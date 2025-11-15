@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ HABILIDADES.SYS - Data Engineering</title>
+    
+    <!-- Framework Y2K (98.css) -->
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    
+    <style>
+        body {
+            background-color: #C0C0C0; /* Fundo cinza claro para a página web */
+        }
+        .main-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+        .skills-list {
+            margin-top: 20px;
+        }
+        
+        /* Estilo da Barra de Progresso Y2K */
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            border: 2px outset #C0C0C0;
+            background-color: #FFFFFF; /* Fundo branco para a barra */
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #000080; /* Azul escuro */
+            transition: width 1.5s ease-out; /* Adiciona uma animação suave e mais longa */
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: #000000; /* Texto sobre o fundo da barra (cinza) */
+            z-index: 2;
+        }
+        .progress-bar-fill .progress-text {
+            color: #FFFFFF; /* Texto branco sobre a parte preenchida (azul) */
+        }
+        
+        .skill-item h4 {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- JANELA PRINCIPAL DE HABILIDADES -->
+        <div class="window">
+            <div class="title-bar">
+                <div class="title-bar-text">⚡ HABILIDADES.SYS - Níveis de Proficiência</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Minimize"></button>
+                    <button aria-label="Maximize"></button>
+                    <button aria-label="Close" onclick="window.close();"></button>
+                </div>
+            </div>
+            
+            <div class="window-body">
+                <p><strong>Status: Análise de Proficiência Completa.</strong> A porcentagem reflete o nível de experiência e fluência nas ferramentas e linguagens listadas abaixo. </p>
+                <button onclick="window.location.href='index.html'">Voltar ao Desktop</button>
+                <hr style="margin-top: 10px;">
+
+                <div class="skills-list">
+                    
+                    <!-- HABILIDADE 1: Python -->
+                    <div class="skill-item">
+                        <h4>Python (Pandas, PySpark)</h4>
+                        <div class="progress-bar-container">
+                            <!-- Inicia com 0% no HTML para garantir a animação -->
+                            <div class="progress-bar-fill" id="skill-python" style="width: 0%;">
+                                <span class="progress-text">0%</span>
+                            </div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- HABILIDADE 2: SQL -->
+                    <div class="skill-item">
+                        <h4>SQL (PostgreSQL, BigQuery)</h4>
+                        <div class="progress-bar-container">
+                             <!-- Inicia com 0% no HTML para garantir a animação -->
+                            <div class="progress-bar-fill" id="skill-sql" style="width: 0%;">
+                                <span class="progress-text">0%</span>
+                            </div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- HABILIDADE 3: AWS Cloud -->
+                    <div class="skill-item">
+                        <h4>AWS Cloud (S3, Glue, Lambda)</h4>
+                        <div class="progress-bar-container">
+                             <!-- Inicia com 0% no HTML para garantir a animação -->
+                            <div class="progress-bar-fill" id="skill-aws" style="width: 0%;">
+                                <span class="progress-text">0%</span>
+                            </div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- HABILIDADE 4: Ferramentas ETL/Orquestração -->
+                    <div class="skill-item">
+                        <h4>Ferramentas ETL (Airflow/Prefect)</h4>
+                        <div class="progress-bar-container">
+                             <!-- Inicia com 0% no HTML para garantir a animação -->
+                            <div class="progress-bar-fill" id="skill-etl" style="width: 0%;">
+                                <span class="progress-text">0%</span>
+                            </div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- HABILIDADE 5: Modelagem de Dados -->
+                    <div class="skill-item">
+                        <h4>Modelagem (Dimensional, Data Vault)</h4>
+                        <div class="progress-bar-container">
+                             <!-- Inicia com 0% no HTML para garantir a animação -->
+                            <div class="progress-bar-fill" id="skill-modeling" style="width: 0%;">
+                                <span class="progress-text">0%</span>
+                            </div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para Animacao e Preenchimento da Barra -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Definição das Habilidades e Níveis (Substitua pelos seus valores reais!)
+            const skills = [
+                { id: 'skill-python', name: 'Python', level: 95 },
+                { id: 'skill-sql', name: 'SQL', level: 90 },
+                { id: 'skill-aws', name: 'AWS Cloud', level: 85 },
+                { id: 'skill-etl', name: 'ETL Tools', level: 75 },
+                { id: 'skill-modeling', name: 'Data Modeling', level: 80 }
+            ];
+
+            // Função para preencher a barra com a animação
+            function fillProgressBar(id, level) {
+                const fillElement = document.getElementById(id);
+                const containerElement = fillElement.parentNode;
+                const textElements = containerElement.querySelectorAll('.progress-text');
+                
+                // Texto que aparece sobre a barra (ex: 85%)
+                const percentageText = `${level}%`;
+
+                // 1. Inicia a barra em 0%
+                fillElement.style.width = '0%';
+                textElements.forEach(span => span.textContent = '0%');
+                
+                // 2. Após um pequeno atraso, aciona a animação de preenchimento
+                setTimeout(() => {
+                    // Preenche o texto FINAL em ambos os spans
+                    textElements.forEach(span => span.textContent = percentageText);
+                    
+                    // Aplica a largura final (a animação CSS se encarrega da transição)
+                    fillElement.style.width = `${level}%`;
+                }, 300); // 300ms de atraso antes de começar a animação
+            }
+
+            // Inicia o preenchimento de todas as barras
+            skills.forEach(skill => {
+                fillProgressBar(skill.id, skill.level);
+            });
+        });
+    </script>
+</body>
+</html>
