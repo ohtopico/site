@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JÚLIA'S INTERACTIVE DATA DESKTOP (v. 98)</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+
+    <style>
+        /* Estilos do Desktop/Sistema Operacional */
+        body {
+            background-color: #008080; /* Teal/Verde-Petróleo (Padrão) */
+            padding: 0; 
+            overflow: hidden; 
+            position: relative; 
+            min-height: 100vh;
+        }
+
+        /* Janelas Arrastáveis */
+        .window {
+            position: absolute; 
+            min-width: 250px; 
+            max-width: 500px; 
+            z-index: 100; /* Posição inicial Z */
+        }
+
+        /* Barra de Título para arrastar */
+        .window .title-bar {
+            cursor: grab; 
+            user-select: none;
+        }
+
+        /* Estilos da Janela do Terminal */
+        .ascii-art-window-body {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            background-color: #000000;
+            color: #00FF00;
+            padding: 10px;
+            border: 1px solid #00FF00;
+            white-space: pre; 
+            overflow-x: auto;
+            line-height: 1.2;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); 
+        }
+
+        /* Cores de Destaque nas Barras de Título */
+        #window-portfolio .title-bar { background-color: #000080; color: white; } 
+        #window-trek .title-bar { background-color: #800000; color: white; } 
+        #window-moedas .title-bar { background-color: #008000; color: white; } 
+        #window-contact .title-bar { background-color: #FF0000; color: white; } 
+        #window-ascii .title-bar { background-color: #404040; color: #00FF00; } 
+        #window-properties .title-bar { background-color: #000080; color: white; } 
+
+        /* Barra de Tarefas Fixa */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #C0C0C0;
+            border-top: 2px solid #FFFFFF;
+            padding: 2px 5px;
+            display: flex;
+            align-items: center;
+            z-index: 999; /* Acima de todas as janelas */
+        }
+        .taskbar .start-button {
+            padding: 3px 10px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .taskbar-separator {
+            width: 2px;
+            height: 20px;
+            background-color: #808080;
+            border-right: 2px solid #FFFFFF;
+            margin: 0 5px;
+        }
+	
+	.maximized {
+    	/* Posição da janela maximizada: 0px do topo, mas deixa espaço para a taskbar no fundo */
+	top: 0 !important;
+    	left: 0 !important;
+    	width: 100vw !important; /* 100% da largura da viewport */
+    	height: 100vh !important; /* 100% da altura da viewport */
+    	transform: none !important; /* Zera a transformação do drag */
+    	/* Garante que o conteúdo não cubra a barra de tarefas se houver scroll */
+    	padding-bottom: 35px; 
+    	box-sizing: border-box; /* Para que o padding não aumente o tamanho total */
+}
+    </style>
+</head>
+<body>
+
+    <div class="taskbar">
+        <button class="start-button" id="startResetButton">
+            <span style="font-size: 1.1em;">&#x273b;</span> Start
+        </button>
+        <div class="taskbar-separator"></div>
+        
+        <button class="start-button" id="openPropertiesButton" style="font-weight: normal;">
+            Wallpaper Selector
+        </button>
+
+        <div id="minimized-windows" style="display: flex;">
+            </div>
+        
+        <div style="margin-left: auto; background-color: #BDBDBD; padding: 2px 5px; border: 1px solid #808080;">
+            20:21 PM
+        </div>
+    </div>
+
+    <div class="window" id="window-ascii" style="top: 20px; left: 20px; width: 400px; z-index: 105;" data-x="0" data-y="0">
+        <div class="title-bar">
+            <div class="title-bar-text">TERMINAL.COM (C:\)</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body ascii-art-window-body">
+            //-------------------------------------------------------------
+            // B I O - S C A N N E R   R E A D I N G :   J U L I A 
+            //-------------------------------------------------------------
+            <br>
+            Atuação como Engenheira de Dados Trainee na Compass UOL, onde 
+	    participei de projeto com modelagem de dados com SQL e do 
+	    gerenciamento de um Data Lake (S3 e EC2) para alimentar 
+	    dashboards de gestão interna sobre indicadores de 
+	    colaboradores.
+            <br>
+            <br>
+            <br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;[ STATUS: ONLINE ]
+            <br>
+            <br>
+            //-------------------------------------------------------------
+            // ROLE: DATA ENGINEER
+            // HOBBIES: NUMISMATICS | STAR TREK | DOCTOR WHO | WIKIPEDIA
+            //-------------------------------------------------------------
+        </div>
+    </div>
+
+    <div class="window" id="window-portfolio" style="top: 80px; left: 450px; width: 450px; z-index: 104;" data-x="0" data-y="0">
+        <div class="title-bar">
+            <div class="title-bar-text">📂 DATA_PROJECTS.TXT</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <h3>Engenheira de Dados</h3>
+            <p>Pyhon | SQL | Data lake | Databricks | PowerBI </p>
+            <a href="CurriculoJuliaAlves.pdf" download="Curriculo_JuliaAlves.pdf">
+    		<button>Download CV (PDF)</button></a>
+		<button onclick="window.open('https://github.com/ohtopico')">Github</button>
+        </div>
+    </div>
+
+
+    <div class="window" id="window-contact" style="top: 200px; left: 700px; width: 300px; z-index: 101;" data-x="0" data-y="0">
+        <div class="title-bar">
+            <div class="title-bar-text">📧 CONTACT_JULIA.HTM</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <h3>Fale com Julia.</h3>
+            <p>Conecte-se comigo!</p>
+            <button onclick="window.location.href='mailto:juliarqalves@gmail.com'">Enviar E-mail</button>
+            <button onclick="window.open('https://linkedin.com/in/ohtopico')">LinkedIn</button>
+        </div>
+    </div>
+    
+    <div class="window" id="window-properties" style="top: 150px; left: 200px; width: 450px; display: none; z-index: 106;" data-x="0" data-y="0">
+        <div class="title-bar">
+            <div class="title-bar-text">🎨 Propriedades de Tela</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            
+            <menu role="tablist">
+                <li role="tab" aria-selected="true">Fundo</li>
+                <li role="tab">Aparência</li>
+            </menu>
+
+            <div class="sunken-panel" style="padding: 10px; margin-top: 10px;">
+                <h4>Escolha o Papel de Parede:</h4>
+                
+                <div class="field-row">
+                    <select id="wallpaper-select">
+                        <option value="default" selected>Windows Padrão</option>
+                        <option value="space">Nebulosa</option>
+                        <option value="classic">Classic</option>
+                    </select>
+                </div>
+
+                <div class="field-row" style="margin-top: 10px;">
+                    <button id="apply-wallpaper-btn">Aplicar</button>
+                    <button onclick="document.getElementById('window-properties').style.display='none';">Cancelar</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <script>
+        // --- 1. Mapeamento de Configurações ---
+
+        // URLs simuladas para o fundo (Use suas próprias URLs!)
+        const wallpaperURLs = {
+            'default': '#008080', 
+            'space': 'url(https://svs.gsfc.nasa.gov/vis/a010000/a014800/a014866/CW_Leo_From_GALEX_desktop.jpg)', 
+            'classic': 'url(https://wallpaperaccess.com/full/3480667.jpg)', 
+        };
+        
+        // Configurações iniciais de Posição (para o Reset)
+        const initialWindowConfig = {
+            'window-ascii': { top: '20px', left: '20px', zIndex: 105, title: 'TERMINAL.COM (C:\\)' },
+            'window-portfolio': { top: '80px', left: '450px', zIndex: 104, title: '📂 DATA_PROJECTS.TXT' },
+            'window-contact': { top: '850px', left: '600px', zIndex: 102, title: '💰  CONTACT_JULIA.HTM' },
+            'window-properties': { top: '150px', left: '200px', zIndex: 106, title: '🎨 Propriedades da Tela' }
+        };
+        
+        const minimizedContainer = document.getElementById('minimized-windows');
+
+        // --- 2. FUNÇÕES UTILITY ---
+        
+        // Retorna o Z-Index máximo de todas as janelas visíveis
+        function getMaxZIndex() {
+            let maxZIndex = 0;
+            document.querySelectorAll('.window').forEach(otherWindow => {
+                const zIndex = parseInt(otherWindow.style.zIndex || 0);
+                if (zIndex > maxZIndex && zIndex < 999 && otherWindow.style.display !== 'none') { 
+                    maxZIndex = zIndex;
+                }
+            });
+            return maxZIndex;
+        }
+	function toggleBrowserFullscreen() {
+    		if (!document.fullscreenElement) {
+        	// Entra no modo tela cheia
+        		document.documentElement.requestFullscreen();
+    		} else {
+        	// Sai do modo tela cheia
+        	if (document.exitFullscreen) {
+           	 document.exitFullscreen();
+        	}
+    		}
+	}
+
+        // Aplica o papel de parede selecionado
+        function applyWallpaper(selection) {
+            const body = document.body;
+            const url = wallpaperURLs[selection];
+            
+            if (selection === 'default') {
+                body.style.backgroundImage = 'none';
+                body.style.backgroundColor = '#008080';
+            } else {
+                body.style.backgroundImage = url;
+                body.style.backgroundSize = 'cover';
+                body.style.backgroundRepeat = 'no-repeat';
+                body.style.backgroundPosition = 'center center';
+                body.style.backgroundColor = '#000000';
+            }
+        }
+
+        // --- 3. FUNÇÃO PARA MINIMIZAR E RESTAURAR JANELAS ---
+        function toggleMinimize(windowId) {
+            const win = document.getElementById(windowId);
+            const iconId = `icon-${windowId}`;
+            let icon = document.getElementById(iconId);
+
+            if (win.style.display === 'none') {
+                // Restaurar
+                win.style.display = 'block';
+                win.style.zIndex = getMaxZIndex() + 1;
+                if (icon) icon.classList.remove('active');
+                
+                // Remove o ícone da barra de tarefas
+                if (icon) icon.remove(); 
+            } else {
+                // Minimizar / Fechar
+                win.style.display = 'none';
+                
+                // Cria o ícone na taskbar se não existir
+                if (!icon) {
+                    const config = initialWindowConfig[windowId];
+                    icon = document.createElement('button');
+                    icon.id = iconId;
+                    icon.className = 'start-button'; 
+                    // Limita o título para caber na taskbar
+                    const displayTitle = config.title.length > 20 ? config.title.substring(0, 17) + '...' : config.title;
+                    icon.innerHTML = `<span style="font-weight: normal;">${displayTitle}</span>`;
+                    icon.onclick = () => toggleMinimize(windowId);
+                    minimizedContainer.appendChild(icon);
+                }
+                icon.classList.add('active');
+            }
+        }
+
+	// --- 4. FUNÇÃO PARA MAXIMIZAR E RESTAURAR  ---
+        function toggleMaximize(windowId) {
+            const win = document.getElementById(windowId);
+            const isMaximized = win.classList.toggle('maximized');
+            
+            if (isMaximized) {
+                // Salva a posição e o tamanho antes de maximizar
+                win.setAttribute('data-prev-top', win.style.top);
+                win.setAttribute('data-prev-left', win.style.left);
+                win.setAttribute('data-prev-width', win.style.width);
+
+                win.style.zIndex = 900; // Garante que a janela maximizada fique em destaque (abaixo da taskbar: 999)
+                
+                // O CSS .maximized aplica o novo tamanho e posição
+            } else {
+                // Restaurar
+                win.style.top = win.getAttribute('data-prev-top') || initialWindowConfig[windowId].top;
+                win.style.left = win.getAttribute('data-prev-left') || initialWindowConfig[windowId].left;
+                win.style.width = win.getAttribute('data-prev-width') || initialWindowConfig[windowId].width;
+                win.style.height = initialWindowConfig[windowId].height; // Restaura a altura
+                
+                win.style.zIndex = getMaxZIndex() + 1; // Traz para frente
+            }
+        }
+
+        // --- 5. LIGAÇÃO DE EVENTOS ---
+        
+        // A. Botão Start (Reset: Recarrega a página)
+        document.getElementById('startResetButton').addEventListener('click', () => {
+            window.location.reload(); 
+        });
+
+        // B. Botão de Propriedades (Abre a janela)
+        document.getElementById('openPropertiesButton').addEventListener('click', () => {
+            toggleMinimize('window-properties');
+        });
+
+        // C. Aplica o fundo quando o botão na janela é clicado
+        document.getElementById('apply-wallpaper-btn').addEventListener('click', () => {
+            const selectElement = document.getElementById('wallpaper-select');
+            const selectedValue = selectElement.value;
+            applyWallpaper(selectedValue);
+            
+            // Fecha a janela de propriedades após aplicar
+            document.getElementById('window-properties').style.display = 'none';
+        });
+
+        // D. Botão Minimize
+        document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(minimizeButton => {
+            minimizeButton.addEventListener('click', (event) => {
+                const windowToMinimize = event.target.closest('.window');
+                if (windowToMinimize) {
+                    toggleMinimize(windowToMinimize.id);
+                }
+            });
+        });
+
+	// E. Botão Maximize (Chamada para a função toggleMaximize)
+        document.querySelectorAll('.title-bar-controls button[aria-label="Maximize"]').forEach(maximizeButton => {
+            maximizeButton.addEventListener('click', (event) => {
+                const windowToMaximize = event.target.closest('.window');
+                if (windowToMaximize) {
+                    toggleMaximize(windowToMaximize.id);
+                }
+            });
+        });
+
+        // F. Botão Close (Fecha/Minimiza para a Taskbar)
+        document.querySelectorAll('.title-bar-controls button[aria-label="Close"]').forEach(closeButton => {
+            closeButton.addEventListener('click', (event) => {
+                const windowToMinimize = event.target.closest('.window');
+                if (windowToMinimize) {
+                    toggleMinimize(windowToMinimize.id);
+                }
+            });
+        });
+
+        // G. Arrastar e Foco (z-index)
+        interact('.window')
+            .draggable({
+                allowFrom: '.title-bar',
+                listeners: {
+                    move (event) {
+                        var target = event.target
+                        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+                        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+                        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+                        target.setAttribute('data-x', x)
+                        target.setAttribute('data-y', y)
+                    },
+                }
+            })
+            .on('down', (event) => {
+                const windowElement = event.currentTarget;
+                if (windowElement.style.display !== 'none') { 
+                    windowElement.style.zIndex = getMaxZIndex() + 1;
+                }
+            });
+
+	// I. Botão de Tela Cheia Real (Navegador)
+	document.getElementById('fullscreenToggle').addEventListener('click', toggleBrowserFullscreen);
+
+    </script>
+</body>
+</html>
