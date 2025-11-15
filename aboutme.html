@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Júlia Roberta Quoos Alves | Sobre Mim</title>
+    <!-- Carrega o Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter como padrão */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc; /* Fundo muito claro */
+            color: #1f2937; /* Texto escuro */
+        }
+        .section-header {
+            border-bottom: 2px solid #e5e7eb; /* Linha sutil de separação */
+        }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .accent-color {
+            color: #4f46e5; /* Indigo 600 - Cor de destaque para tecnologia/dados */
+        }
+        .accent-bg {
+            background-color: #4f46e5;
+        }
+        .skill-badge {
+            background-color: #e0e7ff; /* Indigo 100 */
+            color: #3730a3; /* Indigo 800 */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Ícone SVG para Data -->
+    <script>
+        function dataIcon(className = "w-6 h-6") {
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}">
+                <path d="M12 2v6"/><path d="M12 18v4"/><path d="M4.2 4.2l3.5 3.5"/><path d="M18.3 18.3l3.5 3.5"/><path d="M18.3 4.2l3.5-3.5"/><path d="M4.2 18.3l-3.5 3.5"/><circle cx="12" cy="12" r="10"/>
+            </svg>
+            `;
+        }
+        function userIcon(className = "w-6 h-6") {
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            `;
+        }
+        function workIcon(className = "w-6 h-6") {
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}">
+                <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            `;
+        }
+        function graduationCapIcon(className = "w-6 h-6") {
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}">
+                <path d="M21.42 10.97l-6.42-6.42A2 2 0 0 0 13.9 4H5.1A2 2 0 0 0 3.68 5.48l6.42 6.42"/><path d="M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><circle cx="12" cy="12" r="10"/>
+            </svg>
+            `;
+        }
+    </script>
+
+    <!-- Barra de Navegação para a Home/Projetos -->
+    <nav class="sticky top-0 bg-white shadow-md z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold accent-color hover:text-indigo-800 transition">
+                Júlia Alves | Portfólio
+            </a>
+            <a href="index.html" class="text-sm font-medium text-gray-700 hover:text-indigo-600 border border-indigo-200 px-3 py-1 rounded-full transition">
+                <span class="inline-block mr-1">🏠</span> Ver Projetos
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- Container Principal com foco no centro -->
+    <div class="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+
+        <!-- Header e Título Principal -->
+        <header class="mb-12 text-center">
+            <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight text-gray-900 mb-2">
+                Júlia Roberta Quoos Alves
+            </h1>
+            <p class="text-xl text-gray-600">
+                <span class="font-bold accent-color">Data Scientist</span> & | Apaixonada por excelência e dados.
+            </p>
+        </header>
+
+        <!-- Seção: Sobre Mim -->
+        <section class="mb-12 p-6 bg-white rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold accent-color mb-4 pb-2 flex items-center section-header">
+                <span class="mr-3" id="about-icon"></span>
+                Sobre Mim
+            </h2>
+            <script>document.getElementById('about-icon').innerHTML = userIcon('w-7 h-7');</script>
+            <div class="space-y-4 text-gray-700">
+                <p>
+                    Meu nome é Júlia Roberta Quoos Alves. Sou uma profissional com 5 graduações e uma pós-graduação em Ciência de Dados e Big Data Analytics, movida pela paixão por dados e pela excelência.
+                </p>
+                <p>
+                    Minha experiência inclui a atuação como <span class="font-semibold accent-color">Data Engineer Trainee na Compass UOL</span>, onde trabalhei com modelagem de dados (SQL) e gestão de Data Lake (S3 e EC2) para alimentar dashboards de indicadores internos.
+                </p>
+                <p>
+                    Tenho foco em estruturação de dados para <span class="font-semibold">Marketing e Vendas</span>, visando performance e uma visão 360 do cliente. Isso abrange desde Análise de Sentimento em Redes Sociais (LinkedIn, X/Twitter) até o domínio em estruturação de Google Analytics 4 (GA4) e dados de CRM e Performance Media (certificada em Google Ads).
+                </p>
+                <p>
+                    <span class="font-semibold">Comunicação e Didática:</span> Já ministrei palestras sobre Computação, Redes Sociais e Tecnologia. Nos meus momentos de lazer, amo debater sobre Star Trek e Doctor Who, edito a Wikipedia e coleciono moedas.
+                </p>
+                <div class="mt-6 p-4 border-l-4 border-indigo-500 bg-indigo-50 rounded-r-lg">
+                    <p class="text-indigo-800 font-medium">
+                        <span class="font-extrabold">💬 Quer conversar sobre Dados?</span> Me mande uma mensagem! (Substitua por um link de contato real, ex: LinkedIn).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção: Habilidades e Ferramentas -->
+        <section class="mb-12 p-6 bg-white rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold accent-color mb-6 pb-2 flex items-center section-header">
+                <span class="mr-3" id="skills-icon"></span>
+                🚀 Habilidades e Ferramentas
+            </h2>
+            <script>document.getElementById('skills-icon').innerHTML = dataIcon('w-7 h-7');</script>
+            
+            <div class="space-y-6">
+                <!-- Data Science & Analysis -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-1">Data Science & Análise</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Python (NumPy, Pandas, Plotly)</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Data Modeling (SQL)</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Análise Estatística e Exploratória</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Data Visualization (Matplotlib, Seaborn, Power BI)</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Análise de Sentimento (NLP)</span>
+                    </div>
+                </div>
+
+                <!-- Data Engineering & Cloud -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-1">Data Engineering & Cloud</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Apache Kafka, Airflow, Spark</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">AWS (S3, EC2)</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Google Cloud Certified</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Microsoft Azure, Databricks</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Git (Version Control)</span>
+                    </div>
+                </div>
+                
+                <!-- Marketing & Business Intelligence -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-1">Marketing & Business Intelligence</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Google Analytics 4 (GA4)</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Google Ads Certified</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Meta Certified</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Visão 360 do Cliente</span>
+                        <span class="skill-badge text-sm font-medium px-3 py-1 rounded-full">Scrum (Metodologias Ágeis)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+            <p>&copy; 2025 Júlia Roberta Quoos Alves.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
