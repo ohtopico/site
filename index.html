@@ -3,576 +3,938 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JÚLIA'S INTERACTIVE DATA DESKTOP (v. 98)</title>
+    <title>★ o h t o p i c o . c o m ★</title>
     
-    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <!-- Google Fonts para tipografia Y2K pixelada e retrô -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     
-    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-
+    <!-- FontAwesome para ícones retrô -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* Estilos do Desktop/Sistema Operacional */
-        body {
-            background-color: #008080; /* Teal/Verde-Petróleo (Padrão) */
-            padding: 0; 
-            overflow: hidden; 
-            position: relative; 
-            min-height: 100vh;
+        /* Estilos Base & Variáveis Estéticas Y2K */
+        :root {
+            --bg-color: #0c001a;
+            --desktop-bg: #1d003b;
+            --window-bg: #e2d8f0;
+            --window-border-light: #ffffff;
+            --window-border-dark: #7a6a8a;
+            --neon-pink: #ff007f;
+            --neon-green: #39ff14;
+            --neon-blue: #00f0ff;
+            --purple-dark: #2d124d;
+            --hot-pink: #ff3399;
         }
 
-        /* Taskbar: Fixa no rodapé e alinhada */
-        .taskbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        * {
+            box-sizing: border-box;
+            cursor: url('https://cur.cursors-4u.net/symbols/sym-8/sym761.cur'), auto !important;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(rgba(255, 0, 127, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 127, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #121212;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 0;
+            user-select: none;
+        }
+
+        /* Área de Trabalho (Desktop) */
+        #desktop {
+            height: calc(100vh - 40px);
+            padding: 20px;
+            position: relative;
             width: 100%;
-            z-index: 1000; /* Garante que fique acima de todas as janelas */
-            
-            /* Garante que os itens internos estejam alinhados verticalmente */
-            display: flex; 
-            align-items: center; 
-            
-            /* Padding removido para controle, o 98.css define o fundo cinza */
-            padding: 0; 
         }
-        
-        /* Ajuste fino nos botões da Taskbar para garantir que preencham a altura */
-        .taskbar .start-button {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-        
-        /* Área de Ícones */
+
+        /* Ícones da Área de Trabalho */
         .desktop-icons {
+            display: flex;
+            flex-direction: column; 
+            flex-wrap: wrap;        
+            gap: 20px;
+            left: 20px;
             position: absolute;
-            top: 5px;
-            left: 5px;
+            top: 20px;
+            height: calc(100vh - 80px); 
+            width: auto;                
+            z-index: 5;
+        }
+
+        .icon-item {
+            align-items: center;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: var(--neon-blue);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            justify-content: center;
+            padding: 8px;
+            text-align: center;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .icon-item:hover {
+            background: rgba(255, 0, 127, 0.2);
+            border: 1px dashed var(--neon-pink);
+        }
+
+        .icon-item i {
+            font-size: 32px;
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5));
+        }
+
+        .icon-label {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* Estrutura das Janelas Clássicas Y2K (Estilo Windows 98 Cyberpunk) */
+        .y2k-window {
+            background: var(--window-bg);
+            border: 3px solid;
+            border-color: var(--window-border-light) var(--window-border-dark) var(--window-border-dark) var(--window-border-light);
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.5), inset 1px 1px 0px #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 200px;
+            position: absolute;
+            width: 350px;
+            z-index: 10;
+        }
+
+        .window-header {
+            background: linear-gradient(90deg, var(--neon-pink), var(--purple-dark));
+            color: white;
+            display: flex;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            justify-content: space-between;
+            letter-spacing: 1px;
+            padding: 4px 8px;
+            cursor: move;
+        }
+
+        .window-title {
+            align-items: center;
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .win-btn {
+            background: var(--window-bg);
+            border: 2px solid;
+            border-color: #fff #555 #555 #fff;
+            color: #000;
+            font-family: monospace;
+            font-weight: bold;
+            height: 18px;
+            line-height: 10px;
+            padding: 0;
+            text-align: center;
+            width: 18px;
+        }
+
+        .win-btn:active {
+            border-color: #555 #fff #fff #555;
+            padding: 1px 0 0 1px;
+        }
+
+        .window-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        /* Estilização Interna das Janelas */
+        .post-card {
+            background: #fff;
+            border: 2px inset #fff;
+            box-shadow: inset -1px -1px 0px #000;
+            padding: 10px;
+        }
+
+        .post-title {
+            color: var(--neon-pink);
+            font-family: 'VT323', monospace;
+            font-size: 26px;
+            margin: 0;
+        }
+
+        .post-date {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .post-text {
+            color: #333;
+            font-family: 'Courier Prime', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Força mídias do Tumblr a respeitarem a janela */
+        .post-text img, .post-text iframe, .post-text video {
+            max-width: 100% !important;
+            height: auto !important;
+            border: 2px inset var(--window-border-light);
+        }
+
+        /* Marquee Retro */
+        .retro-banner {
+            background: #000;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            overflow: hidden;
+            padding: 6px;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        /* Mini Player Winamp Retro */
+        .winamp-player {
+            background: #111;
+            border: 2px solid #555;
+            color: var(--neon-green);
+            font-family: monospace;
+            padding: 10px;
+        }
+
+        .player-display {
+            background: #000;
+            border: 1px inset #555;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+        }
+
+        .track-info {
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .vis-bar-container {
+            display: flex;
+            gap: 2px;
+            height: 20px;
+        }
+
+        .vis-bar {
+            background: var(--neon-green);
+            flex-grow: 1;
+            height: 100%;
+            transform-origin: bottom;
+            transition: transform 0.1s ease;
+        }
+
+        .player-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .player-btn {
+            background: #222;
+            border: 1px solid #777;
+            color: #fff;
+            font-size: 11px;
+            padding: 4px;
+            width: 100%;
+        }
+
+        .player-btn:hover {
+            background: var(--neon-pink);
+            color: #000;
+        }
+
+        /* Mascote Virtual */
+        .virtual-pet-container {
+            align-items: center;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            padding: 5px;
+            justify-content: center;
         }
-        
-        .desktop-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 70px; /* Largura do ícone */
-            cursor: pointer;
+
+        .pet-sprite {
+            animation: bounce 1.5s infinite alternate;
+            font-size: 48px;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        .pet-bubble {
+            background: #fff;
+            border: 1px solid #000;
+            border-radius: 10px;
+            font-size: 12px;
+            padding: 6px;
+            position: relative;
             text-align: center;
-            color: white;
-            text-shadow: 1px 1px 0 #000;
-            font-size: 10px; /* Fonte pequena */
-            padding: 5px 0;
-            user-select: none;
-            border: 1px solid transparent; /* Para o efeito de seleção */
         }
 
-        /* Efeito de Seleção (Borda pontilhada) */
-        .desktop-icon:hover {
-            border: 1px dotted #FFFFFF;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-        
-        .icon-image {
-            font-size: 2.2em; /* Tamanho do Emoji/Ícone */
-            line-height: 1;
-            margin-bottom: 3px;
-        }
-
-        /* Janelas Arrastáveis */
-        .window {
-            position: absolute; 
-            min-width: 250px; 
-            max-width: 95%; /* Adaptação para tela cheia */
-            z-index: 100; /* Posição inicial Z */
-            transition: all 0.3s ease; /* Transição para maximizar/restaurar */
+        .pet-bubble::after {
+            border-color: #fff transparent transparent transparent;
+            border-style: solid;
+            border-width: 5px 5px 0 5px;
+            bottom: -5px;
+            content: '';
+            left: 50%;
+            position: absolute;
+            transform: translateX(-50%);
         }
 
-        /* Barra de Título para arrastar */
-        .window .title-bar {
-            cursor: grab; 
-            user-select: none;
+        /* Contador de Visitas */
+        .visitor-counter {
+            background: #000;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: 'VT323', monospace;
+            font-size: 28px;
+            letter-spacing: 2px;
+            padding: 5px;
+            text-align: center;
         }
 
-        /* Estilos da Janela do Terminal */
-        .ascii-art-window-body {
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            background-color: #000000;
-            color: #00FF00;
-            padding: 10px;
-            border: 1px solid #00FF00;
-            white-space: pre; 
-            overflow-x: auto;
-            line-height: 1.2;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); 
-        }
-
-        /* Cores de Destaque nas Barras de Título */
-        #window-portfolio .title-bar { background-color: #000080; color: white; } 
-        #window-contact .title-bar { background-color: #FF0000; color: white; } 
-        #window-ascii .title-bar { background-color: #404040; color: #00FF00; } 
-        #window-properties .title-bar { background-color: #000080; color: white; } 
-        #window-skills .title-bar { background-color: #008080; color: white; } 
-
-        /* Estilo Maximizado (Ocupa a tela toda, exceto a taskbar) */
-	    .maximized {
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important; 
-            /* Altura total - altura da taskbar (~35px) */
-            height: calc(100vh - 35px) !important; 
-            max-width: 100vw !important; 
-            transform: none !important; 
-            box-sizing: border-box; 
-        }
-
-        /* Estilo para o iFrame de Habilidades */
-        #window-skills iframe {
+        /* Barra de Tarefas (Taskbar Estilo Win98) */
+        #taskbar {
+            align-items: center;
+            background: var(--window-bg);
+            border-top: 3px solid #fff;
+            bottom: 0;
+            display: flex;
+            height: 40px;
+            justify-content: space-between;
+            left: 0;
+            padding: 4px;
+            position: fixed;
             width: 100%;
-            height: 100%;
-            border: none;
-            background-color: white; 
+            z-index: 100;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--neon-pink), var(--purple-dark));
+            border: 2px solid;
+            border-color: #ff9de2 #4a007d #4a007d #ff9de2;
+            color: white;
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 0px 12px;
+        }
+
+        .start-btn:active {
+            border-color: #4a007d #ff9de2 #ff9de2 #4a007d;
+        }
+
+        .taskbar-clock {
+            background: inset 1px 1px #000;
+            border: 2px inset #fff;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 4px 10px;
+        }
+
+        /* Cursor Stars */
+        .cursor-star {
+            color: var(--neon-blue);
+            font-size: 12px;
+            pointer-events: none;
+            position: absolute;
+            z-index: 9999;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 14px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border: 1px solid #7a6a8a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #fff #808080 #808080 #fff;
+        }
+
+        /* Estilo dos programas minimizados/abertos na barra de tarefas */
+        .taskbar-tab {
+            background: var(--window-bg);
+            border: 2px solid;
+            border-color: #fff #555 #555 #fff;
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 8px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            max-width: 120px;
+            cursor: pointer !important;
+        }
+        .taskbar-tab.active {
+            border-color: #555 #fff #fff #555;
+            background: #d2c4e6;
+            padding: 3px 7px 1px 9px;
+        }
+
+        .menu-item:hover {
+            background: var(--neon-pink) !important;
+            color: #fff !important;
         }
     </style>
 </head>
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-Z7QDTBLC4K');
-</script>
 <body>
-    
-    <div class="desktop-icons">
-        <div class="desktop-icon" onclick="openWindow('window-ascii')">
-            <span class="icon-image">💻</span>
-            <span>TERMINAL.COM</span>
-        </div>
-        <div class="desktop-icon" onclick="openWindow('window-portfolio')">
-            <span class="icon-image">📁</span>
-            <span>DATA_PROJECTS.TXT</span>
-        </div>
-        <div class="desktop-icon" onclick="openWindow('window-skills')">
-            <span class="icon-image">⚡</span>
-            <span>HABILIDADES.SYS</span>
-        </div>
-        <div class="desktop-icon" onclick="openWindow('window-contact')">
-            <span class="icon-image">✉️</span>
-            <span>CONTACT_JULIA.HTM</span>
-        </div>
-    </div>
-    
-    <div class="taskbar">
-        <button class="start-button" id="startResetButton">
-            <span style="font-size: 1.1em;">&#x273b;</span> Start
-        </button>
-        <div class="taskbar-separator"></div>
-        
-        <button class="start-button" id="fullscreenToggle">
-            [ <span style="font-size: 1.1em;">&#x25a1;</span> ]
-        </button>
 
-        <button class="start-button" id="openPropertiesButton">
-            🖼️ Vídeo
-        </button>
+    <!-- Área de Trabalho -->
+    <div id="desktop">
 
-        <div id="minimized-windows" style="display: flex; flex-grow: 1;">
+        <!-- Ícones Principais -->
+        <div class="desktop-icons">
+            <div class="icon-item" onclick="toggleWindow('win-diario')">
+                <i class="fa-solid fa-book-open"></i>
+                <span class="icon-label">Atualizações</span>
             </div>
-        
-        <div id="clock-display" style="background-color: #BDBDBD; padding: 2px 5px; border: 1px solid #808080; height: 100%; display: flex; align-items: center; white-space: nowrap;">
-            20:21 PM
-        </div>
-    </div>
-
-    <div class="window" id="window-ascii" style="top: 20px; left: 20px; width: 400px; z-index: 105; display: none;" data-x="0" data-y="0">
-        <div class="title-bar">
-            <div class="title-bar-text">TERMINAL.COM (C:\)</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+            <div class="icon-item" onclick="toggleWindow('win-player')">
+                <i class="fa-solid fa-compact-disc fa-spin"></i>
+                <span class="icon-label">Player</span>
             </div>
-        </div>
-        <div class="window-body ascii-art-window-body">
-            //-------------------------------------------------------------
-            // B I O - S C A N N E R   R E A D I N G :   J U L I A 
-            //-------------------------------------------------------------
-            <br>
-            Atuação como Engenheira de Dados Trainee na Compass UOL, onde 
-	    participei de projeto com modelagem de dados com SQL e do 
-	    gerenciamento de um Data Lake (S3 e EC2) para alimentar 
-	    dashboards de gestão interna sobre indicadores de 
-	    colaboradores.
-            <br>
-            <br>
-            <br>
-            <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;[ STATUS: ONLINE ]
-            <br>
-            <br>
-            //-------------------------------------------------------------
-            // ROLE: DATA ENGINEER
-            // HOBBIES: NUMISMATICS | STAR TREK | DOCTOR WHO | WIKIPEDIA
-            //-------------------------------------------------------------
-        </div>
-    </div>
-
-    <div class="window" id="window-portfolio" style="top: 80px; left: 450px; width: 450px; z-index: 104; display: none;" data-x="0" data-y="0">
-        <div class="title-bar">
-            <div class="title-bar-text">📂 DATA_PROJECTS.TXT</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+            <div class="icon-item" onclick="toggleWindow('win-pet')">
+                <i class="fa-solid fa-ghost"></i>
+                <span class="icon-label">Mascote</span>
             </div>
-        </div>
-        <div class="window-body">
-            <h3>Engenheira de Dados</h3>
-            <p>Pyhon | SQL | Data lake | Databricks | PowerBI </p>
-            <a href="CurriculoJuliaAlves.pdf" download="Curriculo_JuliaAlves.pdf">
-    		<button>Download CV (PDF)</button></a>
-		<button onclick="window.open('https://github.com/ohtopico')">Github</button>
-        </div>
-    </div>
-
-    <div class="window" id="window-contact" style="top: 200px; left: 700px; width: 300px; z-index: 101; display: none;" data-x="0" data-y="0">
-        <div class="title-bar">
-            <div class="title-bar-text">📧 CONTACT_JULIA.HTM</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+            <div class="icon-item" onclick="toggleWindow('win-skills')">
+                <i class="fa-solid fa-gear"></i>
+                <span class="icon-label">Skills</span>
             </div>
-        </div>
-        <div class="window-body">
-            <h3>Fale com Julia.</h3>
-            <p>Conecte-se comigo!</p>
-            <button onclick="window.location.href='mailto:juliarqalves@gmail.com'">Enviar E-mail</button>
-            <button onclick="window.open('https://linkedin.com/in/ohtopico')">LinkedIn</button>
-        </div>
-    </div>
-	
-    <div class="window" id="window-skills" 
-         style="top: 150px; left: 80px; width: 600px; height: 400px; z-index: 107; display: none;" 
-         data-x="0" data-y="0">
-        <div class="title-bar">
-            <div class="title-bar-text">⚡ HABILIDADES.SYS</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+            <div class="icon-item" onclick="toggleWindow('win-tumblr')">
+                <i class="fa-brands fa-tumblr"></i>
+                <span class="icon-label">Blog Tumblr</span>
             </div>
-        </div>
-        <div class="window-body" style="padding: 0; height: calc(100% - 30px);">
-            <iframe src="skills.html" title="Painel de Proficiência"></iframe>
-        </div>
-    </div>
-    
-    <div class="window" id="window-properties" style="top: 150px; left: 200px; width: 450px; display: none; z-index: 106;" data-x="0" data-y="0">
-        <div class="title-bar">
-            <div class="title-bar-text">🎨 Propriedades de Tela</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+            <div class="icon-item" onclick="window.open('https://www.linkedin.com/in/ohtopico', '_blank')">
+                 <i class="fa-brands fa-linkedin"></i>
+                <span class="icon-label">LinkedIn</span>
+            </div>
+            <div class="icon-item" onclick="window.open('https://github.com/seu-usuario', '_blank')">
+                <i class="fa-brands fa-github"></i>
+                <span class="icon-label">GitHub</span>
             </div>
         </div>
 
-        <div class="window-body">
-
-            <div class="sunken-panel" style="padding: 10px; margin-top: 10px;">
-                <h4>Escolha o Papel de Parede:</h4>
-                
-                <div class="field-row">
-                    <select id="wallpaper-select">
-                        <option value="default" selected>Windows Padrão</option>
-                        <option value="space">Nebulosa</option>
-                        <option value="classic">Classic</option>
-                    </select>
+        <!-- Janela 1: Diário / Posts -->
+        <div id="win-diario" class="y2k-window" style="left: 180px; top: 40px; width: 450px;">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fa-solid fa-star"></i> atualizações.txt
                 </div>
-
-                <div class="field-row" style="margin-top: 10px;">
-                    <button id="apply-wallpaper-btn">Aplicar</button>
-                    <button onclick="document.getElementById('window-properties').style.display='none';">Cancelar</button>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-diario')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-diario')">X</button>
                 </div>
             </div>
+            <div class="retro-banner">
+                <marquee scrollamount="4">+++ ALÔ! BOAS-VINDAS AO MEU SITE! +++</marquee>
+            </div>
+            <div class="window-content" style="gap: 15px;">
+                <div class="post-card">
+                    <h3 class="post-title">BEM-VINDO AO MEU NOVO WEB SPACE!</h3>
+                    <div class="post-date">Escrito em: 10 de Julho de 2026 às 19:00</div>
+                    <hr style="border: 1px dotted var(--neon-pink); margin: 8px 0;">
+                    <p class="post-text">
+                        Finalmente dediquei um tempo para aprimorar o site. Agora tenho esse pequeno espaço e a aba de blog, além do mascote e da musiquinha.
+                    </p>
+                    <p class="post-text">
+                        Navegue usando as janelas! Você pode arrastá-las pela área de trabalho. E não se esqueça de ligar a trilha sonora no meu Winamp Player! 🎧✨
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Janela 2: Winamp-like Player -->
+        <div id="win-player" class="y2k-window" style="left: 650px; top: 40px; width: 320px;">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fa-solid fa-music"></i> cyber_music.exe
+                </div>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-player')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-player')">X</button>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="winamp-player">
+                    <div class="player-display">
+                        <div class="track-info" id="track-name">Sintetizador Retrô de 8-bits - Loop 01</div>
+                        <div class="vis-bar-container" id="vis-bars">
+                            <div class="vis-bar" style="transform: scaleY(0.3);"></div>
+                            <div class="vis-bar" style="transform: scaleY(0.7);"></div>
+                            <div class="vis-bar" style="transform: scaleY(0.9);"></div>
+                            <div class="vis-bar" style="transform: scaleY(0.5);"></div>
+                            <div class="vis-bar" style="transform: scaleY(0.8);"></div>
+                            <div class="vis-bar" style="transform: scaleY(0.4);"></div>
+                            <div class="vis-bar" style="transform: scaleY(0.6);"></div>
+                            <div class="vis-bar" style="transform: scaleY(0.2);"></div>
+                        </div>
+                    </div>
+                    <div class="player-controls" style="margin-top: 10px;">
+                        <button class="player-btn" onclick="playMusic()"><i class="fa-solid fa-play"></i> PLAY</button>
+                        <button class="player-btn" onclick="stopMusic()"><i class="fa-solid fa-stop"></i> STOP</button>
+                    </div>
+                    <div style="font-size: 11px; margin-top: 8px; text-align: center; color: #aaa;">
+                        (Clique em Play para iniciar o som sintetizado!)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Janela 3: Skills -->
+        <div id="win-skills" class="y2k-window" style="left: 400px; top: 150px; width: 380px; display: none;">
+            <div class="window-header">
+                <div class="window-title">
+                     <i class="fa-solid fa-gear"></i> SYSTEM_SPECS.EXE
+                </div>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-skills')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-skills')">X</button>
+                </div>
+            </div>
+            <div class="window-content">
+                <p style="font-size:12px; margin-bottom:15px; font-family: monospace;"> Veja algumas de minhas habilidades profissionais...</p>
             
+                <div class="skill-section">
+                    <div class="skill-title" style="display: flex; justify-content: space-between;">
+                        <span>Criatividade e comunicação</span>
+                        <span class="skill-percentage">95%</span>
+                    </div>
+                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
+                        <div style="background: var(--neon-green); height: 100%; width: 95%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill-section">
+                    <div class="skill-title" style="display: flex; justify-content: space-between;">
+                        <span>SQL (MySQL, PostgreSQL)</span>
+                        <span class="skill-percentage">85%</span>
+                    </div>
+                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
+                        <div style="background: var(--neon-blue); height: 100%; width: 85%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill-section">
+                    <div class="skill-title" style="display: flex; justify-content: space-between;">
+                        <span>Python (Pandas, matplot, pyspark)</span>
+                        <span class="skill-percentage">60%</span>
+                    </div>
+                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
+                        <div style="background: var(--neon-pink); height: 100%; width: 60%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill-section">
+                    <div class="skill-title" style="display: flex; justify-content: space-between;">
+                        <span>Google Cloud Platform</span>
+                        <span class="skill-percentage">60%</span>
+                    </div>
+                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
+                        <div style="background: #9710FF; height: 100%; width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Janela 4: Mascote Virtual & Info -->
+        <div id="win-pet" class="y2k-window" style="left: 180px; top: 430px; width: 450px;">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fa-solid fa-heart"></i> companheiro.app
+                </div>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-pet')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-pet')">X</button>
+                </div>
+            </div>
+            <div class="window-content" style="flex-direction: row; gap: 15px;">
+                <div class="virtual-pet-container" style="width: 40%;">
+                    <div class="pet-bubble" id="pet-talk">Oi! Eu sou o Mimi. Clique em mi!</div>
+                    <div class="pet-sprite" id="pet" onclick="petClick()">👾</div>
+                </div>
+                <div style="width: 60%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <p style="font-size: 13px; line-height: 1.3; color: #333; margin: 0;">
+                        Este é o Mimi, seu assistente digital holográfico. Ele vive no meu servidor e adora receber visitas.
+                    </p>
+                    <div>
+                        <div style="font-size: 11px; color: #555; margin-bottom: 2px;">Você é o visitante número:</div>
+                        <div class="visitor-counter" id="counter">001337</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Janela 5: Feed do Tumblr -->
+        <div id="win-tumblr" class="y2k-window" style="left: 220px; top: 100px; width: 480px; display: none;">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fa-brands fa-tumblr"></i> tumblr_reader.exe
+                </div>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-tumblr')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-tumblr')">X</button>
+                </div>
+            </div>
+            <div style="background: #000; color: var(--neon-pink); font-family: 'VT323', monospace; font-size: 16px; padding: 4px; text-align: center; border-bottom: 2px solid var(--window-border-dark);">
+                🌐 CONECTANDO A: C:\INTERNET\TUMBLR_FEED.SYS
+            </div>
+            <div class="window-content" style="max-height: 380px; overflow-y: auto; background: #fff; padding: 10px;" id="tumblr-posts-container">
+                <p style="font-family: monospace; color: #666; text-align: center; margin-top: 20px;" id="tumblr-status">
+                    <i class="fa-solid fa-spinner fa-spin"></i> Disparando requisição dial-up para o servidor...
+                </p>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Barra de Tarefas inferior -->
+    <div id="taskbar">
+        <div style="position: relative; display: flex; align-items: center; gap: 10px;">
+            <button class="start-btn" onclick="toggleStartMenu()">
+                <i class="fa-solid fa-compact-disc"></i> INICIAR
+            </button>
+            
+            <!-- Menu Iniciar Oculto -->
+            <div id="start-menu" style="display: none; position: absolute; bottom: 40px; left: 0; background: var(--window-bg); border: 3px solid; border-color: #fff #7a6a8a #7a6a8a #fff; width: 200px; box-shadow: 3px 3px 10px rgba(0,0,0,0.5); z-index: 1000;">
+                <div style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); float: left; height: 160px; text-align: center;">
+                    Y2K OS
+                </div>
+                <div style="margin-left: 35px; display: flex; flex-direction: column;">
+                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-book-open" style="width: 20px;"></i> Atualizações</div>
+                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-compact-disc" style="width: 20px;"></i> Player</div>
+                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-ghost" style="width: 20px;"></i> Mascote</div>
+                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-skills')"><i class="fa-solid fa-gear" style="width: 20px;"></i> Habilidades</div>
+                </div>
+            </div>
+
+            <!-- Container das abas ativas -->
+            <div id="open-programs-tabs" style="display: flex; gap: 5px;"></div>
+        </div>
+
+        <div style="color: var(--purple-dark); font-weight: bold; font-size: 15px; padding-right: 20px;">
+            ★ ohtopico.com.br ★
+        </div>
+        <div class="taskbar-clock" id="clock">00:00:00</div>
+    </div>
 
     <script>
-        // --- 1. Mapeamento de Configurações ---
+        // --- 1. LÓGICA DE JANELAS ARRASTÁVEIS ---
+        document.querySelectorAll('.window-header').forEach(header => {
+            header.addEventListener('mousedown', initDrag);
+        });
 
-        // URLs simuladas para o fundo (Use suas próprias URLs!)
-        const wallpaperURLs = {
-            'default': '#008080', 
-            'space': 'url(https://svs.gsfc.nasa.gov/vis/a010000/a014800/a014866/CW_Leo_From_GALEX_desktop.jpg)', 
-            'classic': 'url(https://wallpaperaccess.com/full/3480667.jpg)', 
-        };
-        
-        // Configurações iniciais de Posição (para o Reset)
-        const initialWindowConfig = {
-            'window-ascii': { top: '20px', left: '20px', zIndex: 105, title: 'TERMINAL.COM (C:\\)', width: '400px', height: 'auto' },
-            'window-portfolio': { top: '80px', left: '450px', zIndex: 104, title: '📂 DATA_PROJECTS.TXT', width: '450px', height: 'auto' },
-            'window-contact': { top: '200px', left: '700px', zIndex: 101, title: '📧 CONTACT_JULIA.HTM', width: '300px', height: 'auto' },
-            'window-properties': { top: '150px', left: '200px', zIndex: 106, title: '🎨 Propriedades de Tela', width: '450px', height: 'auto' },
-            'window-skills': { top: '150px', left: '80px', width: '600px', height: '400px', zIndex: 107, title: '⚡ HABILIDADES.SYS' } 
-        };
-        
-        const minimizedContainer = document.getElementById('minimized-windows');
+        function initDrag(e) {
+            if (e.target.classList.contains('win-btn')) return;
 
-        // --- 2. FUNÇÕES UTILITY ---
-        
-        // Retorna o Z-Index máximo de todas as janelas visíveis
-        function getMaxZIndex() {
-            let maxZIndex = 0;
-            document.querySelectorAll('.window').forEach(otherWindow => {
-                const zIndex = parseInt(otherWindow.style.zIndex || 0);
-                if (zIndex > maxZIndex && zIndex < 999 && otherWindow.style.display !== 'none') { 
-                    maxZIndex = zIndex;
-                }
-            });
-            return maxZIndex;
+            const windowEl = e.currentTarget.parentElement;
+            let startX = e.clientX;
+            let startY = e.clientY;
+            let startLeft = parseInt(window.getComputedStyle(windowEl).left, 10);
+            let startTop = parseInt(window.getComputedStyle(windowEl).top, 10);
+
+            document.querySelectorAll('.y2k-window').forEach(win => win.style.zIndex = '10');
+            windowEl.style.zIndex = '50';
+
+            function doDrag(dragEvent) {
+                let dx = dragEvent.clientX - startX;
+                let dy = dragEvent.clientY - startY;
+                windowEl.style.left = (startLeft + dx) + 'px';
+                windowEl.style.top = (startTop + dy) + 'px';
+            }
+
+            function stopDrag() {
+                document.removeEventListener('mousemove', doDrag);
+                document.removeEventListener('mouseup', stopDrag);
+            }
+
+            document.addEventListener('mousemove', doDrag);
+            document.addEventListener('mouseup', stopDrag);
         }
 
-        // Alterna o modo tela cheia do NAVEGADOR
-        function toggleBrowserFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
+        // --- 2. MASCOTE INTERATIVO ---
+        const petDialogues = [
+            "Você quer um chiclete de menta? 🍬",
+            "Minha cor favorita é o verde neon!",
+            "Não clique tão forte, eu sinto cócegas!",
+            "Escutando músicas espaciais hoje...",
+            "Alimente-me com arquivos digitais!"
+        ];
+
+        function petClick() {
+            const bubble = document.getElementById('pet-talk');
+            const randomMsg = petDialogues[Math.floor(Math.random() * petDialogues.length)];
+            bubble.innerText = randomMsg;
         }
 
-        // Aplica o papel de parede selecionado
-        function applyWallpaper(selection) {
-            const body = document.body;
-            const url = wallpaperURLs[selection];
-            
-            if (selection === 'default') {
-                body.style.backgroundImage = 'none';
-                body.style.backgroundColor = '#008080';
-            } else {
-                body.style.backgroundImage = url;
-                body.style.backgroundSize = 'cover';
-                body.style.backgroundRepeat = 'no-repeat';
-                body.style.backgroundPosition = 'center center';
-                body.style.backgroundColor = '#000000';
-            }
-        }
-
-        // --- 3. FUNÇÃO PARA MINIMIZAR E RESTAURAR JANELAS ---
-        function toggleMinimize(windowId) {
-            const win = document.getElementById(windowId);
-            const iconId = `icon-${windowId}`;
-            let icon = document.getElementById(iconId);
-
-            if (win.style.display === 'none') {
-                // Restaurar
-                win.style.display = 'block';
-                win.style.zIndex = getMaxZIndex() + 1;
-                // Remove o ícone da taskbar ao restaurar
-                if (icon) icon.remove(); 
-            } else {
-                // Minimizar / Fechar
-                win.style.display = 'none';
-                
-                // Remove o estado de maximizado antes de minimizar
-                win.classList.remove('maximized'); 
-
-                // Cria o ícone na taskbar se não existir
-                if (!icon) {
-                    const config = initialWindowConfig[windowId];
-                    icon = document.createElement('button');
-                    icon.id = iconId;
-                    icon.className = 'start-button'; 
-                    // Limita o título para caber na taskbar
-                    const displayTitle = config.title.length > 20 ? config.title.substring(0, 17) + '...' : config.title;
-                    icon.innerHTML = `<span style="font-weight: normal;">${displayTitle}</span>`;
-                    icon.onclick = () => toggleMinimize(windowId);
-                    minimizedContainer.appendChild(icon);
-                }
-                icon.classList.add('active');
-            }
-        }
-
-	    // --- 4. FUNÇÃO PARA MAXIMIZAR E RESTAURAR  ---
-        function toggleMaximize(windowId) {
-            const win = document.getElementById(windowId);
-            const isMaximized = win.classList.toggle('maximized');
-            
-            if (isMaximized) {
-                // Salva a posição e o tamanho antes de maximizar
-                win.setAttribute('data-prev-top', win.style.top);
-                win.setAttribute('data-prev-left', win.style.left);
-                win.setAttribute('data-prev-width', win.style.width);
-                win.setAttribute('data-prev-height', win.style.height);
-
-                win.style.zIndex = 900; 
-                
-                // O CSS .maximized aplica o novo tamanho e posição
-            } else {
-                // Restaurar
-                win.style.top = win.getAttribute('data-prev-top') || initialWindowConfig[windowId].top;
-                win.style.left = win.getAttribute('data-prev-left') || initialWindowConfig[windowId].left;
-                win.style.width = win.getAttribute('data-prev-width') || initialWindowConfig[windowId].width;
-                win.style.height = win.getAttribute('data-prev-height') || initialWindowConfig[windowId].height;
-                
-                win.style.zIndex = getMaxZIndex() + 1; 
-            }
-        }
-        
-        // --- 5. NOVA FUNÇÃO: ABRIR JANELA (Small/Focus) ---
-        function openWindow(windowId) {
-            const win = document.getElementById(windowId);
-            
-            // 1. Garante que a janela esteja visível (restaura se minimizada)
-            if (win.style.display === 'none') {
-                toggleMinimize(windowId); 
-            }
-            
-            // 2. Traz para frente (foco)
-            win.style.zIndex = getMaxZIndex() + 1;
-
-            // 3. Garante que ela não esteja maximizada ao ser aberta
-            if (win.classList.contains('maximized')) {
-                toggleMaximize(windowId);
-            }
-        }
-
-        // Torna as funções acessíveis globalmente, especialmente para o iframe de skills.html
-        window.openWindow = openWindow;
-        window.toggleMinimize = toggleMinimize;
-
-        // --- 6. LIGAÇÃO DE EVENTOS ---
-        
-        // A. Botão Start (Reset: Recarrega a página)
-        document.getElementById('startResetButton').addEventListener('click', () => {
-            window.location.reload(); 
-        });
-
-        // B. Botão de Propriedades (Abre a janela)
-        document.getElementById('openPropertiesButton').addEventListener('click', () => {
-            openWindow('window-properties');
-        });
-
-        // C. Aplica o fundo quando o botão na janela é clicado
-        document.getElementById('apply-wallpaper-btn').addEventListener('click', () => {
-            const selectElement = document.getElementById('wallpaper-select');
-            const selectedValue = selectElement.value;
-            applyWallpaper(selectedValue);
-            
-            // Fecha a janela de propriedades após aplicar
-            document.getElementById('window-properties').style.display = 'none';
-        });
-
-        // D. Botão Minimize
-        document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(minimizeButton => {
-            minimizeButton.addEventListener('click', (event) => {
-                const windowToMinimize = event.target.closest('.window');
-                if (windowToMinimize) {
-                    toggleMinimize(windowToMinimize.id);
-                }
-            });
-        });
-
-	    // E. Botão Maximize (Chamada para a função toggleMaximize)
-        document.querySelectorAll('.title-bar-controls button[aria-label="Maximize"]').forEach(maximizeButton => {
-            maximizeButton.addEventListener('click', (event) => {
-                const windowToMaximize = event.target.closest('.window');
-                if (windowToMaximize) {
-                    toggleMaximize(windowToMaximize.id);
-                }
-            });
-        });
-
-        // F. Botão Close (Fecha/Minimiza para a Taskbar)
-        document.querySelectorAll('.title-bar-controls button[aria-label="Close"]').forEach(closeButton => {
-            closeButton.addEventListener('click', (event) => {
-                const windowToMinimize = event.target.closest('.window');
-                if (windowToMinimize) {
-                    toggleMinimize(windowToMinimize.id);
-                }
-            });
-        });
-
-        // G. Botão de Tela Cheia Real (Navegador)
-        document.getElementById('fullscreenToggle').addEventListener('click', toggleBrowserFullscreen);
-
-
-        // H. Arrastar e Foco (z-index)
-        interact('.window')
-            .draggable({
-                allowFrom: '.title-bar',
-                listeners: {
-                    move (event) {
-                        var target = event.target
-                        // Impede drag se estiver maximizado
-                        if (target.classList.contains('maximized')) return; 
-
-                        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-                        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-                        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-                        target.setAttribute('data-x', x)
-                        target.setAttribute('data-y', y)
-                    },
-                }
-            })
-            // Evento de clique duplo na barra de título para Maximizar/Restaurar
-            .on('doubletap', (event) => {
-                const target = event.currentTarget;
-                if (event.target.closest('.title-bar')) {
-                    toggleMaximize(target.id);
-                }
-            })
-            .on('down', (event) => {
-                const windowElement = event.currentTarget;
-                // Aplica foco apenas se a janela não estiver minimizada
-                if (windowElement.style.display !== 'none') { 
-                    windowElement.style.zIndex = getMaxZIndex() + 1;
-                }
-            });
-            
-        // I. Inicialização: Oculta todas as janelas que devem ser abertas por ícone
-        document.addEventListener('DOMContentLoaded', () => {
-             ['window-ascii', 'window-portfolio', 'window-contact', 'window-skills', 'window-properties'].forEach(id => {
-                const win = document.getElementById(id);
-                if (win) {
-                    // Inicializa a janela como escondida
-                    win.style.display = 'none'; 
-                    // Certifica-se de que a posição inicial não está traduzida
-                    win.style.transform = 'none';
-                    win.setAttribute('data-x', 0);
-                    win.setAttribute('data-y', 0);
-                }
-            });
-        });
-
-        // J. Relógio
+        // --- 3. CONTADOR DE VISITAS & RELÓGIO ---
         function updateClock() {
             const now = new Date();
-            // Formato 24h: HH:MM PM/AM (para simular a notação PM que o 98.css usa por padrão)
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            const displayHours = hours % 12 || 12; // Converte 0 para 12
+            const timeString = now.toTimeString().split(' ')[0];
+            document.getElementById('clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        let visitCount = localStorage.getItem('y2k_visits') || 1337;
+        visitCount = parseInt(visitCount, 10) + 1;
+        localStorage.setItem('y2k_visits', visitCount);
+        document.getElementById('counter').innerText = String(visitCount).padStart(6, '0');
+
+        // --- 4. EFEITO DE CURSOR (ESTRELAS NEON) ---
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.08) return; 
+            const star = document.createElement('div');
+            star.className = 'cursor-star';
+            star.innerHTML = '★';
+            star.style.left = e.pageX + 'px';
+            star.style.top = e.pageY + 'px';
             
-            const timeString = `${displayHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-            document.getElementById('clock-display').textContent = timeString;
+            const colors = ['#ff007f', '#39ff14', '#00f0ff', '#ff3399'];
+            star.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.appendChild(star);
+
+            setTimeout(() => {
+                star.style.transform = 'translateY(15px) scale(0.5)';
+                star.style.opacity = '0';
+                star.style.transition = 'all 0.6s ease';
+                setTimeout(() => star.remove(), 600);
+            }, 50);
+        });
+
+        // --- 5. AUDIO ENGINE ---
+        let audioCtx;
+        let isPlaying = false;
+        let animInterval, synthInterval;
+
+        function playMusic() {
+            if (isPlaying) return;
+            isPlaying = true;
+
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const bars = document.querySelectorAll('.vis-bar');
+            animInterval = setInterval(() => {
+                bars.forEach(bar => {
+                    bar.style.transform = `scaleY(${Math.random() * 0.9 + 0.1})`;
+                });
+            }, 100);
+
+            let count = 0;
+            const melody = [261.63, 293.66, 329.63, 349.23, 392.00, 349.23, 329.63, 293.66]; 
+
+            synthInterval = setInterval(() => {
+                if (!isPlaying) return;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+
+                osc.type = 'triangle'; 
+                osc.frequency.setValueAtTime(melody[count % melody.length], audioCtx.currentTime);
+                
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+
+                count++;
+            }, 300);
         }
 
-        // Inicializa e atualiza o relógio a cada segundo
-        updateClock();
-        setInterval(updateClock, 1000);
+        function stopMusic() {
+            isPlaying = false;
+            clearInterval(animInterval);
+            clearInterval(synthInterval);
+            const bars = document.querySelectorAll('.vis-bar');
+            bars.forEach(bar => bar.style.transform = 'scaleY(0.1)');
+        }
 
+        // --- 6. GERENCIAMENTO DE JANELAS E BARRA DE TAREFAS ---
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('start-menu');
+            const startBtn = document.querySelector('.start-btn');
+            if (menu && !menu.contains(e.target) && !startBtn.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        function minimizeWindow(id) {
+            const win = document.getElementById(id);
+            if(win) win.style.display = 'none';
+            updateTaskbarTabs();
+        }
+
+        function openProgram(id) {
+            const win = document.getElementById(id);
+            if(win) {
+                win.style.display = 'flex';
+                document.querySelectorAll('.y2k-window').forEach(w => w.style.zIndex = '10');
+                win.style.zIndex = '50';
+            }
+            const startMenu = document.getElementById('start-menu');
+            if(startMenu) startMenu.style.display = 'none';
+            updateTaskbarTabs();
+        }
+
+        function toggleWindow(id) {
+            const win = document.getElementById(id);
+            if (win && win.style.display === 'none') {
+                openProgram(id);
+            } else {
+                minimizeWindow(id);
+            }
+        }
+
+        function updateTaskbarTabs() {
+            const container = document.getElementById('open-programs-tabs');
+            if (!container) return;
+            container.innerHTML = ''; 
+            
+            const programs = [
+                { id: 'win-diario', title: 'Atualizações', icon: 'fa-book-open' },
+                { id: 'win-player', title: 'Player', icon: 'fa-compact-disc' },
+                { id: 'win-pet', title: 'Mascote', icon: 'fa-ghost' },
+                { id: 'win-skills', title: 'Skills', icon: 'fa-gear' },
+                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-tumblr' }
+            ];
+            
+            programs.forEach(prog => {
+                const winEl = document.getElementById(prog.id);
+                if (winEl) {
+                    const isVisible = winEl.style.display !== 'none';
+                    const tab = document.createElement('button');
+                    tab.className = `taskbar-tab ${isVisible ? 'active' : ''}`;
+                    tab.innerHTML = `<i class="fa-solid ${prog.icon}"></i> ${prog.title}`;
+                    
+                    tab.onclick = function() {
+                        if (isVisible) {
+                            minimizeWindow(prog.id);
+                        } else {
+                            openProgram(prog.id);
+                        }
+                    };
+                    container.appendChild(tab);
+                }
+            });
+        }
+
+// --- 7. MOTOR DE CAPTURA DO TUMBLR (RESOLUÇÃO DEFINITIVA DE ACENTOS) ---
+function fetchTumblrPosts() {
+    const tumblrUser = "ohtopico"; 
+    const rssFeedUrl = `https://${tumblrUser}.tumblr.com/rss`;
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeedUrl)}`;
+
+    // Função limpa: usa o próprio navegador para decodificar entidades de texto de forma segura
+    function decodeHtml(html) {
+        const txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('tumblr-posts-container');
+            if (!container) return;
+
+            if (data.status !== 'ok' || !data.items || data.items.length === 0) {
+                document.getElementById('tumblr-status').innerText = "Erro: Blog não encontrado ou sem posts públicos.";
+                return;
+            }
+
+            container.innerHTML = '';
+
+            data.items.slice(0, 5).forEach(post => {
+                const postCard = document.createElement('div');
+                postCard.className = 'post-card';
+                postCard.style.marginBottom = '15px';
+                postCard.style.border = '2px inset #fff';
+                postCard.style.boxShadow = 'inset -1px -1px 0px #000';
+                postCard.style.padding = '12px';
+                postCard.style.background = '#fff';
+
+                const postDate = new Date(post.pubDate).toLocaleDateString('pt-BR', {
+                    day: '2-digit', month: 'long', year: 'numeric'
+                });
+
+                // Decodifica o título e o conteúdo usando o interpretador nativo do navegador
+                const cleanTitle = decodeHtml(post.title) || "Post sem Título";
+                const cleanContent = decodeHtml(post.content);
+
+                postCard.innerHTML = `
+                    <h4 class="post-title" style="color: var(--purple-dark); font-size: 20px; margin: 0 0 5px 0;">
+                        ${cleanTitle}
+                    </h4>
+                    <div style="font-size: 11px; color: #7a6a8a; font-family: monospace; margin-bottom: 8px;">
+                        📅 Sincronizado em: ${postDate}
+                    </div>
+                    <hr style="border: 1px dotted var(--neon-pink); margin-bottom: 10px;">
+                    <div class="post-text" style="font-size: 13px; color: #222;">
+                        ${cleanContent}
+                    </div>
+                    <div style="margin-top: 10px; text-align: right;">
+                        <a href="${post.link}" target="_blank" style="font-family: 'VT323', monospace; font-size: 16px; color: var(--neon-pink); text-decoration: none; font-weight: bold;">
+                            [ Ler no Tumblr ↗ ]
+                        </a>
+                    </div>
+                `;
+                container.appendChild(postCard);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            const statusEl = document.getElementById('tumblr-status');
+            if(statusEl) statusEl.innerText = "Falha na conexão dial-up com o Tumblr. Tente novamente.";
+        });
+}
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchTumblrPosts();
+            setTimeout(updateTaskbarTabs, 100);
+        });
     </script>
 </body>
-
 </html>
