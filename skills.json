@@ -1,0 +1,27 @@
+[
+  {
+    "nome": "HTML5 / CSS3",
+    "porcentagem": 90,
+    "cor": "#ff007f"
+  },
+  {
+    "nome": "JavaScript (ES6+)",
+    "porcentagem": 80,
+    "cor": "#39ff14"
+  },
+  {
+    "nome": "Python & Data Science",
+    "porcentagem": 75,
+    "cor": "#00f0ff"
+  },
+  {
+    "nome": "Robótica Educacional",
+    "porcentagem": 85,
+    "cor": "#ff3399"
+  },
+  {
+    "nome": "Node.js & APIs",
+    "porcentagem": 65,
+    "cor": "#2d124d"
+  }
+]

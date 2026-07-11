@@ -1,0 +1,22 @@
+[
+  {
+    "titulo": "online-retail-dataset",
+    "descricao": "Verificação de quais clientes têm maior probabilidade de comprar novamente nos próximos 60 dias e como podemos usar essa informação para priorizar ações comerciais.",
+    "raw_url": "https://raw.githubusercontent.com/ohtopico/online-retail-dataset/Online_Retail_Dataset.ipynb"
+  },
+ {
+    "titulo": "moedas-brasileiras",
+    "descricao": "[EM ANDAMENTO] Reconhecimento de moedas brasileiras através de imagem com ML.",
+    "raw_url": "https://raw.githubusercontent.com/ohtopico/moedas-brasileiras/notebook.ipynb"
+  },
+  {
+    "titulo": "state-of-data-brazil",
+    "descricao": "to do",
+    "raw_url": "https://raw.githubusercontent.com/ohtopico/state-of-data-brazil/State_of_Data_Brazil.ipynb"
+  },
+ {
+    "titulo": "marketing-analytics",
+    "descricao": "Análises de dados baseadas em datasets sobre marketing do Kaggle.",
+    "raw_url": "https://raw.githubusercontent.com/ohtopico/marketing-analytics/email_marketing.ipynb"
+  }
+]

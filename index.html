@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>★ o h t o p i c o . c o m ★</title>
+    <title>★ o h t o p i c o ★</title>
     
     <!-- Google Fonts para tipografia Y2K pixelada e retrô -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -437,7 +437,15 @@
             </div>
             <div class="icon-item" onclick="toggleWindow('win-tumblr')">
                 <i class="fa-brands fa-tumblr"></i>
-                <span class="icon-label">Blog Tumblr</span>
+                <span class="icon-label">Tumblr</span>
+            </div>
+            <div class="icon-item" onclick="toggleWindow('win-projetos')">
+                <i class="fa-solid fa-code"></i>
+                <span class="icon-label">Projetos</span>
+            </div>
+            <div class="icon-item" onclick="window.open('https://www.superprof.com.br/mestre-computacao-pela-ufsm-possui-especializacao-robotica-educacional-ciencia-dados-aee.html', '_blank')">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span class="icon-label">Aulas (Superprof)</span>
             </div>
             <div class="icon-item" onclick="window.open('https://www.linkedin.com/in/ohtopico', '_blank')">
                  <i class="fa-brands fa-linkedin"></i>
@@ -449,8 +457,8 @@
             </div>
         </div>
 
-        <!-- Janela 1: Diário / Posts -->
-        <div id="win-diario" class="y2k-window" style="left: 180px; top: 40px; width: 450px;">
+        <!-- Janela 1: Diário / Posts (Centralizada e Aberta por Padrão) -->
+        <div id="win-diario" class="y2k-window" style="left: 50%; top: 45%; transform: translate(-50%, -50%); width: 450px;">
             <div class="window-header">
                 <div class="window-title">
                     <i class="fa-solid fa-star"></i> atualizações.txt
@@ -479,7 +487,7 @@
         </div>
 
         <!-- Janela 2: Winamp-like Player -->
-        <div id="win-player" class="y2k-window" style="left: 650px; top: 40px; width: 320px;">
+        <div id="win-player" class="y2k-window" style="left: 650px; top: 40px; width: 320px; display: none;">
             <div class="window-header">
                 <div class="window-title">
                     <i class="fa-solid fa-music"></i> cyber_music.exe
@@ -515,7 +523,7 @@
             </div>
         </div>
 
-        <!-- Janela 3: Skills -->
+        <!-- Janela 3: Habilidades Profissionais (Modulada por JSON) -->
         <div id="win-skills" class="y2k-window" style="left: 400px; top: 150px; width: 380px; display: none;">
             <div class="window-header">
                 <div class="window-title">
@@ -526,53 +534,13 @@
                     <button class="win-btn" onclick="toggleWindow('win-skills')">X</button>
                 </div>
             </div>
-            <div class="window-content">
-                <p style="font-size:12px; margin-bottom:15px; font-family: monospace;"> Veja algumas de minhas habilidades profissionais...</p>
-            
-                <div class="skill-section">
-                    <div class="skill-title" style="display: flex; justify-content: space-between;">
-                        <span>Criatividade e comunicação</span>
-                        <span class="skill-percentage">95%</span>
-                    </div>
-                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
-                        <div style="background: var(--neon-green); height: 100%; width: 95%;"></div>
-                    </div>
-                </div>
-
-                <div class="skill-section">
-                    <div class="skill-title" style="display: flex; justify-content: space-between;">
-                        <span>SQL (MySQL, PostgreSQL)</span>
-                        <span class="skill-percentage">85%</span>
-                    </div>
-                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
-                        <div style="background: var(--neon-blue); height: 100%; width: 85%;"></div>
-                    </div>
-                </div>
-
-                <div class="skill-section">
-                    <div class="skill-title" style="display: flex; justify-content: space-between;">
-                        <span>Python (Pandas, matplot, pyspark)</span>
-                        <span class="skill-percentage">60%</span>
-                    </div>
-                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
-                        <div style="background: var(--neon-pink); height: 100%; width: 60%;"></div>
-                    </div>
-                </div>
-
-                <div class="skill-section">
-                    <div class="skill-title" style="display: flex; justify-content: space-between;">
-                        <span>Google Cloud Platform</span>
-                        <span class="skill-percentage">60%</span>
-                    </div>
-                    <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px;">
-                        <div style="background: #9710FF; height: 100%; width: 60%;"></div>
-                    </div>
-                </div>
+            <div class="window-content" id="skills-container">
+                <p style="font-size:12px; margin-bottom:15px; font-family: monospace;">Carregando competências do banco de dados...</p>
             </div>
         </div>
 
         <!-- Janela 4: Mascote Virtual & Info -->
-        <div id="win-pet" class="y2k-window" style="left: 180px; top: 430px; width: 450px;">
+        <div id="win-pet" class="y2k-window" style="left: 180px; top: 430px; width: 450px; display: none;">
             <div class="window-header">
                 <div class="window-title">
                     <i class="fa-solid fa-heart"></i> companheiro.app
@@ -620,6 +588,29 @@
             </div>
         </div>
 
+        <!-- Janela 6: Repositório de Códigos (GitHub API) -->
+        <div id="win-projetos" class="y2k-window" style="left: 300px; top: 80px; width: 550px; display: none;">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fa-solid fa-code"></i> src_viewer.exe
+                </div>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-projetos')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-projetos')">X</button>
+                </div>
+            </div>
+            <div style="background: #2d124d; color: #fff; padding: 6px; font-size: 12px; font-family: monospace; border-bottom: 2px solid var(--window-border-dark);">
+                📁 SELECIONE O SCRIPT PARA INSPEÇÃO:
+                <select id="project-selector" onchange="fetchGithubCode(this.value)" style="background: #000; color: var(--neon-green); border: 1px solid var(--neon-green); font-family: monospace; margin-left: 5px; padding: 2px;">
+                    <option value="">-- Escolha um projeto --</option>
+                </select>
+            </div>
+            <div class="window-content" style="background: #050010; color: #39ff14; font-family: 'Courier Prime', monospace; max-height: 350px; overflow-y: auto; padding: 10px;">
+                <p id="project-description" style="color: #00f0ff; font-size: 13px; margin-top: 0; margin-bottom: 10px; font-style: italic;"></p>
+                <hr style="border: 1px dashed rgba(57, 255, 20, 0.3); margin-bottom: 10px;">
+                <pre id="code-display" style="margin: 0; font-size: 12px; white-space: pre-wrap; word-break: break-all; color: #39ff14;">Selecione um script acima para rodar a requisição HTTP para o GitHub...</pre>
+            </div>
+        </div>
     </div>
 
     <!-- Barra de Tarefas inferior -->
@@ -639,6 +630,7 @@
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-compact-disc" style="width: 20px;"></i> Player</div>
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-ghost" style="width: 20px;"></i> Mascote</div>
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-skills')"><i class="fa-solid fa-gear" style="width: 20px;"></i> Habilidades</div>
+                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-projetos')"><i class="fa-solid fa-code" style="width: 20px;"></i> Projetos</div>
                 </div>
             </div>
 
@@ -666,6 +658,16 @@
             let startY = e.clientY;
             let startLeft = parseInt(window.getComputedStyle(windowEl).left, 10);
             let startTop = parseInt(window.getComputedStyle(windowEl).top, 10);
+
+            // Reseta transform inicial de centralização para evitar bugs ao arrastar
+            if (windowEl.style.transform) {
+                const rect = windowEl.getBoundingClientRect();
+                startLeft = rect.left;
+                startTop = rect.top;
+                windowEl.style.transform = 'none';
+                windowEl.style.left = startLeft + 'px';
+                windowEl.style.top = startTop + 'px';
+            }
 
             document.querySelectorAll('.y2k-window').forEach(win => win.style.zIndex = '10');
             windowEl.style.zIndex = '50';
@@ -737,7 +739,7 @@
             }, 50);
         });
 
-        // --- 5. AUDIO ENGINE ---
+        // --- 5. AUDIO ENGINE (WINAMP SINTETIZADOR) ---
         let audioCtx;
         let isPlaying = false;
         let animInterval, synthInterval;
@@ -839,7 +841,8 @@
                 { id: 'win-player', title: 'Player', icon: 'fa-compact-disc' },
                 { id: 'win-pet', title: 'Mascote', icon: 'fa-ghost' },
                 { id: 'win-skills', title: 'Skills', icon: 'fa-gear' },
-                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-tumblr' }
+                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-tumblr' },
+                { id: 'win-projetos', title: 'Projetos', icon: 'fa-code' }
             ];
             
             programs.forEach(prog => {
@@ -862,77 +865,163 @@
             });
         }
 
-// --- 7. MOTOR DE CAPTURA DO TUMBLR (RESOLUÇÃO DEFINITIVA DE ACENTOS) ---
-function fetchTumblrPosts() {
-    const tumblrUser = "ohtopico"; 
-    const rssFeedUrl = `https://${tumblrUser}.tumblr.com/rss`;
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeedUrl)}`;
+        // --- 7. MOTOR DE CAPTURA DO TUMBLR (RESOLUÇÃO DE ACENTOS) ---
+        function fetchTumblrPosts() {
+            const tumblrUser = "ohtopico"; 
+            const rssFeedUrl = `https://${tumblrUser}.tumblr.com/rss`;
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeedUrl)}`;
 
-    // Função limpa: usa o próprio navegador para decodificar entidades de texto de forma segura
-    function decodeHtml(html) {
-        const txt = document.createElement("textarea");
-        txt.innerHTML = html;
-        return txt.value;
-    }
+            function decodeHtml(html) {
+                const txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
 
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById('tumblr-posts-container');
-            if (!container) return;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('tumblr-posts-container');
+                    if (!container) return;
 
-            if (data.status !== 'ok' || !data.items || data.items.length === 0) {
-                document.getElementById('tumblr-status').innerText = "Erro: Blog não encontrado ou sem posts públicos.";
+                    if (data.status !== 'ok' || !data.items || data.items.length === 0) {
+                        document.getElementById('tumblr-status').innerText = "Erro: Blog não encontrado ou sem posts públicos.";
+                        return;
+                    }
+
+                    container.innerHTML = '';
+
+                    data.items.slice(0, 5).forEach(post => {
+                        const postCard = document.createElement('div');
+                        postCard.className = 'post-card';
+                        postCard.style.marginBottom = '15px';
+                        postCard.style.border = '2px inset #fff';
+                        postCard.style.boxShadow = 'inset -1px -1px 0px #000';
+                        postCard.style.padding = '12px';
+                        postCard.style.background = '#fff';
+
+                        const postDate = new Date(post.pubDate).toLocaleDateString('pt-BR', {
+                            day: '2-digit', month: 'long', year: 'numeric'
+                        });
+
+                        const cleanTitle = decodeHtml(post.title) || "Post sem Título";
+                        const cleanContent = decodeHtml(post.content);
+
+                        postCard.innerHTML = `
+                            <h4 class="post-title" style="color: var(--purple-dark); font-size: 20px; margin: 0 0 5px 0;">
+                                ${cleanTitle}
+                            </h4>
+                            <div style="font-size: 11px; color: #7a6a8a; font-family: monospace; margin-bottom: 8px;">
+                                📅 Sincronizado em: ${postDate}
+                            </div>
+                            <hr style="border: 1px dotted var(--neon-pink); margin-bottom: 10px;">
+                            <div class="post-text" style="font-size: 13px; color: #222;">
+                                ${cleanContent}
+                            </div>
+                            <div style="margin-top: 10px; text-align: right;">
+                                <a href="${post.link}" target="_blank" style="font-family: 'VT323', monospace; font-size: 16px; color: var(--neon-pink); text-decoration: none; font-weight: bold;">
+                                    [ Ler no Tumblr ↗ ]
+                                </a>
+                            </div>
+                        `;
+                        container.appendChild(postCard);
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    const statusEl = document.getElementById('tumblr-status');
+                    if(statusEl) statusEl.innerText = "Falha na conexão dial-up com o Tumblr. Tente novamente.";
+                });
+        }
+
+        // --- 8. PIPELINE DE COMPETÊNCIAS (JSON) ---
+        function loadSkillsFromJson() {
+            fetch('skills.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro ao carregar skills.json");
+                    return response.json();
+                })
+                .then(skills => {
+                    const container = document.getElementById('skills-container');
+                    if (!container) return;
+
+                    container.innerHTML = `<p style="font-size:12px; margin-bottom:15px; font-family: monospace;">Métricas de sistema extraídas com sucesso:</p>`;
+
+                    skills.forEach(skill => {
+                        const section = document.createElement('div');
+                        section.className = 'skill-section';
+                        section.innerHTML = `
+                            <div class="skill-title" style="display: flex; justify-content: space-between; font-size: 13px; font-family: monospace;">
+                                <span>${skill.nome}</span>
+                                <span class="skill-percentage">${skill.porcentagem}%</span>
+                            </div>
+                            <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px; margin-top: 4px;">
+                                <div style="background: ${skill.cor}; height: 100%; width: ${skill.porcentagem}%; transition: width 1s ease-in-out;"></div>
+                            </div>
+                        `;
+                        container.appendChild(section);
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    const container = document.getElementById('skills-container');
+                    if (container) container.innerHTML = `<p style="color:var(--neon-pink); font-size:12px;">Falha ao carregar specs do sistema.</p>`;
+                });
+        }
+
+        // --- 9. MOTOR DE INSPEÇÃO DE CÓDIGO (GITHUB API) ---
+        let localProjectsData = [];
+
+        function loadProjectsMenu() {
+            fetch('projects.json')
+                .then(response => response.json())
+                .then(projects => {
+                    localProjectsData = projects;
+                    const selector = document.getElementById('project-selector');
+                    if (!selector) return;
+                    
+                    projects.forEach((proj, index) => {
+                        const opt = document.createElement('option');
+                        opt.value = index;
+                        opt.innerText = proj.titulo;
+                        selector.appendChild(opt);
+                    });
+                })
+                .catch(err => console.error("Erro ao carregar menu de projetos:", err));
+        }
+
+        function fetchGithubCode(index) {
+            const descEl = document.getElementById('project-description');
+            const displayEl = document.getElementById('code-display');
+            
+            if (index === "") {
+                descEl.innerText = "";
+                displayEl.innerText = "Selecione um script acima para rodar a requisição HTTP para o GitHub...";
                 return;
             }
 
-            container.innerHTML = '';
+            const projeto = localProjectsData[index];
+            descEl.innerText = `// Descrição: ${projeto.descricao}`;
+            displayEl.innerText = "📡 Conectando ao repositório remoto e baixando buffers...";
 
-            data.items.slice(0, 5).forEach(post => {
-                const postCard = document.createElement('div');
-                postCard.className = 'post-card';
-                postCard.style.marginBottom = '15px';
-                postCard.style.border = '2px inset #fff';
-                postCard.style.boxShadow = 'inset -1px -1px 0px #000';
-                postCard.style.padding = '12px';
-                postCard.style.background = '#fff';
-
-                const postDate = new Date(post.pubDate).toLocaleDateString('pt-BR', {
-                    day: '2-digit', month: 'long', year: 'numeric'
+            fetch(projeto.raw_url)
+                .then(response => {
+                    if (!response.ok) throw new Error("Falha ao ler arquivo remoto.");
+                    return response.text();
+                })
+                .then(code => {
+                    displayEl.innerText = code;
+                })
+                .catch(err => {
+                    console.error(err);
+                    displayEl.innerText = "❌ Erro 404: Não foi possível compilar o script do GitHub. Verifique a URL do arquivo Raw.";
                 });
+        }
 
-                // Decodifica o título e o conteúdo usando o interpretador nativo do navegador
-                const cleanTitle = decodeHtml(post.title) || "Post sem Título";
-                const cleanContent = decodeHtml(post.content);
-
-                postCard.innerHTML = `
-                    <h4 class="post-title" style="color: var(--purple-dark); font-size: 20px; margin: 0 0 5px 0;">
-                        ${cleanTitle}
-                    </h4>
-                    <div style="font-size: 11px; color: #7a6a8a; font-family: monospace; margin-bottom: 8px;">
-                        📅 Sincronizado em: ${postDate}
-                    </div>
-                    <hr style="border: 1px dotted var(--neon-pink); margin-bottom: 10px;">
-                    <div class="post-text" style="font-size: 13px; color: #222;">
-                        ${cleanContent}
-                    </div>
-                    <div style="margin-top: 10px; text-align: right;">
-                        <a href="${post.link}" target="_blank" style="font-family: 'VT323', monospace; font-size: 16px; color: var(--neon-pink); text-decoration: none; font-weight: bold;">
-                            [ Ler no Tumblr ↗ ]
-                        </a>
-                    </div>
-                `;
-                container.appendChild(postCard);
-            });
-        })
-        .catch(err => {
-            console.error(err);
-            const statusEl = document.getElementById('tumblr-status');
-            if(statusEl) statusEl.innerText = "Falha na conexão dial-up com o Tumblr. Tente novamente.";
-        });
-}
+        // --- 10. INICIALIZADOR GLOBAL DO SISTEMA ---
         window.addEventListener('DOMContentLoaded', () => {
             fetchTumblrPosts();
+            loadSkillsFromJson();
+            loadProjectsMenu();
             setTimeout(updateTaskbarTabs, 100);
         });
     </script>
