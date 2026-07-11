@@ -1050,6 +1050,14 @@
             openProgram('win-notebook-viewer');
         }
 
+function openNotebookInline(repoPath) {
+    // Monta a URL direta e correta para o arquivo no GitHub
+    const githubUrl = `https://github.com/${repoPath.replace('/main/', '/blob/main/')}`;
+    
+    // Abre o notebook instantaneamente em uma nova aba do navegador
+    window.open(githubUrl, '_blank');
+}
+
         // --- 10. INICIALIZADOR GLOBAL DO SISTEMA ---
         window.addEventListener('DOMContentLoaded', () => {
             fetchTumblrPosts();
