@@ -100,6 +100,7 @@
             font-weight: bold;
         }
 
+
         /* Estrutura das Janelas Clássicas Y2K (Estilo Windows 98 Cyberpunk) */
         .y2k-window {
             background: var(--window-bg);
@@ -658,27 +659,30 @@
             </div>
         </div>
 
-        <!-- Janela 7: Visualizador Interno de Notebooks (Iframe) -->
-        <div id="win-notebook-viewer" class="y2k-window" style="left: 350px; top: 120px; width: 650px; display: none;">
-            <div class="window-header">
-                <div class="window-title">
-                     <i class="fa-solid fa-chart-column"></i> notebook_preview.sys
-                </div>
-                <div class="window-controls">
-                    <button class="win-btn" onclick="minimizeWindow('win-notebook-viewer')">_</button>
-                    <button class="win-btn" onclick="toggleWindow('win-notebook-viewer')">X</button>
-                </div>
-            </div>
-            <div style="background: #2d124d; color: #fff; padding: 4px 10px; font-size: 11px; font-family: monospace; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--window-border-dark);">
-                <span>🌐 ENDEREÇO: <span id="nb-url-display" style="color: var(--neon-blue);">Carregando...</span></span>
-                <a id="nb-external-link" href="#" target="_blank" style="color: var(--neon-green); text-decoration: none; font-weight: bold;">[ Abrir em nova aba ↗ ]</a>
-            </div>
-            <div class="window-content" style="padding: 0; background: #fff; height: 450px; overflow: hidden;">
-                <iframe id="notebook-iframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
-            </div>
-        </div>
-
     </div>
+
+<!-- Janela 7: Leitura de Tarot -->
+<div id="win-tarot" class="y2k-window" style="left: 100px; top: 100px; width: 320px; display: none;">
+    <div class="window-header">
+        <div class="window-title">
+            <i class="fa-solid fa-moon"></i> tarot_digital.exe
+        </div>
+        <div class="window-controls">
+            <button class="win-btn" onclick="minimizeWindow('win-tarot')">_</button>
+            <button class="win-btn" onclick="toggleWindow('win-tarot')">X</button>
+        </div>
+    </div>
+    <div class="window-content" style="text-align: center; background: #0c001a; color: var(--neon-blue);">
+        <div id="tarot-display" style="padding: 20px;">
+            <p style="font-size: 14px;">Clique para sortear uma carta do destino:</p>
+            <button onclick="sortearCarta()" class="player-btn" style="padding: 10px; margin-top: 10px;">[ INICIAR_SORTEIO ]</button>
+        </div>
+        <div id="resultado-tarot" style="margin-top: 20px; display: none;">
+            <div id="carta-nome" style="font-size: 20px; color: var(--neon-pink); font-family: 'VT323', monospace;"></div>
+            <p id="carta-desc" style="font-size: 13px; margin-top: 10px;"></p>
+        </div>
+    </div>
+</div>
 
     <!-- Barra de Tarefas inferior -->
     <div id="taskbar">
@@ -692,13 +696,15 @@
                 <div style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); float: left; height: 160px; text-align: center;">
                     Y2K OS
                 </div>
+
                 <div style="margin-left: 35px; display: flex; flex-direction: column;">
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-book-open" style="width: 20px;"></i> Atualizações</div>
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-compact-disc" style="width: 20px;"></i> Player</div>
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-ghost" style="width: 20px;"></i> Mascote</div>
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-skills')"><i class="fa-solid fa-gear" style="width: 20px;"></i> Habilidades</div>
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-projetos')"><i class="fa-solid fa-code" style="width: 20px;"></i> Projetos</div>
-                </div>
+		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" style="width: 20px;"></i> Tarot Digital</div>
+ 		</div>
             </div>
 
             <!-- Container das abas ativas -->
@@ -908,8 +914,7 @@
                 { id: 'win-pet', title: 'Mascote', icon: 'fa-ghost' },
                 { id: 'win-skills', title: 'Skills', icon: 'fa-gear' },
                 { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-tumblr' },
-                { id: 'win-projetos', title: 'Projetos', icon: 'fa-code' },
-                { id: 'win-notebook-viewer', title: 'Notebook', icon: 'fa-chart-column' }
+                { id: 'win-projetos', title: 'Projetos', icon: 'fa-code' }
             ];
             
             programs.forEach(prog => {
@@ -1035,35 +1040,76 @@
                 });
         }
 
-        // --- 9. INTERFACE INLINE DE VISUALIZAÇÃO DE NOTEBOOKS ---
+        // --- 9. INTERFACE DE VISUALIZAÇÃO DE NOTEBOOKS (GITHUB NATÍVISSIMO) ---
         function openNotebookInline(repoPath) {
-            // Usamos o visualizador do jupyter oficial (nbviewer) para contornar o bloqueio de iframe do GitHub
-            const nbviewerUrl = `https://nbviewer.org/github/${repoPath}`;
+            // Monta a URL direta e perfeitamente renderizada no ambiente do próprio GitHub
             const githubUrl = `https://github.com/${repoPath.replace('/main/', '/blob/main/')}`;
             
-            // Atualiza os elementos do iframe e do cabeçalho
-            document.getElementById('notebook-iframe').src = nbviewerUrl;
-            document.getElementById('nb-url-display').innerText = repoPath.split('/').pop();
-            document.getElementById('nb-external-link').href = githubUrl;
-            
-            // Abre a nova janela do visualizador na interface
-            openProgram('win-notebook-viewer');
+            // Abre o notebook instantaneamente em uma nova aba dedicada do navegador externo
+            window.open(githubUrl, '_blank');
         }
 
-function openNotebookInline(repoPath) {
-    // Monta a URL direta e correta para o arquivo no GitHub
-    const githubUrl = `https://github.com/${repoPath.replace('/main/', '/blob/main/')}`;
+function sortearCarta() {
+    const cartas = [
+        // Arcanos Maiores
+        { nome: "O Louco", desc: "Novos começos, otimismo, confiança e aventura." },
+        { nome: "O Mago", desc: "Manifestação, habilidades e poder pessoal." },
+        { nome: "A Sacerdotisa", desc: "Intuição, poderes inconscientes e mistério." },
+        { nome: "A Imperatriz", desc: "Fertilidade, abundância e criatividade." },
+        { nome: "O Imperador", desc: "Autoridade, estrutura e controle." },
+        { nome: "O Hierofante", desc: "Espiritualidade, tradição e conformidade." },
+        { nome: "Os Amantes", desc: "Amor, harmonia e escolhas importantes." },
+        { nome: "O Carro", desc: "Controle, vitória, força de vontade e determinação." },
+        { nome: "A Força", desc: "Coragem, persuasão e compaixão." },
+        { nome: "O Eremita", desc: "Introspecção, busca pela verdade e isolamento." },
+        { nome: "A Roda da Fortuna", desc: "Ciclos, destino e mudanças súbitas." },
+        { nome: "A Justiça", desc: "Causa e efeito, clareza e verdade." },
+        { nome: "O Enforcado", desc: "Sacrifício, liberação e nova perspectiva." },
+        { nome: "A Morte", desc: "Fim de um ciclo, mudança e transformação profunda." },
+        { nome: "A Temperança", desc: "Equilíbrio, moderação e paciência." },
+        { nome: "O Diabo", desc: "Apego, vício e materialismo." },
+        { nome: "A Torre", desc: "Mudança repentina, revelação e destruição de estruturas." },
+        { nome: "A Estrela", desc: "Esperança, inspiração e serenidade." },
+        { nome: "A Lua", desc: "Ilusão, medo e intuição oculta." },
+        { nome: "O Sol", desc: "Positividade, sucesso e vitalidade." },
+        { nome: "O Julgamento", desc: "Renascimento, chamado interno e absolvição." },
+        { nome: "O Mundo", desc: "Conclusão, integração e realização." },
+    ];
+
+    const sorteio = cartas[Math.floor(Math.random() * cartas.length)];
     
-    // Abre o notebook instantaneamente em uma nova aba do navegador
-    window.open(githubUrl, '_blank');
+    document.getElementById('tarot-display').style.display = 'none';
+    document.getElementById('resultado-tarot').style.display = 'block';
+    document.getElementById('carta-nome').innerText = sorteio.nome;
+    document.getElementById('carta-desc').innerText = sorteio.desc;
 }
 
-        // --- 10. INICIALIZADOR GLOBAL DO SISTEMA ---
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchTumblrPosts();
-            loadSkillsFromJson();
-            setTimeout(updateTaskbarTabs, 100);
-        });
-    </script>
+    // --- GERENCIADOR GLOBAL DE JANELAS ---
+    function openProgram(id) {
+        const win = document.getElementById(id);
+        if (!win) return;
+        
+        win.style.display = 'flex';
+        bringToFront(win);
+        updateTaskbarTabs();
+        }
+    }
+
+    function bringToFront(win) {
+        document.querySelectorAll('.y2k-window').forEach(w => w.style.zIndex = '10');
+        win.style.zIndex = '50';
+    }
+
+    // --- CARREGAMENTO ÚNICO OTIMIZADO ---
+    window.addEventListener('DOMContentLoaded', () => {
+        fetchTumblrPosts();
+        loadSkillsFromJson();
+        updateTaskbarTabs();
+        
+        // Log de inicialização do sistema
+        console.log("Sistema Y2K carregado com sucesso.");
+    });
+</script>
+
 </body>
 </html>
