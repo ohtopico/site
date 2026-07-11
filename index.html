@@ -608,7 +608,7 @@
                 <div class="post-card" style="background: #1d003b; border: 2px solid var(--neon-blue); padding: 10px; color: #fff;">
                     <h4 style="color: var(--neon-blue); font-size: 18px; margin: 0 0 5px 0; font-family: 'VT323', monospace;">★ online-retail-dataset</h4>
                     <p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">
-                        Verificação de quais clientes têm maior probabilidade de comprar novamente nos próximos 60 dias e como podemos usar essa informação para priorizar ações comerciais.
+                        Objetivo: Verificar quais clientes têm maior probabilidade de comprar novamente nos próximos 60 dias e descobrir como podemos usar essa informação para priorizar ações comerciais.
                     </p>
                     <div style="text-align: right;">
                         <button onclick="openNotebookInline('ohtopico/online-retail-dataset/main/Online_Retail_Dataset.ipynb')" class="win-btn" style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 3px 8px; font-size: 12px; height: auto; width: auto; font-family: 'Share Tech Mono', monospace;">
@@ -621,7 +621,11 @@
                 <div class="post-card" style="background: #1d003b; border: 2px solid var(--neon-pink); padding: 10px; color: #fff;">
                     <h4 style="color: var(--neon-pink); font-size: 18px; margin: 0 0 5px 0; font-family: 'VT323', monospace;">★ moedas-brasileiras</h4>
                     <p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">
-                        <span style="color: #ffcc00; font-weight: bold;">[EM ANDAMENTO]</span> Reconhecimento de moedas brasileiras através de imagem com Machine Learning.
+                        <span style="color: #ffcc00; font-weight: bold;"></span> Objetivo: Prever o tipo/denominação de uma moeda brasileira diretamente a partir de uma fotografia.
+										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">Tecnologias: Python, Machine Learning (ML), Visão Computacional, Google Cloud (Storage e Serviços de ML).</p>
+										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">- Aquisição de Dados: Capturamos mais de 100 fotos de moedas da segunda família do Real brasileiro para criar um conjunto de dados próprio.</p>
+										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">- Infraestrutura na Nuvem: Armazenamos e gerenciamos o conjunto de dados em um bucket do Google Cloud Storage.</p>
+										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">- Modelagem & Classificação: Processamos as imagens das moedas e testamos vários algoritmos de classificação para separá-las com precisão em grupos correspondentes ao valor de cada moeda.</p>
                     </p>
                     <div style="text-align: right;">
                         <button onclick="openNotebookInline('ohtopico/moedas-brasileiras/main/notebook.ipynb')" class="win-btn" style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 3px 8px; font-size: 12px; height: auto; width: auto; font-family: 'Share Tech Mono', monospace;">
@@ -643,18 +647,8 @@
                     </div>
                 </div>
 
-                <!-- CARD 4: Marketing Analytics -->
-                <div class="post-card" style="background: #1d003b; border: 2px solid var(--neon-blue); padding: 10px; color: #fff;">
-                    <h4 style="color: var(--neon-blue); font-size: 18px; margin: 0 0 5px 0; font-family: 'VT323', monospace;">★ marketing-analytics</h4>
-                    <p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">
-                        Análises de dados avançadas baseadas em conjuntos de dados sobre campanhas de marketing do Kaggle.
-                    </p>
-                    <div style="text-align: right;">
-                        <button onclick="openNotebookInline('ohtopico/marketing-analytics/main/email_marketing.ipynb')" class="win-btn" style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 3px 8px; font-size: 12px; height: auto; width: auto; font-family: 'Share Tech Mono', monospace;">
-                            [ abrir_notebook.sys ]
-                        </button>
-                    </div>
-                </div>
+                <!-- CARD 4: [INSERIR] -->
+                
             </div>
         </div>
 
@@ -1014,7 +1008,7 @@
                     const container = document.getElementById('skills-container');
                     if (!container) return;
 
-                    container.innerHTML = `<p style="font-size:12px; margin-bottom:15px; font-family: monospace;">Métricas de sistema extraídas com sucesso:</p>`;
+                    container.innerHTML = `<p style="font-size:12px; margin-bottom:15px; font-family: monospace;">Experiência em desenvolvimento de modelos de Machine Learning e Análise de Dados, utilização de Python, SQL, AWS e Google Cloud. Implementação de técnicas de visão computacionais para análise de dados. Atuação como Engenheira de Dados Trainee na Compass UOL, onde participei de projeto com modelagem de dados com SQL e do gerenciamento de um Data Lake (S3 e EC2) para alimentar dashboards de gestão interna sobre indicadores de colaboradores. Sou uma profissional multidisciplinar com formação em Ciência da Computação, Marketing, Administração e Matemática. </p>`;
 
                     skills.forEach(skill => {
                         const section = document.createElement('div');
