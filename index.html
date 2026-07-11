@@ -675,6 +675,24 @@
     </div>
 </div>
 
+<!-- Janela 8: Paint -->
+<div id="win-paint" class="y2k-window" style="left: 150px; top: 150px; width: 720px; display: none;">
+    <div class="window-header">
+        <div class="window-title">
+            <i class="fa-solid fa-paintbrush"></i> paint_y2k.exe
+        </div>
+        <div class="window-controls">
+            <button class="win-btn" onclick="minimizeWindow('win-paint')">_</button>
+            <button class="win-btn" onclick="toggleWindow('win-paint')">X</button>
+        </div>
+    </div>
+    <div class="window-content" style="padding: 0; background: #c0c0c0;">
+        <!-- Incorporando o Paint como iframe -->
+        <iframe src="paint.html" width="710" height="400" frameborder="0"></iframe>
+    </div>
+</div>
+
+
     <!-- Barra de Tarefas inferior -->
     <div id="taskbar">
         <div style="position: relative; display: flex; align-items: center; gap: 10px;">
@@ -690,12 +708,9 @@
 
                 <div style="margin-left: 35px; display: flex; flex-direction: column;">
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-book-open" style="width: 20px;"></i> Atualizações</div>
-                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-compact-disc" style="width: 20px;"></i> Player</div>
-                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-ghost" style="width: 20px;"></i> Mascote</div>
-                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-skills')"><i class="fa-solid fa-gear" style="width: 20px;"></i> Habilidades</div>
-                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-projetos')"><i class="fa-solid fa-code" style="width: 20px;"></i> Projetos</div>
 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" style="width: 20px;"></i> Tarot Digital</div>
- 		</div>
+ 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-paint')"><i class="fa-solid fa-paintbrush" style="width: 20px;"></i> Paint</div>
+		</div>
             </div>
 
             <!-- Container das abas ativas -->

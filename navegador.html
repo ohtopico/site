@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Navegador Retrô</title>
+    <style>
+        body { background: #008080; font-family: 'Courier New', Courier, monospace; }
+        .browser-window {
+            width: 80%; height: 650px; margin: 30px auto;
+            border: 2px outset #fff; background: #c0c0c0; padding: 2px;
+        }
+        .title-bar { background: #000080; color: white; padding: 3px; display: flex; justify-content: space-between; }
+        .toolbar { padding: 5px; border-bottom: 1px solid #808080; }
+        
+        /* Estilo das abas */
+        .tabs-bar { display: flex; gap: 2px; padding: 5px 5px 0 5px; }
+        .tabs-bar button {
+            background: #c0c0c0; border: 2px outset #fff;
+            padding: 5px 10px; cursor: pointer; font-family: 'Courier New', monospace;
+        }
+        .tabs-bar button:active { border-style: inset; }
+
+        .content-area { 
+            height: 500px; background: white; border: inset 2px; 
+            overflow-y: scroll; padding: 15px; margin: 0 5px 5px 5px;
+        }
+        .postagem {
+            background: #fff; padding: 15px; margin-bottom: 20px;
+            border: 2px outset #c0c0c0;
+        }
+        .tab-content { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="browser-window">
+    <div class="title-bar">
+        <span>Internet Explorer - OHTOPICO</span>
+        <a href="index.html" style="color:white; text-decoration:none; padding-right:5px;">[X]</a>
+    </div>
+    
+    <div class="toolbar">
+        Endereço: <input type="text" value="ohtopico.com.br/navegador" style="width: 60%;" readonly>
+    </div>
+
+    <!-- Barra de Abas -->
+    <div class="tabs-bar">
+        <button onclick="showTab('poemas')">Poemas</button>
+        <button onclick="showTab('marketing')">Marketing</button>
+        <button onclick="showTab('outros')">Outros</button>
+    </div>
+
+    <div class="content-area">
+        <!-- Aba Poemas -->
+        <div id="poemas" class="tab-content" style="display:block;">
+            <div class="postagem">
+                <p><i>Data: 08/02/2026</i></p>
+                <div style="white-space: pre-line;">é posto que tu olhas me e não vê<br>enquanto me descartas e não te dói<br><br>tento semear entre nós a humanidade<br>em tenras águas de amor</div>
+            </div>
+           
+<div class="postagem">
+    	<h3></h3>
+    	<p><i>Data: 08/02/2026</i></p>
+	<div class="poema-texto" style="white-space: pre-line;">
+	eu sou o mestre
+	dos bobos
+	que nadam e não veem,
+	que rolam na sujeira
+	do próprio amargor.
+
+	perdido em olhos
+	de puro amor,
+	não sou gentil,
+	tampouco infante - 
+	sou gênio entre os errantes
+	que tocaram seu coração,
+
+	sou o castiçal da ingenuidade:
+	via esperança
+	em seu esplendor.
+	</div>
+	</div>
+	
+	 <div class="postagem">
+    	<h3></h3>
+    	<p><i>Data: 05/03/2025</i></p>
+    	<div class="poema-texto" style="white-space: pre-line;">
+		Quando me escondo,
+		Se me antes expondo,
+		Vivo, aprendo medonho,
+		Me recolho, envergonho.
+		</div>
+	</div>
+
+ 	<div class="postagem">
+    	<h3>enganação</h3>
+    	<p><i>Data: 23/02/2024</i></p>
+    	<div class="poema-texto" style="white-space: pre-line;">
+		refeito com enfeites
+		prolixos, com sujos sufixos,
+		cheirando a carne simples
+		feita em panela de vó.
+	</div>
+	</div>
+            <!-- Adicione os outros poemas aqui -->
+        </div>
+
+        <!-- Aba Marketing -->
+        <div id="marketing" class="tab-content">
+            <h2>Marketing</h2>
+            <p>Espaço reservado para textos sobre estratégias e mercado.</p>
+        </div>
+
+        <!-- Aba Outros -->
+        <div id="outros" class="tab-content">
+            <h2>Outros</h2>
+            <p>Espaço para colagens e outros conteúdos diversos.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showTab(tabId) {
+        const contents = document.getElementsByClassName('tab-content');
+        for (let i = 0; i < contents.length; i++) {
+            contents[i].style.display = 'none';
+        }
+        document.getElementById(tabId).style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
+
+

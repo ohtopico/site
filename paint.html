@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            background-color: #c0c0c0;
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Evita barras de rolagem */
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: #c0c0c0;
+            border: 2px outset #ffffff;
+            gap: 15px;
+            margin: 10px;
+            width: fit-content;
+        }
+
+        .tool-group { display: flex; align-items: center; gap: 8px; }
+
+        .cor-btn {
+            width: 20px;
+            height: 20px;
+            border: 2px inset #000;
+            cursor: pointer;
+        }
+
+        button, select {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            padding: 4px 8px;
+            border: 2px outset #ffffff;
+            background: #c0c0c0;
+            cursor: pointer;
+        }
+
+        button:active { border-style: inset; }
+
+        #canvas {
+            background: #ffffff;
+            border: 2px inset #000;
+            cursor: crosshair;
+            display: block;
+            flex-grow: 1; /* Ocupa todo o espaço restante */
+            width: 95vw;  /* Quase a largura total da tela */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div class="tool-group">
+            <span>COR:</span>
+            <div class="cor-btn" style="background: #ff0000" onclick="setCor('#ff0000')"></div>
+            <div class="cor-btn" style="background: #00ff00" onclick="setCor('#00ff00')"></div>
+            <div class="cor-btn" style="background: #0000ff" onclick="setCor('#0000ff')"></div>
+            <div class="cor-btn" style="background: #ffff00" onclick="setCor('#ffff00')"></div>
+            <div class="cor-btn" style="background: #000000" onclick="setCor('#000000')"></div>
+        </div>
+        
+        <div class="tool-group">
+            <span>TAM:</span>
+            <select id="tamanho" onchange="setTamanho(this.value)">
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+
+        <button onclick="limpar()">CLEAR</button>
+        <button onclick="salvar()">SAVE</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let corAtual = '#000000';
+        let tamanhoAtual = 5;
+        let desenhando = false;
+
+        // Ajusta o tamanho real do buffer do canvas ao redimensionar
+        function ajustarTamanho() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            // Preenche de branco após redimensionar
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        window.addEventListener('resize', ajustarTamanho);
+        ajustarTamanho(); // Inicializa
+
+        function setCor(cor) { corAtual = cor; }
+        function setTamanho(tam) { tamanhoAtual = tam; }
+
+        canvas.onmousedown = (e) => { desenhando = true; desenhar(e); };
+        canvas.onmouseup = () => { desenhando = false; ctx.beginPath(); };
+        canvas.onmousemove = desenhar;
+
+        function desenhar(e) {
+            if (!desenhando) return;
+            ctx.lineWidth = tamanhoAtual;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = corAtual;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function limpar() { ctx.fillStyle = "white"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+        function salvar() {
+            const link = document.createElement('a');
+            link.download = 'desenho.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>

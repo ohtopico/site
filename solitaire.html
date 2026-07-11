@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Paciência Y2K</title>
+    <style>
+body {
+    background: #008080;
+    font-family: 'Courier New', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    /* Reduz o tamanho do jogo para 80% do tamanho original */
+    transform: scale(0.8);
+    transform-origin: top center;
+    width: 125%; /* Compensa a escala para manter o layout centralizado */
+    height: 100vh;
+    overflow: hidden;
+}
+
+        #game-container { display: flex; gap: 10px; padding: 20px; background: #c0c0c0; border: 3px outset #fff; }
+        .pile { width: 80px; height: 110px; border: 2px inset #808080; background: #006400; position: relative; }
+        .column { width: 80px; min-height: 400px; border: 2px inset #808080; background: #006400; position: relative; padding-bottom: 20px; }
+	.card { 
+   		 width: 70px; height: 100px; background: white; border: 1px solid #000; 
+    		position: relative; cursor: grab; user-select: none; margin-top: -75px;
+    		display: flex; flex-direction: column; align-items: center; justify-content: center;
+	}
+	.card-value {
+    		position: absolute;
+    		font-size: 14px;
+    		font-weight: bold;
+    		line-height: 1;
+	}
+	.column .card { 
+    		position: relative; 
+    		margin-top: -75px; 
+	}
+	.column .card:first-child { margin-top: 5px; }
+
+/* Pilhas (Estoque e Lixo) não devem ter margem negativa */
+.pile .card { 
+    margin-top: 0 !important; 
+    position: absolute; 
+    top: 0; left: 0; 
+}
+
+/* Estilo do verso no estoque */
+#stock::after {
+    content: "Y2K";
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: #000080;
+    border: 2px solid #fff;
+    font-size: 14px;
+}
+
+.top-left { top: 2px; left: 4px; }
+.bottom-right { bottom: 2px; right: 4px; transform: rotate(180deg); }        
+
+        .column .card:first-child { margin-top: 5px; }
+        .red { color: red; }
+        .back { background: #000080 !important; color: transparent; border: 2px solid #fff; cursor: default; }
+        .back::after { content: "Y2K"; color: #fff; font-size: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="stock" class="pile" onclick="drawCard()"></div>
+    <div id="waste" class="pile"></div>
+    <!-- Todas as 7 colunas presentes -->
+    <div id="col1" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
+    <div id="col2" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
+    <div id="col3" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
+    <div id="col4" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
+    <div id="col5" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
+    <div id="col6" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
+    <div id="col7" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
+</div>
+
+<script>
+    const CONFIG = {
+        values: {'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13},
+        suits: ['♠', '♥', '♦', '♣']
+    };
+    let deck = [];
+
+    const isRed = (suit) => ['♥', '♦'].includes(suit);
+
+    function initGame() {
+        deck = [];
+        CONFIG.suits.forEach(s => Object.keys(CONFIG.values).forEach(v => deck.push({s, v})));
+        deck.sort(() => Math.random() - 0.5); 
+        // Distribui corretamente em todas as 7 colunas[cite: 3]
+        for (let i = 1; i <= 7; i++) {
+            const col = document.getElementById(`col${i}`);
+            for (let j = 0; j < i; j++) renderCard(deck.pop(), col, false, j < i - 1);
+        }
+    }
+
+
+function renderCard(data, container, isWaste, isBack) {
+    if (isWaste) container.innerHTML = ''; // Limpa a carta anterior no Waste
+    
+    const el = document.createElement('div');
+    el.className = `card ${isBack ? 'back' : (isRed(data.s) ? 'red' : '')}`;
+    el.id = `card-${Date.now()}-${Math.random()}`;
+    el.draggable = !isBack;
+    el.dataset.value = data.v;
+    el.dataset.suit = data.s;
+
+    if (!isBack) {
+        createCardContent(data, el); // Usa a função que criamos antes
+    }
+    
+    el.ondragstart = (ev) => ev.dataTransfer.setData("text", ev.target.id);
+    container.appendChild(el);
+}
+
+
+    function allowDrop(ev) { ev.preventDefault(); }
+
+function handleDrop(ev) {
+        ev.preventDefault();
+        const cardId = ev.dataTransfer.getData("text");
+        const cardEl = document.getElementById(cardId);
+        const oldCol = cardEl.parentElement; // Captura a coluna de origem ANTES de mover
+        
+        const target = ev.target;
+        const container = target.classList.contains('column') ? target : target.parentElement;
+        
+        // Move a carta para o novo destino
+        container.appendChild(cardEl);
+        
+        // Se a carta saiu de uma coluna, verifica se a nova carta do topo precisa ser revelada
+        if (oldCol && oldCol.classList.contains('column')) {
+            revealCardIfUnderneath(oldCol);
+        }
+    }
+
+    // Atualize sua revealCardIfUnderneath para usar a função acima
+function revealCardIfUnderneath(column) {
+    const cards = column.querySelectorAll('.card');
+    if (cards.length > 0) {
+        const topCard = cards[cards.length - 1];
+        if (topCard.classList.contains('back')) {
+            topCard.classList.remove('back');
+            topCard.draggable = true;
+            
+            // Reutiliza a lógica de criação de conteúdo
+            const data = { v: topCard.dataset.value, s: topCard.dataset.suit };
+            createCardContent(data, topCard);
+            
+            if (isRed(data.s)) topCard.classList.add('red');
+        }
+    }
+}
+
+
+// Função auxiliar para padronizar o conteúdo das cartas
+function createCardContent(data, element) {
+    element.innerHTML = ''; // Limpa o conteúdo anterior
+    
+    const topLeft = document.createElement('span');
+    topLeft.className = 'card-value top-left';
+    topLeft.innerHTML = `${data.v}<br>${data.s}`;
+    
+    const bottomRight = document.createElement('span');
+    bottomRight.className = 'card-value bottom-right';
+    bottomRight.innerHTML = `${data.v}<br>${data.s}`;
+    
+    element.appendChild(topLeft);
+    element.appendChild(bottomRight);
+}
+
+function drawCard() {
+    const stock = document.getElementById('stock');
+    const waste = document.getElementById('waste');
+
+    // Se o baralho acabou, recicla o lixo (waste) de volta para o baralho
+    if (deck.length === 0) {
+        const cardsInWaste = waste.querySelectorAll('.card');
+        if (cardsInWaste.length === 0) return alert("Não há mais cartas!");
+        
+        // Move as cartas de volta para o array de deck e limpa a pilha de lixo
+        cardsInWaste.forEach(cardEl => {
+            deck.push({ s: cardEl.dataset.suit, v: cardEl.dataset.value });
+            cardEl.remove();
+        });
+        deck.sort(() => Math.random() - 0.5); // Re-embaralha
+        return;
+    }
+
+    // Pega a carta do topo do deck
+    const cardData = deck.pop();
+    
+    // Renderiza a carta no Waste
+    // Note: O isWaste é true, então ele limpa a carta anterior (se quiser apenas 1 visível)
+    // Se quiser uma pilha no lixo, remova o `waste.innerHTML = ''` dentro da renderCard
+    renderCard(cardData, waste, true, false);
+}
+
+// Verifica se o movimento é válido para o Foundation
+function canMoveToFoundation(movingCard, targetPile) {
+    const cards = targetPile.querySelectorAll('.card');
+    
+    // Regra: Se vazia, aceita apenas Ás (A)
+    if (cards.length === 0) return movingCard.value === 'A';
+    
+    // Regra: Deve ser o mesmo naipe e valor superior (Ex: 2 de Copas sobre Ás de Copas)
+    const topCard = cards[cards.length - 1];
+    const sameSuit = movingCard.suit === topCard.dataset.suit;
+    const isSequence = CONFIG.values[movingCard.value] === CONFIG.values[topCard.dataset.value] + 1;
+    
+    return sameSuit && isSequence;
+}
+
+// Verifica se todas as cartas foram movidas para o Foundation
+function checkWinCondition() {
+    const totalInFoundation = document.querySelectorAll('.foundation .card').length;
+    if (totalInFoundation === 52) {
+        alert("Parabéns! Você venceu o jogo!");
+    }
+}
+
+// Atualização da handleDrop para incluir a lógica de Foundation
+function handleDrop(ev) {
+    ev.preventDefault();
+    const cardId = ev.dataTransfer.getData("text");
+    const cardEl = document.getElementById(cardId);
+    const target = ev.target;
+    const container = target.classList.contains('column') || target.classList.contains('foundation') ? target : target.parentElement;
+    
+    const movingCard = { value: cardEl.dataset.value, suit: cardEl.dataset.suit };
+    let isValid = false;
+
+    if (container.classList.contains('foundation')) {
+        isValid = canMoveToFoundation(movingCard, container);
+    } else if (container.classList.contains('column')) {
+        // Lógica de coluna simplificada para exemplo
+        isValid = true; 
+    }
+
+    if (isValid) {
+        container.appendChild(cardEl);
+        revealCardIfUnderneath(cardEl.parentElement); // Se moveu de uma coluna, revela a de baixo
+        checkWinCondition(); // Verifica se venceu
+    } else {
+        alert("Movimento inválido!");
+    }
+}
+
+
+    initGame();
+</script>
+</body>
+</html>
