@@ -420,33 +420,13 @@
 
         <!-- Ícones Principais -->
         <div class="desktop-icons">
-            <div class="icon-item" onclick="toggleWindow('win-diario')">
-                <i class="fa-solid fa-book-open"></i>
-                <span class="icon-label">Atualizações</span>
-            </div>
-            <div class="icon-item" onclick="toggleWindow('win-player')">
-                <i class="fa-solid fa-compact-disc fa-spin"></i>
-                <span class="icon-label">Player</span>
-            </div>
-            <div class="icon-item" onclick="toggleWindow('win-pet')">
-                <i class="fa-solid fa-ghost"></i>
-                <span class="icon-label">Mascote</span>
-            </div>
             <div class="icon-item" onclick="toggleWindow('win-skills')">
                 <i class="fa-solid fa-gear"></i>
                 <span class="icon-label">Skills</span>
             </div>
-            <div class="icon-item" onclick="toggleWindow('win-tumblr')">
-                <i class="fa-brands fa-tumblr"></i>
-                <span class="icon-label">Tumblr</span>
-            </div>
             <div class="icon-item" onclick="toggleWindow('win-projetos')">
                 <i class="fa-solid fa-code"></i>
                 <span class="icon-label">Projetos</span>
-            </div>
-            <div class="icon-item" onclick="window.open('https://www.superprof.com.br/mestre-computacao-pela-ufsm-possui-especializacao-robotica-educacional-ciencia-dados-aee.html', '_blank')">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span class="icon-label">Aulas (Superprof)</span>
             </div>
             <div class="icon-item" onclick="window.open('https://www.linkedin.com/in/ohtopico', '_blank')">
                  <i class="fa-brands fa-linkedin"></i>
@@ -708,6 +688,8 @@
 
                 <div style="margin-left: 35px; display: flex; flex-direction: column;">
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-book-open" style="width: 20px;"></i> Atualizações</div>
+		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-paw" style="width: 20px;"></i> Mascote</div>
+		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-music" style="width: 20px;"></i> Player</div>
 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" style="width: 20px;"></i> Tarot Digital</div>
  		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-paint')"><i class="fa-solid fa-paintbrush" style="width: 20px;"></i> Paint</div>
 		</div>
@@ -769,8 +751,8 @@
 
         // --- 2. MASCOTE INTERATIVO ---
         const petDialogues = [
-            "Você quer um chiclete de menta? 🍬",
-            "Minha cor favorita é o verde neon!",
+            "Você quer uma bala de chocomenta? 🍬",
+            "Minha cor favorita é o vermelho!",
             "Não clique tão forte, eu sinto cócegas!",
             "Escutando músicas espaciais hoje...",
             "Alimente-me com arquivos digitais!"
@@ -916,12 +898,7 @@
             container.innerHTML = ''; 
             
             const programs = [
-                { id: 'win-diario', title: 'Atualizações', icon: 'fa-book-open' },
-                { id: 'win-player', title: 'Player', icon: 'fa-compact-disc' },
-                { id: 'win-pet', title: 'Mascote', icon: 'fa-ghost' },
-                { id: 'win-skills', title: 'Skills', icon: 'fa-gear' },
-                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-tumblr' },
-                { id: 'win-projetos', title: 'Projetos', icon: 'fa-code' }
+                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-journal' },
             ];
             
             programs.forEach(prog => {
