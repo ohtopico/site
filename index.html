@@ -989,7 +989,7 @@
                 .catch(err => console.error("Erro ao carregar menu de projetos:", err));
         }
 
-        function fetchGithubCode(index) {
+       function fetchGithubCode(index) {
     const descEl = document.getElementById('project-description');
     const displayEl = document.getElementById('code-display');
     
@@ -1001,18 +1001,16 @@
 
     const projeto = localProjectsData[index];
     
-    // Define a descrição do projeto
     descEl.innerText = `📋 Sobre o projeto:`;
     
-    // Renderiza uma interface limpa com a descrição e um botão para abrir o Notebook
     displayEl.innerHTML = `
-        <div style="color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 14px; line-height: 1.5;">
+        <div style="color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 13px; line-height: 1.4;">
             <p style="margin-top: 0; color: #00f0ff;">${projeto.descricao}</p>
-            <div style="margin-top: 20px; text-align: center;">
-                <a href="${projeto.raw_url.replace('raw.githubusercontent.com', 'github.com').replace('/main/', '/blob/main/')}" 
+            <div style="margin-top: 15px; text-align: left;">
+                <a href="${projeto.url}" 
                    target="_blank" 
-                   style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 6px 12px; text-decoration: none; font-weight: bold; font-family: 'VT323', monospace; font-size: 18px;">
-                   ABRIR JUPYTER NOTEBOOK
+                   style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 3px 8px; text-decoration: none; font-weight: bold; font-size: 12px; font-family: 'Share Tech Mono', monospace;">
+                   [ acessar_notebook.sys ]
                 </a>
             </div>
         </div>
