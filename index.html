@@ -655,11 +655,8 @@
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
-
-    </div>
 
 <!-- Janela 7: Leitura de Tarot -->
 <div id="win-tarot" class="y2k-window" style="left: 100px; top: 100px; width: 320px; display: none;">
@@ -716,8 +713,9 @@
         </div>
         <div class="taskbar-clock" id="clock">00:00:00</div>
     </div>
+</div>
 
-    <script>
+<script>
         // --- 1. LÓGICA DE JANELAS ARRASTÁVEIS ---
         document.querySelectorAll('.window-header').forEach(header => {
             header.addEventListener('mousedown', initDrag);
@@ -1092,7 +1090,7 @@ function sortearCarta() {
         win.style.display = 'flex';
         bringToFront(win);
         updateTaskbarTabs();
-        }
+ 
     }
 
     function bringToFront(win) {
@@ -1110,6 +1108,5 @@ function sortearCarta() {
         console.log("Sistema Y2K carregado com sucesso.");
     });
 </script>
-
 </body>
 </html>
