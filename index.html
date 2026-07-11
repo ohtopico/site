@@ -672,6 +672,23 @@
     </div>
 </div>
 
+<!-- Janela 9: Instagram Perfil -->
+<div id="win-instagram" class="y2k-window" style="left: 200px; top: 100px; width: 400px; height: 500px; display: none; resize: both; overflow: hidden; min-width: 320px; min-height: 300px;">
+    <div class="window-header">
+        <div class="window-title">
+            <i class="fa-brands fa-instagram"></i> instagram.exe
+        </div>
+        <div class="window-controls">
+            <button class="win-btn" onclick="minimizeWindow('win-instagram')">_</button>
+            <button class="win-btn" onclick="toggleWindow('win-instagram')">X</button>
+        </div>
+    </div>
+    <div class="window-content" style="padding: 0; width: 100%; height: calc(100% - 30px);">
+        <!-- O iframe agora ocupa 100% da área da janela -->
+        <iframe src="galeria.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+</div>
+
 
     <!-- Barra de Tarefas inferior -->
     <div id="taskbar">
@@ -898,7 +915,8 @@
             container.innerHTML = ''; 
             
             const programs = [
-                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-journal' },
+                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-web' },
+                { id: 'win-instagram', title: 'Instagram', icon: 'fa-web' },
             ];
             
             programs.forEach(prog => {
