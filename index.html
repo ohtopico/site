@@ -990,32 +990,34 @@
         }
 
         function fetchGithubCode(index) {
-            const descEl = document.getElementById('project-description');
-            const displayEl = document.getElementById('code-display');
-            
-            if (index === "") {
-                descEl.innerText = "";
-                displayEl.innerText = "Selecione um script acima para rodar a requisição HTTP para o GitHub...";
-                return;
-            }
+    const descEl = document.getElementById('project-description');
+    const displayEl = document.getElementById('code-display');
+    
+    if (index === "") {
+        descEl.innerText = "";
+        displayEl.innerText = "Selecione um projeto acima para ver os detalhes...";
+        return;
+    }
 
-            const projeto = localProjectsData[index];
-            descEl.innerText = `// Descrição: ${projeto.descricao}`;
-            displayEl.innerText = "📡 Conectando ao repositório remoto e baixando buffers...";
-
-            fetch(projeto.raw_url)
-                .then(response => {
-                    if (!response.ok) throw new Error("Falha ao ler arquivo remoto.");
-                    return response.text();
-                })
-                .then(code => {
-                    displayEl.innerText = code;
-                })
-                .catch(err => {
-                    console.error(err);
-                    displayEl.innerText = "❌ Erro 404: Não foi possível compilar o script do GitHub. Verifique a URL do arquivo Raw.";
-                });
-        }
+    const projeto = localProjectsData[index];
+    
+    // Define a descrição do projeto
+    descEl.innerText = `📋 Sobre o projeto:`;
+    
+    // Renderiza uma interface limpa com a descrição e um botão para abrir o Notebook
+    displayEl.innerHTML = `
+        <div style="color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 14px; line-height: 1.5;">
+            <p style="margin-top: 0; color: #00f0ff;">${projeto.descricao}</p>
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="${projeto.raw_url.replace('raw.githubusercontent.com', 'github.com').replace('/main/', '/blob/main/')}" 
+                   target="_blank" 
+                   style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 6px 12px; text-decoration: none; font-weight: bold; font-family: 'VT323', monospace; font-size: 18px;">
+                   📂 ABRIR JUPYTER NOTEBOOK
+                </a>
+            </div>
+        </div>
+    `;
+}
 
         // --- 10. INICIALIZADOR GLOBAL DO SISTEMA ---
         window.addEventListener('DOMContentLoaded', () => {
