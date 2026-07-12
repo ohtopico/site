@@ -689,6 +689,26 @@
     </div>
 </div>
 
+<!-- Janela da Nuvem de Palavras -->
+<div id="win-nuvem" class="y2k-window" style="left: 100px; top: 100px; width: 600px; height: 400px; display: block; resize: both; overflow: hidden; min-width: 300px; min-height: 200px; display: none;">
+    
+    <!-- Cabeçalho da Janela (Barra de arrastar) -->
+    <div class="window-header">
+        <div class="window-title">
+            <i class="fa-solid fa-cloud"></i> word-cloud.exe
+        </div>
+        <div class="window-controls">
+            <button class="win-btn" onclick="minimizeWindow('win-nuvem')">_</button>
+            <button class="win-btn" onclick="toggleWindow('win-nuvem')">X</button>
+        </div>
+    </div>
+
+    <!-- Conteúdo da Janela -->
+    <div class="window-content" style="padding: 0; width: 100%; height: calc(100% - 30px); background: #c0c0c0;">
+        <iframe src="nuvem.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+</div>
+
 
     <!-- Barra de Tarefas inferior -->
     <div id="taskbar">
@@ -705,6 +725,7 @@
 
                 <div style="margin-left: 35px; display: flex; flex-direction: column;">
                     <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-book-open" style="width: 20px;"></i> Atualizações</div>
+		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-nuvem')"><i class="fa-solid fa-sun" style="width: 20px;"></i>Sobre mim</div>
 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-paw" style="width: 20px;"></i> Mascote</div>
 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-music" style="width: 20px;"></i> Player</div>
 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" style="width: 20px;"></i> Tarot Digital</div>

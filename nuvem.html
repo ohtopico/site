@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Impede barras de rolagem */
+            background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffcc),
+                        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.1) 3px);
+            background-size: 200% 200%, 100% auto;
+            animation: gradientBG 10s ease infinite;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%, 0 0;}
+            50% {background-position: 100% 50%, 0 0;}
+            100% {background-position: 0% 50%, 0 0;}
+        }
+
+        .word {
+            position: absolute;
+            cursor: grab;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(10px);
+            border: 2px solid #ffffff;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            border-radius: 15px;
+            box-shadow: 5px 5px 0px #ff00cc, 10px 10px 20px rgba(0,0,0,0.5);
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #000;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .word:active { cursor: grabbing; transform: translate(3px, 3px); }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 30px;
+            text-shadow: 3px 3px 0 #00ffcc;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">SOBRE MIM</div>
+
+    <div class="word" style="left: 50px; top: 100px;">Computação</div>
+    <div class="word" style="left: 200px; top: 200px;">Café</div>
+    <div class="word" style="left: 50px; top: 300px;">Poesia</div>
+
+    <script>
+	let activeElement = null;
+    	let offsetX, offsetY;
+
+    	// Garante que as palavras apareçam dentro da área visível ao carregar
+    	window.onload = () => {
+        	document.querySelectorAll('.word').forEach(word => {
+            	// Define posições aleatórias dentro do limite do iframe
+            	const maxX = window.innerWidth - word.offsetWidth - 20;
+            	const maxY = window.innerHeight - word.offsetHeight - 20;
+            
+            	// Verifica se o tamanho é válido antes de aplicar
+            	if(maxX > 0 && maxY > 0) {
+               	 word.style.left = Math.floor(Math.random() * maxX) + 'px';
+               	 word.style.top = Math.floor(Math.random() * maxY) + 'px';
+           	 }
+       	 });
+   	 };
+
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('word')) {
+                activeElement = e.target;
+                offsetX = e.clientX - activeElement.getBoundingClientRect().left;
+                offsetY = e.clientY - activeElement.getBoundingClientRect().top;
+                activeElement.style.zIndex = 1000;
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (activeElement) {
+                // Calcula limites para manter dentro do iframe
+                let x = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - activeElement.offsetWidth));
+                let y = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - activeElement.offsetHeight));
+                
+                activeElement.style.left = x + 'px';
+                activeElement.style.top = y + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (activeElement) {
+                activeElement.style.zIndex = 1;
+                activeElement = null;
+            }
+        });
+    </script>
+</body>
+</html>
