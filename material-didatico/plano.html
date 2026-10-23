@@ -87,8 +87,9 @@
     <h2>Acessibilidade e inclusão</h2>
     <div class="panel">${esc(p.inclusao)}</div>
 
-    <h2 class="no-print">Materiais deste plano</h2>
-    <div class="related no-print">${p.recursos.map(i => REC[i]).map(o => `
+    <h2 class="no-print">${p.recursos.length ? 'Materiais relacionados' : 'Outros planos para o mesmo ano'}</h2>
+    <div class="related no-print">${(p.recursos.length ? p.recursos.map(i => REC[i])
+      : RECURSOS.filter(o => o.tipo === 'plano' && o.id !== r.id && o.anos.some(a => r.anos.includes(a))).slice(0, 3)).map(o => `
       <a class="card" href="${recUrl(o)}">
         <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>
         <strong>${esc(o.titulo)}</strong>

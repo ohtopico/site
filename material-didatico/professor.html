@@ -41,6 +41,8 @@
   </div>
 
   <h2>Planos de aula</h2>
+  <p class="muted">Todas as habilidades de Computação do 6º ao 9º ano têm pelo menos um plano. Filtre por ano:</p>
+  <div class="chips" id="f-ano" style="margin-bottom:12px"></div>
   <div class="table-wrap">
     <table class="plan-table">
       <thead><tr><th>Plano</th><th class="hide-sm">Ano</th><th>Habilidades</th><th class="hide-sm">Materiais ligados</th></tr></thead>
@@ -61,13 +63,22 @@
 <script>
   mdTopbar('professor');
   mdFooter();
-  document.getElementById('plans').innerHTML = RECURSOS.filter(r => r.tipo === 'plano').map(r => `
+  let ano = 0;
+  function renderPlans() {
+  document.getElementById('f-ano').innerHTML = [[0, 'Todos'], [6, '6º'], [7, '7º'], [8, '8º'], [9, '9º']].map(([v, l]) => {
+    const n = RECURSOS.filter(r => r.tipo === 'plano' && (!v || r.anos.includes(v))).length;
+    return `<button class="chip" type="button" data-a="${v}" aria-pressed="${v === ano}">${l} <span class="small muted">${n}</span></button>`;
+  }).join('');
+  document.getElementById('plans').innerHTML = RECURSOS.filter(r => r.tipo === 'plano' && (!ano || r.anos.includes(ano))).map(r => `
     <tr>
       <td><a class="ptitle" href="${recUrl(r)}">${esc(r.titulo)}</a><div class="small muted">${esc(PLANOS[r.id].duracao)}</div></td>
       <td class="hide-sm">${anosTxt(r.anos)}</td>
       <td><div class="tags">${r.habs.map(tagHab).join('')}</div></td>
-      <td class="hide-sm">${PLANOS[r.id].recursos.map(id => `<a href="${recUrl(REC[id])}">${TIPOS[REC[id].tipo].icone} ${esc(REC[id].titulo)}</a>`).join('<br>')}</td>
+      <td class="hide-sm">${PLANOS[r.id].recursos.map(id => `<a href="${recUrl(REC[id])}">${TIPOS[REC[id].tipo].icone} ${esc(REC[id].titulo)}</a>`).join('<br>') || '<span class="muted">—</span>'}</td>
     </tr>`).join('');
+  }
+  document.getElementById('f-ano').onclick = e => { const b = e.target.closest('button'); if (b) { ano = +b.dataset.a; renderPlans(); } };
+  renderPlans();
 </script>
 </body>
 </html>
