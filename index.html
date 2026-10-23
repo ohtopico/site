@@ -892,6 +892,10 @@
                 <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
                 <span class="icon-label">Leia-me</span>
             </button>
+            <a class="icon-item" href="curriculo/">
+                <i class="fa-solid fa-id-card" aria-hidden="true"></i>
+                <span class="icon-label">Currículo</span>
+            </a>
             <button type="button" class="icon-item" onclick="toggleWindow('win-ensino')" aria-controls="win-ensino">
                 <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i>
                 <span class="icon-label">Ensino</span>
@@ -1250,6 +1254,22 @@
     </div>
 </div>
 
+<!-- Janela: Navegador (busca no site) -->
+<div id="win-navegador" class="y2k-window win-full" style="left: 160px; top: 30px; width: 840px; height: 600px; display: none; resize: both; overflow: hidden; min-width: 340px; min-height: 360px;">
+    <div class="window-header">
+        <div class="window-title">
+            <i class="fa-solid fa-globe"></i> navegador.exe
+        </div>
+        <div class="window-controls">
+            <button class="win-btn" onclick="minimizeWindow('win-navegador')">_</button>
+            <button class="win-btn" onclick="toggleWindow('win-navegador')">X</button>
+        </div>
+    </div>
+    <div class="window-content" style="padding: 0; width: 100%; height: calc(100% - 30px); background: #c0c0c0;">
+        <iframe data-src="navegador.html" title="Navegador: busca no site" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+</div>
+
 <!-- Janela: Paciência -->
 <div id="win-paciencia" class="y2k-window win-full" style="left: 120px; top: 40px; width: 780px; height: 600px; display: none; resize: both; overflow: hidden; min-width: 360px; min-height: 360px;">
     <div class="window-header">
@@ -1321,6 +1341,7 @@
                     <div class="menu-heading">Profissional</div>
                     <button type="button" class="menu-item" onclick="openProgram('win-leiame')"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Leia-me</button>
                     <a class="menu-item" href="curriculo/"><i class="fa-solid fa-id-card" aria-hidden="true"></i> Currículo</a>
+                    <button type="button" class="menu-item" onclick="openProgram('win-navegador')"><i class="fa-solid fa-globe" aria-hidden="true"></i> Navegador (busca)</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-projetos')"><i class="fa-solid fa-code" aria-hidden="true"></i> Projetos</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-ensino')"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Ensino</button>
                     <a class="menu-item" href="ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
@@ -1715,7 +1736,22 @@ function sortearCarta() {
         document.querySelectorAll('.window-title i, .win-btn i').forEach(i => i.setAttribute('aria-hidden', 'true'));
     }
 
+    // Janelas que outras páginas do site podem pedir para abrir
+    const JANELAS_ABERTAS_POR_LINK = ['win-leiame', 'win-ensino', 'win-projetos', 'win-diario', 'win-nuvem', 'win-navegador'];
+
+    window.addEventListener('message', e => {
+        if (e.origin !== location.origin || !e.data || e.data.tipo !== 'abrir-janela') return;
+        if (JANELAS_ABERTAS_POR_LINK.includes(e.data.janela)) openProgram(e.data.janela);
+    });
+
+    function abrirPeloEndereco() {
+        const m = location.hash.match(/^#abrir=(win-[a-z]+)$/);
+        if (m && JANELAS_ABERTAS_POR_LINK.includes(m[1])) openProgram(m[1]);
+    }
+    window.addEventListener('hashchange', abrirPeloEndereco);
+
     window.addEventListener('DOMContentLoaded', () => {
+        abrirPeloEndereco();
         prepararJanelas();
         aplicarContatos();
         updateTaskbarTabs();

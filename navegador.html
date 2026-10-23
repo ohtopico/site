@@ -1,135 +1,687 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Navegador Retrô</title>
-    <style>
-        body { background: #008080; font-family: 'Courier New', Courier, monospace; }
-        .browser-window {
-            width: 80%; height: 650px; margin: 30px auto;
-            border: 2px outset #fff; background: #c0c0c0; padding: 2px;
-        }
-        .title-bar { background: #000080; color: white; padding: 3px; display: flex; justify-content: space-between; }
-        .toolbar { padding: 5px; border-bottom: 1px solid #808080; }
-        
-        /* Estilo das abas */
-        .tabs-bar { display: flex; gap: 2px; padding: 5px 5px 0 5px; }
-        .tabs-bar button {
-            background: #c0c0c0; border: 2px outset #fff;
-            padding: 5px 10px; cursor: pointer; font-family: 'Courier New', monospace;
-        }
-        .tabs-bar button:active { border-style: inset; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ohtopico busca</title>
+<style>
+    :root {
+        --cinza: #c0c0c0;
+        --cinza-claro: #dfdfdf;
+        --sombra: #808080;
+        --azul: #000080;
+        --rosa: #ff007f;
+        --roxo: #2d124d;
+        --link: #1a0dab;
+        --visitado: #681da8;
+    }
 
-        .content-area { 
-            height: 500px; background: white; border: inset 2px; 
-            overflow-y: scroll; padding: 15px; margin: 0 5px 5px 5px;
-        }
-        .postagem {
-            background: #fff; padding: 15px; margin-bottom: 20px;
-            border: 2px outset #c0c0c0;
-        }
-        .tab-content { display: none; }
-    </style>
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; margin: 0; }
+
+    body {
+        background: var(--cinza);
+        display: flex;
+        flex-direction: column;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+    }
+
+    /* Barra de ferramentas do navegador */
+    .ferramentas {
+        align-items: center;
+        border-bottom: 1px solid var(--sombra);
+        display: flex;
+        gap: 4px;
+        padding: 4px 6px;
+    }
+
+    .btn98 {
+        background: var(--cinza);
+        border: 2px solid;
+        border-color: #fff var(--sombra) var(--sombra) #fff;
+        color: #000;
+        cursor: pointer;
+        font: bold 13px 'Courier New', monospace;
+        min-height: 28px;
+        padding: 2px 9px;
+    }
+
+    .btn98:active { border-color: var(--sombra) #fff #fff var(--sombra); }
+    .btn98:disabled { color: #8a8a8a; cursor: default; }
+    .btn98:focus-visible, input:focus-visible, a:focus-visible, button:focus-visible {
+        outline: 2px dotted #000;
+        outline-offset: 1px;
+    }
+
+    .endereco {
+        align-items: center;
+        display: flex;
+        flex: 1;
+        gap: 6px;
+        min-width: 0;
+        padding: 4px 6px;
+    }
+
+    .endereco label { white-space: nowrap; }
+
+    .endereco input {
+        background: #fff;
+        border: 2px inset #fff;
+        flex: 1;
+        font: 13px 'Courier New', monospace;
+        min-width: 0;
+        padding: 4px 6px;
+    }
+
+    .favoritos {
+        border-bottom: 1px solid var(--sombra);
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 13px;
+        gap: 2px 12px;
+        padding: 3px 8px 5px 8px;
+    }
+
+    .favoritos a { color: #000; }
+
+    /* Área da página */
+    #pagina {
+        background: #fff;
+        border: 2px inset #fff;
+        flex: 1;
+        margin: 0 5px 5px 5px;
+        overflow-y: auto;
+        padding: 18px 22px;
+    }
+
+    .status {
+        border-top: 1px solid #fff;
+        font-size: 12px;
+        padding: 2px 8px 4px 8px;
+    }
+
+    /* Página inicial da busca */
+    .home {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin: 4vh auto 0 auto;
+        max-width: 560px;
+        text-align: center;
+    }
+
+    .logo {
+        font: bold 46px 'Trebuchet MS', Verdana, sans-serif;
+        letter-spacing: -1px;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .logo span:nth-child(1) { color: var(--rosa); }
+    .logo span:nth-child(2) { color: #3333ff; }
+    .logo span:nth-child(3) { color: #00b89c; }
+    .logo span:nth-child(4) { color: #ff9900; }
+    .logo span:nth-child(5) { color: var(--rosa); }
+    .logo span:nth-child(6) { color: #3333ff; }
+    .logo span:nth-child(7) { color: #00b89c; }
+    .logo small {
+        color: var(--roxo);
+        display: block;
+        font: bold 15px 'Courier New', monospace;
+        letter-spacing: 6px;
+        margin-top: 4px;
+    }
+
+    .busca {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .busca input {
+        border: 2px inset #fff;
+        font: 16px 'Courier New', monospace;
+        padding: 8px 10px;
+        width: 100%;
+    }
+
+    .busca .botoes { display: flex; gap: 8px; justify-content: center; }
+
+    .sugestoes { color: #444; font-size: 13px; line-height: 1.8; }
+    .sugestoes button {
+        background: none;
+        border: none;
+        color: var(--link);
+        cursor: pointer;
+        font: inherit;
+        padding: 0 3px;
+        text-decoration: underline;
+    }
+
+    .rodape-home { color: #666; font-size: 12px; margin-top: 12px; }
+
+    /* Resultados */
+    .barra-busca {
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin: -4px 0 12px 0;
+        padding-bottom: 12px;
+    }
+
+    .barra-busca .logo { font-size: 26px; }
+    .barra-busca form { display: flex; flex: 1; gap: 6px; min-width: 220px; }
+    .barra-busca input { border: 2px inset #fff; flex: 1; font: 15px 'Courier New', monospace; min-width: 0; padding: 5px 8px; }
+
+    .contagem { color: #555; font-size: 13px; margin: 0 0 14px 0; }
+
+    .filtros { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .filtros button[aria-pressed="true"] {
+        background: var(--roxo);
+        border-color: #6b4f8f #12001f #12001f #6b4f8f;
+        color: #fff;
+    }
+
+    ol.resultados { list-style: none; margin: 0; padding: 0; }
+
+    .resultado { margin-bottom: 18px; max-width: 680px; }
+
+    .resultado .onde { color: #006621; font-size: 13px; }
+
+    .resultado a.titulo {
+        color: var(--link);
+        display: inline-block;
+        font: 18px Arial, Helvetica, sans-serif;
+        margin: 1px 0 2px 0;
+    }
+
+    .resultado a.titulo:visited { color: var(--visitado); }
+
+    .resultado p {
+        color: #333;
+        font: 14px/1.45 Arial, Helvetica, sans-serif;
+        margin: 0;
+    }
+
+    mark { background: #fff36b; color: inherit; padding: 0 1px; }
+
+    .vazio { font: 15px/1.6 Arial, Helvetica, sans-serif; max-width: 560px; }
+
+    /* Poemas */
+    .poemas h1 { color: var(--roxo); font: bold 26px 'Courier New', monospace; margin: 0 0 4px 0; }
+    .poemas .sub { color: #666; margin: 0 0 18px 0; }
+
+    .poema {
+        background: #fff;
+        border: 2px outset var(--cinza);
+        margin-bottom: 18px;
+        max-width: 560px;
+        padding: 14px 18px;
+        scroll-margin-top: 12px;
+    }
+
+    .poema h2 { color: var(--rosa); font: bold 17px 'Courier New', monospace; margin: 0 0 2px 0; }
+    .poema .data { color: #777; font-size: 12px; margin: 0 0 10px 0; }
+    .poema .verso { font: 15px/1.6 Georgia, 'Times New Roman', serif; white-space: pre-line; }
+    .poema.destaque { box-shadow: 0 0 0 3px #fff36b; }
+
+    .sr-only {
+        clip: rect(0 0 0 0);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        width: 1px;
+    }
+
+    @media (max-width: 560px) {
+        .endereco label, .favoritos .opcional { display: none; }
+        #pagina { padding: 14px 12px; }
+        .logo { font-size: 36px; }
+    }
+</style>
 </head>
 <body>
-
-<div class="browser-window">
-    <div class="title-bar">
-        <span>Internet Explorer - OHTOPICO</span>
-        <a href="index.html" style="color:white; text-decoration:none; padding-right:5px;">[X]</a>
+    <div class="ferramentas" role="toolbar" aria-label="Navegação">
+        <button type="button" class="btn98" id="voltar" aria-label="Voltar" disabled>◄</button>
+        <button type="button" class="btn98" id="avancar" aria-label="Avançar" disabled>►</button>
+        <button type="button" class="btn98" id="inicio" aria-label="Página inicial">⌂</button>
+        <form class="endereco" id="form-endereco" role="search">
+            <label for="campo-endereco">Endereço:</label>
+            <input id="campo-endereco" type="text" autocomplete="off" spellcheck="false">
+            <button type="submit" class="btn98">Ir</button>
+        </form>
     </div>
-    
-    <div class="toolbar">
-        Endereço: <input type="text" value="ohtopico.com.br/navegador" style="width: 60%;" readonly>
-    </div>
+    <nav class="favoritos" aria-label="Favoritos">
+        <span>Favoritos:</span>
+        <a href="#" data-ir="inicio">Busca</a>
+        <a href="#" data-ir="poemas">Poemas</a>
+        <a href="curriculo/" target="_top" class="opcional">Currículo</a>
+        <a href="ia-pra-prof/" target="_top" class="opcional">IA pra Prof</a>
+    </nav>
 
-    <!-- Barra de Abas -->
-    <div class="tabs-bar">
-        <button onclick="showTab('poemas')">Poemas</button>
-        <button onclick="showTab('marketing')">Marketing</button>
-        <button onclick="showTab('outros')">Outros</button>
-    </div>
+    <main id="pagina" tabindex="-1"></main>
+    <div class="status" id="status" aria-live="polite">Pronto</div>
 
-    <div class="content-area">
-        <!-- Aba Poemas -->
-        <div id="poemas" class="tab-content" style="display:block;">
-            <div class="postagem">
-                <p><i>Data: 08/02/2026</i></p>
-                <div style="white-space: pre-line;">é posto que tu olhas me e não vê<br>enquanto me descartas e não te dói<br><br>tento semear entre nós a humanidade<br>em tenras águas de amor</div>
-            </div>
-           
-<div class="postagem">
-    	<h3></h3>
-    	<p><i>Data: 08/02/2026</i></p>
-	<div class="poema-texto" style="white-space: pre-line;">
-	eu sou o mestre
-	dos bobos
-	que nadam e não veem,
-	que rolam na sujeira
-	do próprio amargor.
+    <!-- Poemas (conteúdo próprio do navegador, também entra na busca) -->
+    <template id="tpl-poemas">
+        <article class="poema" id="poema-1" data-titulo="Sem título" data-data="08/02/2026">
+            <div class="verso">é posto que tu olhas me e não vê
+enquanto me descartas e não te dói
 
-	perdido em olhos
-	de puro amor,
-	não sou gentil,
-	tampouco infante - 
-	sou gênio entre os errantes
-	que tocaram seu coração,
+tento semear entre nós a humanidade
+em tenras águas de amor</div>
+        </article>
+        <article class="poema" id="poema-2" data-titulo="Sem título" data-data="08/02/2026">
+            <div class="verso">eu sou o mestre
+dos bobos
+que nadam e não veem,
+que rolam na sujeira
+do próprio amargor.
 
-	sou o castiçal da ingenuidade:
-	via esperança
-	em seu esplendor.
-	</div>
-	</div>
-	
-	 <div class="postagem">
-    	<h3></h3>
-    	<p><i>Data: 05/03/2025</i></p>
-    	<div class="poema-texto" style="white-space: pre-line;">
-		Quando me escondo,
-		Se me antes expondo,
-		Vivo, aprendo medonho,
-		Me recolho, envergonho.
-		</div>
-	</div>
+perdido em olhos
+de puro amor,
+não sou gentil,
+tampouco infante -
+sou gênio entre os errantes
+que tocaram seu coração,
 
- 	<div class="postagem">
-    	<h3>enganação</h3>
-    	<p><i>Data: 23/02/2024</i></p>
-    	<div class="poema-texto" style="white-space: pre-line;">
-		refeito com enfeites
-		prolixos, com sujos sufixos,
-		cheirando a carne simples
-		feita em panela de vó.
-	</div>
-	</div>
-            <!-- Adicione os outros poemas aqui -->
-        </div>
-
-        <!-- Aba Marketing -->
-        <div id="marketing" class="tab-content">
-            <h2>Marketing</h2>
-            <p>Espaço reservado para textos sobre estratégias e mercado.</p>
-        </div>
-
-        <!-- Aba Outros -->
-        <div id="outros" class="tab-content">
-            <h2>Outros</h2>
-            <p>Espaço para colagens e outros conteúdos diversos.</p>
-        </div>
-    </div>
-</div>
+sou o castiçal da ingenuidade:
+via esperança
+em seu esplendor.</div>
+        </article>
+        <article class="poema" id="poema-3" data-titulo="Sem título" data-data="05/03/2025">
+            <div class="verso">Quando me escondo,
+Se me antes expondo,
+Vivo, aprendo medonho,
+Me recolho, envergonho.</div>
+        </article>
+        <article class="poema" id="poema-4" data-titulo="enganação" data-data="23/02/2024">
+            <div class="verso">refeito com enfeites
+prolixos, com sujos sufixos,
+cheirando a carne simples
+feita em panela de vó.</div>
+        </article>
+    </template>
 
 <script>
-    function showTab(tabId) {
-        const contents = document.getElementsByClassName('tab-content');
-        for (let i = 0; i < contents.length; i++) {
-            contents[i].style.display = 'none';
-        }
-        document.getElementById(tabId).style.display = 'block';
-    }
-</script>
+(function () {
+    const pagina = document.getElementById('pagina');
+    const status = document.getElementById('status');
+    const campoEndereco = document.getElementById('campo-endereco');
+    const dentroDoSite = window.parent !== window;
 
+    // Janelas da área de trabalho que podem ser abertas pelos resultados
+    const JANELAS = {
+        'win-leiame': 'Leia-me', 'win-ensino': 'Ensino', 'win-projetos': 'Projetos',
+        'win-diario': 'Atualizações', 'win-nuvem': 'Interesses'
+    };
+
+    const SUGESTOES = ['Python', 'Arduino', 'LGPD', 'prompts', 'oficina', 'visão computacional', 'Scratch', 'poema'];
+
+    const normalizar = t => (t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const limparTexto = t => (t || '').replace(/\s+/g, ' ').trim();
+    const escapar = t => t.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    // ---------- Índice: lido das próprias páginas do site ----------
+    let indice = null;
+    let carregando = null;
+
+    async function lerPagina(url) {
+        const r = await fetch(url, { cache: 'no-cache' });
+        if (!r.ok) throw new Error(url);
+        return new DOMParser().parseFromString(await r.text(), 'text/html');
+    }
+
+    function semScripts(no) {
+        const c = no.cloneNode(true);
+        c.querySelectorAll('script, style, template, button.win-btn, .pv-slot, .comp-dica, .sr-only').forEach(e => e.remove());
+        // Separa blocos e itens de lista para as palavras não grudarem
+        c.querySelectorAll('li, p, h1, h2, h3, h4, dt, dd, div, td, br, .when, .org, .tags').forEach(e => e.append(' '));
+        return c;
+    }
+
+    async function montarIndice() {
+        const docs = [];
+
+        // Página inicial: janelas profissionais
+        try {
+            const d = await lerPagina('index.html');
+            ['win-leiame', 'win-ensino', 'win-diario'].forEach(id => {
+                const w = d.getElementById(id);
+                if (!w) return;
+                const corpo = w.querySelector('.window-content');
+                docs.push({
+                    titulo: JANELAS[id], onde: 'Área de trabalho › ' + JANELAS[id],
+                    texto: limparTexto(semScripts(corpo).textContent), janela: id
+                });
+            });
+            d.querySelectorAll('#win-projetos .project-card').forEach(card => {
+                docs.push({
+                    titulo: limparTexto(card.querySelector('h3').textContent.replace('★', '')),
+                    onde: 'Área de trabalho › Projetos',
+                    texto: limparTexto(semScripts(card).textContent), janela: 'win-projetos'
+                });
+            });
+        } catch (e) { console.warn('Não foi possível ler a página inicial', e); }
+
+        // Currículo: cada item vira um resultado
+        try {
+            const d = await lerPagina('curriculo/index.html');
+            d.querySelectorAll('section.cv-section').forEach(sec => {
+                const nomeSecao = limparTexto(sec.querySelector('h2') ? sec.querySelector('h2').textContent : '');
+                const itens = sec.querySelectorAll(':scope > .item, .skill');
+                if (!itens.length) {
+                    const resumo = sec.querySelector('.summary[data-perfil="completo"]');
+                    const partes = resumo ? [resumo] : sec.querySelectorAll(':scope > ul li, :scope > p');
+                    partes.forEach(p => {
+                        const t = limparTexto(semScripts(p).textContent);
+                        if (t) docs.push({ titulo: nomeSecao, onde: 'Currículo › ' + nomeSecao, texto: t, url: 'curriculo/#' + sec.id });
+                    });
+                    return;
+                }
+                itens.forEach(it => {
+                    const h = it.querySelector('h3');
+                    docs.push({
+                        titulo: limparTexto(h ? h.textContent : nomeSecao),
+                        onde: 'Currículo › ' + nomeSecao,
+                        texto: limparTexto(semScripts(it).textContent),
+                        url: 'curriculo/#' + sec.id
+                    });
+                });
+            });
+        } catch (e) { console.warn('Não foi possível ler o currículo', e); }
+
+        // IA pra Prof: cada capítulo
+        try {
+            const d = await lerPagina('ia-pra-prof/index.html');
+            d.querySelectorAll('section.chapter').forEach(sec => {
+                if (sec.id === 'inicio') return;
+                docs.push({
+                    titulo: sec.dataset.title || sec.id,
+                    onde: 'IA pra Prof' + (sec.dataset.part ? ' › ' + sec.dataset.part : ''),
+                    texto: limparTexto(semScripts(sec).textContent),
+                    url: 'ia-pra-prof/#/' + sec.id
+                });
+            });
+        } catch (e) { console.warn('Não foi possível ler o IA pra Prof', e); }
+
+        // Poemas
+        document.getElementById('tpl-poemas').content.querySelectorAll('.poema').forEach(p => {
+            docs.push({
+                titulo: p.dataset.titulo === 'Sem título' ? 'Poema de ' + p.dataset.data : p.dataset.titulo,
+                onde: 'Navegador › Poemas',
+                texto: limparTexto(p.textContent),
+                poema: p.id
+            });
+        });
+
+        docs.forEach(d => { d.nt = normalizar(d.titulo); d.nx = normalizar(d.texto); });
+        return docs;
+    }
+
+    function garantirIndice() {
+        if (indice) return Promise.resolve(indice);
+        if (!carregando) {
+            status.textContent = 'Indexando o site…';
+            carregando = montarIndice().then(d => { indice = d; status.textContent = `Pronto · ${d.length} páginas indexadas`; return d; });
+        }
+        return carregando;
+    }
+
+    // ---------- Busca ----------
+    // Siglas que também devem achar a forma por extenso (e vice-versa)
+    const SINONIMOS = {
+        lgpd: 'lei geral de protecao de dados',
+        ia: 'inteligencia artificial',
+        aee: 'atendimento educacional especializado',
+        ml: 'machine learning',
+        bncc: 'base nacional comum curricular'
+    };
+
+    function buscar(consulta, docs) {
+        const termos = normalizar(consulta).split(/\s+/).filter(t => t.length > 1);
+        if (!termos.length) return [];
+        const frase = normalizar(consulta).trim();
+        const pontuar = (d, exigirTodos) => {
+            let pontos = 0, achados = 0;
+            termos.forEach(t => {
+                const sin = SINONIMOS[t];
+                const noTitulo = d.nt.includes(t) || (sin && d.nt.includes(sin));
+                const vezes = d.nx.split(t).length - 1 + (sin ? d.nx.split(sin).length - 1 : 0);
+                if (noTitulo || vezes) achados++;
+                // Título pesa mais; repetições contam, mas com retorno decrescente
+                pontos += (noTitulo ? 8 : 0) + (vezes ? 2 + Math.log2(1 + vezes) * 2 : 0);
+            });
+            if (exigirTodos && achados < termos.length) return 0;
+            if (termos.length > 1 && d.nx.includes(frase)) pontos += 10;
+            // Desempate: textos mais focados no termo ficam na frente
+            return pontos ? pontos + Math.min(2, 400 / (d.nx.length + 200)) : 0;
+        };
+        let res = docs.map(d => ({ d, p: pontuar(d, true) })).filter(r => r.p > 0);
+        if (!res.length) res = docs.map(d => ({ d, p: pontuar(d, false) })).filter(r => r.p > 0);
+        return res.sort((a, b) => b.p - a.p).map(r => r.d);
+    }
+
+    // Trecho com os termos destacados
+    function trecho(texto, consulta) {
+        const termos = normalizar(consulta).split(/\s+/).filter(t => t.length > 1);
+        const nx = normalizar(texto);
+        let pos = -1;
+        termos.forEach(t => { const i = nx.indexOf(t); if (i >= 0 && (pos < 0 || i < pos)) pos = i; });
+        let ini = Math.max(0, pos - 70);
+        let fim = Math.min(texto.length, (pos < 0 ? 0 : pos) + 190);
+        if (ini > 0) ini = texto.indexOf(' ', ini) + 1;
+        let pedaço = texto.slice(ini, fim);
+        let html = '';
+        let i = 0;
+        const np = normalizar(pedaço);
+        const marcas = [];
+        termos.forEach(t => {
+            let k = np.indexOf(t);
+            while (k >= 0) { marcas.push([k, k + t.length]); k = np.indexOf(t, k + t.length); }
+        });
+        marcas.sort((a, b) => a[0] - b[0]);
+        marcas.forEach(([a, b]) => {
+            if (a < i) return;
+            html += escapar(pedaço.slice(i, a)) + '<mark>' + escapar(pedaço.slice(a, b)) + '</mark>';
+            i = b;
+        });
+        html += escapar(pedaço.slice(i));
+        return (ini > 0 ? '… ' : '') + html + (fim < texto.length ? ' …' : '');
+    }
+
+    // ---------- Páginas do navegador ----------
+    let historico = [], posicao = -1;
+
+    function navegar(rota, registrar = true) {
+        if (registrar) {
+            historico = historico.slice(0, posicao + 1);
+            historico.push(rota);
+            posicao = historico.length - 1;
+        }
+        document.getElementById('voltar').disabled = posicao <= 0;
+        document.getElementById('avancar').disabled = posicao >= historico.length - 1;
+        if (rota.pagina === 'busca') paginaResultados(rota.q, rota.filtro || 'tudo');
+        else if (rota.pagina === 'poemas') paginaPoemas(rota.destaque);
+        else paginaInicial();
+    }
+
+    function enderecoDe(rota) {
+        if (rota.pagina === 'busca') return 'ohtopico://busca?q=' + rota.q.trim().replace(/\s+/g, '+');
+        if (rota.pagina === 'poemas') return 'ohtopico://poemas';
+        return 'ohtopico://busca';
+    }
+
+    function formularioBusca(valor, grande) {
+        return `
+            <form class="${grande ? 'busca' : ''}" data-busca role="search">
+                <label class="sr-only" for="q">Buscar no site</label>
+                <input id="q" name="q" type="search" value="${escapar(valor || '')}" placeholder="Busque em todo o site" autocomplete="off">
+                ${grande
+                    ? '<div class="botoes"><button class="btn98" type="submit">Pesquisar</button><button class="btn98" type="button" data-sorte>Estou com sorte</button></div>'
+                    : '<button class="btn98" type="submit">Pesquisar</button>'}
+            </form>`;
+    }
+
+    const LOGO = '<span>o</span><span>h</span><span>t</span><span>o</span><span>p</span><span>i</span><span>c</span><span>o</span>';
+
+    function paginaInicial() {
+        campoEndereco.value = 'ohtopico://busca';
+        pagina.innerHTML = `
+            <div class="home">
+                <h1 class="logo">${LOGO}<small>BUSCA</small></h1>
+                ${formularioBusca('', true)}
+                <p class="sugestoes">Experimente: ${SUGESTOES.map(s => `<button type="button" data-sugestao="${escapar(s)}">${escapar(s)}</button>`).join(' ')}</p>
+                <p class="rodape-home">Busca no leia-me, nos projetos, no currículo, no guia IA pra Prof e nos poemas.</p>
+            </div>`;
+        ligarFormulario();
+        pagina.querySelectorAll('[data-sugestao]').forEach(b => b.addEventListener('click', () => navegar({ pagina: 'busca', q: b.dataset.sugestao })));
+        const q = document.getElementById('q');
+        if (q) q.focus({ preventScroll: true });
+        garantirIndice();
+    }
+
+    const GRUPOS = [['tudo', 'Tudo'], ['curriculo', 'Currículo'], ['guia', 'IA pra Prof'], ['desktop', 'Área de trabalho'], ['poemas', 'Poemas']];
+    const grupoDe = d => d.poema ? 'poemas' : d.janela ? 'desktop' : d.url && d.url.startsWith('curriculo') ? 'curriculo' : 'guia';
+
+    async function paginaResultados(q, filtro) {
+        campoEndereco.value = enderecoDe({ pagina: 'busca', q });
+        pagina.innerHTML = `
+            <div class="barra-busca">
+                <span class="logo" aria-hidden="true">${LOGO}</span>
+                ${formularioBusca(q, false)}
+            </div>
+            <p class="contagem">Buscando…</p>`;
+        ligarFormulario();
+
+        const t0 = performance.now();
+        const docs = await garantirIndice();
+        const todos = buscar(q, docs);
+        const lista = filtro === 'tudo' ? todos : todos.filter(d => grupoDe(d) === filtro);
+        const seg = ((performance.now() - t0) / 1000).toFixed(2).replace('.', ',');
+
+        const contagem = pagina.querySelector('.contagem');
+        contagem.textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'} para “${q}” (${seg} segundos)`;
+        status.textContent = `${lista.length} resultado${lista.length === 1 ? '' : 's'}`;
+
+        const filtros = document.createElement('div');
+        filtros.className = 'filtros';
+        filtros.setAttribute('role', 'group');
+        filtros.setAttribute('aria-label', 'Filtrar resultados');
+        GRUPOS.forEach(([id, nome]) => {
+            const n = id === 'tudo' ? todos.length : todos.filter(d => grupoDe(d) === id).length;
+            if (id !== 'tudo' && !n) return;
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'btn98';
+            b.textContent = `${nome} (${n})`;
+            b.setAttribute('aria-pressed', String(id === filtro));
+            b.addEventListener('click', () => navegar({ pagina: 'busca', q, filtro: id }));
+            filtros.appendChild(b);
+        });
+        contagem.after(filtros);
+
+        if (!lista.length) {
+            const v = document.createElement('div');
+            v.className = 'vazio';
+            v.innerHTML = `<p>Nenhum resultado para <b>${escapar(q)}</b>.</p><p>Dicas: confira a ortografia ou tente palavras mais gerais, como ${SUGESTOES.slice(0, 4).map(escapar).join(', ')}.</p>`;
+            filtros.after(v);
+            return;
+        }
+
+        const ol = document.createElement('ol');
+        ol.className = 'resultados';
+        lista.slice(0, 40).forEach(d => {
+            const li = document.createElement('li');
+            li.className = 'resultado';
+            li.innerHTML = `<div class="onde">${escapar(d.onde)}</div><a class="titulo" href="#">${escapar(d.titulo)}</a><p>${trecho(d.texto, q)}</p>`;
+            const a = li.querySelector('a');
+            if (d.url) { a.href = d.url; a.target = '_top'; }
+            else if (d.janela && !dentroDoSite) { a.href = 'index.html#abrir=' + d.janela; a.target = '_top'; }
+            a.addEventListener('click', e => abrirResultado(e, d));
+            ol.appendChild(li);
+        });
+        filtros.after(ol);
+    }
+
+    function abrirResultado(e, d) {
+        if (d.poema) {
+            e.preventDefault();
+            navegar({ pagina: 'poemas', destaque: d.poema });
+        } else if (d.janela && dentroDoSite) {
+            e.preventDefault();
+            window.parent.postMessage({ tipo: 'abrir-janela', janela: d.janela }, location.origin);
+            status.textContent = `Abrindo ${JANELAS[d.janela]} na área de trabalho`;
+        }
+    }
+
+    function paginaPoemas(destaque) {
+        campoEndereco.value = 'ohtopico://poemas';
+        pagina.innerHTML = '<div class="poemas"><h1>Poemas</h1><p class="sub">Escritos por Júlia Roberta Quoos Alves.</p></div>';
+        const caixa = pagina.querySelector('.poemas');
+        document.getElementById('tpl-poemas').content.querySelectorAll('.poema').forEach(p => {
+            const art = p.cloneNode(true);
+            const titulo = p.dataset.titulo;
+            art.insertAdjacentHTML('afterbegin', `<h2>${escapar(titulo)}</h2><p class="data">${escapar(p.dataset.data)}</p>`);
+            if (art.id === destaque) art.classList.add('destaque');
+            caixa.appendChild(art);
+        });
+        status.textContent = 'Pronto';
+        if (destaque) {
+            const alvo = document.getElementById(destaque);
+            if (alvo) { alvo.scrollIntoView({ block: 'start' }); alvo.tabIndex = -1; alvo.focus({ preventScroll: true }); }
+        } else {
+            pagina.scrollTop = 0;
+        }
+    }
+
+    function ligarFormulario() {
+        const form = pagina.querySelector('[data-busca]');
+        if (!form) return;
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const q = form.q.value.trim();
+            if (q) navegar({ pagina: 'busca', q });
+        });
+        const sorte = form.querySelector('[data-sorte]');
+        if (sorte) sorte.addEventListener('click', async () => {
+            const q = form.q.value.trim();
+            if (!q) return;
+            const r = buscar(q, await garantirIndice());
+            if (!r.length) { navegar({ pagina: 'busca', q }); return; }
+            const d = r[0];
+            if (d.url) window.top.location.href = d.url;
+            else abrirResultado({ preventDefault() {} }, d);
+        });
+    }
+
+    // Barra de endereço: aceita uma busca ou um endereço ohtopico://
+    document.getElementById('form-endereco').addEventListener('submit', e => {
+        e.preventDefault();
+        const v = campoEndereco.value.trim();
+        const m = v.match(/^ohtopico:\/\/busca\?q=(.*)$/i);
+        if (m) navegar({ pagina: 'busca', q: decodeURIComponent(m[1].replace(/\+/g, ' ')) });
+        else if (/^ohtopico:\/\/poemas/i.test(v)) navegar({ pagina: 'poemas' });
+        else if (/^ohtopico:\/\/(busca)?$/i.test(v) || !v) navegar({ pagina: 'inicio' });
+        else navegar({ pagina: 'busca', q: v.replace(/^ohtopico:\/\//i, '') });
+    });
+
+    document.getElementById('voltar').addEventListener('click', () => { if (posicao > 0) navegar(historico[--posicao], false); });
+    document.getElementById('avancar').addEventListener('click', () => { if (posicao < historico.length - 1) navegar(historico[++posicao], false); });
+    document.getElementById('inicio').addEventListener('click', () => navegar({ pagina: 'inicio' }));
+    document.querySelectorAll('[data-ir]').forEach(a => a.addEventListener('click', e => {
+        e.preventDefault();
+        navegar({ pagina: a.dataset.ir });
+    }));
+
+    navegar({ pagina: 'inicio' });
+})();
+</script>
 </body>
 </html>
-
-
