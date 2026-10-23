@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA pra Prof — Guia prático de IA para educadores</title>
+<meta name="description" content="Versão interativa do e-book IA pra Prof, de Júlia Roberta Quoos Alves: guia prático de inteligência artificial para educadores, com prompts prontos para copiar e personalizar.">
+<meta property="og:title" content="IA pra Prof — Guia prático de IA para educadores">
+<meta property="og:description" content="Prompts prontos, LGPD, ética, planos de aula, materiais interativos e AEE. Versão interativa do e-book de Júlia Roberta Quoos Alves.">
+<meta property="og:url" content="https://ohtopico.com.br/ia-pra-prof/">
+<meta property="og:type" content="book">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #ffffff;
+    --paper-2: #f4f4f2;
+    --pill: #efefed;
+    --pill-2: #e2e2df;
+    --ink: #111111;
+    --ink-2: #4a4a4a;
+    --ink-3: #7a7a7a;
+    --line: #d9d9d6;
+    --accent: #1f5cff;
+    --accent-soft: #e6edff;
+    --ok: #157f3b;
+    --ok-soft: #e3f4e8;
+    --bad: #c21f3a;
+    --bad-soft: #fbe6ea;
+    --warn: #b77900;
+    --radius: 28px;
+    --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+    --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+      --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+      --accent: #7ea2ff; --accent-soft: #1d2747; --ok: #5fd08a; --ok-soft: #173322;
+      --bad: #ff7d93; --bad-soft: #3b1a21; --warn: #f2b84b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+    --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+    --accent: #7ea2ff; --accent-soft: #1d2747; --ok: #5fd08a; --ok-soft: #173322;
+    --bad: #ff7d93; --bad-soft: #3b1a21; --warn: #f2b84b;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-weight: 400; font-size: 17px; line-height: 1.6;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  img { max-width: 100%; height: auto; display: block; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- Barra superior ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40; background: var(--paper);
+    border-bottom: 1.5px solid var(--ink);
+    display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+  }
+  .brand {
+    font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink); text-decoration: none; white-space: nowrap;
+  }
+  .topbar .spacer { flex: 1; }
+  .progress-wrap { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+  .progress { width: 120px; height: 8px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; }
+  .progress > span { display: block; height: 100%; width: 0; background: var(--ink); transition: width .4s ease; }
+  .icon-btn {
+    border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px;
+    padding: 6px 14px; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px; min-height: 38px;
+  }
+  .icon-btn:hover { background: var(--pill); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  #toc-btn { display: none; }
+
+  /* ---------- Layout ---------- */
+  .layout { display: grid; grid-template-columns: 290px 1fr; max-width: 1180px; margin: 0 auto; }
+  .toc {
+    position: sticky; top: 60px; align-self: start; height: calc(100vh - 60px); overflow-y: auto;
+    padding: 24px 16px 40px 16px; border-right: 1.5px solid var(--line);
+  }
+  .toc h2 {
+    font-family: var(--display); font-weight: 800; font-size: 14px; letter-spacing: .14em;
+    text-transform: uppercase; margin: 22px 8px 8px; color: var(--ink);
+  }
+  .toc h2:first-child { margin-top: 0; }
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc a {
+    display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 12px;
+    color: var(--ink-2); text-decoration: none; font-size: 15px; line-height: 1.35;
+  }
+  .toc a:hover { background: var(--pill); color: var(--ink); }
+  .toc a[aria-current="page"] { background: var(--ink); color: var(--paper); }
+  .toc a .dot {
+    flex: none; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid currentColor;
+    display: grid; place-items: center; font-size: 10px; opacity: .55;
+  }
+  .toc a.done .dot { background: currentColor; opacity: 1; }
+  .toc a.done .dot::after { content: '✓'; color: var(--paper); font-weight: 700; }
+  .toc a[aria-current="page"].done .dot::after { color: var(--ink); }
+  .toc .sub { padding-left: 34px; font-size: 14px; }
+
+  main { padding: 36px 48px 80px; min-width: 0; }
+  .chapter { display: none; max-width: 720px; margin: 0 auto; }
+  .chapter.active { display: block; animation: fade .35s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .part-label {
+    font-family: var(--display); font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-3); margin: 0 0 6px;
+  }
+  .chapter > h1, .cover h1 {
+    font-family: var(--display); font-weight: 800; text-transform: uppercase;
+    letter-spacing: .12em; font-size: clamp(28px, 5.4vw, 42px); line-height: 1.15; margin: 0 0 6px;
+  }
+  .chapter .kicker {
+    font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 14px;
+    color: var(--ink-2); margin: 0 0 22px;
+  }
+  .chapter h3 {
+    font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+    font-size: 17px; margin: 34px 0 10px;
+  }
+  .chapter p { margin: 0 0 14px; }
+  .chapter ul, .chapter ol { padding-left: 22px; margin: 0 0 16px; }
+  .chapter li { margin-bottom: 6px; }
+  .u { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+  .signature { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; text-align: center; margin-top: 30px; }
+
+  /* Pílulas no estilo do livro */
+  .pill { background: var(--pill); border-radius: 999px; padding: 18px 28px; text-align: center; }
+  .pill.dark { background: var(--pill-2); }
+  .pill strong, .pill-title { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-weight: 800; display: block; }
+  .pill-row { display: grid; gap: 12px; margin: 18px 0 26px; }
+  @media (min-width: 640px) { .pill-row.three { grid-template-columns: repeat(3, 1fr); } .pill-row.two { grid-template-columns: 1fr 1fr; } }
+  .callout {
+    font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+    font-size: 17px; line-height: 1.5; margin: 22px 0;
+  }
+
+  /* Tabelas */
+  .table-wrap { overflow-x: auto; margin: 16px 0 24px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.45; }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; font-weight: 800; font-size: 14px; }
+  table.ruled th, table.ruled td { border: 0; border-bottom: 2px solid var(--ink); text-align: center; }
+  table.ruled th:first-child, table.ruled td:first-child { text-align: left; font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; font-weight: 800; }
+
+  /* Prompts */
+  .prompt {
+    margin: 14px 0 18px; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--paper);
+  }
+  .prompt figcaption {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 8px 8px 8px 16px; background: var(--pill); border-bottom: 1.5px solid var(--ink);
+    font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-weight: 800; font-size: 14px;
+  }
+  .prompt .body { padding: 14px 16px; margin: 0; font-size: 16px; white-space: pre-line; }
+  .copy-btn {
+    border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 4px 12px;
+    font-family: var(--body); font-size: 13px; text-transform: none; letter-spacing: 0; font-weight: 500;
+    cursor: pointer; min-height: 32px; white-space: nowrap;
+  }
+  .copy-btn:hover { background: var(--ink); color: var(--paper); }
+  .copy-btn.copied { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .ph {
+    background: var(--accent-soft); color: var(--accent); border-radius: 6px; padding: 0 4px;
+    font-weight: 500; white-space: normal;
+  }
+  .ph.filled { background: var(--ok-soft); color: var(--ok); }
+
+  /* Personalizador */
+  .personalize {
+    position: fixed; z-index: 60; right: 16px; bottom: 16px; width: min(360px, calc(100vw - 32px));
+    background: var(--paper); border: 1.5px solid var(--ink); border-radius: 22px; padding: 18px;
+    box-shadow: 6px 6px 0 var(--ink); display: none;
+  }
+  .personalize.open { display: block; }
+  .personalize h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 17px; margin: 0 0 4px; }
+  .personalize p { font-size: 14px; color: var(--ink-2); margin: 0 0 12px; line-height: 1.45; }
+  .field { display: grid; gap: 4px; margin-bottom: 10px; }
+  .field label { font-size: 13px; font-weight: 500; }
+  .field input, .field textarea {
+    font: inherit; font-size: 16px; color: var(--ink); background: var(--paper-2);
+    border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px; width: 100%;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--ink); outline: none; }
+  .personalize .row { display: flex; gap: 8px; justify-content: space-between; margin-top: 6px; }
+  .personalize .close { position: absolute; top: 10px; right: 10px; border: 0; background: none; font-size: 22px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; }
+  .personalize .close:hover { background: var(--pill); }
+
+  /* Navegação entre capítulos */
+  .pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 50px; padding-top: 20px; border-top: 1.5px solid var(--line); }
+  .pager a {
+    flex: 1; max-width: 48%; text-decoration: none; color: var(--ink);
+    border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; line-height: 1.3;
+  }
+  .pager a:hover { background: var(--pill); }
+  .pager small { display: block; color: var(--ink-3); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2px; }
+  .pager .next { text-align: right; margin-left: auto; }
+
+  /* Capa */
+  .cover { text-align: center; padding: 30px 0 10px; }
+  .cover .stack { font-family: var(--display); font-weight: 800; font-size: clamp(56px, 13vw, 104px); line-height: .95; letter-spacing: .12em; margin: 10px 0 24px; }
+  .cover .sub { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 15px; color: var(--ink-2); max-width: 520px; margin: 0 auto 8px; }
+  .cover .author { font-family: var(--display); text-transform: uppercase; letter-spacing: .12em; margin: 22px 0 28px; }
+  .cover-cta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--paper);
+    border: 1.5px solid var(--ink); border-radius: 99px; padding: 12px 22px; text-decoration: none;
+    font-weight: 500; cursor: pointer; min-height: 46px;
+  }
+  .btn-primary:hover { opacity: .88; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--ink);
+    border: 1.5px solid var(--ink); border-radius: 99px; padding: 12px 22px; text-decoration: none;
+    font-weight: 500; cursor: pointer; min-height: 46px;
+  }
+  .btn-ghost:hover { background: var(--pill); }
+  .parts { display: grid; gap: 14px; margin: 40px 0 10px; text-align: left; }
+  @media (min-width: 700px) { .parts { grid-template-columns: repeat(3, 1fr); } }
+  .part-card { border: 1.5px solid var(--ink); border-radius: 22px; padding: 18px; text-decoration: none; color: var(--ink); display: block; }
+  .part-card:hover { background: var(--pill); }
+  .part-card strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 18px; display: block; margin-bottom: 4px; }
+  .part-card span { font-size: 14px; color: var(--ink-2); line-height: 1.45; display: block; }
+
+  /* Fluxo (conceitos) */
+  .flow { display: grid; gap: 10px; margin: 20px 0; }
+  @media (min-width: 640px) { .flow { grid-template-columns: repeat(4, 1fr); } }
+  .flow button {
+    border: 1.5px solid var(--ink); background: var(--paper); border-radius: 18px; padding: 14px 10px;
+    cursor: pointer; text-align: center; min-height: 70px;
+  }
+  .flow button strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; display: block; font-size: 14px; }
+  .flow button span { font-size: 13px; color: var(--ink-2); }
+  .flow button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .flow button[aria-pressed="true"] span { color: var(--paper); opacity: .8; }
+  .flow-out { background: var(--pill); border-radius: 18px; padding: 14px 18px; min-height: 56px; }
+
+  /* Jogos e atividades */
+  .activity { border: 1.5px dashed var(--ink); border-radius: 22px; padding: 18px; margin: 26px 0; }
+  .activity > .tag {
+    display: inline-block; font-family: var(--display); text-transform: uppercase; letter-spacing: .12em;
+    font-size: 12px; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 3px 10px; margin-bottom: 8px;
+  }
+  .activity h4 { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-size: 17px; margin: 0 0 6px; }
+  .sort-card { background: var(--pill); border-radius: 18px; padding: 18px; text-align: center; font-size: 18px; font-weight: 500; margin: 12px 0; min-height: 70px; display: grid; place-items: center; }
+  .choice-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .choice-row button { min-width: 140px; }
+  .feedback { margin-top: 12px; border-radius: 14px; padding: 10px 14px; font-size: 15px; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--ok-soft); color: var(--ok); }
+  .feedback.bad { background: var(--bad-soft); color: var(--bad); }
+  .score { font-size: 14px; color: var(--ink-2); text-align: center; margin-top: 8px; }
+
+  .flip-grid { display: grid; gap: 12px; margin: 18px 0; }
+  @media (min-width: 640px) { .flip-grid { grid-template-columns: 1fr 1fr; } }
+  .flip {
+    border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 16px; text-align: center;
+    cursor: pointer; min-height: 110px; display: grid; place-items: center; gap: 4px;
+  }
+  .flip strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; font-size: 15px; display: block; }
+  .flip .hint { font-size: 12px; color: var(--ink-3); }
+  .flip.on { background: var(--ink); color: var(--paper); }
+  .flip.on .hint { color: var(--paper); opacity: .7; }
+
+  .checklist { list-style: none; padding: 0 !important; }
+  .checklist label { display: flex; gap: 12px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; cursor: pointer; font-family: var(--display); text-transform: uppercase; letter-spacing: .05em; font-weight: 800; font-size: 15px; }
+  .checklist label:hover { background: var(--pill); }
+  .checklist input { width: 22px; height: 22px; accent-color: var(--ink); flex: none; margin-top: 1px; }
+  .all-done { display: none; margin-top: 8px; }
+  .all-done.show { display: block; }
+
+  .two-col { display: grid; gap: 26px; }
+  @media (min-width: 720px) { .two-col { grid-template-columns: 1fr 1fr; } }
+
+  .shots { display: grid; gap: 14px; margin: 16px 0 22px; }
+  .shots figure { margin: 0; }
+  .shots figcaption, .figcap { font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
+  .shot { border: 1.5px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0 !important; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 46px; margin-bottom: 16px; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px; width: 32px; height: 32px; border-radius: 50%;
+    border: 1.5px solid var(--ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800;
+  }
+
+  .link-cards { display: grid; gap: 12px; margin: 16px 0; }
+  @media (min-width: 640px) { .link-cards { grid-template-columns: 1fr 1fr; } }
+  .link-card { border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; text-decoration: none; color: var(--ink); display: flex; flex-direction: column; }
+  .link-card:hover { background: var(--pill); }
+  .link-card img { border-bottom: 1.5px solid var(--line); background: #fff; max-height: 220px; object-fit: cover; object-position: top; width: 100%; }
+  .link-card span { padding: 10px 14px; font-weight: 500; }
+  .link-card span::after { content: ' ↗'; }
+
+  /* Semáforo */
+  .traffic { display: grid; gap: 18px; align-items: start; margin: 18px 0; }
+  @media (min-width: 640px) { .traffic { grid-template-columns: 120px 1fr; } }
+  .lights { background: #222; border-radius: 26px; padding: 12px; display: flex; gap: 10px; justify-content: center; width: fit-content; margin: 0 auto; }
+  @media (min-width: 640px) { .lights { flex-direction: column; } }
+  .light { width: 64px; height: 64px; border-radius: 50%; border: 3px solid #000; cursor: pointer; opacity: .35; transition: opacity .2s, transform .2s; }
+  .light[data-c="vermelho"] { background: #e23b3b; }
+  .light[data-c="amarelo"] { background: #f4c430; }
+  .light[data-c="verde"] { background: #2fb45a; }
+  .light[aria-pressed="true"] { opacity: 1; transform: scale(1.06); box-shadow: 0 0 22px currentColor; }
+  .light-out { background: var(--pill); border-radius: 22px; padding: 18px 20px; min-height: 140px; }
+  .light-out strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; display: block; margin-bottom: 4px; }
+
+  /* Glossário */
+  .search { width: 100%; font: inherit; font-size: 16px; padding: 12px 16px; border-radius: 99px; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); margin: 6px 0 16px; }
+  .gloss { display: grid; gap: 12px; }
+  .gloss article { border: 1.5px solid var(--line); border-radius: 18px; padding: 14px 16px; }
+  .gloss h4 { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; margin: 0 0 4px; font-size: 16px; }
+  .gloss p { margin: 0 0 6px; font-size: 15px; }
+  .gloss em { color: var(--ink-2); font-size: 14px; }
+
+  /* Acordeão */
+  details.acc { border: 1.5px solid var(--line); border-radius: 18px; margin-bottom: 10px; overflow: hidden; }
+  details.acc summary { cursor: pointer; padding: 14px 16px; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+  details.acc summary::-webkit-details-marker { display: none; }
+  details.acc summary::after { content: '+'; font-family: var(--display); font-size: 20px; line-height: 1; }
+  details.acc[open] summary::after { content: '–'; }
+  details.acc[open] summary { background: var(--pill); }
+  details.acc .inner { padding: 12px 16px 16px; font-size: 15px; }
+  details.acc .inner p { margin: 0 0 8px; }
+
+  .tool-cards { display: grid; gap: 12px; }
+  .tool { border: 1.5px solid var(--line); border-radius: 18px; padding: 16px; }
+  .tool h4 { margin: 0 0 8px; font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-size: 17px; }
+  .tool dl { margin: 0; display: grid; gap: 6px; font-size: 15px; }
+  .tool dt { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .tool dd { margin: 0 0 4px; }
+
+  /* Quiz */
+  .quiz-q { font-weight: 500; margin-bottom: 10px; }
+  .quiz-opts { display: grid; gap: 8px; }
+  .quiz-opts button { text-align: left; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 14px; padding: 10px 14px; cursor: pointer; min-height: 44px; }
+  .quiz-opts button:hover:not(:disabled) { background: var(--pill); }
+  .quiz-opts button.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .quiz-opts button.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 10px; }
+
+  .builder-out { background: var(--pill); border-radius: 18px; padding: 14px 16px; white-space: pre-line; font-size: 15px; min-height: 80px; margin: 10px 0; }
+
+  .refs p { padding-left: 24px; text-indent: -24px; font-size: 15px; word-break: break-word; }
+
+  .site-foot { text-align: center; font-family: var(--display); text-transform: uppercase; letter-spacing: .12em; font-size: 12px; color: var(--ink-3); margin-top: 40px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0;
+    background: var(--ink); color: var(--paper); border-radius: 99px; padding: 10px 18px; font-size: 14px;
+    transition: all .25s ease; z-index: 80; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .scrim { display: none; }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    #toc-btn { display: inline-flex; }
+    .toc {
+      position: fixed; top: 0; left: 0; bottom: 0; width: min(320px, 86vw); height: 100dvh; z-index: 70;
+      background: var(--paper); border-right: 1.5px solid var(--ink); transform: translateX(-102%);
+      transition: transform .25s ease; padding-top: 20px;
+    }
+    .toc.open { transform: none; }
+    .scrim.open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 65; }
+    main { padding: 26px 16px 70px; }
+    .progress { width: 70px; }
+    .brand { font-size: 18px; }
+  }
+  @media (max-width: 520px) {
+    .progress-wrap .pct-label { display: none; }
+    .icon-btn .lbl { display: none; }
+    .icon-btn { padding: 6px 9px; }
+    .topbar { gap: 6px; padding: 10px 12px; }
+    .brand { font-size: 16px; letter-spacing: .08em; }
+    .progress { width: 48px; }
+    body { font-size: 16px; }
+    .pill { border-radius: 24px; padding: 16px 18px; }
+    .pager a { max-width: none; }
+    .pager { flex-direction: column; }
+  }
+  @media print {
+    .topbar, .toc, .pager, .personalize, .copy-btn { display: none !important; }
+    .chapter { display: block !important; page-break-after: always; }
+    .layout { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="icon-btn" id="toc-btn" aria-controls="toc" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <span class="lbl">Sumário</span>
+  </button>
+  <a class="brand" href="#/inicio">IA pra Prof</a>
+  <div class="spacer"></div>
+  <div class="progress-wrap" title="Capítulos lidos">
+    <span class="pct-label" id="pct-label">0% lido</span>
+    <div class="progress" role="progressbar" aria-label="Progresso de leitura" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="pbar"></span></div>
+  </div>
+  <button class="icon-btn" id="perso-btn" aria-controls="personalize" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+    <span class="lbl">Personalizar prompts</span>
+  </button>
+  <button class="icon-btn" id="theme-btn" aria-label="Alternar tema claro/escuro">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+  </button>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Sumário">
+    <h2>Início</h2>
+    <ol>
+      <li><a href="#/inicio" data-ch="inicio"><span class="dot"></span>Capa</a></li>
+      <li><a href="#/apresentacao" data-ch="apresentacao"><span class="dot"></span>Apresentação</a></li>
+    </ol>
+    <h2>Fundamentos</h2>
+    <ol>
+      <li><a href="#/conceitos" data-ch="conceitos"><span class="dot"></span>Conceitos introdutórios</a></li>
+      <li><a href="#/lgpd" data-ch="lgpd"><span class="dot"></span>Lei Geral de Proteção de Dados (LGPD)</a></li>
+      <li><a href="#/etica" data-ch="etica"><span class="dot"></span>Ética no uso de IA</a></li>
+      <li><a href="#/vies" data-ch="vies"><span class="dot"></span>Viés algorítmico (Bias)</a></li>
+      <li><a href="#/detectores" data-ch="detectores"><span class="dot"></span>Detectores de IA e seus limites</a></li>
+      <li><a href="#/riscos" data-ch="riscos"><span class="dot"></span>Riscos</a></li>
+      <li><a href="#/teste" data-ch="teste" class="sub"><span class="dot"></span>Teste rápido</a></li>
+    </ol>
+    <h2>Na prática</h2>
+    <ol>
+      <li><a href="#/prompts" data-ch="prompts"><span class="dot"></span>Prompts: o que são e como fazer bem feito?</a></li>
+      <li><a href="#/superdicas" data-ch="superdicas" class="sub"><span class="dot"></span>Superdicas &amp; Fórmula P.A.C.T.O.</a></li>
+      <li><a href="#/prompts-prontos" data-ch="prompts-prontos" class="sub"><span class="dot"></span>Prompts prontos</a></li>
+      <li><a href="#/metodologias" data-ch="metodologias"><span class="dot"></span>Metodologias ativas</a></li>
+      <li><a href="#/planos" data-ch="planos"><span class="dot"></span>Planos de aula</a></li>
+      <li><a href="#/anexos" data-ch="anexos" class="sub"><span class="dot"></span>Adicionando modelos e anexos no Claude</a></li>
+      <li><a href="#/materiais" data-ch="materiais"><span class="dot"></span>Materiais didáticos</a></li>
+      <li><a href="#/interativos" data-ch="interativos"><span class="dot"></span>Materiais interativos (HTML)</a></li>
+      <li><a href="#/interativos-prompts" data-ch="interativos-prompts" class="sub"><span class="dot"></span>Prompts para testar materiais interativos</a></li>
+      <li><a href="#/exercicios" data-ch="exercicios"><span class="dot"></span>Exercícios e situações-problema</a></li>
+      <li><a href="#/letramento" data-ch="letramento"><span class="dot"></span>Atividades para início do letramento digital</a></li>
+      <li><a href="#/aee" data-ch="aee"><span class="dot"></span>Facilitando o AEE e inclusão escolar</a></li>
+      <li><a href="#/comunicacao" data-ch="comunicacao"><span class="dot"></span>Gestão e comunicação escolar empática</a></li>
+      <li><a href="#/referencias" data-ch="referencias"><span class="dot"></span>Referências</a></li>
+    </ol>
+    <h2>Guia de bolso</h2>
+    <ol>
+      <li><a href="#/glossario" data-ch="glossario"><span class="dot"></span>Glossário: principais termos</a></li>
+      <li><a href="#/alunos" data-ch="alunos"><span class="dot"></span>Uso da IA pelos alunos</a></li>
+      <li><a href="#/assistentes" data-ch="assistentes"><span class="dot"></span>Assistentes de uso geral</a></li>
+      <li><a href="#/ferramentas" data-ch="ferramentas"><span class="dot"></span>Ferramentas para educação</a></li>
+      <li><a href="#/autora" data-ch="autora"><span class="dot"></span>Sobre a autora</a></li>
+    </ol>
+  </nav>
+
+  <main id="main">
+
+    <!-- ================= CAPA ================= -->
+    <section class="chapter" id="inicio" data-title="Capa">
+      <div class="cover">
+        <div class="stack" aria-hidden="true">IA<br>PRA<br>PROF</div>
+        <h1 class="sr-only">IA pra Prof</h1>
+        <p class="sub">Guia prático de Inteligência Artificial para educadores</p>
+        <p class="sub" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:15px">E-book voltado para capacitação docente, planejamento pedagógico e integração ética da inteligência artificial na escola.</p>
+        <p class="author">Júlia Roberta Quoos Alves<br><small style="color:var(--ink-3)">1ª edição · Novo Cabrais – RS · 2026</small></p>
+        <div class="cover-cta">
+          <a class="btn-primary" href="#/apresentacao" id="start-btn">Começar a leitura →</a>
+          <a class="btn-ghost" href="#/prompts-prontos">Ir direto aos prompts</a>
+        </div>
+        <div class="parts">
+          <a class="part-card" href="#/conceitos"><strong>Fundamentos</strong><span>O que a IA é (e não é), LGPD, ética, viés, detectores e riscos.</span></a>
+          <a class="part-card" href="#/prompts"><strong>Na prática</strong><span>Prompts, P.A.C.T.O., planos de aula, materiais, jogos em HTML, AEE e comunicação.</span></a>
+          <a class="part-card" href="#/glossario"><strong>Guia de bolso</strong><span>Glossário, uso pelos alunos e comparativo de ferramentas.</span></a>
+        </div>
+        <p style="font-size:14px;color:var(--ink-2);margin-top:26px">Dica: use <strong>Personalizar prompts</strong> no topo para preencher tema, ano e componente uma vez só. Todos os prompts do livro se ajustam sozinhos.</p>
+      </div>
+    </section>
+
+    <!-- ================= APRESENTAÇÃO ================= -->
+    <section class="chapter" id="apresentacao" data-title="Apresentação">
+      <h1>Apresentação</h1>
+      <p>A Inteligência Artificial não foi criada para substituir o docente, mas para assumir tarefas mecânicas e operacionais do cotidiano escolar. Ela nada mais é do que um sistema computacional baseado no reconhecimento de padrões estatísticos em grandes volumes de dados (chamado popularmente de big data), que prevê a sequência textual mais provável (mas sem possuir consciência ou discernimento reais).</p>
+      <p>Seu valor reside na capacidade de atuar como apoio ao trabalho de planejamento, dependendo integralmente da orientação e da supervisão humana para produzir resultados.</p>
+      <p>A interação com estas ferramentas se baseia em conceitos simples: o <span class="u">prompt</span>, que é a instrução ou comando fornecido ao sistema, e os <span class="u">tokens</span>, que são as unidades mínimas de texto processadas pelo modelo. Falaremos mais disso durante o livro.</p>
+      <p>A eficácia da resposta gerada pela IA depende da clareza do pedido feito no prompt. É necessário ter contextualização, público-alvo e limites estabelecidos, cabendo ao usuário conduzir o processo. O domínio desta dinâmica permite transformar a tecnologia num recurso funcional para a elaboração de materiais didáticos e planos de aula sem exigir conhecimentos técnicos prévios.</p>
+      <p>Este livro apresenta orientações práticas para integrar a IA na rotina docente de forma produtiva, ética e segura. A premissa central é a preservação da autoria: a tecnologia sugere estruturas e conteúdos, mas a validação científica, o ajuste pedagógico e a decisão final pertencem em exclusivo ao professor. A leitura que se segue oferece as diretrizes necessárias para aplicar estas ferramentas com rigor, otimizando o tempo de trabalho sem comprometer a integridade do processo educativo.</p>
+      <p class="signature">Obrigada e boa leitura,<br>Júlia Roberta Quoos Alves</p>
+    </section>
+
+    <!-- ================= CONCEITOS ================= -->
+    <section class="chapter" id="conceitos" data-title="Conceitos introdutórios" data-part="Fundamentos">
+      <h1>Conceitos introdutórios</h1>
+      <p>A Inteligência Artificial não é um ser consciente nem possui intenções próprias. Trata-se de um sistema treinado com milhões de textos para reconhecer padrões de linguagem.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>O que a IA não é</th><th>O que a IA realmente é</th><th>O papel do professor</th></tr></thead>
+          <tbody>
+            <tr><td>Não é um educador: não tem empatia, contexto de sala de aula nem julgamento ético.</td><td>Um sistema estatístico que reorganiza dados e gera esboços em poucos segundos.</td><td>Definir os objetivos pedagógicos e fazer a curadoria do conteúdo.</td></tr>
+            <tr><td>Não é uma fonte inquestionável: pode inventar regras, fontes ou competências com absoluta segurança.</td><td>Um assistente que gera texto a partir de instruções fornecidas.</td><td>Validar os fatos, links e códigos curriculares em documentos oficiais (por exemplo, na BNCC).</td></tr>
+            <tr><td>Não é autônoma: não substituiu o planejamento humano nem compreende as necessidades da turma.</td><td>Um acelerador de rascunhos para atividades, sequências e materiais de apoio.</td><td>Adaptar, cortar e decidir o que é viável para os seus alunos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="callout">Para utilizar a tecnologia com fluidez, o docente apenas precisa de dominar três noções fundamentais:</p>
+      <ul>
+        <li><strong>Prompt:</strong> É o comando, pergunta ou orientação que escreve na janela da ferramenta. Quanto maior for a riqueza de detalhes, mais útil e precisa será a sugestão apresentada.</li>
+        <li><strong>Token:</strong> É a fração mínima em que o sistema subdivide o texto para calcular probabilidades (podendo corresponder a uma palavra, a uma sílaba ou a um grupo de caracteres). Os limites de leitura e de produção de resposta de cada plataforma são quantificados através de quotas de tokens.</li>
+        <li><strong>Janela de Contexto:</strong> Corresponde à memória da conversa ativa. A máquina considera as mensagens anteriores para responder às seguintes; se o diálogo se prolongar em demasia, o modelo pode esquecer instruções antigas, sendo preferível abrir uma nova conversa limpa.</li>
+      </ul>
+      <div class="activity">
+        <span class="tag">Interativo</span>
+        <h4>Como uma resposta nasce</h4>
+        <p style="font-size:15px;color:var(--ink-2)">Toque em cada etapa.</p>
+        <div class="flow" id="flow">
+          <button aria-pressed="false" data-i="0"><strong>Utilizador</strong><span>Prompt</span></button>
+          <button aria-pressed="false" data-i="1"><strong>Processamento</strong><span>Tokens</span></button>
+          <button aria-pressed="false" data-i="2"><strong>Limites</strong><span>Janela de contexto</span></button>
+          <button aria-pressed="false" data-i="3"><strong>Resposta</strong><span>Rascunho</span></button>
+        </div>
+        <div class="flow-out" id="flow-out" aria-live="polite">Escolha uma etapa acima.</div>
+      </div>
+    </section>
+
+    <!-- ================= LGPD ================= -->
+    <section class="chapter" id="lgpd" data-title="Lei Geral de Proteção de Dados" data-part="Fundamentos">
+      <h1>Lei Geral de Proteção de Dados</h1>
+      <div class="pill-row three">
+        <div class="pill"><strong>Dados do aluno</strong>Nome, nota, idade, laudos</div>
+        <div class="pill"><strong>Anonimizar</strong>Tirar identificadores</div>
+        <div class="pill"><strong>Prompt na IA</strong>Só perfis e contexto</div>
+      </div>
+      <p><span class="u">Nunca insira dados pessoais identificáveis</span> (identificadores): Nomes completos, fotos, números de matrícula, datas de nascimento, endereços ou contatos de estudantes e famílias jamais devem ser colados em ferramentas abertas.</p>
+      <p><span class="u">Atenção redobrada aos dados sensíveis:</span> Informações sobre saúde, diagnósticos de neurodivergência (como TEA ou TDAH), laudos psicopedagógicos, histórico comportamental e notas individuais exigem sigilo absoluto.</p>
+      <p class="callout">Ao pedir adaptações pedagógicas, substitua casos reais por personas fictícias (por exemplo: "Elabore uma atividade adaptada para um aluno hipotético de 10 anos com dificuldades de atenção").</p>
+      <p>Cuidado com uploads de arquivos: Evite enviar planilhas de turmas, atas de reuniões pedagógicas ou redações digitalizadas contendo cabeçalhos com nomes de alunos.</p>
+      <div class="pill" style="margin:22px 0"><strong>LGPD (Lei 13.709/2018)</strong>Dados de crianças e adolescentes têm proteção especial!</div>
+
+      <h3 id="pode-nunca">O que pode e o que nunca vai no prompt</h3>
+      <div class="pill-row two">
+        <div class="pill"><strong><span class="u">Pode</span> ir no prompt</strong>Série, tema e tempo de aula<br>Perfil da turma, sem nomes<br>Textos e exercícios propostos</div>
+        <div class="pill dark"><strong><span class="u">Nunca</span> vai no prompt</strong>Nomes, fotos, vozes de alunos<br>Laudos, saúde, dados familiares<br>Notas e trabalhos identificáveis</div>
+      </div>
+      <p>Assim, o principal ponto de atenção para os educadores está na alimentação dos modelos de IA (prompts). Muitas plataformas públicas <span class="u">utilizam as entradas fornecidas pelos usuários para treinar novas versões do sistema</span>. Isso significa que qualquer dado pessoal inserido pode se tornar parte da base de conhecimento da empresa desenvolvedora, escapando do controle pedagógico e violando a privacidade do estudante.</p>
+
+      <div class="activity" id="sort-game">
+        <span class="tag">Jogo</span>
+        <h4>Pode ou nunca?</h4>
+        <p style="font-size:15px;color:var(--ink-2)">Esta informação pode ir no prompt?</p>
+        <div class="sort-card" id="sort-item" aria-live="polite"></div>
+        <div class="choice-row">
+          <button class="btn-primary" data-ans="pode">✓ Pode</button>
+          <button class="btn-ghost" data-ans="nunca">✕ Nunca</button>
+        </div>
+        <div class="feedback" id="sort-fb" role="status"></div>
+        <div class="score" id="sort-score"></div>
+      </div>
+    </section>
+
+    <!-- ================= ÉTICA ================= -->
+    <section class="chapter" id="etica" data-title="Ética no uso de IA" data-part="Fundamentos">
+      <h1>Ética no uso de IA</h1>
+      <div class="pill" style="border-radius:40px;margin:18px 0 12px">
+        <strong>Uso ético de IA nas escolas</strong>3 princípios para o professor
+        <div class="flip-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
+          <button class="flip" data-front="Transparência" data-back="Diga quando usou"><strong>Transparência</strong><span class="hint">toque para ver</span></button>
+          <button class="flip" data-front="Privacidade" data-back="Proteja os dados"><strong>Privacidade</strong><span class="hint">toque para ver</span></button>
+          <button class="flip" data-front="Supervisão" data-back="Revise e decida"><strong>Supervisão</strong><span class="hint">toque para ver</span></button>
+        </div>
+      </div>
+      <div class="pill dark" style="margin-bottom:24px"><strong>Autoria docente</strong>A IA propõe, o docente dispõe!</div>
+      <p>Usar a IA com ética na escola significa assumir que a responsabilidade pelo que chega ao aluno continua sendo do professor. Isso envolve:</p>
+      <ul>
+        <li>ser transparente, avisando quando um material foi feito com apoio de IA e combinando regras claras com os estudantes;</li>
+        <li>proteger a privacidade, anonimizando tudo e nunca expondo dados de alunos, em respeito à LGPD;</li>
+        <li>manter a supervisão humana, conferindo conteúdo, fontes e vieses antes de usar e deixando avaliações e decisões pedagógicas com quem conhece a turma;</li>
+        <li>pensar na equidade, lembrando que nem todos têm o mesmo acesso a internet, equipamentos e ferramentas.</li>
+      </ul>
+      <p>Lembre-se: a IA pode agilizar o trabalho, mas a autoria, o olhar sensível e o julgamento seguem sendo do professor.</p>
+    </section>
+
+    <!-- ================= VIÉS ================= -->
+    <section class="chapter" id="vies" data-title="Viés algorítmico (Bias)" data-part="Fundamentos">
+      <h1>Viés algorítmico (Bias)</h1>
+      <p class="kicker">Como a IA reproduz desigualdades sociais, de gênero e raciais</p>
+      <p>A inteligência artificial não cria ideias do vácuo: ela reflete o espelho da internet com a qual foi alimentada. Se a sociedade possui desigualdades históricas, a IA tende a amplificá-las.</p>
+      <h3>Principais vieses na IA</h3>
+      <details class="acc" open><summary>1. Viés Cultural e Geográfico</summary><div class="inner"><p>A imensa maioria dos dados de treino é oriunda do Norte Global (em língua inglesa). Conceitos, marcos históricos e referências do Brasil profundo, de comunidades tradicionais ou de culturas africanas e indígenas costumam ser marginalizados ou tratados de forma folclorizada.</p></div></details>
+      <details class="acc"><summary>2. Viés de Gênero e Profissões</summary><div class="inner"><p>Ao solicitar histórias infantis ou exemplos de carreiras, profissões de cuidado ou assistência frequentemente recebem pronomes femininos, enquanto cargos de liderança, exatas e poder recebem pronomes masculinos.</p></div></details>
+      <details class="acc"><summary>3. Invisibilidade e Estereótipos Regionais</summary><div class="inner"><p>O modelo tende a retratar determinadas regiões com estereótipos de escassez ou arcaísmo, desconsiderando a diversidade científica e cultural local.</p></div></details>
+      <h3>Provocação pedagógica</h3>
+      <p>Se você pedir para uma ferramenta de geração de imagens criar a ilustração de um "cientista brilhante", quase certamente ela desenhará um homem branco e idoso. Se pedir a imagem de "pessoa na limpeza", a probabilidade de gerar uma mulher negra é altíssima. Isso é viés algorítmico.</p>
+      <h3>Intervenção ativa no prompt</h3>
+      <p>Force o modelo a romper com o padrão confortável:</p>
+      <figure class="prompt"><figcaption>Intervenção ativa</figcaption><p class="body">Crie uma narrativa contextualizada apresentando mulheres pioneiras na ciência brasileira.</p></figure>
+      <p><strong>Debate em aula:</strong> Mostre respostas enviesadas da IA para os estudantes e promova a reflexão: "Por que a ferramenta escolheu esses perfis? Quem produz o conteúdo da internet? Quem não está representado aqui?"</p>
+    </section>
+
+    <!-- ================= DETECTORES ================= -->
+    <section class="chapter" id="detectores" data-title="Detectores de IA e seus limites" data-part="Fundamentos">
+      <h1>Detectores de IA e seus limites</h1>
+      <p>Muitas escolas buscam softwares que prometem identificar "se o trabalho foi feito por inteligência artificial". Do ponto de vista técnico e pedagógico, <span class="u">não é recomendável reprovar ou punir estudantes com base em detectores de IA</span>.</p>
+      <h3>Por que os detectores falham?</h3>
+      <ol>
+        <li><strong>Funcionamento:</strong> Os detectores apenas medem o quão previsível é a escolha das palavras (perplexidade) e o grau de variação no tamanho das frases (explosão). Eles não "rastreiam" a IA: apenas julgam se o texto parece mecanizado.</li>
+        <li><strong>Altíssima taxa de falsos positivos:</strong> Textos escritos por pessoas neurodivergentes, estudantes que escrevem de forma direta e formal, ou alunos com repertório vocabular mais enxuto são frequentemente rotulados como "gerados por IA" por engano.</li>
+        <li><strong>Burlar é trivial:</strong> Basta o estudante pedir para a IA "reescreva com vocabulário informal e inclua um erro de digitação" para o detector zerar a probabilidade de máquina.</li>
+      </ol>
+      <h3>O que fazer em vez de usar detectores?</h3>
+      <ul>
+        <li><strong>Avalie o processo, não a entrega:</strong> Peça rascunhos, etapas prévias, mapas mentais feitos em sala e justificativas de pesquisa.</li>
+        <li><strong>Defesa oral rápida:</strong> Reserve 2 minutos para o aluno explicar individualmente: "O que significa esse termo do seu 3º parágrafo? Como você chegou a essa conclusão?"</li>
+        <li><strong>Adote a política de transparência:</strong> Ensine o aluno a citar o uso: "Pesquisei ideias na ferramenta X e elaborei o texto com minhas próprias palavras".</li>
+      </ul>
+    </section>
+
+    <!-- ================= RISCOS ================= -->
+    <section class="chapter" id="riscos" data-title="Riscos" data-part="Fundamentos">
+      <h1>Riscos</h1>
+      <p>A IA pode errar com muita convicção, inventando informações, fontes e códigos da BNCC. Por isso, <span class="u">nada do que ela gera deve ser usado sem conferência</span>.</p>
+      <p>Há também o risco de expor dados de alunos, como nomes, laudos e trabalhos identificáveis, o que contraria a LGPD e exige tornar anônimo tudo antes de colar em qualquer ferramenta.</p>
+      <p>Do ponto de vista pedagógico, aceitar o rascunho pronto afasta o professor das decisões que lhe cabem, e o uso sem critério pelos alunos pode estimular a cópia e reduzir o esforço de pensar. Por isso, a IA deve ser tratada como apoio: ela propõe e o professor confere, ajusta e decide.</p>
+      <h3>Risco → como evitar</h3>
+      <p style="font-size:15px;color:var(--ink-2)">Toque em cada risco para ver como evitar.</p>
+      <div class="flip-grid">
+        <button class="flip" data-front="Códigos e fontes inventados|Alucinações de IA" data-back="Conferir BNCC e links|Sempre na fonte oficial"><strong>Códigos e fontes inventados</strong>Alucinações de IA<span class="hint">toque para ver como evitar</span></button>
+        <button class="flip" data-front="Plano que não cabe na aula|Tempo e recursos ignorados" data-back="Informar tempo e recursos|Pedir também um plano B"><strong>Plano que não cabe na aula</strong>Tempo e recursos ignorados<span class="hint">toque para ver como evitar</span></button>
+        <button class="flip" data-front="Perda da autoria docente|Aceitar o rascunho pronto" data-back="Curadoria sobre o rascunho|Ler, cortar e ajustar"><strong>Perda da autoria docente</strong>Aceitar o rascunho pronto<span class="hint">toque para ver como evitar</span></button>
+        <button class="flip" data-front="Dados de alunos expostos|Risco de LGPD" data-back="Perfis, nunca nomes|Anonimizar antes de colar"><strong>Dados de alunos expostos</strong>Risco de LGPD<span class="hint">toque para ver como evitar</span></button>
+      </div>
+      <p style="margin-top:24px">Quer conferir o que ficou? Faça o <a href="#/teste">teste rápido</a> sobre os fundamentos.</p>
+    </section>
+
+    <!-- ================= TESTE ================= -->
+    <section class="chapter" id="teste" data-title="Teste rápido" data-part="Fundamentos">
+      <h1>Teste rápido</h1>
+      <p class="kicker">6 perguntas sobre os fundamentos</p>
+      <div class="activity" id="quiz">
+        <span class="tag" id="quiz-count">Pergunta 1 de 6</span>
+        <div class="quiz-q" id="quiz-q"></div>
+        <div class="quiz-opts" id="quiz-opts"></div>
+        <div class="feedback" id="quiz-fb" role="status"></div>
+        <div class="quiz-nav">
+          <span class="score" id="quiz-score" style="margin:0"></span>
+          <button class="btn-primary" id="quiz-next" style="display:none">Próxima →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROMPTS ================= -->
+    <section class="chapter" id="prompts" data-title="Prompts: o que são e como fazer bem feito?" data-part="Na prática">
+      <h1>Prompts: o que são e como fazer bem feito?</h1>
+      <p>Prompt é a instrução ou pergunta que você escreve para a IA.</p>
+      <p>A qualidade da resposta depende muito da qualidade do prompt. É necessário:</p>
+      <ul>
+        <li>dar contexto (quem a IA deve ser, para qual ano e turma)</li>
+        <li>trazer um comando claro (o que fazer, com verbo e objetivo)</li>
+        <li>definir o formato (tabela, tópicos, tempo, linguagem)</li>
+        <li>estabelecer limites (como "não invente fontes").</li>
+      </ul>
+      <p>Como a primeira resposta é sempre um rascunho, faça o ciclo de refinar: peça ajustes pontuais, como "mais curto", "outro exemplo" ou "nível mais simples", em vez de recomeçar do zero.</p>
+      <p style="font-size:15px;color:var(--ink-2)">(Relembre: nunca inclua dados pessoais de alunos e confira o resultado antes de usar.)</p>
+      <h3>Onde são inseridos os prompts (perguntas)</h3>
+      <div class="shots">
+        <figure><div class="shot"><img src="img/prompt-claude.jpg" alt="Caixa de mensagem do Claude com o texto 'Escreva uma mensagem…'" loading="lazy"></div><figcaption>Onde digitamos o prompt no Claude</figcaption></figure>
+        <figure><div class="shot"><img src="img/prompt-chatgpt.jpg" alt="Caixa de mensagem do ChatGPT com o texto 'Pergunte qualquer coisa'" loading="lazy"></div><figcaption>Onde digitamos o prompt no ChatGPT</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ================= SUPERDICAS ================= -->
+    <section class="chapter" id="superdicas" data-title="Superdicas" data-part="Na prática">
+      <h1>Superdicas</h1>
+      <h3>8 dicas que melhoram qualquer prompt</h3>
+      <ol>
+        <li><strong>Conte o contexto.</strong> Quanto mais a IA sabe da sua turma, menos genérica é a resposta.</li>
+        <li><strong>Peça em etapas.</strong> Primeiro o esqueleto em tópicos, depois o desenvolvimento.</li>
+        <li><strong>Deixe a IA te entrevistar.</strong> "Faça 3 perguntas sobre minha turma antes de começar."</li>
+        <li><strong>Itere.</strong> O primeiro resultado é rascunho: "mais curto", "outro exemplo", "nível mais simples".</li>
+        <li><strong>Mande ela se auditar.</strong> "Aponte ambiguidades e o que pode estar errado nesta resposta."</li>
+        <li><strong>Peça versões.</strong> Duas ou três opções (formal, neutra, acolhedora) para você escolher.</li>
+        <li><strong>Mostre um modelo.</strong> Cole um documento da sua escola e diga: "siga esta estrutura e este estilo".</li>
+        <li><strong>Proteja os dados.</strong> Nunca cole nomes, laudos ou informações sensíveis de alunos. Anonimize antes.</li>
+      </ol>
+
+      <h3>A fórmula P.A.C.T.O.</h3>
+      <ul style="list-style:none;padding-left:0">
+        <li><span class="u"><strong>Papel:</strong></span> quem a IA deve ser ("Atue como coordenador pedagógico experiente")</li>
+        <li><span class="u"><strong>Alvo:</strong></span> ano, tamanho da turma, realidade da escola</li>
+        <li><span class="u"><strong>Comando:</strong></span> a tarefa, com verbo claro (crie, reescreva, compare, resuma)</li>
+        <li><span class="u"><strong>Tom e formato:</strong></span> tabela, tópicos, tempo por etapa, linguagem para a idade dos alunos</li>
+        <li><span class="u"><strong>Observações:</strong></span> restrições e o que evitar ("não invente fatos", "sem internet na sala")</li>
+      </ul>
+
+      <div class="activity" id="pacto">
+        <span class="tag">Montador</span>
+        <h4>Monte seu prompt com a P.A.C.T.O.</h4>
+        <p style="font-size:15px;color:var(--ink-2)">Preencha o que quiser; o prompt aparece pronto para copiar.</p>
+        <div class="field"><label for="p-papel">P — Papel</label><input id="p-papel" placeholder="Atue como coordenador pedagógico experiente"></div>
+        <div class="field"><label for="p-alvo">A — Alvo</label><input id="p-alvo" placeholder="6º ano, turma de 30 alunos, escola rural"></div>
+        <div class="field"><label for="p-comando">C — Comando</label><textarea id="p-comando" rows="2" placeholder="Crie uma sequência de 3 aulas sobre frações"></textarea></div>
+        <div class="field"><label for="p-tom">T — Tom e formato</label><input id="p-tom" placeholder="Tabela com tempo por etapa, linguagem simples"></div>
+        <div class="field"><label for="p-obs">O — Observações</label><input id="p-obs" placeholder="Não invente fatos; sem internet na sala"></div>
+        <div class="builder-out" id="pacto-out" aria-live="polite"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-primary" id="pacto-copy">Copiar prompt</button>
+          <button class="btn-ghost" id="pacto-example">Preencher com exemplo</button>
+          <button class="btn-ghost" id="pacto-clear">Limpar</button>
+        </div>
+      </div>
+
+      <h3>[Checklist]</h3>
+      <ul class="checklist" id="checklist">
+        <li><label><input type="checkbox"> Conferi o conteúdo e as fontes?</label></li>
+        <li><label><input type="checkbox"> Serve para a minha turma e o meu tempo de aula?</label></li>
+        <li><label><input type="checkbox"> Protegi os dados dos alunos?</label></li>
+        <li><label><input type="checkbox"> O texto final tem a minha voz e a minha decisão?</label></li>
+      </ul>
+      <div class="pill all-done" id="check-done"><strong>Pronto para usar!</strong>Material conferido, adaptado e com a sua autoria.</div>
+    </section>
+
+    <!-- ================= PROMPTS PRONTOS ================= -->
+    <section class="chapter" id="prompts-prontos" data-title="Prompts prontos" data-part="Na prática">
+      <h1>Prompts prontos</h1>
+      <p class="kicker">Cole, adapte e use. O rascunho é da IA; a decisão é sua.</p>
+      <figure class="prompt"><figcaption>Planejar</figcaption><p class="body">Crie uma sequência de 4 aulas de 50 min sobre [tema] para o [ano], com objetivo, atividade de abertura, desenvolvimento e fechamento. Formato: tabela.</p></figure>
+      <figure class="prompt"><figcaption>Avaliar</figcaption><p class="body">Crie 8 questões de múltipla escolha sobre [tema]. Os distratores devem refletir erros comuns. Depois revise como um aluno atento e aponte ambiguidades.</p></figure>
+      <figure class="prompt"><figcaption>Dar feedback</figcaption><p class="body">Escreva um feedback para esta resposta: 1 ponto forte, 1 ponto a melhorar, 1 próximo passo. Tom encorajador, linguagem para [idade].</p></figure>
+      <figure class="prompt"><figcaption>Documentar</figcaption><p class="body">Transforme estas anotações em um parecer descritivo de 1 parágrafo, tom formal e positivo. Não invente fatos além das anotações.</p></figure>
+      <figure class="prompt"><figcaption>Comunicar</figcaption><p class="body">Reescreva esta mensagem para um responsável preocupado. Tom acolhedor, sem culpabilizar, com um encaminhamento concreto. Máximo de 5 linhas.</p></figure>
+      <figure class="prompt"><figcaption>Adaptar</figcaption><p class="body">Adapte este texto para um aluno com dificuldade de leitura: frases curtas, vocabulário simples e glossário no fim, mantendo o objetivo [X].</p></figure>
+      <figure class="prompt"><figcaption>Criar material</figcaption><p class="body">Crie o roteiro de 10 slides sobre [tema]: título, 3 tópicos curtos, sugestão de imagem e fala de apoio para o professor.</p></figure>
+    </section>
+
+    <!-- ================= METODOLOGIAS ================= -->
+    <section class="chapter" id="metodologias" data-title="Metodologias ativas" data-part="Na prática">
+      <h1>Metodologias ativas</h1>
+      <p>Metodologias ativas são abordagens de ensino em que o aluno participa do processo de aprendizagem: <span class="u">pesquisa, discute, resolve problemas e produz, em vez de apenas ouvir e copiar</span>. O professor deixa de ser o único transmissor de conteúdo e passa a planejar, mediar e orientar as experiências de aprendizagem.</p>
+      <p>A ideia central é que se aprende melhor fazendo, e não apenas recebendo informação. Isso tem raízes em autores como John Dewey, Paulo Freire e Lev Vygotsky, e dialoga com a BNCC, que valoriza o protagonismo do estudante e o desenvolvimento de competências, não só a memorização de conteúdos.</p>
+      <div class="table-wrap">
+        <table class="ruled">
+          <thead><tr><th></th><th>Tradicional</th><th>Metodologias ativas</th></tr></thead>
+          <tbody>
+            <tr><td>Papel do aluno</td><td>Ouvinte, receptor</td><td>Protagonista, participante</td></tr>
+            <tr><td>Papel do professor</td><td>Transmite o conteúdo</td><td>Planeja e media</td></tr>
+            <tr><td>Foco</td><td>Conteúdo</td><td>Competências e resolução de problemas</td></tr>
+            <tr><td>Avaliação</td><td>Prova no final</td><td>Acompanhamento contínuo</td></tr>
+            <tr><td>Ritmo</td><td>Igual para todos</td><td>Mais espaço para ritmos diferentes</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Aprendizagem por projetos, sala invertida e rotação</h3>
+      <div class="pill-row two">
+        <div class="pill"><strong>Aprendizagem por projetos</strong>Investigar e criar soluções</div>
+        <div class="pill dark"><strong>Sala de aula invertida</strong>Teoria antes, prática depois</div>
+        <div class="pill dark"><strong>Rotação por estações</strong>Grupos circulam por atividades</div>
+        <div class="pill"><strong>Gamificação</strong>Missões, fases e conquistas</div>
+      </div>
+      <p style="text-align:center;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em">Aluno: protagonista</p>
+      <figure class="prompt"><figcaption>Aprendizagem baseada em projetos</figcaption><p class="body">Proponha um projeto de 3 semanas em que alunos do [ano] investiguem [problema real da comunidade] e apresentem uma solução. Inclua marcos semanais, produtos entregues e critérios de avaliação.</p></figure>
+      <figure class="prompt"><figcaption>Sala de aula invertida</figcaption><p class="body">Planeje uma aula invertida sobre [tema]: o que os alunos estudam em casa (15 min, com material simples e sem depender de internet rápida) e quais atividades fazemos em sala para aplicar e tirar dúvidas.</p></figure>
+      <figure class="prompt"><figcaption>Rotação por estações</figcaption><p class="body">Organize uma rotação com 3 estações de 15 min sobre [tema]: uma com ação do professor, uma colaborativa e uma individual. Descreva materiais, instruções para cada estação e como organizar os grupos.</p></figure>
+      <figure class="prompt"><figcaption>Gamificação</figcaption><p class="body">Transforme esta sequência em uma missão com fases, pontos por conquista e um desafio final. Evite competição que exponha quem tem mais dificuldade.</p></figure>
+    </section>
+
+    <!-- ================= PLANOS ================= -->
+    <section class="chapter" id="planos" data-title="Planos de aula" data-part="Na prática">
+      <h1>Planos de aula</h1>
+      <div class="two-col">
+        <div>
+          <p>O plano de aula organiza o que será ensinado, como e em quanto tempo.</p>
+          <p>A IA acelera a montagem do rascunho, a criação de variações e a adaptação para turmas diferentes. Quem define o objetivo, escolhe o caminho e ajusta à realidade da sala é o professor. Um bom plano responde a quatro perguntas:</p>
+          <ul>
+            <li>para que (objetivo),</li>
+            <li>o quê (conteúdo),</li>
+            <li>como (atividades)</li>
+            <li>como saberei (avaliação).</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Passo a passo</h3>
+          <ol class="steps">
+            <li><strong>Reuna o contexto:</strong> ano, turma, tempo de aula, recursos e o que a turma já viu.</li>
+            <li><strong>Defina o objetivo:</strong> com verbo observável, como identificar, comparar, resolver ou produzir.</li>
+            <li><strong>Peça o rascunho</strong> com a <a href="#/superdicas">fórmula P.A.C.T.O.</a> e o tempo de cada etapa.</li>
+            <li><strong>Faça a curadoria:</strong> confira conteúdo, tempo, materiais e códigos da BNCC; ajuste ao seu estilo.</li>
+            <li><strong>Refine:</strong> peça mudanças pontuais, um plano B e adaptações para quem precisa.</li>
+          </ol>
+        </div>
+      </div>
+      <h3>Prompts para testar</h3>
+      <figure class="prompt"><figcaption>Habilidade da BNCC</figcaption><p class="body">Sugira um objetivo de aprendizagem e as habilidades da BNCC relacionadas ao tema [tema] para o [ano] de [componente]. Para cada habilidade, indique o código e avise quando não tiver certeza dele, para eu conferir no documento oficial.</p></figure>
+      <figure class="prompt"><figcaption>Metodologia ativa</figcaption><p class="body">Transforme este plano em uma aula de rotação por estações com 3 estações de 15 minutos: uma com o professor, uma colaborativa e uma individual. Descreva materiais, instruções para cada estação e como organizar os grupos. Plano: [cole aqui].</p></figure>
+      <figure class="prompt"><figcaption>Avaliação integrada</figcaption><p class="body">Inclua neste plano uma avaliação formativa: 3 perguntas rápidas de verificação durante a aula e um bilhete de saída para o final. Indique o que cada resposta revela sobre a compreensão dos alunos.</p></figure>
+    </section>
+
+    <!-- ================= ANEXOS ================= -->
+    <section class="chapter" id="anexos" data-title="Adicionando modelos de plano de aula" data-part="Na prática">
+      <h1>Adicionando modelos de plano de aula</h1>
+      <p class="kicker">ou outros anexos</p>
+      <div class="two-col" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
+        <ol class="steps">
+          <li>Use o seu modelo de plano de aula em Word (.docx), PDF ou planilha. Se puder, deixe os campos bem identificados, como "Tema:", "Objetivo:", "Tempo:" e "Avaliação:". Quanto mais claro o modelo, melhor a IA o preenche. Apague dados pessoais antes de enviar, como nomes de alunos.</li>
+          <li>Na caixa onde você escreve, clique no símbolo de clipe ou de "+" e escolha o arquivo no seu computador ou celular. Você também pode arrastar o arquivo para dentro da janela da conversa. Espere o nome do arquivo aparecer antes de enviar.</li>
+          <li>Diga o que preencher e com quais informações: tema, ano, tempo de aula, recursos e objetivo. Peça para manter a estrutura, os títulos e a ordem do modelo, e para não inventar informações.</li>
+          <li>Peça que a IA entregue o modelo preenchido em um arquivo para baixar, no mesmo formato (por exemplo, Word). Se o recurso de criar arquivos estiver ligado nas suas configurações, o arquivo aparece para download no chat. Se não estiver, peça o texto de cada campo e cole você mesma no seu modelo.</li>
+          <li>Abra o arquivo, confira conteúdo, tempo e códigos da BNCC, e ajuste ao seu estilo. Para mudar algo, escreva no chat ("reduza a atividade 2 para 10 minutos") e a IA atualiza o arquivo. Salve a versão final com o nome da aula.</li>
+        </ol>
+        <figure style="margin:0">
+          <div class="shot" style="max-width:260px;margin:0 auto"><img src="img/claude-anexos.jpg" alt="Menu do Claude aberto pelo botão +, com a opção 'Fazer upload ou adicionar arquivos', e a área de artefatos com 'Fazer upload do computador'" loading="lazy"></div>
+          <figcaption style="text-align:center">Exemplo do passo a passo para adicionar arquivos no Claude</figcaption>
+        </figure>
+      </div>
+      <figure class="prompt"><figcaption>Bônus: preencher meu modelo</figcaption><p class="body">Preencha o modelo de plano de aula anexado com: tema [tema], [ano], tempo de aula [tempo], recursos [recursos] e objetivo [objetivo]. Mantenha a estrutura, os títulos e a ordem do modelo e não invente informações. Entregue o modelo preenchido em um arquivo Word para baixar.</p></figure>
+    </section>
+
+    <!-- ================= MATERIAIS DIDÁTICOS ================= -->
+    <section class="chapter" id="materiais" data-title="Materiais didáticos" data-part="Na prática">
+      <h1>Materiais didáticos</h1>
+      <p>Material didático é tudo o que apoia a aprendizagem além da fala do professor.</p>
+      <p>A IA ajuda a criar a primeira versão e a gerar variações de formato com rapidez.</p>
+      <h3>Prompts para testar</h3>
+      <figure class="prompt"><figcaption>Roteiro de slides</figcaption><p class="body">Crie o roteiro de um deck de 10 slides sobre [tema] para o [ano]. Para cada slide: título, 3 tópicos curtos, sugestão de imagem e uma fala de apoio para o professor. Linguagem simples e uma ideia por slide.</p></figure>
+      <figure class="prompt"><figcaption>Guia de estudo</figcaption><p class="body">Crie um guia de estudo de 1 página sobre [tema] para o [ano], com resumo em tópicos, 5 termos-chave com definição, 3 exemplos do dia a dia e 5 perguntas de revisão. Use o conteúdo abaixo como base: [cole aqui].</p></figure>
+      <figure class="prompt"><figcaption>Mapa conceitual</figcaption><p class="body">Gere um mapa conceitual em lista hierárquica (conceito central, ramos e exemplos) sobre [tema]. Indique em cada ligação a relação entre os conceitos, como 'causa', 'faz parte de' ou 'exemplo de'.</p></figure>
+      <figure class="prompt"><figcaption>Flashcards</figcaption><p class="body">Crie 15 flashcards sobre [tema] para o [ano], em tabela com 'frente' (pergunta ou termo) e 'verso' (resposta curta). Misture níveis de dificuldade e evite respostas ambíguas.</p></figure>
+      <figure class="prompt"><figcaption>Texto de apoio com analogia</figcaption><p class="body">Explique [conceito] para alunos do [ano] em até 150 palavras, com uma analogia ligada a [interesse dos alunos: futebol, jogos, culinária]. Depois, liste os dois erros de compreensão mais comuns sobre o tema.</p></figure>
+      <figure class="prompt"><figcaption>Roteiro de vídeo curto</figcaption><p class="body">Escreva o roteiro de um vídeo de 3 minutos sobre [tema] para alunos do [ano], com abertura que desperte curiosidade, 3 blocos de conteúdo, uma pergunta de reflexão e o texto da fala do professor.</p></figure>
+      <figure class="prompt"><figcaption>Material acessível</figcaption><p class="body">Adapte o material abaixo para alunos com baixa visão ou dificuldade de leitura: texto em linguagem mais simples, estrutura em tópicos curtos e uma descrição em texto de cada imagem ou gráfico. Material: [cole aqui].</p></figure>
+    </section>
+
+    <!-- ================= INTERATIVOS ================= -->
+    <section class="chapter" id="interativos" data-title="Materiais interativos" data-part="Na prática">
+      <h1>Materiais interativos</h1>
+      <p class="kicker">Passo a passo para criar seus próprios jogos, sites, flash cards e o que mais a imaginação permitir.</p>
+      <ol class="steps">
+        <li>Escreva o prompt pedindo "um único arquivo HTML". A IA vai responder com um bloco de código. Clique em "Copiar" no canto do bloco, ou selecione tudo, do começo ao fim, e use Ctrl+C.</li>
+        <li>No Windows, abra o Bloco de Notas (digite "bloco de notas" no menu Iniciar).</li>
+        <li>Clique na área em branco e use Ctrl+V. O texto vai parecer um monte de símbolos, e isso é normal.</li>
+        <li>Vá em Arquivo &gt; Salvar como.
+          <div class="shot" style="max-width:340px;margin-top:10px"><img src="img/bloco-notas.jpg" alt="Bloco de Notas com o menu Arquivo aberto mostrando Salvar Como" loading="lazy"></div>
+        </li>
+        <li>No nome, escreva algo como quiz-fracoes.html, com o .html no final. No Windows, em "Tipo", escolha "Todos os arquivos" e em "Codificação" escolha UTF-8, para os acentos aparecerem certos. Salve em um lugar fácil de achar.
+          <div class="shot" style="margin-top:10px"><img src="img/salvar-como.jpg" alt="Janela Salvar como com Nome 'nome do seu arquivo.html', Tipo 'Todos os arquivos' e Codificação UTF-8" loading="lazy"></div>
+        </li>
+        <li>Encontre o arquivo salvo e dê dois cliques. Ele abre no Chrome, Edge, Firefox ou Safari. Se abrir em outro programa, clique com o botão direito &gt; Abrir com &gt; escolha o navegador.</li>
+      </ol>
+      <p class="callout">Dica geral: peça sempre um único arquivo HTML, que funciona sem instalar nada e até sem internet. Dá para abrir no navegador, no celular e no laboratório da escola.</p>
+
+      <h3>Se algo der errado</h3>
+      <details class="acc"><summary>O arquivo abre como texto, e não como página</summary><div class="inner"><p>O nome ficou terminando em .txt. Salve de novo com "Todos os arquivos" e confira o .html no final.</p></div></details>
+      <details class="acc"><summary>Os acentos aparecem estranhos (como "Ã§")</summary><div class="inner"><p>Salve de novo com codificação UTF-8.</p></div></details>
+      <details class="acc"><summary>Nada acontece ao clicar nos botões</summary><div class="inner"><p>Provavelmente faltou copiar o final do código. Volte à IA, copie o bloco inteiro e substitua.</p></div></details>
+      <details class="acc"><summary>No celular</summary><div class="inner"><p>Envie o arquivo pelo WhatsApp ou Drive e abra pelo navegador do aparelho. Alguns celulares abrem arquivos HTML melhor depois de baixados.</p></div></details>
+      <p id="video-help" hidden><strong>Ainda com dificuldades?</strong> <a id="video-link" href="#" target="_blank" rel="noopener">Clique aqui para acessar nosso tutorial em vídeo.</a></p>
+
+      <h3>Confira também</h3>
+      <div class="link-cards">
+        <a class="link-card" href="https://github.com/ohtopico/materiais-didaticos/blob/main/criador%20de%20prompts.html" target="_blank" rel="noopener"><span>Criador de prompts em HTML</span></a>
+        <a class="link-card" href="https://github.com/ohtopico/materiais-didaticos/blob/main/jogotriangulo.html" target="_blank" rel="noopener"><img src="img/jogo-triangulos.jpg" alt="Jogo dos triângulos: missão 1 de 8, construa um triângulo retângulo arrastando os pontos A, B e C" loading="lazy"><span>Jogo dos triângulos</span></a>
+      </div>
+      <p><a href="#/interativos-prompts">Ver os 10 prompts para testar materiais interativos →</a></p>
+    </section>
+
+    <!-- ================= INTERATIVOS: PROMPTS ================= -->
+    <section class="chapter" id="interativos-prompts" data-title="Prompts para testar materiais interativos" data-part="Na prática">
+      <h1>Prompts para testar</h1>
+      <p class="kicker">Materiais interativos em HTML</p>
+      <figure class="prompt"><figcaption>1. Quiz interativo com feedback</figcaption><p class="body">Crie um quiz interativo em HTML sobre [tema] para o [ano], com 8 questões de múltipla escolha. Mostre se a resposta está certa ou errada na hora, com uma explicação curta, e no final exiba a pontuação e os temas para revisar. Arquivo único, funcionando offline, sem pedir nome nem coletar dados.</p></figure>
+      <figure class="prompt"><figcaption>2. Simulador de um conceito</figcaption><p class="body">Crie um simulador interativo sobre [conceito, como movimento, juros, ecossistema ou frações] para alunos do [ano]. Inclua controles (barras e botões) para o aluno alterar os valores e ver o resultado mudar na tela, com um texto curto explicando o que está acontecendo.</p></figure>
+      <figure class="prompt"><figcaption>3. Jogo de memória ou associação</figcaption><p class="body">Crie um jogo da memória em HTML com 12 pares de cartas sobre [tema], associando termo e definição. Conte as tentativas, mostre o tempo e dê uma mensagem de parabéns no final. Cores com bom contraste e botões grandes, para uso no celular.</p></figure>
+      <figure class="prompt"><figcaption>4. Linha do tempo interativa</figcaption><p class="body">Crie uma linha do tempo interativa sobre [período ou tema], com 8 eventos. Ao clicar em cada evento, mostre uma data, uma explicação em até 3 linhas e uma pergunta de reflexão. Não use imagens externas.</p></figure>
+      <figure class="prompt"><figcaption>5. Trilha de aprendizagem (por fases)</figcaption><p class="body">Crie uma trilha de aprendizagem em HTML sobre [tema], com 4 fases de dificuldade crescente. Cada fase tem uma explicação curta e 3 desafios, e só libera a próxima quando o aluno acerta. Mostre uma barra de progresso. Linguagem simples e tom motivador.</p></figure>
+      <figure class="prompt"><figcaption>6. Escape room digital</figcaption><p class="body">Crie um escape room digital sobre [tema] para o [ano], com 4 salas. Em cada sala, o aluno resolve um enigma ligado ao conteúdo para obter uma senha e abrir a próxima. Inclua dicas opcionais e uma tela final de vitória. Arquivo único em HTML.</p></figure>
+      <figure class="prompt"><figcaption>7. Ferramenta de estudo (flashcards e revisão)</figcaption><p class="body">Crie uma página de flashcards sobre [tema] com 15 cartas. O aluno vira a carta para ver a resposta e marca 'acertei' ou 'preciso rever'. Ao final, mostre quais cartas ficaram para revisar. Sem login e sem salvar dados pessoais.</p></figure>
+      <figure class="prompt"><figcaption>8. Site de apresentação de um projeto da turma</figcaption><p class="body">Crie um site simples de uma página para apresentar o projeto '[nome do projeto]' da turma do [ano], com título, objetivo, etapas, resultados e uma seção 'o que aprendemos'. Layout limpo, responsivo para celular e com bom contraste. Use textos e nomes fictícios onde eu indicar [ ].</p></figure>
+      <figure class="prompt"><figcaption>9. Calculadora</figcaption><p class="body">Crie uma calculadora interativa para [uso, como média de notas, conversão de unidades ou orçamento de um projeto], para alunos do [ano]. Mostre o passo a passo do cálculo, e não só o resultado, para o aluno entender como se chega nele.</p></figure>
+      <figure class="prompt"><figcaption>10. Mapa ou esquema clicável</figcaption><p class="body">Crie um esquema interativo de [corpo humano, sistema solar, regiões do Brasil ou célula]. Ao clicar em cada parte, mostre o nome, uma função ou característica e uma curiosidade. Desenhe com formas simples, sem imagens externas.</p></figure>
+      <h3>Exemplos criados com esses prompts</h3>
+      <div class="link-cards">
+        <a class="link-card" href="https://github.com/ohtopico/materiais-didaticos/blob/main/calculadora-bhaskara.html" target="_blank" rel="noopener"><img src="img/calculadora-bhaskara.jpg" alt="Calculadora interativa de Bháskara com campos a, b e c e o passo a passo" loading="lazy"><span>Calculadora interativa de Bháskara</span></a>
+        <a class="link-card" href="https://github.com/ohtopico/materiais-didaticos/blob/main/mapa%20do%20tesouro%20matem%C3%A1tico.html" target="_blank" rel="noopener"><img src="img/caca-tesouro.jpg" alt="Mapa do jogo caça ao tesouro matemático, com Praia da Soma, Floresta das Frações e Caverna do Tesouro" loading="lazy"><span>Jogo caça ao tesouro matemático</span></a>
+      </div>
+      <p><a class="btn-ghost" href="https://github.com/ohtopico/materiais-didaticos" target="_blank" rel="noopener">Acessar todos os jogos de IA que já criei ↗</a></p>
+    </section>
+
+    <!-- ================= EXERCÍCIOS ================= -->
+    <section class="chapter" id="exercicios" data-title="Exercícios" data-part="Na prática">
+      <h1>Exercícios</h1>
+      <div class="two-col">
+        <div>
+          <p>Exercício não é só lista de questões. Uma boa atividade pode ser uma investigação, um estudo de caso, um jogo, um debate ou uma produção.</p>
+          <p>A IA ajuda a criar muitas versões em pouco tempo, mas quem decide o objetivo, o nível e o formato é o professor.</p>
+          <h3>Ideias de exercícios (para fugir do óbvio)</h3>
+          <ul>
+            <li>Jogos de perguntas e respostas</li>
+            <li>Escape room pedagógico</li>
+            <li>Caça ao tesouro de conceitos</li>
+            <li>Estudos de caso</li>
+            <li>Júri simulado</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Formulação, situações-problema e dificuldade</h3>
+          <ol class="steps">
+            <li><span class="u">Defina o objetivo:</span> o que o aluno deve ser capaz de fazer ao final.</li>
+            <li><span class="u">Contextualize:</span> peça situações-problema ligadas à realidade da turma (cidade, profissões, cotidiano).</li>
+            <li><span class="u">Escolha a dificuldade:</span> básico, intermediário e desafio, sobre a mesma habilidade.</li>
+            <li><span class="u">Peça o gabarito</span> resolvido e confira cada resposta por conta própria.</li>
+            <li><span class="u">Revise e adapte:</span> corte, troque exemplos e ajuste ao tempo de aula.</li>
+          </ol>
+        </div>
+      </div>
+      <h3>Prompts para testar</h3>
+      <figure class="prompt"><figcaption>Desafio em grupo</figcaption><p class="body">Crie uma dinâmica em grupo de 30 minutos sobre [tema] para uma turma de 30 alunos, em grupos de 5, com papéis definidos (leitor, anotador, conferente, porta-voz e cronometrista), materiais simples e um critério de avaliação da colaboração.</p></figure>
+      <figure class="prompt"><figcaption>Jogo de perguntas</figcaption><p class="body">Crie um jogo de perguntas e respostas com 12 cartas sobre [tema], com pontuação diferente por nível de dificuldade, regras em até 5 linhas e uma carta-surpresa que exija trabalho em equipe.</p></figure>
+      <figure class="prompt"><figcaption>Adaptação de nível</figcaption><p class="body">Adapte esta atividade para alunos com dificuldade de leitura: frases curtas, vocabulário simples e glossário no final, mantendo o objetivo [X]. Em seguida, crie uma versão de aprofundamento para quem termina antes. Atividade: [cole aqui].</p></figure>
+    </section>
+
+    <!-- ================= LETRAMENTO ================= -->
+    <section class="chapter" id="letramento" data-title="Atividades para início do letramento digital" data-part="Na prática">
+      <h1>Atividades para início do letramento digital</h1>
+      <h3>Atividade 1: "O tribunal da máquina" (caça aos erros)</h3>
+      <p><span class="u">Como aplicar</span>: O professor gera um texto intencionalmente impreciso sobre o conteúdo de aula usando a IA.</p>
+      <p><span class="u">Comando para os alunos</span>: "A IA gerou esta explicação histórica/científica com 3 informações falsas e 1 fonte inventada. Em duplas e usando os livros didáticos da biblioteca, identifiquem os 4 erros e reescrevam o texto corrigido."</p>
+      <p><span class="u">Objetivo</span>: Demonstrar que o texto da IA parece verdadeiro, mas requer checagem bibliográfica rigorosa.</p>
+      <figure class="prompt"><figcaption>Bônus: para o professor gerar o texto</figcaption><p class="body">Escreva uma explicação de 2 parágrafos sobre [tema] para alunos do [ano] contendo, de propósito, 3 informações falsas e 1 fonte inventada. Depois, em separado, liste os 4 erros e a correção de cada um, para eu usar como gabarito.</p></figure>
+
+      <h3>Atividade 2: "Rastreando as fontes reais"</h3>
+      <p><span class="u">Como aplicar</span>: Peça que os alunos façam uma pesquisa temática em uma IA (como Perplexity ou ChatGPT) solicitando links e autores.</p>
+      <p><span class="u">Comando para os alunos</span>: "Abram cada link citado pela ferramenta. O autor existe? O estudo diz exatamente o que a IA afirmou ou ela distorceu a conclusão?"</p>
+      <p><span class="u">Objetivo</span>: Desenvolver o hábito de nunca citar terceiros sem checar a fonte primária.</p>
+
+      <h3>Atividade 3: A regra do semáforo na sala de aula</h3>
+      <p>Definir visualmente (para cada projeto) o nível de intervenção permitido da IA. Toque em cada luz:</p>
+      <div class="traffic">
+        <div class="lights" role="group" aria-label="Semáforo">
+          <button class="light" data-c="vermelho" aria-pressed="false" aria-label="Vermelho" style="color:#e23b3b"></button>
+          <button class="light" data-c="amarelo" aria-pressed="false" aria-label="Amarelo" style="color:#f4c430"></button>
+          <button class="light" data-c="verde" aria-pressed="false" aria-label="Verde" style="color:#2fb45a"></button>
+        </div>
+        <div class="light-out" id="light-out" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ================= AEE ================= -->
+    <section class="chapter" id="aee" data-title="Facilitando o AEE" data-part="Na prática">
+      <h1>Facilitando o AEE</h1>
+      <p>A IA é uma ferramenta poderosa para o Atendimento Educacional Especializado (AEE) e para o Desenho Universal para a Aprendizagem (DUA), desde que respeitada a regra de ouro: <strong>NUNCA insira nomes de alunos, diagnósticos nominais ou laudos médicos.</strong> Trabalhe sempre com barreiras de aprendizagem e personas fictícias.</p>
+      <h3>Caso 1: Aluno com TDAH</h3>
+      <p class="kicker" style="margin-bottom:8px">Barreira: sobrecarga visual e foco executivo</p>
+      <p>O objetivo não é reduzir o conteúdo conceitual, mas fracionar a execução da tarefa.</p>
+      <figure class="prompt"><figcaption>Caso 1</figcaption><p class="body">Adapte a lista de 5 exercícios abaixo para um estudante hipotético de 12 anos com déficit de atenção e baixa tolerância à sobrecarga textual:
+1. Destaque em negrito os verbos de comando de cada questão (ex: calcule, compare).
+2. Divida problemas longos em caixas de 'Passo 1' e 'Passo 2'.
+3. Elimine enunciados prolixos e use frases diretas de até 12 palavras.
+Exercícios: [cole aqui].</p></figure>
+      <h3>Caso 2: Estudante autista / TEA</h3>
+      <p class="kicker" style="margin-bottom:8px">Barreira: linguagem figurada e abstração</p>
+      <p>O foco é conferir previsibilidade, clareza literal e suporte visual.</p>
+      <figure class="prompt"><figcaption>Caso 2</figcaption><p class="body">Reescreva a seguinte situação-problema de matemática para um estudante com necessidade de linguagem direta e literal:
+1. Elimine metáforas, gírias e ironias.
+2. Adicione uma rotina visual em tópicos numerados indicando o que deve ser feito primeiro, segundo e por último.
+3. Sugira uma representação em desenho ou esquema concreto para acompanhar o texto.
+Texto original: [cole aqui].</p></figure>
+      <h3>Caso 3: Dificuldade de decodificação / baixa visão</h3>
+      <figure class="prompt"><figcaption>Caso 3</figcaption><p class="body">Adapte este texto de história para acessibilidade de leitura:
+1. Parágrafos curtos (máximo 3 linhas).
+2. Substitua palavras de baixa frequência por termos cotidianos equivalentes.
+3. Inclua um mini-glossário com 3 palavras-chave ao final.
+4. Descreva em uma frase objetiva o que a imagem de apoio deve ilustrar.
+Texto: [cole aqui].</p></figure>
+    </section>
+
+    <!-- ================= COMUNICAÇÃO ================= -->
+    <section class="chapter" id="comunicacao" data-title="Gestão e comunicação escolar empática" data-part="Na prática">
+      <h1>Gestão e comunicação escolar empática</h1>
+      <div class="two-col">
+        <div>
+          <h3 style="margin-top:0">Passo a passo</h3>
+          <p><span class="u">Defina o objetivo:</span> informar, convidar, pedir uma ação, acolher ou resolver um conflito.</p>
+          <p><span class="u">Conheça o público:</span> aluno, responsável, coordenação ou comunidade, e o canal (WhatsApp, e-mail, bilhete, mural).</p>
+          <p><span class="u">Escreva os fatos primeiro:</span> reuna as informações, sem dados desnecessários, e peça que a IA estruture e ajuste o tom.</p>
+          <p><span class="u">Revise com empatia:</span> leia como se fosse quem recebe. Peça à IA para apontar trechos que podem soar duros ou ser mal interpretados.</p>
+          <p><span class="u">Personalize</span> e envie você mesma: mensagens sobre casos individuais precisam do seu olhar antes de sair.</p>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Riscos</h3>
+          <p><span class="u">Tom frio ou genérico:</span> mensagens com cara de modelo pronto podem soar impessoais, sobretudo em momentos delicados.</p>
+          <p><span class="u">Informação inventada:</span> em atas e pareceres, a IA pode acrescentar fatos que não aconteceram. Peça sempre "não invente informações".</p>
+          <p><span class="u">Julgamentos disfarçados:</span> rotular o aluno ou a família, mesmo com palavras polidas, afasta em vez de aproximar.</p>
+          <p><span class="u">Exposição de terceiros:</span> citar outros alunos ou famílias em mensagens individuais.</p>
+          <p><span class="u">Linguagem técnica demais:</span> termos pedagógicos dificultam a compreensão das famílias.</p>
+        </div>
+      </div>
+      <h3>Prompts para comunicados, atas e pareceres</h3>
+      <figure class="prompt"><figcaption>1. Mensagem para responsável preocupado</figcaption><p class="body">Reescreva esta mensagem para um responsável preocupado com as notas do filho. Tom acolhedor e objetivo, sem culpabilizar, com um encaminhamento concreto. Máximo de 5 linhas, formato WhatsApp. Mensagem: [cole aqui, sem nomes].</p></figure>
+      <figure class="prompt"><figcaption>2. Três versões de tom</figcaption><p class="body">Escreva esta mensagem em 3 versões: formal, neutra e acolhedora. Ao final, indique em qual situação cada uma funciona melhor. Conteúdo: [fatos].</p></figure>
+      <figure class="prompt"><figcaption>3. Revisão de tom</figcaption><p class="body">Leia o texto abaixo como se fosse um responsável que o recebe. Aponte trechos que podem soar agressivos, acusatórios ou ser mal interpretados e sugira reescritas mais empáticas. Texto: [cole aqui].</p></figure>
+      <figure class="prompt"><figcaption>4. Convite para reunião</figcaption><p class="body">Escreva um convite curto e acolhedor para uma reunião de pais do [ano], dia [data], às [hora]. Explique em uma frase por que a presença é importante, sugira que avisem se não puderem vir e mantenha um tom de parceria.</p></figure>
+      <figure class="prompt"><figcaption>5. Pauta de reunião com tempo</figcaption><p class="body">Monte uma pauta para uma reunião de pais de 60 minutos, com os itens [lista], tempo para cada um, um momento de escuta das famílias e um fechamento com encaminhamentos.</p></figure>
+      <figure class="prompt"><figcaption>6. Parecer descritivo</figcaption><p class="body">Transforme estas anotações em um parágrafo de parecer descritivo, em linguagem formal e positiva, destacando avanços, dificuldades e próximos passos. Não invente fatos além das anotações. Anotações: [use iniciais, sem dados sensíveis].</p></figure>
+      <figure class="prompt"><figcaption>7. Ata</figcaption><p class="body">Organize as anotações abaixo em uma ata no modelo [cole o modelo da escola]: data, participantes (por cargo), pauta, decisões e encaminhamentos com responsáveis e prazos. Não acrescente informações.</p></figure>
+      <figure class="prompt"><figcaption>8. Situação delicada</figcaption><p class="body">Preciso comunicar a uma família que houve um conflito entre dois alunos. Escreva uma mensagem que descreva o fato sem julgamentos, reconheça a preocupação da família, explique o que a escola já fez e convide para uma conversa presencial. Não cite nomes nem detalhes de outros alunos.</p></figure>
+    </section>
+
+    <!-- ================= REFERÊNCIAS ================= -->
+    <section class="chapter refs" id="referencias" data-title="Referências" data-part="Na prática">
+      <h1>Referências</h1>
+      <p>BRASIL. Ministério da Educação. <strong>Base Nacional Comum Curricular</strong>. Brasília: MEC, 2018. Disponível em: <a href="http://basenacionalcomum.mec.gov.br/" target="_blank" rel="noopener">http://basenacionalcomum.mec.gov.br/</a>. Acesso em: 23 out. 2026.</p>
+      <p>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. <strong>Lei Geral de Proteção de Dados Pessoais (LGPD)</strong>. Brasília, DF: Presidência da República, 2018. Disponível em: <a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener">https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm</a>. Acesso em: 23 out. 2026.</p>
+      <p>UNESCO. <strong>Guidance for generative AI in education and research</strong>. Paris: UNESCO, 2023. ISBN 978-92-3-100612-8. Disponível em: <a href="https://unesdoc.unesco.org/ark:/48223/pf0000386693" target="_blank" rel="noopener">https://unesdoc.unesco.org/ark:/48223/pf0000386693</a>. Acesso em: 23 out. 2026.</p>
+    </section>
+
+    <!-- ================= GLOSSÁRIO ================= -->
+    <section class="chapter" id="glossario" data-title="Glossário" data-part="Guia de bolso">
+      <h1>Glossário</h1>
+      <p class="kicker">Principais termos</p>
+      <label class="sr-only" for="gloss-search">Buscar termo</label>
+      <input class="search" id="gloss-search" type="search" placeholder="Buscar termo… (ex.: token)">
+      <div class="gloss" id="gloss"></div>
+    </section>
+
+    <!-- ================= USO PELOS ALUNOS ================= -->
+    <section class="chapter" id="alunos" data-title="Uso da IA pelos alunos" data-part="Guia de bolso">
+      <h1>Uso da IA pelos alunos</h1>
+      <p style="font-size:15px;color:var(--ink-2)">Toque em uma situação para ver o que fazer e um exemplo prático.</p>
+      <div id="alunos-list"></div>
+    </section>
+
+    <!-- ================= ASSISTENTES ================= -->
+    <section class="chapter" id="assistentes" data-title="Assistentes de uso geral" data-part="Guia de bolso">
+      <h1>Assistentes de uso geral</h1>
+      <div class="tool-cards" id="assist-list"></div>
+    </section>
+
+    <!-- ================= FERRAMENTAS ================= -->
+    <section class="chapter" id="ferramentas" data-title="Ferramentas para educação" data-part="Guia de bolso">
+      <h1>Ferramentas para educação</h1>
+      <div class="tool-cards" id="tools-list"></div>
+    </section>
+
+    <!-- ================= AUTORA ================= -->
+    <section class="chapter" id="autora" data-title="Sobre a autora" data-part="Guia de bolso">
+      <h1>Sobre a autora</h1>
+      <p>Júlia Roberta Quoos Alves une tecnologia e educação. No mestrado em Ciência da Computação, na Universidade Federal de Santa Maria (UFSM), desenvolveu uma pesquisa sobre inteligência artificial para auxiliar pessoas com deficiência visual, usando deep learning e visão computacional.</p>
+      <p>Formada em Ciência da Computação, Administração e Marketing na UNISC, também tem quatro pós-graduações voltadas à educação: robótica educacional, tecnologias educacionais, gestão escolar e atendimento educacional especializado (AEE). Passou por experiências em engenharia de dados e em pesquisa em IA, e atua como professora de informática, além de ministrar oficinas de formação continuada para professores da rede municipal.</p>
+      <div style="text-align:right;margin-top:30px">
+        <a href="https://ohtopico.com.br/" style="font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:clamp(30px,7vw,44px);line-height:1.05;display:inline-block">Júlia<br>Roberta<br>Quoos<br>Alves</a>
+        <div style="font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;margin-top:4px">clique!</div>
+      </div>
+      <div class="pill" style="margin-top:36px">
+        <strong>Chegou ao fim!</strong>
+        <span id="end-msg">Obrigada pela leitura.</span>
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-ghost" id="share-btn">Compartilhar o livro</button>
+          <a class="btn-ghost" href="https://ohtopico.com.br/">Voltar ao site</a>
+        </div>
+      </div>
+    </section>
+
+    <nav class="pager" id="pager" aria-label="Navegação entre capítulos"></nav>
+    <p class="site-foot">Júlia Roberta Quoos Alves @2026 IA pra Prof · <a href="https://ohtopico.com.br/" style="color:inherit">ohtopico.com.br</a></p>
+  </main>
+</div>
+
+<!-- Personalizador -->
+<aside class="personalize" id="personalize" aria-label="Personalizar prompts">
+  <button class="close" id="perso-close" aria-label="Fechar">×</button>
+  <h2>Personalizar prompts</h2>
+  <p>Preencha uma vez e os campos <span class="ph">[tema]</span>, <span class="ph">[ano]</span>, <span class="ph">[componente]</span> e <span class="ph">[idade]</span> são trocados em todos os prompts do livro. Nada sai do seu navegador.</p>
+  <div class="field"><label for="v-tema">Tema</label><input id="v-tema" data-key="tema" placeholder="ex.: frações"></div>
+  <div class="field"><label for="v-ano">Ano / turma</label><input id="v-ano" data-key="ano" placeholder="ex.: 6º ano do ensino fundamental"></div>
+  <div class="field"><label for="v-componente">Componente curricular</label><input id="v-componente" data-key="componente" placeholder="ex.: Matemática"></div>
+  <div class="field"><label for="v-idade">Idade dos alunos</label><input id="v-idade" data-key="idade" placeholder="ex.: 11 anos"></div>
+  <div class="row">
+    <button class="btn-ghost" id="perso-clear" style="min-height:40px;padding:8px 16px">Limpar</button>
+    <button class="btn-primary" id="perso-done" style="min-height:40px;padding:8px 16px">Pronto</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  // Link do tutorial em vídeo (deixe vazio para esconder)
+  const VIDEO_URL = '';
+
+  // ---------- armazenamento seguro ----------
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('iapraprof:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem('iapraprof:' + k, JSON.stringify(v)); } catch (e) {} }
+  };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+  function toast(msg) {
+    const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch (e) {
+      const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand('copy'); } catch (e2) {}
+      ta.remove(); return ok;
+    }
+  }
+
+  // ---------- tema ----------
+  const savedTheme = store.get('theme', null);
+  if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+  $('#theme-btn').addEventListener('click', () => {
+    const isDark = document.documentElement.dataset.theme === 'dark' ||
+      (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next; store.set('theme', next);
+  });
+
+  // ---------- capítulos / navegação ----------
+  const chapters = $$('.chapter');
+  const ids = chapters.map(c => c.id);
+  const tocLinks = $$('.toc a[data-ch]');
+  let visited = new Set(store.get('visited', []));
+  const countable = ids.filter(id => id !== 'inicio');
+
+  function updateProgress() {
+    const n = countable.filter(id => visited.has(id)).length;
+    const pct = Math.round(n / countable.length * 100);
+    $('#pbar').style.width = pct + '%';
+    $('#pct-label').textContent = pct + '% lido';
+    $('.progress').setAttribute('aria-valuenow', pct);
+    tocLinks.forEach(a => a.classList.toggle('done', visited.has(a.dataset.ch)));
+    const startBtn = $('#start-btn');
+    const last = store.get('last', null);
+    if (startBtn && last && last !== 'inicio' && ids.includes(last)) {
+      startBtn.textContent = 'Continuar de onde parei →';
+      startBtn.setAttribute('href', '#/' + last);
+    }
+    const end = $('#end-msg');
+    if (end) end.textContent = pct === 100 ? 'Você leu todos os capítulos. Obrigada pela leitura!' : `Você já leu ${pct}% do livro. Obrigada pela leitura!`;
+  }
+
+  function titleOf(id) { const c = document.getElementById(id); return c.dataset.title || id; }
+
+  function show(id) {
+    if (!ids.includes(id)) id = 'inicio';
+    chapters.forEach(c => c.classList.toggle('active', c.id === id));
+    tocLinks.forEach(a => { if (a.dataset.ch === id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    const i = ids.indexOf(id);
+    const prev = ids[i - 1], next = ids[i + 1];
+    $('#pager').innerHTML =
+      (prev ? `<a class="prev" href="#/${prev}"><small>← Anterior</small>${titleOf(prev)}</a>` : '') +
+      (next ? `<a class="next" href="#/${next}"><small>Próximo →</small>${titleOf(next)}</a>` : '');
+    if (id !== 'inicio') { visited.add(id); store.set('visited', [...visited]); store.set('last', id); }
+    updateProgress();
+    document.title = (id === 'inicio' ? '' : titleOf(id) + ' · ') + 'IA pra Prof';
+    closeToc();
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function route() {
+    const h = location.hash.replace(/^#\/?/, '');
+    show(h || 'inicio');
+  }
+  window.addEventListener('hashchange', route);
+
+  // ---------- sumário mobile ----------
+  const toc = $('#toc'), scrim = $('#scrim'), tocBtn = $('#toc-btn');
+  function openToc() { toc.classList.add('open'); scrim.classList.add('open'); tocBtn.setAttribute('aria-expanded', 'true'); }
+  function closeToc() { toc.classList.remove('open'); scrim.classList.remove('open'); tocBtn.setAttribute('aria-expanded', 'false'); }
+  tocBtn.addEventListener('click', () => toc.classList.contains('open') ? closeToc() : openToc());
+  scrim.addEventListener('click', closeToc);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeToc(); closePerso(); }
+    if (e.target.matches('input, textarea')) return;
+    const i = ids.indexOf(document.querySelector('.chapter.active')?.id);
+    if (e.key === 'ArrowRight' && ids[i + 1]) location.hash = '#/' + ids[i + 1];
+    if (e.key === 'ArrowLeft' && ids[i - 1]) location.hash = '#/' + ids[i - 1];
+  });
+
+  // ---------- personalizador de prompts ----------
+  const KEYS = ['tema', 'ano', 'componente', 'idade'];
+  let vals = store.get('vals', {});
+  const perso = $('#personalize'), persoBtn = $('#perso-btn');
+  function openPerso() { perso.classList.add('open'); persoBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => $('#v-tema').focus(), 30); }
+  function closePerso() { perso.classList.remove('open'); persoBtn.setAttribute('aria-expanded', 'false'); }
+  persoBtn.addEventListener('click', () => perso.classList.contains('open') ? closePerso() : openPerso());
+  $('#perso-close').addEventListener('click', closePerso);
+  $('#perso-done').addEventListener('click', () => { closePerso(); toast('Prompts personalizados'); });
+  $('#perso-clear').addEventListener('click', () => { vals = {}; store.set('vals', vals); $$('#personalize input').forEach(i => i.value = ''); applyVals(); });
+  $$('#personalize input').forEach(inp => {
+    inp.value = vals[inp.dataset.key] || '';
+    inp.addEventListener('input', () => { vals[inp.dataset.key] = inp.value.trim(); store.set('vals', vals); applyVals(); });
+  });
+
+  function keyOf(label) {
+    const l = label.toLowerCase().trim();
+    if (KEYS.includes(l)) return l;
+    return null;
+  }
+
+  // Prepara os prompts: placeholders destacados + botão copiar
+  $$('.prompt').forEach(fig => {
+    const body = fig.querySelector('.body');
+    body.innerHTML = body.innerHTML.replace(/\[([^\]]*)\]/g, (m, inner) => {
+      const k = keyOf(inner);
+      return `<span class="ph"${k ? ` data-k="${k}"` : ''} data-orig="${m.replace(/"/g, '&quot;')}">${m}</span>`;
+    });
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn'; btn.type = 'button'; btn.textContent = 'Copiar';
+    btn.setAttribute('aria-label', 'Copiar prompt: ' + fig.querySelector('figcaption').textContent.trim());
+    btn.addEventListener('click', async () => {
+      const ok = await copyText(body.innerText.trim());
+      btn.textContent = ok ? 'Copiado!' : 'Erro'; btn.classList.toggle('copied', ok);
+      if (ok) toast('Prompt copiado. Cole na sua IA e ajuste o que estiver entre [ ].');
+      setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 1600);
+    });
+    fig.querySelector('figcaption').appendChild(btn);
+  });
+
+  function applyVals() {
+    $$('.ph[data-k]').forEach(s => {
+      const v = vals[s.dataset.k];
+      if (v) {
+        s.textContent = v;
+        s.classList.add('filled');
+      } else { s.textContent = s.dataset.orig; s.classList.remove('filled'); }
+    });
+    const n = KEYS.filter(k => vals[k]).length;
+    persoBtn.querySelector('.lbl').textContent = n ? `Personalizado (${n}/4)` : 'Personalizar prompts';
+  }
+  applyVals();
+
+  // ---------- fluxo (conceitos) ----------
+  const flowText = [
+    '<strong>Utilizador → escreve a instrução (PROMPT).</strong> Quanto mais contexto, público-alvo e limites, melhor a resposta.',
+    '<strong>Processamento → divide o texto em pedaços (TOKENS).</strong> A máquina calcula probabilidades sobre essas frações de texto.',
+    '<strong>Limites → memoriza a conversa recente (JANELA DE CONTEXTO).</strong> Conversas longas demais fazem a IA esquecer instruções antigas: abra uma conversa limpa.',
+    '<strong>Resposta → entrega um rascunho para validação humana.</strong> A decisão final é sempre do professor.'
+  ];
+  $$('#flow button').forEach(b => b.addEventListener('click', () => {
+    $$('#flow button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    $('#flow-out').innerHTML = flowText[+b.dataset.i];
+  }));
+
+  // ---------- jogo pode ou nunca ----------
+  const sortItems = [
+    ['Série, tema e tempo de aula', 'pode', 'Contexto pedagógico não identifica ninguém.'],
+    ['Nome completo de um aluno', 'nunca', 'Nomes são identificadores diretos.'],
+    ['Perfil da turma, sem nomes', 'pode', 'Perfis gerais ajudam a IA sem expor ninguém.'],
+    ['Laudo psicopedagógico de um estudante', 'nunca', 'Dados de saúde exigem sigilo absoluto.'],
+    ['Textos e exercícios propostos', 'pode', 'Conteúdo didático pode e deve ir no prompt.'],
+    ['Foto da turma no pátio', 'nunca', 'Fotos e vozes identificam os alunos.'],
+    ['"Aluno hipotético de 10 anos com dificuldades de atenção"', 'pode', 'Personas fictícias são o caminho certo para pedir adaptações.'],
+    ['Planilha de notas com nomes', 'nunca', 'Notas e trabalhos identificáveis nunca vão no prompt.'],
+    ['Data de nascimento e endereço de um aluno', 'nunca', 'São dados pessoais identificáveis.'],
+    ['Redação de um aluno, sem nome e sem cabeçalho', 'pode', 'Anonimizada, sem identificadores, a redação pode ser usada como exemplo.']
+  ];
+  let sortOrder = [], sortIdx = 0, sortHits = 0, sortLock = false;
+  function sortReset() {
+    sortOrder = sortItems.map((_, i) => i).sort(() => Math.random() - .5);
+    sortIdx = 0; sortHits = 0; sortLock = false; sortRender();
+  }
+  function sortRender() {
+    const fb = $('#sort-fb');
+    if (sortIdx >= sortOrder.length) {
+      $('#sort-item').innerHTML = `${sortHits} de ${sortOrder.length} acertos! <br><button class="btn-ghost" id="sort-again" style="margin-top:10px">Jogar de novo</button>`;
+      $('#sort-again').addEventListener('click', sortReset);
+      $$('#sort-game .choice-row button').forEach(b => b.disabled = true);
+      fb.className = 'feedback'; $('#sort-score').textContent = '';
+      return;
+    }
+    $$('#sort-game .choice-row button').forEach(b => b.disabled = false);
+    $('#sort-item').textContent = sortItems[sortOrder[sortIdx]][0];
+    $('#sort-score').textContent = `${sortIdx + 1} de ${sortOrder.length} · ${sortHits} acertos`;
+  }
+  $$('#sort-game .choice-row button').forEach(b => b.addEventListener('click', () => {
+    if (sortLock) return; sortLock = true;
+    const [, ans, why] = sortItems[sortOrder[sortIdx]];
+    const right = b.dataset.ans === ans; if (right) sortHits++;
+    const fb = $('#sort-fb');
+    fb.className = 'feedback show ' + (right ? 'ok' : 'bad');
+    fb.textContent = (right ? 'Isso! ' : (ans === 'pode' ? 'Pode, sim. ' : 'Nunca! ')) + why;
+    setTimeout(() => { sortIdx++; sortLock = false; fb.className = 'feedback'; sortRender(); }, 1700);
+  }));
+  sortReset();
+
+  // ---------- cartas que viram ----------
+  $$('.flip').forEach(f => {
+    const [ft, fs] = f.dataset.front.split('|');
+    const [bt, bs] = f.dataset.back.split('|');
+    const hint = f.querySelector('.hint')?.textContent || '';
+    const render = on => {
+      const t = on ? bt : ft, s = on ? bs : fs;
+      f.innerHTML = `<span><strong>${t}</strong>${s ? s : ''}</span>${on ? '' : `<span class="hint">${hint}</span>`}`;
+    };
+    f.setAttribute('aria-pressed', 'false');
+    f.addEventListener('click', () => {
+      const on = !f.classList.contains('on');
+      f.classList.toggle('on', on); f.setAttribute('aria-pressed', on); render(on);
+    });
+    render(false);
+  });
+
+  // ---------- montador P.A.C.T.O. ----------
+  const pFields = ['papel', 'alvo', 'comando', 'tom', 'obs'];
+  const pSaved = store.get('pacto', {});
+  pFields.forEach(k => { const el = $('#p-' + k); el.value = pSaved[k] || ''; el.addEventListener('input', pactoRender); });
+  function pactoText() {
+    const v = Object.fromEntries(pFields.map(k => [k, $('#p-' + k).value.trim()]));
+    const parts = [];
+    if (v.papel) parts.push(/^atue/i.test(v.papel) ? v.papel.replace(/\.?$/, '.') : `Atue como ${v.papel.replace(/\.?$/, '.')}`);
+    if (v.alvo) parts.push(`Contexto: ${v.alvo.replace(/\.?$/, '.')}`);
+    if (v.comando) parts.push(`Tarefa: ${v.comando.replace(/\.?$/, '.')}`);
+    if (v.tom) parts.push(`Formato e tom: ${v.tom.replace(/\.?$/, '.')}`);
+    if (v.obs) parts.push(`Observações: ${v.obs.replace(/\.?$/, '.')}`);
+    store.set('pacto', v);
+    return parts.join('\n');
+  }
+  function pactoRender() {
+    const t = pactoText();
+    $('#pacto-out').textContent = t || 'Seu prompt aparece aqui conforme você preenche.';
+  }
+  $('#pacto-copy').addEventListener('click', async () => {
+    const t = pactoText(); if (!t) { toast('Preencha pelo menos um campo'); return; }
+    if (await copyText(t)) toast('Prompt P.A.C.T.O. copiado');
+  });
+  $('#pacto-example').addEventListener('click', () => {
+    const ex = {
+      papel: 'Atue como coordenador pedagógico experiente',
+      alvo: (vals.ano || '6º ano') + ', turma de 30 alunos, escola pública com poucos recursos',
+      comando: 'Crie uma sequência de 3 aulas de 50 minutos sobre ' + (vals.tema || 'frações') + ', com objetivo, abertura, desenvolvimento e fechamento',
+      tom: 'Tabela com tempo por etapa, linguagem adequada à idade dos alunos',
+      obs: 'Não invente fatos nem códigos da BNCC; sem internet na sala'
+    };
+    pFields.forEach(k => $('#p-' + k).value = ex[k]); pactoRender();
+  });
+  $('#pacto-clear').addEventListener('click', () => { pFields.forEach(k => $('#p-' + k).value = ''); pactoRender(); });
+  pactoRender();
+
+  // ---------- checklist ----------
+  const checks = $$('#checklist input');
+  const cSaved = store.get('checks', []);
+  checks.forEach((c, i) => {
+    c.checked = !!cSaved[i];
+    c.addEventListener('change', () => { store.set('checks', checks.map(x => x.checked)); checkDone(); });
+  });
+  function checkDone() { $('#check-done').classList.toggle('show', checks.every(c => c.checked)); }
+  checkDone();
+
+  // ---------- semáforo ----------
+  const lightsInfo = {
+    vermelho: ['Vermelho', 'Proibido o uso de telas e IA (avaliações diagnósticas individuais, produções manuscritas em sala).'],
+    amarelo: ['Amarelo', 'Uso permitido como assistente (pesquisar ideias iniciais, tirar dúvidas de vocabulário, estruturar tópicos), com declaração obrigatória de como foi usada.'],
+    verde: ['Verde', 'Uso intensivo e colaborativo (gerar dados para análise crítica, debater com a máquina, criar jogos e códigos interativos).']
+  };
+  function setLight(c) {
+    $$('.light').forEach(l => l.setAttribute('aria-pressed', l.dataset.c === c ? 'true' : 'false'));
+    $('#light-out').innerHTML = `<strong>${lightsInfo[c][0]}</strong>${lightsInfo[c][1]}`;
+  }
+  $$('.light').forEach(l => l.addEventListener('click', () => setLight(l.dataset.c)));
+  setLight('amarelo');
+
+  // ---------- glossário ----------
+  const gloss = [
+    ['Alucinação', 'Quando a IA inventa informações falsas com muita confiança, como fontes ou códigos que não existem.', 'A IA citou uma habilidade da BNCC que não existe: foi uma alucinação.'],
+    ['Anonimização', 'Remover dados que identificam uma pessoa (nome, turma, documento) antes de usar o conteúdo.', 'Anonimizei as respostas dos alunos antes de colar na IA.'],
+    ['Deep learning (aprendizado profundo)', 'Tipo de machine learning com redes neurais em muitas camadas, usado em imagem, voz e texto.', 'O reconhecimento de voz funciona com deep learning.'],
+    ['Engenharia de prompt', 'Técnica de escrever bons prompts: dar papel, contexto, formato e restrições.', 'Aplicando a fórmula P.A.C.T.O., o plano de aula ficou muito melhor.'],
+    ['Prompt', 'A instrução ou pergunta que você escreve para a IA. Quanto mais claro, melhor a resposta.', 'Meu prompt incluía o ano, o tema e o tempo de aula.'],
+    ['Rede neural', 'Modelo inspirado no cérebro, com camadas de "neurônios" artificiais que processam informações.', 'Uma rede neural identifica o objeto na foto.'],
+    ['Token', 'Pedaço de texto (uma palavra ou parte dela) que a IA processa. Os limites de uso costumam ser contados em tokens.', 'O texto era tão longo que passou do limite de tokens.'],
+    ['Treinamento', 'Processo em que a IA aprende a partir de grandes conjuntos de dados.', 'O modelo foi treinado com milhões de textos.'],
+    ['Viés (bias)', 'Tendência injusta nas respostas da IA, vinda dos dados com que ela foi treinada.', 'A IA sugeriu exemplos que só representavam um tipo de família: era um viés.']
+  ];
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  function renderGloss(q = '') {
+    const nq = norm(q);
+    const list = gloss.filter(g => !nq || norm(g.join(' ')).includes(nq));
+    $('#gloss').innerHTML = list.length
+      ? list.map(([t, d, e]) => `<article><h4>${t}</h4><p>${d}</p><em>"${e}"</em></article>`).join('')
+      : '<p style="color:var(--ink-2)">Nenhum termo encontrado.</p>';
+  }
+  $('#gloss-search').addEventListener('input', e => renderGloss(e.target.value));
+  renderGloss();
+
+  // ---------- uso pelos alunos ----------
+  const alunos = [
+    ['Alunos copiam respostas da IA sem entender', 'Peça que expliquem com as próprias palavras, oralmente ou por escrito, em sala', '"Explique para o colega como você chegou a essa resposta."'],
+    ['Trabalhos prontos, sem autoria', 'Avalie o processo: rascunhos, versões, anotações e justificativas das escolhas', 'Entrega em etapas, com um registro do que mudou entre as versões'],
+    ['Falta de regras claras', 'Defina com a turma quando o uso é permitido, permitido com aviso ou proibido', 'Semáforo: verde (pesquisar ideias), amarelo (revisar texto, citando), vermelho (prova)'],
+    ['Dúvida se o texto foi feito por IA', 'Converse com o aluno e compare com a produção anterior; não se baseie só em detectores', 'Peça para ele resumir o trabalho em sala, sem consulta'],
+    ['Confiança cega nas respostas', 'Ensine a checar fontes e erros', 'Atividade: "Encontre os 3 erros nesta resposta da IA"'],
+    ['Atividades fáceis de resolver com IA', 'Redesenhe as tarefas: contexto local, opinião pessoal, produção em aula', '"Relacione o tema a algo que aconteceu na sua cidade ou na sua vida"'],
+    ['Uso sem transparência', 'Exija a declaração de uso: qual IA, para quê e como foi o prompt', 'Nota no fim do trabalho: "Usei a IA para sugerir tópicos; escrevi o texto sozinho"'],
+    ['Uso por menores de idade', 'Confira a idade mínima das ferramentas e envolva a escola e os responsáveis', 'Use apenas plataformas aprovadas pela escola, com orientação do professor'],
+    ['Queda no esforço de pensar', 'Use a IA como parceira, não como substituta: pedir dicas e perguntas, não respostas prontas', '"Em vez de resolver, faça perguntas que me ajudem a chegar à resposta."']
+  ];
+  $('#alunos-list').innerHTML = alunos.map(([s, o, e]) =>
+    `<details class="acc"><summary>${s}</summary><div class="inner"><p><strong>O que fazer:</strong> ${o}</p><p><strong>Exemplo prático:</strong> ${e}</p></div></details>`).join('');
+
+  // ---------- ferramentas ----------
+  const toolCard = ([n, url, f, w]) => `<article class="tool"><h4><a href="${url}" target="_blank" rel="noopener">${n} ↗</a></h4><dl><dt>Pontos fortes</dt><dd>${f}</dd><dt>Pontos fracos</dt><dd>${w}</dd></dl></article>`;
+  $('#assist-list').innerHTML = [
+    ['ChatGPT', 'https://chatgpt.com/', 'Muito versátil: planos de aula, textos, exercícios, imagens e análise de arquivos. Grande comunidade e muitos tutoriais.', 'Pode errar com convicção (alucinações). Recursos mais avançados ficam nos planos pagos.'],
+    ['Claude', 'https://claude.ai/', 'Escrita natural e bem estruturada, ótimo para textos longos, pareceres, adaptação de linguagem e análise de documentos.', 'Menos recursos de mídia (imagem e vídeo) que alguns concorrentes. Limites de uso no plano gratuito.'],
+    ['Gemini', 'https://gemini.google.com/', 'Integra com Gmail, Docs, Slides, Drive e Forms, ideal para quem já vive no Google Workspace.', 'Qualidade varia conforme a tarefa. Recursos completos dependem do plano.'],
+    ['Microsoft Copilot', 'https://copilot.microsoft.com/', 'Integra com Word, PowerPoint e Excel, útil em escolas que usam Microsoft 365.', 'Melhor experiência exige licença paga. Respostas às vezes mais genéricas.'],
+    ['Perplexity', 'https://www.perplexity.ai/', 'Pesquisa com fontes citadas, ótimo para checar informações e achar referências.', 'Menos indicado para criar materiais longos. As fontes citadas ainda precisam ser conferidas.']
+  ].map(toolCard).join('');
+  $('#tools-list').innerHTML = [
+    ['NotebookLM', 'https://notebooklm.google.com/', 'Responde só com base nos materiais que você envia (PDFs, textos, links). Gera resumos, guias de estudo e áudio-resumos.', 'Só vale o que você carregar. Menos flexível para criar conteúdo novo do zero.'],
+    ['MagicSchool', 'https://www.magicschool.ai/', 'Dezenas de ferramentas prontas para professores: plano de aula, rubricas, feedback, comunicados e adaptações.', 'Pensada principalmente para o contexto dos EUA, então exige ajuste para BNCC. Parte dos recursos é paga.'],
+    ['Teachy', 'https://teachy.ai/', 'Feita para o professor brasileiro, com foco em planos de aula e materiais alinhados à BNCC.', 'Recursos completos em plano pago. Sempre vale revisar o alinhamento curricular.'],
+    ['Khanmigo', 'https://www.khanacademy.org/khan-labs', 'Tutoria socrática, que guia o aluno a pensar em vez de entregar a resposta, e apoio ao planejamento.', 'Disponibilidade e idioma dependem do país e do plano. Ecossistema da Khan Academy.']
+  ].map(toolCard).join('');
+
+  // ---------- teste rápido ----------
+  const quiz = [
+    ['O que a IA generativa realmente é?', ['Um ser consciente que entende a turma', 'Um sistema estatístico que prevê a sequência de texto mais provável', 'Uma fonte oficial e sempre correta'], 1, 'Ela reconhece padrões em grandes volumes de dados, sem consciência nem discernimento reais.'],
+    ['Você quer adaptar uma atividade para um aluno com dificuldade de atenção. O que vai no prompt?', ['O nome do aluno e o laudo', 'Uma persona fictícia: "aluno hipotético de 10 anos com dificuldades de atenção"', 'A planilha da turma para dar contexto'], 1, 'Pela LGPD, use personas fictícias e barreiras de aprendizagem, nunca dados reais.'],
+    ['Um detector diz que a redação é "90% IA". O que fazer?', ['Reprovar o aluno', 'Ignorar e aceitar o trabalho', 'Conversar, pedir rascunhos e uma defesa oral rápida'], 2, 'Detectores têm muitos falsos positivos. Avalie o processo, não só a entrega.'],
+    ['A IA citou um código da BNCC. Qual é o próximo passo?', ['Usar direto, ela sabe a BNCC', 'Conferir no documento oficial', 'Pedir para outra IA confirmar'], 1, 'A IA pode inventar códigos e fontes com convicção (alucinação). Confira sempre na fonte oficial.'],
+    ['Quais são os 3 princípios do uso ético de IA na escola?', ['Velocidade, quantidade e automação', 'Transparência, privacidade e supervisão', 'Criatividade, competição e ranking'], 1, 'Diga quando usou, proteja os dados e revise e decida. A IA propõe, o docente dispõe!'],
+    ['Uma ferramenta de imagens desenhou o "cientista brilhante" como um homem branco e idoso. Isso é…', ['Viés algorítmico', 'Alucinação', 'Janela de contexto'], 0, 'A IA reflete os dados com que foi treinada e tende a amplificar desigualdades.']
+  ];
+  let qi = 0, qScore = 0;
+  function quizRender() {
+    const fb = $('#quiz-fb'); fb.className = 'feedback';
+    $('#quiz-next').style.display = 'none';
+    if (qi >= quiz.length) {
+      $('#quiz-count').textContent = 'Resultado';
+      $('#quiz-q').innerHTML = `Você acertou <strong>${qScore} de ${quiz.length}</strong>. ${qScore === quiz.length ? 'Fundamentos dominados!' : 'Vale revisar os capítulos de Fundamentos.'}`;
+      $('#quiz-opts').innerHTML = `<button class="btn-ghost" id="quiz-restart" style="justify-self:start">Refazer o teste</button>`;
+      $('#quiz-restart').addEventListener('click', () => { qi = 0; qScore = 0; quizRender(); });
+      $('#quiz-score').textContent = '';
+      store.set('quizBest', Math.max(store.get('quizBest', 0), qScore));
+      return;
+    }
+    const [q, opts] = quiz[qi];
+    $('#quiz-count').textContent = `Pergunta ${qi + 1} de ${quiz.length}`;
+    $('#quiz-q').textContent = q;
+    $('#quiz-opts').innerHTML = opts.map((o, i) => `<button data-i="${i}">${o}</button>`).join('');
+    $('#quiz-score').textContent = `${qScore} acerto${qScore === 1 ? '' : 's'}`;
+    $$('#quiz-opts button').forEach(b => b.addEventListener('click', () => {
+      const [, , right, why] = quiz[qi];
+      const i = +b.dataset.i;
+      $$('#quiz-opts button').forEach(x => { x.disabled = true; if (+x.dataset.i === right) x.classList.add('right'); });
+      if (i === right) qScore++; else b.classList.add('wrong');
+      fb.className = 'feedback show ' + (i === right ? 'ok' : 'bad');
+      fb.textContent = (i === right ? 'Isso! ' : 'Quase. ') + why;
+      $('#quiz-score').textContent = `${qScore} acerto${qScore === 1 ? '' : 's'}`;
+      const nx = $('#quiz-next'); nx.style.display = 'inline-flex';
+      nx.textContent = qi === quiz.length - 1 ? 'Ver resultado →' : 'Próxima →';
+      nx.focus();
+    }));
+  }
+  $('#quiz-next').addEventListener('click', () => { qi++; quizRender(); });
+  quizRender();
+
+  // ---------- vídeo ----------
+  if (VIDEO_URL) { $('#video-link').href = VIDEO_URL; $('#video-help').hidden = false; }
+
+  // ---------- compartilhar ----------
+  $('#share-btn').addEventListener('click', async () => {
+    const data = { title: 'IA pra Prof', text: 'Guia prático de IA para educadores, de Júlia Roberta Quoos Alves', url: 'https://ohtopico.com.br/ia-pra-prof/' };
+    if (navigator.share) { try { await navigator.share(data); } catch (e) {} }
+    else if (await copyText(data.url)) toast('Link copiado');
+  });
+
+  route();
+})();
+</script>
+</body>
+</html>

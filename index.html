@@ -432,7 +432,7 @@
             /* Ícones viram uma grade no topo, estilo tela inicial */
             .desktop-icons {
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 gap: 6px;
                 height: auto;
                 left: 8px;
@@ -556,7 +556,7 @@
                 width: 230px !important;
             }
 
-            .start-menu-side { height: 264px !important; }
+            .start-menu-side { height: 308px !important; }
 
             #start-menu .menu-item {
                 font-size: 16px !important;
@@ -581,6 +581,10 @@
             <div class="icon-item" onclick="toggleWindow('win-projetos')">
                 <i class="fa-solid fa-code"></i>
                 <span class="icon-label">Projetos</span>
+            </div>
+            <div class="icon-item" onclick="window.location.href='ia-pra-prof/'">
+                <i class="fa-solid fa-book-open"></i>
+                <span class="icon-label">IA pra Prof</span>
             </div>
             <div class="icon-item" onclick="window.open('https://www.linkedin.com/in/ohtopico', '_blank')">
                  <i class="fa-brands fa-linkedin"></i>
@@ -873,7 +877,7 @@
             
             <!-- Menu Iniciar Oculto -->
             <div id="start-menu" style="display: none; position: absolute; bottom: 40px; left: 0; background: var(--window-bg); border: 3px solid; border-color: #fff #7a6a8a #7a6a8a #fff; width: 200px; box-shadow: 3px 3px 10px rgba(0,0,0,0.5); z-index: 1000;">
-                <div class="start-menu-side" style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); float: left; height: 160px; text-align: center;">
+                <div class="start-menu-side" style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); float: left; height: 196px; text-align: center;">
                     Y2K OS
                 </div>
 
@@ -884,6 +888,7 @@
 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-music" style="width: 20px;"></i> Player</div>
 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" style="width: 20px;"></i> Tarot Digital</div>
  		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-paint')"><i class="fa-solid fa-paintbrush" style="width: 20px;"></i> Paint</div>
+		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="window.location.href='ia-pra-prof/'"><i class="fa-solid fa-book-open" style="width: 20px;"></i> IA pra Prof</div>
 		</div>
             </div>
 
