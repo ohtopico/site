@@ -335,6 +335,8 @@ h3 {
     padding: 2px 10px;
 }
 
+.print-only { display: none !important; }
+
 .status {
     clip: rect(0 0 0 0);
     height: 1px;
@@ -439,6 +441,345 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
     .item li { margin-bottom: 0; }
     a { color: inherit; text-decoration: none; }
     .skills { gap: 8px 20px; }
+    .print-only { display: list-item !important; }
+    .contacts .print-only { display: block !important; }
+    #sec-idiomas { display: none !important; }
+    /* Na versão completa impressa, as tecnologias já aparecem nos projetos */
+    body[data-perfil="completo"] #sec-competencias { display: none !important; }
+
+}
+
+/* =========================================================
+   PRÉVIAS VISUAIS (janela de navegador)
+   ========================================================= */
+.pv-slot { margin-top: 8px; }
+
+.pv-strip {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pv-thumb {
+    background: var(--chip);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+    height: 52px;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    transition: transform 0.15s, border-color 0.15s;
+    width: 78px;
+}
+
+.pv-thumb img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.pv-thumb:hover { border-color: var(--accent-2); transform: translateY(-2px); }
+
+.pv-open {
+    align-items: center;
+    background: none;
+    border: 1px dashed var(--accent-2);
+    border-radius: 999px;
+    color: var(--accent-2);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    gap: 6px;
+    padding: 5px 12px;
+}
+
+.pv-open:hover { background: var(--chip); border-style: solid; }
+
+.pv-open svg, .br-btn svg { flex-shrink: 0; }
+
+/* A janela */
+dialog.browser {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 24px 60px rgba(20, 0, 40, 0.35);
+    color: var(--ink);
+    max-height: calc(100vh - 48px);
+    max-width: 1040px;
+    overflow: hidden;
+    padding: 0;
+    width: calc(100% - 48px);
+}
+
+dialog.browser[open] {
+    animation: br-in 0.18s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+dialog.browser::backdrop {
+    backdrop-filter: blur(2px);
+    background: rgba(12, 0, 26, 0.55);
+}
+
+@keyframes br-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+.br-top {
+    align-items: flex-end;
+    background: var(--chip);
+    display: flex;
+    gap: 14px;
+    padding: 10px 12px 0 14px;
+}
+
+.br-dots {
+    align-items: center;
+    align-self: center;
+    display: flex;
+    gap: 7px;
+    padding-bottom: 8px;
+}
+
+.br-dot {
+    border-radius: 50%;
+    display: block;
+    height: 12px;
+    width: 12px;
+}
+
+.br-dot.red { background: #ff5f57; }
+.br-dot.yellow { background: #febc2e; }
+.br-dot.green { background: #28c840; }
+
+.br-tabs {
+    display: flex;
+    flex: 1;
+    gap: 2px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.br-tabs::-webkit-scrollbar { display: none; }
+
+.br-tab {
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: 9px 9px 0 0;
+    color: var(--ink-2);
+    cursor: pointer;
+    display: flex;
+    flex-shrink: 0;
+    font: inherit;
+    font-size: 13.5px;
+    gap: 7px;
+    max-width: 210px;
+    padding: 8px 14px;
+    white-space: nowrap;
+}
+
+.br-tab span { overflow: hidden; text-overflow: ellipsis; }
+
+.br-tab::before {
+    background: var(--accent-2);
+    border-radius: 3px;
+    content: '';
+    flex-shrink: 0;
+    height: 10px;
+    opacity: 0.55;
+    width: 10px;
+}
+
+.br-tab:hover { background: color-mix(in srgb, var(--paper) 55%, transparent); }
+
+.br-tab[aria-selected="true"] {
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.br-tab[aria-selected="true"]::before { opacity: 1; }
+
+.br-close {
+    align-items: center;
+    align-self: center;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--ink-2);
+    cursor: pointer;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    margin-bottom: 6px;
+    width: 32px;
+}
+
+.br-close:hover { background: var(--paper); color: var(--ink); }
+
+.br-bar {
+    align-items: center;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px;
+}
+
+.br-btn {
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--ink-2);
+    cursor: pointer;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    text-decoration: none;
+    width: 32px;
+}
+
+.br-btn:hover:not(:disabled) { background: var(--chip); color: var(--ink); }
+.br-btn:disabled { cursor: default; opacity: 0.35; }
+
+.br-url {
+    align-items: center;
+    background: var(--chip);
+    border-radius: 999px;
+    color: var(--ink-2);
+    display: flex;
+    flex: 1;
+    font-size: 13.5px;
+    gap: 8px;
+    min-width: 0;
+    overflow: hidden;
+    padding: 6px 14px;
+    white-space: nowrap;
+}
+
+.br-url b { color: var(--ink); font-weight: 500; }
+.br-url span { overflow: hidden; text-overflow: ellipsis; }
+
+.br-page {
+    display: grid;
+    gap: 0;
+    grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
+    min-height: 0;
+    overflow: auto;
+}
+
+.br-figure {
+    align-items: center;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    min-height: 320px;
+    padding: 18px;
+}
+
+.br-figure img {
+    border-radius: 6px;
+    box-shadow: 0 4px 18px rgba(20, 0, 40, 0.12);
+    display: block;
+    max-height: calc(100vh - 240px);
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.br-figure figcaption {
+    color: var(--ink-2);
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.br-info {
+    border-left: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px 22px 24px 22px;
+}
+
+.br-kicker {
+    color: var(--accent-2);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.br-info h2 {
+    color: var(--accent);
+    display: block;
+    font-size: 21px;
+    letter-spacing: 0;
+    line-height: 1.25;
+    margin: 0;
+    text-transform: none;
+}
+
+.br-info h2::after { display: none; }
+
+.br-info p { margin: 0; }
+
+.br-facts {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.br-facts li {
+    background: var(--chip);
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+.br-facts b { color: var(--accent); font-size: 17px; font-weight: 600; }
+
+.br-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+
+.br-count { color: var(--ink-3); font-size: 13px; }
+
+@media (max-width: 760px) {
+    dialog.browser {
+        border-radius: 12px 12px 0 0;
+        bottom: 0;
+        margin: auto auto 0 auto;
+        max-height: calc(100dvh - 24px);
+        width: 100%;
+    }
+    .br-page { grid-template-columns: 1fr; }
+    .br-info { border-left: none; border-top: 1px solid var(--line); padding: 18px 16px 22px 16px; }
+    .br-figure { min-height: 200px; padding: 12px; }
+    .br-figure img { max-height: 46dvh; }
+    .br-dots { display: none; }
+    .br-tab { padding: 8px 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    dialog.browser[open] { animation: none; }
+    .pv-thumb { transition: none; }
+}
+
+@media print {
+    .pv-slot, dialog.browser, .cred-link { display: none !important; }
 }
 </style>
 </head>
@@ -483,6 +824,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
             <li><span class="k">GitHub</span><a href="https://github.com/ohtopico">ohtopico</a></li>
             <li><span class="k">Site</span><a href="https://ohtopico.com.br/">ohtopico.com.br</a></li>
             <li><span class="k">Local</span>Rio Grande do Sul · presencial, híbrido ou remoto</li>
+            <li class="print-only"><span class="k">Idiomas</span>inglês e espanhol (profissional)</li>
         </ul>
     </header>
 
@@ -515,6 +857,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                     <li>Ministra oficinas de formação continuada para professores de matemática da rede municipal, com foco no uso de tecnologia e IA em sala de aula.</li>
                     <li>Oficina mais recente em Lagoão (RS), em outubro de 2026.</li>
                 </ul>
+                <div class="pv-slot" data-preview="oficinas"></div>
             </div>
 
             <div class="item" data-perfil="completo docencia dados">
@@ -560,6 +903,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                     <li>Recebeu menções honrosas na IV e na V Mostra de Extensão, Ciência e Tecnologia da UNISC.</li>
                     <li data-perfil="completo docencia">Foi monitora de 3 disciplinas da graduação em Ciência da Computação.</li>
                 </ul>
+                <div class="pv-slot" data-preview="cnpq"></div>
             </div>
 
             <div class="item" data-perfil="completo docencia dados">
@@ -580,6 +924,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                 </div>
                 <ul>
                     <li>Ministrou oficinas de robótica, Excel e informática básica para públicos variados.</li>
+                    <li>Com o grupo PrendAdas, de estudantes de Computação da UNISC, apresentou a palestra “Computação e cuidados com redes sociais” na 1ª Gincana Virtual de Vera Cruz (<a href="https://www.unisc.br/pt/noticias/grupo-prendadas-participa-da-1-gincana-virtual-de-vera-cruz">notícia da UNISC</a>).</li>
                 </ul>
             </div>
 
@@ -606,6 +951,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                 </div>
                 <p>Limpeza de 541 mil transações de um varejo online, análise exploratória, segmentação RFM e comparação de 5 modelos sem vazamento de dados do futuro. A regressão logística teve o melhor resultado (ROC AUC de 0,73, precisão de 0,70), e a taxa de cancelamento e a frequência de compra foram os sinais mais fortes.</p>
                 <p class="tags">Python · pandas · scikit-learn · LightGBM · XGBoost</p>
+                <div class="pv-slot" data-preview="recompra"></div>
             </div>
 
             <div class="item" data-perfil="completo dados">
@@ -614,6 +960,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                 </div>
                 <p>Análise da pesquisa State of Data Brazil 2024 (5.217 respostas) e classificação da faixa salarial com Random Forest e ajuste por validação cruzada. Agrupar as faixas em 3 macrofaixas elevou a acurácia de 31% para 71%; um resultado de 99% causado por vazamento do alvo foi identificado e descartado.</p>
                 <p class="tags">Python · scikit-learn · GridSearchCV · imbalanced-learn · Plotly</p>
+                <div class="pv-slot" data-preview="salario"></div>
             </div>
 
             <div class="item" data-perfil="completo dados docencia">
@@ -622,6 +969,15 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                 </div>
                 <p>Criação de um dataset próprio com 186 fotos das 6 moedas do Real, armazenado no Google Cloud Storage, e classificação com MobileNetV2 por transfer learning: 53% de acurácia na validação, contra 17% de um palpite aleatório.</p>
                 <p class="tags">Python · TensorFlow/Keras · MobileNetV2 · Google Cloud</p>
+                <div class="pv-slot" data-preview="moedas"></div>
+            </div>
+
+            <div class="item" data-perfil="completo dados docencia">
+                <div class="item-head">
+                    <h3>OdontoApp <span class="org">· hackathon, projeto em equipe</span></h3>
+                </div>
+                <p>Aplicação para reunir em um só lugar os dados odontológicos de cada paciente, voltada a dentistas e outros profissionais da saúde.</p>
+                <div class="pv-slot" data-preview="odontoapp"></div>
             </div>
         </section>
 
@@ -697,6 +1053,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                     <span class="when">2026</span>
                 </div>
                 <p>E-book de autoria própria sobre IA na escola: fundamentos, ética e LGPD, prompts prontos para planejamento, materiais e AEE. Tem versão interativa on-line.</p>
+                <div class="pv-slot" data-preview="iapraprof"></div>
             </div>
 
             <div class="item" data-perfil="docencia">
@@ -741,6 +1098,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
         <!-- CERTIFICAÇÕES -->
         <section class="cv-section" id="sec-certificacoes" aria-labelledby="h-cert">
             <h2 id="h-cert">Certificações e cursos</h2>
+            <p class="cred-link" style="margin: -4px 0 10px 0; font-size: 14px;"><a href="https://www.credly.com/users/ohtopico/badges">Ver badges verificados no Credly ↗</a></p>
             <ul class="compact cert-list">
                 <li><span>Google Cloud Computing Foundations <span class="org">· Google</span></span><span class="when">2025</span></li>
                 <li><span>Google Cloud Data Analytics <span class="org">· Google</span></span><span class="when">2025</span></li>
@@ -816,5 +1174,274 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
         }
     });
 </script>
+
+<!-- Janela de prévia (estilo navegador) -->
+<dialog class="browser" id="previa" aria-labelledby="br-titulo">
+    <div class="br-top">
+        <div class="br-dots" aria-hidden="true">
+            <span class="br-dot red"></span><span class="br-dot yellow"></span><span class="br-dot green"></span>
+        </div>
+        <div class="br-tabs" role="tablist" aria-label="Imagens desta prévia" id="br-tabs"></div>
+        <button type="button" class="br-close" id="br-fechar" aria-label="Fechar prévia">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+    <div class="br-bar">
+        <button type="button" class="br-btn" id="br-ant" aria-label="Imagem anterior">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3.5L5.5 9l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="br-btn" id="br-prox" aria-label="Próxima imagem">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 3.5L12.5 9 7 14.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="br-url" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 14 14"><rect x="2.5" y="6" width="9" height="6.5" rx="1.5" fill="currentColor"/><path d="M4.5 6V4.5a2.5 2.5 0 015 0V6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span id="br-url"></span>
+        </div>
+        <a class="br-btn" id="br-externo" target="_blank" rel="noopener" aria-label="Abrir a página original em nova aba" hidden>
+            <svg width="17" height="17" viewBox="0 0 18 18" aria-hidden="true"><path d="M10 3.5h4.5V8M14.5 3.5L8 10M13 11v3.5H3.5V5H7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+    </div>
+    <div class="br-page">
+        <figure class="br-figure" id="br-painel" role="tabpanel">
+            <img id="br-img" src="" alt="">
+            <figcaption id="br-legenda"></figcaption>
+        </figure>
+        <div class="br-info">
+            <p class="br-kicker" id="br-tipo"></p>
+            <h2 id="br-titulo"></h2>
+            <p id="br-texto"></p>
+            <ul class="br-facts" id="br-fatos"></ul>
+            <p class="br-count" id="br-contagem" aria-live="polite"></p>
+            <div class="br-links" id="br-links"></div>
+        </div>
+    </div>
+</dialog>
+
+<script>
+/* ---------------------------------------------------------------
+   PRÉVIAS: para adicionar uma nova, crie uma entrada aqui e coloque
+   <div class="pv-slot" data-preview="nome"></div> no item do currículo.
+   As imagens ficam em curriculo/img/.
+   --------------------------------------------------------------- */
+const PREVIAS = {
+    oficinas: {
+        tipo: 'Formação de professores',
+        titulo: 'Oficina “Prof., onde eu vou usar isso?”',
+        url: 'oficinas/prof-onde-eu-vou-usar-isso',
+        texto: 'Oficina de formação continuada para professores de matemática da rede municipal, no Programa A União Faz a Vida. A proposta apresenta a matemática como linguagem para resolver problemas do dia a dia e entrega atividades prontas para aplicar em sala.',
+        fatos: [['8', 'atividades práticas para a sala de aula'], ['Rede municipal', 'professores de matemática']],
+        abas: [
+            { nome: 'Na oficina', img: 'img/oficina-foto.jpg', alt: 'Júlia, em pé ao lado da tela, conduz a oficina para professores sentados ao redor de uma mesa; na tela, o slide “Prof., onde eu vou usar isso?”', legenda: 'Oficina com professores da rede municipal.' },
+            { nome: 'Abertura', img: 'img/oficina-capa.jpg', alt: 'Slide de abertura com o título “Prof., onde eu vou usar isso?” e o nome Júlia Roberta Quoos Alves, cercado de símbolos matemáticos', legenda: 'Slide de abertura da oficina.' },
+            { nome: 'A proposta', img: 'img/oficina-matematica.jpg', alt: 'Slide “O que é matemática, afinal?”: a linguagem da resolução de problemas, da lógica e da tomada de decisões', legenda: 'A matemática como linguagem para resolver problemas.' },
+            { nome: 'Atividades', img: 'img/oficina-atividades.jpg', alt: 'Slide “Lista de atividades”: Dinâmica do Triângulo Humano, Caçadores de Medidas, Capitão de Papel, Explorador Dourado, Projeto Arquiteto Mirim, Laboratório da Rampa, Detetives dos Dados e Escape Room Matemático', legenda: 'As 8 atividades propostas aos professores.' }
+        ]
+    },
+    cnpq: {
+        tipo: 'Pesquisa em IA · CNPq',
+        titulo: 'Menção honrosa na V Mostra de Extensão, Ciência e Tecnologia da UNISC',
+        url: 'pesquisa/mencao-honrosa-v-mostra',
+        texto: 'O trabalho “Eye tracking como metodologia para pesquisas em leitura” recebeu menção honrosa na categoria Inovação, na área de Ciências Humanas, na V Mostra de Extensão, Ciência e Tecnologia da UNISC, em 2024.',
+        fatos: [['15', 'trabalhos apresentados em eventos'], ['3', 'palestras em institutos federais'], ['2', 'menções honrosas (IV e V Mostra)']],
+        abas: [
+            { nome: 'Menção honrosa', img: 'img/mencao-honrosa.jpg', alt: 'Júlia, sorrindo, segura o certificado de menção honrosa da V Mostra de Extensão, Ciência e Tecnologia da UNISC diante de um painel com logotipos da UNISC', legenda: 'Entrega do certificado de menção honrosa (2024).' }
+        ]
+    },
+    odontoapp: {
+        tipo: 'Hackathon · projeto em equipe',
+        titulo: 'OdontoApp',
+        url: 'projetos/odontoapp',
+        texto: 'Aplicação criada em equipe durante um hackathon para reunir em um só lugar os dados odontológicos de cada paciente, pensada para dentistas e outros profissionais da saúde.',
+        fatos: [['Saúde', 'dados odontológicos reunidos em um só lugar'], ['Hackathon', 'projeto desenvolvido em equipe']],
+        abas: [
+            { nome: 'Apresentação', img: 'img/hackathon-odontoapp.jpg', alt: 'Júlia, ao microfone, apresenta o OdontoApp ao lado de dois colegas de equipe, com o projeto na tela ao fundo', legenda: 'Apresentação do OdontoApp no hackathon.' }
+        ]
+    },
+    recompra: {
+        tipo: 'Projeto de dados',
+        titulo: 'Previsão de recompra de clientes em 60 dias',
+        url: 'projetos/previsao-de-recompra',
+        externo: 'https://github.com/ohtopico/online-retail-dataset/blob/main/Online_Retail_Dataset.ipynb',
+        texto: 'Quais clientes de um varejo online têm mais chance de comprar de novo nos próximos 60 dias? A análise segmentou os clientes por RFM e comparou cinco modelos para priorizar as ações comerciais.',
+        fatos: [['0,73', 'ROC AUC da regressão logística'], ['541 mil', 'transações limpas e analisadas'], ['4.257', 'clientes na base final']],
+        abas: [
+            { nome: 'Segmentos RFM', img: 'img/recompra-rfm.jpg', alt: 'Gráfico de barras com a distribuição de clientes por segmento RFM: cerca de 2.200 melhores clientes, 750 potenciais, 740 leais e 540 em risco', legenda: 'Distribuição dos clientes por segmento RFM.' },
+            { nome: 'Curva ROC', img: 'img/recompra-roc.jpg', alt: 'Curva ROC da regressão logística, com AUC de 0,73, acima da linha diagonal do classificador aleatório', legenda: 'Curva ROC do melhor modelo (AUC = 0,73).' },
+            { nome: 'Matriz de confusão', img: 'img/recompra-matriz.jpg', alt: 'Matriz de confusão da regressão logística: 294 verdadeiros negativos, 86 falsos positivos, 157 falsos negativos e 194 verdadeiros positivos', legenda: 'Acertos e erros do modelo no conjunto de teste.' }
+        ]
+    },
+    salario: {
+        tipo: 'Projeto de dados',
+        titulo: 'Faixa salarial na área de dados no Brasil',
+        url: 'projetos/state-of-data-brazil',
+        externo: 'https://github.com/ohtopico/state-of-data-brazil/blob/main/State_of_Data_Brazil.ipynb',
+        texto: 'Análise da pesquisa State of Data Brazil 2024 para entender o que se relaciona com o salário de quem trabalha com dados, e o quanto é possível prever a faixa salarial.',
+        fatos: [['5.217', 'respostas analisadas'], ['31% → 71%', 'acurácia ao agrupar as faixas'], ['99%', 'resultado com vazamento, descartado']],
+        abas: [
+            { nome: 'Faixas salariais', img: 'img/salario-distribuicao.jpg', alt: 'Gráfico de barras horizontais com a distribuição das faixas salariais; a mais frequente é de R$ 8.001 a R$ 12.000 por mês', legenda: 'Distribuição das faixas salariais dos respondentes.' },
+            { nome: 'Correlações', img: 'img/salario-correlacoes.jpg', alt: 'Gráfico das 15 maiores e menores correlações com a faixa salarial, em barras azuis para correlações positivas e vermelhas para negativas', legenda: 'Variáveis mais e menos associadas à faixa salarial.' }
+        ]
+    },
+    moedas: {
+        tipo: 'Projeto de visão computacional',
+        titulo: 'Reconhecimento de moedas brasileiras por foto',
+        url: 'projetos/moedas-brasileiras',
+        externo: 'https://github.com/ohtopico/moedas-brasileiras/blob/main/notebook.ipynb',
+        texto: 'Dataset próprio de fotos das moedas do Real, segmentação das moedas com OpenCV e classificação com MobileNetV2 por transfer learning, tudo armazenado no Google Cloud Storage.',
+        fatos: [['186', 'fotos no dataset próprio'], ['53%', 'acurácia na validação (acaso: 17%)']],
+        abas: [
+            { nome: 'Segmentação', img: 'img/moedas-segmentacao.jpg', alt: 'Slide “Passo 2: Segmentação”, com uma moeda de 10 centavos detectada e recortes de várias moedas segmentadas', legenda: 'Detecção e recorte das moedas nas fotos.' },
+            { nome: 'Treinamento', img: 'img/moedas-treino.jpg', alt: 'Gráficos de acurácia e de perda ao longo de 250 épocas de treinamento e validação', legenda: 'Acurácia e perda ao longo do treinamento.' },
+            { nome: 'Resultado', img: 'img/moedas-matriz.jpg', alt: 'Matriz de confusão do modelo MobileNetV2 para as seis moedas', legenda: 'Matriz de confusão por tipo de moeda.' }
+        ]
+    },
+    iapraprof: {
+        tipo: 'Publicação',
+        titulo: 'IA pra Prof: guia prático de IA para educadores',
+        url: 'ia-pra-prof',
+        externo: '../ia-pra-prof/',
+        texto: 'E-book com versão interativa on-line, com fundamentos, ética e LGPD e prompts prontos para planejar aulas, criar materiais e jogos em HTML e apoiar o AEE.',
+        fatos: [['4', 'módulos'], ['8', 'capítulos com prompts prontos']],
+        abas: [
+            { nome: 'Capa', img: '../ia-pra-prof/img/og-ia-pra-prof.jpg', alt: 'Capa do guia IA pra Prof: guia prático de inteligência artificial para educadores', legenda: 'Capa da versão interativa.' },
+            { nome: 'Jogo dos triângulos', img: '../ia-pra-prof/img/jogo-triangulos.jpg', alt: 'Jogo dos triângulos: missão 1 de 8, construa um triângulo retângulo arrastando os pontos A, B e C', legenda: 'Exemplo de jogo em HTML criado com IA a partir de um prompt do guia.' },
+            { nome: 'Calculadora', img: '../ia-pra-prof/img/calculadora-bhaskara.jpg', alt: 'Calculadora interativa de Bháskara com campos a, b e c e o passo a passo', legenda: 'Material interativo para aulas de matemática.' },
+            { nome: 'Caça ao tesouro', img: '../ia-pra-prof/img/caca-tesouro.jpg', alt: 'Mapa do jogo caça ao tesouro matemático, com Praia da Soma, Floresta das Frações e Caverna do Tesouro', legenda: 'Jogo de caça ao tesouro matemático.' }
+        ]
+    }
+};
+
+(function () {
+    const dlg = document.getElementById('previa');
+    const el = id => document.getElementById(id);
+    let atual = null, indice = 0, origem = null;
+
+    const ICONE = '<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 5.5h13" stroke="currentColor" stroke-width="1.4"/><circle cx="3.6" cy="4" r=".6" fill="currentColor"/><circle cx="5.4" cy="4" r=".6" fill="currentColor"/></svg>';
+
+    // Miniaturas + botão em cada item marcado com data-preview
+    document.querySelectorAll('.pv-slot').forEach(slot => {
+        const chave = slot.dataset.preview;
+        const p = PREVIAS[chave];
+        if (!p) return;
+        const strip = document.createElement('div');
+        strip.className = 'pv-strip';
+        p.abas.slice(0, 3).forEach((aba, i) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'pv-thumb';
+            b.setAttribute('aria-label', `Abrir prévia: ${aba.nome}`);
+            b.innerHTML = `<img src="${aba.img}" alt="" loading="lazy">`;
+            b.addEventListener('click', () => abrir(chave, i, b));
+            strip.appendChild(b);
+        });
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pv-open';
+        btn.setAttribute('aria-haspopup', 'dialog');
+        btn.innerHTML = `${ICONE} Ver prévia${p.abas.length > 1 ? ` (${p.abas.length} imagens)` : ''}`;
+        btn.addEventListener('click', () => abrir(chave, 0, btn));
+        strip.appendChild(btn);
+        slot.appendChild(strip);
+    });
+
+    function abrir(chave, i, botao) {
+        atual = PREVIAS[chave];
+        origem = botao;
+        el('br-tipo').textContent = atual.tipo;
+        el('br-titulo').textContent = atual.titulo;
+        el('br-texto').textContent = atual.texto;
+
+        el('br-fatos').innerHTML = '';
+        (atual.fatos || []).forEach(([valor, rotulo]) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<b></b> <span></span>`;
+            li.querySelector('b').textContent = valor;
+            li.querySelector('span').textContent = rotulo;
+            el('br-fatos').appendChild(li);
+        });
+
+        const ext = el('br-externo');
+        const links = el('br-links');
+        links.innerHTML = '';
+        if (atual.externo) {
+            ext.href = atual.externo;
+            ext.hidden = false;
+            const a = document.createElement('a');
+            a.className = 'btn primary';
+            a.href = atual.externo;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.textContent = atual.externo.includes('github') ? 'Abrir notebook ↗' : 'Abrir o guia ↗';
+            links.appendChild(a);
+        } else {
+            ext.hidden = true;
+        }
+
+        const tabs = el('br-tabs');
+        tabs.innerHTML = '';
+        atual.abas.forEach((aba, n) => {
+            const t = document.createElement('button');
+            t.type = 'button';
+            t.className = 'br-tab';
+            t.id = `br-tab-${n}`;
+            t.setAttribute('role', 'tab');
+            t.setAttribute('aria-controls', 'br-painel');
+            t.innerHTML = '<span></span>';
+            t.querySelector('span').textContent = aba.nome;
+            t.addEventListener('click', () => mostrar(n));
+            tabs.appendChild(t);
+        });
+
+        mostrar(i);
+        dlg.showModal();
+        el(`br-tab-${i}`).focus();
+    }
+
+    function mostrar(n) {
+        const total = atual.abas.length;
+        indice = (n + total) % total;
+        const aba = atual.abas[indice];
+        const img = el('br-img');
+        img.src = aba.img;
+        img.alt = aba.alt;
+        el('br-legenda').textContent = aba.legenda || '';
+        el('br-url').innerHTML = '<b>ohtopico.com.br</b>/curriculo/' + atual.url + (total > 1 ? '#' + (indice + 1) : '');
+        document.querySelectorAll('.br-tab').forEach((t, k) => {
+            const sel = k === indice;
+            t.setAttribute('aria-selected', String(sel));
+            t.tabIndex = sel ? 0 : -1;
+            if (sel) t.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        });
+        el('br-painel').setAttribute('aria-labelledby', `br-tab-${indice}`);
+        el('br-ant').disabled = total < 2;
+        el('br-prox').disabled = total < 2;
+        el('br-contagem').textContent = total > 1 ? `Imagem ${indice + 1} de ${total}: ${aba.nome}` : '';
+    }
+
+    el('br-ant').addEventListener('click', () => mostrar(indice - 1));
+    el('br-prox').addEventListener('click', () => mostrar(indice + 1));
+    el('br-fechar').addEventListener('click', () => dlg.close());
+
+    // Setas trocam de aba; clique fora da janela fecha
+    el('br-tabs').addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            mostrar(indice + (e.key === 'ArrowRight' ? 1 : -1));
+            el(`br-tab-${indice}`).focus();
+        } else if (e.key === 'Home' || e.key === 'End') {
+            e.preventDefault();
+            mostrar(e.key === 'Home' ? 0 : atual.abas.length - 1);
+            el(`br-tab-${indice}`).focus();
+        }
+    });
+    dlg.addEventListener('click', e => {
+        const r = dlg.getBoundingClientRect();
+        const fora = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+        if (fora && e.target === dlg) dlg.close();
+    });
+    dlg.addEventListener('close', () => { if (origem) origem.focus(); });
+})();
+</script>
+
 </body>
 </html>
