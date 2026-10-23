@@ -411,6 +411,160 @@
             background: var(--neon-pink) !important;
             color: #fff !important;
         }
+
+        /* Permite arrastar janelas com toque em tablets */
+        .window-header { touch-action: none; }
+
+        /* =========================================================
+           VERSÃO MOBILE (celulares e telas pequenas)
+           ========================================================= */
+        @media (max-width: 768px), (max-height: 500px) and (pointer: coarse) {
+            body {
+                min-height: 100dvh;
+                background-size: 16px 16px;
+            }
+
+            #desktop {
+                height: calc(100dvh - 48px);
+                padding: 0;
+            }
+
+            /* Ícones viram uma grade no topo, estilo tela inicial */
+            .desktop-icons {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+                height: auto;
+                left: 8px;
+                right: 8px;
+                top: 8px;
+            }
+
+            .icon-item {
+                padding: 8px 2px;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .icon-item:active {
+                background: rgba(255, 0, 127, 0.25);
+                border: 1px dashed var(--neon-pink);
+            }
+
+            .icon-item i { font-size: 30px; }
+            .icon-label { font-size: 12px; }
+
+            /* Janelas encaixadas na tela, abaixo dos ícones */
+            .y2k-window {
+                position: fixed;
+                left: 8px !important;
+                right: 8px;
+                top: 96px !important;
+                width: auto !important;
+                min-width: 0 !important;
+                height: auto !important;
+                max-height: calc(100dvh - 96px - 56px);
+                min-height: 0;
+                transform: none !important;
+                resize: none !important;
+            }
+
+            /* Janelas com iframe (Paint, Instagram, Sobre mim) ocupam a altura toda */
+            .y2k-window.win-full {
+                height: calc(100dvh - 96px - 56px) !important;
+            }
+
+            .window-header {
+                cursor: default;
+                font-size: 18px;
+                padding: 6px 8px;
+            }
+
+            .window-title {
+                min-width: 0;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            /* Botões da janela maiores para o dedo */
+            .win-btn {
+                height: 28px;
+                width: 28px;
+                font-size: 14px;
+                line-height: 1;
+            }
+
+            .window-content {
+                min-height: 0;
+                max-height: none !important;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .win-full .window-content {
+                height: auto !important;
+                flex: 1 1 auto;
+                overflow: hidden;
+            }
+
+            .win-full iframe {
+                width: 100% !important;
+                height: 100% !important;
+                display: block;
+            }
+
+            .post-title { font-size: 22px; }
+            .post-text { font-size: 15px; }
+
+            /* Mascote: empilha em coluna */
+            .pet-content { flex-direction: column !important; }
+            .pet-content > div { width: 100% !important; gap: 10px; }
+
+            .player-btn { padding: 10px; font-size: 13px; }
+
+            /* Barra de tarefas compacta */
+            #taskbar {
+                height: 48px;
+                padding: 4px 6px;
+                gap: 6px;
+            }
+
+            .taskbar-brand { display: none; }
+
+            .start-btn {
+                font-size: 20px;
+                height: 36px;
+                padding: 0 10px;
+            }
+
+            .taskbar-tab {
+                height: 36px;
+                padding: 0 10px;
+                font-size: 16px;
+            }
+            .taskbar-tab.active { padding: 1px 9px 0 11px; }
+            .taskbar-tab .tab-label { display: none; }
+
+            .taskbar-clock {
+                font-size: 13px;
+                padding: 6px 8px;
+            }
+
+            /* Menu iniciar com itens maiores */
+            #start-menu {
+                bottom: 44px !important;
+                width: 230px !important;
+            }
+
+            .start-menu-side { height: 264px !important; }
+
+            #start-menu .menu-item {
+                font-size: 16px !important;
+                padding: 12px 12px !important;
+            }
+
+            .cursor-star { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -531,7 +685,7 @@
                     <button class="win-btn" onclick="toggleWindow('win-pet')">X</button>
                 </div>
             </div>
-            <div class="window-content" style="flex-direction: row; gap: 15px;">
+            <div class="window-content pet-content" style="flex-direction: row; gap: 15px;">
                 <div class="virtual-pet-container" style="width: 40%;">
                     <div class="pet-bubble" id="pet-talk">Oi! Eu sou o Mimi. Clique em mi!</div>
                     <div class="pet-sprite" id="pet" onclick="petClick()">👾</div>
@@ -656,7 +810,7 @@
 </div>
 
 <!-- Janela 8: Paint -->
-<div id="win-paint" class="y2k-window" style="left: 150px; top: 150px; width: 720px; display: none;">
+<div id="win-paint" class="y2k-window win-full" style="left: 150px; top: 150px; width: 720px; display: none;">
     <div class="window-header">
         <div class="window-title">
             <i class="fa-solid fa-paintbrush"></i> paint_y2k.exe
@@ -673,7 +827,7 @@
 </div>
 
 <!-- Janela 9: Instagram Perfil -->
-<div id="win-instagram" class="y2k-window" style="left: 200px; top: 100px; width: 400px; height: 500px; display: none; resize: both; overflow: hidden; min-width: 320px; min-height: 300px;">
+<div id="win-instagram" class="y2k-window win-full" style="left: 200px; top: 100px; width: 400px; height: 500px; display: none; resize: both; overflow: hidden; min-width: 320px; min-height: 300px;">
     <div class="window-header">
         <div class="window-title">
             <i class="fa-brands fa-instagram"></i> instagram.exe
@@ -690,7 +844,7 @@
 </div>
 
 <!-- Janela da Nuvem de Palavras -->
-<div id="win-nuvem" class="y2k-window" style="left: 100px; top: 100px; width: 600px; height: 400px; display: block; resize: both; overflow: hidden; min-width: 300px; min-height: 200px; display: none;">
+<div id="win-nuvem" class="y2k-window win-full" style="left: 100px; top: 100px; width: 600px; height: 400px; display: block; resize: both; overflow: hidden; min-width: 300px; min-height: 200px; display: none;">
     
     <!-- Cabeçalho da Janela (Barra de arrastar) -->
     <div class="window-header">
@@ -719,7 +873,7 @@
             
             <!-- Menu Iniciar Oculto -->
             <div id="start-menu" style="display: none; position: absolute; bottom: 40px; left: 0; background: var(--window-bg); border: 3px solid; border-color: #fff #7a6a8a #7a6a8a #fff; width: 200px; box-shadow: 3px 3px 10px rgba(0,0,0,0.5); z-index: 1000;">
-                <div style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); float: left; height: 160px; text-align: center;">
+                <div class="start-menu-side" style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); float: left; height: 160px; text-align: center;">
                     Y2K OS
                 </div>
 
@@ -737,7 +891,7 @@
             <div id="open-programs-tabs" style="display: flex; gap: 5px;"></div>
         </div>
 
-        <div style="color: var(--purple-dark); font-weight: bold; font-size: 15px; padding-right: 20px;">
+        <div class="taskbar-brand" style="color: var(--purple-dark); font-weight: bold; font-size: 15px; padding-right: 20px;">
             ★ ohtopico.com.br ★
         </div>
         <div class="taskbar-clock" id="clock">00:00:00</div>
@@ -745,21 +899,31 @@
 </div>
 
 <script>
-        // --- 1. LÓGICA DE JANELAS ARRASTÁVEIS ---
+        // --- 0. DETECÇÃO DE MODO MOBILE ---
+        const mobileQuery = window.matchMedia('(max-width: 768px), (max-height: 500px) and (pointer: coarse)');
+        function isMobile() { return mobileQuery.matches; }
+
+        // --- 1. LÓGICA DE JANELAS ARRASTÁVEIS (mouse e toque) ---
         document.querySelectorAll('.window-header').forEach(header => {
-            header.addEventListener('mousedown', initDrag);
+            header.addEventListener('pointerdown', initDrag);
         });
 
         function initDrag(e) {
-            if (e.target.classList.contains('win-btn')) return;
+            if (e.target.closest('.win-btn')) return;
 
             const windowEl = e.currentTarget.parentElement;
+            bringToFront(windowEl);
+
+            // No celular as janelas ficam encaixadas na tela
+            if (isMobile()) return;
+
+            const header = e.currentTarget;
             let startX = e.clientX;
             let startY = e.clientY;
             let startLeft = parseInt(window.getComputedStyle(windowEl).left, 10);
             let startTop = parseInt(window.getComputedStyle(windowEl).top, 10);
 
-            if (windowEl.style.transform) {
+            if (windowEl.style.transform && windowEl.style.transform !== 'none') {
                 const rect = windowEl.getBoundingClientRect();
                 startLeft = rect.left;
                 startTop = rect.top;
@@ -768,23 +932,24 @@
                 windowEl.style.top = startTop + 'px';
             }
 
-            document.querySelectorAll('.y2k-window').forEach(win => win.style.zIndex = '10');
-            windowEl.style.zIndex = '50';
+            try { header.setPointerCapture(e.pointerId); } catch (err) {}
 
             function doDrag(dragEvent) {
                 let dx = dragEvent.clientX - startX;
                 let dy = dragEvent.clientY - startY;
                 windowEl.style.left = (startLeft + dx) + 'px';
-                windowEl.style.top = (startTop + dy) + 'px';
+                windowEl.style.top = Math.max(0, startTop + dy) + 'px';
             }
 
             function stopDrag() {
-                document.removeEventListener('mousemove', doDrag);
-                document.removeEventListener('mouseup', stopDrag);
+                header.removeEventListener('pointermove', doDrag);
+                header.removeEventListener('pointerup', stopDrag);
+                header.removeEventListener('pointercancel', stopDrag);
             }
 
-            document.addEventListener('mousemove', doDrag);
-            document.addEventListener('mouseup', stopDrag);
+            header.addEventListener('pointermove', doDrag);
+            header.addEventListener('pointerup', stopDrag);
+            header.addEventListener('pointercancel', stopDrag);
         }
 
         // --- 2. MASCOTE INTERATIVO ---
@@ -805,7 +970,8 @@
         // --- 3. CONTADOR DE VISITAS & RELÓGIO ---
         function updateClock() {
             const now = new Date();
-            const timeString = now.toTimeString().split(' ')[0];
+            let timeString = now.toTimeString().split(' ')[0];
+            if (isMobile()) timeString = timeString.slice(0, 5);
             document.getElementById('clock').innerText = timeString;
         }
         setInterval(updateClock, 1000);
@@ -818,7 +984,7 @@
 
         // --- 4. EFEITO DE CURSOR (ESTRELAS NEON) ---
         document.addEventListener('mousemove', (e) => {
-            if (Math.random() > 0.08) return; 
+            if (isMobile() || Math.random() > 0.08) return; 
             const star = document.createElement('div');
             star.className = 'cursor-star';
             star.innerHTML = '★';
@@ -936,8 +1102,8 @@
             container.innerHTML = ''; 
             
             const programs = [
-                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-web' },
-                { id: 'win-instagram', title: 'Instagram', icon: 'fa-web' },
+                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-brands fa-tumblr' },
+                { id: 'win-instagram', title: 'Instagram', icon: 'fa-brands fa-instagram' },
             ];
             
             programs.forEach(prog => {
@@ -946,7 +1112,8 @@
                     const isVisible = winEl.style.display !== 'none';
                     const tab = document.createElement('button');
                     tab.className = `taskbar-tab ${isVisible ? 'active' : ''}`;
-                    tab.innerHTML = `<i class="fa-solid ${prog.icon}"></i> ${prog.title}`;
+                    tab.innerHTML = `<i class="${prog.icon}"></i> <span class="tab-label">${prog.title}</span>`;
+                    tab.setAttribute('aria-label', prog.title);
                     
                     tab.onclick = function() {
                         if (isVisible) {
@@ -1112,10 +1279,20 @@ function sortearCarta() {
         const win = document.getElementById(id);
         if (!win) return;
         
+        // No celular, mostra uma janela por vez
+        if (isMobile()) {
+            document.querySelectorAll('.y2k-window').forEach(w => {
+                if (w !== win) w.style.display = 'none';
+            });
+        }
+
         win.style.display = 'flex';
         bringToFront(win);
+
+        const startMenu = document.getElementById('start-menu');
+        if (startMenu) startMenu.style.display = 'none';
+
         updateTaskbarTabs();
- 
     }
 
     function bringToFront(win) {

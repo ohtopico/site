@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         html, body {
             margin: 0;
@@ -39,6 +40,7 @@
             text-shadow: 2px 2px 0px #000;
             user-select: none;
             white-space: nowrap;
+            touch-action: none;
         }
 
         .word:active { cursor: grabbing; transform: translate(3px, 3px); }
@@ -83,7 +85,7 @@
        	 });
    	 };
 
-        document.addEventListener('mousedown', (e) => {
+        document.addEventListener('pointerdown', (e) => {
             if (e.target.classList.contains('word')) {
                 activeElement = e.target;
                 offsetX = e.clientX - activeElement.getBoundingClientRect().left;
@@ -92,7 +94,7 @@
             }
         });
 
-        document.addEventListener('mousemove', (e) => {
+        document.addEventListener('pointermove', (e) => {
             if (activeElement) {
                 // Calcula limites para manter dentro do iframe
                 let x = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - activeElement.offsetWidth));
@@ -103,7 +105,7 @@
             }
         });
 
-        document.addEventListener('mouseup', () => {
+        document.addEventListener('pointerup', () => {
             if (activeElement) {
                 activeElement.style.zIndex = 1;
                 activeElement = null;

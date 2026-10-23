@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         body { background-color: #c0c0c0; font-family: 'Press Start 2P', cursive; margin: 0; display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
@@ -10,7 +11,12 @@
         .cor-btn { width: 16px; height: 16px; border: 2px inset #000; cursor: pointer; }
         button, select { font-family: 'Press Start 2P', cursive; font-size: 8px; padding: 4px; border: 2px outset #ffffff; background: #c0c0c0; cursor: pointer; }
         button:active { border-style: inset; }
-        #canvas { background: #ffffff; border: 2px inset #000; cursor: crosshair; flex-grow: 1; width: 95vw; }
+        #canvas { background: #ffffff; border: 2px inset #000; cursor: crosshair; flex-grow: 1; width: 95vw; min-height: 0; touch-action: none; margin-bottom: 10px; }
+        @media (max-width: 600px) {
+            .toolbar { margin: 6px; padding: 6px; gap: 8px; }
+            .cor-btn { width: 24px; height: 24px; }
+            button, select { font-size: 9px; padding: 8px; }
+        }
     </style>
 </head>
 <body>
@@ -50,17 +56,32 @@
         let desenhando = false;
 
         function ajustarTamanho() {
-            canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight;
+            const w = canvas.clientWidth, h = canvas.clientHeight;
+            if (!w || !h || (w === canvas.width && h === canvas.height)) return;
+            // Preserva o desenho ao redimensionar (ex.: girar o celular)
+            const copia = document.createElement('canvas');
+            copia.width = canvas.width; copia.height = canvas.height;
+            if (canvas.width && canvas.height) copia.getContext('2d').drawImage(canvas, 0, 0);
+            canvas.width = w; canvas.height = h;
             ctx.fillStyle = "white"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (copia.width && copia.height) ctx.drawImage(copia, 0, 0);
         }
         window.addEventListener('resize', ajustarTamanho);
         ajustarTamanho();
 
         function setCor(cor) { corAtual = cor; }
 
-        canvas.onmousedown = (e) => { desenhando = true; desenhar(e); };
-        canvas.onmouseup = () => { desenhando = false; ctx.beginPath(); };
-        canvas.onmousemove = desenhar;
+        // Pointer events: funciona com mouse, dedo e caneta
+        canvas.addEventListener('pointerdown', (e) => {
+            desenhando = true;
+            try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+            ctx.beginPath();
+            desenhar(e);
+        });
+        const pararDesenho = () => { desenhando = false; ctx.beginPath(); };
+        canvas.addEventListener('pointerup', pararDesenho);
+        canvas.addEventListener('pointercancel', pararDesenho);
+        canvas.addEventListener('pointermove', desenhar);
 
         function desenhar(e) {
             if (!desenhando) return;
