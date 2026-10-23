@@ -288,6 +288,23 @@ h3 {
 .item li { margin-bottom: 2px; }
 .item li::marker { color: var(--accent-2); }
 
+.compact { list-style: none; padding-left: 0 !important; }
+.compact li {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 12px;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+.compact .org { font-weight: 400; }
+.cert-list {
+    column-gap: 28px;
+    columns: 2;
+}
+.cert-list li { break-inside: avoid; }
+@media (max-width: 700px) { .cert-list { columns: 1; } }
+
 .tags {
     color: var(--ink-3);
     font-size: 13.5px;
@@ -365,7 +382,8 @@ body[data-perfil="docencia"] [data-perfil]:not([data-perfil~="docencia"]) {
 #sec-formacao { order: 3; }
 #sec-ensino { order: 4; }
 #sec-competencias { order: 5; }
-#sec-idiomas { order: 6; }
+#sec-certificacoes { order: 6; }
+#sec-idiomas { order: 7; }
 
 body[data-perfil="dados"] #sec-projetos { order: 1; }
 body[data-perfil="dados"] #sec-experiencia { order: 2; }
@@ -397,22 +415,28 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
 
 /* ---------- Impressão / Salvar como PDF ---------- */
 @media print {
-    @page { size: A4; margin: 14mm 14mm 16mm 14mm; }
+    @page { size: A4; margin: 12mm 14mm 12mm 14mm; }
     :root {
         --paper: #fff; --bg: #fff; --ink: #000; --ink-2: #333; --ink-3: #555;
         --line: #ccc; --accent: #2d124d; --accent-2: #a3004f; --chip: #f1ecf8;
     }
-    body { background: #fff; font-size: 10.5pt; line-height: 1.4; }
+    body { background: #fff; font-size: 9.7pt; line-height: 1.32; }
     .toolbar, .skip-link, .toast, .footer-note, .no-print { display: none !important; }
     .sheet { border: none; margin: 0; max-width: none; padding: 0; }
     h1 { font-size: 22pt; }
     .headline { font-size: 12pt; }
     h2 { font-size: 9.5pt; margin-bottom: 6px; }
     h3 { font-size: 11pt; }
-    section.cv-section { padding-top: 12px; }
-    .item { break-inside: avoid; margin-bottom: 9px; }
+    section.cv-section { padding-top: 10px; }
+    .item { break-inside: avoid; margin-bottom: 7px; }
     .contacts a { border: none; }
-    .chips li { border: 1px solid #ddd; }
+    .chips { gap: 0; }
+    .chips li { background: none; border-radius: 0; padding: 0; font-size: 10pt; }
+    .chips li + li::before { content: '\00a0·\00a0'; color: #777; }
+    .skill h3 { margin-bottom: 2px; }
+    .compact li { margin-bottom: 1px; }
+    .item ul { margin-top: 2px; }
+    .item li { margin-bottom: 0; }
     a { color: inherit; text-decoration: none; }
     .skills { gap: 8px 20px; }
 }
@@ -468,30 +492,19 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
         <section class="cv-section" id="sec-resumo" aria-labelledby="h-resumo">
             <h2 id="h-resumo">Resumo</h2>
             <p class="summary" data-perfil="completo">
-                Profissional de computação que une dados, inteligência artificial e educação. Tem experiência em engenharia de dados (SQL, Python e data lake na AWS), pesquisa IA para auxiliar pessoas com deficiência visual no mestrado da UFSM e atua como professora de informática e formadora de professores.
+                Profissional de tecnologia e educação. Pesquisou inteligência artificial pelo CNPq de 2020 a 2025, com projetos de visão computacional e processamento de linguagem natural, e hoje pesquisa IA para auxiliar pessoas com deficiência visual no mestrado da UFSM. Tem experiência em engenharia de dados na nuvem, é licenciada em Informática, já lecionou na educação básica e forma professores da rede municipal.
             </p>
             <p class="summary" data-perfil="dados">
-                Engenheira de dados com experiência em modelagem com SQL, Python e data lake na AWS (S3, EC2) para alimentar dashboards de gestão. Desenvolve projetos de machine learning e visão computacional, da limpeza dos dados à comparação de modelos, e pesquisa deep learning no mestrado em Ciência da Computação da UFSM.
+                Profissional de dados e IA, com especialização em Ciência de Dados e Big Data Analytics (UNISC) e certificações Google Cloud. Na Compass UOL, projetou arquiteturas em nuvem para soluções de inteligência artificial. Pesquisou IA pelo CNPq de 2020 a 2025, com visão computacional e processamento de linguagem natural, e hoje pesquisa deep learning no mestrado em Ciência da Computação da UFSM.
             </p>
             <p class="summary" data-perfil="docencia">
-                Professora de computação e mestranda em Ciência da Computação na UFSM, com pesquisa em IA para auxiliar pessoas com deficiência visual. Leciona lógica e pensamento computacional no ensino médio, forma professores da rede municipal em oficinas de formação continuada e é autora do guia IA pra Prof. Traz para a sala de aula a experiência prática em engenharia de dados.
+                Professora licenciada em Informática e mestranda em Ciência da Computação na UFSM. Lecionou informática no ensino médio da rede estadual e nos anos finais do ensino fundamental, foi tutora de oficinas de inclusão digital e monitora de três disciplinas na graduação. Como pesquisadora de IA pelo CNPq, apresentou 15 trabalhos em eventos e ministrou 3 palestras em institutos federais. Forma professores da rede municipal e é autora do guia IA pra Prof.
             </p>
         </section>
 
         <!-- EXPERIÊNCIA -->
         <section class="cv-section" id="sec-experiencia" aria-labelledby="h-exp">
             <h2 id="h-exp">Experiência</h2>
-
-            <div class="item" data-perfil="completo docencia dados">
-                <div class="item-head">
-                    <h3>Professora de informática <span class="org">· Seduc-RS</span></h3>
-                    <span class="when">2026 – atual</span>
-                </div>
-                <ul>
-                    <li>Leciona disciplinas do novo ensino médio que preparam estudantes para o curso técnico em informática, em três turmas de 1º ano.</li>
-                    <li>Conteúdos: lógica, pensamento computacional e introdução a projetos.</li>
-                </ul>
-            </div>
 
             <div class="item" data-perfil="completo docencia">
                 <div class="item-head">
@@ -506,6 +519,17 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
 
             <div class="item" data-perfil="completo docencia dados">
                 <div class="item-head">
+                    <h3>Professora de informática <span class="org">· E. E. Antonio Vicente da Fontoura (Seduc-RS)</span></h3>
+                    <span class="when">abr. – jun. 2026</span>
+                </div>
+                <ul>
+                    <li>Preparou estudantes do ensino médio para o curso técnico em informática, em três turmas de 1º ano.</li>
+                    <li>Conteúdos: lógica, pensamento computacional e introdução a projetos.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo docencia dados">
+                <div class="item-head">
                     <h3>Pesquisadora de mestrado <span class="org">· UFSM</span></h3>
                     <span class="when">abr. 2025 – atual</span>
                 </div>
@@ -515,22 +539,60 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                 </ul>
             </div>
 
-            <div class="item" data-perfil="completo dados">
+            <div class="item" data-perfil="completo docencia">
                 <div class="item-head">
-                    <h3>Engenheira de dados trainee <span class="org">· Compass UOL</span></h3>
-                    <span class="when">2019 – 2020</span>
+                    <h3>Estágio de docência em informática <span class="org">· Escolas Pedro Lovato e Teófilo Teodoro Streck</span></h3>
+                    <span class="when">abr. – dez. 2025</span>
                 </div>
                 <ul>
-                    <li>Modelou dados com SQL e participou do gerenciamento de um data lake na AWS (S3 e EC2).</li>
-                    <li>O data lake alimentava dashboards de gestão interna com indicadores de colaboradores.</li>
+                    <li>Lecionou nos anos finais do ensino fundamental, com conteúdos de segurança da computação alinhados à BNCC.</li>
                 </ul>
             </div>
 
             <div class="item" data-perfil="completo docencia dados">
                 <div class="item-head">
-                    <h3>Bolsista de iniciação científica em IA <span class="org">· CNPq</span></h3>
+                    <h3>Pesquisadora de inteligência artificial <span class="org">· CNPq</span></h3>
+                    <span class="when">jul. 2020 – jan. 2025</span>
                 </div>
-                <p>Pesquisa em inteligência artificial durante a graduação.</p>
+                <ul>
+                    <li>Desenvolveu e aplicou projetos de visão computacional e processamento de linguagem natural.</li>
+                    <li>Apresentou 15 trabalhos em eventos e ministrou 3 palestras em institutos federais.</li>
+                    <li>Recebeu menções honrosas na IV e na V Mostra de Extensão, Ciência e Tecnologia da UNISC.</li>
+                    <li data-perfil="completo docencia">Foi monitora de 3 disciplinas da graduação em Ciência da Computação.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo docencia dados">
+                <div class="item-head">
+                    <h3>Engenheira de dados trainee <span class="org">· Compass UOL</span></h3>
+                    <span class="when">dez. 2019 – jul. 2020</span>
+                </div>
+                <ul>
+                    <li>Projetou arquiteturas em nuvem para soluções de inteligência artificial.</li>
+                    <li data-perfil="completo dados">Modelou dados com SQL e participou do gerenciamento de um data lake na AWS (S3 e EC2), que alimentava dashboards de indicadores internos.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3>Tutora de informática <span class="org">· Projeto UNISC Inclusão Digital</span></h3>
+                    <span class="when">mai. – nov. 2019</span>
+                </div>
+                <ul>
+                    <li>Ministrou oficinas de robótica, Excel e informática básica para públicos variados.</li>
+                </ul>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Outras experiências</h3>
+                </div>
+                <ul class="compact">
+                    <li><span><b>Agente administrativo</b> <span class="org">· Prefeitura de Novo Cabrais · concurso público, aprovada em 10º lugar</span></span><span class="when">jan. 2025 – abr. 2026</span></li>
+                    <li><span><b>Estagiária de assessoria de imprensa</b> <span class="org">· Prefeitura de Novo Cabrais</span></span><span class="when">jun. 2024 – jan. 2025</span></li>
+                    <li><span><b>Estagiária de marketing</b> <span class="org">· Analítica 3M e Fortalk</span></span><span class="when">mai. – jun. 2024</span></li>
+                    <li><span><b>Estagiária de customer success</b> <span class="org">· RKSAM</span></span><span class="when">ago. – dez. 2023</span></li>
+                </ul>
             </div>
         </section>
 
@@ -570,28 +632,58 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
             <div class="item">
                 <div class="item-head">
                     <h3>Mestrado em Ciência da Computação <span class="org">· UFSM</span></h3>
-                    <span class="when">2025 – 2027 (previsto)</span>
+                    <span class="when">previsão: 2027</span>
                 </div>
                 <p>Dissertação: inteligência artificial para auxílio de pessoas com deficiência visual.</p>
             </div>
 
-            <div class="item">
+            <div class="item" data-perfil="completo docencia">
                 <div class="item-head">
-                    <h3>Graduação em Ciência da Computação <span class="org">· UNISC</span></h3>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-head">
-                    <h3>Graduações em Administração e em Marketing <span class="org">· UNISC</span></h3>
+                    <h3>Formação pedagógica em Matemática</h3>
+                    <span class="when">previsão: 2027</span>
                 </div>
             </div>
 
             <div class="item" data-perfil="completo docencia">
                 <div class="item-head">
-                    <h3>Pós-graduações em educação</h3>
+                    <h3>Licenciatura em Informática <span class="org">· UNIASSELVI</span></h3>
+                    <span class="when">2026</span>
                 </div>
-                <p>Robótica educacional · Tecnologias educacionais · Atendimento educacional especializado (AEE) · Gestão escolar</p>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3>Especialização em Robótica Educacional <span class="org">· Líbano Educacional</span></h3>
+                    <span class="when">2026</span>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Especialização em Ciência de Dados e Big Data Analytics <span class="org">· UNISC</span></h3>
+                    <span class="when">2025</span>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Bacharelado em Administração <span class="org">· UNISC</span></h3>
+                    <span class="when">2025</span>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Bacharelado em Ciência da Computação <span class="org">· UNISC</span></h3>
+                    <span class="when">2024</span>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Tecnologia em Marketing <span class="org">· UNISC</span></h3>
+                    <span class="when">2023</span>
+                </div>
             </div>
         </section>
 
@@ -607,9 +699,9 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                 <p>E-book de autoria própria sobre IA na escola: fundamentos, ética e LGPD, prompts prontos para planejamento, materiais e AEE. Tem versão interativa on-line.</p>
             </div>
 
-            <div class="item">
+            <div class="item" data-perfil="docencia">
                 <div class="item-head">
-                    <h3>Áreas que leciono</h3>
+                    <h3>Disciplinas que posso lecionar</h3>
                 </div>
                 <p>Lógica de programação e pensamento computacional · Programação em Python · Banco de dados e SQL · Ciência de dados e machine learning · Organização e arquitetura de computadores · Tecnologia na educação</p>
             </div>
@@ -644,6 +736,20 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
                     </ul>
                 </div>
             </div>
+        </section>
+
+        <!-- CERTIFICAÇÕES -->
+        <section class="cv-section" id="sec-certificacoes" aria-labelledby="h-cert">
+            <h2 id="h-cert">Certificações e cursos</h2>
+            <ul class="compact cert-list">
+                <li><span>Google Cloud Computing Foundations <span class="org">· Google</span></span><span class="when">2025</span></li>
+                <li><span>Google Cloud Data Analytics <span class="org">· Google</span></span><span class="when">2025</span></li>
+                <li data-perfil="completo dados"><span>Google Analytics 4 <span class="org">· Google</span></span><span class="when">2025</span></li>
+                <li data-perfil="completo dados"><span>Google Agile Essentials <span class="org">· Google</span></span><span class="when">2025</span></li>
+                <li><span>Redes Neurais <span class="org">· UNISC</span></span><span class="when">2023</span></li>
+                <li data-perfil="completo dados"><span>Gestão de projetos <span class="org">· Veduca</span></span><span class="when">2023</span></li>
+                <li data-perfil="completo dados"><span>Formação SQL com MySQL Server <span class="org">· Alura</span></span><span class="when">2019</span></li>
+            </ul>
         </section>
 
         <!-- IDIOMAS -->
