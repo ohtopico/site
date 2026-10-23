@@ -1,28 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <title>Paint</title>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        body { background-color: #c0c0c0; font-family: 'Press Start 2P', cursive; margin: 0; display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
-        .toolbar { display: flex; align-items: center; padding: 10px; background: #c0c0c0; border: 2px outset #ffffff; gap: 10px; margin: 10px; flex-wrap: wrap; justify-content: center; }
-        .tool-group { display: flex; align-items: center; gap: 5px; font-size: 8px; }
-        .cor-btn { width: 16px; height: 16px; border: 2px inset #000; cursor: pointer; }
-        button, select { font-family: 'Press Start 2P', cursive; font-size: 8px; padding: 4px; border: 2px outset #ffffff; background: #c0c0c0; cursor: pointer; }
-        button:active { border-style: inset; }
-        #canvas { background: #ffffff; border: 2px inset #000; cursor: crosshair; flex-grow: 1; width: 95vw; min-height: 0; touch-action: none; margin-bottom: 10px; }
-        @media (max-width: 600px) {
-            .toolbar { margin: 6px; padding: 6px; gap: 8px; }
-            .cor-btn { width: 24px; height: 24px; }
-            button, select { font-size: 9px; padding: 8px; }
+    :root {
+        --paper: #ffffff; --paper-2: #f4f4f2; --pill: #efefed; --pill-2: #e2e2df;
+        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #7a7a7a; --line: #d9d9d6;
+        --accent: #1f5cff; --accent-soft: #e6edff;
+        --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+        --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+            --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+            --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+            --accent: #7ea2ff; --accent-soft: #1d2747;
         }
-    </style>
+    }
+    :root[data-theme="dark"] {
+        --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+        --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+        --accent: #7ea2ff; --accent-soft: #1d2747;
+    }
+
+        body { background: var(--paper-2); color: var(--ink); font-family: var(--body); margin: 0; display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
+        .toolbar { display: flex; align-items: center; padding: 8px 14px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 99px; gap: 14px; margin: 10px; flex-wrap: wrap; justify-content: center; }
+        .tool-group { display: flex; align-items: center; gap: 6px; font: 800 12px var(--display); letter-spacing: .1em; text-transform: uppercase; }
+        .cor-btn { width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; cursor: pointer; }
+        .cor-btn:hover { transform: scale(1.12); }
+        input[type="color"] { width: 30px; height: 26px; border: 1.5px solid var(--ink); border-radius: 8px; padding: 0; background: var(--paper); cursor: pointer; }
+        button, select { font: 500 13px var(--body); padding: 5px 14px; border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); color: var(--ink); cursor: pointer; min-height: 32px; }
+        button:hover { background: var(--ink); color: var(--paper); }
+        #canvas { background: #ffffff; border: 1.5px solid var(--ink); border-radius: 16px; cursor: crosshair; flex-grow: 1; width: calc(100vw - 20px); min-height: 0; touch-action: none; margin-bottom: 10px; }
+        @media (max-width: 600px) {
+            .toolbar { margin: 6px; padding: 8px; gap: 10px; border-radius: 22px; }
+            .cor-btn { width: 28px; height: 28px; }
+            button, select { min-height: 40px; }
+        }
+</style>
 </head>
 <body>
     <div class="toolbar">
         <div class="tool-group">
-            <span>COR:</span>
+            <span>Cor</span>
             <div class="cor-btn" style="background: #ff0000" onclick="setCor('#ff0000')"></div>
             <div class="cor-btn" style="background: #ff00ff" onclick="setCor('#ff00ff')"></div>
             <div class="cor-btn" style="background: #00ffff" onclick="setCor('#00ffff')"></div>
@@ -32,7 +59,7 @@
             <input type="color" onchange="setCor(this.value)">
         </div>
         <div class="tool-group">
-            <span>PINCEL:</span>
+            <span>Pincel</span>
             <select id="tipoPincel" onchange="tipoPincel = this.value">
                 <option value="round">Redondo</option>
                 <option value="square">Quadrado</option>
@@ -43,8 +70,8 @@
                 <option value="spray">Spray</option>
             </select>
         </div>
-        <button onclick="limpar()">CLEAR</button>
-        <button onclick="salvar()">SAVE</button>
+        <button onclick="limpar()">Limpar</button>
+        <button onclick="salvar()">Salvar</button>
     </div>
     <canvas id="canvas"></canvas>
 
@@ -137,5 +164,11 @@
             link.click();
         }
     </script>
+
+<script>
+    window.addEventListener('message', e => {
+        if (e.origin === location.origin && e.data && e.data.tipo === 'tema') document.documentElement.dataset.theme = e.data.tema;
+    });
+</script>
 </body>
 </html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de aula · Material didático | ohtopico</title>
+<meta name="description" content="Plano de aula alinhado à BNCC, com objetivos, etapas, avaliação e sugestões de acessibilidade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 20px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .doc h2 { font-size: 26px; margin-top: 34px; }
+  .habs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .habs li { display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: start; font-size: 15px; }
+  .doc ul.plain { padding-left: 20px; margin: 0; }
+  .doc ul.plain li { margin-bottom: 6px; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+  .timeline li { position: relative; padding: 0 0 22px 24px; }
+  .timeline li::before { content: ''; position: absolute; left: -8px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .timeline .t { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .timeline strong { display: block; font-size: 18px; }
+  .timeline p { margin: 4px 0 0; color: var(--ink-2); }
+  .tot { font-size: 14px; color: var(--ink-2); }
+  @media print {
+    .doc { padding: 0; }
+    .meta div, .panel { border-color: #000; }
+    .timeline li { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc"></main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const id = new URLSearchParams(location.search).get('id');
+  const r = REC[id], p = PLANOS[id];
+  const doc = document.getElementById('doc');
+  if (!r || !p) {
+    doc.innerHTML = `<h1>Plano não encontrado</h1><p><a href="professor.html">Ver todos os planos de aula</a></p>`;
+    return;
+  }
+  document.title = `${r.titulo} · Plano de aula | ohtopico`;
+  const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
+  doc.innerHTML = `
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">${esc(r.titulo)}</h1>
+    <p class="muted">${esc(r.resumo)}</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>${r.comp.map(c => COMPONENTES[c].nome).join(' + ')}</div>
+      <div><span>Ano</span>${anosTxt(r.anos)}</div>
+      <div><span>Duração</span>${esc(p.duracao)}</div>
+    </div>
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain">${p.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain">${p.materiais.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: ${minutos} minutos.</p>
+    <ol class="timeline">${p.etapas.map(([t, tit, txt]) => `<li><span class="t">${esc(t)}</span><strong>${esc(tit)}</strong><p>${esc(txt)}</p></li>`).join('')}</ol>
+
+    <h2>Avaliação</h2>
+    <p>${esc(p.avaliacao)}</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">${esc(p.inclusao)}</div>
+
+    <h2 class="no-print">Materiais deste plano</h2>
+    <div class="related no-print">${p.recursos.map(i => REC[i]).map(o => `
+      <a class="card" href="${recUrl(o)}">
+        <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>
+        <strong>${esc(o.titulo)}</strong>
+        <span class="small muted">${esc(o.resumo)}</span>
+      </a>`).join('')}</div>`;
+})();
+</script>
+</body>
+</html>

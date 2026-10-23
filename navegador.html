@@ -4,102 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ohtopico busca</title>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
     :root {
-        --cinza: #c0c0c0;
-        --cinza-claro: #dfdfdf;
-        --sombra: #808080;
-        --azul: #000080;
-        --rosa: #ff007f;
-        --roxo: #2d124d;
-        --link: #1a0dab;
-        --visitado: #681da8;
+        --paper: #ffffff; --paper-2: #f4f4f2; --pill: #efefed; --pill-2: #e2e2df;
+        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #7a7a7a; --line: #d9d9d6;
+        --accent: #1f5cff; --accent-soft: #e6edff; --mark: #fff36b;
+        --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+        --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+            --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+            --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+            --accent: #7ea2ff; --accent-soft: #1d2747; --mark: #5c5200;
+        }
+    }
+    :root[data-theme="dark"] {
+        --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+        --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+        --accent: #7ea2ff; --accent-soft: #1d2747; --mark: #5c5200;
     }
 
     * { box-sizing: border-box; }
-
     html, body { height: 100%; margin: 0; }
 
     body {
-        background: var(--cinza);
+        background: var(--paper);
+        color: var(--ink);
         display: flex;
         flex-direction: column;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 14px;
+        font-family: var(--body);
+        font-size: 15px;
     }
 
-    /* Barra de ferramentas do navegador */
+    button, input { color: inherit; font: inherit; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+
+    /* Barra do navegador */
     .ferramentas {
         align-items: center;
-        border-bottom: 1px solid var(--sombra);
+        background: var(--pill);
+        border-bottom: 1.5px solid var(--ink);
         display: flex;
-        gap: 4px;
-        padding: 4px 6px;
+        gap: 6px;
+        padding: 8px 10px;
     }
 
     .btn98 {
-        background: var(--cinza);
-        border: 2px solid;
-        border-color: #fff var(--sombra) var(--sombra) #fff;
-        color: #000;
-        cursor: pointer;
-        font: bold 13px 'Courier New', monospace;
-        min-height: 28px;
-        padding: 2px 9px;
-    }
-
-    .btn98:active { border-color: var(--sombra) #fff #fff var(--sombra); }
-    .btn98:disabled { color: #8a8a8a; cursor: default; }
-    .btn98:focus-visible, input:focus-visible, a:focus-visible, button:focus-visible {
-        outline: 2px dotted #000;
-        outline-offset: 1px;
-    }
-
-    .endereco {
         align-items: center;
-        display: flex;
-        flex: 1;
-        gap: 6px;
-        min-width: 0;
-        padding: 4px 6px;
+        background: var(--paper);
+        border: 1.5px solid var(--ink);
+        border-radius: 99px;
+        cursor: pointer;
+        display: inline-flex;
+        font-size: 14px;
+        font-weight: 500;
+        justify-content: center;
+        min-height: 34px;
+        min-width: 34px;
+        padding: 3px 14px;
+        white-space: nowrap;
     }
 
-    .endereco label { white-space: nowrap; }
+    .btn98:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+    .btn98:disabled { border-color: var(--line); color: var(--ink-3); cursor: default; }
+    #voltar, #avancar, #inicio { padding: 3px 0; width: 34px; }
 
+    .endereco { align-items: center; display: flex; flex: 1; gap: 6px; min-width: 0; }
+    .endereco label { color: var(--ink-2); font-size: 13px; white-space: nowrap; }
     .endereco input {
-        background: #fff;
-        border: 2px inset #fff;
+        background: var(--paper);
+        border: 1.5px solid var(--line);
+        border-radius: 99px;
         flex: 1;
-        font: 13px 'Courier New', monospace;
+        font-size: 14px;
+        min-height: 34px;
         min-width: 0;
-        padding: 4px 6px;
+        padding: 4px 14px;
     }
+    .endereco input:focus { border-color: var(--ink); outline: none; }
 
     .favoritos {
-        border-bottom: 1px solid var(--sombra);
+        border-bottom: 1.5px solid var(--line);
+        color: var(--ink-3);
         display: flex;
         flex-wrap: wrap;
         font-size: 13px;
-        gap: 2px 12px;
-        padding: 3px 8px 5px 8px;
+        gap: 2px 14px;
+        padding: 6px 14px;
     }
 
-    .favoritos a { color: #000; }
+    .favoritos a { color: var(--ink-2); text-decoration: none; }
+    .favoritos a:hover { color: var(--ink); text-decoration: underline; }
 
-    /* Área da página */
-    #pagina {
-        background: #fff;
-        border: 2px inset #fff;
-        flex: 1;
-        margin: 0 5px 5px 5px;
-        overflow-y: auto;
-        padding: 18px 22px;
-    }
+    #pagina { flex: 1; overflow-y: auto; padding: 22px 26px; }
+    #pagina:focus { outline: none; }
 
     .status {
-        border-top: 1px solid #fff;
-        font-size: 12px;
-        padding: 2px 8px 4px 8px;
+        background: var(--pill);
+        border-top: 1.5px solid var(--line);
+        color: var(--ink-2);
+        font-size: 12.5px;
+        padding: 4px 14px;
     }
 
     /* Página inicial da busca */
@@ -107,142 +117,129 @@
         align-items: center;
         display: flex;
         flex-direction: column;
-        gap: 14px;
-        margin: 4vh auto 0 auto;
+        gap: 16px;
+        margin: 5vh auto 0 auto;
         max-width: 560px;
         text-align: center;
     }
 
     .logo {
-        font: bold 46px 'Trebuchet MS', Verdana, sans-serif;
-        letter-spacing: -1px;
-        line-height: 1;
+        color: var(--ink);
+        font: 800 44px/1 var(--display);
+        letter-spacing: .12em;
         margin: 0;
+        text-transform: uppercase;
     }
 
-    .logo span:nth-child(1) { color: var(--rosa); }
-    .logo span:nth-child(2) { color: #3333ff; }
-    .logo span:nth-child(3) { color: #00b89c; }
-    .logo span:nth-child(4) { color: #ff9900; }
-    .logo span:nth-child(5) { color: var(--rosa); }
-    .logo span:nth-child(6) { color: #3333ff; }
-    .logo span:nth-child(7) { color: #00b89c; }
     .logo small {
-        color: var(--roxo);
+        color: var(--ink-2);
         display: block;
-        font: bold 15px 'Courier New', monospace;
-        letter-spacing: 6px;
-        margin-top: 4px;
+        font: 400 14px var(--display);
+        letter-spacing: .3em;
+        margin-top: 8px;
     }
 
-    .busca {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+    .busca { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+
+    .busca input, .barra-busca input {
+        background: var(--paper);
+        border: 1.5px solid var(--ink);
+        border-radius: 99px;
+        font-size: 16px;
+        min-height: 46px;
+        padding: 8px 20px;
         width: 100%;
     }
 
-    .busca input {
-        border: 2px inset #fff;
-        font: 16px 'Courier New', monospace;
-        padding: 8px 10px;
-        width: 100%;
-    }
-
+    .busca input:focus, .barra-busca input:focus { box-shadow: 4px 4px 0 var(--ink); outline: none; }
     .busca .botoes { display: flex; gap: 8px; justify-content: center; }
+    .busca .btn98[type="submit"], .barra-busca .btn98 { background: var(--ink); color: var(--paper); }
+    .busca .btn98[type="submit"]:hover, .barra-busca .btn98:hover { background: var(--ink-2); }
 
-    .sugestoes { color: #444; font-size: 13px; line-height: 1.8; }
+    .sugestoes { color: var(--ink-3); font-size: 13.5px; line-height: 2.2; }
     .sugestoes button {
-        background: none;
+        background: var(--pill);
         border: none;
-        color: var(--link);
+        border-radius: 99px;
+        color: var(--ink);
         cursor: pointer;
-        font: inherit;
-        padding: 0 3px;
-        text-decoration: underline;
+        margin: 0 2px;
+        padding: 3px 12px;
     }
+    .sugestoes button:hover { background: var(--ink); color: var(--paper); }
 
-    .rodape-home { color: #666; font-size: 12px; margin-top: 12px; }
+    .rodape-home { color: var(--ink-3); font-size: 13px; margin-top: 6px; }
 
     /* Resultados */
     .barra-busca {
         align-items: center;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1.5px solid var(--line);
         display: flex;
         flex-wrap: wrap;
-        gap: 8px 14px;
-        margin: -4px 0 12px 0;
-        padding-bottom: 12px;
+        gap: 10px 16px;
+        margin: -4px 0 14px 0;
+        padding-bottom: 16px;
     }
 
-    .barra-busca .logo { font-size: 26px; }
-    .barra-busca form { display: flex; flex: 1; gap: 6px; min-width: 220px; }
-    .barra-busca input { border: 2px inset #fff; flex: 1; font: 15px 'Courier New', monospace; min-width: 0; padding: 5px 8px; }
+    .barra-busca .logo { font-size: 22px; }
+    .barra-busca form { display: flex; flex: 1; gap: 8px; min-width: 220px; }
+    .barra-busca input { flex: 1; font-size: 15px; min-height: 40px; min-width: 0; padding: 6px 16px; }
 
-    .contagem { color: #555; font-size: 13px; margin: 0 0 14px 0; }
+    .contagem { color: var(--ink-3); font-size: 13px; margin: 0 0 12px 0; }
 
-    .filtros { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-    .filtros button[aria-pressed="true"] {
-        background: var(--roxo);
-        border-color: #6b4f8f #12001f #12001f #6b4f8f;
-        color: #fff;
-    }
+    .filtros { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .filtros .btn98 { font-size: 13px; min-height: 30px; padding: 2px 12px; }
+    .filtros button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 
     ol.resultados { list-style: none; margin: 0; padding: 0; }
+    .resultado { margin-bottom: 20px; max-width: 680px; }
 
-    .resultado { margin-bottom: 18px; max-width: 680px; }
-
-    .resultado .onde { color: #006621; font-size: 13px; }
+    .resultado .onde {
+        color: var(--ink-3);
+        font: 400 12px var(--display);
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
 
     .resultado a.titulo {
-        color: var(--link);
+        color: var(--accent);
         display: inline-block;
-        font: 18px Arial, Helvetica, sans-serif;
-        margin: 1px 0 2px 0;
+        font-size: 18px;
+        font-weight: 500;
+        margin: 2px 0 3px 0;
+        text-underline-offset: 3px;
     }
 
-    .resultado a.titulo:visited { color: var(--visitado); }
+    .resultado p { color: var(--ink-2); font-size: 14.5px; line-height: 1.5; margin: 0; }
 
-    .resultado p {
-        color: #333;
-        font: 14px/1.45 Arial, Helvetica, sans-serif;
-        margin: 0;
-    }
+    mark { background: var(--mark); border-radius: 3px; color: inherit; padding: 0 2px; }
 
-    mark { background: #fff36b; color: inherit; padding: 0 1px; }
-
-    .vazio { font: 15px/1.6 Arial, Helvetica, sans-serif; max-width: 560px; }
+    .vazio { color: var(--ink-2); line-height: 1.6; max-width: 560px; }
 
     /* Poemas */
-    .poemas h1 { color: var(--roxo); font: bold 26px 'Courier New', monospace; margin: 0 0 4px 0; }
-    .poemas .sub { color: #666; margin: 0 0 18px 0; }
+    .poemas h1 { font: 800 28px var(--display); letter-spacing: .12em; margin: 0 0 4px 0; text-transform: uppercase; }
+    .poemas .sub { color: var(--ink-3); margin: 0 0 20px 0; }
 
     .poema {
-        background: #fff;
-        border: 2px outset var(--cinza);
+        border: 1.5px solid var(--ink);
+        border-radius: 22px;
         margin-bottom: 18px;
         max-width: 560px;
-        padding: 14px 18px;
+        padding: 18px 24px;
         scroll-margin-top: 12px;
     }
 
-    .poema h2 { color: var(--rosa); font: bold 17px 'Courier New', monospace; margin: 0 0 2px 0; }
-    .poema .data { color: #777; font-size: 12px; margin: 0 0 10px 0; }
-    .poema .verso { font: 15px/1.6 Georgia, 'Times New Roman', serif; white-space: pre-line; }
-    .poema.destaque { box-shadow: 0 0 0 3px #fff36b; }
+    .poema h2 { font: 800 15px var(--display); letter-spacing: .12em; margin: 0 0 2px 0; text-transform: uppercase; }
+    .poema .data { color: var(--ink-3); font-size: 12.5px; margin: 0 0 12px 0; }
+    .poema .verso { font: 16px/1.65 Georgia, 'Times New Roman', serif; white-space: pre-line; }
+    .poema.destaque { box-shadow: 6px 6px 0 var(--ink); }
 
-    .sr-only {
-        clip: rect(0 0 0 0);
-        height: 1px;
-        overflow: hidden;
-        position: absolute;
-        width: 1px;
-    }
+    .sr-only { clip: rect(0 0 0 0); height: 1px; overflow: hidden; position: absolute; width: 1px; }
 
     @media (max-width: 560px) {
         .endereco label, .favoritos .opcional { display: none; }
-        #pagina { padding: 14px 12px; }
-        .logo { font-size: 36px; }
+        #pagina { padding: 16px 14px; }
+        .logo { font-size: 34px; }
     }
 </style>
 </head>
@@ -317,10 +314,7 @@ feita em panela de vó.</div>
     const dentroDoSite = window.parent !== window;
 
     // Janelas da área de trabalho que podem ser abertas pelos resultados
-    const JANELAS = {
-        'win-leiame': 'Leia-me', 'win-ensino': 'Ensino', 'win-projetos': 'Projetos',
-        'win-diario': 'Atualizações', 'win-nuvem': 'Interesses'
-    };
+    const JANELAS = { 'win-leiame': 'Leia-me', 'win-diario': 'Atualizações', 'win-nuvem': 'Interesses' };
 
     const SUGESTOES = ['Python', 'Arduino', 'LGPD', 'prompts', 'oficina', 'visão computacional', 'Scratch', 'poema'];
 
@@ -352,20 +346,13 @@ feita em panela de vó.</div>
         // Página inicial: janelas profissionais
         try {
             const d = await lerPagina('index.html');
-            ['win-leiame', 'win-ensino', 'win-diario'].forEach(id => {
+            ['win-leiame', 'win-diario'].forEach(id => {
                 const w = d.getElementById(id);
                 if (!w) return;
-                const corpo = w.querySelector('.window-content');
+                const corpo = w.querySelector('.janela-conteudo');
                 docs.push({
                     titulo: JANELAS[id], onde: 'Área de trabalho › ' + JANELAS[id],
                     texto: limparTexto(semScripts(corpo).textContent), janela: id
-                });
-            });
-            d.querySelectorAll('#win-projetos .project-card').forEach(card => {
-                docs.push({
-                    titulo: limparTexto(card.querySelector('h3').textContent.replace('★', '')),
-                    onde: 'Área de trabalho › Projetos',
-                    texto: limparTexto(semScripts(card).textContent), janela: 'win-projetos'
                 });
             });
         } catch (e) { console.warn('Não foi possível ler a página inicial', e); }
@@ -529,7 +516,7 @@ feita em panela de vó.</div>
             </form>`;
     }
 
-    const LOGO = '<span>o</span><span>h</span><span>t</span><span>o</span><span>p</span><span>i</span><span>c</span><span>o</span>';
+    const LOGO = 'ohtopico';
 
     function paginaInicial() {
         campoEndereco.value = 'ohtopico://busca';
@@ -538,7 +525,7 @@ feita em panela de vó.</div>
                 <h1 class="logo">${LOGO}<small>BUSCA</small></h1>
                 ${formularioBusca('', true)}
                 <p class="sugestoes">Experimente: ${SUGESTOES.map(s => `<button type="button" data-sugestao="${escapar(s)}">${escapar(s)}</button>`).join(' ')}</p>
-                <p class="rodape-home">Busca no leia-me, nos projetos, no currículo, no guia IA pra Prof e nos poemas.</p>
+                <p class="rodape-home">Busca no leia-me, no currículo, no guia IA pra Prof e nos poemas.</p>
             </div>`;
         ligarFormulario();
         pagina.querySelectorAll('[data-sugestao]').forEach(b => b.addEventListener('click', () => navegar({ pagina: 'busca', q: b.dataset.sugestao })));
@@ -679,6 +666,10 @@ feita em panela de vó.</div>
         e.preventDefault();
         navegar({ pagina: a.dataset.ir });
     }));
+
+    window.addEventListener('message', e => {
+        if (e.origin === location.origin && e.data && e.data.tipo === 'tema') document.documentElement.dataset.theme = e.data.tema;
+    });
 
     navegar({ pagina: 'inicio' });
 })();

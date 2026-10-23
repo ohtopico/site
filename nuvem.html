@@ -4,101 +4,101 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interesses</title>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
-    html, body {
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-        width: 100%;
+    :root {
+        --paper: #ffffff; --paper-2: #f4f4f2; --pill: #efefed; --pill-2: #e2e2df;
+        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #7a7a7a; --line: #d9d9d6;
+        --accent: #1f5cff; --accent-soft: #e6edff;
+        --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+        --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+            --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+            --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+            --accent: #7ea2ff; --accent-soft: #1d2747;
+        }
+    }
+    :root[data-theme="dark"] {
+        --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+        --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+        --accent: #7ea2ff; --accent-soft: #1d2747;
     }
 
+    html, body { height: 100%; margin: 0; overflow: hidden; padding: 0; width: 100%; }
+
     body {
-        animation: fundo 12s ease infinite;
-        background:
-            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.08) 3px),
-            linear-gradient(135deg, #ff00cc, #3333ff, #00ffcc);
-        background-size: 100% auto, 200% 200%;
-        font-family: 'Courier New', Courier, monospace;
+        background-color: var(--paper-2);
+        background-image: radial-gradient(var(--line) 1.2px, transparent 1.2px);
+        background-size: 22px 22px;
+        color: var(--ink);
+        font-family: var(--body);
         touch-action: none;
         user-select: none;
     }
 
-    @keyframes fundo {
-        0%, 100% { background-position: 0 0, 0% 50%; }
-        50% { background-position: 0 0, 100% 50%; }
-    }
-
     h1 {
-        color: #fff;
-        font-size: 26px;
-        left: 0;
-        letter-spacing: 6px;
-        margin: 0;
-        pointer-events: none;
-        position: absolute;
-        right: 0;
-        text-align: center;
-        text-shadow: 3px 3px 0 #00ffcc, 5px 5px 0 rgba(0,0,0,0.35);
-        top: 12px;
+        font: 800 20px var(--display);
+        left: 0; letter-spacing: .16em; margin: 0; pointer-events: none;
+        position: absolute; right: 0; text-align: center; text-transform: uppercase; top: 14px;
     }
 
-    svg {
-        height: 100%;
-        inset: 0;
-        position: absolute;
-        width: 100%;
-    }
+    svg { height: 100%; inset: 0; position: absolute; width: 100%; }
 
     line {
-        stroke: rgba(255, 255, 255, 0.55);
-        stroke-dasharray: 6 5;
-        stroke-width: 2;
-        transition: stroke 0.15s, stroke-width 0.15s, opacity 0.15s;
+        stroke: var(--ink-3);
+        stroke-dasharray: 5 5;
+        stroke-width: 1.5;
+        transition: stroke .15s, stroke-width .15s, opacity .15s;
     }
 
-    line.on { stroke: #fff36b; stroke-dasharray: none; stroke-width: 3.5; }
-    line.off { opacity: 0.15; }
+    line.on { stroke: var(--accent); stroke-dasharray: none; stroke-width: 3; }
+    line.off { opacity: .15; }
 
     .node {
-        background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.15));
-        border: 2px solid #fff;
-        border-bottom-color: #6c6c8a;
-        border-radius: 14px;
-        border-right-color: #6c6c8a;
-        box-shadow: 4px 4px 0 var(--c, #ff00cc), 8px 8px 16px rgba(0,0,0,0.35);
-        color: #fff;
+        background: var(--paper);
+        border: 1.5px solid var(--ink);
+        border-radius: 99px;
+        box-shadow: 3px 3px 0 var(--ink);
+        color: var(--ink);
         cursor: grab;
-        font: bold 13px 'Courier New', Courier, monospace;
+        font: 800 12.5px var(--display);
         left: 0;
-        padding: 9px 14px;
+        letter-spacing: .1em;
+        padding: 8px 16px;
         position: absolute;
-        text-shadow: 2px 2px 0 #000;
         text-transform: uppercase;
         top: 0;
         touch-action: none;
-        transition: opacity 0.15s, box-shadow 0.15s;
+        transition: opacity .15s, background .15s;
         white-space: nowrap;
-        backdrop-filter: blur(6px);
     }
 
     .node:active { cursor: grabbing; }
-    .node.off { opacity: 0.35; }
+    .node.off { opacity: .3; }
     .node.on, .node:focus-visible {
-        box-shadow: 4px 4px 0 #fff36b, 0 0 0 3px #fff36b, 8px 8px 18px rgba(0,0,0,0.4);
+        background: var(--ink);
+        box-shadow: 3px 3px 0 var(--accent);
+        color: var(--paper);
         outline: none;
         z-index: 2;
     }
 
     .legenda {
-        background: rgba(0, 0, 0, 0.55);
-        border: 2px solid #fff;
-        bottom: 10px;
-        color: #fff;
+        background: var(--paper);
+        border: 1.5px solid var(--ink);
+        border-radius: 99px;
+        bottom: 12px;
+        color: var(--ink-2);
         font-size: 13px;
         left: 50%;
         max-width: calc(100% - 24px);
-        padding: 6px 12px;
+        padding: 7px 16px;
         pointer-events: none;
         position: absolute;
         text-align: center;
@@ -106,22 +106,13 @@
         width: max-content;
     }
 
-    .sr-only {
-        clip: rect(0 0 0 0);
-        height: 1px;
-        overflow: hidden;
-        position: absolute;
-        width: 1px;
-    }
+    .sr-only { clip: rect(0 0 0 0); height: 1px; overflow: hidden; position: absolute; width: 1px; }
 
-    @media (prefers-reduced-motion: reduce) {
-        body { animation: none; }
-        line, .node { transition: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { line, .node { transition: none; } }
 </style>
 </head>
 <body>
-    <h1>INTERESSES</h1>
+    <h1>Interesses</h1>
     <svg id="arestas" aria-hidden="true"></svg>
     <div id="nos"></div>
     <p class="legenda" id="legenda" aria-live="polite">Arraste os interesses. Passe o mouse para ver as ligações.</p>
@@ -352,6 +343,12 @@
 
     desenhar();
     aquecer(1);
+</script>
+
+<script>
+    window.addEventListener('message', e => {
+        if (e.origin === location.origin && e.data && e.data.tipo === 'tema') document.documentElement.dataset.theme = e.data.tema;
+    });
 </script>
 </body>
 </html>

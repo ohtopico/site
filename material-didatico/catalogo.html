@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo · Material didático | ohtopico</title>
+<meta name="description" content="Catálogo de jogos, fichas para imprimir e planos de aula de Computação e Matemática para o 6º ao 9º ano, com filtros pelas habilidades da BNCC.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/catalogo.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  /* Cabeçalho */
+  .cat-head { padding: 40px 0 28px; border-bottom: 1.5px solid var(--ink); background:
+    radial-gradient(var(--line) 1.2px, transparent 1.5px) 0 0 / 18px 18px; }
+  .cat-head h1 { font-size: clamp(32px, 5vw, 50px); margin-bottom: 6px; }
+  .cat-head p { color: var(--ink-2); max-width: 640px; }
+  .search {
+    display: flex; align-items: center; gap: 10px; max-width: 720px; margin-top: 18px;
+    border: 1.5px solid var(--ink); border-radius: 99px; padding: 0 8px 0 20px; background: var(--paper);
+    min-height: 58px; box-shadow: 5px 5px 0 var(--ink);
+  }
+  .search:focus-within { box-shadow: 5px 5px 0 var(--accent); }
+  .search svg { width: 20px; height: 20px; flex: none; }
+  .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 17px; padding: 12px 0; }
+  .search .clear { border: 0; background: var(--pill); border-radius: 99px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; }
+  .quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; font-size: 14px; align-items: center; }
+  .quick span { color: var(--ink-2); }
+  .quick button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; }
+  .quick button:hover { border-style: solid; }
+
+  /* Layout */
+  .cat-layout > * { min-width: 0; }
+  .cat-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 32px; padding-top: 28px; padding-bottom: 60px; align-items: start; }
+  .cat-side { position: sticky; top: 76px; }
+  .cat-side summary { display: none; }
+  .fgroup { padding: 0 0 18px; margin-bottom: 18px; border-bottom: 1.5px solid var(--line); }
+  .fgroup:last-of-type { border-bottom: 0; }
+  .fgroup h2 { font-family: var(--body); font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); margin: 0 0 10px; }
+  .opt { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: none; padding: 7px 8px; border-radius: 12px; cursor: pointer; text-align: left; font-size: 15px; }
+  .opt:hover { background: var(--pill); }
+  .opt .box { width: 18px; height: 18px; border: 1.5px solid var(--ink); border-radius: 50%; flex: none; display: grid; place-items: center; }
+  .opt[aria-pressed="true"] { font-weight: 600; }
+  .opt[aria-pressed="true"] .box::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--ink); }
+  .opt .n { margin-left: auto; font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
+  .opt .dot { margin-left: -2px; }
+  .opt.sub { padding-left: 16px; font-size: 14px; }
+  .opt-label { font-size: 12px; font-weight: 600; color: var(--ink-3); margin: 8px 8px 2px; }
+  .years { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .years button { border: 1.5px solid var(--ink); background: var(--paper); border-radius: 12px; min-height: 42px; font-family: var(--display); font-weight: 800; font-size: 18px; cursor: pointer; }
+  .years button:hover { background: var(--pill); }
+  .years button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .reset { border: 0; background: none; color: var(--accent); text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px; }
+
+  /* Abas de tipo */
+  .tabs { min-width: 0; display: flex; gap: 4px; padding: 4px; border: 1.5px solid var(--ink); border-radius: 99px; width: fit-content; max-width: 100%; overflow-x: auto; background: var(--paper-2); }
+  .tabs button { border: 0; background: none; border-radius: 99px; padding: 8px 16px; font-size: 15px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+  .tabs button:hover { background: var(--pill-2); }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+  .tabs .n { font-size: 12px; opacity: .7; margin-left: 4px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .count { font-size: 14px; color: var(--ink-2); }
+
+  .hab-banner { display: flex; gap: 14px; align-items: flex-start; border: 1.5px solid var(--ink); border-radius: 20px; padding: 14px 16px; margin-bottom: 20px; background: var(--paper-2); }
+  .hab-banner .txt { flex: 1; font-size: 15px; }
+  .hab-banner .txt small { display: block; color: var(--ink-2); font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+  .hab-banner button { border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; width: 34px; height: 34px; cursor: pointer; flex: none; }
+
+  .group { margin-bottom: 40px; }
+  .group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .group-head h2 { font-size: 26px; margin: 0; }
+  .group-head h2 .n { font-family: var(--body); font-size: 14px; font-weight: 500; color: var(--ink-2); margin-left: 6px; }
+  .group-head button { border: 0; background: none; color: var(--ink); text-decoration: underline; cursor: pointer; font-size: 14px; }
+  .empty { border: 1.5px dashed var(--ink); border-radius: var(--radius); padding: 40px 24px; text-align: center; color: var(--ink-2); }
+  .empty .big { font-size: 40px; display: block; margin-bottom: 8px; }
+
+  @media (max-width: 900px) {
+    .cat-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .cat-side { position: static; border: 1.5px solid var(--ink); border-radius: 20px; padding: 0 16px; }
+    .cat-side summary { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; cursor: pointer; font-weight: 600; list-style: none; }
+    .cat-side summary::-webkit-details-marker { display: none; }
+    .cat-side summary::after { content: '▾'; }
+    .cat-side[open] summary::after { content: '▴'; }
+    .cat-side[open] summary { border-bottom: 1.5px solid var(--line); margin-bottom: 14px; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+
+<section class="cat-head">
+  <div class="wrap">
+    <span class="eyebrow">Catálogo</span>
+    <h1>Todos os materiais</h1>
+    <p>Jogos, fichas para imprimir e planos de aula de Computação e Matemática, do 6º ao 9º ano.</p>
+    <div class="search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <label class="sr-only" for="q">Buscar materiais</label>
+      <input id="q" type="search" placeholder="Busque um tema ou código da BNCC" autocomplete="off">
+      <button class="clear" type="button" id="q-clear" aria-label="Limpar busca" hidden>✕</button>
+    </div>
+    <div class="quick" id="quick"><span>Experimente:</span></div>
+  </div>
+</section>
+
+<main class="wrap cat-layout">
+  <details class="cat-side" id="side" open>
+    <summary id="side-sum">Filtros</summary>
+    <div class="fgroup"><h2>Componente</h2><div id="f-comp"></div></div>
+    <div class="fgroup"><h2>Ano</h2><div class="years" id="f-ano"></div></div>
+    <div class="fgroup"><h2>Eixo / unidade temática</h2><div id="f-eixo"></div></div>
+    <button class="reset" type="button" data-clear="all" id="reset" hidden>Limpar todos os filtros</button>
+  </details>
+
+  <div>
+    <div class="bar">
+      <div class="tabs" role="tablist" aria-label="Tipo de material" id="tabs"></div>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+    <div id="banner"></div>
+    <div id="results"></div>
+  </div>
+</main>
+
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('catalogo');
+  mdFooter();
+  const $ = s => document.querySelector(s);
+  const params = new URLSearchParams(location.search);
+  const state = {
+    q: params.get('q') || '',
+    comp: ['CO', 'MA'].includes(params.get('comp')) ? params.get('comp') : 'todos',
+    ano: Number(params.get('ano')) || 0,
+    tipo: ['jogo', 'ficha', 'plano'].includes(params.get('tipo')) ? params.get('tipo') : 'todos',
+    eixo: EIXOS[params.get('eixo')] ? params.get('eixo') : 'todos',
+    hab: (params.get('hab') || '').toUpperCase()
+  };
+  if (state.tipo === 'jogo') document.querySelector('.cat-head h1').textContent = 'Jogos';
+  $('#q').value = state.q;
+
+  const QUICK = ['frações', 'internet', 'algoritmo', 'segurança', 'EF06CO02'];
+  $('#quick').innerHTML += QUICK.map(t => `<button type="button" data-q="${t}">${t}</button>`).join('');
+
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  function matches(r, skip) {
+    if (skip !== 'comp' && state.comp !== 'todos' && !r.comp.includes(state.comp)) return false;
+    if (skip !== 'ano' && state.ano && !r.anos.includes(state.ano)) return false;
+    if (skip !== 'tipo' && state.tipo !== 'todos' && r.tipo !== state.tipo) return false;
+    if (skip !== 'eixo' && state.eixo !== 'todos' && !r.habs.some(c => HAB[c] && HAB[c].eixo === state.eixo)) return false;
+    if (state.hab && !r.habs.includes(state.hab)) return false;
+    if (state.q) {
+      const hay = norm([r.titulo, r.resumo, ...r.habs, ...r.habs.map(c => HAB[c] ? HAB[c].objeto + ' ' + HAB[c].texto : '')].join(' '));
+      if (!norm(state.q).split(/\s+/).filter(Boolean).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  }
+  const countFor = (key, val) => RECURSOS.filter(r => {
+    const saved = state[key]; state[key] = val; const ok = matches(r); state[key] = saved; return ok;
+  }).length;
+
+  function sidebar() {
+    const opt = (key, val, label, extra) => `<button class="opt${extra && extra.sub ? ' sub' : ''}" type="button" data-k="${key}" data-v="${val}" aria-pressed="${String(state[key]) === String(val)}">
+        <span class="box"></span>${extra && extra.dot ? `<span class="dot ${extra.dot}"></span>` : ''}${label}<span class="n">${countFor(key, val)}</span></button>`;
+    $('#f-comp').innerHTML = opt('comp', 'todos', 'Todos') + opt('comp', 'CO', 'Computação', { dot: 'co' }) + opt('comp', 'MA', 'Matemática', { dot: 'ma' });
+    $('#f-ano').innerHTML = [6, 7, 8, 9].map(a => `<button type="button" data-k="ano" data-v="${a}" aria-pressed="${state.ano === a}" aria-label="${a}º ano">${a}º</button>`).join('');
+    const comps = state.comp === 'todos' ? ['CO', 'MA'] : [state.comp];
+    $('#f-eixo').innerHTML = opt('eixo', 'todos', 'Todos') + comps.map(c =>
+      `<div class="opt-label">${COMPONENTES[c].nome}</div>` +
+      Object.entries(EIXOS).filter(([, e]) => e.comp === c).map(([k, e]) => opt('eixo', k, e.nome, { sub: true })).join('')).join('');
+    const nAtivos = [state.comp !== 'todos', state.ano, state.eixo !== 'todos', state.hab].filter(Boolean).length;
+    $('#side-sum').textContent = nAtivos ? `Filtros (${nAtivos} ativo${nAtivos > 1 ? 's' : ''})` : 'Filtros';
+    $('#reset').hidden = !(nAtivos || state.q || state.tipo !== 'todos');
+  }
+
+  function tabs() {
+    const t = [['todos', 'Todos'], ['jogo', '🎮 Jogos'], ['ficha', '🖨️ Fichas'], ['plano', '📋 Planos']];
+    $('#tabs').innerHTML = t.map(([v, l]) => `<button type="button" role="tab" data-k="tipo" data-v="${v}" aria-selected="${state.tipo === v}">${l}<span class="n">${countFor('tipo', v)}</span></button>`).join('');
+  }
+
+  function banner() {
+    if (!state.hab) { $('#banner').innerHTML = ''; return; }
+    const h = HAB[state.hab];
+    $('#banner').innerHTML = `<div class="hab-banner">
+      <span class="tag code ${h ? h.comp.toLowerCase() : ''}">${esc(state.hab)}</span>
+      <div class="txt"><small>Filtrando pela habilidade</small>${h ? esc(h.texto) : 'Código não encontrado na base.'}</div>
+      <button type="button" data-clear="hab" aria-label="Remover filtro de habilidade">✕</button>
+    </div>`;
+  }
+
+  function results() {
+    const list = RECURSOS.filter(r => matches(r));
+    $('#count').textContent = list.length === 1 ? '1 material' : `${list.length} materiais`;
+    if (!list.length) {
+      $('#results').innerHTML = `<div class="empty"><span class="big">🔍</span>Nenhum material com esses filtros ainda.<br><button class="reset" type="button" data-clear="all">Limpar filtros</button></div>`;
+      return;
+    }
+    const grid = arr => `<div class="rc-grid">${arr.map(r => mdCard(r, { codeButtons: true })).join('')}</div>`;
+    if (state.tipo !== 'todos' || list.length <= 6) { $('#results').innerHTML = grid(list); return; }
+    $('#results').innerHTML = ['jogo', 'ficha', 'plano'].map(t => {
+      const arr = list.filter(r => r.tipo === t);
+      if (!arr.length) return '';
+      return `<section class="group">
+        <div class="group-head"><h2>${TIPOS[t].icone} ${TIPOS[t].plural}<span class="n">${arr.length}</span></h2>
+        <button type="button" data-k="tipo" data-v="${t}">Ver só ${TIPOS[t].plural.toLowerCase()}</button></div>
+        ${grid(arr)}
+      </section>`;
+    }).join('');
+  }
+
+  function syncUrl() {
+    const p = new URLSearchParams();
+    if (state.q) p.set('q', state.q);
+    if (state.tipo !== 'todos') p.set('tipo', state.tipo);
+    if (state.comp !== 'todos') p.set('comp', state.comp);
+    if (state.ano) p.set('ano', state.ano);
+    if (state.eixo !== 'todos') p.set('eixo', state.eixo);
+    if (state.hab) p.set('hab', state.hab);
+    const qs = p.toString();
+    history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  }
+
+  function render() {
+    if (state.comp !== 'todos' && state.eixo !== 'todos' && EIXOS[state.eixo].comp !== state.comp) state.eixo = 'todos';
+    $('#q-clear').hidden = !state.q;
+    sidebar(); tabs(); banner(); results(); syncUrl();
+  }
+
+  document.addEventListener('click', e => {
+    const k = e.target.closest('[data-k]');
+    if (k) {
+      const key = k.dataset.k, v = k.dataset.v;
+      if (key === 'ano') state.ano = state.ano === Number(v) ? 0 : Number(v);
+      else state[key] = v;
+      if (key === 'tipo') window.scrollTo({ top: Math.min(window.scrollY, $('.cat-layout').offsetTop - 70), behavior: 'smooth' });
+      render(); return;
+    }
+    const h = e.target.closest('button[data-hab]');
+    if (h) { state.hab = h.dataset.hab; render(); window.scrollTo({ top: $('.cat-layout').offsetTop - 70, behavior: 'smooth' }); return; }
+    const q = e.target.closest('button[data-q]');
+    if (q) { state.q = q.dataset.q; $('#q').value = state.q; render(); return; }
+    const c = e.target.closest('[data-clear]');
+    if (c) {
+      if (c.dataset.clear === 'hab') state.hab = '';
+      else Object.assign(state, { q: '', comp: 'todos', ano: 0, tipo: 'todos', eixo: 'todos', hab: '' });
+      $('#q').value = state.q; render();
+    }
+  });
+  let t; $('#q').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 150); });
+  $('#q-clear').onclick = () => { state.q = ''; $('#q').value = ''; render(); $('#q').focus(); };
+
+  // filtros abertos no computador, recolhidos no celular
+  const mq = matchMedia('(max-width: 900px)');
+  const side = $('#side');
+  const syncSide = () => { side.open = !mq.matches; };
+  syncSide(); mq.addEventListener('change', syncSide);
+  side.querySelector('summary').addEventListener('click', e => { if (!mq.matches) e.preventDefault(); });
+
+  render();
+})();
+</script>
+</body>
+</html>

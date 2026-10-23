@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material didático · Computação e Matemática (BNCC, 6º ao 9º) | ohtopico</title>
+<meta name="description" content="Repositório gratuito de jogos, fichas para imprimir e planos de aula de Computação e Matemática para os anos finais do Ensino Fundamental, organizados pelas habilidades da BNCC.">
+<meta property="og:title" content="Material didático · Computação e Matemática (BNCC, 6º ao 9º)">
+<meta property="og:description" content="Jogos interativos, fichas para imprimir e planos de aula alinhados à BNCC, para estudantes e professores dos anos finais.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .hero { padding: 56px 0 48px; border-bottom: 1.5px solid var(--ink); }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+  .hero p.lead { font-size: 19px; color: var(--ink-2); max-width: 600px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stat { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px; text-align: center; text-decoration: none; color: var(--ink); }
+  .stat:hover { background: var(--pill); }
+  .stat b { display: block; font-family: var(--display); font-size: 40px; line-height: 1; }
+  .stat span { font-size: 14px; color: var(--ink-2); }
+  .doors { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .door { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; text-decoration: none; color: var(--ink); background: var(--paper-2); }
+  .door:hover { background: var(--pill); }
+  .door strong { font-family: var(--display); font-size: 20px; display: block; }
+  .door span { font-size: 14px; color: var(--ink-2); }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 28px; } }
+  @media (max-width: 420px) { .doors { grid-template-columns: 1fr; } .stat b { font-size: 32px; } }
+
+  .paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
+  .path { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 24px; text-decoration: none; color: var(--ink); display: flex; flex-direction: column; gap: 8px; transition: transform .15s, box-shadow .15s; background: var(--paper); }
+  .path:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
+  .path .ic { font-size: 34px; }
+  .path h3 { margin: 0; font-size: 24px; }
+  .path p { margin: 0; color: var(--ink-2); font-size: 15px; flex: 1; }
+  .path .go { font-weight: 600; }
+  @media (max-width: 860px) { .paths { grid-template-columns: 1fr; } }
+  .sec-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .sec-head h2 { margin: 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Anos finais · 6º ao 9º ano · BNCC</span>
+        <h1>Aprender jogando, ensinar com plano.</h1>
+        <p class="lead">Jogos interativos, fichas para imprimir e planos de aula de <strong>Computação</strong> e <strong>Matemática</strong>, organizados pelas habilidades da BNCC. Tudo gratuito e pronto para usar em sala.</p>
+        <div class="btn-row">
+          <a class="btn" href="catalogo.html">Explorar o catálogo</a>
+          <a class="btn ghost" href="bncc.html">Buscar por habilidade</a>
+        </div>
+      </div>
+      <div>
+        <div class="stats" id="stats"></div>
+        <div class="doors">
+          <a class="door" href="catalogo.html?tipo=jogo"><strong>🎮 Sou estudante</strong><span>Ir direto para os jogos</span></a>
+          <a class="door" href="professor.html"><strong>📋 Sou professor(a)</strong><span>Planos, fichas e orientações</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Por onde começar</span>
+      <h2>Três caminhos pelo repositório</h2>
+      <div class="paths">
+        <a class="path" href="catalogo.html"><span class="ic">🗂️</span><h3>Catálogo</h3><p>Todos os jogos, fichas e planos, com busca e filtros por ano, componente e eixo.</p><span class="go">Abrir o catálogo →</span></a>
+        <a class="path" href="bncc.html"><span class="ic">🧭</span><h3>Explorar a BNCC</h3><p>Habilidades ano a ano, com os materiais que trabalham cada uma.</p><span class="go">Ver habilidades →</span></a>
+        <a class="path" href="professor.html"><span class="ic">📋</span><h3>Área do professor</h3><p>Como usar o repositório e os planos de aula prontos, com avaliação e acessibilidade.</p><span class="go">Ir para a área →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Para jogar agora</span><h2>Jogos</h2></div>
+        <a class="btn ghost" href="catalogo.html?tipo=jogo">Ver todos os jogos →</a>
+      </div>
+      <div class="rc-grid" id="games"></div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+  mdTopbar('inicio');
+  mdFooter();
+  const n = t => RECURSOS.filter(r => r.tipo === t).length;
+  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['ficha', 'fichas'], ['plano', 'planos de aula']]
+    .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
+  document.getElementById('games').innerHTML = RECURSOS.filter(r => r.tipo === 'jogo').slice(0, 4).map(r => mdCard(r)).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rota Mais Curta · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de grafos: encontre o caminho de menor custo entre dois vértices. BNCC EF07CO04, EF09CO01, EF06MA34.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .gsvg { width: 100%; height: auto; display: block; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px; touch-action: manipulation; }
+  .gsvg text { font-family: var(--body); fill: var(--ink); pointer-events: none; }
+  .edge { stroke: var(--ink-3); stroke-width: 3; }
+  .edge.on { stroke: var(--accent); stroke-width: 7; }
+  .edge.opt { stroke: var(--ok); stroke-width: 7; stroke-dasharray: 10 6; }
+  .wbg { fill: var(--paper); stroke: var(--ink-3); stroke-width: 1.5; }
+  .vtx circle { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; cursor: pointer; }
+  .vtx.can circle { fill: var(--accent-soft); stroke: var(--accent); }
+  .vtx.in circle { fill: var(--accent); stroke: var(--accent); }
+  .vtx.in text.l { fill: #fff; }
+  .vtx.start circle, .vtx.end circle { stroke-width: 4; }
+  .vtx:focus-visible circle { stroke: var(--accent); stroke-width: 5; }
+  .vtx:focus { outline: none; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--ink-2); margin-top: 10px; }
+  .pathline { font-family: ui-monospace, Consolas, monospace; font-size: 15px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Cada círculo é um <strong>vértice</strong> (um lugar) e cada linha é uma <strong>aresta</strong> (uma rua). O número na aresta é o custo — minutos de caminhada. Comece pelo vértice <strong>🚩 de partida</strong> e clique nos vértices vizinhos, um de cada vez, até chegar ao <strong>🏁 destino</strong>. Clique de novo no último vértice para voltar um passo.</p>
+    <p>Quando chegar, o jogo compara sua rota com a de menor custo possível, calculada pelo algoritmo de Dijkstra.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="hud">
+      <span>Fase <b id="lv">1</b> de <span id="lt"></span></span>
+      <span>Custo da rota: <b id="cost">0</b></span>
+      <span id="tot" class="muted"></span>
+    </div>
+    <svg class="gsvg" id="g" viewBox="0 0 600 360" role="group" aria-label="Grafo da fase"></svg>
+    <div class="legend"><span>🚩 partida</span><span>🏁 destino</span><span class="pathline" id="path"></span></div>
+    <p class="feedback" id="fb" role="status"></p>
+    <div class="btn-row">
+      <button class="btn ghost" type="button" id="undo">↩ Voltar um passo</button>
+      <button class="btn ghost" type="button" id="reset">Recomeçar</button>
+      <button class="btn ghost" type="button" id="show" hidden>Mostrar rota ótima</button>
+      <button class="btn" type="button" id="next" hidden>Próxima fase →</button>
+    </div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('rotas');
+(function () {
+  const LEVELS = [
+    { V: { A: [70, 180], B: [240, 80], C: [240, 280], D: [400, 180], E: [540, 180] },
+      E: [['A','B',3],['A','C',1],['B','D',2],['C','D',5],['D','E',2],['B','C',1]], s: 'A', t: 'E' },
+    { V: { A: [70, 180], B: [230, 70], C: [230, 290], D: [390, 70], E: [390, 290], F: [540, 180] },
+      E: [['A','B',4],['A','C',2],['B','C',1],['B','D',5],['C','D',8],['C','E',10],['D','E',2],['D','F',6],['E','F',3]], s: 'A', t: 'F' },
+    { V: { A: [60, 180], B: [180, 60], C: [180, 300], D: [300, 180], E: [420, 60], F: [420, 300], G: [545, 180] },
+      E: [['A','B',2],['A','C',6],['B','D',7],['C','D',1],['B','E',9],['D','E',2],['D','F',3],['C','F',8],['E','G',6],['F','G',4],['B','C',3]], s: 'A', t: 'G' },
+    { V: { A: [60, 80], B: [230, 55], C: [400, 85], D: [550, 60], E: [80, 290], F: [260, 220], G: [420, 300], H: [555, 240] },
+      E: [['A','B',4],['B','C',3],['C','D',6],['A','E',2],['E','F',3],['F','B',2],['F','C',4],['F','G',5],['G','H',2],['C','H',7],['D','H',1],['E','G',9]], s: 'A', t: 'D' },
+    { V: { A: [45, 180], B: [140, 60], C: [140, 300], D: [270, 120], E: [270, 250], F: [400, 50], G: [400, 315], H: [455, 180], I: [560, 180] },
+      E: [['A','B',3],['A','C',2],['B','D',4],['C','E',3],['B','C',2],['D','E',1],['D','F',5],['E','G',6],['D','H',7],['E','H',4],['F','H',2],['G','H',3],['F','I',6],['H','I',3],['G','I',5]], s: 'A', t: 'I' }
+  ];
+  const $ = s => document.querySelector(s);
+  const svg = $('#g');
+  let li = 0, path = [], solved = mdStore.get('rotas-ok', {});
+  $('#lt').textContent = LEVELS.length;
+
+  const L = () => LEVELS[li];
+  const w = (a, b) => { const e = L().E.find(([x, y]) => (x === a && y === b) || (x === b && y === a)); return e ? e[2] : null; };
+  const cost = p => p.slice(1).reduce((s, v, i) => s + w(p[i], v), 0);
+
+  function dijkstra() {
+    const { V, E, s, t } = L();
+    const dist = {}, prev = {}, seen = new Set();
+    Object.keys(V).forEach(k => dist[k] = Infinity); dist[s] = 0;
+    while (seen.size < Object.keys(V).length) {
+      const u = Object.keys(V).filter(k => !seen.has(k)).sort((a, b) => dist[a] - dist[b])[0];
+      seen.add(u);
+      E.forEach(([a, b, c]) => {
+        const v = a === u ? b : b === u ? a : null;
+        if (v && dist[u] + c < dist[v]) { dist[v] = dist[u] + c; prev[v] = u; }
+      });
+    }
+    const p = [t]; while (p[0] !== s) p.unshift(prev[p[0]]);
+    return { d: dist[t], p };
+  }
+
+  function draw(opt) {
+    const { V, E, s, t } = L();
+    const last = path[path.length - 1];
+    const onEdge = (a, b) => path.some((v, i) => i && ((path[i - 1] === a && v === b) || (path[i - 1] === b && v === a)));
+    const optEdge = (a, b) => opt && opt.some((v, i) => i && ((opt[i - 1] === a && v === b) || (opt[i - 1] === b && v === a)));
+    let h = '';
+    E.forEach(([a, b, c]) => {
+      const [x1, y1] = V[a], [x2, y2] = V[b];
+      h += `<line class="edge${onEdge(a, b) ? ' on' : ''}${optEdge(a, b) ? ' opt' : ''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+    });
+    E.forEach(([a, b, c]) => {
+      const [x1, y1] = V[a], [x2, y2] = V[b], mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+      h += `<circle class="wbg" cx="${mx}" cy="${my}" r="14"/><text x="${mx}" y="${my + 5}" text-anchor="middle" font-size="15" font-weight="700">${c}</text>`;
+    });
+    const done = last === t;
+    Object.entries(V).forEach(([k, [x, y]]) => {
+      const inP = path.includes(k), can = !done && !inP && w(last, k) !== null;
+      const cls = ['vtx', inP && 'in', can && 'can', k === s && 'start', k === t && 'end'].filter(Boolean).join(' ');
+      const flag = k === s ? '🚩' : k === t ? '🏁' : '';
+      h += `<g class="${cls}" data-v="${k}" tabindex="0" role="button" aria-label="Vértice ${k}${k === s ? ', partida' : ''}${k === t ? ', destino' : ''}${inP ? ', na rota' : ''}">
+        <circle cx="${x}" cy="${y}" r="24"/><text class="l" x="${x}" y="${y + 7}" text-anchor="middle" font-size="20" font-weight="800">${k}</text>
+        ${flag ? `<text x="${x + 18}" y="${y - 18}" font-size="18">${flag}</text>` : ''}</g>`;
+    });
+    svg.innerHTML = h;
+    $('#cost').textContent = cost(path);
+    $('#path').textContent = 'Rota: ' + path.join(' → ');
+    $('#lv').textContent = li + 1;
+    $('#tot').textContent = `Fases com rota ótima: ${Object.keys(solved).length} de ${LEVELS.length}`;
+  }
+
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+
+  function load(i) {
+    li = i; path = [L().s]; fb('Clique em um vértice vizinho da partida.', '');
+    $('#show').hidden = true; $('#next').hidden = true; draw();
+  }
+
+  function choose(k) {
+    const last = path[path.length - 1];
+    if (last === L().t) return;
+    if (k === last && path.length > 1) { path.pop(); fb('', ''); draw(); return; }
+    if (path.includes(k)) return fb(`O vértice ${k} já está na rota. Clique no último vértice para voltar.`, 'bad');
+    if (w(last, k) === null) return fb(`Não há aresta ligando ${last} a ${k}. Escolha um vizinho de ${last}.`, 'bad');
+    path.push(k); fb('', ''); draw();
+    if (k === L().t) finish();
+  }
+
+  function finish() {
+    const c = cost(path), o = dijkstra();
+    if (c === o.d) {
+      solved[li] = true; mdStore.set('rotas-ok', solved);
+      fb(`Rota ótima! Custo ${c} — não existe caminho mais barato.`, 'ok');
+    } else {
+      fb(`Você chegou com custo ${c}. Existe uma rota de custo ${o.d}. Recomece e tente encontrar, ou veja a rota ótima.`, 'bad');
+      $('#show').hidden = false;
+    }
+    $('#next').hidden = li >= LEVELS.length - 1;
+    draw();
+  }
+
+  svg.addEventListener('click', e => { const g = e.target.closest('.vtx'); if (g) choose(g.dataset.v); });
+  svg.addEventListener('keydown', e => { const g = e.target.closest('.vtx'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); choose(g.dataset.v); const n = svg.querySelector(`.vtx[data-v="${g.dataset.v}"]`); n && n.focus(); } });
+  $('#undo').onclick = () => { if (path.length > 1) { if (path[path.length - 1] === L().t) { $('#show').hidden = true; $('#next').hidden = true; } path.pop(); fb('', ''); draw(); } };
+  $('#reset').onclick = () => load(li);
+  $('#show').onclick = () => { const o = dijkstra(); draw(o.p); fb(`Rota ótima (tracejado verde): ${o.p.join(' → ')} = ${o.d}.`, 'ok'); };
+  $('#next').onclick = () => load(li + 1);
+  load(0);
+})();
+</script>
+</body>
+</html>

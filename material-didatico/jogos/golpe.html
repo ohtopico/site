@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golpe ou Seguro? · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de segurança digital: decida se mensagens são golpes e aprenda os sinais de alerta. BNCC EF07CO07, EF08CO08, EF08CO10, EF09CO04.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .phone { max-width: 520px; margin: 0 auto; }
+  .ctx { font-size: 14px; color: var(--ink-2); margin-bottom: 8px; }
+  .msgcard { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 18px; box-shadow: 6px 6px 0 var(--ink); }
+  .msgcard .ch { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-2); margin-bottom: 8px; }
+  .msgcard .from { font-weight: 600; font-size: 16px; margin-bottom: 6px; }
+  .msgcard .txt { font-size: 17px; }
+  .msgcard .lnk { color: var(--accent); text-decoration: underline; word-break: break-all; }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  .choices .btn { min-height: 56px; font-size: 18px; }
+  .exp { margin-top: 16px; border-radius: 18px; padding: 14px 16px; font-size: 15px; }
+  .exp.ok { background: var(--ok-soft); }
+  .exp.bad { background: var(--bad-soft); }
+  .exp .tags { margin-top: 8px; }
+  .sig { background: var(--warn-soft); color: var(--warn); }
+  .center { text-align: center; padding: 20px 0; }
+  .note.fict { margin-bottom: 14px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Leia cada mensagem e o contexto acima dela. Decida se é <strong>golpe</strong> ou se é <strong>seguro</strong>. Depois de responder, veja a explicação e os sinais de alerta. Todas as empresas, pessoas e endereços do jogo são inventados.</p>
+  </details>
+
+  <div class="game-stage"><div class="phone" id="stage"></div></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('golpe');
+(function () {
+  const CARDS = [
+    { ch: 'SMS', from: 'Banco Pinhão', ctx: 'Você recebeu este SMS à noite.', txt: 'Sua conta sera BLOQUEADA em 1 hora! Confirme seus dados e senha agora:', link: 'pinhao-seguranca.top/confirmar', golpe: true,
+      sinais: ['Urgência', 'Pede senha', 'Link estranho'], exp: 'Bancos não pedem senha por mensagem. O endereço não é o site oficial e a ameaça de bloqueio serve para você agir sem pensar.' },
+    { ch: 'Mensagem', from: 'Número desconhecido', ctx: 'A foto do perfil é da sua tia.', txt: 'Oi! Troquei de número, salva esse. Consegue me fazer um Pix de R$ 300 urgente? Te devolvo amanhã.', golpe: true,
+      sinais: ['Troca de número', 'Pede dinheiro', 'Urgência'], exp: 'É o golpe do “troquei de número”. Antes de qualquer transferência, ligue para o número antigo da pessoa ou confirme com outra pessoa da família.' },
+    { ch: 'E-mail', from: 'Loja Girassol', ctx: 'Você comprou um fone nessa loja ontem.', txt: 'Seu pedido nº 4821 foi enviado. Para acompanhar a entrega, abra o aplicativo da loja e vá em “Meus pedidos”.', golpe: false,
+      sinais: [], exp: 'Confirma uma compra que você realmente fez, não pede dados nem traz link: orienta abrir o aplicativo oficial. Esse é o comportamento esperado.' },
+    { ch: 'Rede social', from: '@promo_celular_gratis', ctx: 'Perfil criado há 3 dias, que você não segue.', txt: 'PARABÉNS!!! Você foi sorteado e ganhou um celular novo! Pague só o frete de R$ 19,90 no link:', link: 'premio-celular.click', golpe: true,
+      sinais: ['Boa demais para ser verdade', 'Pede pagamento', 'Perfil novo'], exp: 'Você não participou de sorteio nenhum. Pedir uma “pequena taxa” para liberar prêmio é golpe clássico.' },
+    { ch: 'Chat do jogo', from: 'Suporte_Oficial_BR', ctx: 'Mensagem privada dentro de um jogo online.', txt: 'Olá! Para ganhar 1000 moedas grátis, me envie seu login e senha que eu coloco direto na sua conta.', golpe: true,
+      sinais: ['Pede senha', 'Boa demais para ser verdade'], exp: 'Nenhum suporte de verdade precisa da sua senha. Com ela, roubam a conta e tudo o que há nela.' },
+    { ch: 'Agenda escolar', from: 'Secretaria da escola', ctx: 'Aviso no aplicativo oficial que a escola usa.', txt: 'Reunião de pais e responsáveis na quinta-feira, às 19h, no auditório. Contamos com a presença de todos!', golpe: false,
+      sinais: [], exp: 'Canal oficial conhecido, informação esperada e nenhum pedido de dados, dinheiro ou clique.' },
+    { ch: 'Mensagem', from: 'Colega da turma', ctx: 'Você não pediu código nenhum.', txt: 'Oi, mandei um código de 6 números para o seu celular sem querer. Pode me passar ele?', golpe: true,
+      sinais: ['Pede código', 'Situação estranha'], exp: 'O código de verificação é a chave da sua conta. Quem pede é alguém tentando entrar no seu aplicativo — mesmo que pareça um conhecido (a conta dele pode ter sido invadida).' },
+    { ch: 'SMS', from: 'Aplicativo de mensagens', ctx: 'Você acabou de instalar o aplicativo no celular novo e pediu o código.', txt: 'Seu código de verificação é 482913. Não compartilhe este código com ninguém.', golpe: false,
+      sinais: [], exp: 'Você mesmo pediu o código e a mensagem orienta a não compartilhar. Use no aplicativo e não envie para ninguém.' },
+    { ch: 'Rede social', from: 'Quiz Divertido', ctx: 'Teste que apareceu no seu feed.', txt: 'Descubra qual personagem você é! Informe nome completo, data de nascimento, nome da escola e do seu bichinho de estimação.', golpe: true,
+      sinais: ['Coleta de dados pessoais'], exp: 'Esses dados são usados para adivinhar senhas, responder perguntas de segurança e montar perfis falsos. Não precisa de nada disso para um quiz.' },
+    { ch: 'E-mail', from: 'Equipe de Contas', ctx: 'O remetente é um endereço que você não reconhece.', txt: 'Seu e-mail será DESATIVADO hoje por falta de uso. Para manter a conta, clique em reativar:', link: 'reativar-conta-email.xyz', golpe: true,
+      sinais: ['Urgência', 'Link estranho'], exp: 'Ameaça com prazo curto e link fora do site oficial do serviço. Na dúvida, entre no serviço digitando o endereço que você já conhece.' },
+    { ch: 'Grupo da turma', from: 'Profª Helena', ctx: 'Grupo oficial da turma, com a professora de sempre.', txt: 'Pessoal, a atividade de hoje está no ambiente virtual da escola, na pasta “Semana 12”. Entrem com o login de sempre.', golpe: false,
+      sinais: [], exp: 'Pessoa conhecida, canal conhecido, e ela orienta acessar o ambiente que vocês já usam — sem pedir senha por mensagem.' },
+    { ch: 'Janela no navegador', from: 'Alerta!!!', ctx: 'Apareceu enquanto você assistia um vídeo.', txt: 'SEU CELULAR ESTÁ COM 3 VÍRUS! Baixe agora o Limpador Turbo para evitar a perda de todos os seus arquivos.', golpe: true,
+      sinais: ['Urgência', 'Pede para instalar app'], exp: 'Um site não consegue examinar seu celular. Esse alerta falso tenta fazer você instalar um malware. Feche a página.' }
+  ];
+  const stage = document.getElementById('stage');
+  let deck = [], i = 0, acertos = 0, cont = {};
+  const shuffle = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+
+  function start() { deck = shuffle(CARDS.slice()); i = 0; acertos = 0; cont = {}; show(); }
+  function show() {
+    if (i >= deck.length) return end();
+    const c = deck[i];
+    stage.innerHTML = `
+      <div class="hud"><span>Mensagem <b>${i + 1}</b> de ${deck.length}</span><span>Acertos <b>${acertos}</b></span></div>
+      <div class="ctx">📍 ${esc(c.ctx)}</div>
+      <article class="msgcard">
+        <div class="ch"><span>${esc(c.ch)}</span><span>agora</span></div>
+        <div class="from">${esc(c.from)}</div>
+        <div class="txt">${esc(c.txt)} ${c.link ? `<span class="lnk">${esc(c.link)}</span>` : ''}</div>
+      </article>
+      <div class="choices" id="ch">
+        <button class="btn" type="button" data-g="1" style="background:var(--bad);border-color:var(--bad)">🚨 Golpe</button>
+        <button class="btn" type="button" data-g="0" style="background:var(--ok);border-color:var(--ok)">✅ Seguro</button>
+      </div>
+      <div id="exp"></div>`;
+    document.getElementById('ch').onclick = e => { const b = e.target.closest('button'); if (b) answer(b.dataset.g === '1'); };
+  }
+  function answer(g) {
+    const c = deck[i], certo = g === c.golpe;
+    if (certo) acertos++;
+    c.sinais.forEach(s => cont[s] = (cont[s] || 0) + 1);
+    document.querySelectorAll('#ch button').forEach(b => b.disabled = true);
+    document.getElementById('exp').innerHTML = `<div class="exp ${certo ? 'ok' : 'bad'}" role="status">
+      <strong>${certo ? 'Acertou!' : 'Não foi dessa vez.'} ${c.golpe ? 'É golpe.' : 'É seguro.'}</strong> ${esc(c.exp)}
+      ${c.sinais.length ? `<div class="tags">${c.sinais.map(s => `<span class="tag sig">⚠ ${esc(s)}</span>`).join('')}</div>` : ''}
+    </div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="nx">${i + 1 < deck.length ? 'Próxima →' : 'Ver resultado'}</button></div>`;
+    const nx = document.getElementById('nx'); nx.onclick = () => { i++; show(); }; nx.focus();
+  }
+  function end() {
+    const top = Object.entries(cont).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    stage.innerHTML = `<div class="center">
+      <h2>${acertos >= deck.length - 1 ? 'Olho de águia! 🦅' : acertos >= deck.length * .7 ? 'Muito bem! 🛡️' : 'Bom começo! 🔍'}</h2>
+      <p style="font-size:20px"><b>${acertos}</b> de ${deck.length} acertos</p>
+      <p>Sinais de alerta que mais apareceram:</p>
+      <div class="tags" style="justify-content:center">${top.map(([s, n]) => `<span class="tag sig">⚠ ${esc(s)} (${n})</span>`).join('')}</div>
+      <div class="note" style="text-align:left;margin:18px auto">
+        <strong>Regra de ouro:</strong> desconfie de pressa, de pedidos de senha ou código e de links que você não pediu. Na dúvida, pare e confirme por outro canal — e conte para um adulto de confiança.
+      </div>
+      <button class="btn" type="button" id="again">Jogar de novo</button></div>`;
+    document.getElementById('again').onclick = start;
+  }
+  start();
+})();
+</script>
+</body>
+</html>

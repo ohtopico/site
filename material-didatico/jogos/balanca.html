@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balança das Equações · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de equações do 1º grau com balança de pratos: use as propriedades da igualdade para descobrir x. BNCC EF07MA18, EF07MA13, EF08MA06.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .scale { max-width: 720px; margin: 0 auto; }
+  .beam { height: 8px; background: var(--ink); border-radius: 4px; margin: 0 6%; }
+  .pans { display: grid; grid-template-columns: 1fr 1fr; gap: 6%; margin: 0 2%; }
+  .pan { min-height: 120px; border: 1.5px solid var(--ink); border-top: 0; border-radius: 0 0 60px 60px; padding: 12px 14px 22px; display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-end; justify-content: center; background: var(--paper); }
+  .stand { width: 8px; height: 50px; background: var(--ink); margin: 0 auto; }
+  .stand-base { width: 140px; height: 8px; background: var(--ink); border-radius: 4px; margin: 0 auto; }
+  .xbox { width: 40px; height: 40px; border-radius: 8px; background: var(--ma); color: #fff; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 22px; animation: pop .25s; }
+  :root[data-theme="dark"] .xbox { color: #111; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .xbox { color: #111; } }
+  .unit { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--pill-2); display: grid; place-items: center; font-size: 12px; font-weight: 600; animation: pop .25s; }
+  @keyframes pop { from { transform: scale(.4); } to { transform: scale(1); } }
+  .eqn { text-align: center; font-family: var(--display); font-size: clamp(28px, 6vw, 44px); margin: 16px 0 6px; }
+  .ops { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 16px; }
+  .op { display: flex; gap: 8px; align-items: center; border: 1.5px solid var(--ink); border-radius: 18px; padding: 10px 12px; background: var(--paper); }
+  .op input { width: 64px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 6px 8px; font-size: 17px; text-align: center; background: var(--paper); }
+  .op .btn { flex: 1; min-height: 42px; padding: 6px 12px; font-size: 15px; }
+  .log { font-family: ui-monospace, Consolas, monospace; font-size: 15px; color: var(--ink-2); margin-top: 14px; line-height: 1.8; }
+  .center { text-align: center; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Cada caixa laranja pesa <strong>x</strong> e cada bolinha pesa <strong>1</strong>. A balança está em equilíbrio, então os dois lados valem o mesmo — é uma equação. Para manter o equilíbrio, tudo o que você fizer de um lado precisa fazer do outro: tirar a mesma quantidade ou dividir pelo mesmo número.</p>
+    <p>O objetivo é deixar <strong>uma única caixa x</strong> de um lado e só bolinhas do outro. Tente usar o menor número de passos.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="chips" id="modes" style="margin-bottom:14px"></div>
+    <div class="hud"><span>Equação <b id="qn">1</b> de 5</span><span>Passos <b id="steps">0</b></span><span>Resolvidas <b id="ok">0</b></span></div>
+    <div class="scale" aria-hidden="true">
+      <div class="beam"></div>
+      <div class="pans"><div class="pan" id="L"></div><div class="pan" id="R"></div></div>
+      <div class="stand"></div><div class="stand-base"></div>
+    </div>
+    <div class="eqn" id="eqn" aria-live="polite"></div>
+    <div class="ops" id="ops">
+      <div class="op"><label class="sr-only" for="sub">Quantidade</label><input id="sub" type="number" min="1" max="40" value="1"><button class="btn ghost" type="button" id="b-sub">Tirar bolinhas dos dois lados</button></div>
+      <div class="op"><button class="btn ghost" type="button" id="b-subx">Tirar um x dos dois lados</button></div>
+      <div class="op"><label class="sr-only" for="div">Divisor</label><input id="div" type="number" min="2" max="9" value="2"><button class="btn ghost" type="button" id="b-div">Dividir os dois lados</button></div>
+    </div>
+    <p class="feedback" id="fb" role="status"></p>
+    <div class="btn-row" id="actions"></div>
+    <div class="log" id="log"></div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('balanca');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  let mode = 1, q = 0, solved = 0, steps = 0, E, X, done = false;
+
+  function gen() {
+    X = ri(1, 9);
+    if (mode === 1) { const b = ri(1, 12); return { a: 1, b, c: 0, d: X + b }; }
+    if (mode === 2) { const a = ri(2, 4), b = ri(0, 10); return { a, b, c: 0, d: a * X + b }; }
+    const c = ri(1, 3), a = c + ri(1, 3), b = ri(0, 8), d = (a - c) * X + b;
+    return { a, b, c, d };
+  }
+  const side = (k, n) => { const p = []; if (k) p.push(k === 1 ? 'x' : k + 'x'); if (n || !k) p.push(String(n)); return p.join(' + '); };
+  const txt = () => `${side(E.a, E.b)} = ${side(E.c, E.d)}`;
+
+  function draw() {
+    const pan = (k, n) => '<span class="xbox">x</span>'.repeat(k) + '<span class="unit">1</span>'.repeat(n);
+    $('#L').innerHTML = pan(E.a, E.b); $('#R').innerHTML = pan(E.c, E.d);
+    $('#eqn').textContent = txt();
+    $('#steps').textContent = steps; $('#qn').textContent = Math.min(q + 1, 5); $('#ok').textContent = solved;
+  }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function log(op) { $('#log').innerHTML += `<div>${op} &nbsp;⇒&nbsp; <strong>${txt()}</strong></div>`; }
+
+  function drawModes() {
+    $('#modes').innerHTML = [[1, 'Nível 1 · x + b = c'], [2, 'Nível 2 · ax + b = c'], [3, 'Nível 3 · x dos dois lados']]
+      .map(([v, l]) => `<button class="chip" type="button" data-m="${v}" aria-pressed="${v === mode}">${l}</button>`).join('');
+  }
+  $('#modes').onclick = e => { const b = e.target.closest('button'); if (b) { mode = +b.dataset.m; restart(); } };
+
+  function restart() { q = 0; solved = 0; drawModes(); next(); }
+  function next() {
+    if (q >= 5) return end();
+    E = gen(); steps = 0; done = false;
+    origEq = { ...E }; orig = (E.c ? 1 : 0) + (E.b ? 1 : 0) + (E.a - E.c > 1 ? 1 : 0);
+    $('#log').innerHTML = `<div>Início: <strong>${txt()}</strong></div>`;
+    $('#actions').innerHTML = ''; $('#ops').hidden = false;
+    fb('Qual operação ajuda a isolar o x?', ''); draw();
+  }
+  function check() {
+    const isolated = (E.a === 1 && E.b === 0 && E.c === 0) || (E.c === 1 && E.d === 0 && E.a === 0);
+    if (!isolated) return;
+    done = true; solved++; q++;
+    const min = minSteps();
+    fb(`x = ${X}! ${steps <= min ? `Resolvido em ${steps} passo(s) — o caminho mais curto.` : `Resolvido em ${steps} passos. Dava para fazer em ${min}.`} Confira: ${checkTxt()}.`, 'ok');
+    $('#ops').hidden = true; draw();
+    $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${q < 5 ? 'Próxima equação →' : 'Ver resultado'}</button>`;
+    $('#nx').onclick = next; $('#nx').focus();
+  }
+  let orig = 0, origEq = null;
+  function minSteps() { return orig; }
+  function checkTxt() { const o = origEq; const t = (k, n) => `${k === 1 ? X : k + '·' + X}${n ? ' + ' + n : ''}`; return `${t(o.a, o.b)} = ${o.a * X + o.b}${o.c ? ` e ${t(o.c, o.d)} = ${o.c * X + o.d}` : ''}`; }
+
+  $('#b-sub').onclick = () => {
+    if (done) return;
+    const n = parseInt($('#sub').value, 10);
+    if (!(n >= 1)) return fb('Escolha quantas bolinhas tirar.', 'bad');
+    if (E.b < n || E.d < n) return fb(`Não dá: para tirar ${n} bolinha(s) de cada lado, os dois lados precisam ter pelo menos ${n}. Esquerda: ${E.b}, direita: ${E.d}.`, 'bad');
+    E.b -= n; E.d -= n; steps++; draw(); log(`− ${n} dos dois lados`); fb('', ''); check();
+  };
+  $('#b-subx').onclick = () => {
+    if (done) return;
+    if (E.a < 1 || E.c < 1) return fb('Não dá: os dois lados precisam ter pelo menos uma caixa x.', 'bad');
+    E.a--; E.c--; steps++; draw(); log('− x dos dois lados'); fb('', ''); check();
+  };
+  $('#b-div').onclick = () => {
+    if (done) return;
+    const n = parseInt($('#div').value, 10);
+    if (!(n >= 2)) return fb('Escolha um divisor de 2 a 9.', 'bad');
+    const ok = [E.a, E.b, E.c, E.d].every(v => v % n === 0);
+    if (!ok) return fb(`Não dá para dividir tudo por ${n} em partes iguais. Dica: deixe só as caixas de um lado antes de dividir.`, 'bad');
+    E.a /= n; E.b /= n; E.c /= n; E.d /= n; steps++; draw(); log(`÷ ${n} nos dois lados`); fb('', ''); check();
+  };
+
+  function end() {
+    $('#L').innerHTML = ''; $('#R').innerHTML = '';
+    $('#eqn').textContent = 'Fim do nível! ⚖️';
+    $('#ops').hidden = true;
+    fb(`Você resolveu ${solved} equações. Cada passo usou uma propriedade da igualdade: o que se faz de um lado, faz-se do outro.`, 'ok');
+    $('#actions').innerHTML = `<button class="btn ghost" type="button" id="again">Repetir</button>${mode < 3 ? `<button class="btn" type="button" id="up">Nível ${mode + 1} →</button>` : ''}`;
+    $('#again').onclick = restart;
+    const up = $('#up'); if (up) up.onclick = () => { mode++; restart(); };
+    $('#log').innerHTML = '';
+  }
+  restart();
+})();
+</script>
+</body>
+</html>

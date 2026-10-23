@@ -4,7 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paciência</title>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
+
+    :root {
+        --cw: 72px;
+        --paper: #ffffff; --paper-2: #f4f4f2; --pill: #efefed; --pill-2: #e2e2df;
+        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #7a7a7a; --line: #d9d9d6;
+        --accent: #1f5cff; --accent-soft: #e6edff;
+        --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+        --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+            --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+            --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+            --accent: #7ea2ff; --accent-soft: #1d2747;
+        }
+    }
+    :root[data-theme="dark"] {
+        --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+        --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+        --accent: #7ea2ff; --accent-soft: #1d2747;
+    }
     :root {
         --cw: 72px;
         --ch: calc(var(--cw) * 1.4);
@@ -29,15 +55,15 @@
         color: #fff;
         display: flex;
         flex-direction: column;
-        font-family: 'Courier New', Courier, monospace;
+        font-family: var(--body);
         user-select: none;
     }
 
     .barra {
         align-items: center;
-        background: #c0c0c0;
-        border-bottom: 2px solid #7a7a7a;
-        color: #000;
+        background: var(--paper);
+        border-bottom: 1.5px solid var(--ink);
+        color: var(--ink);
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
@@ -45,20 +71,23 @@
     }
 
     .barra button {
-        background: #c0c0c0;
-        border: 2px solid;
-        border-color: #fff #555 #555 #fff;
-        color: #000;
+        background: var(--paper);
+        border: 1.5px solid var(--ink);
+        border-radius: 99px;
+        color: var(--ink);
         cursor: pointer;
-        font: bold 13px 'Courier New', monospace;
-        padding: 4px 10px;
+        font: 500 13.5px var(--body);
+        min-height: 34px;
+        padding: 3px 14px;
     }
 
-    .barra button:active { border-color: #555 #fff #fff #555; }
-    .barra button:disabled { color: #888; cursor: default; }
+    .barra button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+    .barra button:disabled { border-color: var(--line); color: var(--ink-3); cursor: default; }
 
     .placar {
+        color: var(--ink-2);
         font-size: 13px;
+        font-variant-numeric: tabular-nums;
         margin-left: auto;
         white-space: nowrap;
     }
@@ -146,18 +175,18 @@
 
     .carta.verso {
         background:
-            repeating-linear-gradient(45deg, #ff007f 0 6px, #2d124d 6px 12px);
+            repeating-linear-gradient(45deg, #1f5cff 0 5px, #ffffff 5px 10px);
         border: 3px solid #fff;
         cursor: default;
     }
 
     .carta.verso::after {
-        background: #2d124d;
+        background: #111111;
         border: 2px solid #fff;
-        border-radius: 4px;
+        border-radius: 99px;
         color: #fff;
-        content: 'Y2K';
-        font: bold calc(var(--cw) * 0.2) 'Courier New', monospace;
+        content: 'oh';
+        font: 800 calc(var(--cw) * 0.2) var(--display);
         left: 50%;
         padding: 2px 4px;
         position: absolute;
@@ -198,19 +227,22 @@
     .vitoria.aberta { display: flex; }
 
     .vitoria h2 {
-        color: #fff36b;
-        font-size: 34px;
+        color: #fff;
+        font: 800 32px var(--display);
+        letter-spacing: .12em;
         margin: 0;
-        text-shadow: 3px 3px 0 #ff007f;
+        text-transform: uppercase;
     }
 
     .vitoria button {
-        background: #c0c0c0;
-        border: 2px solid;
-        border-color: #fff #555 #555 #fff;
+        background: #fff;
+        border: 1.5px solid #111;
+        border-radius: 99px;
+        color: #111;
         cursor: pointer;
-        font: bold 15px 'Courier New', monospace;
-        padding: 8px 16px;
+        font: 500 15px var(--body);
+        min-height: 42px;
+        padding: 6px 20px;
     }
 
     .sr-only {
@@ -648,6 +680,12 @@
 
     novoJogo();
 })();
+</script>
+
+<script>
+    window.addEventListener('message', e => {
+        if (e.origin === location.origin && e.data && e.data.tipo === 'tema') document.documentElement.dataset.theme = e.data.tema;
+    });
 </script>
 </body>
 </html>

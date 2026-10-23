@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correio de Pacotes · Material didático | ohtopico</title>
+<meta name="description" content="Jogo sobre transmissão de dados: remonte mensagens enviadas em pacotes e peça o reenvio dos que se perderam. BNCC EF06CO07, EF07CO06, EF08CO06.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .route { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; margin-bottom: 16px; }
+  .node { border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 12px; background: var(--paper); font-weight: 600; }
+  .node.r { border-style: dashed; font-weight: 500; }
+  .zone-t { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  .inbox { display: flex; flex-wrap: wrap; gap: 10px; min-height: 110px; border: 1.5px dashed var(--ink); border-radius: 18px; padding: 12px; background: var(--paper); }
+  .pkt { border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); padding: 8px 12px; cursor: pointer; text-align: left; min-width: 112px; animation: pop .3s ease; }
+  .pkt:hover { background: var(--pill); }
+  .pkt .hd { display: block; font-size: 11.5px; color: var(--ink-2); font-family: ui-monospace, Consolas, monospace; }
+  .pkt .hd b { color: var(--ink); font-size: 13px; }
+  .pkt .bd { display: block; font-weight: 600; font-size: 17px; margin-top: 2px; }
+  .pkt.wrong { animation: shake .35s; border-color: var(--bad); }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  .assembled { display: flex; flex-wrap: wrap; gap: 6px; min-height: 52px; margin: 18px 0 10px; }
+  .slot { border: 1.5px solid var(--line); border-radius: 10px; padding: 6px 10px; min-width: 44px; text-align: center; color: var(--ink-3); font-size: 13px; }
+  .slot.on { border-color: var(--ink); background: var(--accent-soft); color: var(--ink); font-weight: 600; font-size: 16px; }
+  .slot.next { border: 2px solid var(--accent); color: var(--accent); }
+  .center { text-align: center; padding: 20px 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Na internet, uma mensagem é quebrada em <strong>pacotes</strong>. Cada pacote leva um <strong>cabeçalho</strong> com o número dele, o total, a origem e o destino — e pode viajar por roteadores diferentes, chegando fora de ordem.</p>
+    <p>Sua tarefa é ser o computador de destino: clique nos pacotes <strong>na ordem dos números</strong> para remontar a mensagem. Se o próximo pacote não chegou, clique em <strong>Pedir reenvio</strong>. Pedir reenvio de um pacote que já está na caixa conta como erro.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('pacotes');
+(function () {
+  const MSGS = [
+    'A internet divide tudo em pequenos pacotes',
+    'Cada pacote pode seguir um caminho diferente',
+    'O cabeçalho diz a ordem e o destino',
+    'Quando um pacote se perde ele é enviado de novo',
+    'Protocolos são combinados que todos seguem',
+    'Sua foto viaja pela rede em muitos pedaços'
+  ];
+  const LUGARES = [['Escola', 'Casa'], ['Celular', 'Servidor'], ['Biblioteca', 'Prefeitura'], ['Notebook', 'Site'], ['Tablet', 'Nuvem'], ['Câmera', 'Computador']];
+  const ROTEADORES = ['R1', 'R2', 'R3', 'R4'];
+  const stage = document.getElementById('stage');
+  let round = 0, score = 0, errors = 0, resends = 0, st;
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+
+  function start() { round = 0; score = 0; errors = 0; resends = 0; next(); }
+
+  function next() {
+    if (round >= MSGS.length) return end();
+    const words = MSGS[round].split(' ');
+    const [de, para] = LUGARES[round];
+    const pkts = words.map((w, i) => ({ n: i + 1, w, via: shuffle(ROTEADORES.slice()).slice(0, 2).join('→') }));
+    let order = shuffle(pkts.slice());
+    // a partir da 2ª rodada, alguns pacotes se perdem
+    const lost = new Set();
+    const nLost = round === 0 ? 0 : round < 3 ? 1 : 2;
+    shuffle(pkts.slice()).slice(0, nLost).forEach(p => lost.add(p.n));
+    st = { words, de, para, pkts, inbox: [], expected: 1, lost, pending: order.filter(p => !lost.has(p.n)), done: false };
+    draw();
+    // chegada gradual dos pacotes
+    const my = st;
+    const tick = () => {
+      if (st !== my || !st.pending.length || st.done) return;
+      st.inbox.push(st.pending.shift()); drawInbox();
+      setTimeout(tick, 380);
+    };
+    setTimeout(tick, 300);
+  }
+
+  function draw() {
+    stage.innerHTML = `
+      <div class="hud">
+        <span>Mensagem <b>${round + 1}</b> de ${MSGS.length}</span>
+        <span>Pontos <b id="sc">${score}</b></span>
+        <span>Erros <b id="er">${errors}</b></span>
+      </div>
+      <div class="route" aria-hidden="true"><span class="node">📤 ${st.de}</span>→${ROTEADORES.map(r => `<span class="node r">${r}</span>`).join('')}→<span class="node">📥 ${st.para}</span></div>
+      <p class="zone-t">Caixa de entrada (pacotes chegando)</p>
+      <div class="inbox" id="inbox" aria-live="polite"></div>
+      <div class="assembled" id="asm"></div>
+      <div class="btn-row">
+        <button class="btn ghost" type="button" id="resend">📡 Pedir reenvio do pacote <span id="exp">1</span></button>
+      </div>
+      <p class="feedback" id="fb" role="status"></p>`;
+    document.getElementById('resend').onclick = resend;
+    drawInbox(); drawAsm();
+  }
+  function drawInbox() {
+    const el = document.getElementById('inbox'); if (!el) return;
+    el.innerHTML = st.inbox.map(p => `<button class="pkt" type="button" data-n="${p.n}" aria-label="Pacote ${p.n} de ${st.words.length}: ${p.w}">
+        <span class="hd"><b>#${p.n}/${st.words.length}</b> · ${st.de}→${st.para}<br>via ${p.via}</span><span class="bd">${p.w}</span></button>`).join('')
+      || '<span class="muted small">Aguardando pacotes…</span>';
+  }
+  function drawAsm() {
+    document.getElementById('asm').innerHTML = st.words.map((w, i) => {
+      const n = i + 1;
+      return n < st.expected ? `<span class="slot on">${w}</span>` : `<span class="slot${n === st.expected ? ' next' : ''}">${n}</span>`;
+    }).join('');
+    document.getElementById('exp').textContent = Math.min(st.expected, st.words.length);
+    document.getElementById('sc').textContent = score;
+    document.getElementById('er').textContent = errors;
+  }
+  function fb(t, c) { const el = document.getElementById('fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+
+  stage.addEventListener('click', e => {
+    const b = e.target.closest('.pkt'); if (!b || st.done) return;
+    const n = +b.dataset.n;
+    if (n === st.expected) {
+      st.inbox = st.inbox.filter(p => p.n !== n);
+      st.expected++; score += 10; drawInbox(); drawAsm(); fb('', '');
+      if (st.expected > st.words.length) finishRound();
+    } else {
+      errors++; score = Math.max(0, score - 3); b.classList.add('wrong'); setTimeout(() => b.classList.remove('wrong'), 400);
+      fb(`Esse é o pacote ${n}. Agora a mensagem precisa do pacote ${st.expected}.`, 'bad'); drawAsm();
+    }
+  });
+
+  function resend() {
+    if (st.done) return;
+    const n = st.expected;
+    const inInbox = st.inbox.some(p => p.n === n);
+    const onTheWay = st.pending.some(p => p.n === n);
+    if (inInbox) { errors++; score = Math.max(0, score - 3); fb(`O pacote ${n} já está na caixa de entrada. Procure pelo número no cabeçalho.`, 'bad'); drawAsm(); return; }
+    if (onTheWay) { fb(`O pacote ${n} ainda está a caminho. Espere um pouco antes de pedir de novo.`, 'bad'); return; }
+    if (st.lost.has(n)) {
+      st.lost.delete(n); resends++; score += 5;
+      const p = st.pkts.find(p => p.n === n);
+      p.via = shuffle(ROTEADORES.slice()).slice(0, 2).join('→');
+      fb(`Pedido enviado! O remetente mandou o pacote ${n} de novo.`, 'ok');
+      setTimeout(() => { st.inbox.push(p); drawInbox(); }, 600);
+    }
+  }
+
+  function finishRound() {
+    st.done = true;
+    fb(`Mensagem completa: “${st.words.join(' ')}”`, 'ok');
+    const btn = document.createElement('button');
+    btn.className = 'btn'; btn.type = 'button';
+    btn.textContent = round + 1 < MSGS.length ? 'Próxima mensagem →' : 'Ver resultado';
+    btn.onclick = () => { round++; next(); };
+    document.querySelector('#stage .btn-row').appendChild(btn);
+    btn.focus();
+  }
+
+  function end() {
+    const recorde = Math.max(score, mdStore.get('pacotes-rec', 0)); mdStore.set('pacotes-rec', recorde);
+    stage.innerHTML = `<div class="center">
+      <h2>Todas as mensagens entregues! 📬</h2>
+      <p style="font-size:20px"><b>${score}</b> pontos · ${errors} erro(s) · ${resends} pacote(s) reenviado(s)</p>
+      <p class="muted">Seu recorde neste aparelho: ${recorde} pontos</p>
+      <div class="note" style="text-align:left;max-width:640px;margin:16px auto">
+        <strong>O que aconteceu aqui?</strong> Você fez o papel do protocolo <strong>TCP</strong>: usou o número de cada pacote para colocar a mensagem em ordem e pediu de novo os que se perderam. O endereço de origem e destino no cabeçalho é trabalho do protocolo <strong>IP</strong>.
+      </div>
+      <button class="btn" type="button" id="again">Jogar de novo</button>
+    </div>`;
+    document.getElementById('again').onclick = start;
+  }
+
+  stage.innerHTML = `<div class="center"><h2>Pronto para receber mensagens?</h2><p class="muted">São ${MSGS.length} mensagens. A partir da segunda, alguns pacotes se perdem no caminho.</p><button class="btn" type="button" id="go">Começar</button></div>`;
+  document.getElementById('go').onclick = start;
+})();
+</script>
+</body>
+</html>

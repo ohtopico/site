@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explorar a BNCC · Material didático | ohtopico</title>
+<meta name="description" content="Habilidades da BNCC de Computação e Matemática do 6º ao 9º ano, com os jogos, fichas e planos de aula que trabalham cada uma.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/bncc.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .page-head { padding: 44px 0 8px; }
+  .page-head h1 { font-size: clamp(32px, 5vw, 48px); }
+  .bncc-ctrl { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; margin: 18px 0; }
+  .cover { font-size: 14px; color: var(--ink-2); }
+  .cover-bar { width: 160px; height: 10px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 6px; }
+  .cover-bar > span { display: block; height: 100%; background: var(--ink); }
+  .eixo { margin: 26px 0 8px; }
+  .eixo h3 { display: flex; align-items: center; gap: 10px; }
+  .hab-list { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--line); }
+  .hab-item { display: grid; grid-template-columns: 110px 1fr minmax(180px, 260px); gap: 6px 18px; padding: 14px 0; border-bottom: 1.5px solid var(--line); align-items: start; }
+  .hab-item .obj { font-size: 13px; font-weight: 600; color: var(--ink-2); display: block; }
+  .hab-item .txt { font-size: 15px; }
+  .hab-item .mats { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+  .hab-item .mats a { color: var(--ink); }
+  .hab-item .soon { font-size: 13px; color: var(--ink-3); font-style: italic; }
+  @media (max-width: 760px) { .hab-item { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+
+<main class="wrap" style="padding-bottom:56px">
+  <div class="page-head">
+    <span class="eyebrow">Explorar a BNCC</span>
+    <h1>Habilidades e materiais, ano a ano</h1>
+    <p class="muted" style="max-width:780px">Em Computação estão listadas todas as habilidades específicas de cada ano; em Matemática, a seleção de habilidades que os materiais já trabalham. Clique em um código para ver os materiais no catálogo. Os textos estão resumidos — para a redação oficial, consulte a <a href="https://basenacionalcomum.mec.gov.br/" target="_blank" rel="noopener">BNCC</a>.</p>
+  </div>
+  <div class="bncc-ctrl">
+    <div class="chips" id="b-comp"></div>
+    <div class="chips" id="b-ano"></div>
+    <span class="cover" id="b-cover"></span>
+  </div>
+  <div id="b-list"></div>
+</main>
+
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('bncc');
+  mdFooter();
+  const $ = s => document.querySelector(s);
+  const params = new URLSearchParams(location.search);
+  const b = { comp: params.get('comp') === 'MA' ? 'MA' : 'CO', ano: Number(params.get('ano')) || 6 };
+
+  function render() {
+    const anosComp = [...new Set(HABILIDADES.filter(h => h.comp === b.comp).map(h => h.ano))];
+    if (!anosComp.includes(b.ano)) b.ano = anosComp[0];
+    const grp = (el, opts, key) => {
+      el.innerHTML = opts.map(([v, l]) => `<button class="chip" type="button" data-v="${v}" aria-pressed="${String(b[key]) === String(v)}">${l}</button>`).join('');
+      el.onclick = e => { const x = e.target.closest('button'); if (!x) return; b[key] = key === 'ano' ? Number(x.dataset.v) : x.dataset.v; render(); };
+    };
+    grp($('#b-comp'), [['CO', 'Computação'], ['MA', 'Matemática']], 'comp');
+    grp($('#b-ano'), anosComp.map(a => [a, a + 'º ano']), 'ano');
+    history.replaceState(null, '', `?comp=${b.comp}&ano=${b.ano}`);
+
+    const habs = HABILIDADES.filter(h => h.comp === b.comp && h.ano === b.ano);
+    const comMat = habs.filter(h => RECURSOS.some(r => r.habs.includes(h.codigo))).length;
+    const pct = habs.length ? Math.round(comMat / habs.length * 100) : 0;
+    $('#b-cover').innerHTML = `${comMat} de ${habs.length} habilidades com material <span class="cover-bar" aria-hidden="true"><span style="width:${pct}%"></span></span>`;
+
+    const eixos = [...new Set(habs.map(h => h.eixo))];
+    $('#b-list').innerHTML = eixos.map(ex => `
+      <div class="eixo">
+        <h3><span class="tag ${b.comp.toLowerCase()}">${COMPONENTES[b.comp].curto}</span>${EIXOS[ex].nome}</h3>
+        <ul class="hab-list">
+          ${habs.filter(h => h.eixo === ex).map(h => {
+            const mats = RECURSOS.filter(r => r.habs.includes(h.codigo));
+            return `<li class="hab-item">
+              <div>${tagHab(h.codigo)}</div>
+              <div><span class="obj">${esc(h.objeto)}</span><span class="txt">${esc(h.texto)}</span></div>
+              <div class="mats">${mats.length ? mats.map(r => `<a href="${recUrl(r)}">${TIPOS[r.tipo].icone} ${esc(r.titulo)}</a>`).join('') : '<span class="soon">Material em preparação</span>'}</div>
+            </li>`;
+          }).join('')}
+        </ul>
+      </div>`).join('');
+  }
+  render();
+})();
+</script>
+</body>
+</html>
