@@ -298,6 +298,8 @@ h3 {
     margin-bottom: 4px;
 }
 .compact .org { font-weight: 400; }
+.compact .pv-slot { flex-basis: 100%; margin: 4px 0 6px 0; }
+.compact .pv-thumb { height: 40px; width: 60px; }
 .cert-list {
     column-gap: 28px;
     columns: 2;
@@ -442,10 +444,12 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
     a { color: inherit; text-decoration: none; }
     .skills { gap: 8px 20px; }
     .print-only { display: list-item !important; }
+    .screen-only { display: none !important; }
     .contacts .print-only { display: block !important; }
     #sec-idiomas { display: none !important; }
     /* Na versão completa impressa, as tecnologias já aparecem nos projetos */
-    body[data-perfil="completo"] #sec-competencias { display: none !important; }
+    body[data-perfil="completo"] #sec-competencias,
+    body[data-perfil="docencia"] #sec-competencias { display: none !important; }
 
 }
 
@@ -919,13 +923,26 @@ dialog.browser::backdrop {
 
             <div class="item" data-perfil="completo docencia">
                 <div class="item-head">
+                    <h3>Integrante do grupo PrendAdas <span class="org">· mulheres na Computação, UNISC</span></h3>
+                </div>
+                <ul>
+                    <li class="screen-only">Grupo de estudantes de Computação da UNISC criado para atrair e manter mais mulheres na área.</li>
+                    <li>Palestra “Tecnologia e o profissional do futuro”, com Geisa G. Kochenborger, uma das apresentadas em institutos federais.</li>
+                    <li>Palestra “Computação e cuidados com redes sociais” na 1ª Gincana Virtual de Vera Cruz, em 2019 (<a href="https://www.unisc.br/pt/noticias/grupo-prendadas-participa-da-1-gincana-virtual-de-vera-cruz">notícia da UNISC</a>).</li>
+                </ul>
+                <div class="pv-slot" data-preview="prendadas"></div>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
                     <h3>Tutora de informática <span class="org">· Projeto UNISC Inclusão Digital</span></h3>
                     <span class="when">mai. – nov. 2019</span>
                 </div>
                 <ul>
-                    <li>Ministrou oficinas de robótica, Excel e informática básica para públicos variados.</li>
-                    <li>Com o grupo PrendAdas, de estudantes de Computação da UNISC, apresentou a palestra “Computação e cuidados com redes sociais” na 1ª Gincana Virtual de Vera Cruz (<a href="https://www.unisc.br/pt/noticias/grupo-prendadas-participa-da-1-gincana-virtual-de-vera-cruz">notícia da UNISC</a>).</li>
+                    <li>Ministrou oficinas de robótica, Excel e informática básica para públicos variados, incluindo um curso de ginástica cerebral para idosos.</li>
+                    <li class="screen-only">Criou o material “Métodos de estudo”, um guia para estudantes que estão começando.</li>
                 </ul>
+                <div class="pv-slot" data-preview="tutoria"></div>
             </div>
 
             <div class="item">
@@ -935,7 +952,8 @@ dialog.browser::backdrop {
                 <ul class="compact">
                     <li><span><b>Agente administrativo</b> <span class="org">· Prefeitura de Novo Cabrais · concurso público, aprovada em 10º lugar</span></span><span class="when">jan. 2025 – abr. 2026</span></li>
                     <li><span><b>Estagiária de assessoria de imprensa</b> <span class="org">· Prefeitura de Novo Cabrais</span></span><span class="when">jun. 2024 – jan. 2025</span></li>
-                    <li><span><b>Estagiária de marketing</b> <span class="org">· Analítica 3M e Fortalk</span></span><span class="when">mai. – jun. 2024</span></li>
+                    <li><span><b>Estagiária de marketing</b> <span class="org">· Analítica 3M e Fortalk</span></span><span class="when">mai. – jun. 2024</span><div class="pv-slot" data-preview="fortalk"></div></li>
+                    <li><span><b>Freelancer em design e marketing digital</b> <span class="org">· identidade visual, peças e redes sociais</span></span><span class="when"></span><div class="pv-slot" data-preview="freelancer"></div></li>
                     <li><span><b>Estagiária de customer success</b> <span class="org">· RKSAM</span></span><span class="when">ago. – dez. 2023</span></li>
                 </ul>
             </div>
@@ -1005,6 +1023,8 @@ dialog.browser::backdrop {
                     <h3>Licenciatura em Informática <span class="org">· UNIASSELVI</span></h3>
                     <span class="when">2026</span>
                 </div>
+                <p class="screen-only">Materiais didáticos criados no curso: Arduino (do LED ao piano com botões) e Scratch (animação e jogos).</p>
+                <div class="pv-slot" data-preview="licenciatura"></div>
             </div>
 
             <div class="item" data-perfil="completo docencia">
@@ -1224,6 +1244,77 @@ dialog.browser::backdrop {
    As imagens ficam em curriculo/img/.
    --------------------------------------------------------------- */
 const PREVIAS = {
+    prendadas: {
+        tipo: 'Palestra · grupo PrendAdas',
+        titulo: 'Tecnologia e o profissional do futuro',
+        url: 'palestras/tecnologia-e-o-profissional-do-futuro',
+        texto: 'Palestra do grupo PrendAdas, apresentada com Geisa G. Kochenborger em um instituto federal. Discute como a tecnologia mudou o mercado de trabalho, os desafios da educação no Brasil e as habilidades que o profissional do futuro precisa desenvolver.',
+        fatos: [['3', 'palestras em institutos federais'], ['PrendAdas', 'mais mulheres na Computação']],
+        abas: [
+            { nome: 'Abertura', img: 'img/palestra-capa.jpg', alt: 'Slide de abertura: “Tecnologia e o profissional do futuro”, de Geisa G. Kochenborger e Júlia R. Quoos Alves', legenda: 'Slide de abertura da palestra.' },
+            { nome: 'O grupo', img: 'img/palestra-prendadas.jpg', alt: 'Slide “Como surgimos?”, com o logotipo do PrendAdas e os motivos: diminuição de mulheres na computação, altos índices de desistência e tratamento no mercado de trabalho', legenda: 'Por que o PrendAdas surgiu.' },
+            { nome: 'Contexto', img: 'img/palestra-contexto.jpg', alt: 'Slide “Como chegamos até aqui?”, com os tópicos internet, redes sociais, globalização, revoluções industriais, automação e “era uma vez”', legenda: 'Como a tecnologia transformou o trabalho.' },
+            { nome: 'Educação', img: 'img/palestra-educacao.jpg', alt: 'Slide “Educação no Brasil: dados que preocupam”, com evasão escolar, analfabetismo e qualidade do ensino', legenda: 'Os desafios da educação no Brasil.' },
+            { nome: 'Conclusão', img: 'img/palestra-conclusao.jpg', alt: 'Slide “O que podemos fazer?”: o melhor jeito de mudar o país é transformar a educação, começando pelo conhecimento de cada um', legenda: 'A mensagem final da palestra.' }
+        ]
+    },
+    tutoria: {
+        tipo: 'Extensão · UNISC Inclusão Digital',
+        titulo: 'Oficinas e materiais do UNISC Inclusão Digital',
+        url: 'ensino/unisc-inclusao-digital',
+        texto: 'Materiais criados para as oficinas do projeto de extensão: um curso de ginástica cerebral para idosos, com exercícios de memória e atenção, e o guia “Métodos de estudo” para estudantes que estão começando.',
+        fatos: [['Idosos', 'público da ginástica cerebral'], ['Pomodoro', 'e repetição espaçada no guia de estudos']],
+        abas: [
+            { nome: 'Ginástica cerebral', img: 'img/ginastica-capa.jpg', alt: 'Capa da aula “Ginástica Cerebral”, do UNISC Inclusão Digital, por J. R. Quoos Alves', legenda: 'Curso de ginástica cerebral para idosos.' },
+            { nome: 'Memória', img: 'img/ginastica-memoria.jpg', alt: 'Slide sobre memória: o processo de armazenar e recuperar informações, dividido em memória de trabalho, de curto prazo e de longo prazo', legenda: 'A parte teórica, sobre os tipos de memória.' },
+            { nome: 'Exercício de números', img: 'img/ginastica-numeros.jpg', alt: 'Exercício de memorização com os números 5, 2 e 4 dentro de um círculo, um quadrado e um triângulo', legenda: 'Exercício: memorizar formas e números.' },
+            { nome: 'Exercício de cores', img: 'img/ginastica-formas.jpg', alt: 'Exercício de memorização com formas coloridas: círculo amarelo, quadrado vermelho, estrela amarela, coração rosa e triângulo azul', legenda: 'Exercício: memorizar formas e cores.' },
+            { nome: 'Métodos de estudo', img: 'img/metodos-boasvindas.jpg', alt: 'Slide de boas-vindas do guia “Métodos de estudo”, com a apresentação do material para quem ainda não sabe como estudar de maneira eficiente', legenda: 'Guia “Métodos de estudo” para estudantes novatos.' },
+            { nome: 'Pomodoro', img: 'img/metodos-pomodoro.jpg', alt: 'Slide “Técnica 1: Pomodoro”, explicando sessões de 25 minutos com pausas de 5 minutos', legenda: 'Uma das técnicas do guia.' },
+            { nome: 'Curva do esquecimento', img: 'img/metodos-esquecimento.jpg', alt: 'Gráfico da curva do esquecimento com revisões espaçadas e o texto “Como superar”, sobre repetição espaçada', legenda: 'Como a revisão espaçada vence a curva do esquecimento.' }
+        ]
+    },
+    licenciatura: {
+        tipo: 'Licenciatura em Informática',
+        titulo: 'Materiais didáticos: Arduino e Scratch',
+        url: 'ensino/arduino-e-scratch',
+        texto: 'Aulas montadas durante a licenciatura. No Arduino, os projetos vão do LED ao semáforo e a um piano com botões e buzzer, com listas de exercícios on-line. No Scratch, o passo a passo de uma animação leva a desafios de criação de jogos.',
+        fatos: [['7', 'projetos práticos de Arduino'], ['Scratch', 'pensamento computacional com animações e jogos']],
+        abas: [
+            { nome: 'Arduino', img: 'img/arduino-capa.jpg', alt: 'Capa da aula “Arduíno”, de Júlia Roberta Quoos Alves, com a ilustração de uma placa Arduino', legenda: 'Aula de Arduino.' },
+            { nome: 'Semáforo', img: 'img/arduino-semaforo.jpg', alt: 'Circuito do projeto semáforo: três LEDs, vermelho, amarelo e verde, ligados ao Arduino por uma protoboard', legenda: 'Projeto semáforo: o circuito.' },
+            { nome: 'Lógica do semáforo', img: 'img/arduino-tabela.jpg', alt: 'Tabela com o estado de cada LED nas fases siga, atenção e pare do semáforo', legenda: 'A lógica antes do código.' },
+            { nome: 'Piano', img: 'img/arduino-piano.jpg', alt: 'Circuito do projeto piano: LEDs, buzzer e três botões ligados ao Arduino', legenda: 'Projeto piano com botões e buzzer.' },
+            { nome: 'Scratch', img: 'img/scratch-capa.jpg', alt: 'Capa do “Curso de Scratch”, de Júlia R. Quoos Alves, com o gato do Scratch', legenda: 'Curso de Scratch.' },
+            { nome: 'Blocos', img: 'img/scratch-blocos.jpg', alt: 'Blocos de programação do Scratch para animar um personagem com as setas do teclado', legenda: 'Passo 3: animando o personagem.' },
+            { nome: 'Animação', img: 'img/scratch-animacao.jpg', alt: 'Programa completo no Scratch com a bandeira verde para rodar a animação', legenda: 'Passo 4: rodando a animação.' }
+        ]
+    },
+    fortalk: {
+        tipo: 'Estágio de marketing · Fortalk',
+        titulo: 'Apresentação comercial e redes sociais da Fortalk',
+        url: 'marketing/fortalk',
+        texto: 'Apresentação comercial e peças para o feed criadas durante o estágio na Fortalk, uma plataforma de atendimento integrada ao WhatsApp Business.',
+        fatos: [['Vendas', 'apresentação comercial completa'], ['Redes sociais', 'peças para o feed']],
+        abas: [
+            { nome: 'Sobre a empresa', img: 'img/fortalk-sobre.jpg', alt: 'Slide “Sobre nós” da apresentação da Fortalk, com o texto institucional e a tela do sistema em um notebook', legenda: 'Slide institucional da apresentação.' },
+            { nome: 'Vantagens', img: 'img/fortalk-vantagens.jpg', alt: 'Slide de vantagens com a tela do aplicativo em um celular: acompanhar o atendimento de onde estiver e segurança dos dados', legenda: 'Vantagens do produto.' },
+            { nome: 'Relatórios', img: 'img/fortalk-relatorios.jpg', alt: 'Slide com a tela de relatórios do sistema e o recurso de disparo de mensagens em massa', legenda: 'Recursos de relatórios e campanhas.' },
+            { nome: 'Comparação', img: 'img/fortalk-comparacao.jpg', alt: 'Slide comparando os recursos da Fortalk com os do WhatsApp Business', legenda: 'Comparação com o WhatsApp Business.' },
+            { nome: 'Feed', img: 'img/portfolio-fortalk.jpg', alt: 'Página do portfólio com as miniaturas da apresentação comercial e o feed do Instagram da Fortalk', legenda: 'A apresentação e o feed no portfólio.' }
+        ]
+    },
+    freelancer: {
+        tipo: 'Design e marketing digital',
+        titulo: 'Portfólio de trabalhos de design',
+        url: 'marketing/portfolio',
+        texto: 'Trabalhos de identidade visual, peças gráficas e redes sociais feitos em sua maioria como freelancer.',
+        fatos: [['Logos', 'identidades visuais criadas'], ['Feed', 'peças para redes sociais']],
+        abas: [
+            { nome: 'Logos', img: 'img/portfolio-logos.jpg', alt: 'Página do portfólio com estudos de logotipo para a GESTRATI e para a Associação de Mulheres Trabalhadoras Rurais', legenda: 'Logotipos: GESTRATI e Associação de Mulheres Trabalhadoras Rurais.' },
+            { nome: 'Novo Cabrais', img: 'img/portfolio-novocabrais.jpg', alt: 'Página do portfólio com a placa do Roteiro Turístico de Novo Cabrais e um feed de notícias institucionais', legenda: 'Placa do roteiro turístico de Novo Cabrais e feed de notícias.' }
+        ]
+    },
     oficinas: {
         tipo: 'Formação de professores',
         titulo: 'Oficina “Prof., onde eu vou usar isso?”',
