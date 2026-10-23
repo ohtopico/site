@@ -226,7 +226,7 @@
             line-height: 1.4;
         }
 
-        /* Força mídias do Tumblr a respeitarem a janela */
+        /* Mídias dentro dos posts respeitam a janela */
         .post-text img, .post-text iframe, .post-text video {
             max-width: 100% !important;
             height: auto !important;
@@ -451,7 +451,7 @@
 
 
         /* =========================================================
-           LEIA-ME, ENSINO, PROJETOS E SKILLS (conteúdo profissional)
+           LEIA-ME, ENSINO E PROJETOS (conteúdo profissional)
            ========================================================= */
         .window-content, .start-menu-list {
             user-select: text;
@@ -627,33 +627,6 @@
         }
 
         .project-card .btn-row { justify-content: flex-end; }
-
-        /* Skills em grupos */
-        .skill-group { margin-bottom: 12px; }
-        .skill-group h3 {
-            border-left: 6px solid var(--skill-color, var(--neon-pink));
-            color: var(--purple-dark);
-            font-family: 'VT323', monospace;
-            font-size: 22px;
-            font-weight: normal;
-            margin: 0 0 6px 0;
-            padding-left: 8px;
-        }
-        .skill-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-        .skill-chip {
-            background: #fff;
-            border: 2px solid;
-            border-color: #555 #fff #fff #555;
-            color: #1a1a1a;
-            font-size: 14px;
-            padding: 2px 8px;
-        }
-        .skill-evidence {
-            color: #4a4a4a;
-            font-family: 'Courier Prime', monospace;
-            font-size: 14px;
-            margin: 6px 0 0 0;
-        }
 
         /* Ícones da área de trabalho como botões/links de verdade */
         button.icon-item, a.icon-item {
@@ -919,29 +892,13 @@
                 <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
                 <span class="icon-label">Leia-me</span>
             </button>
-            <button type="button" class="icon-item" onclick="toggleWindow('win-projetos')" aria-controls="win-projetos">
-                <i class="fa-solid fa-code" aria-hidden="true"></i>
-                <span class="icon-label">Projetos</span>
-            </button>
             <button type="button" class="icon-item" onclick="toggleWindow('win-ensino')" aria-controls="win-ensino">
                 <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i>
                 <span class="icon-label">Ensino</span>
             </button>
-            <button type="button" class="icon-item" onclick="toggleWindow('win-skills')" aria-controls="win-skills">
-                <i class="fa-solid fa-gear" aria-hidden="true"></i>
-                <span class="icon-label">Skills</span>
-            </button>
             <a class="icon-item" href="ia-pra-prof/">
                 <i class="fa-solid fa-book-open" aria-hidden="true"></i>
                 <span class="icon-label">IA pra Prof</span>
-            </a>
-            <a class="icon-item desktop-only" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener">
-                <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
-                <span class="icon-label">LinkedIn</span>
-            </a>
-            <a class="icon-item desktop-only" href="https://github.com/ohtopico" target="_blank" rel="noopener">
-                <i class="fa-brands fa-github" aria-hidden="true"></i>
-                <span class="icon-label">GitHub</span>
             </a>
         </nav>
 
@@ -965,6 +922,14 @@
                     </div>
                 </div>
 
+                <div class="btn-row">
+                    <a class="retro-btn primary" data-contato="curriculo" hidden><i class="fa-solid fa-id-card" aria-hidden="true"></i> Currículo</a>
+                    <a class="retro-btn" data-contato="lattes" hidden target="_blank" rel="noopener"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Lattes</a>
+                    <a class="retro-btn" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
+                    <a class="retro-btn" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+                    <a class="retro-btn" data-contato="email" hidden><i class="fa-solid fa-envelope" aria-hidden="true"></i> E-mail</a>
+                </div>
+
                 <p>
                     Trabalho onde dados, inteligência artificial e educação se encontram. No mestrado, pesquiso IA para auxiliar pessoas com deficiência visual. Na sala de aula, ensino lógica e pensamento computacional e formo professores para usar tecnologia.
                 </p>
@@ -976,13 +941,6 @@
                     <li><b>Idiomas:</b> inglês e espanhol, em nível profissional.</li>
                 </ul>
 
-                <div class="btn-row">
-                    <a class="retro-btn primary" data-contato="curriculo" hidden><i class="fa-solid fa-id-card" aria-hidden="true"></i> Currículo</a>
-                    <a class="retro-btn" data-contato="lattes" hidden target="_blank" rel="noopener"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Lattes</a>
-                    <a class="retro-btn" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
-                    <a class="retro-btn" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
-                    <a class="retro-btn" data-contato="email" hidden><i class="fa-solid fa-envelope" aria-hidden="true"></i> E-mail</a>
-                </div>
 
                 <div class="btn-row">
                     <button type="button" class="retro-btn" onclick="openProgram('win-projetos')" aria-controls="win-projetos"><i class="fa-solid fa-code" aria-hidden="true"></i> Ver projetos</button>
@@ -1141,22 +1099,6 @@
             </div>
         </div>
 
-        <!-- Janela 3: Habilidades Profissionais -->
-        <div id="win-skills" class="y2k-window" style="left: 400px; top: 150px; width: 380px; display: none;">
-            <div class="window-header">
-                <div class="window-title">
-                     <i class="fa-solid fa-gear"></i> SYSTEM_SPECS.EXE
-                </div>
-                <div class="window-controls">
-                    <button class="win-btn" onclick="minimizeWindow('win-skills')">_</button>
-                    <button class="win-btn" onclick="toggleWindow('win-skills')">X</button>
-                </div>
-            </div>
-            <div class="window-content" id="skills-container">
-                <p style="font-size: 14px; margin-bottom:15px; font-family: monospace;">Carregando competências do banco de dados...</p>
-            </div>
-        </div>
-
         <!-- Janela 4: Mascote Virtual & Info -->
         <div id="win-pet" class="y2k-window" style="left: 180px; top: 430px; width: 450px; display: none;">
             <div class="window-header">
@@ -1179,27 +1121,6 @@
                     </p>
 
                 </div>
-            </div>
-        </div>
-
-        <!-- Janela 5: Feed do Tumblr -->
-        <div id="win-tumblr" class="y2k-window" style="left: 220px; top: 100px; width: 480px; display: none;">
-            <div class="window-header">
-                <div class="window-title">
-                    <i class="fa-brands fa-tumblr"></i> tumblr_reader.exe
-                </div>
-                <div class="window-controls">
-                    <button class="win-btn" onclick="minimizeWindow('win-tumblr')">_</button>
-                    <button class="win-btn" onclick="toggleWindow('win-tumblr')">X</button>
-                </div>
-            </div>
-            <div style="background: #000; color: var(--neon-pink); font-family: 'VT323', monospace; font-size: 16px; padding: 4px; text-align: center; border-bottom: 2px solid var(--window-border-dark);">
-                🌐 CONECTANDO A: C:\INTERNET\TUMBLR_FEED.SYS
-            </div>
-            <div class="window-content" style="max-height: 380px; overflow-y: auto; background: #fff; padding: 10px;" id="tumblr-posts-container">
-                <p style="font-family: monospace; color: #666; text-align: center; margin-top: 20px;" id="tumblr-status">
-                    <i class="fa-solid fa-spinner fa-spin"></i> Disparando requisição dial-up para o servidor...
-                </p>
             </div>
         </div>
 
@@ -1329,6 +1250,22 @@
     </div>
 </div>
 
+<!-- Janela: Paciência -->
+<div id="win-paciencia" class="y2k-window win-full" style="left: 120px; top: 40px; width: 780px; height: 600px; display: none; resize: both; overflow: hidden; min-width: 360px; min-height: 360px;">
+    <div class="window-header">
+        <div class="window-title">
+            <i class="fa-solid fa-heart"></i> paciencia.exe
+        </div>
+        <div class="window-controls">
+            <button class="win-btn" onclick="minimizeWindow('win-paciencia')">_</button>
+            <button class="win-btn" onclick="toggleWindow('win-paciencia')">X</button>
+        </div>
+    </div>
+    <div class="window-content" style="padding: 0; width: 100%; height: calc(100% - 30px); background: #c0c0c0;">
+        <iframe data-src="solitaire.html" title="Jogo de paciência" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+</div>
+
 <!-- Janela 9: Instagram Perfil -->
 <div id="win-instagram" class="y2k-window win-full" style="left: 200px; top: 100px; width: 400px; height: 500px; display: none; resize: both; overflow: hidden; min-width: 320px; min-height: 300px;">
     <div class="window-header">
@@ -1347,7 +1284,7 @@
 </div>
 
 <!-- Janela da Nuvem de Palavras -->
-<div id="win-nuvem" class="y2k-window win-full" style="left: 100px; top: 100px; width: 600px; height: 400px; display: block; resize: both; overflow: hidden; min-width: 300px; min-height: 200px; display: none;">
+<div id="win-nuvem" class="y2k-window win-full" style="left: 100px; top: 60px; width: 680px; height: 480px; display: block; resize: both; overflow: hidden; min-width: 300px; min-height: 200px; display: none;">
     
     <!-- Cabeçalho da Janela (Barra de arrastar) -->
     <div class="window-header">
@@ -1362,7 +1299,7 @@
 
     <!-- Conteúdo da Janela -->
     <div class="window-content" style="padding: 0; width: 100%; height: calc(100% - 30px); background: #c0c0c0;">
-        <iframe src="nuvem.html" title="Nuvem de interesses" style="width: 100%; height: 100%; border: none;"></iframe>
+        <iframe data-src="nuvem.html" title="Grafo de interesses" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
 </div>
 
@@ -1386,7 +1323,6 @@
                     <a class="menu-item" href="curriculo/"><i class="fa-solid fa-id-card" aria-hidden="true"></i> Currículo</a>
                     <button type="button" class="menu-item" onclick="openProgram('win-projetos')"><i class="fa-solid fa-code" aria-hidden="true"></i> Projetos</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-ensino')"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Ensino</button>
-                    <button type="button" class="menu-item" onclick="openProgram('win-skills')"><i class="fa-solid fa-gear" aria-hidden="true"></i> Skills</button>
                     <a class="menu-item" href="ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
                     <a class="menu-item" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
                     <a class="menu-item" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
@@ -1396,11 +1332,11 @@
                     <button type="button" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-star" aria-hidden="true"></i> Atualizações</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-nuvem')"><i class="fa-solid fa-cloud" aria-hidden="true"></i> Interesses</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-instagram')"><i class="fa-solid fa-image" aria-hidden="true"></i> Fotos</button>
-                    <button type="button" class="menu-item" onclick="openProgram('win-tumblr')"><i class="fa-brands fa-tumblr" aria-hidden="true"></i> Blog</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-paw" aria-hidden="true"></i> Mascote</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-music" aria-hidden="true"></i> Player</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" aria-hidden="true"></i> Tarot Digital</button>
                     <button type="button" class="menu-item" onclick="openProgram('win-paint')"><i class="fa-solid fa-paintbrush" aria-hidden="true"></i> Paint</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-paciencia')"><i class="fa-solid fa-heart" aria-hidden="true"></i> Paciência</button>
                 </nav>
             </div>
 
@@ -1660,107 +1596,6 @@
             });
         }
 
-        // --- 7. MOTOR DE CAPTURA DO TUMBLR (RESOLUÇÃO DE ACENTOS) ---
-        function fetchTumblrPosts() {
-            const tumblrUser = "ohtopico"; 
-            const rssFeedUrl = `https://${tumblrUser}.tumblr.com/rss`;
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeedUrl)}`;
-
-            function decodeHtml(html) {
-                const txt = document.createElement("textarea");
-                txt.innerHTML = html;
-                return txt.value;
-            }
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('tumblr-posts-container');
-                    if (!container) return;
-
-                    if (data.status !== 'ok' || !data.items || data.items.length === 0) {
-                        document.getElementById('tumblr-status').innerText = "Erro: Blog não encontrado ou sem posts públicos.";
-                        return;
-                    }
-
-                    container.innerHTML = '';
-
-                    data.items.slice(0, 5).forEach(post => {
-                        const postCard = document.createElement('div');
-                        postCard.className = 'post-card';
-                        postCard.style.marginBottom = '15px';
-                        postCard.style.border = '2px inset #fff';
-                        postCard.style.boxShadow = 'inset -1px -1px 0px #000';
-                        postCard.style.padding = '12px';
-                        postCard.style.background = '#fff';
-
-                        const postDate = new Date(post.pubDate).toLocaleDateString('pt-BR', {
-                            day: '2-digit', month: 'long', year: 'numeric'
-                        });
-
-                        const cleanTitle = decodeHtml(post.title) || "Post sem Título";
-                        const cleanContent = decodeHtml(post.content);
-
-                        postCard.innerHTML = `
-                            <h4 class="post-title" style="color: var(--purple-dark); font-size: 20px; margin: 0 0 5px 0;">
-                                ${cleanTitle}
-                            </h4>
-                            <div style="font-size: 13px; color: #7a6a8a; font-family: monospace; margin-bottom: 8px;">
-                                📅 Sincronizado em: ${postDate}
-                            </div>
-                            <hr style="border: 1px dotted var(--neon-pink); margin-bottom: 10px;">
-                            <div class="post-text" style="font-size: 15px; color: #222;">
-                                ${cleanContent}
-                            </div>
-                            <div style="margin-top: 10px; text-align: right;">
-                                <a href="${post.link}" target="_blank" style="font-family: 'VT323', monospace; font-size: 16px; color: var(--neon-pink); text-decoration: none; font-weight: bold;">
-                                    [ Ler no Tumblr ↗ ]
-                                </a>
-                            </div>
-                        `;
-                        container.appendChild(postCard);
-                    });
-                })
-                .catch(err => {
-                    console.error(err);
-                    const statusEl = document.getElementById('tumblr-status');
-                    if(statusEl) statusEl.innerText = "Falha na conexão dial-up com o Tumblr. Tente novamente.";
-                });
-        }
-
-        // --- 8. PIPELINE DE COMPETÊNCIAS (JSON) ---
-        function loadSkillsFromJson() {
-            fetch('skills.json')
-                .then(response => {
-                    if (!response.ok) throw new Error("Erro ao carregar skills.json");
-                    return response.json();
-                })
-                .then(skills => {
-                    const container = document.getElementById('skills-container');
-                    if (!container) return;
-
-                    container.innerHTML = `<p style="font-size: 15px; margin: 0 0 14px 0; font-family: 'Courier Prime', monospace; line-height: 1.45;">Experiência em engenharia e análise de dados, machine learning e visão computacional, com Python, SQL, AWS e Google Cloud. Como engenheira de dados trainee na Compass UOL, projetei arquiteturas em nuvem para soluções de IA e trabalhei com modelagem em SQL e um data lake na AWS (S3 e EC2). Especialização em Ciência de Dados e Big Data Analytics (UNISC) e certificações Google Cloud Computing Foundations e Google Cloud Data Analytics.</p>`;
-
-                    skills.forEach(grupo => {
-                        const section = document.createElement('section');
-                        section.className = 'skill-group';
-                        section.style.setProperty('--skill-color', grupo.cor);
-                        const chips = grupo.itens.map(item => `<li class="skill-chip">${item}</li>`).join('');
-                        section.innerHTML = `
-                            <h3>${grupo.grupo}</h3>
-                            <ul class="skill-chips" style="list-style: none; margin: 0; padding: 0;">${chips}</ul>
-                            ${grupo.evidencia ? `<p class="skill-evidence">Onde usei: ${grupo.evidencia}</p>` : ''}
-                        `;
-                        container.appendChild(section);
-                    });
-                })
-                .catch(err => {
-                    console.error(err);
-                    const container = document.getElementById('skills-container');
-                    if (container) container.innerHTML = `<p style="color:var(--neon-pink); font-size: 14px;">Falha ao carregar specs do sistema.</p>`;
-                });
-        }
-
         // --- 9. INTERFACE DE VISUALIZAÇÃO DE NOTEBOOKS (GITHUB NATÍVISSIMO) ---
         function openNotebookInline(repoPath) {
             // Monta a URL direta e perfeitamente renderizada no ambiente do próprio GitHub
@@ -1820,10 +1655,10 @@ function sortearCarta() {
         win.style.display = 'flex';
         bringToFront(win);
 
-        if (id === 'win-tumblr' && !tumblrCarregado) {
-            tumblrCarregado = true;
-            fetchTumblrPosts();
-        }
+        // Iframes pesados só carregam quando a janela abre
+        win.querySelectorAll('iframe[data-src]').forEach(f => {
+            if (!f.getAttribute('src')) f.src = f.dataset.src;
+        });
 
         const startMenu = document.getElementById('start-menu');
         if (startMenu && !startMenu.hidden) setStartMenu(false);
@@ -1832,7 +1667,7 @@ function sortearCarta() {
         win.focus({ preventScroll: true });
     }
 
-    let tumblrCarregado = false;
+
 
     function bringToFront(win) {
         document.querySelectorAll('.y2k-window').forEach(w => w.style.zIndex = '10');
@@ -1883,7 +1718,6 @@ function sortearCarta() {
     window.addEventListener('DOMContentLoaded', () => {
         prepararJanelas();
         aplicarContatos();
-        loadSkillsFromJson();
         updateTaskbarTabs();
         
         // Log de inicialização do sistema

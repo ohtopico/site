@@ -1,263 +1,653 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Paciência Y2K</title>
-    <style>
-body {
-    background: #008080;
-    font-family: 'Courier New', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    /* Reduz o tamanho do jogo para 80% do tamanho original */
-    transform: scale(0.8);
-    transform-origin: top center;
-    width: 125%; /* Compensa a escala para manter o layout centralizado */
-    height: 100vh;
-    overflow: hidden;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paciência</title>
+<style>
+    :root {
+        --cw: 72px;
+        --ch: calc(var(--cw) * 1.4);
+        --gap: 10px;
+        --mesa: #0f7a5c;
+        --mesa-2: #0a5c45;
+        --vermelho: #d1003f;
+        --preto: #15121c;
+    }
 
-        #game-container { display: flex; gap: 10px; padding: 20px; background: #c0c0c0; border: 3px outset #fff; }
-        .pile { width: 80px; height: 110px; border: 2px inset #808080; background: #006400; position: relative; }
-        .column { width: 80px; min-height: 400px; border: 2px inset #808080; background: #006400; position: relative; padding-bottom: 20px; }
-	.card { 
-   		 width: 70px; height: 100px; background: white; border: 1px solid #000; 
-    		position: relative; cursor: grab; user-select: none; margin-top: -75px;
-    		display: flex; flex-direction: column; align-items: center; justify-content: center;
-	}
-	.card-value {
-    		position: absolute;
-    		font-size: 14px;
-    		font-weight: bold;
-    		line-height: 1;
-	}
-	.column .card { 
-    		position: relative; 
-    		margin-top: -75px; 
-	}
-	.column .card:first-child { margin-top: 5px; }
+    * { box-sizing: border-box; }
 
-/* Pilhas (Estoque e Lixo) não devem ter margem negativa */
-.pile .card { 
-    margin-top: 0 !important; 
-    position: absolute; 
-    top: 0; left: 0; 
-}
+    html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+    }
 
-/* Estilo do verso no estoque */
-#stock::after {
-    content: "Y2K";
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    background: #000080;
-    border: 2px solid #fff;
-    font-size: 14px;
-}
+    body {
+        background:
+            radial-gradient(circle at 50% 30%, var(--mesa), var(--mesa-2));
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        font-family: 'Courier New', Courier, monospace;
+        user-select: none;
+    }
 
-.top-left { top: 2px; left: 4px; }
-.bottom-right { bottom: 2px; right: 4px; transform: rotate(180deg); }        
+    .barra {
+        align-items: center;
+        background: #c0c0c0;
+        border-bottom: 2px solid #7a7a7a;
+        color: #000;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 5px 8px;
+    }
 
-        .column .card:first-child { margin-top: 5px; }
-        .red { color: red; }
-        .back { background: #000080 !important; color: transparent; border: 2px solid #fff; cursor: default; }
-        .back::after { content: "Y2K"; color: #fff; font-size: 10px; }
-    </style>
+    .barra button {
+        background: #c0c0c0;
+        border: 2px solid;
+        border-color: #fff #555 #555 #fff;
+        color: #000;
+        cursor: pointer;
+        font: bold 13px 'Courier New', monospace;
+        padding: 4px 10px;
+    }
+
+    .barra button:active { border-color: #555 #fff #fff #555; }
+    .barra button:disabled { color: #888; cursor: default; }
+
+    .placar {
+        font-size: 13px;
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    #mesa {
+        flex: 1;
+        min-height: 0;
+        padding: var(--gap);
+        position: relative;
+        touch-action: none;
+    }
+
+    .slot, .carta {
+        border-radius: 7px;
+        height: var(--ch);
+        position: absolute;
+        width: var(--cw);
+    }
+
+    .slot {
+        background: rgba(0, 0, 0, 0.14);
+        border: 2px dashed rgba(255, 255, 255, 0.35);
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .slot.fundacao::after {
+        color: rgba(255, 255, 255, 0.4);
+        content: attr(data-naipe);
+        font-size: calc(var(--cw) * 0.45);
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .slot.monte::after {
+        color: rgba(255, 255, 255, 0.5);
+        content: '↻';
+        font-size: calc(var(--cw) * 0.45);
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .carta {
+        background: #fffdf7;
+        border: 1px solid #333;
+        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.35);
+        color: var(--preto);
+        cursor: pointer;
+        font-family: Georgia, 'Times New Roman', serif;
+        padding: 0;
+        transition: box-shadow 0.1s;
+    }
+
+    .carta.vermelha { color: var(--vermelho); }
+
+    .carta .canto {
+        font-size: calc(var(--cw) * 0.24);
+        font-weight: bold;
+        left: 5px;
+        line-height: 0.95;
+        position: absolute;
+        text-align: center;
+        top: 4px;
+    }
+
+    .carta .canto.baixo {
+        bottom: 4px;
+        left: auto;
+        right: 5px;
+        top: auto;
+        transform: rotate(180deg);
+    }
+
+    .carta .centro {
+        font-size: calc(var(--cw) * 0.55);
+        left: 50%;
+        position: absolute;
+        top: 54%;
+        transform: translate(-50%, -50%);
+    }
+
+    .carta.verso {
+        background:
+            repeating-linear-gradient(45deg, #ff007f 0 6px, #2d124d 6px 12px);
+        border: 3px solid #fff;
+        cursor: default;
+    }
+
+    .carta.verso::after {
+        background: #2d124d;
+        border: 2px solid #fff;
+        border-radius: 4px;
+        color: #fff;
+        content: 'Y2K';
+        font: bold calc(var(--cw) * 0.2) 'Courier New', monospace;
+        left: 50%;
+        padding: 2px 4px;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .carta.selecionada {
+        box-shadow: 0 0 0 3px #fff36b, 0 0 14px #fff36b;
+        z-index: 500 !important;
+    }
+
+    .carta:focus-visible, .slot:focus-visible {
+        outline: 3px solid #00f0ff;
+        outline-offset: 2px;
+    }
+
+    .fantasma {
+        pointer-events: none;
+        position: fixed;
+        z-index: 2000;
+    }
+
+    .fantasma .carta { box-shadow: 4px 8px 14px rgba(0, 0, 0, 0.45); }
+
+    .vitoria {
+        align-items: center;
+        background: rgba(10, 0, 30, 0.6);
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        inset: 0;
+        justify-content: center;
+        position: absolute;
+        z-index: 3000;
+    }
+
+    .vitoria.aberta { display: flex; }
+
+    .vitoria h2 {
+        color: #fff36b;
+        font-size: 34px;
+        margin: 0;
+        text-shadow: 3px 3px 0 #ff007f;
+    }
+
+    .vitoria button {
+        background: #c0c0c0;
+        border: 2px solid;
+        border-color: #fff #555 #555 #fff;
+        cursor: pointer;
+        font: bold 15px 'Courier New', monospace;
+        padding: 8px 16px;
+    }
+
+    .sr-only {
+        clip: rect(0 0 0 0);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        width: 1px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .carta { transition: none; }
+    }
+</style>
 </head>
 <body>
-
-<div id="game-container">
-    <div id="stock" class="pile" onclick="drawCard()"></div>
-    <div id="waste" class="pile"></div>
-    <!-- Todas as 7 colunas presentes -->
-    <div id="col1" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
-    <div id="col2" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
-    <div id="col3" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
-    <div id="col4" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
-    <div id="col5" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
-    <div id="col6" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
-    <div id="col7" class="column" ondrop="handleDrop(event)" ondragover="allowDrop(event)"></div>
-</div>
+    <div class="barra" role="toolbar" aria-label="Controles do jogo">
+        <button type="button" id="novo">Novo jogo</button>
+        <button type="button" id="desfazer" disabled>Desfazer</button>
+        <button type="button" id="auto" title="Leva as cartas possíveis para as fundações">Auto</button>
+        <span class="placar"><span id="jogadas">0</span> jogadas · <span id="tempo">0:00</span></span>
+    </div>
+    <div id="mesa" aria-label="Mesa do paciência"></div>
+    <div class="vitoria" id="vitoria" role="dialog" aria-labelledby="vit-titulo">
+        <h2 id="vit-titulo">Você venceu! ★</h2>
+        <p id="vit-texto"></p>
+        <button type="button" id="denovo">Jogar de novo</button>
+    </div>
+    <p class="sr-only" id="aviso" aria-live="polite"></p>
 
 <script>
-    const CONFIG = {
-        values: {'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13},
-        suits: ['♠', '♥', '♦', '♣']
-    };
-    let deck = [];
+(function () {
+    const NAIPES = ['♠', '♥', '♦', '♣'];
+    const NOMES_NAIPE = { '♠': 'espadas', '♥': 'copas', '♦': 'ouros', '♣': 'paus' };
+    const VALORES = ['', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    const NOMES_VALOR = ['', 'Ás', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valete', 'Dama', 'Rei'];
 
-    const isRed = (suit) => ['♥', '♦'].includes(suit);
+    const mesa = document.getElementById('mesa');
+    const aviso = document.getElementById('aviso');
+    let estado, historico, selecao, jogadas, inicio, timer, ultimoArraste = 0;
 
-    function initGame() {
-        deck = [];
-        CONFIG.suits.forEach(s => Object.keys(CONFIG.values).forEach(v => deck.push({s, v})));
-        deck.sort(() => Math.random() - 0.5); 
-        // Distribui corretamente em todas as 7 colunas[cite: 3]
-        for (let i = 1; i <= 7; i++) {
-            const col = document.getElementById(`col${i}`);
-            for (let j = 0; j < i; j++) renderCard(deck.pop(), col, false, j < i - 1);
+    const vermelha = c => c.s === '♥' || c.s === '♦';
+    const nomeCarta = c => `${NOMES_VALOR[c.r]} de ${NOMES_NAIPE[c.s]}`;
+    const falar = t => { aviso.textContent = ''; setTimeout(() => aviso.textContent = t, 30); };
+
+    function novoJogo() {
+        const baralho = [];
+        NAIPES.forEach(s => { for (let r = 1; r <= 13; r++) baralho.push({ s, r, up: false, id: s + r }); });
+        for (let i = baralho.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [baralho[i], baralho[j]] = [baralho[j], baralho[i]];
         }
-    }
-
-
-function renderCard(data, container, isWaste, isBack) {
-    if (isWaste) container.innerHTML = ''; // Limpa a carta anterior no Waste
-    
-    const el = document.createElement('div');
-    el.className = `card ${isBack ? 'back' : (isRed(data.s) ? 'red' : '')}`;
-    el.id = `card-${Date.now()}-${Math.random()}`;
-    el.draggable = !isBack;
-    el.dataset.value = data.v;
-    el.dataset.suit = data.s;
-
-    if (!isBack) {
-        createCardContent(data, el); // Usa a função que criamos antes
-    }
-    
-    el.ondragstart = (ev) => ev.dataTransfer.setData("text", ev.target.id);
-    container.appendChild(el);
-}
-
-
-    function allowDrop(ev) { ev.preventDefault(); }
-
-function handleDrop(ev) {
-        ev.preventDefault();
-        const cardId = ev.dataTransfer.getData("text");
-        const cardEl = document.getElementById(cardId);
-        const oldCol = cardEl.parentElement; // Captura a coluna de origem ANTES de mover
-        
-        const target = ev.target;
-        const container = target.classList.contains('column') ? target : target.parentElement;
-        
-        // Move a carta para o novo destino
-        container.appendChild(cardEl);
-        
-        // Se a carta saiu de uma coluna, verifica se a nova carta do topo precisa ser revelada
-        if (oldCol && oldCol.classList.contains('column')) {
-            revealCardIfUnderneath(oldCol);
+        const tab = [];
+        for (let c = 0; c < 7; c++) {
+            tab.push(baralho.splice(0, c + 1));
+            tab[c][c].up = true;
         }
+        estado = { monte: baralho, descarte: [], fund: [[], [], [], []], tab };
+        historico = [];
+        selecao = null;
+        jogadas = 0;
+        inicio = null;
+        clearInterval(timer);
+        document.getElementById('tempo').textContent = '0:00';
+        document.getElementById('vitoria').classList.remove('aberta');
+        desenhar();
+        falar('Novo jogo distribuído.');
     }
 
-    // Atualize sua revealCardIfUnderneath para usar a função acima
-function revealCardIfUnderneath(column) {
-    const cards = column.querySelectorAll('.card');
-    if (cards.length > 0) {
-        const topCard = cards[cards.length - 1];
-        if (topCard.classList.contains('back')) {
-            topCard.classList.remove('back');
-            topCard.draggable = true;
-            
-            // Reutiliza a lógica de criação de conteúdo
-            const data = { v: topCard.dataset.value, s: topCard.dataset.suit };
-            createCardContent(data, topCard);
-            
-            if (isRed(data.s)) topCard.classList.add('red');
+    function relogio() {
+        if (inicio) return;
+        inicio = Date.now();
+        timer = setInterval(() => {
+            const s = Math.floor((Date.now() - inicio) / 1000);
+            document.getElementById('tempo').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+        }, 1000);
+    }
+
+    function salvar() {
+        historico.push(JSON.stringify(estado));
+        if (historico.length > 200) historico.shift();
+    }
+
+    function desfazer() {
+        if (!historico.length) return;
+        estado = JSON.parse(historico.pop());
+        selecao = null;
+        jogadas = Math.max(0, jogadas - 1);
+        desenhar();
+        falar('Jogada desfeita.');
+    }
+
+    // ---------- Regras ----------
+    function pilha(ref) {
+        if (ref.tipo === 'tab') return estado.tab[ref.i];
+        if (ref.tipo === 'fund') return estado.fund[ref.i];
+        if (ref.tipo === 'descarte') return estado.descarte;
+        return estado.monte;
+    }
+
+    function cartasDe(origem) {
+        const p = pilha(origem);
+        if (origem.tipo === 'tab') return p.slice(origem.idx);
+        return p.length ? [p[p.length - 1]] : [];
+    }
+
+    function podeMover(cartas, destino) {
+        if (!cartas.length) return false;
+        const primeira = cartas[0];
+        const p = pilha(destino);
+        const topo = p[p.length - 1];
+        if (destino.tipo === 'fund') {
+            if (cartas.length !== 1) return false;
+            if (!topo) return primeira.r === 1;
+            return topo.s === primeira.s && topo.r === primeira.r - 1;
         }
+        if (destino.tipo === 'tab') {
+            if (!topo) return primeira.r === 13;
+            return topo.up && vermelha(topo) !== vermelha(primeira) && topo.r === primeira.r + 1;
+        }
+        return false;
     }
-}
 
+    function mover(origem, destino) {
+        const cartas = cartasDe(origem);
+        if (origem.tipo === destino.tipo && origem.i === destino.i) return false;
+        if (!podeMover(cartas, destino)) return false;
+        salvar();
+        const p = pilha(origem);
+        p.splice(p.length - cartas.length, cartas.length);
+        pilha(destino).push(...cartas);
+        if (origem.tipo === 'tab' && p.length && !p[p.length - 1].up) p[p.length - 1].up = true;
+        jogadas++;
+        relogio();
+        falar(`${nomeCarta(cartas[0])} movida.`);
+        return true;
+    }
 
-// Função auxiliar para padronizar o conteúdo das cartas
-function createCardContent(data, element) {
-    element.innerHTML = ''; // Limpa o conteúdo anterior
-    
-    const topLeft = document.createElement('span');
-    topLeft.className = 'card-value top-left';
-    topLeft.innerHTML = `${data.v}<br>${data.s}`;
-    
-    const bottomRight = document.createElement('span');
-    bottomRight.className = 'card-value bottom-right';
-    bottomRight.innerHTML = `${data.v}<br>${data.s}`;
-    
-    element.appendChild(topLeft);
-    element.appendChild(bottomRight);
-}
+    function comprar() {
+        salvar();
+        if (estado.monte.length) {
+            const c = estado.monte.pop();
+            c.up = true;
+            estado.descarte.push(c);
+            falar(`Virou ${nomeCarta(c)}.`);
+        } else if (estado.descarte.length) {
+            estado.monte = estado.descarte.reverse().map(c => ({ ...c, up: false }));
+            estado.descarte = [];
+            falar('Monte reiniciado.');
+        } else {
+            historico.pop();
+            return;
+        }
+        jogadas++;
+        relogio();
+        selecao = null;
+        desenhar();
+    }
 
-function drawCard() {
-    const stock = document.getElementById('stock');
-    const waste = document.getElementById('waste');
+    function paraFundacao(origem) {
+        const cartas = cartasDe(origem);
+        if (cartas.length !== 1) return false;
+        for (let f = 0; f < 4; f++) {
+            if (mover(origem, { tipo: 'fund', i: f })) return true;
+        }
+        return false;
+    }
 
-    // Se o baralho acabou, recicla o lixo (waste) de volta para o baralho
-    if (deck.length === 0) {
-        const cardsInWaste = waste.querySelectorAll('.card');
-        if (cardsInWaste.length === 0) return alert("Não há mais cartas!");
-        
-        // Move as cartas de volta para o array de deck e limpa a pilha de lixo
-        cardsInWaste.forEach(cardEl => {
-            deck.push({ s: cardEl.dataset.suit, v: cardEl.dataset.value });
-            cardEl.remove();
+    function automatico() {
+        let moveu = true, total = 0;
+        while (moveu) {
+            moveu = false;
+            if (estado.descarte.length && paraFundacao({ tipo: 'descarte' })) { moveu = true; total++; continue; }
+            for (let c = 0; c < 7; c++) {
+                const p = estado.tab[c];
+                if (p.length && paraFundacao({ tipo: 'tab', i: c, idx: p.length - 1 })) { moveu = true; total++; break; }
+            }
+        }
+        selecao = null;
+        desenhar();
+        if (!total) falar('Nenhuma carta pode ir para as fundações agora.');
+    }
+
+    function venceu() {
+        return estado.fund.every(f => f.length === 13);
+    }
+
+    // ---------- Interação ----------
+    let ultimoClique = null;
+    const mesmaRef = (a, b) => a.tipo === b.tipo && a.i === b.i && a.idx === b.idx;
+
+    function clicar(ref) {
+        if (Date.now() - ultimoArraste < 60) return; // ignora só o clique gerado pelo próprio arraste
+        if (ref.tipo === 'monte') { comprar(); return; }
+
+        // Duplo clique (feito à mão, porque a mesa é redesenhada a cada clique)
+        const agora = Date.now();
+        if (ultimoClique && mesmaRef(ultimoClique.ref, ref) && agora - ultimoClique.t < 400) {
+            ultimoClique = null;
+            duploClique(ref);
+            return;
+        }
+        ultimoClique = { ref, t: agora };
+
+        if (selecao) {
+            const mesmo = selecao.tipo === ref.tipo && selecao.i === ref.i && selecao.idx === ref.idx;
+            if (mesmo) { selecao = null; desenhar(); return; }
+            const destino = { tipo: ref.tipo, i: ref.i };
+            if ((ref.tipo === 'tab' || ref.tipo === 'fund') && mover(selecao, destino)) {
+                selecao = null;
+                desenhar();
+                return;
+            }
+        }
+        // Seleciona a carta clicada, se puder ser movida
+        if (ref.idx !== undefined || ref.tipo === 'descarte' || ref.tipo === 'fund') {
+            const cartas = cartasDe(ref);
+            if (cartas.length && cartas[0].up) {
+                selecao = ref;
+                falar(`${nomeCarta(cartas[0])} selecionada${cartas.length > 1 ? ` com mais ${cartas.length - 1}` : ''}. Escolha o destino.`);
+            } else {
+                selecao = null;
+            }
+        } else {
+            selecao = null;
+        }
+        desenhar();
+    }
+
+    function duploClique(ref) {
+        if (ref.tipo === 'monte') return;
+        const p = pilha(ref);
+        const ultima = ref.tipo === 'tab' ? ref.idx === p.length - 1 : true;
+        if (ultima && paraFundacao(ref)) { selecao = null; }
+        desenhar();
+    }
+
+    // Arrastar com mouse ou toque
+    let arraste = null;
+
+    function iniciarArraste(e, ref, el) {
+        const cartas = cartasDe(ref);
+        if (!cartas.length || !cartas[0].up) return;
+        arraste = { ref, x0: e.clientX, y0: e.clientY, el, ativo: false, fantasma: null, dx: 0, dy: 0 };
+        el.setPointerCapture(e.pointerId);
+    }
+
+    mesa.addEventListener('pointermove', e => {
+        if (!arraste) return;
+        const dist = Math.hypot(e.clientX - arraste.x0, e.clientY - arraste.y0);
+        if (!arraste.ativo && dist < 6) return;
+        if (!arraste.ativo) {
+            arraste.ativo = true;
+            const r = arraste.el.getBoundingClientRect();
+            arraste.dx = arraste.x0 - r.left;
+            arraste.dy = arraste.y0 - r.top;
+            const f = document.createElement('div');
+            f.className = 'fantasma';
+            const ids = cartasDe(arraste.ref).map(c => c.id);
+            const passo = espacoAberto();
+            ids.forEach((id, k) => {
+                const orig = mesa.querySelector(`[data-id="${id}"]`);
+                const c = orig.cloneNode(true);
+                c.style.left = '0px';
+                c.style.top = (k * passo) + 'px';
+                c.classList.remove('selecionada');
+                f.appendChild(c);
+                orig.style.visibility = 'hidden';
+            });
+            document.body.appendChild(f);
+            arraste.fantasma = f;
+        }
+        arraste.fantasma.style.left = (e.clientX - arraste.dx) + 'px';
+        arraste.fantasma.style.top = (e.clientY - arraste.dy) + 'px';
+    });
+
+    function terminarArraste(e) {
+        if (!arraste) return;
+        const a = arraste;
+        arraste = null;
+        if (!a.ativo) return;
+        a.fantasma.remove();
+        ultimoArraste = Date.now();
+        const alvo = document.elementFromPoint(e.clientX, e.clientY);
+        const alvoEl = alvo && alvo.closest('[data-tipo]');
+        if (alvoEl) {
+            const destino = { tipo: alvoEl.dataset.tipo, i: Number(alvoEl.dataset.i) };
+            if (destino.tipo === 'tab' || destino.tipo === 'fund') mover(a.ref, destino);
+        }
+        selecao = null;
+        desenhar();
+    }
+
+    mesa.addEventListener('pointerup', terminarArraste);
+    mesa.addEventListener('pointercancel', terminarArraste);
+
+    // ---------- Desenho ----------
+    let geo = {};
+
+    function medir() {
+        const w = mesa.clientWidth, h = mesa.clientHeight;
+        const gap = Math.max(6, Math.min(14, w * 0.015));
+        const cw = Math.min(96, (w - gap * 8) / 7, (h - gap * 3) / 1.4 / 2.6);
+        document.documentElement.style.setProperty('--cw', cw + 'px');
+        document.documentElement.style.setProperty('--gap', gap + 'px');
+        geo = { w, h, gap, cw, ch: cw * 1.4 };
+    }
+
+    function espacoAberto() { return geo.ch * 0.26; }
+
+    function colX(c) { return geo.gap + c * (geo.cw + geo.gap); }
+
+    function criarCarta(c, ref, x, y, z) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'carta';
+        b.style.left = x + 'px';
+        b.style.top = y + 'px';
+        b.style.zIndex = z;
+        b.dataset.tipo = ref.tipo;
+        if (ref.i !== undefined) b.dataset.i = ref.i;
+        b.dataset.id = c.id;
+        if (!c.up) {
+            b.classList.add('verso');
+            b.tabIndex = -1;
+            b.setAttribute('aria-label', 'Carta virada para baixo');
+        } else {
+            if (vermelha(c)) b.classList.add('vermelha');
+            const v = VALORES[c.r];
+            b.innerHTML = `<span class="canto">${v}<br>${c.s}</span><span class="centro">${c.s}</span><span class="canto baixo">${v}<br>${c.s}</span>`;
+            b.setAttribute('aria-label', nomeCarta(c));
+            if (selecao && selecao.tipo === ref.tipo && selecao.i === ref.i &&
+                (ref.tipo !== 'tab' || ref.idx >= selecao.idx)) b.classList.add('selecionada');
+            b.addEventListener('pointerdown', e => { if (e.button === 0) iniciarArraste(e, ref, b); });
+        }
+        b.addEventListener('click', () => clicar(ref));
+        mesa.appendChild(b);
+        return b;
+    }
+
+    function criarSlot(ref, x, y, classe, rotulo, naipe) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'slot ' + classe;
+        b.style.left = x + 'px';
+        b.style.top = y + 'px';
+        b.dataset.tipo = ref.tipo;
+        if (ref.i !== undefined) b.dataset.i = ref.i;
+        if (naipe) b.dataset.naipe = naipe;
+        b.setAttribute('aria-label', rotulo);
+        b.addEventListener('click', () => clicar(ref));
+        mesa.appendChild(b);
+    }
+
+    function desenhar() {
+        medir();
+        const foco = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.id : null;
+        mesa.innerHTML = '';
+        const { gap, ch } = geo;
+
+        // Monte
+        if (estado.monte.length) {
+            const b = criarCarta(estado.monte[estado.monte.length - 1], { tipo: 'monte' }, colX(0), gap, 1);
+            b.tabIndex = 0;
+            b.setAttribute('aria-label', `Monte, ${estado.monte.length} cartas. Clique para virar uma`);
+            b.style.cursor = 'pointer';
+        } else {
+            criarSlot({ tipo: 'monte' }, colX(0), gap, 'monte', 'Monte vazio. Clique para reiniciar com o descarte');
+        }
+
+        // Descarte
+        if (estado.descarte.length) {
+            const c = estado.descarte[estado.descarte.length - 1];
+            criarCarta(c, { tipo: 'descarte' }, colX(1), gap, 1);
+        }
+
+        // Fundações
+        for (let f = 0; f < 4; f++) {
+            const p = estado.fund[f];
+            const x = colX(3 + f);
+            if (p.length) criarCarta(p[p.length - 1], { tipo: 'fund', i: f }, x, gap, 1);
+            else criarSlot({ tipo: 'fund', i: f }, x, gap, 'fundacao', `Fundação ${f + 1}, vazia`, '♠♥♦♣'[f]);
+        }
+
+        // Tableau: espaçamento se ajusta à altura disponível
+        const topo = gap * 2 + ch;
+        estado.tab.forEach((p, c) => {
+            const x = colX(c);
+            if (!p.length) {
+                criarSlot({ tipo: 'tab', i: c }, x, topo, '', `Coluna ${c + 1}, vazia`);
+                return;
+            }
+            const fechadas = p.filter(k => !k.up).length;
+            const abertas = p.length - fechadas;
+            const disponivel = geo.h - topo - ch - gap;
+            let pf = ch * 0.12, pa = ch * 0.26;
+            const preciso = fechadas * pf + Math.max(0, abertas - 1) * pa;
+            if (preciso > disponivel && preciso > 0) {
+                const k = disponivel / preciso;
+                pf *= k; pa *= k;
+            }
+            let y = topo;
+            p.forEach((carta, idx) => {
+                criarCarta(carta, { tipo: 'tab', i: c, idx }, x, y, idx + 1);
+                y += carta.up ? pa : pf;
+            });
         });
-        deck.sort(() => Math.random() - 0.5); // Re-embaralha
-        return;
+
+        document.getElementById('jogadas').textContent = jogadas;
+        document.getElementById('desfazer').disabled = !historico.length;
+
+        if (foco) {
+            const el = mesa.querySelector(`[data-id="${foco}"]`);
+            if (el && el.tabIndex !== -1) el.focus({ preventScroll: true });
+        }
+
+        if (venceu()) {
+            clearInterval(timer);
+            document.getElementById('vit-texto').textContent = `${jogadas} jogadas em ${document.getElementById('tempo').textContent}.`;
+            document.getElementById('vitoria').classList.add('aberta');
+            document.getElementById('denovo').focus();
+            falar('Você venceu!');
+        }
     }
 
-    // Pega a carta do topo do deck
-    const cardData = deck.pop();
-    
-    // Renderiza a carta no Waste
-    // Note: O isWaste é true, então ele limpa a carta anterior (se quiser apenas 1 visível)
-    // Se quiser uma pilha no lixo, remova o `waste.innerHTML = ''` dentro da renderCard
-    renderCard(cardData, waste, true, false);
-}
+    document.getElementById('novo').addEventListener('click', novoJogo);
+    document.getElementById('denovo').addEventListener('click', novoJogo);
+    document.getElementById('desfazer').addEventListener('click', desfazer);
+    document.getElementById('auto').addEventListener('click', automatico);
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); desfazer(); }
+        if (e.key === 'Escape' && selecao) { selecao = null; desenhar(); }
+    });
+    addEventListener('resize', () => { if (estado) desenhar(); });
 
-// Verifica se o movimento é válido para o Foundation
-function canMoveToFoundation(movingCard, targetPile) {
-    const cards = targetPile.querySelectorAll('.card');
-    
-    // Regra: Se vazia, aceita apenas Ás (A)
-    if (cards.length === 0) return movingCard.value === 'A';
-    
-    // Regra: Deve ser o mesmo naipe e valor superior (Ex: 2 de Copas sobre Ás de Copas)
-    const topCard = cards[cards.length - 1];
-    const sameSuit = movingCard.suit === topCard.dataset.suit;
-    const isSequence = CONFIG.values[movingCard.value] === CONFIG.values[topCard.dataset.value] + 1;
-    
-    return sameSuit && isSequence;
-}
-
-// Verifica se todas as cartas foram movidas para o Foundation
-function checkWinCondition() {
-    const totalInFoundation = document.querySelectorAll('.foundation .card').length;
-    if (totalInFoundation === 52) {
-        alert("Parabéns! Você venceu o jogo!");
-    }
-}
-
-// Atualização da handleDrop para incluir a lógica de Foundation
-function handleDrop(ev) {
-    ev.preventDefault();
-    const cardId = ev.dataTransfer.getData("text");
-    const cardEl = document.getElementById(cardId);
-    const target = ev.target;
-    const container = target.classList.contains('column') || target.classList.contains('foundation') ? target : target.parentElement;
-    
-    const movingCard = { value: cardEl.dataset.value, suit: cardEl.dataset.suit };
-    let isValid = false;
-
-    if (container.classList.contains('foundation')) {
-        isValid = canMoveToFoundation(movingCard, container);
-    } else if (container.classList.contains('column')) {
-        // Lógica de coluna simplificada para exemplo
-        isValid = true; 
-    }
-
-    if (isValid) {
-        container.appendChild(cardEl);
-        revealCardIfUnderneath(cardEl.parentElement); // Se moveu de uma coluna, revela a de baixo
-        checkWinCondition(); // Verifica se venceu
-    } else {
-        alert("Movimento inválido!");
-    }
-}
-
-
-    initGame();
+    novoJogo();
+})();
 </script>
 </body>
 </html>

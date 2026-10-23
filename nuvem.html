@@ -1,116 +1,357 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Impede barras de rolagem */
-            background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffcc),
-                        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.1) 3px);
-            background-size: 200% 200%, 100% auto;
-            animation: gradientBG 10s ease infinite;
-            font-family: 'Courier New', Courier, monospace;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interesses</title>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        width: 100%;
+    }
 
-        @keyframes gradientBG {
-            0% {background-position: 0% 50%, 0 0;}
-            50% {background-position: 100% 50%, 0 0;}
-            100% {background-position: 0% 50%, 0 0;}
-        }
+    body {
+        animation: fundo 12s ease infinite;
+        background:
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.08) 3px),
+            linear-gradient(135deg, #ff00cc, #3333ff, #00ffcc);
+        background-size: 100% auto, 200% 200%;
+        font-family: 'Courier New', Courier, monospace;
+        touch-action: none;
+        user-select: none;
+    }
 
-        .word {
-            position: absolute;
-            cursor: grab;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
-            backdrop-filter: blur(10px);
-            border: 2px solid #ffffff;
-            border-right-color: #808080;
-            border-bottom-color: #808080;
-            border-radius: 15px;
-            box-shadow: 5px 5px 0px #ff00cc, 10px 10px 20px rgba(0,0,0,0.5);
-            color: #fff;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0px #000;
-            user-select: none;
-            white-space: nowrap;
-            touch-action: none;
-        }
+    @keyframes fundo {
+        0%, 100% { background-position: 0 0, 0% 50%; }
+        50% { background-position: 0 0, 100% 50%; }
+    }
 
-        .word:active { cursor: grabbing; transform: translate(3px, 3px); }
+    h1 {
+        color: #fff;
+        font-size: 26px;
+        left: 0;
+        letter-spacing: 6px;
+        margin: 0;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        text-shadow: 3px 3px 0 #00ffcc, 5px 5px 0 rgba(0,0,0,0.35);
+        top: 12px;
+    }
 
-        .header {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            font-size: 30px;
-            text-shadow: 3px 3px 0 #00ffcc;
-            pointer-events: none;
-            z-index: -1;
-        }
-    </style>
+    svg {
+        height: 100%;
+        inset: 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    line {
+        stroke: rgba(255, 255, 255, 0.55);
+        stroke-dasharray: 6 5;
+        stroke-width: 2;
+        transition: stroke 0.15s, stroke-width 0.15s, opacity 0.15s;
+    }
+
+    line.on { stroke: #fff36b; stroke-dasharray: none; stroke-width: 3.5; }
+    line.off { opacity: 0.15; }
+
+    .node {
+        background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.15));
+        border: 2px solid #fff;
+        border-bottom-color: #6c6c8a;
+        border-radius: 14px;
+        border-right-color: #6c6c8a;
+        box-shadow: 4px 4px 0 var(--c, #ff00cc), 8px 8px 16px rgba(0,0,0,0.35);
+        color: #fff;
+        cursor: grab;
+        font: bold 13px 'Courier New', Courier, monospace;
+        left: 0;
+        padding: 9px 14px;
+        position: absolute;
+        text-shadow: 2px 2px 0 #000;
+        text-transform: uppercase;
+        top: 0;
+        touch-action: none;
+        transition: opacity 0.15s, box-shadow 0.15s;
+        white-space: nowrap;
+        backdrop-filter: blur(6px);
+    }
+
+    .node:active { cursor: grabbing; }
+    .node.off { opacity: 0.35; }
+    .node.on, .node:focus-visible {
+        box-shadow: 4px 4px 0 #fff36b, 0 0 0 3px #fff36b, 8px 8px 18px rgba(0,0,0,0.4);
+        outline: none;
+        z-index: 2;
+    }
+
+    .legenda {
+        background: rgba(0, 0, 0, 0.55);
+        border: 2px solid #fff;
+        bottom: 10px;
+        color: #fff;
+        font-size: 13px;
+        left: 50%;
+        max-width: calc(100% - 24px);
+        padding: 6px 12px;
+        pointer-events: none;
+        position: absolute;
+        text-align: center;
+        transform: translateX(-50%);
+        width: max-content;
+    }
+
+    .sr-only {
+        clip: rect(0 0 0 0);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        width: 1px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        body { animation: none; }
+        line, .node { transition: none; }
+    }
+</style>
 </head>
 <body>
+    <h1>INTERESSES</h1>
+    <svg id="arestas" aria-hidden="true"></svg>
+    <div id="nos"></div>
+    <p class="legenda" id="legenda" aria-live="polite">Arraste os interesses. Passe o mouse para ver as ligações.</p>
+    <ul class="sr-only" id="lista" aria-label="Interesses e suas ligações"></ul>
 
-    <div class="header">SOBRE MIM</div>
+<script>
+    const NOS = [
+        { id: 'computacao', nome: 'Computação', cor: '#00ffcc' },
+        { id: 'jogos', nome: 'Jogos educacionais', cor: '#00ffcc' },
+        { id: 'design', nome: 'Design', cor: '#ff00cc' },
+        { id: 'fotografia', nome: 'Fotografia', cor: '#ff00cc' },
+        { id: 'moda', nome: 'Moda', cor: '#ff9de2' },
+        { id: 'papelaria', nome: 'Papelaria', cor: '#ff9de2' },
+        { id: 'artesanato', nome: 'Artesanato', cor: '#ffcc00' },
+        { id: 'saboaria', nome: 'Saboaria', cor: '#ffcc00' },
+        { id: 'cogumelos', nome: 'Criação de cogumelos', cor: '#7cff6b' },
+        { id: 'cafe', nome: 'Café', cor: '#7cff6b' },
+        { id: 'poesia', nome: 'Poesia', cor: '#a98bff' }
+    ];
 
-    <div class="word" style="left: 50px; top: 100px;">Computação</div>
-    <div class="word" style="left: 200px; top: 200px;">Café</div>
-    <div class="word" style="left: 50px; top: 300px;">Poesia</div>
+    const ARESTAS = [
+        ['computacao', 'jogos'], ['computacao', 'design'], ['computacao', 'cafe'],
+        ['jogos', 'design'], ['jogos', 'papelaria'],
+        ['design', 'papelaria'], ['design', 'moda'], ['design', 'fotografia'], ['design', 'artesanato'],
+        ['fotografia', 'moda'], ['fotografia', 'cogumelos'], ['fotografia', 'saboaria'], ['fotografia', 'poesia'],
+        ['artesanato', 'saboaria'], ['artesanato', 'papelaria'], ['artesanato', 'moda'],
+        ['cogumelos', 'cafe'],
+        ['poesia', 'cafe'], ['poesia', 'papelaria']
+    ];
 
-    <script>
-	let activeElement = null;
-    	let offsetX, offsetY;
+    const svg = document.getElementById('arestas');
+    const caixa = document.getElementById('nos');
+    const legenda = document.getElementById('legenda');
+    const porId = {};
+    const vizinhos = {};
+    let W = innerWidth, H = innerHeight;
+    const MARGEM_TOPO = 52, MARGEM_BASE = 64;
 
-    	// Garante que as palavras apareçam dentro da área visível ao carregar
-    	window.onload = () => {
-        	document.querySelectorAll('.word').forEach(word => {
-            	// Define posições aleatórias dentro do limite do iframe
-            	const maxX = window.innerWidth - word.offsetWidth - 20;
-            	const maxY = window.innerHeight - word.offsetHeight - 20;
-            
-            	// Verifica se o tamanho é válido antes de aplicar
-            	if(maxX > 0 && maxY > 0) {
-               	 word.style.left = Math.floor(Math.random() * maxX) + 'px';
-               	 word.style.top = Math.floor(Math.random() * maxY) + 'px';
-           	 }
-       	 });
-   	 };
+    // Cria os nós em círculo para começar
+    NOS.forEach((n, i) => {
+        const ang = (i / NOS.length) * Math.PI * 2;
+        n.x = W / 2 + Math.cos(ang) * W * 0.28;
+        n.y = H / 2 + Math.sin(ang) * H * 0.25;
+        n.vx = 0; n.vy = 0; n.fixo = false;
+        const el = document.createElement('button');
+        el.type = 'button';
+        el.className = 'node';
+        el.textContent = n.nome;
+        el.style.setProperty('--c', n.cor);
+        caixa.appendChild(el);
+        n.el = el;
+        n.w = el.offsetWidth; n.h = el.offsetHeight;
+        porId[n.id] = n;
+        vizinhos[n.id] = new Set();
+    });
 
-        document.addEventListener('pointerdown', (e) => {
-            if (e.target.classList.contains('word')) {
-                activeElement = e.target;
-                offsetX = e.clientX - activeElement.getBoundingClientRect().left;
-                offsetY = e.clientY - activeElement.getBoundingClientRect().top;
-                activeElement.style.zIndex = 1000;
+    const linhas = ARESTAS.map(([a, b]) => {
+        vizinhos[a].add(b); vizinhos[b].add(a);
+        const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        svg.appendChild(l);
+        return { a: porId[a], b: porId[b], el: l };
+    });
+
+    // Lista acessível com as ligações
+    const lista = document.getElementById('lista');
+    NOS.forEach(n => {
+        const li = document.createElement('li');
+        li.textContent = `${n.nome}: ligado a ${[...vizinhos[n.id]].map(v => porId[v].nome).join(', ')}.`;
+        lista.appendChild(li);
+    });
+
+    // Simulação de forças simples: repulsão entre nós, molas nas arestas, centro
+    function passo(alpha) {
+        for (let i = 0; i < NOS.length; i++) {
+            for (let j = i + 1; j < NOS.length; j++) {
+                const a = NOS[i], b = NOS[j];
+                let dx = b.x - a.x, dy = b.y - a.y;
+                let d2 = dx * dx + dy * dy || 0.01;
+                const d = Math.sqrt(d2);
+                const f = (9000 / d2) * alpha;
+                dx /= d; dy /= d;
+                a.vx -= dx * f; a.vy -= dy * f;
+                b.vx += dx * f; b.vy += dy * f;
             }
+        }
+        const alvo = Math.min(W, H) * 0.32 + 40;
+        linhas.forEach(({ a, b }) => {
+            const dx = b.x - a.x, dy = b.y - a.y;
+            const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
+            const f = (d - alvo) * 0.02 * alpha;
+            a.vx += (dx / d) * f; a.vy += (dy / d) * f;
+            b.vx -= (dx / d) * f; b.vy -= (dy / d) * f;
+        });
+        NOS.forEach(n => {
+            n.vx += (W / 2 - n.x) * 0.004 * alpha;
+            n.vy += ((H + MARGEM_TOPO - MARGEM_BASE) / 2 - n.y) * 0.004 * alpha;
+            if (n.fixo) { n.vx = 0; n.vy = 0; return; }
+            n.vx *= 0.82; n.vy *= 0.82;
+            n.x += n.vx; n.y += n.vy;
+            n.x = Math.max(n.w / 2 + 6, Math.min(W - n.w / 2 - 6, n.x));
+            n.y = Math.max(MARGEM_TOPO + n.h / 2, Math.min(H - MARGEM_BASE - n.h / 2, n.y));
+        });
+        // Colisão: rótulos nunca ficam um em cima do outro
+        for (let volta = 0; volta < 3; volta++) {
+            for (let i = 0; i < NOS.length; i++) {
+                for (let j = i + 1; j < NOS.length; j++) {
+                    const a = NOS[i], b = NOS[j];
+                    const ox = (a.w + b.w) / 2 + 10 - Math.abs(b.x - a.x);
+                    const oy = (a.h + b.h) / 2 + 8 - Math.abs(b.y - a.y);
+                    if (ox <= 0 || oy <= 0) continue;
+                    const [pa, pb] = a.fixo ? [0, 1] : b.fixo ? [1, 0] : [0.5, 0.5];
+                    if (ox < oy) {
+                        const sx = b.x >= a.x ? 1 : -1;
+                        a.x -= sx * ox * pa; b.x += sx * ox * pb;
+                    } else {
+                        const sy = b.y >= a.y ? 1 : -1;
+                        a.y -= sy * oy * pa; b.y += sy * oy * pb;
+                    }
+                }
+            }
+        }
+        NOS.forEach(n => {
+            n.x = Math.max(n.w / 2 + 6, Math.min(W - n.w / 2 - 6, n.x));
+            n.y = Math.max(MARGEM_TOPO + n.h / 2, Math.min(H - MARGEM_BASE - n.h / 2, n.y));
+        });
+    }
+
+    function desenhar() {
+        NOS.forEach(n => {
+            n.el.style.transform = `translate(${n.x - n.w / 2}px, ${n.y - n.h / 2}px)`;
+        });
+        linhas.forEach(({ a, b, el }) => {
+            el.setAttribute('x1', a.x); el.setAttribute('y1', a.y);
+            el.setAttribute('x2', b.x); el.setAttribute('y2', b.y);
+        });
+    }
+
+    const semMovimento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let calor = 1, rodando = false;
+
+    function animar() {
+        passo(calor);
+        desenhar();
+        calor *= 0.985;
+        if (calor > 0.02) requestAnimationFrame(animar);
+        else rodando = false;
+    }
+
+    function aquecer(valor) {
+        if (semMovimento) {
+            for (let k = 0; k < 200; k++) passo(1 - k / 200);
+            desenhar();
+            return;
+        }
+        calor = Math.max(calor, valor);
+        if (!rodando) { rodando = true; requestAnimationFrame(animar); }
+    }
+
+    // Destaque dos vizinhos
+    function destacar(n) {
+        NOS.forEach(m => {
+            const perto = m === n || vizinhos[n.id].has(m.id);
+            m.el.classList.toggle('on', m === n);
+            m.el.classList.toggle('off', !perto);
+        });
+        linhas.forEach(l => {
+            const liga = l.a === n || l.b === n;
+            l.el.classList.toggle('on', liga);
+            l.el.classList.toggle('off', !liga);
+        });
+        legenda.textContent = `${n.nome} se liga a: ${[...vizinhos[n.id]].map(v => porId[v].nome).join(', ')}`;
+    }
+
+    function limpar() {
+        NOS.forEach(m => m.el.classList.remove('on', 'off'));
+        linhas.forEach(l => l.el.classList.remove('on', 'off'));
+        legenda.textContent = 'Arraste os interesses. Passe o mouse para ver as ligações.';
+    }
+
+    // Arrastar com mouse ou toque
+    NOS.forEach(n => {
+        n.el.addEventListener('pointerenter', () => destacar(n));
+        n.el.addEventListener('pointerleave', () => { if (!n.fixo) limpar(); });
+        n.el.addEventListener('focus', () => destacar(n));
+        n.el.addEventListener('blur', limpar);
+
+        n.el.addEventListener('pointerdown', e => {
+            n.el.setPointerCapture(e.pointerId);
+            n.fixo = true;
+            destacar(n);
+            const dx = e.clientX - n.x, dy = e.clientY - n.y;
+            const mover = ev => {
+                n.x = Math.max(n.w / 2, Math.min(W - n.w / 2, ev.clientX - dx));
+                n.y = Math.max(MARGEM_TOPO + n.h / 2, Math.min(H - MARGEM_BASE - n.h / 2, ev.clientY - dy));
+                aquecer(0.35);
+                desenhar();
+            };
+            const soltar = () => {
+                n.fixo = false;
+                n.el.removeEventListener('pointermove', mover);
+                n.el.removeEventListener('pointerup', soltar);
+                n.el.removeEventListener('pointercancel', soltar);
+                limpar();
+                aquecer(0.3);
+            };
+            n.el.addEventListener('pointermove', mover);
+            n.el.addEventListener('pointerup', soltar);
+            n.el.addEventListener('pointercancel', soltar);
         });
 
-        document.addEventListener('pointermove', (e) => {
-            if (activeElement) {
-                // Calcula limites para manter dentro do iframe
-                let x = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - activeElement.offsetWidth));
-                let y = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - activeElement.offsetHeight));
-                
-                activeElement.style.left = x + 'px';
-                activeElement.style.top = y + 'px';
-            }
+        // Teclado: setas movem o interesse em foco
+        n.el.addEventListener('keydown', e => {
+            const passoPx = e.shiftKey ? 40 : 15;
+            const mov = { ArrowLeft: [-passoPx, 0], ArrowRight: [passoPx, 0], ArrowUp: [0, -passoPx], ArrowDown: [0, passoPx] }[e.key];
+            if (!mov) return;
+            e.preventDefault();
+            n.x += mov[0]; n.y += mov[1];
+            desenhar();
+            aquecer(0.25);
         });
+    });
 
-        document.addEventListener('pointerup', () => {
-            if (activeElement) {
-                activeElement.style.zIndex = 1;
-                activeElement = null;
-            }
-        });
-    </script>
+    addEventListener('resize', () => {
+        W = innerWidth; H = innerHeight;
+        NOS.forEach(n => { n.w = n.el.offsetWidth; n.h = n.el.offsetHeight; });
+        aquecer(0.6);
+    });
+
+    desenhar();
+    aquecer(1);
+</script>
 </body>
 </html>

@@ -761,6 +761,50 @@ dialog.browser::backdrop {
 
 .br-count { color: var(--ink-3); font-size: 13px; }
 
+/* Competências clicáveis */
+.comp-dica { color: var(--ink-3); font-size: 14px; margin: -4px 0 12px 0; }
+
+.chips li.tem-previa { background: none; padding: 0; }
+
+.chip-btn {
+    background: var(--chip);
+    border: 1px dashed var(--accent-2);
+    border-radius: 999px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13.5px;
+    padding: 2px 10px;
+}
+
+.chip-btn:hover { background: var(--paper); border-style: solid; color: var(--accent-2); }
+
+/* Ficha de texto quando o item não tem imagem */
+.br-ficha {
+    align-items: center;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 420px;
+    padding: 34px 28px;
+    text-align: center;
+    width: 100%;
+}
+
+.br-ficha[hidden], .br-figure img[hidden] { display: none; }
+
+.br-ficha-icone {
+    color: var(--accent-2);
+    font-size: 42px;
+    line-height: 1;
+}
+
+.br-ficha strong { color: var(--accent); font-size: 20px; font-weight: 600; }
+.br-ficha span:last-child { color: var(--ink-2); font-size: 14px; }
+
 @media (max-width: 760px) {
     dialog.browser {
         border-radius: 12px 12px 0 0;
@@ -783,7 +827,9 @@ dialog.browser::backdrop {
 }
 
 @media print {
-    .pv-slot, dialog.browser, .cred-link { display: none !important; }
+    .pv-slot, dialog.browser, .cred-link, .comp-dica { display: none !important; }
+    .chips li.tem-previa { background: none; padding: 0; }
+    .chip-btn { background: none; border: none; color: inherit; font-size: 10pt; padding: 0; }
 }
 </style>
 </head>
@@ -1087,6 +1133,7 @@ dialog.browser::backdrop {
         <!-- COMPETÊNCIAS -->
         <section class="cv-section" id="sec-competencias" aria-labelledby="h-comp">
             <h2 id="h-comp">Competências</h2>
+            <p class="comp-dica no-print">Clique em uma competência para ver os projetos e as experiências em que a usei.</p>
             <div class="skills">
                 <div class="skill" data-perfil="completo dados docencia">
                     <h3>Dados e engenharia</h3>
@@ -1110,6 +1157,12 @@ dialog.browser::backdrop {
                     <h3>Educação</h3>
                     <ul class="chips">
                         <li>Pensamento computacional</li><li>Formação de professores</li><li>Robótica educacional</li><li>AEE</li><li>IA na educação</li>
+                    </ul>
+                </div>
+                <div class="skill" data-perfil="completo docencia">
+                    <h3>Comunicação e design</h3>
+                    <ul class="chips">
+                        <li>Palestras e apresentações</li><li>Material didático</li><li>Design gráfico</li><li>Marketing digital</li>
                     </ul>
                 </div>
             </div>
@@ -1224,6 +1277,11 @@ dialog.browser::backdrop {
     <div class="br-page">
         <figure class="br-figure" id="br-painel" role="tabpanel">
             <img id="br-img" src="" alt="">
+            <div class="br-ficha" id="br-ficha" hidden>
+                <span class="br-ficha-icone" id="br-ficha-icone" aria-hidden="true"></span>
+                <strong id="br-ficha-nome"></strong>
+                <span id="br-ficha-tipo"></span>
+            </div>
             <figcaption id="br-legenda"></figcaption>
         </figure>
         <div class="br-info">
@@ -1402,12 +1460,93 @@ const PREVIAS = {
     }
 };
 
+/* ---------------------------------------------------------------
+   COMPETÊNCIAS: cada competência aponta para os projetos e as
+   experiências onde foi usada. Itens com prévia (PREVIAS) usam a
+   primeira imagem; os demais aparecem como ficha de texto (FICHAS).
+   --------------------------------------------------------------- */
+const FICHAS = {
+    compass: {
+        nome: 'Compass UOL',
+        tipo: 'Engenharia de dados · 2019–2020',
+        texto: 'Como engenheira de dados trainee, projetou arquiteturas em nuvem para soluções de IA, modelou dados com SQL e participou do gerenciamento de um data lake na AWS (S3 e EC2) que alimentava dashboards internos.',
+        icone: '☁'
+    },
+    mestrado: {
+        nome: 'Pesquisa do mestrado',
+        tipo: 'UFSM · em andamento',
+        texto: 'Deep learning e visão computacional para uma mochila inteligente que auxilia pessoas com baixa visão ou cegas, com modelos MobileNet treinados nos datasets MIT67 e NYU Depth v2.',
+        icone: '◎'
+    },
+    seduc: {
+        nome: 'Escola estadual',
+        tipo: 'Professora de informática · 2026',
+        texto: 'Lógica, pensamento computacional e introdução a projetos em três turmas de 1º ano do ensino médio, preparando os estudantes para o curso técnico em informática.',
+        icone: '✎'
+    }
+};
+
+const NOMES_CURTOS = {
+    recompra: 'Previsão de recompra', salario: 'Faixa salarial', moedas: 'Moedas brasileiras',
+    odontoapp: 'OdontoApp', iapraprof: 'IA pra Prof', oficinas: 'Oficinas para professores',
+    cnpq: 'Pesquisa no CNPq', prendadas: 'Palestra PrendAdas', tutoria: 'UNISC Inclusão Digital',
+    licenciatura: 'Arduino e Scratch', fortalk: 'Fortalk', freelancer: 'Portfólio de design'
+};
+
+const COMPETENCIAS = {
+    'SQL (MySQL, PostgreSQL)': ['compass'],
+    'Python (pandas, NumPy, PySpark)': ['recompra', 'salario', 'moedas', 'mestrado'],
+    'Modelagem de dados': ['compass'],
+    'Data lake na AWS': ['compass'],
+    'scikit-learn': ['recompra', 'salario'],
+    'LightGBM e XGBoost': ['recompra'],
+    'TensorFlow/Keras': ['moedas', 'mestrado'],
+    'MobileNet': ['mestrado', 'moedas'],
+    'Visão computacional': ['mestrado', 'moedas', 'cnpq'],
+    'AWS (S3, EC2)': ['compass'],
+    'Google Cloud (Storage, Vision)': ['moedas'],
+    'Pensamento computacional': ['seduc', 'licenciatura'],
+    'Formação de professores': ['oficinas', 'iapraprof'],
+    'Robótica educacional': ['licenciatura', 'tutoria'],
+    'AEE': ['iapraprof'],
+    'IA na educação': ['iapraprof', 'oficinas'],
+    'Palestras e apresentações': ['prendadas', 'cnpq'],
+    'Material didático': ['licenciatura', 'tutoria', 'oficinas'],
+    'Design gráfico': ['freelancer', 'fortalk'],
+    'Marketing digital': ['fortalk', 'freelancer']
+};
+
 (function () {
     const dlg = document.getElementById('previa');
     const el = id => document.getElementById(id);
     let atual = null, indice = 0, origem = null;
 
     const ICONE = '<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 5.5h13" stroke="currentColor" stroke-width="1.4"/><circle cx="3.6" cy="4" r=".6" fill="currentColor"/><circle cx="5.4" cy="4" r=".6" fill="currentColor"/></svg>';
+
+    const slug = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    // Monta a prévia de uma competência a partir dos itens ligados a ela
+    function previaDaCompetencia(nome) {
+        const abas = COMPETENCIAS[nome].map(chave => {
+            const p = PREVIAS[chave];
+            if (p) {
+                return {
+                    nome: NOMES_CURTOS[chave] || p.titulo,
+                    img: p.abas[0].img, alt: p.abas[0].alt, legenda: p.titulo,
+                    texto: p.texto, link: p.externo, chave
+                };
+            }
+            const f = FICHAS[chave];
+            return { nome: f.nome, ficha: f, texto: f.texto, legenda: '' };
+        });
+        return {
+            tipo: 'Competência',
+            titulo: nome,
+            url: 'competencias/' + slug(nome),
+            fatos: [[String(abas.length), abas.length > 1 ? 'projetos e experiências' : 'projeto ou experiência']],
+            abas
+        };
+    }
 
     // Miniaturas + botão em cada item marcado com data-preview
     document.querySelectorAll('.pv-slot').forEach(slot => {
@@ -1422,7 +1561,7 @@ const PREVIAS = {
             b.className = 'pv-thumb';
             b.setAttribute('aria-label', `Abrir prévia: ${aba.nome}`);
             b.innerHTML = `<img src="${aba.img}" alt="" loading="lazy">`;
-            b.addEventListener('click', () => abrir(chave, i, b));
+            b.addEventListener('click', () => abrir(p, i, b));
             strip.appendChild(b);
         });
         const btn = document.createElement('button');
@@ -1430,43 +1569,41 @@ const PREVIAS = {
         btn.className = 'pv-open';
         btn.setAttribute('aria-haspopup', 'dialog');
         btn.innerHTML = `${ICONE} Ver prévia${p.abas.length > 1 ? ` (${p.abas.length} imagens)` : ''}`;
-        btn.addEventListener('click', () => abrir(chave, 0, btn));
+        btn.addEventListener('click', () => abrir(p, 0, btn));
         strip.appendChild(btn);
         slot.appendChild(strip);
     });
 
-    function abrir(chave, i, botao) {
-        atual = PREVIAS[chave];
-        origem = botao;
+    // Competências viram botões quando há projetos ligados a elas
+    document.querySelectorAll('#sec-competencias .chips li').forEach(li => {
+        const nome = li.textContent.trim();
+        if (!COMPETENCIAS[nome]) return;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'chip-btn';
+        b.setAttribute('aria-haspopup', 'dialog');
+        b.setAttribute('aria-label', `${nome}: ver onde usei`);
+        b.textContent = nome;
+        b.addEventListener('click', () => abrir(previaDaCompetencia(nome), 0, b));
+        li.textContent = '';
+        li.classList.add('tem-previa');
+        li.appendChild(b);
+    });
+
+    function abrir(previa, i, botao) {
+        atual = previa;
+        if (botao) origem = botao;
         el('br-tipo').textContent = atual.tipo;
         el('br-titulo').textContent = atual.titulo;
-        el('br-texto').textContent = atual.texto;
 
         el('br-fatos').innerHTML = '';
         (atual.fatos || []).forEach(([valor, rotulo]) => {
             const li = document.createElement('li');
-            li.innerHTML = `<b></b> <span></span>`;
+            li.innerHTML = '<b></b> <span></span>';
             li.querySelector('b').textContent = valor;
             li.querySelector('span').textContent = rotulo;
             el('br-fatos').appendChild(li);
         });
-
-        const ext = el('br-externo');
-        const links = el('br-links');
-        links.innerHTML = '';
-        if (atual.externo) {
-            ext.href = atual.externo;
-            ext.hidden = false;
-            const a = document.createElement('a');
-            a.className = 'btn primary';
-            a.href = atual.externo;
-            a.target = '_blank';
-            a.rel = 'noopener';
-            a.textContent = atual.externo.includes('github') ? 'Abrir notebook ↗' : 'Abrir o guia ↗';
-            links.appendChild(a);
-        } else {
-            ext.hidden = true;
-        }
 
         const tabs = el('br-tabs');
         tabs.innerHTML = '';
@@ -1484,18 +1621,67 @@ const PREVIAS = {
         });
 
         mostrar(i);
-        dlg.showModal();
-        el(`br-tab-${i}`).focus();
+        if (!dlg.open) dlg.showModal();
+        el(`br-tab-${indice}`).focus();
+    }
+
+    function rotuloLink(url) {
+        if (url.includes('github')) return 'Abrir notebook ↗';
+        if (url.includes('ia-pra-prof')) return 'Abrir o guia ↗';
+        return 'Abrir ↗';
     }
 
     function mostrar(n) {
         const total = atual.abas.length;
         indice = (n + total) % total;
         const aba = atual.abas[indice];
+
+        // Imagem ou ficha de texto
         const img = el('br-img');
-        img.src = aba.img;
-        img.alt = aba.alt;
+        const ficha = el('br-ficha');
+        if (aba.img) {
+            img.hidden = false;
+            ficha.hidden = true;
+            img.src = aba.img;
+            img.alt = aba.alt;
+        } else {
+            img.hidden = true;
+            img.removeAttribute('src');
+            ficha.hidden = false;
+            el('br-ficha-icone').textContent = aba.ficha.icone;
+            el('br-ficha-nome').textContent = aba.ficha.nome;
+            el('br-ficha-tipo').textContent = aba.ficha.tipo;
+        }
         el('br-legenda').textContent = aba.legenda || '';
+        el('br-texto').textContent = aba.texto || atual.texto || '';
+
+        // Link da aba ou da prévia, e atalho para a prévia completa do item
+        const link = aba.link || atual.externo;
+        const ext = el('br-externo');
+        const links = el('br-links');
+        links.innerHTML = '';
+        if (link) {
+            ext.href = link;
+            ext.hidden = false;
+            const a = document.createElement('a');
+            a.className = 'btn primary';
+            a.href = link;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.textContent = rotuloLink(link);
+            links.appendChild(a);
+        } else {
+            ext.hidden = true;
+        }
+        if (aba.chave && PREVIAS[aba.chave].abas.length > 1) {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'btn';
+            b.textContent = `Ver as ${PREVIAS[aba.chave].abas.length} imagens`;
+            b.addEventListener('click', () => abrir(PREVIAS[aba.chave], 0, null));
+            links.appendChild(b);
+        }
+
         el('br-url').innerHTML = '<b>ohtopico.com.br</b>/curriculo/' + atual.url + (total > 1 ? '#' + (indice + 1) : '');
         document.querySelectorAll('.br-tab').forEach((t, k) => {
             const sel = k === indice;
@@ -1506,7 +1692,7 @@ const PREVIAS = {
         el('br-painel').setAttribute('aria-labelledby', `br-tab-${indice}`);
         el('br-ant').disabled = total < 2;
         el('br-prox').disabled = total < 2;
-        el('br-contagem').textContent = total > 1 ? `Imagem ${indice + 1} de ${total}: ${aba.nome}` : '';
+        el('br-contagem').textContent = total > 1 ? `${indice + 1} de ${total}: ${aba.nome}` : '';
     }
 
     el('br-ant').addEventListener('click', () => mostrar(indice - 1));
