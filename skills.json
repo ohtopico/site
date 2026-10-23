@@ -1,27 +1,31 @@
 [
   {
-    "nome": "Google Cloud Plataform",
-    "porcentagem": 80,
-    "cor": "#ff007f"
+    "grupo": "Dados e engenharia",
+    "cor": "#00f0ff",
+    "itens": ["SQL (MySQL, PostgreSQL)", "Python (pandas, NumPy, PySpark)", "Modelagem de dados", "Data lake na AWS (S3, EC2)", "Análise exploratória"],
+    "evidencia": "Compass UOL · previsão de recompra · faixa salarial na área de dados"
   },
   {
-    "nome": "AWS",
-    "porcentagem": 50,
-    "cor": "#39ff14"
+    "grupo": "Machine learning e IA",
+    "cor": "#ff007f",
+    "itens": ["scikit-learn", "Regressão logística e Random Forest", "LightGBM e XGBoost", "TensorFlow/Keras", "Transfer learning (MobileNet)", "Visão computacional"],
+    "evidencia": "dissertação · reconhecimento de moedas · previsão de recompra"
   },
   {
-    "nome": "Python (Pandas, Pyspark)",
-    "porcentagem": 85,
-    "cor": "#00f0ff"
+    "grupo": "Nuvem e BI",
+    "cor": "#39ff14",
+    "itens": ["AWS", "Google Cloud (Storage, Vision)", "Power BI"],
+    "evidencia": "Compass UOL · reconhecimento de moedas"
   },
   {
-    "nome": "Robótica Educacional",
-    "porcentagem": 80,
-    "cor": "#ff3399"
+    "grupo": "Educação",
+    "cor": "#ffcc00",
+    "itens": ["Lógica e pensamento computacional", "Formação de professores", "Robótica educacional", "Atendimento educacional especializado (AEE)", "IA na educação"],
+    "evidencia": "Seduc-RS · oficinas de formação continuada · guia IA pra Prof"
   },
   {
-    "nome": "SQL (MySql, PostgreSQL)",
-    "porcentagem": 90,
-    "cor": "#ff007f"
+    "grupo": "Idiomas",
+    "cor": "#c9a6ff",
+    "itens": ["Inglês (profissional)", "Espanhol (profissional)"]
   }
 ]

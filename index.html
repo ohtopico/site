@@ -3,7 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>★ o h t o p i c o ★</title>
+    <title>Júlia Roberta Quoos Alves · Dados, IA e Docência | ohtopico</title>
+    <meta name="description" content="Júlia Roberta Quoos Alves: engenheira de dados, mestranda em Ciência da Computação na UFSM (IA para pessoas com deficiência visual) e professora de computação. Projetos, ensino e contato.">
+    <meta name="author" content="Júlia Roberta Quoos Alves">
+    <link rel="canonical" href="https://ohtopico.com.br/">
+
+    <!-- Prévia ao compartilhar o link (LinkedIn, WhatsApp etc.) -->
+    <meta property="og:type" content="profile">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:url" content="https://ohtopico.com.br/">
+    <meta property="og:site_name" content="ohtopico">
+    <meta property="og:title" content="Júlia Roberta Quoos Alves · Dados, IA e Docência">
+    <meta property="og:description" content="Engenheira de dados, mestranda em Ciência da Computação (UFSM) e professora de computação. Veja projetos, experiência docente e o guia IA pra Prof.">
+    <meta property="og:image" content="https://ohtopico.com.br/galeria/perfil.jpg">
+    <meta property="og:image:alt" content="Foto de Júlia Roberta Quoos Alves">
+    <meta name="twitter:card" content="summary">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Júlia Roberta Quoos Alves",
+      "url": "https://ohtopico.com.br/",
+      "image": "https://ohtopico.com.br/galeria/perfil.jpg",
+      "jobTitle": "Engenheira de dados e professora de computação",
+      "alumniOf": [{"@type": "CollegeOrUniversity", "name": "Universidade Federal de Santa Maria (UFSM)"}],
+      "knowsAbout": ["Engenharia de dados", "SQL", "Python", "Machine learning", "Visão computacional", "Educação em computação"],
+      "knowsLanguage": ["pt-BR", "en", "es"],
+      "email": "mailto:contato@ohtopico.com.br",
+      "sameAs": ["https://www.linkedin.com/in/ohtopico", "https://github.com/ohtopico", "https://lattes.cnpq.br/7211035377768669"]
+    }
+    </script>
     
     <!-- Google Fonts para tipografia Y2K pixelada e retrô -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +60,11 @@
 
         * {
             box-sizing: border-box;
-            cursor: url('https://cur.cursors-4u.net/symbols/sym-8/sym761.cur'), auto !important;
+            cursor: url('https://cur.cursors-4u.net/symbols/sym-8/sym761.cur'), auto;
+        }
+
+        button, a, [role="button"] {
+            cursor: url('https://cur.cursors-4u.net/symbols/sym-8/sym761.cur'), pointer;
         }
 
         body {
@@ -96,7 +130,7 @@
         }
 
         .icon-label {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: bold;
         }
 
@@ -182,7 +216,7 @@
 
         .post-date {
             color: #666;
-            font-size: 11px;
+            font-size: 13px;
         }
 
         .post-text {
@@ -231,7 +265,7 @@
         }
 
         .track-info {
-            font-size: 12px;
+            font-size: 14px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -260,7 +294,7 @@
             background: #222;
             border: 1px solid #777;
             color: #fff;
-            font-size: 11px;
+            font-size: 13px;
             padding: 4px;
             width: 100%;
         }
@@ -293,7 +327,7 @@
             background: #fff;
             border: 1px solid #000;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 14px;
             padding: 6px;
             position: relative;
             text-align: center;
@@ -365,7 +399,7 @@
         /* Cursor Stars */
         .cursor-star {
             color: var(--neon-blue);
-            font-size: 12px;
+            font-size: 14px;
             pointer-events: none;
             position: absolute;
             z-index: 9999;
@@ -391,7 +425,7 @@
             border: 2px solid;
             border-color: #fff #555 #555 #fff;
             color: #000;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             padding: 2px 8px;
             height: 28px;
@@ -414,6 +448,305 @@
 
         /* Permite arrastar janelas com toque em tablets */
         .window-header { touch-action: none; }
+
+
+        /* =========================================================
+           LEIA-ME, ENSINO, PROJETOS E SKILLS (conteúdo profissional)
+           ========================================================= */
+        .window-content, .start-menu-list {
+            user-select: text;
+        }
+
+        .readme {
+            color: #1a1a1a;
+            font-family: 'Courier Prime', monospace;
+            font-size: 15px;
+            gap: 12px;
+            line-height: 1.45;
+        }
+
+        .readme-head {
+            align-items: center;
+            display: flex;
+            gap: 14px;
+        }
+
+        .readme-photo {
+            border: 3px solid;
+            border-color: #555 #fff #fff #555;
+            flex-shrink: 0;
+            height: 84px;
+            object-fit: cover;
+            width: 84px;
+        }
+
+        .readme h1 {
+            color: var(--purple-dark);
+            font-family: 'VT323', monospace;
+            font-size: 34px;
+            font-weight: normal;
+            line-height: 1;
+            margin: 0 0 6px 0;
+        }
+
+        .readme .role {
+            color: #a3004f;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .readme p { margin: 0; }
+
+        .readme ul, .ensino ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .readme li, .ensino li {
+            margin-bottom: 6px;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        .readme li::before, .ensino li::before {
+            color: #a3004f;
+            content: '▸';
+            left: 0;
+            position: absolute;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .retro-btn {
+            align-items: center;
+            background: var(--window-bg);
+            border: 2px solid;
+            border-color: #fff #555 #555 #fff;
+            box-shadow: 1px 1px 0 #000;
+            color: #000;
+            display: inline-flex;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 15px;
+            gap: 6px;
+            min-height: 36px;
+            padding: 4px 12px;
+            text-decoration: none;
+        }
+
+        .retro-btn:hover { background: #fff; }
+
+        .retro-btn:active {
+            border-color: #555 #fff #fff #555;
+            box-shadow: none;
+        }
+
+        .retro-btn.primary {
+            background: linear-gradient(135deg, var(--neon-pink), var(--purple-dark));
+            border-color: #ff9de2 #4a007d #4a007d #ff9de2;
+            color: #fff;
+        }
+
+        .retro-btn.primary:hover { filter: brightness(1.15); }
+
+        .section-label {
+            border-bottom: 1px dotted #a3004f;
+            color: var(--purple-dark);
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            margin: 4px 0 2px 0;
+        }
+
+        .ensino {
+            color: #1a1a1a;
+            font-family: 'Courier Prime', monospace;
+            font-size: 15px;
+            gap: 10px;
+            line-height: 1.45;
+        }
+
+        .ensino p { margin: 0; }
+        .ensino .muted { color: #4a4a4a; font-size: 14px; }
+        .ensino a { color: #a3004f; font-weight: bold; }
+
+        /* Cards de projeto (janela escura) */
+        .projetos-content {
+            background: #050010;
+            gap: 14px;
+            max-height: calc(100vh - 150px);
+            padding: 12px;
+        }
+
+        .project-card {
+            background: #1d003b;
+            border: 2px solid var(--card-color, var(--neon-blue));
+            color: #f2ecfa;
+            font-family: 'Courier Prime', monospace;
+            font-size: 15px;
+            line-height: 1.45;
+            padding: 12px;
+        }
+
+        .project-card h3 {
+            color: var(--card-color, var(--neon-blue));
+            font-family: 'VT323', monospace;
+            font-size: 24px;
+            font-weight: normal;
+            margin: 0 0 2px 0;
+        }
+
+        .project-card .badge {
+            background: var(--card-color, var(--neon-blue));
+            color: #000;
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            margin-bottom: 8px;
+            padding: 1px 6px;
+        }
+
+        .project-card dl { margin: 0 0 10px 0; }
+        .project-card dt {
+            color: var(--card-color, var(--neon-blue));
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+        .project-card dd { margin: 0; }
+
+        .project-card .tags {
+            color: #c9bde0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            margin: 0 0 10px 0;
+        }
+
+        .project-card .btn-row { justify-content: flex-end; }
+
+        /* Skills em grupos */
+        .skill-group { margin-bottom: 12px; }
+        .skill-group h3 {
+            border-left: 6px solid var(--skill-color, var(--neon-pink));
+            color: var(--purple-dark);
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            font-weight: normal;
+            margin: 0 0 6px 0;
+            padding-left: 8px;
+        }
+        .skill-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .skill-chip {
+            background: #fff;
+            border: 2px solid;
+            border-color: #555 #fff #fff #555;
+            color: #1a1a1a;
+            font-size: 14px;
+            padding: 2px 8px;
+        }
+        .skill-evidence {
+            color: #4a4a4a;
+            font-family: 'Courier Prime', monospace;
+            font-size: 14px;
+            margin: 6px 0 0 0;
+        }
+
+        /* Ícones da área de trabalho como botões/links de verdade */
+        button.icon-item, a.icon-item {
+            font: inherit;
+            text-decoration: none;
+        }
+
+        /* Foco visível para quem navega pelo teclado */
+        :focus-visible {
+            outline: 3px dashed var(--neon-blue);
+            outline-offset: 2px;
+        }
+        .y2k-window:focus, .y2k-window:focus-visible { outline: none; }
+
+        [hidden] { display: none !important; }
+
+        /* Menu Iniciar */
+        #start-menu {
+            display: flex;
+        }
+        #start-menu[hidden] { display: none; }
+        .start-menu-side {
+            align-self: stretch;
+        }
+        .start-menu-list {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .menu-item {
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: #000;
+            display: flex;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 15px;
+            gap: 8px;
+            padding: 8px 12px;
+            text-align: left;
+            text-decoration: none;
+            width: 100%;
+        }
+        .menu-item i { text-align: center; width: 20px; }
+        .menu-item:focus-visible { outline-offset: -3px; }
+        .menu-heading {
+            color: #5a3a7a;
+            font-family: 'VT323', monospace;
+            font-size: 17px;
+            letter-spacing: 1px;
+            padding: 6px 12px 2px 12px;
+            text-transform: uppercase;
+        }
+        .menu-sep {
+            border: none;
+            border-top: 1px solid #7a6a8a;
+            border-bottom: 1px solid #fff;
+            margin: 4px 6px;
+        }
+
+        /* Faixa animada (substitui o <marquee>) */
+        .retro-banner span {
+            animation: banner-scroll 14s linear infinite;
+            display: inline-block;
+            padding-left: 100%;
+        }
+        @keyframes banner-scroll {
+            to { transform: translateX(-100%); }
+        }
+
+        /* Respeita quem prefere menos movimento */
+        @media (prefers-reduced-motion: reduce) {
+            .retro-banner span { animation: none; padding-left: 0; }
+            .pet-sprite { animation: none; }
+            .cursor-star { display: none; }
+            * { transition: none !important; }
+        }
+
+        /* Texto só para leitores de tela */
+        .sr-only {
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
+        }
 
         /* =========================================================
            VERSÃO MOBILE (celulares e telas pequenas)
@@ -451,7 +784,15 @@
             }
 
             .icon-item i { font-size: 30px; }
-            .icon-label { font-size: 12px; }
+
+            /* LinkedIn e GitHub ficam no leia-me e no menu iniciar */
+            .icon-item.desktop-only { display: none; }
+
+            .readme-photo { height: 64px; width: 64px; }
+            .readme h1 { font-size: 28px; }
+            .retro-btn { min-height: 44px; }
+            .projetos-content { max-height: none; }
+            .icon-label { font-size: 14px; }
 
             /* Janelas encaixadas na tela, abaixo dos ícones */
             .y2k-window {
@@ -520,7 +861,7 @@
             .pet-content { flex-direction: column !important; }
             .pet-content > div { width: 100% !important; gap: 10px; }
 
-            .player-btn { padding: 10px; font-size: 13px; }
+            .player-btn { padding: 10px; font-size: 15px; }
 
             /* Barra de tarefas compacta */
             #taskbar {
@@ -546,7 +887,7 @@
             .taskbar-tab .tab-label { display: none; }
 
             .taskbar-clock {
-                font-size: 13px;
+                font-size: 15px;
                 padding: 6px 8px;
             }
 
@@ -556,11 +897,11 @@
                 width: 230px !important;
             }
 
-            .start-menu-side { height: 308px !important; }
+            .start-menu-list { max-height: calc(100dvh - 70px); }
 
             #start-menu .menu-item {
-                font-size: 16px !important;
-                padding: 12px 12px !important;
+                font-size: 17px;
+                padding: 11px 12px;
             }
 
             .cursor-star { display: none; }
@@ -573,31 +914,144 @@
     <div id="desktop">
 
         <!-- Ícones Principais -->
-        <div class="desktop-icons">
-            <div class="icon-item" onclick="toggleWindow('win-skills')">
-                <i class="fa-solid fa-gear"></i>
-                <span class="icon-label">Skills</span>
-            </div>
-            <div class="icon-item" onclick="toggleWindow('win-projetos')">
-                <i class="fa-solid fa-code"></i>
+        <nav class="desktop-icons" aria-label="Atalhos da área de trabalho">
+            <button type="button" class="icon-item" onclick="toggleWindow('win-leiame')" aria-controls="win-leiame">
+                <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+                <span class="icon-label">Leia-me</span>
+            </button>
+            <button type="button" class="icon-item" onclick="toggleWindow('win-projetos')" aria-controls="win-projetos">
+                <i class="fa-solid fa-code" aria-hidden="true"></i>
                 <span class="icon-label">Projetos</span>
-            </div>
-            <div class="icon-item" onclick="window.location.href='ia-pra-prof/'">
-                <i class="fa-solid fa-book-open"></i>
+            </button>
+            <button type="button" class="icon-item" onclick="toggleWindow('win-ensino')" aria-controls="win-ensino">
+                <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i>
+                <span class="icon-label">Ensino</span>
+            </button>
+            <button type="button" class="icon-item" onclick="toggleWindow('win-skills')" aria-controls="win-skills">
+                <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                <span class="icon-label">Skills</span>
+            </button>
+            <a class="icon-item" href="ia-pra-prof/">
+                <i class="fa-solid fa-book-open" aria-hidden="true"></i>
                 <span class="icon-label">IA pra Prof</span>
-            </div>
-            <div class="icon-item" onclick="window.open('https://www.linkedin.com/in/ohtopico', '_blank')">
-                 <i class="fa-brands fa-linkedin"></i>
+            </a>
+            <a class="icon-item desktop-only" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener">
+                <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
                 <span class="icon-label">LinkedIn</span>
-            </div>
-            <div class="icon-item" onclick="window.open('https://github.com/ohtopico', '_blank')">
-                <i class="fa-brands fa-github"></i>
+            </a>
+            <a class="icon-item desktop-only" href="https://github.com/ohtopico" target="_blank" rel="noopener">
+                <i class="fa-brands fa-github" aria-hidden="true"></i>
                 <span class="icon-label">GitHub</span>
+            </a>
+        </nav>
+
+        <!-- Janela 0: Leia-me (abre sozinha: quem é, o que faz, contato) -->
+        <div id="win-leiame" class="y2k-window" style="left: 50%; top: 16px; transform: translateX(-50%); width: 580px; max-height: calc(100vh - 72px);">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fa-solid fa-file-lines"></i> leia-me.txt
+                </div>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-leiame')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-leiame')">X</button>
+                </div>
+            </div>
+            <div class="window-content readme">
+                <div class="readme-head">
+                    <img src="galeria/perfil.jpg" alt="Foto de Júlia" class="readme-photo" width="84" height="84">
+                    <div>
+                        <h1>Júlia Roberta Quoos Alves</h1>
+                        <p class="role">Engenheira de dados · Mestranda em Ciência da Computação (UFSM) · Professora de computação</p>
+                    </div>
+                </div>
+
+                <p>
+                    Trabalho onde dados, inteligência artificial e educação se encontram. No mestrado, pesquiso IA para auxiliar pessoas com deficiência visual. Na sala de aula, ensino lógica e pensamento computacional e formo professores para usar tecnologia.
+                </p>
+
+                <ul>
+                    <li><b>Dados:</b> SQL, Python, AWS, Google Cloud e Power BI. Fui engenheira de dados na Compass UOL, com modelagem em SQL e data lake na AWS.</li>
+                    <li><b>IA:</b> machine learning, deep learning e visão computacional (MobileNet), na dissertação e em projetos próprios.</li>
+                    <li><b>Docência:</b> professora de informática na rede estadual (Seduc-RS) e formadora em oficinas para professores. Autora do guia <a href="ia-pra-prof/">IA pra Prof</a>.</li>
+                    <li><b>Idiomas:</b> inglês e espanhol, em nível profissional.</li>
+                </ul>
+
+                <div class="btn-row">
+                    <a class="retro-btn primary" data-contato="curriculo" hidden><i class="fa-solid fa-id-card" aria-hidden="true"></i> Currículo</a>
+                    <a class="retro-btn" data-contato="lattes" hidden target="_blank" rel="noopener"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Lattes</a>
+                    <a class="retro-btn" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
+                    <a class="retro-btn" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+                    <a class="retro-btn" data-contato="email" hidden><i class="fa-solid fa-envelope" aria-hidden="true"></i> E-mail</a>
+                </div>
+
+                <div class="btn-row">
+                    <button type="button" class="retro-btn" onclick="openProgram('win-projetos')" aria-controls="win-projetos"><i class="fa-solid fa-code" aria-hidden="true"></i> Ver projetos</button>
+                    <button type="button" class="retro-btn" onclick="openProgram('win-ensino')" aria-controls="win-ensino"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Ver experiência docente</button>
+                </div>
+
+                <p style="font-size: 14px; color: #4a4a4a;">
+                    Dica: as janelas podem ser arrastadas. As brincadeiras do site estão na pasta Diversão do menu Iniciar.
+                </p>
+            </div>
+        </div>
+
+        <!-- Janela: Ensino (experiência docente e formação pedagógica) -->
+        <div id="win-ensino" class="y2k-window" style="left: 380px; top: 50px; width: 520px; display: none;">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fa-solid fa-chalkboard-user"></i> ensino.doc
+                </div>
+                <div class="window-controls">
+                    <button class="win-btn" onclick="minimizeWindow('win-ensino')">_</button>
+                    <button class="win-btn" onclick="toggleWindow('win-ensino')">X</button>
+                </div>
+            </div>
+            <div class="window-content ensino" style="max-height: calc(100vh - 140px);">
+                <h2 class="section-label">Sala de aula</h2>
+                <ul>
+                    <li>
+                        <b>Professora de informática · Seduc-RS (2026)</b><br>
+                        Disciplinas do novo ensino médio que preparam estudantes para o curso técnico em informática: lógica, pensamento computacional e introdução a projetos, em três turmas de 1º ano.
+                    </li>
+                </ul>
+
+                <h2 class="section-label">Formação de professores</h2>
+                <ul>
+                    <li>
+                        <b>Oficinas de formação continuada</b><br>
+                        Capacitação de professores de matemática da rede municipal, com o Programa A União Faz a Vida. A mais recente foi em Lagoão, em outubro de 2026.
+                    </li>
+                    <li>
+                        <b>Guia <a href="ia-pra-prof/">IA pra Prof</a></b><br>
+                        Guia prático de inteligência artificial para educadores, com prompts prontos para copiar e adaptar. Tem versão interativa no site.
+                    </li>
+                </ul>
+
+                <h2 class="section-label">Pesquisa</h2>
+                <ul>
+                    <li>
+                        <b>Mestrado em Ciência da Computação · UFSM</b> (conclusão prevista para junho de 2027)<br>
+                        Dissertação sobre IA para auxiliar pessoas com baixa visão ou cegas.
+                    </li>
+                    <li>
+                        <b>Iniciação científica em IA · CNPq</b>
+                    </li>
+                </ul>
+
+                <h2 class="section-label">Formação pedagógica</h2>
+                <ul>
+                    <li>Pós-graduações em robótica educacional, tecnologias educacionais, atendimento educacional especializado (AEE) e gestão escolar.</li>
+                </ul>
+
+                <h2 class="section-label">Áreas que leciono</h2>
+                <p>
+                    Lógica de programação e pensamento computacional · Programação em Python · Banco de dados e SQL · Ciência de dados e machine learning · Organização e arquitetura de computadores · Tecnologia na educação
+                </p>
             </div>
         </div>
 
         <!-- Janela 1: Diário / Posts -->
-        <div id="win-diario" class="y2k-window" style="left: 50%; top: 45%; transform: translate(-50%, -50%); width: 450px;">
+        <div id="win-diario" class="y2k-window" style="left: 140px; top: 60px; width: 450px; display: none;">
             <div class="window-header">
                 <div class="window-title">
                     <i class="fa-solid fa-star"></i> atualizações.txt
@@ -608,9 +1062,20 @@
                 </div>
             </div>
             <div class="retro-banner">
-                <marquee scrollamount="4">+++ ALÔ! BOAS-VINDAS AO MEU SITE! +++</marquee>
+                <span aria-hidden="true">+++ ALÔ! BOAS-VINDAS AO MEU SITE! +++</span>
             </div>
             <div class="window-content" style="gap: 15px;">
+                <div class="post-card">
+                    <h3 class="post-title">SITE REORGANIZADO!</h3>
+                    <div class="post-date">Escrito em: 23 de outubro de 2026</div>
+                    <hr style="border: 1px dotted var(--neon-pink); margin: 8px 0;">
+                    <p class="post-text">
+                        Agora o site abre com o <b>leia-me</b>, e ganhou as janelas de <b>Ensino</b> e de <b>Projetos</b> com os resultados de cada um. O guia <a href="ia-pra-prof/">IA pra Prof</a> também tem versão interativa.
+                    </p>
+                    <p class="post-text">
+                        Também melhorei a acessibilidade: dá para navegar pelo teclado e com leitor de tela. As brincadeiras continuam na pasta <b>Diversão</b> do menu Iniciar. ✨
+                    </p>
+                </div>
                 <div class="post-card">
                     <h3 class="post-title">BEM-VINDO AO MEU NOVO WEB SPACE!</h3>
                     <div class="post-date">Escrito em: 10 de Julho de 2026 às 19:00</div>
@@ -655,7 +1120,7 @@
                         <button class="player-btn" onclick="playMusic()"><i class="fa-solid fa-play"></i> PLAY</button>
                         <button class="player-btn" onclick="stopMusic()"><i class="fa-solid fa-stop"></i> STOP</button>
                     </div>
-                    <div style="font-size: 11px; margin-top: 8px; text-align: center; color: #aaa;">
+                    <div style="font-size: 13px; margin-top: 8px; text-align: center; color: #aaa;">
                         (Clique em Play para iniciar o som sintetizado!)
                     </div>
                 </div>
@@ -674,7 +1139,7 @@
                 </div>
             </div>
             <div class="window-content" id="skills-container">
-                <p style="font-size:12px; margin-bottom:15px; font-family: monospace;">Carregando competências do banco de dados...</p>
+                <p style="font-size: 14px; margin-bottom:15px; font-family: monospace;">Carregando competências do banco de dados...</p>
             </div>
         </div>
 
@@ -691,17 +1156,14 @@
             </div>
             <div class="window-content pet-content" style="flex-direction: row; gap: 15px;">
                 <div class="virtual-pet-container" style="width: 40%;">
-                    <div class="pet-bubble" id="pet-talk">Oi! Eu sou o Mimi. Clique em mi!</div>
-                    <div class="pet-sprite" id="pet" onclick="petClick()">👾</div>
+                    <div class="pet-bubble" id="pet-talk" aria-live="polite">Oi! Eu sou o Mimi. Clique em mi!</div>
+                    <button type="button" class="pet-sprite" id="pet" onclick="petClick()" aria-label="Conversar com o Mimi" style="background: none; border: none; padding: 0;">👾</button>
                 </div>
                 <div style="width: 60%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <p style="font-size: 13px; line-height: 1.3; color: #333; margin: 0;">
+                    <p style="font-size: 15px; line-height: 1.3; color: #333; margin: 0;">
                         Este é o Mimi, seu assistente digital holográfico. Ele vive no meu servidor e adora receber visitas.
                     </p>
-                    <div>
-                        <div style="font-size: 11px; color: #555; margin-bottom: 2px;">Você é o visitante número:</div>
-                        <div class="visitor-counter" id="counter">001337</div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -727,8 +1189,8 @@
             </div>
         </div>
 
-        <!-- Janela 6: Repositório de Códigos (Galeria Visual de Portfólio) -->
-        <div id="win-projetos" class="y2k-window" style="left: 300px; top: 80px; width: 500px; display: none;">
+        <!-- Janela 6: Projetos (portfólio de dados e IA) -->
+        <div id="win-projetos" class="y2k-window" style="left: 300px; top: 60px; width: 560px; display: none;">
             <div class="window-header">
                 <div class="window-title">
                     <i class="fa-solid fa-code"></i> data_science_portfolio.exe
@@ -738,55 +1200,78 @@
                     <button class="win-btn" onclick="toggleWindow('win-projetos')">X</button>
                 </div>
             </div>
-            
-            <!-- Conteúdo com rolagem contendo os cards dos projetos -->
-            <div class="window-content" style="background: #050010; max-height: 400px; overflow-y: auto; padding: 12px; gap: 15px;">
-                
-                <!-- CARD 1: Online Retail Dataset -->
-                <div class="post-card" style="background: #1d003b; border: 2px solid var(--neon-blue); padding: 10px; color: #fff;">
-                    <h4 style="color: var(--neon-blue); font-size: 18px; margin: 0 0 5px 0; font-family: 'VT323', monospace;">★ online-retail-dataset</h4>
-                    <p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">
-                        Objetivo: Verificar quais clientes têm maior probabilidade de comprar novamente nos próximos 60 dias e descobrir como podemos usar essa informação para priorizar ações comerciais.
-                    </p>
-                    <div style="text-align: right;">
-                        <button onclick="openNotebookInline('ohtopico/online-retail-dataset/main/Online_Retail_Dataset.ipynb')" class="win-btn" style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 3px 8px; font-size: 12px; height: auto; width: auto; font-family: 'Share Tech Mono', monospace;">
-                            [ abrir_notebook.sys ]
-                        </button>
-                    </div>
-                </div>
 
-                <!-- CARD 2: Moedas Brasileiras -->
-                <div class="post-card" style="background: #1d003b; border: 2px solid var(--neon-pink); padding: 10px; color: #fff;">
-                    <h4 style="color: var(--neon-pink); font-size: 18px; margin: 0 0 5px 0; font-family: 'VT323', monospace;">★ moedas-brasileiras</h4>
-                    <p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">
-                        <span style="color: #ffcc00; font-weight: bold;"></span> Objetivo: Prever o tipo/denominação de uma moeda brasileira diretamente a partir de uma fotografia.
-										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">Tecnologias: Python, Machine Learning (ML), Visão Computacional, Google Cloud (Storage e Serviços de ML).</p>
-										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">- Aquisição de Dados: Capturamos mais de 100 fotos de moedas da segunda família do Real brasileiro para criar um conjunto de dados próprio.</p>
-										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">- Infraestrutura na Nuvem: Armazenamos e gerenciamos o conjunto de dados em um bucket do Google Cloud Storage.</p>
-										<p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">- Modelagem & Classificação: Processamos as imagens das moedas e testamos vários algoritmos de classificação para separá-las com precisão em grupos correspondentes ao valor de cada moeda.</p>
-                    </p>
-                    <div style="text-align: right;">
-                        <button onclick="openNotebookInline('ohtopico/moedas-brasileiras/main/notebook.ipynb')" class="win-btn" style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 3px 8px; font-size: 12px; height: auto; width: auto; font-family: 'Share Tech Mono', monospace;">
-                            [ abrir_notebook.sys ]
-                        </button>
+            <div class="window-content projetos-content">
+
+                <!-- CARD 1: Dissertação -->
+                <article class="project-card" style="--card-color: var(--neon-pink);">
+                    <h3>★ IA para pessoas com deficiência visual</h3>
+                    <span class="badge">Dissertação de mestrado · UFSM · em andamento</span>
+                    <dl>
+                        <dt>Problema</dt>
+                        <dd>Ajudar pessoas com baixa visão ou cegas a entender o ambiente ao redor, com uma mochila inteligente.</dd>
+                        <dt>O que faço</dt>
+                        <dd>Desenvolvo a parte de deep learning e visão computacional da solução, com modelos leves (MobileNet) treinados nos datasets MIT67 (cenas internas) e NYU Depth v2 (profundidade), pensados para rodar no hardware da mochila.</dd>
+                        <dt>Previsão</dt>
+                        <dd>Conclusão em junho de 2027.</dd>
+                    </dl>
+                    <p class="tags">Python · deep learning · visão computacional · MobileNet · MIT67 · NYU Depth v2</p>
+                </article>
+
+                <!-- CARD 2: Online Retail Dataset -->
+                <article class="project-card" style="--card-color: var(--neon-blue);">
+                    <h3>★ Previsão de recompra em 60 dias</h3>
+                    <span class="badge">online-retail-dataset · projeto individual</span>
+                    <dl>
+                        <dt>Problema</dt>
+                        <dd>Descobrir quais clientes de um varejo online têm mais chance de comprar de novo nos próximos 60 dias, para priorizar ações comerciais.</dd>
+                        <dt>O que fiz</dt>
+                        <dd>Limpei 541 mil transações, fiz análise exploratória e segmentação RFM, e comparei 5 modelos em 3 conjuntos de variáveis, sem vazamento de dados do futuro.</dd>
+                        <dt>Resultado</dt>
+                        <dd>Regressão logística com ROC AUC de 0,73 e precisão de 0,70. Taxa de cancelamento e frequência de compra foram os sinais mais fortes, e modelos mais complexos não superaram o mais simples.</dd>
+                    </dl>
+                    <p class="tags">Python · pandas · scikit-learn · LightGBM · XGBoost · RFM</p>
+                    <div class="btn-row">
+                        <a class="retro-btn" href="https://github.com/ohtopico/online-retail-dataset/blob/main/Online_Retail_Dataset.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-book" aria-hidden="true"></i> Ver notebook</a>
                     </div>
-                </div>
+                </article>
 
                 <!-- CARD 3: State of Data Brazil -->
-                <div class="post-card" style="background: #1d003b; border: 2px solid var(--neon-green); padding: 10px; color: #fff;">
-                    <h4 style="color: var(--neon-green); font-size: 18px; margin: 0 0 5px 0; font-family: 'VT323', monospace;">★ state-of-data-brazil</h4>
-                    <p style="font-size: 13px; color: #e2d8f0; line-height: 1.4; margin: 0 0 10px 0;">
-                        Análise exploratória e mapeamento do cenário profissional de dados no Brasil.
-                    </p>
-                    <div style="text-align: right;">
-                        <button onclick="openNotebookInline('ohtopico/state-of-data-brazil/main/State_of_Data_Brazil.ipynb')" class="win-btn" style="display: inline-block; background: var(--window-bg); color: #000; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 3px 8px; font-size: 12px; height: auto; width: auto; font-family: 'Share Tech Mono', monospace;">
-                            [ abrir_notebook.sys ]
-                        </button>
+                <article class="project-card" style="--card-color: var(--neon-green);">
+                    <h3>★ Faixa salarial na área de dados</h3>
+                    <span class="badge">state-of-data-brazil · projeto individual</span>
+                    <dl>
+                        <dt>Problema</dt>
+                        <dd>Entender que características dos profissionais de dados no Brasil se relacionam com o salário, e o quanto é possível prever a faixa salarial.</dd>
+                        <dt>O que fiz</dt>
+                        <dd>Analisei a pesquisa State of Data Brazil 2024 (5.217 respostas, 403 colunas) e treinei Random Forest com ajuste de hiperparâmetros por validação cruzada. Identifiquei e descartei um resultado de 99% causado por vazamento do alvo.</dd>
+                        <dt>Resultado</dt>
+                        <dd>Agrupar as 13 faixas em 3 macrofaixas levou a acurácia de 31% para 71%. Escrever consultas SQL para as áreas de negócio foi a atividade mais associada a salários altos.</dd>
+                    </dl>
+                    <p class="tags">Python · pandas · scikit-learn · GridSearchCV · imbalanced-learn · Plotly</p>
+                    <div class="btn-row">
+                        <a class="retro-btn" href="https://github.com/ohtopico/state-of-data-brazil/blob/main/State_of_Data_Brazil.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-book" aria-hidden="true"></i> Ver notebook</a>
                     </div>
-                </div>
+                </article>
 
-                <!-- CARD 4: [INSERIR] -->
-                
+                <!-- CARD 4: Moedas Brasileiras -->
+                <article class="project-card" style="--card-color: #ffcc00;">
+                    <h3>★ Reconhecimento de moedas brasileiras</h3>
+                    <span class="badge">moedas-brasileiras · projeto individual</span>
+                    <dl>
+                        <dt>Problema</dt>
+                        <dd>Identificar o valor de uma moeda do Real a partir de uma foto.</dd>
+                        <dt>O que fiz</dt>
+                        <dd>Criei meu próprio dataset com 186 fotos das 6 moedas da segunda família do Real, armazenado no Google Cloud Storage, e treinei uma MobileNetV2 com transfer learning.</dd>
+                        <dt>Resultado</dt>
+                        <dd>53% de acurácia na validação, contra 17% de um palpite aleatório. O principal limite é o tamanho do dataset; os próximos passos são ampliá-lo e incluir moedas comemorativas.</dd>
+                    </dl>
+                    <p class="tags">Python · TensorFlow/Keras · MobileNetV2 · Google Cloud Storage · Cloud Vision</p>
+                    <div class="btn-row">
+                        <a class="retro-btn" href="https://github.com/ohtopico/moedas-brasileiras/blob/main/notebook.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-book" aria-hidden="true"></i> Ver notebook</a>
+                    </div>
+                </article>
+
             </div>
         </div>
 
@@ -808,7 +1293,7 @@
         </div>
         <div id="resultado-tarot" style="margin-top: 20px; display: none;">
             <div id="carta-nome" style="font-size: 20px; color: var(--neon-pink); font-family: 'VT323', monospace;"></div>
-            <p id="carta-desc" style="font-size: 13px; margin-top: 10px;"></p>
+            <p id="carta-desc" style="font-size: 15px; margin-top: 10px;"></p>
         </div>
     </div>
 </div>
@@ -826,7 +1311,7 @@
     </div>
     <div class="window-content" style="padding: 0; background: #c0c0c0;">
         <!-- Incorporando o Paint como iframe -->
-        <iframe src="paint.html" width="710" height="400" frameborder="0"></iframe>
+        <iframe src="paint.html" title="Paint" width="710" height="400" frameborder="0"></iframe>
     </div>
 </div>
 
@@ -843,7 +1328,7 @@
     </div>
     <div class="window-content" style="padding: 0; width: 100%; height: calc(100% - 30px);">
         <!-- O iframe agora ocupa 100% da área da janela -->
-        <iframe src="galeria.html" style="width: 100%; height: 100%; border: none;"></iframe>
+        <iframe src="galeria.html" title="Galeria de fotos" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
 </div>
 
@@ -853,7 +1338,7 @@
     <!-- Cabeçalho da Janela (Barra de arrastar) -->
     <div class="window-header">
         <div class="window-title">
-            <i class="fa-solid fa-cloud"></i> word-cloud.exe
+            <i class="fa-solid fa-cloud"></i> interesses.exe
         </div>
         <div class="window-controls">
             <button class="win-btn" onclick="minimizeWindow('win-nuvem')">_</button>
@@ -863,7 +1348,7 @@
 
     <!-- Conteúdo da Janela -->
     <div class="window-content" style="padding: 0; width: 100%; height: calc(100% - 30px); background: #c0c0c0;">
-        <iframe src="nuvem.html" style="width: 100%; height: 100%; border: none;"></iframe>
+        <iframe src="nuvem.html" title="Nuvem de interesses" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
 </div>
 
@@ -871,25 +1356,38 @@
     <!-- Barra de Tarefas inferior -->
     <div id="taskbar">
         <div style="position: relative; display: flex; align-items: center; gap: 10px;">
-            <button class="start-btn" onclick="toggleStartMenu()">
-                <i class="fa-solid fa-compact-disc"></i> INICIAR
+            <button type="button" class="start-btn" onclick="toggleStartMenu()" aria-haspopup="true" aria-expanded="false" aria-controls="start-menu">
+                <i class="fa-solid fa-compact-disc" aria-hidden="true"></i> INICIAR
             </button>
-            
-            <!-- Menu Iniciar Oculto -->
-            <div id="start-menu" style="display: none; position: absolute; bottom: 40px; left: 0; background: var(--window-bg); border: 3px solid; border-color: #fff #7a6a8a #7a6a8a #fff; width: 200px; box-shadow: 3px 3px 10px rgba(0,0,0,0.5); z-index: 1000;">
-                <div class="start-menu-side" style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); float: left; height: 196px; text-align: center;">
+
+            <!-- Menu Iniciar -->
+            <div id="start-menu" hidden style="position: absolute; bottom: 40px; left: 0; background: var(--window-bg); border: 3px solid; border-color: #fff #7a6a8a #7a6a8a #fff; width: 230px; box-shadow: 3px 3px 10px rgba(0,0,0,0.5); z-index: 1000;">
+                <div class="start-menu-side" aria-hidden="true" style="background: linear-gradient(180deg, var(--purple-dark), var(--neon-pink)); color: white; padding: 10px 6px; font-family: 'VT323', monospace; font-size: 20px; font-weight: bold; writing-mode: vertical-lr; transform: rotate(180deg); text-align: center;">
                     Y2K OS
                 </div>
 
-                <div style="margin-left: 35px; display: flex; flex-direction: column;">
-                    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-book-open" style="width: 20px;"></i> Atualizações</div>
-		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-nuvem')"><i class="fa-solid fa-sun" style="width: 20px;"></i>Sobre mim</div>
-		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-paw" style="width: 20px;"></i> Mascote</div>
-		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-music" style="width: 20px;"></i> Player</div>
-		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" style="width: 20px;"></i> Tarot Digital</div>
- 		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="openProgram('win-paint')"><i class="fa-solid fa-paintbrush" style="width: 20px;"></i> Paint</div>
-		    <div style="padding: 8px 12px; cursor: pointer; font-size: 14px; color: #000;" class="menu-item" onclick="window.location.href='ia-pra-prof/'"><i class="fa-solid fa-book-open" style="width: 20px;"></i> IA pra Prof</div>
-		</div>
+                <nav class="start-menu-list" aria-label="Menu Iniciar">
+                    <div class="menu-heading">Profissional</div>
+                    <button type="button" class="menu-item" onclick="openProgram('win-leiame')"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Leia-me</button>
+                    <a class="menu-item" href="curriculo/"><i class="fa-solid fa-id-card" aria-hidden="true"></i> Currículo</a>
+                    <button type="button" class="menu-item" onclick="openProgram('win-projetos')"><i class="fa-solid fa-code" aria-hidden="true"></i> Projetos</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-ensino')"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Ensino</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-skills')"><i class="fa-solid fa-gear" aria-hidden="true"></i> Skills</button>
+                    <a class="menu-item" href="ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
+                    <a class="menu-item" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
+                    <a class="menu-item" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+
+                    <hr class="menu-sep">
+                    <div class="menu-heading">Diversão</div>
+                    <button type="button" class="menu-item" onclick="openProgram('win-diario')"><i class="fa-solid fa-star" aria-hidden="true"></i> Atualizações</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-nuvem')"><i class="fa-solid fa-cloud" aria-hidden="true"></i> Interesses</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-instagram')"><i class="fa-solid fa-image" aria-hidden="true"></i> Fotos</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-tumblr')"><i class="fa-brands fa-tumblr" aria-hidden="true"></i> Blog</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-pet')"><i class="fa-solid fa-paw" aria-hidden="true"></i> Mascote</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-player')"><i class="fa-solid fa-music" aria-hidden="true"></i> Player</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-tarot')"><i class="fa-solid fa-moon" aria-hidden="true"></i> Tarot Digital</button>
+                    <button type="button" class="menu-item" onclick="openProgram('win-paint')"><i class="fa-solid fa-paintbrush" aria-hidden="true"></i> Paint</button>
+                </nav>
             </div>
 
             <!-- Container das abas ativas -->
@@ -899,7 +1397,7 @@
         <div class="taskbar-brand" style="color: var(--purple-dark); font-weight: bold; font-size: 15px; padding-right: 20px;">
             ★ ohtopico.com.br ★
         </div>
-        <div class="taskbar-clock" id="clock">00:00:00</div>
+        <div class="taskbar-clock" id="clock" aria-hidden="true">00:00:00</div>
     </div>
 </div>
 
@@ -982,10 +1480,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        let visitCount = localStorage.getItem('y2k_visits') || 1337;
-        visitCount = parseInt(visitCount, 10) + 1;
-        localStorage.setItem('y2k_visits', visitCount);
-        document.getElementById('counter').innerText = String(visitCount).padStart(6, '0');
 
         // --- 4. EFEITO DE CURSOR (ESTRELAS NEON) ---
         document.addEventListener('mousemove', (e) => {
@@ -1061,35 +1555,52 @@
         }
 
         // --- 6. GERENCIAMENTO DE JANELAS E BARRA DE TAREFAS ---
-        function toggleStartMenu() {
+        function setStartMenu(open) {
             const menu = document.getElementById('start-menu');
-            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            const startBtn = document.querySelector('.start-btn');
+            menu.hidden = !open;
+            startBtn.setAttribute('aria-expanded', String(open));
+            if (open) {
+                const first = menu.querySelector('.menu-item');
+                if (first) first.focus();
+            }
+        }
+
+        function toggleStartMenu() {
+            setStartMenu(document.getElementById('start-menu').hidden);
         }
 
         document.addEventListener('click', function(e) {
             const menu = document.getElementById('start-menu');
             const startBtn = document.querySelector('.start-btn');
-            if (menu && !menu.contains(e.target) && !startBtn.contains(e.target)) {
-                menu.style.display = 'none';
+            if (menu && !menu.hidden && !menu.contains(e.target) && !startBtn.contains(e.target)) {
+                setStartMenu(false);
             }
+        });
+
+        // Esc fecha o menu iniciar ou a janela que está em foco
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            const menu = document.getElementById('start-menu');
+            if (!menu.hidden) {
+                setStartMenu(false);
+                document.querySelector('.start-btn').focus();
+                return;
+            }
+            const win = document.activeElement && document.activeElement.closest('.y2k-window');
+            if (win) minimizeWindow(win.id);
         });
 
         function minimizeWindow(id) {
             const win = document.getElementById(id);
-            if(win) win.style.display = 'none';
+            if (!win) return;
+            const hadFocus = win.contains(document.activeElement);
+            win.style.display = 'none';
             updateTaskbarTabs();
-        }
-
-        function openProgram(id) {
-            const win = document.getElementById(id);
-            if(win) {
-                win.style.display = 'flex';
-                document.querySelectorAll('.y2k-window').forEach(w => w.style.zIndex = '10');
-                win.style.zIndex = '50';
+            if (hadFocus) {
+                const opener = document.querySelector(`[aria-controls="${id}"]`) || document.querySelector('.start-btn');
+                opener.focus();
             }
-            const startMenu = document.getElementById('start-menu');
-            if(startMenu) startMenu.style.display = 'none';
-            updateTaskbarTabs();
         }
 
         function toggleWindow(id) {
@@ -1107,8 +1618,9 @@
             container.innerHTML = ''; 
             
             const programs = [
-                { id: 'win-tumblr', title: 'Tumblr', icon: 'fa-brands fa-tumblr' },
-                { id: 'win-instagram', title: 'Instagram', icon: 'fa-brands fa-instagram' },
+                { id: 'win-leiame', title: 'Leia-me', icon: 'fa-solid fa-file-lines' },
+                { id: 'win-projetos', title: 'Projetos', icon: 'fa-solid fa-code' },
+                { id: 'win-ensino', title: 'Ensino', icon: 'fa-solid fa-chalkboard-user' },
             ];
             
             programs.forEach(prog => {
@@ -1116,9 +1628,11 @@
                 if (winEl) {
                     const isVisible = winEl.style.display !== 'none';
                     const tab = document.createElement('button');
+                    tab.type = 'button';
                     tab.className = `taskbar-tab ${isVisible ? 'active' : ''}`;
-                    tab.innerHTML = `<i class="${prog.icon}"></i> <span class="tab-label">${prog.title}</span>`;
+                    tab.innerHTML = `<i class="${prog.icon}" aria-hidden="true"></i> <span class="tab-label">${prog.title}</span>`;
                     tab.setAttribute('aria-label', prog.title);
+                    tab.setAttribute('aria-pressed', String(isVisible));
                     
                     tab.onclick = function() {
                         if (isVisible) {
@@ -1177,11 +1691,11 @@
                             <h4 class="post-title" style="color: var(--purple-dark); font-size: 20px; margin: 0 0 5px 0;">
                                 ${cleanTitle}
                             </h4>
-                            <div style="font-size: 11px; color: #7a6a8a; font-family: monospace; margin-bottom: 8px;">
+                            <div style="font-size: 13px; color: #7a6a8a; font-family: monospace; margin-bottom: 8px;">
                                 📅 Sincronizado em: ${postDate}
                             </div>
                             <hr style="border: 1px dotted var(--neon-pink); margin-bottom: 10px;">
-                            <div class="post-text" style="font-size: 13px; color: #222;">
+                            <div class="post-text" style="font-size: 15px; color: #222;">
                                 ${cleanContent}
                             </div>
                             <div style="margin-top: 10px; text-align: right;">
@@ -1211,19 +1725,17 @@
                     const container = document.getElementById('skills-container');
                     if (!container) return;
 
-                    container.innerHTML = `<p style="font-size:12px; margin-bottom:15px; font-family: monospace;">Experiência em desenvolvimento de modelos de Machine Learning e Análise de Dados, utilização de Python, SQL, AWS e Google Cloud. Implementação de técnicas de visão computacionais para análise de dados. Atuação como Engenheira de Dados Trainee na Compass UOL, onde participei de projeto com modelagem de dados com SQL e do gerenciamento de um Data Lake (S3 e EC2) para alimentar dashboards de gestão interna sobre indicadores de colaboradores. Sou uma profissional multidisciplinar com formação em Ciência da Computação, Marketing, Administração e Matemática. </p>`;
+                    container.innerHTML = `<p style="font-size: 15px; margin: 0 0 14px 0; font-family: 'Courier Prime', monospace; line-height: 1.45;">Experiência em engenharia e análise de dados, machine learning e visão computacional, com Python, SQL, AWS e Google Cloud. Como engenheira de dados trainee na Compass UOL, trabalhei com modelagem de dados em SQL e no gerenciamento de um data lake (S3 e EC2) que alimentava dashboards de indicadores internos. Formação em Ciência da Computação, Marketing, Administração e Matemática.</p>`;
 
-                    skills.forEach(skill => {
-                        const section = document.createElement('div');
-                        section.className = 'skill-section';
+                    skills.forEach(grupo => {
+                        const section = document.createElement('section');
+                        section.className = 'skill-group';
+                        section.style.setProperty('--skill-color', grupo.cor);
+                        const chips = grupo.itens.map(item => `<li class="skill-chip">${item}</li>`).join('');
                         section.innerHTML = `
-                            <div class="skill-title" style="display: flex; justify-content: space-between; font-size: 13px; font-family: monospace;">
-                                <span>${skill.nome}</span>
-                                <span class="skill-percentage">${skill.porcentagem}%</span>
-                            </div>
-                            <div style="background: #000; border: 1px inset #fff; height: 12px; margin-bottom: 10px; margin-top: 4px;">
-                                <div style="background: ${skill.cor}; height: 100%; width: ${skill.porcentagem}%; transition: width 1s ease-in-out;"></div>
-                            </div>
+                            <h3>${grupo.grupo}</h3>
+                            <ul class="skill-chips" style="list-style: none; margin: 0; padding: 0;">${chips}</ul>
+                            ${grupo.evidencia ? `<p class="skill-evidence">Onde usei: ${grupo.evidencia}</p>` : ''}
                         `;
                         container.appendChild(section);
                     });
@@ -1231,7 +1743,7 @@
                 .catch(err => {
                     console.error(err);
                     const container = document.getElementById('skills-container');
-                    if (container) container.innerHTML = `<p style="color:var(--neon-pink); font-size:12px;">Falha ao carregar specs do sistema.</p>`;
+                    if (container) container.innerHTML = `<p style="color:var(--neon-pink); font-size: 14px;">Falha ao carregar specs do sistema.</p>`;
                 });
         }
 
@@ -1294,11 +1806,19 @@ function sortearCarta() {
         win.style.display = 'flex';
         bringToFront(win);
 
+        if (id === 'win-tumblr' && !tumblrCarregado) {
+            tumblrCarregado = true;
+            fetchTumblrPosts();
+        }
+
         const startMenu = document.getElementById('start-menu');
-        if (startMenu) startMenu.style.display = 'none';
+        if (startMenu && !startMenu.hidden) setStartMenu(false);
 
         updateTaskbarTabs();
+        win.focus({ preventScroll: true });
     }
+
+    let tumblrCarregado = false;
 
     function bringToFront(win) {
         document.querySelectorAll('.y2k-window').forEach(w => w.style.zIndex = '10');
@@ -1306,8 +1826,49 @@ function sortearCarta() {
     }
 
     // --- CARREGAMENTO ÚNICO OTIMIZADO ---
+    // --- CONTATOS (preencha para os botões aparecerem no leia-me) ---
+    const CONTATO = {
+        email: 'contato@ohtopico.com.br',
+        lattes: 'https://lattes.cnpq.br/7211035377768669',
+        curriculo: 'curriculo/'
+    };
+
+    function aplicarContatos() {
+        const destinos = {
+            email: CONTATO.email ? `mailto:${CONTATO.email}` : '',
+            lattes: CONTATO.lattes,
+            curriculo: CONTATO.curriculo
+        };
+        document.querySelectorAll('[data-contato]').forEach(el => {
+            const url = destinos[el.dataset.contato];
+            if (url) {
+                el.href = url;
+                el.hidden = false;
+            }
+        });
+    }
+
+    // --- ACESSIBILIDADE DAS JANELAS ---
+    function prepararJanelas() {
+        document.querySelectorAll('.y2k-window').forEach(win => {
+            const title = win.querySelector('.window-title');
+            const nome = title ? title.textContent.trim() : win.id;
+            win.setAttribute('role', 'region');
+            win.setAttribute('aria-label', nome);
+            win.tabIndex = -1;
+            win.querySelectorAll('.win-btn').forEach(btn => {
+                btn.type = 'button';
+                const txt = btn.textContent.trim();
+                if (txt === '_') btn.setAttribute('aria-label', `Minimizar ${nome}`);
+                if (txt === 'X') btn.setAttribute('aria-label', `Fechar ${nome}`);
+            });
+        });
+        document.querySelectorAll('.window-title i, .win-btn i').forEach(i => i.setAttribute('aria-hidden', 'true'));
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
-        fetchTumblrPosts();
+        prepararJanelas();
+        aplicarContatos();
         loadSkillsFromJson();
         updateTaskbarTabs();
         

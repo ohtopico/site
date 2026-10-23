@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currículo · Júlia Roberta Quoos Alves</title>
+<meta name="description" content="Currículo de Júlia Roberta Quoos Alves: engenheira de dados, mestranda em Ciência da Computação (UFSM) e professora de computação. Versões para vagas de dados e de docência.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/curriculo/">
+<meta property="og:type" content="profile">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://ohtopico.com.br/curriculo/">
+<meta property="og:site_name" content="ohtopico">
+<meta property="og:title" content="Currículo · Júlia Roberta Quoos Alves">
+<meta property="og:description" content="Engenheira de dados, mestranda em Ciência da Computação (UFSM) e professora de computação.">
+<meta property="og:image" content="https://ohtopico.com.br/galeria/perfil.jpg">
+<meta name="twitter:card" content="summary">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --paper: #ffffff;
+    --bg: #f5f2fa;
+    --ink: #17121f;
+    --ink-2: #4a4458;
+    --ink-3: #6e6880;
+    --line: #e2dbee;
+    --accent: #2d124d;
+    --accent-2: #a3004f;
+    --chip: #f1ecf8;
+    --focus: #0077b6;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --paper: #1a1326;
+        --bg: #0c001a;
+        --ink: #f2ecfa;
+        --ink-2: #c9bde0;
+        --ink-3: #a499bb;
+        --line: #362a4c;
+        --accent: #d9b8ff;
+        --accent-2: #ff6fae;
+        --chip: #261b38;
+        --focus: #00f0ff;
+    }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.55;
+    margin: 0;
+}
+
+a { color: var(--accent-2); }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.skip-link {
+    background: var(--accent);
+    color: var(--paper);
+    left: 16px;
+    padding: 8px 12px;
+    position: absolute;
+    top: -60px;
+    z-index: 10;
+}
+.skip-link:focus { top: 16px; }
+
+/* ---------- Barra de ferramentas ---------- */
+.toolbar {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.toolbar-inner {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 880px;
+    padding: 10px 16px;
+}
+
+.brand {
+    color: var(--accent);
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    text-decoration: none;
+}
+
+.perfil-switch {
+    border: none;
+    display: flex;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.perfil-switch legend {
+    clip: rect(0 0 0 0);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+}
+
+.perfil-switch input {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.perfil-switch label {
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 7px 14px;
+}
+
+.perfil-switch label:first-of-type { border-radius: 999px 0 0 999px; }
+.perfil-switch label:last-of-type { border-radius: 0 999px 999px 0; }
+.perfil-switch label + input + label { margin-left: -1px; }
+
+.perfil-switch input:checked + label {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--paper);
+}
+
+.perfil-switch input:focus-visible + label {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.btn {
+    align-items: center;
+    background: var(--chip);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    gap: 6px;
+    padding: 7px 14px;
+    text-decoration: none;
+}
+
+.btn:hover { border-color: var(--accent); }
+
+.btn.primary {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+    color: #fff;
+}
+
+/* ---------- Folha do currículo ---------- */
+.sheet {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    margin: 24px auto 48px auto;
+    max-width: 880px;
+    padding: 40px 48px;
+}
+
+header.cv-head {
+    border-bottom: 3px solid var(--accent);
+    display: grid;
+    gap: 6px 24px;
+    grid-template-columns: 1fr auto;
+    padding-bottom: 20px;
+}
+
+h1 {
+    color: var(--accent);
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.headline {
+    color: var(--accent-2);
+    font-size: 17px;
+    font-weight: 500;
+    margin: 6px 0 0 0;
+}
+
+.contacts {
+    font-size: 14px;
+    grid-column: 1 / -1;
+    list-style: none;
+    margin: 10px 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+}
+
+.contacts li { color: var(--ink-2); }
+.contacts a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.contacts a:hover { border-color: var(--accent-2); }
+.contacts .k { color: var(--ink-3); font-weight: 500; margin-right: 4px; }
+
+.cv-body { display: flex; flex-direction: column; }
+
+section.cv-section { padding-top: 22px; }
+
+h2 {
+    align-items: center;
+    color: var(--accent);
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 10px;
+    letter-spacing: 1.5px;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+}
+
+h2::after {
+    background: var(--line);
+    content: '';
+    flex: 1;
+    height: 1px;
+}
+
+.summary { color: var(--ink); font-size: 16px; margin: 0; }
+
+.item { margin-bottom: 16px; }
+.item:last-child { margin-bottom: 0; }
+
+.item-head {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 12px;
+    justify-content: space-between;
+}
+
+h3 {
+    font-size: 16.5px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.org { color: var(--ink-2); font-weight: 400; }
+
+.when {
+    color: var(--ink-3);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.item p, .item ul { margin: 4px 0 0 0; }
+.item ul { padding-left: 18px; }
+.item li { margin-bottom: 2px; }
+.item li::marker { color: var(--accent-2); }
+
+.tags {
+    color: var(--ink-3);
+    font-size: 13.5px;
+    margin-top: 4px !important;
+}
+
+.skills {
+    display: grid;
+    gap: 12px 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.skill h3 { font-size: 15px; margin-bottom: 6px; }
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chips li {
+    background: var(--chip);
+    border-radius: 999px;
+    font-size: 13.5px;
+    padding: 2px 10px;
+}
+
+.status {
+    clip: rect(0 0 0 0);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+}
+
+.toast {
+    background: var(--accent);
+    border-radius: 999px;
+    bottom: 20px;
+    color: var(--paper);
+    font-size: 14px;
+    left: 50%;
+    opacity: 0;
+    padding: 8px 16px;
+    pointer-events: none;
+    position: fixed;
+    transform: translateX(-50%) translateY(10px);
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.footer-note {
+    color: var(--ink-3);
+    font-size: 13px;
+    margin: 28px 0 0 0;
+    text-align: center;
+}
+
+/* ---------- Versões por perfil ---------- */
+/* Itens marcados para outro perfil somem na versão filtrada */
+body[data-perfil="completo"] [data-perfil]:not([data-perfil~="completo"]),
+body[data-perfil="dados"] [data-perfil]:not([data-perfil~="dados"]),
+body[data-perfil="docencia"] [data-perfil]:not([data-perfil~="docencia"]) {
+    display: none;
+}
+
+/* Ordem das seções muda conforme o perfil */
+#sec-resumo { order: 0; }
+#sec-experiencia { order: 1; }
+#sec-projetos { order: 2; }
+#sec-formacao { order: 3; }
+#sec-ensino { order: 4; }
+#sec-competencias { order: 5; }
+#sec-idiomas { order: 6; }
+
+body[data-perfil="dados"] #sec-projetos { order: 1; }
+body[data-perfil="dados"] #sec-experiencia { order: 2; }
+
+body[data-perfil="docencia"] #sec-ensino { order: 2; }
+body[data-perfil="docencia"] #sec-formacao { order: 3; }
+body[data-perfil="docencia"] #sec-projetos { order: 4; }
+
+/* ---------- Telas pequenas ---------- */
+@media (max-width: 700px) {
+    .sheet {
+        border-left: none;
+        border-radius: 0;
+        border-right: none;
+        margin: 0 0 32px 0;
+        padding: 24px 16px;
+    }
+    h1 { font-size: 28px; }
+    header.cv-head { grid-template-columns: 1fr; }
+    .skills { grid-template-columns: 1fr; }
+    .toolbar-inner { justify-content: flex-start; }
+    .brand { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .toast { transition: none; }
+}
+
+/* ---------- Impressão / Salvar como PDF ---------- */
+@media print {
+    @page { size: A4; margin: 14mm 14mm 16mm 14mm; }
+    :root {
+        --paper: #fff; --bg: #fff; --ink: #000; --ink-2: #333; --ink-3: #555;
+        --line: #ccc; --accent: #2d124d; --accent-2: #a3004f; --chip: #f1ecf8;
+    }
+    body { background: #fff; font-size: 10.5pt; line-height: 1.4; }
+    .toolbar, .skip-link, .toast, .footer-note, .no-print { display: none !important; }
+    .sheet { border: none; margin: 0; max-width: none; padding: 0; }
+    h1 { font-size: 22pt; }
+    .headline { font-size: 12pt; }
+    h2 { font-size: 9.5pt; margin-bottom: 6px; }
+    h3 { font-size: 11pt; }
+    section.cv-section { padding-top: 12px; }
+    .item { break-inside: avoid; margin-bottom: 9px; }
+    .contacts a { border: none; }
+    .chips li { border: 1px solid #ddd; }
+    a { color: inherit; text-decoration: none; }
+    .skills { gap: 8px 20px; }
+}
+</style>
+</head>
+<body data-perfil="completo">
+
+<a class="skip-link" href="#cv">Pular para o currículo</a>
+
+<div class="toolbar" role="region" aria-label="Opções do currículo">
+    <div class="toolbar-inner">
+        <a class="brand" href="../">★ ohtopico</a>
+
+        <fieldset class="perfil-switch">
+            <legend>Versão do currículo</legend>
+            <input type="radio" name="perfil" id="p-completo" value="completo" checked>
+            <label for="p-completo">Completo</label>
+            <input type="radio" name="perfil" id="p-dados" value="dados">
+            <label for="p-dados">Dados</label>
+            <input type="radio" name="perfil" id="p-docencia" value="docencia">
+            <label for="p-docencia">Docência</label>
+        </fieldset>
+
+        <div class="actions">
+            <button type="button" class="btn primary" onclick="window.print()">Salvar em PDF</button>
+            <button type="button" class="btn" id="copiar-link">Copiar link</button>
+            <a class="btn" href="../">Voltar ao site</a>
+        </div>
+    </div>
+</div>
+
+<p class="status" id="status" aria-live="polite"></p>
+
+<main class="sheet" id="cv">
+    <header class="cv-head">
+        <div>
+            <h1>Júlia Roberta Quoos Alves</h1>
+            <p class="headline" id="headline">Engenheira de dados · Mestranda em Ciência da Computação (UFSM) · Professora de computação</p>
+        </div>
+        <ul class="contacts">
+            <li><span class="k">E-mail</span><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></li>
+            <li><span class="k">Lattes</span><a href="https://lattes.cnpq.br/7211035377768669">lattes.cnpq.br/7211035377768669</a></li>
+            <li><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/ohtopico">in/ohtopico</a></li>
+            <li><span class="k">GitHub</span><a href="https://github.com/ohtopico">ohtopico</a></li>
+            <li><span class="k">Site</span><a href="https://ohtopico.com.br/">ohtopico.com.br</a></li>
+            <li><span class="k">Local</span>Rio Grande do Sul · presencial, híbrido ou remoto</li>
+        </ul>
+    </header>
+
+    <div class="cv-body">
+
+        <!-- RESUMO: um texto por versão -->
+        <section class="cv-section" id="sec-resumo" aria-labelledby="h-resumo">
+            <h2 id="h-resumo">Resumo</h2>
+            <p class="summary" data-perfil="completo">
+                Profissional de computação que une dados, inteligência artificial e educação. Tem experiência em engenharia de dados (SQL, Python e data lake na AWS), pesquisa IA para auxiliar pessoas com deficiência visual no mestrado da UFSM e atua como professora de informática e formadora de professores.
+            </p>
+            <p class="summary" data-perfil="dados">
+                Engenheira de dados com experiência em modelagem com SQL, Python e data lake na AWS (S3, EC2) para alimentar dashboards de gestão. Desenvolve projetos de machine learning e visão computacional, da limpeza dos dados à comparação de modelos, e pesquisa deep learning no mestrado em Ciência da Computação da UFSM.
+            </p>
+            <p class="summary" data-perfil="docencia">
+                Professora de computação e mestranda em Ciência da Computação na UFSM, com pesquisa em IA para auxiliar pessoas com deficiência visual. Leciona lógica e pensamento computacional no ensino médio, forma professores da rede municipal em oficinas de formação continuada e é autora do guia IA pra Prof. Traz para a sala de aula a experiência prática em engenharia de dados.
+            </p>
+        </section>
+
+        <!-- EXPERIÊNCIA -->
+        <section class="cv-section" id="sec-experiencia" aria-labelledby="h-exp">
+            <h2 id="h-exp">Experiência</h2>
+
+            <div class="item" data-perfil="completo docencia dados">
+                <div class="item-head">
+                    <h3>Professora de informática <span class="org">· Seduc-RS</span></h3>
+                    <span class="when">2026 – atual</span>
+                </div>
+                <ul>
+                    <li>Leciona disciplinas do novo ensino médio que preparam estudantes para o curso técnico em informática, em três turmas de 1º ano.</li>
+                    <li>Conteúdos: lógica, pensamento computacional e introdução a projetos.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3>Formadora de professores <span class="org">· Programa A União Faz a Vida</span></h3>
+                    <span class="when">2026 – atual</span>
+                </div>
+                <ul>
+                    <li>Ministra oficinas de formação continuada para professores de matemática da rede municipal, com foco no uso de tecnologia e IA em sala de aula.</li>
+                    <li>Oficina mais recente em Lagoão (RS), em outubro de 2026.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo docencia dados">
+                <div class="item-head">
+                    <h3>Pesquisadora de mestrado <span class="org">· UFSM</span></h3>
+                    <span class="when">abr. 2025 – atual</span>
+                </div>
+                <ul>
+                    <li>Desenvolve a parte de deep learning e visão computacional de uma mochila inteligente para pessoas com baixa visão ou cegas.</li>
+                    <li>Treina modelos leves (MobileNet) com os datasets MIT67 e NYU Depth v2, pensados para rodar no hardware da mochila.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo dados">
+                <div class="item-head">
+                    <h3>Engenheira de dados trainee <span class="org">· Compass UOL</span></h3>
+                    <span class="when">2019 – 2020</span>
+                </div>
+                <ul>
+                    <li>Modelou dados com SQL e participou do gerenciamento de um data lake na AWS (S3 e EC2).</li>
+                    <li>O data lake alimentava dashboards de gestão interna com indicadores de colaboradores.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo docencia dados">
+                <div class="item-head">
+                    <h3>Bolsista de iniciação científica em IA <span class="org">· CNPq</span></h3>
+                </div>
+                <p>Pesquisa em inteligência artificial durante a graduação.</p>
+            </div>
+        </section>
+
+        <!-- PROJETOS -->
+        <section class="cv-section" id="sec-projetos" aria-labelledby="h-proj">
+            <h2 id="h-proj">Projetos de dados e IA</h2>
+
+            <div class="item" data-perfil="completo dados docencia">
+                <div class="item-head">
+                    <h3><a href="https://github.com/ohtopico/online-retail-dataset">Previsão de recompra de clientes em 60 dias</a></h3>
+                </div>
+                <p>Limpeza de 541 mil transações de um varejo online, análise exploratória, segmentação RFM e comparação de 5 modelos sem vazamento de dados do futuro. A regressão logística teve o melhor resultado (ROC AUC de 0,73, precisão de 0,70), e a taxa de cancelamento e a frequência de compra foram os sinais mais fortes.</p>
+                <p class="tags">Python · pandas · scikit-learn · LightGBM · XGBoost</p>
+            </div>
+
+            <div class="item" data-perfil="completo dados">
+                <div class="item-head">
+                    <h3><a href="https://github.com/ohtopico/state-of-data-brazil">Faixa salarial na área de dados no Brasil</a></h3>
+                </div>
+                <p>Análise da pesquisa State of Data Brazil 2024 (5.217 respostas) e classificação da faixa salarial com Random Forest e ajuste por validação cruzada. Agrupar as faixas em 3 macrofaixas elevou a acurácia de 31% para 71%; um resultado de 99% causado por vazamento do alvo foi identificado e descartado.</p>
+                <p class="tags">Python · scikit-learn · GridSearchCV · imbalanced-learn · Plotly</p>
+            </div>
+
+            <div class="item" data-perfil="completo dados docencia">
+                <div class="item-head">
+                    <h3><a href="https://github.com/ohtopico/moedas-brasileiras">Reconhecimento de moedas brasileiras por foto</a></h3>
+                </div>
+                <p>Criação de um dataset próprio com 186 fotos das 6 moedas do Real, armazenado no Google Cloud Storage, e classificação com MobileNetV2 por transfer learning: 53% de acurácia na validação, contra 17% de um palpite aleatório.</p>
+                <p class="tags">Python · TensorFlow/Keras · MobileNetV2 · Google Cloud</p>
+            </div>
+        </section>
+
+        <!-- FORMAÇÃO -->
+        <section class="cv-section" id="sec-formacao" aria-labelledby="h-form">
+            <h2 id="h-form">Formação</h2>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Mestrado em Ciência da Computação <span class="org">· UFSM</span></h3>
+                    <span class="when">2025 – 2027 (previsto)</span>
+                </div>
+                <p>Dissertação: inteligência artificial para auxílio de pessoas com deficiência visual.</p>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Graduação em Ciência da Computação <span class="org">· UNISC</span></h3>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Graduações em Administração e em Marketing <span class="org">· UNISC</span></h3>
+                </div>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3>Pós-graduações em educação</h3>
+                </div>
+                <p>Robótica educacional · Tecnologias educacionais · Atendimento educacional especializado (AEE) · Gestão escolar</p>
+            </div>
+        </section>
+
+        <!-- ENSINO -->
+        <section class="cv-section" id="sec-ensino" aria-labelledby="h-ensino" data-perfil="completo docencia">
+            <h2 id="h-ensino">Ensino e publicação</h2>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3><a href="https://ohtopico.com.br/ia-pra-prof/">IA pra Prof: guia prático de inteligência artificial para educadores</a></h3>
+                    <span class="when">2026</span>
+                </div>
+                <p>E-book de autoria própria sobre IA na escola: fundamentos, ética e LGPD, prompts prontos para planejamento, materiais e AEE. Tem versão interativa on-line.</p>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Áreas que leciono</h3>
+                </div>
+                <p>Lógica de programação e pensamento computacional · Programação em Python · Banco de dados e SQL · Ciência de dados e machine learning · Organização e arquitetura de computadores · Tecnologia na educação</p>
+            </div>
+        </section>
+
+        <!-- COMPETÊNCIAS -->
+        <section class="cv-section" id="sec-competencias" aria-labelledby="h-comp">
+            <h2 id="h-comp">Competências</h2>
+            <div class="skills">
+                <div class="skill" data-perfil="completo dados docencia">
+                    <h3>Dados e engenharia</h3>
+                    <ul class="chips">
+                        <li>SQL (MySQL, PostgreSQL)</li><li>Python (pandas, NumPy, PySpark)</li><li>Modelagem de dados</li><li>Data lake na AWS</li>
+                    </ul>
+                </div>
+                <div class="skill" data-perfil="completo dados docencia">
+                    <h3>Machine learning e IA</h3>
+                    <ul class="chips">
+                        <li>scikit-learn</li><li>LightGBM e XGBoost</li><li>TensorFlow/Keras</li><li>MobileNet</li><li>Visão computacional</li>
+                    </ul>
+                </div>
+                <div class="skill" data-perfil="completo dados">
+                    <h3>Nuvem e BI</h3>
+                    <ul class="chips">
+                        <li>AWS (S3, EC2)</li><li>Google Cloud (Storage, Vision)</li><li>Power BI</li>
+                    </ul>
+                </div>
+                <div class="skill" data-perfil="completo docencia">
+                    <h3>Educação</h3>
+                    <ul class="chips">
+                        <li>Pensamento computacional</li><li>Formação de professores</li><li>Robótica educacional</li><li>AEE</li><li>IA na educação</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- IDIOMAS -->
+        <section class="cv-section" id="sec-idiomas" aria-labelledby="h-idiomas">
+            <h2 id="h-idiomas">Idiomas</h2>
+            <p style="margin: 0;">Português (nativo) · Inglês (profissional) · Espanhol (profissional)</p>
+        </section>
+
+    </div>
+
+    <p class="footer-note no-print">Dica: escolha a versão no topo e use “Copiar link” para enviar a versão certa para cada vaga.</p>
+</main>
+
+<div class="toast" id="toast" aria-hidden="true"></div>
+
+<script>
+    const HEADLINES = {
+        completo: 'Engenheira de dados · Mestranda em Ciência da Computação (UFSM) · Professora de computação',
+        dados: 'Engenheira de dados · Machine learning e visão computacional · Mestranda em Ciência da Computação (UFSM)',
+        docencia: 'Professora de computação · Mestranda em Ciência da Computação (UFSM) · Formadora de professores'
+    };
+    const NOMES = { completo: 'completa', dados: 'para vagas de dados', docencia: 'para vagas de docência' };
+
+    function aplicarPerfil(perfil, anunciar) {
+        if (!HEADLINES[perfil]) perfil = 'completo';
+        document.body.dataset.perfil = perfil;
+        document.getElementById('headline').textContent = HEADLINES[perfil];
+        document.getElementById('p-' + perfil).checked = true;
+        document.title = perfil === 'completo'
+            ? 'Currículo · Júlia Roberta Quoos Alves'
+            : `Currículo (${perfil === 'dados' ? 'Dados' : 'Docência'}) · Júlia Roberta Quoos Alves`;
+
+        const url = new URL(window.location.href);
+        if (perfil === 'completo') url.searchParams.delete('perfil');
+        else url.searchParams.set('perfil', perfil);
+        history.replaceState(null, '', url);
+
+        if (anunciar) document.getElementById('status').textContent = `Mostrando a versão ${NOMES[perfil]}.`;
+    }
+
+    document.querySelectorAll('input[name="perfil"]').forEach(r => {
+        r.addEventListener('change', () => aplicarPerfil(r.value, true));
+    });
+
+    const inicial = new URLSearchParams(window.location.search).get('perfil');
+    aplicarPerfil(inicial || 'completo', false);
+
+    function avisar(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        document.getElementById('status').textContent = msg;
+        clearTimeout(avisar.timer);
+        avisar.timer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    document.getElementById('copiar-link').addEventListener('click', async () => {
+        const link = window.location.href;
+        try {
+            await navigator.clipboard.writeText(link);
+            avisar('Link desta versão copiado');
+        } catch (e) {
+            window.prompt('Copie o link:', link);
+        }
+    });
+</script>
+</body>
+</html>
