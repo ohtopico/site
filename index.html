@@ -15,7 +15,7 @@
     <meta property="og:site_name" content="ohtopico">
     <meta property="og:title" content="Júlia Roberta Quoos Alves · Dados, IA e Docência">
     <meta property="og:description" content="Engenheira de dados, mestranda em Ciência da Computação (UFSM) e professora de computação. Veja projetos, experiência docente e o guia IA pra Prof.">
-    <meta property="og:image" content="https://ohtopico.com.br/galeria/perfil.jpg">
+    <meta property="og:image" content="https://ohtopico.com.br/img/perfil.jpg">
     <meta property="og:image:alt" content="Foto de Júlia Roberta Quoos Alves">
     <meta name="twitter:card" content="summary">
 
@@ -25,7 +25,7 @@
       "@type": "Person",
       "name": "Júlia Roberta Quoos Alves",
       "url": "https://ohtopico.com.br/",
-      "image": "https://ohtopico.com.br/galeria/perfil.jpg",
+      "image": "https://ohtopico.com.br/img/perfil.jpg",
       "jobTitle": "Engenheira de dados e professora de computação",
       "alumniOf": [{"@type": "CollegeOrUniversity", "name": "Universidade Federal de Santa Maria (UFSM)"}],
       "knowsAbout": ["Engenharia de dados", "SQL", "Python", "Machine learning", "Visão computacional", "Educação em computação"],
@@ -611,33 +611,33 @@
         .desktop-icons {
             display: grid;
             gap: 4px;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             left: 10px;
             right: 10px;
             top: 10px;
         }
 
-        .icon-item { flex-direction: row; gap: 8px; justify-content: center; padding: 4px; width: auto; }
+        .icon-item { gap: 4px; padding: 2px; width: auto; }
         .icon-item .tile { border-radius: 14px; font-size: 17px; height: 40px; width: 40px; }
-        .icon-item .icon-label { font-size: 11px; text-align: left; }
+        .icon-item .icon-label { font-size: 10px; letter-spacing: .06em; }
 
         .janela {
             border-radius: 20px;
             box-shadow: 4px 4px 0 var(--ink);
             height: auto !important;
             left: 10px !important;
-            max-height: calc(100dvh - var(--topo) - var(--base) - 82px);
+            max-height: calc(100dvh - var(--topo) - var(--base) - 100px);
             min-height: 0 !important;
             min-width: 0 !important;
             position: fixed;
             resize: none !important;
             right: 14px;
-            top: calc(var(--topo) + 66px) !important;
+            top: calc(var(--topo) + 84px) !important;
             transform: none !important;
             width: auto !important;
         }
 
-        .janela.cheia { height: calc(100dvh - var(--topo) - var(--base) - 82px) !important; }
+        .janela.cheia { height: calc(100dvh - var(--topo) - var(--base) - 100px) !important; }
         .janela-header { cursor: default; }
         .janela-conteudo { padding: 16px; }
 
@@ -686,6 +686,10 @@
             <span class="tile"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
             <span class="icon-label">IA pra Prof</span>
         </a>
+        <a class="icon-item" href="material-didatico/">
+            <span class="tile"><i class="fa-solid fa-shapes" aria-hidden="true"></i></span>
+            <span class="icon-label">Material didático</span>
+        </a>
     </nav>
 
     <!-- Leia-me (abre sozinha) -->
@@ -699,7 +703,7 @@
         </div>
         <div class="janela-conteudo readme">
             <div class="readme-head">
-                <img src="galeria/perfil.jpg" alt="Foto de Júlia" class="readme-photo" width="88" height="88">
+                <img src="img/perfil.jpg" alt="Foto de Júlia" class="readme-photo" width="88" height="88">
                 <div>
                     <h1>Júlia Roberta Quoos Alves</h1>
                     <p class="role">Engenheira de dados · Mestranda em Ciência da Computação (UFSM) · Professora de computação</p>
@@ -896,6 +900,7 @@
     <a class="menu-item" href="curriculo/?perfil=docencia"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Experiência docente</a>
     <button type="button" class="menu-item" onclick="openProgram('win-navegador')"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Busca no site</button>
     <a class="menu-item" href="ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
+    <a class="menu-item" href="material-didatico/"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Material didático</a>
     <a class="menu-item" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
     <a class="menu-item" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
 

@@ -1,5 +1,7 @@
 /* Material didático — ohtopico.com.br
-   Mesmo sistema visual do IA pra Prof: papel branco, traço preto, pílulas, Sniglet + Lexend. */
+   Mesmo sistema visual do IA pra Prof: papel branco, traço preto, pílulas, Sniglet + Lexend.
+   Paleta em tons de cinza e verde: verde para Computação e destaques, cinza para Matemática.
+   O vermelho fica só para erro (feedback dos jogos). */
 :root {
   --paper: #ffffff;
   --paper-2: #f4f4f2;
@@ -9,18 +11,18 @@
   --ink-2: #4a4a4a;
   --ink-3: #6f6f6f;
   --line: #d9d9d6;
-  --accent: #1f5cff;
-  --accent-soft: #e6edff;
-  --co: #1f5cff;
-  --co-soft: #e6edff;
-  --ma: #b5400a;
-  --ma-soft: #fdeadb;
+  --accent: #166c40;
+  --accent-soft: #e3f1e8;
+  --co: #166c40;
+  --co-soft: #e3f1e8;
+  --ma: #545a56;
+  --ma-soft: #ebecea;
   --ok: #157f3b;
   --ok-soft: #e3f4e8;
   --bad: #c21f3a;
   --bad-soft: #fbe6ea;
-  --warn: #9a6500;
-  --warn-soft: #fff3d6;
+  --warn: #3d4340;
+  --warn-soft: #e4e7e5;
   --radius: 28px;
   --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
   --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -30,19 +32,19 @@
   :root:not([data-theme="light"]) {
     --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
     --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
-    --accent: #7ea2ff; --accent-soft: #1d2747; --co: #7ea2ff; --co-soft: #1d2747;
-    --ma: #ff9b5e; --ma-soft: #3a2214;
+    --accent: #6fd39b; --accent-soft: #173323; --co: #6fd39b; --co-soft: #173323;
+    --ma: #b9bfbb; --ma-soft: #2a2d2b;
     --ok: #5fd08a; --ok-soft: #173322; --bad: #ff7d93; --bad-soft: #3b1a21;
-    --warn: #f2b84b; --warn-soft: #3a2c10; color-scheme: dark;
+    --warn: #d4d8d5; --warn-soft: #2c302e; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
   --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
-  --accent: #7ea2ff; --accent-soft: #1d2747; --co: #7ea2ff; --co-soft: #1d2747;
-  --ma: #ff9b5e; --ma-soft: #3a2214;
+  --accent: #6fd39b; --accent-soft: #173323; --co: #6fd39b; --co-soft: #173323;
+  --ma: #b9bfbb; --ma-soft: #2a2d2b;
   --ok: #5fd08a; --ok-soft: #173322; --bad: #ff7d93; --bad-soft: #3b1a21;
-  --warn: #f2b84b; --warn-soft: #3a2c10; color-scheme: dark;
+  --warn: #d4d8d5; --warn-soft: #2c302e; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }

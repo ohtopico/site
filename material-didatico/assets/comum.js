@@ -8,9 +8,9 @@
   };
   window.mdStore = store;
 
-  // Tema compartilhado com o resto do site
+  // Tema compartilhado com o resto do site (mesma chave do IA pra Prof e da página inicial)
   try {
-    const t = localStorage.getItem('theme');
+    const t = localStorage.getItem('iapraprof:theme') || localStorage.getItem('theme');
     const saved = t ? (t.startsWith('"') ? JSON.parse(t) : t) : null;
     if (saved === 'dark' || saved === 'light') document.documentElement.dataset.theme = saved;
   } catch (e) {}
@@ -56,7 +56,7 @@
       const isDark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
       const next = isDark ? 'light' : 'dark';
       root.dataset.theme = next;
-      try { localStorage.setItem('theme', next); } catch (e) {}
+      try { localStorage.setItem('iapraprof:theme', JSON.stringify(next)); } catch (e) {}
     });
   };
 
