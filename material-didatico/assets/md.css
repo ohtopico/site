@@ -224,3 +224,25 @@ details.howto[open] summary { margin-bottom: 8px; }
   .wrap { max-width: none; padding: 0; }
   a { color: #000; text-decoration: none; }
 }
+
+/* ---------- Progresso do estudante ---------- */
+[hidden] { display: none !important; }
+.prog-btn[aria-current="page"] { background: var(--pill); }
+@media (max-width: 1060px) { .prog-txt { display: none; } }
+.rc-done { position: absolute; left: 12px; bottom: 10px; z-index: 1; font-size: 12.5px; font-weight: 700; background: var(--ok); color: var(--paper);
+  border: 1.5px solid var(--ink); border-radius: 99px; padding: 1px 9px; }
+.nv { display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; border-radius: 99px;
+  padding: 1px 9px; border: 1.5px solid var(--ink); white-space: nowrap; }
+.nv0 { background: var(--paper); border-style: dashed; color: var(--ink-2); }
+.nv1 { background: var(--pill-2); color: var(--ink); }
+.nv2 { background: var(--accent-soft); color: var(--ink); }
+.nv3 { background: color-mix(in srgb, var(--accent) 55%, var(--paper)); color: var(--ink); }
+.nv4 { background: var(--accent); color: var(--paper); }
+.md-toast { position: fixed; right: 16px; bottom: 16px; z-index: 60; max-width: min(360px, calc(100vw - 32px)); display: flex; gap: 12px; align-items: center;
+  background: var(--paper); color: var(--ink); text-decoration: none; border: 1.5px solid var(--ink); border-radius: 20px; padding: 12px 16px;
+  box-shadow: 5px 5px 0 var(--ink); animation: mdToast .35s ease; transition: opacity .5s, transform .5s; }
+.md-toast.out { opacity: 0; transform: translateY(12px); }
+.md-toast-i { font-size: 32px; line-height: 1; }
+@keyframes mdToast { from { opacity: 0; transform: translateY(16px); } }
+@media (prefers-reduced-motion: reduce) { .md-toast { animation: none; transition: none; } }
+@media print { .md-toast, .prog-btn { display: none !important; } }

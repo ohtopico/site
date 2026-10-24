@@ -50,6 +50,7 @@
         ${link('bncc', 'bncc.html', 'BNCC')}
         ${link('professor', 'professor.html', 'Professor')}
       </nav>
+      <a class="icon-btn prog-btn" href="${BASE}meu-progresso.html"${atual === 'progresso' ? ' aria-current="page"' : ''} aria-label="Meu progresso" title="Meu progresso"><span aria-hidden="true">📈</span><span class="prog-txt">Meu progresso</span></a>
       <button class="icon-btn" id="theme-btn" aria-label="Alternar tema claro/escuro">${sun}</button>`;
     document.getElementById('theme-btn').addEventListener('click', () => {
       const root = document.documentElement;
@@ -81,11 +82,13 @@
     const code = c => opts.codeButtons
       ? `<button class="tag code ${HAB[c].comp.toLowerCase()}" type="button" data-hab="${c}" title="${esc(c + ' — ' + HAB[c].texto)}">${c}</button>`
       : tagHab(c);
+    const feito = window.MDP && (r.tipo === 'jogo' || r.tipo === 'lista') ? MDP.resultado(r.id) : null;
     const cta = { jogo: 'Jogar', ficha: 'Abrir ficha', plano: 'Ver plano', lista: 'Abrir lista' }[r.tipo];
     return `<article class="rc t-${r.tipo} ${cc}">
       <div class="rc-cover" aria-hidden="true">
         <span class="rc-type">${TIPOS[r.tipo].icone} ${TIPOS[r.tipo].nome}</span>
         <span class="rc-time">⏱ ${r.tempo}</span>
+        ${feito ? `<span class="rc-done" title="Sua melhor nota neste aparelho">✓ ${feito.b}%</span>` : ''}
         <span class="rc-icon">${r.icone}</span>
       </div>
       <div class="rc-body">

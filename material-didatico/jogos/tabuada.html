@@ -51,6 +51,8 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('tabuada');
@@ -169,6 +171,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('tabuada');
 
   function finish() {
     if (G.fim) return; G.fim = true; clearInterval(G.timer);
+    window.MDP && MDP.registrar('tabuada', G.ok + G.err ? G.ok / (G.ok + G.err) * (0.5 + 0.5 * Math.min(1, G.pos / META)) * 100 : 0);
     const t = (performance.now() - G.inicio) / 1000;
     const lugar = G.pos >= META ? 1 + G.rivais.filter(p => p >= META).length : 1 + G.rivais.filter(p => p > G.pos).length;
     const venceu = G.pos >= META && lugar === 1;

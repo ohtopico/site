@@ -51,6 +51,7 @@
 <script>window.MD_BASE = '';</script>
 <script src="assets/dados.js"></script>
 <script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
 <script>
 (function () {
@@ -60,6 +61,8 @@
   const params = new URLSearchParams(location.search);
   const b = { comp: params.get('comp') === 'MA' ? 'MA' : 'CO', ano: Number(params.get('ano')) || 6 };
 
+  const perfil = window.MDP && MDP.perfil();
+  const nivelDe = c => { if (!perfil) return ''; const n = MDP.nivelHab(c, perfil); return n ? `<div style="margin-top:6px"><span class="nv nv${n}" title="Seu nível neste aparelho">${MDP.NIVEIS[n].nome}</span></div>` : ''; };
   function render() {
     const anosComp = [...new Set(HABILIDADES.filter(h => h.comp === b.comp).map(h => h.ano))];
     if (!anosComp.includes(b.ano)) b.ano = anosComp[0];
@@ -84,7 +87,7 @@
           ${habs.filter(h => h.eixo === ex).map(h => {
             const mats = RECURSOS.filter(r => r.habs.includes(h.codigo));
             return `<li class="hab-item">
-              <div>${tagHab(h.codigo)}</div>
+              <div>${tagHab(h.codigo)}${nivelDe(h.codigo)}</div>
               <div><span class="obj">${esc(h.objeto)}</span><span class="txt">${esc(h.texto)}</span></div>
               <div class="mats">${mats.length ? mats.map(r => `<a href="${recUrl(r)}">${TIPOS[r.tipo].icone} ${esc(r.titulo)}</a>`).join('') : '<span class="soon">Material em preparação</span>'}</div>
             </li>`;

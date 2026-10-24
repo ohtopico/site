@@ -49,6 +49,8 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('pacotes');
@@ -168,6 +170,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('pacotes');
   }
 
   function end() {
+    window.MDP && MDP.registrar('pacotes', 100 - errors * 10);
     const recorde = Math.max(score, mdStore.get('pacotes-rec', 0)); mdStore.set('pacotes-rec', recorde);
     stage.innerHTML = `<div class="center">
       <h2>Todas as mensagens entregues! 📬</h2>

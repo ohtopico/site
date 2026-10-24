@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel da turma · Material didático | ohtopico</title>
+<meta name="description" content="Junte os relatórios de progresso dos estudantes e veja o domínio da turma em cada habilidade da BNCC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 1180px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 46px); margin: 4px 0 6px; }
+  .doc h2 { font-size: 24px; margin: 34px 0 8px; }
+  textarea { width: 100%; font: 13px ui-monospace, Consolas, monospace; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; padding: 10px 12px; resize: vertical; word-break: break-all; }
+  .tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 12px 0; }
+  .msg { font-size: 14px; font-weight: 600; min-height: 1.4em; margin: 8px 0 0; }
+  .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+  .scroll { overflow-x: auto; border: 1.5px solid var(--ink); border-radius: 18px; max-width: 100%; }
+  table { border-collapse: collapse; font-size: 13.5px; min-width: 100%; }
+  th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: center; white-space: nowrap; }
+  thead th { position: sticky; top: 0; background: var(--paper-2); font-weight: 600; vertical-align: bottom; }
+  thead th.code { writing-mode: vertical-rl; transform: rotate(180deg); font-family: ui-monospace, Consolas, monospace; font-size: 12px; padding: 8px 4px; }
+  th.name, td.name { text-align: left; position: sticky; left: 0; background: var(--paper); z-index: 1; }
+  thead th.name { z-index: 2; background: var(--paper-2); }
+  td.name small { display: block; color: var(--ink-2); font-weight: 400; }
+  .cell { display: inline-block; width: 28px; height: 22px; border-radius: 7px; border: 1.5px solid var(--ink); font-size: 11.5px; font-weight: 700; line-height: 19px; }
+  .cell.nv0 { border-style: dashed; }
+  tfoot td { font-weight: 700; background: var(--paper-2); }
+  tfoot td.name { background: var(--paper-2); }
+  .warn { color: var(--bad); font-weight: 700; }
+  .rm { border: 0; background: none; cursor: pointer; color: var(--ink-2); font-size: 14px; padding: 2px 6px; border-radius: 8px; }
+  .rm:hover { background: var(--pill); color: var(--ink); }
+  .attn { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .attn a { text-decoration: none; color: var(--ink); }
+  .attn a:hover { background: var(--pill); }
+  .empty { border: 1.5px dashed var(--ink); border-radius: 18px; padding: 22px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc">
+  <div class="no-print" style="font-size:14px;margin-bottom:18px"><a href="professor.html" style="color:var(--ink-2)">← Área do professor</a></div>
+  <span class="eyebrow">👩‍🏫 Área do professor</span>
+  <h1>Painel da turma</h1>
+  <p class="muted" style="max-width:780px">Os estudantes não têm cadastro: cada um gera o seu relatório na página <a href="meu-progresso.html">Meu progresso</a> e envia para você (no chat da turma, por e-mail ou como arquivo). Cole os relatórios aqui para ver a turma inteira. Os dados ficam só neste navegador: nada é enviado para servidor nenhum.</p>
+
+  <div class="panel no-print" style="margin-top:18px">
+    <label for="codes" style="font-weight:600">Relatórios dos estudantes (pode colar vários de uma vez)</label>
+    <textarea id="codes" rows="4" placeholder="MDR1z.…" style="margin-top:6px"></textarea>
+    <div class="tools">
+      <button class="btn" type="button" id="add">Adicionar à turma</button>
+      <label class="small">ou arquivos: <input type="file" id="files" accept=".txt,text/plain" multiple></label>
+    </div>
+    <p class="msg" id="msg" role="status"></p>
+  </div>
+
+  <div class="tools">
+    <div class="chips" id="f-ano"></div>
+    <div class="chips" id="f-comp"></div>
+  </div>
+  <div id="out"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const KEY = 'md-turma-v1';
+  const $ = s => document.querySelector(s);
+  const f = { ano: null, comp: 'CO', escolhido: false };
+  let alunos = []; // {a, y, d, l, r, valido, code}
+
+  const lerCodes = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
+  const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(alunos.map(x => x.code))); } catch (e) {} };
+  const dataTxt = d => new Date(d * 864e5).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+
+  async function adicionar(textos) {
+    const codes = textos.join('\n').match(/MDR1[jz]\.[A-Za-z0-9_-]+/g) || [];
+    let ok = 0, ruins = 0;
+    for (const code of codes) {
+      try {
+        const o = await MDP.lerRelatorio(code);
+        o.code = code;
+        // mesmo apelido: fica o relatório mais recente
+        const i = alunos.findIndex(x => x.a.toLowerCase() === String(o.a).toLowerCase());
+        if (i < 0) alunos.push(o); else if (o.d >= alunos[i].d) alunos[i] = o;
+        ok++;
+      } catch (e) { ruins++; }
+    }
+    alunos.sort((x, y) => x.a.localeCompare(y.a, 'pt-BR'));
+    salvar();
+    return { ok, ruins, achados: codes.length };
+  }
+
+  $('#add').onclick = async () => {
+    const r = await adicionar([$('#codes').value]);
+    const msg = $('#msg');
+    if (!r.achados) { msg.textContent = 'Nenhum relatório encontrado. Os relatórios começam com MDR1.'; msg.className = 'msg bad'; return; }
+    msg.textContent = `${r.ok} relatório(s) adicionado(s)${r.ruins ? `, ${r.ruins} com erro (código incompleto?)` : ''}.`;
+    msg.className = 'msg ' + (r.ruins ? 'bad' : 'ok');
+    $('#codes').value = ''; render();
+  };
+  $('#files').onchange = async e => {
+    const textos = await Promise.all([...e.target.files].map(x => x.text()));
+    const r = await adicionar(textos);
+    $('#msg').textContent = `${r.ok} relatório(s) adicionado(s) a partir de ${e.target.files.length} arquivo(s).`; $('#msg').className = 'msg ok';
+    e.target.value = ''; render();
+  };
+
+  function csv(habs) {
+    const linhas = [['Estudante', 'Ano', 'Relatório de', ...habs.map(h => h.codigo)]];
+    alunos.forEach(x => linhas.push([x.a, x.y + 'º', dataTxt(x.d), ...habs.map(h => MDP.NIVEIS[x.l[h.codigo] || 0].nome)]));
+    const txt = '﻿' + linhas.map(l => l.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([txt], { type: 'text/csv' }));
+    a.download = `turma-${f.ano}ano-${f.comp === 'CO' ? 'computacao' : 'matematica'}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  function render() {
+    if (!f.escolhido) {
+      const anos = alunos.map(x => x.y);
+      f.ano = anos.length ? anos.sort((a, b) => anos.filter(v => v === b).length - anos.filter(v => v === a).length)[0] : 6;
+    }
+    $('#f-ano').innerHTML = [6, 7, 8, 9].map(a => `<button class="chip" type="button" data-a="${a}" aria-pressed="${f.ano === a}">${a}º ano</button>`).join('');
+    $('#f-comp').innerHTML = [['CO', 'Computação'], ['MA', 'Matemática']].map(([c, n]) => `<button class="chip" type="button" data-c="${c}" aria-pressed="${f.comp === c}">${n}</button>`).join('');
+    const out = $('#out');
+    if (!alunos.length) { out.innerHTML = `<div class="empty">Nenhum relatório ainda. Peça aos estudantes que abram <strong>Meu progresso</strong>, toquem em <strong>Gerar relatório</strong> e enviem o código para você.</div>`; return; }
+
+    const habs = HABILIDADES.filter(h => h.ano === f.ano && h.comp === f.comp);
+    const prof = h => alunos.filter(x => (x.l[h.codigo] || 0) >= 3).length;
+    const pct = h => Math.round(prof(h) / alunos.length * 100);
+    const atencao = habs.filter(h => RECURSOS.some(r => r.habs.includes(h.codigo)))
+      .map(h => ({ h, p: pct(h), ini: alunos.filter(x => x.l[h.codigo]).length }))
+      .sort((a, b) => a.p - b.p || b.ini - a.ini).slice(0, 3);
+    const nv = n => `<span class="cell nv nv${n}" title="${MDP.NIVEIS[n].nome}">${n ? n : ''}</span>`;
+
+    out.innerHTML = `
+      <p class="small muted">${alunos.length} estudante(s) · níveis: ${MDP.NIVEIS.map((n, i) => `${nv(i)} ${n.nome}`).join(' &nbsp; ')}</p>
+      <div class="scroll"><table>
+        <thead><tr><th class="name">Estudante</th>${habs.map(h => `<th class="code" title="${esc(h.codigo + ' — ' + h.texto)}">${h.codigo}</th>`).join('')}<th class="no-print"></th></tr></thead>
+        <tbody>${alunos.map((x, i) => `<tr>
+          <td class="name"><strong>${esc(x.a)}</strong>${x.valido ? '' : ' <span class="warn" title="O código foi alterado depois de gerado">⚠</span>'}<small>${x.y}º ano · ${dataTxt(x.d)}</small></td>
+          ${habs.map(h => `<td>${nv(x.l[h.codigo] || 0)}</td>`).join('')}
+          <td class="no-print"><button class="rm" type="button" data-i="${i}" aria-label="Remover ${esc(x.a)}">✕</button></td></tr>`).join('')}</tbody>
+        <tfoot><tr><td class="name">Proficientes</td>${habs.map(h => `<td title="${prof(h)} de ${alunos.length}">${pct(h)}%</td>`).join('')}<td class="no-print"></td></tr></tfoot>
+      </table></div>
+      ${alunos.some(x => !x.valido) ? '<p class="small"><span class="warn">⚠</span> Relatório que não confere com a assinatura (foi editado depois de gerado).</p>' : ''}
+      <div class="btn-row no-print" style="margin-top:14px">
+        <button class="btn ghost" type="button" id="csv">Baixar planilha (CSV)</button>
+        <button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir</button>
+        <button class="btn ghost" type="button" id="clear">Limpar turma</button>
+      </div>
+      ${atencao.length ? `<h2>Habilidades que mais pedem atenção</h2>
+      <div class="attn">${atencao.map(({ h, p }) => { const r = RECURSOS.find(o => o.tipo === 'plano' && o.habs.includes(h.codigo)) || RECURSOS.find(o => o.habs.includes(h.codigo)); return `
+        <a class="card" href="${recUrl(r)}">
+          <span><code>${h.codigo}</code> · ${p}% proficientes</span>
+          <strong>${esc(h.objeto)}</strong>
+          <span class="small muted">${esc(h.texto)}</span>
+          <span class="small">${TIPOS[r.tipo].icone} ${esc(r.titulo)} →</span>
+        </a>`; }).join('')}</div>` : ''}`;
+    out.querySelectorAll('.rm').forEach(b => b.onclick = () => { alunos.splice(+b.dataset.i, 1); salvar(); render(); });
+    $('#csv').onclick = () => csv(habs);
+    $('#clear').onclick = () => { if (confirm('Remover todos os relatórios deste navegador?')) { alunos = []; salvar(); render(); } };
+  }
+  $('#f-ano').onclick = e => { const b = e.target.closest('button'); if (b) { f.ano = +b.dataset.a; f.escolhido = true; render(); } };
+  $('#f-comp').onclick = e => { const b = e.target.closest('button'); if (b) { f.comp = b.dataset.c; render(); } };
+
+  adicionar(lerCodes()).then(render);
+})();
+</script>
+</body>
+</html>

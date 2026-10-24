@@ -40,6 +40,12 @@
     <div class="step"><strong>Feche com o jogo</strong><p>Os jogos rodam no navegador do computador, tablet ou celular, sem cadastro e sem instalar nada. Para fixar, use a <a href="catalogo.html?tipo=lista">lista de exercícios</a> do tema, com gabarito.</p></div>
   </div>
 
+  <div class="panel" style="margin:28px 0 8px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between">
+    <div style="max-width:680px"><strong style="font-family:var(--display);font-size:22px">📊 Painel da turma</strong>
+    <p style="margin:4px 0 0">Os estudantes acompanham o próprio progresso em <a href="meu-progresso.html">Meu progresso</a>, sem cadastro, e enviam um relatório para você. No painel, você vê o nível de cada estudante em cada habilidade.</p></div>
+    <a class="btn" href="turma.html">Abrir o painel</a>
+  </div>
+
   <h2>Planos de aula</h2>
   <p class="muted">Todas as habilidades de Computação do 6º ao 9º ano têm pelo menos um plano. Filtre por ano:</p>
   <div class="chips" id="f-ano" style="margin-bottom:12px"></div>
@@ -59,6 +65,8 @@
 
 <script>window.MD_BASE = '';</script>
 <script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
 <script>
   mdTopbar('professor');

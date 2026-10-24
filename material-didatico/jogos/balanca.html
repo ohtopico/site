@@ -66,13 +66,15 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('balanca');
 (function () {
   const $ = s => document.querySelector(s);
   const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
-  let mode = 1, q = 0, solved = 0, steps = 0, E, X, done = false;
+  let mode = 1, q = 0, solved = 0, otimas = 0, steps = 0, E, X, done = false;
 
   function gen() {
     X = ri(1, 9);
@@ -99,7 +101,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('balanca');
   }
   $('#modes').onclick = e => { const b = e.target.closest('button'); if (b) { mode = +b.dataset.m; restart(); } };
 
-  function restart() { q = 0; solved = 0; drawModes(); next(); }
+  function restart() { q = 0; solved = 0; otimas = 0; drawModes(); next(); }
   function next() {
     if (q >= 5) return end();
     E = gen(); steps = 0; done = false;
@@ -113,6 +115,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('balanca');
     if (!isolated) return;
     done = true; solved++; q++;
     const min = minSteps();
+    if (steps <= min) otimas++;
     fb(`x = ${X}! ${steps <= min ? `Resolvido em ${steps} passo(s) — o caminho mais curto.` : `Resolvido em ${steps} passos. Dava para fazer em ${min}.`} Confira: ${checkTxt()}.`, 'ok');
     $('#ops').hidden = true; draw();
     $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${q < 5 ? 'Próxima equação →' : 'Ver resultado'}</button>`;
@@ -144,6 +147,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('balanca');
   };
 
   function end() {
+    window.MDP && MDP.registrar('balanca', 50 + otimas * 10);
     $('#L').innerHTML = ''; $('#R').innerHTML = '';
     $('#eqn').textContent = 'Fim do nível! ⚖️';
     $('#ops').hidden = true;

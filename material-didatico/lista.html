@@ -75,6 +75,7 @@
 <script>window.MD_BASE = '';</script>
 <script src="assets/dados.js"></script>
 <script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
 <script>
 (function () {
@@ -193,6 +194,7 @@
         sec.querySelector('.fb').classList.add('show');
       }
     });
+    if (total - vazias > 0) window.MDP && MDP.registrar(id, acertos / total * 100);
     $('#score').textContent = `Você acertou ${acertos} de ${total} questões objetivas` + (vazias ? ` (${vazias} sem resposta).` : '.') + (acertos === total ? ' 🎉' : '');
   };
   $('#reset').onclick = () => {

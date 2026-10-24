@@ -57,6 +57,8 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('cartesiano');
@@ -164,6 +166,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cartesiano');
   });
 
   function end() {
+    window.MDP && MDP.registrar('cartesiano', ac / 8 * 100);
     const recs = mdStore.get('cart-rec', {}); recs[mode] = Math.max(recs[mode] || 0, ac); mdStore.set('cart-rec', recs);
     cur = null; marks = ''; draw();
     $('#task').innerHTML = `${ac >= 7 ? 'Tesouro encontrado! 🏴‍☠️' : 'Fim do nível!'}`;

@@ -61,6 +61,8 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('rotas');
@@ -152,7 +154,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('rotas');
   function finish() {
     const c = cost(path), o = dijkstra();
     if (c === o.d) {
-      solved[li] = true; mdStore.set('rotas-ok', solved);
+      solved[li] = true; mdStore.set('rotas-ok', solved); window.MDP && MDP.registrar('rotas', Object.keys(solved).length / LEVELS.length * 100);
       fb(`Rota ótima! Custo ${c} — não existe caminho mais barato.`, 'ok');
     } else {
       fb(`Você chegou com custo ${c}. Existe uma rota de custo ${o.d}. Recomece e tente encontrar, ou veja a rota ótima.`, 'bad');

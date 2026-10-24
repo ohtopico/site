@@ -52,6 +52,8 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('fracoes');
@@ -147,6 +149,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('fracoes');
   const gcd = (x, y) => y ? gcd(y, x % y) : x;
 
   function end() {
+    window.MDP && MDP.registrar('fracoes', ac * 10);
     $('#play').innerHTML = `<div class="center">
       <h2>${ac >= 9 ? 'Campeã(o) das frações! 🏆' : ac >= 7 ? 'Mandou bem! 🎉' : 'Continue treinando! 💪'}</h2>
       <p style="font-size:20px"><b>${ac}</b> de 10 acertos</p>

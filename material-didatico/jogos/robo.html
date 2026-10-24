@@ -85,6 +85,8 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('robo');
@@ -178,6 +180,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('robo');
       const s = prog.length <= L.meta ? 3 : prog.length <= L.meta + 2 ? 2 : 1;
       if (!best[li] || s > best[li]) { best[li] = s; mdStore.set('robo-best', best); }
       drawLevels();
+      window.MDP && MDP.registrar('robo', Object.values(best).reduce((a, b) => a + (b || 0), 0) / (LEVELS.length * 3) * 100);
       const msg = s === 3 ? `Perfeito! ${prog.length} bloco(s), dentro da meta. ★★★` : `Conseguiu com ${prog.length} blocos! ${'★'.repeat(s)} Dá para chegar a ${L.meta} usando repetição?`;
       fb(msg, 'ok');
       if (li < LEVELS.length - 1) setTimeout(() => { if (!running) fb(msg + ' Clique na próxima fase quando quiser.', 'ok'); }, 50);

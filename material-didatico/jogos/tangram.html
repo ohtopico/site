@@ -78,6 +78,8 @@
 
 <script>window.MD_BASE = '../';</script>
 <script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('tangram');
@@ -162,6 +164,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('tangram');
     isComplete = cov > .985 && over < inT * .01 && out < inT * .01;
     if (isComplete && !was) {
       done[FIGS[fi].id] = true; try { localStorage.setItem('md-tangram', JSON.stringify(done)); } catch (e) {}
+      window.MDP && MDP.registrar('tangram', FIGS.filter(f => done[f.id]).length / FIGS.length * 100);
       fb(`Figura completa! ${FIGS[fi].info}`, 'ok'); figChips(); draw();
     }
   }
