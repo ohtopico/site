@@ -244,6 +244,7 @@ a { color: var(--accent); text-underline-offset: 3px; }
 .caixa-contador .caixa-titulo { background: var(--bad-soft); }
 .caixa p { margin: 0 0 10px; }
 .caixa .btn98 { font-size: 13px; min-height: 32px; }
+.caixa .tema-btn { gap: 6px; margin: 4px 14px 14px; }
 
 .lista-menu, .lista-recentes { list-style: none; margin: 0; padding: 0; }
 .lista-menu li + li, .lista-recentes li + li { border-top: 1.5px dashed var(--line); }
