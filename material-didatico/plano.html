@@ -46,6 +46,7 @@
 <script src="assets/listas.js"></script>
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
 <script>
 (function () {
   mdTopbar('professor');
@@ -73,7 +74,7 @@
     </div>
 
     <h2>Habilidades da BNCC</h2>
-    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}${SLIDES[c] ? ` <a class="no-print" href="${slidesUrl(c)}" download>📥 Baixar slides (PDF)</a>` : ''}</span></li>`).join('')}</ul>
 
     <h2>Objetivos de aprendizagem</h2>
     <ul class="plain">${p.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul>

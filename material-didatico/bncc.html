@@ -53,6 +53,7 @@
 <script src="assets/listas.js"></script>
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
 <script>
 (function () {
   mdTopbar('bncc');
@@ -89,7 +90,7 @@
             return `<li class="hab-item">
               <div>${tagHab(h.codigo)}${nivelDe(h.codigo)}</div>
               <div><span class="obj">${esc(h.objeto)}</span><span class="txt">${esc(h.texto)}</span></div>
-              <div class="mats">${mats.length ? mats.map(r => `<a href="${recUrl(r)}">${TIPOS[r.tipo].icone} ${esc(r.titulo)}</a>`).join('') : '<span class="soon">Material em preparação</span>'}</div>
+              <div class="mats">${mats.length ? mats.map(r => `<a href="${recUrl(r)}">${TIPOS[r.tipo].icone} ${esc(r.titulo)}</a>`).join('') : (SLIDES[h.codigo] ? '' : '<span class="soon">Material em preparação</span>')}${SLIDES[h.codigo] ? `<a href="${slidesUrl(h.codigo)}" download>📥 Slides da aula (PDF)</a>` : ''}</div>
             </li>`;
           }).join('')}
         </ul>

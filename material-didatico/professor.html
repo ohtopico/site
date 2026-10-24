@@ -56,6 +56,15 @@
     </table>
   </div>
 
+  <h2 id="slides" style="margin-top:40px">Slides para aula expositiva</h2>
+  <p class="muted">Cada habilidade de Computação tem um conjunto de slides em PDF para uma aula de 30 minutos: pergunta de abertura, explicação com exemplos, atividade de 7 minutos, perguntas de checagem e, no último slide, o roteiro do professor com as respostas. O filtro de ano acima vale aqui também.</p>
+  <div class="table-wrap">
+    <table class="plan-table">
+      <thead><tr><th>Aula</th><th class="hide-sm">Ano</th><th>Habilidade</th><th>Slides</th></tr></thead>
+      <tbody id="slides-list"></tbody>
+    </table>
+  </div>
+
   <div class="note" style="margin-top:26px">
     <strong>Sobre o alinhamento.</strong> Os códigos seguem a BNCC (Matemática) e o complemento de Computação à BNCC (Resolução CNE/CEB nº 1/2022). Muitos materiais combinam as duas áreas — um bom caminho para trabalhar Computação de forma integrada, mesmo onde ela ainda não é componente próprio.
   </div>
@@ -68,6 +77,7 @@
 <script src="assets/listas.js"></script>
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
 <script>
   mdTopbar('professor');
   mdFooter();
@@ -83,6 +93,13 @@
       <td class="hide-sm">${anosTxt(r.anos)}</td>
       <td><div class="tags">${r.habs.map(tagHab).join('')}</div></td>
       <td class="hide-sm">${PLANOS[r.id].recursos.map(id => `<a href="${recUrl(REC[id])}">${TIPOS[REC[id].tipo].icone} ${esc(REC[id].titulo)}</a>`).join('<br>') || '<span class="muted">—</span>'}</td>
+    </tr>`).join('');
+  document.getElementById('slides-list').innerHTML = Object.keys(SLIDES).filter(c => !ano || HAB[c].ano === ano).map(c => `
+    <tr>
+      <td><strong>${esc(SLIDES[c])}</strong><div class="small muted">${esc(HAB[c].objeto)} · 30 min</div></td>
+      <td class="hide-sm">${HAB[c].ano}º ano</td>
+      <td>${tagHab(c)}</td>
+      <td>${slidesBtn(c)}</td>
     </tr>`).join('');
   }
   document.getElementById('f-ano').onclick = e => { const b = e.target.closest('button'); if (b) { ano = +b.dataset.a; renderPlans(); } };
