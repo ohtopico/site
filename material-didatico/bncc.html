@@ -80,7 +80,7 @@
     $('#b-cover').innerHTML = `${comMat} de ${habs.length} habilidades com material <span class="cover-bar" aria-hidden="true"><span style="width:${pct}%"></span></span>`;
 
     const eixos = [...new Set(habs.map(h => h.eixo))];
-    $('#b-list').innerHTML = eixos.map(ex => `
+    $('#b-list').innerHTML = '<h2 class="sr-only">Habilidades por eixo</h2>' + eixos.map(ex => `
       <div class="eixo">
         <h3><span class="tag ${b.comp.toLowerCase()}">${COMPONENTES[b.comp].curto}</span>${EIXOS[ex].nome}</h3>
         <ul class="hab-list">

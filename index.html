@@ -61,7 +61,7 @@
         --pill-2: #e2e2df;
         --ink: #111111;
         --ink-2: #4a4a4a;
-        --ink-3: #7a7a7a;
+        --ink-3: #6f6f6f;
         --line: #d9d9d6;
         --accent: #1f5cff;
         --accent-soft: #e6edff;
@@ -698,6 +698,10 @@
             <span class="tile"><i class="fa-solid fa-shapes" aria-hidden="true"></i></span>
             <span class="icon-label">Material didático</span>
         </a>
+        <a class="icon-item" href="blog/" onclick="return abrirNoNavegador('blog/')">
+            <span class="tile"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
+            <span class="icon-label">Blog</span>
+        </a>
     </nav>
 
     <!-- Leia-me (abre sozinha) -->
@@ -756,6 +760,7 @@
             </div>
         </div>
         <div class="janela-conteudo">
+            <h2 class="sr-only">Atualizações</h2>
             <article class="post">
                 <h3>Site de cara nova</h3>
                 <p class="data">23 de outubro de 2026</p>
@@ -909,6 +914,8 @@
     <button type="button" class="menu-item" onclick="openProgram('win-navegador')"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Busca no site</button>
     <a class="menu-item" href="ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
     <a class="menu-item" href="material-didatico/"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Material didático</a>
+    <a class="menu-item" href="blog/" onclick="return abrirNoNavegador('blog/')"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Blog</a>
+    <a class="menu-item" href="mentoria/" onclick="return abrirNoNavegador('mentoria/')"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Mentoria</a>
     <a class="menu-item" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
     <a class="menu-item" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
 
@@ -1150,6 +1157,15 @@
         const c = cartas[Math.floor(Math.random() * cartas.length)];
         document.getElementById('carta-nome').textContent = c.nome;
         document.getElementById('carta-desc').textContent = c.desc;
+    }
+
+    // Blog e mentoria abrem dentro da janela Busca; no celular, o link segue para a página inteira
+    function abrirNoNavegador(url) {
+        if (isMobile()) return true;
+        const f = document.querySelector('#win-navegador iframe');
+        f.src = url;
+        openProgram('win-navegador');
+        return false;
     }
 
     // ---------- Pedidos de outras páginas e links com #abrir= ----------

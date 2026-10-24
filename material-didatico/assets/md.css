@@ -127,6 +127,7 @@ section.block { padding: 56px 0; border-bottom: 1.5px solid var(--line); }
 }
 .chip:hover { background: var(--pill); }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.chip[aria-pressed="true"] .muted { color: inherit; opacity: .85; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .tag {

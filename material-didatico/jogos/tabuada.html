@@ -70,6 +70,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('tabuada');
   function setup() {
     clearInterval(G && G.timer);
     stage.innerHTML = `<div class="setup">
+      <h2 class="sr-only">Painel do jogo</h2>
       <h3>Quais tabuadas?</h3>
       <div class="nums" id="nums">${Array.from({ length: 10 }, (_, i) => i + 1).map(n => `<button type="button" data-n="${n}" aria-pressed="${cfg.tab.includes(n)}">${n}</button>`).join('')}</div>
       <div class="btn-row" style="margin-top:10px"><button class="chip" type="button" id="all">Todas</button><button class="chip" type="button" id="hard">Só as difíceis (6 a 9)</button></div>

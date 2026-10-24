@@ -13,7 +13,7 @@
 <style>
     :root {
         --paper: #ffffff; --paper-2: #f4f4f2; --pill: #efefed; --pill-2: #e2e2df;
-        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #7a7a7a; --line: #d9d9d6;
+        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #6f6f6f; --line: #d9d9d6;
         --accent: #1f5cff; --accent-soft: #e6edff;
         --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
         --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -113,11 +113,13 @@
 </style>
 </head>
 <body>
+<main style="display: contents">
     <h1>Interesses</h1>
     <svg id="arestas" aria-hidden="true"></svg>
     <div id="nos"></div>
     <p class="legenda" id="legenda" aria-live="polite">Arraste os interesses. Passe o mouse para ver as ligações.</p>
     <ul class="sr-only" id="lista" aria-label="Interesses e suas ligações"></ul>
+</main>
 
 <script>
     const NOS = [

@@ -13,7 +13,7 @@
     <style>
     :root {
         --paper: #ffffff; --paper-2: #f4f4f2; --pill: #efefed; --pill-2: #e2e2df;
-        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #7a7a7a; --line: #d9d9d6;
+        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #6f6f6f; --line: #d9d9d6;
         --accent: #1f5cff; --accent-soft: #e6edff;
         --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
         --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -34,7 +34,8 @@
         body { background: var(--paper-2); color: var(--ink); font-family: var(--body); margin: 0; display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
         .toolbar { display: flex; align-items: center; padding: 8px 14px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 99px; gap: 14px; margin: 10px; flex-wrap: wrap; justify-content: center; }
         .tool-group { display: flex; align-items: center; gap: 6px; font: 800 12px var(--display); letter-spacing: .1em; text-transform: uppercase; }
-        .cor-btn { width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; cursor: pointer; }
+        .cor-btn { width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; cursor: pointer; padding: 0; min-height: 0; flex: none; box-sizing: content-box; align-self: center; }
+        .sr-only { clip: rect(0 0 0 0); height: 1px; overflow: hidden; position: absolute; width: 1px; }
         .cor-btn:hover { transform: scale(1.12); }
         input[type="color"] { width: 30px; height: 26px; border: 1.5px solid var(--ink); border-radius: 8px; padding: 0; background: var(--paper); cursor: pointer; }
         button, select { font: 500 13px var(--body); padding: 5px 14px; border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); color: var(--ink); cursor: pointer; min-height: 32px; }
@@ -48,20 +49,22 @@
 </style>
 </head>
 <body>
+<main style="display: contents">
+<h1 class="sr-only">Paint</h1>
     <div class="toolbar">
         <div class="tool-group">
             <span>Cor</span>
-            <div class="cor-btn" style="background: #ff0000" onclick="setCor('#ff0000')"></div>
-            <div class="cor-btn" style="background: #ff00ff" onclick="setCor('#ff00ff')"></div>
-            <div class="cor-btn" style="background: #00ffff" onclick="setCor('#00ffff')"></div>
-            <div class="cor-btn" style="background: #00ff00" onclick="setCor('#00ff00')"></div>
-            <div class="cor-btn" style="background: #ffff00" onclick="setCor('#ffff00')"></div>
-            <div class="cor-btn" style="background: #000000" onclick="setCor('#000000')"></div>
-            <input type="color" onchange="setCor(this.value)">
+            <button type="button" class="cor-btn" style="background: #ff0000" onclick="setCor('#ff0000')" aria-label="Vermelho"></button>
+            <button type="button" class="cor-btn" style="background: #ff00ff" onclick="setCor('#ff00ff')" aria-label="Magenta"></button>
+            <button type="button" class="cor-btn" style="background: #00ffff" onclick="setCor('#00ffff')" aria-label="Ciano"></button>
+            <button type="button" class="cor-btn" style="background: #00ff00" onclick="setCor('#00ff00')" aria-label="Verde"></button>
+            <button type="button" class="cor-btn" style="background: #ffff00" onclick="setCor('#ffff00')" aria-label="Amarelo"></button>
+            <button type="button" class="cor-btn" style="background: #000000" onclick="setCor('#000000')" aria-label="Preto"></button>
+            <input type="color" onchange="setCor(this.value)" aria-label="Escolher outra cor">
         </div>
         <div class="tool-group">
             <span>Pincel</span>
-            <select id="tipoPincel" onchange="tipoPincel = this.value">
+            <select id="tipoPincel" onchange="tipoPincel = this.value" aria-label="Tipo de pincel">
                 <option value="round">Redondo</option>
                 <option value="square">Quadrado</option>
                 <option value="star">Estrela</option>
@@ -74,7 +77,8 @@
         <button onclick="limpar()">Limpar</button>
         <button onclick="salvar()">Salvar</button>
     </div>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" role="img" aria-label="Área de desenho"></canvas>
+</main>
 
     <script>
         const canvas = document.getElementById('canvas');

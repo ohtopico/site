@@ -12,7 +12,7 @@
 <style>
     :root {
         --paper: #ffffff; --paper-2: #f4f4f2; --pill: #efefed; --pill-2: #e2e2df;
-        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #7a7a7a; --line: #d9d9d6;
+        --ink: #111111; --ink-2: #4a4a4a; --ink-3: #6f6f6f; --line: #d9d9d6;
         --accent: #1f5cff; --accent-soft: #e6edff; --mark: #fff36b;
         --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
         --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -245,6 +245,7 @@
 </style>
 </head>
 <body>
+    <header style="display: contents">
     <div class="ferramentas" role="toolbar" aria-label="Navegação">
         <button type="button" class="btn98" id="voltar" aria-label="Voltar" disabled>◄</button>
         <button type="button" class="btn98" id="avancar" aria-label="Avançar" disabled>►</button>
@@ -259,10 +260,13 @@
         <span>Favoritos:</span>
         <a href="#" data-ir="inicio">Busca</a>
         <a href="#" data-ir="poemas">Poemas</a>
+        <a href="blog/">Blog</a>
+        <a href="mentoria/">Mentoria</a>
         <a href="curriculo/" target="_top" class="opcional">Currículo</a>
         <a href="ia-pra-prof/" target="_top" class="opcional">IA pra Prof</a>
         <a href="material-didatico/" target="_top" class="opcional">Material didático</a>
     </nav>
+    </header>
 
     <main id="pagina" tabindex="-1"></main>
     <div class="status" id="status" aria-live="polite">Pronto</div>
@@ -400,6 +404,23 @@ feita em panela de vó.</div>
             });
         } catch (e) { console.warn('Não foi possível ler o IA pra Prof', e); }
 
+        // Blog: cada post listado no índice do blog
+        try {
+            const d = await lerPagina('blog/index.html');
+            const links = [...d.querySelectorAll('.cartao h2 a')].map(a => a.getAttribute('href').replace(/^\//, ''));
+            const posts = await Promise.all(links.map(u => lerPagina(u + 'index.html').then(p => [u, p]).catch(() => null)));
+            posts.filter(Boolean).forEach(([u, p]) => {
+                const artigo = p.querySelector('.artigo');
+                if (!artigo) return;
+                docs.push({
+                    titulo: limparTexto(p.querySelector('h1').textContent),
+                    onde: 'Blog › ' + limparTexto((p.querySelector('.rotulo') || {}).textContent || ''),
+                    texto: limparTexto(semScripts(artigo).textContent),
+                    url: u, blog: true
+                });
+            });
+        } catch (e) { console.warn('Não foi possível ler o blog', e); }
+
         // Poemas
         document.getElementById('tpl-poemas').content.querySelectorAll('.poema').forEach(p => {
             docs.push({
@@ -527,7 +548,7 @@ feita em panela de vó.</div>
                 <h1 class="logo">${LOGO}<small>BUSCA</small></h1>
                 ${formularioBusca('', true)}
                 <p class="sugestoes">Experimente: ${SUGESTOES.map(s => `<button type="button" data-sugestao="${escapar(s)}">${escapar(s)}</button>`).join(' ')}</p>
-                <p class="rodape-home">Busca no leia-me, no currículo, no guia IA pra Prof e nos poemas.</p>
+                <p class="rodape-home">Busca no leia-me, no currículo, no guia IA pra Prof, no blog e nos poemas.</p>
             </div>`;
         ligarFormulario();
         pagina.querySelectorAll('[data-sugestao]').forEach(b => b.addEventListener('click', () => navegar({ pagina: 'busca', q: b.dataset.sugestao })));
@@ -536,8 +557,8 @@ feita em panela de vó.</div>
         garantirIndice();
     }
 
-    const GRUPOS = [['tudo', 'Tudo'], ['curriculo', 'Currículo'], ['guia', 'IA pra Prof'], ['desktop', 'Área de trabalho'], ['poemas', 'Poemas']];
-    const grupoDe = d => d.poema ? 'poemas' : d.janela ? 'desktop' : d.url && d.url.startsWith('curriculo') ? 'curriculo' : 'guia';
+    const GRUPOS = [['tudo', 'Tudo'], ['blog', 'Blog'], ['curriculo', 'Currículo'], ['guia', 'IA pra Prof'], ['desktop', 'Área de trabalho'], ['poemas', 'Poemas']];
+    const grupoDe = d => d.blog ? 'blog' : d.poema ? 'poemas' : d.janela ? 'desktop' : d.url && d.url.startsWith('curriculo') ? 'curriculo' : 'guia';
 
     async function paginaResultados(q, filtro) {
         campoEndereco.value = enderecoDe({ pagina: 'busca', q });
@@ -591,7 +612,7 @@ feita em panela de vó.</div>
             li.className = 'resultado';
             li.innerHTML = `<div class="onde">${escapar(d.onde)}</div><a class="titulo" href="#">${escapar(d.titulo)}</a><p>${trecho(d.texto, q)}</p>`;
             const a = li.querySelector('a');
-            if (d.url) { a.href = d.url; a.target = '_top'; }
+            if (d.url) { a.href = d.url; if (!d.blog) a.target = '_top'; }
             else if (d.janela && !dentroDoSite) { a.href = 'index.html#abrir=' + d.janela; a.target = '_top'; }
             a.addEventListener('click', e => abrirResultado(e, d));
             ol.appendChild(li);
@@ -645,7 +666,8 @@ feita em panela de vó.</div>
             const r = buscar(q, await garantirIndice());
             if (!r.length) { navegar({ pagina: 'busca', q }); return; }
             const d = r[0];
-            if (d.url) window.top.location.href = d.url;
+            if (d.url && d.blog) location.href = d.url;
+            else if (d.url) window.top.location.href = d.url;
             else abrirResultado({ preventDefault() {} }, d);
         });
     }
