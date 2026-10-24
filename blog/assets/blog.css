@@ -9,7 +9,7 @@
     --ok-soft: #e3f4e8; --bad-soft: #fbe6ea; --red: #b3261e;
     --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
     --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --topo: 58px; --base: 56px;
+    --topo: 0px; --base: 0px;
 }
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -362,6 +362,7 @@ a.taskbar-tab:hover { border-color: var(--ink); }
 }
 .programa-linkedin { background: #b9e6c6; }
 .programa-github { background: #fff36b; }
+.programa-tema { background: var(--paper); color: var(--ink); cursor: pointer; padding: 0; }
 .programa:hover, .programa:focus-visible { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
 .bandeja .taskbar-clock { margin-left: 4px; }
 .taskbar-clock { color: var(--ink-2); font-size: 14px; font-variant-numeric: tabular-nums; font-weight: 500; }
@@ -584,11 +585,8 @@ figure.infografico figcaption a { font-weight: 500; }
 
 /* ---------- Celular e tablet: página rola normalmente, menus vão para baixo do texto ---------- */
 @media (max-width: 860px) {
-    :root { --topo: 54px; --base: 58px; }
+    :root { --base: 0px; }
     body { overflow: auto; }
-    .topbar { padding: 0 12px; position: sticky; }
-    .brand { font-size: 19px; margin-right: 4px; }
-    .topo-links .opcional { display: none; }
     .area { padding: 10px 10px calc(var(--base) + 16px); position: static; }
     .janela { box-shadow: 4px 4px 0 var(--ink); height: auto; }
     .corpo { display: flex; flex-direction: column; overflow: visible; padding: 0 14px; }

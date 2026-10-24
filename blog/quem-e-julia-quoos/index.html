@@ -105,18 +105,6 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 </head>
 <body data-contador="ohtopico">
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
-<header class="topbar">
-    <a class="brand" href="/">ohtopico</a>
-    <nav class="topo-links" aria-label="Seções do site">
-        <a class="pill-btn ativo" href="/blog/" aria-current="page">Blog</a>
-        <a class="pill-btn" href="/mentoria/">Mentoria</a>
-        <a class="pill-btn opcional" href="/ia-pra-prof/">IA pra Prof</a>
-    </nav>
-    <span class="spacer"></span>
-    <button type="button" class="pill-btn icon-only" id="tema-btn" aria-label="Alternar tema claro/escuro">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
-    </button>
-</header>
 <div class="area">
 <div class="janela">
     <div class="janela-header">
@@ -130,6 +118,7 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
         <a class="btn98 quadrado" href="/blog/" data-voltar aria-label="Voltar">◄</a>
         <a class="btn98 quadrado" href="/blog/" aria-label="Início do blog">⌂</a>
         <p class="endereco" aria-label="Endereço da página"><span>ohtopico.com.br/blog/quem-e-julia-quoos</span></p>
+        <button type="button" class="btn98 quadrado" id="tema-btn" aria-label="Alternar tema claro/escuro" title="Tema claro/escuro"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></button>
     </div>
     <div class="letreiro" aria-label="Destaques"><div class="letreiro-faixa"><a href="/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/">✦ Post novo: Números binários: por que o computador só sabe 0 e 1</a><a href="/mentoria/">✦ Mentoria para professores e escolas</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a></div></div>
     <div class="corpo">
@@ -242,37 +231,6 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
     <div class="status">Pronto · publicado em 24 de outubro de 2026</div>
 </div>
 </div>
-<footer id="taskbar">
-    <button type="button" class="start-btn" aria-haspopup="true" aria-expanded="false" aria-controls="start-menu">Iniciar</button>
-    <div class="taskbar-abas">
-        <a class="taskbar-tab" href="/#abrir=win-leiame"><span aria-hidden="true">▤</span> <span class="tab-label">Leia-me</span></a>
-        <span class="taskbar-tab active"><span aria-hidden="true">▦</span> <span class="tab-label">quem-sou.txt</span></span>
-    </div>
-    <div class="bandeja">
-        <a class="programa programa-linkedin" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="me noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i><span class="sr-only">LinkedIn de Júlia Roberta Quoos Alves (abre em nova aba)</span></a>
-        <a class="programa programa-github" href="https://github.com/ohtopico" target="_blank" rel="me noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i><span class="sr-only">GitHub de Júlia Roberta Quoos Alves (abre em nova aba)</span></a>
-        <div class="taskbar-clock" id="relogio" aria-hidden="true">00:00</div>
-    </div>
-</footer>
-<nav id="start-menu" aria-label="Menu Iniciar" hidden>
-    <p class="menu-heading">Profissional</p>
-    <a class="menu-item" href="/#abrir=win-leiame"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Leia-me</a>
-    <a class="menu-item" href="/curriculo/"><i class="fa-regular fa-id-card" aria-hidden="true"></i> Currículo</a>
-    <a class="menu-item" href="/#abrir=win-navegador"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Busca no site</a>
-    <a class="menu-item" href="/ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
-    <a class="menu-item" href="/material-didatico/"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Material didático</a>
-    <a class="menu-item" href="/blog/"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Blog</a>
-    <a class="menu-item" href="/mentoria/"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Mentoria</a>
-    <hr class="menu-sep">
-    <p class="menu-heading">Diversão</p>
-    <a class="menu-item" href="/#abrir=win-diario"><i class="fa-regular fa-star" aria-hidden="true"></i> Atualizações</a>
-    <a class="menu-item" href="/#abrir=win-nuvem"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> Interesses</a>
-    <a class="menu-item" href="/#abrir=win-pet"><i class="fa-regular fa-face-smile" aria-hidden="true"></i> Mascote</a>
-    <a class="menu-item" href="/#abrir=win-player"><i class="fa-solid fa-music" aria-hidden="true"></i> Player</a>
-    <a class="menu-item" href="/#abrir=win-tarot"><i class="fa-regular fa-moon" aria-hidden="true"></i> Tarot</a>
-    <a class="menu-item" href="/#abrir=win-paint"><i class="fa-solid fa-paintbrush" aria-hidden="true"></i> Paint</a>
-    <a class="menu-item" href="/#abrir=win-paciencia"><i class="fa-regular fa-heart" aria-hidden="true"></i> Paciência</a>
-</nav>
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script src="/blog/assets/blog.js?v=20261024" defer></script>
 </body>
