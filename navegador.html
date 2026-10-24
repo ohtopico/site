@@ -260,8 +260,8 @@
         <span>Favoritos:</span>
         <a href="#" data-ir="inicio">Busca</a>
         <a href="#" data-ir="poemas">Poemas</a>
-        <a href="blog/">Blog</a>
-        <a href="mentoria/">Mentoria</a>
+        <a href="blog/" target="_top">Blog</a>
+        <a href="mentoria/" target="_top">Mentoria</a>
         <a href="curriculo/" target="_top" class="opcional">Currículo</a>
         <a href="ia-pra-prof/" target="_top" class="opcional">IA pra Prof</a>
         <a href="material-didatico/" target="_top" class="opcional">Material didático</a>
@@ -407,7 +407,7 @@ feita em panela de vó.</div>
         // Blog: cada post listado no índice do blog
         try {
             const d = await lerPagina('blog/index.html');
-            const links = [...d.querySelectorAll('.cartao h2 a')].map(a => a.getAttribute('href').replace(/^\//, ''));
+            const links = [...d.querySelectorAll('.cartao h2 a, .cartao h3 a')].map(a => a.getAttribute('href').replace(/^\//, ''));
             const posts = await Promise.all(links.map(u => lerPagina(u + 'index.html').then(p => [u, p]).catch(() => null)));
             posts.filter(Boolean).forEach(([u, p]) => {
                 const artigo = p.querySelector('.artigo');
@@ -612,7 +612,7 @@ feita em panela de vó.</div>
             li.className = 'resultado';
             li.innerHTML = `<div class="onde">${escapar(d.onde)}</div><a class="titulo" href="#">${escapar(d.titulo)}</a><p>${trecho(d.texto, q)}</p>`;
             const a = li.querySelector('a');
-            if (d.url) { a.href = d.url; if (!d.blog) a.target = '_top'; }
+            if (d.url) { a.href = d.url; a.target = '_top'; }
             else if (d.janela && !dentroDoSite) { a.href = 'index.html#abrir=' + d.janela; a.target = '_top'; }
             a.addEventListener('click', e => abrirResultado(e, d));
             ol.appendChild(li);
@@ -666,8 +666,7 @@ feita em panela de vó.</div>
             const r = buscar(q, await garantirIndice());
             if (!r.length) { navegar({ pagina: 'busca', q }); return; }
             const d = r[0];
-            if (d.url && d.blog) location.href = d.url;
-            else if (d.url) window.top.location.href = d.url;
+            if (d.url) window.top.location.href = d.url;
             else abrirResultado({ preventDefault() {} }, d);
         });
     }

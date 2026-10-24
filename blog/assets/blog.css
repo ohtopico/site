@@ -463,6 +463,21 @@ h1 .marca { background: var(--mark); border-radius: 8px; box-decoration-break: c
     white-space: pre-wrap;
 }
 
+.artigo h3 { font: 600 17px/1.35 var(--body); margin: 22px 0 8px; }
+.ficha th[scope="row"] { background: var(--ok-soft); border-bottom-color: var(--line); white-space: nowrap; width: 1%; }
+.artigo .fontes li { font-size: 15px; }
+.slides-baixar {
+    background: var(--mark-soft);
+    border: 1.5px solid var(--ink);
+    border-radius: 22px;
+    margin: 30px 0;
+    padding: 18px 22px;
+}
+.slides-baixar h2 { margin-top: 0; }
+.slides-baixar p { margin-bottom: 12px; }
+.slides-baixar .baixar { background: var(--ink); color: var(--paper); gap: 8px; }
+.slides-baixar .baixar:hover { background: var(--ink-2); }
+
 .copiar { font-size: 13px; margin: 0 0 20px; min-height: 30px; padding: 2px 12px; }
 
 .tabela { margin: 0 0 20px; overflow-x: auto; }
