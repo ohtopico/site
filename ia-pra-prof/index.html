@@ -90,6 +90,14 @@
   .icon-btn:hover { background: var(--pill); }
   .icon-btn svg { width: 18px; height: 18px; }
   #toc-btn { display: none; }
+  .back-btn { color: var(--ink); text-decoration: none; font-family: var(--display); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: 13px; }
+  .back-btn:hover { background: var(--ink); color: var(--paper); }
+  .toc-back {
+    align-items: center; border: 1.5px solid var(--ink); border-radius: 99px; color: var(--ink);
+    display: flex; font-size: 14px; font-weight: 500; gap: 6px; justify-content: center;
+    margin: 0 4px 18px; min-height: 40px; padding: 6px 14px; text-decoration: none;
+  }
+  .toc-back:hover { background: var(--ink); color: var(--paper); }
 
   /* ---------- Layout ---------- */
   .layout { display: grid; grid-template-columns: 290px 1fr; max-width: 1180px; margin: 0 auto; }
@@ -392,6 +400,7 @@
   @media (max-width: 520px) {
     .progress-wrap .pct-label { display: none; }
     .icon-btn .lbl { display: none; }
+    .back-btn .lbl-site { display: none; }
     .icon-btn { padding: 6px 9px; }
     .topbar { gap: 6px; padding: 10px 12px; }
     .brand { font-size: 16px; letter-spacing: .08em; }
@@ -415,6 +424,10 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     <span class="lbl">Sumário</span>
   </button>
+  <a class="icon-btn back-btn" href="../" aria-label="Voltar ao site ohtopico.com.br">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    <span class="lbl-site">ohtopico</span>
+  </a>
   <a class="brand" href="#/inicio">IA pra Prof</a>
   <div class="spacer"></div>
   <div class="progress-wrap" title="Capítulos lidos">
@@ -434,6 +447,7 @@
 
 <div class="layout">
   <nav class="toc" id="toc" aria-label="Sumário">
+    <a class="toc-back" href="../">← Voltar ao ohtopico.com.br</a>
     <h2>Início</h2>
     <ol>
       <li><a href="#/inicio" data-ch="inicio"><span class="dot"></span>Capa</a></li>

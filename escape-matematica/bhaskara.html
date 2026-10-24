@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0f1720">
+<title>Escape de Bhaskara</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1720; --bg-2: #17212d; --card: #fbf7ee; --ink: #1b1b1b; --ink-2: #4b4b4b;
+    --light: #f3efe6; --muted: #a9b4c0; --gold: #ffb703; --gold-2: #fb8500; --ok: #2a9d8f; --bad: #e76f51; --line: #2b3a4a;
+    --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+    --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+  body { margin: 0; min-height: 100vh; background: var(--bg) radial-gradient(1200px 600px at 50% -10%, #213042 0, var(--bg) 60%) no-repeat; color: var(--light); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+  button, input { font: inherit; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.15; margin: 0 0 .4em; }
+
+  /* Barra do jogo */
+  .hud { position: sticky; top: 0; z-index: 10; background: rgba(15, 23, 32, .92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .hud-in { max-width: 760px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .hud .team { font-weight: 600; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40%; }
+  .hud .sp { flex: 1; }
+  .timer { font-family: ui-monospace, Consolas, monospace; font-size: 20px; font-weight: 700; letter-spacing: .05em; }
+  .timer.late { color: var(--bad); }
+  .dots { display: flex; gap: 6px; }
+  .dots span { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--muted); }
+  .dots span.done { background: var(--ok); border-color: var(--ok); }
+  .dots span.cur { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255, 183, 3, .25); }
+
+  /* Telas */
+  .screen { padding-top: 26px; animation: fade .4s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .eyebrow { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .story { color: #dfe6ee; }
+  .hero-ic { font-size: 64px; line-height: 1; margin: 10px 0; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 99px; padding: 12px 22px; min-height: 50px; background: var(--gold); color: #1b1b1b; font-weight: 700; cursor: pointer; font-size: 17px; }
+  .btn:hover { background: #ffc633; }
+  .btn.ghost { background: transparent; color: var(--light); border: 2px solid var(--line); }
+  .btn.ghost:hover { border-color: var(--muted); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .rules { background: var(--bg-2); border: 1px solid var(--line); border-radius: 18px; padding: 14px 18px; margin: 18px 0; }
+  .rules li { margin-bottom: 6px; }
+  .field { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; font-weight: 600; }
+  .field input { border: 2px solid var(--line); background: var(--bg-2); color: var(--light); border-radius: 14px; padding: 12px 14px; font-size: 18px; }
+
+  /* Pistas (cartões de papel) */
+  .clues { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 18px 0; }
+  .paper { background: var(--card); color: var(--ink); border-radius: 6px; padding: 16px; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); position: relative; transform: rotate(-.6deg); }
+  .paper:nth-child(2n) { transform: rotate(.7deg); }
+  .paper h3 { font-size: 20px; margin-bottom: 6px; }
+  .paper .tag { display: inline-block; background: var(--bad); color: #fff; font-weight: 700; border-radius: 6px; padding: 2px 8px; font-size: 14px; transform: rotate(-3deg); }
+  .paper .price { font-family: var(--display); font-size: 34px; font-weight: 800; color: #b3261e; line-height: 1.1; }
+  .paper small { color: var(--ink-2); }
+  .paper table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .paper td { padding: 4px 0; border-bottom: 1px dashed #c9c1ad; }
+  .paper td:last-child { text-align: right; font-weight: 600; }
+  .paper.tape::before { content: ''; position: absolute; top: -10px; left: 50%; width: 80px; height: 22px; background: rgba(255, 220, 150, .75); transform: translateX(-50%) rotate(-2deg); }
+  .plan { width: 100%; height: auto; display: block; }
+  .plan text { font-family: var(--body); font-size: 12px; fill: #1b1b1b; }
+  .mission { background: linear-gradient(135deg, rgba(255, 183, 3, .14), rgba(251, 133, 0, .08)); border: 1px solid rgba(255, 183, 3, .45); border-radius: 18px; padding: 14px 18px; margin: 10px 0 18px; }
+  .mission strong { color: var(--gold); }
+
+  /* Cadeado */
+  .lock { background: var(--bg-2); border: 1px solid var(--line); border-radius: 24px; padding: 20px 16px; text-align: center; }
+  .lock-ic { font-size: 44px; line-height: 1; display: inline-block; transition: transform .3s; }
+  .lock.shake .lock-ic { animation: shake .45s; }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+  .wheels { display: flex; justify-content: center; gap: 8px; margin: 14px 0; }
+  .wheel { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .wheel button { width: 54px; height: 34px; border: 0; border-radius: 10px; background: #263546; color: var(--light); cursor: pointer; font-size: 16px; }
+  .wheel button:active { background: #33475d; }
+  .wheel .digit { width: 54px; height: 66px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(#e9e3d3, #fbf7ee 45%, #e0d8c3); color: #1b1b1b; font-family: ui-monospace, Consolas, monospace; font-size: 38px; font-weight: 800; box-shadow: inset 0 2px 6px rgba(0, 0, 0, .25); }
+  .unit { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+  .fb { min-height: 26px; font-weight: 600; margin: 10px 0 0; }
+  .fb.bad { color: var(--bad); } .fb.ok { color: var(--ok); }
+  .hints { margin-top: 16px; display: grid; gap: 10px; }
+  .hint { background: rgba(255, 255, 255, .05); border: 1px dashed var(--line); border-radius: 14px; padding: 10px 14px; font-size: 15.5px; color: #dfe6ee; text-align: left; }
+  .hint b { color: var(--gold); }
+  .small { font-size: 14px; color: var(--muted); }
+
+  /* Final */
+  .result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+  .result div { background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 12px; text-align: center; }
+  .result b { display: block; font-family: ui-monospace, Consolas, monospace; font-size: 26px; color: var(--gold); }
+  .result span { font-size: 13px; color: var(--muted); }
+  .code { font-family: ui-monospace, Consolas, monospace; font-size: 28px; letter-spacing: .15em; background: var(--card); color: var(--ink); border-radius: 12px; padding: 10px 16px; display: inline-block; margin: 6px 0 12px; }
+  .reflect li { margin-bottom: 6px; }
+  .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 20; }
+  .confetti i { position: absolute; top: -20px; width: 10px; height: 14px; border-radius: 2px; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+  @media (max-width: 420px) { .wheel .digit, .wheel button { width: 46px; } .result b { font-size: 21px; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="hud" id="hud" hidden>
+  <div class="hud-in">
+    <span class="team" id="h-team"></span>
+    <div class="dots" id="h-dots" aria-label="Progresso"></div>
+    <span class="sp"></span>
+    <span class="small" id="h-pen"></span>
+    <span class="timer" id="h-time" aria-live="off">00:00</span>
+  </div>
+</div>
+<main class="wrap" id="app"></main>
+
+<script>
+(function () {
+  const KEY = 'escape-bhaskara-v1', META = 20 * 60, PEN = 60;
+  const SALAS = [
+    {
+      ic: '🌱', titulo: 'Sala 1 · A horta comunitária',
+      historia: 'A associação de moradores vai transformar um terreno baldio em horta. O canteiro principal é <strong>retangular</strong>, e o projeto já está aprovado — só falta comprar a tela para cercá-lo.',
+      pistas: `
+        <div class="paper tape">
+          <h3>Projeto do canteiro</h3>
+          <svg class="plan" viewBox="0 0 260 150" role="img" aria-label="Retângulo com largura x e comprimento x mais 3; área de 40 metros quadrados">
+            <rect x="40" y="25" width="180" height="100" fill="#d8f3dc" stroke="#1b1b1b" stroke-width="3"/>
+            <text x="130" y="18" text-anchor="middle">comprimento = x + 3</text>
+            <text x="24" y="78" text-anchor="middle">x</text>
+            <text x="130" y="80" text-anchor="middle" style="font-size:16px;font-weight:600">área = 40 m²</text>
+          </svg>
+          <small>O comprimento tem 3 m a mais que a largura.</small>
+        </div>
+        <div class="paper"><h3>Agropecuária do bairro</h3><table><tr><td>Tela para cercado</td><td>R$ 12,00 o metro</td></tr></table><small>Vende-se por metro inteiro.</small></div>`,
+      missao: 'Quanto a associação vai gastar com a tela para cercar <strong>todo o contorno</strong> do canteiro?',
+      unidade: 'Digite o valor em reais, sem centavos (ex.: R$ 245,00 → 245).', digitos: 3,
+      hash: '9fe57a5a2dce3f2a29ad8dabba0ea196104b1cdbeb2a3b0d644f5767c1cc2ad6',
+      dicas: ['Monte a equação da área: x · (x + 3) = 40, ou seja, x² + 3x − 40 = 0.',
+              'Δ = 3² − 4 · 1 · (−40) = 169. Então x = (−3 ± 13) ÷ 2 — como x é uma medida, só a raiz positiva serve.']
+    },
+    {
+      ic: '🚀', titulo: 'Sala 2 · O foguete da feira de ciências',
+      historia: 'Na feira de ciências, a turma lança um foguete de garrafa PET do <strong>terraço da escola, a 15 m do chão</strong>. O professor de Física já deu a função da altura; agora a turma precisa prever o voo para posicionar quem vai filmar.',
+      pistas: `
+        <div class="paper tape"><h3>Função da altura</h3><p style="font-size:22px;margin:6px 0;font-weight:700">h(t) = −5t² + 10t + 15</p><small>h = altura em metros · t = tempo em segundos após o lançamento</small></div>
+        <div class="paper"><h3>Bilhete da turma</h3><p style="margin:0">“Precisamos saber <strong>quanto tempo</strong> o foguete fica no ar até tocar o chão e <strong>qual a altura máxima</strong> que ele atinge.”</p></div>`,
+      missao: 'O código é o <strong>tempo até tocar o chão</strong> (em segundos) seguido da <strong>altura máxima</strong> (em metros).',
+      unidade: 'Ex.: 4 s e 35 m → 435.', digitos: 3,
+      hash: '977187495a9bcb965484f509e55f6d49af5214274806c0c0ee6c2778d976023a',
+      dicas: ['O foguete toca o chão quando h(t) = 0: −5t² + 10t + 15 = 0. Dá para dividir tudo por −5: t² − 2t − 3 = 0.',
+              'A altura máxima está no vértice: t = −b ÷ 2a, ou direto h máx = −Δ ÷ 4a, usando a função original (a = −5, b = 10, c = 15).']
+    },
+    {
+      ic: '🧵', titulo: 'Sala 3 · A cooperativa de artesãs',
+      historia: 'Um grupo de artesãs fundou uma cooperativa de bolsas de tecido. A contadora voluntária modelou o lucro mensal e avisou: <strong>vender pouco dá prejuízo, e vender demais também</strong> — por causa das horas extras e do material comprado às pressas.',
+      pistas: `
+        <div class="paper tape"><h3>Planilha da contadora</h3><p style="font-size:22px;margin:6px 0;font-weight:700">L(x) = −x² + 60x − 500</p><small>L = lucro mensal em reais · x = número de bolsas vendidas no mês</small></div>
+        <div class="paper"><h3>Pergunta da assembleia</h3><p style="margin:0">“Entre quantas bolsas por mês a cooperativa <strong>não tem prejuízo</strong>?”</p></div>`,
+      missao: 'Encontre as duas quantidades de bolsas em que o lucro é <strong>exatamente zero</strong>. O código é a menor seguida da maior.',
+      unidade: 'Ex.: 8 e 45 bolsas → 0845.', digitos: 4,
+      hash: '4ed56543cd3b23af187ec929cb282a621cee2bb6feacc998458c9f70bf56076a',
+      dicas: ['Resolva −x² + 60x − 500 = 0. Multiplicar por −1 deixa mais fácil: x² − 60x + 500 = 0.',
+              'Δ = 60² − 4 · 1 · 500 = 1600, e √1600 = 40. Agora é só aplicar x = (60 ± 40) ÷ 2.']
+    }
+  ];
+
+  const app = document.getElementById('app');
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  let S = load(), tick;
+  const now = () => Date.now();
+  const elapsed = () => Math.floor(((S.fim || now()) - S.inicio) / 1000);
+  const total = () => elapsed() + S.dicas * PEN;
+  const mmss = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  async function sha(t) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function hud() {
+    const h = document.getElementById('hud');
+    h.hidden = !S || S.sala === undefined;
+    if (h.hidden) return;
+    document.getElementById('h-team').textContent = S.equipe;
+    document.getElementById('h-dots').innerHTML = SALAS.map((_, i) => `<span class="${i < S.sala ? 'done' : i === S.sala ? 'cur' : ''}"></span>`).join('');
+    document.getElementById('h-pen').textContent = S.dicas ? `+${S.dicas} min de dicas` : '';
+    const t = document.getElementById('h-time'); t.textContent = mmss(total()); t.classList.toggle('late', total() > META);
+  }
+
+  function intro() {
+    app.innerHTML = `<section class="screen">
+      <span class="eyebrow">Formação de professores · Matemática · 9º ano</span>
+      <div class="hero-ic">🔐</div>
+      <h1>Escape de Bhaskara</h1>
+      <p class="story">Três projetos da comunidade estão parados, esperando uma resposta. Em todos eles, a chave é uma equação do 2º grau — e a fórmula de Bhaskara. Trabalhem juntos: a união faz a vida (e resolve equações).</p>
+      <div class="rules"><ul>
+        <li><strong>3 salas</strong>, uma depois da outra. Meta: sair em até <strong>20 minutos</strong>.</li>
+        <li>Podem usar papel, lápis e calculadora. Lembrete: x = (−b ± √Δ) ÷ 2a, com Δ = b² − 4ac.</li>
+        <li>Cada sala tem 2 dicas. Cada dica aberta acrescenta <strong>1 minuto</strong> ao tempo final.</li>
+        <li>Tentativas erradas não dão penalidade — mas discutam antes de girar o cadeado!</li>
+      </ul></div>
+      <label class="field">Nome da equipe<input id="team" maxlength="30" autocomplete="off" placeholder="Ex.: As Raízes Reais"></label>
+      <button class="btn" id="go" type="button">Começar ▶</button>
+    </section>`;
+    const go = () => {
+      const n = document.getElementById('team').value.trim();
+      if (!n) { document.getElementById('team').focus(); return; }
+      S = { equipe: n, inicio: now(), sala: 0, dicas: 0, abertas: [[], [], []], tempos: [] }; save(); start();
+    };
+    document.getElementById('go').onclick = go;
+    document.getElementById('team').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+  }
+
+  function start() {
+    clearInterval(tick); tick = setInterval(hud, 1000);
+    if (S.fim) return final();
+    sala();
+  }
+
+  function sala() {
+    const k = S.sala, R = SALAS[k];
+    hud(); window.scrollTo(0, 0);
+    const digits = Array(R.digitos).fill(0);
+    app.innerHTML = `<section class="screen">
+      <span class="eyebrow">Sala ${k + 1} de ${SALAS.length}</span>
+      <div class="hero-ic">${R.ic}</div>
+      <h2>${R.titulo}</h2>
+      <p class="story">${R.historia}</p>
+      <div class="clues">${R.pistas}</div>
+      <div class="mission">🎯 ${R.missao}</div>
+      <div class="lock" id="lock">
+        <span class="lock-ic" id="lock-ic">🔒</span>
+        <div class="wheels" id="wheels">${digits.map((_, i) => `<div class="wheel"><button type="button" data-i="${i}" data-d="1" aria-label="Aumentar dígito ${i + 1}">▲</button><div class="digit" id="d${i}" aria-live="polite">0</div><button type="button" data-i="${i}" data-d="-1" aria-label="Diminuir dígito ${i + 1}">▼</button></div>`).join('')}</div>
+        <div class="unit">${R.unidade}</div>
+        <button class="btn" id="try" type="button">Abrir o cadeado</button>
+        <p class="fb" id="fb" role="status"></p>
+        <div class="hints" id="hints"></div>
+        <button class="btn ghost" id="hint" type="button" style="margin-top:12px">💡 Pedir dica (+1 min)</button>
+      </div>
+    </section>`;
+    const draw = () => digits.forEach((d, i) => { document.getElementById('d' + i).textContent = d; });
+    document.getElementById('wheels').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      const i = +b.dataset.i; digits[i] = (digits[i] + +b.dataset.d + 10) % 10; draw();
+    };
+    // teclado: digitar números preenche da esquerda para a direita
+    let pos = 0;
+    document.onkeydown = e => {
+      if (!/^\d$/.test(e.key) || e.target.tagName === 'INPUT') return;
+      digits[pos] = +e.key; pos = (pos + 1) % digits.length; draw();
+    };
+    const showHints = () => {
+      document.getElementById('hints').innerHTML = S.abertas[k].map(j => `<div class="hint"><b>Dica ${j + 1}:</b> ${R.dicas[j]}</div>`).join('');
+      const hb = document.getElementById('hint'); hb.disabled = S.abertas[k].length >= R.dicas.length;
+      if (hb.disabled) hb.textContent = 'Sem mais dicas nesta sala';
+    };
+    showHints();
+    document.getElementById('hint').onclick = () => {
+      if (S.abertas[k].length >= R.dicas.length) return;
+      S.abertas[k].push(S.abertas[k].length); S.dicas++; save(); showHints(); hud();
+    };
+    document.getElementById('try').onclick = async () => {
+      const code = digits.join(''), fb = document.getElementById('fb'), lock = document.getElementById('lock');
+      if (await sha('uniao:' + String(+code)) === R.hash || await sha('uniao:' + code) === R.hash) {
+        document.getElementById('lock-ic').textContent = '🔓';
+        fb.textContent = 'Cadeado aberto!'; fb.className = 'fb ok';
+        S.tempos.push(elapsed()); S.sala++;
+        if (S.sala >= SALAS.length) S.fim = now();
+        save();
+        setTimeout(() => S.fim ? final() : sala(), 1100);
+      } else {
+        lock.classList.remove('shake'); void lock.offsetWidth; lock.classList.add('shake');
+        fb.textContent = 'Não abriu. Revejam as contas juntos.'; fb.className = 'fb bad';
+      }
+    };
+  }
+
+  async function final() {
+    clearInterval(tick); document.onkeydown = null; hud();
+    const t = total(), code = (await sha(`${S.equipe.trim().toLowerCase()}|${t}|${S.dicas}|uniao-bhaskara`)).slice(0, 6).toUpperCase();
+    app.innerHTML = `<section class="screen">
+      <span class="eyebrow">Missão cumprida</span>
+      <div class="hero-ic">🏆</div>
+      <h1>${esc(S.equipe)}, vocês saíram!</h1>
+      <p class="story">${t <= META ? 'Dentro da meta de 20 minutos. Bhaskara ficaria orgulhoso!' : 'Passou da meta, mas todas as portas se abriram — e é isso que conta.'}</p>
+      <div class="result">
+        <div><b>${mmss(elapsed())}</b><span>tempo jogado</span></div>
+        <div><b>${S.dicas}</b><span>dica(s) (+${S.dicas} min)</span></div>
+        <div><b>${mmss(t)}</b><span>tempo final</span></div>
+      </div>
+      <p class="small" style="margin-bottom:0">Mostrem esta tela à formadora. Código de verificação:</p>
+      <div class="code">${code}</div>
+      <div class="rules">
+        <h3>Para conversar depois</h3>
+        <ul class="reflect">
+          <li>Que conteúdos apareceram? (equação do 2º grau, fórmula de Bhaskara, vértice da parábola, interpretação das raízes no contexto)</li>
+          <li>Que estratégias diferentes as equipes usaram para o mesmo problema?</li>
+          <li>Por que, na horta, uma das raízes foi descartada? Como discutir com os alunos quando uma solução matemática não serve para o problema real?</li>
+          <li>Onde seus alunos teriam mais dificuldade — montar a equação ou resolvê-la? Que pergunta você faria para ajudá-los sem dar a resposta?</li>
+          <li>Que situação da realidade da sua escola poderia virar uma sala deste jogo?</li>
+        </ul>
+      </div>
+      <button class="btn ghost" id="again" type="button">Nova partida (outra equipe)</button>
+    </section>`;
+    confetti();
+    document.getElementById('again').onclick = () => { if (confirm('Apagar esta partida e começar outra?')) { try { localStorage.removeItem(KEY); } catch (e) {} S = null; hud(); intro(); } };
+  }
+
+  function confetti() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const c = document.createElement('div'); c.className = 'confetti';
+    const cores = ['#ffb703', '#fb8500', '#2a9d8f', '#e76f51', '#8ecae6'];
+    for (let i = 0; i < 80; i++) { const p = document.createElement('i'); p.style.left = Math.random() * 100 + 'vw'; p.style.background = cores[i % 5]; p.style.animationDuration = 2 + Math.random() * 2.5 + 's'; p.style.animationDelay = Math.random() * .8 + 's'; c.appendChild(p); }
+    document.body.appendChild(c); setTimeout(() => c.remove(), 5500);
+  }
+
+  if (S && S.equipe) start(); else intro();
+})();
+</script>
+</body>
+</html>

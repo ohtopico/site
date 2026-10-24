@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tangram · Material didático | ohtopico</title>
+<meta name="description" content="Tangram digital: monte figuras com as 7 peças, classifique polígonos e descubra a fração e a área de cada peça. BNCC EF06MA18, EF06MA19, EF06MA20, EF07MA32, EF06MA07.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .tg-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); gap: 20px; align-items: start; }
+  @media (max-width: 860px) { .tg-layout { grid-template-columns: minmax(0, 1fr); } }
+  .tg-layout > * { min-width: 0; }
+  .board { width: 100%; height: auto; display: block; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .board .target { fill: var(--pill-2); stroke: var(--ink-3); stroke-width: .05; }
+  .board .target.done { fill: var(--ok-soft); stroke: var(--ok); }
+  .board .tray { fill: none; stroke: var(--line); stroke-width: .05; stroke-dasharray: .2 .15; }
+  .board .piece { stroke: var(--ink); stroke-width: .06; stroke-linejoin: round; cursor: grab; }
+  .board .piece.sel { stroke-width: .14; filter: drop-shadow(0 .08px .12px rgba(0,0,0,.35)); }
+  .board .piece:focus { outline: none; }
+  .board .sol { fill: none; stroke: var(--ink); stroke-width: .05; stroke-dasharray: .15 .1; pointer-events: none; }
+  .board text { font-family: var(--body); font-size: .5px; fill: var(--ink-2); pointer-events: none; }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+  .tools .btn { min-height: 44px; padding: 8px 14px; font-size: 15px; }
+  .figs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .figs .chip.ok::after { content: ' ✓'; }
+  .side h3 { font-size: 18px; margin: 0 0 8px; }
+  .frac { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .frac td { padding: 5px 4px; border-bottom: 1px solid var(--line); }
+  .frac td:last-child { text-align: right; font-weight: 600; }
+  .sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--ink); vertical-align: -2px; margin-right: 6px; }
+  .reveal { margin-top: 10px; }
+  .reveal summary { cursor: pointer; font-weight: 600; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Arraste as 7 peças para cobrir exatamente a figura cinza, sem sobrar e sem sobrepor. Toque numa peça para selecioná-la e use os botões para <strong>girar</strong> (45° por vez) ou <strong>espelhar</strong> — o paralelogramo só encaixa em algumas figuras se for espelhado. As peças se alinham sozinhas quando chegam perto do lugar.</p>
+    <p class="small muted">Teclado: Tab seleciona as peças, setas movem, R gira, E espelha.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="figs" id="figs" aria-label="Figuras"></div>
+    <div class="tg-layout">
+      <div>
+        <svg class="board" id="board" role="application" aria-label="Tabuleiro do tangram"></svg>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="rotL" aria-label="Girar à esquerda">↺ Girar</button>
+          <button class="btn ghost" type="button" id="rotR" aria-label="Girar à direita">↻ Girar</button>
+          <button class="btn ghost" type="button" id="flip">⇋ Espelhar</button>
+          <button class="btn ghost" type="button" id="hint">💡 Encaixar uma peça</button>
+          <button class="btn ghost" type="button" id="reset">↺ Recomeçar</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <h3 id="fig-name"></h3>
+        <p class="small" id="fig-status">Cobertura: 0%</p>
+        <h3 style="margin-top:16px">As peças em frações</h3>
+        <p class="small muted" style="margin-top:0">Se o quadrado completo tem área 16, cada peça vale:</p>
+        <table class="frac" id="frac"></table>
+        <details class="reveal"><summary>Desafio: e se o quadrado tivesse área 64 cm²?</summary>
+          <p class="small">Cada triângulo grande teria 16 cm²; o médio, o quadrado e o paralelogramo, 8 cm² cada; cada triângulo pequeno, 4 cm². Todas as figuras que você montar têm a mesma área — só mudam a forma e o perímetro.</p></details>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('tangram');
+(function () {
+  const $ = s => document.querySelector(s);
+  /* Figuras com solução verificada (coordenadas em unidades; o quadrado completo tem lado 4) */
+  const FIGS = [{"id":"quadrado","nome":"Quadrado","info":"Quadrado: quadril\u00e1tero regular \u2014 4 lados iguais e 4 \u00e2ngulos retos.","alvo":[[0,4],[4,4],[4,0],[0,0]],"sol":[["L",[[0,0],[0,4],[2,2]]],["L",[[0,4],[4,4],[2,2]]],["S",[[2,0],[0,0],[1,1]]],["Q",[[1,1],[2,2],[3,1],[2,0]]],["S",[[3,3],[3,1],[2,2]]],["M",[[4,0],[2,0],[4,2]]],["P",[[3,3],[3,1],[4,2],[4,4]]]]},{"id":"triangulo","nome":"Tri\u00e2ngulo","info":"Tri\u00e2ngulo ret\u00e2ngulo is\u00f3sceles: um \u00e2ngulo de 90\u00b0 e dois lados iguais.","alvo":[[0,4],[8,4],[4,0]],"sol":[["L",[[0,4],[4,4],[2,2]]],["L",[[4,4],[4,0],[2,2]]],["M",[[4,4],[6,4],[4,2]]],["Q",[[4,2],[5,3],[6,2],[5,1]]],["S",[[4,0],[4,2],[5,1]]],["P",[[6,4],[8,4],[7,3],[5,3]]],["S",[[5,3],[7,3],[6,2]]]]},{"id":"paralelogramo","nome":"Paralelogramo","info":"Paralelogramo: quadril\u00e1tero com dois pares de lados opostos paralelos.","alvo":[[0,4],[4,4],[8,0],[4,0]],"sol":[["L",[[0,4],[4,4],[2,2]]],["L",[[4,4],[4,0],[2,2]]],["S",[[4,2],[4,4],[5,3]]],["Q",[[4,2],[5,3],[6,2],[5,1]]],["M",[[4,0],[4,2],[6,0]]],["S",[[7,1],[5,1],[6,2]]],["P",[[6,0],[8,0],[7,1],[5,1]]]]},{"id":"retangulo_girado","nome":"Ret\u00e2ngulo","info":"Ret\u00e2ngulo: 4 \u00e2ngulos retos e lados opostos iguais \u2014 aqui, inclinado. Todo quadrado \u00e9 ret\u00e2ngulo, mas nem todo ret\u00e2ngulo \u00e9 quadrado.","alvo":[[2,6],[6,2],[4,0],[0,4]],"sol":[["L",[[2,6],[2,2],[0,4]]],["L",[[2,2],[2,6],[4,4]]],["M",[[4,2],[2,2],[4,4]]],["S",[[2,2],[4,2],[3,1]]],["Q",[[3,1],[4,2],[5,1],[4,0]]],["P",[[5,3],[5,1],[4,2],[4,4]]],["S",[[5,1],[5,3],[6,2]]]]},{"id":"trapezio_ret","nome":"Trap\u00e9zio ret\u00e2ngulo","info":"Trap\u00e9zio ret\u00e2ngulo: um \u00fanico par de lados paralelos e dois \u00e2ngulos retos.","alvo":[[0,4],[6,4],[2,0],[0,0]],"sol":[["L",[[0,0],[0,4],[2,2]]],["L",[[0,4],[4,4],[2,2]]],["M",[[2,0],[0,0],[2,2]]],["Q",[[2,2],[3,3],[4,2],[3,1]]],["S",[[2,0],[2,2],[3,1]]],["P",[[4,4],[6,4],[5,3],[3,3]]],["S",[[3,3],[5,3],[4,2]]]]},{"id":"hexagono","nome":"Hex\u00e1gono","info":"Hex\u00e1gono n\u00e3o regular: 6 lados, mas nem todos do mesmo tamanho; tem quatro \u00e2ngulos de 135\u00b0 e dois de 90\u00b0.","alvo":[[0,2],[2,4],[4,4],[6,2],[4,0],[2,0]],"sol":[["L",[[2,4],[2,0],[0,2]]],["L",[[2,0],[2,4],[4,2]]],["M",[[4,4],[4,2],[2,4]]],["S",[[4,0],[2,0],[3,1]]],["Q",[[3,1],[4,2],[5,1],[4,0]]],["P",[[5,3],[5,1],[4,2],[4,4]]],["S",[[5,1],[5,3],[6,2]]]]},{"id":"barco","nome":"Barco","info":"Figura composta: um trap\u00e9zio (casco) e um tri\u00e2ngulo (vela). \u00c1rea total: a mesma do quadrado!","alvo":[[2,4],[6,4],[8,2],[6,2],[4,0],[2,2],[0,2]],"sol":[["L",[[4,2],[0,2],[2,4]]],["L",[[2,4],[6,4],[4,2]]],["M",[[4,2],[4,0],[2,2]]],["Q",[[4,2],[5,3],[6,2],[5,1]]],["S",[[4,0],[4,2],[5,1]]],["S",[[7,3],[5,3],[6,4]]],["P",[[6,2],[8,2],[7,3],[5,3]]]]}];
+  const BASE = {
+    L: [[0, 0], [4, 0], [2, 2]], M: [[0, 0], [2, 0], [0, 2]], S: [[0, 0], [2, 0], [1, 1]],
+    Q: [[0, 1], [1, 0], [2, 1], [1, 2]], P: [[1, 0], [3, 0], [2, 1], [0, 1]]
+  };
+  const KINDS = ['L', 'L', 'M', 'S', 'S', 'Q', 'P'];
+  const NOMES = { L: 'Triângulo grande', M: 'Triângulo médio', S: 'Triângulo pequeno', Q: 'Quadrado', P: 'Paralelogramo' };
+  const FRAC = { L: ['1/4', 4], M: ['1/8', 2], S: ['1/16', 1], Q: ['1/8', 2], P: ['1/8', 2] };
+  const CORES = ['#e76f51', '#f4a261', '#2a9d8f', '#e9c46a', '#8ecae6', '#9b5de5', '#06d6a0'];
+  const svg = $('#board');
+  let fi = 0, pieces = [], sel = null, layout, done = (() => { try { return JSON.parse(localStorage.getItem('md-tangram') || '{}'); } catch (e) { return {}; } })();
+
+  const centroid = p => [p.reduce((s, v) => s + v[0], 0) / p.length, p.reduce((s, v) => s + v[1], 0) / p.length];
+  const move = (p, dx, dy) => p.map(([x, y]) => [x + dx, y + dy]);
+  function rot(p, deg) { const [cx, cy] = centroid(p), a = deg * Math.PI / 180, c = Math.cos(a), s = Math.sin(a); return p.map(([x, y]) => [cx + (x - cx) * c - (y - cy) * s, cy + (x - cx) * s + (y - cy) * c]); }
+  function flipP(p) { const [cx] = centroid(p); return p.map(([x, y]) => [2 * cx - x, y]).reverse(); }
+  function inside(px, py, poly) { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > py) !== (yj > py) && px < (xj - xi) * (py - yi) / (yj - yi) + xi) c = !c; } return c; }
+
+  function computeLayout() {
+    const narrow = svg.parentElement.clientWidth < 560;
+    const F = FIGS[fi], w = Math.max(...F.alvo.map(v => v[0])), h = Math.max(...F.alvo.map(v => v[1]));
+    if (narrow) return { W: 12, H: 21, ox: Math.floor((12 - w) / 2), oy: Math.max(1, Math.floor((10.6 - h) / 2)), tray: [0.4, 11, 11.2, 9.6],
+      spots: [[2.6, 13], [8.8, 13.6], [2, 16.8], [6, 16.6], [9.6, 16.6], [4.5, 19.6], [8.8, 19.6]] };
+    return { W: 24, H: 11, ox: Math.floor((11 - w) / 2), oy: Math.floor((11 - h) / 2), tray: [12, 0.4, 11.6, 10.2],
+      spots: [[14.6, 2.4], [20.4, 2.6], [14, 6.6], [17.6, 6.4], [21.4, 6.4], [15.6, 9.4], [20.4, 9.4]] };
+  }
+
+  function reset() {
+    layout = computeLayout();
+    pieces = KINDS.map((k, i) => {
+      let p = BASE[k].map(v => [...v]);
+      const [cx, cy] = centroid(p), [sx, sy] = layout.spots[i];
+      return { k, cor: CORES[i], p: move(p, sx - cx, sy - cy) };
+    });
+    sel = null; showSol = false; fb('', ''); draw(); check();
+  }
+  let showSol = false;
+  const target = () => FIGS[fi].alvo.map(([x, y]) => [x + layout.ox, y + layout.oy]);
+
+  function draw() {
+    const { W, H, tray } = layout;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const pts = p => p.map(v => v.map(n => +n.toFixed(3)).join(',')).join(' ');
+    let h = `<rect class="tray" x="${tray[0]}" y="${tray[1]}" width="${tray[2]}" height="${tray[3]}" rx=".4"/>
+      <text x="${tray[0] + .3}" y="${tray[1] + .6}">peças</text>
+      <polygon class="target${done[FIGS[fi].id] && isComplete ? ' done' : ''}" points="${pts(target())}"/>`;
+    if (showSol) FIGS[fi].sol.forEach(([, p]) => { h += `<polygon class="sol" points="${pts(p.map(([x, y]) => [x + layout.ox, y + layout.oy]))}"/>`; });
+    pieces.forEach((pc, i) => { h += `<polygon class="piece${sel === i ? ' sel' : ''}" data-i="${i}" tabindex="0" role="button" aria-label="${NOMES[pc.k]}" fill="${pc.cor}" points="${pts(pc.p)}"/>`; });
+    svg.innerHTML = h;
+    $('#flip').disabled = sel === null || pieces[sel].k !== 'P';
+    $('#rotL').disabled = $('#rotR').disabled = sel === null;
+  }
+
+  /* Encaixe: aproxima o vértice mais próximo de um ponto inteiro da malha */
+  function snap(pc) {
+    let best = null;
+    pc.p.forEach(([x, y]) => { const dx = Math.round(x) - x, dy = Math.round(y) - y, d = Math.hypot(dx, dy); if (!best || d < best.d) best = { d, dx, dy }; });
+    if (best && best.d < .35) pc.p = move(pc.p, best.dx, best.dy);
+    pc.p = pc.p.map(([x, y]) => [Math.abs(x - Math.round(x)) < 1e-6 ? Math.round(x) : x, Math.abs(y - Math.round(y)) < 1e-6 ? Math.round(y) : y]);
+  }
+
+  /* Verificação por amostragem: cada ponto da figura coberto por exatamente uma peça e nada fora */
+  let isComplete = false;
+  function check() {
+    const T = target(), step = .125;
+    const xs = T.map(v => v[0]), ys = T.map(v => v[1]);
+    let inT = 0, ok = 0, over = 0, out = 0;
+    for (let x = 0.0625; x < layout.W; x += step) for (let y = 0.0625; y < layout.H; y += step) {
+      const t = inside(x, y, T); let n = 0;
+      for (const pc of pieces) if (inside(x, y, pc.p)) n++;
+      if (t) { inT++; if (n === 1) ok++; if (n > 1) over++; } else if (n > 0 && x >= Math.min(...xs) - 3 && x <= Math.max(...xs) + 3 && y >= Math.min(...ys) - 3 && y <= Math.max(...ys) + 3) out++;
+    }
+    const cov = ok / inT;
+    $('#fig-status').textContent = `Cobertura: ${Math.round(cov * 100)}%${over ? ' · há peças sobrepostas' : ''}`;
+    const was = isComplete;
+    isComplete = cov > .985 && over < inT * .01 && out < inT * .01;
+    if (isComplete && !was) {
+      done[FIGS[fi].id] = true; try { localStorage.setItem('md-tangram', JSON.stringify(done)); } catch (e) {}
+      fb(`Figura completa! ${FIGS[fi].info}`, 'ok'); figChips(); draw();
+    }
+  }
+
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function figChips() {
+    $('#figs').innerHTML = FIGS.map((f, i) => `<button class="chip${done[f.id] ? ' ok' : ''}" type="button" data-f="${i}" aria-pressed="${i === fi}">${f.nome}</button>`).join('');
+    $('#fig-name').textContent = FIGS[fi].nome;
+  }
+  $('#figs').onclick = e => { const b = e.target.closest('button[data-f]'); if (b) { fi = +b.dataset.f; isComplete = false; figChips(); reset(); } };
+
+  /* Arrastar */
+  let drag = null;
+  const toSvg = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const p = pt.matrixTransform(svg.getScreenCTM().inverse()); return [p.x, p.y]; };
+  svg.addEventListener('pointerdown', e => {
+    const el = e.target.closest('.piece'); if (!el) { sel = null; draw(); return; }
+    const i = +el.dataset.i; sel = i;
+    pieces.push(pieces.splice(i, 1)[0]); sel = pieces.length - 1;   // traz para frente
+    drag = { last: toSvg(e), moved: false };
+    svg.setPointerCapture(e.pointerId); draw();
+  });
+  svg.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const p = toSvg(e), dx = p[0] - drag.last[0], dy = p[1] - drag.last[1];
+    if (Math.abs(dx) + Math.abs(dy) > .01) drag.moved = true;
+    pieces[sel].p = move(pieces[sel].p, dx, dy); drag.last = p;
+    svg.querySelector(`.piece[data-i="${sel}"]`).setAttribute('points', pieces[sel].p.map(v => v.join(',')).join(' '));
+  });
+  const end = () => { if (!drag) return; snap(pieces[sel]); drag = null; draw(); check(); };
+  svg.addEventListener('pointerup', end); svg.addEventListener('pointercancel', end);
+  svg.addEventListener('dblclick', e => { if (e.target.closest('.piece') && sel !== null) { doRot(45); } });
+
+  function doRot(d) { if (sel === null) return; pieces[sel].p = rot(pieces[sel].p, d); snap(pieces[sel]); draw(); check(); }
+  $('#rotL').onclick = () => doRot(-45); $('#rotR').onclick = () => doRot(45);
+  $('#flip').onclick = () => { if (sel === null) return; pieces[sel].p = flipP(pieces[sel].p); snap(pieces[sel]); draw(); check(); };
+  $('#reset').onclick = reset;
+  $('#hint').onclick = () => {
+    // coloca na posição da solução a primeira peça ainda fora do lugar
+    const T = FIGS[fi].sol.map(([k, p]) => [k, p.map(([x, y]) => [x + layout.ox, y + layout.oy])]);
+    const near = (a, b) => a.length === b.length && a.every(([x, y]) => b.some(([u, v]) => Math.hypot(x - u, y - v) < .05));
+    const usedP = new Set(), usedS = new Set();
+    T.forEach(([k, sp], si) => { const pi = pieces.findIndex((pc, i) => !usedP.has(i) && pc.k === k && near(pc.p, sp)); if (pi >= 0) { usedP.add(pi); usedS.add(si); } });
+    const si = T.findIndex((_, i) => !usedS.has(i)); if (si < 0) return;
+    const [k, sp] = T[si]; const pi = pieces.findIndex((pc, i) => !usedP.has(i) && pc.k === k);
+    pieces[pi].p = sp.map(v => [...v]); sel = pi;
+    fb(`Encaixei um ${NOMES[k].toLowerCase()}. Tente as outras!`, ''); draw(); check();
+  };
+  svg.addEventListener('keydown', e => {
+    const el = e.target.closest('.piece'); if (!el) return;
+    sel = +el.dataset.i;
+    const mv = { ArrowLeft: [-.5, 0], ArrowRight: [.5, 0], ArrowUp: [0, -.5], ArrowDown: [0, .5] }[e.key];
+    if (mv) { e.preventDefault(); pieces[sel].p = move(pieces[sel].p, ...mv); }
+    else if (e.key === 'r' || e.key === 'R') pieces[sel].p = rot(pieces[sel].p, 45);
+    else if ((e.key === 'e' || e.key === 'E') && pieces[sel].k === 'P') pieces[sel].p = flipP(pieces[sel].p);
+    else return;
+    const i = sel; draw(); check(); const n = svg.querySelector(`.piece[data-i="${i}"]`); n && n.focus();
+  });
+  svg.addEventListener('focusin', e => { const el = e.target.closest('.piece'); if (el && sel !== +el.dataset.i) { sel = +el.dataset.i; $('#flip').disabled = pieces[sel].k !== 'P'; $('#rotL').disabled = $('#rotR').disabled = false; } });
+
+  $('#frac').innerHTML = ['L', 'M', 'S', 'Q', 'P'].map((k, i) => `<tr><td><span class="sw" style="background:${CORES[[0, 2, 3, 5, 6][i]]}"></span>${NOMES[k]}${k === 'L' || k === 'S' ? ' (×2)' : ''}</td><td>${FRAC[k][0]} · área ${FRAC[k][1]}</td></tr>`).join('');
+  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { const nl = computeLayout(); if (nl.W !== layout.W) reset(); }, 200); });
+  figChips(); reset();
+})();
+</script>
+</body>
+</html>

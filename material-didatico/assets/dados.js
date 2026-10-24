@@ -24,6 +24,7 @@ const EIXOS = {
   NU: { comp: 'MA', nome: 'Números' },
   AL: { comp: 'MA', nome: 'Álgebra' },
   GE: { comp: 'MA', nome: 'Geometria' },
+  GM: { comp: 'MA', nome: 'Grandezas e medidas' },
   PE: { comp: 'MA', nome: 'Probabilidade e estatística' }
 };
 
@@ -76,9 +77,14 @@ const HABILIDADES_RAW = [
   ['EF09CO09', 9, 'CD', 'Autoria em meio digital', 'Criar ou utilizar conteúdo em meio digital compreendendo questões éticas de direitos autorais e uso de imagem.'],
   ['EF09CO10', 9, 'CD', 'Qualidade da informação', 'Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos.'],
   // ---------- Matemática (seleção ligada aos materiais) ----------
+  ['EF06MA03', 6, 'NU', 'Operações com naturais', 'Resolver e elaborar problemas com cálculos (mentais ou escritos, exatos ou aproximados) envolvendo números naturais, com ou sem calculadora.'],
   ['EF06MA04', 6, 'NU', 'Fluxograma', 'Construir algoritmo em linguagem natural e representá-lo por fluxograma que resolva um problema simples (por exemplo, saber se um número é par).'],
   ['EF06MA07', 6, 'NU', 'Frações', 'Compreender, comparar e ordenar frações associadas a partes de inteiros e a resultados de divisão, identificando frações equivalentes.'],
+  ['EF06MA06', 6, 'NU', 'Múltiplos e divisores', 'Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor.'],
   ['EF06MA16', 6, 'GE', 'Plano cartesiano', 'Associar pares ordenados a pontos do plano cartesiano do 1º quadrante, como na localização dos vértices de um polígono.'],
+  ['EF06MA18', 6, 'GE', 'Polígonos', 'Reconhecer, nomear e comparar polígonos considerando lados, vértices e ângulos, e classificá-los em regulares e não regulares.'],
+  ['EF06MA19', 6, 'GE', 'Triângulos', 'Identificar características dos triângulos e classificá-los em relação às medidas dos lados e dos ângulos.'],
+  ['EF06MA20', 6, 'GE', 'Quadriláteros', 'Identificar características dos quadriláteros, classificá-los em relação a lados e ângulos e reconhecer a inclusão e a intersecção de classes entre eles.'],
   ['EF06MA34', 6, 'PE', 'Fluxogramas e diagramas', 'Interpretar e desenvolver fluxogramas simples, identificando relações entre objetos (por exemplo, cidades ligadas por estradas).'],
   ['EF07MA03', 7, 'NU', 'Números inteiros', 'Comparar e ordenar números inteiros, associá-los a pontos da reta numérica e usá-los em adições e subtrações.'],
   ['EF07MA05', 7, 'NU', 'Algoritmos', 'Resolver um mesmo problema utilizando diferentes algoritmos.'],
@@ -86,6 +92,7 @@ const HABILIDADES_RAW = [
   ['EF07MA13', 7, 'AL', 'Variável e incógnita', 'Compreender a ideia de variável, representada por letra ou símbolo, diferenciando-a da ideia de incógnita.'],
   ['EF07MA18', 7, 'AL', 'Equações de 1º grau', 'Resolver e elaborar problemas representados por equações polinomiais de 1º grau redutíveis a ax + b = c, usando as propriedades da igualdade.'],
   ['EF07MA20', 7, 'GE', 'Simetrias no plano cartesiano', 'Reconhecer e representar, no plano cartesiano, o simétrico de figuras em relação aos eixos e à origem.'],
+  ['EF07MA32', 7, 'GM', 'Área de figuras planas', 'Resolver e elaborar problemas de cálculo de área de figuras planas que podem ser decompostas em quadrados, retângulos e/ou triângulos, usando a equivalência entre áreas.'],
   ['EF08MA06', 8, 'AL', 'Valor numérico', 'Resolver e elaborar problemas que envolvam o cálculo do valor numérico de expressões algébricas, usando as propriedades das operações.'],
   ['EF08MA08', 8, 'AL', 'Sistemas de equações', 'Resolver e elaborar problemas do contexto próximo representados por sistemas de equações de 1º grau com duas incógnitas.'],
   ['EF08MA10', 8, 'AL', 'Sequências', 'Identificar a regularidade de uma sequência não recursiva e construir um fluxograma que indique os próximos termos.'],
@@ -134,6 +141,14 @@ const RECURSOS = [
     habs: ['EF07MA18', 'EF07MA13', 'EF08MA06'], tempo: '15 min',
     resumo: 'Tire o mesmo peso dos dois lados, divida por igual e descubra quanto vale cada caixa x sem desequilibrar a balança.',
     url: 'jogos/balanca.html', plano: 'p-equacoes', ficha: null },
+  { id: 'tangram', tipo: 'jogo', titulo: 'Tangram', comp: ['MA'], anos: [6, 7],
+    habs: ['EF06MA18', 'EF06MA20', 'EF07MA32', 'EF06MA19', 'EF06MA07'], tempo: '15–20 min',
+    resumo: 'Monte quadrado, triângulo, trapézio, hexágono e outras figuras com as 7 peças. Cada figura revela sua classificação, e as peças viram frações e áreas.',
+    url: 'jogos/tangram.html', plano: null, ficha: null },
+  { id: 'tabuada', tipo: 'jogo', titulo: 'Corrida da Tabuada', comp: ['MA'], anos: [6],
+    habs: ['EF06MA03', 'EF06MA06'], tempo: '5–10 min',
+    resumo: 'Cada multiplicação certa acelera seu carro. Escolha as tabuadas, vença os rivais e veja no final quais fatos merecem revisão.',
+    url: 'jogos/tabuada.html', plano: null, ficha: null },
 
   // ---------- Fichas para imprimir ----------
   { id: 'f-robo', tipo: 'ficha', titulo: 'Programando o colega-robô', comp: ['CO', 'MA'], anos: [6, 7],
@@ -278,7 +293,7 @@ const RECURSOS = [
 ];
 /* Ícone de capa de cada material no catálogo */
 const ICONES = {
-  robo: '🤖', pacotes: '📦', rotas: '🗺️', cifra: '🔐', golpe: '🛡️', fracoes: '🍕', cartesiano: '🧭', balanca: '⚖️',
+  robo: '🤖', pacotes: '📦', rotas: '🗺️', cifra: '🔐', golpe: '🛡️', fracoes: '🍕', cartesiano: '🧭', balanca: '⚖️', tangram: '🔷', tabuada: '🏎️',
   'f-robo': '✏️', 'f-decompor': '🧱', 'f-pacotes': '✉️', 'f-cesar': '🎡', 'f-grafo': '📍', 'f-fracoes': '🍫', 'f-batalha': '⚓', 'f-golpe': '🔒',
   'p-robo': '🧠', 'p-internet': '🌐', 'p-grafos': '🕸️', 'p-cripto': '🗝️', 'p-golpes': '🚨', 'p-fracoes': '➗', 'p-cartesiano': '📐', 'p-equacoes': '🟰',
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',

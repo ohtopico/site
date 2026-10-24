@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0f1720">
+<title>Escape da Matemática do Dia a Dia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1720; --bg-2: #17212d; --card: #fbf7ee; --ink: #1b1b1b; --ink-2: #4b4b4b;
+    --light: #f3efe6; --muted: #a9b4c0; --gold: #ffb703; --gold-2: #fb8500; --ok: #2a9d8f; --bad: #e76f51; --line: #2b3a4a;
+    --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+    --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+  body { margin: 0; min-height: 100vh; background: var(--bg) radial-gradient(1200px 600px at 50% -10%, #213042 0, var(--bg) 60%) no-repeat; color: var(--light); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+  button, input { font: inherit; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.15; margin: 0 0 .4em; }
+
+  /* Barra do jogo */
+  .hud { position: sticky; top: 0; z-index: 10; background: rgba(15, 23, 32, .92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .hud-in { max-width: 760px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .hud .team { font-weight: 600; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40%; }
+  .hud .sp { flex: 1; }
+  .timer { font-family: ui-monospace, Consolas, monospace; font-size: 20px; font-weight: 700; letter-spacing: .05em; }
+  .timer.late { color: var(--bad); }
+  .dots { display: flex; gap: 6px; }
+  .dots span { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--muted); }
+  .dots span.done { background: var(--ok); border-color: var(--ok); }
+  .dots span.cur { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255, 183, 3, .25); }
+
+  /* Telas */
+  .screen { padding-top: 26px; animation: fade .4s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .eyebrow { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .story { color: #dfe6ee; }
+  .hero-ic { font-size: 64px; line-height: 1; margin: 10px 0; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 99px; padding: 12px 22px; min-height: 50px; background: var(--gold); color: #1b1b1b; font-weight: 700; cursor: pointer; font-size: 17px; }
+  .btn:hover { background: #ffc633; }
+  .btn.ghost { background: transparent; color: var(--light); border: 2px solid var(--line); }
+  .btn.ghost:hover { border-color: var(--muted); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .rules { background: var(--bg-2); border: 1px solid var(--line); border-radius: 18px; padding: 14px 18px; margin: 18px 0; }
+  .rules li { margin-bottom: 6px; }
+  .field { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; font-weight: 600; }
+  .field input { border: 2px solid var(--line); background: var(--bg-2); color: var(--light); border-radius: 14px; padding: 12px 14px; font-size: 18px; }
+
+  /* Pistas (cartões de papel) */
+  .clues { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 18px 0; }
+  .paper { background: var(--card); color: var(--ink); border-radius: 6px; padding: 16px; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); position: relative; transform: rotate(-.6deg); }
+  .paper:nth-child(2n) { transform: rotate(.7deg); }
+  .paper h3 { font-size: 20px; margin-bottom: 6px; }
+  .paper .tag { display: inline-block; background: var(--bad); color: #fff; font-weight: 700; border-radius: 6px; padding: 2px 8px; font-size: 14px; transform: rotate(-3deg); }
+  .paper .price { font-family: var(--display); font-size: 34px; font-weight: 800; color: #b3261e; line-height: 1.1; }
+  .paper small { color: var(--ink-2); }
+  .paper table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .paper td { padding: 4px 0; border-bottom: 1px dashed #c9c1ad; }
+  .paper td:last-child { text-align: right; font-weight: 600; }
+  .paper.tape::before { content: ''; position: absolute; top: -10px; left: 50%; width: 80px; height: 22px; background: rgba(255, 220, 150, .75); transform: translateX(-50%) rotate(-2deg); }
+  .plan { width: 100%; height: auto; display: block; }
+  .plan text { font-family: var(--body); font-size: 12px; fill: #1b1b1b; }
+  .mission { background: linear-gradient(135deg, rgba(255, 183, 3, .14), rgba(251, 133, 0, .08)); border: 1px solid rgba(255, 183, 3, .45); border-radius: 18px; padding: 14px 18px; margin: 10px 0 18px; }
+  .mission strong { color: var(--gold); }
+
+  /* Cadeado */
+  .lock { background: var(--bg-2); border: 1px solid var(--line); border-radius: 24px; padding: 20px 16px; text-align: center; }
+  .lock-ic { font-size: 44px; line-height: 1; display: inline-block; transition: transform .3s; }
+  .lock.shake .lock-ic { animation: shake .45s; }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+  .wheels { display: flex; justify-content: center; gap: 8px; margin: 14px 0; }
+  .wheel { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .wheel button { width: 54px; height: 34px; border: 0; border-radius: 10px; background: #263546; color: var(--light); cursor: pointer; font-size: 16px; }
+  .wheel button:active { background: #33475d; }
+  .wheel .digit { width: 54px; height: 66px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(#e9e3d3, #fbf7ee 45%, #e0d8c3); color: #1b1b1b; font-family: ui-monospace, Consolas, monospace; font-size: 38px; font-weight: 800; box-shadow: inset 0 2px 6px rgba(0, 0, 0, .25); }
+  .unit { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+  .fb { min-height: 26px; font-weight: 600; margin: 10px 0 0; }
+  .fb.bad { color: var(--bad); } .fb.ok { color: var(--ok); }
+  .hints { margin-top: 16px; display: grid; gap: 10px; }
+  .hint { background: rgba(255, 255, 255, .05); border: 1px dashed var(--line); border-radius: 14px; padding: 10px 14px; font-size: 15.5px; color: #dfe6ee; text-align: left; }
+  .hint b { color: var(--gold); }
+  .small { font-size: 14px; color: var(--muted); }
+
+  /* Final */
+  .result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+  .result div { background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 12px; text-align: center; }
+  .result b { display: block; font-family: ui-monospace, Consolas, monospace; font-size: 26px; color: var(--gold); }
+  .result span { font-size: 13px; color: var(--muted); }
+  .code { font-family: ui-monospace, Consolas, monospace; font-size: 28px; letter-spacing: .15em; background: var(--card); color: var(--ink); border-radius: 12px; padding: 10px 16px; display: inline-block; margin: 6px 0 12px; }
+  .reflect li { margin-bottom: 6px; }
+  .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 20; }
+  .confetti i { position: absolute; top: -20px; width: 10px; height: 14px; border-radius: 2px; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+  @media (max-width: 420px) { .wheel .digit, .wheel button { width: 46px; } .result b { font-size: 21px; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="hud" id="hud" hidden>
+  <div class="hud-in">
+    <span class="team" id="h-team"></span>
+    <div class="dots" id="h-dots" aria-label="Progresso"></div>
+    <span class="sp"></span>
+    <span class="small" id="h-pen"></span>
+    <span class="timer" id="h-time" aria-live="off">00:00</span>
+  </div>
+</div>
+<main class="wrap" id="app"></main>
+
+<script>
+(function () {
+  const KEY = 'escape-uniao-v1', META = 20 * 60, PEN = 60;
+  const SALAS = [
+    {
+      ic: '🛒', titulo: 'Sala 1 · O mercado da esquina',
+      historia: 'Dona Lúcia coordena o café do grupo de convivência do bairro e precisa comprar <strong>6 pacotes de café</strong> para o mês. Ela tem dois folhetos na mão e o dinheiro é contado.',
+      pistas: `
+        <div class="paper tape"><h3>Mercado Bom Preço</h3><small>Café torrado e moído 500 g</small><div class="price">R$ 18,00</div><span class="tag">Leve 3, pague 2!</span></div>
+        <div class="paper tape"><h3>Supermercado Economia</h3><small>Café torrado e moído 500 g</small><div class="price">R$ 16,50</div><span class="tag" style="background:#2a9d8f">Comprando 6 ou mais: 15% de desconto no total</span></div>`,
+      missao: 'Quanto Dona Lúcia <strong>economiza</strong> comprando os 6 pacotes no mercado mais vantajoso, em vez do outro?',
+      unidade: 'Digite o valor em centavos (ex.: R$ 4,05 → 0405).', digitos: 4,
+      hash: 'f5b8b2da0114276c4ad263445fe9e52af6941a6bb8898a08a7c3805b9103425f',
+      dicas: ['No Bom Preço, a cada 3 pacotes ela paga só 2. Levando 6, quantos pacotes ela paga de fato?',
+              'No Economia: 6 × R$ 16,50 = R$ 99,00. Tirar 15% é o mesmo que pagar 85% do total.']
+    },
+    {
+      ic: '💡', titulo: 'Sala 2 · A conta de luz',
+      historia: 'A conta de luz da família Souza veio alta. O vilão suspeito é o <strong>chuveiro elétrico</strong>. Na reunião de família, todos combinaram tomar banhos mais curtos.',
+      pistas: `
+        <div class="paper"><h3>Etiqueta do chuveiro</h3><table><tr><td>Potência (posição inverno)</td><td>5 500 W</td></tr><tr><td>Tensão</td><td>220 V</td></tr></table></div>
+        <div class="paper"><h3>Combinado da família</h3><table><tr><td>Pessoas na casa</td><td>4</td></tr><tr><td>Banho de cada uma hoje</td><td>10 min/dia</td></tr><tr><td>Nova meta por banho</td><td>6 min/dia</td></tr><tr><td>Mês</td><td>30 dias</td></tr></table></div>
+        <div class="paper tape"><h3>Conta de energia</h3><table><tr><td>Tarifa com impostos</td><td>R$ 0,85 por kWh</td></tr></table><small>kWh = potência em quilowatts × tempo de uso em horas</small></div>`,
+      missao: 'Se a família cumprir o combinado, quanto vai <strong>economizar por mês</strong> com o chuveiro?',
+      unidade: 'Digite o valor em centavos (ex.: R$ 12,30 → 1230).', digitos: 4,
+      hash: 'bf2a321cbe3191fd0c011ef4443694f59a80e230f86e57d658255228209096d3',
+      dicas: ['5 500 W = 5,5 kW. A economia vem só dos minutos que deixam de ser usados.',
+              'Por dia são 4 banhos × 4 minutos a menos = 16 minutos. Em 30 dias, quantas horas isso dá?']
+    },
+    {
+      ic: '🎨', titulo: 'Sala 3 · A reforma da sala de aula',
+      historia: 'A comunidade se juntou num mutirão para pintar uma sala da escola. As <strong>quatro paredes</strong> (o teto não) vão receber <strong>duas demãos</strong> de tinta. A tesoureira quer gastar o mínimo possível.',
+      pistas: `
+        <div class="paper tape">
+          <h3>Medidas da sala</h3>
+          <svg class="plan" viewBox="0 0 260 180" role="img" aria-label="Planta da sala: 6 metros por 5 metros, pé-direito de 3 metros, uma porta de 2,10 por 0,80 metro e uma janela de 2,00 por 1,50 metro">
+            <rect x="40" y="25" width="180" height="125" fill="#fff" stroke="#1b1b1b" stroke-width="4"/>
+            <rect x="60" y="146" width="40" height="8" fill="#fbf7ee"/><path d="M60 150 A40 40 0 0 1 100 110" fill="none" stroke="#1b1b1b" stroke-dasharray="4 3"/>
+            <rect x="215" y="55" width="10" height="60" fill="#9fd3ff" stroke="#1b1b1b"/>
+            <text x="130" y="18" text-anchor="middle">6 m</text><text x="20" y="92" text-anchor="middle">5 m</text>
+            <text x="80" y="172" text-anchor="middle">porta</text><text x="245" y="88" text-anchor="middle">janela</text>
+            <text x="130" y="92" text-anchor="middle" style="font-size:13px;font-weight:600">pé-direito: 3 m</text>
+          </svg>
+          <table><tr><td>Porta</td><td>2,10 m × 0,80 m</td></tr><tr><td>Janela</td><td>2,00 m × 1,50 m</td></tr></table>
+        </div>
+        <div class="paper"><h3>Loja de tintas</h3><table><tr><td>Galão 3,6 L — rende 38 m² por demão</td><td>R$ 89,90</td></tr><tr><td>Lata 18 L — rende 190 m² por demão</td><td>R$ 389,00</td></tr></table><small>Não se vende tinta fracionada.</small></div>`,
+      missao: 'Qual o <strong>menor valor</strong> que a comunidade precisa gastar em tinta?',
+      unidade: 'Digite só a parte inteira, em reais (ex.: R$ 245,80 → 245).', digitos: 3,
+      hash: '75ed90f21dcd97fbcf2cc8a05fe9118460f2f956b6cc0790c1f67b66d4db230a',
+      dicas: ['Área das paredes = perímetro da sala × pé-direito, menos a porta e a janela. Depois, dobre (duas demãos).',
+              'São 122,64 m² para pintar. Compare: quantos galões seriam necessários (lembre que não dá para comprar meio galão) e quanto custa a lata.']
+    }
+  ];
+
+  const app = document.getElementById('app');
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  let S = load(), tick;
+  const now = () => Date.now();
+  const elapsed = () => Math.floor(((S.fim || now()) - S.inicio) / 1000);
+  const total = () => elapsed() + S.dicas * PEN;
+  const mmss = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  async function sha(t) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function hud() {
+    const h = document.getElementById('hud');
+    h.hidden = !S || S.sala === undefined;
+    if (h.hidden) return;
+    document.getElementById('h-team').textContent = S.equipe;
+    document.getElementById('h-dots').innerHTML = SALAS.map((_, i) => `<span class="${i < S.sala ? 'done' : i === S.sala ? 'cur' : ''}"></span>`).join('');
+    document.getElementById('h-pen').textContent = S.dicas ? `+${S.dicas} min de dicas` : '';
+    const t = document.getElementById('h-time'); t.textContent = mmss(total()); t.classList.toggle('late', total() > META);
+  }
+
+  function intro() {
+    app.innerHTML = `<section class="screen">
+      <span class="eyebrow">Formação de professores · Matemática</span>
+      <div class="hero-ic">🔐</div>
+      <h1>Escape da Matemática do Dia a Dia</h1>
+      <p class="story">Três situações reais estão trancadas. Cada uma só abre com o número certo — e esse número sai de um problema que poderia estar na conta de qualquer família da nossa comunidade. Trabalhem juntos: a união faz a vida (e abre os cadeados).</p>
+      <div class="rules"><ul>
+        <li><strong>3 salas</strong>, uma depois da outra. Meta: sair em até <strong>20 minutos</strong>.</li>
+        <li>Podem usar papel, lápis e calculadora.</li>
+        <li>Cada sala tem 2 dicas. Cada dica aberta acrescenta <strong>1 minuto</strong> ao tempo final.</li>
+        <li>Tentativas erradas não dão penalidade — mas discutam antes de girar o cadeado!</li>
+      </ul></div>
+      <label class="field">Nome da equipe<input id="team" maxlength="30" autocomplete="off" placeholder="Ex.: Os Proporcionais"></label>
+      <button class="btn" id="go" type="button">Começar ▶</button>
+    </section>`;
+    const go = () => {
+      const n = document.getElementById('team').value.trim();
+      if (!n) { document.getElementById('team').focus(); return; }
+      S = { equipe: n, inicio: now(), sala: 0, dicas: 0, abertas: [[], [], []], tempos: [] }; save(); start();
+    };
+    document.getElementById('go').onclick = go;
+    document.getElementById('team').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+  }
+
+  function start() {
+    clearInterval(tick); tick = setInterval(hud, 1000);
+    if (S.fim) return final();
+    sala();
+  }
+
+  function sala() {
+    const k = S.sala, R = SALAS[k];
+    hud(); window.scrollTo(0, 0);
+    const digits = Array(R.digitos).fill(0);
+    app.innerHTML = `<section class="screen">
+      <span class="eyebrow">Sala ${k + 1} de ${SALAS.length}</span>
+      <div class="hero-ic">${R.ic}</div>
+      <h2>${R.titulo}</h2>
+      <p class="story">${R.historia}</p>
+      <div class="clues">${R.pistas}</div>
+      <div class="mission">🎯 ${R.missao}</div>
+      <div class="lock" id="lock">
+        <span class="lock-ic" id="lock-ic">🔒</span>
+        <div class="wheels" id="wheels">${digits.map((_, i) => `<div class="wheel"><button type="button" data-i="${i}" data-d="1" aria-label="Aumentar dígito ${i + 1}">▲</button><div class="digit" id="d${i}" aria-live="polite">0</div><button type="button" data-i="${i}" data-d="-1" aria-label="Diminuir dígito ${i + 1}">▼</button></div>`).join('')}</div>
+        <div class="unit">${R.unidade}</div>
+        <button class="btn" id="try" type="button">Abrir o cadeado</button>
+        <p class="fb" id="fb" role="status"></p>
+        <div class="hints" id="hints"></div>
+        <button class="btn ghost" id="hint" type="button" style="margin-top:12px">💡 Pedir dica (+1 min)</button>
+      </div>
+    </section>`;
+    const draw = () => digits.forEach((d, i) => { document.getElementById('d' + i).textContent = d; });
+    document.getElementById('wheels').onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      const i = +b.dataset.i; digits[i] = (digits[i] + +b.dataset.d + 10) % 10; draw();
+    };
+    // teclado: digitar números preenche da esquerda para a direita
+    let pos = 0;
+    document.onkeydown = e => {
+      if (!/^\d$/.test(e.key) || e.target.tagName === 'INPUT') return;
+      digits[pos] = +e.key; pos = (pos + 1) % digits.length; draw();
+    };
+    const showHints = () => {
+      document.getElementById('hints').innerHTML = S.abertas[k].map(j => `<div class="hint"><b>Dica ${j + 1}:</b> ${R.dicas[j]}</div>`).join('');
+      const hb = document.getElementById('hint'); hb.disabled = S.abertas[k].length >= R.dicas.length;
+      if (hb.disabled) hb.textContent = 'Sem mais dicas nesta sala';
+    };
+    showHints();
+    document.getElementById('hint').onclick = () => {
+      if (S.abertas[k].length >= R.dicas.length) return;
+      S.abertas[k].push(S.abertas[k].length); S.dicas++; save(); showHints(); hud();
+    };
+    document.getElementById('try').onclick = async () => {
+      const code = digits.join(''), fb = document.getElementById('fb'), lock = document.getElementById('lock');
+      if (await sha('uniao:' + String(+code)) === R.hash || await sha('uniao:' + code) === R.hash) {
+        document.getElementById('lock-ic').textContent = '🔓';
+        fb.textContent = 'Cadeado aberto!'; fb.className = 'fb ok';
+        S.tempos.push(elapsed()); S.sala++;
+        if (S.sala >= SALAS.length) S.fim = now();
+        save();
+        setTimeout(() => S.fim ? final() : sala(), 1100);
+      } else {
+        lock.classList.remove('shake'); void lock.offsetWidth; lock.classList.add('shake');
+        fb.textContent = 'Não abriu. Revejam as contas juntos.'; fb.className = 'fb bad';
+      }
+    };
+  }
+
+  async function final() {
+    clearInterval(tick); document.onkeydown = null; hud();
+    const t = total(), code = (await sha(`${S.equipe.trim().toLowerCase()}|${t}|${S.dicas}|uniao-faz-a-vida`)).slice(0, 6).toUpperCase();
+    app.innerHTML = `<section class="screen">
+      <span class="eyebrow">Missão cumprida</span>
+      <div class="hero-ic">🏆</div>
+      <h1>${esc(S.equipe)}, vocês saíram!</h1>
+      <p class="story">${t <= META ? 'Dentro da meta de 20 minutos. Trabalho em equipe de verdade!' : 'Passou da meta, mas todas as portas se abriram — e é isso que conta.'}</p>
+      <div class="result">
+        <div><b>${mmss(elapsed())}</b><span>tempo jogado</span></div>
+        <div><b>${S.dicas}</b><span>dica(s) (+${S.dicas} min)</span></div>
+        <div><b>${mmss(t)}</b><span>tempo final</span></div>
+      </div>
+      <p class="small" style="margin-bottom:0">Mostrem esta tela à formadora. Código de verificação:</p>
+      <div class="code">${code}</div>
+      <div class="rules">
+        <h3>Para conversar depois</h3>
+        <ul class="reflect">
+          <li>Que conteúdos apareceram? (porcentagem e descontos, grandezas proporcionais e unidades de medida, área e arredondamento)</li>
+          <li>Que estratégias diferentes as equipes usaram para o mesmo problema?</li>
+          <li>Onde seus alunos teriam mais dificuldade — e que pergunta você faria para ajudá-los sem dar a resposta?</li>
+          <li>Que situação da realidade da sua escola poderia virar uma sala deste jogo?</li>
+        </ul>
+      </div>
+      <button class="btn ghost" id="again" type="button">Nova partida (outra equipe)</button>
+    </section>`;
+    confetti();
+    document.getElementById('again').onclick = () => { if (confirm('Apagar esta partida e começar outra?')) { try { localStorage.removeItem(KEY); } catch (e) {} S = null; hud(); intro(); } };
+  }
+
+  function confetti() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const c = document.createElement('div'); c.className = 'confetti';
+    const cores = ['#ffb703', '#fb8500', '#2a9d8f', '#e76f51', '#8ecae6'];
+    for (let i = 0; i < 80; i++) { const p = document.createElement('i'); p.style.left = Math.random() * 100 + 'vw'; p.style.background = cores[i % 5]; p.style.animationDuration = 2 + Math.random() * 2.5 + 's'; p.style.animationDelay = Math.random() * .8 + 's'; c.appendChild(p); }
+    document.body.appendChild(c); setTimeout(() => c.remove(), 5500);
+  }
+
+  if (S && S.equipe) start(); else intro();
+})();
+</script>
+</body>
+</html>

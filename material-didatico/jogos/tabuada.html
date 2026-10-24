@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corrida da Tabuada · Material didático | ohtopico</title>
+<meta name="description" content="Corrida da Tabuada: responda multiplicações de 1 a 10 para acelerar seu carro e vencer os rivais. BNCC EF06MA03, EF06MA06.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .setup h3 { font-size: 18px; margin: 16px 0 8px; }
+  .nums { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 420px; }
+  .nums button { min-height: 48px; border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); font-family: var(--display); font-size: 22px; font-weight: 800; cursor: pointer; }
+  .nums button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .track { width: 100%; height: auto; display: block; background: #3a3f44; border-radius: 18px; border: 1.5px solid var(--ink); }
+  .track text { font-size: 26px; dominant-baseline: middle; }
+  .q-card { text-align: center; margin: 16px auto 6px; max-width: 460px; }
+  .q { font-family: var(--display); font-size: clamp(44px, 12vw, 72px); font-weight: 800; line-height: 1.1; }
+  .ans { display: inline-block; min-width: 2.2ch; border-bottom: 4px solid var(--ink); }
+  .pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 320px; margin: 12px auto 0; }
+  .pad button { min-height: 56px; border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); font-family: var(--display); font-size: 26px; font-weight: 800; cursor: pointer; }
+  .pad button:active { background: var(--pill); }
+  .pad .ok { background: var(--ink); color: var(--paper); }
+  .pad button:disabled { opacity: .45; }
+  .count { font-family: var(--display); font-size: 120px; text-align: center; line-height: 1; padding: 30px 0; }
+  .center { text-align: center; }
+  .podium { font-size: 64px; }
+  .miss { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 8px 0 16px; }
+  .miss span { border: 1.5px solid var(--bad); color: var(--bad); border-radius: 99px; padding: 2px 10px; font-weight: 600; }
+  @media (prefers-reduced-motion: reduce) { .track * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Escolha as tabuadas e a velocidade dos rivais. Cada resposta certa faz seu carro avançar; uma resposta errada mostra o resultado correto e deixa o carro parado por um instante. Vence quem cruzar a linha de chegada primeiro — são 15 respostas certas.</p>
+    <p class="small muted">Use o teclado numérico da tela ou o do computador (Enter confirma, Backspace apaga). No final, o jogo mostra as multiplicações que merecem revisão.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('tabuada');
+(function () {
+  const $ = s => document.querySelector(s);
+  const stage = $('#stage');
+  const META = 15;
+  const NIVEIS = { lento: ['Tranquila', 5.0], medio: ['Média', 3.4], rapido: ['Rápida', 2.2] };
+  const RIVAIS = [['🚙', 'Rival azul', .92], ['🚕', 'Rival amarelo', 1.0], ['🛻', 'Rival vermelho', 1.1]];
+  const store = { get(k, d) { try { const v = localStorage.getItem('md-tab-' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem('md-tab-' + k, JSON.stringify(v)); } catch (e) {} } };
+  let cfg = store.get('cfg', { tab: [2, 3, 4, 5, 6, 7, 8, 9], nivel: 'medio' });
+  let G = null;
+
+  function setup() {
+    clearInterval(G && G.timer);
+    stage.innerHTML = `<div class="setup">
+      <h3>Quais tabuadas?</h3>
+      <div class="nums" id="nums">${Array.from({ length: 10 }, (_, i) => i + 1).map(n => `<button type="button" data-n="${n}" aria-pressed="${cfg.tab.includes(n)}">${n}</button>`).join('')}</div>
+      <div class="btn-row" style="margin-top:10px"><button class="chip" type="button" id="all">Todas</button><button class="chip" type="button" id="hard">Só as difíceis (6 a 9)</button></div>
+      <h3>Velocidade dos rivais</h3>
+      <div class="chips" id="lvl">${Object.entries(NIVEIS).map(([k, [n]]) => `<button class="chip" type="button" data-l="${k}" aria-pressed="${cfg.nivel === k}">${n}</button>`).join('')}</div>
+      <p class="small muted" id="rec"></p>
+      <div class="btn-row" style="margin-top:16px"><button class="btn" type="button" id="go">🏁 Largar!</button></div>
+    </div>`;
+    const sync = () => {
+      stage.querySelectorAll('#nums button').forEach(b => b.setAttribute('aria-pressed', cfg.tab.includes(+b.dataset.n)));
+      stage.querySelectorAll('#lvl button').forEach(b => b.setAttribute('aria-pressed', cfg.nivel === b.dataset.l));
+      const r = store.get('rec-' + key(), null);
+      $('#rec').textContent = r ? `Seu melhor tempo nesta configuração: ${r.toFixed(1).replace('.', ',')} s` : '';
+      $('#go').disabled = !cfg.tab.length;
+    };
+    $('#nums').onclick = e => { const b = e.target.closest('button'); if (!b) return; const n = +b.dataset.n; cfg.tab = cfg.tab.includes(n) ? cfg.tab.filter(x => x !== n) : [...cfg.tab, n].sort((a, b) => a - b); sync(); };
+    $('#all').onclick = () => { cfg.tab = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; sync(); };
+    $('#hard').onclick = () => { cfg.tab = [6, 7, 8, 9]; sync(); };
+    $('#lvl').onclick = e => { const b = e.target.closest('button'); if (b) { cfg.nivel = b.dataset.l; sync(); } };
+    $('#go').onclick = () => { store.set('cfg', cfg); countdown(); };
+    sync();
+  }
+  const key = () => cfg.tab.join('-') + '_' + cfg.nivel;
+
+  function countdown() {
+    let n = 3;
+    stage.innerHTML = `<div class="count" id="cd" aria-live="assertive">3</div>`;
+    const t = setInterval(() => { n--; if (n > 0) $('#cd').textContent = n; else { clearInterval(t); race(); } }, 700);
+  }
+
+  function nextQ() {
+    let a, b, tries = 0;
+    if (G.revisar.length && G.desde >= 3) { [a, b] = G.revisar.shift(); G.desde = 0; }
+    else do { a = cfg.tab[Math.floor(Math.random() * cfg.tab.length)]; b = 1 + Math.floor(Math.random() * 10); tries++; } while (G.last === `${a}x${b}` && tries < 10);
+    if (Math.random() < .5) [a, b] = [b, a];
+    G.q = [a, b]; G.last = `${a}x${b}`; G.input = ''; G.desde++;
+  }
+
+  function race() {
+    G = { pos: 0, rivais: RIVAIS.map(() => 0), ok: 0, err: 0, erros: {}, revisar: [], desde: 0, inicio: performance.now(), travado: false, fim: false };
+    nextQ();
+    stage.innerHTML = `
+      <svg class="track" id="track" viewBox="0 0 600 220" role="img" aria-label="Pista da corrida"></svg>
+      <div class="hud" style="margin-top:12px"><span>Acertos <b id="ok">0</b>/${META}</span><span>Erros <b id="er">0</b></span><span>Tempo <b id="tm">0,0</b> s</span></div>
+      <div class="q-card"><div class="q" id="q" aria-live="polite"></div><p class="feedback" id="fb" role="status"></p></div>
+      <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" data-k="del" aria-label="Apagar">⌫</button><button type="button" data-k="0">0</button><button type="button" data-k="ok" class="ok" aria-label="Confirmar">OK</button></div>`;
+    drawTrack(); drawQ();
+    const speed = NIVEIS[cfg.nivel][1];
+    let lastT = performance.now();
+    G.timer = setInterval(() => {
+      const now = performance.now(), dt = (now - lastT) / 1000; lastT = now;
+      if (G.fim) return;
+      G.rivais = G.rivais.map((p, i) => Math.min(META, p + dt / speed * RIVAIS[i][2] * (0.85 + Math.random() * 0.3)));
+      $('#tm').textContent = ((now - G.inicio) / 1000).toFixed(1).replace('.', ',');
+      drawTrack();
+      if (G.rivais.some(p => p >= META)) finish();
+    }, 100);
+    $('#pad').onclick = e => { const b = e.target.closest('button'); if (b) press(b.dataset.k); };
+  }
+
+  function drawTrack() {
+    const lanes = [['🚗', 'Você', G.pos], ...RIVAIS.map((r, i) => [r[0], r[1], G.rivais[i]])];
+    const x0 = 46, x1 = 548, lh = 50;
+    let h = `<rect x="${x1 + 8}" y="6" width="20" height="208" fill="url(#flag)"/>
+      <defs><pattern id="flag" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#fff"/><rect width="5" height="5" fill="#111"/><rect x="5" y="5" width="5" height="5" fill="#111"/></pattern></defs>`;
+    lanes.forEach(([ic, nome, p], i) => {
+      const y = 10 + i * lh + lh / 2;
+      h += `<line x1="10" y1="${y + lh / 2 - 2}" x2="590" y2="${y + lh / 2 - 2}" stroke="#fff" stroke-opacity=".25" stroke-dasharray="14 10"/>`;
+      h += `<text x="${x0 + (x1 - x0) * (p / META)}" y="${y}" text-anchor="middle" aria-label="${nome}" style="transform: scaleX(-1); transform-box: fill-box; transform-origin: center">${ic}</text>`;
+      if (i === 0) h += `<text x="14" y="${y}" style="font-size:13px;fill:#ffd166;font-family:var(--body);font-weight:700">você</text>`;
+    });
+    $('#track').innerHTML = h;
+  }
+  function drawQ() { $('#q').innerHTML = `${G.q[0]} × ${G.q[1]} = <span class="ans">${G.input || '&nbsp;'}</span>`; }
+
+  function press(k) {
+    if (G.fim || G.travado) return;
+    if (k === 'del') G.input = G.input.slice(0, -1);
+    else if (k === 'ok') return answer();
+    else if (G.input.length < 3) G.input += k;
+    drawQ();
+  }
+  function answer() {
+    if (!G.input) return;
+    const [a, b] = G.q, certo = a * b, fb = $('#fb');
+    if (+G.input === certo) {
+      G.ok++; G.pos = Math.min(META, G.pos + 1); fb.textContent = 'Isso!'; fb.className = 'feedback ok';
+      $('#ok').textContent = G.ok; drawTrack();
+      if (G.pos >= META) return finish();
+      nextQ(); drawQ();
+    } else {
+      G.err++; $('#er').textContent = G.err;
+      const f = `${Math.min(a, b)} × ${Math.max(a, b)}`; G.erros[f] = (G.erros[f] || 0) + 1;
+      G.revisar.push([a, b]);
+      fb.textContent = `${a} × ${b} = ${certo}`; fb.className = 'feedback bad';
+      G.travado = true; $('#pad').querySelectorAll('button').forEach(x => x.disabled = true);
+      setTimeout(() => { G.travado = false; if (G.fim) return; $('#pad').querySelectorAll('button').forEach(x => x.disabled = false); nextQ(); drawQ(); fb.textContent = ''; }, 1500);
+    }
+  }
+
+  function finish() {
+    if (G.fim) return; G.fim = true; clearInterval(G.timer);
+    const t = (performance.now() - G.inicio) / 1000;
+    const lugar = G.pos >= META ? 1 + G.rivais.filter(p => p >= META).length : 1 + G.rivais.filter(p => p > G.pos).length;
+    const venceu = G.pos >= META && lugar === 1;
+    let rec = store.get('rec-' + key(), null), novo = false;
+    if (venceu && (!rec || t < rec)) { store.set('rec-' + key(), t); rec = t; novo = true; }
+    const erros = Object.entries(G.erros).sort((a, b) => b[1] - a[1]);
+    stage.innerHTML = `<div class="center">
+      <div class="podium">${lugar === 1 ? '🏆' : lugar === 2 ? '🥈' : lugar === 3 ? '🥉' : '🏁'}</div>
+      <h2>${venceu ? 'Você venceu a corrida!' : `Você chegou em ${lugar}º lugar`}</h2>
+      <p>${G.ok} acertos · ${G.err} erro(s) · ${t.toFixed(1).replace('.', ',')} s${novo ? ' · <strong>novo recorde!</strong>' : ''}</p>
+      ${erros.length ? `<p class="small">Para revisar:</p><div class="miss">${erros.map(([f]) => `<span>${f} = ${f.split(' × ').reduce((a, b) => a * b, 1)}</span>`).join('')}</div>` : '<p class="small">Nenhum erro. Que tal aumentar a velocidade dos rivais?</p>'}
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="again">Correr de novo</button><button class="btn ghost" type="button" id="cfg">Mudar tabuadas</button></div>
+    </div>`;
+    $('#again').onclick = countdown; $('#cfg').onclick = setup;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (!G || G.fim || !$('#pad')) return;
+    if (/^\d$/.test(e.key)) press(e.key);
+    else if (e.key === 'Backspace') { e.preventDefault(); press('del'); }
+    else if (e.key === 'Enter') { e.preventDefault(); press('ok'); }
+  });
+  setup();
+})();
+</script>
+</body>
+</html>
