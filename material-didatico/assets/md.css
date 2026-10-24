@@ -165,6 +165,9 @@ a.tag:hover, button.tag:hover { outline: 1.5px solid currentColor; }
 .t-plano .rc-cover::before { background:
   repeating-linear-gradient(0deg, transparent 0 21px, var(--ink) 21px 22px),
   repeating-linear-gradient(90deg, transparent 0 21px, var(--ink) 21px 22px); opacity: .12; }
+.t-lista .rc-cover::before { background:
+  repeating-linear-gradient(0deg, transparent 0 17px, var(--ink) 17px 18px),
+  linear-gradient(90deg, transparent 0 34px, var(--ink) 34px 36px, transparent 36px); opacity: .16; }
 .rc-type, .rc-time {
   position: absolute; top: 12px; z-index: 1; font-size: 12.5px; font-weight: 600; background: var(--paper);
   border: 1.5px solid var(--ink); border-radius: 99px; padding: 2px 10px; white-space: nowrap;

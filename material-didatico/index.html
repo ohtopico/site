@@ -20,7 +20,7 @@
   .hero { padding: 56px 0 48px; border-bottom: 1.5px solid var(--ink); }
   .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
   .hero p.lead { font-size: 19px; color: var(--ink-2); max-width: 600px; }
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .stat { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px; text-align: center; text-decoration: none; color: var(--ink); }
   .stat:hover { background: var(--pill); }
   .stat b { display: block; font-family: var(--display); font-size: 40px; line-height: 1; }
@@ -97,12 +97,13 @@
 
 <script>window.MD_BASE = '';</script>
 <script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
 <script src="assets/comum.js"></script>
 <script>
   mdTopbar('inicio');
   mdFooter();
   const n = t => RECURSOS.filter(r => r.tipo === t).length;
-  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['ficha', 'fichas'], ['plano', 'planos de aula']]
+  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['ficha', 'fichas'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
     .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
   document.getElementById('games').innerHTML = RECURSOS.filter(r => r.tipo === 'jogo').slice(0, 4).map(r => mdCard(r)).join('');
 </script>

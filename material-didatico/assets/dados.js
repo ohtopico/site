@@ -13,7 +13,8 @@ const COMPONENTES = {
 const TIPOS = {
   jogo:  { nome: 'Jogo',  plural: 'Jogos',  icone: '🎮' },
   ficha: { nome: 'Ficha para imprimir', plural: 'Fichas para imprimir', icone: '🖨️' },
-  plano: { nome: 'Plano de aula', plural: 'Planos de aula', icone: '📋' }
+  plano: { nome: 'Plano de aula', plural: 'Planos de aula', icone: '📋' },
+  lista: { nome: 'Lista de exercícios', plural: 'Listas de exercícios', icone: '📝' }
 };
 
 /* Eixos (Computação) e unidades temáticas (Matemática) */

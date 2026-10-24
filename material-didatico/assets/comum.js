@@ -81,7 +81,7 @@
     const code = c => opts.codeButtons
       ? `<button class="tag code ${HAB[c].comp.toLowerCase()}" type="button" data-hab="${c}" title="${esc(c + ' — ' + HAB[c].texto)}">${c}</button>`
       : tagHab(c);
-    const cta = { jogo: 'Jogar', ficha: 'Abrir ficha', plano: 'Ver plano' }[r.tipo];
+    const cta = { jogo: 'Jogar', ficha: 'Abrir ficha', plano: 'Ver plano', lista: 'Abrir lista' }[r.tipo];
     return `<article class="rc t-${r.tipo} ${cc}">
       <div class="rc-cover" aria-hidden="true">
         <span class="rc-type">${TIPOS[r.tipo].icone} ${TIPOS[r.tipo].nome}</span>
