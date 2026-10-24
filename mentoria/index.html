@@ -52,26 +52,55 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="/blog/assets/blog.css?v=20261024">
 <link rel="alternate" type="application/rss+xml" title="Blog da Júlia Quoos" href="/blog/feed.xml">
 </head>
-<body>
+<body data-contador="">
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topbar">
+    <a class="brand" href="/">ohtopico</a>
+    <nav class="topo-links" aria-label="Seções do site">
+        <a class="pill-btn" href="/blog/">Blog</a>
+        <a class="pill-btn ativo" href="/mentoria/" aria-current="page">Mentoria</a>
+        <a class="pill-btn opcional" href="/ia-pra-prof/">IA pra Prof</a>
+    </nav>
+    <span class="spacer"></span>
+    <button type="button" class="pill-btn icon-only" id="tema-btn" aria-label="Alternar tema claro/escuro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+    </button>
+</header>
+<div class="area">
 <div class="janela">
-    <header class="janela-header">
+    <div class="janela-header">
         <p class="janela-titulo"><a href="/blog/">mentoria.exe</a></p>
-        <a class="win-btn" href="/" aria-label="Fechar e ir para a área de trabalho do site" title="Área de trabalho">✕</a>
-    </header>
+        <div class="janela-controles">
+            <a class="win-btn" href="/" aria-label="Minimizar e voltar para a área de trabalho" title="Área de trabalho">–</a>
+            <a class="win-btn" href="/" aria-label="Fechar e voltar para a área de trabalho" title="Fechar">✕</a>
+        </div>
+    </div>
     <div class="ferramentas">
         <a class="btn98 quadrado" href="/" data-voltar aria-label="Voltar">◄</a>
         <a class="btn98 quadrado" href="/blog/" aria-label="Início do blog">⌂</a>
         <p class="endereco" aria-label="Endereço da página"><span>ohtopico.com.br/mentoria</span></p>
     </div>
-    <nav class="favoritos" aria-label="Favoritos">
-        <span aria-hidden="true">Favoritos:</span>
-        <ul><li><a href="/#abrir=win-navegador" data-busca>Busca</a></li><li><a href="/blog/">Blog</a></li><li><a href="/mentoria/" aria-current="page">Mentoria</a></li><li class="opcional"><a href="/ia-pra-prof/">IA pra Prof</a></li><li class="opcional"><a href="/material-didatico/">Material didático</a></li><li class="opcional"><a href="/curriculo/">Currículo</a></li></ul>
-    </nav>
-    <main class="pagina" id="conteudo" tabindex="-1">
+    <div class="letreiro" aria-label="Destaques"><div class="letreiro-faixa"><a href="/blog/bncc-computacao-6-ao-9-ano/">✦ Post novo: Computação na BNCC: o que muda do 6º ao 9º ano</a><a href="/mentoria/">✦ Mentoria para professores e escolas</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a></div></div>
+    <div class="corpo">
+        <aside class="lateral lateral-esq" aria-label="Menu do blog">
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Navegue</h2>
+                <ul class="lista-menu"><li><a href="/blog/"><span aria-hidden="true">⌂</span> Início do blog</a></li><li><a href="/mentoria/" aria-current="page"><span aria-hidden="true">✦</span> Mentoria</a></li><li><a href="/ia-pra-prof/"><span aria-hidden="true">✎</span> Guia IA pra Prof</a></li><li><a href="/material-didatico/"><span aria-hidden="true">▲</span> Material didático</a></li><li><a href="/curriculo/"><span aria-hidden="true">☺</span> Currículo</a></li></ul>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Temas</h2>
+                <ul class="lista-menu"><li><a href="/blog/#sobre-mim">Sobre mim</a></li><li><a href="/blog/#formacao-de-professores-em-ia">Formação de professores em IA</a></li><li><a href="/blog/#ia-na-pratica">IA na prática</a></li><li><a href="/blog/#etica-e-lgpd">Ética e LGPD</a></li><li><a href="/blog/#computacao-e-bncc">Computação e BNCC</a></li></ul>
+            </section>
+            <section class="caixa caixa-verde">
+                <h2 class="caixa-titulo">★ Posts recentes</h2>
+                <ul class="lista-recentes"><li><a href="/blog/bncc-computacao-6-ao-9-ano/">Computação na BNCC: o que muda do 6º ao 9º ano</a></li><li><a href="/blog/ia-lgpd-escola-o-que-vai-no-prompt/">O que pode e o que nunca vai no prompt</a></li><li><a href="/blog/treinamento-professores-ia-criterios/">Treinamento de professores em IA: o que uma boa formação precisa ter</a></li><li><a href="/blog/prompts-para-professores-planejar-aulas/">5 prompts prontos para planejar aulas com IA</a></li><li><a href="/blog/formacao-continuada-professores-ia/">Formação continuada de professores em IA: por onde começar</a></li></ul>
+            </section>
+        </aside>
+        <main class="pagina" id="conteudo" tabindex="-1">
 <article class="texto">
     <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Mentoria</li></ol></nav>
     <p class="rotulo">Mentoria</p>
@@ -120,9 +149,73 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
         <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Mentoria%20de%20IA%20para%20professores">Falar com a Júlia</a>
     </section>
 </article>
-    </main>
-    <footer class="status">Pronto</footer>
+        </main>
+        <aside class="lateral lateral-dir" aria-label="Sobre a autora">
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Quem escreve</h2>
+                <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
+                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA.</p>
+                <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
+            </section>
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Mentoria</h2>
+                <p>Formação em IA para professores, escolas e redes de ensino.</p>
+                <a class="btn98 escuro" href="/mentoria/">Saiba mais</a>
+            </section>
+            <section class="caixa caixa-contador">
+                <h2 class="caixa-titulo">★ Visitas</h2>
+                <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
+                <p class="miudo">Contador sem cookies e sem dados pessoais.</p>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Selos</h2>
+                <ul class="selos">
+                    <li class="selo selo-amarelo">feito à mão</li>
+                    <li class="selo selo-verde">sem cookies</li>
+                    <li class="selo selo-vermelho">♥ professores</li>
+                    <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="rodape">
+            <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+            <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
+        </footer>
+    </div>
+    <div class="status">Pronto</div>
 </div>
+</div>
+<footer id="taskbar">
+    <button type="button" class="start-btn" aria-haspopup="true" aria-expanded="false" aria-controls="start-menu">Iniciar</button>
+    <div class="taskbar-abas">
+        <a class="taskbar-tab" href="/#abrir=win-leiame"><span aria-hidden="true">▤</span> <span class="tab-label">Leia-me</span></a>
+        <span class="taskbar-tab active"><span aria-hidden="true">▦</span> <span class="tab-label">mentoria.exe</span></span>
+    </div>
+    <div class="bandeja">
+        <a class="programa programa-linkedin" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="me noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i><span class="sr-only">LinkedIn da Júlia (abre em nova aba)</span></a>
+        <a class="programa programa-github" href="https://github.com/ohtopico" target="_blank" rel="me noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i><span class="sr-only">GitHub da Júlia (abre em nova aba)</span></a>
+        <div class="taskbar-clock" id="relogio" aria-hidden="true">00:00</div>
+    </div>
+</footer>
+<nav id="start-menu" aria-label="Menu Iniciar" hidden>
+    <p class="menu-heading">Profissional</p>
+    <a class="menu-item" href="/#abrir=win-leiame"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Leia-me</a>
+    <a class="menu-item" href="/curriculo/"><i class="fa-regular fa-id-card" aria-hidden="true"></i> Currículo</a>
+    <a class="menu-item" href="/#abrir=win-navegador"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Busca no site</a>
+    <a class="menu-item" href="/ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
+    <a class="menu-item" href="/material-didatico/"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Material didático</a>
+    <a class="menu-item" href="/blog/"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Blog</a>
+    <a class="menu-item" href="/mentoria/"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Mentoria</a>
+    <hr class="menu-sep">
+    <p class="menu-heading">Diversão</p>
+    <a class="menu-item" href="/#abrir=win-diario"><i class="fa-regular fa-star" aria-hidden="true"></i> Atualizações</a>
+    <a class="menu-item" href="/#abrir=win-nuvem"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> Interesses</a>
+    <a class="menu-item" href="/#abrir=win-pet"><i class="fa-regular fa-face-smile" aria-hidden="true"></i> Mascote</a>
+    <a class="menu-item" href="/#abrir=win-player"><i class="fa-solid fa-music" aria-hidden="true"></i> Player</a>
+    <a class="menu-item" href="/#abrir=win-tarot"><i class="fa-regular fa-moon" aria-hidden="true"></i> Tarot</a>
+    <a class="menu-item" href="/#abrir=win-paint"><i class="fa-solid fa-paintbrush" aria-hidden="true"></i> Paint</a>
+    <a class="menu-item" href="/#abrir=win-paciencia"><i class="fa-regular fa-heart" aria-hidden="true"></i> Paciência</a>
+</nav>
 <script src="/blog/assets/blog.js?v=20261024" defer></script>
 </body>
 </html>

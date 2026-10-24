@@ -547,6 +547,24 @@
     .taskbar-tab:hover { border-color: var(--ink); }
     .taskbar-tab.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 
+    .bandeja { align-items: center; border-left: 1.5px solid var(--line); display: flex; flex-shrink: 0; gap: 6px; padding-left: 10px; }
+    .programa {
+        align-items: center;
+        border: 1.5px solid var(--ink);
+        border-radius: 10px;
+        color: #111;
+        display: flex;
+        font-size: 17px;
+        height: 34px;
+        justify-content: center;
+        text-decoration: none;
+        width: 34px;
+    }
+    .programa-linkedin { background: #b9e6c6; }
+    .programa-github { background: #fff36b; }
+    .programa:hover, .programa:focus-visible { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
+    .bandeja .taskbar-clock { margin-left: 4px; }
+
     .taskbar-clock {
         color: var(--ink-2);
         font-size: 14px;
@@ -736,7 +754,7 @@
 
             <ul>
                 <li><b>Dados:</b> SQL, Python, AWS, Google Cloud e Power BI. Especialização em Ciência de Dados e Big Data Analytics e experiência em engenharia de dados na Compass UOL.</li>
-                <li><b>IA:</b> pesquisadora pelo CNPq de 2020 a 2025 (visão computacional e processamento de linguagem natural) e, no mestrado, deep learning com MobileNet.</li>
+                <li><b>IA:</b> bolsista de IC do CNPq de 2020 a 2025 (visão computacional e processamento de linguagem natural) e, no mestrado, deep learning com MobileNet.</li>
                 <li><b>Docência:</b> licenciada em Informática, com experiência no ensino médio da rede estadual e no ensino fundamental, e formadora em oficinas para professores. Autora do guia <a href="ia-pra-prof/">IA pra Prof</a>.</li>
                 <li><b>Idiomas:</b> inglês e espanhol, em nível profissional.</li>
             </ul>
@@ -902,22 +920,22 @@
 <footer id="taskbar">
     <button type="button" class="start-btn" onclick="toggleStartMenu()" aria-haspopup="true" aria-expanded="false" aria-controls="start-menu">Iniciar</button>
     <div id="open-programs-tabs" role="toolbar" aria-label="Janelas abertas"></div>
-    <div class="taskbar-clock" id="clock" aria-hidden="true">00:00</div>
+    <div class="bandeja">
+        <a class="programa programa-linkedin" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="me noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i><span class="sr-only">LinkedIn da Júlia (abre em nova aba)</span></a>
+        <a class="programa programa-github" href="https://github.com/ohtopico" target="_blank" rel="me noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i><span class="sr-only">GitHub da Júlia (abre em nova aba)</span></a>
+        <div class="taskbar-clock" id="clock" aria-hidden="true">00:00</div>
+    </div>
 </footer>
 
 <nav id="start-menu" aria-label="Menu Iniciar" hidden>
     <div class="menu-heading">Profissional</div>
     <button type="button" class="menu-item" onclick="openProgram('win-leiame')"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Leia-me</button>
     <a class="menu-item" href="curriculo/"><i class="fa-regular fa-id-card" aria-hidden="true"></i> Currículo</a>
-    <a class="menu-item" href="curriculo/?perfil=dados#sec-projetos"><i class="fa-solid fa-code" aria-hidden="true"></i> Projetos</a>
-    <a class="menu-item" href="curriculo/?perfil=docencia"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Experiência docente</a>
     <button type="button" class="menu-item" onclick="openProgram('win-navegador')"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Busca no site</button>
     <a class="menu-item" href="ia-pra-prof/"><i class="fa-solid fa-book-open" aria-hidden="true"></i> IA pra Prof</a>
     <a class="menu-item" href="material-didatico/"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Material didático</a>
     <a class="menu-item" href="blog/" onclick="return abrirNoNavegador('blog/')"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Blog</a>
     <a class="menu-item" href="mentoria/" onclick="return abrirNoNavegador('mentoria/')"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Mentoria</a>
-    <a class="menu-item" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
-    <a class="menu-item" href="https://github.com/ohtopico" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
 
     <hr class="menu-sep">
     <div class="menu-heading">Diversão</div>
