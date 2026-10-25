@@ -221,6 +221,11 @@ a { color: var(--accent); text-underline-offset: 3px; }
 
 .lateral { display: grid; gap: 16px; padding: 22px 0; }
 
+/* No HTML o texto vem antes das laterais (títulos em ordem); a grade devolve cada coluna ao seu lugar */
+.lateral-esq { grid-column: 1; grid-row: 1; }
+.pagina { grid-column: 2; grid-row: 1; }
+.lateral-dir { grid-column: 3; grid-row: 1; }
+
 .caixa {
     background: var(--paper);
     border: 1.5px solid var(--ink);
@@ -581,7 +586,7 @@ figure.infografico figcaption a { font-weight: 500; }
 /* ---------- Telas médias: some a coluna da direita, ela desce para baixo do texto ---------- */
 @media (max-width: 1180px) {
     .corpo { grid-template-columns: 210px minmax(0, 1fr); }
-    .lateral-dir { grid-column: 2; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); padding-top: 0; }
+    .lateral-dir { grid-column: 2; grid-row: 2; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); padding-top: 0; }
 }
 
 /* ---------- Celular e tablet: página rola normalmente, menus vão para baixo do texto ---------- */

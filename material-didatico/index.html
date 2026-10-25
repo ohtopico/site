@@ -12,6 +12,11 @@
 <meta property="og:locale" content="pt_BR">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -43,6 +48,12 @@
   @media (max-width: 860px) { .paths { grid-template-columns: 1fr; } }
   .sec-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
   .sec-head h2 { margin: 0; }
+  .todos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 18px; }
+  .todos h3 { margin: 0 0 8px; font-size: 22px; }
+  .todos ul { columns: 2; column-gap: 24px; margin: 0; padding-left: 20px; }
+  .todos li { margin: 0 0 6px; break-inside: avoid; }
+  @media (max-width: 860px) { .todos { grid-template-columns: 1fr; } }
+  @media (max-width: 420px) { .todos ul { columns: 1; } }
 </style>
 <!-- Meta Pixel Code -->
 <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '2280257989421593'); fbq('track', 'PageView');</script>
@@ -103,6 +114,47 @@
         <a class="btn ghost" href="catalogo.html?tipo=3d">Ver todos os recursos 3D →</a>
       </div>
       <div class="rc-grid" id="lab3d"></div>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Lista completa</span>
+      <h2>Todos os jogos e recursos 3D</h2>
+      <div class="todos">
+        <div>
+          <h3>Jogos</h3>
+          <ul>
+          <li><a href="jogos/balanca.html">Balança das Equações</a></li>
+          <li><a href="jogos/bhaskara.html">Bhaskara Passo a Passo</a></li>
+          <li><a href="jogos/pacotes.html">Correio de Pacotes</a></li>
+          <li><a href="jogos/tabuada.html">Corrida da Tabuada</a></li>
+          <li><a href="jogos/fracoes.html">Corrida das Frações</a></li>
+          <li><a href="jogos/cifra.html">Detetive da Cifra</a></li>
+          <li><a href="jogos/golpe.html">Golpe ou Seguro?</a></li>
+          <li><a href="jogos/robo.html">Robô Coletor</a></li>
+          <li><a href="jogos/rotas.html">Rota Mais Curta</a></li>
+          <li><a href="jogos/tangram.html">Tangram</a></li>
+          <li><a href="jogos/cartesiano.html">Tesouro Cartesiano</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Laboratório 3D</h3>
+          <ul>
+          <li><a href="3d/balanca.html">Balança 3D das Equações</a></li>
+          <li><a href="3d/fracoes.html">Barras de Frações 3D</a></li>
+          <li><a href="3d/algeblocos.html">Blocos Algébricos: Polinômios e Fatoração</a></li>
+          <li><a href="3d/potencias.html">Cubos das Potências</a></li>
+          <li><a href="3d/elevador.html">Elevador dos Inteiros</a></li>
+          <li><a href="3d/sucos.html">Laboratório de Sucos: Razão e Proporção</a></li>
+          <li><a href="3d/ladrilhos.html">Ladrilhos e Ângulos</a></li>
+          <li><a href="3d/decimais.html">Material Dourado 3D</a></li>
+          <li><a href="3d/produtos.html">Produtos Notáveis em Blocos</a></li>
+          <li><a href="3d/tales.html">Teorema de Tales: Sombras e Paralelas</a></li>
+          <li><a href="3d/terreno.html">Terreno: Área e Perímetro</a></li>
+          <li><a href="3d/mmc.html">Torres do MMC</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 </main>

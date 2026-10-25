@@ -150,7 +150,7 @@
     font-family: var(--display); font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
     color: var(--ink-3); margin: 0 0 6px;
   }
-  .chapter > h1, .cover h1 {
+  .chapter > h2, .cover h1 {
     font-family: var(--display); font-weight: 800; text-transform: uppercase;
     letter-spacing: .12em; font-size: clamp(28px, 5.4vw, 42px); line-height: 1.15; margin: 0 0 6px;
   }
@@ -515,7 +515,7 @@
     <section class="chapter" id="inicio" data-title="Capa">
       <div class="cover">
         <div class="stack" aria-hidden="true">IA<br>PRA<br>PROF</div>
-        <h1 class="sr-only">IA pra Prof</h1>
+        <h1 class="sr-only">IA pra Prof: guia de IA para professores</h1>
         <p class="sub">Guia prático de Inteligência Artificial para educadores</p>
         <p class="sub" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:15px">E-book voltado para capacitação docente, planejamento pedagógico e integração ética da inteligência artificial na escola.</p>
         <p class="author">Júlia Roberta Quoos Alves<br><small style="color:var(--ink-3)">1ª edição · Novo Cabrais – RS · 2026</small></p>
@@ -534,7 +534,7 @@
 
     <!-- ================= APRESENTAÇÃO ================= -->
     <section class="chapter" id="apresentacao" data-title="Apresentação">
-      <h1>Apresentação</h1>
+      <h2>Apresentação</h2>
       <p>A Inteligência Artificial não foi criada para substituir o docente, mas para assumir tarefas mecânicas e operacionais do cotidiano escolar. Ela nada mais é do que um sistema computacional baseado no reconhecimento de padrões estatísticos em grandes volumes de dados (chamado popularmente de big data), que prevê a sequência textual mais provável (mas sem possuir consciência ou discernimento reais).</p>
       <p>Seu valor reside na capacidade de atuar como apoio ao trabalho de planejamento, dependendo integralmente da orientação e da supervisão humana para produzir resultados.</p>
       <p>A interação com estas ferramentas se baseia em conceitos simples: o <span class="u">prompt</span>, que é a instrução ou comando fornecido ao sistema, e os <span class="u">tokens</span>, que são as unidades mínimas de texto processadas pelo modelo. Falaremos mais disso durante o livro.</p>
@@ -545,7 +545,7 @@
 
     <!-- ================= CONCEITOS ================= -->
     <section class="chapter" id="conceitos" data-title="Conceitos introdutórios" data-part="Fundamentos">
-      <h1>Conceitos introdutórios</h1>
+      <h2>Conceitos introdutórios</h2>
       <p>A Inteligência Artificial não é um ser consciente nem possui intenções próprias. Trata-se de um sistema treinado com milhões de textos para reconhecer padrões de linguagem.</p>
       <div class="table-wrap">
         <table>
@@ -579,7 +579,7 @@
 
     <!-- ================= LGPD ================= -->
     <section class="chapter" id="lgpd" data-title="Lei Geral de Proteção de Dados" data-part="Fundamentos">
-      <h1>Lei Geral de Proteção de Dados</h1>
+      <h2>Lei Geral de Proteção de Dados</h2>
       <div class="pill-row three">
         <div class="pill"><strong>Dados do aluno</strong>Nome, nota, idade, laudos</div>
         <div class="pill"><strong>Anonimizar</strong>Tirar identificadores</div>
@@ -614,7 +614,7 @@
 
     <!-- ================= ÉTICA ================= -->
     <section class="chapter" id="etica" data-title="Ética no uso de IA" data-part="Fundamentos">
-      <h1>Ética no uso de IA</h1>
+      <h2>Ética no uso de IA</h2>
       <div class="pill" style="border-radius:40px;margin:18px 0 12px">
         <strong>Uso ético de IA nas escolas</strong>3 princípios para o professor
         <div class="flip-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
@@ -636,7 +636,7 @@
 
     <!-- ================= VIÉS ================= -->
     <section class="chapter" id="vies" data-title="Viés algorítmico (Bias)" data-part="Fundamentos">
-      <h1>Viés algorítmico (Bias)</h1>
+      <h2>Viés algorítmico (Bias)</h2>
       <p class="kicker">Como a IA reproduz desigualdades sociais, de gênero e raciais</p>
       <p>A inteligência artificial não cria ideias do vácuo: ela reflete o espelho da internet com a qual foi alimentada. Se a sociedade possui desigualdades históricas, a IA tende a amplificá-las.</p>
       <h3>Principais vieses na IA</h3>
@@ -653,7 +653,7 @@
 
     <!-- ================= DETECTORES ================= -->
     <section class="chapter" id="detectores" data-title="Detectores de IA e seus limites" data-part="Fundamentos">
-      <h1>Detectores de IA e seus limites</h1>
+      <h2>Detectores de IA e seus limites</h2>
       <p>Muitas escolas buscam softwares que prometem identificar "se o trabalho foi feito por inteligência artificial". Do ponto de vista técnico e pedagógico, <span class="u">não é recomendável reprovar ou punir estudantes com base em detectores de IA</span>.</p>
       <h3>Por que os detectores falham?</h3>
       <ol>
@@ -671,7 +671,7 @@
 
     <!-- ================= RISCOS ================= -->
     <section class="chapter" id="riscos" data-title="Riscos" data-part="Fundamentos">
-      <h1>Riscos</h1>
+      <h2>Riscos</h2>
       <p>A IA pode errar com muita convicção, inventando informações, fontes e códigos da BNCC. Por isso, <span class="u">nada do que ela gera deve ser usado sem conferência</span>.</p>
       <p>Há também o risco de expor dados de alunos, como nomes, laudos e trabalhos identificáveis, o que contraria a LGPD e exige tornar anônimo tudo antes de colar em qualquer ferramenta.</p>
       <p>Do ponto de vista pedagógico, aceitar o rascunho pronto afasta o professor das decisões que lhe cabem, e o uso sem critério pelos alunos pode estimular a cópia e reduzir o esforço de pensar. Por isso, a IA deve ser tratada como apoio: ela propõe e o professor confere, ajusta e decide.</p>
@@ -688,7 +688,7 @@
 
     <!-- ================= TESTE ================= -->
     <section class="chapter" id="teste" data-title="Teste rápido" data-part="Fundamentos">
-      <h1>Teste rápido</h1>
+      <h2>Teste rápido</h2>
       <p class="kicker">6 perguntas sobre os fundamentos</p>
       <div class="activity" id="quiz">
         <span class="tag" id="quiz-count">Pergunta 1 de 6</span>
@@ -704,7 +704,7 @@
 
     <!-- ================= PROMPTS ================= -->
     <section class="chapter" id="prompts" data-title="Prompts: o que são e como fazer bem feito?" data-part="Na prática">
-      <h1>Prompts: o que são e como fazer bem feito?</h1>
+      <h2>Prompts: o que são e como fazer bem feito?</h2>
       <p>Prompt é a instrução ou pergunta que você escreve para a IA.</p>
       <p>A qualidade da resposta depende muito da qualidade do prompt. É necessário:</p>
       <ul>
@@ -724,7 +724,7 @@
 
     <!-- ================= SUPERDICAS ================= -->
     <section class="chapter" id="superdicas" data-title="Superdicas" data-part="Na prática">
-      <h1>Superdicas</h1>
+      <h2>Superdicas</h2>
       <h3>8 dicas que melhoram qualquer prompt</h3>
       <ol>
         <li><strong>Conte o contexto.</strong> Quanto mais a IA sabe da sua turma, menos genérica é a resposta.</li>
@@ -775,7 +775,7 @@
 
     <!-- ================= PROMPTS PRONTOS ================= -->
     <section class="chapter" id="prompts-prontos" data-title="Prompts prontos" data-part="Na prática">
-      <h1>Prompts prontos</h1>
+      <h2>Prompts prontos</h2>
       <p class="kicker">Cole, adapte e use. O rascunho é da IA; a decisão é sua.</p>
       <figure class="prompt"><figcaption>Planejar</figcaption><p class="body">Crie uma sequência de 4 aulas de 50 min sobre [tema] para o [ano], com objetivo, atividade de abertura, desenvolvimento e fechamento. Formato: tabela.</p></figure>
       <figure class="prompt"><figcaption>Avaliar</figcaption><p class="body">Crie 8 questões de múltipla escolha sobre [tema]. Os distratores devem refletir erros comuns. Depois revise como um aluno atento e aponte ambiguidades.</p></figure>
@@ -788,7 +788,7 @@
 
     <!-- ================= METODOLOGIAS ================= -->
     <section class="chapter" id="metodologias" data-title="Metodologias ativas" data-part="Na prática">
-      <h1>Metodologias ativas</h1>
+      <h2>Metodologias ativas</h2>
       <p>Metodologias ativas são abordagens de ensino em que o aluno participa do processo de aprendizagem: <span class="u">pesquisa, discute, resolve problemas e produz, em vez de apenas ouvir e copiar</span>. O professor deixa de ser o único transmissor de conteúdo e passa a planejar, mediar e orientar as experiências de aprendizagem.</p>
       <p>A ideia central é que se aprende melhor fazendo, e não apenas recebendo informação. Isso tem raízes em autores como John Dewey, Paulo Freire e Lev Vygotsky, e dialoga com a BNCC, que valoriza o protagonismo do estudante e o desenvolvimento de competências, não só a memorização de conteúdos.</p>
       <div class="table-wrap">
@@ -819,7 +819,7 @@
 
     <!-- ================= PLANOS ================= -->
     <section class="chapter" id="planos" data-title="Planos de aula" data-part="Na prática">
-      <h1>Planos de aula</h1>
+      <h2>Planos de aula</h2>
       <div class="two-col">
         <div>
           <p>O plano de aula organiza o que será ensinado, como e em quanto tempo.</p>
@@ -850,7 +850,7 @@
 
     <!-- ================= ANEXOS ================= -->
     <section class="chapter" id="anexos" data-title="Adicionando modelos de plano de aula" data-part="Na prática">
-      <h1>Adicionando modelos de plano de aula</h1>
+      <h2>Adicionando modelos de plano de aula</h2>
       <p class="kicker">ou outros anexos</p>
       <div class="two-col" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
         <ol class="steps">
@@ -870,7 +870,7 @@
 
     <!-- ================= MATERIAIS DIDÁTICOS ================= -->
     <section class="chapter" id="materiais" data-title="Materiais didáticos" data-part="Na prática">
-      <h1>Materiais didáticos</h1>
+      <h2>Materiais didáticos</h2>
       <p>Material didático é tudo o que apoia a aprendizagem além da fala do professor.</p>
       <p>A IA ajuda a criar a primeira versão e a gerar variações de formato com rapidez.</p>
       <h3>Prompts para testar</h3>
@@ -885,7 +885,7 @@
 
     <!-- ================= INTERATIVOS ================= -->
     <section class="chapter" id="interativos" data-title="Materiais interativos" data-part="Na prática">
-      <h1>Materiais interativos</h1>
+      <h2>Materiais interativos</h2>
       <p class="kicker">Passo a passo para criar seus próprios jogos, sites, flash cards e o que mais a imaginação permitir.</p>
       <ol class="steps">
         <li>Escreva o prompt pedindo "um único arquivo HTML". A IA vai responder com um bloco de código. Clique em "Copiar" no canto do bloco, ou selecione tudo, do começo ao fim, e use Ctrl+C.</li>
@@ -918,7 +918,7 @@
 
     <!-- ================= INTERATIVOS: PROMPTS ================= -->
     <section class="chapter" id="interativos-prompts" data-title="Prompts para testar materiais interativos" data-part="Na prática">
-      <h1>Prompts para testar</h1>
+      <h2>Prompts para testar</h2>
       <p class="kicker">Materiais interativos em HTML</p>
       <figure class="prompt"><figcaption>1. Quiz interativo com feedback</figcaption><p class="body">Crie um quiz interativo em HTML sobre [tema] para o [ano], com 8 questões de múltipla escolha. Mostre se a resposta está certa ou errada na hora, com uma explicação curta, e no final exiba a pontuação e os temas para revisar. Arquivo único, funcionando offline, sem pedir nome nem coletar dados.</p></figure>
       <figure class="prompt"><figcaption>2. Simulador de um conceito</figcaption><p class="body">Crie um simulador interativo sobre [conceito, como movimento, juros, ecossistema ou frações] para alunos do [ano]. Inclua controles (barras e botões) para o aluno alterar os valores e ver o resultado mudar na tela, com um texto curto explicando o que está acontecendo.</p></figure>
@@ -940,7 +940,7 @@
 
     <!-- ================= EXERCÍCIOS ================= -->
     <section class="chapter" id="exercicios" data-title="Exercícios" data-part="Na prática">
-      <h1>Exercícios</h1>
+      <h2>Exercícios</h2>
       <div class="two-col">
         <div>
           <p>Exercício não é só lista de questões. Uma boa atividade pode ser uma investigação, um estudo de caso, um jogo, um debate ou uma produção.</p>
@@ -973,7 +973,7 @@
 
     <!-- ================= LETRAMENTO ================= -->
     <section class="chapter" id="letramento" data-title="Atividades para início do letramento digital" data-part="Na prática">
-      <h1>Atividades para início do letramento digital</h1>
+      <h2>Atividades para início do letramento digital</h2>
       <h3>Atividade 1: "O tribunal da máquina" (caça aos erros)</h3>
       <p><span class="u">Como aplicar</span>: O professor gera um texto intencionalmente impreciso sobre o conteúdo de aula usando a IA.</p>
       <p><span class="u">Comando para os alunos</span>: "A IA gerou esta explicação histórica/científica com 3 informações falsas e 1 fonte inventada. Em duplas e usando os livros didáticos da biblioteca, identifiquem os 4 erros e reescrevam o texto corrigido."</p>
@@ -999,7 +999,7 @@
 
     <!-- ================= AEE ================= -->
     <section class="chapter" id="aee" data-title="Facilitando o AEE" data-part="Na prática">
-      <h1>Facilitando o AEE</h1>
+      <h2>Facilitando o AEE</h2>
       <p>A IA é uma ferramenta poderosa para o Atendimento Educacional Especializado (AEE) e para o Desenho Universal para a Aprendizagem (DUA), desde que respeitada a regra de ouro: <strong>NUNCA insira nomes de alunos, diagnósticos nominais ou laudos médicos.</strong> Trabalhe sempre com barreiras de aprendizagem e personas fictícias.</p>
       <h3>Caso 1: Aluno com TDAH</h3>
       <p class="kicker" style="margin-bottom:8px">Barreira: sobrecarga visual e foco executivo</p>
@@ -1028,7 +1028,7 @@ Texto: [cole aqui].</p></figure>
 
     <!-- ================= COMUNICAÇÃO ================= -->
     <section class="chapter" id="comunicacao" data-title="Gestão e comunicação escolar empática" data-part="Na prática">
-      <h1>Gestão e comunicação escolar empática</h1>
+      <h2>Gestão e comunicação escolar empática</h2>
       <div class="two-col">
         <div>
           <h3 style="margin-top:0">Passo a passo</h3>
@@ -1060,7 +1060,7 @@ Texto: [cole aqui].</p></figure>
 
     <!-- ================= REFERÊNCIAS ================= -->
     <section class="chapter refs" id="referencias" data-title="Referências" data-part="Na prática">
-      <h1>Referências</h1>
+      <h2>Referências</h2>
       <p>BRASIL. Ministério da Educação. <strong>Base Nacional Comum Curricular</strong>. Brasília: MEC, 2018. Disponível em: <a href="http://basenacionalcomum.mec.gov.br/" target="_blank" rel="noopener">http://basenacionalcomum.mec.gov.br/</a>. Acesso em: 23 out. 2026.</p>
       <p>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. <strong>Lei Geral de Proteção de Dados Pessoais (LGPD)</strong>. Brasília, DF: Presidência da República, 2018. Disponível em: <a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener">https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm</a>. Acesso em: 23 out. 2026.</p>
       <p>UNESCO. <strong>Guidance for generative AI in education and research</strong>. Paris: UNESCO, 2023. ISBN 978-92-3-100612-8. Disponível em: <a href="https://unesdoc.unesco.org/ark:/48223/pf0000386693" target="_blank" rel="noopener">https://unesdoc.unesco.org/ark:/48223/pf0000386693</a>. Acesso em: 23 out. 2026.</p>
@@ -1068,7 +1068,7 @@ Texto: [cole aqui].</p></figure>
 
     <!-- ================= GLOSSÁRIO ================= -->
     <section class="chapter" id="glossario" data-title="Glossário" data-part="Guia de bolso">
-      <h1>Glossário</h1>
+      <h2>Glossário</h2>
       <p class="kicker">Principais termos</p>
       <label class="sr-only" for="gloss-search">Buscar termo</label>
       <input class="search" id="gloss-search" type="search" placeholder="Buscar termo… (ex.: token)">
@@ -1077,28 +1077,28 @@ Texto: [cole aqui].</p></figure>
 
     <!-- ================= USO PELOS ALUNOS ================= -->
     <section class="chapter" id="alunos" data-title="Uso da IA pelos alunos" data-part="Guia de bolso">
-      <h1>Uso da IA pelos alunos</h1>
+      <h2>Uso da IA pelos alunos</h2>
       <p style="font-size:15px;color:var(--ink-2)">Toque em uma situação para ver o que fazer e um exemplo prático.</p>
       <div id="alunos-list"></div>
     </section>
 
     <!-- ================= ASSISTENTES ================= -->
     <section class="chapter" id="assistentes" data-title="Assistentes de uso geral" data-part="Guia de bolso">
-      <h1>Assistentes de uso geral</h1>
+      <h2>Assistentes de uso geral</h2>
       <div class="tool-cards" id="assist-list"></div>
     </section>
 
     <!-- ================= FERRAMENTAS ================= -->
     <section class="chapter" id="ferramentas" data-title="Ferramentas para educação" data-part="Guia de bolso">
-      <h1>Ferramentas para educação</h1>
+      <h2>Ferramentas para educação</h2>
       <div class="tool-cards" id="tools-list"></div>
     </section>
 
     <!-- ================= AUTORA ================= -->
     <section class="chapter" id="autora" data-title="Sobre a autora" data-part="Guia de bolso">
-      <h1>Sobre a autora</h1>
+      <h2>Sobre a autora</h2>
       <p>Júlia Roberta Quoos Alves une tecnologia e educação. No mestrado em Ciência da Computação, na Universidade Federal de Santa Maria (UFSM), desenvolveu uma pesquisa sobre inteligência artificial para auxiliar pessoas com deficiência visual, usando deep learning e visão computacional.</p>
-      <p>Formada em Ciência da Computação, Administração e Marketing na UNISC, também tem quatro pós-graduações voltadas à educação: robótica educacional, tecnologias educacionais, gestão escolar e atendimento educacional especializado (AEE). Passou por experiências em engenharia de dados e em pesquisa em IA, e atua como professora de informática, além de ministrar oficinas de formação continuada para professores da rede municipal.</p>
+      <p>Licenciada em Informática e formada em Ciência da Computação, Administração e Marketing na UNISC, também tem quatro pós-graduações voltadas à educação: robótica educacional, tecnologias educacionais, gestão escolar e atendimento educacional especializado (AEE). Passou por experiências em engenharia de dados e em pesquisa em IA, e atua como professora de informática, além de ministrar oficinas de formação continuada para professores da rede municipal.</p>
       <div style="text-align:right;margin-top:30px">
         <a href="https://ohtopico.com.br/" style="font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:clamp(30px,7vw,44px);line-height:1.05;display:inline-block">Júlia<br>Roberta<br>Quoos<br>Alves</a>
         <div style="font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;margin-top:4px">clique!</div>
