@@ -47,6 +47,8 @@ SCRIPT_TOPO = ("<script>try { const t = JSON.parse(localStorage.getItem('iaprapr
 VERSAO_CSS = hashlib.md5((AQUI / 'blog.css').read_bytes() + (AQUI / 'blog.js').read_bytes()).hexdigest()[:10]
 
 esc = html.escape
+# Largura das miniaturas da grade do blog (o dobro do tamanho na tela, para ficar nítida em telas de alta densidade)
+MINI_LARGURA = 480
 
 
 def data_extenso(d):
@@ -237,6 +239,18 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 '''
 
 
+def seletor(rotulo, padrao, nome_padrao, opcoes):
+    """Botões que escolhem uma seção da página (blog: categoria; biblioteca: disciplina).
+    Sem JavaScript são links para as seções, e todo o conteúdo continua na página (indexável).
+    Com JavaScript (blog.js), mostram só a seção escolhida; padrao é a opção marcada ao abrir
+    ('todos' mostra todas as seções, dentro do elemento id="todos")."""
+    botoes = ([('todos', nome_padrao)] if nome_padrao else []) + opcoes
+    itens = ''.join(f'<li><a class="botao-secao" href="#{v}" data-secao="{v}">{esc(n)}</a></li>'
+                    for v, n in botoes)
+    return (f'<nav class="seletor" aria-label="{esc(rotulo)}" data-seletor data-padrao="{padrao}">'
+            f'<ul>{itens}</ul></nav>')
+
+
 def figura(post, img_dim):
     w, h = img_dim
     return (f'<figure class="infografico">\n'
@@ -387,12 +401,10 @@ def pagina_indice(cfg, publicados):
     def cartao(p):
         miniatura = Path(p['imagem']).stem + '-mini.webp'
         return f'''            <li class="cartao">
-                <img src="/blog/img/{miniatura}" alt="Miniatura do infográfico: {esc(p["legenda"])}" width="240" height="300" loading="lazy" decoding="async">
-                <div>
-                    <p class="rotulo"><time datetime="{p["data"]}">{data_extenso(p["data"])}</time></p>
-                    <h3><a href="/blog/{p["slug"]}/">{esc(p["titulo"])}</a></h3>
-                    <p>{esc(p["descricao"])}</p>
-                </div>
+                <a href="/blog/{p["slug"]}/">
+                    <img src="/blog/img/{miniatura}" alt="Infográfico do post: {esc(p["legenda"])}" width="{MINI_LARGURA}" height="{round(MINI_LARGURA * 1.25)}" loading="lazy" decoding="async">
+                    <h3>{esc(p["titulo"])}</h3>
+                </a>
             </li>'''
     secoes = []
     for p in reversed(publicados):
@@ -403,7 +415,7 @@ def pagina_indice(cfg, publicados):
         lista = '\n'.join(cartao(p) for p in reversed(publicados) if p['secao'] == sec)
         blocos.append(f'''    <section class="tema" id="{slug_secao(sec)}" aria-labelledby="t-{slug_secao(sec)}">
         <h2 class="tema-titulo" id="t-{slug_secao(sec)}">{esc(sec)}</h2>
-        <ul class="lista-posts">
+        <ul class="grade-posts">
 {lista}
         </ul>
     </section>''')
@@ -411,7 +423,10 @@ def pagina_indice(cfg, publicados):
     <p class="rotulo">Blog</p>
     <h1>Formação de professores em <span class="marca">IA</span>, na prática</h1>
     <p class="linha-fina">Textos curtos de Júlia Roberta Quoos Alves para professores, coordenadores e redes de ensino: como começar a usar inteligência artificial com segurança, prompts prontos e Computação na BNCC.</p>
+{seletor('Categorias do blog', 'todos', 'Todos os posts', [(slug_secao(s), s) for s in secoes])}
+    <div id="todos">
 {chr(10).join(blocos)}
+    </div>
     <section class="chamada" aria-labelledby="chamada-mentoria">
         <h2 id="chamada-mentoria">Quer levar isso para a sua escola?</h2>
         <p>Faço mentoria individual, oficinas para equipes e <a href="/formacao-continuada/">formação continuada para escolas e redes de ensino</a>.</p>
@@ -576,18 +591,17 @@ def pagina_prompts(cfg):
     total = sum(len(g['prompts']) for g in bib['grupos'])
     opcoes = lambda pares: ''.join(f'<option value="{v}">{esc(n)}</option>' for v, n in pares)
     disciplinas = [(slug_secao(g['disciplina']), g['disciplina']) for g in bib['grupos']]
-    filtros = f'''<div class="filtros" id="filtros" role="search" aria-label="Filtrar prompts" hidden>
+    filtros = f'''<div class="filtros" id="filtros" role="search" aria-label="Filtrar prompts da disciplina" hidden>
 <div class="filtros-campos">
-<label for="f-disciplina">Disciplina<select id="f-disciplina"><option value="">Todas</option>{opcoes(disciplinas)}</select></label>
 <label for="f-etapa">Etapa<select id="f-etapa"><option value="">Todas</option>{opcoes(etapas.items())}</select></label>
 <label for="f-tipo">Para quê<select id="f-tipo"><option value="">Tudo</option>{opcoes(tipos.items())}</select></label>
-<label for="f-busca">Palavra<input type="search" id="f-busca" placeholder="frações, Scratch, rubrica" autocomplete="off"></label>
+<label for="f-busca">Palavra-chave<input type="search" id="f-busca" placeholder="busca em todas as disciplinas" autocomplete="off"></label>
 </div>
 <div class="filtros-rodape"><p id="f-status" aria-live="polite">{total} prompts encontrados</p><button type="button" class="btn98" id="f-limpar">Limpar filtros</button></div>
 </div>'''
-    sumario = ('<nav aria-label="Disciplinas da biblioteca"><ul class="sumario-prompts">'
-               + ''.join(f'<li><a href="#{v}">{esc(n)}</a></li>' for v, n in disciplinas)
-               + '</ul></nav>')
+    # A disciplina se escolhe primeiro; a padrão é a primeira do prompts.json ("Para todas as disciplinas")
+    sumario = ('<h2 class="seletor-titulo" id="escolha-disciplina">Escolha a disciplina</h2>\n'
+               + seletor('Disciplinas da biblioteca', disciplinas[0][0], None, disciplinas))
     secoes, itens_ld = [], []
     for g in bib['grupos']:
         gid = slug_secao(g['disciplina'])
@@ -610,7 +624,7 @@ def pagina_prompts(cfg):
             })
         secoes.append(f'<section class="grupo-prompts" id="{gid}" aria-labelledby="{gid}-titulo">\n'
                       f'<h2 id="{gid}-titulo">{esc(g["disciplina"])}</h2>\n' + '\n'.join(artigos) + '\n</section>')
-    bloco = (filtros + '\n' + sumario + '\n<p class="sem-resultado" id="f-vazio" hidden>Nenhum prompt com esses filtros. '
+    bloco = (sumario + '\n' + filtros + '\n<p class="sem-resultado" id="f-vazio" hidden>Nenhum prompt com esses filtros. '
              'Tente outra etapa ou limpe os filtros.</p>\n' + '\n'.join(secoes))
     corpo = (AQUI / 'conteudo' / 'biblioteca-prompts.html').read_text(encoding='utf-8').strip().replace('<!--PROMPTS-->', bloco)
     titulo = 'Biblioteca de prompts para professores'
@@ -771,8 +785,12 @@ def main():
             shutil.copy(origem, destino)
         with Image.open(origem) as im:
             dims[nome] = im.size
-            if mudou or not mini.exists():
-                im.convert('RGB').resize((240, round(240 * im.size[1] / im.size[0])), Image.LANCZOS).save(mini, 'WEBP', quality=82)
+            refazer = mudou or not mini.exists()
+            if not refazer:
+                with Image.open(mini) as m:
+                    refazer = m.width != MINI_LARGURA
+            if refazer:
+                im.convert('RGB').resize((MINI_LARGURA, round(MINI_LARGURA * im.size[1] / im.size[0])), Image.LANCZOS).save(mini, 'WEBP', quality=80)
 
     tamanhos = {}
     for p in publicados:
