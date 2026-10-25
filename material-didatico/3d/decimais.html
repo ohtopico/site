@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material Dourado 3D · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Material Dourado em 3D para números decimais: cubo, placa, barra e cubinho como inteiro, décimo, centésimo e milésimo. Trocas, frações decimais e desafios. BNCC EF06MA01, EF06MA02, EF06MA08, EF06MA11.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/decimais.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>O cubo grande vale <strong>1 inteiro</strong>. A placa é a décima parte do cubo (<strong>0,1</strong>), a barra é a centésima parte (<strong>0,01</strong>) e o cubinho é a milésima parte (<strong>0,001</strong>). Use os botões + e − para montar números, e as trocas para ver que 10 peças de um tipo formam uma peça do tipo maior.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="livre" aria-pressed="true">Montar livre</button>
+      <button type="button" data-modo="desafio" aria-pressed="false">Desafios</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="pecas"></div>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="agrupar">Trocar 10 peças por 1 maior</button>
+          <button class="btn ghost" type="button" id="desagrupar">Trocar 1 peça por 10 menores</button>
+          <button class="btn ghost" type="button" id="zerar">Recomeçar</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Número montado</h3>
+          <p class="grande" id="num">0</p>
+          <div class="conta" id="conta"></div>
+          <p class="small" id="leitura"></p>
+          <div id="caixa-desafio" hidden>
+            <h3 style="margin-top:14px">Desafio</h3>
+            <p id="desafio-txt"></p>
+            <button class="btn" type="button" id="conferir">Conferir</button>
+            <button class="btn ghost" type="button" id="proximo">Outro desafio</button>
+            <p class="small muted" id="placar"></p>
+          </div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>cubo = 1 inteiro</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>placa = 0,1 = 1/10</li>
+            <li><span class="sw" style="background:#9fdab4"></span>barra = 0,01 = 1/100</li>
+            <li><span class="sw" style="background:#c8323f"></span>cubinho = 0,001 = 1/1000</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> rotação por estações. Uma estação usa este recurso no projetor ou em duplas; outra usa o Material Dourado de madeira (ou recortado em papel quadriculado); a terceira registra as trocas no quadro valor de lugar.</p>
+    <ol>
+      <li>Peça que montem 0,3 e depois 0,30. Pergunte: o número mudou? O que mudou foi a forma de representar (3 placas ou 30 barras).</li>
+      <li>Monte 0,8 e 0,25 e pergunte qual é maior. Muitos estudantes dizem 0,25 “porque 25 é maior que 8”; as peças mostram o contrário.</li>
+      <li>Monte 1,5 e mostre a fração 15/10 = 3/2. Relacione com a reta numérica.</li>
+      <li>Feche com a pergunta: por que 10 é o número das trocas? (valor posicional, base 10).</li>
+    </ol>
+    <p class="small muted">Habilidades: EF06MA01, EF06MA02, EF06MA08 e EF06MA11. Material concreto equivalente: Material Dourado com o cubo grande valendo 1.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-decimais');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, fmt, mdc } from '../assets/lab3d.js';
+
+const CEL = 0.22;               // aresta do cubinho na cena
+const TIPOS = [
+  { k: 'cubo',  nome: 'cubo', plural: 'cubos', valor: 1, dim: [10, 10, 10], cor: COR.verde, max: 3 },
+  { k: 'placa', nome: 'placa', plural: 'placas', valor: 0.1, dim: [10, 1, 10], cor: COR.amarelo, max: 19 },
+  { k: 'barra', nome: 'barra', plural: 'barras', valor: 0.01, dim: [10, 1, 1], cor: COR.verdeClaro, max: 19 },
+  { k: 'cubinho', nome: 'cubinho', plural: 'cubinhos', valor: 0.001, dim: [1, 1, 1], cor: COR.vermelho, max: 19 }
+];
+const qtd = { cubo: 0, placa: 0, barra: 0, cubinho: 0 };
+const $ = s => document.querySelector(s);
+
+const cena = lab3d($('#palco'), { cam: [1.8, 8.5, 13.5], alvo: [1.8, 0.6, -0.6], min: 4, max: 28 });
+botoesCamera(cena);
+
+const grupos = {};
+const X0 = { cubo: -3.4, placa: 0.1, barra: 3.4, cubinho: 6.7 };
+if (cena) {
+  TIPOS.forEach(t => { grupos[t.k] = new cena.THREE.Group(); grupos[t.k].position.x = X0[t.k]; cena.add(grupos[t.k]); });
+  // rótulos das colunas (quadro valor de lugar)
+  [['Inteiros', -2.3], ['Décimos', 1.2], ['Centésimos', 4.5], ['Milésimos', 7.0]].forEach(([t, x]) => {
+    const r = cena.rotulo(t, { tam: 0.42 }); r.position.set(x, 0.2, 3.3); cena.add(r);
+  });
+}
+
+function desenha() {
+  if (!cena) return;
+  TIPOS.forEach(t => {
+    const g = grupos[t.k];
+    cena.limpar(g);
+    for (let i = 0; i < qtd[t.k]; i++) {
+      const m = cena.blocoGrade(t.dim[0], t.dim[1], t.dim[2], CEL, t.cor);
+      if (t.k === 'cubo') m.position.set(0, 0, -2.4 * i + 0.4);
+      else if (t.k === 'placa') m.position.set(0, (i % 10) * CEL * 1.15, i < 10 ? -1.2 : -3.8);
+      else if (t.k === 'barra') m.position.set(0, Math.floor(i / 10) * CEL * 1.2, -2 + (i % 10) * CEL * 1.35);
+      else m.position.set((i % 2) * CEL * 1.6, 0, -2 + Math.floor(i / 2) * CEL * 1.6);
+      if (t.k === 'barra') { m.rotation.y = 0; }
+      g.add(m);
+    }
+  });
+  cena.pedeQuadro();
+}
+
+/* Valor em milésimos (inteiro, para não ter erro de arredondamento) */
+const milesimos = () => qtd.cubo * 1000 + qtd.placa * 100 + qtd.barra * 10 + qtd.cubinho;
+const decimal = m => (m / 1000).toLocaleString('pt-BR', { minimumFractionDigits: m % 1000 ? (m % 10 ? 3 : m % 100 ? 2 : 1) : 0, maximumFractionDigits: 3 });
+
+const UN = ['', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze', 'treze', 'catorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove'];
+const DZ = ['', '', 'vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa'];
+const CT = ['', 'cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos'];
+function extenso(n) {
+  if (n === 0) return 'zero';
+  if (n === 100) return 'cem';
+  const c = Math.floor(n / 100), r = n % 100, partes = [];
+  if (c) partes.push(CT[c]);
+  if (r) partes.push(r < 20 ? UN[r] : DZ[Math.floor(r / 10)] + (r % 10 ? ' e ' + UN[r % 10] : ''));
+  return partes.join(' e ');
+}
+function leitura(m) {
+  const int = Math.floor(m / 1000), dec = m % 1000;
+  const casas = dec === 0 ? 0 : dec % 10 ? 3 : dec % 100 ? 2 : 1;
+  const nomeCasa = ['', 'décimo', 'centésimo', 'milésimo'][casas];
+  const v = casas === 3 ? dec : casas === 2 ? dec / 10 : dec / 100;
+  const p1 = int ? `${extenso(int)} ${int === 1 ? 'inteiro' : 'inteiros'}` : '';
+  const p2 = dec ? `${extenso(v)} ${nomeCasa}${v > 1 ? 's' : ''}` : '';
+  return [p1, p2].filter(Boolean).join(' e ') || 'zero';
+}
+
+function atualiza() {
+  const m = milesimos();
+  $('#num').textContent = decimal(m);
+  const g = mdc(m, 1000) || 1;
+  const partes = TIPOS.filter(t => qtd[t.k]).map(t => `${qtd[t.k]} × ${t.valor.toLocaleString('pt-BR')}`);
+  $('#conta').textContent = (partes.length ? partes.join(' + ') : '0') + `\n= ${m}/1000` + (g > 1 && m ? ` = ${m / g}/${1000 / g}` : '');
+  $('#leitura').textContent = 'Leitura: ' + leitura(m) + '.';
+  document.querySelectorAll('[data-k]').forEach(b => {
+    const t = TIPOS.find(x => x.k === b.dataset.k);
+    b.disabled = b.dataset.d === '+' ? qtd[t.k] >= t.max : qtd[t.k] <= 0;
+  });
+  const podeAgrupar = TIPOS.slice(1).some(t => qtd[t.k] >= 10) ;
+  $('#agrupar').disabled = !podeAgrupar;
+  $('#desagrupar').disabled = !TIPOS.slice(0, 3).some((t, i) => qtd[t.k] > 0 && qtd[TIPOS[i + 1].k] <= TIPOS[i + 1].max - 10);
+  cena && cena.descrever(`Material Dourado com ${TIPOS.map(t => `${qtd[t.k]} ${qtd[t.k] === 1 ? t.nome : t.plural}`).join(', ')}. O número montado é ${decimal(m)}.`);
+  desenha();
+}
+
+$('#pecas').innerHTML = TIPOS.map(t => `
+  <span class="chips" role="group" aria-label="${t.plural}">
+    <button class="btn ghost" type="button" data-k="${t.k}" data-d="-" aria-label="Tirar ${t.nome}">− ${t.nome}</button>
+    <button class="btn" type="button" data-k="${t.k}" data-d="+" aria-label="Pôr ${t.nome}">+ ${t.nome}</button>
+  </span>`).join('');
+document.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => {
+  qtd[b.dataset.k] += b.dataset.d === '+' ? 1 : -1; $('#fb').textContent = ''; atualiza();
+}));
+
+$('#agrupar').onclick = () => {
+  for (let i = TIPOS.length - 1; i > 0; i--) {
+    const t = TIPOS[i], maior = TIPOS[i - 1];
+    if (qtd[t.k] >= 10 && qtd[maior.k] < maior.max) {
+      qtd[t.k] -= 10; qtd[maior.k] += 1;
+      $('#fb').className = 'feedback ok';
+      $('#fb').textContent = `10 ${t.plural} viraram 1 ${maior.nome}. O número continua o mesmo: ${decimal(milesimos())}.`;
+      atualiza(); return;
+    }
+  }
+};
+$('#desagrupar').onclick = () => {
+  for (let i = 0; i < TIPOS.length - 1; i++) {
+    const t = TIPOS[i], menor = TIPOS[i + 1];
+    if (qtd[t.k] > 0 && qtd[menor.k] <= menor.max - 10) {
+      qtd[t.k] -= 1; qtd[menor.k] += 10;
+      $('#fb').className = 'feedback ok';
+      $('#fb').textContent = `1 ${t.nome} virou 10 ${menor.plural}. O número continua o mesmo: ${decimal(milesimos())}.`;
+      atualiza(); return;
+    }
+  }
+};
+$('#zerar').onclick = () => { Object.keys(qtd).forEach(k => qtd[k] = 0); $('#fb').textContent = ''; atualiza(); };
+
+/* ---------- desafios ---------- */
+const DESAFIOS = [
+  { txt: 'Monte o número 0,5.', alvo: 500 },
+  { txt: 'Monte 1,25 usando um cubo, placas e barras.', alvo: 1250 },
+  { txt: 'Monte três quartos de um inteiro (3/4).', alvo: 750 },
+  { txt: 'Monte 0,07. Cuidado: não é 0,7.', alvo: 70 },
+  { txt: 'Monte 2,035.', alvo: 2035 },
+  { txt: 'Monte um quinto (1/5) de um inteiro.', alvo: 200 },
+  { txt: 'Monte 0,3 usando só barras.', alvo: 300, so: 'barra' },
+  { txt: 'Monte metade de 0,1.', alvo: 50 },
+  { txt: 'Monte 1,1 − 0,25.', alvo: 850 },
+  { txt: 'Monte 3 × 0,12.', alvo: 360 }
+];
+let di = 0, acertos = 0, feitos = 0, modo = 'livre';
+function mostraDesafio() { $('#desafio-txt').textContent = DESAFIOS[di].txt; $('#placar').textContent = `Acertos: ${acertos} de ${feitos}`; }
+$('#conferir').onclick = () => {
+  const d = DESAFIOS[di], m = milesimos();
+  const okSo = !d.so || TIPOS.every(t => t.k === d.so || qtd[t.k] === 0);
+  feitos++;
+  if (m === d.alvo && okSo) {
+    acertos++; $('#fb').className = 'feedback ok'; $('#fb').textContent = `Correto: ${decimal(m)}.`;
+    window.MDP && MDP.registrar('3d-decimais', Math.round(100 * acertos / Math.max(feitos, 1)));
+  } else {
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = m === d.alvo ? 'O valor está certo, mas use só o tipo de peça pedido. Experimente as trocas.' : `Você montou ${decimal(m)}. ${m > d.alvo ? 'Passou do valor.' : 'Ainda falta.'}`;
+  }
+  mostraDesafio();
+};
+$('#proximo').onclick = () => { di = (di + 1) % DESAFIOS.length; $('#zerar').onclick(); mostraDesafio(); };
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => {
+  modo = b.dataset.modo;
+  document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  $('#caixa-desafio').hidden = modo !== 'desafio';
+  if (modo === 'desafio') { $('#zerar').onclick(); mostraDesafio(); }
+}));
+
+qtd.cubo = 1; qtd.placa = 2; qtd.barra = 3; qtd.cubinho = 4;
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

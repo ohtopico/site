@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ladrilhos e Ângulos · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Ladrilhe o plano com polígonos regulares em 3D e descubra a soma dos ângulos internos por triangulação. BNCC EF07MA27, EF07MA24, EF06MA18.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/ladrilhos.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Ladrilhar:</strong> coloque polígonos regulares em volta do mesmo ponto, um encostado no outro. Se a soma dos ângulos em volta do ponto der exatamente 360°, os ladrilhos fecham sem buracos e sem sobrepor. <strong>Soma dos ângulos:</strong> divida um polígono em triângulos a partir de um vértice e descubra a soma dos ângulos internos.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="lad" aria-pressed="true">Ladrilhar em volta de um ponto</button>
+      <button type="button" data-modo="soma" aria-pressed="false">Soma dos ângulos internos</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="t-lad"></div>
+        <div class="tools" id="t-lad2">
+          <button class="btn ghost" type="button" id="desfaz">Tirar o último</button>
+          <button class="btn ghost" type="button" id="limpa">Recomeçar</button>
+        </div>
+        <div class="tools" id="t-soma" hidden>
+          <button class="btn ghost" type="button" id="menos">− lados</button>
+          <button class="btn ghost" type="button" id="mais">+ lados</button>
+          <button class="btn" type="button" id="separa">Separar os triângulos</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <p class="grande" id="tot"></p>
+          <div class="conta" id="conta"></div>
+          <div id="caixa-des">
+            <h3 style="margin-top:14px">Desafios</h3>
+            <ol class="desafios" id="desafios"></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> ateliê de mosaicos (aprendizagem baseada em projetos com arte). Os grupos investigam quais polígonos ladrilham, registram as combinações que fecham e criam um mosaico em papel para expor na escola, ligando Matemática e Arte como pede a BNCC (EF07MA27).</p>
+    <ol>
+      <li>Por que o hexágono ladrilha e o pentágono não? Escreva a soma: 108 + 108 + 108 = 324 e 4 × 108 = 432.</li>
+      <li>Encontre combinações com dois polígonos diferentes: 2 octógonos e 1 quadrado; 2 dodecágonos e 1 triângulo; 3 triângulos e 2 quadrados.</li>
+      <li>No modo soma, o polígono de n lados se divide em n − 2 triângulos. Daí vem a soma (n − 2) × 180°.</li>
+      <li>Relacione com o triângulo: a soma 180° pode ser verificada recortando os três cantos de um triângulo de papel e juntando-os (EF07MA24).</li>
+    </ol>
+    <p class="small muted">Habilidades: EF07MA27, EF07MA24 e EF06MA18. Material concreto equivalente: polígonos regulares de papel cartão com o mesmo lado.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-ladrilhos');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const LADO = 2.2;
+const cena = lab3d($('#palco'), { cam: [0, 13, 9], alvo: [0, 0, 0], min: 5, max: 40 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let g = null; if (cena) { g = new T.Group(); cena.add(g); }
+const POL = { 3: ['triângulo', COR.amarelo], 4: ['quadrado', COR.verde], 5: ['pentágono', COR.vermelhoClaro], 6: ['hexágono', COR.verdeClaro], 8: ['octógono', COR.amareloClaro], 12: ['dodecágono', '#d9d9d6'] };
+const ang = n => (n - 2) * 180 / n;
+let modo = 'lad', lista = [], nSoma = 6, aberto = false;
+
+function vertices(n, th0) {
+  const pts = [[0, 0]]; let d = th0, p = [0, 0];
+  const ext = 180 - ang(n);
+  for (let i = 1; i < n; i++) {
+    p = [p[0] + LADO * Math.cos(d * Math.PI / 180), p[1] + LADO * Math.sin(d * Math.PI / 180)];
+    pts.push(p); d += ext;
+  }
+  return pts;
+}
+function desenhaLad() {
+  cena.limpar(g);
+  let th = 0;
+  lista.forEach((n, i) => {
+    const pass = th + ang(n) > 360.01;
+    const pr = cena.prisma(vertices(n, th).map(([x, y]) => [x, -y]), 0.25, pass ? COR.vermelho : POL[n][1], { mat: pass ? { transparent: true, opacity: 0.75 } : {} });
+    pr.position.y = i * 0.01; g.add(pr);
+    // rótulo do ângulo perto do vértice comum
+    const meio = (th + ang(n) / 2) * Math.PI / 180;
+    const r = cena.rotulo(`${Math.round(ang(n) * 10) / 10}°`, { tam: 0.4 }); r.position.set(Math.cos(meio) * 1.1, 0.6, -Math.sin(meio) * 1.1); g.add(r);
+    th += ang(n);
+  });
+  const ponto = cena.cilindro(0.12, 0.4, COR.tinta); g.add(ponto);
+}
+function desenhaSoma() {
+  cena.limpar(g);
+  const n = nSoma, R = 3.2;
+  const P = Array.from({ length: n }, (_, i) => { const a = (90 + 360 * i / n) * Math.PI / 180; return [R * Math.cos(a), -R * Math.sin(a)]; });
+  const cores = [COR.verde, COR.amarelo, COR.verdeClaro, COR.vermelhoClaro];
+  for (let k = 1; k < n - 1; k++) {
+    const tri = [P[0], P[k], P[k + 1]];
+    const c = [(tri[0][0] + tri[1][0] + tri[2][0]) / 3, (tri[0][1] + tri[1][1] + tri[2][1]) / 3];
+    const m = cena.prisma(tri, 0.3, cores[(k - 1) % 4]);
+    m.userData.fora = [c[0] * 0.35, 0, c[1] * 0.35];
+    if (aberto) m.position.set(...m.userData.fora);
+    g.add(m);
+    const r = cena.rotulo('180°', { tam: 0.38 }); r.position.set(c[0] + (aberto ? c[0] * 0.35 : 0), 0.7, c[1] + (aberto ? c[1] * 0.35 : 0)); g.add(r);
+  }
+}
+const DES = [
+  ['Feche o ponto só com triângulos.', l => l.length === 6 && l.every(n => n === 3)],
+  ['Feche o ponto só com hexágonos.', l => l.length === 3 && l.every(n => n === 6)],
+  ['Feche o ponto com dois tipos de polígono diferentes.', l => new Set(l).size >= 2],
+  ['Tente fechar só com pentágonos. Explique o que acontece.', l => l.length >= 4 && l.every(n => n === 5)],
+  ['Feche o ponto usando um dodecágono.', l => l.includes(12)]
+];
+const feitos = new Set();
+function atualiza() {
+  $('#t-lad').hidden = $('#t-lad2').hidden = $('#caixa-des').hidden = modo !== 'lad';
+  $('#t-soma').hidden = modo !== 'soma';
+  if (modo === 'lad') {
+    cena && desenhaLad();
+    const soma = lista.reduce((s, n) => s + ang(n), 0);
+    $('#tot').textContent = `${Math.round(soma * 10) / 10}° de 360°`;
+    $('#conta').textContent = lista.length ? lista.map(n => `${POL[n][0]}: ${Math.round(ang(n) * 10) / 10}°`).join('\n') + `\nsoma = ${Math.round(soma * 10) / 10}°` : 'Escolha um polígono para começar.';
+    const fecha = Math.abs(soma - 360) < 0.01;
+    if (fecha) DES.forEach(([, f], i) => { if (i !== 3 && f(lista)) feitos.add(i); });
+    if (soma > 360.01 && lista.every(n => n === 5)) feitos.add(3);
+    $('#fb').className = 'feedback' + (fecha ? ' ok' : soma > 360.01 ? ' bad' : '');
+    $('#fb').textContent = fecha ? 'Fechou: 360° em volta do ponto, sem buracos e sem sobreposição. Essa combinação ladrilha.' : soma > 360.01 ? `Passou de 360° em ${Math.round((soma - 360) * 10) / 10}°: o último ladrilho (em vermelho) fica sobreposto.` : lista.length ? `Faltam ${Math.round((360 - soma) * 10) / 10}°.` : '';
+    $('#desafios').innerHTML = DES.map(([t], i) => `<li class="${feitos.has(i) ? 'ok' : ''}">${t}</li>`).join('');
+    window.MDP && feitos.size && MDP.registrar('3d-ladrilhos', Math.round(100 * feitos.size / DES.length));
+    cena && cena.descrever(lista.length ? `Ladrilhos em volta de um ponto: ${lista.map(n => POL[n][0]).join(', ')}. A soma dos ângulos é ${Math.round(soma * 10) / 10} graus.${fecha ? ' Os ladrilhos fecham sem buracos.' : ''}` : 'Ponto vazio, sem ladrilhos.');
+    $('#desfaz').disabled = !lista.length;
+  } else {
+    cena && desenhaSoma();
+    const S = (nSoma - 2) * 180;
+    $('#tot').textContent = `${S}°`;
+    $('#conta').textContent = `Polígono de ${nSoma} lados\n${nSoma - 2} triângulos × 180° = ${S}°\nSe for regular, cada ângulo interno mede\n${S}° ÷ ${nSoma} = ${Math.round(S / nSoma * 100) / 100}°`;
+    $('#fb').className = 'feedback'; $('#fb').textContent = '';
+    cena && cena.descrever(`Polígono regular de ${nSoma} lados dividido em ${nSoma - 2} triângulos coloridos a partir de um vértice. A soma dos ângulos internos é ${S} graus.`);
+  }
+}
+$('#t-lad').innerHTML = Object.entries(POL).map(([n, [nome]]) => `<button class="btn" type="button" data-n="${n}">+ ${nome} (${Math.round(ang(+n) * 10) / 10}°)</button>`).join('');
+document.querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => { if (lista.length < 8) { lista.push(+b.dataset.n); atualiza(); } }));
+$('#desfaz').onclick = () => { lista.pop(); atualiza(); };
+$('#limpa').onclick = () => { lista = []; atualiza(); };
+$('#menos').onclick = () => { nSoma = Math.max(3, nSoma - 1); atualiza(); };
+$('#mais').onclick = () => { nSoma = Math.min(12, nSoma + 1); atualiza(); };
+$('#separa').onclick = () => { aberto = !aberto; $('#separa').textContent = aberto ? 'Juntar os triângulos' : 'Separar os triângulos'; atualiza(); };
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => { modo = b.dataset.modo; document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === b)); atualiza(); }));
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

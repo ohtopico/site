@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terreno: Área e Perímetro · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Terreno em 3D com cerca e piso: mude as medidas, recorte um canto e compare área e perímetro. BNCC EF05MA20, EF06MA24, EF06MA29, EF07MA31, EF07MA32.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/terreno.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Cada placa de grama tem 1 m por 1 m. A <strong>área</strong> é a quantidade de placas; o <strong>perímetro</strong> é o comprimento da cerca. Arraste a estaca amarela do canto para mudar as medidas, ou use os botões. Ligue “Recortar um canto” para formar um terreno em L e “Dividir pela diagonal” para ver a área do triângulo.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn ghost" type="button" data-m="w-">− largura</button>
+          <button class="btn ghost" type="button" data-m="w+">+ largura</button>
+          <button class="btn ghost" type="button" data-m="h-">− comprimento</button>
+          <button class="btn ghost" type="button" data-m="h+">+ comprimento</button>
+        </div>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="recorte" aria-pressed="false">Recortar um canto</button>
+          <button class="btn ghost" type="button" data-m="c-" hidden>− recorte</button>
+          <button class="btn ghost" type="button" data-m="c+" hidden>+ recorte</button>
+          <button class="btn ghost" type="button" id="diag" aria-pressed="false">Dividir pela diagonal</button>
+          <button class="btn ghost" type="button" id="guardar">Guardar medidas na tabela</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Medidas</h3>
+          <p class="grande" id="med" style="font-size:26px"></p>
+          <div class="conta" id="conta"></div>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios"></ol>
+          <h3 style="margin-top:14px">Tabela</h3>
+          <div class="conta" id="tabela">Guarde medidas para comparar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem baseada em projetos. “A escola vai cercar uma horta com 20 m de tela. Qual formato dá mais espaço para plantar?”. Os grupos testam formatos no recurso, registram na tabela e defendem a proposta.</p>
+    <ol>
+      <li>Mesmo perímetro, áreas diferentes: com 20 m de cerca, compare 1 × 9, 3 × 7 e 5 × 5 (EF05MA20).</li>
+      <li>Mesma área, perímetros diferentes: compare 1 × 12, 2 × 6 e 3 × 4.</li>
+      <li>Recorte um canto: a área diminui, mas o perímetro continua igual. Peça que expliquem o porquê com a cerca.</li>
+      <li>Dobre os lados de um quadrado: o perímetro dobra e a área quadruplica (EF06MA29).</li>
+      <li>Divida pela diagonal: cada triângulo tem metade da área do retângulo, o que leva à expressão b × h ÷ 2 (EF07MA31).</li>
+    </ol>
+    <p class="small muted">Habilidades: EF05MA20, EF06MA24, EF06MA29, EF07MA31 e EF07MA32. Material concreto equivalente: geoplano ou malha quadriculada no pátio com giz e barbante.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-terreno');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const S = { w: 6, h: 4, corte: false, c: 2, diag: false };
+const MAX = 14;
+const cena = lab3d($('#palco'), { cam: [3, 13, 14], alvo: [3, 0, 2], min: 6, max: 50 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let piso, cerca, extra, estaca;
+if (cena) {
+  piso = new T.Group(); cerca = new T.Group(); extra = new T.Group();
+  cena.add(piso, cerca, extra);
+  // malha de fundo
+  const malha = new T.GridHelper(MAX + 2, MAX + 2, 0xbdbdb8, 0xd9d9d6);
+  malha.position.set((MAX + 2) / 2 - 1, 0.001, (MAX + 2) / 2 - 1); cena.add(malha);
+  estaca = cena.cilindro(0.22, 1.1, COR.amarelo);
+  cena.add(estaca);
+  cena.arrastavel(estaca, {
+    aoMover: (ob, p) => {
+      const w = Math.max(1, Math.min(MAX, Math.round(p.x))), h = Math.max(1, Math.min(MAX, Math.round(p.z)));
+      if (w !== S.w || h !== S.h) { S.w = w; S.h = h; ajustaCorte(); atualiza(); }
+    }
+  });
+}
+const celulas = () => {
+  const c = [];
+  for (let x = 0; x < S.w; x++) for (let z = 0; z < S.h; z++) {
+    if (S.corte && x >= S.w - S.c && z < S.c) continue;
+    c.push([x, z]);
+  }
+  return c;
+};
+function ajustaCorte() { S.c = Math.max(1, Math.min(S.c, S.w - 1, S.h - 1)); if (S.w < 2 || S.h < 2) S.corte = false; }
+
+function desenha(cels) {
+  cena.limpar(piso); cena.limpar(cerca); cena.limpar(extra);
+  const set = new Set(cels.map(c => c.join(',')));
+  const geo = new T.BoxGeometry(0.94, 0.12, 0.94);
+  const inst = new T.InstancedMesh(geo, cena.material(COR.verde), cels.length);
+  const mat = new T.Matrix4();
+  cels.forEach(([x, z], i) => { mat.makeTranslation(x + 0.5, 0.06, z + 0.5); inst.setMatrixAt(i, mat); });
+  inst.castShadow = false; inst.receiveShadow = true;
+  piso.add(inst);
+  // cerca: um trilho em cada lado de célula que faz divisa com o vazio
+  const postes = new Set();
+  const lados = [[0, -1, [0, 0], [1, 0]], [0, 1, [0, 1], [1, 1]], [-1, 0, [0, 0], [0, 1]], [1, 0, [1, 0], [1, 1]]];
+  cels.forEach(([x, z]) => lados.forEach(([dx, dz, a, b]) => {
+    if (set.has(`${x + dx},${z + dz}`)) return;
+    const A = [x + a[0], z + a[1]], B = [x + b[0], z + b[1]];
+    cerca.add(cena.haste([A[0], 0.55, A[1]], [B[0], 0.55, B[1]], 0.07, COR.cinzaEscuro));
+    cerca.add(cena.haste([A[0], 0.3, A[1]], [B[0], 0.3, B[1]], 0.05, COR.cinzaEscuro));
+    postes.add(A.join(',')); postes.add(B.join(','));
+  }));
+  postes.forEach(p => { const [x, z] = p.split(',').map(Number); const m = cena.bloco(0.14, 0.75, 0.14, COR.papel, { base: false }); m.position.set(x, 0.375, z); cerca.add(m); });
+  // rótulos das medidas
+  const rw = cena.rotulo(`${S.w} m`, { tam: 0.55 }); rw.position.set(S.w / 2, 0.4, S.h + 0.9); extra.add(rw);
+  const rh = cena.rotulo(`${S.h} m`, { tam: 0.55 }); rh.position.set(-0.9, 0.4, S.h / 2); extra.add(rh);
+  if (S.diag && !S.corte) {
+    const tri = cena.prisma([[0, 0], [S.w, S.h], [0, S.h]], 0.2, COR.amarelo, { mat: { transparent: true, opacity: 0.85 } });
+    extra.add(tri);
+  }
+  estaca.position.set(S.w, 0, S.h);
+}
+
+const DES = [
+  ['Com 20 m de cerca, monte o retângulo de maior área.', () => !S.corte && 2 * (S.w + S.h) === 20 && S.w * S.h === 25],
+  ['Monte um terreno de 12 m² com o maior perímetro possível.', () => !S.corte && S.w * S.h === 12 && 2 * (S.w + S.h) === 26],
+  ['Faça um terreno em L que tenha o mesmo perímetro de um retângulo 6 × 4.', () => S.corte && perimetro() === 20],
+  ['Monte um quadrado de lado 3 e depois um de lado 6. Compare as áreas na tabela.', () => tabela.some(t => t.w === 3 && t.h === 3 && !t.c) && tabela.some(t => t.w === 6 && t.h === 6 && !t.c)],
+  ['Divida um retângulo 8 × 5 pela diagonal e encontre a área do triângulo.', () => S.diag && !S.corte && S.w === 8 && S.h === 5]
+];
+const feitos = new Set();
+const tabela = [];
+const perimetro = () => { const c = celulas(), set = new Set(c.map(x => x.join(','))); let p = 0; c.forEach(([x, z]) => [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([a, b]) => { if (!set.has(`${x + a},${z + b}`)) p++; })); return p; };
+
+function atualiza() {
+  const cels = celulas(), A = cels.length, P = perimetro();
+  if (cena) desenha(cels);
+  $('#med').textContent = `A = ${A} m² · P = ${P} m`;
+  let t = `Área: ${S.w} × ${S.h} = ${S.w * S.h} m²`;
+  if (S.corte) t += ` − ${S.c} × ${S.c} = ${A} m²`;
+  t += `\nPerímetro: ${S.corte ? 'contorno do L' : `2 × (${S.w} + ${S.h})`} = ${P} m`;
+  if (S.diag && !S.corte) t += `\nTriângulo amarelo: ${S.w} × ${S.h} ÷ 2 = ${(S.w * S.h / 2).toLocaleString('pt-BR')} m²`;
+  $('#conta').textContent = t;
+  document.querySelectorAll('[data-m="c-"],[data-m="c+"]').forEach(b => b.hidden = !S.corte);
+  $('#recorte').setAttribute('aria-pressed', S.corte); $('#diag').setAttribute('aria-pressed', S.diag);
+  DES.forEach(([, f], i) => { if (f()) feitos.add(i); });
+  $('#desafios').innerHTML = DES.map(([txt], i) => `<li class="${feitos.has(i) ? 'ok' : ''}">${txt}</li>`).join('');
+  window.MDP && feitos.size && MDP.registrar('3d-terreno', Math.round(100 * feitos.size / DES.length));
+  cena && cena.descrever(`Terreno ${S.corte ? 'em forma de L' : 'retangular'} de ${S.w} por ${S.h} metros${S.corte ? `, com um canto de ${S.c} por ${S.c} recortado` : ''}, coberto por ${A} placas de grama e cercado por ${P} metros de cerca.${S.diag && !S.corte ? ' Metade do terreno, um triângulo, está pintada de amarelo.' : ''}`);
+}
+document.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => {
+  const m = b.dataset.m;
+  if (m === 'w+') S.w = Math.min(MAX, S.w + 1); if (m === 'w-') S.w = Math.max(1, S.w - 1);
+  if (m === 'h+') S.h = Math.min(MAX, S.h + 1); if (m === 'h-') S.h = Math.max(1, S.h - 1);
+  if (m === 'c+') S.c++; if (m === 'c-') S.c--;
+  ajustaCorte(); atualiza();
+}));
+$('#recorte').onclick = () => { S.corte = !S.corte && S.w > 1 && S.h > 1; if (S.corte) S.diag = false; ajustaCorte(); atualiza(); };
+$('#diag').onclick = () => { S.diag = !S.diag; if (S.diag) S.corte = false; atualiza(); };
+$('#guardar').onclick = () => {
+  tabela.push({ w: S.w, h: S.h, c: S.corte ? S.c : 0, A: celulas().length, P: perimetro() });
+  if (tabela.length > 8) tabela.shift();
+  $('#tabela').textContent = 'medidas      área   perímetro\n' + tabela.map(t => `${(t.w + ' × ' + t.h + (t.c ? ` − ${t.c}×${t.c}` : '')).padEnd(13)}${String(t.A).padStart(4)} m²${String(t.P).padStart(6)} m`).join('\n');
+  atualiza();
+};
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

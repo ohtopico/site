@@ -142,11 +142,12 @@
     q: params.get('q') || '',
     comp: ['CO', 'MA'].includes(params.get('comp')) ? params.get('comp') : 'todos',
     ano: Number(params.get('ano')) || 0,
-    tipo: ['jogo', 'ficha', 'plano', 'lista'].includes(params.get('tipo')) ? params.get('tipo') : 'todos',
+    tipo: ['jogo', '3d', 'ficha', 'plano', 'lista'].includes(params.get('tipo')) ? params.get('tipo') : 'todos',
     eixo: EIXOS[params.get('eixo')] ? params.get('eixo') : 'todos',
     hab: (params.get('hab') || '').toUpperCase()
   };
   if (state.tipo === 'jogo') document.querySelector('.cat-head h1').textContent = 'Jogos';
+  if (state.tipo === '3d') document.querySelector('.cat-head h1').textContent = 'Recursos 3D';
   $('#q').value = state.q;
 
   const QUICK = ['frações', 'internet', 'algoritmo', 'segurança', 'EF06CO02'];
@@ -184,7 +185,7 @@
   }
 
   function tabs() {
-    const t = [['todos', 'Todos'], ['jogo', '🎮 Jogos'], ['ficha', '🖨️ Fichas'], ['plano', '📋 Planos'], ['lista', '📝 Listas']];
+    const t = [['todos', 'Todos'], ['jogo', '🎮 Jogos'], ['3d', '🧊 Recursos 3D'], ['ficha', '🖨️ Fichas'], ['plano', '📋 Planos'], ['lista', '📝 Listas']];
     $('#tabs').innerHTML = t.map(([v, l]) => `<button type="button" role="tab" data-k="tipo" data-v="${v}" aria-selected="${state.tipo === v}">${l}<span class="n">${countFor('tipo', v)}</span></button>`).join('');
   }
 
@@ -207,7 +208,7 @@
     }
     const grid = arr => `<div class="rc-grid">${arr.map(r => mdCard(r, { codeButtons: true })).join('')}</div>`;
     if (state.tipo !== 'todos' || list.length <= 6) { $('#results').innerHTML = grid(list); return; }
-    $('#results').innerHTML = ['jogo', 'ficha', 'plano', 'lista'].map(t => {
+    $('#results').innerHTML = ['jogo', '3d', 'ficha', 'plano', 'lista'].map(t => {
       const arr = list.filter(r => r.tipo === t);
       if (!arr.length) return '';
       return `<section class="group">

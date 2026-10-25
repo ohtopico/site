@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produtos Notáveis em Blocos · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Quadrado e cubo da soma, quadrado da diferença e produto da soma pela diferença montados com blocos em 3D. BNCC EF09MA09, EF08MA06.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/produtos.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Escolha um produto notável e os valores de <strong>a</strong> e <strong>b</strong>. As peças mostram cada termo como uma área (ou um volume, no cubo da soma). Use “Separar as peças” para ver os termos um a um e “Juntar” para montar de novo a figura inteira.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Produto notável">
+      <button type="button" data-modo="q" aria-pressed="true">(a + b)²</button>
+      <button type="button" data-modo="d" aria-pressed="false">(a − b)²</button>
+      <button type="button" data-modo="p" aria-pressed="false">(a + b)(a − b)</button>
+      <button type="button" data-modo="c" aria-pressed="false">(a + b)³</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="separar">Separar as peças</button>
+          <button class="btn ghost" type="button" id="juntar">Juntar</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <label for="va">a = <b id="la">4</b></label>
+          <input type="range" id="va" min="2" max="7" value="4">
+          <label for="vb">b = <b id="lb">2</b></label>
+          <input type="range" id="vb" min="1" max="5" value="2">
+          <p class="grande" id="formula" style="font-size:26px"></p>
+          <div class="conta" id="conta"></div>
+          <ul class="leg" id="leg"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem por descoberta guiada e quebra-cabeça em grupos. Cada grupo recebe as peças de papel de um produto notável (veja a atividade desplugada) e precisa montar o quadrado ou o retângulo. O recurso 3D serve para conferir e para a discussão coletiva.</p>
+    <ol>
+      <li>Antes de mostrar a fórmula, pergunte: (a + b)² é igual a a² + b²? Monte e conte as peças. Faltam os dois retângulos ab.</li>
+      <li>Teste com números: a = 4, b = 2. (4 + 2)² = 36 e 4² + 2² = 20. Onde estão os 16 que faltam?</li>
+      <li>No (a + b)(a − b), o canto b² sai e um retângulo gira para fechar a figura. Por que o resultado é a² − b²?</li>
+      <li>O cubo da soma mostra 8 blocos: 1 cubo a³, 3 blocos a²b, 3 blocos ab² e 1 cubo b³. Peça que expliquem o coeficiente 3.</li>
+      <li>Relacione com a fatoração: ler a figura de trás para a frente é fatorar (EF09MA09).</li>
+    </ol>
+    <p class="small muted">Habilidades: EF09MA09 e EF08MA06. A BNCC trata os produtos notáveis junto com a fatoração na habilidade EF09MA09.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-produtos');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const U = 0.6;
+let modo = 'q', a = 4, b = 2, aberto = false;
+const cena = lab3d($('#palco'), { cam: [5, 7, 8], alvo: [2, 0.5, 2], min: 3, max: 40 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let grupo = null; if (cena) { grupo = new T.Group(); cena.add(grupo); }
+const pecas = [];
+
+/* peça centrada: dimensões em unidades (nx, ny, nz) */
+function peca(nx, ny, nz, cor, texto, centro, aberto2, rot = 0, rotAb = rot) {
+  const g = new T.Group();
+  const m = cena.blocoGrade(nx, ny, nz, U, cor, { base: false });
+  g.add(m);
+  const r = cena.rotulo(texto, { tam: modo === 'c' ? 0.32 : 0.4 }); r.position.set(0, ny * U / 2 + 0.35, 0); g.add(r);
+  g.userData = { fechado: centro.map(v => v * U), aberto: aberto2.map(v => v * U), rot, rotAb };
+  g.position.set(...g.userData.fechado); g.rotation.y = rot;
+  grupo.add(g); pecas.push(g);
+  return g;
+}
+const sq = n => `${n}²`;
+function monta() {
+  if (!cena) return;
+  cena.limpar(grupo); pecas.length = 0;
+  const h = 1, y = 0.5;
+  if (modo === 'q') {
+    peca(a, h, a, COR.verde, `a² = ${a * a}`, [a / 2, y, a / 2], [a / 2 - 0.8, y, a / 2 - 0.8]);
+    peca(b, h, a, COR.amarelo, `ab = ${a * b}`, [a + b / 2, y, a / 2], [a + b / 2 + 0.8, y, a / 2 - 0.8]);
+    peca(a, h, b, COR.amarelo, `ab = ${a * b}`, [a / 2, y, a + b / 2], [a / 2 - 0.8, y, a + b / 2 + 0.8]);
+    peca(b, h, b, COR.vermelho, `b² = ${b * b}`, [a + b / 2, y, a + b / 2], [a + b / 2 + 0.8, y, a + b / 2 + 0.8]);
+  } else if (modo === 'd') {
+    const c = a - b;
+    peca(c, h, c, COR.verde, `(a − b)² = ${c * c}`, [c / 2, y, c / 2], [c / 2 - 0.8, y, c / 2 - 0.8]);
+    peca(b, h, c, COR.amarelo, `b(a − b) = ${b * c}`, [c + b / 2, y, c / 2], [c + b / 2 + 1.2, y, c / 2 - 0.8]);
+    peca(c, h, b, COR.amarelo, `b(a − b) = ${b * c}`, [c / 2, y, c + b / 2], [c / 2 - 0.8, y, c + b / 2 + 1.2]);
+    peca(b, h, b, COR.vermelho, `b² = ${b * b}`, [c + b / 2, y, c + b / 2], [c + b / 2 + 1.2, y, c + b / 2 + 1.2]);
+  } else if (modo === 'p') {
+    const c = a - b;
+    peca(a, h, c, COR.verde, `a(a − b) = ${a * c}`, [a / 2, y, c / 2], [a / 2, y, c / 2]);
+    // retângulo que gira: (a − b) × b → b × (a − b), encostado à direita
+    peca(c, h, b, COR.amarelo, `b(a − b) = ${b * c}`, [c / 2, y, c + b / 2], [a + b / 2, y, c / 2], 0, Math.PI / 2);
+    // canto b² que sai
+    peca(b, h, b, COR.vermelho, `b² = ${b * b} (sai)`, [c + b / 2, y, c + b / 2], [a + b / 2 + 1.6, y + 1.2, c + b / 2 + 1.8]);
+  } else {
+    const P = [];
+    for (const ix of [0, 1]) for (const iy of [0, 1]) for (const iz of [0, 1]) {
+      const sx = ix ? b : a, sy = iy ? b : a, sz = iz ? b : a;
+      const nb = ix + iy + iz;
+      const cor = [COR.verde, COR.amarelo, COR.vermelhoClaro, COR.vermelho][nb];
+      const nome = ['a³', 'a²b', 'ab²', 'b³'][nb];
+      const val = sx * sy * sz;
+      const cx = (ix ? a + b / 2 : a / 2), cy = (iy ? a + b / 2 : a / 2), cz = (iz ? a + b / 2 : a / 2);
+      const k = 1.2;
+      peca(sx, sy, sz, cor, `${nome} = ${val}`, [cx, cy, cz], [cx + (ix ? k : -k * 0.3), cy + (iy ? k * 1.4 : 0), cz + (iz ? k : -k * 0.3)]);
+    }
+  }
+  const lado = (modo === 'c' ? a + b : a + b) * U;
+  cena.enquadrar([lado / 2, modo === 'c' ? lado / 2 : 0.3, lado / 2], Math.max(8, lado * (modo === 'c' ? 4 : 2.8)));
+  aberto = false;
+}
+async function abre(sim) {
+  aberto = sim;
+  await Promise.all(pecas.map(g => cena.animar(g, { position: sim ? g.userData.aberto : g.userData.fechado, rotation: [0, sim ? g.userData.rotAb : g.userData.rot, 0] }, 650)));
+  if (modo === 'p') pecas[2].visible = !sim;
+  cena.pedeQuadro();
+}
+
+function textos() {
+  const s = a + b, d = a - b;
+  const F = {
+    q: ['(a + b)² = a² + 2ab + b²', `(${a} + ${b})² = ${s * s}\n${a}² + 2·${a}·${b} + ${b}² = ${a * a} + ${2 * a * b} + ${b * b} = ${a * a + 2 * a * b + b * b}\nCompare: a² + b² = ${a * a + b * b} (faltam os dois retângulos ab)`],
+    d: ['(a − b)² = a² − 2ab + b²', `O quadrado a² = ${a * a} se divide em (a − b)², duas faixas b(a − b) e o canto b².\n(a − b)² = a² − 2·b(a − b) − b²\n         = a² − 2ab + 2b² − b² = a² − 2ab + b²\n(${a} − ${b})² = ${d * d} = ${a * a} − ${2 * a * b} + ${b * b}`],
+    p: ['(a + b)(a − b) = a² − b²', `Do quadrado a² = ${a * a} sai o canto b² = ${b * b}.\nO pedaço amarelo gira e a figura vira um retângulo\n(a + b) × (a − b) = ${s} × ${d} = ${s * d}\na² − b² = ${a * a} − ${b * b} = ${a * a - b * b}`],
+    c: ['(a + b)³ = a³ + 3a²b + 3ab² + b³', `(${a} + ${b})³ = ${s ** 3}\n${a}³ + 3·${a}²·${b} + 3·${a}·${b}² + ${b}³\n= ${a ** 3} + ${3 * a * a * b} + ${3 * a * b * b} + ${b ** 3} = ${a ** 3 + 3 * a * a * b + 3 * a * b * b + b ** 3}`]
+  }[modo];
+  $('#formula').textContent = F[0]; $('#conta').textContent = F[1];
+  const leg = { q: [['#1f8a4c', 'a²'], ['#f2cf1d', 'ab (duas peças)'], ['#c8323f', 'b²']], d: [['#1f8a4c', '(a − b)²'], ['#f2cf1d', 'b(a − b) (duas faixas)'], ['#c8323f', 'b²']], p: [['#1f8a4c', 'a(a − b)'], ['#f2cf1d', 'b(a − b), a peça que gira'], ['#c8323f', 'b², o canto que sai']], c: [['#1f8a4c', 'a³ (1 cubo)'], ['#f2cf1d', 'a²b (3 blocos)'], ['#f2a9b3', 'ab² (3 blocos)'], ['#c8323f', 'b³ (1 cubo)']] }[modo];
+  $('#leg').innerHTML = leg.map(([c, t]) => `<li><span class="sw" style="background:${c}"></span>${t}</li>`).join('');
+  const desc = { q: `Quadrado de lado a + b formado por um quadrado verde a², dois retângulos amarelos ab e um quadrado vermelho b², com a = ${a} e b = ${b}.`, d: `Quadrado de lado a = ${a} dividido em um quadrado verde de lado a − b, duas faixas amarelas e um canto vermelho b².`, p: `Quadrado de lado a = ${a} sem o canto vermelho b²; o retângulo amarelo gira para formar um retângulo de lados a + b e a − b.`, c: `Cubo de aresta a + b dividido em 8 blocos: um cubo verde a³, três blocos amarelos a²b, três blocos rosados ab² e um cubo vermelho b³.` }[modo];
+  cena && cena.descrever(desc + (aberto ? ' As peças estão separadas.' : ''));
+}
+function atualiza() {
+  if (modo !== 'q' && modo !== 'c' && b >= a) { b = a - 1; $('#vb').value = b; }
+  $('#vb').max = modo === 'q' || modo === 'c' ? 5 : a - 1;
+  $('#la').textContent = a; $('#lb').textContent = b;
+  monta(); textos();
+  $('#fb').textContent = '';
+}
+$('#va').addEventListener('input', e => { a = +e.target.value; atualiza(); });
+$('#vb').addEventListener('input', e => { b = +e.target.value; atualiza(); });
+document.querySelectorAll('[data-modo]').forEach(x => x.addEventListener('click', () => { modo = x.dataset.modo; document.querySelectorAll('[data-modo]').forEach(y => y.setAttribute('aria-pressed', y === x)); atualiza(); }));
+$('#separar').onclick = async () => { if (!cena) return; await abre(true); textos(); $('#fb').className = 'feedback ok'; $('#fb').textContent = modo === 'p' ? 'O canto b² saiu e o retângulo amarelo girou: agora a figura é um retângulo (a + b) × (a − b).' : 'Cada peça é um termo do desenvolvimento.'; window.MDP && MDP.registrar('3d-produtos', 100); };
+$('#juntar').onclick = async () => { if (!cena) return; if (modo === 'p') pecas[2].visible = true; await abre(false); textos(); $('#fb').textContent = ''; };
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

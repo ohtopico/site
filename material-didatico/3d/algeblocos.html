@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blocos Algébricos: Polinômios e Fatoração · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Blocos algébricos em 3D: some polinômios cancelando pares opostos e fatore trinômios montando retângulos. BNCC EF08MA06, EF09MA09.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/algeblocos.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Três peças representam os termos: o quadrado grande é <strong>x²</strong>, a barra é <strong>x</strong> e o quadradinho é <strong>1</strong>. As peças vermelhas são negativas. Uma peça positiva e uma negativa do mesmo tipo formam um <strong>par zero</strong> e se anulam.</p>
+    <p><strong>Polinômios:</strong> escolha os coeficientes de P e Q e junte as peças para somar ou subtrair. <strong>Fatoração:</strong> arraste as peças para formar um retângulo sem buracos. Toque numa barra para girá-la. Os lados do retângulo são os fatores.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="poli" aria-pressed="true">Somar e subtrair polinômios</button>
+      <button type="button" data-modo="fat" aria-pressed="false">Fatorar trinômios</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="t-poli">
+          <button class="btn" type="button" id="soma">P + Q</button>
+          <button class="btn" type="button" id="sub">P − Q</button>
+          <button class="btn ghost" type="button" id="separa">Separar de novo</button>
+          <button class="btn ghost" type="button" id="sorteia">Sortear P e Q</button>
+        </div>
+        <div class="tools" id="t-fat" hidden>
+          <button class="btn ghost" type="button" id="dica">Dica</button>
+          <button class="btn ghost" type="button" id="resolve">Mostrar um retângulo</button>
+          <button class="btn ghost" type="button" id="embaralha">Espalhar as peças</button>
+          <button class="btn" type="button" id="outro">Outro trinômio</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div id="p-poli">
+            <h3>P(x)</h3>
+            <div class="tools" id="cP"></div>
+            <h3 style="margin-top:12px">Q(x)</h3>
+            <div class="tools" id="cQ"></div>
+          </div>
+          <div id="p-fat" hidden>
+            <h3>Trinômio</h3>
+          </div>
+          <p class="grande" id="expr" style="font-size:26px"></p>
+          <div class="conta" id="conta"></div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>x²</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>x</li>
+            <li><span class="sw" style="background:#9fdab4"></span>1</li>
+            <li><span class="sw" style="background:#c8323f"></span>termos negativos (−x², −x, −1)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> rotação por estações com material manipulável. Estação 1: blocos de papel (veja a atividade desplugada). Estação 2: este recurso. Estação 3: registro simbólico no caderno, conferindo com o colega.</p>
+    <ol>
+      <li>Termos semelhantes: por que 2x + 3 não vira 5x? As peças têm formas diferentes e não se juntam numa só.</li>
+      <li>Par zero: some (x² − 2x + 1) com (−x² + 3x). As peças vermelhas anulam as positivas do mesmo tipo.</li>
+      <li>Subtração: P − Q é P mais o oposto de Q. Veja as peças de Q trocarem de cor antes de juntar.</li>
+      <li>Fatoração: para x² + 5x + 6, as barras x precisam ser divididas entre os dois lados. Qual divisão fecha o retângulo? Os lados lidos ficam (x + 2)(x + 3).</li>
+      <li>Ligação com o 9º ano: a fatoração permite resolver x² + 5x + 6 = 0 sem fórmula (EF09MA09).</li>
+    </ol>
+    <p class="small muted">Habilidades: EF08MA06 e EF09MA09. A BNCC não tem uma habilidade só para operações com polinômios; elas aparecem como base do cálculo algébrico do 8º e do 9º ano.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-algeblocos');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const U = 0.55, X = 2.7, ESP = 0.28;     // x vale 2,7 unidades na cena (não é inteiro de propósito)
+const cena = lab3d($('#palco'), { cam: [4, 10, 11], alvo: [4, 0, 2], min: 5, max: 40 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let grupo = null; if (cena) { grupo = new T.Group(); cena.add(grupo); }
+let modo = 'poli';
+const DIM = { x2: [X, X], x: [X, 1], u: [1, 1] };
+const NOME = { x2: 'x²', x: 'x', u: '1' };
+const CORP = { x2: COR.verde, x: COR.amarelo, u: COR.verdeClaro };
+
+/* uma peça: tipo, sinal, posição (centro, em unidades), rotação 0/90 */
+function criaPeca(t, s, x, z, rot = 0) {
+  const [w, d] = DIM[t];
+  const m = cena.bloco(w * U - 0.04, ESP, d * U - 0.04, s > 0 ? CORP[t] : COR.vermelho, { base: false });
+  const r = cena.rotulo((s < 0 ? '−' : '') + NOME[t], { tam: t === 'u' ? 0.26 : 0.36, depthTest: false });
+  r.position.y = ESP / 2 + 0.2; m.add(r);
+  m.userData = { t, s, rot };
+  m.position.set(x * U, ESP / 2, z * U); m.rotation.y = rot ? Math.PI / 2 : 0;
+  grupo.add(m);
+  return m;
+}
+const tam = m => { const [w, d] = DIM[m.userData.t]; return m.userData.rot ? [d, w] : [w, d]; };
+
+/* ===================== polinômios ===================== */
+const P = [1, 2, -1], Q = [-1, 1, 3];     // [x², x, 1]
+let pecasP = [], pecasQ = [];
+const fmtPoli = c => {
+  const ts = [[c[0], 'x²'], [c[1], 'x'], [c[2], '']].filter(([v]) => v);
+  if (!ts.length) return '0';
+  return ts.map(([v, l], i) => {
+    const abs = Math.abs(v), coef = l && abs === 1 ? '' : abs;
+    return (v < 0 ? (i ? ' − ' : '−') : (i ? ' + ' : '')) + coef + l;
+  }).join('');
+};
+function pecasDe(c, x0, z0) {
+  const out = []; let z = z0;
+  ['x2', 'x', 'u'].forEach((t, i) => {
+    const n = Math.abs(c[i]), s = Math.sign(c[i]);
+    const [w, d] = DIM[t];
+    for (let k = 0; k < n; k++) out.push(criaPeca(t, s, x0 + k * (w + 0.3) + w / 2, z + d / 2));
+    if (n) z += d + 0.6;
+  });
+  return out;
+}
+function montaPoli() {
+  if (!cena) return;
+  cena.limpar(grupo);
+  pecasP = pecasDe(P, 0, 0); pecasQ = pecasDe(Q, 10, 0);
+  const rp = cena.rotulo('P', { tam: 0.6 }); rp.position.set(-0.9, 0.3, -0.8); grupo.add(rp);
+  const rq = cena.rotulo('Q', { tam: 0.6 }); rq.position.set(10 * U - 0.9, 0.3, -0.8); grupo.add(rq);
+  cena.enquadrar([8 * U + 1, 0, 3], 14);
+}
+async function junta(menos) {
+  if (!cena) return;
+  montaPoli();
+  if (menos) {
+    $('#fb').className = 'feedback'; $('#fb').textContent = 'Subtrair Q é somar o oposto de Q: as peças de Q trocam de sinal.';
+    pecasQ.forEach(m => { m.userData.s *= -1; m.material = cena.material(m.userData.s > 0 ? CORP[m.userData.t] : COR.vermelho); const r = m.children.find(c => c.isSprite); m.remove(r); const nr = cena.rotulo((m.userData.s < 0 ? '−' : '') + NOME[m.userData.t], { tam: m.userData.t === 'u' ? 0.26 : 0.36, depthTest: false }); nr.position.y = ESP / 2 + 0.2; m.add(nr); });
+    await Promise.all(pecasQ.map(m => cena.animar(m, { rotation: [0, 0, Math.PI * 2], position: [m.position.x, m.position.y + 0.8, m.position.z] }, 500)));
+    pecasQ.forEach(m => { m.rotation.z = 0; });
+  }
+  const todas = [...pecasP, ...pecasQ];
+  // organiza por tipo: positivos em cima, negativos embaixo, pares zero se encontram
+  const zLin = { x2: 0, x: X + 1.6, u: X + 4.2 };
+  const res = [0, 0, 0];
+  const anim = [];
+  ['x2', 'x', 'u'].forEach((t, i) => {
+    const pos = todas.filter(m => m.userData.t === t && m.userData.s > 0), neg = todas.filter(m => m.userData.t === t && m.userData.s < 0);
+    const [w, d] = DIM[t];
+    const pares = Math.min(pos.length, neg.length);
+    res[i] = pos.length - neg.length;
+    pos.forEach((m, k) => anim.push(cena.animar(m, { position: [(4 + k * (w + 0.3) + w / 2) * U, ESP / 2, (zLin[t] + d / 2) * U] }, 600)));
+    neg.forEach((m, k) => anim.push(cena.animar(m, { position: [(4 + k * (w + 0.3) + w / 2) * U, ESP / 2 + (k < pares ? ESP : 0), (zLin[t] + d / 2 + (k < pares ? 0 : d + 0.3)) * U] }, 600)));
+    for (let k = 0; k < pares; k++) { pos[k].userData.zero = true; neg[k].userData.zero = true; }
+  });
+  await Promise.all(anim);
+  const zeros = todas.filter(m => m.userData.zero);
+  await Promise.all(zeros.map(m => cena.animar(m, { scale: [0.01, 0.01, 0.01] }, 500)));
+  zeros.forEach(m => m.visible = false);
+  cena.pedeQuadro();
+  const R = menos ? P.map((v, i) => v - Q[i]) : P.map((v, i) => v + Q[i]);
+  $('#expr').textContent = `${menos ? 'P − Q' : 'P + Q'} = ${fmtPoli(R)}`;
+  $('#conta').textContent = `P = ${fmtPoli(P)}\nQ = ${fmtPoli(Q)}\n${menos ? `−Q = ${fmtPoli(Q.map(v => -v))}\n` : ''}x²: ${P[0]} ${menos ? '−' : '+'} (${Q[0]}) = ${R[0]}\nx:  ${P[1]} ${menos ? '−' : '+'} (${Q[1]}) = ${R[1]}\n1:  ${P[2]} ${menos ? '−' : '+'} (${Q[2]}) = ${R[2]}\nPares zero que sumiram: ${zeros.length / 2}`;
+  $('#fb').className = 'feedback ok'; $('#fb').textContent = `Resultado: ${fmtPoli(R)}. Os pares zero se anularam e só sobraram termos semelhantes juntos.`;
+  cena.descrever(`Peças de P e Q reunidas por tipo. Depois de anular ${zeros.length / 2} pares zero, sobra ${fmtPoli(R)}.`);
+  window.MDP && MDP.registrar('3d-algeblocos', 100);
+}
+function ctlCoef(id, arr) {
+  $(id).innerHTML = ['x²', 'x', '1'].map((l, i) => `<label style="margin:0;flex:1;min-width:70px">${l}<select data-c="${i}">${[-3, -2, -1, 0, 1, 2, 3].map(v => `<option${v === arr[i] ? ' selected' : ''}>${v}</option>`).join('')}</select></label>`).join('');
+  $(id).querySelectorAll('select').forEach(s => s.addEventListener('change', () => { arr[+s.dataset.c] = +s.value; mostraPoli(); }));
+}
+function mostraPoli() {
+  montaPoli();
+  $('#expr').textContent = `P = ${fmtPoli(P)}`;
+  $('#conta').textContent = `P = ${fmtPoli(P)}\nQ = ${fmtPoli(Q)}`;
+  $('#fb').textContent = '';
+  cena && cena.descrever(`Peças de P à esquerda (${fmtPoli(P)}) e de Q à direita (${fmtPoli(Q)}).`);
+}
+
+/* ===================== fatoração ===================== */
+const TRI = [[1, 3, 2], [1, 4, 3], [1, 5, 6], [1, 4, 4], [1, 6, 8], [1, 6, 9], [1, 7, 12], [1, 7, 10], [2, 5, 3], [2, 7, 6], [1, 2, 1], [1, 6, 5]];
+let ti = 2, pecasF = [];
+function montaFat() {
+  if (!cena) return;
+  cena.limpar(grupo); pecasF = [];
+  const [A, B, C] = TRI[ti];
+  // bandeja na frente do tapete
+  const tapete = cena.bloco(16 * U, 0.04, 11 * U, COR.papel, { base: true, bordas: true }); tapete.position.set(-0.5 * U, -0.04, -0.5 * U); tapete.receiveShadow = true; grupo.add(tapete);
+  let x = 0;
+  const z = 12.5;
+  for (let k = 0; k < A; k++) { pecasF.push(criaPeca('x2', 1, x + X / 2, z + X / 2)); x += X + 0.4; }
+  for (let k = 0; k < B; k++) { pecasF.push(criaPeca('x', 1, x + 0.5, z + X / 2, 1)); x += 1.3; }
+  let ux = 0;
+  for (let k = 0; k < C; k++) { pecasF.push(criaPeca('u', 1, ux + 0.5, z + X + 1.2 + 0.5)); ux += 1.25; }
+  pecasF.forEach(m => {
+    cena.arrastavel(m, { aoMover: (ob, p) => { ob.position.x = p.x; ob.position.z = p.z; ob.position.y = ESP / 2 + 0.2; }, aoSoltar: ob => { ob.position.y = ESP / 2; imanta(ob); confere(); } });
+    if (m.userData.t === 'x') cena.clicavel(m, ob => { ob.userData.rot ^= 1; ob.rotation.y = ob.userData.rot ? Math.PI / 2 : 0; imanta(ob); confere(); });
+  });
+  cena.enquadrar([7 * U, 0, 8 * U], 15);
+  $('#expr').textContent = fmtPoli([A, B, C]);
+  $('#conta').textContent = `Peças: ${A} x², ${B} barras x e ${C} unidades.\nMonte um retângulo sem buracos e sem sobreposição.`;
+  $('#fb').textContent = '';
+  cena.descrever(`Tapete com as peças de ${fmtPoli([A, B, C])}: ${A} quadrado x², ${B} barras x e ${C} quadradinhos de 1 esperando na bandeja.`);
+}
+const ret = m => { const [w, d] = tam(m); return { x0: m.position.x / U - w / 2, x1: m.position.x / U + w / 2, z0: m.position.z / U - d / 2, z1: m.position.z / U + d / 2 }; };
+function imanta(m) {
+  const r = ret(m), outros = pecasF.filter(o => o !== m).map(ret);
+  let bx = null, bz = null;
+  outros.forEach(o => {
+    [[r.x0, o.x0], [r.x0, o.x1], [r.x1, o.x0], [r.x1, o.x1]].forEach(([a, b]) => { const d = b - a; if (Math.abs(d) < 0.45 && (bx === null || Math.abs(d) < Math.abs(bx))) bx = d; });
+    [[r.z0, o.z0], [r.z0, o.z1], [r.z1, o.z0], [r.z1, o.z1]].forEach(([a, b]) => { const d = b - a; if (Math.abs(d) < 0.45 && (bz === null || Math.abs(d) < Math.abs(bz))) bz = d; });
+  });
+  if (bx) m.position.x += bx * U; if (bz) m.position.z += bz * U;
+  cena.pedeQuadro();
+}
+function lerLado(L) {
+  for (let k = 0; k <= 3; k++) { const p = L - k * X; if (p > -0.05 && Math.abs(p - Math.round(p)) < 0.06) return [k, Math.round(p)]; }
+  return null;
+}
+const ladoTxt = ([k, p]) => { const xs = k ? (k === 1 ? 'x' : `${k}x`) : ''; return xs && p ? `(${xs} + ${p})` : xs ? xs : String(p); };
+function confere() {
+  const rs = pecasF.map(ret);
+  const x0 = Math.min(...rs.map(r => r.x0)), x1 = Math.max(...rs.map(r => r.x1)), z0 = Math.min(...rs.map(r => r.z0)), z1 = Math.max(...rs.map(r => r.z1));
+  const areaT = rs.reduce((s, r) => s + (r.x1 - r.x0) * (r.z1 - r.z0), 0);
+  let sobrepoe = false;
+  for (let i = 0; i < rs.length; i++) for (let j = i + 1; j < rs.length; j++) {
+    const a = rs[i], b = rs[j];
+    if (Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0) > 0.08 && Math.min(a.z1, b.z1) - Math.max(a.z0, b.z0) > 0.08) sobrepoe = true;
+  }
+  const W = x1 - x0, D = z1 - z0;
+  if (!sobrepoe && Math.abs(W * D - areaT) < 0.15) {
+    const lw = lerLado(W), ld = lerLado(D);
+    if (lw && ld) {
+      const [A, B, C] = TRI[ti];
+      $('#fb').className = 'feedback ok';
+      $('#fb').textContent = `Retângulo fechado. Lados ${ladoTxt(lw)} e ${ladoTxt(ld)}: ${fmtPoli([A, B, C])} = ${ladoTxt(lw)}${ladoTxt(ld)}.`;
+      $('#conta').textContent = `Lado 1: ${ladoTxt(lw)}\nLado 2: ${ladoTxt(ld)}\nConfira: ${ladoTxt(lw)} · ${ladoTxt(ld)} = ${fmtPoli([lw[0] * ld[0], lw[0] * ld[1] + lw[1] * ld[0], lw[1] * ld[1]])}`;
+      cena.descrever(`As peças formam um retângulo de lados ${ladoTxt(lw)} e ${ladoTxt(ld)}.`);
+      window.MDP && MDP.registrar('3d-algeblocos', 100);
+      return;
+    }
+  }
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = sobrepoe ? 'Há peças sobrepostas.' : '';
+}
+function solucao() {
+  const [A, B, C] = TRI[ti];
+  // procura p, q com A·x² + B·x + C = (a1 x + p)(a2 x + q), com a1 = A e a2 = 1
+  for (let p = 1; p <= C; p++) { if (C % p) continue; const q = C / p; if (A * q + p === B) return { a1: A, p, q }; }
+  return null;
+}
+async function resolve() {
+  const s = solucao(); if (!s || !cena) return;
+  const { a1, p, q } = s;   // lados: largura a1·x + p, profundidade x + q
+  const x2 = pecasF.filter(m => m.userData.t === 'x2'), xs = pecasF.filter(m => m.userData.t === 'x'), us = pecasF.filter(m => m.userData.t === 'u');
+  const anim = []; let ix = 0;
+  x2.forEach((m, k) => anim.push(cena.animar(m, { position: [(k * X + X / 2) * U, ESP / 2, X / 2 * U] }, 600)));
+  // barras verticais à direita: p barras (largura 1, profundidade x)
+  for (let k = 0; k < p; k++) { const m = xs[ix++]; m.userData.rot = 1; m.rotation.y = Math.PI / 2; anim.push(cena.animar(m, { position: [(a1 * X + k + 0.5) * U, ESP / 2, X / 2 * U] }, 600)); }
+  // barras deitadas embaixo: a1·q barras
+  for (let r = 0; r < q; r++) for (let k = 0; k < a1; k++) { const m = xs[ix++]; m.userData.rot = 0; m.rotation.y = 0; anim.push(cena.animar(m, { position: [(k * X + X / 2) * U, ESP / 2, (X + r + 0.5) * U] }, 600)); }
+  let iu = 0;
+  for (let r = 0; r < q; r++) for (let k = 0; k < p; k++) { const m = us[iu++]; anim.push(cena.animar(m, { position: [(a1 * X + k + 0.5) * U, ESP / 2, (X + r + 0.5) * U] }, 600)); }
+  await Promise.all(anim); confere();
+}
+$('#dica').onclick = () => { const s = solucao(); const [A, B, C] = TRI[ti]; $('#fb').className = 'feedback'; $('#fb').textContent = s ? `Coloque ${A > 1 ? 'os quadrados x² lado a lado' : 'o x² num canto'}. Depois, as ${B} barras precisam ser divididas: algumas de um lado, outras do outro. Os ${C} quadradinhos fecham o canto: que números multiplicados dão ${C}${A === 1 ? ` e somados dão ${B}` : ''}?` : 'Este trinômio não forma retângulo.'; };
+$('#resolve').onclick = resolve;
+$('#embaralha').onclick = montaFat;
+$('#outro').onclick = () => { ti = (ti + 1) % TRI.length; montaFat(); };
+
+$('#soma').onclick = () => junta(false);
+$('#sub').onclick = () => junta(true);
+$('#separa').onclick = mostraPoli;
+$('#sorteia').onclick = () => { for (let i = 0; i < 3; i++) { P[i] = Math.floor(Math.random() * 7) - 3; Q[i] = Math.floor(Math.random() * 7) - 3; } ctlCoef('#cP', P); ctlCoef('#cQ', Q); mostraPoli(); };
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => {
+  modo = b.dataset.modo;
+  document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  const f = modo === 'fat';
+  $('#t-fat').hidden = $('#p-fat').hidden = !f; $('#t-poli').hidden = $('#p-poli').hidden = f;
+  f ? montaFat() : mostraPoli();
+}));
+ctlCoef('#cP', P); ctlCoef('#cQ', Q); mostraPoli();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

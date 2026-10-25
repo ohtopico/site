@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teorema de Tales: Sombras e Paralelas · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Meça a altura de um prédio pela sombra e verifique as razões entre segmentos de paralelas cortadas por transversais, em 3D. BNCC EF09MA14, EF09MA10, EF09MA12.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/tales.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Sombras:</strong> como os raios de sol chegam paralelos, o bastão e o prédio formam triângulos semelhantes com as suas sombras. Mude a altura do sol, leia as sombras na fita métrica e descubra a altura do prédio, como Tales fez com a pirâmide.</p>
+    <p><strong>Feixe de paralelas:</strong> três retas paralelas cortadas por duas transversais. Arraste as esferas amarelas ou use os botões e confira que as razões entre os segmentos continuam iguais.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="sombra" aria-pressed="true">Sombras</button>
+      <button type="button" data-modo="feixe" aria-pressed="false">Feixe de paralelas</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="t-feixe" hidden>
+          <button class="btn ghost" type="button" data-f="r1-">Transversal 1 ←</button>
+          <button class="btn ghost" type="button" data-f="r1+">Transversal 1 →</button>
+          <button class="btn ghost" type="button" data-f="r2-">Transversal 2 ←</button>
+          <button class="btn ghost" type="button" data-f="r2+">Transversal 2 →</button>
+          <button class="btn ghost" type="button" data-f="m-">Reta do meio ↑</button>
+          <button class="btn ghost" type="button" data-f="m+">Reta do meio ↓</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div id="p-sombra">
+            <label for="sol">Altura do sol no céu: <b id="lsol">40°</b></label>
+            <input type="range" id="sol" min="20" max="70" value="40">
+            <div class="conta" id="medidas"></div>
+            <label for="resp">Altura do prédio (em metros)</label>
+            <input type="number" id="resp" step="0.1" inputmode="decimal">
+            <p style="margin-top:10px"><button class="btn" type="button" id="conf">Conferir</button> <button class="btn ghost" type="button" id="novo">Outro prédio</button></p>
+          </div>
+          <div id="p-feixe" hidden>
+            <p class="grande" id="razao" style="font-size:22px"></p>
+            <div class="conta" id="segs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem baseada em projetos, com saída de campo. Num dia de sol, a turma mede com trena a sombra de um cabo de vassoura e a de um poste, árvore ou da própria escola, e calcula a altura real. O recurso 3D prepara a saída e permite repetir com o sol em várias alturas.</p>
+    <ol>
+      <li>Pergunte por que a razão altura ÷ sombra é a mesma para o bastão e para o prédio no mesmo instante (raios paralelos, ângulos iguais, triângulos semelhantes, EF09MA12).</li>
+      <li>Mude a altura do sol: as sombras mudam, mas a altura calculada do prédio não muda. Por quê?</li>
+      <li>No feixe de paralelas, mova as transversais e observe: AB/BC = A'B'/B'C'. Essa é a forma do Teorema de Tales usada em EF09MA14.</li>
+      <li>Aplicação: dividir um segmento em partes proporcionais com régua e esquadro, ou calcular a largura de um rio sem atravessá-lo.</li>
+    </ol>
+    <p class="small muted">Habilidades: EF09MA14, EF09MA10 e EF09MA12. Material concreto equivalente: trena, cabo de vassoura e prumo; folha pautada como feixe de paralelas.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-tales');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const cena = lab3d($('#palco'), { cam: [-6, 9, 22], alvo: [4, 3, 0], min: 6, max: 70, chaoTam: 80 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let modo = 'sombra';
+const fmt1 = v => v.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+
+/* ===================== sombras ===================== */
+const BAST = 1.5;
+let H = 12, elev = 40;
+let gS = null, gF = null;
+if (cena) { gS = new T.Group(); gF = new T.Group(); cena.add(gS, gF); }
+function montaSombra() {
+  cena.limpar(gS);
+  const piso = cena.bloco(80, 0.02, 14, '#e9ece6', { base: false, bordas: false, sombra: false }); piso.position.set(28, -0.01, 0); piso.receiveShadow = true; gS.add(piso);
+  const predio = cena.bloco(3, H, 3, COR.cinza, {}); predio.position.set(-1.5, 0, -1.5); gS.add(predio);
+  for (let a = 1; a < H; a += 1.5) { const j = cena.bloco(0.02, 0.6, 1.6, COR.tinta, { bordas: false }); j.position.set(1.51, a, -0.8); gS.add(j); }
+  const bast = cena.cilindro(0.08, BAST, COR.amarelo); bast.position.set(0, 0, 5.5); gS.add(bast);
+  const rb = cena.rotulo('bastão 1,5 m', { tam: 0.9 }); rb.position.set(0, BAST + 0.9, 5.5); gS.add(rb);
+  const rp = cena.rotulo('altura do prédio = ?', { tam: 1 }); rp.position.set(0, H + 1.2, 0); gS.add(rp);
+  // sol: luz direcional na elevação escolhida, vindo do lado −x
+  const e = elev * Math.PI / 180;
+  cena.sol.position.set(-Math.cos(e) * 30, Math.sin(e) * 30, 0);
+  cena.sol.target.position.set(0, 0, 0); cena.sol.target.updateMatrixWorld();
+  const sc = cena.sol.shadow.camera; sc.left = -45; sc.right = 45; sc.top = 45; sc.bottom = -45; sc.far = 90; sc.updateProjectionMatrix();
+  // fitas métricas
+  const s = BAST / Math.tan(e), S = H / Math.tan(e);
+  const fita = (z, L, cor, txt, x0) => {
+    gS.add(cena.haste([x0, 0.03, z], [x0 + L, 0.03, z], 0.08, cor));
+    const r = cena.rotulo(txt, { tam: 0.85 }); r.position.set(x0 + L / 2, 0.6, z + 1.1); gS.add(r);
+  };
+  fita(6.6, s, COR.vermelho, `sombra do bastão: ${fmt1(s)} m`, 0);
+  fita(2.2, S, COR.verde, `sombra do prédio: ${fmt1(S)} m`, 1.5);
+  // raio de sol tocando o topo do prédio
+  gS.add(cena.haste([1.5, H, 0], [1.5 + S, 0, 0], 0.04, COR.amarelo));
+  $('#lsol').textContent = `${elev}°`;
+  $('#medidas').textContent = `Sombra do bastão (1,5 m): ${fmt1(s)} m\nSombra do prédio, a partir da parede: ${fmt1(S)} m\n\nSemelhança de triângulos:\naltura do prédio ÷ sombra do prédio\n= altura do bastão ÷ sombra do bastão`;
+  cena.descrever(`Um prédio cinza e um bastão amarelo de 1,5 metro em pé no chão, com o sol a ${elev} graus. A sombra do bastão mede ${fmt1(s)} metros e a sombra do prédio mede ${fmt1(S)} metros.`);
+  const cx = Math.min(S, 40) / 2;
+  cena.posicionar([cx - 8, H * 0.7 + 9, Math.max(34, S * 1.45)], [cx, H / 3, 0]);
+  return { s, S };
+}
+$('#sol').addEventListener('input', e => { elev = +e.target.value; montaSombra(); });
+$('#novo').onclick = () => { H = rnd(8, 22) + (Math.random() < 0.5 ? 0.5 : 0); $('#resp').value = ''; $('#fb').textContent = ''; montaSombra(); };
+$('#conf').onclick = () => {
+  const v = parseFloat(String($('#resp').value).replace(',', '.'));
+  const e = elev * Math.PI / 180, s = BAST / Math.tan(e), S = H / Math.tan(e);
+  if (Math.abs(v - H) <= 0.2) {
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = `Correto: ${fmt1(H)} m. Pela semelhança, H / ${fmt1(S)} = 1,5 / ${fmt1(s)}, então H = 1,5 × ${fmt1(S)} ÷ ${fmt1(s)}.`;
+    window.MDP && MDP.registrar('3d-tales', 100);
+  } else {
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = `Ainda não. Quantas vezes a sombra do prédio é maior que a do bastão? (${fmt1(S)} ÷ ${fmt1(s)}). O prédio é essa quantidade de vezes mais alto que o bastão.`;
+  }
+};
+
+/* ===================== feixe de paralelas ===================== */
+// retas paralelas horizontais (em z) sobre uma prancha; transversais ligam um ponto da reta de cima a um da de baixo
+const F = { z: [0, 3, 8], t1: [-2, 3], t2: [5, 12] }; // t = [x na reta de cima, x na reta de baixo]
+const esferas = [];
+function xEm(t, z) { const k = (z - F.z[0]) / (F.z[2] - F.z[0]); return t[0] + (t[1] - t[0]) * k; }
+function montaFeixe() {
+  cena.limpar(gF); esferas.length = 0;
+  const prancha = cena.bloco(22, 0.2, 12, COR.papel, { base: false }); prancha.position.set(4, -0.1, 4); gF.add(prancha);
+  F.z.forEach((z, i) => {
+    gF.add(cena.haste([-6, 0.05, z], [15, 0.05, z], 0.08, COR.tinta));
+    const r = cena.rotulo(['r', 's', 't'][i], { tam: 0.45 }); r.position.set(-6.8, 0.3, z); gF.add(r);
+  });
+  [['t1', COR.verde, ['A', 'B', 'C']], ['t2', COR.vermelho, ["A'", "B'", "C'"]]].forEach(([k, cor, nomes]) => {
+    const t = F[k];
+    gF.add(cena.haste([t[0], 0.08, F.z[0]], [t[1], 0.08, F.z[2]], 0.07, cor));
+    F.z.forEach((z, i) => {
+      const p = cena.cilindro(0.16, 0.18, cor); p.position.set(xEm(t, z), 0.05, z); gF.add(p);
+      const r = cena.rotulo(nomes[i], { tam: 0.4 }); r.position.set(xEm(t, z) + 0.6, 0.4, z - 0.4); gF.add(r);
+    });
+    // alças: topo e base de cada transversal
+    [0, 1].forEach(j => {
+      const h = cena.cilindro(0.3, 0.5, COR.amarelo); h.position.set(t[j], 0.05, F.z[j ? 2 : 0]); gF.add(h);
+      cena.arrastavel(h, { aoMover: (ob, p) => { t[j] = Math.max(-5, Math.min(14, Math.round(p.x * 2) / 2)); atualizaFeixe(); } });
+      esferas.push(h);
+    });
+  });
+  // alça da reta do meio
+  const hm = cena.bloco(0.6, 0.4, 0.6, COR.amarelo, { base: false }); hm.position.set(14.6, 0.2, F.z[1]); gF.add(hm);
+  cena.arrastavel(hm, { aoMover: (ob, p) => { F.z[1] = Math.max(F.z[0] + 0.5, Math.min(F.z[2] - 0.5, Math.round(p.z * 2) / 2)); atualizaFeixe(); } });
+}
+function atualizaFeixe() {
+  if (cena) montaFeixe();
+  const L = t => { const P = F.z.map(z => [xEm(t, z), z]); const d = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]); return [d(P[0], P[1]), d(P[1], P[2])]; };
+  const [ab, bc] = L(F.t1), [ab2, bc2] = L(F.t2);
+  $('#razao').textContent = `AB/BC = A'B'/B'C' = ${fmt1(ab / bc)}`;
+  $('#segs').textContent = `AB = ${fmt1(ab)}   BC = ${fmt1(bc)}   AB/BC = ${fmt1(ab / bc)}\nA'B' = ${fmt1(ab2)}   B'C' = ${fmt1(bc2)}   A'B'/B'C' = ${fmt1(ab2 / bc2)}\n\nAs distâncias entre as paralelas: ${fmt1(F.z[1] - F.z[0])} e ${fmt1(F.z[2] - F.z[1])}\nrazão entre elas = ${fmt1((F.z[1] - F.z[0]) / (F.z[2] - F.z[1]))}`;
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent = 'Os segmentos mudam de tamanho, mas as razões continuam iguais nas duas transversais.';
+  cena && cena.descrever(`Três retas paralelas r, s e t cortadas por duas transversais. Na primeira, AB mede ${fmt1(ab)} e BC mede ${fmt1(bc)}. Na segunda, A'B' mede ${fmt1(ab2)} e B'C' mede ${fmt1(bc2)}. As razões são iguais a ${fmt1(ab / bc)}.`);
+  window.MDP && MDP.registrar('3d-tales', 100);
+}
+document.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => {
+  const c = b.dataset.f;
+  if (c === 'r1-') { F.t1[0] -= 0.5; F.t1[1] -= 0.5; } if (c === 'r1+') { F.t1[0] += 0.5; F.t1[1] += 0.5; }
+  if (c === 'r2-') F.t2[1] -= 0.5; if (c === 'r2+') F.t2[1] += 0.5;
+  if (c === 'm-') F.z[1] = Math.max(F.z[0] + 0.5, F.z[1] - 0.5); if (c === 'm+') F.z[1] = Math.min(F.z[2] - 0.5, F.z[1] + 0.5);
+  atualizaFeixe();
+}));
+
+function trocaModo() {
+  const s = modo === 'sombra';
+  $('#p-sombra').hidden = !s; $('#p-feixe').hidden = s; $('#t-feixe').hidden = s;
+  $('#fb').textContent = '';
+  if (!cena) { s ? null : atualizaFeixe(); return; }
+  gS.visible = s; gF.visible = !s;
+  if (s) montaSombra();
+  else { cena.sol.position.set(8, 14, 6); atualizaFeixe(); cena.posicionar([4, 21, 21], [4, 0, 4]); }
+}
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => { modo = b.dataset.modo; document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === b)); trocaModo(); }));
+trocaModo();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

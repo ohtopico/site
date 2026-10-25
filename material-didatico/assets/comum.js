@@ -82,8 +82,8 @@
     const code = c => opts.codeButtons
       ? `<button class="tag code ${HAB[c].comp.toLowerCase()}" type="button" data-hab="${c}" title="${esc(c + ' — ' + HAB[c].texto)}">${c}</button>`
       : tagHab(c);
-    const feito = window.MDP && (r.tipo === 'jogo' || r.tipo === 'lista') ? MDP.resultado(r.id) : null;
-    const cta = { jogo: 'Jogar', ficha: 'Abrir ficha', plano: 'Ver plano', lista: 'Abrir lista' }[r.tipo];
+    const feito = window.MDP && (r.tipo === 'jogo' || r.tipo === '3d' || r.tipo === 'lista') ? MDP.resultado(r.id) : null;
+    const cta = { jogo: 'Jogar', '3d': 'Explorar', ficha: 'Abrir ficha', plano: 'Ver plano', lista: 'Abrir lista' }[r.tipo];
     return `<article class="rc t-${r.tipo} ${cc}">
       <div class="rc-cover" aria-hidden="true">
         <span class="rc-type">${TIPOS[r.tipo].icone} ${TIPOS[r.tipo].nome}</span>
@@ -119,7 +119,7 @@
       const itens = [];
       if (r.plano && REC[r.plano]) itens.push(REC[r.plano]);
       if (r.ficha && REC[r.ficha]) itens.push(REC[r.ficha]);
-      RECURSOS.filter(o => o.tipo === 'jogo' && o.id !== id && o.comp.some(c => r.comp.includes(c))).slice(0, 2).forEach(o => itens.push(o));
+      RECURSOS.filter(o => o.tipo === (r.tipo === '3d' ? '3d' : 'jogo') && o.id !== id && o.comp.some(c => r.comp.includes(c))).slice(0, r.tipo === '3d' ? 3 : 2).forEach(o => itens.push(o));
       rel.innerHTML = itens.map(o => `
         <a class="card" href="${recUrl(o)}">
           <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhaskara Passo a Passo · Material didático | ohtopico</title>
+<meta name="description" content="Calculadora da fórmula de Bhaskara passo a passo: coeficientes, discriminante, raízes exatas e aproximadas, verificação, forma fatorada e gráfico da parábola. Modo treino com correção de cada etapa. BNCC EF09MA09.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/bhaskara.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+  .bk-coef { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .bk-coef label { font-weight: 600; font-size: 15px; }
+  .bk-coef input, .bk-treino input { width: 100%; min-height: 46px; border: 1.5px solid var(--ink); border-radius: 14px; padding: 6px 12px; font-size: 18px; background: var(--paper); }
+  .bk-eq { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 5vw, 38px); margin: 14px 0 4px; }
+  .passos { list-style: none; padding: 0; margin: 16px 0 0; counter-reset: p; }
+  .passos li { counter-increment: p; border: 1.5px solid var(--ink); border-radius: 18px; padding: 14px 16px 12px 58px; margin: 10px 0; background: var(--paper); position: relative; }
+  .passos li::before { content: counter(p); position: absolute; left: 14px; top: 12px; width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 800; display: grid; place-items: center; }
+  .passos li[hidden] { display: none; }
+  .passos h3 { font-size: 18px; margin: 2px 0 6px; }
+  .passos .conta { margin: 6px 0; }
+  .passos .nota { font-size: 14.5px; color: var(--ink-2); margin: 4px 0 0; }
+  .grafico { width: 100%; height: auto; display: block; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px; }
+  .grafico .eixo { stroke: var(--ink); stroke-width: 1.4; }
+  .grafico .grade { stroke: var(--line); stroke-width: .8; }
+  .grafico .curva { fill: none; stroke: #1f8a4c; stroke-width: 3; }
+  .grafico .raiz { fill: #c8323f; stroke: var(--ink); stroke-width: 1.2; }
+  .grafico .vert { fill: #f2cf1d; stroke: var(--ink); stroke-width: 1.2; }
+  .grafico text { font-family: var(--body); font-size: 12px; fill: var(--ink-2); }
+  .grafico text.rot { font-size: 13px; font-weight: 600; fill: var(--ink); }
+  .bk-treino .linha { display: grid; grid-template-columns: minmax(0, 1fr) 140px auto; gap: 8px; align-items: center; margin: 8px 0; }
+  .bk-treino .linha span { font-size: 15.5px; }
+  .bk-treino .linha .ok-txt { color: var(--ok); font-weight: 600; }
+  @media (max-width: 560px) { .bk-treino .linha { grid-template-columns: minmax(0, 1fr) 110px; } .bk-treino .linha .btn { grid-column: 1 / -1; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Calculadora:</strong> digite os coeficientes de ax² + bx + c = 0 (inteiros ou decimais) e avance um passo de cada vez. Cada passo mostra a substituição completa, com os parênteses nos números negativos, que é onde acontece a maioria dos erros.</p>
+    <p><strong>Treino:</strong> a página sorteia uma equação e o estudante preenche cada etapa. A correção aponta o erro mais provável (sinal do b, sinal do −4ac, divisão só por 2 em vez de 2a).</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="calc" aria-pressed="true">Calculadora passo a passo</button>
+      <button type="button" data-modo="treino" aria-pressed="false">Treino</button>
+    </div>
+
+    <div class="lab-layout">
+      <div>
+        <section id="m-calc">
+          <div class="bk-coef">
+            <label>a <input id="a" inputmode="decimal" value="2" aria-label="Coeficiente a"></label>
+            <label>b <input id="b" inputmode="decimal" value="-3" aria-label="Coeficiente b"></label>
+            <label>c <input id="c" inputmode="decimal" value="-2" aria-label="Coeficiente c"></label>
+          </div>
+          <p class="bk-eq" id="eq"></p>
+          <div class="chips" style="margin:8px 0" id="exemplos"></div>
+          <div class="tools">
+            <button class="btn" type="button" id="prox">Próximo passo</button>
+            <button class="btn ghost" type="button" id="tudo">Mostrar todos os passos</button>
+            <button class="btn ghost" type="button" id="esconde">Esconder os passos</button>
+          </div>
+          <ol class="passos" id="passos"></ol>
+        </section>
+
+        <section id="m-treino" class="bk-treino" hidden>
+          <p class="bk-eq" id="eq-t"></p>
+          <p class="small muted">Preencha cada etapa e confira. Use vírgula para decimais e escreva as raízes em qualquer ordem.</p>
+          <div class="linha"><span>Coeficientes: a, b, c (separados por ponto e vírgula)</span><input id="t-coef" aria-label="Coeficientes"><button class="btn ghost" type="button" data-t="coef">Conferir</button></div>
+          <div class="linha"><span>Δ = b² − 4ac</span><input id="t-delta" inputmode="numeric" aria-label="Delta"><button class="btn ghost" type="button" data-t="delta">Conferir</button></div>
+          <div class="linha"><span>√Δ</span><input id="t-raiz" inputmode="numeric" aria-label="Raiz de delta"><button class="btn ghost" type="button" data-t="raiz">Conferir</button></div>
+          <div class="linha"><span>x₁ = (−b + √Δ) ÷ 2a</span><input id="t-x1" inputmode="decimal" aria-label="x1"><button class="btn ghost" type="button" data-t="x1">Conferir</button></div>
+          <div class="linha"><span>x₂ = (−b − √Δ) ÷ 2a</span><input id="t-x2" inputmode="decimal" aria-label="x2"><button class="btn ghost" type="button" data-t="x2">Conferir</button></div>
+          <div class="tools">
+            <button class="btn" type="button" id="t-nova">Nova equação</button>
+            <button class="btn ghost" type="button" id="t-ver">Ver a resolução</button>
+          </div>
+          <p class="feedback" id="t-fb" role="status"></p>
+          <p class="small muted" id="t-placar"></p>
+        </section>
+      </div>
+
+      <div class="side">
+        <div class="panel">
+          <h3>Gráfico da parábola</h3>
+          <svg class="grafico" id="graf" viewBox="0 0 320 320" role="img" aria-label=""></svg>
+          <p class="small" id="graf-txt" style="margin-top:8px"></p>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>y = ax² + bx + c</li>
+            <li><span class="sw" style="background:#c8323f"></span>raízes (onde a curva corta o eixo x)</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>vértice</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> pensar, formar duplas e compartilhar, com o treino como avaliação formativa. Cada estudante resolve uma equação no caderno, confere as etapas no modo treino com a dupla e a turma discute os erros mais frequentes que apareceram.</p>
+    <ol>
+      <li>Antes da fórmula, resolva x² + 5x + 6 = 0 pela fatoração (blocos algébricos) e compare com o resultado de Bhaskara. A BNCC (EF09MA09) liga a resolução do 2º grau à fatoração e aos produtos notáveis.</li>
+      <li>Investigue o Δ: troque só o c e observe o gráfico subir ou descer. Quando Δ fica negativo, a parábola não toca o eixo x.</li>
+      <li>Erros clássicos para discutir: (−3)² = 9 e não −9; −4ac com a e c negativos fica positivo; dividir por 2a e não por 2.</li>
+      <li>Situação real: um terreno retangular tem 6 m a mais de comprimento que de largura e 40 m² de área. Escreva x(x + 6) = 40 e resolva. Por que só uma raiz serve?</li>
+    </ol>
+    <p class="small muted">Habilidade: EF09MA09. Complementa o <a href="../../escape-matematica/">Escape Matemática</a>, que usa a fórmula em um desafio em equipe, e o recurso 3D <a href="../3d/algeblocos.html">Blocos Algébricos</a>.</p>
+  </details>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('bhaskara');
+(function () {
+  const $ = s => document.querySelector(s);
+  const mdc = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
+  const num = v => v.toLocaleString('pt-BR', { maximumFractionDigits: 4 }).replace(/-/g, '−');
+  const neg = v => v < 0 ? `(${num(v)})` : num(v);           // negativo entre parênteses na substituição
+  const menos = s => String(s).replace(/-/g, '−');
+  const lerNum = s => { const t = String(s).trim().replace(/\s/g, '').replace('−', '-').replace(',', '.'); if (t === '' || t === '-' ) return NaN; if (/^-?\d+\/\d+$/.test(t)) { const [p, q] = t.split('/').map(Number); return p / q; } return Number(t); };
+
+  /* fração p/q simplificada, como texto */
+  function frac(p, q) {
+    if (q < 0) { p = -p; q = -q; }
+    const g = mdc(p, q) || 1; p /= g; q /= g;
+    return q === 1 ? menos(p) : `${menos(p)}/${q}`;
+  }
+  /* raiz simplificada: √n = k√m */
+  function raizSimp(n) { let k = 1, m = n; for (let i = 2; i * i <= m; i++) while (m % (i * i) === 0) { m /= i * i; k *= i; } return [k, m]; }
+
+  function termo(coef, x, primeiro) {
+    if (!coef) return '';
+    const s = coef < 0 ? (primeiro ? '−' : ' − ') : (primeiro ? '' : ' + ');
+    const a = Math.abs(coef);
+    return s + (x && a === 1 ? '' : num(a)) + x;
+  }
+  const eqTxt = (a, b, c) => ((termo(a, 'x²', true) + termo(b, 'x', !a) + termo(c, '', !a && !b)) || '0') + ' = 0';
+
+  /* ---------------- gráfico ---------------- */
+  function grafico(a, b, c, raizes) {
+    const svg = $('#graf'), W = 320, H = 320;
+    if (!a) { svg.innerHTML = ''; $('#graf-txt').textContent = ''; return; }
+    const xv = -b / (2 * a), yv = a * xv * xv + b * xv + c;
+    let xs = [xv - 4, xv + 4, ...raizes];
+    let x0 = Math.min(...xs) - 1, x1 = Math.max(...xs) + 1;
+    const f = x => a * x * x + b * x + c;
+    const ys = [0, yv, f(x0), f(x1)];
+    let y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const pad = (y1 - y0) * 0.08 || 1; y0 -= pad; y1 += pad;
+    const X = x => 20 + (x - x0) / (x1 - x0) * (W - 40), Y = y => H - 20 - (y - y0) / (y1 - y0) * (H - 40);
+    let g = '';
+    const passo = v => { const r = Math.pow(10, Math.floor(Math.log10(v / 6))); return [1, 2, 5, 10].map(k => k * r).find(k => v / k <= 8); };
+    const px = passo(x1 - x0), py = passo(y1 - y0);
+    for (let x = Math.ceil(x0 / px) * px; x <= x1; x += px) g += `<line class="grade" x1="${X(x)}" x2="${X(x)}" y1="20" y2="${H - 20}"/>${Math.abs(x) > 1e-9 ? `<text x="${X(x)}" y="${Math.min(H - 6, Math.max(14, Y(0) + 14))}" text-anchor="middle">${num(Math.round(x * 100) / 100)}</text>` : ''}`;
+    for (let y = Math.ceil(y0 / py) * py; y <= y1; y += py) g += `<line class="grade" y1="${Y(y)}" y2="${Y(y)}" x1="20" x2="${W - 20}"/>${Math.abs(y) > 1e-9 ? `<text x="${Math.min(W - 24, Math.max(24, X(0) - 6))}" y="${Y(y) + 4}" text-anchor="end">${num(Math.round(y * 100) / 100)}</text>` : ''}`;
+    if (y0 <= 0 && y1 >= 0) g += `<line class="eixo" x1="20" x2="${W - 20}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+    if (x0 <= 0 && x1 >= 0) g += `<line class="eixo" y1="20" y2="${H - 20}" x1="${X(0)}" x2="${X(0)}"/>`;
+    let d = '';
+    for (let i = 0; i <= 120; i++) { const x = x0 + (x1 - x0) * i / 120, y = f(x); d += (i ? 'L' : 'M') + X(x).toFixed(1) + ' ' + Math.max(-50, Math.min(H + 50, Y(y))).toFixed(1); }
+    g += `<path class="curva" d="${d}"/>`;
+    g += `<circle class="vert" cx="${X(xv)}" cy="${Y(yv)}" r="6"/><text class="rot" x="${X(xv) + 9}" y="${Y(yv) + (a > 0 ? 18 : -10)}">V(${num(Math.round(xv * 100) / 100)}; ${num(Math.round(yv * 100) / 100)})</text>`;
+    raizes.forEach((r, i) => { g += `<circle class="raiz" cx="${X(r)}" cy="${Y(0)}" r="6.5"/><text class="rot" x="${X(r)}" y="${Y(0) + (a > 0 ? -12 : 22)}" text-anchor="middle">x${raizes.length > 1 ? (i ? '₂' : '₁') : ''} = ${num(Math.round(r * 1000) / 1000)}</text>`; });
+    svg.innerHTML = g;
+    const txt = `Parábola de y = ${eqTxt(a, b, c).replace(' = 0', '')}, com a concavidade voltada para ${a > 0 ? 'cima' : 'baixo'} e vértice em (${num(Math.round(xv * 100) / 100)}; ${num(Math.round(yv * 100) / 100)}). ${raizes.length === 2 ? `Corta o eixo x em ${num(Math.round(raizes[0] * 1000) / 1000)} e ${num(Math.round(raizes[1] * 1000) / 1000)}.` : raizes.length === 1 ? `Toca o eixo x só em ${num(raizes[0])}.` : 'Não toca o eixo x: não há raízes reais.'}`;
+    svg.setAttribute('aria-label', txt); $('#graf-txt').textContent = txt;
+  }
+
+  /* ---------------- resolução passo a passo ---------------- */
+  function resolver(A, B, C) {
+    const P = [];
+    // decimais: multiplica tudo por uma potência de 10 para trabalhar com inteiros
+    const casas = Math.max(...[A, B, C].map(v => (String(v).split('.')[1] || '').length));
+    const k = Math.pow(10, casas);
+    let a = Math.round(A * k), b = Math.round(B * k), c = Math.round(C * k);
+    const g = mdc(mdc(a, b), c) || 1;
+    if (!A) {
+      if (!B) return { passos: [[ 'Não é equação do 2º grau', `<p>Com a = 0 e b = 0 sobra ${num(C)} = 0, que ${C ? 'é falso: não há solução' : 'vale para qualquer x'}.</p>` ]], raizes: [] };
+      const r = -C / B;
+      return { passos: [[ 'Não é equação do 2º grau', `<p>Com a = 0, a equação vira ${eqTxt(0, B, C)}, que é do 1º grau.</p><div class="conta">${num(B)}x = ${neg(-C)}\nx = ${neg(-C)} ÷ ${neg(B)} = ${num(r)}</div><p class="nota">A fórmula de Bhaskara só se aplica quando a ≠ 0, porque ela divide por 2a.</p>` ]], raizes: [r] };
+    }
+    let pre = '';
+    if (casas) pre += `<p class="nota">Como há decimais, multiplicamos os dois membros por ${k}: ${eqTxt(a, b, c)}. As raízes não mudam.</p>`;
+    if (g > 1) { a /= g; b /= g; c /= g; pre += `<p class="nota">Todos os coeficientes são divisíveis por ${g}. Dividindo: ${eqTxt(a, b, c)}. As raízes não mudam e as contas ficam menores.</p>`; }
+    P.push(['Identificar os coeficientes', `<p>Na forma ax² + bx + c = 0:</p><div class="conta">a = ${num(A)}    b = ${num(B)}    c = ${num(C)}</div>${pre}<p class="nota">O coeficiente leva o sinal que está antes dele. Se falta o termo, o coeficiente é 0.</p>`]);
+    const D = b * b - 4 * a * c;
+    P.push(['Calcular o discriminante Δ', `<div class="conta">Δ = b² − 4ac\nΔ = ${neg(b)}² − 4 · ${neg(a)} · ${neg(c)}\nΔ = ${num(b * b)} ${-4 * a * c < 0 ? '−' : '+'} ${num(Math.abs(4 * a * c))}\nΔ = ${num(D)}</div><p class="nota">Atenção aos sinais: ${neg(b)}² = ${num(b * b)} (sempre positivo) e −4 · ${neg(a)} · ${neg(c)} = ${num(-4 * a * c)}.</p>`]);
+    P.push(['Analisar o Δ', D > 0 ? `<p>Δ = ${num(D)} > 0: a equação tem <strong>duas raízes reais diferentes</strong>.</p>` : D === 0 ? `<p>Δ = 0: a equação tem <strong>uma raiz real</strong> (duas raízes iguais).</p>` : `<p>Δ = ${num(D)} < 0: <strong>não existe raiz real</strong>, porque nenhum número real elevado ao quadrado dá negativo. A parábola não toca o eixo x.</p>`]);
+    if (D < 0) {
+      P.push(['Conclusão', `<p>Conjunto solução nos reais: S = { } (vazio).</p><p class="nota">No Ensino Médio, essa equação terá soluções nos números complexos.</p>`]);
+      return { passos: P, raizes: [] };
+    }
+    const [kq, mq] = D === 0 ? [0, 1] : raizSimp(D), exata = mq === 1;
+    const rTxt = exata ? num(kq) : (kq > 1 ? `${kq}√${mq}` : `√${mq}`);
+    P.push(['Calcular √Δ', exata ? `<div class="conta">√${num(D)} = ${num(kq)}  (porque ${kq}² = ${num(D)})</div>` : `<div class="conta">√${num(D)}${kq > 1 ? ` = √(${kq * kq} · ${mq}) = ${kq}√${mq}` : ''} ≈ ${num(Math.round(Math.sqrt(D) * 1000) / 1000)}</div><p class="nota">${num(D)} não é quadrado perfeito, então as raízes são irracionais. Elas podem ficar na forma exata (com raiz) ou aproximada.</p>`]);
+    const x1n = Math.round((-b + Math.sqrt(D)) / (2 * a) * 1e9) / 1e9, x2n = Math.round((-b - Math.sqrt(D)) / (2 * a) * 1e9) / 1e9;
+    let x1t, x2t;
+    if (exata) { x1t = frac(-b + kq, 2 * a); x2t = frac(-b - kq, 2 * a); }
+    else {
+      const h = mdc(mdc(b, kq), 2 * a) * Math.sign(a);
+      const p = -b / h, r = kq / h, q = 2 * a / h;
+      const rad = `${Math.abs(r) === 1 ? '' : Math.abs(r)}√${mq}`;
+      const base = p ? `${menos(p)} ± ${rad}` : `±${rad}`;
+      x1t = q === 1 ? base : `(${base}) / ${q}`; x2t = null;
+    }
+    const subst = `x = (−b ± √Δ) / 2a\nx = (−${neg(b)} ± ${rTxt}) / (2 · ${neg(a)})\nx = (${num(-b)} ± ${rTxt}) / ${num(2 * a)}`;
+    if (D === 0) P.push(['Aplicar a fórmula', `<div class="conta">${subst}\nx = ${num(-b)} / ${num(2 * a)} = ${x1t}</div><p class="nota">Com Δ = 0, o “±” não muda nada: as duas raízes são iguais.</p>`]);
+    else if (exata) P.push(['Aplicar a fórmula', `<div class="conta">${subst}\n\nx₁ = (${num(-b)} + ${num(kq)}) / ${num(2 * a)} = ${num(-b + kq)} / ${num(2 * a)} = ${x1t}\nx₂ = (${num(-b)} − ${num(kq)}) / ${num(2 * a)} = ${num(-b - kq)} / ${num(2 * a)} = ${x2t}</div><p class="nota">Erro comum: dividir só o √Δ por 2a. A divisão vale para todo o numerador, −b ± √Δ.</p>`]);
+    else P.push(['Aplicar a fórmula', `<div class="conta">${subst}\nx = ${x1t}\n\nx₁ ≈ ${num(Math.round(x1n * 1000) / 1000)}\nx₂ ≈ ${num(Math.round(x2n * 1000) / 1000)}</div>`]);
+    const raizes = D === 0 ? [x1n] : [x1n, x2n];
+    const S = D === 0 ? `S = {${x1t}}` : exata ? `S = {${x1t}; ${x2t}}` : `S = {${x1t.replace('±', '+')}; ${x1t.replace('±', '−')}}`;
+    const ver = raizes.map((r, i) => { const v = A * r * r + B * r + C; return `x${raizes.length > 1 ? (i ? '₂' : '₁') : ''} = ${num(Math.round(r * 1000) / 1000)}: ${num(A)} · ${neg(Math.round(r * 1000) / 1000)}² ${B < 0 ? '−' : '+'} ${num(Math.abs(B))} · ${neg(Math.round(r * 1000) / 1000)} ${C < 0 ? '−' : '+'} ${num(Math.abs(C))} ${exata ? '=' : '≈'} ${num(Math.abs(v) < 1e-6 ? 0 : Math.round(v * 1000) / 1000)}`; }).join('\n');
+    P.push(['Verificar', `<p>Substituindo cada raiz na equação original, o resultado precisa ser 0${exata ? '' : ' (ou muito perto de 0, por causa do arredondamento)'}:</p><div class="conta">${ver}</div><p class="nota">Soma das raízes = −b/a = ${frac(-b, a)} e produto = c/a = ${frac(c, a)}. Confira com os valores encontrados.</p>`]);
+    P.push(['Escrever a solução', `<div class="conta">${S}</div>${exata ? `<p class="nota">Forma fatorada: ${A === 1 ? '' : A === -1 ? '−' : num(A)}${D === 0 ? `(x ${x1n < 0 ? '+' : '−'} ${frac(Math.abs(-b), 2 * Math.abs(a)).replace('−', '')})²` : `(x ${x1n < 0 ? '+' : '−'} ${frac(Math.abs(-b + kq), Math.abs(2 * a)).replace('−', '')})(x ${x2n < 0 ? '+' : '−'} ${frac(Math.abs(-b - kq), Math.abs(2 * a)).replace('−', '')})`} = 0. Ler a equação assim é o caminho da fatoração (EF09MA09).</p>`.replace(/\(x [−+] 0\)/g, 'x') : ''}`]);
+    return { passos: P, raizes };
+  }
+
+  let mostrados = 1, atual = null;
+  function calcula() {
+    const A = lerNum($('#a').value), B = lerNum($('#b').value), C = lerNum($('#c').value);
+    if ([A, B, C].some(isNaN)) { $('#eq').textContent = 'Digite números em a, b e c.'; $('#passos').innerHTML = ''; return; }
+    $('#eq').textContent = eqTxt(A, B, C);
+    atual = resolver(A, B, C);
+    $('#passos').innerHTML = atual.passos.map(([t, h], i) => `<li${i >= mostrados ? ' hidden' : ''}><h3>${t}</h3>${h}</li>`).join('');
+    $('#prox').disabled = mostrados >= atual.passos.length;
+    grafico(A, B, C, atual.raizes);
+  }
+  ['a', 'b', 'c'].forEach(id => $('#' + id).addEventListener('input', () => { mostrados = 1; calcula(); }));
+  $('#prox').onclick = () => { mostrados++; calcula(); const li = $('#passos').children[mostrados - 1]; li && li.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); window.MDP && mostrados >= atual.passos.length && MDP.registrar('bhaskara', 60); };
+  $('#tudo').onclick = () => { mostrados = 99; calcula(); };
+  $('#esconde').onclick = () => { mostrados = 1; calcula(); };
+  const EX = [[1, -5, 6, 'duas raízes inteiras'], [2, -3, -2, 'raízes fracionárias'], [1, -6, 9, 'Δ = 0'], [1, 2, 5, 'Δ < 0'], [1, -2, -1, 'raízes irracionais'], [1, 6, -40, 'terreno: x(x + 6) = 40'], [-5, 20, 0, 'bola: altura −5t² + 20t'], [0.5, -1, -1.5, 'com decimais']];
+  $('#exemplos').innerHTML = EX.map(([a, b, c, t], i) => `<button class="chip" type="button" data-ex="${i}">${t}</button>`).join('');
+  document.querySelectorAll('[data-ex]').forEach(bt => bt.addEventListener('click', () => { const [a, b, c] = EX[+bt.dataset.ex]; $('#a').value = String(a).replace('.', ','); $('#b').value = String(b).replace('.', ','); $('#c').value = String(c).replace('.', ','); mostrados = 1; calcula(); }));
+
+  /* ---------------- treino ---------------- */
+  let T = null, acertos = 0, tentativas = 0;
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  function novaT() {
+    let a, r1, r2;
+    do { a = [1, 1, 1, 2, -1, 3][rnd(0, 5)]; r1 = rnd(-6, 6); r2 = rnd(-6, 6); } while (r1 === r2 && Math.random() < 0.7);
+    // a(x − r1)(x − r2), com uma chance de raiz fracionária quando a = 2
+    let b = -a * (r1 + r2), c = a * r1 * r2;
+    let x1 = r1, x2 = r2;
+    if (a === 2 && Math.random() < 0.5) { // 2x² ... com raiz r1/2
+      b = -(r1 + 2 * r2); c = r1 * r2; x1 = r1 / 2; x2 = r2;
+      if (r1 % 2 === 0) { x1 = r1 / 2; }
+    }
+    const D = b * b - 4 * a * c;
+    T = { a, b, c, D, x: [x1, x2].sort((p, q) => q - p) };
+    $('#eq-t').textContent = eqTxt(a, b, c);
+    ['coef', 'delta', 'raiz', 'x1', 'x2'].forEach(k => { $('#t-' + k).value = ''; });
+    document.querySelectorAll('.bk-treino .ok-txt').forEach(e => e.classList.remove('ok-txt'));
+    $('#t-fb').textContent = '';
+    grafico(a, b, c, []);
+  }
+  function confere(k) {
+    const v = $('#t-' + k).value, fb = $('#t-fb');
+    let ok = false, dica = '';
+    const { a, b, c, D } = T;
+    if (k === 'coef') { const p = v.split(';').map(lerNum); ok = p.length === 3 && p[0] === a && p[1] === b && p[2] === c; dica = 'Escreva os três coeficientes com os sinais, por exemplo: 1; −5; 6.'; }
+    if (k === 'delta') {
+      const n = lerNum(v); ok = n === D;
+      if (!ok) dica = n === -b * b - 4 * a * c ? 'O b² ficou negativo. Lembre: (−5)² = 25.' : n === b * b + 4 * a * c ? 'O sinal do −4ac inverteu. Calcule −4 · a · c com os sinais de a e de c.' : `Refaça: Δ = ${neg(b)}² − 4 · ${neg(a)} · ${neg(c)}.`;
+    }
+    if (k === 'raiz') { const n = lerNum(v); ok = Math.abs(n - Math.sqrt(D)) < 1e-9; dica = `Qual número ao quadrado dá ${num(D)}?`; }
+    if (k === 'x1' || k === 'x2') {
+      const n = lerNum(v), outro = lerNum($('#t-' + (k === 'x1' ? 'x2' : 'x1')).value);
+      ok = T.x.some(r => Math.abs(r - n) < 1e-6) && !(T.x[0] !== T.x[1] && Math.abs(n - outro) < 1e-6 && $('#t-' + (k === 'x1' ? 'x2' : 'x1')).dataset.ok === '1');
+      const s = Math.sqrt(D);
+      dica = [(-b + s) / 2, (-b - s) / 2].some(r => Math.abs(r - n) < 1e-6) && Math.abs(a) !== 1 ? 'Parece que você dividiu por 2 em vez de 2a.' : [(b + s) / (2 * a), (b - s) / (2 * a)].some(r => Math.abs(r - n) < 1e-6) ? 'O sinal do −b trocou: se b é negativo, −b é positivo.' : 'Calcule (−b ± √Δ) e só depois divida tudo por 2a.';
+    }
+    tentativas++;
+    const inp = $('#t-' + k);
+    inp.dataset.ok = ok ? '1' : '';
+    inp.closest('.linha').querySelector('span').classList.toggle('ok-txt', ok);
+    if (ok) acertos++;
+    fb.className = 'feedback ' + (ok ? 'ok' : 'bad');
+    fb.textContent = ok ? 'Correto.' : dica;
+    if (ok && (k === 'x1' || k === 'x2') && $('#t-x1').dataset.ok && $('#t-x2').dataset.ok) { fb.textContent = 'Equação resolvida.'; grafico(T.a, T.b, T.c, T.x[0] === T.x[1] ? [T.x[0]] : T.x); }
+    $('#t-placar').textContent = `Acertos: ${acertos} de ${tentativas}`;
+    window.MDP && MDP.registrar('bhaskara', Math.round(100 * acertos / tentativas));
+  }
+  document.querySelectorAll('[data-t]').forEach(bt => bt.addEventListener('click', () => confere(bt.dataset.t)));
+  ['coef', 'delta', 'raiz', 'x1', 'x2'].forEach(k => $('#t-' + k).addEventListener('keydown', e => { if (e.key === 'Enter') confere(k); }));
+  $('#t-nova').onclick = novaT;
+  $('#t-ver').onclick = () => { document.querySelector('[data-modo=calc]').click(); $('#a').value = T.a; $('#b').value = T.b; $('#c').value = T.c; mostrados = 99; calcula(); };
+
+  document.querySelectorAll('[data-modo]').forEach(bt => bt.addEventListener('click', () => {
+    document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === bt));
+    const tr = bt.dataset.modo === 'treino';
+    $('#m-treino').hidden = !tr; $('#m-calc').hidden = tr;
+    if (tr) { if (!T) novaT(); else grafico(T.a, T.b, T.c, []); } else calcula();
+  }));
+  calcula();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

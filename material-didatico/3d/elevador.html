@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elevador dos Inteiros · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Elevador em 3D com andares e subsolos para somar e subtrair números inteiros, inclusive subtrair negativos. BNCC EF07MA03, EF07MA04.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/elevador.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>O térreo é o zero. Os andares acima são positivos e os subsolos da garagem são negativos. Escolha o andar de partida, a operação e o número, e veja o elevador fazer a conta. <strong>Somar</strong> um positivo sobe e somar um negativo desce. <strong>Subtrair</strong> faz o contrário: subtrair um positivo desce e subtrair um negativo sobe, porque tirar uma descida é o mesmo que subir.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="desce">Descer 1 andar</button>
+          <button class="btn ghost" type="button" id="sobe">Subir 1 andar</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Montar a operação</h3>
+          <label for="ini">Andar de partida</label>
+          <select id="ini"></select>
+          <label for="op">Operação</label>
+          <select id="op"><option value="+">+ (somar)</option><option value="-">− (subtrair)</option></select>
+          <label for="num">Número</label>
+          <select id="num"></select>
+          <p style="margin-top:12px"><button class="btn" type="button" id="exec">Executar</button></p>
+          <p class="grande" id="andar">0</p>
+          <div class="conta" id="log">Histórico de viagens</div>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> gamificação com cartas. Em duplas, cada estudante sorteia uma carta de operação (por exemplo, “− (−3)”), prevê o andar de chegada no caderno e só depois confere no elevador. Ponto para quem acertar a previsão.</p>
+    <ol>
+      <li>Comece só com subir e descer, sem sinais. Depois escreva cada viagem como operação: subir 3 a partir do −2 é (−2) + 3 = 1.</li>
+      <li>Compare 5 − 3 e 5 + (−3). As duas viagens terminam no mesmo andar: subtrair é somar o oposto.</li>
+      <li>O caso difícil: 2 − (−3). Pergunte o que significa “cancelar uma descida de 3 andares”. O elevador sobe.</li>
+      <li>Relacione com outros contextos: saldo bancário, temperatura, altitude acima e abaixo do nível do mar.</li>
+    </ol>
+    <p class="small muted">Habilidades: EF07MA03 e EF07MA04. Material concreto equivalente: reta numérica vertical no chão ou na parede, com um estudante fazendo o papel do elevador.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-elevador');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const MIN = -5, MAXA = 8, H = 1.1; // altura de cada andar
+const sgn = n => n > 0 ? `+${n}` : n < 0 ? `−${-n}` : '0';
+const par = n => n < 0 ? `(${sgn(n)})` : String(n);
+let atual = 0, movendo = false;
+const log = [];
+
+const cena = lab3d($('#palco'), { cam: [13, 5, 19], alvo: [0, 1.8, 0], min: 6, max: 45, chao: false, polarMax: Math.PI * 0.75 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let cabine = null;
+if (cena) {
+  // solo em corte: terra abaixo de zero, grama na superfície
+  const terra = cena.bloco(9, -MIN * H, 4, '#8a8a84', { base: false, mat: { transparent: true, opacity: 0.35 } });
+  terra.position.set(0, MIN * H / 2, 0); cena.add(terra);
+  const grama = cena.bloco(9, 0.08, 4, COR.verdeClaro, { base: false }); grama.position.set(0, 0.04, 0); cena.add(grama);
+  // poço e lajes
+  for (let a = MIN; a <= MAXA; a++) {
+    const y = a * H;
+    const laje = cena.bloco(3.4, 0.08, 2.6, a < 0 ? COR.cinza : COR.papel, { base: false }); laje.position.set(-1.6, y, 0); cena.add(laje);
+    const r = cena.rotulo(a === 0 ? '0 térreo' : a < 0 ? `−${-a} subsolo` : `+${a}`, { tam: 0.5, fundo: a < 0 ? '#fbe6ea' : a > 0 ? '#e3f4e8' : '#fff36b' });
+    r.position.set(-5.6, y + 0.2, 0.9); cena.add(r);
+  }
+  // trilhos do elevador
+  [[0.3, -1], [0.3, 1], [1.7, -1], [1.7, 1]].forEach(([x, z]) => cena.add(cena.haste([x, MIN * H, z], [x, (MAXA + 1) * H, z], 0.06, COR.cinzaEscuro)));
+  cabine = cena.bloco(1.3, H * 0.85, 1.8, COR.amarelo, { base: false });
+  cabine.position.set(1, H * 0.43, 0); cena.add(cabine);
+  const porta = cena.bloco(0.04, H * 0.7, 1.2, COR.tinta, { base: false }); porta.position.set(0.67, 0, 0); cabine.add(porta);
+}
+
+async function vai(destino, passoAPasso = true) {
+  destino = Math.max(MIN, Math.min(MAXA, destino));
+  if (!cena) { atual = destino; return; }
+  movendo = true;
+  const dir = Math.sign(destino - atual);
+  while (atual !== destino) {
+    atual += dir;
+    $('#andar').textContent = sgn(atual);
+    await cena.animar(cabine, { position: [1, atual * H + H * 0.43, 0] }, passoAPasso ? 300 : 120);
+  }
+  movendo = false;
+}
+
+function opcoes(sel, de, ate, val) { sel.innerHTML = ''; for (let i = de; i <= ate; i++) sel.add(new Option(sgn(i), i, false, i === val)); }
+opcoes($('#ini'), MIN, MAXA, 0); opcoes($('#num'), -6, 6, 3);
+
+const DES = [
+  { txt: 'Saia do +3 e chegue ao −2 com uma única operação de soma.', ok: v => v.a === 3 && v.op === '+' && v.r === -2 },
+  { txt: 'Faça uma subtração que faça o elevador subir.', ok: v => v.op === '-' && v.r > v.a },
+  { txt: 'Mostre que 4 − 6 e 4 + (−6) chegam ao mesmo andar.', ok: () => log.some(v => v.a === 4 && v.op === '-' && v.b === 6) && log.some(v => v.a === 4 && v.op === '+' && v.b === -6) },
+  { txt: 'Calcule (−3) − (−5) no elevador.', ok: v => v.a === -3 && v.op === '-' && v.b === -5 },
+  { txt: 'Parta de um subsolo e chegue ao térreo subtraindo.', ok: v => v.a < 0 && v.op === '-' && v.r === 0 }
+];
+const feitos = new Set();
+function pintaDesafios(v) {
+  DES.forEach((d, i) => { if (d.ok(v || {})) feitos.add(i); });
+  $('#desafios').innerHTML = DES.map((d, i) => `<li class="${feitos.has(i) ? 'ok' : ''}">${d.txt}</li>`).join('');
+  window.MDP && feitos.size && MDP.registrar('3d-elevador', Math.round(100 * feitos.size / DES.length));
+}
+
+$('#exec').onclick = async () => {
+  if (movendo) return;
+  const a = +$('#ini').value, op = $('#op').value, b = +$('#num').value;
+  const mov = op === '+' ? b : -b;
+  const r = a + mov;
+  if (r < MIN || r > MAXA) { $('#fb').className = 'feedback bad'; $('#fb').textContent = `O resultado seria ${sgn(r)}, fora do prédio (de ${MIN} a +${MAXA}). Escolha outros números.`; return; }
+  $('#fb').className = 'feedback';
+  const explica = op === '+'
+    ? (b >= 0 ? `somar ${b} é subir ${b}` : `somar ${par(b)} é descer ${-b}`)
+    : (b >= 0 ? `subtrair ${b} é descer ${b}` : `subtrair ${par(b)} é cancelar uma descida: sobe ${-b}`);
+  $('#fb').textContent = `${par(a)} ${op === '+' ? '+' : '−'} ${par(b)}: ${explica}.`;
+  await vai(a, false);
+  await vai(r);
+  const v = { a, op, b, r };
+  log.unshift(v); if (log.length > 6) log.pop();
+  $('#log').textContent = log.map(v => `${par(v.a)} ${v.op === '+' ? '+' : '−'} ${par(v.b)} = ${sgn(v.r)}`).join('\n');
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent += ` Resultado: ${sgn(r)}.`;
+  pintaDesafios(v);
+  descreve();
+};
+$('#sobe').onclick = async () => { if (!movendo) { await vai(atual + 1); descreve(); } };
+$('#desce').onclick = async () => { if (!movendo) { await vai(atual - 1); descreve(); } };
+function descreve() { cena && cena.descrever(`Prédio com andares de −5 (subsolo) a +8. O térreo é o zero. O elevador amarelo está no andar ${sgn(atual)}.`); $('#andar').textContent = sgn(atual); }
+pintaDesafios(); descreve();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

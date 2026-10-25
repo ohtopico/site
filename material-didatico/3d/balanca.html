@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balança 3D das Equações · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Balança de pratos em 3D para resolver equações do 1º grau mantendo a igualdade. BNCC EF06MA14, EF07MA18.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/balanca.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Cada caixa amarela tem o mesmo peso desconhecido, o <strong>x</strong>. Cada peso verde vale <strong>1</strong>. A balança começa equilibrada. Para descobrir x, faça a mesma coisa dos dois lados: tirar pesos iguais ou dividir os dois pratos pelo mesmo número. Se você tocar numa peça, ela sai só daquele prato e a balança mostra o que acontece.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="tira1">Tirar 1 de cada lado</button>
+          <button class="btn" type="button" id="tirax">Tirar um x de cada lado</button>
+          <button class="btn" type="button" id="divide">Dividir os dois lados</button>
+          <button class="btn ghost" type="button" id="desfaz">Desfazer</button>
+          <button class="btn ghost" type="button" id="nova">Nova equação</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Equação</h3>
+          <p class="grande" id="eq"></p>
+          <div class="conta" id="passos"></div>
+          <label for="chute">Quanto vale x?</label>
+          <input type="number" id="chute" min="0" max="20" inputmode="numeric">
+          <p style="margin-top:10px"><button class="btn ghost" type="button" id="conferir">Conferir</button></p>
+          <p class="small muted" id="placar"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> sala de aula invertida. Os estudantes exploram a balança em casa ou no início da aula, anotam os passos que fizeram e chegam com as dúvidas. A aula começa com a comparação entre os registros.</p>
+    <ol>
+      <li>Peça que resolvam três equações só com a balança e escrevam cada passo como operação nos dois membros.</li>
+      <li>Provoque o erro: toque num peso de um lado só. A balança tomba. Pergunte que regra isso mostra (propriedade da igualdade, EF06MA14).</li>
+      <li>Compare a sequência de passos com o “passa para o outro lado com o sinal trocado”. Por que essa frase funciona e onde ela engana?</li>
+      <li>Para fechar, cada grupo cria um problema da vida real que vire uma equação da forma ax + b = c e troca com outro grupo (EF07MA18).</li>
+    </ol>
+    <p class="small muted">Habilidades: EF06MA14 e EF07MA18. Complementa o jogo 2D Balança das Equações. Material concreto equivalente: cabide com dois copos e clipes, ou balança de pratos com saquinhos opacos.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-balanca');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const cena = lab3d($('#palco'), { cam: [0, 6, 13], alvo: [0, 2.6, 0], min: 6, max: 30 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+
+let X = 3, lado, hist = [], passos = [], acertos = 0, total = 0;
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+function nova() {
+  X = rnd(1, 7);
+  const a = rnd(2, 4), c = rnd(0, a - 1), b = rnd(0, 6);
+  const d = (a - c) * X + b;
+  if (d > 14 || a + b > 10 || c + d > 16) return nova();
+  lado = [{ x: a, u: b }, { x: c, u: d }];
+  hist = []; passos = [txtEq()];
+  $('#chute').value = ''; $('#fb').textContent = '';
+  atualiza(true);
+}
+const termo = s => [s.x ? (s.x === 1 ? 'x' : `${s.x}x`) : '', s.u ? String(s.u) : ''].filter(Boolean).join(' + ') || '0';
+const txtEq = () => `${termo(lado[0])} = ${termo(lado[1])}`;
+const peso = s => s.x * X + s.u;
+
+/* ---------- cena ---------- */
+let viga, pratos = [], pecas = [];
+if (cena) {
+  const base = cena.cilindro(1.1, 0.25, COR.cinzaEscuro); cena.add(base);
+  const coluna = cena.bloco(0.35, 4, 0.35, COR.cinzaEscuro, { base: false }); coluna.position.set(0, 2.1, 0); cena.add(coluna);
+  viga = new T.Group(); viga.position.set(0, 4.1, 0); cena.add(viga);
+  const barra = cena.bloco(8.4, 0.22, 0.3, COR.tinta, { base: false }); viga.add(barra);
+  [-1, 1].forEach((s, i) => {
+    const p = new T.Group(); p.userData.s = s;
+    const fio = cena.haste([0, 0, 0], [0, -1.4, 0], 0.04, COR.cinzaEscuro); p.add(fio);
+    const prato = cena.cilindro(1.6, 0.12, COR.papel, { rTopo: 1.75 }); prato.position.y = -1.5; p.add(prato);
+    pratos.push(p); cena.add(p);
+  });
+}
+function posPratos(ang) {
+  pratos.forEach(p => {
+    const s = p.userData.s;
+    p.position.set(Math.cos(ang) * 4 * s, 4.1 + Math.sin(ang) * 4 * s, 0);
+  });
+}
+let angAtual = 0, angAlvo = 0;
+cena && cena.loop(() => {
+  const d = angAlvo - angAtual;
+  if (Math.abs(d) < 0.0005) { angAtual = angAlvo; viga.rotation.z = angAtual; posPratos(angAtual); return false; }
+  angAtual += d * 0.12; viga.rotation.z = angAtual; posPratos(angAtual); return true;
+});
+
+function desenhaPecas() {
+  pecas.forEach(p => cena.remove(p)); pecas = [];
+  lado.forEach((s, i) => {
+    const prato = pratos[i];
+    let k = 0;
+    const lugar = () => { const col = k % 3, lin = Math.floor(k / 3) % 3, cam = Math.floor(k / 9); k++; return [(col - 1) * 0.78, -1.44 + cam * 0.62, (lin - 1) * 0.78]; };
+    for (let j = 0; j < s.x; j++) {
+      const m = cena.bloco(0.66, 0.6, 0.66, COR.amarelo, { base: false });
+      const [x, y, z] = lugar(); m.position.set(x, y + 0.3, z);
+      const r = cena.rotulo('x', { tam: 0.36, fundo: '#fff36b' }); r.position.set(0, 0.05, 0.36); m.add(r);
+      m.userData = { lado: i, tipo: 'x' };
+      cena.clicavel(m, () => tiraUm(i, 'x'));
+      prato.add(m); pecas.push(m);
+    }
+    for (let j = 0; j < s.u; j++) {
+      const m = cena.cilindro(0.27, 0.42, COR.verde);
+      const [x, y, z] = lugar(); m.position.set(x, y, z);
+      m.userData = { lado: i, tipo: 'u' };
+      cena.clicavel(m, () => tiraUm(i, 'u'));
+      prato.add(m); pecas.push(m);
+    }
+  });
+}
+
+function atualiza(reset) {
+  const d = peso(lado[0]) - peso(lado[1]);
+  angAlvo = Math.max(-0.28, Math.min(0.28, d * 0.06));
+  if (reset) { angAtual = angAlvo; }
+  if (cena) { desenhaPecas(); posPratos(angAtual); cena.pedeQuadro(); }
+  $('#eq').textContent = d === 0 ? txtEq() : `${termo(lado[0])} ${d > 0 ? '>' : '<'} ${termo(lado[1])}`;
+  $('#passos').textContent = passos.join('\n');
+  $('#tira1').disabled = !(lado[0].u && lado[1].u);
+  $('#tirax').disabled = !(lado[0].x && lado[1].x);
+  $('#divide').disabled = !divisor();
+  $('#desfaz').disabled = !hist.length;
+  $('#placar').textContent = total ? `Acertos: ${acertos} de ${total}` : '';
+  cena && cena.descrever(`Balança de pratos. Prato da esquerda: ${lado[0].x} caixas x e ${lado[0].u} pesos de 1. Prato da direita: ${lado[1].x} caixas x e ${lado[1].u} pesos de 1. ${d === 0 ? 'A balança está equilibrada.' : `A balança pende para a ${d > 0 ? 'esquerda' : 'direita'}.`}`);
+}
+const salva = () => hist.push(JSON.stringify({ lado, passos }));
+function tiraUm(i, tipo) {
+  if (!lado[i][tipo]) return;
+  salva();
+  lado[i][tipo]--;
+  passos.push(`tirei ${tipo === 'x' ? 'um x' : '1'} só do lado ${i ? 'direito' : 'esquerdo'}`);
+  $('#fb').className = 'feedback bad';
+  $('#fb').textContent = 'A balança desequilibrou: o que se faz de um lado precisa ser feito do outro. Use Desfazer ou faça o mesmo no outro prato.';
+  atualiza();
+}
+function ambos(tipo, n, txt) {
+  salva();
+  lado.forEach(s => s[tipo] -= n);
+  passos.push(`${txt} → ${txtEq()}`);
+  $('#fb').className = 'feedback ok'; $('#fb').textContent = 'A balança continua equilibrada.';
+  checaFim(); atualiza();
+}
+function divisor() {
+  const [e, d] = lado;
+  if (peso(e) !== peso(d)) return 0;
+  // dividir só quando um lado tem apenas x e o outro apenas unidades (ou forma equivalente)
+  const n = [e.x, e.u, d.x, d.u].filter(v => v > 0).reduce((g, v) => { let a = g, b = v; while (b) [a, b] = [b, a % b]; return a; }, 0);
+  return n > 1 ? n : 0;
+}
+$('#tira1').onclick = () => { const n = Math.min(lado[0].u, lado[1].u); ambos('u', 1, `−1 dos dois lados`); };
+$('#tirax').onclick = () => ambos('x', 1, `−x dos dois lados`);
+$('#divide').onclick = () => {
+  const n = divisor(); if (!n) return;
+  salva();
+  lado.forEach(s => { s.x /= n; s.u /= n; });
+  passos.push(`÷${n} dos dois lados → ${txtEq()}`);
+  $('#fb').className = 'feedback ok'; $('#fb').textContent = `Os dois pratos foram divididos em ${n} partes iguais e ficou só uma delas.`;
+  checaFim(); atualiza();
+};
+$('#desfaz').onclick = () => { if (!hist.length) return; const h = JSON.parse(hist.pop()); lado = h.lado; passos = h.passos; $('#fb').textContent = ''; atualiza(); };
+$('#nova').onclick = nova;
+function checaFim() {
+  const [e, d] = lado;
+  if ((e.x === 1 && !e.u && !d.x) || (d.x === 1 && !d.u && !e.x)) {
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = `Uma caixa sozinha equilibra ${e.x ? d.u : e.u} pesos: x = ${X}.`;
+  }
+}
+$('#conferir').onclick = () => {
+  const v = +$('#chute').value; total++;
+  if (v === X) { acertos++; $('#fb').className = 'feedback ok'; $('#fb').textContent = `Isso: x = ${X}. Confira substituindo na equação original: ${passos[0].replace(/(\d*)x/g, (m, c) => `${c ? c + '·' : ''}${X}`)}.`; window.MDP && MDP.registrar('3d-balanca', Math.round(100 * acertos / total)); }
+  else { $('#fb').className = 'feedback bad'; $('#fb').textContent = `Com x = ${v} a balança não fica equilibrada. Continue isolando a caixa.`; }
+  atualiza();
+};
+nova();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

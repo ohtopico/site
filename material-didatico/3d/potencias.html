@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cubos das Potências · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Potências e raízes com cubinhos em 3D: linha, quadrado e cubo de cubinhos, raiz quadrada e raiz cúbica exatas e aproximadas. BNCC EF06MA11, EF08MA01, EF08MA02, EF09MA03.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/potencias.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Potência:</strong> escolha a base e o expoente. Com expoente 1 aparece uma fila de cubinhos, com expoente 2 um quadrado e com expoente 3 um cubo. Use “Montar camada por camada” para ver a multiplicação acontecer.</p>
+    <p><strong>Raiz:</strong> escolha uma quantidade de cubinhos e tente formar o maior quadrado (raiz quadrada) ou o maior cubo (raiz cúbica). Se sobrar cubinho, a raiz não é exata e fica entre dois números inteiros.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="pot" aria-pressed="true">Potência</button>
+      <button type="button" data-modo="raiz" aria-pressed="false">Raiz</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="montar">Montar camada por camada</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div id="ctl-pot">
+            <label for="base">Base: <b id="lbase">4</b></label>
+            <input type="range" id="base" min="1" max="10" value="4">
+            <label>Expoente</label>
+            <div class="seg" role="group" aria-label="Expoente">
+              <button type="button" data-exp="1" aria-pressed="false">1</button>
+              <button type="button" data-exp="2" aria-pressed="false">2</button>
+              <button type="button" data-exp="3" aria-pressed="true">3</button>
+            </div>
+          </div>
+          <div id="ctl-raiz" hidden>
+            <label for="qt">Quantidade de cubinhos: <b id="lqt">30</b></label>
+            <input type="range" id="qt" min="1" max="200" value="30">
+            <label>Tipo de raiz</label>
+            <div class="seg" role="group" aria-label="Índice">
+              <button type="button" data-ind="2" aria-pressed="true">Quadrada</button>
+              <button type="button" data-ind="3" aria-pressed="false">Cúbica</button>
+            </div>
+          </div>
+          <p class="grande" id="res"></p>
+          <div class="conta" id="conta"></div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>potência formada</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>camada sendo colocada</li>
+            <li><span class="sw" style="background:#c8323f"></span>cubinhos que sobraram</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> investigação matemática em grupos. Cada grupo recebe uma pergunta e usa o recurso para buscar padrões antes de qualquer regra.</p>
+    <ul>
+      <li>Por que 3² se chama “3 ao quadrado” e 3³ “3 ao cubo”? (A forma geométrica dá o nome.)</li>
+      <li>O que acontece com a quantidade de cubinhos quando a base dobra? Compare 2³ e 4³ (multiplica por 8).</li>
+      <li>Por que 2³ não é 2 × 3? Monte as duas quantidades e compare.</li>
+      <li>Entre quais inteiros está a raiz quadrada de 50? E a raiz cúbica de 100? Como saber sem calculadora?</li>
+      <li>Para o 8º e 9º ano: se 4² = 16, que número elevado a 1/2 dá 4? Relacione raiz e potência de expoente fracionário (EF08MA02).</li>
+    </ul>
+    <p class="small muted">Habilidades: EF06MA11, EF08MA01, EF08MA02 e EF09MA03. Material concreto equivalente: cubinhos de encaixe ou cubos de papel montados a partir de planificações.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-potencias');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const C = 0.6; // aresta do cubinho
+const cena = lab3d($('#palco'), { cam: [6, 6, 8], alvo: [1.2, 1, 1.2], min: 3, max: 40 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let grupo = null; if (cena) { grupo = new T.Group(); cena.add(grupo); }
+let modo = 'pot', base = 4, exp = 3, qt = 30, ind = 2, montando = false;
+
+const sup = ['', '¹', '²', '³'];
+function centra(w, h, d) { cena && cena.enquadrar([w / 2, h / 2, d / 2], Math.max(7, Math.max(w, h, d) * 3.4)); }
+
+function desenhaPot() {
+  cena.limpar(grupo);
+  const nx = base, ny = exp >= 3 ? base : 1, nz = exp >= 2 ? base : 1;
+  const m = cena.blocoGrade(nx, ny, nz, C, COR.verde);
+  grupo.add(m);
+  centra(nx * C, ny * C, nz * C);
+}
+async function montarPot() {
+  montando = true; $('#montar').disabled = true;
+  cena.limpar(grupo);
+  if (exp === 1) {
+    for (let i = 0; i < base; i++) {
+      const m = cena.blocoGrade(1, 1, 1, C, COR.amarelo); m.position.set(i * C, 2, 0); grupo.add(m);
+      await cena.animar(m, { position: [i * C, 0, 0] }, 220);
+      m.material = cena.blocoGrade(1, 1, 1, C, COR.verde).material;
+    }
+  } else if (exp === 2) {
+    for (let j = 0; j < base; j++) {
+      const m = cena.blocoGrade(base, 1, 1, C, COR.amarelo); m.position.set(0, 2, j * C); grupo.add(m);
+      $('#fb').textContent = `Fila ${j + 1} de ${base}: ${(j + 1) * base} cubinhos.`;
+      await cena.animar(m, { position: [0, 0, j * C] }, 300);
+      m.material = cena.blocoGrade(base, 1, 1, C, COR.verde).material;
+    }
+  } else {
+    for (let k = 0; k < base; k++) {
+      const m = cena.blocoGrade(base, 1, base, C, COR.amarelo); m.position.set(0, k * C + 2.5, 0); grupo.add(m);
+      $('#fb').textContent = `Camada ${k + 1} de ${base}: ${(k + 1) * base * base} cubinhos.`;
+      await cena.animar(m, { position: [0, k * C, 0] }, 360);
+      m.material = cena.blocoGrade(base, 1, base, C, COR.verde).material;
+    }
+  }
+  cena.pedeQuadro();
+  montando = false; $('#montar').disabled = false;
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent = `Pronto: ${base}${sup[exp]} = ${Math.pow(base, exp)} cubinhos.`;
+}
+
+function desenhaRaiz() {
+  cena.limpar(grupo);
+  const r = Math.floor(Math.pow(qt + 1e-9, 1 / ind));
+  const usados = Math.pow(r, ind), sobra = qt - usados;
+  const prof = ind === 3 ? r : 1;
+  if (r > 0) grupo.add(cena.blocoGrade(r, ind === 3 ? r : 1, r, C, COR.verde));
+  // sobras organizadas ao lado: camadas inteiras, filas e cubinhos soltos
+  let s = sobra, x0 = r * C + C * 0.8;
+  const camada = r * r, fila = r || 1;
+  let y = 0, z = 0, x = 0, peças = 0;
+  while (s > 0 && peças < 400) {
+    const m = cena.blocoGrade(1, 1, 1, C, COR.vermelho);
+    m.position.set(x0 + x * C, y * C, z * C);
+    grupo.add(m); s--; peças++;
+    x++; if (x >= 2) { x = 0; z++; if (z >= Math.max(fila, 3)) { z = 0; y++; } }
+  }
+  centra(r * C + 2.5, prof * C, r * C);
+  return { r, usados, sobra };
+}
+
+function atualiza() {
+  $('#ctl-pot').hidden = modo !== 'pot'; $('#ctl-raiz').hidden = modo !== 'raiz';
+  $('#montar').hidden = modo !== 'pot';
+  $('#fb').className = 'feedback'; $('#fb').textContent = '';
+  if (modo === 'pot') {
+    const v = Math.pow(base, exp);
+    $('#res').textContent = `${base}${sup[exp]} = ${v}`;
+    $('#conta').textContent = Array(exp).fill(base).join(' × ') + ` = ${v}` + (exp === 2 ? `\nárea de um quadrado de lado ${base}` : exp === 3 ? `\nvolume de um cubo de aresta ${base}` : `\n${base} cubinhos em fila`);
+    if (cena) { desenhaPot(); cena.descrever(`${exp === 1 ? 'Fila' : exp === 2 ? 'Quadrado' : 'Cubo'} de cubinhos verdes com ${base} cubinhos em cada aresta: ${base} elevado a ${exp} é igual a ${v}.`); }
+  } else {
+    const r = Math.floor(Math.pow(qt + 1e-9, 1 / ind));
+    const sobra = qt - Math.pow(r, ind);
+    if (cena) desenhaRaiz();
+    const nome = ind === 2 ? 'quadrada' : 'cúbica', simb = ind === 2 ? '√' : '∛';
+    if (sobra === 0) {
+      $('#res').textContent = `${simb}${qt} = ${r}`;
+      $('#conta').textContent = `${r}${sup[ind]} = ${qt}\nOs ${qt} cubinhos formam um ${ind === 2 ? 'quadrado' : 'cubo'} perfeito de lado ${r}.`;
+      $('#fb').className = 'feedback ok'; $('#fb').textContent = `Raiz ${nome} exata: ${qt} é um ${ind === 2 ? 'quadrado' : 'cubo'} perfeito.`;
+    } else {
+      $('#res').textContent = `${r} < ${simb}${qt} < ${r + 1}`;
+      $('#conta').textContent = `${r}${sup[ind]} = ${Math.pow(r, ind)}   ${r + 1}${sup[ind]} = ${Math.pow(r + 1, ind)}\nSobraram ${sobra} cubinho${sobra > 1 ? 's' : ''}; faltam ${Math.pow(r + 1, ind) - qt} para o próximo ${ind === 2 ? 'quadrado' : 'cubo'}.\n${simb}${qt} ≈ ${Math.pow(qt, 1 / ind).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}`;
+    }
+    cena && cena.descrever(`${qt} cubinhos. O maior ${ind === 2 ? 'quadrado' : 'cubo'} possível tem lado ${r}, usando ${Math.pow(r, ind)} cubinhos verdes. Sobram ${sobra} cubinhos vermelhos.`);
+    window.MDP && MDP.registrar('3d-potencias', 100);
+  }
+}
+
+$('#base').addEventListener('input', e => { base = +e.target.value; $('#lbase').textContent = base; atualiza(); });
+$('#qt').addEventListener('input', e => { qt = +e.target.value; $('#lqt').textContent = qt; atualiza(); });
+document.querySelectorAll('[data-exp]').forEach(b => b.addEventListener('click', () => { exp = +b.dataset.exp; document.querySelectorAll('[data-exp]').forEach(x => x.setAttribute('aria-pressed', x === b)); atualiza(); }));
+document.querySelectorAll('[data-ind]').forEach(b => b.addEventListener('click', () => { ind = +b.dataset.ind; document.querySelectorAll('[data-ind]').forEach(x => x.setAttribute('aria-pressed', x === b)); atualiza(); }));
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => { modo = b.dataset.modo; document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === b)); atualiza(); }));
+$('#montar').onclick = () => { if (!montando && cena) montarPot(); };
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

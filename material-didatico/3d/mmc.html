@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Torres do MMC · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Torres de blocos em 3D para descobrir o mínimo múltiplo comum: empilhe até as torres ficarem da mesma altura. BNCC EF06MA05, EF06MA06, EF07MA01.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/mmc.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Cada torre só cresce com blocos do mesmo tamanho: a torre A com blocos de altura <strong>a</strong>, a torre B com blocos de altura <strong>b</strong>. Empilhe sempre na torre mais baixa. Quando as duas ficam da mesma altura pela primeira vez, essa altura é o <strong>mínimo múltiplo comum</strong> de a e b. Ligue a terceira torre para três números.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="passo">Empilhar na torre mais baixa</button>
+          <button class="btn ghost" type="button" id="auto">Empilhar até igualar</button>
+          <button class="btn ghost" type="button" id="zerar">Desmontar</button>
+          <button class="btn ghost" type="button" id="tres" aria-pressed="false">Terceira torre</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <label for="va">Altura do bloco da torre A: <b id="la">4</b></label>
+          <input type="range" id="va" min="1" max="12" value="4">
+          <label for="vb">Altura do bloco da torre B: <b id="lb">6</b></label>
+          <input type="range" id="vb" min="1" max="12" value="6">
+          <div id="caixa-c" hidden>
+            <label for="vc">Altura do bloco da torre C: <b id="lc">3</b></label>
+            <input type="range" id="vc" min="1" max="10" value="3">
+          </div>
+          <h3 style="margin-top:16px">Alturas das torres</h3>
+          <div class="conta" id="conta"></div>
+          <p class="small" id="contexto"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem baseada em problemas. Comece por uma situação real antes de mostrar as torres: “Dois ônibus saem juntos do terminal às 7h. Um passa a cada 12 minutos e o outro a cada 18. Quando voltam a sair juntos?”.</p>
+    <ol>
+      <li>Em grupos, os estudantes estimam e registram a resposta sem cálculo formal (a BNCC pede estratégias diversas antes do algoritmo, EF07MA01).</li>
+      <li>Use as torres para testar as estimativas. Peça que anotem as alturas intermediárias: são os múltiplos de cada número.</li>
+      <li>Investigue: quando o mmc é o produto dos números? (Quando eles não têm divisor comum além de 1.) Quando o mmc é o maior dos números? (Quando um é múltiplo do outro.)</li>
+      <li>Só depois apresente a decomposição em fatores primos como um atalho para o que as torres mostraram.</li>
+    </ol>
+    <p class="small muted">Habilidades: EF06MA05, EF06MA06 e EF07MA01. Material concreto equivalente: torres de peças de encaixe (tipo Lego) ou tiras de papel de comprimentos diferentes.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-mmc');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, mmc } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const cena = lab3d($('#palco'), { cam: [9, 8, 13], alvo: [2, 3, 0], min: 5, max: 60 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+
+const torres = [
+  { k: 'A', cor: COR.verde, x: -2.2, b: 4, n: 0, ativa: true },
+  { k: 'B', cor: COR.amarelo, x: 0.6, b: 6, n: 0, ativa: true },
+  { k: 'C', cor: COR.vermelho, x: 3.4, b: 3, n: 0, ativa: false }
+];
+const ativas = () => torres.filter(t => t.ativa);
+const alvo = () => ativas().reduce((m, t) => mmc(m, t.b), 1);
+let escala = 0.3, grupo = null, regua = null;
+if (cena) { grupo = new T.Group(); regua = new T.Group(); cena.add(grupo, regua); }
+
+function calcEscala() { escala = Math.min(0.5, 9 / Math.max(alvo(), 8)); }
+function desenhaRegua() {
+  cena.limpar(regua);
+  const H = alvo() * escala;
+  const RX = torres[2].ativa ? 6.2 : 3.4;
+  regua.add(cena.haste([RX, 0, -1.2], [RX, H + 0.6, -1.2], 0.08, COR.tinta));
+  const passo = alvo() <= 30 ? 1 : alvo() <= 60 ? 5 : 10;
+  for (let v = 0; v <= alvo(); v += passo) {
+    const y = v * escala, forte = v % (passo * (passo === 1 ? 5 : 2)) === 0;
+    regua.add(cena.haste([RX, y, -1.2], [RX - (forte ? 0.5 : 0.3), y, -1.2], 0.04, COR.tinta));
+    if (forte) { const r = cena.rotulo(String(v), { tam: 0.32 }); r.position.set(RX + 0.55, y, -1.2); regua.add(r); }
+  }
+  // faixa da altura do mmc
+  const faixa = cena.bloco(RX + 2.8, 0.03, 2.4, COR.amareloClaro, { bordas: false, mat: { transparent: true, opacity: 0.6 } });
+  faixa.position.set(-2.6, H, -1.2); faixa.userData.mmc = true; faixa.visible = false; regua.add(faixa);
+  regua.userData.faixa = faixa;
+}
+function desenhaTorres(animarUltimo) {
+  cena.limpar(grupo);
+  let ultimo = null;
+  ativas().forEach(t => {
+    for (let i = 0; i < t.n; i++) {
+      const m = cena.blocoGrade(1, t.b, 1, 1, t.cor);
+      m.scale.set(1.8, escala, 1.8);
+      m.position.set(t.x, i * t.b * escala, -0.9);
+      grupo.add(m);
+      if (animarUltimo === t && i === t.n - 1) ultimo = m;
+    }
+    const r = cena.rotulo(`${t.k}: ${t.n * t.b}`, { tam: 0.45 });
+    r.position.set(t.x + 0.9, t.n * t.b * escala + 0.5, 0); grupo.add(r);
+  });
+  if (ultimo) { const y = ultimo.position.y; ultimo.position.y = y + 2.5; cena.animar(ultimo, { position: [ultimo.position.x, y, ultimo.position.z] }, 380); }
+  const iguais = ativas().every(t => t.n > 0 && t.n * t.b === ativas()[0].n * ativas()[0].b);
+  regua.userData.faixa.visible = iguais;
+}
+
+function atualiza(animarUltimo) {
+  const at = ativas();
+  if (cena) desenhaTorres(animarUltimo);
+  const alt = at.map(t => t.n * t.b);
+  const iguais = at.every(t => t.n > 0) && alt.every(h => h === alt[0]);
+  $('#conta').textContent = at.map(t => `${t.k} (blocos de ${t.b}): ${t.n ? Array.from({ length: t.n }, (_, i) => (i + 1) * t.b).join(', ') : '—'}`).join('\n');
+  const nums = at.map(t => t.b).join(', ');
+  if (iguais) {
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = `As torres se encontraram na altura ${alt[0]}. mmc(${nums}) = ${alt[0]}.`;
+    window.MDP && MDP.registrar('3d-mmc', 100);
+  } else { $('#fb').className = 'feedback'; $('#fb').textContent = ''; }
+  $('#passo').disabled = $('#auto').disabled = iguais;
+  $('#contexto').textContent = at.length === 2
+    ? `Situação: dois ônibus saem juntos do terminal. Um passa a cada ${at[0].b} minutos e o outro a cada ${at[1].b}. Eles voltam a sair juntos depois de quantos minutos?`
+    : `Situação: três lâmpadas piscam juntas. Elas piscam a cada ${at[0].b}, ${at[1].b} e ${at[2].b} segundos. Quando piscam juntas de novo?`;
+  cena && cena.descrever(`Torres de blocos. ${at.map(t => `Torre ${t.k}: ${t.n} blocos de altura ${t.b}, altura total ${t.n * t.b}`).join('. ')}.${iguais ? ` As torres têm a mesma altura: mmc igual a ${alt[0]}.` : ''}`);
+}
+
+function passo() {
+  const at = ativas();
+  const menor = at.reduce((m, t) => (t.n * t.b < m.n * m.b ? t : m), at[0]);
+  menor.n++;
+  atualiza(menor);
+}
+$('#passo').onclick = passo;
+let rodando = null;
+$('#auto').onclick = () => {
+  if (rodando) return;
+  rodando = setInterval(() => {
+    const alt = ativas().map(t => t.n * t.b);
+    if (ativas().every(t => t.n > 0) && alt.every(h => h === alt[0])) { clearInterval(rodando); rodando = null; return; }
+    passo();
+  }, 320);
+};
+function reinicia() {
+  if (rodando) { clearInterval(rodando); rodando = null; }
+  torres.forEach(t => t.n = 0);
+  calcEscala();
+  if (cena) { desenhaRegua(); cena.enquadrar([0.8, alvo() * escala / 2, 0], 15 + alvo() * escala * 0.9); }
+  atualiza();
+}
+$('#zerar').onclick = reinicia;
+[['va', 0, 'la'], ['vb', 1, 'lb'], ['vc', 2, 'lc']].forEach(([id, i, l]) => $('#' + id).addEventListener('input', e => { torres[i].b = +e.target.value; $('#' + l).textContent = e.target.value; reinicia(); }));
+$('#tres').onclick = e => { torres[2].ativa = !torres[2].ativa; e.target.setAttribute('aria-pressed', torres[2].ativa); $('#caixa-c').hidden = !torres[2].ativa; reinicia(); };
+reinicia();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

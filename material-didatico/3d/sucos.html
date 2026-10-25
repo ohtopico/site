@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratório de Sucos: Razão e Proporção · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Jarras em 3D para razão, proporção e regra de três: misture concentrado e água e compare sabores. BNCC EF06MA15, EF07MA09, EF07MA17, EF08MA13, EF09MA08.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/sucos.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Cada jarra recebe copos de <strong>suco concentrado</strong> (amarelo) e copos de <strong>água</strong>. A <strong>razão</strong> concentrado : água decide o sabor: quanto mais concentrado em relação à água, mais forte a cor. Duas jarras com razões iguais formam uma <strong>proporção</strong> e têm o mesmo sabor, mesmo com quantidades diferentes. Na aba Regra de três, use a receita para calcular quantidades maiores.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="comparar" aria-pressed="true">Comparar jarras</button>
+      <button type="button" data-modo="regra" aria-pressed="false">Regra de três</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="ctl-A"></div>
+        <div class="tools" id="ctl-B"></div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div id="p-comparar">
+            <h3>Razões</h3>
+            <p class="grande" id="comp"></p>
+            <div class="conta" id="conta"></div>
+            <h3 style="margin-top:14px">Desafios</h3>
+            <ol class="desafios" id="desafios"></ol>
+          </div>
+          <div id="p-regra" hidden>
+            <h3>Receita</h3>
+            <p id="receita"></p>
+            <label for="pede" id="lpede"></label>
+            <input type="number" id="pede" min="0" max="200" inputmode="numeric">
+            <p style="margin-top:10px"><button class="btn" type="button" id="conf">Conferir</button> <button class="btn ghost" type="button" id="outra">Outra receita</button></p>
+            <div class="conta" id="tabela3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> laboratório investigativo com previsão, observação e explicação (POE). Antes de cada mistura, os estudantes preveem se o sabor vai ficar mais forte, mais fraco ou igual, observam no recurso e explicam a diferença entre o previsto e o observado.</p>
+    <ol>
+      <li>Razão: 2 copos de concentrado para 3 de água se escreve 2 : 3 ou 2/3. A razão do concentrado para o total é 2/5 (EF07MA09, EF06MA15).</li>
+      <li>Proporção: monte 2 : 3 em A e 4 : 6 em B. As cores são iguais. Escreva 2/3 = 4/6 e verifique que 2 × 6 = 3 × 4.</li>
+      <li>Armadilha aditiva: A em 2 : 3 e B em 3 : 4 (um copo a mais de cada). O sabor muda. Somar a mesma quantidade não mantém a proporção.</li>
+      <li>Regra de três: organize a tabela de duas grandezas e encontre o fator multiplicativo antes de usar o produto cruzado (EF07MA17, EF08MA13).</li>
+      <li>Contexto real: compare rótulos de suco concentrado e a diluição recomendada. A BNCC também pede proporcionalidade inversa: discuta quantos copos cabem em cada jarra se o copo for maior.</li>
+    </ol>
+    <p class="small muted">Habilidades: EF06MA15, EF07MA09, EF07MA17, EF08MA13 e EF09MA08. Material concreto equivalente: copos descartáveis, água e suco em pó ou corante alimentício.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-sucos');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, mdc } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const J = { A: { c: 2, a: 3, x: -2.6 }, B: { c: 4, a: 6, x: 2.6 } };
+const MAXC = 10;
+const cena = lab3d($('#palco'), { cam: [0, 6.5, 12.5], alvo: [0, 2, 0], min: 5, max: 30 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+
+const amarelo = cena ? new T.Color('#f0a800') : null, agua = cena ? new T.Color('#f4f7f2') : null;
+const jarras = {};
+if (cena) {
+  Object.entries(J).forEach(([k, j]) => {
+    const g = new T.Group(); g.position.set(j.x, 0, 0); cena.add(g);
+    const vidro = cena.cilindro(1.3, 4.2, '#ffffff', { bordas: true, mat: { transparent: true, opacity: 0.22, roughness: 0.1 } });
+    vidro.castShadow = false; g.add(vidro);
+    const liquido = cena.cilindro(1.2, 1, '#f2b705', { bordas: false, material: new T.MeshStandardMaterial({ color: '#f2b705', roughness: 0.3, transparent: true, opacity: 0.92 }) });
+    liquido.position.y = 0.05; g.add(liquido);
+    const r = cena.rotulo(`Jarra ${k}`, { tam: 0.5 }); r.position.set(0, 4.8, 0); g.add(r);
+    const copos = new T.Group(); copos.position.set(0, 0, 2.2); g.add(copos);
+    jarras[k] = { g, liquido, copos };
+  });
+}
+function desenhaJarra(k) {
+  const j = J[k], o = jarras[k];
+  const tot = j.c + j.a;
+  const h = Math.min(4.05, Math.max(0.02, tot / (2 * MAXC) * 4));
+  o.liquido.scale.y = h; o.liquido.visible = tot > 0;
+  const forca = tot ? j.c / tot : 0;
+  o.liquido.material.color.copy(agua).lerp(amarelo, Math.min(1, forca * 2.2));
+  cena.limpar(o.copos);
+  const mostra = Math.min(tot, 30), cMostra = Math.round(j.c / Math.max(1, tot) * mostra);
+  for (let i = 0; i < mostra; i++) {
+    const conc = i < cMostra;
+    const m = cena.cilindro(0.2, 0.42, conc ? COR.amarelo : '#e9eee8', { rTopo: 0.24 });
+    m.position.set(((i % 5) - 2) * 0.5, 0, Math.floor(i / 5) * 0.55);
+    o.copos.add(m);
+  }
+}
+const simp = (a, b) => { const g = mdc(a, b) || 1; return [a / g, b / g]; };
+
+const DES = [
+  ['Monte em B uma mistura com o mesmo sabor de 2 : 3, mas com mais suco no total.', () => J.A.c * 3 === J.A.a * 2 && J.B.c * 3 === J.B.a * 2 && J.B.c + J.B.a > 5],
+  ['Faça a jarra B ficar mais forte que A usando a mesma quantidade de água.', () => J.B.a === J.A.a && J.B.c > J.A.c],
+  ['Monte duas jarras em que o concentrado é a metade da água.', () => J.A.c * 2 === J.A.a && J.B.c * 2 === J.B.a && J.A.a > 0 && J.B.a > 0],
+  ['Mostre que 1 : 2 e 2 : 3 não têm o mesmo sabor.', () => J.A.c === 1 && J.A.a === 2 && J.B.c === 2 && J.B.a === 3]
+];
+const feitos = new Set();
+
+function atualiza() {
+  if (cena) { desenhaJarra('A'); desenhaJarra('B'); cena.pedeQuadro(); }
+  const ra = J.A.c * (J.B.a || 1e-9), rb = J.B.c * (J.A.a || 1e-9);
+  const fa = J.A.c / Math.max(1, J.A.c + J.A.a), fb = J.B.c / Math.max(1, J.B.c + J.B.a);
+  const igual = J.A.c * J.B.a === J.B.c * J.A.a && (J.A.c + J.A.a) > 0 && (J.B.c + J.B.a) > 0;
+  $('#comp').textContent = `${J.A.c} : ${J.A.a}  ${igual ? '=' : fa > fb ? '>' : '<'}  ${J.B.c} : ${J.B.a}`;
+  const lin = k => { const j = J[k], [p, q] = simp(j.c, j.a); const tot = j.c + j.a; return `${k}: concentrado/água = ${j.c}/${j.a}${p !== j.c ? ` = ${p}/${q}` : ''}\n   concentrado/total = ${j.c}/${tot} ≈ ${(tot ? 100 * j.c / tot : 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`; };
+  $('#conta').textContent = lin('A') + '\n' + lin('B') + (igual ? `\nProporção: ${J.A.c}/${J.A.a} = ${J.B.c}/${J.B.a}\n${J.A.c} × ${J.B.a} = ${J.A.a} × ${J.B.c} = ${J.A.c * J.B.a}` : '');
+  $('#fb').className = 'feedback' + (igual ? ' ok' : '');
+  $('#fb').textContent = igual ? 'Mesmo sabor: as razões são iguais, então as jarras formam uma proporção.' : (fa > fb ? 'A jarra A está mais forte.' : 'A jarra B está mais forte.');
+  DES.forEach(([, f], i) => { if (f()) feitos.add(i); });
+  $('#desafios').innerHTML = DES.map(([t], i) => `<li class="${feitos.has(i) ? 'ok' : ''}">${t}</li>`).join('');
+  window.MDP && feitos.size && MDP.registrar('3d-sucos', Math.round(100 * feitos.size / DES.length));
+  cena && cena.descrever(`Duas jarras de suco. Jarra A: ${J.A.c} copos de concentrado e ${J.A.a} de água. Jarra B: ${J.B.c} de concentrado e ${J.B.a} de água. ${igual ? 'As duas têm a mesma cor e o mesmo sabor.' : `A jarra ${fa > fb ? 'A' : 'B'} tem a cor mais forte.`}`);
+}
+function ctl(k) {
+  return `<span class="small" style="align-self:center;font-weight:600;min-width:70px">Jarra ${k}</span>
+  <button class="btn ghost" type="button" data-j="${k}" data-t="c-">− concentrado</button>
+  <button class="btn" type="button" data-j="${k}" data-t="c+">+ concentrado</button>
+  <button class="btn ghost" type="button" data-j="${k}" data-t="a-">− água</button>
+  <button class="btn" type="button" data-j="${k}" data-t="a+">+ água</button>`;
+}
+$('#ctl-A').innerHTML = ctl('A'); $('#ctl-B').innerHTML = ctl('B');
+document.querySelectorAll('[data-j]').forEach(b => b.addEventListener('click', () => {
+  const j = J[b.dataset.j], t = b.dataset.t, tot = j.c + j.a;
+  if (t === 'c+' && tot < 2 * MAXC) j.c++; if (t === 'c-' && j.c > 0) j.c--;
+  if (t === 'a+' && tot < 2 * MAXC) j.a++; if (t === 'a-' && j.a > 0) j.a--;
+  atualiza();
+}));
+
+/* ---------- regra de três ---------- */
+const RECEITAS = [
+  { c: 2, a: 5, pede: 'c', dado: 6, txt: (c, a) => `A receita usa ${c} copos de concentrado para ${a} copos de água.` },
+  { c: 1, a: 3, pede: 'a', dado: 12, txt: (c, a) => `A embalagem recomenda ${c} copo de concentrado para ${a} copos de água.` },
+  { c: 3, a: 4, pede: 'a', dado: 12, txt: (c, a) => `Para a festa, a receita é ${c} copos de concentrado para ${a} de água.` },
+  { c: 2, a: 7, pede: 'c', dado: 6, txt: (c, a) => `Uma lanchonete mistura ${c} copos de concentrado com ${a} de água.` },
+  { c: 4, a: 6, pede: 'a', dado: 9, txt: (c, a) => `A merenda usa ${c} copos de concentrado para ${a} de água.` }
+];
+let ri = 0;
+function mostraRegra() {
+  const r = RECEITAS[ri];
+  $('#receita').textContent = r.txt(r.c, r.a);
+  $('#lpede').textContent = r.pede === 'c'
+    ? `Se forem usados ${r.dado} copos de concentrado, quantos copos de água são necessários?`
+    : `Se forem usados ${r.dado} copos de água, quantos copos de concentrado são necessários?`;
+  $('#tabela3').textContent = `concentrado   água\n${String(r.c).padStart(6)}      ${String(r.a).padStart(4)}\n${(r.pede === 'c' ? String(r.dado) : '?').padStart(6)}      ${(r.pede === 'a' ? String(r.dado) : '?').padStart(4)}`;
+  $('#pede').value = '';
+  J.A.c = r.c; J.A.a = r.a; J.B.c = 0; J.B.a = 0; atualiza();
+}
+$('#conf').onclick = () => {
+  const r = RECEITAS[ri], v = +$('#pede').value;
+  const certo = r.pede === 'c' ? r.dado * r.a / r.c : r.dado * r.c / r.a;
+  const fator = r.pede === 'c' ? r.dado / r.c : r.dado / r.a;
+  if (Math.abs(v - certo) < 1e-6) {
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = `Correto. As duas grandezas foram multiplicadas por ${fator.toLocaleString('pt-BR')}. Veja na jarra B: mesma cor da jarra A.`;
+    if (r.pede === 'c') { J.B.c = r.dado; J.B.a = certo; } else { J.B.a = r.dado; J.B.c = certo; }
+    atualizaSemAviso();
+    window.MDP && MDP.registrar('3d-sucos', 100);
+  } else {
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = `Ainda não. Descubra por quanto a quantidade conhecida foi multiplicada (${r.pede === 'c' ? r.dado + ' ÷ ' + r.c : r.dado + ' ÷ ' + r.a}) e aplique o mesmo fator à outra grandeza.`;
+  }
+};
+function atualizaSemAviso() { const fb = $('#fb').textContent, cl = $('#fb').className; atualiza(); $('#fb').textContent = fb; $('#fb').className = cl; }
+$('#outra').onclick = () => { ri = (ri + 1) % RECEITAS.length; mostraRegra(); $('#fb').textContent = ''; };
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  const regra = b.dataset.modo === 'regra';
+  $('#p-regra').hidden = !regra; $('#p-comparar').hidden = regra;
+  if (regra) mostraRegra(); else atualiza();
+}));
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

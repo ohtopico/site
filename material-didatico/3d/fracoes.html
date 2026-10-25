@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barras de Frações 3D · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Barras de frações em 3D com reta numérica: compare, encontre equivalentes, passe da fração para o decimal e localize racionais negativos. BNCC EF06MA07, EF06MA08, EF07MA08, EF07MA10.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/fracoes.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Cada barra é um inteiro dividido em partes iguais. Escolha o <strong>denominador</strong> (em quantas partes o inteiro foi dividido) e o <strong>numerador</strong> (quantas partes foram tomadas). Toque numa parte da barra para pintar até ela. Quando o numerador passa do denominador, aparece um segundo inteiro. A reta numérica embaixo mostra onde cada fração fica, inclusive as negativas.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="ctl-a"></div>
+        <div class="tools" id="ctl-b"></div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Comparação</h3>
+          <p class="grande" id="comp">1/2 = 2/4</p>
+          <div class="conta" id="conta"></div>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios"></ol>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>barra A</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>barra B</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Metodologia sugerida:</strong> instrução por pares (peer instruction). Projete uma pergunta de comparação (por exemplo, 3/5 ou 2/3?), cada estudante vota sozinho, discute com o colega usando as barras e vota de novo.</p>
+    <ol>
+      <li>Frações equivalentes: deixe A em 1/2 e peça que encontrem três frações em B que deixem a comparação com o sinal de igual.</li>
+      <li>Frações maiores que o inteiro: 5/4 aparece com um inteiro completo e mais uma parte. Escreva como número misto e como decimal.</li>
+      <li>Racionais negativos: ligue o sinal negativo e localize −3/4 na reta. Pergunte qual é maior, −1/2 ou −3/4.</li>
+      <li>Registro: cada dupla escreve no caderno a regra que descobriu para comparar frações de mesmo denominador e de mesmo numerador.</li>
+    </ol>
+    <p class="small muted">Habilidades: EF06MA07, EF06MA08, EF07MA08 e EF07MA10. Material concreto equivalente: tiras de papel dobradas ou barras de frações em EVA.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-fracoes');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, mdc, fmt } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const L = 6;                       // comprimento de um inteiro na cena
+const F = { A: { n: 1, d: 2, neg: false, cor: COR.verde, z: -1.6 }, B: { n: 2, d: 4, neg: false, cor: COR.amarelo, z: 0.4 } };
+
+const cena = lab3d($('#palco'), { cam: [2, 15, 21], alvo: [2, 0, 1.2], min: 5, max: 40 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+const g = {}; let reta = null;
+if (cena) {
+  g.A = new T.Group(); g.B = new T.Group(); reta = new T.Group();
+  cena.add(g.A, g.B, reta);
+  // reta numérica de −2 a 2 (centrada em x = 4: o zero da reta fica no início das barras)
+  const R = L; // 1 unidade da reta = 1 inteiro das barras
+  reta.userData.R = R;
+  reta.position.set(0, 0, 3.6);
+  reta.add(cena.haste([-2 * R + 0.0, 0.05, 0], [2 * R + 0.0, 0.05, 0], 0.07, COR.tinta));
+  for (let k = -8; k <= 8; k++) {
+    const x = k * R / 4, alto = k % 4 === 0;
+    reta.add(cena.haste([x, 0.05, -0.12], [x, 0.05, alto ? 0.25 : 0.12], alto ? 0.06 : 0.035, COR.tinta));
+    if (alto) { const r = cena.rotulo(String(k / 4).replace('-', '−'), { tam: 0.4 }); r.position.set(x, 0.1, 0.65); reta.add(r); }
+  }
+  reta.position.x = 0;
+}
+
+function frac(f) { return (f.neg ? '−' : '') + `${f.n}/${f.d}`; }
+const valor = f => (f.neg ? -1 : 1) * f.n / f.d;
+
+function desenhaBarra(k) {
+  const f = F[k], grp = g[k];
+  cena.limpar(grp);
+  const inteiros = Math.max(1, Math.ceil(f.n / f.d));
+  const w = L / f.d;
+  for (let i = 0; i < inteiros * f.d; i++) {
+    const cheio = i < f.n;
+    const inteiro = Math.floor(i / f.d);
+    const m = cena.bloco(w - 0.05, cheio ? 0.7 : 0.45, 1.3, cheio ? f.cor : COR.papel);
+    m.position.set((i % f.d) * w + inteiro * L, 0, f.z);
+    m.userData.i = i;
+    cena.clicavel(m, ob => { f.n = ob.userData.i + 1 === f.n ? ob.userData.i : ob.userData.i + 1; atualiza(); });
+    grp.add(m);
+  }
+  const r = cena.rotulo(`${k}: ${frac(f)}`, { tam: 0.55 });
+  r.position.set(-1.6, 0.5, f.z + 0.65); grp.add(r);
+}
+
+const marcas = {};
+function desenhaReta() {
+  ['A', 'B'].forEach(k => {
+    if (marcas[k]) reta.remove(marcas[k]);
+    const v = Math.max(-2, Math.min(2, valor(F[k])));
+    const m = new T.Group();
+    const pino = cena.cilindro(0.16, 0.6, F[k].cor);
+    m.add(pino);
+    const r = cena.rotulo(frac(F[k]), { tam: 0.42 }); r.position.set(0, 1.05, 0); m.add(r);
+    m.position.set(v * reta.userData.R, 0.05, k === 'A' ? -0.5 : -0.5);
+    if (k === 'B') { r.position.y = 0.95; r.position.x = -0.9; } else r.position.x = 0.9;
+    marcas[k] = m; reta.add(m);
+  });
+}
+
+function controles(k) {
+  return `<span class="small" style="align-self:center;font-weight:600;min-width:70px">Barra ${k}</span>
+    <button class="btn ghost" type="button" data-f="${k}" data-c="d-">− partes</button>
+    <button class="btn ghost" type="button" data-f="${k}" data-c="d+">+ partes</button>
+    <button class="btn ghost" type="button" data-f="${k}" data-c="n-">− pintar</button>
+    <button class="btn" type="button" data-f="${k}" data-c="n+">+ pintar</button>
+    <button class="btn ghost" type="button" data-f="${k}" data-c="s" aria-pressed="false">Sinal −</button>`;
+}
+$('#ctl-a').innerHTML = controles('A'); $('#ctl-b').innerHTML = controles('B');
+document.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => {
+  const f = F[b.dataset.f], c = b.dataset.c;
+  if (c === 'd+' && f.d < 12) f.d++;
+  if (c === 'd-' && f.d > 1) { f.d--; f.n = Math.min(f.n, 2 * f.d); }
+  if (c === 'n+' && f.n < 2 * f.d) f.n++;
+  if (c === 'n-' && f.n > 0) f.n--;
+  if (c === 's') { f.neg = !f.neg; b.setAttribute('aria-pressed', f.neg); }
+  atualiza();
+}));
+
+const DES = [
+  ['Deixe A em 1/2 e encontre uma fração de B, com denominador 8, que seja equivalente.', () => valor(F.A) === 0.5 && F.B.d === 8 && valor(F.B) === 0.5],
+  ['Monte em A e em B duas frações equivalentes a 2/3 com denominadores diferentes.', () => Math.abs(valor(F.A) - 2 / 3) < 1e-9 && Math.abs(valor(F.B) - 2 / 3) < 1e-9 && F.A.d !== F.B.d],
+  ['Monte uma fração maior que o inteiro (imprópria) em A.', () => valor(F.A) > 1],
+  ['Coloque B em −3/4 e A em uma fração negativa maior que −3/4.', () => Math.abs(valor(F.B) + 0.75) < 1e-9 && valor(F.A) < 0 && valor(F.A) > -0.75],
+  ['Monte em A uma fração que vale 0,6 como decimal.', () => Math.abs(valor(F.A) - 0.6) < 1e-9]
+];
+const feitos = new Set();
+
+function atualiza() {
+  if (cena) { desenhaBarra('A'); desenhaBarra('B'); desenhaReta(); }
+  const a = valor(F.A), b = valor(F.B);
+  const sinal = Math.abs(a - b) < 1e-9 ? '=' : a > b ? '>' : '<';
+  $('#comp').textContent = `${frac(F.A)} ${sinal} ${frac(F.B)}`;
+  const simp = f => { const m = mdc(f.n, f.d) || 1; return m > 1 ? ` = ${f.neg ? '−' : ''}${f.n / m}/${f.d / m}` : ''; };
+  const dec = v => v.toLocaleString('pt-BR', { maximumFractionDigits: 4 });
+  const misto = f => f.n > f.d && f.n % f.d ? ` = ${f.neg ? '−' : ''}${Math.floor(f.n / f.d)} inteiro(s) e ${f.n % f.d}/${f.d}` : '';
+  $('#conta').textContent = ['A', 'B'].map(k => `${k}: ${frac(F[k])}${simp(F[k])}${misto(F[k])}\n   ≈ ${dec(valor(F[k]))}  (${dec(valor(F[k]) * 100)}%)`).join('\n');
+  DES.forEach(([, t], i) => { if (t()) feitos.add(i); });
+  $('#desafios').innerHTML = DES.map(([txt], i) => `<li class="${feitos.has(i) ? 'ok' : ''}">${txt}</li>`).join('');
+  window.MDP && feitos.size && MDP.registrar('3d-fracoes', Math.round(100 * feitos.size / DES.length));
+  $('#fb').className = 'feedback' + (sinal === '=' ? ' ok' : '');
+  $('#fb').textContent = sinal === '=' ? 'As duas frações representam a mesma quantidade: são equivalentes.' : '';
+  cena && cena.descrever(`Duas barras de frações. Barra A: ${frac(F.A)}, ${F.A.n} de ${F.A.d} partes pintadas. Barra B: ${frac(F.B)}. Na reta numérica, A fica em ${dec(a)} e B em ${dec(b)}. ${frac(F.A)} ${sinal} ${frac(F.B)}.`);
+}
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

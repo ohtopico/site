@@ -162,6 +162,7 @@ a.tag:hover, button.tag:hover { outline: 1.5px solid currentColor; }
 .c-coma .rc-cover { background: linear-gradient(120deg, var(--co-soft) 0 50%, var(--ma-soft) 50% 100%); }
 .rc-cover::before { content: ''; position: absolute; inset: 0; opacity: .32; }
 .t-jogo .rc-cover::before { background: radial-gradient(var(--ink) 1.3px, transparent 1.6px) 0 0 / 16px 16px; }
+.t-3d .rc-cover::before { background: linear-gradient(30deg, transparent 47%, var(--ink) 47% 49%, transparent 49%) 0 0 / 22px 38px, linear-gradient(-30deg, transparent 47%, var(--ink) 47% 49%, transparent 49%) 0 0 / 22px 38px; opacity: .16; }
 .t-ficha .rc-cover::before { background: repeating-linear-gradient(0deg, transparent 0 17px, var(--ink) 17px 18px); opacity: .18; }
 .t-plano .rc-cover::before { background:
   repeating-linear-gradient(0deg, transparent 0 21px, var(--ink) 21px 22px),
@@ -197,7 +198,7 @@ a.tag:hover, button.tag:hover { outline: 1.5px solid currentColor; }
 .rc-foot .tags { position: relative; z-index: 3; flex: 1 1 100%; }
 .rc-cta { margin-left: auto; }
 .rc-cta { font-weight: 600; font-size: 14px; white-space: nowrap; }
-.t-jogo .rc-cta { background: var(--ink); color: var(--paper); border-radius: 99px; padding: 5px 12px; }
+.t-jogo .rc-cta, .t-3d .rc-cta { background: var(--ink); color: var(--paper); border-radius: 99px; padding: 5px 12px; }
 
 /* ---------- Páginas de jogo ---------- */
 .game-head { padding: 32px 0 8px; }

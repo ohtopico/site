@@ -79,7 +79,7 @@
       <span class="eyebrow">Por onde começar</span>
       <h2>Três caminhos pelo repositório</h2>
       <div class="paths">
-        <a class="path" href="catalogo.html"><span class="ic">🗂️</span><h3>Catálogo</h3><p>Todos os jogos, fichas e planos, com busca e filtros por ano, componente e eixo.</p><span class="go">Abrir o catálogo →</span></a>
+        <a class="path" href="catalogo.html"><span class="ic">🗂️</span><h3>Catálogo</h3><p>Todos os jogos, recursos 3D, fichas e planos, com busca e filtros por ano, componente e eixo.</p><span class="go">Abrir o catálogo →</span></a>
         <a class="path" href="bncc.html"><span class="ic">🧭</span><h3>Explorar a BNCC</h3><p>Habilidades ano a ano, com os materiais que trabalham cada uma.</p><span class="go">Ver habilidades →</span></a>
         <a class="path" href="professor.html"><span class="ic">📋</span><h3>Área do professor</h3><p>Como usar o repositório e os planos de aula prontos, com avaliação e acessibilidade.</p><span class="go">Ir para a área →</span></a>
       </div>
@@ -95,6 +95,16 @@
       <div class="rc-grid" id="games"></div>
     </div>
   </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Matemática para girar e mexer</span><h2>Laboratório 3D</h2></div>
+        <a class="btn ghost" href="catalogo.html?tipo=3d">Ver todos os recursos 3D →</a>
+      </div>
+      <div class="rc-grid" id="lab3d"></div>
+    </div>
+  </section>
 </main>
 
 <footer id="footer"></footer>
@@ -108,9 +118,10 @@
   mdTopbar('inicio');
   mdFooter();
   const n = t => RECURSOS.filter(r => r.tipo === t).length;
-  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['ficha', 'fichas'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
+  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['ficha', 'fichas'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
     .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
   document.getElementById('games').innerHTML = RECURSOS.filter(r => r.tipo === 'jogo').slice(0, 4).map(r => mdCard(r)).join('');
+  document.getElementById('lab3d').innerHTML = RECURSOS.filter(r => r.tipo === '3d').slice(0, 4).map(r => mdCard(r)).join('');
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
