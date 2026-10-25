@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://ohtopico.com.br/">
     <meta property="og:site_name" content="ohtopico">
     <meta property="og:title" content="Júlia Roberta Quoos Alves · IA na educação e formação de professores">
-    <meta property="og:description" content="Engenheira de dados, mestranda em Ciência da Computação (UFSM) e professora de computação. Veja projetos, experiência docente e o guia IA pra Prof.">
+    <meta property="og:description" content="Professora de computação e formadora de professores em IA no RS, mestranda em Ciência da Computação (UFSM) e autora do guia IA pra Prof.">
     <meta property="og:image" content="https://ohtopico.com.br/img/perfil.jpg">
     <meta property="og:image:alt" content="Foto de Júlia Roberta Quoos Alves">
     <meta name="twitter:card" content="summary">
@@ -38,7 +38,7 @@
         "knowsAbout": ["Formação continuada de professores", "Inteligência artificial na educação", "Pensamento computacional", "Engenharia de dados", "SQL", "Python", "Machine learning", "Visão computacional", "Educação em computação"],
         "knowsLanguage": ["pt-BR", "en", "es"],
         "email": "mailto:contato@ohtopico.com.br",
-        "sameAs": ["https://www.linkedin.com/in/ohtopico", "https://github.com/ohtopico", "https://lattes.cnpq.br/7211035377768669"],
+        "sameAs": ["https://www.linkedin.com/in/ohtopico", "https://www.instagram.com/topico.tech/", "https://www.facebook.com/profile.php?id=61596036681061", "https://github.com/ohtopico", "https://lattes.cnpq.br/7211035377768669"],
         "makesOffer": [
           {"@type": "Offer", "itemOffered": {"@type": "Service", "@id": "https://ohtopico.com.br/formacao-continuada/#servico", "name": "Formação continuada de professores em IA", "url": "https://ohtopico.com.br/formacao-continuada/"}},
           {"@type": "Offer", "itemOffered": {"@type": "Service", "@id": "https://ohtopico.com.br/mentoria/#servico", "name": "Mentoria e formação de professores em IA", "url": "https://ohtopico.com.br/mentoria/"}}
@@ -193,6 +193,20 @@
         position: absolute;
         top: 22px;
         z-index: 5;
+    }
+
+    /* Desktop baixo (notebooks 1366x768, 1280x720): ícones mais compactos
+       e, se ainda faltar altura, quebram em uma segunda coluna */
+    @media (min-width: 769px) and (max-height: 820px) {
+        .desktop-icons {
+            align-content: flex-start;
+            bottom: 12px;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+            top: 12px;
+        }
+        .icon-item { gap: 5px; padding: 3px; }
+        .icon-item .tile { border-radius: 16px; font-size: 21px; height: 50px; width: 50px; }
     }
 
     .icon-item {
@@ -566,6 +580,8 @@
     }
     .programa-linkedin { background: #b9e6c6; }
     .programa-github { background: #fff36b; }
+    .programa-facebook { background: #ffb3a7; }
+    .programa-instagram { background: #ffd98a; }
     .programa:hover, .programa:focus-visible { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
     .bandeja .taskbar-clock { margin-left: 4px; }
 
@@ -641,7 +657,7 @@
         .desktop-icons {
             display: grid;
             gap: 4px;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             left: 10px;
             right: 10px;
             top: 10px;
@@ -740,7 +756,7 @@
                 <img src="img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" class="readme-photo" width="88" height="88">
                 <div>
                     <h1>Júlia Roberta Quoos Alves</h1>
-                    <p class="role">Engenheira de dados · Mestranda em Ciência da Computação (UFSM) · Professora de computação</p>
+                    <p class="role">Professora de computação · Formadora de professores em IA · Mestranda em Ciência da Computação (UFSM)</p>
                 </div>
             </div>
 
@@ -931,6 +947,8 @@
     <div id="open-programs-tabs" role="toolbar" aria-label="Janelas abertas"></div>
     <div class="bandeja">
         <a class="programa programa-linkedin" href="https://www.linkedin.com/in/ohtopico" target="_blank" rel="me noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i><span class="sr-only">LinkedIn de Júlia Roberta Quoos Alves (abre em nova aba)</span></a>
+        <a class="programa programa-facebook" href="https://www.facebook.com/profile.php?id=61596036681061" target="_blank" rel="me noopener" title="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook de Júlia Roberta Quoos Alves (abre em nova aba)</span></a>
+        <a class="programa programa-instagram" href="https://www.instagram.com/topico.tech/" target="_blank" rel="me noopener" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i><span class="sr-only">Instagram de Júlia Roberta Quoos Alves (abre em nova aba)</span></a>
         <a class="programa programa-github" href="https://github.com/ohtopico" target="_blank" rel="me noopener" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i><span class="sr-only">GitHub de Júlia Roberta Quoos Alves (abre em nova aba)</span></a>
         <div class="taskbar-clock" id="clock" aria-hidden="true">00:00</div>
     </div>
