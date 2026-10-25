@@ -7,6 +7,7 @@ Uso:
 - site/blog/index.html lista os posts publicados (data <= --ate; sem --ate, todos).
 - site/mentoria/index.html sai com noindex enquanto tiver trechos [pendentes].
 - site/formacao-continuada/index.html é a página de serviço da formação continuada em IA.
+- site/prompts-para-professores/index.html é a biblioteca de prompts (prompts.json + conteudo/biblioteca-prompts.html).
 - --sitemap atualiza o bloco do blog dentro de site/sitemap.xml (entre os marcadores).
 - Posts com data depois de --ate não saem no site: a pasta, a imagem e os slides deles são apagados
   do site, se já existirem. Assim a automação diária (.github/workflows/publicar-blog.yml) libera
@@ -103,6 +104,7 @@ MENU_INICIAR = [
         ('fa-regular fa-newspaper', 'Blog', '/blog/'),
         ('fa-solid fa-chalkboard-user', 'Mentoria', '/mentoria/'),
         ('fa-solid fa-people-group', 'Formação continuada', '/formacao-continuada/'),
+        ('fa-regular fa-clipboard', 'Biblioteca de prompts', '/prompts-para-professores/'),
     ]),
     ('Diversão', [
         ('fa-regular fa-star', 'Atualizações', '/#abrir=win-diario'),
@@ -143,6 +145,7 @@ def laterais(atual):
     temas = ''.join(f'<li><a href="/blog/#{slug_secao(s)}">{esc(s)}</a></li>' for s in secoes)
     navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Mentoria', '/mentoria/', 'mentoria'),
                ('◆', 'Formação continuada', '/formacao-continuada/', 'formacao'),
+               ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
                ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''), ('▲', 'Material didático', '/material-didatico/', ''),
                ('☺', 'Currículo', '/curriculo/', '')]
     atual_attr = ' aria-current="page"'
@@ -202,6 +205,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
         letreiro = (f'<a href="/blog/{ultimo["slug"]}/">✦ Post novo: {esc(ultimo["titulo"])}</a>'
                     '<a href="/mentoria/">✦ Mentoria para professores e escolas</a>'
                     '<a href="/formacao-continuada/">✦ Formação continuada em IA para escolas e redes</a>'
+                    '<a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a>'
                     '<a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a>')
     contador = ''
     if CONTEXTO['contador']:
@@ -561,6 +565,119 @@ def pagina_formacao(cfg, dims):
     return head + '\n' + moldura('guia-formacao.html', 'ohtopico.com.br/formacao-continuada', '/', conteudo, 'Pronto', 'formacao')
 
 
+PROMPTS_IMAGEM = 'dia03-pacto.png'
+
+
+def pagina_prompts(cfg):
+    site = cfg['site']
+    url = f'{site}/prompts-para-professores/'
+    bib = json.loads((AQUI / 'prompts.json').read_text(encoding='utf-8'))
+    etapas, tipos = bib['etapas'], bib['tipos']
+    total = sum(len(g['prompts']) for g in bib['grupos'])
+    opcoes = lambda pares: ''.join(f'<option value="{v}">{esc(n)}</option>' for v, n in pares)
+    disciplinas = [(slug_secao(g['disciplina']), g['disciplina']) for g in bib['grupos']]
+    filtros = f'''<div class="filtros" id="filtros" role="search" aria-label="Filtrar prompts" hidden>
+<div class="filtros-campos">
+<label for="f-disciplina">Disciplina<select id="f-disciplina"><option value="">Todas</option>{opcoes(disciplinas)}</select></label>
+<label for="f-etapa">Etapa<select id="f-etapa"><option value="">Todas</option>{opcoes(etapas.items())}</select></label>
+<label for="f-tipo">Para quê<select id="f-tipo"><option value="">Tudo</option>{opcoes(tipos.items())}</select></label>
+<label for="f-busca">Palavra<input type="search" id="f-busca" placeholder="frações, Scratch, rubrica" autocomplete="off"></label>
+</div>
+<div class="filtros-rodape"><p id="f-status" aria-live="polite">{total} prompts encontrados</p><button type="button" class="btn98" id="f-limpar">Limpar filtros</button></div>
+</div>'''
+    sumario = ('<nav aria-label="Disciplinas da biblioteca"><ul class="sumario-prompts">'
+               + ''.join(f'<li><a href="#{v}">{esc(n)}</a></li>' for v, n in disciplinas)
+               + '</ul></nav>')
+    secoes, itens_ld = [], []
+    for g in bib['grupos']:
+        gid = slug_secao(g['disciplina'])
+        artigos = []
+        for pr in g['prompts']:
+            etiquetas = (''.join(f'<li class="etapa">{esc(etapas[e])}</li>' for e in pr['etapas'])
+                         + f'<li class="tipo">{esc(tipos[pr["tipo"]])}</li>')
+            artigos.append(f'''<article class="prompt-item" id="{pr['id']}" data-etapas="{' '.join(pr['etapas'])}" data-tipo="{pr['tipo']}">
+<h3>{esc(pr['titulo'])}</h3>
+<ul class="etiquetas" aria-label="Etapa e uso">{etiquetas}</ul>
+<pre>{esc(pr['texto'])}</pre>
+</article>''')
+            itens_ld.append({
+                '@type': 'ListItem', 'position': len(itens_ld) + 1,
+                'item': {'@type': 'CreativeWork', '@id': f'{url}#{pr["id"]}', 'url': f'{url}#{pr["id"]}',
+                         'name': f'{pr["titulo"]} ({g["disciplina"]})', 'text': pr['texto'],
+                         'learningResourceType': 'Prompt de IA', 'about': g['disciplina'],
+                         'educationalLevel': [etapas[e] for e in pr['etapas']],
+                         'inLanguage': 'pt-BR', 'isAccessibleForFree': True},
+            })
+        secoes.append(f'<section class="grupo-prompts" id="{gid}" aria-labelledby="{gid}-titulo">\n'
+                      f'<h2 id="{gid}-titulo">{esc(g["disciplina"])}</h2>\n' + '\n'.join(artigos) + '\n</section>')
+    bloco = (filtros + '\n' + sumario + '\n<p class="sem-resultado" id="f-vazio" hidden>Nenhum prompt com esses filtros. '
+             'Tente outra etapa ou limpe os filtros.</p>\n' + '\n'.join(secoes))
+    corpo = (AQUI / 'conteudo' / 'biblioteca-prompts.html').read_text(encoding='utf-8').strip().replace('<!--PROMPTS-->', bloco)
+    titulo = 'Biblioteca de prompts para professores'
+    descricao = (f'{total} prompts de IA prontos para professores, por disciplina e etapa de ensino, da Educação Infantil ao ensino médio. '
+                 'Gratuitos, para copiar e adaptar, com orientações de LGPD. Por Júlia Roberta Quoos Alves.')
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'CollectionPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'isAccessibleForFree': True,
+                'keywords': ['prompts para professores', 'prompts de IA para professores', 'IA na educação',
+                             'planejamento de aulas com IA', 'formação de professores em IA'],
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
+                'author': AUTORA,
+                'publisher': {'@id': AUTORA['@id']},
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': f'{site}/blog/img/{PROMPTS_IMAGEM}', 'width': 1080, 'height': 1350},
+                'mainEntity': {'@id': url + '#prompts'},
+                'relatedLink': [f'{site}/formacao-continuada/', f'{site}/mentoria/', f'{site}/blog/prompts-para-professores-planejar-aulas/'],
+            },
+            {
+                '@type': 'ItemList',
+                '@id': url + '#prompts',
+                'name': titulo,
+                'numberOfItems': total,
+                'itemListElement': itens_ld,
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Biblioteca de prompts', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Biblioteca de prompts</li></ol></nav>
+    <p class="rotulo">Biblioteca de prompts</p>
+    <h1>Biblioteca de prompts para <span class="marca">professores</span></h1>
+    <p class="linha-fina">{total} prompts de inteligência artificial prontos para copiar, organizados por disciplina e etapa de ensino: planejamento, atividades, avaliação, inclusão e comunicação com as famílias.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="levar-escola">
+        <h2 id="levar-escola">Levar a biblioteca para a sua escola</h2>
+        <p>Na <a href="/formacao-continuada/">formação continuada de professores em IA</a>, cada área monta e testa os próprios prompts com as tarefas reais da semana. Para um acompanhamento individual, há a <a href="/mentoria/">mentoria</a>.</p>
+        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Biblioteca%20de%20prompts%20para%20professores">Falar com Júlia Roberta Quoos Alves</a>
+    </section>
+</article>'''
+    alt = 'Exemplo de prompt com cada parte da fórmula P.A.C.T.O. marcada em uma cor: papel, alvo, comando, tom e formato, observações.'
+    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/blog/img/{PROMPTS_IMAGEM}', alt, 'website', ld)
+    return head + '\n' + moldura('prompts.txt', 'ohtopico.com.br/prompts-para-professores', '/', conteudo,
+                                 f'Pronto · {total} prompts', 'prompts')
+
+
 def feed(cfg, publicados):
     site = cfg['site']
     itens = ''.join(f'''
@@ -590,13 +707,13 @@ def lastmod_atual(xml, url):
 
 def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram):
     """hoje: data da publicação (lastmod no futuro faz o Google desconfiar do sitemap).
-    mudaram: páginas fixas ('mentoria', 'formacao-continuada') cujo HTML mudou nesta execução;
+    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'prompts-para-professores') cujo HTML mudou nesta execução;
     as outras mantêm o lastmod que já estava no sitemap."""
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada']
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'prompts-para-professores']
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -633,7 +750,7 @@ def main():
     shutil.copy(AQUI / 'blog.js', blog / 'assets' / 'blog.js')
 
     # Posts agendados: nada deles pode ficar no site antes da data
-    em_uso = {p['imagem'] for p in publicados} | {'dia07-mentoria.png', FORMACAO_IMAGEM}
+    em_uso = {p['imagem'] for p in publicados} | {'dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM}
     for p in agendados:
         shutil.rmtree(blog / p['slug'], ignore_errors=True)
         if p['imagem'] not in em_uso:
@@ -643,7 +760,7 @@ def main():
             (blog / 'slides' / p['slides']['pdf']).unlink(missing_ok=True)
 
     dims = {}
-    for nome in [p['imagem'] for p in publicados] + ['dia07-mentoria.png', FORMACAO_IMAGEM]:
+    for nome in dict.fromkeys([p['imagem'] for p in publicados] + ['dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM]):
         origem = next((d / nome for d in a.imagens if (d / nome).exists()), None)
         if origem is None:
             raise SystemExit(f'Imagem não encontrada: {nome}')
@@ -679,7 +796,8 @@ def main():
 
     mentoria, pendente = pagina_mentoria(cfg, dims)
     mudaram = set()
-    for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims))):
+    for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims)),
+                          ('prompts-para-professores', pagina_prompts(cfg))):
         caminho = a.site / pagina / 'index.html'
         caminho.parent.mkdir(exist_ok=True)
         if not caminho.exists() or caminho.read_text(encoding='utf-8') != texto:

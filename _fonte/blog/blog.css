@@ -583,6 +583,61 @@ figure.infografico figcaption a { font-weight: 500; }
 .chamada .btn98 { background: var(--ink); color: var(--paper); }
 .chamada .btn98:hover { background: var(--ink-2); }
 
+/* ---------- Biblioteca de prompts ---------- */
+.aviso-lgpd {
+    background: var(--bad-soft);
+    border: 1.5px solid var(--ink);
+    border-radius: 22px;
+    margin: 28px 0;
+    padding: 18px 22px;
+}
+.aviso-lgpd h2 { margin-top: 0; }
+.aviso-lgpd p:last-child { margin-bottom: 0; }
+.filtros {
+    background: var(--paper-2);
+    border: 1.5px solid var(--ink);
+    border-radius: 22px;
+    margin: 28px 0 18px;
+    padding: 16px 18px;
+}
+.filtros-campos { display: grid; gap: 10px 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.filtros label { display: grid; font-size: 14px; font-weight: 500; gap: 4px; }
+.filtros select, .filtros input {
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 12px;
+    color: var(--ink);
+    font: 15px var(--body);
+    min-height: 38px;
+    padding: 4px 10px;
+    width: 100%;
+}
+.filtros-rodape { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 14px; justify-content: space-between; margin-top: 12px; }
+.artigo .filtros-rodape p { font-size: 15px; margin: 0; }
+.filtros .btn98 { font-size: 13px; min-height: 32px; padding: 2px 12px; }
+.sumario-prompts { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 0 10px; padding: 0; }
+.artigo .sumario-prompts li { font-size: 14px; margin: 0; }
+.sumario-prompts a {
+    background: var(--pill);
+    border: 1.5px solid var(--line);
+    border-radius: 99px;
+    color: var(--ink);
+    display: inline-block;
+    padding: 3px 12px;
+    text-decoration: none;
+}
+.sumario-prompts a:hover { border-color: var(--ink); }
+.grupo-prompts { scroll-margin-top: 16px; }
+.prompt-item { border-top: 1.5px dashed var(--line); padding-top: 4px; scroll-margin-top: 16px; }
+.grupo-prompts h2 + .prompt-item { border-top: none; padding-top: 0; }
+.artigo .prompt-item h3 { margin-bottom: 6px; }
+.etiquetas { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 10px; padding: 0; }
+.artigo .etiquetas li { border: 1.5px solid var(--ink); border-radius: 99px; font-size: 12.5px; margin: 0; padding: 0 10px; }
+.etiquetas .etapa { background: var(--mark); }
+.etiquetas .tipo { background: var(--ok-soft); }
+.artigo .sumario-prompts, .artigo .etiquetas { padding-left: 0; }
+.sem-resultado { background: var(--mark-soft); border-radius: 16px; padding: 12px 16px; }
+
 /* ---------- Telas médias: some a coluna da direita, ela desce para baixo do texto ---------- */
 @media (max-width: 1180px) {
     .corpo { grid-template-columns: 210px minmax(0, 1fr); }
@@ -623,7 +678,7 @@ figure.infografico figcaption a { font-weight: 500; }
 
 @media print {
     body { background: none; overflow: visible; }
-    .topbar, #taskbar, .janela-header, .ferramentas, .letreiro, .lateral, .status, .compartilhar, .vizinhos, .copiar { display: none !important; }
+    .topbar, #taskbar, .janela-header, .ferramentas, .letreiro, .lateral, .status, .compartilhar, .vizinhos, .copiar, .filtros { display: none !important; }
     .area { position: static; padding: 0; }
     .janela { border: none; box-shadow: none; height: auto; }
     .corpo { display: block; overflow: visible; }

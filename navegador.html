@@ -422,8 +422,8 @@ feita em panela de vó.</div>
             });
         } catch (e) { console.warn('Não foi possível ler o blog', e); }
 
-        // Páginas de serviço: mentoria e formação continuada
-        await Promise.all(['mentoria/', 'formacao-continuada/'].map(u => lerPagina(u + 'index.html').then(p => {
+        // Páginas de serviço: mentoria, formação continuada e biblioteca de prompts
+        await Promise.all(['mentoria/', 'formacao-continuada/', 'prompts-para-professores/'].map(u => lerPagina(u + 'index.html').then(p => {
             const artigo = p.querySelector('.artigo');
             if (!artigo) return;
             docs.push({

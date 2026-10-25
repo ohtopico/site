@@ -1,0 +1,362 @@
+{
+  "etapas": {
+    "infantil": "Educação Infantil",
+    "iniciais": "Anos iniciais",
+    "finais": "Anos finais",
+    "medio": "Ensino médio"
+  },
+  "tipos": {
+    "planejar": "Planejar aula",
+    "atividade": "Criar atividade",
+    "avaliar": "Avaliar",
+    "adaptar": "Adaptar e incluir",
+    "comunicar": "Comunicar"
+  },
+  "grupos": [
+    {
+      "disciplina": "Para qualquer disciplina",
+      "prompts": [
+        {
+          "id": "plano-de-aula",
+          "titulo": "Plano de aula completo",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como professor experiente de [disciplina]. Crie um plano de aula de [50] minutos sobre [tema] para o [ano], turma de [número] alunos, em uma escola [urbana ou rural] com [recursos disponíveis: quadro, projetor, sem internet]. Inclua: objetivo de aprendizagem, a habilidade da BNCC relacionada (eu vou conferir o código no documento oficial), abertura, desenvolvimento, fechamento e uma forma rápida de verificar o que a turma aprendeu. Formato: tabela com o tempo de cada etapa. Não invente dados nem referências."
+        },
+        {
+          "id": "diagnostico-inicial",
+          "titulo": "Perguntas de diagnóstico para começar um conteúdo",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "avaliar",
+          "texto": "Atue como professor de [disciplina] do [ano]. Crie 5 perguntas rápidas para o início da aula sobre [tema], para descobrir o que a turma já sabe e quais ideias equivocadas são comuns. Para cada pergunta, explique o que cada tipo de resposta indica e o que eu posso fazer em seguida."
+        },
+        {
+          "id": "questoes-com-gabarito",
+          "titulo": "Questões de múltipla escolha com gabarito comentado",
+          "etapas": ["finais", "medio"],
+          "tipo": "avaliar",
+          "texto": "Atue como especialista em avaliação. Crie 10 questões de múltipla escolha sobre [tema] para o [ano], com 4 alternativas, gabarito e uma explicação de uma linha para cada resposta. Distribua assim: 4 de lembrar e compreender, 4 de aplicar e 2 de analisar. As alternativas erradas devem refletir erros comuns dos alunos, não respostas absurdas."
+        },
+        {
+          "id": "rubrica",
+          "titulo": "Rubrica de avaliação",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "avaliar",
+          "texto": "Atue como especialista em avaliação. Crie uma rubrica para avaliar [tipo de trabalho: cartaz, apresentação oral, texto, maquete] sobre [tema] no [ano]. Use 4 critérios e 4 níveis de desempenho (iniciante, em desenvolvimento, proficiente e avançado), com descrições curtas e observáveis. Formato: tabela. Use uma linguagem que os alunos também entendam."
+        },
+        {
+          "id": "simplificar-texto",
+          "titulo": "Texto reescrito para a idade da turma",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "adaptar",
+          "texto": "Reescreva o texto abaixo para alunos do [ano], mantendo todas as informações corretas. Use frases curtas, vocabulário do dia a dia e uma explicação entre parênteses para cada termo técnico que precisar ficar. Ao final, crie 3 perguntas de compreensão.\n[cole o texto aqui]"
+        },
+        {
+          "id": "projeto-interdisciplinar",
+          "titulo": "Projeto interdisciplinar com a comunidade",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como coordenador pedagógico. Proponha um projeto interdisciplinar de [3] semanas para o [ano] sobre [tema da comunidade: a água do município, o cooperativismo, uma festa local], envolvendo [disciplinas]. Para cada semana, indique as atividades de cada disciplina, o produto final do projeto e como as famílias e a comunidade podem participar. Formato: cronograma em tabela."
+        }
+      ]
+    },
+    {
+      "disciplina": "Língua Portuguesa",
+      "prompts": [
+        {
+          "id": "lp-leitura-iniciais",
+          "titulo": "Texto curto com perguntas de leitura",
+          "etapas": ["iniciais"],
+          "tipo": "atividade",
+          "texto": "Atue como professor alfabetizador do [2º ou 3º ano]. Crie um texto de até 150 palavras sobre [tema], para alunos que estão consolidando a alfabetização, com frases curtas e palavras do cotidiano deles. Depois, crie 4 perguntas: 2 para localizar informações no texto, 1 de inferência e 1 de opinião."
+        },
+        {
+          "id": "lp-sequencia-genero",
+          "titulo": "Sequência de produção de um gênero textual",
+          "etapas": ["finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Língua Portuguesa do [ano]. Planeje uma sequência de 4 aulas para a produção de [gênero: notícia, artigo de opinião, conto, carta de reclamação] sobre [tema]. Inclua: as características do gênero que os alunos devem observar em um texto real, o planejamento do texto, a primeira escrita, a revisão em duplas com um roteiro de perguntas e a reescrita. Não invente textos de autores reais."
+        },
+        {
+          "id": "lp-devolutiva",
+          "titulo": "Devolutiva de um texto de aluno",
+          "etapas": ["finais", "medio"],
+          "tipo": "avaliar",
+          "texto": "Atue como professor de Língua Portuguesa do [ano]. Abaixo está um texto de aluno, sem identificação. Aponte 2 pontos fortes e 2 aspectos a melhorar, com exemplos tirados do próprio texto, em linguagem respeitosa e dirigida ao aluno. Não reescreva o texto inteiro e não atribua nota: a avaliação final é minha.\n[cole o texto, sem nome, turma ou detalhes pessoais]"
+        },
+        {
+          "id": "lp-concordancia",
+          "titulo": "Exercício de concordância com frases do cotidiano",
+          "etapas": ["finais"],
+          "tipo": "atividade",
+          "texto": "Crie 8 frases sobre [contexto: o recreio, o campeonato da escola, a feira da cidade] com problemas de concordância verbal e nominal, para alunos do [ano] corrigirem. Inclua o gabarito e a explicação de cada regra em linguagem simples."
+        }
+      ]
+    },
+    {
+      "disciplina": "Matemática",
+      "prompts": [
+        {
+          "id": "mat-situacoes-problema",
+          "titulo": "Situações-problema do cotidiano da região",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "atividade",
+          "texto": "Atue como professor de Matemática em uma escola do interior do Rio Grande do Sul. Crie 5 situações-problema sobre [frações, porcentagem, proporção] para o [ano], usando [a feira da cidade, a colheita, o mercado do bairro]. Inclua a resposta, a resolução passo a passo e o erro mais comum em cada uma. Use números realistas e deixe claro que os valores são exemplos."
+        },
+        {
+          "id": "mat-material-concreto",
+          "titulo": "Atividades com material concreto de baixo custo",
+          "etapas": ["iniciais"],
+          "tipo": "atividade",
+          "texto": "Atue como professor de Matemática dos anos iniciais. Sugira 3 atividades com material concreto de baixo custo (tampinhas, palitos, papel, embalagens) para ensinar [conteúdo] no [ano]. Para cada atividade: material, passo a passo, perguntas para fazer durante a atividade e como os alunos registram no caderno."
+        },
+        {
+          "id": "mat-analise-erros",
+          "titulo": "Erros comuns e como ajudar o aluno a percebê-los",
+          "etapas": ["finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Matemática. Liste os 5 erros mais frequentes de alunos do [ano] em [conteúdo: equações do 1º grau, operações com números negativos, frações]. Explique o raciocínio que leva a cada erro e sugira uma pergunta ou atividade curta que ajude o aluno a perceber o erro por conta própria."
+        },
+        {
+          "id": "mat-modelagem",
+          "titulo": "Atividade de modelagem com uma situação real",
+          "etapas": ["medio"],
+          "tipo": "atividade",
+          "texto": "Atue como professor de Matemática do ensino médio. Crie uma atividade de modelagem em que os alunos usem [função afim, quadrática ou exponencial] para analisar [situação: a conta de luz, o crescimento de uma plantação, os juros de uma compra parcelada]. Inclua dados de exemplo, marcados como fictícios, as perguntas que guiam a investigação e o que se espera em cada resposta."
+        }
+      ]
+    },
+    {
+      "disciplina": "Ciências",
+      "prompts": [
+        {
+          "id": "cie-experimento",
+          "titulo": "Experimento simples e seguro",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Ciências do [ano]. Sugira um experimento simples e seguro sobre [tema] que possa ser feito em sala com materiais domésticos. Inclua: pergunta investigativa, hipóteses que a turma pode levantar, materiais, passo a passo, cuidados de segurança, resultado esperado e a explicação científica em linguagem para alunos de [idade] anos."
+        },
+        {
+          "id": "cie-concepcoes",
+          "titulo": "Ideias equivocadas e como trabalhar com elas",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Ciências. Liste as ideias equivocadas mais comuns de alunos do [ano] sobre [tema: estações do ano, fotossíntese, digestão, eletricidade]. Para cada uma, proponha uma pergunta ou demonstração que coloque a ideia em dúvida e ajude a turma a construir a explicação científica."
+        },
+        {
+          "id": "cie-estudo-de-caso",
+          "titulo": "Estudo de caso sobre um problema da região",
+          "etapas": ["medio"],
+          "tipo": "atividade",
+          "texto": "Atue como professor de [Biologia, Química ou Física] do ensino médio. Prepare um estudo de caso sobre [tema ligado à região: a qualidade da água do rio, o uso de defensivos agrícolas, a energia solar no campo], com um texto de contexto, 4 perguntas de análise e uma proposta de posicionamento argumentado. Indique quais dados eu devo conferir em fontes oficiais antes de usar o material."
+        }
+      ]
+    },
+    {
+      "disciplina": "História",
+      "prompts": [
+        {
+          "id": "his-fontes",
+          "titulo": "Aula a partir de fontes históricas",
+          "etapas": ["finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de História do [ano]. Sugira como trabalhar [tema] a partir de fontes históricas. Indique que tipos de fonte procurar (fotografias, jornais, documentos oficiais, relatos orais), onde elas costumam estar disponíveis (acervos públicos, museus, arquivos municipais) e 5 perguntas que os alunos podem fazer a qualquer fonte. Não invente citações nem documentos."
+        },
+        {
+          "id": "his-entrevista",
+          "titulo": "Roteiro de entrevista com a comunidade",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "atividade",
+          "texto": "Crie um roteiro para alunos do [ano] entrevistarem pessoas mais velhas da comunidade sobre [tema: a história do município, a imigração, o trabalho no campo]. Inclua 8 perguntas abertas, orientações para pedir autorização e agir com respeito, e uma forma de registrar as respostas sem expor dados pessoais dos entrevistados."
+        },
+        {
+          "id": "his-perspectivas",
+          "titulo": "Um acontecimento visto por diferentes grupos",
+          "etapas": ["finais", "medio"],
+          "tipo": "atividade",
+          "texto": "Atue como professor de História do [ano]. Apresente [acontecimento histórico] do ponto de vista de 3 grupos envolvidos, em parágrafos curtos. Depois, crie 3 perguntas que levem a turma a comparar as versões. Sinalize os pontos em que há debate entre historiadores e indique que tipo de fonte eu devo consultar para confirmar cada informação."
+        }
+      ]
+    },
+    {
+      "disciplina": "Geografia",
+      "prompts": [
+        {
+          "id": "geo-estudo-do-lugar",
+          "titulo": "Estudo do lugar com mapa projetado",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Geografia do [ano]. Planeje uma aula de estudo do lugar sobre [bairro ou município], usando um mapa ou imagem de satélite que eu vou projetar. Inclua 6 perguntas de observação (relevo, uso do solo, serviços, deslocamentos) e uma atividade de croqui feito à mão pelos alunos."
+        },
+        {
+          "id": "geo-graficos",
+          "titulo": "Leitura de gráficos com dados oficiais",
+          "etapas": ["finais", "medio"],
+          "tipo": "atividade",
+          "texto": "Crie uma atividade de leitura de gráficos para o [ano] sobre [tema: população do Rio Grande do Sul, chuvas no ano, produção agrícola do município]. Não invente números: indique quais dados eu devo buscar no IBGE ou em outra fonte oficial e como montar as perguntas a partir deles. Inclua 5 perguntas, da leitura direta à interpretação."
+        }
+      ]
+    },
+    {
+      "disciplina": "Arte",
+      "prompts": [
+        {
+          "id": "arte-apreciacao",
+          "titulo": "Apreciação e releitura de uma obra",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Arte do [ano]. Planeje uma aula de apreciação e releitura de [artista ou movimento]. Inclua perguntas de apreciação (o que você vê, o que sente, como acha que foi feito), um breve contexto histórico para eu conferir antes da aula e uma proposta de produção com materiais simples. Não descreva obras específicas como se as tivesse visto: eu vou mostrar a imagem original."
+        },
+        {
+          "id": "arte-cultura-local",
+          "titulo": "Cultura da região na aula de Arte",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "atividade",
+          "texto": "Proponha uma atividade para o [ano] sobre manifestações culturais de [sua região], como música, dança, artesanato ou festas populares. Organize em três momentos: pesquisa, apreciação e produção. Sugira também como convidar uma pessoa da comunidade para participar."
+        }
+      ]
+    },
+    {
+      "disciplina": "Educação Física",
+      "prompts": [
+        {
+          "id": "ef-jogos-cooperativos",
+          "titulo": "Jogos cooperativos com adaptações",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "atividade",
+          "texto": "Atue como professor de Educação Física do [ano]. Crie 4 jogos cooperativos para trabalhar [habilidade: lateralidade, passe, trabalho em equipe] com [número] alunos em [espaço: quadra, pátio, sala]. Para cada jogo: material, regras, variações para quem tem mais ou menos facilidade e como incluir alunos com deficiência física ou visual."
+        },
+        {
+          "id": "ef-saude-medio",
+          "titulo": "Sequência sobre atividade física e saúde",
+          "etapas": ["medio"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Educação Física do ensino médio. Planeje uma sequência de 3 aulas sobre [tema: atividade física e saúde mental, esportes de aventura, cultura corporal da região], alternando prática e discussão. Inclua uma autoavaliação em que o aluno não precise expor informações sobre a própria saúde."
+        }
+      ]
+    },
+    {
+      "disciplina": "Língua Inglesa",
+      "prompts": [
+        {
+          "id": "ing-dialogo",
+          "titulo": "Diálogo curto com expressões úteis",
+          "etapas": ["finais", "medio"],
+          "tipo": "atividade",
+          "texto": "Atue como professor de Língua Inglesa do [ano]. Crie um diálogo curto, de 8 a 10 falas, em inglês, sobre [situação: pedir comida, apresentar a família, pedir informações na rua], no nível [A1 ou A2]. Destaque 6 expressões úteis com tradução e crie uma atividade em duplas para praticar o diálogo."
+        },
+        {
+          "id": "ing-jogos-vocabulario",
+          "titulo": "Jogos de vocabulário sem internet",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "atividade",
+          "texto": "Crie 3 jogos rápidos de sala para revisar o vocabulário de [tema] em inglês com o [ano], sem precisar de internet nem de material impresso. Para cada jogo: preparação, regras e tempo de duração."
+        }
+      ]
+    },
+    {
+      "disciplina": "Computação",
+      "prompts": [
+        {
+          "id": "comp-desplugada",
+          "titulo": "Atividade desplugada",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Computação. Crie uma atividade desplugada para o [ano] sobre [conceito: algoritmos, decomposição, padrões, representação binária]. Use apenas papel, lápis e o próprio corpo. Inclua objetivo, passo a passo, perguntas para o fechamento e a habilidade de Computação da BNCC relacionada (eu vou conferir o código no documento oficial)."
+        },
+        {
+          "id": "comp-pensamento-computacional",
+          "titulo": "Pensamento computacional no dia a dia",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "atividade",
+          "texto": "Escreva 5 situações do cotidiano de alunos do [ano] que possam ser resolvidas com pensamento computacional. Para cada situação, mostre onde aparecem a decomposição, o reconhecimento de padrões, a abstração e o algoritmo, e proponha uma pergunta para a turma discutir."
+        },
+        {
+          "id": "comp-scratch",
+          "titulo": "Aula de Scratch com desafios extras",
+          "etapas": ["iniciais", "finais"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Computação. Planeje uma aula de [50] minutos de Scratch para o [ano], em que os alunos criem [um jogo de labirinto, uma animação de uma história]. Liste os blocos que serão usados, divida o passo a passo em etapas que a turma consiga seguir sozinha e proponha 2 desafios extras para quem terminar antes."
+        },
+        {
+          "id": "comp-ia-critica",
+          "titulo": "Como a IA funciona e onde ela erra",
+          "etapas": ["finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Computação do [ano]. Planeje uma aula sobre como funcionam os sistemas de inteligência artificial que os alunos já usam (recomendação de vídeos, filtros de foto, assistentes). Inclua uma atividade desplugada que mostre que a IA aprende com exemplos, uma discussão sobre vieses e privacidade e a construção de um combinado da turma para o uso de IA nos trabalhos."
+        }
+      ]
+    },
+    {
+      "disciplina": "Educação Infantil",
+      "prompts": [
+        {
+          "id": "ei-semana",
+          "titulo": "Semana de experiências por campo de experiência",
+          "etapas": ["infantil"],
+          "tipo": "planejar",
+          "texto": "Atue como professor de Educação Infantil. Planeje uma semana de experiências para crianças de [idade] sobre [tema: os animais do pátio, as cores, o próprio nome], considerando os campos de experiência da BNCC. Para cada dia: proposta, materiais, organização do espaço e o que observar nas crianças. Dê preferência a propostas com brincadeira, exploração e interação."
+        },
+        {
+          "id": "ei-historia",
+          "titulo": "História curta para contar com a turma",
+          "etapas": ["infantil"],
+          "tipo": "atividade",
+          "texto": "Crie uma história curta para crianças de [idade] sobre [tema: dividir os brinquedos, lavar as mãos, um dia de chuva], com repetições e sons para as crianças participarem durante a contação. Sugira 3 perguntas para conversar depois da história e uma brincadeira relacionada."
+        }
+      ]
+    },
+    {
+      "disciplina": "Inclusão e acessibilidade",
+      "prompts": [
+        {
+          "id": "inc-adaptar-atividade",
+          "titulo": "Atividade adaptada sem expor o aluno",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "adaptar",
+          "texto": "Atue como professor especialista em educação inclusiva. Adapte a atividade abaixo para um aluno do [ano] com [necessidade pedagógica descrita de forma geral: dificuldade de leitura, baixa visão, necessidade de rotina visual]. Mantenha o mesmo objetivo de aprendizagem da turma. Sugira apoios visuais, divisão em etapas curtas e uma forma alternativa de o aluno mostrar o que aprendeu.\n[cole a atividade aqui, sem nome, laudo ou diagnóstico do aluno]"
+        },
+        {
+          "id": "inc-descricao-imagem",
+          "titulo": "Descrição de imagem para alunos com deficiência visual",
+          "etapas": ["iniciais", "finais", "medio"],
+          "tipo": "adaptar",
+          "texto": "Vou enviar junto com este pedido uma [imagem, gráfico ou mapa] que uso em aula com o [ano]. Escreva uma descrição para alunos com deficiência visual: comece pelo que é mais importante, siga uma ordem clara (da esquerda para a direita e de cima para baixo) e inclua todos os textos e números que aparecem. Depois, escreva uma versão curta, de até 2 frases, para usar como texto alternativo."
+        },
+        {
+          "id": "inc-rotina-visual",
+          "titulo": "Rotina visual da aula",
+          "etapas": ["infantil", "iniciais", "finais"],
+          "tipo": "adaptar",
+          "texto": "Crie uma rotina visual para a aula de [disciplina] do [ano], com 6 passos curtos que comecem com um verbo (chegar, sentar, ouvir, fazer, mostrar, guardar). Para cada passo, sugira um símbolo simples que eu possa desenhar ou imprimir e uma frase curta para ler com a turma."
+        }
+      ]
+    },
+    {
+      "disciplina": "Gestão e coordenação",
+      "prompts": [
+        {
+          "id": "ges-reuniao",
+          "titulo": "Pauta de reunião pedagógica",
+          "etapas": ["infantil", "iniciais", "finais", "medio"],
+          "tipo": "planejar",
+          "texto": "Atue como coordenador pedagógico. Monte a pauta de uma reunião pedagógica de [60] minutos para discutir [tema: o uso de IA pelos alunos, os resultados da avaliação diagnóstica, o projeto do semestre]. Inclua objetivo, tempo de cada parte, uma dinâmica de abertura, os encaminhamentos esperados e um modelo de ata em tópicos."
+        },
+        {
+          "id": "ges-comunicado",
+          "titulo": "Comunicado às famílias",
+          "etapas": ["infantil", "iniciais", "finais", "medio"],
+          "tipo": "comunicar",
+          "texto": "Escreva um comunicado às famílias dos alunos do [ano] sobre [assunto: saída de campo, projeto da turma, novo combinado sobre o uso do celular]. Use um tom cordial e claro, em até 150 palavras, com data, horário e o que a família precisa fazer. Crie também uma versão curta para mensagem de aplicativo."
+        },
+        {
+          "id": "ges-combinado-ia",
+          "titulo": "Combinado da escola para o uso de IA",
+          "etapas": ["finais", "medio"],
+          "tipo": "comunicar",
+          "texto": "Atue como coordenador pedagógico. Redija uma proposta de combinado da escola para o uso de inteligência artificial por professores e alunos do [etapa], em até 10 itens. Cubra: o que é permitido, o que precisa ser informado quando um trabalho teve apoio de IA, o que nunca vai no prompt (dados pessoais de alunos e de famílias) e como a autoria dos trabalhos será avaliada. Use linguagem simples, para discutir com a equipe."
+        }
+      ]
+    }
+  ]
+}

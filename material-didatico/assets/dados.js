@@ -142,6 +142,25 @@ const HABILIDADES = HABILIDADES_RAW.map(([codigo, ano, eixo, objeto, texto]) => 
 }));
 const HAB = Object.fromEntries(HABILIDADES.map(h => [h.codigo, h]));
 
+/* Anos iniciais: só as habilidades de Computação usadas pelo caderno de datas festivas.
+   Ficam fora de HABILIDADES para não aparecer em Explorar a BNCC, que cobre o 6º ao 9º ano. */
+[
+  ['EF01CO01', 1, 'PC', 'Organização de objetos', 'Organizar objetos físicos ou digitais considerando diferentes características para esta organização, explicitando semelhanças (padrões) e diferenças.'],
+  ['EF01CO02', 1, 'PC', 'Algoritmos: definição', 'Identificar e seguir sequências de passos aplicados no dia a dia para resolver problemas.'],
+  ['EF01CO03', 1, 'PC', 'Algoritmos: definição', 'Reorganizar e criar sequências de passos em meios físicos ou digitais, relacionando essas sequências à palavra “algoritmos”.'],
+  ['EF02CO01', 2, 'PC', 'Modelagem de objetos', 'Criar e comparar modelos (representações) de objetos, identificando padrões e atributos essenciais.'],
+  ['EF02CO02', 2, 'PC', 'Algoritmos com repetição simples', 'Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, construídos como sequências de passos e com repetições simples (iterações definidas), em contextos do cotidiano.'],
+  ['EF02CO03', 2, 'MD', 'Instrução de máquina', 'Identificar que máquinas diferentes executam conjuntos próprios de instruções e que podem ser usadas para definir algoritmos.'],
+  ['EF03CO01', 3, 'PC', 'Lógica computacional', 'Associar os valores “verdadeiro” e “falso” a sentenças lógicas que dizem respeito a situações do dia a dia, fazendo uso de termos que indicam negação.'],
+  ['EF04CO01', 4, 'PC', 'Matrizes e registros', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, e fazer manipulações simples sobre estas matrizes.'],
+  ['EF04CO04', 4, 'MD', 'Codificação da informação', 'Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).'],
+  ['EF04CO05', 4, 'MD', 'Codificação da informação', 'Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).'],
+  ['EF05CO01', 5, 'PC', 'Listas', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de listas que estabelecem uma organização na qual há um número variável de itens dispostos em sequência, e fazer manipulações simples sobre estas listas.'],
+  ['EF05CO02', 5, 'PC', 'Grafos', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de grafos que estabelecem uma organização com uma quantidade variável de vértices conectados por arestas, e fazer manipulações simples sobre estes grafos.'],
+  ['EF05CO03', 5, 'PC', 'Lógica computacional', 'Realizar operações de negação, conjunção e disjunção sobre sentenças lógicas e valores “verdadeiro” e “falso”.'],
+  ['EF05CO04', 5, 'PC', 'Algoritmos com seleção condicional', 'Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências, repetições e seleções condicionais para resolver problemas de forma independente e em colaboração.'],
+].forEach(([codigo, ano, eixo, objeto, texto]) => { HAB[codigo] = { codigo, ano, eixo, objeto, texto, comp: EIXOS[eixo].comp }; });
+
 /* ---------------------------------------------------------------------
    RECURSOS — url é relativa à pasta material-didatico/
    --------------------------------------------------------------------- */
@@ -243,6 +262,10 @@ const RECURSOS = [
     url: '3d/ladrilhos.html', plano: null, ficha: null },
 
   // ---------- Fichas para imprimir ----------
+  { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
+    habs: ['EF01CO01', 'EF01CO02', 'EF01CO03', 'EF02CO01', 'EF02CO02', 'EF02CO03', 'EF03CO01', 'EF04CO01', 'EF04CO04', 'EF04CO05', 'EF05CO01', 'EF05CO02', 'EF05CO03', 'EF05CO04'], tempo: '9 aulas',
+    resumo: 'Caderno em PDF para os anos iniciais: 9 atividades sem computador, do Carnaval ao fim de ano, com ficha do professor, folhas para recortar e gabarito.',
+    url: 'datas-festivas/', plano: null, ficha: null, icone: '01' },
   { id: 'f-robo', tipo: 'ficha', titulo: 'Programando o colega-robô', comp: ['CO', 'MA'], anos: [6, 7],
     habs: ['EF06CO02', 'EF06CO03', 'EF06MA04'], tempo: '1 aula',
     resumo: 'Atividade desplugada: um aluno programa, o outro executa. Inclui malha, legenda de comandos e fluxograma de par ou ímpar para completar.',

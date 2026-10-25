@@ -118,6 +118,17 @@
   </section>
   <section class="block">
     <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Anos iniciais · 1º ao 5º ano</span><h2>Computação desplugada nas datas festivas</h2></div>
+        <a class="btn ghost" href="datas-festivas/">Ver o caderno →</a>
+      </div>
+      <p class="muted" style="max-width:760px">Nove atividades sem computador para o calendário escolar, com ficha do professor, folhas para imprimir e gabarito, em um PDF gratuito.</p>
+      <div class="rc-grid" id="iniciais"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
       <span class="eyebrow">Lista completa</span>
       <h2>Todos os jogos e recursos 3D</h2>
       <div class="todos">
@@ -173,6 +184,7 @@
   document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
     .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
   document.getElementById('games').innerHTML = RECURSOS.filter(r => r.tipo === 'jogo').slice(0, 4).map(r => mdCard(r)).join('');
+  document.getElementById('iniciais').innerHTML = mdCard(REC['datas-festivas']);
   document.getElementById('lab3d').innerHTML = RECURSOS.filter(r => r.tipo === '3d').slice(0, 4).map(r => mdCard(r)).join('');
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->

@@ -1,4 +1,4 @@
-// Blog do ohtopico: barra do navegador, menu Iniciar, relógio, tema, contador e "copiar prompt"
+// Blog do ohtopico: barra do navegador, menu Iniciar, relógio, tema, contador, "copiar prompt" e filtros da biblioteca de prompts
 (function () {
     const raiz = document.documentElement;
     const emoldurado = raiz.classList.contains('emoldurado');
@@ -64,6 +64,58 @@
             .then(r => r.ok ? r.json() : Promise.reject(r.status))
             .then(d => mostrar(String(d.count).replace(/\D/g, '') || '0'))
             .catch(() => {});
+    }
+
+    // Biblioteca de prompts: filtros por disciplina, etapa, tipo e palavra (sem JavaScript, tudo aparece)
+    const filtros = document.getElementById('filtros');
+    if (filtros) {
+        const campos = {
+            disciplina: document.getElementById('f-disciplina'),
+            etapa: document.getElementById('f-etapa'),
+            tipo: document.getElementById('f-tipo'),
+            busca: document.getElementById('f-busca'),
+        };
+        const itens = [...document.querySelectorAll('.prompt-item')];
+        const grupos = [...document.querySelectorAll('.grupo-prompts')];
+        const status = document.getElementById('f-status');
+        const vazio = document.getElementById('f-vazio');
+        const normalizar = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        itens.forEach(it => { it.dataset.texto = normalizar(it.textContent); });
+
+        function aplicar() {
+            const d = campos.disciplina.value, e = campos.etapa.value, t = campos.tipo.value;
+            const palavras = normalizar(campos.busca.value).split(/\s+/).filter(Boolean);
+            let total = 0;
+            itens.forEach(it => {
+                const ok = (!d || it.closest('.grupo-prompts').id === d) &&
+                    (!e || it.dataset.etapas.split(' ').includes(e)) &&
+                    (!t || it.dataset.tipo === t) &&
+                    palavras.every(p => it.dataset.texto.includes(p));
+                it.hidden = !ok;
+                if (ok) total++;
+            });
+            grupos.forEach(g => { g.hidden = !g.querySelector('.prompt-item:not([hidden])'); });
+            status.textContent = total === 1 ? '1 prompt encontrado' : `${total} prompts encontrados`;
+            vazio.hidden = total > 0;
+            const q = new URLSearchParams();
+            if (d) q.set('disciplina', d);
+            if (e) q.set('etapa', e);
+            if (t) q.set('tipo', t);
+            history.replaceState(null, '', (q.toString() ? '?' + q : location.pathname) + location.hash);
+        }
+
+        const q = new URLSearchParams(location.search);
+        ['disciplina', 'etapa', 'tipo'].forEach(k => {
+            const v = q.get(k);
+            if (v && [...campos[k].options].some(o => o.value === v)) campos[k].value = v;
+        });
+        Object.values(campos).forEach(c => c.addEventListener(c.tagName === 'INPUT' ? 'input' : 'change', aplicar));
+        document.getElementById('f-limpar').addEventListener('click', () => {
+            Object.values(campos).forEach(c => { c.value = ''; });
+            aplicar();
+        });
+        filtros.hidden = false;
+        if (q.toString()) aplicar();
     }
 
     // Botão de copiar embaixo de cada prompt
