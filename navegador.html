@@ -262,6 +262,7 @@
         <a href="#" data-ir="poemas">Poemas</a>
         <a href="blog/" target="_top">Blog</a>
         <a href="mentoria/" target="_top">Mentoria</a>
+        <a href="formacao-continuada/" target="_top" class="opcional">Formação continuada</a>
         <a href="curriculo/" target="_top" class="opcional">Currículo</a>
         <a href="ia-pra-prof/" target="_top" class="opcional">IA pra Prof</a>
         <a href="material-didatico/" target="_top" class="opcional">Material didático</a>
@@ -420,6 +421,18 @@ feita em panela de vó.</div>
                 });
             });
         } catch (e) { console.warn('Não foi possível ler o blog', e); }
+
+        // Páginas de serviço: mentoria e formação continuada
+        await Promise.all(['mentoria/', 'formacao-continuada/'].map(u => lerPagina(u + 'index.html').then(p => {
+            const artigo = p.querySelector('.artigo');
+            if (!artigo) return;
+            docs.push({
+                titulo: limparTexto(p.querySelector('h1').textContent),
+                onde: limparTexto((p.querySelector('.rotulo') || {}).textContent || ''),
+                texto: limparTexto(semScripts(artigo).textContent),
+                url: u, blog: true
+            });
+        }).catch(e => console.warn('Não foi possível ler ' + u, e))));
 
         // Poemas
         document.getElementById('tpl-poemas').content.querySelectorAll('.poema').forEach(p => {

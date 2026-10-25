@@ -118,7 +118,7 @@
   mdTopbar('inicio');
   mdFooter();
   const n = t => RECURSOS.filter(r => r.tipo === t).length;
-  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['ficha', 'fichas'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
+  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
     .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
   document.getElementById('games').innerHTML = RECURSOS.filter(r => r.tipo === 'jogo').slice(0, 4).map(r => mdCard(r)).join('');
   document.getElementById('lab3d').innerHTML = RECURSOS.filter(r => r.tipo === '3d').slice(0, 4).map(r => mdCard(r)).join('');
