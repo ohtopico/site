@@ -42,7 +42,9 @@ jobs:
 
       - name: Publicar se algo mudou
         run: |
-          git add -A blog mentoria formacao-continuada sitemap.xml
+          # O checkout começa limpo, então tudo o que mudou aqui saiu do gerador
+          # (blog, mentoria, formação continuada, biblioteca de prompts, sitemap e o que vier depois)
+          git add -A
           if git diff --cached --quiet; then
             echo "Nada novo para publicar hoje."
             exit 0
