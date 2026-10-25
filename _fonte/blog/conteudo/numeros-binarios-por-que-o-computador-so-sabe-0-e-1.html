@@ -1,0 +1,50 @@
+<p>No <a href="/blog/sistema-decimal-por-que-contamos-de-10-em-10/">Bit a Bit #01</a> vimos que o sistema decimal tem 10 símbolos e que cada casa vale 10 vezes a casa da direita. Agora imagine um sistema com só dois símbolos: 0 e 1. É assim que o computador guarda tudo, de um texto a um filme.</p>
+
+<h2>Ligado ou desligado</h2>
+<p>Dentro do computador, a informação passa por milhões de chaves minúsculas, os transistores. Cada uma só tem dois estados: deixa passar corrente ou não deixa. Chamamos um estado de 1 e o outro de 0. Cada um desses 0 ou 1 é um <strong>bit</strong>, abreviação de <em lang="en">binary digit</em>, “dígito binário” em inglês.</p>
+<p>Por que só dois? Porque é muito mais fácil e seguro distinguir “tem corrente” de “não tem” do que diferenciar dez níveis de energia. Um pequeno ruído elétrico poderia transformar um 6 num 7. Entre ligado e desligado, a dúvida quase não existe.</p>
+
+<h2>A mesma regra do decimal, com base 2</h2>
+<p>O binário também é posicional. A diferença é que cada casa vale o dobro da casa da direita:</p>
+<div class="tabela"><table><thead><tr><th scope="col">Casa</th><th scope="col">5ª</th><th scope="col">4ª</th><th scope="col">3ª</th><th scope="col">2ª</th><th scope="col">1ª</th></tr></thead><tbody><tr><th scope="row">Vale</th><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr></tbody></table></div>
+<p>Para ler um número binário, basta somar o valor das casas que têm 1. O número 10110 tem 1 nas casas que valem 16, 4 e 2. Então 10110 = 16 + 4 + 2 = 22.</p>
+<p>E o “10”? No binário, depois do 1 a casa já enche, volta para 0 e sobe um. Por isso, no computador, o 10 vem logo depois do 1 e vale dois. É o mesmo movimento que vimos no decimal, só que acontece bem mais cedo.</p>
+
+<h2>Quanto cabe em poucas casas</h2>
+<p>Com 5 casas, o maior número é 11111, que vale 16 + 8 + 4 + 2 + 1 = 31. Com 8 casas (um byte), dá para ir de 0 a 255. Cada casa a mais dobra a quantidade de números possíveis. Dá até para contar até 31 numa mão só, usando cada dedo como uma casa: dedo levantado é 1, abaixado é 0.</p>
+
+<h2>Uma ideia mais antiga que o computador</h2>
+<p>O matemático alemão Gottfried Leibniz publicou um estudo sobre a aritmética binária em 1703, mais de dois séculos antes do primeiro computador eletrônico. A palavra “bit” apareceu em 1948, num artigo de Claude Shannon, que deu o crédito do nome ao colega John Tukey.</p>
+
+<h2>Na sala de aula</h2>
+<p>O tema está na BNCC Computação: a habilidade EF04CO05 pede codificar informações para representação em computador, citando o binário, e a EF04CO04 pede entender por que os dados precisam ser codificados. A atividade clássica para isso são os cartões binários, que funcionam sem computador. Logo abaixo está o plano de aula e os slides.</p>
+<p>No próximo post: se o binário é tão simples, por que programadores usam letras como A, B e F nos números?</p>
+
+<h2>Plano de aula: cartões binários</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>4º e 5º ano (funciona também no 6º e 7º)</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF04CO04: entender que, para guardar, manipular e transmitir dados, é preciso codificá-los. EF04CO05: codificar informações para representação em computador (binária, ASCII, pixel/RGB)</td></tr>
+<tr><th scope="row">Materiais</th><td>5 cartões por grupo, com 1, 2, 4, 8 e 16 bolinhas de um lado e o verso liso; folha com a mensagem secreta</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim, a aula é toda desplugada</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> representar números de 0 a 31 em binário e perceber que o computador guarda tudo como 0 e 1.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Retomada (5 min).</strong> Lembre a pergunta da aula anterior: “E se fossem só 2 dedos?”</li>
+<li><strong>Os cartões (10 min).</strong> Cinco alunos vão à frente, cada um com um cartão, em ordem: 16, 8, 4, 2, 1. Pergunte o que eles percebem nas bolinhas (cada cartão tem o dobro do vizinho da direita). Cartão virado para a turma é 1; virado para trás é 0.</li>
+<li><strong>Formar números (15 min).</strong> A turma pede um número e os cinco formam virando cartões. Comece por 5, 9, 13 e 22. Depois, desafie: qual é o maior número possível? E o menor? Existe algum número com dois jeitos de formar?</li>
+<li><strong>Mensagem secreta (15 min).</strong> Em grupos, decifrem uma mensagem escrita em binário em que A = 1, B = 2, C = 3 e assim por diante. Exemplo: 00010 00001 01001 10100 = B, A, I, T (2, 1, 9, 20). Os grupos criam uma palavra e trocam com outro grupo.</li>
+<li><strong>Fechamento (5 min).</strong> Contar até 31 numa mão: cada dedo vale um cartão. Pergunta para a próxima aula: “E como o computador guarda uma letra de verdade?”</li>
+</ol>
+<p><strong>Avaliação:</strong> a mensagem decifrada e a criada pelo grupo mostram se o aluno converte nos dois sentidos.</p>
+<p><strong>Adaptações:</strong> para baixa visão ou cegueira, cartões com bolinhas em relevo (cola alto-relevo ou botões colados). A atividade da mão também funciona pelo tato.</p>
+
+<!-- slides -->
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades de Computação do 4º ano (EF04CO04 e EF04CO05): <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Atividade dos cartões binários: adaptada do CS Unplugged, projeto da Universidade de Canterbury (Nova Zelândia), material aberto.</li>
+<li>Leibniz, <em lang="fr">Explication de l’arithmétique binaire</em> (1703); Shannon, <em lang="en">A Mathematical Theory of Communication</em> (1948).</li>
+</ul>

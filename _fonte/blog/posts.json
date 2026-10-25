@@ -1,0 +1,182 @@
+{
+  "site": "https://ohtopico.com.br",
+  "contador": "ohtopico",
+  "posts": [
+    {
+      "slug": "quem-e-julia-quoos",
+      "titulo": "Quem é Júlia Roberta Quoos Alves: da engenharia de dados à sala de aula",
+      "titulo_seo": "Quem é Júlia Roberta Quoos Alves: da engenharia de dados à sala de aula",
+      "descricao": "Júlia Roberta Quoos Alves é professora de computação no RS, mestranda na UFSM e formadora de professores em inteligência artificial.",
+      "palavras_chave": [
+        "Quoos",
+        "Júlia Quoos",
+        "formação de professores em IA"
+      ],
+      "secao": "Sobre mim",
+      "data": "2026-10-24",
+      "arquivo_janela": "quem-sou.txt",
+      "imagem": "dia01-trajetoria.png",
+      "imagem_depois_de": "<h2>Por que formo professores em IA</h2>",
+      "imagem_antes": true,
+      "alt": "Linha do tempo da trajetória de Júlia Roberta Quoos Alves: 2019, engenharia de dados na Compass UOL; 2020 a 2025, pesquisa em IA pelo CNPq com visão computacional e linguagem, 15 trabalhos; 2025, mestrado na UFSM sobre IA para pessoas com deficiência visual; 2026, formadora de professores no programa A União Faz a Vida e autora do guia IA pra Prof.",
+      "legenda": "Dados, pesquisa e sala de aula: a linha do tempo resumida, com anos e instituições."
+    },
+    {
+      "slug": "formacao-continuada-professores-ia",
+      "titulo": "Formação continuada de professores em IA: por onde começar",
+      "titulo_seo": "Formação continuada de professores em IA: por onde começar",
+      "descricao": "Um roteiro em 4 etapas para escolas e redes começarem a formação continuada de professores em inteligência artificial.",
+      "palavras_chave": [
+        "formação continuada para professores em IA",
+        "formação de professores",
+        "IA na educação"
+      ],
+      "secao": "Formação de professores em IA",
+      "data": "2026-10-24",
+      "arquivo_janela": "diagnostico.doc",
+      "imagem": "dia02-diagnostico.png",
+      "imagem_depois_de": "</ol>",
+      "alt": "Cartão para enviar à equipe antes do primeiro encontro, com as mesmas 5 perguntas de diagnóstico da lista acima e a frase: as respostas dizem a primeira tarefa.",
+      "legenda": "Salve o cartão e mande para a equipe antes do primeiro encontro."
+    },
+    {
+      "slug": "prompts-para-professores-planejar-aulas",
+      "titulo": "5 prompts prontos para planejar aulas com IA",
+      "titulo_seo": "5 prompts prontos para professores planejarem aulas com IA",
+      "descricao": "Cinco prompts prontos para professores planejarem aulas com IA, montados com a fórmula P.A.C.T.O. e fáceis de adaptar.",
+      "palavras_chave": [
+        "prompts para professores",
+        "planejamento de aulas com IA",
+        "P.A.C.T.O."
+      ],
+      "secao": "IA na prática",
+      "data": "2026-10-24",
+      "arquivo_janela": "prompt.txt",
+      "imagem": "dia03-pacto.png",
+      "imagem_depois_de": "</ul>",
+      "alt": "Exemplo de prompt com cada parte da fórmula P.A.C.T.O. marcada em uma cor. Papel: atue como professor de matemática. Alvo: do 6º ano, numa escola do interior do RS, turma de 25 alunos. Comando: crie 5 situações-problema sobre frações usando a feira da cidade. Tom e formato: lista numerada, linguagem para 11 anos. Observações: inclua o erro mais comum de cada uma e não invente dados.",
+      "legenda": "A fórmula na prática: um prompt completo com cada parte marcada em uma cor."
+    },
+    {
+      "slug": "treinamento-professores-ia-criterios",
+      "titulo": "Treinamento de professores em IA: o que uma boa formação precisa ter",
+      "titulo_seo": "Treinamento de professores em IA: 7 critérios para escolher",
+      "descricao": "Sete critérios para escolher um bom treinamento de professores em inteligência artificial para a sua escola ou rede.",
+      "palavras_chave": [
+        "treinamento de professores em IA",
+        "curso de IA para professores",
+        "formação de professores"
+      ],
+      "secao": "Formação de professores em IA",
+      "data": "2026-10-24",
+      "arquivo_janela": "checklist.pdf",
+      "imagem": "dia04-checklist.png",
+      "imagem_depois_de": "<h2>Checklist rápido</h2>",
+      "alt": "Checklist com caixas para marcar os 7 critérios da lista abaixo e uma escala de pontuação: de 0 a 4, desconfie; de 5 a 6, bom caminho; 7, ótima escolha.",
+      "legenda": "Versão para imprimir e levar para a reunião, com a escala de pontuação."
+    },
+    {
+      "slug": "ia-lgpd-escola-o-que-vai-no-prompt",
+      "titulo": "O que pode e o que nunca vai no prompt",
+      "titulo_seo": "IA e LGPD na escola: o que pode e o que nunca vai no prompt",
+      "descricao": "Quais dados de alunos podem e quais nunca devem ir no prompt de uma IA, segundo a LGPD, com exemplos para professores.",
+      "palavras_chave": [
+        "IA e LGPD na escola",
+        "dados de alunos",
+        "prompt seguro"
+      ],
+      "secao": "Ética e LGPD",
+      "data": "2026-10-24",
+      "arquivo_janela": "prompt-seguro.txt",
+      "imagem": "dia05-prompt-seguro.png",
+      "imagem_depois_de": "Repare que ele descreve a necessidade pedagógica, não o diagnóstico.</p>",
+      "alt": "Comparação de dois prompts. Em vez de: “O Pedro, do 7º B, tem laudo de TDAH e não consegue fazer a prova. Adapte esta atividade para ele.”, com o nome, a turma e o laudo riscados. Escreva: “Tenho um aluno do 7º ano com dificuldade de manter a atenção em tarefas longas. Divida esta atividade em etapas curtas, com uma instrução por vez.” Resumo: descreva a necessidade, não o diagnóstico.",
+      "legenda": "O mesmo pedido, sem expor o aluno: o que sai e o que entra no prompt."
+    },
+    {
+      "slug": "bncc-computacao-6-ao-9-ano",
+      "titulo": "Computação na BNCC: o que muda do 6º ao 9º ano",
+      "titulo_seo": "Computação na BNCC do 6º ao 9º ano: resumo para professores",
+      "descricao": "Resumo das habilidades de Computação da BNCC do 6º ao 9º ano, com os três eixos e exemplos de aula para o professor.",
+      "palavras_chave": [
+        "BNCC computação anos finais",
+        "computação na BNCC",
+        "pensamento computacional"
+      ],
+      "secao": "Computação e BNCC",
+      "data": "2026-10-24",
+      "arquivo_janela": "bncc-computacao.xls",
+      "imagem": "dia06-bncc.png",
+      "imagem_depois_de": "</table></div>",
+      "alt": "Quadro resumido do 6º ao 9º ano nos três eixos da Computação na BNCC, Pensamento Computacional, Mundo Digital e Cultura Digital, com o mesmo conteúdo da tabela acima em versão curta. Fonte: complemento de Computação à BNCC (CNE, 2022).",
+      "legenda": "A tabela em uma imagem só, para salvar ou imprimir."
+    },
+    {
+      "slug": "formacao-continuada-ia-professores-rs",
+      "titulo": "Formação continuada em IA para professores no RS: o que as redes precisam saber",
+      "titulo_seo": "Formação continuada em IA para professores no RS: guia para redes",
+      "descricao": "O que secretarias e escolas do Rio Grande do Sul precisam saber para organizar a formação continuada de professores em IA: documentos oficiais, formatos e cinco perguntas antes de contratar.",
+      "palavras_chave": [
+        "formação continuada de professores em IA",
+        "formação continuada IA RS",
+        "IA na educação Rio Grande do Sul",
+        "secretaria de educação"
+      ],
+      "secao": "Formação de professores em IA",
+      "data": "2026-10-25",
+      "arquivo_janela": "formacao-rs.doc",
+      "imagem": "dia27-diretrizes.png",
+      "imagem_depois_de": "</ul>",
+      "alt": "Card com o título “IA na escola: o que já está definido” e uma linha do tempo com cinco marcos: 2018, LGPD, dados de alunos só com cuidado e finalidade; 2022, BNCC Computação, cultura digital e IA no currículo; março de 2026, ECA Digital em vigor, proteção de crianças e adolescentes on-line; março de 2026, Referencial do MEC, orientações para uso responsável de IA; outubro de 2026, Parecer CNE/CP nº 15/2026, diretrizes de IA na educação, à espera da homologação. Abaixo, a régua de risco do CNE em quatro faixas: baixo, moderado, alto e proibido. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.",
+      "legenda": "Os documentos que já orientam o uso de IA nas escolas, em ordem."
+    },
+    {
+      "slug": "sistema-decimal-por-que-contamos-de-10-em-10",
+      "titulo": "Sistema decimal: por que contamos de 10 em 10?",
+      "titulo_seo": "Sistema decimal: por que contamos de 10 em 10? (Bit a Bit #01)",
+      "descricao": "O que é o sistema decimal, por que ele tem só 10 símbolos e como o valor posicional prepara o aluno para entender o binário. Bit a Bit #01.",
+      "palavras_chave": [
+        "sistema decimal",
+        "valor posicional",
+        "EF06MA02",
+        "plano de aula",
+        "Bit a Bit"
+      ],
+      "secao": "Bit a Bit",
+      "data": "2026-10-27",
+      "arquivo_janela": "decimal.txt",
+      "imagem": "01-decimal.png",
+      "imagem_depois_de": "</ul>",
+      "alt": "Selo Bit a Bit número 1. Título: “Por que contamos de 10 em 10?”. Subtítulo: no sistema decimal, cada casa vale 10 vezes a casa da direita. Três colunas decompõem o número 347: centenas, 3 vezes 10 elevado a 2, igual a 300; dezenas, 4 vezes 10, igual a 40; unidades, 7 vezes 1, igual a 7. Soma: 300 + 40 + 7 = 347. No rodapé: “São só 10 símbolos, de 0 a 9. Depois do 9, a casa enche e sobe um: 10.” Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.",
+      "legenda": "O 347 desmontado: cada casa vale 10 vezes a casa da direita.",
+      "slides": {
+        "pdf": "bit-a-bit-01-slides.pdf",
+        "quantidade": 8
+      }
+    },
+    {
+      "slug": "numeros-binarios-por-que-o-computador-so-sabe-0-e-1",
+      "titulo": "Números binários: por que o computador só sabe 0 e 1",
+      "titulo_seo": "Números binários: por que o computador só sabe 0 e 1 (Bit a Bit #02)",
+      "descricao": "O que é o sistema binário, por que o computador usa só 0 e 1 e como converter binário em decimal com uma conta simples. Bit a Bit #02.",
+      "palavras_chave": [
+        "sistema binário",
+        "números binários",
+        "EF04CO05",
+        "cartões binários",
+        "Bit a Bit"
+      ],
+      "secao": "Bit a Bit",
+      "data": "2026-10-29",
+      "arquivo_janela": "binario.txt",
+      "imagem": "02-binario.png",
+      "imagem_depois_de": "</table></div>",
+      "alt": "Selo Bit a Bit número 2. Título: “O computador só sabe 0 e 1”. Subtítulo: no binário, cada casa vale o dobro da casa da direita; 1 é ligado e 0 é desligado. Cinco lâmpadas valem 16, 8, 4, 2 e 1. As de 16, 4 e 2 estão acesas (1) e as de 8 e 1 apagadas (0), formando 10110. Conta: 10110 = 16 + 4 + 2 = 22. No rodapé: “Com 5 lâmpadas dá para escrever qualquer número de 0 a 31. Com 8, de 0 a 255.” Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.",
+      "legenda": "Lendo 10110: some o valor das lâmpadas acesas.",
+      "slides": {
+        "pdf": "bit-a-bit-02-slides.pdf",
+        "quantidade": 10
+      }
+    }
+  ]
+}

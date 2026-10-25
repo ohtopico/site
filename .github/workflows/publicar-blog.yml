@@ -1,0 +1,54 @@
+# Publicação agendada do blog.
+# Todo dia de manhã (e a cada push no main) roda o gerador com a data de hoje no horário de Brasília:
+# só os posts cuja data já chegou aparecem no site, no índice do blog, no feed e no sitemap.
+# Os textos e imagens de todos os posts ficam em _fonte/blog/ (pastas com "_" não são publicadas pelo GitHub Pages).
+name: Publicar posts agendados
+
+on:
+  schedule:
+    - cron: '7 9 * * *'   # 06h07 em Brasília (o GitHub pode atrasar alguns minutos)
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-blog
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar Pillow
+        run: pip install pillow==11.0.0
+
+      - name: Gerar o blog só com os posts liberados até hoje
+        run: |
+          python _fonte/blog/gerar.py --site . \
+            --imagens _fonte/blog/imagens \
+            --slides _fonte/blog/slides \
+            --ate "$(date +%F)" --sitemap
+
+      - name: Publicar se algo mudou
+        run: |
+          git add -A blog mentoria formacao-continuada sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Nada novo para publicar hoje."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Blog: publica posts agendados até $(date +%d/%m/%Y)"
+          git pull --rebase origin main
+          git push origin HEAD:main
