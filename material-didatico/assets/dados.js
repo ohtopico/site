@@ -276,6 +276,128 @@ const RECURSOS = [
     resumo: 'Classificar dados pessoais por risco e usar um checklist para analisar mensagens suspeitas.',
     url: 'ficha.html?id=f-golpe', plano: 'p-golpes', jogo: 'golpe' },
 
+  // ---------- Matemática · fichas desplugadas e planos das oficinas (gerado por oficinas_ma.py) ----------
+  { id: 'f-ma-decimais', tipo: 'ficha', titulo: "Frações e decimais no metro", comp: ['MA'], anos: [6],
+    habs: ["EF06MA08", "EF06MA01"], tempo: '1 aula',
+    resumo: "Dobrar tiras de 1 metro em partes iguais, escrever cada parte como fração e como decimal e comparar na reta numérica.",
+    url: 'ficha.html?id=f-ma-decimais', plano: 'p-ma-decimais', jogo: '3d-decimais' },
+  { id: 'f-ma-mmc', tipo: 'ficha', titulo: "Corrida dos sapos: MMC", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA05", "EF06MA06", "EF07MA01"], tempo: '1 aula',
+    resumo: "Uma reta numérica no chão: dois sapos pulam de tamanhos diferentes e a turma descobre onde eles se encontram.",
+    url: 'ficha.html?id=f-ma-mmc', plano: 'p-ma-mmc', jogo: '3d-mmc' },
+  { id: 'f-ma-potencias', tipo: 'ficha', titulo: "Quadrados de tampinhas: potência e raiz", comp: ['MA'], anos: [6, 8],
+    habs: ["EF06MA11", "EF08MA02"], tempo: '1 aula',
+    resumo: "Montar quadrados com tampinhas para entender “ao quadrado” e descobrir a raiz quadrada como o lado do quadrado.",
+    url: 'ficha.html?id=f-ma-potencias', plano: 'p-ma-potencias', jogo: '3d-potencias' },
+  { id: 'f-ma-area', tipo: 'ficha', titulo: "Hortas com a mesma cerca: área e perímetro", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA24", "EF06MA29", "EF07MA31"], tempo: '1 aula',
+    resumo: "Com um barbante fixo como cerca, os estudantes desenham hortas diferentes na malha e percebem que perímetro igual não garante área igual.",
+    url: 'ficha.html?id=f-ma-area', plano: 'p-ma-area', jogo: '3d-terreno' },
+  { id: 'f-ma-inteiros', tipo: 'ficha', titulo: "Fichas positivas e negativas", comp: ['MA'], anos: [7],
+    habs: ["EF07MA03", "EF07MA04"], tempo: '1 aula',
+    resumo: "Fichas verdes (+1) e vermelhas (−1) para somar, subtrair e entender por que tirar um negativo é o mesmo que somar.",
+    url: 'ficha.html?id=f-ma-inteiros', plano: 'p-ma-inteiros', jogo: '3d-elevador' },
+  { id: 'f-ma-equacoes', tipo: 'ficha', titulo: "Envelopes na balança: equações", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA14", "EF07MA18"], tempo: '1 aula',
+    resumo: "Envelopes com clipes escondidos num tapete-balança: o que se faz de um lado precisa ser feito do outro.",
+    url: 'ficha.html?id=f-ma-equacoes', plano: 'p-ma-equacoes', jogo: '3d-balanca' },
+  { id: 'f-ma-racionais', tipo: 'ficha', titulo: "Varal dos números racionais", comp: ['MA'], anos: [7],
+    habs: ["EF07MA08", "EF07MA10", "EF07MA12"], tempo: '1 aula',
+    resumo: "Um varal vira reta numérica coletiva: frações, decimais e negativos são pendurados e justificados em grupo.",
+    url: 'ficha.html?id=f-ma-racionais', plano: 'p-ma-racionais', jogo: '3d-fracoes' },
+  { id: 'f-ma-regra3', tipo: 'ficha', titulo: "Regra de três na receita", comp: ['MA'], anos: [7, 8],
+    habs: ["EF07MA17", "EF08MA13"], tempo: '1 aula',
+    resumo: "Ampliar e reduzir uma receita de bolo, montar a regra de três e decidir quando a proporção é direta ou inversa.",
+    url: 'ficha.html?id=f-ma-regra3', plano: 'p-ma-regra3', jogo: '3d-sucos' },
+  { id: 'f-ma-razao', tipo: 'ficha', titulo: "Razões no corpo e no pátio", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA15", "EF07MA09"], tempo: '1 aula',
+    resumo: "Medir partes do corpo, cronometrar corridas e calcular razões entre medidas da mesma espécie e de espécies diferentes.",
+    url: 'ficha.html?id=f-ma-razao', plano: 'p-ma-razao', jogo: '3d-sucos' },
+  { id: 'f-ma-proporcao', tipo: 'ficha', titulo: "Ampliar sem deformar: proporção", comp: ['MA'], anos: [8, 9],
+    habs: ["EF08MA12", "EF09MA08"], tempo: '1 aula',
+    resumo: "Ampliar uma figura na malha, comparar lados e áreas e reconhecer quando duas grandezas são proporcionais.",
+    url: 'ficha.html?id=f-ma-proporcao', plano: 'p-ma-proporcao', jogo: '3d-sucos' },
+  { id: 'f-ma-produtos', tipo: 'ficha', titulo: "Quadrado recortado: produtos notáveis", comp: ['MA'], anos: [9],
+    habs: ["EF09MA09"], tempo: '1 aula',
+    resumo: "Recortar o quadrado de lado a + b em quatro peças e descobrir por que (a + b)² não é a² + b².",
+    url: 'ficha.html?id=f-ma-produtos', plano: 'p-ma-produtos', jogo: '3d-produtos' },
+  { id: 'f-ma-fatoracao', tipo: 'ficha', titulo: "Fatorar é montar retângulos", comp: ['MA'], anos: [9],
+    habs: ["EF09MA09"], tempo: '1 aula',
+    resumo: "Peças x², x e 1 em papel: montar retângulos com trinômios e ler a forma fatorada nos lados.",
+    url: 'ficha.html?id=f-ma-fatoracao', plano: 'p-ma-fatoracao', jogo: '3d-algeblocos' },
+  { id: 'f-ma-polinomios', tipo: 'ficha', titulo: "Dominó dos polinômios", comp: ['MA'], anos: [8],
+    habs: ["EF08MA06"], tempo: '1 aula',
+    resumo: "Dominó de expressões equivalentes para reduzir termos semelhantes, somar e subtrair polinômios e calcular valor numérico.",
+    url: 'ficha.html?id=f-ma-polinomios', plano: 'p-ma-polinomios', jogo: '3d-algeblocos' },
+  { id: 'f-ma-geometria', tipo: 'ficha', titulo: "Ateliê de mosaicos: ângulos e polígonos", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA18", "EF07MA24", "EF07MA27"], tempo: '1 aula',
+    resumo: "Recortar polígonos regulares, descobrir quais ladrilham o plano e calcular somas de ângulos internos.",
+    url: 'ficha.html?id=f-ma-geometria', plano: 'p-ma-geometria', jogo: '3d-ladrilhos' },
+  { id: 'f-ma-tales', tipo: 'ficha', titulo: "Medindo com sombras: Teorema de Tales", comp: ['MA'], anos: [9],
+    habs: ["EF09MA14", "EF09MA12"], tempo: '1 aula',
+    resumo: "Medir a altura de postes e árvores pela sombra e dividir segmentos em partes iguais com uma folha pautada.",
+    url: 'ficha.html?id=f-ma-tales', plano: 'p-ma-tales', jogo: '3d-tales' },
+  { id: 'p-ma-decimais', tipo: 'plano', titulo: "Frações e decimais com o metro", comp: ['MA'], anos: [6],
+    habs: ["EF06MA08", "EF06MA01"], tempo: '2 aulas',
+    resumo: "Rotação por estações com tiras de 1 metro, Material Dourado 3D e reta numérica para ligar fração e decimal.",
+    url: 'plano.html?id=p-ma-decimais' },
+  { id: 'p-ma-mmc', tipo: 'plano', titulo: "MMC com a corrida dos sapos", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA05", "EF06MA06", "EF07MA01"], tempo: '2 aulas',
+    resumo: "Jogo corporal na reta numérica do pátio e Torres do MMC 3D para descobrir múltiplos comuns sem decorar algoritmo.",
+    url: 'plano.html?id=p-ma-mmc' },
+  { id: 'p-ma-potencias', tipo: 'plano', titulo: "Potências e raízes com quadrados", comp: ['MA'], anos: [6, 8],
+    habs: ["EF06MA11", "EF08MA02"], tempo: '2 aulas',
+    resumo: "Investigação com tampinhas e cubos 3D: potência como área e volume e raiz quadrada como o lado do quadrado.",
+    url: 'plano.html?id=p-ma-potencias' },
+  { id: 'p-ma-area', tipo: 'plano', titulo: "A horta da escola: área e perímetro", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA24", "EF06MA29", "EF07MA31"], tempo: '2 aulas',
+    resumo: "Projeto da horta da escola: barbante como cerca, malha quadriculada e o Terreno 3D para separar área de perímetro.",
+    url: 'plano.html?id=p-ma-area' },
+  { id: 'p-ma-inteiros', tipo: 'plano', titulo: "Operações com negativos: pares zero", comp: ['MA'], anos: [7],
+    habs: ["EF07MA03", "EF07MA04"], tempo: '2 aulas',
+    resumo: "Instrução por pares com fichas de duas cores e o Elevador dos Inteiros 3D para dar sentido às operações com negativos.",
+    url: 'plano.html?id=p-ma-inteiros' },
+  { id: 'p-ma-equacoes', tipo: 'plano', titulo: "Equações do 1º grau com envelopes misteriosos", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA14", "EF07MA18"], tempo: '2 aulas',
+    resumo: "Envelopes com clipes escondidos e a Balança 3D para resolver equações usando as propriedades da igualdade.",
+    url: 'plano.html?id=p-ma-equacoes' },
+  { id: 'p-ma-racionais', tipo: 'plano', titulo: "O varal dos racionais", comp: ['MA'], anos: [7],
+    habs: ["EF07MA08", "EF07MA10", "EF07MA12"], tempo: '2 aulas',
+    resumo: "Varal coletivo de frações, decimais e negativos e as Barras de Frações 3D para comparar, ordenar e operar com racionais.",
+    url: 'plano.html?id=p-ma-racionais' },
+  { id: 'p-ma-regra3', tipo: 'plano', titulo: "Regra de três na cozinha", comp: ['MA'], anos: [7, 8],
+    habs: ["EF07MA17", "EF08MA13"], tempo: '2 aulas',
+    resumo: "Adaptar uma receita para a turma inteira, montar a regra de três e decidir quando a proporção é direta ou inversa.",
+    url: 'plano.html?id=p-ma-regra3' },
+  { id: 'p-ma-razao', tipo: 'plano', titulo: "Razões medidas no corpo e no pátio", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA15", "EF07MA09"], tempo: '2 aulas',
+    resumo: "Medir o corpo e cronometrar corridas no pátio para calcular razões, escalas e velocidades.",
+    url: 'plano.html?id=p-ma-razao' },
+  { id: 'p-ma-proporcao', tipo: 'plano', titulo: "Ampliar sem deformar: proporção e escala", comp: ['MA'], anos: [8, 9],
+    habs: ["EF08MA12", "EF09MA08"], tempo: '2 aulas',
+    resumo: "Ampliar figuras na malha, comparar lados e áreas e usar escalas reais para reconhecer grandezas proporcionais.",
+    url: 'plano.html?id=p-ma-proporcao' },
+  { id: 'p-ma-produtos', tipo: 'plano', titulo: "Produtos notáveis com recortes", comp: ['MA'], anos: [9],
+    habs: ["EF09MA09"], tempo: '2 aulas',
+    resumo: "Sala de aula invertida com os Produtos Notáveis em Blocos e o quadrado recortado para justificar as fórmulas pela área.",
+    url: 'plano.html?id=p-ma-produtos' },
+  { id: 'p-ma-fatoracao', tipo: 'plano', titulo: "Fatoração com blocos algébricos", comp: ['MA'], anos: [9],
+    habs: ["EF09MA09"], tempo: '2 aulas',
+    resumo: "Estações com peças x², x e 1 em papel, Blocos Algébricos 3D e problemas de área para fatorar trinômios.",
+    url: 'plano.html?id=p-ma-fatoracao' },
+  { id: 'p-ma-polinomios', tipo: 'plano', titulo: "Polinômios com dominó de expressões", comp: ['MA'], anos: [8],
+    habs: ["EF08MA06"], tempo: '2 aulas',
+    resumo: "Dominó de expressões equivalentes e Blocos Algébricos 3D para reduzir, somar e subtrair polinômios e calcular valor numérico.",
+    url: 'plano.html?id=p-ma-polinomios' },
+  { id: 'p-ma-geometria', tipo: 'plano', titulo: "Ateliê de mosaicos: geometria plana", comp: ['MA'], anos: [6, 7],
+    habs: ["EF06MA18", "EF07MA24", "EF07MA27"], tempo: '2 aulas',
+    resumo: "Projeto de mosaicos: polígonos regulares recortados, Ladrilhos e Ângulos 3D e soma dos ângulos internos.",
+    url: 'plano.html?id=p-ma-geometria' },
+  { id: 'p-ma-tales', tipo: 'plano', titulo: "Medindo a escola com o Teorema de Tales", comp: ['MA'], anos: [9],
+    habs: ["EF09MA14", "EF09MA12"], tempo: '2 aulas',
+    resumo: "Aula de campo para medir alturas pela sombra, folha pautada para dividir segmentos e o recurso 3D de Tales.",
+    url: 'plano.html?id=p-ma-tales' },
+  // ---------- fim das oficinas de Matemática ----------
   // ---------- Planos de aula ----------
   { id: 'p-robo', tipo: 'plano', titulo: 'Algoritmos: do papel ao robô', comp: ['CO', 'MA'], anos: [6, 7],
     habs: ['EF06CO02', 'EF06CO03', 'EF06CO04', 'EF06MA04'], tempo: '2 aulas',
@@ -391,7 +513,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
@@ -898,5 +1020,786 @@ const PLANOS = {
     avaliacao: 'Cartaz com imagens de uso permitido e créditos corretos; mudança de respostas na revotação justificada.',
     inclusao: 'Peça descrição em texto alternativo para as imagens do cartaz: além de acessível, é parte da boa autoria digital.',
     recursos: ['p-midia']
-  }
+  },
+  /* ---------- Oficinas de Matemática · metodologias ativas (gerado por oficinas_ma.py) ---------- */
+  'p-ma-decimais': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Rotação por estações",
+      "A turma passa por três estações de 20 minutos: tiras de papel, Material Dourado 3D e reta numérica. Cada estação mostra a mesma ideia de um jeito diferente, e o grupo registra o que descobriu antes de trocar."
+    ],
+    "objetivos": [
+      "Representar a mesma quantidade nas formas fracionária e decimal.",
+      "Comparar e ordenar decimais usando a reta numérica.",
+      "Relacionar décimos e centésimos com o metro, o decímetro e o centímetro."
+    ],
+    "materiais": [
+      "Ficha “Frações e decimais no metro”",
+      "Tiras de papel de 1 metro e de 20 cm, fita métrica",
+      "Dispositivos com o Material Dourado 3D (1 por grupo)",
+      "Fita crepe para uma reta no chão"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Situação-problema",
+        "Mostre uma fita métrica e pergunte: meio metro é 0,5 ou 0,50? E 0,05? Anote as hipóteses no quadro sem corrigir."
+      ],
+      [
+        "20 min",
+        "Estação 1: tiras",
+        "Os grupos dobram as tiras em 2, 4, 5 e 10 partes, pintam e escrevem cada parte como fração e como decimal (ficha, partes 1 e 2)."
+      ],
+      [
+        "20 min",
+        "Estação 2: Material Dourado 3D",
+        "Representam 1,25; 0,8 e 0,08 com o cubo valendo 1 e fazem as trocas dos desafios."
+      ],
+      [
+        "20 min",
+        "Estação 3: reta no chão",
+        "Cada estudante recebe um cartão (1/4, 0,3, 3/5, 0,75...) e se posiciona na reta de fita crepe. O grupo justifica a ordem."
+      ],
+      [
+        "15 min",
+        "Socialização",
+        "Volte às hipóteses iniciais. Cada grupo explica uma descoberta. Pergunta de saída: o que é maior, 0,3 ou 0,25? Por quê?"
+      ]
+    ],
+    "avaliacao": "Registro da ficha, participação nas estações e a pergunta de saída. Observe se o estudante ainda compara decimais pelo número de algarismos.",
+    "inclusao": "Use tiras com texturas diferentes para cada divisão e cartões com fonte ampliada. Na estação 3D, um colega pode ler os valores em voz alta.",
+    "recursos": [
+      "f-ma-decimais",
+      "3d-decimais",
+      "l-ma-decimais"
+    ]
+  },
+  'p-ma-mmc': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Gamificação com o corpo",
+      "Os estudantes viram sapos numa reta desenhada no chão. O jogo cria a necessidade do conceito antes de qualquer algoritmo: o MMC surge como o primeiro ponto onde os dois sapos pisam."
+    ],
+    "objetivos": [
+      "Identificar múltiplos de um número natural.",
+      "Encontrar o menor múltiplo comum de dois números em situações do cotidiano.",
+      "Relacionar o MMC com a decomposição em fatores primos."
+    ],
+    "materiais": [
+      "Ficha “Corrida dos sapos: MMC”",
+      "Fita crepe ou giz para uma reta de 0 a 40",
+      "Fichas ou tampinhas de duas cores",
+      "Dispositivos com as Torres do MMC"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Pergunta de abertura",
+        "Dois ônibus saem juntos do terminal: um volta a cada 15 minutos e o outro a cada 20. Quando saem juntos de novo? Hipóteses no quadro."
+      ],
+      [
+        "25 min",
+        "Corrida dos sapos",
+        "Dois estudantes pulam de 3 em 3 e de 4 em 4 na reta do chão. A turma marca as casas com fichas de cores diferentes e encontra onde as cores coincidem."
+      ],
+      [
+        "20 min",
+        "Torres do MMC 3D",
+        "As duplas empilham blocos de tamanhos diferentes até as torres ficarem da mesma altura e anotam os pares testados."
+      ],
+      [
+        "20 min",
+        "Problemas da vida real",
+        "Resolução das partes 2 e 3 da ficha. Cada dupla apresenta uma estratégia diferente (lista de múltiplos, desenho, fatores primos)."
+      ],
+      [
+        "15 min",
+        "Sistematização",
+        "Volte ao problema dos ônibus. Registre que o MMC é o menor múltiplo comum diferente de zero e mostre a decomposição em primos como atalho."
+      ]
+    ],
+    "avaliacao": "Resolução do problema dos ônibus com justificativa e a lista de exercícios. Valorize estratégias diferentes, como pede a EF07MA01.",
+    "inclusao": "Estudantes com mobilidade reduzida podem marcar a reta com fichas em vez de pular. Ofereça a reta impressa em tamanho ampliado.",
+    "recursos": [
+      "f-ma-mmc",
+      "3d-mmc",
+      "l-ma-mmc"
+    ]
+  },
+  'p-ma-potencias': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Investigação matemática",
+      "Os grupos recebem um desafio aberto (quais quantidades de tampinhas formam um quadrado?) e constroem a regra a partir dos casos que testam, antes de qualquer definição."
+    ],
+    "objetivos": [
+      "Calcular potências de expoente natural associando-as a quadrados e cubos.",
+      "Compreender a raiz quadrada como operação inversa da potência de expoente 2.",
+      "Reconhecer quadrados perfeitos e estimar raízes não exatas."
+    ],
+    "materiais": [
+      "Ficha “Quadrados de tampinhas: potência e raiz”",
+      "70 tampinhas ou grãos por grupo",
+      "Cubinhos de encaixe, se houver",
+      "Dispositivos com os Cubos das Potências"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Desafio aberto",
+        "Com quais quantidades de tampinhas, de 1 a 70, é possível montar um quadrado cheio? Os grupos testam e anotam."
+      ],
+      [
+        "20 min",
+        "Montando quadrados",
+        "Parte 1 da ficha. Pergunte por que se diz “ao quadrado” e registre 1, 4, 9, 16, 25... como potências."
+      ],
+      [
+        "20 min",
+        "Raiz como lado",
+        "Parte 2 da ficha. Dada a quantidade, descobrir o lado. Introduza o símbolo √ só depois que todos explicaram com as tampinhas."
+      ],
+      [
+        "20 min",
+        "Do quadrado ao cubo",
+        "Nos Cubos das Potências 3D, alternar entre os modos potência e raiz. Comparar 2³ e 3² e discutir o erro comum 2³ = 6."
+      ],
+      [
+        "10 min",
+        "Fechamento",
+        "Parte 3 da ficha (cuidado com o erro) e pergunta de saída: entre quais inteiros está √50?"
+      ]
+    ],
+    "avaliacao": "Tabela de quadrados perfeitos do grupo, a estimativa de √50 e a lista de exercícios.",
+    "inclusao": "Tampinhas grandes facilitam a manipulação. Para estudantes cegos ou com baixa visão, use cubinhos de encaixe, que permitem contar pelo toque.",
+    "recursos": [
+      "f-ma-potencias",
+      "3d-potencias",
+      "l-ma-potencias"
+    ]
+  },
+  'p-ma-area': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Aprendizagem baseada em projetos",
+      "A turma planeja uma horta real (ou um canteiro da escola) com uma quantidade fixa de cerca. O produto final é uma planta baixa com medidas e a justificativa da escolha."
+    ],
+    "objetivos": [
+      "Diferenciar perímetro e área em situações reais.",
+      "Calcular a área de retângulos, quadrados e triângulos.",
+      "Descrever como área e perímetro mudam quando as medidas são ampliadas ou reduzidas."
+    ],
+    "materiais": [
+      "Ficha “Hortas com a mesma cerca: área e perímetro”",
+      "Barbante de 24 cm por dupla",
+      "Trena",
+      "Dispositivos com o Terreno: Área e Perímetro"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Lançamento do projeto",
+        "A escola tem 24 metros de tela para cercar uma horta. Qual formato dá mais espaço para plantar? Cada grupo faz uma aposta."
+      ],
+      [
+        "25 min",
+        "Barbante na malha",
+        "Partes 1 e 2 da ficha. As duplas desenham pelo menos quatro hortas diferentes com o mesmo barbante e completam a tabela."
+      ],
+      [
+        "20 min",
+        "Terreno 3D",
+        "Arrastando a estaca, os grupos testam outros formatos, inclusive em L, e comparam com a tabela feita no papel."
+      ],
+      [
+        "20 min",
+        "Medindo de verdade",
+        "Com a trena, medem o espaço real disponível no pátio e ajustam o projeto."
+      ],
+      [
+        "15 min",
+        "Apresentação",
+        "Cada grupo apresenta a planta da horta com área, perímetro e justificativa. A turma vota no projeto que seria levado à direção."
+      ]
+    ],
+    "avaliacao": "Planta baixa do grupo (medidas corretas, área e perímetro calculados e justificativa) e a lista de exercícios.",
+    "inclusao": "A malha pode ser feita com quadrados de EVA para contagem pelo toque. Grupos com papéis definidos garantem a participação de todos.",
+    "recursos": [
+      "f-ma-area",
+      "3d-terreno",
+      "l-ma-area"
+    ]
+  },
+  'p-ma-inteiros': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Instrução por pares (peer instruction)",
+      "O professor lança uma pergunta conceitual, os estudantes votam sozinhos, discutem em dupla para convencer o colega e votam de novo. A discussão entre pares corrige mais erros do que a explicação direta."
+    ],
+    "objetivos": [
+      "Comparar e ordenar números inteiros na reta numérica.",
+      "Somar e subtrair inteiros usando o modelo dos pares zero.",
+      "Resolver problemas com temperaturas, saldos e altitudes."
+    ],
+    "materiais": [
+      "Ficha “Fichas positivas e negativas”",
+      "Fichas verdes e vermelhas recortadas",
+      "Cartões de votação A, B, C e D",
+      "Dispositivos com o Elevador dos Inteiros"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Votação 1",
+        "Em São José dos Ausentes estava −3 °C e esfriou mais 4 °C. Qual a temperatura? A) 1 °C B) −7 °C C) 7 °C D) −1 °C. Votação individual, sem discussão."
+      ],
+      [
+        "10 min",
+        "Discussão em pares",
+        "Cada estudante tenta convencer um colega que votou diferente. Nova votação. Mostre o resultado no elevador 3D."
+      ],
+      [
+        "25 min",
+        "Fichas e pares zero",
+        "Partes 1 e 2 da ficha. Deixe que tentem tirar fichas que não existem e só então mostre o truque de acrescentar pares zero."
+      ],
+      [
+        "15 min",
+        "Votação 2",
+        "Quanto é 5 − (−2)? Repita o ciclo votar, discutir e votar. Use as fichas para conferir."
+      ],
+      [
+        "20 min",
+        "Situações reais",
+        "Parte 4 da ficha e lista de exercícios em dupla. Fechamento com a comparação entre as duas votações."
+      ]
+    ],
+    "avaliacao": "Compare a porcentagem de acertos antes e depois da discussão em pares. Use a ficha e a lista para acompanhar cada estudante.",
+    "inclusao": "As fichas de cores diferentes também podem ter formas diferentes (círculo e quadrado) para estudantes com daltonismo.",
+    "recursos": [
+      "f-ma-inteiros",
+      "3d-elevador",
+      "l-ma-inteiros"
+    ]
+  },
+  'p-ma-equacoes': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Pensar, conversar e compartilhar (think-pair-share)",
+      "Cada estudante pensa sozinho por um minuto, discute com a dupla e só depois o grupo compartilha com a turma. Ninguém fica sem tempo para pensar, e as estratégias aparecem antes da regra."
+    ],
+    "objetivos": [
+      "Reconhecer que a igualdade se mantém quando se faz a mesma operação nos dois membros.",
+      "Resolver equações do tipo ax + b = c.",
+      "Traduzir situações do cotidiano em equações."
+    ],
+    "materiais": [
+      "Ficha “Envelopes na balança: equações”",
+      "Envelopes pequenos e clipes",
+      "Dispositivos com a Balança 3D das Equações"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Pensar sozinho",
+        "Mostre 3 envelopes iguais e 2 clipes de um lado e 14 clipes do outro, em equilíbrio. Quantos clipes há em cada envelope? Um minuto em silêncio."
+      ],
+      [
+        "15 min",
+        "Conversar em dupla",
+        "As duplas comparam estratégias e testam com os envelopes da ficha (parte 1), sem abrir até o fim."
+      ],
+      [
+        "20 min",
+        "Balança 3D",
+        "Na balança 3D, usar apenas os botões tirar 1, tirar x e dividir. Registrar cada passo como uma linha de equação."
+      ],
+      [
+        "20 min",
+        "Criar para o colega",
+        "Parte 2 da ficha: cada dupla monta uma equação com envelopes para outra dupla resolver."
+      ],
+      [
+        "15 min",
+        "Compartilhar",
+        "Parte 3 da ficha (do problema para a equação). Sistematize as propriedades da igualdade no quadro."
+      ]
+    ],
+    "avaliacao": "Registro dos passos na balança, as equações criadas pelas duplas e a lista de exercícios.",
+    "inclusao": "O tapete-balança pode ser montado em cartolina grande e os envelopes substituídos por copos opacos, mais fáceis de manusear.",
+    "recursos": [
+      "f-ma-equacoes",
+      "3d-balanca",
+      "l-ma-equacoes"
+    ]
+  },
+  'p-ma-racionais': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Aprendizagem colaborativa com argumentação",
+      "O varal é uma reta numérica da turma inteira. Um cartão só é pendurado quando o grupo convence os demais de que a posição está correta, o que torna o erro visível e discutível."
+    ],
+    "objetivos": [
+      "Comparar e ordenar números racionais, inclusive negativos.",
+      "Converter frações em decimais e localizar ambos na reta numérica.",
+      "Resolver problemas com operações entre racionais."
+    ],
+    "materiais": [
+      "Ficha “Varal dos números racionais”",
+      "Barbante, pregadores e os cartões recortados",
+      "Dispositivos com as Barras de Frações 3D"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Montagem do varal",
+        "Estique o barbante e marque o 0, o 1 e o −1. Cada grupo recebe quatro cartões."
+      ],
+      [
+        "25 min",
+        "Pendurar e justificar",
+        "Os grupos penduram um cartão por vez, explicando a posição. A turma pode contestar; quem contesta precisa justificar."
+      ],
+      [
+        "20 min",
+        "Barras 3D",
+        "Nas Barras de Frações 3D, conferir os casos polêmicos (−1/2 e −3/4; 2/3 e 0,75) e explorar frações impróprias."
+      ],
+      [
+        "20 min",
+        "Registro",
+        "Partes 2, 3 e 4 da ficha: ordem, conversão entre fração e decimal e comparação."
+      ],
+      [
+        "15 min",
+        "Problemas",
+        "Parte 5 da ficha e início da lista de exercícios."
+      ]
+    ],
+    "avaliacao": "Qualidade das justificativas no varal (registre no diário), a ficha e a lista de exercícios.",
+    "inclusao": "Cartões com números grandes e alto contraste. Estudantes que preferem não falar em público podem justificar por escrito no cartão.",
+    "recursos": [
+      "f-ma-racionais",
+      "3d-fracoes",
+      "l-ma-racionais"
+    ]
+  },
+  'p-ma-regra3': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Aprendizagem baseada em problemas",
+      "O problema real vem primeiro: a turma precisa adaptar uma receita para a quantidade de pessoas da escola. A regra de três aparece como ferramenta para resolver o problema, não como fórmula pronta."
+    ],
+    "objetivos": [
+      "Identificar grandezas diretamente e inversamente proporcionais.",
+      "Montar e resolver a regra de três simples.",
+      "Usar o fator multiplicativo como estratégia de verificação."
+    ],
+    "materiais": [
+      "Ficha “Regra de três na receita”",
+      "Receita de bolo impressa, calculadora (opcional)",
+      "Copos medidores, se for preparar a receita",
+      "Dispositivos com o Laboratório de Sucos"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "O problema",
+        "A receita serve 8 pessoas e a turma tem 28. Quanto de cada ingrediente? Os grupos estimam antes de calcular."
+      ],
+      [
+        "25 min",
+        "Bolo para a turma",
+        "Parte 1 da ficha. Primeiro o fator multiplicativo (por quanto multiplico?), depois a tabela com duas colunas."
+      ],
+      [
+        "15 min",
+        "Laboratório de Sucos 3D",
+        "No modo regra de três, resolver as receitas propostas e conferir na jarra."
+      ],
+      [
+        "20 min",
+        "Direta ou inversa?",
+        "Parte 3 da ficha. Discutir o caso das torneiras e dos pedreiros: mais gente, menos tempo."
+      ],
+      [
+        "20 min",
+        "Fechamento",
+        "Parte 2 da ficha (montar a regra de três) e lista de exercícios. Se possível, preparar a receita ampliada."
+      ]
+    ],
+    "avaliacao": "Resolução da receita ampliada com justificativa, classificação correta das grandezas e a lista de exercícios.",
+    "inclusao": "Leve os ingredientes reais ou embalagens vazias. Estudantes com dificuldade de cálculo podem usar a calculadora; o foco está no raciocínio proporcional.",
+    "recursos": [
+      "f-ma-regra3",
+      "3d-sucos",
+      "l-ma-regra3"
+    ]
+  },
+  'p-ma-razao': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Ensino por investigação com coleta de dados",
+      "Os estudantes produzem os próprios dados (medidas do corpo e tempos de corrida) e usam a razão para responder perguntas da turma. Os dados reais dão sentido ao conceito."
+    ],
+    "objetivos": [
+      "Expressar a relação entre duas quantidades como razão e como fração.",
+      "Calcular razões entre grandezas de espécies diferentes, como velocidade.",
+      "Usar a razão para interpretar escalas."
+    ],
+    "materiais": [
+      "Ficha “Razões no corpo e no pátio”",
+      "Trena, cronômetro e giz",
+      "Dispositivos com o Laboratório de Sucos"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Pergunta investigável",
+        "Será que a altura de uma pessoa é parecida com a distância entre as pontas dos dedos de braços abertos? Registre as hipóteses."
+      ],
+      [
+        "25 min",
+        "Coleta no corpo",
+        "Partes 1 e 2 da ficha, com papéis no grupo: medidor, anotador e calculador."
+      ],
+      [
+        "20 min",
+        "Coleta no pátio",
+        "Parte 3: cronometrar a caminhada e a corrida de 10 metros e calcular metros por segundo."
+      ],
+      [
+        "15 min",
+        "Razão nas misturas",
+        "No Laboratório de Sucos 3D, modo razão: comparar misturas e decidir qual tem gosto mais forte."
+      ],
+      [
+        "20 min",
+        "Escala e conclusão",
+        "Parte 4 da ficha (escala). Os grupos comparam resultados e respondem à pergunta inicial com os dados."
+      ]
+    ],
+    "avaliacao": "Tabela de dados do grupo, as razões calculadas e a resposta à pergunta investigável com base nos dados.",
+    "inclusao": "As medidas do corpo são opcionais: o estudante pode medir um objeto ou um colega que se ofereça. Respeite quem não quer ser medido.",
+    "recursos": [
+      "f-ma-razao",
+      "3d-sucos",
+      "l-ma-razao"
+    ]
+  },
+  'p-ma-proporcao': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Aprendizagem maker",
+      "Os estudantes produzem uma ampliação de uma figura e verificam, no próprio produto, se ela ficou deformada. O erro na ampliação vira dado para discutir proporcionalidade."
+    ],
+    "objetivos": [
+      "Identificar grandezas diretamente, inversamente ou não proporcionais.",
+      "Resolver problemas com escala e ampliação.",
+      "Perceber que, ao dobrar os lados, a área fica quatro vezes maior."
+    ],
+    "materiais": [
+      "Ficha “Ampliar sem deformar: proporção”",
+      "Régua e lápis de cor",
+      "Planta baixa ou mapa do município",
+      "Dispositivos com o Laboratório de Sucos"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Aposta",
+        "Se dobrarmos o tamanho de um desenho, ele fica com o dobro de tinta? Votação rápida."
+      ],
+      [
+        "25 min",
+        "Ampliação na malha",
+        "Parte 1 da ficha. Cada estudante amplia a figura e confere com o colega se ficou proporcional."
+      ],
+      [
+        "15 min",
+        "E a área?",
+        "Parte 2 da ficha. Contar os quadradinhos e registrar a conclusão sobre a área."
+      ],
+      [
+        "20 min",
+        "É proporcional?",
+        "Parte 3 em grupo: tabelas de grandezas do cotidiano para classificar como direta, inversa ou não proporcional."
+      ],
+      [
+        "20 min",
+        "Escala real",
+        "Parte 4: medir distâncias no mapa do município e converter com a escala. Lista de exercícios para casa."
+      ]
+    ],
+    "avaliacao": "A ampliação produzida (lados proporcionais e ângulos preservados), a classificação das tabelas e a lista de exercícios.",
+    "inclusao": "Ofereça malhas com quadrados maiores e figuras mais simples. A ampliação pode ser feita com palitos ou fios sobre a malha.",
+    "recursos": [
+      "f-ma-proporcao",
+      "3d-sucos",
+      "l-ma-proporcao"
+    ]
+  },
+  'p-ma-produtos': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Sala de aula invertida",
+      "Em casa (ou no início da aula), os estudantes exploram os Produtos Notáveis em Blocos 3D. Em sala, o tempo é usado para recortar, montar e discutir o erro clássico (a + b)² = a² + b²."
+    ],
+    "objetivos": [
+      "Compreender o quadrado da soma, o quadrado da diferença e o produto da soma pela diferença.",
+      "Justificar os produtos notáveis por meio de áreas.",
+      "Usar produtos notáveis em cálculo mental."
+    ],
+    "materiais": [
+      "Ficha “Quadrado recortado: produtos notáveis”",
+      "Tesoura e lápis de cor",
+      "Dispositivos com os Produtos Notáveis em Blocos"
+    ],
+    "etapas": [
+      [
+        "Em casa",
+        "Exploração prévia",
+        "Explorar o modo (a + b)² dos Produtos Notáveis em Blocos e anotar uma pergunta."
+      ],
+      [
+        "10 min",
+        "Perguntas da turma",
+        "Recolha as perguntas trazidas e escolha duas para guiar a aula."
+      ],
+      [
+        "25 min",
+        "Montar o quadrado grande",
+        "Partes 1 e 2 da ficha. Os grupos recortam, montam e escrevem a área de cada peça. Não mostre a fórmula antes."
+      ],
+      [
+        "20 min",
+        "Diferença e soma pela diferença",
+        "Partes 3 e 4. Conferir no recurso 3D com a peça que gira."
+      ],
+      [
+        "20 min",
+        "Cálculo mental",
+        "Parte 5: 21², 99² e 31 × 29. Cada grupo explica uma conta no quadro."
+      ],
+      [
+        "15 min",
+        "Fechamento",
+        "Registro das três fórmulas com o desenho ao lado e início da lista de exercícios."
+      ]
+    ],
+    "avaliacao": "Explicação escrita, com desenho, de por que (a + b)² ≠ a² + b², o cálculo mental e a lista de exercícios.",
+    "inclusao": "Peças de EVA em cores diferentes ajudam estudantes com dificuldade motora no recorte e permitem identificar as peças pelo toque.",
+    "recursos": [
+      "f-ma-produtos",
+      "3d-produtos",
+      "l-ma-produtos"
+    ]
+  },
+  'p-ma-fatoracao': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Rotação por estações",
+      "Três estações de 20 minutos: peças de papel, blocos algébricos 3D e problemas de área. Cada estação trabalha a fatoração como “encontrar os lados de um retângulo”."
+    ],
+    "objetivos": [
+      "Fatorar trinômios do tipo x² + bx + c.",
+      "Reconhecer a fatoração como a operação inversa da multiplicação de polinômios.",
+      "Usar a fatoração para resolver equações e problemas de área."
+    ],
+    "materiais": [
+      "Ficha “Fatorar é montar retângulos”",
+      "Peças recortadas ou de EVA",
+      "Dispositivos com os Blocos Algébricos"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Retomada",
+        "Relembre (x + 2)(x + 3) com área. Agora o caminho inverso: dada a área, quais os lados?"
+      ],
+      [
+        "20 min",
+        "Estação 1: peças de papel",
+        "Parte 1 da ficha. Formar retângulos com os quatro trinômios e registrar os lados."
+      ],
+      [
+        "20 min",
+        "Estação 2: Blocos 3D",
+        "No modo fatoração, arrastar as peças até formar o retângulo. Usar “Mostrar um retângulo” só depois de tentar."
+      ],
+      [
+        "20 min",
+        "Estação 3: problemas",
+        "Partes 3, 4 e 5 da ficha: quando não fecha, fatoração resolve equação e terreno."
+      ],
+      [
+        "20 min",
+        "Padrão",
+        "Parte 2 da ficha com a turma: soma e produto. Fatorar sem as peças e conferir com elas."
+      ]
+    ],
+    "avaliacao": "Registro das três estações e a fatoração sem peças (parte 2). Lista de exercícios para consolidar.",
+    "inclusao": "Na estação 3D, o teclado também gira e aproxima a cena. Peças de papel cartão grosso são mais fáceis de manusear.",
+    "recursos": [
+      "f-ma-fatoracao",
+      "3d-algeblocos",
+      "l-ma-fatoracao"
+    ]
+  },
+  'p-ma-polinomios': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Gamificação com jogo de cartas",
+      "O dominó de expressões só avança quando o grupo concorda que as metades são equivalentes. A regra do jogo obriga a justificar cada passo da simplificação."
+    ],
+    "objetivos": [
+      "Reduzir termos semelhantes.",
+      "Somar e subtrair polinômios.",
+      "Calcular o valor numérico de expressões algébricas em problemas."
+    ],
+    "materiais": [
+      "Ficha “Dominó dos polinômios”",
+      "Peças do dominó recortadas e embaralhadas",
+      "Dispositivos com os Blocos Algébricos"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Aquecimento",
+        "É verdade que x + x = x²? Votação e discussão rápida."
+      ],
+      [
+        "25 min",
+        "Dominó",
+        "Grupos de 3 montam a fila do INÍCIO ao FIM. O anotador escreve a conta de cada encaixe."
+      ],
+      [
+        "20 min",
+        "Blocos 3D",
+        "No modo polinômios, somar e subtrair usando pares zero. Comparar com as contas do dominó."
+      ],
+      [
+        "20 min",
+        "Termos semelhantes e valor numérico",
+        "Partes 2 e 3 da ficha."
+      ],
+      [
+        "15 min",
+        "Situação real",
+        "Parte 4: lucro da loja de camisetas. Os grupos trocam os dominós para conferir."
+      ]
+    ],
+    "avaliacao": "Registro das contas do dominó, a resolução do problema do lucro e a lista de exercícios.",
+    "inclusao": "As peças podem ser ampliadas e impressas em papel colorido. Permita que o grupo use os blocos 3D para conferir antes de encaixar.",
+    "recursos": [
+      "f-ma-polinomios",
+      "3d-algeblocos",
+      "l-ma-polinomios"
+    ]
+  },
+  'p-ma-geometria': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Aprendizagem baseada em projetos com arte",
+      "A turma produz um painel de mosaicos para expor na escola. Para que o mosaico feche sem buracos, os grupos precisam investigar os ângulos dos polígonos."
+    ],
+    "objetivos": [
+      "Verificar que a soma dos ângulos internos de um triângulo é 180°.",
+      "Calcular ângulos internos de polígonos regulares sem fórmula pronta.",
+      "Identificar quais polígonos ladrilham o plano."
+    ],
+    "materiais": [
+      "Ficha “Ateliê de mosaicos: ângulos e polígonos”",
+      "Papel colorido, tesoura e cola",
+      "Cartolina para o painel",
+      "Dispositivos com Ladrilhos e Ângulos"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "Lançamento",
+        "Mostre fotos de pisos, colmeias e calçadas. Por que as abelhas usam hexágonos e não pentágonos?"
+      ],
+      [
+        "15 min",
+        "Cantos do triângulo",
+        "Parte 1 da ficha: recortar os três cantos de um triângulo e juntá-los numa reta."
+      ],
+      [
+        "25 min",
+        "Ladrilhar",
+        "Partes 2 e 3 em grupo, com papel e no Ladrilhos e Ângulos 3D. Registrar as combinações que fecham 360°."
+      ],
+      [
+        "15 min",
+        "Soma dos ângulos internos",
+        "Parte 4 da ficha e modo soma do recurso 3D: dividir em triângulos a partir de um vértice."
+      ],
+      [
+        "35 min",
+        "Painel de mosaicos",
+        "Cada grupo cria um trecho do painel com uma combinação que ladrilha e escreve a conta dos ângulos ao lado."
+      ]
+    ],
+    "avaliacao": "O painel (combinações corretas e contas dos ângulos), a ficha e a lista de exercícios.",
+    "inclusao": "Use moldes de papel cartão para traçar os polígonos. Estudantes com dificuldade motora podem montar no recurso 3D e colar peças já recortadas.",
+    "recursos": [
+      "f-ma-geometria",
+      "3d-ladrilhos",
+      "l-ma-geometria"
+    ]
+  },
+  'p-ma-tales': {
+    "duracao": "2 aulas de 50 min",
+    "metodologia": [
+      "Aprendizagem baseada em problemas com aula de campo",
+      "O problema é medir a altura de algo que não se alcança (poste, árvore, caixa d’água). A turma vai ao pátio, mede sombras e usa a proporcionalidade para resolver."
+    ],
+    "objetivos": [
+      "Aplicar o Teorema de Tales em situações reais.",
+      "Reconhecer triângulos semelhantes pelas medidas dos ângulos.",
+      "Dividir um segmento em partes iguais usando retas paralelas."
+    ],
+    "materiais": [
+      "Ficha “Medindo com sombras: Teorema de Tales”",
+      "Trena, bastão de comprimento conhecido e giz",
+      "Folha de caderno pautada",
+      "Dispositivos com o Teorema de Tales: Sombras e Paralelas"
+    ],
+    "etapas": [
+      [
+        "10 min",
+        "O problema",
+        "Qual é a altura do poste da frente da escola? Ninguém pode subir nele. As estimativas ficam registradas no quadro."
+      ],
+      [
+        "30 min",
+        "Aula de campo",
+        "Partes 1 e 2 da ficha. Grupos com papéis medem a sombra do bastão e a do poste no mesmo horário."
+      ],
+      [
+        "15 min",
+        "Recurso 3D",
+        "No modo sol e sombra, mover o sol e verificar que a razão entre altura e sombra se mantém."
+      ],
+      [
+        "20 min",
+        "Folha pautada",
+        "Parte 3 da ficha: dividir um palito em três partes iguais. Modo paralelas do recurso 3D para formalizar o teorema."
+      ],
+      [
+        "15 min",
+        "Problema final",
+        "Parte 5: a largura do rio. Comparar as estimativas iniciais com as medidas calculadas."
+      ]
+    ],
+    "avaliacao": "Relatório do grupo com medidas, cálculos e comparação com a estimativa inicial. Lista de exercícios.",
+    "inclusao": "Se não houver sol, use uma lanterna e objetos na sala. Estudantes que não podem ir ao pátio fazem a parte 3 e o recurso 3D com um colega.",
+    "recursos": [
+      "f-ma-tales",
+      "3d-tales",
+      "l-ma-tales"
+    ]
+  },
+  /* ---------- fim das oficinas de Matemática ---------- */
 };

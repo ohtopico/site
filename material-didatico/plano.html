@@ -59,7 +59,7 @@
     return;
   }
   document.title = `${r.titulo} · Plano de aula | ohtopico`;
-  const rel = [...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))];
+  const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
   const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
   doc.innerHTML = `
     <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
@@ -72,6 +72,9 @@
       <div><span>Ano</span>${anosTxt(r.anos)}</div>
       <div><span>Duração</span>${esc(p.duracao)}</div>
     </div>
+${p.metodologia ? `
+    <h2>Metodologia ativa</h2>
+    <div class="panel"><strong>${esc(p.metodologia[0])}</strong><p style="margin:6px 0 0">${esc(p.metodologia[1])}</p></div>` : ''}
 
     <h2>Habilidades da BNCC</h2>
     <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}${SLIDES[c] ? ` <a class="no-print" href="${slidesUrl(c)}" download>📥 Baixar slides (PDF)</a>` : ''}</span></li>`).join('')}</ul>

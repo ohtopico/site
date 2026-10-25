@@ -157,8 +157,8 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('bhaskara');
     const svg = $('#graf'), W = 320, H = 320;
     if (!a) { svg.innerHTML = ''; $('#graf-txt').textContent = ''; return; }
     const xv = -b / (2 * a), yv = a * xv * xv + b * xv + c;
-    let xs = [xv - 4, xv + 4, ...raizes];
-    let x0 = Math.min(...xs) - 1, x1 = Math.max(...xs) + 1;
+    let xs = [xv - 2.5, xv + 2.5, ...raizes];
+    let x0 = Math.min(...xs) - 0.8, x1 = Math.max(...xs) + 0.8;
     const f = x => a * x * x + b * x + c;
     const ys = [0, yv, f(x0), f(x1)];
     let y0 = Math.min(...ys), y1 = Math.max(...ys);

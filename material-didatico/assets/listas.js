@@ -1,6 +1,7 @@
 /* =====================================================================
-   Listas de exercícios — BNCC Computação (6º ao 9º ano)
-   Uma lista por objeto de conhecimento em cada ano.
+   Listas de exercícios — BNCC Computação (6º ao 9º ano) e Matemática (oficinas)
+   Uma lista por objeto de conhecimento em cada ano. Listas com comp: 'MA'
+   são de Matemática; sem comp, Computação.
    Formatos de exercício:
      ['me', enunciado, [alternativas], índice da correta, comentário]   múltipla escolha
      ['vf', enunciado, [[afirmação, true|false], ...], comentário]      verdadeiro ou falso
@@ -278,7 +279,129 @@ const LISTAS = [
     ['me', 'Uma foto de enchente circula com a legenda “aconteceu ontem na nossa cidade”. A busca reversa mostra que ela é de outro país, há cinco anos. A informação é:', ['Verdadeira', 'Enganosa (imagem real fora de contexto)', 'Uma fonte oficial', 'Irrelevante'], 1, 'Conteúdo verdadeiro usado fora de contexto também é desinformação.'],
     ['me', 'Qual sinal pode indicar que uma imagem foi gerada por IA?', ['Mãos com dedos a mais ou textos ilegíveis', 'Estar em preto e branco', 'Ter boa resolução', 'Ter uma legenda'], 0, 'Esses sinais ajudam, mas estão ficando mais difíceis de perceber; a origem da informação continua sendo o principal critério.'],
     ['ab', 'Crie um roteiro de checagem com pelo menos 5 passos para avaliar uma informação recebida em formato de texto, imagem, áudio ou vídeo. Aplique o roteiro a um exemplo real (ou inventado) e explique sua conclusão.', 'Passos possíveis: identificar a fonte; verificar data e contexto; procurar confirmação em fontes confiáveis; fazer busca reversa de imagem; analisar sinais de manipulação ou IA; checar em agências de checagem; avaliar a relevância. A aplicação deve seguir os passos e justificar a conclusão.', 9]
-  ]}
+  ]},
+  /* ===================== MATEMÁTICA · oficinas (gerado por oficinas_ma.py) ===================== */
+  { id: 'l-ma-decimais', comp: 'MA', ano: 6, objeto: "Frações e números decimais", habs: ["EF06MA08", "EF06MA01"], ex: [
+    ["me", "Na padaria, Ana pediu 3/4 de quilo de queijo. A balança mostra o peso em número decimal. Qual valor deve aparecer?", ["0,34 kg", "0,75 kg", "0,43 kg", "1,34 kg"], 1, "3/4 = 3 ÷ 4 = 0,75."],
+    ["me", "Um posto anuncia a gasolina a R$ 6,19 e outro a R$ 6,2. Qual é mais barato?", ["O de R$ 6,19", "O de R$ 6,2", "Os dois custam o mesmo", "Não dá para comparar"], 0, "6,2 é o mesmo que 6,20, que é maior que 6,19."],
+    ["me", "Bia correu 2 quilômetros e meio, Caio correu 2,45 km e Duda correu 2,6 km. Qual é a ordem do menor para o maior percurso?", ["Caio, Bia, Duda", "Bia, Caio, Duda", "Duda, Bia, Caio", "Caio, Duda, Bia"], 0, "Dois quilômetros e meio são 2,50 km: 2,45 < 2,50 < 2,60."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["0,5 e 1/2 representam a mesma quantidade.", true], ["0,25 é maior que 0,3 porque 25 é maior que 3.", false], ["1/5 de um metro é 20 cm, ou 0,2 m.", true], ["Uma garrafa de 1,5 L tem um litro e meio.", true]], "Para comparar decimais, compare casa por casa: 0,30 tem 3 décimos e 0,25 tem só 2."],
+    ["me", "Uma receita pede 0,2 kg de açúcar. Quantos gramas são?", ["2 g", "20 g", "200 g", "2 000 g"], 2, "1 kg = 1 000 g, então 0,2 kg = 200 g."],
+    ["ab", "Uma família gasta 1/4 do salário com aluguel e 0,3 do salário com alimentação. Qual dos dois gastos é maior? Explique usando frações ou decimais e mostre os dois números numa reta de 0 a 1.", "1/4 = 0,25 e 0,25 < 0,3, então a alimentação é o gasto maior. Também vale comparar com frações equivalentes: 1/4 = 5/20 e 0,3 = 6/20. Na reta, 0,25 fica à esquerda de 0,3.", 4]
+  ]},
+  { id: 'l-ma-mmc', comp: 'MA', ano: 6, objeto: "MMC e múltiplos", habs: ["EF06MA05", "EF06MA06"], ex: [
+    ["me", "Um ônibus passa no ponto a cada 15 minutos e outro a cada 20 minutos. Às 7h os dois passaram juntos. Quando passam juntos de novo?", ["7h35", "8h", "8h15", "7h45"], 1, "MMC(15, 20) = 60 minutos, ou seja, uma hora depois."],
+    ["me", "Duas luzes de Natal piscam: uma a cada 4 segundos e outra a cada 6 segundos. Elas piscam juntas a cada:", ["10 segundos", "12 segundos", "24 segundos", "2 segundos"], 1, "Múltiplos de 4: 4, 8, 12. Múltiplos de 6: 6, 12. O primeiro comum é 12."],
+    ["me", "Joana toma um remédio a cada 8 horas e outro a cada 12 horas. Tomou os dois à meia-noite. Quando tomará os dois juntos de novo?", ["Às 8h", "Ao meio-dia", "À meia-noite do dia seguinte", "Às 20h"], 2, "MMC(8, 12) = 24 horas."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["Todo número é múltiplo de si mesmo.", true], ["O MMC de 3 e 5 é 15.", true], ["O MMC de 6 e 12 é 72.", false], ["O número 1 é primo.", false]], "O MMC de 6 e 12 é 12, porque 12 já é múltiplo de 6. O 1 não é primo, pois tem apenas um divisor."],
+    ["me", "Salsichas vêm em pacotes de 10 e pães em pacotes de 8. Qual é o menor número de cachorros-quentes que se pode montar sem sobrar salsicha nem pão?", ["18", "40", "80", "20"], 1, "MMC(10, 8) = 40: 4 pacotes de salsicha e 5 de pão."],
+    ["ab", "Na escola, a turma A visita a biblioteca a cada 6 dias e a turma B a cada 9 dias. Hoje as duas foram juntas. Daqui a quantos dias vão se encontrar de novo? Mostre duas estratégias diferentes.", "18 dias. Estratégia 1: múltiplos de 6 (6, 12, 18) e de 9 (9, 18). Estratégia 2: 6 = 2 × 3 e 9 = 3 × 3, então MMC = 2 × 3 × 3 = 18. Também vale desenhar os pulos numa reta.", 4]
+  ]},
+  { id: 'l-ma-potencias', comp: 'MA', ano: 8, objeto: "Potenciação e radiciação", habs: ["EF08MA02", "EF08MA01"], ex: [
+    ["me", "Uma sala quadrada tem 49 m² de piso. Quanto mede cada lado?", ["7 m", "24,5 m", "12,25 m", "49 m"], 0, "√49 = 7, porque 7 × 7 = 49."],
+    ["me", "Uma mensagem é repassada assim: cada pessoa envia para 3 pessoas novas. Na 4ª rodada de envios, quantas pessoas recebem a mensagem?", ["12", "64", "81", "27"], 2, "3 × 3 × 3 × 3 = 3⁴ = 81."],
+    ["me", "Uma cultura de bactérias começa com 1 bactéria e dobra a cada hora. Depois de 10 horas, quantas bactérias haverá?", ["20", "100", "1 024", "512"], 2, "2¹⁰ = 1 024. Note que 2 × 10 = 20 é o erro comum de multiplicar a base pelo expoente."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["2³ = 6", false], ["(−3)² = 9", true], ["√16 + √9 = √25", false], ["5⁰ = 1", true]], "2³ = 2 × 2 × 2 = 8. √16 + √9 = 4 + 3 = 7, mas √25 = 5: a raiz da soma não é a soma das raízes."],
+    ["me", "A distância da Terra ao Sol é de cerca de 150 000 000 km. Em notação científica, isso é:", ["1,5 × 10⁸ km", "15 × 10⁸ km", "1,5 × 10⁶ km", "150 × 10⁶ km"], 0, "150 000 000 = 1,5 × 100 000 000 = 1,5 × 10⁸. A opção 150 × 10⁶ tem o mesmo valor, mas não está em notação científica (o número antes da potência deve estar entre 1 e 10)."],
+    ["ab", "Um jardineiro tem 100 mudas e quer plantá-las formando um quadrado completo. Quantas mudas terá cada fileira? Se ele tivesse 120 mudas, conseguiria formar um quadrado completo? Explique.", "Com 100 mudas: √100 = 10 mudas por fileira. Com 120 mudas não forma um quadrado completo, porque 120 não é quadrado perfeito (10² = 100 e 11² = 121). Ele faria um quadrado 10 × 10 e sobrariam 20 mudas, ou precisaria de mais 1 muda para um quadrado 11 × 11.", 4]
+  ]},
+  { id: 'l-ma-area', comp: 'MA', ano: 6, objeto: "Área e perímetro", habs: ["EF06MA24", "EF06MA29"], ex: [
+    ["me", "Um quarto retangular mede 4 m por 3 m. Quantos metros de rodapé são necessários para contorná-lo (sem descontar a porta)?", ["7 m", "12 m", "14 m", "24 m"], 2, "Perímetro = 4 + 3 + 4 + 3 = 14 m."],
+    ["me", "Quantos metros quadrados de piso são necessários para cobrir esse mesmo quarto de 4 m por 3 m?", ["7 m²", "12 m²", "14 m²", "24 m²"], 1, "Área = 4 × 3 = 12 m²."],
+    ["me", "Uma sala de 5 m por 4 m será coberta com lajotas quadradas de 50 cm de lado. Quantas lajotas são necessárias?", ["20", "40", "80", "160"], 2, "Em 5 m cabem 10 lajotas e em 4 m cabem 8: 10 × 8 = 80. Ou: 20 m² ÷ 0,25 m² = 80."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["Dois retângulos com o mesmo perímetro sempre têm a mesma área.", false], ["Se o lado de um quadrado dobra, o perímetro também dobra.", true], ["Se o lado de um quadrado dobra, a área também só dobra.", false], ["A área de um triângulo é a metade da área do retângulo de mesma base e mesma altura.", true]], "Um retângulo 1 × 5 e um 3 × 3 têm perímetro 12, mas áreas 5 e 9. Ao dobrar o lado do quadrado, a área fica 4 vezes maior."],
+    ["me", "Uma horta retangular de 6 m por 2 m será cercada com 3 voltas de arame. Quantos metros de arame serão necessários?", ["16 m", "36 m", "48 m", "12 m"], 2, "Perímetro = 16 m. Três voltas: 16 × 3 = 48 m."],
+    ["ab", "Uma família quer pintar uma parede de 5 m de largura por 2,8 m de altura. Nela há uma porta de 0,8 m por 2,1 m, que não será pintada. Cada lata de tinta pinta 10 m². Qual é a área a pintar e quantas latas precisam comprar?", "Parede: 5 × 2,8 = 14 m². Porta: 0,8 × 2,1 = 1,68 m². Área a pintar: 14 − 1,68 = 12,32 m². Uma lata não basta (10 m²), então precisam de 2 latas.", 5]
+  ]},
+  { id: 'l-ma-inteiros', comp: 'MA', ano: 7, objeto: "Operações com números negativos", habs: ["EF07MA03", "EF07MA04"], ex: [
+    ["me", "Em Bom Jesus, na Serra Gaúcha, a temperatura era de −2 °C às 6h e subiu 9 °C até o meio-dia. Qual era a temperatura ao meio-dia?", ["−11 °C", "7 °C", "11 °C", "−7 °C"], 1, "−2 + 9 = 7."],
+    ["me", "O saldo de uma conta bancária era de R$ −120,00. Foi feito um depósito de R$ 200,00. Qual é o novo saldo?", ["R$ 320,00", "R$ −80,00", "R$ 80,00", "R$ −320,00"], 2, "−120 + 200 = 80."],
+    ["me", "Um mergulhador estava a 15 m abaixo do nível do mar, subiu 6 m e depois desceu 10 m. Em que posição ficou?", ["−19 m", "−11 m", "−1 m", "−31 m"], 0, "−15 + 6 − 10 = −19, ou seja, 19 m abaixo do nível do mar."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["−8 é maior que −3.", false], ["(−4) × (−5) = 20", true], ["−7 + 7 = 0", true], ["(−12) ÷ 3 = 4", false]], "−8 está mais à esquerda na reta, então é menor que −3. (−12) ÷ 3 = −4."],
+    ["me", "Em uma cidade, a maior temperatura registrada no ano foi 38 °C e a menor foi −6 °C. Qual é a diferença entre elas?", ["32 °C", "44 °C", "−44 °C", "38 °C"], 1, "38 − (−6) = 38 + 6 = 44."],
+    ["ab", "Em um jogo, ganhar uma rodada vale +5 pontos e perder vale −3 pontos. Marina ganhou 4 rodadas e perdeu 7. Qual é o saldo de pontos dela? Mostre a conta usando multiplicação de inteiros.", "4 × (+5) + 7 × (−3) = 20 + (−21) = −1. Marina terminou com saldo de −1 ponto.", 4]
+  ]},
+  { id: 'l-ma-equacoes', comp: 'MA', ano: 7, objeto: "Equações do primeiro grau", habs: ["EF07MA18"], ex: [
+    ["me", "Comprei 3 cadernos de mesmo preço, paguei com R$ 50,00 e recebi R$ 14,00 de troco. Qual equação representa a situação, sendo x o preço de cada caderno?", ["3x = 50 + 14", "3x + 14 = 50", "x + 3 = 50 − 14", "14x + 3 = 50"], 1, "O que gastei (3x) mais o troco (14) é igual ao que paguei (50)."],
+    ["me", "Na situação anterior, quanto custou cada caderno?", ["R$ 12,00", "R$ 21,33", "R$ 36,00", "R$ 16,00"], 0, "3x + 14 = 50 → 3x = 36 → x = 12."],
+    ["me", "Um táxi cobra R$ 5,00 de bandeirada mais R$ 3,00 por quilômetro. Uma corrida custou R$ 41,00. Quantos quilômetros foram percorridos?", ["12 km", "15 km", "13,6 km", "8 km"], 0, "5 + 3x = 41 → 3x = 36 → x = 12."],
+    ["vf", "Sobre a equação 2x − 7 = 11, classifique como verdadeiro (V) ou falso (F):", [["x = 9 é a solução.", true], ["Para resolver, posso somar 7 aos dois membros.", true], ["Se eu dividir só o primeiro membro por 2, a igualdade continua verdadeira.", false], ["x = 2 é solução.", false]], "Conferindo: 2 × 9 − 7 = 18 − 7 = 11. Qualquer operação precisa ser feita nos dois membros."],
+    ["me", "A soma de três números naturais consecutivos é 72. Quais são esses números?", ["23, 24 e 25", "24, 24 e 24", "22, 24 e 26", "20, 25 e 27"], 0, "x + (x + 1) + (x + 2) = 72 → 3x + 3 = 72 → x = 23."],
+    ["ab", "Pedro tem o triplo da idade da irmã. Juntos, os dois têm 32 anos. Escreva uma equação para a situação, resolva e confira a resposta.", "Idade da irmã: x. Idade de Pedro: 3x. Equação: x + 3x = 32 → 4x = 32 → x = 8. A irmã tem 8 anos e Pedro tem 24. Conferência: 8 + 24 = 32 e 24 = 3 × 8.", 5]
+  ]},
+  { id: 'l-ma-racionais', comp: 'MA', ano: 7, objeto: "Frações e números racionais", habs: ["EF07MA08", "EF07MA10", "EF07MA12"], ex: [
+    ["me", "Em uma pesquisa, 3/8 da turma prefere futebol e 0,4 da turma prefere vôlei. Qual esporte tem mais preferência?", ["Futebol", "Vôlei", "Os dois têm a mesma", "Não é possível comparar"], 1, "3/8 = 0,375, que é menor que 0,4."],
+    ["me", "Em uma manhã de inverno, quatro cidades registraram −1,5 °C, −0,8 °C, −2 °C e 0,3 °C. Qual é a ordem da menor para a maior temperatura?", ["−2; −1,5; −0,8; 0,3", "−0,8; −1,5; −2; 0,3", "0,3; −0,8; −1,5; −2", "−1,5; −2; −0,8; 0,3"], 0, "Entre negativos, o menor é o que está mais longe do zero, à esquerda."],
+    ["me", "Ana comeu 1/3 de uma pizza e Beto comeu 1/4. Que fração da pizza sobrou?", ["5/12", "2/7", "7/12", "1/2"], 0, "1/3 + 1/4 = 4/12 + 3/12 = 7/12. Sobrou 1 − 7/12 = 5/12."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["−1/2 é maior que −3/4.", true], ["2/3 é menor que 0,6.", false], ["Todo número inteiro é racional.", true], ["3/4 ÷ 1/2 = 3/8", false]], "2/3 ≈ 0,667, maior que 0,6. Dividir por 1/2 é multiplicar por 2: 3/4 ÷ 1/2 = 3/2."],
+    ["me", "Uma garrafa de 2 litros de suco será servida em copos de 1/4 de litro. Quantos copos podem ser servidos?", ["4", "6", "8", "10"], 2, "2 ÷ 1/4 = 2 × 4 = 8."],
+    ["ab", "Uma receita usa 3/4 de xícara de leite. Você quer fazer 2,5 receitas. Quanto leite vai usar? Dê a resposta em fração e em decimal e explique como pensou.", "2,5 = 5/2. 3/4 × 5/2 = 15/8 = 1 7/8 xícara = 1,875 xícara. Também vale: 2 receitas usam 6/4 = 1,5 e meia receita usa 3/8 = 0,375; total 1,875.", 4]
+  ]},
+  { id: 'l-ma-regra3', comp: 'MA', ano: 7, objeto: "Regra de três", habs: ["EF07MA17"], ex: [
+    ["me", "No açougue, 3 kg de carne custam R$ 105,00. Quanto custam 5 kg da mesma carne?", ["R$ 150,00", "R$ 175,00", "R$ 180,00", "R$ 210,00"], 1, "Cada quilo custa 105 ÷ 3 = 35 reais. 5 × 35 = 175."],
+    ["me", "Quatro pedreiros constroem um muro em 6 dias. Em quantos dias 8 pedreiros, no mesmo ritmo, construiriam o mesmo muro?", ["12 dias", "3 dias", "2 dias", "6 dias"], 1, "É uma proporção inversa: o dobro de pedreiros leva a metade do tempo. 4 × 6 = 8 × x → x = 3."],
+    ["me", "Um carro percorre 240 km com 20 litros de combustível. Quantos quilômetros percorre com 35 litros, no mesmo consumo?", ["400 km", "420 km", "360 km", "480 km"], 1, "240 ÷ 20 = 12 km por litro. 12 × 35 = 420 km."],
+    ["vf", "Direta ou inversa? Classifique como verdadeiro (V) ou falso (F):", [["Quantidade de pães e preço pago são diretamente proporcionais.", true], ["Velocidade e tempo de uma viagem de distância fixa são diretamente proporcionais.", false], ["Número de torneiras iguais e tempo para encher uma caixa são inversamente proporcionais.", true], ["Idade e altura de uma pessoa são diretamente proporcionais.", false]], "Velocidade maior leva a tempo menor: é inversa. Idade e altura não são proporcionais: uma pessoa de 40 anos não tem o dobro da altura de uma de 20."],
+    ["me", "Uma receita para 6 pessoas usa 400 g de farinha. Quanto de farinha é necessário para 15 pessoas?", ["1 kg", "900 g", "600 g", "1,2 kg"], 0, "400 ÷ 6 × 15 = 1 000 g. Ou: 15 é 2,5 vezes 6, e 400 × 2,5 = 1 000."],
+    ["ab", "Um grupo de 12 estudantes leva 5 dias para organizar a biblioteca da escola. Quantos dias levariam 20 estudantes, trabalhando no mesmo ritmo? Diga se a proporção é direta ou inversa e justifique.", "É inversa: com mais estudantes, o trabalho termina em menos dias. 12 × 5 = 60 (dias de trabalho de um estudante). 60 ÷ 20 = 3 dias.", 4]
+  ]},
+  { id: 'l-ma-razao', comp: 'MA', ano: 7, objeto: "Razão", habs: ["EF07MA09"], ex: [
+    ["me", "Uma turma tem 12 meninas e 18 meninos. Qual é a razão entre o número de meninas e o de meninos?", ["2/3", "3/2", "12/30", "2/5"], 0, "12/18 = 2/3. A razão 12/30 (ou 2/5) compara as meninas com o total da turma."],
+    ["me", "Um suco concentrado deve ser misturado na razão de 1 parte de suco para 4 partes de água. Para preparar 2 litros de suco pronto, quanto suco concentrado é necessário?", ["500 mL", "400 mL", "250 mL", "800 mL"], 1, "São 5 partes no total. 2 000 mL ÷ 5 = 400 mL por parte."],
+    ["me", "Em um mapa com escala 1 : 50 000, duas cidades estão a 3 cm de distância. Qual é a distância real?", ["150 m", "1,5 km", "15 km", "150 km"], 1, "3 × 50 000 = 150 000 cm = 1 500 m = 1,5 km."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["A razão de 3 para 5 pode ser escrita como 3/5 ou 3 : 5.", true], ["A razão 4/6 é equivalente a 2/3.", true], ["Em um time com 5 titulares e 3 reservas, a razão entre reservas e titulares é 5/3.", false], ["A velocidade média é uma razão entre distância e tempo.", true]], "Reservas para titulares é 3/5. A ordem das grandezas na razão importa."],
+    ["me", "Um carro percorreu 180 km em 2 horas e 30 minutos. Qual foi a velocidade média?", ["72 km/h", "90 km/h", "60 km/h", "75 km/h"], 0, "2 h 30 min = 2,5 h. 180 ÷ 2,5 = 72 km/h."],
+    ["ab", "Uma cidade A tem 30 000 habitantes em 600 km² de área. Uma cidade B tem 45 000 habitantes em 1 500 km². Calcule a densidade demográfica (habitantes por km²) de cada uma e diga qual é mais povoada. Explique por que a cidade com mais habitantes não é necessariamente a mais povoada.", "A: 30 000 ÷ 600 = 50 hab/km². B: 45 000 ÷ 1 500 = 30 hab/km². A cidade A é mais povoada, mesmo tendo menos habitantes, porque a densidade compara a população com a área.", 4]
+  ]},
+  { id: 'l-ma-proporcao', comp: 'MA', ano: 8, objeto: "Proporção", habs: ["EF08MA12", "EF08MA13"], ex: [
+    ["me", "Uma foto de 10 cm por 15 cm será ampliada sem deformar. Se a largura passar a 20 cm, qual será a altura?", ["25 cm", "30 cm", "20 cm", "35 cm"], 1, "A largura dobrou, então a altura também dobra: 15 × 2 = 30 cm."],
+    ["me", "Em qual tabela as grandezas são diretamente proporcionais?", ["1 → 3; 2 → 6; 4 → 12", "1 → 3; 2 → 5; 3 → 7", "2 → 12; 3 → 8; 4 → 6", "1 → 1; 2 → 4; 3 → 9"], 0, "Na primeira, a razão é sempre 3. A terceira é inversamente proporcional (o produto é sempre 24) e a quarta não é proporcional."],
+    ["me", "Em uma escola, 3 de cada 5 estudantes vão de ônibus. Em uma turma de 40 estudantes, quantos vão de ônibus, mantendo essa proporção?", ["24", "15", "8", "30"], 0, "3/5 = x/40 → 5x = 120 → x = 24."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["Se os lados de um quadrado dobram, a área também dobra.", false], ["Em grandezas inversamente proporcionais, o produto entre os valores correspondentes é constante.", true], ["Em uma proporção a/b = c/d, vale a × d = b × c.", true], ["O preço de uma corrida de táxi com bandeirada é diretamente proporcional aos quilômetros rodados.", false]], "Ao dobrar os lados, a área fica 4 vezes maior. A bandeirada é um valor fixo, que quebra a proporcionalidade."],
+    ["me", "Dois amigos investiram R$ 300,00 e R$ 500,00 em uma banca de lanches e lucraram R$ 1 200,00. Dividindo o lucro em partes proporcionais ao investimento, quanto recebe quem investiu R$ 300,00?", ["R$ 450,00", "R$ 600,00", "R$ 400,00", "R$ 750,00"], 0, "Total investido: 800. Parte do primeiro: 300/800 = 3/8. 3/8 de 1 200 = 450."],
+    ["ab", "A planta baixa de uma casa está na escala 1 : 100. Na planta, a sala mede 4,5 cm por 3,2 cm. Quais são as medidas reais da sala e qual é a sua área?", "Cada centímetro na planta vale 100 cm = 1 m. A sala mede 4,5 m por 3,2 m. Área: 4,5 × 3,2 = 14,4 m².", 4]
+  ]},
+  { id: 'l-ma-produtos', comp: 'MA', ano: 9, objeto: "Produtos notáveis", habs: ["EF09MA09"], ex: [
+    ["me", "O desenvolvimento de (x + 3)² é:", ["x² + 9", "x² + 6x + 9", "x² + 3x + 9", "2x + 6"], 1, "(x + 3)² = x² + 2 · x · 3 + 3² = x² + 6x + 9."],
+    ["me", "O desenvolvimento de (a − 5)² é:", ["a² − 25", "a² − 10a + 25", "a² + 25", "a² − 10a − 25"], 1, "(a − 5)² = a² − 2 · a · 5 + 25. O último termo é positivo, porque (−5)² = 25."],
+    ["me", "Usando (20 + 1)², quanto é 21²?", ["421", "441", "401", "442"], 1, "400 + 2 · 20 · 1 + 1 = 441."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["(x + y)² = x² + y²", false], ["(x + 4)(x − 4) = x² − 16", true], ["(2x + 1)² = 4x² + 4x + 1", true], ["(x − 1)² = x² − 1", false]], "Falta o termo do meio: (x + y)² = x² + 2xy + y² e (x − 1)² = x² − 2x + 1."],
+    ["me", "Um terreno quadrado de lado x metros foi ampliado em 2 metros em cada lado. Quanto a área aumentou?", ["4 m²", "(4x + 4) m²", "(2x + 4) m²", "(x² + 4) m²"], 1, "(x + 2)² − x² = x² + 4x + 4 − x² = 4x + 4."],
+    ["ab", "Calcule 99 × 101 sem calculadora, usando o produto da soma pela diferença. Depois explique a conta com um desenho de áreas.", "99 × 101 = (100 − 1)(100 + 1) = 100² − 1² = 10 000 − 1 = 9 999. No desenho, um retângulo de 99 por 101 pode ser rearranjado como um quadrado de 100 por 100 do qual se retira um quadradinho de 1 por 1.", 5]
+  ]},
+  { id: 'l-ma-fatoracao', comp: 'MA', ano: 9, objeto: "Fatoração", habs: ["EF09MA09"], ex: [
+    ["me", "A forma fatorada de x² + 7x + 12 é:", ["(x + 3)(x + 4)", "(x + 2)(x + 6)", "(x + 1)(x + 12)", "(x + 7)(x + 12)"], 0, "Procuramos dois números com soma 7 e produto 12: 3 e 4."],
+    ["me", "Colocando o fator comum em evidência, 6x + 18 fica:", ["6(x + 18)", "6(x + 3)", "3(x + 6)", "x(6 + 18)"], 1, "6x + 18 = 6 · x + 6 · 3 = 6(x + 3)."],
+    ["me", "A fatoração de x² − 49 é:", ["(x − 7)²", "(x + 7)(x − 7)", "(x − 49)(x + 1)", "x(x − 49)"], 1, "Diferença de dois quadrados: a² − b² = (a + b)(a − b)."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["x² + 10x + 25 = (x + 5)²", true], ["x² + 4 = (x + 2)(x − 2)", false], ["3x² + 6x = 3x(x + 2)", true], ["Se (x − 2)(x + 5) = 0, então x = 2 ou x = −5.", true]], "(x + 2)(x − 2) = x² − 4, e não x² + 4. Um produto é zero quando um dos fatores é zero."],
+    ["me", "A área de um retângulo é x² + 5x + 6 cm². Se um dos lados mede (x + 2) cm, o outro mede:", ["(x + 3) cm", "(x + 4) cm", "(x + 6) cm", "(x + 5) cm"], 0, "x² + 5x + 6 = (x + 2)(x + 3)."],
+    ["ab", "Um canteiro retangular tem área x² + 3x metros quadrados e largura x metros. Escreva a expressão do comprimento. Se a área for 40 m², quais são as medidas do canteiro? Use a fatoração para resolver.", "x² + 3x = x(x + 3), então o comprimento é x + 3. Se x² + 3x = 40, então x² + 3x − 40 = 0 → (x + 8)(x − 5) = 0 → x = 5 (x = −8 não serve para medida). Largura 5 m e comprimento 8 m.", 5]
+  ]},
+  { id: 'l-ma-polinomios', comp: 'MA', ano: 8, objeto: "Polinômios", habs: ["EF08MA06"], ex: [
+    ["me", "Reduzindo os termos semelhantes de 3x + 2y − x + 5y, obtemos:", ["2x + 7y", "4x + 7y", "9xy", "2x + 3y"], 0, "3x − x = 2x e 2y + 5y = 7y. Termos com letras diferentes não se juntam."],
+    ["me", "Uma locadora de filmes on-line cobra R$ 20,00 por mês mais R$ 5,00 por filme alugado. O custo é C = 20 + 5f. Quanto paga quem alugou 3 filmes no mês?", ["R$ 35,00", "R$ 75,00", "R$ 28,00", "R$ 25,00"], 0, "C = 20 + 5 · 3 = 35."],
+    ["me", "O resultado de (2x² + 3x − 1) + (x² − 5x + 4) é:", ["3x² − 2x + 3", "3x² + 8x + 3", "x² − 2x + 3", "3x⁴ − 2x² + 3"], 0, "2x² + x² = 3x²; 3x − 5x = −2x; −1 + 4 = 3. Na soma, os expoentes não mudam."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["3x e 3x² são termos semelhantes.", false], ["O valor numérico de x² − 2x para x = 3 é 3.", true], ["(5x − 2) − (2x − 4) = 3x + 2", true], ["x · x = 2x", false]], "Termos semelhantes têm a mesma parte literal com o mesmo expoente. x · x = x², enquanto x + x = 2x."],
+    ["me", "Qual é o perímetro de um retângulo com lados (3x + 1) e (x + 2)?", ["4x + 3", "8x + 6", "3x² + 7x + 2", "8x + 3"], 1, "2(3x + 1) + 2(x + 2) = 6x + 2 + 2x + 4 = 8x + 6."],
+    ["ab", "Uma cantina vende pastel por p reais e suco por s reais. Em um dia, vendeu 40 pastéis e 25 sucos. Escreva o polinômio que representa o faturamento do dia e calcule o valor para p = 7 e s = 4,50.", "Faturamento: 40p + 25s. Para p = 7 e s = 4,50: 40 · 7 + 25 · 4,50 = 280 + 112,50 = R$ 392,50.", 4]
+  ]},
+  { id: 'l-ma-geometria', comp: 'MA', ano: 7, objeto: "Geometria plana: ângulos e polígonos", habs: ["EF07MA24", "EF07MA27"], ex: [
+    ["me", "Dois ângulos de um triângulo medem 50° e 60°. Quanto mede o terceiro?", ["70°", "80°", "90°", "110°"], 0, "180 − 50 − 60 = 70."],
+    ["me", "Qual é a soma dos ângulos internos de um hexágono?", ["360°", "540°", "720°", "1 080°"], 2, "Um hexágono se divide em 4 triângulos a partir de um vértice: 4 × 180° = 720°."],
+    ["me", "Quanto mede cada ângulo interno de um pentágono regular?", ["72°", "108°", "120°", "540°"], 1, "Soma: 3 × 180° = 540°. Cada ângulo: 540° ÷ 5 = 108°."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["Hexágonos regulares, sozinhos, cobrem um piso sem deixar buracos.", true], ["Pentágonos regulares, sozinhos, cobrem um piso sem deixar buracos.", false], ["É possível construir um triângulo com lados de 2 cm, 3 cm e 7 cm.", false], ["Um quadrado é um polígono regular.", true]], "3 × 108° = 324° e 4 × 108° = 432°: os pentágonos não fecham 360°. No triângulo, 2 + 3 = 5 é menor que 7, então os lados não se encontram."],
+    ["me", "Um piso feito com lajotas em forma de octógono regular deixa buracos entre elas. Qual polígono regular preenche esses buracos?", ["Triângulo", "Quadrado", "Pentágono", "Hexágono"], 1, "Cada ângulo do octógono regular mede 135°. Dois octógonos somam 270°; faltam 90°, o ângulo do quadrado."],
+    ["ab", "Um marceneiro quer fazer o tampo de uma mesa em forma de hexágono regular juntando peças em forma de triângulo equilátero. Quantos triângulos ele precisa? Quanto mede cada ângulo interno do hexágono? Explique usando os ângulos dos triângulos.", "São 6 triângulos equiláteros, todos com um vértice no centro (6 × 60° = 360°). Cada ângulo interno do hexágono é formado por dois ângulos de 60°, então mede 120°.", 4]
+  ]},
+  { id: 'l-ma-tales', comp: 'MA', ano: 9, objeto: "Teorema de Tales", habs: ["EF09MA14", "EF09MA12"], ex: [
+    ["me", "Às 10h, um bastão de 1 m faz uma sombra de 0,8 m. No mesmo horário, a sombra de um poste mede 4 m. Qual é a altura do poste?", ["3,2 m", "5 m", "4,8 m", "6 m"], 1, "1/0,8 = h/4 → h = 4 ÷ 0,8 = 5 m."],
+    ["me", "Três retas paralelas cortam duas transversais. Na primeira transversal, os segmentos medem 4 cm e 6 cm. Na segunda, o segmento correspondente ao de 4 cm mede 6 cm. Quanto mede o outro?", ["8 cm", "9 cm", "4 cm", "12 cm"], 1, "4/6 = 6/x → 4x = 36 → x = 9."],
+    ["me", "Três ruas paralelas cortam duas avenidas. Na avenida A, as frentes de dois lotes medem 20 m e 30 m. Na avenida B, a frente do lote correspondente ao de 20 m mede 24 m. Quanto mede a frente do outro lote na avenida B?", ["34 m", "36 m", "40 m", "30 m"], 1, "20/30 = 24/x → 20x = 720 → x = 36."],
+    ["vf", "Classifique como verdadeiro (V) ou falso (F):", [["O Teorema de Tales relaciona os segmentos que retas paralelas determinam em duas transversais.", true], ["Se os três ângulos de dois triângulos são iguais, os triângulos são semelhantes.", true], ["Triângulos semelhantes têm sempre os lados com as mesmas medidas.", false], ["Para medir uma árvore pela sombra, as duas sombras devem ser medidas no mesmo horário.", true]], "Triângulos semelhantes têm lados proporcionais, não necessariamente iguais."],
+    ["me", "Um prédio projeta uma sombra de 15 m no mesmo momento em que uma pessoa de 1,60 m projeta uma sombra de 1,20 m. Qual é a altura do prédio?", ["20 m", "11,25 m", "18 m", "24 m"], 0, "1,60/1,20 = h/15 → h = 15 × 1,60 ÷ 1,20 = 20 m."],
+    ["ab", "Explique como usar uma folha de caderno pautada (linhas paralelas igualmente espaçadas) para dividir um palito de picolé em 3 partes iguais, sem usar régua graduada. Por que esse método funciona?", "Coloque uma ponta do palito sobre uma linha e incline o palito até a outra ponta ficar exatamente 3 linhas abaixo. As duas linhas intermediárias marcam os pontos de divisão. Funciona pelo Teorema de Tales: retas paralelas igualmente espaçadas determinam segmentos iguais em qualquer transversal.", 5]
+  ]},
+  /* ===================== fim das listas de Matemática ===================== */
 ];
 
 /* Registra as listas como materiais do catálogo */
@@ -287,7 +410,7 @@ const LISTAS = [
   const nomes = { me: 'múltipla escolha', vf: 'verdadeiro ou falso', ab: 'dissertativa' };
   LISTAS.forEach(L => {
     const tipos = [...new Set(L.ex.map(e => e[0]))].map(t => nomes[t]).join(', ');
-    const r = { id: L.id, tipo: 'lista', titulo: `${L.objeto} (${L.ano}º ano)`, comp: ['CO'], anos: [L.ano], habs: L.habs,
+    const r = { id: L.id, tipo: 'lista', titulo: `${L.objeto} (${L.ano}º ano)`, comp: [L.comp || 'CO'], anos: [L.ano], habs: L.habs,
       tempo: `${L.ex.length} questões`, resumo: `Lista de exercícios com gabarito: ${tipos}.`, url: `lista.html?id=${L.id}`, icone: '📝' };
     RECURSOS.push(r); REC[r.id] = r;
   });

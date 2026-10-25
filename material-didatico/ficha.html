@@ -81,6 +81,7 @@
 <script src="assets/listas.js"></script>
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
+<script src="assets/fichas-ma.js"></script>
 <script>
 (function () {
   mdTopbar('catalogo');
@@ -111,7 +112,7 @@
       g += `<line x1="${i * s}" y1="0" x2="${i * s}" y2="${n * s}" stroke="#111" stroke-width="1.2"/>`;
       g += `<line x1="0" y1="${i * s}" x2="${n * s}" y2="${i * s}" stroke="#111" stroke-width="1.2"/>`;
     }
-    return `<svg viewBox="-2 -2 ${n * s + 4} ${n * s + 4}" width="100%" style="max-width:${n * s + 4}px">${g}${extras || ''}</svg>`;
+    return `<svg viewBox="-2 -2 ${n * s + 4} ${n * s + 4}" width="100%" style="max-width:${n * s + 4}px" role="img" aria-label="Malha quadriculada de ${n} por ${n}">${g}${extras || ''}</svg>`;
   }
 
   const caesar = (txt, k) => txt.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -423,6 +424,7 @@
       <p>Parte 2: as duas mensagens são golpes. A primeira tem urgência, pede senha e usa link estranho. A segunda é o golpe do “troquei de número”: ligar para o número antigo da pessoa antes de qualquer Pix. Os nomes usados são fictícios.</p>`
   };
 
+  if (window.FICHAS_MA) Object.assign(FICHAS, window.FICHAS_MA({ head, sheet, lines, malha }));
   const f = FICHAS[id];
   main.innerHTML = f ? f() : '';
   if (FICHAS[id + ':gab']) {
