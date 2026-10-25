@@ -172,7 +172,7 @@ def laterais(atual):
             </section>
             <section class="caixa caixa-amarela">
                 <h2 class="caixa-titulo">★ Mentoria</h2>
-                <p>Formação em IA para professores, escolas e redes de ensino.</p>
+                <p>Mentoria e treinamento em IA para professores, escolas e redes de ensino.</p>
                 <a class="btn98 escuro" href="/mentoria/">Saiba mais</a>
                 <p class="miudo"><a href="/formacao-continuada/">Formação continuada para escolas e redes</a></p>
             </section>
@@ -214,10 +214,10 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 <div class="janela">
     <div class="letreiro" aria-label="Destaques"><div class="letreiro-faixa">{letreiro}</div></div>
     <div class="corpo">
-        {esquerda}
         <main class="pagina" id="conteudo" tabindex="-1">
 {conteudo}
         </main>
+        {esquerda}
         {direita}
         <footer class="rodape">
             <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
@@ -434,13 +434,13 @@ def pagina_mentoria(cfg, dims):
                   'legenda': 'Os três formatos e o que cada um entrega.'}, dims['dia07-mentoria.png'])
     corpo = corpo.replace('<!--IMAGEM-->', fig)
     pendente = 'class="pendente"' in corpo
-    descricao = ('Mentoria e formação continuada de professores em inteligência artificial com Júlia Roberta Quoos Alves, '
+    descricao = ('Mentoria individual e treinamento de professores em inteligência artificial com Júlia Roberta Quoos Alves, '
                  'para professores, escolas e redes de ensino.')
     ld = json_ld({
         '@context': 'https://schema.org',
         '@type': 'Service',
         '@id': url + '#servico',
-        'name': 'Mentoria e formação de professores em IA',
+        'name': 'Mentoria e treinamento de professores em IA',
         'serviceType': 'Formação continuada de professores em inteligência artificial',
         'description': descricao,
         'url': url,
@@ -452,7 +452,7 @@ def pagina_mentoria(cfg, dims):
     conteudo = f'''<article class="texto">
     <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Mentoria</li></ol></nav>
     <p class="rotulo">Mentoria</p>
-    <h1>Mentoria e formação de professores em <span class="marca">IA</span></h1>
+    <h1>Mentoria e treinamento de professores em <span class="marca">IA</span></h1>
     <p class="linha-fina">Ajudo professores, escolas e redes de ensino a usar inteligência artificial com segurança, ética e propósito pedagógico. Sem promessas mágicas e sem lista de ferramentas da moda: fundamentos, prática com o material real da escola e acompanhamento.</p>
     <div class="artigo">
 {corpo}
@@ -464,7 +464,7 @@ def pagina_mentoria(cfg, dims):
     </section>
 </article>'''
     robots = 'noindex, follow' if pendente else 'index, follow'
-    head = cabeca('Mentoria e formação de professores em IA · Júlia Roberta Quoos Alves', descricao, url,
+    head = cabeca('Mentoria e treinamento de professores em IA · Júlia Roberta Quoos Alves', descricao, url,
                   f'{site}/blog/img/dia07-mentoria.png', 'Os três formatos da mentoria', 'website', ld, robots)
     return head + '\n' + moldura('mentoria.exe', 'ohtopico.com.br/mentoria', '/', conteudo, 'Pronto', 'mentoria'), pendente
 
@@ -520,7 +520,7 @@ def pagina_formacao(cfg, dims):
                 'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
                 'availableChannel': {'@type': 'ServiceChannel', 'serviceUrl': url,
                                      'availableLanguage': 'pt-BR'},
-                'isRelatedTo': {'@type': 'Service', '@id': f'{site}/mentoria/#servico', 'name': 'Mentoria e formação de professores em IA'},
+                'isRelatedTo': {'@type': 'Service', '@id': f'{site}/mentoria/#servico', 'name': 'Mentoria e treinamento de professores em IA'},
                 'offers': {'@type': 'Offer', 'priceCurrency': 'BRL',
                            'priceSpecification': {'@type': 'UnitPriceSpecification', 'price': 200, 'priceCurrency': 'BRL',
                                                   'unitText': 'hora de formação'},
