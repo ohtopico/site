@@ -553,23 +553,39 @@ figure.infografico figcaption a { font-weight: 500; }
 }
 .tema:nth-of-type(3n+2) .tema-titulo { background: var(--ok-soft); }
 .tema:nth-of-type(3n) .tema-titulo { background: var(--bad-soft); }
-.lista-posts { display: grid; gap: 16px; list-style: none; margin: 0; padding: 0; }
+.grade-posts { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); list-style: none; margin: 0; padding: 0; }
 .cartao {
+    background: var(--paper);
     border: 1.5px solid var(--ink);
     border-radius: 22px;
-    display: grid;
-    gap: 18px;
-    grid-template-columns: 110px 1fr;
-    padding: 14px;
-    position: relative;
+    overflow: hidden;
+    transition: box-shadow .12s, transform .12s;
 }
-.cartao:hover, .cartao:focus-within { box-shadow: 6px 6px 0 var(--ink); }
-.cartao img { border-radius: 12px; display: block; height: auto; width: 110px; }
-.cartao h3 { font: 500 18px/1.35 var(--body); margin: 2px 0 6px; }
-.cartao h3 a { color: var(--accent); }
-.cartao h3 a::after { content: ''; inset: 0; position: absolute; }
-.cartao p { color: var(--ink-2); font-size: 15px; margin: 0; }
-.cartao .rotulo { margin: 0; }
+.cartao:hover, .cartao:focus-within { box-shadow: 6px 6px 0 var(--ink); transform: translate(-2px, -2px); }
+.cartao a { color: var(--ink); display: flex; flex-direction: column; height: 100%; text-decoration: none; }
+.cartao a:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+.cartao img { aspect-ratio: 4 / 5; border-bottom: 1.5px solid var(--ink); display: block; height: auto; object-fit: cover; width: 100%; }
+.cartao h3 { font: 500 16px/1.35 var(--body); margin: 0; padding: 12px 14px 14px; }
+.cartao:hover h3 { color: var(--accent); }
+
+/* Botões de categoria (blog) e de disciplina (biblioteca de prompts) */
+.seletor { margin: 18px 0 6px; }
+.seletor ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.artigo .seletor li { margin: 0; }
+.botao-secao {
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 99px;
+    color: var(--ink);
+    display: inline-block;
+    font: 500 14px/1.3 var(--body);
+    padding: 6px 14px;
+    text-decoration: none;
+}
+.botao-secao:hover { background: var(--mark-soft); }
+.seletor.ativo .botao-secao[aria-current] { background: var(--mark); box-shadow: 3px 3px 0 var(--ink); font-weight: 600; }
+.seletor.em-busca .botao-secao[aria-current] { background: var(--paper); box-shadow: none; font-weight: 500; }
+.artigo .seletor-titulo { margin-bottom: 0; }
 
 .chamada {
     background: var(--mark-soft);
@@ -615,18 +631,6 @@ figure.infografico figcaption a { font-weight: 500; }
 .filtros-rodape { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 14px; justify-content: space-between; margin-top: 12px; }
 .artigo .filtros-rodape p { font-size: 15px; margin: 0; }
 .filtros .btn98 { font-size: 13px; min-height: 32px; padding: 2px 12px; }
-.sumario-prompts { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 0 10px; padding: 0; }
-.artigo .sumario-prompts li { font-size: 14px; margin: 0; }
-.sumario-prompts a {
-    background: var(--pill);
-    border: 1.5px solid var(--line);
-    border-radius: 99px;
-    color: var(--ink);
-    display: inline-block;
-    padding: 3px 12px;
-    text-decoration: none;
-}
-.sumario-prompts a:hover { border-color: var(--ink); }
 .grupo-prompts { scroll-margin-top: 16px; }
 .prompt-item { border-top: 1.5px dashed var(--line); padding-top: 4px; scroll-margin-top: 16px; }
 .grupo-prompts h2 + .prompt-item { border-top: none; padding-top: 0; }
@@ -635,7 +639,7 @@ figure.infografico figcaption a { font-weight: 500; }
 .artigo .etiquetas li { border: 1.5px solid var(--ink); border-radius: 99px; font-size: 12.5px; margin: 0; padding: 0 10px; }
 .etiquetas .etapa { background: var(--mark); }
 .etiquetas .tipo { background: var(--ok-soft); }
-.artigo .sumario-prompts, .artigo .etiquetas { padding-left: 0; }
+.artigo .seletor ul, .artigo .etiquetas { padding-left: 0; }
 .sem-resultado { background: var(--mark-soft); border-radius: 16px; padding: 12px 16px; }
 
 /* ---------- Telas médias: some a coluna da direita, ela desce para baixo do texto ---------- */
@@ -661,8 +665,8 @@ figure.infografico figcaption a { font-weight: 500; }
     h1 { font-size: clamp(22px, 6.4vw, 30px); letter-spacing: .02em; overflow-wrap: break-word; }
     .rodape { margin: 0 -14px; }
     .artigo p, .artigo li { font-size: 16px; }
-    .cartao { grid-template-columns: 1fr; }
-    .cartao img { width: 120px; }
+    .grade-posts { gap: 14px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .cartao h3 { font-size: 15px; padding: 10px 12px 12px; }
     .vizinhos { grid-template-columns: 1fr; }
     .vizinhos .prox { grid-column: 1; }
     .autora { align-items: flex-start; flex-direction: column; }
@@ -678,7 +682,7 @@ figure.infografico figcaption a { font-weight: 500; }
 
 @media print {
     body { background: none; overflow: visible; }
-    .topbar, #taskbar, .janela-header, .ferramentas, .letreiro, .lateral, .status, .compartilhar, .vizinhos, .copiar, .filtros { display: none !important; }
+    .topbar, #taskbar, .janela-header, .ferramentas, .letreiro, .lateral, .status, .compartilhar, .vizinhos, .copiar, .filtros, .seletor, .seletor-titulo { display: none !important; }
     .area { position: static; padding: 0; }
     .janela { border: none; box-shadow: none; height: auto; }
     .corpo { display: block; overflow: visible; }

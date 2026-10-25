@@ -1,4 +1,4 @@
-// Blog do ohtopico: barra do navegador, menu Iniciar, relógio, tema, contador, "copiar prompt" e filtros da biblioteca de prompts
+// Blog do ohtopico: barra do navegador, menu Iniciar, relógio, tema, contador, "copiar prompt", categorias do blog e disciplinas da biblioteca de prompts
 (function () {
     const raiz = document.documentElement;
     const emoldurado = raiz.classList.contains('emoldurado');
@@ -66,56 +66,111 @@
             .catch(() => {});
     }
 
-    // Biblioteca de prompts: filtros por disciplina, etapa, tipo e palavra (sem JavaScript, tudo aparece)
+    // Botões de seção: categoria no índice do blog, disciplina na biblioteca de prompts.
+    // Sem JavaScript são só links para as seções e tudo aparece; aqui mostram uma seção por vez.
+    const seletor = document.querySelector('[data-seletor]');
     const filtros = document.getElementById('filtros');
-    if (filtros) {
-        const campos = {
-            disciplina: document.getElementById('f-disciplina'),
-            etapa: document.getElementById('f-etapa'),
-            tipo: document.getElementById('f-tipo'),
-            busca: document.getElementById('f-busca'),
-        };
-        const itens = [...document.querySelectorAll('.prompt-item')];
-        const grupos = [...document.querySelectorAll('.grupo-prompts')];
-        const status = document.getElementById('f-status');
-        const vazio = document.getElementById('f-vazio');
-        const normalizar = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-        itens.forEach(it => { it.dataset.texto = normalizar(it.textContent); });
+    if (seletor) {
+        const param = filtros ? 'disciplina' : 'categoria';
+        const padrao = seletor.dataset.padrao;
+        const botoes = [...seletor.querySelectorAll('[data-secao]')];
+        const valores = botoes.map(b => b.dataset.secao);
+        const secoes = valores.map(v => document.getElementById(v)).filter(s => s && s.tagName === 'SECTION');
+        const q = new URLSearchParams(location.search);
+        let atual = padrao;
+        let alvo = null;
+        if (valores.includes(q.get(param))) {
+            atual = q.get(param);
+        } else if (location.hash.length > 1) {
+            // Link direto para uma seção ou para um prompt: abre a seção dele
+            alvo = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+            const sec = alvo && alvo.closest('section[id]');
+            if (sec && valores.includes(sec.id)) atual = sec.id;
+            else alvo = null;
+        }
 
-        function aplicar() {
-            const d = campos.disciplina.value, e = campos.etapa.value, t = campos.tipo.value;
+        const normalizar = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        let campos, itens, status, vazio;
+        if (filtros) {
+            campos = {
+                etapa: document.getElementById('f-etapa'),
+                tipo: document.getElementById('f-tipo'),
+                busca: document.getElementById('f-busca'),
+            };
+            itens = [...document.querySelectorAll('.prompt-item')];
+            status = document.getElementById('f-status');
+            vazio = document.getElementById('f-vazio');
+            itens.forEach(it => { it.dataset.texto = normalizar(it.textContent); });
+            ['etapa', 'tipo'].forEach(k => {
+                const v = q.get(k);
+                if (v && [...campos[k].options].some(o => o.value === v)) campos[k].value = v;
+            });
+        }
+
+        function atualizarEndereco(extra) {
+            const nova = new URLSearchParams(extra);
+            if (atual !== padrao) nova.set(param, atual);
+            const hash = alvo ? location.hash : '';
+            history.replaceState(null, '', (nova.toString() ? '?' + nova : location.pathname) + hash);
+        }
+
+        function mostrar() {
+            botoes.forEach(b => {
+                if (b.dataset.secao === atual) b.setAttribute('aria-current', 'true');
+                else b.removeAttribute('aria-current');
+            });
+            if (!filtros) {
+                secoes.forEach(s => { s.hidden = atual !== 'todos' && s.id !== atual; });
+                atualizarEndereco({});
+                return;
+            }
+            // Biblioteca: a palavra procura em todas as disciplinas; etapa e tipo filtram a disciplina escolhida
+            const e = campos.etapa.value, t = campos.tipo.value;
             const palavras = normalizar(campos.busca.value).split(/\s+/).filter(Boolean);
+            const todas = palavras.length > 0;
+            seletor.classList.toggle('em-busca', todas);
             let total = 0;
             itens.forEach(it => {
-                const ok = (!d || it.closest('.grupo-prompts').id === d) &&
+                const ok = (todas || it.closest('.grupo-prompts').id === atual) &&
                     (!e || it.dataset.etapas.split(' ').includes(e)) &&
                     (!t || it.dataset.tipo === t) &&
                     palavras.every(p => it.dataset.texto.includes(p));
                 it.hidden = !ok;
                 if (ok) total++;
             });
-            grupos.forEach(g => { g.hidden = !g.querySelector('.prompt-item:not([hidden])'); });
-            status.textContent = total === 1 ? '1 prompt encontrado' : `${total} prompts encontrados`;
+            secoes.forEach(g => { g.hidden = !g.querySelector('.prompt-item:not([hidden])'); });
+            const n = total === 1 ? '1 prompt encontrado' : `${total} prompts encontrados`;
+            status.textContent = todas ? `${n} em todas as disciplinas` : n;
             vazio.hidden = total > 0;
-            const q = new URLSearchParams();
-            if (d) q.set('disciplina', d);
-            if (e) q.set('etapa', e);
-            if (t) q.set('tipo', t);
-            history.replaceState(null, '', (q.toString() ? '?' + q : location.pathname) + location.hash);
+            const extra = {};
+            if (e) extra.etapa = e;
+            if (t) extra.tipo = t;
+            atualizarEndereco(extra);
         }
 
-        const q = new URLSearchParams(location.search);
-        ['disciplina', 'etapa', 'tipo'].forEach(k => {
-            const v = q.get(k);
-            if (v && [...campos[k].options].some(o => o.value === v)) campos[k].value = v;
+        botoes.forEach(b => b.addEventListener('click', ev => {
+            ev.preventDefault();
+            atual = b.dataset.secao;
+            alvo = null;
+            if (filtros && campos.busca.value) campos.busca.value = '';
+            mostrar();
+        }));
+        if (filtros) {
+            Object.values(campos).forEach(c => c.addEventListener(c.tagName === 'INPUT' ? 'input' : 'change', () => { alvo = null; mostrar(); }));
+            document.getElementById('f-limpar').addEventListener('click', () => {
+                Object.values(campos).forEach(c => { c.value = ''; });
+                mostrar();
+            });
+            filtros.hidden = false;
+        }
+        // Links da caixa Temas (/blog/#categoria) na própria página
+        window.addEventListener('hashchange', () => {
+            const v = decodeURIComponent(location.hash.slice(1));
+            if (valores.includes(v)) { atual = v; alvo = null; mostrar(); document.getElementById(v)?.scrollIntoView(); }
         });
-        Object.values(campos).forEach(c => c.addEventListener(c.tagName === 'INPUT' ? 'input' : 'change', aplicar));
-        document.getElementById('f-limpar').addEventListener('click', () => {
-            Object.values(campos).forEach(c => { c.value = ''; });
-            aplicar();
-        });
-        filtros.hidden = false;
-        if (q.toString()) aplicar();
+        seletor.classList.add('ativo');
+        mostrar();
+        if (alvo) alvo.scrollIntoView();
     }
 
     // Botão de copiar embaixo de cada prompt
