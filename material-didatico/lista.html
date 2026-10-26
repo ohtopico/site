@@ -124,12 +124,12 @@
 
   const planos = RECURSOS.filter(o => o.tipo === 'plano' && o.habs.some(h => L.habs.includes(h)));
   const jogos = RECURSOS.filter(o => (o.tipo === 'jogo' || o.tipo === 'ficha' || o.tipo === '3d') && o.habs.some(h => L.habs.includes(h)));
-  const outras = RECURSOS.filter(o => o.tipo === 'lista' && o.id !== id && o.anos[0] === L.ano && o.comp[0] === (L.comp || 'CO'));
+  const outras = RECURSOS.filter(o => o.tipo === 'lista' && o.id !== id && o.anos.some(a => r.anos.includes(a)) && o.comp[0] === (L.comp || 'CO'));
   const rel = [...planos, ...jogos, ...outras].slice(0, 6);
 
   doc.innerHTML = `
     <div class="crumbs no-print"><a href="catalogo.html?tipo=lista">← Listas de exercícios</a></div>
-    <span class="eyebrow">📝 Lista de exercícios · ${COMPONENTES[L.comp || 'CO'].nome} · ${L.ano}º ano</span>
+    <span class="eyebrow">📝 Lista de exercícios · ${COMPONENTES[L.comp || 'CO'].nome} · ${anosTxt(r.anos)}</span>
     <h1 style="font-size:clamp(30px,5vw,46px)">${esc(L.objeto)}</h1>
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>

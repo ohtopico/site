@@ -1992,7 +1992,7 @@ const PLANOS = {
     ],
     "avaliacao": "Registro individual da folha de problemas, observando qual estratégia cada estudante usou e se conferiu a resposta. Na socialização, avalie a clareza ao explicar o raciocínio, que é o que a 2ª fase da OBMEP cobra.",
     "inclusao": "Disponibilize os problemas em fonte ampliada ou leitura em voz alta, e materiais concretos (tampinhas para os veículos, cartões com os algarismos 1, 2 e 3) para quem precisa manipular. Valorize qualquer estratégia correta: o desenho vale tanto quanto a equação. Estudantes com laudo têm direito a atendimento específico na prova; oriente a escola a solicitá-lo no período de inscrição.",
-    "recursos": []
+    "recursos": ["l-obmep-n1-1", "l-obmep-n1-2", "l-obmep-n1-3", "l-obmep-n2-1", "l-obmep-n2-2", "l-obmep-n2-3"]
   },
   /* ---------- fim das oficinas de Matemática ---------- */
 };
