@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desafio da Mesada · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de educação financeira: guarde parte da mesada, calcule porcentagens e descontos e tente chegar à meta em 6 meses. BNCC EF06MA13, EF07MA02.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/mesada.html">
+<meta property="og:title" content="Desafio da Mesada · Material didático">
+<meta property="og:description" content="Jogo de educação financeira: guarde parte da mesada, calcule porcentagens e descontos e tente chegar à meta em 6 meses. BNCC EF06MA13, EF07MA02.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/mesada.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 16px; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; background: var(--paper); text-align: center; }
+  .box span { display: block; font-size: 14px; color: var(--ink-2); }
+  .box b { font-family: var(--display); font-size: 28px; }
+  .meta { height: 18px; border: 1.5px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--paper-2); margin: 4px 0 18px; }
+  .meta i { display: block; height: 100%; background: var(--ok); width: 0; transition: width .4s; }
+  .cardq { border: 1.5px solid var(--ink); border-radius: 22px; padding: 18px 20px; background: var(--paper); max-width: 760px; margin: 0 auto; }
+  .cardq h3 { margin: 0 0 8px; font-size: 20px; }
+  .cardq p { margin: 0 0 12px; font-size: 18px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
+  .row input { width: 110px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 10px; font-size: 18px; text-align: center; background: var(--paper); }
+  .row .btn.right { background: var(--ok-soft); border-color: var(--ok); }
+  .row .btn.wrong { background: var(--bad-soft); border-color: var(--bad); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você recebe <strong>R$ 50,00 de mesada</strong> por mês, durante 6 meses, e quer comprar um <strong>fone de R$ 180,00</strong>. No começo de cada mês, escolha quantos por cento vão para o cofrinho e calcule o valor. O resto fica na carteira para gastar.</p>
+    <p>Depois, aparece uma situação do dia a dia com uma conta de porcentagem. Acerte a conta e decida: vale a pena gastar? Cada gasto dá pontos de diversão, mas tira dinheiro da carteira.</p>
+  </details>
+  <div class="game-stage">
+    <div class="hud"><span>Mês <b id="mes">1</b> de 6</span><span>Contas certas <b id="ok">0</b></span><span>Diversão <b id="fun">0</b> ⭐</span></div>
+    <div class="board">
+      <div class="box"><span>🐷 Cofrinho</span><b id="cof">R$ 0</b></div>
+      <div class="box"><span>👛 Carteira</span><b id="cart">R$ 0</b></div>
+      <div class="box"><span>🎧 Meta</span><b>R$ 180</b></div>
+    </div>
+    <div class="meta" aria-hidden="true"><i id="bar"></i></div>
+    <div class="cardq" id="card" aria-live="polite"></div>
+    <p class="feedback" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('mesada');
+(function () {
+  const $ = s => document.querySelector(s);
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const R$ = v => 'R$ ' + (Number.isInteger(v) ? v : v.toFixed(2).replace('.', ','));
+  const MESADA = 50, META = 180, MESES = 6;
+  // Situações: pergunta com alternativas; custo (se comprar), presente (se ganhar) e diversão
+  const EVENTOS = [
+    { t: '🥪 Promoção na cantina', p: 'O salgado de R$ 8,00 está com 25% de desconto. Quanto ele custa agora?', c: 'R$ 6', e: ['R$ 2', 'R$ 5', 'R$ 7'], x: '25% é um quarto. Um quarto de 8 é 2, então o salgado sai por 8 − 2 = 6 reais.', custo: 6, fun: 1, acao: 'Comprar o salgado' },
+    { t: '🎮 Jogo de celular', p: 'Um jogo de R$ 30,00 está com 10% de desconto. Por quanto ele sai?', c: 'R$ 27', e: ['R$ 20', 'R$ 3', 'R$ 29'], x: '10% de 30 é 3 (é só dividir por 10). O jogo sai por 30 − 3 = 27 reais.', custo: 27, fun: 3, acao: 'Comprar o jogo' },
+    { t: '🎬 Cinema com a turma', p: 'O ingresso custa R$ 24,00 e a pipoca custa 50% do valor do ingresso. Quanto você gasta com ingresso e pipoca?', c: 'R$ 36', e: ['R$ 12', 'R$ 48', 'R$ 30'], x: '50% de 24 é a metade, 12. Ingresso + pipoca = 24 + 12 = 36 reais.', custo: 36, fun: 4, acao: 'Ir ao cinema' },
+    { t: '👕 Camiseta do time', p: 'Na loja A ela custa R$ 60,00 com 20% de desconto. Na loja B custa R$ 50,00. Qual é o menor preço?', c: 'R$ 48 na loja A', e: ['R$ 50 na loja B', 'R$ 40 na loja A', 'R$ 12 na loja A'], x: '20% de 60 é 12, então na loja A ela sai por 48. É mais barata que os 50 da loja B.', custo: 48, fun: 3, acao: 'Comprar a camiseta' },
+    { t: '🎁 Presente da avó', p: 'Sua avó te deu R$ 20,00. Se você guardar 50% no cofrinho, quanto vai para ele?', c: 'R$ 10', e: ['R$ 5', 'R$ 15', 'R$ 2'], x: '50% é a metade: 10 reais vão para o cofrinho e 10 ficam na carteira.', ganho: 20, guarda: 0.5 },
+    { t: '🧃 Lanche com os amigos', p: 'O lanche de R$ 15,00 tem uma taxa de 10% de entrega. Qual é o total?', c: 'R$ 16,50', e: ['R$ 25', 'R$ 15,10', 'R$ 13,50'], x: '10% de 15 é 1,50. Somando: 15 + 1,50 = 16,50.', custo: 16.5, fun: 2, acao: 'Pedir o lanche' },
+    { t: '🤝 Empréstimo para o irmão', p: 'Seu irmão pediu R$ 10,00 emprestados e prometeu devolver R$ 12,00. Ele vai devolver quantos por cento a mais?', c: '20%', e: ['2%', '12%', '10%'], x: 'A mais são 2 reais sobre 10. Como 2 é um quinto de 10, são 20%.', ganho: 2, guarda: 1 },
+    { t: '🏷️ O preço subiu', p: 'O fone custava R$ 180,00, mas a loja anunciou aumento de 10% no mês que vem. Qual será o novo preço?', c: 'R$ 198', e: ['R$ 190', 'R$ 162', 'R$ 18'], x: '10% de 180 é 18, então o fone passaria a 198. Por sorte, a loja garantiu o preço antigo para quem já estava juntando!', info: true }
+  ];
+  let mes, cof, cart, fun, ok, fila, pct;
+
+  function hud() {
+    $('#mes').textContent = Math.min(mes, MESES); $('#ok').textContent = ok; $('#fun').textContent = fun;
+    $('#cof').textContent = R$(cof); $('#cart').textContent = R$(cart);
+    $('#bar').style.width = Math.min(100, cof / META * 100) + '%';
+  }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function start() { mes = 1; cof = 0; cart = 0; fun = 0; ok = 0; fila = shuffle(EVENTOS).slice(0, MESES); $('#actions').innerHTML = ''; inicioMes(); }
+
+  function inicioMes() {
+    hud(); fb('', '');
+    $('#card').innerHTML = `<h3>📅 Mês ${mes}: chegou a mesada de ${R$(MESADA)}!</h3>
+      <p>Quantos por cento você vai guardar no cofrinho? Faltam ${R$(Math.max(0, META - cof))} para a meta.</p>
+      <div class="row" id="pcts">${[10, 20, 30, 40, 50, 60].map(p => `<button class="btn ghost" type="button" data-p="${p}">${p}%</button>`).join('')}</div>`;
+    $('#pcts').onclick = e => { const b = e.target.closest('button'); if (b) { pct = +b.dataset.p; calcular(); } };
+  }
+  function calcular() {
+    const certo = MESADA * pct / 100;
+    $('#card').innerHTML = `<h3>🐷 Guardar ${pct}% de ${R$(MESADA)}</h3><p>Quantos reais vão para o cofrinho?</p>
+      <div class="row"><label class="sr-only" for="v">Valor em reais</label><input id="v" type="number" min="0" step="0.5" inputmode="decimal"><button class="btn" type="button" id="conf">Conferir</button></div>`;
+    const conf = () => {
+      const v = parseFloat(String($('#v').value).replace(',', '.'));
+      if (isNaN(v)) return fb('Digite um valor.', 'bad');
+      if (Math.abs(v - certo) < 0.01) { ok++; fb(`Certo! ${pct}% de 50 é ${R$(certo)}. Dica: 10% de 50 é 5, então ${pct}% é ${pct / 10} × 5.`, 'ok'); }
+      else fb(`Quase. ${pct}% de 50 é ${R$(certo)}: 10% de 50 é 5, e ${pct}% é ${pct / 10} × 5 = ${certo}. O cofrinho recebeu o valor certo.`, 'bad');
+      cof += certo; cart += MESADA - certo; hud();
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">Ver a situação do mês →</button>`; $('#nx').onclick = evento; $('#nx').focus();
+    };
+    $('#conf').onclick = conf; $('#v').onkeydown = e => { if (e.key === 'Enter') conf(); }; $('#v').focus();
+  }
+  function evento() {
+    $('#actions').innerHTML = ''; fb('', '');
+    const E = fila[mes - 1];
+    const ops = shuffle([E.c, ...E.e]);
+    $('#card').innerHTML = `<h3>${E.t}</h3><p>${E.p}</p><div class="row" id="ops">${ops.map(o => `<button class="btn ghost" type="button">${o}</button>`).join('')}</div>`;
+    let feito = false;
+    $('#ops').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (feito) return; feito = true;
+      const certo = b.textContent === E.c;
+      $('#ops').querySelectorAll('button').forEach(o => o.textContent === E.c && o.classList.add('right'));
+      if (certo) ok++; else b.classList.add('wrong');
+      fb((certo ? 'Isso! ' : 'Não foi dessa vez. ') + E.x, certo ? 'ok' : 'bad'); hud();
+      decidir(E);
+    });
+  }
+  function decidir(E) {
+    const fim = mes < MESES ? 'Próximo mês →' : 'Ver resultado';
+    if (E.ganho) {
+      const g = E.ganho * E.guarda; cof += g; cart += E.ganho - g; hud();
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${fim}</button>`;
+    } else if (E.info) {
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${fim}</button>`;
+    } else {
+      const pode = cart >= E.custo;
+      $('#actions').innerHTML = `<button class="btn ghost" type="button" id="sim" ${pode ? '' : 'disabled'}>${E.acao} (${R$(E.custo)}, +${E.fun} ⭐)</button><button class="btn" type="button" id="nx">Passar e ${mes < MESES ? 'ir ao próximo mês' : 'ver o resultado'} →</button>`;
+      if (!pode) fb($('#fb').textContent + ` Sua carteira tem só ${R$(cart)}, então não dá para gastar ${R$(E.custo)}.`, $('#fb').className.includes('bad') ? 'bad' : 'ok');
+      $('#sim').onclick = () => { cart -= E.custo; fun += E.fun; hud(); seguir(); };
+    }
+    $('#nx').onclick = seguir;
+  }
+  function seguir() { mes++; if (mes > MESES) return fim(); inicioMes(); $('#actions').innerHTML = ''; }
+  function fim() {
+    mes = MESES; hud();
+    const total = cof + cart, chegou = cof >= META, quase = total >= META;
+    window.MDP && MDP.registrar('mesada', ok / (MESES * 2) * 70 + (chegou ? 30 : quase ? 15 : 0));
+    $('#card').innerHTML = `<h3>${chegou ? '🎧 Meta alcançada!' : quase ? '🤏 Quase lá!' : '🐷 Ainda faltou'}</h3>
+      <p>Cofrinho: <strong>${R$(cof)}</strong> · Carteira: <strong>${R$(cart)}</strong> · Diversão: <strong>${fun} ⭐</strong> · Contas certas: <strong>${ok} de ${MESES * 2}</strong></p>
+      <p>${chegou ? 'Você juntou o suficiente só com o cofrinho${fun ? ' e ainda se divertiu no caminho' : ''}.' : quase ? `Somando cofrinho e carteira, você tem ${R$(total)}: dá para comprar o fone, mas o dinheiro do cofrinho sozinho não bastou.` : `Faltaram ${R$(META - total)}. Para chegar a ${R$(META)} em 6 meses, é preciso guardar pelo menos ${R$(META / MESES)} por mês, ou seja, 60% da mesada.`}</p>`;
+    fb('Guardar uma porcentagem fixa todo mês é o primeiro passo de qualquer planejamento financeiro.', 'ok');
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Jogar de novo</button>`; $('#again').onclick = start;
+  }
+  start();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

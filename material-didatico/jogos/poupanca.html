@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juros que Crescem · Material didático | ohtopico</title>
+<meta name="description" content="Laboratório e desafio de juros simples e compostos na poupança, com gráfico e tabela. BNCC EF07MA02, EF08MA04, EF09MA05.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/poupanca.html">
+<meta property="og:title" content="Juros que Crescem · Material didático">
+<meta property="og:description" content="Laboratório e desafio de juros simples e compostos na poupança, com gráfico e tabela. BNCC EF07MA02, EF08MA04, EF09MA05.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/poupanca.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 14px; }
+  .ctrl label { display: flex; flex-direction: column; gap: 6px; font-size: 15px; border: 1.5px solid var(--ink); border-radius: 18px; padding: 10px 14px; background: var(--paper); }
+  .ctrl b { font-family: var(--display); font-size: 22px; }
+  .ctrl input[type=range] { width: 100%; accent-color: var(--ma); }
+  .plot svg { width: 100%; height: auto; display: block; }
+  .plot text { font-family: var(--body); fill: var(--ink); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 10px; }
+  .tab th, .tab td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: right; }
+  .tab th:first-child, .tab td:first-child { text-align: left; }
+  .tabwrap { max-height: 260px; overflow: auto; }
+  .legend { display: flex; gap: 18px; justify-content: center; font-size: 15px; margin-top: 6px; }
+  .legend i { display: inline-block; width: 22px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; max-width: 720px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p><strong>Laboratório:</strong> escolha quanto guardar, a taxa de juros por mês e o tempo. O gráfico compara os <strong>juros simples</strong> (sempre calculados sobre o valor inicial) com os <strong>juros compostos</strong> (calculados sobre o saldo do mês anterior, como na poupança).</p>
+    <p><strong>Desafio:</strong> 6 perguntas para prever quanto o dinheiro vai render. Use a calculadora se quiser: nos juros compostos, multiplicar por 1,05 é o mesmo que somar 5%.</p>
+    <p class="small muted">As taxas do jogo são exemplos. O rendimento real da poupança muda com o tempo; consulte o valor atual em fontes oficiais.</p>
+  </details>
+  <div class="game-stage">
+    <div class="chips" id="modes" style="margin-bottom:14px"></div>
+    <div id="lab">
+      <div class="ctrl">
+        <label>Valor guardado <b id="vc"></b><input id="c" type="range" min="100" max="2000" step="100" value="1000"></label>
+        <label>Taxa por mês <b id="vi"></b><input id="i" type="range" min="1" max="10" step="1" value="5"></label>
+        <label>Tempo <b id="vn"></b><input id="n" type="range" min="1" max="36" step="1" value="12"></label>
+      </div>
+      <div class="plot" id="plot" role="img" aria-label="Gráfico comparando juros simples e compostos"></div>
+      <div class="legend"><span><i style="background:#5b8def"></i>Juros simples</span><span><i style="background:#f08c2e"></i>Juros compostos</span></div>
+      <p class="feedback ok" id="resumo" aria-live="polite"></p>
+      <div class="tabwrap"><table class="tab" id="tab"></table></div>
+    </div>
+    <div id="des" hidden>
+      <div class="hud"><span>Pergunta <b id="qn">1</b> de 6</span><span>Acertos <b id="ok">0</b></span></div>
+      <p class="q" id="q" aria-live="polite"></p>
+      <div class="opts" id="opts"></div>
+      <p class="feedback" id="fb" role="status"></p>
+      <div class="btn-row" id="actions" style="justify-content:center"></div>
+    </div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('poupanca');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const R$ = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const simples = (c, i, n) => c * (1 + i / 100 * n);
+  const compostos = (c, i, n) => c * Math.pow(1 + i / 100, n);
+  let mode = 'lab', q = 0, ok = 0, usadas = [];
+
+  function drawModes() {
+    $('#modes').innerHTML = [['lab', '🧪 Laboratório'], ['des', '🎯 Desafio']].map(([v, l]) => `<button class="chip" type="button" data-m="${v}" aria-pressed="${v === mode}">${l}</button>`).join('');
+    $('#lab').hidden = mode !== 'lab'; $('#des').hidden = mode !== 'des';
+  }
+  $('#modes').onclick = e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.m; drawModes(); if (mode === 'des') startDes(); else lab(); };
+
+  function lab() {
+    const c = +$('#c').value, i = +$('#i').value, n = +$('#n').value;
+    $('#vc').textContent = R$(c); $('#vi').textContent = i + '% ao mês'; $('#vn').textContent = n + (n === 1 ? ' mês' : ' meses');
+    const S = [], C = [];
+    for (let k = 0; k <= n; k++) { S.push(simples(c, i, k)); C.push(compostos(c, i, k)); }
+    const W = 640, H = 300, L = 70, R = 16, T = 16, B = 40, ymax = C[n] * 1.05;
+    const x = k => L + (W - L - R) * k / n, y = v => T + (H - T - B) * (1 - v / ymax);
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    for (let g = 0; g <= 4; g++) { const v = ymax * g / 4; s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="12">${Math.round(v).toLocaleString('pt-BR')}</text>`; }
+    const passo = Math.max(1, Math.ceil(n / 12));
+    for (let k = 0; k <= n; k += passo) s += `<text x="${x(k)}" y="${H - 18}" text-anchor="middle" font-size="12">${k}</text>`;
+    s += `<text x="${(W + L) / 2}" y="${H - 2}" text-anchor="middle" font-size="12">meses</text>`;
+    const line = (arr, cor) => `<polyline fill="none" stroke="${cor}" stroke-width="3.5" stroke-linejoin="round" points="${arr.map((v, k) => `${x(k)},${y(v)}`).join(' ')}"/>`;
+    s += line(S, '#5b8def') + line(C, '#f08c2e') + `<line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/><line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/></svg>`;
+    $('#plot').innerHTML = s;
+    const dif = C[n] - S[n];
+    $('#resumo').textContent = `Depois de ${n} ${n === 1 ? 'mês' : 'meses'}: juros simples dão ${R$(S[n])} e juros compostos dão ${R$(C[n])}. ${n === 1 ? 'No primeiro mês os dois são iguais: os juros sobre juros ainda não começaram.' : `Os juros sobre juros renderam ${R$(dif)} a mais.`}`;
+    $('#tab').innerHTML = `<thead><tr><th>Mês</th><th>Simples</th><th>Compostos</th><th>Diferença</th></tr></thead><tbody>${S.map((v, k) => `<tr><td>${k}</td><td>${R$(v)}</td><td>${R$(C[k])}</td><td>${R$(C[k] - v)}</td></tr>`).join('')}</tbody>`;
+  }
+  ['c', 'i', 'n'].forEach(id => $('#' + id).oninput = lab);
+
+  const fmt = v => R$(Math.round(v * 100) / 100);
+  const TIPOS = [
+    () => { const c = pick([100, 200, 500, 1000]), i = pick([2, 5, 10]), n = pick([2, 3, 4]); const ok = simples(c, i, n);
+      return { p: `Você guardou ${R$(c)} a ${i}% ao mês em <strong>juros simples</strong>. Quanto terá depois de ${n} meses?`, c: fmt(ok), e: [fmt(compostos(c, i, n)), fmt(c + c * i / 100), fmt(c * i / 100 * n)], x: `Nos juros simples, o rendimento é sempre ${i}% de ${R$(c)} = ${R$(c * i / 100)} por mês. Em ${n} meses: ${R$(c)} + ${n} × ${R$(c * i / 100)} = ${fmt(ok)}.` }; },
+    () => { const c = pick([100, 200, 1000]), i = pick([10, 5]), n = 2; const ok = compostos(c, i, n);
+      return { p: `Você guardou ${R$(c)} a ${i}% ao mês em <strong>juros compostos</strong>. Quanto terá depois de ${n} meses?`, c: fmt(ok), e: [fmt(simples(c, i, n)), fmt(c * (1 + i / 100)), fmt(ok + c * i / 100)], x: `1º mês: ${R$(c)} + ${i}% = ${fmt(c * (1 + i / 100))}. 2º mês: os ${i}% incidem sobre esse novo saldo e o total vai a ${fmt(ok)}. Nos simples seriam ${fmt(simples(c, i, n))}.` }; },
+    () => ({ p: 'Um valor aumenta 10% num mês e mais 10% no mês seguinte, em juros compostos. Qual foi o aumento total?', c: '21%', e: ['20%', '11%', '100%'], x: '1,10 × 1,10 = 1,21. O aumento total é 21%: o segundo aumento de 10% incide também sobre o primeiro.' }),
+    () => ({ p: 'Guardando dinheiro a 10% ao mês em juros compostos, em quantos meses ele mais que dobra pela primeira vez?', c: '8 meses', e: ['10 meses', '5 meses', '20 meses'], x: '1,1 elevado a 7 dá cerca de 1,95 e 1,1 elevado a 8 dá cerca de 2,14. Nos juros simples, seriam 10 meses para dobrar exatamente.' }),
+    () => { const c = pick([1000, 2000]); return { p: `${R$(c)} aplicados a 1% ao mês por 12 meses. Qual opção rende mais?`, c: 'Juros compostos', e: ['Juros simples', 'Rendem igual', 'Depende do banco'], x: `Simples: ${fmt(simples(c, 1, 12))}. Compostos: ${fmt(compostos(c, 1, 12))}. Depois do primeiro mês, os compostos sempre ganham, porque rendem juros sobre juros.` }; },
+    () => { const c = pick([200, 400, 500]), i = pick([5, 10]); const j = c * i / 100;
+      return { p: `Um investimento de ${R$(c)} rendeu ${R$(j)} no primeiro mês. Qual é a taxa mensal?`, c: `${i}%`, e: [`${i * 2}%`, `${j}%`, `${i / 2}%`], x: `${R$(j)} ÷ ${R$(c)} = ${(i / 100).toLocaleString('pt-BR')}, ou seja, ${i}%.` }; },
+    () => ({ p: 'Na poupança, os juros de cada mês são calculados sobre…', c: 'o saldo do mês anterior, já com os juros', e: ['apenas o valor depositado no início', 'o salário de quem guardou', 'a inflação do mês'], x: 'É por isso que a poupança funciona como juros compostos: o rendimento de um mês passa a render também no mês seguinte.' })
+  ];
+  function startDes() { q = 0; ok = 0; usadas = shuffle([...TIPOS.keys()]).slice(0, 6); nextDes(); }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function nextDes() {
+    if (q >= 6) return endDes();
+    const R = TIPOS[usadas[q]](); let feito = false;
+    $('#qn').textContent = q + 1; $('#ok').textContent = ok; $('#q').innerHTML = R.p; fb('', ''); $('#actions').innerHTML = '';
+    const ops = shuffle([R.c, ...[...new Set(R.e)].filter(e => e !== R.c)]);
+    $('#opts').innerHTML = ops.map(o => `<button class="btn ghost" type="button">${o}</button>`).join('');
+    $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (feito) return; feito = true; q++;
+      const certo = b.textContent === R.c;
+      $('#opts').querySelectorAll('button').forEach(o => o.textContent === R.c && o.classList.add('right'));
+      if (certo) { ok++; fb('Isso! ' + R.x, 'ok'); } else { b.classList.add('wrong'); fb('Não foi dessa vez. ' + R.x, 'bad'); }
+      $('#ok').textContent = ok;
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${q < 6 ? 'Próxima →' : 'Ver resultado'}</button>`; $('#nx').onclick = nextDes; $('#nx').focus();
+    });
+  }
+  function endDes() {
+    window.MDP && MDP.registrar('poupanca', ok / 6 * 100);
+    $('#q').textContent = `Você acertou ${ok} de 6 ${ok >= 5 ? '💰🎉' : '💰'}`; $('#opts').innerHTML = '';
+    fb('Juros simples crescem sempre o mesmo valor por mês; juros compostos crescem cada vez mais. Experimente no Laboratório!', 'ok');
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Jogar de novo</button>`; $('#again').onclick = startDes;
+  }
+  drawModes(); lab();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

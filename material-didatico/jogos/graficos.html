@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detetive dos Gráficos · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de leitura de gráficos de colunas e de setores e de identificação de gráficos enganosos. BNCC EF06MA31, EF07MA37, EF08MA23, EF09MA21.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/graficos.html">
+<meta property="og:title" content="Detetive dos Gráficos · Material didático">
+<meta property="og:description" content="Jogo de leitura de gráficos de colunas e de setores e de identificação de gráficos enganosos. BNCC EF06MA31, EF07MA37, EF08MA23, EF09MA21.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/graficos.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .chart { max-width: 640px; margin: 0 auto; }
+  .chart svg { width: 100%; height: auto; display: block; }
+  .chart text { font-family: var(--body); fill: var(--ink); }
+  .q { font-size: 20px; text-align: center; margin: 18px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; max-width: 720px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Cada rodada mostra um gráfico feito a partir de uma pesquisa. Leia com atenção o título, os eixos, a legenda e a fonte antes de responder.</p>
+    <p><strong>Nível 1:</strong> gráficos de colunas. <strong>Nível 2:</strong> gráficos de setores com porcentagens. <strong>Nível 3:</strong> gráficos enganosos — descubra o truque que distorce a leitura.</p>
+  </details>
+  <div class="game-stage">
+    <div class="chips" id="modes" style="margin-bottom:14px"></div>
+    <div class="hud"><span>Rodada <b id="qn">1</b> de 6</span><span>Acertos <b id="ok">0</b></span><span>Sequência <b id="seq">0</b></span></div>
+    <div class="chart" id="chart" role="img"></div>
+    <p class="q" id="q" aria-live="polite"></p>
+    <div class="opts" id="opts"></div>
+    <p class="feedback" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('graficos');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const TEMAS = [
+    { t: 'Esporte preferido da turma', u: 'estudantes', c: ['Futebol', 'Vôlei', 'Basquete', 'Natação', 'Skate'] },
+    { t: 'Como chegamos à escola', u: 'estudantes', c: ['A pé', 'Ônibus', 'Carro', 'Bicicleta', 'Van'] },
+    { t: 'Fruta preferida', u: 'pessoas', c: ['Banana', 'Maçã', 'Uva', 'Manga', 'Laranja'] },
+    { t: 'Livros lidos no mês', u: 'livros', c: ['6º A', '6º B', '7º A', '7º B', '8º A'] },
+    { t: 'Garrafas recicladas por semana', u: 'garrafas', c: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'] }
+  ];
+  const CORES = ['#5b8def', '#f2b84b', '#47b881', '#ef6a5a', '#a77de8'];
+  let mode = 1, q = 0, ok = 0, seq = 0, answered = false;
+
+  function colunas({ titulo, cats, vals, ymin = 0, ticks, fonte = 'Fonte: pesquisa da turma, 2026.', mostraTitulo = true }) {
+    const W = 600, H = 340, L = 54, R = 16, T = 44, B = 64, ymax = ticks[ticks.length - 1];
+    const y = v => T + (H - T - B) * (1 - (v - ymin) / (ymax - ymin));
+    const bw = (W - L - R) / cats.length;
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    if (mostraTitulo) s += `<text x="${W / 2}" y="24" text-anchor="middle" font-size="18" font-weight="600">${titulo}</text>`;
+    ticks.forEach((t, i) => { const yy = ticks.irregular ? T + (H - T - B) * (1 - i / (ticks.length - 1)) : y(t); s += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="${L - 8}" y="${yy + 5}" text-anchor="end" font-size="13">${t}</text>`; });
+    cats.forEach((c, i) => {
+      const v = vals[i];
+      let yy = y(v);
+      if (ticks.irregular) { let k = ticks.findIndex(t => t >= v); const a = ticks[k - 1] ?? 0, b = ticks[k]; const f = k <= 0 ? 0 : (k - 1 + (v - a) / (b - a)) / (ticks.length - 1); yy = T + (H - T - B) * (1 - f); }
+      const x = L + i * bw + bw * .18, w = bw * .64;
+      s += `<rect x="${x}" y="${yy}" width="${w}" height="${H - B - yy}" rx="4" fill="${CORES[i % 5]}" stroke="var(--ink)" stroke-width="1.5"/>`;
+      s += `<text x="${x + w / 2}" y="${H - B + 20}" text-anchor="middle" font-size="13">${c}</text>`;
+    });
+    s += `<line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/><line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/>`;
+    if (fonte) s += `<text x="${L}" y="${H - 10}" font-size="12" fill="var(--ink-2)" style="fill:var(--ink-2)">${fonte}</text>`;
+    return s + '</svg>';
+  }
+  function setores({ titulo, cats, pcts, total }) {
+    const W = 600, H = 330, cx = 190, cy = 175, r = 120;
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><text x="${W / 2}" y="24" text-anchor="middle" font-size="18" font-weight="600">${titulo}</text>`, a0 = -Math.PI / 2;
+    pcts.forEach((p, i) => {
+      const a1 = a0 + p / 100 * 2 * Math.PI, big = p > 50 ? 1 : 0;
+      s += `<path d="M${cx},${cy} L${cx + r * Math.cos(a0)},${cy + r * Math.sin(a0)} A${r},${r} 0 ${big} 1 ${cx + r * Math.cos(a1)},${cy + r * Math.sin(a1)} Z" fill="${CORES[i % 5]}" stroke="var(--ink)" stroke-width="1.5"/>`;
+      const am = (a0 + a1) / 2; s += `<text x="${cx + r * .62 * Math.cos(am)}" y="${cy + r * .62 * Math.sin(am) + 5}" text-anchor="middle" font-size="14" font-weight="600" style="fill:#111">${p}%</text>`;
+      s += `<rect x="350" y="${80 + i * 34}" width="20" height="20" rx="4" fill="${CORES[i % 5]}" stroke="var(--ink)"/><text x="380" y="${96 + i * 34}" font-size="15">${cats[i]}</text>`;
+      a0 = a1;
+    });
+    return s + `<text x="350" y="${H - 30}" font-size="12" style="fill:var(--ink-2)">Total: ${total} entrevistados.</text><text x="350" y="${H - 12}" font-size="12" style="fill:var(--ink-2)">Fonte: pesquisa da escola, 2026.</text></svg>`;
+  }
+  function opcoes(certa, erradas) { const o = [certa, ...[...new Set(erradas.map(String))].filter(e => e !== String(certa)).slice(0, 3)]; return shuffle(o.map(String)); }
+  const pctSet = n => { let p; do { p = Array.from({ length: n }, () => ri(1, 8) * 5); } while (p.reduce((a, b) => a + b) !== 100 || new Set(p).size < n); return p.sort((a, b) => b - a); };
+
+  function gen() {
+    const T = pick(TEMAS), n = Math.min(T.c.length, ri(4, 5)), cats = T.c.slice(0, n);
+    if (mode === 1) {
+      let vals; do { vals = cats.map(() => ri(2, 18)); } while (new Set(vals).size < n);
+      const ticks = [0, 5, 10, 15, 20];
+      const svg = colunas({ titulo: T.t, cats, vals, ticks });
+      const i = ri(0, n - 1), j = (i + ri(1, n - 1)) % n, mx = vals.indexOf(Math.max(...vals)), mn = vals.indexOf(Math.min(...vals));
+      const tipos = [
+        () => ({ p: `Qual opção teve mais ${T.u}?`, c: cats[mx], e: cats.filter((_, k) => k !== mx), x: `A coluna mais alta é a de ${cats[mx]}, com ${vals[mx]}.` }),
+        () => ({ p: `Qual opção teve menos ${T.u}?`, c: cats[mn], e: cats.filter((_, k) => k !== mn), x: `A coluna mais baixa é a de ${cats[mn]}, com ${vals[mn]}.` }),
+        () => ({ p: `Quantos ${T.u} tem “${cats[i]}”?`, c: vals[i], e: [vals[i] + 1, vals[i] - 1, vals[i] + 2, vals[i] + 5], x: `Siga o topo da coluna até o eixo vertical: ${vals[i]}.` }),
+        () => { const d = Math.abs(vals[i] - vals[j]); return { p: `Qual é a diferença entre “${cats[i]}” e “${cats[j]}”?`, c: d, e: [d + 1, d + 2, vals[i] + vals[j], Math.max(1, d - 1)], x: `${Math.max(vals[i], vals[j])} − ${Math.min(vals[i], vals[j])} = ${d}.` }; },
+        () => { const s = vals.reduce((a, b) => a + b); return { p: `Quantos ${T.u} foram contados no total?`, c: s, e: [s + 2, s - 3, s + 5, s - 1], x: `Some todas as colunas: ${vals.join(' + ')} = ${s}.` }; }
+      ];
+      return { svg, ...pick(tipos)() };
+    }
+    if (mode === 2) {
+      const pcts = pctSet(n), total = pick([20, 40, 60, 100, 200, 400]), i = ri(0, n - 1);
+      const svg = setores({ titulo: T.t, cats, pcts, total });
+      const pess = pcts[i] * total / 100;
+      const fr = { 50: 'Metade', 25: 'Um quarto', 75: 'Três quartos', 10: 'Um décimo', 20: 'Um quinto' };
+      const tipos = [
+        () => ({ p: `Quantas pessoas escolheram “${cats[i]}”?`, c: pess, e: [pcts[i], pess + total / 20, Math.max(1, pess - total / 20), pess * 2], x: `${pcts[i]}% de ${total} = ${pcts[i]} × ${total} ÷ 100 = ${pess}.` }),
+        () => ({ p: `Juntando “${cats[0]}” e “${cats[1]}”, qual é a porcentagem?`, c: pcts[0] + pcts[1] + '%', e: [pcts[0] + '%', pcts[0] + pcts[1] + 10 + '%', 100 - pcts[0] - pcts[1] + '%', pcts[1] + '%'], x: `${pcts[0]}% + ${pcts[1]}% = ${pcts[0] + pcts[1]}%.` }),
+        () => ({ p: `Qual opção ocupa a maior fatia do círculo?`, c: cats[0], e: cats.slice(1), x: `A maior porcentagem é ${pcts[0]}%, de ${cats[0]}.` }),
+        () => { const k = pcts.findIndex(p => fr[p]); if (k < 0) return tipos[0](); return { p: `A fatia de “${cats[k]}” corresponde a que fração do círculo?`, c: fr[pcts[k]], e: Object.values(fr), x: `${pcts[k]}% = ${pcts[k]}/100, que é ${fr[pcts[k]].toLowerCase()} do círculo.` }; }
+      ];
+      return { svg, ...pick(tipos)() };
+    }
+    const truque = pick(['eixo', 'eixo', 'fonte', 'escala']);
+    if (truque === 'eixo') {
+      const a = ri(40, 50), b = a + ri(2, 5);
+      const svg = colunas({ titulo: 'Vendas de picolé no fim de semana', cats: ['Sorveteria A', 'Sorveteria B'], vals: [a, b], ymin: a - 2, ticks: [a - 2, a, a + 2, a + 4, a + 6].filter(t => t <= a + 6) });
+      return { svg, p: 'A sorveteria B diz que vendeu “muito mais” que a A. Qual é o problema deste gráfico?', c: 'O eixo vertical não começa no zero', e: ['Falta a fonte dos dados', 'As cores das colunas estão trocadas', 'O gráfico deveria ser de setores'], x: `O eixo começa em ${a - 2}, não em 0. Assim a diferença de ${b - a} picolés (${a} contra ${b}) parece enorme.` };
+    }
+    if (truque === 'fonte') {
+      const cats = ['Marca X', 'Marca Y', 'Marca Z'], vals = [18, 6, 4];
+      const svg = colunas({ titulo: '9 em cada 10 dentistas recomendam a Marca X', cats, vals, ticks: [0, 5, 10, 15, 20], fonte: '' });
+      return { svg, p: 'O que falta para confiar neste gráfico?', c: 'Fonte e data da pesquisa', e: ['Um eixo vertical', 'Mais cores', 'Um título'], x: 'Sem fonte nem data não dá para saber quem fez a pesquisa, quando, nem quantas pessoas foram ouvidas.' };
+    }
+    const ticks = [0, 10, 20, 50, 100]; ticks.irregular = true;
+    const svg = colunas({ titulo: 'Seguidores do clube de ciências (em centenas)', cats: ['Jan', 'Fev', 'Mar', 'Abr'], vals: [10, 18, 40, 90], ticks });
+    return { svg, p: 'Olhe os números do eixo vertical. Qual é o problema?', c: 'Os intervalos da escala não são iguais', e: ['O eixo não começa no zero', 'Falta a fonte', 'As colunas deveriam ser horizontais'], x: 'A escala salta de 10 em 10 e depois de 30 em 30 e de 50 em 50, com o mesmo espaço entre as linhas. Isso deforma o crescimento.' };
+  }
+
+  function drawModes() {
+    $('#modes').innerHTML = [[1, 'Nível 1 · colunas'], [2, 'Nível 2 · setores'], [3, 'Nível 3 · gráficos enganosos']]
+      .map(([v, l]) => `<button class="chip" type="button" data-m="${v}" aria-pressed="${v === mode}">${l}</button>`).join('');
+  }
+  $('#modes').onclick = e => { const b = e.target.closest('button'); if (b) { mode = +b.dataset.m; restart(); } };
+  function hud() { $('#qn').textContent = Math.min(q + 1, 6); $('#ok').textContent = ok; $('#seq').textContent = seq; }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function restart() { q = 0; ok = 0; seq = 0; drawModes(); next(); }
+  function next() {
+    if (q >= 6) return end();
+    const R = gen(); answered = false;
+    $('#chart').innerHTML = R.svg; $('#chart').setAttribute('aria-label', 'Gráfico da rodada'); $('#q').textContent = R.p; fb('', ''); $('#actions').innerHTML = '';
+    $('#opts').innerHTML = opcoes(R.c, R.e).map(o => `<button class="btn ghost" type="button">${o}</button>`).join('');
+    $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (answered) return; answered = true; q++;
+      const certo = b.textContent === String(R.c);
+      $('#opts').querySelectorAll('button').forEach(o => { if (o.textContent === String(R.c)) o.classList.add('right'); });
+      if (certo) { ok++; seq++; fb('Isso! ' + R.x, 'ok'); } else { seq = 0; b.classList.add('wrong'); fb('Não foi dessa vez. ' + R.x, 'bad'); }
+      hud(); $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${q < 6 ? 'Próximo gráfico →' : 'Ver resultado'}</button>`; $('#nx').onclick = next; $('#nx').focus();
+    });
+    hud();
+  }
+  function end() {
+    window.MDP && MDP.registrar('graficos', ok / 6 * 100);
+    $('#chart').innerHTML = ''; $('#opts').innerHTML = ''; $('#q').textContent = `Você acertou ${ok} de 6 ${ok >= 5 ? '📊🎉' : '📊'}`;
+    fb(mode === 3 ? 'Antes de acreditar num gráfico, confira o eixo, a escala, a fonte e a data.' : 'Sempre comece lendo o título, os eixos e a legenda.', 'ok');
+    $('#actions').innerHTML = `<button class="btn ghost" type="button" id="again">Repetir</button>${mode < 3 ? `<button class="btn" type="button" id="up">Nível ${mode + 1} →</button>` : ''}`;
+    $('#again').onclick = restart; const up = $('#up'); if (up) up.onclick = () => { mode++; restart(); };
+  }
+  restart();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

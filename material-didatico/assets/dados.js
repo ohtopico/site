@@ -218,6 +218,18 @@ const RECURSOS = [
     resumo: 'Cada multiplicação certa acelera seu carro. Escolha as tabuadas, vença os rivais e veja no final quais fatos merecem revisão.',
     url: 'jogos/tabuada.html', plano: null, ficha: null },
 
+  { id: 'graficos', tipo: 'jogo', titulo: 'Detetive dos Gráficos', comp: ['MA'], anos: [6, 7, 8, 9],
+    habs: ['EF06MA31', 'EF07MA37', 'EF08MA23', 'EF09MA21'], tempo: '10–15 min',
+    resumo: 'Leia gráficos de colunas e de setores, calcule porcentagens e desmascare gráficos enganosos com eixo cortado, escala torta ou sem fonte.',
+    url: 'jogos/graficos.html', plano: 'p-ma-graficos', ficha: null },
+  { id: 'mesada', tipo: 'jogo', titulo: 'Desafio da Mesada', comp: ['MA'], anos: [6, 7, 8],
+    habs: ['EF06MA13', 'EF07MA02', 'EF08MA04'], tempo: '10–15 min',
+    resumo: 'Seis meses para juntar R$ 180 com a mesada. Escolha quanto guardar, calcule descontos e decida se a diversão do mês vale o gasto.',
+    url: 'jogos/mesada.html', plano: 'p-ma-financeira', ficha: null },
+  { id: 'poupanca', tipo: 'jogo', titulo: 'Juros que Crescem', comp: ['MA'], anos: [7, 8, 9],
+    habs: ['EF07MA02', 'EF08MA04', 'EF09MA05'], tempo: '10–15 min',
+    resumo: 'Laboratório com gráfico e tabela para comparar juros simples e compostos na poupança, e um desafio de 6 perguntas para prever o rendimento.',
+    url: 'jogos/poupanca.html', plano: 'p-ma-financeira', ficha: null },
   { id: 'bhaskara', tipo: 'jogo', titulo: 'Bhaskara Passo a Passo', comp: ['MA'], anos: [9],
     habs: ['EF09MA09'], tempo: '15–20 min',
     resumo: 'Calculadora que resolve ax² + bx + c = 0 um passo de cada vez, com gráfico da parábola, e modo treino que corrige cada etapa e aponta o erro mais provável.',
@@ -559,7 +571,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
@@ -1895,7 +1907,7 @@ const PLANOS = {
     ],
     "avaliacao": "Observação durante a construção, gráfico do grupo conferido com o checklist (título, eixos, legenda, fonte, data e escala) e a frase-conclusão individual, que mostra se o estudante interpreta os dados, e não só os desenha.",
     "inclusao": "Para estudantes com baixa visão, use papel quadriculado ampliado, canetas de contraste forte e colunas feitas com tiras de EVA ou blocos de montar, para que o gráfico possa ser lido pelo tato. Distribua papéis no grupo (contador, desenhista, revisor do checklist, porta-voz) para que todos participem.",
-    "recursos": []
+    "recursos": ["graficos"]
   },
   "p-ma-financeira": {
     "duracao": "1 aula de 50 min",
@@ -1944,7 +1956,7 @@ const PLANOS = {
     ],
     "avaliacao": "Registro das duplas nos três dilemas, observando as estratégias de cálculo (não só o resultado) e a justificativa escrita da decisão final. Erros comuns a observar: achar que +25% e −25% se anulam e somar juros sempre sobre o valor inicial nos juros compostos.",
     "inclusao": "Use calculadora com voz ou leitor de tela no celular para estudantes com deficiência visual e cédulas e moedas de brinquedo para quem precisa manipular os valores. Os dilemas podem ser lidos em voz alta e os valores ajustados para números menores conforme a turma. Evite expor a realidade financeira das famílias: os dilemas usam personagens fictícios.",
-    "recursos": []
+    "recursos": ["mesada", "poupanca"]
   },
   "p-ma-obmep": {
     "duracao": "1 aula de 50 min",
