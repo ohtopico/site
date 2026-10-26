@@ -134,7 +134,18 @@ const HABILIDADES_RAW = [
   ['EF09MA09', 9, 'AL', 'Expressões algébricas: fatoração e produtos notáveis', 'Compreender os processos de fatoração de expressões algébricas, com base em suas relações com os produtos notáveis, para resolver e elaborar problemas que possam ser representados por equações polinomiais do 2º grau.'],
   ['EF09MA10', 9, 'GE', 'Paralelas e transversal', 'Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.'],
   ['EF09MA12', 9, 'GE', 'Semelhança de triângulos', 'Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.'],
-  ['EF09MA14', 9, 'GE', 'Tales e Pitágoras', 'Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.']
+  ['EF09MA14', 9, 'GE', 'Tales e Pitágoras', 'Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.'],
+  ["EF06MA31", 6, "PE", "Leitura de tabelas e gráficos", "Identificar as variáveis e suas frequências e os elementos constitutivos (título, eixos, legendas, fontes e datas) em diferentes tipos de gráfico."],
+  ["EF06MA33", 6, "PE", "Coleta de dados e construção de gráficos", "Planejar e coletar dados de pesquisa referente a práticas sociais escolhidas pelos alunos e fazer uso de planilhas eletrônicas para registro, representação e interpretação das informações, em tabelas, vários tipos de gráficos e texto."],
+  ["EF07MA02", 7, "NU", "Porcentagens: acréscimos e decréscimos", "Resolver e elaborar problemas que envolvam porcentagens, como os que lidam com acréscimos e decréscimos simples, utilizando estratégias pessoais, cálculo mental e calculadora, no contexto de educação financeira, entre outros."],
+  ["EF07MA06", 7, "NU", "Problemas de mesma estrutura", "Reconhecer que as resoluções de um grupo de problemas que têm a mesma estrutura podem ser obtidas utilizando os mesmos procedimentos."],
+  ["EF07MA37", 7, "PE", "Gráficos de setores", "Interpretar e analisar dados apresentados em gráfico de setores divulgados pela mídia e compreender quando é possível ou conveniente sua utilização."],
+  ["EF08MA03", 8, "NU", "Princípio multiplicativo da contagem", "Resolver e elaborar problemas de contagem cuja resolução envolva a aplicação do princípio multiplicativo."],
+  ["EF08MA04", 8, "NU", "Porcentagens", "Resolver e elaborar problemas, envolvendo cálculo de porcentagens, incluindo o uso de tecnologias digitais."],
+  ["EF08MA23", 8, "PE", "Adequação de gráficos", "Avaliar a adequação de diferentes tipos de gráficos para representar um conjunto de dados de uma pesquisa."],
+  ["EF09MA05", 9, "NU", "Percentuais sucessivos", "Resolver e elaborar problemas que envolvam porcentagens, com a ideia de aplicação de percentuais sucessivos e a determinação das taxas percentuais, preferencialmente com o uso de tecnologias digitais, no contexto da educação financeira."],
+  ["EF09MA21", 9, "PE", "Gráficos que induzem a erros", "Analisar e identificar, em gráficos divulgados pela mídia, os elementos que podem induzir, às vezes propositadamente, erros de leitura, como escalas inapropriadas, legendas não explicitadas corretamente, omissão de informações importantes (fontes e datas), entre outros."],
+  ["EF09MA22", 9, "PE", "Escolha do gráfico adequado", "Escolher e construir o gráfico mais adequado (colunas, setores, linhas), com ou sem uso de planilhas eletrônicas, para apresentar um determinado conjunto de dados, destacando aspectos como as medidas de tendência central."],
 ];
 
 const HABILIDADES = HABILIDADES_RAW.map(([codigo, ano, eixo, objeto, texto]) => ({
@@ -420,6 +431,18 @@ const RECURSOS = [
     habs: ["EF09MA14", "EF09MA12"], tempo: '2 aulas',
     resumo: "Aula de campo para medir alturas pela sombra, folha pautada para dividir segmentos e o recurso 3D de Tales.",
     url: 'plano.html?id=p-ma-tales' },
+  { id: 'p-ma-graficos', tipo: 'plano', titulo: "Pesquisa-relâmpago: da pergunta ao gráfico", comp: ['MA'], anos: [6, 7, 8, 9],
+    habs: ["EF06MA31", "EF06MA33", "EF07MA37", "EF08MA23", "EF09MA21", "EF09MA22"], tempo: '1 aula',
+    resumo: "A turma faz uma pesquisa em 10 minutos, organiza os dados em tabela, constrói gráficos em grupos e caça erros num gráfico enganoso.",
+    url: 'plano.html?id=p-ma-graficos' },
+  { id: 'p-ma-financeira', tipo: 'plano', titulo: "Mesada, descontos e juros: decisões com porcentagem", comp: ['MA'], anos: [6, 7, 8, 9],
+    habs: ["EF06MA13", "EF07MA02", "EF08MA04", "EF09MA05"], tempo: '1 aula',
+    resumo: "Dilemas de dinheiro do dia a dia: dividir a mesada, avaliar promoções e comparar juros simples e compostos na poupança.",
+    url: 'plano.html?id=p-ma-financeira' },
+  { id: 'p-ma-obmep', tipo: 'plano', titulo: "Minha primeira OBMEP: estratégias para resolver problemas", comp: ['MA'], anos: [6, 7, 8, 9],
+    habs: ["EF06MA03", "EF07MA05", "EF07MA06", "EF08MA03"], tempo: '1 aula',
+    resumo: "Apresenta a OBMEP e treina quatro estratégias de resolução (padrão, tentativa organizada, desenho e contagem) com problemas no estilo da prova.",
+    url: 'plano.html?id=p-ma-obmep' },
   // ---------- fim das oficinas de Matemática ----------
   // ---------- Planos de aula ----------
   { id: 'p-robo', tipo: 'plano', titulo: 'Algoritmos: do papel ao robô', comp: ['CO', 'MA'], anos: [6, 7],
@@ -536,7 +559,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
@@ -1823,6 +1846,153 @@ const PLANOS = {
       "3d-tales",
       "l-ma-tales"
     ]
+  },
+  "p-ma-graficos": {
+    "duracao": "1 aula de 50 min",
+    "metodologia": [
+      "Aprendizagem baseada em investigação",
+      "A própria turma é a fonte dos dados: escolhe uma pergunta, coleta as respostas, organiza em tabela e decide como mostrar o resultado. Cada grupo representa os mesmos dados com um gráfico diferente, e a comparação entre eles conduz a discussão."
+    ],
+    "objetivos": [
+      "Organizar dados coletados em uma tabela de frequências.",
+      "Construir gráficos de colunas, barras, setores ou pictóricos a partir da tabela.",
+      "Identificar os elementos de um gráfico: título, eixos, legenda, fonte e data.",
+      "Avaliar qual gráfico é mais adequado para um conjunto de dados e reconhecer escalas que distorcem a leitura."
+    ],
+    "materiais": [
+      "Quadro e canetas ou giz coloridos",
+      "Papel quadriculado ou cartolina (1 por grupo), régua, lápis de cor",
+      "Transferidor e compasso para o grupo do gráfico de setores",
+      "Um gráfico enganoso impresso ou projetado (eixo vertical que não começa no zero)",
+      "Opcional: computadores com planilha eletrônica"
+    ],
+    "etapas": [
+      [
+        "5 min",
+        "Gráfico enganoso",
+        "Mostre dois gráficos de colunas com os mesmos números (por exemplo, vendas de 48 e 52 unidades): um com o eixo começando em 0 e outro começando em 45. Pergunte qual empresa vendeu “muito mais”. Registre as respostas sem corrigir."
+      ],
+      [
+        "10 min",
+        "Pesquisa-relâmpago",
+        "A turma escolhe uma pergunta com 4 ou 5 opções (meio de transporte até a escola, esporte preferido, horas de tela por dia). Cada estudante vota e a professora faz a contagem por tracinhos no quadro. Juntos, montam a tabela com título, categorias, frequência e fonte (“Pesquisa da turma, data de hoje”)."
+      ],
+      [
+        "15 min",
+        "Um gráfico por grupo",
+        "Em grupos de 4, cada um representa a mesma tabela com um tipo de gráfico: colunas, barras, pictórico ou setores. Ajuste por ano: 6º ano foca em colunas e barras com todos os elementos; 7º ano assume o de setores (porcentagem de cada fatia); 8º e 9º anos justificam por escrito se o tipo de gráfico é adequado e o 9º calcula a moda."
+      ],
+      [
+        "10 min",
+        "Galeria e checklist",
+        "Os gráficos ficam expostos. Os grupos circulam com um checklist: tem título? Eixos nomeados? Legenda? Fonte e data? A escala começa no zero? Cada grupo deixa um comentário em post-it para outro."
+      ],
+      [
+        "10 min",
+        "Sistematização",
+        "Volte ao gráfico enganoso: agora a turma explica o truque da escala. Discuta qual gráfico ficou mais fácil de ler e por quê, e quando o de setores não funciona (muitas categorias, dados que não somam um todo). Cada estudante escreve uma frase-conclusão sobre a pesquisa."
+      ]
+    ],
+    "avaliacao": "Observação durante a construção, gráfico do grupo conferido com o checklist (título, eixos, legenda, fonte, data e escala) e a frase-conclusão individual, que mostra se o estudante interpreta os dados, e não só os desenha.",
+    "inclusao": "Para estudantes com baixa visão, use papel quadriculado ampliado, canetas de contraste forte e colunas feitas com tiras de EVA ou blocos de montar, para que o gráfico possa ser lido pelo tato. Distribua papéis no grupo (contador, desenhista, revisor do checklist, porta-voz) para que todos participem.",
+    "recursos": []
+  },
+  "p-ma-financeira": {
+    "duracao": "1 aula de 50 min",
+    "metodologia": [
+      "Aprendizagem baseada em problemas",
+      "A aula é organizada em três dilemas reais de dinheiro, do mais simples ao mais complexo. Em duplas, os estudantes decidem o que fariam, calculam para conferir e defendem a escolha. As estratégias pessoais e a calculadora vêm antes de qualquer fórmula."
+    ],
+    "objetivos": [
+      "Calcular porcentagens de uma quantia por estratégias pessoais (10%, 50%, 25%) e com calculadora.",
+      "Resolver problemas com acréscimos e descontos e avaliar se uma promoção vale a pena.",
+      "Diferenciar juros simples de juros compostos e perceber o efeito dos percentuais sucessivos.",
+      "Tomar decisões financeiras justificadas com cálculos."
+    ],
+    "materiais": [
+      "Calculadoras ou celulares (1 por dupla)",
+      "Folha com os três dilemas impressos",
+      "Encartes de supermercado ou anúncios de promoção (opcional)",
+      "Quadro para a tabela de juros"
+    ],
+    "etapas": [
+      [
+        "5 min",
+        "Pergunta de abertura",
+        "Pergunte: você prefere ganhar R$ 100 hoje ou R$ 110 daqui a um ano? A turma vota e alguns explicam a escolha. Guarde a votação para o final."
+      ],
+      [
+        "15 min",
+        "Dilema 1: a mesada",
+        "Lucas recebe R$ 60 por mês e quer dividir em gastar, guardar e doar. As duplas criam a divisão em porcentagem (por exemplo, 50%, 40% e 10%) e calculam os valores sem regra de três: 10% é dividir por 10, 50% é a metade. Depois: quantos meses para juntar R$ 120 para um tênis? Foco no 6º ano (EF06MA13)."
+      ],
+      [
+        "12 min",
+        "Dilema 2: promoção ou cilada?",
+        "Uma camiseta de R$ 80 está com 25% de desconto numa loja e por R$ 65 na outra. Qual é mais barata? Depois o preço volta a subir 25%: ele volta a R$ 80? (Não: 60 + 25% = 75.) Foco no 7º e 8º anos (EF07MA02 e EF08MA04)."
+      ],
+      [
+        "13 min",
+        "Dilema 3: a poupança",
+        "Monte com a turma uma tabela de R$ 100 guardados a 1% ao mês (taxa de exemplo). Juros simples: sempre R$ 1 por mês, R$ 112 em 12 meses. Juros compostos: 1% sobre o novo saldo a cada mês, com a calculadora (×1,01), chegando a cerca de R$ 112,68. Para o 9º ano: aumentar 10% e depois descontar 10% devolve ao valor inicial? (100 → 110 → 99.) Explique que a poupança rende juros compostos e que a taxa real varia; consulte o valor atual em fontes oficiais."
+      ],
+      [
+        "5 min",
+        "Fechamento",
+        "Retome a votação inicial: R$ 110 daqui a um ano é um rendimento de 10%. Vale a pena? Depende de quanto o dinheiro renderia guardado e de quanto os preços sobem. Cada dupla registra uma decisão financeira que tomaria e o cálculo que a justifica."
+      ]
+    ],
+    "avaliacao": "Registro das duplas nos três dilemas, observando as estratégias de cálculo (não só o resultado) e a justificativa escrita da decisão final. Erros comuns a observar: achar que +25% e −25% se anulam e somar juros sempre sobre o valor inicial nos juros compostos.",
+    "inclusao": "Use calculadora com voz ou leitor de tela no celular para estudantes com deficiência visual e cédulas e moedas de brinquedo para quem precisa manipular os valores. Os dilemas podem ser lidos em voz alta e os valores ajustados para números menores conforme a turma. Evite expor a realidade financeira das famílias: os dilemas usam personagens fictícios.",
+    "recursos": []
+  },
+  "p-ma-obmep": {
+    "duracao": "1 aula de 50 min",
+    "metodologia": [
+      "Resolução de problemas com pensar-conversar-compartilhar",
+      "Cada problema passa por três momentos: o estudante pensa sozinho, conversa com a dupla e compartilha com a turma. As etapas de Polya (entender, planejar, executar, conferir) organizam o raciocínio, e o foco está na estratégia, não na resposta."
+    ],
+    "objetivos": [
+      "Conhecer a OBMEP: público, níveis, fases e oportunidades para os estudantes.",
+      "Aplicar as quatro etapas de resolução de problemas de Polya.",
+      "Usar estratégias como procurar padrão, tentativa organizada, desenho e contagem sistemática.",
+      "Comparar diferentes caminhos para resolver o mesmo problema."
+    ],
+    "materiais": [
+      "Folha com os problemas da aula (1 por estudante)",
+      "Quadro com as quatro etapas de Polya escritas",
+      "Opcional: projetor para mostrar o site oficial (obmep.org.br) e o Banco de Questões"
+    ],
+    "etapas": [
+      [
+        "8 min",
+        "O que é a OBMEP",
+        "Apresente a olimpíada: é gratuita para escolas públicas e privadas, tem o Nível 1 (6º e 7º anos), o Nível 2 (8º e 9º anos) e o Nível 3 (ensino médio), uma 1ª fase de múltipla escolha e uma 2ª fase discursiva para os classificados. Mencione medalhas, menções honrosas e o Programa de Iniciação Científica Jr. Mostre onde ficam as provas anteriores e o calendário no site oficial."
+      ],
+      [
+        "7 min",
+        "Aquecimento com Polya",
+        "Problema: quantos números de dois algarismos têm a soma dos algarismos igual a 5? Resolva junto com a turma, passando pelas quatro etapas no quadro. Estratégia: lista organizada (14, 23, 32, 41, 50). Resposta: 5."
+      ],
+      [
+        "20 min",
+        "Três problemas, três estratégias",
+        "Em duplas, com pensar-conversar-compartilhar: (1) Padrão: qual é o algarismo das unidades de 2²⁰? As unidades se repetem em 2, 4, 8, 6; como 20 é múltiplo de 4, a resposta é 6. (2) Contagem: quantos números de três algarismos diferentes dá para formar com 1, 2 e 3? São 3 × 2 × 1 = 6. (3) Tentativa organizada: num estacionamento há carros e motos, 10 veículos e 32 rodas; quantos carros? Com tabela ou desenho, chega-se a 6 carros e 4 motos. As duplas do 6º e 7º anos podem resolver por desenho e listas; as do 8º e 9º devem apresentar dois caminhos diferentes para um dos problemas."
+      ],
+      [
+        "10 min",
+        "Socialização",
+        "Duplas apresentam caminhos diferentes para o mesmo problema (o 3 rende bem: desenho, tabela ou equação). Destaque a etapa de conferir: 6 carros e 4 motos dão 24 + 8 = 32 rodas?"
+      ],
+      [
+        "5 min",
+        "Plano de treino",
+        "Cada estudante anota uma estratégia que quer treinar e se compromete a resolver um problema por semana de provas anteriores do seu nível. Dica para a 1ª fase: eliminar alternativas impossíveis também é estratégia."
+      ]
+    ],
+    "avaliacao": "Registro individual da folha de problemas, observando qual estratégia cada estudante usou e se conferiu a resposta. Na socialização, avalie a clareza ao explicar o raciocínio, que é o que a 2ª fase da OBMEP cobra.",
+    "inclusao": "Disponibilize os problemas em fonte ampliada ou leitura em voz alta, e materiais concretos (tampinhas para os veículos, cartões com os algarismos 1, 2 e 3) para quem precisa manipular. Valorize qualquer estratégia correta: o desenho vale tanto quanto a equação. Estudantes com laudo têm direito a atendimento específico na prova; oriente a escola a solicitá-lo no período de inscrição.",
+    "recursos": []
   },
   /* ---------- fim das oficinas de Matemática ---------- */
 };
