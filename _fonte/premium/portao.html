@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Área premium · ohtopico</title>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{CSS}}">
+<style>
+  .portao { max-width: 440px; margin: 12vh auto 0; border: 1.5px solid var(--ink); border-radius: 28px; padding: 30px 26px; background: var(--paper); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
+  .portao h1 { font-size: 34px; margin: 6px 0 8px; }
+  .portao input { width: 100%; box-sizing: border-box; border: 1.5px solid var(--ink); border-radius: 14px; padding: 12px; font-size: 20px; text-align: center; margin: 14px 0 12px; background: var(--paper); color: var(--ink); }
+  .portao .btn { width: 100%; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <form class="portao" id="f">
+    <div style="font-size:44px">🔒</div>
+    <h1>Área premium</h1>
+    <p class="muted">Conteúdo exclusivo para apoiadores do Catarse. Digite a senha que você recebeu.</p>
+    <label class="sr-only" for="s">Senha</label>
+    <input id="s" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit" id="b">Entrar</button>
+    <p class="feedback" id="fb" role="status"></p>
+    <p class="small muted"><a href="/">Voltar para o ohtopico</a></p>
+  </form>
+</main>
+<script>
+(function () {
+  const SAL = '{{SAL}}', NONCE = '{{NONCE}}', DADOS = '{{DADOS}}', ITER = {{ITER}};
+  const bin = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+  async function abrir(senha) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']);
+    const chave = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: bin(SAL), iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(NONCE) }, chave, bin(DADOS)));
+    try { sessionStorage.setItem('ohtopico:premium', senha); } catch (e) {}
+    document.open(); document.write(html); document.close();
+  }
+  const fb = document.getElementById('fb');
+  document.getElementById('f').onsubmit = async e => {
+    e.preventDefault(); fb.textContent = 'Conferindo…'; fb.className = 'feedback';
+    try { await abrir(document.getElementById('s').value); }
+    catch (err) { fb.textContent = 'Senha incorreta. Confira a mensagem do Catarse.'; fb.className = 'feedback bad'; }
+  };
+  let salva = null; try { salva = sessionStorage.getItem('ohtopico:premium'); } catch (e) {}
+  if (salva) abrir(salva).catch(() => { try { sessionStorage.removeItem('ohtopico:premium'); } catch (e) {} });
+  else document.getElementById('s').focus();
+})();
+</script>
+</body>
+</html>

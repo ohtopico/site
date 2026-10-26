@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Área premium · ohtopico</title>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<style>
+  .portao { max-width: 440px; margin: 12vh auto 0; border: 1.5px solid var(--ink); border-radius: 28px; padding: 30px 26px; background: var(--paper); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
+  .portao h1 { font-size: 34px; margin: 6px 0 8px; }
+  .portao input { width: 100%; box-sizing: border-box; border: 1.5px solid var(--ink); border-radius: 14px; padding: 12px; font-size: 20px; text-align: center; margin: 14px 0 12px; background: var(--paper); color: var(--ink); }
+  .portao .btn { width: 100%; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <form class="portao" id="f">
+    <div style="font-size:44px">🔒</div>
+    <h1>Área premium</h1>
+    <p class="muted">Conteúdo exclusivo para apoiadores do Catarse. Digite a senha que você recebeu.</p>
+    <label class="sr-only" for="s">Senha</label>
+    <input id="s" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit" id="b">Entrar</button>
+    <p class="feedback" id="fb" role="status"></p>
+    <p class="small muted"><a href="/">Voltar para o ohtopico</a></p>
+  </form>
+</main>
+<script>
+(function () {
+  const SAL = 'JLtO9G0UEKpq3ChUi2Zosw==', NONCE = '5lIqpokSGi21eHe1', DADOS = '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', ITER = 250000;
+  const bin = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+  async function abrir(senha) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']);
+    const chave = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: bin(SAL), iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(NONCE) }, chave, bin(DADOS)));
+    try { sessionStorage.setItem('ohtopico:premium', senha); } catch (e) {}
+    document.open(); document.write(html); document.close();
+  }
+  const fb = document.getElementById('fb');
+  document.getElementById('f').onsubmit = async e => {
+    e.preventDefault(); fb.textContent = 'Conferindo…'; fb.className = 'feedback';
+    try { await abrir(document.getElementById('s').value); }
+    catch (err) { fb.textContent = 'Senha incorreta. Confira a mensagem do Catarse.'; fb.className = 'feedback bad'; }
+  };
+  let salva = null; try { salva = sessionStorage.getItem('ohtopico:premium'); } catch (e) {}
+  if (salva) abrir(salva).catch(() => { try { sessionStorage.removeItem('ohtopico:premium'); } catch (e) {} });
+  else document.getElementById('s').focus();
+})();
+</script>
+</body>
+</html>
