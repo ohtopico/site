@@ -1,0 +1,39 @@
+<p>Você vai criar um jogo de verdade, em uns 30 minutos, sem digitar nenhuma linha de código. No Scratch a programação é feita encaixando blocos coloridos, como peças de montar. O jogo: um personagem que você controla com as setas precisa pegar uma maçã que muda de lugar a cada ponto.</p>
+
+<h2>Antes de começar</h2>
+<p>Abra o site scratch.mit.edu e clique em “Criar”. Dá para usar sem conta, mas, se quiser salvar o jogo, peça ajuda a um adulto para criar uma. O gato que aparece no palco é o seu primeiro ator e se chama Ator1. É ele quem vai pegar a maçã.</p>
+
+<h2>Passo 1: mover o gato com as setas</h2>
+<p>Clique no gato e vá até a categoria <strong>Eventos</strong>. Arraste o bloco “quando 🏁 for clicado”, aquele com a bandeira verde. Embaixo dele, encaixe um bloco <strong>sempre</strong> (categoria Controle). Dentro do “sempre”, coloque quatro blocos “se … então”, um para cada seta:</p>
+<ul>
+<li>se “tecla seta para a direita pressionada?”, então “mude x por 10”;</li>
+<li>se “tecla seta para a esquerda pressionada?”, então “mude x por -10”;</li>
+<li>se “tecla seta para cima pressionada?”, então “mude y por 10”;</li>
+<li>se “tecla seta para baixo pressionada?”, então “mude y por -10”.</li>
+</ul>
+<p>Clique na bandeira verde e teste. O gato anda! Repare que x é o movimento na horizontal e y é na vertical, como no plano cartesiano da aula de matemática.</p>
+
+<h2>Passo 2: criar a maçã</h2>
+<p>Clique em “Escolher um ator” (o ícone de gato no canto inferior direito) e procure a maçã (no catálogo ela pode aparecer como “Apple”). Diminua o tamanho dela para uns 50. Na maçã, monte: “quando 🏁 for clicado” e depois “vá para posição aleatória”.</p>
+
+<h2>Passo 3: contar os pontos</h2>
+<p>Na categoria <strong>Variáveis</strong>, clique em “Criar uma variável” e dê o nome <em>pontos</em>. Ainda na maçã, complete o código:</p>
+<ol>
+<li>“quando 🏁 for clicado”;</li>
+<li>“mude pontos para 0”;</li>
+<li>“sempre”, e dentro dele: se “tocando em Ator1?”, então “adicione 1 a pontos” e “vá para posição aleatória”.</li>
+</ol>
+<p>Pronto: cada vez que o gato encosta na maçã, você ganha um ponto e ela pula para outro lugar.</p>
+
+<h2>Passo 4: deixe o jogo com a sua cara</h2>
+<ul>
+<li>Troque o cenário clicando em “Escolher um cenário”.</li>
+<li>Adicione um som com “toque o som” quando pegar a maçã.</li>
+<li>Crie um cronômetro: o jogo acaba quando o tempo chegar a 30 segundos.</li>
+<li>Coloque um segundo ator, um inimigo, que tira pontos se encostar no gato.</li>
+</ul>
+
+<h2>Deu erro? Isso é normal</h2>
+<p>Programadores passam boa parte do tempo procurando erros, e isso tem até nome: depurar. Se algo não funciona, confira se o bloco está mesmo encaixado (ele “gruda” no de cima) e se o código está no ator certo. Testar, errar e consertar é exatamente o que um programador faz.</p>
+
+<p class="assinatura">Júlia Roberta Quoos Alves é professora de computação no Rio Grande do Sul.</p>

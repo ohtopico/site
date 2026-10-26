@@ -179,6 +179,141 @@
         "pdf": "bit-a-bit-02-slides.pdf",
         "quantidade": 10
       }
+    },
+    {
+      "slug": "como-manter-alunos-motivados-matematica",
+      "titulo": "Como manter os alunos motivados em matemática o ano inteiro",
+      "titulo_seo": "Como manter os alunos motivados em matemática: 5 estratégias",
+      "descricao": "Cinco estratégias para manter a motivação dos alunos em matemática do início ao fim do ano, e o que desmotiva sem a gente perceber.",
+      "palavras_chave": [
+        "motivação em matemática",
+        "ensino de matemática",
+        "anos finais"
+      ],
+      "secao": "Matemática em sala",
+      "data": "2026-10-31",
+      "arquivo_janela": "motivacao.txt",
+      "imagem": "mat-motivacao.png",
+      "imagem_depois_de": "<h2>Cinco estratégias para o ano inteiro</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão com a frase: a motivação dura o ano quando o problema vem antes da regra, o progresso fica visível, o erro vira dado e não vergonha, o aluno faz pequenas escolhas e a aula termina com uma conquista.",
+      "legenda": "As cinco estratégias do texto num cartão para a sala dos professores."
+    },
+    {
+      "slug": "minha-primeira-obmep",
+      "titulo": "Minha primeira OBMEP: o que preciso saber",
+      "titulo_seo": "Minha primeira OBMEP: como funciona a prova e como estudar",
+      "descricao": "Guia para estudantes que vão fazer a OBMEP pela primeira vez: níveis, fases, o que estudar e estratégias para o dia da prova.",
+      "palavras_chave": [
+        "OBMEP",
+        "olimpíada de matemática",
+        "como estudar para a OBMEP"
+      ],
+      "secao": "Para estudantes",
+      "data": "2026-11-02",
+      "arquivo_janela": "obmep.txt",
+      "imagem": "obmep.png",
+      "imagem_depois_de": "<h2>Como são as duas fases</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão da OBMEP: nível 1 para 6º e 7º anos, nível 2 para 8º e 9º anos; 1ª fase de múltipla escolha na escola, 2ª fase discursiva. Dica: teste com números pequenos, faça um desenho, organize as tentativas e elimine alternativas.",
+      "legenda": "Níveis, fases e o que fazer quando travar."
+    },
+    {
+      "slug": "como-envolver-alunos-na-matematica",
+      "titulo": "Como envolver os alunos na aula de matemática",
+      "titulo_seo": "Como envolver os alunos na matemática: 6 técnicas de participação",
+      "descricao": "Seis técnicas simples para que toda a turma participe da aula de matemática, e não só os alunos que sempre levantam a mão.",
+      "palavras_chave": [
+        "participação dos alunos",
+        "aula de matemática",
+        "metodologias ativas"
+      ],
+      "secao": "Matemática em sala",
+      "data": "2026-11-04",
+      "arquivo_janela": "participacao.txt",
+      "imagem": "mat-participacao.png",
+      "imagem_depois_de": "<h2>Seis técnicas para todos participarem</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão comparando: em vez de perguntar quem sabe a resposta e ver as mesmas três mãos levantadas, experimente miniquadros, conversa numérica e pensar, conversar, compartilhar.",
+      "legenda": "Troque “quem sabe?” por “todo mundo mostra”."
+    },
+    {
+      "slug": "meu-primeiro-jogo-no-scratch",
+      "titulo": "Meu primeiro jogo no Scratch: passo a passo",
+      "titulo_seo": "Meu primeiro jogo no Scratch: passo a passo para iniciantes",
+      "descricao": "Tutorial para estudantes criarem o primeiro jogo no Scratch em 30 minutos: mover o personagem com as setas, pegar a maçã e contar pontos.",
+      "palavras_chave": [
+        "Scratch",
+        "jogo no Scratch",
+        "programação para iniciantes"
+      ],
+      "secao": "Para estudantes",
+      "data": "2026-11-06",
+      "arquivo_janela": "meu-jogo.sb3",
+      "imagem": "scratch.png",
+      "imagem_depois_de": "<h2>Passo 1: mover o gato com as setas</h2>",
+      "imagem_antes": true,
+      "alt": "Blocos do Scratch empilhados: quando a bandeira for clicado, sempre, se tecla seta para a direita pressionada então mude x por 10, se tocando em Ator1 então adicione 1 a pontos e vá para posição aleatória.",
+      "legenda": "Os blocos principais do jogo, na ordem em que se encaixam."
+    },
+    {
+      "slug": "sites-para-ensinar-matematica",
+      "titulo": "Sites gratuitos que ajudam a ensinar matemática",
+      "titulo_seo": "6 sites gratuitos que ajudam a ensinar matemática",
+      "descricao": "Seis sites gratuitos e em português para usar nas aulas de matemática do ensino fundamental, com uma sugestão de uso para cada um.",
+      "palavras_chave": [
+        "sites de matemática",
+        "recursos digitais",
+        "GeoGebra",
+        "OBMEP"
+      ],
+      "secao": "Matemática em sala",
+      "data": "2026-11-08",
+      "arquivo_janela": "sites.txt",
+      "imagem": "mat-sites.png",
+      "imagem_depois_de": "<h2>Para visualizar e experimentar</h2>",
+      "imagem_antes": true,
+      "alt": "Lista de seis sites gratuitos: GeoGebra para geometria dinâmica e gráficos, Desmos para funções, PhET para simulações de frações e área, Portal da OBMEP com videoaulas, Khan Academy com exercícios corrigidos e Scratch para programar com coordenadas.",
+      "legenda": "Os seis sites num cartão para salvar."
+    },
+    {
+      "slug": "como-montar-um-robo-do-zero",
+      "titulo": "Como montar um robô do zero",
+      "titulo_seo": "Como montar um robô do zero: do robô-escova ao Arduino",
+      "descricao": "Guia para estudantes montarem o primeiro robô com materiais simples e entenderem as quatro partes de todo robô: energia, atuadores, sensores e controlador.",
+      "palavras_chave": [
+        "robótica educacional",
+        "robô caseiro",
+        "robótica para iniciantes"
+      ],
+      "secao": "Para estudantes",
+      "data": "2026-11-10",
+      "arquivo_janela": "robo.txt",
+      "imagem": "robo.png",
+      "imagem_depois_de": "<h2>Projeto 1: o robô-escova</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão com as quatro partes de todo robô: energia, atuadores, sensores e controlador. O robô-escova tem só energia e atuador: cabeça de escova, motor de vibração e pilha de 3 volts.",
+      "legenda": "As quatro partes de todo robô."
+    },
+    {
+      "slug": "como-ensinar-ciberseguranca-na-escola",
+      "titulo": "Como ensinar cibersegurança na escola",
+      "titulo_seo": "Como ensinar cibersegurança no ensino fundamental (BNCC Computação)",
+      "descricao": "Atividades para ensinar cibersegurança nos anos finais do ensino fundamental, de acordo com a BNCC Computação, sem precisar de laboratório.",
+      "palavras_chave": [
+        "cibersegurança na escola",
+        "BNCC Computação",
+        "EF07CO07",
+        "segurança digital"
+      ],
+      "secao": "Computação e BNCC",
+      "data": "2026-11-12",
+      "arquivo_janela": "golpe.txt",
+      "imagem": "ciberseguranca.png",
+      "imagem_depois_de": "<h2>Quatro atividades que funcionam</h2>",
+      "imagem_antes": true,
+      "alt": "Mensagem fictícia de golpe: urgente, sua conta vai ser bloqueada hoje, mande o código que chegou por SMS e clique num link encurtado, com erro de português. Os quatro sinais: pressa e ameaça, pedido de código ou senha, link encurtado e erro de português.",
+      "legenda": "Mensagem fictícia para a atividade “Caça ao golpe”."
     }
   ]
 }
