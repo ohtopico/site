@@ -45,8 +45,9 @@
       <span class="spacer"></span>
       <nav class="topnav" aria-label="Seções">
         ${link('inicio', 'index.html', 'Início')}
+        ${link('computacao', 'computacao/', 'Computação')}
+        ${link('matematica', 'matematica/', 'Matemática')}
         ${link('catalogo', 'catalogo.html', 'Catálogo')}
-        ${link('jogos', 'catalogo.html?tipo=jogo', 'Jogos')}
         ${link('bncc', 'bncc.html', 'BNCC')}
         ${link('professor', 'professor.html', 'Professor')}
       </nav>

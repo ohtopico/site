@@ -36,7 +36,7 @@
   .door strong { font-family: var(--display); font-size: 20px; display: block; }
   .door span { font-size: 14px; color: var(--ink-2); }
   @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 28px; } }
-  @media (max-width: 420px) { .doors { grid-template-columns: 1fr; } .stat b { font-size: 32px; } }
+  @media (max-width: 560px) { .doors { grid-template-columns: 1fr; } #stats { grid-template-columns: 1fr 1fr !important; } .stat b { font-size: 32px; } }
 
   .paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
   .path { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 24px; text-decoration: none; color: var(--ink); display: flex; flex-direction: column; gap: 8px; transition: transform .15s, box-shadow .15s; background: var(--paper); }
@@ -65,22 +65,33 @@
 
 <main>
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <span class="eyebrow">Anos finais · 6º ao 9º ano · BNCC</span>
-        <h1>Aprender jogando, ensinar com plano.</h1>
-        <p class="lead">Jogos interativos, fichas para imprimir e planos de aula de <strong>Computação</strong> e <strong>Matemática</strong>, organizados pelas habilidades da BNCC. Tudo gratuito e pronto para usar em sala.</p>
-        <div class="btn-row">
-          <a class="btn" href="catalogo.html">Explorar o catálogo</a>
-          <a class="btn ghost" href="bncc.html">Buscar por habilidade</a>
-        </div>
-      </div>
-      <div>
-        <div class="stats" id="stats"></div>
-        <div class="doors">
-          <a class="door" href="meu-progresso.html"><strong>🎮 Sou estudante</strong><span>Jogos, listas e meu progresso</span></a>
-          <a class="door" href="professor.html"><strong>📋 Sou professor(a)</strong><span>Planos, fichas e orientações</span></a>
-        </div>
+    <div class="wrap">
+      <span class="eyebrow">Material didático gratuito · BNCC</span>
+      <h1>Aprender jogando, ensinar com plano.</h1>
+      <p class="lead">Jogos interativos, recursos 3D, slides, fichas para imprimir e planos de aula, organizados pelas habilidades da BNCC. Escolha a área para começar.</p>
+      <div class="areas" style="margin-top:28px">
+        <a class="area-door co" href="computacao/">
+          <span class="mark">Computação</span>
+          <h3>Material de Computação</h3>
+          <p>BNCC Computação do 1º ao 9º ano: pensamento computacional, mundo digital e cultura digital.</p>
+          <ul>
+            <li>Slides para cada habilidade do 6º ao 9º ano</li>
+            <li>Jogos de algoritmos, redes e segurança</li>
+            <li>Computação desplugada nas datas festivas</li>
+          </ul>
+          <span class="go">Entrar em Computação →</span>
+        </a>
+        <a class="area-door ma" href="matematica/">
+          <span class="mark">Matemática</span>
+          <h3>Material de Matemática</h3>
+          <p>BNCC Matemática do 6º ao 9º ano: números, álgebra, geometria e grandezas e medidas.</p>
+          <ul>
+            <li>Laboratório 3D para girar e mexer</li>
+            <li>Bhaskara passo a passo e jogos</li>
+            <li>Oficinas com fichas, planos e listas</li>
+          </ul>
+          <span class="go">Entrar em Matemática →</span>
+        </a>
       </div>
     </div>
   </section>
@@ -88,68 +99,38 @@
   <section class="block">
     <div class="wrap">
       <span class="eyebrow">Por onde começar</span>
-      <h2>Três caminhos pelo repositório</h2>
+      <h2>Outros caminhos pelo repositório</h2>
+      <div class="stats" id="stats" style="grid-template-columns:repeat(4,1fr);margin-top:18px"></div>
       <div class="paths">
-        <a class="path" href="catalogo.html"><span class="ic">🗂️</span><h3>Catálogo</h3><p>Todos os jogos, recursos 3D, fichas e planos, com busca e filtros por ano, componente e eixo.</p><span class="go">Abrir o catálogo →</span></a>
-        <a class="path" href="bncc.html"><span class="ic">🧭</span><h3>Explorar a BNCC</h3><p>Habilidades ano a ano, com os materiais que trabalham cada uma.</p><span class="go">Ver habilidades →</span></a>
-        <a class="path" href="professor.html"><span class="ic">📋</span><h3>Área do professor</h3><p>Como usar o repositório e os planos de aula prontos, com avaliação e acessibilidade.</p><span class="go">Ir para a área →</span></a>
+        <a class="path" href="catalogo.html"><h3>Catálogo</h3><p>Todos os materiais das duas áreas, com busca e filtros por componente, ano, tipo e eixo.</p><span class="go">Abrir o catálogo →</span></a>
+        <a class="path" href="bncc.html"><h3>Explorar a BNCC</h3><p>Habilidades ano a ano, com os materiais que trabalham cada uma.</p><span class="go">Ver habilidades →</span></a>
+        <a class="path" href="professor.html"><h3>Área do professor</h3><p>Como usar o repositório, planos de aula prontos e slides para baixar.</p><span class="go">Ir para a área →</span></a>
       </div>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="eyebrow">Para jogar agora</span><h2>Jogos</h2></div>
-        <a class="btn ghost" href="catalogo.html?tipo=jogo">Ver todos os jogos →</a>
+      <div class="doors" style="margin-top:16px">
+        <a class="door" href="meu-progresso.html"><strong>Sou estudante</strong><span>Jogos, listas e meu progresso</span></a>
+        <a class="door" href="professor.html"><strong>Sou professor(a)</strong><span>Planos, fichas e orientações</span></a>
       </div>
-      <div class="rc-grid" id="games"></div>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="eyebrow">Matemática para girar e mexer</span><h2>Laboratório 3D</h2></div>
-        <a class="btn ghost" href="catalogo.html?tipo=3d">Ver todos os recursos 3D →</a>
-      </div>
-      <div class="rc-grid" id="lab3d"></div>
-    </div>
-  </section>
-  <section class="block">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="eyebrow">Anos iniciais · 1º ao 5º ano</span><h2>Computação desplugada nas datas festivas</h2></div>
-        <a class="btn ghost" href="datas-festivas/">Ver o caderno →</a>
-      </div>
-      <p class="muted" style="max-width:760px">Nove atividades sem computador para o calendário escolar, com ficha do professor, folhas para imprimir e gabarito, em um PDF gratuito.</p>
-      <div class="rc-grid" id="iniciais"></div>
     </div>
   </section>
 
   <section class="block">
     <div class="wrap">
       <span class="eyebrow">Lista completa</span>
-      <h2>Todos os jogos e recursos 3D</h2>
+      <h2>Jogos e recursos por área</h2>
       <div class="todos">
         <div>
-          <h3>Jogos</h3>
+          <h3><a href="computacao/">Computação</a></h3>
           <ul>
-          <li><a href="jogos/balanca.html">Balança das Equações</a></li>
-          <li><a href="jogos/bhaskara.html">Bhaskara Passo a Passo</a></li>
           <li><a href="jogos/pacotes.html">Correio de Pacotes</a></li>
-          <li><a href="jogos/tabuada.html">Corrida da Tabuada</a></li>
-          <li><a href="jogos/fracoes.html">Corrida das Frações</a></li>
           <li><a href="jogos/cifra.html">Detetive da Cifra</a></li>
           <li><a href="jogos/golpe.html">Golpe ou Seguro?</a></li>
           <li><a href="jogos/robo.html">Robô Coletor</a></li>
           <li><a href="jogos/rotas.html">Rota Mais Curta</a></li>
-          <li><a href="jogos/tangram.html">Tangram</a></li>
-          <li><a href="jogos/cartesiano.html">Tesouro Cartesiano</a></li>
+          <li><a href="datas-festivas/">Computação desplugada nas datas festivas</a></li>
           </ul>
         </div>
         <div>
-          <h3>Laboratório 3D</h3>
+          <h3><a href="matematica/">Matemática</a></h3>
           <ul>
           <li><a href="3d/balanca.html">Balança 3D das Equações</a></li>
           <li><a href="3d/fracoes.html">Barras de Frações 3D</a></li>
@@ -163,6 +144,14 @@
           <li><a href="3d/tales.html">Teorema de Tales: Sombras e Paralelas</a></li>
           <li><a href="3d/terreno.html">Terreno: Área e Perímetro</a></li>
           <li><a href="3d/mmc.html">Torres do MMC</a></li>
+          <li><a href="jogos/balanca.html">Balança das Equações</a></li>
+          <li><a href="jogos/bhaskara.html">Bhaskara Passo a Passo</a></li>
+          <li><a href="jogos/tabuada.html">Corrida da Tabuada</a></li>
+          <li><a href="jogos/fracoes.html">Corrida das Frações</a></li>
+          <li><a href="jogos/robo.html">Robô Coletor</a></li>
+          <li><a href="jogos/rotas.html">Rota Mais Curta</a></li>
+          <li><a href="jogos/tangram.html">Tangram</a></li>
+          <li><a href="jogos/cartesiano.html">Tesouro Cartesiano</a></li>
           </ul>
         </div>
       </div>
@@ -183,9 +172,6 @@
   const n = t => RECURSOS.filter(r => r.tipo === t).length;
   document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
     .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
-  document.getElementById('games').innerHTML = RECURSOS.filter(r => r.tipo === 'jogo').slice(0, 4).map(r => mdCard(r)).join('');
-  document.getElementById('iniciais').innerHTML = mdCard(REC['datas-festivas']);
-  document.getElementById('lab3d').innerHTML = RECURSOS.filter(r => r.tipo === '3d').slice(0, 4).map(r => mdCard(r)).join('');
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
