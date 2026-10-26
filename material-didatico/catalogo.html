@@ -103,6 +103,7 @@
 <section class="cat-head">
   <div class="wrap">
     <span class="eyebrow">Catálogo</span>
+    <p class="small" id="cat-area" style="margin:0 0 6px"></p>
     <h1>Todos os materiais</h1>
     <p>Jogos, fichas para imprimir e planos de aula de Computação e Matemática, do 6º ao 9º ano. Para o 1º ao 5º ano, veja o caderno <a href="datas-festivas/">Computação desplugada nas datas festivas</a>.</p>
     <div class="search" role="search">
@@ -156,8 +157,15 @@
     eixo: EIXOS[params.get('eixo')] ? params.get('eixo') : 'todos',
     hab: (params.get('hab') || '').toUpperCase()
   };
-  if (state.tipo === 'jogo') document.querySelector('.cat-head h1').textContent = 'Jogos';
-  if (state.tipo === '3d') document.querySelector('.cat-head h1').textContent = 'Recursos 3D';
+  // título e trilha acompanham a área (Computação ou Matemática) e o tipo escolhidos
+  function heading() {
+    const base = state.tipo === 'jogo' ? 'Jogos' : state.tipo === '3d' ? 'Recursos 3D' : 'Todos os materiais';
+    const area = { CO: 'de Computação', MA: 'de Matemática' }[state.comp];
+    $('.cat-head h1').textContent = area ? (state.tipo === 'todos' ? 'Materiais ' + area : base + ' ' + area) : base;
+    $('#cat-area').innerHTML = area
+      ? `<a href="${state.comp === 'CO' ? 'computacao/' : 'matematica/'}">Voltar para a área ${area}</a>`
+      : 'Escolha uma área: <a href="computacao/">Computação</a> ou <a href="matematica/">Matemática</a>';
+  }
   $('#q').value = state.q;
 
   const QUICK = ['frações', 'internet', 'algoritmo', 'segurança', 'EF06CO02'];
@@ -244,7 +252,7 @@
   function render() {
     if (state.comp !== 'todos' && state.eixo !== 'todos' && EIXOS[state.eixo].comp !== state.comp) state.eixo = 'todos';
     $('#q-clear').hidden = !state.q;
-    sidebar(); tabs(); banner(); results(); syncUrl();
+    heading(); sidebar(); tabs(); banner(); results(); syncUrl();
   }
 
   document.addEventListener('click', e => {
