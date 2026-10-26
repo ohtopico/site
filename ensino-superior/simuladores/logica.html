@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portas lógicas e circuitos · OAC | ohtopico</title>
+<meta name="description" content="Simulador de portas lógicas, meio somador, somador completo e multiplexador com tabela-verdade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../assets/es.css">
+<style>
+  .lg-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(220px, 1fr); gap: 22px; align-items: start; }
+  @media (max-width: 860px) { .lg-layout { grid-template-columns: 1fr; } }
+  .circ { width: 100%; height: auto; display: block; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px; }
+  .circ text { font-family: var(--body); fill: var(--ink); }
+  .circ .w { fill: none; stroke: var(--ink-3); stroke-width: 2.5; }
+  .circ .w.on { stroke: var(--accent); stroke-width: 4; }
+  .circ .g rect { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+  .circ .g circle.neg { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+  .circ .g text { font-size: 18px; font-weight: 700; }
+  .circ .pin { cursor: pointer; }
+  .circ .pin rect { stroke: var(--ink); stroke-width: 2; fill: var(--paper); }
+  .circ .pin.on rect { fill: var(--accent); stroke: var(--accent); }
+  .circ .pin.on text.v { fill: #fff; }
+  .circ .lamp circle { stroke: var(--ink); stroke-width: 2; fill: var(--paper); }
+  .circ .lamp.on circle { fill: var(--accent); }
+  .circ .lamp.on text.v { fill: #fff; }
+  .tt { border-collapse: collapse; font-family: ui-monospace, Consolas, monospace; font-size: 15px; width: 100%; background: var(--paper); border-radius: 12px; overflow: hidden; }
+  .tt th, .tt td { border: 1px solid var(--line); padding: 5px 8px; text-align: center; }
+  .tt th { background: var(--pill); font-family: var(--body); font-size: 13px; }
+  .tt th.out, .tt td.out { border-left: 2px solid var(--ink); }
+  .tt tr.cur td { background: var(--accent-soft); font-weight: 700; }
+  .tt tbody tr { cursor: pointer; }
+  .expr { font-family: ui-monospace, Consolas, monospace; font-size: 16px; background: var(--paper); border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px; margin: 10px 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim">
+    <h2>1. Portas lógicas</h2>
+    <div class="seg" id="gates" style="margin-bottom:14px"></div>
+    <div class="lg-layout">
+      <div><svg class="circ" id="g-svg" viewBox="0 0 520 220" role="img" aria-label="Porta lógica"></svg>
+        <p class="small muted" style="margin-top:8px">Clique nas entradas A e B para alternar entre 0 e 1. Símbolos no padrão IEC (retangular).</p></div>
+      <div><div class="expr" id="g-expr"></div><table class="tt" id="g-tt"></table></div>
+    </div>
+  </section>
+
+  <section class="sim">
+    <h2>2. Circuitos combinacionais</h2>
+    <div class="seg" id="circs" style="margin-bottom:14px"></div>
+    <p class="small muted" id="c-desc"></p>
+    <div class="lg-layout">
+      <div><svg class="circ" id="c-svg" viewBox="0 0 640 360" role="img" aria-label="Circuito"></svg></div>
+      <div><div class="expr" id="c-expr"></div><table class="tt" id="c-tt"></table>
+        <p class="small muted" style="margin-top:8px">Clique numa linha da tabela para aplicar aquelas entradas.</p></div>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.ES_BASE = '../';</script>
+<script src="../assets/es-dados.js"></script>
+<script src="../assets/arquitetura-unidades.js"></script>
+<script src="../assets/ciencia-dados-unidades.js"></script>
+<script src="../assets/es-comum.js"></script>
+<script>
+esTopbar('sim'); esFooter(); esSimHead('logica');
+(function () {
+  const $ = s => document.querySelector(s);
+  const GATES = {
+    AND:  { f: (a, b) => a & b, sym: '&', neg: false, expr: 'S = A · B' },
+    OR:   { f: (a, b) => a | b, sym: '≥1', neg: false, expr: 'S = A + B' },
+    NOT:  { f: a => a ^ 1, sym: '1', neg: true, one: true, expr: 'S = ¬A' },
+    NAND: { f: (a, b) => (a & b) ^ 1, sym: '&', neg: true, expr: 'S = ¬(A · B)' },
+    NOR:  { f: (a, b) => (a | b) ^ 1, sym: '≥1', neg: true, expr: 'S = ¬(A + B)' },
+    XOR:  { f: (a, b) => a ^ b, sym: '=1', neg: false, expr: 'S = A ⊕ B' },
+    XNOR: { f: (a, b) => (a ^ b) ^ 1, sym: '=1', neg: true, expr: 'S = ¬(A ⊕ B)' }
+  };
+
+  /* Desenho genérico: portas como retângulos IEC, fios ortogonais */
+  const GW = 64, GH = 54;
+  function gateOut(g) { return [g.x + GW + (GATES[g.t].neg ? 12 : 0), g.y + GH / 2]; }
+  function gateIn(g, k) { const n = GATES[g.t].one ? 1 : 2; return [g.x, n === 1 ? g.y + GH / 2 : g.y + (k ? GH - 14 : 14)]; }
+  function drawGate(g) {
+    const G = GATES[g.t];
+    return `<g class="g"><rect x="${g.x}" y="${g.y}" width="${GW}" height="${GH}" rx="4"/>
+      <text x="${g.x + GW / 2}" y="${g.y + GH / 2 + 6}" text-anchor="middle">${G.sym}</text>
+      ${G.neg ? `<circle class="neg" cx="${g.x + GW + 6}" cy="${g.y + GH / 2}" r="6"/>` : ''}
+      ${g.label ? `<text x="${g.x + GW / 2}" y="${g.y - 6}" text-anchor="middle" style="font-size:12px;font-weight:500;fill:var(--ink-2)">${g.label}</text>` : ''}</g>`;
+  }
+  const wire = (x1, y1, x2, y2, on, mid) => { const m = mid ?? (x1 + x2) / 2; return `<path class="w${on ? ' on' : ''}" d="M${x1} ${y1} H${m} V${y2} H${x2}"/>`; };
+  const pin = (id, x, y, v, name) => `<g class="pin${v ? ' on' : ''}" data-pin="${id}" tabindex="0" role="button" aria-label="Entrada ${name} = ${v}">
+      <text x="${x - 12}" y="${y + 6}" text-anchor="end" style="font-size:16px;font-weight:700">${name}</text>
+      <rect x="${x}" y="${y - 15}" width="30" height="30" rx="7"/><text class="v" x="${x + 15}" y="${y + 6}" text-anchor="middle" style="font-size:16px;font-weight:700">${v}</text></g>`;
+  const lamp = (x, y, v, name) => `<g class="lamp${v ? ' on' : ''}"><circle cx="${x + 16}" cy="${y}" r="16"/>
+      <text class="v" x="${x + 16}" y="${y + 6}" text-anchor="middle" style="font-size:16px;font-weight:700">${v}</text>
+      <text x="${x + 40}" y="${y + 6}" style="font-size:16px;font-weight:700">${name}</text></g>`;
+
+  function truth(el, inputs, outputs, fn, cur, onPick) {
+    const n = inputs.length, rows = [];
+    for (let i = 0; i < 2 ** n; i++) {
+      const vals = inputs.map((_, k) => (i >> (n - 1 - k)) & 1);
+      const outs = fn(vals);
+      const isCur = vals.every((v, k) => v === cur[k]);
+      rows.push(`<tr class="${isCur ? 'cur' : ''}" data-row="${vals.join('')}">${vals.map(v => `<td>${v}</td>`).join('')}${outs.map((v, k) => `<td class="${k === 0 ? 'out' : ''}">${v}</td>`).join('')}</tr>`);
+    }
+    el.innerHTML = `<thead><tr>${inputs.map(x => `<th>${x}</th>`).join('')}${outputs.map((x, k) => `<th class="${k === 0 ? 'out' : ''}">${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody>`;
+    el.onclick = e => { const r = e.target.closest('tr[data-row]'); if (r) onPick(r.dataset.row.split('').map(Number)); };
+  }
+  function bindPins(svg, toggle) {
+    svg.onclick = e => { const p = e.target.closest('.pin'); if (p) toggle(p.dataset.pin); };
+    svg.onkeydown = e => { const p = e.target.closest('.pin'); if (p && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggle(p.dataset.pin); const n = svg.querySelector(`[data-pin="${p.dataset.pin}"]`); n && n.focus(); } };
+  }
+
+  /* ---------- 1. Portas ---------- */
+  let gt = 'AND', A = 0, B = 1;
+  function drawG() {
+    $('#gates').innerHTML = Object.keys(GATES).map(k => `<button type="button" aria-pressed="${k === gt}" data-g="${k}">${k}</button>`).join('');
+    const G = GATES[gt], g = { t: gt, x: 230, y: 83 };
+    const out = G.one ? G.f(A) : G.f(A, B);
+    const [ox, oy] = gateOut(g);
+    let h = '';
+    if (G.one) { const [ix, iy] = gateIn(g, 0); h += wire(110, 110, ix, iy, A) + pin('A', 80, 110, A, 'A'); }
+    else {
+      const [i0x, i0y] = gateIn(g, 0), [i1x, i1y] = gateIn(g, 1);
+      h += wire(110, 70, i0x, i0y, A, 190) + wire(110, 150, i1x, i1y, B, 175) + pin('A', 80, 70, A, 'A') + pin('B', 80, 150, B, 'B');
+    }
+    h += drawGate(g) + wire(ox, oy, 400, oy, out) + lamp(400, oy, out, 'S');
+    $('#g-svg').innerHTML = h;
+    $('#g-expr').textContent = `${G.expr}   →   S = ${out}`;
+    truth($('#g-tt'), G.one ? ['A'] : ['A', 'B'], ['S'], v => [G.one ? G.f(v[0]) : G.f(v[0], v[1])], G.one ? [A] : [A, B], v => { A = v[0]; if (!G.one) B = v[1]; drawG(); });
+  }
+  $('#gates').onclick = e => { const b = e.target.closest('button'); if (b) { gt = b.dataset.g; drawG(); } };
+  bindPins($('#g-svg'), p => { if (p === 'A') A ^= 1; else B ^= 1; drawG(); });
+  drawG();
+
+  /* ---------- 2. Circuitos ---------- */
+  const CIRCS = {
+    meio: {
+      nome: 'Meio somador', desc: 'Soma dois bits: S é a soma e C é o vai-um.',
+      inputs: { A: 70, B: 170 },
+      gates: [{ id: 'x', t: 'XOR', x: 300, y: 50, ins: ['A', 'B'], label: 'XOR' }, { id: 'a', t: 'AND', x: 300, y: 200, ins: ['A', 'B'], label: 'AND' }],
+      outputs: [['S', 'x'], ['C', 'a']], expr: 'S = A ⊕ B     C = A · B'
+    },
+    completo: {
+      nome: 'Somador completo', desc: 'Soma três bits (A, B e o vai-um de entrada). Encadeando 32 deles obtemos um somador de 32 bits.',
+      inputs: { A: 50, B: 120, Cin: 220 },
+      gates: [
+        { id: 'x1', t: 'XOR', x: 170, y: 58, ins: ['A', 'B'], label: 'XOR' },
+        { id: 'x2', t: 'XOR', x: 340, y: 90, ins: ['x1', 'Cin'], label: 'XOR' },
+        { id: 'a1', t: 'AND', x: 340, y: 190, ins: ['x1', 'Cin'], label: 'AND' },
+        { id: 'a2', t: 'AND', x: 170, y: 270, ins: ['A', 'B'], label: 'AND' },
+        { id: 'o', t: 'OR', x: 480, y: 230, ins: ['a1', 'a2'], label: 'OR' }
+      ],
+      outputs: [['S', 'x2'], ['Cout', 'o']], expr: 'S = A ⊕ B ⊕ Cin     Cout = A·B + Cin·(A ⊕ B)'
+    },
+    mux: {
+      nome: 'Multiplexador 2:1', desc: 'O sinal S escolhe qual entrada aparece na saída: S = 0 → I0; S = 1 → I1.',
+      inputs: { I0: 60, I1: 170, S: 290 },
+      gates: [
+        { id: 'n', t: 'NOT', x: 150, y: 225, ins: ['S'], label: 'NOT' },
+        { id: 'a0', t: 'AND', x: 320, y: 45, ins: ['I0', 'n'], label: 'AND' },
+        { id: 'a1', t: 'AND', x: 320, y: 175, ins: ['I1', 'S'], label: 'AND' },
+        { id: 'o', t: 'OR', x: 470, y: 105, ins: ['a0', 'a1'], label: 'OR' }
+      ],
+      outputs: [['Y', 'o']], expr: 'Y = ¬S · I0 + S · I1'
+    }
+  };
+  let ck = 'meio', vals = { A: 1, B: 1, Cin: 0, I0: 0, I1: 1, S: 0 };
+  function evalC(c, v) {
+    const val = { ...v }, byId = Object.fromEntries(c.gates.map(g => [g.id, g]));
+    const get = id => {
+      if (id in val) return val[id];
+      const g = byId[id], ins = g.ins.map(get);
+      return (val[id] = GATES[g.t].one ? GATES[g.t].f(ins[0]) : GATES[g.t].f(ins[0], ins[1]));
+    };
+    c.gates.forEach(g => get(g.id));
+    return val;
+  }
+  function drawC() {
+    const c = CIRCS[ck];
+    $('#circs').innerHTML = Object.entries(CIRCS).map(([k, x]) => `<button type="button" aria-pressed="${k === ck}" data-c="${k}">${x.nome}</button>`).join('');
+    $('#c-desc').textContent = c.desc;
+    const names = Object.keys(c.inputs), v = evalC(c, vals);
+    const src = id => id in c.inputs ? [100, c.inputs[id]] : gateOut(c.gates.find(g => g.id === id));
+    let wires = '', k = 0;
+    c.gates.forEach(g => g.ins.forEach((s, i) => {
+      const [x1, y1] = src(s), [x2, y2] = gateIn(g, i);
+      const mid = s in c.inputs ? x2 - 22 - (k++ % 4) * 9 : (x1 + x2) / 2 + (i ? 8 : -8);
+      wires += wire(x1, y1, x2, y2, v[s], mid);
+    }));
+    let outs = '';
+    c.outputs.forEach(([name, id]) => { const [x, y] = gateOut(c.gates.find(g => g.id === id)); outs += wire(x, y, 568, y, v[id]) + lamp(568, y, v[id], name); });
+    $('#c-svg').innerHTML = wires + c.gates.map(drawGate).join('') + names.map(n => pin(n, 70, c.inputs[n], vals[n], n)).join('') + outs;
+    $('#c-expr').textContent = c.expr;
+    truth($('#c-tt'), names, c.outputs.map(o => o[0]), arr => {
+      const vv = evalC(c, Object.fromEntries(names.map((n, i) => [n, arr[i]])));
+      return c.outputs.map(o => vv[o[1]]);
+    }, names.map(n => vals[n]), arr => { names.forEach((n, i) => vals[n] = arr[i]); drawC(); });
+  }
+  $('#circs').onclick = e => { const b = e.target.closest('button'); if (b) { ck = b.dataset.c; drawC(); } };
+  bindPins($('#c-svg'), p => { vals[p] ^= 1; drawC(); });
+  drawC();
+})();
+</script>
+</body>
+</html>
