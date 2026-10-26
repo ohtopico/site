@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador financeiro para a sala de aula | ohtopico</title>
+<meta name="description" content="Simulador gratuito de orçamento da mesada, juros simples e compostos e compra à vista ou parcelada, para aulas de matemática financeira do 6º ao 9º ano.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/freebies/simulador/">
+<meta property="og:title" content="Simulador financeiro para a sala de aula">
+<meta property="og:description" content="Orçamento da mesada, juros simples e compostos e à vista ou parcelado, com gráficos. Grátis.">
+<meta property="og:url" content="https://ohtopico.com.br/freebies/simulador/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<style>
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1.5px solid var(--ink); margin-bottom: 30px; gap: 12px; flex-wrap: wrap; }
+  .top > a { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: 2px; text-decoration: none; color: var(--ink); }
+  .top nav { display: flex; gap: 16px; font-size: 15px; }
+  h1 { font-size: clamp(34px, 6vw, 56px); margin: 0 0 10px; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 18px; }
+  .tabs button { border: 1.5px solid var(--ink); border-radius: 999px; padding: 10px 18px; font: inherit; font-weight: 600; background: var(--paper); color: var(--ink); cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+  .painel { border: 1.5px solid var(--ink); border-radius: 28px; padding: 22px; background: var(--paper); box-shadow: 6px 6px 0 var(--ink); margin-bottom: 40px; }
+  .painel h2 { margin: 0 0 4px; font-size: 28px; }
+  .cols { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.4fr); gap: 22px; margin-top: 16px; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+  .campo { display: flex; flex-direction: column; gap: 6px; border: 1.5px solid var(--ink); border-radius: 18px; padding: 10px 14px; background: var(--paper-2); margin-bottom: 10px; }
+  .campo span { font-size: 14px; color: var(--ink-2); display: flex; justify-content: space-between; gap: 8px; }
+  .campo b { font-family: var(--display); font-size: 22px; color: var(--ink); }
+  .campo input[type=range] { width: 100%; accent-color: var(--ink); }
+  .campo input[type=number], .campo input[type=text] { border: 1.5px solid var(--ink); border-radius: 12px; padding: 8px 10px; font: inherit; font-size: 18px; background: var(--paper); color: var(--ink); }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--ink); margin-right: 6px; vertical-align: -1px; }
+  .barra { display: flex; height: 46px; border: 1.5px solid var(--ink); border-radius: 14px; overflow: hidden; margin: 6px 0 14px; }
+  .barra div { display: grid; place-items: center; font-weight: 600; font-size: 14px; color: #111; transition: width .3s; white-space: nowrap; overflow: hidden; }
+  .res { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 10px 0; }
+  .res div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px; text-align: center; }
+  .res span { display: block; font-size: 13px; color: var(--ink-2); }
+  .res b { font-family: var(--display); font-size: 24px; }
+  .aviso { border-radius: 16px; padding: 12px 16px; font-size: 16px; line-height: 1.5; border: 1.5px solid var(--ink); }
+  .aviso.ok { background: var(--ok-soft); } .aviso.bad { background: var(--bad-soft); } .aviso.info { background: var(--warn-soft); }
+  .plot svg { width: 100%; height: auto; display: block; }
+  .plot text { font-family: var(--body); fill: var(--ink); }
+  .legenda { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; margin-top: 6px; }
+  .legenda i { display: inline-block; width: 22px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  .pergunta { font-style: italic; color: var(--ink-2); margin-top: 14px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><a href="/">OHTOPICO</a><nav><a href="/freebies/">← Freebies</a><a href="/material-didatico/">Material didático</a></nav></div>
+  <h1>Simulador financeiro</h1>
+  <p class="muted" style="max-width:780px">Três simulações para projetar em aula: peça que a turma preveja o resultado antes de mexer num valor e depois confira. Funciona no computador e no celular, sem cadastro. Combine com a <a href="../folha-atividades-simulador.pdf">folha de atividades em PDF</a>.</p>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-t="orc">🐷 Orçamento da mesada</button>
+    <button role="tab" aria-selected="false" data-t="jur">📈 Juros simples x compostos</button>
+    <button role="tab" aria-selected="false" data-t="par">🧾 À vista ou parcelado?</button>
+  </div>
+
+  <section class="painel" id="orc" role="tabpanel">
+    <h2>🐷 Orçamento da mesada</h2>
+    <p class="muted">Divida a mesada em porcentagens. A soma precisa dar 100%.</p>
+    <div class="cols">
+      <div>
+        <label class="campo"><span>Mesada por mês <b id="o-mv"></b></span><input id="o-m" type="range" min="10" max="300" step="10" value="60"></label>
+        <div id="o-sl"></div>
+      </div>
+      <div>
+        <div class="barra" id="o-barra" aria-hidden="true"></div>
+        <div class="res" id="o-res"></div>
+        <div class="aviso" id="o-soma" role="status"></div>
+        <label class="campo" style="margin-top:14px"><span>Meta: quanto custa o que você quer comprar? <b id="o-pv"></b></span><input id="o-p" type="range" min="20" max="1500" step="10" value="200"></label>
+        <div class="aviso info" id="o-meta" aria-live="polite"></div>
+        <p class="pergunta">Para discutir: se o lazer aumentar 10 pontos e a poupança diminuir 10, quantos meses a mais leva até a meta?</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="painel" id="jur" role="tabpanel" hidden>
+    <h2>📈 Juros simples x juros compostos</h2>
+    <p class="muted">Simples: os juros são sempre calculados sobre o valor inicial. Compostos: sobre o saldo do mês anterior, como na poupança.</p>
+    <div class="cols">
+      <div>
+        <label class="campo"><span>Valor guardado no início <b id="j-cv"></b></span><input id="j-c" type="range" min="0" max="5000" step="100" value="1000"></label>
+        <label class="campo"><span>Taxa de juros por mês <b id="j-iv"></b></span><input id="j-i" type="range" min="0.5" max="10" step="0.5" value="1"></label>
+        <label class="campo"><span>Tempo <b id="j-nv"></b></span><input id="j-n" type="range" min="1" max="60" step="1" value="24"></label>
+        <label class="campo"><span>Depósito extra todo mês <b id="j-dv"></b></span><input id="j-d" type="range" min="0" max="300" step="10" value="0"></label>
+        <p class="small muted">As taxas são exemplos. A taxa real da poupança muda com o tempo: pesquise o valor atual com a turma em fontes oficiais.</p>
+      </div>
+      <div>
+        <div class="plot" id="j-plot" role="img" aria-label="Gráfico do saldo ao longo dos meses"></div>
+        <div class="legenda"><span><i style="background:#5b8def"></i>Juros simples</span><span><i style="background:#f08c2e"></i>Juros compostos</span><span id="j-leg3"><i style="background:#47b881"></i>Compostos com depósitos</span></div>
+        <div class="res" id="j-res"></div>
+        <div class="aviso ok" id="j-txt" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="painel" id="par" role="tabpanel" hidden>
+    <h2>🧾 À vista ou parcelado?</h2>
+    <p class="muted">Compare o total e descubra a taxa de juros escondida nas parcelas.</p>
+    <div class="cols">
+      <div>
+        <label class="campo"><span>Produto</span><input id="p-nome" type="text" value="Videogame"></label>
+        <label class="campo"><span>Preço anunciado <b id="p-pv"></b></span><input id="p-p" type="range" min="20" max="3000" step="10" value="300"></label>
+        <label class="campo"><span>Desconto para pagar à vista <b id="p-dv"></b></span><input id="p-d" type="range" min="0" max="30" step="1" value="10"></label>
+        <label class="campo"><span>Número de parcelas <b id="p-nv"></b></span><input id="p-n" type="range" min="2" max="24" step="1" value="6"></label>
+        <label class="campo"><span>Valor de cada parcela (R$)</span><input id="p-v" type="number" min="1" step="0.01" value="55"></label>
+      </div>
+      <div>
+        <div class="res" id="p-res"></div>
+        <div class="plot" id="p-plot" role="img" aria-label="Comparação entre o preço à vista e o total parcelado"></div>
+        <div class="aviso" id="p-txt" aria-live="polite"></div>
+        <p class="small muted">A taxa embutida considera a primeira parcela 30 dias depois da compra.</p>
+        <p class="pergunta">Para discutir: e se, em vez de parcelar, você guardasse o valor da parcela por alguns meses e comprasse à vista?</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="small muted">Simulador criado por Júlia Roberta Quoos Alves. Uso livre em sala de aula, com citação da fonte. BNCC EF06MA13, EF07MA02, EF08MA04 e EF09MA05. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p>
+</main>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const R$ = v => 'R$ ' + (Math.round(v * 100) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const pct = v => (Math.round(v * 10) / 10).toLocaleString('pt-BR') + '%';
+
+  // Abas
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+    document.querySelectorAll('.tabs button').forEach(o => o.setAttribute('aria-selected', o === b));
+    ['orc', 'jur', 'par'].forEach(id => $('#' + id).hidden = id !== b.dataset.t);
+  });
+
+  // ---------- Orçamento ----------
+  const CAT = [['Guardar', '#47b881', 30], ['Essenciais', '#5b8def', 40], ['Lazer', '#f2b84b', 25], ['Doar', '#ef6a5a', 5]];
+  $('#o-sl').innerHTML = CAT.map(([n, c, v], i) => `<label class="campo"><span><span><i class="dot" style="background:${c}"></i>${n}</span><b id="o-v${i}"></b></span><input id="o-s${i}" type="range" min="0" max="100" step="5" value="${v}"></label>`).join('');
+  function orc() {
+    const m = +$('#o-m').value, ps = CAT.map((_, i) => +$('#o-s' + i).value), soma = ps.reduce((a, b) => a + b, 0);
+    $('#o-mv').textContent = R$(m);
+    ps.forEach((p, i) => $('#o-v' + i).textContent = `${p}% · ${R$(m * p / 100)}`);
+    $('#o-barra').innerHTML = CAT.map(([n, c], i) => `<div style="width:${soma ? ps[i] / Math.max(soma, 100) * 100 : 0}%;background:${c}">${ps[i] >= 10 ? n : ''}</div>`).join('');
+    $('#o-res').innerHTML = `<div><span>Guardado por mês</span><b>${R$(m * ps[0] / 100)}</b></div><div><span>Guardado em 1 ano</span><b>${R$(m * ps[0] / 100 * 12)}</b></div>`;
+    const el = $('#o-soma');
+    if (soma === 100) { el.className = 'aviso ok'; el.textContent = 'A soma dá 100%: todo o dinheiro tem destino.'; }
+    else if (soma > 100) { el.className = 'aviso bad'; el.textContent = `A soma dá ${soma}%: passou ${soma - 100} pontos. Você está planejando gastar mais do que recebe.`; }
+    else { el.className = 'aviso bad'; el.textContent = `A soma dá ${soma}%: faltam ${100 - soma} pontos para todo o dinheiro ter destino.`; }
+    const preco = +$('#o-p').value, g = m * ps[0] / 100; $('#o-pv').textContent = R$(preco);
+    $('#o-meta').textContent = g > 0
+      ? `Guardando ${R$(g)} por mês, você chega aos ${R$(preco)} em ${Math.ceil(preco / g)} ${Math.ceil(preco / g) === 1 ? 'mês' : 'meses'}. Para chegar em 6 meses, seria preciso guardar ${R$(preco / 6)} por mês (${pct(preco / 6 / m * 100)} da mesada${preco / 6 > m ? ', mais do que a mesada inteira' : ''}).`
+      : 'Sem guardar nada, a meta nunca chega. Experimente aumentar a porcentagem de “Guardar”.';
+  }
+  document.querySelectorAll('#orc input').forEach(i => i.oninput = orc);
+
+  // ---------- Juros ----------
+  function linhas(series, n, ymax, cores, W = 640, H = 300) {
+    const L = 74, R = 14, T = 14, B = 40, x = k => L + (W - L - R) * k / n, y = v => T + (H - T - B) * (1 - v / ymax);
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    for (let g = 0; g <= 4; g++) { const v = ymax * g / 4; s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="12">${Math.round(v).toLocaleString('pt-BR')}</text>`; }
+    const passo = Math.max(1, Math.ceil(n / 12));
+    for (let k = 0; k <= n; k += passo) s += `<text x="${x(k)}" y="${H - 20}" text-anchor="middle" font-size="12">${k}</text>`;
+    s += `<text x="${(W + L) / 2}" y="${H - 3}" text-anchor="middle" font-size="12">meses</text>`;
+    series.forEach((arr, i) => { if (arr) s += `<polyline fill="none" stroke="${cores[i]}" stroke-width="3.5" stroke-linejoin="round" points="${arr.map((v, k) => `${x(k)},${y(v)}`).join(' ')}"/>`; });
+    return s + `<line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/><line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/></svg>`;
+  }
+  function jur() {
+    const c = +$('#j-c').value, i = +$('#j-i').value / 100, n = +$('#j-n').value, d = +$('#j-d').value;
+    $('#j-cv').textContent = R$(c); $('#j-iv').textContent = pct(i * 100) + ' ao mês'; $('#j-nv').textContent = n + (n === 1 ? ' mês' : ' meses'); $('#j-dv').textContent = R$(d);
+    const S = [], C = [], D = [c];
+    for (let k = 0; k <= n; k++) { S.push(c * (1 + i * k)); C.push(c * Math.pow(1 + i, k)); if (k) D.push(D[k - 1] * (1 + i) + d); }
+    const ymax = Math.max(C[n], D[n], 1) * 1.06;
+    $('#j-plot').innerHTML = linhas([S, C, d ? D : null], n, ymax, ['#5b8def', '#f08c2e', '#47b881']);
+    $('#j-leg3').hidden = !d;
+    $('#j-res').innerHTML = `<div><span>Juros simples</span><b>${R$(S[n])}</b></div><div><span>Juros compostos</span><b>${R$(C[n])}</b></div>${d ? `<div><span>Com depósitos</span><b>${R$(D[n])}</b></div>` : ''}`;
+    const dobra = i > 0 ? Math.ceil(Math.log(2) / Math.log(1 + i)) : null;
+    $('#j-txt').textContent = (c ? `Em ${n} ${n === 1 ? 'mês' : 'meses'}, os juros sobre juros renderam ${R$(C[n] - S[n])} a mais que os juros simples. ` + (dobra ? `A ${pct(i * 100)} ao mês em juros compostos, o dinheiro dobra em cerca de ${dobra} meses.` : '') : 'Com valor inicial zero, só os depósitos rendem.') + (d ? ` Com os depósitos, você colocou ${R$(c + d * n)} do seu bolso e terminou com ${R$(D[n])}.` : '');
+  }
+  document.querySelectorAll('#jur input').forEach(e => e.oninput = jur);
+
+  // ---------- À vista x parcelado ----------
+  function taxa(pv, pmt, n) {
+    if (pmt * n <= pv) return 0;
+    let lo = 0, hi = 1;
+    for (let k = 0; k < 100; k++) { const r = (lo + hi) / 2, v = pmt * (1 - Math.pow(1 + r, -n)) / r; if (v > pv) lo = r; else hi = r; }
+    return (lo + hi) / 2;
+  }
+  function par() {
+    const nome = $('#p-nome').value.trim() || 'produto', p = +$('#p-p').value, d = +$('#p-d').value / 100, n = +$('#p-n').value, v = Math.max(0, +$('#p-v').value || 0);
+    $('#p-pv').textContent = R$(p); $('#p-dv').textContent = pct(d * 100); $('#p-nv').textContent = n + ' vezes';
+    const vista = p * (1 - d), total = v * n, dif = total - vista, t = taxa(vista, v, n);
+    $('#p-res').innerHTML = `<div><span>À vista</span><b>${R$(vista)}</b></div><div><span>Parcelado</span><b>${R$(total)}</b></div><div><span>Diferença</span><b>${R$(dif)}</b></div><div><span>Juros embutidos</span><b>${pct(t * 100)} ao mês</b></div>`;
+    const W = 600, H = 120, mx = Math.max(vista, total, 1), w = x => 150 + (W - 170) * x / mx;
+    $('#p-plot').innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><text x="0" y="40" font-size="15">À vista</text><rect x="150" y="18" width="${w(vista) - 150}" height="34" rx="8" fill="#47b881" stroke="var(--ink)" stroke-width="1.5"/><text x="0" y="96" font-size="15">Parcelado</text><rect x="150" y="74" width="${w(total) - 150}" height="34" rx="8" fill="#ef6a5a" stroke="var(--ink)" stroke-width="1.5"/></svg>`;
+    const el = $('#p-txt');
+    if (dif > 0.005) { el.className = 'aviso bad'; el.textContent = `Parcelado, o ${nome} sai ${R$(dif)} mais caro: ${pct(dif / vista * 100)} a mais que à vista. É como pegar dinheiro emprestado a ${pct(t * 100)} ao mês.`; }
+    else { el.className = 'aviso ok'; el.textContent = `O parcelado não custa mais que o preço à vista. Nesse caso, pagar aos poucos e deixar o dinheiro rendendo pode valer a pena.`; }
+  }
+  document.querySelectorAll('#par input').forEach(e => e.oninput = par);
+
+  orc(); jur(); par();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
