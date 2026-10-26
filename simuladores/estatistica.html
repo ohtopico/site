@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estatística descritiva · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador de estatística descritiva: média, mediana, moda, desvio padrão, quartis, outliers, histograma e boxplot, com o código pandas equivalente.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/estatistica.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .st-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .st-layout { grid-template-columns: minmax(0, 1fr); } }
+  .st-layout > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  #vals { width: 100%; min-height: 110px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; align-items: center; font-size: 14px; }
+  .presets button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; }
+  .presets button:hover { border-style: solid; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+  .metric { border: 1.5px solid var(--line); border-radius: 14px; padding: 8px 10px; background: var(--paper); }
+  .metric span { display: block; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+  .metric b { font-family: var(--display); font-size: 22px; line-height: 1.2; }
+  .metric.key { border-color: var(--ink); }
+  .chart { width: 100%; height: auto; display: block; }
+  .chart text { font-family: var(--body); fill: var(--ink-2); font-size: 11px; }
+  .chart .bar { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+  .chart .axis { stroke: var(--ink); stroke-width: 1.5; }
+  .chart .mean { stroke: var(--bad); stroke-width: 2.5; stroke-dasharray: 6 4; }
+  .chart .median { stroke: var(--ink); stroke-width: 2.5; }
+  .chart .bx { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 2; }
+  .chart .wh { stroke: var(--ink); stroke-width: 2; }
+  .chart .out { fill: var(--bad); }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .legend i { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid; vertical-align: middle; margin-right: 4px; }
+  .note-small { font-size: 14px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim">
+    <div class="st-layout">
+      <div>
+        <div class="box">
+          <h3>Dados</h3>
+          <label class="field"><span class="sr-only">Valores</span><textarea id="vals" spellcheck="false">7.5 8 6.5 9 5 7 8.5 6 9.5 7 4 8</textarea></label>
+          <div class="presets" id="presets"><span class="muted">Exemplos:</span></div>
+          <p class="small muted" style="margin:6px 0 0">Separe por espaço, ponto e vírgula ou quebra de linha. Decimais com ponto ou vírgula (2,5).</p>
+          <p class="feedback" id="err" role="status"></p>
+        </div>
+        <div class="box"><h3>Medidas</h3><div class="metrics" id="metrics"></div><p class="note-small" id="interp"></p></div>
+      </div>
+      <div>
+        <div class="box"><h3>Histograma</h3><svg class="chart" id="hist" viewBox="0 0 520 240" role="img" aria-label="Histograma"></svg>
+          <div class="legend"><span><i style="border-color:var(--bad);border-top-style:dashed"></i>média</span><span><i style="border-color:var(--ink)"></i>mediana</span></div></div>
+        <div class="box"><h3>Boxplot</h3><svg class="chart" id="box" viewBox="0 0 520 120" role="img" aria-label="Boxplot"></svg>
+          <p class="small muted" style="margin:4px 0 0">Caixa de Q1 a Q3, linha na mediana, bigodes até os valores mais extremos dentro de 1,5 × IQR; pontos vermelhos são possíveis outliers.</p></div>
+        <div class="box"><h3>O mesmo em pandas</h3><pre id="code" style="margin:0"></pre></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+simTopbar('sim'); simFooter(); simHead('estatistica');
+(function () {
+  const $ = s => document.querySelector(s);
+  const PRESETS = [
+    ['Notas de uma turma', '7.5 8 6.5 9 5 7 8.5 6 9.5 7 4 8'],
+    ['Salários com um valor extremo (mil R$)', '2 2 3 3 3 4 25'],
+    ['Lista curta com outlier', '2 3 3 4 5 6 30'],
+    ['Tempo de entrega (dias)', '1 2 2 2 3 3 3 3 4 4 5 6 8 12 15'],
+    ['Idades (distribuição simétrica)', '18 19 20 20 21 21 21 22 22 22 22 23 23 23 24 24 25 26']
+  ];
+  $('#presets').innerHTML += PRESETS.map((p, i) => `<button type="button" data-p="${i}">${p[0]}</button>`).join('');
+  $('#presets').onclick = e => { const b = e.target.closest('button[data-p]'); if (b) { $('#vals').value = PRESETS[+b.dataset.p][1]; run(); } };
+
+  const fmt = (v, d = 2) => Number.isFinite(v) ? v.toLocaleString('pt-BR', { maximumFractionDigits: d }) : '—';
+  const py = v => Number.isInteger(v) ? String(v) : String(+v.toFixed(6));
+  function parse(txt) {
+    const t = txt.replace(/,\s+/g, ' ').replace(/(\d),(\d)/g, '$1.$2').replace(/,/g, ' ');
+    const toks = t.split(/[\s;]+/).filter(Boolean);
+    const vals = toks.map(Number);
+    return vals.some(v => !Number.isFinite(v)) ? null : vals;
+  }
+  /* Quantil pelo método linear (padrão do pandas/NumPy) */
+  function quantile(sorted, q) {
+    const pos = (sorted.length - 1) * q, lo = Math.floor(pos), hi = Math.ceil(pos);
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
+  }
+  function run() {
+    const v = parse($('#vals').value), err = $('#err');
+    if (!v || v.length < 2) { err.textContent = v ? 'Informe pelo menos dois valores.' : 'Há valores que não são números.'; err.className = 'feedback bad'; return; }
+    err.textContent = ''; err.className = 'feedback';
+    const n = v.length, s = [...v].sort((a, b) => a - b), sum = v.reduce((a, b) => a + b, 0), mean = sum / n;
+    const median = quantile(s, .5), q1 = quantile(s, .25), q3 = quantile(s, .75), iqr = q3 - q1;
+    const ss = v.reduce((a, x) => a + (x - mean) ** 2, 0), varS = ss / (n - 1), sd = Math.sqrt(varS), sdP = Math.sqrt(ss / n);
+    const freq = new Map(); v.forEach(x => freq.set(x, (freq.get(x) || 0) + 1));
+    const maxF = Math.max(...freq.values());
+    const modes = maxF > 1 ? [...freq].filter(([, f]) => f === maxF).map(([x]) => x).sort((a, b) => a - b) : [];
+    const lo = q1 - 1.5 * iqr, hi = q3 + 1.5 * iqr, outs = s.filter(x => x < lo || x > hi);
+    const inside = s.filter(x => x >= lo && x <= hi), wl = inside[0], wh = inside[inside.length - 1];
+    const cv = mean !== 0 ? sd / Math.abs(mean) * 100 : NaN;
+
+    const M = [['n', n], ['Média', mean, 1], ['Mediana', median, 1], ['Moda', modes.length ? modes.map(x => fmt(x)).join('; ') : 'sem moda'],
+      ['Desvio padrão (amostral)', sd, 1], ['Desvio padrão (populacional)', sdP], ['Variância (amostral)', varS], ['Mínimo', s[0]], ['Máximo', s[n - 1]],
+      ['Amplitude', s[n - 1] - s[0]], ['Q1 (25%)', q1, 1], ['Q3 (75%)', q3, 1], ['IQR', iqr], ['Coef. de variação', Number.isFinite(cv) ? fmt(cv, 1) + '%' : '—'],
+      ['Limite inferior', lo], ['Limite superior', hi], ['Outliers', outs.length ? outs.map(x => fmt(x)).join('; ') : 'nenhum']];
+    $('#metrics').innerHTML = M.map(([k, val, key]) => `<div class="metric${key ? ' key' : ''}"><span>${k}</span><b>${typeof val === 'number' ? fmt(val, 3) : val}</b></div>`).join('');
+    const diff = (mean - median) / (sd || 1);
+    $('#interp').innerHTML = Math.abs(diff) < 0.1 ? 'Média e mediana próximas: distribuição aproximadamente <strong>simétrica</strong>.'
+      : diff > 0 ? 'Média maior que a mediana: cauda à <strong>direita</strong> (assimetria positiva) — valores altos puxam a média.'
+      : 'Média menor que a mediana: cauda à <strong>esquerda</strong> (assimetria negativa) — valores baixos puxam a média.';
+
+    /* Histograma (regra de Sturges) */
+    const k = Math.max(3, Math.ceil(Math.log2(n) + 1)), mn = s[0], mx = s[n - 1], w = (mx - mn) / k || 1;
+    const bins = Array(k).fill(0); v.forEach(x => { let i = Math.floor((x - mn) / w); if (i >= k) i = k - 1; bins[i]++; });
+    const W = 520, H = 240, L = 36, R = 12, T = 12, B = 30, pw = W - L - R, ph = H - T - B, top = Math.max(...bins);
+    const X = x => L + (x - mn) / (w * k) * pw;
+    let h = `<line class="axis" x1="${L}" y1="${T + ph}" x2="${W - R}" y2="${T + ph}"/><line class="axis" x1="${L}" y1="${T}" x2="${L}" y2="${T + ph}"/>`;
+    bins.forEach((c, i) => { const bh = c / top * ph; h += `<rect class="bar" x="${L + i * pw / k + 1}" y="${T + ph - bh}" width="${pw / k - 2}" height="${bh}"/>${c ? `<text x="${L + (i + .5) * pw / k}" y="${T + ph - bh - 3}" text-anchor="middle">${c}</text>` : ''}`; });
+    for (let i = 0; i <= k; i++) if (k <= 10 || i % 2 === 0) h += `<text x="${L + i * pw / k}" y="${H - 12}" text-anchor="middle">${fmt(mn + i * w, 1)}</text>`;
+    h += `<text x="${L - 6}" y="${T + 8}" text-anchor="end">${top}</text><text x="${L - 6}" y="${T + ph}" text-anchor="end">0</text>`;
+    h += `<line class="mean" x1="${X(mean)}" y1="${T}" x2="${X(mean)}" y2="${T + ph}"/><line class="median" x1="${X(median)}" y1="${T}" x2="${X(median)}" y2="${T + ph}"/>`;
+    $('#hist').innerHTML = h;
+
+    /* Boxplot */
+    const bW = 520, bL = 20, bR = 20, by = 50, bh2 = 36, bx = x => bL + (x - mn) / ((mx - mn) || 1) * (bW - bL - bR);
+    let b = `<line class="wh" x1="${bx(wl)}" y1="${by}" x2="${bx(q1)}" y2="${by}"/><line class="wh" x1="${bx(q3)}" y1="${by}" x2="${bx(wh)}" y2="${by}"/>
+      <line class="wh" x1="${bx(wl)}" y1="${by - 12}" x2="${bx(wl)}" y2="${by + 12}"/><line class="wh" x1="${bx(wh)}" y1="${by - 12}" x2="${bx(wh)}" y2="${by + 12}"/>
+      <rect class="bx" x="${bx(q1)}" y="${by - bh2 / 2}" width="${Math.max(2, bx(q3) - bx(q1))}" height="${bh2}"/>
+      <line class="median" x1="${bx(median)}" y1="${by - bh2 / 2}" x2="${bx(median)}" y2="${by + bh2 / 2}"/>
+      <line class="mean" x1="${bx(mean)}" y1="${by - bh2 / 2 - 6}" x2="${bx(mean)}" y2="${by + bh2 / 2 + 6}"/>`;
+    outs.forEach(x => { b += `<circle class="out" cx="${bx(x)}" cy="${by}" r="5"/>`; });
+    [['mín', s[0]], ['Q1', q1], ['Q2', median], ['Q3', q3], ['máx', s[n - 1]]].forEach(([l, x], i) => { b += `<text x="${bx(x)}" y="${by + bh2 / 2 + 22 + (i % 2) * 12}" text-anchor="middle">${l} ${fmt(x, 2)}</text>`; });
+    $('#box').innerHTML = b;
+
+    /* Código pandas */
+    $('#code').textContent = `import pandas as pd
+s = pd.Series([${v.map(py).join(', ')}])
+s.describe()
+# count   ${n}
+# mean    ${mean.toFixed(6)}
+# std     ${sd.toFixed(6)}
+# min     ${s[0].toFixed(6)}
+# 25%     ${q1.toFixed(6)}
+# 50%     ${median.toFixed(6)}
+# 75%     ${q3.toFixed(6)}
+# max     ${s[n - 1].toFixed(6)}
+s.mode()          # moda: ${modes.length ? modes.map(py).join(', ') : 'todos os valores (sem repetição)'}
+iqr = s.quantile(0.75) - s.quantile(0.25)
+s[(s < s.quantile(0.25) - 1.5*iqr) | (s > s.quantile(0.75) + 1.5*iqr)]   # outliers: ${outs.length ? outs.map(py).join(', ') : 'nenhum'}`;
+  }
+  let t; $('#vals').addEventListener('input', () => { clearTimeout(t); t = setTimeout(run, 200); });
+  run();
+})();
+</script>
+</body>
+</html>

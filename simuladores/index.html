@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simuladores de Computação e Estatística | ohtopico</title>
+<meta name="description" content="Simuladores interativos e gratuitos no navegador: bases numéricas, portas lógicas, estatística descritiva, assembly MIPS e memória cache, com indicação de uso no Ensino Fundamental e habilidades da BNCC.">
+<meta property="og:title" content="Simuladores de Computação e Estatística | ohtopico">
+<meta property="og:description" content="Bases numéricas, portas lógicas, estatística descritiva, assembly MIPS e memória cache no navegador, sem cadastro.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .hero { padding: 56px 0 44px; border-bottom: 1.5px solid var(--ink); background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 22px 22px; }
+  .hero-inner { max-width: 760px; }
+  .hero p.lead { font-size: 19px; color: var(--ink-2); }
+  .hero .terminal { display: inline-block; font-family: ui-monospace, Consolas, monospace; font-size: 14px; background: var(--ink); color: var(--paper); border-radius: 10px; padding: 6px 12px; margin-bottom: 14px; }
+  .u-card .sig { align-self: flex-start; font-family: ui-monospace, Consolas, monospace; font-weight: 700; font-size: 15px; border: 1.5px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 2px 8px; }
+  .u-card .niveis { margin-top: 0; }
+  .u-card .bncc { font-size: 13px; color: var(--ink-2); }
+  .filtro { margin-top: 18px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main>
+  <section class="hero">
+    <div class="wrap"><div class="hero-inner">
+      <span class="terminal">$ simular no navegador</span>
+      <h1>Simuladores para ver a Computação funcionando.</h1>
+      <p class="lead">Experimentos interativos de Computação e Estatística, sem cadastro e sem instalar nada. Funcionam no computador e no celular. Cada simulador indica em quais etapas de ensino pode ser usado e, no Ensino Fundamental, quais habilidades da BNCC apoia.</p>
+    </div></div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Simuladores</span>
+      <h2>Escolha um simulador</h2>
+      <div class="seg filtro" role="group" aria-label="Filtrar por etapa de ensino">
+        <button type="button" data-n="" aria-pressed="true">Todos</button>
+        <button type="button" data-n="EF" aria-pressed="false">Ensino Fundamental</button>
+        <button type="button" data-n="EM" aria-pressed="false">Ensino Médio</button>
+        <button type="button" data-n="ES" aria-pressed="false">Ensino Superior e técnico</button>
+      </div>
+      <div class="u-grid" id="sims" style="margin-top:18px"></div>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+  simTopbar('inicio'); simFooter();
+  function render(n) {
+    document.getElementById('sims').innerHTML = SIMULADORES.filter(s => !n || s.niveis.includes(n)).map(s => `
+      <article class="u-card">
+        <span class="sig" aria-hidden="true">${esc(s.sigla)}</span>
+        <h3><a href="${s.url}">${esc(s.titulo)}</a></h3>
+        <p>${esc(s.resumo)}</p>
+        ${simNiveis(s)}
+        ${s.bncc ? `<span class="bncc">BNCC: ${s.bncc.join(', ')}</span>` : ''}
+      </article>`).join('');
+  }
+  const btns = document.querySelectorAll('.filtro button');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    render(b.dataset.n);
+  }));
+  render('');
+</script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini-MIPS · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador de assembly MIPS no navegador: montagem, execução passo a passo, registradores, memória, codificação nos formatos R, I e J e ciclo da instrução.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/mips.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .mips { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 960px) { .mips { grid-template-columns: minmax(0, 1fr); } }
+  .mips > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  #src { width: 100%; min-height: 300px; }
+  .ctrl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+  .ctrl .btn { min-height: 42px; padding: 8px 16px; font-size: 15px; }
+  .listing { width: 100%; border-collapse: collapse; font-family: ui-monospace, Consolas, monospace; font-size: 13.5px; }
+  .listing td { padding: 3px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .listing tr { cursor: pointer; }
+  .listing tr:hover td { background: var(--pill); }
+  .listing tr.pc td { background: var(--accent-soft); font-weight: 700; }
+  .listing tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  .listing .src { color: var(--ink-2); white-space: normal; }
+  .scroll { max-height: 280px; overflow: auto; }
+  .regs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 2px 10px; font-family: ui-monospace, Consolas, monospace; font-size: 13.5px; }
+  .regs div { display: flex; justify-content: space-between; padding: 2px 6px; border-radius: 6px; }
+  .regs div b { color: var(--ink-2); font-weight: 600; }
+  .regs div.ch { background: var(--accent); color: var(--paper); }
+  .regs div.ch b { color: var(--paper); }
+  .mem { width: 100%; border-collapse: collapse; font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  .mem td, .mem th { padding: 3px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+  .mem th { font-family: var(--body); font-size: 12px; color: var(--ink-2); }
+  .mem tr.ch td { background: var(--accent-soft); font-weight: 700; }
+  .enc { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+  .enc div { border: 1.5px solid var(--ink); border-radius: 8px; padding: 4px 6px; text-align: center; font-family: ui-monospace, Consolas, monospace; font-size: 13px; min-width: 60px; }
+  .enc div small { display: block; font-family: var(--body); font-size: 11px; color: var(--ink-2); }
+  .enc div b { display: block; letter-spacing: .06em; }
+  .enc .f-op { background: var(--pill); } .enc .f-reg { background: var(--accent-soft); } .enc .f-imm { background: var(--paper-2); } .enc .f-fn { background: var(--pill-2); }
+  .fmt { display: inline-block; font-weight: 700; border-radius: 6px; padding: 0 8px; background: var(--ink); color: var(--paper); font-size: 13px; }
+  .stages { list-style: none; padding: 0; margin: 0; font-size: 14.5px; }
+  .stages li { display: grid; grid-template-columns: 52px 1fr; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--line); }
+  .stages li b { font-family: ui-monospace, Consolas, monospace; background: var(--ink); color: var(--paper); border-radius: 6px; text-align: center; font-size: 12.5px; padding: 1px 0; height: fit-content; }
+  .stages li.none { color: var(--ink-3); }
+  .console { font-family: ui-monospace, Consolas, monospace; font-size: 14px; background: var(--ink); color: var(--paper); border-radius: 12px; padding: 10px 12px; min-height: 60px; white-space: pre-wrap; max-height: 180px; overflow: auto; }
+  .status { font-size: 14.5px; font-weight: 600; }
+  .status.bad { color: var(--bad); } .status.ok { color: var(--ok); }
+  .help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 18px; font-size: 14px; }
+  .help-grid code { font-size: 13px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim">
+    <div class="ctrl">
+      <label class="field" style="flex-direction:row;align-items:center;gap:8px">Exemplo
+        <select id="ex"></select></label>
+      <span class="spacer" style="flex:1"></span>
+      <button class="btn ghost" type="button" id="b-asm">Montar</button>
+      <button class="btn" type="button" id="b-step">⏭ Passo</button>
+      <button class="btn" type="button" id="b-run">▶ Executar</button>
+      <button class="btn ghost" type="button" id="b-reset">↺ Reiniciar</button>
+    </div>
+    <p class="status" id="status" role="status"></p>
+
+    <div class="mips">
+      <div>
+        <div class="box">
+          <h3>Código assembly</h3>
+          <label class="field"><span class="sr-only">Código</span><textarea id="src" spellcheck="false" autocomplete="off"></textarea></label>
+        </div>
+        <div class="box">
+          <h3>Programa montado <span class="small" style="text-transform:none;letter-spacing:0;font-weight:500">clique numa linha para ver a codificação</span></h3>
+          <div class="scroll"><table class="listing"><tbody id="listing"></tbody></table></div>
+        </div>
+      </div>
+      <div>
+        <div class="box">
+          <h3>Registradores <span><label class="small" style="text-transform:none;letter-spacing:0;font-weight:500"><input type="checkbox" id="hex"> hexadecimal</label></span></h3>
+          <div class="regs" id="regs"></div>
+        </div>
+        <div class="box">
+          <h3>Memória de dados</h3>
+          <div class="scroll" style="max-height:200px"><table class="mem"><thead><tr><th>Endereço</th><th>Rótulo</th><th>Palavra</th><th>Decimal</th></tr></thead><tbody id="mem"></tbody></table></div>
+        </div>
+        <div class="box">
+          <h3>Saída (syscall)</h3>
+          <div class="console" id="console" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mips">
+      <div class="box">
+        <h3>Codificação da instrução</h3>
+        <div id="enc"><p class="small muted">Monte o programa para ver a codificação.</p></div>
+      </div>
+      <div class="box">
+        <h3>Ciclo da última instrução executada</h3>
+        <ul class="stages" id="stages"><li class="none"><b>—</b><span>Execute um passo para ver busca, decodificação, execução, memória e escrita.</span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <details class="howto">
+    <summary>Instruções suportadas</summary>
+    <div class="help-grid" style="margin-top:10px">
+      <div><strong>Formato R</strong><br><code>add addu sub subu and or xor nor slt sltu</code><br><code>mul sll srl sra jr syscall</code></div>
+      <div><strong>Formato I</strong><br><code>addi addiu andi ori xori slti sltiu lui</code><br><code>lw sw lb lbu sb beq bne</code></div>
+      <div><strong>Formato J</strong><br><code>j jal</code></div>
+      <div><strong>Pseudoinstruções</strong><br><code>li la move nop b blt bge bgt ble</code></div>
+      <div><strong>Diretivas</strong><br><code>.data .text .word .asciiz .space</code></div>
+      <div><strong>syscall</strong> ($v0)<br>1 imprime inteiro ($a0) · 4 imprime texto ($a0) · 11 imprime caractere · 10 encerra</div>
+    </div>
+    <p class="small muted" style="margin-top:8px">Segmento de texto em 0x00400000 e de dados em 0x10010000, como no simulador MARS. A memória é little-endian. <code>add</code>, <code>addi</code> e <code>sub</code> geram exceção em caso de overflow.</p>
+  </details>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+simTopbar('sim'); simFooter(); simHead('mips');
+(function () {
+  const $ = s => document.querySelector(s);
+  const TEXT = 0x00400000, DATA = 0x10010000;
+  const RN = ['$zero', '$at', '$v0', '$v1', '$a0', '$a1', '$a2', '$a3', '$t0', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7',
+    '$s0', '$s1', '$s2', '$s3', '$s4', '$s5', '$s6', '$s7', '$t8', '$t9', '$k0', '$k1', '$gp', '$sp', '$fp', '$ra'];
+  const hex = (v, d = 8) => '0x' + (v >>> 0).toString(16).toUpperCase().padStart(d, '0');
+
+  const EXEMPLOS = {
+    'if/else': `# if (a == b) c = a + b; else c = a - b;
+# a em $s0, b em $s1, c em $s2
+        li   $s0, 7
+        li   $s1, 3
+        bne  $s0, $s1, senao   # se a != b, vai para o else
+        add  $s2, $s0, $s1     # c = a + b
+        j    fim
+senao:  sub  $s2, $s0, $s1     # c = a - b
+fim:    move $a0, $s2          # imprime c
+        li   $v0, 1
+        syscall`,
+    'Soma simples': `# soma dois números e guarda em $t2
+        li   $t0, 5
+        li   $t1, 7
+        add  $t2, $t0, $t1     # $t2 = 12`,
+    'Laço: soma de 1 a n': `# soma 1 + 2 + ... + n
+        li   $a0, 10           # n = 10
+        li   $v0, 0            # soma = 0
+        li   $t0, 1            # i = 1
+laco:   slt  $t1, $a0, $t0     # t1 = (n < i)
+        bne  $t1, $zero, fim   # se n < i, sai
+        add  $v0, $v0, $t0     # soma += i
+        addi $t0, $t0, 1       # i++
+        j    laco
+fim:    move $a0, $v0
+        li   $v0, 1            # imprime a soma (55)
+        syscall`,
+    'Vetor na memória': `# soma os elementos de um vetor
+        .data
+vetor:  .word 3, 8, 1, 9, 4
+n:      .word 5
+soma:   .word 0
+        .text
+        la   $s0, vetor        # base do vetor
+        lw   $s1, n            # quantidade
+        li   $t0, 0            # i = 0
+        li   $t2, 0            # acumulador
+laco:   beq  $t0, $s1, fim
+        sll  $t1, $t0, 2       # deslocamento = i * 4
+        add  $t1, $t1, $s0     # endereço de vetor[i]
+        lw   $t3, 0($t1)
+        add  $t2, $t2, $t3
+        addi $t0, $t0, 1
+        j    laco
+fim:    sw   $t2, soma         # guarda o resultado na memória
+        move $a0, $t2
+        li   $v0, 1
+        syscall`,
+    'Procedimento (jal/jr)': `# maior(a, b) devolve o maior valor em $v0
+        li   $a0, 12
+        li   $a1, 30
+        jal  maior
+        move $a0, $v0
+        li   $v0, 1
+        syscall
+        li   $v0, 10           # encerra o programa
+        syscall
+
+maior:  slt  $t0, $a0, $a1     # a < b ?
+        beq  $t0, $zero, ehA
+        move $v0, $a1
+        jr   $ra
+ehA:    move $v0, $a0
+        jr   $ra`,
+    'Fatorial recursivo': `# fact(n) = n * fact(n - 1), com a pilha guardando $ra e $a0
+        li   $a0, 5
+        jal  fact
+        move $a0, $v0          # imprime 120
+        li   $v0, 1
+        syscall
+        li   $v0, 10
+        syscall
+
+fact:   addi $sp, $sp, -8      # abre espaço na pilha
+        sw   $ra, 4($sp)
+        sw   $a0, 0($sp)
+        slti $t0, $a0, 1       # n < 1 ?
+        beq  $t0, $zero, L1
+        addi $v0, $zero, 1     # caso base
+        addi $sp, $sp, 8
+        jr   $ra
+L1:     addi $a0, $a0, -1
+        jal  fact              # fact(n - 1)
+        lw   $a0, 0($sp)
+        lw   $ra, 4($sp)
+        addi $sp, $sp, 8
+        mul  $v0, $a0, $v0     # n * fact(n - 1)
+        jr   $ra`,
+    'Olá, mundo': `        .data
+msg:    .asciiz "Olá, mundo!\\n"
+        .text
+        la   $a0, msg
+        li   $v0, 4            # imprime texto
+        syscall`,
+    'Overflow': `# 2 147 483 647 + 1 não cabe em 32 bits com sinal
+        li   $t0, 0x7FFFFFFF
+        addu $t1, $t0, 1       # addu ignora o overflow
+        addi $t2, $t0, 1       # addi gera exceção`
+  };
+
+  /* ---------- Tabela de instruções ---------- */
+  const R3 = { add: 0x20, addu: 0x21, sub: 0x22, subu: 0x23, and: 0x24, or: 0x25, xor: 0x26, nor: 0x27, slt: 0x2a, sltu: 0x2b };
+  const SH = { sll: 0x00, srl: 0x02, sra: 0x03 };
+  const IA = { addi: 0x08, addiu: 0x09, slti: 0x0a, sltiu: 0x0b, andi: 0x0c, ori: 0x0d, xori: 0x0e };
+  const MEM = { lw: 0x23, sw: 0x2b, lb: 0x20, lbu: 0x24, sb: 0x28 };
+  const BR = { beq: 0x04, bne: 0x05 };
+  const JJ = { j: 0x02, jal: 0x03 };
+
+  class AsmError extends Error { constructor(line, msg) { super(`Linha ${line}: ${msg}`); } }
+  function reg(tok, ln) {
+    tok = (tok || '').trim();
+    let i = RN.indexOf(tok);
+    if (i < 0 && /^\$\d+$/.test(tok)) i = +tok.slice(1);
+    if (i < 0 && tok === '$s8') i = 30;
+    if (i < 0 || i > 31) throw new AsmError(ln, `registrador inválido “${tok}”`);
+    return i;
+  }
+  function imm(tok, ln) {
+    tok = (tok || '').trim();
+    if (/^'.'$/.test(tok)) return tok.charCodeAt(1);
+    if (!/^-?(0x[0-9a-f]+|\d+)$/i.test(tok)) throw new AsmError(ln, `valor imediato inválido “${tok}”`);
+    const neg = tok.startsWith('-'); const v = Number(neg ? tok.slice(1) : tok);
+    return neg ? -v : v;
+  }
+  const isImm = t => /^-?(0x[0-9a-f]+|\d+)$/i.test((t || '').trim()) || /^'.'$/.test((t || '').trim());
+  const split = s => { const out = []; let cur = '', q = false; for (const ch of s) { if (ch === '"') q = !q; if (ch === ',' && !q) { out.push(cur.trim()); cur = ''; } else cur += ch; } if (cur.trim()) out.push(cur.trim()); return out; };
+
+  /* Expande uma linha em instruções básicas (com rótulos ainda simbólicos) */
+  function expand(op, a, ln) {
+    const need = n => { if (a.length !== n) throw new AsmError(ln, `${op} espera ${n} operando(s)`); };
+    const memop = t => { const m = /^(-?(?:0x[0-9a-f]+|\d+))?\s*\(\s*(\$\w+)\s*\)$/i.exec(t.trim()); return m ? { off: m[1] ? imm(m[1], ln) : 0, base: reg(m[2], ln) } : null; };
+    if (op === 'mul') { need(3); return [{ op, f: 'R', rd: reg(a[0], ln), rs: reg(a[1], ln), rt: reg(a[2], ln) }]; }
+    if (op in R3) { need(3); if (isImm(a[2])) { const iop = { add: 'addi', addu: 'addiu', and: 'andi', or: 'ori', xor: 'xori', slt: 'slti', sltu: 'sltiu' }[op]; if (iop) return expand(iop, a, ln); if (op === 'sub' || op === 'subu') return expand(op === 'sub' ? 'addi' : 'addiu', [a[0], a[1], String(-imm(a[2], ln))], ln); } return [{ op, f: 'R', rd: reg(a[0], ln), rs: reg(a[1], ln), rt: reg(a[2], ln) }]; }
+    if (op in SH) { need(3); return [{ op, f: 'R', rd: reg(a[0], ln), rt: reg(a[1], ln), rs: 0, sh: imm(a[2], ln) & 31 }]; }
+    if (op === 'jr') { need(1); return [{ op, f: 'R', rs: reg(a[0], ln), rt: 0, rd: 0 }]; }
+    if (op === 'syscall') return [{ op, f: 'R', rs: 0, rt: 0, rd: 0 }];
+    if (op === 'nop') return [{ op: 'sll', f: 'R', rd: 0, rt: 0, rs: 0, sh: 0, alias: 'nop' }];
+    if (op in IA) { need(3); return [{ op, f: 'I', rt: reg(a[0], ln), rs: reg(a[1], ln), imm: imm(a[2], ln) }]; }
+    if (op === 'lui') { need(2); return [{ op, f: 'I', rt: reg(a[0], ln), rs: 0, imm: imm(a[1], ln) & 0xffff }]; }
+    if (op in MEM) {
+      need(2); const m = memop(a[1]);
+      if (m) return [{ op, f: 'I', rt: reg(a[0], ln), rs: m.base, imm: m.off }];
+      // rótulo: lui $at + acesso com deslocamento
+      return [{ op: 'lui', f: 'I', rt: 1, rs: 0, lab: a[1].trim(), part: 'hiS' }, { op, f: 'I', rt: reg(a[0], ln), rs: 1, lab: a[1].trim(), part: 'loS' }];
+    }
+    if (op in BR) { need(3); return [{ op, f: 'I', rs: reg(a[0], ln), rt: reg(a[1], ln), lab: a[2].trim(), part: 'br' }]; }
+    if (op in JJ) { need(1); return [{ op, f: 'J', lab: a[0].trim(), part: 'j' }]; }
+    // pseudoinstruções
+    if (op === 'li') {
+      need(2); const r = reg(a[0], ln), v = imm(a[1], ln);
+      if (v >= -32768 && v <= 32767) return [{ op: 'addiu', f: 'I', rt: r, rs: 0, imm: v, pseudo: 'li' }];
+      if (v >= 0 && v <= 0xffff) return [{ op: 'ori', f: 'I', rt: r, rs: 0, imm: v, pseudo: 'li' }];
+      return [{ op: 'lui', f: 'I', rt: 1, rs: 0, imm: (v >>> 16) & 0xffff, pseudo: 'li' }, { op: 'ori', f: 'I', rt: r, rs: 1, imm: v & 0xffff, pseudo: 'li' }];
+    }
+    if (op === 'la') { need(2); const r = reg(a[0], ln); return [{ op: 'lui', f: 'I', rt: 1, rs: 0, lab: a[1].trim(), part: 'hi', pseudo: 'la' }, { op: 'ori', f: 'I', rt: r, rs: 1, lab: a[1].trim(), part: 'lo', pseudo: 'la' }]; }
+    if (op === 'move') { need(2); return [{ op: 'addu', f: 'R', rd: reg(a[0], ln), rs: reg(a[1], ln), rt: 0, pseudo: 'move' }]; }
+    if (op === 'b') { need(1); return [{ op: 'beq', f: 'I', rs: 0, rt: 0, lab: a[0].trim(), part: 'br', pseudo: 'b' }]; }
+    if (['blt', 'bge', 'bgt', 'ble'].includes(op)) {
+      need(3); const x = reg(a[0], ln), y = reg(a[1], ln), L = a[2].trim();
+      const [p, q] = op === 'blt' || op === 'bge' ? [x, y] : [y, x];
+      return [{ op: 'slt', f: 'R', rd: 1, rs: p, rt: q, pseudo: op }, { op: op === 'blt' || op === 'bgt' ? 'bne' : 'beq', f: 'I', rs: 1, rt: 0, lab: L, part: 'br', pseudo: op }];
+    }
+    throw new AsmError(ln, `instrução desconhecida “${op}”`);
+  }
+
+  function assemble(text) {
+    const lines = text.replace(/\r/g, '').split('\n');
+    const labels = {}, prog = [], dataBytes = [], dataLabels = {};
+    let seg = 'text', pc = TEXT;
+    const pending = [];
+    lines.forEach((raw, idx) => {
+      const ln = idx + 1;
+      let line = raw.replace(/#(?=(?:[^"]*"[^"]*")*[^"]*$).*/, '').trim();
+      while (true) {
+        const m = /^([A-Za-z_][\w.]*)\s*:\s*/.exec(line);
+        if (!m) break;
+        const name = m[1];
+        if (name in labels) throw new AsmError(ln, `rótulo “${name}” repetido`);
+        labels[name] = seg === 'text' ? pc : DATA + dataBytes.length;
+        if (seg === 'data') dataLabels[DATA + dataBytes.length] = name;
+        line = line.slice(m[0].length);
+      }
+      if (!line) return;
+      const m = /^(\.?[A-Za-z]+)\s*(.*)$/.exec(line);
+      if (!m) throw new AsmError(ln, 'linha não reconhecida');
+      const op = m[1].toLowerCase(), args = split(m[2]);
+      if (op === '.data') { seg = 'data'; return; }
+      if (op === '.text') { seg = 'text'; return; }
+      if (op === '.globl' || op === '.align') return;
+      if (op === '.word') {
+        if (seg !== 'data') throw new AsmError(ln, '.word só pode aparecer em .data');
+        const before = DATA + dataBytes.length;
+        while (dataBytes.length % 4) dataBytes.push(0);
+        // rótulos colocados logo antes do alinhamento passam a apontar para a palavra alinhada
+        const aligned = DATA + dataBytes.length;
+        if (aligned !== before) Object.keys(labels).forEach(k => { if (labels[k] === before) { labels[k] = aligned; delete dataLabels[before]; dataLabels[aligned] = k; } });
+        args.forEach(t => { const v = imm(t, ln) >>> 0; dataBytes.push(v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255); });
+        return;
+      }
+      if (op === '.asciiz' || op === '.ascii') {
+        const s = /^"(.*)"$/.exec(m[2].trim()); if (!s) throw new AsmError(ln, 'texto deve estar entre aspas');
+        const str = s[1].replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+        new TextEncoder().encode(str).forEach(b => dataBytes.push(b));
+        if (op === '.asciiz') dataBytes.push(0);
+        return;
+      }
+      if (op === '.space') { const n = imm(args[0], ln); for (let i = 0; i < n; i++) dataBytes.push(0); return; }
+      if (op.startsWith('.')) throw new AsmError(ln, `diretiva não suportada “${op}”`);
+      if (seg !== 'text') throw new AsmError(ln, 'instruções devem ficar no segmento .text');
+      const basics = expand(op, args, ln);
+      basics.forEach((b, k) => { b.addr = pc; b.ln = ln; b.src = raw.replace(/#.*/, '').trim(); b.first = k === 0; pc += 4; prog.push(b); });
+    });
+    // resolve rótulos e codifica
+    prog.forEach(b => {
+      if (b.lab !== undefined) {
+        if (!(b.lab in labels)) throw new AsmError(b.ln, `rótulo “${b.lab}” não encontrado`);
+        const t = labels[b.lab];
+        if (b.part === 'br') { b.imm = (t - (b.addr + 4)) / 4; b.target = t; }
+        if (b.part === 'j') { b.target = t; b.addr26 = (t >>> 2) & 0x3ffffff; }
+        if (b.part === 'hi') b.imm = (t >>> 16) & 0xffff;
+        if (b.part === 'lo') b.imm = t & 0xffff;
+        if (b.part === 'hiS') b.imm = ((t + 0x8000) >>> 16) & 0xffff;
+        if (b.part === 'loS') b.imm = t - ((((t + 0x8000) >>> 16) & 0xffff) << 16);
+      }
+      if (b.f === 'I' && !['andi', 'ori', 'xori', 'lui'].includes(b.op) && (b.imm < -32768 || b.imm > 32767)) throw new AsmError(b.ln, `imediato ${b.imm} não cabe em 16 bits com sinal`);
+      if (b.f === 'I' && ['andi', 'ori', 'xori'].includes(b.op) && (b.imm < 0 || b.imm > 0xffff)) throw new AsmError(b.ln, `imediato ${b.imm} não cabe em 16 bits sem sinal`);
+      b.word = encode(b); b.text = basicText(b);
+    });
+    return { prog, labels, dataBytes, dataLabels };
+  }
+
+  function encode(b) {
+    if (b.f === 'R') {
+      const fn = b.op in R3 ? R3[b.op] : b.op in SH ? SH[b.op] : b.op === 'jr' ? 0x08 : b.op === 'mul' ? 0x02 : 0x0c;
+      const opc = b.op === 'mul' ? 0x1c : 0;
+      b.fields = { op: opc, rs: b.rs || 0, rt: b.rt || 0, rd: b.rd || 0, shamt: b.sh || 0, funct: fn };
+      return ((opc << 26) | (b.fields.rs << 21) | (b.fields.rt << 16) | (b.fields.rd << 11) | (b.fields.shamt << 6) | fn) >>> 0;
+    }
+    if (b.f === 'I') {
+      const opc = IA[b.op] ?? MEM[b.op] ?? BR[b.op] ?? (b.op === 'lui' ? 0x0f : 0);
+      b.fields = { op: opc, rs: b.rs || 0, rt: b.rt || 0, imm: b.imm & 0xffff };
+      return ((opc << 26) | (b.fields.rs << 21) | (b.fields.rt << 16) | b.fields.imm) >>> 0;
+    }
+    b.fields = { op: JJ[b.op], addr: b.addr26 };
+    return ((JJ[b.op] << 26) | b.addr26) >>> 0;
+  }
+  function basicText(b) {
+    const r = i => RN[i];
+    if (b.alias) return b.alias;
+    if (b.op in R3 || b.op === 'mul') return `${b.op} ${r(b.rd)}, ${r(b.rs)}, ${r(b.rt)}`;
+    if (b.op in SH) return `${b.op} ${r(b.rd)}, ${r(b.rt)}, ${b.sh}`;
+    if (b.op === 'jr') return `jr ${r(b.rs)}`;
+    if (b.op === 'syscall') return 'syscall';
+    if (b.op in IA) return `${b.op} ${r(b.rt)}, ${r(b.rs)}, ${b.imm}`;
+    if (b.op === 'lui') return `lui ${r(b.rt)}, ${hex(b.imm, 4)}`;
+    if (b.op in MEM) return `${b.op} ${r(b.rt)}, ${b.imm}(${r(b.rs)})`;
+    if (b.op in BR) return `${b.op} ${r(b.rs)}, ${r(b.rt)}, ${b.imm}`;
+    return `${b.op} ${hex(b.target)}`;
+  }
+
+  /* ---------- Máquina ---------- */
+  let A = null, R, PC, MEMB, halted, changed, memChanged, lastTrace, out, sel, dirty = true;
+  function reset() {
+    R = new Int32Array(32); R[28] = 0x10008000; R[29] = 0x7fffeffc | 0;
+    PC = TEXT; MEMB = new Map(); halted = false; changed = new Set(); memChanged = null; lastTrace = null; out = '';
+    if (A) A.dataBytes.forEach((v, i) => MEMB.set(DATA + i, v));
+    sel = null;
+  }
+  const rb = a => MEMB.get(a >>> 0) || 0;
+  const rw = a => (rb(a) | (rb(a + 1) << 8) | (rb(a + 2) << 16) | (rb(a + 3) << 24)) | 0;
+  const wb = (a, v) => MEMB.set(a >>> 0, v & 255);
+  const ww = (a, v) => { wb(a, v); wb(a + 1, v >>> 8); wb(a + 2, v >>> 16); wb(a + 3, v >>> 24); };
+  class RunError extends Error {}
+
+  function step() {
+    if (halted) return false;
+    const i = (PC - TEXT) / 4, b = A.prog[i];
+    if (!b) { halted = true; setStatus('Fim do programa.', 'ok'); return false; }
+    changed = new Set(); memChanged = null;
+    const r = k => R[k], set = (k, v) => { if (k !== 0) { R[k] = v | 0; changed.add(k); } };
+    const T = { b, pcOld: PC, IF: `Busca ${hex(b.word)} no endereço ${hex(PC)}; PC ← PC + 4 = ${hex(PC + 4)}.` };
+    let next = PC + 4;
+    const rn = k => `${RN[k]} (${R[k]})`;
+    const ovf = (x, y, s) => { if (((x ^ s) & (y ^ s)) < 0) throw new RunError(`Exceção: overflow aritmético em “${b.text}” (${hex(b.addr)}). Use addu/addiu/subu para ignorar.`); };
+    switch (b.op) {
+      case 'add': case 'addu': case 'sub': case 'subu': case 'and': case 'or': case 'xor': case 'nor': case 'slt': case 'sltu': {
+        const x = r(b.rs), y = r(b.rt); let v, sym;
+        if (b.op === 'add' || b.op === 'addu') { v = (x + y) | 0; sym = '+'; if (b.op === 'add') ovf(x, y, v); }
+        else if (b.op === 'sub' || b.op === 'subu') { v = (x - y) | 0; sym = '−'; if (b.op === 'sub') ovf(x, ~y + 1, v); }
+        else if (b.op === 'and') { v = x & y; sym = 'AND'; } else if (b.op === 'or') { v = x | y; sym = 'OR'; }
+        else if (b.op === 'xor') { v = x ^ y; sym = 'XOR'; } else if (b.op === 'nor') { v = ~(x | y); sym = 'NOR'; }
+        else if (b.op === 'slt') { v = x < y ? 1 : 0; sym = '<'; } else { v = (x >>> 0) < (y >>> 0) ? 1 : 0; sym = '< (sem sinal)'; }
+        T.ID = `Formato R, funct ${hex(b.fields.funct, 2)} (${b.op}). Lê ${rn(b.rs)} e ${rn(b.rt)}.`;
+        T.EX = b.op.startsWith('sl') ? `ULA compara ${x} ${sym} ${y} → ${v}.` : `ULA calcula ${x} ${sym} ${y} = ${v}.`;
+        set(b.rd, v); T.WB = b.rd ? `Escreve ${v} em ${RN[b.rd]}.` : '$zero não pode ser alterado.'; break;
+      }
+      case 'mul': {
+        const x = r(b.rs), y = r(b.rt), v = Math.imul(x, y);
+        T.ID = `Formato R (opcode 0x1C, funct 0x02 — mul). Lê ${rn(b.rs)} e ${rn(b.rt)}.`;
+        T.EX = `Multiplicador calcula ${x} × ${y} = ${v} (32 bits menos significativos).`;
+        set(b.rd, v); T.WB = b.rd ? `Escreve ${v} em ${RN[b.rd]}.` : 'Sem escrita (destino $zero).'; break;
+      }
+      case 'sll': case 'srl': case 'sra': {
+        const x = r(b.rt), v = b.op === 'sll' ? x << b.sh : b.op === 'srl' ? x >>> b.sh : x >> b.sh;
+        T.ID = b.alias ? 'Formato R: nop (sll $zero, $zero, 0) — não faz nada.' : `Formato R, funct ${hex(b.fields.funct, 2)} (${b.op}). Lê ${rn(b.rt)}, shamt = ${b.sh}.`;
+        T.EX = b.alias ? 'Nenhuma operação.' : `Deslocador: ${x} ${b.op === 'sll' ? '<<' : '>>'} ${b.sh} = ${v | 0}.`;
+        set(b.rd, v); T.WB = b.rd ? `Escreve ${v | 0} em ${RN[b.rd]}.` : 'Sem escrita (destino $zero).'; break;
+      }
+      case 'jr': T.ID = `Formato R, funct 0x08 (jr). Lê ${RN[b.rs]} = ${hex(r(b.rs))}.`; T.EX = `PC ← ${hex(r(b.rs))}.`; next = r(b.rs) >>> 0; break;
+      case 'syscall': {
+        const code = r(2); T.ID = `Formato R, funct 0x0C (syscall). Código em $v0 = ${code}.`;
+        if (code === 1) { out += String(r(4)); T.EX = `Sistema imprime o inteiro de $a0: ${r(4)}.`; }
+        else if (code === 11) { out += String.fromCharCode(r(4) & 255); T.EX = 'Sistema imprime o caractere de $a0.'; }
+        else if (code === 4) { const bytes = []; let a = r(4) >>> 0; while (rb(a) && bytes.length < 2000) bytes.push(rb(a++)); const s = new TextDecoder().decode(new Uint8Array(bytes)); out += s; T.EX = `Sistema imprime o texto que começa em ${hex(r(4))}.`; }
+        else if (code === 10) { halted = true; T.EX = 'Sistema encerra o programa.'; setStatus('Programa encerrado (syscall 10).', 'ok'); }
+        else throw new RunError(`syscall com $v0 = ${code} não é suportada.`);
+        break;
+      }
+      case 'addi': case 'addiu': case 'slti': case 'sltiu': case 'andi': case 'ori': case 'xori': {
+        const x = r(b.rs), se = (b.imm << 16) >> 16, ze = b.imm & 0xffff; let v, y, sym;
+        if (b.op === 'addi' || b.op === 'addiu') { y = se; v = (x + y) | 0; sym = '+'; if (b.op === 'addi') ovf(x, y, v); }
+        else if (b.op === 'slti') { y = se; v = x < y ? 1 : 0; sym = '<'; } else if (b.op === 'sltiu') { y = se; v = (x >>> 0) < (y >>> 0) ? 1 : 0; sym = '< (sem sinal)'; }
+        else { y = ze; v = b.op === 'andi' ? x & y : b.op === 'ori' ? x | y : x ^ y; sym = b.op.slice(0, -1).toUpperCase(); }
+        T.ID = `Formato I, opcode ${hex(b.fields.op, 2)} (${b.op}). Lê ${rn(b.rs)}; imediato ${['andi', 'ori', 'xori'].includes(b.op) ? 'estendido com zeros' : 'com extensão de sinal'} = ${y}.`;
+        T.EX = `ULA calcula ${x} ${sym} ${y} = ${v}.`;
+        set(b.rt, v); T.WB = b.rt ? `Escreve ${v} em ${RN[b.rt]}.` : 'Sem escrita (destino $zero).'; break;
+      }
+      case 'lui': T.ID = `Formato I, opcode 0x0F (lui). Imediato = ${hex(b.imm, 4)}.`; T.EX = `Desloca o imediato 16 bits à esquerda: ${hex(b.imm << 16)}.`; set(b.rt, b.imm << 16); T.WB = `Escreve ${hex(b.imm << 16)} em ${RN[b.rt]}.`; break;
+      case 'lw': case 'lb': case 'lbu': case 'sw': case 'sb': {
+        const se = (b.imm << 16) >> 16, addr = (r(b.rs) + se) >>> 0;
+        T.ID = `Formato I, opcode ${hex(b.fields.op, 2)} (${b.op}). Lê ${RN[b.rs]} = ${hex(r(b.rs))}${b.op.startsWith('s') ? ` e ${rn(b.rt)}` : ''}.`;
+        T.EX = `ULA calcula o endereço: ${hex(r(b.rs))} + ${se} = ${hex(addr)}.`;
+        if ((b.op === 'lw' || b.op === 'sw') && addr % 4) throw new RunError(`Endereço ${hex(addr)} não está alinhado a 4 bytes (${b.text}).`);
+        if (b.op === 'lw') { const v = rw(addr); T.MEM = `Lê a palavra ${v} de ${hex(addr)}.`; set(b.rt, v); T.WB = `Escreve ${v} em ${RN[b.rt]}.`; }
+        else if (b.op === 'lb' || b.op === 'lbu') { let v = rb(addr); if (b.op === 'lb') v = (v << 24) >> 24; T.MEM = `Lê o byte ${v} de ${hex(addr)}.`; set(b.rt, v); T.WB = `Escreve ${v} em ${RN[b.rt]}.`; }
+        else if (b.op === 'sw') { ww(addr, r(b.rt)); memChanged = addr; T.MEM = `Escreve ${r(b.rt)} na palavra ${hex(addr)}.`; }
+        else { wb(addr, r(b.rt)); memChanged = addr & ~3; T.MEM = `Escreve o byte ${r(b.rt) & 255} em ${hex(addr)}.`; }
+        break;
+      }
+      case 'beq': case 'bne': {
+        const x = r(b.rs), y = r(b.rt), taken = b.op === 'beq' ? x === y : x !== y;
+        T.ID = `Formato I, opcode ${hex(b.fields.op, 2)} (${b.op}). Lê ${rn(b.rs)} e ${rn(b.rt)}; deslocamento = ${b.imm} instrução(ões).`;
+        T.EX = `ULA subtrai para comparar (${x} − ${y} = ${(x - y) | 0}): ${x === y ? 'iguais' : 'diferentes'} → ${taken ? `desvia para PC + 4 + ${b.imm}×4 = ${hex(b.target)}` : 'não desvia'}.`;
+        if (taken) next = b.target; break;
+      }
+      case 'j': case 'jal':
+        T.ID = `Formato J, opcode ${hex(b.fields.op, 2)} (${b.op}). Endereço de 26 bits = ${hex(b.addr26, 7)}.`;
+        T.EX = `PC ← 4 bits altos do PC + endereço × 4 = ${hex(b.target)}.`;
+        if (b.op === 'jal') { set(31, PC + 4); T.WB = `Guarda o endereço de retorno ${hex(PC + 4)} em $ra.`; }
+        next = b.target; break;
+    }
+    PC = next >>> 0; lastTrace = T;
+    return true;
+  }
+
+  /* ---------- Interface ---------- */
+  function setStatus(t, c) { const el = $('#status'); el.textContent = t; el.className = 'status ' + (c || ''); }
+  function doAssemble() {
+    try { A = assemble($('#src').value); dirty = false; reset(); setStatus(`Montado: ${A.prog.length} instrução(ões), ${A.dataBytes.length} byte(s) de dados.`, 'ok'); render(); return true; }
+    catch (e) { A = null; setStatus(e.message, 'bad'); $('#listing').innerHTML = ''; return false; }
+  }
+  function ensure() { return (dirty || !A) ? doAssemble() : true; }
+  function guard(fn) { try { fn(); } catch (e) { if (e instanceof RunError) { halted = true; setStatus(e.message, 'bad'); } else throw e; } render(); }
+
+  function render() {
+    if (!A) return;
+    const cur = (PC - TEXT) / 4;
+    $('#listing').innerHTML = A.prog.map((b, i) => `<tr class="${i === cur && !halted ? 'pc' : ''}${sel === i ? ' sel' : ''}" data-i="${i}">
+      <td>${hex(b.addr)}</td><td>${hex(b.word)}</td><td>${b.text}</td><td class="src">${b.first ? esc(b.src) : ''}</td></tr>`).join('');
+    const row = $('#listing tr.pc'); if (row) row.scrollIntoView({ block: 'nearest' });
+    const H = $('#hex').checked;
+    $('#regs').innerHTML = `<div class="${lastTrace && lastTrace.pcOld !== undefined ? '' : ''}"><b>pc</b><span>${hex(PC)}</span></div>` +
+      RN.map((n, i) => `<div class="${changed.has(i) ? 'ch' : ''}"><b>${n}</b><span>${H ? hex(R[i]) : R[i]}</span></div>`).join('');
+    const words = Math.max(8, Math.ceil(A.dataBytes.length / 4) + 2);
+    let m = '';
+    for (let k = 0; k < words; k++) { const a = DATA + k * 4; const lab = [0, 1, 2, 3].map(o => A.dataLabels[a + o]).filter(Boolean).join(', '); m += `<tr class="${memChanged === a ? 'ch' : ''}"><td>${hex(a)}</td><td>${lab}</td><td>${hex(rw(a))}</td><td>${rw(a)}</td></tr>`; }
+    $('#mem').innerHTML = m;
+    $('#console').textContent = out || '';
+    const showI = sel ?? (A.prog[cur] ? cur : null);
+    renderEnc(showI === null ? null : A.prog[showI]);
+    renderStages();
+  }
+  function renderEnc(b) {
+    if (!b) { $('#enc').innerHTML = '<p class="small muted">Nenhuma instrução selecionada.</p>'; return; }
+    const F = b.fields, bin = (v, n) => (v >>> 0).toString(2).padStart(n, '0').slice(-n);
+    let cells;
+    if (b.f === 'R') cells = [['op', 6, F.op, 'f-op'], ['rs', 5, F.rs, 'f-reg', RN[F.rs]], ['rt', 5, F.rt, 'f-reg', RN[F.rt]], ['rd', 5, F.rd, 'f-reg', RN[F.rd]], ['shamt', 5, F.shamt, 'f-imm'], ['funct', 6, F.funct, 'f-fn']];
+    else if (b.f === 'I') cells = [['op', 6, F.op, 'f-op'], ['rs', 5, F.rs, 'f-reg', RN[F.rs]], ['rt', 5, F.rt, 'f-reg', RN[F.rt]], ['imediato', 16, F.imm, 'f-imm', String((F.imm << 16) >> 16)]];
+    else cells = [['op', 6, F.op, 'f-op'], ['endereço', 26, F.addr, 'f-imm', hex(b.target)]];
+    $('#enc').innerHTML = `<p style="margin:0 0 6px"><span class="fmt">Formato ${b.f}</span> <code>${b.text}</code> ${b.pseudo ? `<span class="small muted">(parte da pseudoinstrução ${b.pseudo})</span>` : ''}</p>
+      <div class="enc">${cells.map(([n, w, v, c, extra]) => `<div class="${c}" style="flex:${w}"><small>${n} (${w})</small><b>${bin(v, w)}</b><small>${extra ?? v}</small></div>`).join('')}</div>
+      <p class="small" style="margin:6px 0 0">Palavra: <code>${hex(b.word)}</code> · endereço ${hex(b.addr)}</p>`;
+  }
+  function renderStages() {
+    const T = lastTrace;
+    if (!T) { $('#stages').innerHTML = '<li class="none"><b>—</b><span>Execute um passo para ver busca, decodificação, execução, memória e escrita.</span></li>'; return; }
+    const st = [['IF', T.IF], ['ID', T.ID], ['EX', T.EX], ['MEM', T.MEM], ['WB', T.WB]];
+    $('#stages').innerHTML = `<li><b>instr</b><span><code>${T.b.text}</code></span></li>` + st.map(([k, v]) => `<li class="${v ? '' : 'none'}"><b>${k}</b><span>${v ? esc(v) : k === 'MEM' ? 'Sem acesso à memória de dados.' : 'Sem escrita em registrador.'}</span></li>`).join('');
+  }
+
+  /* Eventos */
+  const sel0 = $('#ex');
+  sel0.innerHTML = Object.keys(EXEMPLOS).map(k => `<option>${k}</option>`).join('');
+  const loadEx = () => { $('#src').value = EXEMPLOS[sel0.value]; dirty = true; doAssemble(); };
+  sel0.onchange = loadEx;
+  $('#src').addEventListener('input', () => { dirty = true; setStatus('Código alterado — clique em Montar (ou em Passo/Executar, que montam automaticamente).', ''); });
+  $('#b-asm').onclick = doAssemble;
+  $('#b-reset').onclick = () => { if (ensure()) { reset(); setStatus('Reiniciado.', ''); render(); } };
+  $('#b-step').onclick = () => { if (!ensure()) return; sel = null; if (halted) { setStatus('O programa terminou. Clique em Reiniciar.', ''); return; } guard(() => { step(); if (!halted) setStatus(`Executou ${lastTrace.b.text}. Próxima: ${A.prog[(PC - TEXT) / 4] ? A.prog[(PC - TEXT) / 4].text : 'fim do programa'}.`, ''); }); };
+  $('#b-run').onclick = () => {
+    if (!ensure()) return; sel = null;
+    if (halted) reset();
+    guard(() => { let n = 0; while (!halted && n < 200000) { if (!step()) break; n++; } if (n >= 200000) { halted = true; setStatus('Parado após 200 000 instruções — possível laço infinito.', 'bad'); } else if (!$('#status').classList.contains('bad')) setStatus(`Execução concluída: ${n} instrução(ões) executada(s).`, 'ok'); });
+  };
+  $('#listing').onclick = e => { const tr = e.target.closest('tr'); if (tr) { sel = +tr.dataset.i; render(); } };
+  $('#hex').onchange = render;
+  $('#src').addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const t = e.target, s = t.selectionStart; t.value = t.value.slice(0, s) + '        '.slice(0, 4) + t.value.slice(t.selectionEnd); t.selectionStart = t.selectionEnd = s + 4; } });
+  loadEx();
+  window.__mips = { assemble, encode };
+})();
+</script>
+</body>
+</html>
