@@ -1,4 +1,4 @@
-/* Ensino Superior — componentes próprios. Os tokens de cor, tipografia e a barra superior vêm de material-didatico/assets/md.css. */
+/* Simuladores — componentes próprios. Os tokens de cor, tipografia e a barra superior vêm de material-didatico/assets/md.css. */
 .page-head { padding: 40px 0 10px; }
 .page-head h1 { font-size: clamp(30px, 5vw, 48px); }
 .crumbs { font-size: 14px; margin-bottom: 14px; }
@@ -31,14 +31,6 @@ table.tbl th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .06
 .u-card p { margin: 0; font-size: 14.5px; color: var(--ink-2); flex: 1; }
 .u-card .meta { font-size: 13px; color: var(--ink-2); font-weight: 600; }
 .u-card .ic { font-size: 30px; }
-
-/* Exercícios */
-.ex { border: 1.5px solid var(--ink); border-radius: 18px; padding: 14px 16px; margin-bottom: 12px; background: var(--paper); }
-.ex .q { font-weight: 500; }
-.ex details { margin-top: 8px; }
-.ex summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 14.5px; }
-.ex .ans { margin-top: 8px; padding: 10px 12px; background: var(--accent-soft); border-radius: 12px; font-size: 15px; }
-.ex .ans pre { background: var(--paper); margin: 6px 0 0; }
 
 /* Simuladores */
 .sim { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 20px; background: var(--paper-2); margin: 16px 0 26px; }
@@ -108,3 +100,10 @@ tr.exam td { background: var(--accent-soft); }
   .ex details:not([open]) .ans { display: none; }
   .u-card { break-inside: avoid; }
 }
+
+/* Níveis de ensino e uso no Fundamental */
+.niveis { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.nivel { border: 1.5px solid var(--ink); border-radius: 99px; padding: 2px 10px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.nivel.n-ef { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.uso { max-width: 760px; margin-top: 12px; padding: 12px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 12px 12px 0; font-size: 15px; }
+.seg button[aria-pressed="true"]:hover { background: var(--ink); }
