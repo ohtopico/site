@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Criador de enigmas · Material didático | ohtopico</title>
+<meta name="description" content="Crie enigmas em binário, hexadecimal ou na Cifra de César e desafie os colegas com um código.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 1040px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 48px); margin: 4px 0 6px; }
+  .doc h2 { font-size: 26px; margin: 40px 0 6px; }
+  .form { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: end; margin-top: 14px; }
+  .form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .form input, .form select, textarea { font: inherit; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; min-height: 42px; }
+  .form input[type="checkbox"] { min-height: 0; width: 18px; height: 18px; }
+  .form .chk { flex-direction: row; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: var(--ink); min-height: 42px; }
+  textarea { width: 100%; box-sizing: border-box; font-family: ui-monospace, Consolas, monospace; font-size: 13px; resize: vertical; word-break: break-all; }
+  .enigma { border: 1.5px solid var(--ink); border-radius: 22px; padding: 18px 20px; background: var(--paper); margin-top: 14px; }
+  .enigma .msg-cod { font-family: ui-monospace, Consolas, monospace; font-size: clamp(16px, 2.4vw, 22px); background: var(--pill); border-radius: 12px; padding: 10px 14px; margin: 10px 0; overflow-wrap: anywhere; }
+  .msg { font-size: 14px; font-weight: 600; min-height: 1.4em; margin: 8px 0 0; }
+  .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+  .criar-trava.md-travado > .md-trava { top: 80px; transform: translateX(-50%); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+  <span class="eyebrow">Criador de enigmas</span>
+  <h1>Criador de enigmas</h1>
+  <p class="muted" style="max-width:760px;margin:0">Esconda uma mensagem em binário, em hexadecimal ou na Cifra de César e mande o código para os colegas resolverem. <a href="missoes.html">Voltar para as missões</a></p>
+
+  <h2>Resolver o enigma de um colega</h2>
+  <p class="muted" style="margin:0">Cole o código que você recebeu. Qualquer pessoa pode resolver.</p>
+  <div class="form" style="display:block">
+    <label for="cod">Código do enigma</label>
+    <textarea id="cod" rows="2" placeholder="ENIGMA1…"></textarea>
+    <div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="abrir">Abrir enigma</button></div>
+    <p class="msg" id="abrir-msg" role="status"></p>
+  </div>
+  <div id="resolver"></div>
+
+  <h2>Criar um enigma</h2>
+  <div class="criar-trava" data-nivel="criador">
+    <p class="muted" style="margin:0">Use palavras sem dados pessoais: nada de nome completo, endereço ou telefone.</p>
+    <form class="form" id="criar">
+      <label>Tipo<select id="tipo">
+        <option value="bin">Palavra em binário (ASCII)</option>
+        <option value="hex">Número em hexadecimal</option>
+        <option value="cesar">Frase na Cifra de César</option>
+      </select></label>
+      <label id="l-seg">Palavra secreta<input id="seg" maxlength="12" autocomplete="off" required></label>
+      <label id="l-chave" hidden>Chave (1 a 25)<input id="chave" type="number" min="1" max="25" value="3"></label>
+      <label class="chk" id="l-mostrar" hidden><input type="checkbox" id="mostrar" checked>Mostrar a chave</label>
+      <label style="flex:1;min-width:200px">Dica (opcional)<input id="dica" maxlength="80" autocomplete="off"></label>
+      <button class="btn" type="submit">Gerar código</button>
+    </form>
+    <p class="msg" id="criar-msg" role="status"></p>
+    <div id="saida" hidden>
+      <div class="enigma" id="previa"></div>
+      <label class="small muted" for="saida-cod" style="display:block;margin-top:12px">Código para mandar aos colegas</label>
+      <textarea id="saida-cod" rows="2" readonly></textarea>
+      <div class="btn-row" style="margin-top:8px"><button class="btn ghost" type="button" id="copiar">Copiar código</button><button class="btn ghost" type="button" id="copiar-link">Copiar link</button></div>
+    </div>
+  </div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/missoes.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('missoes');
+  mdFooter();
+  const $ = s => document.querySelector(s);
+  const AB = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const sem = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const norm = s => sem(String(s)).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const cesar = (s, k) => sem(s).toUpperCase().replace(/[^A-Z ]/g, '').replace(/\s+/g, ' ').trim().replace(/[A-Z]/g, c => AB[(AB.indexOf(c) + k) % 26]);
+  const b64 = {
+    enc: s => btoa(String.fromCharCode(...new TextEncoder().encode(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''),
+    dec: s => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return new TextDecoder().decode(Uint8Array.from(atob(s), c => c.charCodeAt(0))); }
+  };
+  async function resumo(txt) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('ohtopico-colega|' + norm(txt)));
+    return [...new Uint8Array(buf)].slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  const PERGUNTA = {
+    bin: 'Que palavra está escrita em binário (ASCII)?',
+    hex: 'Qual é este número hexadecimal no sistema decimal?',
+    cesar: o => o.k ? `Decifre a mensagem. A chave é ${o.k}.` : 'Decifre a mensagem. A chave é segredo: teste as 25 possibilidades.'
+  };
+  const pergunta = o => typeof PERGUNTA[o.t] === 'function' ? PERGUNTA[o.t](o) : PERGUNTA[o.t];
+  const cartao = (o, comResposta) => `
+    <strong>${esc(pergunta(o))}</strong>
+    <div class="msg-cod">${esc(o.m)}</div>
+    ${o.d ? `<p class="small muted" style="margin:0">Dica: ${esc(o.d)}</p>` : ''}
+    ${comResposta ? `<form class="form" id="resp-f"><label style="flex:1;min-width:200px">Sua resposta<input id="resp" autocomplete="off" required></label><button class="btn" type="submit">Conferir</button></form><p class="msg" id="resp-msg" role="status"></p>` : ''}`;
+
+  /* ---------- resolver ---------- */
+  function abrir(code) {
+    const msg = $('#abrir-msg');
+    try {
+      code = String(code).trim().replace(/\s+/g, '');
+      if (!code.startsWith('ENIGMA1.')) throw 0;
+      const o = JSON.parse(b64.dec(code.slice(8)));
+      if (!PERGUNTA[o.t] || typeof o.m !== 'string' || typeof o.h !== 'string') throw 0;
+      msg.textContent = ''; msg.className = 'msg';
+      const box = $('#resolver');
+      box.innerHTML = `<div class="enigma">${cartao(o, true)}</div>`;
+      $('#resp-f').onsubmit = async ev => {
+        ev.preventDefault();
+        const m = $('#resp-msg');
+        if (await resumo($('#resp').value) === o.h) { m.textContent = 'Certo! Agora crie um enigma para quem mandou este.'; m.className = 'msg ok'; }
+        else { m.textContent = 'Ainda não. Tente de novo.'; m.className = 'msg bad'; }
+      };
+      $('#resp').focus();
+    } catch (e) { msg.textContent = 'Código inválido. Confira se copiou o código inteiro (começa com ENIGMA1).'; msg.className = 'msg bad'; }
+  }
+  $('#abrir').onclick = () => abrir($('#cod').value);
+  const hash = new URLSearchParams(location.hash.slice(1)).get('c');
+  if (hash) { $('#cod').value = hash; abrir(hash); }
+
+  /* ---------- criar ---------- */
+  const tipo = $('#tipo');
+  function ajustar() {
+    const t = tipo.value, seg = $('#seg');
+    $('#l-seg').firstChild.textContent = t === 'hex' ? 'Número (0 a 4095)' : t === 'cesar' ? 'Frase secreta' : 'Palavra secreta';
+    seg.maxLength = t === 'cesar' ? 40 : t === 'hex' ? 4 : 8;
+    seg.inputMode = t === 'hex' ? 'numeric' : 'text';
+    $('#l-chave').hidden = $('#l-mostrar').hidden = t !== 'cesar';
+  }
+  tipo.onchange = ajustar; ajustar();
+  let ultimo = '';
+  $('#criar').onsubmit = async ev => {
+    ev.preventDefault();
+    const msg = $('#criar-msg'), t = tipo.value, seg = $('#seg').value.trim();
+    let m, resposta = seg;
+    if (t === 'bin') {
+      const w = sem(seg).toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (!w) { msg.textContent = 'Use letras ou números.'; msg.className = 'msg bad'; return; }
+      m = [...w].map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' '); resposta = w;
+    } else if (t === 'hex') {
+      const n = Number(seg);
+      if (!Number.isInteger(n) || n < 0 || n > 4095) { msg.textContent = 'Escolha um número inteiro de 0 a 4095.'; msg.className = 'msg bad'; return; }
+      m = n.toString(16).toUpperCase();
+    } else {
+      const k = Math.min(25, Math.max(1, Math.round(+$('#chave').value || 3)));
+      m = cesar(seg, k);
+      if (!m.replace(/ /g, '')) { msg.textContent = 'Escreva uma frase com letras.'; msg.className = 'msg bad'; return; }
+      var chave = $('#mostrar').checked ? k : 0;
+    }
+    const o = { t, m, h: await resumo(resposta) };
+    if (chave) o.k = chave;
+    const d = $('#dica').value.trim(); if (d) o.d = d.slice(0, 80);
+    ultimo = 'ENIGMA1.' + b64.enc(JSON.stringify(o));
+    $('#previa').innerHTML = cartao(o, false);
+    $('#saida-cod').value = ultimo; $('#saida').hidden = false;
+    msg.textContent = 'Enigma pronto. Mande o código ou o link para os colegas.'; msg.className = 'msg ok';
+  };
+  const copiar = async txt => {
+    try { await navigator.clipboard.writeText(txt); } catch (e) { $('#saida-cod').select(); try { document.execCommand('copy'); } catch (x) {} }
+    $('#criar-msg').textContent = 'Copiado.'; $('#criar-msg').className = 'msg ok';
+  };
+  $('#copiar').onclick = () => copiar(ultimo);
+  $('#copiar-link').onclick = () => copiar(location.origin + location.pathname + '#c=' + ultimo);
+  MDM.travar(document.getElementById('doc'));
+})();
+</script>
+</body>
+</html>

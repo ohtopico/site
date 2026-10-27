@@ -204,6 +204,9 @@
     return p;
   }
 
+  // relatórios antigos (sem nível) continuam conferindo
+  const camposAssinados = o => o.n === undefined ? [o.a, o.y, o.d, o.l, o.r] : [o.a, o.y, o.d, o.l, o.r, o.n];
+
   // Relatório resumido para a professora (níveis por habilidade e notas)
   async function relatorio() {
     const p = perfilAtual(false);
@@ -213,12 +216,14 @@
     const r = {};
     Object.entries(p.r).forEach(([id, x]) => { if (REC[id]) r[id] = x.b; });
     const corpo = { a: p.apelido, y: p.ano, d: hoje(), l, r };
-    corpo.s = await assinatura(JSON.stringify([corpo.a, corpo.y, corpo.d, corpo.l, corpo.r]));
+    // nível das missões (missoes.js): a professora vê quem pode ser monitor da turma
+    if (window.MDM) corpo.n = MDM.nivel(p).n;
+    corpo.s = await assinatura(JSON.stringify(camposAssinados(corpo)));
     return empacotar('MDR1', corpo);
   }
   async function lerRelatorio(code) {
     const o = await desempacotar('MDR1', code);
-    const ok = o.s === await assinatura(JSON.stringify([o.a, o.y, o.d, o.l, o.r]));
+    const ok = o.s === await assinatura(JSON.stringify(camposAssinados(o)));
     return Object.assign(o, { valido: ok });
   }
 

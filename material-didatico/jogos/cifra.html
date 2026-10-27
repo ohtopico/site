@@ -67,7 +67,17 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cifra');
   const norm = s => s.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Z ]/g, '').replace(/\s+/g, ' ').trim();
   const shift = (s, k) => norm(s).replace(/[A-Z]/g, c => AB[(AB.indexOf(c) + k + 26) % 26]);
   const rk = () => 2 + Math.floor(Math.random() * 23);
-  const DESAFIOS = [
+  // ?modo=dificil: versão da Sala dos desafios (sem prévia e com cifra dupla)
+  const DIFICIL = new URLSearchParams(location.search).get('modo') === 'dificil';
+  const DUPLA = () => { const a = rk(), b = rk(); return { a, b, k: (a + b) % 26 }; };
+  const DESAFIOS = DIFICIL ? [
+    { f: 4, txt: 'Todo segredo tem uma chave', k: rk() },
+    { f: 4, txt: 'Atualize o sistema do celular', k: rk() },
+    { f: 4, txt: 'Desconfie de links estranhos', k: rk() },
+    Object.assign({ f: 5, txt: 'Duas cifras valem uma' }, DUPLA()),
+    Object.assign({ f: 5, txt: 'Use autenticação em duas etapas' }, DUPLA()),
+    { f: 3, txt: 'Criptografia de ponta a ponta', k: 13 }
+  ] : [
     { f: 1, txt: 'Olá detetive', k: 3 },
     { f: 1, txt: 'A chave é o segredo', k: 4 },
     { f: 1, txt: 'Senhas longas são melhores', k: 6 },
@@ -78,7 +88,13 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cifra');
     { f: 3, txt: 'Escola', k: 5 },
     { f: 3, txt: 'Bom trabalho', k: 10 }
   ];
-  const FASES = { 1: 'Fase 1 · Decifrar com a chave', 2: 'Fase 2 · Descobrir a chave', 3: 'Fase 3 · Cifrar' };
+  const FASES = { 1: 'Fase 1 · Decifrar com a chave', 2: 'Fase 2 · Descobrir a chave', 3: DIFICIL ? 'Desafio final · Cifrar' : 'Fase 3 · Cifrar', 4: 'Modo difícil · Sem chave e sem prévia', 5: 'Modo difícil · Cifra dupla' };
+  if (DIFICIL) {
+    const st = document.getElementById('stage'), trava = document.createElement('div');
+    trava.dataset.nivel = 'sala'; st.before(trava); trava.appendChild(st); // a trava fica fora do palco, que é redesenhado
+    const h = document.querySelector('#game-head h1');
+    if (h) h.insertAdjacentHTML('afterend', '<p><strong>Modo difícil</strong> da <a href="../desafios.html">Sala dos desafios</a>: faça 70% dos pontos para ganhar o desafio. <a href="cifra.html">Voltar ao modo normal</a></p>');
+  }
   const stage = document.getElementById('stage');
   let i = 0, key = 3, pts = 0, tentativas = 0;
 
@@ -96,6 +112,8 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cifra');
     let body = '';
     if (d.f === 1) body = `<p>Mensagem interceptada. A chave é <strong>${d.k}</strong>. O que ela diz?</p><div class="cipher">${cifrado}</div>`;
     if (d.f === 2) body = `<p>Esta mensagem chegou <strong>sem a chave</strong>. Mova o controle até o texto decifrado fazer sentido.</p><div class="cipher">${cifrado}</div><div class="preview" id="prev" aria-live="polite"></div>`;
+    if (d.f === 4) body = `<p>Mensagem interceptada <strong>sem a chave</strong> e sem prévia. Use a régua para testar chaves e digite a mensagem decifrada.</p><div class="cipher">${cifrado}</div>`;
+    if (d.f === 5) body = `<p>Esta mensagem foi cifrada <strong>duas vezes</strong>: primeiro com a chave <strong>${d.a}</strong>, depois com a chave <strong>${d.b}</strong>. O que ela diz?</p><div class="cipher">${cifrado}</div>`;
     if (d.f === 3) body = `<p>Sua vez de proteger um segredo. Cifre a palavra abaixo usando a chave <strong>${d.k}</strong>.</p><div class="cipher">${norm(d.txt)}</div>`;
     stage.innerHTML = `
       <div class="hud"><span>Desafio <b>${i + 1}</b> de ${DESAFIOS.length}</span><span>Pontos <b>${pts}</b></span></div>
@@ -140,18 +158,22 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cifra');
       return;
     }
     const v = norm(document.getElementById('ans').value);
-    const certo = d.f === 1 ? norm(d.txt) : cifrado;
+    const certo = d.f === 3 ? cifrado : norm(d.txt);
     if (!v) return fb('Digite sua resposta.', 'bad');
     if (v.replace(/ /g, '') === certo.replace(/ /g, '')) ok(d.f === 1 ? 'Mensagem decifrada!' : `Perfeito: ${certo}`);
     else {
       tentativas++;
-      const dica = d.f === 1 ? `Dica: posicione a chave em ${d.k} e procure cada letra na linha de baixo (cifrado) — a resposta está em cima.` : `Dica: posicione a chave em ${d.k} e procure cada letra na linha de cima — a cifrada está embaixo.`;
+      const dica = d.f === 4 ? 'Dica: mova a régua e decifre só a primeira palavra. Quando ela fizer sentido, você achou a chave.'
+        : d.f === 5 ? 'Dica: duas cifras de César seguidas valem uma só. Some as duas chaves (se passar de 25, tire 26).'
+        : d.f === 1 ? `Dica: posicione a chave em ${d.k} e procure cada letra na linha de baixo (cifrado) — a resposta está em cima.` : `Dica: posicione a chave em ${d.k} e procure cada letra na linha de cima — a cifrada está embaixo.`;
       fb('Ainda não. ' + dica, 'bad');
     }
   }
   function end() {
-    window.MDP && MDP.registrar('cifra', pts / (DESAFIOS.length * 10) * 100);
-    const rec = Math.max(pts, mdStore.get('cifra-rec', 0)); mdStore.set('cifra-rec', rec);
+    if (DIFICIL) { if (pts >= DESAFIOS.length * 10 * 0.7 && window.MDM) MDM.desafio('cifra-dificil', MDM.PONTOS.dificil, 'Detetive da Cifra: modo difícil concluído'); }
+    else window.MDP && MDP.registrar('cifra', pts / (DESAFIOS.length * 10) * 100);
+    const chaveRec = DIFICIL ? 'cifra-rec-dificil' : 'cifra-rec';
+    const rec = Math.max(pts, mdStore.get(chaveRec, 0)); mdStore.set(chaveRec, rec);
     stage.innerHTML = `<div class="center">
       <h2>Caso encerrado, detetive! 🕵️</h2>
       <p style="font-size:20px"><b>${pts}</b> de ${DESAFIOS.length * 10} pontos</p>
@@ -160,7 +182,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cifra');
         <strong>Por que a Cifra de César não protege nada hoje?</strong> Ela tem só 25 chaves úteis — você testou todas em segundos. A criptografia usada no navegador e nos aplicativos de mensagem trabalha com chaves tão longas que testar todas levaria mais tempo do que a idade do universo.
       </div>
       <button class="btn" type="button" id="again">Jogar de novo</button></div>`;
-    document.getElementById('again').onclick = () => { i = 0; pts = 0; DESAFIOS.filter(d => d.f === 2).forEach(d => d.k = rk()); render(); };
+    document.getElementById('again').onclick = () => { i = 0; pts = 0; DESAFIOS.forEach(d => { if (d.f === 2 || d.f === 4) d.k = rk(); if (d.f === 5) Object.assign(d, DUPLA()); }); render(); };
   }
   render();
 })();

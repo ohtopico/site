@@ -103,7 +103,16 @@
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('robo');
 (function () {
-  const LEVELS = [
+  // ?modo=dificil: labirintos 8x8 da Sala dos desafios (metas calculadas pelo menor número de blocos)
+  const DIFICIL = new URLSearchParams(location.search).get('modo') === 'dificil';
+  const DIFICEIS = [
+    { n: 8, start: [0, 0], stars: [[0, 2], [0, 6], [7, 6]], walls: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [2, 3], [3, 3], [4, 3], [5, 3], [6, 3], [7, 3], [0, 5], [1, 5], [2, 5], [3, 5], [4, 5], [5, 5]], meta: 9 },
+    { n: 8, start: [0, 0], stars: [[6, 1], [0, 3], [4, 4], [7, 7]], walls: [[2, 0], [2, 1], [4, 1], [5, 1], [2, 2], [5, 2], [2, 3], [3, 3], [5, 3], [7, 3], [5, 4], [1, 5], [2, 5], [3, 5], [4, 5], [7, 5], [1, 6], [5, 6], [3, 7]], meta: 9 },
+    { n: 8, start: [4, 3], stars: [[0, 0], [7, 0], [0, 5], [7, 5], [7, 7]], walls: [[3, 0], [1, 1], [5, 1], [1, 2], [3, 2], [5, 2], [7, 2], [3, 3], [5, 3], [0, 4], [1, 4], [3, 4], [4, 4], [5, 4], [7, 4], [1, 6], [3, 6], [4, 6], [6, 6], [1, 7], [6, 7]], meta: 12 },
+    { n: 8, start: [0, 7], stars: [[0, 0], [7, 0], [3, 3], [7, 7]], walls: [[1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [1, 2], [6, 2], [1, 3], [4, 3], [6, 3], [1, 4], [3, 4], [4, 4], [6, 4], [1, 5], [6, 5], [1, 6], [2, 6], [3, 6], [4, 6], [6, 6], [6, 7]], meta: 14 },
+    { n: 8, start: [0, 0], stars: [[6, 2], [0, 6], [3, 6], [7, 7]], walls: [[3, 0], [1, 1], [3, 1], [5, 1], [6, 1], [1, 2], [5, 2], [1, 3], [2, 3], [3, 3], [4, 3], [6, 3], [6, 4], [0, 5], [2, 5], [3, 5], [4, 5], [6, 5], [2, 6], [6, 6], [2, 7], [6, 7]], meta: 22 }
+  ];
+  const LEVELS = DIFICIL ? DIFICEIS : [
     { n: 5, start: [0, 2], stars: [[4, 2]], walls: [], meta: 1 },
     { n: 5, start: [0, 4], stars: [[4, 0]], walls: [[2, 2]], meta: 2 },
     { n: 6, start: [0, 5], stars: [[0, 0], [5, 0]], walls: [[1, 1], [1, 2], [1, 3], [1, 4]], meta: 2 },
@@ -111,9 +120,14 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('robo');
     { n: 7, start: [0, 6], stars: [[0, 0], [6, 0], [6, 6], [2, 6]], walls: [[2, 2], [3, 2], [4, 2], [2, 4], [3, 4], [4, 4]], meta: 4 },
     { n: 7, start: [0, 0], stars: [[3, 3], [0, 6], [6, 6]], walls: [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [2, 4], [3, 4], [4, 4], [5, 4], [6, 4]], meta: 5 }
   ];
+  if (DIFICIL) {
+    document.querySelector('.game-stage').dataset.nivel = 'sala';
+    const h = document.querySelector('#game-head h1');
+    if (h) h.insertAdjacentHTML('afterend', '<p><strong>Modo difícil</strong> da <a href="../desafios.html">Sala dos desafios</a>: termine as cinco fases para ganhar os pontos. <a href="robo.html">Voltar ao modo normal</a></p>');
+  }
   const DIR = { U: [0, -1, '↑'], D: [0, 1, '↓'], L: [-1, 0, '←'], R: [1, 0, '→'] };
   const $ = s => document.querySelector(s);
-  let li = 0, prog = [], rep = 1, running = false, best = mdStore.get('robo-best', {});
+  let li = 0, prog = [], rep = 1, running = false, best = mdStore.get(DIFICIL ? 'robo-best-dificil' : 'robo-best', {});
   const board = $('#board');
   $('#lvl-tot').textContent = LEVELS.length;
 
@@ -190,9 +204,10 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('robo');
     drawProg(); running = false;
     if (got.size === L.stars.length) {
       const s = prog.length <= L.meta ? 3 : prog.length <= L.meta + 2 ? 2 : 1;
-      if (!best[li] || s > best[li]) { best[li] = s; mdStore.set('robo-best', best); }
+      if (!best[li] || s > best[li]) { best[li] = s; mdStore.set(DIFICIL ? 'robo-best-dificil' : 'robo-best', best); }
       drawLevels();
-      window.MDP && MDP.registrar('robo', Object.values(best).reduce((a, b) => a + (b || 0), 0) / (LEVELS.length * 3) * 100);
+      if (DIFICIL) { if (LEVELS.every((L, i) => best[i]) && window.MDM) MDM.desafio('robo-dificil', MDM.PONTOS.dificil, 'Robô Coletor: modo difícil concluído'); }
+      else window.MDP && MDP.registrar('robo', Object.values(best).reduce((a, b) => a + (b || 0), 0) / (LEVELS.length * 3) * 100);
       const msg = s === 3 ? `Perfeito! ${prog.length} bloco(s), dentro da meta. ★★★` : `Conseguiu com ${prog.length} blocos! ${'★'.repeat(s)} Dá para chegar a ${L.meta} usando repetição?`;
       fb(msg, 'ok');
       if (li < LEVELS.length - 1) setTimeout(() => { if (!running) fb(msg + ' Clique na próxima fase quando quiser.', 'ok'); }, 50);

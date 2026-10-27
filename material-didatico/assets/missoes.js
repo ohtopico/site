@@ -5,7 +5,8 @@
    páginas que usam window.MDM logo de cara incluem o <script> direto.
 
    Pontos = atividades diferentes feitas + medalhas + estrelas secretas + missões.
-   Seções travadas por nível: qualquer elemento com data-nivel="N" fica bloqueado
+   Seções travadas por nível: qualquer elemento com data-nivel="N" (ou o id de um
+   desbloqueio, como data-nivel="sala") fica bloqueado
    até o estudante chegar ao nível N (MDM.travar() aplica; roda sozinho no carregamento).
    ===================================================================== */
 (function () {
@@ -14,28 +15,28 @@
   const hoje = MDP.hoje;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const PONTOS = { atividade: 5, medalha: 20, estrela: 10, bonus: 15 };
+  const PONTOS = { atividade: 5, medalha: 20, estrela: 10, bonus: 15, enigma: 50, dificil: 40, semana: 60 };
 
-  /* Níveis com nomes de unidades de informação, na linha da série Bit a Bit */
-  const NIVEIS = [
-    { n: 1, nome: 'Bit', min: 0 },
-    { n: 2, nome: 'Nibble', min: 60 },
-    { n: 3, nome: 'Byte', min: 150 },
-    { n: 4, nome: 'Kilobyte', min: 280 },
-    { n: 5, nome: 'Megabyte', min: 450 },
-    { n: 6, nome: 'Gigabyte', min: 680 },
-    { n: 7, nome: 'Terabyte', min: 960 },
-    { n: 8, nome: 'Petabyte', min: 1300 }
-  ];
+  /* 100 níveis. Cada faixa de 10 níveis tem o nome de uma unidade de informação,
+     na linha da série Bit a Bit. Cada nível pede PONTOS_POR_NIVEL pontos a mais.
+     Ritmo de referência: 3 dias por semana cumprindo as missões dá uns 150 pontos por semana. */
+  const PONTOS_POR_NIVEL = 430; // nível 10 em uns 6 meses nesse ritmo
+  const FAIXAS = ['Bit', 'Nibble', 'Byte', 'Kilobyte', 'Megabyte', 'Gigabyte', 'Terabyte', 'Petabyte', 'Exabyte', 'Zettabyte', 'Yottabyte'];
+  const NIVEIS = Array.from({ length: 100 }, (_, k) => ({ n: k + 1, nome: FAIXAS[Math.floor((k + 1) / 10)], min: k * PONTOS_POR_NIVEL }));
 
   /* O que cada nível libera. emBreve: seção ainda em preparação. */
   const DESBLOQUEIOS = [
     { nivel: 2, id: 'cor', nome: 'Cor do perfil', desc: 'Escolha verde, vermelho ou amarelo para o seu cartão de missões.' },
     { nivel: 3, id: 'extra', nome: 'Missão extra', desc: 'Uma quarta missão por dia, mais difícil, que vale 30 pontos.' },
-    { nivel: 4, id: 'trocar', nome: 'Trocar missão', desc: 'Troque uma missão do dia por outra, uma vez por dia.' },
-    { nivel: 5, id: 'sala', nome: 'Sala dos desafios', desc: 'Uma seção do site só para quem chegou ao nível Megabyte.', emBreve: true },
-    { nivel: 6, id: 'antecipado', nome: 'Acesso antecipado', desc: 'Jogos e simuladores novos antes de todo mundo.', emBreve: true }
+    { nivel: 5, id: 'trocar', nome: 'Trocar missão', desc: 'Troque uma missão do dia por outra, uma vez por dia.' },
+    { nivel: 10, id: 'certificado', nome: 'Certificado de conquista', desc: 'Certificado para imprimir ou salvar em PDF, com o seu nível e os seus pontos.', link: 'certificado.html' },
+    { nivel: 10, id: 'sala', nome: 'Sala dos desafios', desc: 'Enigmas da série Bit a Bit, fases difíceis dos jogos e o desafio da semana.', link: 'desafios.html' },
+    { nivel: 20, id: 'monitor', nome: 'Distintivo de monitor', desc: 'O relatório para a professora mostra que você pode ajudar os colegas.' },
+    { nivel: 30, id: 'criador', nome: 'Criador de enigmas', desc: 'Crie enigmas em binário, hexadecimal ou na Cifra de César para os colegas.', link: 'criador.html' },
+    { nivel: 80, id: 'votacao', nome: 'Votação do próximo jogo', desc: 'Vote em qual jogo ou simulador vai ser criado a seguir.', emBreve: true }
   ];
+
+  const nivelDe = id => (DESBLOQUEIOS.find(x => x.id === id) || { nivel: 1 }).nivel;
 
   const CORES = [
     { id: 'verde', nome: 'Verde', cor: '#166c40', txt: '#ffffff' },
@@ -66,6 +67,30 @@
   ];
   const TODAS = {}; MISSOES.concat(EXTRAS).forEach(m => { TODAS[m.id] = m; });
 
+  /* ---------- desafio da semana (nível 5) ----------
+     ok(p, jg, dias): dias = os dias desta semana, de segunda até hoje */
+  const naSemana = (dias, d) => dias.includes(+d);
+  const recsNaSemana = (p, dias, min) => Object.entries(p.r || {})
+    .filter(([id, r]) => REC[id] && r && Array.isArray(r.h) && r.h.some(([d, v]) => naSemana(dias, d) && v >= (min || 0))).length;
+  const SEMANAIS = [
+    { id: 's-ativ', txt: 'Faça 5 atividades diferentes nesta semana', meta: 5, conta: (p, jg, dias) => recsNaSemana(p, dias) },
+    { id: 's-dias', txt: 'Cumpra missões em 4 dias diferentes nesta semana', meta: 4, conta: (p, jg, dias) => Object.keys(jg.dias).filter(d => naSemana(dias, d) && jg.dias[d].ok.length).length },
+    { id: 's-enigma', txt: 'Resolva 2 enigmas Bit a Bit nesta semana', meta: 2, conta: (p, jg, dias) => Object.entries(jg.ds).filter(([id, d]) => id.startsWith('en-') && naSemana(dias, d)).length },
+    { id: 's-80', txt: 'Tire 80% ou mais em 3 atividades diferentes nesta semana', meta: 3, conta: (p, jg, dias) => recsNaSemana(p, dias, 80) },
+    { id: 's-dificil', txt: 'Termine um jogo no modo difícil nesta semana', meta: 1, conta: (p, jg, dias) => Object.entries(jg.ds).filter(([id, d]) => id.endsWith('-dificil') && naSemana(dias, d)).length,
+      pode: jg => Object.keys(jg.ds).filter(id => id.endsWith('-dificil')).length < 2 }
+  ];
+  const semanaDe = d => Math.floor((d + 3) / 7); // semanas começam na segunda-feira
+  function desafioSemana(p, jg, d) {
+    const w = semanaDe(d), dias = [];
+    for (let k = w * 7 - 3; k <= d; k++) dias.push(k);
+    const opcoes = SEMANAIS.filter(x => !x.pode || x.pode(jg));
+    const x = opcoes[Math.floor(sorteio(p.id + ':semana:' + w)() * opcoes.length)];
+    const feito = x.conta(p, jg, dias);
+    return { id: x.id, txt: x.txt, meta: x.meta, feito: Math.min(feito, x.meta), ok: feito >= x.meta, creditado: !!jg.sem[w], semana: w, pts: PONTOS.semana,
+      fim: w * 7 + 3 - d };
+  }
+
   /* sorteio estável: o mesmo perfil vê as mesmas missões o dia todo */
   function sorteio(semente) {
     let h = 2166136261;
@@ -83,7 +108,7 @@
     const jg = p.jg || {};
     return {
       desde: jg.desde || hoje(), pts: jg.pts || 0, dias: jg.dias || {}, vd: jg.vd || {},
-      tr: jg.tr || {}, nv: jg.nv || 0, cor: jg.cor || ''
+      tr: jg.tr || {}, nv: jg.v === 2 ? jg.nv || 0 : 0, v: 2, cor: jg.cor || '', ds: jg.ds || {}, sem: jg.sem || {}
     };
   }
   function salvar(jg) { MDP.atualizar({ jg }); }
@@ -95,7 +120,7 @@
     let lista = base.slice(0, 3);
     const t = jg.tr[d];
     if (t && TODAS[t.para]) lista = lista.map(m => (m.id === t.de ? TODAS[t.para] : m));
-    if ((nivelN || nivel(p).n) >= 3) lista.push(EXTRAS[Math.floor(rnd() * EXTRAS.length)]);
+    if ((nivelN || nivel(p).n) >= nivelDe('extra')) lista.push(EXTRAS[Math.floor(rnd() * EXTRAS.length)]);
     return lista;
   }
 
@@ -165,18 +190,24 @@
     Object.keys(jg.dias).forEach(k => { if (+k < d - 400) delete jg.dias[k]; });
     Object.keys(jg.vd).forEach(k => { if (+k < d - 7) delete jg.vd[k]; });
     Object.keys(jg.tr).forEach(k => { if (+k < d - 7) delete jg.tr[k]; });
+    let semana = false;
+    if (nv >= nivelDe('sala')) {
+      const s = desafioSemana(p, jg, d);
+      if (s.ok && !jg.sem[s.semana]) { jg.sem[s.semana] = 1; jg.pts += PONTOS.semana; semana = s; }
+    }
     const pAtual = Object.assign({}, p, { jg });
     const nvNovo = nivel(pAtual).n;
-    const subiu = jg.nv && nvNovo > jg.nv ? nvNovo : 0;
+    const antes = jg.nv, subiu = antes && nvNovo > antes ? nvNovo : 0;
     jg.nv = nvNovo;
-    if (!p.jg || novas.length || bonus || subiu || JSON.stringify(p.jg) !== JSON.stringify(jg)) salvar(jg);
+    if (!p.jg || novas.length || bonus || subiu || semana || JSON.stringify(p.jg) !== JSON.stringify(jg)) salvar(jg);
     if (!silencioso) {
       if (novas.length) aviso(`+${novas.reduce((s, m) => s + m.pts, 0) + (bonus ? PONTOS.bonus : 0)}`,
         `Missão cumprida: ${novas[0].txt}${novas.length > 1 ? ` (+${novas.length - 1})` : ''}`,
         bonus ? `Todas as missões de hoje feitas: +${PONTOS.bonus} de bônus.` : 'Ver minhas missões');
+      if (semana) aviso(`+${PONTOS.semana}`, 'Desafio da semana cumprido', semana.txt);
       if (subiu) {
-        const l = NIVEIS[subiu - 1], lib = DESBLOQUEIOS.filter(x => x.nivel === subiu);
-        aviso(`N${subiu}`, `Você chegou ao nível ${l.nome}`, lib.length ? `Desbloqueado: ${lib.map(x => x.nome).join(', ')}.` : 'Ver minhas missões');
+        const l = NIVEIS[subiu - 1], lib = DESBLOQUEIOS.filter(x => x.nivel > antes && x.nivel <= subiu);
+        aviso(`N${subiu}`, `Você chegou ao nível ${subiu} (${l.nome})`, lib.length ? `Desbloqueado: ${lib.map(x => x.nome).join(', ')}.` : 'Ver minhas missões');
       }
       atualizarBarra();
     }
@@ -192,10 +223,23 @@
     if (!v.includes(id)) { v.push(id); jg.vd[d] = v; salvar(jg); }
   }
 
+  /* Desafios da Sala (nível 5): enigmas e modos difíceis valem pontos uma vez só */
+  function desafio(id, pts, titulo) {
+    const p = MDP.perfil();
+    if (!p || !id || nivel(p).n < nivelDe('sala')) return false;
+    const jg = jgDe(p);
+    if (jg.ds[id] !== undefined) return false;
+    jg.ds[id] = hoje(); jg.pts += pts; salvar(jg);
+    aviso(`+${pts}`, titulo || 'Desafio cumprido', 'Ver a Sala dos desafios');
+    verificar();
+    return true;
+  }
+  function feitos() { const p = MDP.perfil(); return p ? jgDe(p).ds : {}; }
+
   /* Troca uma missão de hoje que ainda não foi cumprida (nível 4) */
   function trocar(idMissao) {
     const p = MDP.perfil();
-    if (!p || nivel(p).n < 4) return false;
+    if (!p || nivel(p).n < nivelDe('trocar')) return false;
     const jg = jgDe(p), d = hoje();
     if (jg.tr[d] || (jg.dias[d] && jg.dias[d].ok.includes(idMissao))) return false;
     const atuais = missoesDoDia(p, d).map(m => m.id);
@@ -210,7 +254,7 @@
 
   function escolherCor(id) {
     const p = MDP.perfil();
-    if (!p || nivel(p).n < 2) return false;
+    if (!p || nivel(p).n < nivelDe('cor')) return false;
     const jg = jgDe(p); jg.cor = CORES.some(c => c.id === id) ? id : ''; salvar(jg);
     return true;
   }
@@ -233,6 +277,7 @@
     }));
     return {
       perfil: p, pontos: pts, nivel: nv, missoes: lista, bonus: !!reg.b, sequencia: sequencia(p),
+      semana: nv.n >= nivelDe('sala') ? desafioSemana(p, jg, d) : null, desafios: jg.ds,
       trocou: !!jg.tr[d], cor: CORES.find(c => c.id === jg.cor) || null,
       desbloqueios: DESBLOQUEIOS.map(x => Object.assign({ livre: nv.n >= x.nivel }, x))
     };
@@ -242,8 +287,9 @@
   function travar(raiz) {
     const p = MDP.perfil(), n = p ? nivel(p).n : 0;
     (raiz || document).querySelectorAll('[data-nivel]').forEach(el => {
-      const req = +el.dataset.nivel || 1, livre = n >= req;
+      const v = el.dataset.nivel, req = isNaN(+v) ? nivelDe(v) : (+v || 1), livre = n >= req;
       el.classList.toggle('md-travado', !livre);
+      [...el.children].forEach(c => { if (!c.classList.contains('md-trava')) c.inert = !livre; });
       let selo = el.querySelector(':scope > .md-trava');
       if (livre) { if (selo) selo.remove(); el.removeAttribute('aria-disabled'); return; }
       el.setAttribute('aria-disabled', 'true');
@@ -300,8 +346,8 @@
   const registrarOriginal = MDP.registrar;
   MDP.registrar = function () { const r = registrarOriginal.apply(this, arguments); verificar(); return r; };
 
-  window.MDM = { NIVEIS, DESBLOQUEIOS, CORES, PONTOS, MISSOES, EXTRAS, pontos, nivel, nivelPorPontos, estado,
-    verificar, visitar, trocar, escolherCor, travar, atualizarBarra };
+  window.MDM = { NIVEIS, FAIXAS, PONTOS_POR_NIVEL, DESBLOQUEIOS, CORES, PONTOS, MISSOES, EXTRAS, pontos, nivel, nivelPorPontos, estado,
+    nivelDe, verificar, visitar, trocar, escolherCor, travar, atualizarBarra, desafio, feitos };
 
   function iniciar() {
     const rec = window.MD_REC || (/\/(lista|ficha|plano)\.html$/.test(location.pathname) && new URLSearchParams(location.search).get('id'));

@@ -53,8 +53,8 @@
   .fonte span { font-size: 14px; color: var(--ink-2); }
 
   .niveis { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; }
-  .niv { display: grid; grid-template-columns: 52px 150px minmax(0, 1fr); gap: 14px; align-items: center; border: 1.5px solid var(--line); border-radius: 18px; padding: 10px 14px; }
-  .niv .n { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 20px; background: var(--paper); }
+  .niv { display: grid; grid-template-columns: 52px 130px minmax(0, 1fr); gap: 14px; align-items: center; border: 1.5px solid var(--line); border-radius: 18px; padding: 10px 14px; }
+  .niv .n { width: 46px; height: 46px; font-size: 18px !important; border-radius: 50%; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 20px; background: var(--paper); }
   .niv.ok .n { background: var(--accent); color: var(--paper); }
   .niv.atual { border-color: var(--ink); background: var(--paper-2); }
   .niv strong { display: block; }
@@ -65,7 +65,8 @@
   .cores { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
   .cor-op { display: inline-flex; align-items: center; gap: 8px; }
   .cor-op i { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ink); }
-  .sala { min-height: 150px; margin-top: 14px; }
+  .sala { min-height: 150px; margin-top: 14px; display: flex; flex-direction: column; gap: 6px; justify-content: center; text-decoration: none; color: var(--ink); }
+  a.sala:hover { background: var(--pill); }
   .regras { font-size: 14.5px; color: var(--ink-2); max-width: 760px; }
   .regras li { margin: 4px 0; }
   @media (max-width: 760px) {
@@ -101,7 +102,7 @@
     doc.innerHTML = `
       <span class="eyebrow">Missões do dia</span>
       <h1>Missões, pontos e níveis</h1>
-      <p class="muted" style="max-width:720px">Todo dia aparecem três missões novas com os jogos, listas de exercícios e recursos 3D do site. Cada missão vale pontos, e os pontos fazem você subir de nível, de Bit até Petabyte. Alguns níveis desbloqueiam partes novas do site.</p>
+      <p class="muted" style="max-width:720px">Todo dia aparecem três missões novas com os jogos, listas de exercícios e recursos 3D do site. Cada missão vale pontos, e os pontos fazem você subir de nível, do 1 ao 100. Alguns níveis desbloqueiam partes novas do site.</p>
       <div class="panel" style="max-width:620px;margin-top:22px">
         <h2 style="margin:0 0 6px;font-size:22px">Crie seu perfil para receber missões</h2>
         <p class="small muted" style="margin:0 0 12px">Use um apelido, não seu nome completo. Não precisa de cadastro: o perfil fica salvo só neste navegador, o mesmo do Meu progresso.</p>
@@ -118,15 +119,16 @@
 
   function blocoNiveis(e) {
     const n = e ? e.nivel.n : 0;
+    const marcos = [...new Set(MDM.DESBLOQUEIOS.map(x => x.nivel))].sort((a, b) => a - b);
     return `
-      <h2>Níveis</h2>
-      <p class="muted" style="margin:0">Cada nível tem o nome de uma unidade de informação, do menor para o maior.</p>
-      <ol class="niveis">${MDM.NIVEIS.map(l => {
-        const libs = MDM.DESBLOQUEIOS.filter(x => x.nivel === l.n);
-        return `<li class="niv${n >= l.n ? ' ok' : ''}${n === l.n ? ' atual' : ''}">
-          <span class="n" aria-hidden="true">${l.n}</span>
-          <span><strong>${l.nome}${n === l.n ? ' <span class="sr-only">(seu nível)</span>' : ''}</strong><span class="min">${l.min} pontos</span></span>
-          <span class="lib">${libs.length ? libs.map(x => `<strong>${x.nome}</strong>${x.emBreve ? '<em>em preparação</em>' : ''}<br><span class="small muted">${x.desc}</span>`).join('<br>') : '<span class="small muted">Nível de passagem: guarde os pontos para o próximo.</span>'}</span>
+      <h2>Níveis e recompensas</h2>
+      <p class="muted" style="margin:0">São 100 níveis, e cada um pede ${MDM.PONTOS_POR_NIVEL} pontos a mais. A cada 10 níveis, o seu título muda para uma unidade de informação maior: ${MDM.FAIXAS.map((f, i) => `${f} (${i ? i * 10 : 1}${i < 10 ? `–${i * 10 + 9}` : ''})`).join(', ')}.</p>
+      <ol class="niveis">${marcos.map(m => {
+        const libs = MDM.DESBLOQUEIOS.filter(x => x.nivel === m), l = MDM.NIVEIS[m - 1];
+        return `<li class="niv${n >= m ? ' ok' : ''}">
+          <span class="n" aria-hidden="true">${m}</span>
+          <span><strong>Nível ${m}</strong><span class="min">${l.min} pontos${n >= m ? ' · liberado' : ''}</span></span>
+          <span class="lib">${libs.map(x => `<strong>${x.link && n >= m ? `<a href="${x.link}">${x.nome}</a>` : x.nome}</strong>${x.emBreve ? '<em>em preparação</em>' : ''}<br><span class="small muted">${x.desc}</span>`).join('<br>')}</span>
         </li>`;
       }).join('')}</ol>`;
   }
@@ -137,7 +139,7 @@
     const p = e.perfil, nv = e.nivel, pt = e.pontos;
     const cor = e.cor || { cor: 'var(--accent)', txt: 'var(--paper)' };
     const feitas = e.missoes.filter(m => m.feita).length;
-    const podeTrocar = nv.n >= 4 && !e.trocou;
+    const podeTrocar = nv.n >= MDM.nivelDe('trocar') && !e.trocou;
 
     doc.innerHTML = `
       <span class="eyebrow">Missões do dia</span>
@@ -164,8 +166,8 @@
         </li>`).join('')}
       </ul>
       <p class="bonus${e.bonus ? ' ok' : ''}">${e.bonus ? `Bônus de hoje garantido: +${MDM.PONTOS.bonus} pontos.` : `Bônus do dia: +${MDM.PONTOS.bonus} pontos ao cumprir todas.`}</p>
-      ${nv.n < 3 ? `<div class="mis extra" data-nivel="3"><span class="ck"></span><span><strong>Missão extra do dia</strong><span class="meta">Uma quarta missão, mais difícil</span></span><span class="acoes"><span class="pts">+30</span></span></div>` : ''}
-      ${nv.n >= 4 ? `<p class="small muted">${e.trocou ? 'Você já trocou uma missão hoje.' : 'Nível Kilobyte: você pode trocar uma missão por dia.'}</p>` : ''}
+      ${nv.n < MDM.nivelDe('extra') ? `<div class="mis extra" data-nivel="extra"><span class="ck"></span><span><strong>Missão extra do dia</strong><span class="meta">Uma quarta missão, mais difícil</span></span><span class="acoes"><span class="pts">+30</span></span></div>` : ''}
+      ${podeTrocar || e.trocou ? `<p class="small muted">${e.trocou ? 'Você já trocou uma missão hoje.' : 'Você pode trocar uma missão por dia.'}</p>` : ''}
 
       <h2>De onde vêm seus pontos</h2>
       <div class="fontes">
@@ -176,7 +178,7 @@
       </div>
 
       <h2>Cor do perfil</h2>
-      <div data-nivel="2">
+      <div data-nivel="cor">
         <p class="muted" style="margin:0">Escolha a cor do seu selo de nível.</p>
         <div class="cores" role="group" aria-label="Cor do perfil">
           <button class="chip cor-op" type="button" data-cor="" aria-pressed="${!e.cor}"><i style="background:var(--accent)"></i>Padrão</button>
@@ -185,8 +187,10 @@
       </div>
 
       <h2>Sala dos desafios</h2>
-      <div class="panel sala" data-nivel="5">
-        <p style="margin:0">Uma seção nova do site, só para quem chegou ao nível Megabyte. Está em preparação: quando abrir, ela aparece aqui.</p>
+      <a class="panel sala" data-nivel="sala" href="desafios.html">
+        <strong style="font-size:18px">Enigmas Bit a Bit, fases difíceis e desafio da semana</strong>
+        <span class="small muted">${e.semana ? `Desafio desta semana: ${esc(e.semana.txt)} (${e.semana.feito} de ${e.semana.meta}). ` : ''}${Object.keys(e.desafios).length} ${Object.keys(e.desafios).length === 1 ? 'desafio concluído' : 'desafios concluídos'}. Entrar na Sala →</span>
+      </a>
       </div>
 
       ${blocoNiveis(e)}
