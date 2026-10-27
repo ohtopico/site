@@ -146,6 +146,12 @@ const HABILIDADES_RAW = [
   ["EF09MA05", 9, "NU", "Percentuais sucessivos", "Resolver e elaborar problemas que envolvam porcentagens, com a ideia de aplicação de percentuais sucessivos e a determinação das taxas percentuais, preferencialmente com o uso de tecnologias digitais, no contexto da educação financeira."],
   ["EF09MA21", 9, "PE", "Gráficos que induzem a erros", "Analisar e identificar, em gráficos divulgados pela mídia, os elementos que podem induzir, às vezes propositadamente, erros de leitura, como escalas inapropriadas, legendas não explicitadas corretamente, omissão de informações importantes (fontes e datas), entre outros."],
   ["EF09MA22", 9, "PE", "Escolha do gráfico adequado", "Escolher e construir o gráfico mais adequado (colunas, setores, linhas), com ou sem uso de planilhas eletrônicas, para apresentar um determinado conjunto de dados, destacando aspectos como as medidas de tendência central."],
+  ["EF06MA25", 6, "GM", "Ângulos: noção e usos", "Reconhecer a abertura do ângulo como grandeza associada às figuras geométricas."],
+  ["EF06MA26", 6, "GM", "Ângulos: noção e usos", "Resolver problemas que envolvam a noção de ângulo em diferentes contextos e em situações reais, como ângulo de visão."],
+  ["EF06MA27", 6, "GM", "Ângulos: medida", "Determinar medidas da abertura de ângulos, por meio de transferidor e/ou tecnologias digitais."],
+  ["EF06MA32", 6, "PE", "Tabelas e gráficos", "Interpretar e resolver situações que envolvam dados de pesquisas apresentadas em tabelas e em diferentes tipos de gráficos e redigir textos para sintetizar conclusões."],
+  ["EF07MA35", 7, "PE", "Média estatística", "Compreender o significado de média estatística como indicador da tendência de uma pesquisa, calcular seu valor e relacioná-lo, intuitivamente, com a amplitude do conjunto de dados."],
+  ["EF07MA36", 7, "PE", "Pesquisa amostral e censitária", "Planejar e realizar pesquisa envolvendo tema da realidade social e comunicar os dados por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas."],
 ];
 
 const HABILIDADES = HABILIDADES_RAW.map(([codigo, ano, eixo, objeto, texto]) => ({
@@ -234,6 +240,30 @@ const RECURSOS = [
     habs: ['EF09MA09'], tempo: '15–20 min',
     resumo: 'Calculadora que resolve ax² + bx + c = 0 um passo de cada vez, com gráfico da parábola, e modo treino que corrige cada etapa e aponta o erro mais provável.',
     url: 'jogos/bhaskara.html', plano: null, ficha: null },
+  { id: 'empresa-sucos', tipo: 'jogo', titulo: 'Empresa de Sucos da Turma', comp: ['MA'], anos: [6, 7, 8, 9],
+    habs: ['EF06MA31', 'EF06MA32', 'EF07MA37', 'EF08MA23', 'EF09MA21'], tempo: '15–20 min',
+    resumo: 'Seis meses à frente da empresa de sucos da turma: escolha estratégias e use colunas, setores e linhas para convencer os pais a investir.',
+    url: 'jogos/empresa-sucos.html', plano: 'p-ma-graficos', ficha: null },
+  { id: 'angulos', tipo: 'jogo', titulo: 'Mira dos Ângulos', comp: ['MA'], anos: [7],
+    habs: ['EF06MA25', 'EF06MA27', 'EF07MA23', 'EF07MA24', 'EF07MA27'], tempo: '15 min',
+    resumo: 'Leia o transferidor para mirar o laser, classifique ângulos e descubra medidas em retas concorrentes, triângulos, paralelas e polígonos regulares.',
+    url: 'jogos/angulos.html', plano: null, ficha: null },
+  { id: 'cofrinho', tipo: 'jogo', titulo: 'Cofrinho que Cresce', comp: ['MA'], anos: [6, 7],
+    habs: ['EF06MA13', 'EF07MA02', 'EF09MA05'], tempo: '10–15 min',
+    resumo: 'O cofrinho rende 10% ao mês. Guarde ou gaste a cada acontecimento, calcule os juros sobre juros e tente chegar à bicicleta de R$ 300.',
+    url: 'jogos/cofrinho.html', plano: 'p-ma-financeira', ficha: null },
+  { id: 'tabelas', tipo: 'jogo', titulo: 'Gincana das Tabelas', comp: ['MA'], anos: [6, 7],
+    habs: ['EF06MA31', 'EF06MA32', 'EF06MA33', 'EF07MA35', 'EF07MA36'], tempo: '10–15 min',
+    resumo: 'Monte a tabela de frequência dos votos, leia tabelas de dupla entrada, ache o valor apagado pelos totais, calcule a média e cace o total errado.',
+    url: 'jogos/tabelas.html', plano: null, ficha: null },
+  { id: 'receitas', tipo: 'jogo', titulo: 'Cozinha das Proporções', comp: ['MA'], anos: [6, 7, 8],
+    habs: ['EF06MA15', 'EF07MA09', 'EF07MA17', 'EF08MA13'], tempo: '15 min',
+    resumo: 'Aumente e diminua receitas sem mudar o sabor, compare qual suco ficou mais forte, simplifique razões e descubra o ingrediente que falta.',
+    url: 'jogos/receitas.html', plano: 'p-ma-razao', ficha: 'f-ma-razao' },
+  { id: 'cartao', tipo: 'jogo', titulo: 'Cartão de Crédito de Treino', comp: ['MA'], anos: [7, 8, 9],
+    habs: ['EF07MA02', 'EF08MA04', 'EF09MA05'], tempo: '15 min',
+    resumo: 'Seis meses com um cartão de treino: limite, fatura, parcelas com e sem juros, pagamento mínimo e os juros do rotativo.',
+    url: 'jogos/cartao.html', plano: 'p-ma-financeira', ficha: null },
   // ---------- Recursos 3D (Laboratório 3D) ----------
   { id: '3d-decimais', tipo: '3d', titulo: 'Material Dourado 3D', comp: ['MA'], anos: [6],
     habs: ['EF06MA01', 'EF06MA02', 'EF06MA08', 'EF06MA11'], tempo: '15 min',
@@ -571,7 +601,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));

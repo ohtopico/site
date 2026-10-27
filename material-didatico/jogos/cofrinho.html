@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cofrinho que Cresce · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de educação financeira sobre juros compostos para crianças: o cofrinho rende 10% ao mês, você decide guardar ou gastar e calcula os juros sobre juros até comprar a bicicleta. BNCC EF06MA13, EF07MA02, EF09MA05.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/cofrinho.html">
+<meta property="og:title" content="Cofrinho que Cresce · Material didático">
+<meta property="og:description" content="Jogo de educação financeira sobre juros compostos para crianças: o cofrinho rende 10% ao mês, você decide guardar ou gastar e calcula os juros sobre juros até comprar a bicicleta. BNCC EF06MA13, EF07MA02, EF09MA05.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/cofrinho.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; height: auto; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+  .svgbox { max-width: 640px; margin: 0 auto; }
+  .svgbox svg { width: 100%; height: auto; display: block; }
+  .svgbox text { font-family: var(--body); fill: var(--ink); }
+  .num { border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 14px; width: 120px; font-size: 18px; background: var(--paper); text-align: center; }
+  .num.right { background: var(--ok-soft); border-color: var(--ok); }
+  .num.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0; }
+  .tab th, .tab td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: right; }
+  .tab th:first-child, .tab td:first-child { text-align: left; }
+  .tabwrap { overflow-x: auto; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); }
+  .center { text-align: center; }
+  .painel { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .painel div { border: 1.5px solid var(--ink); border-radius: 16px; padding: 8px 12px; background: var(--paper); font-size: 14px; }
+  .painel b { display: block; font-family: var(--display); font-size: 22px; }
+  .evento { margin: 12px 0; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; font-size: 14px; margin-top: 4px; }
+  .legenda i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--ink); vertical-align: -2px; margin-right: 6px; }
+  .barra { height: 16px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: var(--paper); margin: 6px 0 2px; }
+  .barra span { display: block; height: 100%; background: #47b881; transition: width .4s ease; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você quer comprar uma bicicleta de <strong>R$ 300,00</strong> daqui a 10 meses e começou com R$ 100,00 num cofrinho do banco que rende <strong>10% ao mês</strong> sobre tudo o que está dentro dele.</p>
+    <p>Todo mês acontece alguma coisa: um presente, uma vontade, um passeio. Decida se guarda ou gasta. Depois, calcule quanto o cofrinho vai render no mês. Repare que os juros de um mês também passam a render no mês seguinte: são os <strong>juros sobre juros</strong>, ou juros compostos.</p>
+    <p class="small muted">10% ao mês é uma taxa de brincadeira, bem maior que a de uma poupança de verdade, para o efeito aparecer rápido.</p>
+  </details>
+  <div class="game-stage">
+    <div class="hud"><span>Mês <b id="mn">1</b> de 10</span><span>Contas certas <b id="ok">0</b></span><span>Diversão <b id="div">0</b></span></div>
+    <div class="painel"><div>No cofrinho<b id="saldo"></b></div><div>Juros ganhos até agora<b id="juros"></b></div><div>Meta: bicicleta<b>R$ 300,00</b><div class="barra" aria-hidden="true"><span id="meta"></span></div></div></div>
+    <div class="svgbox" id="chart" role="img" aria-label="Gráfico de colunas do dinheiro no cofrinho mês a mês"></div>
+    <div class="legenda"><span><i style="background:#47b881"></i>Dinheiro que você colocou</span><span><i style="background:#f2b84b"></i>Juros acumulados</span><span><i style="background:#c21f3a"></i>Meta</span></div>
+    <div id="etapa"></div>
+    <p class="feedback center" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('cofrinho');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const R$ = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const c2 = v => Math.round(v * 100) / 100;
+  const META = 300, TAXA = 0.1, MESES = 10;
+  // Acontecimentos: valor positivo entra, negativo é um gasto que sai do cofrinho
+  const EVENTOS = [
+    { t: 'Sua tia deu R$ 20,00 de presente.', v: 20, sim: 'Guardar no cofrinho', nao: 'Gastar com figurinhas' },
+    { t: 'Os amigos chamaram para tomar sorvete. Custa R$ 12,00.', v: -12, sim: 'Tirar do cofrinho e ir', nao: 'Levar um lanche de casa' },
+    { t: 'Saiu um jogo novo para o celular por R$ 30,00.', v: -30, sim: 'Comprar agora', nao: 'Esperar uma promoção' },
+    { t: 'Você vendeu pulseiras na feira da escola e ganhou R$ 25,00.', v: 25, sim: 'Guardar no cofrinho', nao: 'Gastar no lanche' },
+    { t: 'Passeio da turma ao museu: R$ 15,00 para o ônibus.', v: -15, sim: 'Pagar com o cofrinho e ir', nao: 'Ficar em casa' },
+    { t: 'Promoção de um tênis de marca por R$ 60,00.', v: -60, sim: 'Comprar o tênis', nao: 'Continuar com o tênis que tenho' },
+    { t: 'Aniversário! Você ganhou R$ 30,00 da família.', v: 30, sim: 'Guardar no cofrinho', nao: 'Gastar em doces e brinquedos' },
+    { t: 'Lanche na cantina todos os dias da semana: R$ 10,00.', v: -10, sim: 'Tirar do cofrinho', nao: 'Levar lanche de casa' },
+    { t: 'Cinema com a turma no sábado: R$ 20,00.', v: -20, sim: 'Tirar do cofrinho e ir', nao: 'Ver um filme em casa' },
+    null
+  ];
+  let m, saldo, colocado, ok, diversao, hist;
+
+  function grafico() {
+    const W = 600, H = 250, L = 46, R = 10, T = 14, B = 30, topo = Math.max(META + 50, Math.ceil(Math.max(...hist.map(h => h.s)) / 50) * 50 + 50);
+    const y = v => T + (H - T - B) * (1 - v / topo), larg = (W - L - R) / (MESES + 1);
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    for (let g = 0; g <= topo; g += 100) s += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)"/><text x="${L - 6}" y="${y(g) + 4}" text-anchor="end" font-size="14">${g}</text>`;
+    for (let k = 0; k <= MESES; k++) {
+      const x = L + larg * k + larg * 0.18, w = larg * 0.64, h = hist[k];
+      s += `<text x="${x + w / 2}" y="${H - 10}" text-anchor="middle" font-size="14">${k}</text>`;
+      if (!h) continue;
+      const verde = Math.max(0, Math.min(h.c, h.s));
+      s += `<rect x="${x}" y="${y(verde)}" width="${w}" height="${y(0) - y(verde)}" fill="#47b881" stroke="var(--ink)" stroke-width="1.2"/>`;
+      if (h.s > verde) s += `<rect x="${x}" y="${y(h.s)}" width="${w}" height="${y(verde) - y(h.s)}" fill="#f2b84b" stroke="var(--ink)" stroke-width="1.2"/>`;
+    }
+    s += `<line x1="${L}" x2="${W - R}" y1="${y(META)}" y2="${y(META)}" stroke="#c21f3a" stroke-width="2.5" stroke-dasharray="8 6"/>`;
+    s += `<line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/><line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/>`;
+    s += `<text x="${W - R}" y="${H - 10}" text-anchor="end" font-size="11" fill="var(--ink-2)">mês</text></svg>`;
+    $('#chart').innerHTML = s;
+  }
+  function painel() {
+    $('#mn').textContent = Math.min(m + 1, MESES); $('#ok').textContent = ok; $('#div').textContent = diversao;
+    $('#saldo').textContent = R$(saldo); $('#juros').textContent = R$(Math.max(0, saldo - Math.max(0, colocado)));
+    $('#meta').style.width = Math.min(100, saldo / META * 100) + '%';
+    grafico();
+  }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback center ' + (c || ''); }
+
+  function evento() {
+    painel(); fb(''); $('#actions').innerHTML = '';
+    const E = EVENTOS[m];
+    if (!E) return prever();
+    const podeTirar = E.v > 0 || saldo >= -E.v;
+    $('#etapa').innerHTML = `<p class="evento box"><strong>Mês ${m + 1}.</strong> ${E.t}</p>
+      <div class="opts"><button class="btn ghost" type="button" id="sim" ${podeTirar ? '' : 'disabled'}>${E.sim}</button><button class="btn ghost" type="button" id="nao">${E.nao}</button></div>
+      ${podeTirar ? '' : '<p class="small muted center">Não há dinheiro suficiente no cofrinho para isso.</p>'}`;
+    $('#sim').onclick = () => {
+      saldo = c2(saldo + E.v); colocado = c2(colocado + E.v);
+      if (E.v < 0) diversao++;
+      painel(); prever(E.v > 0 ? `Guardado! Agora esses ${R$(E.v)} também vão render juros.` : `Você aproveitou, e saíram ${R$(-E.v)} do cofrinho. Esse dinheiro deixa de render juros.`);
+    };
+    $('#nao').onclick = () => { if (E.v > 0) diversao++; painel(); prever(E.v > 0 ? 'Você aproveitou o presente agora. Ele não vai render juros, mas foi divertido.' : 'Boa escolha para a meta: o dinheiro continua rendendo.'); };
+  }
+  function prever(msg) {
+    const juros = c2(saldo * TAXA);
+    const cands = [c2(100 * TAXA), c2(saldo * 0.01), c2(saldo + juros), c2(colocado * TAXA), c2(juros * 2)];
+    const ops = shuffle([juros, ...shuffle([...new Set(cands)].filter(v => v !== juros && v > 0)).slice(0, 3)]);
+    $('#etapa').innerHTML = `${msg ? `<p class="small center">${msg}</p>` : ''}
+      <p class="q">Fim do mês ${m + 1}. Com ${R$(saldo)} no cofrinho, quanto ele vai render de juros (10%)?</p>
+      <div class="opts" id="opts">${ops.map(v => `<button class="btn ghost" type="button" data-v="${v}">${R$(v)}</button>`).join('')}</div>`;
+    let feito = false;
+    $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (feito) return; feito = true;
+      const certo = +b.dataset.v === juros;
+      $('#opts').querySelectorAll('button').forEach(o => +o.dataset.v === juros && o.classList.add('right'));
+      if (certo) ok++; else b.classList.add('wrong');
+      const antes = saldo; saldo = c2(saldo + juros); hist.push({ s: saldo, c: colocado }); m++;
+      painel();
+      const dica = `10% de ${R$(antes)} é ${R$(antes)} ÷ 10 = ${R$(juros)}.`;
+      fb((certo ? 'Isso! ' : 'Não foi dessa vez. ') + dica + (m > 1 ? ' Os juros dos meses anteriores também renderam.' : ''), certo ? 'ok' : 'bad');
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${m < MESES ? 'Próximo mês →' : 'Ver se deu para comprar'}</button>`;
+      $('#nx').onclick = () => m < MESES ? evento() : fim(); $('#nx').focus();
+    });
+  }
+  function fim() {
+    painel(); $('#mn').textContent = MESES; fb('');
+    window.MDP && MDP.registrar('cofrinho', ok / MESES * 100);
+    const juros = c2(saldo - Math.max(0, colocado)), deu = saldo >= META;
+    let parado = 100; for (let k = 0; k < MESES; k++) parado = c2(parado + c2(parado * TAXA));
+    $('#etapa').innerHTML = `<p class="q">${deu ? `Deu! Você juntou ${R$(saldo)} e comprou a bicicleta.` : `Você juntou ${R$(saldo)}. Faltaram ${R$(META - saldo)} para a bicicleta.`}</p>
+      <div class="tabwrap"><table class="tab"><thead><tr><th>Comparação depois de 10 meses</th><th>Valor</th></tr></thead><tbody>
+      <tr><td>Seu cofrinho (juros sobre juros)</td><td>${R$(saldo)}</td></tr>
+      <tr><td>Só os R$ 100,00 iniciais, sem mexer em nada</td><td>${R$(parado)}</td></tr>
+      <tr><td>Primo que tirava os juros todo mês: rendeu sempre R$ 10,00, como nos juros simples (R$ 100,00 guardados + R$ 100,00 de juros)</td><td>R$ 200,00</td></tr>
+      </tbody></table></div>
+      <p class="small">Você ganhou ${R$(juros)} só de juros, fez ${diversao} ${diversao === 1 ? 'escolha divertida' : 'escolhas divertidas'} no caminho e acertou ${ok} de ${MESES} contas. Repare no gráfico: a parte amarela cresce mais rápido a cada mês, porque os juros também rendem juros.</p>`;
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Jogar de novo</button>`;
+    $('#again').onclick = start;
+  }
+  function start() { m = 0; saldo = 100; colocado = 100; ok = 0; diversao = 0; hist = [{ s: 100, c: 100 }]; evento(); }
+  start();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
