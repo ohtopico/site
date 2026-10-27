@@ -4,8 +4,8 @@
    (o mesmo perfil de material-didatico/meu-progresso.html; sem perfil = 6º ano).
      vermelho = Matemática · verde = Computação · amarelo = Desafio rápido
    Tudo fica no navegador (localStorage), separado por perfil.
-   Para colocar estrelas numa página nova: incluir este script e adicionar
-   o caminho em LOCAIS (o total do contador é calculado a partir dessa lista).
+   Carregado por material-didatico/assets/comum.js. Para colocar estrela numa página nova do
+   material didático, adicionar o caminho em LOCAIS (o total do contador sai dessa lista).
    ===================================================================== */
 (function () {
   if (window.__estrelas || window.top !== window) return; // não roda dentro das janelas com iframe
@@ -19,37 +19,40 @@
     amarelo: { nome: 'amarela', area: 'Desafio rápido', fill: '#f5c400' }
   };
 
-  /* Onde ficam as estrelas: caminho da página (sem .html e sem index) -> cores das estrelas.
+  /* Onde ficam as estrelas: só no material didático e no máximo uma por página.
+     Caminho da página (sem .html e sem index) -> cor da estrela.
      grupo = nome mostrado no painel para dizer onde ainda faltam estrelas. */
   const LOCAIS = [
-    ['/', 'Página inicial', ['amarelo', 'verde']],
-    ['/blog/', 'Blog', ['vermelho']],
-    ['/material-didatico/', 'Material didático', ['vermelho', 'verde']],
-    ['/material-didatico/catalogo', 'Material didático', ['amarelo']],
-    ['/material-didatico/matematica/', 'Material didático', ['vermelho']],
-    ['/material-didatico/computacao/', 'Material didático', ['verde']],
-    ['/material-didatico/bncc', 'Material didático', ['amarelo']],
-    ['/material-didatico/meu-progresso', 'Material didático', ['amarelo']],
-    ['/material-didatico/datas-festivas/', 'Material didático', ['vermelho']],
+    ['/material-didatico/', 'Início', ['amarelo']],
+    ['/material-didatico/catalogo', 'Catálogo', ['verde']],
+    ['/material-didatico/matematica/', 'Matemática', ['vermelho']],
+    ['/material-didatico/computacao/', 'Computação', ['verde']],
+    ['/material-didatico/bncc', 'BNCC', ['verde']],
+    ['/material-didatico/meu-progresso', 'Meu progresso', ['verde']],
+    ['/material-didatico/datas-festivas/', 'Datas festivas', ['verde']],
     ['/material-didatico/jogos/graficos', 'Jogos', ['vermelho']],
     ['/material-didatico/jogos/tabuada', 'Jogos', ['vermelho']],
     ['/material-didatico/jogos/fracoes', 'Jogos', ['vermelho']],
     ['/material-didatico/jogos/cartesiano', 'Jogos', ['vermelho']],
-    ['/material-didatico/jogos/balanca', 'Jogos', ['amarelo']],
-    ['/material-didatico/jogos/tangram', 'Jogos', ['amarelo']],
-    ['/material-didatico/jogos/golpe', 'Jogos', ['amarelo']],
+    ['/material-didatico/jogos/angulos', 'Jogos', ['vermelho']],
+    ['/material-didatico/jogos/receitas', 'Jogos', ['vermelho']],
+    ['/material-didatico/jogos/tabelas', 'Jogos', ['vermelho']],
+    ['/material-didatico/jogos/empresa-sucos', 'Jogos', ['vermelho']],
+    ['/material-didatico/jogos/bhaskara', 'Jogos', ['vermelho']],
     ['/material-didatico/jogos/robo', 'Jogos', ['verde']],
     ['/material-didatico/jogos/cifra', 'Jogos', ['verde']],
     ['/material-didatico/jogos/rotas', 'Jogos', ['verde']],
     ['/material-didatico/jogos/pacotes', 'Jogos', ['verde']],
-    ['/material-didatico/3d/tales', 'Laboratório 3D', ['vermelho']],
-    ['/material-didatico/3d/balanca', 'Laboratório 3D', ['vermelho']],
+    ['/material-didatico/jogos/golpe', 'Jogos', ['verde']],
+    ['/material-didatico/jogos/balanca', 'Jogos', ['amarelo']],
+    ['/material-didatico/jogos/tangram', 'Jogos', ['amarelo']],
+    ['/material-didatico/jogos/cartao', 'Jogos', ['amarelo']],
+    ['/material-didatico/jogos/cofrinho', 'Jogos', ['amarelo']],
+    ['/material-didatico/jogos/poupanca', 'Jogos', ['amarelo']],
     ['/material-didatico/3d/potencias', 'Laboratório 3D', ['amarelo']],
-    ['/simuladores/', 'Simuladores', ['verde']],
-    ['/simuladores/logica', 'Simuladores', ['verde']],
-    ['/simuladores/bases', 'Simuladores', ['amarelo']],
-    ['/escape-matematica/', 'Escape de Matemática', ['amarelo']],
-    ['/freebies/', 'Materiais gratuitos', ['verde']]
+    ['/material-didatico/3d/tales', 'Laboratório 3D', ['amarelo']],
+    ['/material-didatico/3d/balanca', 'Laboratório 3D', ['amarelo']],
+    ['/material-didatico/3d/fracoes', 'Laboratório 3D', ['amarelo']]
   ];
   // lista plana: cada estrela tem id fixo (caminho#n) e um número dentro da sua cor (para escolher a dica)
   const ESTRELAS = [];
@@ -250,8 +253,8 @@
     return c || '/';
   }
   const aqui = ESTRELAS.filter(e => e.cam === caminho());
-  // o contador aparece nas páginas com estrelas e nas áreas de estudante; páginas de serviços ficam sem nada
-  if (!aqui.length && !/^\/(material-didatico|simuladores|blog)\//.test(location.pathname)) return;
+  // estrelas e contador só existem no material didático
+  if (!location.pathname.startsWith('/material-didatico/')) return;
 
   /* ---------- estilo ---------- */
   const css = `
@@ -428,8 +431,8 @@
       <p style="margin:0 0 10px"><strong>${n} de ${TOTAL}</strong> estrelas encontradas.</p>
       <div class="cores">${Object.entries(CORES).map(([k, c]) => `<span><i>${svgEstrela(c.fill)}</i>${c.area}: ${contaCor(k)}</span>`).join('')}</div>
       ${minhas.length ? `<ul>${minhas.map(e => `<li><i>${svgEstrela(CORES[e.cor].fill)}</i><div>${blocoDica(e, p.ano)}</div></li>`).join('')}</ul>`
-        : '<p>Nenhuma estrela ainda. Elas estão escondidas pelas páginas do site, perto de títulos, textos e imagens. Clique nelas para ganhar dicas.</p>'}
-      <p class="pe">${n === TOTAL ? 'Você encontrou todas as estrelas do site.' : 'Ainda há estrelas em: ' + ondeFalta + '.'}${linkProgresso()}</p>`, 'Estrelas secretas');
+        : '<p>Nenhuma estrela ainda. Elas estão escondidas pelas páginas do material didático, uma por página, perto de títulos, textos e imagens. Clique nelas para ganhar dicas.</p>'}
+      <p class="pe">${n === TOTAL ? 'Você encontrou todas as estrelas do material didático.' : 'Ainda há estrelas em: ' + ondeFalta + '.'}${linkProgresso()}</p>`, 'Estrelas secretas');
     // o estilo inline do bloco da lista substitui o da dica; a cor fica só no ícone
     f.querySelectorAll('li .dica').forEach(d => d.setAttribute('style', 'margin:0;padding:0;border:0;background:none'));
     ligarRespostas(f);
