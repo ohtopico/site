@@ -97,7 +97,7 @@ def cabeca(titulo, descricao, url, imagem, imagem_alt, tipo_og, extra='', robots
 </head>'''
 
 
-CONTEXTO = {'posts': [], 'contador': None}
+CONTEXTO = {'posts': [], 'contador': None, 'agendados': []}
 
 MENU_INICIAR = [
     ('Profissional', [
@@ -283,11 +283,19 @@ def caixa_slides(post, tamanhos):
             f'</section>')
 
 
+def sem_links_agendados(corpo):
+    """Tira o link (fica só o texto) para posts que ainda não saíram: o endereço deles dá 404 até a data."""
+    for p in CONTEXTO['agendados']:
+        corpo = re.sub(rf'<a [^>]*href="(?:https://ohtopico\.com\.br)?/blog/{re.escape(p["slug"])}/"[^>]*>(.*?)</a>',
+                       r'\1', corpo, flags=re.S)
+    return corpo
+
+
 def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
     site = cfg['site']
     url = f'{site}/blog/{post["slug"]}/'
     img_url = f'{site}/blog/img/{post["imagem"]}'
-    corpo = (AQUI / 'conteudo' / f'{post["slug"]}.html').read_text(encoding='utf-8').strip()
+    corpo = sem_links_agendados((AQUI / 'conteudo' / f'{post["slug"]}.html').read_text(encoding='utf-8').strip())
     corpo = inserir_imagem(corpo, post, figura(post, dims[post['imagem']]))
     # Infográficos extras do post: lista "imagens_extra" com imagem, alt, legenda e imagem_depois_de
     for extra in post.get('imagens_extra', []):
@@ -763,6 +771,7 @@ def main():
     hoje = a.ate or date.today().isoformat()
     CONTEXTO['posts'] = publicados
     CONTEXTO['contador'] = cfg.get('contador')
+    CONTEXTO['agendados'] = agendados
 
     blog = a.site / 'blog'
     (blog / 'assets').mkdir(parents=True, exist_ok=True)
