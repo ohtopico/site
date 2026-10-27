@@ -289,6 +289,9 @@ def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
     img_url = f'{site}/blog/img/{post["imagem"]}'
     corpo = (AQUI / 'conteudo' / f'{post["slug"]}.html').read_text(encoding='utf-8').strip()
     corpo = inserir_imagem(corpo, post, figura(post, dims[post['imagem']]))
+    # Infográficos extras do post: lista "imagens_extra" com imagem, alt, legenda e imagem_depois_de
+    for extra in post.get('imagens_extra', []):
+        corpo = inserir_imagem(corpo, extra, figura(extra, dims[extra['imagem']]))
     if post.get('slides'):
         if '<!-- slides -->' not in corpo:
             raise SystemExit(f'Marcador <!-- slides --> não encontrado em {post["slug"]}')
@@ -768,17 +771,19 @@ def main():
     shutil.copy(AQUI / 'blog.js', blog / 'assets' / 'blog.js')
 
     # Posts agendados: nada deles pode ficar no site antes da data
-    em_uso = {p['imagem'] for p in publicados} | {'dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM}
+    imagens_do = lambda p: [p['imagem']] + [e['imagem'] for e in p.get('imagens_extra', [])]
+    em_uso = {i for p in publicados for i in imagens_do(p)} | {'dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM}
     for p in agendados:
         shutil.rmtree(blog / p['slug'], ignore_errors=True)
-        if p['imagem'] not in em_uso:
-            (blog / 'img' / p['imagem']).unlink(missing_ok=True)
-            (blog / 'img' / (Path(p['imagem']).stem + '-mini.webp')).unlink(missing_ok=True)
+        for img in imagens_do(p):
+            if img not in em_uso:
+                (blog / 'img' / img).unlink(missing_ok=True)
+                (blog / 'img' / (Path(img).stem + '-mini.webp')).unlink(missing_ok=True)
         if p.get('slides'):
             (blog / 'slides' / p['slides']['pdf']).unlink(missing_ok=True)
 
     dims = {}
-    for nome in dict.fromkeys([p['imagem'] for p in publicados] + ['dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM]):
+    for nome in dict.fromkeys([i for p in publicados for i in imagens_do(p)] + ['dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM]):
         origem = next((d / nome for d in a.imagens if (d / nome).exists()), None)
         if origem is None:
             raise SystemExit(f'Imagem não encontrada: {nome}')
