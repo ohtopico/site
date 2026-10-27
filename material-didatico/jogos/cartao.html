@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartão de Crédito de Treino · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de educação financeira sobre cartão de crédito para crianças e adolescentes: limite, fatura, parcelamento com e sem juros, pagamento mínimo e juros do rotativo em seis meses de simulação. BNCC EF07MA02, EF08MA04, EF09MA05.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/cartao.html">
+<meta property="og:title" content="Cartão de Crédito de Treino · Material didático">
+<meta property="og:description" content="Jogo de educação financeira sobre cartão de crédito para crianças e adolescentes: limite, fatura, parcelamento com e sem juros, pagamento mínimo e juros do rotativo em seis meses de simulação. BNCC EF07MA02, EF08MA04, EF09MA05.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/cartao.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; height: auto; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+  .svgbox { max-width: 640px; margin: 0 auto; }
+  .svgbox svg { width: 100%; height: auto; display: block; }
+  .svgbox text { font-family: var(--body); fill: var(--ink); }
+  .num { border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 14px; width: 120px; font-size: 18px; background: var(--paper); text-align: center; }
+  .num.right { background: var(--ok-soft); border-color: var(--ok); }
+  .num.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0; }
+  .tab th, .tab td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: right; }
+  .tab th:first-child, .tab td:first-child { text-align: left; }
+  .tabwrap { overflow-x: auto; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); }
+  .center { text-align: center; }
+  .painel { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .painel div { border: 1.5px solid var(--ink); border-radius: 16px; padding: 8px 12px; background: var(--paper); font-size: 14px; }
+  .painel b { display: block; font-family: var(--display); font-size: 21px; }
+  .cartao { max-width: 340px; margin: 0 auto 14px; border-radius: 18px; padding: 16px 18px; color: #111; background: linear-gradient(135deg, #47b881, #f2b84b); border: 1.5px solid var(--ink); font-size: 14px; }
+  .cartao strong { font-family: var(--display); font-size: 20px; display: block; }
+  .cartao .chip-c { width: 34px; height: 24px; border-radius: 5px; background: #fdf1d6; border: 1px solid #111; margin: 8px 0; }
+  .oferta { margin: 10px 0; }
+  .escolhas { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+  .escolha { text-align: left; border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; background: var(--paper); cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
+  .escolha:hover:not(:disabled) { background: var(--pill); }
+  .escolha:disabled { opacity: .45; cursor: not-allowed; }
+  .escolha strong { font-size: 16px; }
+  .tab td.neg { color: var(--bad); }
+  .licao { border-left: 4px solid #f2b84b; background: #fdf1d6; color: #111; padding: 10px 14px; border-radius: 0 14px 14px 0; font-size: 15px; margin: 10px 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Este é um cartão de crédito de treino. Você recebe <strong>R$ 200,00 por mês</strong> (mesada e venda de pulseiras) e o cartão tem <strong>limite de R$ 400,00</strong>. Durante 6 meses aparecem coisas para comprar: decida se compra, se paga à vista ou no cartão, e em quantas parcelas.</p>
+    <p>No fim do mês chega a <strong>fatura</strong>. Se pagar tudo, não paga juros. Se pagar só uma parte, o resto vira dívida no <strong>rotativo</strong>, que cobra 12% de juros ao mês sobre o que ficou faltando.</p>
+    <p class="small muted">Os valores são simplificados para o jogo. Na vida real, os juros do rotativo costumam ser ainda mais altos, e as regras de cada banco aparecem no contrato do cartão.</p>
+  </details>
+  <div class="game-stage">
+    <div class="hud"><span>Mês <b id="mn">1</b> de 6</span><span>Contas certas <b id="ok">0</b></span><span>Diversão <b id="div">0</b></span></div>
+    <div class="painel"><div>Dinheiro na conta<b id="din"></b></div><div>Limite disponível<b id="lim"></b></div><div>Dívida no cartão<b id="div2"></b></div><div>Juros pagos<b id="jur"></b></div></div>
+    <div id="tela"></div>
+    <p class="feedback center" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('cartao');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const R$ = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const c2 = v => Math.round(v * 100) / 100;
+  const RENDA = 200, LIMITE = 400, JUROS = 0.12, MINIMO = 0.15;
+  // n parcelas de valor p; pix = paga na hora com 5% de desconto
+  const OFERTAS = [
+    { item: 'Fone de ouvido sem fio', preco: 120, div: 2, op: [{ pix: 1 }, { n: 1, p: 120 }, { n: 3, p: 40 }] },
+    { item: 'Tênis novo para a educação física', preco: 240, div: 3, op: [{ pix: 1 }, { n: 1, p: 240 }, { n: 4, p: 60 }, { n: 6, p: 46 }] },
+    { item: 'Ingresso para o show da sua banda preferida', preco: 150, div: 3, op: [{ pix: 1 }, { n: 1, p: 150 }, { n: 2, p: 75 }] },
+    { item: 'Videogame portátil', preco: 600, div: 5, op: [{ pix: 1 }, { n: 10, p: 60 }, { n: 12, p: 62.5 }] },
+    { item: 'Presente de aniversário para alguém da família', preco: 80, div: 2, op: [{ pix: 1 }, { n: 1, p: 80 }, { n: 2, p: 40 }] },
+    { item: 'Viagem de fim de ano com a turma', preco: 300, div: 4, op: [{ pix: 1 }, { n: 1, p: 300 }, { n: 3, p: 100 }, { n: 6, p: 55 }] }
+  ];
+  const LICOES = [
+    'Crédito não é dinheiro a mais: é dinheiro emprestado que você vai pagar quando a fatura chegar.',
+    'Parcelar “sem juros” divide o mesmo preço em partes. Parcelar “com juros” faz você pagar mais pelo mesmo produto.',
+    'O limite é o máximo que o banco empresta. Ele não é parte da sua renda e não deve ser usado como se fosse.',
+    'Uma compra parcelada ocupa o limite inteiro de uma vez e libera um pedaço a cada parcela paga.',
+    'Pagar só o mínimo da fatura faz a dívida crescer com juros sobre juros, como no cofrinho, só que contra você.',
+    'Antes de comprar, compare: quanto custa à vista, quanto custa no total parcelado e quanto sobra da renda do mês.'
+  ];
+  let m, din, parcelas, rotativo, jurosPagos, ok, perguntas, diversao, compras, hist;
+
+  const futuro = () => c2(parcelas.reduce((a, p) => a + p.p * p.rest, 0));
+  const divida = () => c2(rotativo + futuro());
+  const limiteLivre = () => c2(LIMITE - divida());
+  function painel() {
+    $('#mn').textContent = Math.min(m + 1, 6); $('#ok').textContent = `${ok} de ${perguntas}`; $('#div').textContent = diversao;
+    $('#din').textContent = R$(din); $('#lim').textContent = R$(limiteLivre()); $('#div2').textContent = R$(divida()); $('#jur').textContent = R$(jurosPagos);
+  }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback center ' + (c || ''); }
+
+  function opcaoTxt(o, O) {
+    if (o.pix) return { t: `À vista no Pix: ${R$(c2(O.preco * 0.95))}`, d: '5% de desconto, sai agora da conta.' };
+    if (o.n === 1) return { t: `Crédito em 1x: ${R$(o.p)}`, d: 'Entra inteiro na fatura deste mês.' };
+    const tot = c2(o.n * o.p), j = tot > O.preco;
+    return { t: `${o.n}x de ${R$(o.p)} ${j ? 'com juros' : 'sem juros'}`, d: j ? `Total de ${R$(tot)}: ${R$(c2(tot - O.preco))} a mais.` : `Total de ${R$(tot)}, o mesmo preço.` };
+  }
+  function mes() {
+    din = c2(din + RENDA); compras = []; painel(); fb(''); $('#actions').innerHTML = '';
+    const O = OFERTAS[m];
+    const btns = O.op.map((o, k) => {
+      const T = opcaoTxt(o, O);
+      let pode = true, motivo = '';
+      if (o.pix && din < c2(O.preco * 0.95)) { pode = false; motivo = 'Não há dinheiro suficiente na conta.'; }
+      if (!o.pix && c2(o.n * o.p) > limiteLivre()) { pode = false; motivo = `Passa do limite disponível (${R$(limiteLivre())}).`; }
+      return `<button class="escolha" type="button" data-k="${k}" ${pode ? '' : 'disabled'}><strong>${T.t}</strong><span class="small muted">${pode ? T.d : motivo}</span></button>`;
+    }).join('');
+    $('#tela').innerHTML = `<div class="cartao"><span>Cartão de treino</span><div class="chip-c"></div><strong>Limite ${R$(LIMITE)}</strong><span>Recebeu ${R$(RENDA)} neste mês</span></div>
+      <p class="oferta box"><strong>Mês ${m + 1}.</strong> Você viu: <strong>${O.item}</strong>, por ${R$(O.preco)}. Como prefere fazer?</p>
+      <div class="escolhas">${btns}<button class="escolha" type="button" data-k="-1"><strong>Não comprar agora</strong><span class="small muted">Guardar o dinheiro e o limite.</span></button></div>`;
+    $('#tela').querySelectorAll('.escolha').forEach(b => b.onclick = () => {
+      const k = +b.dataset.k;
+      if (k >= 0) {
+        const o = O.op[k]; diversao += O.div;
+        if (o.pix) { din = c2(din - O.preco * 0.95); compras.push(`${O.item}: pago no Pix`); }
+        else { parcelas.push({ nome: O.item, p: o.p, rest: o.n, n: o.n }); compras.push(`${O.item}: ${o.n}x de ${R$(o.p)}`); }
+      }
+      fatura();
+    });
+  }
+  function fatura() {
+    // linhas da fatura: rotativo do mês passado (já com juros) e parcelas que vencem agora
+    const linhas = [];
+    if (rotativo > 0) linhas.push(['Saldo não pago do mês passado + 12% de juros', rotativo]);
+    parcelas.forEach(p => linhas.push([p.n === 1 ? p.nome : `${p.nome} (parcela ${p.n - p.rest + 1} de ${p.n})`, p.p]));
+    const F = c2(linhas.reduce((a, l) => a + l[1], 0));
+    parcelas.forEach(p => p.rest--); parcelas = parcelas.filter(p => p.rest > 0);
+    rotativo = 0; painel();
+    const minimo = c2(F * MINIMO);
+    const tabela = F > 0 ? `<div class="tabwrap"><table class="tab"><caption style="font-weight:600;text-align:left">Fatura do mês ${m + 1}</caption><tbody>${linhas.map(l => `<tr><td>${l[0]}</td><td>${R$(l[1])}</td></tr>`).join('')}<tr><th>Total da fatura</th><th>${R$(F)}</th></tr><tr><td>Pagamento mínimo (15%)</td><td>${R$(minimo)}</td></tr></tbody></table></div>` : '<p class="box center">A fatura deste mês veio zerada. Nada a pagar.</p>';
+    $('#tela').innerHTML = `${compras.length ? `<p class="small">Compra do mês: ${compras.join('; ')}.</p>` : ''}${tabela}<p class="licao">${LICOES[m]}</p><div id="pergunta"></div><div id="pagar"></div>`;
+    perguntar(F, minimo, () => pagar(F, minimo));
+  }
+  function perguntar(F, minimo, depois) {
+    let P;
+    if (F > 0 && (m % 2 === 0)) {
+      const resto = c2(F - minimo), certo = c2(resto * (1 + JUROS));
+      P = { q: `Se você pagar só o mínimo (${R$(minimo)}), quanto vai dever no mês que vem, com 12% de juros?`, c: R$(certo),
+        e: [R$(resto), R$(c2(F * (1 + JUROS))), R$(c2(resto * JUROS)), R$(c2(F - minimo * 1.12))],
+        x: `Faltariam ${R$(F)} − ${R$(minimo)} = ${R$(resto)}. Com 12% de juros: ${R$(resto)} × 1,12 = ${R$(certo)}.` };
+    } else if (F > 0) {
+      const metade = c2(F / 2), j = c2(metade * JUROS);
+      P = { q: `Se você pagar metade da fatura (${R$(metade)}), quanto vai pagar só de juros no mês que vem?`, c: R$(j),
+        e: [R$(c2(F * JUROS)), R$(12), R$(c2(metade * 1.12)), R$(c2(j / 2))],
+        x: `Ficariam ${R$(c2(F - metade))} sem pagar. 12% disso é ${R$(c2(F - metade))} × 0,12 = ${R$(c2((F - metade) * JUROS))}.` };
+      P.c = R$(c2((F - metade) * JUROS));
+    } else {
+      const O = OFERTAS[Math.min(m + 1, 5)], par = O.op.filter(o => o.n > 1).pop();
+      const tot = c2(par.n * par.p);
+      P = { q: `Pergunta extra: ${O.item.toLowerCase()} custa ${R$(O.preco)} à vista ou ${par.n}x de ${R$(par.p)}. Quanto custa no total parcelado?`, c: R$(tot),
+        e: [R$(O.preco), R$(c2(par.p * (par.n - 1))), R$(c2(tot + par.p)), R$(c2(O.preco * 0.95))],
+        x: `${par.n} × ${R$(par.p)} = ${R$(tot)}. ${tot > O.preco ? `São ${R$(c2(tot - O.preco))} de juros embutidos.` : 'Mesmo preço do à vista: parcelamento sem juros.'}` };
+    }
+    perguntas++;
+    const ops = shuffle([P.c, ...[...new Set(P.e)].filter(e => e !== P.c).slice(0, 3)]);
+    $('#pergunta').innerHTML = `<p class="q">${P.q}</p><div class="opts" id="opts">${ops.map(o => `<button class="btn ghost" type="button">${o}</button>`).join('')}</div>`;
+    let feito = false;
+    $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (feito) return; feito = true;
+      const certo = b.textContent === P.c;
+      $('#opts').querySelectorAll('button').forEach(o => o.textContent === P.c && o.classList.add('right'));
+      if (certo) ok++; else b.classList.add('wrong');
+      painel(); fb((certo ? 'Conta certa! ' : 'Não foi dessa vez. ') + P.x, certo ? 'ok' : 'bad');
+      depois();
+    });
+  }
+  function pagar(F, minimo) {
+    const fim1 = pago => {
+      pago = c2(Math.min(pago, din, F)); din = c2(din - pago);
+      const resto = c2(F - pago), j = c2(resto * JUROS);
+      rotativo = c2(resto + j); jurosPagos = c2(jurosPagos + j);
+      hist.push({ m: m + 1, din, div: divida() });
+      painel();
+      $('#pagar').innerHTML = `<p class="center ${resto > 0 ? '' : 'small'}">${F === 0 ? 'Sem fatura neste mês.' : resto > 0 ? `Você pagou ${R$(pago)}. Ficaram ${R$(resto)} no rotativo, que viram ${R$(rotativo)} com os juros.` : `Fatura paga inteira: ${R$(pago)}. Nenhum centavo de juros.`}</p>`;
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${m < 5 ? 'Próximo mês →' : 'Ver o resumo dos 6 meses'}</button>`;
+      $('#nx').onclick = () => { m++; m < 6 ? mes() : fim(); }; $('#nx').focus();
+    };
+    if (F === 0) return fim1(0);
+    const tudo = Math.min(F, din), metade = Math.min(c2(F / 2), din), minimoPago = Math.min(minimo, din);
+    $('#pagar').innerHTML = `<p class="q" style="font-size:18px">Quanto você vai pagar da fatura? Na conta há ${R$(din)}.</p>
+      <div class="opts"><button class="btn ghost" type="button" data-v="${tudo}">${tudo < F ? `Tudo o que tenho (${R$(tudo)})` : `A fatura inteira (${R$(F)})`}</button>
+      <button class="btn ghost" type="button" data-v="${metade}">Metade (${R$(metade)})</button>
+      <button class="btn ghost" type="button" data-v="${minimoPago}">Só o mínimo (${R$(minimoPago)})</button></div>`;
+    $('#pagar').querySelectorAll('button').forEach(b => b.onclick = () => fim1(+b.dataset.v));
+  }
+  function fim() {
+    painel(); $('#mn').textContent = 6; $('#tela').innerHTML = ''; fb('');
+    window.MDP && MDP.registrar('cartao', perguntas ? ok / perguntas * 100 : 0);
+    const W = 560, H = 230, L = 50, R = 12, T = 16, B = 30, topo = Math.max(100, ...hist.map(h => Math.max(h.din, h.div))) * 1.15;
+    const x = i => L + 30 + (W - L - R - 60) * i / Math.max(1, hist.length - 1), y = v => T + (H - T - B) * (1 - v / topo);
+    const linha = (k, cor) => `<polyline fill="none" stroke="${cor}" stroke-width="3.5" stroke-linejoin="round" points="${hist.map((h, i) => `${x(i)},${y(h[k])}`).join(' ')}"/>`;
+    let g = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+    for (let v = 0; v <= topo; v += topo > 600 ? 200 : 100) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="14">${v}</text>`;
+    hist.forEach((h, i) => { g += `<text x="${x(i)}" y="${H - 10}" text-anchor="middle" font-size="14">mês ${h.m}</text>`; });
+    g += linha('din', '#166c40') + linha('div', '#c21f3a') + `<line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/><line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/></svg>`;
+    const d = divida();
+    const veredito = jurosPagos === 0 ? 'Você não pagou nenhum centavo de juros. Usou o cartão como ferramenta, e não como dinheiro extra.' : jurosPagos < 30 ? `Você pagou ${R$(jurosPagos)} de juros. Dá para evitar pagando a fatura inteira sempre que possível.` : `Os juros custaram ${R$(jurosPagos)}: dinheiro que não comprou nada. Pagar só parte da fatura sai caro.`;
+    $('#tela').innerHTML = `<p class="q">Resumo dos 6 meses</p>
+      <div class="svgbox" role="img" aria-label="Gráfico de linhas do dinheiro na conta e da dívida no cartão ao fim de cada mês">${g}</div>
+      <p class="small center"><span style="color:#166c40;font-weight:600">linha verde</span>: dinheiro na conta · <span style="color:#c21f3a;font-weight:600">linha vermelha</span>: dívida no cartão</p>
+      <div class="tabwrap"><table class="tab"><tbody><tr><td>Dinheiro na conta</td><td>${R$(din)}</td></tr><tr><td>Dívida que ainda falta pagar (rotativo e parcelas futuras)</td><td class="${d > 0 ? 'neg' : ''}">${R$(d)}</td></tr>
+      <tr><td>Juros pagos</td><td class="${jurosPagos > 0 ? 'neg' : ''}">${R$(jurosPagos)}</td></tr><tr><td>Pontos de diversão</td><td>${diversao}</td></tr><tr><td>Contas certas</td><td>${ok} de ${perguntas}</td></tr></tbody></table></div>
+      <p class="licao">${veredito}</p>`;
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Jogar de novo</button>`;
+    $('#again').onclick = start;
+  }
+  function start() { m = 0; din = 0; parcelas = []; rotativo = 0; jurosPagos = 0; ok = 0; perguntas = 0; diversao = 0; hist = []; mes(); }
+  start();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

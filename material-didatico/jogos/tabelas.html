@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gincana das Tabelas · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de tabelas: organize votos numa tabela de frequência, leia tabelas de dupla entrada, use totais para descobrir valores que faltam, calcule a média e encontre o erro. BNCC EF06MA31, EF06MA32, EF06MA33, EF07MA35, EF07MA36.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/tabelas.html">
+<meta property="og:title" content="Gincana das Tabelas · Material didático">
+<meta property="og:description" content="Jogo de tabelas: organize votos numa tabela de frequência, leia tabelas de dupla entrada, use totais para descobrir valores que faltam, calcule a média e encontre o erro. BNCC EF06MA31, EF06MA32, EF06MA33, EF07MA35, EF07MA36.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/tabelas.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; height: auto; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+  .svgbox { max-width: 640px; margin: 0 auto; }
+  .svgbox svg { width: 100%; height: auto; display: block; }
+  .svgbox text { font-family: var(--body); fill: var(--ink); }
+  .num { border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 14px; width: 120px; font-size: 18px; background: var(--paper); text-align: center; }
+  .num.right { background: var(--ok-soft); border-color: var(--ok); }
+  .num.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0; }
+  .tab th, .tab td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: right; }
+  .tab th:first-child, .tab td:first-child { text-align: left; }
+  .tabwrap { overflow-x: auto; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); }
+  .center { text-align: center; }
+  .votos { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 8px 0 14px; }
+  .voto { border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 12px; font-size: 14px; font-weight: 500; color: #111; }
+  .tab.grade th, .tab.grade td { text-align: center; border: 1.5px solid var(--ink); }
+  .tab.grade thead th { background: var(--pill); }
+  .tab.grade th:first-child, .tab.grade td:first-child { text-align: left; }
+  .tab.grade .tot { background: #fdf1d6; color: #111; font-weight: 600; }
+  .tab.grade .num { width: 80px; padding: 4px 8px; font-size: 16px; }
+  .tab.grade button.cel { font: inherit; font-weight: 600; width: 100%; border: 0; background: none; cursor: pointer; padding: 2px; color: inherit; border-radius: 8px; }
+  .tab.grade button.cel:hover { background: var(--pill); }
+  .tab.grade button.cel.right { background: var(--ok-soft); }
+  .tab.grade button.cel.wrong { background: var(--bad-soft); }
+  .tab caption { caption-side: top; font-weight: 600; padding-bottom: 6px; text-align: center; }
+  .tab .fonte { caption-side: bottom; font-weight: 400; font-size: 12px; color: var(--ink-2); }
+  .resp { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; margin: 6px 0; }
+  #area { max-width: 720px; margin: 0 auto; }
+  @media (max-width: 560px) { .tab.grade th, .tab.grade td { padding: 5px 3px; font-size: 13px; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>A escola está organizando uma gincana esportiva, e você é a pessoa responsável pelas tabelas. São 6 tarefas: montar uma tabela de frequência com os votos, ler tabelas de dupla entrada, usar os totais para achar um valor apagado, calcular a média de pontos e encontrar um total errado.</p>
+    <p class="small muted">Dica: numa tabela de dupla entrada, cada número fica no cruzamento de uma linha com uma coluna. A linha e a coluna de total somam tudo o que vem antes.</p>
+  </details>
+  <div class="game-stage">
+    <div class="hud"><span>Tarefa <b id="qn">1</b> de 6</span><span>Acertos <b id="ok">0</b></span><span id="tipo" class="small muted"></span></div>
+    <p class="q" id="q" aria-live="polite"></p>
+    <div id="area"></div>
+    <div class="opts" id="opts"></div>
+    <p class="feedback center" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('tabelas');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const soma = a => a.reduce((x, y) => x + y, 0);
+  const ESP = ['Futebol', 'Vôlei', 'Basquete', 'Handebol'];
+  const COR = { Futebol: '#47b881', 'Vôlei': '#f2b84b', Basquete: '#ef6a5a', Handebol: '#fdf1d6' };
+  const TUR = ['6º A', '6º B', '7º A'];
+  const FONTE = '<caption class="fonte">Fonte: votação da gincana, organizada pela turma</caption>';
+  const matriz = () => TUR.map(() => ESP.map(() => ri(2, 12)));
+
+  function tabela(M, opt) {
+    opt = opt || {};
+    const linTot = M.map(soma), colTot = ESP.map((_, j) => soma(M.map(l => l[j]))), geral = soma(linTot);
+    const cel = (v, i, j) => opt.cel ? opt.cel(v, i, j) : v;
+    let s = `<div class="tabwrap"><table class="tab grade"><caption>${opt.titulo || 'Esporte preferido por turma'}</caption>${FONTE}<thead><tr><th>Turma</th>${ESP.map(e => `<th>${e}</th>`).join('')}${opt.totais ? '<th class="tot">Total</th>' : ''}</tr></thead><tbody>`;
+    M.forEach((l, i) => { s += `<tr><th scope="row">${TUR[i]}</th>${l.map((v, j) => `<td>${cel(v, i, j)}</td>`).join('')}${opt.totais ? `<td class="tot">${cel(opt.linTot ? opt.linTot[i] : linTot[i], i, 'T')}</td>` : ''}</tr>`; });
+    if (opt.totais) s += `<tr class="tot"><th scope="row" class="tot">Total</th>${colTot.map((v, j) => `<td class="tot">${cel(opt.colTot ? opt.colTot[j] : v, 'T', j)}</td>`).join('')}<td class="tot">${cel(geral, 'T', 'T')}</td></tr>`;
+    return s + '</tbody></table></div>';
+  }
+
+  /* ---------- Tarefas ---------- */
+  function contagem() {
+    let cont;
+    do { cont = ESP.map(() => ri(2, 8)); } while (soma(cont) < 16 || soma(cont) > 24);
+    const votos = shuffle(ESP.flatMap((e, i) => Array(cont[i]).fill(e)));
+    return {
+      tipo: 'Tabela de frequência', q: 'Os alunos do 6º ano A votaram no esporte preferido. Conte os votos e complete a tabela.',
+      html: `<div class="votos">${votos.map(v => `<span class="voto" style="background:${COR[v]}">${v}</span>`).join('')}</div>
+        <div class="tabwrap"><table class="tab grade"><caption>Esporte preferido do 6º ano A</caption>${FONTE}<thead><tr><th>Esporte</th><th>Votos</th></tr></thead><tbody>
+        ${ESP.map((e, i) => `<tr><th scope="row">${e}</th><td><input class="num" type="number" min="0" inputmode="numeric" data-i="${i}" aria-label="Votos em ${e}"></td></tr>`).join('')}
+        <tr><th scope="row" class="tot">Total</th><td class="tot"><input class="num" type="number" min="0" inputmode="numeric" data-i="4" aria-label="Total de votos"></td></tr></tbody></table></div>
+        <div class="resp"><button class="btn" type="button" id="conf">Conferir a tabela</button></div>`,
+      montar(fim) {
+        const certo = cont.concat(soma(cont));
+        $('#conf').onclick = () => {
+          const ins = [...$('#area').querySelectorAll('input')];
+          if (ins.some(i => i.value === '')) { $('#fb').textContent = 'Preencha todas as linhas antes de conferir.'; return; }
+          let tudo = true;
+          ins.forEach(i => { const ok = +i.value === certo[+i.dataset.i]; tudo = tudo && ok; i.classList.add(ok ? 'right' : 'wrong'); i.disabled = true; if (!ok) i.value = certo[+i.dataset.i]; });
+          $('#conf').disabled = true;
+          fim(tudo, tudo ? `Tabela perfeita: ${ESP.map((e, i) => `${e} ${cont[i]}`).join(', ')}, total ${soma(cont)}.` : `Os campos em vermelho foram corrigidos. Uma estratégia é riscar cada voto à medida que conta e, no fim, conferir se o total bate com o número de fichas (${soma(cont)}).`);
+        };
+      }
+    };
+  }
+  function leitura() {
+    const M = matriz(), i = ri(0, 2), j = ri(0, 3), v = M[i][j];
+    const outros = [M[(i + 1) % 3][j], M[i][(j + 1) % 4], soma(M[i]), soma(M.map(l => l[j]))];
+    return {
+      tipo: 'Tabela de dupla entrada', q: `Quantos alunos do <strong>${TUR[i]}</strong> escolheram <strong>${ESP[j]}</strong>?`,
+      html: tabela(M), c: String(v), opcoes: shuffle([v, ...[...new Set(outros)].filter(o => o !== v).slice(0, 3)]).map(String),
+      x: `Procure a linha do ${TUR[i]} e desça pela coluna de ${ESP[j]}: no cruzamento está o ${v}.`
+    };
+  }
+  function totalColuna() {
+    let M, tot;
+    do { M = matriz(); tot = ESP.map((_, j) => soma(M.map(l => l[j]))); } while (tot.filter(t => t === Math.max(...tot)).length > 1);
+    const j = tot.indexOf(Math.max(...tot));
+    const maiorLinha = ESP[M.flat().indexOf(Math.max(...M.flat())) % 4];
+    return {
+      tipo: 'Somando colunas', q: 'Somando as três turmas, qual esporte teve mais votos?', html: tabela(M), c: ESP[j], opcoes: ESP.slice(),
+      x: `Somando cada coluna: ${ESP.map((e, k) => `${e} ${tot[k]}`).join(', ')}. ${maiorLinha !== ESP[j] ? `Cuidado: o maior número sozinho da tabela é de ${maiorLinha}, mas o que conta é a soma da coluna.` : ''}`
+    };
+  }
+  function faltando() {
+    const M = matriz(), i = ri(0, 2), j = ri(0, 3), v = M[i][j], porLinha = ri(0, 1);
+    return {
+      tipo: 'Valor apagado', q: 'Um número da tabela foi apagado. Use os totais para descobrir quanto vale o “?”.',
+      html: tabela(M, { totais: true, cel: (x, a, b) => a === i && b === j ? '<strong>?</strong>' : x }), num: v,
+      x: porLinha ? `Na linha do ${TUR[i]}: total ${soma(M[i])} − (${M[i].filter((_, k) => k !== j).join(' + ')}) = ${v}.` : `Na coluna de ${ESP[j]}: total ${soma(M.map(l => l[j]))} − (${M.filter((_, k) => k !== i).map(l => l[j]).join(' + ')}) = ${v}.`
+    };
+  }
+  function media() {
+    const dias = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+    let p; do { p = dias.map(() => ri(4, 20) * 5); } while (soma(p) % 25 !== 0);
+    const m = soma(p) / 5;
+    return {
+      tipo: 'Média', q: 'Qual foi a média de pontos por dia da equipe Verde na semana da gincana?',
+      html: `<div class="tabwrap"><table class="tab grade" style="max-width:420px;margin:10px auto"><caption>Pontos da equipe Verde por dia</caption>${FONTE}<thead><tr><th>Dia</th><th>Pontos</th></tr></thead><tbody>${dias.map((d, k) => `<tr><th scope="row">${d}</th><td>${p[k]}</td></tr>`).join('')}</tbody></table></div>`,
+      num: m, x: `Some os pontos (${p.join(' + ')} = ${soma(p)}) e divida pelo número de dias: ${soma(p)} ÷ 5 = ${m}.`
+    };
+  }
+  function erro() {
+    const M = matriz(), linha = ri(0, 1);
+    const linTot = M.map(soma), colTot = ESP.map((_, j) => soma(M.map(l => l[j])));
+    const k = linha ? ri(0, 2) : ri(0, 3), certo = linha ? linTot[k] : colTot[k], errado = certo + pick([-3, -2, 2, 3, 10, -10].filter(d => certo + d > 0));
+    if (linha) linTot[k] = errado; else colTot[k] = errado;
+    const alvo = linha ? `${k}|T` : `T|${k}`;
+    return {
+      tipo: 'Caça ao erro', q: 'Um dos totais desta tabela está errado. Clique no total errado.',
+      html: tabela(M, { totais: true, linTot, colTot, cel: (x, a, b) => (a === 'T' || b === 'T') ? `<button class="cel" type="button" data-k="${a}|${b}">${x}</button>` : x }),
+      montar(fim) {
+        $('#area').querySelectorAll('button.cel').forEach(b => b.onclick = () => {
+          $('#area').querySelectorAll('button.cel').forEach(o => { o.disabled = true; if (o.dataset.k === alvo) o.classList.add('right'); });
+          const ok = b.dataset.k === alvo; if (!ok) b.classList.add('wrong');
+          fim(ok, `O total de ${linha ? TUR[k] : ESP[k]} deveria ser ${certo}, e não ${errado}: ${linha ? M[k].join(' + ') : M.map(l => l[k]).join(' + ')} = ${certo}.`);
+        });
+      }
+    };
+  }
+
+  const SEQ = [contagem, leitura, totalColuna, faltando, media, erro];
+  let q = 0, ok = 0;
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback center ' + (c || ''); }
+  function next() {
+    if (q >= SEQ.length) return fim();
+    const T = SEQ[q]();
+    $('#qn').textContent = q + 1; $('#ok').textContent = ok; $('#tipo').textContent = T.tipo;
+    $('#q').innerHTML = T.q; $('#area').innerHTML = T.html; $('#opts').innerHTML = ''; $('#actions').innerHTML = ''; fb('');
+    let feito = false;
+    const fim1 = (certo, texto) => {
+      if (feito) return; feito = true; q++; if (certo) ok++;
+      $('#ok').textContent = ok; fb((certo ? 'Certo! ' : 'Não foi dessa vez. ') + texto, certo ? 'ok' : 'bad');
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${q < SEQ.length ? 'Próxima tarefa →' : 'Ver resultado'}</button>`;
+      $('#nx').onclick = next; $('#nx').focus();
+    };
+    if (T.montar) T.montar(fim1);
+    else if (T.opcoes) {
+      $('#opts').innerHTML = T.opcoes.map(o => `<button class="btn ghost" type="button">${o}</button>`).join('');
+      $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+        if (feito) return;
+        $('#opts').querySelectorAll('button').forEach(o => o.textContent === T.c && o.classList.add('right'));
+        if (b.textContent !== T.c) b.classList.add('wrong');
+        fim1(b.textContent === T.c, T.x);
+      });
+    } else {
+      $('#area').insertAdjacentHTML('beforeend', `<div class="resp"><label for="r">Resposta:</label><input class="num" id="r" type="number" inputmode="numeric" aria-label="Sua resposta"><button class="btn" type="button" id="conf">Conferir</button></div>`);
+      const conf = () => {
+        const v = $('#r').value.trim(); if (v === '') { $('#r').focus(); return; }
+        const certo = Number(v) === T.num;
+        $('#r').classList.add(certo ? 'right' : 'wrong'); $('#r').disabled = true; $('#conf').disabled = true;
+        fim1(certo, certo ? T.x : `A resposta é ${T.num}. ${T.x}`);
+      };
+      $('#conf').onclick = conf; $('#r').onkeydown = e => { if (e.key === 'Enter') conf(); };
+    }
+  }
+  function fim() {
+    window.MDP && MDP.registrar('tabelas', ok / SEQ.length * 100);
+    $('#tipo').textContent = ''; $('#area').innerHTML = ''; $('#opts').innerHTML = '';
+    $('#q').textContent = `Você acertou ${ok} de ${SEQ.length} tarefas.`;
+    fb(ok >= 5 ? 'A gincana está muito bem organizada. As tabelas mudam a cada partida: jogue de novo para treinar.' : 'As tabelas mudam a cada partida. Leia a dica do “Como jogar” e tente outra vez.', 'ok');
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Jogar de novo</button>`;
+    $('#again').onclick = () => { q = 0; ok = 0; next(); };
+  }
+  next();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
