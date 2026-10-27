@@ -133,6 +133,64 @@
       "legenda": "Os documentos que já orientam o uso de IA nas escolas, em ordem."
     },
     {
+      "slug": "dicas-de-matematica-para-estudantes",
+      "titulo": "Dicas de Matemática para estudantes",
+      "titulo_seo": "Dicas de Matemática para estudantes do 6º ao 9º ano: guia rápido com exemplos",
+      "descricao": "Guia de dicas de Matemática para estudantes do 6º ao 9º ano: frações, potências, negativos, regra de três, equações, Bhaskara, geometria e os erros mais comuns, com cartões para baixar.",
+      "palavras_chave": [
+        "dicas de matemática",
+        "matemática 6º ao 9º ano",
+        "como estudar matemática",
+        "regra de três",
+        "fórmula de Bhaskara"
+      ],
+      "secao": "Para estudantes",
+      "data": "2026-10-26",
+      "arquivo_janela": "dicas.txt",
+      "imagem": "dicas-mat-passos.png",
+      "imagem_depois_de": "<h2>Números</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão Como resolver qualquer problema, em cinco passos: 1, leia duas vezes e sublinhe os números e a pergunta; 2, separe o que você sabe do que quer descobrir; 3, desenhe ou monte uma tabela; 4, resolva mostrando cada passo; 5, confira se a resposta faz sentido. Rodapé: coloque o resultado de volta no problema.",
+      "legenda": "Os cinco passos para qualquer problema.",
+      "imagens_extra": [
+        {
+          "imagem": "dicas-mat-numeros.png",
+          "imagem_depois_de": "<h2>Razão, proporção e regra de três</h2>",
+          "imagem_antes": true,
+          "alt": "Cartão Números sem susto, com seis dicas. Fração é uma divisão: 3/4 = 3 ÷ 4 = 0,75. Decimais: iguale as casas, 0,30 é maior que 0,25. Potência é multiplicação repetida: 2³ = 2 × 2 × 2 = 8. Raiz é o lado do quadrado: raiz de 49 = 7. Negativos: menos com menos vira mais, 5 − (−2) = 7. MMC: quando as duas coisas acontecem juntas de novo, MMC de 6 e 9 = 18. Rodapé: sinais iguais, positivo; sinais diferentes, negativo.",
+          "legenda": "Frações, decimais, potências, raízes, negativos e MMC."
+        },
+        {
+          "imagem": "dicas-mat-proporcao.png",
+          "imagem_depois_de": "<h2>Álgebra</h2>",
+          "imagem_antes": true,
+          "alt": "Cartão Aumenta ou diminui? Antes da regra de três, descubra o tipo de relação. Direta: as duas aumentam juntas, 3 kg custam R$ 105 e 5 kg custam R$ 175. Inversa: uma aumenta e a outra diminui, 4 pedreiros levam 6 dias e 8 pedreiros levam 3. Não proporcional: não segue uma razão fixa, como idade e altura, e a regra de três não serve. Rodapé: confira com o fator, 15 pessoas ÷ 6 = 2,5 vezes a receita.",
+          "legenda": "Direta, inversa ou não proporcional."
+        },
+        {
+          "imagem": "dicas-mat-algebra.png",
+          "imagem_depois_de": "<h2>Geometria</h2>",
+          "imagem_antes": true,
+          "alt": "Cartão Dicas de álgebra. Equação é balança: o que faz de um lado, faz do outro, 3x + 14 = 50, 3x = 36, x = 12. Produtos notáveis: não esqueça o termo do meio, (a + b)² = a² + 2ab + b². Fatoração: dois números com soma 7 e produto 12, x² + 7x + 12 = (x + 3)(x + 4). Bhaskara: delta = b² − 4ac, com b entre parênteses, e x = (−b mais ou menos raiz de delta) ÷ 2a. Rodapé: sempre confira trocando x pelo valor encontrado.",
+          "legenda": "Equações, produtos notáveis, fatoração e Bhaskara."
+        },
+        {
+          "imagem": "dicas-mat-geometria.png",
+          "imagem_depois_de": "<h2>Erros mais comuns</h2>",
+          "imagem_antes": true,
+          "alt": "Cartão Geometria sem decorar. Perímetro é o contorno, a cerca ou o rodapé, em metros. Área é o espaço de dentro, o piso, em metros quadrados. Fórmulas: retângulo, base × altura; triângulo, base × altura ÷ 2. Ângulos: triângulo soma 180°; polígono de n lados, (n − 2) × 180°; hexágono, 4 × 180° = 720°. Tales e a sombra: no mesmo horário, altura ÷ sombra é igual para tudo; bastão de 1 m com sombra de 0,8 m indica poste de 5 m. Rodapé: deixe todas as medidas na mesma unidade.",
+          "legenda": "Área, perímetro, ângulos e Teorema de Tales."
+        },
+        {
+          "imagem": "dicas-mat-erros.png",
+          "imagem_depois_de": "<h2>Hábitos de estudo</h2>",
+          "imagem_antes": true,
+          "alt": "Cartão Erros que todo mundo já cometeu, com duas colunas, errado e certo: 0,25 maior que 0,3, o certo é 0,30 maior que 0,25; 2³ = 6, o certo é 2³ = 8; raiz de 16 mais raiz de 9 igual a raiz de 25, o certo é 7; −8 maior que −3, o certo é −8 menor que −3; 1/3 + 1/4 = 2/7, o certo é 7/12; x + x = x², o certo é 2x; (a + b)² = a² + b², o certo é a² + 2ab + b². Rodapé: releia esta lista antes de entregar a prova.",
+          "legenda": "Errado e certo, lado a lado."
+        }
+      ]
+    },
+    {
       "slug": "sistema-decimal-por-que-contamos-de-10-em-10",
       "titulo": "Sistema decimal: por que contamos de 10 em 10?",
       "titulo_seo": "Sistema decimal: por que contamos de 10 em 10? (Bit a Bit #01)",
