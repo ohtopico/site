@@ -113,6 +113,66 @@
   };
 
   /* Bloco "habilidades + como jogar + relacionados" para as páginas de jogo */
+  /* Habilidades da BNCC de uma área (páginas computacao/ e matematica/), um ano por vez,
+     cada uma com os slides em PDF e os materiais que a trabalham. */
+  window.mdHabArea = function (el, comp) {
+    const CADERNO = 'datas-festivas/computacao-desplugada-datas-festivas.pdf';
+    const todas = Object.values(HAB).filter(h => h.comp === comp);
+    const anos = [...new Set(todas.map(h => h.ano))].sort((a, b) => a - b);
+    const iniciais = anos.filter(a => a <= 5);
+    const grupos = (iniciais.length ? [{ v: 'ai', l: '1º ao 5º ano', anos: iniciais }] : [])
+      .concat(anos.filter(a => a > 5).map(a => ({ v: String(a), l: a + 'º ano', anos: [a] })));
+    let atual = (grupos.find(g => g.v === '6') || grupos[0]).v;
+    let mostrarTodas = false;
+    const sl = c => window.SLIDES && window.SLIDES[c] ? window.slidesUrl(c) : '';
+    function render() {
+      const g = grupos.find(x => x.v === atual);
+      const habs = todas.filter(h => g.anos.includes(h.ano)).sort((a, b) => a.codigo.localeCompare(b.codigo));
+      const pdfs = habs.filter(h => sl(h.codigo)).length;
+      const temMat = h => sl(h.codigo) || RECURSOS.some(r => r.habs.includes(h.codigo) && r.comp.includes(comp));
+      const LIMITE = 14;
+      const lista = mostrarTodas ? habs : habs.filter(temMat).slice(0, LIMITE);
+      const faltam = habs.length - lista.length;
+      const topo = g.v === 'ai'
+        ? `<div class="hab-pdf"><div><strong>Caderno de computação desplugada nas datas festivas</strong><span>Nove atividades sem computador, com ficha do professor, folhas para imprimir e gabarito.</span></div><a class="btn" href="${BASE}${CADERNO}" download type="application/pdf">Baixar o caderno (PDF)</a><a class="btn ghost" href="${BASE}datas-festivas/">Ver o caderno</a></div>`
+        : pdfs ? `<p class="muted hab-nota">Cada habilidade tem slides em PDF para uma aula expositiva de 30 minutos, com atividade e roteiro do professor. Clique na habilidade para ver o texto da BNCC e os jogos, fichas e planos que a trabalham.</p>`
+        : `<p class="muted hab-nota">Clique na habilidade para ver o texto da BNCC e os jogos, recursos 3D, fichas e planos que a trabalham.</p>`;
+      el.innerHTML = `
+        <div class="hab-anos" role="group" aria-label="Ano">${grupos.map(x => `<button class="chip" type="button" data-v="${x.v}" aria-pressed="${x.v === atual}">${x.l}</button>`).join('')}</div>
+        ${topo}
+        <ul class="hab-area">${lista.map(h => {
+          const mats = RECURSOS.filter(r => r.habs.includes(h.codigo) && r.comp.includes(comp));
+          const pdf = sl(h.codigo);
+          const n = mats.length;
+          return `<li>
+            <details>
+              <summary><span class="tag code ${comp.toLowerCase()}">${h.codigo}</span><span class="hab-obj">${esc(h.objeto)}</span><span class="hab-n">${n ? n + (n > 1 ? ' materiais' : ' material') : 'Habilidade'}</span></summary>
+              <div class="hab-corpo">
+                <p class="hab-txt"><strong>${esc(EIXOS[h.eixo].nome)}</strong>${esc(h.texto)}</p>
+                <div class="hab-mats">${mats.map(r => `<a href="${recUrl(r)}"><span>${esc(TIPOS[r.tipo].nome.split(' ')[0])}</span>${esc(r.titulo)}</a>`).join('')}${!n ? '<span class="hab-breve">Material em preparação</span>' : ''}</div>
+              </div>
+            </details>
+            ${pdf ? `<a class="hab-baixar" href="${pdf}" download type="application/pdf" title="Baixar os slides da aula de ${h.codigo} (PDF)">Slides (PDF)</a>` : ''}
+          </li>`;
+        }).join('')}</ul>
+        ${faltam ? `<button class="hab-todas" type="button">Mostrar todas as ${habs.length} habilidades do ${g.l}</button>` : ''}
+        <p class="hab-mais"><a href="${BASE}bncc.html?comp=${comp}&amp;ano=${g.v === 'ai' ? 6 : g.v}">Abrir no Explorar a BNCC →</a></p>`;
+    }
+    el.addEventListener('click', e => { const b = e.target.closest('.hab-anos button'); if (b) { atual = b.dataset.v; mostrarTodas = false; render(); } if (e.target.closest('.hab-todas')) { mostrarTodas = true; render(); } });
+    render();
+  };
+
+  /* Índice estático do catálogo: acrescenta jogos e recursos 3D que ainda não estão na lista escrita à mão. */
+  window.mdIndiceCompleta = function (el) {
+    const tem = new Set([...el.querySelectorAll('a')].map(a => a.getAttribute('href')));
+    RECURSOS.filter(r => (r.tipo === 'jogo' || r.tipo === '3d') && !tem.has(r.url)).forEach(r => {
+      r.comp.forEach(c => {
+        const ul = el.querySelector(`ul[data-comp="${c}"][data-tipo="${r.tipo}"]`);
+        if (ul) ul.insertAdjacentHTML('beforeend', `<li><a href="${recUrl(r)}">${esc(r.titulo)}</a></li>`);
+      });
+    });
+  };
+
   window.mdJogoHead = function (id) {
     const r = REC[id];
     window.MD_REC = id;

@@ -94,6 +94,16 @@
     </div>
   </section>
 
+  <section class="block" id="bncc">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">BNCC Matemática · 6º ao 9º ano</span><h2>Habilidades e materiais</h2></div>
+        <a class="btn ghost" href="../bncc.html?comp=MA&amp;ano=6">Explorar a BNCC →</a>
+      </div>
+      <div data-hab-area="MA"><p class="muted">Carregando as habilidades...</p></div>
+    </div>
+  </section>
+
   <section class="block">
     <div class="wrap">
       <div class="sec-head">
@@ -120,39 +130,7 @@
 
   <section class="block">
     <div class="wrap">
-      <span class="eyebrow">Lista completa</span>
-      <h2>Recursos 3D e jogos de Matemática</h2>
-      <ul class="lista-links">
-          <li><a href="../3d/balanca.html">Balança 3D das Equações</a></li>
-          <li><a href="../3d/fracoes.html">Barras de Frações 3D</a></li>
-          <li><a href="../3d/algeblocos.html">Blocos Algébricos: Polinômios e Fatoração</a></li>
-          <li><a href="../3d/potencias.html">Cubos das Potências</a></li>
-          <li><a href="../3d/elevador.html">Elevador dos Inteiros</a></li>
-          <li><a href="../3d/figuras.html">Figuras Geométricas em 3D</a></li>
-          <li><a href="../3d/sucos.html">Laboratório de Sucos: Razão e Proporção</a></li>
-          <li><a href="../3d/ladrilhos.html">Ladrilhos e Ângulos</a></li>
-          <li><a href="../3d/decimais.html">Material Dourado 3D</a></li>
-          <li><a href="../3d/produtos.html">Produtos Notáveis em Blocos</a></li>
-          <li><a href="../3d/tales.html">Teorema de Tales: Sombras e Paralelas</a></li>
-          <li><a href="../3d/terreno.html">Terreno: Área e Perímetro</a></li>
-          <li><a href="../3d/mmc.html">Torres do MMC</a></li>
-          <li><a href="../jogos/balanca.html">Balança das Equações</a></li>
-          <li><a href="../jogos/bhaskara.html">Bhaskara Passo a Passo</a></li>
-          <li><a href="../jogos/cartao.html">Cartão de Crédito de Treino</a></li>
-          <li><a href="../jogos/cofrinho.html">Cofrinho que Cresce</a></li>
-          <li><a href="../jogos/tabuada.html">Corrida da Tabuada</a></li>
-          <li><a href="../jogos/fracoes.html">Corrida das Frações</a></li>
-          <li><a href="../jogos/receitas.html">Cozinha das Proporções</a></li>
-          <li><a href="../jogos/empresa-sucos.html">Empresa de Sucos da Turma</a></li>
-          <li><a href="../jogos/tabelas.html">Gincana das Tabelas</a></li>
-          <li><a href="../jogos/angulos.html">Mira dos Ângulos</a></li>
-          <li><a href="../jogos/robo.html">Robô Coletor</a></li>
-          <li><a href="../jogos/rotas.html">Rota Mais Curta</a></li>
-          <li><a href="../../simuladores/estatistica.html">Simulador de estatística descritiva</a></li>
-          <li><a href="../jogos/tangram.html">Tangram</a></li>
-          <li><a href="../jogos/cartesiano.html">Tesouro Cartesiano</a></li>
-      </ul>
-      <p class="muted" style="margin-top:24px">Procura materiais de Computação? Veja a <a href="../computacao/">área de Computação</a>, com os slides da BNCC Computação, os jogos e a computação desplugada.</p>
+      <p class="area-rodape">Procura um material específico? O <a href="../catalogo.html?comp=MA#indice">índice completo do catálogo</a> lista todos os jogos e recursos das duas áreas. Para slides da BNCC Computação, jogos e computação desplugada, veja a <a href="../computacao/">área de Computação</a>.</p>
     </div>
   </section>
 </main>
@@ -176,6 +154,7 @@
     const max = Number(el.dataset.max) || 99;
     el.innerHTML = doComp(el.dataset.grid).filter(r => !el.dataset.so || r.id.startsWith(el.dataset.so)).slice(0, max).map(r => mdCard(r)).join('');
   });
+  document.querySelectorAll('[data-hab-area]').forEach(el => mdHabArea(el, el.dataset.habArea));
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

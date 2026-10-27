@@ -22,38 +22,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/md.css">
 <style>
-  .hero { padding: 56px 0 48px; border-bottom: 1.5px solid var(--ink); }
-  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
-  .hero p.lead { font-size: 19px; color: var(--ink-2); max-width: 600px; }
-  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .stat { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px; text-align: center; text-decoration: none; color: var(--ink); }
+  .hero { padding: 56px 0 0; }
+  .hero-top { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px 48px; align-items: end; }
+  .hero h1 { margin: 6px 0 14px; }
+  .hero h1 .marca { white-space: nowrap; }
+  .hero h1 .marca { background: linear-gradient(transparent 58%, var(--marca) 58%, var(--marca) 92%, transparent 92%); padding: 0 .08em; }
+  .hero p.lead { font-size: 19px; color: var(--ink-2); max-width: 580px; margin: 0; }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat { border: 1.5px solid var(--ink); border-radius: 22px; padding: 12px 16px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; align-items: baseline; gap: 10px; transition: background .15s; }
   .stat:hover { background: var(--pill); }
-  .stat b { display: block; font-family: var(--display); font-size: 40px; line-height: 1; }
+  .stat b { font-family: var(--display); font-size: 34px; line-height: 1; }
   .stat span { font-size: 14px; color: var(--ink-2); }
-  .doors { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-  .door { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; text-decoration: none; color: var(--ink); background: var(--paper-2); }
-  .door:hover { background: var(--pill); }
-  .door strong { font-family: var(--display); font-size: 20px; display: block; }
-  .door span { font-size: 14px; color: var(--ink-2); }
-  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 28px; } }
-  @media (max-width: 560px) { .doors { grid-template-columns: 1fr; } #stats { grid-template-columns: 1fr 1fr !important; } .stat b { font-size: 32px; } }
-
-  .paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
-  .path { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 24px; text-decoration: none; color: var(--ink); display: flex; flex-direction: column; gap: 8px; transition: transform .15s, box-shadow .15s; background: var(--paper); }
-  .path:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
-  .path .ic { font-size: 34px; }
-  .path h3 { margin: 0; font-size: 24px; }
-  .path p { margin: 0; color: var(--ink-2); font-size: 15px; flex: 1; }
-  .path .go { font-weight: 600; }
-  @media (max-width: 860px) { .paths { grid-template-columns: 1fr; } }
-  .sec-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
-  .sec-head h2 { margin: 0; }
-  .todos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 18px; }
-  .todos h3 { margin: 0 0 8px; font-size: 22px; }
-  .todos ul { columns: 2; column-gap: 24px; margin: 0; padding-left: 20px; }
-  .todos li { margin: 0 0 6px; break-inside: avoid; }
-  @media (max-width: 860px) { .todos { grid-template-columns: 1fr; } }
-  @media (max-width: 420px) { .todos ul { columns: 1; } }
+  .hero .areas { margin-top: 40px; }
+  .area-door .go { align-self: flex-start; margin-top: 4px; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 9px 18px; font-size: 15px; }
+  .atalhos { margin-top: 18px; padding: 18px 0 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .atalho { border: 1.5px solid var(--ink); border-radius: 22px; padding: 14px 18px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; flex-direction: column; gap: 2px; transition: transform .15s, box-shadow .15s; }
+  .atalho:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .atalho strong { font-family: var(--display); font-size: 19px; }
+  .atalho span { font-size: 14px; color: var(--ink-2); }
+  .atalho.destaque { background: var(--marca); color: #111111; }
+  .atalho.destaque span { color: #3a3a38; }
+  .hero-faixa { border-top: 1.5px solid var(--ink); }
+  :root { --marca: #fff36b; }
+  :root[data-theme="dark"] { --marca: #5c5200; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --marca: #5c5200; } }
+  :root[data-theme="dark"] .atalho.destaque, :root[data-theme="dark"] .atalho.destaque span { color: #f3f3f1; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .atalho.destaque, :root:not([data-theme="light"]) .atalho.destaque span { color: #f3f3f1; } }
+  @media (max-width: 900px) { .hero-top { grid-template-columns: 1fr; } .atalhos { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .hero { padding-top: 36px; } .atalho { padding: 12px 14px; } .atalho strong { font-size: 17px; } .stat b { font-size: 28px; } }
 </style>
 <!-- Meta Pixel Code -->
 <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '2280257989421593'); fbq('track', 'PageView');</script>
@@ -66,15 +62,21 @@
 <main>
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">Material didático gratuito · BNCC</span>
-      <h1>Do código ao quadro</h1>
-      <div class="areas" style="margin-top:24px">
+      <div class="hero-top">
+        <div>
+          <span class="eyebrow">Material didático gratuito · BNCC</span>
+          <h1>Do código <span class="marca">ao quadro</span></h1>
+          <p class="lead">Jogos interativos, recursos 3D, slides, fichas para imprimir e planos de aula de Computação e Matemática, organizados pelas habilidades da BNCC.</p>
+        </div>
+        <div class="stats" id="stats"></div>
+      </div>
+      <div class="areas">
         <a class="area-door co" href="computacao/">
           <span class="mark">Computação</span>
           <h3>Material de Computação</h3>
           <p>BNCC Computação do 1º ao 9º ano: pensamento computacional, mundo digital e cultura digital.</p>
           <ul>
-            <li>Slides para cada habilidade do 6º ao 9º ano</li>
+            <li>Slides em PDF para cada habilidade do 6º ao 9º ano</li>
             <li>Jogos de algoritmos, redes e segurança</li>
             <li>Computação desplugada nas datas festivas</li>
           </ul>
@@ -92,78 +94,15 @@
           <span class="go">Entrar em Matemática →</span>
         </a>
       </div>
-      <p class="lead" style="margin:28px 0 0">Jogos interativos, recursos 3D, slides, fichas para imprimir e planos de aula, organizados pelas habilidades da BNCC.</p>
+      <nav class="atalhos" aria-label="Outros caminhos">
+        <a class="atalho" href="catalogo.html"><strong>Catálogo</strong><span>Busca e filtros nas duas áreas</span></a>
+        <a class="atalho" href="bncc.html"><strong>Explorar a BNCC</strong><span>Habilidades ano a ano</span></a>
+        <a class="atalho" href="professor.html"><strong>Sou professor(a)</strong><span>Planos, slides e orientações</span></a>
+        <a class="atalho destaque" href="meu-progresso.html"><strong>Sou estudante</strong><span>Missões, níveis e meu progresso</span></a>
+      </nav>
     </div>
   </section>
-
-  <section class="block">
-    <div class="wrap">
-      <span class="eyebrow">Por onde começar</span>
-      <h2>Outros caminhos pelo repositório</h2>
-      <div class="stats" id="stats" style="grid-template-columns:repeat(4,1fr);margin-top:18px"></div>
-      <div class="paths">
-        <a class="path" href="catalogo.html"><h3>Catálogo</h3><p>Todos os materiais das duas áreas, com busca e filtros por componente, ano, tipo e eixo.</p><span class="go">Abrir o catálogo →</span></a>
-        <a class="path" href="bncc.html"><h3>Explorar a BNCC</h3><p>Habilidades ano a ano, com os materiais que trabalham cada uma.</p><span class="go">Ver habilidades →</span></a>
-        <a class="path" href="professor.html"><h3>Área do professor</h3><p>Como usar o repositório, planos de aula prontos e slides para baixar.</p><span class="go">Ir para a área →</span></a>
-      </div>
-      <div class="doors" style="margin-top:16px">
-        <a class="door" href="meu-progresso.html"><strong>Sou estudante</strong><span>Jogos, listas e meu progresso</span></a>
-        <a class="door" href="professor.html"><strong>Sou professor(a)</strong><span>Planos, fichas e orientações</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
-      <span class="eyebrow">Lista completa</span>
-      <h2>Jogos e recursos por área</h2>
-      <div class="todos">
-        <div>
-          <h3><a href="computacao/">Computação</a></h3>
-          <ul>
-          <li><a href="jogos/pacotes.html">Correio de Pacotes</a></li>
-          <li><a href="jogos/cifra.html">Detetive da Cifra</a></li>
-          <li><a href="jogos/golpe.html">Golpe ou Seguro?</a></li>
-          <li><a href="jogos/robo.html">Robô Coletor</a></li>
-          <li><a href="jogos/rotas.html">Rota Mais Curta</a></li>
-          <li><a href="datas-festivas/">Computação desplugada nas datas festivas</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3><a href="matematica/">Matemática</a></h3>
-          <ul>
-          <li><a href="3d/balanca.html">Balança 3D das Equações</a></li>
-          <li><a href="3d/fracoes.html">Barras de Frações 3D</a></li>
-          <li><a href="3d/algeblocos.html">Blocos Algébricos: Polinômios e Fatoração</a></li>
-          <li><a href="3d/potencias.html">Cubos das Potências</a></li>
-          <li><a href="3d/elevador.html">Elevador dos Inteiros</a></li>
-          <li><a href="3d/figuras.html">Figuras Geométricas em 3D</a></li>
-          <li><a href="3d/sucos.html">Laboratório de Sucos: Razão e Proporção</a></li>
-          <li><a href="3d/ladrilhos.html">Ladrilhos e Ângulos</a></li>
-          <li><a href="3d/decimais.html">Material Dourado 3D</a></li>
-          <li><a href="3d/produtos.html">Produtos Notáveis em Blocos</a></li>
-          <li><a href="3d/tales.html">Teorema de Tales: Sombras e Paralelas</a></li>
-          <li><a href="3d/terreno.html">Terreno: Área e Perímetro</a></li>
-          <li><a href="3d/mmc.html">Torres do MMC</a></li>
-          <li><a href="jogos/balanca.html">Balança das Equações</a></li>
-          <li><a href="jogos/bhaskara.html">Bhaskara Passo a Passo</a></li>
-          <li><a href="jogos/cartao.html">Cartão de Crédito de Treino</a></li>
-          <li><a href="jogos/cofrinho.html">Cofrinho que Cresce</a></li>
-          <li><a href="jogos/tabuada.html">Corrida da Tabuada</a></li>
-          <li><a href="jogos/fracoes.html">Corrida das Frações</a></li>
-          <li><a href="jogos/receitas.html">Cozinha das Proporções</a></li>
-          <li><a href="jogos/empresa-sucos.html">Empresa de Sucos da Turma</a></li>
-          <li><a href="jogos/tabelas.html">Gincana das Tabelas</a></li>
-          <li><a href="jogos/angulos.html">Mira dos Ângulos</a></li>
-          <li><a href="jogos/robo.html">Robô Coletor</a></li>
-          <li><a href="jogos/rotas.html">Rota Mais Curta</a></li>
-          <li><a href="jogos/tangram.html">Tangram</a></li>
-          <li><a href="jogos/cartesiano.html">Tesouro Cartesiano</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="hero-faixa"></div>
 </main>
 
 <footer id="footer"></footer>
