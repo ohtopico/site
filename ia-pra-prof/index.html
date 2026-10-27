@@ -217,6 +217,7 @@
     box-shadow: 6px 6px 0 var(--ink); display: none;
   }
   .personalize.open { display: block; }
+  body:has(.personalize.open) .assist-abrir { display: none; } /* botão "Pergunte ao site" sai da frente do painel */
   .personalize h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 17px; margin: 0 0 4px; }
   .personalize p { font-size: 14px; color: var(--ink-2); margin: 0 0 12px; line-height: 1.45; }
   .field { display: grid; gap: 4px; margin-bottom: 10px; }
@@ -1531,5 +1532,6 @@ Texto: [cole aqui].</p></figure>
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/assistente/assistente.js?v=1" defer></script>
 </body>
 </html>
