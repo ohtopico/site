@@ -26,7 +26,9 @@
   .next { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 14px; }
   .next a { text-decoration: none; color: var(--ink); }
   .next a:hover { background: var(--pill); }
-  .next .why { font-size: 13px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; }
+  .mis-resumo { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; text-decoration: none; color: var(--ink); }
+  .mis-resumo:hover { background: var(--pill); }
+  .mis-resumo .why, .next .why { font-size: 13px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; }
   .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 10px 0 0; font-size: 13.5px; color: var(--ink-2); align-items: center; }
   .map-tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 16px 0 6px; }
   .habgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-top: 12px; }
@@ -64,6 +66,7 @@
 <script src="assets/dados.js"></script>
 <script src="assets/listas.js"></script>
 <script src="assets/progresso.js"></script>
+<script src="assets/missoes.js"></script>
 <script src="assets/comum.js"></script>
 <script>
 (function () {
@@ -128,6 +131,17 @@
     $('#imp-file').onchange = e => { const f = e.target.files[0]; if (f) f.text().then(go); };
   }
 
+  function missoesResumo() {
+    const e = window.MDM && MDM.estado();
+    if (!e) return '';
+    const feitas = e.missoes.filter(m => m.feita).length;
+    return `<a class="card mis-resumo" href="missoes.html">
+      <span class="why">Missões do dia</span>
+      <strong style="font-size:18px">Nível ${e.nivel.n} · ${e.nivel.nome} · ${e.pontos.total} pontos</strong>
+      <span class="small muted">${feitas} de ${e.missoes.length} missões de hoje feitas${e.nivel.prox ? ` · faltam ${e.nivel.falta} pontos para o nível ${e.nivel.prox.nome}` : ''}. Ver missões →</span>
+    </a>`;
+  }
+
   function render() {
     const p = MDP.perfil();
     if (!p) return boasVindas();
@@ -174,6 +188,8 @@
         <div class="stat"><b>${dom}</b><span>habilidades dominadas</span></div>
         <div class="stat"><b>${nMed}<small style="font-size:18px">/${med.length}</small></b><span>medalhas</span></div>
       </div>
+
+      ${missoesResumo()}
 
       <div class="btn-row" style="margin-top:18px"><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Listas de exercícios</a></div>
 
