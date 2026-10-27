@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Placa-mãe em 3D · Simuladores | ohtopico</title>
+<meta name="description" content="Placa-mãe em 3D no navegador: clique no processador, memória RAM, chipset, slots PCIe, M.2, SATA, BIOS e conectores para saber o que cada peça faz, separe as peças e veja o caminho dos dados.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/placa-mae.html">
+<meta property="og:title" content="Placa-mãe em 3D · Simuladores | ohtopico">
+<meta property="og:description" content="Explore as peças de uma placa-mãe em 3D e acompanhe o caminho dos dados entre processador, memória e armazenamento.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/placa-mae.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../material-didatico/assets/lab3d.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .modos { margin: 0 0 12px; }
+  .pecas { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; }
+  .pecas .chip { min-height: 34px; font-size: 13.5px; padding: 4px 10px; }
+  .info h3 { margin-bottom: 4px; }
+  .info .tag { display: inline-block; font-size: 12.5px; font-weight: 600; border: 1.5px solid var(--ink); border-radius: 99px; padding: 1px 10px; margin: 0 0 8px; }
+  .info p { font-size: 15px; margin: 6px 0; }
+  .info .tec { font-size: 14px; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 8px; margin-top: 10px; }
+  .passos { list-style: none; counter-reset: p; padding: 0; margin: 8px 0; font-size: 14.5px; }
+  .passos li { counter-increment: p; border: 1.5px solid var(--line); border-radius: 12px; padding: 6px 10px 6px 36px; margin: 5px 0; position: relative; cursor: pointer; background: var(--paper); }
+  .passos li::before { content: counter(p); position: absolute; left: 9px; top: 6px; width: 20px; height: 20px; border-radius: 50%; background: var(--pill-2); font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+  .passos li[aria-current="step"] { border-color: var(--ok); background: var(--ok-soft); }
+  .passos li[aria-current="step"]::before { background: var(--ok); color: var(--paper); }
+  .placar { font-family: var(--display); font-size: 26px; margin: 4px 0; }
+  .side .btn { min-height: 40px; padding: 6px 14px; font-size: 14.5px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Explorar:</strong> clique numa peça da placa (ou num botão da lista abaixo da cena) para ver o nome, para que serve e uma comparação com o dia a dia. Use "Separar as peças" para tirar processador, memórias, placa de vídeo e SSD dos encaixes.</p>
+    <p><strong>Caminho dos dados:</strong> escolha uma situação, como abrir um programa ou jogar, e acompanhe passo a passo por onde os dados passam.</p>
+    <p><strong>Encontre a peça:</strong> o simulador pede uma peça e você clica nela na placa.</p>
+    <p class="small muted">Arraste a cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões. A placa é um modelo didático no formato ATX, simplificado: as posições seguem o padrão mais comum, mas cada fabricante organiza a placa do seu jeito.</p>
+  </details>
+
+  <section class="sim">
+    <div class="seg modos" role="group" aria-label="Modo">
+      <button type="button" data-modo="explorar" aria-pressed="true">Explorar</button>
+      <button type="button" data-modo="caminho" aria-pressed="false">Caminho dos dados</button>
+      <button type="button" data-modo="jogo" aria-pressed="false">Encontre a peça</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+          <button class="chip" type="button" id="separar" aria-pressed="false">Separar as peças</button>
+        </div>
+        <div class="pecas" id="pecas" role="group" aria-label="Peças da placa-mãe"></div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel" id="p-explorar">
+          <div class="info" id="info"></div>
+        </div>
+        <div class="panel" id="p-caminho" hidden>
+          <label for="cenario">Situação</label>
+          <select id="cenario"></select>
+          <ol class="passos" id="passos"></ol>
+          <p><button class="btn ghost" type="button" id="ant">Passo anterior</button> <button class="btn" type="button" id="prox">Próximo passo</button></p>
+        </div>
+        <div class="panel" id="p-jogo" hidden>
+          <h3>Encontre a peça</h3>
+          <p class="small muted">Clique na peça pedida, na cena ou na lista de botões.</p>
+          <p class="grande" id="pedido" style="font-size:24px"></p>
+          <p class="placar" id="placar">0 de 0</p>
+          <p><button class="btn ghost" type="button" id="pular">Pular</button> <button class="btn ghost" type="button" id="recomecar">Recomeçar</button></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <ol>
+      <li><strong>Ensino Fundamental:</strong> comece pelo modo Explorar com as comparações do dia a dia (o processador como o cozinheiro, a memória RAM como a bancada, o SSD como o armário). Depois, jogue Encontre a peça em duplas.</li>
+      <li><strong>Descarte e reaproveitamento (EF07CO10):</strong> separe as peças e discuta quais podem ser trocadas ou reaproveitadas (memória, SSD, placa de vídeo) e quais componentes contêm metais que exigem descarte correto (placa de circuito, bateria).</li>
+      <li><strong>Ensino Médio e técnico:</strong> no modo Caminho dos dados, compare as ligações diretas com o processador (memória, placa de vídeo, SSD M.2) com as que passam pelo chipset (SATA, USB, rede, áudio). Por que a placa de vídeo fica no slot ligado direto ao processador?</li>
+      <li><strong>Ensino Superior:</strong> relacione a hierarquia de memória (registradores, cache, RAM, SSD) com as distâncias e os barramentos vistos na placa, e o processo de inicialização (firmware UEFI, POST, carregador do sistema).</li>
+    </ol>
+    <p class="small muted">Material concreto equivalente: uma placa-mãe usada (muitas escolas e lojas de informática doam peças antigas), com as peças etiquetadas pela turma.</p>
+  </details>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>simTopbar(); simFooter(); simHead('placa-mae');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, THREE as T } from '../material-didatico/assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const cena = lab3d($('#palco'), { cam: [0, 15, 15.5], alvo: [0, 0, 0.6], min: 5, max: 42, chaoTam: 60 });
+botoesCamera(cena);
+
+/* Cores: placa verde, peças em preto, cinza, amarelo e vermelho (sem azul) */
+const C = { pcb: '#1d5b3a', slot: '#222222', slot2: '#3a3a3a', metal: '#b9b9b4', metalEsc: '#7d7d78', ouro: '#d9b43a', chip: '#1a1a1a', ram: '#2a6a44', dissip: '#8f8f8a', vermelho: COR.vermelho, amarelo: COR.amarelo, branco: '#eeeeea' };
+const TOPO = 0.16; // altura da superfície da placa
+
+/* ---------- textos das peças ---------- */
+const PECAS = [
+  { id: 'cpu', nome: 'Processador (CPU)', tag: 'Processamento',
+    faz: 'Executa as instruções dos programas: faz contas, compara valores e decide o que acontece a seguir. É encaixado no soquete, um conector com centenas de contatos.',
+    dia: 'É o cozinheiro da cozinha: lê a receita (o programa) e faz cada passo.',
+    tec: 'Tem vários núcleos, memória cache interna (L1, L2, L3) e controlador de memória. Liga-se direto à RAM, ao slot PCIe x16 e ao primeiro M.2; o resto chega pelo chipset.' },
+  { id: 'cooler', nome: 'Cooler (dissipador e ventoinha)', tag: 'Refrigeração',
+    faz: 'Tira o calor do processador. O dissipador de metal espalha o calor e a ventoinha empurra o ar quente para fora. Entre ele e o processador vai a pasta térmica.',
+    dia: 'É como soprar a comida quente: sem isso, o processador esquenta demais e diminui a velocidade para se proteger.',
+    tec: 'A ventoinha se liga no conector CPU_FAN, e a placa controla a rotação pela temperatura (PWM).' },
+  { id: 'ram', nome: 'Memória RAM', tag: 'Memória',
+    faz: 'Guarda os programas e dados que estão em uso agora. É muito mais rápida que o SSD, mas apaga tudo quando o computador desliga (memória volátil).',
+    dia: 'É a bancada da cozinha: o que está sendo usado fica à mão, mas no fim do dia a bancada é limpa.',
+    tec: 'Pentes DDR4 ou DDR5 em canal duplo: com dois pentes nos slots indicados, a CPU acessa os dois ao mesmo tempo e dobra a largura de banda.' },
+  { id: 'gpu', nome: 'Placa de vídeo (GPU)', tag: 'Expansão',
+    faz: 'Monta as imagens que aparecem no monitor. Tem processador gráfico e memória próprios, com milhares de núcleos simples trabalhando em paralelo.',
+    dia: 'É um time de desenhistas: cada um pinta um pedacinho da tela ao mesmo tempo.',
+    tec: 'Encaixa no slot PCIe x16 ligado direto à CPU (16 pistas). Também é usada para treinar redes neurais, porque faz muitas contas iguais em paralelo.' },
+  { id: 'pcie', nome: 'Slots PCI Express', tag: 'Expansão',
+    faz: 'Encaixes para placas de expansão: placa de vídeo, placa de rede, placa de captura e outras. O tamanho do slot indica o número de pistas (x1, x4, x16).',
+    dia: 'São tomadas especiais para ligar novos aparelhos dentro do computador.',
+    tec: 'Cada pista PCIe é uma ligação serial bidirecional. O primeiro x16 vem da CPU; os slots menores normalmente vêm do chipset.' },
+  { id: 'ssd', nome: 'SSD M.2 (NVMe)', tag: 'Armazenamento',
+    faz: 'Guarda o sistema operacional, os programas e os arquivos mesmo com o computador desligado (memória não volátil, do tipo flash).',
+    dia: 'É o armário da cozinha: guarda tudo, mas é preciso ir até ele buscar.',
+    tec: 'O formato M.2 com protocolo NVMe usa pistas PCIe e lê vários gigabytes por segundo, bem mais que um SSD SATA.' },
+  { id: 'chipset', nome: 'Chipset', tag: 'Controle',
+    faz: 'Organiza a comunicação entre o processador e as peças mais lentas: portas SATA, USB, rede, áudio e slots PCIe menores.',
+    dia: 'É o porteiro do prédio: recebe as entregas dos vizinhos e repassa ao processador.',
+    tec: 'Liga-se à CPU por um barramento dedicado (DMI na Intel, PCIe na AMD). Tem um dissipador próprio porque também esquenta.' },
+  { id: 'vrm', nome: 'Reguladores de tensão (VRM)', tag: 'Energia',
+    faz: 'Transformam os 12 volts da fonte em pouco mais de 1 volt, a tensão que o processador usa, sem oscilações.',
+    dia: 'É um redutor de pressão de água: a fonte manda forte, o VRM entrega na medida certa.',
+    tec: 'Várias fases com MOSFETs, bobinas e capacitores, sob dissipadores. Quanto mais fases, mais estável a tensão sob carga alta.' },
+  { id: 'atx', nome: 'Conector de energia ATX (24 pinos)', tag: 'Energia',
+    faz: 'Recebe a energia da fonte para alimentar a placa, as memórias, os slots e as portas.',
+    dia: 'É o plugue da casa na rede elétrica.',
+    tec: 'Fornece 3,3 V, 5 V e 12 V, além do sinal que liga a fonte (PS_ON) e do aviso de energia estável (PWR_OK).' },
+  { id: 'eps', nome: 'Conector de energia da CPU (8 pinos)', tag: 'Energia',
+    faz: 'Leva energia extra de 12 volts direto para os reguladores do processador.',
+    dia: 'É uma tomada só para o aparelho que mais gasta energia da casa.',
+    tec: 'Padrão EPS 12 V. Placas para processadores de alto consumo podem ter dois desses conectores.' },
+  { id: 'sata', nome: 'Portas SATA', tag: 'Armazenamento',
+    faz: 'Ligam HDs, SSDs de 2,5 polegadas e drives de DVD por cabo.',
+    dia: 'São como prateleiras extras ligadas ao armário principal.',
+    tec: 'SATA III chega a 6 Gbit/s (cerca de 550 MB/s na prática) e é controlado pelo chipset.' },
+  { id: 'bios', nome: 'Chip do BIOS/UEFI', tag: 'Inicialização',
+    faz: 'Guarda o firmware que roda primeiro quando o computador liga: testa as peças e procura o sistema operacional para carregar.',
+    dia: 'É o checklist do piloto antes de decolar.',
+    tec: 'Memória flash SPI. O UEFI faz o POST (autoteste), inicializa a memória e entrega o controle ao carregador do sistema (bootloader).' },
+  { id: 'bateria', nome: 'Bateria (CMOS)', tag: 'Inicialização',
+    faz: 'Mantém o relógio funcionando e guarda as configurações do BIOS quando o computador está fora da tomada.',
+    dia: 'É a pilha do relógio de parede.',
+    tec: 'Bateria de lítio CR2032 de 3 V. Quando acaba, o computador perde data e hora a cada vez que é desligado da tomada.' },
+  { id: 'io', nome: 'Painel traseiro (entradas e saídas)', tag: 'Conexões',
+    faz: 'Reúne as portas que ficam na parte de trás do gabinete: USB, rede, áudio e saídas de vídeo do processador.',
+    dia: 'É a porta de entrada e saída da casa.',
+    tec: 'As saídas de vídeo daqui só funcionam se o processador tiver vídeo integrado. Com placa de vídeo, o monitor vai ligado na placa.' },
+  { id: 'rede', nome: 'Controlador de rede', tag: 'Conexões',
+    faz: 'Transforma os dados em sinais elétricos para o cabo de rede e faz o caminho inverso com o que chega da internet.',
+    dia: 'É o carteiro: entrega e recebe as cartas da casa.',
+    tec: 'Controlador Ethernet de 1 ou 2,5 Gbit/s ligado ao chipset por uma pista PCIe.' },
+  { id: 'audio', nome: 'Controlador de áudio', tag: 'Conexões',
+    faz: 'Converte o som digital em sinal para fones e caixas de som, e o sinal do microfone em dados.',
+    dia: 'É o tradutor entre o computador (números) e os ouvidos (ondas sonoras).',
+    tec: 'Codec de áudio com conversores digital-analógico (DAC) e analógico-digital (ADC), isolado do resto da placa para reduzir ruído.' },
+  { id: 'frontal', nome: 'Conectores do painel frontal', tag: 'Conexões',
+    faz: 'Ligam o botão de ligar, o botão de reiniciar e as luzes do gabinete. Ao lado ficam os conectores para as portas USB e de áudio da frente.',
+    dia: 'São os fios que ligam o interruptor à lâmpada.',
+    tec: 'O botão de ligar só fecha um contato; a placa então pede à fonte que ligue as saídas principais.' },
+  { id: 'pcb', nome: 'Placa de circuito impresso', tag: 'Base',
+    faz: 'É a placa em si: várias camadas de fibra de vidro com trilhas de cobre que ligam todas as peças.',
+    dia: 'É o sistema de ruas da cidade: cada trilha leva os dados de um lugar a outro.',
+    tec: 'Placas ATX medem 30,5 × 24,4 cm e têm de 6 a 8 camadas de cobre. As trilhas entre CPU e memória têm o mesmo comprimento para os sinais chegarem juntos.' }
+];
+
+/* ---------- montagem da placa ---------- */
+const grupos = {}, removiveis = {};
+let selecionada = null, halo = null, rotuloSel = null;
+function g(id) { if (!grupos[id]) { grupos[id] = new T.Group(); grupos[id].userData.id = id; cena.add(grupos[id]); } return grupos[id]; }
+/* caixa centrada em (x, z), apoiada na altura y */
+function caixa(grp, x, z, w, h, d, cor, y = TOPO, op = {}) {
+  const m = cena.bloco(w, h, d, cor, Object.assign({ base: false }, op));
+  m.position.set(x, y + h / 2, z); grp.add(m); return m;
+}
+function cil(grp, x, z, r, h, cor, y = TOPO, op = {}) { const m = cena.cilindro(r, h, cor, op); m.position.set(x, y, z); grp.add(m); return m; }
+
+function montarPlaca() {
+  /* placa (15,25 × 12,2: escala 1 unidade = 2 cm) */
+  const pcb = g('pcb');
+  caixa(pcb, 0, 0, 15.25, TOPO, 12.2, C.pcb, 0, { bordas: true });
+  // furos de fixação
+  [[-7.1, -5.65], [-7.1, 5.65], [6.1, -5.65], [6.1, 5.65], [0.6, -5.65], [0.6, 5.65]].forEach(([x, z]) => cil(pcb, x, z, 0.18, 0.02, C.ouro, TOPO, { bordas: false }));
+  // trilhas decorativas entre CPU e memória
+  for (let i = 0; i < 9; i++) caixa(pcb, -0.1, -4.4 + i * 0.42, 1.6, 0.01, 0.05, C.ouro, TOPO, { bordas: false, sombra: false });
+  for (let i = 0; i < 6; i++) caixa(pcb, -2.6 + i * 0.3, 0.1, 0.05, 0.01, 1.2, C.ouro, TOPO, { bordas: false, sombra: false });
+
+  /* soquete + CPU */
+  const soq = g('cpu');
+  caixa(soq, -2.6, -2.6, 2.6, 0.18, 2.6, C.slot2);
+  caixa(soq, -2.6, -2.6, 2.6, 0.04, 0.3, C.metal, TOPO + 0.18).position.z = -3.75;
+  const cpuMov = new T.Group(); soq.add(cpuMov);
+  caixa(cpuMov, -2.6, -2.6, 2.0, 0.1, 2.0, '#2f6b4a', TOPO + 0.18);
+  caixa(cpuMov, -2.6, -2.6, 1.6, 0.12, 1.6, C.metal, TOPO + 0.28);
+  removiveis.cpu = { ob: cpuMov, sobe: 0.2, dx: -3, dz: -8.5 };
+
+  /* cooler */
+  const cool = g('cooler');
+  const cMov = new T.Group(); cool.add(cMov);
+  caixa(cMov, -2.6, -2.6, 2.4, 0.12, 2.4, C.metal, TOPO + 0.4);
+  for (let i = 0; i < 9; i++) caixa(cMov, -2.6, -3.6 + i * 0.25, 2.4, 1.1, 0.05, C.dissip, TOPO + 0.52, { bordas: false });
+  caixa(cMov, -2.6, -2.6, 2.5, 0.08, 2.5, C.slot, TOPO + 1.62);
+  const helice = cil(cMov, -2.6, -2.6, 1.05, 0.16, C.slot2, TOPO + 1.7, { seg: 40 });
+  cil(cMov, -2.6, -2.6, 0.35, 0.2, C.vermelho, TOPO + 1.7, { seg: 24 });
+  for (let i = 0; i < 7; i++) { const p = caixa(cMov, -2.6, -2.6, 0.9, 0.04, 0.32, C.metalEsc, TOPO + 1.84, { bordas: false }); p.geometry = p.geometry.clone(); p.geometry.translate(0.5, 0, 0); p.rotation.y = i * 2 * Math.PI / 7; p.userData.helice = true; }
+  removiveis.cooler = { ob: cMov, sobe: -0.3, dx: 0.6, dz: -8.5 };
+  cool.userData.gira = cMov.children.filter(c => c.userData.helice);
+
+  /* VRM: dissipadores em L ao redor do soquete */
+  const vrm = g('vrm');
+  caixa(vrm, -5.3, -2.8, 0.9, 0.9, 3.6, C.dissip);
+  caixa(vrm, -2.8, -5.0, 3.6, 0.9, 0.8, C.dissip);
+  for (let i = 0; i < 6; i++) caixa(vrm, -4.55, -4.2 + i * 0.55, 0.4, 0.35, 0.4, C.chip);
+  for (let i = 0; i < 5; i++) cil(vrm, -4.4 + i * 0.6, -4.35, 0.1, 0.42, C.chip);
+
+  /* conector EPS 8 pinos */
+  const eps = g('eps');
+  caixa(eps, -6.3, -5.55, 1.3, 0.55, 0.6, C.branco);
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 2; j++) caixa(eps, -6.75 + i * 0.3, -5.7 + j * 0.3, 0.2, 0.02, 0.2, C.slot, TOPO + 0.55, { bordas: false });
+
+  /* slots de memória (4) e dois pentes */
+  const ram = g('ram');
+  const xsRam = [0.95, 1.55, 2.15, 2.75];
+  xsRam.forEach((x, i) => {
+    caixa(ram, x, -2.3, 0.32, 0.3, 6.7, i % 2 ? C.slot2 : C.slot);
+    caixa(ram, x, -5.8, 0.36, 0.42, 0.25, C.branco); caixa(ram, x, 1.2, 0.36, 0.42, 0.25, C.branco);
+  });
+  const ramMov = new T.Group(); ram.add(ramMov);
+  [xsRam[1], xsRam[3]].forEach(x => {
+    caixa(ramMov, x, -2.3, 0.08, 1.6, 6.6, C.ram, TOPO + 0.22);
+    caixa(ramMov, x, -2.3, 0.22, 1.25, 6.5, C.vermelho, TOPO + 0.45);
+    caixa(ramMov, x, -2.3, 0.24, 0.12, 6.3, C.slot, TOPO + 1.7);
+  });
+  removiveis.ram = { ob: ramMov, sobe: -0.2, dx: 7, dz: 0 };
+
+  /* conector ATX 24 pinos (borda direita) */
+  const atx = g('atx');
+  caixa(atx, 7.05, -2.2, 0.75, 0.55, 3.0, C.branco);
+  for (let i = 0; i < 12; i++) for (let j = 0; j < 2; j++) caixa(atx, 6.92 + j * 0.28, -3.5 + i * 0.235, 0.17, 0.02, 0.17, C.slot, TOPO + 0.55, { bordas: false });
+
+  /* slots PCIe: x16 (CPU), x1, x16 (chipset) */
+  const pcie = g('pcie');
+  caixa(pcie, -2.6, 0.9, 4.45, 0.3, 0.38, C.slot);
+  caixa(pcie, -2.6 + 2.35, 0.9, 0.3, 0.35, 0.42, C.metal);
+  caixa(pcie, -5.25, 2.3, 1.25, 0.3, 0.38, C.slot);
+  caixa(pcie, -2.6, 4.5, 4.45, 0.3, 0.38, C.slot2);
+
+  /* placa de vídeo */
+  const gpu = g('gpu');
+  const gMov = new T.Group(); gpu.add(gMov);
+  caixa(gMov, -1.0, 0.9, 13.2, 0.25, 0.1, C.slot2, TOPO + 0.12).position.y = TOPO + 0.12 + 2.1;
+  const corpo = caixa(gMov, -0.9, 1.7, 13.4, 0.55, 1.95, C.slot, TOPO + 2.3);
+  corpo.rotation.x = Math.PI / 2; corpo.position.set(-0.9, TOPO + 1.6, 1.25);
+  caixa(gMov, -0.9, 1.0, 13.0, 2.6, 0.16, '#2a2a2a', TOPO + 0.3);
+  caixa(gMov, -0.9, 0.98, 13.0, 0.14, 0.2, C.vermelho, TOPO + 2.9);
+  [-4.4, 0.6].forEach(x => { const f = cil(gMov, x, 1.75, 1.15, 0.1, C.slot2, 0, { seg: 40 }); f.rotation.x = Math.PI / 2; f.position.set(x, TOPO + 1.6, 1.8); });
+  caixa(gMov, -7.55, 1.0, 0.1, 3.2, 0.9, C.metal, TOPO - 0.2);
+  removiveis.gpu = { ob: gMov, sobe: 1.5, dz: 8 };
+
+  /* SSD M.2 entre os slots PCIe */
+  const ssd = g('ssd');
+  caixa(ssd, -2.2, 2.9, 0.4, 0.12, 0.6, C.slot);
+  caixa(ssd, 1.75, 2.9, 0.2, 0.15, 0.2, C.metal);
+  const sMov = new T.Group(); ssd.add(sMov);
+  caixa(sMov, -0.25, 2.9, 4.0, 0.05, 1.1, '#164a2f', TOPO + 0.15);
+  caixa(sMov, -0.9, 2.9, 1.2, 0.08, 0.8, C.chip, TOPO + 0.2);
+  caixa(sMov, 0.6, 2.9, 1.0, 0.08, 0.8, C.chip, TOPO + 0.2);
+  caixa(sMov, -1.9, 2.9, 0.4, 0.06, 0.7, C.amarelo, TOPO + 0.2);
+  removiveis.ssd = { ob: sMov, sobe: 1.6, dz: 0.4 };
+
+  /* chipset com dissipador */
+  const chip = g('chipset');
+  caixa(chip, 3.6, 3.0, 1.5, 0.12, 1.5, C.chip);
+  caixa(chip, 3.6, 3.0, 2.1, 0.45, 2.1, C.dissip, TOPO + 0.12);
+  caixa(chip, 3.6, 3.0, 1.2, 0.04, 0.5, C.vermelho, TOPO + 0.57, { bordas: false });
+
+  /* SATA: 4 portas em pé na borda direita */
+  const sata = g('sata');
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) caixa(sata, 6.95 - j * 0.0, 2.6 + i * 0.85 + j * 0.0, 0.7, 0.42, 0.7, C.vermelho, TOPO + j * 0.44);
+
+  /* BIOS e bateria */
+  const bios = g('bios');
+  caixa(bios, 5.4, 4.9, 0.5, 0.08, 0.5, C.chip);
+  caixa(bios, 5.4, 4.9, 0.4, 0.01, 0.4, C.amarelo, TOPO + 0.08, { bordas: false });
+  const bat = g('bateria');
+  const bMov = new T.Group(); bat.add(bMov);
+  cil(bat, 0.9, 3.2, 0.62, 0.12, C.slot);
+  cil(bMov, 0.9, 3.2, 0.52, 0.1, C.metal, TOPO + 0.12, { seg: 40 });
+  removiveis.bateria = { ob: bMov, sobe: 1.4 };
+
+  /* painel traseiro: USB, rede, áudio, vídeo */
+  const io = g('io');
+  caixa(io, -7.1, -3.0, 1.0, 1.4, 1.4, C.metal);  // vídeo
+  caixa(io, -7.1, -1.2, 1.0, 1.6, 1.2, C.metal);  // USB
+  caixa(io, -7.1, 0.5, 1.0, 1.8, 1.2, C.metal);   // rede + USB
+  caixa(io, -7.1, 2.5, 1.0, 2.2, 1.6, C.metal);   // áudio
+  for (let i = 0; i < 3; i++) cil(io, -7.62, 2.0 + i * 0.5, 0.17, 0.05, [C.vermelho, C.amarelo, '#2f8a4c'][i], TOPO + 1.8 - i * 0.1, { bordas: false }).rotation.z = Math.PI / 2;
+  [1.1, 0.5].forEach(y => caixa(io, -7.62, -1.2, 0.03, 0.2, 0.75, C.slot, TOPO + y, { bordas: false }));
+  caixa(io, -7.62, 0.5, 0.03, 0.55, 0.62, C.slot, TOPO + 1.0, { bordas: false });
+
+  /* controladores de rede e áudio */
+  const rede = g('rede');
+  caixa(rede, -5.4, 0.3, 0.6, 0.08, 0.6, C.chip);
+  const audio = g('audio');
+  caixa(audio, -5.4, 4.6, 0.7, 0.08, 0.7, C.chip);
+  for (let i = 0; i < 4; i++) cil(audio, -6.4 + (i % 2) * 0.5, 4.3 + Math.floor(i / 2) * 0.6, 0.18, 0.45, C.amarelo);
+
+  /* painel frontal */
+  const fr = g('frontal');
+  caixa(fr, 4.4, 5.75, 1.2, 0.35, 0.4, C.slot);
+  for (let i = 0; i < 5; i++) for (let j = 0; j < 2; j++) caixa(fr, 3.95 + i * 0.22, 5.65 + j * 0.2, 0.06, 0.25, 0.06, C.ouro, TOPO + 0.35, { bordas: false });
+  caixa(fr, 1.6, 5.75, 1.0, 0.35, 0.4, C.slot);
+
+  Object.values(grupos).forEach(gr => cena.clicavel(gr, () => clicou(gr.userData.id)));
+}
+
+/* ---------- seleção e destaque ---------- */
+function caixaDe(id) {
+  const b = new T.Box3().setFromObject(grupos[id]);
+  return b;
+}
+function destacar(id) {
+  if (!cena) return;
+  if (halo) { cena.remove(halo); halo = null; }
+  if (rotuloSel) { cena.remove(rotuloSel); rotuloSel = null; }
+  if (!id) return;
+  const b = caixaDe(id), s = b.getSize(new T.Vector3()), c = b.getCenter(new T.Vector3());
+  const geo = new T.BoxGeometry(s.x + 0.25, s.y + 0.2, s.z + 0.25);
+  halo = new T.Mesh(geo, new T.MeshBasicMaterial({ color: '#fff36b', transparent: true, opacity: 0.32, depthWrite: false }));
+  const lin = new T.LineSegments(new T.EdgesGeometry(geo), new T.LineBasicMaterial({ color: '#c8a400' }));
+  halo.add(lin); halo.position.copy(c); halo.raycast = () => {}; lin.raycast = () => {};
+  cena.add(halo);
+  rotuloSel = cena.rotulo(PECAS.find(p => p.id === id).nome, { tam: 0.75, fundo: '#fff36b' });
+  rotuloSel.position.set(c.x, b.max.y + 0.8, c.z);
+  cena.add(rotuloSel);
+}
+function mostrarInfo(id) {
+  const p = PECAS.find(x => x.id === id);
+  if (!p) { $('#info').innerHTML = '<h3>Placa-mãe</h3><p>A placa-mãe liga todas as peças do computador: processador, memória, armazenamento, placa de vídeo e conectores. Clique numa peça para saber o que ela faz.</p><p class="small muted">' + PECAS.length + ' peças para explorar.</p>'; return; }
+  $('#info').innerHTML = `<span class="tag">${p.tag}</span><h3>${p.nome}</h3><p>${p.faz}</p><p><strong>No dia a dia:</strong> ${p.dia}</p><p class="tec"><strong>Mais a fundo:</strong> ${p.tec}</p>`;
+}
+function selecionar(id) {
+  selecionada = id;
+  document.querySelectorAll('#pecas [data-p]').forEach(b => b.setAttribute('aria-pressed', b.dataset.p === id));
+  mostrarInfo(id); destacar(id);
+  if (cena) cena.descrever(id ? `Placa-mãe em 3D com a peça ${PECAS.find(p => p.id === id).nome} destacada em amarelo.` : descricaoGeral);
+}
+const descricaoGeral = 'Placa-mãe verde vista de cima e de lado, com processador e cooler, quatro slots de memória com dois pentes vermelhos, placa de vídeo, SSD M.2, chipset, portas SATA vermelhas, conectores de energia brancos e painel traseiro de metal.';
+
+/* ---------- separar peças ---------- */
+let separado = false;
+function separar(liga) {
+  separado = liga; $('#separar').setAttribute('aria-pressed', liga);
+  $('#separar').textContent = liga ? 'Encaixar as peças' : 'Separar as peças';
+  if (!cena) return;
+  Object.values(removiveis).forEach(r => cena.animar(r.ob, { position: liga ? [r.dx || 0, r.sobe, r.dz || 0] : [0, 0, 0] }, 700));
+  setTimeout(() => destacar(selecionada), 720);
+  cena.enquadrar(liga ? [1, 0, 0] : [0, 0, 0.6], liga ? 34 : 21.8);
+}
+$('#separar').addEventListener('click', () => separar(!separado));
+
+/* ---------- caminho dos dados ---------- */
+const PT = {
+  cpu: [-2.6, -2.6], ram: [1.85, -2.3], gpu: [-2.6, 0.9], ssd: [-0.25, 2.9], chipset: [3.6, 3.0], sata: [6.95, 3.0],
+  bios: [5.4, 4.9], atx: [7.05, -2.2], vrm: [-4.6, -2.8], io: [-6.6, -1.2], rede: [-5.4, 0.3], audio: [-5.4, 4.6], monitor: [-7.6, 1.0], eps: [-6.3, -5.55]
+};
+const NOME = { cpu: 'processador', ram: 'memória RAM', gpu: 'placa de vídeo', ssd: 'SSD M.2', chipset: 'chipset', sata: 'porta SATA', bios: 'chip do BIOS', atx: 'conector ATX', vrm: 'VRM', io: 'painel traseiro', rede: 'controlador de rede', audio: 'controlador de áudio', monitor: 'monitor', eps: 'conector de 8 pinos' };
+const CENARIOS = [
+  { nome: 'Ligar o computador', passos: [
+    ['atx', 'chipset', 'O botão de ligar avisa a placa, e a fonte começa a mandar energia pelo conector de 24 pinos.', 'energia'],
+    ['eps', 'vrm', 'O conector de 8 pinos leva 12 volts aos reguladores, que entregam a tensão certa ao processador.', 'energia'],
+    ['bios', 'cpu', 'O processador começa a executar o firmware UEFI guardado no chip do BIOS, passando pelo chipset.', null, ['chipset']],
+    ['cpu', 'ram', 'O firmware testa a memória e as peças (POST). Se algo falhar, a placa avisa com bipes ou luzes.'],
+    ['ssd', 'ram', 'O carregador do sistema operacional é lido do SSD e copiado para a memória RAM.'],
+    ['ram', 'cpu', 'O processador passa a executar o sistema operacional a partir da RAM. O computador está pronto.']
+  ] },
+  { nome: 'Abrir um programa', passos: [
+    ['io', 'chipset', 'O clique do mouse entra por uma porta USB e chega ao chipset.'],
+    ['chipset', 'cpu', 'O chipset repassa o aviso ao processador, que pede ao sistema para abrir o programa.'],
+    ['ssd', 'cpu', 'O programa está guardado no SSD M.2, que fica ligado direto ao processador por pistas PCIe.'],
+    ['cpu', 'ram', 'O programa é copiado para a memória RAM, onde o acesso é muito mais rápido.'],
+    ['ram', 'cpu', 'O processador busca as instruções na RAM (e guarda as mais usadas na cache) e executa uma a uma.']
+  ] },
+  { nome: 'Jogar um jogo', passos: [
+    ['ram', 'cpu', 'O processador calcula as regras do jogo: física, personagens e o que cada um faz.'],
+    ['cpu', 'gpu', 'Ele manda à placa de vídeo, pelo slot PCIe x16, a lista do que deve ser desenhado.'],
+    ['gpu', 'gpu', 'Milhares de núcleos da GPU calculam as cores de cada pixel ao mesmo tempo, usando a memória de vídeo da própria placa.'],
+    ['gpu', 'monitor', 'A imagem pronta sai pela saída de vídeo da placa de vídeo até o monitor, dezenas de vezes por segundo.']
+  ] },
+  { nome: 'Salvar um arquivo no HD', passos: [
+    ['ram', 'cpu', 'O arquivo que você editou está na memória RAM.'],
+    ['cpu', 'chipset', 'O processador envia os dados ao chipset pelo barramento que liga os dois.'],
+    ['chipset', 'sata', 'O chipset controla as portas SATA e entrega os dados ao cabo do HD.'],
+    ['sata', 'sata', 'O HD grava o arquivo nos discos magnéticos. Agora ele continua lá mesmo com o computador desligado.']
+  ] },
+  { nome: 'Receber uma página da internet', passos: [
+    ['io', 'rede', 'Os sinais chegam pelo cabo de rede no painel traseiro.'],
+    ['rede', 'chipset', 'O controlador de rede transforma os sinais em dados e os entrega ao chipset.'],
+    ['chipset', 'cpu', 'O chipset repassa os dados ao processador.'],
+    ['cpu', 'ram', 'O navegador, que está na RAM, recebe os dados e monta a página.'],
+    ['cpu', 'gpu', 'A página montada vai para a placa de vídeo e aparece na tela.']
+  ] }
+];
+let cenario = 0, passo = 0, gCaminho = null, pulsos = [];
+function rota(a, b, via = []) {
+  const y = TOPO + 0.08, A = PT[a];
+  if (a === b) return [[A[0] - 0.6, y, A[1]], [A[0] + 0.6, y, A[1]], [A[0], y, A[1] + 0.6], [A[0] - 0.6, y, A[1]]];
+  const ks = [a, ...via, b], pts = [[A[0], y, A[1]]];
+  for (let i = 1; i < ks.length; i++) { const P = PT[ks[i - 1]], Q = PT[ks[i]]; pts.push([Q[0], y, P[1]], [Q[0], y, Q[1]]); }
+  return pts;
+}
+function desenhaCaminho() {
+  if (!cena) return;
+  if (!gCaminho) { gCaminho = new T.Group(); cena.add(gCaminho); }
+  cena.limpar(gCaminho); pulsos = [];
+  const [a, b, , tipo, via] = CENARIOS[cenario].passos[passo];
+  const pts = rota(a, b, via || []).map(p => new T.Vector3(...p));
+  const cor = tipo === 'energia' ? COR.vermelho : COR.amarelo;
+  for (let i = 0; i < pts.length - 1; i++) {
+    if (pts[i].distanceTo(pts[i + 1]) < 0.01) continue;
+    const h = cena.haste(pts[i].toArray(), pts[i + 1].toArray(), 0.22, cor, { mat: { emissive: new T.Color(cor), emissiveIntensity: 0.35 } });
+    h.castShadow = false; gCaminho.add(h);
+  }
+  [a, b].forEach((k, i) => {
+    const r = cena.rotulo(NOME[k], { tam: 0.65, fundo: i ? '#fff36b' : '#ffffff' });
+    r.position.set(PT[k][0], TOPO + 3.4 + i * 0.01, PT[k][1]); gCaminho.add(r);
+  });
+  const curva = new T.CurvePath();
+  for (let i = 0; i < pts.length - 1; i++) if (pts[i].distanceTo(pts[i + 1]) > 0.01) curva.add(new T.LineCurve3(pts[i], pts[i + 1]));
+  for (let i = 0; i < 4; i++) {
+    const s = new T.Mesh(new T.SphereGeometry(0.22, 16, 12), new T.MeshBasicMaterial({ color: tipo === 'energia' ? '#ff5a66' : '#fff36b' }));
+    gCaminho.add(s); pulsos.push({ s, fase: i / 4, curva });
+  }
+  cena.descrever(`Caminho dos dados, ${CENARIOS[cenario].nome}, passo ${passo + 1}: ${CENARIOS[cenario].passos[passo][2]}`);
+}
+function listaPassos() {
+  const c = CENARIOS[cenario];
+  $('#passos').innerHTML = c.passos.map((p, i) => `<li tabindex="0"${i === passo ? ' aria-current="step"' : ''} data-i="${i}">${p[2]}</li>`).join('');
+  $('#passos').querySelectorAll('li').forEach(li => {
+    const ir = () => { passo = +li.dataset.i; atualizaCaminho(); };
+    li.addEventListener('click', ir); li.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); } });
+  });
+  $('#ant').disabled = passo === 0; $('#prox').disabled = passo === c.passos.length - 1;
+}
+function atualizaCaminho() { listaPassos(); desenhaCaminho(); $('#fb').textContent = ''; }
+$('#cenario').innerHTML = CENARIOS.map((c, i) => `<option value="${i}">${c.nome}</option>`).join('');
+$('#cenario').addEventListener('change', e => { cenario = +e.target.value; passo = 0; atualizaCaminho(); });
+$('#ant').addEventListener('click', () => { if (passo > 0) { passo--; atualizaCaminho(); } });
+$('#prox').addEventListener('click', () => { if (passo < CENARIOS[cenario].passos.length - 1) { passo++; atualizaCaminho(); } });
+
+/* ---------- jogo: encontre a peça ---------- */
+let pedido = null, acertos = 0, tentativas = 0, fila = [];
+function novoPedido() {
+  if (!fila.length) fila = PECAS.map(p => p.id).filter(id => id !== 'pcb').sort(() => Math.random() - 0.5);
+  pedido = fila.pop();
+  $('#pedido').textContent = PECAS.find(p => p.id === pedido).nome;
+  $('#placar').textContent = `${acertos} de ${tentativas}`;
+}
+function responder(id) {
+  tentativas++;
+  const ok = id === pedido;
+  if (ok) acertos++;
+  $('#fb').className = 'feedback ' + (ok ? 'ok' : 'bad');
+  $('#fb').textContent = ok ? `Isso! ${PECAS.find(p => p.id === id).nome}: ${PECAS.find(p => p.id === id).dia}` : `Essa peça é: ${PECAS.find(p => p.id === id).nome}. Tente de novo.`;
+  destacar(id);
+  if (ok) novoPedido(); else $('#placar').textContent = `${acertos} de ${tentativas}`;
+}
+$('#pular').addEventListener('click', () => { $('#fb').className = 'feedback'; $('#fb').textContent = `A peça era: ${PECAS.find(p => p.id === pedido).nome} (destacada em amarelo).`; destacar(pedido); novoPedido(); });
+$('#recomecar').addEventListener('click', () => { acertos = 0; tentativas = 0; fila = []; $('#fb').textContent = ''; destacar(null); novoPedido(); });
+
+/* ---------- modos ---------- */
+let modo = 'explorar';
+function clicou(id) { if (modo === 'jogo') responder(id); else { if (modo === 'caminho') trocaModo('explorar'); selecionar(id); } }
+function trocaModo(m) {
+  modo = m;
+  document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x.dataset.modo === m));
+  $('#p-explorar').hidden = m !== 'explorar'; $('#p-caminho').hidden = m !== 'caminho'; $('#p-jogo').hidden = m !== 'jogo';
+  $('#fb').textContent = '';
+  if (gCaminho) { cena.limpar(gCaminho); pulsos = []; }
+  destacar(null);
+  if (m === 'explorar') selecionar(selecionada);
+  if (m === 'caminho') { if (separado) separar(false); atualizaCaminho(); if (cena) cena.vista('cima'); }
+  if (m === 'jogo') { if (cena) cena.descrever(descricaoGeral); novoPedido(); }
+}
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => trocaModo(b.dataset.modo)));
+
+$('#pecas').innerHTML = PECAS.map(p => `<button type="button" class="chip" data-p="${p.id}" aria-pressed="false">${p.nome}</button>`).join('');
+$('#pecas').querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => clicou(b.dataset.p)));
+
+if (cena) {
+  montarPlaca();
+  cena.animarSempre(true);
+  let t0 = performance.now();
+  cena.loop(now => {
+    const dt = (now - t0) / 1000; t0 = now;
+    const red = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!red) (grupos.cooler.userData.gira || []).forEach(p => { p.rotation.y += dt * 6; });
+    pulsos.forEach(p => { p.fase = (p.fase + (red ? 0 : dt * 0.35)) % 1; p.s.position.copy(p.curva.getPointAt(p.fase)); p.s.position.y += 0.1; });
+    return true;
+  });
+}
+selecionar(null);
+</script>
+</body>
+</html>
