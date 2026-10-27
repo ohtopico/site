@@ -1,0 +1,13 @@
+name: tmp checar urls
+on:
+  push:
+    branches: [tmp-checar-urls]
+jobs:
+  checar:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for u in http://ohtopico.com.br/ https://ohtopico.com.br/ http://www.ohtopico.com.br/ https://www.ohtopico.com.br/ https://ohtopico.com.br/index.html https://ohtopico.com.br/mentoria https://ohtopico.com.br/blog https://ohtopico.com.br/curriculo https://ohtopico.com.br/galeria.html https://ohtopico.com.br/skills.html https://ohtopico.com.br/aboutme.html https://ohtopico.com.br/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/ https://ohtopico.github.io/ https://ohtopico.github.io/site/ https://ohtopico.com.br/ensino-superior/ https://ohtopico.com.br/simuladores/figuras-3d.html https://ohtopico.com.br/material-didatico/datas-festivas/ https://ohtopico.com.br/sitemap.xml; do
+            echo "== $u"; curl -s -I -L --max-redirs 10 --max-time 20 "$u" | grep -iE '^(HTTP|location)' || echo FALHOU
+          done
+          echo "== DNS"; dig +short ohtopico.com.br; dig +short www.ohtopico.com.br
