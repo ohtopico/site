@@ -84,6 +84,7 @@ const HABILIDADES_RAW = [
   ['EF06MA07', 6, 'NU', 'Frações', 'Compreender, comparar e ordenar frações associadas a partes de inteiros e a resultados de divisão, identificando frações equivalentes.'],
   ['EF06MA06', 6, 'NU', 'Múltiplos e divisores', 'Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor.'],
   ['EF06MA16', 6, 'GE', 'Plano cartesiano', 'Associar pares ordenados a pontos do plano cartesiano do 1º quadrante, como na localização dos vértices de um polígono.'],
+  ['EF06MA17', 6, 'GE', 'Prismas e pirâmides', 'Quantificar e estabelecer relações entre o número de vértices, faces e arestas de prismas e pirâmides, em função do seu polígono da base, para resolver problemas e desenvolver a percepção espacial.'],
   ['EF06MA18', 6, 'GE', 'Polígonos', 'Reconhecer, nomear e comparar polígonos considerando lados, vértices e ângulos, e classificá-los em regulares e não regulares.'],
   ['EF06MA19', 6, 'GE', 'Triângulos', 'Identificar características dos triângulos e classificá-los em relação às medidas dos lados e dos ângulos.'],
   ['EF06MA20', 6, 'GE', 'Quadriláteros', 'Identificar características dos quadriláteros, classificá-los em relação a lados e ângulos e reconhecer a inclusão e a intersecção de classes entre eles.'],
@@ -313,6 +314,10 @@ const RECURSOS = [
     habs: ['EF07MA27', 'EF07MA24', 'EF06MA18'], tempo: '15 min',
     resumo: 'Encaixe polígonos regulares em volta de um ponto até fechar 360° e descubra a soma dos ângulos internos por triangulação.',
     url: '3d/ladrilhos.html', plano: null, ficha: null },
+  { id: '3d-figuras', tipo: '3d', titulo: 'Figuras Geométricas em 3D', comp: ['MA'], anos: [6, 7],
+    habs: ['EF06MA17', 'EF06MA18', 'EF06MA19', 'EF06MA20', 'EF07MA27'], tempo: '15–20 min',
+    resumo: 'Polígonos, prismas, pirâmides, poliedros de Platão e corpos redondos com faces transparentes: todas as arestas aparecem, as escondidas em tracejado. Conte vértices, arestas, faces, diagonais e ângulos.',
+    url: '3d/figuras.html', plano: null, ficha: null },
 
   // ---------- Fichas para imprimir ----------
   { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
@@ -601,7 +606,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));

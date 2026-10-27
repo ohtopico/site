@@ -35,11 +35,7 @@
     { id: 'placa-mae', sigla: 'CPU', titulo: 'Placa-mãe em 3D', url: 'placa-mae.html', niveis: ['EF', 'EM', 'ES'],
       resumo: 'Gire uma placa-mãe em 3D, clique em cada componente para saber o que ele faz, separe as peças e acompanhe o caminho dos dados entre processador, memória, chipset e armazenamento.',
       bncc: ['EF07CO10'],
-      uso: 'Use a exploração das peças e o modo Encontre a peça para conhecer processador, memória, armazenamento e conexões. Barramentos e chipset ficam para o Médio e o Superior.' },
-    { id: 'figuras-3d', sigla: 'V-A+F', titulo: 'Figuras geométricas em 3D', url: 'figuras-3d.html', niveis: ['EF', 'EM'],
-      resumo: 'Polígonos, prismas, pirâmides, poliedros de Platão e corpos redondos com faces transparentes: todas as arestas aparecem, as escondidas em tracejado. Conta vértices, arestas, faces, diagonais e ângulos.',
-      bncc: ['EF05MA16', 'EF06MA17', 'EF06MA18', 'EF06MA19', 'EF06MA20', 'EF07MA27'],
-      uso: 'Compare polígonos pelos lados, vértices e ângulos, conte vértices, faces e arestas de prismas e pirâmides e confira a relação de Euler.' }
+      uso: 'Use a exploração das peças e o modo Encontre a peça para conhecer processador, memória, armazenamento e conexões. Barramentos e chipset ficam para o Médio e o Superior.' }
   ];
   window.NIVEIS = { EF: 'Ensino Fundamental', EM: 'Ensino Médio', ES: 'Ensino Superior e técnico' };
 
@@ -70,7 +66,7 @@
     const el = document.getElementById('footer'); if (!el) return;
     el.className = 'footer';
     el.innerHTML = `<div class="wrap">
-      <p>Simuladores interativos de Computação, Estatística e Geometria, organizados por
+      <p>Simuladores interativos de Computação e Estatística, organizados por
       <a href="${BASE}../curriculo/">Júlia Roberta Quoos Alves</a>. Veja também o <a href="${BASE}../material-didatico/">material didático para o Ensino Fundamental</a>.</p>
       <p>Uso livre em aulas, com citação da fonte. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p>
     </div>`;
