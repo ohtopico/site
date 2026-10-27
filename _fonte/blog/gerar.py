@@ -45,6 +45,9 @@ SCRIPT_TOPO = ("<script>try { const t = JSON.parse(localStorage.getItem('iaprapr
                "if (window.self !== window.top) document.documentElement.classList.add('emoldurado');</script>")
 # Versão dos arquivos de estilo e script: muda só quando o conteúdo deles muda
 VERSAO_CSS = hashlib.md5((AQUI / 'blog.css').read_bytes() + (AQUI / 'blog.js').read_bytes()).hexdigest()[:10]
+# o assistente (chatbot de busca) fica em /assistente/ na raiz do site; o índice é gerado por _fonte/assistente/indexar.py
+_ASSISTENTE = AQUI.parent.parent / 'assistente'
+VERSAO_ASSISTENTE = hashlib.md5(b''.join((_ASSISTENTE / n).read_bytes() for n in ('assistente.js', 'assistente.css') if (_ASSISTENTE / n).exists())).hexdigest()[:10]
 
 esc = html.escape
 # Largura das miniaturas da grade do blog (o dobro do tamanho na tela, para ficar nítida em telas de alta densidade)
@@ -235,6 +238,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 </div>
 {contador}<script src="/blog/assets/blog.js?v={VERSAO_CSS}" defer></script>
 <script src="/assets/estrelas.js?v=202610270000" defer></script>
+<script src="/assistente/assistente.js?v={VERSAO_ASSISTENTE}" defer></script>
 </body>
 </html>
 '''

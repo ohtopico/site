@@ -40,6 +40,9 @@ jobs:
             --slides _fonte/blog/slides \
             --ate "$(date +%F)" --sitemap
 
+      - name: Atualizar o índice do assistente (chatbot) com as páginas publicadas
+        run: python _fonte/assistente/indexar.py --site .
+
       - name: Publicar se algo mudou
         run: |
           # O checkout começa limpo, então tudo o que mudou aqui saiu do gerador
