@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline MIPS · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador do pipeline MIPS de cinco estágios (IF, ID, EX, MEM, WB) no navegador: diagrama ciclo a ciclo, bolhas, adiantamento (forwarding), dependência de load e descarte após desvios.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/pipeline-mips.html">
+<meta property="og:title" content="Pipeline MIPS · Simuladores | ohtopico">
+<meta property="og:description" content="Veja instruções MIPS passando pelos cinco estágios do pipeline, com bolhas, forwarding e desvios.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/pipeline-mips.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  :root { --s-if: #dff3e5; --s-id: #fff4b8; --s-ex: #fbdde2; --s-mem: #e4e4e0; --s-wb: #c9ebd3; --fwd: #c8323f; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --s-if: #1d3a27; --s-id: #4a4214; --s-ex: #4a1f27; --s-mem: #333331; --s-wb: #24492f; --fwd: #ff7d93; } }
+  :root[data-theme="dark"] { --s-if: #1d3a27; --s-id: #4a4214; --s-ex: #4a1f27; --s-mem: #333331; --s-wb: #24492f; --fwd: #ff7d93; }
+  .pl { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 18px; align-items: start; }
+  @media (max-width: 960px) { .pl { grid-template-columns: minmax(0, 1fr); } }
+  .pl > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  #src { width: 100%; min-height: 250px; }
+  .ctrl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .ctrl .btn { min-height: 42px; padding: 8px 14px; font-size: 15px; }
+  .opts { display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; }
+  .opts label { display: flex; gap: 8px; align-items: center; }
+  .opts label { flex-wrap: wrap; }
+  .opts select { max-width: 100%; min-height: 38px; border: 1.5px solid var(--ink); border-radius: 10px; padding: 2px 8px; background: var(--paper); }
+  .ciclo { font-family: var(--display); font-size: 26px; margin: 0; }
+  svg.dp { width: 100%; height: auto; display: block; font-family: ui-monospace, Consolas, monospace; }
+  svg.dp .st { stroke: var(--ink); stroke-width: 1.5; }
+  svg.dp .reg { fill: var(--ink); }
+  svg.dp text { fill: var(--ink); }
+  svg.dp .tt { font-family: var(--body); font-weight: 600; font-size: 13px; }
+  svg.dp .ins { font-size: 12.5px; font-weight: 700; }
+  svg.dp .vz { fill: var(--ink-3); font-style: italic; font-weight: 400; }
+  svg.dp .fl { fill: var(--fwd); font-size: 11.5px; font-weight: 700; }
+  svg.dp .fw { stroke: var(--fwd); stroke-width: 2.5; fill: none; }
+  svg.dp .rl { fill: var(--paper); font-size: 9px; font-family: var(--body); font-weight: 600; }
+  .s-if { background: var(--s-if); } .s-id { background: var(--s-id); } .s-ex { background: var(--s-ex); } .s-mem { background: var(--s-mem); } .s-wb { background: var(--s-wb); }
+  svg .f-if { fill: var(--s-if); } svg .f-id { fill: var(--s-id); } svg .f-ex { fill: var(--s-ex); } svg .f-mem { fill: var(--s-mem); } svg .f-wb { fill: var(--s-wb); }
+  .eventos { list-style: none; padding: 0; margin: 8px 0 0; font-size: 14.5px; }
+  .eventos li { display: grid; grid-template-columns: 46px 1fr; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--line); }
+  .eventos li b { font-family: ui-monospace, Consolas, monospace; border: 1.5px solid var(--ink); border-radius: 6px; text-align: center; font-size: 12.5px; height: fit-content; color: var(--ink); }
+  .eventos li .alerta { color: var(--bad); font-weight: 600; }
+  .eventos li .fwdtxt { color: var(--fwd); font-weight: 600; }
+  .diag-wrap { overflow-x: auto; border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); }
+  table.diag { border-collapse: collapse; font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; }
+  table.diag th, table.diag td { border: 1px solid var(--line); padding: 0; text-align: center; min-width: 38px; height: 28px; }
+  table.diag th { font-family: var(--body); font-size: 12px; color: var(--ink-2); background: var(--paper-2); cursor: pointer; }
+  table.diag th.atual { background: var(--ink); color: var(--paper); }
+  table.diag td.atual { box-shadow: inset 2px 0 0 var(--ink), inset -2px 0 0 var(--ink); }
+  table.diag td.atual:not(.c[class*=" s-"]) { background-color: var(--pill); }
+  table.diag th.ins { text-align: left; padding: 0 10px; min-width: 190px; position: sticky; left: 0; z-index: 1; background: var(--paper); color: var(--ink); cursor: default; font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; white-space: nowrap; }
+  table.diag tr.flush th.ins { color: var(--ink-3); text-decoration: line-through; }
+  table.diag tr.flush td.c { opacity: .55; }
+  table.diag td.stall { background-image: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,.18) 4px 6px); font-style: italic; }
+  table.diag td.x { color: var(--bad); font-weight: 700; }
+  .leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13.5px; margin: 10px 0 0; align-items: center; }
+  .leg span.sw { display: inline-block; width: 26px; height: 16px; border: 1px solid var(--ink-3); border-radius: 4px; vertical-align: middle; margin-right: 4px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 6px 0; }
+  .stats div { border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; background: var(--paper); }
+  .stats b { display: block; font-family: var(--display); font-size: 26px; line-height: 1.15; }
+  .stats small { color: var(--ink-2); font-size: 13px; }
+  .regs { display: flex; flex-wrap: wrap; gap: 4px 12px; font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  .regs span.ch { background: var(--s-wb); border-radius: 4px; padding: 0 4px; }
+  .status { font-size: 14.5px; font-weight: 600; min-height: 22px; }
+  .status.bad { color: var(--bad); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p>Escolha um exemplo ou escreva um trecho de assembly MIPS e clique em <strong>Simular</strong>. O diagrama mostra em que estágio cada instrução está a cada ciclo de relógio. Avance ciclo a ciclo e acompanhe, no desenho do caminho de dados, qual instrução ocupa cada estágio.</p>
+    <p>Ligue e desligue o <strong>adiantamento (forwarding)</strong> e mude o <strong>estágio em que o desvio é decidido</strong> para comparar a quantidade de ciclos. Células listradas são paradas (bolhas); instruções riscadas foram buscadas pelo caminho errado e descartadas.</p>
+    <p class="small muted">Modelo do livro de Patterson e Hennessy: cinco estágios, banco de registradores escrito na primeira metade do ciclo e lido na segunda, previsão de desvio "não tomado" e sem slot de atraso. Os registradores começam em zero e a memória começa com os valores 5, 8, 2, 7, 4, 9, 1 e 6 nos endereços 0, 4, 8, ... 28.</p>
+  </details>
+
+  <section class="sim">
+    <div class="pl">
+      <div>
+        <div class="box">
+          <h3>Código assembly</h3>
+          <div class="ctrl">
+            <label class="field" style="flex-direction:row;align-items:center;gap:8px;flex-wrap:wrap;min-width:0;max-width:100%">Exemplo <select id="ex" style="max-width:100%;min-width:0"></select></label>
+          </div>
+          <label class="field"><span class="sr-only">Código</span><textarea id="src" spellcheck="false" autocomplete="off"></textarea></label>
+          <p class="status" id="status" role="status"></p>
+        </div>
+        <div class="box">
+          <h3>Configuração do pipeline</h3>
+          <div class="opts">
+            <label><input type="checkbox" id="o-fwd" checked> Adiantamento de dados (forwarding)</label>
+            <label>Desvio decidido no estágio
+              <select id="o-desvio"><option value="id">ID (1 instrução descartada)</option><option value="mem">MEM (3 instruções descartadas)</option></select></label>
+          </div>
+          <p style="margin:12px 0 0"><button class="btn" type="button" id="b-sim">Simular</button></p>
+        </div>
+      </div>
+      <div>
+        <div class="box">
+          <div class="ctrl" style="justify-content:space-between">
+            <p class="ciclo" id="ciclo">Ciclo 1</p>
+            <span style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="btn ghost" type="button" id="b-ini">Início</button>
+              <button class="btn ghost" type="button" id="b-ant">Ciclo anterior</button>
+              <button class="btn" type="button" id="b-prox">Próximo ciclo</button>
+              <button class="btn ghost" type="button" id="b-play" aria-pressed="false">Reproduzir</button>
+            </span>
+          </div>
+          <svg class="dp" id="dp" viewBox="0 0 760 200" role="img" aria-labelledby="dp-desc"><desc id="dp-desc"></desc></svg>
+          <ul class="eventos" id="eventos" aria-live="polite"></ul>
+        </div>
+        <div class="box">
+          <h3>Registradores ao fim do ciclo</h3>
+          <div class="regs" id="regs"></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="font-size:22px;margin-top:6px">Diagrama do pipeline</h2>
+    <p class="small muted" style="margin-top:0">Clique no número de um ciclo para ver o que acontece nele.</p>
+    <div class="diag-wrap"><table class="diag" id="diag"></table></div>
+    <div class="leg">
+      <span><span class="sw s-if"></span>IF busca</span><span><span class="sw s-id"></span>ID decodificação</span><span><span class="sw s-ex"></span>EX execução</span><span><span class="sw s-mem"></span>MEM memória</span><span><span class="sw s-wb"></span>WB escrita</span>
+      <span><span class="sw" style="background-image:repeating-linear-gradient(45deg,transparent 0 4px,rgba(0,0,0,.25) 4px 6px)"></span>parada (bolha)</span>
+      <span><s>instrução</s> descartada</span>
+    </div>
+
+    <h2 style="font-size:22px;margin-top:22px">Desempenho</h2>
+    <div class="stats" id="stats"></div>
+    <div class="tbl-wrap"><table class="tbl" id="comp"></table></div>
+  </section>
+
+  <details class="howto">
+    <summary>Instruções suportadas</summary>
+    <p class="small"><code>add sub and or xor nor slt sll srl addi andi ori slti lw sw beq bne j nop</code> e as pseudoinstruções <code>li</code> e <code>move</code>. Rótulos terminam com dois-pontos e comentários começam com <code>#</code>. Registradores pelo nome (<code>$t0</code>) ou pelo número (<code>$8</code>). Para executar o programa completo, com syscall e memória de dados, use o <a href="mips.html">Mini-MIPS</a>.</p>
+  </details>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <ol>
+      <li><strong>Sem dependências:</strong> com cinco instruções independentes, o pipeline termina em 9 ciclos em vez de 25. Depois que enche, conclui uma instrução por ciclo (CPI perto de 1).</li>
+      <li><strong>Dependência de dados:</strong> desligue o adiantamento e conte as bolhas. Ligue de novo e veja as setas vermelhas: o resultado sai do registrador EX/MEM ou MEM/WB direto para a ULA.</li>
+      <li><strong>Load-use:</strong> mesmo com adiantamento, uma instrução que usa o valor de um <code>lw</code> logo em seguida para um ciclo, porque o dado só existe no fim do estágio MEM. Compare com o exemplo reordenado: a mesma conta, sem bolhas.</li>
+      <li><strong>Desvios:</strong> no laço, mude o estágio de decisão do desvio de MEM para ID e compare os ciclos. Discuta previsão de desvio e por que processadores reais preveem em vez de esperar.</li>
+    </ol>
+    <p class="small muted">Referência: Patterson e Hennessy, Organização e Projeto de Computadores, capítulo 4.</p>
+  </details>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>simTopbar(); simFooter(); simHead('pipeline');</script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const RN = ['$zero', '$at', '$v0', '$v1', '$a0', '$a1', '$a2', '$a3', '$t0', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7',
+    '$s0', '$s1', '$s2', '$s3', '$s4', '$s5', '$s6', '$s7', '$t8', '$t9', '$k0', '$k1', '$gp', '$sp', '$fp', '$ra'];
+  const MEM0 = [5, 8, 2, 7, 4, 9, 1, 6];
+  const MAXDIN = 40;
+  const EXEMPLOS = {
+    'Sem dependências': `# Cinco instruções independentes
+addi $t0, $zero, 1
+addi $t1, $zero, 2
+addi $t2, $zero, 3
+addi $t3, $zero, 4
+addi $t4, $zero, 5`,
+    'Dependência de dados (ULA)': `# Todas usam $t0, calculado pela sub
+addi $t1, $zero, 5
+addi $t2, $zero, 3
+sub  $t0, $t1, $t2
+and  $t3, $t0, $t1
+or   $t4, $t0, $t2
+add  $t5, $t0, $t0
+sw   $t5, 32($zero)`,
+    'Load-use (lw seguido de uso)': `# Soma dois valores da memória
+lw   $t0, 0($zero)
+lw   $t1, 4($zero)
+add  $t2, $t0, $t1     # usa $t1 logo após o lw
+lw   $t3, 8($zero)
+add  $t4, $t2, $t3     # usa $t3 logo após o lw
+sw   $t4, 32($zero)`,
+    'Load-use reordenado (sem bolhas)': `# Mesma conta, com os lw adiantados
+lw   $t0, 0($zero)
+lw   $t1, 4($zero)
+lw   $t3, 8($zero)
+add  $t2, $t0, $t1
+add  $t4, $t2, $t3
+sw   $t4, 32($zero)`,
+    'Laço com desvio (soma de vetor)': `# Soma os 4 primeiros valores da memória
+      addi $t0, $zero, 0    # deslocamento (i * 4)
+      addi $t1, $zero, 16   # fim do vetor
+      addi $s0, $zero, 0    # soma
+laco: lw   $t2, 0($t0)
+      add  $s0, $s0, $t2
+      addi $t0, $t0, 4
+      bne  $t0, $t1, laco
+      sw   $s0, 32($zero)`,
+    'Salto incondicional (j)': `addi $t0, $zero, 1
+j    pula
+addi $t0, $zero, 99   # nunca executa
+addi $t1, $zero, 99   # nunca executa
+pula: addi $t2, $t0, 10
+addi $t3, $t2, 1`
+  };
+
+  /* ---------- montagem ---------- */
+  class Erro extends Error {}
+  function reg(tok, ln) {
+    tok = (tok || '').trim();
+    let i = RN.indexOf(tok);
+    if (i < 0 && /^\$\d+$/.test(tok)) i = +tok.slice(1);
+    if (i < 0 || i > 31) throw new Erro(`Linha ${ln}: registrador inválido "${tok}".`);
+    return i;
+  }
+  function imm(tok, ln) {
+    tok = (tok || '').trim();
+    if (!/^-?(0x[0-9a-f]+|\d+)$/i.test(tok)) throw new Erro(`Linha ${ln}: número inválido "${tok}".`);
+    const v = parseInt(tok); if (v < -32768 || v > 65535) throw new Erro(`Linha ${ln}: o imediato precisa caber em 16 bits.`);
+    return v;
+  }
+  const R3 = ['add', 'sub', 'and', 'or', 'xor', 'nor', 'slt'], IA = ['addi', 'andi', 'ori', 'slti'];
+  function montar(texto) {
+    const prog = [], rotulos = {}, pend = [];
+    texto.split('\n').forEach((linha, k) => {
+      const ln = k + 1;
+      let l = linha.replace(/#.*/, '').trim();
+      const m = l.match(/^([A-Za-z_][\w]*)\s*:\s*(.*)$/);
+      if (m) { if (rotulos[m[1]] !== undefined) throw new Erro(`Linha ${ln}: rótulo "${m[1]}" repetido.`); rotulos[m[1]] = prog.length; l = m[2].trim(); }
+      if (!l) return;
+      const sp = l.search(/\s/), op = (sp < 0 ? l : l.slice(0, sp)).toLowerCase(), a = sp < 0 ? [] : l.slice(sp).split(',').map(s => s.trim());
+      const n = q => { if (a.length !== q) throw new Erro(`Linha ${ln}: "${op}" espera ${q} operandos.`); };
+      const I = { op, ln, txt: l.replace(/\s+/g, ' ') };
+      if (R3.includes(op)) { n(3); Object.assign(I, { kind: 'alu', dst: reg(a[0], ln), srcs: [reg(a[1], ln), reg(a[2], ln)] }); }
+      else if (op === 'sll' || op === 'srl') { n(3); Object.assign(I, { kind: 'alu', dst: reg(a[0], ln), srcs: [reg(a[1], ln)], sh: imm(a[2], ln) & 31 }); }
+      else if (IA.includes(op)) { n(3); Object.assign(I, { kind: 'alu', dst: reg(a[0], ln), srcs: [reg(a[1], ln)], imm: imm(a[2], ln) }); }
+      else if (op === 'li') { n(2); Object.assign(I, { op: 'addi', kind: 'alu', dst: reg(a[0], ln), srcs: [0], imm: imm(a[1], ln) }); }
+      else if (op === 'move') { n(2); Object.assign(I, { op: 'add', kind: 'alu', dst: reg(a[0], ln), srcs: [reg(a[1], ln), 0] }); }
+      else if (op === 'lw' || op === 'sw') {
+        n(2); const mm = a[1].match(/^(-?\w*)\s*\(\s*(\$\w+)\s*\)$/);
+        if (!mm) throw new Erro(`Linha ${ln}: use o formato ${op} $t0, deslocamento($base).`);
+        const off = mm[1] ? imm(mm[1], ln) : 0, base = reg(mm[2], ln), rt = reg(a[0], ln);
+        Object.assign(I, op === 'lw' ? { kind: 'load', dst: rt, srcs: [base], imm: off } : { kind: 'store', dst: null, srcs: [base, rt], imm: off });
+      }
+      else if (op === 'beq' || op === 'bne') { n(3); Object.assign(I, { kind: 'branch', dst: null, srcs: [reg(a[0], ln), reg(a[1], ln)], alvo: a[2] }); pend.push(I); }
+      else if (op === 'j') { n(1); Object.assign(I, { kind: 'jump', dst: null, srcs: [], alvo: a[0] }); pend.push(I); }
+      else if (op === 'nop') { n(0); Object.assign(I, { kind: 'nop', dst: null, srcs: [] }); }
+      else throw new Erro(`Linha ${ln}: instrução "${op}" não suportada neste simulador.`);
+      if (I.dst === 0) I.dst = null;
+      I.fontes = I.srcs || [];
+      I.srcs = I.fontes.filter(r => r !== 0);
+      prog.push(I);
+    });
+    pend.forEach(I => { if (rotulos[I.alvo] === undefined) throw new Erro(`Linha ${I.ln}: rótulo "${I.alvo}" não encontrado.`); I.destino = rotulos[I.alvo]; });
+    if (!prog.length) throw new Erro('Escreva pelo menos uma instrução.');
+    return prog;
+  }
+
+  /* ---------- execução funcional (para saber valores e desvios tomados) ---------- */
+  function executar(prog) {
+    const R = new Int32Array(32), M = new Map(MEM0.map((v, i) => [i * 4, v]));
+    const trace = []; let pc = 0, aviso = '';
+    while (pc < prog.length) {
+      if (trace.length >= MAXDIN) { aviso = `O simulador mostra só as primeiras ${MAXDIN} instruções executadas.`; break; }
+      const I = prog[pc], t = { idx: pc, I };
+      let next = pc + 1, val = null;
+      switch (I.op) {
+        case 'add': val = (opnd(I, 0, R) + opnd(I, 1, R)) | 0; break;
+        case 'sub': val = (opnd(I, 0, R) - opnd(I, 1, R)) | 0; break;
+        case 'and': val = opnd(I, 0, R) & opnd(I, 1, R); break;
+        case 'or': val = opnd(I, 0, R) | opnd(I, 1, R); break;
+        case 'xor': val = opnd(I, 0, R) ^ opnd(I, 1, R); break;
+        case 'nor': val = ~(opnd(I, 0, R) | opnd(I, 1, R)); break;
+        case 'slt': val = opnd(I, 0, R) < opnd(I, 1, R) ? 1 : 0; break;
+        case 'sll': val = opnd(I, 0, R) << I.sh; break;
+        case 'srl': val = opnd(I, 0, R) >>> I.sh | 0; break;
+        case 'addi': val = (opnd(I, 0, R) + I.imm) | 0; break;
+        case 'andi': val = opnd(I, 0, R) & (I.imm & 0xffff); break;
+        case 'ori': val = opnd(I, 0, R) | (I.imm & 0xffff); break;
+        case 'slti': val = opnd(I, 0, R) < I.imm ? 1 : 0; break;
+        case 'lw': case 'sw': {
+          const ad = (opnd(I, 0, R) + I.imm) | 0;
+          if (ad < 0 || ad > 4092 || ad % 4) throw new Erro(`Linha ${I.ln}: endereço ${ad} inválido (use múltiplos de 4 entre 0 e 4092).`);
+          t.addr = ad;
+          if (I.op === 'lw') val = M.get(ad) || 0; else { t.store = opnd(I, 1, R); M.set(ad, t.store); }
+          break;
+        }
+        case 'beq': t.taken = opnd(I, 0, R) === opnd(I, 1, R); if (t.taken) next = I.destino; break;
+        case 'bne': t.taken = opnd(I, 0, R) !== opnd(I, 1, R); if (t.taken) next = I.destino; break;
+        case 'j': t.taken = true; next = I.destino; break;
+      }
+      if (I.dst !== null && I.dst !== undefined && val !== null) { R[I.dst] = val; t.val = val; }
+      trace.push(t); pc = next;
+    }
+    return { trace, aviso };
+  }
+  /* operando k da instrução (fontes guarda a ordem original, com $zero) */
+  function opnd(I, k, R) { return R[I.fontes[k]]; }
+
+  /* ---------- escalonamento no pipeline ---------- */
+  function escalonar(prog, trace, fwd, desvioID) {
+    const rows = [], ultimo = {};
+    let prev = null, liberaBusca = 1;
+    for (const t of trace) {
+      const I = t.I;
+      const IF = prev ? Math.max(prev.ID, liberaBusca) : 1;
+      const ID = Math.max(IF + 1, prev ? prev.EX : 0);
+      let EX = Math.max(ID + 1, prev ? prev.EX + 1 : 0), motivo = null;
+      const fontes = [];
+      for (const r of I.srcs) {
+        const p = ultimo[r]; if (!p) continue;
+        const pronto = p.I.kind === 'load' ? p.MEM : p.EX;
+        let precisa;
+        if (!fwd) precisa = p.WB + 1;
+        else if (I.kind === 'branch' && desvioID) precisa = pronto + 2;
+        else precisa = pronto + 1;
+        if (precisa > EX) { EX = precisa; motivo = { r, p }; }
+        fontes.push({ r, p });
+      }
+      const row = { t, I, IF, ID, EX, MEM: EX + 1, WB: EX + 2, parada: EX - (ID + 1), motivo };
+      // de onde veio cada operando
+      row.fontes = fontes.map(({ r, p }) => {
+        let via = 'banco';
+        if (fwd) {
+          if (I.kind === 'branch' && desvioID) { if (p.MEM === EX - 1) via = 'EX/MEM'; }
+          else if (p.MEM === EX && p.I.kind !== 'load') via = 'EX/MEM';
+          else if (p.WB === EX) via = 'MEM/WB';
+        }
+        return { r, p, via };
+      });
+      rows.push(row);
+      if (I.dst) ultimo[I.dst] = row;
+      prev = row;
+      // desvio tomado: as instruções buscadas depois dele são descartadas
+      if (t.taken) {
+        const R = I.kind === 'jump' ? EX - 1 : (desvioID ? EX - 1 : row.MEM);
+        row.decide = R;
+        let pw = row;
+        for (let k = 1; ; k++) {
+          const wIF = Math.max(pw.ID, pw === row ? 0 : pw.IF + 1);
+          if (wIF > R) break;
+          const wID = Math.max(wIF + 1, pw.EX), wEX = Math.max(wID + 1, pw.EX + 1);
+          const w = { flush: true, I: prog[t.idx + k] || null, IF: wIF, ID: wID, EX: wEX, MEM: wEX + 1, WB: wEX + 2, fim: R, parada: 0 };
+          rows.push(w); pw = w;
+        }
+        liberaBusca = R + 1;
+      }
+    }
+    return rows;
+  }
+  function estagio(row, c) {
+    if (c < row.IF || (row.fim && c > row.fim)) return null;
+    if (c < row.ID) return 'IF';
+    if (c < row.EX) return 'ID';
+    if (c === row.EX) return 'EX';
+    if (c === row.MEM) return 'MEM';
+    if (c === row.WB) return 'WB';
+    return null;
+  }
+
+  /* ---------- estado e desenho ---------- */
+  let prog = null, trace = [], rows = [], ciclo = 1, total = 1, timer = null;
+  const nomeR = r => RN[r];
+  const txt = row => row.I ? row.I.txt : '(fim do programa)';
+
+  function simular() {
+    parar();
+    try {
+      prog = montar($('#src').value);
+      const ex = executar(prog); trace = ex.trace;
+      rows = escalonar(prog, trace, $('#o-fwd').checked, $('#o-desvio').value === 'id');
+      total = Math.max(...rows.filter(r => !r.flush).map(r => r.WB));
+      ciclo = 1;
+      $('#status').className = 'status'; $('#status').textContent = ex.aviso || `${trace.length} instruções executadas em ${total} ciclos.`;
+      desenharTabela(); estatisticas(); mostrarCiclo();
+    } catch (e) {
+      if (!(e instanceof Erro)) throw e;
+      $('#status').className = 'status bad'; $('#status').textContent = e.message;
+    }
+  }
+
+  function desenharTabela() {
+    let h = '<thead><tr><th class="ins" scope="col">Instrução</th>';
+    for (let c = 1; c <= total; c++) h += `<th scope="col" data-c="${c}" tabindex="0" aria-label="Ciclo ${c}">${c}</th>`;
+    h += '</tr></thead><tbody>';
+    rows.forEach(r => {
+      h += `<tr${r.flush ? ' class="flush"' : ''}><th class="ins" scope="row">${esc(txt(r))}${r.flush ? ' <span class="sr-only">(descartada)</span>' : ''}</th>`;
+      for (let c = 1; c <= total; c++) {
+        const s = estagio(r, c);
+        let cls = 'c', conteudo = '';
+        if (s) { cls += ' s-' + s.toLowerCase(); conteudo = s; if ((s === 'IF' && c > r.IF) || (s === 'ID' && c > r.ID)) cls += ' stall'; }
+        else if (r.flush && c === r.fim + 1) { cls += ' x'; conteudo = '×'; }
+        h += `<td class="${cls}" data-c="${c}">${conteudo}</td>`;
+      }
+      h += '</tr>';
+    });
+    $('#diag').innerHTML = h + '</tbody>';
+    $('#diag').querySelectorAll('th[data-c]').forEach(th => {
+      const ir = () => { ciclo = +th.dataset.c; mostrarCiclo(); };
+      th.addEventListener('click', ir); th.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); } });
+    });
+  }
+
+  function ocupante(s, c) { return rows.find(r => estagio(r, c) === s) || null; }
+  function vazio(s, c) {
+    const antes = rows.some(r => !r.flush && r[s] !== undefined && r[s] < c), depois = rows.some(r => !r.flush && r[s] > c);
+    return antes && depois ? 'bolha' : 'vazio';
+  }
+
+  const X = { IF: 10, ID: 160, EX: 310, MEM: 460, WB: 610 }, W = 128, Y0 = 46, H = 80;
+  function mostrarCiclo() {
+    $('#ciclo').textContent = `Ciclo ${ciclo} de ${total}`;
+    $('#b-ant').disabled = ciclo <= 1; $('#b-ini').disabled = ciclo <= 1; $('#b-prox').disabled = ciclo >= total;
+    $('#diag').querySelectorAll('[data-c]').forEach(el => el.classList.toggle('atual', +el.dataset.c === ciclo));
+    const atualTh = $('#diag').querySelector(`th[data-c="${ciclo}"]`);
+    if (atualTh) { const wrap = $('.diag-wrap'); const x = atualTh.offsetLeft - wrap.clientWidth / 2; if (x > 0 || wrap.scrollLeft > 0) wrap.scrollLeft = Math.max(0, x); }
+
+    // caminho de dados
+    let s = `<defs><marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--fwd)"/></marker></defs>`;
+    const desc = [];
+    const evs = [];
+    ['IF', 'ID', 'EX', 'MEM', 'WB'].forEach((st, i) => {
+      const r = ocupante(st, ciclo), x = X[st];
+      s += `<rect class="st f-${st.toLowerCase()}" x="${x}" y="${Y0}" width="${W}" height="${H}" rx="12"/>`;
+      s += `<text class="tt" x="${x + W / 2}" y="${Y0 + 20}" text-anchor="middle">${st}</text>`;
+      if (r) {
+        const t = txt(r), sp = t.indexOf(' '), parts = t.length > 12 && sp > 0 ? [t.slice(0, sp), t.slice(sp + 1)] : [t];
+        parts.forEach((p, k) => { s += `<text class="ins" x="${x + W / 2}" y="${Y0 + 44 + k * 16}" text-anchor="middle"${r.flush ? ' text-decoration="line-through"' : ''}>${esc(p)}</text>`; });
+        if (r.flush) s += `<text class="fl" x="${x + W / 2}" y="${Y0 + H - 6}" text-anchor="middle">${ciclo === r.fim ? 'será descartada' : 'caminho errado'}</text>`;
+        else if ((st === 'ID' && ciclo > r.ID) || (st === 'IF' && ciclo > r.IF)) s += `<text class="fl" x="${x + W / 2}" y="${Y0 + H - 6}" text-anchor="middle">parada</text>`;
+        desc.push(`${st}: ${t}${r.flush ? ' (descartada)' : ''}`);
+      } else {
+        const v = vazio(st, ciclo);
+        s += `<text class="ins vz" x="${x + W / 2}" y="${Y0 + 50}" text-anchor="middle">${v}</text>`;
+        desc.push(`${st}: ${v}`);
+      }
+      if (i < 4) {
+        const rx = x + W + 6;
+        s += `<rect class="reg" x="${rx}" y="${Y0 - 8}" width="10" height="${H + 16}" rx="3"/>`;
+        s += `<text class="rl" transform="translate(${rx + 7.5},${Y0 + H / 2}) rotate(-90)" text-anchor="middle">${['IF/ID', 'ID/EX', 'EX/MEM', 'MEM/WB'][i]}</text>`;
+      }
+      evs.push([st, r ? evento(st, r) : (vazio(st, ciclo) === 'bolha' ? 'Bolha: nenhuma instrução útil neste estágio.' : 'Vazio.')]);
+    });
+    // setas de adiantamento
+    const exR = ocupante('EX', ciclo), idR = ocupante('ID', ciclo);
+    let nf = 0;
+    const seta = (deX, paraX, rotulo, alto) => {
+      const yb = Y0 + H + 14 + nf * 22, xa = deX, xb = paraX;
+      s += `<path class="fw" d="M${xa},${Y0 + H + 8} L${xa},${yb} L${xb},${yb} L${xb},${Y0 + H + 6}" marker-end="url(#seta)"/>`;
+      s += `<text class="fl" x="${(xa + xb) / 2}" y="${yb - 4}" text-anchor="middle">${rotulo}</text>`;
+      nf++;
+    };
+    if (exR && !exR.flush && exR.fontes) exR.fontes.forEach(f => {
+      if (f.via === 'EX/MEM' && !(exR.I.kind === 'branch' && $('#o-desvio').value === 'id')) seta(X.MEM - 13, X.EX + W / 2, `${nomeR(f.r)} de EX/MEM`);
+      if (f.via === 'MEM/WB') seta(X.WB - 13, X.EX + W / 2 + 20, `${nomeR(f.r)} de MEM/WB`);
+    });
+    if (idR && !idR.flush && idR.fontes && idR.I.kind === 'branch' && $('#o-desvio').value === 'id' && ciclo === idR.EX - 1)
+      idR.fontes.forEach(f => { if (f.via === 'EX/MEM') seta(X.MEM - 13, X.ID + W / 2, `${nomeR(f.r)} de EX/MEM`); });
+    const svg = $('#dp');
+    svg.setAttribute('viewBox', `0 0 760 ${Y0 + H + 22 + nf * 22}`);
+    svg.innerHTML = `<desc id="dp-desc">Ciclo ${ciclo}. ${desc.join('; ')}.</desc>` + s;
+    $('#eventos').innerHTML = evs.map(([st, e]) => `<li><b>${st}</b><span>${e}</span></li>`).join('');
+
+    // registradores escritos até o fim deste ciclo
+    const R = new Int32Array(32), mud = new Set();
+    rows.forEach(r => { if (!r.flush && r.I.dst && r.WB <= ciclo) { R[r.I.dst] = r.t.val; if (r.WB === ciclo) mud.add(r.I.dst); } });
+    const usados = [...new Set(prog.flatMap(I => [I.dst, ...I.srcs]).filter(x => x))].sort((a, b) => a - b);
+    $('#regs').innerHTML = usados.map(r => `<span${mud.has(r) ? ' class="ch"' : ''}>${nomeR(r)} = ${R[r]}</span>`).join('') || '<span class="muted">Nenhum registrador usado.</span>';
+  }
+
+  function evento(st, r) {
+    if (r.flush) return `<span class="alerta">${esc(txt(r))}</span> foi buscada porque o pipeline supõe que o desvio não é tomado. ${ciclo === r.fim ? 'Neste ciclo o desvio é decidido como tomado e ela será descartada.' : ''}`;
+    const I = r.I, t = r.t, nome = `<code>${esc(I.txt)}</code>`;
+    if (st === 'IF') return ciclo > r.IF ? `${nome} espera no IF: o estágio ID está ocupado pela instrução parada.` : `Busca ${nome} no endereço 0x${(0x00400000 + 4 * t.idx).toString(16).padStart(8, '0')} e soma 4 ao PC.`;
+    if (st === 'ID') {
+      const lidos = I.srcs.map(nomeR).join(' e ');
+      let e = `Decodifica ${nome}${lidos ? ` e lê ${lidos} no banco de registradores` : ''}.`;
+      if (ciclo < r.EX - 1 && r.motivo) {
+        const p = r.motivo.p;
+        const loadUse = p.I.kind === 'load' && $('#o-fwd').checked;
+        e += ` <span class="alerta">Parada: ${nomeR(r.motivo.r)} ainda não está pronto (vem de <code>${esc(p.I.txt)}</code>)${loadUse ? ', dependência de load (load-use)' : ''}${!$('#o-fwd').checked ? '; sem adiantamento, é preciso esperar a escrita no estágio WB' : ''}.</span>`;
+      }
+      if ((I.kind === 'branch' && $('#o-desvio').value === 'id' || I.kind === 'jump') && ciclo === r.EX - 1) e += ` ${I.kind === 'jump' ? 'O salto' : 'O desvio'} é decidido aqui: <strong>${t.taken ? 'tomado' : 'não tomado'}</strong>.`;
+      return e;
+    }
+    if (st === 'EX') {
+      const fw = (r.fontes || []).filter(f => f.via !== 'banco' && !(I.kind === 'branch' && $('#o-desvio').value === 'id')).map(f => `<span class="fwdtxt">${nomeR(f.r)} adiantado de ${f.via}</span>`);
+      let e;
+      if (I.kind === 'alu') e = `A ULA calcula ${nome}: resultado ${t.val}.`;
+      else if (I.kind === 'load' || I.kind === 'store') e = `A ULA calcula o endereço ${t.addr} para ${nome}.`;
+      else if (I.kind === 'branch') e = $('#o-desvio').value === 'id' ? `${nome} já foi decidido no ID; segue sem trabalho.` : `A ULA compara os registradores de ${nome}.`;
+      else e = `${nome} não usa a ULA.`;
+      return e + (fw.length ? ' ' + fw.join(', ') + '.' : '');
+    }
+    if (st === 'MEM') {
+      if (I.kind === 'load') return `${nome} lê a memória no endereço ${t.addr}: valor ${t.val}.`;
+      if (I.kind === 'store') return `${nome} grava ${t.store} na memória, endereço ${t.addr}.`;
+      if (I.kind === 'branch' && $('#o-desvio').value === 'mem') return `O desvio de ${nome} é decidido aqui: <strong>${t.taken ? 'tomado' : 'não tomado'}</strong>.`;
+      return `${nome} não acessa a memória.`;
+    }
+    if (st === 'WB') return I.dst ? `${nome} escreve ${t.val} em ${nomeR(I.dst)}.` : `${nome} não escreve em registrador.`;
+    return '';
+  }
+
+  function estatisticas() {
+    const reais = rows.filter(r => !r.flush), N = reais.length;
+    const bolhas = reais.reduce((s, r) => s + r.parada, 0), desc = rows.length - N;
+    const cpi = (total - 4) / N;
+    $('#stats').innerHTML = `
+      <div><b>${N}</b><small>instruções executadas</small></div>
+      <div><b>${total}</b><small>ciclos no pipeline</small></div>
+      <div><b>${cpi.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}</b><small>CPI (sem contar o enchimento)</small></div>
+      <div><b>${bolhas}</b><small>ciclos de parada por dados</small></div>
+      <div><b>${desc}</b><small>instruções descartadas</small></div>
+      <div><b>${5 * N}</b><small>ciclos sem pipeline (5 por instrução)</small></div>`;
+    const conf = [[false, false], [false, true], [true, false], [true, true]];
+    const linhas = conf.map(([fwd, id]) => {
+      const rr = escalonar(prog, trace, fwd, id), tt = Math.max(...rr.filter(r => !r.flush).map(r => r.WB));
+      const atual = fwd === $('#o-fwd').checked && id === ($('#o-desvio').value === 'id');
+      return `<tr${atual ? ' style="font-weight:700"' : ''}><td>${fwd ? 'Com' : 'Sem'} adiantamento</td><td>Desvio no ${id ? 'ID' : 'MEM'}</td><td>${tt}</td><td>${(5 * N / tt).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}×</td></tr>`;
+    });
+    $('#comp').innerHTML = `<thead><tr><th>Adiantamento</th><th>Decisão do desvio</th><th>Ciclos</th><th>Ganho sobre 5 ciclos por instrução</th></tr></thead><tbody>${linhas.join('')}</tbody>`;
+  }
+
+  function parar() { if (timer) { clearInterval(timer); timer = null; } $('#b-play').textContent = 'Reproduzir'; $('#b-play').setAttribute('aria-pressed', 'false'); }
+  $('#b-play').addEventListener('click', () => {
+    if (timer) { parar(); return; }
+    if (ciclo >= total) ciclo = 1;
+    $('#b-play').textContent = 'Pausar'; $('#b-play').setAttribute('aria-pressed', 'true');
+    mostrarCiclo();
+    timer = setInterval(() => { if (ciclo >= total) { parar(); return; } ciclo++; mostrarCiclo(); }, 1100);
+  });
+  $('#b-prox').addEventListener('click', () => { parar(); if (ciclo < total) { ciclo++; mostrarCiclo(); } });
+  $('#b-ant').addEventListener('click', () => { parar(); if (ciclo > 1) { ciclo--; mostrarCiclo(); } });
+  $('#b-ini').addEventListener('click', () => { parar(); ciclo = 1; mostrarCiclo(); });
+  $('#b-sim').addEventListener('click', simular);
+  ['#o-fwd', '#o-desvio'].forEach(s => $(s).addEventListener('change', simular));
+  const sel = $('#ex');
+  sel.innerHTML = Object.keys(EXEMPLOS).map(k => `<option>${esc(k)}</option>`).join('');
+  sel.addEventListener('change', () => { $('#src').value = EXEMPLOS[sel.value]; simular(); });
+  $('#src').value = EXEMPLOS[sel.value];
+  simular();
+})();
+</script>
+</body>
+</html>
