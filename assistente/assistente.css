@@ -21,11 +21,11 @@
 .assist button, .assist input { font: inherit; color: inherit; }
 .assist :focus-visible { outline: 3px solid var(--a-accent); outline-offset: 2px; }
 
-.assist-abrir {
+.assist .assist-abrir {
     position: fixed; right: 16px; bottom: calc(16px + var(--a-base)); z-index: 9998;
     display: inline-flex; align-items: center; gap: 8px;
     padding: 10px 16px; border: 2px solid var(--a-ink); border-radius: 999px;
-    background: var(--a-accent); color: var(--a-accent-ink); font-weight: 600; cursor: pointer;
+    background: #fff36b; color: #111111; font-weight: 600; cursor: pointer;   /* amarelo do site, nos dois temas */
     box-shadow: 3px 3px 0 var(--a-ink);
 }
 .assist-abrir:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--a-ink); }
@@ -85,7 +85,7 @@
 
 @media (max-width: 520px) {
     .assist-abrir span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .assist-abrir { padding: 12px; }
+    .assist .assist-abrir { padding: 12px; }
     .assist-painel { right: 8px; left: 8px; width: auto; bottom: calc(8px + var(--a-base)); height: calc(100vh - 16px - var(--a-base)); height: calc(100dvh - 16px - var(--a-base)); }
 }
 @media print { .assist { display: none; } }
