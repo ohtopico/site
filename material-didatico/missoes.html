@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Missões do dia · Material didático | ohtopico</title>
+<meta name="description" content="Missões diárias, pontos e níveis para estudantes que usam o material didático do ohtopico. Sem cadastro: tudo fica salvo no seu navegador.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 1040px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 48px); margin: 4px 0 6px; }
+  .doc h2 { font-size: 26px; margin: 40px 0 6px; }
+  .who { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: end; margin: 18px 0 8px; }
+  .who label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .who input, .who select { font: inherit; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; min-height: 42px; }
+  .who input { width: 200px; max-width: 100%; }
+
+  .perfil { --c: var(--accent); --t: var(--paper); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px 22px; align-items: center;
+    border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 22px; background: var(--paper-2); box-shadow: 8px 8px 0 var(--ink); margin-top: 22px; }
+  .selo-nv { width: 108px; height: 108px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--c); color: var(--t);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
+  .selo-nv b { font-family: var(--display); font-size: 46px; }
+  .selo-nv span { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-top: 4px; }
+  .perfil h2 { margin: 0 0 2px; font-size: 28px; }
+  .perfil .sub { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .xp { height: 14px; border-radius: 99px; border: 1.5px solid var(--ink); overflow: hidden; margin: 12px 0 6px; background: var(--paper); }
+  .xp span { display: block; height: 100%; background: var(--c); }
+  .xp-txt { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-size: 14px; color: var(--ink-2); }
+
+  .missoes { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+  .mis { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 14px; align-items: center; border: 1.5px solid var(--ink); border-radius: 20px; padding: 12px 16px; background: var(--paper); }
+  .mis .ck { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; }
+  .mis.feita { background: var(--ok-soft); }
+  .mis.feita .ck { background: var(--ok); color: var(--paper); }
+  .mis.feita .ck svg { width: 16px; height: 16px; }
+  .mis strong { display: block; font-size: 16.5px; }
+  .mis .meta { font-size: 13px; color: var(--ink-2); }
+  .mis .acoes { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .mis .pts { font-family: var(--display); font-size: 20px; white-space: nowrap; }
+  .mis .btn { min-height: 34px; padding: 4px 14px; font-size: 14px; }
+  .mis.extra { border-style: dashed; border-width: 2px; }
+  .bonus { margin: 12px 0 0; font-size: 15px; font-weight: 600; }
+  .bonus.ok { color: var(--ok); }
+
+  .fontes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  .fonte { border: 1.5px solid var(--ink); border-radius: 22px; padding: 14px 16px; }
+  .fonte b { display: block; font-family: var(--display); font-size: 30px; line-height: 1.05; }
+  .fonte span { font-size: 14px; color: var(--ink-2); }
+
+  .niveis { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; }
+  .niv { display: grid; grid-template-columns: 52px 150px minmax(0, 1fr); gap: 14px; align-items: center; border: 1.5px solid var(--line); border-radius: 18px; padding: 10px 14px; }
+  .niv .n { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 20px; background: var(--paper); }
+  .niv.ok .n { background: var(--accent); color: var(--paper); }
+  .niv.atual { border-color: var(--ink); background: var(--paper-2); }
+  .niv strong { display: block; }
+  .niv .min { font-size: 13px; color: var(--ink-2); }
+  .niv .lib { font-size: 14.5px; }
+  .niv .lib em { font-style: normal; font-size: 12px; font-weight: 600; border: 1.5px solid var(--ink); border-radius: 99px; padding: 0 8px; margin-left: 6px; white-space: nowrap; }
+
+  .cores { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .cor-op { display: inline-flex; align-items: center; gap: 8px; }
+  .cor-op i { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ink); }
+  .sala { min-height: 150px; margin-top: 14px; }
+  .regras { font-size: 14.5px; color: var(--ink-2); max-width: 760px; }
+  .regras li { margin: 4px 0; }
+  @media (max-width: 760px) {
+    .perfil { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+    .selo-nv { width: 84px; height: 84px; } .selo-nv b { font-size: 36px; }
+    .mis { grid-template-columns: 30px minmax(0, 1fr); }
+    .mis .acoes { grid-column: 2; justify-content: flex-start; }
+    .fontes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .niv { grid-template-columns: 48px minmax(0, 1fr); }
+    .niv .lib { grid-column: 2; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc"></main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/missoes.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('missoes');
+  mdFooter();
+  const doc = document.getElementById('doc');
+  const $ = s => doc.querySelector(s);
+  const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+  function boasVindas() {
+    doc.innerHTML = `
+      <span class="eyebrow">Missões do dia</span>
+      <h1>Missões, pontos e níveis</h1>
+      <p class="muted" style="max-width:720px">Todo dia aparecem três missões novas com os jogos, listas de exercícios e recursos 3D do site. Cada missão vale pontos, e os pontos fazem você subir de nível, de Bit até Petabyte. Alguns níveis desbloqueiam partes novas do site.</p>
+      <div class="panel" style="max-width:620px;margin-top:22px">
+        <h2 style="margin:0 0 6px;font-size:22px">Crie seu perfil para receber missões</h2>
+        <p class="small muted" style="margin:0 0 12px">Use um apelido, não seu nome completo. Não precisa de cadastro: o perfil fica salvo só neste navegador, o mesmo do Meu progresso.</p>
+        <form class="who" id="novo" style="margin:0">
+          <label>Apelido<input id="ap" maxlength="30" required autocomplete="off" placeholder="Ex.: Lu 7B"></label>
+          <label>Ano<select id="an">${[6, 7, 8, 9].map(a => `<option value="${a}">${a}º ano</option>`).join('')}</select></label>
+          <button class="btn" type="submit">Começar</button>
+        </form>
+        <p class="small" style="margin:16px 0 0">Já tem um código de progresso de outro aparelho? <a href="meu-progresso.html#importar">Carregar no Meu progresso</a></p>
+      </div>
+      ${blocoNiveis(null)}`;
+    $('#novo').onsubmit = e => { e.preventDefault(); MDP.criar($('#ap').value.trim() || 'Estudante', +$('#an').value); MDM.verificar(true); MDM.atualizarBarra(); render(); };
+  }
+
+  function blocoNiveis(e) {
+    const n = e ? e.nivel.n : 0;
+    return `
+      <h2>Níveis</h2>
+      <p class="muted" style="margin:0">Cada nível tem o nome de uma unidade de informação, do menor para o maior.</p>
+      <ol class="niveis">${MDM.NIVEIS.map(l => {
+        const libs = MDM.DESBLOQUEIOS.filter(x => x.nivel === l.n);
+        return `<li class="niv${n >= l.n ? ' ok' : ''}${n === l.n ? ' atual' : ''}">
+          <span class="n" aria-hidden="true">${l.n}</span>
+          <span><strong>${l.nome}${n === l.n ? ' <span class="sr-only">(seu nível)</span>' : ''}</strong><span class="min">${l.min} pontos</span></span>
+          <span class="lib">${libs.length ? libs.map(x => `<strong>${x.nome}</strong>${x.emBreve ? '<em>em preparação</em>' : ''}<br><span class="small muted">${x.desc}</span>`).join('<br>') : '<span class="small muted">Nível de passagem: guarde os pontos para o próximo.</span>'}</span>
+        </li>`;
+      }).join('')}</ol>`;
+  }
+
+  function render() {
+    const e = MDM.estado();
+    if (!e) return boasVindas();
+    const p = e.perfil, nv = e.nivel, pt = e.pontos;
+    const cor = e.cor || { cor: 'var(--accent)', txt: 'var(--paper)' };
+    const feitas = e.missoes.filter(m => m.feita).length;
+    const podeTrocar = nv.n >= 4 && !e.trocou;
+
+    doc.innerHTML = `
+      <span class="eyebrow">Missões do dia</span>
+      <h1>Olá, ${esc(p.apelido)}</h1>
+      <p class="muted" style="max-width:760px;margin:0">Cumpra as missões fazendo as atividades do site. Elas são conferidas sozinhas quando você termina um jogo, uma lista ou abre um recurso 3D.</p>
+
+      <section class="perfil" style="--c:${cor.cor};--t:${cor.txt}" aria-label="Seu nível">
+        <div class="selo-nv"><b>${nv.n}</b><span>nível</span></div>
+        <div>
+          <h2>${nv.nome}</h2>
+          <p class="sub">${pt.total} pontos${e.sequencia > 1 ? ` · ${e.sequencia} dias seguidos com missão cumprida` : ''}</p>
+          <div class="xp" role="progressbar" aria-label="Progresso até o próximo nível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${nv.pct}"><span style="width:${nv.pct}%"></span></div>
+          <div class="xp-txt">${nv.prox ? `<span>Faltam ${nv.falta} pontos para o nível ${nv.prox.n} (${nv.prox.nome})</span><span>${nv.prox.min} pontos</span>` : '<span>Você chegou ao nível mais alto.</span>'}</div>
+        </div>
+      </section>
+
+      <h2>Missões de hoje</h2>
+      <p class="muted" style="margin:0">${feitas} de ${e.missoes.length} feitas. Cumprindo todas, você ganha mais ${MDM.PONTOS.bonus} pontos de bônus. Amanhã aparecem missões novas.</p>
+      <ul class="missoes">${e.missoes.map(m => `
+        <li class="mis${m.feita ? ' feita' : ''}${m.extra ? ' extra' : ''}">
+          <span class="ck">${m.feita ? check : ''}</span>
+          <span><strong>${esc(m.txt)}</strong><span class="meta">${m.extra ? 'Missão extra · ' : ''}${m.feita ? 'Cumprida' : 'A fazer'}</span></span>
+          <span class="acoes"><span class="pts">+${m.pts}</span>${m.feita ? '' : `<a class="btn ghost" href="${m.url}">Ir</a>`}${podeTrocar && !m.feita && !m.extra ? `<button class="btn ghost" type="button" data-trocar="${m.id}">Trocar</button>` : ''}</span>
+        </li>`).join('')}
+      </ul>
+      <p class="bonus${e.bonus ? ' ok' : ''}">${e.bonus ? `Bônus de hoje garantido: +${MDM.PONTOS.bonus} pontos.` : `Bônus do dia: +${MDM.PONTOS.bonus} pontos ao cumprir todas.`}</p>
+      ${nv.n < 3 ? `<div class="mis extra" data-nivel="3"><span class="ck"></span><span><strong>Missão extra do dia</strong><span class="meta">Uma quarta missão, mais difícil</span></span><span class="acoes"><span class="pts">+30</span></span></div>` : ''}
+      ${nv.n >= 4 ? `<p class="small muted">${e.trocou ? 'Você já trocou uma missão hoje.' : 'Nível Kilobyte: você pode trocar uma missão por dia.'}</p>` : ''}
+
+      <h2>De onde vêm seus pontos</h2>
+      <div class="fontes">
+        <div class="fonte"><b>${pt.missoes}</b><span>de missões</span></div>
+        <div class="fonte"><b>${pt.atividades}</b><span>de ${pt.n.atividades} ${pt.n.atividades === 1 ? 'atividade diferente' : 'atividades diferentes'} (${MDM.PONTOS.atividade} cada)</span></div>
+        <div class="fonte"><b>${pt.medalhas}</b><span>de ${pt.n.medalhas} ${pt.n.medalhas === 1 ? 'medalha' : 'medalhas'} (${MDM.PONTOS.medalha} cada)</span></div>
+        <div class="fonte"><b>${pt.estrelas}</b><span>de ${pt.n.estrelas} ${pt.n.estrelas === 1 ? 'estrela secreta' : 'estrelas secretas'} (${MDM.PONTOS.estrela} cada)</span></div>
+      </div>
+
+      <h2>Cor do perfil</h2>
+      <div data-nivel="2">
+        <p class="muted" style="margin:0">Escolha a cor do seu selo de nível.</p>
+        <div class="cores" role="group" aria-label="Cor do perfil">
+          <button class="chip cor-op" type="button" data-cor="" aria-pressed="${!e.cor}"><i style="background:var(--accent)"></i>Padrão</button>
+          ${MDM.CORES.map(c => `<button class="chip cor-op" type="button" data-cor="${c.id}" aria-pressed="${!!e.cor && e.cor.id === c.id}"><i style="background:${c.cor}"></i>${c.nome}</button>`).join('')}
+        </div>
+      </div>
+
+      <h2>Sala dos desafios</h2>
+      <div class="panel sala" data-nivel="5">
+        <p style="margin:0">Uma seção nova do site, só para quem chegou ao nível Megabyte. Está em preparação: quando abrir, ela aparece aqui.</p>
+      </div>
+
+      ${blocoNiveis(e)}
+
+      <h2>Como funciona</h2>
+      <ul class="regras">
+        <li>As missões são conferidas pelo que você faz no material didático: terminar um jogo, responder uma lista ou abrir um recurso 3D.</li>
+        <li>Se você cumprir uma missão e só abrir esta página depois, os pontos entram do mesmo jeito (vale até 6 dias para trás).</li>
+        <li>Medalhas, estrelas secretas e cada atividade diferente que você faz também dão pontos.</li>
+        <li>Tudo fica salvo neste navegador, no perfil “${esc(p.apelido)}”. Para levar para outro aparelho, use o código de progresso no <a href="meu-progresso.html">Meu progresso</a>: ele inclui os pontos das missões.</li>
+      </ul>`;
+
+    doc.querySelectorAll('[data-trocar]').forEach(b => { b.onclick = () => { MDM.trocar(b.dataset.trocar); render(); }; });
+    doc.querySelectorAll('[data-cor]').forEach(b => { b.onclick = () => { MDM.escolherCor(b.dataset.cor); MDM.atualizarBarra(); render(); }; });
+    MDM.travar(doc);
+  }
+
+  MDM.verificar(true);
+  render();
+  // volta para esta aba depois de jogar em outra: atualiza
+  addEventListener('focus', () => { MDM.verificar(true); MDM.atualizarBarra(); render(); });
+})();
+</script>
+</body>
+</html>

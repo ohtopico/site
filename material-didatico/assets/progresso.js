@@ -180,7 +180,7 @@
   async function exportar() {
     const p = perfilAtual(false);
     if (!p) return '';
-    return empacotar('MDP1', { a: p.apelido, y: p.ano, c: p.criado, r: p.r, v: p.vistas || [] });
+    return empacotar('MDP1', { a: p.apelido, y: p.ano, c: p.criado, r: p.r, v: p.vistas || [], g: p.jg });
   }
   async function importar(code) {
     const o = await desempacotar('MDP1', code);
@@ -198,6 +198,8 @@
         h: Object.entries(porDia).map(([d, v]) => [+d, v]).sort((a, b) => a[0] - b[0]).slice(-12) };
     });
     p.vistas = [...new Set([...(p.vistas || []), ...(o.v || [])])];
+    // missões e pontos (missoes.js): fica o registro com mais pontos
+    if (o.g && typeof o.g === 'object' && (+o.g.pts || 0) > ((p.jg && p.jg.pts) || 0)) p.jg = o.g;
     s.atual = p.id; save(s);
     return p;
   }

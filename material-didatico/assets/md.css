@@ -285,3 +285,18 @@ details.howto[open] summary { margin-bottom: 8px; }
 .lista-links li { margin: 0 0 6px; break-inside: avoid; }
 @media (max-width: 860px) { .lista-links { columns: 2; } }
 @media (max-width: 420px) { .lista-links { columns: 1; } }
+
+/* ---------- Missões do dia e níveis ---------- */
+.mis-btn { --mis-cor: var(--accent); --mis-txt: var(--paper); gap: 8px; padding-left: 6px; }
+.mis-btn[aria-current="page"] { background: var(--pill); }
+.mis-nv { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 26px; padding: 0 6px; border-radius: 99px;
+  background: var(--mis-cor); color: var(--mis-txt); font-family: var(--display); font-size: 14px; }
+@media (max-width: 1060px) { .mis-txt { display: none; } .mis-btn { padding-right: 6px; } }
+.md-toast-pts { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 52px; height: 52px; padding: 0 8px; border-radius: 99px;
+  border: 1.5px solid var(--ink); background: var(--accent); color: var(--paper); font-family: var(--display); font-size: 20px; }
+.md-travado { position: relative; }
+.md-travado > :not(.md-trava) { filter: blur(3px) grayscale(1); opacity: .45; pointer-events: none; user-select: none; }
+.md-trava { position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: calc(100% - 24px); text-align: center;
+  background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 600;
+  text-decoration: none; box-shadow: 4px 4px 0 var(--ink); }
+@media print { .mis-btn { display: none !important; } }

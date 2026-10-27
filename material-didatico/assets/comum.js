@@ -8,6 +8,13 @@
   };
   window.mdStore = store;
 
+  // Missões do dia e níveis (missoes.js), em todas as páginas que têm o perfil do MDP
+  if (window.MDP && !window.MDM && !document.querySelector('script[src$="missoes.js"]')) {
+    const s = document.createElement('script');
+    s.src = BASE + 'assets/missoes.js';
+    document.head.appendChild(s);
+  }
+
   // Tema compartilhado com o resto do site (mesma chave do IA pra Prof e da página inicial)
   try {
     const t = localStorage.getItem('iapraprof:theme') || localStorage.getItem('theme');
@@ -60,6 +67,7 @@
       root.dataset.theme = next;
       try { localStorage.setItem('iapraprof:theme', JSON.stringify(next)); } catch (e) {}
     });
+    if (window.MDM) MDM.atualizarBarra();
   };
 
   window.mdFooter = function () {
@@ -107,6 +115,7 @@
   /* Bloco "habilidades + como jogar + relacionados" para as páginas de jogo */
   window.mdJogoHead = function (id) {
     const r = REC[id];
+    window.MD_REC = id;
     const el = document.getElementById('game-head');
     if (!r || !el) return;
     document.title = `${r.titulo} · Material didático | ohtopico`;
