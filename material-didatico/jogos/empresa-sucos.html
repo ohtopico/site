@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empresa de Sucos da Turma · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de gráficos: administre a empresa de sucos da turma por seis meses, escolha estratégias e use colunas, setores e linhas para convencer os pais a investir. BNCC EF06MA31, EF06MA32, EF07MA37, EF08MA23, EF09MA21.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/empresa-sucos.html">
+<meta property="og:title" content="Empresa de Sucos da Turma · Material didático">
+<meta property="og:description" content="Jogo de gráficos: administre a empresa de sucos da turma por seis meses, escolha estratégias e use colunas, setores e linhas para convencer os pais a investir. BNCC EF06MA31, EF06MA32, EF07MA37, EF08MA23, EF09MA21.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/empresa-sucos.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; height: auto; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+  .svgbox { max-width: 640px; margin: 0 auto; }
+  .svgbox svg { width: 100%; height: auto; display: block; }
+  .svgbox text { font-family: var(--body); fill: var(--ink); }
+  .num { border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 14px; width: 120px; font-size: 18px; background: var(--paper); text-align: center; }
+  .num.right { background: var(--ok-soft); border-color: var(--ok); }
+  .num.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0; }
+  .tab th, .tab td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: right; }
+  .tab th:first-child, .tab td:first-child { text-align: left; }
+  .tabwrap { overflow-x: auto; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); }
+  .center { text-align: center; }
+  .mes { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; justify-content: space-between; }
+  .mes h2 { font-size: 26px; margin: 0; }
+  .evento { margin: 10px 0 14px; }
+  .escolhas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .escolha { text-align: left; border: 1.5px solid var(--ink); border-radius: 20px; padding: 14px 16px; background: var(--paper); cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+  .escolha:hover { background: var(--pill); }
+  .escolha strong { font-size: 17px; }
+  .resumo { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 12px 0; }
+  .resumo div { border: 1.5px solid var(--ink); border-radius: 16px; padding: 8px 12px; background: var(--paper); font-size: 14px; }
+  .resumo b { display: block; font-family: var(--display); font-size: 21px; }
+  .reuniao { border-top: 1.5px dashed var(--line); margin-top: 16px; padding-top: 10px; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; font-size: 14px; margin-top: 4px; }
+  .legenda i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--ink); vertical-align: -2px; margin-right: 6px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você e seus colegas de escola abriram uma pequena empresa de sucos: laranja, morango e limão. Cada copo é vendido por R$ 4,00 e custa R$ 1,50 para fazer.</p>
+    <p>Durante seis meses, leia o que aconteceu no mês e escolha uma estratégia. Depois, na <strong>reunião com os pais</strong>, responda usando o gráfico certo. Se a resposta convencer, os pais investem mais dinheiro na empresa.</p>
+    <p class="small muted">Dica: colunas comparam quantidades, setores mostram as partes de um todo e linhas mostram como algo muda com o tempo.</p>
+  </details>
+  <div class="game-stage">
+    <div class="hud"><span>Mês <b id="mn">1</b> de 6</span><span>Caixa <b id="caixa">R$ 50,00</b></span><span>Investido pelos pais <b id="inv">R$ 0,00</b></span><span>Reuniões convincentes <b id="ok">0</b></span></div>
+    <div id="tela"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('empresa-sucos');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const R$ = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const SAB = [
+    { id: 'la', nome: 'Laranja', cor: '#f2b84b', base: 30 },
+    { id: 'mo', nome: 'Morango', cor: '#ef6a5a', base: 25 },
+    { id: 'li', nome: 'Limão', cor: '#47b881', base: 20 }
+  ];
+  const PRECO = 4, CUSTO = 1.5;
+  // Eventos de cada mês: multiplicador geral e por sabor
+  const MESES = [
+    { nome: 'Março', ev: 'Volta às aulas com muito calor. Suco gelado de limão é o mais pedido no recreio.', geral: 1, sab: { li: 1.6 } },
+    { nome: 'Abril', ev: 'Semana de provas: a turma fica menos tempo no pátio e as vendas caem um pouco.', geral: 0.8, sab: {} },
+    { nome: 'Maio', ev: 'Festa da Família na escola. Muita gente circulando, e o morango vira a estrela da festa.', geral: 1.4, sab: { mo: 1.4 } },
+    { nome: 'Junho', ev: 'Esfriou. Os sucos gelados vendem menos, mas o de laranja continua acompanhando o lanche.', geral: 0.75, sab: { la: 1.3 } },
+    { nome: 'Julho', ev: 'Metade do mês é de férias. Vocês vendem só nas duas semanas de aula.', geral: 0.6, sab: {} },
+    { nome: 'Agosto', ev: 'Feira de Ciências: a barraca fica ao lado da entrada e muitos pais passam por ali.', geral: 1.5, sab: {} }
+  ];
+  // Estratégias possíveis; cada mês oferece três delas
+  const EST = {
+    manter: { t: 'Manter tudo como está', d: 'Sem gastos extras. As vendas seguem o movimento do mês.', ef: v => v },
+    promo: { t: 'Promoção: copo a R$ 3,00', d: 'Mais gente compra, mas cada copo rende menos.', ef: v => (v.preco = 3, v.mult *= 1.35, v) },
+    cartaz: { t: 'Cartazes no pátio (R$ 15,00)', d: 'Propaganda colorida chama mais clientes para todos os sabores.', ef: v => (v.extra += 15, v.mult *= 1.25, v) },
+    la: { t: 'Dobrar a produção de laranja', d: 'Mais laranja pronta para vender. Bom se laranja estiver em alta.', ef: v => (v.foco = 'la', v) },
+    mo: { t: 'Dobrar a produção de morango', d: 'Mais morango pronto para vender. Bom se morango estiver em alta.', ef: v => (v.foco = 'mo', v) },
+    li: { t: 'Dobrar a produção de limão', d: 'Mais limão pronto para vender. Bom se limão estiver em alta.', ef: v => (v.foco = 'li', v) },
+    copo: { t: 'Copos reutilizáveis (R$ 20,00)', d: 'Os pais valorizam a escolha sustentável e cada cliente volta mais vezes.', ef: v => (v.extra += 20, v.mult *= 1.15, v.eco = true, v) }
+  };
+  const OFERTAS = [['li', 'cartaz', 'promo'], ['manter', 'promo', 'copo'], ['mo', 'la', 'cartaz'], ['la', 'promo', 'li'], ['manter', 'cartaz', 'copo'], ['cartaz', 'promo', 'mo']];
+
+  let m, caixa, investido, acertos, hist;
+
+  /* ---------- Gráficos em SVG ---------- */
+  const W = 560, H = 290;
+  function colunas(dados, titulo, yMin) {
+    yMin = yMin || 0;
+    const L = 52, R = 14, T = 34, B = 40, max = Math.max(...dados.map(d => d.v));
+    const topo = yMin ? max + 2 : Math.ceil(max / 10) * 10 + 10;
+    const y = v => T + (H - T - B) * (1 - (v - yMin) / (topo - yMin));
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><text x="${W / 2}" y="20" text-anchor="middle" font-size="17" font-weight="600">${titulo}</text>`;
+    const passo = yMin ? Math.max(1, Math.round((topo - yMin) / 4)) : Math.max(5, Math.round(topo / 5 / 5) * 5);
+    for (let g = yMin; g <= topo; g += passo) s += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)"/><text x="${L - 8}" y="${y(g) + 4}" text-anchor="end" font-size="14">${g}</text>`;
+    const larg = (W - L - R) / dados.length;
+    dados.forEach((d, i) => {
+      const x = L + larg * i + larg * 0.2, w = larg * 0.6;
+      s += `<rect x="${x}" y="${y(d.v)}" width="${w}" height="${y(yMin) - y(d.v)}" fill="${d.cor}" stroke="var(--ink)" stroke-width="1.5" rx="4"/>`;
+      s += `<text x="${x + w / 2}" y="${y(d.v) - 6}" text-anchor="middle" font-size="15" font-weight="600">${d.v}</text>`;
+      s += `<text x="${x + w / 2}" y="${H - 20}" text-anchor="middle" font-size="15">${d.r}</text>`;
+    });
+    s += `<line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/><line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/>`;
+    s += `<text x="${W - R}" y="${H - 4}" text-anchor="end" font-size="12" fill="var(--ink-2)">Fonte: caderno de vendas da turma</text></svg>`;
+    return s;
+  }
+  function setores(dados, titulo) {
+    const tot = dados.reduce((a, d) => a + d.v, 0), cx = 190, cy = 160, r = 110;
+    let a0 = -Math.PI / 2, s = `<svg viewBox="0 0 ${W} ${H + 10}" xmlns="http://www.w3.org/2000/svg"><text x="${W / 2}" y="20" text-anchor="middle" font-size="17" font-weight="600">${titulo}</text>`;
+    dados.forEach((d, i) => {
+      const a1 = a0 + 2 * Math.PI * d.v / tot, big = a1 - a0 > Math.PI ? 1 : 0;
+      s += `<path d="M${cx},${cy} L${cx + r * Math.cos(a0)},${cy + r * Math.sin(a0)} A${r},${r} 0 ${big} 1 ${cx + r * Math.cos(a1)},${cy + r * Math.sin(a1)} Z" fill="${d.cor}" stroke="var(--ink)" stroke-width="1.5"/>`;
+      const am = (a0 + a1) / 2;
+      s += `<text x="${cx + r * 0.62 * Math.cos(am)}" y="${cy + r * 0.62 * Math.sin(am) + 5}" text-anchor="middle" font-size="14" font-weight="600" style="fill:#111">${d.p !== undefined ? d.p + '%' : ''}</text>`;
+      s += `<rect x="340" y="${100 + i * 34}" width="18" height="18" rx="4" fill="${d.cor}" stroke="var(--ink)"/><text x="366" y="${114 + i * 34}" font-size="14">${d.r}</text>`;
+      a0 = a1;
+    });
+    return s + `<text x="${W - 14}" y="${H + 4}" text-anchor="end" font-size="12" fill="var(--ink-2)">Fonte: caderno de vendas da turma</text></svg>`;
+  }
+  function linhas(pontos, titulo) {
+    const L = 64, R = 20, T = 34, B = 40, vals = pontos.map(p => p.v);
+    const lo = Math.min(0, ...vals), hi = Math.max(...vals);
+    const topo = Math.ceil(hi / 20) * 20 + 20, base = Math.floor(lo / 20) * 20;
+    const x = i => L + 28 + (W - L - R - 56) * (pontos.length === 1 ? 0.5 : i / (pontos.length - 1)), y = v => T + (H - T - B) * (1 - (v - base) / (topo - base));
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><text x="${W / 2}" y="20" text-anchor="middle" font-size="17" font-weight="600">${titulo}</text>`;
+    const passo = Math.max(20, Math.ceil((topo - base) / 5 / 20) * 20);
+    for (let g = base; g <= topo; g += passo) s += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)"/><text x="${L - 8}" y="${y(g) + 4}" text-anchor="end" font-size="14">${g}</text>`;
+    s += `<polyline fill="none" stroke="#166c40" stroke-width="4" stroke-linejoin="round" points="${pontos.map((p, i) => `${x(i)},${y(p.v)}`).join(' ')}"/>`;
+    pontos.forEach((p, i) => { s += `<circle cx="${x(i)}" cy="${y(p.v)}" r="6" fill="#f2b84b" stroke="var(--ink)" stroke-width="1.5"/><text x="${x(i)}" y="${y(p.v) - 12}" text-anchor="middle" font-size="14" font-weight="600">${Math.round(p.v)}</text><text x="${x(i)}" y="${H - 20}" text-anchor="middle" font-size="15">${p.r}</text>`; });
+    s += `<line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="2"/><line x1="${L}" x2="${W - R}" y1="${y(base)}" y2="${y(base)}" stroke="var(--ink)" stroke-width="2"/>`;
+    return s + `<text x="${L}" y="${T - 6}" font-size="12" fill="var(--ink-2)">R$</text><text x="${W - R}" y="${H - 4}" text-anchor="end" font-size="12" fill="var(--ink-2)">Fonte: caderno de vendas da turma</text></svg>`;
+  }
+
+  /* ---------- Simulação do mês ---------- */
+  function simular(estId) {
+    const M = MESES[m], v = EST[estId].ef({ preco: PRECO, mult: 1, extra: 0, foco: null, eco: false });
+    const vendas = SAB.map(s => {
+      const procura = s.base * M.geral * (M.sab[s.id] || 1) * v.mult * (0.9 + Math.random() * 0.2);
+      // sem produção extra, a turma só consegue preparar até 40 copos de cada sabor
+      const teto = v.foco === s.id ? 90 : 40;
+      return { r: s.nome, cor: s.cor, v: Math.max(4, Math.round(Math.min(procura * (v.foco === s.id ? 1.25 : 1), teto))) };
+    });
+    const copos = vendas.reduce((a, d) => a + d.v, 0);
+    const receita = copos * v.preco, custos = copos * CUSTO + v.extra + (v.foco ? 12 : 0);
+    return { vendas, copos, receita, custos, lucro: receita - custos, eco: v.eco, est: estId };
+  }
+
+  /* ---------- Perguntas da reunião, uma por mês ---------- */
+  function pergunta(res) {
+    const tipos = res.vendas, tot = res.copos;
+    // porcentagens inteiras que somam exatamente 100 (maiores restos)
+    const brutos = tipos.map(d => d.v / tot * 100), pct = brutos.map(Math.floor);
+    brutos.map((b, i) => [b - pct[i], i]).sort((a, b) => b[0] - a[0]).slice(0, 100 - pct.reduce((a, b) => a + b, 0)).forEach(([, i]) => pct[i]++);
+    const maior = tipos.reduce((a, d) => d.v > a.v ? d : a);
+    switch (m) {
+      case 0: return { chart: colunas(tipos, `Copos vendidos por sabor em ${MESES[m].nome}`),
+        q: 'Os pais perguntam: qual sabor vendeu mais neste mês, e quantos copos?',
+        c: `${maior.r}, ${maior.v} copos`, e: tipos.filter(d => d !== maior).map(d => `${d.r}, ${d.v} copos`).concat(`${maior.r}, ${tot} copos`),
+        x: `A coluna mais alta é a de ${maior.r.toLowerCase()}, com ${maior.v} copos. ${tot} é o total dos três sabores.` };
+      case 1: return { chart: colunas(tipos, `Copos vendidos por sabor em ${MESES[m].nome}`),
+        q: 'Agora os pais querem ver que parte do total de copos cada sabor representa. Qual gráfico mostra isso melhor?',
+        c: 'Gráfico de setores', e: ['Gráfico de linhas', 'Gráfico de colunas empilhadas por mês', 'Uma tabela sem título'],
+        x: 'O gráfico de setores (pizza) mostra as partes de um todo: o círculo inteiro é 100% dos copos.',
+        depois: setores(tipos.map((d, i) => ({ ...d, p: pct[i] })), `Parte de cada sabor no total de ${MESES[m].nome}`) };
+      case 2: { const alvo = tipos[ri(0, 2)], i = tipos.indexOf(alvo), out = pct.filter((p, k) => k !== i).map(p => p + '%');
+        return { chart: setores(tipos.map((d, k) => ({ ...d, p: k === i ? undefined : pct[k] })), `Parte de cada sabor no total de ${MESES[m].nome}`),
+          q: `O setor de ${alvo.r.toLowerCase()} ficou sem a porcentagem. Foram ${alvo.v} de ${tot} copos. Que porcentagem é essa?`,
+          c: pct[i] + '%', e: out.concat(alvo.v + '%', (100 - pct[i]) + '%'),
+          x: `${alvo.v} ÷ ${tot} ≈ ${(alvo.v / tot).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}, ou seja, cerca de ${pct[i]}%. Outro caminho: o círculo todo é 100%, então ${pct[i]}% = 100% − ${out.join(' − ')}.` }; }
+      case 3: return { chart: colunas(tipos, `Copos vendidos por sabor em ${MESES[m].nome}`),
+        q: 'Os pais querem acompanhar como o lucro mudou de março até agora. Qual gráfico você mostra?',
+        c: 'Gráfico de linhas', e: ['Gráfico de setores', 'Gráfico de colunas por sabor', 'Pictograma de copos'],
+        x: 'O gráfico de linhas mostra a evolução de um valor ao longo do tempo: dá para ver quando subiu e quando caiu.',
+        depois: linhas(hist.concat({ r: MESES[m].nome.slice(0, 3), v: res.lucro }), 'Lucro por mês (R$)') };
+      case 4: { const pts = hist.concat({ r: MESES[m].nome.slice(0, 3), v: res.lucro }), melhor = pts.reduce((a, p) => p.v > a.v ? p : a);
+        const nomes = { Mar: 'Março', Abr: 'Abril', Mai: 'Maio', Jun: 'Junho', Jul: 'Julho' };
+        return { chart: linhas(pts, 'Lucro por mês (R$)'),
+          q: 'Em qual mês a empresa teve o maior lucro até agora?',
+          c: nomes[melhor.r], e: shuffle(Object.values(nomes).filter(n => n !== nomes[melhor.r])).slice(0, 3),
+          x: `O ponto mais alto da linha é ${nomes[melhor.r].toLowerCase()}, com ${R$(melhor.v)} de lucro.` }; }
+      default: {
+        const corte = Math.max(0, Math.min(...tipos.map(d => d.v)) - 3);
+        return { chart: colunas(tipos, `Vendas de ${MESES[m].nome} (gráfico feito por um sócio)`, corte),
+          q: `Um sócio fez este gráfico com o eixo começando em ${corte}. Assim, a diferença entre os sabores parece enorme. O que fazer antes de mostrar aos pais?`,
+          c: 'Refazer com o eixo começando no zero', e: ['Mostrar assim, porque impressiona', 'Tirar os números das colunas', 'Apagar a fonte dos dados'],
+          x: `Cortar o eixo exagera as diferenças. Com o eixo no zero, a altura de cada coluna fica proporcional ao número de copos. Os pais confiam em quem mostra os dados com honestidade.`,
+          depois: colunas(tipos, `Vendas de ${MESES[m].nome} (corrigido, eixo no zero)`) }; }
+    }
+  }
+
+  function hud() {
+    $('#mn').textContent = Math.min(m + 1, 6); $('#caixa').textContent = R$(caixa);
+    $('#inv').textContent = R$(investido); $('#ok').textContent = acertos;
+  }
+  function escolher() {
+    hud();
+    const M = MESES[m];
+    $('#tela').innerHTML = `<div class="mes"><h2>${M.nome}</h2><span class="small muted">Copo a R$ 4,00 · custo de R$ 1,50 por copo</span></div>
+      <p class="evento box">${M.ev}</p>
+      <p><strong>Qual estratégia a turma vai seguir neste mês?</strong></p>
+      <div class="escolhas">${OFERTAS[m].map(id => `<button class="escolha" type="button" data-e="${id}"><strong>${EST[id].t}</strong><span class="small muted">${EST[id].d}</span></button>`).join('')}</div>`;
+    $('#tela').querySelectorAll('.escolha').forEach(b => b.onclick = () => resultado(simular(b.dataset.e)));
+  }
+  function resultado(res) {
+    caixa += res.lucro; hud();
+    const P = pergunta(res);
+    $('#tela').innerHTML = `<div class="mes"><h2>${MESES[m].nome}: resultado</h2><span class="small muted">Estratégia: ${EST[res.est].t}</span></div>
+      <div class="resumo"><div>Copos vendidos<b>${res.copos}</b></div><div>Receita<b>${R$(res.receita)}</b></div><div>Custos<b>${R$(res.custos)}</b></div><div>Lucro<b style="color:${res.lucro >= 0 ? 'var(--ok)' : 'var(--bad)'}">${R$(res.lucro)}</b></div></div>
+      <div class="reuniao"><p class="eyebrow" style="margin:0">Reunião com os pais</p>
+      <div class="svgbox" id="chart" role="img" aria-label="Gráfico das vendas do mês">${P.chart}</div>
+      <p class="q">${P.q}</p><div class="opts" id="opts"></div><p class="feedback" id="fb" role="status"></p>
+      <div class="btn-row" id="actions" style="justify-content:center"></div></div>`;
+    const ops = shuffle([P.c, ...[...new Set(P.e)].filter(e => e !== P.c).slice(0, 3)]);
+    $('#opts').innerHTML = ops.map(o => `<button class="btn ghost" type="button">${o}</button>`).join('');
+    let feito = false;
+    $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (feito) return; feito = true;
+      const certo = b.textContent === P.c;
+      $('#opts').querySelectorAll('button').forEach(o => o.textContent === P.c && o.classList.add('right'));
+      let aporte = 0;
+      if (certo) { acertos++; aporte = 20 + Math.round(Math.max(0, caixa) * 0.1) + (res.eco ? 10 : 0); investido += aporte; caixa += aporte; }
+      else b.classList.add('wrong');
+      const fbEl = $('#fb');
+      fbEl.className = 'feedback ' + (certo ? 'ok' : 'bad');
+      fbEl.textContent = (certo ? `Os pais se convenceram e investiram ${R$(aporte)}. ` : 'Os pais ficaram em dúvida e não investiram neste mês. ') + P.x;
+      if (P.depois) $('#chart').innerHTML = P.depois;
+      hist.push({ r: MESES[m].nome.slice(0, 3), v: res.lucro });
+      hud();
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${m < 5 ? 'Próximo mês →' : 'Ver o balanço do semestre'}</button>`;
+      $('#nx').onclick = () => { m++; m < 6 ? escolher() : fim(); }; $('#nx').focus();
+    });
+  }
+  function fim() {
+    hud(); $('#mn').textContent = 6;
+    window.MDP && MDP.registrar('empresa-sucos', acertos / 6 * 100);
+    const lucroTot = hist.reduce((a, p) => a + p.v, 0);
+    const msg = acertos >= 5 ? 'Os pais estão animados e querem continuar investindo no próximo semestre.' : acertos >= 3 ? 'Os pais gostaram, mas pediram gráficos mais claros na próxima reunião.' : 'Os pais pediram uma nova reunião, com os gráficos certos para cada pergunta.';
+    $('#tela').innerHTML = `<div class="mes"><h2>Balanço do semestre</h2></div>
+      <div class="resumo"><div>Lucro das vendas<b>${R$(lucroTot)}</b></div><div>Investido pelos pais<b>${R$(investido)}</b></div><div>Caixa final<b>${R$(caixa)}</b></div><div>Reuniões convincentes<b>${acertos} de 6</b></div></div>
+      <div class="svgbox" role="img" aria-label="Gráfico de linhas do lucro mês a mês">${linhas(hist, 'Lucro por mês (R$)')}</div>
+      <p class="feedback ok">${msg}</p>
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="again">Começar outro semestre</button></div>`;
+    $('#again').onclick = start;
+  }
+  function start() { m = 0; caixa = 50; investido = 0; acertos = 0; hist = []; escolher(); }
+  start();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

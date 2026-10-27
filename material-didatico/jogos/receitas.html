@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozinha das Proporções · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de razão e proporção com receitas: aumente e diminua receitas para mais ou menos pessoas, compare a força de sucos, simplifique razões e descubra o ingrediente que falta. BNCC EF06MA15, EF07MA09, EF07MA17, EF08MA13.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/receitas.html">
+<meta property="og:title" content="Cozinha das Proporções · Material didático">
+<meta property="og:description" content="Jogo de razão e proporção com receitas: aumente e diminua receitas para mais ou menos pessoas, compare a força de sucos, simplifique razões e descubra o ingrediente que falta. BNCC EF06MA15, EF07MA09, EF07MA17, EF08MA13.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/receitas.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; height: auto; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+  .svgbox { max-width: 640px; margin: 0 auto; }
+  .svgbox svg { width: 100%; height: auto; display: block; }
+  .svgbox text { font-family: var(--body); fill: var(--ink); }
+  .num { border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 14px; width: 120px; font-size: 18px; background: var(--paper); text-align: center; }
+  .num.right { background: var(--ok-soft); border-color: var(--ok); }
+  .num.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0; }
+  .tab th, .tab td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: right; }
+  .tab th:first-child, .tab td:first-child { text-align: left; }
+  .tabwrap { overflow-x: auto; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); }
+  .center { text-align: center; }
+  .cartao { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 14px 18px; max-width: 640px; margin: 0 auto; }
+  .cartao h3 { font-size: 22px; margin: 0 0 4px; }
+  .cartao .rende { font-size: 14px; color: var(--ink-2); margin: 0 0 8px; }
+  .tab .num { width: 100px; padding: 4px 10px; font-size: 16px; }
+  .tab td.un { text-align: left; color: var(--ink-2); }
+  @media (max-width: 560px) { .cartao { padding: 12px; } .tab .num { width: 64px; padding: 4px 6px; } .tab th, .tab td { padding: 6px 4px; font-size: 14px; } .tab td.un { display: none; } }
+  .sucos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; max-width: 640px; margin: 0 auto 12px; }
+  .jarra { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px; background: var(--paper); text-align: center; }
+  .copos { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin: 8px 0; }
+  .copo { width: 20px; height: 28px; border: 1.5px solid var(--ink); border-radius: 3px 3px 7px 7px; }
+  .resp { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; margin: 10px 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você está na cozinha da festa da escola. Chegam 6 pedidos: aumentar ou diminuir receitas para outro número de pessoas, comparar qual suco ficou mais forte, simplificar razões e descobrir quanto usar de um ingrediente.</p>
+    <p>Para mudar o tamanho de uma receita, descubra primeiro <strong>quantas vezes</strong> o novo pedido é maior ou menor que a receita original, e multiplique todos os ingredientes por esse mesmo número. Assim a proporção entre eles não muda e o sabor continua o mesmo.</p>
+    <p class="small muted">Pode responder com vírgula (1,5) ou com fração (3/2).</p>
+  </details>
+  <div class="game-stage">
+    <div class="hud"><span>Pedido <b id="qn">1</b> de 6</span><span>Acertos <b id="ok">0</b></span><span id="tipo" class="small muted"></span></div>
+    <p class="q" id="q" aria-live="polite"></p>
+    <div id="area"></div>
+    <div class="opts" id="opts"></div>
+    <p class="feedback center" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('receitas');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const nf = v => (Math.round(v * 100) / 100).toLocaleString('pt-BR');
+  const mdc = (a, b) => b ? mdc(b, a % b) : a;
+  // aceita 1,5 · 1.5 · 3/2 · 1 1/2
+  function ler(t) {
+    t = String(t).trim().replace(',', '.');
+    let m = t.match(/^(\d+)\s+(\d+)\/(\d+)$/); if (m) return +m[1] + m[2] / m[3];
+    m = t.match(/^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/); if (m) return m[1] / m[2];
+    return t === '' || isNaN(+t) ? NaN : +t;
+  }
+  // [quantidade, unidade no singular, no plural, complemento, precisa ser inteiro]
+  const RECEITAS = [
+    { nome: 'Bolo de cenoura', rende: 8, un: 'pedaços', ing: [[3, 'cenoura', 'cenouras', ''], [4, 'ovo', 'ovos', '', 1], [2, 'xícara', 'xícaras', 'de açúcar'], [2, 'xícara', 'xícaras', 'de farinha de trigo'], [1, 'xícara', 'xícaras', 'de óleo']] },
+    { nome: 'Panquecas', rende: 4, un: 'pessoas', ing: [[2, 'xícara', 'xícaras', 'de farinha de trigo'], [2, 'ovo', 'ovos', '', 1], [3, 'xícara', 'xícaras', 'de leite'], [1, 'colher', 'colheres', 'de manteiga']] },
+    { nome: 'Brigadeiro', rende: 20, un: 'unidades', ing: [[1, 'lata', 'latas', 'de leite condensado', 1], [1, 'colher', 'colheres', 'de manteiga'], [4, 'colher', 'colheres', 'de chocolate em pó']] },
+    { nome: 'Limonada', rende: 6, un: 'copos', ing: [[4, 'limão', 'limões', '', 1], [6, 'copo', 'copos', 'de água'], [3, 'colher', 'colheres', 'de açúcar']] },
+    { nome: 'Pão de queijo', rende: 30, un: 'unidades', ing: [[500, 'g', 'g', 'de polvilho'], [250, 'ml', 'ml', 'de leite'], [2, 'ovo', 'ovos', '', 1], [200, 'g', 'g', 'de queijo ralado']] },
+    { nome: 'Arroz da cantina', rende: 4, un: 'pessoas', ing: [[2, 'xícara', 'xícaras', 'de arroz'], [4, 'xícara', 'xícaras', 'de água'], [1, 'colher', 'colheres', 'de óleo'], [1, 'colher', 'colheres', 'de chá de sal']] }
+  ];
+  const FATORES = { dobro: [2, 3], metade: [0.5], meio: [1.5] };
+  const fatorTxt = f => f === 2 ? 'o dobro' : f === 3 ? 'o triplo' : f === 0.5 ? 'a metade' : f === 1.5 ? 'uma vez e meia (1,5 vez)' : f + ' vezes';
+  const cabe = (r, f) => r.ing.every(i => !i[4] || Number.isInteger(i[0] * f)) && Number.isInteger(r.rende * f);
+  const linhaIng = (q, i) => `${nf(q)} ${q < 2 ? i[1] : i[2]}${i[3] ? ' ' + i[3] : ''}`;
+  const nomeIng = i => i[3] ? i[3].replace(/^de (chá de )?/, '') : i[2];
+  let usadas = [];
+  function receita(tipo) {
+    const ok = RECEITAS.filter(r => !usadas.includes(r.nome) && FATORES[tipo].some(f => cabe(r, f)));
+    const r = pick(ok.length ? ok : RECEITAS); usadas.push(r.nome);
+    return r;
+  }
+
+  /* ---------- Pedidos ---------- */
+  function escalar(tipo) {
+    const r = receita(tipo), fs = FATORES[tipo].filter(x => cabe(r, x)), f = fs.length ? pick(fs) : 2;
+    const novo = r.rende * f;
+    return {
+      tipo: f > 1 ? 'Aumentar a receita' : 'Diminuir a receita',
+      q: `A receita de <strong>${r.nome.toLowerCase()}</strong> rende ${r.rende} ${r.un}. O pedido é de <strong>${novo} ${r.un}</strong>. Quanto vai de cada ingrediente?`,
+      html: `<div class="cartao"><h3>${r.nome}</h3><p class="rende">Receita original: rende ${r.rende} ${r.un}</p>
+        <div class="tabwrap"><table class="tab"><thead><tr><th>Ingrediente</th><th>Original</th><th>Para ${novo} ${r.un}</th><th></th></tr></thead><tbody>
+        ${r.ing.map((i, k) => `<tr><td>${nomeIng(i)}</td><td>${nf(i[0])} ${i[0] < 2 ? i[1] : i[2]}</td><td><input class="num" type="text" inputmode="decimal" data-k="${k}" aria-label="Quantidade de ${nomeIng(i)} para ${novo} ${r.un}, em ${i[2]}"></td><td class="un">${i[2]}</td></tr>`).join('')}
+        </tbody></table></div><div class="resp"><button class="btn" type="button" id="conf">Mandar para o forno</button></div></div>`,
+      montar(fim) {
+        $('#conf').onclick = () => {
+          const ins = [...$('#area').querySelectorAll('input')];
+          if (ins.some(i => isNaN(ler(i.value)))) { $('#fb').textContent = 'Preencha todos os ingredientes com um número.'; $('#fb').className = 'feedback center bad'; return; }
+          let tudo = true;
+          ins.forEach(i => { const alvo = r.ing[+i.dataset.k][0] * f, ok = Math.abs(ler(i.value) - alvo) < 0.01; tudo = tudo && ok; i.classList.add(ok ? 'right' : 'wrong'); i.disabled = true; if (!ok) i.value = nf(alvo); });
+          $('#conf').disabled = true;
+          fim(tudo, `${novo} ${r.un} é ${fatorTxt(f)} de ${r.rende}, então cada ingrediente é multiplicado por ${nf(f)}. Por exemplo: ${linhaIng(r.ing[0][0], r.ing[0])} × ${nf(f)} = ${linhaIng(r.ing[0][0] * f, r.ing[0])}.`);
+        };
+      }
+    };
+  }
+  function comparar() {
+    let a, b;
+    do { a = [ri(1, 5), ri(2, 8)]; b = [ri(1, 5), ri(2, 8)]; } while (a[0] === b[0] && a[1] === b[1] || a[0] >= a[1] || b[0] >= b[1]);
+    if (Math.random() < 0.25) { const k = ri(2, 3), s = [ri(1, 3), ri(3, 5)]; if (s[0] < s[1] && s[1] * k <= 10) { a = s; b = [s[0] * k, s[1] * k]; } }
+    const ra = a[0] / a[1], rb = b[0] / b[1];
+    const c = Math.abs(ra - rb) < 1e-9 ? 'Têm a mesma força' : ra > rb ? 'O suco da Ana' : 'O suco do Beto';
+    const copos = (n, cor) => Array(n).fill(`<span class="copo" style="background:${cor}"></span>`).join('');
+    return {
+      tipo: 'Comparar razões', q: 'Ana e Beto fizeram suco de uva misturando suco concentrado com água. Qual suco ficou mais forte (com mais gosto de uva)?',
+      html: `<div class="sucos"><div class="jarra"><strong>Suco da Ana</strong><div class="copos">${copos(a[0], '#c21f3a')}${copos(a[1], 'var(--paper)')}</div><span class="small">${a[0]} de concentrado para ${a[1]} de água</span></div>
+        <div class="jarra"><strong>Suco do Beto</strong><div class="copos">${copos(b[0], '#c21f3a')}${copos(b[1], 'var(--paper)')}</div><span class="small">${b[0]} de concentrado para ${b[1]} de água</span></div></div>`,
+      opcoes: ['O suco da Ana', 'O suco do Beto', 'Têm a mesma força'], c,
+      x: `Compare a razão concentrado/água: Ana ${a[0]}/${a[1]} ≈ ${nf(ra)} e Beto ${b[0]}/${b[1]} ≈ ${nf(rb)} de concentrado para cada copo de água. ${c === 'Têm a mesma força' ? 'As razões são equivalentes, então o sabor é igual, mesmo com quantidades diferentes.' : 'Quem tem mais concentrado por copo de água fez o suco mais forte.'} Ter mais copos de concentrado no total não basta: o que importa é a proporção.`
+    };
+  }
+  function simplificar() {
+    const pares = [
+      ['limões', 'copos de água', 4, 6, 'na limonada'], ['ovos', 'xícaras de farinha', 4, 2, 'no bolo de cenoura'],
+      ['xícaras de arroz', 'xícaras de água', 2, 4, 'no arroz da cantina'], ['gramas de queijo', 'gramas de polvilho', 200, 500, 'no pão de queijo'],
+      ['colheres de chocolate', 'latas de leite condensado', 4, 1, 'no brigadeiro'], ['xícaras de farinha', 'xícaras de leite', 2, 3, 'nas panquecas']
+    ];
+    const [x, y, a, b, onde] = pick(pares), d = mdc(a, b), c = `${a / d} : ${b / d}`;
+    const distr = [`${b / d} : ${a / d}`, `${a} : ${a + b}`, `${a / d} : ${(a + b) / d}`, `${a - b > 0 ? a - b : b - a} : 1`];
+    return {
+      tipo: 'Simplificar razão', q: `${onde[0].toUpperCase() + onde.slice(1)} vão ${a} ${x} para ${b} ${y}. Qual é essa razão na forma mais simples (${x} : ${y})?`,
+      opcoes: shuffle([c, ...[...new Set(distr)].filter(o => o !== c).slice(0, 3)]), c,
+      x: `${a} : ${b}. Dividindo os dois termos por ${d}, que é o maior divisor comum, fica ${c}. ${a / d} : ${b / d} quer dizer: para cada ${a / d} ${x} vão ${b / d} ${y}.`
+    };
+  }
+  function faltando() {
+    const casos = [
+      { r: 'bolo de cenoura', a: [4, 'ovos'], b: [2, 'xícaras de farinha'], k: [1.5, 2, 3] },
+      { r: 'limonada', a: [4, 'limões'], b: [6, 'copos de água'], k: [2, 2.5, 3], m: 1 },
+      { r: 'panquecas', a: [2, 'xícaras de farinha'], b: [3, 'xícaras de leite'], k: [2, 3, 4] },
+      { r: 'arroz da cantina', a: [2, 'xícaras de arroz'], b: [4, 'xícaras de água'], k: [1.5, 2.5, 3] }
+    ];
+    const C = pick(casos), k = pick(C.k), novoA = C.a[0] * k, resp = C.b[0] * k;
+    return {
+      tipo: 'Valor desconhecido', q: `Na receita de ${C.r} vão ${C.a[0]} ${C.a[1]} para ${C.b[0]} ${C.b[1]}. Se usarmos <strong>${nf(novoA)} ${C.a[1]}</strong>, ${C.m ? 'quantos' : 'quantas'} ${C.b[1]} precisamos para manter a proporção?`,
+      num: resp,
+      x: `${nf(novoA)} é ${nf(k)} vezes ${C.a[0]}. Então as ${C.b[1]} também são multiplicadas por ${nf(k)}: ${C.b[0]} × ${nf(k)} = ${nf(resp)}.`
+    };
+  }
+
+  const SEQ = [() => escalar('dobro'), comparar, () => escalar('metade'), simplificar, faltando, () => escalar('meio')];
+  let q = 0, ok = 0;
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback center ' + (c || ''); }
+  function next() {
+    if (q >= SEQ.length) return fim();
+    if (q === 0) usadas = [];
+    const T = SEQ[q]();
+    $('#qn').textContent = q + 1; $('#ok').textContent = ok; $('#tipo').textContent = T.tipo;
+    $('#q').innerHTML = T.q; $('#area').innerHTML = T.html || ''; $('#opts').innerHTML = ''; $('#actions').innerHTML = ''; fb('');
+    let feito = false;
+    const fim1 = (certo, texto) => {
+      if (feito) return; feito = true; q++; if (certo) ok++;
+      $('#ok').textContent = ok; fb((certo ? 'Delícia, acertou! ' : 'A receita desandou. ') + texto, certo ? 'ok' : 'bad');
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${q < SEQ.length ? 'Próximo pedido →' : 'Ver resultado'}</button>`;
+      $('#nx').onclick = next; $('#nx').focus();
+    };
+    if (T.montar) T.montar(fim1);
+    else if (T.opcoes) {
+      $('#opts').innerHTML = T.opcoes.map(o => `<button class="btn ghost" type="button">${o}</button>`).join('');
+      $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+        if (feito) return;
+        $('#opts').querySelectorAll('button').forEach(o => o.textContent === T.c && o.classList.add('right'));
+        if (b.textContent !== T.c) b.classList.add('wrong');
+        fim1(b.textContent === T.c, T.x);
+      });
+    } else {
+      $('#area').innerHTML = `<div class="resp"><label for="r">Resposta:</label><input class="num" id="r" type="text" inputmode="decimal" aria-label="Sua resposta"><button class="btn" type="button" id="conf">Conferir</button></div>`;
+      const conf = () => {
+        const v = ler($('#r').value); if (isNaN(v)) { $('#r').focus(); return; }
+        const certo = Math.abs(v - T.num) < 0.01;
+        $('#r').classList.add(certo ? 'right' : 'wrong'); $('#r').disabled = true; $('#conf').disabled = true;
+        fim1(certo, certo ? T.x : `A resposta é ${nf(T.num)}. ${T.x}`);
+      };
+      $('#conf').onclick = conf; $('#r').onkeydown = e => { if (e.key === 'Enter') conf(); };
+    }
+  }
+  function fim() {
+    window.MDP && MDP.registrar('receitas', ok / SEQ.length * 100);
+    $('#tipo').textContent = ''; $('#area').innerHTML = ''; $('#opts').innerHTML = '';
+    $('#q').textContent = `Você acertou ${ok} de ${SEQ.length} pedidos.`;
+    fb(ok >= 5 ? 'A festa foi um sucesso: tudo na proporção certa. As receitas mudam a cada partida.' : 'Lembre: multiplique todos os ingredientes pelo mesmo número. As receitas mudam a cada partida, tente de novo.', 'ok');
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Jogar de novo</button>`;
+    $('#again').onclick = () => { q = 0; ok = 0; next(); };
+  }
+  next();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
