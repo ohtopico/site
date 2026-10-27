@@ -357,6 +357,136 @@ const RECURSOS = [
     resumo: 'Classificar dados pessoais por risco e usar um checklist para analisar mensagens suspeitas.',
     url: 'ficha.html?id=f-golpe', plano: 'p-golpes', jogo: 'golpe' },
 
+  // ---------- Computação · fichas desplugadas por habilidade, 6º ao 9º ano (conteúdo em fichas-co.js) ----------
+  { id: 'f-co-tipos', tipo: 'ficha', titulo: "Coleções e tipos de dados", comp: ['CO'], anos: [6],
+    habs: ["EF06CO01"], tempo: '1 aula', icone: '01',
+    resumo: "Classificar as informações de uma ficha por tipo de dado, agrupar em coleções e entender por que “12” + “3” dá “123”.",
+    url: 'ficha.html?id=f-co-tipos', plano: 'p-dados' },
+  { id: 'f-co-maquinas', tipo: 'ficha', titulo: "Máquinas de entrada e saída", comp: ['CO'], anos: [6],
+    habs: ["EF06CO05"], tempo: '1 aula', icone: '05',
+    resumo: "Descobrir a regra de máquinas misteriosas, identificar os tipos de entrada e de saída e planejar a solução de um problema.",
+    url: 'ficha.html?id=f-co-maquinas', plano: 'p-dados' },
+  { id: 'f-co-generalizar', tipo: 'ficha', titulo: "Uma receita para qualquer número", comp: ['CO'], anos: [6],
+    habs: ["EF06CO06"], tempo: '1 aula', icone: '06',
+    resumo: "Generalizar uma receita e os programas da tartaruga com parâmetros, até chegar a um único algoritmo para todos os casos.",
+    url: 'ficha.html?id=f-co-generalizar', plano: 'p-dados' },
+  { id: 'f-co-arquivos', tipo: 'ficha', titulo: "Arrumando as pastas do computador", comp: ['CO'], anos: [6],
+    habs: ["EF06CO08"], tempo: '1 aula', icone: '08',
+    resumo: "Organizar arquivos em pastas, renomear com padrão de data, decidir que metadados apagar e entender a compactação.",
+    url: 'ficha.html?id=f-co-arquivos', plano: 'p-arquivos' },
+  { id: 'f-co-respeito', tipo: 'ficha', titulo: "Do outro lado da tela tem gente", comp: ['CO'], anos: [6],
+    habs: ["EF06CO09"], tempo: '1 aula', icone: '09',
+    resumo: "Reescrever mensagens com respeito, avaliar a pegada digital de cada ação e criar os combinados dos grupos da turma.",
+    url: 'ficha.html?id=f-co-respeito', plano: 'p-conduta' },
+  { id: 'f-co-aparelho', tipo: 'ficha', titulo: "A vida do meu aparelho", comp: ['CO'], anos: [6],
+    habs: ["EF06CO10"], tempo: '1 aula', icone: '10',
+    resumo: "Desenhar o ciclo de vida de um eletrônico de casa, discutir obsolescência e propor ações para ele durar mais.",
+    url: 'ficha.html?id=f-co-aparelho', plano: 'p-lixo' },
+  { id: 'f-co-registros', tipo: 'ficha', titulo: "A ficha da turma: registros e vetores", comp: ['CO'], anos: [7],
+    habs: ["EF07CO01"], tempo: '1 aula', icone: '01',
+    resumo: "Criar campos e registros, montar um vetor com posições a partir de 0 e escrever o algoritmo da maior nota.",
+    url: 'ficha.html?id=f-co-registros', plano: 'p-registros' },
+  { id: 'f-co-bugs', tipo: 'ficha', titulo: "Caça aos bugs no papel", comp: ['CO'], anos: [7],
+    habs: ["EF07CO02"], tempo: '1 aula', icone: '02',
+    resumo: "Quatro programas com erros para encontrar e corrigir, com teste de mesa e valores de borda.",
+    url: 'ficha.html?id=f-co-bugs', plano: 'p-bugs' },
+  { id: 'f-co-projeto7', tipo: 'ficha', titulo: "Nosso projeto em uma página", comp: ['CO'], anos: [7],
+    habs: ["EF07CO03"], tempo: '1 aula', icone: '03',
+    resumo: "Plano do projeto de programação do grupo: problema, decomposição, estruturas, papéis e cronograma.",
+    url: 'ficha.html?id=f-co-projeto7', plano: 'p-midia' },
+  { id: 'f-co-seguranca7', tipo: 'ficha', titulo: "Detetive de golpes e senhas fortes", comp: ['CO'], anos: [7],
+    habs: ["EF07CO07"], tempo: '1 aula', icone: '07',
+    resumo: "Analisar quatro mensagens, encontrar os sinais de golpe, avaliar senhas e entender a verificação em duas etapas.",
+    url: 'ficha.html?id=f-co-seguranca7', plano: 'p-golpes', jogo: 'golpe' },
+  { id: 'f-co-empatia', tipo: 'ficha', titulo: "Discordar sem ferir", comp: ['CO'], anos: [7],
+    habs: ["EF07CO08"], tempo: '1 aula', icone: '08',
+    resumo: "Debate com regras, comentários que atacam a ideia ou a pessoa e perguntas para fazer antes de responder na internet.",
+    url: 'ficha.html?id=f-co-empatia', plano: 'p-conduta' },
+  { id: 'f-co-cyberbullying', tipo: 'ficha', titulo: "O que eu faria? Cyberbullying", comp: ['CO'], anos: [7],
+    habs: ["EF07CO09"], tempo: '1 aula', icone: '09',
+    resumo: "Uma situação no grupo da turma analisada por papéis, a diferença entre brincadeira e cyberbullying e combinados da turma.",
+    url: 'ficha.html?id=f-co-cyberbullying', plano: 'p-conduta' },
+  { id: 'f-co-descarte', tipo: 'ficha', titulo: "Mapa do descarte eletrônico", comp: ['CO'], anos: [7],
+    habs: ["EF07CO10"], tempo: '1 aula', icone: '10',
+    resumo: "Decidir o destino dos eletrônicos parados em casa, preparar um celular para o descarte e escrever um aviso para a família.",
+    url: 'ficha.html?id=f-co-descarte', plano: 'p-lixo' },
+  { id: 'f-co-roteiro', tipo: 'ficha', titulo: "Roteiro relâmpago de produção digital", comp: ['CO'], anos: [7],
+    habs: ["EF07CO11"], tempo: '1 aula', icone: '11',
+    resumo: "Planejar um vídeo, podcast ou site: mensagem, roteiro, papéis, documentação das fontes e checklist antes de publicar.",
+    url: 'ficha.html?id=f-co-roteiro', plano: 'p-midia' },
+  { id: 'f-co-recursao', tipo: 'ficha', titulo: "Fila recursiva e fatorial", comp: ['CO'], anos: [8],
+    habs: ["EF08CO01"], tempo: '1 aula', icone: '01',
+    resumo: "Uma fila que conta pessoas por recursão, o fatorial passo a passo e uma função recursiva para completar.",
+    url: 'ficha.html?id=f-co-recursao', plano: 'p-recursao' },
+  { id: 'f-co-listas', tipo: 'ficha', titulo: "A playlist: listas que crescem", comp: ['CO'], anos: [8],
+    habs: ["EF08CO02"], tempo: '1 aula', icone: '02',
+    resumo: "Executar comandos numa lista viva, completar o programa de uma playlist e achar a maior nota de uma lista.",
+    url: 'ficha.html?id=f-co-listas', plano: 'p-recursao' },
+  { id: 'f-co-ordenar', tipo: 'ficha', titulo: "Ordenar e buscar com cartões", comp: ['CO'], anos: [8],
+    habs: ["EF08CO03"], tempo: '1 aula', icone: '03',
+    resumo: "Cartões para recortar: ordenação por seleção passo a passo, busca binária e quantas perguntas ela precisa.",
+    url: 'ficha.html?id=f-co-ordenar', plano: 'p-recursao' },
+  { id: 'f-co-projeto8', tipo: 'ficha', titulo: "Ficha do projeto: requisitos e testes", comp: ['CO'], anos: [8],
+    habs: ["EF08CO04"], tempo: '1 aula', icone: '04',
+    resumo: "Requisitos essenciais e desejáveis, quadro de tarefas, casos de teste e teste com um usuário de fora do grupo.",
+    url: 'ficha.html?id=f-co-projeto8', plano: 'p-projeto8' },
+  { id: 'f-co-paralelo', tipo: 'ficha', titulo: "A corrida das somas: paralelismo", comp: ['CO'], anos: [8],
+    habs: ["EF08CO05"], tempo: '1 aula', icone: '05',
+    resumo: "Quarenta contas resolvidas por uma e por quatro pessoas, tarefas que dá ou não para dividir, concorrência e nuvem.",
+    url: 'ficha.html?id=f-co-paralelo', plano: 'p-paralelo' },
+  { id: 'f-co-internet', tipo: 'ficha', titulo: "Mapa da internet: rede de redes", comp: ['CO'], anos: [8],
+    habs: ["EF08CO06"], tempo: '1 aula', icone: '06',
+    resumo: "Um mapa com provedores, ponto de troca e servidor para traçar caminhos, cortar ligações e entender o DNS.",
+    url: 'ficha.html?id=f-co-internet', plano: 'p-internet', jogo: 'pacotes' },
+  { id: 'f-co-feed', tipo: 'ficha', titulo: "O feed de papel", comp: ['CO'], anos: [8],
+    habs: ["EF08CO07"], tempo: '1 aula', icone: '07',
+    resumo: "Dez posts para escolher, a turma no papel do algoritmo do feed, bolhas de filtro e perguntas antes de compartilhar.",
+    url: 'ficha.html?id=f-co-feed', plano: 'p-redes' },
+  { id: 'f-co-termos', tipo: 'ficha', titulo: "Tradutores de termos de uso", comp: ['CO'], anos: [8],
+    habs: ["EF08CO09"], tempo: '1 aula', icone: '09',
+    resumo: "Três trechos de termos de uso para traduzir em linguagem simples e avaliar, com glossário e a LGPD.",
+    url: 'ficha.html?id=f-co-termos', plano: 'p-redes' },
+  { id: 'f-co-checagem8', tipo: 'ficha', titulo: "Agência de checagem", comp: ['CO'], anos: [8],
+    habs: ["EF08CO11"], tempo: '1 aula', icone: '11',
+    resumo: "Duas notícias inventadas analisadas com quem, quando, onde mais e por quê, sinais de alerta e viés.",
+    url: 'ficha.html?id=f-co-checagem8', plano: 'p-fontes' },
+  { id: 'f-co-arvore', tipo: 'ficha', titulo: "Árvore de decisão: adivinhe o animal", comp: ['CO'], anos: [9],
+    habs: ["EF09CO01"], tempo: '1 aula', icone: '01',
+    resumo: "Montar uma árvore de perguntas de sim ou não que separa oito animais e descobrir a relação com as potências de 2.",
+    url: 'ficha.html?id=f-co-arvore', plano: 'p-arvores', jogo: 'rotas' },
+  { id: 'f-co-prototipo', tipo: 'ficha', titulo: "Protótipo de papel", comp: ['CO'], anos: [9],
+    habs: ["EF09CO02"], tempo: '1 aula', icone: '02',
+    resumo: "Três telas de um aplicativo desenhadas no papel e testadas por outro grupo antes de programar.",
+    url: 'ficha.html?id=f-co-prototipo', plano: 'p-cidade' },
+  { id: 'f-co-estados', tipo: 'ficha', titulo: "Máquina de estados do personagem", comp: ['CO'], anos: [9],
+    habs: ["EF09CO03"], tempo: '1 aula', icone: '03',
+    resumo: "Seguir a máquina de estados de uma catraca e desenhar a de um personagem de jogo, com tabela de transições.",
+    url: 'ficha.html?id=f-co-estados', plano: 'p-automatos' },
+  { id: 'f-co-incidente', tipo: 'ficha', titulo: "Análise de incidente: como agem os ataques", comp: ['CO'], anos: [9],
+    habs: ["EF09CO04"], tempo: '1 aula', icone: '04',
+    resumo: "Ligar tipos de malware às descrições e investigar um ataque de ransomware fictício numa escola.",
+    url: 'ficha.html?id=f-co-incidente', plano: 'p-golpes', jogo: 'golpe' },
+  { id: 'f-co-radar', tipo: 'ficha', titulo: "Radar do bairro: dados para a cidade", comp: ['CO'], anos: [9],
+    habs: ["EF09CO06"], tempo: '1 aula', icone: '06',
+    resumo: "Escolher um problema local, listar os dados abertos que ajudam a entendê-lo e propor uma solução digital.",
+    url: 'ficha.html?id=f-co-radar', plano: 'p-cidade' },
+  { id: 'f-co-julgamento', tipo: 'ficha', titulo: "Julgamento da tecnologia", comp: ['CO'], anos: [9],
+    habs: ["EF09CO07"], tempo: '1 aula', icone: '07',
+    resumo: "Quatro perguntas para analisar uma tecnologia, impactos positivos e negativos e uma regra para deixá-la mais justa.",
+    url: 'ficha.html?id=f-co-julgamento', plano: 'p-sociedade' },
+  { id: 'f-co-acesso', tipo: 'ficha', titulo: "Mapa do acesso digital", comp: ['CO'], anos: [9],
+    habs: ["EF09CO08"], tempo: '1 aula', icone: '08',
+    resumo: "Pesquisa anônima da turma, gráfico de barras e discussão sobre as camadas da desigualdade digital.",
+    url: 'ficha.html?id=f-co-acesso', plano: 'p-sociedade' },
+  { id: 'f-co-creditos', tipo: 'ficha', titulo: "Créditos certos: licenças e uso de imagem", comp: ['CO'], anos: [9],
+    habs: ["EF09CO09"], tempo: '1 aula', icone: '09',
+    resumo: "O que cada licença Creative Commons permite, como escrever o crédito e um caso de uso de imagem sem autorização.",
+    url: 'ficha.html?id=f-co-creditos', plano: 'p-autoria' },
+  { id: 'f-co-verdade', tipo: 'ficha', titulo: "Checagem em todos os formatos", comp: ['CO'], anos: [9],
+    habs: ["EF09CO10"], tempo: '1 aula', icone: '10',
+    resumo: "Um texto, uma foto, um áudio e um vídeo inventados para checar veracidade, credibilidade e relevância.",
+    url: 'ficha.html?id=f-co-verdade', plano: 'p-fontes' },
+
   // ---------- Matemática · fichas desplugadas e planos das oficinas (gerado por oficinas_ma.py) ----------
   { id: 'f-ma-decimais', tipo: 'ficha', titulo: "Frações e decimais no metro", comp: ['MA'], anos: [6],
     habs: ["EF06MA08", "EF06MA01"], tempo: '1 aula',
@@ -653,7 +783,7 @@ const PLANOS = {
     ],
     avaliacao: 'O esquema final mostra pacotes numerados, caminhos diferentes e o reenvio? O aluno usa as palavras pacote, cabeçalho e protocolo com sentido?',
     inclusao: 'Os cartões podem ser escritos em letra ampliada ou braille. A simulação funciona bem com papéis definidos para estudantes que preferem tarefas estruturadas (ex.: roteador com regra fixa).',
-    recursos: ['f-pacotes', 'pacotes']
+    recursos: ['f-pacotes', 'pacotes', 'f-co-internet']
   },
   'p-grafos': {
     duracao: '2 aulas de 50 min',
@@ -710,7 +840,7 @@ const PLANOS = {
     ],
     avaliacao: 'Justificativas no checklist citam sinais concretos? A campanha traz dicas corretas e acionáveis?',
     inclusao: 'As mensagens do jogo podem ser lidas pelo leitor de tela. Para estudantes com deficiência intelectual, trabalhe com 3 sinais de alerta fixos e repetidos.',
-    recursos: ['f-golpe', 'golpe']
+    recursos: ['f-golpe', 'golpe', 'f-co-seguranca7', 'f-co-incidente']
   },
   'p-fracoes': {
     duracao: '2 aulas de 50 min',
@@ -788,7 +918,7 @@ const PLANOS = {
     ],
     avaliacao: 'Classificação correta dos dados por tipo; tabela de entradas e saídas com tipos; algoritmo que funciona para valores novos.',
     inclusao: 'Use cartões com textura ou cor por tipo de dado. O algoritmo pode ser montado com cartões de instrução em vez de escrito.',
-    recursos: ['robo']
+    recursos: ['robo', 'f-co-tipos', 'f-co-maquinas', 'f-co-generalizar']
   },
   'p-arquivos': {
     duracao: '2 aulas de 50 min',
@@ -807,7 +937,7 @@ const PLANOS = {
     ],
     avaliacao: 'Estrutura de pastas e regra de nomes aplicadas; explicação correta de metadado e de compactação.',
     inclusao: 'Para leitores de tela, nomes de arquivos claros fazem toda a diferença — use isso como argumento. Ofereça a versão com envelopes para quem não tem computador.',
-    recursos: []
+    recursos: ['f-co-arquivos']
   },
   'p-conduta': {
     duracao: '2 aulas de 50 min',
@@ -826,7 +956,7 @@ const PLANOS = {
     ],
     avaliacao: 'Qualidade das reescritas (mantêm a opinião sem ataque pessoal) e das respostas sobre como agir em cada papel.',
     inclusao: 'Evite situações que exponham estudantes reais. Esteja atento a reações durante a aula e combine com a coordenação um encaminhamento caso surja um caso real.',
-    recursos: []
+    recursos: ['f-co-respeito', 'f-co-empatia', 'f-co-cyberbullying']
   },
   'p-lixo': {
     duracao: '2 aulas de 50 min',
@@ -845,7 +975,7 @@ const PLANOS = {
     ],
     avaliacao: 'Linha do tempo com impactos por etapa e cartaz com informações corretas sobre descarte.',
     inclusao: 'Aparelhos para tocar e desmontar (sem bateria) favorecem estudantes cegos e quem aprende melhor com materiais concretos.',
-    recursos: []
+    recursos: ['f-co-aparelho', 'f-co-descarte']
   },
   'p-registros': {
     duracao: '2 aulas de 50 min',
@@ -864,7 +994,7 @@ const PLANOS = {
     ],
     avaliacao: 'O programa armazena os dados em lista, acessa por posição e calcula a média corretamente.',
     inclusao: 'Os copos numerados funcionam como modelo tátil da lista. Para quem programa com leitor de tela, Python costuma ser mais acessível que blocos.',
-    recursos: []
+    recursos: ['f-co-registros']
   },
   'p-bugs': {
     duracao: '2 aulas de 50 min',
@@ -883,7 +1013,7 @@ const PLANOS = {
     ],
     avaliacao: 'Tabela de casos de teste preenchida e programas corrigidos com o tipo de erro identificado.',
     inclusao: 'Explicar o código em voz alta para um colega (“depuração do patinho”) ajuda estudantes que leem com dificuldade. Ofereça os programas impressos em fonte ampliada.',
-    recursos: ['robo']
+    recursos: ['robo', 'f-co-bugs']
   },
   'p-reuso': {
     duracao: '2 aulas de 50 min',
@@ -921,7 +1051,7 @@ const PLANOS = {
     ],
     avaliacao: 'Rubrica: planejamento cumprido, qualidade do conteúdo, documentação completa (créditos e fontes) e colaboração no grupo.',
     inclusao: 'Formatos variados permitem que cada estudante contribua no que faz melhor. Incentive legendas nos vídeos e transcrição dos podcasts — o produto fica acessível para todos.',
-    recursos: []
+    recursos: ['f-co-projeto7', 'f-co-roteiro']
   },
   'p-recursao': {
     duracao: '3 aulas de 50 min',
@@ -941,7 +1071,7 @@ const PLANOS = {
     ],
     avaliacao: 'Registro das comparações nas ordenações; fluxograma de uma sequência; programa funcionando para listas ou entradas diferentes.',
     inclusao: 'As cartas com números grandes ou em braille tornam os algoritmos concretos. Permita que a ordenação seja feita em dupla, com um aluno executando e outro registrando.',
-    recursos: []
+    recursos: ['f-co-recursao', 'f-co-listas', 'f-co-ordenar']
   },
   'p-paralelo': {
     duracao: '2 aulas de 50 min',
@@ -960,7 +1090,7 @@ const PLANOS = {
     ],
     avaliacao: 'Desenho com exemplo correto de paralelismo e de concorrência; participação na discussão sobre a nuvem.',
     inclusao: 'As atividades são corporais e concretas; garanta papéis para estudantes com mobilidade reduzida (cronometrar, registrar, coordenar a fila).',
-    recursos: ['pacotes']
+    recursos: ['pacotes', 'f-co-paralelo']
   },
   'p-redes': {
     duracao: '2 aulas de 50 min',
@@ -979,7 +1109,7 @@ const PLANOS = {
     ],
     avaliacao: 'Respostas dos grupos sobre os termos de uso e o compromisso individual com justificativa.',
     inclusao: 'Disponibilize os trechos em fonte ampliada e com linguagem simplificada ao lado do original. A teia de lã pode ser descrita verbalmente a cada passo.',
-    recursos: ['golpe']
+    recursos: ['golpe', 'f-co-feed', 'f-co-termos']
   },
   'p-fontes': {
     duracao: '2 aulas de 50 min',
@@ -998,7 +1128,7 @@ const PLANOS = {
     ],
     avaliacao: 'Fichas de checagem com classificação justificada e fontes consultadas.',
     inclusao: 'Use leitores de tela para as postagens e descreva as imagens em voz alta. Grupos heterogêneos ajudam na pesquisa.',
-    recursos: ['golpe']
+    recursos: ['golpe', 'f-co-checagem8', 'f-co-verdade']
   },
   'p-projeto8': {
     duracao: '4 aulas de 50 min',
@@ -1017,7 +1147,7 @@ const PLANOS = {
     ],
     avaliacao: 'Rubrica: o programa resolve o problema, usa estruturas adequadas, foi testado, está documentado e o grupo apresentou o processo.',
     inclusao: 'Distribua papéis (programador, testador, documentador, apresentador) com rodízio. Projetos podem ter versões simples e desafios extras.',
-    recursos: ['balanca']
+    recursos: ['balanca', 'f-co-projeto8']
   },
   'p-arvores': {
     duracao: '2 aulas de 50 min',
@@ -1036,7 +1166,7 @@ const PLANOS = {
     ],
     avaliacao: 'Árvore de classificação correta e programa que classifica todos os casos previstos.',
     inclusao: 'Use objetos reais ou cartões táteis para a classificação; a árvore pode ser montada no chão com barbante.',
-    recursos: ['rotas', 'f-grafo']
+    recursos: ['rotas', 'f-grafo', 'f-co-arvore']
   },
   'p-automatos': {
     duracao: '2 aulas de 50 min',
@@ -1055,7 +1185,7 @@ const PLANOS = {
     ],
     avaliacao: 'Diagrama com estados e transições completos e programa coerente com o diagrama.',
     inclusao: 'A encenação com cartões dá sentido concreto aos estados. No programa, use sons diferentes para cada estado, o que também ajuda estudantes com baixa visão.',
-    recursos: []
+    recursos: ['f-co-estados']
   },
   'p-cidade': {
     duracao: '4 aulas de 50 min',
@@ -1074,7 +1204,7 @@ const PLANOS = {
     ],
     avaliacao: 'Uso de dados reais para justificar o problema, protótipo coerente com a proposta e qualidade da apresentação.',
     inclusao: 'Incentive que pelo menos um grupo trate de acessibilidade urbana; estudantes com deficiência podem trazer sua experiência como especialistas, se quiserem.',
-    recursos: []
+    recursos: ['f-co-prototipo', 'f-co-radar']
   },
   'p-sociedade': {
     duracao: '2 aulas de 50 min',
@@ -1093,7 +1223,7 @@ const PLANOS = {
     ],
     avaliacao: 'Qualidade dos argumentos com evidências e respeito às regras do debate; texto curto individual com a posição do aluno.',
     inclusao: 'Distribua papéis conforme o perfil (pesquisa, fala, registro). Ofereça os dados também em formato de tabela acessível.',
-    recursos: ['p-lixo']
+    recursos: ['p-lixo', 'f-co-julgamento', 'f-co-acesso']
   },
   'p-autoria': {
     duracao: '2 aulas de 50 min',
@@ -1112,7 +1242,7 @@ const PLANOS = {
     ],
     avaliacao: 'Cartaz com imagens de uso permitido e créditos corretos; mudança de respostas na revotação justificada.',
     inclusao: 'Peça descrição em texto alternativo para as imagens do cartaz: além de acessível, é parte da boa autoria digital.',
-    recursos: ['p-midia']
+    recursos: ['p-midia', 'f-co-creditos']
   },
   /* ---------- Oficinas de Matemática · metodologias ativas (gerado por oficinas_ma.py) ---------- */
   'p-ma-decimais': {
