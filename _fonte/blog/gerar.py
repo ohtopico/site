@@ -234,6 +234,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 </div>
 </div>
 {contador}<script src="/blog/assets/blog.js?v={VERSAO_CSS}" defer></script>
+<script src="/assets/estrelas.js?v=202610270000" defer></script>
 </body>
 </html>
 '''

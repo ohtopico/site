@@ -130,3 +130,6 @@
     }
   };
 })();
+
+// Estrelas secretas do site (dicas escondidas e contador de estrelas)
+(function () { const s = document.createElement('script'); s.src = '/assets/estrelas.js?v=202610270000'; s.defer = true; document.head.appendChild(s); })();

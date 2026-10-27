@@ -82,3 +82,6 @@
       ${s.uso ? `<p class="uso"><strong>No Ensino Fundamental:</strong> ${esc(s.uso)} <span class="muted">BNCC: ${s.bncc.join(', ')}.</span></p>` : ''}`;
   };
 })();
+
+// Estrelas secretas do site (dicas escondidas e contador de estrelas)
+(function () { const s = document.createElement('script'); s.src = '/assets/estrelas.js?v=202610270000'; s.defer = true; document.head.appendChild(s); })();
