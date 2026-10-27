@@ -29,11 +29,11 @@
     { nivel: 2, id: 'cor', nome: 'Cor do perfil', desc: 'Escolha verde, vermelho ou amarelo para o seu cartão de missões.' },
     { nivel: 3, id: 'extra', nome: 'Missão extra', desc: 'Uma quarta missão por dia, mais difícil, que vale 30 pontos.' },
     { nivel: 5, id: 'trocar', nome: 'Trocar missão', desc: 'Troque uma missão do dia por outra, uma vez por dia.' },
-    { nivel: 10, id: 'certificado', nome: 'Certificado de conquista', desc: 'Certificado para imprimir ou salvar em PDF, com o seu nível e os seus pontos.', link: 'certificado.html' },
     { nivel: 10, id: 'sala', nome: 'Sala dos desafios', desc: 'Enigmas da série Bit a Bit, fases difíceis dos jogos e o desafio da semana.', link: 'desafios.html' },
-    { nivel: 20, id: 'monitor', nome: 'Distintivo de monitor', desc: 'O relatório para a professora mostra que você pode ajudar os colegas.' },
+    { nivel: 20, id: 'votacao', nome: 'Votação do próximo jogo', desc: 'Vote em qual jogo ou simulador vai ser criado a seguir.', emBreve: true },
     { nivel: 30, id: 'criador', nome: 'Criador de enigmas', desc: 'Crie enigmas em binário, hexadecimal ou na Cifra de César para os colegas.', link: 'criador.html' },
-    { nivel: 80, id: 'votacao', nome: 'Votação do próximo jogo', desc: 'Vote em qual jogo ou simulador vai ser criado a seguir.', emBreve: true }
+    { nivel: 70, id: 'monitor', nome: 'Distintivo de monitor', desc: 'O relatório para a professora mostra que você pode ajudar os colegas.' },
+    { nivel: 80, id: 'certificado', nome: 'Certificado de conquista', desc: 'Certificado para imprimir ou salvar em PDF, com o seu nível e os seus pontos.', link: 'certificado.html' }
   ];
 
   const nivelDe = id => (DESBLOQUEIOS.find(x => x.id === id) || { nivel: 1 }).nivel;

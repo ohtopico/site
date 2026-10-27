@@ -149,7 +149,7 @@
       <div class="scroll"><table>
         <thead><tr><th class="name">Estudante</th>${habs.map(h => `<th class="code" title="${esc(h.codigo + ' — ' + h.texto)}">${h.codigo}</th>`).join('')}<th class="no-print"></th></tr></thead>
         <tbody>${alunos.map((x, i) => `<tr>
-          <td class="name"><strong>${esc(x.a)}</strong>${x.valido ? '' : ' <span class="warn" title="O código foi alterado depois de gerado">⚠</span>'}${x.valido && x.n >= (window.MDM ? MDM.nivelDe('monitor') : 20) ? ` <span class="nv nv4" title="Chegou ao nível ${x.n} nas missões e pode ajudar os colegas">Monitor</span>` : ''}<small>${x.y}º ano · ${dataTxt(x.d)}${x.n ? ` · nível ${x.n}` : ''}</small></td>
+          <td class="name"><strong>${esc(x.a)}</strong>${x.valido ? '' : ' <span class="warn" title="O código foi alterado depois de gerado">⚠</span>'}${x.valido && x.n >= (window.MDM ? MDM.nivelDe('monitor') : 70) ? ` <span class="nv nv4" title="Chegou ao nível ${x.n} nas missões e pode ajudar os colegas">Monitor</span>` : ''}<small>${x.y}º ano · ${dataTxt(x.d)}${x.n ? ` · nível ${x.n}` : ''}</small></td>
           ${habs.map(h => `<td>${nv(x.l[h.codigo] || 0)}</td>`).join('')}
           <td class="no-print"><button class="rm" type="button" data-i="${i}" aria-label="Remover ${esc(x.a)}">✕</button></td></tr>`).join('')}</tbody>
         <tfoot><tr><td class="name">Proficientes</td>${habs.map(h => `<td title="${prof(h)} de ${alunos.length}">${pct(h)}%</td>`).join('')}<td class="no-print"></td></tr></tfoot>
