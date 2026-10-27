@@ -82,6 +82,7 @@
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
 <script src="assets/fichas-ma.js"></script>
+<script src="assets/fichas-co.js"></script>
 <script>
 (function () {
   mdTopbar('catalogo');
@@ -425,6 +426,7 @@
   };
 
   if (window.FICHAS_MA) Object.assign(FICHAS, window.FICHAS_MA({ head, sheet, lines, malha }));
+  if (window.FICHAS_CO) Object.assign(FICHAS, window.FICHAS_CO({ head, sheet, lines, malha }));
   const f = FICHAS[id];
   main.innerHTML = f ? f() : '';
   if (FICHAS[id + ':gab']) {
