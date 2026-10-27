@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Sala dos desafios · Material didático | ohtopico</title>
+<meta name="description" content="Enigmas da série Bit a Bit, fases difíceis dos jogos e o desafio da semana, para quem já subiu de nível nas missões.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 1040px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 48px); margin: 4px 0 6px; }
+  .doc h2 { font-size: 26px; margin: 40px 0 6px; }
+  .semana { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 20px 22px; background: var(--paper-2); box-shadow: 8px 8px 0 var(--ink); margin-top: 14px; }
+  .semana strong { font-size: 19px; }
+  .semana .xp { height: 14px; border-radius: 99px; border: 1.5px solid var(--ink); overflow: hidden; margin: 12px 0 6px; background: var(--paper); }
+  .semana .xp span { display: block; height: 100%; background: var(--accent); }
+  .semana.ok { background: var(--ok-soft); }
+  .enigmas { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-top: 14px; }
+  .enigma { display: flex; flex-direction: column; gap: 8px; border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; background: var(--paper); }
+  .enigma.ok { background: var(--ok-soft); }
+  .enigma .top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+  .enigma .serie { display: inline-flex; gap: 6px; align-items: center; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 2px 10px; font-size: 12.5px; font-weight: 600; }
+  .enigma .serie b { color: #f2c230; }
+  .enigma .pts { font-family: var(--display); font-size: 18px; }
+  .enigma h3 { margin: 0; font-size: 18px; }
+  .enigma p { margin: 0; font-size: 15px; }
+  .enigma code { font-size: 14px; background: var(--pill); border-radius: 6px; padding: 1px 5px; }
+  .enigma form { display: flex; gap: 8px; margin-top: auto; padding-top: 6px; }
+  .enigma input { flex: 1; min-width: 0; font: inherit; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; min-height: 42px; }
+  .enigma .btn { min-height: 42px; padding: 6px 16px; }
+  .enigma .msg { font-size: 14px; font-weight: 600; min-height: 1.3em; margin: 0; }
+  .enigma .msg.ok { color: var(--ok); } .enigma .msg.bad { color: var(--bad); }
+  .enigma details { font-size: 14px; color: var(--ink-2); }
+  .enigma .ler { font-size: 13.5px; }
+  .jogos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 14px; }
+  .jogos a { text-decoration: none; color: var(--ink); }
+  .jogos a:hover { background: var(--pill); }
+  .jogos .ok-tag { align-self: flex-start; font-size: 12.5px; font-weight: 700; background: var(--ok); color: var(--paper); border: 1.5px solid var(--ink); border-radius: 99px; padding: 1px 9px; }
+  .sala-trava { min-height: 260px; }
+  .sala-trava.md-travado > .md-trava { top: 90px; transform: translateX(-50%); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc"></main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/missoes.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('missoes');
+  mdFooter();
+  const doc = document.getElementById('doc');
+
+  /* Enigmas da série Bit a Bit. As respostas ficam só como resumo (SHA-256),
+     para não aparecerem no código da página. */
+  const ENIGMAS = [
+    { id: 'en-01', n: 1, tema: 'Sistema decimal', post: '../blog/sistema-decimal-por-que-contamos-de-10-em-10/',
+      txt: 'No número <code>4.725</code>, quanto vale o algarismo 7? Responda só com o número.', dica: 'O 7 está na casa das centenas.', h: ['d4da95c87844d501'] },
+    { id: 'en-02', n: 2, tema: 'Números binários', post: '../blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/',
+      txt: 'Quanto vale <code>101101</code> (binário) no sistema decimal?', dica: 'Da direita para a esquerda, as casas valem 1, 2, 4, 8, 16 e 32.', h: ['3a2b9773c44e2504'] },
+    { id: 'en-03', n: 3, tema: 'Hexadecimal',
+      txt: 'A cor <code>#1A8F3C</code> é um verde. Os dois algarismos do meio (<code>8F</code>) dizem quanto de verde ela tem. Quanto vale <code>8F</code> em decimal?', dica: 'Em hexadecimal, F vale 15 e a casa da esquerda vale 16 vezes mais.', h: ['3b6a5ce650715b09'] },
+    { id: 'en-04', n: 4, tema: 'Bits e bytes',
+      txt: 'Quantos valores diferentes cabem em 1 byte?', dica: '1 byte tem 8 bits, e cada bit tem 2 possibilidades.', h: ['85dc15f98f48b3b2'] },
+    { id: 'en-05', n: 5, tema: 'Texto no computador',
+      txt: 'Decifre a palavra escrita em ASCII: <code>01000010 01001001 01010100</code>', dica: 'Converta cada grupo para decimal. Em ASCII, 65 é A, 66 é B e assim por diante.', h: ['743a10c70c3b8d73'] },
+    { id: 'en-06', n: 6, tema: 'Imagens e pixels',
+      txt: 'Uma imagem de 10 por 10 pixels usa 24 bits para a cor de cada pixel. Quantos bytes ela ocupa, sem compressão?', dica: 'Conte os pixels, multiplique pelos bits de cada um e divida por 8.', h: ['f576453d1b9630c8'] },
+    { id: 'en-07', n: 7, tema: 'Algoritmos',
+      txt: 'Comece com o número 3. Repita 4 vezes: dobre o número e depois subtraia 1. Qual é o resultado final?', dica: 'Faça passo a passo: 3, depois 5, depois...', h: ['b4939759db599f41'] },
+    { id: 'en-08', n: 8, tema: 'Circuitos lógicos',
+      txt: 'Uma porta AND recebe A = 1 e B = 0. A saída dela entra numa porta NOT. Qual é a saída final, 0 ou 1?', dica: 'A porta AND só dá 1 quando as duas entradas são 1. A NOT inverte.', h: ['4b009e65b7f65d2f', '2978ad7b601647c2'] },
+    { id: 'en-09', n: 9, tema: 'Arquitetura de computadores',
+      txt: 'O processador repete o ciclo buscar, decodificar e executar. Em qual dessas etapas ele descobre o que a instrução está pedindo? Responda com o verbo.', dica: 'Não é a primeira nem a última.', h: ['163084721aafe396', 'b5f3976d6fb1d0db', '4c60f00119e6cee0'] },
+    { id: 'en-11', n: 11, tema: 'Estruturas de dados',
+      txt: 'Numa pilha vazia, você empilha A, B e C. Desempilha duas vezes. Empilha D e E. Desempilha uma vez. Qual letra está no topo?', dica: 'Na pilha, sai primeiro quem entrou por último.', h: ['b5afd02a05a23d05'] },
+    { id: 'en-12', n: 12, tema: 'Grafos',
+      txt: 'Estradas entre cidades: A–B 4 km, B–C 3 km, A–C 9 km, C–D 2 km, B–D 7 km. Qual é o menor caminho de A até D, em km?', dica: 'Compare todos os caminhos que saem de A e chegam em D.', h: ['eb2b72cd60e7a6df', 'fcda427af76eaf69'] }
+  ];
+  const DIFICEIS = [
+    { id: 'robo-dificil', titulo: 'Robô Coletor: modo difícil', url: 'jogos/robo.html?modo=dificil', desc: 'Cinco labirintos de 8 por 8. Termine todas as fases para ganhar os pontos.' },
+    { id: 'cifra-dificil', titulo: 'Detetive da Cifra: modo difícil', url: 'jogos/cifra.html?modo=dificil', desc: 'Mensagens sem a chave e sem prévia, e mensagens cifradas duas vezes. Faça 70% dos pontos.' }
+  ];
+
+  const norm = s => s.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Z0-9]/g, '');
+  async function resumo(id, txt) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`ohtopico-enigma|${id}|${norm(txt)}`));
+    return [...new Uint8Array(buf)].slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  const bits = n => n.toString(2).padStart(4, '0');
+
+  function render() {
+    const e = MDM.estado();
+    const ds = e ? e.desafios : {};
+    const s = e && e.semana;
+    const resolvidos = ENIGMAS.filter(x => ds[x.id] !== undefined).length;
+    doc.innerHTML = `
+      <span class="eyebrow">Sala dos desafios</span>
+      <h1>Sala dos desafios</h1>
+      <p class="muted" style="max-width:760px;margin:0">Desafios mais difíceis para quem já subiu de nível nas missões. Cada um vale pontos uma vez só. <a href="missoes.html">Voltar para as missões</a></p>
+      <div class="sala-trava" data-nivel="sala">
+        <h2>Desafio da semana</h2>
+        ${s ? `<div class="semana${s.ok ? ' ok' : ''}">
+          <strong>${esc(s.txt)}</strong>
+          <div class="xp" role="progressbar" aria-label="Progresso do desafio da semana" aria-valuemin="0" aria-valuemax="${s.meta}" aria-valuenow="${s.feito}"><span style="width:${s.feito / s.meta * 100}%"></span></div>
+          <span class="small muted">${s.ok ? `Cumprido: +${s.pts} pontos.` : `${s.feito} de ${s.meta} · vale ${s.pts} pontos · ${s.fim <= 1 ? 'termina hoje' : `faltam ${s.fim} dias`}. Toda segunda-feira começa um desafio novo.`}</span>
+        </div>` : '<p class="muted">O desafio da semana aparece aqui quando você chegar ao nível da Sala.</p>'}
+
+        <h2>Enigmas Bit a Bit</h2>
+        <p class="muted" style="margin:0">Um enigma para cada post da série Bit a Bit no blog. Cada um vale ${MDM.PONTOS.enigma} pontos. ${resolvidos} de ${ENIGMAS.length} resolvidos.</p>
+        <div class="enigmas">${ENIGMAS.map(x => {
+          const ok = ds[x.id] !== undefined;
+          return `<article class="enigma${ok ? ' ok' : ''}" data-id="${x.id}">
+            <div class="top"><span class="serie">Bit a Bit <span aria-hidden="true">${bits(x.n)}</span> <b>#${String(x.n).padStart(2, '0')}</b></span><span class="pts">${ok ? 'Resolvido' : '+' + MDM.PONTOS.enigma}</span></div>
+            <h3>${esc(x.tema)}</h3>
+            <p>${x.txt}</p>
+            <details><summary>Dica</summary>${esc(x.dica)}</details>
+            <span class="ler">${x.post ? `<a href="${x.post}">Ler o post #${String(x.n).padStart(2, '0')} no blog</a>` : '<a href="../blog/">Ver a série Bit a Bit no blog</a>'}</span>
+            ${ok ? '' : `<form><label class="sr-only" for="r-${x.id}">Resposta do enigma ${x.n}</label><input id="r-${x.id}" autocomplete="off" placeholder="Sua resposta"><button class="btn" type="submit">Conferir</button></form>`}
+            <p class="msg" role="status"></p>
+          </article>`;
+        }).join('')}</div>
+
+        <h2>Fases difíceis</h2>
+        <p class="muted" style="margin:0">Versões mais difíceis dos jogos. Cada uma vale ${MDM.PONTOS.dificil} pontos na primeira vez que você termina.</p>
+        <div class="jogos">${DIFICEIS.map(j => `<a class="card" href="${j.url}">
+          ${ds[j.id] !== undefined ? '<span class="ok-tag">Concluído</span>' : ''}
+          <strong style="font-size:18px">${esc(j.titulo)}</strong>
+          <span class="small muted">${esc(j.desc)}</span>
+          <span class="small">${ds[j.id] !== undefined ? 'Jogar de novo' : `Jogar · +${MDM.PONTOS.dificil}`} →</span>
+        </a>`).join('')}</div>
+      </div>`;
+
+    doc.querySelectorAll('.enigma form').forEach(f => {
+      f.onsubmit = async ev => {
+        ev.preventDefault();
+        const card = f.closest('.enigma'), x = ENIGMAS.find(k => k.id === card.dataset.id);
+        const msg = card.querySelector('.msg'), v = f.querySelector('input').value;
+        if (!norm(v)) { msg.textContent = 'Digite sua resposta.'; msg.className = 'msg bad'; return; }
+        if (x.h.includes(await resumo(x.id, v))) {
+          MDM.desafio(x.id, MDM.PONTOS.enigma, `Enigma #${String(x.n).padStart(2, '0')} resolvido`);
+          render();
+          const m = doc.querySelector(`.enigma[data-id="${x.id}"] .msg`);
+          if (m) { m.textContent = 'Certo!'; m.className = 'msg ok'; }
+        } else { msg.textContent = 'Ainda não. Abra a dica ou leia o post.'; msg.className = 'msg bad'; }
+      };
+    });
+    MDM.travar(doc);
+  }
+  MDM.verificar(true);
+  render();
+  addEventListener('focus', () => { MDM.verificar(true); MDM.atualizarBarra(); render(); });
+})();
+</script>
+</body>
+</html>
