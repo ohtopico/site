@@ -300,3 +300,37 @@ details.howto[open] summary { margin-bottom: 8px; }
   background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 600;
   text-decoration: none; box-shadow: 4px 4px 0 var(--ink); }
 @media print { .mis-btn { display: none !important; } }
+
+/* ---------- Habilidades da BNCC nas páginas de área (mdHabArea) ---------- */
+.hab-anos { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 18px; }
+.hab-nota { max-width: 760px; margin: 0 0 14px; }
+.hab-pdf { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; margin-bottom: 18px; background: var(--co-soft); }
+.hab-pdf > div { flex: 1 1 320px; }
+.hab-pdf strong { display: block; font-family: var(--display); font-size: 19px; }
+.hab-pdf span { font-size: 14.5px; color: var(--ink-2); }
+.hab-area { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--line); }
+.hab-area li { display: flex; align-items: flex-start; gap: 12px; border-bottom: 1.5px solid var(--line); }
+.hab-area details { flex: 1; min-width: 0; }
+.hab-area summary { display: flex; align-items: center; gap: 12px; padding: 11px 0; cursor: pointer; list-style: none; }
+.hab-area summary::-webkit-details-marker { display: none; }
+.hab-area summary::before { content: '+'; flex: none; width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 14px; line-height: 1; }
+.hab-area details[open] summary::before { content: '\2212'; background: var(--ink); color: var(--paper); }
+.hab-area summary:hover .hab-obj { text-decoration: underline; }
+.hab-area summary .tag { flex: none; }
+.hab-obj { flex: 1; min-width: 0; font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hab-n { flex: none; font-size: 13px; color: var(--ink-3); }
+.hab-corpo { padding: 0 0 14px 34px; }
+.hab-txt { margin: 0; font-size: 15px; max-width: 760px; }
+.hab-txt strong { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 1px; }
+.hab-mats { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; font-size: 13.5px; }
+.hab-mats a { color: var(--ink); text-decoration: none; border: 1.5px solid var(--line); border-radius: 99px; padding: 3px 11px; background: var(--paper); }
+.hab-mats a:hover { border-color: var(--ink); background: var(--pill); }
+.hab-mats a span { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); margin-right: 6px; }
+a.hab-baixar { flex: none; margin-top: 7px; font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--paper); background: var(--accent); border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 13px; white-space: nowrap; }
+a.hab-baixar:hover { opacity: .88; }
+.hab-breve { font-size: 13px; color: var(--ink-3); font-style: italic; }
+.hab-todas { margin-top: 12px; border: 0; background: none; padding: 0; color: var(--ink); text-decoration: underline; font-size: 14.5px; cursor: pointer; }
+.hab-mais { margin: 14px 0 0; font-weight: 600; }
+.hab-mais a { color: var(--ink); }
+.area-rodape { margin: 0; color: var(--ink-2); }
+@media (max-width: 560px) { .hab-n { display: none; } .hab-area summary { gap: 8px; } .hab-corpo { padding-left: 0; } a.hab-baixar { padding: 4px 10px; } }

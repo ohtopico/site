@@ -84,29 +84,13 @@
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="bncc">
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="eyebrow">Aula expositiva de 30 minutos</span><h2>Slides da BNCC Computação</h2></div>
-        <a class="btn ghost" href="../professor.html#slides">Baixar os slides →</a>
+        <div><span class="eyebrow">BNCC Computação · 1º ao 9º ano</span><h2>Habilidades e materiais</h2></div>
+        <a class="btn ghost" href="../bncc.html?comp=CO&amp;ano=6">Explorar a BNCC →</a>
       </div>
-      <p class="muted" style="max-width:760px">Um conjunto de slides em PDF para cada habilidade de Computação do 6º ao 9º ano: pergunta de abertura, explicação com exemplos, atividade de 7 minutos, perguntas de checagem e roteiro do professor com as respostas no último slide.</p>
-      <div class="btn-row">
-        <a class="btn ghost" href="../bncc.html?comp=CO&amp;ano=6">6º ano</a>
-        <a class="btn ghost" href="../bncc.html?comp=CO&amp;ano=7">7º ano</a>
-        <a class="btn ghost" href="../bncc.html?comp=CO&amp;ano=8">8º ano</a>
-        <a class="btn ghost" href="../bncc.html?comp=CO&amp;ano=9">9º ano</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="eyebrow">Anos iniciais · 1º ao 5º ano</span><h2>Computação desplugada nas datas festivas</h2></div>
-        <a class="btn ghost" href="../datas-festivas/">Ver o caderno →</a>
-      </div>
-      <p class="muted" style="max-width:760px">Nove atividades sem computador para o calendário escolar, com ficha do professor, folhas para imprimir e gabarito, em um PDF gratuito.</p>
+      <div data-hab-area="CO"><p class="muted">Carregando as habilidades...</p></div>
     </div>
   </section>
 
@@ -135,20 +119,7 @@
 
   <section class="block">
     <div class="wrap">
-      <span class="eyebrow">Lista completa</span>
-      <h2>Jogos e cadernos de Computação</h2>
-      <ul class="lista-links">
-          <li><a href="../jogos/pacotes.html">Correio de Pacotes</a></li>
-          <li><a href="../jogos/cifra.html">Detetive da Cifra</a></li>
-          <li><a href="../jogos/golpe.html">Golpe ou Seguro?</a></li>
-          <li><a href="../jogos/robo.html">Robô Coletor</a></li>
-          <li><a href="../jogos/rotas.html">Rota Mais Curta</a></li>
-          <li><a href="../../simuladores/bases.html">Simulador de bases numéricas</a></li>
-          <li><a href="../../simuladores/logica.html">Simulador de portas lógicas</a></li>
-          <li><a href="../../simuladores/placa-mae.html">Placa-mãe em 3D</a></li>
-          <li><a href="../datas-festivas/">Computação desplugada nas datas festivas</a></li>
-      </ul>
-      <p class="muted" style="margin-top:24px">Procura materiais de Matemática? Veja a <a href="../matematica/">área de Matemática</a>, com o Laboratório 3D, a calculadora de Bhaskara e as oficinas.</p>
+      <p class="area-rodape">Procura um material específico? O <a href="../catalogo.html?comp=CO#indice">índice completo do catálogo</a> lista todos os jogos e recursos das duas áreas. Para o Laboratório 3D, a calculadora de Bhaskara e as oficinas, veja a <a href="../matematica/">área de Matemática</a>.</p>
     </div>
   </section>
 </main>
@@ -166,12 +137,13 @@
   mdFooter();
   const COMP = 'CO';
   const doComp = t => RECURSOS.filter(r => r.tipo === t && r.comp.includes(COMP));
-  const statDef = [[doComp('jogo').length, 'jogos', '../catalogo.html?comp=CO&tipo=jogo'], [Object.keys(SLIDES).length, 'aulas com slides', '../professor.html#slides'], [doComp('plano').length, 'planos de aula', '../catalogo.html?comp=CO&tipo=plano'], [doComp('lista').length, 'listas de exercícios', '../catalogo.html?comp=CO&tipo=lista']];
+  const statDef = [[doComp('jogo').length, 'jogos', '../catalogo.html?comp=CO&tipo=jogo'], [Object.keys(SLIDES).length, 'aulas com slides', '#bncc'], [doComp('plano').length, 'planos de aula', '../catalogo.html?comp=CO&tipo=plano'], [doComp('lista').length, 'listas de exercícios', '../catalogo.html?comp=CO&tipo=lista']];
   document.getElementById('stats').innerHTML = statDef.map(([n, l, href]) => `<a href="${href}"><b>${n}</b><span>${l}</span></a>`).join('');
   document.querySelectorAll('[data-grid]').forEach(el => {
     const max = Number(el.dataset.max) || 99;
     el.innerHTML = doComp(el.dataset.grid).filter(r => !el.dataset.so || r.id.startsWith(el.dataset.so)).slice(0, max).map(r => mdCard(r)).join('');
   });
+  document.querySelectorAll('[data-hab-area]').forEach(el => mdHabArea(el, el.dataset.habArea));
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
