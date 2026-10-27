@@ -1,0 +1,2732 @@
+{
+ "CO": [
+  {
+   "codigo": "EF06CO01",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Tipos de dados",
+   "texto": "Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado.",
+   "materiais": [
+    {
+     "t": "Slides · Organizando informações",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co01-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Coleções, entradas e saídas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-dados"
+    },
+    {
+     "t": "Lista · Tipos de dados (6º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l6-tipos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO02",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Linguagem de programação",
+   "texto": "Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Sequência, repetição e decisão",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co02-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Algoritmos: do papel ao robô",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-robo"
+    },
+    {
+     "t": "Jogo · Robô Coletor",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/robo.html"
+    },
+    {
+     "t": "Ficha · Programando o colega-robô",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-robo"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO03",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Pensamento computacional",
+   "objeto": "Linguagem de programação",
+   "texto": "Descrever com precisão a solução de um problema, construindo o programa que implementa essa solução.",
+   "materiais": [
+    {
+     "t": "Slides · Do problema ao programa",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co03-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Algoritmos: do papel ao robô",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-robo"
+    },
+    {
+     "t": "Jogo · Robô Coletor",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/robo.html"
+    },
+    {
+     "t": "Ficha · Programando o colega-robô",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-robo"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO04",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Pensamento computacional",
+   "objeto": "Decomposição",
+   "texto": "Construir soluções de problemas usando a técnica de decomposição e automatizá-las com uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Dividir para resolver",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co04-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Algoritmos: do papel ao robô",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-robo"
+    },
+    {
+     "t": "Jogo · Robô Coletor",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/robo.html"
+    },
+    {
+     "t": "Ficha · Decompor para resolver",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-decompor"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO05",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Pensamento computacional",
+   "objeto": "Generalização",
+   "texto": "Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.",
+   "materiais": [
+    {
+     "t": "Slides · Entradas e saídas",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co05-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Coleções, entradas e saídas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-dados"
+    },
+    {
+     "t": "Lista · Generalização (6º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l6-generalizacao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO06",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Pensamento computacional",
+   "objeto": "Generalização",
+   "texto": "Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros).",
+   "materiais": [
+    {
+     "t": "Slides · Um algoritmo para todos os casos",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co06-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Coleções, entradas e saídas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-dados"
+    },
+    {
+     "t": "Lista · Generalização (6º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l6-generalizacao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO07",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Mundo digital",
+   "objeto": "Transmissão de dados",
+   "texto": "Entender como a informação é quebrada em pedaços, transmitida em pacotes por vários equipamentos e reconstruída no destino.",
+   "materiais": [
+    {
+     "t": "Slides · Como a mensagem viaja",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co07-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Como uma mensagem atravessa a internet",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-internet"
+    },
+    {
+     "t": "Jogo · Correio de Pacotes",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/pacotes.html"
+    },
+    {
+     "t": "Ficha · Mensagem em pacotes",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-pacotes"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO08",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Mundo digital",
+   "objeto": "Gestão de dados",
+   "texto": "Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados.",
+   "materiais": [
+    {
+     "t": "Slides · Arquivos em ordem",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co08-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Arquivos em ordem: pastas, compactação e metadados",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-arquivos"
+    },
+    {
+     "t": "Lista · Gestão de dados (6º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l6-gestao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO09",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Tecnologia digital e sociedade",
+   "texto": "Apresentar conduta e linguagem apropriadas ao se comunicar em ambiente digital, com ética e respeito.",
+   "materiais": [
+    {
+     "t": "Slides · Do outro lado da tela tem gente",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co09-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Convivência digital: respeito, empatia e cyberbullying",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-conduta"
+    },
+    {
+     "t": "Lista · Tecnologia digital e sociedade (6º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l6-sociedade"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06CO10",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Tecnologia digital e sustentabilidade",
+   "texto": "Analisar o consumo de tecnologia na sociedade, a produção dos recursos, a obsolescência e a sustentabilidade.",
+   "materiais": [
+    {
+     "t": "Slides · Quanto custa um celular?",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef06co10-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Do consumo ao lixo eletrônico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-lixo"
+    },
+    {
+     "t": "Lista · Tecnologia digital e sustentabilidade (6º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l6-sustentabilidade"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO01",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Registros e matrizes",
+   "texto": "Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Fichas e listas",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co01-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Registros e listas: a ficha da turma",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-registros"
+    },
+    {
+     "t": "Lista · Registros e matrizes (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-registros"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO02",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Análise de programas",
+   "texto": "Analisar programas para detectar e remover erros, ampliando a confiança na sua correção.",
+   "materiais": [
+    {
+     "t": "Slides · Caça aos bugs",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co02-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Caça aos bugs: depuração de programas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-bugs"
+    },
+    {
+     "t": "Lista · Análise de programas (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-analise"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO03",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Projetos com programação",
+   "texto": "Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente, escolhendo estruturas de dados e técnicas adequadas.",
+   "materiais": [
+    {
+     "t": "Slides · Programar para outras matérias",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co03-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Projeto: nossa produção digital",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-midia"
+    },
+    {
+     "t": "Lista · Projetos com programação (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-projetos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO04",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Pensamento computacional",
+   "objeto": "Propriedades de grafos",
+   "texto": "Explorar propriedades básicas de grafos.",
+   "materiais": [
+    {
+     "t": "Slides · Pontos e ligações",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co04-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Grafos e o caminho mais curto",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-grafos"
+    },
+    {
+     "t": "Jogo · Rota Mais Curta",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/rotas.html"
+    },
+    {
+     "t": "Ficha · Mapa dos bairros",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-grafo"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO05",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Pensamento computacional",
+   "objeto": "Reúso",
+   "texto": "Criar algoritmos usando decomposição e reúso, de forma colaborativa, e automatizá-los com uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Escreva uma vez, use sempre",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co05-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Blocos que se repetem: funções e reúso",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-reuso"
+    },
+    {
+     "t": "Ficha · Decompor para resolver",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-decompor"
+    },
+    {
+     "t": "Lista · Reúso (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-reuso"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO06",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Mundo digital",
+   "objeto": "Protocolos de comunicação em redes",
+   "texto": "Compreender o papel de protocolos para a transmissão de dados.",
+   "materiais": [
+    {
+     "t": "Slides · As regras da conversa",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co06-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Como uma mensagem atravessa a internet",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-internet"
+    },
+    {
+     "t": "Jogo · Correio de Pacotes",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/pacotes.html"
+    },
+    {
+     "t": "Ficha · Mensagem em pacotes",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-pacotes"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO07",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Mundo digital",
+   "objeto": "Segurança cibernética",
+   "texto": "Identificar problemas de segurança cibernética e experimentar formas de proteção.",
+   "materiais": [
+    {
+     "t": "Slides · Proteja sua vida digital",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co07-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Golpes digitais e dados pessoais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-golpes"
+    },
+    {
+     "t": "Jogo · Golpe ou Seguro?",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/golpe.html"
+    },
+    {
+     "t": "Lista · Segurança cibernética (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-seguranca"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO08",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Cultura digital",
+   "objeto": "Cyberbullying",
+   "texto": "Demonstrar empatia sobre opiniões divergentes na web.",
+   "materiais": [
+    {
+     "t": "Slides · Discordar sem ferir",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co08-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Convivência digital: respeito, empatia e cyberbullying",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-conduta"
+    },
+    {
+     "t": "Lista · Cyberbullying (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-cyberbullying"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO09",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Cyberbullying",
+   "texto": "Reconhecer e debater sobre cyberbullying.",
+   "materiais": [
+    {
+     "t": "Slides · Cyberbullying não é brincadeira",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co09-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Convivência digital: respeito, empatia e cyberbullying",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-conduta"
+    },
+    {
+     "t": "Lista · Cyberbullying (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-cyberbullying"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO10",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Impactos da tecnologia digital",
+   "texto": "Identificar os impactos ambientais do descarte de peças de computadores e eletrônicos e sua relação com a sustentabilidade.",
+   "materiais": [
+    {
+     "t": "Slides · Para onde vai o lixo eletrônico?",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co10-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Do consumo ao lixo eletrônico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-lixo"
+    },
+    {
+     "t": "Lista · Impactos da tecnologia digital (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-impactos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07CO11",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Produção digital",
+   "texto": "Criar, documentar e publicar produtos (vídeos, podcasts, sites) usando recursos de tecnologia, individual ou colaborativamente.",
+   "materiais": [
+    {
+     "t": "Slides · Do roteiro à publicação",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef07co11-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Projeto: nossa produção digital",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-midia"
+    },
+    {
+     "t": "Lista · Produção digital (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l7-producao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO01",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Listas e recursão",
+   "texto": "Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Um problema dentro de outro",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co01-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Listas, recursão e algoritmos de ordenação",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-recursao"
+    },
+    {
+     "t": "Lista · Listas e recursão (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-listas"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO02",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Listas e recursão",
+   "texto": "Criar soluções que usem listas para descrever informações e automatizá- las com uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Listas que crescem",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co02-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Listas, recursão e algoritmos de ordenação",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-recursao"
+    },
+    {
+     "t": "Lista · Listas e recursão (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-listas"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO03",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Algoritmos clássicos",
+   "texto": "Utilizar algoritmos clássicos de manipulação sobre listas.",
+   "materiais": [
+    {
+     "t": "Slides · Buscar e ordenar",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co03-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Listas, recursão e algoritmos de ordenação",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-recursao"
+    },
+    {
+     "t": "Lista · Algoritmos clássicos (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-algoritmos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO04",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Pensamento computacional",
+   "objeto": "Projetos com programação",
+   "texto": "Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente.",
+   "materiais": [
+    {
+     "t": "Slides · Um programa para outra disciplina",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co04-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Projeto: um programa para outra disciplina",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-projeto8"
+    },
+    {
+     "t": "Lista · Projetos com programação (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-projetos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO05",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Mundo digital",
+   "objeto": "Sistemas distribuídos",
+   "texto": "Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.",
+   "materiais": [
+    {
+     "t": "Slides · Muitas mãos",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co05-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Muitas mãos: paralelismo e sistemas distribuídos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-paralelo"
+    },
+    {
+     "t": "Lista · Sistemas distribuídos (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-distribuidos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO06",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Mundo digital",
+   "objeto": "Internet",
+   "texto": "Entender como é a estrutura e o funcionamento da internet.",
+   "materiais": [
+    {
+     "t": "Slides · Como a internet funciona",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co06-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Como uma mensagem atravessa a internet",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-internet"
+    },
+    {
+     "t": "Jogo · Correio de Pacotes",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/pacotes.html"
+    },
+    {
+     "t": "Lista · Internet (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-internet"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO07",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Cultura digital",
+   "objeto": "Redes sociais e segurança da informação",
+   "texto": "Compartilhar informações em redes sociais compreendendo sua dinâmica de funcionamento.",
+   "materiais": [
+    {
+     "t": "Slides · Por dentro das redes sociais",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co07-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Por dentro das redes sociais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-redes"
+    },
+    {
+     "t": "Lista · Redes sociais e segurança da informação (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-redes-sociais"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO08",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Cultura digital",
+   "objeto": "Redes sociais e segurança da informação",
+   "texto": "Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados.",
+   "materiais": [
+    {
+     "t": "Slides · Seus dados valem muito",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co08-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Golpes digitais e dados pessoais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-golpes"
+    },
+    {
+     "t": "Jogo · Golpe ou Seguro?",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/golpe.html"
+    },
+    {
+     "t": "Ficha · Meus dados, minhas regras",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-golpe"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO09",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Redes sociais e segurança da informação",
+   "texto": "Analisar criticamente as políticas e os termos de uso das redes sociais e demais plataformas.",
+   "materiais": [
+    {
+     "t": "Slides · Li e concordo?",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co09-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Por dentro das redes sociais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-redes"
+    },
+    {
+     "t": "Lista · Redes sociais e segurança da informação (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-redes-sociais"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO10",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Segurança em ambientes virtuais",
+   "texto": "Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais.",
+   "materiais": [
+    {
+     "t": "Slides · Privacidade é direito",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co10-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Golpes digitais e dados pessoais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-golpes"
+    },
+    {
+     "t": "Jogo · Golpe ou Seguro?",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/golpe.html"
+    },
+    {
+     "t": "Ficha · Meus dados, minhas regras",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-golpe"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08CO11",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Uso crítico das mídias digitais",
+   "texto": "Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.",
+   "materiais": [
+    {
+     "t": "Slides · Checagem de fatos",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef08co11-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Checagem de fatos: fontes, vieses e desinformação",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-fontes"
+    },
+    {
+     "t": "Lista · Uso crítico das mídias digitais (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l8-midias"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO01",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Grafos e árvores",
+   "texto": "Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Árvores que decidem",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co01-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Árvores de decisão e grafos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-arvores"
+    },
+    {
+     "t": "Jogo · Rota Mais Curta",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/rotas.html"
+    },
+    {
+     "t": "Lista · Grafos e árvores (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-grafos-arvores"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO02",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Pensamento computacional",
+   "objeto": "Projetos com programação",
+   "texto": "Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente.",
+   "materiais": [
+    {
+     "t": "Slides · Resolver problemas de verdade",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co02-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Projeto: tecnologia para a nossa cidade",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-cidade"
+    },
+    {
+     "t": "Lista · Projetos com programação (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-projetos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO03",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Pensamento computacional",
+   "objeto": "Autômatos e eventos",
+   "texto": "Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.",
+   "materiais": [
+    {
+     "t": "Slides · Máquinas de estados",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co03-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Máquinas de estados: do semáforo ao jogo",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-automatos"
+    },
+    {
+     "t": "Lista · Autômatos e eventos (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-automatos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO04",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Mundo digital",
+   "objeto": "Segurança cibernética",
+   "texto": "Compreender o funcionamento de malwares e outros ataques cibernéticos.",
+   "materiais": [
+    {
+     "t": "Slides · Como agem os ataques",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co04-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Segredos em código: criptografia",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-cripto"
+    },
+    {
+     "t": "Plano de aula · Golpes digitais e dados pessoais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-golpes"
+    },
+    {
+     "t": "Jogo · Golpe ou Seguro?",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/golpe.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO05",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Mundo digital",
+   "objeto": "Segurança cibernética",
+   "texto": "Analisar técnicas de criptografia para armazenamento e transmissão de dados.",
+   "materiais": [
+    {
+     "t": "Slides · Segredos em código",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co05-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Segredos em código: criptografia",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-cripto"
+    },
+    {
+     "t": "Jogo · Detetive da Cifra",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/cifra.html"
+    },
+    {
+     "t": "Ficha · Disco da Cifra de César",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-cesar"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO06",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Cultura digital",
+   "objeto": "Tecnologia digital e sociedade",
+   "texto": "Analisar problemas sociais da cidade e do estado a partir de ambientes digitais, propondo soluções.",
+   "materiais": [
+    {
+     "t": "Slides · Tecnologia para a nossa cidade",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co06-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Projeto: tecnologia para a nossa cidade",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-cidade"
+    },
+    {
+     "t": "Lista · Tecnologia digital e sociedade (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-sociedade"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO07",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Cultura digital",
+   "objeto": "Tecnologia digital e sociedade",
+   "texto": "Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.",
+   "materiais": [
+    {
+     "t": "Slides · Tecnologia não é neutra",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co07-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Tecnologia, poder e desigualdade digital",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-sociedade"
+    },
+    {
+     "t": "Lista · Tecnologia digital e sociedade (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-sociedade"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO08",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Cultura digital",
+   "objeto": "Tecnologia digital e sociedade",
+   "texto": "Discutir como a distribuição desigual de recursos de computação na economia global levanta questões éticas.",
+   "materiais": [
+    {
+     "t": "Slides · Desigualdade digital",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co08-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Tecnologia, poder e desigualdade digital",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-sociedade"
+    },
+    {
+     "t": "Lista · Tecnologia digital e sociedade (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-sociedade"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO09",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Autoria em meio digital",
+   "texto": "Criar ou utilizar conteúdo em meio digital compreendendo questões éticas de direitos autorais e uso de imagem.",
+   "materiais": [
+    {
+     "t": "Slides · Isso é seu?",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co09-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Autoria, direitos autorais e uso de imagem",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-autoria"
+    },
+    {
+     "t": "Lista · Autoria em meio digital (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-autoria"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09CO10",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Cultura digital",
+   "objeto": "Qualidade da informação",
+   "texto": "Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos.",
+   "materiais": [
+    {
+     "t": "Slides · Verdade em todos os formatos",
+     "u": "https://ohtopico.com.br/material-didatico/slides/bncc-ef09co10-slides.pdf"
+    },
+    {
+     "t": "Plano de aula · Checagem de fatos: fontes, vieses e desinformação",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-fontes"
+    },
+    {
+     "t": "Lista · Qualidade da informação (9º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l9-qualidade"
+    }
+   ]
+  }
+ ],
+ "MA": [
+  {
+   "codigo": "EF06MA01",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Sistema de numeração decimal: características, leitura, escrita e comparação de números naturais e de números racionais representados na forma decimal",
+   "texto": "Comparar, ordenar, ler e escrever números naturais e números racionais cuja representação decimal é finita, fazendo uso da reta numérica.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Frações e decimais com o metro",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-decimais"
+    },
+    {
+     "t": "Recurso 3D · Material Dourado 3D",
+     "u": "https://ohtopico.com.br/material-didatico/3d/decimais.html"
+    },
+    {
+     "t": "Ficha · Frações e decimais no metro",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-decimais"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA02",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Sistema de numeração decimal: características, leitura, escrita e comparação de números naturais e de números racionais representados na forma decimal",
+   "texto": "Reconhecer o sistema de numeração decimal, como o que prevaleceu no mundo ocidental, e destacar semelhanças e diferenças com outros sistemas, de modo a sistematizar suas principais características (base, valor posicional e função do zero), utilizando, inclusive, a composição e decomposição de números naturais e números racionais em sua representação decimal.",
+   "materiais": [
+    {
+     "t": "Recurso 3D · Material Dourado 3D",
+     "u": "https://ohtopico.com.br/material-didatico/3d/decimais.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA03",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Operações (adição, subtração, multiplicação, divisão e potenciação) com números naturais; divisão euclidiana",
+   "texto": "Resolver e elaborar problemas que envolvam cálculos (mentais ou escritos, exatos ou aproximados) com números naturais, por meio de estratégias variadas, com compreensão dos processos neles envolvidos com e sem uso de calculadora.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Minha primeira OBMEP: estratégias para resolver problemas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-obmep"
+    },
+    {
+     "t": "Jogo · Corrida da Tabuada",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/tabuada.html"
+    },
+    {
+     "t": "Lista · Simulado OBMEP Nível 1 · nº 1",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-obmep-n1-1"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA04",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Fluxograma para determinar a paridade de um número natural",
+   "texto": "Construir algoritmo em linguagem natural e representá-lo por fluxograma que indique a resolução de um problema simples (por exemplo, se um número natural qualquer é par).",
+   "materiais": [
+    {
+     "t": "Plano de aula · Algoritmos: do papel ao robô",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-robo"
+    },
+    {
+     "t": "Jogo · Robô Coletor",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/robo.html"
+    },
+    {
+     "t": "Ficha · Programando o colega-robô",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-robo"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA05",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Múltiplos e divisores de um número natural; números primos e compostos",
+   "texto": "Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.",
+   "materiais": [
+    {
+     "t": "Plano de aula · MMC com a corrida dos sapos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-mmc"
+    },
+    {
+     "t": "Recurso 3D · Torres do MMC",
+     "u": "https://ohtopico.com.br/material-didatico/3d/mmc.html"
+    },
+    {
+     "t": "Ficha · Corrida dos sapos: MMC",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-mmc"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA06",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Múltiplos e divisores de um número natural; números primos e compostos",
+   "texto": "Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor.",
+   "materiais": [
+    {
+     "t": "Plano de aula · MMC com a corrida dos sapos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-mmc"
+    },
+    {
+     "t": "Jogo · Corrida da Tabuada",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/tabuada.html"
+    },
+    {
+     "t": "Recurso 3D · Torres do MMC",
+     "u": "https://ohtopico.com.br/material-didatico/3d/mmc.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA07",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Frações: significados (parte/todo, quociente), equivalência, comparação, adição e subtração; cálculo da fração de um número natural; adição e subtração de frações",
+   "texto": "Compreender, comparar e ordenar frações associadas às ideias de partes de inteiros e resultado de divisão, identificando frações equivalentes.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Comparando frações",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-fracoes"
+    },
+    {
+     "t": "Jogo · Corrida das Frações",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/fracoes.html"
+    },
+    {
+     "t": "Recurso 3D · Barras de Frações 3D",
+     "u": "https://ohtopico.com.br/material-didatico/3d/fracoes.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA08",
+   "ano": 6,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Frações: significados (parte/todo, quociente), equivalência, comparação, adição e subtração; cálculo da fração de um número natural; adição e subtração de frações",
+   "texto": "Reconhecer que os números racionais positivos podem ser expressos nas formas fracionária e decimal, estabelecer relações entre essas representações, passando de uma representação para outra, e relacioná- los a pontos na reta numérica.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Frações e decimais com o metro",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-decimais"
+    },
+    {
+     "t": "Recurso 3D · Material Dourado 3D",
+     "u": "https://ohtopico.com.br/material-didatico/3d/decimais.html"
+    },
+    {
+     "t": "Ficha · Frações e decimais no metro",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-decimais"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA09",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Frações: significados (parte/todo, quociente), equivalência, comparação, adição e subtração; cálculo da fração de um número natural; adição e subtração de frações",
+   "texto": "Resolver e elaborar problemas que envolvam o cálculo da fração de uma quantidade e cujo resultado seja um número natural, com e sem uso de calculadora.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA10",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Frações: significados (parte/todo, quociente), equivalência, comparação, adição e subtração; cálculo da fração de um número natural; adição e subtração de frações",
+   "texto": "Resolver e elaborar problemas que envolvam adição ou subtração com números racionais positivos na representação fracionária.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA11",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Operações (adição, subtração, multiplicação, divisão e potenciação) com números racionais",
+   "texto": "Resolver e elaborar problemas com números racionais positivos na representação decimal, envolvendo as quatro operações fundamentais e a potenciação, por meio de estratégias diversas, utilizando estimativas e arredondamentos para verificar a razoabilidade de respostas, com e sem uso de calculadora.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Potências e raízes com quadrados",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-potencias"
+    },
+    {
+     "t": "Recurso 3D · Material Dourado 3D",
+     "u": "https://ohtopico.com.br/material-didatico/3d/decimais.html"
+    },
+    {
+     "t": "Ficha · Quadrados de tampinhas: potência e raiz",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-potencias"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA12",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Aproximação de números para múltiplos de potências de 10",
+   "texto": "Fazer estimativas de quantidades e aproximar números para múltiplos da potência de 10 mais próxima.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA13",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Cálculo de porcentagens por meio de estratégias diversas, sem fazer uso da “regra de três”",
+   "texto": "Resolver e elaborar problemas que envolvam porcentagens, com base na ideia de proporcionalidade, sem fazer uso da “regra de três”, utilizando estratégias pessoais, cálculo mental e calculadora, em contextos de educação financeira, entre outros.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Mesada, descontos e juros: decisões com porcentagem",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-financeira"
+    },
+    {
+     "t": "Jogo · Desafio da Mesada",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/mesada.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA14",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Propriedades da igualdade",
+   "texto": "Reconhecer que a relação de igualdade matemática não se altera ao adicionar, subtrair, multiplicar ou dividir os seus dois membros por um mesmo número e utilizar essa noção para determinar valores desconhecidos na resolução de problemas.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Equações do 1º grau com envelopes misteriosos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-equacoes"
+    },
+    {
+     "t": "Recurso 3D · Balança 3D das Equações",
+     "u": "https://ohtopico.com.br/material-didatico/3d/balanca.html"
+    },
+    {
+     "t": "Ficha · Envelopes na balança: equações",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-equacoes"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA15",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Problemas que tratam da partição de um todo em duas partes desiguais, envolvendo razões entre as partes e entre uma das partes e o todo",
+   "texto": "Resolver e elaborar problemas que envolvam a partilha de uma quantidade em duas partes desiguais, envolvendo relações aditivas e multiplicativas, bem como a razão entre as partes e entre uma das partes e o todo.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Razões medidas no corpo e no pátio",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-razao"
+    },
+    {
+     "t": "Recurso 3D · Laboratório de Sucos: Razão e Proporção",
+     "u": "https://ohtopico.com.br/material-didatico/3d/sucos.html"
+    },
+    {
+     "t": "Ficha · Razões no corpo e no pátio",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-razao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA16",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Geometria",
+   "objeto": "Plano cartesiano: associação dos vértices de um polígono a pares ordenados",
+   "texto": "Associar pares ordenados de números a pontos do plano cartesiano do 1º quadrante, em situações como a localização dos vértices de um polígono.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Localização no plano cartesiano",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-cartesiano"
+    },
+    {
+     "t": "Jogo · Tesouro Cartesiano",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/cartesiano.html"
+    },
+    {
+     "t": "Ficha · Batalha naval cartesiana",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-batalha"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA17",
+   "ano": 6,
+   "bimestre": 2,
+   "eixo": "Geometria",
+   "objeto": "Prismas e pirâmides: planificações e relações entre seus elementos (vértices, faces e arestas)",
+   "texto": "Quantificar e estabelecer relações entre o número de vértices, faces e arestas de prismas e pirâmides, em função do seu polígono da base, para resolver problemas e desenvolver a percepção espacial.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA18",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Polígonos: classificações quanto ao número de vértices, às medidas de lados e ângulos e ao paralelismo e perpendicularismo dos lados",
+   "texto": "Reconhecer, nomear e comparar polígonos, considerando lados, vértices e ângulos, e classificá-los em regulares e não regulares, tanto em suas representações no plano como em faces de poliedros.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Ateliê de mosaicos: geometria plana",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-geometria"
+    },
+    {
+     "t": "Jogo · Tangram",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/tangram.html"
+    },
+    {
+     "t": "Recurso 3D · Ladrilhos e Ângulos",
+     "u": "https://ohtopico.com.br/material-didatico/3d/ladrilhos.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA19",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Polígonos: classificações quanto ao número de vértices, às medidas de lados e ângulos e ao paralelismo e perpendicularismo dos lados",
+   "texto": "Identificar características dos triângulos e classificá-los em relação às medidas dos lados e dos ângulos.",
+   "materiais": [
+    {
+     "t": "Jogo · Tangram",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/tangram.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA20",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Polígonos: classificações quanto ao número de vértices, às medidas de lados e ângulos e ao paralelismo e perpendicularismo dos lados",
+   "texto": "Identificar características dos quadriláteros, classificá-los em relação a lados e a ângulos e reconhecer a inclusão e a intersecção de classes entre eles.",
+   "materiais": [
+    {
+     "t": "Jogo · Tangram",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/tangram.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA21",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Construção de figuras semelhantes: ampliação e redução de figuras planas em malhas quadriculadas",
+   "texto": "Construir figuras planas semelhantes em situações de ampliação e de redução, com o uso de malhas quadriculadas, plano cartesiano ou tecnologias digitais.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA22",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Construção de retas paralelas e perpendiculares, fazendo uso de réguas, esquadros e softwares",
+   "texto": "Utilizar instrumentos, como réguas e esquadros, ou softwares para representações de retas paralelas e perpendiculares e construção de quadriláteros, entre outros.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA23",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Construção de retas paralelas e perpendiculares, fazendo uso de réguas, esquadros e softwares",
+   "texto": "Construir algoritmo para resolver situações passo a passo (como na construção de dobraduras ou na indicação de deslocamento de um objeto no plano segundo pontos de referência e distâncias fornecidas etc.).",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA24",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Problemas sobre medidas envolvendo grandezas como comprimento, massa, tempo, temperatura, área, capacidade e volume",
+   "texto": "Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento.",
+   "materiais": [
+    {
+     "t": "Plano de aula · A horta da escola: área e perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-area"
+    },
+    {
+     "t": "Recurso 3D · Terreno: Área e Perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/3d/terreno.html"
+    },
+    {
+     "t": "Ficha · Hortas com a mesma cerca: área e perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-area"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA25",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Ângulos: noção, usos e medida",
+   "texto": "Reconhecer a abertura do ângulo como grandeza associada às figuras geométricas.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA26",
+   "ano": 6,
+   "bimestre": 3,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Ângulos: noção, usos e medida",
+   "texto": "Resolver problemas que envolvam a noção de ângulo em diferentes contextos e em situações reais, como ângulo de visão.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA27",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Ângulos: noção, usos e medida",
+   "texto": "Determinar medidas da abertura de ângulos, por meio de transferidor e/ou tecnologias digitais.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA28",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Plantas baixas e vistas aéreas",
+   "texto": "Interpretar, descrever e desenhar plantas baixas simples de residências e vistas aéreas.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA29",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Perímetro de um quadrado como grandeza proporcional à medida do lado",
+   "texto": "Analisar e descrever mudanças que ocorrem no perímetro e na área de um quadrado ao se ampliarem ou reduzirem, igualmente, as medidas de seus lados, para compreender que o perímetro é proporcional à medida do lado, o que não ocorre com a área.",
+   "materiais": [
+    {
+     "t": "Plano de aula · A horta da escola: área e perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-area"
+    },
+    {
+     "t": "Recurso 3D · Terreno: Área e Perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/3d/terreno.html"
+    },
+    {
+     "t": "Ficha · Hortas com a mesma cerca: área e perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-area"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA30",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Cálculo de probabilidade como a razão entre o número de resultados favoráveis e o total de resultados possíveis em um espaço amostral equiprovável; cálculo de probabilidade por meio de muitas repetições de um experimento (frequências de ocorrências e probabilidade frequentista)",
+   "texto": "Calcular a probabilidade de um evento aleatório, expressando-a por número racional (forma fracionária, decimal e percentual) e comparar esse número com a probabilidade obtida por meio de experimentos sucessivos.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA31",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Leitura e interpretação de tabelas e gráficos (de colunas ou barras simples ou múltiplas) referentes a variáveis categóricas e variáveis numéricas",
+   "texto": "Identificar as variáveis e suas frequências e os elementos constitutivos (título, eixos, legendas, fontes e datas) em diferentes tipos de gráfico.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Pesquisa-relâmpago: da pergunta ao gráfico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-graficos"
+    },
+    {
+     "t": "Jogo · Detetive dos Gráficos",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/graficos.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA32",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Leitura e interpretação de tabelas e gráficos (de colunas ou barras simples ou múltiplas) referentes a variáveis categóricas e variáveis numéricas",
+   "texto": "Interpretar e resolver situações que envolvam dados de pesquisas sobre contextos ambientais, sustentabilidade, trânsito, consumo responsável, entre outros, apresentadas pela mídia em tabelas e em diferentes tipos de gráficos e redigir textos escritos com o objetivo de sintetizar conclusões.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF06MA33",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Coleta de dados, organização e registro; construção de diferentes tipos de gráficos para representá- los e interpretação das informações",
+   "texto": "Planejar e coletar dados de pesquisa referente a práticas sociais escolhidas pelos alunos e fazer uso de planilhas eletrônicas para registro, representação e interpretação das informações, em tabelas, vários tipos de gráficos e texto.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Pesquisa-relâmpago: da pergunta ao gráfico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-graficos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF06MA34",
+   "ano": 6,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Diferentes tipos de representação de informações: gráficos e fluxogramas",
+   "texto": "Interpretar e desenvolver fluxogramas simples, identificando as relações entre os objetos representados (por exemplo, posição de cidades considerando as estradas que as unem, hierarquia dos funcionários de uma empresa etc.).",
+   "materiais": [
+    {
+     "t": "Plano de aula · Grafos e o caminho mais curto",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-grafos"
+    },
+    {
+     "t": "Jogo · Rota Mais Curta",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/rotas.html"
+    },
+    {
+     "t": "Ficha · Mapa dos bairros",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-grafo"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA01",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Múltiplos e divisores de um número natural",
+   "texto": "Resolver e elaborar problemas com números naturais, envolvendo as noções de divisor e de múltiplo, podendo incluir máximo divisor comum ou mínimo múltiplo comum, por meio de estratégias diversas, sem a aplicação de algoritmos.",
+   "materiais": [
+    {
+     "t": "Plano de aula · MMC com a corrida dos sapos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-mmc"
+    },
+    {
+     "t": "Recurso 3D · Torres do MMC",
+     "u": "https://ohtopico.com.br/material-didatico/3d/mmc.html"
+    },
+    {
+     "t": "Ficha · Corrida dos sapos: MMC",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-mmc"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA02",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Cálculo de porcentagens e de acréscimos e decréscimos simples",
+   "texto": "Resolver e elaborar problemas que envolvam porcentagens, como os que lidam com acréscimos e decréscimos simples, utilizando estratégias pessoais, cálculo mental e calculadora, no contexto de educação financeira, entre outros.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Mesada, descontos e juros: decisões com porcentagem",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-financeira"
+    },
+    {
+     "t": "Jogo · Desafio da Mesada",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/mesada.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA03",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Números inteiros: usos, história, ordenação, associação com pontos da reta numérica e operações",
+   "texto": "Comparar e ordenar números inteiros em diferentes contextos, incluindo o histórico, associá-los a pontos da reta numérica e utilizá-los em situações que envolvam adição e subtração.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Operações com negativos: pares zero",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-inteiros"
+    },
+    {
+     "t": "Plano de aula · Localização no plano cartesiano",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-cartesiano"
+    },
+    {
+     "t": "Jogo · Tesouro Cartesiano",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/cartesiano.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA04",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Números inteiros: usos, história, ordenação, associação com pontos da reta numérica e operações",
+   "texto": "Resolver e elaborar problemas que envolvam operações com números inteiros.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Operações com negativos: pares zero",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-inteiros"
+    },
+    {
+     "t": "Recurso 3D · Elevador dos Inteiros",
+     "u": "https://ohtopico.com.br/material-didatico/3d/elevador.html"
+    },
+    {
+     "t": "Ficha · Fichas positivas e negativas",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-inteiros"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA05",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Fração e seus significados: como parte de inteiros, resultado da divisão, razão e operador",
+   "texto": "Resolver um mesmo problema utilizando diferentes algoritmos.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Minha primeira OBMEP: estratégias para resolver problemas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-obmep"
+    },
+    {
+     "t": "Plano de aula · Blocos que se repetem: funções e reúso",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-reuso"
+    },
+    {
+     "t": "Lista · Simulado OBMEP Nível 1 · nº 1",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-obmep-n1-1"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA06",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Fração e seus significados: como parte de inteiros, resultado da divisão, razão e operador",
+   "texto": "Reconhecer que as resoluções de um grupo de problemas que têm a mesma estrutura podem ser obtidas utilizando os mesmos procedimentos.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Minha primeira OBMEP: estratégias para resolver problemas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-obmep"
+    },
+    {
+     "t": "Lista · Simulado OBMEP Nível 1 · nº 1",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-obmep-n1-1"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA07",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Fração e seus significados: como parte de inteiros, resultado da divisão, razão e operador",
+   "texto": "Representar por meio de um fluxograma os passos utilizados para resolver um grupo de problemas.",
+   "materiais": [
+    {
+     "t": "Jogo · Robô Coletor",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/robo.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA08",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Fração e seus significados: como parte de inteiros, resultado da divisão, razão e operador",
+   "texto": "Comparar e ordenar frações associadas às ideias de partes de inteiros, resultado da divisão, razão e operador.",
+   "materiais": [
+    {
+     "t": "Plano de aula · O varal dos racionais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-racionais"
+    },
+    {
+     "t": "Recurso 3D · Barras de Frações 3D",
+     "u": "https://ohtopico.com.br/material-didatico/3d/fracoes.html"
+    },
+    {
+     "t": "Ficha · Varal dos números racionais",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-racionais"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA09",
+   "ano": 7,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Fração e seus significados: como parte de inteiros, resultado da divisão, razão e operador",
+   "texto": "Utilizar, na resolução de problemas, a associação entre razão e fração, como a fração 2/3 para expressar a razão de duas partes de uma grandeza para três partes da mesma ou três partes de outra grandeza.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Razões medidas no corpo e no pátio",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-razao"
+    },
+    {
+     "t": "Recurso 3D · Laboratório de Sucos: Razão e Proporção",
+     "u": "https://ohtopico.com.br/material-didatico/3d/sucos.html"
+    },
+    {
+     "t": "Ficha · Razões no corpo e no pátio",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-razao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA10",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Números racionais na representação fracionária e na decimal: usos, ordenação e associação com pontos da reta numérica e operações",
+   "texto": "Comparar e ordenar números racionais em diferentes contextos e associá-los a pontos da reta numérica.",
+   "materiais": [
+    {
+     "t": "Plano de aula · O varal dos racionais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-racionais"
+    },
+    {
+     "t": "Recurso 3D · Barras de Frações 3D",
+     "u": "https://ohtopico.com.br/material-didatico/3d/fracoes.html"
+    },
+    {
+     "t": "Ficha · Varal dos números racionais",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-racionais"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA11",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Números racionais na representação fracionária e na decimal: usos, ordenação e associação com pontos da reta numérica e operações",
+   "texto": "Compreender e utilizar a multiplicação e a divisão de números racionais, a relação entre elas e suas propriedades operatórias.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA12",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Números",
+   "objeto": "Números racionais na representação fracionária e na decimal: usos, ordenação e associação com pontos da reta numérica e operações",
+   "texto": "Resolver e elaborar problemas que envolvam as operações com números racionais.",
+   "materiais": [
+    {
+     "t": "Plano de aula · O varal dos racionais",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-racionais"
+    },
+    {
+     "t": "Ficha · Varal dos números racionais",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-racionais"
+    },
+    {
+     "t": "Lista · Frações e números racionais (7º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-ma-racionais"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA13",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Linguagem algébrica: variável e incógnita",
+   "texto": "Compreender a ideia de variável, representada por letra ou símbolo, diferenciando-a da ideia de incógnita.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Equações com a balança",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-equacoes"
+    },
+    {
+     "t": "Jogo · Balança das Equações",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/balanca.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA14",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Linguagem algébrica: variável e incógnita",
+   "texto": "Classificar sequências em recursivas e não recursivas, reconhecendo que o conceito de recursão está presente não apenas na matemática, mas também nas artes e na literatura.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA15",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Linguagem algébrica: variável e incógnita",
+   "texto": "Utilizar a simbologia algébrica para expressar regularidades encontradas em sequências numéricas.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA16",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Equivalência de expressões algébricas: identificação da regularidade de uma sequência numérica",
+   "texto": "Reconhecer se duas expressões algébricas obtidas para descrever a regularidade de uma mesma sequência numérica são ou não equivalentes.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA17",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Problemas envolvendo grandezas diretamente proporcionais e grandezas inversamente proporcionais",
+   "texto": "Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Regra de três na cozinha",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-regra3"
+    },
+    {
+     "t": "Recurso 3D · Laboratório de Sucos: Razão e Proporção",
+     "u": "https://ohtopico.com.br/material-didatico/3d/sucos.html"
+    },
+    {
+     "t": "Ficha · Regra de três na receita",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-regra3"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA18",
+   "ano": 7,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Equações polinomiais do 1º grau",
+   "texto": "Resolver e elaborar problemas que possam ser representados por equações polinomiais de 1º grau, redutíveis à forma ax + b = c, fazendo uso das propriedades da igualdade.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Equações do 1º grau com envelopes misteriosos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-equacoes"
+    },
+    {
+     "t": "Plano de aula · Equações com a balança",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-equacoes"
+    },
+    {
+     "t": "Jogo · Balança das Equações",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/balanca.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA19",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Transformações geométricas de polígonos no plano cartesiano: multiplicação das coordenadas por um número inteiro e obtenção de simétricos em relação aos eixos e à origem",
+   "texto": "Realizar transformações de polígonos representados no plano cartesiano, decorrentes da multiplicação das coordenadas de seus vértices por um número inteiro.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA20",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Transformações geométricas de polígonos no plano cartesiano: multiplicação das coordenadas por um número inteiro e obtenção de simétricos em relação aos eixos e à origem",
+   "texto": "Reconhecer e representar, no plano cartesiano, o simétrico de figuras em relação aos eixos e à origem.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Localização no plano cartesiano",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-cartesiano"
+    },
+    {
+     "t": "Jogo · Tesouro Cartesiano",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/cartesiano.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA21",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Simetrias de translação, rotação e reflexão",
+   "texto": "Reconhecer e construir figuras obtidas por simetrias de translação, rotação e reflexão, usando instrumentos de desenho ou softwares de geometria dinâmica e vincular esse estudo a representações planas de obras de arte, elementos arquitetônicos, entre outros.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA22",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "A circunferência como lugar geométrico",
+   "texto": "Construir circunferências, utilizando compasso, reconhecê-las como lugar geométrico e utilizá-las para fazer composições artísticas e resolver problemas que envolvam objetos equidistantes.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA23",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Relações entre os ângulos formados por retas paralelas intersectadas por uma transversal",
+   "texto": "Verificar relações entre os ângulos formados por retas paralelas cortadas por uma transversal, com e sem uso de softwares de geometria dinâmica.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA24",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Triângulos: construção, condição de existência e soma das medidas dos ângulos internos",
+   "texto": "Construir triângulos, usando régua e compasso, reconhecer a condição de existência do triângulo quanto à medida dos lados e verificar que a soma das medidas dos ângulos internos de um triângulo é 180°.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Ateliê de mosaicos: geometria plana",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-geometria"
+    },
+    {
+     "t": "Recurso 3D · Ladrilhos e Ângulos",
+     "u": "https://ohtopico.com.br/material-didatico/3d/ladrilhos.html"
+    },
+    {
+     "t": "Ficha · Ateliê de mosaicos: ângulos e polígonos",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-geometria"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA25",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Triângulos: construção, condição de existência e soma das medidas dos ângulos internos",
+   "texto": "Reconhecer a rigidez geométrica dos triângulos e suas aplicações, como na construção de estruturas arquitetônicas (telhados, estruturas metálicas e outras) ou nas artes plásticas.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA26",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Triângulos: construção, condição de existência e soma das medidas dos ângulos internos",
+   "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um triângulo qualquer, conhecidas as medidas dos três lados.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA27",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Polígonos regulares: quadrado e triângulo equilátero",
+   "texto": "Calcular medidas de ângulos internos de polígonos regulares, sem o uso de fórmulas, e estabelecer relações entre ângulos internos e externos de polígonos, preferencialmente vinculadas à construção de mosaicos e de ladrilhamentos.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Ateliê de mosaicos: geometria plana",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-geometria"
+    },
+    {
+     "t": "Recurso 3D · Ladrilhos e Ângulos",
+     "u": "https://ohtopico.com.br/material-didatico/3d/ladrilhos.html"
+    },
+    {
+     "t": "Ficha · Ateliê de mosaicos: ângulos e polígonos",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-geometria"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA28",
+   "ano": 7,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Polígonos regulares: quadrado e triângulo equilátero",
+   "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um polígono regular (como quadrado e triângulo equilátero), conhecida a medida de seu lado.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA29",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Problemas envolvendo medições",
+   "texto": "Resolver e elaborar problemas que envolvam medidas de grandezas inseridos em contextos oriundos de situações cotidianas ou de outras áreas do conhecimento, reconhecendo que toda medida empírica é aproximada.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA30",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Cálculo de volume de blocos retangulares, utilizando unidades de medida convencionais mais usuais",
+   "texto": "Resolver e elaborar problemas de cálculo de medida do volume de blocos retangulares, envolvendo as unidades usuais (metro cúbico, decímetro cúbico e centímetro cúbico).",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA31",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Equivalência de área de figuras planas: cálculo de áreas de figuras que podem ser decompostas por outras, cujas áreas podem ser facilmente determinadas como triângulos e quadriláteros",
+   "texto": "Estabelecer expressões de cálculo de área de triângulos e de quadriláteros.",
+   "materiais": [
+    {
+     "t": "Plano de aula · A horta da escola: área e perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-area"
+    },
+    {
+     "t": "Recurso 3D · Terreno: Área e Perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/3d/terreno.html"
+    },
+    {
+     "t": "Ficha · Hortas com a mesma cerca: área e perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-area"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA32",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Equivalência de área de figuras planas: cálculo de áreas de figuras que podem ser decompostas por outras, cujas áreas podem ser facilmente determinadas como triângulos e quadriláteros",
+   "texto": "Resolver e elaborar problemas de cálculo de medida de área de figuras planas que podem ser decompostas por quadrados, retângulos e/ou triângulos, utilizando a equivalência entre áreas.",
+   "materiais": [
+    {
+     "t": "Jogo · Tangram",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/tangram.html"
+    },
+    {
+     "t": "Recurso 3D · Terreno: Área e Perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/3d/terreno.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF07MA33",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Medida do comprimento da circunferência",
+   "texto": "Estabelecer o número π como a razão entre a medida de uma circunferência e seu diâmetro, para compreender e resolver problemas, inclusive os de natureza histórica.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA34",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Experimentos aleatórios: espaço amostral e estimativa de probabilidade por meio de frequência de ocorrências",
+   "texto": "Planejar e realizar experimentos aleatórios ou simulações que envolvem cálculo de probabilidades ou estimativas por meio de frequência de ocorrências.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA35",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Estatística: média e amplitude de um conjunto de dados",
+   "texto": "Compreender, em contextos significativos, o significado de média estatística como indicador da tendência de uma pesquisa, calcular seu valor e relacioná-lo, intuitivamente, com a amplitude do conjunto de dados.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA36",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Pesquisa amostral e pesquisa censitária; planejamento de pesquisa, coleta e organização dos dados, construção de tabelas e gráficos e interpretação das informações",
+   "texto": "Planejar e realizar pesquisa envolvendo tema da realidade social, identificando a necessidade de ser censitária ou de usar amostra, e interpretar os dados para comunicá-los por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF07MA37",
+   "ano": 7,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Gráficos de setores: interpretação, pertinência e construção para representar conjunto de dados",
+   "texto": "Interpretar e analisar dados apresentados em gráfico de setores divulgados pela mídia e compreender quando é possível ou conveniente sua utilização.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Pesquisa-relâmpago: da pergunta ao gráfico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-graficos"
+    },
+    {
+     "t": "Jogo · Detetive dos Gráficos",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/graficos.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA01",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Notação científica",
+   "texto": "Efetuar cálculos com potências de expoentes inteiros e aplicar esse conhecimento na representação de números em notação científica.",
+   "materiais": [
+    {
+     "t": "Recurso 3D · Cubos das Potências",
+     "u": "https://ohtopico.com.br/material-didatico/3d/potencias.html"
+    },
+    {
+     "t": "Lista · Potenciação e radiciação (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-ma-potencias"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA02",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Potenciação e radiciação",
+   "texto": "Resolver e elaborar problemas usando a relação entre potenciação e radiciação, para representar uma raiz como potência de expoente fracionário.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Potências e raízes com quadrados",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-potencias"
+    },
+    {
+     "t": "Recurso 3D · Cubos das Potências",
+     "u": "https://ohtopico.com.br/material-didatico/3d/potencias.html"
+    },
+    {
+     "t": "Ficha · Quadrados de tampinhas: potência e raiz",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-potencias"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA03",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "O princípio multiplicativo da contagem",
+   "texto": "Resolver e elaborar problemas de contagem cuja resolução envolva a aplicação do princípio multiplicativo.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Minha primeira OBMEP: estratégias para resolver problemas",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-obmep"
+    },
+    {
+     "t": "Lista · Simulado OBMEP Nível 2 · nº 1",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-obmep-n2-1"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA04",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Porcentagens",
+   "texto": "Resolver e elaborar problemas, envolvendo cálculo de porcentagens, incluindo o uso de tecnologias digitais.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Mesada, descontos e juros: decisões com porcentagem",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-financeira"
+    },
+    {
+     "t": "Jogo · Desafio da Mesada",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/mesada.html"
+    },
+    {
+     "t": "Lista · Simulado OBMEP Nível 2 · nº 1",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-obmep-n2-1"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA05",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Dízimas periódicas: fração geratriz",
+   "texto": "Reconhecer e utilizar procedimentos para a obtenção de uma fração geratriz para uma dízima periódica.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA06",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Álgebra",
+   "objeto": "Valor numérico de expressões algébricas",
+   "texto": "Resolver e elaborar problemas que envolvam o cálculo do valor numérico de expressões algébricas, usando as propriedades das operações.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Polinômios com dominó de expressões",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-polinomios"
+    },
+    {
+     "t": "Plano de aula · Projeto: um programa para outra disciplina",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-projeto8"
+    },
+    {
+     "t": "Jogo · Balança das Equações",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/balanca.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA07",
+   "ano": 8,
+   "bimestre": 1,
+   "eixo": "Álgebra",
+   "objeto": "Associação de uma equação linear de 1º grau a uma reta no plano cartesiano",
+   "texto": "Associar uma equação linear de 1º grau com duas incógnitas a uma reta no plano cartesiano.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA08",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Sistema de equações polinomiais de 1º grau: resolução algébrica e representação no plano cartesiano",
+   "texto": "Resolver e elaborar problemas relacionados ao seu contexto próximo, que possam ser representados por sistemas de equações de 1º grau com duas incógnitas e interpretá-los, utilizando, inclusive, o plano cartesiano como recurso.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA09",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Equação polinomial de 2º grau do tipo ax² = b",
+   "texto": "Resolver e elaborar, com e sem uso de tecnologias, problemas que possam ser representados por equações polinomiais de 2º grau do tipo ax² = b.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA10",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Sequências recursivas e não recursivas",
+   "texto": "Identificar a regularidade de uma sequência numérica ou figural não recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números ou as figuras seguintes.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Listas, recursão e algoritmos de ordenação",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-recursao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA11",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Sequências recursivas e não recursivas",
+   "texto": "Identificar a regularidade de uma sequência numérica recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números seguintes.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA12",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Variação de grandezas: diretamente proporcionais, inversamente proporcionais ou não proporcionais",
+   "texto": "Identificar a natureza da variação de duas grandezas, diretamente, inversamente proporcionais ou não proporcionais, expressando a relação existente por meio de sentença algébrica e representá-la no plano cartesiano.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Ampliar sem deformar: proporção e escala",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-proporcao"
+    },
+    {
+     "t": "Ficha · Ampliar sem deformar: proporção",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-proporcao"
+    },
+    {
+     "t": "Lista · Proporção (8º ano)",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-ma-proporcao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA13",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Variação de grandezas: diretamente proporcionais, inversamente proporcionais ou não proporcionais",
+   "texto": "Resolver e elaborar problemas que envolvam grandezas diretamente ou inversamente proporcionais, por meio de estratégias variadas.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Regra de três na cozinha",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-regra3"
+    },
+    {
+     "t": "Recurso 3D · Laboratório de Sucos: Razão e Proporção",
+     "u": "https://ohtopico.com.br/material-didatico/3d/sucos.html"
+    },
+    {
+     "t": "Ficha · Regra de três na receita",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-regra3"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA14",
+   "ano": 8,
+   "bimestre": 2,
+   "eixo": "Geometria",
+   "objeto": "Congruência de triângulos e demonstrações de propriedades de quadriláteros",
+   "texto": "Demonstrar propriedades de quadriláteros por meio da identificação da congruência de triângulos.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA15",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Construções geométricas: ângulos de 90°, 60°, 45° e 30° e polígonos regulares",
+   "texto": "Construir, utilizando instrumentos de desenho ou softwares de geometria dinâmica, mediatriz, bissetriz, ângulos de 90°, 60°, 45° e 30° e polígonos regulares.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA16",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Construções geométricas: ângulos de 90°, 60°, 45° e 30° e polígonos regulares",
+   "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um hexágono regular de qualquer área, a partir da medida do ângulo central e da utilização de esquadros e compasso.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA17",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Mediatriz e bissetriz como lugares geométricos: construção e problemas",
+   "texto": "Aplicar os conceitos de mediatriz e bissetriz como lugares geométricos na resolução de problemas.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA18",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Transformações geométricas: simetrias de translação, reflexão e rotação",
+   "texto": "Reconhecer e construir figuras obtidas por composições de transformações geométricas (translação, reflexão e rotação), com o uso de instrumentos de desenho ou de softwares de geometria dinâmica.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA19",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Área de figuras planas; área do círculo e comprimento de sua circunferência",
+   "texto": "Resolver e elaborar problemas que envolvam medidas de área de figuras geométricas, utilizando expressões de cálculo de área (quadriláteros, triângulos e círculos), em situações como determinar medida de terrenos.",
+   "materiais": [
+    {
+     "t": "Recurso 3D · Terreno: Área e Perímetro",
+     "u": "https://ohtopico.com.br/material-didatico/3d/terreno.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA20",
+   "ano": 8,
+   "bimestre": 3,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Volume de cilindro reto; medidas de capacidade",
+   "texto": "Reconhecer a relação entre um litro e um decímetro cúbico e a relação entre litro e metro cúbico, para resolver problemas de cálculo de capacidade de recipientes.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA21",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Volume de cilindro reto; medidas de capacidade",
+   "texto": "Resolver e elaborar problemas que envolvam o cálculo do volume de recipiente cujo formato é o de um bloco retangular.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA22",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Princípio multiplicativo da contagem; soma das probabilidades de todos os elementos de um espaço amostral",
+   "texto": "Calcular a probabilidade de eventos, com base na construção do espaço amostral, utilizando o princípio multiplicativo, e reconhecer que a soma das probabilidades de todos os elementos do espaço amostral é igual a 1.",
+   "materiais": [
+    {
+     "t": "Lista · Simulado OBMEP Nível 2 · nº 1",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-obmep-n2-1"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA23",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Gráficos de barras, colunas, linhas ou setores e seus elementos constitutivos e adequação para determinado conjunto de dados",
+   "texto": "Avaliar a adequação de diferentes tipos de gráficos para representar um conjunto de dados de uma pesquisa.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Pesquisa-relâmpago: da pergunta ao gráfico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-graficos"
+    },
+    {
+     "t": "Jogo · Detetive dos Gráficos",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/graficos.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF08MA24",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Organização dos dados de uma variável contínua em classes",
+   "texto": "Classificar as frequências de uma variável contínua de uma pesquisa em classes, de modo que resumam os dados de maneira adequada para a tomada de decisões.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA25",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Organização dos dados de uma variável contínua em classes",
+   "texto": "Obter os valores de medidas de tendência central de uma pesquisa estatística (média, moda e mediana) com a compreensão de seus significados e relacioná-los com a dispersão de dados, indicada pela amplitude.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA26",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Pesquisas censitária ou amostral; planejamento e execução de pesquisa amostral",
+   "texto": "Selecionar razões, de diferentes naturezas (física, ética ou econômica), que justificam a realização de pesquisas amostrais e não censitárias, e reconhecer que a seleção da amostra pode ser feita de diferentes maneiras (amostra casual simples, sistemática e estratificada).",
+   "materiais": []
+  },
+  {
+   "codigo": "EF08MA27",
+   "ano": 8,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Pesquisas censitária ou amostral; planejamento e execução de pesquisa amostral",
+   "texto": "Planejar e executar pesquisa amostral, selecionando uma técnica de amostragem adequada, e escrever relatório que contenha os gráficos apropriados para representar os conjuntos de dados, destacando aspectos como as medidas de tendência central, a amplitude e as conclusões.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA01",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Necessidade dos números reais para medir qualquer segmento de reta; números irracionais: reconhecimento e localização de alguns na reta numérica",
+   "texto": "Reconhecer que, uma vez fixada uma unidade de comprimento, existem segmentos de reta cujo comprimento não é expresso por número racional (como as medidas de diagonais de um polígono e alturas de um triângulo, quando se toma a medida de cada lado como unidade).",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA02",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Necessidade dos números reais para medir qualquer segmento de reta; números irracionais: reconhecimento e localização de alguns na reta numérica",
+   "texto": "Reconhecer um número irracional como um número real cuja representação decimal é infinita e não periódica, e estimar a localização de alguns deles na reta numérica.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA03",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Potências com expoentes negativos e fracionários",
+   "texto": "Efetuar cálculos com números reais, inclusive potências com expoentes fracionários.",
+   "materiais": [
+    {
+     "t": "Recurso 3D · Cubos das Potências",
+     "u": "https://ohtopico.com.br/material-didatico/3d/potencias.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA04",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Números reais: notação científica e problemas",
+   "texto": "Resolver e elaborar problemas com números reais, inclusive em notação científica, envolvendo diferentes operações.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA05",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Números",
+   "objeto": "Porcentagens: problemas que envolvem cálculo de percentuais sucessivos",
+   "texto": "Resolver e elaborar problemas que envolvam porcentagens, com a ideia de aplicação de percentuais sucessivos e a determinação das taxas percentuais, preferencialmente com o uso de tecnologias digitais, no contexto da educação financeira.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Mesada, descontos e juros: decisões com porcentagem",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-financeira"
+    },
+    {
+     "t": "Jogo · Juros que Crescem",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/poupanca.html"
+    },
+    {
+     "t": "Lista · Simulado OBMEP Nível 2 · nº 1",
+     "u": "https://ohtopico.com.br/material-didatico/lista.html?id=l-obmep-n2-1"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA06",
+   "ano": 9,
+   "bimestre": 1,
+   "eixo": "Álgebra",
+   "objeto": "Funções: representações numérica, algébrica e gráfica",
+   "texto": "Compreender as funções como relações de dependência unívoca entre duas variáveis e suas representações numérica, algébrica e gráfica e utilizar esse conceito para analisar situações que envolvam relações funcionais entre duas variáveis.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA07",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Razão entre grandezas de espécies diferentes",
+   "texto": "Resolver problemas que envolvam a razão entre duas grandezas de espécies diferentes, como velocidade e densidade demográfica.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA08",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Grandezas diretamente proporcionais e grandezas inversamente proporcionais",
+   "texto": "Resolver e elaborar problemas que envolvam relações de proporcionalidade direta e inversa entre duas ou mais grandezas, inclusive escalas, divisão em partes proporcionais e taxa de variação, em contextos socioculturais, ambientais e de outras áreas.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Ampliar sem deformar: proporção e escala",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-proporcao"
+    },
+    {
+     "t": "Recurso 3D · Laboratório de Sucos: Razão e Proporção",
+     "u": "https://ohtopico.com.br/material-didatico/3d/sucos.html"
+    },
+    {
+     "t": "Ficha · Ampliar sem deformar: proporção",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-proporcao"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA09",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Álgebra",
+   "objeto": "Expressões algébricas: fatoração e produtos notáveis; resolução de equações polinomiais do 2º grau por meio de fatorações",
+   "texto": "Compreender os processos de fatoração de expressões algébricas, com base em suas relações com os produtos notáveis, para resolver e elaborar problemas que possam ser representados por equações polinomiais do 2º grau.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Produtos notáveis com recortes",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-produtos"
+    },
+    {
+     "t": "Plano de aula · Fatoração com blocos algébricos",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-fatoracao"
+    },
+    {
+     "t": "Jogo · Bhaskara Passo a Passo",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/bhaskara.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA10",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Geometria",
+   "objeto": "Demonstrações de relações entre os ângulos formados por retas paralelas intersectadas por uma transversal",
+   "texto": "Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.",
+   "materiais": [
+    {
+     "t": "Recurso 3D · Teorema de Tales: Sombras e Paralelas",
+     "u": "https://ohtopico.com.br/material-didatico/3d/tales.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA11",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Geometria",
+   "objeto": "Relações entre arcos e ângulos na circunferência de um círculo",
+   "texto": "Resolver problemas por meio do estabelecimento de relações entre arcos, ângulos centrais e ângulos inscritos na circunferência, fazendo uso, inclusive, de softwares de geometria dinâmica.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA12",
+   "ano": 9,
+   "bimestre": 2,
+   "eixo": "Geometria",
+   "objeto": "Semelhança de triângulos",
+   "texto": "Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Medindo a escola com o Teorema de Tales",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-tales"
+    },
+    {
+     "t": "Recurso 3D · Teorema de Tales: Sombras e Paralelas",
+     "u": "https://ohtopico.com.br/material-didatico/3d/tales.html"
+    },
+    {
+     "t": "Ficha · Medindo com sombras: Teorema de Tales",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-tales"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA13",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Relações métricas no triângulo retângulo; teorema de Pitágoras: verificações experimentais e demonstração; retas paralelas cortadas por transversais: teoremas de proporcionalidade e verificações experimentais",
+   "texto": "Demonstrar relações métricas do triângulo retângulo, entre elas o teorema de Pitágoras, utilizando, inclusive, a semelhança de triângulos.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA14",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Relações métricas no triângulo retângulo; teorema de Pitágoras: verificações experimentais e demonstração; retas paralelas cortadas por transversais: teoremas de proporcionalidade e verificações experimentais",
+   "texto": "Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Medindo a escola com o Teorema de Tales",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-tales"
+    },
+    {
+     "t": "Recurso 3D · Teorema de Tales: Sombras e Paralelas",
+     "u": "https://ohtopico.com.br/material-didatico/3d/tales.html"
+    },
+    {
+     "t": "Ficha · Medindo com sombras: Teorema de Tales",
+     "u": "https://ohtopico.com.br/material-didatico/ficha.html?id=f-ma-tales"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA15",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Polígonos regulares",
+   "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um polígono regular cuja medida do lado é conhecida, utilizando régua e compasso, como também softwares.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA16",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Distância entre pontos no plano cartesiano",
+   "texto": "Determinar o ponto médio de um segmento de reta e a distância entre dois pontos quaisquer, dadas as coordenadas desses pontos no plano cartesiano, sem o uso de fórmulas, e utilizar esse conhecimento para calcular, por exemplo, medidas de perímetros e áreas de figuras planas construídas no plano.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA17",
+   "ano": 9,
+   "bimestre": 3,
+   "eixo": "Geometria",
+   "objeto": "Vistas ortogonais de figuras espaciais",
+   "texto": "Reconhecer vistas ortogonais de figuras espaciais e aplicar esse conhecimento para desenhar objetos em perspectiva.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA18",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Unidades de medida para medir distâncias muito grandes e muito pequenas; unidades de medida utilizadas na informática",
+   "texto": "Reconhecer e empregar unidades usadas para expressar medidas muito grandes ou muito pequenas, tais como distância entre planetas e sistemas solares, tamanho de vírus ou de células, capacidade de armazenamento de computadores, entre outros.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA19",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Grandezas e medidas",
+   "objeto": "Volume de prismas e cilindros",
+   "texto": "Resolver e elaborar problemas que envolvam medidas de volumes de prismas e de cilindros retos, inclusive com uso de expressões de cálculo, em situações cotidianas.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA20",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Análise de probabilidade de eventos aleatórios: eventos dependentes e independentes",
+   "texto": "Reconhecer, em experimentos aleatórios, eventos independentes e dependentes e calcular a probabilidade de sua ocorrência, nos dois casos.",
+   "materiais": []
+  },
+  {
+   "codigo": "EF09MA21",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Análise de gráficos divulgados pela mídia: elementos que podem induzir a erros de leitura ou de interpretação",
+   "texto": "Analisar e identificar, em gráficos divulgados pela mídia, os elementos que podem induzir, às vezes propositadamente, erros de leitura, como escalas inapropriadas, legendas não explicitadas corretamente, omissão de informações importantes (fontes e datas), entre outros.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Pesquisa-relâmpago: da pergunta ao gráfico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-graficos"
+    },
+    {
+     "t": "Jogo · Detetive dos Gráficos",
+     "u": "https://ohtopico.com.br/material-didatico/jogos/graficos.html"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA22",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Leitura, interpretação e representação de dados de pesquisa expressos em tabelas de dupla entrada, gráficos de colunas simples e agrupadas, gráficos de barras e de setores e gráficos pictóricos",
+   "texto": "Escolher e construir o gráfico mais adequado (colunas, setores, linhas), com ou sem uso de planilhas eletrônicas, para apresentar um determinado conjunto de dados, destacando aspectos como as medidas de tendência central.",
+   "materiais": [
+    {
+     "t": "Plano de aula · Pesquisa-relâmpago: da pergunta ao gráfico",
+     "u": "https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-graficos"
+    }
+   ]
+  },
+  {
+   "codigo": "EF09MA23",
+   "ano": 9,
+   "bimestre": 4,
+   "eixo": "Probabilidade e estatística",
+   "objeto": "Planejamento e execução de pesquisa amostral e apresentação de relatório",
+   "texto": "Planejar e executar pesquisa amostral envolvendo tema da realidade social e comunicar os resultados por meio de relatório contendo avaliação de medidas de tendência central e da amplitude, tabelas e gráficos adequados, construídos com o apoio de planilhas eletrônicas.",
+   "materiais": []
+  }
+ ]
+}
