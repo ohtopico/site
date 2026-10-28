@@ -372,6 +372,36 @@
       "imagem_antes": true,
       "alt": "Mensagem fictícia de golpe: urgente, sua conta vai ser bloqueada hoje, mande o código que chegou por SMS e clique num link encurtado, com erro de português. Os quatro sinais: pressa e ameaça, pedido de código ou senha, link encurtado e erro de português.",
       "legenda": "Mensagem fictícia para a atividade “Caça ao golpe”."
+    },
+    {
+      "slug": "missoes-niveis-e-laboratorio-3d",
+      "titulo": "Missões, níveis e Laboratório 3D: os jogos do material didático",
+      "titulo_seo": "Jogos educativos gratuitos com missões e níveis e Laboratório 3D de Matemática (6º ao 9º ano)",
+      "descricao": "Como funcionam as missões do dia, os pontos e os 100 níveis do material didático, e os 13 recursos 3D de Matemática para girar e montar no navegador, sem cadastro.",
+      "palavras_chave": [
+        "jogos educativos gratuitos",
+        "gamificação na escola",
+        "matemática 3D",
+        "material dourado online",
+        "BNCC Matemática"
+      ],
+      "secao": "Jogos",
+      "data": "2026-10-28",
+      "arquivo_janela": "missoes.txt",
+      "imagem": "jogos-missoes-niveis.png",
+      "imagem_depois_de": "<h2>Pontos, níveis e desbloqueios</h2>",
+      "imagem_antes": true,
+      "alt": "Infográfico Estudar vira missão, em quatro etapas ligadas por traços. 1, três missões por dia: jogar um jogo até o fim, explorar um recurso 3D, tirar 80% numa lista. 2, pontos: missões, atividades novas, medalhas e estrelas secretas escondidas no site. 3, 100 níveis: do Bit ao Yottabyte, um nome de unidade de informação a cada 10 níveis. 4, desbloqueios: missão extra, Sala dos desafios, criador de enigmas e certificado de conquista. Rodapé: sem cadastro, o progresso fica salvo no navegador. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.",
+      "legenda": "Como as missões viram pontos, níveis e desbloqueios.",
+      "imagens_extra": [
+        {
+          "imagem": "jogos-laboratorio-3d.png",
+          "imagem_depois_de": "<h2>Como usar em sala</h2>",
+          "imagem_antes": true,
+          "alt": "Infográfico Matemática para girar. No alto, a imagem do recurso 3D de produtos notáveis: um bloco quadrado dividido em a ao quadrado igual a 16, em verde, duas faixas ab igual a 8, em amarelo, e b ao quadrado igual a 4, em vermelho. Abaixo, três colunas. Números: Material Dourado, barras de frações, torres do MMC, cubos das potências, elevador dos inteiros. Álgebra: balança das equações, sucos com razão e proporção, produtos notáveis, blocos algébricos. Geometria: terreno com área e perímetro, Teorema de Tales, ladrilhos e ângulos, figuras em 3D. Rodapé: 13 recursos que rodam no navegador, também no celular. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.",
+          "legenda": "Os 13 recursos do Laboratório 3D."
+        }
+      ]
     }
   ]
 }
