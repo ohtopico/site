@@ -20,7 +20,7 @@ const AJUDA = "Toque na tela e fale. Por exemplo: cadê a xícara, ache a chave,
   "tem um extintor, o que tem na minha frente, o caminho está livre, gravar percurso e o nome, " +
   "seguir percurso e o nome, o que eu passei, lembrar este lugar como cozinha, onde estou, " +
   "cadastrar pessoa e o nome, quem está aqui, que prédio é esse, me leva até e um lugar na rua, " +
-  "quanto falta, silêncio por 10 minutos, continuar, ou parar.";
+  "quanto falta, leia este texto, trocar voz, fale mais devagar, silêncio por 10 minutos, continuar, ou parar.";
 // Tutorial em partes curtas: mostrado em lista (para o leitor de tela) e falado com pausas entre as partes
 const TUTORIAL = [
   "Este site usa inteligência artificial para reconhecer o ambiente pela câmera do celular. " +
@@ -29,6 +29,7 @@ const TUTORIAL = [
   "Para pedir algo, toque em qualquer lugar da tela e fale depois do bipe. Por exemplo: cadê a xícara, " +
     "ache a chave, tem um extintor, o que tem na minha frente, ou o caminho está livre.",
   "Dentro de um prédio, posso gravar um percurso e depois guiar você por ele: diga gravar percurso e um nome. " +
+    "Para ler um livro, placa ou rótulo, diga leia este texto e segure o celular acima dele. " +
     "Na rua, diga que prédio é esse, onde fica a reitoria, ou me leva até e o nome do lugar, que eu guio você a pé pelo GPS.",
   "Eu lembro do que passou pela câmera no último minuto: pergunte o que eu passei, ou onde estava a porta. " +
     "Também guardo lugares, dizendo lembrar este lugar como cozinha, e depois respondo onde estou. " +
@@ -44,6 +45,7 @@ const marcarTutorialOuvido = () => { try { localStorage.setItem(TUTORIAL_OUVIDO,
 
 const anunciador = new Anunciador();
 let detector, extra = null, cena, profundidade = null, nuvem = null, tarefa = null, gravacao = null;
+let leitura = null; // { cancelada } enquanto lê um texto em voz alta
 let pausado = false, ouvindo = false, processando = false, aguardandoIntro = false;
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
@@ -113,9 +115,9 @@ function falarEsperando(texto) {
     const u = new SpeechSynthesisUtterance(texto);
     u.lang = "pt-BR";
     if (anunciador.voz) u.voice = anunciador.voz;
-    u.rate = 1.05;
+    u.rate = anunciador.velocidade;
     u.onend = u.onerror = ok;
-    setTimeout(ok, 1500 + texto.length * 90);
+    setTimeout(ok, 1500 + texto.length * 90 / anunciador.velocidade);
     speechSynthesis.speak(u);
   });
 }
@@ -214,7 +216,7 @@ async function comecar() {
 
 async function laco(agora) {
   requestAnimationFrame(laco);
-  if (pausado || ouvindo || processando || agora - ultimoQuadro < QUADRO_MS || video.readyState < 2) return;
+  if (pausado || ouvindo || leitura || processando || agora - ultimoQuadro < QUADRO_MS || video.readyState < 2) return;
   ultimoQuadro = agora;
   processando = true;
   try {
@@ -261,6 +263,8 @@ function ouvir() {
   if (ouvindo) return;
   ouvindo = true;
   document.body.classList.add("ouvindo");
+  if (leitura) leitura.cancelada = true;
+  leitura = null;
   anunciador.calar();
   anunciador.bipe(660, 0.12);
   mostrar("Ouvindo…");
@@ -442,6 +446,15 @@ function executar(frase) {
     case "retomar":
       definirPausa(false);
       return;
+    case "ler":
+      lerTexto();
+      return;
+    case "trocarVoz":
+      anunciador.falar(anunciador.trocarVoz(), true);
+      return;
+    case "velocidade":
+      anunciador.falar(anunciador.mudarVelocidade(pedido.sentido), true);
+      return;
     case "ajuda":
       anunciador.falar(AJUDA, true);
       return;
@@ -462,6 +475,74 @@ function descreverEspaco() {
     : m > 3.5 ? `${lado}, livre` : `${lado}, obstáculo ${falarDistancia(m)}`;
   return [parte("À frente", espaco.frente), parte("À esquerda", espaco.esquerda), parte("À direita", espaco.direita)]
     .filter(Boolean).join(". ") + ". Valores aproximados.";
+}
+
+// --- Ler textos (livro, placa, rótulo) pela IA na nuvem ----------------------------------
+
+const pausa = ms => new Promise(ok => setTimeout(ok, ms));
+
+/** Frases de até ~250 caracteres: falas longas travam em alguns navegadores e não dá para parar no meio. */
+const cortarLonga = frase => frase.length <= 250 ? [frase]
+  : frase.split(" ").reduce((p, w) => (p[p.length - 1].length + w.length < 200 ? (p[p.length - 1] += w + " ") : p.push(w + " "), p), [""]);
+
+export const emFrases = texto => (texto.replace(/\s+/g, " ").match(/[^.!?;:]+[.!?;:]*\s*/g) || [])
+  .flatMap(cortarLonga)
+  .reduce((partes, f) => {
+    const ultima = partes[partes.length - 1];
+    if (ultima && ultima.length + f.length < 250) partes[partes.length - 1] = ultima + f;
+    else partes.push(f);
+    return partes;
+  }, []).map(p => p.trim()).filter(Boolean);
+
+/** A câmera fica em 640x480 para a análise ser rápida; para ler, sobe a resolução só durante a foto. */
+async function fotoNitida() {
+  const trilha = video.srcObject?.getVideoTracks?.()[0];
+  const antes = trilha?.getSettings?.();
+  try {
+    await trilha?.applyConstraints({ width: { ideal: 1920 }, height: { ideal: 1440 } });
+    await pausa(700); // tempo para o foco e a exposição se ajustarem
+  } catch {}
+  const foto = await fotografar(video, 1568);
+  if (antes?.width) trilha.applyConstraints({ width: { ideal: antes.width }, height: { ideal: antes.height } }).catch(() => {});
+  return foto;
+}
+
+async function lerTexto() {
+  if (!nuvem) {
+    anunciador.falar("Para ler textos eu preciso da IA na nuvem, que ainda não está configurada.", true);
+    return;
+  }
+  tarefa?.cancelar?.();
+  tarefa = null;
+  const minha = leitura = { cancelada: false };
+  anunciador.calar();
+  await falarEsperando("Segure o celular parado, uns 30 centímetros acima do texto. Vou fotografar depois de três bipes.");
+  for (let i = 0; i < 3 && !minha.cancelada; i++) { anunciador.bipe(700); await pausa(800); }
+  if (minha.cancelada) return;
+  const foto = await fotoNitida();
+  anunciador.bipe(1200, 0.15);
+  await falarEsperando("Lendo.");
+  let r;
+  try {
+    r = await nuvem.lerTexto(foto);
+  } catch {
+    if (!minha.cancelada) anunciador.falar("Não consegui falar com a IA. Verifique a internet.", true);
+    if (leitura === minha) leitura = null;
+    return;
+  }
+  if (minha.cancelada) return;
+  const frases = emFrases(r?.texto || "");
+  if (!frases.length) {
+    await falarEsperando(r?.aviso || "Não encontrei texto. Aponte para a página e diga ler de novo.");
+  } else {
+    if (r.aviso) await falarEsperando(r.aviso);
+    for (const f of frases) {
+      if (minha.cancelada) return;
+      await falarEsperando(f);
+    }
+    if (!minha.cancelada) await falarEsperando("Fim. Para a próxima página, toque e diga ler de novo.");
+  }
+  if (leitura === minha) leitura = null;
 }
 
 // --- Rua (GPS + OpenStreetMap) -----------------------------------------------------

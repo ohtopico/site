@@ -20,6 +20,8 @@ toca em qualquer lugar e fala.
 | "que prédio é esse?", "o que tem perto?" | na rua: prédios e lugares com nome à frente e dos lados (GPS, bússola e OpenStreetMap) |
 | "onde fica a reitoria?" | direção e distância em linha reta até o lugar |
 | "me leva até a reitoria" / "quanto falta?" | guia a pé por voz, sem abrir outro app ("em 40 metros, vire à direita"); recalcula se sair do caminho |
+| "leia este texto", "ler de novo", "o que está escrito?" | fotografa a página, placa ou rótulo em resolução maior e lê em voz alta (IA na nuvem); tocar na tela interrompe |
+| "trocar voz", "fale mais devagar", "fale mais rápido" | escolhe a voz mais natural do celular por padrão; a escolha fica guardada |
 | "silêncio", "silêncio por 10 minutos", "continuar" | modo silêncio: para de analisar e de falar até continuar ou até acabar o tempo |
 | "parar", "ajuda" | controle |
 

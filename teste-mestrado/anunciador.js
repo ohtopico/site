@@ -32,15 +32,36 @@ export const estaPerto = d => (d.metros != null ? d.metros < PERTO_M : d.tamanho
 export const ladoDe = cx => (cx < 0.33 ? "esquerda" : cx > 0.67 ? "direita" : "frente");
 export const onde = lado => ({ esquerda: "à esquerda", frente: "à frente", direita: "à direita" })[lado];
 
+const CHAVE_VOZ = "assistencia.voz";
+const CHAVE_VELOCIDADE = "assistencia.velocidade";
+
+// As vozes mais naturais (neurais) costumam trazer isso no nome: "Online (Natural)" no Edge/Windows,
+// "Aprimorada"/"Premium"/"Enhanced" no iPhone, "Google" no Chrome.
+const pontos = v => (v.lang.replace("_", "-") === "pt-BR" ? 100 : 50)
+  + (/natural|neural|online/i.test(v.name) ? 40 : 0)
+  + (/premium|enhanced|aprimorad|melhorad|siri/i.test(v.name) ? 30 : 0)
+  + (/google/i.test(v.name) ? 20 : 0)
+  - (/compact|eloquence|espeak/i.test(v.name) ? 30 : 0);
+
+/** Vozes em português, da mais natural para a menos. */
+export const vozesPt = () => speechSynthesis.getVoices()
+  .filter(v => v.lang.toLowerCase().startsWith("pt"))
+  .sort((a, b) => pontos(b) - pontos(a));
+
+const ler = chave => { try { return localStorage.getItem(chave); } catch { return null; } };
+const gravar = (chave, valor) => { try { localStorage.setItem(chave, valor); } catch {} };
+
 export class Anunciador {
   constructor() {
     this.ultimaFala = new Map();
     this.ultimaVibracao = 0;
     this.voz = null;
     this.reiniciar();
+    this.velocidade = Number(ler(CHAVE_VELOCIDADE)) || 1.05;
+    // A escolhida pela pessoa ("trocar voz"), senão a que parece mais natural
     const escolher = () => {
-      const vozes = speechSynthesis.getVoices();
-      this.voz = vozes.find(v => v.lang === "pt-BR") || vozes.find(v => v.lang.startsWith("pt")) || null;
+      const vozes = vozesPt();
+      this.voz = vozes.find(v => v.name === ler(CHAVE_VOZ)) || vozes[0] || null;
     };
     escolher();
     speechSynthesis.addEventListener("voiceschanged", escolher);
@@ -51,13 +72,30 @@ export class Anunciador {
     const u = new SpeechSynthesisUtterance(texto);
     u.lang = "pt-BR";
     if (this.voz) u.voice = this.voz;
-    u.rate = 1.1;
+    u.rate = this.velocidade;
     u.onend = u.onerror = () => {
       if (speechSynthesis.speaking || speechSynthesis.pending) return;
       this.livreEm = performance.now() + PAUSA_MS;
       setTimeout(() => this.falarPendente(), PAUSA_MS + 20);
     };
     speechSynthesis.speak(u);
+  }
+
+  /** Passa para a próxima voz em português e guarda a escolha. Devolve a frase de apresentação. */
+  trocarVoz() {
+    const vozes = vozesPt();
+    if (vozes.length < 2) return "Este celular só tem uma voz em português. Dá para instalar outras nas configurações de fala do sistema.";
+    const i = (vozes.indexOf(this.voz) + 1) % vozes.length;
+    this.voz = vozes[i];
+    gravar(CHAVE_VOZ, this.voz.name);
+    return `Esta é a voz ${i + 1} de ${vozes.length}. Para ouvir outra, diga trocar voz de novo.`;
+  }
+
+  /** Mais rápido (+1) ou mais devagar (-1), entre 0,7 e 1,6. */
+  mudarVelocidade(sentido) {
+    this.velocidade = Math.round(Math.min(1.6, Math.max(0.7, this.velocidade + 0.15 * sentido)) * 100) / 100;
+    gravar(CHAVE_VELOCIDADE, this.velocidade);
+    return sentido > 0 ? "Falando mais rápido." : "Falando mais devagar.";
   }
 
   ocupado() {

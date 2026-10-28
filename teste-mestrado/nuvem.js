@@ -22,8 +22,17 @@ export const salvarChave = valor => { try { valor ? localStorage.setItem(CHAVE, 
 const INSTRUCAO_LUGAR = `Você ajuda uma pessoa cega a reconhecer lugares. A foto é da câmera do celular dela.
 Responda só com JSON: {"resposta": "uma frase em português, no máximo 20 palavras, descrevendo o lugar e o que o distingue (ex.: cozinha com balcão de mármore e janela à direita)"}`;
 
+const INSTRUCAO_LER = `Você lê textos em voz alta para uma pessoa cega. A foto é de uma página, placa, rótulo ou papel.
+Transcreva o texto legível na ordem natural de leitura (colunas de cima para baixo, da esquerda para a direita),
+na língua original. Junte palavras quebradas por hífen no fim da linha. Ignore número de página, cabeçalho e rodapé repetidos.
+Em embalagem, bula ou cardápio, comece pelo que é mais importante (nome, dose, validade, preço).
+Responda só com JSON: {"texto": "o texto transcrito, ou vazio se não der para ler",
+ "aviso": null ou uma frase curta dizendo como melhorar a foto, se o texto estiver cortado, desfocado, escuro ou de cabeça para baixo
+ (ex.: "o texto está cortado à direita, mova o celular um pouco para a direita")}`;
+
 /**
- * Devolve { origem, perguntar(foto, alvo), descreverLugar(foto) } ou null.
+ * Devolve { origem, perguntar(foto, alvo), descreverLugar(foto), lerTexto(foto) } ou null.
+ * lerTexto -> {texto, aviso}.
  * perguntar -> {encontrado, lado, distancia, no_caminho, resposta}; descreverLugar -> texto.
  */
 export async function abrirNuvem() {
@@ -34,6 +43,7 @@ export async function abrirNuvem() {
       origem: "claude",
       perguntar: (foto, alvo) => json(instrucao(alvo), foto),
       descreverLugar: async foto => (await json(INSTRUCAO_LUGAR, foto)).resposta,
+      lerTexto: foto => sample.json(INSTRUCAO_LER, { images: [foto], cache: false }),
     };
   }
   if (lerChave()) {
@@ -41,12 +51,13 @@ export async function abrirNuvem() {
       origem: "api",
       perguntar: (foto, alvo) => perguntarApi(foto, instrucao(alvo)),
       descreverLugar: async foto => (await perguntarApi(foto, INSTRUCAO_LUGAR)).resposta,
+      lerTexto: foto => perguntarApi(foto, INSTRUCAO_LER, 4000),
     };
   }
   return null;
 }
 
-async function perguntarApi(foto, texto) {
+async function perguntarApi(foto, texto, maxTokens = 200) {
   const dados = await new Promise((ok, erro) => {
     const r = new FileReader();
     r.onload = () => ok(r.result.split(",")[1]);
@@ -64,7 +75,7 @@ async function perguntarApi(foto, texto) {
     },
     body: JSON.stringify({
       model: MODELO_API,
-      max_tokens: 200,
+      max_tokens: maxTokens,
       messages: [{
         role: "user",
         content: [
@@ -79,12 +90,12 @@ async function perguntarApi(foto, texto) {
   return JSON.parse(bruto.slice(bruto.indexOf("{"), bruto.lastIndexOf("}") + 1));
 }
 
-/** Foto do quadro atual em JPEG, com no máximo 768 px no lado maior (menos dados, resposta mais rápida). */
-export function fotografar(video) {
-  const escala = Math.min(1, 768 / Math.max(video.videoWidth, video.videoHeight));
+/** Foto do quadro atual em JPEG, com no máximo `lado` px no lado maior (menos dados, resposta mais rápida). */
+export function fotografar(video, lado = 768) {
+  const escala = Math.min(1, lado / Math.max(video.videoWidth, video.videoHeight));
   const c = document.createElement("canvas");
   c.width = Math.round(video.videoWidth * escala);
   c.height = Math.round(video.videoHeight * escala);
   c.getContext("2d").drawImage(video, 0, 0, c.width, c.height);
-  return new Promise(ok => c.toBlob(ok, "image/jpeg", 0.75));
+  return new Promise(ok => c.toBlob(ok, "image/jpeg", lado > 768 ? 0.9 : 0.75));
 }

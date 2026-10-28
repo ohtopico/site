@@ -5,6 +5,8 @@
 //   { tipo: "ondeEstou" | "quem" | "listarPessoas" | "listarLugares" }
 //   { tipo: "mapa" | "ondeFica", destino }             na rua, pelo GPS e o OpenStreetMap
 //   { tipo: "predio" | "quantoFalta" }                 o que há perto na rua; quanto falta na rota
+//   { tipo: "ler" | "trocarVoz" }                      ler texto pela câmera (IA na nuvem); outra voz do celular
+//   { tipo: "velocidade", sentido: 1 | -1 }            falar mais rápido ou mais devagar
 //   { tipo: "pausar", minutos }                        modo silêncio (minutos = null: até dizer continuar)
 //   { tipo: "sim" | "nao" | "descrever" | "livre" | "lembrar" | "listar" | "terminar" | "parar" | "pausar"
 //          | "retomar" | "ajuda" | "explicar" | "desconhecido" }
@@ -35,6 +37,9 @@ const PADROES = [
   ["sim", /^(sim|quero|pode|claro|ok|por favor)\b/],
   ["nao", /^(nao|agora nao|depois|dispenso)\b/],
   ["explicar", /^(como (isso|o site|voce) funciona|explica|explique)/],
+  ["velocidade", /(fal[ae]|le|leia|ler)( mais)? (rapido|devagar|depressa|lento)|(mais|menos) (rapido|devagar)/],
+  ["ler", /^((le|ler|leia|leh)( para mim| pra mim)?( o| a| este| esse| esta| essa| isto| isso| aqui| de novo| a proxima| outra)*( (texto|pagina|livro|documento|placa|papel|carta|rotulo|bula|cardapio|embalagem|aviso|cartaz|receita))?\b|o que (esta )?escrito|proxima pagina)/],
+  ["trocarVoz", /^(troca(r)?|muda(r)?|outra) (a |de )?voz/],
   ["predio", /((que|qual) (e )?(o |a )?(predio|edificio|bloco|loja|construcao|estabelecimento|lugar na rua)( e| eh)?( esse| este| aquele| aqui| a (minha )?frente| na (minha )?frente)|(qual|que) (e )?(esse|este|aquele) (predio|edificio|bloco|loja|lugar)|o que tem (por )?perto( daqui)?|o que tem na rua|onde estou na rua)/],
   ["quantoFalta", /(quanto (falta|tempo falta)|falta muito|onde (eu )?viro|qual (e )?(a )?proxima (curva|instrucao))/],
   ["ondeEstou", /(onde (eu )?estou|que lugar e (esse|este)|reconhece (o|este|esse) lugar)/],
@@ -90,6 +95,7 @@ export function interpretar(frase) {
     const m = f.match(padrao);
     if (!m) continue;
     if (tipo === "pausar") return { tipo, minutos: minutosDe(f) };
+    if (tipo === "velocidade") return { tipo, sentido: /devagar|lento|menos rapido/.test(f) && !/menos devagar/.test(f) ? -1 : 1 };
     if (tipo !== "procurar" && tipo !== "verificar") return { tipo };
     const inicio = m.index + m[0].length;
     const resto = f.slice(inicio);
