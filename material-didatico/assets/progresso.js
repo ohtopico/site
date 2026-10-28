@@ -86,10 +86,13 @@
       .map(({ h, i }) => ({ codigo: h.codigo, nivel: i.nivel }));
   }
 
-  /* Recurso sugerido para uma habilidade: lista ou jogo ainda não feito ou com a nota mais baixa */
+  /* Recurso sugerido para uma habilidade: lista ou jogo ainda não feito ou com a nota mais baixa.
+     Sem lista nem jogo, vale um recurso 3D (eles também contam no progresso). */
   function recursoPara(codigo, p) {
     p = p || perfilAtual(false);
-    const recs = RECURSOS.filter(r => r.habs.includes(codigo) && (r.tipo === 'lista' || r.tipo === 'jogo'));
+    const daHab = RECURSOS.filter(r => r.habs.includes(codigo));
+    let recs = daHab.filter(r => r.tipo === 'lista' || r.tipo === 'jogo');
+    if (!recs.length) recs = daHab.filter(r => r.tipo === '3d');
     if (!recs.length) return null;
     const nota = r => (p && p.r[r.id]) ? p.r[r.id].b : -1;
     return recs.slice().sort((a, b) => nota(a) - nota(b) || (a.tipo === 'lista' ? -1 : 1))[0];
