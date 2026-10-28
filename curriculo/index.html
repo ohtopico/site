@@ -12,7 +12,22 @@
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "url": "https://ohtopico.com.br/curriculo/",
-  "mainEntity": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/",
+    "identifier": {"@type": "PropertyValue", "propertyID": "ORCID", "value": "0000-0002-9948-779X"},
+    "sameAs": ["https://orcid.org/0000-0002-9948-779X", "https://lattes.cnpq.br/7211035377768669", "https://www.researchgate.net/profile/Julia-Quoos-Alves", "https://www.linkedin.com/in/ohtopico", "https://github.com/ohtopico"]
+  },
+  "hasPart": {
+    "@type": "CreativeWork",
+    "name": "Material didático de Computação, Matemática e IA para professores (BNCC)",
+    "url": "https://ohtopico.com.br/material-didatico/",
+    "identifier": "https://doi.org/10.5281/zenodo.23717721",
+    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "author": {"@id": "https://ohtopico.com.br/#julia"}
+  }
 }
 </script>
 <meta property="og:type" content="profile">
@@ -902,6 +917,7 @@ dialog.browser::backdrop {
         </div>
         <ul class="contacts">
             <li><span class="k">E-mail</span><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></li>
+            <li><span class="k">ORCID</span><a href="https://orcid.org/0000-0002-9948-779X">0000-0002-9948-779X</a></li>
             <li><span class="k">Lattes</span><a href="https://lattes.cnpq.br/7211035377768669">lattes.cnpq.br/7211035377768669</a></li>
             <li><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/ohtopico">in/ohtopico</a></li>
             <li><span class="k">ResearchGate</span><a href="https://www.researchgate.net/profile/Julia-Quoos-Alves">Julia-Quoos-Alves</a></li>
@@ -919,13 +935,13 @@ dialog.browser::backdrop {
         <section class="cv-section" id="sec-resumo" aria-labelledby="h-resumo">
             <h2 id="h-resumo">Resumo</h2>
             <p class="summary" data-perfil="completo">
-                Professora de computação e formadora de professores em inteligência artificial no Rio Grande do Sul. Licenciada em Informática e bacharela em Ciência da Computação, é mestranda na UFSM, onde pesquisa IA para auxiliar pessoas com deficiência visual. Foi bolsista de iniciação científica do CNPq de 2020 a 2025, em visão computacional e processamento de linguagem natural, e tem experiência em engenharia de dados na nuvem. Forma professores da rede municipal pelo programa A União Faz a Vida e é autora do guia IA pra Prof.
+                Professora de computação e formadora de professores em inteligência artificial no Rio Grande do Sul. Licenciada em Informática e bacharela em Ciência da Computação, é mestranda na UFSM, onde pesquisa IA para auxiliar pessoas com deficiência visual. Foi bolsista de iniciação científica do CNPq de 2020 a 2025, em visão computacional e processamento de linguagem natural, e tem experiência em engenharia de dados na nuvem. Forma professores da rede municipal pelo programa A União Faz a Vida, é autora do guia IA pra Prof e mantém um acervo aberto de material didático, com DOI no Zenodo.
             </p>
             <p class="summary" data-perfil="dados">
                 Profissional de dados e IA, com especialização em Ciência de Dados e Big Data Analytics (UNISC) e certificações Google Cloud. Na Compass UOL, projetou arquiteturas em nuvem para soluções de inteligência artificial. Foi bolsista de iniciação científica do CNPq de 2020 a 2025, em visão computacional e processamento de linguagem natural, e hoje pesquisa deep learning no mestrado em Ciência da Computação da UFSM.
             </p>
             <p class="summary" data-perfil="docencia">
-                Professora licenciada em Informática, bacharel em Ciência da Computação (UNISC) e mestranda em Ciência da Computação na UFSM. Lecionou informática no ensino médio da rede estadual e nos anos finais do ensino fundamental, foi tutora de oficinas de inclusão digital e monitora de três disciplinas na graduação. Como bolsista de IC em IA pelo CNPq, apresentou 15 trabalhos em eventos e ministrou 3 palestras em institutos federais. Forma professores da rede municipal e é autora do guia IA pra Prof.
+                Professora licenciada em Informática, bacharel em Ciência da Computação (UNISC) e mestranda em Ciência da Computação na UFSM. Lecionou informática no ensino médio da rede estadual e nos anos finais do ensino fundamental, foi tutora de oficinas de inclusão digital e monitora de três disciplinas na graduação. Como bolsista de IC em IA pelo CNPq, apresentou 15 trabalhos em eventos e ministrou 3 palestras em institutos federais. Forma professores da rede municipal, é autora do guia IA pra Prof e mantém um acervo aberto de material didático, com 42 aulas da BNCC Computação, 20 jogos e simuladores.
             </p>
         </section>
 
@@ -1054,6 +1070,14 @@ dialog.browser::backdrop {
                 <div class="pv-slot" data-preview="recompra"></div>
             </div>
 
+            <div class="item" data-perfil="dados">
+                <div class="item-head">
+                    <h3><a href="https://ohtopico.com.br/dados-da-regiao/">Painel de dados da educação no Vale do Rio Pardo</a></h3>
+                </div>
+                <p>Painel interativo publicado no site, com dados do Censo Escolar (INEP) e do Censo IBGE de 21 municípios, de 2010 a 2025: escolas, matrículas, estrutura das escolas, alfabetização e renda, com filtros por região e município.</p>
+                <p class="tags">Python · tratamento de microdados públicos · JavaScript · visualização de dados</p>
+            </div>
+
             <div class="item" data-perfil="completo dados">
                 <div class="item-head">
                     <h3><a href="https://github.com/ohtopico/state-of-data-brazil">Faixa salarial na área de dados no Brasil</a></h3>
@@ -1163,7 +1187,32 @@ dialog.browser::backdrop {
                     <h3><a href="https://ohtopico.com.br/material-didatico/">Material didático gratuito</a></h3>
                     <span class="when">2026</span>
                 </div>
-                <p>Jogos educativos e o Laboratório 3D de Matemática, com 13 recursos interativos, alinhados às habilidades da BNCC. Inclui 42 aulas em slides de Computação da BNCC do 6º ao 9º ano, com planos de aula.</p>
+                <p>Acervo aberto alinhado às habilidades da BNCC, separado em Computação e Matemática: 42 aulas em slides de Computação do 6º ao 9º ano com planos de aula, 20 jogos educativos, o Laboratório 3D de Matemática com 13 recursos interativos e missões diárias com níveis para acompanhar o progresso dos estudantes.</p>
+                <p>Registrado no Zenodo com DOI <a href="https://doi.org/10.5281/zenodo.23717721">10.5281/zenodo.23717721</a>, sob licença <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br">CC BY-NC-SA 4.0</a>.</p>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Apostilas didáticas</h3>
+                    <span class="when">2026</span>
+                </div>
+                <p>Apostilas de autoria própria, em fase de publicação: Robótica, Programação com Scratch, Cibersegurança (apostila do aluno) e a apostila do professor de Computação da BNCC, do 6º ao 9º ano.</p>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3><a href="https://ohtopico.com.br/simuladores/">Simuladores de Computação e Estatística</a></h3>
+                    <span class="when">2026</span>
+                </div>
+                <p>Sete simuladores interativos para o ensino técnico e superior: bases numéricas, portas lógicas, memória cache, Mini-MIPS, pipeline MIPS, placa-mãe em 3D e estatística descritiva.</p>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3><a href="https://ohtopico.com.br/dados-da-regiao/">Painel Dados da educação na região</a></h3>
+                    <span class="when">2026</span>
+                </div>
+                <p>Painel interativo com dados do Censo Escolar (INEP) e do Censo IBGE de 21 municípios do Vale do Rio Pardo, de 2010 a 2025, com página própria para <a href="https://ohtopico.com.br/dados-da-regiao/novo-cabrais/">Novo Cabrais</a>.</p>
             </div>
 
             <div class="item">
@@ -1547,6 +1596,12 @@ const FICHAS = {
         texto: 'Deep learning e visão computacional para uma mochila inteligente que auxilia pessoas com baixa visão ou cegas, com modelos MobileNet treinados nos datasets MIT67 e NYU Depth v2.',
         icone: '◎'
     },
+    acervo: {
+        nome: 'Acervo aberto',
+        tipo: 'Material didático · DOI no Zenodo',
+        texto: '42 aulas da BNCC Computação com planos de aula, 20 jogos educativos, Laboratório 3D de Matemática e simuladores, sob licença CC BY-NC-SA 4.0 (DOI 10.5281/zenodo.23717721).',
+        icone: '▦'
+    },
     seduc: {
         nome: 'Escola estadual',
         tipo: 'Professora de informática · 2026',
@@ -1580,7 +1635,7 @@ const COMPETENCIAS = {
     'AEE': ['iapraprof'],
     'IA na educação': ['iapraprof', 'oficinas'],
     'Palestras e apresentações': ['prendadas', 'cnpq'],
-    'Material didático': ['licenciatura', 'tutoria', 'oficinas'],
+    'Material didático': ['acervo', 'licenciatura', 'tutoria', 'oficinas'],
     'Design gráfico': ['freelancer', 'fortalk'],
     'Marketing digital': ['fortalk', 'freelancer']
 };
