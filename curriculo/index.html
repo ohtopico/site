@@ -981,7 +981,9 @@ dialog.browser::backdrop {
                 <ul>
                     <li>Desenvolve a parte de deep learning e visão computacional de uma mochila inteligente para pessoas com baixa visão ou cegas.</li>
                     <li>Treina modelos leves (MobileNet) com os datasets MIT67 e NYU Depth v2, pensados para rodar no hardware da mochila.</li>
+                    <li>A MobileNetV1 chegou a 70,0% de acurácia no MIT67 com 3,2 ms por imagem, perto da mais precisa (MobileNetV3 Large, 70,7%) e com menos da metade da latência; no NYU Depth v2, foi a mais precisa (57,5%).</li>
                 </ul>
+                <div class="pv-slot" data-preview="mestrado"></div>
             </div>
 
             <div class="item" data-perfil="completo docencia">
@@ -1076,6 +1078,7 @@ dialog.browser::backdrop {
                 </div>
                 <p>Painel interativo publicado no site, com dados do Censo Escolar (INEP) e do Censo IBGE de 21 municípios, de 2010 a 2025: escolas, matrículas, estrutura das escolas, alfabetização e renda, com filtros por região e município.</p>
                 <p class="tags">Python · tratamento de microdados públicos · JavaScript · visualização de dados</p>
+                <div class="pv-slot" data-preview="censo"></div>
             </div>
 
             <div class="item" data-perfil="completo dados">
@@ -1212,7 +1215,8 @@ dialog.browser::backdrop {
                     <h3><a href="https://ohtopico.com.br/dados-da-regiao/">Painel Dados da educação na região</a></h3>
                     <span class="when">2026</span>
                 </div>
-                <p>Painel interativo com dados do Censo Escolar (INEP) e do Censo IBGE de 21 municípios do Vale do Rio Pardo, de 2010 a 2025, com página própria para <a href="https://ohtopico.com.br/dados-da-regiao/novo-cabrais/">Novo Cabrais</a>.</p>
+                <p>Painel interativo com dados do Censo Escolar (INEP) e do Censo IBGE de 21 municípios do Vale do Rio Pardo, de 2010 a 2025, acompanhado de infográficos sobre alfabetização, saneamento e renda, com página própria para <a href="https://ohtopico.com.br/dados-da-regiao/novo-cabrais/">Novo Cabrais</a>.</p>
+                <div class="pv-slot" data-preview="censo"></div>
             </div>
 
             <div class="item">
@@ -1247,7 +1251,7 @@ dialog.browser::backdrop {
                 <div class="skill" data-perfil="completo dados docencia">
                     <h3>Dados e engenharia</h3>
                     <ul class="chips">
-                        <li>SQL (MySQL, PostgreSQL)</li><li>Python (pandas, NumPy, PySpark)</li><li>Modelagem de dados</li><li>Data lake na AWS</li>
+                        <li>SQL (MySQL, PostgreSQL)</li><li>Python (pandas, NumPy, PySpark)</li><li>Modelagem de dados</li><li>Visualização de dados</li><li>Data lake na AWS</li>
                     </ul>
                 </div>
                 <div class="skill" data-perfil="completo dados docencia">
@@ -1420,6 +1424,30 @@ dialog.browser::backdrop {
    As imagens ficam em curriculo/img/.
    --------------------------------------------------------------- */
 const PREVIAS = {
+    mestrado: {
+        tipo: 'Pesquisa de mestrado · UFSM',
+        titulo: 'MobileNet para a mochila inteligente',
+        url: 'pesquisa/mobilenet-mochila-inteligente',
+        texto: 'Comparação de quatro versões da MobileNet em reconhecimento de ambientes (MIT67) e de cenas internas (NYU Depth v2), medindo acurácia no teste e latência por imagem, para escolher o modelo que roda no hardware da mochila para pessoas com baixa visão ou cegas.',
+        fatos: [['70,0%', 'MobileNetV1 no MIT67, com 3,2 ms por imagem'], ['57,5%', 'MobileNetV1 no NYU Depth v2, a mais precisa'], ['2x', 'mais rápida que a MobileNetV3 Large, com acurácia próxima']],
+        abas: [
+            { nome: 'Acurácia x latência', img: 'img/mestrado-acuracia-latencia.jpg', alt: 'Dois gráficos de acurácia no teste por latência em milissegundos. No MIT67: MobileNetV1 70,0% com 3,2 ms, MobileNetV2 68,9% com 6,0 ms, MobileNetV3 Small 64,4% com 5,8 ms e MobileNetV3 Large 70,7% com 7,1 ms. No NYU Depth v2: MobileNetV1 57,5%, MobileNetV2 55,4%, MobileNetV3 Small 54,0% e MobileNetV3 Large 55,8%, com as mesmas latências.', legenda: 'Acurácia no teste por latência (batch 1), com a variação entre execuções.' }
+        ]
+    },
+    censo: {
+        tipo: 'Projeto de dados · visualização',
+        titulo: 'Dados da educação na região',
+        url: 'projetos/dados-da-regiao',
+        externo: '../dados-da-regiao/',
+        texto: 'Painel interativo e infográficos feitos a partir dos Censos do IBGE (2010 e 2022) e do Censo Escolar do INEP, mostrando os avanços em alfabetização, água da rede, coleta de lixo e renda nos municípios do Vale do Rio Pardo.',
+        fatos: [['21', 'municípios no painel interativo'], ['16 de 16', 'municípios da microrregião melhoraram a alfabetização'], ['1º', 'Novo Cabrais, o que mais avançou entre os vizinhos']],
+        abas: [
+            { nome: 'Painel', img: 'img/censo-painel.jpg', alt: 'Topo do painel “Dados da educação na região”, com filtros por região (Candelária e vizinhos, Novo Cabrais e vizinhos, Região de Santa Cruz do Sul) e por município', legenda: 'O painel interativo no site.' },
+            { nome: 'Alfabetização', img: 'img/censo-alfabetizacao.jpg', alt: 'Infográfico “Ler e escrever na região de Santa Cruz do Sul”: 96,3% sabem ler e escrever, eram 94,6% em 2010; 16 de 16 municípios melhoraram; mapa por faixa de alfabetização', legenda: 'Infográfico sobre alfabetização na microrregião de Santa Cruz do Sul.', link: 'img/infografico-alfabetizacao.jpg' },
+            { nome: 'Novo Cabrais', img: 'img/censo-novo-cabrais-melhorou.jpg', alt: 'Seção “O que melhorou” do infográfico de Novo Cabrais: casas com água da rede de 67,5% para 81,4%, coleta de lixo de 82,3% para 97,2%, alfabetização de 91,3% para 94,7%, renda do trabalho 80% acima da inflação e PIB por pessoa 54% acima da inflação', legenda: 'O que melhorou em Novo Cabrais de 2010 a 2022.', link: 'img/infografico-novo-cabrais.jpg' },
+            { nome: 'Candelária e vizinhos', img: 'img/censo-candelaria.jpg', alt: 'Seção “Como cada município avançou” do infográfico de Candelária e vizinhos: gráficos de 2010 e 2022 para água da rede, lixo coletado, alfabetização e renda média do trabalho em nove municípios', legenda: 'Como cada município avançou de 2010 a 2022.', link: 'img/infografico-candelaria.jpg' }
+        ]
+    },
     prendadas: {
         tipo: 'Palestra · grupo PrendAdas',
         titulo: 'Tecnologia e o profissional do futuro',
@@ -1590,12 +1618,6 @@ const FICHAS = {
         texto: 'Como engenheira de dados trainee, projetou arquiteturas em nuvem para soluções de IA, modelou dados com SQL e participou do gerenciamento de um data lake na AWS (S3 e EC2) que alimentava dashboards internos.',
         icone: '☁'
     },
-    mestrado: {
-        nome: 'Pesquisa do mestrado',
-        tipo: 'UFSM · em andamento',
-        texto: 'Deep learning e visão computacional para uma mochila inteligente que auxilia pessoas com baixa visão ou cegas, com modelos MobileNet treinados nos datasets MIT67 e NYU Depth v2.',
-        icone: '◎'
-    },
     acervo: {
         nome: 'Acervo aberto',
         tipo: 'Material didático · DOI no Zenodo',
@@ -1614,13 +1636,14 @@ const NOMES_CURTOS = {
     recompra: 'Previsão de recompra', salario: 'Faixa salarial', moedas: 'Moedas brasileiras',
     odontoapp: 'OdontoApp', iapraprof: 'IA pra Prof', oficinas: 'Oficinas para professores',
     cnpq: 'Pesquisa no CNPq', prendadas: 'Palestra PrendAdas', tutoria: 'UNISC Inclusão Digital',
-    licenciatura: 'Arduino e Scratch', fortalk: 'Fortalk', freelancer: 'Portfólio de design'
+    licenciatura: 'Arduino e Scratch', mestrado: 'Pesquisa do mestrado', censo: 'Dados da região', fortalk: 'Fortalk', freelancer: 'Portfólio de design'
 };
 
 const COMPETENCIAS = {
     'SQL (MySQL, PostgreSQL)': ['compass'],
     'Python (pandas, NumPy, PySpark)': ['recompra', 'salario', 'moedas', 'mestrado'],
     'Modelagem de dados': ['compass'],
+    'Visualização de dados': ['censo', 'recompra', 'salario'],
     'Data lake na AWS': ['compass'],
     'scikit-learn': ['recompra', 'salario'],
     'LightGBM e XGBoost': ['recompra'],
