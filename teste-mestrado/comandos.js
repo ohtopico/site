@@ -3,7 +3,9 @@
 //   { tipo: "gravar" | "seguir" | "voltar" | "apagar", nome }  percursos gravados
 //   { tipo: "lugar" | "apagarLugar" | "cadastrar" | "apagarPessoa", nome }  lugares e pessoas
 //   { tipo: "ondeEstou" | "quem" | "listarPessoas" | "listarLugares" }
-//   { tipo: "mapa", destino }                          navegação a pé na rua (Google Maps)
+//   { tipo: "mapa" | "ondeFica", destino }             na rua, pelo GPS e o OpenStreetMap
+//   { tipo: "predio" | "quantoFalta" }                 o que há perto na rua; quanto falta na rota
+//   { tipo: "pausar", minutos }                        modo silêncio (minutos = null: até dizer continuar)
 //   { tipo: "sim" | "nao" | "descrever" | "livre" | "lembrar" | "listar" | "terminar" | "parar" | "pausar"
 //          | "retomar" | "ajuda" | "explicar" | "desconhecido" }
 
@@ -26,13 +28,15 @@ const COM_NOME = [
   ["mapa", /^(navega(r)?|como (eu )?(chego|vou)|rota|caminho a pe|me leva) (ate |para |pra |a |ao |na |no |em |à )*(?<nome>.+)/],
 ];
 
-// Palavras que indicam um lugar na rua (vai para o Google Maps em vez da câmera)
-const LUGAR = /\b(rua|avenida|av|praca|rodoviaria|estacao|shopping|mercado|supermercado|farmacia|hospital|posto|universidade|ufsm|faculdade|escola|parada|ponto de onibus|casa|centro|bairro|parque|igreja|prefeitura|restaurante|padaria|aeroporto|endereco)\b|\d/;
+// Palavras que indicam um lugar na rua (vai para o mapa em vez da câmera)
+const LUGAR = /\b(rua|avenida|av|praca|predio|bloco|reitoria|biblioteca|banco|loja|lanchonete|cafe|rodoviaria|estacao|shopping|mercado|supermercado|farmacia|hospital|posto|universidade|ufsm|faculdade|escola|parada|ponto de onibus|casa|centro|bairro|parque|igreja|prefeitura|restaurante|padaria|aeroporto|endereco)\b|\d/;
 
 const PADROES = [
   ["sim", /^(sim|quero|pode|claro|ok|por favor)\b/],
   ["nao", /^(nao|agora nao|depois|dispenso)\b/],
   ["explicar", /^(como (isso|o site|voce) funciona|explica|explique)/],
+  ["predio", /((que|qual) (e )?(o |a )?(predio|edificio|bloco|loja|construcao|estabelecimento|lugar na rua)( e| eh)?( esse| este| aquele| aqui| a (minha )?frente| na (minha )?frente)|(qual|que) (e )?(esse|este|aquele) (predio|edificio|bloco|loja|lugar)|o que tem (por )?perto( daqui)?|o que tem na rua|onde estou na rua)/],
+  ["quantoFalta", /(quanto (falta|tempo falta)|falta muito|onde (eu )?viro|qual (e )?(a )?proxima (curva|instrucao))/],
   ["ondeEstou", /(onde (eu )?estou|que lugar e (esse|este)|reconhece (o|este|esse) lugar)/],
   ["quem", /(quem (esta|e|ta)( aqui| ai| na (minha )?frente)?|quem e (essa|esta) pessoa|reconhece (essa|esta) pessoa)/],
   ["listarPessoas", /quais (sao )?(as )?pessoas/],
@@ -41,7 +45,7 @@ const PADROES = [
   ["listar", /(quais (sao )?(os |as )?(percursos|caminhos|trajetos|rotas)|lista(r)? (os |as )?(percursos|caminhos|trajetos|rotas))/],
   ["livre", /(caminho (esta )?livre|posso (seguir|ir|andar)|da para (passar|seguir)|tem espaco)/],
   ["parar", /^(parar?|para tudo|cancela(r)?|chega|pronto|achei|obrigad[ao])\b/],
-  ["pausar", /^(pausa(r)?|silencio|fica quiet[ao]|cala a boca)\b/],
+  ["pausar", /^((modo (de )?)?(silencio|espera|descanso)|pausa(r)?|fica (quiet[ao]|em silencio)|faz silencio|cala a boca|descansa(r)?)\b/],
   ["retomar", /^(continua(r)?|retoma(r)?|volta(r)?)\b/],
   ["ajuda", /^(ajuda|o que (voce )?(sabe|pode) fazer|comandos)\b/],
   ["descrever", /(o que (tem|ha|existe|voce ve|esta)( aqui| na (minha )?frente| ao (meu )?redor| em volta)?|descreve|descreva)/],
@@ -55,6 +59,17 @@ const VAZIAS = new Set(("o a os as um uma meu minha meus minhas pra para mim me 
 
 // Igual a normalizar(), mas sem juntar espaços: cada posição continua batendo com a frase original
 const semAcento = texto => [...texto.toLowerCase()].map(c => c.normalize("NFD")[0]).join("").replace(/[?!.,]/g, " ");
+
+const NUMEROS = { um: 1, uma: 1, dois: 2, duas: 2, tres: 3, cinco: 5, dez: 10, quinze: 15, vinte: 20, trinta: 30, quarenta: 40 };
+
+/** "por 10 minutos" -> 10, "meia hora" -> 30, "uma hora" -> 60; sem tempo -> null. */
+export function minutosDe(f) {
+  if (/meia hora/.test(f)) return 30;
+  const m = f.match(/(\d+|um|uma|dois|duas|tres|cinco|dez|quinze|vinte|trinta|quarenta) (minuto|hora)/);
+  if (!m) return null;
+  const n = /\d/.test(m[1]) ? +m[1] : NUMEROS[m[1]];
+  return m[2] === "hora" ? n * 60 : n;
+}
 
 export function interpretar(frase) {
   const f = semAcento(frase);
@@ -74,6 +89,7 @@ export function interpretar(frase) {
   for (const [tipo, padrao] of PADROES) {
     const m = f.match(padrao);
     if (!m) continue;
+    if (tipo === "pausar") return { tipo, minutos: minutosDe(f) };
     if (tipo !== "procurar" && tipo !== "verificar") return { tipo };
     const inicio = m.index + m[0].length;
     const resto = f.slice(inicio);
@@ -83,7 +99,10 @@ export function interpretar(frase) {
       .map((p, i) => (p && !VAZIAS.has(p) ? palavras[i] : null))
       .filter(Boolean).join(" ");
     if (!alvo) return { tipo: "desconhecido", frase };
-    return { tipo, rotulo: acharObjeto(resto), alvo };
+    const rotulo = acharObjeto(resto);
+    // "onde fica a reitoria" é no mapa; "onde fica a saída" é na câmera
+    if (/onde fica/.test(m[0]) && !rotulo && LUGAR.test(resto)) return { tipo: "ondeFica", destino: alvo };
+    return { tipo, rotulo, alvo };
   }
   // Só o nome de um objeto conhecido ("xícara") vale como procurar
   const rotulo = acharObjeto(f);

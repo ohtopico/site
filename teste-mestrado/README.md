@@ -17,14 +17,22 @@ toca em qualquer lugar e fala.
 | "lembrar este lugar como cozinha" / "onde estou?" | guarda o lugar em texto (objetos e direções, mais uma frase da IA se houver) e reconhece depois |
 | "cadastrar pessoa Maria" / "quem está aqui?" | reconhece pessoas cadastradas, só com o consentimento falado delas |
 | "apagar pessoa Maria", "esquecer o lugar cozinha" | apaga do celular |
-| "me leva até a rodoviária" | abre o Google Maps a pé (só para a rua) |
-| "parar", "pausar", "continuar", "ajuda" | controle |
+| "que prédio é esse?", "o que tem perto?" | na rua: prédios e lugares com nome à frente e dos lados (GPS, bússola e OpenStreetMap) |
+| "onde fica a reitoria?" | direção e distância em linha reta até o lugar |
+| "me leva até a reitoria" / "quanto falta?" | guia a pé por voz, sem abrir outro app ("em 40 metros, vire à direita"); recalcula se sair do caminho |
+| "silêncio", "silêncio por 10 minutos", "continuar" | modo silêncio: para de analisar e de falar até continuar ou até acabar o tempo |
+| "parar", "ajuda" | controle |
 
 Ao procurar ou descrever, o site diz onde está cada objeto (lado e distância) e se há algo no caminho até ele
 ("xícara à direita, a 3 metros; cuidado, cadeira no caminho, a 1 metro").
 
-Sem nenhum pedido, o site avisa obstáculos com a distância aproximada, vibra (Android) quando algo está perto
-à frente e diz quando um lado se abre e dá para virar. Na primeira vez, pergunta se a pessoa quer saber como funciona.
+Sem nenhum pedido, o site só avisa paredes e obstáculos à frente com a distância aproximada, vibra (Android)
+quando algo está perto e diz quando um lado se abre e dá para virar. Os objetos são ditos quando a pessoa pede.
+Uma fala nunca corta outra.
+
+Na rua, os mapas vêm de serviços públicos do OpenStreetMap, sem chave: Overpass (lugares perto), Nominatim
+(busca por nome) e o servidor de rotas a pé (routing.openstreetmap.de). Os prédios só aparecem se tiverem nome
+no OpenStreetMap; quem quiser pode acrescentar os que faltam em openstreetmap.org. Na primeira vez, pergunta se a pessoa quer saber como funciona.
 
 ## Como funciona
 

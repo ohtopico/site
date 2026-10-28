@@ -75,8 +75,8 @@ async function perguntarApi(foto, texto) {
     }),
   });
   if (!resposta.ok) throw new Error(`API ${resposta.status}`);
-  const texto = (await resposta.json()).content.map(b => b.text ?? "").join("");
-  return JSON.parse(texto.slice(texto.indexOf("{"), texto.lastIndexOf("}") + 1));
+  const bruto = (await resposta.json()).content.map(b => b.text ?? "").join("");
+  return JSON.parse(bruto.slice(bruto.indexOf("{"), bruto.lastIndexOf("}") + 1));
 }
 
 /** Foto do quadro atual em JPEG, com no máximo 768 px no lado maior (menos dados, resposta mais rápida). */

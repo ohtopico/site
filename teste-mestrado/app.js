@@ -5,11 +5,13 @@ import { abrirNuvem, fotografar, lerChave, salvarChave } from "./nuvem.js";
 import { abrirCamera } from "./camera.js";
 import { Memoria } from "./memoria.js";
 import { apagarLugar, descreverLugar, lembrarLugar, listarLugares, ondeEstou } from "./lugares.js";
-import { Cadastro, Reconhecedor, apagarPessoa, listarPessoas } from "./pessoas.js";
+import { Cadastro, Reconhecedor as ReconhecedorRostos, apagarPessoa, listarPessoas } from "./pessoas.js";
 import { Gravacao, SeguirPercurso, Sensores, acharPercurso, apagar, listar } from "./percursos.js";
 import { Profundidade, definirGrandeAngular, distanciaPorTamanho, falarDistancia } from "./profundidade.js";
 import { Procurar, ProcurarNaNuvem, Verificar, descrever } from "./tarefas.js";
 import { adicionarObjetos, nomeFalado } from "./vocabulario.js";
+import { NavegarRua, buscarLugar, descreverPerto, direcaoFalada, distanciaM, erroGps, lugaresPerto, metrosFalados,
+  posicaoAtual, rotaAPe, rumoEntre } from "./rua.js";
 
 const $ = id => document.getElementById(id);
 const video = $("video"), caixas = $("caixas"), estado = $("estado"), botao = $("pausar");
@@ -17,7 +19,8 @@ const QUADRO_MS = 200; // ~5 análises por segundo
 const AJUDA = "Toque na tela e fale. Por exemplo: cadê a xícara, ache a chave, onde fica a saída, " +
   "tem um extintor, o que tem na minha frente, o caminho está livre, gravar percurso e o nome, " +
   "seguir percurso e o nome, o que eu passei, lembrar este lugar como cozinha, onde estou, " +
-  "cadastrar pessoa e o nome, quem está aqui, me leva até e um endereço na rua, ou parar.";
+  "cadastrar pessoa e o nome, quem está aqui, que prédio é esse, me leva até e um lugar na rua, " +
+  "quanto falta, silêncio por 10 minutos, continuar, ou parar.";
 // Tutorial em partes curtas: mostrado em lista (para o leitor de tela) e falado com pausas entre as partes
 const TUTORIAL = [
   "Este site usa inteligência artificial para reconhecer o ambiente pela câmera do celular. " +
@@ -26,7 +29,7 @@ const TUTORIAL = [
   "Para pedir algo, toque em qualquer lugar da tela e fale depois do bipe. Por exemplo: cadê a xícara, " +
     "ache a chave, tem um extintor, o que tem na minha frente, ou o caminho está livre.",
   "Dentro de um prédio, posso gravar um percurso e depois guiar você por ele: diga gravar percurso e um nome. " +
-    "Na rua, diga me leva até e o endereço, que eu abro o Google Maps.",
+    "Na rua, diga que prédio é esse, onde fica a reitoria, ou me leva até e o nome do lugar, que eu guio você a pé pelo GPS.",
   "Eu lembro do que passou pela câmera no último minuto: pergunte o que eu passei, ou onde estava a porta. " +
     "Também guardo lugares, dizendo lembrar este lugar como cozinha, e depois respondo onde estou. " +
     "Posso reconhecer pessoas conhecidas, se elas concordarem: diga cadastrar pessoa e o nome. " +
@@ -45,7 +48,7 @@ let pausado = false, ouvindo = false, processando = false, aguardandoIntro = fal
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
 const memoria = new Memoria(sensores);
-const reconhecedor = new Reconhecedor(anunciador, memoria);
+const reconhecedor = new ReconhecedorRostos(anunciador, memoria);
 const nomeProprio = n => n.trim().replace(/(^|\s)\p{L}/gu, l => l.toUpperCase());
 
 $("comecar").addEventListener("click", comecar);
@@ -304,7 +307,7 @@ function executar(frase) {
       return;
     case "procurar":
     case "verificar":
-      pausado = false;
+      if (pausado) definirPausa(false, "calado");
       tarefa?.cancelar?.();
       if (!pedido.rotulo) {
         // Fora dos objetos do detector local: pergunta à IA na nuvem
@@ -415,7 +418,17 @@ function executar(frase) {
         .catch(() => anunciador.falar("Não consegui analisar os rostos agora.", true));
       return;
     case "mapa":
-      abrirMapa(pedido.destino);
+      irPara(pedido.destino);
+      return;
+    case "ondeFica":
+      ondeFica(pedido.destino);
+      return;
+    case "predio":
+      oQueTemPerto();
+      return;
+    case "quantoFalta":
+      anunciador.falar(tarefa instanceof NavegarRua ? tarefa.situacao()
+        : "Não estou guiando nenhum caminho agora. Diga me leva até e o nome do lugar.", true);
       return;
     case "parar":
       tarefa?.cancelar?.();
@@ -424,7 +437,7 @@ function executar(frase) {
       anunciador.falar(gravacao ? "Ok. A gravação continua." : "Ok.");
       return;
     case "pausar":
-      definirPausa(true);
+      definirPausa(true, pedido.minutos);
       return;
     case "retomar":
       definirPausa(false);
@@ -451,23 +464,75 @@ function descreverEspaco() {
     .filter(Boolean).join(". ") + ". Valores aproximados.";
 }
 
-/** Abre a navegação a pé do Google Maps (app no celular, site no computador). */
-function abrirMapa(destino) {
-  const url = `https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=${encodeURIComponent(destino)}`;
-  anunciador.falar(`Abrindo o Google Maps com o caminho a pé até ${destino}. Para voltar, use o botão voltar do celular.`, true);
-  setTimeout(() => { location.href = url; }, 4500);
+// --- Rua (GPS + OpenStreetMap) -----------------------------------------------------
+
+async function irPara(destino) {
+  tarefa?.cancelar?.();
+  tarefa = null;
+  anunciador.falar(`Procurando o caminho até ${destino}.`, true);
+  let pos;
+  try { pos = await posicaoAtual(); } catch (e) { anunciador.falar(erroGps(e), true); return; }
+  try {
+    const lugar = await buscarLugar(destino, pos);
+    if (!lugar) { anunciador.falar(`Não achei ${destino} no mapa. Tente dizer o nome completo ou o endereço.`, true); return; }
+    const rota = await rotaAPe(pos, lugar);
+    if (!rota) { anunciador.falar(`Não achei um caminho a pé até ${lugar.nome}.`, true); return; }
+    tarefa = new NavegarRua(anunciador, sensores, lugar, rota, pos);
+  } catch {
+    anunciador.falar("Não consegui consultar o mapa. Verifique a internet.", true);
+  }
 }
 
-function definirPausa(valor) {
+async function ondeFica(destino) {
+  let pos;
+  try { pos = await posicaoAtual(); } catch (e) { anunciador.falar(erroGps(e), true); return; }
+  try {
+    const lugar = await buscarLugar(destino, pos);
+    if (!lugar) { anunciador.falar(`Não achei ${destino} no mapa.`, true); return; }
+    const d = distanciaM(pos, lugar);
+    anunciador.falar(`${lugar.nome} fica ${direcaoFalada(sensores.rumo, rumoEntre(pos, lugar))}, a ${metrosFalados(d)} em linha reta. ` +
+      "Para ir até lá, diga me leva até e o nome.", true);
+  } catch {
+    anunciador.falar("Não consegui consultar o mapa. Verifique a internet.", true);
+  }
+}
+
+async function oQueTemPerto() {
+  anunciador.falar("Olhando o mapa.", true);
+  let pos;
+  try { pos = await posicaoAtual(); } catch (e) { anunciador.falar(erroGps(e), true); return; }
+  try {
+    anunciador.falar(descreverPerto(await lugaresPerto(pos), sensores.rumo), true);
+  } catch {
+    anunciador.falar("Não consegui consultar o mapa. Verifique a internet.", true);
+  }
+}
+
+// Modo silêncio: a câmera para de analisar e nada é falado até a pessoa dizer continuar,
+// ou até acabar o tempo pedido ("silêncio por 10 minutos").
+let fimDaPausa = null;
+
+function definirPausa(valor, minutos = null) {
   pausado = valor;
+  clearTimeout(fimDaPausa);
+  fimDaPausa = null;
   tarefa?.cancelar?.();
   tarefa = null;
   anunciador.reiniciar();
   document.body.classList.toggle("pausado", pausado);
   botao.setAttribute("aria-label", pausado
-    ? "Pausado. Toque e diga continuar."
+    ? "Modo silêncio. Toque e diga continuar."
     : "Assistência ativa. Toque e fale um pedido.");
-  anunciador.falar(pausado ? "Pausado" : "Retomado", true);
+  if (!pausado) {
+    if (minutos !== "calado") anunciador.falar(minutos === "fim" ? "Fim do silêncio. Estou de volta." : "Estou de volta.", true);
+    return;
+  }
+  if (minutos) {
+    fimDaPausa = setTimeout(() => definirPausa(false, "fim"), minutos * 60000);
+    anunciador.falar(`Modo silêncio por ${minutos >= 60 && minutos % 60 === 0 ? `${minutos / 60} ${minutos === 60 ? "hora" : "horas"}` : `${minutos} minutos`}. Para voltar antes, toque e diga continuar.`, true);
+  } else {
+    anunciador.falar("Modo silêncio. Quando quiser, toque e diga continuar.", true);
+  }
 }
 
 // --- Tela (para quem acompanha os testes) -------------------------------------------
