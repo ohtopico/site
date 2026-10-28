@@ -9,18 +9,14 @@ import { Cadastro, Reconhecedor as ReconhecedorRostos, apagarPessoa, listarPesso
 import { Gravacao, SeguirPercurso, Sensores, acharPercurso, apagar, listar } from "./percursos.js";
 import { Profundidade, definirGrandeAngular, distanciaPorTamanho, falarDistancia } from "./profundidade.js";
 import { Procurar, ProcurarNaNuvem, Verificar, descrever } from "./tarefas.js";
-import { adicionarObjetos, nomeFalado } from "./vocabulario.js";
+import { adicionarObjetos, nomeFalado, normalizar } from "./vocabulario.js";
+import { GRUPOS, falaDoGrupo, falaDoMenu, grupoDaFrase, montarListaDeComandos } from "./menu.js";
 import { NavegarRua, buscarLugar, descreverPerto, direcaoFalada, distanciaM, erroGps, lugaresPerto, metrosFalados,
   posicaoAtual, rotaAPe, rumoEntre } from "./rua.js";
 
 const $ = id => document.getElementById(id);
 const video = $("video"), caixas = $("caixas"), estado = $("estado"), botao = $("pausar");
 const QUADRO_MS = 200; // ~5 análises por segundo
-const AJUDA = "Toque na tela e fale. Por exemplo: cadê a xícara, ache a chave, onde fica a saída, " +
-  "tem um extintor, o que tem na minha frente, o caminho está livre, gravar percurso e o nome, " +
-  "seguir percurso e o nome, o que eu passei, lembrar este lugar como cozinha, onde estou, " +
-  "cadastrar pessoa e o nome, quem está aqui, que prédio é esse, me leva até e um lugar na rua, " +
-  "quanto falta, leia este texto, trocar voz, fale mais devagar, silêncio por 10 minutos, continuar, ou parar.";
 // Tutorial em partes curtas: mostrado em lista (para o leitor de tela) e falado com pausas entre as partes
 const TUTORIAL = [
   "Este site usa inteligência artificial para reconhecer o ambiente pela câmera do celular. " +
@@ -35,7 +31,7 @@ const TUTORIAL = [
     "Também guardo lugares, dizendo lembrar este lugar como cozinha, e depois respondo onde estou. " +
     "Posso reconhecer pessoas conhecidas, se elas concordarem: diga cadastrar pessoa e o nome. " +
     "Tudo isso fica só neste celular.",
-  "Diga parar para cancelar, e ajuda para ouvir os exemplos de novo. A distância é aproximada: " +
+  "Diga parar para cancelar, e menu para conhecer todos os comandos, separados por grupos. A distância é aproximada: " +
     "continue usando a bengala ou o cão-guia.",
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
@@ -46,7 +42,7 @@ const marcarTutorialOuvido = () => { try { localStorage.setItem(TUTORIAL_OUVIDO,
 const anunciador = new Anunciador();
 let detector, extra = null, cena, profundidade = null, nuvem = null, tarefa = null, gravacao = null;
 let leitura = null; // { cancelada } enquanto lê um texto em voz alta
-let pausado = false, ouvindo = false, processando = false, aguardandoIntro = false;
+let pausado = false, ouvindo = false, processando = false, aguardandoIntro = false, aguardandoGrupo = false;
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
 const memoria = new Memoria(sensores);
@@ -58,6 +54,7 @@ $("tutorial-comecar").addEventListener("click", comecar);
 $("tutorial").addEventListener("click", abrirTutorial);
 $("tutorial-voltar").addEventListener("click", fecharTutorial);
 $("comecar").focus();
+montarListaDeComandos($("lista-comandos"));
 
 // Os modelos começam a baixar assim que a página abre, enquanto a pessoa ouve as boas-vindas;
 // a profundidade, mais pesada, vem depois do detector e não segura o início.
@@ -68,7 +65,7 @@ preparo.then(() => Profundidade.carregar()).then(p => { profundidade = p; }).cat
 // Detector treinado com a lista de objetos (opcional): os nomes dele entram no vocabulário dos pedidos
 DetectorExtra.carregar().then(d => {
   if (!d) return;
-  adicionarObjetos(d.nomes);
+  adicionarObjetos(d.nomesAtivos);
   extra = d;
 }).catch(() => {});
 
@@ -205,7 +202,7 @@ async function comecar() {
   setTimeout(() => {
     if (ouvindo || tarefa) return;
     if (tutorialOuvido()) {
-      anunciador.falar("Toque na tela e diga o que procura.");
+      anunciador.falar("Toque na tela e diga o que procura, ou diga menu.");
     } else {
       aguardandoIntro = true;
       anunciador.falar("Quer ouvir como o site funciona? Toque na tela e diga sim ou não.");
@@ -291,7 +288,10 @@ function ouvir() {
 }
 
 function executar(frase) {
-  const pedido = interpretar(frase);
+  // Logo depois do menu, basta dizer o nome do grupo ("rua")
+  const grupo = aguardandoGrupo ? grupoDaFrase(normalizar(frase)) : null;
+  aguardandoGrupo = false;
+  const pedido = grupo ? { tipo: "menu", grupo: grupo.nome } : interpretar(frase);
   mostrar(`“${frase}”`);
   // Sim/não durante um cadastro é o consentimento da pessoa, não resposta ao tutorial
   if ((pedido.tipo === "sim" || pedido.tipo === "nao") && tarefa?.aoResponder?.(pedido.tipo)) return;
@@ -455,11 +455,14 @@ function executar(frase) {
     case "velocidade":
       anunciador.falar(anunciador.mudarVelocidade(pedido.sentido), true);
       return;
-    case "ajuda":
-      anunciador.falar(AJUDA, true);
+    case "menu": {
+      const g = GRUPOS.find(x => x.nome === pedido.grupo);
+      aguardandoGrupo = !g;
+      anunciador.falar(g ? falaDoGrupo(g) : falaDoMenu(), true);
       return;
+    }
     default:
-      anunciador.falar("Não entendi. Diga ajuda para ouvir os comandos.", true);
+      anunciador.falar("Não entendi. Diga menu para conhecer os comandos.", true);
   }
 }
 

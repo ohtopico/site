@@ -9,9 +9,11 @@
 //   { tipo: "velocidade", sentido: 1 | -1 }            falar mais rápido ou mais devagar
 //   { tipo: "pausar", minutos }                        modo silêncio (minutos = null: até dizer continuar)
 //   { tipo: "sim" | "nao" | "descrever" | "livre" | "lembrar" | "listar" | "terminar" | "parar" | "pausar"
-//          | "retomar" | "ajuda" | "explicar" | "desconhecido" }
+//          | "retomar" | "explicar" | "desconhecido" }
+//   { tipo: "menu", grupo }                            menu falado; grupo = nome do grupo citado ou null
 
 import { acharObjeto } from "./vocabulario.js";
+import { grupoDaFrase } from "./menu.js";
 
 const PERCURSO = "(o |um |pelo |no )?(percurso|caminho|trajeto|rota)";
 
@@ -36,7 +38,7 @@ const LUGAR = /\b(rua|avenida|av|praca|predio|bloco|reitoria|biblioteca|banco|lo
 const PADROES = [
   ["sim", /^(sim|quero|pode|claro|ok|por favor)\b/],
   ["nao", /^(nao|agora nao|depois|dispenso)\b/],
-  ["explicar", /^(como (isso|o site|voce) funciona|explica|explique)/],
+  ["explicar", /^(como (isso |o site |voce |o app |o aplicativo )?funciona|explica|explique|tutorial)/],
   ["velocidade", /(fal[ae]|le|leia|ler)( mais)? (rapido|devagar|depressa|lento)|(mais|menos) (rapido|devagar)/],
   ["ler", /^((le|ler|leia|leh)( para mim| pra mim)?( o| a| este| esse| esta| essa| isto| isso| aqui| de novo| a proxima| outra)*( (texto|pagina|livro|documento|placa|papel|carta|rotulo|bula|cardapio|embalagem|aviso|cartaz|receita))?\b|o que (esta )?escrito|proxima pagina)/],
   ["trocarVoz", /^(troca(r)?|muda(r)?|outra) (a |de )?voz/],
@@ -52,7 +54,7 @@ const PADROES = [
   ["parar", /^(parar?|para tudo|cancela(r)?|chega|pronto|achei|obrigad[ao])\b/],
   ["pausar", /^((modo (de )?)?(silencio|espera|descanso)|pausa(r)?|fica (quiet[ao]|em silencio)|faz silencio|cala a boca|descansa(r)?)\b/],
   ["retomar", /^(continua(r)?|retoma(r)?|volta(r)?)\b/],
-  ["ajuda", /^(ajuda|o que (voce )?(sabe|pode) fazer|comandos)\b/],
+  ["menu", /^(menu|opcoes|ajuda|comandos|o que (voce )?(sabe|pode) fazer|quais (sao )?(os )?comandos)\b/],
   ["descrever", /(o que (tem|ha|existe|voce ve|esta)( aqui| na (minha )?frente| ao (meu )?redor| em volta)?|descreve|descreva)/],
   ["verificar", /^(sera que )?(aqui |o lugar |a sala |esse lugar |este lugar )?(tem|ha|existe)( algum| alguma| um| uma)? /],
   ["procurar", /(ach[ae]|encontr[ae]|procur[ae]|cade|onde (estava|estavam|esta|estao|fica|ficam|tem|ta)|me (leva|guia) (ate|para|pra)|busc[ae]|localiz[ae])/],
@@ -95,6 +97,7 @@ export function interpretar(frase) {
     const m = f.match(padrao);
     if (!m) continue;
     if (tipo === "pausar") return { tipo, minutos: minutosDe(f) };
+    if (tipo === "menu") return { tipo, grupo: grupoDaFrase(f.slice(m[0].length))?.nome ?? null };
     if (tipo === "velocidade") return { tipo, sentido: /devagar|lento|menos rapido/.test(f) && !/menos devagar/.test(f) ? -1 : 1 };
     if (tipo !== "procurar" && tipo !== "verificar") return { tipo };
     const inicio = m.index + m[0].length;

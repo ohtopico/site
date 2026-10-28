@@ -84,3 +84,6 @@ button, input { font: inherit; color: inherit; }
 .pilula { display: inline-flex; align-items: center; min-height: 46px; padding: 10px 18px; margin: 6px 8px 0 0; border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); font-weight: 600; font-size: 15px; cursor: pointer; }
 .pilula:hover { background: var(--pill); }
 .config input[type="file"]:focus-visible + .pilula, .pilula:focus-within { outline: 3px solid var(--accent); }
+
+.lista-comandos h3 { font-family: var(--display); font-size: 20px; margin: 18px 0 6px; }
+.lista-comandos ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }

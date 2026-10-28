@@ -23,7 +23,8 @@ toca em qualquer lugar e fala.
 | "leia este texto", "ler de novo", "o que está escrito?" | fotografa a página, placa ou rótulo em resolução maior e lê em voz alta (IA na nuvem); tocar na tela interrompe |
 | "trocar voz", "fale mais devagar", "fale mais rápido" | escolhe a voz mais natural do celular por padrão; a escolha fica guardada |
 | "silêncio", "silêncio por 10 minutos", "continuar" | modo silêncio: para de analisar e de falar até continuar ou até acabar o tempo |
-| "parar", "ajuda" | controle |
+| "menu", depois o nome do grupo ("rua"), ou "menu leitura" | menu falado com todos os comandos, em 7 grupos; a mesma lista aparece por escrito na tela inicial |
+| "parar", "como funciona" | controle e tutorial |
 
 Ao procurar ou descrever, o site diz onde está cada objeto (lado e distância) e se há algo no caminho até ele
 ("xícara à direita, a 3 metros; cuidado, cadeira no caminho, a 1 metro").
@@ -56,6 +57,8 @@ no OpenStreetMap; quem quiser pode acrescentar os que faltam em openstreetmap.or
 - **Câmera**: usa a ultra-angular (0,5x) quando o navegador mostra qual é; senão, a traseira padrão.
 - **Detector treinado (opcional)**: com `modelos/objetos.onnx` e `objetos_labels.txt` (gerados pelo notebook
   `treino_detector_mobilenet.ipynb`, SSDLite + MobileNetV3), os objetos treinados entram junto com os do COCO.
+  O modelo atual (Open Images, 49 objetos, mAP50 0,47) está dividido em `objetos.onnx.part0/1`; só valem detecções
+  com confiança de 0,5 ou mais, e os objetos de `objetos_ignorar.txt` (os que o modelo acerta pouco) ficam com a IA na nuvem.
 - **Ambiente (opcional)**: com `modelos/cena.onnx` e `cena_labels.txt` (gerados por `tools/export_onnx.py` a partir da
   MobileNet treinada em `mobilenet_cenas`), também fala o tipo de ambiente.
 
