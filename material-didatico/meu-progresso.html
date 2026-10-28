@@ -54,7 +54,14 @@
   .msg { font-size: 14px; font-weight: 600; min-height: 1.4em; margin: 8px 0 0; }
   .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
   .file { font-size: 14px; }
-  @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .two { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 760px) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .two { grid-template-columns: minmax(0, 1fr); }
+    .stat b { font-size: 28px; } .stat span { font-size: 13px; }
+    /* 16px evita o zoom automático do iPhone ao tocar no campo */
+    textarea { font-size: 16px; }
+    .who label { flex: 1 1 140px; } .who input { width: 100%; }
+    .file input { max-width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -128,7 +135,12 @@
       catch (e) { msg.textContent = e.message === 'navegador' ? 'Este navegador é antigo demais para ler o código. Tente outro navegador.' : 'Código inválido. Confira se copiou o código inteiro (começa com MDP1).'; msg.className = 'msg bad'; }
     };
     $('#imp-go').onclick = () => go($('#imp-code').value);
-    $('#imp-file').onchange = e => { const f = e.target.files[0]; if (f) f.text().then(go); };
+    $('#imp-file').onchange = e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      if (f.text) return f.text().then(go);
+      const fr = new FileReader(); fr.onload = () => go(fr.result); fr.readAsText(f); // celulares mais antigos
+    };
   }
 
   function missoesResumo() {
@@ -144,6 +156,7 @@
 
   function render() {
     const p = MDP.perfil();
+    if (window.MDM) MDM.atualizarBarra(); // nível na barra de cima (o perfil pode ter sido criado agora)
     if (!p) return boasVindas();
     const ano = p.ano || 6;
     const todos = MDP.perfis();
@@ -248,13 +261,19 @@
       ${blocoImportar()}
       <p class="small muted" style="margin-top:22px">Limpar os dados do navegador apaga o progresso. <button class="btn ghost" type="button" id="del" style="min-height:34px;padding:4px 14px;font-size:14px;margin-left:6px">Apagar o perfil “${esc(p.apelido)}”</button></p>`;
 
-    $('#ap').onchange = e => { MDP.atualizar({ apelido: e.target.value.trim().slice(0, 30) || 'Estudante' }); render(); };
+    // sem redesenhar a página: no celular, o toque seguinte (no seletor de ano, por exemplo) se perdia
+    $('#ap').onchange = e => {
+      const q = MDP.atualizar({ apelido: e.target.value.trim().slice(0, 30) || 'Estudante' });
+      $('h1').textContent = `Olá, ${q.apelido}!`;
+      $('#del').textContent = `Apagar o perfil “${q.apelido}”`;
+      const op = $('#pf') && $('#pf').selectedOptions[0]; if (op) op.textContent = q.apelido;
+    };
     $('#an').onchange = e => { MDP.atualizar({ ano: +e.target.value }); render(); };
     if ($('#pf')) $('#pf').onchange = e => { MDP.trocar(e.target.value); render(); };
     $('#novo').onclick = e => { const f = $('#novo-f'); f.hidden = !f.hidden; e.currentTarget.setAttribute('aria-expanded', !f.hidden); if (!f.hidden) $('#novo-ap').focus(); };
     $('#novo-f').onsubmit = e => { e.preventDefault(); MDP.criar($('#novo-ap').value.trim() || 'Estudante', ano); render(); };
     $('#comp').onclick = e => { const b = e.target.closest('button'); if (b) { ui.comp = b.dataset.c; render(); } };
-    $('#del').onclick = () => { if (confirm(`Apagar todo o progresso de “${p.apelido}” neste aparelho? Isso não pode ser desfeito.`)) { MDP.excluir(p.id); render(); } };
+    $('#del').onclick = () => { if (confirm(`Apagar todo o progresso de “${MDP.perfil().apelido}” neste aparelho? Isso não pode ser desfeito.`)) { MDP.excluir(p.id); render(); } };
     const par = (pre, gerar, nome) => {
       $(`#${pre}-go`).onclick = async () => {
         const code = await gerar();
@@ -263,8 +282,8 @@
       $(`#${pre}-copy`).onclick = () => copiar($(`#${pre}-code`), $(`#${pre}-msg`));
       $(`#${pre}-dl`).onclick = () => baixar($(`#${pre}-code`).value, nome());
     };
-    par('exp', MDP.exportar, () => `progresso-${slug(p.apelido)}.txt`);
-    par('rel', MDP.relatorio, () => `relatorio-${slug(p.apelido)}.txt`);
+    par('exp', MDP.exportar, () => `progresso-${slug(MDP.perfil().apelido)}.txt`);
+    par('rel', MDP.relatorio, () => `relatorio-${slug(MDP.perfil().apelido)}.txt`);
     ligarImportar();
   }
   render();
