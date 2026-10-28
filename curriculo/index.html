@@ -244,6 +244,13 @@ h1 {
     text-transform: uppercase;
 }
 
+.credenciais {
+    color: var(--ink-2);
+    font-size: 14px;
+    margin: 6px 0 0 0;
+}
+.disciplinas { margin-top: 18px; }
+
 .headline {
     color: var(--ink-2);
     font-family: var(--display);
@@ -419,20 +426,25 @@ body[data-perfil="docencia"] [data-perfil]:not([data-perfil~="docencia"]) {
 }
 
 /* Ordem das seções muda conforme o perfil */
+/* Pensada para recrutadores: competências interativas logo depois do resumo
+   e informações secundárias no fim */
 #sec-resumo { order: 0; }
-#sec-experiencia { order: 1; }
-#sec-projetos { order: 2; }
-#sec-formacao { order: 3; }
+#sec-competencias { order: 1; }
+#sec-experiencia { order: 2; }
+#sec-projetos { order: 3; }
 #sec-ensino { order: 4; }
-#sec-competencias { order: 5; }
-#sec-certificacoes { order: 6; }
+#sec-certificacoes { order: 5; }
+#sec-formacao { order: 6; }
 #sec-idiomas { order: 7; }
+#sec-outras { order: 8; }
 
-body[data-perfil="dados"] #sec-projetos { order: 1; }
-body[data-perfil="dados"] #sec-experiencia { order: 2; }
+/* Na versão Dados, projetos vêm antes da experiência e certificações antes das publicações */
+body[data-perfil="dados"] #sec-projetos { order: 2; }
+body[data-perfil="dados"] #sec-experiencia { order: 3; }
+body[data-perfil="dados"] #sec-certificacoes { order: 4; }
+body[data-perfil="dados"] #sec-ensino { order: 5; }
 
-body[data-perfil="docencia"] #sec-ensino { order: 2; }
-body[data-perfil="docencia"] #sec-formacao { order: 3; }
+body[data-perfil="docencia"] #sec-ensino { order: 3; }
 body[data-perfil="docencia"] #sec-projetos { order: 4; }
 
 /* ---------- Telas pequenas ---------- */
@@ -468,6 +480,7 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
     .sheet { border: none; border-radius: 0; box-shadow: none; margin: 0; max-width: none; padding: 0; }
     h1 { font-size: 22pt; }
     .headline { font-size: 12pt; }
+    .credenciais { font-size: 10pt; margin-top: 2px; }
     h2 { font-size: 9.5pt; margin-bottom: 6px; }
     h3 { font-size: 11pt; }
     section.cv-section { padding-top: 10px; }
@@ -487,8 +500,10 @@ body[data-perfil="docencia"] #sec-projetos { order: 4; }
     .contacts .print-only { display: block !important; }
     #sec-idiomas { display: none !important; }
     /* Na versão completa impressa, as tecnologias já aparecem nos projetos */
-    body[data-perfil="completo"] #sec-competencias,
-    body[data-perfil="docencia"] #sec-competencias { display: none !important; }
+    body[data-perfil="completo"] #sec-competencias { display: none !important; }
+    /* Na docência impressa, só as disciplinas ficam visíveis */
+    body[data-perfil="docencia"] #sec-competencias .skills { display: none !important; }
+    .disciplinas { margin-top: 0; }
 
 }
 
@@ -880,7 +895,7 @@ dialog.browser::backdrop {
 }
 </style>
 </head>
-<body data-perfil="completo">
+<body data-perfil="dados">
 
 <a class="skip-link" href="#cv">Pular para o currículo</a>
 
@@ -890,10 +905,10 @@ dialog.browser::backdrop {
 
         <fieldset class="perfil-switch">
             <legend>Versão do currículo</legend>
-            <input type="radio" name="perfil" id="p-completo" value="completo" checked>
-            <label for="p-completo">Completo</label>
-            <input type="radio" name="perfil" id="p-dados" value="dados">
+            <input type="radio" name="perfil" id="p-dados" value="dados" checked>
             <label for="p-dados">Dados</label>
+            <input type="radio" name="perfil" id="p-completo" value="completo">
+            <label for="p-completo">Completo</label>
             <input type="radio" name="perfil" id="p-docencia" value="docencia">
             <label for="p-docencia">Docência</label>
         </fieldset>
@@ -913,7 +928,8 @@ dialog.browser::backdrop {
     <header class="cv-head">
         <div>
             <h1>Júlia Roberta Quoos Alves</h1>
-            <p class="headline" id="headline">Professora de computação · Formadora de professores em IA · Mestranda em Ciência da Computação (UFSM)</p>
+            <p class="headline" id="headline">Engenheira de dados · Machine learning e visão computacional</p>
+            <p class="credenciais">Mestranda em Ciência da Computação (UFSM) · Bacharel em Ciência da Computação (UNISC) · Licenciada em Informática</p>
         </div>
         <ul class="contacts">
             <li><span class="k">E-mail</span><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></li>
@@ -947,7 +963,7 @@ dialog.browser::backdrop {
 
         <!-- EXPERIÊNCIA -->
         <section class="cv-section" id="sec-experiencia" aria-labelledby="h-exp">
-            <h2 id="h-exp">Experiência</h2>
+            <h2 id="h-exp">Experiência profissional</h2>
 
             <div class="item" data-perfil="completo docencia">
                 <div class="item-head">
@@ -986,16 +1002,6 @@ dialog.browser::backdrop {
                 <div class="pv-slot" data-preview="mestrado"></div>
             </div>
 
-            <div class="item" data-perfil="completo docencia">
-                <div class="item-head">
-                    <h3>Estágio de docência em informática <span class="org">· Escolas Pedro Lovato e Teófilo Teodoro Streck</span></h3>
-                    <span class="when">abr. – dez. 2025</span>
-                </div>
-                <ul>
-                    <li>Lecionou nos anos finais do ensino fundamental, com conteúdos de segurança da computação alinhados à BNCC.</li>
-                </ul>
-            </div>
-
             <div class="item" data-perfil="completo docencia dados">
                 <div class="item-head">
                     <h3>Bolsista de iniciação científica em inteligência artificial <span class="org">· CNPq</span></h3>
@@ -1021,42 +1027,6 @@ dialog.browser::backdrop {
                 </ul>
             </div>
 
-            <div class="item" data-perfil="completo docencia">
-                <div class="item-head">
-                    <h3>Integrante do grupo PrendAdas <span class="org">· mulheres na Computação, UNISC</span></h3>
-                </div>
-                <ul>
-                    <li class="screen-only">Grupo de estudantes de Computação da UNISC criado para atrair e manter mais mulheres na área.</li>
-                    <li>Palestra “Tecnologia e o profissional do futuro”, com Geisa G. Kochenborger, uma das apresentadas em institutos federais.</li>
-                    <li>Palestra “Computação e cuidados com redes sociais” na 1ª Gincana Virtual de Vera Cruz, em 2019 (<a href="https://www.unisc.br/pt/noticias/grupo-prendadas-participa-da-1-gincana-virtual-de-vera-cruz">notícia da UNISC</a>).</li>
-                </ul>
-                <div class="pv-slot" data-preview="prendadas"></div>
-            </div>
-
-            <div class="item" data-perfil="completo docencia">
-                <div class="item-head">
-                    <h3>Tutora de informática <span class="org">· Projeto UNISC Inclusão Digital</span></h3>
-                    <span class="when">mai. – nov. 2019</span>
-                </div>
-                <ul>
-                    <li>Ministrou oficinas de robótica, Excel e informática básica para públicos variados, incluindo um curso de ginástica cerebral para idosos.</li>
-                    <li class="screen-only">Criou o material “Métodos de estudo”, um guia para estudantes que estão começando.</li>
-                </ul>
-                <div class="pv-slot" data-preview="tutoria"></div>
-            </div>
-
-            <div class="item">
-                <div class="item-head">
-                    <h3>Outras experiências</h3>
-                </div>
-                <ul class="compact">
-                    <li><span><b>Agente administrativo</b> <span class="org">· Prefeitura de Novo Cabrais · concurso público, aprovada em 10º lugar</span></span><span class="when">jan. 2025 – abr. 2026</span></li>
-                    <li><span><b>Estagiária de assessoria de imprensa</b> <span class="org">· Prefeitura de Novo Cabrais</span></span><span class="when">jun. 2024 – jan. 2025</span></li>
-                    <li><span><b>Estagiária de marketing</b> <span class="org">· Analítica 3M e Fortalk</span></span><span class="when">mai. – jun. 2024</span><div class="pv-slot" data-preview="fortalk"></div></li>
-                    <li><span><b>Freelancer em design e marketing digital</b> <span class="org">· identidade visual, peças e redes sociais</span></span><span class="when"></span><div class="pv-slot" data-preview="freelancer"></div></li>
-                    <li><span><b>Estagiária de customer success</b> <span class="org">· RKSAM</span></span><span class="when">ago. – dez. 2023</span></li>
-                </ul>
-            </div>
         </section>
 
         <!-- PROJETOS -->
@@ -1099,13 +1069,6 @@ dialog.browser::backdrop {
                 <div class="pv-slot" data-preview="moedas"></div>
             </div>
 
-            <div class="item" data-perfil="completo dados docencia">
-                <div class="item-head">
-                    <h3>OdontoApp <span class="org">· hackathon, projeto em equipe</span></h3>
-                </div>
-                <p>Aplicação para reunir em um só lugar os dados odontológicos de cada paciente, voltada a dentistas e outros profissionais da saúde.</p>
-                <div class="pv-slot" data-preview="odontoapp"></div>
-            </div>
         </section>
 
         <!-- FORMAÇÃO -->
@@ -1174,7 +1137,7 @@ dialog.browser::backdrop {
 
         <!-- ENSINO -->
         <section class="cv-section" id="sec-ensino" aria-labelledby="h-ensino" data-perfil="completo docencia">
-            <h2 id="h-ensino">Ensino e publicação</h2>
+            <h2 id="h-ensino">Publicações e materiais</h2>
 
             <div class="item">
                 <div class="item-head">
@@ -1219,28 +1182,6 @@ dialog.browser::backdrop {
                 <div class="pv-slot" data-preview="censo"></div>
             </div>
 
-            <div class="item">
-                <div class="item-head">
-                    <h3><a href="https://ohtopico.com.br/blog/">Blog e série Bit a Bit</a></h3>
-                    <span class="when">2026</span>
-                </div>
-                <p>Artigos sobre formação de professores em IA, LGPD na escola e Computação na BNCC, e a série Bit a Bit, de computação básica, com plano de aula e slides em cada post.</p>
-            </div>
-
-            <div class="item">
-                <div class="item-head">
-                    <h3><a href="https://mecred.mec.gov.br/perfil/73086">Recursos na plataforma MEC RED</a></h3>
-                    <span class="when">2026</span>
-                </div>
-                <p>Caderno de computação desplugada nas datas comemorativas (1º ao 5º ano) e material de Informática Módulo 1, publicados para uso livre por professores.</p>
-            </div>
-
-            <div class="item" data-perfil="docencia">
-                <div class="item-head">
-                    <h3>Disciplinas que posso lecionar</h3>
-                </div>
-                <p>Lógica de programação e pensamento computacional · Programação em Python · Banco de dados e SQL · Ciência de dados e machine learning · Organização e arquitetura de computadores · Tecnologia na educação</p>
-            </div>
         </section>
 
         <!-- COMPETÊNCIAS -->
@@ -1279,6 +1220,12 @@ dialog.browser::backdrop {
                     </ul>
                 </div>
             </div>
+            <div class="item disciplinas" data-perfil="docencia">
+                <div class="item-head">
+                    <h3>Disciplinas que posso lecionar</h3>
+                </div>
+                <p>Lógica de programação e pensamento computacional · Programação em Python · Banco de dados e SQL · Ciência de dados e machine learning · Organização e arquitetura de computadores · Tecnologia na educação</p>
+            </div>
         </section>
 
         <!-- CERTIFICAÇÕES -->
@@ -1296,6 +1243,82 @@ dialog.browser::backdrop {
             </ul>
         </section>
 
+        <!-- OUTRAS INFORMAÇÕES -->
+        <section class="cv-section" id="sec-outras" aria-labelledby="h-outras">
+            <h2 id="h-outras">Outras informações</h2>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3>Estágio de docência em informática <span class="org">· Escolas Pedro Lovato e Teófilo Teodoro Streck</span></h3>
+                    <span class="when">abr. – dez. 2025</span>
+                </div>
+                <ul>
+                    <li>Lecionou nos anos finais do ensino fundamental, com conteúdos de segurança da computação alinhados à BNCC.</li>
+                </ul>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3>Integrante do grupo PrendAdas <span class="org">· mulheres na Computação, UNISC</span></h3>
+                </div>
+                <ul>
+                    <li class="screen-only">Grupo de estudantes de Computação da UNISC criado para atrair e manter mais mulheres na área.</li>
+                    <li>Palestra “Tecnologia e o profissional do futuro”, com Geisa G. Kochenborger, uma das apresentadas em institutos federais.</li>
+                    <li>Palestra “Computação e cuidados com redes sociais” na 1ª Gincana Virtual de Vera Cruz, em 2019 (<a href="https://www.unisc.br/pt/noticias/grupo-prendadas-participa-da-1-gincana-virtual-de-vera-cruz">notícia da UNISC</a>).</li>
+                </ul>
+                <div class="pv-slot" data-preview="prendadas"></div>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3>Tutora de informática <span class="org">· Projeto UNISC Inclusão Digital</span></h3>
+                    <span class="when">mai. – nov. 2019</span>
+                </div>
+                <ul>
+                    <li>Ministrou oficinas de robótica, Excel e informática básica para públicos variados, incluindo um curso de ginástica cerebral para idosos.</li>
+                    <li class="screen-only">Criou o material “Métodos de estudo”, um guia para estudantes que estão começando.</li>
+                </ul>
+                <div class="pv-slot" data-preview="tutoria"></div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>OdontoApp <span class="org">· hackathon, projeto em equipe</span></h3>
+                </div>
+                <p>Aplicação para reunir em um só lugar os dados odontológicos de cada paciente, voltada a dentistas e outros profissionais da saúde.</p>
+                <div class="pv-slot" data-preview="odontoapp"></div>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3><a href="https://ohtopico.com.br/blog/">Blog e série Bit a Bit</a></h3>
+                    <span class="when">2026</span>
+                </div>
+                <p>Artigos sobre formação de professores em IA, LGPD na escola e Computação na BNCC, e a série Bit a Bit, de computação básica, com plano de aula e slides em cada post.</p>
+            </div>
+
+            <div class="item" data-perfil="completo docencia">
+                <div class="item-head">
+                    <h3><a href="https://mecred.mec.gov.br/perfil/73086">Recursos na plataforma MEC RED</a></h3>
+                    <span class="when">2026</span>
+                </div>
+                <p>Caderno de computação desplugada nas datas comemorativas (1º ao 5º ano) e material de Informática Módulo 1, publicados para uso livre por professores.</p>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <h3>Outros cargos e estágios</h3>
+                </div>
+                <ul class="compact">
+                    <li><span><b>Agente administrativo</b> <span class="org">· Prefeitura de Novo Cabrais · concurso público, aprovada em 10º lugar</span></span><span class="when">jan. 2025 – abr. 2026</span></li>
+                    <li data-perfil="completo docencia"><span><b>Estagiária de assessoria de imprensa</b> <span class="org">· Prefeitura de Novo Cabrais</span></span><span class="when">jun. 2024 – jan. 2025</span></li>
+                    <li data-perfil="completo docencia"><span><b>Estagiária de marketing</b> <span class="org">· Analítica 3M e Fortalk</span></span><span class="when">mai. – jun. 2024</span><div class="pv-slot" data-preview="fortalk"></div></li>
+                    <li data-perfil="completo docencia"><span><b>Freelancer em design e marketing digital</b> <span class="org">· identidade visual, peças e redes sociais</span></span><span class="when"></span><div class="pv-slot" data-preview="freelancer"></div></li>
+                    <li><span><b>Estagiária de customer success</b> <span class="org">· RKSAM</span></span><span class="when">ago. – dez. 2023</span></li>
+                </ul>
+            </div>
+        </section>
+
         <!-- IDIOMAS -->
         <section class="cv-section" id="sec-idiomas" aria-labelledby="h-idiomas">
             <h2 id="h-idiomas">Idiomas</h2>
@@ -1311,14 +1334,16 @@ dialog.browser::backdrop {
 
 <script>
     const HEADLINES = {
-        completo: 'Professora de computação · Formadora de professores em IA · Mestranda em Ciência da Computação (UFSM)',
-        dados: 'Engenheira de dados · Machine learning e visão computacional · Mestranda em Ciência da Computação (UFSM)',
+        completo: 'Professora de computação · Formadora de professores em IA · Pesquisadora em visão computacional',
+        dados: 'Engenheira de dados · Machine learning e visão computacional',
         docencia: 'Professora de computação · Formadora de professores em IA · Autora do guia IA pra Prof'
     };
+    // Versão aberta quando o link não traz ?perfil=
+    const PADRAO = 'dados';
     const NOMES = { completo: 'completa', dados: 'para vagas de dados', docencia: 'para vagas de docência' };
 
     function aplicarPerfil(perfil, anunciar) {
-        if (!HEADLINES[perfil]) perfil = 'completo';
+        if (!HEADLINES[perfil]) perfil = PADRAO;
         document.body.dataset.perfil = perfil;
         document.getElementById('headline').textContent = HEADLINES[perfil];
         document.getElementById('p-' + perfil).checked = true;
@@ -1327,7 +1352,7 @@ dialog.browser::backdrop {
             : `Currículo (${perfil === 'dados' ? 'Dados' : 'Docência'}) · Júlia Roberta Quoos Alves`;
 
         const url = new URL(window.location.href);
-        if (perfil === 'completo') url.searchParams.delete('perfil');
+        if (perfil === PADRAO) url.searchParams.delete('perfil');
         else url.searchParams.set('perfil', perfil);
         history.replaceState(null, '', url);
 
@@ -1339,7 +1364,7 @@ dialog.browser::backdrop {
     });
 
     const inicial = new URLSearchParams(window.location.search).get('perfil');
-    aplicarPerfil(inicial || 'completo', false);
+    aplicarPerfil(inicial || PADRAO, false);
 
     function avisar(msg) {
         const t = document.getElementById('toast');
