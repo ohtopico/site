@@ -12,7 +12,7 @@
   const S = {
     r: Math.max(0, D.regioes.findIndex(r => r.id === q.get('regiao'))),
     mun: q.get('municipio') || '',
-    ind: IND[q.get('indicador')] ? q.get('indicador') : 'escolas',
+    ind: IND[q.get('indicador')] ? q.get('indicador') : 'banda',
     ano: q.get('ano') || '',
     ca: '', cb: '', cano: 'ultimo',
   };
@@ -141,7 +141,7 @@
       const a = val(ind, quem, comparaCom), x = delta(ind, a, v);
       if (x != null) {
         const bom = ind.bom === false ? x < 0 : ind.bom === true ? x > 0 : null;
-        const cls = ind.unidade === 'd' ? '' : (bom ?? x > 0) ? 'sobe' : x < 0 ? 'desce' : '';
+        const cls = x === 0 ? '' : (bom ?? x > 0) ? 'sobe' : 'desce';
         varHtml = `<span class="var ${cls}">${fmtDelta(ind, x)} desde ${ind.anos[comparaCom]}</span>`;
       }
     }
@@ -154,17 +154,18 @@
     $('resumo-sub').textContent = S.mun
       ? `Município da região ${regiao().nome}. Clique de novo no mapa ou escolha "Toda a região" para voltar.`
       : `Soma dos ${regiao().membros.length} municípios: ${[...regiao().membros].sort((a, b) => a.localeCompare(b, 'pt-BR')).join(', ')}.`;
-    const E = IND.escolas, R = IND.esc_rur, M = IND.mat, P = IND.al_prof, B = IND.banda, A = IND.alfa;
-    const rsVar = ind => `No RS: ${fmtDelta(ind, varQuem(ind, 'RS', [0, ind.id === 'mat' ? 1 : 2]))} no mesmo período.`;
-    let h = kpi('Escolas em atividade em 2025', E, 2, 0, rsVar(E))
-      + kpi('Escolas rurais em 2025', R, 2, 0, rsVar(R))
-      + kpi('Matrículas em 2022', M, 1, 0, rsVar(M))
-      + kpi('Alunos por professor em 2022', P, 1, 0, `No RS: ${fmt(P.rs[1], 'd')}. No Brasil: ${fmt(P.brasil[1], 'd')}.`)
+    // Regra: o resumo destaca os avanços. Quedas ficam no explorador de indicadores.
+    const I = IND.internet, B = IND.banda, A = IND.alfa, T = IND.al_turma, C = IND.mat_creche, Q = IND.mat_esp;
+    const rsVar = (ind, f) => `No RS: ${fmtDelta(ind, varQuem(ind, 'RS', [0, f]))} no mesmo período.`;
+    let h = kpi('Escolas com internet em 2025', I, 2, 0, `No RS: ${fmt(I.rs[2], '%')}.`)
       + kpi('Escolas com banda larga em 2025', B, 2, 0, `No RS: ${fmt(B.rs[2], '%')}.`);
     if (val(A, escopo(), 1) != null) {
       const e = S.mun && estimado(A, S.mun, 0) ? ' Valor de 2010 estimado.' : '';
       h += kpi('Sabem ler e escrever (15+) em 2022', A, 1, 0, `No RS: 96,9%. No Brasil: 93%.${e}`);
     }
+    h += kpi('Alunos por turma em 2022', T, 1, 0, `Turmas menores dão mais atenção a cada aluno. No RS: ${fmt(T.rs[1], 'd')}.`)
+      + kpi('Matrículas em creche em 2022', C, 1, 0, rsVar(C, 1))
+      + kpi('Matrículas na educação especial em 2022', Q, 1, 0, rsVar(Q, 1));
     $('kpis').innerHTML = h;
   }
 
