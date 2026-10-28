@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "Se usar este material, cite-o com os metadados abaixo."
+type: software
+title: "ohtopico: materiais didáticos de Computação, Matemática e IA para professores (BNCC)"
+abstract: >-
+  Site e materiais didáticos abertos para a educação básica: atividades, jogos,
+  simuladores, slides, planejamentos e apostilas de Computação (BNCC Computação),
+  Matemática e Inteligência Artificial, além de materiais de formação continuada
+  de professores em IA. Autoria de Júlia Roberta Quoos Alves.
+authors:
+  - given-names: "Júlia Roberta"
+    family-names: "Quoos Alves"
+    alias: ohtopico
+license: CC-BY-NC-SA-4.0
+url: "https://ohtopico.com.br"
+repository-code: "https://github.com/ohtopico/site"
+keywords:
+  - material didático
+  - BNCC Computação
+  - formação continuada de professores
+  - inteligência artificial na educação
+  - educação básica
+  - matemática
+  - pensamento computacional
+  - recurso educacional aberto

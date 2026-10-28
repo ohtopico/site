@@ -1,0 +1,30 @@
+{
+  "title": "ohtopico: materiais didáticos de Computação, Matemática e IA para professores (BNCC)",
+  "upload_type": "lesson",
+  "description": "<p>Site e materiais didáticos abertos para a educação básica: atividades, jogos, simuladores, slides, planejamentos e apostilas de Computação (BNCC Computação), Matemática e Inteligência Artificial, além de materiais de formação continuada de professores em IA.</p><p>Autoria: Júlia Roberta Quoos Alves. Versão online: <a href=\"https://ohtopico.com.br\">ohtopico.com.br</a>.</p>",
+  "creators": [
+    {
+      "name": "Quoos Alves, Júlia Roberta"
+    }
+  ],
+  "license": "cc-by-nc-sa-4.0",
+  "access_right": "open",
+  "language": "por",
+  "keywords": [
+    "material didático",
+    "BNCC Computação",
+    "formação continuada de professores",
+    "inteligência artificial na educação",
+    "educação básica",
+    "matemática",
+    "pensamento computacional",
+    "recurso educacional aberto"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://ohtopico.com.br",
+      "relation": "isSupplementTo",
+      "resource_type": "other"
+    }
+  ]
+}
