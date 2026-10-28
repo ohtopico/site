@@ -75,6 +75,16 @@ export function acharPercurso(nome) {
   return listar().find(p => normalizar(p.nome) === alvo)
     ?? listar().find(p => normalizar(p.nome).includes(alvo) || alvo.includes(normalizar(p.nome)));
 }
+/** Troca o nome de um percurso salvo (o que foi gravado sem nome). */
+export function renomear(antigo, novo) {
+  const lista = listar();
+  const p = lista.find(x => x.nome === antigo);
+  if (!p || !novo.trim()) return false;
+  const nome = novo.trim();
+  salvar([...lista.filter(x => x !== p && normalizar(x.nome) !== normalizar(nome)), { ...p, nome }]);
+  return true;
+}
+
 export function apagar(nome) {
   const p = acharPercurso(nome);
   if (p) salvar(listar().filter(x => x !== p && x.nome !== p.nome));
@@ -87,10 +97,12 @@ export class Gravacao {
   constructor(anunciador, sensores, nome) {
     this.a = anunciador;
     this.s = sensores;
+    this.semNome = !nome;
     this.nome = nome || `percurso ${listar().length + 1}`;
     this.trechos = [];
     this.novoTrecho(null);
-    this.a.falar(`Gravando ${this.nome}. Ande normalmente. No fim, diga terminar gravação.`, true);
+    this.a.falar(`Gravando ${this.semNome ? "o percurso" : this.nome}. Ande normalmente. ` +
+      "Quando chegar, toque e diga cheguei, ou terminar gravação.", true);
     if (!sensores.disponivel) this.a.falar("A bússola não respondeu; vou gravar só os passos.");
   }
 
@@ -128,13 +140,15 @@ export class Gravacao {
     const trechos = this.trechos.filter(t => t.passos > 0 || t.virar);
     if (!trechos.length) {
       this.a.falar("Não contei nenhum passo, o percurso não foi salvo.", true);
-      return;
+      return false;
     }
     salvar([...listar().filter(p => normalizar(p.nome) !== normalizar(this.nome)),
       { nome: this.nome, criado: new Date().toISOString(), trechos }]);
     const total = trechos.reduce((n, t) => n + t.passos, 0);
     const curvas = trechos.filter(t => t.virar).length;
-    this.a.falar(`Percurso ${this.nome} salvo: cerca de ${total} passos e ${curvas} ${curvas === 1 ? "curva" : "curvas"}.`, true);
+    this.a.falar(`Percurso ${this.semNome ? "" : this.nome + " "}salvo: cerca de ${total} passos e ${curvas} ${curvas === 1 ? "curva" : "curvas"}.` +
+      (this.semNome ? ` Qual o nome dele? Toque e diga o nome, por exemplo banheiro. Se não disser, fica ${this.nome}.` : ""), true);
+    return true;
   }
 }
 

@@ -6,7 +6,7 @@ import { abrirCamera } from "./camera.js";
 import { Memoria } from "./memoria.js";
 import { apagarLugar, descreverLugar, lembrarLugar, listarLugares, ondeEstou } from "./lugares.js";
 import { Cadastro, Reconhecedor as ReconhecedorRostos, apagarPessoa, listarPessoas } from "./pessoas.js";
-import { Gravacao, SeguirPercurso, Sensores, acharPercurso, apagar, listar } from "./percursos.js";
+import { Gravacao, SeguirPercurso, Sensores, acharPercurso, apagar, listar, renomear } from "./percursos.js";
 import { Profundidade, definirGrandeAngular, distanciaPorTamanho, falarDistancia } from "./profundidade.js";
 import { Procurar, ProcurarNaNuvem, Verificar, descrever } from "./tarefas.js";
 import { adicionarObjetos, nomeFalado, normalizar } from "./vocabulario.js";
@@ -43,6 +43,7 @@ const anunciador = new Anunciador();
 let detector, extra = null, cena, profundidade = null, nuvem = null, tarefa = null, gravacao = null;
 let leitura = null; // { cancelada } enquanto lê um texto em voz alta
 let pausado = false, ouvindo = false, processando = false, aguardandoIntro = false, aguardandoGrupo = false;
+let aguardandoNomePercurso = null; // nome provisório do percurso gravado sem nome
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
 const memoria = new Memoria(sensores);
@@ -291,7 +292,23 @@ function executar(frase) {
   // Logo depois do menu, basta dizer o nome do grupo ("rua")
   const grupo = aguardandoGrupo ? grupoDaFrase(normalizar(frase)) : null;
   aguardandoGrupo = false;
-  const pedido = grupo ? { tipo: "menu", grupo: grupo.nome } : interpretar(frase);
+  let pedido = grupo ? { tipo: "menu", grupo: grupo.nome } : interpretar(frase);
+  // Logo depois de salvar um percurso sem nome, a próxima frase é o nome dele (a não ser que seja "não")
+  const provisorio = aguardandoNomePercurso;
+  aguardandoNomePercurso = null;
+  if (provisorio && pedido.tipo === "nao") {
+    anunciador.falar(`Tudo bem, ficou ${provisorio}.`, true);
+    return;
+  }
+  if (provisorio && !["parar", "menu"].includes(pedido.tipo)) {
+    const nome = frase.trim().replace(/^(o |a |pode ser |chama |se chama |nome )+/i, "").replace(/[.!?]+$/, "");
+    mostrar(`“${frase}”`);
+    anunciador.falar(renomear(provisorio, nome) ? `Percurso ${nome} salvo. Para usar, diga seguir percurso ${nome}.`
+      : `Ficou ${provisorio}.`, true);
+    return;
+  }
+  // Gravando, "parar" e "pronto" encerram a gravação (a não ser que haja uma busca em andamento)
+  if (gravacao && !tarefa && pedido.tipo === "parar") pedido = { tipo: "terminar" };
   mostrar(`“${frase}”`);
   // Sim/não durante um cadastro é o consentimento da pessoa, não resposta ao tutorial
   if ((pedido.tipo === "sim" || pedido.tipo === "nao") && tarefa?.aoResponder?.(pedido.tipo)) return;
@@ -347,7 +364,7 @@ function executar(frase) {
         anunciador.falar("Não há gravação em andamento.", true);
         return;
       }
-      gravacao.terminar();
+      if (gravacao.terminar() && gravacao.semNome) aguardandoNomePercurso = gravacao.nome;
       gravacao = null;
       return;
     case "seguir":
