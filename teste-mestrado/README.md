@@ -13,8 +13,15 @@ toca em qualquer lugar e fala.
 | "o caminho está livre?" | distância livre à esquerda, à frente e à direita (mapa de profundidade) |
 | "gravar percurso banheiro" / "terminar gravação" | grava passos, curvas e objetos vistos |
 | "seguir percurso banheiro" / "voltar pelo percurso banheiro" | guia pelo percurso, na ida ou na volta |
+| "o que eu passei?", "onde estava a porta?" | memória curta: o que saiu da câmera no último minuto, com a direção pela bússola |
+| "lembrar este lugar como cozinha" / "onde estou?" | guarda o lugar em texto (objetos e direções, mais uma frase da IA se houver) e reconhece depois |
+| "cadastrar pessoa Maria" / "quem está aqui?" | reconhece pessoas cadastradas, só com o consentimento falado delas |
+| "apagar pessoa Maria", "esquecer o lugar cozinha" | apaga do celular |
 | "me leva até a rodoviária" | abre o Google Maps a pé (só para a rua) |
 | "parar", "pausar", "continuar", "ajuda" | controle |
+
+Ao procurar ou descrever, o site diz onde está cada objeto (lado e distância) e se há algo no caminho até ele
+("xícara à direita, a 3 metros; cuidado, cadeira no caminho, a 1 metro").
 
 Sem nenhum pedido, o site avisa obstáculos com a distância aproximada, vibra (Android) quando algo está perto
 à frente e diz quando um lado se abre e dá para virar. Na primeira vez, pergunta se a pessoa quer saber como funciona.
@@ -30,6 +37,15 @@ Sem nenhum pedido, o site avisa obstáculos com a distância aproximada, vibra (
 - **IA na nuvem**: dentro do Claude usa a conta de quem abre; fora dele, uma chave da API da Anthropic colada em
   "Configurar IA na nuvem" (guardada só no navegador). Só esses pedidos enviam foto.
 - **Percursos**: passos pelo acelerômetro e direção pela bússola; ficam salvos no navegador do celular.
+- **Pessoas**: face-api (detector TinyFace + reconhecimento com vetor de 128 números), em `vendor/face-api` e
+  `modelos/rostos`. Só carrega se houver alguém cadastrado. O vetor e o nome ficam no navegador do celular;
+  nada vai para a internet. Reconhecer pessoas é dado biométrico (LGPD): cadastre só quem concordar e, em
+  pesquisa com usuários, inclua no projeto do Comitê de Ética.
+- **Memória em texto**: percursos, lugares e pessoas podem ser exportados e importados como `.txt` (JSON)
+  em "Configuração para quem ajuda".
+- **Câmera**: usa a ultra-angular (0,5x) quando o navegador mostra qual é; senão, a traseira padrão.
+- **Detector treinado (opcional)**: com `modelos/objetos.onnx` e `objetos_labels.txt` (gerados pelo notebook
+  `treino_detector_mobilenet.ipynb`, SSDLite + MobileNetV3), os objetos treinados entram junto com os do COCO.
 - **Ambiente (opcional)**: com `modelos/cena.onnx` e `cena_labels.txt` (gerados por `tools/export_onnx.py` a partir da
   MobileNet treinada em `mobilenet_cenas`), também fala o tipo de ambiente.
 

@@ -1,8 +1,10 @@
 // Transforma a frase falada numa tarefa.
 //   { tipo: "procurar" | "verificar", rotulo, alvo }  rotulo = null se o detector local não conhece
 //   { tipo: "gravar" | "seguir" | "voltar" | "apagar", nome }  percursos gravados
+//   { tipo: "lugar" | "apagarLugar" | "cadastrar" | "apagarPessoa", nome }  lugares e pessoas
+//   { tipo: "ondeEstou" | "quem" | "listarPessoas" | "listarLugares" }
 //   { tipo: "mapa", destino }                          navegação a pé na rua (Google Maps)
-//   { tipo: "sim" | "nao" | "descrever" | "livre" | "listar" | "terminar" | "parar" | "pausar"
+//   { tipo: "sim" | "nao" | "descrever" | "livre" | "lembrar" | "listar" | "terminar" | "parar" | "pausar"
 //          | "retomar" | "ajuda" | "explicar" | "desconhecido" }
 
 import { acharObjeto } from "./vocabulario.js";
@@ -16,6 +18,11 @@ const COM_NOME = [
   ["voltar", new RegExp(`^volta(r)? ${PERCURSO}(?<nome>.*)`)],
   ["seguir", new RegExp(`^(segu(e|ir)|repet(e|ir)|faz(er)?|percorre(r)?|me leva) ${PERCURSO}(?<nome>.*)`)],
   ["apagar", new RegExp(`^(apaga(r)?|exclui(r)?|remove(r)?|deleta(r)?) ${PERCURSO}(?<nome>.*)`)],
+  ["lugar", /^(lembra(r)?|guarda(r)?|salva(r)?|grava(r)?|memoriza(r)?) (deste |este |esse |desse |o )?(lugar|local|ambiente|comodo)( como| com o nome| de nome| chamado)?(?<nome>.*)/],
+  ["apagarLugar", /^(apaga|esquece|remove|exclui)r? (o )?(lugar|local) (?<nome>.+)/],
+  ["cadastrar", /^(cadastra|registra|salva|memoriza|lembra)r? (a |o |um |uma )?(pessoa|rosto)( chamad[ao]| de nome| d[ae])?(?<nome>.*)/],
+  ["cadastrar", /^(esta|essa|este|esse) (e|eh) (a |o )?(?<nome>.+)/],
+  ["apagarPessoa", /^(apaga|esquece|remove|exclui)r? (a |o )?(pessoa|rosto)( d[ae])? (?<nome>.+)/],
   ["mapa", /^(navega(r)?|como (eu )?(chego|vou)|rota|caminho a pe|me leva) (ate |para |pra |a |ao |na |no |em |à )*(?<nome>.+)/],
 ];
 
@@ -26,6 +33,11 @@ const PADROES = [
   ["sim", /^(sim|quero|pode|claro|ok|por favor)\b/],
   ["nao", /^(nao|agora nao|depois|dispenso)\b/],
   ["explicar", /^(como (isso|o site|voce) funciona|explica|explique)/],
+  ["ondeEstou", /(onde (eu )?estou|que lugar e (esse|este)|reconhece (o|este|esse) lugar)/],
+  ["quem", /(quem (esta|e|ta)( aqui| ai| na (minha )?frente)?|quem e (essa|esta) pessoa|reconhece (essa|esta) pessoa)/],
+  ["listarPessoas", /quais (sao )?(as )?pessoas/],
+  ["listarLugares", /quais (sao )?(os )?lugares/],
+  ["lembrar", /(o que (eu )?(passei|deixei|ficou)|o que (tinha|havia) (aqui|por aqui|atras)|o que voce (lembra|viu)|ficou para tras)/],
   ["listar", /(quais (sao )?(os |as )?(percursos|caminhos|trajetos|rotas)|lista(r)? (os |as )?(percursos|caminhos|trajetos|rotas))/],
   ["livre", /(caminho (esta )?livre|posso (seguir|ir|andar)|da para (passar|seguir)|tem espaco)/],
   ["parar", /^(parar?|para tudo|cancela(r)?|chega|pronto|achei|obrigad[ao])\b/],
@@ -34,7 +46,7 @@ const PADROES = [
   ["ajuda", /^(ajuda|o que (voce )?(sabe|pode) fazer|comandos)\b/],
   ["descrever", /(o que (tem|ha|existe|voce ve|esta)( aqui| na (minha )?frente| ao (meu )?redor| em volta)?|descreve|descreva)/],
   ["verificar", /^(sera que )?(aqui |o lugar |a sala |esse lugar |este lugar )?(tem|ha|existe)( algum| alguma| um| uma)? /],
-  ["procurar", /(ach[ae]|encontr[ae]|procur[ae]|cade|onde (esta|estao|fica|ficam|tem|ta)|me (leva|guia) (ate|para|pra)|busc[ae]|localiz[ae])/],
+  ["procurar", /(ach[ae]|encontr[ae]|procur[ae]|cade|onde (estava|estavam|esta|estao|fica|ficam|tem|ta)|me (leva|guia) (ate|para|pra)|busc[ae]|localiz[ae])/],
 ];
 
 // Palavras que sobram depois do verbo e não fazem parte do nome do objeto

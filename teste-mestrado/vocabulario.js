@@ -61,6 +61,22 @@ export const OBSTACULOS = new Set([
 
 export const nomeFalado = rotulo => OBJETOS[rotulo]?.[0];
 
+/**
+ * Acrescenta as classes do detector treinado (nomes já em português, ex.: "carteira", "cedula_20").
+ * Cada uma passa a ser falada e reconhecida nos pedidos pelo próprio nome.
+ */
+export function adicionarObjetos(rotulos) {
+  for (const r of rotulos) {
+    if (OBJETOS[r]) continue;
+    const falado = r.replaceAll("_", " ");
+    OBJETOS[r] = [falado];
+    SINONIMOS.push([normalizar(falado), r]);
+    // "cedula 20" também atende por "cédula de 20"
+    if (/ \d/.test(falado)) SINONIMOS.push([normalizar(falado.replace(/ (\d)/, " de $1")), r]);
+  }
+  SINONIMOS.sort((a, b) => b[0].length - a[0].length);
+}
+
 export const normalizar = texto =>
   texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[?!.,]/g, " ").replace(/\s+/g, " ").trim();
 

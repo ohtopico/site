@@ -12,26 +12,41 @@ Responda só com JSON, sem texto fora dele:
 {"encontrado": true|false,
  "lado": "esquerda"|"frente"|"direita"|null,
  "distancia": "perto"|"medio"|"longe"|null,
- "resposta": "frase curta em português para ser falada, no máximo 15 palavras, dizendo onde está e como chegar; se não encontrou, diga isso"}
+ "no_caminho": "o que houver entre a pessoa e o alvo (ex.: cadeira, degrau, porta fechada)" | null,
+ "resposta": "frase curta em português para ser falada, no máximo 20 palavras: onde está, a distância aproximada em metros e, se houver, o que está no caminho; se não encontrou, diga isso"}
 Se houver uma placa indicando o caminho (ex.: seta de saída), considere encontrado e diga para onde a placa aponta.`;
 
 export const lerChave = () => { try { return localStorage.getItem(CHAVE) || ""; } catch { return ""; } };
 export const salvarChave = valor => { try { valor ? localStorage.setItem(CHAVE, valor) : localStorage.removeItem(CHAVE); } catch {} };
 
-/** Devolve { origem, perguntar(foto: Blob, alvo) -> {encontrado, lado, distancia, resposta} } ou null. */
+const INSTRUCAO_LUGAR = `Você ajuda uma pessoa cega a reconhecer lugares. A foto é da câmera do celular dela.
+Responda só com JSON: {"resposta": "uma frase em português, no máximo 20 palavras, descrevendo o lugar e o que o distingue (ex.: cozinha com balcão de mármore e janela à direita)"}`;
+
+/**
+ * Devolve { origem, perguntar(foto, alvo), descreverLugar(foto) } ou null.
+ * perguntar -> {encontrado, lado, distancia, no_caminho, resposta}; descreverLugar -> texto.
+ */
 export async function abrirNuvem() {
   const sample = await window.claude?.use?.("sample").catch(() => null);
   if (sample && (await sample.limits().catch(() => ({}))).images) {
+    const json = (texto, foto) => sample.json(texto, { images: [foto], modelTier: "quick", cache: false });
     return {
       origem: "claude",
-      perguntar: (foto, alvo) => sample.json(instrucao(alvo), { images: [foto], modelTier: "quick", cache: false }),
+      perguntar: (foto, alvo) => json(instrucao(alvo), foto),
+      descreverLugar: async foto => (await json(INSTRUCAO_LUGAR, foto)).resposta,
     };
   }
-  if (lerChave()) return { origem: "api", perguntar: perguntarApi };
+  if (lerChave()) {
+    return {
+      origem: "api",
+      perguntar: (foto, alvo) => perguntarApi(foto, instrucao(alvo)),
+      descreverLugar: async foto => (await perguntarApi(foto, INSTRUCAO_LUGAR)).resposta,
+    };
+  }
   return null;
 }
 
-async function perguntarApi(foto, alvo) {
+async function perguntarApi(foto, texto) {
   const dados = await new Promise((ok, erro) => {
     const r = new FileReader();
     r.onload = () => ok(r.result.split(",")[1]);
@@ -54,7 +69,7 @@ async function perguntarApi(foto, alvo) {
         role: "user",
         content: [
           { type: "image", source: { type: "base64", media_type: "image/jpeg", data: dados } },
-          { type: "text", text: instrucao(alvo) },
+          { type: "text", text: texto },
         ],
       }],
     }),

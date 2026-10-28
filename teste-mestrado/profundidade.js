@@ -10,8 +10,19 @@
 import { carregarOrt, MEDIA, DESVIO } from "./modelos.js";
 
 const LADO = 256;
-// Campo de visão do lado MAIOR da imagem numa câmera traseira típica; ajustar por aparelho
-const FOV_LADO_MAIOR = 65 * Math.PI / 180;
+// Campo de visão do lado MAIOR da imagem: ~65° na câmera traseira comum, ~100° na ultra-angular
+let FOV_LADO_MAIOR = 65 * Math.PI / 180;
+export function definirGrandeAngular(sim) {
+  FOV_LADO_MAIOR = (sim ? 100 : 65) * Math.PI / 180;
+}
+
+/** Campo de visão horizontal da imagem atual, em graus. */
+export function fovHorizontal(video) {
+  const rad = video.videoWidth >= video.videoHeight
+    ? FOV_LADO_MAIOR
+    : 2 * Math.atan(Math.tan(FOV_LADO_MAIOR / 2) * video.videoWidth / video.videoHeight);
+  return rad * 180 / Math.PI;
+}
 const CHAO_BORDA_M = 1.2;
 
 // Alturas típicas (m) dos objetos do COCO usados para calibrar e para dar distância
@@ -107,8 +118,11 @@ export class Profundidade {
       this.k = this.k ? 0.8 * this.k + 0.2 * novo : novo;
       this.kPorObjeto = true;
     } else if (!this.kPorObjeto) {
+      // O chão só serve de régua quando aparece: a borda de baixo bem mais perto que o meio da imagem.
+      // De frente para uma parede, a borda de baixo também é parede e a régua mediria a parede a 1,2 m.
       const chao = this.regiao(0.35, 0.65, 0.92, 1, 0.5);
-      if (chao > 0) this.k = this.k ? 0.9 * this.k + 0.1 * chao * CHAO_BORDA_M : chao * CHAO_BORDA_M;
+      const meio = this.regiao(0.35, 0.65, 0.3, 0.6, 0.5);
+      if (chao > 0 && chao > 1.4 * meio) this.k = this.k ? 0.9 * this.k + 0.1 * chao * CHAO_BORDA_M : chao * CHAO_BORDA_M;
     }
   }
 
