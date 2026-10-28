@@ -43,6 +43,13 @@ button, input { font: inherit; color: inherit; }
   background: var(--accent-soft); color: var(--ink); cursor: pointer; transition: transform .15s, box-shadow .15s;
 }
 .grande:hover, .grande:focus-visible { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
+.grande.secundario { flex: 0 0 auto; min-height: 150px; background: var(--paper); padding: 22px 26px; }
+.grande.secundario .titulo { font-size: clamp(34px, 10vw, 52px); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.titulo-tutorial { font-family: var(--display); font-weight: 800; font-size: clamp(38px, 11vw, 58px); line-height: 1.1; margin: 8px 0 0; }
+.partes { margin: 0; padding-left: 1.4em; font-size: 20px; display: flex; flex-direction: column; gap: 14px; }
+.partes li.falando { color: var(--accent); font-weight: 600; }
+#tela-tutorial .grande { flex: 0 0 auto; min-height: 110px; }
 .grande .titulo { font-family: var(--display); font-weight: 800; line-height: 1.05; font-size: clamp(48px, 14vw, 84px); }
 .grande .marca { color: var(--accent); }
 .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
@@ -74,3 +81,6 @@ button, input { font: inherit; color: inherit; }
 .digitar.visivel { display: flex; }
 .digitar input { flex: 1; min-width: 0; }
 .digitar button { border: 1.5px solid var(--ink); border-radius: 99px; background: var(--ink); color: var(--paper); font-weight: 600; padding: 10px 18px; min-height: 46px; cursor: pointer; }
+.pilula { display: inline-flex; align-items: center; min-height: 46px; padding: 10px 18px; margin: 6px 8px 0 0; border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); font-weight: 600; font-size: 15px; cursor: pointer; }
+.pilula:hover { background: var(--pill); }
+.config input[type="file"]:focus-visible + .pilula, .pilula:focus-within { outline: 3px solid var(--accent); }

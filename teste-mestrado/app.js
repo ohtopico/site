@@ -1,42 +1,159 @@
 import { Anunciador } from "./anunciador.js";
 import { interpretar } from "./comandos.js";
-import { Detector, ClassificadorCena } from "./modelos.js";
-import { abrirNuvem, lerChave, salvarChave } from "./nuvem.js";
+import { Detector, DetectorExtra, ClassificadorCena } from "./modelos.js";
+import { abrirNuvem, fotografar, lerChave, salvarChave } from "./nuvem.js";
+import { abrirCamera } from "./camera.js";
+import { Memoria } from "./memoria.js";
+import { apagarLugar, descreverLugar, lembrarLugar, listarLugares, ondeEstou } from "./lugares.js";
+import { Cadastro, Reconhecedor, apagarPessoa, listarPessoas } from "./pessoas.js";
 import { Gravacao, SeguirPercurso, Sensores, acharPercurso, apagar, listar } from "./percursos.js";
-import { Profundidade, distanciaPorTamanho, falarDistancia } from "./profundidade.js";
+import { Profundidade, definirGrandeAngular, distanciaPorTamanho, falarDistancia } from "./profundidade.js";
 import { Procurar, ProcurarNaNuvem, Verificar, descrever } from "./tarefas.js";
-import { nomeFalado } from "./vocabulario.js";
+import { adicionarObjetos, nomeFalado } from "./vocabulario.js";
 
 const $ = id => document.getElementById(id);
 const video = $("video"), caixas = $("caixas"), estado = $("estado"), botao = $("pausar");
 const QUADRO_MS = 200; // ~5 análises por segundo
 const AJUDA = "Toque na tela e fale. Por exemplo: cadê a xícara, ache a chave, onde fica a saída, " +
   "tem um extintor, o que tem na minha frente, o caminho está livre, gravar percurso e o nome, " +
-  "seguir percurso e o nome, me leva até e um endereço na rua, ou parar.";
-const EXPLICACAO = "Este site usa inteligência artificial para reconhecer o ambiente pela câmera do celular. " +
-  "Ela identifica objetos, estima a que distância eles estão e avisa obstáculos e espaços livres para virar. " +
-  "Segure o celular na altura do peito, com a câmera para a frente. " +
-  "Para pedir algo, toque em qualquer lugar da tela e fale. Por exemplo: cadê a xícara, ache a chave, " +
-  "tem um extintor, o que tem na minha frente, ou o caminho está livre. " +
-  "Também posso gravar um percurso dentro de um prédio e depois guiar você por ele: diga gravar percurso e um nome. " +
-  "Na rua, diga me leva até e o endereço, que eu abro o Google Maps. " +
-  "Diga parar para cancelar e ajuda para ouvir os exemplos de novo. " +
-  "As imagens são analisadas no próprio celular; só quando peço ajuda à inteligência artificial na nuvem uma foto é enviada. " +
-  "A distância é aproximada: continue usando a bengala ou o cão-guia.";
+  "seguir percurso e o nome, o que eu passei, lembrar este lugar como cozinha, onde estou, " +
+  "cadastrar pessoa e o nome, quem está aqui, me leva até e um endereço na rua, ou parar.";
+// Tutorial em partes curtas: mostrado em lista (para o leitor de tela) e falado com pausas entre as partes
+const TUTORIAL = [
+  "Este site usa inteligência artificial para reconhecer o ambiente pela câmera do celular. " +
+    "Ela identifica objetos, estima a que distância eles estão e avisa o que está no caminho.",
+  "Segure o celular na altura do peito, com a câmera de trás virada para a frente.",
+  "Para pedir algo, toque em qualquer lugar da tela e fale depois do bipe. Por exemplo: cadê a xícara, " +
+    "ache a chave, tem um extintor, o que tem na minha frente, ou o caminho está livre.",
+  "Dentro de um prédio, posso gravar um percurso e depois guiar você por ele: diga gravar percurso e um nome. " +
+    "Na rua, diga me leva até e o endereço, que eu abro o Google Maps.",
+  "Eu lembro do que passou pela câmera no último minuto: pergunte o que eu passei, ou onde estava a porta. " +
+    "Também guardo lugares, dizendo lembrar este lugar como cozinha, e depois respondo onde estou. " +
+    "Posso reconhecer pessoas conhecidas, se elas concordarem: diga cadastrar pessoa e o nome. " +
+    "Tudo isso fica só neste celular.",
+  "Diga parar para cancelar, e ajuda para ouvir os exemplos de novo. A distância é aproximada: " +
+    "continue usando a bengala ou o cão-guia.",
+];
+const EXPLICACAO = TUTORIAL.join(" ");
+const TUTORIAL_OUVIDO = "assistencia.tutorial_ouvido";
+const tutorialOuvido = () => { try { return localStorage.getItem(TUTORIAL_OUVIDO) === "1"; } catch { return false; } };
+const marcarTutorialOuvido = () => { try { localStorage.setItem(TUTORIAL_OUVIDO, "1"); } catch {} };
 
 const anunciador = new Anunciador();
-let detector, cena, profundidade = null, nuvem = null, tarefa = null, gravacao = null;
-let pausado = false, ouvindo = false, processando = false, aguardandoIntro = true;
+let detector, extra = null, cena, profundidade = null, nuvem = null, tarefa = null, gravacao = null;
+let pausado = false, ouvindo = false, processando = false, aguardandoIntro = false;
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
+const memoria = new Memoria(sensores);
+const reconhecedor = new Reconhecedor(anunciador, memoria);
+const nomeProprio = n => n.trim().replace(/(^|\s)\p{L}/gu, l => l.toUpperCase());
 
 $("comecar").addEventListener("click", comecar);
+$("tutorial-comecar").addEventListener("click", comecar);
+$("tutorial").addEventListener("click", abrirTutorial);
+$("tutorial-voltar").addEventListener("click", fecharTutorial);
+$("comecar").focus();
+
+// Os modelos começam a baixar assim que a página abre, enquanto a pessoa ouve as boas-vindas;
+// a profundidade, mais pesada, vem depois do detector e não segura o início.
+const preparo = Promise.all([
+  Detector.carregar(), ClassificadorCena.carregar().catch(() => null), abrirNuvem(),
+]);
+preparo.then(() => Profundidade.carregar()).then(p => { profundidade = p; }).catch(() => {});
+// Detector treinado com a lista de objetos (opcional): os nomes dele entram no vocabulário dos pedidos
+DetectorExtra.carregar().then(d => {
+  if (!d) return;
+  adicionarObjetos(d.nomes);
+  extra = d;
+}).catch(() => {});
+
+// Boas-vindas faladas ao abrir. A maioria dos celulares só deixa o site falar depois de um toque,
+// então isto às vezes não toca; para esses casos os rótulos dos botões dizem o mesmo pelo leitor de tela.
+const BOAS_VINDAS = "Assistência por voz. Há dois botões grandes: Começar, em cima, e Como funciona, embaixo.";
+let iniciado = false;
+addEventListener("load", () => setTimeout(() => {
+  if (!iniciado && $("tela-tutorial").hidden) anunciador.falar(BOAS_VINDAS);
+}, 600));
+
+// --- Tutorial ----------------------------------------------------------------------
+
+let tutorialAtivo = 0; // muda a cada abertura, para uma leitura antiga parar sozinha
+
+function abrirTutorial() {
+  anunciador.bipe(1, 0.01); // libera o áudio no iPhone
+  $("inicio").hidden = true;
+  $("tela-tutorial").hidden = false;
+  const lista = $("partes");
+  lista.replaceChildren(...TUTORIAL.map(t => Object.assign(document.createElement("li"), { textContent: t })));
+  $("titulo-tutorial").focus();
+  lerTutorial(++tutorialAtivo);
+}
+
+async function lerTutorial(id) {
+  speechSynthesis.cancel();
+  const itens = [...$("partes").children];
+  for (const [i, texto] of TUTORIAL.entries()) {
+    if (id !== tutorialAtivo) return;
+    itens.forEach((li, j) => li.classList.toggle("falando", j === i));
+    await falarEsperando(texto);
+    await new Promise(r => setTimeout(r, 900)); // pausa entre as partes
+  }
+  if (id !== tutorialAtivo) return;
+  itens.forEach(li => li.classList.remove("falando"));
+  marcarTutorialOuvido();
+  await falarEsperando("Fim do tutorial. Para começar, toque no botão Começar agora, logo abaixo.");
+}
+
+/** Fala e espera terminar (com limite, porque alguns navegadores não avisam o fim). */
+function falarEsperando(texto) {
+  return new Promise(ok => {
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = "pt-BR";
+    if (anunciador.voz) u.voice = anunciador.voz;
+    u.rate = 1.05;
+    u.onend = u.onerror = ok;
+    setTimeout(ok, 1500 + texto.length * 90);
+    speechSynthesis.speak(u);
+  });
+}
+
+function fecharTutorial() {
+  tutorialAtivo++;
+  speechSynthesis.cancel();
+  $("tela-tutorial").hidden = true;
+  $("inicio").hidden = false;
+  $("comecar").focus();
+}
 
 // Chave da API: só aparece fora do Claude, onde a IA não vem da conta de quem está vendo
 const campoChave = $("chave");
 campoChave.value = lerChave();
 campoChave.addEventListener("change", () => salvarChave(campoChave.value.trim()));
-window.claude?.use?.("sample").then(s => { if (s) $("config-nuvem").hidden = true; }).catch(() => {});
+window.claude?.use?.("sample").then(s => { if (s) $("campo-chave").hidden = true; }).catch(() => {});
+
+// Memória em texto: percursos, lugares e pessoas num arquivo .txt (JSON), para backup ou outro celular
+const CHAVES_MEMORIA = ["assistencia.percursos", "assistencia.lugares", "assistencia.pessoas"];
+$("exportar").addEventListener("click", () => {
+  const dados = {};
+  for (const k of CHAVES_MEMORIA) { try { dados[k] = JSON.parse(localStorage.getItem(k)) || []; } catch { dados[k] = []; } }
+  const link = Object.assign(document.createElement("a"), {
+    href: URL.createObjectURL(new Blob([JSON.stringify(dados, null, 1)], { type: "text/plain" })),
+    download: "memoria-assistencia.txt",
+  });
+  link.click();
+  URL.revokeObjectURL(link.href);
+});
+$("importar").addEventListener("change", async e => {
+  const arquivo = e.target.files[0];
+  if (!arquivo) return;
+  try {
+    const dados = JSON.parse(await arquivo.text());
+    for (const k of CHAVES_MEMORIA) if (Array.isArray(dados[k])) localStorage.setItem(k, JSON.stringify(dados[k]));
+    $("aviso").textContent = "Memória importada.";
+  } catch {
+    $("aviso").textContent = "Arquivo inválido.";
+  }
+});
 botao.addEventListener("click", ouvir);
 $("digitar").addEventListener("submit", e => {
   e.preventDefault();
@@ -46,22 +163,21 @@ $("digitar").addEventListener("submit", e => {
 });
 
 async function comecar() {
+  if (iniciado) return;
+  iniciado = true;
+  tutorialAtivo++;
   const aviso = $("aviso");
   aviso.textContent = "Carregando…";
-  anunciador.falar("Carregando.");
+  anunciador.falar("Carregando, um momento.", true);
   anunciador.bipe(1, 0.01); // libera o áudio no iPhone, que só toca depois de um toque
   const permissaoSensores = Sensores.pedirPermissao(); // também precisa vir direto do toque
   try {
-    const camera = navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment", width: { ideal: 640 }, height: { ideal: 480 } },
-      audio: false,
-    });
-    [detector, cena, nuvem, profundidade] = await Promise.all([
-      Detector.carregar(), ClassificadorCena.carregar().catch(() => null), abrirNuvem(),
-      Profundidade.carregar().catch(() => null), permissaoSensores,
-    ]);
+    const camera = abrirCamera();
+    [[detector, cena, nuvem]] = await Promise.all([preparo, permissaoSensores]);
     sensores.ligar();
-    video.srcObject = await camera;
+    const { stream, grandeAngular } = await camera;
+    definirGrandeAngular(grandeAngular);
+    video.srcObject = stream;
     await video.play();
   } catch (erro) {
     const msg = erro.name === "NotAllowedError"
@@ -69,14 +185,27 @@ async function comecar() {
       : `Não consegui iniciar: ${erro.message}`;
     aviso.textContent = msg;
     anunciador.falar(msg, true);
+    iniciado = false;
     return;
   }
   navigator.wakeLock?.request("screen").catch(() => {}); // tela acesa durante o trajeto
   $("inicio").hidden = true;
+  $("tela-tutorial").hidden = true;
   $("uso").hidden = false;
   if (!Reconhecedor || location.search.includes("teclado")) $("digitar").classList.add("visivel");
   botao.focus();
-  anunciador.falar("Olá! Quer saber como o site funciona? Toque na tela e diga sim ou não.", true);
+  anunciador.bipe(880, 0.1);
+  anunciador.falar("Pronto.", true);
+  // Um respiro antes da próxima instrução; o tutorial só é oferecido a quem ainda não ouviu
+  setTimeout(() => {
+    if (ouvindo || tarefa) return;
+    if (tutorialOuvido()) {
+      anunciador.falar("Toque na tela e diga o que procura.");
+    } else {
+      aguardandoIntro = true;
+      anunciador.falar("Quer ouvir como o site funciona? Toque na tela e diga sim ou não.");
+    }
+  }, 2000);
   requestAnimationFrame(laco);
 }
 
@@ -87,6 +216,9 @@ async function laco(agora) {
   processando = true;
   try {
     ultimasDeteccoes = detector.detectar(video, agora);
+    if (extra) {
+      ultimasDeteccoes = ultimasDeteccoes.concat(await extra.detectar(video)).sort((a, b) => b.tamanho - a.tamanho);
+    }
     // Profundidade a cada 2 quadros (~2,5 por segundo): é o modelo mais pesado
     if (profundidade && quadros++ % 2 === 0) {
       await profundidade.estimar(video);
@@ -96,17 +228,17 @@ async function laco(agora) {
     for (const d of ultimasDeteccoes) {
       d.metros = distanciaPorTamanho(d, video) ?? profundidade?.distanciaDe(d, video) ?? null;
     }
+    memoria.registrar(ultimasDeteccoes, video);
+    reconhecedor.aoQuadro(ultimasDeteccoes, video); // não espera: roda em paralelo, no máximo a cada 1,2 s
     gravacao?.aoQuadro(ultimasDeteccoes);
     if (tarefa) {
       if (!tarefa.aoQuadro(ultimasDeteccoes)) tarefa = null;
       anunciador.aoVerEspaco(espaco, false, true);
     } else {
-      const avisouFrente = anunciador.aoVerObstaculos(ultimasDeteccoes);
-      anunciador.aoVerEspaco(espaco, avisouFrente);
-      if (cena) {
-        ultimaCena = await cena.classificar(video);
-        anunciador.aoVerCena(ultimaCena);
-      }
+      // Andando: só paredes, obstáculos à frente e "dá para virar". Os objetos são ditos quando a pessoa
+      // pede ("o que tem na minha frente"); o ambiente fica guardado para "onde estou".
+      anunciador.aoVerEspaco(espaco, false);
+      if (cena) ultimaCena = await cena.classificar(video);
     }
     desenhar();
   } finally {
@@ -126,7 +258,7 @@ function ouvir() {
   if (ouvindo) return;
   ouvindo = true;
   document.body.classList.add("ouvindo");
-  speechSynthesis.cancel();
+  anunciador.calar();
   anunciador.bipe(660, 0.12);
   mostrar("Ouvindo…");
   const r = new Reconhecedor();
@@ -154,12 +286,17 @@ function ouvir() {
 function executar(frase) {
   const pedido = interpretar(frase);
   mostrar(`“${frase}”`);
+  // Sim/não durante um cadastro é o consentimento da pessoa, não resposta ao tutorial
+  if ((pedido.tipo === "sim" || pedido.tipo === "nao") && tarefa?.aoResponder?.(pedido.tipo)) return;
   const intro = aguardandoIntro;
   aguardandoIntro = false;
   switch (pedido.tipo) {
     case "sim":
     case "explicar":
-      if (intro || pedido.tipo === "explicar") anunciador.falar(EXPLICACAO, true);
+      if (intro || pedido.tipo === "explicar") {
+        anunciador.falar(`${EXPLICACAO} Agora é com você: toque na tela e diga o que procura.`, true);
+        marcarTutorialOuvido();
+      }
       else anunciador.falar("Ok.");
       return;
     case "nao":
@@ -175,15 +312,18 @@ function executar(frase) {
           anunciador.falar(`Ainda não sei reconhecer ${pedido.alvo} sem a IA na nuvem.`, true);
           return;
         }
-        tarefa = new ProcurarNaNuvem(anunciador, nuvem, video, pedido.alvo, pedido.tipo === "verificar" ? 2 : 4);
+        tarefa = new ProcurarNaNuvem(anunciador, nuvem, video, pedido.alvo, pedido.tipo === "verificar" ? 2 : 4, memoria);
         return;
       }
       tarefa = pedido.tipo === "procurar"
-        ? new Procurar(anunciador, pedido.rotulo, pedido.alvo)
-        : new Verificar(anunciador, pedido.rotulo, pedido.alvo);
+        ? new Procurar(anunciador, pedido.rotulo, pedido.alvo, profundidade, video, memoria)
+        : new Verificar(anunciador, pedido.rotulo, pedido.alvo, profundidade, video);
       return;
     case "descrever":
-      anunciador.falar(descrever(ultimasDeteccoes), true);
+      anunciador.falar(descrever(ultimasDeteccoes, profundidade, video), true);
+      return;
+    case "lembrar":
+      anunciador.falar(memoria.resumo(new Set(ultimasDeteccoes.map(d => nomeFalado(d.rotulo)))), true);
       return;
     case "livre":
       anunciador.falar(descreverEspaco(), true);
@@ -222,6 +362,58 @@ function executar(frase) {
       anunciador.falar(apagado ? `Percurso ${apagado.nome} apagado.` : `Não achei o percurso ${pedido.nome}.`, true);
       return;
     }
+    case "lugar": {
+      const nome = pedido.nome || `lugar ${listarLugares().length + 1}`;
+      const visiveis = new Set(ultimasDeteccoes.map(d => nomeFalado(d.rotulo)).filter(Boolean));
+      const objetos = [...visiveis].map(n => ({ nome: n, onde: memoria.ondeEstava(n)?.split(",")[0] ?? "" }));
+      // inclui o que passou pela câmera no último minuto, para o lugar não depender de um só ângulo
+      for (const [n] of memoria.itens) if (!visiveis.has(n)) objetos.push({ nome: n, onde: memoria.ondeEstava(n)?.split(",")[0] ?? "" });
+      const registro = lembrarLugar(nome, objetos);
+      anunciador.falar(`Lugar ${nome} guardado, com ${registro.objetos.length} ${registro.objetos.length === 1 ? "objeto" : "objetos"}.`, true);
+      if (nuvem) fotografar(video).then(f => nuvem.descreverLugar(f)).then(d => descreverLugar(nome, d)).catch(() => {});
+      return;
+    }
+    case "ondeEstou": {
+      const vistos = [...new Set([...ultimasDeteccoes.map(d => nomeFalado(d.rotulo)), ...memoria.itens.keys()])].filter(Boolean);
+      const lugar = ondeEstou(vistos);
+      anunciador.falar(lugar ? `Parece ${lugar.nome}. ${lugar.texto.split(": ")[1] ?? ""}`
+        : listarLugares().length ? "Não reconheço este lugar. Para guardar, diga lembrar este lugar como e um nome."
+          : "Ainda não há lugares guardados. Diga lembrar este lugar como e um nome.", true);
+      return;
+    }
+    case "apagarLugar": {
+      const l = apagarLugar(pedido.nome);
+      anunciador.falar(l ? `Lugar ${l.nome} apagado.` : `Não achei o lugar ${pedido.nome}.`, true);
+      return;
+    }
+    case "listarLugares": {
+      const nomes = listarLugares().map(l => l.nome);
+      anunciador.falar(nomes.length ? `Lugares guardados: ${nomes.join(", ")}.` : "Ainda não há lugares guardados.", true);
+      return;
+    }
+    case "cadastrar":
+      if (!pedido.nome) {
+        anunciador.falar("Diga cadastrar pessoa e o nome dela.", true);
+        return;
+      }
+      tarefa?.cancelar?.();
+      tarefa = new Cadastro(anunciador, video, nomeProprio(pedido.nome));
+      return;
+    case "apagarPessoa": {
+      const p = apagarPessoa(pedido.nome);
+      anunciador.falar(p ? `${p.nome} foi apagado deste celular.` : `Não achei ${pedido.nome} entre as pessoas cadastradas.`, true);
+      return;
+    }
+    case "listarPessoas": {
+      const nomes = listarPessoas().map(p => p.nome);
+      anunciador.falar(nomes.length ? `Pessoas cadastradas: ${nomes.join(", ")}.` : "Ainda não há pessoas cadastradas.", true);
+      return;
+    }
+    case "quem":
+      anunciador.falar("Olhando.", true);
+      reconhecedor.quemEsta(video).then(t => anunciador.falar(t, true))
+        .catch(() => anunciador.falar("Não consegui analisar os rostos agora.", true));
+      return;
     case "mapa":
       abrirMapa(pedido.destino);
       return;

@@ -13,23 +13,47 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-  <!-- Tela inicial: um único botão do tamanho da tela. Toque em qualquer lugar começa. -->
-  <div id="inicio" class="inicio">
-    <button id="comecar" class="grande">
-      <span class="eyebrow">ohtopico · assistência por voz</span>
-      <span class="titulo">Toque para <span class="marca">começar</span></span>
+  <!-- Tela inicial: dois botões grandes, Começar em cima e Como funciona embaixo -->
+  <main id="inicio" class="inicio">
+    <h1 class="sr-only">Assistência por voz</h1>
+    <button id="comecar" class="grande" aria-label="Começar. Liga a câmera e o microfone.">
+      <span class="eyebrow" aria-hidden="true">ohtopico · assistência por voz</span>
+      <span class="titulo">Começar</span>
       <span class="lead">Depois, toque na tela e diga o que procura.</span>
     </button>
+    <button id="tutorial" class="grande secundario" aria-label="Como funciona. Tutorial falado, em partes curtas.">
+      <span class="titulo">Como funciona</span>
+      <span class="lead">Tutorial falado, em partes curtas.</span>
+    </button>
     <p id="aviso" class="aviso" role="alert"></p>
-    <!-- Configuração para quem ajuda a instalar; fica depois do botão principal -->
-    <details id="config-nuvem" class="config">
-      <summary>Configurar IA na nuvem</summary>
-      <p>Objetos comuns são reconhecidos no próprio celular. Para chave, extintor, saída e outros,
-         o site manda uma foto para o Claude. Cole uma chave da API da Anthropic; ela fica só neste navegador.</p>
-      <label for="chave">Chave da API</label>
-      <input id="chave" type="password" autocomplete="off" placeholder="sk-ant-…">
+    <!-- Configuração para quem ajuda a instalar; fica por último -->
+    <details id="config" class="config">
+      <summary>Configuração para quem ajuda (opcional)</summary>
+      <div id="campo-chave">
+        <p>Objetos comuns são reconhecidos no próprio celular. Para chave, extintor, saída e outros,
+           o site manda uma foto para o Claude. Cole uma chave da API da Anthropic; ela fica só neste navegador.</p>
+        <label for="chave">Chave da API</label>
+        <input id="chave" type="password" autocomplete="off" placeholder="sk-ant-…">
+      </div>
+      <p>Percursos, lugares e pessoas cadastradas ficam só neste celular. Dá para salvar uma cópia em texto
+         ou levar para outro celular.</p>
+      <button id="exportar" type="button" class="pilula">Exportar memória (.txt)</button>
+      <label for="importar" class="pilula">Importar memória</label>
+      <input id="importar" type="file" accept=".txt,.json,text/plain" class="sr-only">
     </details>
-  </div>
+  </main>
+
+  <!-- Tutorial: o texto fica na tela para o leitor de tela e também é falado, parte por parte -->
+  <section id="tela-tutorial" class="inicio" hidden aria-labelledby="titulo-tutorial">
+    <h1 id="titulo-tutorial" class="titulo-tutorial" tabindex="-1">Como funciona</h1>
+    <ol id="partes" class="partes"></ol>
+    <button id="tutorial-comecar" class="grande">
+      <span class="titulo">Começar agora</span>
+    </button>
+    <button id="tutorial-voltar" class="grande secundario">
+      <span class="titulo">Voltar</span>
+    </button>
+  </section>
 
   <!-- Durante o uso, a tela inteira é um botão: toque (ou toque duplo com leitor de tela) pausa ou retoma -->
   <section id="uso" class="uso" hidden>
@@ -38,7 +62,7 @@
     <button id="pausar" class="tela-toda" aria-label="Assistência ativa. Toque e fale um pedido."></button>
     <!-- Alternativa digitada: aparece quando o navegador não reconhece fala (ex.: Firefox) -->
     <form id="digitar" class="digitar">
-      <label for="comando">Pedido</label>
+      <label for="comando">Digitar pedido</label>
       <input id="comando" autocomplete="off" placeholder="ex.: cadê a xícara">
       <button>Enviar</button>
     </form>

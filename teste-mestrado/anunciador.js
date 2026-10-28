@@ -1,9 +1,9 @@
 import { OBSTACULOS, nomeFalado } from "./vocabulario.js";
 import { falarDistancia } from "./profundidade.js";
 
-// Decide o que falar e quando (mesmas regras do app Android).
-// Obstáculo perto interrompe tudo (vibração + fala), ambiente só é falado quando muda
-// e fica estável, e a mesma frase não se repete antes do intervalo de espera.
+// Decide o que falar e quando. Nenhuma fala corta outra: avisos automáticos esperam a fala atual
+// terminar (só o mais recente fica guardado) e a mesma frase não se repete antes do intervalo de espera.
+// Só a própria pessoa interrompe, ao tocar para dar um comando (calar).
 
 const CENA_CONFIANCA_MIN = 0.6;
 const CENA_QUADROS_ESTAVEIS = 5;
@@ -19,7 +19,9 @@ export const TAMANHO_MEDIO = 0.3;
 
 // Com distância em metros (quando há mapa de profundidade ou altura conhecida)
 export const PERTO_M = 1.5;
-const LIVRE_FRENTE_M = 1.0; // menos que isso à frente, sem objeto conhecido: provável parede ou poste
+const LIVRE_FRENTE_M = 1.3; // menos que isso à frente: parede ou obstáculo
+const PAUSA_MS = 500;       // silêncio entre uma fala e o próximo aviso
+const AVISO_VALIDO_MS = 3000; // aviso guardado que esperou mais que isso já não vale
 const PAREDE_M = 1.8;       // lado "fechado"
 const ABERTO_M = 3.5;       // lado "aberto": dá para virar
 const ESPACO_ESPERA_MS = 8000;
@@ -44,13 +46,36 @@ export class Anunciador {
     speechSynthesis.addEventListener("voiceschanged", escolher);
   }
 
+  /** Fala sem cortar o que está sendo dito: entra na fila. (`urgente` ficou só por compatibilidade.) */
   falar(texto, urgente = false) {
-    if (urgente) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(texto);
     u.lang = "pt-BR";
     if (this.voz) u.voice = this.voz;
     u.rate = 1.1;
+    u.onend = u.onerror = () => {
+      if (speechSynthesis.speaking || speechSynthesis.pending) return;
+      this.livreEm = performance.now() + PAUSA_MS;
+      setTimeout(() => this.falarPendente(), PAUSA_MS + 20);
+    };
     speechSynthesis.speak(u);
+  }
+
+  ocupado() {
+    return speechSynthesis.speaking || speechSynthesis.pending || performance.now() < (this.livreEm ?? 0);
+  }
+
+  /** Para tudo (a pessoa tocou para falar um comando). */
+  calar() {
+    this.pendente = null;
+    this.livreEm = 0;
+    speechSynthesis.cancel();
+  }
+
+  falarPendente() {
+    const p = this.pendente;
+    if (!p || this.ocupado()) return;
+    this.pendente = null;
+    if (performance.now() - p.quando < AVISO_VALIDO_MS) this.falarUmaVez(p.texto, p.esperaMs, p.urgente, p.chave);
   }
 
   aoVerCena({ rotulo, confianca }) {
@@ -88,14 +113,17 @@ export class Anunciador {
   }
 
   /**
-   * Usa o mapa de profundidade: algo muito perto à frente que o detector não reconheceu,
+   * Usa o mapa de profundidade: parede ou obstáculo perto à frente (reconhecido ou não pelo detector),
    * e lados que passam de fechados (parede) para abertos (corredor, porta aberta): "pode virar".
    */
   aoVerEspaco(espaco, jaAvisouFrente, soFrente = false) {
     if (!espaco) return;
-    if (!jaAvisouFrente && espaco.frente != null && espaco.frente < LIVRE_FRENTE_M) {
+    const f = espaco.frente;
+    if (!jaAvisouFrente && f != null && f < LIVRE_FRENTE_M) {
+      // Parede: os três lados quase à mesma distância. Senão, é algo no meio do caminho.
+      const parede = [espaco.esquerda, espaco.direita].every(m => m != null && m < Math.max(1.6 * f, f + 0.5));
       this.vibrar();
-      this.falarUmaVez(`Cuidado, algo à frente, ${falarDistancia(espaco.frente)}`, OBSTACULO_ESPERA_MS, true, "frente|desconhecido");
+      this.falarUmaVez(`${parede ? "Parede" : "Cuidado, obstáculo"} à frente, ${falarDistancia(f)}`, OBSTACULO_ESPERA_MS, true, "frente");
     }
     if (soFrente) return;
     for (const lado of ["esquerda", "direita"]) {
@@ -129,9 +157,14 @@ export class Anunciador {
   }
 
   // `chave` agrupa frases que só mudam no número ("a 2 metros", "a 1,5 metro") para não repetir
+  // Se já houver fala, guarda só o aviso mais recente (um urgente não é trocado por um comum)
   falarUmaVez(texto, esperaMs, urgente = false, chave = texto) {
     const agora = performance.now();
     if (agora - (this.ultimaFala.get(chave) ?? -Infinity) < esperaMs) return;
+    if (this.ocupado()) {
+      if (!this.pendente?.urgente || urgente) this.pendente = { texto, esperaMs, urgente, chave, quando: agora };
+      return;
+    }
     this.ultimaFala.set(chave, agora);
     this.falar(texto, urgente);
   }
@@ -150,6 +183,6 @@ export class Anunciador {
     this.contagem = 0;
     this.cenaAnunciada = null;
     this.lados = { esquerda: { estado: null, candidato: null, vezes: 0 }, direita: { estado: null, candidato: null, vezes: 0 } };
-    speechSynthesis.cancel();
+    this.calar();
   }
 }

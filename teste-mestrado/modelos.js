@@ -105,3 +105,53 @@ export class ClassificadorCena {
     return { rotulo: this.nomes[melhor], confianca: exps[melhor] / soma };
   }
 }
+
+/**
+ * Detector treinado com os objetos da lista (notebook treino_detector_mobilenet.ipynb, SSDLite + MobileNetV3).
+ * Opcional: só carrega se existirem modelos/objetos.onnx e objetos_labels.txt.
+ * Devolve detecções no mesmo formato do Detector, com rotulo = nome da classe.
+ */
+export class DetectorExtra {
+  static async carregar() {
+    const [modelo, rotulos] = await Promise.all([fetch("modelos/objetos.onnx"), fetch("modelos/objetos_labels.txt")]);
+    if (!modelo.ok || !rotulos.ok) return null;
+    const ort = await carregarOrt();
+    const sessao = await ort.InferenceSession.create(new Uint8Array(await modelo.arrayBuffer()));
+    const nomes = (await rotulos.text()).split("\n").map(s => s.trim()).filter(Boolean);
+    return new DetectorExtra(ort, sessao, nomes);
+  }
+
+  constructor(ort, sessao, nomes) {
+    this.ort = ort;
+    this.sessao = sessao;
+    this.nomes = nomes;
+    this.lado = 320;
+    this.canvas = new OffscreenCanvas(this.lado, this.lado);
+    this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
+    this.entrada = new Float32Array(3 * this.lado * this.lado);
+  }
+
+  async detectar(video) {
+    // A imagem inteira esticada para 320x320, valores de 0 a 1 (a normalização está dentro do modelo)
+    this.ctx.drawImage(video, 0, 0, this.lado, this.lado);
+    const px = this.ctx.getImageData(0, 0, this.lado, this.lado).data;
+    const n = this.lado * this.lado;
+    for (let i = 0; i < n; i++) for (let c = 0; c < 3; c++) this.entrada[c * n + i] = px[i * 4 + c] / 255;
+    const t = new this.ort.Tensor("float32", this.entrada, [1, 3, this.lado, this.lado]);
+    const r = await this.sessao.run({ [this.sessao.inputNames[0]]: t });
+    const [caixas, pontuacoes, rotulos] = this.sessao.outputNames.map(k => r[k].data);
+    const sx = video.videoWidth / this.lado, sy = video.videoHeight / this.lado;
+    const saida = [];
+    for (let i = 0; i < pontuacoes.length; i++) {
+      const [x0, y0, x1, y1] = [caixas[i * 4] * sx, caixas[i * 4 + 1] * sy, caixas[i * 4 + 2] * sx, caixas[i * 4 + 3] * sy];
+      saida.push({
+        rotulo: this.nomes[Number(rotulos[i]) - 1],
+        confianca: pontuacoes[i],
+        cx: (x0 + x1) / 2 / video.videoWidth,
+        tamanho: (y1 - y0) / video.videoHeight,
+        caixa: { originX: x0, originY: y0, width: x1 - x0, height: y1 - y0 },
+      });
+    }
+    return saida;
+  }
+}

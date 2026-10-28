@@ -13,12 +13,53 @@ const VERIFICA_MS = 6000;
 const VERIFICA_QUADROS = 2;
 // Bem à frente: centro do objeto a menos de 12% do centro da imagem
 const CENTRO = 0.12;
-const PLURAL = n => (/[rzs]$/.test(n) ? `${n}es` : /l$/.test(n) ? `${n.slice(0, -1)}is` : /ão$/.test(n) ? `${n.slice(0, -2)}ões` : `${n}s`);
+const CORPO = 0.12; // meia largura do corredor que a pessoa ocupa, em fração da imagem
+
+/**
+ * Há algo entre a pessoa e o alvo? Olha um "corredor" que vai do centro de baixo da imagem
+ * (onde a pessoa está) até o alvo. Primeiro objetos reconhecidos mais próximos que o alvo;
+ * depois, com o mapa de profundidade, qualquer coisa na altura do corpo bem mais perto que ele.
+ * Devolve { nome, metros } ou null.
+ */
+export function noCaminho(alvo, deteccoes, profundidade, video) {
+  const x0 = Math.min(0.5, alvo.cx) - CORPO, x1 = Math.max(0.5, alvo.cx) + CORPO;
+  const distAlvo = alvo.metros ?? Infinity;
+  const fundoAlvo = (alvo.caixa.originY + alvo.caixa.height) / video.videoHeight;
+  const candidatos = deteccoes.filter(d => {
+    if (d === alvo || !nomeFalado(d.rotulo)) return false;
+    const c = d.caixa;
+    const dx0 = c.originX / video.videoWidth, dx1 = (c.originX + c.width) / video.videoWidth;
+    if (dx1 < x0 || dx0 > x1) return false;
+    // mais perto que o alvo: pela distância, ou, sem ela, por estar mais embaixo na imagem
+    return d.metros != null && alvo.metros != null
+      ? d.metros < alvo.metros - Math.max(0.5, 0.1 * alvo.metros)
+      : (c.originY + c.height) / video.videoHeight > fundoAlvo + 0.05;
+  }).sort((a, b) => (a.metros ?? 99) - (b.metros ?? 99));
+  if (candidatos.length) return { nome: nomeFalado(candidatos[0].rotulo), metros: candidatos[0].metros };
+
+  if (profundidade?.mapa && isFinite(distAlvo) && fundoAlvo > 0.35) {
+    // Da altura do corpo até a linha onde o alvo toca o chão: o chão ali fica atrás do alvo
+    const m = profundidade.metros(profundidade.regiao(Math.max(0, x0), Math.min(1, x1), 0.3, fundoAlvo, 0.9));
+    if (m != null && m < distAlvo * 0.6 && m < 2.5) return { nome: "algo", metros: m };
+  }
+  return null;
+}
+
+/** "; cuidado, cadeira no caminho, a 1 metro" ou "". */
+export function avisoCaminho(bloqueio) {
+  if (!bloqueio) return "";
+  const dist = falarDistancia(bloqueio.metros);
+  return `; cuidado, ${bloqueio.nome} no caminho${dist ? ", " + dist : ""}`;
+}
+
 
 /** "Ache a xícara": guia por bipes (mais rápidos quanto mais centralizado) e por voz. */
 export class Procurar {
-  constructor(anunciador, rotulo, alvo) {
+  constructor(anunciador, rotulo, alvo, profundidade, video, memoria) {
     this.a = anunciador;
+    this.memoria = memoria;
+    this.profundidade = profundidade;
+    this.video = video;
     this.rotulo = rotulo;
     this.nome = nomeFalado(rotulo) || alvo;
     this.inicio = performance.now();
@@ -26,7 +67,11 @@ export class Procurar {
     this.ultimoLado = null;
     this.ultimaDirecao = 0;
     this.ultimoBipe = 0;
-    this.a.falar(`Procurando ${this.nome}. Gire o celular devagar.`, true);
+    // Se a câmera já viu o objeto há pouco, começa dizendo para onde virar
+    const lembranca = memoria?.ondeEstava(this.nome);
+    this.a.falar(lembranca
+      ? `Procurando ${this.nome}. Há pouco ele estava ${lembranca}.`
+      : `Procurando ${this.nome}. Gire o celular devagar.`, true);
   }
 
   get descricao() { return `Procurando: ${this.nome}`; }
@@ -40,7 +85,8 @@ export class Procurar {
       if (this.vistoEm && agora - this.vistoEm > PERDEU_MS) {
         this.vistoEm = null;
         this.ultimoLado = null;
-        this.a.falar(`Perdi ${this.nome} de vista.`);
+        const lembranca = this.memoria?.ondeEstava(this.nome);
+        this.a.falar(`Perdi ${this.nome} de vista.${lembranca ? ` Ele estava ${lembranca}.` : ""}`);
       }
       if (!this.vistoEm && agora - this.inicio > PROCURA_LIMITE_MS) {
         this.a.falar(`Não encontrei ${this.nome}. Tente em outro lugar.`, true);
@@ -65,12 +111,13 @@ export class Procurar {
 
     // Repete só quando muda a direção ou a distância falada
     const direcao = desvio < CENTRO ? "bem à frente" : onde(lado);
-    const fala = `${this.nome} ${direcao}${dist ? ", " + dist : perto ? ", perto" : ""}`;
+    const bloqueio = perto ? null : noCaminho(alvo, deteccoes, this.profundidade, this.video);
+    const fala = `${this.nome} ${direcao}${dist ? ", " + dist : perto ? ", perto" : ""}${avisoCaminho(bloqueio)}`;
     if (fala !== this.ultimaFala && agora - this.ultimaDirecao > DIRECAO_ESPERA_MS) {
       this.ultimaFala = fala;
       this.ultimaDirecao = agora;
       if (desvio < CENTRO && perto) this.a.vibrar([200]);
-      this.a.falar(fala, true);
+      this.a.falarUmaVez(fala, 0, true, "procurar");
     }
     return true;
   }
@@ -78,8 +125,10 @@ export class Procurar {
 
 /** "Tem um extintor?": olha por alguns segundos e responde sim ou não. */
 export class Verificar {
-  constructor(anunciador, rotulo, alvo) {
+  constructor(anunciador, rotulo, alvo, profundidade, video) {
     this.a = anunciador;
+    this.profundidade = profundidade;
+    this.video = video;
     this.rotulo = rotulo;
     this.nome = nomeFalado(rotulo) || alvo;
     this.inicio = performance.now();
@@ -93,7 +142,8 @@ export class Verificar {
     const alvo = deteccoes.find(d => d.rotulo === this.rotulo);
     if (alvo && ++this.vezes >= VERIFICA_QUADROS) {
       const dist = falarDistancia(alvo.metros);
-      this.a.falar(`Sim, tem ${this.nome} ${onde(ladoDe(alvo.cx))}${dist ? ", " + dist : ""}.`, true);
+      const caminho = avisoCaminho(noCaminho(alvo, deteccoes, this.profundidade, this.video));
+      this.a.falar(`Sim, tem ${this.nome} ${onde(ladoDe(alvo.cx))}${dist ? ", " + dist : ""}${caminho}.`, true);
       return false;
     }
     if (performance.now() - this.inicio > VERIFICA_MS) {
@@ -104,20 +154,25 @@ export class Verificar {
   }
 }
 
-/** "O que tem na minha frente?": lista o que está visível agora, da esquerda para a direita. */
-export function descrever(deteccoes) {
-  const grupos = new Map();
-  for (const d of deteccoes) {
+/**
+ * "O que tem na minha frente?": cada objeto com lado e distância, do mais perto para o mais longe,
+ * dizendo quando há outra coisa no caminho até ele. No máximo DESCREVER_MAX objetos.
+ */
+const DESCREVER_MAX = 5;
+
+export function descrever(deteccoes, profundidade, video) {
+  const vistos = deteccoes.filter(d => nomeFalado(d.rotulo) && d.confianca >= 0.5)
+    .sort((a, b) => (a.metros ?? 99) - (b.metros ?? 99) || b.tamanho - a.tamanho)
+    .slice(0, DESCREVER_MAX);
+  if (!vistos.length) return "Não reconheço nenhum objeto agora.";
+  const partes = vistos.map(d => {
+    const dist = falarDistancia(d.metros);
+    const bloqueio = noCaminho(d, vistos, profundidade, video);
+    const caminho = bloqueio ? `, com ${bloqueio.nome === "algo" ? "algo" : bloqueio.nome} no caminho` : "";
     const nome = nomeFalado(d.rotulo);
-    if (!nome || d.confianca < 0.5) continue;
-    const chave = `${nome}|${ladoDe(d.cx)}`;
-    grupos.set(chave, { nome, lado: ladoDe(d.cx), n: (grupos.get(chave)?.n ?? 0) + 1 });
-  }
-  if (!grupos.size) return "Não reconheço nenhum objeto agora.";
-  const ordem = { esquerda: 0, frente: 1, direita: 2 };
-  const partes = [...grupos.values()].sort((x, y) => ordem[x.lado] - ordem[y.lado])
-    .map(g => `${g.n > 1 ? `${g.n} ${PLURAL(g.nome)}` : g.nome} ${onde(g.lado)}`);
-  return `Vejo ${partes.join(", ")}.`;
+    return `${nome[0].toUpperCase()}${nome.slice(1)} ${onde(ladoDe(d.cx))}${dist ? ", " + dist : ""}${caminho}`;
+  });
+  return `${partes.length > 1 ? "Do mais perto para o mais longe. " : ""}${partes.join(". ")}.`;
 }
 
 /**
@@ -127,8 +182,9 @@ export function descrever(deteccoes) {
 const INTERVALO_NUVEM_MS = 2500;
 
 export class ProcurarNaNuvem {
-  constructor(anunciador, nuvem, video, alvo, tentativas = 4) {
+  constructor(anunciador, nuvem, video, alvo, tentativas = 4, memoria = null) {
     this.a = anunciador;
+    this.memoria = memoria;
     this.nuvem = nuvem;
     this.video = video;
     this.alvo = alvo;
@@ -136,7 +192,10 @@ export class ProcurarNaNuvem {
     this.tentativa = 0;
     this.tentativas = tentativas;
     this.ativa = true;
-    this.a.falar(`Procurando ${alvo}. Segure o celular parado.`, true);
+    const lembranca = memoria?.ondeEstava(alvo);
+    this.a.falar(lembranca
+      ? `Há pouco ${alvo} estava ${lembranca}. Vou confirmar; segure o celular parado.`
+      : `Procurando ${alvo}. Segure o celular parado.`, true);
     this.perguntar();
   }
 
@@ -149,6 +208,10 @@ export class ProcurarNaNuvem {
       const r = await this.nuvem.perguntar(await fotografar(this.video), this.alvo);
       if (!this.ativa) return;
       if (r.encontrado) {
+        // Guarda na memória curta, para "onde estava a saída?" depois que ela sair da câmera
+        const angulo = { esquerda: -25, frente: 0, direita: 25 }[r.lado] ?? 0;
+        const metros = { perto: 1, medio: 3, longe: 6 }[r.distancia] ?? null;
+        this.memoria?.anotar(this.alvo, angulo, metros);
         if (r.lado === "frente" && r.distancia === "perto") this.a.vibrar([200]);
         this.a.falar(r.resposta || `${this.alvo} ${onde(r.lado) ?? ""}`, true);
         this.ativa = false;
