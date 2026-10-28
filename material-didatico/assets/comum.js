@@ -59,7 +59,15 @@
         ${link('professor', 'professor.html', 'Professor')}
       </nav>
       <a class="icon-btn prog-btn" href="${BASE}meu-progresso.html"${atual === 'progresso' ? ' aria-current="page"' : ''} aria-label="Meu progresso" title="Meu progresso"><span aria-hidden="true">📈</span><span class="prog-txt">Meu progresso</span></a>
-      <button class="icon-btn" id="theme-btn" aria-label="Alternar tema claro/escuro">${sun}</button>`;
+      <button class="icon-btn" id="theme-btn" aria-label="Alternar tema claro/escuro">${sun}</button>
+      <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="topnav-m" aria-label="Abrir o menu"><span aria-hidden="true">☰</span></button>`;
+    // celular: as seções viram um menu que abre por baixo da barra
+    const nav = el.querySelector('.topnav'), menu = document.getElementById('menu-btn');
+    nav.id = 'topnav-m';
+    const abrirMenu = abre => { el.classList.toggle('menu-aberto', abre); menu.setAttribute('aria-expanded', abre); menu.setAttribute('aria-label', abre ? 'Fechar o menu' : 'Abrir o menu'); };
+    menu.addEventListener('click', () => abrirMenu(!el.classList.contains('menu-aberto')));
+    document.addEventListener('click', e => { if (!el.contains(e.target)) abrirMenu(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && el.classList.contains('menu-aberto')) { abrirMenu(false); menu.focus(); } });
     document.getElementById('theme-btn').addEventListener('click', () => {
       const root = document.documentElement;
       const isDark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);

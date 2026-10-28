@@ -160,14 +160,79 @@
     if (typeof CompressionStream !== 'undefined') return prefixo + 'z.' + b64.enc(await pipe(bytes, CompressionStream, 'deflate-raw'));
     return prefixo + 'j.' + b64.enc(bytes);
   }
+  /* Descompactador "deflate" em JavaScript puro, para celulares sem DecompressionStream
+     (iPhone com iOS anterior ao 16.4): sem ele, o código gerado no computador não abria no celular. */
+  function inflar(src) {
+    let pos = 0, bit = 0, nb = 0, out = [];
+    const bits = n => { while (nb < n) { if (pos >= src.length) throw new Error('formato'); bit |= src[pos++] << nb; nb += 8; } const v = bit & ((1 << n) - 1); bit >>>= n; nb -= n; return v; };
+    // tabela de Huffman canônica: quantidade de códigos por tamanho + símbolos em ordem
+    const tabela = (lens, ini, n) => {
+      const cont = new Uint16Array(16), offs = new Uint16Array(16), sim = new Uint16Array(n);
+      for (let i = 0; i < n; i++) cont[lens[ini + i]]++;
+      cont[0] = 0;
+      for (let i = 1; i < 16; i++) offs[i] = offs[i - 1] + cont[i - 1];
+      for (let i = 0; i < n; i++) if (lens[ini + i]) sim[offs[lens[ini + i]]++] = i;
+      return { cont, sim };
+    };
+    const ler = t => {
+      let cod = 0, primeiro = 0, idx = 0;
+      for (let len = 1; len < 16; len++) {
+        cod |= bits(1); const c = t.cont[len];
+        if (cod - primeiro < c) return t.sim[idx + cod - primeiro];
+        idx += c; primeiro = (primeiro + c) << 1; cod <<= 1;
+      }
+      throw new Error('formato');
+    };
+    const LB = [3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258];
+    const LX = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0];
+    const DB = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577];
+    const DX = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
+    const fixa = new Uint8Array(320);
+    fixa.fill(8, 0, 144); fixa.fill(9, 144, 256); fixa.fill(7, 256, 280); fixa.fill(8, 280, 288); fixa.fill(5, 288, 320);
+    const fixaL = tabela(fixa, 0, 288), fixaD = tabela(fixa, 288, 32);
+    const ORDEM = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+    let fim;
+    do {
+      fim = bits(1);
+      const tipo = bits(2);
+      if (tipo === 0) {
+        bit = 0; nb = 0;
+        const len = src[pos] | (src[pos + 1] << 8); pos += 4;
+        for (let i = 0; i < len; i++) out.push(src[pos++]);
+        continue;
+      }
+      let tl = fixaL, td = fixaD;
+      if (tipo === 2) {
+        const hl = bits(5) + 257, hd = bits(5) + 1, hc = bits(4) + 4;
+        const cl = new Uint8Array(19);
+        for (let i = 0; i < hc; i++) cl[ORDEM[i]] = bits(3);
+        const tc = tabela(cl, 0, 19), lens = new Uint8Array(hl + hd);
+        for (let i = 0; i < hl + hd;) {
+          const s = ler(tc);
+          if (s < 16) lens[i++] = s;
+          else { const [rep, v] = s === 16 ? [3 + bits(2), lens[i - 1]] : s === 17 ? [3 + bits(3), 0] : [11 + bits(7), 0]; for (let k = 0; k < rep; k++) lens[i++] = v; }
+        }
+        tl = tabela(lens, 0, hl); td = tabela(lens, hl, hd);
+      } else if (tipo !== 1) throw new Error('formato');
+      for (;;) {
+        const s = ler(tl);
+        if (s < 256) out.push(s);
+        else if (s === 256) break;
+        else {
+          const len = LB[s - 257] + bits(LX[s - 257]), d = ler(td), dist = DB[d] + bits(DX[d]);
+          for (let i = 0; i < len; i++) out.push(out[out.length - dist]);
+        }
+      }
+    } while (!fim);
+    return new Uint8Array(out);
+  }
   async function desempacotar(prefixo, code) {
     code = String(code || '').trim().replace(/\s+/g, '');
     if (!code.startsWith(prefixo)) throw new Error('formato');
     const resto = code.slice(prefixo.length), modo = resto[0], dados = resto.slice(2);
     let bytes = b64.dec(dados);
     if (modo === 'z') {
-      if (typeof DecompressionStream === 'undefined') throw new Error('navegador');
-      bytes = await pipe(bytes, DecompressionStream, 'deflate-raw');
+      bytes = typeof DecompressionStream === 'undefined' ? inflar(bytes) : await pipe(bytes, DecompressionStream, 'deflate-raw');
     }
     return JSON.parse(new TextDecoder().decode(bytes));
   }
@@ -244,5 +309,5 @@
   function resultado(recId) { const p = perfilAtual(false); return p && p.r[recId] ? p.r[recId] : null; }
 
   window.MDP = { NIVEIS, MEDALHAS, hoje, registrar, resultado, infoHab, nivelHab, revisoes, recursoPara, medalhas,
-    perfil: () => perfilAtual(false), perfis, criar, trocar, atualizar, excluir, exportar, importar, relatorio, lerRelatorio };
+    perfil: () => perfilAtual(false), perfis, _inflar: inflar, criar, trocar, atualizar, excluir, exportar, importar, relatorio, lerRelatorio };
 })();
