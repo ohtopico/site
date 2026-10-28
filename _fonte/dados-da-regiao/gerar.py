@@ -141,3 +141,7 @@ js = '/* Gerado por _fonte/dados-da-regiao/gerar.py. Não editar à mão. */\nwi
      json.dumps(dados, ensure_ascii=False, separators=(',', ':')) + ';\n'
 open(SAIDA, 'w').write(js)
 print(SAIDA, len(js) // 1024, 'KB')
+
+# Página estática de Novo Cabrais (indexável, sem depender de JavaScript)
+import pagina_novo_cabrais
+pagina_novo_cabrais.gerar(dados['mapa'], ESC, DEM)
