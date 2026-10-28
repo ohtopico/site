@@ -1,0 +1,39 @@
+# Confere o índice de aulas do README.md. Em pull requests, confere que cada link aponta para um
+# arquivo do repositório (o material novo ainda não está no ar). Toda segunda-feira e quando for
+# disparado à mão (aba Actions > Conferir links do README > Run workflow), também pede cada link
+# ao ohtopico.com.br.
+name: Conferir links do README
+
+on:
+  pull_request:
+    paths:
+      - 'README.md'
+      - '_fonte/readme/**'
+      - 'material-didatico/**'
+  schedule:
+    - cron: '0 11 * * 1'   # segunda-feira, 08h em Brasília
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gerar o README e conferir os links
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            node _fonte/readme/gerar.js
+          else
+            node _fonte/readme/gerar.js --conferir
+          fi
+
+      - name: Avisar se o README do repositório está desatualizado
+        run: |
+          if ! git diff --quiet README.md; then
+            echo "::warning::O README.md mudou ao ser gerado de novo. Rode node _fonte/readme/gerar.js e faça commit (ou espere a publicação no main, que atualiza sozinha)."
+            git diff --stat README.md
+          fi

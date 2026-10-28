@@ -43,6 +43,9 @@ jobs:
       - name: Atualizar o índice do assistente (chatbot) com as páginas publicadas
         run: python _fonte/assistente/indexar.py --site .
 
+      - name: Atualizar o índice de aulas do README com os materiais do site
+        run: node _fonte/readme/gerar.js
+
       - name: Publicar se algo mudou
         run: |
           # O checkout começa limpo, então tudo o que mudou aqui saiu do gerador
