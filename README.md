@@ -1,5 +1,7 @@
 # Material didático de Computação e Matemática
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23717721.svg)](https://doi.org/10.5281/zenodo.23717721)
+
 Índice das aulas publicadas em **[ohtopico.com.br](https://ohtopico.com.br)**, o site de Júlia Roberta Quoos Alves, professora de Computação no Rio Grande do Sul. Cada linha leva direto ao plano de aula, aos slides em PDF e aos materiais extras (jogos, fichas para imprimir, listas de exercícios e recursos 3D). Todo o material é gratuito.
 
 - [Material didático completo](https://ohtopico.com.br/material-didatico/)
@@ -116,6 +118,12 @@ Planos de aula com rotação por estações, jogos, atividades desplugadas, recu
 | Pesquisa-relâmpago: da pergunta ao gráfico | 6º, 7º, 8º, 9º | **EF06MA31**, **EF06MA33**, **EF07MA37**, **EF08MA23**, **EF09MA21**, **EF09MA22** | [Plano de aula](https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-graficos) | Jogo: [Detetive dos Gráficos](https://ohtopico.com.br/material-didatico/jogos/graficos.html)<br>Jogo: [Empresa de Sucos da Turma](https://ohtopico.com.br/material-didatico/jogos/empresa-sucos.html) |
 | Mesada, descontos e juros: decisões com porcentagem | 6º, 7º, 8º, 9º | **EF06MA13**, **EF07MA02**, **EF08MA04**, **EF09MA05** | [Plano de aula](https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-financeira) | Jogo: [Desafio da Mesada](https://ohtopico.com.br/material-didatico/jogos/mesada.html)<br>Jogo: [Juros que Crescem](https://ohtopico.com.br/material-didatico/jogos/poupanca.html)<br>Jogo: [Cofrinho que Cresce](https://ohtopico.com.br/material-didatico/jogos/cofrinho.html)<br>Jogo: [Cartão de Crédito de Treino](https://ohtopico.com.br/material-didatico/jogos/cartao.html) |
 | Minha primeira OBMEP: estratégias para resolver problemas | 6º, 7º, 8º, 9º | **EF06MA03**, **EF07MA05**, **EF07MA06**, **EF08MA03** | [Plano de aula](https://ohtopico.com.br/material-didatico/plano.html?id=p-ma-obmep) | - |
+
+## Como citar
+
+Quoos Alves, J. R. (2026). *ohtopico: materiais didáticos de Computação, Matemática e IA para professores (BNCC)* (Versão 1.0.0) [Material didático]. Zenodo. https://doi.org/10.5281/zenodo.23717721
+
+O botão "Cite this repository", ao lado da lista de arquivos no GitHub, gera a citação em APA e BibTeX. Licença: [CC BY-NC-SA 4.0](LICENSE).
 
 ## Sobre
 

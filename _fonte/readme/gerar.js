@@ -93,6 +93,8 @@ const secoesCO = anos.map(a => {
 
 const readme = `# Material didático de Computação e Matemática
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23717721.svg)](https://doi.org/10.5281/zenodo.23717721)
+
 Índice das aulas publicadas em **[ohtopico.com.br](${SITE})**, o site de Júlia Roberta Quoos Alves, professora de Computação no Rio Grande do Sul. Cada linha leva direto ao plano de aula, aos slides em PDF e aos materiais extras (jogos, fichas para imprimir, listas de exercícios e recursos 3D). Todo o material é gratuito.
 
 - [Material didático completo](${MD})
@@ -120,6 +122,12 @@ Planos de aula com rotação por estações, jogos, atividades desplugadas, recu
 
 ${tabela(['Tema', 'Anos', 'Habilidades da BNCC', 'Plano de aula', 'Material extra'], planosMA.map(linhaMA))}
 
+## Como citar
+
+Quoos Alves, J. R. (2026). *ohtopico: materiais didáticos de Computação, Matemática e IA para professores (BNCC)* (Versão 1.0.0) [Material didático]. Zenodo. https://doi.org/10.5281/zenodo.23717721
+
+O botão "Cite this repository", ao lado da lista de arquivos no GitHub, gera a citação em APA e BibTeX. Licença: [CC BY-NC-SA 4.0](LICENSE).
+
 ## Sobre
 
 Materiais criados por Júlia Roberta Quoos Alves. Mentoria individual e formação continuada para professores: [ohtopico.com.br/mentoria](${SITE}/mentoria/).
@@ -143,7 +151,7 @@ function arquivoDoLink(u) {
 }
 const ids = new Set(RECURSOS.map(r => r.id));
 const falhas = [];
-for (const u of links) {
+for (const u of links.filter(l => l.startsWith(SITE))) {  // links externos (DOI, Zenodo) ficam de fora
   const id = new URL(u).searchParams.get('id');
   if (!fs.existsSync(arquivoDoLink(u))) falhas.push(`${u} (arquivo não existe no repositório)`);
   else if (id && !ids.has(id)) falhas.push(`${u} (id não existe nos dados do site)`);
