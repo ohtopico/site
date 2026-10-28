@@ -174,7 +174,8 @@
     comMat.filter(h => inf[h.codigo].nivel === 1 || inf[h.codigo].nivel === 2).forEach(h => passos.push({ c: h.codigo, why: '📈 Continuar praticando' }));
     comMat.filter(h => inf[h.codigo].nivel === 0).forEach(h => passos.push({ c: h.codigo, why: '✨ Novo para você' }));
     const vistos = new Set();
-    const prox = passos.filter(x => !vistos.has(x.c) && vistos.add(x.c)).slice(0, 3);
+    // só entra o que tem atividade para abrir (sem isso a página inteira ficava em branco)
+    const prox = passos.filter(x => MDP.recursoPara(x.c, p) && !vistos.has(x.c) && vistos.add(x.c)).slice(0, 3);
 
     const habsMapa = habsAno.filter(h => h.comp === ui.comp);
     const cont = [0, 0, 0, 0, 0]; habsMapa.forEach(h => cont[inf[h.codigo].nivel]++);
