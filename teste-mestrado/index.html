@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Protótipo de assistência por voz para pessoas cegas: reconhece objetos e o ambiente pela câmera do celular.">
+  <title>Assistência por voz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <!-- Tela inicial: um único botão do tamanho da tela. Toque em qualquer lugar começa. -->
+  <div id="inicio" class="inicio">
+    <button id="comecar" class="grande">
+      <span class="eyebrow">ohtopico · assistência por voz</span>
+      <span class="titulo">Toque para <span class="marca">começar</span></span>
+      <span class="lead">Depois, toque na tela e diga o que procura.</span>
+    </button>
+    <p id="aviso" class="aviso" role="alert"></p>
+    <!-- Configuração para quem ajuda a instalar; fica depois do botão principal -->
+    <details id="config-nuvem" class="config">
+      <summary>Configurar IA na nuvem</summary>
+      <p>Objetos comuns são reconhecidos no próprio celular. Para chave, extintor, saída e outros,
+         o site manda uma foto para o Claude. Cole uma chave da API da Anthropic; ela fica só neste navegador.</p>
+      <label for="chave">Chave da API</label>
+      <input id="chave" type="password" autocomplete="off" placeholder="sk-ant-…">
+    </details>
+  </div>
+
+  <!-- Durante o uso, a tela inteira é um botão: toque (ou toque duplo com leitor de tela) pausa ou retoma -->
+  <section id="uso" class="uso" hidden>
+    <video id="video" playsinline muted aria-hidden="true"></video>
+    <canvas id="caixas" aria-hidden="true"></canvas>
+    <button id="pausar" class="tela-toda" aria-label="Assistência ativa. Toque e fale um pedido."></button>
+    <!-- Alternativa digitada: aparece quando o navegador não reconhece fala (ex.: Firefox) -->
+    <form id="digitar" class="digitar">
+      <label for="comando">Pedido</label>
+      <input id="comando" autocomplete="off" placeholder="ex.: cadê a xícara">
+      <button>Enviar</button>
+    </form>
+    <div id="estado" class="estado" aria-hidden="true"></div>
+  </section>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

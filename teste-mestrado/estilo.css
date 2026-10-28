@@ -1,0 +1,76 @@
+/* Assistência por voz — mesmo sistema visual do ohtopico.com.br/material-didatico:
+   papel branco, traço preto de 1.5px, pílulas, Sniglet nos títulos e Lexend no texto, verde de destaque. */
+:root {
+  --paper: #ffffff;
+  --paper-2: #f4f4f2;
+  --pill: #efefed;
+  --ink: #111111;
+  --ink-2: #4a4a4a;
+  --line: #d9d9d6;
+  --accent: #166c40;
+  --accent-soft: #e3f1e8;
+  --bad: #c21f3a;
+  --radius: 28px;
+  --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+  --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #151515; --paper-2: #1d1d1d; --pill: #242424;
+    --ink: #f3f3f1; --ink-2: #c9c9c6; --line: #3a3a38;
+    --accent: #6fd39b; --accent-soft: #173323; --bad: #ff7d93; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #151515; --paper-2: #1d1d1d; --pill: #242424;
+  --ink: #f3f3f1; --ink-2: #c9c9c6; --line: #3a3a38;
+  --accent: #6fd39b; --accent-soft: #173323; --bad: #ff7d93; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- Tela inicial: um botão só, do tamanho da tela ---------- */
+.inicio { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; gap: 12px; padding: 16px; }
+.grande {
+  flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px;
+  text-align: left; padding: 32px 26px; border: 1.5px solid var(--ink); border-radius: var(--radius);
+  background: var(--accent-soft); color: var(--ink); cursor: pointer; transition: transform .15s, box-shadow .15s;
+}
+.grande:hover, .grande:focus-visible { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
+.grande .titulo { font-family: var(--display); font-weight: 800; line-height: 1.05; font-size: clamp(48px, 14vw, 84px); }
+.grande .marca { color: var(--accent); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.lead { font-size: 20px; color: var(--ink-2); }
+.aviso { color: var(--bad); font-weight: 600; margin: 0; }
+.aviso:empty { display: none; }
+.config { border: 1.5px solid var(--ink); border-radius: 22px; padding: 14px 18px; background: var(--paper-2); }
+.config summary { font-weight: 600; cursor: pointer; }
+.config p { color: var(--ink-2); font-size: 15px; margin: 10px 0; }
+.config label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.config input, .digitar input { width: 100%; border: 1.5px solid var(--ink); border-radius: 99px; padding: 10px 16px; background: var(--paper); min-height: 46px; }
+
+/* ---------- Tela de uso: câmera ocupa tudo ---------- */
+.uso { position: fixed; inset: 0; background: #000; }
+.uso video, .uso canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tela-toda { position: absolute; inset: 0; width: 100%; height: 100%; background: transparent; border: 0; cursor: pointer; }
+.tela-toda:focus-visible { outline: 6px solid var(--accent); outline-offset: -6px; border-radius: 0; }
+.estado {
+  position: absolute; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+  background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 24px;
+  box-shadow: 6px 6px 0 var(--ink); padding: 14px 18px; font-size: 19px; line-height: 1.45;
+  white-space: pre-line; pointer-events: none;
+}
+.estado:empty { display: none; }
+.pausado .estado { background: var(--accent-soft); font-weight: 600; }
+.ouvindo .estado { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+
+.digitar { position: absolute; top: calc(12px + env(safe-area-inset-top)); left: 12px; right: 12px; display: none; gap: 8px; align-items: center; }
+.digitar.visivel { display: flex; }
+.digitar input { flex: 1; min-width: 0; }
+.digitar button { border: 1.5px solid var(--ink); border-radius: 99px; background: var(--ink); color: var(--paper); font-weight: 600; padding: 10px 18px; min-height: 46px; cursor: pointer; }
