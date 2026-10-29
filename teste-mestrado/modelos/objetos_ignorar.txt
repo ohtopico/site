@@ -1,0 +1,14 @@
+# Objetos do modelo treinado que ficam de fora (AP abaixo de 0,13 no teste do Open Images, 2026-10-28).
+# Pedidos por eles vão para a IA na nuvem. Para reativar um, apague a linha.
+sapato
+chuveiro
+torneira
+poste
+janela
+óculos_de_sol
+árvore
+saboneteira
+escada
+porta
+prateleira
+fogão

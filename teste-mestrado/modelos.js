@@ -108,23 +108,39 @@ export class ClassificadorCena {
 
 /**
  * Detector treinado com os objetos da lista (notebook treino_detector_mobilenet.ipynb, SSDLite + MobileNetV3).
- * Opcional: só carrega se existirem modelos/objetos.onnx e objetos_labels.txt.
+ * Opcional: só carrega se existirem modelos/objetos.onnx (ou dividido em .part0 e .part1, como o MiDaS)
+ * e objetos_labels.txt. Os nomes em
+ * objetos_ignorar.txt (também opcional) ficam de fora: objetos que o modelo acerta pouco, que é melhor
+ * deixar para a IA na nuvem do que arriscar alarme falso.
  * Devolve detecções no mesmo formato do Detector, com rotulo = nome da classe.
  */
+// O modelo treinado erra mais que o do COCO: só vale a detecção com pelo menos esta confiança
+const CONFIANCA_EXTRA = 0.5;
+
 export class DetectorExtra {
   static async carregar() {
-    const [modelo, rotulos] = await Promise.all([fetch("modelos/objetos.onnx"), fetch("modelos/objetos_labels.txt")]);
-    if (!modelo.ok || !rotulos.ok) return null;
+    const rotulos = await fetch("modelos/objetos_labels.txt");
+    if (!rotulos.ok) return null;
+    let partes = await Promise.all([0, 1].map(i => fetch(`modelos/objetos.onnx.part${i}`)));
+    if (partes.some(r => !r.ok)) partes = [await fetch("modelos/objetos.onnx")];
+    if (partes.some(r => !r.ok)) return null;
+    const buffers = await Promise.all(partes.map(r => r.arrayBuffer()));
+    const bytes = new Uint8Array(buffers.reduce((n, b) => n + b.byteLength, 0));
+    buffers.reduce((pos, b) => (bytes.set(new Uint8Array(b), pos), pos + b.byteLength), 0);
     const ort = await carregarOrt();
-    const sessao = await ort.InferenceSession.create(new Uint8Array(await modelo.arrayBuffer()));
-    const nomes = (await rotulos.text()).split("\n").map(s => s.trim()).filter(Boolean);
-    return new DetectorExtra(ort, sessao, nomes);
+    const sessao = await ort.InferenceSession.create(bytes);
+    const linhas = texto => texto.split("\n").map(s => s.trim()).filter(s => s && !s.startsWith("#"));
+    const nomes = linhas(await rotulos.text());
+    const ignorar = await fetch("modelos/objetos_ignorar.txt").then(r => (r.ok ? r.text() : "")).catch(() => "");
+    return new DetectorExtra(ort, sessao, nomes, new Set(linhas(ignorar)));
   }
 
-  constructor(ort, sessao, nomes) {
+  constructor(ort, sessao, nomes, ignorar = new Set()) {
     this.ort = ort;
     this.sessao = sessao;
     this.nomes = nomes;
+    this.ignorar = ignorar;
+    this.nomesAtivos = nomes.filter(n => !ignorar.has(n));
     this.lado = 320;
     this.canvas = new OffscreenCanvas(this.lado, this.lado);
     this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
@@ -143,9 +159,11 @@ export class DetectorExtra {
     const sx = video.videoWidth / this.lado, sy = video.videoHeight / this.lado;
     const saida = [];
     for (let i = 0; i < pontuacoes.length; i++) {
+      const rotulo = this.nomes[Number(rotulos[i]) - 1];
+      if (!rotulo || this.ignorar.has(rotulo) || pontuacoes[i] < CONFIANCA_EXTRA) continue;
       const [x0, y0, x1, y1] = [caixas[i * 4] * sx, caixas[i * 4 + 1] * sy, caixas[i * 4 + 2] * sx, caixas[i * 4 + 3] * sy];
       saida.push({
-        rotulo: this.nomes[Number(rotulos[i]) - 1],
+        rotulo,
         confianca: pontuacoes[i],
         cx: (x0 + x1) / 2 / video.videoWidth,
         tamanho: (y1 - y0) / video.videoHeight,

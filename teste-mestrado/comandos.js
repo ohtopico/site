@@ -9,23 +9,38 @@
 //   { tipo: "velocidade", sentido: 1 | -1 }            falar mais rápido ou mais devagar
 //   { tipo: "pausar", minutos }                        modo silêncio (minutos = null: até dizer continuar)
 //   { tipo: "sim" | "nao" | "descrever" | "livre" | "lembrar" | "listar" | "terminar" | "parar" | "pausar"
-//          | "retomar" | "ajuda" | "explicar" | "desconhecido" }
+//          | "retomar" | "explicar" | "desconhecido" }
+//   { tipo: "menu", grupo }                            menu falado; grupo = nome do grupo citado ou null
 
 import { acharObjeto } from "./vocabulario.js";
+import { grupoDaFrase } from "./menu.js";
 
 const PERCURSO = "(o |um |pelo |no )?(percurso|caminho|trajeto|rota)";
+const ROTA = "percurso|caminho|trajeto|trajetoria|rota|trilha";
+// "... chamado banheiro", "... até o banheiro", "... para a cozinha": o resto é o nome
+const NOME_DA_ROTA = "( chamad[oa]| com (o )?nome( de)?| de nome| ate( o| a)?| para( o| a)?| pro| pra( o| a)?| d[oa])?(?<nome>.*)";
 
 // Pedidos com um nome no fim: o grupo "nome" é o resto da frase
 const COM_NOME = [
-  ["terminar", new RegExp(`^(termina(r)?|para(r)?|fim da|encerra(r)?|finaliza(r)?|salva(r)?) (a )?grava(cao|r)`)],
-  ["gravar", new RegExp(`^(grava(r)?|comeca(r)? a gravar|salva(r)?) ${PERCURSO}( chamado| com (o )?nome| de nome)?(?<nome>.*)`)],
+  // Gravação: vários jeitos de dizer, para não depender das palavras exatas
+  ["terminar", new RegExp(`^((pode )?(termina|para|encerra|finaliza|salva|acaba|conclui|desliga|fecha)(r)?( de)?|fim d[ae]|chega de) ` +
+    `(a |o |essa |esse |de )?(grava(cao|r|ndo)|${ROTA})`)],
+  ["terminar", /^(terminei|acabei|cheguei|chegamos|acabou( a gravacao)?|fim da gravacao|gravacao (terminada|encerrada|concluida))\b/],
   ["voltar", new RegExp(`^volta(r)? ${PERCURSO}(?<nome>.*)`)],
   ["seguir", new RegExp(`^(segu(e|ir)|repet(e|ir)|faz(er)?|percorre(r)?|me leva) ${PERCURSO}(?<nome>.*)`)],
   ["apagar", new RegExp(`^(apaga(r)?|exclui(r)?|remove(r)?|deleta(r)?) ${PERCURSO}(?<nome>.*)`)],
   ["lugar", /^(lembra(r)?|guarda(r)?|salva(r)?|grava(r)?|memoriza(r)?) (deste |este |esse |desse |o )?(lugar|local|ambiente|comodo)( como| com o nome| de nome| chamado)?(?<nome>.*)/],
+  // Pessoas: vários jeitos de pedir o cadastro ("cadastrar pessoa Maria", "te apresento a Maria", "essa é minha mãe")
+  ["cadastrar", /^((eu )?(quero|vou|pode|vamos|preciso) )?(cadastra|registra|salva|memoriza|lembra|grava|reconhece|aprende|adiciona|guarda|conhece)(r)?( de| do| da)? (a |o |um |uma |essa |esta |esse |este |nova |novo )?(pessoa|rosto|amig[oa]|colega|conhecid[oa]|familiar)( chamad[ao]| de nome| d[ae]| do)?(?<nome>.*)/],
+  ["cadastrar", /^(nova|novo) (pessoa|rosto|cadastro de pessoa)( chamad[ao]| d[ae])?(?<nome>.*)/],
+  ["cadastrar", /^((eu )?(te|vou te|quero te) )?(apresento|apresentar|conheca|conhecer)( a| o)? (?<nome>.+)/],
+  ["gravar", new RegExp(`^((eu )?(quero|vou|pode|preciso|vamos)( comecar a| comecar)? )?` +
+    `(grava(r)?|comeca(r)?( a)? grava(r|cao)?|inicia(r)?( a)? grava(r|cao)?)` +
+    `( (o |um |uma |a |esse |este |esta |essa |meu |minha |novo |nova )?(${ROTA}|gravacao))?${NOME_DA_ROTA}`)],
+  ["gravar", new RegExp(`^((eu )?(quero|vou|pode|vamos) )?(memoriza|aprende|registra)(r)? (o |um |uma |a |esse |este |esta |essa )?(${ROTA})${NOME_DA_ROTA}`)],
+  ["gravar", new RegExp(`^(nova|novo) (${ROTA}|gravacao)${NOME_DA_ROTA}`)],
   ["apagarLugar", /^(apaga|esquece|remove|exclui)r? (o )?(lugar|local) (?<nome>.+)/],
-  ["cadastrar", /^(cadastra|registra|salva|memoriza|lembra)r? (a |o |um |uma )?(pessoa|rosto)( chamad[ao]| de nome| d[ae])?(?<nome>.*)/],
-  ["cadastrar", /^(esta|essa|este|esse) (e|eh) (a |o )?(?<nome>.+)/],
+  ["cadastrar", /^(esta|essa|este|esse) (e|eh) (a |o |minha |meu )?(?<nome>.+)/],
   ["apagarPessoa", /^(apaga|esquece|remove|exclui)r? (a |o )?(pessoa|rosto)( d[ae])? (?<nome>.+)/],
   ["mapa", /^(navega(r)?|como (eu )?(chego|vou)|rota|caminho a pe|me leva) (ate |para |pra |a |ao |na |no |em |à )*(?<nome>.+)/],
 ];
@@ -36,7 +51,7 @@ const LUGAR = /\b(rua|avenida|av|praca|predio|bloco|reitoria|biblioteca|banco|lo
 const PADROES = [
   ["sim", /^(sim|quero|pode|claro|ok|por favor)\b/],
   ["nao", /^(nao|agora nao|depois|dispenso)\b/],
-  ["explicar", /^(como (isso|o site|voce) funciona|explica|explique)/],
+  ["explicar", /^(como (isso |o site |voce |o app |o aplicativo )?funciona|explica|explique|tutorial)/],
   ["velocidade", /(fal[ae]|le|leia|ler)( mais)? (rapido|devagar|depressa|lento)|(mais|menos) (rapido|devagar)/],
   ["ler", /^((le|ler|leia|leh)( para mim| pra mim)?( o| a| este| esse| esta| essa| isto| isso| aqui| de novo| a proxima| outra)*( (texto|pagina|livro|documento|placa|papel|carta|rotulo|bula|cardapio|embalagem|aviso|cartaz|receita))?\b|o que (esta )?escrito|proxima pagina)/],
   ["trocarVoz", /^(troca(r)?|muda(r)?|outra) (a |de )?voz/],
@@ -52,7 +67,7 @@ const PADROES = [
   ["parar", /^(parar?|para tudo|cancela(r)?|chega|pronto|achei|obrigad[ao])\b/],
   ["pausar", /^((modo (de )?)?(silencio|espera|descanso)|pausa(r)?|fica (quiet[ao]|em silencio)|faz silencio|cala a boca|descansa(r)?)\b/],
   ["retomar", /^(continua(r)?|retoma(r)?|volta(r)?)\b/],
-  ["ajuda", /^(ajuda|o que (voce )?(sabe|pode) fazer|comandos)\b/],
+  ["menu", /^(menu|opcoes|ajuda|comandos|o que (voce )?(sabe|pode) fazer|quais (sao )?(os )?comandos)\b/],
   ["descrever", /(o que (tem|ha|existe|voce ve|esta)( aqui| na (minha )?frente| ao (meu )?redor| em volta)?|descreve|descreva)/],
   ["verificar", /^(sera que )?(aqui |o lugar |a sala |esse lugar |este lugar )?(tem|ha|existe)( algum| alguma| um| uma)? /],
   ["procurar", /(ach[ae]|encontr[ae]|procur[ae]|cade|onde (estava|estavam|esta|estao|fica|ficam|tem|ta)|me (leva|guia) (ate|para|pra)|busc[ae]|localiz[ae])/],
@@ -95,6 +110,7 @@ export function interpretar(frase) {
     const m = f.match(padrao);
     if (!m) continue;
     if (tipo === "pausar") return { tipo, minutos: minutosDe(f) };
+    if (tipo === "menu") return { tipo, grupo: grupoDaFrase(f.slice(m[0].length))?.nome ?? null };
     if (tipo === "velocidade") return { tipo, sentido: /devagar|lento|menos rapido/.test(f) && !/menos devagar/.test(f) ? -1 : 1 };
     if (tipo !== "procurar" && tipo !== "verificar") return { tipo };
     const inicio = m.index + m[0].length;

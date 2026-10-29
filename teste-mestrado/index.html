@@ -26,6 +26,11 @@
       <span class="lead">Tutorial falado, em partes curtas.</span>
     </button>
     <p id="aviso" class="aviso" role="alert"></p>
+    <details id="comandos" class="config">
+      <summary>Todos os comandos, por grupo</summary>
+      <p>Toque na tela e fale. Também dá para dizer menu e ouvir esta lista por grupos.</p>
+      <div id="lista-comandos" class="lista-comandos"></div>
+    </details>
     <!-- Configuração para quem ajuda a instalar; fica por último -->
     <details id="config" class="config">
       <summary>Configuração para quem ajuda (opcional)</summary>
@@ -40,6 +45,20 @@
       <button id="exportar" type="button" class="pilula">Exportar memória (.txt)</button>
       <label for="importar" class="pilula">Importar memória</label>
       <input id="importar" type="file" accept=".txt,.json,text/plain" class="sr-only">
+      <form id="form-pessoa" class="form-pessoa">
+        <h2>Cadastrar pessoa por foto</h2>
+        <p>Escolha de 1 a 5 fotos com o rosto de frente e bem iluminado. Fica guardado só um código numérico
+           do rosto, neste celular; a foto não é guardada nem enviada.</p>
+        <label for="pessoa-nome">Nome da pessoa</label>
+        <input id="pessoa-nome" type="text" autocomplete="off" required>
+        <label for="pessoa-fotos" class="pilula">Escolher fotos</label>
+        <input id="pessoa-fotos" type="file" accept="image/*" multiple class="sr-only">
+        <label class="consentimento"><input id="pessoa-concorda" type="checkbox" required>
+          A pessoa concordou em ter o rosto reconhecido por este celular e sabe que pode pedir para apagar.</label>
+        <button type="submit" class="pilula">Cadastrar</button>
+        <p id="pessoa-estado" role="status"></p>
+        <ul id="lista-pessoas" class="lista-pessoas"></ul>
+      </form>
     </details>
   </main>
 
