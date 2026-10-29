@@ -95,3 +95,11 @@ button, input { font: inherit; color: inherit; }
 .form-pessoa .consentimento { display: flex; gap: 10px; align-items: flex-start; }
 .form-pessoa .consentimento input { width: 22px; height: 22px; margin-top: 3px; flex: none; }
 .lista-pessoas { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+
+/* ---------- Versão: pílula pequena no canto, em todas as telas ---------- */
+.versao {
+  position: fixed; top: calc(8px + env(safe-area-inset-top)); right: 8px; z-index: 10; margin: 0;
+  background: var(--paper); color: var(--ink-2); border: 1.5px solid var(--ink); border-radius: 99px;
+  padding: 2px 10px; font-size: 12px; font-weight: 600; pointer-events: none;
+}
+.versao:empty { display: none; }

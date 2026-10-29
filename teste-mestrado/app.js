@@ -35,6 +35,11 @@ const TUTORIAL = [
     "continue usando a bengala ou o cão-guia.",
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
+// Subir a cada atualização publicada (número do PR): aparece no canto da tela
+const VERSAO = "v44 · 29/10";
+$("versao").textContent = VERSAO;
+$("versao").setAttribute("aria-label", `Versão ${VERSAO.replace(/^v/, "").replace(" · ", ", de ")}`);
+
 // Marca de 1 byte no navegador: quem já usou não ouve de novo a introdução nem a pergunta do tutorial
 const TUTORIAL_OUVIDO = "assistencia.tutorial_ouvido";
 const tutorialOuvido = () => { try { return localStorage.getItem(TUTORIAL_OUVIDO) === "1"; } catch { return false; } };
