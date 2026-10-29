@@ -7,8 +7,7 @@ import { nomeFalado } from "./vocabulario.js";
 import { fotografar } from "./nuvem.js";
 
 const PROCURA_LIMITE_MS = 45000;
-const PERDEU_MS = 4000;
-const DIRECAO_ESPERA_MS = 1500;
+const PROCURA_QUADROS = 2;
 const VERIFICA_MS = 6000;
 const VERIFICA_QUADROS = 2;
 // Bem à frente: centro do objeto a menos de 12% do centro da imagem
@@ -53,19 +52,19 @@ export function avisoCaminho(bloqueio) {
 }
 
 
-/** "Ache a xícara": guia por bipes (mais rápidos quanto mais centralizado) e por voz. */
+/**
+ * "Ache a xícara": procura até ver o objeto em PROCURA_QUADROS quadros seguidos (evita alarme falso),
+ * diz onde está e termina. Para ser guiado de novo, a pessoa pede outra vez.
+ */
 export class Procurar {
   constructor(anunciador, rotulo, alvo, profundidade, video, memoria) {
     this.a = anunciador;
-    this.memoria = memoria;
     this.profundidade = profundidade;
     this.video = video;
     this.rotulo = rotulo;
     this.nome = nomeFalado(rotulo) || alvo;
     this.inicio = performance.now();
-    this.vistoEm = null;
-    this.ultimoLado = null;
-    this.ultimaDirecao = 0;
+    this.seguidos = 0;
     this.ultimoBipe = 0;
     // Se a câmera já viu o objeto há pouco, começa dizendo para onde virar
     const lembranca = memoria?.ondeEstava(this.nome);
@@ -82,44 +81,26 @@ export class Procurar {
     this.a.aoVerObstaculos(deteccoes.filter(d => d !== alvo), true);
 
     if (!alvo) {
-      if (this.vistoEm && agora - this.vistoEm > PERDEU_MS) {
-        this.vistoEm = null;
-        this.ultimoLado = null;
-        const lembranca = this.memoria?.ondeEstava(this.nome);
-        this.a.falar(`Perdi ${this.nome} de vista.${lembranca ? ` Ele estava ${lembranca}.` : ""}`);
-      }
-      if (!this.vistoEm && agora - this.inicio > PROCURA_LIMITE_MS) {
+      this.seguidos = 0;
+      if (agora - this.inicio > PROCURA_LIMITE_MS) {
         this.a.falar(`Não encontrei ${this.nome}. Tente em outro lugar.`, true);
         return false;
       }
+      // Bipe baixo de vez em quando: ainda estou procurando
+      if (agora - this.ultimoBipe > 2000) { this.ultimoBipe = agora; this.a.bipe(400, 0.04); }
       return true;
     }
+    if (++this.seguidos < PROCURA_QUADROS) return true;
 
-    this.vistoEm = agora;
-    this.inicio = agora; // o limite de tempo conta a partir da última vez que viu
     const desvio = Math.abs(alvo.cx - 0.5);
-    const lado = ladoDe(alvo.cx);
     const perto = estaPerto(alvo);
     const dist = falarDistancia(alvo.metros);
-
-    // Bipe: intervalo de 700 ms (na borda) a 120 ms (no centro); tom sobe com a proximidade
-    const intervalo = 120 + 580 * Math.min(desvio / 0.5, 1);
-    if (agora - this.ultimoBipe > intervalo) {
-      this.ultimoBipe = agora;
-      this.a.bipe(perto ? 1400 : 500 + 900 * Math.min(alvo.tamanho, 1));
-    }
-
-    // Repete só quando muda a direção ou a distância falada
-    const direcao = desvio < CENTRO ? "bem à frente" : onde(lado);
+    const direcao = desvio < CENTRO ? "bem à frente" : onde(ladoDe(alvo.cx));
     const bloqueio = perto ? null : noCaminho(alvo, deteccoes, this.profundidade, this.video);
-    const fala = `${this.nome} ${direcao}${dist ? ", " + dist : perto ? ", perto" : ""}${avisoCaminho(bloqueio)}`;
-    if (fala !== this.ultimaFala && agora - this.ultimaDirecao > DIRECAO_ESPERA_MS) {
-      this.ultimaFala = fala;
-      this.ultimaDirecao = agora;
-      if (desvio < CENTRO && perto) this.a.vibrar([200]);
-      this.a.falarUmaVez(fala, 0, true, "procurar");
-    }
-    return true;
+    this.a.bipe(1400);
+    this.a.vibrar(desvio < CENTRO && perto ? [200] : [80]);
+    this.a.falar(`Achei: ${this.nome} ${direcao}${dist ? ", " + dist : perto ? ", perto" : ""}${avisoCaminho(bloqueio)}.`, true);
+    return false;
   }
 }
 

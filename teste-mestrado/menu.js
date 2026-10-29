@@ -6,7 +6,7 @@ export const GRUPOS = [
     nome: "objetos", padrao: /objeto|procurar|achar/,
     resumo: "achar coisas pela câmera",
     comandos: [
-      ["cadê a chave", "procura e guia você com bipes, dizendo o lado, a distância e o que está no caminho"],
+      ["cadê a chave", "procura, diz onde está, a distância e o que há no caminho, e para de procurar"],
       ["tem extintor?", "diz se há o objeto por perto"],
       ["o que tem na minha frente?", "descreve os objetos à frente, do mais perto ao mais longe"],
       ["o caminho está livre?", "diz se dá para seguir em frente"],

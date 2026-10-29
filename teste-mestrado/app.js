@@ -35,6 +35,7 @@ const TUTORIAL = [
     "continue usando a bengala ou o cão-guia.",
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
+// Marca de 1 byte no navegador: quem já usou não ouve de novo a introdução nem a pergunta do tutorial
 const TUTORIAL_OUVIDO = "assistencia.tutorial_ouvido";
 const tutorialOuvido = () => { try { return localStorage.getItem(TUTORIAL_OUVIDO) === "1"; } catch { return false; } };
 const marcarTutorialOuvido = () => { try { localStorage.setItem(TUTORIAL_OUVIDO, "1"); } catch {} };
@@ -73,9 +74,10 @@ DetectorExtra.carregar().then(d => {
 // Boas-vindas faladas ao abrir. A maioria dos celulares só deixa o site falar depois de um toque,
 // então isto às vezes não toca; para esses casos os rótulos dos botões dizem o mesmo pelo leitor de tela.
 const BOAS_VINDAS = "Assistência por voz. Há dois botões grandes: Começar, em cima, e Como funciona, embaixo.";
+const BOAS_VINDAS_DE_VOLTA = "Assistência por voz. Toque em Começar.";
 let iniciado = false;
 addEventListener("load", () => setTimeout(() => {
-  if (!iniciado && $("tela-tutorial").hidden) anunciador.falar(BOAS_VINDAS);
+  if (!iniciado && $("tela-tutorial").hidden) anunciador.falar(tutorialOuvido() ? BOAS_VINDAS_DE_VOLTA : BOAS_VINDAS);
 }, 600));
 
 // --- Tutorial ----------------------------------------------------------------------
@@ -207,7 +209,7 @@ async function comecar() {
   tutorialAtivo++;
   const aviso = $("aviso");
   aviso.textContent = "Carregando…";
-  anunciador.falar("Carregando, um momento.", true);
+  if (!tutorialOuvido()) anunciador.falar("Carregando, um momento.", true);
   anunciador.bipe(1, 0.01); // libera o áudio no iPhone, que só toca depois de um toque
   const permissaoSensores = Sensores.pedirPermissao(); // também precisa vir direto do toque
   try {
@@ -242,7 +244,8 @@ async function comecar() {
       anunciador.falar("Toque na tela e diga o que procura, ou diga menu.");
     } else {
       aguardandoIntro = true;
-      anunciador.falar("Quer ouvir como o site funciona? Toque na tela e diga sim ou não.");
+      marcarTutorialOuvido(); // a pergunta só é feita uma vez; depois, "como funciona" ou "menu"
+      anunciador.falar("Quer ouvir como o site funciona? Toque na tela e diga sim ou não. Depois, diga como funciona quando quiser.");
     }
   }, 2000);
   requestAnimationFrame(laco);
@@ -289,7 +292,28 @@ async function laco(agora) {
 
 const Reconhecedor = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-function ouvir() {
+// Microfone com redução de ruído do próprio celular. O Chrome mais novo aceita entregar esse áudio
+// ao reconhecimento de voz (start com a trilha); os mais antigos ignoram e usam o microfone direto.
+// Se o celular não deixar os dois usarem o microfone juntos, desliga isso de vez neste aparelho.
+const SEM_MIC_LIMPO = "assistencia.sem_mic_limpo";
+async function microfoneLimpo() {
+  try { if (localStorage.getItem(SEM_MIC_LIMPO)) return null; } catch {}
+  try {
+    const s = await navigator.mediaDevices.getUserMedia({
+      audio: { noiseSuppression: true, echoCancellation: true, autoGainControl: true, channelCount: 1 },
+    });
+    return s.getAudioTracks()[0] ?? null;
+  } catch { return null; }
+}
+
+// Com barulho, o reconhecimento às vezes ouve outra coisa primeiro: das alternativas, vale a
+// primeira que é um comando conhecido.
+function melhorAlternativa(resultado) {
+  const frases = Array.from(resultado, a => a.transcript);
+  return frases.find(f => interpretar(f).tipo !== "desconhecido") ?? frases[0];
+}
+
+async function ouvir() {
   if (!Reconhecedor) {
     $("comando").focus();
     return;
@@ -305,23 +329,32 @@ function ouvir() {
   const r = new Reconhecedor();
   r.lang = "pt-BR";
   r.interimResults = false;
-  r.maxAlternatives = 1;
+  r.maxAlternatives = 4;
   let entendeu = false;
   r.onresult = e => {
     entendeu = true;
     ouvindo = false;
     document.body.classList.remove("ouvindo");
-    executar(e.results[0][0].transcript);
+    executar(melhorAlternativa(e.results[0]));
   };
+  let tentarDeNovo = false;
   r.onerror = e => {
+    if (e.error === "audio-capture" && trilha) {
+      try { localStorage.setItem(SEM_MIC_LIMPO, "1"); } catch {}
+      tentarDeNovo = true;
+      return;
+    }
     if (e.error === "not-allowed") anunciador.falar("Sem permissão do microfone.", true);
   };
+  const trilha = await microfoneLimpo();
   r.onend = () => {
+    trilha?.stop();
     ouvindo = false;
     document.body.classList.remove("ouvindo");
+    if (tentarDeNovo) { ouvir(); return; }
     if (!entendeu) anunciador.falar("Não ouvi. Toque e fale de novo.", true);
   };
-  r.start();
+  try { r.start(trilha ?? undefined); } catch { r.start(); }
 }
 
 function executar(frase) {
@@ -686,7 +719,8 @@ function desenhar() {
   if (estado.dataset.fala) linhas.push(estado.dataset.fala);
   if (tarefa) linhas.push(tarefa.descricao);
   else if (pausado) linhas.push("Pausado");
-  if (gravacao) linhas.push(`● Gravando ${gravacao.nome}: ${gravacao.trechos.length} trecho(s)`);
+  if (gravacao) linhas.push(`● Gravando ${gravacao.nome}: ${sensores.passos - gravacao.passosNoComeco} passos, ${gravacao.trechos.length} trecho(s)` +
+    (sensores.movimentoOk ? "" : " · sem sensor de movimento"));
   if (espaco) linhas.push(`Livre: esq. ${m(espaco.esquerda)} · frente ${m(espaco.frente)} · dir. ${m(espaco.direita)}`);
   if (ultimaCena && !tarefa) linhas.push(`Ambiente: ${ultimaCena.rotulo} (${Math.round(ultimaCena.confianca * 100)}%)`);
   estado.textContent = linhas.join("\n");
