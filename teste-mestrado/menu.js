@@ -28,7 +28,7 @@ export const GRUPOS = [
     nome: "pessoas", padrao: /pessoa|rosto|gente/,
     resumo: "reconhecer pessoas que concordaram em ser cadastradas",
     comandos: [
-      ["cadastrar pessoa Maria", "pede o consentimento da pessoa e guarda o rosto só neste celular"],
+      ["cadastrar pessoa Maria", "pede o consentimento da pessoa e guarda o rosto só neste celular; também vale te apresento a Maria, ou essa é a Maria. Quem ajuda também pode cadastrar por foto, na configuração da tela inicial"],
       ["quem está aqui?", "diz quem das pessoas cadastradas está à frente"],
       ["quais são as pessoas?", "lista as pessoas cadastradas"],
       ["apagar pessoa Maria", "apaga a pessoa do celular"],

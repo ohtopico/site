@@ -36,6 +36,7 @@ button, input { font: inherit; color: inherit; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 
 /* ---------- Tela inicial: um botão só, do tamanho da tela ---------- */
+[hidden] { display: none !important; } /* senão o display das classes ganha do atributo hidden */
 .inicio { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; gap: 12px; padding: 16px; }
 .grande {
   flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px;
@@ -87,3 +88,10 @@ button, input { font: inherit; color: inherit; }
 
 .lista-comandos h3 { font-family: var(--display); font-size: 20px; margin: 18px 0 6px; }
 .lista-comandos ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+
+.form-pessoa { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1.5px solid var(--ink); }
+.form-pessoa h2 { font-family: var(--display); font-size: 22px; margin: 0; }
+.form-pessoa input[type="text"] { font: inherit; padding: 10px 14px; border: 1.5px solid var(--ink); border-radius: 12px; }
+.form-pessoa .consentimento { display: flex; gap: 10px; align-items: flex-start; }
+.form-pessoa .consentimento input { width: 22px; height: 22px; margin-top: 3px; flex: none; }
+.lista-pessoas { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }

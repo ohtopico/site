@@ -75,6 +75,38 @@ function identificar(vetor, pessoas) {
   return melhor;
 }
 
+// ---------- Cadastro por fotos (tela de configuração) --------------------------------
+
+/**
+ * Cadastro feito por quem ajuda, com fotos da galeria: útil quando a pessoa não está presente.
+ * Quem cadastra declara que a pessoa concordou (caixa obrigatória na tela).
+ * Devolve { usadas, total }: quantas fotos tinham um rosto aproveitável.
+ */
+export async function cadastrarPorFotos(nome, arquivos) {
+  const f = await carregar();
+  const vetores = [];
+  for (const arquivo of arquivos) {
+    const img = new Image();
+    img.src = URL.createObjectURL(arquivo);
+    try {
+      await img.decode();
+      const achados = await f.detectAllFaces(img, new f.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.5 }))
+        .withFaceLandmarks(true).withFaceDescriptors();
+      // Numa foto com várias pessoas, vale o maior rosto
+      const maior = achados.sort((a, b) => b.detection.box.height - a.detection.box.height)[0];
+      if (maior) vetores.push(Array.from(maior.descriptor));
+    } catch {} finally {
+      URL.revokeObjectURL(img.src);
+    }
+  }
+  if (vetores.length) {
+    const media = vetores[0].map((_, i) => vetores.reduce((s, v) => s + v[i], 0) / vetores.length);
+    salvar([...listarPessoas().filter(p => normalizar(p.nome) !== normalizar(nome)),
+      { nome, vetor: media.map(x => +x.toFixed(5)), consentimento: new Date().toISOString(), forma: "fotos" }]);
+  }
+  return { usadas: vetores.length, total: arquivos.length };
+}
+
 // ---------- Cadastro (tarefa) --------------------------------------------------------
 
 /**

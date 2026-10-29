@@ -5,7 +5,7 @@ import { abrirNuvem, fotografar, lerChave, salvarChave } from "./nuvem.js";
 import { abrirCamera } from "./camera.js";
 import { Memoria } from "./memoria.js";
 import { apagarLugar, descreverLugar, lembrarLugar, listarLugares, ondeEstou } from "./lugares.js";
-import { Cadastro, Reconhecedor as ReconhecedorRostos, apagarPessoa, listarPessoas } from "./pessoas.js";
+import { Cadastro, Reconhecedor as ReconhecedorRostos, apagarPessoa, cadastrarPorFotos, listarPessoas } from "./pessoas.js";
 import { Gravacao, SeguirPercurso, Sensores, acharPercurso, apagar, listar, renomear } from "./percursos.js";
 import { Profundidade, definirGrandeAngular, distanciaPorTamanho, falarDistancia } from "./profundidade.js";
 import { Procurar, ProcurarNaNuvem, Verificar, descrever } from "./tarefas.js";
@@ -157,6 +157,42 @@ $("importar").addEventListener("change", async e => {
     $("aviso").textContent = "Arquivo inválido.";
   }
 });
+// Cadastro de pessoa por fotos da galeria, feito por quem ajuda
+function mostrarPessoas() {
+  $("lista-pessoas").replaceChildren(...listarPessoas().map(p => {
+    const li = document.createElement("li");
+    const apagar = Object.assign(document.createElement("button"), { type: "button", className: "pilula", textContent: "Apagar" });
+    apagar.setAttribute("aria-label", `Apagar ${p.nome}`);
+    apagar.addEventListener("click", () => { apagarPessoa(p.nome); mostrarPessoas(); });
+    li.append(`${p.nome} `, apagar);
+    return li;
+  }));
+}
+mostrarPessoas();
+$("pessoa-fotos").addEventListener("change", e => {
+  const n = e.target.files.length;
+  $("pessoa-estado").textContent = n ? `${n} ${n === 1 ? "foto escolhida" : "fotos escolhidas"}.` : "";
+});
+$("form-pessoa").addEventListener("submit", async e => {
+  e.preventDefault();
+  const nome = nomeProprio($("pessoa-nome").value);
+  const fotos = [...$("pessoa-fotos").files].slice(0, 5);
+  const estadoPessoa = $("pessoa-estado");
+  if (!fotos.length) { estadoPessoa.textContent = "Escolha pelo menos uma foto."; return; }
+  if (!nome || !$("pessoa-concorda").checked) return;
+  estadoPessoa.textContent = "Analisando as fotos…";
+  try {
+    const { usadas, total } = await cadastrarPorFotos(nome, fotos);
+    estadoPessoa.textContent = usadas
+      ? `${nome} cadastrado com ${usadas} de ${total} ${total === 1 ? "foto" : "fotos"}.`
+      : "Não achei um rosto nas fotos. Tente fotos de frente, com mais luz.";
+    if (usadas) e.target.reset();
+  } catch {
+    estadoPessoa.textContent = "Não consegui analisar as fotos agora. Verifique a internet e tente de novo.";
+  }
+  mostrarPessoas();
+});
+
 botao.addEventListener("click", ouvir);
 $("digitar").addEventListener("submit", e => {
   e.preventDefault();
