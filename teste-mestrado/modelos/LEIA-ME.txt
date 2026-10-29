@@ -2,6 +2,7 @@ efficientdet_lite0.tflite   detector de objetos COCO (MediaPipe, float16)
 midas_int8.onnx.part0/1     MiDaS v2.1 small (profundidade relativa), quantizado em int8 e dividido
                             em partes de até 9 MB; modelos.js junta as partes no navegador
 cena.onnx + cena_labels.txt opcional: MobileNet de cena exportada por tools/export_onnx.py
-objetos.onnx.part0/1        detector treinado no Colab (tools/treino_detector_mobilenet.ipynb, Open Images,
-                            2026-10-28, mAP50 0,47), dividido em partes de até 9 MB; nomes em objetos_labels.txt
+objetos.onnx.part0/1        YOLO11n treinado no Colab (tools/treino_detector_yolo11n.ipynb, Open Images, 320 px,
+                            NMS no próprio ONNX, 2026-10-29), dividido em partes de até 9 MB; nomes em objetos_labels.txt.
+                            modelos.js também aceita o SSDLite antigo (tools/treino_detector_mobilenet.ipynb)
 objetos_ignorar.txt         objetos desse detector que ficam de fora por acertarem pouco
