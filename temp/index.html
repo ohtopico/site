@@ -1,0 +1,201 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<style>
+@media screen {
+  html, body { height: 100%; overflow: hidden; background: #111; }
+  .slide { position: absolute; left: 50%; top: 50%; transform-origin: center center; display: none; }
+  .slide.atual { display: block; }
+  .ctl { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 9; font-family: 'Lexend', sans-serif; }
+  .ctl button, .ctl a { background: #fff; color: #111; border: 2.5px solid #111; border-radius: 99px; padding: 6px 16px; font: 600 15px 'Lexend', sans-serif; cursor: pointer; text-decoration: none; }
+  .ctl.oculto { display: none; }
+  .ctl button, .ctl a { white-space: nowrap; }
+  @media (max-width: 520px) { .ctl { gap: 6px; } .ctl button, .ctl a { padding: 5px 10px; font-size: 13px; } }
+}
+@media print { .ctl { display: none; } }
+</style><title>Assembly: instruções de máquina e o MIPS (mini-aula)</title>
+<meta name="author" content="Júlia Roberta Quoos Alves"><link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><style>
+@page { size: 1440px 810px; margin: 0; }
+:root { --paper:#fff; --paper-2:#f4f4f2; --ink:#111; --ink-2:#444; --mark:#fff36b; --ok:#e3f4e8; --bad:#fbe6ea; --green:#157f3b; --red:#b3123a; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: 'Lexend', sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.slide { width: 1440px; height: 810px; position: relative; overflow: hidden; page-break-after: always; break-after: page;
+  background: var(--paper-2) radial-gradient(#d6d6d0 1.6px, transparent 1.7px) 0 0 / 26px 26px; }
+.win { position: absolute; left: 56px; top: 40px; width: 1316px; height: 680px; background: var(--paper); border: 3.5px solid var(--ink);
+  border-radius: 34px; box-shadow: 14px 14px 0 var(--ink); display: flex; flex-direction: column; overflow: hidden; }
+.bar { height: 58px; flex: none; border-bottom: 3.5px solid var(--ink); background: var(--paper-2); display: flex; align-items: center; justify-content: space-between; padding: 0 22px 0 32px; }
+.bar .fn { font-family: 'Sniglet', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; }
+.bar .bt { display: flex; gap: 9px; }
+.bar .bt span { width: 27px; height: 27px; border: 2.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 14px; line-height: 1; font-weight: 600; }
+.body { flex: 1; padding: 46px 72px 40px; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+.foot { position: absolute; left: 60px; right: 68px; bottom: 22px; display: flex; justify-content: space-between; align-items: center; }
+.foot .who { font-family: 'Sniglet', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .1em; text-transform: uppercase; }
+.foot .pg { font-family: 'Sniglet', sans-serif; font-weight: 800; font-size: 16px; }
+.foot .pill { border: 2.5px solid var(--ink); border-radius: 99px; padding: 3px 16px; font-size: 16px; background: var(--paper); }
+h1, h2 { font-family: 'Sniglet', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .03em; margin: 0 0 26px; line-height: 1.12; }
+h1 { font-size: 74px; }
+h2 { font-size: 50px; }
+mark { background: var(--mark); color: inherit; padding: 0 12px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+p, li { font-size: 31px; line-height: 1.42; margin: 0; }
+p + p { margin-top: 16px; }
+b, strong { font-weight: 600; }
+.muted { color: var(--ink-2); }
+.small { font-size: 22px; }
+.chip { display: inline-flex; align-items: center; gap: 10px; border: 3px solid var(--ink); border-radius: 99px; padding: 5px 18px 5px 12px; font-family: 'Sniglet', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: .08em; text-transform: uppercase; }
+.chip .px { display: inline-flex; gap: 3px; } .chip .px i { width: 9px; height: 18px; background: var(--ink); border-radius: 2px; } .chip .px i:last-child { background: var(--green); }
+.chip .cd { background: var(--mark); border-radius: 99px; padding: 1px 12px; }
+.chips { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+.tagline { display: inline-block; border: 2.5px solid var(--ink); border-radius: 99px; padding: 3px 16px; font-size: 20px; margin-right: 10px; background: var(--paper); }
+.tagline.g { background: var(--ok); } .tagline.y { background: var(--mark); } .tagline.r { background: var(--bad); }
+.cards { display: grid; gap: 22px; margin: 6px 0 22px; }
+.card { border: 3px solid var(--ink); border-radius: 22px; padding: 20px 24px; background: var(--ok); }
+.card.y { background: var(--mark); } .card.r { background: var(--bad); } .card.w { background: var(--paper); }
+.card .big { font-family: 'Sniglet', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.1; margin-bottom: 8px; }
+.card .lb { font-weight: 600; font-size: 28px; margin-bottom: 4px; }
+.card .ds { font-size: 25px; line-height: 1.38; }
+.cards.c .card { text-align: center; }
+ol.steps, ul.dots { margin: 0; padding-left: 40px; }
+ol.steps li, ul.dots li { padding-left: 8px; margin-bottom: 14px; }
+ul.dots li::marker { content: '■  '; color: var(--green); font-size: 22px; }
+.code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 27px; line-height: 1.5; background: var(--paper-2); border: 3px solid var(--ink); border-radius: 20px; padding: 22px 28px; white-space: pre; font-variant-ligatures: none; }
+.code .k { color: var(--green); font-weight: 700; } .code .c { color: #7a7a72; } .code .s { color: var(--red); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
+.split.wide { grid-template-columns: 1.25fr 1fr; }
+.fig { display: flex; justify-content: center; align-items: center; }
+.fig svg { width: 100%; height: auto; max-height: 390px; }
+.timer { display: inline-block; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 4px 18px; font-family: 'Sniglet', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: .06em; vertical-align: middle; margin-left: 14px; }
+.hab { border: 3px solid var(--ink); border-radius: 22px; padding: 22px 28px; background: var(--ok); margin-bottom: 26px; }
+.hab .cod { font-family: 'Sniglet', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: .05em; }
+.hab .obj { font-size: 21px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-left: 14px; }
+.hab p { margin-top: 10px; font-size: 29px; }
+table.rot { width: 100%; border-collapse: collapse; font-size: 21px; }
+table.rot td { border-bottom: 2px solid #ddd; padding: 8px 10px; vertical-align: top; line-height: 1.32; }
+table.rot td:first-child { font-family: 'Sniglet', sans-serif; font-weight: 800; white-space: nowrap; width: 128px; }
+table.rot td:nth-child(2) { font-weight: 600; width: 250px; }
+.ans { font-size: 19px; line-height: 1.38; background: var(--paper-2); border: 2.5px solid var(--ink); border-radius: 18px; padding: 14px 20px; margin-top: 16px; }
+.center { text-align: center; }
+ .cards .card .big{font-size:48px} .split.wide{grid-template-columns:1.35fr 1fr;gap:36px} .split.wide p{font-size:27px} .code{font-size:30px}</style></head><body><section class="slide" aria-label="Slide 1 de 16: Assembly">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><div class="chips"><span class="chip"><span class="px" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Organização e Arquitetura de Computadores</span></div>
+<h1 style="font-size:120px;margin-bottom:18px"><mark>Assembly</mark></h1>
+<p class="muted">Instruções de máquina e o MIPS</p>
+<p class="small muted" style="margin-top:22px"><span class="tagline g">Prof. Júlia Roberta Quoos Alves</span><span class="tagline y">Mini-aula · 10 min</span><span class="tagline">Faculdade Antonio Meneghetti</span></p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">1/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 2 de 16: O processador entende C?">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h1 style="font-size:66px">O processador entende <mark>C</mark>?</h1><p class="muted">Ele só executa sequências de bits. Quem faz a ponte entre o código e o hardware?</p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">2/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 3 de 16: Sumário e objetivo">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><div class="split" style="grid-template-columns:1.1fr 1fr;align-items:start">
+<div><h2><mark>Sumário</mark></h2><ol class="steps">
+<li><b>Instruções de máquina</b><br><span class="muted" style="font-size:25px">o que é assembly · elementos de uma instrução · RISC x CISC · o que é o MIPS</span></li>
+<li><b>Exemplo de código em MIPS</b><br><span class="muted" style="font-size:25px">do assembly ao binário · simulador</span></li></ol></div>
+<div class="card y" style="margin-top:8px"><div class="lb">Objetivo da aula</div><div class="ds" style="font-size:28px">Relacionar uma instrução MIPS com a sua codificação e ler um trecho simples de código.</div></div></div></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">3/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 4 de 16: Instruções de máquina">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><div style="display:flex;align-items:center;gap:48px">
+<div style="width:220px;height:220px;flex:none;border:4px solid #111;border-radius:50%;background:var(--mark);display:grid;place-items:center;font-family:Sniglet;font-weight:800;font-size:150px;line-height:1">1</div>
+<h1 style="margin:0;font-size:84px">Instruções de máquina</h1></div></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">4/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 5 de 16: A CPU faz o que as instruções mandam">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>A CPU faz o que as <mark>instruções</mark> mandam</h2><div class="fig"><svg role="img" aria-label="Cadeia de tradução: em C, c = a + b; o compilador gera o assembly add $t2, $t0, $t1; o montador gera o código de máquina 0x01095020." xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 212' width='1200' height='212'><defs><marker id='ar' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0,0 L10,5 L0,10 z' fill='#111'/></marker></defs><rect x='0' y='10' width='340' height='150' rx='18' fill='#e3f4e8' stroke='#111' stroke-width='3'/><text x='170.0' y='62' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='27'>LINGUAGEM C</text><text x='170.0' y='118' text-anchor='middle' font-family='JetBrains Mono' font-size='25' font-weight='700'>c = a + b;</text><line x1='348' y1='85' x2='420' y2='85' stroke='#111' stroke-width='3' marker-end='url(#ar)'/><text x='385.0' y='200' text-anchor='middle' font-family='Lexend' font-size='20' fill='#444'>compilador</text><rect x='430' y='10' width='340' height='150' rx='18' fill='#fff36b' stroke='#111' stroke-width='3'/><text x='600.0' y='62' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='27'>ASSEMBLY</text><text x='600.0' y='118' text-anchor='middle' font-family='JetBrains Mono' font-size='25' font-weight='700'>add $t2, $t0, $t1</text><line x1='778' y1='85' x2='850' y2='85' stroke='#111' stroke-width='3' marker-end='url(#ar)'/><text x='815.0' y='200' text-anchor='middle' font-family='Lexend' font-size='20' fill='#444'>montador</text><rect x='860' y='10' width='340' height='150' rx='18' fill='#fbe6ea' stroke='#111' stroke-width='3'/><text x='1030.0' y='62' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='27'>CÓDIGO DE MÁQUINA</text><text x='1030.0' y='118' text-anchor='middle' font-family='JetBrains Mono' font-size='25' font-weight='700'>0x01095020</text></svg></div><p>A operação de uma CPU é determinada pelas instruções que ela executa. Cada linha de assembly corresponde a <b>uma instrução de máquina</b>.</p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">5/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 6 de 16: Elementos de uma instrução">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>Elementos de uma <mark>instrução</mark></h2><div class="cards" style="grid-template-columns:repeat(2,1fr)"><div class="card y"><div class="lb">Código de operação</div><div class="ds">qual operação fazer (soma, leitura da memória, desvio).</div></div><div class="card "><div class="lb">Operandos fonte</div><div class="ds">de onde vêm os dados de entrada.</div></div><div class="card r"><div class="lb">Operando de destino</div><div class="ds">onde guardar o resultado.</div></div><div class="card w"><div class="lb">Próxima instrução</div><div class="ds">onde buscar a seguinte. No MIPS fica implícita: PC + 4, exceto nos desvios.</div></div></div><p class="muted">Cada instrução precisa conter toda a informação para a CPU executá-la.</p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">6/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 7 de 16: RISC x CISC">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>RISC <mark>x</mark> CISC</h2><div class="cards" style="grid-template-columns:1fr 1fr">
+<div class="card "><div class="lb">RISC</div><div class="ds" style="font-size:24px">Poucas instruções simples e de <b>tamanho fixo</b> (32 bits no MIPS). Memória só por <b>lw</b> e <b>sw</b>. Pensada para o pipeline e para a otimização pelo compilador. Ex.: MIPS, ARM, RISC-V.</div></div>
+<div class="card y"><div class="lb">CISC</div><div class="ds" style="font-size:24px">Muitas instruções, de <b>tamanho variável</b> (1 a 15 bytes no x86). Uma instrução pode fazer várias operações e acessar a memória direto. Ex.: x86.</div></div></div><p class="center" style="margin-top:22px">Somar um valor da memória: x86 faz <b>add eax, [ebx]</b>; MIPS faz <b>lw</b> e depois <b>add</b>.</p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">7/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 8 de 16: O que é o MIPS?">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>O que é o <mark>MIPS</mark>?</h2><div class="cards c" style="grid-template-columns:repeat(3,1fr)"><div class="card "><div class="big">32</div><div class="lb">registradores</div><div class="ds">de 32 bits cada ($t0, $s0, $zero...)</div></div><div class="card y"><div class="big">32 bits</div><div class="lb">por instrução</div><div class="ds">sempre o mesmo tamanho</div></div><div class="card r"><div class="big">3</div><div class="lb">formatos</div><div class="ds">R (registradores), I (imediato), J (salto)</div></div></div><p class="center muted">Arquitetura de conjunto de instruções (ISA) do tipo <b>RISC</b>, criada em Stanford nos anos 1980. Base do livro de Patterson e Hennessy e parente direto do RISC-V.</p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">8/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 9 de 16: Exemplo de código em MIPS">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><div style="display:flex;align-items:center;gap:48px">
+<div style="width:220px;height:220px;flex:none;border:4px solid #111;border-radius:50%;background:var(--mark);display:grid;place-items:center;font-family:Sniglet;font-weight:800;font-size:150px;line-height:1">2</div>
+<h1 style="margin:0;font-size:84px">Exemplo de código em MIPS</h1></div></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">9/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 10 de 16: Somando 5 + 7">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>Somando <mark>5 + 7</mark></h2><div class="split wide"><div class="code" role="img" aria-label="Código MIPS: li $t0, 5; li $t1, 7; add $t2, $t0, $t1, com comentários indicando que $t2 recebe 12."><span class="k">li</span>   $t0, 5          <span class="c"># $t0 = 5</span>
+<span class="k">li</span>   $t1, 7          <span class="c"># $t1 = 7</span>
+<span class="k">add</span>  $t2, $t0, $t1   <span class="c"># $t2 = 12</span></div><div><p><b>li</b> é uma pseudoinstrução: o montador troca por <b>addiu $t0, $zero, 5</b>.</p><p><b>add</b> é formato R: três registradores.</p></div></div></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">10/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 11 de 16: Do assembly ao binário">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>Do assembly ao <mark>binário</mark></h2><div class="fig"><svg role="img" aria-label="Campos do formato R para add $t2, $t0, $t1: op 000000 (6 bits), rs 01000 = $t0 (5 bits), rt 01001 = $t1 (5 bits), rd 01010 = $t2 (5 bits), shamt 00000 (5 bits), funct 100000 = add (6 bits). Em hexadecimal: 0x01095020." xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1184 186' width='1184' height='186'><defs><marker id='ar' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0,0 L10,5 L0,10 z' fill='#111'/></marker></defs><text x='111.0' y='26' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='24'>op</text><rect x='3' y='40' width='216' height='74' rx='10' fill='#fff36b' stroke='#111' stroke-width='3'/><text x='111.0' y='86.72' text-anchor='middle' font-family='Lexend' font-size='27' font-weight='600'>000000</text><text x='111.0' y='146' text-anchor='middle' font-family='Lexend' font-size='19' fill='#444'>6 bits</text><text x='111.0' y='176' text-anchor='middle' font-family='Lexend' font-size='21' font-weight='600'>0</text><text x='314.5' y='26' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='24'>rs</text><rect x='225' y='40' width='179' height='74' rx='10' fill='#e3f4e8' stroke='#111' stroke-width='3'/><text x='314.5' y='86.72' text-anchor='middle' font-family='Lexend' font-size='27' font-weight='600'>01000</text><text x='314.5' y='146' text-anchor='middle' font-family='Lexend' font-size='19' fill='#444'>5 bits</text><text x='314.5' y='176' text-anchor='middle' font-family='Lexend' font-size='21' font-weight='600'>$t0 = 8</text><text x='499.5' y='26' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='24'>rt</text><rect x='410' y='40' width='179' height='74' rx='10' fill='#e3f4e8' stroke='#111' stroke-width='3'/><text x='499.5' y='86.72' text-anchor='middle' font-family='Lexend' font-size='27' font-weight='600'>01001</text><text x='499.5' y='146' text-anchor='middle' font-family='Lexend' font-size='19' fill='#444'>5 bits</text><text x='499.5' y='176' text-anchor='middle' font-family='Lexend' font-size='21' font-weight='600'>$t1 = 9</text><text x='684.5' y='26' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='24'>rd</text><rect x='595' y='40' width='179' height='74' rx='10' fill='#fbe6ea' stroke='#111' stroke-width='3'/><text x='684.5' y='86.72' text-anchor='middle' font-family='Lexend' font-size='27' font-weight='600'>01010</text><text x='684.5' y='146' text-anchor='middle' font-family='Lexend' font-size='19' fill='#444'>5 bits</text><text x='684.5' y='176' text-anchor='middle' font-family='Lexend' font-size='21' font-weight='600'>$t2 = 10</text><text x='869.5' y='26' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='24'>shamt</text><rect x='780' y='40' width='179' height='74' rx='10' fill='#ffffff' stroke='#111' stroke-width='3'/><text x='869.5' y='86.72' text-anchor='middle' font-family='Lexend' font-size='27' font-weight='600'>00000</text><text x='869.5' y='146' text-anchor='middle' font-family='Lexend' font-size='19' fill='#444'>5 bits</text><text x='869.5' y='176' text-anchor='middle' font-family='Lexend' font-size='21' font-weight='600'>0</text><text x='1073.0' y='26' text-anchor='middle' font-family='Sniglet' font-weight='800' font-size='24'>funct</text><rect x='965' y='40' width='216' height='74' rx='10' fill='#fff36b' stroke='#111' stroke-width='3'/><text x='1073.0' y='86.72' text-anchor='middle' font-family='Lexend' font-size='27' font-weight='600'>100000</text><text x='1073.0' y='146' text-anchor='middle' font-family='Lexend' font-size='19' fill='#444'>6 bits</text><text x='1073.0' y='176' text-anchor='middle' font-family='Lexend' font-size='21' font-weight='600'>add = 32</text></svg></div><p><b>add $t2, $t0, $t1</b> = 000000 01000 01001 01010 00000 100000 = <b>0x01095020</b>. O op 0 diz “formato R”; o funct diz qual operação.</p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">11/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 12 de 16: No simulador">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>No <mark>simulador</mark></h2>
+<div class="card y" style="margin-bottom:26px;text-align:center"><div class="big" style="font-size:40px;margin:0">ohtopico.com.br/simuladores/mips.html</div></div>
+<ul class="dots"><li>montar o programa e ver o li virar instrução real;</li><li>clicar na linha do <b>add</b> e conferir os campos e o binário;</li><li>executar passo a passo e ver <b>$t2 = 12</b> nos registradores.</li></ul><p class="muted" style="margin-top:14px">Mini-MIPS: simulador aberto e gratuito, com formatos R, I e J.</p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">12/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 13 de 16: Confira">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2><mark>Confira</mark></h2><ol class="steps"><li>Em <b>add $t2, $t0, $t1</b>, quais campos dizem à CPU que a operação é uma soma?</li><li>Trocando por <b>sub $t2, $t0, $t1</b>, o que muda no binário?</li><li>Por que <b>li</b> não aparece no código de máquina?</li></ol></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">13/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 14 de 16: Resumo da aula">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2>Resumo da <mark>aula</mark></h2><ul class="dots"><li>Uma instrução de máquina é uma <b>sequência de bits</b> que carrega a operação e os operandos.</li><li>Assembly é a <b>forma legível</b> dessas instruções; cada arquitetura, RISC ou CISC, tem o seu.</li><li>MIPS é uma <b>arquitetura de conjunto de instruções RISC</b>: 32 bits, formatos R, I e J.</li></ul></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">14/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 15 de 16: Referências">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h2><mark>Referências</mark></h2><ul class="dots"><li style="font-size:25px;margin-bottom:16px">PATTERSON, D. A.; HENNESSY, J. L. <b>Organização e projeto de computadores</b>: a interface hardware/software. 4. ed. Rio de Janeiro: Elsevier, 2014.</li><li style="font-size:25px;margin-bottom:16px">HENNESSY, J. L.; PATTERSON, D. A. <b>Arquitetura de computadores</b>: uma abordagem quantitativa. 5. ed. Rio de Janeiro: Elsevier, 2014.</li><li style="font-size:25px;margin-bottom:16px">STALLINGS, W. <b>Arquitetura e organização de computadores</b>. 10. ed. São Paulo: Pearson, 2017.</li><li style="font-size:25px;margin-bottom:16px">CARTER, N. <b>Arquitetura de computadores</b>. Porto Alegre: Bookman, 2003. (Coleção Schaum).</li></ul></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">15/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><section class="slide" aria-label="Slide 16 de 16: Obrigada">
+<div class="win"><div class="bar" aria-hidden="true"><span class="fn">assembly.asm</span><span class="bt"><span>–</span><span>□</span><span>✕</span></span></div>
+<div class="body"><h1 style="font-size:96px"><mark>Obrigada</mark></h1>
+<p style="font-size:34px"><b>Júlia Roberta Quoos Alves</b></p>
+<p class="muted">Material e simuladores abertos em <b>ohtopico.com.br</b></p></div></div>
+<div class="foot"><span class="who">Júlia Roberta Quoos Alves</span><span class="pg">16/16</span><span class="pill">ohtopico.com.br</span></div>
+</section><nav class="ctl" aria-label="Controles da apresentação">
+<button type="button" id="ant" aria-label="Slide anterior">Anterior</button>
+<button type="button" id="prox" aria-label="Próximo slide">Próximo</button>
+<button type="button" id="tela">Tela cheia</button>
+<a href="assembly-slides.pdf" download>Baixar PDF</a></nav>
+<script>
+(function () {
+  var s = Array.prototype.slice.call(document.querySelectorAll('.slide')), i = 0;
+  var ctl = document.querySelector('.ctl'), t;
+  function ajusta() {
+    var k = Math.min(innerWidth / 1440, innerHeight / 810);
+    s.forEach(function (e) { e.style.transform = 'translate(-50%, -50%) scale(' + k + ')'; });
+  }
+  function vai(n) {
+    i = Math.max(0, Math.min(s.length - 1, n));
+    s.forEach(function (e, j) { e.classList.toggle('atual', j === i); e.setAttribute('aria-hidden', j === i ? 'false' : 'true'); });
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function mostra() { ctl.classList.remove('oculto'); clearTimeout(t); t = setTimeout(function () { ctl.classList.add('oculto'); }, 2500); }
+  document.getElementById('ant').onclick = function () { vai(i - 1); };
+  document.getElementById('prox').onclick = function () { vai(i + 1); };
+  document.getElementById('tela').onclick = function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+  };
+  addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].indexOf(e.key) >= 0) { e.preventDefault(); vai(i + 1); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].indexOf(e.key) >= 0) { e.preventDefault(); vai(i - 1); }
+    else if (e.key === 'Home') vai(0);
+    else if (e.key === 'End') vai(s.length - 1);
+    else if (e.key === 'f' || e.key === 'F') document.getElementById('tela').click();
+  });
+  var x0 = null;
+  addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', function (e) {
+    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) vai(i + (dx < 0 ? 1 : -1)); x0 = null;
+  });
+  addEventListener('mousemove', mostra);
+  addEventListener('resize', ajusta);
+  ajusta(); vai((parseInt(location.hash.slice(1), 10) || 1) - 1); mostra();
+})();
+</script></body></html>
