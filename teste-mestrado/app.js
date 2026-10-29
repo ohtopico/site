@@ -36,7 +36,7 @@ const TUTORIAL = [
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
 // Subir a cada atualização publicada (número do PR): aparece no canto da tela
-const VERSAO = "v44 · 29/10";
+const VERSAO = "v45 · 29/10";
 $("versao").textContent = VERSAO;
 $("versao").setAttribute("aria-label", `Versão ${VERSAO.replace(/^v/, "").replace(" · ", ", de ")}`);
 
@@ -52,6 +52,16 @@ let pausado = false, ouvindo = false, processando = false, aguardandoIntro = fal
 let aguardandoNomePercurso = null; // nome provisório do percurso gravado sem nome
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
+// Sensibilidade dos passos na configuração (também muda por voz: "passos mais sensível")
+const mostrarSensibilidade = () => {
+  $("sensibilidade").value = sensores.sensibilidade;
+  $("sensibilidade-valor").textContent = sensores.sensibilidade;
+};
+mostrarSensibilidade();
+$("sensibilidade").addEventListener("input", e => {
+  sensores.ajustarSensibilidade(0, +e.target.value);
+  mostrarSensibilidade();
+});
 const memoria = new Memoria(sensores);
 const reconhecedor = new ReconhecedorRostos(anunciador, memoria);
 const nomeProprio = n => n.trim().replace(/(^|\s)\p{L}/gu, l => l.toUpperCase());
@@ -520,6 +530,12 @@ function executar(frase) {
     case "trocarVoz":
       anunciador.falar(anunciador.trocarVoz(), true);
       return;
+    case "sensibilidade": {
+      const n = sensores.ajustarSensibilidade(pedido.sentido, pedido.valor);
+      mostrarSensibilidade();
+      anunciador.falar(`Sensibilidade dos passos: ${n} de 5.${n === 5 ? " É a mais alta." : n === 1 ? " É a mais baixa." : ""}`, true);
+      return;
+    }
     case "velocidade":
       anunciador.falar(anunciador.mudarVelocidade(pedido.sentido), true);
       return;
@@ -701,8 +717,11 @@ function desenhar() {
   if (estado.dataset.fala) linhas.push(estado.dataset.fala);
   if (tarefa) linhas.push(tarefa.descricao);
   else if (pausado) linhas.push("Pausado");
-  if (gravacao) linhas.push(`● Gravando ${gravacao.nome}: ${sensores.passos - gravacao.passosNoComeco} passos, ${gravacao.trechos.length} trecho(s)` +
-    (sensores.movimentoOk ? "" : " · sem sensor de movimento"));
+  if (gravacao) linhas.push(`● Gravando ${gravacao.nome}: ${sensores.passos - gravacao.passosNoComeco} passos, ` +
+    `${gravacao.trechos.reduce((n, t) => n + t.marcos.length, 0)} objeto(s), ${gravacao.trechos.length} trecho(s)` +
+    (sensores.movimentoOk
+      ? ` · movimento ${sensores.movimento.toFixed(2).replace(".", ",")} (conta acima de ${sensores.limiar.toString().replace(".", ",")}; sensibilidade ${sensores.sensibilidade}/5)`
+      : " · sem sensor de movimento"));
   if (espaco) linhas.push(`Livre: esq. ${m(espaco.esquerda)} · frente ${m(espaco.frente)} · dir. ${m(espaco.direita)}`);
   if (ultimaCena && !tarefa) linhas.push(`Ambiente: ${ultimaCena.rotulo} (${Math.round(ultimaCena.confianca * 100)}%)`);
   estado.textContent = linhas.join("\n");

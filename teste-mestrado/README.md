@@ -11,8 +11,9 @@ toca em qualquer lugar e fala.
 | "tem uma cadeira aqui?" | olha por alguns segundos e responde sim ou não |
 | "o que tem na minha frente?" | lista os objetos visíveis, da esquerda para a direita |
 | "o caminho está livre?" | distância livre à esquerda, à frente e à direita (mapa de profundidade) |
-| "gravar percurso banheiro" / "terminar gravação" | grava passos, curvas e objetos vistos |
-| "seguir percurso banheiro" / "voltar pelo percurso banheiro" | guia pelo percurso, na ida ou na volta |
+| "gravar percurso banheiro" / "terminar gravação" | grava a ordem dos móveis e objetos vistos (e de que lado), curvas e passos |
+| "seguir percurso banheiro" / "voltar pelo percurso banheiro" | guia pela ordem dos objetos (a cada um visto, diz o próximo), na ida ou na volta |
+| "passos mais sensível" / "passos menos sensível" | ajusta o contador de passos (1 a 5) |
 | "o que eu passei?", "onde estava a porta?" | memória curta: o que saiu da câmera no último minuto, com a direção pela bússola |
 | "lembrar este lugar como cozinha" / "onde estou?" | guarda o lugar em texto (objetos e direções, mais uma frase da IA se houver) e reconhece depois |
 | "cadastrar pessoa Maria" / "quem está aqui?" | reconhece pessoas cadastradas, só com o consentimento falado delas |

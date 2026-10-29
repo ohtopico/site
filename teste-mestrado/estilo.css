@@ -105,3 +105,4 @@ button, input { font: inherit; color: inherit; }
   padding: 2px 10px; font-size: 12px; font-weight: 600; pointer-events: none;
 }
 .versao:empty { display: none; }
+.config input[type="range"] { border: 0; padding: 0; background: none; accent-color: var(--accent); min-height: 32px; }
