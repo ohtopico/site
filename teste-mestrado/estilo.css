@@ -59,6 +59,8 @@ button, input { font: inherit; color: inherit; }
 .aviso:empty { display: none; }
 .config { border: 1.5px solid var(--ink); border-radius: 22px; padding: 14px 18px; background: var(--paper-2); }
 .config summary { font-weight: 600; cursor: pointer; }
+.sobre { margin: 0; text-align: center; }
+.sobre a { color: inherit; }
 .config p { color: var(--ink-2); font-size: 15px; margin: 10px 0; }
 .config label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
 .config input, .digitar input { width: 100%; border: 1.5px solid var(--ink); border-radius: 99px; padding: 10px 16px; background: var(--paper); min-height: 46px; }

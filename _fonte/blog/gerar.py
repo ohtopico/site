@@ -8,6 +8,7 @@ Uso:
 - site/mentoria/index.html sai com noindex enquanto tiver trechos [pendentes].
 - site/formacao-continuada/index.html é a página de serviço da formação continuada em IA.
 - site/prompts-para-professores/index.html é a biblioteca de prompts (prompts.json + conteudo/biblioteca-prompts.html).
+- site/assistencia-por-voz/index.html apresenta o projeto de assistência por voz (teste-mestrado), com os avisos de privacidade.
 - --sitemap atualiza o bloco do blog dentro de site/sitemap.xml (entre os marcadores).
 - Posts com data depois de --ate não saem no site: a pasta, a imagem e os slides deles são apagados
   do site, se já existirem. Assim a automação diária (.github/workflows/publicar-blog.yml) libera
@@ -151,6 +152,7 @@ def laterais(atual):
     navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Mentoria', '/mentoria/', 'mentoria'),
                ('◆', 'Formação continuada', '/formacao-continuada/', 'formacao'),
                ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
+               ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia'),
                ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''), ('▲', 'Material didático', '/material-didatico/', ''),
                ('☺', 'Currículo', '/curriculo/', '')]
     atual_attr = ' aria-current="page"'
@@ -595,6 +597,72 @@ def pagina_formacao(cfg, dims):
     return head + '\n' + moldura('guia-formacao.html', 'ohtopico.com.br/formacao-continuada', '/', conteudo, 'Pronto', 'formacao')
 
 
+def pagina_assistencia(cfg):
+    site = cfg['site']
+    url = f'{site}/assistencia-por-voz/'
+    corpo = (AQUI / 'conteudo' / 'assistencia-por-voz.html').read_text(encoding='utf-8').strip()
+    titulo = 'Assistência por voz para pessoas cegas'
+    descricao = ('Projeto pessoal de Júlia Roberta Quoos Alves: um site para o celular que reconhece objetos, obstáculos, '
+                 'lugares e textos pela câmera e responde por voz. Com o que é guardado, o que é enviado e os cuidados de LGPD.')
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'about': {'@id': url + '#app'},
+                'author': {'@id': AUTORA['@id']},
+            },
+            {
+                '@type': 'WebApplication',
+                '@id': url + '#app',
+                'name': 'Assistência por voz',
+                'url': f'{site}/teste-mestrado/',
+                'applicationCategory': 'AccessibilityApplication',
+                'operatingSystem': 'Navegador do celular (Android e iPhone)',
+                'isAccessibleForFree': True,
+                'offers': {'@type': 'Offer', 'price': 0, 'priceCurrency': 'BRL'},
+                'author': AUTORA,
+                'inLanguage': 'pt-BR',
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Assistência por voz', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Assistência por voz</li></ol></nav>
+    <p class="rotulo">Projeto pessoal</p>
+    <h1>Assistência por voz para pessoas <span class="marca">cegas</span></h1>
+    <p class="linha-fina">Um site para o celular que olha pela câmera e responde por voz: onde está a xícara, se o caminho está livre, o que diz uma placa, como chegar a um prédio. Gratuito, de código aberto e ainda em fase de testes.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="abrir-experimento">
+        <h2 id="abrir-experimento">Abrir o experimento</h2>
+        <p>Ao tocar em Começar, o navegador pede acesso à câmera e ao microfone. Nos pedidos de rua, também pede a localização. Leia antes o <a href="#aviso-seguranca">aviso sobre o protótipo</a> e <a href="#privacidade">o que acontece com os dados</a>.</p>
+        <a class="btn98" href="/teste-mestrado/">Abrir a assistência por voz</a>
+    </section>
+</article>'''
+    alt = 'Foto de Júlia Roberta Quoos Alves'
+    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/img/perfil.jpg', alt, 'website', ld)
+    return head + '\n' + moldura('assistencia.exe', 'ohtopico.com.br/assistencia-por-voz', '/', conteudo, 'Pronto', 'assistencia')
+
+
 PROMPTS_IMAGEM = 'dia03-pacto.png'
 
 
@@ -736,13 +804,13 @@ def lastmod_atual(xml, url):
 
 def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram):
     """hoje: data da publicação (lastmod no futuro faz o Google desconfiar do sitemap).
-    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'prompts-para-professores') cujo HTML mudou nesta execução;
+    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'prompts-para-professores', 'assistencia-por-voz') cujo HTML mudou nesta execução;
     as outras mantêm o lastmod que já estava no sitemap."""
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'prompts-para-professores']
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'prompts-para-professores', 'assistencia-por-voz']
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -833,7 +901,8 @@ def main():
     mentoria, pendente = pagina_mentoria(cfg, dims)
     mudaram = set()
     for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims)),
-                          ('prompts-para-professores', pagina_prompts(cfg))):
+                          ('prompts-para-professores', pagina_prompts(cfg)),
+                          ('assistencia-por-voz', pagina_assistencia(cfg))):
         caminho = a.site / pagina / 'index.html'
         caminho.parent.mkdir(exist_ok=True)
         if not caminho.exists() or caminho.read_text(encoding='utf-8') != texto:
