@@ -141,35 +141,98 @@ export class DetectorExtra {
     this.nomes = nomes;
     this.ignorar = ignorar;
     this.nomesAtivos = nomes.filter(n => !ignorar.has(n));
-    this.lado = 320;
+    // Dois formatos aceitos: SSDLite (três saídas: caixas, pontuações, rótulos de 1 a K) ou
+    // YOLO (uma saída: [1, N, 6] já com NMS, ou [1, 4+K, N] cru, rótulos de 0 a K-1)
+    this.yolo = sessao.outputNames.length === 1;
+    const forma = sessao.inputMetadata?.[0]?.shape;
+    this.lado = typeof forma?.[2] === "number" ? forma[2] : 320;
     this.canvas = new OffscreenCanvas(this.lado, this.lado);
     this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
     this.entrada = new Float32Array(3 * this.lado * this.lado);
   }
 
   async detectar(video) {
-    // A imagem inteira esticada para 320x320, valores de 0 a 1 (a normalização está dentro do modelo)
-    this.ctx.drawImage(video, 0, 0, this.lado, this.lado);
+    const W = video.videoWidth, H = video.videoHeight;
+    // SSDLite: a imagem inteira esticada. YOLO: proporção mantida, com faixas cinza (como no treino)
+    const escala = this.yolo ? this.lado / Math.max(W, H) : null;
+    const [dx, dy] = this.yolo ? [(this.lado - W * escala) / 2, (this.lado - H * escala) / 2] : [0, 0];
+    if (this.yolo) {
+      this.ctx.fillStyle = "rgb(114,114,114)";
+      this.ctx.fillRect(0, 0, this.lado, this.lado);
+      this.ctx.drawImage(video, dx, dy, W * escala, H * escala);
+    } else {
+      this.ctx.drawImage(video, 0, 0, this.lado, this.lado);
+    }
+    // Valores de 0 a 1 (a normalização, quando existe, está dentro do modelo)
     const px = this.ctx.getImageData(0, 0, this.lado, this.lado).data;
     const n = this.lado * this.lado;
     for (let i = 0; i < n; i++) for (let c = 0; c < 3; c++) this.entrada[c * n + i] = px[i * 4 + c] / 255;
     const t = new this.ort.Tensor("float32", this.entrada, [1, 3, this.lado, this.lado]);
     const r = await this.sessao.run({ [this.sessao.inputNames[0]]: t });
-    const [caixas, pontuacoes, rotulos] = this.sessao.outputNames.map(k => r[k].data);
-    const sx = video.videoWidth / this.lado, sy = video.videoHeight / this.lado;
+
+    // Caixas em pixels da entrada -> pixels do vídeo
+    const achados = this.yolo ? caixasYolo(r[this.sessao.outputNames[0]], this.nomes.length) : (() => {
+      const [caixas, pontuacoes, rotulos] = this.sessao.outputNames.map(k => r[k].data);
+      return Array.from(pontuacoes, (p, i) => ({
+        classe: Number(rotulos[i]) - 1, pontuacao: p, caixa: Array.from(caixas.subarray(i * 4, i * 4 + 4)),
+      }));
+    })();
+    const [sx, sy] = this.yolo ? [1 / escala, 1 / escala] : [W / this.lado, H / this.lado];
     const saida = [];
-    for (let i = 0; i < pontuacoes.length; i++) {
-      const rotulo = this.nomes[Number(rotulos[i]) - 1];
-      if (!rotulo || this.ignorar.has(rotulo) || pontuacoes[i] < CONFIANCA_EXTRA) continue;
-      const [x0, y0, x1, y1] = [caixas[i * 4] * sx, caixas[i * 4 + 1] * sy, caixas[i * 4 + 2] * sx, caixas[i * 4 + 3] * sy];
+    for (const { classe, pontuacao, caixa } of achados) {
+      const rotulo = this.nomes[classe];
+      if (!rotulo || this.ignorar.has(rotulo) || pontuacao < CONFIANCA_EXTRA) continue;
+      const x0 = Math.max(0, (caixa[0] - dx) * sx), y0 = Math.max(0, (caixa[1] - dy) * sy);
+      const x1 = Math.min(W, (caixa[2] - dx) * sx), y1 = Math.min(H, (caixa[3] - dy) * sy);
       saida.push({
         rotulo,
-        confianca: pontuacoes[i],
-        cx: (x0 + x1) / 2 / video.videoWidth,
-        tamanho: (y1 - y0) / video.videoHeight,
+        confianca: pontuacao,
+        cx: (x0 + x1) / 2 / W,
+        tamanho: (y1 - y0) / H,
         caixa: { originX: x0, originY: y0, width: x1 - x0, height: y1 - y0 },
       });
     }
     return saida;
   }
+}
+
+/** Saída do YOLO -> [{ classe, pontuacao, caixa: [x0, y0, x1, y1] }]. */
+export function caixasYolo(tensor, numClasses) {
+  const [, a, b] = tensor.dims;
+  const d = tensor.data;
+  if (b === 6) {
+    // Exportado com NMS: [1, N, 6] = x0, y0, x1, y1, pontuação, classe
+    const r = [];
+    for (let i = 0; i < a; i++) {
+      const o = i * 6;
+      if (d[o + 4] > 0) r.push({ classe: Math.round(d[o + 5]), pontuacao: d[o + 4], caixa: [d[o], d[o + 1], d[o + 2], d[o + 3]] });
+    }
+    return r;
+  }
+  // Cru: [1, 4 + K, N] = cx, cy, w, h e a pontuação de cada classe; aqui faz o NMS
+  const total = b, candidatos = [];
+  for (let i = 0; i < total; i++) {
+    let melhor = 0, classe = -1;
+    for (let k = 0; k < numClasses; k++) {
+      const p = d[(4 + k) * total + i];
+      if (p > melhor) { melhor = p; classe = k; }
+    }
+    if (melhor < CONFIANCA_EXTRA) continue;
+    const cx = d[i], cy = d[total + i], w = d[2 * total + i], h = d[3 * total + i];
+    candidatos.push({ classe, pontuacao: melhor, caixa: [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2] });
+  }
+  candidatos.sort((p, q) => q.pontuacao - p.pontuacao);
+  const ficam = [];
+  for (const c of candidatos) {
+    if (ficam.length >= 100) break;
+    if (!ficam.some(f => f.classe === c.classe && iou(f.caixa, c.caixa) > 0.45)) ficam.push(c);
+  }
+  return ficam;
+}
+
+function iou(a, b) {
+  const w = Math.min(a[2], b[2]) - Math.max(a[0], b[0]), h = Math.min(a[3], b[3]) - Math.max(a[1], b[1]);
+  if (w <= 0 || h <= 0) return 0;
+  const inter = w * h;
+  return inter / ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter);
 }
