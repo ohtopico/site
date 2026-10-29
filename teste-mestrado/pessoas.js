@@ -8,9 +8,10 @@ import { falarDistancia } from "./profundidade.js";
 import { normalizar } from "./vocabulario.js";
 
 const CHAVE = "assistencia.pessoas";
-const LIMIAR = 0.5;            // distância euclidiana máxima entre vetores para dizer que é a mesma pessoa
-const AMOSTRAS = 5;            // vetores tirados no cadastro, depois tirada a média
-const CADASTRO_LIMITE_MS = 20000;
+const LIMIAR = 0.55;           // distância euclidiana máxima entre vetores para dizer que é a mesma pessoa
+const AMOSTRAS = 5;            // vetores tirados no cadastro, guardados junto com a média
+const AMOSTRAS_MINIMAS = 3;    // se o tempo acabar com pelo menos isso, o cadastro vale assim mesmo
+const CADASTRO_LIMITE_MS = 25000; // sem nenhuma amostra nova nesse tempo, desiste (no celular cada amostra pode levar segundos)
 const INTERVALO_MS = 1200;     // reconhecimento em segundo plano no máximo a cada 1,2 s
 const ESPERA_MESMA_PESSOA_MS = 30000;
 
@@ -65,14 +66,26 @@ function distancia(a, b) {
   return Math.sqrt(s);
 }
 
-/** Nome da pessoa cadastrada mais parecida, ou null. */
+/** Nome da pessoa cadastrada mais parecida, ou null. Compara com a média e com cada amostra guardada. */
 function identificar(vetor, pessoas) {
   let melhor = null, menor = LIMIAR;
   for (const p of pessoas) {
-    const d = distancia(vetor, p.vetor);
-    if (d < menor) { menor = d; melhor = p.nome; }
+    for (const v of [p.vetor, ...(p.amostras ?? [])]) {
+      const d = distancia(vetor, v);
+      if (d < menor) { menor = d; melhor = p.nome; }
+    }
   }
   return melhor;
+}
+
+const media = vetores => vetores[0].map((_, i) => vetores.reduce((s, v) => s + v[i], 0) / vetores.length);
+const arredondar = v => v.map(x => +x.toFixed(5));
+
+function guardarPessoa(nome, vetores, forma) {
+  salvar([...listarPessoas().filter(p => normalizar(p.nome) !== normalizar(nome)), {
+    nome, vetor: arredondar(media(vetores)), amostras: vetores.map(arredondar),
+    consentimento: new Date().toISOString(), ...(forma && { forma }),
+  }]);
 }
 
 // ---------- Cadastro por fotos (tela de configuração) --------------------------------
@@ -99,11 +112,7 @@ export async function cadastrarPorFotos(nome, arquivos) {
       URL.revokeObjectURL(img.src);
     }
   }
-  if (vetores.length) {
-    const media = vetores[0].map((_, i) => vetores.reduce((s, v) => s + v[i], 0) / vetores.length);
-    salvar([...listarPessoas().filter(p => normalizar(p.nome) !== normalizar(nome)),
-      { nome, vetor: media.map(x => +x.toFixed(5)), consentimento: new Date().toISOString(), forma: "fotos" }]);
-  }
+  if (vetores.length) guardarPessoa(nome, vetores, "fotos");
   return { usadas: vetores.length, total: arquivos.length };
 }
 
@@ -142,14 +151,18 @@ export class Cadastro {
     }
     this.etapa = "captura";
     this.inicio = performance.now();
-    this.a.falar(`Obrigado. Aponte o celular para o rosto de ${this.nome}, a um braço de distância, e espere o bipe.`, true);
+    this.a.falar(`Obrigado. Aponte o celular para o rosto de ${this.nome}, a um braço de distância. ` +
+      `Cada bipe é uma foto; são ${AMOSTRAS}.`, true);
     return true;
   }
 
   aoQuadro() {
     if (!this.ativa) return false;
     if (this.etapa !== "captura" || this.ocupado) return true;
+    // O prazo conta desde a última foto boa (ou do começo) e só depois que a instrução terminou de ser falada
+    if (this.a.ocupado()) this.inicio = performance.now();
     if (performance.now() - this.inicio > CADASTRO_LIMITE_MS) {
+      if (this.amostras.length >= AMOSTRAS_MINIMAS) { this.concluir(); return false; }
       this.a.falar(`Não consegui ver o rosto de ${this.nome} direito. Tente de novo com mais luz.`, true);
       this.ativa = false;
       return false;
@@ -159,6 +172,7 @@ export class Cadastro {
       const rosto = achados[0];
       if (!rosto || rosto.altura < 0.15 || !this.ativa) return;
       this.amostras.push(Array.from(rosto.vetor));
+      this.inicio = performance.now();
       this.a.bipe(700 + 100 * this.amostras.length, 0.06);
       if (this.amostras.length >= AMOSTRAS) this.concluir();
     }).catch(() => {}).finally(() => { setTimeout(() => { this.ocupado = false; }, 400); });
@@ -166,9 +180,8 @@ export class Cadastro {
   }
 
   concluir() {
-    const media = this.amostras[0].map((_, i) => this.amostras.reduce((s, v) => s + v[i], 0) / this.amostras.length);
-    salvar([...listarPessoas().filter(p => normalizar(p.nome) !== normalizar(this.nome)),
-      { nome: this.nome, vetor: media.map(x => +x.toFixed(5)), consentimento: new Date().toISOString() }]);
+    if (!this.ativa) return;
+    guardarPessoa(this.nome, this.amostras);
     this.a.falar(`Pronto, ${this.nome} foi cadastrado. Para apagar, diga apagar pessoa ${this.nome}.`, true);
     this.ativa = false;
   }

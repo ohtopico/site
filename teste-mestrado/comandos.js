@@ -49,6 +49,8 @@ const COM_NOME = [
 const LUGAR = /\b(rua|avenida|av|praca|predio|bloco|reitoria|biblioteca|banco|loja|lanchonete|cafe|rodoviaria|estacao|shopping|mercado|supermercado|farmacia|hospital|posto|universidade|ufsm|faculdade|escola|parada|ponto de onibus|casa|centro|bairro|parque|igreja|prefeitura|restaurante|padaria|aeroporto|endereco)\b|\d/;
 
 const PADROES = [
+  // antes de "sim": "pode ficar em silêncio" é silêncio, não um sim
+  ["pausar", /(modo (de )?(silencio(so)?|silenciar|espera|descanso|soneca)\b|^(silencio(so)?|pausa(r)?|descansa(r)?|shh+|psiu)\b|silencia(r)?\b|fi(ca|que|car)( em)? (quiet[ao]|calad[ao]|em silencio|mud[ao])|faz(er)? silencio|cala a boca|cal[ae]-?se|(para|pare|parar) de falar|nao fal[ae] (nada|mais))/],
   ["sim", /^(sim|quero|pode|claro|ok|por favor)\b/],
   ["nao", /^(nao|agora nao|depois|dispenso)\b/],
   ["explicar", /^(como (isso |o site |voce |o app |o aplicativo )?funciona|explica|explique|tutorial)/],
@@ -65,7 +67,6 @@ const PADROES = [
   ["listar", /(quais (sao )?(os |as )?(percursos|caminhos|trajetos|rotas)|lista(r)? (os |as )?(percursos|caminhos|trajetos|rotas))/],
   ["livre", /(caminho (esta )?livre|posso (seguir|ir|andar)|da para (passar|seguir)|tem espaco)/],
   ["parar", /^(parar?|para tudo|cancela(r)?|chega|pronto|achei|obrigad[ao])\b/],
-  ["pausar", /^((modo (de )?)?(silencio|espera|descanso)|pausa(r)?|fica (quiet[ao]|em silencio)|faz silencio|cala a boca|descansa(r)?)\b/],
   ["retomar", /^(continua(r)?|retoma(r)?|volta(r)?)\b/],
   ["menu", /^(menu|opcoes|ajuda|comandos|o que (voce )?(sabe|pode) fazer|quais (sao )?(os )?comandos)\b/],
   ["descrever", /(o que (tem|ha|existe|voce ve|esta)( aqui| na (minha )?frente| ao (meu )?redor| em volta)?|descreve|descreva)/],

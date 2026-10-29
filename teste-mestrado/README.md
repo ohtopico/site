@@ -6,7 +6,7 @@ toca em qualquer lugar e fala.
 
 | Pedido falado | O que acontece |
 |---|---|
-| "cadê a xícara", "ache o celular" | procura com o detector no celular; bipes mais rápidos quando o objeto está no centro, voz com lado e distância |
+| "cadê a xícara", "ache o celular" | procura com o detector no celular; quando acha, diz o lado, a distância e o que há no caminho, e para de procurar |
 | "ache a chave", "onde fica a saída", "tem um extintor?" | objetos que o detector não conhece: tira uma foto e pergunta à IA na nuvem (Claude) |
 | "tem uma cadeira aqui?" | olha por alguns segundos e responde sim ou não |
 | "o que tem na minha frente?" | lista os objetos visíveis, da esquerda para a direita |
