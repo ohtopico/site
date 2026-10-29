@@ -13,13 +13,24 @@ export const GRUPOS = [
     ],
   },
   {
-    nome: "memória", padrao: /memoria|lugar|ambiente|lembra/,
+    nome: "ambiente", padrao: /ambiente|pergunta|hora|luz/,
+    resumo: "perguntas sobre o lugar onde você está",
+    comandos: [
+      ["descreva o ambiente", "com a IA, diz que lugar é e o que há à frente e dos lados, pessoas, portas e degraus; também vale como é este lugar, ou o que você está vendo"],
+      ["onde estou?", "reconhece um lugar guardado; se não for, a IA diz que lugar parece"],
+      ["quantas pessoas tem aqui?", "conta pessoas ou objetos à frente, como quantas cadeiras tem"],
+      ["está claro ou escuro?", "diz se a luz parece acesa"],
+      ["é seguro andar?", "diz se o caminho à frente está livre"],
+      ["que horas são?", "diz a hora e o dia"],
+    ],
+  },
+  {
+    nome: "memória", padrao: /memoria|lugar|lembra/,
     resumo: "lembrar o que passou e reconhecer lugares",
     comandos: [
       ["o que eu passei?", "o que saiu da câmera no último minuto"],
       ["onde estava a porta?", "a direção de algo que você já passou"],
       ["lembrar este lugar como cozinha", "guarda o lugar no celular, em texto"],
-      ["onde estou?", "reconhece um lugar guardado"],
       ["quais são os lugares?", "lista os lugares guardados"],
       ["esquecer o lugar cozinha", "apaga um lugar"],
     ],

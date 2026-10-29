@@ -60,13 +60,17 @@ const PADROES = [
   ["trocarVoz", /^(troca(r)?|muda(r)?|outra) (a |de )?voz/],
   ["predio", /((que|qual) (e )?(o |a )?(predio|edificio|bloco|loja|construcao|estabelecimento|lugar na rua)( e| eh)?( esse| este| aquele| aqui| a (minha )?frente| na (minha )?frente)|(qual|que) (e )?(esse|este|aquele) (predio|edificio|bloco|loja|lugar)|o que tem (por )?perto( daqui)?|o que tem na rua|onde estou na rua)/],
   ["quantoFalta", /(quanto (falta|tempo falta)|falta muito|onde (eu )?viro|qual (e )?(a )?proxima (curva|instrucao))/],
-  ["ondeEstou", /(onde (eu )?estou|que lugar e (esse|este)|reconhece (o|este|esse) lugar)/],
+  ["ondeEstou", /(onde (e que )?(eu )?(estou|to|estamos)\b|onde (e que )?(a gente|nos) (esta|ta|estamos)\b|(em )?que (lugar|sala|comodo|parte|andar) (e )?(esse|este|eu estou|estou|to)|reconhece (o|este|esse) lugar)/],
+  ["ambiente", /((descrev[ae]r?|descricao d[eoa]|como e)( (o|a|este|esse|esta|essa|isso|aqui))? ?(ambiente|lugar|sala|local|espaco|comodo|quarto|redor|cenario|aqui|em volta)|o que (voce )?(esta )?(vendo|ve)\b|o que (tem|ha) (a|ao|em) (minha |nossa )?(volta|redor)|me (conta|fala|diz|descreve) (o que (tem|ha|voce ve)|como e)|^descrev[ae]$)/],
+  ["luz", /((esta|ta|e) (claro|escuro)|(tem|ha) luz|luz (esta |ta )?(acesa|apagada|ligada|desligada)|(acesa|apagada) a luz)/],
+  ["hora", /(que horas|qual (e )?a hora|que dia (e )?hoje|qual (e )?a data)/],
+  ["contar", /^quant[ao]s /],
   ["quem", /(quem (esta|e|ta)( aqui| ai| na (minha )?frente)?|quem e (essa|esta) pessoa|reconhece (essa|esta) pessoa)/],
   ["listarPessoas", /quais (sao )?(as )?pessoas/],
   ["listarLugares", /quais (sao )?(os )?lugares/],
   ["lembrar", /(o que (eu )?(passei|deixei|ficou)|o que (tinha|havia) (aqui|por aqui|atras)|o que voce (lembra|viu)|ficou para tras)/],
   ["listar", /(quais (sao )?(os |as )?(percursos|caminhos|trajetos|rotas)|lista(r)? (os |as )?(percursos|caminhos|trajetos|rotas))/],
-  ["livre", /(caminho (esta )?livre|posso (seguir|ir|andar)|da para (passar|seguir)|tem espaco)/],
+  ["livre", /(caminho (esta )?livre|posso (seguir|ir|andar)|da para (passar|seguir)|tem espaco|(e|esta) seguro (andar|seguir|passar|ir))/],
   ["parar", /^(parar?|para tudo|cancela(r)?|chega|pronto|achei|obrigad[ao])\b/],
   ["retomar", /^(continua(r)?|retoma(r)?|volta(r)?)\b/],
   ["menu", /^(menu|opcoes|ajuda|comandos|o que (voce )?(sabe|pode) fazer|quais (sao )?(os )?comandos)\b/],
@@ -112,6 +116,12 @@ export function interpretar(frase) {
     const m = f.match(padrao);
     if (!m) continue;
     if (tipo === "pausar") return { tipo, minutos: minutosDe(f) };
+    if (tipo === "contar") {
+      // "quantas pessoas tem aqui" / "quantas cadeiras tem"
+      const resto = f.slice(m[0].length).replace(/\b(tem|ha|existem?|aqui|na sala|por aqui|na minha frente)\b/g, " ").trim();
+      const singular = resto.split(" ")[0].replace(/(oes|aes)$/, "ao").replace(/es$/, "").replace(/s$/, "");
+      return { tipo, alvo: resto, rotulo: acharObjeto(singular) ?? acharObjeto(resto) };
+    }
     if (tipo === "sensibilidade") {
       const n = f.match(/sensibilidade (\d)/);
       return { tipo, valor: n ? +n[1] : null, sentido: /menos sensivel|diminu|baix|menor|menos/.test(f) ? -1 : 1 };

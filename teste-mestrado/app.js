@@ -36,9 +36,12 @@ const TUTORIAL = [
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
 // Subir a cada atualização publicada (número do PR): aparece no canto da tela
-const VERSAO = "v45 · 29/10";
+const VERSAO = "v46 · 29/10";
 $("versao").textContent = VERSAO;
 $("versao").setAttribute("aria-label", `Versão ${VERSAO.replace(/^v/, "").replace(" · ", ", de ")}`);
+
+// Guarda modelos e código no celular: da segunda vez em diante o site abre quase na hora (sw.js)
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 // Marca de 1 byte no navegador: quem já usou não ouve de novo a introdução nem a pergunta do tutorial
 const TUTORIAL_OUVIDO = "assistencia.tutorial_ouvido";
@@ -50,6 +53,7 @@ let detector, extra = null, cena, profundidade = null, nuvem = null, tarefa = nu
 let leitura = null; // { cancelada } enquanto lê um texto em voz alta
 let pausado = false, ouvindo = false, processando = false, aguardandoIntro = false, aguardandoGrupo = false;
 let aguardandoNomePercurso = null; // nome provisório do percurso gravado sem nome
+let ultimasExtra = [];
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
 // Sensibilidade dos passos na configuração (também muda por voz: "passos mais sensível")
@@ -273,11 +277,15 @@ async function laco(agora) {
   processando = true;
   try {
     ultimasDeteccoes = detector.detectar(video, agora);
-    if (extra) {
-      ultimasDeteccoes = ultimasDeteccoes.concat(await extra.detectar(video)).sort((a, b) => b.tamanho - a.tamanho);
+    const q = quadros++;
+    // O detector extra (49 objetos) é o segundo mais pesado: em todo quadro só durante uma busca,
+    // percurso ou gravação; andando à toa, a cada 3 quadros, repetindo nos outros o último resultado
+    if (extra && (tarefa || gravacao || q % 3 === 0)) ultimasExtra = await extra.detectar(video);
+    if (ultimasExtra.length) {
+      ultimasDeteccoes = ultimasDeteccoes.concat(ultimasExtra).sort((a, b) => b.tamanho - a.tamanho);
     }
     // Profundidade a cada 2 quadros (~2,5 por segundo): é o modelo mais pesado
-    if (profundidade && quadros++ % 2 === 0) {
+    if (profundidade && q % 2 === 0) {
       await profundidade.estimar(video);
       profundidade.calibrar(ultimasDeteccoes, video);
       espaco = profundidade.espacoLivre();
@@ -407,6 +415,31 @@ function executar(frase) {
     case "descrever":
       anunciador.falar(descrever(ultimasDeteccoes, profundidade, video), true);
       return;
+    case "ambiente":
+      descreverAmbiente();
+      return;
+    case "luz":
+      anunciador.falar(falaDaLuz(), true);
+      return;
+    case "hora": {
+      const agora = new Date();
+      const h = agora.getHours(), min = agora.getMinutes();
+      const horas = h === 0 ? "É meia-noite" : h === 1 ? "É uma hora" : h === 12 ? "É meio-dia" : `São ${h} horas`;
+      anunciador.falar(`${horas}${min ? ` e ${min} ${min === 1 ? "minuto" : "minutos"}` : " em ponto"}, ` +
+        agora.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" }) + ".", true);
+      return;
+    }
+    case "contar": {
+      if (!pedido.rotulo) {
+        anunciador.falar(`Não sei contar ${pedido.alvo || "isso"} pela câmera. Diga descreva o ambiente.`, true);
+        return;
+      }
+      const n = ultimasDeteccoes.filter(d => d.rotulo === pedido.rotulo).length;
+      const nome = nomeFalado(pedido.rotulo);
+      anunciador.falar(n ? `Vejo ${n === 1 ? "um" : n} ${n === 1 ? nome : pedido.alvo || nome} à frente. Gire o celular para contar o resto.`
+        : `Não vejo ${pedido.alvo || nome} à frente agora.`, true);
+      return;
+    }
     case "lembrar":
       anunciador.falar(memoria.resumo(new Set(ultimasDeteccoes.map(d => nomeFalado(d.rotulo)))), true);
       return;
@@ -461,9 +494,18 @@ function executar(frase) {
     case "ondeEstou": {
       const vistos = [...new Set([...ultimasDeteccoes.map(d => nomeFalado(d.rotulo)), ...memoria.itens.keys()])].filter(Boolean);
       const lugar = ondeEstou(vistos);
-      anunciador.falar(lugar ? `Parece ${lugar.nome}. ${lugar.texto.split(": ")[1] ?? ""}`
-        : listarLugares().length ? "Não reconheço este lugar. Para guardar, diga lembrar este lugar como e um nome."
+      if (lugar) {
+        anunciador.falar(`Parece ${lugar.nome}. ${lugar.texto.split(": ")[1] ?? ""}`, true);
+      } else if (nuvem) {
+        // Lugar não guardado: a IA diz que tipo de lugar parece
+        anunciador.falar("Não é um lugar guardado. Vou olhar; segure o celular parado.", true);
+        fotografar(video).then(f => nuvem.descreverLugar(f))
+          .then(d => anunciador.falar(`${d} Para guardar, diga lembrar este lugar como e um nome.`, true))
+          .catch(() => anunciador.falar("Não consegui falar com a IA. Verifique a internet.", true));
+      } else {
+        anunciador.falar(listarLugares().length ? "Não reconheço este lugar. Para guardar, diga lembrar este lugar como e um nome."
           : "Ainda não há lugares guardados. Diga lembrar este lugar como e um nome.", true);
+      }
       return;
     }
     case "apagarLugar": {
@@ -674,6 +716,31 @@ async function oQueTemPerto() {
   } catch {
     anunciador.falar("Não consegui consultar o mapa. Verifique a internet.", true);
   }
+}
+
+// "Descreva o ambiente": com a IA na nuvem, descrição completa; sem ela, os objetos e o espaço livre.
+async function descreverAmbiente() {
+  const local = `${descrever(ultimasDeteccoes, profundidade, video)} ${descreverEspaco()}`;
+  if (!nuvem) { anunciador.falar(local, true); return; }
+  anunciador.falar("Olhando o ambiente; segure o celular parado.", true);
+  try {
+    anunciador.falar(await nuvem.descreverAmbiente(await fotografar(video)), true);
+  } catch {
+    anunciador.falar(`Não consegui falar com a IA. Pela câmera: ${local}`, true);
+  }
+}
+
+// "Está claro ou escuro?": brilho médio do quadro atual
+const telaLuz = new OffscreenCanvas(32, 24);
+function falaDaLuz() {
+  const ctx = telaLuz.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(video, 0, 0, 32, 24);
+  const px = ctx.getImageData(0, 0, 32, 24).data;
+  let soma = 0;
+  for (let i = 0; i < px.length; i += 4) soma += 0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2];
+  const brilho = soma / (px.length / 4) / 255;
+  return brilho < 0.12 ? "Está escuro; a luz parece apagada." : brilho < 0.3 ? "Está pouco iluminado."
+    : brilho < 0.7 ? "Está claro." : "Está bem claro; pode haver uma luz forte ou janela à frente.";
 }
 
 // Modo silêncio: a câmera para de analisar e nada é falado até a pessoa dizer continuar,

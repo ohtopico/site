@@ -22,6 +22,12 @@ export const salvarChave = valor => { try { valor ? localStorage.setItem(CHAVE, 
 const INSTRUCAO_LUGAR = `Você ajuda uma pessoa cega a reconhecer lugares. A foto é da câmera do celular dela.
 Responda só com JSON: {"resposta": "uma frase em português, no máximo 20 palavras, descrevendo o lugar e o que o distingue (ex.: cozinha com balcão de mármore e janela à direita)"}`;
 
+const INSTRUCAO_AMBIENTE = `Você descreve o ambiente para uma pessoa cega. A foto é da câmera do celular dela, apontada para a frente.
+Em português, de 3 a 5 frases curtas, para serem faladas: que tipo de lugar é; o que há à frente, à esquerda e à direita,
+com a distância aproximada em metros; pessoas (quantas e o que fazem, sem descrever aparência);
+portas, saídas, escadas, degraus e obstáculos no chão; e a iluminação se estiver escuro. Comece pelo mais útil para andar.
+Não invente o que não dá para ver. Responda só com JSON: {"resposta": "a descrição"}`;
+
 const INSTRUCAO_LER = `Você lê textos em voz alta para uma pessoa cega. A foto é de uma página, placa, rótulo ou papel.
 Transcreva o texto legível na ordem natural de leitura (colunas de cima para baixo, da esquerda para a direita),
 na língua original. Junte palavras quebradas por hífen no fim da linha. Ignore número de página, cabeçalho e rodapé repetidos.
@@ -31,7 +37,7 @@ Responda só com JSON: {"texto": "o texto transcrito, ou vazio se não der para 
  (ex.: "o texto está cortado à direita, mova o celular um pouco para a direita")}`;
 
 /**
- * Devolve { origem, perguntar(foto, alvo), descreverLugar(foto), lerTexto(foto) } ou null.
+ * Devolve { origem, perguntar(foto, alvo), descreverLugar(foto), descreverAmbiente(foto), lerTexto(foto) } ou null.
  * lerTexto -> {texto, aviso}.
  * perguntar -> {encontrado, lado, distancia, no_caminho, resposta}; descreverLugar -> texto.
  */
@@ -43,6 +49,7 @@ export async function abrirNuvem() {
       origem: "claude",
       perguntar: (foto, alvo) => json(instrucao(alvo), foto),
       descreverLugar: async foto => (await json(INSTRUCAO_LUGAR, foto)).resposta,
+      descreverAmbiente: async foto => (await json(INSTRUCAO_AMBIENTE, foto)).resposta,
       lerTexto: foto => sample.json(INSTRUCAO_LER, { images: [foto], cache: false }),
     };
   }
@@ -51,6 +58,7 @@ export async function abrirNuvem() {
       origem: "api",
       perguntar: (foto, alvo) => perguntarApi(foto, instrucao(alvo)),
       descreverLugar: async foto => (await perguntarApi(foto, INSTRUCAO_LUGAR)).resposta,
+      descreverAmbiente: async foto => (await perguntarApi(foto, INSTRUCAO_AMBIENTE, 500)).resposta,
       lerTexto: foto => perguntarApi(foto, INSTRUCAO_LER, 4000),
     };
   }
