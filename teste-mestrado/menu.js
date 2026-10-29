@@ -16,6 +16,7 @@ export const GRUPOS = [
     nome: "ambiente", padrao: /ambiente|pergunta|hora|luz/,
     resumo: "perguntas sobre o lugar onde você está",
     comandos: [
+      ["o que tem aqui?", "diz os objetos à frente, do mais perto ao mais longe; também vale o que que tem aqui, ou quais coisas tem aqui"],
       ["descreva o ambiente", "com a IA, diz que lugar é e o que há à frente e dos lados, pessoas, portas e degraus; também vale como é este lugar, ou o que você está vendo"],
       ["onde estou?", "reconhece um lugar guardado; se não for, a IA diz que lugar parece"],
       ["quantas pessoas tem aqui?", "conta pessoas ou objetos à frente, como quantas cadeiras tem"],

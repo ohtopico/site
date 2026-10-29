@@ -132,22 +132,17 @@ export class Anunciador {
     }
   }
 
-  /** Avisa o obstáculo mais próximo. Com soPerto, só o que está perto (usado durante uma busca). */
-  aoVerObstaculos(deteccoes, soPerto = false) {
-    const maisPerto = deteccoes.find(d => OBSTACULOS.has(d.rotulo) && (d.tamanho >= TAMANHO_MEDIO || estaPerto(d)));
-    if (!maisPerto) return false;
-    const nome = nomeFalado(maisPerto.rotulo);
-    const lado = ladoDe(maisPerto.cx);
-    const dist = falarDistancia(maisPerto.metros);
-    if (estaPerto(maisPerto)) {
-      if (lado === "frente") this.vibrar();
-      this.falarUmaVez(`${nome} ${onde(lado)}${dist ? ", " + dist : ", perto"}`, OBSTACULO_ESPERA_MS, true, `${nome}|${lado}|perto`);
-      return lado === "frente";
-    }
-    if (!soPerto && !speechSynthesis.speaking) {
-      this.falarUmaVez(`${nome} ${onde(lado)}${dist ? ", " + dist : ""}`, OBSTACULO_LONGE_ESPERA_MS, false, `${nome}|${lado}`);
-    }
-    return false;
+  /**
+   * Durante uma busca: só avisa o que está perto e bem à frente, sem dizer o nome (os objetos
+   * só são ditos quando a pessoa pede). Devolve true se avisou.
+   */
+  aoVerObstaculos(deteccoes) {
+    const perto = deteccoes.find(d => OBSTACULOS.has(d.rotulo) && estaPerto(d) && ladoDe(d.cx) === "frente");
+    if (!perto) return false;
+    const dist = falarDistancia(perto.metros);
+    this.vibrar();
+    this.falarUmaVez(`Cuidado, obstáculo à frente${dist ? ", " + dist : ""}`, OBSTACULO_ESPERA_MS, true, "frente");
+    return true;
   }
 
   /**
