@@ -35,6 +35,11 @@ const TUTORIAL = [
     "continue usando a bengala ou o cão-guia.",
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
+// Subir a cada atualização publicada (número do PR): aparece no canto da tela
+const VERSAO = "v44 · 29/10";
+$("versao").textContent = VERSAO;
+$("versao").setAttribute("aria-label", `Versão ${VERSAO.replace(/^v/, "").replace(" · ", ", de ")}`);
+
 // Marca de 1 byte no navegador: quem já usou não ouve de novo a introdução nem a pergunta do tutorial
 const TUTORIAL_OUVIDO = "assistencia.tutorial_ouvido";
 const tutorialOuvido = () => { try { return localStorage.getItem(TUTORIAL_OUVIDO) === "1"; } catch { return false; } };
@@ -292,20 +297,6 @@ async function laco(agora) {
 
 const Reconhecedor = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-// Microfone com redução de ruído do próprio celular. O Chrome mais novo aceita entregar esse áudio
-// ao reconhecimento de voz (start com a trilha); os mais antigos ignoram e usam o microfone direto.
-// Se o celular não deixar os dois usarem o microfone juntos, desliga isso de vez neste aparelho.
-const SEM_MIC_LIMPO = "assistencia.sem_mic_limpo";
-async function microfoneLimpo() {
-  try { if (localStorage.getItem(SEM_MIC_LIMPO)) return null; } catch {}
-  try {
-    const s = await navigator.mediaDevices.getUserMedia({
-      audio: { noiseSuppression: true, echoCancellation: true, autoGainControl: true, channelCount: 1 },
-    });
-    return s.getAudioTracks()[0] ?? null;
-  } catch { return null; }
-}
-
 // Com barulho, o reconhecimento às vezes ouve outra coisa primeiro: das alternativas, vale a
 // primeira que é um comando conhecido.
 function melhorAlternativa(resultado) {
@@ -313,7 +304,7 @@ function melhorAlternativa(resultado) {
   return frases.find(f => interpretar(f).tipo !== "desconhecido") ?? frases[0];
 }
 
-async function ouvir() {
+function ouvir() {
   if (!Reconhecedor) {
     $("comando").focus();
     return;
@@ -337,24 +328,15 @@ async function ouvir() {
     document.body.classList.remove("ouvindo");
     executar(melhorAlternativa(e.results[0]));
   };
-  let tentarDeNovo = false;
   r.onerror = e => {
-    if (e.error === "audio-capture" && trilha) {
-      try { localStorage.setItem(SEM_MIC_LIMPO, "1"); } catch {}
-      tentarDeNovo = true;
-      return;
-    }
     if (e.error === "not-allowed") anunciador.falar("Sem permissão do microfone.", true);
   };
-  const trilha = await microfoneLimpo();
   r.onend = () => {
-    trilha?.stop();
     ouvindo = false;
     document.body.classList.remove("ouvindo");
-    if (tentarDeNovo) { ouvir(); return; }
     if (!entendeu) anunciador.falar("Não ouvi. Toque e fale de novo.", true);
   };
-  try { r.start(trilha ?? undefined); } catch { r.start(); }
+  r.start();
 }
 
 function executar(frase) {
