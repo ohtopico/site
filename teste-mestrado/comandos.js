@@ -49,6 +49,7 @@ const COM_NOME = [
 const LUGAR = /\b(rua|avenida|av|praca|predio|bloco|reitoria|biblioteca|banco|loja|lanchonete|cafe|rodoviaria|estacao|shopping|mercado|supermercado|farmacia|hospital|posto|universidade|ufsm|faculdade|escola|parada|ponto de onibus|casa|centro|bairro|parque|igreja|prefeitura|restaurante|padaria|aeroporto|endereco)\b|\d/;
 
 const PADROES = [
+  ["sensibilidade", /((mais|menos) sensivel|(aument|diminu|baix|sub)[aei]r? (a )?sensibilidade|sensibilidade (maior|menor|mais|menos|alta|baixa|\d))/],
   // antes de "sim": "pode ficar em silêncio" é silêncio, não um sim
   ["pausar", /(modo (de )?(silencio(so)?|silenciar|espera|descanso|soneca)\b|^(silencio(so)?|pausa(r)?|descansa(r)?|shh+|psiu)\b|silencia(r)?\b|fi(ca|que|car)( em)? (quiet[ao]|calad[ao]|em silencio|mud[ao])|faz(er)? silencio|cala a boca|cal[ae]-?se|(para|pare|parar) de falar|nao fal[ae] (nada|mais))/],
   ["sim", /^(sim|quero|pode|claro|ok|por favor)\b/],
@@ -111,6 +112,10 @@ export function interpretar(frase) {
     const m = f.match(padrao);
     if (!m) continue;
     if (tipo === "pausar") return { tipo, minutos: minutosDe(f) };
+    if (tipo === "sensibilidade") {
+      const n = f.match(/sensibilidade (\d)/);
+      return { tipo, valor: n ? +n[1] : null, sentido: /menos sensivel|diminu|baix|menor|menos/.test(f) ? -1 : 1 };
+    }
     if (tipo === "menu") return { tipo, grupo: grupoDaFrase(f.slice(m[0].length))?.nome ?? null };
     if (tipo === "velocidade") return { tipo, sentido: /devagar|lento|menos rapido/.test(f) && !/menos devagar/.test(f) ? -1 : 1 };
     if (tipo !== "procurar" && tipo !== "verificar") return { tipo };

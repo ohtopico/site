@@ -38,9 +38,10 @@ export const GRUPOS = [
     nome: "caminhos", padrao: /caminho|percurso|trajeto|predio por dentro/,
     resumo: "gravar e repetir percursos dentro de prédios",
     comandos: [
-      ["gravar o caminho até o banheiro", "começa a gravar passos e curvas enquanto você anda; também vale começar a gravar, sem nome, que eu pergunto no fim"],
+      ["gravar o caminho até o banheiro", "começa a gravar enquanto você anda, com a câmera para a frente: a ordem dos móveis e objetos, de que lado ficam, as curvas e os passos. Um bipe curto marca cada objeto anotado. Também vale começar a gravar, sem nome, que eu pergunto no fim"],
       ["cheguei", "termina e salva o percurso; também vale terminar gravação, parar, ou pronto"],
-      ["seguir percurso banheiro", "guia você pelo percurso gravado"],
+      ["passos mais sensível", "se os passos não estão sendo contados; ou passos menos sensível, se conta passos demais"],
+      ["seguir percurso banheiro", "guia você pela ordem dos objetos gravados: a cada um que aparece, diz qual é o próximo"],
       ["voltar pelo percurso banheiro", "guia o caminho de volta"],
       ["quais são os percursos?", "lista os percursos gravados"],
       ["apagar percurso banheiro", "apaga um percurso"],

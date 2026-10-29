@@ -1,16 +1,22 @@
 // Gravar e repetir percursos dentro de prédios, onde o GPS não serve.
-// Um percurso é uma lista de trechos: virar (ou não) e andar N passos, com os objetos vistos no caminho.
-// Passos vêm do acelerômetro e a direção da bússola do celular; os dois são aproximados,
-// então o site fala "cerca de" e usa os objetos vistos como confirmação.
+// Um percurso é uma lista de trechos: virar (ou não) e andar N passos, com os objetos vistos no caminho
+// (móveis, portas...) na ordem em que apareceram e de que lado. Ao seguir, a ordem dos objetos é o guia
+// principal: cada objeto visto confirma o caminho e anuncia o próximo. Passos (acelerômetro) e curvas
+// (bússola) são aproximados e completam onde não há objetos; sem passos, o percurso vale só pelos objetos.
 
 import { normalizar, nomeFalado } from "./vocabulario.js";
+import { ladoDe, onde } from "./anunciador.js";
+
+const MARCO_TAMANHO = 0.2; // objeto grande o bastante na imagem para contar como "passei por ele"
 
 const CHAVE = "assistencia.percursos";
 const CURVA_GRAUS = 50;        // mudança de rumo que conta como curva
 const CURVA_ESTAVEL_MS = 1500; // a nova direção precisa se manter esse tempo
 // Passo = pico da aceleração vertical (na direção da gravidade, sem ela). Com o celular junto ao
 // peito o balanço é pequeno, então o limiar é baixo; o intervalo mínimo evita contar a mesma pisada duas vezes.
-const PASSO_LIMIAR = 0.9;      // m/s² para cima do repouso
+// Sensibilidade de 1 a 5 (ajustável por voz ou na configuração): limiar em m/s² para cima do repouso.
+const LIMIARES = [1.0, 0.75, 0.5, 0.35, 0.22];
+const CHAVE_SENSIBILIDADE = "assistencia.sensibilidade_passos";
 const PASSO_SOLTA = 0;         // precisa voltar a descer antes do próximo passo
 const PASSO_INTERVALO_MS = 280;
 
@@ -26,6 +32,25 @@ export class Sensores {
     this.filtrado = 0;
     this.gravidade = null;
     this.ultimoMovimento = 0; // última vez que o sensor de movimento mandou dados
+    this.picos = [];          // [tempo, valor] dos últimos 2 s, para mostrar quanto o sensor mexe
+    let n = 3;
+    try { n = +localStorage.getItem(CHAVE_SENSIBILIDADE) || 3; } catch {}
+    this.sensibilidade = Math.min(5, Math.max(1, n));
+  }
+
+  get limiar() { return LIMIARES[this.sensibilidade - 1]; }
+
+  /** Muda a sensibilidade em +1 ou -1 (ou para um valor de 1 a 5) e guarda. Devolve o novo valor. */
+  ajustarSensibilidade(passo, valor = null) {
+    this.sensibilidade = Math.min(5, Math.max(1, valor ?? this.sensibilidade + passo));
+    try { localStorage.setItem(CHAVE_SENSIBILIDADE, String(this.sensibilidade)); } catch {}
+    return this.sensibilidade;
+  }
+
+  /** Maior balanço vertical dos últimos 2 s, em m/s² (para a tela). */
+  get movimento() {
+    const desde = performance.now() - 2000;
+    return this.picos.filter(([t]) => t > desde).reduce((m, [, v]) => Math.max(m, v), 0);
   }
 
   /** O navegador está mandando dados de movimento? (no Android pode estar bloqueado nas permissões do site) */
@@ -47,11 +72,14 @@ export class Sensores {
       this.ultimoMovimento = agora;
       // Gravidade estimada por média lenta; o que sobra, projetado na vertical, é o sobe e desce do corpo
       const g = this.gravidade ??= { x: a.x, y: a.y, z: a.z };
-      g.x = 0.95 * g.x + 0.05 * a.x; g.y = 0.95 * g.y + 0.05 * a.y; g.z = 0.95 * g.z + 0.05 * a.z;
+      // média bem lenta (cerca de 1 s): mais rápida, ela acompanha o próprio passo e apaga o sinal
+      g.x = 0.98 * g.x + 0.02 * a.x; g.y = 0.98 * g.y + 0.02 * a.y; g.z = 0.98 * g.z + 0.02 * a.z;
       const ng = Math.hypot(g.x, g.y, g.z) || 1;
       const vertical = ((a.x - g.x) * g.x + (a.y - g.y) * g.y + (a.z - g.z) * g.z) / ng;
-      this.filtrado = 0.6 * this.filtrado + 0.4 * vertical;
-      if (!this.acimaDoLimiar && this.filtrado > PASSO_LIMIAR && agora - this.ultimoPasso > PASSO_INTERVALO_MS) {
+      this.filtrado = 0.5 * this.filtrado + 0.5 * vertical;
+      if (this.picos.length > 200) this.picos.splice(0, 100);
+      this.picos.push([agora, Math.abs(this.filtrado)]);
+      if (!this.acimaDoLimiar && this.filtrado > this.limiar && agora - this.ultimoPasso > PASSO_INTERVALO_MS) {
         this.acimaDoLimiar = true;
         this.ultimoPasso = agora;
         this.passos++;
@@ -131,7 +159,8 @@ export class Gravacao {
         "No Chrome, toque no cadeado ao lado do endereço, abra Permissões e ative Sensores de movimento.", true);
     } else if (this.s.passos === this.passosNoComeco) {
       this.avisouSensor = true;
-      this.a.falar("Ainda não contei nenhum passo. Segure o celular firme, junto ao peito, e ande normalmente.", true);
+      this.a.falar("Ainda não contei nenhum passo. Segure o celular firme, junto ao peito, e ande normalmente. " +
+        "Se continuar assim, diga passos mais sensível.", true);
     }
   }
 
@@ -149,8 +178,9 @@ export class Gravacao {
     this.trecho.passos = this.s.passos - this.inicioPassos;
     for (const d of deteccoes) {
       const nome = nomeFalado(d.rotulo);
-      if (nome && d.tamanho > 0.25 && !this.trecho.marcos.some(m => m.nome === nome)) {
-        this.trecho.marcos.push({ nome, aosPassos: this.trecho.passos });
+      if (nome && d.tamanho > MARCO_TAMANHO && !this.trecho.marcos.some(m => m.nome === nome)) {
+        this.trecho.marcos.push({ nome, lado: ladoDe(d.cx), aosPassos: this.trecho.passos });
+        this.a.bipe(900, 0.05); // anotado
       }
     }
     if (this.rumoTrecho == null) { this.rumoTrecho = this.s.rumo; return; }
@@ -158,7 +188,7 @@ export class Gravacao {
     const delta = diferenca(this.rumoTrecho, this.s.rumo);
     if (Math.abs(delta) < CURVA_GRAUS) { this.candidatoDesde = null; return; }
     this.candidatoDesde ??= performance.now();
-    if (performance.now() - this.candidatoDesde > CURVA_ESTAVEL_MS && this.trecho.passos >= 2) {
+    if (performance.now() - this.candidatoDesde > CURVA_ESTAVEL_MS && (this.trecho.passos >= 2 || this.trecho.marcos.length)) {
       const lado = delta > 0 ? "direita" : "esquerda";
       this.novoTrecho(lado);
       this.a.falar(`Curva à ${lado} anotada.`);
@@ -167,16 +197,21 @@ export class Gravacao {
 
   terminar() {
     this.trecho.passos = this.s.passos - this.inicioPassos;
-    const trechos = this.trechos.filter(t => t.passos > 0 || t.virar);
-    if (!trechos.length) {
-      this.a.falar("Não contei nenhum passo, o percurso não foi salvo.", true);
+    const trechos = this.trechos.filter(t => t.passos > 0 || t.virar || t.marcos.length);
+    const marcos = trechos.flatMap(t => t.marcos.map(m => m.nome));
+    if (!trechos.some(t => t.passos > 0 || t.marcos.length)) {
+      this.a.falar("Não contei passos nem vi objetos no caminho, o percurso não foi salvo. " +
+        "Ande com a câmera virada para a frente, para eu ver os móveis.", true);
       return false;
     }
     salvar([...listar().filter(p => normalizar(p.nome) !== normalizar(this.nome)),
       { nome: this.nome, criado: new Date().toISOString(), trechos }]);
     const total = trechos.reduce((n, t) => n + t.passos, 0);
     const curvas = trechos.filter(t => t.virar).length;
-    this.a.falar(`Percurso ${this.semNome ? "" : this.nome + " "}salvo: cerca de ${total} passos e ${curvas} ${curvas === 1 ? "curva" : "curvas"}.` +
+    const resumo = [total ? `cerca de ${total} passos` : "", `${curvas} ${curvas === 1 ? "curva" : "curvas"}`,
+      marcos.length ? `${marcos.length} ${marcos.length === 1 ? "objeto" : "objetos"} no caminho: ${marcos.slice(0, 6).join(", ")}` : ""]
+      .filter(Boolean).join(", ");
+    this.a.falar(`Percurso ${this.semNome ? "" : this.nome + " "}salvo: ${resumo}.` +
       (this.semNome ? ` Qual o nome dele? Toque e diga o nome, por exemplo banheiro. Se não disser, fica ${this.nome}.` : ""), true);
     return true;
   }
@@ -191,7 +226,9 @@ function deVolta(trechos) {
   const r = [];
   for (let i = trechos.length - 1; i >= 0; i--) {
     const virar = i === trechos.length - 1 ? "meia-volta" : inverso(trechos[i + 1].virar);
-    r.push({ ...trechos[i], virar, marcos: [...trechos[i].marcos].reverse() });
+    const t = trechos[i];
+    r.push({ ...t, virar, marcos: [...t.marcos].reverse()
+      .map(m => ({ ...m, lado: m.lado === "frente" ? m.lado : inverso(m.lado), aosPassos: Math.max(0, t.passos - m.aosPassos) })) });
   }
   return r;
 }
@@ -210,8 +247,11 @@ export class SeguirPercurso {
 
   get descricao() {
     const t = this.trechos[this.i];
+    if (!t || this.virando) return `Percurso ${this.nome}: trecho ${this.i + 1} de ${this.trechos.length}`;
+    const m = t.marcos[this.m];
     return `Percurso ${this.nome}: trecho ${this.i + 1} de ${this.trechos.length}` +
-      (t && !this.virando ? `, ${this.s.passos - this.inicioPassos} de ${t.passos} passos` : "");
+      (t.passos ? `, ${this.s.passos - this.inicioPassos} de ${t.passos} passos` : "") +
+      (m ? `, próximo: ${m.nome}` : "");
   }
 
   proximo() {
@@ -223,7 +263,7 @@ export class SeguirPercurso {
       return;
     }
     this.avisouFalta = false;
-    this.marcosAvisados = new Set();
+    this.m = 0; // próximo objeto esperado neste trecho
     if (t.virar) {
       this.virando = true;
       this.rumoAntes = this.s.rumo;
@@ -234,12 +274,17 @@ export class SeguirPercurso {
     }
   }
 
+  /** "a mesa, à esquerda" */
+  static marcoFalado(m) { return `${m.nome}${m.lado ? ", " + onde(m.lado) : ""}`; }
+
   andar() {
     this.virando = false;
     this.inicioPassos = this.s.passos;
     const t = this.trechos[this.i];
-    if (t.passos > 0) this.a.falar(`Siga em frente, cerca de ${t.passos} passos.`);
-    else this.proximo();
+    if (!t.passos && !t.marcos.length) { this.proximo(); return; }
+    const primeiro = t.marcos[0];
+    this.a.falar(`Siga em frente${t.passos ? `, cerca de ${t.passos} passos` : ""}.` +
+      (primeiro ? ` Primeiro: ${SeguirPercurso.marcoFalado(primeiro)}.` : ""));
   }
 
   aoQuadro(deteccoes) {
@@ -258,20 +303,33 @@ export class SeguirPercurso {
       }
       return true;
     }
-    const andados = this.s.passos - this.inicioPassos;
-    for (const d of deteccoes) {
-      const nome = nomeFalado(d.rotulo);
-      if (nome && !this.marcosAvisados.has(nome) && t.marcos.some(m => m.nome === nome)) {
-        this.marcosAvisados.add(nome);
-        this.a.falar(`Passando por ${nome}, como na gravação.`);
+    // A ordem dos objetos guia: viu o próximo esperado (ou um adiante dele), confirma e anuncia o seguinte
+    const vistos = new Set(deteccoes.filter(d => d.tamanho > MARCO_TAMANHO).map(d => nomeFalado(d.rotulo)).filter(Boolean));
+    const achado = t.marcos.findIndex((m, k) => k >= this.m && vistos.has(m.nome));
+    if (achado >= 0) {
+      const m = t.marcos[achado];
+      this.m = achado + 1;
+      // corrige a contagem de passos: aqui a gravação estava em m.aosPassos
+      this.inicioPassos = this.s.passos - m.aosPassos;
+      const seguinte = t.marcos[this.m];
+      const ultimo = !seguinte;
+      this.a.bipe(1000, 0.08);
+      if (ultimo && (!t.passos || t.passos - m.aosPassos <= 3)) {
+        this.a.falar(`${m.nome[0].toUpperCase() + m.nome.slice(1)}, como na gravação.`);
+        this.proximo();
+        return this.ativa;
       }
+      this.a.falar(`${m.nome[0].toUpperCase() + m.nome.slice(1)}, como na gravação.` +
+        (seguinte ? ` Próximo: ${SeguirPercurso.marcoFalado(seguinte)}.` : ""));
     }
-    const faltam = t.passos - andados;
+    if (!t.passos) return true; // sem passos gravados, só os objetos fazem o trecho andar
+    const faltam = t.passos - (this.s.passos - this.inicioPassos);
     if (!this.avisouFalta && t.passos >= 6 && faltam <= 3 && faltam > 0) {
       this.avisouFalta = true;
       this.a.falar(`Faltam ${faltam} passos.`);
     }
-    if (faltam <= 0) this.proximo();
+    // pelos passos, só termina o trecho se já não falta nenhum objeto esperado
+    if (faltam <= 0 && this.m >= t.marcos.length) this.proximo();
     return this.ativa;
   }
 
