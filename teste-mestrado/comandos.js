@@ -30,13 +30,13 @@ const COM_NOME = [
   ["seguir", new RegExp(`^(segu(e|ir)|repet(e|ir)|faz(er)?|percorre(r)?|me leva) ${PERCURSO}(?<nome>.*)`)],
   ["apagar", new RegExp(`^(apaga(r)?|exclui(r)?|remove(r)?|deleta(r)?) ${PERCURSO}(?<nome>.*)`)],
   ["lugar", /^(lembra(r)?|guarda(r)?|salva(r)?|grava(r)?|memoriza(r)?) (deste |este |esse |desse |o )?(lugar|local|ambiente|comodo)( como| com o nome| de nome| chamado)?(?<nome>.*)/],
+  ["cadastrar", /^(cadastra|registra|salva|memoriza|lembra|grava|reconhece|aprende)r? (a |o |um |uma |essa |esta |nova )?(pessoa|rosto)( chamad[ao]| de nome| d[ae])?(?<nome>.*)/],
   ["gravar", new RegExp(`^((eu )?(quero|vou|pode|preciso|vamos)( comecar a| comecar)? )?` +
     `(grava(r)?|comeca(r)?( a)? grava(r|cao)?|inicia(r)?( a)? grava(r|cao)?)` +
     `( (o |um |uma |a |esse |este |esta |essa |meu |minha |novo |nova )?(${ROTA}|gravacao))?${NOME_DA_ROTA}`)],
   ["gravar", new RegExp(`^((eu )?(quero|vou|pode|vamos) )?(memoriza|aprende|registra)(r)? (o |um |uma |a |esse |este |esta |essa )?(${ROTA})${NOME_DA_ROTA}`)],
   ["gravar", new RegExp(`^(nova|novo) (${ROTA}|gravacao)${NOME_DA_ROTA}`)],
   ["apagarLugar", /^(apaga|esquece|remove|exclui)r? (o )?(lugar|local) (?<nome>.+)/],
-  ["cadastrar", /^(cadastra|registra|salva|memoriza|lembra)r? (a |o |um |uma )?(pessoa|rosto)( chamad[ao]| de nome| d[ae])?(?<nome>.*)/],
   ["cadastrar", /^(esta|essa|este|esse) (e|eh) (a |o )?(?<nome>.+)/],
   ["apagarPessoa", /^(apaga|esquece|remove|exclui)r? (a |o )?(pessoa|rosto)( d[ae])? (?<nome>.+)/],
   ["mapa", /^(navega(r)?|como (eu )?(chego|vou)|rota|caminho a pe|me leva) (ate |para |pra |a |ao |na |no |em |à )*(?<nome>.+)/],
