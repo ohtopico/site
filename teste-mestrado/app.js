@@ -36,7 +36,7 @@ const TUTORIAL = [
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
 // Subir a cada atualização publicada (número do PR): aparece no canto da tela
-const VERSAO = "v46 · 29/10";
+const VERSAO = "v47 · 29/10";
 $("versao").textContent = VERSAO;
 $("versao").setAttribute("aria-label", `Versão ${VERSAO.replace(/^v/, "").replace(" · ", ", de ")}`);
 
