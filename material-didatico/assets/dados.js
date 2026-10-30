@@ -21,12 +21,12 @@ const TIPOS = {
 /* Jogos em dois grupos, pelo jeito de jogar (campo interacao de cada jogo):
    - 'perguntas': responder uma pergunta de cada vez (escolher, digitar ou clicar na resposta) e somar acertos.
    - 'outras': montar, programar, explorar, simular, arrastar, digitar textos etc.
-   Jogo novo sem o campo entra em 'outras'. */
+   Jogo novo sem o campo entra em 'outras'. A ordem abaixo é a ordem dos grupos nas páginas. */
 const INTERACOES = {
-  perguntas: { nome: 'Responder e ganhar pontos', curto: 'Perguntas e pontos',
-    desc: 'Uma pergunta de cada vez: escolha ou digite a resposta e some acertos.' },
   outras: { nome: 'Montar, explorar e simular', curto: 'Outras interações',
-    desc: 'Monte, programe, explore, simule e tome decisões para chegar ao objetivo.' }
+    desc: 'Monte, programe, explore, simule e tome decisões para chegar ao objetivo.' },
+  perguntas: { nome: 'Responder e ganhar pontos', curto: 'Perguntas e pontos',
+    desc: 'Uma pergunta de cada vez: escolha ou digite a resposta e some acertos.' }
 };
 const interacaoDe = r => (r.interacao === 'perguntas' ? 'perguntas' : 'outras');
 
