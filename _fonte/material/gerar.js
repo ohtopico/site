@@ -472,8 +472,8 @@ async function jogosE3d(browser) {
     t = t.replace(/<title>[^<]*<\/title>/, `<title>${esc(novoTitulo)}</title>`)
       .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(novoTitulo)}$2`);
     const url = `${SITE}/material-didatico/${r.url}`;
-    // recurso 3D com imagem própria (gerada por _fonte/og/gerar.js) usa a dele; os outros, a imagem do tipo
-    const propria = r.tipo === '3d' && r.url.replace(/^3d\/([\w-]+)\.html$/, '3d/img/og-$1.jpg');
+    // recurso 3D ou jogo com imagem própria (gerada por _fonte/og/gerar.js) usa a dele; os outros, a imagem do tipo
+    const propria = r.url.replace(/^(jogos|3d)\/([\w-]+)\.html$/, '$1/img/og-$2.jpg');
     const img = `${SITE}/material-didatico/${propria && fs.existsSync(path.join(MD, propria)) ? propria : OG[r.tipo]}`;
     const dados = [recursoLD(r, url, img), migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`],
       r.tipo === 'jogo' ? ['Jogos', `${SITE}/material-didatico/jogos/`] : ['Laboratório 3D', `${SITE}/material-didatico/catalogo.html?tipo=3d`], [r.titulo, url]])];
