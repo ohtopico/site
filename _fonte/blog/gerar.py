@@ -945,6 +945,8 @@ QUIZ_DIR = 'quiz-pensamento-computacional'
 _QUIZ_ASSETS = AQUI.parent.parent / QUIZ_DIR / 'assets'
 VERSAO_QUIZ = hashlib.md5(b''.join((_QUIZ_ASSETS / n).read_bytes() for n in ('quiz.js', 'quiz.css') if (_QUIZ_ASSETS / n).exists())).hexdigest()[:10]
 QUIZ_TITULO = 'Quiz de pensamento computacional para professores'
+# título da aba curto: com a assinatura, fica dentro dos 60 caracteres
+QUIZ_TITULO_ABA = 'Quiz: pensamento computacional do professor'
 QUIZ_IMAGEM_ALT = ('Capa do quiz de pensamento computacional para professores, de Júlia Roberta Quoos Alves: '
                    '12 perguntas sobre decomposição, reconhecimento de padrões, abstração e algoritmos.')
 
@@ -1052,7 +1054,7 @@ def pagina_quiz(cfg):
 </article>'''
     extra = ('<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld
              + f'\n<link rel="stylesheet" href="/{QUIZ_DIR}/assets/quiz.css?v={VERSAO_QUIZ}">')
-    head = cabeca(QUIZ_TITULO + ' | Júlia Quoos', descricao, url, imagem, QUIZ_IMAGEM_ALT, 'website', extra)
+    head = cabeca(QUIZ_TITULO_ABA + ' | Júlia Quoos', descricao, url, imagem, QUIZ_IMAGEM_ALT, 'website', extra)
     pagina = moldura('quiz.exe', f'ohtopico.com.br/{QUIZ_DIR}', '/', conteudo, f'Pronto · {total} perguntas', 'quiz')
     return head + '\n' + pagina.replace('</body>', f'<script src="/{QUIZ_DIR}/assets/quiz.js?v={VERSAO_QUIZ}" defer></script>\n</body>')
 

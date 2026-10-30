@@ -174,6 +174,9 @@ async function main() {
           const p = await browser.newPage({ viewport: { width: 1000, height: 820 }, colorScheme: 'light' });
           await p.goto(base + pag, { waitUntil: 'load' });
           await p.addStyleTag({ content: '#topbar, .topbar, header.site, .estrelas, [class*="estrela"] { display: none !important; }' });
+          // cenas 3D só carregam depois do clique em "Iniciar a cena 3D"
+          const iniciar = await p.$('.lab-iniciar');
+          if (iniciar) { await iniciar.click(); await p.waitForSelector('#palco canvas', { timeout: 15000 }).catch(() => {}); }
           await p.waitForTimeout(1500);
           cache[pag] = 'data:image/png;base64,' + (await p.screenshot()).toString('base64');
           await p.close();

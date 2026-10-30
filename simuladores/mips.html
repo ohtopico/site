@@ -148,6 +148,12 @@
     </div>
     <p class="small muted" style="margin-top:8px">Para ver as instruções sobrepostas nos cinco estágios, com bolhas e adiantamento, use o <a href="pipeline-mips.html">simulador de pipeline MIPS</a>. Segmento de texto em 0x00400000 e de dados em 0x10010000, como no simulador MARS. A memória é little-endian. <code>add</code>, <code>addi</code> e <code>sub</code> geram exceção em caso de overflow.</p>
   </details>
+  <section class="sim sobre">
+    <h2>Para que serve o simulador Mini-MIPS</h2>
+    <p style="max-width:760px">O Mini-MIPS é um simulador de assembly MIPS que roda no navegador, sem instalar nada. Você escreve o programa, monta e executa passo a passo, acompanhando os 32 registradores, a memória de dados e a saída das chamadas de sistema. Os segmentos de texto e de dados começam nos mesmos endereços do MARS, então exercícios feitos lá funcionam aqui.</p>
+    <p style="max-width:760px">Ao clicar numa linha do programa montado, o simulador mostra a codificação binária da instrução, campo por campo, nos formatos R, I e J: opcode, registradores, shamt, funct, imediato ou endereço. Também mostra o que aconteceu em cada etapa do ciclo da última instrução: busca, decodificação, execução, acesso à memória e escrita no registrador. Pseudoinstruções como li, la, move e blt aparecem já traduzidas para as instruções reais.</p>
+    <p style="max-width:760px">Em aulas de Arquitetura e Organização de Computadores, use o simulador para mostrar como um laço, um vetor na memória ou uma chamada de função viram instruções de máquina. Depois, veja as mesmas instruções sobrepostas nos cinco estágios no <a href="pipeline-mips.html">simulador de pipeline MIPS</a>, ou como a memória responde no <a href="cache.html">simulador de memória cache</a>.</p>
+  </section>
 </main>
 <footer id="footer"></footer>
 
