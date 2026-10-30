@@ -312,6 +312,22 @@ const RECURSOS = [
     habs: ['EF02CO04', 'EF03CO06'], tempo: '20–30 min',
     resumo: 'Jogo em 3D para os menores, com voz: conheça o monitor, o teclado, o mouse e as outras partes, ache cada uma, descubra para que serve e monte o computador por dentro.',
     url: 'jogos/partes-computador.html', plano: null, ficha: null },
+  { id: 'senha', tipo: 'jogo', interacao: 'perguntas', titulo: 'Senha Forte', comp: ['CO'], anos: [7, 8, 9],
+    habs: ['EF07CO07', 'EF08CO08'], tempo: '15 min',
+    resumo: 'Descubra qual senha resiste mais, crie uma frase-senha forte para uma personagem sem usar os dados dela e aprenda os hábitos que protegem as contas.',
+    url: 'jogos/senha.html', plano: 'p-golpes', ficha: 'f-co-seguranca7' },
+  { id: 'paridade', tipo: 'jogo', interacao: 'outras', titulo: 'Mágica da Paridade', comp: ['CO'], anos: [6, 7],
+    habs: ['EF06CO07', 'EF06CO01'], tempo: '10–15 min',
+    resumo: 'Prepare a mesa de cartas com o bit de paridade e descubra qual carta o computador virou escondido. É assim que os dados com erro são detectados na transmissão.',
+    url: 'jogos/paridade.html', plano: 'p-internet', ficha: null },
+  { id: 'busca-binaria', tipo: 'jogo', interacao: 'outras', titulo: 'Estante da Busca Binária', comp: ['CO'], anos: [6, 7, 8],
+    habs: ['EF08CO03', 'EF06CO05'], tempo: '10–15 min',
+    resumo: 'Encontre o livro numa estante ordenada abrindo o menor número de livros. Compare a busca um a um com a busca pela metade e veja por que a ordem importa.',
+    url: 'jogos/busca-binaria.html', plano: 'p-recursao', ficha: 'f-co-ordenar' },
+  { id: 'filas-pilhas', tipo: 'jogo', interacao: 'outras', titulo: 'Refeitório das Filas e Pilhas', comp: ['CO'], anos: [7, 8],
+    habs: ['EF08CO02', 'EF07CO03'], tempo: '15 min',
+    resumo: 'Organize a fila do lanche e a pilha de bandejas, descubra quando usar cada estrutura e entregue os pedidos do balcão na ordem certa usando uma pilha.',
+    url: 'jogos/filas-pilhas.html', plano: 'p-recursao', ficha: 'f-co-listas' },
   // ---------- Recursos 3D (Laboratório 3D) ----------
   { id: '3d-decimais', tipo: '3d', titulo: 'Material Dourado 3D', comp: ['MA'], anos: [6],
     habs: ['EF06MA01', 'EF06MA02', 'EF06MA08', 'EF06MA11'], tempo: '15 min',
@@ -816,7 +832,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', impostor: '?', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));

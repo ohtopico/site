@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estante da Busca Binária · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de algoritmos: encontre o livro numa estante ordenada abrindo o menor número de livros e compare a busca um a um com a busca pela metade. BNCC EF08CO03, EF06CO05.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/busca-binaria.html">
+<meta property="og:title" content="Estante da Busca Binária · Material didático">
+<meta property="og:description" content="Jogo de algoritmos: encontre o livro numa estante ordenada abrindo o menor número de livros e compare a busca um a um com a busca pela metade. BNCC EF08CO03, EF06CO05.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/busca-binaria.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .pedido { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 12px 16px; margin-bottom: 14px; }
+  .pedido .alvo { font-family: var(--display); font-size: 26px; background: #ffd23f; color: #111; border: 1.5px solid #111; border-radius: 12px; padding: 0 12px; }
+  .estante { background: #8a5a2b; border: 2px solid #111; border-radius: 16px; padding: 10px 10px 0; }
+  .prateleira { display: flex; align-items: flex-end; gap: 3px; min-height: 110px; padding: 0 4px; border-bottom: 10px solid #5e3b19; margin-bottom: 10px; }
+  .livro { flex: 1 1 0; min-width: 0; max-width: 46px; border: 1.5px solid #111; border-radius: 5px 5px 2px 2px; cursor: pointer; padding: 0;
+    display: flex; align-items: flex-start; justify-content: center; color: #111; font: 700 11px var(--body); writing-mode: vertical-rl; text-orientation: mixed;
+    transition: transform .15s, opacity .2s; position: relative; }
+  .livro:hover:not(:disabled) { transform: translateY(-6px); }
+  .livro:disabled { cursor: default; }
+  .livro.c0 { background: #2fa865; } .livro.c1 { background: #ffd23f; } .livro.c2 { background: #ef5a4c; } .livro.c3 { background: #f2efe6; }
+  .livro.aberto { background: #fff; outline: 3px solid #111; outline-offset: -5px; padding-top: 4px; }
+  .livro.fora { opacity: .25; }
+  .livro.achou { background: #2fa865; color: #fff; outline: 4px solid #ffd23f; transform: translateY(-10px); }
+  .livro.meio { box-shadow: 0 0 0 3px #fff; }
+  .fala { margin-top: 12px; border-radius: 18px; padding: 12px 16px; font-size: 16px; background: var(--paper); border: 1.5px solid var(--ink); min-height: 50px; }
+  .exp { margin-top: 14px; border-radius: 18px; padding: 14px 16px; font-size: 15px; }
+  .exp.ok { background: var(--ok-soft); }
+  .exp.bad { background: var(--bad-soft); }
+  .comp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+  .comp div { border-radius: 14px; background: var(--paper); border: 1.5px solid var(--ink); padding: 8px; text-align: center; font-size: 14px; }
+  .comp b { display: block; font-family: var(--display); font-size: 26px; }
+  .tabela { border-collapse: collapse; margin: 12px auto; font-size: 15px; }
+  .tabela td, .tabela th { border: 1.5px solid var(--ink); padding: 6px 12px; text-align: center; }
+  .tabela th { background: var(--pill); }
+  .center { text-align: center; padding: 16px 0; }
+  .fase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .fase-nav span { border: 1.5px solid var(--ink); border-radius: 99px; padding: 2px 12px; font-size: 13px; font-weight: 600; background: var(--paper); }
+  .fase-nav span.feito { background: var(--ok); border-color: var(--ok); color: var(--paper); }
+  .fase-nav span.agora { background: var(--ink); color: var(--paper); }
+  @media (max-width: 560px) { .livro { font-size: 9px; } .prateleira { min-height: 90px; gap: 2px; } .comp { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Os livros da biblioteca estão em ordem pelo código da etiqueta (ou pelo nome, na lista de chamada). Você precisa encontrar o livro pedido abrindo o <strong>menor número de livros</strong> possível. Cada livro aberto mostra o código e diz se o procurado está antes ou depois. Os livros que não podem mais ser o procurado ficam apagados.</p>
+    <p>A estratégia campeã é abrir sempre o livro do <strong>meio</strong> do trecho que sobrou. Ela se chama <strong>busca binária</strong>: a cada passo, metade da estante é descartada. Na última fase a estante está bagunçada. Veja o que acontece.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('busca-binaria');
+(function () {
+  const NOMES = ['Alice', 'Ana', 'Arthur', 'Beatriz', 'Bernardo', 'Bruna', 'Caio', 'Camila', 'Davi', 'Eduarda', 'Enzo', 'Felipe', 'Gabriel', 'Giovana', 'Heitor', 'Helena',
+    'Isadora', 'João', 'Júlia', 'Laura', 'Lorenzo', 'Luiza', 'Manuela', 'Mateus', 'Miguel', 'Nicolas', 'Pedro', 'Rafaela', 'Samuel', 'Sofia', 'Valentina'];
+  const FASES = [
+    { n: 15, tipo: 'num', titulo: 'Estante pequena', txt: 'A estante tem 15 livros em ordem crescente de código.' },
+    { n: 31, tipo: 'num', titulo: 'Estante média', txt: 'Agora são 31 livros. Será que dá para achar abrindo só 5?' },
+    { n: 63, tipo: 'num', titulo: 'Estante grande', txt: '63 livros! O dobro de livros pede só um passo a mais.' },
+    { n: 31, tipo: 'nome', titulo: 'Lista de chamada', txt: 'As pastas da turma estão em ordem alfabética. Encontre a pasta pedida.' },
+    { n: 15, tipo: 'bagunca', titulo: 'Estante bagunçada', txt: 'Alguém guardou os livros fora de ordem. Tente achar o livro pedido.' }
+  ];
+  const stage = document.getElementById('stage');
+  let f = 0, pontos = 0, livros, alvo, lo, hi, abertos, achado, ordemOk;
+  const shuffle = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  const maxPassos = n => Math.ceil(Math.log2(n + 1));
+  const rotulo = v => String(v);
+
+  function iniciar() {
+    const F = FASES[f];
+    if (F.tipo === 'nome') livros = NOMES.slice(0, F.n);
+    else {
+      const set = new Set(); while (set.size < F.n) set.add(100 + Math.floor(Math.random() * 900));
+      livros = [...set].sort((a, b) => a - b);
+    }
+    ordemOk = F.tipo !== 'bagunca';
+    alvo = livros[Math.floor(Math.random() * livros.length)];
+    if (!ordemOk) livros = shuffle(livros.slice());
+    lo = 0; hi = livros.length - 1; abertos = []; achado = false;
+    desenhar(F.txt);
+  }
+  const cmp = (a, b) => typeof a === 'number' ? a - b : a.localeCompare(b, 'pt-BR');
+
+  function desenhar(fala, extra) {
+    const F = FASES[f];
+    const porPrat = livros.length > 32 ? 21 : livros.length > 15 ? 16 : 15;
+    let html = '';
+    for (let p = 0; p < livros.length; p += porPrat) {
+      html += '<div class="prateleira">';
+      for (let i = p; i < Math.min(p + porPrat, livros.length); i++) {
+        const ab = abertos.includes(i), fora = ordemOk && (i < lo || i > hi) && !ab;
+        const ok = achado && livros[i] === alvo;
+        const alt = 74 + ((i * 37) % 30);
+        html += `<button class="livro c${i % 4} ${ab ? 'aberto' : ''} ${fora ? 'fora' : ''} ${ok ? 'achou' : ''}" style="height:${alt}px" type="button" data-i="${i}"
+          ${ab || fora || achado ? 'disabled' : ''} aria-label="Livro ${i + 1}${ab ? ', ' + rotulo(livros[i]) : fora ? ', descartado' : ', fechado'}">${ab ? esc(rotulo(livros[i])) : ''}</button>`;
+      }
+      html += '</div>';
+    }
+    stage.innerHTML = `
+      <div class="fase-nav">${FASES.map((x, k) => `<span class="${k < f ? 'feito' : k === f ? 'agora' : ''}">${k + 1}. ${x.titulo}</span>`).join('')}</div>
+      <div class="pedido"><span>Procure ${F.tipo === 'nome' ? 'a pasta de' : 'o livro de código'}</span><span class="alvo">${esc(rotulo(alvo))}</span>
+        <span>Livros abertos: <b>${abertos.length}</b></span>${ordemOk ? `<span class="muted small">Meta: até ${maxPassos(livros.length)}</span>` : ''}</div>
+      <div class="estante" id="est">${html}</div>
+      <div class="fala" role="status">${fala || ''}</div>${extra || ''}`;
+    document.getElementById('est').onclick = e => { const b = e.target.closest('.livro'); if (!b || b.disabled) return; abrir(+b.dataset.i); };
+    const nx = document.getElementById('nx'); if (nx) { nx.onclick = () => { f++; f < FASES.length ? iniciar() : fim(); }; nx.focus(); }
+    const dc = document.getElementById('dc');
+    if (dc) dc.onclick = () => { const m = Math.floor((lo + hi) / 2); const b = document.querySelector(`.livro[data-i="${m}"]`); if (b) { b.classList.add('meio'); b.focus(); } };
+  }
+  function abrir(i) {
+    const F = FASES[f];
+    abertos.push(i);
+    const v = livros[i], c = cmp(alvo, v);
+    if (c === 0) {
+      achado = true;
+      const lin = ordemOk ? livros.indexOf(alvo) + 1 : null;
+      const meta = maxPassos(livros.length);
+      let extra;
+      if (ordemOk) {
+        const bom = abertos.length <= meta; pontos += bom ? 1 : .5;
+        extra = `<div class="exp ${bom ? 'ok' : 'bad'}"><strong>${bom ? 'Busca de bibliotecária experiente.' : 'Encontrou, mas dava para abrir menos.'}</strong>
+          ${bom ? 'Você ficou dentro da meta.' : 'Experimente abrir sempre o livro do meio do trecho que sobrou.'}
+          <div class="comp"><div><b>${abertos.length}</b>livros que você abriu</div><div><b>${lin}</b>abrindo um por um, desde o primeiro</div><div><b>${meta}</b>no máximo, abrindo sempre o do meio</div></div></div>
+          <div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="nx">${f + 1 < FASES.length ? 'Próxima estante' : 'Ver resultado'}</button></div>`;
+      } else {
+        extra = `<div class="exp ok"><strong>Achou, depois de abrir ${abertos.length} livros.</strong> Numa estante bagunçada, abrir o livro do meio não ajuda: ele não diz se o procurado está antes ou depois. Só resta abrir um por um. A busca binária só funciona com a lista em ordem. Por isso bibliotecas, dicionários e bancos de dados guardam tudo ordenado.</div>
+          <div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="nx">Ver resultado</button></div>`;
+      }
+      desenhar(`Encontrou! ${F.tipo === 'nome' ? 'A pasta de' : 'O livro'} ${esc(rotulo(alvo))} estava na posição ${i + 1}.`, extra);
+      return;
+    }
+    if (!ordemOk) { desenhar(`Este é o ${esc(rotulo(v))}. Não é o procurado, e como a estante está fora de ordem, ele não dá pista de onde procurar.`); return; }
+    if (c > 0) lo = Math.max(lo, i + 1); else hi = Math.min(hi, i - 1);
+    const sobra = hi - lo + 1;
+    const dir = c > 0 ? (F.tipo === 'nome' ? 'vem depois na ordem alfabética' : 'tem código maior') : (F.tipo === 'nome' ? 'vem antes na ordem alfabética' : 'tem código menor');
+    desenhar(`Este é o ${esc(rotulo(v))}. O procurado ${dir}: ${c > 0 ? 'está à direita' : 'está à esquerda'}. ${sobra === 1 ? 'Só sobrou um livro possível.' : `Sobraram ${sobra} livros possíveis.`}`,
+      abertos.length >= maxPassos(livros.length) - 1 ? '' : `<div class="btn-row" style="margin-top:10px"><button class="btn ghost" type="button" id="dc">Qual é o livro do meio?</button></div>`);
+  }
+  function fim() {
+    const total = FASES.filter(x => x.tipo !== 'bagunca').length;
+    const pct = pontos / total * 100;
+    window.MDP && MDP.registrar('busca-binaria', pct);
+    stage.innerHTML = `<div class="center">
+      <h2>${pct >= 85 ? 'Mestre da busca' : pct >= 60 ? 'Muito bem' : 'Bom começo'}</h2>
+      <p style="font-size:20px"><b>${pontos}</b> de ${total} pontos</p>
+      <p>Quantos livros é preciso abrir, no pior caso?</p>
+      <table class="tabela"><thead><tr><th>Livros na estante</th><th>Um por um</th><th>Pelo meio</th></tr></thead><tbody>
+        ${[15, 63, 1000, 1000000].map(n => `<tr><td>${n.toLocaleString('pt-BR')}</td><td>${n.toLocaleString('pt-BR')}</td><td>${maxPassos(n)}</td></tr>`).join('')}
+      </tbody></table>
+      <div class="note" style="text-align:left;margin:18px auto;max-width:640px">
+        <strong>Para levar:</strong> cada vez que a estante dobra de tamanho, a busca pela metade precisa de só mais um passo. É assim que um buscador ou a lista de contatos do celular encontra um nome entre milhões em instantes, desde que os dados estejam em ordem.
+      </div>
+      <button class="btn" type="button" id="again">Jogar de novo</button></div>`;
+    document.getElementById('again').onclick = () => { f = 0; pontos = 0; iniciar(); };
+  }
+  iniciar();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -68,7 +68,21 @@
       <rect x="12" y="32" width="12" height="9" rx="2" fill="${A}" ${T}/><path d="M30 42h20" ${T}/>`,
     cambio: `<circle cx="22" cy="24" r="14" fill="${A}" ${T}/><text x="15" y="30" font-family="Sniglet,sans-serif" font-weight="800" font-size="16" fill="#111">R$</text>
       <circle cx="42" cy="42" r="14" fill="${V}" ${T}/><text x="37" y="48" font-family="Sniglet,sans-serif" font-weight="800" font-size="17" fill="#111">$</text>
-      <path d="M44 12c6 2 10 8 10 14M52 22l2 4 4-3" fill="none" ${T}/><path d="M20 54c-6-2-10-8-10-14M12 44l-2-4-4 3" fill="none" ${T}/>`
+      <path d="M44 12c6 2 10 8 10 14M52 22l2 4 4-3" fill="none" ${T}/><path d="M20 54c-6-2-10-8-10-14M12 44l-2-4-4 3" fill="none" ${T}/>`,
+    senha: `<path d="M20 28v-8a12 12 0 0 1 24 0v8" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+      <rect x="10" y="28" width="44" height="30" rx="7" fill="${A}" ${T}/><circle cx="21" cy="43" r="3.2" fill="#111"/><circle cx="32" cy="43" r="3.2" fill="#111"/><circle cx="43" cy="43" r="3.2" fill="#111"/>
+      <path d="M48 6l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6-4.5-4 6-1z" fill="${V}" ${T}/>`,
+    paridade: `<rect x="6" y="6" width="14" height="18" rx="3" fill="${A}" ${T}/><rect x="25" y="6" width="14" height="18" rx="3" fill="${B}" ${T}/><rect x="44" y="6" width="14" height="18" rx="3" fill="${B}" stroke="#111" stroke-width="2.5" stroke-dasharray="3 3"/>
+      <rect x="6" y="29" width="14" height="18" rx="3" fill="${B}" ${T}/><rect x="25" y="29" width="14" height="18" rx="3" fill="${R}" ${T}/><rect x="44" y="29" width="14" height="18" rx="3" fill="${A}" stroke="#111" stroke-width="2.5" stroke-dasharray="3 3"/>
+      <path d="M14 58l18-6 18 6" fill="none" stroke="${V}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`,
+    'busca-binaria': `<path d="M4 56h56" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+      <rect x="6" y="22" width="8" height="34" fill="${V}" ${T} opacity=".35"/><rect x="15" y="18" width="8" height="38" fill="${A}" ${T} opacity=".35"/><rect x="24" y="24" width="8" height="32" fill="${R}" ${T} opacity=".35"/>
+      <rect x="33" y="12" width="9" height="44" fill="${V}" ${T}/><rect x="43" y="20" width="8" height="36" fill="${A}" ${T}/><rect x="52" y="16" width="8" height="40" fill="${R}" ${T}/>
+      <path d="M37.5 4v6" stroke="#111" stroke-width="3" stroke-linecap="round"/><path d="M33 6l4.5 5 4.5-5" fill="none" ${T}/>`,
+    'filas-pilhas': `<circle cx="10" cy="16" r="5" fill="${V}" ${T}/><rect x="4" y="22" width="12" height="16" rx="5" fill="${V}" ${T}/>
+      <circle cx="26" cy="16" r="5" fill="${A}" ${T}/><rect x="20" y="22" width="12" height="16" rx="5" fill="${A}" ${T}/>
+      <rect x="38" y="50" width="22" height="6" rx="2" fill="${R}" ${T}/><rect x="38" y="42" width="22" height="6" rx="2" fill="${A}" ${T}/><rect x="38" y="34" width="22" height="6" rx="2" fill="${V}" ${T}/>
+      <path d="M38 24h22M49 16v14M44 20l5-5 5 5" fill="none" ${T}/><path d="M4 46h28" ${T}/>`
   };
   window.iconeJogo = function (id, titulo) {
     const s = window.ICONES_JOGOS[id];
