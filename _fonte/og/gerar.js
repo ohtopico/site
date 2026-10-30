@@ -73,6 +73,12 @@ const IMAGENS = [
     ['espaco-palavras', 'Espaço das', 'palavras', 'Palavras parecidas ficam perto: analogias e o viés que a IA aprende dos textos', ['Embeddings', 'Viés', 'EF09CO07']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/3d/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Laboratório 3D · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/3d/${nome}`, capturas: [`/material-didatico/3d/${nome}.html`] })),
+  /* Jogos com imagem própria, em material-didatico/jogos/img/og-<página>.jpg; os outros jogos usam a capa do material.
+     O #captura pede à página para abrir sem a tela de boas-vindas. */
+  ...[
+    ['sitio-binario', 'Sítio', 'Binário', 'Jogo de fazenda: plante, colha e monte peças que ensinam binário, repetição, pilha, fila e redes', ['Computação', 'Jogo', '6º ao 9º ano']]
+  ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/jogos/img/og-${nome}.jpg`, janela: `${nome}.html`,
+    faixa: 'Jogo · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/jogos/${nome}`, capturas: [`/material-didatico/jogos/${nome}.html#captura`] })),
   { arq: 'mundo/og-mundo.jpg', janela: 'mundo.html', faixa: 'Passeie pelo site', t1: 'Mundo', t2: '3D',
     sub: 'Cada prédio é uma página: jogos, Laboratório 3D, simuladores, material didático e blog', pills: ['Jogos e 3D', 'Simuladores', 'Para professores'],
     url: 'ohtopico.com.br/mundo', capturas: ['/mundo/'] },
