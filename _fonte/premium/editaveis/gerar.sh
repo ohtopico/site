@@ -18,4 +18,7 @@ for MES in $P/meses/*/; do
 done
 # kits mensais (PDFs, editáveis e painel da aula) a partir de $P/kits/dados.py e dos guias dos jogos
 python3 _fonte/premium/editaveis/kit_mes.py --fontes $P --tipos "$FONTES"
+# versão acessível já sai com os kits; Feira de Ciências e guia de adaptação; gerador de provas (banco embutido na página cifrada)
+python3 _fonte/premium/editaveis/extras.py --fontes $P --tipos "$FONTES"
+python3 _fonte/premium/editaveis/banco.py --fontes $P
 python3 _fonte/premium/proteger.py --site . --fontes $P "$@"   # --completar-senhas cria as senhas que faltam
