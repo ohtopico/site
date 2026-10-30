@@ -54,7 +54,8 @@ const IMAGENS = [
      aqui e aponta o og:image para esse arquivo; o gerar.js do material usa a mesma imagem nos dados estruturados. */
   ...[
     ['torre-recursao', 'Torre da', 'recursão', 'Torre de Hanói em 3D: resolva, ensine a regra ao robô e veja a pilha de chamadas', ['Recursão', 'EF08CO01', '8º ano']],
-    ['cozinha-paralela', 'Cozinha', 'paralela', 'Robôs cozinheiros dividem os pedidos, disputam a panela e caem num impasse', ['Paralelismo', 'EF08CO05', '8º ano']]
+    ['cozinha-paralela', 'Cozinha', 'paralela', 'Robôs cozinheiros dividem os pedidos, disputam a panela e caem num impasse', ['Paralelismo', 'EF08CO05', '8º ano']],
+    ['tanque', 'Enche o', 'tanque', 'Prismas, cilindros e cones enchendo de água: estime o volume antes de ver', ['Volume', 'EF09MA19', '8º e 9º ano']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/3d/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Laboratório 3D · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/3d/${nome}`, capturas: [`/material-didatico/3d/${nome}.html`] })),
   { arq: 'dados-da-regiao/og-dados-da-regiao.jpg', janela: 'dados-da-regiao.html', faixa: 'Censo Escolar · IBGE', t1: 'Dados da', t2: 'educação',

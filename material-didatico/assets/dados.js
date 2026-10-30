@@ -142,6 +142,8 @@ const HABILIDADES_RAW = [
   ['EF08MA12', 8, 'AL', 'Proporcionalidade', 'Identificar a natureza da variação de duas grandezas, diretamente, inversamente proporcionais ou não proporcionais, expressando a relação existente por meio de sentença algébrica e representá-la no plano cartesiano.'],
   ['EF08MA13', 8, 'AL', 'Proporcionalidade', 'Resolver e elaborar problemas que envolvam grandezas diretamente ou inversamente proporcionais, por meio de estratégias variadas.'],
   ['EF08MA19', 8, 'GM', 'Área de figuras planas', 'Resolver e elaborar problemas que envolvam medidas de área de figuras geométricas, utilizando expressões de cálculo de área (quadriláteros, triângulos e círculos), em situações como determinar medida de terrenos.'],
+  ['EF08MA20', 8, 'GM', 'Volume de bloco retangular e capacidade', 'Reconhecer a relação entre um litro e um decímetro cúbico e a relação entre litro e metro cúbico, para resolver problemas de cálculo de capacidade de recipientes.'],
+  ['EF08MA21', 8, 'GM', 'Volume de bloco retangular e capacidade', 'Resolver e elaborar problemas que envolvam o cálculo do volume de recipiente cujo formato é o de um bloco retangular.'],
   ['EF09MA03', 9, 'NU', 'Potências e raízes', 'Efetuar cálculos com números reais, inclusive potências com expoentes fracionários.'],
   ['EF09MA07', 9, 'AL', 'Razão entre grandezas de espécies diferentes', 'Resolver problemas que envolvam a razão entre duas grandezas de espécies diferentes, como velocidade e densidade demográfica.'],
   ['EF09MA08', 9, 'AL', 'Proporcionalidade', 'Resolver e elaborar problemas que envolvam relações de proporcionalidade direta e inversa entre duas ou mais grandezas, inclusive escalas, divisão em partes proporcionais e taxa de variação, em contextos socioculturais, ambientais e de outras áreas.'],
@@ -149,6 +151,7 @@ const HABILIDADES_RAW = [
   ['EF09MA10', 9, 'GE', 'Paralelas e transversal', 'Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.'],
   ['EF09MA12', 9, 'GE', 'Semelhança de triângulos', 'Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.'],
   ['EF09MA14', 9, 'GE', 'Tales e Pitágoras', 'Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.'],
+  ['EF09MA19', 9, 'GM', 'Volume de prismas e cilindros', 'Resolver e elaborar problemas que envolvam medidas de volumes de prismas e de cilindros retos, inclusive com uso de expressões de cálculo, em situações cotidianas.'],
   ["EF06MA31", 6, "PE", "Leitura de tabelas e gráficos", "Identificar as variáveis e suas frequências e os elementos constitutivos (título, eixos, legendas, fontes e datas) em diferentes tipos de gráfico."],
   ["EF06MA33", 6, "PE", "Coleta de dados e construção de gráficos", "Planejar e coletar dados de pesquisa referente a práticas sociais escolhidas pelos alunos e fazer uso de planilhas eletrônicas para registro, representação e interpretação das informações, em tabelas, vários tipos de gráficos e texto."],
   ["EF07MA02", 7, "NU", "Porcentagens: acréscimos e decréscimos", "Resolver e elaborar problemas que envolvam porcentagens, como os que lidam com acréscimos e decréscimos simples, utilizando estratégias pessoais, cálculo mental e calculadora, no contexto de educação financeira, entre outros."],
@@ -431,6 +434,10 @@ const RECURSOS = [
     habs: ['EF06MA17', 'EF06MA18', 'EF06MA19', 'EF06MA20', 'EF07MA27'], tempo: '15–20 min',
     resumo: 'Polígonos, prismas, pirâmides, poliedros de Platão e corpos redondos com faces transparentes: todas as arestas aparecem, as escondidas em tracejado. Conte vértices, arestas, faces, diagonais e ângulos.',
     url: '3d/figuras.html', plano: null, ficha: null },
+  { id: '3d-tanque', tipo: '3d', titulo: 'Enche o Tanque: Volume e Capacidade', comp: ['MA'], anos: [8, 9],
+    habs: ['EF09MA19', 'EF08MA21', 'EF08MA20'], tempo: '15–20 min',
+    resumo: 'Prismas, cilindros e cones de vidro enchendo de água. Estime quantos litros cabem ou até onde a água chega, abra a torneira e compare com a conta.',
+    url: '3d/tanque.html', plano: null, ficha: null },
   // ---------- Laboratório 3D de IA, dados e computação ----------
   { id: '3d-rede-neural', tipo: '3d', titulo: 'Rede Neural por Dentro', comp: ['CO'], anos: [9],
     habs: ['EF09CO07', 'EF06CO05'], tempo: '20 min',
@@ -890,7 +897,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-torre-recursao': '🗼', '3d-cozinha-paralela': '🍳', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-tanque': '🚰', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-torre-recursao': '🗼', '3d-cozinha-paralela': '🍳', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
@@ -2600,6 +2607,8 @@ const ESTATICAS = {
   "hab:EF08MA12": "bncc/ef08ma12/",
   "hab:EF08MA13": "bncc/ef08ma13/",
   "hab:EF08MA19": "bncc/ef08ma19/",
+  "hab:EF08MA20": "bncc/ef08ma20/",
+  "hab:EF08MA21": "bncc/ef08ma21/",
   "hab:EF09MA03": "bncc/ef09ma03/",
   "hab:EF09MA07": "bncc/ef09ma07/",
   "hab:EF09MA08": "bncc/ef09ma08/",
@@ -2607,6 +2616,7 @@ const ESTATICAS = {
   "hab:EF09MA10": "bncc/ef09ma10/",
   "hab:EF09MA12": "bncc/ef09ma12/",
   "hab:EF09MA14": "bncc/ef09ma14/",
+  "hab:EF09MA19": "bncc/ef09ma19/",
   "hab:EF06MA31": "bncc/ef06ma31/",
   "hab:EF06MA33": "bncc/ef06ma33/",
   "hab:EF07MA02": "bncc/ef07ma02/",
