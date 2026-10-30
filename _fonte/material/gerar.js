@@ -258,7 +258,7 @@ function paginaHab(h) {
 <base href="/material-didatico/">
 ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['Explorar a BNCC', `${SITE}/material-didatico/bncc.html`], [c, url]])] })}
+${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], h.comp === 'CO' ? ['BNCC Computação', `${SITE}/material-didatico/${HUB_CO}`] : ['Explorar a BNCC', `${SITE}/material-didatico/bncc.html`], [c, url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -279,7 +279,7 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: 
 <body>
 <header id="topbar"></header>
 <main class="doc" id="doc">
-  <div class="crumbs"><a href="bncc.html?comp=${h.comp}&amp;ano=${h.ano}">← Explorar a BNCC</a></div>
+  <div class="crumbs">${h.comp === 'CO' ? `<a href="${HUB_CO}#ano-${h.ano}">← BNCC Computação</a>` : `<a href="bncc.html?comp=${h.comp}&amp;ano=${h.ano}">← Explorar a BNCC</a>`}</div>
   <span class="eyebrow">${h.comp === 'CO' ? '💻' : '📐'} Habilidade da BNCC · ${area} · ${h.ano}º ano</span>
   <h1>${c}: ${esc(h.objeto)}</h1>
   <p class="lead">${esc(h.texto)}</p>
@@ -303,6 +303,105 @@ ${tipos.map(t => `
 ${vizinhas.length ? `
   <h2>Outras habilidades do ${h.ano}º ano</h2>
   <div class="vizinhas">${vizinhas.map(o => `<a class="tag code ${o.comp.toLowerCase()}" href="${EST['hab:' + o.codigo]}" title="${esc(o.objeto)}">${o.codigo}</a>`).join('')}</div>` : ''}
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>mdTopbar('bncc'); mdFooter();</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
+`;
+}
+
+/* ---------- página central da BNCC Computação ---------- */
+const HUB_CO = 'bncc/';
+function paginaHubComputacao() {
+  const url = `${SITE}/material-didatico/${HUB_CO}`;
+  const cos = habs.filter(h => h.comp === 'CO');
+  const anos = [...new Set(cos.map(h => h.ano))].sort();
+  const totalMats = new Set(cos.flatMap(h => materiaisDe(h.codigo).map(r => r.id))).size;
+  const title = titulo(`BNCC Computação: ${cos.length} habilidades com materiais${ASSINATURA}`, `BNCC Computação: ${cos.length} habilidades com materiais`);
+  const desc = cortar(`BNCC Computação do 6º ao 9º ano: as ${cos.length} habilidades por ano e eixo, com plano de aula, slides, jogos, fichas e listas gratuitos.`, 155);
+  const img = `${SITE}/material-didatico/${OG.hab}`;
+  const eixos = ['PC', 'MD', 'CD'];
+  const nEixo = e => cos.filter(h => h.eixo === e).length;
+  const linha = h => {
+    const n = materiaisDe(h.codigo).length + (D.SLIDES[h.codigo] ? 1 : 0);
+    return `
+      <a class="card hab" href="${EST['hab:' + h.codigo]}">
+        <span class="small muted">${h.codigo} · ${D.EIXOS[h.eixo].nome} · ${n} ${n === 1 ? 'material' : 'materiais'}</span>
+        <strong>${esc(h.objeto)}</strong>
+        <span class="small muted">${esc(h.texto)}</span>
+      </a>`;
+  };
+  const ldPagina = {
+    '@type': 'CollectionPage', name: title, description: desc, url, inLanguage: 'pt-BR', image: img, author: AUTORA,
+    about: { '@type': 'DefinedTermSet', name: 'BNCC Computação (Ensino Fundamental, anos finais)' },
+    mainEntity: {
+      '@type': 'ItemList', numberOfItems: cos.length,
+      itemListElement: cos.map((h, i) => ({ '@type': 'ListItem', position: i + 1, name: `${h.codigo}: ${h.objeto}`, url: `${SITE}/material-didatico/${EST['hab:' + h.codigo]}` }))
+    }
+  };
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+${MARCA}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e materiais', ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['BNCC Computação', url]])] })}
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 36px; }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .saltos { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+  <div class="crumbs"><a href="./">← Material didático</a></div>
+  <span class="eyebrow">💻 BNCC Computação · Ensino Fundamental, 6º ao 9º ano</span>
+  <h1>BNCC Computação: as ${cos.length} habilidades do 6º ao 9º ano</h1>
+  <p class="lead">Todas as habilidades de Computação dos anos finais do Ensino Fundamental, organizadas por ano e por eixo, cada uma com plano de aula, slides, jogos, fichas e listas de exercícios gratuitos.</p>
+  <div class="meta">
+    <div><span>Habilidades</span>${cos.length}, do 6º ao 9º ano</div>
+    <div><span>Materiais</span>${totalMats} gratuitos</div>
+    <div><span>Eixos</span>${eixos.length}: ${eixos.map(e => D.EIXOS[e].nome.toLowerCase()).join(', ')}</div>
+    <div><span>Licença</span>CC BY-NC-SA 4.0</div>
+  </div>
+  <nav class="saltos" aria-label="Ir para o ano">${anos.map(a => `<a class="btn ghost" href="bncc/#ano-${a}">${a}º ano</a>`).join('')}</nav>
+
+  <h2>O que é a BNCC Computação</h2>
+  <p>A BNCC Computação é o complemento da Base Nacional Comum Curricular que tornou a Computação parte da formação de todos os estudantes da Educação Básica. Foi aprovada pelo Conselho Nacional de Educação no Parecer CNE/CEB nº 2/2022 e homologada na Resolução CNE/CEB nº 1/2022. Ela não exige uma disciplina nova nem laboratório de informática: as habilidades podem ser trabalhadas dentro de outros componentes, em projetos ou em aulas próprias, com ou sem computador.</p>
+  <p>Do 6º ao 9º ano, as habilidades seguem o código <strong>EF0XCO00</strong> (por exemplo, EF06CO01 é a primeira habilidade de Computação do 6º ano) e se dividem em três eixos:</p>
+  <ul>
+    <li><strong>Pensamento computacional</strong> (${nEixo('PC')} habilidades): decompor problemas, reconhecer padrões, abstrair e escrever algoritmos, com e sem programação.</li>
+    <li><strong>Mundo digital</strong> (${nEixo('MD')} habilidades): como computadores, redes, internet e dados funcionam por dentro.</li>
+    <li><strong>Cultura digital</strong> (${nEixo('CD')} habilidades): uso crítico, ético e seguro da tecnologia, direitos autorais, privacidade e convivência on-line.</li>
+  </ul>
+  <p>Abaixo estão as ${cos.length} habilidades. Cada link leva a uma página com tudo o que está pronto para a aula: plano, slides em PDF, jogos que funcionam no navegador e no celular, fichas desplugadas para imprimir e listas com gabarito.</p>
+${anos.map(a => `
+  <h2 id="ano-${a}">${a}º ano</h2>
+  <div class="related">${cos.filter(h => h.ano === a).map(linha).join('')}
+  </div>`).join('\n')}
+
+  <h2>Para levar a BNCC Computação à sua escola</h2>
+  <p>A <a href="/formacao-continuada/">formação de professores em IA e Computação</a> ajuda escolas e redes a planejar o ano com essas habilidades, mesmo sem professor da área ou laboratório. Para explorar também as habilidades de Matemática, use o <a href="bncc.html">explorador da BNCC</a>.</p>
 </main>
 <footer id="footer"></footer>
 <script>window.MD_BASE = '';</script>
@@ -474,6 +573,11 @@ async function main() {
       const t = paginaHab(h);
       if (escrever(path.join(MD, EST['hab:' + h.codigo], 'index.html'), t)) novas++;
       sitemap.push([`${SITE}/material-didatico/${EST['hab:' + h.codigo]}`, hash(t)]);
+    }
+    {
+      const t = paginaHubComputacao();
+      if (escrever(path.join(MD, HUB_CO, 'index.html'), t)) novas++;
+      sitemap.push([`${SITE}/material-didatico/${HUB_CO}`, hash(t)]);
     }
     const jogos = await jogosE3d(browser);
     const sims = await simuladores(browser);

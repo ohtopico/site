@@ -35,7 +35,7 @@
   .stat span { font-size: 14px; color: var(--ink-2); }
   .hero .areas { margin-top: 40px; }
   .area-door .go { align-self: flex-start; margin-top: 4px; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 9px 18px; font-size: 15px; }
-  .atalhos { margin-top: 18px; padding: 18px 0 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .atalhos { margin-top: 18px; padding: 18px 0 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
   .atalho { border: 1.5px solid var(--ink); border-radius: 22px; padding: 14px 18px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; flex-direction: column; gap: 2px; transition: transform .15s, box-shadow .15s; }
   .atalho:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
   .atalho strong { font-family: var(--display); font-size: 19px; }
@@ -96,6 +96,7 @@
       </div>
       <nav class="atalhos" aria-label="Outros caminhos">
         <a class="atalho" href="catalogo.html"><strong>Catálogo</strong><span>Busca e filtros nas duas áreas</span></a>
+        <a class="atalho" href="bncc/"><strong>BNCC Computação</strong><span>As 42 habilidades com materiais</span></a>
         <a class="atalho" href="bncc.html"><strong>Explorar a BNCC</strong><span>Habilidades ano a ano</span></a>
         <a class="atalho" href="professor.html"><strong>Sou professor(a)</strong><span>Planos, slides e orientações</span></a>
         <a class="atalho destaque" href="../jogos/"><strong>Sou estudante</strong><span>Jogos do meu ano, com estrelas</span></a>
