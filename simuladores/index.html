@@ -24,43 +24,94 @@
 <link rel="stylesheet" href="../material-didatico/assets/md.css">
 <link rel="stylesheet" href="assets/sim.css">
 <style>
-  .hero { padding: 56px 0 44px; border-bottom: 1.5px solid var(--ink); background:
-    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 22px 22px; }
-  .hero-inner { max-width: 760px; }
-  .hero p.lead { font-size: 19px; color: var(--ink-2); }
-  .hero .terminal { display: inline-block; font-family: ui-monospace, Consolas, monospace; font-size: 14px; background: var(--ink); color: var(--paper); border-radius: 10px; padding: 6px 12px; margin-bottom: 14px; }
-  .u-card .sig { align-self: flex-start; font-family: ui-monospace, Consolas, monospace; font-weight: 700; font-size: 15px; border: 1.5px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 2px 8px; }
-  .u-card .niveis { margin-top: 0; }
-  .u-card .bncc { font-size: 13px; color: var(--ink-2); }
-  .filtro { margin-top: 18px; }
+  /* Cores das áreas: fundos suaves sobre a paleta do site (sem azul) */
+  :root { --a-ia: #e3f1e8; --a-fund: #fff3c4; --a-arq: #fbe0da; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --a-ia: #173323; --a-fund: #3a3416; --a-arq: #3b211c; } }
+  :root[data-theme="dark"] { --a-ia: #173323; --a-fund: #3a3416; --a-arq: #3b211c; }
+
+  .sim-hero { padding: 48px 0 36px; border-bottom: 1.5px solid var(--ink); background: radial-gradient(var(--line) 1.2px, transparent 1.4px) 0 0 / 18px 18px; }
+  .sim-hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; }
+  .sim-hero h1 { font-size: clamp(34px, 5.5vw, 56px); max-width: 760px; margin-bottom: 10px; }
+  .sim-hero p.lead { font-size: 18px; color: var(--ink-2); max-width: 640px; margin: 0; }
+  .terminal { display: inline-block; font-family: ui-monospace, Consolas, monospace; font-size: 14px; background: var(--ink); color: var(--paper); border-radius: 10px; padding: 6px 12px; margin-bottom: 16px; }
+  .terminal::after { content: '▍'; margin-left: 2px; animation: pisca 1.1s steps(1) infinite; }
+  @keyframes pisca { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .terminal::after { animation: none; } }
+  .stats { display: grid; grid-template-columns: repeat(3, auto); gap: 10px; }
+  .stats div { border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 12px 16px; min-width: 112px; box-shadow: 4px 4px 0 var(--ink); }
+  .stats b { display: block; font-family: var(--display); font-size: 30px; line-height: 1.1; }
+  .stats span { display: block; font-size: 13px; line-height: 1.3; color: var(--ink-2); }
+  @media (max-width: 860px) { .sim-hero .wrap { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .stats { grid-template-columns: repeat(3, 1fr); } .stats div { min-width: 0; padding: 10px 12px; } .stats b { font-size: 24px; } }
+
+  .sim-bar { position: sticky; top: 58px; z-index: 20; background: var(--paper); border-bottom: 1.5px solid var(--line); padding: 12px 0; }
+  .sim-bar .wrap { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+  .sim-bar .n { font-size: 12px; opacity: .7; margin-left: 4px; }
+  .atalhos { display: flex; flex-wrap: wrap; gap: 6px; font-size: 14px; }
+  .atalhos a { color: var(--ink); text-decoration: none; border: 1.5px dashed var(--ink-3); border-radius: 99px; padding: 3px 12px; }
+  .atalhos a:hover { border-style: solid; border-color: var(--ink); }
+  @media (max-width: 640px) { .sim-bar { padding: 10px 0; } .sim-bar .wrap { flex-wrap: nowrap; flex-direction: column; align-items: stretch; gap: 8px; } .atalhos { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .atalhos a { white-space: nowrap; } }
+
+  .area { padding: 34px 0 6px; scroll-margin-top: 130px; }
+  .area-h { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+  .area-h h2 { margin: 0; font-size: clamp(24px, 3.4vw, 32px); }
+  .area-h .qtd { font-size: 14px; color: var(--ink-2); }
+  .area > p { color: var(--ink-2); margin: 0 0 18px; max-width: 680px; }
+  .area[hidden] { display: none; }
+
+  #sims .rc-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  @media (min-width: 1000px) { #sims .rc-grid { grid-template-columns: repeat(3, 1fr); } }
+  .sc .rc-cover { height: 118px; background: var(--ac); }
+  .sc .rc-cover::before { background:
+    repeating-linear-gradient(0deg, transparent 0 21px, var(--ink) 21px 22px),
+    repeating-linear-gradient(90deg, transparent 0 21px, var(--ink) 21px 22px); opacity: .1; }
+  .a-ia { --ac: var(--a-ia); } .a-fund { --ac: var(--a-fund); } .a-arq { --ac: var(--a-arq); }
+  .tela { position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%) rotate(-2deg); z-index: 1;
+    font-family: ui-monospace, Consolas, monospace; font-weight: 700; font-size: 22px; white-space: nowrap;
+    background: var(--ink); color: var(--paper); border-radius: 14px; padding: 10px 18px; box-shadow: 4px 4px 0 rgba(0,0,0,.18);
+    transition: transform .2s ease; }
+  .sc:hover .tela { transform: translate(-50%, -50%) rotate(2deg) scale(1.05); }
+  .sc .niveis { margin-top: 0; }
+  .sc .nivel { font-size: 12px; padding: 1px 9px; }
+  .bncc { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--ink-2); }
+  .abrir { font-weight: 600; font-size: 14.5px; white-space: nowrap; }
+  .sc:hover .abrir { text-decoration: underline; }
+  .sc .rc-foot { flex-direction: column; align-items: stretch; gap: 10px; }
+  .sc .rc-foot .linha { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .vazio { padding: 40px 0; color: var(--ink-2); }
 </style>
 </head>
 <body>
 <header id="topbar"></header>
 <main>
-  <section class="hero">
-    <div class="wrap"><div class="hero-inner">
-      <span class="terminal">$ simular no navegador</span>
-      <h1>Simuladores para ver a Computação e a IA funcionando.</h1>
-      <p class="lead">Experimentos interativos de Computação, Inteligência Artificial e Estatística, sem cadastro e sem instalar nada. Funcionam no computador e no celular. Cada simulador indica em quais etapas de ensino pode ser usado e, no Ensino Fundamental, quais habilidades da BNCC apoia.</p>
-    </div></div>
-  </section>
-
-  <section class="block">
+  <section class="sim-hero">
     <div class="wrap">
-      <span class="eyebrow">Simuladores</span>
-      <h2>Escolha um simulador</h2>
-      <div class="seg filtro" role="group" aria-label="Filtrar por etapa de ensino">
-        <button type="button" data-n="" aria-pressed="true">Todos</button>
-        <button type="button" data-n="IA" aria-pressed="false">IA e ciência de dados</button>
-        <button type="button" data-n="EF" aria-pressed="false">Ensino Fundamental</button>
-        <button type="button" data-n="EM" aria-pressed="false">Ensino Médio</button>
-        <button type="button" data-n="ES" aria-pressed="false">Ensino Superior e técnico</button>
+      <div>
+        <span class="terminal">$ simular no navegador</span>
+        <h1>Simuladores para ver a Computação e a IA funcionando</h1>
+        <p class="lead">Experimentos interativos de Computação, Inteligência Artificial e Estatística, sem cadastro e sem instalar nada, no computador ou no celular. Cada simulador mostra em quais etapas de ensino pode ser usado e quais habilidades da BNCC apoia.</p>
       </div>
-      <div class="u-grid" id="sims" style="margin-top:18px"></div>
+      <div class="stats" aria-label="Resumo">
+        <div><b id="st-total">13</b><span>simuladores</span></div>
+        <div><b id="st-ef">7</b><span>para o Fundamental</span></div>
+        <div><b>0</b><span>cadastros</span></div>
+      </div>
     </div>
   </section>
+
+  <div class="sim-bar">
+    <div class="wrap">
+      <div class="seg filtro" role="group" aria-label="Filtrar por etapa de ensino">
+        <button type="button" data-n="" aria-pressed="true">Todas as etapas</button>
+        <button type="button" data-n="EF" aria-pressed="false">Fundamental</button>
+        <button type="button" data-n="EM" aria-pressed="false">Médio</button>
+        <button type="button" data-n="ES" aria-pressed="false">Superior e técnico</button>
+      </div>
+      <nav class="atalhos" id="atalhos" aria-label="Áreas"></nav>
+    </div>
+  </div>
+
+  <div class="wrap" id="sims"></div>
 </main>
 <footer id="footer"></footer>
 
@@ -68,21 +119,61 @@
 <script src="assets/sim-comum.js"></script>
 <script>
   simTopbar('inicio'); simFooter();
-  function render(n) {
-    document.getElementById('sims').innerHTML = SIMULADORES.filter(s => !n || (n === 'IA' ? s.ia : s.niveis.includes(n))).map(s => `
-      <article class="u-card">
-        <span class="sig" aria-hidden="true">${esc(s.sigla)}</span>
+  const AREAS = [
+    { id: 'ia', nome: 'Inteligência Artificial e dados', desc: 'Como modelos de linguagem escolhem palavras, como uma rede neural aprende, como medir se um modelo é bom e como resumir dados com estatística.' },
+    { id: 'fund', nome: 'Fundamentos da computação', desc: 'Bits, bases numéricas, portas lógicas e as peças de um computador.' },
+    { id: 'arq', nome: 'Arquitetura de computadores', desc: 'Assembly, caminho de dados, pipeline e memória, para o Ensino Superior e técnico.' }
+  ];
+  const AREA_DE = { bases: 'fund', logica: 'fund', 'placa-mae': 'fund', estatistica: 'ia', mips: 'arq', cache: 'arq', pipeline: 'arq', 'cpu-por-dentro': 'arq' };
+  const CURTO = { EF: 'Fundamental', EM: 'Médio', ES: 'Superior' };
+  const TRES_D = ['placa-mae', 'cpu-por-dentro'];
+  const areaDe = s => s.ia ? 'ia' : (AREA_DE[s.id] || 'fund');
+
+  const card = s => `
+    <article class="rc sc a-${areaDe(s)}">
+      <div class="rc-cover">
+        <span class="rc-type">${TRES_D.includes(s.id) ? '🧊 3D' : '▶ Simulador'}</span>
+        <span class="tela" aria-hidden="true">${esc(s.sigla)}</span>
+      </div>
+      <div class="rc-body">
         <h3><a href="${s.url}">${esc(s.titulo)}</a></h3>
         <p>${esc(s.resumo)}</p>
-        ${simNiveis(s)}
-        ${s.bncc ? `<span class="bncc">BNCC: ${s.bncc.join(', ')}</span>` : ''}
-      </article>`).join('');
+        <div class="rc-foot">
+          <span class="niveis">${s.niveis.map(n => `<span class="nivel n-${n.toLowerCase()}" title="${NIVEIS[n]}">${CURTO[n]}</span>`).join('')}</span>
+          <div class="linha">
+            <span class="bncc">${s.bncc ? 'BNCC ' + s.bncc.join(' · ') : ''}</span>
+            <span class="abrir" aria-hidden="true">Abrir →</span>
+          </div>
+        </div>
+      </div>
+    </article>`;
+
+  function render(n) {
+    const lista = SIMULADORES.filter(s => !n || s.niveis.includes(n));
+    const html = AREAS.map(a => {
+      const itens = lista.filter(s => areaDe(s) === a.id);
+      if (!itens.length) return '';
+      return `<section class="area" id="${a.id}">
+        <div class="area-h"><h2>${a.nome}</h2><span class="qtd">${itens.length} ${itens.length > 1 ? 'simuladores' : 'simulador'}</span></div>
+        <p>${a.desc}</p>
+        <div class="rc-grid">${itens.map(card).join('')}</div>
+      </section>`;
+    }).join('');
+    document.getElementById('sims').innerHTML = html || '<p class="vazio">Nenhum simulador para essa etapa ainda.</p>';
+    document.getElementById('atalhos').innerHTML = AREAS.filter(a => lista.some(s => areaDe(s) === a.id))
+      .map(a => `<a href="#${a.id}">${a.nome}</a>`).join('');
   }
   const btns = document.querySelectorAll('.filtro button');
-  btns.forEach(b => b.addEventListener('click', () => {
-    btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
-    render(b.dataset.n);
-  }));
+  btns.forEach(b => {
+    const n = b.dataset.n;
+    b.insertAdjacentHTML('beforeend', `<span class="n">${SIMULADORES.filter(s => !n || s.niveis.includes(n)).length}</span>`);
+    b.addEventListener('click', () => {
+      btns.forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+      render(n);
+    });
+  });
+  document.getElementById('st-total').textContent = SIMULADORES.length;
+  document.getElementById('st-ef').textContent = SIMULADORES.filter(s => s.niveis.includes('EF')).length;
   render('');
 </script>
 <script src="/assistente/assistente.js?v=2" defer></script>
