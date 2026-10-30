@@ -15,6 +15,9 @@
       <circle cx="10" cy="52" r="5" fill="${V}" ${T}/><path d="M46 10c-7 0-11 5-11 10 0 8 11 18 11 18s11-10 11-18c0-5-4-10-11-10z" fill="${R}" ${T}/><circle cx="46" cy="20" r="4" fill="${B}" ${T}/>`,
     cifra: `<circle cx="26" cy="26" r="15" fill="${C}" ${T}/><path d="M37 37l15 15" stroke="#111" stroke-width="6" stroke-linecap="round"/>
       <text x="16" y="31" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="${V}">A</text><text x="27" y="31" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="${R}">D</text>`,
+    digitacao: `<rect x="4" y="18" width="56" height="30" rx="6" fill="${A}" ${T}/>
+      <g fill="${B}" stroke="#111" stroke-width="1.8"><rect x="9" y="23" width="8" height="7" rx="1.5"/><rect x="19" y="23" width="8" height="7" rx="1.5"/><rect x="29" y="23" width="8" height="7" rx="1.5"/><rect x="39" y="23" width="8" height="7" rx="1.5"/><rect x="49" y="23" width="6" height="7" rx="1.5"/><rect x="18" y="34" width="28" height="8" rx="1.5"/></g>
+      <path d="M22 12l4-6M32 12V4M42 12l-4-6" stroke="${R}" stroke-width="3" stroke-linecap="round"/><rect x="29" y="23" width="8" height="7" rx="1.5" fill="${V}" stroke="#111" stroke-width="1.8"/>`,
     'vale-bits': `<path d="M6 54h52" ${T}/><path d="M10 54V30l12-10 12 10v24z" fill="${B}" ${T}/><path d="M8 32l14-13 14 13" fill="${R}" ${T}/>
       <rect x="18" y="40" width="8" height="14" fill="${V}" ${T}/><path d="M40 54V38M46 54V38M52 54V38M38 44h16M38 50h16" ${T}/>
       <path d="M48 8l7 7-7 7-7-7z" fill="${A}" ${T}/>`,
