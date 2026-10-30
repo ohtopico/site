@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site para Todos · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de acessibilidade digital: encontre e corrija as barreiras de uma página da escola e ouça como o leitor de tela lê antes e depois. BNCC EF06CO09, EF07CO11, EF09CO07.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/acessivel.html">
+<meta property="og:title" content="Site para Todos · Material didático">
+<meta property="og:description" content="Encontre e corrija as barreiras de uma página da escola e ouça como o leitor de tela lê antes e depois.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/acessivel.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .sp { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  @media (max-width: 880px) { .sp { grid-template-columns: 1fr; } }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
+  .browser { border: 1.5px solid var(--ink); border-radius: 20px; overflow: hidden; background: #fff; color: #222; }
+  .browser .bar { background: #ecebe6; border-bottom: 1.5px solid #111; padding: 8px 12px; font-size: 13px; display: flex; gap: 8px; align-items: center; color: #444; }
+  .browser .bar i { width: 11px; height: 11px; border-radius: 50%; background: #d0cec6; display: inline-block; }
+  .browser .url { background: #fff; border-radius: 99px; padding: 2px 12px; margin-left: 6px; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .pg { font-family: Arial, Helvetica, sans-serif; font-size: 15px; transition: filter .3s; }
+  .pg.blur { filter: blur(1.4px) contrast(.8); }
+  .pg .el { position: relative; cursor: pointer; border-radius: 6px; outline: 2px dashed transparent; outline-offset: 2px; }
+  .pg .el:hover, .pg .el:focus-visible { outline-color: #e0b000; }
+  .pg .el.sel { outline: 3px solid #e0b000; }
+  .pg .el.dica { outline: 3px dashed #ef5a4c; }
+  .pg .el.feito::after { content: 'OK'; position: absolute; top: -8px; right: -8px; background: #2fa865; color: #fff; font: 700 10px/1 Arial, sans-serif; padding: 4px 5px; border-radius: 99px; border: 1.5px solid #111; }
+  .pg header { background: #166c40; color: #fff; padding: 10px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pg header .nm { font-weight: 700; font-size: 16px; }
+  .pg nav { display: flex; gap: 14px; padding: 8px 14px; background: #f3f1ea; font-size: 14px; flex-wrap: wrap; }
+  .pg nav a { color: #166c40; }
+  .pg .busca { margin-left: auto; width: 34px; height: 34px; border-radius: 8px; background: #fff; display: grid; place-items: center; border: 0; }
+  .pg .cont { padding: 12px 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .pg .tit { font-size: 21px; font-weight: 700; margin: 0; }
+  .pg .tit.fraco { font-size: 15px; font-weight: 700; }
+  .pg h2.tit { font-size: 21px; font-family: Arial, Helvetica, sans-serif; line-height: 1.3; }
+  .pg .foto svg { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .pg .cal { display: flex; gap: 8px; flex-wrap: wrap; font-size: 14px; }
+  .pg .cal span { border: 1px solid #ccc; border-radius: 6px; padding: 4px 8px; }
+  .pg .cal .fer { color: #c21f3a; border-color: #c21f3a; }
+  .pg form { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 14px; }
+  .pg form input { border: 1px solid #999; border-radius: 6px; padding: 6px 8px; font: inherit; min-width: 0; }
+  .pg form button { border: 0; background: #166c40; color: #fff; border-radius: 6px; padding: 7px 12px; font: inherit; }
+  .pg .video { background: #222; color: #fff; border-radius: 8px; height: 90px; display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; font-size: 14px; }
+  .pg .video .cc { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,.8); padding: 2px 8px; font-size: 12.5px; border-radius: 4px; }
+  .pg footer { border-top: 1px solid #ddd; padding: 8px 14px; font-size: 13px; color: #555; }
+  .insp { border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 14px 16px; }
+  .insp h3 { margin: 0 0 8px; font-size: 19px; }
+  .leitor { background: #111; color: #e8ffe9; font-family: ui-monospace, Consolas, monospace; border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: 8px 0; }
+  .leitor .lb { color: #ffd23f; font-size: 12px; display: block; margin-bottom: 2px; }
+  .code { background: var(--pill); border-radius: 10px; padding: 8px 10px; font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; white-space: pre-wrap; word-break: break-word; margin: 6px 0; }
+  .ops { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .ops .btn { justify-content: flex-start; text-align: left; white-space: normal; height: auto; }
+  .fb { border-radius: 14px; padding: 10px 14px; margin-top: 10px; font-size: 14.5px; }
+  .fb.ok { background: var(--ok-soft); }
+  .fb.bad { background: var(--bad-soft); }
+  .razao { font-family: var(--display); font-size: 22px; }
+  .transc { margin: 10px 0 0; padding-left: 20px; font-family: ui-monospace, Consolas, monospace; font-size: 13.5px; }
+  .transc li.barr { color: var(--bad); }
+  .center { text-align: center; }
+  .selo { width: 120px; margin: 0 auto; display: block; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>A página da Escola Campo Verde (fictícia) tem <strong>9 barreiras</strong> que atrapalham quem usa leitor de tela, quem enxerga pouco, quem não ouve ou quem não usa mouse. Clique em qualquer parte da página para inspecionar. O painel mostra o que o <strong>leitor de tela</strong> fala e o código daquela parte.</p>
+    <p>Quando achar uma barreira, escolha a correção certa. Use <strong>Ouvir</strong> para escutar a leitura (precisa de som) e <strong>Visão embaçada</strong> para sentir a dificuldade de quem tem baixa visão.</p>
+  </details>
+
+  <div class="game-stage"><div id="stage"></div></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('acessivel');
+(function () {
+  // Contraste entre duas cores (fórmula da WCAG)
+  function lum(hex) { const c = [1, 3, 5].map(i => parseInt(hex.substr(i, 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
+  const razao = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+
+  // Cada parte da página: o que o leitor de tela fala antes e depois, o código e as opções de correção
+  const EL = {
+    logo: { nome: 'Logotipo', barreira: true, quem: 'quem usa leitor de tela',
+      antes: 'imagem, logo_final_v2.png', depois: 'imagem, Escola Estadual Campo Verde',
+      cAntes: '<img src="logo_final_v2.png">', cDepois: '<img src="logo_final_v2.png"\n     alt="Escola Estadual Campo Verde">',
+      prob: 'A imagem não tem texto alternativo. O leitor de tela fala o nome do arquivo, que não diz nada.',
+      ops: [['Colocar alt="imagem"', 'O leitor já avisa que é uma imagem. Falta dizer o que ela mostra.'], ['Colocar alt="Escola Estadual Campo Verde"', ''], ['Colocar alt="logo_final_v2"', 'É o nome do arquivo de novo. O texto alternativo deve descrever a imagem.']], certa: 1 },
+    busca: { nome: 'Botão de busca', barreira: true, quem: 'quem usa leitor de tela',
+      antes: 'botão', depois: 'botão, Buscar no site',
+      cAntes: '<button><svg>...lupa...</svg></button>', cDepois: '<button aria-label="Buscar no site">\n  <svg>...lupa...</svg>\n</button>',
+      prob: 'O botão só tem um desenho de lupa. Quem não enxerga ouve "botão" e não sabe para que serve.',
+      ops: [['Dar o nome "Lupa cinza" ao botão', 'Isso descreve o desenho, não a ação. O nome do botão diz o que ele faz.'], ['Dar o nome "Clique" ao botão', 'Todo botão é para clicar. O nome precisa dizer o que acontece.'], ['Dar o nome "Buscar no site" ao botão', '']], certa: 2 },
+    nav: { nome: 'Menu', barreira: false, antes: 'navegação, lista com 4 itens: link, Início; link, Notícias; link, Matrículas; link, Contato', cAntes: '<nav>\n  <a href="/">Início</a> ...\n</nav>',
+      bom: 'Os links têm nomes claros e estão dentro de uma navegação. Quem usa leitor de tela pode pular direto para o menu.' },
+    titulo: { nome: 'Título da notícia', barreira: true, quem: 'quem usa leitor de tela',
+      antes: 'Feira de Ciências 2026', depois: 'título nível 2, Feira de Ciências 2026',
+      cAntes: '<div><b>Feira de Ciências 2026</b></div>', cDepois: '<h2>Feira de Ciências 2026</h2>',
+      prob: 'Parece um título, mas no código é só um texto em negrito. Quem usa leitor de tela navega pulando de título em título e não encontra este.',
+      ops: [['Transformar em título de verdade (h2)', ''], ['Deixar o texto maior e sublinhado', 'Muda só a aparência. O leitor de tela continua sem saber que é um título.'], ['Escrever tudo em letras maiúsculas', 'Letras maiúsculas não criam um título e ainda dificultam a leitura.']], certa: 0 },
+    foto: { nome: 'Foto da feira', barreira: true, quem: 'quem usa leitor de tela',
+      antes: 'imagem, IMG_20261012_0934.jpg', depois: 'imagem, Estudantes apresentam uma maquete de casa com energia solar na feira de ciências',
+      cAntes: '<img src="IMG_20261012_0934.jpg">', cDepois: '<img src="IMG_20261012_0934.jpg"\n     alt="Estudantes apresentam uma maquete de casa\n          com energia solar na feira de ciências">',
+      prob: 'A foto conta uma parte da notícia, mas não tem descrição.',
+      ops: [['alt="foto"', 'Não diz nada sobre o que aparece na foto.'], ['alt="Estudantes apresentam uma maquete de casa com energia solar na feira de ciências"', ''], ['alt="IMG_20261012"', 'Nome de arquivo não descreve a imagem.']], certa: 1 },
+    texto: { nome: 'Texto da notícia', barreira: false, antes: 'Os estudantes do 6º ao 9º ano apresentaram 32 projetos. Os mais votados vão para a feira regional.', cAntes: '<p>Os estudantes do 6º ao 9º ano ...</p>',
+      bom: 'Parágrafo com texto real, boa cor e tamanho. Pode ser ampliado sem quebrar.' },
+    aviso: { nome: 'Aviso das inscrições', barreira: true, quem: 'quem tem baixa visão ou lê no sol', contraste: true,
+      antes: 'Inscrições para a feira regional até 20 de novembro.', depois: 'Inscrições para a feira regional até 20 de novembro.',
+      cAntes: '<p style="color:#c4c4c4">Inscrições ...</p>', cDepois: '<p style="color:#3a3a3a">Inscrições ...</p>',
+      prob: 'O leitor de tela lê sem problema, mas o cinza claro no fundo branco quase some. O mínimo recomendado de contraste para texto é 4,5 para 1.',
+      ops: [['Trocar para cinza mais claro (#dedede)', 'Ficou ainda mais apagado: o contraste caiu.'], ['Trocar para cinza escuro (#3a3a3a)', ''], ['Deixar a letra menor para caber melhor', 'Letra menor com pouco contraste fica ainda mais difícil de ler.']], certa: 1,
+      cores: ['#c4c4c4', '#3a3a3a'], opCores: ['#dedede', '#3a3a3a', '#c4c4c4'] },
+    link: { nome: 'Link do regulamento', barreira: true, quem: 'quem usa leitor de tela',
+      antes: 'link, clique aqui', depois: 'link, Regulamento da feira (PDF)',
+      cAntes: 'Para ver o regulamento, <a href="regulamento.pdf">clique aqui</a>.', cDepois: 'Leia o <a href="regulamento.pdf">Regulamento da feira (PDF)</a>.',
+      prob: 'Quem usa leitor de tela costuma ouvir a lista de links da página. "Clique aqui" fora do texto não diz para onde o link leva.',
+      ops: [['Trocar o texto do link para "aqui"', 'Continua sem dizer aonde o link leva.'], ['Trocar o texto do link para "Regulamento da feira (PDF)"', ''], ['Deixar o link piscando para chamar atenção', 'Piscar não informa nada e pode incomodar quem tem sensibilidade à luz.']], certa: 1 },
+    cal: { nome: 'Calendário de novembro', barreira: true, quem: 'quem não enxerga cores ou usa leitor de tela',
+      antes: '2 de novembro. 15 de novembro. 19 de novembro. 20 de novembro. 27 de novembro.', depois: '2 de novembro, feriado. 15 de novembro, feriado. 19 de novembro. 20 de novembro, feriado. 27 de novembro.',
+      cAntes: '<span class="vermelho">2/11</span> ...', cDepois: '<span class="vermelho">2/11 (feriado)</span> ...',
+      prob: 'Os feriados aparecem só em vermelho. Quem não distingue cores, ou ouve a página, não sabe quais são.',
+      ops: [['Usar um vermelho mais forte', 'Continua dependendo só da cor.'], ['Escrever "(feriado)" ao lado da data', ''], ['Trocar o vermelho por verde', 'Trocar de cor não resolve: a informação precisa estar também em texto.']], certa: 1 },
+    form: { nome: 'Campo de e-mail', barreira: true, quem: 'quem usa leitor de tela',
+      antes: 'campo de edição, vazio', depois: 'Seu e-mail, campo de edição, vazio',
+      cAntes: '<input type="email">', cDepois: '<label for="email">Seu e-mail</label>\n<input id="email" type="email">',
+      prob: 'O campo não tem rótulo. O leitor de tela não sabe o que deve ser escrito ali.',
+      ops: [['Pôr um rótulo "Seu e-mail" ligado ao campo', ''], ['Escrever "digite" dentro do campo', 'O texto dentro do campo some quando a pessoa começa a digitar e não diz o que escrever.'], ['Deixar o campo maior', 'O tamanho não informa o que o campo pede.']], certa: 0 },
+    video: { nome: 'Vídeo da abertura', barreira: true, quem: 'quem é surdo ou está sem som',
+      antes: 'vídeo, Abertura da feira. Sem legendas.', depois: 'vídeo, Abertura da feira. Legendas disponíveis.',
+      cAntes: '<video src="abertura.mp4" controls></video>', cDepois: '<video src="abertura.mp4" controls>\n  <track kind="captions" srclang="pt"\n         src="abertura.vtt">\n</video>',
+      prob: 'A diretora fala no vídeo, mas não há legenda. Quem não ouve perde toda a informação.',
+      ops: [['Aumentar o volume do vídeo', 'Não ajuda quem não ouve.'], ['Fazer o vídeo tocar sozinho ao abrir a página', 'Atrapalha ainda mais, principalmente quem usa leitor de tela.'], ['Adicionar legendas', '']], certa: 2 },
+    rodape: { nome: 'Rodapé', barreira: false, antes: 'Escola Estadual Campo Verde. Rua das Araucárias, 100.', cAntes: '<footer>Escola Estadual Campo Verde ...</footer>',
+      bom: 'Texto simples com bom contraste. Sem barreiras aqui.' }
+  };
+  const ORDEM = ['logo', 'busca', 'nav', 'titulo', 'foto', 'texto', 'aviso', 'link', 'cal', 'form', 'video', 'rodape'];
+  const BARR = ORDEM.filter(k => EL[k].barreira);
+
+  const stage = document.getElementById('stage');
+  let feito, erros, sel, blur, msg;
+
+  function falar(t) {
+    try { if (!('speechSynthesis' in window)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'pt-BR'; u.rate = 1.05; speechSynthesis.speak(u); } catch (e) {}
+  }
+  const leitura = k => feito.has(k) ? (EL[k].depois || EL[k].antes) : EL[k].antes;
+
+  function pagina() {
+    const f = k => feito.has(k), cls = k => `el${sel === k ? ' sel' : ''}${f(k) ? ' feito' : ''}`;
+    const at = (k, extra = '') => `class="${cls(k)} ${extra}" data-k="${k}" tabindex="0" role="button" aria-label="Inspecionar: ${EL[k].nome}"`;
+    const corAviso = f('aviso') ? '#3a3a3a' : '#c4c4c4';
+    return `<div class="pg${blur ? ' blur' : ''}" id="pg">
+      <header><span ${at('logo')}><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#ffd23f" stroke="#111" stroke-width="2"/><path d="M10 26l10-14 10 14z" fill="#2fa865" stroke="#111" stroke-width="2"/></svg></span>
+        <span class="nm">Escola Campo Verde</span>
+        <span ${at('busca')} style="margin-left:auto"><span class="busca"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="#666" stroke-width="2.5"/><path d="M13 13l5 5" stroke="#666" stroke-width="2.5"/></svg></span></span></header>
+      <nav ${at('nav')}><a>Início</a><a>Notícias</a><a>Matrículas</a><a>Contato</a></nav>
+      <div class="cont">
+        <div ${at('titulo')}>${f('titulo') ? '<h2 class="tit">Feira de Ciências 2026</h2>' : '<div class="tit fraco">Feira de Ciências 2026</div>'}</div>
+        <div ${at('foto', 'foto')}><svg viewBox="0 0 400 150" aria-hidden="true"><rect width="400" height="150" fill="#e3f1e8"/><rect x="0" y="118" width="400" height="32" fill="#9a6b3f"/>
+          <rect x="150" y="80" width="100" height="40" fill="#fff" stroke="#111" stroke-width="2"/><path d="M140 82l60-34 60 34z" fill="#ef5a4c" stroke="#111" stroke-width="2"/><path d="M175 66l25-14 25 14z" fill="#2f2f2f"/><path d="M180 64l40 0M190 58l20 0" stroke="#ffd23f" stroke-width="2"/>
+          <circle cx="330" cy="30" r="16" fill="#ffd23f"/><circle cx="80" cy="62" r="13" fill="#9a6b3f" stroke="#111" stroke-width="2"/><rect x="66" y="76" width="28" height="42" rx="8" fill="#2fa865" stroke="#111" stroke-width="2"/>
+          <circle cx="300" cy="66" r="13" fill="#f2c9a0" stroke="#111" stroke-width="2"/><rect x="286" y="80" width="28" height="38" rx="8" fill="#ffd23f" stroke="#111" stroke-width="2"/></svg></div>
+        <p ${at('texto')} style="margin:0">Os estudantes do 6º ao 9º ano apresentaram 32 projetos. Os mais votados vão para a feira regional.</p>
+        <p ${at('aviso')} style="margin:0;color:${corAviso}">Inscrições para a feira regional até 20 de novembro.</p>
+        <p ${at('link')} style="margin:0">${f('link') ? 'Leia o <a style="color:#166c40">Regulamento da feira (PDF)</a>.' : 'Para ver o regulamento, <a style="color:#166c40">clique aqui</a>.'}</p>
+        <div ${at('cal')}><div style="font-size:13px;margin-bottom:4px">Novembro (feriados em vermelho)</div><div class="cal">${[['2/11', 1], ['15/11', 1], ['19/11', 0], ['20/11', 1], ['27/11', 0]].map(([d, fer]) => `<span class="${fer ? 'fer' : ''}">${d}${fer && f('cal') ? ' (feriado)' : ''}</span>`).join('')}</div></div>
+        <div ${at('form')}><form onsubmit="return false">${f('form') ? '<label for="em">Seu e-mail</label>' : ''}<input id="em" type="email" tabindex="-1"><button type="button" tabindex="-1">Receber notícias</button></form></div>
+        <div ${at('video', 'video')}><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#fff"/><path d="M13 10l11 7-11 7z" fill="#222"/></svg> Abertura da feira ${f('video') ? '<span class="cc">"Sejam bem-vindos à nossa feira!"</span>' : ''}</div>
+      </div>
+      <footer ${at('rodape')}>Escola Estadual Campo Verde. Rua das Araucárias, 100.</footer></div>`;
+  }
+
+  function painel() {
+    if (!sel) return `<div class="insp"><h3>Inspetor</h3><p style="margin:0">Clique em qualquer parte da página da escola para ver como o leitor de tela lê aquela parte.</p>
+      <p class="small muted">Nem tudo é barreira. Algumas partes já estão corretas.</p></div>`;
+    const e = EL[sel], ok = feito.has(sel);
+    let corpo = '';
+    if (!e.barreira) corpo = `<div class="fb ok"><b>Sem barreira.</b> ${esc(e.bom)}</div>`;
+    else if (ok) corpo = `<div class="fb ok"><b>Corrigido.</b> Agora funciona para ${esc(e.quem)}.</div><div class="code">${esc(e.cDepois)}</div>
+      ${e.contraste ? `<p class="small">Contraste: <span class="razao">${razao(e.cores[1], '#ffffff').toFixed(1).replace('.', ',')}:1</span> (antes era ${razao(e.cores[0], '#ffffff').toFixed(1).replace('.', ',')}:1)</p>` : ''}`;
+    else corpo = `<p style="margin:6px 0"><b>Barreira para ${esc(e.quem)}.</b> ${esc(e.prob)}</p>
+      ${e.contraste ? `<p class="small" style="margin:4px 0">Contraste atual: <span class="razao" style="color:var(--bad)">${razao(e.cores[0], '#ffffff').toFixed(1).replace('.', ',')}:1</span></p>` : ''}
+      <div class="code">${esc(e.cAntes)}</div>
+      <div class="small muted" style="margin-top:8px">Qual correção resolve?</div>
+      <div class="ops" id="ops">${e.ops.map((o, i) => `<button class="btn ghost" type="button" data-o="${i}">${esc(o[0])}</button>`).join('')}</div>`;
+    return `<div class="insp"><h3>${esc(e.nome)}</h3>
+      <div class="leitor"><span class="lb">O leitor de tela fala:</span>${esc(leitura(sel))}</div>
+      <button class="btn ghost" type="button" id="ouvir" style="min-height:38px;padding:6px 14px">Ouvir</button>
+      ${corpo}${msg || ''}</div>`;
+  }
+
+  function render(foco) {
+    stage.innerHTML = `
+      <div class="hud"><span>Barreiras corrigidas <b>${feito.size}</b> de ${BARR.length}</span><span>Tentativas erradas <b>${erros}</b></span></div>
+      <div class="tools"><button class="chip" type="button" id="blur" aria-pressed="${blur}">Visão embaçada</button>
+        <button class="chip" type="button" id="tudo">Ler a página inteira</button>
+        <button class="chip" type="button" id="dica">Mostrar onde faltam</button></div>
+      <div class="sp"><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url">escolacampoverde.edu.exemplo</span></div>${pagina()}</div>
+        <div id="painel">${painel()}</div></div>
+      <div id="transc"></div>`;
+    const pg = document.getElementById('pg');
+    const pick = el => {
+      if (!el) return; sel = el.dataset.k; msg = ''; render(sel);
+      if (window.innerWidth <= 880) document.getElementById('painel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    pg.onclick = e => pick(e.target.closest('.el'));
+    pg.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(e.target.closest('.el')); } };
+    document.getElementById('blur').onclick = () => { blur = !blur; render(); };
+    document.getElementById('dica').onclick = () => { document.querySelectorAll('#pg .el').forEach(el => { if (EL[el.dataset.k].barreira && !feito.has(el.dataset.k)) el.classList.add('dica'); }); };
+    document.getElementById('tudo').onclick = lerTudo;
+    const ou = document.getElementById('ouvir'); if (ou) ou.onclick = () => falar(leitura(sel));
+    const ops = document.getElementById('ops');
+    if (ops) ops.onclick = e => { const b = e.target.closest('[data-o]'); if (b) escolher(+b.dataset.o); };
+    if (foco) { const f = document.querySelector(`#pg .el[data-k="${foco}"]`); f && f.focus({ preventScroll: true }); }
+  }
+
+  function escolher(o) {
+    const e = EL[sel];
+    if (o === e.certa) {
+      feito.add(sel); msg = ''; render(sel);
+      falar(leitura(sel));
+      if (feito.size === BARR.length) setTimeout(fim, 900);
+    } else {
+      erros++;
+      msg = `<div class="fb bad" role="status"><b>Ainda não.</b> ${esc(e.ops[o][1])}</div>`;
+      render();
+      const b = document.querySelector(`#ops [data-o="${o}"]`); if (b) { b.disabled = true; }
+    }
+  }
+
+  function lerTudo() {
+    const linhas = ORDEM.map(k => ({ k, t: leitura(k), barr: EL[k].barreira && !feito.has(k) }));
+    document.getElementById('transc').innerHTML = `<div class="insp" style="margin-top:16px"><h3>A página lida em ordem, como no leitor de tela</h3>
+      <ol class="transc">${linhas.map(l => `<li class="${l.barr ? 'barr' : ''}">${esc(l.t)}${l.barr ? ' (barreira)' : ''}</li>`).join('')}</ol>
+      <p class="small muted" style="margin:8px 0 0">Linhas em vermelho ainda têm barreira.</p></div>`;
+    falar(linhas.map(l => l.t).join('. '));
+  }
+
+  function fim() {
+    try { speechSynthesis.cancel(); } catch (e) {}
+    const pct = Math.round(BARR.length / (BARR.length + erros) * 100);
+    window.MDP && MDP.registrar('acessivel', pct);
+    stage.innerHTML = `<div class="center">
+      <svg class="selo" viewBox="0 0 120 120" role="img" aria-label="Selo Site para Todos"><circle cx="60" cy="60" r="54" fill="#ffd23f" stroke="#111" stroke-width="3"/><circle cx="60" cy="60" r="40" fill="#fff" stroke="#111" stroke-width="2.5"/>
+        <circle cx="60" cy="38" r="6" fill="#2fa865" stroke="#111" stroke-width="2"/><path d="M40 50h40M60 50v18l-10 18M60 68l10 18" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h2>Site para Todos!</h2>
+      <p style="font-size:19px">Você corrigiu as <b>${BARR.length}</b> barreiras${erros ? ` com ${erros} ${erros === 1 ? 'tentativa errada' : 'tentativas erradas'}` : ' sem nenhum erro'}.</p>
+      <div class="note" style="text-align:left;margin:16px auto;max-width:660px">
+        <strong>Lista rápida para qualquer página:</strong> toda imagem com texto alternativo; botões e campos com nome; títulos de verdade; links que dizem aonde levam; contraste de pelo menos 4,5 para 1; informação nunca só pela cor; vídeo com legenda. Quase todas essas correções são uma linha de código e beneficiam todo mundo, não só pessoas com deficiência.
+      </div>
+      <div class="btn-row" style="justify-content:center"><button class="btn ghost" type="button" id="ver">Ver a página corrigida</button><button class="btn" type="button" id="again">Jogar de novo</button></div></div>`;
+    document.getElementById('ver').onclick = () => { sel = null; render(); };
+    document.getElementById('again').onclick = start;
+  }
+
+  function start() { feito = new Set(); erros = 0; sel = null; blur = false; msg = ''; render(); }
+  start();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot de Regras · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de programação com regras se e senão: monte o atendente da secretaria da escola, teste com perguntas reais e compare com uma IA generativa. BNCC EF06CO02, EF09CO03, EF09CO07.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/chatbot.html">
+<meta property="og:title" content="Chatbot de Regras · Material didático">
+<meta property="og:description" content="Monte com regras se e senão o atendente da secretaria da escola, teste com perguntas reais e compare com uma IA generativa.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/chatbot.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .cb { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  @media (max-width: 900px) { .cb { grid-template-columns: 1fr; } }
+  .missao { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 16px; margin-bottom: 14px; }
+  .missao h3 { margin: 0 0 4px; font-size: 19px; }
+  .missao p { margin: 0; font-size: 15px; }
+  .regras { display: flex; flex-direction: column; gap: 10px; }
+  .regra { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 10px 12px; display: grid; grid-template-columns: auto 1fr auto; gap: 6px 10px; align-items: center; }
+  .regra.hit { outline: 3px solid #2fa865; }
+  .regra .n { font-family: var(--display); font-size: 18px; width: 28px; text-align: center; }
+  .regra .linha { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14.5px; }
+  .kw { font-family: ui-monospace, Consolas, monospace; font-weight: 700; font-size: 13px; padding: 2px 8px; border-radius: 8px; }
+  .kw.se { background: #fff1c2; color: #6b5200; }
+  .kw.entao { background: var(--accent-soft); color: var(--accent); }
+  .kw.senao { background: #fde3df; color: #9d2b20; }
+  .regra input[type=text] { flex: 1 1 180px; min-width: 0; border: 1.5px solid var(--ink); border-radius: 10px; padding: 6px 10px; background: var(--paper); }
+  .regra select, .senao select { flex: 1 1 200px; min-width: 0; border: 1.5px solid var(--ink); border-radius: 10px; padding: 6px 8px; background: var(--paper); max-width: 100%; }
+  .regra .ctl { display: flex; flex-direction: column; gap: 4px; }
+  .mini { border: 1.5px solid var(--ink); background: var(--paper); border-radius: 10px; min-width: 34px; min-height: 30px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .mini:hover { background: var(--pill); }
+  .mini:disabled { opacity: .3; cursor: default; }
+  .senao { border: 1.5px dashed var(--ink); border-radius: 18px; padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14.5px; background: var(--paper); }
+  .opts { margin: 10px 0; font-size: 15px; }
+  .tests { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--paper); border-radius: 14px; overflow: hidden; }
+  .tests td, .tests th { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; vertical-align: top; }
+  .tests th { background: var(--pill); font-size: 13px; }
+  .tests .ok { color: var(--ok); font-weight: 700; }
+  .tests .bad { color: var(--bad); font-weight: 700; }
+  .chat { border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .log { min-height: 120px; max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+  .b { max-width: 88%; padding: 8px 12px; border-radius: 16px; font-size: 14.5px; }
+  .b.eu { align-self: flex-end; background: var(--ink); color: var(--paper); border-bottom-right-radius: 4px; }
+  .b.bot { align-self: flex-start; background: var(--pill); border-bottom-left-radius: 4px; }
+  .b.bot small { display: block; color: var(--ink-2); font-size: 12px; margin-top: 2px; }
+  .chat form { display: flex; gap: 8px; }
+  .chat input { flex: 1; min-width: 0; border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 14px; background: var(--paper); }
+  .res { margin-top: 12px; border-radius: 16px; padding: 12px 16px; font-size: 15px; }
+  .res.ok { background: var(--ok-soft); }
+  .res.bad { background: var(--bad-soft); }
+  .prog { display: flex; gap: 6px; }
+  .prog i { width: 26px; height: 8px; border-radius: 99px; background: var(--line); display: inline-block; }
+  .prog i.on { background: #2fa865; }
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .cmp { grid-template-columns: 1fr; } }
+  .cmp .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); }
+  .cmp h4 { margin: 0 0 6px; font-size: 16px; }
+  .cmp ul { margin: 0; padding-left: 18px; font-size: 14.5px; }
+  .ex { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); margin: 10px 0; }
+  .ex .q { font-weight: 600; }
+  .ex .r { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; font-size: 14.5px; }
+  @media (max-width: 640px) { .ex .r { grid-template-columns: 1fr; } }
+  .ex .r div { background: var(--pill); border-radius: 12px; padding: 8px 10px; }
+  .center { text-align: center; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você vai programar o atendente virtual da secretaria de uma escola fictícia. Cada regra diz: <strong>SE</strong> a mensagem contém uma destas palavras, <strong>ENTÃO</strong> responda isto. O robô lê as regras de cima para baixo e usa a <strong>primeira</strong> que servir. Se nenhuma servir, vale o <strong>SENÃO</strong>.</p>
+    <p>Separe as palavras com vírgula. Clique em <strong>Testar o robô</strong> para ver como ele responde às perguntas da missão. Você também pode conversar com ele na caixa ao lado.</p>
+  </details>
+
+  <div class="game-stage"><div id="stage"></div></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('chatbot');
+(function () {
+  // Respostas que a secretaria da Escola Campo Verde (fictícia) deixou prontas
+  const RESP = {
+    horario: 'A escola funciona de segunda a sexta, das 7h30 às 17h30.',
+    matricula: 'As matrículas para 2027 vão de 1º a 15 de dezembro, na secretaria, com documento do estudante e comprovante de residência.',
+    boletim: 'O boletim fica no aplicativo da escola, no menu Notas, ao fim de cada trimestre.',
+    recuperacao: 'As provas de recuperação são na última semana do trimestre. O calendário está no mural da entrada.',
+    uniforme: 'A camiseta da escola é obrigatória e pode ser comprada na própria secretaria.',
+    merenda: 'O cardápio da merenda da semana fica no mural do refeitório e no aplicativo.',
+    naoentendi: 'Não entendi.',
+    encaminha: 'Ainda não sei responder isso. Fale com a secretaria pelo telefone da escola ou pessoalmente, das 8h às 17h.'
+  };
+  const NOME_R = { horario: 'Horário', matricula: 'Matrícula', boletim: 'Boletim', recuperacao: 'Recuperação', uniforme: 'Uniforme', merenda: 'Merenda', naoentendi: 'Não entendi', encaminha: 'Encaminhar para a secretaria' };
+  const MISSOES = [
+    { titulo: 'Primeiras regras', resps: ['horario', 'matricula', 'naoentendi'],
+      texto: 'A regra do horário já existe, mas não entende todas as perguntas. Complete as palavras e crie uma regra para a matrícula.',
+      testes: [['qual o horário da escola?', 'horario'], ['que horas a escola abre?', 'horario'], ['a escola fecha que horas?', 'horario'], ['quero fazer a matrícula do meu filho', 'matricula'], ['até quando vai a matrícula?', 'matricula']],
+      aprendeu: 'Uma regra só reconhece as palavras que você colocou nela. Perguntar "que horas" não usa a palavra "horário", então a regra precisou de mais de uma palavra.' },
+    { titulo: 'A ordem importa', resps: ['boletim', 'recuperacao'], adiciona: [['nota, boletim', 'boletim'], ['recuperação', 'recuperacao']],
+      texto: 'Duas regras novas chegaram no fim da lista. Teste: tem pergunta de recuperação recebendo a resposta do boletim. Mude a ordem das regras para consertar.',
+      testes: [['onde vejo o boletim?', 'boletim'], ['como vejo minha nota?', 'boletim'], ['quando é a recuperação da nota de matemática?', 'recuperacao'], ['tem recuperação de nota em ciências?', 'recuperacao']],
+      aprendeu: 'O robô para na primeira regra que serve. Regras mais específicas (recuperação) vêm antes das mais gerais (nota).' },
+    { titulo: 'Do jeito que a gente escreve', resps: ['uniforme'], opcao: true,
+      texto: 'As pessoas escrevem sem acento, com letra maiúscula e abreviando. Ligue a opção nova e crie uma regra para o uniforme.',
+      testes: [['Qual o HORÁRIO de vocês?', 'horario'], ['matricula ainda ta aberta?', 'matricula'], ['q horas fecha', 'horario'], ['recuperacao é quando?', 'recuperacao'], ['Boletim saiu?', 'boletim'], ['onde compro o uniforme?', 'uniforme'], ['precisa usar camiseta da escola?', 'uniforme']],
+      aprendeu: 'Antes de comparar, o robô pode "limpar" o texto: tudo minúsculo e sem acento. Programas de verdade fazem isso o tempo todo.' },
+    { titulo: 'Quando o robô não sabe', resps: ['merenda', 'encaminha'],
+      texto: 'Algumas perguntas não têm resposta pronta. Em vez de "Não entendi", o robô deve encaminhar a pessoa para a secretaria. E falta a regra da merenda.',
+      testes: [['o que tem de merenda hoje?', 'merenda'], ['qual o cardápio da semana?', 'merenda'], ['meu filho passou mal, o que faço?', 'encaminha'], ['vocês têm vaga para professor?', 'encaminha'], ['quanto é 7 vezes 8?', 'encaminha'], ['que horas abre?', 'horario']],
+      aprendeu: 'Um bom SENÃO é honesto: diz que não sabe e indica uma pessoa. Isso é melhor do que inventar uma resposta.' }
+  ];
+  const CHAVE = 'chatbot-regras-v1';
+  const ld = () => { try { return JSON.parse(localStorage.getItem(CHAVE)) || null; } catch (e) { return null; } };
+  const sv = () => { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) {} };
+  const novo = () => ({ m: 0, feitas: [], regras: [{ kw: 'horário', r: 'horario' }], senao: 'naoentendi', limpar: false, fim: false });
+  let S = ld() || novo();
+  let ultimo = null, log = [];
+
+  const semAcento = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const prep = s => S.limpar ? semAcento(s.toLowerCase()) : s;
+  function responder(msg) {
+    const m = prep(msg);
+    for (let i = 0; i < S.regras.length; i++) {
+      const kws = S.regras[i].kw.split(',').map(k => prep(k.trim())).filter(Boolean);
+      const k = kws.find(k => m.includes(k));
+      if (k !== undefined) return { i, k, r: S.regras[i].r };
+    }
+    return { i: -1, r: S.senao };
+  }
+  const respsAte = m => MISSOES.slice(0, m + 1).flatMap(x => x.resps);
+
+  const stage = document.getElementById('stage');
+  function render() {
+    if (S.fim) return comparar();
+    const M = MISSOES[S.m], disp = respsAte(S.m);
+    const opt = (sel, lista) => lista.map(id => `<option value="${id}" ${id === sel ? 'selected' : ''}>${NOME_R[id]}</option>`).join('');
+    const regraResp = disp.filter(id => id !== 'naoentendi' && id !== 'encaminha');
+    stage.innerHTML = `
+      <div class="hud"><span>Missão <b>${S.m + 1}</b> de ${MISSOES.length}</span><span class="prog" aria-hidden="true">${MISSOES.map((_, i) => `<i class="${S.feitas.includes(i) ? 'on' : ''}"></i>`).join('')}</span></div>
+      <div class="missao"><h3>${M.titulo}</h3><p>${M.texto}</p></div>
+      <div class="cb"><div>
+        <div class="regras" id="regras">${S.regras.map((g, i) => `
+          <div class="regra ${ultimo && ultimo.i === i ? 'hit' : ''}" data-i="${i}">
+            <span class="n">${i + 1}</span>
+            <div class="linha"><span class="kw se">SE</span> contém
+              <input type="text" value="${esc(g.kw)}" data-f="kw" aria-label="Palavras da regra ${i + 1}, separadas por vírgula" placeholder="palavras, separadas, por vírgula">
+              <span class="kw entao">ENTÃO</span>
+              <select data-f="r" aria-label="Resposta da regra ${i + 1}">${opt(g.r, regraResp)}</select></div>
+            <div class="ctl"><button class="mini" type="button" data-a="up" aria-label="Subir regra ${i + 1}" ${i === 0 ? 'disabled' : ''}>&#9650;</button>
+              <button class="mini" type="button" data-a="down" aria-label="Descer regra ${i + 1}" ${i === S.regras.length - 1 ? 'disabled' : ''}>&#9660;</button>
+              <button class="mini" type="button" data-a="del" aria-label="Apagar regra ${i + 1}">X</button></div>
+          </div>`).join('')}
+          <div class="senao ${ultimo && ultimo.i === -1 ? 'hit' : ''}"><span class="kw senao">SENÃO</span> responder
+            <select id="senao" aria-label="Resposta quando nenhuma regra serve">${opt(S.senao, ['naoentendi', 'encaminha'].filter(x => disp.includes(x)))}</select></div>
+        </div>
+        <div class="btn-row" style="margin-top:10px"><button class="btn ghost" type="button" id="add">+ Nova regra</button></div>
+        ${S.m >= 2 ? `<label class="opts"><input type="checkbox" id="limpar" ${S.limpar ? 'checked' : ''}> Ignorar acentos e letras maiúsculas</label>` : ''}
+        <div class="btn-row" style="margin-top:12px"><button class="btn" type="button" id="testar">Testar o robô</button></div>
+        <div id="out"></div>
+      </div>
+      <div><div class="chat"><strong>Converse com o robô</strong>
+        <div class="log" id="log" aria-live="polite">${log.map(l => `<div class="b ${l.q ? 'eu' : 'bot'}">${esc(l.t)}${l.s ? `<small>${esc(l.s)}</small>` : ''}</div>`).join('') || '<div class="small muted">Escreva uma pergunta como se fosse alguém da comunidade escolar.</div>'}</div>
+        <form id="f"><input id="q" type="text" autocomplete="off" placeholder="Pergunte algo à secretaria" aria-label="Mensagem para o robô"><button class="btn" type="submit">Enviar</button></form></div>
+        <p class="small muted" style="margin-top:10px">Respostas que a secretaria deixou prontas nesta missão:</p>
+        <ul class="small" style="padding-left:18px;margin:0">${disp.map(id => `<li><b>${NOME_R[id]}:</b> ${esc(RESP[id])}</li>`).join('')}</ul>
+      </div></div>`;
+    ligar();
+    const lg = document.getElementById('log'); lg.scrollTop = lg.scrollHeight;
+  }
+
+  function ligar() {
+    const reg = document.getElementById('regras');
+    reg.oninput = e => { const r = e.target.closest('.regra'); if (!r || !e.target.dataset.f) return; S.regras[+r.dataset.i][e.target.dataset.f] = e.target.value; sv(); };
+    reg.onchange = reg.oninput;
+    reg.onclick = e => {
+      const b = e.target.closest('[data-a]'); if (!b) return;
+      const i = +b.closest('.regra').dataset.i, a = b.dataset.a, R = S.regras;
+      if (a === 'up') [R[i - 1], R[i]] = [R[i], R[i - 1]];
+      if (a === 'down') [R[i + 1], R[i]] = [R[i], R[i + 1]];
+      if (a === 'del') R.splice(i, 1);
+      ultimo = null; sv(); render();
+      const foco = document.querySelector(`.regra[data-i="${a === 'up' ? i - 1 : a === 'down' ? i + 1 : Math.max(0, i - 1)}"] [data-a="${a === 'del' ? 'up' : a}"]`);
+      foco && !foco.disabled && foco.focus();
+    };
+    document.getElementById('senao').onchange = e => { S.senao = e.target.value; sv(); };
+    document.getElementById('add').onclick = () => {
+      const livres = respsAte(S.m).filter(id => id !== 'naoentendi' && id !== 'encaminha');
+      const usadas = S.regras.map(r => r.r);
+      S.regras.push({ kw: '', r: livres.find(id => !usadas.includes(id)) || livres[0] }); sv(); render();
+      const ins = document.querySelectorAll('.regra input'); ins[ins.length - 1].focus();
+    };
+    const l = document.getElementById('limpar'); if (l) l.onchange = e => { S.limpar = e.target.checked; sv(); };
+    document.getElementById('testar').onclick = testar;
+    document.getElementById('f').onsubmit = e => {
+      e.preventDefault(); const q = document.getElementById('q').value.trim(); if (!q) return;
+      const r = responder(q); ultimo = r;
+      log.push({ q: true, t: q }, { t: RESP[r.r], s: r.i >= 0 ? `Regra ${r.i + 1}, encontrou "${r.k}"` : 'Nenhuma regra serviu: SENÃO' });
+      log = log.slice(-12); render(); document.getElementById('q').focus();
+    };
+  }
+
+  function testar() {
+    const M = MISSOES[S.m];
+    const res = M.testes.map(([q, esp]) => { const r = responder(q); return { q, esp, r, ok: r.r === esp }; });
+    const ok = res.filter(x => x.ok).length, tudo = ok === res.length;
+    ultimo = null;
+    if (tudo && !S.feitas.includes(S.m)) S.feitas.push(S.m);
+    sv(); render();
+    document.getElementById('out').innerHTML = `
+      <table class="tests" style="margin-top:14px"><thead><tr><th>Pergunta</th><th>O robô usou</th><th>Resultado</th></tr></thead><tbody>
+      ${res.map(x => `<tr><td>${esc(x.q)}</td><td>${x.r.i >= 0 ? `Regra ${x.r.i + 1}: ${NOME_R[x.r.r]}` : `SENÃO: ${NOME_R[x.r.r]}`}</td>
+        <td class="${x.ok ? 'ok' : 'bad'}">${x.ok ? 'Certo' : `Esperado: ${NOME_R[x.esp]}`}</td></tr>`).join('')}</tbody></table>
+      <div class="res ${tudo ? 'ok' : 'bad'}" role="status"><strong>${ok} de ${res.length} respostas certas.</strong>
+        ${tudo ? ` ${esc(M.aprendeu)}` : ' Ajuste as regras e teste de novo.'}</div>
+      ${tudo ? `<div class="btn-row" style="margin-top:12px"><button class="btn" type="button" id="nx">${S.m < MISSOES.length - 1 ? 'Próxima missão' : 'Comparar com uma IA generativa'}</button></div>` : ''}`;
+    const nx = document.getElementById('nx');
+    if (nx) {
+      nx.onclick = () => {
+        if (S.m < MISSOES.length - 1) {
+          S.m++; (MISSOES[S.m].adiciona || []).forEach(([kw, r]) => S.regras.push({ kw, r }));
+          log = []; sv(); render(); window.scrollTo({ top: stage.offsetTop - 20, behavior: 'smooth' });
+        } else { S.fim = true; sv(); comparar(); }
+      };
+      nx.focus();
+    }
+  }
+
+  function comparar() {
+    window.MDP && MDP.registrar('chatbot', S.feitas.length / MISSOES.length * 100);
+    const exemplos = [
+      { q: 'não quero matrícula, quero pedir transferência', ia: 'Para pedir transferência, procure a secretaria com o documento do estudante. Eles emitem a declaração de transferência.', nota: 'A regra viu a palavra "matrícula" e respondeu sobre matrícula. A IA generativa entende melhor a frase inteira.' },
+      { q: 'qual o telefone da secretaria?', ia: 'O telefone da secretaria é (55) 0000-4087.', nota: 'A IA generativa respondeu com segurança um número que não existe nos dados da escola. Isso se chama alucinação. As regras só respondem o que alguém escreveu.' },
+      { q: 'q horas abre amanha', ia: 'A escola abre às 7h30, de segunda a sexta.', nota: 'Os dois acertaram. O robô de regras acertou porque você ensinou a palavra "horas" e ligou a limpeza do texto.' }
+    ];
+    stage.innerHTML = `<div class="center"><h2>Seu robô passou nas ${S.feitas.length} missões</h2>
+      <p style="max-width:680px;margin:0 auto 10px">Agora compare com um assistente de <strong>IA generativa</strong>, que cria a resposta palavra por palavra em vez de seguir regras. As respostas da IA abaixo são exemplos ilustrativos.</p></div>
+      ${exemplos.map(x => { const r = responder(x.q); return `<div class="ex"><div class="q">"${esc(x.q)}"</div>
+        <div class="r"><div><b>Seu robô de regras</b><br>${esc(RESP[r.r])}</div><div><b>IA generativa (exemplo)</b><br>${esc(x.ia)}</div></div>
+        <p class="small" style="margin:8px 0 0">${esc(x.nota)}</p></div>`; }).join('')}
+      <div class="cmp" style="margin-top:14px">
+        <div class="box"><h4>Robô de regras faz bem</h4><ul><li>Responde sempre igual e só o que foi aprovado</li><li>Dá para explicar por que respondeu (qual regra serviu)</li><li>Não inventa telefone, data nem nome</li><li>Funciona sem internet e gasta pouca energia</li></ul></div>
+        <div class="box"><h4>IA generativa faz bem</h4><ul><li>Entende perguntas escritas de muitos jeitos</li><li>Responde frases que ninguém previu</li><li>Conversa de forma mais natural</li><li>Mas pode inventar respostas: precisa de conferência e de dados confiáveis</li></ul></div>
+      </div>
+      <div class="note" style="margin:16px 0">Muitos atendentes de verdade juntam as duas coisas: regras para o que precisa ser exato (datas, valores, documentos) e IA para entender a pergunta e encaminhar.</div>
+      <div class="btn-row" style="justify-content:center"><button class="btn ghost" type="button" id="volta">Voltar às regras</button><button class="btn" type="button" id="again">Começar do zero</button></div>`;
+    document.getElementById('volta').onclick = () => { S.fim = false; sv(); render(); };
+    document.getElementById('again').onclick = () => { S = novo(); log = []; ultimo = null; sv(); render(); };
+  }
+  render();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
