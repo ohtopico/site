@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esteira da Ordenação: simulação 3D de Computação</title>
+<meta name="description" content="Três esteiras em 3D com as mesmas caixas: bolha, seleção e inserção ordenam lado a lado, contando comparações e trocas. Aposte qual algoritmo vence.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/esteira-ordenacao.html">
+<meta property="og:title" content="Esteira da Ordenação: simulação 3D de Computação">
+<meta property="og:description" content="Caixas de alturas diferentes em três esteiras 3D: a ordenação por bolha, por seleção e por inserção trabalham lado a lado, contando comparações e trocas. Para o 8º ano, com desafios e roteiro para o professor.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/esteira-ordenacao.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-esteira-ordenacao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Três esteiras em 3D com caixas de alturas diferentes sendo ordenadas">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Esteira da Ordenação","description":"Caixas de alturas diferentes em três esteiras: bolha, seleção e inserção ordenam lado a lado, contando comparações e trocas. Aposte qual algoritmo faz menos operações.","url":"https://ohtopico.com.br/material-didatico/3d/esteira-ordenacao.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-esteira-ordenacao.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO03","targetDescription":"Utilizar algoritmos clássicos de manipulação sobre listas."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO02","targetDescription":"Criar soluções que usem listas para descrever informações e automatizá-las com uma linguagem de programação."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Esteira da Ordenação","item":"https://ohtopico.com.br/material-didatico/3d/esteira-ordenacao.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Esteira da Ordenação</h1>
+      <p class="muted" style="max-width:720px">Caixas de alturas diferentes em três esteiras: bolha, seleção e inserção ordenam lado a lado, contando comparações e trocas. Aposte qual algoritmo faz menos operações.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef08co03/" title="EF08CO03 — Utilizar algoritmos clássicos de manipulação sobre listas.">EF08CO03</a><a class="tag code co" href="../bncc/ef08co02/" title="EF08CO02 — Criar soluções que usem listas para descrever informações e automatizá-las com uma linguagem de programação.">EF08CO02</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>As esteiras:</strong> as três esteiras recebem as mesmas caixas, na mesma ordem. Cada uma é ordenada por um algoritmo diferente, da caixa mais baixa para a mais alta: <strong>bolha</strong> (compara vizinhas e troca se estiverem fora de ordem), <strong>seleção</strong> (procura a menor e leva para o começo) e <strong>inserção</strong> (pega a próxima caixa e encaixa no lugar certo entre as que já passaram).</p>
+    <p><strong>As cores:</strong> amarelo é uma comparação acontecendo, vermelho é uma troca, rosa é a menor caixa encontrada até agora na seleção e verde é a caixa que já está no lugar final. Cada esteira conta quantas comparações e quantas trocas fez.</p>
+    <p><strong>Experimente:</strong> escolha a ordem inicial, faça sua aposta e use “Passo” para ir devagar ou “Rodar” para ver a corrida. As três esteiras andam no mesmo ritmo: uma comparação ou uma troca por vez. Quem faz menos operações termina primeiro.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões, e a tabela abaixo da cena mostra os mesmos números.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="rodar">Rodar</button>
+          <button class="btn ghost" type="button" id="passo">Passo</button>
+          <button class="btn ghost" type="button" id="recomecar">Recomeçar</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div class="lab-tabw">
+          <table class="lab-tab">
+            <caption class="small muted" style="text-align:left" id="legenda">Placar das esteiras</caption>
+            <thead><tr><th>Algoritmo</th><th>Comparações</th><th>Trocas</th><th>Situação</th></tr></thead>
+            <tbody id="placar"></tbody>
+          </table>
+        </div>
+        <div id="historico"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Caixas</h3>
+          <label for="ordem">Ordem inicial</label>
+          <select id="ordem">
+            <option value="aleatoria">Embaralhada</option>
+            <option value="quase">Quase em ordem</option>
+            <option value="invertida">Invertida (da mais alta à mais baixa)</option>
+            <option value="ordenada">Já em ordem</option>
+          </select>
+          <label for="qtd">Quantidade de caixas: <b id="lqtd">8</b></label>
+          <input type="range" id="qtd" min="4" max="10" step="1" value="8">
+          <label for="seed">Semente (seed) do embaralhamento</label>
+          <input type="number" id="seed" min="1" max="9999" value="3">
+          <div class="tools" style="margin-top:8px">
+            <button class="btn ghost" type="button" id="nova">Nova ordem</button>
+          </div>
+          <label for="vel">Velocidade</label>
+          <input type="range" id="vel" min="1" max="5" step="1" value="3">
+          <h3 style="margin-top:14px">Sua aposta</h3>
+          <label for="aposta">Qual vai fazer menos comparações?</label>
+          <select id="aposta">
+            <option value="">Escolha antes de começar</option>
+            <option value="bolha">Bolha</option>
+            <option value="selecao">Seleção</option>
+            <option value="insercao">Inserção</option>
+            <option value="empate">Vai dar empate</option>
+          </select>
+          <div class="conta" id="conta"></div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#f2cf1d"></span>comparando</li>
+            <li><span class="sw" style="background:#c8323f"></span>trocando</li>
+            <li><span class="sw" style="background:#f2a9b3"></span>menor até agora (seleção)</li>
+            <li><span class="sw" style="background:#1f8a4c"></span>no lugar final</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Aposte antes de começar qual algoritmo fará menos comparações e acerte.</li>
+            <li data-d="1">Rode a ordem invertida até o fim e descubra qual algoritmo fez mais trocas.</li>
+            <li data-d="2">Encontre uma ordem inicial em que a seleção faz mais que o dobro das comparações da inserção.</li>
+            <li data-d="3">Termine 3 corridas com ordens diferentes e compare as trocas da bolha e da inserção. O que se repete?</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> ordenar é a operação clássica sobre listas, e contar comparações e trocas é a forma mais simples de medir o custo de um algoritmo sem cronômetro. Com <em>n</em> caixas, a seleção sempre faz <em>n</em>(<em>n</em> − 1)/2 comparações (28 para 8 caixas), esteja a lista bagunçada ou não, mas faz no máximo <em>n</em> − 1 trocas. A bolha e a inserção fazem exatamente o mesmo número de trocas: cada troca entre vizinhas desfaz um par fora de ordem (uma “inversão”), e as duas só trocam vizinhas. A diferença está nas comparações: a inserção para de comparar assim que encontra o lugar da caixa, por isso brilha em listas quase ordenadas (com a lista já em ordem, faz só <em>n</em> − 1 comparações). A bolha desta página para quando passa pela lista inteira sem trocar nada, que é a versão mais comum nos livros.</p>
+    <p><strong>Metodologia sugerida:</strong> ordenação desplugada antes da tela. Em trios, os alunos ordenam 8 cartas numeradas com cada algoritmo: um executa, outro conta comparações e outro conta trocas. Depois abrem a página, conferem as contagens com a mesma ordem inicial (anotem a semente) e fazem as apostas.</p>
+    <ul>
+      <li>Por que a seleção faz sempre o mesmo número de comparações, mesmo quando a lista já está em ordem?</li>
+      <li>Na ordem invertida, a bolha e a inserção fazem quantas trocas? Tente achar uma fórmula para <em>n</em> caixas.</li>
+      <li>Se trocar uma caixa custasse muito mais que comparar (caixas pesadas de verdade, numa fábrica), qual algoritmo vocês escolheriam? E se comparar fosse o caro?</li>
+      <li>Um aplicativo recebe todo dia uma lista que já chega quase em ordem. Qual algoritmo combina com essa situação?</li>
+    </ul>
+    <p>Para a aula completa, use o plano <a href="../planos/listas-recursao-algoritmos-ordenacao/">Listas, recursão e algoritmos de ordenação</a>; a ficha <a href="../fichas/ordenar-buscar-cartoes/">Ordenar e buscar com cartões</a> leva a atividade para o papel, e a <a href="../jogos/busca-binaria.html">Estante da Busca Binária</a> mostra para que serve uma lista ordenada.</p>
+    <p class="small muted">Habilidades: EF08CO02 e EF08CO03. Material concreto equivalente: 8 caixas ou garrafas de alturas diferentes em fila sobre a mesa, ou cartas de baralho, com dois alunos anotando as contagens na lousa.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/listas-recursao-algoritmos-ordenacao/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Listas, recursão e algoritmos de ordenação</strong>
+          <span class="small muted">Ordenar cartas na mão, buscar em listas e resolver problemas que contêm versões menores de si mesmos.</span>
+        </a>
+        <a class="card" href="../fichas/ordenar-buscar-cartoes/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>Ordenar e buscar com cartões</strong>
+          <span class="small muted">Cartões para recortar: ordenação por seleção passo a passo, busca binária e quantas perguntas ela precisa.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/carro-que-aprende.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Carro que Aprende</strong>
+          <span class="small muted">Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-esteira-ordenacao');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-esteira-ordenacao';
+
+const ALGS = [
+  { id: 'bolha', nome: 'Bolha', gera: bolha },
+  { id: 'selecao', nome: 'Seleção', gera: selecao },
+  { id: 'insercao', nome: 'Inserção', gera: insercao }
+];
+const NOME_ORDEM = { aleatoria: 'embaralhada', quase: 'quase em ordem', invertida: 'invertida', ordenada: 'já em ordem' };
+const ESPERA = [0, 1100, 750, 480, 260, 120]; // ms entre passos, por velocidade
+const feitos = new Set();
+const corridas = []; // corridas terminadas: { chave, ordem, res }
+
+/* ---------- os algoritmos viram listas de eventos ----------
+   cmp e troca contam (e gastam um passo); fixo e min só pintam */
+function bolha(v) {
+  const a = v.slice(), ev = [], n = a.length;
+  for (let fim = n - 1; fim >= 1; fim--) {
+    let trocou = false;
+    for (let i = 0; i < fim; i++) {
+      ev.push({ t: 'cmp', i, j: i + 1 });
+      if (a[i] > a[i + 1]) { [a[i], a[i + 1]] = [a[i + 1], a[i]]; ev.push({ t: 'troca', i, j: i + 1 }); trocou = true; }
+    }
+    ev.push({ t: 'fixo', i: fim });
+    if (!trocou) break;
+  }
+  return ev;
+}
+function selecao(v) {
+  const a = v.slice(), ev = [], n = a.length;
+  for (let i = 0; i < n - 1; i++) {
+    let m = i;
+    ev.push({ t: 'min', i: m });
+    for (let j = i + 1; j < n; j++) {
+      ev.push({ t: 'cmp', i: m, j });
+      if (a[j] < a[m]) { m = j; ev.push({ t: 'min', i: m }); }
+    }
+    if (m !== i) { [a[i], a[m]] = [a[m], a[i]]; ev.push({ t: 'troca', i, j: m }); }
+    ev.push({ t: 'fixo', i });
+  }
+  return ev;
+}
+function insercao(v) {
+  const a = v.slice(), ev = [], n = a.length;
+  for (let i = 1; i < n; i++) {
+    for (let j = i; j > 0; j--) {
+      ev.push({ t: 'cmp', i: j - 1, j });
+      if (a[j - 1] <= a[j]) break;
+      [a[j - 1], a[j]] = [a[j], a[j - 1]];
+      ev.push({ t: 'troca', i: j - 1, j });
+    }
+  }
+  return ev;
+}
+
+/* ---------- ordem inicial ---------- */
+function prng(seed) { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+function ordemInicial(tipo, n, seed) {
+  const r = prng(seed * 2654435761);
+  const a = Array.from({ length: n }, (_, i) => i + 1);
+  if (tipo === 'invertida') return a.reverse();
+  if (tipo === 'ordenada') return a;
+  if (tipo === 'quase') {
+    // duas trocas entre vizinhas
+    for (let k = 0; k < 2; k++) { const i = Math.floor(r() * (n - 1)); [a[i], a[i + 1]] = [a[i + 1], a[i]]; }
+    return a;
+  }
+  for (let i = n - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  if (a.every((x, i) => x === i + 1)) [a[0], a[1]] = [a[1], a[0]];
+  return a;
+}
+
+/* ---------- estado ---------- */
+let valores = [], pistas = [], rodando = false, passos = 0, apostaFeita = '', geracao = 0;
+const lerConfig = () => ({ tipo: $('#ordem').value, n: +$('#qtd').value, seed: Math.max(1, +$('#seed').value || 1) });
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 13.5, 15], alvo: [0, 1, 0.2], min: 6, max: 34, pan: false });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0, 16.5, 18.5], [0, 1, 0.2]);
+const PASSO_X = 1.15, LARG = 0.82, TOPO = 0.42;
+const Z = [-3.6, 0, 3.6];
+const xDe = (pos, n) => (pos - (n - 1) / 2) * PASSO_X;
+const altura = v => 0.35 + v * 0.32;
+const cores = T && { base: new T.Color(COR.cinza), cmp: new T.Color(COR.amarelo), troca: new T.Color(COR.vermelho), min: new T.Color(COR.vermelhoClaro), fixo: new T.Color(COR.verde) };
+let gCena = null;
+
+function montaCena() {
+  if (!cena) return;
+  if (gCena) { gCena.traverse(o => { if (o.isSprite) { o.material.map && o.material.map.dispose(); o.material.dispose(); } }); cena.remove(gCena); }
+  gCena = new T.Group(); cena.add(gCena);
+  const n = valores.length, comp = n * PASSO_X + 1.6;
+  pistas.forEach((p, k) => {
+    const z = Z[k];
+    // esteira: lona escura com roletes nas pontas
+    const lona = cena.bloco(comp, 0.22, 1.5, COR.cinzaEscuro, { base: false });
+    lona.position.set(0, 0.2, z); gCena.add(lona);
+    [-1, 1].forEach(s => {
+      const rol = cena.cilindro(0.2, 1.6, COR.tinta, { bordas: false });
+      rol.rotation.x = Math.PI / 2; rol.position.set(s * comp / 2, 0.2, z - 0.8); gCena.add(rol);
+    });
+    [-1, 1].forEach(s => { const pe = cena.bloco(0.18, 0.1, 0.18, COR.cinzaEscuro, { base: false }); pe.position.set(s * (comp / 2 - 0.4), 0.05, z); gCena.add(pe); });
+    p.caixas = valores.map((v, pos) => {
+      const h = altura(v);
+      const m = cena.bloco(LARG, h, LARG, null, { base: false, material: new T.MeshStandardMaterial({ color: cores.base.clone(), roughness: 0.55 }) });
+      m.position.set(xDe(pos, n), TOPO + h / 2, z);
+      const r = cena.rotulo(String(v), { tam: 0.34 }); r.position.set(0, h / 2 + 0.28, 0); m.add(r);
+      m.userData.h = h;
+      gCena.add(m);
+      return m;
+    });
+    p.placa = null; placa(p);
+  });
+}
+function placa(p) {
+  if (!cena) return;
+  // placa no chão, na frente da esteira: nome e contagens
+  const ini = -(valores.length * PASSO_X + 1.6) / 2;
+  if (p.placa) { p.placa.material.map.dispose(); p.placa.material.dispose(); gCena.remove(p.placa); }
+  const txt = `${p.alg.nome}: ${p.cmp} comparações · ${p.trocas} trocas${p.fim ? ' ✓' : ''}`;
+  p.placa = cena.rotulo(txt, { tam: 0.46, fundo: p.fim ? '#9fdab4' : '#fff36b', depthTest: false });
+  p.placa.renderOrder = 20;
+  p.placa.position.set(ini + p.placa.scale.x / 2, 0.3, Z[pistas.indexOf(p)] + 1.15);
+  gCena.add(p.placa);
+  cena.pedeQuadro();
+}
+function pinta(p) {
+  if (!cena) return;
+  p.caixas.forEach((m, pos) => {
+    const c = p.fixos.has(pos) || p.fim ? cores.fixo : p.marca[pos] ? cores[p.marca[pos]] : cores.base;
+    m.material.color.copy(c);
+  });
+  cena.pedeQuadro();
+}
+function descreve() {
+  if (!cena) return;
+  const partes = pistas.map(p => `${p.alg.nome}: ${p.cmp} comparações e ${p.trocas} trocas${p.fim ? ', terminou' : ''}, caixas na ordem ${p.atual.join(', ')}`);
+  cena.descrever(`Três esteiras com ${valores.length} caixas de alturas diferentes, ordenadas da mais baixa para a mais alta. ${partes.join('. ')}.`);
+}
+
+/* ---------- preparar uma corrida ---------- */
+function preparar(msg) {
+  parar();
+  geracao++;
+  const c = lerConfig();
+  valores = ordemInicial(c.tipo, c.n, c.seed);
+  pistas = ALGS.map(alg => ({ alg, ev: alg.gera(valores), k: 0, cmp: 0, trocas: 0, fim: false, fixos: new Set(), marca: {}, atual: valores.slice(), caixas: [] }));
+  passos = 0; apostaFeita = '';
+  $('#aposta').disabled = false; $('#aposta').value = '';
+  montaCena();
+  pistas.forEach(pinta);
+  atualizaPainel();
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = msg || `Ordem ${NOME_ORDEM[c.tipo]}: ${valores.join(', ')}. Faça sua aposta e comece.`;
+}
+
+/* ---------- um passo: cada esteira faz uma comparação ou uma troca ---------- */
+async function passo() {
+  const ms = ESPERA[+$('#vel').value];
+  if (passos === 0) { apostaFeita = $('#aposta').value; $('#aposta').disabled = true; }
+  passos++;
+  const g = geracao;
+  await Promise.all(pistas.map(p => avanca(p, ms)));
+  if (g !== geracao) return; // recomeçou no meio do passo
+  atualizaPainel();
+  if (pistas.every(p => p.fim)) terminou();
+}
+function drena(p) {
+  // eventos que só pintam; sem mais nada para fazer, a esteira terminou
+  while (p.k < p.ev.length && (p.ev[p.k].t === 'fixo' || p.ev[p.k].t === 'min')) {
+    const e = p.ev[p.k++];
+    if (e.t === 'fixo') p.fixos.add(e.i); else p.min = e.i;
+  }
+  if (p.k >= p.ev.length && !p.fim) { p.fim = true; p.min = null; p.marca = {}; }
+}
+async function avanca(p, ms) {
+  if (p.fim) return;
+  p.marca = {};
+  drena(p);
+  if (p.fim) { pinta(p); placa(p); return; }
+  const e = p.ev[p.k++];
+  const sel = p.alg.id === 'selecao';
+  if (e.t === 'cmp') {
+    p.cmp++;
+    p.marca[e.i] = sel ? 'min' : 'cmp'; p.marca[e.j] = 'cmp';
+  } else {
+    p.trocas++;
+    p.marca[e.i] = p.marca[e.j] = 'troca';
+    pinta(p); placa(p);
+    [p.atual[e.i], p.atual[e.j]] = [p.atual[e.j], p.atual[e.i]];
+    await animaTroca(p, e.i, e.j, ms);
+  }
+  drena(p);
+  pinta(p); placa(p);
+}
+async function animaTroca(p, i, j, ms) {
+  if (!cena) { [p.caixas[i], p.caixas[j]] = [p.caixas[j], p.caixas[i]]; return; }
+  const n = valores.length, z = Z[pistas.indexOf(p)];
+  const A = p.caixas[i], B = p.caixas[j];
+  const yA = A.position.y, yB = B.position.y, t = Math.max(80, ms * 0.3);
+  await Promise.all([cena.animar(A, { position: [xDe(i, n), yA, z - 0.55] }, t), cena.animar(B, { position: [xDe(j, n), yB, z + 0.55] }, t)]);
+  await Promise.all([cena.animar(A, { position: [xDe(j, n), yA, z - 0.55] }, t), cena.animar(B, { position: [xDe(i, n), yB, z + 0.55] }, t)]);
+  await Promise.all([cena.animar(A, { position: [xDe(j, n), yA, z] }, t), cena.animar(B, { position: [xDe(i, n), yB, z] }, t)]);
+  [p.caixas[i], p.caixas[j]] = [p.caixas[j], p.caixas[i]];
+}
+
+/* ---------- rodar e parar ---------- */
+const dorme = ms => new Promise(r => setTimeout(r, ms));
+async function rodar() {
+  if (rodando) { parar(); return; }
+  if (pistas.every(p => p.fim)) preparar();
+  rodando = true; $('#rodar').textContent = 'Pausar'; $('#passo').disabled = true;
+  while (rodando && !pistas.every(p => p.fim)) {
+    await passo();
+    await dorme(ESPERA[+$('#vel').value] * 0.4);
+  }
+  parar();
+}
+function parar() { rodando = false; $('#rodar').textContent = 'Rodar'; $('#passo').disabled = false; }
+
+/* ---------- painel ---------- */
+function atualizaPainel() {
+  $('#placar').innerHTML = pistas.map(p => `<tr><td>${p.alg.nome}</td><td>${p.cmp}</td><td>${p.trocas}</td><td>${p.fim ? '<span class="ok">terminou</span>' : passos ? 'ordenando' : 'esperando'}</td></tr>`).join('');
+  const n = valores.length;
+  $('#legenda').textContent = `Placar das esteiras: ${n} caixas, ${passos} passo${passos === 1 ? '' : 's'}`;
+  $('#conta').textContent = `Caixas: ${valores.join(', ')}\nPares fora de ordem: ${inversoes(valores)}\nComparações da seleção: ${n} × ${n - 1} ÷ 2 = ${n * (n - 1) / 2}` + (apostaFeita ? `\nSua aposta: ${$('#aposta').selectedOptions[0].textContent}` : '');
+  descreve();
+}
+const lista = l => l.length > 1 ? l.slice(0, -1).join(', ') + ' e ' + l[l.length - 1] : l[0];
+const inversoes = a => a.reduce((s, x, i) => s + a.slice(i + 1).filter(y => y < x).length, 0);
+
+function terminou() {
+  const c = lerConfig();
+  const res = Object.fromEntries(pistas.map(p => [p.alg.id, { cmp: p.cmp, trocas: p.trocas }]));
+  const menor = Math.min(...pistas.map(p => p.cmp));
+  const vencedores = pistas.filter(p => p.cmp === menor);
+  const venc = vencedores.length > 1 ? 'empate' : vencedores[0].alg.id;
+  const maisTrocas = pistas.reduce((a, b) => b.trocas > a.trocas ? b : a);
+  let msg = vencedores.length > 1
+    ? `Empate em comparações: ${lista(vencedores.map(p => p.alg.nome))} com ${menor}.`
+    : `${vencedores[0].alg.nome} fez menos comparações: ${menor}.`;
+  let ok = true;
+  if (apostaFeita) {
+    const acertou = apostaFeita === venc;
+    msg += acertou ? ' Você acertou a aposta!' : ' Sua aposta não se confirmou desta vez.';
+    ok = acertou;
+    if (acertou) marca(0);
+  }
+  $('#fb').className = 'feedback' + (ok ? ' ok' : '');
+  $('#fb').textContent = msg;
+
+  if (c.tipo === 'invertida') {
+    const empatados = pistas.filter(p => p.trocas === maisTrocas.trocas).map(p => p.alg.nome);
+    $('#fb').textContent += ` Na ordem invertida, quem mais trocou: ${lista(empatados)} (${maisTrocas.trocas} trocas).`;
+    marca(1);
+  }
+  if (res.selecao.cmp > 2 * res.insercao.cmp) marca(2);
+  const chave = valores.join(',');
+  if (!corridas.some(r => r.chave === chave)) corridas.push({ chave, ordem: NOME_ORDEM[c.tipo], n: valores.length, res });
+  if (corridas.length >= 3) marca(3);
+  historico();
+}
+function historico() {
+  if (!corridas.length) { $('#historico').innerHTML = ''; return; }
+  const linhas = corridas.map((r, i) => `<tr><td>${i + 1}</td><td>${r.ordem}, ${r.n} caixas</td><td>${r.res.bolha.cmp} / ${r.res.bolha.trocas}</td><td>${r.res.selecao.cmp} / ${r.res.selecao.trocas}</td><td>${r.res.insercao.cmp} / ${r.res.insercao.trocas}</td></tr>`);
+  const iguais = corridas.length >= 3 && corridas.every(r => r.res.bolha.trocas === r.res.insercao.trocas);
+  $('#historico').innerHTML = `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">Corridas terminadas (comparações / trocas)</caption><thead><tr><th>#</th><th>Ordem</th><th>Bolha</th><th>Seleção</th><th>Inserção</th></tr></thead><tbody>${linhas.join('')}</tbody></table></div>` +
+    (iguais ? '<p class="small">Repare: em todas as corridas, a bolha e a inserção fizeram o mesmo número de trocas. Esse número é a quantidade de pares fora de ordem na lista inicial.</p>' : '');
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 4 * 100));
+}
+
+/* ---------- controles ---------- */
+$('#rodar').onclick = rodar;
+$('#passo').onclick = async () => {
+  if (pistas.every(p => p.fim)) { preparar(); return; }
+  $('#passo').disabled = true;
+  await passo();
+  $('#passo').disabled = false;
+};
+$('#recomecar').onclick = () => preparar();
+$('#nova').onclick = () => { $('#seed').value = Math.max(1, (+$('#seed').value || 1) % 9999 + 1); if ($('#ordem').value === 'ordenada' || $('#ordem').value === 'invertida') $('#ordem').value = 'aleatoria'; preparar(); };
+$('#ordem').addEventListener('change', () => preparar());
+$('#seed').addEventListener('change', () => preparar());
+$('#qtd').addEventListener('input', e => { $('#lqtd').textContent = e.target.value; preparar(); });
+preparar();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

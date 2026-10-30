@@ -491,6 +491,10 @@ const RECURSOS = [
     habs: ['EF08CO01'], tempo: '20 min',
     resumo: 'Torre de Hanói em 3D: resolva com 3, 4 e 5 discos, ensine ao robô a regra recursiva e veja ele resolver 8 discos, com a pilha de chamadas e o contador de movimentos.',
     url: '3d/torre-recursao.html', plano: 'p-recursao', ficha: 'f-co-recursao' },
+  { id: '3d-esteira-ordenacao', tipo: '3d', titulo: 'Esteira da Ordenação', comp: ['CO'], anos: [8],
+    habs: ['EF08CO03', 'EF08CO02'], tempo: '20 min',
+    resumo: 'Caixas de alturas diferentes em três esteiras: bolha, seleção e inserção ordenam lado a lado, contando comparações e trocas. Aposte qual algoritmo faz menos operações.',
+    url: '3d/esteira-ordenacao.html', plano: 'p-recursao', ficha: 'f-co-ordenar' },
   { id: '3d-cozinha-paralela', tipo: '3d', titulo: 'Cozinha Paralela', comp: ['CO'], anos: [8],
     habs: ['EF08CO05'], tempo: '20 min',
     resumo: 'Um restaurante em 3D com 1, 2 ou 4 cozinheiros-robôs. Distribua os pedidos, veja quanto o paralelismo ganha, ache o gargalo e provoque um impasse quando dois robôs querem a mesma panela.',
@@ -1272,7 +1276,7 @@ const PLANOS = {
     ],
     avaliacao: 'Registro das comparações nas ordenações; fluxograma de uma sequência; programa funcionando para listas ou entradas diferentes.',
     inclusao: 'As cartas com números grandes ou em braille tornam os algoritmos concretos. Permita que a ordenação seja feita em dupla, com um aluno executando e outro registrando.',
-    recursos: ['f-co-recursao', 'f-co-listas', 'f-co-ordenar', '3d-torre-recursao']
+    recursos: ['f-co-recursao', 'f-co-listas', 'f-co-ordenar', '3d-torre-recursao', '3d-esteira-ordenacao']
   },
   'p-paralelo': {
     duracao: '2 aulas de 50 min',
