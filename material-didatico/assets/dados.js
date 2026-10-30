@@ -339,7 +339,7 @@ const RECURSOS = [
   { id: 'cidade-blocos', tipo: 'jogo', interacao: 'perguntas', titulo: 'Cidade em Blocos', comp: ['CO'], anos: [7, 8, 9],
     habs: ['EF06CO02', 'EF07CO01', 'EF07CO02', 'EF07CO06', 'EF07CO07', 'EF08CO06', 'EF08CO08', 'EF09CO05', 'EF09CO10'], tempo: '30–40 min',
     resumo: 'Cidade de blocos de montar com seis bairros: responda os totens de desafio, junte peças, reconstrua os marcos e libere a cidade. Algoritmos, dados, depuração, redes, segurança e IA.',
-    url: 'jogos/cidade-blocos.html', plano: 'p-bugs', ficha: null },
+    url: 'jogos/cidade-blocos.html', plano: 'p-bugs', ficha: null, interacao: 'perguntas' },
   // ---------- Recursos 3D (Laboratório 3D) ----------
   { id: '3d-decimais', tipo: '3d', titulo: 'Material Dourado 3D', comp: ['MA'], anos: [6],
     habs: ['EF06MA01', 'EF06MA02', 'EF06MA08', 'EF06MA11'], tempo: '15 min',
