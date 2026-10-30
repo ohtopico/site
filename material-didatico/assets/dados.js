@@ -229,6 +229,10 @@ const RECURSOS = [
     habs: ['EF06MA31', 'EF07MA37', 'EF08MA23', 'EF09MA21'], tempo: '10–15 min',
     resumo: 'Leia gráficos de colunas e de setores, calcule porcentagens e desmascare gráficos enganosos com eixo cortado, escala torta ou sem fonte.',
     url: 'jogos/graficos.html', plano: 'p-ma-graficos', ficha: null },
+  { id: 'wikipedia', tipo: 'jogo', titulo: 'Qual Verbete Tem Mais Visitas?', comp: ['CO', 'MA'], anos: [6, 7, 8, 9],
+    habs: ['EF06MA32', 'EF07MA36', 'EF08CO11'], tempo: '10 min',
+    resumo: 'Dois verbetes da Wikipédia em português, uma escolha: qual foi mais lido no último ano? Números grandes e reais, atualizados todo mês.',
+    url: 'jogos/wikipedia.html', plano: 'p-wikipedia', ficha: null },
   { id: 'mesada', tipo: 'jogo', titulo: 'Desafio da Mesada', comp: ['MA'], anos: [6, 7, 8, 9],
     habs: ['EF06MA13', 'EF07MA02', 'EF08MA04', 'EF09MA05'], tempo: '20–30 min',
     resumo: 'Um ano de mesada para chegar à meta: poupança e aplicação com juros compostos, à vista ou parcelado, feira da escola, bicos, imprevistos e cheque especial.',
@@ -703,6 +707,10 @@ const RECURSOS = [
     habs: ['EF08CO11', 'EF09CO10'], tempo: '2 aulas',
     resumo: 'Método simples de checagem para notícias, imagens e vídeos, incluindo conteúdo gerado por IA.',
     url: 'plano.html?id=p-fontes' },
+  { id: 'p-wikipedia', tipo: 'plano', titulo: 'A Wikipédia como base de dados', comp: ['CO', 'MA'], anos: [7, 8, 9],
+    habs: ['EF07MA36', 'EF09MA22', 'EF09MA21', 'EF08CO11', 'EF09CO10'], tempo: '2 aulas',
+    resumo: 'A turma faz uma pergunta, coleta as visitas de verbetes da Wikipédia, monta um gráfico de linhas na planilha e investiga o que explica cada pico.',
+    url: 'plano.html?id=p-wikipedia' },
   { id: 'p-projeto8', tipo: 'plano', titulo: 'Projeto: um programa para outra disciplina', comp: ['CO', 'MA'], anos: [8],
     habs: ['EF08CO04', 'EF08MA06'], tempo: '4 aulas',
     resumo: 'Grupos criam um programa que resolve um problema de Matemática, Ciências ou Geografia, com teste e apresentação.',
@@ -734,7 +742,7 @@ const ICONES = {
   'f-robo': '✏️', 'f-decompor': '🧱', 'f-pacotes': '✉️', 'f-cesar': '🎡', 'f-grafo': '📍', 'f-fracoes': '🍫', 'f-batalha': '⚓', 'f-golpe': '🔒',
   'p-robo': '🧠', 'p-internet': '🌐', 'p-grafos': '🕸️', 'p-cripto': '🗝️', 'p-golpes': '🚨', 'p-fracoes': '➗', 'p-cartesiano': '📐', 'p-equacoes': '🟰',
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
-  'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎',
+  'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
   bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
@@ -1129,6 +1137,27 @@ const PLANOS = {
     avaliacao: 'Fichas de checagem com classificação justificada e fontes consultadas.',
     inclusao: 'Use leitores de tela para as postagens e descreva as imagens em voz alta. Grupos heterogêneos ajudam na pesquisa.',
     recursos: ['golpe', 'f-co-checagem8', 'f-co-verdade']
+  },
+  'p-wikipedia': {
+    duracao: '2 aulas de 50 min',
+    objetivos: [
+      'Formular uma pergunta que possa ser respondida com dados abertos.',
+      'Coletar, organizar e representar uma série temporal em gráfico de linhas, com título, eixos, fonte e data.',
+      'Relacionar picos e mudanças nos dados com acontecimentos, checando as explicações em fontes confiáveis.',
+      'Reconhecer limites de um conjunto de dados (o que ele mede e o que não mede).'
+    ],
+    materiais: ['Computadores ou celulares com internet (1 por dupla)', 'Planilha eletrônica (Google Planilhas, Excel ou LibreOffice Calc)', 'Painel https://ohtopico.com.br/interesse-por-ia/ ou a ferramenta pública https://pageviews.wmcloud.org/', 'Projetor (opcional)'],
+    etapas: [
+      ['10 min', 'Pergunta inicial', 'Projete o painel de interesse por IA e mostre a linha do verbete ChatGPT. Pergunte: o que aconteceu em dezembro de 2022? Por que tanta gente foi ler sobre isso? Explique que cada visita a um verbete é registrada e que esses números são públicos.'],
+      ['15 min', 'Nossa pergunta', 'Cada dupla escolhe dois ou três verbetes ligados a um tema da turma (um planeta, um time, um jogo, uma doença, uma festa) e escreve uma pergunta: quando as pessoas mais procuram por isso? Esse interesse cresceu? Registre as hipóteses antes de olhar os dados.'],
+      ['25 min', 'Coleta dos dados', 'Na ferramenta pageviews.wmcloud.org, escolham pt.wikipedia.org, os verbetes, o período e a opção mensal, e baixem o CSV. Quem usar o painel do site pode clicar em Baixar os dados (CSV). Abram o arquivo na planilha e confiram: cada linha é um mês, cada coluna é um verbete.'],
+      ['20 min', 'Gráfico de linhas', 'Montem o gráfico de linhas. Confiram título, nome dos eixos, legenda, fonte (Wikimedia) e data da coleta. Discuta por que o gráfico de linhas combina com dados ao longo do tempo e o que mudaria se o eixo vertical não começasse no zero.'],
+      ['20 min', 'Investigando os picos', 'Cada dupla marca o maior pico e procura uma explicação em duas fontes confiáveis diferentes (jornal, site oficial, a própria Wikipédia). A explicação precisa de data e fonte. Lembre: os dados mostram quando o interesse mudou, mas não dizem sozinhos por quê.'],
+      ['10 min', 'Relatório e limites', 'Cada dupla escreve um parágrafo: pergunta, o que os dados mostraram, a explicação encontrada e um limite dos dados (a Wikipédia em português é lida em vários países; robôs são descontados; quem chega por outro título é contado à parte). Para fechar, joguem uma partida do jogo da Wikipédia, Qual Verbete Tem Mais Visitas.']
+    ],
+    avaliacao: 'O gráfico tem título, eixos, legenda, fonte e data? O relatório diferencia o que os dados mostram da explicação buscada nas fontes? A dupla aponta pelo menos um limite dos dados?',
+    inclusao: 'O painel do site tem a opção Ver como tabela, que funciona com leitores de tela. Para quem precisa de mais apoio, entregue o CSV já baixado e foque na leitura do gráfico. Duplas heterogêneas ajudam na parte da planilha.',
+    recursos: ['wikipedia', 'graficos']
   },
   'p-projeto8': {
     duracao: '4 aulas de 50 min',

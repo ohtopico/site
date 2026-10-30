@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qual Verbete Tem Mais Visitas? · Material didático | ohtopico</title>
+<meta name="description" content="Jogo com dados reais da Wikipédia em português: escolha qual de dois verbetes foi mais lido no último ano. Números grandes, estimativa e leitura de dados. BNCC EF06MA32, EF07MA36, EF08CO11.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/wikipedia.html">
+<meta property="og:title" content="Qual Verbete Tem Mais Visitas? · Material didático">
+<meta property="og:description" content="Jogo com dados reais da Wikipédia em português: escolha qual de dois verbetes foi mais lido no último ano.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/wikipedia.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .duelo { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; align-items: stretch; max-width: 820px; margin: 0 auto; }
+  .vs { align-self: center; font-family: var(--display); font-size: 26px; font-weight: 800; }
+  .verbete { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 22px 18px; min-height: 170px; cursor: pointer; text-align: center;
+    display: flex; flex-direction: column; justify-content: center; gap: 8px; font: inherit; color: inherit; transition: transform .12s, box-shadow .12s; }
+  .verbete:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .verbete:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .verbete .tema { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+  .verbete .nome { font-family: var(--display); font-size: 24px; line-height: 1.2; overflow-wrap: anywhere; }
+  .verbete .num { font-size: 17px; font-weight: 600; min-height: 26px; }
+  .verbete.right { background: var(--ok-soft); border-color: var(--ok); }
+  .verbete.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .verbete:disabled { cursor: default; }
+  .q { font-size: 20px; text-align: center; margin: 4px 0 18px; font-weight: 500; }
+  .barras-res { max-width: 560px; margin: 14px auto 0; display: grid; gap: 6px; font-size: 14px; }
+  .barras-res div { display: grid; grid-template-columns: 150px 1fr; gap: 8px; align-items: center; }
+  .barras-res i { display: block; height: 14px; border-radius: 0 4px 4px 0; background: var(--ok); }
+  @media (max-width: 560px) { .duelo { grid-template-columns: 1fr; } .vs { text-align: center; } .barras-res div { grid-template-columns: 110px 1fr; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Em cada rodada aparecem dois verbetes da Wikipédia em português. Escolha o que teve mais visitas nos últimos 12 meses. Depois da resposta, o jogo mostra os números e quantas vezes um é maior que o outro.</p>
+    <p><strong>Nível 1:</strong> diferenças grandes, de três vezes ou mais. <strong>Nível 2:</strong> diferenças menores, que pedem mais atenção. Escolha um tema para jogar só com verbetes de Computação, Matemática, Ciências, Brasil e RS ou Inteligência artificial.</p>
+    <p>Os números são reais e vêm do <a href="../../interesse-por-ia/">painel de interesse por IA</a>, atualizado todo mês com dados abertos da Wikimedia.</p>
+  </details>
+  <div class="game-stage">
+    <div class="chips" id="niveis" style="margin-bottom:8px"></div>
+    <div class="chips" id="temas" style="margin-bottom:14px"></div>
+    <div class="hud"><span>Rodada <b id="qn">1</b> de 10</span><span>Acertos <b id="ok">0</b></span><span>Sequência <b id="seq">0</b></span></div>
+    <p class="q" id="q">Qual verbete teve mais visitas nos últimos 12 meses?</p>
+    <div class="duelo" id="duelo"></div>
+    <p class="feedback" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script src="../../interesse-por-ia/assets/dados.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('wikipedia');
+(function () {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const nf = (v, c = 0) => v.toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c });
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  // Tira o complemento entre parênteses do título: "Marte (planeta)" vira "Marte"
+  const TODOS = window.DADOS_WIKI.jogo.filter(j => j.v >= 500).map(j => ({ ...j, t: j.t.replace(/ \([^)]*\)$/, '') }));
+  const TEMAS = ['Todos', ...new Set(TODOS.map(j => j.tema))];
+  const RODADAS = 10;
+  let nivel = 1, tema = 'Todos', q = 0, ok = 0, seq = 0, respondeu = false, usados = new Set(), placar = [];
+
+  function chips() {
+    $('#niveis').innerHTML = [[1, 'Nível 1 · diferenças grandes'], [2, 'Nível 2 · diferenças menores']]
+      .map(([v, l]) => `<button class="chip" type="button" data-n="${v}" aria-pressed="${v === nivel}">${l}</button>`).join('');
+    $('#temas').innerHTML = TEMAS.map(t => `<button class="chip" type="button" data-t="${esc(t)}" aria-pressed="${t === tema}">${esc(t)}</button>`).join('');
+  }
+  $('#niveis').onclick = e => { const b = e.target.closest('button'); if (b) { nivel = +b.dataset.n; reinicia(); } };
+  $('#temas').onclick = e => { const b = e.target.closest('button'); if (b) { tema = b.dataset.t; reinicia(); } };
+
+  function par() {
+    const base = tema === 'Todos' ? TODOS : TODOS.filter(j => j.tema === tema);
+    const ok = (a, b) => { const r = Math.max(a.v, b.v) / Math.min(a.v, b.v); return nivel === 1 ? r >= 3 : r >= 1.25 && r < 3; };
+    for (let t = 0; t < 400; t++) {
+      const a = pick(base), b = pick(base);
+      const chave = [a.t, b.t].sort().join('|');
+      if (a !== b && ok(a, b) && (!usados.has(chave) || t > 300)) { usados.add(chave); return Math.random() < .5 ? [a, b] : [b, a]; }
+    }
+    const s = base.slice().sort(() => Math.random() - .5); return [s[0], s[1]];
+  }
+  function hud() { $('#qn').textContent = Math.min(q + 1, RODADAS); $('#ok').textContent = ok; $('#seq').textContent = seq; }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function reinicia() { q = 0; ok = 0; seq = 0; usados = new Set(); placar = []; chips(); proxima(); }
+
+  function proxima() {
+    if (q >= RODADAS) return fim();
+    const [a, b] = par(); respondeu = false;
+    $('#q').textContent = 'Qual verbete teve mais visitas nos últimos 12 meses?';
+    $('#duelo').innerHTML = [a, b].map((v, i) => `${i ? '<span class="vs" aria-hidden="true">ou</span>' : ''}
+      <button class="verbete" type="button" data-i="${i}"><span class="tema">${esc(v.tema)}</span><span class="nome">${esc(v.t)}</span><span class="num"></span></button>`).join('');
+    fb('', ''); $('#actions').innerHTML = '';
+    $('#duelo').querySelectorAll('.verbete').forEach(btn => btn.onclick = () => responde(+btn.dataset.i, [a, b]));
+    hud();
+  }
+  function vezes(r) { return r >= 10 ? nf(r) : nf(r, 1); }
+  function responde(i, pares) {
+    if (respondeu) return; respondeu = true; q++;
+    const maior = pares[0].v >= pares[1].v ? 0 : 1, cards = $('#duelo').querySelectorAll('.verbete');
+    cards.forEach((c, k) => { c.disabled = true; c.querySelector('.num').textContent = nf(pares[k].v) + ' visitas'; if (k === maior) c.classList.add('right'); });
+    const M = pares[maior], m = pares[1 - maior], r = M.v / m.v;
+    placar.push(M, m);
+    const exp = `${M.t} teve ${nf(M.v)} visitas e ${m.t}, ${nf(m.v)}: cerca de ${vezes(r)} vezes mais.`;
+    if (i === maior) { ok++; seq++; fb('Isso! ' + exp, 'ok'); } else { seq = 0; cards[i].classList.add('wrong'); fb('Não foi dessa vez. ' + exp, 'bad'); }
+    hud();
+    $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${q < RODADAS ? 'Próxima rodada' : 'Ver resultado'}</button>`;
+    $('#nx').onclick = proxima; $('#nx').focus();
+  }
+  function fim() {
+    window.MDP && MDP.registrar('wikipedia', ok / RODADAS * 100);
+    $('#q').textContent = `Você acertou ${ok} de ${RODADAS}.`;
+    const vistos = [...new Map(placar.map(p => [p.t, p])).values()].sort((a, b) => b.v - a.v).slice(0, 8), max = vistos[0].v;
+    $('#duelo').innerHTML = `<div style="grid-column:1/-1"><p class="small muted" style="text-align:center">Os verbetes desta partida, do mais lido ao menos lido:</p><div class="barras-res">${vistos.map(v =>
+      `<div><span>${esc(v.t)}</span><span style="display:flex;align-items:center;gap:6px"><i style="width:${Math.max(2, v.v / max * 75)}%"></i>${nf(v.v)}</span></div>`).join('')}</div></div>`;
+    fb('Para pensar: por que alguns verbetes são tão mais lidos? Época de provas, notícias, jogos e filmes mudam o interesse das pessoas.', 'ok');
+    $('#actions').innerHTML = `<button class="btn ghost" type="button" id="de-novo">Jogar de novo</button>${nivel < 2 ? '<button class="btn" type="button" id="sobe">Nível 2</button>' : ''}`;
+    $('#de-novo').onclick = reinicia; const s = $('#sobe'); if (s) s.onclick = () => { nivel = 2; reinicia(); };
+  }
+  reinicia();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
