@@ -8,6 +8,8 @@ Uso:
 - site/mentoria/index.html sai com noindex enquanto tiver trechos [pendentes].
 - site/formacao-continuada/index.html é a página de serviço da formação continuada em IA.
 - site/prompts-para-professores/index.html é a biblioteca de prompts (prompts.json + conteudo/biblioteca-prompts.html).
+- site/quiz-pensamento-computacional/index.html é o quiz de pensamento computacional (quiz.json + conteudo/quiz-pensamento-computacional.html),
+  com uma página por nível em resultado/<nível>/ (noindex) para o LinkedIn mostrar a imagem do nível.
 - site/assistencia-por-voz/index.html apresenta o projeto de assistência por voz (teste-mestrado), com os avisos de privacidade.
 - --sitemap atualiza o bloco do blog dentro de site/sitemap.xml (entre os marcadores).
 - Posts com data depois de --ate não saem no site: a pasta, a imagem e os slides deles são apagados
@@ -112,6 +114,7 @@ MENU_INICIAR = [
         ('fa-solid fa-chalkboard-user', 'Mentoria', '/mentoria/'),
         ('fa-solid fa-people-group', 'Formação continuada', '/formacao-continuada/'),
         ('fa-regular fa-clipboard', 'Biblioteca de prompts', '/prompts-para-professores/'),
+        ('fa-solid fa-list-check', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/'),
     ]),
     ('Diversão', [
         ('fa-regular fa-star', 'Atualizações', '/#abrir=win-diario'),
@@ -153,6 +156,7 @@ def laterais(atual):
     navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Mentoria', '/mentoria/', 'mentoria'),
                ('◆', 'Formação continuada', '/formacao-continuada/', 'formacao'),
                ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
+               ('✱', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/', 'quiz'),
                ('☺', 'Currículo', '/curriculo/', '')]
     projetos = [('▲', 'Material didático', '/material-didatico/', ''),
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
@@ -223,6 +227,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
                     '<a href="/mentoria/">✦ Mentoria para professores e escolas</a>'
                     '<a href="/formacao-continuada/">✦ Formação continuada em IA para escolas e redes</a>'
                     '<a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a>'
+                    '<a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a>'
                     '<a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a>'
                     '<a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a>')
     contador = ''
@@ -786,6 +791,157 @@ def pagina_prompts(cfg):
                                  f'Pronto · {total} prompts', 'prompts')
 
 
+QUIZ_DIR = 'quiz-pensamento-computacional'
+# quiz.js e quiz.css ficam direto na pasta do quiz (não são gerados); a versão muda quando eles mudam
+_QUIZ_ASSETS = AQUI.parent.parent / QUIZ_DIR / 'assets'
+VERSAO_QUIZ = hashlib.md5(b''.join((_QUIZ_ASSETS / n).read_bytes() for n in ('quiz.js', 'quiz.css') if (_QUIZ_ASSETS / n).exists())).hexdigest()[:10]
+QUIZ_TITULO = 'Quiz de pensamento computacional para professores'
+QUIZ_IMAGEM_ALT = ('Capa do quiz de pensamento computacional para professores, de Júlia Roberta Quoos Alves: '
+                   '12 perguntas sobre decomposição, reconhecimento de padrões, abstração e algoritmos.')
+
+
+def quiz_dados():
+    return json.loads((AQUI / 'quiz.json').read_text(encoding='utf-8'))
+
+
+def pagina_quiz(cfg):
+    site = cfg['site']
+    url = f'{site}/{QUIZ_DIR}/'
+    q = quiz_dados()
+    pilares, perguntas = q['pilares'], q['perguntas']
+    total = len(perguntas)
+    letras = 'ABCD'
+    blocos = []
+    for n, p in enumerate(perguntas, 1):
+        opcoes = ''.join(f'<li><label class="quiz-opcao"><input type="radio" name="{p["id"]}" value="{i}">'
+                         f'<span class="quiz-letra" aria-hidden="true">{letras[i]}</span><span>{esc(o)}</span></label></li>'
+                         for i, o in enumerate(p['opcoes']))
+        blocos.append(f'''<fieldset class="quiz-q" id="{p['id']}" data-pilar="{p['pilar']}" data-certa="{p['certa']}">
+<legend><span class="quiz-num">Pergunta {n} de {total}</span> {esc(p['enunciado'])}</legend>
+<ul class="quiz-opcoes">{opcoes}</ul>
+<div class="quiz-explica" role="status"><p class="quiz-veredito"></p><p><strong>Pilar: {esc(pilares[p['pilar']]['nome'])}.</strong> {esc(p['explica'])}</p></div>
+</fieldset>''')
+    pil_json = esc(json.dumps({k: v['nome'] for k, v in pilares.items()}, ensure_ascii=False))
+    niv_json = esc(json.dumps(q['niveis'], ensure_ascii=False))
+    quiz = f'''<section class="quiz" id="quiz" aria-labelledby="quiz-titulo" data-pilares="{pil_json}" data-niveis="{niv_json}">
+<h2 id="quiz-titulo" class="sr-only">Quiz</h2>
+<div class="quiz-capa" id="quiz-capa">
+<ul class="quiz-fatos"><li><strong>{total}</strong> perguntas</li><li><strong>4</strong> pilares</li><li><strong>5</strong> minutos</li></ul>
+<p>Situações reais de sala de aula e pequenos desafios. Depois de cada resposta, você vê a explicação. No fim, recebe o seu nível, o seu ponto forte e uma imagem para compartilhar no LinkedIn.</p>
+<p class="quiz-miudo">Sem cadastro e sem cookies: as respostas ficam só no seu navegador.</p>
+<button type="button" class="btn98 escuro quiz-grande" id="quiz-comecar">Começar o quiz</button>
+</div>
+<form class="quiz-form" id="quiz-form" aria-label="Perguntas do quiz">
+<div class="quiz-barra" aria-hidden="true"><span id="quiz-barra"></span></div>
+{chr(10).join(blocos)}
+<div class="quiz-nav">
+<button type="button" class="btn98" id="quiz-voltar">Anterior</button>
+<p class="quiz-placar" id="quiz-placar" aria-live="polite"></p>
+<button type="button" class="btn98 escuro" id="quiz-proxima" disabled>Próxima</button>
+</div>
+</form>
+<section class="quiz-resultado" id="quiz-resultado" aria-labelledby="res-nivel" tabindex="-1" hidden></section>
+</section>'''
+    corpo = (AQUI / 'conteudo' / 'quiz-pensamento-computacional.html').read_text(encoding='utf-8').strip().replace('<!--QUIZ-->', quiz)
+    descricao = ('Quiz gratuito de pensamento computacional para professores: 12 perguntas sobre decomposição, padrões, '
+                 'abstração e algoritmos, com explicação e resultado para compartilhar no LinkedIn. Por Júlia Roberta Quoos Alves.')
+    imagem = f'{site}/{QUIZ_DIR}/img/quiz-pensamento-computacional.png'
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'Quiz',
+                '@id': url + '#quiz',
+                'url': url,
+                'name': QUIZ_TITULO,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'isAccessibleForFree': True,
+                'educationalLevel': 'Formação de professores',
+                'learningResourceType': 'Quiz',
+                'timeRequired': 'PT5M',
+                'about': [{'@type': 'Thing', 'name': 'Pensamento computacional'}]
+                         + [{'@type': 'Thing', 'name': v['nome'], 'description': v['resumo']} for v in pilares.values()],
+                'educationalAlignment': {'@type': 'AlignmentObject', 'alignmentType': 'educationalSubject',
+                                         'targetName': 'BNCC Computação: eixo Pensamento computacional'},
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
+                'author': AUTORA,
+                'publisher': {'@id': AUTORA['@id']},
+                'image': imagem,
+                'hasPart': [{'@type': 'Question', 'eduQuestionType': 'Multiple choice', 'name': p['enunciado'],
+                             'acceptedAnswer': {'@type': 'Answer', 'text': p['opcoes'][p['certa']]},
+                             'suggestedAnswer': [{'@type': 'Answer', 'text': o} for i, o in enumerate(p['opcoes']) if i != p['certa']]}
+                            for p in perguntas],
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': pq,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for pq, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Quiz de pensamento computacional', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Quiz de pensamento computacional</li></ol></nav>
+    <p class="rotulo">Quiz para professores</p>
+    <h1>Quiz de pensamento computacional para <span class="marca">professores</span></h1>
+    <p class="linha-fina">Quanto você já usa decomposição, padrões, abstração e algoritmos no dia a dia da escola? Responda {total} perguntas curtas e descubra o seu nível.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="levar-escola">
+        <h2 id="levar-escola">Levar o pensamento computacional para a sua escola</h2>
+        <p>Na <a href="/formacao-continuada/">formação continuada de professores</a>, cada área planeja atividades de pensamento computacional e de IA com o material real da escola. Para um acompanhamento individual, há a <a href="/mentoria/">mentoria</a>.</p>
+        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Pensamento%20computacional%20na%20escola">Falar com Júlia Roberta Quoos Alves</a>
+    </section>
+</article>'''
+    extra = ('<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld
+             + f'\n<link rel="stylesheet" href="/{QUIZ_DIR}/assets/quiz.css?v={VERSAO_QUIZ}">')
+    head = cabeca(QUIZ_TITULO + ' · Júlia Roberta Quoos Alves', descricao, url, imagem, QUIZ_IMAGEM_ALT, 'website', extra)
+    pagina = moldura('quiz.exe', f'ohtopico.com.br/{QUIZ_DIR}', '/', conteudo, f'Pronto · {total} perguntas', 'quiz')
+    return head + '\n' + pagina.replace('</body>', f'<script src="/{QUIZ_DIR}/assets/quiz.js?v={VERSAO_QUIZ}" defer></script>\n</body>')
+
+
+def paginas_resultado_quiz(cfg):
+    """Uma página por nível, só para o LinkedIn mostrar a imagem do nível ao compartilhar (noindex)."""
+    site = cfg['site']
+    q = quiz_dados()
+    paginas = {}
+    for nv in q['niveis']:
+        url = f'{site}/{QUIZ_DIR}/resultado/{nv["id"]}/'
+        titulo = f'Meu nível no quiz de pensamento computacional: {nv["nome"]}'
+        descricao = f'{nv["texto"]} Faça também o quiz gratuito para professores, com 12 perguntas e explicação em cada resposta.'
+        alt = f'Resultado do quiz de pensamento computacional para professores: nível {nv["nome"]}.'
+        conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/{QUIZ_DIR}/">Quiz de pensamento computacional</a></li><li aria-current="page">{esc(nv['nome'])}</li></ol></nav>
+    <p class="rotulo">Resultado do quiz</p>
+    <h1>{esc(nv['nome'])}</h1>
+    <p class="linha-fina">Este é um dos quatro níveis do quiz de pensamento computacional para professores.</p>
+    <figure class="infografico"><img src="/{QUIZ_DIR}/img/resultado-{nv['id']}.png" width="1200" height="630" alt="{esc(alt)}" decoding="async"></figure>
+    <div class="artigo">
+<p>{esc(nv['texto'])}</p>
+    </div>
+    <section class="chamada" aria-labelledby="fazer-quiz">
+        <h2 id="fazer-quiz">Qual é o seu nível?</h2>
+        <p>São 12 perguntas sobre decomposição, reconhecimento de padrões, abstração e algoritmos, com a explicação de cada resposta. Leva cerca de cinco minutos.</p>
+        <a class="btn98 escuro" href="/{QUIZ_DIR}/">Fazer o quiz</a>
+    </section>
+</article>'''
+        extra = '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">'
+        head = cabeca(titulo, descricao, url, f'{site}/{QUIZ_DIR}/img/resultado-{nv["id"]}.png', alt, 'website', extra,
+                      robots='noindex, follow')
+        paginas[f'{QUIZ_DIR}/resultado/{nv["id"]}'] = head + '\n' + moldura('quiz.exe', f'ohtopico.com.br/{QUIZ_DIR}/resultado', f'/{QUIZ_DIR}/',
+                                                                           conteudo, 'Pronto', 'quiz')
+    return paginas
+
+
 def feed(cfg, publicados):
     site = cfg['site']
     itens = ''.join(f'''
@@ -815,13 +971,13 @@ def lastmod_atual(xml, url):
 
 def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram):
     """hoje: data da publicação (lastmod no futuro faz o Google desconfiar do sitemap).
-    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'prompts-para-professores', 'assistencia-por-voz') cujo HTML mudou nesta execução;
+    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'prompts-para-professores', 'assistencia-por-voz', QUIZ_DIR) cujo HTML mudou nesta execução;
     as outras mantêm o lastmod que já estava no sitemap."""
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'prompts-para-professores', 'assistencia-por-voz']
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'prompts-para-professores', 'assistencia-por-voz', QUIZ_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -913,9 +1069,10 @@ def main():
     mudaram = set()
     for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims)),
                           ('prompts-para-professores', pagina_prompts(cfg)),
-                          ('assistencia-por-voz', pagina_assistencia(cfg))):
+                          ('assistencia-por-voz', pagina_assistencia(cfg)), (QUIZ_DIR, pagina_quiz(cfg)),
+                          *paginas_resultado_quiz(cfg).items()):
         caminho = a.site / pagina / 'index.html'
-        caminho.parent.mkdir(exist_ok=True)
+        caminho.parent.mkdir(parents=True, exist_ok=True)
         if not caminho.exists() or caminho.read_text(encoding='utf-8') != texto:
             caminho.write_text(texto, encoding='utf-8')
             mudaram.add(pagina)
