@@ -50,6 +50,13 @@ const IMAGENS = [
     ['significancia', 'Significância', 'entre modelos', 'Quando a diferença entre dois modelos é real e quando é sorte', ['Teste estatístico', 'Valor-p', 'Modelos'], '/simuladores/significancia.html']
   ].map(([nome, t1, t2, sub, pills, pag]) => ({ arq: `simuladores/img/og-${nome}.jpg`, janela: pag.split('/').pop() || 'simuladores.html',
     faixa: 'Simulador gratuito', t1, t2, sub, pills, url: 'ohtopico.com.br' + pag.replace(/index\.html$|\.html$/, ''), capturas: [pag] })),
+  /* Laboratório 3D: uma imagem por página, em material-didatico/3d/img/og-<página>.jpg. Cada página nova entra
+     aqui e aponta o og:image para esse arquivo; o gerar.js do material usa a mesma imagem nos dados estruturados. */
+  ...[
+    ['torre-recursao', 'Torre da', 'recursão', 'Torre de Hanói em 3D: resolva, ensine a regra ao robô e veja a pilha de chamadas', ['Recursão', 'EF08CO01', '8º ano']],
+    ['arvore-viva', 'Árvore', 'viva', 'Árvore de busca e pastas em 3D: insira, busque e veja a árvore crescer', ['Árvores', 'EF09CO01', '6º e 9º ano']]
+  ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/3d/img/og-${nome}.jpg`, janela: `${nome}.html`,
+    faixa: 'Laboratório 3D · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/3d/${nome}`, capturas: [`/material-didatico/3d/${nome}.html`] })),
   { arq: 'dados-da-regiao/og-dados-da-regiao.jpg', janela: 'dados-da-regiao.html', faixa: 'Censo Escolar · IBGE', t1: 'Dados da', t2: 'educação',
     sub: 'Escolas e matrículas de Santa Cruz do Sul, Candelária e Novo Cabrais', pills: ['Mapa', 'Escolas', 'Matrículas'],
     url: 'ohtopico.com.br/dados-da-regiao', capturas: ['/dados-da-regiao/'] },
