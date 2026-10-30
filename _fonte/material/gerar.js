@@ -387,7 +387,7 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e m
   <nav class="saltos" aria-label="Ir para o ano">${anos.map(a => `<a class="btn ghost" href="bncc/#ano-${a}">${a}º ano</a>`).join('')}</nav>
 
   <h2>O que é a BNCC Computação</h2>
-  <p>A BNCC Computação é o complemento da Base Nacional Comum Curricular que tornou a Computação parte da formação de todos os estudantes da Educação Básica. Foi aprovada pelo Conselho Nacional de Educação no Parecer CNE/CEB nº 2/2022 e homologada na Resolução CNE/CEB nº 1/2022. Ela não exige uma disciplina nova nem laboratório de informática: as habilidades podem ser trabalhadas dentro de outros componentes, em projetos ou em aulas próprias, com ou sem computador.</p>
+  <p>A BNCC Computação é o complemento da Base Nacional Comum Curricular que tornou a Computação parte da formação de todos os estudantes da Educação Básica. Foi aprovada pelo Conselho Nacional de Educação no Parecer CNE/CEB nº 2/2022 e homologada na Resolução CNE/CEB nº 1/2022. Ela não exige uma disciplina nova nem laboratório de informática: as habilidades podem ser trabalhadas dentro de outros componentes, em projetos ou em aulas próprias, com ou sem computador. O guia <a href="/computacao-na-escola/">como implantar Computação na escola</a> compara esses formatos e traz um roteiro em seis passos para a coordenação.</p>
   <p>Do 6º ao 9º ano, as habilidades seguem o código <strong>EF0XCO00</strong> (por exemplo, EF06CO01 é a primeira habilidade de Computação do 6º ano) e se dividem em três eixos:</p>
   <ul>
     <li><strong>Pensamento computacional</strong> (${nEixo('PC')} habilidades): decompor problemas, reconhecer padrões, abstrair e escrever algoritmos, com e sem programação.</li>
