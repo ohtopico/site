@@ -57,7 +57,8 @@ const CASOS = [
   ["passos menos sensível", { tipo: "sensibilidade", sentido: -1 }],
   // rua
   ["Que prédio é esse?", { tipo: "predio" }],
-  ["o que tem perto", { tipo: "predio" }],
+  ["o que tem por perto", { tipo: "predio" }],
+  ["o que tem perto de mim", { tipo: "descrever" }], // desde o #48: perto de mim é dentro de casa
   ["onde fica a reitoria", { tipo: "ondeFica", destino: "reitoria" }],
   ["me leva até a rodoviária", { tipo: "mapa", destino: "rodoviária" }],
   ["quanto falta", { tipo: "quantoFalta" }],
