@@ -4,6 +4,8 @@
 
      node _fonte/og/gerar.js            gera todas as imagens da lista IMAGENS
      node _fonte/og/gerar.js og-site    gera só as que têm "og-site" no nome do arquivo
+     node _fonte/og/gerar.js --pinterest [pasta]   gera os pins verticais (1000 × 1500) da lista PINS em
+                                        _fonte/og/pinterest/ (ou na pasta indicada); não vão para o site
 
    Precisa do pacote playwright (ou playwright-core com o Chrome instalado). Rode na raiz do site. */
 const fs = require('fs');
@@ -97,6 +99,49 @@ const IMAGENS = [
     url: 'ohtopico.com.br/computacao-na-escola', capturas: ['/material-didatico/bncc/'] }
 ];
 
+/* Pins do Pinterest (1000 × 1500, proporção 2:3). Mesmo visual, com a captura grande embaixo do título.
+   Professores procuram "atividade para imprimir" e "BNCC" no Pinterest, então cada pin aponta para uma
+   página específica (ficha, habilidade, jogo). Sem foto pessoal: só capturas do conteúdo. */
+const PINS = [
+  { arq: 'bncc-computacao', janela: 'bncc', faixa: 'Gratuito · 6º ao 9º ano', t1: 'BNCC', t2: 'Computação',
+    sub: 'As 42 habilidades com plano de aula, slides, jogos, fichas e listas', pills: ['Plano de aula', 'Slides', 'Fichas'],
+    url: 'ohtopico.com.br/material-didatico/bncc', captura: '/material-didatico/bncc/' },
+  { arq: 'fichas-para-imprimir', janela: 'fichas.html', faixa: 'Para imprimir · gratuito', t1: 'Fichas', t2: 'para imprimir',
+    sub: 'Atividades de Computação e Matemática no papel, com gabarito', pills: ['Desplugada', 'Gabarito', 'BNCC'],
+    url: 'ohtopico.com.br/material-didatico', captura: '/material-didatico/fichas/mapa-bairros/' },
+  { arq: 'planos-de-aula', janela: 'planos.html', faixa: 'BNCC · 6º ao 9º ano', t1: 'Planos', t2: 'de aula',
+    sub: 'Objetivos, etapas, avaliação e acessibilidade, prontos para usar', pills: ['Computação', 'Matemática', 'Grátis'],
+    url: 'ohtopico.com.br/material-didatico', captura: '/material-didatico/planos/algoritmos-papel-ao-robo/' },
+  { arq: 'jogos-com-plano-de-aula', janela: 'jogos', faixa: 'No navegador · sem cadastro', t1: '44 jogos', t2: 'educativos',
+    sub: 'Cada jogo vem com plano de aula e habilidade da BNCC', pills: ['Computação', 'Matemática', 'Celular e PC'],
+    url: 'ohtopico.com.br/material-didatico/jogos', captura: '/material-didatico/jogos/' },
+  { arq: 'laboratorio-3d', janela: 'laboratorio-3d', faixa: 'Gire, aproxime, experimente', t1: 'Laboratório', t2: '3D',
+    sub: 'Matemática e Computação em cenas 3D que funcionam no navegador', pills: ['Volume', 'Pitágoras', 'IA'],
+    url: 'ohtopico.com.br/material-didatico', captura: '/material-didatico/3d/cubo-rgb.html' },
+  { arq: 'ia-para-professores', janela: 'ia-pra-prof', faixa: 'Guia gratuito', t1: 'IA para', t2: 'professores',
+    sub: 'Como usar inteligência artificial no planejamento, com ética e segurança', pills: ['Prompts', 'Ética', 'LGPD'],
+    url: 'ohtopico.com.br/ia-pra-prof', captura: '/ia-pra-prof/' },
+  { arq: 'formacao-professores-ia', janela: 'formacao-continuada', faixa: 'Escolas e redes de ensino', t1: 'Formação em', t2: 'IA',
+    sub: 'Formação continuada de professores em IA, com diagnóstico e acompanhamento', pills: ['Diagnóstico', 'Oficinas', 'Regras de uso'],
+    url: 'ohtopico.com.br/formacao-continuada', captura: '/formacao-continuada/' },
+  { arq: 'mentoria-professores', janela: 'mentoria', faixa: 'Individual e on-line', t1: 'Mentoria para', t2: 'professores',
+    sub: 'IA na prática, a partir das tarefas reais da sua semana', pills: ['Professores', 'Coordenação', 'Gestão'],
+    url: 'ohtopico.com.br/mentoria', captura: '/mentoria/' },
+  ...[
+    ['programando-colega-robo', 'Colega', 'robô', 'Um aluno programa, o outro executa: algoritmos sem computador', ['Algoritmos', 'EF06CO02', '6º e 7º ano']],
+    ['disco-cifra-cesar', 'Cifra de', 'César', 'Disco para recortar e montar, com mensagens para cifrar e decifrar', ['Criptografia', 'EF09CO05', '8º e 9º ano']],
+    ['batalha-naval-cartesiana', 'Batalha naval', 'cartesiana', 'Duas malhas de −5 a 5 para jogar em dupla e treinar coordenadas', ['Plano cartesiano', 'EF07MA03', '6º e 7º ano']],
+    ['detetive-golpes-senhas-fortes', 'Detetive', 'de golpes', 'Encontre os sinais de golpe nas mensagens e avalie senhas', ['Segurança', 'EF07CO07', '7º ano']],
+    ['mensagem-pacotes', 'Mensagem em', 'pacotes', 'Cartões recortáveis para simular a internet na sala de aula', ['Internet', 'EF06CO07', '6º ao 8º ano']],
+    ['caca-aos-bugs-papel', 'Caça aos', 'bugs', 'Quatro programas com erros para achar e corrigir com teste de mesa', ['Depuração', 'EF07CO02', '7º ano']],
+    ['barras-fracoes', 'Barras de', 'frações', 'Pinte, compare e encontre frações equivalentes, com a parede de frações', ['Frações', 'EF06MA07', '6º ano']],
+    ['ordenar-buscar-cartoes', 'Ordenar e', 'buscar', 'Cartões para recortar: ordenação por seleção e busca binária', ['Algoritmos', 'EF08CO03', '8º ano']],
+    ['arvore-decisao-adivinhe-animal', 'Árvore de', 'decisão', 'Perguntas de sim ou não que separam oito animais', ['Árvores', 'EF09CO01', '9º ano']],
+    ['mapa-internet-rede-redes', 'Mapa da', 'internet', 'Provedores, ponto de troca e servidor: trace o caminho dos dados', ['Redes', 'EF08CO06', '8º ano']]
+  ].map(([nome, t1, t2, sub, pills]) => ({ arq: `ficha-${nome}`, janela: 'ficha para imprimir', faixa: 'Ficha para imprimir · grátis',
+    t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/fichas/${nome}`, captura: `/material-didatico/fichas/${nome}/` }))
+];
+
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function modelo(o, fotos) {
   const pillCls = ['p-verde', 'p-amarelo', ''];
@@ -148,6 +193,47 @@ function modelo(o, fotos) {
 </body></html>`;
 }
 
+function modeloPin(o, foto) {
+  const pillCls = ['p-verde', 'p-amarelo', ''];
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1000px; height: 1500px; background: #f4f4f2 radial-gradient(#d9d9d6 1.4px, transparent 1.4px) 0 0 / 26px 26px; font-family: Lexend, sans-serif; color: #111; position: relative; overflow: hidden; }
+  .win { position: absolute; left: 44px; top: 40px; width: 900px; height: 1340px; background: #fff; border: 3px solid #111; border-radius: 30px; box-shadow: 16px 16px 0 #111; overflow: hidden; display: flex; flex-direction: column; }
+  .bar { flex: 0 0 60px; border-bottom: 3px solid #111; display: flex; align-items: center; padding: 0 30px; background: #f4f4f2; }
+  .bar b { font-family: Sniglet; font-weight: 800; font-size: 20px; letter-spacing: .12em; text-transform: uppercase; }
+  .dots { margin-left: auto; display: flex; gap: 10px; } .dots i { width: 24px; height: 24px; border: 2.5px solid #111; border-radius: 50%; }
+  .txt { padding: 44px 56px 0; }
+  .faixa { display: inline-flex; align-items: center; gap: 10px; border: 2.5px solid #111; border-radius: 99px; padding: 7px 18px; font-family: Sniglet; font-weight: 800; font-size: 19px; letter-spacing: .1em; text-transform: uppercase; }
+  .faixa i { width: 7px; height: 20px; background: #1f8a4c; border-radius: 2px; }
+  h1 { font-family: Sniglet; font-weight: 800; font-size: 104px; line-height: .98; text-transform: uppercase; margin: 26px 0 18px; letter-spacing: .01em; }
+  h1 span { display: inline-block; background: #fff06a; padding: 4px 14px 0; margin-left: -14px; }
+  p.sub { font-size: 30px; color: #4a4a4a; line-height: 1.3; }
+  .pills { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .pills span { border: 2px solid #111; border-radius: 99px; padding: 8px 20px; font-size: 22px; font-weight: 500; }
+  .p-verde { background: #dff3e6; } .p-amarelo { background: #fff06a; }
+  .vis { flex: 1; min-height: 0; padding: 36px 52px 48px; }
+  .shot { height: 100%; border: 3px solid #111; border-radius: 18px; overflow: hidden; background: #fff; transform: rotate(1.2deg); box-shadow: 9px 9px 0 #111; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .rod { position: absolute; left: 48px; right: 52px; bottom: 34px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .rod b { font-family: Sniglet; font-weight: 800; font-size: 26px; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+  .rod span { border: 2px solid #111; border-radius: 99px; padding: 6px 18px; font-size: 20px; background: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+</style></head><body>
+<div class="win">
+  <div class="bar"><b>${esc(o.janela)}</b><div class="dots"><i></i><i></i><i></i></div></div>
+  <div class="txt">
+    <div class="faixa"><i></i>${esc(o.faixa)}</div>
+    <h1>${esc(o.t1)}<br><span>${esc(o.t2)}</span></h1>
+    <p class="sub">${esc(o.sub)}</p>
+    <div class="pills">${o.pills.map((p, i) => `<span class="${pillCls[i] || ''}">${esc(p)}</span>`).join('')}</div>
+  </div>
+  <div class="vis"><div class="shot"><img src="${foto}" alt=""></div></div>
+</div>
+<div class="rod"><b>Júlia Quoos</b><span>${esc(o.url)}</span></div>
+</body></html>`;
+}
+
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.geojson': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.wasm': 'application/wasm' };
 function servidor() {
@@ -168,45 +254,60 @@ async function navegador() {
   return require('playwright-core').chromium.launch({ channel: 'chrome' });
 }
 
+// captura a página como o professor vê no notebook: tema claro, sem a barra do topo
+async function capturar(browser, url, viewport) {
+  const p = await browser.newPage({ viewport, colorScheme: 'light' });
+  await p.goto(url, { waitUntil: 'load' });
+  await p.addStyleTag({ content: '#topbar, .topbar, header.site, .estrelas, [class*="estrela"] { display: none !important; }' });
+  // cenas 3D só carregam depois do clique em "Iniciar a cena 3D"
+  const iniciar = await p.$('.lab-iniciar');
+  if (iniciar) { await iniciar.click(); await p.waitForSelector('#palco canvas', { timeout: 15000 }).catch(() => {}); }
+  await p.waitForTimeout(1500);
+  const png = 'data:image/png;base64,' + (await p.screenshot()).toString('base64');
+  await p.close();
+  return png;
+}
+
+// diminui o título até tudo caber e nenhuma palavra passar da largura
+async function renderizar(browser, html, viewport, saida, alturaTexto) {
+  const p = await browser.newPage({ viewport });
+  await p.setContent(html, { waitUntil: 'networkidle' });
+  await p.evaluate(async ([inicio, maxAltura]) => {
+    await document.fonts.ready;
+    const h1 = document.querySelector('h1'), txt = document.querySelector('.txt');
+    let t = inicio;
+    const passa = () => (maxAltura ? txt.offsetHeight > maxAltura : txt.scrollHeight > txt.clientHeight) || h1.scrollWidth > h1.clientWidth + 2
+      || [...h1.querySelectorAll('span')].some(s => s.getBoundingClientRect().right > txt.getBoundingClientRect().right);
+    while (t > 40 && passa()) { t -= 2; h1.style.fontSize = t + 'px'; }
+  }, [parseInt(html.match(/h1 \{[^}]*font-size: (\d+)px/)[1], 10), alturaTexto || 0]);
+  fs.mkdirSync(path.dirname(saida), { recursive: true });
+  await p.screenshot({ path: saida, type: 'jpeg', quality: 86 });
+  await p.close();
+}
+
 async function main() {
-  const filtro = process.argv[2];
+  const args = process.argv.slice(2);
+  const pinterest = args[0] === '--pinterest';
   const srv = await servidor();
   const base = `http://127.0.0.1:${srv.address().port}`;
   const browser = await navegador();
   const cache = {};
+  const foto = async (pag, viewport) => cache[pag + viewport.height] || (cache[pag + viewport.height] = await capturar(browser, base + pag, viewport));
   try {
-    for (const o of IMAGENS.filter(o => !filtro || o.arq.includes(filtro))) {
-      const fotos = [];
-      for (const pag of o.capturas) {
-        if (!cache[pag]) {
-          // tema claro, tela de notebook; esconde a barra do topo para sobrar conteúdo
-          const p = await browser.newPage({ viewport: { width: 1000, height: 820 }, colorScheme: 'light' });
-          await p.goto(base + pag, { waitUntil: 'load' });
-          await p.addStyleTag({ content: '#topbar, .topbar, header.site, .estrelas, [class*="estrela"] { display: none !important; }' });
-          // cenas 3D só carregam depois do clique em "Iniciar a cena 3D"
-          const iniciar = await p.$('.lab-iniciar');
-          if (iniciar) { await iniciar.click(); await p.waitForSelector('#palco canvas', { timeout: 15000 }).catch(() => {}); }
-          await p.waitForTimeout(1500);
-          cache[pag] = 'data:image/png;base64,' + (await p.screenshot()).toString('base64');
-          await p.close();
-        }
-        fotos.push(cache[pag]);
+    if (pinterest) {
+      const pasta = path.resolve(args[1] || path.join(__dirname, 'pinterest'));
+      for (const o of PINS) {
+        // captura em pé, no formato do espaço que sobra embaixo do título
+        const saida = path.join(pasta, `pin-${o.arq}.jpg`);
+        await renderizar(browser, modeloPin(o, await foto(o.captura, { width: 1000, height: 1150 })), { width: 1000, height: 1500 }, saida, 560);
+        console.log('gerado', path.relative(process.cwd(), saida));
       }
-      const p = await browser.newPage({ viewport: { width: 1200, height: 630 } });
-      await p.setContent(modelo(o, fotos), { waitUntil: 'networkidle' });
-      await p.evaluate(async () => {
-        await document.fonts.ready;
-        // diminui o título até tudo caber na janela e nenhuma palavra passar da largura
-        const h1 = document.querySelector('h1'), txt = document.querySelector('.txt');
-        let t = 84;
-        const passa = () => txt.scrollHeight > txt.clientHeight || h1.scrollWidth > h1.clientWidth + 2
-          || [...h1.querySelectorAll('span')].some(s => s.getBoundingClientRect().right > txt.getBoundingClientRect().right);
-        while (t > 40 && passa()) { t -= 2; h1.style.fontSize = t + 'px'; }
-      });
-      const saida = path.join(RAIZ, o.arq);
-      fs.mkdirSync(path.dirname(saida), { recursive: true });
-      await p.screenshot({ path: saida, type: 'jpeg', quality: 86 });
-      await p.close();
+      return;
+    }
+    for (const o of IMAGENS.filter(o => !args[0] || o.arq.includes(args[0]))) {
+      const fotos = [];
+      for (const pag of o.capturas) fotos.push(await foto(pag, { width: 1000, height: 820 }));
+      await renderizar(browser, modelo(o, fotos), { width: 1200, height: 630 }, path.join(RAIZ, o.arq));
       console.log('gerada', o.arq);
     }
   } finally {
@@ -214,5 +315,5 @@ async function main() {
     srv.close();
   }
 }
-module.exports = { IMAGENS };
+module.exports = { IMAGENS, PINS };
 if (require.main === module) main().catch(e => { console.error(e); process.exit(1); });
