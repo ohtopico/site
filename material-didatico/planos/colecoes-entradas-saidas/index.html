@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coleções, entradas e saídas · Plano de aula | Júlia Quoos</title>
+<meta name="description" content="Plano de aula gratuito, Computação, 6º ano (BNCC EF06CO01, EF06CO05, EF06CO06). Classificar informações por tipo de dado, identificar entradas e saídas e…">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/planos/colecoes-entradas-saidas/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/planos/colecoes-entradas-saidas/">
+<meta property="og:title" content="Coleções, entradas e saídas · Plano de aula | Júlia Quoos">
+<meta property="og:description" content="Plano de aula gratuito, Computação, 6º ano (BNCC EF06CO01, EF06CO05, EF06CO06). Classificar informações por tipo de dado, identificar entradas e saídas e…">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-planos.jpg">
+<meta property="og:image:alt" content="Plano de aula: Coleções, entradas e saídas">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Coleções, entradas e saídas","description":"Classificar informações por tipo de dado, identificar entradas e saídas e generalizar um algoritmo com variáveis.","url":"https://ohtopico.com.br/material-didatico/planos/colecoes-entradas-saidas/","image":"https://ohtopico.com.br/material-didatico/assets/og-planos.jpg","inLanguage":"pt-BR","learningResourceType":"Plano de aula","educationalLevel":"6º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"2 aulas","audience":{"@type":"EducationalAudience","educationalRole":"teacher"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO01","targetDescription":"Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO05","targetDescription":"Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO06","targetDescription":"Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros)."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Área do professor","item":"https://ohtopico.com.br/material-didatico/professor.html"},{"@type":"ListItem","position":4,"name":"Coleções, entradas e saídas","item":"https://ohtopico.com.br/material-didatico/planos/colecoes-entradas-saidas/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 20px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .doc h2 { font-size: 26px; margin-top: 34px; }
+  .habs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .habs li { display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: start; font-size: 15px; }
+  .doc ul.plain { padding-left: 20px; margin: 0; }
+  .doc ul.plain li { margin-bottom: 6px; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+  .timeline li { position: relative; padding: 0 0 22px 24px; }
+  .timeline li::before { content: ''; position: absolute; left: -8px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .timeline .t { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .timeline strong { display: block; font-size: 18px; }
+  .timeline p { margin: 4px 0 0; color: var(--ink-2); }
+  .tot { font-size: 14px; color: var(--ink-2); }
+  @media print {
+    .doc { padding: 0; }
+    .meta div, .panel { border-color: #000; }
+    .timeline li { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">Coleções, entradas e saídas</h1>
+    <p class="muted">Classificar informações por tipo de dado, identificar entradas e saídas e generalizar um algoritmo com variáveis.</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>Computação</div>
+      <div><span>Ano</span>6º ano</div>
+      <div><span>Duração</span>2 aulas de 50 min</div>
+    </div>
+
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs"><li><a class="tag code co" href="bncc/ef06co01/" title="EF06CO01 — Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado.">EF06CO01</a><span>Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado. <a class="no-print" href="slides/bncc-ef06co01-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li><li><a class="tag code co" href="bncc/ef06co05/" title="EF06CO05 — Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.">EF06CO05</a><span>Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução. <a class="no-print" href="slides/bncc-ef06co05-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li><li><a class="tag code co" href="bncc/ef06co06/" title="EF06CO06 — Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros).">EF06CO06</a><span>Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros). <a class="no-print" href="slides/bncc-ef06co06-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li></ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain"><li>Agrupar informações em coleções e associar cada coleção a um tipo de dado (número, texto, verdadeiro/falso).</li><li>Identificar as entradas, as saídas e os tipos de dados de um problema.</li><li>Comparar casos particulares e escrever um algoritmo geral usando variáveis.</li></ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain"><li>Cartões com informações variadas (idade, nome, “tem irmãos?”, altura, cor favorita…)</li><li>Quadro ou cartaz com três colunas</li><li>Scratch ou papel para o algoritmo</li></ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: 100 minutos.</p>
+    <ol class="timeline"><li><span class="t">15 min</span><strong>Que tipo de informação é essa?</strong><p>Distribua os cartões e peça que os grupos os separem em montes. Depois de ouvirem os critérios, apresente três “tipos de dado”: número, texto e lógico (sim/não). Reagrupem usando esse critério e discutam casos difíceis, como CEP e telefone (números que não fazem conta).</p></li><li><span class="t">15 min</span><strong>Entrada → processamento → saída</strong><p>Proponha o problema “calcular o valor da cantina para um pedido”. Juntos, identifiquem as entradas (preço, quantidade), o processamento (multiplicar e somar) e a saída (total), e o tipo de cada um.</p></li><li><span class="t">20 min</span><strong>Três casos, um algoritmo</strong><p>Os grupos resolvem três pedidos diferentes passo a passo. Pergunta-chave: o que muda e o que se repete entre os casos? O que muda vira variável (parâmetro); o que se repete vira o algoritmo.</p></li><li><span class="t">35 min</span><strong>Generalizando</strong><p>Escrevam o algoritmo geral em linguagem natural e, se houver computadores, no Scratch usando variáveis “preço”, “quantidade” e “total”. Testem com valores novos inventados pela turma.</p></li><li><span class="t">15 min</span><strong>Socialização</strong><p>Cada grupo mostra um caso em que o algoritmo funciona e um em que “quebra” (ex.: quantidade negativa). Discuta como verificar se a entrada é válida.</p></li></ol>
+
+    <h2>Avaliação</h2>
+    <p>Classificação correta dos dados por tipo; tabela de entradas e saídas com tipos; algoritmo que funciona para valores novos.</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">Use cartões com textura ou cor por tipo de dado. O algoritmo pode ser montado com cartões de instrução em vez de escrito.</div>
+
+    <h2 class="no-print">Materiais relacionados</h2>
+    <div class="related no-print">
+      <a class="card" href="jogos/robo.html">
+        <span class="small muted">🎮 Jogo</span>
+        <strong>Robô Coletor</strong>
+        <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+      </a>
+      <a class="card" href="fichas/colecoes-tipos-dados/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Coleções e tipos de dados</strong>
+        <span class="small muted">Classificar as informações de uma ficha por tipo de dado, agrupar em coleções e entender por que “12” + “3” dá “123”.</span>
+      </a>
+      <a class="card" href="fichas/maquinas-entrada-saida/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Máquinas de entrada e saída</strong>
+        <span class="small muted">Descobrir a regra de máquinas misteriosas, identificar os tipos de entrada e de saída e planejar a solução de um problema.</span>
+      </a>
+      <a class="card" href="fichas/uma-receita-qualquer-numero/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Uma receita para qualquer número</strong>
+        <span class="small muted">Generalizar uma receita e os programas da tartaruga com parâmetros, até chegar a um único algoritmo para todos os casos.</span>
+      </a>
+      <a class="card" href="listas/tipos-dados-6-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Tipos de dados (6º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/generalizacao-6-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Generalização (6º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/revisao-ano-6-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Revisão do ano (6º ano)</strong>
+        <span class="small muted">Revisão de todas as habilidades do 6º ano, para recuperação, simulado ou fechamento do ano: múltipla escolha, verdadeiro ou falso e dissertativa.</span>
+      </a></div></main>
+<footer id="footer"></footer>
+
+<script>window.MD_ID = window.MD_REC = "p-dados";</script>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // plano.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
+  const r = REC[id], p = PLANOS[id];
+  const doc = document.getElementById('doc');
+  if (!r || !p) {
+    doc.innerHTML = `<h1>Plano não encontrado</h1><p><a href="professor.html">Ver todos os planos de aula</a></p>`;
+    return;
+  }
+  if (!window.MD_ID) document.title = `${r.titulo} · Plano de aula | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
+  const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
+  const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
+  doc.innerHTML = `
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">${esc(r.titulo)}</h1>
+    <p class="muted">${esc(r.resumo)}</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>${r.comp.map(c => COMPONENTES[c].nome).join(' + ')}</div>
+      <div><span>Ano</span>${anosTxt(r.anos)}</div>
+      <div><span>Duração</span>${esc(p.duracao)}</div>
+    </div>
+${p.metodologia ? `
+    <h2>Metodologia ativa</h2>
+    <div class="panel"><strong>${esc(p.metodologia[0])}</strong><p style="margin:6px 0 0">${esc(p.metodologia[1])}</p></div>` : ''}
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}${SLIDES[c] ? ` <a class="no-print" href="${slidesUrl(c)}" download>📥 Baixar slides (PDF)</a>` : ''}</span></li>`).join('')}</ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain">${p.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain">${p.materiais.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: ${minutos} minutos.</p>
+    <ol class="timeline">${p.etapas.map(([t, tit, txt]) => `<li><span class="t">${esc(t)}</span><strong>${esc(tit)}</strong><p>${esc(txt)}</p></li>`).join('')}</ol>
+
+    <h2>Avaliação</h2>
+    <p>${esc(p.avaliacao)}</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">${esc(p.inclusao)}</div>
+
+    <h2 class="no-print">${rel.length ? 'Materiais relacionados' : 'Outros planos para o mesmo ano'}</h2>
+    <div class="related no-print">${(rel.length ? rel
+      : RECURSOS.filter(o => o.tipo === 'plano' && o.id !== r.id && o.anos.some(a => r.anos.includes(a))).slice(0, 3)).map(o => `
+      <a class="card" href="${recUrl(o)}">
+        <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>
+        <strong>${esc(o.titulo)}</strong>
+        <span class="small muted">${esc(o.resumo)}</span>
+      </a>`).join('')}</div>`;
+})();
+</script>
+</body>
+</html>

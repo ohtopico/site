@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Como uma mensagem atravessa a internet · Plano de aula</title>
+<meta name="description" content="Plano de aula gratuito, Computação, 6º ao 8º ano (BNCC EF06CO07, EF07CO06, EF08CO06). Simulação de pacotes na sala, protocolos como combinados e o jogo…">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/planos/como-mensagem-atravessa-internet/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/planos/como-mensagem-atravessa-internet/">
+<meta property="og:title" content="Como uma mensagem atravessa a internet · Plano de aula">
+<meta property="og:description" content="Plano de aula gratuito, Computação, 6º ao 8º ano (BNCC EF06CO07, EF07CO06, EF08CO06). Simulação de pacotes na sala, protocolos como combinados e o jogo…">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-planos.jpg">
+<meta property="og:image:alt" content="Plano de aula: Como uma mensagem atravessa a internet">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Como uma mensagem atravessa a internet","description":"Simulação de pacotes na sala, protocolos como combinados e o jogo Correio de Pacotes.","url":"https://ohtopico.com.br/material-didatico/planos/como-mensagem-atravessa-internet/","image":"https://ohtopico.com.br/material-didatico/assets/og-planos.jpg","inLanguage":"pt-BR","learningResourceType":"Plano de aula","educationalLevel":"6º ao 8º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"2 aulas","audience":{"@type":"EducationalAudience","educationalRole":"teacher"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO07","targetDescription":"Entender como a informação é quebrada em pedaços, transmitida em pacotes por vários equipamentos e reconstruída no destino."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO06","targetDescription":"Compreender o papel de protocolos para a transmissão de dados."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO06","targetDescription":"Entender como é a estrutura e o funcionamento da internet."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Área do professor","item":"https://ohtopico.com.br/material-didatico/professor.html"},{"@type":"ListItem","position":4,"name":"Como uma mensagem atravessa a internet","item":"https://ohtopico.com.br/material-didatico/planos/como-mensagem-atravessa-internet/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 20px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .doc h2 { font-size: 26px; margin-top: 34px; }
+  .habs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .habs li { display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: start; font-size: 15px; }
+  .doc ul.plain { padding-left: 20px; margin: 0; }
+  .doc ul.plain li { margin-bottom: 6px; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+  .timeline li { position: relative; padding: 0 0 22px 24px; }
+  .timeline li::before { content: ''; position: absolute; left: -8px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .timeline .t { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .timeline strong { display: block; font-size: 18px; }
+  .timeline p { margin: 4px 0 0; color: var(--ink-2); }
+  .tot { font-size: 14px; color: var(--ink-2); }
+  @media print {
+    .doc { padding: 0; }
+    .meta div, .panel { border-color: #000; }
+    .timeline li { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">Como uma mensagem atravessa a internet</h1>
+    <p class="muted">Simulação de pacotes na sala, protocolos como combinados e o jogo Correio de Pacotes.</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>Computação</div>
+      <div><span>Ano</span>6º ao 8º ano</div>
+      <div><span>Duração</span>2 aulas de 50 min</div>
+    </div>
+
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs"><li><a class="tag code co" href="bncc/ef06co07/" title="EF06CO07 — Entender como a informação é quebrada em pedaços, transmitida em pacotes por vários equipamentos e reconstruída no destino.">EF06CO07</a><span>Entender como a informação é quebrada em pedaços, transmitida em pacotes por vários equipamentos e reconstruída no destino. <a class="no-print" href="slides/bncc-ef06co07-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li><li><a class="tag code co" href="bncc/ef07co06/" title="EF07CO06 — Compreender o papel de protocolos para a transmissão de dados.">EF07CO06</a><span>Compreender o papel de protocolos para a transmissão de dados. <a class="no-print" href="slides/bncc-ef07co06-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li><li><a class="tag code co" href="bncc/ef08co06/" title="EF08CO06 — Entender como é a estrutura e o funcionamento da internet.">EF08CO06</a><span>Entender como é a estrutura e o funcionamento da internet. <a class="no-print" href="slides/bncc-ef08co06-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li></ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain"><li>Explicar que mensagens viajam em pacotes numerados.</li><li>Reconhecer o papel do cabeçalho (origem, destino, número, total).</li><li>Entender protocolo como um combinado que todos seguem para a comunicação funcionar.</li></ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain"><li>Ficha “Mensagem em pacotes” (1 por grupo)</li><li>Tesoura</li><li>Envelopes ou copos para representar roteadores</li><li>Dispositivos para o jogo</li></ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: 100 minutos.</p>
+    <ol class="timeline"><li><span class="t">10 min</span><strong>Pergunta inicial</strong><p>Quando você manda uma foto pelo celular, como ela chega do outro lado? Registre as hipóteses no quadro.</p></li><li><span class="t">30 min</span><strong>Internet na sala</strong><p>Cada grupo escreve uma frase, divide em 8 pacotes e preenche o cabeçalho. Os pacotes passam por 2 ou 3 “roteadores” (alunos em pontos da sala) que podem embaralhar a ordem. O grupo destino remonta a mensagem. Em uma rodada, o professor “perde” um pacote de propósito.</p></li><li><span class="t">10 min</span><strong>Protocolos</strong><p>Discuta o que permitiu remontar: o número e o total no cabeçalho. Isso é um protocolo, um combinado. Relacione com o TCP, que confere se todos os pacotes chegaram e pede reenvio do que faltou.</p></li><li><span class="t">30 min</span><strong>Jogo Correio de Pacotes</strong><p>Duplas jogam as rodadas e anotam quantos pedidos de reenvio fizeram.</p></li><li><span class="t">20 min</span><strong>Síntese</strong><p>Cada aluno desenha um esquema: remetente → roteadores → destinatário, com pacotes numerados e um pacote perdido sendo reenviado.</p></li></ol>
+
+    <h2>Avaliação</h2>
+    <p>O esquema final mostra pacotes numerados, caminhos diferentes e o reenvio? O aluno usa as palavras pacote, cabeçalho e protocolo com sentido?</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">Os cartões podem ser escritos em letra ampliada ou braille. A simulação funciona bem com papéis definidos para estudantes que preferem tarefas estruturadas (ex.: roteador com regra fixa).</div>
+
+    <h2 class="no-print">Materiais relacionados</h2>
+    <div class="related no-print">
+      <a class="card" href="fichas/mensagem-pacotes/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Mensagem em pacotes</strong>
+        <span class="small muted">Cartões recortáveis para simular a internet na sala: cada grupo envia uma mensagem em pacotes com cabeçalho e monta a do outro grupo.</span>
+      </a>
+      <a class="card" href="jogos/pacotes.html">
+        <span class="small muted">🎮 Jogo</span>
+        <strong>Correio de Pacotes</strong>
+        <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+      </a>
+      <a class="card" href="fichas/mapa-internet-rede-redes/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Mapa da internet: rede de redes</strong>
+        <span class="small muted">Um mapa com provedores, ponto de troca e servidor para traçar caminhos, cortar ligações e entender o DNS.</span>
+      </a>
+      <a class="card" href="listas/transmissao-dados-6-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Transmissão de dados (6º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/protocolos-comunicacao-redes-7-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Protocolos de comunicação em redes (7º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/internet-8-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Internet (8º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/revisao-ano-6-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Revisão do ano (6º ano)</strong>
+        <span class="small muted">Revisão de todas as habilidades do 6º ano, para recuperação, simulado ou fechamento do ano: múltipla escolha, verdadeiro ou falso e dissertativa.</span>
+      </a>
+      <a class="card" href="listas/revisao-ano-7-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Revisão do ano (7º ano)</strong>
+        <span class="small muted">Revisão de todas as habilidades do 7º ano, para recuperação, simulado ou fechamento do ano: múltipla escolha, verdadeiro ou falso e dissertativa.</span>
+      </a>
+      <a class="card" href="listas/revisao-ano-8-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Revisão do ano (8º ano)</strong>
+        <span class="small muted">Revisão de todas as habilidades do 8º ano, para recuperação, simulado ou fechamento do ano: múltipla escolha, verdadeiro ou falso e dissertativa.</span>
+      </a></div></main>
+<footer id="footer"></footer>
+
+<script>window.MD_ID = window.MD_REC = "p-internet";</script>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // plano.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
+  const r = REC[id], p = PLANOS[id];
+  const doc = document.getElementById('doc');
+  if (!r || !p) {
+    doc.innerHTML = `<h1>Plano não encontrado</h1><p><a href="professor.html">Ver todos os planos de aula</a></p>`;
+    return;
+  }
+  if (!window.MD_ID) document.title = `${r.titulo} · Plano de aula | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
+  const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
+  const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
+  doc.innerHTML = `
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">${esc(r.titulo)}</h1>
+    <p class="muted">${esc(r.resumo)}</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>${r.comp.map(c => COMPONENTES[c].nome).join(' + ')}</div>
+      <div><span>Ano</span>${anosTxt(r.anos)}</div>
+      <div><span>Duração</span>${esc(p.duracao)}</div>
+    </div>
+${p.metodologia ? `
+    <h2>Metodologia ativa</h2>
+    <div class="panel"><strong>${esc(p.metodologia[0])}</strong><p style="margin:6px 0 0">${esc(p.metodologia[1])}</p></div>` : ''}
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}${SLIDES[c] ? ` <a class="no-print" href="${slidesUrl(c)}" download>📥 Baixar slides (PDF)</a>` : ''}</span></li>`).join('')}</ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain">${p.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain">${p.materiais.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: ${minutos} minutos.</p>
+    <ol class="timeline">${p.etapas.map(([t, tit, txt]) => `<li><span class="t">${esc(t)}</span><strong>${esc(tit)}</strong><p>${esc(txt)}</p></li>`).join('')}</ol>
+
+    <h2>Avaliação</h2>
+    <p>${esc(p.avaliacao)}</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">${esc(p.inclusao)}</div>
+
+    <h2 class="no-print">${rel.length ? 'Materiais relacionados' : 'Outros planos para o mesmo ano'}</h2>
+    <div class="related no-print">${(rel.length ? rel
+      : RECURSOS.filter(o => o.tipo === 'plano' && o.id !== r.id && o.anos.some(a => r.anos.includes(a))).slice(0, 3)).map(o => `
+      <a class="card" href="${recUrl(o)}">
+        <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>
+        <strong>${esc(o.titulo)}</strong>
+        <span class="small muted">${esc(o.resumo)}</span>
+      </a>`).join('')}</div>`;
+})();
+</script>
+</body>
+</html>

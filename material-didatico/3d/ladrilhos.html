@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ladrilhos e Ângulos · Laboratório 3D | ohtopico</title>
+<title>Ladrilhos e Ângulos: simulação 3D de Matemática</title>
 <meta name="description" content="Ladrilhe o plano com polígonos regulares em 3D e descubra a soma dos ângulos internos por triangulação. BNCC EF07MA27, EF07MA24, EF06MA18.">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/ladrilhos.html">
-<meta property="og:title" content="Ladrilhos e Ângulos · Laboratório 3D">
+<meta property="og:title" content="Ladrilhos e Ângulos: simulação 3D de Matemática">
 <meta property="og:description" content="Ladrilhe o plano com polígonos regulares em 3D e descubra a soma dos ângulos internos por triangulação. BNCC EF07MA27, EF07MA24, EF06MA18.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/ladrilhos.html">
 <meta property="og:type" content="website">
@@ -22,11 +22,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/md.css">
 <link rel="stylesheet" href="../assets/lab3d.css">
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Ladrilhos e Ângulos","description":"Encaixe polígonos regulares em volta de um ponto até fechar 360° e descubra a soma dos ângulos internos por triangulação.","url":"https://ohtopico.com.br/material-didatico/3d/ladrilhos.html","image":"https://ohtopico.com.br/material-didatico/assets/og-laboratorio-3d.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"6º ao 7º ano do Ensino Fundamental","about":["Matemática"],"isAccessibleForFree":true,"timeRequired":"15 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA27","targetDescription":"Calcular medidas de ângulos internos de polígonos regulares, sem o uso de fórmulas, e estabelecer relações entre ângulos internos e externos de polígonos, preferencialmente vinculadas à construção de mosaicos e de ladrilhamentos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA24","targetDescription":"Construir triângulos, usando régua e compasso, reconhecer a condição de existência do triângulo quanto à medida dos lados e verificar que a soma das medidas dos ângulos internos de um triângulo é 180°."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA18","targetDescription":"Reconhecer, nomear e comparar polígonos considerando lados, vértices e ângulos, e classificá-los em regulares e não regulares."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Ladrilhos e Ângulos","item":"https://ohtopico.com.br/material-didatico/3d/ladrilhos.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag ma">Matemática</span><span class="tag">6º ao 7º ano</span><span class="tag">⏱ 15 min</span></div>
+      <h1>Ladrilhos e Ângulos</h1>
+      <p class="muted" style="max-width:720px">Encaixe polígonos regulares em volta de um ponto até fechar 360° e descubra a soma dos ângulos internos por triangulação.</p>
+      <div class="tags"><a class="tag code ma" href="../bncc/ef07ma27/" title="EF07MA27 — Calcular medidas de ângulos internos de polígonos regulares, sem o uso de fórmulas, e estabelecer relações entre ângulos internos e externos de polígonos, preferencialmente vinculadas à construção de mosaicos e de ladrilhamentos.">EF07MA27</a><a class="tag code ma" href="../bncc/ef07ma24/" title="EF07MA24 — Construir triângulos, usando régua e compasso, reconhecer a condição de existência do triângulo quanto à medida dos lados e verificar que a soma das medidas dos ângulos internos de um triângulo é 180°.">EF07MA24</a><a class="tag code ma" href="../bncc/ef06ma18/" title="EF06MA18 — Reconhecer, nomear e comparar polígonos considerando lados, vértices e ângulos, e classificá-los em regulares e não regulares.">EF06MA18</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como usar</summary>
     <p><strong>Ladrilhar:</strong> coloque polígonos regulares em volta do mesmo ponto, um encostado no outro. Se a soma dos ângulos em volta do ponto der exatamente 360°, os ladrilhos fecham sem buracos e sem sobrepor. <strong>Soma dos ângulos:</strong> divida um polígono em triângulos a partir de um vértice e descubra a soma dos ângulos internos.</p>
@@ -84,7 +96,22 @@
     <p class="small muted">Habilidades: EF07MA27, EF07MA24 e EF06MA18. Material concreto equivalente: polígonos regulares de papel cartão com o mesmo lado.</p>
   </details>
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../3d/decimais.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Material Dourado 3D</strong>
+          <span class="small muted">Cubo, placa, barra e cubinho viram inteiro, décimo, centésimo e milésimo. Monte números decimais, faça trocas e resolva desafios.</span>
+        </a>
+        <a class="card" href="../3d/fracoes.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Barras de Frações 3D</strong>
+          <span class="small muted">Duas barras de frações e uma reta numérica: compare, encontre equivalentes, passe para decimal e localize racionais negativos.</span>
+        </a>
+        <a class="card" href="../3d/mmc.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Torres do MMC</strong>
+          <span class="small muted">Empilhe blocos de alturas diferentes na torre mais baixa até as torres se igualarem: a altura comum é o mmc.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 <script>window.MD_BASE = '../';</script>

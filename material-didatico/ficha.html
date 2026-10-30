@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, follow">
-<title>Ficha para imprimir · Material didático | ohtopico</title>
+<title>Ficha para imprimir · Material didático | Júlia Quoos</title>
 <meta name="description" content="Atividade para imprimir alinhada à BNCC.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,7 +87,9 @@
 (function () {
   mdTopbar('catalogo');
   mdFooter();
-  const id = new URLSearchParams(location.search).get('id');
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // ficha.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
   const r = REC[id];
   const main = document.getElementById('fichas');
   const gab = document.getElementById('gab');
@@ -95,7 +97,7 @@
     main.innerHTML = `<div class="wrap" style="padding:40px 16px"><h1>Ficha não encontrada</h1><p><a href="catalogo.html?tipo=ficha">Ver todas as fichas</a></p></div>`;
     return;
   }
-  document.title = `${r.titulo} · Ficha para imprimir | ohtopico`;
+  if (!window.MD_ID) document.title = `${r.titulo} · Ficha para imprimir | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
 
   const head = (sub) => `
     <div class="idline"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>

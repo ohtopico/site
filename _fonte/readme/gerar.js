@@ -20,9 +20,9 @@ vm.createContext(ctx);
 for (const f of ['dados.js', 'listas.js', 'slides.js']) {
   vm.runInContext(fs.readFileSync(path.join(RAIZ, 'material-didatico/assets', f), 'utf8'), ctx);
 }
-vm.runInContext('this.D = { HABILIDADES, RECURSOS, EIXOS };', ctx);
+vm.runInContext('this.D = { HABILIDADES, RECURSOS, EIXOS, ESTATICAS: typeof ESTATICAS === "undefined" ? {} : ESTATICAS };', ctx);
 // listas.js já registra cada lista de exercícios em RECURSOS (tipo 'lista')
-const { HABILIDADES, RECURSOS, EIXOS } = ctx.D;
+const { HABILIDADES, RECURSOS, EIXOS, ESTATICAS } = ctx.D;
 const SLIDES = ctx.window.SLIDES;
 
 const HAB = Object.fromEntries(HABILIDADES.map(h => [h.codigo, h]));
@@ -45,12 +45,12 @@ function linhaCO(h) {
   const c = h.codigo;
   const planos = RECURSOS.filter(r => r.tipo === 'plano' && temHab(r, c));
   const extras = RECURSOS.filter(r => r.tipo !== 'plano' && !revisao(r) && temHab(r, c))
-    .map(r => extra(r.tipo, r.titulo, url(r.url)));
+    .map(r => extra(r.tipo, r.titulo, url(ESTATICAS[r.id] || r.url)));
   return [
     SLIDES[c] ? esc(SLIDES[c]) : '-',
     esc(h.objeto),
     `**${c}** ${esc(h.texto)}`,
-    planos.map(p => link(p.titulo, url(p.url))).join('<br>') || '-',
+    planos.map(p => link(p.titulo, url(ESTATICAS[p.id] || p.url))).join('<br>') || '-',
     SLIDES[c] ? link('PDF', slidesUrl(c)) : '-',
     juntar(extras)
   ];
@@ -63,12 +63,12 @@ function linhaMA(p) {
   const ids3d = new Set(ligados.map(r => r.jogo).filter(Boolean));
   const extras = ligados
     .concat(RECURSOS.filter(r => ids3d.has(r.id) || r.id === `l-ma-${sufixo}`))
-    .map(r => extra(r.tipo, r.titulo, url(r.url)));
+    .map(r => extra(r.tipo, r.titulo, url(ESTATICAS[r.id] || r.url)));
   return [
     esc(p.titulo),
     p.anos.map(a => `${a}º`).join(', '),
     p.habs.map(c => HAB[c] ? `**${c}**` : c).join(', '),
-    link('Plano de aula', url(p.url)),
+    link('Plano de aula', url(ESTATICAS[p.id] || p.url)),
     juntar(extras)
   ];
 }
@@ -88,7 +88,7 @@ const secoesCO = anos.map(a => {
   return `### ${a}º ano\n\n` + tabela(
     ['Aula', 'Tema', 'Habilidade da BNCC', 'Plano de aula', 'Slides', 'Material extra'],
     co.filter(h => h.ano === a).map(linhaCO)) +
-    (rev ? `\n\nPara fechar o ano: ${link(`lista de revisão do ${a}º ano`, url(rev.url))}.` : '');
+    (rev ? `\n\nPara fechar o ano: ${link(`lista de revisão do ${a}º ano`, url(ESTATICAS[rev.id] || rev.url))}.` : '');
 }).join('\n\n');
 
 const readme = `# Material didático de Computação e Matemática

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rota Mais Curta · Material didático | ohtopico</title>
+<title>Rota Mais Curta: jogo de Computação e Matemática</title>
 <meta name="description" content="Jogo de grafos: encontre o caminho de menor custo entre dois vértices. BNCC EF07CO04, EF09CO01, EF06MA34.">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/rotas.html">
-<meta property="og:title" content="Rota Mais Curta · Material didático">
+<meta property="og:title" content="Rota Mais Curta: jogo de Computação e Matemática">
 <meta property="og:description" content="Jogo de grafos: encontre o caminho de menor custo entre dois vértices. BNCC EF07CO04, EF09CO01, EF06MA34.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/rotas.html">
 <meta property="og:type" content="website">
@@ -37,11 +37,23 @@
   .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--ink-2); margin-top: 10px; }
   .pathline { font-family: ui-monospace, Consolas, monospace; font-size: 15px; }
 </style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Rota Mais Curta","description":"Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.","url":"https://ohtopico.com.br/material-didatico/jogos/rotas.html","image":"https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"6º, 7º, 9º anos do Ensino Fundamental","about":["Computação","Matemática"],"isAccessibleForFree":true,"timeRequired":"15 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO04","targetDescription":"Explorar propriedades básicas de grafos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO01","targetDescription":"Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA34","targetDescription":"Interpretar e desenvolver fluxogramas simples, identificando relações entre objetos (por exemplo, cidades ligadas por estradas)."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Rota Mais Curta","item":"https://ohtopico.com.br/material-didatico/jogos/rotas.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag ma">Matemática</span><span class="tag">6º, 7º, 9º anos</span><span class="tag">⏱ 15 min</span></div>
+      <h1>Rota Mais Curta</h1>
+      <p class="muted" style="max-width:720px">Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef07co04/" title="EF07CO04 — Explorar propriedades básicas de grafos.">EF07CO04</a><a class="tag code co" href="../bncc/ef09co01/" title="EF09CO01 — Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação.">EF09CO01</a><a class="tag code ma" href="../bncc/ef06ma34/" title="EF06MA34 — Interpretar e desenvolver fluxogramas simples, identificando relações entre objetos (por exemplo, cidades ligadas por estradas).">EF06MA34</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como jogar</summary>
     <p>Cada círculo é um <strong>vértice</strong> (um lugar) e cada linha é uma <strong>aresta</strong> (uma rua). O número na aresta é o custo — minutos de caminhada. Comece pelo vértice <strong>🚩 de partida</strong> e clique nos vértices vizinhos, um de cada vez, até chegar ao <strong>🏁 destino</strong>. Clique de novo no último vértice para voltar um passo.</p>
@@ -65,8 +77,41 @@
     </div>
   </div>
 
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Rota Mais Curta</strong> é um jogo gratuito de Computação e Matemática para o 6º, 7º, 9º anos, pensado para cerca de 15 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../bncc/ef07co04/"><strong>EF07CO04</strong></a>: Explorar propriedades básicas de grafos.</li>
+      <li><a href="../bncc/ef09co01/"><strong>EF09CO01</strong></a>: Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação.</li>
+      <li><a href="../bncc/ef06ma34/"><strong>EF06MA34</strong></a>: Interpretar e desenvolver fluxogramas simples, identificando relações entre objetos (por exemplo, cidades ligadas por estradas).</li>
+    </ul>
+    <p>Para a aula completa, use o plano <a href="../planos/grafos-caminho-mais-curto/">Grafos e o caminho mais curto</a>, com objetivos, etapas, avaliação e acessibilidade. A ficha <a href="../fichas/mapa-bairros/">Mapa dos bairros</a> leva a atividade para o papel. Para fixar, há as listas <a href="../listas/propriedades-grafos-7-ano/">Propriedades de grafos (7º ano)</a>, <a href="../listas/grafos-arvores-9-ano/">Grafos e árvores (9º ano)</a>, com gabarito. Os slides da aula expositiva de EF07CO04, EF09CO01 estão na página de cada habilidade.</p>
+  </details>
+  <!-- professor: fim -->
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/grafos-caminho-mais-curto/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Grafos e o caminho mais curto</strong>
+          <span class="small muted">Do mapa do bairro ao grafo: vértices, arestas, grau e menor caminho.</span>
+        </a>
+        <a class="card" href="../fichas/mapa-bairros/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>Mapa dos bairros</strong>
+          <span class="small muted">Grafo com distâncias entre bairros: contar arestas, achar o grau de cada vértice e calcular o caminho mais curto.</span>
+        </a>
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/pacotes.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Correio de Pacotes</strong>
+          <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 

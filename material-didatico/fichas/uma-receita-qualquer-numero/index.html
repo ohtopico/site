@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uma receita para qualquer número · Ficha para imprimir</title>
+<meta name="description" content="Ficha para imprimir gratuito, Computação, 6º ano (BNCC EF06CO06). Generalizar uma receita e os programas da tartaruga com parâmetros, até chegar a um…">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/fichas/uma-receita-qualquer-numero/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/fichas/uma-receita-qualquer-numero/">
+<meta property="og:title" content="Uma receita para qualquer número · Ficha para imprimir">
+<meta property="og:description" content="Ficha para imprimir gratuito, Computação, 6º ano (BNCC EF06CO06). Generalizar uma receita e os programas da tartaruga com parâmetros, até chegar a um…">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-fichas.jpg">
+<meta property="og:image:alt" content="Ficha para imprimir: Uma receita para qualquer número">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Uma receita para qualquer número","description":"Generalizar uma receita e os programas da tartaruga com parâmetros, até chegar a um único algoritmo para todos os casos.","url":"https://ohtopico.com.br/material-didatico/fichas/uma-receita-qualquer-numero/","image":"https://ohtopico.com.br/material-didatico/assets/og-fichas.jpg","inLanguage":"pt-BR","learningResourceType":"Ficha para imprimir","educationalLevel":"6º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"1 aula","audience":{"@type":"EducationalAudience","educationalRole":"teacher"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO06","targetDescription":"Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros)."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Fichas","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=ficha"},{"@type":"ListItem","position":4,"name":"Uma receita para qualquer número","item":"https://ohtopico.com.br/material-didatico/fichas/uma-receita-qualquer-numero/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .toolbar { max-width: 860px; margin: 0 auto; padding: 24px 16px 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+  .toolbar a.back { color: var(--ink-2); font-size: 14px; }
+  .sheet {
+    max-width: 860px; margin: 18px auto 30px; padding: 36px 40px; background: #fff; color: #111;
+    border: 1.5px solid var(--ink); border-radius: 8px; --ink: #111; --ink-2: #444; --line: #bbb;
+  }
+  .sheet + .sheet { margin-top: 0; }
+  .sheet h1 { font-size: 30px; margin: 6px 0 4px; }
+  .sheet h2 { font-size: 21px; margin: 24px 0 8px; }
+  .sheet p, .sheet li { font-size: 15px; }
+  .sheet .tag.code { background: #eee; color: #111; }
+  .idline { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; font-size: 14px; margin-bottom: 16px; }
+  .idline span { border-bottom: 1px solid #111; padding-bottom: 2px; }
+  .sheet .kicker { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #555; }
+  .habline { font-size: 12.5px; color: #444; margin: 4px 0 14px; }
+  .lines { display: grid; gap: 22px; margin: 10px 0; }
+  .lines span { border-bottom: 1px solid #999; height: 1px; display: block; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .boxes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .boxes span { border: 1.5px solid #111; border-radius: 8px; height: 46px; display: grid; place-items: center; font-size: 11px; color: #999; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.t th, table.t td { border: 1.2px solid #111; padding: 7px 8px; text-align: left; }
+  table.t th { background: #f0f0f0; }
+  table.t td.c { text-align: center; width: 70px; }
+  .cut { border: 2px dashed #111; border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cut .f { display: flex; gap: 6px; margin: 4px 0; }
+  .cut .f b { white-space: nowrap; }
+  .cut .f i { flex: 1; border-bottom: 1px solid #111; }
+  .cut .content { height: 46px; border: 1px solid #999; border-radius: 6px; margin-top: 6px; }
+  .msg { border: 1.5px solid #111; border-radius: 12px; padding: 10px 14px; font-size: 15px; margin: 8px 0; }
+  .mono { font-family: ui-monospace, Consolas, monospace; letter-spacing: .18em; font-size: 17px; font-weight: 600; }
+  .check li { list-style: none; margin-left: -20px; }
+  .check li::before { content: '☐  '; }
+  .gab { max-width: 860px; margin: 0 auto 30px; padding: 0 16px; }
+  .gab details { border: 1.5px solid var(--ink); border-radius: 20px; padding: 12px 18px; }
+  .gab summary { cursor: pointer; font-weight: 600; }
+  svg text { font-family: 'Lexend', system-ui, sans-serif; }
+  @media (max-width: 640px) {
+    .sheet { padding: 22px 16px; }
+    .two, .cards { grid-template-columns: 1fr; }
+    .idline { grid-template-columns: 1fr; }
+    .sheet { overflow-x: auto; }
+    .sheet table.t { font-size: 12px; }
+  }
+  @media print {
+    @page { size: A4; margin: 12mm; }
+    .sheet { border: 0; margin: 0; padding: 0; max-width: none; }
+    .sheet + .sheet { break-before: page; }
+    .gab { display: none; }
+    .two { grid-template-columns: 1fr 1fr; }
+    .cards { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<nav class="toolbar no-print" aria-label="Fichas">
+  <a class="back" href="catalogo.html?tipo=ficha">← Todas as fichas</a>
+  <div class="btn-row"><button class="btn" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+</nav>
+<main id="fichas"><section class="sheet">
+    <div class="idline"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
+    <div class="kicker">Computação · 6º ano · Generalização com parâmetros</div>
+    <h1>Uma receita para qualquer número</h1>
+    <div class="habline">BNCC: <strong>EF06CO06</strong> Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros).</div>
+      <p><strong>Generalizar</strong> é olhar vários casos parecidos e escrever um algoritmo que resolva todos. O que muda de um caso para outro vira um <strong>parâmetro</strong>.</p>
+      <h2>1. Suco para quantas pessoas?</h2>
+      <p>Receita para 2 pessoas: 4 laranjas, 1 colher de açúcar e 2 copos de água. Complete a tabela.</p>
+      <table class="t"><tbody><tr><th>Pessoas</th><th>Laranjas</th><th>Colheres de açúcar</th><th>Copos de água</th></tr><tr><td>2</td><td>4</td><td>1</td><td>2</td></tr><tr><td>4</td><td style="height:32px"></td><td style="height:32px"></td><td style="height:32px"></td></tr><tr><td>6</td><td style="height:32px"></td><td style="height:32px"></td><td style="height:32px"></td></tr><tr><td>30</td><td style="height:32px"></td><td style="height:32px"></td><td style="height:32px"></td></tr><tr><td><strong>p</strong></td><td style="height:32px"></td><td style="height:32px"></td><td style="height:32px"></td></tr></tbody></table>
+      <h2>2. A tartaruga que desenha</h2>
+      <p>A tartaruga anda e vira. Complete os programas e descubra o padrão.</p>
+      <table class="t"><tbody><tr><th>Figura</th><th>Programa</th><th>Quanto vira?</th></tr><tr><td>Triângulo</td><td>repita 3 vezes: ande 50, vire ____</td><td style="height:32px"></td></tr><tr><td>Quadrado</td><td>repita 4 vezes: ande 50, vire ____</td><td style="height:32px"></td></tr><tr><td>Pentágono</td><td>repita ____ vezes: ande 50, vire ____</td><td style="height:32px"></td></tr><tr><td>Hexágono</td><td>repita ____ vezes: ande 50, vire ____</td><td style="height:32px"></td></tr></tbody></table>
+      <p>Agora escreva um único programa <strong>polígono(n, lado)</strong> que desenhe qualquer polígono regular:</p>
+      <pre style="font-family:ui-monospace,Consolas,monospace;font-size:14px;border:1.2px solid #111;border-radius:8px;padding:10px 12px;margin:6px 0;white-space:pre-wrap">polígono(n, lado):
+    repita ____ vezes
+        ande ____
+        vire ____
+    fim</pre>
+      <h2>3. Quais são os parâmetros?</h2>
+      <p>a) Na receita do suco: ______________________ &nbsp; b) No programa da tartaruga: ______________________</p>
+      <p>c) Dê outro exemplo do dia a dia em que um mesmo “molde” serve para vários casos.</p><div class="lines"><span></span><span></span></div></section></main>
+<div class="gab no-print" id="gab"><details><summary>Gabarito e orientações para o professor</summary><div style="margin-top:10px"><p><strong>Condução (35 min):</strong> faça a linha de 4 pessoas no quadro e pergunte o que mudou. Na parte 2, se houver espaço, um estudante faz a tartaruga no chão e vira com o corpo. Destaque que a soma das viradas é sempre 360 graus.</p>
+      <p><strong>Gabarito.</strong> 1) 4 pessoas: 8, 2, 4; 6 pessoas: 12, 3, 6; 30 pessoas: 60, 15, 30; p pessoas: 2 × p laranjas, p ÷ 2 colheres e p copos. 2) Triângulo: 120; quadrado: 90; pentágono: 5 vezes, 72; hexágono: 6 vezes, 60. Programa geral: repita n vezes, ande lado, vire 360 ÷ n. 3) a) o número de pessoas p; b) n e lado; c) exemplos: convite de aniversário (muda o nome), boletim (muda o estudante), cálculo da conta de luz (muda o consumo).</p><p>Use junto com: <a href="planos/colecoes-entradas-saidas/">📋 Coleções, entradas e saídas</a></p></div></details></div>
+<footer id="footer"></footer>
+
+<script>window.MD_ID = window.MD_REC = "f-co-generalizar";</script>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/fichas-ma.js"></script>
+<script src="assets/fichas-co.js"></script>
+<script>
+(function () {
+  mdTopbar('catalogo');
+  mdFooter();
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // ficha.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
+  const r = REC[id];
+  const main = document.getElementById('fichas');
+  const gab = document.getElementById('gab');
+  if (!r || r.tipo !== 'ficha') {
+    main.innerHTML = `<div class="wrap" style="padding:40px 16px"><h1>Ficha não encontrada</h1><p><a href="catalogo.html?tipo=ficha">Ver todas as fichas</a></p></div>`;
+    return;
+  }
+  if (!window.MD_ID) document.title = `${r.titulo} · Ficha para imprimir | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
+
+  const head = (sub) => `
+    <div class="idline"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
+    <div class="kicker">${r.comp.map(c => COMPONENTES[c].nome).join(' + ')} · ${anosTxt(r.anos)}${sub ? ' · ' + sub : ''}</div>
+    <h1>${esc(r.titulo)}</h1>
+    <div class="habline">BNCC: ${r.habs.map(c => `<strong>${c}</strong> ${esc(HAB[c].texto)}`).join(' · ')}</div>`;
+  const lines = n => `<div class="lines">${'<span></span>'.repeat(n)}</div>`;
+  const sheet = html => `<section class="sheet">${html}</section>`;
+  const gabarito = html => { gab.innerHTML = `<details><summary>Gabarito e orientações para o professor</summary><div style="margin-top:10px">${html}</div></details>`; };
+
+  /* Malha em SVG: células n×n com tamanho s */
+  function malha(n, s, extras) {
+    let g = '';
+    for (let i = 0; i <= n; i++) {
+      g += `<line x1="${i * s}" y1="0" x2="${i * s}" y2="${n * s}" stroke="#111" stroke-width="1.2"/>`;
+      g += `<line x1="0" y1="${i * s}" x2="${n * s}" y2="${i * s}" stroke="#111" stroke-width="1.2"/>`;
+    }
+    return `<svg viewBox="-2 -2 ${n * s + 4} ${n * s + 4}" width="100%" style="max-width:${n * s + 4}px" role="img" aria-label="Malha quadriculada de ${n} por ${n}">${g}${extras || ''}</svg>`;
+  }
+
+  const caesar = (txt, k) => txt.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[A-Z]/g, ch => String.fromCharCode((ch.charCodeAt(0) - 65 + k + 26) % 26 + 65));
+
+  const FICHAS = {
+    /* ---------------------------------------------------------- */
+    'f-robo': () => {
+      const s = 52, n = 6;
+      const cell = (x, y, t, sz) => `<text x="${x * s + s / 2}" y="${y * s + s / 2 + (sz || 26) / 3}" text-anchor="middle" font-size="${sz || 26}">${t}</text>`;
+      const walls = [[2, 1], [2, 2], [4, 3], [1, 4], [4, 4]];
+      const extras = walls.map(([x, y]) => `<rect x="${x * s + 3}" y="${y * s + 3}" width="${s - 6}" height="${s - 6}" fill="#bbb"/>`).join('')
+        + cell(0, 5, '🤖') + cell(5, 0, '⭐') + cell(3, 2, '⭐');
+      return sheet(`${head('Atividade desplugada')}
+        <p><strong>Como funciona:</strong> em dupla, um é o <em>programador</em> e o outro é o <em>robô</em>. O programador escreve os comandos; o robô executa exatamente o que está escrito, sem adivinhar. Os quadrados cinza são paredes.</p>
+        <div class="two">
+          <div>${malha(n, s, extras)}</div>
+          <div>
+            <h2 style="margin-top:0">Comandos</h2>
+            <table class="t"><tr><th>Símbolo</th><th>Significado</th></tr>
+              <tr><td class="c">↑</td><td>anda uma casa para cima</td></tr>
+              <tr><td class="c">↓</td><td>anda uma casa para baixo</td></tr>
+              <tr><td class="c">→</td><td>anda uma casa para a direita</td></tr>
+              <tr><td class="c">←</td><td>anda uma casa para a esquerda</td></tr>
+              <tr><td class="c">3×→</td><td>repete o comando 3 vezes</td></tr>
+            </table>
+          </div>
+        </div>
+        <h2>1. Programa para pegar as duas estrelas</h2>
+        <div class="boxes">${'<span></span>'.repeat(18)}</div>
+        <h2>2. Reescreva usando repetição (ex.: 3×↑). Quantos comandos você economizou?</h2>
+        <div class="boxes">${'<span></span>'.repeat(6)}</div>
+        ${lines(1)}`)
+      + sheet(`
+        <h2 style="margin-top:0">3. Fluxograma: par ou ímpar?</h2>
+        <p>Complete as partes em branco do fluxograma que decide se um número natural é par.</p>
+        <svg viewBox="0 0 520 470" width="100%" style="max-width:520px;display:block;margin:0 auto">
+          <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#111"/></marker></defs>
+          <g fill="none" stroke="#111" stroke-width="1.8">
+            <rect x="200" y="10" width="120" height="44" rx="22"/>
+            <path d="M190 90h160l-20 50H170z"/>
+            <path d="M260 175l110 55-110 55-110-55z"/>
+            <rect x="20" y="320" width="170" height="54" rx="6"/>
+            <rect x="330" y="320" width="170" height="54" rx="6"/>
+            <rect x="200" y="410" width="120" height="44" rx="22"/>
+            <path d="M260 54v34M260 140v33M150 230H105v88M370 230h45v88M105 374v58h93M415 374v58h-93" marker-end="url(#ar)"/>
+          </g>
+          <g font-size="15" text-anchor="middle" fill="#111">
+            <text x="260" y="37">Início</text>
+            <text x="260" y="120">Ler o número n</text>
+            <text x="260" y="226">O resto de n ÷ 2</text>
+            <text x="260" y="246">é igual a ____ ?</text>
+            <text x="125" y="222">Sim</text><text x="395" y="222">Não</text>
+            <text x="105" y="352">Escrever “________”</text>
+            <text x="415" y="352">Escrever “________”</text>
+            <text x="260" y="437">Fim</text>
+          </g>
+        </svg>
+        <h2>4. Teste o fluxograma</h2>
+        <table class="t"><tr><th>Número n</th><th>Resto de n ÷ 2</th><th>Resposta do fluxograma</th></tr>
+          <tr><td>14</td><td></td><td></td></tr><tr><td>27</td><td></td><td></td></tr><tr><td>0</td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>
+        <h2>5. Em que o fluxograma se parece com o programa do robô? Em que é diferente?</h2>
+        ${lines(3)}`);
+    },
+    'f-robo:gab': `<p><strong>1.</strong> Uma solução (robô começa embaixo à esquerda): ↑ ↑ → → → ↑ (pega a estrela do meio) ↑ ↑ → → (pega a estrela do canto). Outras rotas valem, desde que não atravessem paredes.</p>
+      <p><strong>2.</strong> 2×↑ 3×→ 3×↑ 2×→ — de 10 para 4 comandos.</p>
+      <p><strong>3.</strong> Resto igual a <strong>0</strong>; Sim → “par”; Não → “ímpar”.</p>
+      <p><strong>5.</strong> Ambos são sequências precisas de passos; o fluxograma tem uma <em>decisão</em> (seleção), o programa do robô usa <em>repetição</em>.</p>`,
+
+    /* ---------------------------------------------------------- */
+    'f-decompor': () => {
+      const box = (x, y, w, h, t, dashed) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#fff" stroke="#111" stroke-width="1.6" ${dashed ? 'stroke-dasharray="6 5"' : ''}/>` + (t ? `<text x="${x + w / 2}" y="${y + h / 2 + 5}" text-anchor="middle" font-size="14">${t}</text>` : '');
+      let svg = box(200, 10, 220, 46, 'Feira de ciências da escola');
+      const xs = [10, 165, 320, 475];
+      const nomes = ['Espaço', 'Projetos', '', ''];
+      xs.forEach((x, i) => {
+        svg += `<path d="M310 56 V80 H${x + 67} V100" fill="none" stroke="#111" stroke-width="1.4"/>`;
+        svg += box(x, 100, 135, 42, nomes[i], !nomes[i]);
+        [160, 210, 260].forEach(y => { svg += `<path d="M${x + 67} ${y - 18} V${y}" stroke="#111" stroke-width="1.2"/>` + box(x + 8, y, 119, 34, '', true); });
+      });
+      return sheet(`${head('Decomposição e reúso')}
+        <p>Problemas grandes ficam mais fáceis quando quebramos em partes menores. Essa estratégia se chama <strong>decomposição</strong>. Sua turma vai organizar uma feira de ciências. Complete o diagrama com as partes do problema e, embaixo de cada uma, as tarefas menores.</p>
+        <svg viewBox="0 0 620 300" width="100%">${svg}</svg>
+        <h2>1. Quais tarefas aparecem em mais de uma parte?</h2>
+        <p class="small">Quando uma tarefa se repete, podemos criar um “molde” e reaproveitar. Isso é <strong>reúso</strong> — como uma função em um programa.</p>
+        ${lines(2)}
+        <h2>2. Escreva o “molde” de uma tarefa que se repete</h2>
+        <table class="t"><tr><th>Nome da tarefa</th><td colspan="2"></td></tr><tr><th>O que muda a cada vez (parâmetro)</th><td colspan="2"></td></tr><tr><th style="width:38%">Passos</th><td colspan="2" style="height:110px"></td></tr></table>
+        <h2>3. Que ordem as partes precisam seguir? Alguma pode ser feita ao mesmo tempo que outra?</h2>
+        ${lines(3)}`);
+    },
+    'f-decompor:gab': `<p>Exemplos de partes: Espaço (sala, mesas, tomadas), Projetos (inscrição, orientação, ensaio), Divulgação (cartazes, convite às famílias), Avaliação (jurados, fichas, premiação).</p>
+      <p>Tarefas que se repetem: preparar a placa de cada projeto, montar cada bancada, convidar cada turma. O “molde” da placa tem como parâmetros o título, os autores e a turma.</p>
+      <p>Na questão 3, aproveite para conversar sobre tarefas paralelas (divulgação e ensaio podem acontecer ao mesmo tempo) — uma ponte para o 8º ano (EF08CO05).</p>`,
+
+    /* ---------------------------------------------------------- */
+    'f-pacotes': () => {
+      const card = () => `<div class="cut">
+          <div class="f"><b>Pacote nº</b><i></i><b>de</b><i></i></div>
+          <div class="f"><b>De (remetente):</b><i></i></div>
+          <div class="f"><b>Para (destino):</b><i></i></div>
+          <div class="content"></div>
+        </div>`;
+      return sheet(`${head('Simulação da internet na sala')}
+        <p><strong>Missão:</strong> enviar uma mensagem para outro grupo como a internet faz — em pedaços chamados <strong>pacotes</strong>.</p>
+        <ol>
+          <li>Escrevam uma frase com 8 palavras para o grupo destino.</li>
+          <li>Coloquem uma palavra em cada cartão e preencham o <strong>cabeçalho</strong>: número do pacote, total, remetente e destino.</li>
+          <li>Recortem os cartões e entreguem aos “roteadores”. Cada pacote pode ir por um caminho diferente!</li>
+          <li>Quando receberem pacotes, montem a mensagem pela numeração. Faltou algum? Peçam o reenvio ao remetente.</li>
+        </ol>
+        <div class="cards">${card().repeat(8)}</div>`)
+      + sheet(`
+        <h2 style="margin-top:0">Mensagem recebida</h2>
+        <div class="boxes" style="grid-template-columns:repeat(8,1fr)">${[1,2,3,4,5,6,7,8].map(i => `<span>${i}</span>`).join('')}</div>
+        <h2>1. Em que ordem os pacotes chegaram? Anote os números.</h2>
+        <div class="boxes" style="grid-template-columns:repeat(8,1fr)">${'<span></span>'.repeat(8)}</div>
+        <h2>2. Como vocês souberam que um pacote estava faltando?</h2>
+        ${lines(2)}
+        <h2>3. Por que o cabeçalho é importante? O que aconteceria sem o número do pacote?</h2>
+        ${lines(3)}
+        <h2>4. Um <em>protocolo</em> é um combinado que todos seguem para a comunicação funcionar. Qual foi o protocolo da turma hoje?</h2>
+        ${lines(3)}`);
+    },
+    'f-pacotes:gab': `<p>Pontos-chave: os pacotes chegam fora de ordem porque seguem caminhos diferentes; o número e o total no cabeçalho permitem remontar e perceber o que falta; o combinado “número / total / remetente / destino” é o protocolo. Relacione com o IP (endereçamento: de/para) e o TCP (ordem e reenvio).</p>`,
+
+    /* ---------------------------------------------------------- */
+    'f-cesar': () => {
+      const L = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const disc = (R, r0, fs, label) => {
+        let g = `<circle cx="0" cy="0" r="${R}" fill="#fff" stroke="#111" stroke-width="1.6" stroke-dasharray="6 4"/>`;
+        g += `<circle cx="0" cy="0" r="${r0}" fill="none" stroke="#111" stroke-width="1"/>`;
+        for (let i = 0; i < 26; i++) {
+          const a = (i / 26) * Math.PI * 2 - Math.PI / 2;
+          const a2 = ((i + .5) / 26) * Math.PI * 2 - Math.PI / 2;
+          g += `<line x1="${Math.cos(a2) * r0}" y1="${Math.sin(a2) * r0}" x2="${Math.cos(a2) * R}" y2="${Math.sin(a2) * R}" stroke="#111" stroke-width=".8"/>`;
+          const rr = (R + r0) / 2;
+          g += `<text x="${Math.cos(a) * rr}" y="${Math.sin(a) * rr + fs / 3}" text-anchor="middle" font-size="${fs}" font-weight="600" transform="rotate(${i * 360 / 26} ${Math.cos(a) * rr} ${Math.sin(a) * rr})">${L[i]}</text>`;
+        }
+        g += `<circle cx="0" cy="0" r="3" fill="#111"/><text x="0" y="${r0 - 14}" text-anchor="middle" font-size="11">${label}</text>`;
+        return g;
+      };
+      const m1 = caesar('SENHA FORTE PROTEGE', 3), m2 = caesar('DADOS SAO VALIOSOS', 5), m3 = caesar('CODIGO SECRETO', 7);
+      return sheet(`${head('Recortar e montar')}
+        <p>Recorte os dois discos pela linha tracejada. Coloque o menor sobre o maior e prenda no centro com um colchete. Gire o disco interno para escolher a <strong>chave</strong>: com chave 3, o A de fora fica sobre o D de dentro.</p>
+        <div class="two" style="align-items:center">
+          <svg viewBox="-150 -150 300 300" width="100%">${disc(145, 95, 18, 'texto normal (fora)')}</svg>
+          <svg viewBox="-105 -105 210 210" width="70%" style="margin:0 auto;display:block">${disc(93, 50, 14, 'cifrado (dentro)')}</svg>
+        </div>`)
+      + sheet(`
+        <h2 style="margin-top:0">1. Decifre (chave 3)</h2>
+        <div class="msg mono">${m1}</div>${lines(1)}
+        <h2>2. Decifre (chave 5)</h2>
+        <div class="msg mono">${m2}</div>${lines(1)}
+        <h2>3. Sem chave! Teste as chaves até a frase fazer sentido</h2>
+        <div class="msg mono">${m3}</div>
+        <p>Chave descoberta: ______ &nbsp; Mensagem: ____________________________________</p>
+        <h2>4. Cifre uma mensagem para seu colega</h2>
+        <p>Chave secreta: ______</p>${lines(2)}
+        <h2>5. Quantas chaves diferentes existem na Cifra de César? Por que isso a torna fácil de quebrar?</h2>
+        ${lines(3)}`);
+    },
+    'f-cesar:gab': `<p><strong>1.</strong> SENHA FORTE PROTEGE · <strong>2.</strong> DADOS SAO VALIOSOS · <strong>3.</strong> chave 7, CODIGO SECRETO.</p>
+      <p><strong>5.</strong> Existem 25 chaves úteis; testar todas (força bruta) leva poucos minutos. As cifras modernas têm um número tão grande de chaves que testar todas levaria bilhões de anos.</p>`,
+
+    /* ---------------------------------------------------------- */
+    'f-grafo': () => {
+      const V = { A: [80, 160, 'Centro'], B: [250, 60, 'Escola'], C: [250, 260, 'Praça'], D: [430, 60, 'Mercado'], E: [430, 260, 'Posto'], F: [590, 160, 'Parque'] };
+      const Ed = [['A','B',4],['A','C',2],['B','C',1],['B','D',5],['C','D',8],['C','E',10],['D','E',2],['D','F',6],['E','F',3]];
+      let g = '';
+      Ed.forEach(([a, b, w]) => {
+        const [x1, y1] = V[a], [x2, y2] = V[b];
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+        g += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#111" stroke-width="2"/>`;
+        g += `<circle cx="${mx}" cy="${my}" r="13" fill="#fff" stroke="#111"/><text x="${mx}" y="${my + 5}" text-anchor="middle" font-size="14" font-weight="700">${w}</text>`;
+      });
+      Object.entries(V).forEach(([k, [x, y, nome]]) => {
+        g += `<circle cx="${x}" cy="${y}" r="24" fill="#fff" stroke="#111" stroke-width="2"/><text x="${x}" y="${y + 6}" text-anchor="middle" font-size="18" font-weight="800">${k}</text>`;
+        g += `<text x="${x}" y="${y + (y < 160 ? -32 : y > 160 ? 44 : 44)}" text-anchor="middle" font-size="13">${nome}</text>`;
+      });
+      return sheet(`${head('Grafos')}
+        <p>Este é um <strong>grafo</strong>: cada lugar é um <strong>vértice</strong> e cada rua é uma <strong>aresta</strong>. O número na aresta é o tempo, em minutos, para ir de um lugar ao outro.</p>
+        <svg viewBox="30 10 610 300" width="100%">${g}</svg>
+        <h2>1. Quantos vértices e quantas arestas tem o grafo?</h2>
+        <p>Vértices: ______ &nbsp;&nbsp; Arestas: ______</p>
+        <h2>2. O grau de um vértice é o número de arestas ligadas a ele. Complete:</h2>
+        <table class="t"><tr><th>Vértice</th>${'ABCDEF'.split('').map(v => `<th style="text-align:center">${v}</th>`).join('')}<th>Soma</th></tr>
+          <tr><th>Grau</th>${'<td></td>'.repeat(7)}</tr></table>
+        <p class="small">Compare a soma dos graus com o número de arestas. O que você percebe?</p>
+        ${lines(1)}`)
+      + sheet(`
+        <h2 style="margin-top:0">3. Qual é o caminho mais rápido do Centro (A) até o Parque (F)?</h2>
+        <p>Teste pelo menos três caminhos e calcule o tempo de cada um.</p>
+        <table class="t"><tr><th>Caminho (ex.: A → B → D → F)</th><th style="width:30%">Tempo total</th></tr>
+          <tr><td style="height:38px"></td><td></td></tr><tr><td style="height:38px"></td><td></td></tr><tr><td style="height:38px"></td><td></td></tr><tr><td style="height:38px"></td><td></td></tr></table>
+        <p>O caminho mais rápido é: ______________________ com ______ minutos.</p>
+        <h2>4. A rua entre Mercado (D) e Posto (E) fechou para obras. Qual é o novo caminho mais rápido de A até F?</h2>
+        ${lines(2)}
+        <h2>5. Escreva com suas palavras uma estratégia (algoritmo) para encontrar o caminho mais rápido em qualquer mapa.</h2>
+        ${lines(4)}`);
+    },
+    'f-grafo:gab': `<p><strong>1.</strong> 6 vértices e 9 arestas. <strong>2.</strong> Graus: A=2, B=3, C=4, D=4, E=3, F=2; soma 18 = 2 × 9 (cada aresta conta duas vezes).</p>
+      <p><strong>3.</strong> A → C → B → D → E → F = 2 + 1 + 5 + 2 + 3 = <strong>13 min</strong>. Caminhos “óbvios” como A → B → D → F dão 15 e A → C → B → D → F dá 14.</p>
+      <p><strong>4.</strong> Sem a aresta D–E: A → C → B → D → F = 14 min.</p>
+      <p><strong>5.</strong> Aceite estratégias como a de Dijkstra: a partir da origem, sempre avançar para o lugar ainda não visitado com menor tempo acumulado, atualizando os tempos dos vizinhos.</p>`,
+
+    /* ---------------------------------------------------------- */
+    'f-fracoes': () => {
+      const W = 600, rows = [1, 2, 3, 4, 6, 8, 12];
+      let wall = '';
+      rows.forEach((d, i) => {
+        const w = W / d;
+        for (let k = 0; k < d; k++) {
+          wall += `<rect x="${k * w}" y="${i * 40}" width="${w}" height="40" fill="#fff" stroke="#111" stroke-width="1.4"/>`;
+          wall += `<text x="${k * w + w / 2}" y="${i * 40 + 26}" text-anchor="middle" font-size="${d > 8 ? 12 : 15}">${d === 1 ? '1 inteiro' : '1/' + d}</text>`;
+        }
+      });
+      const bar = d => { let s = ''; for (let k = 0; k < d; k++) s += `<rect x="${k * 360 / d}" y="0" width="${360 / d}" height="34" fill="#fff" stroke="#111" stroke-width="1.4"/>`; return `<svg viewBox="-2 -2 364 38" width="100%" style="max-width:364px">${s}</svg>`; };
+      return sheet(`${head('Frações')}
+        <h2 style="margin-top:0">1. Parede de frações</h2>
+        <p>Pinte cada linha de uma cor e recorte as peças. Use-as para comparar e encontrar frações equivalentes.</p>
+        <svg viewBox="-2 -2 ${W + 4} ${rows.length * 40 + 4}" width="100%">${wall}</svg>
+        <h2>2. Pinte a fração indicada em cada barra</h2>
+        <table class="t">
+          <tr><td style="width:70px;text-align:center"><strong>3/4</strong></td><td>${bar(4)}</td></tr>
+          <tr><td style="text-align:center"><strong>2/3</strong></td><td>${bar(3)}</td></tr>
+          <tr><td style="text-align:center"><strong>5/8</strong></td><td>${bar(8)}</td></tr>
+          <tr><td style="text-align:center"><strong>4/6</strong></td><td>${bar(6)}</td></tr>
+        </table>
+        <p>Qual das frações acima é a maior? ________ &nbsp; Quais são equivalentes? ________</p>`)
+      + sheet(`
+        <h2 style="margin-top:0">3. Compare usando &gt;, &lt; ou =</h2>
+        <table class="t">
+          ${[['1/2', '2/4'], ['2/3', '3/4'], ['3/8', '1/4'], ['5/6', '7/12'], ['2/3', '8/12'], ['3/5', '3/4']].map(([a, b]) => `<tr><td class="c" style="font-size:18px">${a}</td><td class="c" style="width:70px"></td><td class="c" style="font-size:18px">${b}</td><td>Como pensei:</td></tr>`).join('')}
+        </table>
+        <h2>4. Complete as frações equivalentes</h2>
+        <p style="font-size:19px;line-height:2.2">1/2 = ___/4 = ___/6 = ___/8 = ___/12<br>1/3 = ___/6 = ___/12 &nbsp;&nbsp;&nbsp; 3/4 = ___/8 = ___/12</p>
+        <h2>5. Explique por que 2/3 é maior do que 3/5</h2>
+        ${lines(3)}`);
+    },
+    'f-fracoes:gab': `<p><strong>2.</strong> Maior: 3/4. Equivalentes: 2/3 = 4/6.</p>
+      <p><strong>3.</strong> 1/2 = 2/4 · 2/3 &lt; 3/4 · 3/8 &gt; 1/4 · 5/6 &gt; 7/12 · 2/3 = 8/12 · 3/5 &lt; 3/4 (mesmo numerador: maior denominador, peças menores).</p>
+      <p><strong>4.</strong> 2/4, 3/6, 4/8, 6/12 · 2/6, 4/12 · 6/8, 9/12.</p>
+      <p><strong>5.</strong> 2/3 = 10/15 e 3/5 = 9/15; ou: a 2/3 falta 1/3 para o inteiro e a 3/5 faltam 2/5, que é mais.</p>`,
+
+    /* ---------------------------------------------------------- */
+    'f-batalha': () => {
+      const plano = titulo => {
+        const s = 26, n = 5, o = n * s + 20;
+        let g = '';
+        for (let i = -n; i <= n; i++) {
+          const p = o + i * s;
+          g += `<line x1="${p}" y1="20" x2="${p}" y2="${2 * o - 20}" stroke="#999" stroke-width="${i === 0 ? 0 : 1}"/>`;
+          g += `<line x1="20" y1="${p}" x2="${2 * o - 20}" y2="${p}" stroke="#999" stroke-width="${i === 0 ? 0 : 1}"/>`;
+          if (i !== 0) {
+            g += `<text x="${p}" y="${o + 16}" text-anchor="middle" font-size="10">${i}</text>`;
+            g += `<text x="${o - 6}" y="${o - i * s + 4}" text-anchor="end" font-size="10">${i}</text>`;
+          }
+        }
+        g += `<line x1="10" y1="${o}" x2="${2 * o - 6}" y2="${o}" stroke="#111" stroke-width="2"/><line x1="${o}" y1="${2 * o - 10}" x2="${o}" y2="6" stroke="#111" stroke-width="2"/>`;
+        g += `<text x="${2 * o - 6}" y="${o - 6}" font-size="13" font-weight="700" text-anchor="end">x</text><text x="${o + 8}" y="16" font-size="13" font-weight="700">y</text>`;
+        g += `<text x="${o - 6}" y="${o + 16}" text-anchor="end" font-size="10">0</text>`;
+        return `<div><strong>${titulo}</strong><svg viewBox="0 0 ${2 * o} ${2 * o}" width="100%">${g}</svg></div>`;
+      };
+      return sheet(`${head('Jogo em dupla')}
+        <p><strong>Regras:</strong> sem o colega ver, marque no <em>Meu mar</em> seus navios sobre os pontos da malha: 1 navio de 3 pontos, 2 navios de 2 pontos e 2 botes de 1 ponto (pontos vizinhos na horizontal ou vertical). Na sua vez, diga um par ordenado, como (−2, 3). O colega responde “água” ou “acertou”. Marque no <em>Mar do adversário</em>. Vence quem afundar tudo primeiro.</p>
+        <div class="two">${plano('Meu mar')}${plano('Mar do adversário')}</div>`)
+      + sheet(`
+        <h2 style="margin-top:0">Registro dos disparos</h2>
+        <table class="t"><tr><th>Disparo (x, y)</th><th>Quadrante</th><th>Resultado</th><th>Disparo (x, y)</th><th>Quadrante</th><th>Resultado</th></tr>
+          ${'<tr><td style="height:30px"></td><td></td><td></td><td></td><td></td><td></td></tr>'.repeat(10)}</table>
+        <h2>Depois do jogo</h2>
+        <p>1. Em qual quadrante os dois números do par são negativos? ________</p>
+        <p>2. O ponto (3, −2) refletido no eixo x vira ( ___ , ___ ). Refletido no eixo y vira ( ___ , ___ ).</p>
+        <p>3. Qual é a regra? Quando refletimos um ponto no eixo x, o que acontece com as coordenadas?</p>
+        ${lines(2)}`);
+    },
+    'f-batalha:gab': `<p><strong>1.</strong> 3º quadrante. <strong>2.</strong> (3, 2) no eixo x; (−3, −2) no eixo y. <strong>3.</strong> Reflexão no eixo x troca o sinal de y; no eixo y troca o sinal de x; na origem troca os dois.</p>`,
+
+    /* ---------------------------------------------------------- */
+    'f-golpe': () => {
+      const dados = ['Primeiro nome', 'Nome completo + endereço', 'Foto do rosto', 'Cor favorita', 'CPF', 'Senha do aplicativo', 'Código recebido por SMS', 'Localização em tempo real', 'Escola onde estuda', 'Data de nascimento'];
+      return sheet(`${head('Cultura digital')}
+        <h2 style="margin-top:0">Parte 1 — Quanto vale cada dado?</h2>
+        <p>Marque o risco de compartilhar cada dado com alguém que você não conhece na internet.</p>
+        <table class="t"><tr><th>Dado</th><th class="c">Baixo</th><th class="c">Médio</th><th class="c">Alto</th></tr>
+          ${dados.map(d => `<tr><td>${d}</td><td class="c">☐</td><td class="c">☐</td><td class="c">☐</td></tr>`).join('')}</table>
+        <p>Escolha um dado de risco alto e explique o que alguém mal-intencionado poderia fazer com ele.</p>
+        ${lines(2)}`)
+      + sheet(`
+        <h2 style="margin-top:0">Parte 2 — Checklist anti-golpe</h2>
+        <ul class="check">
+          <li>A mensagem cria <strong>urgência</strong> (“agora”, “em 1 hora”, “última chance”)?</li>
+          <li>Pede <strong>senha, código ou dados</strong> que a empresa ou pessoa já deveria ter?</li>
+          <li>O <strong>link</strong> tem um endereço estranho, diferente do site oficial?</li>
+          <li>Alguém diz que <strong>trocou de número</strong> e pede dinheiro?</li>
+          <li>A oferta é <strong>boa demais</strong> para ser verdade?</li>
+          <li>Tem erros de escrita ou remetente desconhecido?</li>
+        </ul>
+        <p>Analise as mensagens fictícias abaixo. Marque quais itens do checklist aparecem e decida.</p>
+        <div class="msg"><strong>Banco Pinhão:</strong> Sua conta sera BLOQUEADA em 1 hora! Confirme seus dados e senha em pinhao-seguranca.top</div>
+        <p>Itens do checklist: __________ &nbsp; ☐ Golpe &nbsp; ☐ Seguro &nbsp; Por quê?</p>${lines(1)}
+        <div class="msg"><strong>Número desconhecido:</strong> Oi, é a sua tia! Troquei de celular. Consegue me fazer um Pix de R$ 300 urgente? Te devolvo amanhã.</div>
+        <p>Itens do checklist: __________ &nbsp; ☐ Golpe &nbsp; ☐ Seguro &nbsp; O que fazer?</p>${lines(1)}
+        <h2>Parte 3 — Minhas 3 regras de proteção</h2>
+        ${lines(3)}`);
+    },
+    'f-golpe:gab': `<p>Parte 1 (sugestão): baixo — primeiro nome, cor favorita; médio — foto, escola, data de nascimento; alto — nome + endereço, CPF, senha, código SMS, localização em tempo real. Aceite justificativas que mudem a classificação conforme o contexto.</p>
+      <p>Parte 2: as duas mensagens são golpes. A primeira tem urgência, pede senha e usa link estranho. A segunda é o golpe do “troquei de número”: ligar para o número antigo da pessoa antes de qualquer Pix. Os nomes usados são fictícios.</p>`
+  };
+
+  if (window.FICHAS_MA) Object.assign(FICHAS, window.FICHAS_MA({ head, sheet, lines, malha }));
+  if (window.FICHAS_CO) Object.assign(FICHAS, window.FICHAS_CO({ head, sheet, lines, malha }));
+  const f = FICHAS[id];
+  main.innerHTML = f ? f() : '';
+  if (FICHAS[id + ':gab']) {
+    const rel = [r.plano && REC[r.plano], r.jogo && REC[r.jogo]].filter(Boolean);
+    gabarito(FICHAS[id + ':gab'] + (rel.length ? `<p>Use junto com: ${rel.map(o => `<a href="${recUrl(o)}">${TIPOS[o.tipo].icone} ${esc(o.titulo)}</a>`).join(' · ')}</p>` : ''));
+  }
+})();
+</script>
+</body>
+</html>

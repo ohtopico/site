@@ -143,7 +143,7 @@ def secao_ano(ano, habs):
 
 def pagina():
     habs = habilidades()
-    titulo = 'Apostila do professor: Computação na BNCC do 6º ao 9º ano (PDF gratuito) | ohtopico'
+    titulo = 'Apostila de Computação na BNCC (PDF grátis) | Júlia Quoos'
     og_titulo = 'Apostila do professor: Computação na BNCC, 6º ao 9º ano'
     itens = '\n'.join(f'        <li><span class="it-n" aria-hidden="true">{i}</span><div><h3>{t}</h3><p>{d}</p></div></li>'
                       for i, (t, d) in enumerate(ITENS, 1))

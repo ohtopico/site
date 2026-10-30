@@ -28,6 +28,16 @@ const temaEscuro = () => {
   return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
+/* Modo leve: sem antialias, sem sombras e com menos pixels, para os computadores mais fracos da escola.
+   Liga sozinho em aparelhos com pouca memória ou poucos núcleos (ou com economia de dados) e pode ser
+   ligado ou desligado no botão "Modo leve" que aparece junto de cada cena. A escolha fica salva no navegador. */
+const CHAVE_LEVE = 'md-3d-leve';
+export function modoLeve() {
+  try { const v = localStorage.getItem(CHAVE_LEVE); if (v === '1' || v === '0') return v === '1'; } catch (e) {}
+  const n = navigator;
+  return !!((n.connection && n.connection.saveData) || (n.deviceMemory && n.deviceMemory <= 2) || (n.hardwareConcurrency && n.hardwareConcurrency <= 2));
+}
+
 export function webglOk() {
   try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); }
   catch (e) { return false; }
@@ -45,9 +55,10 @@ export function lab3d(el, op = {}) {
   el.setAttribute('role', 'img');
   el.tabIndex = 0;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: false });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.shadowMap.enabled = true;
+  const leve = modoLeve();
+  const renderer = new THREE.WebGLRenderer({ antialias: !leve, alpha: true, preserveDrawingBuffer: false, powerPreference: leve ? 'low-power' : 'default' });
+  renderer.setPixelRatio(leve ? 1 : Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = !leve;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   el.appendChild(renderer.domElement);
@@ -71,8 +82,8 @@ export function lab3d(el, op = {}) {
   scene.add(ceu);
   const sol = new THREE.DirectionalLight(0xffffff, 1.6);
   sol.position.set(8, 14, 6);
-  sol.castShadow = true;
-  sol.shadow.mapSize.set(2048, 2048);
+  sol.castShadow = !leve;
+  sol.shadow.mapSize.set(leve ? 512 : 2048, leve ? 512 : 2048);
   const sc = sol.shadow.camera; sc.left = -18; sc.right = 18; sc.top = 18; sc.bottom = -18; sc.near = 1; sc.far = 60;
   sol.shadow.bias = -0.0005;
   scene.add(sol);
@@ -363,8 +374,15 @@ export function lab3d(el, op = {}) {
   let pedido = false, sempre = 0;
   function pedeQuadro() { if (!pedido) { pedido = true; requestAnimationFrame(quadro); } }
   function animarSempre(liga) { sempre = Math.max(0, sempre + (liga ? 1 : -1)); pedeQuadro(); }
+  /* Fora da tela (página rolada ou aba escondida) a cena não desenha: poupa o processador */
+  let visivel = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(es => { visivel = es[es.length - 1].isIntersecting; if (visivel) pedeQuadro(); }).observe(el);
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) pedeQuadro(); });
   function quadro(now) {
     pedido = false;
+    if (!visivel || document.hidden) return;
     let continuar = sempre > 0;
     for (let i = tweens.length - 1; i >= 0; i--) {
       const tw = tweens[i];
@@ -389,6 +407,7 @@ export function lab3d(el, op = {}) {
     pedeQuadro();
   }
   new ResizeObserver(ajusta).observe(el);
+  botaoLeve(el, leve);
   ajusta();
   aplicaTema();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => api.aoFontes && api.aoFontes());
@@ -404,6 +423,22 @@ export function lab3d(el, op = {}) {
   };
   el.__cena = api;
   return api;
+}
+
+/* Botão "Modo leve" junto da cena (nos botões de câmera, se houver). Trocar exige recarregar a cena. */
+function botaoLeve(el, leve) {
+  if (document.querySelector('.lab-leve')) return;
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'chip lab-leve';
+  b.setAttribute('aria-pressed', String(leve));
+  b.title = 'Sem sombras e com menos detalhes, para computadores mais lentos. A página recarrega.';
+  b.textContent = leve ? 'Modo leve: ligado' : 'Modo leve';
+  b.addEventListener('click', () => {
+    try { localStorage.setItem(CHAVE_LEVE, leve ? '0' : '1'); } catch (e) {}
+    location.reload();
+  });
+  const cam = el.parentElement && el.parentElement.querySelector('.lab-cam');
+  if (cam) cam.appendChild(b); else el.insertAdjacentElement('afterend', b);
 }
 
 /* Botões de câmera padrão: liga os [data-vista] dentro do elemento */

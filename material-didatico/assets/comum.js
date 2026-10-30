@@ -25,11 +25,14 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   window.esc = esc;
 
+  // Endereços das páginas estáticas (planos, fichas, listas e habilidades), gerados por _fonte/material/gerar.js em dados.js
+  const EST = typeof ESTATICAS !== 'undefined' ? ESTATICAS : {};
+
   window.tagHab = function (codigo) {
     const h = HAB[codigo];
     const cls = h ? h.comp.toLowerCase() : '';
     const title = h ? esc(h.codigo + ' — ' + h.texto) : esc(codigo);
-    return `<a class="tag code ${cls}" href="${BASE}catalogo.html?hab=${codigo}" title="${title}">${codigo}</a>`;
+    return `<a class="tag code ${cls}" href="${BASE}${EST['hab:' + codigo] || 'catalogo.html?hab=' + codigo}" title="${title}">${codigo}</a>`;
   };
   window.tagComp = c => `<span class="tag ${c.toLowerCase()}">${COMPONENTES[c].curto}</span>`;
   window.anosTxt = anos => {
@@ -37,7 +40,7 @@
     const seq = anos.every((a, i) => i === 0 || a === anos[i - 1] + 1);
     return seq ? `${anos[0]}º ao ${anos[anos.length - 1]}º ano` : anos.map(a => a + 'º').join(', ') + ' anos';
   };
-  window.recUrl = r => BASE + r.url;
+  window.recUrl = r => BASE + (EST[r.id] || r.url);
 
   const sun = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
 
@@ -192,7 +195,7 @@
     window.MD_REC = id;
     const el = document.getElementById('game-head');
     if (!r || !el) return;
-    document.title = `${r.titulo} · Material didático | ohtopico`;
+    // o título já vem escrito no HTML de cada página (gerado por _fonte/material/gerar.js)
     el.innerHTML = `
       <div class="tags" style="margin-bottom:12px">${r.comp.map(tagComp).join('')}<span class="tag">${anosTxt(r.anos)}</span><span class="tag">⏱ ${r.tempo}</span></div>
       <h1>${esc(r.titulo)}</h1>

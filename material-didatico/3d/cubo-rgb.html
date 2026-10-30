@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cubo das Cores RGB · Laboratório 3D | ohtopico</title>
-<meta name="description" content="Cada cor da tela é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo em 3D, veja o código do pixel em decimal, binário e hexadecimal, corte o cubo em fatias e acerte as cores do desafio. BNCC EF04CO05.">
+<title>Cubo das Cores RGB: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Cada cor da tela é um ponto num cubo de vermelho, verde e azul. Navegue pelo cubo em 3D e veja o código do pixel em decimal, binário e hexadecimal.">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/cubo-rgb.html">
-<meta property="og:title" content="Cubo das Cores RGB · Laboratório 3D">
+<meta property="og:title" content="Cubo das Cores RGB: simulação 3D de Computação | Júlia Quoos">
 <meta property="og:description" content="Cada cor da tela é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo em 3D, veja o código do pixel em decimal, binário e hexadecimal, corte o cubo em fatias e acerte as cores do desafio. BNCC EF04CO05.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/cubo-rgb.html">
 <meta property="og:type" content="website">
@@ -23,11 +23,23 @@
 <link rel="stylesheet" href="../assets/md.css">
 <link rel="stylesheet" href="../assets/lab3d.css">
 <style>.amostra{height:74px;border:1.5px solid var(--ink);border-radius:14px;margin:6px 0 4px;display:flex;align-items:flex-end;justify-content:flex-end;padding:6px 10px;font:600 14px ui-monospace,Consolas,monospace}.amostras{display:grid;grid-template-columns:1fr 1fr;gap:8px}.amostras small{display:block;font-size:13px;margin-top:4px}</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cubo das Cores RGB","description":"Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.","url":"https://ohtopico.com.br/material-didatico/3d/cubo-rgb.html","image":"https://ohtopico.com.br/material-didatico/assets/og-laboratorio-3d.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"4º ao 7º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"15 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF04CO05","targetDescription":"Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.)."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF04CO04","targetDescription":"Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital)."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO01","targetDescription":"Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Cubo das Cores RGB","item":"https://ohtopico.com.br/material-didatico/3d/cubo-rgb.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">4º ao 7º ano</span><span class="tag">⏱ 15 min</span></div>
+      <h1>Cubo das Cores RGB</h1>
+      <p class="muted" style="max-width:720px">Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.</p>
+      <div class="tags"><a class="tag code co" href="../catalogo.html?hab=EF04CO05" title="EF04CO05 — Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).">EF04CO05</a><a class="tag code co" href="../catalogo.html?hab=EF04CO04" title="EF04CO04 — Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).">EF04CO04</a><a class="tag code co" href="../bncc/ef07co01/" title="EF07CO01 — Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação.">EF07CO01</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como usar</summary>
     <p><strong>O cubo:</strong> toda cor de uma tela é feita de três luzes, vermelha (R), verde (G) e azul (B), cada uma com intensidade de 0 a 255. Por isso cada cor é um ponto dentro de um cubo: um eixo para cada luz. No canto (0, 0, 0) fica o preto e no canto oposto (255, 255, 255), o branco.</p>
@@ -95,7 +107,22 @@
     <p class="small muted">Habilidades: EF04CO05, EF04CO04 e EF07CO01 (uma imagem é uma matriz de pixels). Conversa com a série Bit a Bit sobre binário, hexadecimal e imagem. Material concreto equivalente: lanternas com celofane, ou um cubo de arame com bolinhas de massinha nas cores dos cantos.</p>
   </details>
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/agrupamento.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Nuvem de Pontos e Agrupamento</strong>
+          <span class="small muted">Frutas viram pontos em 3D (peso, doçura e acidez) e o algoritmo k-means separa os grupos passo a passo, com os centros se movendo até estabilizar.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 <script>window.MD_BASE = '../';</script>

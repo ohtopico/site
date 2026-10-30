@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rede Neural por Dentro · Laboratório 3D | ohtopico</title>
-<meta name="description" content="Uma rede neural pequena em 3D: os sinais acendem da entrada até a saída, o aluno mexe nos pesos e vê a resposta mudar, e a rede explica qual entrada mais pesou na decisão. 9º ano, Ensino Médio e formação de professores.">
+<title>Rede Neural por Dentro: simulação 3D de Computação</title>
+<meta name="description" content="Uma rede neural pequena em 3D: os sinais acendem da entrada até a saída, você mexe nos pesos e vê qual entrada mais pesou na decisão.">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/rede-neural.html">
-<meta property="og:title" content="Rede Neural por Dentro · Laboratório 3D">
+<meta property="og:title" content="Rede Neural por Dentro: simulação 3D de Computação">
 <meta property="og:description" content="Uma rede neural pequena em 3D: os sinais acendem da entrada até a saída, o aluno mexe nos pesos e vê a resposta mudar, e a rede explica qual entrada mais pesou na decisão. 9º ano, Ensino Médio e formação de professores.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/rede-neural.html">
 <meta property="og:type" content="website">
@@ -23,11 +23,23 @@
 <link rel="stylesheet" href="../assets/md.css">
 <link rel="stylesheet" href="../assets/lab3d.css">
 
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Rede Neural por Dentro","description":"Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.","url":"https://ohtopico.com.br/material-didatico/3d/rede-neural.html","image":"https://ohtopico.com.br/material-didatico/assets/og-laboratorio-3d.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO07","targetDescription":"Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO05","targetDescription":"Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Rede Neural por Dentro","item":"https://ohtopico.com.br/material-didatico/3d/rede-neural.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">9º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Rede Neural por Dentro</h1>
+      <p class="muted" style="max-width:720px">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co07/" title="EF09CO07 — Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.">EF09CO07</a><a class="tag code co" href="../bncc/ef06co05/" title="EF06CO05 — Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.">EF06CO05</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como usar</summary>
     <p><strong>A rede:</strong> ela recebe três informações sobre uma fruta (cor, maciez e cheiro, de 0 a 1) e responde se a fruta está madura. As bolinhas são os neurônios e as hastes são as conexões. Haste verde é peso positivo (empurra a resposta para cima), haste vermelha é peso negativo (empurra para baixo). Quanto mais grossa, maior o peso.</p>
@@ -104,7 +116,22 @@
     <p class="small muted">Habilidades: EF09CO07 e EF06CO05; serve de introdução a redes neurais no Ensino Médio e em formações de professores sobre IA. Material concreto equivalente: neurônios de papel na lousa, com barbantes de duas cores para os pesos e uma calculadora para as somas.</p>
   </details>
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/cubo-rgb.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Cubo das Cores RGB</strong>
+          <span class="small muted">Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.</span>
+        </a>
+        <a class="card" href="../3d/agrupamento.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Nuvem de Pontos e Agrupamento</strong>
+          <span class="small muted">Frutas viram pontos em 3D (peso, doçura e acidez) e o algoritmo k-means separa os grupos passo a passo, com os centros se movendo até estabilizar.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 <script>window.MD_BASE = '../';</script>

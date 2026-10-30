@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estante da Busca Binária · Material didático | ohtopico</title>
-<meta name="description" content="Jogo de algoritmos: encontre o livro numa estante ordenada abrindo o menor número de livros e compare a busca um a um com a busca pela metade. BNCC EF08CO03, EF06CO05.">
+<title>Estante da Busca Binária: jogo de Computação | Júlia Quoos</title>
+<meta name="description" content="Jogo de algoritmos: encontre o livro numa estante ordenada abrindo o menor número de livros e compare a busca um a um com a busca pela metade.">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/busca-binaria.html">
-<meta property="og:title" content="Estante da Busca Binária · Material didático">
+<meta property="og:title" content="Estante da Busca Binária: jogo de Computação | Júlia Quoos">
 <meta property="og:description" content="Jogo de algoritmos: encontre o livro numa estante ordenada abrindo o menor número de livros e compare a busca um a um com a busca pela metade. BNCC EF08CO03, EF06CO05.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/busca-binaria.html">
 <meta property="og:type" content="website">
@@ -52,11 +52,23 @@
   .fase-nav span.agora { background: var(--ink); color: var(--paper); }
   @media (max-width: 560px) { .livro { font-size: 9px; } .prateleira { min-height: 90px; gap: 2px; } .comp { grid-template-columns: 1fr; } }
 </style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Estante da Busca Binária","description":"Encontre o livro numa estante ordenada abrindo o menor número de livros. Compare a busca um a um com a busca pela metade e veja por que a ordem importa.","url":"https://ohtopico.com.br/material-didatico/jogos/busca-binaria.html","image":"https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"6º ao 8º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"10–15 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO03","targetDescription":"Utilizar algoritmos clássicos de manipulação sobre listas."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO05","targetDescription":"Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Estante da Busca Binária","item":"https://ohtopico.com.br/material-didatico/jogos/busca-binaria.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">6º ao 8º ano</span><span class="tag">⏱ 10–15 min</span></div>
+      <h1>Estante da Busca Binária</h1>
+      <p class="muted" style="max-width:720px">Encontre o livro numa estante ordenada abrindo o menor número de livros. Compare a busca um a um com a busca pela metade e veja por que a ordem importa.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef08co03/" title="EF08CO03 — Utilizar algoritmos clássicos de manipulação sobre listas.">EF08CO03</a><a class="tag code co" href="../bncc/ef06co05/" title="EF06CO05 — Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.">EF06CO05</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como jogar</summary>
     <p>Os livros da biblioteca estão em ordem pelo código da etiqueta (ou pelo nome, na lista de chamada). Você precisa encontrar o livro pedido abrindo o <strong>menor número de livros</strong> possível. Cada livro aberto mostra o código e diz se o procurado está antes ou depois. Os livros que não podem mais ser o procurado ficam apagados.</p>
@@ -65,8 +77,40 @@
 
   <div class="game-stage" id="stage"></div>
 
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Estante da Busca Binária</strong> é um jogo gratuito de Computação para o 6º ao 8º ano, pensado para cerca de 10–15 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Encontre o livro numa estante ordenada abrindo o menor número de livros. Compare a busca um a um com a busca pela metade e veja por que a ordem importa.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../bncc/ef08co03/"><strong>EF08CO03</strong></a>: Utilizar algoritmos clássicos de manipulação sobre listas.</li>
+      <li><a href="../bncc/ef06co05/"><strong>EF06CO05</strong></a>: Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.</li>
+    </ul>
+    <p>Para a aula completa, use o plano <a href="../planos/listas-recursao-algoritmos-ordenacao/">Listas, recursão e algoritmos de ordenação</a>, com objetivos, etapas, avaliação e acessibilidade. A ficha <a href="../fichas/ordenar-buscar-cartoes/">Ordenar e buscar com cartões</a> leva a atividade para o papel. Para fixar, há as listas <a href="../listas/generalizacao-6-ano/">Generalização (6º ano)</a>, <a href="../listas/algoritmos-classicos-8-ano/">Algoritmos clássicos (8º ano)</a>, com gabarito. Os slides da aula expositiva de EF08CO03, EF06CO05 estão na página de cada habilidade.</p>
+  </details>
+  <!-- professor: fim -->
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/listas-recursao-algoritmos-ordenacao/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Listas, recursão e algoritmos de ordenação</strong>
+          <span class="small muted">Ordenar cartas na mão, buscar em listas e resolver problemas que contêm versões menores de si mesmos.</span>
+        </a>
+        <a class="card" href="../fichas/ordenar-buscar-cartoes/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>Ordenar e buscar com cartões</strong>
+          <span class="small muted">Cartões para recortar: ordenação por seleção passo a passo, busca binária e quantas perguntas ela precisa.</span>
+        </a>
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/pacotes.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Correio de Pacotes</strong>
+          <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 

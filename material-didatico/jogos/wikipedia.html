@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qual Verbete Tem Mais Visitas? · Material didático | ohtopico</title>
-<meta name="description" content="Jogo com dados reais da Wikipédia em português: escolha qual de dois verbetes foi mais lido no último ano. Números grandes, estimativa e leitura de dados. BNCC EF06MA32, EF07MA36, EF08CO11.">
+<title>Qual Verbete Tem Mais Visitas? | Júlia Quoos</title>
+<meta name="description" content="Jogo com dados reais da Wikipédia em português: escolha qual de dois verbetes foi mais lido no último ano. Números grandes, estimativa e leitura de dados.">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/wikipedia.html">
-<meta property="og:title" content="Qual Verbete Tem Mais Visitas? · Material didático">
+<meta property="og:title" content="Qual Verbete Tem Mais Visitas? | Júlia Quoos">
 <meta property="og:description" content="Jogo com dados reais da Wikipédia em português: escolha qual de dois verbetes foi mais lido no último ano.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/wikipedia.html">
 <meta property="og:type" content="website">
@@ -39,11 +39,23 @@
   .barras-res i { display: block; height: 14px; border-radius: 0 4px 4px 0; background: var(--ok); }
   @media (max-width: 560px) { .duelo { grid-template-columns: 1fr; } .vs { text-align: center; } .barras-res div { grid-template-columns: 110px 1fr; } }
 </style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Qual Verbete Tem Mais Visitas?","description":"Dois verbetes da Wikipédia em português, uma escolha: qual foi mais lido no último ano? Números grandes e reais, atualizados todo mês.","url":"https://ohtopico.com.br/material-didatico/jogos/wikipedia.html","image":"https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"6º ao 9º ano do Ensino Fundamental","about":["Computação","Matemática"],"isAccessibleForFree":true,"timeRequired":"10 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA32","targetDescription":"Interpretar e resolver situações que envolvam dados de pesquisas apresentadas em tabelas e em diferentes tipos de gráficos e redigir textos para sintetizar conclusões."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA36","targetDescription":"Planejar e realizar pesquisa envolvendo tema da realidade social e comunicar os dados por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO11","targetDescription":"Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Qual Verbete Tem Mais Visitas?","item":"https://ohtopico.com.br/material-didatico/jogos/wikipedia.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag ma">Matemática</span><span class="tag">6º ao 9º ano</span><span class="tag">⏱ 10 min</span></div>
+      <h1>Qual Verbete Tem Mais Visitas?</h1>
+      <p class="muted" style="max-width:720px">Dois verbetes da Wikipédia em português, uma escolha: qual foi mais lido no último ano? Números grandes e reais, atualizados todo mês.</p>
+      <div class="tags"><a class="tag code ma" href="../bncc/ef06ma32/" title="EF06MA32 — Interpretar e resolver situações que envolvam dados de pesquisas apresentadas em tabelas e em diferentes tipos de gráficos e redigir textos para sintetizar conclusões.">EF06MA32</a><a class="tag code ma" href="../bncc/ef07ma36/" title="EF07MA36 — Planejar e realizar pesquisa envolvendo tema da realidade social e comunicar os dados por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas.">EF07MA36</a><a class="tag code co" href="../bncc/ef08co11/" title="EF08CO11 — Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.">EF08CO11</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como jogar</summary>
     <p>Em cada rodada aparecem dois verbetes da Wikipédia em português. Escolha o que teve mais visitas nos últimos 12 meses. Depois da resposta, o jogo mostra os números e quantas vezes um é maior que o outro.</p>
@@ -59,8 +71,36 @@
     <p class="feedback" id="fb" role="status"></p>
     <div class="btn-row" id="actions" style="justify-content:center"></div>
   </div>
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Qual Verbete Tem Mais Visitas?</strong> é um jogo gratuito de Computação e Matemática para o 6º ao 9º ano, pensado para cerca de 10 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Dois verbetes da Wikipédia em português, uma escolha: qual foi mais lido no último ano? Números grandes e reais, atualizados todo mês.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../bncc/ef06ma32/"><strong>EF06MA32</strong></a>: Interpretar e resolver situações que envolvam dados de pesquisas apresentadas em tabelas e em diferentes tipos de gráficos e redigir textos para sintetizar conclusões.</li>
+      <li><a href="../bncc/ef07ma36/"><strong>EF07MA36</strong></a>: Planejar e realizar pesquisa envolvendo tema da realidade social e comunicar os dados por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas.</li>
+      <li><a href="../bncc/ef08co11/"><strong>EF08CO11</strong></a>: Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.</li>
+    </ul>
+    <p>Para a aula completa, use o plano <a href="../planos/a-wikipedia-como-base-dados/">A Wikipédia como base de dados</a>, com objetivos, etapas, avaliação e acessibilidade. Para fixar, há a lista <a href="../listas/uso-critico-midias-digitais-8-ano/">Uso crítico das mídias digitais (8º ano)</a>, com gabarito. Os slides da aula expositiva de EF08CO11 estão na página de cada habilidade.</p>
+  </details>
+  <!-- professor: fim -->
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/a-wikipedia-como-base-dados/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>A Wikipédia como base de dados</strong>
+          <span class="small muted">A turma faz uma pergunta, coleta as visitas de verbetes da Wikipédia, monta um gráfico de linhas na planilha e investiga o que explica cada pico.</span>
+        </a>
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/pacotes.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Correio de Pacotes</strong>
+          <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 <script>window.MD_BASE = '../';</script>

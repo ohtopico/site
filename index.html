@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Júlia Roberta Quoos Alves · IA na educação e formação de professores</title>
-    <meta name="description" content="Júlia Roberta Quoos Alves: professora de computação e formadora de professores em inteligência artificial no RS. Mestranda em Ciência da Computação (UFSM) e autora do guia IA pra Prof.">
+    <title>Júlia Quoos · IA na educação e formação de professores</title>
+    <meta name="description" content="Júlia Quoos: professora de computação e formadora de professores em IA no RS. Material didático gratuito, jogos, Laboratório 3D, simuladores e guias.">
     <meta name="author" content="Júlia Roberta Quoos Alves">
     <link rel="canonical" href="https://ohtopico.com.br/">
 
@@ -12,12 +12,14 @@
     <meta property="og:type" content="profile">
     <meta property="og:locale" content="pt_BR">
     <meta property="og:url" content="https://ohtopico.com.br/">
-    <meta property="og:site_name" content="ohtopico">
-    <meta property="og:title" content="Júlia Roberta Quoos Alves · IA na educação e formação de professores">
+    <meta property="og:site_name" content="Júlia Quoos">
+    <meta property="og:title" content="Júlia Quoos · IA na educação e formação de professores">
     <meta property="og:description" content="Professora de computação e formadora de professores em IA no RS, mestranda em Ciência da Computação (UFSM) e autora do guia IA pra Prof.">
-    <meta property="og:image" content="https://ohtopico.com.br/img/perfil.jpg">
-    <meta property="og:image:alt" content="Foto de Júlia Roberta Quoos Alves">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://ohtopico.com.br/img/og-site.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="IA, Computação e Matemática: formação de professores em IA, jogos, Laboratório 3D e simuladores">
+    <meta name="twitter:card" content="summary_large_image">
 
     <script type="application/ld+json">
     {
@@ -207,9 +209,9 @@
         z-index: 5;
     }
 
-    /* Desktop baixo (notebooks 1366x768, 1280x720): ícones mais compactos
+    /* Desktop até 1020 px de altura (notebooks e a maioria dos monitores): ícones mais compactos
        e, se ainda faltar altura, quebram em uma segunda coluna */
-    @media (min-width: 769px) and (max-height: 820px) {
+    @media (min-width: 769px) and (max-height: 1020px) {
         .desktop-icons {
             align-content: flex-start;
             bottom: 12px;
@@ -752,6 +754,14 @@
             <span class="tile"><i class="fa-solid fa-gamepad" aria-hidden="true"></i></span>
             <span class="icon-label">Jogos</span>
         </a>
+        <a class="icon-item" href="simuladores/">
+            <span class="tile"><i class="fa-solid fa-flask" aria-hidden="true"></i></span>
+            <span class="icon-label">Simuladores</span>
+        </a>
+        <a class="icon-item" href="assistencia-por-voz/">
+            <span class="tile"><i class="fa-solid fa-ear-listen" aria-hidden="true"></i></span>
+            <span class="icon-label">Assistência por voz</span>
+        </a>
         <a class="icon-item" href="blog/">
             <span class="tile"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
             <span class="icon-label">Blog</span>
@@ -785,7 +795,7 @@
             </div>
 
             <p>
-                Trabalho onde dados, inteligência artificial e educação se encontram. No mestrado, pesquiso IA para auxiliar pessoas com deficiência visual. Na sala de aula, ensino lógica e pensamento computacional e formo professores para usar tecnologia.
+                Trabalho onde dados, inteligência artificial e educação se encontram. No mestrado, pesquiso IA para auxiliar pessoas com deficiência visual (veja o protótipo de <a href="assistencia-por-voz/">assistência por voz</a>). Na sala de aula, ensino lógica e pensamento computacional e formo professores para usar tecnologia.
             </p>
 
             <ul>
@@ -799,6 +809,8 @@
                 <a class="pill-btn" href="curriculo/?perfil=dados#sec-projetos"><i class="fa-solid fa-code" aria-hidden="true"></i> Ver projetos</a>
                 <a class="pill-btn" href="curriculo/?perfil=docencia"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Ver experiência docente</a>
             </div>
+
+            <p>Nas redes, sou <b>Júlia Quoos</b>: ohtopico no <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a>, no <a href="https://www.youtube.com/@ohtopico" rel="me">YouTube</a> e no <a href="https://github.com/ohtopico" rel="me">GitHub</a>, e <a href="https://www.instagram.com/topico.tech/" rel="me">@topico.tech</a> no Instagram.</p>
 
             <p class="dica">As janelas podem ser arrastadas. As brincadeiras do site estão em Diversão, no menu Iniciar.</p>
         </div>
@@ -815,6 +827,11 @@
         </div>
         <div class="janela-conteudo">
             <h2 class="sr-only">Atualizações</h2>
+            <article class="post">
+                <h3>Uma página para cada plano de aula</h3>
+                <p class="data">30 de outubro de 2026</p>
+                <p>Cada <a href="material-didatico/professor.html">plano de aula</a>, ficha e lista de exercícios do material didático agora tem endereço próprio, e cada habilidade da BNCC ganhou uma página com plano, slides, jogos e fichas, como a <a href="material-didatico/bncc/ef06co02/">EF06CO02</a>. Os <a href="simuladores/">simuladores</a> de IA, estatística e arquitetura também ganharam atalho na área de trabalho.</p>
+            </article>
             <article class="post">
                 <h3>Quiz de pensamento computacional</h3>
                 <p class="data">30 de outubro de 2026</p>
@@ -994,6 +1011,8 @@
     <a class="menu-item" href="tech-pra-prof/"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Tech pra Prof</a>
     <a class="menu-item" href="material-didatico/"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Material didático</a>
     <a class="menu-item" href="jogos/"><i class="fa-solid fa-gamepad" aria-hidden="true"></i> Jogos para estudantes</a>
+    <a class="menu-item" href="simuladores/"><i class="fa-solid fa-flask" aria-hidden="true"></i> Simuladores</a>
+    <a class="menu-item" href="assistencia-por-voz/"><i class="fa-solid fa-ear-listen" aria-hidden="true"></i> Assistência por voz (mestrado)</a>
     <a class="menu-item" href="blog/"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Blog</a>
     <a class="menu-item" href="mentoria/"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Mentoria</a>
     <a class="menu-item" href="formacao-continuada/"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Formação continuada</a>

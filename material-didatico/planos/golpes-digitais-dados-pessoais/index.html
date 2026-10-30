@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golpes digitais e dados pessoais · Plano de aula</title>
+<meta name="description" content="Plano de aula gratuito, Computação, 7º ao 9º ano (BNCC EF07CO07, EF08CO08, EF08CO10). Quais dados são sensíveis, como golpes funcionam e como se…">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/planos/golpes-digitais-dados-pessoais/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/planos/golpes-digitais-dados-pessoais/">
+<meta property="og:title" content="Golpes digitais e dados pessoais · Plano de aula">
+<meta property="og:description" content="Plano de aula gratuito, Computação, 7º ao 9º ano (BNCC EF07CO07, EF08CO08, EF08CO10). Quais dados são sensíveis, como golpes funcionam e como se…">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-planos.jpg">
+<meta property="og:image:alt" content="Plano de aula: Golpes digitais e dados pessoais">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Golpes digitais e dados pessoais","description":"Quais dados são sensíveis, como golpes funcionam e como se proteger, com casos fictícios.","url":"https://ohtopico.com.br/material-didatico/planos/golpes-digitais-dados-pessoais/","image":"https://ohtopico.com.br/material-didatico/assets/og-planos.jpg","inLanguage":"pt-BR","learningResourceType":"Plano de aula","educationalLevel":"7º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"2 aulas","audience":{"@type":"EducationalAudience","educationalRole":"teacher"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO07","targetDescription":"Identificar problemas de segurança cibernética e experimentar formas de proteção."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO08","targetDescription":"Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO10","targetDescription":"Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO04","targetDescription":"Compreender o funcionamento de malwares e outros ataques cibernéticos."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Área do professor","item":"https://ohtopico.com.br/material-didatico/professor.html"},{"@type":"ListItem","position":4,"name":"Golpes digitais e dados pessoais","item":"https://ohtopico.com.br/material-didatico/planos/golpes-digitais-dados-pessoais/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 20px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .doc h2 { font-size: 26px; margin-top: 34px; }
+  .habs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .habs li { display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: start; font-size: 15px; }
+  .doc ul.plain { padding-left: 20px; margin: 0; }
+  .doc ul.plain li { margin-bottom: 6px; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+  .timeline li { position: relative; padding: 0 0 22px 24px; }
+  .timeline li::before { content: ''; position: absolute; left: -8px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .timeline .t { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .timeline strong { display: block; font-size: 18px; }
+  .timeline p { margin: 4px 0 0; color: var(--ink-2); }
+  .tot { font-size: 14px; color: var(--ink-2); }
+  @media print {
+    .doc { padding: 0; }
+    .meta div, .panel { border-color: #000; }
+    .timeline li { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">Golpes digitais e dados pessoais</h1>
+    <p class="muted">Quais dados são sensíveis, como golpes funcionam e como se proteger, com casos fictícios.</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>Computação</div>
+      <div><span>Ano</span>7º ao 9º ano</div>
+      <div><span>Duração</span>2 aulas de 50 min</div>
+    </div>
+
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs"><li><a class="tag code co" href="bncc/ef07co07/" title="EF07CO07 — Identificar problemas de segurança cibernética e experimentar formas de proteção.">EF07CO07</a><span>Identificar problemas de segurança cibernética e experimentar formas de proteção. <a class="no-print" href="slides/bncc-ef07co07-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li><li><a class="tag code co" href="bncc/ef08co08/" title="EF08CO08 — Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados.">EF08CO08</a><span>Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados. <a class="no-print" href="slides/bncc-ef08co08-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li><li><a class="tag code co" href="bncc/ef08co10/" title="EF08CO10 — Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais.">EF08CO10</a><span>Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais. <a class="no-print" href="slides/bncc-ef08co10-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li><li><a class="tag code co" href="bncc/ef09co04/" title="EF09CO04 — Compreender o funcionamento de malwares e outros ataques cibernéticos.">EF09CO04</a><span>Compreender o funcionamento de malwares e outros ataques cibernéticos. <a class="no-print" href="slides/bncc-ef09co04-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li></ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain"><li>Diferenciar dados pessoais comuns de dados sensíveis.</li><li>Reconhecer sinais de golpes (urgência, link estranho, pedido de código ou senha).</li><li>Propor atitudes de proteção para si e para a família.</li></ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain"><li>Ficha “Meus dados, minhas regras”</li><li>Dispositivos para o jogo</li></ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: 100 minutos.</p>
+    <ol class="timeline"><li><span class="t">10 min</span><strong>Roda de conversa</strong><p>Alguém da sua família já recebeu uma mensagem estranha pedindo dinheiro ou um código? Sem citar nomes, o que aconteceu?</p></li><li><span class="t">20 min</span><strong>Classificando dados</strong><p>Parte 1 da ficha: classificar dados (nome, CPF, foto, localização, senha, código do SMS) em baixo, médio e alto risco. Discussão sobre a LGPD em linguagem simples.</p></li><li><span class="t">30 min</span><strong>Jogo Golpe ou Seguro?</strong><p>Duplas jogam e anotam o sinal de alerta que mais apareceu.</p></li><li><span class="t">20 min</span><strong>Checklist</strong><p>Parte 2 da ficha: usar o checklist para analisar duas mensagens fictícias e justificar a decisão.</p></li><li><span class="t">20 min</span><strong>Campanha</strong><p>Grupos criam um cartaz ou áudio curto com 3 dicas para os familiares. Pode virar publicação da escola.</p></li></ol>
+
+    <h2>Avaliação</h2>
+    <p>Justificativas no checklist citam sinais concretos? A campanha traz dicas corretas e acionáveis?</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">As mensagens do jogo podem ser lidas pelo leitor de tela. Para estudantes com deficiência intelectual, trabalhe com 3 sinais de alerta fixos e repetidos.</div>
+
+    <h2 class="no-print">Materiais relacionados</h2>
+    <div class="related no-print">
+      <a class="card" href="fichas/meus-dados-minhas-regras/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Meus dados, minhas regras</strong>
+        <span class="small muted">Classificar dados pessoais por risco e usar um checklist para analisar mensagens suspeitas.</span>
+      </a>
+      <a class="card" href="jogos/golpe.html">
+        <span class="small muted">🎮 Jogo</span>
+        <strong>Golpe ou Seguro?</strong>
+        <span class="small muted">Mensagens, links e pedidos de dados chegam o tempo todo. Decida o que é golpe e veja os sinais que denunciam cada um.</span>
+      </a>
+      <a class="card" href="fichas/detetive-golpes-senhas-fortes/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Detetive de golpes e senhas fortes</strong>
+        <span class="small muted">Analisar quatro mensagens, encontrar os sinais de golpe, avaliar senhas e entender a verificação em duas etapas.</span>
+      </a>
+      <a class="card" href="fichas/analise-incidente-como-agem-ataques/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Análise de incidente: como agem os ataques</strong>
+        <span class="small muted">Ligar tipos de malware às descrições e investigar um ataque de ransomware fictício numa escola.</span>
+      </a>
+      <a class="card" href="listas/seguranca-cibernetica-7-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Segurança cibernética (7º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/redes-sociais-seguranca-informacao-8-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Redes sociais e segurança da informação (8º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/seguranca-ambientes-virtuais-8-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Segurança em ambientes virtuais (8º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/seguranca-cibernetica-9-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Segurança cibernética (9º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/revisao-ano-7-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Revisão do ano (7º ano)</strong>
+        <span class="small muted">Revisão de todas as habilidades do 7º ano, para recuperação, simulado ou fechamento do ano: múltipla escolha, verdadeiro ou falso e dissertativa.</span>
+      </a></div></main>
+<footer id="footer"></footer>
+
+<script>window.MD_ID = window.MD_REC = "p-golpes";</script>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // plano.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
+  const r = REC[id], p = PLANOS[id];
+  const doc = document.getElementById('doc');
+  if (!r || !p) {
+    doc.innerHTML = `<h1>Plano não encontrado</h1><p><a href="professor.html">Ver todos os planos de aula</a></p>`;
+    return;
+  }
+  if (!window.MD_ID) document.title = `${r.titulo} · Plano de aula | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
+  const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
+  const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
+  doc.innerHTML = `
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">${esc(r.titulo)}</h1>
+    <p class="muted">${esc(r.resumo)}</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>${r.comp.map(c => COMPONENTES[c].nome).join(' + ')}</div>
+      <div><span>Ano</span>${anosTxt(r.anos)}</div>
+      <div><span>Duração</span>${esc(p.duracao)}</div>
+    </div>
+${p.metodologia ? `
+    <h2>Metodologia ativa</h2>
+    <div class="panel"><strong>${esc(p.metodologia[0])}</strong><p style="margin:6px 0 0">${esc(p.metodologia[1])}</p></div>` : ''}
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}${SLIDES[c] ? ` <a class="no-print" href="${slidesUrl(c)}" download>📥 Baixar slides (PDF)</a>` : ''}</span></li>`).join('')}</ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain">${p.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain">${p.materiais.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: ${minutos} minutos.</p>
+    <ol class="timeline">${p.etapas.map(([t, tit, txt]) => `<li><span class="t">${esc(t)}</span><strong>${esc(tit)}</strong><p>${esc(txt)}</p></li>`).join('')}</ol>
+
+    <h2>Avaliação</h2>
+    <p>${esc(p.avaliacao)}</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">${esc(p.inclusao)}</div>
+
+    <h2 class="no-print">${rel.length ? 'Materiais relacionados' : 'Outros planos para o mesmo ano'}</h2>
+    <div class="related no-print">${(rel.length ? rel
+      : RECURSOS.filter(o => o.tipo === 'plano' && o.id !== r.id && o.anos.some(a => r.anos.includes(a))).slice(0, 3)).map(o => `
+      <a class="card" href="${recUrl(o)}">
+        <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>
+        <strong>${esc(o.titulo)}</strong>
+        <span class="small muted">${esc(o.resumo)}</span>
+      </a>`).join('')}</div>`;
+})();
+</script>
+</body>
+</html>

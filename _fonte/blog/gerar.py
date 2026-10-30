@@ -84,7 +84,7 @@ def cabeca(titulo, descricao, url, imagem, imagem_alt, tipo_og, extra='', robots
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="{tipo_og}">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:site_name" content="ohtopico · Júlia Roberta Quoos Alves">
+<meta property="og:site_name" content="Júlia Quoos">
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{esc(titulo)}">
 <meta property="og:description" content="{esc(descricao)}">
@@ -358,7 +358,7 @@ def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
              f'<meta property="article:author" content="https://ohtopico.com.br/">\n'
              f'<meta property="article:section" content="{esc(post["secao"])}">\n'
              f'<meta property="og:image:width" content="1080">\n<meta property="og:image:height" content="1350">\n' + ld)
-    titulo_pagina = post['titulo_seo'] if 'Quoos' in post['titulo_seo'] else post['titulo_seo'] + ' · Júlia Roberta Quoos Alves'
+    titulo_pagina = post['titulo_seo'] if 'Quoos' in post['titulo_seo'] else post['titulo_seo'] + ' | Júlia Quoos'
     head = cabeca(titulo_pagina, post['descricao'], url, img_url, post['alt'], 'article', extra)
 
     from urllib.parse import quote
@@ -410,8 +410,7 @@ def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
 def pagina_indice(cfg, publicados):
     site = cfg['site']
     url = f'{site}/blog/'
-    descricao = ('Blog de Júlia Roberta Quoos Alves sobre formação continuada de professores em inteligência artificial, '
-                 'prompts para planejar aulas, ética e LGPD na escola e Computação na BNCC.')
+    descricao = 'Blog de Júlia Quoos sobre formação de professores em IA, prompts para planejar aulas, ética e LGPD na escola e Computação na BNCC.'
     ld = json_ld({
         '@context': 'https://schema.org',
         '@type': 'Blog',
@@ -467,7 +466,7 @@ def pagina_indice(cfg, publicados):
     </section>
 </div>'''
     img = f'{site}/blog/img/{publicados[0]["imagem"]}' if publicados else f'{site}/img/perfil.jpg'
-    head = cabeca('Blog de Júlia Roberta Quoos Alves · formação de professores em IA', descricao, url, img,
+    head = cabeca('Blog da Júlia Quoos: formação de professores em IA', descricao, url, img,
                   'Infográfico do blog de Júlia Roberta Quoos Alves', 'website', ld)
     n = len(publicados)
     return head + '\n' + moldura('blog.txt', 'ohtopico.com.br/blog', '/', conteudo,
@@ -516,7 +515,7 @@ def pagina_mentoria(cfg, dims):
     </section>
 </article>'''
     robots = 'noindex, follow' if pendente else 'index, follow'
-    head = cabeca('Mentoria e treinamento de professores em IA · Júlia Roberta Quoos Alves', descricao, url,
+    head = cabeca('Mentoria e treinamento de professores em IA | Júlia Quoos', descricao, url,
                   f'{site}/blog/img/dia07-mentoria.png', 'Os três formatos da mentoria', 'website', ld, robots)
     return head + '\n' + moldura('mentoria.exe', 'ohtopico.com.br/mentoria', '/', conteudo, 'Pronto', 'mentoria'), pendente
 
@@ -543,8 +542,7 @@ def pagina_formacao(cfg, dims):
                   'legenda': 'O caminho da formação continuada em IA, em cinco etapas.'}, dims[FORMACAO_IMAGEM])
     corpo = corpo.replace('<!--IMAGEM-->', fig)
     titulo = 'Formação continuada de professores em IA'
-    descricao = ('Formação continuada de professores em inteligência artificial para escolas e redes de ensino, em cinco etapas: '
-                 'diagnóstico, formato, regras, prática com apoio e avaliação. Com Júlia Roberta Quoos Alves.')
+    descricao = 'Formação continuada de professores em IA para escolas e redes de ensino, em cinco etapas: diagnóstico, formato, regras, prática com apoio e avaliação.'
     w, h = dims[FORMACAO_IMAGEM]
     ld = json_ld({
         '@context': 'https://schema.org',
@@ -608,7 +606,7 @@ def pagina_formacao(cfg, dims):
         <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Forma%C3%A7%C3%A3o%20continuada%20de%20professores%20em%20IA">Falar com Júlia Roberta Quoos Alves</a>
     </section>
 </article>'''
-    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/blog/img/{FORMACAO_IMAGEM}', alt, 'website',
+    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, f'{site}/blog/img/{FORMACAO_IMAGEM}', alt, 'website',
                   f'<meta property="og:image:width" content="{w}">\n<meta property="og:image:height" content="{h}">\n' + ld)
     return head + '\n' + moldura('guia-formacao.html', 'ohtopico.com.br/formacao-continuada', '/', conteudo, 'Pronto', 'formacao')
 
@@ -618,8 +616,7 @@ def pagina_assistencia(cfg):
     url = f'{site}/assistencia-por-voz/'
     corpo = (AQUI / 'conteudo' / 'assistencia-por-voz.html').read_text(encoding='utf-8').strip()
     titulo = 'Assistência por voz para pessoas cegas'
-    descricao = ('Projeto pessoal de Júlia Roberta Quoos Alves: um site para o celular que reconhece objetos, obstáculos, '
-                 'lugares e textos pela câmera e responde por voz. Com o que é guardado, o que é enviado e os cuidados de LGPD.')
+    descricao = 'Protótipo do mestrado de Júlia Quoos: um site para celular que reconhece objetos, obstáculos, lugares e textos pela câmera e responde por voz.'
     ld = json_ld({
         '@context': 'https://schema.org',
         '@graph': [
@@ -675,7 +672,7 @@ def pagina_assistencia(cfg):
     </section>
 </article>'''
     alt = 'Foto de Júlia Roberta Quoos Alves'
-    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/img/perfil.jpg', alt, 'website', ld)
+    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, f'{site}/img/perfil.jpg', alt, 'website', ld)
     return head + '\n' + moldura('assistencia.exe', 'ohtopico.com.br/assistencia-por-voz', '/', conteudo, 'Pronto', 'assistencia')
 
 
@@ -727,8 +724,7 @@ def pagina_prompts(cfg):
              'Tente outra etapa ou limpe os filtros.</p>\n' + '\n'.join(secoes))
     corpo = (AQUI / 'conteudo' / 'biblioteca-prompts.html').read_text(encoding='utf-8').strip().replace('<!--PROMPTS-->', bloco)
     titulo = 'Biblioteca de prompts para professores'
-    descricao = (f'{total} prompts de IA prontos para professores, por disciplina e etapa de ensino, da Educação Infantil ao ensino médio. '
-                 'Gratuitos, para copiar e adaptar, com orientações de LGPD. Por Júlia Roberta Quoos Alves.')
+    descricao = f'{total} prompts de IA prontos para professores, por disciplina e etapa de ensino, da Educação Infantil ao ensino médio, com orientações de LGPD.'
     ld = json_ld({
         '@context': 'https://schema.org',
         '@graph': [
@@ -786,7 +782,7 @@ def pagina_prompts(cfg):
     </section>
 </article>'''
     alt = 'Exemplo de prompt com cada parte da fórmula P.A.C.T.O. marcada em uma cor: papel, alvo, comando, tom e formato, observações.'
-    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/blog/img/{PROMPTS_IMAGEM}', alt, 'website', ld)
+    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, f'{site}/blog/img/{PROMPTS_IMAGEM}', alt, 'website', ld)
     return head + '\n' + moldura('prompts.txt', 'ohtopico.com.br/prompts-para-professores', '/', conteudo,
                                  f'Pronto · {total} prompts', 'prompts')
 
@@ -843,8 +839,7 @@ def pagina_quiz(cfg):
 <section class="quiz-resultado" id="quiz-resultado" aria-labelledby="res-nivel" tabindex="-1" hidden></section>
 </section>'''
     corpo = (AQUI / 'conteudo' / 'quiz-pensamento-computacional.html').read_text(encoding='utf-8').strip().replace('<!--QUIZ-->', quiz)
-    descricao = ('Quiz gratuito de pensamento computacional para professores: 12 perguntas sobre decomposição, padrões, '
-                 'abstração e algoritmos, com explicação e resultado para compartilhar no LinkedIn. Por Júlia Roberta Quoos Alves.')
+    descricao = 'Quiz gratuito de pensamento computacional para professores: 12 perguntas sobre decomposição, padrões, abstração e algoritmos, com resultado para compartilhar.'
     imagem = f'{site}/{QUIZ_DIR}/img/quiz-pensamento-computacional.png'
     ld = json_ld({
         '@context': 'https://schema.org',
@@ -904,7 +899,7 @@ def pagina_quiz(cfg):
 </article>'''
     extra = ('<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld
              + f'\n<link rel="stylesheet" href="/{QUIZ_DIR}/assets/quiz.css?v={VERSAO_QUIZ}">')
-    head = cabeca(QUIZ_TITULO + ' · Júlia Roberta Quoos Alves', descricao, url, imagem, QUIZ_IMAGEM_ALT, 'website', extra)
+    head = cabeca(QUIZ_TITULO + ' | Júlia Quoos', descricao, url, imagem, QUIZ_IMAGEM_ALT, 'website', extra)
     pagina = moldura('quiz.exe', f'ohtopico.com.br/{QUIZ_DIR}', '/', conteudo, f'Pronto · {total} perguntas', 'quiz')
     return head + '\n' + pagina.replace('</body>', f'<script src="/{QUIZ_DIR}/assets/quiz.js?v={VERSAO_QUIZ}" defer></script>\n</body>')
 
