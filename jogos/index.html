@@ -186,7 +186,7 @@
   const $ = s => document.querySelector(s);
   // Temas pensados para o estudante (no lugar de "Computação" e "Matemática")
   const TEMAS = [
-    { id: 'digital', nome: 'Robôs, internet e segurança', icone: 'robo', jogos: ['partes-computador', 'vale-bits', 'python', 'digitacao', 'impostor', 'robo', 'pacotes', 'golpe', 'senha', 'paridade', 'filas-pilhas', 'linha-tempo', 'bingo'] },
+    { id: 'digital', nome: 'Robôs, internet e segurança', icone: 'robo', jogos: ['partes-computador', 'vale-bits', 'cidade-blocos', 'python', 'digitacao', 'impostor', 'robo', 'pacotes', 'golpe', 'senha', 'paridade', 'filas-pilhas', 'linha-tempo', 'bingo'] },
     { id: 'numeros', nome: 'Números e contas', icone: 'fracoes', jogos: ['numeria', 'tabuada', 'fracoes', 'balanca', 'receitas', 'bhaskara'] },
     { id: 'formas', nome: 'Formas, mapas e ângulos', icone: 'tangram', jogos: ['tangram', 'cartesiano', 'angulos', 'rotas'] },
     { id: 'dinheiro', nome: 'Dinheiro e mesada', icone: 'cofrinho', jogos: ['cofrinho', 'mesada', 'cambio', 'empresa-sucos', 'poupanca', 'cartao'] },
@@ -215,7 +215,8 @@
     numeria: 'Vença monstros e chefes com contas certas.',
     'partes-computador': 'Conheça as partes do computador em 3D e monte ele por dentro.',
     'linha-tempo': 'Monte o museu com as invenções na ordem certa.',
-    bingo: 'Descubra o termo pela pista e complete a cartela.'
+    bingo: 'Descubra o termo pela pista e complete a cartela.',
+    'cidade-blocos': 'Reconstrua a cidade de blocos respondendo os totens.'
   };
   const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo');
   // jogo novo que ainda não está em nenhum tema entra pelo componente
