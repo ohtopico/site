@@ -15,6 +15,9 @@
       <circle cx="10" cy="52" r="5" fill="${V}" ${T}/><path d="M46 10c-7 0-11 5-11 10 0 8 11 18 11 18s11-10 11-18c0-5-4-10-11-10z" fill="${R}" ${T}/><circle cx="46" cy="20" r="4" fill="${B}" ${T}/>`,
     cifra: `<circle cx="26" cy="26" r="15" fill="${C}" ${T}/><path d="M37 37l15 15" stroke="#111" stroke-width="6" stroke-linecap="round"/>
       <text x="16" y="31" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="${V}">A</text><text x="27" y="31" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="${R}">D</text>`,
+    'vale-bits': `<path d="M6 54h52" ${T}/><path d="M10 54V30l12-10 12 10v24z" fill="${B}" ${T}/><path d="M8 32l14-13 14 13" fill="${R}" ${T}/>
+      <rect x="18" y="40" width="8" height="14" fill="${V}" ${T}/><path d="M40 54V38M46 54V38M52 54V38M38 44h16M38 50h16" ${T}/>
+      <path d="M48 8l7 7-7 7-7-7z" fill="${A}" ${T}/>`,
     golpe: `<path d="M32 6l22 8v14c0 14-10 24-22 30C20 52 10 42 10 28V14z" fill="${A}" ${T}/><path d="M32 18v16" stroke="#111" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="43" r="3" fill="#111"/>`,
     fracoes: `<circle cx="32" cy="32" r="24" fill="${B}" ${T}/><path d="M32 32V8a24 24 0 0 1 24 24z" fill="${R}" ${T}/><path d="M32 32L8 32" ${T}/><path d="M32 32V56" ${T}/>`,
     cartesiano: `<path d="M8 32h48M32 8v48" ${T}/><path d="M52 28l4 4-4 4M28 12l4-4 4 4" fill="none" ${T}/>

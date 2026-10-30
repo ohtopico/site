@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vale dos Bits · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de aventura: explore o Vale dos Bits, converse com os moradores, junte fragmentos e abra os portões respondendo desafios de informática, lógica, dados, internet e algoritmos. BNCC 6º e 7º ano.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/vale-bits.html">
+<meta property="og:title" content="Vale dos Bits · Material didático">
+<meta property="og:description" content="Jogo de aventura: explore o Vale dos Bits, converse com os moradores, junte fragmentos e abra os portões respondendo desafios de informática, lógica, dados, internet e algoritmos.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/vale-bits.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .vb { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 18px; align-items: start; }
+  .vb-tela { position: relative; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: #1f5c35; }
+  .vb-tela canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; touch-action: none; }
+  .vb-regiao { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(17,17,17,.82); color: #fff;
+    font-family: var(--display); font-size: 18px; padding: 6px 16px; border-radius: 99px; pointer-events: none; opacity: 0; transition: opacity .4s; white-space: nowrap; }
+  .vb-regiao.on { opacity: 1; }
+  .vb-dialogo { position: absolute; left: 10px; right: 10px; bottom: 10px; background: #fffdf6; color: #111; border: 2px solid #111; border-radius: 16px;
+    padding: 12px 14px; box-shadow: 4px 4px 0 #111; max-height: calc(100% - 20px); overflow: auto; }
+  .vb-dialogo[hidden] { display: none; }
+  .vb-dialogo .quem { font-family: var(--display); font-size: 17px; margin-bottom: 4px; color: #166c40; }
+  .vb-dialogo .fala { font-size: 16px; line-height: 1.45; }
+  .vb-dialogo .acoes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+  .vb-dialogo .btn { min-height: 40px; padding: 8px 16px; font-size: 15px; background: #111; color: #fff; border-color: #111; }
+  .vb-dialogo .btn.ghost { background: #fff; color: #111; }
+  .vb-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .vb-ops button { text-align: left; border: 1.5px solid #111; border-radius: 12px; background: #fff; color: #111; padding: 9px 12px; font: inherit; font-size: 15px; cursor: pointer; min-height: 46px; }
+  .vb-ops button:hover:not(:disabled) { background: #f3f0e4; }
+  .vb-ops button.certa { background: #e3f4e8; border-color: #157f3b; }
+  .vb-ops button.errada { background: #fbe6ea; border-color: #c21f3a; }
+  .vb-ops button:disabled { cursor: default; }
+  .vb-prog { font-size: 13px; color: #4a4a4a; margin-bottom: 4px; }
+  .vb-exp { margin-top: 8px; padding: 8px 12px; border-radius: 12px; font-size: 14.5px; }
+  .vb-exp.ok { background: #e3f4e8; } .vb-exp.bad { background: #fbe6ea; }
+  .vb-lado { display: grid; gap: 12px; }
+  .vb-box { border: 1.5px solid var(--ink); border-radius: 16px; background: var(--paper); padding: 12px 14px; }
+  .vb-box h2 { font-size: 16px; margin: 0 0 6px; font-family: var(--display); }
+  .vb-box p { margin: 0; font-size: 14.5px; }
+  .vb-frag { display: flex; gap: 8px; }
+  .vb-frag span { width: 34px; height: 34px; border: 1.5px dashed var(--ink-3); border-radius: 8px; display: grid; place-items: center; font-family: var(--display); font-size: 14px; color: var(--ink-3); }
+  .vb-frag span.on { border-style: solid; border-color: #111; background: #ffd23f; color: #111; }
+  .vb-mini { width: 100%; height: auto; image-rendering: pixelated; border-radius: 8px; border: 1px solid var(--line); display: block; }
+  .vb-legenda { display: grid; gap: 3px; margin-top: 8px; font-size: 13.5px; }
+  .vb-legenda .bloq { color: var(--ink-3); }
+  .vb-dicas { margin: 6px 0 0; padding-left: 18px; font-size: 14px; display: grid; gap: 6px; }
+  .vb-missao { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 14px; }
+  .vb-missao li { display: flex; gap: 8px; align-items: flex-start; }
+  .vb-missao li::before { content: ''; flex: none; width: 14px; height: 14px; margin-top: 3px; border: 1.5px solid var(--ink); border-radius: 4px; }
+  .vb-missao li.ok { color: var(--ink-3); text-decoration: line-through; }
+  .vb-missao li.ok::before { background: var(--ok); border-color: var(--ok); }
+  .vb-rel { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .vb-rel td { padding: 3px 0; border-bottom: 1px solid var(--line); }
+  .vb-rel td:last-child { text-align: right; font-weight: 600; }
+  .vb-mochila { display: flex; flex-wrap: wrap; gap: 6px; }
+  .vb-controles { display: none; margin-top: 12px; justify-content: center; }
+  .vb-pad { display: grid; grid-template-columns: repeat(3, 58px); grid-template-rows: repeat(2, 58px); gap: 6px; }
+  .vb-pad button { border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); color: var(--ink); font-size: 22px; font-weight: 700; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .vb-pad button:active { background: var(--pill-2); }
+  .vb-pad .c { grid-column: 2; grid-row: 1; } .vb-pad .e { grid-column: 1; grid-row: 2; } .vb-pad .b { grid-column: 2; grid-row: 2; } .vb-pad .d { grid-column: 3; grid-row: 2; }
+  .vb-fim { text-align: center; padding: 26px 10px; }
+  .vb-fim h2 { font-size: 30px; }
+  @media (max-width: 860px) { .vb { grid-template-columns: 1fr; } }
+  @media (hover: none), (max-width: 860px) { .vb-controles { display: flex; } }
+  @media (max-width: 520px) { .vb-ops { grid-template-columns: 1fr; } .vb-dialogo .fala { font-size: 15px; } .game-stage { padding: 12px; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você começa na <strong>Vila do Início</strong>. Os outros lugares do vale estão fechados por portões, e cada portão tem um guardião. Para passar, responda corretamente <strong>3 desafios</strong> de computação, informática ou lógica. Se errar, o guardião explica e faz outra pergunta.</p>
+    <p>Ande com as <strong>setas</strong> ou <strong>W, A, S, D</strong> (no celular, use os botões abaixo do mapa). Para conversar, ande na direção da pessoa. Os moradores dão dicas que vão para o seu <strong>Caderno de dicas</strong>, e pelo caminho há pergaminhos e <strong>4 fragmentos do Código</strong>. Com os quatro fragmentos, a Torre do Algoritmo se abre para o desafio final. O jogo salva o progresso neste aparelho.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="vb">
+      <div>
+        <div class="vb-tela">
+          <canvas id="tela" width="520" height="360" role="img" aria-label="Mapa do Vale dos Bits visto de cima, com a sua personagem no centro"></canvas>
+          <div class="vb-regiao" id="regiao" aria-hidden="true"></div>
+          <div class="vb-dialogo" id="dialogo" role="dialog" aria-live="polite" hidden></div>
+        </div>
+        <div class="vb-controles" aria-label="Controles de movimento">
+          <div class="vb-pad">
+            <button type="button" class="c" data-dir="c" aria-label="Andar para cima">&#9650;</button>
+            <button type="button" class="e" data-dir="e" aria-label="Andar para a esquerda">&#9664;</button>
+            <button type="button" class="b" data-dir="b" aria-label="Andar para baixo">&#9660;</button>
+            <button type="button" class="d" data-dir="d" aria-label="Andar para a direita">&#9654;</button>
+          </div>
+        </div>
+      </div>
+      <aside class="vb-lado">
+        <div class="vb-box"><h2>Objetivo</h2><p id="objetivo"></p></div>
+        <div class="vb-box"><h2 id="missao-tit">Missão da região</h2><ul class="vb-missao" id="missao"></ul></div>
+        <div class="vb-box"><h2>Fragmentos do Código</h2><div class="vb-frag" id="frags"></div></div>
+        <div class="vb-box"><h2>Mapa do vale</h2><canvas class="vb-mini" id="mini" width="192" height="136" aria-hidden="true"></canvas><div class="vb-legenda" id="legenda"></div></div>
+        <div class="vb-box"><h2>Mochila</h2><div class="vb-mochila tags" id="mochila"></div></div>
+        <details class="vb-box" id="caderno"><summary><strong>Caderno de dicas</strong> <span class="muted small" id="ndicas"></span></summary><ol class="vb-dicas" id="dicas"></ol></details>
+        <div class="vb-box"><p class="small muted" id="placar"></p><details style="margin-top:8px"><summary class="small"><strong>Relatório para o professor</strong></summary><div id="relatorio" class="small" style="margin-top:6px"></div></details><div class="btn-row" style="margin-top:8px"><button class="btn ghost" type="button" id="recomecar" style="min-height:38px;padding:6px 14px;font-size:14px">Recomeçar</button></div></div>
+      </aside>
+    </div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
+(function () {
+  const $ = s => document.getElementById(s);
+  const W = 24, H = 17, TS = 40, VH = 9, CHAVE = 'vale-bits-v1';
+
+  /* ---------- Regiões ---------- */
+  const REGIOES = {
+    vila: { nome: 'Vila do Início', tema: 'Informática básica' },
+    bosque: { nome: 'Bosque da Lógica', tema: 'Lógica' },
+    biblio: { nome: 'Biblioteca dos Dados', tema: 'Dados e arquivos' },
+    porto: { nome: 'Porto da Rede', tema: 'Internet e segurança' },
+    torre: { nome: 'Torre do Algoritmo', tema: 'Algoritmos' }
+  };
+  const ORDEM = ['vila', 'bosque', 'biblio', 'porto', 'torre'];
+  function regiaoDe(x, y) {
+    if (y < 8) return x < 12 ? 'bosque' : 'biblio';
+    if (x < 12) return 'vila';
+    return (x >= 20 && y >= 11 && y <= 13) ? 'torre' : 'porto';
+  }
+
+  /* ---------- Mapa ----------
+     .  grama   f flores   = caminho   # árvore   ~ lago   H casa   D porta   p piso
+     B estante   s areia   b ponte/píer   T torre   P poço   G portão */
+  const M = [];
+  for (let y = 0; y < H; y++) { M.push([]); for (let x = 0; x < W; x++) M[y].push((x === 0 || y === 0 || x === W - 1 || y === H - 1 || y === 8 || x === 12) ? '#' : '.'); }
+  const put = (c, pts) => pts.forEach(([x, y]) => { M[y][x] = c; });
+  const faixa = (c, x0, x1, y0, y1) => { for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) M[y][x] = c; };
+  // Vila
+  faixa('H', 2, 4, 10, 11); faixa('H', 7, 9, 10, 11); put('D', [[3, 11], [8, 11]]);
+  faixa('=', 5, 5, 9, 13); faixa('=', 2, 10, 12, 12);
+  put('f', [[1, 15], [2, 15], [10, 9], [11, 9], [1, 9], [6, 15], [7, 15]]); put('#', [[9, 15], [11, 15], [10, 13]]); put('P', [[3, 14]]);
+  // Bosque
+  faixa('=', 5, 5, 5, 7); faixa('=', 5, 11, 4, 4); faixa('~', 8, 10, 2, 3);
+  put('#', [[2, 2], [3, 2], [3, 6], [2, 6], [7, 6], [9, 6], [10, 6], [6, 1], [4, 4], [1, 3], [2, 4]]); put('f', [[1, 7], [11, 7], [7, 2]]);
+  // Biblioteca
+  faixa('p', 13, 22, 1, 7); faixa('B', 14, 17, 2, 2); faixa('B', 19, 22, 2, 2); faixa('B', 14, 16, 6, 6); faixa('B', 20, 22, 6, 6);
+  faixa('=', 13, 18, 4, 4); faixa('=', 18, 18, 4, 7);
+  // Porto
+  faixa('s', 13, 22, 9, 15); faixa('~', 19, 22, 9, 15); faixa('s', 20, 22, 11, 13); put('T', [[21, 12], [22, 12]]);
+  faixa('=', 18, 18, 9, 12); put('b', [[19, 15], [20, 15]]); put('#', [[13, 9], [22, 11], [22, 13]]);
+  // Portões (abrem com desafios)
+  const PORTOES = {
+    1: { x: 5, y: 8, chao: '=', abre: 'bosque', guardiao: 'ernesto' },
+    2: { x: 12, y: 4, chao: '=', abre: 'biblio', guardiao: 'sofia' },
+    3: { x: 18, y: 8, chao: '=', abre: 'porto', guardiao: 'marta' },
+    4: { x: 19, y: 12, chao: 'b', abre: 'torre', guardiao: 'tobias' }
+  };
+  Object.entries(PORTOES).forEach(([n, p]) => { M[p.y][p.x] = 'G'; p.n = +n; });
+  const BLOQ = new Set(['#', '~', 'H', 'D', 'B', 'T', 'P', 'G']);
+
+  /* ---------- Perguntas (conteúdo original) ---------- */
+  const PERGUNTAS = {
+    vila: [
+      ['Qual destes é um dispositivo de entrada, que leva informação para dentro do computador?', ['Teclado', 'Monitor', 'Caixa de som', 'Impressora'], 0, 'O teclado envia ao computador o que você digita. Monitor, caixa de som e impressora mostram resultados: são de saída.'],
+      ['Qual destes é um dispositivo de saída?', ['Mouse', 'Microfone', 'Impressora', 'Leitor de código de barras'], 2, 'A impressora coloca no papel o que está no computador. Mouse, microfone e leitor enviam informação para dentro: são de entrada.'],
+      ['O que é hardware?', ['A parte física do computador, que dá para tocar', 'Os programas instalados', 'A conexão com a internet', 'Um tipo de vírus'], 0, 'Hardware é a parte física: teclado, tela, placa-mãe, memória. Os programas são o software.'],
+      ['Qual destes é um software?', ['Placa-mãe', 'Editor de texto', 'Memória RAM', 'Cabo de energia'], 1, 'O editor de texto é um programa, então é software. Os outros são peças físicas, ou seja, hardware.'],
+      ['O arquivo "redacao.pdf" provavelmente é:', ['Uma música', 'Um vídeo', 'Um documento', 'Um jogo'], 2, 'A extensão .pdf indica documento. Música costuma ser .mp3, vídeo .mp4 e imagem .png ou .jpg.'],
+      ['Para organizar muitos arquivos no computador, o melhor é:', ['Deixar tudo na área de trabalho', 'Criar pastas com nomes claros', 'Apagar os mais antigos', 'Dar o mesmo nome a todos'], 1, 'Pastas com nomes claros, como "Escola" e "Fotos", ajudam a encontrar cada arquivo depois.'],
+      ['Na maioria dos programas, o atalho Ctrl + Z serve para:', ['Desfazer a última ação', 'Fechar o programa', 'Salvar o arquivo', 'Aumentar o zoom'], 0, 'Ctrl + Z desfaz. Outros atalhos úteis: Ctrl + C copia, Ctrl + V cola e Ctrl + S salva.']
+    ],
+    bosque: [
+      ['Qual número continua a sequência 3, 6, 9, 12, ...?', ['13', '14', '15', '18'], 2, 'A cada passo soma 3. Então 12 + 3 = 15.'],
+      ['Qual número continua a sequência 1, 2, 4, 8, ...?', ['10', '12', '16', '9'], 2, 'A cada passo o número dobra. Então 8 x 2 = 16.'],
+      ['"Se chover, Lia leva o guarda-chuva." Hoje choveu. O que acontece?', ['Lia leva o guarda-chuva', 'Lia fica em casa', 'Não dá para saber', 'Lia esquece o guarda-chuva'], 0, 'Na regra "se... então", quando a condição acontece, a consequência também acontece.'],
+      ['Todos os pássaros do bosque têm penas. Piu é um pássaro do bosque. Então:', ['Piu não tem penas', 'Piu tem penas', 'Piu é uma coruja', 'Nada se pode concluir'], 1, 'Se a regra vale para todos os pássaros do bosque e Piu é um deles, ela vale para Piu.'],
+      ['A frase "o fogo é quente E o gelo é quente" é:', ['Verdadeira', 'Falsa', 'Verdadeira só de dia', 'Nem verdadeira nem falsa'], 1, 'Com E, as duas partes precisam ser verdadeiras. O gelo não é quente, então a frase toda é falsa.'],
+      ['A frase "hoje é sábado OU hoje é domingo" é verdadeira em qual dia?', ['Segunda-feira', 'Quarta-feira', 'Domingo', 'Em nenhum dia'], 2, 'Com OU, basta uma das partes ser verdadeira. No domingo, a segunda parte é verdadeira.'],
+      ['Ana é mais alta que Bia. Bia é mais alta que Caio. Quem é o mais baixo?', ['Ana', 'Bia', 'Caio', 'Não dá para saber'], 2, 'Ana > Bia > Caio. Caio é o mais baixo dos três.'],
+      ['Qual figura vem depois: quadrado, círculo, triângulo, quadrado, círculo, ...?', ['Quadrado', 'Círculo', 'Triângulo', 'Estrela'], 2, 'O padrão se repete de três em três: quadrado, círculo, triângulo.']
+    ],
+    biblio: [
+      ['Por dentro, o computador guarda todas as informações usando:', ['Só os dígitos 0 e 1', 'Só letras', 'Só cores', 'Os dígitos de 0 a 9'], 0, 'Tudo vira sequências de 0 e 1, os bits: textos, fotos, músicas e vídeos.'],
+      ['Quantos bits formam 1 byte?', ['2', '4', '8', '10'], 2, 'Um byte tem 8 bits. Com 8 bits é possível representar 256 valores diferentes.'],
+      ['O que é maior?', ['1 KB (quilobyte)', '1 MB (megabyte)', '1 byte', 'São todos iguais'], 1, 'A ordem é byte, depois KB, MB, GB e TB. Cada um vale cerca de mil vezes o anterior.'],
+      ['Em binário, o número 10 vale quanto no nosso sistema decimal?', ['10', '2', '1', '100'], 1, 'Em binário, cada casa vale o dobro da anterior: 1 e 2. 10 tem um 2 e nenhum 1, então vale 2.'],
+      ['Numa ficha de cadastro, qual informação é um número?', ['Nome: Davi', 'Cidade: Arroio Novo', 'Idade: 11', 'Cor favorita: verde'], 2, 'A idade é um número: dá para fazer contas com ela. Nome, cidade e cor são textos.'],
+      ['Qual pergunta tem como resposta apenas "sim" ou "não" (verdadeiro ou falso)?', ['Qual é o seu nome?', 'Já entregou a tarefa?', 'Quantos irmãos você tem?', 'Em que rua você mora?'], 1, 'Esse tipo de dado se chama lógico ou booleano: só pode ser verdadeiro ou falso.'],
+      ['Uma foto digital é formada por:', ['Milhares de pontinhos coloridos, os pixels', 'Uma única cor', 'Letras escondidas', 'Tinta guardada no computador'], 0, 'A imagem é uma grade de pixels. Cada pixel guarda a sua cor como números.']
+    ],
+    porto: [
+      ['Qual destas senhas é a mais forte?', ['123456', 'nome do meu cachorro', 'Girassol-Pula-7-Muros!', 'senha'], 2, 'Senhas longas, com palavras sem relação, números e símbolos, são muito mais difíceis de adivinhar.'],
+      ['Chega uma mensagem de um número desconhecido: "Você ganhou um prêmio, clique no link!". O que fazer?', ['Clicar para ver o prêmio', 'Não clicar e mostrar a um adulto de confiança', 'Enviar para todos os contatos', 'Responder com seu endereço'], 1, 'Prêmio que você não pediu, com link e pressa, é sinal de golpe. Não clique e peça ajuda.'],
+      ['Quando você envia uma foto pela internet, ela viaja:', ['Inteira, de uma vez só', 'Dividida em pequenos pacotes', 'Pelo correio', 'Só quando o celular está desligado'], 1, 'Os dados são quebrados em pacotes, que podem seguir caminhos diferentes e são montados de novo no destino.'],
+      ['O Wi-Fi é:', ['Um tipo de computador', 'Uma forma de conectar aparelhos à rede sem fio', 'Um programa de desenho', 'Um jogo on-line'], 1, 'O Wi-Fi usa ondas de rádio para ligar aparelhos à rede sem precisar de cabo.'],
+      ['A verificação em duas etapas protege a conta porque pede:', ['Duas senhas iguais', 'A senha e mais um código, como o que chega no celular', 'O nome duas vezes', 'Duas fotos de perfil'], 1, 'Mesmo que alguém descubra a senha, ainda precisa do código extra para entrar.'],
+      ['Antes de compartilhar uma notícia surpreendente, o mais indicado é:', ['Compartilhar logo, antes dos outros', 'Conferir se a fonte é confiável e se outros sites sérios publicaram', 'Mudar o título para chamar atenção', 'Enviar só para os amigos'], 1, 'Checar a fonte e procurar a mesma notícia em veículos sérios evita espalhar boatos.'],
+      ['O cadeado e o "https" no endereço de um site indicam que:', ['O site é sempre verdadeiro', 'A conexão com o site é protegida (criptografada)', 'O site é gratuito', 'O site é do governo'], 1, 'O https protege os dados no caminho, mas não garante que o site seja honesto. Confira também o endereço.']
+    ],
+    torre: [
+      ['O que é um algoritmo?', ['Uma sequência de passos para resolver um problema', 'Um tipo de computador', 'Um vírus', 'Uma senha'], 0, 'Receitas, rotas e programas são algoritmos: passos em ordem que levam a um resultado.'],
+      ['Qual é a ordem certa para escovar os dentes?', ['Escovar, pôr a pasta, pegar a escova', 'Pegar a escova, pôr a pasta, escovar, enxaguar', 'Enxaguar, escovar, pegar a escova', 'Pôr a pasta, enxaguar, pegar a escova'], 1, 'Num algoritmo a ordem importa: não dá para escovar antes de pegar a escova.'],
+      ['Um robô segue: "repita 4 vezes: ande 2 passos e vire à direita". Que figura ele desenha?', ['Um triângulo', 'Uma linha reta', 'Um quadrado', 'Um círculo'], 2, 'Quatro lados iguais e quatro viradas iguais formam um quadrado.'],
+      ['Programa do semáforo: "se a luz estiver vermelha, pare; senão, siga". A luz está verde. O que acontece?', ['Para', 'Segue', 'Espera ficar amarela', 'O programa trava'], 1, 'A condição (luz vermelha) é falsa, então o programa executa a parte do "senão": siga.'],
+      ['Como se chama um erro em um programa?', ['Bug', 'Byte', 'Pixel', 'Link'], 0, 'Encontrar e corrigir bugs se chama depuração. Todo programador faz isso o tempo todo.'],
+      ['"Repita 3 vezes: bata palmas 2 vezes." Quantas palmas no total?', ['2', '3', '5', '6'], 3, 'São 3 repetições de 2 palmas: 3 x 2 = 6.']
+    ]
+  };
+
+  /* ---------- Personagens ---------- */
+  const NPCS = [
+    { id: 'rosa', nome: 'Prefeita Rosa', x: 6, y: 12, cor: '#ef5a4c', cabelo: '#4a2c1a', pele: '#c68642',
+      falas: ['Bem-vinda, bem-vindo ao Vale dos Bits! Eu sou a Rosa, prefeita da vila.', 'Por enquanto, só a nossa vila está aberta. Os outros lugares do vale estão atrás de portões, e cada portão tem um guardião.', 'Para passar, você precisa acertar 3 desafios. Converse com os moradores: eles dão dicas que ficam guardadas no seu Caderno de dicas.', 'Ao longo do caminho, procure os 4 fragmentos do Código. Só com os quatro a Torre do Algoritmo se abre. O primeiro está aqui na vila, perto das árvores do sudeste.'],
+      dica: 'Os portões abrem com 3 respostas certas. Junte os 4 fragmentos para entrar na Torre do Algoritmo.' },
+    { id: 'davi', nome: 'Técnico Davi', x: 2, y: 13, cor: '#2fa865', cabelo: '#111', pele: '#8d5524',
+      falas: ['Eu conserto computadores aqui na vila. Quer uma dica para o portão do Seu Ernesto?', 'Dispositivos de ENTRADA levam informação para dentro do computador: teclado, mouse, microfone. Os de SAÍDA mostram o resultado: monitor, caixa de som, impressora.', 'E lembre: HARDWARE é tudo o que dá para tocar. SOFTWARE são os programas.'],
+      dica: 'Entrada: teclado, mouse, microfone. Saída: monitor, caixa de som, impressora. Hardware dá para tocar; software são os programas.' },
+    { id: 'lara', nome: 'Lara', x: 9, y: 13, cor: '#ffd23f', cabelo: '#7a3b12', pele: '#f1c27d',
+      falas: ['Oi! Eu organizo os arquivos da escola da vila.', 'O final do nome do arquivo, a extensão, conta o que ele é: .pdf é documento, .mp3 é música, .mp4 é vídeo, .png e .jpg são imagens.', 'E um segredo: Ctrl + Z desfaz o que você acabou de fazer. Ctrl + C copia e Ctrl + V cola.'],
+      dica: 'Extensões: .pdf documento, .mp3 música, .mp4 vídeo, .png e .jpg imagem. Ctrl + Z desfaz, Ctrl + C copia, Ctrl + V cola.' },
+    { id: 'ernesto', nome: 'Seu Ernesto, guardião do portão norte', x: 6, y: 9, cor: '#545a56', cabelo: '#ddd', pele: '#f1c27d', guardiao: 1 },
+    { id: 'bento', nome: 'Bento, o lenhador', x: 3, y: 3, cor: '#c0392b', cabelo: '#5a3a1a', pele: '#e0ac69',
+      falas: ['Este bosque é cheio de padrões. Os troncos, as folhas, tudo se repete.', 'Numa sequência de números, olhe o que muda de um para o outro: soma sempre o mesmo valor? Ou dobra? Descubra a regra e continue.', 'Com figuras é igual: procure o pedaço que se repete.'],
+      dica: 'Sequências: descubra a regra (soma sempre o mesmo valor? dobra?) e aplique no próximo termo.' },
+    { id: 'lu', nome: 'Dona Lu, a tartaruga', x: 8, y: 5, tipo: 'tartaruga',
+      falas: ['Devagar se chega longe... e se pensa melhor.', 'Uma frase com E só é verdadeira se as duas partes forem verdadeiras. Com OU, basta uma parte ser verdadeira.', 'E na regra "se... então": quando o "se" acontece, o "então" acontece também.'],
+      dica: 'E: as duas partes precisam ser verdadeiras. OU: basta uma. "Se... então": quando a condição acontece, a consequência também.' },
+    { id: 'sofia', nome: 'Sofia, a coruja guardiã', x: 11, y: 3, tipo: 'coruja', guardiao: 2 },
+    { id: 'caio', nome: 'Bibliotecário Caio', x: 15, y: 5, cor: '#166c40', cabelo: '#2b1a0e', pele: '#c68642',
+      falas: ['Silêncio, por favor... mas pode perguntar. Toda esta biblioteca cabe em zeros e uns.', 'Cada 0 ou 1 é um BIT. Oito bits formam um BYTE. Depois vêm o quilobyte (KB), o megabyte (MB), o gigabyte (GB) e o terabyte (TB), cada um cerca de mil vezes maior.', 'No binário, cada casa vale o dobro da casa à direita: 1, 2, 4, 8... Assim, 10 em binário vale 2, e 11 vale 3.'],
+      dica: '8 bits = 1 byte. Ordem: byte, KB, MB, GB, TB. No binário as casas valem 1, 2, 4, 8 (da direita para a esquerda).' },
+    { id: 'nina', nome: 'Nina, estudante', x: 21, y: 4, cor: '#ef5a4c', cabelo: '#111', pele: '#8d5524',
+      falas: ['Estou fazendo um cadastro para a feira de ciências.', 'Cada informação tem um tipo: a idade é número, o nome é texto, e "já se inscreveu?" é sim ou não, o tipo lógico.', 'E sabia que uma foto é uma grade de pontinhos chamados pixels? Cada um guarda a sua cor em números.'],
+      dica: 'Tipos de dado: número (idade), texto (nome), lógico (sim ou não). Fotos são feitas de pixels.' },
+    { id: 'marta', nome: 'Marta, guardiã da biblioteca', x: 19, y: 7, cor: '#545a56', cabelo: '#9a9a97', pele: '#e0ac69', guardiao: 3 },
+    { id: 'joana', nome: 'Joana, a pescadora', x: 15, y: 10, cor: '#2fa865', cabelo: '#7a3b12', pele: '#c68642',
+      falas: ['No porto chegam mensagens do mundo todo. Nem todas são confiáveis.', 'Senha boa é longa e mistura palavras sem relação, números e símbolos. Nada de 123456 ou nome do bicho de estimação.', 'Mensagem com prêmio, pressa e link estranho? Não clique. Mostre a um adulto de confiança.'],
+      dica: 'Senha forte: longa, com palavras sem relação, números e símbolos. Prêmio + pressa + link = sinal de golpe.' },
+    { id: 'teo', nome: 'Marinheiro Téo', x: 14, y: 13, cor: '#ffd23f', cabelo: '#111', pele: '#f1c27d',
+      falas: ['Na internet, as mensagens viajam como os barcos deste porto: em pequenos PACOTES, que chegam e são montados de novo.', 'O Wi-Fi conecta os aparelhos sem fio. E o "https" com cadeado quer dizer que a conexão é protegida, mas confira sempre o endereço do site.', 'A verificação em duas etapas pede a senha e mais um código. E antes de passar uma notícia adiante, confira a fonte.'],
+      dica: 'Dados viajam em pacotes. https = conexão protegida. Duas etapas = senha + código. Confira a fonte antes de compartilhar.' },
+    { id: 'bia', nome: 'Inventora Bia', x: 16, y: 15, cor: '#c0392b', cabelo: '#4a2c1a', pele: '#8d5524',
+      falas: ['Estou construindo um robô para a Torre do Algoritmo. Quer saber como ele pensa?', 'Um ALGORITMO é uma sequência de passos em ordem. Trocar a ordem pode estragar tudo.', 'REPITA serve para não escrever a mesma coisa várias vezes. SE... SENÃO escolhe um caminho conforme a condição. E erro de programa se chama BUG.'],
+      dica: 'Algoritmo = passos em ordem. Repita = laço. Se... senão = escolha conforme a condição. Erro de programa = bug.' },
+    { id: 'tobias', nome: 'Capitão Tobias, guardião da ponte', x: 18, y: 13, cor: '#111', cabelo: '#ddd', pele: '#c68642', guardiao: 4 },
+    { id: 'robo', nome: 'Robô Guardião da Torre', x: 20, y: 12, tipo: 'robo', final: true }
+  ];
+  const NPC_AT = {};
+  NPCS.forEach(n => { NPC_AT[n.x + ',' + n.y] = n; });
+
+  /* ---------- Itens ---------- */
+  const ITENS = [
+    { id: 'frag1', x: 10, y: 14, tipo: 'frag', n: 1, nome: 'Fragmento do Código 1' },
+    { id: 'frag2', x: 1, y: 1, tipo: 'frag', n: 2, nome: 'Fragmento do Código 2' },
+    { id: 'frag3', x: 14, y: 1, tipo: 'frag', n: 3, nome: 'Fragmento do Código 3' },
+    { id: 'frag4', x: 20, y: 15, tipo: 'frag', n: 4, nome: 'Fragmento do Código 4' },
+    { id: 'perg1', x: 1, y: 11, tipo: 'perg', nome: 'Pergaminho da vila', dica: 'Arquivos ficam organizados em pastas com nomes claros. Evite deixar tudo solto na área de trabalho.' },
+    { id: 'perg2', x: 10, y: 1, tipo: 'perg', nome: 'Pergaminho do bosque', dica: 'Se A é maior que B e B é maior que C, então A é maior que C. Organize as pessoas em fila para comparar.' },
+    { id: 'perg3', x: 22, y: 7, tipo: 'perg', nome: 'Pergaminho da biblioteca', dica: 'Por dentro do computador, tudo vira 0 e 1: textos, imagens, sons e vídeos.' },
+    { id: 'perg4', x: 13, y: 15, tipo: 'perg', nome: 'Pergaminho do porto', dica: 'Robô que repete 4 vezes "ande e vire à direita" volta ao ponto de partida desenhando um quadrado.' },
+    { id: 'lanterna', x: 22, y: 1, tipo: 'obj', nome: 'Lanterna', fala: 'Você achou uma lanterna entre as estantes. Ela não abre portões, mas deixa a mochila mais completa.' },
+    { id: 'concha', x: 13, y: 12, tipo: 'obj', nome: 'Concha do porto', fala: 'Uma concha com o desenho 1011 gravado. Em binário, 1011 vale 8 + 2 + 1 = 11.' }
+  ];
+  const ITEM_AT = {};
+  ITENS.forEach(i => { ITEM_AT[i.x + ',' + i.y] = i; });
+
+  /* ---------- Estado ---------- */
+  const novo = () => ({ x: 5, y: 12, dir: 'b', abertos: ['vila'], itens: [], dicas: [], falou: [], acertos: 0, resp: 0, fim: false, visto: ['vila'], temas: {}, inicio: Date.now() });
+  let S;
+  try { S = Object.assign(novo(), JSON.parse(localStorage.getItem(CHAVE) || 'null') || {}); } catch (e) { S = novo(); }
+  const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) {} };
+  const aberto = r => S.abertos.includes(r);
+  const tem = id => S.itens.includes(id);
+  const nFrag = () => ITENS.filter(i => i.tipo === 'frag' && tem(i.id)).length;
+  const portaoAberto = p => aberto(p.abre);
+
+  function tile(x, y) {
+    if (x < 0 || y < 0 || x >= W || y >= H) return '#';
+    const c = M[y][x];
+    if (c === 'G') { const p = Object.values(PORTOES).find(q => q.x === x && q.y === y); return portaoAberto(p) ? p.chao : 'G'; }
+    return c;
+  }
+
+  /* ---------- Desenho ---------- */
+  const cv = $('tela'), ctx = cv.getContext('2d');
+  let VW = 13;
+  function ajusta() { const v = innerWidth < 600 ? 9 : 13; if (v !== VW || cv.width !== v * TS) { VW = v; cv.width = VW * TS; cv.height = VH * TS; } }
+  ajusta(); addEventListener('resize', ajusta);
+  const mini = $('mini'), mctx = mini.getContext('2d');
+  let cam = { x: 0, y: 0 }, anim = null, t0 = performance.now();
+  const COR = { grama: '#9fd38a', grama2: '#8cc777', arvore: '#2f7d4a', arvore2: '#1f5c35', tronco: '#7a5230', caminho: '#e8d6a0', caminho2: '#dcc68a',
+    lago: '#5fae8f', lago2: '#86c9a8', parede: '#f2efe6', telhado: '#ef5a4c', piso: '#ece4cf', piso2: '#e0d6bb', estante: '#8a5a32', areia: '#f3e2a9', areia2: '#ead18a', madeira: '#b98552', pedra: '#cfcac0' };
+
+  function rr(x, y, w, h, r, fill, stroke) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke(); } }
+  function circ(x, y, r, fill, stroke) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke(); } }
+
+  function desenhaTile(c, x, y, px, py, t) {
+    const chao = { '.': COR.grama, f: COR.grama, '#': COR.grama, H: COR.grama, D: COR.grama, P: COR.grama, '=': COR.caminho, p: COR.piso, B: COR.piso, s: COR.areia, '~': COR.lago, b: COR.lago, T: COR.areia, G: COR.caminho }[c] || COR.grama;
+    ctx.fillStyle = chao; ctx.fillRect(px, py, TS, TS);
+    if (c === '.' && (x * 7 + y * 3) % 5 === 0) { ctx.fillStyle = COR.grama2; ctx.fillRect(px + 8, py + 24, 4, 6); ctx.fillRect(px + 26, py + 10, 4, 6); }
+    if (c === 'p' || c === 'B') { ctx.fillStyle = COR.piso2; if ((x + y) % 2) ctx.fillRect(px, py, TS, TS); }
+    if (c === 's' && (x + y * 2) % 4 === 0) { ctx.fillStyle = COR.areia2; ctx.fillRect(px + 12, py + 16, 3, 3); ctx.fillRect(px + 26, py + 28, 3, 3); }
+    if (c === '=') { ctx.fillStyle = COR.caminho2; ctx.fillRect(px + 6, py + 8, 5, 3); ctx.fillRect(px + 24, py + 26, 6, 3); }
+    if (c === '~' || c === 'b') { ctx.strokeStyle = COR.lago2; ctx.lineWidth = 2; const o = Math.sin(t / 500 + x + y) * 3; ctx.beginPath(); ctx.moveTo(px + 6, py + 14 + o); ctx.quadraticCurveTo(px + 13, py + 9 + o, px + 20, py + 14 + o); ctx.moveTo(px + 20, py + 28 - o); ctx.quadraticCurveTo(px + 27, py + 23 - o, px + 34, py + 28 - o); ctx.stroke(); }
+    if (c === 'b') { ctx.fillStyle = COR.madeira; ctx.fillRect(px, py + 4, TS, TS - 8); ctx.strokeStyle = '#7a5230'; ctx.lineWidth = 1.5; for (let i = 1; i < 4; i++) { ctx.beginPath(); ctx.moveTo(px + i * 10, py + 4); ctx.lineTo(px + i * 10, py + TS - 4); ctx.stroke(); } }
+    if (c === 'f') { [[10, 12, '#ffd23f'], [28, 18, '#ef5a4c'], [16, 30, '#fff']].forEach(([a, b, k]) => { circ(px + a, py + b, 4, k, '#111'); }); }
+    if (c === '#') { ctx.fillStyle = COR.tronco; ctx.fillRect(px + 16, py + 24, 8, 14); circ(px + 20, py + 18, 15, COR.arvore, '#111'); circ(px + 14, py + 14, 5, '#3f9a5d'); }
+    if (c === 'H') {
+      ctx.fillStyle = COR.parede; ctx.fillRect(px, py, TS, TS); ctx.strokeStyle = '#111'; ctx.lineWidth = 2; ctx.strokeRect(px + 1, py + 1, TS - 2, TS - 2);
+      if (tile(x, y - 1) !== 'H') { ctx.fillStyle = COR.telhado; ctx.fillRect(px, py, TS, 16); ctx.strokeRect(px + 1, py + 1, TS - 2, 15); }
+      else { rr(px + 10, py + 10, 14, 12, 2, '#ffd23f', '#111'); }
+    }
+    if (c === 'D') { ctx.fillStyle = COR.parede; ctx.fillRect(px, py, TS, TS); ctx.strokeStyle = '#111'; ctx.lineWidth = 2; ctx.strokeRect(px + 1, py + 1, TS - 2, TS - 2); rr(px + 12, py + 12, 16, 28, 3, COR.tronco, '#111'); circ(px + 24, py + 27, 2, '#ffd23f'); }
+    if (c === 'P') { circ(px + 20, py + 22, 13, COR.pedra, '#111'); circ(px + 20, py + 22, 7, COR.lago); ctx.fillStyle = '#7a5230'; ctx.fillRect(px + 5, py + 4, 3, 16); ctx.fillRect(px + 32, py + 4, 3, 16); ctx.fillRect(px + 5, py + 4, 30, 3); }
+    if (c === 'B') { rr(px + 2, py + 4, TS - 4, TS - 6, 3, COR.estante, '#111'); const ks = ['#ef5a4c', '#ffd23f', '#2fa865', '#f2efe6']; for (let i = 0; i < 5; i++) { ctx.fillStyle = ks[(i + x) % 4]; ctx.fillRect(px + 6 + i * 6, py + 8, 4, 11); ctx.fillStyle = ks[(i + x + 2) % 4]; ctx.fillRect(px + 6 + i * 6, py + 23, 4, 11); } }
+    if (c === 'T') {
+      ctx.fillStyle = COR.areia; ctx.fillRect(px, py, TS, TS);
+      rr(px + 4, py - 10, 32, 48, 4, COR.pedra, '#111'); ctx.fillStyle = '#ef5a4c'; ctx.beginPath(); ctx.moveTo(px + 1, py - 8); ctx.lineTo(px + 20, py - 30); ctx.lineTo(px + 39, py - 8); ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#111'; ctx.stroke();
+      rr(px + 14, py + 14, 12, 24, 6, '#2b2b2b');
+      const on = nFrag() >= 4; circ(px + 20, py + 2, 5, on ? '#ffd23f' : '#888', '#111');
+    }
+    if (c === 'G') {
+      ctx.fillStyle = COR.tronco; for (let i = 0; i < 4; i++) rr(px + 3 + i * 9, py + 4, 7, 32, 2, '#a26a3a', '#111');
+      ctx.fillRect(px, py + 12, TS, 4); ctx.fillRect(px, py + 26, TS, 4);
+      rr(px + 13, py + 15, 14, 12, 3, '#ffd23f', '#111'); ctx.strokeStyle = '#111'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(px + 20, py + 15, 4, Math.PI, 0); ctx.stroke();
+    }
+  }
+
+  function pessoa(px, py, n, dir, t, andando) {
+    const pulo = andando ? Math.abs(Math.sin(t / 70)) * 3 : 0;
+    ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.ellipse(px + 20, py + 36, 11, 4, 0, 0, Math.PI * 2); ctx.fill();
+    const y = py - pulo;
+    rr(px + 11, y + 18, 18, 16, 6, n.cor, '#111');
+    ctx.fillStyle = '#333'; ctx.fillRect(px + 13, y + 33, 5, 4); ctx.fillRect(px + 22, y + 33, 5, 4);
+    circ(px + 20, y + 13, 9, n.pele, '#111');
+    ctx.fillStyle = n.cabelo; ctx.beginPath(); ctx.arc(px + 20, y + 11, 9, Math.PI, 0); ctx.fill();
+    if (n.bone) { rr(px + 10, y + 3, 20, 6, 3, n.bone, '#111'); ctx.fillStyle = n.bone; ctx.fillRect(dir === 'e' ? px + 5 : px + 26, y + 6, 9, 3); }
+    ctx.fillStyle = '#111';
+    if (dir !== 'c') { const dx = dir === 'e' ? -3 : dir === 'd' ? 3 : 0; ctx.fillRect(px + 16 + dx, y + 13, 2.5, 2.5); ctx.fillRect(px + 22 + dx, y + 13, 2.5, 2.5); }
+  }
+  function bicho(px, py, n, t) {
+    const b = Math.sin(t / 400) * 1.5;
+    ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.ellipse(px + 20, py + 36, 12, 4, 0, 0, Math.PI * 2); ctx.fill();
+    if (n.tipo === 'coruja') {
+      rr(px + 9, py + 8 + b, 22, 28, 11, '#a26a3a', '#111'); circ(px + 15, py + 18 + b, 5, '#fff', '#111'); circ(px + 25, py + 18 + b, 5, '#fff', '#111');
+      circ(px + 15, py + 18 + b, 2, '#111'); circ(px + 25, py + 18 + b, 2, '#111'); ctx.fillStyle = '#ffd23f'; ctx.beginPath(); ctx.moveTo(px + 18, py + 23 + b); ctx.lineTo(px + 22, py + 23 + b); ctx.lineTo(px + 20, py + 27 + b); ctx.fill();
+    } else if (n.tipo === 'tartaruga') {
+      circ(px + 32, py + 24, 5, '#9fd38a', '#111'); ctx.fillStyle = '#111'; ctx.fillRect(px + 33, py + 22, 2, 2);
+      ctx.beginPath(); ctx.ellipse(px + 18, py + 26, 13, 9, 0, Math.PI, 0); ctx.fillStyle = '#2f7d4a'; ctx.fill(); ctx.strokeStyle = '#111'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillRect(px + 5, py + 26, 26, 3); circ(px + 18, py + 21, 3, '#ffd23f');
+    } else if (n.tipo === 'robo') {
+      ctx.strokeStyle = '#111'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(px + 20, py + 2 + b); ctx.lineTo(px + 20, py + 8 + b); ctx.stroke(); circ(px + 20, py + 2 + b, 3, '#ef5a4c', '#111');
+      rr(px + 9, py + 8 + b, 22, 15, 4, '#cfcac0', '#111'); circ(px + 15, py + 15 + b, 3, nFrag() >= 4 ? '#2fa865' : '#ffd23f'); circ(px + 25, py + 15 + b, 3, nFrag() >= 4 ? '#2fa865' : '#ffd23f');
+      rr(px + 11, py + 24, 18, 12, 3, '#2fa865', '#111');
+    }
+  }
+  function balao(px, py, txt, cor, t) {
+    const b = Math.sin(t / 250) * 2;
+    rr(px + 13, py - 18 + b, 14, 16, 4, cor, '#111'); ctx.fillStyle = '#111'; ctx.font = 'bold 13px Lexend, sans-serif'; ctx.textAlign = 'center'; ctx.fillText(txt, px + 20, py - 6 + b);
+  }
+  function desenhaItem(it, px, py, t) {
+    const b = Math.sin(t / 300 + it.x) * 2;
+    if (it.tipo === 'frag') {
+      ctx.save(); ctx.translate(px + 20, py + 20 + b); ctx.rotate(Math.PI / 4); rr(-9, -9, 18, 18, 3, '#ffd23f', '#111'); ctx.restore();
+      ctx.fillStyle = '#111'; ctx.font = 'bold 11px Lexend, sans-serif'; ctx.textAlign = 'center'; ctx.fillText(String(it.n), px + 20, py + 24 + b);
+    } else if (it.tipo === 'perg') {
+      rr(px + 10, py + 12 + b, 20, 16, 3, '#f2efe6', '#111'); ctx.fillStyle = '#ef5a4c'; ctx.fillRect(px + 8, py + 11 + b, 4, 18); ctx.fillRect(px + 28, py + 11 + b, 4, 18);
+      ctx.fillStyle = '#888'; ctx.fillRect(px + 14, py + 17 + b, 12, 2); ctx.fillRect(px + 14, py + 22 + b, 9, 2);
+    } else {
+      circ(px + 20, py + 22 + b, 7, '#fff', '#111'); circ(px + 20, py + 22 + b, 3, '#2fa865');
+    }
+  }
+
+  function render(t) {
+    const pos = posTela(t);
+    const alvoX = pos.x - (VW - 1) / 2, alvoY = pos.y - (VH - 1) / 2;
+    cam.x = Math.max(0, Math.min(W - VW, alvoX)); cam.y = Math.max(0, Math.min(H - VH, alvoY));
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const x0 = Math.floor(cam.x), y0 = Math.floor(cam.y);
+    for (let y = y0; y <= y0 + VH + 1 && y < H; y++) for (let x = x0; x <= x0 + VW && x < W; x++) {
+      const px = Math.round((x - cam.x) * TS), py = Math.round((y - cam.y) * TS);
+      const c = tile(x, y);
+      if (c !== 'T') desenhaTile(c, x, y, px, py, t);
+      else desenhaTile('s', x, y, px, py, t);
+    }
+    // névoa sobre regiões fechadas
+    for (let y = y0; y <= y0 + VH + 1 && y < H; y++) for (let x = x0; x <= x0 + VW && x < W; x++) {
+      const r = regiaoDe(x, y); if (aberto(r) || M[y][x] === 'G') continue;
+      const px = Math.round((x - cam.x) * TS), py = Math.round((y - cam.y) * TS);
+      ctx.fillStyle = 'rgba(30,40,34,.45)'; ctx.fillRect(px, py, TS, TS);
+    }
+    // itens
+    ITENS.forEach(it => { if (tem(it.id)) return; if (it.x < x0 - 1 || it.x > x0 + VW + 1 || it.y < y0 - 1 || it.y > y0 + VH + 1) return; desenhaItem(it, (it.x - cam.x) * TS, (it.y - cam.y) * TS, t); });
+    // pessoas e torre, por linha (para sobrepor corretamente)
+    const ents = NPCS.map(n => ({ y: n.y, f: () => { const px = (n.x - cam.x) * TS, py = (n.y - cam.y) * TS; n.tipo ? bicho(px, py, n, t) : pessoa(px, py, n, dirNpc(n), t, false);
+      if (n.guardiao && !portaoAberto(PORTOES[n.guardiao])) balao(px, py, '?', '#ffd23f', t);
+      else if (n.final && !S.fim) balao(px, py, nFrag() >= 4 ? '!' : String(4 - nFrag()), nFrag() >= 4 ? '#2fa865' : '#ffd23f', t);
+      else if (n.falas && !S.falou.includes(n.id)) balao(px, py, '!', '#ffffff', t); } }));
+    [[21, 12]].forEach(([x, y]) => ents.push({ y, f: () => desenhaTile('T', x, y, (x - cam.x) * TS, (y - cam.y) * TS, t) }));
+    ents.push({ y: pos.y + .01, f: () => pessoa((pos.x - cam.x) * TS, (pos.y - cam.y) * TS, { cor: '#ffd23f', pele: '#e0ac69', cabelo: '#4a2c1a', bone: '#2fa865' }, S.dir, t, !!anim) });
+    ents.sort((a, b) => a.y - b.y).forEach(e => e.f());
+  }
+  function dirNpc(n) {
+    const dx = S.x - n.x, dy = S.y - n.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) return 'b';
+    return Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'e' : 'd') : (dy < 0 ? 'c' : 'b');
+  }
+  function posTela(t) {
+    if (!anim) return { x: S.x, y: S.y };
+    const k = Math.min(1, (t - anim.t) / anim.dur);
+    if (k >= 1) { anim = null; return { x: S.x, y: S.y }; }
+    return { x: anim.fx + (S.x - anim.fx) * k, y: anim.fy + (S.y - anim.fy) * k };
+  }
+
+  function desenhaMini() {
+    const k = 8; mctx.clearRect(0, 0, mini.width, mini.height);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const c = tile(x, y), r = regiaoDe(x, y);
+      let cor = { '#': '#2f7d4a', '~': '#5fae8f', '=': '#e8d6a0', H: '#ef5a4c', D: '#ef5a4c', p: '#ece4cf', B: '#8a5a32', s: '#f3e2a9', b: '#b98552', T: '#cfcac0', G: '#ffd23f', P: '#cfcac0', f: '#9fd38a' }[c] || '#9fd38a';
+      if (!aberto(r) && c !== 'G') cor = c === '#' ? '#3a3f3c' : '#6f736f';
+      mctx.fillStyle = cor; mctx.fillRect(x * k, y * k, k, k);
+    }
+    ITENS.forEach(it => { if (it.tipo === 'frag' && !tem(it.id) && aberto(regiaoDe(it.x, it.y))) { mctx.fillStyle = '#ffd23f'; mctx.fillRect(it.x * k + 1, it.y * k + 1, k - 2, k - 2); mctx.strokeStyle = '#111'; mctx.strokeRect(it.x * k + 1, it.y * k + 1, k - 2, k - 2); } });
+    mctx.fillStyle = '#c21f3a'; mctx.beginPath(); mctx.arc(S.x * k + k / 2, S.y * k + k / 2, 4, 0, Math.PI * 2); mctx.fill(); mctx.strokeStyle = '#fff'; mctx.lineWidth = 1.5; mctx.stroke();
+  }
+
+  /* ---------- Missões por região ---------- */
+  const falouN = ids => { const n = ids.filter(id => S.falou.includes(id)).length; return n === ids.length ? true : `${n}/${ids.length}`; };
+  const MISSOES = {
+    vila: [['Conversar com Rosa, Davi e Lara', () => falouN(['rosa', 'davi', 'lara'])], ['Ler o pergaminho da vila', () => tem('perg1')], ['Encontrar o fragmento 1', () => tem('frag1')], ['Abrir o portão do bosque', () => aberto('bosque')]],
+    bosque: [['Conversar com Bento e Dona Lu', () => falouN(['bento', 'lu'])], ['Ler o pergaminho do bosque', () => tem('perg2')], ['Encontrar o fragmento 2', () => tem('frag2')], ['Abrir o portão da biblioteca', () => aberto('biblio')]],
+    biblio: [['Conversar com Caio e Nina', () => falouN(['caio', 'nina'])], ['Ler o pergaminho da biblioteca', () => tem('perg3')], ['Encontrar o fragmento 3', () => tem('frag3')], ['Abrir o portão do porto', () => aberto('porto')]],
+    porto: [['Conversar com Joana, Téo e Bia', () => falouN(['joana', 'teo', 'bia'])], ['Ler o pergaminho do porto', () => tem('perg4')], ['Encontrar o fragmento 4', () => tem('frag4')], ['Atravessar a ponte da torre', () => aberto('torre')]],
+    torre: [['Juntar os 4 fragmentos', () => nFrag() >= 4 ? true : `${nFrag()}/4`], ['Vencer o desafio final', () => S.fim]]
+  };
+
+  /* ---------- Painel lateral ---------- */
+  function objetivo() {
+    if (S.fim) return 'Você completou o Vale dos Bits! Pode continuar explorando ou recomeçar.';
+    if (!S.falou.includes('rosa')) return 'Converse com a Prefeita Rosa, na praça da vila.';
+    const prox = Object.values(PORTOES).find(p => !portaoAberto(p));
+    if (prox) {
+      const g = NPCS.find(n => n.id === prox.guardiao);
+      return `Fale com ${g.nome.split(',')[0]} e acerte 3 desafios de ${REGIOES[prox.abre === 'torre' ? 'porto' : ORDEM[ORDEM.indexOf(prox.abre) - 1]].tema.toLowerCase()} para abrir ${REGIOES[prox.abre].nome}.`;
+    }
+    if (nFrag() < 4) return `Encontre os fragmentos que faltam (${nFrag()} de 4) e leve-os ao Robô Guardião da Torre.`;
+    return 'Você tem os 4 fragmentos. Fale com o Robô Guardião da Torre para o desafio final.';
+  }
+  function painel() {
+    $('objetivo').textContent = objetivo();
+    $('frags').innerHTML = [1, 2, 3, 4].map(n => `<span class="${tem('frag' + n) ? 'on' : ''}" aria-label="Fragmento ${n}: ${tem('frag' + n) ? 'encontrado' : 'não encontrado'}">${n}</span>`).join('');
+    $('legenda').innerHTML = ORDEM.map(r => `<span class="${aberto(r) ? '' : 'bloq'}">${aberto(r) ? 'Aberto' : 'Fechado'}: ${REGIOES[r].nome}</span>`).join('');
+    const objs = ITENS.filter(i => i.tipo !== 'frag' && tem(i.id));
+    $('mochila').innerHTML = objs.length ? objs.map(i => `<span class="tag">${i.nome}</span>`).join('') : '<span class="small muted">Vazia por enquanto.</span>';
+    $('dicas').innerHTML = S.dicas.map(d => `<li>${esc(d)}</li>`).join('') || '<li class="muted">Converse com os moradores para ganhar dicas.</li>';
+    $('ndicas').textContent = `(${S.dicas.length})`;
+    $('placar').textContent = S.resp ? `Desafios: ${S.acertos} acertos de primeira em ${S.resp} perguntas.` : 'Nenhum desafio respondido ainda.';
+    const reg = regiaoDe(S.x, S.y), mi = MISSOES[reg];
+    $('missao-tit').textContent = 'Missão: ' + REGIOES[reg].nome;
+    $('missao').innerHTML = mi.map(([txt, f]) => { const v = f(); return `<li class="${v === true ? 'ok' : ''}">${esc(txt)}${typeof v === 'string' ? ' (' + v + ')' : ''}</li>`; }).join('');
+    const temas = Object.entries(S.temas);
+    const min = Math.max(1, Math.round((Date.now() - (S.inicio || Date.now())) / 60000));
+    $('relatorio').innerHTML = `<table class="vb-rel"><tbody>
+      <tr><td>Perguntas respondidas</td><td>${S.resp}</td></tr><tr><td>Acertos</td><td>${S.acertos}</td></tr>
+      <tr><td>Regiões abertas</td><td>${S.abertos.length} de 5</td></tr><tr><td>Dicas no caderno</td><td>${S.dicas.length}</td></tr>
+      <tr><td>Tempo desde o início</td><td>${min} min</td></tr>
+      ${temas.map(([t, v]) => `<tr><td>${esc(t)}</td><td>${v.a} de ${v.r}</td></tr>`).join('')}</tbody></table>
+      ${temas.length ? '' : '<p class="muted" style="margin:6px 0 0">Os acertos por tema aparecem depois do primeiro desafio.</p>'}`;
+    desenhaMini();
+  }
+  function addDica(d) { if (d && !S.dicas.includes(d)) S.dicas.push(d); }
+
+  /* ---------- Diálogos ---------- */
+  const dlg = $('dialogo');
+  let fila = null;
+  const aberta = () => !dlg.hidden;
+  function falar(paginas, depois) { fila = { p: paginas.slice(), depois }; proxima(); }
+  function proxima() {
+    if (!fila) return fechar();
+    const pg = fila.p.shift();
+    if (!pg) { const d = fila.depois; fila = null; fechar(); if (d) d(); return; }
+    dlg.hidden = false;
+    dlg.innerHTML = `<div class="quem">${esc(pg[0])}</div><div class="fala">${esc(pg[1])}</div>
+      <div class="acoes"><button class="btn" type="button" id="vb-ok">${fila.p.length || fila.depois ? 'Continuar' : 'Fechar'}</button></div>`;
+    const b = $('vb-ok'); b.onclick = proxima; b.focus({ preventScroll: true });
+  }
+  function fechar() { dlg.hidden = true; dlg.innerHTML = ''; cv.focus({ preventScroll: true }); painel(); salvar(); }
+
+  /* ---------- Desafios ---------- */
+  const embaralha = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  function desafio(nome, tema, chaveP, meta, aoVencer) {
+    let banco = embaralha(PERGUNTAS[chaveP].slice()), certos = 0;
+    function pergunta() {
+      if (!banco.length) banco = embaralha(PERGUNTAS[chaveP].slice());
+      const [q, ops, c, exp] = banco.shift();
+      const ordem = embaralha(ops.map((o, i) => i));
+      dlg.hidden = false;
+      dlg.innerHTML = `<div class="quem">${esc(nome)}</div><div class="vb-prog">Desafio de ${esc(tema.toLowerCase())}: ${certos} de ${meta} acertos</div>
+        <div class="fala"><strong>${esc(q)}</strong></div>
+        <div class="vb-ops" id="vb-ops">${ordem.map(i => `<button type="button" data-i="${i}">${esc(ops[i])}</button>`).join('')}</div><div id="vb-exp"></div>`;
+      const box = $('vb-ops'); box.querySelector('button').focus({ preventScroll: true });
+      box.onclick = e => {
+        const b = e.target.closest('button'); if (!b || b.disabled) return;
+        const i = +b.dataset.i, ok = i === c;
+        S.resp++; if (ok) { S.acertos++; certos++; }
+        const tm = S.temas[tema] = S.temas[tema] || { r: 0, a: 0 }; tm.r++; if (ok) tm.a++;
+        box.querySelectorAll('button').forEach(x => { x.disabled = true; if (+x.dataset.i === c) x.classList.add('certa'); });
+        if (!ok) b.classList.add('errada');
+        const fim = certos >= meta;
+        $('vb-exp').innerHTML = `<div class="vb-exp ${ok ? 'ok' : 'bad'}" role="status"><strong>${ok ? 'Certo!' : 'Ainda não.'}</strong> ${esc(exp)}</div>
+          <div class="acoes"><button class="btn" type="button" id="vb-nx">${fim ? 'Continuar' : ok ? 'Próximo desafio' : 'Tentar outra pergunta'}</button></div>`;
+        if (!ok) addDica(exp);
+        salvar(); painel();
+        const nx = $('vb-nx'); nx.focus({ preventScroll: true });
+        nx.onclick = () => fim ? aoVencer() : pergunta();
+      };
+    }
+    pergunta();
+  }
+
+  function falaGuardiao(n) {
+    const p = PORTOES[n.guardiao], reg = REGIOES[p.abre];
+    const temaR = p.n === 4 ? REGIOES.porto.tema : REGIOES[ORDEM[ORDEM.indexOf(p.abre) - 1]].tema;
+    const chaveP = p.n === 4 ? 'porto' : ORDEM[ORDEM.indexOf(p.abre) - 1];
+    if (portaoAberto(p)) return falar([[n.nome, `O caminho para ${reg.nome} está aberto. Boa viagem!`]]);
+    if (!S.falou.includes('rosa')) return falar([[n.nome, 'Olá, viajante. Antes de tentar o portão, converse com a Prefeita Rosa, ali na praça.']]);
+    const anteriores = { 1: ['davi', 'lara'], 2: ['bento', 'lu'], 3: ['caio', 'nina'], 4: ['joana', 'teo'] }[p.n];
+    const faltam = anteriores.filter(id => !S.falou.includes(id)).map(id => NPCS.find(x => x.id === id).nome);
+    falar([
+      [n.nome, `Este portão leva a ${reg.nome}. Para abrir, acerte 3 desafios de ${temaR.toLowerCase()}.`],
+      ...(faltam.length ? [[n.nome, `Uma dica: ${faltam.join(' e ')} ${faltam.length > 1 ? 'sabem' : 'sabe'} muito sobre isso. Se quiser, converse antes e volte. Ou tente agora mesmo.`]] : [])
+    ], () => {
+      dlg.hidden = false;
+      dlg.innerHTML = `<div class="quem">${esc(n.nome)}</div><div class="fala">Quer tentar agora?</div>
+        <div class="acoes"><button class="btn ghost" type="button" id="vb-depois">Depois</button><button class="btn" type="button" id="vb-ja">Começar o desafio</button></div>`;
+      $('vb-ja').focus({ preventScroll: true });
+      $('vb-depois').onclick = fechar;
+      $('vb-ja').onclick = () => desafio(n.nome, temaR, chaveP, 3, () => {
+        S.abertos.push(p.abre); salvar(); painel();
+        falar([[n.nome, `Muito bem! O portão está aberto. Seja bem-vinda, bem-vindo a ${reg.nome}.`]], () => mostraRegiao(p.abre));
+      });
+    });
+  }
+
+  function falaFinal(n) {
+    if (S.fim) return falar([[n.nome, 'Algoritmo completo. Obrigado por devolver o Código ao Vale dos Bits!']]);
+    const f = nFrag();
+    if (f < 4) return falar([[n.nome, `BIP. A torre precisa dos 4 fragmentos do Código. Você tem ${f}. Procure nos cantos de cada região: o mapa mostra em amarelo os que ainda faltam.`]]);
+    falar([[n.nome, 'BIP BIP. Quatro fragmentos detectados! Para ligar a torre, mostre que sabe pensar como um algoritmo: acerte 4 desafios.']], () => {
+      desafio(n.nome, 'Algoritmos', 'torre', 4, () => { S.fim = true; salvar(); final(); });
+    });
+  }
+
+  function final() {
+    const pct = S.resp ? Math.round(S.acertos / S.resp * 100) : 100;
+    window.MDP && MDP.registrar('vale-bits', pct);
+    painel();
+    dlg.hidden = false;
+    dlg.innerHTML = `<div class="vb-fim" role="status">
+      <h2>${pct >= 80 ? 'Mestre do Vale!' : pct >= 60 ? 'Jornada completa!' : 'Você chegou lá!'}</h2>
+      <p>A Torre do Algoritmo voltou a funcionar e todo o vale está aberto.</p>
+      <p style="font-size:19px"><b>${S.acertos}</b> acertos de primeira em <b>${S.resp}</b> perguntas (${pct}%).</p>
+      <p class="small">Você passou por informática básica, lógica, dados, internet e segurança e algoritmos.</p>
+      <div class="acoes" style="justify-content:center"><button class="btn ghost" type="button" id="vb-explorar">Continuar explorando</button><button class="btn" type="button" id="vb-denovo">Jogar de novo</button></div></div>`;
+    $('vb-explorar').onclick = fechar;
+    $('vb-denovo').onclick = recomecar;
+    $('vb-denovo').focus({ preventScroll: true });
+  }
+
+  /* ---------- Movimento e interação ---------- */
+  const DIRS = { c: [0, -1], b: [0, 1], e: [-1, 0], d: [1, 0] };
+  let segura = null, regAtual = regiaoDe(S.x, S.y), tReg = null;
+  function mostraRegiao(r) {
+    const el = $('regiao'); el.textContent = REGIOES[r].nome; el.classList.add('on');
+    clearTimeout(tReg); tReg = setTimeout(() => el.classList.remove('on'), 1800);
+  }
+  function tentar(dir) {
+    if (aberta() || anim) return;
+    S.dir = dir;
+    const [dx, dy] = DIRS[dir], nx = S.x + dx, ny = S.y + dy;
+    const npc = NPC_AT[nx + ',' + ny];
+    if (npc) { segura = null; return interagir(npc); }
+    const c = tile(nx, ny);
+    if (c === 'G') { segura = null; const p = Object.values(PORTOES).find(q => q.x === nx && q.y === ny); return interagir(NPCS.find(n => n.id === p.guardiao)); }
+    if (BLOQ.has(c)) return;
+    anim = { fx: S.x, fy: S.y, t: performance.now(), dur: 150 };
+    S.x = nx; S.y = ny;
+    const r = regiaoDe(nx, ny);
+    if (r !== regAtual) { regAtual = r; mostraRegiao(r); painel(); }
+    const it = ITEM_AT[nx + ',' + ny];
+    if (it && !tem(it.id)) { segura = null; setTimeout(() => pegar(it), 160); }
+    salvar(); desenhaMini();
+  }
+  function interagir(n) {
+    if (n.guardiao) return falaGuardiao(n);
+    if (n.final) return falaFinal(n);
+    const primeira = !S.falou.includes(n.id);
+    const paginas = n.falas.map(f => [n.nome, f]);
+    if (!primeira) paginas.splice(0, paginas.length - 1);
+    falar(paginas, () => { if (!S.falou.includes(n.id)) S.falou.push(n.id); addDica(n.dica); painel(); salvar(); });
+  }
+  function pegar(it) {
+    S.itens.push(it.id);
+    if (it.tipo === 'frag') falar([['Você encontrou', `${it.nome}! (${nFrag()} de 4)${nFrag() === 4 ? ' Agora leve todos ao Robô Guardião da Torre.' : ''}`]]);
+    else if (it.tipo === 'perg') { addDica(it.dica); falar([[it.nome, it.dica + ' (Guardado no Caderno de dicas.)']]); }
+    else falar([[it.nome, it.fala]]);
+  }
+
+  const TECLAS = { ArrowUp: 'c', ArrowDown: 'b', ArrowLeft: 'e', ArrowRight: 'd', w: 'c', s: 'b', a: 'e', d: 'd', W: 'c', S: 'b', A: 'e', D: 'd' };
+  document.addEventListener('keydown', e => {
+    if (aberta()) return;
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+    const d = TECLAS[e.key]; if (!d) return;
+    const r = cv.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+    e.preventDefault(); segura = d; tentar(d);
+  });
+  document.addEventListener('keyup', e => { if (TECLAS[e.key] === segura) segura = null; });
+  document.querySelectorAll('.vb-pad button').forEach(b => {
+    b.addEventListener('pointerdown', e => { e.preventDefault(); segura = b.dataset.dir; tentar(segura); });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => { segura = null; }));
+  });
+  // toque no mapa: anda na direção do toque
+  cv.addEventListener('pointerdown', e => {
+    if (aberta()) return;
+    const r = cv.getBoundingClientRect(), tx = (e.clientX - r.left) / r.width * VW + cam.x - .5, ty = (e.clientY - r.top) / r.height * VH + cam.y - .5;
+    const dx = tx - S.x, dy = ty - S.y; if (Math.abs(dx) < .5 && Math.abs(dy) < .5) return;
+    segura = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'e' : 'd') : (dy < 0 ? 'c' : 'b'); tentar(segura);
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => cv.addEventListener(ev, () => { segura = null; }));
+  cv.tabIndex = 0;
+
+  function loop(t) {
+    if (!anim && segura && !aberta()) tentar(segura);
+    render(t);
+    requestAnimationFrame(loop);
+  }
+
+  function recomecar() {
+    S = novo(); regAtual = 'vila'; salvar(); fechar(); inicio();
+  }
+  $('recomecar').onclick = () => { if (confirm('Recomeçar o Vale dos Bits do início? O progresso deste aparelho será apagado.')) recomecar(); };
+
+  function inicio() {
+    painel();
+    if (!S.falou.includes('rosa')) falar([['Vale dos Bits', 'O Código que mantém o vale funcionando se partiu em 4 fragmentos, e os caminhos se fecharam. Explore, converse com os moradores, junte os fragmentos e abra os portões. Comece falando com a Prefeita Rosa, logo à direita.']]);
+    else mostraRegiao(regiaoDe(S.x, S.y));
+  }
+  inicio();
+  requestAnimationFrame(loop);
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
