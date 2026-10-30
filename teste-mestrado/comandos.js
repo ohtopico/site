@@ -58,7 +58,7 @@ const PADROES = [
   ["velocidade", /(fal[ae]|le|leia|ler)( mais)? (rapido|devagar|depressa|lento)|(mais|menos) (rapido|devagar)/],
   ["ler", /^((le|ler|leia|leh)( para mim| pra mim)?( o| a| este| esse| esta| essa| isto| isso| aqui| de novo| a proxima| outra)*( (texto|pagina|livro|documento|placa|papel|carta|rotulo|bula|cardapio|embalagem|aviso|cartaz|receita))?\b|o que (esta )?escrito|proxima pagina)/],
   ["trocarVoz", /^(troca(r)?|muda(r)?|outra) (a |de )?voz/],
-  ["predio", /((que|qual) (e )?(o |a )?(predio|edificio|bloco|loja|construcao|estabelecimento|lugar na rua)( e| eh)?( esse| este| aquele| aqui| a (minha )?frente| na (minha )?frente)|(qual|que) (e )?(esse|este|aquele) (predio|edificio|bloco|loja|lugar)|o que tem (por )?perto( daqui)?|o que tem na rua|onde estou na rua)/],
+  ["predio", /((que|qual) (e )?(o |a )?(predio|edificio|bloco|loja|construcao|estabelecimento|lugar na rua)( e| eh)?( esse| este| aquele| aqui| a (minha )?frente| na (minha )?frente)|(qual|que) (e )?(esse|este|aquele) (predio|edificio|bloco|loja|lugar)|o que tem por perto( daqui)?|o que tem perto daqui|o que tem na rua|onde estou na rua)/],
   ["quantoFalta", /(quanto (falta|tempo falta)|falta muito|onde (eu )?viro|qual (e )?(a )?proxima (curva|instrucao))/],
   ["ondeEstou", /(onde (e que )?(eu )?(estou|to|estamos)\b|onde (e que )?(a gente|nos) (esta|ta|estamos)\b|(em )?que (lugar|sala|comodo|parte|andar) (e )?(esse|este|eu estou|estou|to)|reconhece (o|este|esse) lugar)/],
   ["ambiente", /((descrev[ae]r?|descricao d[eoa]|como e)( (o|a|este|esse|esta|essa|isso|aqui))? ?(ambiente|lugar|sala|local|espaco|comodo|quarto|redor|cenario|aqui|em volta)|o que (voce )?(esta )?(vendo|ve)\b|o que (tem|ha) (a|ao|em) (minha |nossa )?(volta|redor)|me (conta|fala|diz|descreve) (o que (tem|ha|voce ve)|como e)|^descrev[ae]$)/],
@@ -74,7 +74,8 @@ const PADROES = [
   ["parar", /^(parar?|para tudo|cancela(r)?|chega|pronto|achei|obrigad[ao])\b/],
   ["retomar", /^(continua(r)?|retoma(r)?|volta(r)?)\b/],
   ["menu", /^(menu|opcoes|ajuda|comandos|o que (voce )?(sabe|pode) fazer|quais (sao )?(os )?comandos)\b/],
-  ["descrever", /(o que (tem|ha|existe|voce ve|esta)( aqui| na (minha )?frente| ao (meu )?redor| em volta)?|descreve|descreva)/],
+  // "o que tem aqui", "o que que tem aqui", "que que tem", "tem o que aqui", "quais coisas tem aqui"
+  ["descrever", /((^|\bo )que( que| e que)? (tem|ha|existe|voce ve|esta|ta)\b|\btem o que\b|quais (sao )?(os |as )?(objetos|coisas)|\bque (objetos|coisas)\b|descreve|descreva)/],
   ["verificar", /^(sera que )?(aqui |o lugar |a sala |esse lugar |este lugar )?(tem|ha|existe)( algum| alguma| um| uma)? /],
   ["procurar", /(ach[ae]|encontr[ae]|procur[ae]|cade|onde (estava|estavam|esta|estao|fica|ficam|tem|ta)|me (leva|guia) (ate|para|pra)|busc[ae]|localiz[ae])/],
 ];

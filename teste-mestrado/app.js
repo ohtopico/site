@@ -36,7 +36,7 @@ const TUTORIAL = [
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
 // Subir a cada atualização publicada (número do PR): aparece no canto da tela
-const VERSAO = "v47 · 29/10";
+const VERSAO = "v48 · 29/10";
 $("versao").textContent = VERSAO;
 $("versao").setAttribute("aria-label", `Versão ${VERSAO.replace(/^v/, "").replace(" · ", ", de ")}`);
 
@@ -294,7 +294,7 @@ async function laco(agora) {
       d.metros = distanciaPorTamanho(d, video) ?? profundidade?.distanciaDe(d, video) ?? null;
     }
     memoria.registrar(ultimasDeteccoes, video);
-    reconhecedor.aoQuadro(ultimasDeteccoes, video); // não espera: roda em paralelo, no máximo a cada 1,2 s
+    // Pessoas cadastradas só são ditas quando a pessoa pergunta ("quem está aqui"), como os objetos
     gravacao?.aoQuadro(ultimasDeteccoes);
     if (tarefa) {
       if (!tarefa.aoQuadro(ultimasDeteccoes)) tarefa = null;
@@ -413,7 +413,9 @@ function executar(frase) {
         : new Verificar(anunciador, pedido.rotulo, pedido.alvo, profundidade, video);
       return;
     case "descrever":
-      anunciador.falar(descrever(ultimasDeteccoes, profundidade, video), true);
+      // Sem nenhum objeto conhecido à vista, a IA descreve o que houver
+      if (nuvem && !ultimasDeteccoes.some(d => nomeFalado(d.rotulo))) descreverAmbiente();
+      else anunciador.falar(descrever(ultimasDeteccoes, profundidade, video), true);
       return;
     case "ambiente":
       descreverAmbiente();
