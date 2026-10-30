@@ -34,11 +34,16 @@
   .search:focus-within { box-shadow: 5px 5px 0 var(--accent); }
   .search svg { width: 20px; height: 20px; flex: none; }
   .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 17px; padding: 12px 0; }
+  .search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
   .search .clear { border: 0; background: var(--pill); border-radius: 99px; width: 36px; height: 36px; cursor: pointer; font-size: 16px; }
   .quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; font-size: 14px; align-items: center; }
   .quick span { color: var(--ink-2); }
   .quick button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; }
   .quick button:hover { border-style: solid; }
+  .q-res { display: none; margin: 12px 0 0; font-size: 14.5px; font-weight: 600; }
+  .q-res button { border: 0; background: none; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font-size: inherit; font-weight: inherit; }
+  .group-more { display: block; margin: 16px auto 0; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 10px 20px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .group-more:hover { background: var(--pill); }
 
   /* Layout */
   .cat-layout > * { min-width: 0; }
@@ -93,6 +98,15 @@
     .cat-side summary::after { content: '▾'; }
     .cat-side[open] summary::after { content: '▴'; }
     .cat-side[open] summary { border-bottom: 1.5px solid var(--line); margin-bottom: 14px; }
+    /* abas quebram em linhas no celular, em vez de sumir na borda */
+    .tabs { flex-wrap: wrap; border-radius: 20px; width: auto; overflow: visible; }
+    .tabs button { padding: 7px 12px; font-size: 14px; }
+    .q-res { display: block; }
+  }
+  @media (max-width: 560px) {
+    .cat-head { padding: 26px 0 20px; }
+    .cat-head p { font-size: 15px; }
+    .quick { margin-top: 10px; }
   }
   /* Índice completo (lista estática, também para buscadores) */
   .indice { margin-top: 24px; margin-bottom: 56px; }
@@ -127,10 +141,11 @@
     <div class="search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
       <label class="sr-only" for="q">Buscar materiais</label>
-      <input id="q" type="search" placeholder="Busque um tema ou código da BNCC" autocomplete="off">
+      <input id="q" type="search" placeholder="Tema ou código da BNCC" autocomplete="off">
       <button class="clear" type="button" id="q-clear" aria-label="Limpar busca" hidden>✕</button>
     </div>
     <div class="quick" id="quick"><span>Experimente:</span></div>
+    <p class="q-res" id="q-res" hidden></p>
   </div>
 </section>
 
@@ -185,6 +200,7 @@
           <li><a href="jogos/vale-bits.html">Vale dos Bits</a></li>
           <li><a href="jogos/vila-cidada.html">Vila Cidadã</a></li>
           <li><a href="jogos/cidade-blocos.html">Cidade em Blocos</a></li>
+          <li><a href="jogos/sitio-binario.html">Sítio Binário</a></li>
         </ul>
         <h4>Recursos 3D</h4>
         <ul data-comp="CO" data-tipo="3d">
@@ -319,6 +335,9 @@
   $('#quick').innerHTML += QUICK.map(t => `<button type="button" data-q="${t}">${t}</button>`).join('');
 
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  // singular e plural acham o mesmo material: "fracao" e "fracoes" viram "frac"
+  const FINAIS = ['oes', 'aes', 'ao', 'ais', 'eis', 'es', 's'];
+  const raiz = w => { const f = FINAIS.find(f => w.endsWith(f) && w.length - f.length >= 4); return f ? w.slice(0, -f.length) : w; };
   function matches(r, skip) {
     if (skip !== 'comp' && state.comp !== 'todos' && !r.comp.includes(state.comp)) return false;
     if (skip !== 'ano' && state.ano && !r.anos.includes(state.ano)) return false;
@@ -327,7 +346,7 @@
     if (state.hab && !r.habs.includes(state.hab)) return false;
     if (state.q) {
       const hay = norm([r.titulo, r.resumo, ...r.habs, ...r.habs.map(c => HAB[c] ? HAB[c].objeto + ' ' + HAB[c].texto : '')].join(' '));
-      if (!norm(state.q).split(/\s+/).filter(Boolean).every(w => hay.includes(w))) return false;
+      if (!norm(state.q).split(/\s+/).filter(Boolean).every(w => hay.includes(raiz(w)))) return false;
     }
     return true;
   }
@@ -367,19 +386,25 @@
   function results() {
     const list = RECURSOS.filter(r => matches(r));
     $('#count').textContent = list.length === 1 ? '1 material' : `${list.length} materiais`;
+    // celular: com o teclado aberto os resultados ficam fora da tela, então o total aparece junto da busca
+    $('#q-res').hidden = !state.q;
+    $('#q-res').innerHTML = state.q ? (list.length ? `${list.length === 1 ? '1 material encontrado' : list.length + ' materiais encontrados'} · <button type="button" id="q-ir">ver resultados ↓</button>` : 'Nenhum material com essa busca.') : '';
     if (!list.length) {
       $('#results').innerHTML = `<div class="empty"><span class="big">🔍</span>Nenhum material com esses filtros ainda.<br><button class="reset" type="button" data-clear="all">Limpar filtros</button></div>`;
       return;
     }
     const grid = arr => `<div class="rc-grid">${arr.map(r => mdCard(r, { codeButtons: true })).join('')}</div>`;
     if (state.tipo !== 'todos' || list.length <= 6) { $('#results').innerHTML = grid(list); return; }
+    // em "Todos", cada tipo mostra só os primeiros; o resto fica a um clique
+    const POR_GRUPO = 6;
     $('#results').innerHTML = ['jogo', '3d', 'ficha', 'plano', 'lista'].map(t => {
       const arr = list.filter(r => r.tipo === t);
       if (!arr.length) return '';
+      const mais = arr.length > POR_GRUPO ? `<button class="group-more" type="button" data-k="tipo" data-v="${t}">Ver ${t === 'ficha' || t === 'lista' ? 'todas as' : 'todos os'} ${arr.length} ${TIPOS[t].plural.charAt(0).toLowerCase() + TIPOS[t].plural.slice(1)} →</button>` : '';
       return `<section class="group">
         <div class="group-head"><h2>${TIPOS[t].icone} ${TIPOS[t].plural}<span class="n">${arr.length}</span></h2>
         <button type="button" data-k="tipo" data-v="${t}">Ver só ${TIPOS[t].plural.toLowerCase()}</button></div>
-        ${grid(arr)}
+        ${grid(arr.slice(0, POR_GRUPO))}${mais}
       </section>`;
     }).join('');
   }
@@ -423,6 +448,9 @@
     }
   });
   let t; $('#q').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 150); });
+  const irResultados = () => { $('#q').blur(); window.scrollTo({ top: $('.cat-layout').offsetTop - 70, behavior: 'smooth' }); };
+  $('#q').addEventListener('keydown', e => { if (e.key === 'Enter') { clearTimeout(t); state.q = e.target.value.trim(); render(); irResultados(); } });
+  $('#q-res').addEventListener('click', e => { if (e.target.closest('#q-ir')) irResultados(); });
   $('#q-clear').onclick = () => { state.q = ''; $('#q').value = ''; render(); $('#q').focus(); };
 
   // filtros abertos no computador, recolhidos no celular

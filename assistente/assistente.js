@@ -255,6 +255,14 @@
         '</section>';
 
     const abrir = raiz.querySelector('.assist-abrir');
+    // rolando para baixo o botão sai da frente do conteúdo; volta ao rolar para cima ou no fim da página
+    let ultimoY = scrollY;
+    addEventListener('scroll', () => {
+        const y = scrollY, fim = y + innerHeight >= document.documentElement.scrollHeight - 40;
+        if (Math.abs(y - ultimoY) < 8) return;
+        abrir.classList.toggle('recolhido', y > ultimoY && y > 160 && !fim);
+        ultimoY = y;
+    }, { passive: true });
     const painel = raiz.querySelector('.assist-painel');
     const conversa = raiz.querySelector('.assist-conversa');
     const form = raiz.querySelector('.assist-form');

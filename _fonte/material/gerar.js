@@ -186,7 +186,7 @@ let BASE_LOCAL = '';
 /* ---------- planos, fichas e listas ---------- */
 const DESC_TIPO = { plano: 'Plano de aula', ficha: 'Ficha para imprimir', lista: 'Lista de exercícios com gabarito' };
 const NOME_TIPO = { plano: 'Plano de aula', ficha: 'Ficha para imprimir', lista: 'Lista de exercícios' };
-const MIGALHA_TIPO = { plano: ['Área do professor', 'professor.html'], ficha: ['Fichas', 'catalogo.html?tipo=ficha'], lista: ['Listas', 'catalogo.html?tipo=lista'] };
+const MIGALHA_TIPO = { plano: ['Planos de aula', 'catalogo.html?tipo=plano'], ficha: ['Fichas', 'catalogo.html?tipo=ficha'], lista: ['Listas', 'catalogo.html?tipo=lista'] };
 const ALVO = { plano: [['#doc', 'main']], ficha: [['#fichas', 'main'], ['#gab', 'div']], lista: [['#doc', 'main']] };
 
 function paginaEstatica(fonte, r, html) {
@@ -472,8 +472,8 @@ async function jogosE3d(browser) {
     t = t.replace(/<title>[^<]*<\/title>/, `<title>${esc(novoTitulo)}</title>`)
       .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(novoTitulo)}$2`);
     const url = `${SITE}/material-didatico/${r.url}`;
-    // recurso 3D com imagem própria (gerada por _fonte/og/gerar.js) usa a dele; os outros, a imagem do tipo
-    const propria = r.tipo === '3d' && r.url.replace(/^3d\/([\w-]+)\.html$/, '3d/img/og-$1.jpg');
+    // recurso 3D ou jogo com imagem própria (gerada por _fonte/og/gerar.js) usa a dele; os outros, a imagem do tipo
+    const propria = r.url.replace(/^(jogos|3d)\/([\w-]+)\.html$/, '$1/img/og-$2.jpg');
     const img = `${SITE}/material-didatico/${propria && fs.existsSync(path.join(MD, propria)) ? propria : OG[r.tipo]}`;
     const dados = [recursoLD(r, url, img), migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`],
       r.tipo === 'jogo' ? ['Jogos', `${SITE}/material-didatico/jogos/`] : ['Laboratório 3D', `${SITE}/material-didatico/catalogo.html?tipo=3d`], [r.titulo, url]])];
@@ -578,6 +578,14 @@ async function main() {
       const t = paginaHubComputacao();
       if (escrever(path.join(MD, HUB_CO, 'index.html'), t)) novas++;
       sitemap.push([`${SITE}/material-didatico/${HUB_CO}`, hash(t)]);
+    }
+    // números da página inicial do material escritos no HTML: a página não precisa carregar listas.js só para contar
+    {
+      const f = path.join(MD, 'index.html');
+      const n = t => D.RECURSOS.filter(r => r.tipo === t).length;
+      const stats = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
+        .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
+      if (escrever(f, blocoMarcado(ler(f), 'stats', stats, x => x))) novas++;
     }
     const jogos = await jogosE3d(browser);
     const sims = await simuladores(browser);

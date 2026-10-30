@@ -27,6 +27,10 @@
   .strip .lab { font-family: var(--body); font-size: 12px; font-weight: 600; text-align: left; color: var(--ink-2); border: 0; padding-left: 2px; align-self: center; }
   .strip .top { background: var(--paper); border-top: 1.5px solid var(--ink); }
   .strip .bot { background: var(--accent-soft); color: var(--accent); border-bottom: 1.5px solid var(--ink); }
+  /* celular: a régua vira duas linhas de 13 letras, sem rolagem escondida */
+  .strip.meia { display: none; grid-template-columns: 58px repeat(13, minmax(0, 1fr)); min-width: 0; font-size: 14px; }
+  .strip.meia + .strip.meia { margin-top: 8px; }
+  @media (max-width: 760px) { .strip.inteira { display: none; } .strip.meia { display: grid; } }
   .keyrow { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
   .keyrow input[type=range] { flex: 1; min-width: 180px; accent-color: var(--accent); }
   .keyrow output { font-family: var(--display); font-size: 28px; min-width: 40px; text-align: center; }
@@ -50,10 +54,12 @@
 <header id="topbar"></header>
 <main class="wrap">
   <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="crumbs no-print"><a href="../jogos/">← Jogos</a></div>
       <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">9º ano</span><span class="tag">⏱ 15–20 min</span></div>
       <h1>Detetive da Cifra</h1>
       <p class="muted" style="max-width:720px">Decifre mensagens com a Cifra de César, descubra chaves escondidas e entenda por que ela é fácil de quebrar.</p>
-      <div class="tags"><a class="tag code co" href="../bncc/ef09co05/" title="EF09CO05 — Analisar técnicas de criptografia para armazenamento e transmissão de dados.">EF09CO05</a></div><!-- cab: fim --></div>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co05/" title="EF09CO05 — Analisar técnicas de criptografia para armazenamento e transmissão de dados.">EF09CO05</a></div>
+      <div class="game-acoes no-print"><a class="btn ghost" href="../planos/segredos-codigo-criptografia/">📋 Plano de aula</a><a class="btn ghost" href="../fichas/disco-cifra-cesar/">🖨️ Ficha para imprimir</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como jogar</summary>
     <p>Na <strong>Cifra de César</strong>, cada letra é trocada pela letra que está algumas posições à frente no alfabeto. Esse número de posições é a <strong>chave</strong>. Com chave 3, A vira D, B vira E… e Z volta para C.</p>
@@ -142,10 +148,11 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cifra');
   let i = 0, key = 3, pts = 0, tentativas = 0;
 
   function strip() {
-    return `<div class="strip-wrap"><div class="strip" aria-hidden="true">
-      <span class="lab">normal</span>${AB.split('').map(c => `<span class="top">${c}</span>`).join('')}
-      <span class="lab">cifrado</span>${AB.split('').map((c, j) => `<span class="bot">${AB[(j + key) % 26]}</span>`).join('')}
-    </div></div>`;
+    const linha = (de, ate, cls) => `<div class="strip ${cls}" aria-hidden="true">
+      <span class="lab">normal</span>${AB.slice(de, ate).split('').map(c => `<span class="top">${c}</span>`).join('')}
+      <span class="lab">cifrado</span>${AB.slice(de, ate).split('').map((c, j) => `<span class="bot">${AB[(de + j + key) % 26]}</span>`).join('')}
+    </div>`;
+    return `<div class="strip-wrap">${linha(0, 26, 'inteira')}${linha(0, 13, 'meia')}${linha(13, 26, 'meia')}</div>`;
   }
 
   function render() {
@@ -169,7 +176,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cifra');
       </div>
       <div id="strip">${strip()}</div>
       <form class="answer" id="form">
-        ${d.f === 2 ? '' : `<label class="sr-only" for="ans">Resposta</label><input id="ans" autocomplete="off" placeholder="${d.f === 3 ? 'Mensagem cifrada' : 'Mensagem decifrada'}">`}
+        ${d.f === 2 ? '' : `<label class="sr-only" for="ans">Resposta</label><input id="ans" autocomplete="off" placeholder="Sua resposta">`}
         <button class="btn" type="submit">${d.f === 2 ? 'É essa a chave!' : 'Conferir'}</button>
       </form>
       <p class="feedback" id="fb" role="status"></p>`;

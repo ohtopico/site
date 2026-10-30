@@ -80,5 +80,5 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
   .minimapa { bottom: 96px; right: 10px; padding: 5px; } .minimapa canvas { width: 120px; height: 80px; } .minimapa p { display: none; }
   .teclas { display: none; }
   .aviso { top: auto; bottom: 300px; font-size: 16px; padding: 10px 18px; }
-  .toque .dpad { bottom: 96px; width: 150px; height: 150px; } .toque .acoes { bottom: 190px; right: 140px; grid-auto-flow: column; }
+  .toque .dpad { bottom: 96px; width: 150px; height: 150px; } .toque .acoes { bottom: 215px; right: 14px; }
 }

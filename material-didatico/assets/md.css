@@ -351,3 +351,17 @@ a.hab-baixar:hover { opacity: .88; }
 .hab-mais a { color: var(--ink); }
 .area-rodape { margin: 0; color: var(--ink-2); }
 @media (max-width: 560px) { .hab-n { display: none; } .hab-area summary { gap: 8px; } .hab-corpo { padding-left: 0; } a.hab-baixar { padding: 4px 10px; } }
+
+/* Cartões mais baixos no celular: capa curta e resumo em duas linhas */
+@media (max-width: 560px) {
+  .rc-cover { height: 58px; }
+  .rc-type, .rc-time { top: 14px; }
+  .rc-icon { top: 50%; width: 42px; height: 42px; font-size: 22px; }
+  .rc-body { padding: 12px 16px 14px; gap: 6px; }
+  .rc h3 { font-size: 18px; }
+  .rc p { -webkit-line-clamp: 2; }
+  .rc-foot { padding-top: 4px; }
+}
+a.chip { display: inline-flex; align-items: center; color: var(--ink); text-decoration: none; }
+.game-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.game-acoes .btn { min-height: 38px; padding: 6px 14px; font-size: 14px; }
