@@ -22,24 +22,6 @@
       "legenda": "Dados, pesquisa e sala de aula: a linha do tempo resumida, com anos e instituições."
     },
     {
-      "slug": "formacao-continuada-professores-ia",
-      "titulo": "Como começar a formação em IA na escola: roteiro em 4 etapas",
-      "titulo_seo": "Formação em IA na escola: roteiro em 4 etapas",
-      "descricao": "Roteiro em 4 etapas para a escola começar a formar os professores em inteligência artificial, a partir de um diagnóstico rápido da equipe.",
-      "palavras_chave": [
-        "formação continuada para professores em IA",
-        "formação de professores",
-        "IA na educação"
-      ],
-      "secao": "Formação de professores em IA",
-      "data": "2026-10-24",
-      "arquivo_janela": "diagnostico.doc",
-      "imagem": "dia02-diagnostico.png",
-      "imagem_depois_de": "</ol>",
-      "alt": "Cartão para enviar à equipe antes do primeiro encontro, com as mesmas 5 perguntas de diagnóstico da lista acima e a frase: as respostas dizem a primeira tarefa.",
-      "legenda": "Salve o cartão e mande para a equipe antes do primeiro encontro."
-    },
-    {
       "slug": "prompts-para-professores-planejar-aulas",
       "titulo": "5 prompts prontos para planejar aulas com IA",
       "titulo_seo": "5 prompts para professores planejarem aulas",
@@ -423,6 +405,13 @@
       "imagem_antes": true,
       "alt": "Cartão O interesse por IA na Wikipédia, com três destaques: 2,9 vezes, o verbete Inteligência artificial teve 274 mil visitas em 2023, quase o triplo de 2022; 9 milhões de visitas ao verbete ChatGPT desde o lançamento, em dezembro de 2022; 2,8 vezes, Modelos de linguagem em grande escala passou de 6,3 mil visitas em 2023 para 17,5 mil em 2025. Rodapé: painel interativo, jogo e plano de aula em ohtopico.com.br/interesse-por-ia. Wikipédia em português, só visitas de pessoas, dados abertos da Wikimedia até setembro de 2026. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.",
       "legenda": "Três destaques do painel de interesse por IA."
+    }
+  ],
+  "movidos": [
+    {
+      "slug": "formacao-continuada-professores-ia",
+      "para": "/formacao-continuada/#diagnostico",
+      "motivo": "Juntado à página de formação continuada (mesmo tema, mesma busca), out/2026"
     }
   ]
 }

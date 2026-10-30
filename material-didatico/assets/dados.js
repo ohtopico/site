@@ -410,7 +410,7 @@ const RECURSOS = [
     habs: ['EF07MA03', 'EF07MA04'], tempo: '10–15 min',
     resumo: 'Andares positivos, térreo zero e subsolos negativos: o elevador faz somas e subtrações de inteiros, inclusive subtrair negativos.',
     url: '3d/elevador.html', plano: null, ficha: null },
-  { id: '3d-balanca', tipo: '3d', titulo: 'Balança 3D das Equações', comp: ['MA'], anos: [6, 7],
+  { id: '3d-balanca', tipo: '3d', titulo: 'Equações na Balança 3D', comp: ['MA'], anos: [6, 7],
     habs: ['EF06MA14', 'EF07MA18'], tempo: '15 min',
     resumo: 'Tire pesos iguais dos dois pratos ou divida os dois lados para isolar a caixa x sem desequilibrar a balança.',
     url: '3d/balanca.html', plano: null, ficha: null },
@@ -1745,7 +1745,7 @@ const PLANOS = {
     "materiais": [
       "Ficha “Envelopes na balança: equações”",
       "Envelopes pequenos e clipes",
-      "Dispositivos com a Balança 3D das Equações"
+      "Dispositivos com a Equações na Balança 3D"
     ],
     "etapas": [
       [
