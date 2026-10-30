@@ -44,6 +44,7 @@ const IMAGENS = [
     ['mips', 'Mini', 'MIPS', 'Assembly MIPS passo a passo: registradores, memória e formatos R, I e J', ['Assembly', 'Registradores', 'Ciclo da instrução'], '/simuladores/mips.html'],
     ['pipeline-mips', 'Pipeline', 'MIPS', 'As cinco etapas do pipeline, conflitos e adiantamento, ciclo a ciclo', ['Pipeline', 'Conflitos', 'Adiantamento'], '/simuladores/pipeline-mips.html'],
     ['placa-mae', 'Placa-mãe', 'em 3D', 'Gire a placa e descubra o que faz cada componente do computador', ['Processador', 'Memória', 'Barramentos'], '/simuladores/placa-mae.html'],
+    ['cpu-por-dentro', 'CPU por', 'dentro', 'O caminho de dados do MIPS em 3D, com a instrução viajando pelo pipeline', ['Caminho de dados', 'Pipeline', '3D'], '/simuladores/cpu-por-dentro.html'],
     ['proxima-palavra', 'A próxima', 'palavra', 'Como um modelo de linguagem escolhe a próxima palavra: probabilidade e temperatura', ['IA generativa', 'Probabilidade', 'Temperatura'], '/simuladores/proxima-palavra.html'],
     ['rede-neural', 'Rede neural', 'treinando', 'Taxa de aprendizado, lote, camadas e sobreajuste, ao vivo', ['Aprendizado de máquina', 'Sobreajuste', 'Ao vivo'], '/simuladores/rede-neural.html'],
     ['regressao', 'Regressão', 'linear', 'Ajuste a reta, veja o erro e faça previsões com os seus pontos', ['Mínimos quadrados', 'Erro', 'Previsão'], '/simuladores/regressao.html'],
