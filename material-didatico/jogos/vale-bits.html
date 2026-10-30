@@ -73,6 +73,10 @@
   .vb-conqs li.on .med { border: 2px solid #111; background: #ffd23f; color: #111; }
   .vb-conqs li:not(.on) strong { color: var(--ink-2); }
   .vb-conqs span.d { display: block; color: var(--ink-3); }
+  .vb-mini-btns .btn { min-height: 38px; padding: 6px 14px; font-size: 14px; }
+  .vb-cod { width: 100%; box-sizing: border-box; font-family: ui-monospace, Consolas, monospace; font-size: 12px; border: 1.5px solid var(--line); border-radius: 10px; padding: 6px 8px; background: var(--paper-2); color: var(--ink); resize: vertical; }
+  .vb-destaque { outline: 4px solid #ffd23f; outline-offset: 3px; }
+  .vb-dialogo .passo { font-size: 13px; color: #4a4a4a; margin-bottom: 2px; }
   .vb-mochila { display: flex; flex-wrap: wrap; gap: 6px; }
   .vb-controles { display: none; margin-top: 12px; justify-content: center; }
   .vb-pad { display: grid; grid-template-columns: repeat(3, 58px); grid-template-rows: repeat(2, 58px); gap: 6px; }
@@ -123,7 +127,18 @@
         <div class="vb-box"><h2>Mochila</h2><div class="vb-mochila tags" id="mochila"></div></div>
         <details class="vb-box" id="conquistas"><summary><strong>Conquistas</strong> <span class="muted small" id="nconq"></span></summary><ul class="vb-conqs" id="lista-conq"></ul></details>
         <details class="vb-box" id="caderno"><summary><strong>Caderno de dicas</strong> <span class="muted small" id="ndicas"></span></summary><ol class="vb-dicas" id="dicas"></ol></details>
-        <div class="vb-box"><p class="small muted" id="placar"></p><details style="margin-top:8px"><summary class="small"><strong>Relatório para o professor</strong></summary><div id="relatorio" class="small" style="margin-top:6px"></div></details><div class="btn-row" style="margin-top:8px"><button class="btn ghost" type="button" id="recomecar" style="min-height:38px;padding:6px 14px;font-size:14px">Recomeçar</button></div></div>
+        <div class="vb-box"><p class="small muted" id="placar"></p><details style="margin-top:8px"><summary class="small"><strong>Relatório para o professor</strong></summary><div id="relatorio" class="small" style="margin-top:6px"></div></details></div>
+        <div class="vb-box" id="box-salvar"><h2>Progresso</h2><p class="small muted" id="salvo">O jogo salva sozinho a cada passo.</p>
+          <div class="btn-row vb-mini-btns" style="margin-top:8px"><button class="btn" type="button" id="salvar">Salvar</button><button class="btn ghost" type="button" id="ver-tutorial">Tutorial</button><button class="btn ghost" type="button" id="recomecar">Recomeçar</button></div>
+          <details style="margin-top:10px"><summary class="small"><strong>Continuar em outro aparelho</strong></summary>
+            <p class="small" style="margin:6px 0">Copie este código e cole no outro aparelho, no campo abaixo.</p>
+            <textarea id="codigo" class="vb-cod" rows="3" readonly aria-label="Código do seu progresso"></textarea>
+            <div class="btn-row vb-mini-btns" style="margin:6px 0 10px"><button class="btn ghost" type="button" id="copiar">Copiar código</button></div>
+            <label class="small" for="colar"><strong>Tem um código?</strong> Cole aqui:</label>
+            <textarea id="colar" class="vb-cod" rows="2"></textarea>
+            <div class="btn-row vb-mini-btns" style="margin-top:6px"><button class="btn ghost" type="button" id="carregar">Carregar código</button></div>
+            <p class="small" id="cod-msg" role="status" style="margin:6px 0 0"></p>
+          </details></div>
       </aside>
     </div>
   </div>
@@ -299,7 +314,10 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
   const novo = () => ({ x: 5, y: 12, dir: 'b', abertos: ['vila'], itens: [], dicas: [], falou: [], acertos: 0, resp: 0, fim: false, visto: ['vila'], temas: {}, inicio: Date.now(), conq: [], passos: 0, seq: 0, melhorSeq: 0, limpo: false, recuperou: false, errou: false });
   let S;
   try { S = Object.assign(novo(), JSON.parse(localStorage.getItem(CHAVE) || 'null') || {}); } catch (e) { S = novo(); }
-  const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) {} };
+  let salvoOk = true;
+  const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(S)); salvoOk = true; } catch (e) { salvoOk = false; } };
+  const hora = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const codigo = () => 'VB1-' + btoa(unescape(encodeURIComponent(JSON.stringify(S))));
   const aberto = r => S.abertos.includes(r);
   const tem = id => S.itens.includes(id);
   const nFrag = () => ITENS.filter(i => i.tipo === 'frag' && tem(i.id)).length;
@@ -544,8 +562,9 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     if (!pg) { const d = fila.depois; fila = null; fechar(); if (d) d(); return; }
     dlg.hidden = false;
     dlg.innerHTML = `<div class="quem">${esc(pg[0])}</div><div class="fala">${esc(pg[1])}</div>
-      <div class="acoes"><button class="btn" type="button" id="vb-ok">${fila.p.length || fila.depois ? 'Continuar' : 'Fechar'}</button></div>`;
+      <div class="acoes">${fila.p.length ? '<button class="btn ghost" type="button" id="vb-pular">Pular conversa</button>' : ''}<button class="btn" type="button" id="vb-ok">${fila.p.length || fila.depois ? 'Continuar' : 'Fechar'}</button></div>`;
     const b = $('vb-ok'); b.onclick = proxima; b.focus({ preventScroll: true });
+    if ($('vb-pular')) $('vb-pular').onclick = () => { fila.p = []; proxima(); };
   }
   function fechar() { dlg.hidden = true; dlg.innerHTML = ''; cv.focus({ preventScroll: true }); painel(); salvar(); }
 
@@ -708,8 +727,57 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
   }
   $('recomecar').onclick = () => { if (confirm('Recomeçar o Vale dos Bits do início? O progresso deste aparelho será apagado.')) recomecar(); };
 
+  const TUTORIAL = [
+    ['Bem-vinda, bem-vindo ao Vale dos Bits', 'O Código que mantém o vale funcionando se partiu em 4 fragmentos, e os caminhos se fecharam. Sua missão é explorar, abrir os portões e levar os fragmentos até a Torre do Algoritmo.', null],
+    ['Como andar', 'No computador, use as setas ou as teclas W, A, S e D. No celular, use os botões de direção abaixo do mapa ou toque no mapa para o lado que quer ir.', '.vb-tela'],
+    ['Como conversar', 'Ande na direção de uma pessoa para conversar. O "!" mostra quem você ainda não ouviu. O "?" marca os guardiões dos portões. Se quiser, use "Pular conversa".', '.vb-tela'],
+    ['Portões e desafios', 'Cada guardião pede 3 respostas certas. Se errar, você vê a explicação e recebe outra pergunta. As dicas dos moradores e as explicações ficam guardadas no Caderno de dicas.', '#caderno'],
+    ['Itens', 'Procure os 4 fragmentos do Código (losangos amarelos), os pergaminhos com dicas e alguns objetos escondidos. Os fragmentos que faltam aparecem em amarelo no mapa do vale.', '#frags'],
+    ['Objetivo e missões', 'O painel mostra o que fazer agora e a lista de missões da região onde você está. Complete tudo para ganhar conquistas.', '#objetivo'],
+    ['Salvar', 'O jogo salva sozinho neste aparelho. O botão Salvar confirma na hora e gera um código para continuar em outro aparelho. Este tutorial pode ser visto de novo no botão Tutorial.', '#box-salvar']
+  ];
+  function tutorial(i) {
+    document.querySelectorAll('.vb-destaque').forEach(e => e.classList.remove('vb-destaque'));
+    if (i >= TUTORIAL.length) { S.tutorial = true; salvar(); fechar(); return comecar(); }
+    const [tit, txt, alvo] = TUTORIAL[i];
+    if (alvo) { const el = document.querySelector(alvo); const box = el && (el.closest('.vb-box') || el); if (box) box.classList.add('vb-destaque'); }
+    dlg.hidden = false;
+    dlg.innerHTML = `<div class="passo">Tutorial: passo ${i + 1} de ${TUTORIAL.length}</div><div class="quem">${esc(tit)}</div><div class="fala">${esc(txt)}</div>
+      <div class="acoes"><button class="btn ghost" type="button" id="vb-skip">Pular tutorial</button>${i ? '<button class="btn ghost" type="button" id="vb-volta">Voltar</button>' : ''}<button class="btn" type="button" id="vb-ok">${i + 1 < TUTORIAL.length ? 'Próximo' : 'Começar a jogar'}</button></div>`;
+    $('vb-ok').onclick = () => tutorial(i + 1); $('vb-ok').focus({ preventScroll: true });
+    $('vb-skip').onclick = () => tutorial(TUTORIAL.length);
+    if ($('vb-volta')) $('vb-volta').onclick = () => tutorial(i - 1);
+  }
+  function comecar() {
+    if (!S.falou.includes('rosa')) falar([['Vale dos Bits', 'Comece falando com a Prefeita Rosa, logo à direita.']]);
+    else mostraRegiao(regiaoDe(S.x, S.y));
+  }
+  $('ver-tutorial').onclick = () => { if (!aberta()) tutorial(0); };
+  $('salvar').onclick = () => {
+    salvar();
+    $('salvo').textContent = salvoOk ? `Progresso salvo neste aparelho às ${hora()}.` : 'Este navegador não deixou salvar. Use o código abaixo para guardar o progresso.';
+    $('codigo').value = codigo();
+  };
+  $('box-salvar').querySelector('details').addEventListener('toggle', e => { if (e.target.open) $('codigo').value = codigo(); });
+  $('copiar').onclick = () => {
+    $('codigo').value = codigo(); $('codigo').select();
+    const ok = () => { $('cod-msg').textContent = 'Código copiado.'; };
+    (navigator.clipboard ? navigator.clipboard.writeText($('codigo').value).then(ok, () => { document.execCommand('copy'); ok(); }) : (document.execCommand('copy'), ok()));
+  };
+  $('carregar').onclick = () => {
+    const v = $('colar').value.trim();
+    try {
+      if (!v.startsWith('VB1-')) throw 0;
+      const d = JSON.parse(decodeURIComponent(escape(atob(v.slice(4)))));
+      if (typeof d.x !== 'number' || !Array.isArray(d.abertos)) throw 0;
+      S = Object.assign(novo(), d); regAtual = regiaoDe(S.x, S.y); salvar(); fechar();
+      $('cod-msg').textContent = 'Progresso carregado.'; $('colar').value = ''; mostraRegiao(regAtual);
+    } catch (e) { $('cod-msg').textContent = 'Código inválido. Confira se copiou o código inteiro, começando por VB1-.'; }
+  };
+
   function inicio() {
     painel();
+    if (!S.tutorial && !S.falou.includes('rosa')) return tutorial(0);
     if (!S.falou.includes('rosa')) falar([['Vale dos Bits', 'O Código que mantém o vale funcionando se partiu em 4 fragmentos, e os caminhos se fecharam. Explore, converse com os moradores, junte os fragmentos e abra os portões. Comece falando com a Prefeita Rosa, logo à direita.']]);
     else mostraRegiao(regiaoDe(S.x, S.y));
   }
