@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treino de rede neural · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador de treino de rede neural no navegador: escolha a taxa de aprendizado, o tamanho do lote, as camadas, a regularização e a seed, e acompanhe as curvas de treino e validação para ver o sobreajuste acontecer.">
+<meta property="og:title" content="Treino de rede neural | ohtopico">
+<meta property="og:description" content="Uma rede neural pequena treinando ao vivo: taxa de aprendizado, lote, camadas, seed e sobreajuste.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/rede-neural.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/rede-neural.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .rn-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .rn-layout { grid-template-columns: minmax(0, 1fr); } }
+  .rn-layout > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  .ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  .ctrl input[type=range] { width: 100%; accent-color: var(--accent); }
+  .ctrl output { font-family: var(--display); font-size: 16px; color: var(--ink); }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+  .btns button { font: inherit; font-size: 14.5px; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 7px 14px; cursor: pointer; color: var(--ink); }
+  .btns button.primary { background: var(--ink); color: var(--paper); min-width: 120px; }
+  .btns button:hover { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
+  .btns button:disabled { opacity: .45; cursor: wait; box-shadow: none; transform: none; }
+  .mapa-wrap { position: relative; width: 100%; max-width: 440px; margin: 0 auto; aspect-ratio: 1; border: 1.5px solid var(--ink); border-radius: 12px; overflow: hidden; }
+  .mapa-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #fundo { image-rendering: auto; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 8px; justify-content: center; }
+  .legend i { display: inline-block; width: 12px; height: 12px; vertical-align: middle; margin-right: 4px; border: 2px solid var(--ink); }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+  .metric { border: 1.5px solid var(--line); border-radius: 14px; padding: 7px 10px; background: var(--paper); }
+  .metric span { display: block; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+  .metric b { font-family: var(--display); font-size: 20px; line-height: 1.2; }
+  .metric.key { border-color: var(--ink); }
+  .chart { width: 100%; height: auto; display: block; }
+  .chart text { font-family: var(--body); fill: var(--ink-2); font-size: 11px; }
+  .chart .axis { stroke: var(--ink); stroke-width: 1.5; }
+  .chart .grid { stroke: var(--line); }
+  .chart .tr { fill: none; stroke: var(--ink); stroke-width: 2.2; }
+  .chart .va { fill: none; stroke: var(--bad); stroke-width: 2.2; stroke-dasharray: 6 4; }
+  .chart .best { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 2 3; }
+  .lg2 { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+  .lg2 i { display: inline-block; width: 20px; height: 0; border-top: 2.5px solid; vertical-align: middle; margin-right: 4px; }
+  .aviso { border-left: 4px solid var(--bad); background: var(--bad-soft); border-radius: 0 12px 12px 0; padding: 10px 12px; font-size: 14.5px; margin: 10px 0 0; }
+  .aviso.ok { border-left-color: var(--accent); background: var(--accent-soft); }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; align-items: center; font-size: 14px; }
+  .presets button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; color: var(--ink); }
+  .presets button:hover { border-style: solid; }
+  .arq { font-family: ui-monospace, Consolas, monospace; font-size: 13.5px; color: var(--ink-2); margin: 8px 0 0; }
+  .note-small { font-size: 14px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim">
+    <div class="presets" id="experimentos"><span class="muted">Experimentos prontos:</span></div>
+    <div class="rn-layout">
+      <div>
+        <div class="box">
+          <h3>O que a rede aprendeu</h3>
+          <div class="mapa-wrap"><canvas id="fundo" width="60" height="60"></canvas><canvas id="pontos" width="600" height="600" role="img" aria-label="Mapa de decisão da rede com os pontos de treino e validação"></canvas></div>
+          <div class="legend"><span><i style="background:#d9455f;border-radius:50%"></i>classe A</span><span><i style="background:#2e9b5f"></i>classe B</span><span>cheio: treino</span><span>vazado: validação</span></div>
+          <div class="btns">
+            <button type="button" class="primary" id="b-play">Treinar</button>
+            <button type="button" id="b-passo">Uma época</button>
+            <button type="button" id="b-reset">Recomeçar</button>
+          </div>
+        </div>
+        <div class="box">
+          <h3>Dados</h3>
+          <div class="ctrl">
+            <label class="field">Conjunto
+              <select id="ds"><option value="circulos">Círculos</option><option value="xor">Quadrantes (XOR)</option><option value="luas">Duas luas</option><option value="espiral">Espiral</option></select></label>
+            <label class="field">Ruído <output id="ruido-out"></output><input type="range" id="ruido" min="0" max="0.6" step="0.05" value="0.15"></label>
+            <label class="field">Total de pontos <select id="npts"><option>60</option><option selected>200</option><option>400</option></select></label>
+            <label class="field">Parte usada no treino <output id="split-out"></output><input type="range" id="split" min="10" max="90" step="5" value="60"></label>
+          </div>
+          <div class="btns"><button type="button" id="b-dados">Sortear outros pontos</button></div>
+        </div>
+      </div>
+      <div>
+        <div class="box">
+          <h3>Hiperparâmetros</h3>
+          <div class="ctrl">
+            <label class="field">Taxa de aprendizado
+              <select id="lr"><option>0.001</option><option>0.003</option><option>0.01</option><option selected>0.03</option><option>0.1</option><option>0.3</option><option>1</option><option>3</option></select></label>
+            <label class="field">Tamanho do lote
+              <select id="bs"><option value="1">1 (estocástico)</option><option value="10" selected>10</option><option value="32">32</option><option value="0">todos os dados</option></select></label>
+            <label class="field">Camadas ocultas
+              <select id="arq"><option value="">nenhuma (linear)</option><option value="3">1 camada, 3 neurônios</option><option value="8" selected>1 camada, 8 neurônios</option><option value="6-6">2 camadas, 6 e 6</option><option value="16-16">2 camadas, 16 e 16</option><option value="24-24-24">3 camadas, 24 cada</option></select></label>
+            <label class="field">Regularização L2
+              <select id="l2"><option value="0" selected>nenhuma</option><option>0.0001</option><option>0.001</option><option>0.01</option></select></label>
+            <label class="field">Semente (seed) da rede <input type="number" id="seed" value="1" min="0" step="1"></label>
+            <label class="field">Velocidade
+              <select id="vel"><option value="1">1 época por quadro</option><option value="5" selected>5 épocas por quadro</option><option value="20">20 épocas por quadro</option></select></label>
+          </div>
+          <p class="arq" id="arq-txt"></p>
+        </div>
+        <div class="box">
+          <h3>Curvas de erro</h3>
+          <div class="metrics" id="metrics"></div>
+          <svg class="chart" id="curva" viewBox="0 0 520 220" role="img" aria-label="Erro de treino e de validação por época" style="margin-top:10px"></svg>
+          <div class="lg2"><span><i style="border-color:var(--ink)"></i>erro no treino</span><span><i style="border-color:var(--bad);border-top-style:dashed"></i>erro na validação</span><span><i style="border-color:var(--accent);border-top-style:dotted"></i>melhor época na validação</span></div>
+          <div id="aviso"></div>
+        </div>
+        <div class="box">
+          <h3>A sorte da semente</h3>
+          <p class="small muted" style="margin:0">A seed define os pesos iniciais e a ordem dos exemplos. Treine a mesma rede, com os mesmos dados, usando cinco seeds diferentes por 300 épocas.</p>
+          <div class="btns"><button type="button" id="b-seeds">Comparar 5 seeds</button></div>
+          <div id="seeds-out"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="box">
+      <h3>Para entender o que acontece</h3>
+      <ul style="margin:0;padding-left:20px">
+        <li><strong>Época</strong> é uma passada por todos os exemplos de treino. A cada lote, a rede calcula o erro e ajusta os pesos um pouco na direção que diminui esse erro (descida do gradiente com retropropagação).</li>
+        <li><strong>Taxa de aprendizado</strong> é o tamanho desse passo. Muito pequena, a rede quase não sai do lugar; muito grande, o erro oscila ou explode.</li>
+        <li><strong>Lote</strong>: com lote 1 os passos são rápidos e barulhentos; com todos os dados, são suaves e lentos.</li>
+        <li><strong>Sobreajuste</strong> (overfitting) acontece quando a rede decora os pontos de treino, inclusive o ruído. O erro de treino continua caindo, mas o da validação para de cair e sobe. Poucos dados, muito ruído e redes grandes favorecem isso. Regularização e parar na melhor época (early stopping) ajudam.</li>
+        <li><strong>Seed</strong>: a mesma configuração com outra semente chega a resultados diferentes. Por isso, ao comparar dois modelos, é preciso repetir com várias seeds. Veja o simulador <a href="significancia.html">Significância entre modelos</a>.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+simTopbar('sim'); simFooter(); simHead('rede-neural');
+(function () {
+  const $ = s => document.querySelector(s);
+  const fmt = (v, d = 3) => Number.isFinite(v) ? v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+  const pct = v => Number.isFinite(v) ? (v * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%' : '—';
+  function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(r) { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
+
+  /* ---------- Dados ---------- */
+  let dadosSeed = 11, treino = [], valid = [];
+  function gerarDados() {
+    const r = mulberry32(dadosSeed), n = +$('#npts').value, rd = +$('#ruido').value, tipo = $('#ds').value, pts = [];
+    for (let i = 0; i < n; i++) {
+      const y = i % 2; let x1, x2;
+      if (tipo === 'circulos') { const ang = r() * 2 * Math.PI, raio = y ? r() * 0.38 : 0.6 + r() * 0.3; x1 = raio * Math.cos(ang); x2 = raio * Math.sin(ang); }
+      else if (tipo === 'xor') { x1 = (r() * 0.85 + 0.08) * (r() < .5 ? 1 : -1); x2 = (r() * 0.85 + 0.08) * (r() < .5 ? 1 : -1); pts.push({ x: [x1 + gauss(r) * rd * .5, x2 + gauss(r) * rd * .5], y: (x1 * x2 > 0) ? 1 : 0 }); continue; }
+      else if (tipo === 'luas') { const t = r() * Math.PI; if (y) { x1 = Math.cos(t) * .55 - .25; x2 = Math.sin(t) * .55 - .15; } else { x1 = .25 - Math.cos(t) * .55; x2 = .15 - Math.sin(t) * .55; } }
+      else { const t = 0.15 + r() * 0.85, ang = t * 3.2 * Math.PI + (y ? Math.PI : 0); x1 = t * .85 * Math.cos(ang); x2 = t * .85 * Math.sin(ang); }
+      pts.push({ x: [x1 + gauss(r) * rd * .5, x2 + gauss(r) * rd * .5], y });
+    }
+    // Embaralha antes de separar treino e validação
+    for (let i = pts.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [pts[i], pts[j]] = [pts[j], pts[i]]; }
+    const nt = Math.max(4, Math.round(n * +$('#split').value / 100));
+    treino = pts.slice(0, nt); valid = pts.slice(nt);
+    $('#ruido-out').textContent = (+$('#ruido').value).toLocaleString('pt-BR');
+    $('#split-out').textContent = `${$('#split').value}% (${treino.length} pontos)`;
+  }
+
+  /* ---------- Rede neural (tanh nas ocultas, sigmoide na saída, entropia cruzada) ---------- */
+  function criaRede(seed) {
+    const r = mulberry32(seed * 7919 + 1), oc = $('#arq').value ? $('#arq').value.split('-').map(Number) : [];
+    const tam = [2, ...oc, 1], camadas = [];
+    for (let l = 1; l < tam.length; l++) {
+      const nin = tam[l - 1], nout = tam[l], W = new Float64Array(nin * nout), b = new Float64Array(nout);
+      for (let i = 0; i < W.length; i++) W[i] = gauss(r) * Math.sqrt(1 / nin);
+      camadas.push({ nin, nout, W, b, gW: new Float64Array(nin * nout), gb: new Float64Array(nout) });
+    }
+    return { camadas, tam, r };
+  }
+  function frente(rede, x) {
+    const acts = [x];
+    rede.camadas.forEach((c, l) => {
+      const a = acts[l], z = new Float64Array(c.nout), ult = l === rede.camadas.length - 1;
+      for (let o = 0; o < c.nout; o++) { let s = c.b[o]; for (let i = 0; i < c.nin; i++) s += c.W[o * c.nin + i] * a[i]; z[o] = ult ? 1 / (1 + Math.exp(-s)) : Math.tanh(s); }
+      acts.push(z);
+    });
+    return acts;
+  }
+  const prever = (rede, x) => frente(rede, x)[rede.camadas.length][0];
+  function epoca(rede, dados, lr, bs, l2) {
+    const idx = dados.map((_, i) => i), r = rede.r;
+    for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    const tl = bs || dados.length;
+    for (let s = 0; s < idx.length; s += tl) {
+      const lote = idx.slice(s, s + tl);
+      rede.camadas.forEach(c => { c.gW.fill(0); c.gb.fill(0); });
+      lote.forEach(k => {
+        const p = dados[k], acts = frente(rede, p.x);
+        let delta = new Float64Array([acts[acts.length - 1][0] - p.y]);
+        for (let l = rede.camadas.length - 1; l >= 0; l--) {
+          const c = rede.camadas[l], a = acts[l];
+          for (let o = 0; o < c.nout; o++) { c.gb[o] += delta[o]; for (let i = 0; i < c.nin; i++) c.gW[o * c.nin + i] += delta[o] * a[i]; }
+          if (l > 0) {
+            const nd = new Float64Array(c.nin);
+            for (let i = 0; i < c.nin; i++) { let s2 = 0; for (let o = 0; o < c.nout; o++) s2 += c.W[o * c.nin + i] * delta[o]; nd[i] = s2 * (1 - a[i] * a[i]); }
+            delta = nd;
+          }
+        }
+      });
+      rede.camadas.forEach(c => {
+        for (let i = 0; i < c.W.length; i++) c.W[i] -= lr * (c.gW[i] / lote.length + l2 * c.W[i]);
+        for (let o = 0; o < c.nout; o++) c.b[o] -= lr * c.gb[o] / lote.length;
+      });
+    }
+  }
+  function avaliar(rede, dados) {
+    if (!dados.length) return { loss: NaN, acc: NaN };
+    let loss = 0, ac = 0;
+    dados.forEach(p => { const q = Math.min(1 - 1e-7, Math.max(1e-7, prever(rede, p.x))); loss -= p.y * Math.log(q) + (1 - p.y) * Math.log(1 - q); if ((q >= .5) === (p.y === 1)) ac++; });
+    return { loss: loss / dados.length, acc: ac / dados.length };
+  }
+
+  /* ---------- Estado e desenho ---------- */
+  let rede, ep = 0, hist = [], rodando = false, raf = null;
+  function reiniciar() {
+    parar(); gerarDados(); rede = criaRede(+$('#seed').value || 0); ep = 0; hist = [];
+    registrar(); desenhar();
+    const p = rede.tam.slice(1).reduce((s, n, i) => s + n * (rede.tam[i] + 1), 0);
+    $('#arq-txt').textContent = `Rede: ${rede.tam.join(' → ')} neurônios, ${p} pesos para aprender.`;
+  }
+  function registrar() { const t = avaliar(rede, treino), v = avaliar(rede, valid); hist.push({ ep, tl: t.loss, ta: t.acc, vl: v.loss, va: v.acc }); }
+  const hp = () => ({ lr: +$('#lr').value, bs: +$('#bs').value, l2: +$('#l2').value });
+  function treinarN(n) {
+    const { lr, bs, l2 } = hp();
+    for (let i = 0; i < n; i++) { epoca(rede, treino, lr, bs, l2); ep++; registrar(); }
+    if (hist.length > 4000) hist = hist.filter((h, i) => i % 2 === 0 || i === hist.length - 1);
+  }
+  const COR_A = [217, 69, 95], COR_B = [46, 155, 95];
+  function desenhar() {
+    const fc = $('#fundo'), g = fc.getContext('2d'), N = fc.width, img = g.createImageData(N, N);
+    for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+      const x = [(i + .5) / N * 2 - 1, 1 - (j + .5) / N * 2], q = prever(rede, x), c = q >= .5 ? COR_B : COR_A, f = Math.min(1, Math.abs(q - .5) * 2) * 0.55 + 0.05, k = (j * N + i) * 4;
+      img.data[k] = 255 - (255 - c[0]) * f; img.data[k + 1] = 255 - (255 - c[1]) * f; img.data[k + 2] = 255 - (255 - c[2]) * f; img.data[k + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    const pc = $('#pontos'), h = pc.getContext('2d'), S = pc.width;
+    h.clearRect(0, 0, S, S);
+    const ponto = (p, cheio) => {
+      const px = (p.x[0] + 1) / 2 * S, py = (1 - (p.x[1] + 1) / 2) * S, cor = p.y ? '#2e9b5f' : '#d9455f';
+      h.lineWidth = 3; h.strokeStyle = cheio ? '#111' : cor; h.fillStyle = cheio ? cor : 'rgba(255,255,255,.85)';
+      h.beginPath();
+      if (p.y) h.rect(px - 7, py - 7, 14, 14); else h.arc(px, py, 8, 0, 2 * Math.PI);
+      h.fill(); h.stroke();
+    };
+    valid.forEach(p => ponto(p, false)); treino.forEach(p => ponto(p, true));
+    desenharCurvas();
+  }
+  function desenharCurvas() {
+    const u = hist[hist.length - 1];
+    let mi = 0; hist.forEach((h, i) => { if (h.vl < hist[mi].vl) mi = i; });
+    const best = hist[mi];
+    $('#metrics').innerHTML = [['Época', u.ep, 1], ['Erro treino', fmt(u.tl)], ['Erro validação', fmt(u.vl), 1], ['Acerto treino', pct(u.ta)], ['Acerto validação', pct(u.va), 1]]
+      .map(([k, v, key]) => `<div class="metric${key ? ' key' : ''}"><span>${k}</span><b>${v}</b></div>`).join('');
+    const W = 520, H = 220, L = 40, R = 10, T = 10, B = 26;
+    const maxE = Math.max(10, u.ep), vals = hist.flatMap(h => [h.tl, h.vl]).filter(Number.isFinite);
+    const top = Math.min(2, Math.max(0.1, ...vals) * 1.05);
+    const X = e => L + e / maxE * (W - L - R), Y = v => T + (1 - Math.min(v, top) / top) * (H - T - B);
+    let s = '';
+    for (let i = 0; i <= 4; i++) { const v = top * i / 4; s += `<line class="grid" x1="${L}" y1="${Y(v)}" x2="${W - R}" y2="${Y(v)}"/><text x="${L - 4}" y="${Y(v) + 4}" text-anchor="end">${fmt(v, 2)}</text>`; }
+    s += `<line class="axis" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"/><line class="axis" x1="${L}" y1="${T}" x2="${L}" y2="${H - B}"/>`;
+    s += `<text x="${L}" y="${H - 8}">0</text><text x="${W - R}" y="${H - 8}" text-anchor="end">${maxE} épocas</text>`;
+    const passo = Math.max(1, Math.floor(hist.length / 400));
+    const linha = k => hist.filter((h, i) => i % passo === 0 || i === hist.length - 1).map(h => `${X(h.ep).toFixed(1)},${Y(h[k]).toFixed(1)}`).join(' ');
+    if (valid.length && u.ep > 0) s += `<line class="best" x1="${X(best.ep)}" y1="${T}" x2="${X(best.ep)}" y2="${H - B}"/>`;
+    s += `<polyline class="tr" points="${linha('tl')}"/>`;
+    if (valid.length) s += `<polyline class="va" points="${linha('vl')}"/>`;
+    $('#curva').innerHTML = s;
+    let av = '';
+    if (!Number.isFinite(u.tl) || u.tl > 5) av = '<p class="aviso"><strong>O treino explodiu.</strong> A taxa de aprendizado está alta demais: os passos passam por cima do vale do erro. Recomece com uma taxa menor.</p>';
+    else if (u.ep >= 80 && u.vl > best.vl * 1.15 && u.ep - best.ep > 40) av = `<p class="aviso"><strong>Sobreajuste.</strong> O erro de validação foi mínimo na época ${best.ep} (${fmt(best.vl)}) e agora está em ${fmt(u.vl)}, enquanto o de treino segue caindo. A rede está decorando o ruído dos pontos de treino. Parar na época ${best.ep} (early stopping) daria um modelo melhor.</p>`;
+    else if (u.ep >= 300 && u.ta < 0.75) av = '<p class="aviso">A rede não consegue separar as classes. Talvez falte capacidade (camadas ou neurônios) ou a taxa de aprendizado esteja pequena demais.</p>';
+    else if (u.ep >= 100 && u.va >= 0.9) av = `<p class="aviso ok">Boa generalização: ${pct(u.va)} de acerto em pontos que a rede nunca viu no treino.</p>`;
+    $('#aviso').innerHTML = av;
+  }
+  function loop() { treinarN(+$('#vel').value); desenhar(); if (rodando) raf = requestAnimationFrame(loop); }
+  function parar() { rodando = false; if (raf) cancelAnimationFrame(raf); raf = null; $('#b-play').textContent = 'Treinar'; }
+  $('#b-play').onclick = () => { if (rodando) { parar(); return; } rodando = true; $('#b-play').textContent = 'Pausar'; loop(); };
+  $('#b-passo').onclick = () => { parar(); treinarN(1); desenhar(); };
+  $('#b-reset').onclick = reiniciar;
+  $('#b-dados').onclick = () => { dadosSeed++; reiniciar(); };
+  ['#ds', '#npts', '#arq', '#seed'].forEach(id => $(id).addEventListener('change', reiniciar));
+  ['#ruido', '#split'].forEach(id => $(id).addEventListener('change', reiniciar));
+  ['#ruido', '#split'].forEach(id => $(id).addEventListener('input', () => { $('#ruido-out').textContent = (+$('#ruido').value).toLocaleString('pt-BR'); $('#split-out').textContent = $('#split').value + '%'; }));
+
+  $('#b-seeds').onclick = () => {
+    const b = $('#b-seeds'); b.disabled = true; b.textContent = 'Treinando...';
+    setTimeout(() => {
+      const base = +$('#seed').value || 0, { lr, bs, l2 } = hp(), res = [];
+      for (let k = 0; k < 5; k++) {
+        const rd = criaRede(base + k);
+        for (let e = 0; e < 300; e++) epoca(rd, treino, lr, bs, l2);
+        res.push({ seed: base + k, ...avaliar(rd, valid) });
+      }
+      const accs = res.map(r => r.acc), m = accs.reduce((a, b) => a + b, 0) / 5, dp = Math.sqrt(accs.reduce((a, b) => a + (b - m) ** 2, 0) / 4);
+      $('#seeds-out').innerHTML = `<div class="tbl-wrap"><table class="tbl" style="margin-top:10px"><thead><tr><th>Seed</th><th>Acerto na validação</th><th>Erro na validação</th></tr></thead><tbody>` +
+        res.map(r => `<tr><td>${r.seed}</td><td>${pct(r.acc)}</td><td>${fmt(r.loss)}</td></tr>`).join('') + `</tbody></table></div>
+        <p class="note-small">Média de ${pct(m)}, com desvio padrão de ${(dp * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} pontos percentuais. Uma diferença entre dois modelos menor do que essa variação pode ser só sorte da seed.</p>`;
+      b.disabled = false; b.textContent = 'Comparar 5 seeds';
+    }, 30);
+  };
+
+  const EXPERIMENTOS = [
+    { nome: 'Ver o sobreajuste', cfg: { ds: 'circulos', ruido: 0.5, npts: 60, split: 40, lr: '0.03', bs: '1', arq: '24-24-24', l2: '0', vel: '20' } },
+    { nome: 'Corrigir com regularização', cfg: { ds: 'circulos', ruido: 0.5, npts: 60, split: 40, lr: '0.03', bs: '1', arq: '24-24-24', l2: '0.01', vel: '20' } },
+    { nome: 'Taxa alta demais', cfg: { ds: 'luas', ruido: 0.15, npts: 200, split: 60, lr: '3', bs: '1', arq: '16-16', l2: '0', vel: '5' } },
+    { nome: 'Rede sem camada oculta', cfg: { ds: 'circulos', ruido: 0.1, npts: 200, split: 60, lr: '0.1', bs: '10', arq: '', l2: '0', vel: '5' } },
+    { nome: 'Espiral difícil', cfg: { ds: 'espiral', ruido: 0.05, npts: 400, split: 70, lr: '0.03', bs: '10', arq: '24-24-24', l2: '0', vel: '20' } }
+  ];
+  $('#experimentos').innerHTML += EXPERIMENTOS.map((e, i) => `<button type="button" data-i="${i}">${e.nome}</button>`).join('');
+  $('#experimentos').onclick = e => {
+    const b = e.target.closest('button[data-i]'); if (!b) return;
+    const c = EXPERIMENTOS[+b.dataset.i].cfg;
+    Object.entries(c).forEach(([k, v]) => { $('#' + k).value = v; });
+    reiniciar(); rodando = true; $('#b-play').textContent = 'Pausar'; loop();
+  };
+  reiniciar();
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
