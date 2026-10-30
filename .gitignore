@@ -7,3 +7,6 @@ _fonte/planejamento/saida/
 
 # Cache do Python dos geradores
 __pycache__/
+
+# Pins do Pinterest gerados por _fonte/og/gerar.js --pinterest (sobem direto no Pinterest)
+_fonte/og/pinterest/
