@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boato em Rede · Material didático | ohtopico</title>
+<meta name="description" content="Jogo sobre desinformação e grafos: escolha quem checa a notícia antes de repassar e veja quantas pessoas deixam de receber o boato. BNCC EF07CO04, EF08CO11, EF09CO10.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/boato.html">
+<meta property="og:title" content="Boato em Rede · Material didático">
+<meta property="og:description" content="Jogo sobre desinformação e grafos: escolha quem checa a notícia antes de repassar e veja quantas pessoas deixam de receber o boato.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/boato.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .boato { border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 14px 16px; margin-bottom: 14px; }
+  .boato .de { font-size: 13px; color: var(--ink-2); }
+  .boato .txt { font-size: 17px; font-weight: 500; margin: 4px 0 8px; }
+  .sig { background: #fde3df; color: #9d2b20; }
+  .net { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); overflow: hidden; }
+  .net svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+  .net .no { cursor: pointer; }
+  .net .no:focus { outline: none; }
+  .net .no:focus-visible circle.c { stroke-width: 5; }
+  .net text { font-family: var(--body); font-weight: 600; pointer-events: none; }
+  .leg { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13.5px; margin: 10px 0 0; }
+  .leg span { display: inline-flex; align-items: center; gap: 6px; }
+  .leg i { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #111; display: inline-block; }
+  .res { margin-top: 14px; border-radius: 18px; padding: 14px 16px; font-size: 15.5px; background: var(--accent-soft); }
+  .stars { font-family: var(--display); font-size: 26px; letter-spacing: 4px; color: #e0b000; }
+  .stars .off { color: var(--line); }
+  .center { text-align: center; padding: 14px 0; }
+  .lvls { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 14px 0; }
+  .lvls .box { font: inherit; color: var(--ink); text-align: left; cursor: pointer; border: 1.5px solid var(--ink); border-radius: 16px; padding: 10px; background: var(--paper); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Cada bolinha é uma pessoa e cada linha liga dois amigos que trocam mensagens. O boato começa na pessoa marcada com <strong>B</strong> e cada um que recebe repassa para todos os amigos.</p>
+    <p>Antes de soltar o boato, toque nas pessoas que vão <strong>checar a informação</strong>. Quem checa descobre que é falso e não repassa. Seu objetivo é que o menor número de pessoas acredite no boato. Os nomes e as mensagens são inventados.</p>
+  </details>
+
+  <div class="game-stage"><div id="stage"></div></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('boato');
+(function () {
+  const NOMES = ['Ana', 'Beto', 'Caio', 'Duda', 'Edu', 'Fabi', 'Gabi', 'Hugo', 'Iara', 'João', 'Kauã', 'Lara', 'Malu', 'Nina', 'Otto', 'Pedro', 'Rafa', 'Sofia'];
+  const ed = s => s.split(' ').map(p => p.split('-').map(Number));
+  const NIVEIS = [
+    { nome: 'O grupo da turma', checa: 2, origem: [0],
+      boato: { de: 'Grupo da turma', txt: 'URGENTE!!! Amanhã não vai ter aula em nenhuma escola do RS. Repassa para todo mundo!', sinais: ['Pede para repassar', 'Sem fonte oficial', 'Urgência'] },
+      dica: 'Quem está perto da origem recebe primeiro. Checar logo no começo segura o boato.',
+      pos: [[60, 190], [170, 100], [170, 280], [290, 60], [290, 190], [290, 320], [410, 110], [410, 260], [530, 80], [530, 300]],
+      ar: ed('0-1 0-2 0-4 1-3 1-4 2-4 2-5 3-6 4-6 4-7 5-7 6-8 7-9 8-9') },
+    { nome: 'A pessoa popular', checa: 2, origem: [0],
+      boato: { de: 'Mensagem encaminhada várias vezes', txt: 'Um médico confirmou: beber água gelada depois do almoço faz mal ao coração. Compartilhe para salvar vidas.', sinais: ['Especialista sem nome', 'Causa medo', 'Encaminhada várias vezes'] },
+      dica: 'Uma pessoa com muitos amigos (um "hub") espalha para muita gente de uma vez. Se ela checa, o boato perde força.',
+      pos: [[50, 190], [140, 90], [140, 290], [230, 190], [335, 190], [300, 60], [300, 320], [440, 70], [470, 165], [470, 255], [420, 330], [570, 80], [580, 205], [560, 320]],
+      ar: ed('0-1 0-2 0-3 1-3 2-3 1-5 3-4 2-6 4-5 4-6 4-7 4-8 4-9 4-10 5-7 7-11 8-12 9-12 10-13 9-13 6-10') },
+    { nome: 'Dois grupos e uma ponte', checa: 2, origem: [0],
+      boato: { de: 'Print sem link', txt: 'A prefeitura vai multar em R$ 5 mil quem andar de bicicleta na rua a partir de segunda.', sinais: ['Print sem link', 'Valor exagerado', 'Não está no site da prefeitura'] },
+      dica: 'Quando dois grupos se ligam por poucas pessoas (as pontes), checar nelas protege o outro grupo inteiro.',
+      pos: [[50, 190], [120, 90], [120, 290], [200, 60], [200, 190], [275, 120], [275, 265], [190, 330], [365, 90], [385, 200], [365, 320], [470, 60], [480, 170], [470, 285], [570, 120], [570, 250]],
+      ar: ed('0-1 0-2 0-4 1-3 1-4 2-4 2-7 3-5 4-5 4-6 6-7 3-4 5-8 6-10 8-9 8-11 9-10 9-12 10-13 11-12 12-13 11-14 12-14 13-15 14-15 12-15') },
+    { nome: 'Dois boatos ao mesmo tempo', checa: 3, origem: [0, 17],
+      boato: { de: 'Áudio sem identificação', txt: 'Ouvi dizer que o aplicativo de mensagens vai cobrar R$ 10 por mês de quem não mandar este áudio para 20 contatos.', sinais: ['Corrente', 'Sem fonte', 'Ameaça de cobrança'] },
+      dica: 'Com duas origens, olhe por onde cada boato precisa passar e onde os caminhos se cruzam.',
+      pos: [[50, 100], [150, 55], [135, 170], [245, 110], [60, 280], [170, 290], [270, 215], [345, 55], [355, 165], [360, 290], [455, 105], [455, 225], [535, 45], [570, 150], [545, 285], [250, 340], [450, 340], [580, 350]],
+      ar: ed('0-1 0-2 1-2 1-3 2-3 2-4 4-5 2-5 3-6 5-6 5-15 3-7 6-8 7-8 7-10 8-9 8-11 9-15 9-16 6-9 10-12 10-13 11-13 11-14 12-13 13-14 14-17 16-17 11-16 14-16') }
+  ];
+  NIVEIS.forEach(n => { n.viz = n.pos.map(() => []); n.ar.forEach(([a, b]) => { n.viz[a].push(b); n.viz[b].push(a); }); });
+
+  // Espalhamento em ondas (busca em largura). Quem checa recebe, mas não repassa.
+  function espalhar(n, checa) {
+    const onda = {}; let fila = n.origem.slice(); fila.forEach(o => onda[o] = 0);
+    const ondas = [fila.slice()];
+    while (fila.length) {
+      const prox = [];
+      fila.forEach(v => { if (checa.has(v)) return; n.viz[v].forEach(w => { if (onda[w] === undefined) { onda[w] = onda[v] + 1; prox.push(w); } }); });
+      if (prox.length) ondas.push(prox);
+      fila = prox;
+    }
+    const enganadas = Object.keys(onda).filter(v => !checa.has(+v)).length;
+    return { onda, ondas, enganadas };
+  }
+  // Melhor resultado possível: testa todas as combinações de quem checa
+  function melhor(n) {
+    const cand = n.pos.map((_, i) => i).filter(i => !n.origem.includes(i));
+    let best = Infinity;
+    (function rec(ini, sel) {
+      if (sel.length === n.checa) { best = Math.min(best, espalhar(n, new Set(sel)).enganadas); return; }
+      for (let i = ini; i < cand.length; i++) rec(i + 1, sel.concat(cand[i]));
+    })(0, []);
+    return best;
+  }
+  NIVEIS.forEach(n => n.melhor = melhor(n));
+
+  const stage = document.getElementById('stage');
+  let nv, checa, estado, resultado, estrelas = [], mostrarGrau = false, timer;
+
+  function inicio() {
+    clearTimeout(timer);
+    stage.innerHTML = `<div class="center">
+      <h2>Quem checa antes de repassar?</h2>
+      <p style="max-width:620px;margin:0 auto">Um boato corre de amigo em amigo. Você tem poucas pessoas que podem checar a informação. Escolha bem quem são elas e veja quantas pessoas deixam de ser enganadas.</p>
+      <div class="lvls" id="lvls">${NIVEIS.map((n, i) => `<button type="button" class="box" data-i="${i}"><strong>${i + 1}. ${n.nome}</strong><div class="small muted">${n.pos.length} pessoas · ${n.checa} checagens</div>${estrelas[i] ? `<div class="stars" aria-label="${estrelas[i]} de 3 estrelas">${'★'.repeat(estrelas[i])}<span class="off">${'★'.repeat(3 - estrelas[i])}</span></div>` : ''}</button>`).join('')}</div>
+      <button class="btn" type="button" id="go">Começar</button></div>`;
+    const b = document.getElementById('go'); b.onclick = () => nivel(0); b.focus();
+    document.getElementById('lvls').onclick = e => { const x = e.target.closest('[data-i]'); if (x) nivel(+x.dataset.i); };
+  }
+
+  function nivel(i) { nv = i; checa = new Set(); estado = {}; resultado = null; desenhar(); }
+
+  function svg() {
+    const n = NIVEIS[nv];
+    const linhas = n.ar.map(([a, b]) => {
+      const quente = resultado && estado[a] && estado[b] && (estado[a] === 'eng' || estado[b] === 'eng');
+      return `<line x1="${n.pos[a][0]}" y1="${n.pos[a][1]}" x2="${n.pos[b][0]}" y2="${n.pos[b][1]}" stroke="${quente ? '#ef5a4c' : '#111'}" stroke-width="${quente ? 3.5 : 2}" opacity="${quente ? .9 : .35}"/>`;
+    }).join('');
+    const nos = n.pos.map(([x, y], i) => {
+      const org = n.origem.includes(i), ch = checa.has(i), st = estado[i];
+      const fill = org || st === 'eng' ? '#ef5a4c' : ch ? '#2fa865' : '#ffffff';
+      const rot = `${NOMES[i]}${org ? ', começou o boato' : ch ? ', vai checar' : ''}${st === 'eng' && !org ? ', acreditou no boato' : ''}${st === 'chk' ? ', checou e não repassou' : ''}`;
+      return `<g class="no" data-i="${i}" ${org || resultado ? '' : 'tabindex="0" role="button"'} aria-label="${rot}" ${org || resultado ? '' : `aria-pressed="${ch}"`}>
+        <circle class="c" cx="${x}" cy="${y}" r="21" fill="${fill}" stroke="#111" stroke-width="${org ? 4 : 2.5}"/>
+        ${ch ? `<path d="M${x - 8} ${y} l6 6 l11 -12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>` : `<text x="${x}" y="${y + 5}" text-anchor="middle" font-size="${org ? 16 : 13}" fill="${fill === '#ffffff' ? '#111' : '#fff'}">${org ? 'B' : NOMES[i][0] + NOMES[i][1]}</text>`}
+        ${mostrarGrau ? `<text x="${x + 18}" y="${y - 16}" font-size="12" fill="#111" stroke="#fff" stroke-width="3" paint-order="stroke">${n.viz[i].length}</text>` : ''}
+      </g>`;
+    }).join('');
+    return `<svg viewBox="0 0 630 380" role="group" aria-label="Rede de amigos">${linhas}${nos}</svg>`;
+  }
+
+  function desenhar() {
+    const n = NIVEIS[nv];
+    stage.innerHTML = `
+      <div class="hud"><span>Nível <b>${nv + 1}</b> de ${NIVEIS.length}: ${n.nome}</span><span>Checagens <b>${n.checa - checa.size}</b> restantes</span></div>
+      <div class="boato"><div class="de">${esc(n.boato.de)}</div><div class="txt">"${esc(n.boato.txt)}"</div>
+        <div class="tags">${n.boato.sinais.map(s => `<span class="tag sig">${esc(s)}</span>`).join('')}</div></div>
+      <div class="net" id="net">${svg()}</div>
+      <div class="leg"><span><i style="background:#ef5a4c"></i>Acreditou no boato</span><span><i style="background:#2fa865"></i>Checou e não repassou</span><span><i style="background:#fff"></i>Não recebeu</span>
+        <label style="margin-left:auto"><input type="checkbox" id="grau" ${mostrarGrau ? 'checked' : ''}> Mostrar número de amigos</label></div>
+      <div id="out"></div>
+      <div class="btn-row" style="margin-top:14px" id="acoes"></div>`;
+    document.getElementById('grau').onchange = e => { mostrarGrau = e.target.checked; document.getElementById('net').innerHTML = svg(); ligar(); };
+    ligar(); botoes();
+  }
+  function ligar() {
+    const net = document.getElementById('net');
+    const toggle = g => {
+      if (!g || resultado) return;
+      const i = +g.dataset.i, n = NIVEIS[nv];
+      if (n.origem.includes(i)) return;
+      if (checa.has(i)) checa.delete(i); else if (checa.size < n.checa) checa.add(i);
+      net.innerHTML = svg(); ligar(); botoes(); atualizaHud();
+      const f = net.querySelector(`.no[data-i="${i}"]`); f && f.focus();
+    };
+    net.onclick = e => toggle(e.target.closest('.no'));
+    net.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(e.target.closest('.no')); } };
+  }
+  function atualizaHud() { const b = stage.querySelectorAll('.hud b')[1]; if (b) b.textContent = NIVEIS[nv].checa - checa.size; }
+  function botoes() {
+    const n = NIVEIS[nv], el = document.getElementById('acoes');
+    if (!resultado) {
+      el.innerHTML = `<button class="btn" type="button" id="soltar" ${checa.size === n.checa ? '' : 'disabled'}>Soltar o boato</button>
+        <span class="small muted" style="align-self:center">${checa.size === n.checa ? 'Pronto. Veja o que acontece.' : `Toque em ${n.checa - checa.size} ${n.checa - checa.size === 1 ? 'pessoa' : 'pessoas'} para checar.`}</span>`;
+      const s = document.getElementById('soltar'); if (s) s.onclick = soltar;
+    }
+  }
+
+  function soltar() {
+    const n = NIVEIS[nv];
+    resultado = espalhar(n, checa);
+    estado = {};
+    document.getElementById('acoes').innerHTML = '';
+    let k = 0;
+    (function passo() {
+      resultado.ondas[k].forEach(v => estado[v] = checa.has(v) ? 'chk' : 'eng');
+      document.getElementById('net').innerHTML = svg();
+      k++;
+      if (k < resultado.ondas.length) timer = setTimeout(passo, 650); else fimNivel();
+    })();
+  }
+
+  function fimNivel() {
+    const n = NIVEIS[nv], eng = resultado.enganadas, total = n.pos.length;
+    const salvas = total - eng, dif = eng - n.melhor;
+    const st = dif <= 0 ? 3 : dif <= 2 ? 2 : 1;
+    estrelas[nv] = Math.max(estrelas[nv] || 0, st);
+    document.getElementById('out').innerHTML = `<div class="res" role="status">
+      <div class="stars" aria-label="${st} de 3 estrelas">${'★'.repeat(st)}<span class="off">${'★'.repeat(3 - st)}</span></div>
+      <strong>${salvas} de ${total} pessoas não foram enganadas.</strong> O boato chegou em ${resultado.ondas.length - 1} ${resultado.ondas.length - 1 === 1 ? 'passo' : 'passos'}.
+      ${dif <= 0 ? ' Essa é a melhor escolha possível nesta rede.' : ` Dá para proteger mais ${dif} ${dif === 1 ? 'pessoa' : 'pessoas'} com outra escolha.`}
+      <p style="margin:8px 0 0"><b>Dica:</b> ${esc(n.dica)}</p></div>`;
+    const ult = nv === NIVEIS.length - 1;
+    document.getElementById('acoes').innerHTML = `<button class="btn ghost" type="button" id="rep">Tentar de novo</button>
+      <button class="btn" type="button" id="nx">${ult ? 'Ver resultado' : 'Próximo nível'}</button>`;
+    document.getElementById('rep').onclick = () => nivel(nv);
+    const nx = document.getElementById('nx'); nx.onclick = () => ult ? fim() : nivel(nv + 1); nx.focus();
+  }
+
+  function fim() {
+    const tot = estrelas.reduce((a, b) => a + (b || 0), 0);
+    window.MDP && MDP.registrar('boato', tot / (NIVEIS.length * 3) * 100);
+    stage.innerHTML = `<div class="center">
+      <h2>${tot >= 11 ? 'Rede protegida!' : tot >= 8 ? 'Muito bem!' : 'Bom começo!'}</h2>
+      <p style="font-size:20px"><b>${tot}</b> de ${NIVEIS.length * 3} estrelas</p>
+      <div class="note" style="text-align:left;margin:18px auto;max-width:640px">
+        <strong>O que a rede ensina:</strong> boatos andam pelas conexões. Uma checagem perto da origem, em uma pessoa com muitos amigos ou numa ponte entre grupos impede que muita gente seja enganada. Na vida real, cada um de nós pode ser esse ponto: antes de repassar, procure a fonte, veja se outros veículos confirmam e desconfie de pressa e de pedidos para compartilhar.
+      </div>
+      <div class="btn-row" style="justify-content:center"><button class="btn ghost" type="button" id="niv">Escolher nível</button><button class="btn" type="button" id="again">Jogar de novo</button></div></div>`;
+    document.getElementById('niv').onclick = inicio;
+    document.getElementById('again').onclick = () => { estrelas = []; nivel(0); };
+  }
+  inicio();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

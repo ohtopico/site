@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolha do Feed · Material didático | ohtopico</title>
+<meta name="description" content="Jogo sobre algoritmos de recomendação: faça o papel do algoritmo, veja a bolha do feed se formar e aprenda a abrir o leque de temas. BNCC EF08CO07, EF08CO11, EF09CO07.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/bolha.html">
+<meta property="og:title" content="Bolha do Feed · Material didático">
+<meta property="og:description" content="Jogo sobre algoritmos de recomendação: faça o papel do algoritmo, veja a bolha do feed se formar e aprenda a abrir o leque de temas.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/bolha.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .bf { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  @media (max-width: 820px) { .bf { grid-template-columns: 1fr; } }
+  .user { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .avatar { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--ink); background: #ffd23f; display: grid; place-items: center; font-family: var(--display); font-size: 20px; color: #111; flex: none; }
+  .meta-goal { font-size: 15px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 16px; padding: 10px 14px; margin-bottom: 14px; }
+  .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+  .post { position: relative; text-align: left; border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px 12px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 128px; font: inherit; color: var(--ink); overflow: hidden; }
+  .post::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 7px; background: var(--c); }
+  .post[aria-pressed="true"] { box-shadow: 5px 5px 0 var(--ink); transform: translate(-2px, -2px); outline: 3px solid var(--accent); }
+  .post:disabled { cursor: default; }
+  .post .tema { font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+  .post .tit { font-weight: 600; font-size: 15.5px; line-height: 1.35; }
+  .post .prev { margin-top: auto; font-size: 13px; color: var(--ink-2); }
+  .post .prev b { font-family: var(--display); font-size: 16px; color: var(--ink); }
+  .post .res { font-size: 13px; font-weight: 600; border-radius: 99px; padding: 2px 10px; align-self: flex-start; }
+  .post .res.sim { background: var(--ok-soft); color: var(--ok); }
+  .post .res.nao { background: var(--pill); color: var(--ink-2); }
+  .post .sel { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--paper); display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+  .post[aria-pressed="true"] .sel { background: var(--ink); color: var(--paper); }
+  .side { display: flex; flex-direction: column; gap: 14px; }
+  .box { border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 14px 16px; }
+  .box h3 { font-size: 17px; margin: 0 0 8px; }
+  .bars { display: flex; flex-direction: column; gap: 5px; font-size: 13px; }
+  .bar { display: grid; grid-template-columns: 92px 1fr 22px; gap: 8px; align-items: center; }
+  .bar .tr { height: 12px; border-radius: 99px; background: var(--pill); overflow: hidden; }
+  .bar .tr i { display: block; height: 100%; background: var(--c); border-radius: 99px; transition: width .4s; }
+  .bubble svg { width: 100%; height: auto; display: block; }
+  .msg { margin-top: 14px; border-radius: 16px; padding: 12px 16px; font-size: 15px; background: var(--accent-soft); }
+  .msg.disc { background: #fff6d6; color: #111; border: 1.5px solid #e0b000; }
+  .center { text-align: center; padding: 10px 0; }
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; text-align: left; }
+  @media (max-width: 560px) { .cmp { grid-template-columns: 1fr; } }
+  .big { font-family: var(--display); font-size: 30px; line-height: 1.1; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você é o <strong>algoritmo de recomendação</strong> de uma rede social de mentira. A cada rodada aparecem 6 publicações e você escolhe <strong>3</strong> para mostrar no feed da Lia. O número em cada publicação é a <strong>previsão de clique</strong>: o algoritmo calcula a partir do que a Lia já clicou.</p>
+    <p>Na fase 1 o objetivo é só ganhar cliques. Na fase 2 você precisa manter os cliques e, ao mesmo tempo, mostrar mais temas. O painel ao lado mostra quantos temas cabem dentro da bolha. A Lia e todas as publicações são inventadas.</p>
+  </details>
+
+  <div class="game-stage"><div id="stage"></div></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('bolha');
+(function () {
+  // Temas da rede social fictícia. "gosto" é o interesse real da Lia (o algoritmo não sabe).
+  const TEMAS = {
+    games:    { nome: 'Games', cor: '#2fa865', gosto: .85 },
+    humor:    { nome: 'Humor', cor: '#e0b000', gosto: .7 },
+    musica:   { nome: 'Música', cor: '#ef5a4c', gosto: .6 },
+    astro:    { nome: 'Astronomia', cor: '#8a5cc2', gosto: .8 },
+    natureza: { nome: 'Natureza', cor: '#166c40', gosto: .6 },
+    ciencia:  { nome: 'Ciência', cor: '#f08a24', gosto: .55 },
+    cozinha:  { nome: 'Culinária', cor: '#9a6b3f', gosto: .5 },
+    esporte:  { nome: 'Esporte', cor: '#d9467a', gosto: .35 }
+  };
+  const POSTS = {
+    games: ['Mapa secreto encontrado no jogo de corrida', 'Cinco jogos leves para celular antigo', 'Torneio de xadrez online da escola', 'Como montar um time no jogo de estratégia', 'Jogo de construção ganha modo cooperativo'],
+    humor: ['Gato tenta entrar numa caixa pequena demais', 'Quando a professora diz "só mais um minuto"', 'Tirinha: o celular com 1% de bateria', 'O cachorro que tem medo do próprio rabo', 'Memes da semana de provas'],
+    musica: ['Banda de Santa Maria lança música nova', 'Aprenda três acordes no violão', 'Coral da escola canta no festival', 'Como funciona um fone com cancelamento de ruído', 'Playlist para estudar sem distração'],
+    astro: ['Chuva de meteoros nesta sexta: onde olhar', 'Foto de Saturno feita com telescópio caseiro', 'Por que a Lua muda de forma', 'Como encontrar o Cruzeiro do Sul', 'Estação espacial passa sobre o RS hoje'],
+    natureza: ['Trilha no Parque do Caracol em fotos', 'Bugio volta a aparecer em mata gaúcha', 'Como fazer uma horta na janela', 'As árvores mais antigas da cidade', 'Rio limpo: mutirão recolhe 200 kg de lixo'],
+    ciencia: ['Experimento: vulcão de bicarbonato', 'Por que o céu fica vermelho no fim da tarde', 'Estudante do RS ganha feira de ciências', 'Como funciona uma vacina, em 1 minuto', 'O que é energia solar, explicado com desenho'],
+    cozinha: ['Bolo de caneca em 3 minutos', 'Pão caseiro com 4 ingredientes', 'Lanche saudável para levar à escola', 'Cuca de uva da vó, passo a passo', 'Pipoca doce sem queimar a panela'],
+    esporte: ['Gol de bicicleta no campeonato juvenil', 'Treino de vôlei para iniciantes', 'Atleta gaúcha vai ao mundial de judô', 'Corrida de rua da cidade abre inscrições', 'Skate: como fazer a primeira manobra']
+  };
+  const IDS = Object.keys(TEMAS);
+  const RODADAS = 5, MOSTRAR = 3;
+  const shuffle = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  const stage = document.getElementById('stage');
+
+  let fase, rodada, hist, escolha, oferta, cliques, mostrados, temasFase, descobertas, res1, revelado, fila;
+
+  function reset() {
+    fase = 1; rodada = 1; descobertas = [];
+    // O que o algoritmo já sabe da Lia antes do jogo começar
+    hist = {}; IDS.forEach(t => hist[t] = { vistos: 0, cliques: 0, fase: [0, 0] });
+    hist.games.vistos = 4; hist.games.cliques = 3; hist.humor.vistos = 3; hist.humor.cliques = 2; hist.musica.vistos = 2; hist.musica.cliques = 1; hist.esporte.vistos = 1;
+    fila = {}; IDS.forEach(t => fila[t] = shuffle(POSTS[t].slice()));
+    novaFase();
+  }
+  function novaFase() { cliques = 0; mostrados = 0; temasFase = new Set(); rodada = 1; nova(); }
+
+  // Previsão do algoritmo: taxa de cliques com um pouco de suavização. Sem dados, não há previsão.
+  function previsao(t) { const h = hist[t]; return h.vistos === 0 ? null : (h.cliques + .3) / (h.vistos + 1); }
+  function post(t) { if (!fila[t].length) fila[t] = shuffle(POSTS[t].slice()); return { t, tit: fila[t].pop() }; }
+
+  function nova() {
+    // 3 temas com melhor previsão + 3 temas sorteados entre os outros
+    const ord = IDS.slice().sort((a, b) => (previsao(b) ?? -1) - (previsao(a) ?? -1));
+    const top = ord.slice(0, 3), resto = shuffle(ord.slice(3)).slice(0, 3);
+    oferta = shuffle(top.concat(resto)).map(post);
+    escolha = new Set(); revelado = false;
+    show();
+  }
+
+  function recentes() {
+    const s = new Set(); (window.__ult || []).slice(-3).forEach(r => r.forEach(t => s.add(t))); return s;
+  }
+
+  function painel() {
+    const max = Math.max(1, ...IDS.map(t => hist[t].fase[fase - 1]));
+    const bars = IDS.map(t => `<div class="bar" style="--c:${TEMAS[t].cor}"><span>${TEMAS[t].nome}</span><span class="tr"><i style="width:${hist[t].fase[fase - 1] / max * 100}%"></i></span><b>${hist[t].fase[fase - 1]}</b></div>`).join('');
+    const rec = recentes();
+    const n = rec.size;
+    const R = 26 + n * 10;
+    const dots = [...rec].map((t, k) => { const a = k / Math.max(1, n) * Math.PI * 2 - Math.PI / 2, r = n === 1 ? 0 : R * .55; return `<circle cx="${120 + Math.cos(a) * r}" cy="${100 + Math.sin(a) * r}" r="11" fill="${TEMAS[t].cor}" stroke="#111" stroke-width="2"/>`; }).join('');
+    const fora = IDS.filter(t => !rec.has(t)).map((t, k) => `<circle cx="${18 + k * 29}" cy="190" r="7" fill="${TEMAS[t].cor}" opacity=".35"/>`).join('');
+    return `<div class="box"><h3>A bolha da Lia</h3>
+      <div class="bubble"><svg viewBox="0 0 240 200" role="img" aria-label="Bolha com ${n} de 8 temas nas últimas 3 rodadas">
+        <circle cx="120" cy="100" r="${R}" fill="rgba(47,168,101,.12)" stroke="#2fa865" stroke-width="2.5" stroke-dasharray="6 5"/>${dots}${fora}</svg></div>
+      <p class="small muted" style="margin:4px 0 0">Temas no feed nas últimas 3 rodadas: <b>${n} de 8</b>. As bolinhas apagadas embaixo ficaram de fora.</p></div>
+      <div class="box"><h3>O que você mostrou nesta fase</h3><div class="bars">${bars}</div></div>`;
+  }
+
+  function show() {
+    const meta = fase === 1
+      ? `<b>Fase 1: só cliques.</b> Ganhe o máximo de cliques possível em ${RODADAS} rodadas.`
+      : `<b>Fase 2: feed equilibrado.</b> Mantenha pelo menos <b>50%</b> de cliques e mostre pelo menos <b>6 temas</b> diferentes na fase.`;
+    const taxa = mostrados ? Math.round(cliques / mostrados * 100) : 0;
+    stage.innerHTML = `
+      <div class="hud"><span>Fase <b>${fase}</b></span><span>Rodada <b>${rodada}</b> de ${RODADAS}</span><span>Cliques <b>${cliques}</b>${mostrados ? ` (${taxa}%)` : ''}</span>${fase === 2 ? `<span>Temas na fase <b>${temasFase.size}</b> de 6</span>` : ''}</div>
+      <div class="bf"><div>
+        <div class="user"><span class="avatar" aria-hidden="true">L</span><div><strong>Lia, 13 anos</strong><div class="small muted">Usuária fictícia da rede</div></div></div>
+        <div class="meta-goal">${meta}</div>
+        <p class="small muted" style="margin:0 0 8px">Escolha ${MOSTRAR} publicações para o feed (${escolha.size} de ${MOSTRAR}).</p>
+        <div class="posts" id="posts">${oferta.map((p, k) => {
+          const pv = previsao(p.t), on = escolha.has(k);
+          const r = revelado && on ? `<span class="res ${p.clicou ? 'sim' : 'nao'}">${p.clicou ? 'A Lia clicou' : 'Passou reto'}</span>` : '';
+          return `<button class="post" type="button" data-k="${k}" aria-pressed="${on}" style="--c:${TEMAS[p.t].cor}" ${revelado ? 'disabled' : ''}>
+            <span class="sel" aria-hidden="true">${on ? [...escolha].indexOf(k) + 1 : ''}</span>
+            <span class="tema">${TEMAS[p.t].nome}</span><span class="tit">${esc(p.tit)}</span>
+            ${r || `<span class="prev">Previsão de clique: ${pv === null ? '<i>sem dados</i>' : `<b>${Math.round(pv * 100)}%</b>`}</span>`}</button>`;
+        }).join('')}</div>
+        <div id="msg"></div>
+        <div class="btn-row" style="margin-top:14px">${revelado
+          ? `<button class="btn" type="button" id="nx">${rodada < RODADAS ? 'Próxima rodada' : fase === 1 ? 'Ver o que aconteceu' : 'Ver resultado'}</button>`
+          : `<button class="btn" type="button" id="go" ${escolha.size === MOSTRAR ? '' : 'disabled'}>Publicar no feed</button>`}</div>
+      </div><div class="side">${painel()}</div></div>`;
+    document.getElementById('posts').onclick = e => {
+      const b = e.target.closest('.post'); if (!b || revelado) return;
+      const k = +b.dataset.k;
+      if (escolha.has(k)) escolha.delete(k); else if (escolha.size < MOSTRAR) escolha.add(k);
+      show();
+    };
+    const go = document.getElementById('go'); if (go) go.onclick = publicar;
+    const nx = document.getElementById('nx'); if (nx) { nx.onclick = proxima; nx.focus(); }
+  }
+
+  function publicar() {
+    const msgs = [];
+    const ult = window.__ult || (window.__ult = []);
+    const rodadaTemas = [];
+    [...escolha].forEach(k => {
+      const p = oferta[k], h = hist[p.t];
+      // O mesmo tema repetido demais cansa um pouco
+      const repet = ult.slice(-2).flat().filter(t => t === p.t).length;
+      const chance = TEMAS[p.t].gosto * Math.max(.6, 1 - repet * .07);
+      p.clicou = Math.random() < chance;
+      if (h.vistos === 0 && p.clicou && TEMAS[p.t].gosto >= .55 && !descobertas.includes(p.t)) {
+        descobertas.push(p.t);
+        msgs.push(`<div class="msg disc"><b>Descoberta:</b> a Lia nunca tinha visto ${TEMAS[p.t].nome} e gostou. O algoritmo não tinha como saber sem testar.</div>`);
+      }
+      h.vistos++; h.fase[fase - 1]++; mostrados++; temasFase.add(p.t); rodadaTemas.push(p.t);
+      if (p.clicou) { h.cliques++; cliques++; }
+    });
+    ult.push(rodadaTemas);
+    revelado = true; show();
+    document.getElementById('msg').innerHTML = msgs.join('');
+  }
+
+  function proxima() {
+    if (rodada < RODADAS) { rodada++; nova(); return; }
+    if (fase === 1) { res1 = { cliques, mostrados, temas: temasFase.size }; revelar(); }
+    else fim();
+  }
+
+  function revelar() {
+    const usados = IDS.filter(t => hist[t].fase[0] > 0);
+    const nunca = IDS.filter(t => hist[t].vistos === 0);
+    stage.innerHTML = `<div class="center">
+      <h2>Fim da fase 1</h2>
+      <p style="font-size:19px">A Lia clicou em <b>${res1.cliques}</b> de ${res1.mostrados} publicações (${Math.round(res1.cliques / res1.mostrados * 100)}%).</p>
+      <div class="cmp"><div class="box"><div class="big">${usados.length} de 8</div>temas apareceram no feed dela nesta fase.</div>
+      <div class="box"><div class="big">${nunca.length}</div>${nunca.length === 1 ? 'tema ela nunca viu' : 'temas ela nunca viu'}${nunca.length ? ': ' + nunca.map(t => TEMAS[t].nome).join(', ') : ''}.</div></div>
+      <div class="note" style="text-align:left">
+        <strong>Isso é a bolha do feed.</strong> Quando o algoritmo só mostra o que já deu clique, os temas novos quase não aparecem. Sem aparecer, eles não ganham cliques, e a previsão deles nunca melhora. O feed vai ficando parecido consigo mesmo, e a pessoa passa a ver uma parte pequena do que existe.
+      </div>
+      <p style="margin-top:16px">Na fase 2, o desafio é o que muitas plataformas tentam fazer: <b>manter a Lia interessada e abrir o leque</b>. Teste temas novos sem abandonar o que ela gosta.</p>
+      <button class="btn" type="button" id="f2">Começar a fase 2</button></div>`;
+    const b = document.getElementById('f2'); b.onclick = () => { fase = 2; novaFase(); }; b.focus();
+  }
+
+  function fim() {
+    const taxa = cliques / mostrados, t2 = temasFase.size;
+    const okC = taxa >= .5, okT = t2 >= 6;
+    const pct = Math.round(Math.min(1, taxa / .5) * 50 + Math.min(1, t2 / 6) * 50);
+    window.MDP && MDP.registrar('bolha', pct);
+    const t1 = res1.temas;
+    stage.innerHTML = `<div class="center">
+      <h2>${okC && okT ? 'Feed equilibrado!' : okT || okC ? 'Quase lá' : 'Bom começo'}</h2>
+      <div class="cmp">
+        <div class="box"><strong>Fase 1: só cliques</strong><div class="big">${t1} temas</div>${Math.round(res1.cliques / res1.mostrados * 100)}% de cliques</div>
+        <div class="box"><strong>Fase 2: feed equilibrado</strong><div class="big">${t2} temas</div>${Math.round(taxa * 100)}% de cliques</div>
+      </div>
+      <p>${t2 > t1 ? `O feed da Lia passou de <b>${t1}</b> para <b>${t2}</b> temas.` : `O feed manteve ${t2} temas.`}
+      ${descobertas.length ? ` E ela descobriu ${descobertas.length === 1 ? 'um interesse novo' : descobertas.length + ' interesses novos'}: <b>${descobertas.map(t => TEMAS[t].nome).join(', ')}</b>.` : ''}</p>
+      <div class="note" style="text-align:left;margin:16px auto">
+        <strong>Para levar da aula:</strong> algoritmos de recomendação aprendem com cliques, curtidas e tempo de tela. Isso ajuda a achar o que gostamos, mas pode fechar uma bolha. Para abrir a sua: siga perfis de temas diferentes, use a busca em vez de só rolar o feed, marque "não tenho interesse" quando algo se repete demais e procure fontes com opiniões diferentes.
+      </div>
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="again">Jogar de novo</button></div></div>`;
+    document.getElementById('again').onclick = () => { window.__ult = []; reset(); };
+  }
+
+  window.__ult = [];
+  reset();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -37,6 +37,14 @@
     'cidade-blocos': `<path d="M32 30l20-10v22L32 52 12 42V20z" fill="${A}" ${T}/><path d="M12 20l20 10 20-10" fill="none" ${T}/><path d="M32 30v22" ${T}/>
       <path d="M12 20l20-10 20 10-20 10z" fill="${R}" ${T}/><ellipse cx="25" cy="18" rx="3.5" ry="1.8" fill="${B}" ${T}/><ellipse cx="39" cy="18" rx="3.5" ry="1.8" fill="${B}" ${T}/>
       <circle cx="50" cy="12" r="8" fill="${V}" ${T}/><text x="46.5" y="16.5" font-family="Sniglet,sans-serif" font-weight="800" font-size="12" fill="#fff">?</text>`,
+    bolha: `<circle cx="32" cy="32" r="24" fill="${C}" stroke="#111" stroke-width="2.5" stroke-dasharray="5 4"/><circle cx="26" cy="27" r="7" fill="${V}" ${T}/><circle cx="39" cy="35" r="6" fill="${A}" ${T}/><circle cx="27" cy="41" r="4" fill="${R}" ${T}/>
+      <circle cx="58" cy="10" r="3" fill="${R}"/><circle cx="6" cy="56" r="3" fill="${V}"/>`,
+    boato: `<path d="M14 16L32 30M32 30L50 16M32 30L20 50M32 30L46 50" ${T}/><circle cx="32" cy="30" r="8" fill="${R}" ${T}/><circle cx="14" cy="16" r="6" fill="${R}" ${T}/>
+      <circle cx="50" cy="16" r="6" fill="${V}" ${T}/><path d="M47 16l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/><circle cx="20" cy="50" r="6" fill="${B}" ${T}/><circle cx="46" cy="50" r="6" fill="${B}" ${T}/>`,
+    chatbot: `<path d="M8 12h36a6 6 0 0 1 6 6v14a6 6 0 0 1-6 6H24l-10 8v-8H8a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6z" fill="${A}" ${T}/>
+      <text x="9" y="30" font-family="Sniglet,sans-serif" font-weight="800" font-size="11" fill="#111">SE</text><rect x="30" y="34" width="30" height="24" rx="8" fill="${V}" ${T}/><circle cx="40" cy="45" r="3" fill="#fff"/><circle cx="50" cy="45" r="3" fill="#fff"/>`,
+    acessivel: `<rect x="4" y="8" width="56" height="44" rx="6" fill="${B}" ${T}/><path d="M4 18h56" ${T}/><circle cx="32" cy="27" r="4" fill="${V}" ${T}/>
+      <path d="M20 33h24M32 33v8l-6 8M32 41l6 8" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="13" r="2" fill="${R}"/><circle cx="16" cy="13" r="2" fill="${A}"/>`,
     golpe: `<path d="M32 6l22 8v14c0 14-10 24-22 30C20 52 10 42 10 28V14z" fill="${A}" ${T}/><path d="M32 18v16" stroke="#111" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="43" r="3" fill="#111"/>`,
     fracoes: `<circle cx="32" cy="32" r="24" fill="${B}" ${T}/><path d="M32 32V8a24 24 0 0 1 24 24z" fill="${R}" ${T}/><path d="M32 32L8 32" ${T}/><path d="M32 32V56" ${T}/>`,
     cartesiano: `<path d="M8 32h48M32 8v48" ${T}/><path d="M52 28l4 4-4 4M28 12l4-4 4 4" fill="none" ${T}/>
