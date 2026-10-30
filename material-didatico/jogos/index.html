@@ -57,6 +57,11 @@
   .acao:hover { background: var(--pill); }
   .acao.forte { background: var(--ink); color: var(--paper); }
   .acao.plano { background: var(--co-soft); }
+  .grupo-t { margin: 30px 0 12px; }
+  .grupo-t h2 { font-size: clamp(24px, 3.6vw, 30px); margin: 0 0 2px; }
+  .grupo-t h2 .n { font-family: var(--body); font-weight: 500; font-size: 15px; color: var(--ink-2); margin-left: 8px; white-space: nowrap; }
+  .grupo-t p { color: var(--ink-2); margin: 0; }
+  .grupo-t:first-child { margin-top: 8px; }
   .rot-m { display: none; }
   .vazio { padding: 24px 16px; color: var(--ink-2); }
   .rodape-lista { color: var(--ink-2); font-size: 14px; margin: 14px 0 50px; }
@@ -98,7 +103,7 @@
       <button class="acao" type="button" id="copiar-turma">Copiar link</button>
       <span class="muted small">O link segue os filtros de ano e área escolhidos aqui.</span>
     </div>
-    <div class="tabela" id="tabela" aria-live="polite"></div>
+    <div id="tabela" aria-live="polite"></div>
     <p class="rodape-lista" id="rodape"></p>
   </div>
 </main>
@@ -146,7 +151,7 @@
     $('#link-turma').textContent = linkTurma();
     const lista = JOGOS.filter(j => (!ano || (ano === 1 ? j.anos.some(x => x <= 5) : j.anos.includes(ano))) && (!comp || j.comp.includes(comp)) && (!curto || minutos(j.tempo) <= 15));
     const cab = `<div class="linha th" role="row"><div>Jogo</div><div>Ano</div><div>Habilidades BNCC</div><div>Tempo</div><div>Para a aula</div></div>`;
-    $('#tabela').innerHTML = cab + (lista.length ? lista.map(j => {
+    const linha = j => {
       const plano = j.plano && REC[j.plano], ficha = j.ficha && REC[j.ficha];
       const max = 3, extra = j.habs.length - max;
       return `<div class="linha">
@@ -162,7 +167,14 @@
           <button class="acao" type="button" data-copiar="${SITE}material-didatico/${j.url}">Copiar link</button>
         </div></div>
       </div>`;
-    }).join('') : '<p class="vazio">Nenhum jogo com esses filtros.</p>');
+    };
+    // dois grupos pelo jeito de jogar (campo interacao em dados.js)
+    const grupos = Object.keys(INTERACOES).map(g => ({ g, js: lista.filter(j => interacaoDe(j) === g) })).filter(x => x.js.length);
+    $('#tabela').innerHTML = grupos.length ? grupos.map(x => `<section class="grupo-t" id="grupo-${x.g}">
+        <h2>${INTERACOES[x.g].nome}<span class="n">${x.js.length} ${x.js.length === 1 ? 'jogo' : 'jogos'}</span></h2>
+        <p>${INTERACOES[x.g].desc}</p></section>
+      <div class="tabela">${cab + x.js.map(linha).join('')}</div>`).join('')
+      : `<div class="tabela">${cab}<p class="vazio">Nenhum jogo com esses filtros.</p></div>`;
     $('#rodape').textContent = `Mostrando ${lista.length} de ${JOGOS.length} jogos. Os planos e as fichas também estão no catálogo, com fichas e listas de exercícios de cada habilidade.`;
     const q = new URLSearchParams();
     if (ano) q.set('ano', ano);

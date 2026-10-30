@@ -63,10 +63,10 @@
   .tema-btn.tudo { background: var(--paper); color: var(--ink); border-color: var(--ink); padding-left: 16px; }
 
   .secao { padding: 22px 0 6px; }
-  .secao h2 { display: flex; align-items: center; gap: 12px; font-size: clamp(24px, 4vw, 32px); margin-bottom: 16px; }
-  .secao h2 .bola { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; flex: none; }
-  .secao h2 .bola svg { width: 32px; height: 32px; }
-  .secao h2 .n { white-space: nowrap; font-family: var(--body); font-weight: 500; font-size: 15px; color: var(--ink-2); }
+  .secao > h3 { display: flex; align-items: center; gap: 12px; font-size: clamp(21px, 3.4vw, 26px); margin-bottom: 16px; }
+  .secao > h3 .bola { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; flex: none; }
+  .secao > h3 .bola svg { width: 32px; height: 32px; }
+  .secao > h3 .n { white-space: nowrap; font-family: var(--body); font-weight: 500; font-size: 15px; color: var(--ink-2); }
   .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
   .jg { display: flex; flex-direction: column; border: 2px solid var(--ink); border-radius: var(--radius); overflow: hidden;
     background: var(--paper); color: var(--ink); text-decoration: none; transition: transform .12s, box-shadow .12s; box-shadow: 4px 4px 0 var(--ink); }
@@ -82,6 +82,11 @@
   .estrelas .on { color: #e0a800; }
   .estrelas .off { color: var(--line); }
   .jg .jogar { background: var(--ink); color: var(--paper); border-radius: 99px; text-align: center; padding: 11px; font-weight: 700; font-size: 17px; }
+  .grupo { margin-top: 26px; padding-top: 22px; border-top: 2px solid var(--ink); }
+  .grupo:first-child { border-top: 0; margin-top: 4px; }
+  .grupo > h2 { font-size: clamp(28px, 4.6vw, 38px); margin: 0 0 4px; }
+  .grupo > h2 .n { font-family: var(--body); font-weight: 500; font-size: 16px; color: var(--ink-2); white-space: nowrap; margin-left: 8px; }
+  .grupo > p { font-size: 17px; color: var(--ink-2); margin: 0 0 4px; max-width: 640px; }
   .vazio { padding: 30px 0; font-size: 18px; }
   .primeiros { display: flex; align-items: center; gap: 16px; margin: 24px 0 0; padding: 14px 20px; border: 2px solid #111; border-radius: var(--radius);
     background: #fff3a6; color: #111; text-decoration: none; box-shadow: 4px 4px 0 #111; }
@@ -260,9 +265,16 @@
     $('#temas').innerHTML = `<button class="tema-btn tudo" type="button" data-tema="" aria-pressed="${!tema}">Todos (${lista.length})</button>` +
       temasVis.map(o => `<button class="tema-btn" type="button" data-tema="${o.t.id}" aria-pressed="${tema === o.t.id}" style="background:var(--t-${o.t.id})">${iconeJogo(o.t.icone)}${o.t.nome}</button>`).join('');
     const mostrar = temasVis.filter(o => !tema || o.t.id === tema);
-    $('#lista').innerHTML = mostrar.length ? mostrar.map(o => `<section class="secao">
-        <h2><span class="bola" style="background:var(--t-${o.t.id})">${iconeJogo(o.t.icone)}</span>${o.t.nome}<span class="n">${o.js.length} ${o.js.length === 1 ? 'jogo' : 'jogos'}</span></h2>
-        <div class="grade">${o.js.map(cartao).join('')}</div></section>`).join('')
+    const nJogos = n => `${n} ${n === 1 ? 'jogo' : 'jogos'}`;
+    // dois grupos pelo jeito de jogar; dentro de cada um, os temas
+    const grupos = Object.keys(INTERACOES).map(g => ({ g, secoes: mostrar.map(o => ({ t: o.t, js: o.js.filter(j => interacaoDe(j) === g) })).filter(o => o.js.length) }))
+      .filter(x => x.secoes.length);
+    $('#lista').innerHTML = grupos.length ? grupos.map(x => `<section class="grupo" id="grupo-${x.g}">
+        <h2>${INTERACOES[x.g].nome}<span class="n">${nJogos(x.secoes.reduce((s, o) => s + o.js.length, 0))}</span></h2>
+        <p>${INTERACOES[x.g].desc}</p>
+        ${x.secoes.map(o => `<section class="secao">
+        <h3><span class="bola" style="background:var(--t-${o.t.id})">${iconeJogo(o.t.icone)}</span>${o.t.nome}<span class="n">${nJogos(o.js.length)}</span></h3>
+        <div class="grade">${o.js.map(cartao).join('')}</div></section>`).join('')}</section>`).join('')
       : '<p class="vazio">Nenhum jogo por aqui ainda. Toque em "Ver todos".</p>';
     const q = new URLSearchParams();
     if (ano) q.set('ano', ano);
