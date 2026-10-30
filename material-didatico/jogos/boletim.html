@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fórmulas do Boletim · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de planilha eletrônica: complete o boletim de uma turma fictícia com SOMA, MÉDIA, SE, CONT.SE e MÁXIMO e copie as fórmulas para baixo. BNCC EF07MA35, EF07MA36, EF07CO01.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/boletim.html">
+<meta property="og:title" content="Fórmulas do Boletim · Material didático">
+<meta property="og:description" content="Jogo de planilha eletrônica: complete o boletim de uma turma fictícia com SOMA, MÉDIA, SE, CONT.SE e MÁXIMO e copie as fórmulas para baixo.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/boletim.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .missao { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); margin-bottom: 12px; }
+  .missao h2 { font-size: 20px; margin: 0 0 6px; }
+  .missao p { margin: 4px 0; }
+  .passos { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 12px; }
+  .passos li { width: 30px; height: 30px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 13px; background: var(--paper); }
+  .passos li.feito { background: var(--ok-soft); border-color: var(--ok); }
+  .passos li.agora { background: #fff36b; color: #111; font-weight: 600; }
+  .fbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .fbar .nome { font-family: ui-monospace, Consolas, monospace; font-weight: 600; border: 1.5px solid var(--ink); border-radius: 10px; padding: 8px 10px; min-width: 52px; text-align: center; background: var(--paper-2); }
+  .fbar .fx { font-style: italic; font-weight: 600; color: var(--ink-2); }
+  .fbar input { flex: 1 1 260px; font: 16px ui-monospace, Consolas, monospace; padding: 10px 12px; border: 1.5px solid var(--ink); border-radius: 10px; background: var(--paper); color: var(--ink); min-width: 0; }
+  .fbar input:focus { outline: 3px solid #ffd23f; outline-offset: 1px; }
+  .atalhos { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .atalhos button { font: 14px ui-monospace, Consolas, monospace; border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 10px; background: var(--paper-2); color: var(--ink); cursor: pointer; }
+  .planilha-wrap { overflow-x: auto; border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); }
+  table.planilha { border-collapse: collapse; font-size: 15px; min-width: 640px; width: 100%; }
+  .planilha th, .planilha td { border: 1px solid var(--line); padding: 6px 8px; height: 34px; }
+  .planilha thead th, .planilha th.rn { background: var(--paper-2); color: var(--ink-2); font-weight: 500; font-size: 13px; text-align: center; }
+  .planilha th.rn { width: 36px; }
+  .planilha td { cursor: pointer; text-align: right; white-space: nowrap; }
+  .planilha td.txt { text-align: left; }
+  .planilha td.cab { font-weight: 600; background: var(--accent-soft); text-align: center; }
+  .planilha td.sel { outline: 2.5px solid var(--ink); outline-offset: -2px; }
+  .planilha td.alvo { background: #fff36b; color: #111; outline: 2.5px dashed #111; outline-offset: -3px; }
+  .planilha td.formula { color: var(--accent); font-weight: 500; }
+  .planilha td.sobe { background: var(--ok-soft); }
+  .planilha td.aprov { color: var(--ok); font-weight: 600; }
+  .planilha td.novo { animation: brilho 1.2s ease-out; }
+  @keyframes brilho { from { background: #ffd23f; } }
+  .dica { border-left: 4px solid #ffd23f; padding: 6px 12px; background: var(--paper-2); border-radius: 0 10px 10px 0; margin: 8px 0; }
+  .copias { font: 13px ui-monospace, Consolas, monospace; color: var(--ink-2); margin: 6px 0 0; }
+  .final { text-align: center; }
+  .final b.grande { font-family: var(--display); font-size: 30px; display: block; }
+  @media (prefers-reduced-motion: reduce) { .planilha td.novo { animation: none; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>O boletim de uma turma fictícia está pela metade. Em cada missão, a célula amarela é a que você precisa preencher. Digite a fórmula na barra de fórmulas e confirme com <strong>Enter</strong>.</p>
+    <p>Toda fórmula começa com <strong>=</strong>. Os argumentos são separados por <strong>ponto e vírgula</strong>, como no Excel e no LibreOffice em português: <code>=SE(F2&gt;=6;"Aprovado";"Recuperação")</code>. Um intervalo de células usa dois-pontos: <code>B2:D2</code> quer dizer de B2 até D2.</p>
+    <p>Enquanto você digita, pode clicar numa célula da planilha para colocar o endereço dela na fórmula. Quando a fórmula estiver certa na linha 2, o jogo copia para as linhas de baixo, como quem arrasta a alça de preenchimento.</p>
+    <p class="small muted">Os nomes e as notas são fictícios e mudam a cada partida. As funções aceitam acento ou não (MÉDIA ou MEDIA).</p>
+  </details>
+  <div class="game-stage">
+    <ol class="passos" id="passos" aria-label="Missões"></ol>
+    <div class="missao" id="missao" aria-live="polite"></div>
+    <div class="fbar">
+      <span class="nome" id="nome" aria-label="Célula selecionada">E2</span>
+      <span class="fx" aria-hidden="true">fx</span>
+      <label for="fx" class="sr-only">Barra de fórmulas</label>
+      <input id="fx" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Digite a fórmula, começando com =">
+      <button class="btn" type="button" id="ok">Confirmar</button>
+    </div>
+    <div class="atalhos" id="atalhos" aria-label="Atalhos para digitar"></div>
+    <div class="planilha-wrap"><table class="planilha" id="planilha" aria-label="Planilha do boletim"></table></div>
+    <p class="feedback" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('boletim');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const semAcento = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+  const COLS = 'ABCDEFGH'.split(''), LINHAS = 12;
+  const NOMES = ['Alice', 'Bruno', 'Carla', 'Davi', 'Elisa', 'Felipe', 'Gabriela', 'Heitor', 'Isadora', 'João', 'Laura', 'Miguel', 'Nina', 'Otávio', 'Paula', 'Rafael', 'Sofia', 'Tiago'];
+
+  /* ---------- planilha ---------- */
+  let cel = {};            // 'B2' -> número, texto ou fórmula ('=...')
+  const meio = v => Math.round(v * 2) / 2;
+  function novaTurma() {
+    let ok = false, linhas;
+    while (!ok) {
+      const nomes = shuffle(NOMES).slice(0, 6).sort((a, b) => a.localeCompare(b, 'pt'));
+      linhas = nomes.map(n => {
+        const b = meio(ri(8, 17) / 2);
+        const c = Math.min(10, Math.max(0, meio(b + ri(-1, 3) / 2)));
+        const d = Math.min(10, Math.max(0, meio(c + ri(-1, 3) / 2)));
+        return [n, b, c, d];
+      });
+      const medias = linhas.map(l => (l[1] + l[2] + l[3]) / 3);
+      const aprov = medias.filter(m => m >= 6).length, sobe = linhas.filter(l => l[3] > l[1]).length;
+      ok = aprov >= 4 && aprov <= 5 && sobe >= 4 && medias.every(m => Math.abs(m - 6) > 0.05);
+    }
+    cel = { A1: 'Estudante', B1: '1º tri', C1: '2º tri', D1: '3º tri', E1: 'Total', F1: 'Média', G1: 'Situação', H1: 'Evolução',
+      A9: 'Aprovados', A10: 'Maior média', A11: 'Melhoraram', A12: 'Média da turma' };
+    linhas.forEach((l, i) => { const r = i + 2; cel['A' + r] = l[0]; cel['B' + r] = l[1]; cel['C' + r] = l[2]; cel['D' + r] = l[3]; });
+  }
+
+  /* ---------- fórmulas: leitor pequeno no padrão brasileiro ---------- */
+  function tokens(src) {
+    const t = []; let i = 0;
+    while (i < src.length) {
+      const s = src.slice(i), c = src[i];
+      if (/\s/.test(c)) { i++; continue; }
+      let m;
+      if ((m = s.match(/^"([^"]*)"/))) { t.push({ k: 'str', v: m[1] }); i += m[0].length; continue; }
+      if ((m = s.match(/^\d+(?:[.,]\d+)?/))) { t.push({ k: 'num', v: parseFloat(m[0].replace(',', '.')) }); i += m[0].length; continue; }
+      if ((m = s.match(/^\$?([A-Za-z])\$?(\d+)(?![A-Za-z(])/))) { t.push({ k: 'ref', v: m[1].toUpperCase() + m[2] }); i += m[0].length; continue; }
+      if ((m = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ.]*)\s*\(/))) { t.push({ k: 'fn', v: semAcento(m[1]) }); i += m[0].length; continue; }
+      if ((m = s.match(/^(>=|<=|<>)/))) { t.push({ k: 'op', v: m[1] }); i += 2; continue; }
+      if ('+-*/()<>=;:,'.includes(c)) { t.push({ k: 'op', v: c === ',' ? ';' : c }); i++; continue; }
+      throw new Error('Não reconheci “' + c + '”.');
+    }
+    return t;
+  }
+  const NOMES_FN = { SOMA: 'SOMA', SUM: 'SOMA', MEDIA: 'MEDIA', AVERAGE: 'MEDIA', SE: 'SE', IF: 'SE', 'CONT.SE': 'CONT.SE', COUNTIF: 'CONT.SE', CONTSE: 'CONT.SE', MAXIMO: 'MAXIMO', MAX: 'MAXIMO', MINIMO: 'MINIMO', MIN: 'MINIMO', 'CONT.NUM': 'CONT.NUM', COUNT: 'CONT.NUM' };
+  function faixa(a, b) {
+    const ca = COLS.indexOf(a[0]), cb = COLS.indexOf(b[0]), ra = +a.slice(1), rb = +b.slice(1), out = [];
+    for (let c = Math.min(ca, cb); c <= Math.max(ca, cb); c++) for (let r = Math.min(ra, rb); r <= Math.max(ra, rb); r++) out.push(COLS[c] + r);
+    return out;
+  }
+  function valor(ref, pilha) {
+    if (pilha.includes(ref)) throw new Error('A fórmula usa a própria célula ' + ref + '.');
+    const v = cel[ref];
+    if (typeof v === 'string' && v[0] === '=') return calcular(v, [...pilha, ref]);
+    return v === undefined ? null : v;
+  }
+  function calcular(f, pilha = [], usadas) {
+    if (!f || f[0] !== '=') throw new Error('Toda fórmula começa com o sinal de igual (=).');
+    const t = tokens(f.slice(1)); let p = 0;
+    const olha = () => t[p], vem = v => t[p] && t[p].k === 'op' && t[p].v === v;
+    const espera = v => { if (!vem(v)) throw new Error(v === ')' ? 'Está faltando fechar um parêntese.' : 'Esperava “' + v + '”.'); p++; };
+    const num = x => { if (x === null || x === '') return 0; if (typeof x === 'number') return x; if (typeof x === 'boolean') return x ? 1 : 0; throw new Error('Não dá para fazer conta com o texto “' + x + '”.'); };
+    function comp() {
+      let a = soma();
+      if (t[p] && t[p].k === 'op' && ['>=', '<=', '<>', '=', '>', '<'].includes(t[p].v)) {
+        const op = t[p++].v, b = soma();
+        const A = typeof a === 'string' ? semAcento(a) : a, B = typeof b === 'string' ? semAcento(b) : b;
+        a = op === '>=' ? A >= B : op === '<=' ? A <= B : op === '<>' ? A !== B : op === '=' ? A === B : op === '>' ? A > B : A < B;
+      }
+      return a;
+    }
+    function soma() { let a = prod(); while (vem('+') || vem('-')) { const o = t[p++].v, b = prod(); a = o === '+' ? num(a) + num(b) : num(a) - num(b); } return a; }
+    function prod() { let a = un(); while (vem('*') || vem('/')) { const o = t[p++].v, b = un(); if (o === '/' && num(b) === 0) throw new Error('Divisão por zero.'); a = o === '*' ? num(a) * num(b) : num(a) / num(b); } return a; }
+    function un() { if (vem('-')) { p++; return -num(un()); } if (vem('+')) { p++; return num(un()); } return prim(); }
+    function arg() {
+      const x = olha();
+      if (x && x.k === 'ref' && t[p + 1] && t[p + 1].k === 'op' && t[p + 1].v === ':') {
+        p += 2; const y = olha(); if (!y || y.k !== 'ref') throw new Error('Depois dos dois-pontos vem outra célula, como B2:D2.');
+        p++; return { faixa: faixa(x.v, y.v).map(r => valor(r, pilha)) };
+      }
+      return comp();
+    }
+    const lista = a => a && a.faixa ? a.faixa : [a];
+    const nums = args => args.flatMap(lista).filter(v => typeof v === 'number');
+    function criterio(c) {
+      if (typeof c === 'number') return v => v === c;
+      const m = String(c).match(/^(>=|<=|<>|>|<|=)?\s*(.*)$/), op = m[1] || '=', alvo = m[2].replace(',', '.');
+      const n = alvo !== '' && !isNaN(+alvo) ? +alvo : null;
+      return v => {
+        const a = n !== null && typeof v === 'number' ? v : semAcento(v ?? ''), b = n !== null && typeof v === 'number' ? n : semAcento(alvo);
+        return op === '>=' ? a >= b : op === '<=' ? a <= b : op === '<>' ? a !== b : op === '>' ? a > b : op === '<' ? a < b : a === b;
+      };
+    }
+    function prim() {
+      const x = t[p++];
+      if (!x) throw new Error('A fórmula terminou antes da hora.');
+      if (x.k === 'num' || x.k === 'str') return x.v;
+      if (x.k === 'ref') { if (vem(':')) throw new Error('Um intervalo como B2:D2 só pode ficar dentro de uma função, como SOMA(B2:D2).'); return valor(x.v, pilha); }
+      if (x.k === 'op' && x.v === '(') { const v = comp(); espera(')'); return v; }
+      if (x.k === 'fn') {
+        const nome = NOMES_FN[x.v.replace(/\s/g, '')];
+        if (!nome) throw new Error('Não conheço a função ' + x.v + '. Use SOMA, MÉDIA, SE, CONT.SE ou MÁXIMO.');
+        if (usadas) usadas.add(nome);
+        const args = [];
+        if (!vem(')')) { args.push(arg()); while (vem(';')) { p++; args.push(arg()); } }
+        espera(')');
+        if (nome === 'SOMA') return nums(args).reduce((a, b) => a + b, 0);
+        if (nome === 'MEDIA') { const n = nums(args); if (!n.length) throw new Error('MÉDIA sem números.'); return n.reduce((a, b) => a + b, 0) / n.length; }
+        if (nome === 'MAXIMO') return Math.max(...nums(args));
+        if (nome === 'MINIMO') return Math.min(...nums(args));
+        if (nome === 'CONT.NUM') return nums(args).length;
+        if (nome === 'SE') { if (args.length < 2) throw new Error('SE precisa de teste; valor se verdadeiro; valor se falso.'); return args[0] ? args[1] : (args.length > 2 ? args[2] : false); }
+        if (nome === 'CONT.SE') { if (args.length !== 2 || !args[0].faixa) throw new Error('CONT.SE precisa de um intervalo e de um critério: =CONT.SE(G2:G7;"Aprovado").'); const ok = criterio(args[1]); return args[0].faixa.filter(ok).length; }
+      }
+      throw new Error('Algo ficou fora do lugar perto de “' + (x.v ?? '') + '”.');
+    }
+    const r = comp();
+    if (p < t.length) throw new Error(t[p].v === ':' ? 'Um intervalo como B2:D2 só pode ficar dentro de uma função.' : 'Sobrou “' + t[p].v + '” no fim da fórmula. Confira os parênteses e os ponto e vírgulas.');
+    if (r && r.faixa) throw new Error('Um intervalo sozinho não dá um valor. Coloque dentro de uma função.');
+    return r;
+  }
+  // copia a fórmula para outra linha, ajustando as referências relativas (como a alça de preenchimento)
+  function desloca(f, dr) {
+    return f.split('"').map((pedaco, i) => i % 2 ? pedaco : pedaco.replace(/(\$?)([A-Za-z])(\$?)(\d+)(?![A-Za-z(])/g, (m, d1, c, d2, r) => d1 + c + d2 + (d2 ? r : +r + dr))).join('"');
+  }
+  const fmt = v => {
+    if (v === null || v === undefined) return '';
+    if (typeof v === 'boolean') return v ? 'VERDADEIRO' : 'FALSO';
+    if (typeof v === 'number') return (Math.round(v * 100) / 100).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+    return String(v);
+  };
+  const igual = (a, b) => typeof a === 'number' && typeof b === 'number' ? Math.abs(a - b) < 0.005 : semAcento(a ?? '') === semAcento(b ?? '');
+
+  /* ---------- missões ---------- */
+  const MISSOES = [
+    { alvo: 'E2', titulo: 'Somar com o sinal de mais', texto: 'Some as três notas de {A2}. Use os endereços das células, não os números.', dica: 'Comece com = e some as células do 1º, 2º e 3º trimestres: =B2+C2+D2', ref: '=B2+C2+D2', precisaRef: true },
+    { alvo: 'E2', titulo: 'Somar com a função SOMA', texto: 'Agora faça o mesmo total com a função SOMA e um intervalo. Depois o jogo copia para toda a turma.', dica: 'Um intervalo vai da primeira à última célula, com dois-pontos no meio: =SOMA(B2:D2)', ref: '=SOMA(B2:D2)', exigir: 'SOMA', copiar: true },
+    { alvo: 'F2', titulo: 'Calcular a média', texto: 'Calcule a média das três notas de {A2} com a função MÉDIA.', dica: 'A função MÉDIA soma e divide pela quantidade de notas: =MÉDIA(B2:D2)', ref: '=MEDIA(B2:D2)', exigir: 'MEDIA', copiar: true },
+    { alvo: 'G2', titulo: 'Decidir com SE', texto: 'Escreva "Aprovado" se a média for 6 ou mais e "Recuperação" se for menor.', dica: 'O SE tem três partes: teste; valor se verdadeiro; valor se falso. =SE(F2>=6;"Aprovado";"Recuperação")', ref: '=SE(F2>=6;"Aprovado";"Recuperação")', exigir: 'SE', copiar: true },
+    { alvo: 'H2', titulo: 'Medir a evolução', texto: 'Quanto a nota de {A2} mudou do 1º para o 3º trimestre? Faça a nota final menos a inicial.', dica: 'Nota do 3º trimestre menos nota do 1º: =D2-B2', ref: '=D2-B2', precisaRef: true, copiar: true },
+    { alvo: 'B9', titulo: 'Contar aprovados com CONT.SE', texto: 'Quantos estudantes da turma foram aprovados? Conte na coluna Situação.', dica: 'CONT.SE recebe o intervalo e o que procurar: =CONT.SE(G2:G7;"Aprovado")', ref: '=CONT.SE(G2:G7;"Aprovado")', exigir: 'CONT.SE' },
+    { alvo: 'B10', titulo: 'Achar a maior média', texto: 'Qual foi a maior média da turma? Use a função MÁXIMO.', dica: '=MÁXIMO(F2:F7)', ref: '=MAXIMO(F2:F7)', exigir: 'MAXIMO' },
+    { alvo: 'B11', titulo: 'Contar quem melhorou', texto: 'Quantos estudantes tiveram evolução positiva? Conte na coluna Evolução os valores maiores que zero.', dica: 'O critério também pode ser uma comparação entre aspas: =CONT.SE(H2:H7;">0")', ref: '=CONT.SE(H2:H7;">0")', exigir: 'CONT.SE' },
+    { alvo: 'B12', titulo: 'Consertar a fórmula', texto: 'Alguém calculou a média da turma com =SOMA(F2:F7)/5, mas a turma tem 6 estudantes. Corrija a fórmula.', dica: 'Divida por 6 ou, melhor ainda, use =MÉDIA(F2:F7), que conta sozinha quantas notas existem.', ref: '=MEDIA(F2:F7)', inicial: '=SOMA(F2:F7)/5' }
+  ];
+  let m = 0, pontos = 0, viuResposta = false, erros = 0, sel = 'E2', novas = new Set();
+
+  function texto(s) { return s.replace(/\{(\w+)\}/g, (_, r) => cel[r]); }
+  function desenha() {
+    const alvo = MISSOES[m] && MISSOES[m].alvo;
+    let h = '<thead><tr><th class="rn" scope="col"><span class="sr-only">Linha</span></th>' + COLS.map(c => `<th scope="col">${c}</th>`).join('') + '</tr></thead><tbody>';
+    for (let r = 1; r <= LINHAS; r++) {
+      h += `<tr><th class="rn" scope="row">${r}</th>`;
+      COLS.forEach(c => {
+        const ref = c + r, raw = cel[ref]; let v = raw, cls = [];
+        if (typeof raw === 'string' && raw[0] === '=') { try { v = calcular(raw, [ref]); } catch (e) { v = '#ERRO'; } cls.push('formula'); }
+        if (r === 1 || (c === 'A' && r >= 9)) cls.push('cab');
+        if (typeof v !== 'number') cls.push('txt');
+        if (c === 'H' && r >= 2 && r <= 7 && typeof v === 'number' && v > 0) cls.push('sobe');
+        if (c === 'G' && semAcento(v) === 'APROVADO') cls.push('aprov');
+        if (ref === alvo) cls.push('alvo');
+        if (ref === sel) cls.push('sel');
+        if (novas.has(ref)) cls.push('novo');
+        const mostra = c === 'H' && typeof v === 'number' && v > 0 ? '+' + fmt(v) : fmt(v);
+        h += `<td data-ref="${ref}" class="${cls.join(' ')}" aria-label="${ref}: ${mostra || 'vazia'}${ref === alvo ? ' (célula da missão)' : ''}">${mostra}</td>`;
+      });
+      h += '</tr>';
+    }
+    $('#planilha').innerHTML = h + '</tbody>';
+    novas = new Set();
+  }
+  function passos() {
+    $('#passos').innerHTML = MISSOES.map((x, i) => `<li class="${i < m ? 'feito' : i === m ? 'agora' : ''}" aria-label="Missão ${i + 1}${i < m ? ', feita' : i === m ? ', atual' : ''}">${i + 1}</li>`).join('');
+  }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function abre() {
+    if (m >= MISSOES.length) return fim();
+    const M = MISSOES[m]; viuResposta = false; erros = 0; sel = M.alvo;
+    if (M.inicial) cel[M.alvo] = M.inicial;
+    $('#missao').innerHTML = `<p class="small muted">Missão ${m + 1} de ${MISSOES.length}</p><h2>${M.titulo}</h2><p>${texto(M.texto)}</p><p class="small">Célula: <strong>${M.alvo}</strong></p><div id="dicabox"></div>`;
+    $('#nome').textContent = M.alvo; $('#fx').value = M.inicial || ''; $('#fx').readOnly = false;
+    $('#actions').innerHTML = '<button class="btn ghost" type="button" id="bdica">Dica</button><button class="btn ghost" type="button" id="bresp">Mostrar a resposta</button>';
+    $('#bdica').onclick = () => { $('#dicabox').innerHTML = `<p class="dica">${M.dica}</p>`; };
+    $('#bresp').onclick = () => { viuResposta = true; $('#fx').value = M.ref.replace('MEDIA', 'MÉDIA').replace('MAXIMO', 'MÁXIMO'); $('#fx').focus(); fb('A fórmula está na barra. Leia com calma e confirme com Enter.', ''); };
+    fb('', ''); passos(); desenha();
+  }
+  function confere() {
+    const M = MISSOES[m]; if (!M) return;
+    let f = $('#fx').value.trim();
+    if (f && f[0] !== '=') f = '=' + f;
+    const usadas = new Set(); let v, certo;
+    const guarda = cel[M.alvo]; delete cel[M.alvo];
+    try {
+      v = calcular(f, [M.alvo], usadas); certo = calcular(M.ref, [M.alvo]);
+    } catch (e) { cel[M.alvo] = guarda; erros++; return fb(e.message, 'bad'); }
+    cel[M.alvo] = guarda;
+    if (!igual(v, certo)) {
+      erros++;
+      let ajuda = `A fórmula deu ${fmt(v) || 'vazio'}, mas o esperado é ${fmt(certo)}.`;
+      if (M.alvo === 'B12' && /\/\s*5\b/.test(f)) ajuda = 'Ainda está dividindo por 5. A turma tem 6 estudantes.';
+      else if (typeof certo === 'string') ajuda += ' Confira o teste e os textos entre aspas.';
+      else ajuda += ' Confira se o intervalo pega as células certas.';
+      return fb(ajuda, 'bad');
+    }
+    if (M.precisaRef && !/[A-Za-z]\$?\d/.test(f.replace(/"[^"]*"/g, ''))) { erros++; return fb(`O resultado ${fmt(v)} até confere, mas use os endereços das células (como B2). Assim a fórmula continua certa quando uma nota mudar.`, 'bad'); }
+    if (M.exigir && !usadas.has(M.exigir)) { erros++; return fb(`O valor ${fmt(v)} está certo. Agora tente com a função ${M.exigir.replace('MEDIA', 'MÉDIA').replace('MAXIMO', 'MÁXIMO')}, que é o objetivo desta missão.`, 'bad'); }
+    // copia para baixo
+    let msgCopia = '';
+    if (M.copiar) {
+      const linha = +M.alvo.slice(1), col = M.alvo[0], copias = [];
+      for (let r = linha + 1; r <= 7; r++) {
+        const g = desloca(f, r - linha), ref = col + r; let vv, cc;
+        try { cel[M.alvo] = f; vv = calcular(g, [ref]); cc = calcular(desloca(M.ref, r - linha), [ref]); } catch (e) { vv = null; }
+        if (!igual(vv, cc)) { cel[M.alvo] = guarda; erros++; return fb(`Na linha 2 deu certo, mas ao copiar para a linha ${r} a fórmula virou ${g} e o resultado não confere. Use referências relativas, sem o cifrão ($).`, 'bad'); }
+        copias.push(g);
+      }
+      for (let r = linha + 1; r <= 7; r++) { cel[col + r] = copias[r - linha - 1]; novas.add(col + r); }
+      msgCopia = `<p class="copias">Copiada para baixo: ${copias[0]}, ${copias[1]}, ..., ${copias[copias.length - 1]}</p>`;
+    }
+    cel[M.alvo] = f; novas.add(M.alvo);
+    const ganhou = !viuResposta;
+    if (ganhou) pontos++;
+    const elogio = viuResposta ? 'Fórmula registrada.' : erros === 0 ? 'Certo de primeira!' : 'Certo!';
+    let extra = '';
+    if (M.alvo === 'H2') { const sobe = [2, 3, 4, 5, 6, 7].filter(r => calcular(cel['H' + r], ['H' + r]) > 0).length; extra = ` As células verdes mostram quem melhorou: ${sobe} de 6 estudantes.`; }
+    if (M.alvo === 'G2') { const ap = [2, 3, 4, 5, 6, 7].filter(r => semAcento(calcular(cel['G' + r], ['G' + r])) === 'APROVADO').length; extra = ` ${ap} de 6 estudantes já estão aprovados.`; }
+    m++; sel = M.alvo; desenha(); passos();
+    $('#missao').insertAdjacentHTML('beforeend', msgCopia);
+    fb(`${elogio} ${M.alvo} = ${fmt(v)}.${extra}`, 'ok');
+    $('#fx').readOnly = true;
+    $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${m < MISSOES.length ? 'Próxima missão' : 'Ver resultado'}</button>`;
+    $('#nx').onclick = abre; $('#nx').focus();
+  }
+  function fim() {
+    window.MDP && MDP.registrar('boletim', pontos / MISSOES.length * 100);
+    const ap = calcular(cel.B9, ['B9']), mel = calcular(cel.B11, ['B11']), med = calcular(cel.B12, ['B12']);
+    sel = ''; desenha(); passos();
+    $('#missao').innerHTML = `<div class="final"><p class="small muted">Boletim fechado</p><b class="grande">${pontos} de ${MISSOES.length} missões</b><p>sem precisar ver a resposta.</p>
+      <p>Pelo boletim que você montou, <strong>${ap} estudantes foram aprovados</strong>, <strong>${mel} melhoraram</strong> do 1º para o 3º trimestre e a média da turma ficou em <strong>${fmt(med)}</strong>.</p>
+      <p class="small">Clique em qualquer célula para rever a fórmula dela na barra.</p></div>`;
+    $('#nome').textContent = 'A1'; $('#fx').value = ''; $('#fx').readOnly = true;
+    fb('Agora você sabe montar um boletim que se atualiza sozinho: se uma nota mudar, todas as contas mudam junto.', 'ok');
+    $('#actions').innerHTML = '<button class="btn" type="button" id="again">Nova turma</button>';
+    $('#again').onclick = inicio;
+  }
+  // cliques na planilha: mostram a fórmula ou inserem o endereço enquanto se digita
+  $('#planilha').addEventListener('mousedown', e => { if (e.target.closest('td') && document.activeElement === $('#fx') && $('#fx').value.startsWith('=')) e.preventDefault(); });
+  $('#planilha').addEventListener('click', e => {
+    const td = e.target.closest('td'); if (!td) return;
+    const ref = td.dataset.ref, M = MISSOES[m], fx = $('#fx');
+    const digitando = M && !fx.readOnly && fx.value.startsWith('=') && ref !== M.alvo;
+    if (digitando) {
+      const a = fx.selectionStart ?? fx.value.length, b = fx.selectionEnd ?? a;
+      fx.value = fx.value.slice(0, a) + ref + fx.value.slice(b); fx.focus(); fx.setSelectionRange(a + ref.length, a + ref.length);
+      return;
+    }
+    sel = ref; $('#nome').textContent = ref;
+    if (M && ref === M.alvo && !fx.readOnly) { fx.focus(); desenha(); return; }
+    const raw = cel[ref];
+    if (!M || fx.readOnly) fx.value = raw === undefined ? '' : (typeof raw === 'number' ? fmt(raw) : String(raw));
+    else fb(`${ref} contém ${raw === undefined ? 'nada' : (typeof raw === 'string' && raw[0] === '=' ? 'a fórmula ' + raw : fmt(raw))}. Para usar o endereço na fórmula, comece digitando = e depois clique.`, '');
+    desenha();
+  });
+  $('#fx').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); if (!$('#fx').readOnly) confere(); else { const nx = $('#nx'); if (nx) nx.click(); } } });
+  $('#ok').onclick = () => { if (!$('#fx').readOnly) confere(); };
+  const ATALHOS = ['=', 'SOMA(', 'MÉDIA(', 'SE(', 'CONT.SE(', 'MÁXIMO(', ':', ';', ')', '>=', '"Aprovado"', '"Recuperação"'];
+  $('#atalhos').innerHTML = ATALHOS.map(a => `<button type="button">${a.replace(/"/g, '&quot;')}</button>`).join('');
+  $('#atalhos').addEventListener('mousedown', e => { if (e.target.closest('button')) e.preventDefault(); });
+  $('#atalhos').onclick = e => {
+    const b = e.target.closest('button'), fx = $('#fx'); if (!b || fx.readOnly) return;
+    const a = fx.selectionStart ?? fx.value.length, s = b.textContent;
+    fx.value = fx.value.slice(0, a) + s + fx.value.slice(fx.selectionEnd ?? a); fx.focus(); fx.setSelectionRange(a + s.length, a + s.length);
+  };
+  function inicio() { novaTurma(); m = 0; pontos = 0; abre(); }
+  inicio();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

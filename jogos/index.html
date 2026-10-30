@@ -188,9 +188,9 @@
   const TEMAS = [
     { id: 'digital', nome: 'Robôs, internet e segurança', icone: 'robo', jogos: ['partes-computador', 'vale-bits', 'cidade-blocos', 'python', 'digitacao', 'impostor', 'robo', 'pacotes', 'golpe', 'senha', 'paridade', 'filas-pilhas', 'linha-tempo', 'bingo'] },
     { id: 'numeros', nome: 'Números e contas', icone: 'fracoes', jogos: ['numeria', 'tabuada', 'fracoes', 'balanca', 'receitas', 'bhaskara'] },
-    { id: 'formas', nome: 'Formas, mapas e ângulos', icone: 'tangram', jogos: ['tangram', 'cartesiano', 'angulos', 'rotas'] },
+    { id: 'formas', nome: 'Formas, mapas e ângulos', icone: 'tangram', jogos: ['tangram', 'arquiteto', 'cartesiano', 'angulos', 'rotas'] },
     { id: 'dinheiro', nome: 'Dinheiro e mesada', icone: 'cofrinho', jogos: ['cofrinho', 'mesada', 'cambio', 'empresa-sucos', 'poupanca', 'cartao'] },
-    { id: 'detetive', nome: 'Detetive de dados', icone: 'graficos', jogos: ['graficos', 'tabelas', 'wikipedia', 'cifra', 'busca-binaria'] }
+    { id: 'detetive', nome: 'Detetive de dados', icone: 'graficos', jogos: ['graficos', 'boletim', 'meteorologista', 'tabelas', 'wikipedia', 'cifra', 'busca-binaria'] }
   ];
   const FRASE = {
     robo: 'Programe o robô para pegar todas as estrelas.', pacotes: 'Monte as mensagens que chegaram picadas.',
@@ -216,7 +216,10 @@
     'partes-computador': 'Conheça as partes do computador em 3D e monte ele por dentro.',
     'linha-tempo': 'Monte o museu com as invenções na ordem certa.',
     bingo: 'Descubra o termo pela pista e complete a cartela.',
-    'cidade-blocos': 'Reconstrua a cidade de blocos respondendo os totens.'
+    'cidade-blocos': 'Reconstrua a cidade de blocos respondendo os totens.',
+    boletim: 'Monte o boletim da turma com fórmulas de planilha.',
+    meteorologista: 'Leia o tempo do RS e preveja o dia de amanhã.',
+    arquiteto: 'Desenhe a sala em escala e organize as carteiras.'
   };
   const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo');
   // jogo novo que ainda não está em nenhum tema entra pelo componente
