@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogos de Matemática e Computação · 6º ao 9º ano | ohtopico</title>
+<meta name="description" content="Jogos online e gratuitos de Matemática e Computação para estudantes do 6º ao 9º ano. Escolha o seu ano, jogue e ganhe estrelas.">
+<link rel="canonical" href="https://ohtopico.com.br/jogos/">
+<meta property="og:title" content="Jogos de Matemática e Computação · 6º ao 9º ano">
+<meta property="og:description" content="Jogos online e gratuitos de Matemática e Computação para estudantes do 6º ao 9º ano. Escolha o seu ano, jogue e ganhe estrelas.">
+<meta property="og:url" content="https://ohtopico.com.br/jogos/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<style>
+  /* Portal de jogos para estudantes: só os jogos, sem códigos da BNCC */
+  .al-head { padding: 44px 0 34px; border-bottom: 1.5px solid var(--ink); background:
+    radial-gradient(var(--line) 1.2px, transparent 1.5px) 0 0 / 18px 18px; }
+  .al-head h1 { font-size: clamp(42px, 8vw, 66px); margin-bottom: 8px; }
+  .al-head h1 mark { background: linear-gradient(transparent 55%, #fff36b 55%); color: inherit; padding: 0 .06em; }
+  .al-head .sub { font-size: clamp(17px, 2.4vw, 20px); color: var(--ink-2); margin-bottom: 24px; }
+  .filtros { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .filtros .rot { font-weight: 600; margin-right: 4px; }
+  .filtros .sep { width: 18px; }
+  .pill { border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); border-radius: 99px;
+    padding: 9px 18px; font-size: 16px; font-weight: 500; cursor: pointer; min-height: 44px; font-family: var(--body); }
+  .pill:hover { background: var(--pill); }
+  .pill.co { background: var(--co-soft); }
+  .pill.ma { background: var(--ma-soft); }
+  .pill[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+  .continuar { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border: 1.5px solid var(--ink); border-radius: var(--radius);
+    background: #fff36b; color: #111; padding: 22px 28px; margin: 30px 0 6px; }
+  .continuar .eyebrow { color: #111; margin-bottom: 2px; }
+  .continuar h2 { font-size: clamp(24px, 4vw, 30px); margin: 0; }
+  .continuar p { margin: 0; color: #333; }
+  .continuar .btn { margin-left: auto; background: #111; color: #fff; border-color: #111; font-size: 18px; padding: 12px 28px; }
+
+  .lista-h { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin: 30px 0 18px; }
+  .lista-h h2 { margin: 0; }
+  .lista-h .n { color: var(--ink-2); }
+  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; padding-bottom: 50px; }
+  .jg { display: flex; flex-direction: column; border: 1.5px solid var(--ink); border-radius: var(--radius); overflow: hidden;
+    background: var(--paper); color: var(--ink); text-decoration: none; transition: transform .12s, box-shadow .12s; }
+  .jg:hover, .jg:focus-visible { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .jg .capa { height: 128px; display: grid; place-items: center; border-bottom: 1.5px solid var(--ink); background: var(--ma-soft); }
+  .jg.co .capa { background: var(--co-soft); }
+  .jg .letra { width: 74px; height: 74px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--paper);
+    display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 32px; }
+  .jg .corpo { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+  .jg h3 { font-size: 21px; line-height: 1.15; margin: 0 0 8px; }
+  .jg .area { font-size: 13.5px; color: var(--ink-2); margin-bottom: 8px; }
+  .estrelas { font-size: 22px; letter-spacing: 3px; margin-bottom: 14px; }
+  .estrelas .on { color: #d4a400; }
+  .estrelas .off { color: var(--line); }
+  .jg .jogar { margin-top: auto; background: var(--ink); color: var(--paper); border-radius: 99px; text-align: center; padding: 10px; font-weight: 600; }
+  .topbar .cel { display: none; }
+  .vazio { padding: 30px 0 60px; color: var(--ink-2); }
+  @media (max-width: 560px) {
+    .topbar .pc, #total-estrelas { display: none; }
+    .topbar .cel { display: inline; }
+    .al-head { padding: 30px 0 24px; }
+    .filtros .sep { display: none; }
+    .filtros .rot { width: 100%; }
+    .pill { padding: 8px 14px; font-size: 15px; }
+    .continuar { padding: 18px 20px; }
+    .continuar .btn { margin-left: 0; width: 100%; }
+    .grade { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .jg .capa { height: 92px; }
+    .jg .letra { width: 54px; height: 54px; font-size: 24px; }
+    .jg .corpo { padding: 12px 12px 14px; }
+    .jg h3 { font-size: 17px; }
+    .estrelas { font-size: 18px; letter-spacing: 1px; margin-bottom: 10px; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar" class="topbar">
+  <a class="brand" href="../">ohtopico</a>
+  <a class="brand-sub" href="./">/ jogos</a>
+  <span class="spacer"></span>
+  <a class="icon-btn prog-btn" href="../material-didatico/meu-progresso.html" aria-label="Meu progresso" title="Meu progresso"><span id="total-estrelas">Meu progresso</span><span class="cel" id="total-cel" aria-hidden="true">Progresso</span></a>
+  <a class="icon-btn" href="../material-didatico/jogos/"><span class="pc">Sou professor(a)</span><span class="cel">Professor</span></a>
+</header>
+
+<main>
+  <section class="al-head">
+    <div class="wrap">
+      <h1>Bora <mark>jogar?</mark></h1>
+      <p class="sub">Escolha o seu ano e comece. Cada jogo vale até três estrelas.</p>
+      <div class="filtros" role="group" aria-label="Filtrar jogos">
+        <span class="rot" id="rot-ano">Estou no</span>
+        <span role="group" aria-labelledby="rot-ano" style="display:contents" id="anos"></span>
+        <span class="sep"></span>
+        <button class="pill co" type="button" data-comp="CO" aria-pressed="false">Computação</button>
+        <button class="pill ma" type="button" data-comp="MA" aria-pressed="false">Matemática</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div id="continuar"></div>
+    <div class="lista-h"><h2 id="titulo-lista">Todos os jogos</h2><span class="n" id="n"></span></div>
+    <div class="grade" id="grade" aria-live="polite"></div>
+  </div>
+</main>
+
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../material-didatico/';</script>
+<script src="../material-didatico/assets/dados.js"></script>
+<script src="../material-didatico/assets/progresso.js"></script>
+<script src="../material-didatico/assets/comum.js"></script>
+<script>
+(function () {
+  mdFooter();
+  const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo').sort((a, b) => a.titulo.localeCompare(b.titulo, 'pt-BR'));
+  const $ = s => document.querySelector(s);
+  const params = new URLSearchParams(location.search);
+  const perfil = window.MDP ? MDP.perfil() : null;
+  const res = id => (perfil && perfil.r && perfil.r[id]) || null;
+  // estrelas pela melhor nota: tentou = 1, 60% ou mais = 2, 80% ou mais = 3
+  const estrelas = id => { const r = res(id); if (!r) return 0; return r.b >= 80 ? 3 : r.b >= 60 ? 2 : 1; };
+
+  let ano = parseInt(params.get('ano'), 10);
+  if (![6, 7, 8, 9].includes(ano)) ano = perfil && params.get('ano') === null ? (perfil.ano || 0) : 0;
+  let comp = ['CO', 'MA'].includes((params.get('area') || '').toUpperCase()) ? params.get('area').toUpperCase() : '';
+
+  $('#anos').innerHTML = [6, 7, 8, 9].map(a => `<button class="pill" type="button" data-ano="${a}" aria-pressed="false">${a}º ano</button>`).join('');
+
+  const total = JOGOS.reduce((s, j) => s + estrelas(j.id), 0);
+  if (total) {
+    $('#total-estrelas').textContent = `Meu progresso: ${total} ${total === 1 ? 'estrela' : 'estrelas'}`;
+    $('#total-cel').textContent = `${total} ★`;
+  }
+
+  // último jogo que ainda não tem três estrelas
+  const ult = JOGOS.map(j => ({ j, r: res(j.id) }))
+    .filter(o => o.r && o.r.h && o.r.h.length && estrelas(o.j.id) < 3)
+    .sort((a, b) => b.r.h[b.r.h.length - 1][0] - a.r.h[a.r.h.length - 1][0])[0];
+  if (ult) {
+    $('#continuar').innerHTML = `<div class="continuar">
+      <div><span class="eyebrow">Continue de onde parou</span><h2>${esc(ult.j.titulo)}</h2><p>Sua melhor nota até agora: ${ult.r.b}%</p></div>
+      <a class="btn" href="${recUrl(ult.j)}">Continuar</a></div>`;
+  }
+
+  function desenhar() {
+    document.querySelectorAll('[data-ano]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.ano === ano));
+    document.querySelectorAll('[data-comp]').forEach(b => b.setAttribute('aria-pressed', b.dataset.comp === comp));
+    const lista = JOGOS.filter(j => (!ano || j.anos.includes(ano)) && (!comp || j.comp.includes(comp)));
+    const area = comp ? ' de ' + COMPONENTES[comp].curto : '';
+    $('#titulo-lista').textContent = ano ? `Jogos${area} do ${ano}º ano` : `Todos os jogos${area}`;
+    $('#n').textContent = lista.length === 1 ? '1 jogo' : `${lista.length} jogos`;
+    $('#grade').innerHTML = lista.length ? lista.map(j => {
+      const e = estrelas(j.id);
+      const cls = j.comp.includes('CO') ? 'co' : 'ma';
+      return `<a class="jg ${cls}" href="${recUrl(j)}">
+        <span class="capa" aria-hidden="true"><span class="letra">${esc(j.titulo[0])}</span></span>
+        <span class="corpo">
+          <h3>${esc(j.titulo)}</h3>
+          <span class="area">${j.comp.map(c => COMPONENTES[c].curto).join(' e ')}</span>
+          <span class="estrelas" role="img" aria-label="${e} de 3 estrelas"><span class="on">${'★'.repeat(e)}</span><span class="off">${'★'.repeat(3 - e)}</span></span>
+          <span class="jogar">${e ? 'Jogar de novo' : 'Jogar'}</span>
+        </span></a>`;
+    }).join('') : '';
+    if (!lista.length) $('#grade').innerHTML = '<p class="vazio">Nenhum jogo com esses filtros. Tente outro ano ou outra área.</p>';
+    // guarda a escolha no endereço, para o professor poder copiar o link já filtrado
+    const q = new URLSearchParams();
+    if (ano) q.set('ano', ano);
+    if (comp) q.set('area', comp.toLowerCase());
+    history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-ano]'), c = e.target.closest('[data-comp]');
+    if (a) { ano = ano === +a.dataset.ano ? 0 : +a.dataset.ano; desenhar(); }
+    if (c) { comp = comp === c.dataset.comp ? '' : c.dataset.comp; desenhar(); }
+  });
+  desenhar();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
