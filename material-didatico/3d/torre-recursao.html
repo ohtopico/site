@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Torre da Recursão: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Torre de Hanói em 3D: resolva com 3, 4 e 5 discos, ensine a regra recursiva ao robô e veja ele resolver 8 discos contando as chamadas.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/torre-recursao.html">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:title" content="Torre da Recursão: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Torre de Hanói em 3D para o 8º ano: o aluno resolve com 3, 4 e 5 discos, ensina ao robô a regra recursiva e assiste ele resolver 8 discos, com a pilha de chamadas e o contador de movimentos na tela.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/torre-recursao.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-torre-recursao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Torre de Hanói em 3D com discos coloridos em três pinos">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+
+  .pilha { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 13.5px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; margin: 8px 0; max-height: 220px; overflow: auto; }
+  .pilha div { white-space: nowrap; padding: 1px 4px; border-radius: 6px; }
+  .pilha div.atual { background: var(--ok-soft); font-weight: 600; }
+  .regra { counter-reset: r; list-style: none; padding: 0; margin: 6px 0; }
+  .regra li { margin: 6px 0; }
+  .regra select { width: 100%; }
+  .placar { font-family: var(--display); font-size: 24px; margin: 2px 0 6px; }
+  .tab-n td, .tab-n th { text-align: center; padding: 4px 3px; font-size: 13px; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Torre da Recursão","description":"Torre de Hanói em 3D: resolva com 3, 4 e 5 discos, ensine ao robô a regra recursiva e veja ele resolver 8 discos, com a pilha de chamadas e o contador de movimentos.","url":"https://ohtopico.com.br/material-didatico/3d/torre-recursao.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-torre-recursao.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO01","targetDescription":"Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Torre da Recursão","item":"https://ohtopico.com.br/material-didatico/3d/torre-recursao.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Torre da Recursão</h1>
+      <p class="muted" style="max-width:720px">Torre de Hanói em 3D: resolva com 3, 4 e 5 discos, ensine ao robô a regra recursiva e veja ele resolver 8 discos, com a pilha de chamadas e o contador de movimentos.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef08co01/" title="EF08CO01 — Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação.">EF08CO01</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+
+    <p><strong>O desafio:</strong> leve todos os discos do pino A para o pino C. Só pode mover um disco por vez, sempre o de cima, e nunca colocar um disco maior em cima de um menor.</p>
+    <p><strong>Você joga:</strong> clique num pino para pegar o disco de cima e depois no pino de destino (ou use os botões A, B e C, ou as teclas 1, 2 e 3). <strong>Robô resolve:</strong> primeiro ensine ao robô a regra, colocando os três passos na ordem certa. Depois escolha quantos discos ele vai mover e acompanhe a pilha de chamadas: cada linha é uma vez em que a regra chamou a si mesma.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões. Em computador mais lento, ligue o “Modo leve” embaixo da cena.</p>
+  </details>
+
+  <div class="game-stage">
+
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="jogar" aria-pressed="true">Você joga</button>
+      <button type="button" data-modo="robo" aria-pressed="false">Robô resolve</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="tools-jogar" role="group" aria-label="Escolher pino">
+          <button class="btn" type="button" data-pino="0">Pino A</button>
+          <button class="btn" type="button" data-pino="1">Pino B</button>
+          <button class="btn" type="button" data-pino="2">Pino C</button>
+          <button class="btn ghost" type="button" id="recomecar">Recomeçar</button>
+        </div>
+        <div class="tools" id="tools-robo" hidden>
+          <button class="btn" type="button" id="rodar">Robô, comece!</button>
+          <button class="btn ghost" type="button" id="passo">Um passo</button>
+          <button class="btn ghost" type="button" id="fim">Pular para o fim</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div id="painel-jogar">
+            <h3>Discos</h3>
+            <div class="seg" role="group" aria-label="Número de discos" id="seg-n">
+              <button type="button" data-n="3" aria-pressed="true">3</button>
+              <button type="button" data-n="4" aria-pressed="false">4</button>
+              <button type="button" data-n="5" aria-pressed="false">5</button>
+            </div>
+            <p class="placar" id="placar">0 movimentos</p>
+            <p class="small muted" id="minimo"></p>
+          </div>
+          <div id="painel-robo" hidden>
+            <h3>1. Ensine a regra ao robô</h3>
+            <p class="small">Para mover <b>n</b> discos da origem para o destino, usando o pino que sobra como apoio:</p>
+            <ol class="regra" id="regra"></ol>
+            <p class="small muted">E quando n = 1? É só mover o disco. Esse é o <b>caso base</b>, que faz a regra parar.</p>
+            <button class="btn ghost" type="button" id="conferir">Conferir a regra</button>
+            <h3 style="margin-top:14px">2. Quantos discos?</h3>
+            <label for="nr">Discos: <b id="lnr">8</b></label>
+            <input type="range" id="nr" min="1" max="8" step="1" value="8">
+            <label for="vel">Velocidade</label>
+            <input type="range" id="vel" min="0" max="10" step="1" value="6">
+            <p class="placar" id="placar-r">0 movimentos · 0 chamadas</p>
+            <p class="small" style="margin:0">Pilha de chamadas (a de baixo é a que está trabalhando agora):</p>
+            <div class="pilha" id="pilha" aria-live="off"></div>
+          </div>
+          <h3 style="margin-top:14px">Quantos movimentos?</h3>
+          <div class="lab-tabw"><table class="lab-tab tab-n"><caption class="small muted" style="text-align:left">Mínimo de movimentos (aparece quando alguém resolve no mínimo)</caption><tbody id="tab-n"></tbody></table></div>
+          <label for="prev">Com 10 discos, quantos movimentos no mínimo?</label>
+          <div style="display:flex;gap:8px"><input type="number" id="prev" min="1" max="99999"><button class="btn ghost" type="button" id="conf-prev">Conferir</button></div>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Resolva com 3 discos usando só 7 movimentos.</li>
+            <li data-d="1">Resolva com 4 discos no número mínimo de movimentos.</li>
+            <li data-d="2">Ensine ao robô a regra recursiva, com os três passos na ordem certa.</li>
+            <li data-d="3">Veja o robô resolver 8 discos e descubra quantos movimentos seriam necessários com 10.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+
+    <p><strong>O que está por trás:</strong> a Torre de Hanói é o exemplo clássico de <em>recursão</em>, quando a solução de um problema usa a solução do mesmo problema, só que menor. Para mover n discos de A para C, basta mover n − 1 discos de A para B (o mesmo problema, com um disco a menos), mover o maior disco de A para C e, por fim, mover os n − 1 discos de B para C. A regra se chama a si mesma até chegar ao <em>caso base</em> (um disco só), que é resolvido direto e faz a recursão parar. A pilha de chamadas mostra isso acontecendo: cada chamada espera as chamadas de dentro terminarem, como as bonecas russas do plano de aula.</p>
+    <p>O número mínimo de movimentos é 2ⁿ − 1 (1, 3, 7, 15, 31...): cada disco a mais dobra o trabalho e soma 1. Com 64 discos, como na lenda dos monges, seriam mais de 18 quintilhões de movimentos, cerca de 585 bilhões de anos a um movimento por segundo. É um bom gancho para falar de crescimento exponencial e de algoritmos que ficam lentos demais.</p>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem por descoberta, em duplas. Primeiro as duplas resolvem com 3 e 4 discos e anotam quantos movimentos usaram. Depois tentam descrever com palavras como resolveram 4 discos “usando” a solução de 3. Só então abrem o modo Robô resolve e ensinam a regra.</p>
+    <ul>
+      <li>Para resolver 4 discos, quantas vezes vocês resolveram, sem perceber, a torre de 3?</li>
+      <li>Por que a regra precisa de um caso base? O que aconteceria sem ele?</li>
+      <li>Olhando a tabela, como achar o número de movimentos de 9 discos a partir do de 8? E com uma fórmula direta?</li>
+      <li>Escrevam a regra em Python ou no Scratch (blocos personalizados podem chamar a si mesmos) e testem com 3 discos.</li>
+    </ul>
+    <pre class="conta">def torre(n, origem, destino, apoio):
+    if n == 1:
+        print("mova de", origem, "para", destino)
+        return
+    torre(n - 1, origem, apoio, destino)
+    print("mova de", origem, "para", destino)
+    torre(n - 1, apoio, destino, origem)
+
+torre(3, "A", "C", "B")</pre>
+    <p class="small muted">Habilidade: EF08CO01 (construir soluções usando a técnica de recursão e automatizá-las com uma linguagem de programação); a tabela de movimentos conversa com sequências recursivas em Matemática. Combina com o plano de aula “Listas, recursão e algoritmos de ordenação”. Material concreto equivalente: três lápis em pé numa massinha e discos de papelão de tamanhos diferentes, ou moedas de valores diferentes empilhadas.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/listas-recursao-algoritmos-ordenacao/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Listas, recursão e algoritmos de ordenação</strong>
+          <span class="small muted">Ordenar cartas na mão, buscar em listas e resolver problemas que contêm versões menores de si mesmos.</span>
+        </a>
+        <a class="card" href="../fichas/fila-recursiva-fatorial/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>Fila recursiva e fatorial</strong>
+          <span class="small muted">Uma fila que conta pessoas por recursão, o fatorial passo a passo e uma função recursiva para completar.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/cubo-rgb.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Cubo das Cores RGB</strong>
+          <span class="small muted">Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-torre-recursao');</script>
+<script type="module">
+
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-torre-recursao';
+const NOMES = ['A', 'B', 'C'];
+const XP = [-5.2, 0, 5.2];
+const H = 0.42;          // altura de um disco
+const BASE = 0.5;        // topo da base de madeira
+const CORES = [COR.vermelho, COR.amarelo, COR.verde, COR.vermelhoClaro, COR.amareloClaro, COR.verdeClaro, COR.cinza, COR.verdeEscuro];
+const feitos = new Set();
+const minimos = {};      // n -> mínimo já descoberto (aparece na tabela)
+
+let modo = 'jogar';
+let n = 3;
+let pinos = [[], [], []];  // cada pino: lista de tamanhos (0 = menor), de baixo para cima
+let movs = 0, pego = null, ocupado = false;
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 6.8, 14.5], alvo: [0, 2.5, 0], min: 7, max: 30 });
+botoesCamera(cena);
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0, 8.5, 20], [0, 2.5, 0]);
+const T = cena && cena.THREE;
+let discos = [];         // mesh por tamanho
+if (cena) {
+  const base = cena.bloco(16.4, BASE, 4.2, '#d9b77a', { base: false });
+  base.position.set(0, BASE / 2, 0); cena.add(base);
+  XP.forEach((x, i) => {
+    const pino = cena.cilindro(0.16, 4.4, '#8a6a3d', { seg: 20 });
+    pino.position.set(x, BASE, 0); cena.add(pino);
+    // área de clique larga em volta do pino
+    const zona = new T.Mesh(new T.CylinderGeometry(2.3, 2.3, 5, 12), new T.MeshBasicMaterial({ visible: false }));
+    zona.position.set(x, BASE + 2.5, 0); cena.add(zona);
+    cena.clicavel(zona, () => clicaPino(i));
+    const r = cena.rotulo(NOMES[i] + (i === 0 ? ' · início' : i === 2 ? ' · destino' : ''), { tam: 0.5, fundo: i === 2 ? COR.amareloClaro : '#ffffff' });
+    r.position.set(x, BASE + 5.3, 0); cena.add(r);
+  });
+}
+function raio(t, total) { return 0.55 + (t + (8 - total) * 0.5) * 0.22; }
+function montaDiscos(total) {
+  if (!cena) return;
+  discos.forEach(d => cena.remove(d));
+  discos = [];
+  for (let t = 0; t < total; t++) {
+    const d = cena.cilindro(raio(t, total), H, CORES[t % CORES.length], { seg: 40 });
+    discos.push(d); cena.add(d);
+  }
+}
+const posDisco = (p, k) => [XP[p], BASE + k * H, 0];
+function arruma() {
+  if (!cena) return;
+  pinos.forEach((pi, p) => pi.forEach((t, k) => discos[t].position.set(...posDisco(p, k))));
+  descreve();
+}
+function descreve() {
+  if (!cena) return;
+  const txt = pinos.map((pi, p) => `pino ${NOMES[p]}: ${pi.length ? pi.map(t => t + 1).reverse().join(', ') : 'vazio'}`).join('; ');
+  cena.descrever(`Torre de Hanói com ${pinos.flat().length} discos (1 é o menor), de cima para baixo. ${txt}.`);
+}
+/* move o disco de cima do pino a para o pino b, com animação */
+async function anima(a, b, ms) {
+  const t = pinos[a].pop();
+  const k = pinos[b].length;
+  pinos[b].push(t);
+  if (cena) {
+    const d = discos[t], alto = BASE + 5.2;
+    if (ms > 30) {
+      await cena.animar(d, { position: [XP[a], alto, 0] }, ms * 0.3);
+      await cena.animar(d, { position: [XP[b], alto, 0] }, ms * 0.35);
+      await cena.animar(d, { position: posDisco(b, k) }, ms * 0.3);
+    } else d.position.set(...posDisco(b, k));
+    descreve();
+  }
+}
+
+/* ---------- você joga ---------- */
+function novoJogo(total) {
+  n = total; movs = 0; pego = null;
+  pinos = [Array.from({ length: n }, (_, i) => n - 1 - i), [], []];
+  montaDiscos(n); arruma();
+  $('#placar').textContent = '0 movimentos';
+  $('#minimo').textContent = minimos[n] ? `Mínimo possível: ${minimos[n]} movimentos.` : 'Será que dá para descobrir o mínimo?';
+  fb('Clique no pino A para pegar o disco de cima.');
+}
+function fb(t, cls = '') { $('#fb').className = 'feedback ' + cls; $('#fb').textContent = t; }
+async function clicaPino(p) {
+  if (modo !== 'jogar' || ocupado) return;
+  if (pego === null) {
+    if (!pinos[p].length) return fb(`O pino ${NOMES[p]} está vazio. Escolha um pino com discos.`, 'bad');
+    pego = p;
+    const t = pinos[p][pinos[p].length - 1];
+    if (cena) cena.animar(discos[t], { position: [XP[p], BASE + 5.2, 0] }, 220);
+    return fb(`Disco ${t + 1} levantado do pino ${NOMES[p]}. Para qual pino ele vai?`);
+  }
+  const a = pego; pego = null;
+  const t = pinos[a][pinos[a].length - 1];
+  if (a === p) { if (cena) cena.animar(discos[t], { position: posDisco(a, pinos[a].length - 1) }, 220); return fb('Disco devolvido ao mesmo pino.'); }
+  const topo = pinos[p][pinos[p].length - 1];
+  if (topo !== undefined && topo < t) {
+    if (cena) cena.animar(discos[t], { position: posDisco(a, pinos[a].length - 1) }, 220);
+    return fb(`Não pode: o disco ${t + 1} é maior que o disco ${topo + 1}, que está no topo do pino ${NOMES[p]}.`, 'bad');
+  }
+  ocupado = true;
+  // o disco já está no alto: só falta atravessar e descer
+  pinos[a].pop(); const k = pinos[p].length; pinos[p].push(t);
+  if (cena) { await cena.animar(discos[t], { position: [XP[p], BASE + 5.2, 0] }, 220); await cena.animar(discos[t], { position: posDisco(p, k) }, 200); descreve(); }
+  ocupado = false;
+  movs++;
+  $('#placar').textContent = movs + (movs === 1 ? ' movimento' : ' movimentos');
+  if (pinos[2].length === n) {
+    const min = 2 ** n - 1;
+    if (movs === min) {
+      fb(`Resolvido em ${movs} movimentos, o mínimo possível para ${n} discos!`, 'ok');
+      descobre(n);
+      if (n === 3) marca(0);
+      if (n === 4) marca(1);
+    } else fb(`Resolvido em ${movs} movimentos! Dá para fazer com menos. Tente de novo.`, 'ok');
+  } else fb(`Movimento ${movs}: disco ${t + 1} de ${NOMES[a]} para ${NOMES[p]}.`);
+}
+document.querySelectorAll('[data-pino]').forEach(b => b.addEventListener('click', () => clicaPino(+b.dataset.pino)));
+document.addEventListener('keydown', e => {
+  if (modo !== 'jogar' || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if (['1', '2', '3'].includes(e.key)) clicaPino(+e.key - 1);
+});
+document.querySelectorAll('#seg-n [data-n]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#seg-n [data-n]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  novoJogo(+b.dataset.n);
+}));
+$('#recomecar').onclick = () => novoJogo(n);
+
+/* ---------- tabela de movimentos ---------- */
+function descobre(k) { minimos[k] = 2 ** k - 1; tabela(); }
+function tabela() {
+  const ks = [1, 2, 3, 4, 5, 6, 7, 8];
+  $('#tab-n').innerHTML = `<tr><th>Discos</th>${ks.map(k => `<th>${k}</th>`).join('')}</tr><tr><th>Mov.</th>${ks.map(k => `<td>${minimos[k] ?? '?'}</td>`).join('')}</tr>`;
+}
+$('#conf-prev').onclick = () => {
+  const v = +$('#prev').value;
+  if (v === 1023) {
+    fb('Isso! 1023 movimentos. Cada disco a mais dobra os movimentos e soma 1: 2 × 511 + 1 = 1023, ou 2¹⁰ − 1.', 'ok');
+    if (minimos[8]) marca(3); else fb('Acertou: 1023. Para concluir o desafio, assista também o robô resolver 8 discos.', 'ok');
+  } else fb('Ainda não. Olhe a tabela: como o número de um disco a mais se relaciona com o anterior?', 'bad');
+};
+
+/* ---------- ensinar a regra ---------- */
+const PASSOS = ['n − 1 discos: origem → apoio', 'disco maior: origem → destino', 'n − 1 discos: apoio → destino'];
+let regraOk = false;
+$('#regra').innerHTML = [0, 1, 2].map(i => `<li><label class="small" for="rg${i}" style="margin:0">Passo ${i + 1}</label><select id="rg${i}"><option value="">escolha...</option>${PASSOS.map((p, j) => `<option value="${j}">${p}</option>`).join('')}</select></li>`).join('');
+$('#conferir').onclick = () => {
+  const v = [0, 1, 2].map(i => $('#rg' + i).value);
+  if (v.includes('')) return fb('Escolha os três passos.', 'bad');
+  if (v.join() === '0,1,2') {
+    regraOk = true; marca(2);
+    fb('Regra certa! Agora o robô sabe resolver a torre de qualquer tamanho. Escolha os discos e clique em “Robô, comece!”.', 'ok');
+  } else if (v[1] !== '1') fb('Pense no disco maior: ele só pode ir para o destino quando todos os outros saírem de cima dele e o destino estiver vazio.', 'bad');
+  else fb('Quase. Antes de mover o maior, onde os outros discos precisam estar? E depois?', 'bad');
+};
+
+/* ---------- robô resolve ---------- */
+let fila = [], iFila = 0, rodando = false, token = 0, chamadas = 0, movsR = 0;
+function* torre(k, o, d, a, prof) {
+  yield { tipo: 'chama', txt: `torre(${k}, ${NOMES[o]} → ${NOMES[d]}, apoio ${NOMES[a]})`, prof };
+  if (k === 1) yield { tipo: 'move', o, d };
+  else {
+    yield* torre(k - 1, o, a, d, prof + 1);
+    yield { tipo: 'move', o, d };
+    yield* torre(k - 1, a, d, o, prof + 1);
+  }
+  yield { tipo: 'volta', prof };
+}
+function preparaRobo() {
+  token++; rodando = false;
+  const k = +$('#nr').value;
+  n = k; pinos = [Array.from({ length: k }, (_, i) => k - 1 - i), [], []];
+  montaDiscos(k); arruma();
+  fila = [...torre(k, 0, 2, 1, 0)]; iFila = 0; chamadas = 0; movsR = 0;
+  pilha.length = 0; desenhaPilha();
+  $('#placar-r').textContent = '0 movimentos · 0 chamadas';
+  $('#rodar').textContent = 'Robô, comece!';
+}
+const pilha = [];
+function desenhaPilha() {
+  $('#pilha').innerHTML = pilha.length
+    ? pilha.map((l, i) => `<div class="${i === pilha.length - 1 ? 'atual' : ''}" style="padding-left:${4 + i * 10}px">${l}</div>`).join('')
+    : '<div class="muted">vazia</div>';
+  $('#pilha').scrollTop = 1e6;
+}
+const msMov = () => [1400, 1100, 850, 650, 480, 350, 240, 150, 90, 45, 0][+$('#vel').value];
+async function umEvento(rapido) {
+  const e = fila[iFila++];
+  if (!e) return false;
+  if (e.tipo === 'chama') { chamadas++; pilha.push(e.txt); }
+  else if (e.tipo === 'volta') pilha.pop();
+  else { movsR++; await anima(e.o, e.d, rapido ? 0 : msMov()); }
+  if (!rapido) { desenhaPilha(); $('#placar-r').textContent = `${movsR} movimentos · ${chamadas} chamadas`; }
+  return e.tipo === 'move';
+}
+function terminou() {
+  desenhaPilha();
+  $('#placar-r').textContent = `${movsR} movimentos · ${chamadas} chamadas`;
+  descobre(n);
+  rodando = false; $('#rodar').textContent = 'De novo';
+  fb(`Pronto: ${n} discos em ${movsR} movimentos, com ${chamadas} chamadas da regra. A pilha nunca passou de ${n} chamadas ao mesmo tempo.`, 'ok');
+}
+async function rodar() {
+  if (!regraOk) return fb('Primeiro ensine a regra ao robô (passo 1, no painel).', 'bad');
+  if (iFila >= fila.length) preparaRobo();
+  if (rodando) { rodando = false; $('#rodar').textContent = 'Continuar'; return; }
+  rodando = true; $('#rodar').textContent = 'Pausar';
+  const meu = token;
+  fb('O robô está seguindo a regra...');
+  while (rodando && meu === token && iFila < fila.length) {
+    const moveu = await umEvento(false);
+    if (!moveu && msMov() > 0) await new Promise(r => setTimeout(r, Math.min(160, msMov() / 4)));
+  }
+  if (meu === token && iFila >= fila.length) terminou();
+}
+async function passo() {
+  if (!regraOk) return fb('Primeiro ensine a regra ao robô (passo 1, no painel).', 'bad');
+  if (rodando || ocupado) return;
+  if (iFila >= fila.length) preparaRobo();
+  ocupado = true;
+  // avança até o próximo movimento, mostrando as chamadas no caminho
+  while (iFila < fila.length && !(await umEvento(false))) { /* chamadas e retornos */ }
+  ocupado = false;
+  if (iFila >= fila.length || fila.slice(iFila).every(e => e.tipo === 'volta')) { while (iFila < fila.length) await umEvento(true); terminou(); }
+}
+async function pular() {
+  if (!regraOk) return fb('Primeiro ensine a regra ao robô (passo 1, no painel).', 'bad');
+  token++; rodando = false;
+  if (iFila >= fila.length) preparaRobo();
+  while (iFila < fila.length) await umEvento(true);
+  arruma(); terminou();
+}
+$('#rodar').onclick = rodar;
+$('#passo').onclick = passo;
+$('#fim').onclick = pular;
+$('#nr').addEventListener('input', () => { $('#lnr').textContent = $('#nr').value; preparaRobo(); });
+
+/* ---------- modos ---------- */
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => {
+  modo = b.dataset.modo;
+  document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  $('#tools-jogar').hidden = $('#painel-jogar').hidden = modo !== 'jogar';
+  $('#tools-robo').hidden = $('#painel-robo').hidden = modo !== 'robo';
+  if (modo === 'robo') { preparaRobo(); fb(regraOk ? 'Escolha os discos e clique em “Robô, comece!”.' : 'Comece ensinando a regra ao robô, no painel ao lado.'); }
+  else { token++; rodando = false; novoJogo(+document.querySelector('#seg-n [aria-pressed="true"]').dataset.n); }
+}));
+
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 4 * 100));
+}
+// o desafio 3 também fecha quando o robô termina 8 discos depois da previsão certa
+const conferePrev = () => { if (minimos[8] && +$('#prev').value === 1023) marca(3); };
+new MutationObserver(conferePrev).observe($('#tab-n'), { childList: true });
+
+tabela();
+novoJogo(3);
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
