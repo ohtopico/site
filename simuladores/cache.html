@@ -103,6 +103,12 @@
       </div>
     </div>
   </section>
+  <section class="sim sobre">
+    <h2>Para que serve o simulador de memória cache</h2>
+    <p style="max-width:760px">A memória cache é uma memória pequena e rápida que fica entre o processador e a memória principal. Quando o processador pede um endereço que já está na cache, há um acerto e a leitura custa poucos ciclos. Quando não está, há uma falha: o bloco inteiro é trazido da memória principal e o acesso fica bem mais lento.</p>
+    <p style="max-width:760px">Neste simulador você escolhe o mapeamento (direto, associativo por conjunto de 2 ou 4 vias ou totalmente associativo), o número de linhas e o tamanho do bloco, e digita uma sequência de endereços. A cada passo aparecem o índice, a tag e o deslocamento do endereço, a linha que foi usada, o bit de validade e a idade usada pela substituição LRU. No fim, o painel de desempenho mostra a taxa de acertos e o tempo médio de acesso.</p>
+    <p style="max-width:760px">É um bom apoio para exercícios de Arquitetura de Computadores: resolva a sequência no papel, depois confira passo a passo. Compare a mesma sequência em mapeamentos diferentes para ver as falhas por conflito sumirem, e aumente o bloco para ver a localidade espacial funcionando. Para o restante do processador, use o <a href="mips.html">Mini-MIPS</a> e o <a href="pipeline-mips.html">pipeline MIPS</a>.</p>
+  </section>
 </main>
 <footer id="footer"></footer>
 

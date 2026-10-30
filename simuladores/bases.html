@@ -108,6 +108,12 @@
     <div class="legend"><span><i style="background:var(--bad-soft)"></i>sinal (1 bit)</span><span><i style="background:var(--accent-soft)"></i>expoente (8 bits, excesso de 127)</span><span><i style="background:var(--pill)"></i>fração (23 bits)</span></div>
     <dl class="kv" style="margin-top:14px" id="f-out"></dl>
   </section>
+  <section class="sim sobre">
+    <h2>Para que serve o simulador de bases numéricas</h2>
+    <p style="max-width:760px">O computador guarda tudo em binário, mas nós lemos em decimal e os programadores costumam escrever em hexadecimal. Este simulador converte números entre as bases 2, 8, 10 e 16 mostrando o passo a passo das divisões e das potências, e mostra a representação em complemento de dois com 8, 16 ou 32 bits, que é como os números negativos são guardados.</p>
+    <p style="max-width:760px">A segunda parte soma dois números em binário e mostra o vai-um de cada coluna. Com ela fica fácil ver a diferença entre o overflow de números sem sinal, indicado pelo vai-um final, e o overflow em complemento de dois, que acontece quando dois números de mesmo sinal dão um resultado de sinal oposto. A terceira parte decompõe um número real no padrão IEEE 754 de precisão simples: sinal, expoente com excesso de 127 e fração.</p>
+    <p style="max-width:760px">No Ensino Fundamental, use o conversor de bases para trabalhar o sistema binário e o hexadecimal previstos na <a href="../material-didatico/bncc/">BNCC Computação</a>. No Ensino Médio e no Superior, use as somas e o IEEE 754 em Arquitetura de Computadores e Programação. Para ver esses bits passando por circuitos, use o simulador de <a href="logica.html">portas lógicas</a>.</p>
+  </section>
 </main>
 <footer id="footer"></footer>
 
