@@ -125,6 +125,10 @@
      cada uma com os slides em PDF e os materiais que a trabalham. */
   window.mdHabArea = function (el, comp) {
     const CADERNO = 'datas-festivas/computacao-desplugada-datas-festivas.pdf';
+    const APOSTILA = 'apostila-professor-bncc/apostila-professor-bncc-computacao.pdf';
+    // página do PDF em que começa a ficha (3 páginas por habilidade)
+    const INICIO_ANO = { 6: 14, 7: 45, 8: 79, 9: 113 };
+    const fichaPag = h => comp === 'CO' && INICIO_ANO[h.ano] ? INICIO_ANO[h.ano] + 3 * (parseInt(h.codigo.slice(-2), 10) - 1) : 0;
     const todas = Object.values(HAB).filter(h => h.comp === comp);
     const anos = [...new Set(todas.map(h => h.ano))].sort((a, b) => a - b);
     const iniciais = anos.filter(a => a <= 5);
@@ -143,6 +147,7 @@
       const faltam = habs.length - lista.length;
       const topo = g.v === 'ai'
         ? `<div class="hab-pdf"><div><strong>Caderno de computação desplugada nas datas festivas</strong><span>Nove atividades sem computador, com ficha do professor, folhas para imprimir e gabarito.</span></div><a class="btn" href="${BASE}${CADERNO}" download type="application/pdf">Baixar o caderno (PDF)</a><a class="btn ghost" href="${BASE}datas-festivas/">Ver o caderno</a></div>`
+        : comp === 'CO' ? `<div class="hab-pdf"><div><strong>Apostila do professor: Computação na BNCC</strong><span>Uma ficha de 3 páginas para cada habilidade do 6º ao 9º ano: conceito, aplicação em sala, exemplos práticos, sites de apoio e rubrica.</span></div><a class="btn" href="${BASE}${APOSTILA}" download type="application/pdf">Baixar a apostila (PDF)</a><a class="btn ghost" href="${BASE}apostila-professor-bncc/">Ver as fichas</a></div>`
         : pdfs ? `<p class="muted hab-nota">Cada habilidade tem slides em PDF para uma aula expositiva de 30 minutos, com atividade e roteiro do professor. Clique na habilidade para ver o texto da BNCC e os jogos, fichas e planos que a trabalham.</p>`
         : `<p class="muted hab-nota">Clique na habilidade para ver o texto da BNCC e os jogos, recursos 3D, fichas e planos que a trabalham.</p>`;
       el.innerHTML = `
@@ -157,7 +162,7 @@
               <summary><span class="tag code ${comp.toLowerCase()}">${h.codigo}</span><span class="hab-obj">${esc(h.objeto)}</span><span class="hab-n">${n ? n + (n > 1 ? ' materiais' : ' material') : 'Habilidade'}</span></summary>
               <div class="hab-corpo">
                 <p class="hab-txt"><strong>${esc(EIXOS[h.eixo].nome)}</strong>${esc(h.texto)}</p>
-                <div class="hab-mats">${mats.map(r => `<a href="${recUrl(r)}"><span>${esc(TIPOS[r.tipo].nome.split(' ')[0])}</span>${esc(r.titulo)}</a>`).join('')}${!n ? '<span class="hab-breve">Material em preparação</span>' : ''}</div>
+                <div class="hab-mats">${mats.map(r => `<a href="${recUrl(r)}"><span>${esc(TIPOS[r.tipo].nome.split(' ')[0])}</span>${esc(r.titulo)}</a>`).join('')}${fichaPag(h) ? `<a href="${BASE}${APOSTILA}#page=${fichaPag(h)}" target="_blank" rel="noopener"><span>Apostila</span>Ficha do professor (p. ${fichaPag(h) - 1})</a>` : ''}${!n && !fichaPag(h) ? '<span class="hab-breve">Material em preparação</span>' : ''}</div>
               </div>
             </details>
             ${pdf ? `<a class="hab-baixar" href="${pdf}" download type="application/pdf" title="Baixar os slides da aula de ${h.codigo} (PDF)">Slides (PDF)</a>` : ''}

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apostila do professor: Computação na BNCC do 6º ao 9º ano (PDF gratuito) | ohtopico</title>
+<meta name="description" content="Apostila gratuita em PDF para professores, com as 42 habilidades de Computação da BNCC do 6º ao 9º ano: conceito, aplicação em sala, exemplos práticos, sites de apoio, equívocos comuns, avaliação, inclusão e aprofundamento.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/apostila-professor-bncc/">
+<meta property="og:title" content="Apostila do professor: Computação na BNCC, 6º ao 9º ano">
+<meta property="og:description" content="Apostila gratuita em PDF para professores, com as 42 habilidades de Computação da BNCC do 6º ao 9º ano: conceito, aplicação em sala, exemplos práticos, sites de apoio, equívocos comuns, avaliação, inclusão e aprofundamento.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/apostila-professor-bncc/">
+<meta property="og:type" content="book">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/apostila-professor-bncc/og-apostila-professor-bncc.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Apostila do professor, BNCC Computação do 6º ao 9º ano: 42 habilidades, do conceito à avaliação. PDF gratuito com 153 páginas, de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .hero { padding: 48px 0 44px; border-bottom: 1.5px solid var(--ink); }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+  .hero p.lead { font-size: 19px; color: var(--ink-2); max-width: 620px; }
+  .crumbs { font-size: 14px; color: var(--ink-2); margin: 0 0 14px; }
+  .crumbs a { color: var(--ink-2); }
+  .capa { display: block; width: 100%; max-width: 380px; margin: 0 auto; height: auto; border: 1.5px solid var(--ink); border-radius: 14px; box-shadow: 6px 6px 0 var(--ink); }
+  .fatos { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 22px; }
+  .fatos .tag { font-size: 13.5px; padding: 4px 12px; }
+  mark { background: #fff27a; color: #111; padding: 0 .15em; border-radius: 4px; }
+  .itens { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+  .itens li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; padding: 12px 0; border-top: 1px solid var(--line); }
+  .it-n { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800; background: var(--co-soft); color: var(--co); }
+  .itens h3 { margin: 0 0 2px; font-size: 19px; }
+  .itens p { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .exemplos { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+  .exemplos figure { margin: 0; }
+  .exemplos img { display: block; width: 100%; height: auto; border: 1.5px solid var(--ink); border-radius: 10px; background: #fff; }
+  .exemplos figcaption { font-size: 14px; color: var(--ink-2); margin-top: 8px; }
+  details.ano { border: 1.5px solid var(--ink); border-radius: var(--radius); margin-top: 14px; background: var(--paper); }
+  details.ano summary { cursor: pointer; padding: 16px 22px; display: flex; gap: 14px; align-items: baseline; }
+  .ano-n { font-family: var(--display); font-weight: 800; font-size: 22px; }
+  .fichas { list-style: none; margin: 0; padding: 0 22px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+  .fichas li { padding: 14px 0; border-top: 1px solid var(--line); }
+  .fi-topo { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .fichas h4 { margin: 6px 0 4px; font-size: 18px; }
+  .fichas p { margin: 0 0 6px; font-size: 15px; color: var(--ink-2); }
+  .fi-pdf { font-size: 14.5px; font-weight: 500; }
+  .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 860px) {
+    .hero-grid, .duas, .exemplos { grid-template-columns: 1fr; gap: 28px; }
+    .itens, .fichas { grid-template-columns: 1fr; }
+  }
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": [
+    "LearningResource",
+    "Book"
+   ],
+   "@id": "https://ohtopico.com.br/material-didatico/apostila-professor-bncc/#apostila",
+   "name": "Apostila do professor: Computação na BNCC, 6º ao 9º ano",
+   "alternativeHeadline": "Conceitos, aplicação em sala e exemplos práticos para as 42 habilidades",
+   "description": "Apostila gratuita em PDF para professores, com as 42 habilidades de Computação da BNCC do 6º ao 9º ano: conceito, aplicação em sala, exemplos práticos, sites de apoio, equívocos comuns, avaliação, inclusão e aprofundamento.",
+   "url": "https://ohtopico.com.br/material-didatico/apostila-professor-bncc/",
+   "image": "https://ohtopico.com.br/material-didatico/apostila-professor-bncc/capa-apostila-professor-bncc.jpg",
+   "inLanguage": "pt-BR",
+   "author": {
+    "@id": "https://ohtopico.com.br/#julia"
+   },
+   "creator": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "publisher": {
+    "@id": "https://ohtopico.com.br/#julia"
+   },
+   "datePublished": "2026-10-30",
+   "isAccessibleForFree": true,
+   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br",
+   "learningResourceType": [
+    "Apostila",
+    "Guia do professor"
+   ],
+   "educationalLevel": "Ensino Fundamental, anos finais (6º ao 9º ano)",
+   "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "teacher"
+   },
+   "numberOfPages": 153,
+   "bookFormat": "https://schema.org/EBook",
+   "encoding": {
+    "@type": "MediaObject",
+    "contentUrl": "https://ohtopico.com.br/material-didatico/apostila-professor-bncc/apostila-professor-bncc-computacao.pdf",
+    "encodingFormat": "application/pdf"
+   },
+   "keywords": "BNCC Computação, apostila do professor, formação de professores, pensamento computacional, mundo digital, cultura digital, anos finais, 6º ao 9º ano, plano de aula, rubrica",
+   "accessibilityFeature": [
+    "alternativeText",
+    "tableOfContents",
+    "printPageNumbers"
+   ],
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO01",
+     "targetDescription": "Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO02",
+     "targetDescription": "Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO03",
+     "targetDescription": "Descrever com precisão a solução de um problema, construindo o programa que implementa essa solução."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO04",
+     "targetDescription": "Construir soluções de problemas usando a técnica de decomposição e automatizá-las com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO05",
+     "targetDescription": "Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO06",
+     "targetDescription": "Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros)."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO07",
+     "targetDescription": "Entender como a informação é quebrada em pedaços, transmitida em pacotes por vários equipamentos e reconstruída no destino."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO08",
+     "targetDescription": "Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO09",
+     "targetDescription": "Apresentar conduta e linguagem apropriadas ao se comunicar em ambiente digital, com ética e respeito."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF06CO10",
+     "targetDescription": "Analisar o consumo de tecnologia na sociedade, a produção dos recursos, a obsolescência e a sustentabilidade."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO01",
+     "targetDescription": "Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO02",
+     "targetDescription": "Analisar programas para detectar e remover erros, ampliando a confiança na sua correção."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO03",
+     "targetDescription": "Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente, escolhendo estruturas de dados e técnicas adequadas."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO04",
+     "targetDescription": "Explorar propriedades básicas de grafos."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO05",
+     "targetDescription": "Criar algoritmos usando decomposição e reúso, de forma colaborativa, e automatizá-los com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO06",
+     "targetDescription": "Compreender o papel de protocolos para a transmissão de dados."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO07",
+     "targetDescription": "Identificar problemas de segurança cibernética e experimentar formas de proteção."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO08",
+     "targetDescription": "Demonstrar empatia sobre opiniões divergentes na web."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO09",
+     "targetDescription": "Reconhecer e debater sobre cyberbullying."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO10",
+     "targetDescription": "Identificar os impactos ambientais do descarte de peças de computadores e eletrônicos e sua relação com a sustentabilidade."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF07CO11",
+     "targetDescription": "Criar, documentar e publicar produtos (vídeos, podcasts, sites) usando recursos de tecnologia, individual ou colaborativamente."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO01",
+     "targetDescription": "Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO02",
+     "targetDescription": "Criar soluções que usem listas para descrever informações e automatizá-las com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO03",
+     "targetDescription": "Utilizar algoritmos clássicos de manipulação sobre listas."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO04",
+     "targetDescription": "Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO05",
+     "targetDescription": "Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO06",
+     "targetDescription": "Entender como é a estrutura e o funcionamento da internet."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO07",
+     "targetDescription": "Compartilhar informações em redes sociais compreendendo sua dinâmica de funcionamento."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO08",
+     "targetDescription": "Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO09",
+     "targetDescription": "Analisar criticamente as políticas e os termos de uso das redes sociais e demais plataformas."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO10",
+     "targetDescription": "Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF08CO11",
+     "targetDescription": "Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO01",
+     "targetDescription": "Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO02",
+     "targetDescription": "Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO03",
+     "targetDescription": "Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO04",
+     "targetDescription": "Compreender o funcionamento de malwares e outros ataques cibernéticos."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO05",
+     "targetDescription": "Analisar técnicas de criptografia para armazenamento e transmissão de dados."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO06",
+     "targetDescription": "Analisar problemas sociais da cidade e do estado a partir de ambientes digitais, propondo soluções."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO07",
+     "targetDescription": "Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO08",
+     "targetDescription": "Discutir como a distribuição desigual de recursos de computação na economia global levanta questões éticas."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO09",
+     "targetDescription": "Criar ou utilizar conteúdo em meio digital compreendendo questões éticas de direitos autorais e uso de imagem."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação (Resolução CNE/CEB nº 1/2022)",
+     "targetName": "EF09CO10",
+     "targetDescription": "Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos."
+    }
+   ],
+   "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "Material didático de Computação e Matemática",
+    "url": "https://ohtopico.com.br/material-didatico/"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Material didático",
+     "item": "https://ohtopico.com.br/material-didatico/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Apostila do professor",
+     "item": "https://ohtopico.com.br/material-didatico/apostila-professor-bncc/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumbs" aria-label="Você está em"><a href="../../">Início</a> / <a href="../">Material didático</a> / Apostila do professor</nav>
+        <span class="eyebrow">Anos finais · 6º ao 9º ano · BNCC Computação</span>
+        <h1>Apostila do professor: Computação na BNCC</h1>
+        <p class="lead">As 42 habilidades de Computação do 6º ao 9º ano explicadas para quem vai dar a aula: o <mark>conceito</mark>, como aplicar em sala, exemplos práticos para repassar aos estudantes, sites de apoio e uma rubrica de avaliação. Gratuita, em PDF.</p>
+        <div class="fatos">
+          <span class="tag co">42 habilidades</span><span class="tag">153 páginas A4</span><span class="tag">10 itens por habilidade</span><span class="tag">Acompanha os slides de aula</span><span class="tag">Licença CC BY-NC-SA</span>
+        </div>
+        <div class="btn-row">
+          <a class="btn" href="apostila-professor-bncc-computacao.pdf" download type="application/pdf">Baixar a apostila (PDF, 4,7 MB)</a>
+          <a class="btn ghost" href="#fichas">Ver as 42 fichas</a>
+        </div>
+      </div>
+      <div>
+        <img class="capa" src="capa-apostila-professor-bncc.webp" width="640" height="905" alt="Capa da apostila: janela de computador com o título &quot;Apostila do professor&quot; em letras pretas e destaque amarelo, selo &quot;BNCC Computação, anos finais&quot;, subtítulo &quot;Computação na BNCC, 6º ao 9º ano: conceitos, aplicação em sala e exemplos práticos&quot;, etiquetas verdes, amarelas e vermelhas com os itens de cada ficha, três quadros com os números 42 habilidades, 3 eixos e 10 itens por habilidade, e assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.">
+      </div>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Para quem é</span>
+      <h2>Para professores de Computação e de outros componentes</h2>
+      <p style="max-width:780px">A BNCC Computação (Resolução CNE/CEB nº 1/2022) não exige uma disciplina própria: cada rede pode trabalhar as habilidades em um componente específico, de forma integrada ou em projetos. A apostila foi escrita para que qualquer professor dos anos finais consiga preparar a aula com segurança, inclusive em turmas com estudantes mais velhos ou do ensino médio. Todas as atividades propostas têm uma versão que funciona sem computador.</p>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Cada ficha tem 3 páginas</span>
+      <h2>Do conceito à avaliação, em 10 itens</h2>
+      <ol class="itens">
+        <li><span class="it-n" aria-hidden="true">1</span><div><h3>O conceito</h3><p>Explicação para o professor, com a base teórica da habilidade.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">2</span><div><h3>Vocabulário</h3><p>Os termos que os estudantes precisam dominar.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">3</span><div><h3>Na sala de aula</h3><p>Objetivos e sequência didática sugerida.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">4</span><div><h3>Exemplos práticos</h3><p>Situações prontas para repassar aos estudantes.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">5</span><div><h3>Sites de apoio</h3><p>Ferramentas e leituras, com o uso indicado.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">6</span><div><h3>Equívocos comuns</h3><p>As dúvidas mais frequentes e como intervir.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">7</span><div><h3>Como avaliar</h3><p>Rubrica em três níveis, para observação ou autoavaliação.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">8</span><div><h3>Inclusão</h3><p>Adaptações e acessibilidade.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">9</span><div><h3>Aprofundamento</h3><p>Para estudantes mais velhos ou do ensino médio.</p></div></li>
+        <li><span class="it-n" aria-hidden="true">10</span><div><h3>Conexões</h3><p>Ligações com outros componentes curriculares.</p></div></li>
+      </ol>
+      <div class="exemplos">
+        <figure><img src="exemplo-ficha-1.webp" width="620" height="877" loading="lazy" alt="Primeira página da ficha EF06CO01, &quot;Organizando informações&quot;: quadro verde com o texto da habilidade, seção 1 O conceito, seção 2 Vocabulário em quatro cartões verdes e início da seção 3 Na sala de aula."><figcaption>Primeira página da ficha EF06CO01.</figcaption></figure>
+        <figure><img src="exemplo-ficha-2.webp" width="620" height="877" loading="lazy" alt="Segunda página da mesma ficha, com a continuação da sequência didática, exemplos práticos e sites de apoio."><figcaption>Continuação da mesma ficha.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+  <section class="block" id="fichas">
+    <div class="wrap">
+      <span class="eyebrow">Sumário</span>
+      <h2>As 42 fichas, por ano</h2>
+      <p class="muted" style="max-width:780px">Textos das habilidades resumidos para leitura rápida; para a redação oficial, consulte a <a href="https://basenacionalcomum.mec.gov.br/" target="_blank" rel="noopener">BNCC</a>. O link de cada ficha abre o PDF na página certa.</p>
+      <details class="ano" open>
+        <summary><span class="ano-n">6º ano</span><span class="muted">10 habilidades</span></summary>
+        <ol class="fichas">
+        <li id="ef06co01">
+          <div class="fi-topo"><span class="tag code co">EF06CO01</span><span class="small muted">Pensamento computacional · Tipos de dados</span></div>
+          <h4>Organizando informações</h4>
+          <p>Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=14" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 13) →</a>
+        </li>
+        <li id="ef06co02">
+          <div class="fi-topo"><span class="tag code co">EF06CO02</span><span class="small muted">Pensamento computacional · Linguagem de programação</span></div>
+          <h4>Sequência, repetição e decisão</h4>
+          <p>Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=17" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 16) →</a>
+        </li>
+        <li id="ef06co03">
+          <div class="fi-topo"><span class="tag code co">EF06CO03</span><span class="small muted">Pensamento computacional · Linguagem de programação</span></div>
+          <h4>Do problema ao programa</h4>
+          <p>Descrever com precisão a solução de um problema, construindo o programa que implementa essa solução.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=20" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 19) →</a>
+        </li>
+        <li id="ef06co04">
+          <div class="fi-topo"><span class="tag code co">EF06CO04</span><span class="small muted">Pensamento computacional · Decomposição</span></div>
+          <h4>Dividir para resolver</h4>
+          <p>Construir soluções de problemas usando a técnica de decomposição e automatizá-las com uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=23" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 22) →</a>
+        </li>
+        <li id="ef06co05">
+          <div class="fi-topo"><span class="tag code co">EF06CO05</span><span class="small muted">Pensamento computacional · Generalização</span></div>
+          <h4>Entradas e saídas</h4>
+          <p>Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=26" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 25) →</a>
+        </li>
+        <li id="ef06co06">
+          <div class="fi-topo"><span class="tag code co">EF06CO06</span><span class="small muted">Pensamento computacional · Generalização</span></div>
+          <h4>Um algoritmo para todos os casos</h4>
+          <p>Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros).</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=29" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 28) →</a>
+        </li>
+        <li id="ef06co07">
+          <div class="fi-topo"><span class="tag code co">EF06CO07</span><span class="small muted">Mundo digital · Transmissão de dados</span></div>
+          <h4>Como a mensagem viaja</h4>
+          <p>Entender como a informação é quebrada em pedaços, transmitida em pacotes por vários equipamentos e reconstruída no destino.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=32" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 31) →</a>
+        </li>
+        <li id="ef06co08">
+          <div class="fi-topo"><span class="tag code co">EF06CO08</span><span class="small muted">Mundo digital · Gestão de dados</span></div>
+          <h4>Arquivos em ordem</h4>
+          <p>Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=35" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 34) →</a>
+        </li>
+        <li id="ef06co09">
+          <div class="fi-topo"><span class="tag code co">EF06CO09</span><span class="small muted">Cultura digital · Tecnologia digital e sociedade</span></div>
+          <h4>Do outro lado da tela tem gente</h4>
+          <p>Apresentar conduta e linguagem apropriadas ao se comunicar em ambiente digital, com ética e respeito.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=38" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 37) →</a>
+        </li>
+        <li id="ef06co10">
+          <div class="fi-topo"><span class="tag code co">EF06CO10</span><span class="small muted">Cultura digital · Tecnologia digital e sustentabilidade</span></div>
+          <h4>Quanto custa um celular?</h4>
+          <p>Analisar o consumo de tecnologia na sociedade, a produção dos recursos, a obsolescência e a sustentabilidade.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=41" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 40) →</a>
+        </li>
+        </ol>
+      </details>
+      <details class="ano">
+        <summary><span class="ano-n">7º ano</span><span class="muted">11 habilidades</span></summary>
+        <ol class="fichas">
+        <li id="ef07co01">
+          <div class="fi-topo"><span class="tag code co">EF07CO01</span><span class="small muted">Pensamento computacional · Registros e matrizes</span></div>
+          <h4>Fichas e listas</h4>
+          <p>Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=45" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 44) →</a>
+        </li>
+        <li id="ef07co02">
+          <div class="fi-topo"><span class="tag code co">EF07CO02</span><span class="small muted">Pensamento computacional · Análise de programas</span></div>
+          <h4>Caça aos bugs</h4>
+          <p>Analisar programas para detectar e remover erros, ampliando a confiança na sua correção.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=48" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 47) →</a>
+        </li>
+        <li id="ef07co03">
+          <div class="fi-topo"><span class="tag code co">EF07CO03</span><span class="small muted">Pensamento computacional · Projetos com programação</span></div>
+          <h4>Programar para outras matérias</h4>
+          <p>Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente, escolhendo estruturas de dados e técnicas adequadas.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=51" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 50) →</a>
+        </li>
+        <li id="ef07co04">
+          <div class="fi-topo"><span class="tag code co">EF07CO04</span><span class="small muted">Pensamento computacional · Propriedades de grafos</span></div>
+          <h4>Pontos e ligações</h4>
+          <p>Explorar propriedades básicas de grafos.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=54" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 53) →</a>
+        </li>
+        <li id="ef07co05">
+          <div class="fi-topo"><span class="tag code co">EF07CO05</span><span class="small muted">Pensamento computacional · Reúso</span></div>
+          <h4>Escreva uma vez, use sempre</h4>
+          <p>Criar algoritmos usando decomposição e reúso, de forma colaborativa, e automatizá-los com uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=57" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 56) →</a>
+        </li>
+        <li id="ef07co06">
+          <div class="fi-topo"><span class="tag code co">EF07CO06</span><span class="small muted">Mundo digital · Protocolos de comunicação em redes</span></div>
+          <h4>As regras da conversa</h4>
+          <p>Compreender o papel de protocolos para a transmissão de dados.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=60" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 59) →</a>
+        </li>
+        <li id="ef07co07">
+          <div class="fi-topo"><span class="tag code co">EF07CO07</span><span class="small muted">Mundo digital · Segurança cibernética</span></div>
+          <h4>Proteja sua vida digital</h4>
+          <p>Identificar problemas de segurança cibernética e experimentar formas de proteção.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=63" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 62) →</a>
+        </li>
+        <li id="ef07co08">
+          <div class="fi-topo"><span class="tag code co">EF07CO08</span><span class="small muted">Cultura digital · Cyberbullying</span></div>
+          <h4>Discordar sem ferir</h4>
+          <p>Demonstrar empatia sobre opiniões divergentes na web.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=66" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 65) →</a>
+        </li>
+        <li id="ef07co09">
+          <div class="fi-topo"><span class="tag code co">EF07CO09</span><span class="small muted">Cultura digital · Cyberbullying</span></div>
+          <h4>Cyberbullying não é brincadeira</h4>
+          <p>Reconhecer e debater sobre cyberbullying.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=69" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 68) →</a>
+        </li>
+        <li id="ef07co10">
+          <div class="fi-topo"><span class="tag code co">EF07CO10</span><span class="small muted">Cultura digital · Impactos da tecnologia digital</span></div>
+          <h4>Para onde vai o lixo eletrônico?</h4>
+          <p>Identificar os impactos ambientais do descarte de peças de computadores e eletrônicos e sua relação com a sustentabilidade.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=72" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 71) →</a>
+        </li>
+        <li id="ef07co11">
+          <div class="fi-topo"><span class="tag code co">EF07CO11</span><span class="small muted">Cultura digital · Produção digital</span></div>
+          <h4>Do roteiro à publicação</h4>
+          <p>Criar, documentar e publicar produtos (vídeos, podcasts, sites) usando recursos de tecnologia, individual ou colaborativamente.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=75" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 74) →</a>
+        </li>
+        </ol>
+      </details>
+      <details class="ano">
+        <summary><span class="ano-n">8º ano</span><span class="muted">11 habilidades</span></summary>
+        <ol class="fichas">
+        <li id="ef08co01">
+          <div class="fi-topo"><span class="tag code co">EF08CO01</span><span class="small muted">Pensamento computacional · Listas e recursão</span></div>
+          <h4>Um problema dentro de outro</h4>
+          <p>Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=79" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 78) →</a>
+        </li>
+        <li id="ef08co02">
+          <div class="fi-topo"><span class="tag code co">EF08CO02</span><span class="small muted">Pensamento computacional · Listas e recursão</span></div>
+          <h4>Listas que crescem</h4>
+          <p>Criar soluções que usem listas para descrever informações e automatizá-las com uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=82" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 81) →</a>
+        </li>
+        <li id="ef08co03">
+          <div class="fi-topo"><span class="tag code co">EF08CO03</span><span class="small muted">Pensamento computacional · Algoritmos clássicos</span></div>
+          <h4>Buscar e ordenar</h4>
+          <p>Utilizar algoritmos clássicos de manipulação sobre listas.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=85" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 84) →</a>
+        </li>
+        <li id="ef08co04">
+          <div class="fi-topo"><span class="tag code co">EF08CO04</span><span class="small muted">Pensamento computacional · Projetos com programação</span></div>
+          <h4>Um programa para outra disciplina</h4>
+          <p>Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=88" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 87) →</a>
+        </li>
+        <li id="ef08co05">
+          <div class="fi-topo"><span class="tag code co">EF08CO05</span><span class="small muted">Mundo digital · Sistemas distribuídos</span></div>
+          <h4>Muitas mãos</h4>
+          <p>Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=91" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 90) →</a>
+        </li>
+        <li id="ef08co06">
+          <div class="fi-topo"><span class="tag code co">EF08CO06</span><span class="small muted">Mundo digital · Internet</span></div>
+          <h4>Como a internet funciona</h4>
+          <p>Entender como é a estrutura e o funcionamento da internet.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=94" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 93) →</a>
+        </li>
+        <li id="ef08co07">
+          <div class="fi-topo"><span class="tag code co">EF08CO07</span><span class="small muted">Cultura digital · Redes sociais e segurança da informação</span></div>
+          <h4>Por dentro das redes sociais</h4>
+          <p>Compartilhar informações em redes sociais compreendendo sua dinâmica de funcionamento.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=97" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 96) →</a>
+        </li>
+        <li id="ef08co08">
+          <div class="fi-topo"><span class="tag code co">EF08CO08</span><span class="small muted">Cultura digital · Redes sociais e segurança da informação</span></div>
+          <h4>Seus dados valem muito</h4>
+          <p>Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=100" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 99) →</a>
+        </li>
+        <li id="ef08co09">
+          <div class="fi-topo"><span class="tag code co">EF08CO09</span><span class="small muted">Cultura digital · Redes sociais e segurança da informação</span></div>
+          <h4>Li e concordo?</h4>
+          <p>Analisar criticamente as políticas e os termos de uso das redes sociais e demais plataformas.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=103" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 102) →</a>
+        </li>
+        <li id="ef08co10">
+          <div class="fi-topo"><span class="tag code co">EF08CO10</span><span class="small muted">Cultura digital · Segurança em ambientes virtuais</span></div>
+          <h4>Privacidade é direito</h4>
+          <p>Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=106" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 105) →</a>
+        </li>
+        <li id="ef08co11">
+          <div class="fi-topo"><span class="tag code co">EF08CO11</span><span class="small muted">Cultura digital · Uso crítico das mídias digitais</span></div>
+          <h4>Checagem de fatos</h4>
+          <p>Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=109" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 108) →</a>
+        </li>
+        </ol>
+      </details>
+      <details class="ano">
+        <summary><span class="ano-n">9º ano</span><span class="muted">10 habilidades</span></summary>
+        <ol class="fichas">
+        <li id="ef09co01">
+          <div class="fi-topo"><span class="tag code co">EF09CO01</span><span class="small muted">Pensamento computacional · Grafos e árvores</span></div>
+          <h4>Árvores que decidem</h4>
+          <p>Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=113" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 112) →</a>
+        </li>
+        <li id="ef09co02">
+          <div class="fi-topo"><span class="tag code co">EF09CO02</span><span class="small muted">Pensamento computacional · Projetos com programação</span></div>
+          <h4>Resolver problemas de verdade</h4>
+          <p>Construir soluções computacionais de problemas de diferentes áreas, individual e colaborativamente.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=116" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 115) →</a>
+        </li>
+        <li id="ef09co03">
+          <div class="fi-topo"><span class="tag code co">EF09CO03</span><span class="small muted">Pensamento computacional · Autômatos e eventos</span></div>
+          <h4>Máquinas de estados</h4>
+          <p>Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=119" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 118) →</a>
+        </li>
+        <li id="ef09co04">
+          <div class="fi-topo"><span class="tag code co">EF09CO04</span><span class="small muted">Mundo digital · Segurança cibernética</span></div>
+          <h4>Como agem os ataques</h4>
+          <p>Compreender o funcionamento de malwares e outros ataques cibernéticos.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=122" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 121) →</a>
+        </li>
+        <li id="ef09co05">
+          <div class="fi-topo"><span class="tag code co">EF09CO05</span><span class="small muted">Mundo digital · Segurança cibernética</span></div>
+          <h4>Segredos em código</h4>
+          <p>Analisar técnicas de criptografia para armazenamento e transmissão de dados.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=125" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 124) →</a>
+        </li>
+        <li id="ef09co06">
+          <div class="fi-topo"><span class="tag code co">EF09CO06</span><span class="small muted">Cultura digital · Tecnologia digital e sociedade</span></div>
+          <h4>Tecnologia para a nossa cidade</h4>
+          <p>Analisar problemas sociais da cidade e do estado a partir de ambientes digitais, propondo soluções.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=128" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 127) →</a>
+        </li>
+        <li id="ef09co07">
+          <div class="fi-topo"><span class="tag code co">EF09CO07</span><span class="small muted">Cultura digital · Tecnologia digital e sociedade</span></div>
+          <h4>Tecnologia não é neutra</h4>
+          <p>Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=131" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 130) →</a>
+        </li>
+        <li id="ef09co08">
+          <div class="fi-topo"><span class="tag code co">EF09CO08</span><span class="small muted">Cultura digital · Tecnologia digital e sociedade</span></div>
+          <h4>Desigualdade digital</h4>
+          <p>Discutir como a distribuição desigual de recursos de computação na economia global levanta questões éticas.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=134" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 133) →</a>
+        </li>
+        <li id="ef09co09">
+          <div class="fi-topo"><span class="tag code co">EF09CO09</span><span class="small muted">Cultura digital · Autoria em meio digital</span></div>
+          <h4>Isso é seu?</h4>
+          <p>Criar ou utilizar conteúdo em meio digital compreendendo questões éticas de direitos autorais e uso de imagem.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=137" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 136) →</a>
+        </li>
+        <li id="ef09co10">
+          <div class="fi-topo"><span class="tag code co">EF09CO10</span><span class="small muted">Cultura digital · Qualidade da informação</span></div>
+          <h4>Verdade em todos os formatos</h4>
+          <p>Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos.</p>
+          <a class="fi-pdf" href="apostila-professor-bncc-computacao.pdf#page=140" target="_blank" rel="noopener">Abrir a ficha no PDF (p. 139) →</a>
+        </li>
+        </ol>
+      </details>
+      <p class="small muted" style="margin-top:18px">Também no PDF: apresentação, os três eixos e a progressão do 6º ao 9º ano, quadro das 42 habilidades, orientações para a prática, glossário, sites de apoio por tema, modelo de plano de aula e ficha de observação, referências.</p>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap duas">
+      <div>
+        <span class="eyebrow">Junto com os slides</span>
+        <h2>Uma ficha para cada aula</h2>
+        <p>Cada habilidade também tem um conjunto de <a href="../professor.html#slides">slides para aula expositiva</a> de 30 minutos, com atividade e roteiro do professor. A apostila aprofunda o que os slides apresentam, mas pode ser usada de forma independente.</p>
+      </div>
+      <div>
+        <span class="eyebrow">Uso e citação</span>
+        <h2>Livre para usar em sala</h2>
+        <p>Material de Júlia Roberta Quoos Alves, professora de computação no Rio Grande do Sul, sob licença <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>: pode copiar, imprimir e adaptar, com citação da autoria, sem fins comerciais e compartilhando pela mesma licença.</p>
+      </div>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Para continuar</span>
+      <h2>Mais material gratuito</h2>
+      <div class="btn-row" style="margin-top:14px">
+        <a class="btn" href="apostila-professor-bncc-computacao.pdf" download type="application/pdf">Baixar a apostila (PDF)</a>
+        <a class="btn ghost" href="../professor.html">Área do professor</a>
+        <a class="btn ghost" href="../bncc.html">Explorar a BNCC</a>
+        <a class="btn ghost" href="../../formacao-continuada/">Formação continuada</a>
+      </div>
+      <p class="small muted" style="margin-top:18px">Sugestões e relatos de uso: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p>
+    </div>
+  </section>
+</main>
+<footer class="footer"><div class="wrap">
+  <p>Apostila do professor para a Computação nos anos finais do Ensino Fundamental, criada por <a href="../../curriculo/">Júlia Roberta Quoos Alves</a>. Habilidades com base no complemento de Computação à <a href="https://basenacionalcomum.mec.gov.br/" target="_blank" rel="noopener">BNCC</a> (Resolução CNE/CEB nº 1/2022).</p>
+  <p>Uso livre em sala de aula, com citação da fonte. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p>
+</div></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+  mdTopbar('professor');
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
