@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trilha da Carreira em Computação · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de tabuleiro on-line sobre a vida e a carreira em computação: da escola ao curso técnico, à graduação ou aos cursos livres, do primeiro emprego à pós-graduação. Para jogar sozinho ou com até 4 pessoas.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/carreira.html">
+<meta property="og:title" content="Trilha da Carreira em Computação · Material didático">
+<meta property="og:description" content="Jogo de tabuleiro on-line sobre a vida e a carreira em computação: da escola ao curso técnico, à graduação ou aos cursos livres, do primeiro emprego à pós-graduação. Para jogar sozinho ou com até 4 pessoas.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/carreira.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  /* ---------- preparação ---------- */
+  .vagas { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin: 10px 0 18px; }
+  .vaga { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .vaga.fora { opacity: .55; }
+  .vaga .topo { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .vaga input[type=text] { width: 100%; border: 1.5px solid var(--ink); border-radius: 12px; padding: 7px 10px; background: var(--paper); }
+  .vaga .tipos { display: flex; gap: 6px; flex-wrap: wrap; }
+  .vaga .tipos button { border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); padding: 4px 12px; font-size: 14px; cursor: pointer; }
+  .vaga .tipos button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .peao { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #111; flex: none; display: inline-block; }
+  /* ---------- tabuleiro ---------- */
+  .mesa { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .tabuleiro { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); overflow: hidden; }
+  .tabuleiro svg { display: block; width: 100%; height: auto; }
+  .tabuleiro .trilho { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .tabuleiro .rotulo { font-family: var(--display); font-size: 17px; fill: var(--ink); }
+  .tabuleiro .rotulo-p { font-family: var(--body); font-size: 13px; fill: var(--ink-2); font-weight: 600; }
+  .tabuleiro .titulo-t { font-family: var(--display); font-size: 40px; font-weight: 800; fill: var(--ink); }
+  .tabuleiro .sub-t { font-family: var(--body); font-size: 15px; fill: var(--ink-2); }
+  .tabuleiro .casa-txt { font-family: var(--body); font-size: 14px; font-weight: 700; fill: #111; pointer-events: none; }
+  .tabuleiro .marco-txt { font-family: var(--body); font-size: 12px; font-weight: 700; fill: var(--paper); pointer-events: none; }
+  .tabuleiro .marco { fill: var(--ink); stroke: var(--ink); }
+  .tabuleiro .destino { stroke: var(--ink); stroke-width: 4; stroke-dasharray: 5 4; fill: none; }
+  .tabuleiro .peao-svg { transition: transform .16s ease; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 10px 14px; border-top: 1.5px solid var(--line); font-size: 14px; color: var(--ink-2); }
+  .legenda i { display: inline-block; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #111; vertical-align: -3px; margin-right: 5px; }
+  .painel { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 820px) { .painel { grid-template-columns: minmax(0, 1fr); } }
+  .vez { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 16px 18px; min-height: 260px; }
+  .vez-topo { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .vez-topo h2 { font-size: 24px; margin: 0; }
+  .dado { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 6px 0 12px; }
+  .bit { width: 46px; height: 54px; border: 2px solid #111; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 30px; font-weight: 800; background: #fff; color: #111; box-shadow: 3px 3px 0 var(--ink); }
+  .bit.um { background: #ffd23f; }
+  .bit.gira { animation: gira .12s linear infinite; }
+  @keyframes gira { 50% { transform: translateY(-4px) rotate(-6deg); } }
+  @media (prefers-reduced-motion: reduce) { .bit.gira { animation: none; } .tabuleiro .peao-svg { transition: none; } }
+  .conta { font-size: 16px; color: var(--ink-2); }
+  .conta b { font-family: var(--display); font-size: 22px; color: var(--ink); }
+  .carta { border: 1.5px solid var(--ink); border-radius: 18px; padding: 14px 16px; background: var(--paper-2); margin-top: 10px; }
+  .carta .tipo { font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
+  .carta .tipo i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #111; }
+  .carta h3 { font-size: 21px; margin: 6px 0 4px; }
+  @media (max-width: 640px) { .carta h3 { font-size: 18px; } .game-stage { padding: 12px; } .vez { padding: 14px; } }
+  .carta p { margin: 4px 0 10px; }
+  .efeitos { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+  .ef { display: inline-flex; align-items: center; gap: 5px; border: 1.5px solid var(--ink); border-radius: 99px; padding: 2px 10px 2px 4px; font-size: 14px; font-weight: 600; background: var(--paper); }
+  .ef.menos { border-style: dashed; font-weight: 500; color: var(--ink-2); }
+  .opcoes { display: grid; gap: 8px; margin-top: 8px; }
+  .opcao { text-align: left; border: 1.5px solid var(--ink); border-radius: 16px; background: var(--paper); padding: 10px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+  .opcao:hover:not(:disabled) { background: var(--pill); }
+  .opcao b { font-size: 16px; }
+  .opcao span { font-size: 14px; color: var(--ink-2); }
+  .opcao.certa { background: var(--ok-soft); border-color: var(--ok); }
+  .opcao.errada { background: var(--bad-soft); border-color: var(--bad); }
+  .opcao:disabled { cursor: default; }
+  .jogadores { display: grid; gap: 10px; }
+  .jog { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 10px 14px; }
+  .jog.atual { box-shadow: 5px 5px 0 var(--ink); }
+  .jog.chegou { background: var(--ok-soft); }
+  .jog-topo { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .jog-topo small { font-weight: 400; color: var(--ink-2); margin-left: auto; font-size: 13px; }
+  .jog .carr { font-size: 13.5px; color: var(--ink-2); margin: 2px 0 6px; }
+  .atrs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .atr { display: flex; align-items: center; gap: 4px; font-size: 14px; }
+  .atr b { font-family: var(--display); font-size: 18px; }
+  .ico { width: 20px; height: 20px; flex: none; }
+  .diario { margin-top: 12px; font-size: 14px; color: var(--ink-2); }
+  .diario ol { margin: 6px 0 0; padding-left: 20px; }
+  .diario li { margin-bottom: 3px; }
+  /* ---------- resultado ---------- */
+  .podio { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 14px 0; }
+  .fim-card { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 14px 16px; }
+  .fim-card.primeiro { box-shadow: 6px 6px 0 var(--ink); }
+  .fim-card h3 { margin: 4px 0; font-size: 22px; }
+  .fim-card .pts { font-family: var(--display); font-size: 40px; line-height: 1; }
+  .fim-card table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 8px 0; }
+  .fim-card td { padding: 3px 0; border-bottom: 1px solid var(--line); }
+  .fim-card td:last-child { text-align: right; font-weight: 600; }
+  .titulos { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .titulos span { background: var(--ok-soft); border: 1.5px solid var(--ok); border-radius: 99px; padding: 2px 10px; font-size: 13px; font-weight: 600; }
+  .melhoras li { background: var(--ok-soft); border-left: 4px solid var(--ok); border-radius: 0 14px 14px 0; padding: 8px 12px; margin-bottom: 6px; font-size: 15px; }
+  .marcos { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
+  .carreiras-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 10px; }
+  .carreiras-lista div { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; font-size: 14.5px; }
+  .carreiras-lista b { display: block; font-size: 15.5px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Cada pessoa percorre uma vida na computação, da escola até a <strong>Celebração</strong>. Na sua vez, jogue o <strong>dado binário</strong>: ele mostra três bits (0 ou 1) e você anda o valor do número em binário. Por exemplo, <kbd>1 0 1</kbd> = 4 + 0 + 1 = 5 casas. Se sair <kbd>0 0 0</kbd>, você não anda e responde a um desafio.</p>
+    <p><strong>Casas:</strong> verde é um acontecimento da vida; vermelha é um desafio de conhecimento; amarela é uma escolha entre dois caminhos; a casa com cifrão é dia de pagamento (ou mesada, na escola). As casas escuras são marcos: o peão para nelas, mesmo que o dado mande andar mais.</p>
+    <p><strong>Marcos:</strong> no fim do ensino médio você escolhe entre curso técnico, graduação ou cursos livres. No primeiro emprego, escolhe uma carreira entre as que estão abertas para você (algumas pedem mais Conhecimento). Depois, decide se faz pós-graduação ou segue direto no mercado.</p>
+    <p><strong>Pontos na Celebração:</strong> Conhecimento + Bem-estar × 2 + Impacto × 2 + Moedas ÷ 2. Não existe um único jeito de vencer: quem cuida do bem-estar e ajuda a comunidade também soma muito. A partida termina quando todos chegam.</p>
+    <p><strong>Jogar sozinho:</strong> escolha uma meta de vida no começo (por exemplo, trabalhar com IA ou chegar com muito Impacto). Se cumprir, ganha +15 pontos. Com 45, 60 e 75 pontos você ganha uma, duas ou três estrelas, e o jogo guarda o seu recorde.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <details class="howto" style="margin-bottom:24px">
+    <summary>Conheça as carreiras do jogo</summary>
+    <p class="small muted">Todas são profissões reais da área de computação. O salário no jogo é só uma comparação entre elas.</p>
+    <div class="carreiras-lista" id="lista-carreiras"></div>
+  </details>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('carreira');
+(function () {
+  const CHAVE = 'trilha-carreira-v1';
+  const CORES = ['#2fa865', '#ffd23f', '#ef5a4c', '#f08a24'];
+  const NOMES_COR = ['verde', 'amarelo', 'vermelho', 'laranja'];
+  const ATR = {
+    C: { nome: 'Conhecimento', cor: '#2fa865' },
+    M: { nome: 'Moedas', cor: '#ffd23f' },
+    B: { nome: 'Bem-estar', cor: '#ef5a4c' },
+    I: { nome: 'Impacto', cor: '#f08a24' }
+  };
+  function ico(k) {
+    const T = 'stroke="#111" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"';
+    const d = {
+      C: `<path d="M3 6c3-2 6-2 9 0v13c-3-2-6-2-9 0z" fill="${ATR.C.cor}" ${T}/><path d="M21 6c-3-2-6-2-9 0v13c3-2 6-2 9 0z" fill="#fff" ${T}/>`,
+      M: `<circle cx="12" cy="12" r="9" fill="${ATR.M.cor}" ${T}/><path d="M12 7v10M9.5 9.5h3.8a1.6 1.6 0 0 1 0 3.2h-2.6a1.6 1.6 0 0 0 0 3.2H14.5" fill="none" ${T}/>`,
+      B: `<path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z" fill="${ATR.B.cor}" ${T}/>`,
+      I: `<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z" fill="${ATR.I.cor}" ${T}/>`
+    };
+    return `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${d[k]}</svg>`;
+  }
+
+  /* ---------- carreiras ---------- */
+  const CARREIRAS = [
+    { id: 'dev', nome: 'Desenvolvimento de software', sal: 8, extra: {},
+      desc: 'Escreve, testa e mantém programas: aplicativos, sites e sistemas de empresas e governos. Trabalha em equipe e revisa o código dos colegas.' },
+    { id: 'dados', nome: 'Ciência de dados', sal: 9, extra: {}, req: { C: 8 },
+      desc: 'Organiza e analisa grandes conjuntos de dados para responder perguntas: o que vende mais, onde vai chover, quais estudantes precisam de apoio.' },
+    { id: 'prof', nome: 'Docência em computação', sal: 6, extra: { I: 2 }, req: { formacao: 'grad' },
+      desc: 'Ensina programação, pensamento computacional e uso crítico da tecnologia em escolas, cursos técnicos e universidades. Prepara aulas, materiais e projetos.' },
+    { id: 'seg', nome: 'Segurança da informação', sal: 9, extra: {}, req: { C: 6 },
+      desc: 'Protege sistemas e dados contra ataques: procura falhas antes dos criminosos, configura defesas e orienta as pessoas sobre senhas e golpes.' },
+    { id: 'ia', nome: 'Engenharia de inteligência artificial', sal: 10, extra: {}, req: { C: 12 },
+      desc: 'Treina e avalia modelos de aprendizado de máquina, como reconhecedores de imagem e assistentes de texto, e cuida para que funcionem de forma justa e segura.' },
+    { id: 'ux', nome: 'Design de experiência (UX)', sal: 7, extra: { B: 1 },
+      desc: 'Pesquisa como as pessoas usam aplicativos e sites e desenha telas mais fáceis e acessíveis. Faz protótipos e testes com usuários.' },
+    { id: 'redes', nome: 'Redes e suporte técnico', sal: 6, extra: { I: 1 },
+      desc: 'Instala e mantém computadores, redes e servidores. Resolve problemas do dia a dia e garante que a internet da escola ou da empresa funcione.' },
+    { id: 'jogos', nome: 'Desenvolvimento de jogos', sal: 7, extra: { B: 1 },
+      desc: 'Programa jogos digitais: regras, física, personagens e fases. Trabalha junto com artistas, roteiristas e músicos.' },
+    { id: 'pesq', nome: 'Pesquisa em computação', sal: 9, extra: { C: 1 }, soPos: true,
+      desc: 'Investiga problemas ainda sem solução, cria novos métodos e publica os resultados em artigos. Costuma trabalhar em universidades e centros de pesquisa.' }
+  ];
+  const CAR = Object.fromEntries(CARREIRAS.map(c => [c.id, c]));
+
+  const FORMACOES = {
+    tec: { nome: 'Curso técnico em informática', curto: 'Curso técnico', ef: { C: 3 },
+      desc: 'Caminho mais curto, com estágio pago no meio. Prepara para começar cedo no mercado.' },
+    grad: { nome: 'Graduação em computação', curto: 'Graduação', ef: { C: 5 },
+      desc: 'Caminho mais longo, com mais desafios e mais Conhecimento. Abre a carreira de docência.' },
+    auto: { nome: 'Cursos livres e portfólio', curto: 'Cursos livres', ef: { C: 1, I: 1 },
+      desc: 'O caminho mais curto de todos, quase só de desafios: quem estuda sozinho precisa provar o que sabe.' }
+  };
+
+  /* ---------- cartas ---------- */
+  const EVENTOS = {
+    escola: [
+      { t: 'Feira de ciências', x: 'Sua turma apresentou um sensor de umidade que avisa quando a horta da escola precisa de água.', ef: { C: 2, I: 1 } },
+      { t: 'Olimpíada de Informática', x: 'Você participou da Olimpíada Brasileira de Informática e descobriu que gosta de resolver problemas de lógica.', ef: { C: 3 } },
+      { t: 'Clube de robótica', x: 'No clube de robótica, seu grupo programou um carrinho que segue uma linha preta no chão.', ef: { C: 2, B: 1 } },
+      { t: 'Primeiro site', x: 'Você criou um site sobre a história do seu bairro, com fotos e entrevistas com os moradores mais antigos.', ef: { C: 1, I: 1 } },
+      { t: 'Ajuda em casa', x: 'Você ensinou sua avó a reconhecer mensagens de golpe no celular.', ef: { I: 2, B: 1 } },
+      { t: 'Curso gratuito', x: 'Você terminou um curso gratuito de programação em blocos e ganhou um certificado.', ef: { C: 2 } },
+      { t: 'Monitoria de informática', x: 'A escola convidou você para cuidar da monitoria do laboratório e ajudar os colegas.', ef: { C: 1, I: 2 } },
+      { t: 'Jogo no Scratch', x: 'Você fez um jogo no Scratch e a turma inteira jogou no recreio.', ef: { C: 1, B: 2 } },
+      { t: 'Senha vazada', x: 'A senha do seu jogo vazou. Você trocou as senhas e ativou a verificação em duas etapas. Susto que ensina.', ef: { C: 2, B: -1 } },
+      { t: 'Oficinas na escola', x: 'Um projeto da universidade levou oficinas de programação para estudantes da sua escola.', ef: { C: 2, I: 1 } },
+      { t: 'Venda na feira', x: 'Você e um colega imprimiram chaveiros numa impressora 3D e venderam na feira da escola.', ef: { M: 3, C: 1 } },
+      { t: 'Visita técnica', x: 'A turma visitou uma empresa de tecnologia da região e conversou com quem trabalha lá.', ef: { C: 1, B: 1 } }
+    ],
+    formacao: [
+      { t: 'Estágio de verão', x: 'Nas férias, você fez um estágio curto ajudando a organizar os computadores de uma cooperativa.', ef: { M: 4, C: 1 } },
+      { t: 'Projeto de extensão', x: 'Você ensinou pessoas idosas a fazer videochamadas com a família.', ef: { I: 2, B: 1 } },
+      { t: 'Iniciação científica', x: 'Você ganhou uma bolsa de iniciação científica para estudar como o computador reconhece imagens.', ef: { C: 3, M: 2 } },
+      { t: 'Hackathon', x: 'Sua equipe criou em 24 horas um aplicativo de carona solidária e ganhou menção honrosa.', ef: { C: 2, I: 1, M: 2 } },
+      { t: 'Monitoria de algoritmos', x: 'Você assumiu a monitoria da disciplina de algoritmos e explica exercícios para a turma.', ef: { C: 2, I: 1, M: 1 } },
+      { t: 'Trabalho em equipe', x: 'O grupo dividiu as tarefas, usou controle de versões e entregou o projeto um dia antes do prazo.', ef: { C: 2, B: 1 } },
+      { t: 'Semana de provas', x: 'Foi uma semana puxada, mas você passou em todas as disciplinas.', ef: { C: 3, B: -1 } },
+      { t: 'Código aberto', x: 'Sua primeira contribuição para um projeto de código aberto foi aceita. Gente do mundo todo vai usar.', ef: { C: 2, I: 2 } },
+      { t: 'Notebook usado', x: 'Você comprou um notebook usado e trocou a memória. Agora consegue estudar em casa.', ef: { M: -3, C: 2 } },
+      { t: 'Bolsa de estudos', x: 'Seu bom desempenho garantiu uma bolsa de estudos por um semestre.', ef: { M: 4 } },
+      { t: 'Grupo de estudos', x: 'Você montou um grupo de estudos na biblioteca. Ninguém ficou para trás.', ef: { C: 2, B: 1 } },
+      { t: 'Evento científico', x: 'Você apresentou um trabalho numa escola regional de computação e conheceu pesquisadores.', ef: { C: 2, I: 1 } }
+    ],
+    carreira: [
+      { t: 'Erro no sistema', x: 'Um erro parou o sistema numa sexta à noite. A equipe corrigiu e criou testes automáticos para não repetir.', ef: { C: 2, B: -1 }, car: 'dev', bonus: { C: 1, M: 2 } },
+      { t: 'Promoção', x: 'Sua equipe reconheceu seu trabalho e a promoção saiu.', ef: { M: 5 } },
+      { t: 'Mentoria', x: 'Você passou a orientar uma pessoa que está começando na área.', ef: { I: 3, B: 1 } },
+      { t: 'Certificação', x: 'Você estudou à noite e passou numa certificação reconhecida.', ef: { C: 3, M: -2 }, car: 'seg', bonus: { M: 3 } },
+      { t: 'Dados da cidade', x: 'Com dados abertos, sua equipe mostrou à prefeitura onde faltavam vagas em creches.', ef: { I: 2, C: 1 }, car: 'dados', bonus: { I: 2, M: 2 } },
+      { t: 'Ataque bloqueado', x: 'O sistema detectou e bloqueou uma tentativa de invasão antes de qualquer dado sair.', ef: { C: 2 }, car: 'seg', bonus: { M: 3, I: 1 } },
+      { t: 'Turma premiada', x: 'Estudantes de uma escola pública ganharam um prêmio com um projeto de programação.', ef: { I: 2 }, car: 'prof', bonus: { I: 2, B: 2 } },
+      { t: 'Lançamento', x: 'O aplicativo em que você trabalhou chegou a cem mil downloads.', ef: { M: 3 }, car: 'jogos', bonus: { M: 3, B: 1 } },
+      { t: 'Férias', x: 'Você tirou férias de verdade, longe das telas, e voltou com energia.', ef: { B: 3 } },
+      { t: 'Modelo mais justo', x: 'O modelo errava mais com sotaques do interior. A equipe juntou mais exemplos e corrigiu o problema.', ef: { C: 2, I: 1 }, car: 'ia', bonus: { C: 2, M: 2 } },
+      { t: 'Trabalho remoto', x: 'A empresa liberou dois dias de trabalho em casa por semana.', ef: { B: 2 } },
+      { t: 'Palestra', x: 'Você recebeu um convite para contar sua trajetória num evento de tecnologia do estado.', ef: { I: 2, C: 1 } },
+      { t: 'Teste com usuários', x: 'Um teste com usuários mostrou que um botão confundia as pessoas. A troca resolveu.', ef: { C: 2 }, car: 'ux', bonus: { B: 2, M: 2 } },
+      { t: 'Internet na escola rural', x: 'Você ajudou a levar internet de qualidade para uma escola do interior.', ef: { I: 2 }, car: 'redes', bonus: { I: 2, M: 2 } },
+      { t: 'Hora extra', x: 'Um projeto atrasou e você fez horas extras durante um mês.', ef: { M: 4, B: -2 } },
+      { t: 'Voluntariado', x: 'Aos sábados, você ensina programação para crianças num centro comunitário.', ef: { I: 3 } },
+      { t: 'Artigo publicado', x: 'Um artigo seu foi aceito numa revista científica.', ef: { C: 2 }, car: 'pesq', bonus: { C: 2, I: 2 } }
+    ]
+  };
+
+  const ESCOLHAS = {
+    escola: [
+      { t: 'Oficina no contraturno', x: 'A escola abriu uma oficina de programação à tarde, no mesmo horário do futebol com os amigos.',
+        a: { b: 'Fazer a oficina', ef: { C: 2, B: -1 } }, c: { b: 'Jogar com os amigos', ef: { B: 2 } } },
+      { t: 'Dinheiro de aniversário', x: 'Você ganhou dinheiro de aniversário.',
+        a: { b: 'Comprar um jogo novo', ef: { B: 2, M: -2 } }, c: { b: 'Guardar no cofrinho', ef: { M: 2 } } },
+      { t: 'Celular novo', x: 'Seu celular quebrou. O que fazer?',
+        a: { b: 'Comprar um novo', ef: { M: -3, B: 1 } }, c: { b: 'Consertar o antigo', ef: { M: -1, I: 1, C: 1 }, nota: 'Menos lixo eletrônico no mundo.' } },
+      { t: 'Trabalho em grupo', x: 'Seu grupo precisa de alguém para cuidar da parte de programação do trabalho.',
+        a: { b: 'Assumir a programação', ef: { C: 2 } }, c: { b: 'Ensinar um colega a fazer', ef: { I: 2 } } }
+    ],
+    formacao: [
+      { t: 'Estágio ou pesquisa?', x: 'Surgiram duas vagas ao mesmo tempo.',
+        a: { b: 'Estágio numa empresa', ef: { M: 4, C: 1 } }, c: { b: 'Bolsa de pesquisa', ef: { C: 3, M: 1 } } },
+      { t: 'Fim de semana', x: 'Tem um hackathon no fim de semana.',
+        a: { b: 'Participar', ef: { C: 2, I: 1, B: -1 } }, c: { b: 'Descansar e ver a família', ef: { B: 2 } } },
+      { t: 'Tempo livre', x: 'Você tem algumas horas livres por semana.',
+        a: { b: 'Ensinar informática na comunidade', ef: { I: 3 } }, c: { b: 'Fazer um trabalho freelancer', ef: { M: 4 } } },
+      { t: 'Projeto final', x: 'Hora de escolher o tema do projeto final.',
+        a: { b: 'Um aplicativo para a escola onde estudei', ef: { I: 2, C: 1 } }, c: { b: 'Um tema novo e difícil', ef: { C: 3 } } }
+    ],
+    carreira: [
+      { t: 'Proposta de outra empresa', x: 'Outra empresa ofereceu um salário maior.',
+        a: { b: 'Aceitar a proposta', ef: { B: -1 }, sal: 1, nota: 'Salário +1 por pagamento.' }, c: { b: 'Ficar e liderar um projeto novo', ef: { I: 2, C: 1 } } },
+      { t: 'Curso nos fins de semana', x: 'Abriram inscrições para um curso de especialização aos sábados.',
+        a: { b: 'Fazer o curso', ef: { C: 3, B: -1 } }, c: { b: 'Guardar os sábados para descansar', ef: { B: 2 } } },
+      { t: 'Mudar de cidade?', x: 'Uma vaga boa apareceu numa capital longe da sua família.',
+        a: { b: 'Mudar de cidade', ef: { M: 4, B: -1 } }, c: { b: 'Ficar perto da família', ef: { B: 2, I: 1 } } },
+      { t: 'Projeto social', x: 'Uma ONG pediu ajuda para criar o site de doações dela.',
+        a: { b: 'Ajudar de graça', ef: { I: 3, M: -1 } }, c: { b: 'Cobrar um preço justo', ef: { M: 3 } } },
+      { t: 'Semana de quatro dias', x: 'A empresa oferece trabalhar quatro dias por semana, com salário um pouco menor.',
+        a: { b: 'Aceitar os quatro dias', ef: { B: 3, M: -2 } }, c: { b: 'Manter os cinco dias', ef: { M: 3 } } },
+      { t: 'Ensinar o que sabe', x: 'Você pode gravar uma série de vídeos explicando seu trabalho.',
+        a: { b: 'Gravar os vídeos', ef: { I: 2, C: 1 } }, c: { b: 'Focar no projeto atual', ef: { M: 2, C: 1 } } }
+    ]
+  };
+
+  /* Desafios: [pergunta, [certa, errada, errada], explicação] */
+  const DESAFIOS = [
+    ['Quanto vale o número binário 101?', ['5', '3', '101'], '1×4 + 0×2 + 1×1 = 5.'],
+    ['Quanto vale o número binário 110?', ['6', '3', '110'], '1×4 + 1×2 + 0×1 = 6.'],
+    ['Qual destas senhas é mais forte?', ['Pinhao!Verde27Lua', '12345678', 'A data do seu aniversário'], 'Senhas longas, com palavras sem relação, números e símbolos são mais difíceis de adivinhar.'],
+    ['O que é um algoritmo?', ['Uma sequência de passos para resolver um problema', 'Uma peça dentro do computador', 'Um tipo de vírus'], 'Receitas, rotas e regras de jogo também são algoritmos.'],
+    ['Em programação, o que é um bug?', ['Um erro no programa', 'Um inseto dentro do computador', 'Um programa antivírus'], 'Encontrar e corrigir bugs se chama depuração.'],
+    ['Quantos bits tem um byte?', ['8', '2', '10'], 'Um byte é um grupo de 8 bits. Com ele dá para guardar uma letra simples.'],
+    ['Como os dados viajam pela internet?', ['Em pacotes, que podem ir por caminhos diferentes', 'Num único bloco, de uma vez', 'Por carta, pelo correio'], 'A mensagem é quebrada em pacotes e montada de novo no destino.'],
+    ['O que é phishing?', ['Uma mensagem falsa feita para roubar dados', 'Um tipo de cabo de rede', 'Uma linguagem de programação'], 'Desconfie de links com pressa, prêmio ou ameaça e confira quem enviou.'],
+    ['Para treinar uma IA que reconhece frutas, o que é preciso?', ['Muitas fotos de frutas com o nome certo de cada uma', 'Uma única foto bem bonita', 'Um teclado novo'], 'A IA aprende com exemplos rotulados. Quanto mais variados, melhor.'],
+    ['Uma IA treinada só com fotos tiradas de dia vai ter dificuldade com...', ['Fotos tiradas à noite', 'Nenhuma foto', 'Fotos grandes'], 'Se os dados de treino não representam todas as situações, o modelo erra mais nas que ficaram de fora.'],
+    ['O que faz o sistema operacional?', ['Gerencia o hardware e os programas do computador', 'Só abre sites', 'Só protege contra vírus'], 'Windows, Linux, Android e iOS são sistemas operacionais.'],
+    ['Qual destes é uma linguagem de programação?', ['Python', 'PDF', 'Wi-Fi'], 'Python é muito usada em ciência de dados e inteligência artificial.'],
+    ['Para onde deve ir um celular velho que não funciona mais?', ['Para um ponto de coleta de lixo eletrônico', 'Para o lixo comum', 'Para o rio'], 'As baterias e placas têm metais que contaminam o solo e podem ser reaproveitados.'],
+    ['O que é a verificação em duas etapas?', ['Pedir um segundo código além da senha', 'Digitar a senha duas vezes', 'Usar duas contas'], 'Mesmo que alguém descubra a senha, ainda vai faltar o segundo código.'],
+    ['O que a LGPD protege?', ['Os dados pessoais das pessoas', 'Os preços dos computadores', 'As redes Wi-Fi públicas'], 'A Lei Geral de Proteção de Dados diz como empresas e governo podem usar dados pessoais.'],
+    ['Numa planilha, a coluna "idade" guarda dados do tipo...', ['Número', 'Imagem', 'Som'], 'Escolher o tipo certo de dado permite fazer contas e gráficos.'],
+    ['O que é decompor um problema?', ['Dividir o problema em partes menores', 'Apagar o problema', 'Resolver tudo de uma vez'], 'Partes menores são mais fáceis de resolver e de dividir com a equipe.'],
+    ['Para que serve um laço de repetição?', ['Repetir instruções sem escrever tudo de novo', 'Desligar o computador', 'Guardar uma senha'], 'Em vez de escrever "ande" dez vezes, usamos "repita 10 vezes: ande".'],
+    ['O que é software de código aberto?', ['Um programa cujo código qualquer pessoa pode ler e melhorar', 'Um programa sem senha', 'Um programa que só funciona aberto na tela'], 'Linux, Firefox e Python são exemplos de código aberto.'],
+    ['O cadeado e o "https" no endereço do site indicam...', ['Que a conexão é criptografada', 'Que o site é do governo', 'Que o site é gratuito'], 'A criptografia impede que alguém no meio do caminho leia os dados. Ainda assim, confira se o site é o verdadeiro.'],
+    ['Qual é o próximo número da sequência 2, 4, 8, 16?', ['32', '20', '24'], 'Cada número é o dobro do anterior: são potências de 2, como a memória dos computadores.'],
+    ['Para que serve o endereço IP?', ['Identificar um aparelho na rede', 'Guardar fotos', 'Medir a bateria'], 'É como o endereço de uma casa: os pacotes sabem para onde ir.'],
+    ['Qual profissional desenha telas fáceis de usar e testa com as pessoas?', ['Design de experiência (UX)', 'Redes e suporte', 'Segurança da informação'], 'UX vem do inglês user experience, experiência do usuário.'],
+    ['O que é um conjunto de dados (dataset)?', ['Uma coleção organizada de dados', 'Um computador muito rápido', 'Um aplicativo de mensagens'], 'Uma tabela com as notas da turma é um pequeno conjunto de dados.'],
+    ['O que é um pixel?', ['O menor ponto colorido de uma imagem digital', 'Um tipo de vírus', 'Um cabo de vídeo'], 'Uma foto é uma grade de pixels, e cada pixel guarda números de cor.'],
+    ['O que é um backup?', ['Uma cópia de segurança dos arquivos', 'Um programa que apaga arquivos', 'Uma senha extra'], 'Com backup, perder o celular não significa perder as fotos.'],
+    ['Para achar uma palavra no dicionário, abrir no meio e descartar a metade errada é um exemplo de...', ['Busca binária', 'Sorteio', 'Cópia'], 'A cada passo, metade das páginas sai da busca. Isso é muito rápido.'],
+    ['Num programa, o que é uma variável?', ['Um nome que guarda um valor que pode mudar', 'Um erro de digitação', 'Um tipo de tela'], 'Por exemplo, a variável "pontos" começa em 0 e aumenta durante o jogo.'],
+    ['Qual destas atitudes ajuda numa discussão on-line?', ['Responder com respeito, mesmo discordando', 'Escrever tudo em maiúsculas', 'Espalhar print da conversa'], 'Discordar é normal; atacar a pessoa não ajuda ninguém.'],
+    ['Antes de compartilhar uma notícia, o que vale conferir?', ['Quem escreveu, a data e se outras fontes confirmam', 'Se ela tem muitas curtidas', 'Se o título é chamativo'], 'Curtidas não mostram se a informação é verdadeira.']
+  ];
+
+  /* ---------- tabuleiro ---------- */
+  const W = 1000, H = 640;
+  const SEG = {
+    escola: ['evento', 'desafio', 'escolha', 'evento', 'mesada', 'desafio', 'evento', 'escolha', 'evento'],
+    tec: ['evento', 'pagamento', 'desafio', 'escolha', 'evento', 'pagamento'],
+    grad: ['evento', 'desafio', 'escolha', 'evento', 'desafio', 'mesada', 'evento', 'escolha', 'desafio'],
+    auto: ['desafio', 'evento', 'desafio', 'escolha', 'desafio'],
+    m1: ['pagamento', 'evento', 'desafio', 'escolha', 'evento', 'pagamento', 'evento', 'desafio', 'escolha', 'evento'],
+    pos: ['evento', 'desafio', 'evento', 'desafio', 'escolha', 'evento'],
+    merc: ['pagamento', 'evento', 'escolha', 'pagamento', 'evento'],
+    m2: ['evento', 'pagamento', 'desafio', 'escolha', 'evento', 'pagamento', 'evento', 'desafio', 'escolha', 'pagamento']
+  };
+  const FASE = { escola: 'escola', tec: 'formacao', grad: 'formacao', auto: 'formacao', m1: 'carreira', pos: 'carreira', merc: 'carreira', m2: 'carreira' };
+  const P = { inicio: [70, 580], F1: [740, 580], J1: [740, 300], F2: [150, 300], J2: [150, 76], FIM: [920, 100] };
+  const ROTAS = {
+    escola: [P.inicio, P.F1],
+    tec: [P.F1, [835, 520], [835, 360], P.J1],
+    grad: [P.F1, [900, 580], [960, 440], [900, 300], P.J1],
+    auto: [P.F1, [620, 500], [620, 380], P.J1],
+    m1: [P.J1, P.F2],
+    pos: [P.F2, [50, 236], [50, 140], P.J2],
+    merc: [P.F2, [255, 236], [255, 140], P.J2],
+    m2: [P.J2, [700, 76], [820, 76], P.FIM]
+  };
+  const MARCOS = {
+    inicio: { nome: 'Início', linhas: ['Início'] },
+    F1: { nome: 'Fim do ensino médio', linhas: ['Fim do', 'ensino', 'médio'], para: true },
+    J1: { nome: 'Primeiro emprego', linhas: ['Primeiro', 'emprego'], para: true },
+    F2: { nome: 'Novos rumos', linhas: ['Novos', 'rumos'], para: true },
+    J2: { nome: 'Meio da carreira', linhas: ['Meio da', 'carreira'], para: true },
+    FIM: { nome: 'Celebração', linhas: ['Celebração'], para: true }
+  };
+  const CASAS = {};
+  // casas espalhadas por igual ao longo do trilho, deixando espaço para os marcos das pontas
+  function amostrar(pts, n, m0, m1) {
+    const lens = []; let tot = 0;
+    for (let k = 1; k < pts.length; k++) { const l = Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]); lens.push(l); tot += l; }
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      let alvo = m0 + (tot - m0 - m1) * (n === 1 ? .5 : i / (n - 1)), k = 0;
+      while (k < lens.length - 1 && alvo > lens[k]) { alvo -= lens[k]; k++; }
+      const f = alvo / lens[k];
+      out.push([pts[k][0] + (pts[k + 1][0] - pts[k][0]) * f, pts[k][1] + (pts[k + 1][1] - pts[k][1]) * f]);
+    }
+    return out;
+  }
+  Object.keys(MARCOS).forEach(id => { CASAS[id] = { id, tipo: 'marco', x: P[id][0], y: P[id][1], next: [] }; });
+  Object.entries(SEG).forEach(([seg, tipos]) => {
+    const pos = amostrar(ROTAS[seg], tipos.length, seg === 'escola' ? 66 : seg === 'auto' ? 78 : 68, seg === 'm2' ? 92 : 68);
+    tipos.forEach((tipo, i) => { CASAS[seg + i] = { id: seg + i, tipo, seg, x: pos[i][0], y: pos[i][1], next: [] }; });
+    const ini = ROTAS[seg][0], fim = ROTAS[seg][ROTAS[seg].length - 1];
+    const idDe = p => Object.keys(P).find(k => P[k] === p);
+    CASAS[idDe(ini)].next.push(seg + '0');
+    for (let i = 0; i < tipos.length - 1; i++) CASAS[seg + i].next.push(seg + (i + 1));
+    CASAS[seg + (tipos.length - 1)].next.push(idDe(fim));
+  });
+
+  /* ---------- estado ---------- */
+  let S = null;
+  const stage = document.getElementById('stage');
+  const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) {} };
+  const ler = () => { try { return JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch (e) { return null; } };
+  const limpar = () => { try { localStorage.removeItem(CHAVE); } catch (e) {} };
+  const sortear = a => a[Math.floor(Math.random() * a.length)];
+  const embaralhar = a => { a = a.slice(); for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  const minus = t => t.charAt(0).toLowerCase() + t.slice(1);
+  const pontos = j => j.C + j.B * 2 + j.I * 2 + Math.floor(j.M / 2);
+
+  /* ---------- modo solo: meta de vida, estrelas e recorde ---------- */
+  const BONUS_META = 15, ESTRELAS = [45, 60, 75];
+  const METAS = [
+    { id: 'impacto', nome: 'Transformar a comunidade', desc: 'Chegar à Celebração com 10 ou mais de Impacto.', ok: j => j.I >= 10, prog: j => `${Math.min(j.I, 10)} de 10 de Impacto` },
+    { id: 'bem', nome: 'Vida equilibrada', desc: 'Chegar à Celebração com 12 ou mais de Bem-estar.', ok: j => j.B >= 12, prog: j => `${Math.min(j.B, 12)} de 12 de Bem-estar` },
+    { id: 'moedas', nome: 'Independência financeira', desc: 'Chegar à Celebração com 50 moedas ou mais.', ok: j => j.M >= 50, prog: j => `${Math.min(j.M, 50)} de 50 moedas` },
+    { id: 'saber', nome: 'Mente curiosa', desc: 'Chegar à Celebração com 28 ou mais de Conhecimento.', ok: j => j.C >= 28, prog: j => `${Math.min(j.C, 28)} de 28 de Conhecimento` },
+    { id: 'desafios', nome: 'Resolver problemas', desc: 'Acertar 5 desafios ao longo da trilha.', ok: j => j.acertos >= 5, prog: j => `${Math.min(j.acertos, 5)} de 5 desafios certos` },
+    { id: 'ia', nome: 'Trabalhar com IA e dados', desc: 'Chegar trabalhando com engenharia de inteligência artificial ou ciência de dados.', ok: j => ['ia', 'dados'].includes(j.carreira), prog: j => j.carreira ? 'Carreira atual: ' + CAR[j.carreira].nome : 'Escolha no primeiro emprego (pede Conhecimento).' },
+    { id: 'ensinar', nome: 'Ensinar computação', desc: 'Chegar trabalhando com docência em computação (pede graduação).', ok: j => j.carreira === 'prof', prog: j => j.carreira ? 'Carreira atual: ' + CAR[j.carreira].nome : 'Escolha a graduação e depois a docência.' },
+    { id: 'pesquisa', nome: 'Fazer ciência', desc: 'Chegar trabalhando com pesquisa em computação (pede pós-graduação).', ok: j => j.carreira === 'pesq', prog: j => j.pos === 'pos' ? 'Na pós: no meio da carreira, escolha a pesquisa.' : 'Escolha a pós-graduação em Novos rumos.' }
+  ];
+  const META = Object.fromEntries(METAS.map(m => [m.id, m]));
+  const metaOk = j => S.solo && S.meta && META[S.meta].ok(j);
+  const pontosFinais = j => pontos(j) + (metaOk(j) ? BONUS_META : 0);
+  const CHAVE_REC = 'trilha-carreira-recorde';
+  const lerRecorde = () => { try { return +(localStorage.getItem(CHAVE_REC) || 0); } catch (e) { return 0; } };
+  const gravarRecorde = v => { try { localStorage.setItem(CHAVE_REC, String(v)); } catch (e) {} };
+
+  function novoJogo(vagas, meta) {
+    const baralho = (lista) => embaralhar(lista.map((_, i) => i));
+    S = {
+      v: 1, jogadores: vagas.map((v, i) => ({ nome: v.nome, cor: v.cor, pc: v.pc, casa: 'inicio', C: 0, M: 10, B: 5, I: 0,
+        formacao: null, carreira: null, pos: null, sal: 0, chegada: 0, acertos: 0, desafios: 0, marcos: [], rota: {} })),
+      vez: 0, chegadas: 0, diario: [], solo: !!meta, meta: meta || null,
+      pilhas: {
+        ev: { escola: baralho(EVENTOS.escola), formacao: baralho(EVENTOS.formacao), carreira: baralho(EVENTOS.carreira) },
+        es: { escola: baralho(ESCOLHAS.escola), formacao: baralho(ESCOLHAS.formacao), carreira: baralho(ESCOLHAS.carreira) },
+        de: baralho(DESAFIOS)
+      }
+    };
+    salvar();
+    mesa();
+  }
+  function tirar(tipo, fase) {
+    const pilha = tipo === 'de' ? S.pilhas.de : S.pilhas[tipo][fase];
+    const fonte = tipo === 'de' ? DESAFIOS : tipo === 'ev' ? EVENTOS[fase] : ESCOLHAS[fase];
+    if (!pilha.length) embaralhar(fonte.map((_, i) => i)).forEach(i => pilha.push(i));
+    return fonte[pilha.shift()];
+  }
+
+  /* ---------- efeitos ---------- */
+  function aplicar(j, ef) {
+    const real = {};
+    Object.entries(ef || {}).forEach(([k, v]) => {
+      const antes = j[k];
+      j[k] = Math.max(0, j[k] + v);
+      if (j[k] !== antes) real[k] = (real[k] || 0) + (j[k] - antes);
+    });
+    return real;
+  }
+  function somar(a, b) { const r = Object.assign({}, a); Object.entries(b || {}).forEach(([k, v]) => { r[k] = (r[k] || 0) + v; }); return r; }
+  function chips(ef) {
+    const ks = ['C', 'M', 'B', 'I'].filter(k => ef && ef[k]);
+    if (!ks.length) return '';
+    return `<div class="efeitos">${ks.map(k => `<span class="ef${ef[k] < 0 ? ' menos' : ''}">${ico(k)}${ef[k] > 0 ? '+' : ''}${ef[k]} ${ATR[k].nome}</span>`).join('')}</div>`;
+  }
+  function textoEf(ef) {
+    return ['C', 'M', 'B', 'I'].filter(k => ef && ef[k]).map(k => `${ef[k] > 0 ? '+' : ''}${ef[k]} ${ATR[k].nome}`).join(', ');
+  }
+  function anotar(txt) { S.diario.unshift(txt); S.diario = S.diario.slice(0, 7); }
+
+  /* ---------- desenho do tabuleiro ---------- */
+  const COR_CASA = { evento: '#2fa865', desafio: '#ef5a4c', escolha: '#ffd23f', pagamento: '#ffd23f', mesada: '#fff3b8' };
+  const TXT_CASA = { evento: '', desafio: '?', escolha: '', pagamento: '$', mesada: '$' };
+  function svgTabuleiro() {
+    const R = 17;
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="tab-tit"><title id="tab-tit">Tabuleiro da Trilha da Carreira em Computação</title>`;
+    // decoração: escola e computador
+    s += `<g aria-hidden="true">
+      <text class="titulo-t" x="560" y="178" text-anchor="middle">Trilha da Carreira</text>
+      <text class="sub-t" x="560" y="206" text-anchor="middle">uma vida na computação, da escola à celebração</text>
+      <g transform="translate(150 380)"><path d="M0 120V50l70-40 70 40v70z" fill="#fff" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M-8 54L70 8l78 46" fill="#ef5a4c" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="55" y="80" width="30" height="40" fill="#2fa865" stroke="#111" stroke-width="3"/>
+        <rect x="18" y="66" width="22" height="20" fill="#ffd23f" stroke="#111" stroke-width="3"/><rect x="100" y="66" width="22" height="20" fill="#ffd23f" stroke="#111" stroke-width="3"/>
+        <circle cx="70" cy="38" r="9" fill="#fff" stroke="#111" stroke-width="3"/><path d="M70 33v5h4" stroke="#111" stroke-width="2" fill="none"/></g>
+      <g transform="translate(330 400)"><rect x="0" y="0" width="150" height="96" rx="10" fill="#fff" stroke="#111" stroke-width="3"/>
+        <rect x="12" y="12" width="126" height="72" rx="4" fill="#2fa865" stroke="#111" stroke-width="2"/>
+        <text x="24" y="44" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700" fill="#111">01 10 11</text>
+        <text x="24" y="68" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700" fill="#fff">print("oi")</text>
+        <path d="M-14 96h178l-14 22H0z" fill="#ffd23f" stroke="#111" stroke-width="3" stroke-linejoin="round"/></g>
+      <g transform="translate(700 210)"><path d="M0 0l7 14 15 2-11 10 3 15-14-8-14 8 3-15-11-10 15-2z" fill="#ffd23f" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/></g>
+    </g>`;
+    // trilhos
+    Object.values(ROTAS).forEach(pts => { s += `<polyline class="trilho" points="${pts.map(p => p.join(',')).join(' ')}"/>`; });
+    // rótulos dos caminhos
+    s += `<g aria-hidden="true">
+      <text class="rotulo-p" x="400" y="622" text-anchor="middle">ESCOLA</text>
+      <text class="rotulo-p" x="760" y="445" text-anchor="end">TÉCNICO</text>
+      <text class="rotulo-p" x="980" y="440" transform="rotate(90 980 440)" text-anchor="middle">GRADUAÇÃO</text>
+      <text class="rotulo-p" x="598" y="445" text-anchor="end">CURSOS LIVRES</text>
+      <text class="rotulo-p" x="445" y="276" text-anchor="middle">CARREIRA</text>
+      <text class="rotulo-p" x="30" y="190" transform="rotate(-90 30 190)" text-anchor="middle">PÓS</text>
+      <text class="rotulo-p" x="275" y="190">MERCADO</text>
+      <text class="rotulo-p" x="480" y="56" text-anchor="middle">CARREIRA MADURA</text>
+    </g>`;
+    // casas
+    Object.values(CASAS).forEach(c => {
+      if (c.tipo === 'marco') return;
+      s += `<g><circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${R}" fill="${COR_CASA[c.tipo]}" stroke="#111" stroke-width="2.5"/>`;
+      if (c.tipo === 'escolha') s += `<path d="M${c.x - 7} ${c.y - 3}h12l-4-4M${c.x + 7} ${c.y + 4}h-12l4 4" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+      else if (TXT_CASA[c.tipo]) s += `<text class="casa-txt" x="${c.x}" y="${c.y + 5}" text-anchor="middle">${TXT_CASA[c.tipo]}</text>`;
+      s += '</g>';
+    });
+    Object.entries(MARCOS).forEach(([id, m]) => {
+      const c = CASAS[id];
+      const largo = id === 'FIM' ? 118 : id === 'inicio' ? 78 : 84, alto = id === 'FIM' ? 64 : 22 + m.linhas.length * 14;
+      s += `<g><rect class="marco" x="${c.x - largo / 2}" y="${c.y - alto / 2}" width="${largo}" height="${alto}" rx="14" stroke-width="2.5"/>`;
+      if (id === 'FIM') s += `<path d="M${c.x - 44} ${c.y - 18}l6 -10 6 10M${c.x + 32} ${c.y - 18}l6 -10 6 10" stroke="#ffd23f" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+      if (id === 'inicio') { s += `<text class="marco-txt" x="${c.x}" y="${c.y + 5}" text-anchor="middle" style="font-size:14px">Início</text></g>`; return; }
+      m.linhas.forEach((l, k) => { s += `<text class="marco-txt" x="${c.x}" y="${c.y - (m.linhas.length - 1) * 7 + k * 14 + 4}" text-anchor="middle"${id === 'FIM' ? ' style="font-size:15px"' : ''}>${l}</text>`; });
+      s += '</g>';
+    });
+    s += `<g id="peoes"></g></svg>`;
+    return s;
+  }
+  function desenharPeoes() {
+    const g = document.getElementById('peoes');
+    if (!g) return;
+    const porCasa = {};
+    S.jogadores.forEach((j, i) => { (porCasa[j.casa] = porCasa[j.casa] || []).push(i); });
+    const desloc = [[-9, -9], [9, -9], [-9, 9], [9, 9]];
+    g.innerHTML = S.jogadores.map((j, i) => {
+      const c = CASAS[j.casa], grupo = porCasa[j.casa];
+      let d = grupo.length > 1 ? desloc[grupo.indexOf(i)] : [0, 0];
+      if (j.casa === 'inicio') d = [-27 + grupo.indexOf(i) * 18, -36];
+      const atual = i === S.vez && !S.fim;
+      return `<g class="peao-svg" transform="translate(${(c.x + d[0]).toFixed(1)} ${(c.y + d[1]).toFixed(1)})">
+        ${atual ? `<circle r="15" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="4 3"/>` : ''}
+        <path d="M0 -12a6 6 0 1 1 0.01 0zM-8 10c0-7 3-11 8-11s8 4 8 11z" fill="${j.cor}" stroke="#111" stroke-width="2.2" stroke-linejoin="round"/>
+        <title>${esc(j.nome)}</title></g>`;
+    }).join('');
+  }
+
+  /* ---------- telas ---------- */
+  function preparacao(modo) {
+    const salvo = ler();
+    const aviso = salvo && !salvo.fim ? `<div class="note" style="margin-bottom:14px">Existe uma partida guardada neste aparelho (${salvo.solo ? 'solo, ' : ''}${salvo.jogadores.map(j => esc(j.nome)).join(', ')}).
+      <div class="btn-row" style="margin-top:8px"><button class="btn" type="button" id="continuar">Continuar a partida</button></div></div>` : '';
+    const ligarContinuar = () => { const c = document.getElementById('continuar'); if (c) c.onclick = () => { S = salvo; mesa(); }; };
+    if (!modo) {
+      const rec = lerRecorde();
+      stage.innerHTML = `${aviso}
+        <h2 style="margin-top:0">Como você quer jogar?</h2>
+        <div class="vagas">
+          <button type="button" class="opcao" id="m-solo"><b>Jogar sozinho</b><span>Escolha uma meta de vida e tente chegar à Celebração com três estrelas.${rec ? ` Seu recorde: ${rec} pontos.` : ''}</span></button>
+          <button type="button" class="opcao" id="m-grupo"><b>Jogar em grupo</b><span>De 2 a 4 peões no mesmo aparelho, com pessoas ou com o computador.</span></button>
+        </div>`;
+      ligarContinuar();
+      document.getElementById('m-solo').onclick = () => preparacao('solo');
+      document.getElementById('m-grupo').onclick = () => preparacao('grupo');
+      return;
+    }
+    if (modo === 'solo') {
+      const ofertas = embaralhar(METAS).slice(0, 3);
+      let nome = 'Jogador 1';
+      stage.innerHTML = `
+        <h2 style="margin-top:0">Jogar sozinho</h2>
+        <label for="nome-solo" style="font-weight:600">Seu nome</label>
+        <div style="max-width:320px;margin:6px 0 16px" class="vaga"><input type="text" id="nome-solo" maxlength="18" value="${esc(nome)}"></div>
+        <p style="margin:0 0 6px"><strong>Escolha sua meta de vida.</strong> Se cumprir a meta ao chegar à Celebração, ganha +${BONUS_META} pontos.</p>
+        <p class="small muted" style="margin:0 0 8px">Estrelas: ${ESTRELAS.map((v, k) => `${k + 1} com ${v} pontos`).join(', ')}.</p>
+        <div class="opcoes">${ofertas.map(m => `<button type="button" class="opcao" data-m="${m.id}"><b>${esc(m.nome)}</b><span>${esc(m.desc)}</span></button>`).join('')}</div>
+        <div class="btn-row" style="margin-top:14px"><button class="btn ghost" type="button" id="voltar">Voltar</button></div>`;
+      stage.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+        nome = document.getElementById('nome-solo').value.trim() || 'Jogador 1';
+        novoJogo([{ nome, cor: CORES[0], pc: false }], b.dataset.m);
+      });
+      document.getElementById('voltar').onclick = () => preparacao();
+      return;
+    }
+    const vagas = [
+      { nome: 'Jogador 1', tipo: 'pessoa' }, { nome: 'Computador', tipo: 'pc' },
+      { nome: 'Jogador 3', tipo: 'fora' }, { nome: 'Jogador 4', tipo: 'fora' }
+    ];
+    function render() {
+      stage.innerHTML = `
+        <h2 style="margin-top:0">Quem vai jogar?</h2>
+        <p class="muted" style="margin-top:0">De 2 a 4 peões no mesmo aparelho, cada um na sua vez. O computador pode completar a mesa.</p>
+        <div class="vagas">${vagas.map((v, i) => `
+          <div class="vaga${v.tipo === 'fora' ? ' fora' : ''}">
+            <div class="topo"><span class="peao" style="background:${CORES[i]}"></span> Peão ${NOMES_COR[i]}</div>
+            <label class="sr-only" for="nome${i}">Nome do peão ${NOMES_COR[i]}</label>
+            <input type="text" id="nome${i}" maxlength="18" value="${esc(v.nome)}" ${v.tipo === 'fora' ? 'disabled' : ''}>
+            <div class="tipos" role="group" aria-label="Quem joga com o peão ${NOMES_COR[i]}">
+              ${[['pessoa', 'Pessoa'], ['pc', 'Computador'], ['fora', 'Ninguém']].map(([t, n]) => `<button type="button" data-v="${i}" data-t="${t}" aria-pressed="${v.tipo === t}">${n}</button>`).join('')}
+            </div>
+          </div>`).join('')}
+        </div>
+        <p class="feedback bad" id="aviso" role="alert"></p>
+        <div class="btn-row"><button class="btn" type="button" id="comecar">Começar a partida</button><button class="btn ghost" type="button" id="voltar">Voltar</button></div>`;
+      stage.querySelectorAll('.tipos button').forEach(b => b.onclick = () => {
+        const i = +b.dataset.v, t = b.dataset.t;
+        vagas.forEach((v, k) => { v.nome = document.getElementById('nome' + k).value; });
+        if (t === 'pc' && vagas[i].tipo !== 'pc') vagas[i].nome = 'Computador' + (vagas.filter(v => v.tipo === 'pc').length ? ' ' + (i + 1) : '');
+        if (t === 'pessoa' && vagas[i].tipo === 'pc') vagas[i].nome = 'Jogador ' + (i + 1);
+        vagas[i].tipo = t; render();
+      });
+      document.getElementById('voltar').onclick = () => preparacao();
+      document.getElementById('comecar').onclick = () => {
+        vagas.forEach((v, k) => { v.nome = document.getElementById('nome' + k).value.trim() || 'Jogador ' + (k + 1); });
+        const ativos = vagas.map((v, i) => ({ nome: v.nome, cor: CORES[i], pc: v.tipo === 'pc', tipo: v.tipo })).filter(v => v.tipo !== 'fora');
+        if (ativos.length < 2) { document.getElementById('aviso').textContent = 'Escolha pelo menos dois peões. Para jogar com um só, volte e escolha Jogar sozinho.'; return; }
+        if (!ativos.some(v => !v.pc)) { document.getElementById('aviso').textContent = 'Coloque pelo menos uma pessoa na partida.'; return; }
+        novoJogo(ativos);
+      };
+    }
+    render();
+  }
+
+  function mesa() {
+    stage.innerHTML = `
+      <div class="mesa">
+        <div class="tabuleiro">${svgTabuleiro()}
+          <div class="legenda" aria-hidden="true">
+            <span><i style="background:#2fa865"></i>Acontecimento</span><span><i style="background:#ef5a4c"></i>Desafio</span>
+            <span><i style="background:#ffd23f"></i>Escolha ou pagamento ($)</span><span><i style="background:#fff3b8"></i>Mesada ou bolsa ($)</span>
+            <span><i style="background:var(--ink);border-radius:5px"></i>Marco: o peão para</span>
+          </div>
+        </div>
+        <div class="painel">
+          <section class="vez" id="vez" aria-live="polite"></section>
+          <section>
+            <div class="jogadores" id="jogadores"></div>
+            <div class="diario" id="diario"></div>
+            <div class="btn-row" style="margin-top:12px"><button class="btn ghost" type="button" id="sair">Nova partida</button></div>
+          </section>
+        </div>
+      </div>`;
+    document.getElementById('sair').onclick = () => {
+      if (confirm('Começar uma nova partida? A partida atual será apagada.')) { limpar(); preparacao(); }
+    };
+    if (S.fim) { resultado(); return; }
+    inicioVez();
+  }
+
+  function atualizarLados() {
+    desenharPeoes();
+    document.getElementById('jogadores').innerHTML = S.jogadores.map((j, i) => `
+      <div class="jog${i === S.vez ? ' atual' : ''}${j.chegada ? ' chegou' : ''}">
+        <div class="jog-topo"><span class="peao" style="background:${j.cor}"></span>${esc(j.nome)}<small>${j.chegada ? j.chegada + 'º a chegar' : nomeLugar(j)}</small></div>
+        <div class="carr">${j.carreira ? esc(CAR[j.carreira].nome) + ` · salário ${j.sal}` : j.formacao ? esc(FORMACOES[j.formacao].curto) : 'Estudante'}${j.pos === 'pos' ? ' · pós-graduação' : ''}</div>
+        <div class="atrs">${['C', 'M', 'B', 'I'].map(k => `<span class="atr" title="${ATR[k].nome}">${ico(k)}<b>${j[k]}</b><span class="sr-only"> ${ATR[k].nome}</span></span>`).join('')}</div>
+      </div>`).join('') + (S.solo ? metaCard(S.jogadores[0]) : '');
+    document.getElementById('diario').innerHTML = S.diario.length ? `<strong>Diário da partida</strong><ol>${S.diario.map(d => `<li>${d}</li>`).join('')}</ol>` : '';
+  }
+  function metaCard(j) {
+    const m = META[S.meta], ok = m.ok(j);
+    return `<div class="jog${ok ? ' chegou' : ''}"><div class="jog-topo">Meta de vida: ${esc(m.nome)}<small>${ok ? 'cumprida' : '+' + BONUS_META + ' pontos'}</small></div>
+      <div class="carr" style="margin-bottom:0">${esc(m.desc)} ${ok ? '' : 'Agora: ' + esc(m.prog(j)) + '.'}</div></div>`;
+  }
+  function nomeLugar(j) {
+    const c = CASAS[j.casa];
+    if (c.tipo === 'marco') return MARCOS[c.id].nome;
+    return { escola: 'Escola', tec: 'Curso técnico', grad: 'Graduação', auto: 'Cursos livres', m1: 'Carreira', pos: 'Pós-graduação', merc: 'Mercado', m2: 'Carreira madura' }[c.seg];
+  }
+
+  const atual = () => S.jogadores[S.vez];
+  const vezEl = () => document.getElementById('vez');
+  function cab(j) {
+    return `<div class="vez-topo"><span class="peao" style="background:${j.cor}"></span><h2>Vez de ${esc(j.nome)}</h2></div>`;
+  }
+  let timer = null;
+  const depois = (fn, ms) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
+
+  function inicioVez() {
+    const j = atual();
+    atualizarLados();
+    salvar();
+    vezEl().innerHTML = `${cab(j)}
+      <div class="dado" aria-hidden="true">${[0, 0, 0].map(() => '<div class="bit">0</div>').join('')}</div>
+      <p class="conta">${j.pc ? 'O computador está jogando o dado...' : 'Jogue o dado binário para andar.'}</p>
+      ${j.pc ? '' : '<div class="btn-row"><button class="btn" type="button" id="jogar">Jogar o dado binário</button></div>'}`;
+    if (j.pc) depois(rolar, 900);
+    else { const b = document.getElementById('jogar'); b.onclick = rolar; b.focus({ preventScroll: true }); }
+  }
+
+  function rolar() {
+    const j = atual();
+    const bits = [0, 1, 2].map(() => Math.random() < .5 ? 1 : 0);
+    const valor = bits[0] * 4 + bits[1] * 2 + bits[2];
+    const btn = document.getElementById('jogar'); if (btn) btn.disabled = true;
+    const dado = vezEl().querySelector('.dado');
+    const els = [...dado.children];
+    els.forEach(e => e.classList.add('gira'));
+    let n = 0;
+    const giro = setInterval(() => {
+      els.forEach(e => { const b = Math.random() < .5 ? 1 : 0; e.textContent = b; e.classList.toggle('um', !!b); });
+      if (++n > 8) {
+        clearInterval(giro);
+        els.forEach((e, k) => { e.classList.remove('gira'); e.textContent = bits[k]; e.classList.toggle('um', !!bits[k]); });
+        dado.setAttribute('aria-hidden', 'false');
+        dado.setAttribute('aria-label', `Dado binário: ${bits.join(' ')}`);
+        const conta = vezEl().querySelector('.conta');
+        conta.innerHTML = `<b>${bits.join(' ')}</b> = ${bits[0]}×4 + ${bits[1]}×2 + ${bits[2]}×1 = <b>${valor}</b>` +
+          (valor ? ` · ${esc(j.nome)} anda ${valor} ${valor === 1 ? 'casa' : 'casas'}.` : ' · Zero: não anda e responde a um desafio.');
+        if (btn) btn.remove();
+        if (!valor) depois(() => desafio(true), 900);
+        else depois(() => andar(valor), 700);
+      }
+    }, 70);
+  }
+
+  function proxima(c, j) {
+    if (c.next.length === 1) return c.next[0];
+    return j.rota[c.id];
+  }
+  function andar(passos) {
+    const j = atual();
+    const passo = () => {
+      const c = CASAS[j.casa];
+      const prox = proxima(c, j);
+      if (!prox) { cair(); return; }
+      j.casa = prox; passos--;
+      desenharPeoes();
+      const nova = CASAS[prox];
+      if (passos > 0 && !(nova.tipo === 'marco' && MARCOS[nova.id].para)) setTimeout(passo, 230);
+      else setTimeout(cair, 350);
+    };
+    passo();
+  }
+
+  function carta(tipo, cor, titulo, corpo) {
+    return `<div class="carta"><div class="tipo"><i style="background:${cor}"></i>${tipo}</div><h3>${titulo}</h3>${corpo}</div>`;
+  }
+  function botaoSeguir(texto) {
+    const j = atual();
+    if (j.pc) { depois(fimVez, 2600); return `<p class="small muted" style="margin:6px 0 0">O computador segue em instantes...</p>`; }
+    return `<div class="btn-row"><button class="btn" type="button" id="seguir">${texto || (S.solo ? 'Continuar' : 'Passar a vez')}</button></div>`;
+  }
+  function ligarSeguir() { const b = document.getElementById('seguir'); if (b) { b.onclick = fimVez; b.focus({ preventScroll: true }); } }
+  function mostrar(html) {
+    const conta = vezEl().querySelector('.conta');
+    const dado = vezEl().querySelector('.dado');
+    vezEl().innerHTML = cab(atual()) + (dado ? dado.outerHTML : '') + (conta ? conta.outerHTML : '') + html;
+    atualizarLados();
+  }
+
+  function cair() {
+    const j = atual(), c = CASAS[j.casa];
+    const fase = c.seg ? FASE[c.seg] : null;
+    if (c.tipo === 'marco') return marco(c.id);
+    if (c.tipo === 'evento') {
+      const ev = tirar('ev', fase);
+      let ef = ev.ef, extra = '';
+      if (ev.car && ev.car === j.carreira) { ef = somar(ef, ev.bonus); extra = `<p class="small"><strong>Bônus da sua carreira</strong> (${esc(CAR[ev.car].nome)}).</p>`; }
+      const real = aplicar(j, ef);
+      anotar(`${esc(j.nome)}: ${esc(ev.t)}${textoEf(real) ? ' (' + textoEf(real) + ')' : ''}.`);
+      mostrar(carta('Acontecimento', '#2fa865', esc(ev.t), `<p>${esc(ev.x)}</p>${extra}${chips(real)}`) + botaoSeguir());
+      ligarSeguir();
+    } else if (c.tipo === 'pagamento' || c.tipo === 'mesada') {
+      let ef, titulo, texto;
+      if (j.carreira) {
+        ef = somar({ M: j.sal }, CAR[j.carreira].extra);
+        titulo = 'Dia de pagamento';
+        texto = `Salário de ${esc(CAR[j.carreira].nome)}${Object.keys(CAR[j.carreira].extra).length ? ', mais o que a profissão traz de bom' : ''}.`;
+      } else if (c.tipo === 'pagamento') {
+        ef = { M: 4, C: 1 }; titulo = 'Estágio remunerado'; texto = 'Você recebeu a bolsa do estágio e aprendeu na prática.';
+      } else if (c.seg === 'escola') {
+        ef = { M: 2 }; titulo = 'Mesada'; texto = 'Você recebeu a mesada do mês.';
+      } else {
+        ef = { M: 3 }; titulo = 'Bolsa de estudos'; texto = 'Você recebeu a bolsa de estudos do semestre.';
+      }
+      const real = aplicar(j, ef);
+      anotar(`${esc(j.nome)}: ${minus(titulo)} (${textoEf(real)}).`);
+      mostrar(carta('Pagamento', '#ffd23f', titulo, `<p>${texto}</p>${chips(real)}`) + botaoSeguir());
+      ligarSeguir();
+    } else if (c.tipo === 'escolha') {
+      const es = tirar('es', fase);
+      escolher(es.t, es.x, [es.a, es.c].map(o => ({
+        b: o.b, d: (textoEf(o.ef) || '') + (o.sal ? (textoEf(o.ef) ? ', ' : '') + 'salário +' + o.sal : '') + (o.nota && !o.sal ? '. ' + o.nota : ''),
+        fn: () => {
+          const real = aplicar(j, o.ef);
+          if (o.sal && j.carreira) j.sal += o.sal;
+          anotar(`${esc(j.nome)} escolheu: ${esc(minus(o.b))}${textoEf(real) ? ' (' + textoEf(real) + ')' : ''}.`);
+          return `<p>Você escolheu: <strong>${esc(o.b)}</strong>.${o.nota ? ' ' + esc(o.nota) : ''}</p>${chips(real)}`;
+        },
+        peso: pesoEscolha(j, o)
+      })), 'Escolha', '#ffd23f');
+    } else if (c.tipo === 'desafio') desafio(false);
+  }
+  function pesoEscolha(j, o) {
+    // o computador prefere equilibrar: valoriza o que está mais baixo
+    let p = Math.random() * 2;
+    Object.entries(o.ef || {}).forEach(([k, v]) => { p += v * (k === 'M' ? .5 : 1) * (j[k] < 6 ? 1.5 : 1); });
+    return p + (o.sal ? 2 : 0);
+  }
+
+  function escolher(titulo, texto, opcoes, tipo, cor) {
+    const j = atual();
+    mostrar(carta(tipo, cor, esc(titulo), `<p>${texto}</p>
+      <div class="opcoes">${opcoes.map((o, i) => `<button class="opcao" type="button" data-i="${i}" ${o.bloq ? 'disabled' : ''}><b>${esc(o.b)}</b>${o.d ? `<span>${o.d}</span>` : ''}</button>`).join('')}</div>
+      <div id="depois"></div>`));
+    const btns = [...vezEl().querySelectorAll('.opcao')];
+    const ir = i => {
+      btns.forEach(b => { b.disabled = true; });
+      btns[i].classList.add('certa');
+      const html = opcoes[i].fn();
+      atualizarLados();
+      if (html === null) return;
+      document.getElementById('depois').innerHTML = (html || '') + botaoSeguir();
+      ligarSeguir();
+    };
+    if (j.pc) {
+      btns.forEach(b => { b.disabled = true; });
+      const livres = opcoes.map((o, i) => [o, i]).filter(([o]) => !o.bloq);
+      const melhor = livres.sort((a, b) => (b[0].peso || 0) - (a[0].peso || 0))[0][1];
+      depois(() => ir(melhor), 1500);
+    } else {
+      btns.forEach(b => b.onclick = () => ir(+b.dataset.i));
+      const primeiro = btns.find(b => !b.disabled); if (primeiro) primeiro.focus({ preventScroll: true });
+    }
+  }
+
+  function desafio(doZero) {
+    const j = atual();
+    const [perg, alts, expl] = tirar('de');
+    const ordem = embaralhar([0, 1, 2]);
+    mostrar(carta('Desafio' + (doZero ? ' do zero' : ''), '#ef5a4c', esc(perg),
+      `<div class="opcoes">${ordem.map(k => `<button class="opcao" type="button" data-k="${k}"><b>${esc(alts[k])}</b></button>`).join('')}</div><div id="depois"></div>`));
+    const btns = [...vezEl().querySelectorAll('.opcao')];
+    const responder = k => {
+      btns.forEach(b => { b.disabled = true; if (+b.dataset.k === 0) b.classList.add('certa'); });
+      const certo = k === 0;
+      if (!certo) btns.find(b => +b.dataset.k === k).classList.add('errada');
+      j.desafios++; if (certo) j.acertos++;
+      const real = aplicar(j, certo ? { C: 2, M: 1 } : { C: 1 });
+      anotar(`${esc(j.nome)} ${certo ? 'acertou' : 'respondeu'} um desafio (${textoEf(real)}).`);
+      document.getElementById('depois').innerHTML = `<p class="feedback ${certo ? 'ok' : 'bad'}" style="margin-top:8px">${certo ? 'Resposta certa.' : 'A resposta certa está marcada em verde.'}</p>
+        <p>${esc(expl)}${certo ? '' : ' Você ganha 1 de Conhecimento só por aprender isso.'}</p>${chips(real)}` + botaoSeguir();
+      atualizarLados();
+      ligarSeguir();
+    };
+    if (j.pc) { btns.forEach(b => { b.disabled = true; }); depois(() => responder(Math.random() < .7 ? 0 : 1 + Math.floor(Math.random() * 2)), 1700); }
+    else { btns.forEach(b => b.onclick = () => responder(+b.dataset.k)); btns[0].focus({ preventScroll: true }); }
+  }
+
+  function marco(id) {
+    const j = atual();
+    if (id === 'F1') {
+      escolher('Fim do ensino médio', 'Você terminou a escola. Qual caminho quer seguir?', Object.entries(FORMACOES).map(([k, f]) => ({
+        b: f.nome, d: `${f.desc} Agora: ${textoEf(f.ef)}.`,
+        peso: Math.random() * 3 + (k === 'grad' ? 1 : 0),
+        fn: () => {
+          j.formacao = k; j.rota.F1 = k + '0';
+          const real = aplicar(j, f.ef);
+          j.marcos.push(`Escolheu ${minus(f.nome)}`);
+          anotar(`${esc(j.nome)} escolheu ${esc(minus(f.nome))}.`);
+          return `<p>Novo caminho: <strong>${esc(f.nome)}</strong>.</p>${chips(real)}`;
+        }
+      })), 'Marco', '#111');
+    } else if (id === 'J1') {
+      const abertas = CARREIRAS.filter(c => !c.soPos && (!c.req || ((!c.req.C || j.C >= c.req.C) && (!c.req.formacao || c.req.formacao === j.formacao))));
+      const fechadas = CARREIRAS.filter(c => !c.soPos && !abertas.includes(c));
+      const oferta = embaralhar(abertas).slice(0, 3);
+      const req = c => c.req ? (c.req.C ? `pede ${c.req.C} de Conhecimento` : 'pede graduação') : '';
+      const opcoes = oferta.map(c => ({
+        b: c.nome, d: `${esc(c.desc)} Salário ${c.sal}${Object.keys(c.extra).length ? ' e mais ' + textoEf(c.extra) + ' por pagamento' : ''}.`,
+        peso: c.sal + Math.random() * 3 + (c.extra.I || 0) + (c.extra.B || 0),
+        fn: () => {
+          j.carreira = c.id; j.sal = c.sal + (j.formacao === 'grad' ? 1 : 0);
+          j.marcos.push(`Primeiro emprego em ${minus(c.nome)}`);
+          anotar(`${esc(j.nome)} começou a trabalhar com ${esc(minus(c.nome))}.`);
+          return `<p>Começa agora a carreira em <strong>${esc(c.nome)}</strong>. Salário: <strong>${j.sal}</strong> moedas a cada pagamento${j.formacao === 'grad' ? ' (+1 pela graduação)' : ''}.</p>`;
+        }
+      }));
+      const nota = fechadas.length ? `<p class="small muted">Também existem: ${fechadas.map(c => `${esc(c.nome)} (${req(c)})`).join('; ')}. Conhecimento abre portas.</p>` : '';
+      escolher('Primeiro emprego', 'Hora de escolher a primeira carreira. Estas vagas estão abertas para você:' + nota, opcoes, 'Marco', '#111');
+    } else if (id === 'F2') {
+      escolher('Novos rumos', 'Depois de alguns anos de trabalho, surge uma decisão.', [
+        { b: 'Fazer pós-graduação', d: 'Mestrado ou especialização: +4 Conhecimento agora. No meio da carreira, salário +3 ou a chance de mudar para a pesquisa.',
+          peso: Math.random() * 3 + (j.C < 20 ? 1 : 0),
+          fn: () => { j.pos = 'pos'; j.rota.F2 = 'pos0'; const real = aplicar(j, { C: 4 }); j.marcos.push('Fez pós-graduação'); anotar(`${esc(j.nome)} entrou na pós-graduação.`); return `<p>Rumo à <strong>pós-graduação</strong>.</p>${chips(real)}`; } },
+        { b: 'Seguir no mercado', d: 'Caminho mais curto, com mais dias de pagamento. Agora: salário +1.',
+          peso: Math.random() * 3,
+          fn: () => { j.pos = 'merc'; j.rota.F2 = 'merc0'; j.sal += 1; j.marcos.push('Seguiu direto no mercado'); anotar(`${esc(j.nome)} seguiu no mercado (salário +1).`); return `<p>Rumo ao <strong>mercado de trabalho</strong>. Salário agora: <strong>${j.sal}</strong>.</p>`; } }
+      ], 'Marco', '#111');
+    } else if (id === 'J2') {
+      if (j.pos === 'pos') {
+        escolher('Meio da carreira', 'Você concluiu a pós-graduação. E agora?', [
+          { b: 'Continuar na mesma carreira', d: `Salário sobe de ${j.sal} para ${j.sal + 3}.`, peso: 3 + Math.random() * 2,
+            fn: () => { j.sal += 3; j.marcos.push('Concluiu a pós-graduação'); anotar(`${esc(j.nome)} concluiu a pós (salário ${j.sal}).`); return `<p>Salário agora: <strong>${j.sal}</strong>.</p>`; } },
+          { b: 'Mudar para pesquisa em computação', d: `${esc(CAR.pesq.desc)} Salário ${CAR.pesq.sal + 1} e +1 Conhecimento por pagamento.`, peso: 2 + Math.random() * 3, bloq: j.carreira === 'pesq',
+            fn: () => { j.carreira = 'pesq'; j.sal = CAR.pesq.sal + 1; j.marcos.push('Concluiu a pós e passou para a pesquisa'); anotar(`${esc(j.nome)} passou a trabalhar com pesquisa.`); const real = aplicar(j, { C: 2 }); return `<p>Nova carreira: <strong>${esc(CAR.pesq.nome)}</strong>.</p>${chips(real)}`; } }
+        ], 'Marco', '#111');
+      } else {
+        j.sal += 2;
+        const real = aplicar(j, { M: j.sal });
+        j.marcos.push('Promoção no meio da carreira');
+        anotar(`${esc(j.nome)} recebeu uma promoção no meio da carreira (salário ${j.sal}).`);
+        mostrar(carta('Marco', '#111', 'Meio da carreira', `<p>A experiência no mercado rendeu uma promoção: salário <strong>${j.sal}</strong>, e o pagamento deste mês já vem com o aumento.</p>${chips(real)}`) + botaoSeguir());
+        ligarSeguir();
+      }
+    } else if (id === 'FIM') {
+      S.chegadas++;
+      j.chegada = S.chegadas;
+      const bonus = [0, 4, 2, 1][j.chegada] || 0;
+      const real = bonus ? aplicar(j, { B: bonus }) : {};
+      j.marcos.push('Chegou à Celebração');
+      anotar(`${esc(j.nome)} chegou à Celebração em ${j.chegada}º lugar.`);
+      const falta = S.jogadores.filter(x => !x.chegada).length;
+      mostrar(carta('Marco', '#111', 'Celebração', `<p>${esc(j.nome)} completou a trilha${bonus ? ' e ganhou tempo para aproveitar a festa' : ''}.</p>${chips(real)}
+        <p class="small muted">${S.solo ? 'Vamos ver como foi a sua trajetória.' : falta ? `Ainda ${falta === 1 ? 'falta 1 pessoa' : 'faltam ' + falta + ' pessoas'} chegar.` : 'Todos chegaram. Vamos ver como foi cada trajetória.'}</p>`) + botaoSeguir(falta ? null : 'Ver o resultado'));
+      ligarSeguir();
+    }
+  }
+
+  function fimVez() {
+    clearTimeout(timer);
+    if (S.jogadores.every(j => j.chegada)) { S.fim = true; salvar(); resultado(); return; }
+    do { S.vez = (S.vez + 1) % S.jogadores.length; } while (S.jogadores[S.vez].chegada);
+    inicioVez();
+  }
+
+  function resultado() {
+    const js = S.jogadores.map((j, i) => Object.assign({ i, pts: pontosFinais(j) }, j)).sort((a, b) => b.pts - a.pts);
+    const titulos = {};
+    const dar = (k, nome) => { const mx = Math.max(...js.map(j => j[k])); if (mx > 0) js.filter(j => j[k] === mx).forEach(j => { (titulos[j.i] = titulos[j.i] || []).push(nome); }); };
+    if (!S.solo) dar('C', 'Mente curiosa'); if (!S.solo) { dar('M', 'Bom planejamento'); dar('B', 'Vida equilibrada'); dar('I', 'Transforma a comunidade'); }
+    // nota para o progresso: acertos de quem é pessoa
+    const humanos = S.jogadores.filter(j => !j.pc);
+    const tot = humanos.reduce((s, j) => s + j.desafios, 0), ac = humanos.reduce((s, j) => s + j.acertos, 0);
+    let solo = '';
+    if (S.solo) {
+      const j = js[0], m = META[S.meta], ok = metaOk(j);
+      const est = ESTRELAS.filter(v => j.pts >= v).length;
+      if (!S.registrado) { S.recAnterior = lerRecorde(); if (j.pts > S.recAnterior) gravarRecorde(j.pts); }
+      const novo = j.pts > S.recAnterior;
+      if (!S.registrado) { window.MDP && MDP.registrar('carreira', Math.min(100, j.pts / ESTRELAS[2] * 100)); S.registrado = true; salvar(); }
+      const prox = ESTRELAS.find(v => j.pts < v);
+      solo = `<div class="fim-card primeiro" style="margin:14px 0">
+        <div class="pts" aria-label="${est} de 3 estrelas" style="letter-spacing:.1em">${[0, 1, 2].map(k => `<span style="color:${k < est ? '#e0a800' : 'var(--line)'}">★</span>`).join('')}</div>
+        <ul class="melhoras" style="list-style:none;padding:0;margin:10px 0 0">
+          ${ok ? `<li><strong>Meta cumprida: ${esc(m.nome)}.</strong> +${BONUS_META} pontos.</li>` : `<li>Meta escolhida: ${esc(m.nome)}. ${esc(m.prog(j))}. Na próxima partida, as escolhas podem levar até ela.</li>`}
+          ${novo ? `<li><strong>Novo recorde: ${j.pts} pontos</strong>${S.recAnterior ? ` (o anterior era ${S.recAnterior})` : ''}.</li>` : `<li>Seu recorde continua em ${S.recAnterior} pontos.</li>`}
+          ${prox ? `<li>A próxima estrela vem com ${prox} pontos: você está a ${prox - j.pts} dela.</li>` : '<li>Três estrelas: trajetória completa.</li>'}
+        </ul></div>`;
+    } else if (!S.registrado) { window.MDP && MDP.registrar('carreira', tot ? ac / tot * 100 : 100); S.registrado = true; salvar(); }
+    desenharPeoes();
+    const lado = document.getElementById('vez').parentElement;
+    lado.outerHTML = `<section class="fim" aria-live="polite">
+      <h2 style="margin:4px 0">${S.solo ? 'Celebração: sua trajetória' : 'Celebração: as trajetórias'}</h2>
+      <p class="muted" style="margin-top:0">Pontos = Conhecimento + Bem-estar × 2 + Impacto × 2 + Moedas ÷ 2${S.solo ? ' + meta de vida' : '. Cada trajetória teve conquistas próprias'}.</p>
+      ${solo}
+      <div class="podio">${js.map((j, n) => `
+        <div class="fim-card${n === 0 && !S.solo ? ' primeiro' : ''}">
+          <div class="jog-topo"><span class="peao" style="background:${j.cor}"></span>${S.solo ? 'Sua trajetória' : n + 1 + 'º lugar'}</div>
+          <h3>${esc(j.nome)}</h3>
+          <div class="pts">${j.pts} <span style="font-size:16px;font-family:var(--body)">pontos</span></div>
+          ${titulos[j.i] ? `<div class="titulos">${titulos[j.i].map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+          <p class="small" style="margin:6px 0">${j.carreira ? esc(CAR[j.carreira].nome) : ''}${j.formacao ? ' · ' + esc(FORMACOES[j.formacao].curto) : ''}</p>
+          <table>
+            <tr><td>${ico('C')} Conhecimento ${j.C}</td><td>${j.C}</td></tr>
+            <tr><td>${ico('B')} Bem-estar ${j.B} × 2</td><td>${j.B * 2}</td></tr>
+            <tr><td>${ico('I')} Impacto ${j.I} × 2</td><td>${j.I * 2}</td></tr>
+            <tr><td>${ico('M')} Moedas ${j.M} ÷ 2</td><td>${Math.floor(j.M / 2)}</td></tr>
+            ${S.solo && metaOk(j) ? `<tr><td>Meta de vida cumprida</td><td>${BONUS_META}</td></tr>` : ''}
+          </table>
+          ${j.desafios ? `<p class="small" style="margin:4px 0">Desafios: ${j.acertos} de ${j.desafios} certos.</p>` : ''}
+          <ul class="marcos">${j.marcos.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
+        </div>`).join('')}
+      </div>
+      <div class="note"><strong>Para conversar com a turma:</strong> qual carreira do jogo você não conhecia? Que escolha trocou dinheiro por bem-estar ou por impacto, e você faria igual? Que profissional de computação existe na sua cidade?</div>
+      <div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="denovo">Jogar de novo</button></div>
+    </section>`;
+    document.getElementById('jogadores') && (document.getElementById('jogadores').innerHTML = '');
+    document.getElementById('denovo').onclick = () => { limpar(); preparacao(); };
+  }
+
+  document.getElementById('lista-carreiras').innerHTML = CARREIRAS.map(c => `<div><b>${esc(c.nome)}</b>${esc(c.desc)}</div>`).join('');
+  const salvo = ler();
+  if (salvo && salvo.fim) limpar();
+  preparacao();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
