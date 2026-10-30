@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPU por Dentro: caminho de dados MIPS em 3D | Júlia Quoos</title>
+<meta name="description" content="Caminho de dados do processador MIPS em 3D: siga uma instrução pelos estágios IF, ID, EX, MEM e WB e veja o pipeline com bolhas, adiantamento e desvios.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/cpu-por-dentro.html">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:image" content="https://ohtopico.com.br/simuladores/img/og-cpu-por-dentro.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CPU por Dentro: caminho de dados MIPS em 3D">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="CPU por Dentro: caminho de dados MIPS em 3D | Júlia Quoos">
+<meta property="og:description" content="Siga uma instrução MIPS pelo caminho de dados em 3D, estágio por estágio, e veja o pipeline com cinco instruções ao mesmo tempo.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/cpu-por-dentro.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../material-didatico/assets/lab3d.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  :root { --s-if: #dff3e5; --s-id: #fff4b8; --s-ex: #fbdde2; --s-mem: #e4e4e0; --s-wb: #c9ebd3; --fwd: #c8323f; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --s-if: #1d3a27; --s-id: #4a4214; --s-ex: #4a1f27; --s-mem: #333331; --s-wb: #24492f; --fwd: #ff7d93; } }
+  :root[data-theme="dark"] { --s-if: #1d3a27; --s-id: #4a4214; --s-ex: #4a1f27; --s-mem: #333331; --s-wb: #24492f; --fwd: #ff7d93; }
+  .modos { margin: 0 0 12px; }
+  .pecas { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; }
+  .pecas .chip { min-height: 34px; font-size: 13.5px; padding: 4px 10px; }
+  .info { border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); padding: 10px 14px; margin: 10px 0 0; font-size: 14.5px; }
+  .info:empty { display: none; }
+  .info h3 { font-size: 16px; margin: 0 0 4px; }
+  .info p { margin: 4px 0; }
+  .side .btn { min-height: 40px; padding: 6px 14px; font-size: 14.5px; }
+  .side input[type=text] { width: 100%; min-height: 40px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 4px 10px; background: var(--paper); font-family: ui-monospace, Consolas, monospace; font-size: 15px; color: var(--ink); }
+  .side textarea { width: 100%; min-height: 170px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 8px 10px; background: var(--paper); font-family: ui-monospace, Consolas, monospace; font-size: 14px; line-height: 1.5; color: var(--ink); resize: vertical; }
+  .passos { list-style: none; padding: 0; margin: 8px 0; font-size: 14.5px; }
+  .passos li { border: 1.5px solid var(--line); border-radius: 12px; padding: 6px 10px; margin: 5px 0; cursor: pointer; background: var(--paper); display: flex; gap: 8px; align-items: center; }
+  .passos li b { font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; border: 1.5px solid var(--ink); border-radius: 6px; padding: 0 5px; min-width: 40px; text-align: center; }
+  .passos li.vazio { color: var(--ink-3); }
+  .passos li[aria-current="step"] { border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+  .s-if { background: var(--s-if); } .s-id { background: var(--s-id); } .s-ex { background: var(--s-ex); } .s-mem { background: var(--s-mem); } .s-wb { background: var(--s-wb); }
+  .texto-estagio { font-size: 15px; line-height: 1.5; margin: 8px 0; }
+  .codif { display: flex; flex-wrap: wrap; gap: 3px; margin: 6px 0 10px; }
+  .codif div { border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 4px; text-align: center; background: var(--paper); }
+  .codif small { display: block; font-size: 11px; color: var(--ink-2); }
+  .codif code { background: none; padding: 0; font-size: 12px; letter-spacing: .02em; }
+  table.ctl { border-collapse: collapse; font-size: 13px; width: 100%; margin: 4px 0 8px; }
+  table.ctl td { border: 1px solid var(--line); padding: 3px 6px; }
+  table.ctl td:last-child { font-family: ui-monospace, Consolas, monospace; text-align: center; font-weight: 700; width: 44px; }
+  table.ctl tr.on td:last-child { background: var(--ok-soft); color: var(--ok); }
+  .regs { display: flex; flex-wrap: wrap; gap: 4px 12px; font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+  .regs span.ch { background: var(--s-wb); border-radius: 4px; padding: 0 4px; }
+  .ciclo { font-family: var(--display); font-size: 28px; margin: 0; }
+  .ctrl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0; }
+  .eventos { list-style: none; padding: 0; margin: 8px 0 0; font-size: 14px; }
+  .eventos li { padding: 5px 0; border-bottom: 1px solid var(--line); }
+  .eventos li .alerta { color: var(--bad); font-weight: 600; }
+  .eventos li .fwdtxt { color: var(--fwd); font-weight: 600; }
+  .status { font-size: 14px; font-weight: 600; min-height: 20px; }
+  .status.bad { color: var(--bad); }
+  .opts label { display: flex; gap: 8px; align-items: center; font-weight: 500; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin: 12px 0 0; }
+  .stats div { border: 1.5px solid var(--ink); border-radius: 14px; padding: 6px 10px; background: var(--paper); }
+  .stats b { display: block; font-family: var(--display); font-size: 24px; line-height: 1.15; }
+  .stats small { color: var(--ink-2); font-size: 12.5px; }
+  .diag-wrap { overflow-x: auto; border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); margin-top: 14px; }
+  table.diag { border-collapse: collapse; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+  table.diag th, table.diag td { border: 1px solid var(--line); padding: 0; text-align: center; min-width: 36px; height: 26px; }
+  table.diag th { font-family: var(--body); font-size: 12px; color: var(--ink-2); background: var(--paper-2); cursor: pointer; }
+  table.diag th.atual { background: var(--ink); color: var(--paper); }
+  table.diag td.atual { box-shadow: inset 2px 0 0 var(--ink), inset -2px 0 0 var(--ink); }
+  table.diag th.ins { text-align: left; padding: 0 10px; min-width: 170px; position: sticky; left: 0; z-index: 1; background: var(--paper); color: var(--ink); cursor: default; font-family: ui-monospace, Consolas, monospace; white-space: nowrap; }
+  table.diag tr.flush th.ins { color: var(--ink-3); text-decoration: line-through; }
+  table.diag tr.flush td { opacity: .55; }
+  table.diag td.stall { background-image: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,.18) 4px 6px); font-style: italic; }
+  .placar { font-family: var(--display); font-size: 26px; margin: 4px 0; }
+  .pergunta { font-family: ui-monospace, Consolas, monospace; font-size: 18px; font-weight: 700; margin: 6px 0; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":["LearningResource","WebApplication"],"name":"CPU por Dentro: caminho de dados MIPS em 3D","description":"Siga uma instrução MIPS pelo caminho de dados em 3D, estágio por estágio (IF, ID, EX, MEM, WB), veja quais peças ela usa e acompanhe o pipeline com cinco instruções ao mesmo tempo, bolhas, adiantamento e desvios.","url":"https://ohtopico.com.br/simuladores/cpu-por-dentro.html","image":"https://ohtopico.com.br/simuladores/img/og-cpu-por-dentro.jpg","inLanguage":"pt-BR","applicationCategory":"EducationalApplication","operatingSystem":"Navegador","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"isAccessibleForFree":true,"learningResourceType":"Simulação","educationalLevel":["Ensino Superior"],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Simuladores","item":"https://ohtopico.com.br/simuladores/"},{"@type":"ListItem","position":3,"name":"CPU por Dentro: caminho de dados MIPS em 3D","item":"https://ohtopico.com.br/simuladores/cpu-por-dentro.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="crumbs"><a href="index.html">← Todos os simuladores</a></div>
+      <span class="eyebrow">Simulador</span>
+      <h1>CPU por Dentro: caminho de dados MIPS em 3D</h1>
+      <p class="muted" style="max-width:760px">Siga uma instrução MIPS pelo caminho de dados em 3D, estágio por estágio (IF, ID, EX, MEM, WB), veja quais peças ela usa e acompanhe o pipeline com cinco instruções ao mesmo tempo, bolhas, adiantamento e desvios.</p>
+      <span class="niveis"><span class="nivel n-es">Ensino Superior e técnico</span></span>
+      <!-- cab: fim --></div>
+
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Uma instrução:</strong> escolha uma instrução (ou escreva a sua) e avance estágio por estágio. A instrução viaja pelo caminho de dados; as peças que ela usa ficam destacadas e os fios por onde passam os dados acendem. Ao lado aparecem a codificação em binário, os sinais de controle e as contas de cada estágio.</p>
+    <p><strong>Pipeline:</strong> escolha um programa e avance ciclo a ciclo. Cada instrução tem uma cor, e até cinco ocupam o caminho de dados ao mesmo tempo, uma em cada estágio. Bolhas, adiantamentos (arcos vermelhos) e instruções descartadas depois de um desvio aparecem na cena, na lista de eventos e no diagrama.</p>
+    <p><strong>Desafio:</strong> o simulador sorteia uma instrução e você marca as peças que ela usa de verdade. Depois confira e veja o caminho completo.</p>
+    <p class="small muted">Clique numa peça (ou no botão dela abaixo da cena) para saber o que ela faz. Arraste a cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões. O modelo é o pipeline de cinco estágios do livro de Patterson e Hennessy, com o desvio decidido no estágio ID e previsão de "não tomado". Fios de controle e alguns MUX foram omitidos para a cena não ficar poluída.</p>
+  </details>
+
+  <section class="sim">
+    <div class="seg modos" role="group" aria-label="Modo">
+      <button type="button" data-modo="uma" aria-pressed="true">Uma instrução</button>
+      <button type="button" data-modo="pipe" aria-pressed="false">Pipeline</button>
+      <button type="button" data-modo="desafio" aria-pressed="false">Desafio</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="pecas" id="pecas" role="group" aria-label="Peças do caminho de dados"></div>
+        <div class="info" id="info" aria-live="polite"></div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <!-- uma instrução -->
+        <div class="panel" id="p-uma">
+          <label for="preset">Instrução</label>
+          <select id="preset"></select>
+          <label for="propria">Ou escreva a sua</label>
+          <input type="text" id="propria" spellcheck="false" autocomplete="off" placeholder="add $t2, $t0, $t1">
+          <p class="status" id="st-uma" role="status"></p>
+          <ol class="passos" id="passos"></ol>
+          <p><button class="btn ghost" type="button" id="ant">Estágio anterior</button> <button class="btn" type="button" id="prox">Próximo estágio</button></p>
+          <p class="texto-estagio" id="texto"></p>
+          <h3 style="font-size:15px;margin:12px 0 2px">Codificação</h3>
+          <div class="codif" id="codif"></div>
+          <h3 style="font-size:15px;margin:8px 0 2px">Sinais de controle</h3>
+          <table class="ctl" id="ctl"></table>
+          <h3 style="font-size:15px;margin:8px 0 2px">Registradores e memória</h3>
+          <div class="regs" id="regs-uma"></div>
+        </div>
+        <!-- pipeline -->
+        <div class="panel" id="p-pipe" hidden>
+          <label for="ex">Programa</label>
+          <select id="ex"></select>
+          <label for="src">Código</label>
+          <textarea id="src" spellcheck="false" autocomplete="off"></textarea>
+          <div class="opts"><label><input type="checkbox" id="o-fwd" checked> Adiantamento (forwarding)</label></div>
+          <p style="margin:8px 0"><button class="btn" type="button" id="b-sim">Carregar programa</button></p>
+          <p class="status" id="st-pipe" role="status"></p>
+          <p class="ciclo" id="ciclo">Ciclo 1</p>
+          <div class="ctrl">
+            <button class="btn ghost" type="button" id="b-ini">Início</button>
+            <button class="btn ghost" type="button" id="b-ant">Ciclo anterior</button>
+            <button class="btn" type="button" id="b-prox">Próximo ciclo</button>
+            <button class="btn ghost" type="button" id="b-play" aria-pressed="false">Reproduzir</button>
+          </div>
+          <ul class="eventos" id="eventos" aria-live="polite"></ul>
+          <h3 style="font-size:15px;margin:12px 0 4px">Registradores</h3>
+          <div class="regs" id="regs-pipe"></div>
+        </div>
+        <!-- desafio -->
+        <div class="panel" id="p-desafio" hidden>
+          <h3>Quais peças ela usa?</h3>
+          <p class="small muted">Marque, na cena ou nos botões, as peças que fazem trabalho útil para a instrução abaixo, em qualquer estágio. Depois clique em Conferir.</p>
+          <p class="pergunta" id="pergunta"></p>
+          <p class="placar" id="placar">0 de 0</p>
+          <p><button class="btn" type="button" id="conferir">Conferir</button> <button class="btn ghost" type="button" id="outra">Outra instrução</button></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="bloco-diag" hidden>
+      <h2 style="font-size:20px;margin-top:22px">Diagrama do pipeline</h2>
+      <p class="small muted" style="margin-top:0">Clique no número de um ciclo para ir até ele.</p>
+      <div class="diag-wrap"><table class="diag" id="diag"></table></div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <details class="howto">
+    <summary>Instruções suportadas</summary>
+    <p class="small"><code>add sub and or slt addi lw sw beq bne j nop</code>. Registradores pelo nome (<code>$t0</code>) ou pelo número (<code>$8</code>). No pipeline, rótulos terminam com dois-pontos e comentários começam com <code>#</code>; os registradores começam em zero e a memória começa com 5, 8, 2, 7, 4, 9, 1 e 6 nos endereços 0, 4, 8, ... 28. Em "Uma instrução", o desvio recebe o deslocamento em instruções (<code>beq $t0, $t1, 3</code>) e o salto recebe um endereço (<code>j 0x00400000</code>).</p>
+    <p class="small">Para escrever e rodar programas inteiros, use o <a href="mips.html">Mini-MIPS</a>. Para ver o pipeline em 2D com mais opções (desvio decidido no MEM, comparação com e sem adiantamento), use o <a href="pipeline-mips.html">Pipeline MIPS</a>. Para ver onde o processador fica no computador, use a <a href="placa-mae.html">Placa-mãe em 3D</a>.</p>
+  </details>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <ol>
+      <li><strong>Antes do pipeline, uma instrução de cada vez.</strong> Passe add, lw, sw e beq em "Uma instrução" e peça que a turma anote, para cada uma, os estágios em que ela não faz nada. O sw não escreve registrador, o add não usa a memória de dados e o beq termina no ID. Essa tabela explica por que o monociclo desperdiça tempo: o relógio precisa caber a instrução mais lenta (o lw).</li>
+      <li><strong>Sinais de controle.</strong> Compare a tabela de controle do add com a do addi: só mudam RegDst e ALUSrc. Pergunte qual MUX cada sinal comanda e confira clicando nas peças. Depois peça que a turma preencha a linha do slt sem olhar.</li>
+      <li><strong>Codificação.</strong> Com a codificação na tela, mostre por que rs e rt estão sempre nos mesmos bits nos formatos R e I: o banco de registradores pode começar a leitura antes de o controle saber qual é a instrução.</li>
+      <li><strong>Pipeline.</strong> No programa sem dependências, conte os ciclos (5 instruções em 9 ciclos) e calcule o CPI. Em "Adiantamento", desligue o forwarding e conte as bolhas; ligue de novo e siga os arcos vermelhos. Em "lw seguido de uso", mostre que nem o adiantamento evita a bolha e peça uma reordenação do código que a elimine.</li>
+      <li><strong>Desvios.</strong> No laço, observe a instrução descartada a cada volta e a parada do bne, que precisa do valor do addi já no ID. Discuta por que processadores reais preveem desvios em vez de esperar.</li>
+      <li><strong>Desafio em duplas:</strong> uma pessoa sorteia a instrução e a outra marca as peças; troquem a cada rodada.</li>
+    </ol>
+    <p class="small muted">Referência: Patterson e Hennessy, Organização e Projeto de Computadores, capítulo 4 (caminho de dados e pipeline do MIPS). Material concreto equivalente: cinco mesas em fila, uma por estágio, e fichas de papel com as instruções passando de mesa em mesa a cada palma (o relógio).</p>
+  </details>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>simTopbar(); simFooter(); simHead('cpu-por-dentro');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, THREE as T } from '../material-didatico/assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const cena = lab3d($('#palco'), { cam: [-1.1, 22, 21], alvo: [-1.1, 0, 0.6], min: 6, max: 60, chaoTam: 80 });
+botoesCamera(cena);
+const reduz = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* =====================================================================
+   Instruções: leitura, codificação e execução
+   ===================================================================== */
+const RN = ['$zero', '$at', '$v0', '$v1', '$a0', '$a1', '$a2', '$a3', '$t0', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7',
+  '$s0', '$s1', '$s2', '$s3', '$s4', '$s5', '$s6', '$s7', '$t8', '$t9', '$k0', '$k1', '$gp', '$sp', '$fp', '$ra'];
+const R3 = { add: 0x20, sub: 0x22, and: 0x24, or: 0x25, slt: 0x2a };
+const OPC = { R: 0, addi: 8, lw: 0x23, sw: 0x2b, beq: 4, bne: 5, j: 2 };
+const SIMB = { add: '+', sub: '−', and: 'E', or: 'OU', slt: '<' };
+
+function reg(s) {
+  s = s.trim();
+  const m = /^\$(\d{1,2})$/.exec(s);
+  if (m && +m[1] < 32) return +m[1];
+  const i = RN.indexOf(s);
+  if (i < 0) throw new Error(`registrador desconhecido: ${s || '(vazio)'}`);
+  return i;
+}
+function num(s) {
+  s = s.trim();
+  if (!/^-?(0x[0-9a-f]+|\d+)$/i.test(s)) throw new Error(`número inválido: ${s || '(vazio)'}`);
+  const n = s.startsWith('-') ? -parseInt(s.slice(1)) : parseInt(s);
+  return n;
+}
+function imm16(s) { const n = num(s); if (n < -32768 || n > 32767) throw new Error(`o imediato ${n} não cabe em 16 bits`); return n; }
+
+/* lê uma linha; alvo de desvio/salto fica como texto para resolver depois */
+function ler(txt) {
+  const t = txt.trim().replace(/\s+/g, ' ');
+  const m = /^([a-z]+)\s*(.*)$/i.exec(t);
+  if (!m) throw new Error('instrução vazia');
+  const op = m[1].toLowerCase(), a = m[2] ? m[2].split(',').map(x => x.trim()) : [];
+  const n = k => { if (a.length !== k) throw new Error(`${op} precisa de ${k} operando${k > 1 ? 's' : ''}`); };
+  const base = { op, texto: '' };
+  if (op in R3) { n(3); Object.assign(base, { classe: 'R', rd: reg(a[0]), rs: reg(a[1]), rt: reg(a[2]) }); }
+  else if (op === 'addi') { n(3); Object.assign(base, { classe: 'addi', rt: reg(a[0]), rs: reg(a[1]), imm: imm16(a[2]) }); }
+  else if (op === 'lw' || op === 'sw') {
+    n(2); const mm = /^(-?(?:0x[0-9a-f]+|\d+))?\s*\((.+)\)$/i.exec(a[1]);
+    if (!mm) throw new Error(`${op}: use o formato ${op} $t0, 4($s0)`);
+    Object.assign(base, { classe: op, rt: reg(a[0]), rs: reg(mm[2]), imm: imm16(mm[1] || '0') });
+  }
+  else if (op === 'beq' || op === 'bne') { n(3); Object.assign(base, { classe: 'br', rs: reg(a[0]), rt: reg(a[1]), alvoTxt: a[2] }); }
+  else if (op === 'j') { n(1); Object.assign(base, { classe: 'j', alvoTxt: a[0] }); }
+  else if (op === 'nop') { n(0); Object.assign(base, { classe: 'nop' }); }
+  else throw new Error(`instrução não suportada aqui: ${op}`);
+  base.texto = textoDe(base, a);
+  return base;
+}
+function textoDe(i, a) {
+  if (i.classe === 'nop') return 'nop';
+  return `${i.op} ${a.join(', ')}`;
+}
+const fontes = i => (i.classe === 'R' || i.classe === 'sw' || i.classe === 'br') ? [i.rs, i.rt] : (i.classe === 'addi' || i.classe === 'lw') ? [i.rs] : [];
+const destino = i => { const d = i.classe === 'R' ? i.rd : (i.classe === 'addi' || i.classe === 'lw') ? i.rt : 0; return d || null; };
+function ula(op, a, b) {
+  switch (op) { case 'add': return (a + b) | 0; case 'sub': return (a - b) | 0; case 'and': return a & b; case 'or': return a | b; case 'slt': return a < b ? 1 : 0; }
+}
+function codificar(i) {
+  const b = (v, n) => (v >>> 0).toString(2).padStart(32, '0').slice(-n);
+  if (i.classe === 'nop') return [['op', '000000'], ['rs', '00000'], ['rt', '00000'], ['rd', '00000'], ['shamt', '00000'], ['funct', '000000']];
+  if (i.classe === 'R') return [['op', '000000'], ['rs', b(i.rs, 5)], ['rt', b(i.rt, 5)], ['rd', b(i.rd, 5)], ['shamt', '00000'], ['funct', b(R3[i.op], 6)]];
+  if (i.classe === 'j') return [['op', b(OPC.j, 6)], ['endereço', b(i.campo || 0, 26)]];
+  const op = i.classe === 'br' ? OPC[i.op] : OPC[i.classe];
+  return [['op', b(op, 6)], ['rs', b(i.rs, 5)], ['rt', b(i.rt, 5)], ['imediato', b(i.imm & 0xffff, 16)]];
+}
+const hex = v => '0x' + (v >>> 0).toString(16).padStart(8, '0');
+const palavra = campos => parseInt(campos.map(c => c[1]).join(''), 2) >>> 0;
+
+/* sinais de controle (Patterson e Hennessy) */
+const SINAIS = ['RegDst', 'ALUSrc', 'MemtoReg', 'RegWrite', 'MemRead', 'MemWrite', 'Branch', 'Jump', 'ALUOp'];
+const SIG_TXT = { RegDst: 'destino é rd (1) ou rt (0)', ALUSrc: 'ULA recebe imediato (1) ou rt (0)', MemtoReg: 'escreve dado da memória (1) ou da ULA (0)', RegWrite: 'escreve no banco de registradores', MemRead: 'lê a memória de dados', MemWrite: 'escreve na memória de dados', Branch: 'é desvio condicional', Jump: 'é salto incondicional', ALUOp: 'tipo de conta da ULA' };
+const CONTROLE = {
+  R: ['1', '0', '0', '1', '0', '0', '0', '0', '10'], addi: ['0', '1', '0', '1', '0', '0', '0', '0', '00'],
+  lw: ['0', '1', '1', '1', '1', '0', '0', '0', '00'], sw: ['X', '1', 'X', '0', '0', '1', '0', '0', '00'],
+  br: ['X', '0', 'X', '0', '0', '0', '1', '0', '01'], j: ['X', 'X', 'X', '0', '0', '0', '0', '1', 'XX'], nop: ['0', '0', '0', '0', '0', '0', '0', '0', '00']
+};
+
+/* =====================================================================
+   Cena: estágios, peças e fios
+   ===================================================================== */
+const ESTAGIOS = [
+  { id: 'IF', nome: 'Busca', x0: -13.4, x1: -7.85, cor: '#dff3e5' },
+  { id: 'ID', nome: 'Decodificação', x0: -7.35, x1: -2.65, cor: '#fff4b8' },
+  { id: 'EX', nome: 'Execução', x0: -2.15, x1: 2.55, cor: '#fbdde2' },
+  { id: 'MEM', nome: 'Memória', x0: 3.05, x1: 7.15, cor: '#e4e4e0' },
+  { id: 'WB', nome: 'Escrita', x0: 7.65, x1: 11.2, cor: '#c9ebd3' }
+];
+const EST_IDS = ESTAGIOS.map(e => e.id);
+const cx = id => { const e = ESTAGIOS.find(x => x.id === id); return (e.x0 + e.x1) / 2; };
+const PIPEREG = [[-7.6, 'IF/ID'], [-2.4, 'ID/EX'], [2.8, 'EX/MEM'], [7.4, 'MEM/WB']];
+const CHAO = 0.08, YF = 0.15;
+
+const PECAS = [
+  { id: 'pc', nome: 'PC (contador de programa)', curto: 'PC', forma: 'caixa', w: 0.7, h: 1.1, d: 1.2, x: -11.5, z: 0, cor: COR.cinzaEscuro, est: 'IF',
+    faz: 'Registrador que guarda o endereço da instrução que vai ser buscada agora. Muda a cada ciclo de relógio.' },
+  { id: 'muxpc', nome: 'MUX do PC', curto: null, forma: 'mux', x: -12.6, z: 0, est: 'IF',
+    faz: 'Escolhe o próximo valor do PC: PC + 4 (seguir para a instrução seguinte) ou o endereço de destino de um desvio tomado ou de um salto.' },
+  { id: 'imem', nome: 'Memória de instruções', curto: 'Mem. instruções', forma: 'caixa', w: 1.6, h: 1.5, d: 2.2, x: -9.4, z: 0.4, cor: COR.verde, est: 'IF',
+    faz: 'Guarda o programa. Recebe o endereço que vem do PC e devolve a instrução de 32 bits que está lá.' },
+  { id: 'add4', nome: 'Somador PC + 4', curto: '+4', forma: 'ula', e: 0.6, x: -9.7, z: -2.6, cor: COR.amarelo, est: 'IF',
+    faz: 'Soma 4 ao PC, porque cada instrução MIPS ocupa 4 bytes. O resultado é o endereço da instrução seguinte.' },
+  { id: 'regs', nome: 'Banco de registradores', curto: 'Registradores', forma: 'caixa', w: 1.6, h: 1.5, d: 2.6, x: -5.0, z: 0.6, cor: COR.amarelo, est: 'ID',
+    faz: 'Os 32 registradores do MIPS. Lê dois ao mesmo tempo (rs e rt) no estágio ID e escreve um no estágio WB. A escrita acontece na primeira metade do ciclo e a leitura na segunda.' },
+  { id: 'ctrl', nome: 'Unidade de controle', curto: 'Controle', forma: 'cil', r: 0.7, h: 1.0, x: -5.6, z: -2.8, cor: COR.vermelho, est: 'ID',
+    faz: 'Lê o código da operação (opcode) e define os sinais de controle: qual entrada cada MUX escolhe, se a memória lê ou escreve, se o registrador de destino é escrito.' },
+  { id: 'ext', nome: 'Extensão de sinal', curto: 'Ext. sinal', forma: 'caixa', w: 1.0, h: 0.6, d: 0.8, x: -5.0, z: 3.0, cor: COR.cinza, est: 'ID',
+    faz: 'Transforma o imediato de 16 bits em 32 bits copiando o bit de sinal, para que um número negativo continue negativo.' },
+  { id: 'cmp', nome: 'Comparador do desvio', curto: '=', forma: 'caixa', w: 0.6, h: 0.7, d: 0.8, x: -3.3, z: -0.6, cor: COR.vermelhoClaro, est: 'ID',
+    faz: 'Compara os dois registradores lidos para decidir, já no estágio ID, se o beq ou o bne é tomado. Decidir cedo faz o desvio custar só uma instrução descartada.' },
+  { id: 'addbr', nome: 'Somador do desvio', curto: '+ desvio', forma: 'ula', e: 0.6, x: -3.5, z: -2.8, cor: COR.amarelo, est: 'ID',
+    faz: 'Calcula o endereço de destino do desvio: PC + 4 + (imediato × 4).' },
+  { id: 'muxsrc', nome: 'MUX da ULA (ALUSrc)', curto: null, forma: 'mux', x: -1.2, z: 1.6, est: 'EX',
+    faz: 'Escolhe a segunda entrada da ULA: o registrador rt (instruções do tipo R) ou o imediato estendido (addi, lw, sw).' },
+  { id: 'alu', nome: 'ULA (unidade lógica e aritmética)', curto: 'ULA', forma: 'ula', e: 1, x: 0.5, z: 0.8, cor: COR.vermelho, est: 'EX',
+    faz: 'Faz a conta: soma, subtração, E, OU e comparação (slt). No lw e no sw, calcula o endereço de memória somando o registrador base e o deslocamento.' },
+  { id: 'muxdst', nome: 'MUX do destino (RegDst)', curto: null, forma: 'mux', x: -0.6, z: 3.5, est: 'EX',
+    faz: 'Escolhe qual campo da instrução indica o registrador que vai ser escrito: rd nas instruções do tipo R, rt no addi e no lw.' },
+  { id: 'dmem', nome: 'Memória de dados', curto: 'Mem. dados', forma: 'caixa', w: 1.8, h: 1.5, d: 2.4, x: 5.0, z: 0.8, cor: COR.verde, est: 'MEM',
+    faz: 'Guarda os dados do programa. O lw lê uma palavra daqui e o sw escreve uma palavra aqui. As outras instruções passam direto por este estágio.' },
+  { id: 'muxwb', nome: 'MUX da escrita (MemtoReg)', curto: null, forma: 'mux', x: 9.3, z: 0.6, est: 'WB',
+    faz: 'Escolhe o que vai ser escrito no registrador de destino: o resultado da ULA ou o dado lido da memória.' },
+  { id: 'regpipe', nome: 'Registradores de pipeline', curto: null, forma: 'pipe', est: null,
+    faz: 'As quatro paredes cinzas (IF/ID, ID/EX, EX/MEM, MEM/WB) separam os estágios. A cada ciclo de relógio, guardam tudo o que o próximo estágio precisa: a instrução, os valores lidos, o resultado e os sinais de controle. É por causa delas que cinco instruções podem estar no caminho de dados ao mesmo tempo.' }
+];
+const PECA = Object.fromEntries(PECAS.map(p => [p.id, p]));
+
+/* fios: pontos [x, z] no chão */
+const FIOS = {
+  muxpc_pc: [[-12.35, 0], [-11.85, 0]],
+  pc_imem: [[-11.15, 0], [-10.2, 0]],
+  pc_add4: [[-11.5, -0.6], [-11.5, -2.45], [-10.05, -2.45]],
+  add4_mux: [[-9.35, -2.6], [-8.3, -2.6], [-8.3, -4.0], [-12.45, -4.0], [-12.45, -0.55]],
+  imem_ifid: [[-8.6, 0.4], [-7.6, 0.4]],
+  ifid_regs: [[-7.6, 0.4], [-5.8, 0.4]],
+  ifid_ctrl: [[-6.9, 0.4], [-6.9, -2.8], [-6.3, -2.8]],
+  ifid_ext: [[-6.9, 0.4], [-6.9, 3.0], [-5.5, 3.0]],
+  regs_a: [[-4.2, 0.3], [-2.4, 0.3]],
+  regs_b: [[-4.2, 1.4], [-2.4, 1.4]],
+  regs_cmp: [[-4.2, -0.4], [-3.6, -0.4]],
+  ext_idex: [[-4.5, 3.0], [-2.4, 3.0]],
+  ext_addbr: [[-4.0, 3.0], [-4.0, -2.6], [-3.85, -2.6]],
+  alvo_mux: [[-3.15, -2.8], [-2.9, -2.8], [-2.9, -4.6], [-12.75, -4.6], [-12.75, -0.55]],
+  ctrl_idex: [[-5.6, -2.1], [-5.6, -1.6], [-2.4, -1.6]],
+  ula_a: [[-2.4, 0.3], [-0.15, 0.3]],
+  rt_mux: [[-2.4, 1.4], [-1.45, 1.4]],
+  imm_mux: [[-2.4, 3.0], [-1.9, 3.0], [-1.9, 1.9], [-1.45, 1.9]],
+  mux_ula: [[-0.95, 1.6], [-0.15, 1.6]],
+  ula_exmem: [[1.15, 0.8], [2.8, 0.8]],
+  rt_exmem: [[-2.05, 1.4], [-2.05, 2.4], [2.8, 2.4]],
+  idex_dst: [[-2.4, 3.5], [-0.85, 3.5]],
+  dst_exmem: [[-0.35, 3.5], [2.8, 3.5]],
+  end_dmem: [[2.8, 0.8], [4.1, 0.8]],
+  dado_dmem: [[2.8, 2.4], [3.6, 2.4], [3.6, 1.6], [4.1, 1.6]],
+  dmem_memwb: [[5.9, 0.8], [7.4, 0.8]],
+  desvio_mem: [[3.3, 0.8], [3.3, -0.8], [7.4, -0.8]],
+  dst_mem: [[2.8, 3.5], [7.4, 3.5]],
+  memwb_mux_mem: [[7.4, 0.8], [9.05, 0.8]],
+  memwb_mux_ula: [[7.4, -0.8], [8.6, -0.8], [8.6, 0.3], [9.05, 0.3]],
+  mux_regs: [[9.55, 0.6], [10.6, 0.6], [10.6, 4.6], [-6.3, 4.6], [-6.3, 1.6], [-5.8, 1.6]],
+  dst_regs: [[7.4, 3.5], [8.2, 3.5], [8.2, 4.2], [-6.1, 4.2], [-6.1, 1.1], [-5.8, 1.1]]
+};
+
+/* o que cada tipo de instrução usa em cada estágio */
+function uso(i) {
+  const c = i.classe, U = {};
+  U.IF = { pecas: ['muxpc', 'pc', 'imem', 'add4'], fios: ['muxpc_pc', 'pc_imem', 'pc_add4', 'add4_mux', 'imem_ifid'] };
+  const vazio = { pecas: [], fios: [] };
+  if (c === 'nop') return Object.assign(U, { ID: vazio, EX: vazio, MEM: vazio, WB: vazio });
+  U.ID = {
+    R: { pecas: ['ctrl', 'regs'], fios: ['ifid_regs', 'ifid_ctrl', 'regs_a', 'regs_b', 'ctrl_idex'] },
+    addi: { pecas: ['ctrl', 'regs', 'ext'], fios: ['ifid_regs', 'ifid_ctrl', 'ifid_ext', 'regs_a', 'ext_idex', 'ctrl_idex'] },
+    lw: { pecas: ['ctrl', 'regs', 'ext'], fios: ['ifid_regs', 'ifid_ctrl', 'ifid_ext', 'regs_a', 'ext_idex', 'ctrl_idex'] },
+    sw: { pecas: ['ctrl', 'regs', 'ext'], fios: ['ifid_regs', 'ifid_ctrl', 'ifid_ext', 'regs_a', 'regs_b', 'ext_idex', 'ctrl_idex'] },
+    br: { pecas: ['ctrl', 'regs', 'ext', 'cmp', 'addbr', 'muxpc'], fios: ['ifid_regs', 'ifid_ctrl', 'ifid_ext', 'regs_cmp', 'ext_addbr', 'alvo_mux'] },
+    j: { pecas: ['ctrl', 'muxpc'], fios: ['ifid_ctrl', 'alvo_mux'] }
+  }[c];
+  U.EX = {
+    R: { pecas: ['muxsrc', 'alu', 'muxdst'], fios: ['ula_a', 'rt_mux', 'mux_ula', 'ula_exmem', 'idex_dst', 'dst_exmem'] },
+    addi: { pecas: ['muxsrc', 'alu', 'muxdst'], fios: ['ula_a', 'imm_mux', 'mux_ula', 'ula_exmem', 'idex_dst', 'dst_exmem'] },
+    lw: { pecas: ['muxsrc', 'alu', 'muxdst'], fios: ['ula_a', 'imm_mux', 'mux_ula', 'ula_exmem', 'idex_dst', 'dst_exmem'] },
+    sw: { pecas: ['muxsrc', 'alu'], fios: ['ula_a', 'imm_mux', 'mux_ula', 'ula_exmem', 'rt_exmem'] },
+    br: vazio, j: vazio
+  }[c];
+  U.MEM = {
+    R: { pecas: [], fios: ['desvio_mem', 'dst_mem'] }, addi: { pecas: [], fios: ['desvio_mem', 'dst_mem'] },
+    lw: { pecas: ['dmem'], fios: ['end_dmem', 'dmem_memwb', 'dst_mem'] }, sw: { pecas: ['dmem'], fios: ['end_dmem', 'dado_dmem'] },
+    br: vazio, j: vazio
+  }[c];
+  U.WB = {
+    R: { pecas: ['muxwb', 'regs'], fios: ['memwb_mux_ula', 'mux_regs', 'dst_regs'] }, addi: { pecas: ['muxwb', 'regs'], fios: ['memwb_mux_ula', 'mux_regs', 'dst_regs'] },
+    lw: { pecas: ['muxwb', 'regs'], fios: ['memwb_mux_mem', 'mux_regs', 'dst_regs'] }, sw: vazio, br: vazio, j: vazio
+  }[c];
+  if (c === 'br' && !i.tomado) U.ID = { pecas: U.ID.pecas.filter(p => p !== 'muxpc'), fios: U.ID.fios.filter(f => f !== 'alvo_mux') };
+  return U;
+}
+
+/* ---------- montagem ---------- */
+const grupos = {};
+function formaUla(e) {
+  const W = 1.3 * e, D = 1.8 * e;
+  return [[0, 0], [W, 0.3 * D], [W, 0.7 * D], [0, D], [0, 0.6 * D], [0.25 * W, 0.5 * D], [0, 0.4 * D]].map(([x, z]) => [x - W / 2, z - D / 2]);
+}
+const FORMA_MUX = [[0, 0], [0.5, 0.25], [0.5, 0.95], [0, 1.2]].map(([x, z]) => [x - 0.25, z - 0.6]);
+function haste(a, b, esp, cor, mat) {
+  const h = cena.haste([a[0], YF, a[1]], [b[0], YF, b[1]], esp, cor, mat ? { mat } : {});
+  h.castShadow = false; return h;
+}
+function montar() {
+  ESTAGIOS.forEach(e => {
+    const m = cena.bloco(e.x1 - e.x0, CHAO, 10, e.cor, { base: false });
+    m.position.set((e.x0 + e.x1) / 2, CHAO / 2, 0); m.castShadow = false; cena.add(m);
+    const r = cena.rotulo(`${e.id} · ${e.nome}`, { tam: 0.62, fundo: e.cor }); r.position.set((e.x0 + e.x1) / 2, 0.7, -5.7); cena.add(r);
+  });
+  const gp = new T.Group(); gp.userData.id = 'regpipe';
+  PIPEREG.forEach(([x, nome]) => {
+    const m = cena.bloco(0.3, 1.0, 9.6, COR.cinzaEscuro, { base: false }); m.position.set(x, CHAO + 0.5, 0); gp.add(m);
+    const r = cena.rotulo(nome, { tam: 0.4 }); r.position.set(x, 1.5, -4.7); cena.add(r);
+  });
+  grupos.regpipe = gp; cena.add(gp);
+  Object.entries(FIOS).forEach(([id, pts]) => {
+    const cor = id === 'ctrl_idex' ? COR.vermelhoClaro : '#8a8a86';
+    for (let i = 0; i < pts.length - 1; i++) cena.add(haste(pts[i], pts[i + 1], 0.07, cor));
+  });
+  PECAS.filter(p => p.forma !== 'pipe').forEach(p => {
+    const g = new T.Group(); g.userData.id = p.id;
+    let m, topo;
+    if (p.forma === 'caixa') { m = cena.bloco(p.w, p.h, p.d, p.cor, { base: false }); m.position.y = CHAO + p.h / 2; topo = CHAO + p.h; }
+    else if (p.forma === 'cil') { m = cena.cilindro(p.r, p.h, p.cor); m.position.y = CHAO; topo = CHAO + p.h; }
+    else if (p.forma === 'ula') { const h = 0.5 + 0.6 * p.e; m = cena.prisma(formaUla(p.e), h, p.cor); m.position.y = CHAO; topo = CHAO + h; }
+    else { m = cena.prisma(FORMA_MUX, 0.55, COR.cinza); m.position.y = CHAO; topo = CHAO + 0.55; }
+    g.add(m); g.position.set(p.x, 0, p.z); grupos[p.id] = g; cena.add(g);
+    if (p.curto) { const r = cena.rotulo(p.curto, { tam: p.id === 'alu' ? 0.55 : 0.42 }); r.position.set(p.x, topo + 0.45, p.z); cena.add(r); }
+  });
+  Object.values(grupos).forEach(gr => cena.clicavel(gr, () => clicou(gr.userData.id)));
+}
+
+/* ---------- destaques: halos nas peças, fios acesos e pulsos ---------- */
+let gDest = null, pulsos = [];
+const matHalo = {};
+function halo(id, cor) {
+  const b = new T.Box3().setFromObject(grupos[id]), s = b.getSize(new T.Vector3()), c = b.getCenter(new T.Vector3());
+  const geo = new T.BoxGeometry(s.x + 0.22, s.y + 0.16, s.z + 0.22);
+  if (!matHalo[cor]) matHalo[cor] = new T.MeshBasicMaterial({ color: cor, transparent: true, opacity: 0.3, depthWrite: false });
+  const m = new T.Mesh(geo, matHalo[cor]);
+  const lin = new T.LineSegments(new T.EdgesGeometry(geo), new T.LineBasicMaterial({ color: cor }));
+  m.add(lin); m.position.copy(c); m.raycast = () => {}; lin.raycast = () => {};
+  gDest.add(m);
+}
+function acende(id, cor) {
+  const pts = FIOS[id];
+  for (let i = 0; i < pts.length - 1; i++) gDest.add(haste(pts[i], pts[i + 1], 0.17, cor, { emissive: new T.Color(cor), emissiveIntensity: 0.4 }));
+  const curva = new T.CurvePath();
+  for (let i = 0; i < pts.length - 1; i++) curva.add(new T.LineCurve3(new T.Vector3(pts[i][0], YF + 0.08, pts[i][1]), new T.Vector3(pts[i + 1][0], YF + 0.08, pts[i + 1][1])));
+  const L = curva.getLength();
+  const s = new T.Mesh(new T.SphereGeometry(0.15, 12, 10), new T.MeshBasicMaterial({ color: cor }));
+  gDest.add(s); pulsos.push({ s, curva, fase: Math.random(), vel: 2.4 / Math.max(L, 1) });
+}
+function limpaDestaques() {
+  if (!cena) return;
+  if (!gDest) { gDest = new T.Group(); cena.add(gDest); }
+  cena.limpar(gDest); pulsos = [];
+}
+/* arco de adiantamento: do registrador de pipeline até a entrada que precisa do valor */
+function arco(deX, paraX, paraZ, texto, n = 0) {
+  const a = new T.Vector3(deX, 0.4, -1.3), b = new T.Vector3(paraX, 0.9, paraZ);
+  const ctl = new T.Vector3((deX + paraX) / 2, 3.2, -1.6);
+  const curva = new T.QuadraticBezierCurve3(a, ctl, b);
+  const tubo = new T.Mesh(new T.TubeGeometry(curva, 40, 0.07, 8, false), new T.MeshBasicMaterial({ color: COR.vermelho }));
+  tubo.raycast = () => {}; gDest.add(tubo);
+  const s = new T.Mesh(new T.SphereGeometry(0.17, 12, 10), new T.MeshBasicMaterial({ color: '#ff5a66' }));
+  gDest.add(s); pulsos.push({ s, curva, fase: 0, vel: 0.5, arco: true });
+  const r = cena.rotulo(texto, { tam: 0.4, fundo: '#f2a9b3' }); r.position.copy(curva.getPoint(0.5)).add(new T.Vector3(0, 0.45 + n * 0.55, 0)); gDest.add(r);
+}
+
+/* ---------- fichas das instruções (tokens) ---------- */
+const CORES_INS = ['#f2cf1d', '#c8323f', '#1f8a4c', '#e0882c', '#9fdab4', '#f2a9b3', '#8a6a3a', '#fff36b'];
+const YTOK = 3.0, ZTOK = 0.6;
+function ficha(texto, cor, tipo) {
+  const g = new T.Group();
+  if (tipo === 'bolha') {
+    const s = new T.Mesh(new T.SphereGeometry(0.45, 24, 16), new T.MeshStandardMaterial({ color: '#c9c9c5', transparent: true, opacity: 0.55, roughness: 0.3 }));
+    g.add(s);
+  } else {
+    const b = cena.bloco(1.7, 0.5, 1.0, tipo === 'descartada' ? '#c9c9c5' : cor, { base: false }); g.add(b);
+  }
+  const r = cena.rotulo(texto, { tam: 0.42, fundo: tipo === 'descartada' ? '#e2e2df' : '#ffffff', cor: tipo === 'descartada' ? '#6f6f6b' : '#111111' });
+  r.position.y = 0.75; g.add(r);
+  return g;
+}
+const posEst = id => [cx(id), YTOK, ZTOK];
+
+/* =====================================================================
+   Painel de peças (botões acessíveis) e informação
+   ===================================================================== */
+$('#pecas').innerHTML = PECAS.map(p => `<button type="button" class="chip" data-p="${p.id}" aria-pressed="false">${esc(p.nome)}</button>`).join('');
+$('#pecas').querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => clicou(b.dataset.p)));
+function mostraPeca(id) {
+  const p = PECA[id];
+  const est = p.est ? ` <span class="small muted">· estágio ${p.est}</span>` : '';
+  $('#info').innerHTML = `<h3>${esc(p.nome)}${est}</h3><p>${esc(p.faz)}</p>`;
+}
+
+/* =====================================================================
+   Modo 1: uma instrução
+   ===================================================================== */
+const PC0 = 0x00400020;
+const REG0 = Array(32).fill(0); REG0[8] = 12; REG0[9] = 5; REG0[10] = 3; REG0[16] = 16;
+const MEMU0 = { 16: 40, 20: 7, 24: 9 };
+const PRESETS = ['add $t2, $t0, $t1', 'sub $t3, $t0, $t1', 'slt $t4, $t1, $t0', 'addi $t5, $t1, -2', 'lw $t6, 4($s0)', 'sw $t0, 8($s0)', 'beq $t0, $t1, 3', 'bne $t0, $t1, 3', 'j 0x00400000'];
+let um = null, umEst = 0, umFicha = null;
+
+function prepararUma(txt) {
+  const i = ler(txt);
+  if (i.classe === 'br') { i.imm = imm16(i.alvoTxt); }
+  if (i.classe === 'j') { const a = num(i.alvoTxt); if (a % 4) throw new Error('o endereço do salto precisa ser múltiplo de 4'); i.alvo = a >>> 0; i.campo = (a >>> 2) & 0x3ffffff; }
+  const R = REG0.slice(), M = Object.assign({}, MEMU0);
+  const a = R[i.rs] | 0, b = R[i.rt] | 0;
+  const v = { a, b };
+  if (i.classe === 'R') v.res = ula(i.op, a, b);
+  if (i.classe === 'addi') v.res = (a + i.imm) | 0;
+  if (i.classe === 'lw' || i.classe === 'sw') {
+    v.end = (a + i.imm) | 0;
+    if (v.end % 4 || v.end < 0) throw new Error(`endereço ${v.end} inválido: precisa ser positivo e múltiplo de 4`);
+    if (i.classe === 'lw') v.res = M[v.end] || 0; else M[v.end] = b;
+  }
+  if (i.classe === 'br') { i.tomado = (a === b) !== (i.op === 'bne'); v.alvo = (PC0 + 4 + i.imm * 4) >>> 0; }
+  if (i.classe === 'j') { i.tomado = true; v.alvo = (((PC0 + 4) & 0xf0000000) | (i.campo << 2)) >>> 0; }
+  const d = destino(i);
+  if (d) R[d] = v.res;
+  i.v = v; i.R = R; i.M = M; i.campos = codificar(i);
+  return i;
+}
+const nm = r => RN[r];
+function textoEstagio(i, e) {
+  const v = i.v, c = i.classe, op = i.op;
+  const campos = i.campos, opBits = campos[0][1];
+  if (e === 'IF') return `O PC vale ${hex(PC0)}. Esse endereço vai para a memória de instruções, que devolve a palavra ${hex(palavra(campos))}: a instrução <code>${esc(i.texto)}</code>. Ao mesmo tempo, o somador calcula PC + 4 = ${hex(PC0 + 4)}. A instrução fica guardada no registrador IF/ID.`;
+  if (c === 'nop') return 'O nop é uma instrução vazia (todos os bits em zero). Ela atravessa o estágio sem usar nenhuma peça.';
+  if (e === 'ID') {
+    if (c === 'R') return `A unidade de controle lê o opcode ${opBits} (tipo R) e liga os sinais da tabela. O banco de registradores lê rs = ${nm(i.rs)} (${v.a}) e rt = ${nm(i.rt)} (${v.b}). Os dois valores, o número do destino ${nm(i.rd)} e os sinais de controle seguem para o ID/EX.`;
+    if (c === 'addi' || c === 'lw') return `O controle lê o opcode ${opBits} (${op}). O banco de registradores lê rs = ${nm(i.rs)} (${v.a}). A extensão de sinal transforma o imediato ${i.imm} de 16 para 32 bits. O destino será rt = ${nm(i.rt)}.`;
+    if (c === 'sw') return `O controle lê o opcode ${opBits} (sw). O banco de registradores lê rs = ${nm(i.rs)} (${v.a}), que é a base do endereço, e rt = ${nm(i.rt)} (${v.b}), que é o valor a gravar. O imediato ${i.imm} é estendido para 32 bits.`;
+    if (c === 'br') return `O controle reconhece o ${op} (opcode ${opBits}). O banco de registradores lê ${nm(i.rs)} (${v.a}) e ${nm(i.rt)} (${v.b}) e o comparador já decide aqui: ${v.a} ${v.a === v.b ? '=' : '≠'} ${v.b}, então o desvio <strong>${i.tomado ? 'é tomado' : 'não é tomado'}</strong>. O somador calcula o destino PC + 4 + ${i.imm} × 4 = ${hex(v.alvo)}. ${i.tomado ? 'O MUX do PC escolhe esse endereço: a próxima instrução vem de lá, e a que já tinha sido buscada é descartada.' : 'O MUX do PC continua com PC + 4.'} Depois daqui, o ${op} não faz mais nada.`;
+    if (c === 'j') return `O controle reconhece o salto (opcode ${opBits}). O destino é montado com os 4 bits mais altos de PC + 4 e o campo endereço vezes 4: ${hex(v.alvo)}. O MUX do PC escolhe esse endereço. No desenho, o salto usa a mesma linha do desvio até o MUX. Depois daqui, o j não faz mais nada.`;
+  }
+  if (e === 'EX') {
+    if (c === 'R') return op === 'slt'
+      ? `O MUX ALUSrc deixa passar rt (${v.b}). A ULA compara: ${v.a} < ${v.b}? ${v.res ? 'Sim' : 'Não'}, então o resultado é ${v.res}. O MUX RegDst escolhe rd (${nm(i.rd)}) como destino.`
+      : `O MUX ALUSrc deixa passar rt (${v.b}). A ULA calcula ${v.a} ${SIMB[op]} ${v.b} = ${v.res}. O MUX RegDst escolhe rd (${nm(i.rd)}) como destino.`;
+    if (c === 'addi') return `O MUX ALUSrc escolhe o imediato estendido. A ULA calcula ${v.a} + ${i.imm} = ${v.res}. O MUX RegDst escolhe rt (${nm(i.rt)}) como destino.`;
+    if (c === 'lw' || c === 'sw') return `O MUX ALUSrc escolhe o imediato. A ULA calcula o endereço: ${v.a} + ${i.imm} = ${v.end}.${c === 'sw' ? ` O valor de ${nm(i.rt)} (${v.b}) segue junto para o EX/MEM.` : ''}`;
+    return `O ${op} já foi resolvido no ID. Aqui ele passa em branco: a ULA fica livre.`;
+  }
+  if (e === 'MEM') {
+    if (c === 'R' || c === 'addi') return `O ${op} não usa a memória de dados. O resultado ${v.res} só atravessa o estágio até o MEM/WB.`;
+    if (c === 'lw') return `A memória de dados lê o endereço ${v.end} e devolve ${v.res}.`;
+    if (c === 'sw') return `A memória de dados grava ${v.b} no endereço ${v.end}. O sw termina aqui.`;
+    return `O ${op} não faz nada neste estágio.`;
+  }
+  if (c === 'R' || c === 'addi') return `O MUX MemtoReg escolhe o resultado da ULA. O banco de registradores (lá no estágio ID) escreve ${v.res} em ${nm(destino(i) || 0)}.${destino(i) ? '' : ' Como o destino é $zero, nada muda: esse registrador vale sempre 0.'}`;
+  if (c === 'lw') return `O MUX MemtoReg escolhe o dado lido da memória. O banco de registradores escreve ${v.res} em ${nm(i.rt)}.`;
+  return `Nada a escrever: o ${op} não altera registradores.`;
+}
+function desenhaUma() {
+  const i = um, e = EST_IDS[umEst], U = uso(i)[e];
+  $('#passos').innerHTML = EST_IDS.map((x, k) => {
+    const vaz = !uso(i)[x].pecas.length && !uso(i)[x].fios.length;
+    return `<li tabindex="0" data-k="${k}" class="${vaz ? 'vazio' : ''}"${k === umEst ? ' aria-current="step"' : ''}><b class="s-${x.toLowerCase()}">${x}</b>${ESTAGIOS[k].nome}${vaz ? ' (não usa)' : ''}</li>`;
+  }).join('');
+  $('#passos').querySelectorAll('li').forEach(li => {
+    const ir = () => { umEst = +li.dataset.k; desenhaUma(); };
+    li.addEventListener('click', ir); li.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); ir(); } });
+  });
+  $('#ant').disabled = umEst === 0; $('#prox').disabled = umEst === 4;
+  $('#texto').innerHTML = `<strong>${e} · ${ESTAGIOS[umEst].nome}.</strong> ` + textoEstagio(i, e);
+  $('#codif').innerHTML = i.campos.map(([n, b]) => `<div><small>${n}</small><code>${b}</code></div>`).join('');
+  const ctl = CONTROLE[i.classe];
+  $('#ctl').innerHTML = SINAIS.map((s, k) => `<tr class="${ctl[k] !== '0' && ctl[k] !== 'X' && ctl[k] !== 'XX' && ctl[k] !== '00' ? 'on' : ''}"><td><strong>${s}</strong> <span class="small muted">${SIG_TXT[s]}</span></td><td>${ctl[k]}</td></tr>`).join('');
+  // registradores: mostra o estado depois do estágio atual
+  const escreveu = (i.classe === 'R' || i.classe === 'addi' || i.classe === 'lw') && umEst === 4 && destino(i);
+  const gravou = i.classe === 'sw' && umEst >= 3;
+  const R = escreveu ? i.R : REG0, M = gravou ? i.M : MEMU0;
+  const lista = [8, 9, 10, 11, 12, 13, 14, 16];
+  $('#regs-uma').innerHTML = lista.map(r => `<span class="${escreveu && r === destino(i) ? 'ch' : ''}">${nm(r)}=${R[r]}</span>`).join('') +
+    Object.keys(Object.assign({}, MEMU0, M)).sort((a, b) => a - b).map(k => `<span class="${gravou && +k === i.v.end ? 'ch' : ''}">mem[${k}]=${M[k] ?? 0}</span>`).join('');
+  if (!cena) return;
+  limpaDestaques();
+  const cor = '#f2cf1d';
+  U.pecas.forEach(p => halo(p, cor));
+  U.fios.forEach(f => acende(f, cor));
+  if (!umFicha) { umFicha = ficha(i.texto, cor); umFicha.position.set(...posEst('IF')); cena.add(umFicha); }
+  cena.animar(umFicha, { position: posEst(e) }, 550);
+  cena.descrever(`Caminho de dados do MIPS em 3D. A instrução ${i.texto} está no estágio ${e} (${ESTAGIOS[umEst].nome}). ${U.pecas.length ? 'Peças em uso destacadas: ' + U.pecas.map(p => PECA[p].nome).join(', ') + '.' : 'Nenhuma peça é usada neste estágio.'}`);
+}
+function carregaUma(txt) {
+  try {
+    um = prepararUma(txt);
+    $('#st-uma').className = 'status'; $('#st-uma').textContent = '';
+    umEst = 0;
+    if (umFicha) { cena.remove(umFicha); umFicha = null; }
+    desenhaUma();
+  } catch (err) { $('#st-uma').className = 'status bad'; $('#st-uma').textContent = err.message; }
+}
+$('#preset').innerHTML = PRESETS.map((p, k) => `<option value="${k}">${esc(p)}${p.startsWith('beq') ? '  (não tomado)' : p.startsWith('bne') ? '  (tomado)' : ''}</option>`).join('');
+$('#preset').addEventListener('change', e => { $('#propria').value = ''; carregaUma(PRESETS[+e.target.value]); });
+$('#propria').addEventListener('keydown', e => { if (e.key === 'Enter') carregaUma(e.target.value); });
+$('#propria').addEventListener('change', e => { if (e.target.value.trim()) carregaUma(e.target.value); });
+$('#ant').addEventListener('click', () => { if (umEst > 0) { umEst--; desenhaUma(); } });
+$('#prox').addEventListener('click', () => { if (umEst < 4) { umEst++; desenhaUma(); } });
+
+/* =====================================================================
+   Modo 2: pipeline
+   ===================================================================== */
+const MEM0 = [5, 8, 2, 7, 4, 9, 1, 6];
+const MAXDIN = 40;
+const EXEMPLOS = {
+  'Sem dependências': `# Cinco instruções independentes
+addi $t2, $zero, 10
+addi $t3, $zero, 3
+lw $t0, 0($zero)
+lw $t1, 4($zero)
+and $t5, $t2, $t3`,
+  'Adiantamento (forwarding)': `# Cada instrução usa o resultado da anterior
+addi $t0, $zero, 5
+add $t1, $t0, $t0
+sub $t2, $t1, $t0
+sw $t2, 8($zero)`,
+  'lw seguido de uso (bolha)': `# O add precisa do valor que o lw ainda está lendo
+lw $t0, 4($zero)
+add $t1, $t0, $t0
+sw $t1, 0($zero)`,
+  'Laço com desvio': `# Soma 3 + 2 + 1
+addi $t0, $zero, 3
+laco:
+add $t1, $t1, $t0
+addi $t0, $t0, -1
+bne $t0, $zero, laco
+sw $t1, 0($zero)`,
+  'Soma de um vetor': `# Soma os 4 primeiros números da memória
+addi $t2, $zero, 16
+laco:
+lw $t1, 0($t0)
+add $t3, $t3, $t1
+addi $t0, $t0, 4
+bne $t0, $t2, laco
+sw $t3, 32($zero)`
+};
+function montarPrograma(src) {
+  const linhas = src.split('\n'), prog = [], rot = {};
+  linhas.forEach((l, n) => {
+    let t = l.replace(/#.*/, '').trim();
+    const m = /^([A-Za-z_]\w*)\s*:\s*(.*)$/.exec(t);
+    if (m) { if (m[1] in rot) throw new Error(`linha ${n + 1}: rótulo repetido ${m[1]}`); rot[m[1]] = prog.length; t = m[2].trim(); }
+    if (!t) return;
+    try { const i = ler(t); i.linha = n + 1; prog.push(i); }
+    catch (e) { throw new Error(`linha ${n + 1}: ${e.message}`); }
+  });
+  if (!prog.length) throw new Error('escreva pelo menos uma instrução');
+  prog.forEach((i, k) => {
+    if (i.classe !== 'br' && i.classe !== 'j') return;
+    const t = i.alvoTxt;
+    if (t in rot) i.alvoIdx = rot[t];
+    else if (/^-?\d+$/.test(t) && i.classe === 'br') i.alvoIdx = k + 1 + (+t);
+    else throw new Error(`linha ${i.linha}: rótulo não encontrado: ${t}`);
+    if (i.classe === 'br') i.imm = i.alvoIdx - k - 1;
+    else i.campo = ((0x00400000 + i.alvoIdx * 4) >>> 2) & 0x3ffffff;
+  });
+  return prog;
+}
+/* execução funcional: devolve a sequência de instruções executadas */
+function executar(prog) {
+  const R = Array(32).fill(0), M = {}; MEM0.forEach((v, k) => { M[k * 4] = v; });
+  const trace = []; let pc = 0, cortado = false;
+  while (pc >= 0 && pc < prog.length) {
+    if (trace.length >= MAXDIN) { cortado = true; break; }
+    const i = prog[pc], a = R[i.rs] | 0, b = R[i.rt] | 0, t = { sidx: pc, i };
+    let prox = pc + 1;
+    if (i.classe === 'R') t.v = ula(i.op, a, b);
+    if (i.classe === 'addi') t.v = (a + i.imm) | 0;
+    if (i.classe === 'lw' || i.classe === 'sw') {
+      const end = (a + i.imm) | 0;
+      if (end % 4 || end < 0 || end > 4092) throw new Error(`linha ${i.linha}: endereço ${end} inválido (positivo, até 4092, múltiplo de 4)`);
+      if (i.classe === 'lw') t.v = M[end] || 0; else M[end] = b;
+      t.end = end;
+    }
+    if (i.classe === 'br') { t.tomado = (a === b) !== (i.op === 'bne'); if (t.tomado) prox = i.alvoIdx; }
+    if (i.classe === 'j') { t.tomado = true; prox = i.alvoIdx; }
+    const d = destino(i); if (d) { R[d] = t.v; t.d = d; }
+    trace.push(t); pc = prox;
+  }
+  return { trace, cortado, M };
+}
+/* pipeline ciclo a ciclo: adiantamento opcional, desvio decidido no ID, previsão "não tomado" */
+function simularPipeline(prog, fwd) {
+  const { trace, cortado } = executar(prog);
+  const fluxo = []; let nId = 0;
+  trace.forEach((t, din) => {
+    fluxo.push({ id: 'i' + nId++, sidx: t.sidx, i: t.i, t, din });
+    if (t.tomado && t.sidx + 1 < prog.length) fluxo.push({ id: 'i' + nId++, sidx: t.sidx + 1, i: prog[t.sidx + 1], errado: true });
+  });
+  const real = x => x && !x.bolha && !x.descartada;
+  const escreve = (x, r) => real(x) && x.t && x.t.d === r;
+  let st = { IF: fluxo[0] || null, ID: null, EX: null, MEM: null, WB: null }, prox = 1, nB = 0;
+  const ciclos = [];
+  const R = Array(32).fill(0);
+  for (let c = 0; c < 400; c++) {
+    if (!EST_IDS.some(e => st[e])) break;
+    const ev = [], fw = [];
+    const a = st.ID, e = st.EX, m = st.MEM;
+    // conflito no ID?
+    let parar = false, motivo = '';
+    if (real(a)) {
+      const fs = fontes(a.i).filter(r => r);
+      const br = a.i.classe === 'br';
+      for (const r of fs) {
+        if (fwd) {
+          if (br && escreve(e, r)) { parar = true; motivo = `${a.i.op} precisa de ${nm(r)} já no ID, mas o ${e.i.op} ainda está calculando esse valor no EX`; }
+          else if (br && escreve(m, r) && m.i.classe === 'lw') { parar = true; motivo = `${a.i.op} precisa de ${nm(r)} já no ID, mas o lw ainda está lendo esse valor da memória`; }
+          else if (!br && escreve(e, r) && e.i.classe === 'lw') { parar = true; motivo = `${a.i.op} precisa de ${nm(r)}, que o lw só terá no fim do estágio MEM`; }
+        } else if (escreve(e, r) || escreve(m, r)) {
+          parar = true; motivo = `${a.i.op} precisa de ${nm(r)}, que ${(escreve(e, r) ? e : m).i.op} ainda não escreveu no banco de registradores`;
+        }
+        if (parar) break;
+      }
+    }
+    // adiantamentos usados neste ciclo
+    if (fwd && real(e)) {
+      fontes(e.i).filter(r => r).forEach(r => {
+        if (escreve(st.MEM, r)) fw.push({ de: 'MEM', para: 'EX', r, x: e });
+        else if (escreve(st.WB, r)) fw.push({ de: 'WB', para: 'EX', r, x: e });
+      });
+    }
+    if (fwd && real(a) && !parar && a.i.classe === 'br') {
+      fontes(a.i).filter(r => r).forEach(r => { if (escreve(m, r)) fw.push({ de: 'MEM', para: 'ID', r, x: a }); });
+    }
+    // escrita no WB (primeira metade do ciclo)
+    if (real(st.WB) && st.WB.t.d) { R[st.WB.t.d] = st.WB.t.v; }
+    const regs = R.slice();
+    // eventos
+    if (real(st.WB)) ev.push(st.WB.t.d ? `<b>WB</b> ${esc(st.WB.i.texto)}: ${nm(st.WB.t.d)} recebe ${st.WB.t.v}.` : `<b>WB</b> ${esc(st.WB.i.texto)}: não escreve registrador.`);
+    if (real(st.MEM) && st.MEM.i.classe === 'lw') ev.push(`<b>MEM</b> ${esc(st.MEM.i.texto)}: lê ${st.MEM.t.v} do endereço ${st.MEM.t.end}.`);
+    if (real(st.MEM) && st.MEM.i.classe === 'sw') ev.push(`<b>MEM</b> ${esc(st.MEM.i.texto)}: grava no endereço ${st.MEM.t.end}.`);
+    fw.forEach(f => ev.push(`<span class="fwdtxt">Adiantamento:</span> o valor de ${nm(f.r)} vai do registrador ${f.de === 'MEM' ? 'EX/MEM' : 'MEM/WB'} direto para ${f.para === 'EX' ? 'a ULA' : 'o comparador do desvio'} (${esc(f.x.i.texto)}).`));
+    if (st.EX && st.EX.bolha) ev.push(`<b>EX</b> bolha: nenhuma instrução executa neste estágio.`);
+    if (parar) ev.push(`<span class="alerta">Parada:</span> ${motivo}. Ela fica no ID, a seguinte fica no IF e uma bolha entra no EX.`);
+    if (real(a) && !parar && (a.i.classe === 'br' || a.i.classe === 'j')) {
+      if (a.t.tomado) ev.push(`<b>ID</b> ${esc(a.i.texto)}: ${a.i.classe === 'j' ? 'salto' : 'desvio tomado'}. ${st.IF ? `A instrução já buscada (${esc(st.IF.i.texto)}) será descartada.` : ''}`);
+      else ev.push(`<b>ID</b> ${esc(a.i.texto)}: desvio não tomado. O pipeline segue sem perder ciclos.`);
+    }
+    if (a && a.descartada) ev.push(`<b>ID</b> ${esc(a.i.texto)} foi descartada (vira um nop).`);
+    if (st.IF && !parar) ev.push(`<b>IF</b> busca ${esc(st.IF.i.texto)}.`);
+    ciclos.push({ st: Object.assign({}, st), fw, parar, ev, regs });
+    // próximo estado
+    const n = { WB: st.MEM, MEM: st.EX };
+    if (parar) { n.EX = { bolha: true, id: 'b' + nB++ }; n.ID = st.ID; n.IF = st.IF; }
+    else {
+      n.EX = st.ID && st.ID.descartada ? { bolha: true, id: 'b' + nB++ } : st.ID;
+      n.ID = st.IF ? (st.IF.errado ? Object.assign({}, st.IF, { descartada: true }) : st.IF) : null;
+      n.IF = prox < fluxo.length ? fluxo[prox++] : null;
+    }
+    st = n;
+  }
+  return { ciclos, fluxo, cortado, n: trace.length };
+}
+
+let pipe = null, ciclo = 0, fichas = {}, tocando = null;
+const corDe = x => CORES_INS[x.sidx % CORES_INS.length];
+function carregaPipe() {
+  parar();
+  try {
+    const prog = montarPrograma($('#src').value);
+    pipe = simularPipeline(prog, $('#o-fwd').checked);
+    $('#st-pipe').className = 'status';
+    $('#st-pipe').textContent = pipe.cortado ? `O programa foi cortado em ${MAXDIN} instruções executadas (laço longo demais?).` : `${prog.length} instruções no código, ${pipe.n} executadas.`;
+  } catch (err) { $('#st-pipe').className = 'status bad'; $('#st-pipe').textContent = err.message; pipe = null; }
+  Object.values(fichas).forEach(f => cena && cena.remove(f)); fichas = {};
+  ciclo = 0; desenhaDiag(); desenhaPipe(false);
+}
+function textoFicha(x) { return x.bolha ? 'bolha' : x.descartada ? 'descartada' : x.i.texto; }
+function desenhaPipe(anima = true) {
+  if (!pipe) { $('#ciclo').textContent = ''; $('#eventos').innerHTML = ''; $('#regs-pipe').innerHTML = ''; limpaDestaques(); return; }
+  const C = pipe.ciclos[ciclo];
+  $('#ciclo').textContent = `Ciclo ${ciclo + 1} de ${pipe.ciclos.length}`;
+  $('#eventos').innerHTML = C.ev.map(t => `<li>${t}</li>`).join('');
+  const ant = ciclo ? pipe.ciclos[ciclo - 1].regs : Array(32).fill(0);
+  const mostrar = RN.map((_, r) => r).filter(r => r && (C.regs[r] !== 0 || ant[r] !== 0));
+  $('#regs-pipe').innerHTML = mostrar.length ? mostrar.map(r => `<span class="${C.regs[r] !== ant[r] ? 'ch' : ''}">${nm(r)}=${C.regs[r]}</span>`).join('') : '<span class="muted">todos em zero</span>';
+  $('#b-ini').disabled = $('#b-ant').disabled = ciclo === 0;
+  $('#b-prox').disabled = ciclo === pipe.ciclos.length - 1;
+  document.querySelectorAll('#diag .atual').forEach(el => el.classList.remove('atual'));
+  document.querySelectorAll(`#diag [data-c="${ciclo}"]`).forEach(el => el.classList.add('atual'));
+  if (!cena) return;
+  // fichas
+  const presentes = new Set();
+  EST_IDS.forEach(e => {
+    const x = C.st[e]; if (!x) return;
+    const chave = x.id + (x.descartada ? 'd' : '');
+    presentes.add(chave);
+    if (!fichas[chave]) {
+      const f = ficha(textoFicha(x), x.bolha ? null : corDe(x), x.bolha ? 'bolha' : x.descartada ? 'descartada' : null);
+      const de = x.descartada ? 'ID' : x.bolha ? 'EX' : 'IF';
+      f.position.set(...posEst(anima ? de : e)); if (anima && !x.descartada && !x.bolha) f.position.y += 1.2;
+      cena.add(f); fichas[chave] = f;
+    }
+    cena.animar(fichas[chave], { position: posEst(e) }, anima ? 500 : 0);
+  });
+  Object.keys(fichas).forEach(k => { if (!presentes.has(k)) { const f = fichas[k]; delete fichas[k]; cena.remove(f); } });
+  // destaques: cada instrução acende as peças que usa, na cor dela
+  limpaDestaques();
+  EST_IDS.forEach(e => {
+    const x = C.st[e]; if (!x || x.bolha || x.descartada) return;
+    const i = Object.assign({}, x.i, { tomado: x.t && x.t.tomado });
+    const U = uso(i)[e], cor = corDe(x);
+    if (e === 'ID' && C.parar) return halo('regs', cor);
+    U.pecas.forEach(p => halo(p, cor)); U.fios.forEach(f => acende(f, cor));
+  });
+  C.fw.forEach((f, n) => arco(f.de === 'MEM' ? 2.8 : 7.4, f.para === 'EX' ? -0.2 : -3.3, f.para === 'EX' ? 0.5 : -0.6, `adiantamento ${nm(f.r)}`, n));
+  const ocup = EST_IDS.map(e => { const x = C.st[e]; return `${e}: ${x ? textoFicha(x) : 'vazio'}`; }).join('; ');
+  cena.descrever(`Pipeline MIPS em 3D, ciclo ${ciclo + 1}. ${ocup}.`);
+}
+function desenhaDiag() {
+  if (!pipe) { $('#diag').innerHTML = ''; $('#stats').innerHTML = ''; return; }
+  const linhas = [], onde = {};
+  pipe.ciclos.forEach((C, c) => EST_IDS.forEach(e => {
+    const x = C.st[e]; if (!x || x.bolha) return;
+    if (!onde[x.id]) { onde[x.id] = { x, cel: {} }; linhas.push(x.id); }
+    if (x.descartada) onde[x.id].flush = true;
+    onde[x.id].cel[c] = { e, stall: (e === 'ID' || e === 'IF') && pipe.ciclos[c - 1] && pipe.ciclos[c - 1].st[e] && pipe.ciclos[c - 1].st[e].id === x.id };
+  }));
+  const N = pipe.ciclos.length;
+  let h = `<thead><tr><th class="ins" scope="col">Instrução</th>${Array.from({ length: N }, (_, c) => `<th scope="col" data-c="${c}" tabindex="0">${c + 1}</th>`).join('')}</tr></thead><tbody>`;
+  linhas.forEach(id => {
+    const L = onde[id];
+    h += `<tr class="${L.flush ? 'flush' : ''}"><th class="ins" scope="row">${esc(L.x.i.texto)}</th>`;
+    for (let c = 0; c < N; c++) {
+      const k = L.cel[c];
+      h += k ? `<td data-c="${c}" class="s-${k.e.toLowerCase()}${k.stall ? ' stall' : ''}">${k.e}</td>` : `<td data-c="${c}"></td>`;
+    }
+    h += '</tr>';
+  });
+  $('#diag').innerHTML = h + '</tbody>';
+  $('#diag').querySelectorAll('th[data-c]').forEach(th => {
+    const ir = () => { parar(); ciclo = +th.dataset.c; desenhaPipe(false); };
+    th.addEventListener('click', ir); th.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); } });
+  });
+  const bolhas = pipe.ciclos.filter(C => C.parar).length;
+  const desc = pipe.fluxo.filter(x => x.errado).length;
+  $('#stats').innerHTML = [[N, 'ciclos'], [pipe.n, 'instruções executadas'], [(N / pipe.n).toLocaleString('pt-BR', { maximumFractionDigits: 2 }), 'ciclos por instrução (CPI)'], [bolhas, 'bolhas'], [desc, 'descartadas']]
+    .map(([v, t]) => `<div><b>${v}</b><small>${t}</small></div>`).join('');
+}
+function vaiPara(c) { if (!pipe) return; const ant = ciclo; ciclo = Math.max(0, Math.min(pipe.ciclos.length - 1, c)); desenhaPipe(ciclo === ant + 1); }
+function parar() { if (tocando) { clearInterval(tocando); tocando = null; } $('#b-play').setAttribute('aria-pressed', 'false'); $('#b-play').textContent = 'Reproduzir'; }
+$('#b-ini').addEventListener('click', () => { parar(); vaiPara(0); });
+$('#b-ant').addEventListener('click', () => { parar(); vaiPara(ciclo - 1); });
+$('#b-prox').addEventListener('click', () => { parar(); vaiPara(ciclo + 1); });
+$('#b-play').addEventListener('click', () => {
+  if (tocando) return parar();
+  if (!pipe) return;
+  if (ciclo >= pipe.ciclos.length - 1) vaiPara(0);
+  $('#b-play').setAttribute('aria-pressed', 'true'); $('#b-play').textContent = 'Pausar';
+  tocando = setInterval(() => { if (ciclo >= pipe.ciclos.length - 1) return parar(); vaiPara(ciclo + 1); }, 1400);
+});
+$('#ex').innerHTML = Object.keys(EXEMPLOS).map(k => `<option>${esc(k)}</option>`).join('');
+$('#ex').addEventListener('change', e => { $('#src').value = EXEMPLOS[e.target.value]; carregaPipe(); });
+$('#b-sim').addEventListener('click', carregaPipe);
+$('#o-fwd').addEventListener('change', carregaPipe);
+$('#src').value = EXEMPLOS['Sem dependências'];
+
+/* =====================================================================
+   Modo 3: desafio
+   ===================================================================== */
+const QUIZ = ['imem', 'regs', 'ext', 'cmp', 'addbr', 'alu', 'dmem'];
+const QUIZ_INS = ['add $t2, $t0, $t1', 'sub $t3, $t0, $t1', 'slt $t4, $t1, $t0', 'and $t5, $t0, $t1', 'addi $t5, $t1, -2', 'lw $t6, 4($s0)', 'sw $t0, 8($s0)', 'beq $t0, $t1, 3', 'bne $t0, $t1, 3', 'j 0x00400000'];
+let qIns = null, qMarc = new Set(), qConf = false, qAc = 0, qTot = 0, qUlt = -1;
+function certas(i) { const U = uso(i), s = new Set(); EST_IDS.forEach(e => U[e].pecas.forEach(p => s.add(p))); return QUIZ.filter(p => s.has(p)); }
+function novaPergunta() {
+  let k; do { k = Math.floor(Math.random() * QUIZ_INS.length); } while (k === qUlt); qUlt = k;
+  qIns = prepararUma(QUIZ_INS[k]); qMarc = new Set(); qConf = false;
+  $('#pergunta').textContent = qIns.texto; $('#fb').textContent = ''; $('#fb').className = 'feedback';
+  $('#conferir').disabled = false;
+  marcaBotoes(); desenhaDesafio();
+}
+function marcaBotoes() { document.querySelectorAll('#pecas [data-p]').forEach(b => b.setAttribute('aria-pressed', qMarc.has(b.dataset.p))); }
+function desenhaDesafio() {
+  if (!cena) return;
+  limpaDestaques();
+  if (!qConf) { qMarc.forEach(p => halo(p, '#f2cf1d')); cena.descrever(`Desafio: quais peças a instrução ${qIns.texto} usa? Marcadas: ${[...qMarc].map(p => PECA[p].nome).join(', ') || 'nenhuma'}.`); return; }
+  const U = uso(qIns);
+  EST_IDS.forEach(e => { U[e].pecas.forEach(p => halo(p, '#1f8a4c')); U[e].fios.forEach(f => acende(f, '#1f8a4c')); });
+  [...qMarc].filter(p => !certas(qIns).includes(p)).forEach(p => halo(p, COR.vermelho));
+}
+function conferir() {
+  if (qConf) return;
+  qConf = true; qTot++;
+  const ok = certas(qIns), falt = ok.filter(p => !qMarc.has(p)), sobr = [...qMarc].filter(p => !ok.includes(p));
+  const acertou = !falt.length && !sobr.length; if (acertou) qAc++;
+  $('#placar').textContent = `${qAc} de ${qTot}`;
+  $('#fb').className = 'feedback ' + (acertou ? 'ok' : 'bad');
+  $('#fb').textContent = acertou ? `Isso! ${qIns.texto} usa: ${ok.map(p => PECA[p].nome).join(', ')}.`
+    : `${falt.length ? 'Faltou: ' + falt.map(p => PECA[p].nome).join(', ') + '. ' : ''}${sobr.length ? 'Não usa: ' + sobr.map(p => PECA[p].nome).join(', ') + '. ' : ''}O caminho completo está aceso em verde.`;
+  $('#conferir').disabled = true;
+  desenhaDesafio();
+}
+$('#conferir').addEventListener('click', conferir);
+$('#outra').addEventListener('click', novaPergunta);
+
+/* =====================================================================
+   Modos e cliques
+   ===================================================================== */
+let modo = 'uma';
+function clicou(id) {
+  if (modo === 'desafio' && QUIZ.includes(id) && !qConf) {
+    qMarc.has(id) ? qMarc.delete(id) : qMarc.add(id);
+    marcaBotoes(); desenhaDesafio();
+    $('#info').innerHTML = `<p class="small muted">${qMarc.size} peça${qMarc.size === 1 ? '' : 's'} marcada${qMarc.size === 1 ? '' : 's'}. Clique de novo para desmarcar.</p>`;
+    return;
+  }
+  if (modo === 'desafio' && !qConf && !QUIZ.includes(id)) { $('#info').innerHTML = `<p>${esc(PECA[id].nome)} não entra no desafio. Marque memórias, registradores, extensão de sinal, comparador, somador do desvio ou ULA.</p>`; return; }
+  if (modo !== 'desafio') document.querySelectorAll('#pecas [data-p]').forEach(b => b.setAttribute('aria-pressed', b.dataset.p === id));
+  mostraPeca(id);
+}
+function trocaModo(m) {
+  modo = m; parar();
+  document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x.dataset.modo === m));
+  $('#p-uma').hidden = m !== 'uma'; $('#p-pipe').hidden = m !== 'pipe'; $('#p-desafio').hidden = m !== 'desafio';
+  $('#bloco-diag').hidden = m !== 'pipe';
+  $('#fb').textContent = ''; $('#info').innerHTML = '';
+  document.querySelectorAll('#pecas [data-p]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  if (umFicha && cena) { cena.remove(umFicha); umFicha = null; }
+  Object.values(fichas).forEach(f => cena && cena.remove(f)); fichas = {};
+  limpaDestaques();
+  if (m === 'uma') desenhaUma();
+  if (m === 'pipe') { if (!pipe) carregaPipe(); else desenhaPipe(false); }
+  if (m === 'desafio') novaPergunta();
+}
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => trocaModo(b.dataset.modo)));
+
+if (cena) {
+  montar();
+  cena.animarSempre(true);
+  let t0 = performance.now();
+  cena.loop(now => {
+    const dt = Math.min(0.1, (now - t0) / 1000); t0 = now;
+    const red = reduz();
+    pulsos.forEach(p => {
+      p.fase = red ? 0.5 : (p.fase + dt * p.vel) % 1;
+      p.s.position.copy(p.arco ? p.curva.getPoint(p.fase) : p.curva.getPointAt(p.fase));
+    });
+    return true;
+  });
+}
+carregaUma(PRESETS[0]);
+</script>
+</body>
+</html>
