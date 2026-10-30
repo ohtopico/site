@@ -11,6 +11,8 @@ e o trecho "Kits do mês" do hub.html, entre <!-- KITS --> e <!-- /KITS -->.
 
 Uso (na raiz do repositório; precisa do Node com Playwright, python-docx e python-pptx):
     python3 _fonte/premium/editaveis/kit_mes.py --fontes _privado/premium --tipos CAMINHO/fontes [--meses 2026-12,2027-01]
+Amostra grátis (ficha e cartaz de um mês já liberado, para /freebies/):
+    python3 _fonte/premium/editaveis/kit_mes.py --fontes _privado/premium --tipos CAMINHO/fontes --amostra 2026-11 freebies/amostra-premium
 --tipos é a pasta com Lexend-400.ttf, Lexend-600.ttf e Sniglet-800.ttf.
 Autora: Júlia Roberta Quoos Alves.
 """
@@ -148,14 +150,18 @@ def pdf_avaliacao(d):
     return doc_html('Avaliação', corpo, d)
 
 
-def imprimir(pares, tipos):
+RODAPE_KIT = 'para os apoiadores do Catarse (ohtopico.com.br). Uso livre em sala de aula, com citação da fonte. Por favor, não compartilhe os arquivos.'
+RODAPE_AMOSTRA = '(ohtopico.com.br/freebies). Amostra gratuita: pode imprimir e compartilhar, citando a fonte.'
+
+
+def imprimir(pares, tipos, rodape=RODAPE_KIT):
     with tempfile.TemporaryDirectory() as tmp:
         lista = []
         for i, (conteudo, destino) in enumerate(pares):
             f = os.path.join(tmp, f'{i}.html'); open(f, 'w', encoding='utf-8').write(conteudo.replace('TIPOS', str(Path(tipos).resolve())))
             lista.append([f, str(Path(destino).resolve())])
         rod = (f'<div style="font-family:sans-serif;font-size:7.5px;color:#555;width:100%;padding:0 15mm;display:flex;justify-content:space-between">'
-               f'<span>Material de {AUTORA} para os apoiadores do Catarse (ohtopico.com.br). Uso livre em sala de aula, com citação da fonte. Por favor, não compartilhe os arquivos.</span>'
+               f'<span>Material de {AUTORA} {rodape}</span>'
                '<span><span class="pageNumber"></span>/<span class="totalPages"></span></span></div>')
         js = (f"const RODAPE={json.dumps(rod)};" "const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage();"
               f"for (const [h,o] of {json.dumps(lista)}) {{await p.goto('file://'+h);await p.waitForTimeout(150);"
@@ -472,10 +478,15 @@ def hub_trecho(meses):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--fontes', default='_privado/premium'); ap.add_argument('--tipos', required=True); ap.add_argument('--meses', default='')
+    ap.add_argument('--amostra', nargs=2, metavar=('MES', 'PASTA'), help='só gera a ficha e o cartaz do mês, com rodapé de amostra grátis, na pasta indicada')
     a = ap.parse_args(); fontes = Path(a.fontes)
     sys.path.insert(0, str(fontes / 'kits'))
     from dados import KITS
     todos = [montar(m, k, fontes) for m, k in sorted(KITS.items())]
+    if a.amostra:
+        d = next(x for x in todos if x['mes'] == a.amostra[0]); pasta = Path(a.amostra[1]); pasta.mkdir(parents=True, exist_ok=True)
+        imprimir([(pdf_ficha(d), pasta / f"{d['slug']}-ficha-do-aluno.pdf"), (pdf_cartaz(d), pasta / f"{d['slug']}-cartaz.pdf")], a.tipos, RODAPE_AMOSTRA)
+        print('ok amostra', d['mes']); return
     escolhidos = [d for d in todos if not a.meses or d['mes'] in a.meses.split(',')]
     pares = []
     for d in escolhidos:
