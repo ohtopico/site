@@ -37,7 +37,7 @@ AUTORA = {
     '@type': 'Person',
     '@id': 'https://ohtopico.com.br/#julia',
     'name': 'Júlia Roberta Quoos Alves',
-    'alternateName': ['Júlia Quoos', 'Júlia Roberta Quoos'],
+    'alternateName': ['Júlia Quoos', 'Júlia Roberta Quoos', 'Quoos'],
     'url': 'https://ohtopico.com.br/',
 }
 FONTES = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
