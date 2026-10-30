@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogos com plano de aula · BNCC 6º ao 9º ano | ohtopico</title>
+<meta name="description" content="Jogos educativos de Computação e Matemática com ano, habilidades da BNCC, tempo de aula, plano de aula e ficha para imprimir. Gratuito, do 6º ao 9º ano.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/">
+<meta property="og:title" content="Jogos com plano de aula · BNCC 6º ao 9º ano">
+<meta property="og:description" content="Jogos educativos de Computação e Matemática com ano, habilidades da BNCC, tempo de aula, plano de aula e ficha para imprimir. Gratuito, do 6º ao 9º ano.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  /* Jogos para professores: a mesma lista do portal dos estudantes, com BNCC, tempo, plano e ficha */
+  .pf-head { padding: 40px 0 30px; border-bottom: 1.5px solid var(--ink); background:
+    radial-gradient(var(--line) 1.2px, transparent 1.5px) 0 0 / 18px 18px; }
+  .pf-head h1 { font-size: clamp(34px, 6vw, 54px); margin: 4px 0 10px; }
+  .pf-head .sub { font-size: 18px; color: var(--ink-2); max-width: 780px; margin-bottom: 20px; }
+  .pf-head .sub b { color: var(--ink); }
+  .filtros { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filtros .sep { width: 14px; }
+  .pill { border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); border-radius: 99px;
+    padding: 7px 16px; font-size: 15px; font-weight: 500; cursor: pointer; min-height: 40px; font-family: var(--body); }
+  .pill:hover { background: var(--pill); }
+  .pill[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+  .turma { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; border: 1.5px dashed var(--ink-2); border-radius: 18px;
+    padding: 12px 18px; margin: 26px 0 18px; font-size: 15px; }
+  .turma code { font-size: 14.5px; background: var(--pill); padding: 3px 8px; border-radius: 8px; word-break: break-all; }
+
+  .tabela { border: 1.5px solid var(--ink); border-radius: 22px; overflow: hidden; font-size: 14.5px; }
+  .linha { display: grid; grid-template-columns: 2.3fr 1fr 1.6fr .8fr 2.1fr; }
+  .linha > div { padding: 14px 16px; border-top: 1px solid var(--line); }
+  .linha:nth-child(odd) > div { background: var(--paper-2); }
+  .linha.th > div { background: var(--ink); color: var(--paper); font-weight: 600; border-top: 0; padding: 12px 16px; }
+  .nome { display: flex; gap: 8px; align-items: center; }
+  .nome .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--ma); }
+  .nome .dot.co { background: var(--co); }
+  .nome a { font-family: var(--display); font-weight: 800; font-size: 17px; color: var(--ink); text-decoration: none; }
+  .nome a:hover { text-decoration: underline; }
+  .resumo { color: var(--ink-2); font-size: 13px; margin-top: 4px; line-height: 1.4; }
+  .codes { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .codes .tag { font-size: 12px; }
+  .acoes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .acao { border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 11px; font-size: 13px; background: var(--paper); color: var(--ink);
+    text-decoration: none; cursor: pointer; font-family: var(--body); white-space: nowrap; }
+  .acao:hover { background: var(--pill); }
+  .acao.forte { background: var(--ink); color: var(--paper); }
+  .acao.plano { background: var(--co-soft); }
+  .rot-m { display: none; }
+  .vazio { padding: 24px 16px; color: var(--ink-2); }
+  .rodape-lista { color: var(--ink-2); font-size: 14px; margin: 14px 0 50px; }
+  @media (max-width: 900px) {
+    .linha.th { display: none; }
+    .linha { grid-template-columns: 1fr 1fr; border-top: 1.5px solid var(--line); }
+    .linha:first-of-type { border-top: 0; }
+    .linha > div { border-top: 0; padding: 8px 16px; }
+    .linha > div:first-child { grid-column: 1 / -1; padding-top: 16px; }
+    .linha > div:nth-child(3), .linha > div:last-child { grid-column: 1 / -1; }
+    .linha > div:last-child { padding-bottom: 16px; }
+    .rot-m { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-bottom: 2px; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+
+<main>
+  <section class="pf-head">
+    <div class="wrap">
+      <span class="eyebrow">Para professores · <span id="qtd"></span> jogos</span>
+      <h1>Jogos com plano de aula</h1>
+      <p class="sub">Cada jogo traz ano, habilidades da BNCC, tempo de aula, plano e ficha para imprimir. Para a turma, envie o link <b>ohtopico.com.br/jogos</b>, que abre a versão para estudantes, sem códigos e com estrelas.</p>
+      <div class="filtros" role="group" aria-label="Filtrar jogos">
+        <span id="anos"></span>
+        <span class="sep"></span>
+        <button class="pill" type="button" data-comp="CO" aria-pressed="false">Computação</button>
+        <button class="pill" type="button" data-comp="MA" aria-pressed="false">Matemática</button>
+        <button class="pill" type="button" id="curto" aria-pressed="false">Até 15 min</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="turma">
+      <span>Link para a turma:</span>
+      <code id="link-turma">ohtopico.com.br/jogos/</code>
+      <button class="acao" type="button" id="copiar-turma">Copiar link</button>
+      <span class="muted small">O link segue os filtros de ano e área escolhidos aqui.</span>
+    </div>
+    <div class="tabela" id="tabela" aria-live="polite"></div>
+    <p class="rodape-lista" id="rodape"></p>
+  </div>
+</main>
+
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('jogos'); mdFooter();
+  const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo').sort((a, b) => a.titulo.localeCompare(b.titulo, 'pt-BR'));
+  const $ = s => document.querySelector(s);
+  const params = new URLSearchParams(location.search);
+  const SITE = 'https://ohtopico.com.br/';
+  let ano = [6, 7, 8, 9].includes(+params.get('ano')) ? +params.get('ano') : 0;
+  let comp = ['CO', 'MA'].includes((params.get('area') || '').toUpperCase()) ? params.get('area').toUpperCase() : '';
+  let curto = params.get('tempo') === '15';
+  // maior número de minutos do campo tempo ("10–15 min" vira 15)
+  const minutos = t => Math.max(...(String(t).match(/\d+/g) || [999]).map(Number));
+
+  $('#qtd').textContent = JOGOS.length;
+  $('#anos').outerHTML = `<button class="pill" type="button" data-ano="0" aria-pressed="false">Todos os anos</button>` +
+    [6, 7, 8, 9].map(a => `<button class="pill" type="button" data-ano="${a}" aria-pressed="false">${a}º</button>`).join('');
+
+  function copiar(txt, btn) {
+    const ok = () => { const t = btn.textContent; btn.textContent = 'Copiado'; setTimeout(() => { btn.textContent = t; }, 1600); };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok, () => prompt('Copie o link:', txt));
+    else prompt('Copie o link:', txt);
+  }
+
+  function linkTurma() {
+    const q = new URLSearchParams();
+    if (ano) q.set('ano', ano);
+    if (comp) q.set('area', comp.toLowerCase());
+    return 'ohtopico.com.br/jogos/' + (q.toString() ? '?' + q : '');
+  }
+
+  function desenhar() {
+    document.querySelectorAll('[data-ano]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.ano === ano));
+    document.querySelectorAll('[data-comp]').forEach(b => b.setAttribute('aria-pressed', b.dataset.comp === comp));
+    $('#curto').setAttribute('aria-pressed', curto);
+    $('#link-turma').textContent = linkTurma();
+    const lista = JOGOS.filter(j => (!ano || j.anos.includes(ano)) && (!comp || j.comp.includes(comp)) && (!curto || minutos(j.tempo) <= 15));
+    const cab = `<div class="linha th" role="row"><div>Jogo</div><div>Ano</div><div>Habilidades BNCC</div><div>Tempo</div><div>Para a aula</div></div>`;
+    $('#tabela').innerHTML = cab + (lista.length ? lista.map(j => {
+      const plano = j.plano && REC[j.plano], ficha = j.ficha && REC[j.ficha];
+      const max = 3, extra = j.habs.length - max;
+      return `<div class="linha">
+        <div><div class="nome"><span class="dot ${j.comp.includes('CO') ? 'co' : ''}" title="${j.comp.map(c => COMPONENTES[c].nome).join(' e ')}"></span><a href="${recUrl(j)}">${esc(j.titulo)}</a></div>
+          <div class="resumo">${esc(j.resumo)}</div></div>
+        <div><span class="rot-m">Ano</span>${anosTxt(j.anos)}</div>
+        <div><span class="rot-m">Habilidades BNCC</span><div class="codes">${j.habs.slice(0, max).map(tagHab).join('')}${extra > 0 ? `<span class="tag" title="${j.habs.slice(max).join(', ')}">+${extra}</span>` : ''}</div></div>
+        <div><span class="rot-m">Tempo</span>${esc(j.tempo)}</div>
+        <div><span class="rot-m">Para a aula</span><div class="acoes">
+          <a class="acao forte" href="${recUrl(j)}">Abrir jogo</a>
+          ${plano ? `<a class="acao plano" href="${recUrl(plano)}">Plano de aula</a>` : ''}
+          ${ficha ? `<a class="acao" href="${recUrl(ficha)}">Ficha</a>` : ''}
+          <button class="acao" type="button" data-copiar="${SITE}material-didatico/${j.url}">Copiar link</button>
+        </div></div>
+      </div>`;
+    }).join('') : '<p class="vazio">Nenhum jogo com esses filtros.</p>');
+    $('#rodape').textContent = `Mostrando ${lista.length} de ${JOGOS.length} jogos. Os planos e as fichas também estão no catálogo, com fichas e listas de exercícios de cada habilidade.`;
+    const q = new URLSearchParams();
+    if (ano) q.set('ano', ano);
+    if (comp) q.set('area', comp.toLowerCase());
+    if (curto) q.set('tempo', '15');
+    history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
+  }
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-ano]'), c = e.target.closest('[data-comp]'), cp = e.target.closest('[data-copiar]');
+    if (a) { ano = +a.dataset.ano; desenhar(); }
+    if (c) { comp = comp === c.dataset.comp ? '' : c.dataset.comp; desenhar(); }
+    if (e.target.closest('#curto')) { curto = !curto; desenhar(); }
+    if (cp) copiar(cp.dataset.copiar, cp);
+    if (e.target.closest('#copiar-turma')) copiar('https://' + linkTurma(), e.target.closest('#copiar-turma'));
+  });
+  desenhar();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
