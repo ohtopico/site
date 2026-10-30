@@ -441,6 +441,12 @@ async function main() {
       sitemap.push([`${SITE}/material-didatico/${EST['hab:' + h.codigo]}`, hash(t)]);
     }
     const jogos = await jogosE3d(browser);
+    // jogos e recursos 3D que ainda não estão no sitemap (os outros têm a data escrita à mão fora do bloco gerado)
+    const foraDoBloco = ler(path.join(RAIZ, 'sitemap.xml')).replace(/<!-- material: início[\s\S]*?<!-- material: fim -->/, '');
+    for (const r of D.RECURSOS.filter(r => (r.tipo === 'jogo' || r.tipo === '3d') && /^(jogos|3d)\/[\w-]+\.html$/.test(r.url))) {
+      const u = `${SITE}/material-didatico/${r.url}`;
+      if (!foraDoBloco.includes(`<loc>${u}</loc>`) && fs.existsSync(path.join(MD, r.url))) sitemap.push([u, hash(ler(path.join(MD, r.url)))]);
+    }
     console.log(`${estaticos.length} planos, fichas e listas e ${habs.length} habilidades (${novas} mudaram); ${jogos} jogos e recursos 3D atualizados.`);
   } finally {
     await browser.close();
