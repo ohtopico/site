@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senha Forte · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de segurança digital: compare senhas, crie uma frase-senha forte sem usar dados pessoais e aprenda hábitos que protegem as contas. BNCC EF07CO07, EF08CO08.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/senha.html">
+<meta property="og:title" content="Senha Forte · Material didático">
+<meta property="og:description" content="Jogo de segurança digital: compare senhas, crie uma frase-senha forte sem usar dados pessoais e aprenda hábitos que protegem as contas. BNCC EF07CO07, EF08CO08.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/senha.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .fase-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .fase-nav .chip[aria-current="step"] { background: var(--ink); color: var(--paper); }
+  .duelo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .opc { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 18px 14px; cursor: pointer; text-align: center;
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 18px; word-break: break-all; min-height: 92px; color: var(--ink);
+    display: flex; align-items: center; justify-content: center; box-shadow: 5px 5px 0 var(--ink); }
+  .opc:hover:not(:disabled) { background: var(--pill); }
+  .opc:disabled { cursor: default; }
+  .opc.ok { background: var(--ok-soft); border-color: var(--ok); box-shadow: 5px 5px 0 var(--ok); }
+  .opc.bad { background: var(--bad-soft); border-color: var(--bad); box-shadow: 5px 5px 0 var(--bad); }
+  .exp { margin-top: 16px; border-radius: 18px; padding: 14px 16px; font-size: 15px; }
+  .exp.ok { background: var(--ok-soft); }
+  .exp.bad { background: var(--bad-soft); }
+  .tempo { font-size: 13px; color: var(--ink-2); margin-top: 6px; font-family: var(--body); }
+  .lab { display: grid; grid-template-columns: 1fr 1.4fr; gap: 18px; align-items: start; }
+  .perfil { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 16px 18px; font-size: 15px; }
+  .perfil h3 { margin: 0 0 6px; font-size: 20px; }
+  .perfil ul { margin: 6px 0 0; padding-left: 18px; }
+  .campo { display: flex; gap: 8px; flex-wrap: wrap; }
+  .campo input { flex: 1 1 220px; font: 500 19px ui-monospace, 'Cascadia Mono', Consolas, monospace; padding: 12px 14px; border-radius: 16px;
+    border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); min-width: 0; }
+  .medidor { height: 18px; border-radius: 99px; border: 1.5px solid var(--ink); background: var(--paper); overflow: hidden; margin: 14px 0 6px; }
+  .medidor span { display: block; height: 100%; width: 0; background: var(--bad); transition: width .25s, background .25s; }
+  .nivel { font-family: var(--display); font-size: 22px; }
+  .checks { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; font-size: 15px; }
+  .checks li { display: flex; gap: 8px; align-items: flex-start; }
+  .checks .m { flex: 0 0 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .checks li.sim .m { background: var(--ok); border-color: var(--ok); color: var(--paper); }
+  .checks li.nao .m { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+  .habito { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 18px; font-size: 18px; box-shadow: 5px 5px 0 var(--ink); }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .choices .btn { min-height: 54px; font-size: 17px; }
+  .center { text-align: center; padding: 16px 0; }
+  .resumo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+  .resumo div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 10px; background: var(--paper); }
+  .resumo b { display: block; font-family: var(--display); font-size: 28px; }
+  @media (max-width: 720px) { .lab { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .duelo, .choices { grid-template-columns: 1fr; } .resumo { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>O jogo tem três etapas. Em <strong>Qual é mais forte?</strong>, escolha a senha que um computador levaria mais tempo para adivinhar. No <strong>Laboratório</strong>, crie uma senha para a personagem Lia sem usar os dados dela e veja o tempo estimado de quebra. Em <strong>Hábitos</strong>, decida se cada atitude protege a conta ou deixa a conta em risco.</p>
+    <p class="small muted">O que você digita fica só no seu navegador: nada é enviado nem guardado. Mesmo assim, não digite aqui uma senha que você usa de verdade. A estimativa considera um computador que testa 1 bilhão de senhas por segundo e listas com palavras comuns, nomes e anos.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('senha');
+(function () {
+  /* ---------- Estimativa de força (simples, para fins didáticos) ---------- */
+  const COMUNS = ['123456', '12345678', '123456789', '1234567890', '1234', '12345', '111111', '000000', '654321', '123123', 'senha', 'senha123', 'senha1234', 'password', 'qwerty', 'abc123', 'abcdef', 'asdfgh', 'iloveyou', 'teamo', 'brasil', 'futebol', 'admin', 'mudar123', 'p@ssw0rd', 'password1', 'qwerty123', '102030', '121212', 'aaaaaa'];
+  const PALAVRAS = ('brasil casa sol lua mar rio flor gato cachorro pato cavalo girafa vaca peixe bola pipa jogo time escola aula livro caderno lapis mesa porta janela ' +
+    'chuva nuvem vento fogo pedra ponte trem carro moto barco aviao bolo pao queijo milho pera uva banana laranja sorvete chocolate pipoca cafe leite ' +
+    'azul verde vermelho amarelo roxo preto branco rosa grande pequeno feliz forte rapido lento novo velho bonito danca samba violao tijolo garfo ' +
+    'faca prato copo panela farol lanterna telhado jardim praia campo cidade rua bairro amigo amiga mae pai irmao irma tia vovo bicho cobra jacare ' +
+    'tigre leao urso lobo coruja sapo abacaxi melancia limao tomate cebola alface feijao arroz ervilha bota sapato chapeu camisa meia relogio ' +
+    'mochila caneta papel tesoura cola foguete planeta estrela cometa robo computador celular internet musica filme anime desenho super mega ' +
+    'amor love vida paz deus sorte magia dragao princesa ninja mario pokemon minecraft roblox free fire master gamer boss rei rainha').split(' ');
+  const DIC = new Set(PALAVRAS);
+  const SEQ = ['0123456789', 'abcdefghijklmnopqrstuvwxyz', 'qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
+  const LEET = { '4': 'a', '@': 'a', '3': 'e', '1': 'i', '!': 'i', '0': 'o', '$': 's', '5': 's', '7': 't' };
+  const tirarAcento = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const LIA = { nome: 'Lia', bicho: 'pingo', ano: '2013', cidade: 'cachoeira', time: 'estrela', rua: 'figueira', aniversario: '0907' };
+  const DADOS_LIA = Object.values(LIA);
+
+  function analisar(s) {
+    const r = { bits: 0, len: [...s].length, avisos: [], pessoal: false, comum: false };
+    if (!s) return r;
+    const low = tirarAcento(s.toLowerCase());
+    const des = low.replace(/[4@3!10$57]/g, c => LEET[c]);
+    let pool = 0;
+    if (/[a-z]/.test(low)) pool += 26;
+    if (/[A-Z]/.test(tirarAcento(s))) pool += 26;
+    if (/[0-9]/.test(s)) pool += 10;
+    if (/[^a-zA-Z0-9]/.test(tirarAcento(s))) pool += 33;
+    const porChar = Math.log2(Math.max(pool, 10));
+    if (COMUNS.includes(low) || COMUNS.includes(des)) { r.comum = true; r.bits = 4; return r; }
+    // percorre a senha procurando palavras, dados pessoais, anos, sequências e repetições
+    let i = 0, bits = 0, palavras = 0;
+    const n = des.length;
+    while (i < n) {
+      let achou = 0, custo = 0;
+      for (const d of DADOS_LIA) {
+        if (d.length >= 4 && des.startsWith(d, i) && d.length > achou) { achou = d.length; custo = 3; }
+      }
+      if (achou) { r.pessoal = true; }
+      else {
+        for (let L = Math.min(12, n - i); L >= 3; L--) {
+          if (DIC.has(des.slice(i, i + L))) { achou = L; custo = 12.9; palavras++; break; }
+        }
+      }
+      if (!achou && (i === 0 || ' -_.'.includes(des[i - 1]))) {
+        // palavrinhas comuns entre as palavras (de, com, no, e...)
+        const m = des.slice(i).match(/^(de|da|do|das|dos|com|no|na|nos|nas|em|e|o|a|os|as|um|uma|pra|para|que|meu|minha)(?=$|[ \-_.])/);
+        if (m) { achou = m[1].length; custo = 4; }
+      }
+      if (!achou) {
+        const ano = des.slice(i).match(/^(19|20)\d\d/);
+        if (ano) { achou = 4; custo = 7; }
+      }
+      if (!achou) {
+        let L = 1;
+        while (i + L < n && des[i + L] === des[i]) L++;
+        if (L >= 3) { achou = L; custo = porChar + 2; }
+      }
+      if (!achou) {
+        for (const q of SEQ) {
+          const p = q.indexOf(des[i]);
+          if (p < 0) continue;
+          let L = 1;
+          while (i + L < n && q[p + L] === des[i + L]) L++;
+          if (L >= 3 && L > achou) { achou = L; custo = 5; }
+        }
+      }
+      // espaço, hífen ou ponto entre palavras: os programas de ataque também testam esses separadores
+      if (!achou && ' -_.'.includes(des[i])) { achou = 1; custo = 2; }
+      if (!achou) { achou = 1; custo = porChar; }
+      bits += custo; i += achou;
+    }
+    // trocar letras por símbolos (s3nh@) é a primeira coisa que os programas testam
+    if (des !== low) bits += 1;
+    if (/[A-Z]/.test(s[0] || '') && !/[A-Z]/.test(s.slice(1))) bits += 1;
+    r.bits = Math.min(bits, r.len * porChar);
+    r.palavras = palavras;
+    return r;
+  }
+  const POR_SEG = 1e9;
+  function tempoTxt(bits) {
+    const seg = Math.pow(2, bits) / 2 / POR_SEG;
+    if (seg < 1) return 'menos de 1 segundo';
+    const U = [[60, 'segundo', 'segundos'], [60, 'minuto', 'minutos'], [24, 'hora', 'horas'], [365, 'dia', 'dias'], [100, 'ano', 'anos']];
+    let v = seg;
+    for (const [lim, um, varios] of U) {
+      if (v < lim) { const k = Math.floor(v); return `${k} ${k === 1 ? um : varios}`; }
+      v /= lim;
+    }
+    v *= 100;
+    if (v < 1e3) return `${Math.floor(v)} anos`;
+    if (v < 1e6) return `${Math.floor(v / 1e3)} mil anos`;
+    if (v < 1e9) return `${Math.floor(v / 1e6)} milhões de anos`;
+    return 'mais de 1 bilhão de anos';
+  }
+  const anos = bits => Math.pow(2, bits) / 2 / POR_SEG / 31536000;
+  function nivel(r) {
+    if (!r.len) return { t: 'Digite uma senha', c: 'var(--pill-2)', p: 0 };
+    if (r.comum) return { t: 'Muito fraca', c: 'var(--bad)', p: 6 };
+    const a = anos(r.bits);
+    if (a < 1 / 365) return { t: 'Fraca', c: 'var(--bad)', p: 20 };
+    if (a < 1) return { t: 'Média', c: '#c98a00', p: 45 };
+    if (a < 100) return { t: 'Boa', c: '#5f9e2f', p: 72 };
+    return { t: 'Forte', c: 'var(--ok)', p: 100 };
+  }
+
+  /* ---------- Etapa 1: Qual é mais forte? ---------- */
+  const DUELOS = [
+    { a: 'abc123', b: 'lanterna-roxa-chuva-pato', certo: 'b', exp: 'abc123 está entre as senhas mais usadas do mundo e cai na primeira tentativa. Quatro palavras sem relação entre si formam uma senha longa e fácil de lembrar.' },
+    { a: 'P@ssw0rd', b: 'jacaré dança samba no telhado', certo: 'b', exp: 'Trocar letras por símbolos (a por @, o por 0) é a primeira coisa que os programas de ataque testam. A frase comprida vale muito mais.' },
+    { a: 'Pingo2013', b: 'caderno lua 47 ponte', certo: 'b', exp: 'Pingo é o cachorro da Lia e 2013 é o ano em que ela nasceu. Quem conhece a pessoa ou vê as redes dela tenta isso primeiro.' },
+    { a: 'Kq8!zR2m@Lp4', b: 'Kq8!zR', certo: 'a', exp: 'As duas misturam tipos de caracteres, mas a primeira tem o dobro do tamanho. Cada caractere a mais multiplica o número de tentativas.' },
+    { a: 'aaaaaaaaaaaa', b: 'pera7 milho! bota', certo: 'b', exp: 'Doze letras iguais são longas só na aparência: repetições e sequências (aaaa, 1234, qwerty) estão nas listas de ataque.' },
+    { a: 'sorvetedechocolate', b: 'sorvete de chocolate com ervilha e farol', certo: 'b', exp: 'Sorvete de chocolate é uma expressão comum. Acrescentar palavras inesperadas deixa a frase muito mais difícil de adivinhar.' },
+    { a: 'Brasil2026', b: 'girafa!Tijolo9relogio', certo: 'b', exp: 'País e ano atual é um padrão muito testado. A segunda mistura palavras sem relação, número e símbolo no meio.' },
+    { a: 'qwerty123', b: 'tomate!Foguete8 ponte', certo: 'b', exp: 'qwerty são as primeiras letras do teclado, seguidas de 123: uma das senhas mais testadas. A segunda junta palavras sem relação, símbolo, maiúscula e número.' }
+  ];
+  /* ---------- Etapa 3: Hábitos ---------- */
+  const HABITOS = [
+    { t: 'Usar a mesma senha no jogo, no e-mail e na rede social.', seguro: false, exp: 'Se um desses serviços vazar, quem pegou a senha tenta a mesma combinação nos outros. Uma senha diferente para cada conta importante.' },
+    { t: 'Ativar a verificação em duas etapas no e-mail.', seguro: true, exp: 'Mesmo que alguém descubra a senha, ainda precisa do código que chega no seu celular ou aplicativo.' },
+    { t: 'Contar a senha para o melhor amigo, para ele entrar no jogo por você.', seguro: false, exp: 'Senha é pessoal. Amizades mudam, e o amigo pode digitá-la num aparelho inseguro sem querer.' },
+    { t: 'Guardar as senhas num gerenciador de senhas, com a ajuda de um adulto.', seguro: true, exp: 'O gerenciador guarda tudo com criptografia e cria senhas fortes. Você precisa lembrar só de uma.' },
+    { t: 'Trocar a senha quando o serviço avisa que houve um vazamento.', seguro: true, exp: 'Depois de um vazamento, a senha antiga pode estar numa lista de ataque. Trocar logo fecha essa porta.' },
+    { t: 'Marcar "lembrar senha" no computador da biblioteca da escola.', seguro: false, exp: 'Em computadores compartilhados, a próxima pessoa entra direto na sua conta. Saia da conta e não salve a senha.' },
+    { t: 'Criar a senha com o nome do time e o número da camisa.', seguro: false, exp: 'Gostos que aparecem nas suas fotos e conversas são os primeiros palpites de quem quer invadir a conta.' }
+  ];
+  const SORTEIO = ['abacaxi', 'farol', 'tijolo', 'coruja', 'violão', 'nuvem', 'garfo', 'planeta', 'mochila', 'sapo', 'lanterna', 'cometa', 'pipoca', 'telhado', 'tesoura', 'melancia', 'chapéu', 'foguete', 'jacaré', 'relógio', 'ervilha', 'ponte', 'tigre', 'panela'];
+
+  const stage = document.getElementById('stage');
+  const shuffle = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  let st;
+  function novo() { st = { fase: 0, i: 0, duelos: shuffle(DUELOS.slice()).map(d => Math.random() < .5 ? d : { a: d.b, b: d.a, certo: d.certo === 'a' ? 'b' : 'a', exp: d.exp }), habitos: shuffle(HABITOS.slice()), a1: 0, a3: 0, lab: false }; render(); }
+  const FASES = ['1. Qual é mais forte?', '2. Laboratório', '3. Hábitos'];
+  const nav = () => `<div class="fase-nav">${FASES.map((f, k) => `<span class="chip" ${k === st.fase ? 'aria-current="step"' : ''}>${f}</span>`).join('')}</div>`;
+
+  function render() {
+    if (st.fase === 0) return duelo();
+    if (st.fase === 1) return laboratorio();
+    if (st.fase === 2) return habito();
+    fim();
+  }
+  function duelo() {
+    const d = st.duelos[st.i];
+    stage.innerHTML = nav() + `
+      <div class="hud"><span>Duelo <b>${st.i + 1}</b> de ${st.duelos.length}</span><span>Acertos <b>${st.a1}</b></span></div>
+      <p style="margin-top:0">Qual das duas senhas um computador levaria <strong>mais tempo</strong> para adivinhar?</p>
+      <div class="duelo" id="du">
+        <button class="opc" type="button" data-k="a">${esc(d.a)}</button>
+        <button class="opc" type="button" data-k="b">${esc(d.b)}</button>
+      </div><div id="exp"></div>`;
+    document.getElementById('du').onclick = e => {
+      const b = e.target.closest('button'); if (!b || b.disabled) return;
+      const certo = b.dataset.k === d.certo; if (certo) st.a1++;
+      document.querySelectorAll('#du .opc').forEach(o => {
+        o.disabled = true;
+        const s = o.dataset.k === 'a' ? d.a : d.b;
+        o.classList.add(o.dataset.k === d.certo ? 'ok' : 'bad');
+        o.insertAdjacentHTML('beforeend', `<span class="tempo" style="display:block">Tempo estimado: ${tempoTxt(analisar(s).bits)}</span>`);
+        o.style.flexDirection = 'column';
+      });
+      document.getElementById('exp').innerHTML = `<div class="exp ${certo ? 'ok' : 'bad'}" role="status"><strong>${certo ? 'Acertou.' : 'Não foi dessa vez.'}</strong> ${esc(d.exp)}</div>
+        <div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="nx">${st.i + 1 < st.duelos.length ? 'Próximo duelo' : 'Ir para o Laboratório'}</button></div>`;
+      const nx = document.getElementById('nx'); nx.onclick = () => { st.i++; if (st.i >= st.duelos.length) { st.fase = 1; st.i = 0; } render(); }; nx.focus();
+    };
+  }
+  function laboratorio() {
+    stage.innerHTML = nav() + `
+      <div class="lab">
+        <div class="perfil">
+          <h3>Ficha da Lia</h3>
+          <p class="small muted" style="margin:0">Personagem inventada. Tudo isso aparece nas redes sociais dela.</p>
+          <ul>
+            <li>Cachorro: <strong>Pingo</strong></li>
+            <li>Nasceu em <strong>2013</strong>, no dia <strong>09/07</strong></li>
+            <li>Mora em <strong>Cachoeira</strong>, na rua <strong>Figueira</strong></li>
+            <li>Torce pelo time <strong>Estrela</strong></li>
+          </ul>
+          <div class="note" style="margin-top:12px"><strong>Missão:</strong> criar para a Lia uma senha <strong>Forte</strong> (mais de 100 anos para quebrar), com pelo menos 12 caracteres e <strong>sem</strong> os dados da ficha.</div>
+        </div>
+        <div>
+          <label for="pw" style="font-weight:600">Senha da Lia</label>
+          <div class="campo" style="margin-top:6px">
+            <input id="pw" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Digite aqui">
+            <button class="btn ghost" type="button" id="sort">Sortear 5 palavras</button>
+          </div>
+          <div class="medidor" aria-hidden="true"><span id="bar"></span></div>
+          <div aria-live="polite"><span class="nivel" id="nv">Digite uma senha</span> <span class="muted" id="tp"></span></div>
+          <ul class="checks" id="ck"></ul>
+          <div class="btn-row" style="margin-top:16px"><button class="btn" type="button" id="ok" disabled>Missão cumprida: ir para Hábitos</button></div>
+        </div>
+      </div>`;
+    const pw = document.getElementById('pw'), okb = document.getElementById('ok');
+    function atualizar() {
+      const s = pw.value, r = analisar(s), nv = nivel(r);
+      const bar = document.getElementById('bar'); bar.style.width = nv.p + '%'; bar.style.background = nv.c;
+      document.getElementById('nv').textContent = nv.t;
+      document.getElementById('tp').textContent = r.len ? `· tempo estimado: ${tempoTxt(r.bits)}` : '';
+      const itens = [
+        [r.len >= 12, `Pelo menos 12 caracteres (agora: ${r.len})`],
+        [r.len > 0 && !r.pessoal, 'Sem dados da ficha da Lia'],
+        [r.len > 0 && !r.comum, 'Fora da lista das senhas mais usadas'],
+        [(r.palavras || 0) >= 3 || /[^a-zA-Z0-9 ]/.test(tirarAcento(s)) || /\d/.test(s), 'Três palavras sem relação, ou números e símbolos no meio'],
+        [nv.t === 'Forte', 'Mais de 100 anos para quebrar']
+      ];
+      document.getElementById('ck').innerHTML = itens.map(([v, t]) => `<li class="${v ? 'sim' : 'nao'}"><span class="m" aria-hidden="true">${v ? '✓' : '·'}</span><span>${esc(t)}<span class="sr-only">${v ? ': cumprido' : ': falta'}</span></span></li>`).join('');
+      okb.disabled = !(itens.every(x => x[0]));
+      if (!okb.disabled) st.lab = true;
+    }
+    pw.oninput = atualizar;
+    document.getElementById('sort').onclick = () => { pw.value = shuffle(SORTEIO.slice()).slice(0, 5).join(' '); atualizar(); pw.focus(); };
+    okb.onclick = () => { st.fase = 2; st.i = 0; render(); };
+    atualizar(); pw.focus();
+  }
+  function habito() {
+    const h = st.habitos[st.i];
+    stage.innerHTML = nav() + `
+      <div class="hud"><span>Atitude <b>${st.i + 1}</b> de ${st.habitos.length}</span><span>Acertos <b>${st.a3}</b></span></div>
+      <div class="habito">${esc(h.t)}</div>
+      <div class="choices" id="ch">
+        <button class="btn" type="button" data-s="1" style="background:var(--ok);border-color:var(--ok)">Protege a conta</button>
+        <button class="btn" type="button" data-s="0" style="background:var(--bad);border-color:var(--bad)">Deixa em risco</button>
+      </div><div id="exp"></div>`;
+    document.getElementById('ch').onclick = e => {
+      const b = e.target.closest('button'); if (!b || b.disabled) return;
+      const certo = (b.dataset.s === '1') === h.seguro; if (certo) st.a3++;
+      document.querySelectorAll('#ch button').forEach(x => x.disabled = true);
+      document.getElementById('exp').innerHTML = `<div class="exp ${certo ? 'ok' : 'bad'}" role="status"><strong>${certo ? 'Acertou.' : 'Não foi dessa vez.'}</strong> ${esc(h.exp)}</div>
+        <div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="nx">${st.i + 1 < st.habitos.length ? 'Próxima atitude' : 'Ver resultado'}</button></div>`;
+      const nx = document.getElementById('nx'); nx.onclick = () => { st.i++; if (st.i >= st.habitos.length) st.fase = 3; render(); }; nx.focus();
+    };
+  }
+  function fim() {
+    const total = st.duelos.length + st.habitos.length + 3;
+    const pontos = st.a1 + st.a3 + (st.lab ? 3 : 0);
+    const pct = pontos / total * 100;
+    window.MDP && MDP.registrar('senha', pct);
+    stage.innerHTML = `<div class="center">
+      <h2>${pct >= 85 ? 'Guardião das senhas' : pct >= 60 ? 'Muito bem' : 'Bom começo'}</h2>
+      <div class="resumo">
+        <div><b>${st.a1}/${st.duelos.length}</b>duelos</div>
+        <div><b>${st.lab ? 'Feita' : 'Pendente'}</b>senha da Lia</div>
+        <div><b>${st.a3}/${st.habitos.length}</b>hábitos</div>
+      </div>
+      <div class="note" style="text-align:left;margin:18px auto;max-width:620px">
+        <strong>Para levar:</strong> senha boa é longa e imprevisível. Uma frase com palavras sem relação é forte e fácil de lembrar. Nada de nome, aniversário, animal ou time. Uma senha diferente para cada conta importante e, sempre que puder, verificação em duas etapas.
+      </div>
+      <button class="btn" type="button" id="again">Jogar de novo</button></div>`;
+    document.getElementById('again').onclick = novo;
+  }
+  novo();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

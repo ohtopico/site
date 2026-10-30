@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mágica da Paridade · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de transmissão de dados: monte o truque do bit de paridade e descubra qual carta o computador virou. BNCC EF06CO07, EF06CO01.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/paridade.html">
+<meta property="og:title" content="Mágica da Paridade · Material didático">
+<meta property="og:description" content="Jogo de transmissão de dados: monte o truque do bit de paridade e descubra qual carta o computador virou. BNCC EF06CO07, EF06CO01.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/paridade.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .mesa { display: flex; justify-content: center; margin: 8px 0 4px; position: relative; }
+  .grade { display: grid; gap: 6px; padding: 14px; border-radius: 22px; background: #1f6b43; border: 1.5px solid var(--ink); position: relative; }
+  .carta { width: clamp(34px, 9vw, 48px); aspect-ratio: 3 / 4; border-radius: 10px; border: 2px solid #111; cursor: pointer; padding: 0;
+    background: #fff; transition: transform .2s, box-shadow .2s; position: relative; }
+  .carta.v { background: #ffd23f; }
+  .carta.v::after { content: ''; position: absolute; inset: 22% 22%; border-radius: 50%; border: 2px solid #111; background: #ef5a4c; }
+  .carta.par { outline: 3px dashed #fff; outline-offset: 2px; }
+  .carta:disabled { cursor: default; }
+  .carta.costas { background: repeating-linear-gradient(45deg, #2fa865 0 6px, #24834f 6px 12px); }
+  .carta.costas::after { display: none; }
+  .carta.alvo { box-shadow: 0 0 0 5px #fff, 0 0 0 9px #ef5a4c; transform: scale(1.08); z-index: 2; }
+  .carta.errou { box-shadow: 0 0 0 4px #ef5a4c; }
+  .cont { font: 700 14px var(--body); color: #fff; display: flex; align-items: center; justify-content: center; min-width: 26px; }
+  .cont.impar { color: #111; background: #ffd23f; border-radius: 99px; }
+  .linha-impar { box-shadow: inset 0 0 0 3px #ffd23f; border-radius: 8px; }
+  .msg { text-align: center; font-size: 17px; margin: 12px auto 0; max-width: 620px; }
+  .exp { margin: 14px auto 0; border-radius: 18px; padding: 14px 16px; font-size: 15px; max-width: 660px; }
+  .exp.ok { background: var(--ok-soft); }
+  .exp.bad { background: var(--bad-soft); }
+  .cortina { position: absolute; inset: 0; border-radius: 22px; background: #111; color: #fff; display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 22px; text-align: center; padding: 16px; z-index: 5; }
+  .legenda { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; font-size: 14px; color: var(--ink-2); margin-top: 8px; }
+  .legenda i { display: inline-block; width: 14px; height: 18px; border-radius: 4px; border: 1.5px solid #111; vertical-align: -3px; margin-right: 5px; }
+  .center { text-align: center; padding: 16px 0; }
+  .niveis { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .niveis span { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; background: var(--paper); }
+  .niveis span.feito { background: var(--ok); border-color: var(--ok); color: var(--paper); }
+  .niveis span.agora { background: var(--ink); color: var(--paper); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>A mesa tem cartas de duas faces: <strong>amarela com ponto</strong> e <strong>branca</strong>. A última coluna e a última linha (de contorno pontilhado) são as cartas de paridade: elas fazem cada linha e cada coluna ficar com um número <strong>par</strong> de cartas amarelas.</p>
+    <p>Nas primeiras fases o computador prepara a mesa. Depois é sua vez: clique nas cartas de paridade até todas as linhas e colunas ficarem pares. Então o computador vira uma carta escondido. Procure a linha e a coluna que ficaram ímpares: a carta virada está no cruzamento.</p>
+    <p class="small muted">É assim que computadores e redes percebem que um dado chegou com erro: junto com a mensagem vão bits extras de paridade.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('paridade');
+(function () {
+  // n = cartas de dados por lado; prepara = o jogador monta a paridade; contagem = mostra quantas amarelas há em cada linha
+  const NIVEIS = [
+    { n: 4, prepara: false, contagem: true, txt: 'O computador já preparou a mesa. Veja: toda linha e toda coluna tem um número par de cartas amarelas.' },
+    { n: 4, prepara: true, contagem: true, txt: 'Sua vez de preparar o truque: clique nas cartas pontilhadas até todas as linhas e colunas ficarem pares.' },
+    { n: 5, prepara: true, contagem: true, txt: 'Mesa maior. Prepare a paridade e depois encontre a carta virada.' },
+    { n: 5, prepara: true, contagem: false, txt: 'Agora sem a contagem ao lado. Conte com os olhos, como um mágico de verdade.' },
+    { n: 6, prepara: true, contagem: false, txt: 'Mesa de mestre: 36 cartas de dados e 13 de paridade.' },
+    { n: 6, prepara: false, contagem: false, txt: 'Desafio final: o computador prepara e vira. Encontre a carta em uma só tentativa.' }
+  ];
+  const stage = document.getElementById('stage');
+  let nv = 0, pontos = 0, g, M, etapa, tentativas, virada, dica;
+
+  function iniciarNivel() {
+    const L = NIVEIS[nv]; M = L.n + 1;
+    g = Array.from({ length: M }, () => Array(M).fill(0));
+    for (let r = 0; r < L.n; r++) for (let c = 0; c < L.n; c++) g[r][c] = Math.random() < .5 ? 1 : 0;
+    if (!L.prepara) completarParidade();
+    etapa = L.prepara ? 'preparar' : 'pronto'; tentativas = 0; virada = null; dica = false;
+    desenhar(L.txt);
+  }
+  function completarParidade() {
+    const n = M - 1;
+    for (let r = 0; r < n; r++) g[r][n] = g[r].slice(0, n).reduce((a, b) => a + b, 0) % 2;
+    for (let c = 0; c <= n; c++) { let s = 0; for (let r = 0; r < n; r++) s += g[r][c]; g[n][c] = s % 2; }
+  }
+  const somaL = r => g[r].reduce((a, b) => a + b, 0);
+  const somaC = c => g.reduce((a, row) => a + row[c], 0);
+  const ehPar = (r, c) => r === M - 1 || c === M - 1;
+
+  function desenhar(texto, extra) {
+    const L = NIVEIS[nv];
+    const mostra = L.contagem || dica;
+    const costas = etapa === 'virando';
+    let cells = '';
+    for (let r = 0; r < M; r++) {
+      for (let c = 0; c < M; c++) {
+        const v = g[r][c];
+        const clic = (etapa === 'preparar' && ehPar(r, c)) || etapa === 'procurar';
+        const cls = ['carta', v && !costas ? 'v' : '', ehPar(r, c) ? 'par' : '', costas ? 'costas' : '',
+          etapa === 'fim' && virada && virada[0] === r && virada[1] === c ? 'alvo' : ''].join(' ');
+        cells += `<button class="${cls}" type="button" data-r="${r}" data-c="${c}" ${clic ? '' : 'disabled'}
+          aria-label="Linha ${r + 1}, coluna ${c + 1}${ehPar(r, c) ? ', paridade' : ''}${costas ? '' : (v ? ', amarela' : ', branca')}"></button>`;
+      }
+      const s = somaL(r);
+      cells += `<span class="cont ${mostra && !costas && s % 2 ? 'impar' : ''}" aria-hidden="true">${mostra && !costas ? s : ''}</span>`;
+    }
+    for (let c = 0; c < M; c++) { const s = somaC(c); cells += `<span class="cont ${mostra && !costas && s % 2 ? 'impar' : ''}" aria-hidden="true">${mostra && !costas ? s : ''}</span>`; }
+    cells += '<span></span>';
+    const botoes = etapa === 'preparar' ? `<button class="btn" type="button" id="pronto">Mesa pronta: pode virar uma carta</button>`
+      : etapa === 'pronto' ? `<button class="btn" type="button" id="virar">Feche os olhos: virar uma carta</button>`
+      : etapa === 'procurar' && !L.contagem && !dica && nv < NIVEIS.length - 1 ? `<button class="btn ghost" type="button" id="dica">Mostrar a contagem (vale meio ponto)</button>`
+      : etapa === 'fim' ? `<button class="btn" type="button" id="nx">${nv + 1 < NIVEIS.length ? 'Próxima mesa' : 'Ver resultado'}</button>` : '';
+    stage.innerHTML = `
+      <div class="niveis">${NIVEIS.map((_, k) => `<span class="${k < nv ? 'feito' : k === nv ? 'agora' : ''}">${k + 1}</span>`).join('')}</div>
+      <div class="hud" style="justify-content:center"><span>Mesa <b>${nv + 1}</b> de ${NIVEIS.length}</span><span>Pontos <b>${pontos}</b></span></div>
+      <div class="mesa"><div class="grade" id="grade" style="grid-template-columns:repeat(${M}, auto) 26px">${cells}</div>${etapa === 'virando' ? '<div class="cortina" role="status">O computador está virando uma carta...</div>' : ''}</div>
+      <div class="legenda"><span><i style="background:#ffd23f"></i>amarela</span><span><i style="background:#fff"></i>branca</span><span><i style="background:#fff;outline:2px dashed #888;outline-offset:1px"></i>paridade</span></div>
+      <p class="msg" role="status">${texto || ''}</p>${extra || ''}
+      <div class="btn-row" style="justify-content:center;margin-top:14px">${botoes}</div>`;
+    const gr = document.getElementById('grade');
+    gr.onclick = e => { const b = e.target.closest('.carta'); if (!b || b.disabled) return; clicar(+b.dataset.r, +b.dataset.c); };
+    const on = (id, f) => { const el = document.getElementById(id); if (el) { el.onclick = f; el.focus(); } };
+    on('pronto', conferir); on('virar', virar); on('dica', () => { dica = true; desenhar('Contagem ligada. Procure a linha e a coluna com número ímpar.'); });
+    on('nx', () => { nv++; if (nv < NIVEIS.length) iniciarNivel(); else fim(); });
+  }
+  function clicar(r, c) {
+    if (etapa === 'preparar') { g[r][c] ^= 1; desenhar(NIVEIS[nv].txt); return; }
+    if (etapa === 'procurar') {
+      tentativas++;
+      const [vr, vc] = virada;
+      if (r === vr && c === vc) {
+        const p = (tentativas === 1 && !dica) ? 1 : .5; pontos += p;
+        etapa = 'fim';
+        desenhar(`Encontrou a carta virada na linha ${vr + 1}, coluna ${vc + 1}.`,
+          `<div class="exp ok"><strong>${p === 1 ? 'Mágica perfeita.' : 'Achou, meio ponto.'}</strong> A linha ${vr + 1} e a coluna ${vc + 1} ficaram com um número ímpar de cartas amarelas. Só uma carta está nas duas ao mesmo tempo. ${vr === M - 1 || vc === M - 1 ? 'Repare que até uma carta de paridade pode virar, e o truque continua funcionando.' : ''}</div>`);
+        return;
+      }
+      if (nv === NIVEIS.length - 1 || tentativas >= 3) {
+        etapa = 'fim';
+        desenhar('A carta virada está destacada.', `<div class="exp bad"><strong>Não foi dessa vez.</strong> A carta virada era a da linha ${vr + 1}, coluna ${vc + 1}: é o cruzamento da linha e da coluna que ficaram com número ímpar de amarelas.</div>`);
+        return;
+      }
+      desenhar(`Essa não foi a carta virada. Tente de novo (${3 - tentativas} ${3 - tentativas === 1 ? 'tentativa restante' : 'tentativas restantes'}). Dica: conte as amarelas de cada linha.`);
+      const b = document.querySelector(`.carta[data-r="${r}"][data-c="${c}"]`); if (b) b.classList.add('errou');
+    }
+  }
+  function conferir() {
+    const ruins = [];
+    for (let r = 0; r < M; r++) if (somaL(r) % 2) ruins.push(`linha ${r + 1}`);
+    for (let c = 0; c < M; c++) if (somaC(c) % 2) ruins.push(`coluna ${c + 1}`);
+    if (ruins.length) { desenhar(`Ainda ficou ímpar: ${ruins.join(', ')}. Ajuste as cartas pontilhadas.`); return; }
+    etapa = 'pronto'; desenhar('Mesa pronta. Todas as linhas e colunas estão pares.');
+  }
+  function virar() {
+    etapa = 'virando'; desenhar('');
+    setTimeout(() => {
+      virada = [Math.floor(Math.random() * M), Math.floor(Math.random() * M)];
+      // na maior parte das vezes vira uma carta de dados; às vezes uma de paridade
+      if (Math.random() < .8) virada = [Math.floor(Math.random() * (M - 1)), Math.floor(Math.random() * (M - 1))];
+      g[virada[0]][virada[1]] ^= 1;
+      etapa = 'procurar';
+      desenhar(nv === NIVEIS.length - 1 ? 'Uma carta foi virada. Você tem uma única tentativa.' : 'Uma carta foi virada. Qual foi? Clique nela.');
+    }, 1400);
+  }
+  function fim() {
+    const pct = pontos / NIVEIS.length * 100;
+    window.MDP && MDP.registrar('paridade', pct);
+    stage.innerHTML = `<div class="center">
+      <h2>${pct >= 85 ? 'Mágico dos bits' : pct >= 60 ? 'Muito bem' : 'Bom começo'}</h2>
+      <p style="font-size:20px"><b>${pontos}</b> de ${NIVEIS.length} pontos</p>
+      <div class="note" style="text-align:left;margin:18px auto;max-width:640px">
+        <strong>O segredo do truque:</strong> quando uma carta muda, a linha e a coluna dela passam a ter um número ímpar de amarelas. Os computadores fazem o mesmo com zeros e uns: enviam bits de paridade junto com os dados e, se algo chegar trocado no caminho, conseguem perceber o erro e até descobrir onde ele está.
+      </div>
+      <div class="note" style="text-align:left;margin:0 auto 18px;max-width:640px">
+        <strong>Para fazer na sala:</strong> com 25 cartões de duas cores, um estudante monta a mesa, outro completa a paridade e um terceiro vira uma carta enquanto o mágico está de costas.
+      </div>
+      <button class="btn" type="button" id="again">Jogar de novo</button></div>`;
+    document.getElementById('again').onclick = () => { nv = 0; pontos = 0; iniciarNivel(); };
+  }
+  iniciarNivel();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

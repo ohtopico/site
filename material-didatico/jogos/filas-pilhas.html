@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refeitório das Filas e Pilhas · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de estruturas de dados: organize a fila do lanche e a pilha de bandejas e descubra quando usar fila ou pilha. BNCC EF08CO02, EF07CO03.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/filas-pilhas.html">
+<meta property="og:title" content="Refeitório das Filas e Pilhas · Material didático">
+<meta property="og:description" content="Jogo de estruturas de dados: organize a fila do lanche e a pilha de bandejas e descubra quando usar fila ou pilha. BNCC EF08CO02, EF07CO03.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/filas-pilhas.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .fase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .fase-nav span { border: 1.5px solid var(--ink); border-radius: 99px; padding: 2px 12px; font-size: 13px; font-weight: 600; background: var(--paper); }
+  .fase-nav span.feito { background: var(--ok); border-color: var(--ok); color: var(--paper); }
+  .fase-nav span.agora { background: var(--ink); color: var(--paper); }
+  .evento { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 16px; font-size: 18px; margin-bottom: 14px; }
+  .evento b { font-family: var(--display); }
+  .cena { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 16px; overflow-x: auto; }
+  .fila { display: flex; align-items: flex-end; gap: 10px; min-height: 120px; }
+  .balcao { flex: 0 0 auto; width: 70px; height: 96px; border: 2px solid #111; border-radius: 10px 10px 0 0; background: #ef5a4c; color: #fff;
+    font: 700 12px var(--body); display: flex; align-items: center; justify-content: center; text-align: center; padding: 4px; }
+  .pessoa { flex: 0 0 auto; border: 0; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--ink); font: 600 13px var(--body); }
+  .pessoa .cab { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #111; background: #f2c79b; }
+  .pessoa .corpo { width: 46px; height: 52px; border-radius: 16px 16px 6px 6px; border: 2px solid #111; display: flex; align-items: center; justify-content: center; font: 800 16px var(--display); color: #111; }
+  .pessoa:hover:not(:disabled) .corpo { transform: translateY(-4px); }
+  .pessoa:disabled { cursor: default; }
+  .seta { font-size: 13px; color: var(--ink-2); margin-top: 8px; }
+  .pilha-cena { display: flex; gap: 24px; align-items: flex-end; justify-content: center; flex-wrap: wrap; }
+  .pilha { display: flex; flex-direction: column-reverse; align-items: center; gap: 3px; min-height: 60px; padding-bottom: 6px; border-bottom: 6px solid #111; min-width: 170px; }
+  .bandeja { width: 160px; height: 26px; border-radius: 8px; border: 2px solid #111; cursor: pointer; padding: 0; font: 700 13px var(--body); color: #111; }
+  .bandeja:disabled { cursor: default; }
+  .bandeja:hover:not(:disabled) { transform: translateX(6px); }
+  .k0 { background: #2fa865; } .k1 { background: #ffd23f; } .k2 { background: #ef5a4c; } .k3 { background: #f2efe6; } .k4 { background: #8fd18a; }
+  .rot { font-size: 13px; color: var(--ink-2); text-align: center; }
+  .situacao { border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 18px; font-size: 18px; box-shadow: 5px 5px 0 var(--ink); }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .choices .btn { min-height: 54px; font-size: 17px; }
+  .exp { margin-top: 14px; border-radius: 18px; padding: 14px 16px; font-size: 15px; }
+  .exp.ok { background: var(--ok-soft); }
+  .exp.bad { background: var(--bad-soft); }
+  .esteira { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; min-height: 44px; }
+  .mini { width: 44px; height: 34px; border-radius: 8px; border: 2px solid #111; display: inline-flex; align-items: center; justify-content: center; font: 800 16px var(--display); color: #111; }
+  .mini.vazio { border-style: dashed; background: transparent; color: var(--ink-3); }
+  .puzzle { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: end; }
+  .puzzle h4 { margin: 0 0 6px; font-size: 15px; }
+  .center { text-align: center; padding: 16px 0; }
+  .resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0; }
+  .resumo div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 10px; background: var(--paper); font-size: 14px; }
+  .resumo b { display: block; font-family: var(--display); font-size: 26px; }
+  @media (max-width: 620px) { .puzzle { grid-template-columns: 1fr; } .resumo { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .choices { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p><strong>1. Fila do lanche:</strong> estudantes chegam no fim da fila. Quando a merendeira chamar, clique em quem deve ser servido. Na <strong>fila</strong>, o primeiro a chegar é o primeiro a sair.</p>
+    <p><strong>2. Pilha de bandejas:</strong> bandejas limpas são colocadas em cima da pilha. Quando um estudante pegar uma, clique na bandeja certa. Na <strong>pilha</strong>, a última a entrar é a primeira a sair.</p>
+    <p><strong>3. Fila ou pilha?</strong> Decida qual estrutura combina com cada situação do dia a dia e da computação.</p>
+    <p><strong>4. Desafio do balcão:</strong> as bandejas chegam numeradas pela esteira. Use a pilha para entregá-las na ordem pedida.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('filas-pilhas');
+(function () {
+  const NOMES = ['Ana', 'Bruno', 'Carla', 'Diego', 'Elisa', 'Fábio', 'Gabi', 'Hugo', 'Iara', 'Joel', 'Kauã', 'Lara', 'Marcos', 'Nina', 'Otávio', 'Paula'];
+  const CORES = ['verde', 'amarela', 'vermelha', 'creme', 'verde-clara'];
+  const SITUACOES = [
+    { t: 'A impressora da escola recebe três trabalhos para imprimir.', r: 'fila', exp: 'Os trabalhos são impressos na ordem em que chegaram: fila de impressão.' },
+    { t: 'O botão Desfazer do editor de texto volta a última coisa que você fez.', r: 'pilha', exp: 'Cada ação vai para o topo de uma pilha. Desfazer tira a mais recente primeiro.' },
+    { t: 'Mensagens de um grupo chegam e aparecem na ordem em que foram enviadas.', r: 'fila', exp: 'A primeira mensagem enviada é a primeira entregue: uma fila de mensagens.' },
+    { t: 'O botão Voltar do navegador leva para a página anterior.', r: 'pilha', exp: 'O histórico de navegação é uma pilha: a página mais recente é a primeira a sair quando você volta.' },
+    { t: 'Senhas de atendimento na secretaria da escola.', r: 'fila', exp: 'Quem pegou a senha antes é chamado antes. Fila clássica.' },
+    { t: 'Uma pilha de pratos na pia esperando para ser lavada.', r: 'pilha', exp: 'Você lava primeiro o prato de cima, que foi o último colocado.' },
+    { t: 'Músicas adicionadas em "tocar a seguir", uma depois da outra, numa playlist.', r: 'fila', exp: 'Elas tocam na ordem em que entraram: primeiro a entrar, primeiro a tocar.' }
+  ];
+  const DESAFIOS = [[2, 1, 3], [3, 2, 1, 4], [2, 4, 3, 1, 5]];
+  const FASES = ['Fila do lanche', 'Pilha de bandejas', 'Fila ou pilha?', 'Desafio do balcão'];
+  const stage = document.getElementById('stage');
+  const shuffle = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  let st;
+
+  function novo() {
+    st = { fase: 0, pts: [0, 0, 0, 0], rodada: 0, nomes: shuffle(NOMES.slice()), fila: [], pilha: [], prox: 0, evento: '', aguardando: false, sit: shuffle(SITUACOES.slice()).slice(0, 6), d: 0 };
+    iniciarFila();
+  }
+  const nav = () => `<div class="fase-nav">${FASES.map((x, k) => `<span class="${k < st.fase ? 'feito' : k === st.fase ? 'agora' : ''}">${k + 1}. ${x}</span>`).join('')}</div>`;
+  function proximaFase() { st.fase++; st.rodada = 0; [null, iniciarPilha, situacao, iniciarDesafio, fim][st.fase](); }
+  const botaoSeguir = rot => `<div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="nx">${rot}</button></div>`;
+
+  /* ---------- Fase 1: fila ---------- */
+  function iniciarFila() { st.fila = st.nomes.splice(0, 3); passoFila(); }
+  function passoFila() {
+    if (st.rodada >= 5) { telaFila('A hora do lanche acabou.', `<div class="exp ok">Você acertou <b>${st.pts[0]}</b> de 5. Na fila, quem chega entra no <strong>fim</strong> e quem é atendido sai do <strong>começo</strong>.</div>` + botaoSeguir('Ir para a pilha de bandejas'), 'fim'); return; }
+    const chegam = st.fila.length < 2 ? 2 : Math.floor(Math.random() * 3);
+    const novos = st.nomes.splice(0, chegam); st.fila.push(...novos);
+    if (!st.nomes.length) st.nomes = shuffle(NOMES.filter(n => !st.fila.includes(n)));
+    const txt = (novos.length ? `${novos.length > 1 ? 'Chegaram' : 'Chegou'} <b>${novos.map(esc).join('</b> e <b>')}</b>. ` : '') + 'A merendeira chama: <b>"Próximo!"</b> Quem pega o lanche agora?';
+    telaFila(txt);
+  }
+  function telaFila(txt, extra, travar) {
+    stage.innerHTML = nav() + `
+      <div class="hud"><span>Chamada <b>${Math.min(st.rodada + 1, 5)}</b> de 5</span><span>Acertos <b>${st.pts[0]}</b></span></div>
+      <div class="evento" role="status">${txt}</div>
+      <div class="cena"><div class="fila" id="fila"><div class="balcao">Balcão do lanche</div>
+        ${st.fila.map((n, i) => `<button class="pessoa" type="button" data-i="${i}" ${travar ? 'disabled' : ''} aria-label="${esc(n)}, posição ${i + 1} na fila"><span class="cab"></span><span class="corpo k${NOMES.indexOf(n) % 5}">${esc(n[0])}</span>${esc(n)}</button>`).join('')}
+      </div><div class="seta">Começo da fila (sai daqui) ← → Fim da fila (entra aqui)</div></div>${extra || ''}`;
+    const fi = document.getElementById('fila');
+    if (!travar) fi.onclick = e => { const b = e.target.closest('.pessoa'); if (!b || b.disabled) return; servir(+b.dataset.i); };
+    const nx = document.getElementById('nx'); if (nx) { nx.onclick = travar === 'fim' ? proximaFase : passoFila; nx.focus(); }
+  }
+  function servir(i) {
+    const certo = i === 0, quem = st.fila[0];
+    if (certo) st.pts[0]++;
+    st.fila.shift(); st.rodada++;
+    telaFila(certo ? `<b>${esc(quem)}</b> pegou o lanche. Certo: estava no começo da fila.` : `Quem estava esperando há mais tempo era <b>${esc(quem)}</b>, no começo da fila. Furar a fila não vale.`,
+      `<div class="exp ${certo ? 'ok' : 'bad'}">${certo ? 'Primeiro a chegar, primeiro a sair.' : 'Na fila, sai sempre quem está no começo.'}</div>` + botaoSeguir(st.rodada >= 5 ? 'Ver como foi' : 'Próxima chamada'), true);
+  }
+
+  /* ---------- Fase 2: pilha ---------- */
+  function iniciarPilha() { st.pilha = []; st.prox = 1; for (let k = 0; k < 3; k++) st.pilha.push(st.prox++); passoPilha(); }
+  const corB = n => (n - 1) % 5;
+  function passoPilha() {
+    if (st.rodada >= 5) { telaPilha('O almoço terminou.', `<div class="exp ok">Você acertou <b>${st.pts[1]}</b> de 5. Na pilha, tudo entra e sai pelo <strong>topo</strong>: a última bandeja guardada é a primeira a ser usada.</div>` + botaoSeguir('Ir para Fila ou pilha?'), 'fim'); return; }
+    const lav = st.pilha.length < 2 ? 2 : Math.floor(Math.random() * 3), novas = [];
+    for (let k = 0; k < lav; k++) { st.pilha.push(st.prox); novas.push(st.prox); st.prox++; }
+    const txt = (novas.length ? `A cozinha guardou ${novas.length > 1 ? 'as bandejas' : 'a bandeja'} <b>${novas.map(n => n + ' (' + CORES[corB(n)] + ')').join('</b> e <b>')}</b>. ` : '') + 'Um estudante vai pegar uma bandeja. Qual ele consegue pegar?';
+    telaPilha(txt);
+  }
+  function telaPilha(txt, extra, travar) {
+    stage.innerHTML = nav() + `
+      <div class="hud"><span>Estudante <b>${Math.min(st.rodada + 1, 5)}</b> de 5</span><span>Acertos <b>${st.pts[1]}</b></span></div>
+      <div class="evento" role="status">${txt}</div>
+      <div class="cena"><div class="pilha-cena"><div><div class="pilha" id="pilha">
+        ${st.pilha.map((n, i) => `<button class="bandeja k${corB(n)}" type="button" data-i="${i}" ${travar ? 'disabled' : ''} aria-label="Bandeja ${n}, ${i === st.pilha.length - 1 ? 'no topo' : 'posição ' + (i + 1) + ' de baixo para cima'}">Bandeja ${n}</button>`).join('')}
+      </div><div class="rot">Topo em cima. Entra e sai por cima.</div></div></div></div>${extra || ''}`;
+    const pi = document.getElementById('pilha');
+    if (!travar) pi.onclick = e => { const b = e.target.closest('.bandeja'); if (!b || b.disabled) return; pegar(+b.dataset.i); };
+    const nx = document.getElementById('nx'); if (nx) { nx.onclick = travar === 'fim' ? proximaFase : passoPilha; nx.focus(); }
+  }
+  function pegar(i) {
+    const topo = st.pilha.length - 1, certo = i === topo, n = st.pilha[topo];
+    if (certo) st.pts[1]++;
+    st.pilha.pop(); st.rodada++;
+    telaPilha(certo ? `Pegou a bandeja <b>${n}</b>, que estava no topo.` : `Puxar uma bandeja do meio derruba a pilha. A que dava para pegar era a <b>${n}</b>, no topo.`,
+      `<div class="exp ${certo ? 'ok' : 'bad'}">${certo ? 'Última a entrar, primeira a sair.' : 'Na pilha, só se mexe no topo.'}</div>` + botaoSeguir(st.rodada >= 5 ? 'Ver como foi' : 'Próximo estudante'), true);
+  }
+
+  /* ---------- Fase 3: fila ou pilha? ---------- */
+  function situacao() {
+    if (st.rodada >= st.sit.length) return proximaFase();
+    const s = st.sit[st.rodada];
+    stage.innerHTML = nav() + `
+      <div class="hud"><span>Situação <b>${st.rodada + 1}</b> de ${st.sit.length}</span><span>Acertos <b>${st.pts[2]}</b></span></div>
+      <div class="situacao">${esc(s.t)}</div>
+      <div class="choices" id="ch"><button class="btn" type="button" data-r="fila">Fila</button><button class="btn" type="button" data-r="pilha" style="background:#ef5a4c;border-color:#111;color:#111">Pilha</button></div>
+      <div id="exp"></div>`;
+    document.getElementById('ch').onclick = e => {
+      const b = e.target.closest('button'); if (!b || b.disabled) return;
+      const certo = b.dataset.r === s.r; if (certo) st.pts[2]++;
+      document.querySelectorAll('#ch button').forEach(x => x.disabled = true);
+      document.getElementById('exp').innerHTML = `<div class="exp ${certo ? 'ok' : 'bad'}" role="status"><strong>${certo ? 'Acertou.' : 'Não foi dessa vez.'} É ${s.r}.</strong> ${esc(s.exp)}</div>` + botaoSeguir(st.rodada + 1 < st.sit.length ? 'Próxima situação' : 'Ir para o desafio do balcão');
+      const nx = document.getElementById('nx'); nx.onclick = () => { st.rodada++; situacao(); }; nx.focus();
+    };
+  }
+
+  /* ---------- Fase 4: desafio do balcão (permutação com pilha) ---------- */
+  function iniciarDesafio() { const alvo = DESAFIOS[st.d]; st.pz = { alvo, esteira: alvo.slice().sort((a, b) => a - b), pilha: [], saida: [], erros: 0 }; telaDesafio('Use os botões para entregar as bandejas na ordem pedida.'); }
+  function telaDesafio(msg, extra, travar) {
+    const p = st.pz;
+    const mini = (n, extraCls) => `<span class="mini k${corB(n)} ${extraCls || ''}">${n}</span>`;
+    stage.innerHTML = nav() + `
+      <div class="hud"><span>Desafio <b>${st.d + 1}</b> de ${DESAFIOS.length}</span><span>Pontos <b>${st.pts[3]}</b></span></div>
+      <div class="evento">Pedido do balcão: ${p.alvo.map((n, k) => mini(n, k < p.saida.length ? '' : '')).join(' ')}</div>
+      <div class="cena"><div class="puzzle">
+        <div><h4>Esteira (chega na ordem)</h4><div class="esteira">${p.esteira.length ? p.esteira.map(n => mini(n)).join('') : '<span class="muted small">vazia</span>'}</div></div>
+        <div><h4 style="text-align:center">Pilha</h4><div class="pilha" style="min-width:90px">${p.pilha.map(n => mini(n)).join('')}</div></div>
+        <div><h4>Entregues</h4><div class="esteira">${p.alvo.map((n, k) => k < p.saida.length ? mini(p.saida[k]) : '<span class="mini vazio">?</span>').join('')}</div></div>
+      </div></div>
+      <p class="feedback" role="status">${msg}</p>
+      ${travar ? '' : `<div class="btn-row"><button class="btn" type="button" id="push" ${p.esteira.length ? '' : 'disabled'}>Empilhar a próxima da esteira</button>
+        <button class="btn ghost" type="button" id="pop" ${p.pilha.length ? '' : 'disabled'}>Entregar a do topo</button></div>`}${extra || ''}`;
+    if (!travar) {
+      document.getElementById('push').onclick = () => { p.pilha.push(p.esteira.shift()); telaDesafio('Bandeja empilhada.'); };
+      document.getElementById('pop').onclick = entregar;
+    }
+    const nx = document.getElementById('nx');
+    if (nx) { nx.onclick = () => { st.d++; st.d < DESAFIOS.length ? iniciarDesafio() : proximaFase(); }; nx.focus(); }
+    const rt = document.getElementById('rt'); if (rt) rt.onclick = () => { const e = st.pz.erros; iniciarDesafio(); st.pz.erros = e; telaDesafio('Recomeçou. Pense antes de entregar: a pilha só libera o topo.'); };
+  }
+  function entregar() {
+    const p = st.pz, n = p.pilha[p.pilha.length - 1], quer = p.alvo[p.saida.length];
+    if (n !== quer) {
+      p.erros++;
+      telaDesafio(`O balcão pediu a bandeja ${quer}, mas no topo está a ${n}.`, `<div class="exp bad">Dica: só empilhe até a bandeja pedida chegar ao topo, e entregue logo.</div><div class="btn-row" style="margin-top:12px"><button class="btn" type="button" id="rt">Tentar de novo</button></div>`, true);
+      return;
+    }
+    p.pilha.pop(); p.saida.push(n);
+    if (p.saida.length === p.alvo.length) {
+      const pt = p.erros ? .5 : 1; st.pts[3] += pt;
+      telaDesafio('Pedido entregue na ordem certa.', `<div class="exp ok"><strong>${pt === 1 ? 'Sem nenhum erro.' : 'Conseguiu, meio ponto.'}</strong> Programas usam pilhas assim para inverter e reorganizar a ordem dos dados.</div>` + botaoSeguir(st.d + 1 < DESAFIOS.length ? 'Próximo pedido' : 'Ver resultado'), true);
+      return;
+    }
+    telaDesafio(`Entregou a bandeja ${n}.`);
+  }
+
+  function fim() {
+    const max = [5, 5, st.sit.length, DESAFIOS.length];
+    const pct = st.pts.reduce((a, b) => a + b, 0) / max.reduce((a, b) => a + b, 0) * 100;
+    window.MDP && MDP.registrar('filas-pilhas', pct);
+    stage.innerHTML = `<div class="center">
+      <h2>${pct >= 85 ? 'Chefe do refeitório' : pct >= 60 ? 'Muito bem' : 'Bom começo'}</h2>
+      <div class="resumo">${FASES.map((x, k) => `<div><b>${st.pts[k]}/${max[k]}</b>${x}</div>`).join('')}</div>
+      <div class="note" style="text-align:left;margin:18px auto;max-width:640px">
+        <strong>Para levar:</strong> fila e pilha são estruturas de dados, jeitos de organizar informações num programa. A <strong>fila</strong> atende na ordem de chegada (impressora, mensagens, senhas). A <strong>pilha</strong> trabalha sempre pelo topo (desfazer, voltar no navegador, pratos na pia).
+      </div>
+      <button class="btn" type="button" id="again">Jogar de novo</button></div>`;
+    document.getElementById('again').onclick = novo;
+  }
+  novo();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
