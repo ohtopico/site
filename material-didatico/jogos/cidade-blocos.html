@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cidade em Blocos · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de exploração numa cidade de blocos de montar: responda os totens de desafio, junte peças, reconstrua os marcos e libere os seis bairros. Algoritmos, dados, depuração, redes, segurança e IA. BNCC 7º ao 9º ano.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/cidade-blocos.html">
+<meta property="og:title" content="Cidade em Blocos · Material didático">
+<meta property="og:description" content="Explore uma cidade de blocos de montar, responda os totens de desafio e reconstrua os marcos dos seis bairros. Algoritmos, dados, depuração, redes, segurança e IA.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/cidade-blocos.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .cb-tela { position: relative; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: #e7efd9; user-select: none; -webkit-user-select: none; }
+  .cb-tela canvas { display: block; width: 100%; touch-action: none; cursor: pointer; outline: none; }
+  .cb-hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; align-content: flex-start; pointer-events: none; }
+  .cb-pill { background: #23272b; color: #fff; border: 3px solid #ffd23f; border-radius: 14px; padding: 4px 12px 5px; display: flex; align-items: center; gap: 8px; box-shadow: 0 3px 0 rgba(0,0,0,.25); min-height: 44px; box-sizing: border-box; }
+  .cb-pill svg { width: 22px; height: 22px; flex: none; }
+  .cb-pill .lb { display: block; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: #cfcac0; font-weight: 600; line-height: 1.1; }
+  .cb-pill .vl { display: block; font-family: var(--display); font-size: 19px; line-height: 1.1; white-space: nowrap; }
+  .cb-pill.vidas { border-color: #e8423a; gap: 4px; }
+  .cb-pill.vidas svg { width: 20px; height: 20px; }
+  .cb-pill.pontos { border-color: #ffd23f; } .cb-pill.combo { border-color: #f08a24; } .cb-pill.pecas { border-color: #e8423a; }
+  .cb-pill.desaf { border-color: #2fa865; } .cb-pill.bairro { border-color: #ffd23f; } .cb-pill.missao { border-color: #2fa865; }
+  .cb-pill.missao .vl { font-size: 15px; font-family: Lexend, sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
+  .cb-pill.combo.quente { animation: cbPulso .5s; }
+  @keyframes cbPulso { 50% { transform: scale(1.08); } }
+  .cb-bts { margin-left: auto; display: flex; gap: 6px; pointer-events: auto; }
+  .cb-bts button { width: 44px; height: 44px; border-radius: 12px; border: 3px solid #23272b; background: #3a4046; color: #fff; display: grid; place-items: center; cursor: pointer; box-shadow: 0 3px 0 rgba(0,0,0,.25); padding: 0; }
+  .cb-bts button:hover { background: #4a5158; }
+  .cb-bts button[aria-pressed="false"] { opacity: .55; }
+  .cb-bts svg { width: 22px; height: 22px; }
+  .cb-mini { position: absolute; right: 10px; bottom: 10px; width: 210px; background: #ffd23f; border: 3px solid #23272b; border-radius: 16px; padding: 8px 8px 4px; box-shadow: 0 3px 0 rgba(0,0,0,.25); pointer-events: none; }
+  .cb-mini canvas { display: block; width: 100%; height: auto; border-radius: 10px; }
+  .cb-mini .nm { text-align: center; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: #23272b; padding-top: 4px; }
+  .cb-ajuda { position: absolute; left: 10px; bottom: 10px; background: rgba(255,255,255,.88); border: 1.5px solid #23272b; border-radius: 12px; padding: 6px 10px; font-size: 13px; pointer-events: none; max-width: 330px; }
+  .cb-dlg { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(20,24,28,.38); padding: 14px; }
+  .cb-dlg[hidden] { display: none; }
+  .cb-card { width: min(560px, 100%); max-height: 100%; overflow: auto; background: #fffdf6; color: #111; border: 3px solid #23272b; border-radius: 18px; padding: 14px 16px; box-shadow: 0 6px 0 rgba(0,0,0,.25); box-sizing: border-box; }
+  .cb-card .quem { font-family: var(--display); font-size: 19px; color: #166c40; margin-bottom: 4px; }
+  .cb-card .tag2 { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; background: #ffd23f; border: 1.5px solid #111; border-radius: 99px; padding: 2px 10px; margin-bottom: 6px; }
+  .cb-card .fala { font-size: 16px; line-height: 1.45; }
+  .cb-card .acoes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+  .cb-card .btn { min-height: 42px; padding: 8px 16px; font-size: 15px; background: #111; color: #fff; border-color: #111; }
+  .cb-card .btn.ghost { background: #fff; color: #111; }
+  .cb-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .cb-ops button { text-align: left; border: 1.5px solid #111; border-radius: 12px; background: #fff; color: #111; padding: 9px 12px; font: inherit; font-size: 15px; cursor: pointer; min-height: 48px; }
+  .cb-ops button:hover:not(:disabled) { background: #fff4c2; }
+  .cb-ops button.certa { background: #e3f4e8; border-color: #157f3b; }
+  .cb-ops button.errada { background: #fbe6ea; border-color: #c21f3a; }
+  .cb-ops button:disabled { cursor: default; }
+  .cb-exp { margin-top: 10px; padding: 8px 12px; border-radius: 12px; font-size: 14.5px; }
+  .cb-exp.ok { background: #e3f4e8; } .cb-exp.bad { background: #fbe6ea; }
+  .cb-ganho { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .cb-ganho span { font-size: 13px; font-weight: 600; background: #fff4c2; border: 1.5px solid #111; border-radius: 99px; padding: 2px 10px; }
+  .cb-toast { position: absolute; z-index: 3; top: 70px; left: 50%; transform: translate(-50%, -6px); max-width: 320px; background: #ffd23f; color: #111; border: 2.5px solid #23272b; border-radius: 14px;
+    box-shadow: 0 3px 0 rgba(0,0,0,.25); padding: 8px 14px; font-size: 14px; pointer-events: none; opacity: 0; transition: opacity .3s, transform .3s; text-align: center; }
+  .cb-toast.on { opacity: 1; transform: translate(-50%, 0); }
+  .cb-toast strong { display: block; font-family: var(--display); font-size: 16px; }
+  .cb-bairros { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+  .cb-bairros li { display: grid; grid-template-columns: 26px 1fr auto; gap: 8px; align-items: center; font-size: 14px; }
+  .cb-bairros .n { width: 26px; height: 26px; border-radius: 8px; border: 1.5px solid #111; display: grid; place-items: center; font-family: var(--display); font-size: 13px; }
+  .cb-bairros .st { font-size: 12.5px; color: #4a4a4a; }
+  .cb-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  .cb-box { border: 1.5px solid var(--ink); border-radius: 16px; background: var(--paper); padding: 12px 14px; }
+  .cb-box h2 { font-size: 16px; margin: 0 0 6px; font-family: var(--display); }
+  .cb-box p { margin: 0; font-size: 14.5px; }
+  .cb-missao { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 14px; }
+  .cb-missao li { display: flex; gap: 8px; align-items: flex-start; }
+  .cb-missao li::before { content: ''; flex: none; width: 14px; height: 14px; margin-top: 3px; border: 1.5px solid var(--ink); border-radius: 4px; }
+  .cb-missao li.ok { color: var(--ink-3); text-decoration: line-through; }
+  .cb-missao li.ok::before { background: var(--ok); border-color: var(--ok); }
+  .cb-conqs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+  .cb-conqs li { display: grid; grid-template-columns: 30px 1fr; gap: 8px; align-items: center; font-size: 13.5px; line-height: 1.3; }
+  .cb-conqs .med { width: 30px; height: 30px; border-radius: 8px; border: 1.5px dashed var(--ink-3); display: grid; place-items: center; font-family: var(--display); font-size: 13px; color: var(--ink-3); }
+  .cb-conqs li.on .med { border: 2px solid #111; background: #ffd23f; color: #111; }
+  .cb-conqs span.d { display: block; color: var(--ink-3); }
+  .cb-dicas { margin: 6px 0 0; padding-left: 18px; font-size: 14px; display: grid; gap: 6px; }
+  .cb-rel { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 13.5px; }
+  .cb-rel td, .cb-rel th { padding: 3px 0; border-bottom: 1px solid var(--line); text-align: left; }
+  .cb-rel td:last-child, .cb-rel th:last-child { text-align: right; }
+  .cb-cod { width: 100%; box-sizing: border-box; font-family: ui-monospace, Consolas, monospace; font-size: 12px; border: 1.5px solid var(--line); border-radius: 10px; padding: 6px 8px; background: var(--paper-2); color: var(--ink); resize: vertical; }
+  .cb-mini-btns .btn { min-height: 38px; padding: 6px 14px; font-size: 14px; }
+  .cb-controles { display: none; margin-top: 12px; justify-content: center; }
+  .cb-pad { display: grid; grid-template-columns: repeat(3, 58px); grid-template-rows: repeat(2, 58px); gap: 6px; }
+  .cb-pad button { border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); color: var(--ink); font-size: 22px; font-weight: 700; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .cb-pad button:active { background: var(--pill-2); }
+  .cb-pad .c { grid-column: 2; grid-row: 1; } .cb-pad .e { grid-column: 1; grid-row: 2; } .cb-pad .b { grid-column: 2; grid-row: 2; } .cb-pad .d { grid-column: 3; grid-row: 2; }
+  .cb-fim { text-align: center; padding: 10px 4px; }
+  .cb-fim h2 { font-size: 30px; margin: 0 0 8px; }
+  .cb-mapa-grande { width: 100%; height: auto; display: block; border-radius: 12px; border: 2px solid #23272b; margin-top: 8px; }
+  @media (max-width: 980px) { .cb-grade { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) {
+    .cb-grade { grid-template-columns: 1fr; }
+    .cb-pill { min-height: 36px; padding: 3px 8px; border-width: 2px; border-radius: 11px; gap: 5px; }
+    .cb-pill .lb { display: none; }
+    .cb-pill .vl { font-size: 15px; }
+    .cb-pill svg { width: 16px; height: 16px; }
+    .cb-pill.vidas svg { width: 14px; height: 14px; }
+    .cb-pill.bairro, .cb-pill.missao { display: none; }
+    .cb-bts { position: absolute; left: 0; bottom: 0; margin: 0; }
+    .cb-hud { bottom: 10px; }
+    .cb-bts button { width: 36px; height: 36px; border-width: 2px; }
+    .cb-bts svg { width: 18px; height: 18px; }
+    .cb-mini { width: 92px; padding: 4px; border-width: 2px; border-radius: 12px; }
+    .cb-mini .nm { display: none; }
+    .cb-ajuda { display: none; }
+    .cb-toast { top: 56px; }
+  }
+  @media (hover: none), (max-width: 760px) { .cb-controles { display: flex; } }
+  @media (max-width: 520px) { .cb-ops { grid-template-columns: 1fr; } .cb-card .fala { font-size: 15px; } .game-stage { padding: 10px; } }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Uma tempestade desmontou os marcos dos seis bairros da <strong>Cidade em Blocos</strong>. Em cada bairro há <strong>5 totens com "?"</strong>. Chegue perto de um totem para abrir o desafio. Cada resposta certa vale pontos e uma <strong>peça</strong>, que volta para o marco do bairro. Com o marco completo, o próximo bairro é liberado.</p>
+    <p>Ande com as <strong>setas</strong> ou <strong>W, A, S, D</strong>, ou clique (toque) no lugar para onde quer ir. Acertos seguidos aumentam o <strong>combo</strong> (até x5), que multiplica os pontos. Cada erro custa uma <strong>vida</strong>, e a explicação aparece na hora. Converse com o morador de cada bairro para ganhar dicas, e procure as peças escondidas pelo chão. O jogo salva o progresso neste aparelho.</p>
+    <p class="small muted">Bairros: Praça do Algoritmo, Bairro dos Dados, Oficina dos Bugs, Avenida da Rede, Distrito Seguro e Parque da IA.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="cb-tela" id="tela-box">
+      <canvas id="tela" role="img" aria-label="Cidade em Blocos vista de cima, em perspectiva, com a sua personagem no centro"></canvas>
+      <div class="cb-hud" id="hud">
+        <div class="cb-pill vidas" id="h-vidas" aria-label="Vidas"></div>
+        <div class="cb-pill pontos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6-4.9-4.6 6.6-.8z" fill="#ffd23f" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg><span><span class="lb">Pontos</span><span class="vl" id="h-pontos">0</span></span></div>
+        <div class="cb-pill combo" id="p-combo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z" fill="#f08a24" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 13c1 1.5 2 2.5 2 4a2 2 0 0 1-4 0c0-1.5 1-2.5 2-4z" fill="#ffd23f"/></svg><span><span class="lb">Combo</span><span class="vl" id="h-combo">x1</span></span></div>
+        <div class="cb-pill pecas"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="1.5" fill="#e8423a" stroke="#111" stroke-width="1.4"/><rect x="5.5" y="5.5" width="5" height="3.5" rx="1" fill="#e8423a" stroke="#111" stroke-width="1.4"/><rect x="13.5" y="5.5" width="5" height="3.5" rx="1" fill="#e8423a" stroke="#111" stroke-width="1.4"/><path d="M3 14.5h18" stroke="#111" stroke-width="1" opacity=".4"/></svg><span><span class="lb">Peças</span><span class="vl" id="h-pecas">0</span></span></div>
+        <div class="cb-pill desaf"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="9" height="9" fill="#2fa865" stroke="#111" stroke-width="1.4"/><rect x="12" y="11" width="9" height="9" fill="#ffd23f" stroke="#111" stroke-width="1.4"/><rect x="7.5" y="3" width="9" height="8" fill="#e8423a" stroke="#111" stroke-width="1.4"/></svg><span><span class="lb">Desafios</span><span class="vl" id="h-desaf">0/30</span></span></div>
+        <div class="cb-pill bairro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s-6-6.5-6-11a6 6 0 0 1 12 0c0 4.5-6 11-6 11z" fill="#e8423a" stroke="#111" stroke-width="1.4"/><circle cx="12" cy="11" r="2.4" fill="#fff" stroke="#111" stroke-width="1.2"/></svg><span><span class="lb">Bairro</span><span class="vl" id="h-bairro"></span></span></div>
+        <div class="cb-pill missao"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#e8423a" stroke="#111" stroke-width="1.4"/><circle cx="12" cy="12" r="5.5" fill="#fff" stroke="#111" stroke-width="1.2"/><circle cx="12" cy="12" r="2.3" fill="#e8423a"/></svg><span><span class="lb">Missão</span><span class="vl" id="h-missao"></span></span></div>
+        <div class="cb-bts">
+          <button type="button" id="b-som" aria-pressed="true" aria-label="Som ligado" title="Som"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#fff"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <button type="button" id="b-mapa" aria-label="Mapa dos bairros" title="Mapa dos bairros"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z" fill="#2fa865" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 4v14M15 6v14" stroke="#fff" stroke-width="1.6"/></svg></button>
+          <button type="button" id="b-missoes" aria-label="Missões e conquistas" title="Missões"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#e8423a" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="5" fill="#fff"/><circle cx="12" cy="12" r="2" fill="#e8423a"/></svg></button>
+          <button type="button" id="b-pausa" aria-label="Pausar" title="Pausar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="#fff"/><rect x="14" y="5" width="4" height="14" rx="1" fill="#fff"/></svg></button>
+        </div>
+      </div>
+      <div class="cb-ajuda" id="ajuda">Setas ou W A S D para andar. Clique no chão para ir até lá. Chegue perto de um totem "?" para responder.</div>
+      <div class="cb-mini" aria-hidden="true"><canvas id="mini" width="200" height="132"></canvas><div class="nm" id="mini-nome"></div></div>
+      <div class="cb-toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="cb-dlg" id="dlg" hidden><div class="cb-card" id="card" role="dialog" aria-live="polite"></div></div>
+    </div>
+    <div class="cb-controles" aria-label="Controles de movimento">
+      <div class="cb-pad">
+        <button type="button" class="c" data-dir="c" aria-label="Andar para cima">&#9650;</button>
+        <button type="button" class="e" data-dir="e" aria-label="Andar para a esquerda">&#9664;</button>
+        <button type="button" class="b" data-dir="b" aria-label="Andar para baixo">&#9660;</button>
+        <button type="button" class="d" data-dir="d" aria-label="Andar para a direita">&#9654;</button>
+      </div>
+    </div>
+
+    <div class="cb-grade">
+      <div class="cb-box"><h2 id="missao-tit">Missão</h2><ul class="cb-missao" id="missao"></ul></div>
+      <details class="cb-box" id="conquistas"><summary><strong>Conquistas</strong> <span class="muted small" id="nconq"></span></summary><ul class="cb-conqs" id="lista-conq"></ul></details>
+      <details class="cb-box" id="caderno"><summary><strong>Caderno de dicas</strong> <span class="muted small" id="ndicas"></span></summary><ol class="cb-dicas" id="dicas"></ol></details>
+      <div class="cb-box"><h2>Relatório para o professor</h2><div id="relatorio" class="small"></div></div>
+      <div class="cb-box" id="box-salvar"><h2>Progresso</h2><p class="small muted" id="salvo">O jogo salva sozinho a cada resposta.</p>
+        <div class="btn-row cb-mini-btns" style="margin-top:8px"><button class="btn" type="button" id="salvar">Salvar</button><button class="btn ghost" type="button" id="ver-tutorial">Tutorial</button><button class="btn ghost" type="button" id="recomecar">Recomeçar</button></div>
+        <details style="margin-top:10px"><summary class="small"><strong>Continuar em outro aparelho</strong></summary>
+          <p class="small" style="margin:6px 0">Copie este código e cole no outro aparelho, no campo abaixo.</p>
+          <textarea id="codigo" class="cb-cod" rows="3" readonly aria-label="Código do seu progresso"></textarea>
+          <div class="btn-row cb-mini-btns" style="margin:6px 0 10px"><button class="btn ghost" type="button" id="copiar">Copiar código</button></div>
+          <label class="small" for="colar"><strong>Tem um código?</strong> Cole aqui:</label>
+          <textarea id="colar" class="cb-cod" rows="2"></textarea>
+          <div class="btn-row cb-mini-btns" style="margin-top:6px"><button class="btn ghost" type="button" id="carregar">Carregar código</button></div>
+          <p class="small" id="cod-msg" role="status" style="margin:6px 0 0"></p>
+        </details></div>
+      <div class="cb-box"><h2>Bairros e BNCC</h2><ul class="cb-bairros" id="lista-bairros"></ul></div>
+    </div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
+(function () {
+  const $ = s => document.getElementById(s);
+  const CHAVE = 'cidade-blocos-v1';
+  const TW = 64, TH = 32, BH = 14;          // losango do piso e altura de um tijolo
+  const BS = 10, GAP = 2;                    // tamanho do bairro e largura da rua
+  const W = GAP + 3 * (BS + GAP), H = GAP + 2 * (BS + GAP);
+  const POS = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1]]; // ordem de liberação (vizinhos)
+  const VERDE = '#2fa865', AMARELO = '#ffd23f', VERMELHO = '#e8423a', LARANJA = '#f08a24', BRANCO = '#f4f1e8', CINZA = '#7a7f86';
+
+  /* ---------- Bairros (conteúdo original) ----------
+     mapa 10 x 10:  .  livre   g  gramado   L  marco (2 x 2, com +)   T  totem   N  morador
+                    A  árvore   l  poste   o  peça escondida   S  início   1-4  prédios */
+  const BAIRROS = [
+    { nome: 'Praça do Algoritmo', tema: 'Algoritmos', habs: ['EF06CO02', 'EF06CO03'], chao: '#f2e4c4',
+      marco: { nome: 'Relógio da Praça', cores: [VERMELHO, BRANCO], enfeite: 'relogio' },
+      npc: { id: 'iara', nome: 'Mestra de obras Iara', cor: LARANJA, calca: '#3a4046', chapeu: AMARELO, pele: '#c68642',
+        falas: ['Boa tarde! Eu sou a Iara, mestra de obras da Praça do Algoritmo.', 'A tempestade desmontou o nosso Relógio da Praça. Cada totem com "?" guarda uma peça dele.', 'Os desafios daqui são sobre algoritmos: passos em ordem, repetições e decisões do tipo "se... senão".', 'Responda certo os 5 totens e o relógio volta a funcionar. Então a rua para o Bairro dos Dados se abre.'],
+        dica: 'Algoritmo é uma sequência de passos em ordem. "Repita N vezes" executa o bloco N vezes. "Se... senão" escolhe um caminho conforme a condição.' },
+      mapa: ['11..A..222', '11.....222', '.T..o..T..', '........o.', '.A..L+..A.', '....++.T..', '..N.......', '.S....A...', '.T.....33.', 'l...T..33l'],
+      predios: { 1: [3, VERMELHO, AMARELO], 2: [4, BRANCO, VERMELHO], 3: [2, LARANJA, BRANCO] },
+      perguntas: [
+        ['Um robô recebe o programa "repita 3 vezes: avance 2 casas". Quantas casas ele anda?', ['3', '5', '6', '9'], 2, 'O bloco "avance 2 casas" é executado 3 vezes: 3 x 2 = 6 casas.'],
+        ['Qual destas instruções usa seleção, ou seja, uma escolha?', ['Se o sinal estiver vermelho, pare; senão, siga', 'Ande 5 passos', 'Repita 4 vezes: pule', 'Comece pelo passo 1'], 0, 'Seleção é o "se... senão": o programa escolhe o que fazer conforme a condição.'],
+        ['Numa receita de bolo, qual passo precisa vir antes de "levar ao forno"?', ['Desenformar', 'Misturar os ingredientes', 'Servir', 'Cortar as fatias'], 1, 'Num algoritmo a ordem importa. Só dá para assar depois de misturar a massa.'],
+        ['Programa: x = 2; repita 3 vezes: x = x + 4. Qual é o valor final de x?', ['6', '10', '12', '14'], 3, 'x começa em 2 e ganha 4 três vezes: 2 + 4 + 4 + 4 = 14.'],
+        ['O laço "enquanto houver garrafas na esteira, embale uma" para quando:', ['A esteira fica vazia', 'A primeira garrafa é embalada', 'Passa um minuto', 'Nunca para'], 0, 'O "enquanto" repete enquanto a condição for verdadeira. Sem garrafas, a condição fica falsa e o laço termina.'],
+        ['Regra: se a nota for maior ou igual a 6, mostre "aprovado"; senão, mostre "recuperação". Com nota 5,5, aparece:', ['Aprovado', 'Recuperação', 'Erro', 'As duas palavras'], 1, '5,5 não é maior nem igual a 6, então a condição é falsa e o programa executa a parte do "senão".'],
+        ['Para desenhar um triângulo de lados iguais, um robô repete 3 vezes: avance e gire. Quanto ele deve girar a cada vez?', ['60 graus', '90 graus', '120 graus', '180 graus'], 2, 'Para fechar a figura, as três viradas somam 360 graus: 360 / 3 = 120 graus.'],
+        ['Qual destas instruções é precisa o bastante para um robô seguir?', ['Vá até ali', 'Ande um pouco', 'Avance 3 casas para a frente', 'Faça o caminho certo'], 2, 'Computadores e robôs precisam de instruções exatas, sem dúvida sobre quanto e para onde.']
+      ] },
+    { nome: 'Bairro dos Dados', tema: 'Dados e listas', habs: ['EF06CO01', 'EF07CO01', 'EF08CO02'], chao: '#f6dccf',
+      marco: { nome: 'Armazém dos Dados', cores: [AMARELO, VERMELHO], enfeite: 'bandeira' },
+      npc: { id: 'tome', nome: 'Arquivista Tomé', cor: VERDE, calca: '#3a4046', chapeu: null, cabelo: '#2b1a0e', pele: '#8d5524',
+        falas: ['Sou o Tomé, arquivista do bairro. Aqui tudo é guardado em tabelas, listas e registros.', 'Cada informação tem um tipo: número, texto, data ou lógico (verdadeiro ou falso). Um registro junta vários campos sobre a mesma coisa, como nome, turma e idade.', 'Numa lista, as posições costumam começar em 0. Na lista [8, 3, 5], o 8 está na posição 0 e o 5 na posição 2.'],
+        dica: 'Tipos de dado: número, texto, data e lógico. Registro = conjunto de campos. Em muitas linguagens, a primeira posição de uma lista é 0.' },
+      mapa: ['A..111..A.', '...111....', '.T......T.', '....o.....', '22..L+..33', '22..++..33', '.N.....T..', '...T..A...', '.A.....To.', 'l..44....l'],
+      predios: { 1: [4, AMARELO, VERMELHO], 2: [3, BRANCO, VERDE], 3: [2, VERMELHO, BRANCO], 4: [1, LARANJA, AMARELO] },
+      perguntas: [
+        ['Num cadastro escolar, "data de nascimento", "nome" e "matriculado (sim ou não)" são dados dos tipos:', ['Data, texto e lógico', 'Todos texto', 'Número, número e número', 'Imagem, texto e som'], 0, 'Cada campo tem o seu tipo. "Sim ou não" é o tipo lógico, também chamado booleano.'],
+        ['Um registro de aluno guarda nome, turma e idade. Cada uma dessas partes se chama:', ['Campo', 'Pixel', 'Pacote', 'Laço'], 0, 'Um registro é formado por campos. Cada campo guarda uma informação sobre a mesma coisa.'],
+        ['Lista = [8, 3, 5, 9]. Se as posições começam em 0, qual valor está na posição 2?', ['3', '5', '8', '9'], 1, 'Posição 0 é o 8, posição 1 é o 3 e posição 2 é o 5.'],
+        ['Quantos elementos tem a lista ["maçã", "uva", "pera", "kiwi", "figo"]?', ['4', '5', '6', '10'], 1, 'O tamanho da lista é o número de elementos: são 5 frutas.'],
+        ['Para guardar a temperatura de cada dia da semana, a melhor estrutura é:', ['Uma lista com 7 valores', 'Sete programas diferentes', 'Um único número', 'Uma imagem'], 0, 'Uma lista guarda vários valores do mesmo tipo em ordem, um para cada dia.'],
+        ['Qual destas informações faz mais sentido guardar como número, para fazer contas?', ['A quantidade de alunos da turma', 'O CEP com zero no começo', 'O nome da escola', 'O telefone com DDD'], 0, 'Com a quantidade dá para somar e comparar. CEP e telefone são códigos: guardados como número, o zero do começo se perderia.'],
+        ['Ordenando [7, 2, 9, 4] do menor para o maior, a lista fica:', ['[2, 4, 7, 9]', '[9, 7, 4, 2]', '[2, 7, 4, 9]', '[7, 2, 9, 4]'], 0, 'Em ordem crescente, cada valor é menor ou igual ao seguinte: 2, 4, 7, 9.'],
+        ['Uma tabela de notas tem linhas (alunos) e colunas (disciplinas). Essa estrutura de linhas e colunas se chama:', ['Matriz', 'Laço', 'Senha', 'Protocolo'], 0, 'Uma matriz organiza os dados em linhas e colunas, como uma planilha.']
+      ] },
+    { nome: 'Oficina dos Bugs', tema: 'Depuração e decomposição', habs: ['EF06CO04', 'EF07CO02', 'EF07CO05'], chao: '#e9e2d0',
+      marco: { nome: 'Guindaste da Oficina', cores: [LARANJA, AMARELO], enfeite: 'bandeira' },
+      npc: { id: 'dora', nome: 'Mecânica Dora', cor: VERMELHO, calca: '#3a4046', chapeu: null, cabelo: '#7a3b12', pele: '#f1c27d',
+        falas: ['Oi, eu sou a Dora. Nesta oficina a gente conserta programas, não só máquinas.', 'Erro de programa se chama bug. Para achar, teste passo a passo e confira os valores, principalmente os do limite, como o 6 numa regra "nota >= 6".', 'Problema grande? Divida em partes menores: isso é decomposição. E um bloco que você usa várias vezes é reúso.'],
+        dica: 'Depurar = encontrar e corrigir erros. Teste os valores do limite (> e >= dão resultados diferentes). Decomposição = dividir o problema em partes.' },
+      mapa: ['111....222', '111.T..222', '..........', '.T..A...T.', '....L+....', 'o...++..N.', '..........', '33.T...A..', '33.....T..', 'l....o...l'],
+      predios: { 1: [2, CINZA, AMARELO], 2: [3, LARANJA, BRANCO], 3: [2, AMARELO, VERMELHO] },
+      perguntas: [
+        ['O programa deveria somar de 1 até 5 e mostrar 15, mas mostra 10. Qual é a causa mais provável?', ['O laço parou antes do 5', 'O computador está quebrado', 'O 15 está errado', 'Faltou internet'], 0, '1 + 2 + 3 + 4 = 10. Faltou somar o 5: o laço terminou uma volta antes.'],
+        ['Depurar um programa significa:', ['Encontrar e corrigir erros', 'Apagar o programa', 'Deixar o programa colorido', 'Instalar um antivírus'], 0, 'Depuração é o trabalho de achar e consertar bugs. Todo programador faz isso o tempo todo.'],
+        ['Para organizar a festa da turma, dividir o trabalho em "convites", "comida" e "música" é usar:', ['Decomposição', 'Criptografia', 'Compactação', 'Recursão'], 0, 'Decompor é quebrar um problema grande em partes menores, mais fáceis de resolver.'],
+        ['Programa: se idade > 12, mostre "adolescente". Para um aluno de 12 anos, o programa:', ['Mostra "adolescente"', 'Não mostra nada', 'Dá erro', 'Mostra 12'], 1, '12 > 12 é falso. Se a regra deveria incluir o 12, o certo seria usar >= 12.'],
+        ['Você usa o mesmo bloco "desenhar casa" para desenhar 10 casas em lugares diferentes. Isso é:', ['Reúso', 'Bug', 'Pacote', 'Backup'], 0, 'Reúso é aproveitar uma parte pronta várias vezes, em vez de reescrever.'],
+        ['Qual é uma boa forma de descobrir onde está o erro de um programa?', ['Executar passo a passo e conferir os valores', 'Reescrever tudo do zero', 'Esperar o erro sumir', 'Trocar de computador'], 0, 'Acompanhar os valores a cada passo mostra o ponto exato em que o resultado sai do esperado.'],
+        ['Para testar a regra "aprovado se nota >= 6", qual valor é o mais importante de experimentar?', ['Exatamente 6', '100', '-50', 'Nenhum valor'], 0, 'Valores no limite revelam se a regra usa > ou >= corretamente.'],
+        ['Uma função area(base, altura) calcula a área do retângulo. Com base 4 e altura 5, ela deve devolver:', ['9', '20', '45', '1'], 1, 'Área do retângulo = base x altura = 4 x 5 = 20. A mesma função serve para qualquer base e altura.']
+      ] },
+    { nome: 'Avenida da Rede', tema: 'Internet e redes', habs: ['EF06CO07', 'EF07CO06', 'EF08CO06'], chao: '#efe6b8',
+      marco: { nome: 'Torre da Antena', cores: [BRANCO, VERMELHO], enfeite: 'antena' },
+      npc: { id: 'lino', nome: 'Carteiro Lino', cor: AMARELO, calca: '#2f7d4a', chapeu: VERMELHO, pele: '#e0ac69',
+        falas: ['Sou o Lino, carteiro da Avenida da Rede. Hoje as cartas viajam como dados.', 'Na internet, a mensagem é quebrada em pacotes numerados. Eles podem ir por caminhos diferentes e são remontados no destino. Se um se perde, é enviado de novo.', 'Cada aparelho tem um endereço IP. O DNS traduz o nome do site para esse endereço. E as regras dessa conversa se chamam protocolos.'],
+        dica: 'Pacotes numerados são remontados no destino. IP = endereço do aparelho. DNS = traduz o nome do site em IP. Protocolo = regras da comunicação.' },
+      mapa: ['..A....11.', '.T.....11.', '......T...', '22........', '22..L+.o..', '....++..T.', '.N.....o..', '..T...333.', '.A....333.', 'l...T....l'],
+      predios: { 1: [5, BRANCO, VERMELHO], 2: [3, VERDE, BRANCO], 3: [2, AMARELO, VERDE] },
+      perguntas: [
+        ['Uma foto enviada pela internet viaja:', ['Dividida em pacotes, remontados no destino', 'Inteira, de uma vez', 'Pelo cabo de energia', 'Só à noite'], 0, 'Os dados são quebrados em pacotes, que podem seguir caminhos diferentes até o destino.'],
+        ['Um protocolo de rede é:', ['Um conjunto de regras para os aparelhos se comunicarem', 'Um tipo de cabo', 'Um vírus', 'Um site de busca'], 0, 'Protocolos, como o HTTP e o TCP, definem como os dados são enviados, recebidos e conferidos.'],
+        ['O endereço IP identifica:', ['Um aparelho conectado à rede', 'A senha do Wi-Fi', 'O nome do usuário', 'A velocidade da internet'], 0, 'O IP funciona como o endereço de uma casa: diz para onde os pacotes devem ir.'],
+        ['Quando você digita o nome de um site, o DNS serve para:', ['Traduzir o nome no endereço IP do servidor', 'Deixar a internet mais rápida', 'Bloquear anúncios', 'Guardar as suas senhas'], 0, 'O DNS é como uma lista telefônica da internet: troca o nome do site pelo número (IP) do servidor.'],
+        ['Se um pacote se perde no caminho, normalmente:', ['Ele é enviado de novo', 'A mensagem inteira é apagada', 'O computador desliga', 'A mensagem chega sem aquela parte'], 0, 'O destino confere quais pacotes chegaram e pede de novo os que faltam.'],
+        ['O roteador da sua casa:', ['Encaminha os dados entre os aparelhos e a internet', 'Imprime documentos', 'Guarda as fotos do celular', 'Cria sites'], 0, 'O roteador escolhe por onde cada pacote segue, ligando a rede da casa à internet.'],
+        ['O que viaja pelos cabos submarinos que ligam os continentes?', ['Dados da internet, como luz em fibra óptica', 'Água', 'Energia para as casas', 'Sinal de rádio AM'], 0, 'A maior parte do tráfego da internet entre continentes passa por cabos de fibra óptica no fundo do mar.'],
+        ['Os pacotes de uma mesma mensagem podem chegar fora de ordem. Para remontar no destino, cada pacote leva:', ['Um número de sequência', 'Uma foto', 'Uma senha nova', 'O nome do remetente em maiúsculas'], 0, 'O número de sequência permite colocar os pacotes na ordem certa e perceber se algum faltou.']
+      ] },
+    { nome: 'Distrito Seguro', tema: 'Segurança digital', habs: ['EF07CO07', 'EF08CO08', 'EF09CO04', 'EF09CO05'], chao: '#dfe9cf',
+      marco: { nome: 'Cofre do Distrito', cores: [VERDE, AMARELO], enfeite: 'bandeira' },
+      npc: { id: 'selma', nome: 'Guarda Selma', cor: '#3a4046', calca: '#23272b', chapeu: VERDE, pele: '#8d5524',
+        falas: ['Sou a Selma e cuido da segurança do distrito, inclusive da segurança digital.', 'Senha forte é longa e mistura palavras sem relação, números e símbolos. Com a verificação em duas etapas, quem descobre a senha ainda não entra sem o código.', 'Desconfie de mensagens com pressa, prêmio e link. E a criptografia embaralha a mensagem para que só quem tem a chave consiga ler.'],
+        dica: 'Senha longa + verificação em duas etapas. Pressa, prêmio e link = sinal de golpe. Criptografia: só quem tem a chave lê. Endereço e rotina não se publicam.' },
+      mapa: ['1111..A...', '1111...T..', '.T........', '......o.22', '....L+..22', '.A..++..22', '...N......', '.T....T...', '...333..o.', 'l..333.T.l'],
+      predios: { 1: [4, VERMELHO, BRANCO], 2: [5, BRANCO, VERDE], 3: [2, VERDE, AMARELO] },
+      perguntas: [
+        ['Qual destas senhas é a mais forte?', ['Girassol-Pula-7-Muros!', '12345678', 'nomedocachorro', 'abcdef'], 0, 'Senhas longas, com palavras sem relação, números e símbolos, são muito mais difíceis de adivinhar.'],
+        ['Qual destas informações não se deve publicar numa rede social?', ['O endereço de casa e o horário em que fica sozinho', 'A cor favorita', 'O filme preferido', 'A opinião sobre um livro'], 0, 'Endereço e rotina são dados pessoais que podem colocar você em risco.'],
+        ['Na cifra de César com deslocamento 1, cada letra vira a seguinte do alfabeto. "CASA" vira:', ['DBTB', 'BZRZ', 'CASA', 'ACAS'], 0, 'C vira D, A vira B, S vira T e A vira B: DBTB.'],
+        ['Phishing é:', ['Uma mensagem falsa que tenta roubar dados fingindo ser alguém confiável', 'Um jogo de pescaria', 'Um antivírus', 'Um tipo de backup'], 0, 'O golpista "pesca" senhas e dados com mensagens que imitam bancos, lojas ou a escola.'],
+        ['A verificação em duas etapas protege a conta porque pede:', ['A senha e mais um código', 'Duas senhas iguais', 'O nome duas vezes', 'Uma foto de perfil nova'], 0, 'Mesmo que alguém descubra a senha, ainda precisa do código que chega no seu aparelho.'],
+        ['Um ransomware é um programa malicioso que:', ['Bloqueia ou criptografa os arquivos e pede pagamento', 'Limpa o computador', 'Acelera os jogos', 'Corrige erros de digitação'], 0, 'Backups atualizados e cuidado com anexos ajudam a se proteger desse tipo de ataque.'],
+        ['Criptografar uma mensagem serve para:', ['Que só quem tem a chave consiga ler', 'Deixar a mensagem mais curta', 'Enviar mais rápido', 'Corrigir a ortografia'], 0, 'A criptografia embaralha os dados. Sem a chave, o conteúdo fica ilegível.'],
+        ['Um aplicativo de lanterna pede acesso aos seus contatos. O mais prudente é:', ['Negar, porque a lanterna não precisa disso', 'Aceitar sempre', 'Enviar os contatos para amigos', 'Desligar o celular'], 0, 'Conceda só as permissões que o aplicativo realmente precisa para funcionar.']
+      ] },
+    { nome: 'Parque da IA', tema: 'IA e informação', habs: ['EF08CO11', 'EF09CO07', 'EF09CO09', 'EF09CO10'], chao: '#d7ecc6',
+      marco: { nome: 'Observatório de Dados', cores: [BRANCO, VERDE], enfeite: 'cupula' },
+      npc: { id: 'nara', nome: 'Cientista Nara', cor: BRANCO, calca: '#3a4046', chapeu: null, cabelo: '#111', pele: '#c68642',
+        falas: ['Bem-vinda, bem-vindo ao Parque da IA. Sou a Nara e estudo como as máquinas aprendem.', 'Uma IA aprende com exemplos, os dados de treinamento. Se os exemplos forem pouco variados, ela erra com casos diferentes.', 'Resposta de IA também precisa ser conferida em fontes confiáveis. E usar IA num trabalho exige honestidade: diga que usou e revise com as suas palavras.'],
+        dica: 'A IA aprende com dados de treinamento; dados pouco variados geram erros. Confira respostas em fontes confiáveis e informe quando usar IA.' },
+      mapa: ['A...A.o.A.', '.T....T...', '..gggggg..', '.Agg..ggA.', '..g.L+.g..', '..g.++.g..', '..gggggg.N', '.T......o.', '...11..T..', 'l..11.A..T'],
+      predios: { 1: [3, BRANCO, VERDE] },
+      perguntas: [
+        ['Um sistema de IA que reconhece frutas aprendeu com milhares de fotos já identificadas. Essas fotos são:', ['Os dados de treinamento', 'O processador', 'A senha do sistema', 'O monitor'], 0, 'A IA encontra padrões nos exemplos de treinamento e usa esses padrões para classificar fotos novas.'],
+        ['Uma IA só viu maçãs vermelhas no treinamento e erra quando vê maçãs verdes. Isso mostra que:', ['O resultado depende da variedade dos dados', 'A IA nunca erra', 'Maçã verde não é fruta', 'A câmera estava quebrada'], 0, 'Dados pouco variados geram vieses. Quanto mais diversos os exemplos, melhor a IA lida com casos novos.'],
+        ['Um assistente de IA deu uma data histórica para o seu trabalho. O que fazer antes de usar?', ['Conferir em fontes confiáveis', 'Copiar sem ler', 'Acreditar porque veio da IA', 'Apagar a pergunta'], 0, 'Assistentes de IA podem errar com segurança. Confira em livros, enciclopédias e sites sérios.'],
+        ['Num gráfico de barras, o eixo começa em 90 em vez de 0. Isso pode:', ['Fazer uma diferença pequena parecer enorme', 'Deixar os dados mais exatos', 'Aumentar os valores', 'Apagar os valores'], 0, 'Cortar o eixo exagera as diferenças. Ao ler um gráfico, confira sempre onde a escala começa.'],
+        ['Uma notícia sem autor, sem data e com título em maiúsculas pedindo "compartilhe já" é:', ['Um sinal de alerta para desconfiar', 'Garantia de verdade', 'Uma notícia oficial', 'Uma pesquisa científica'], 0, 'Fonte, autor e data ajudam a avaliar a credibilidade. Pressa para compartilhar é sinal de boato.'],
+        ['Um aplicativo de música recomenda canções parecidas com as que você mais ouve. Ele usa:', ['Os seus dados de uso para encontrar padrões', 'Sorte', 'A opinião de um vizinho', 'Só a hora do dia'], 0, 'Sistemas de recomendação aprendem com o histórico de uso de muitas pessoas.'],
+        ['Um vídeo falso, feito por IA, que imita o rosto e a voz de uma pessoa real se chama:', ['Deepfake', 'Backup', 'Firewall', 'Planilha'], 0, 'Deepfakes podem enganar e prejudicar pessoas. Desconfie de vídeos chocantes e procure a fonte original.'],
+        ['Qual atitude é ética ao usar IA num trabalho escolar?', ['Informar que usou IA e revisar o texto com as próprias palavras', 'Entregar o texto da IA como se fosse seu', 'Copiar o trabalho de um colega', 'Inventar as fontes'], 0, 'Transparência e autoria são parte do uso responsável da tecnologia.']
+      ] }
+  ];
+  const NB = BAIRROS.length, TOTENS_POR = 5;
+
+  /* ---------- Montagem do mapa ---------- */
+  const TIPO = [], BLOQ = [], GRAMA = [];
+  for (let y = 0; y < H; y++) { TIPO.push(new Array(W).fill(-1)); BLOQ.push(new Array(W).fill(false)); GRAMA.push(new Array(W).fill(false)); }
+  const ESTATICOS = [], TOTENS = [], BONUS = [], NPCS = [], MARCOS = [], POSTES = [];
+  let INICIO = { x: 3.5, y: 9.5 };
+  BAIRROS.forEach((b, i) => {
+    const [bx, by] = POS[i], X0 = GAP + bx * (BS + GAP), Y0 = GAP + by * (BS + GAP);
+    b.x0 = X0; b.y0 = Y0; b.i = i;
+    for (let y = 0; y < BS; y++) for (let x = 0; x < BS; x++) TIPO[Y0 + y][X0 + x] = i;
+    const rects = {};
+    b.mapa.forEach((row, y) => [...row].forEach((ch, x) => {
+      const gx = X0 + x, gy = Y0 + y;
+      if (/[1-4]/.test(ch)) { const r = rects[ch] = rects[ch] || { x0: x, y0: y, x1: x, y1: y }; r.x0 = Math.min(r.x0, x); r.y0 = Math.min(r.y0, y); r.x1 = Math.max(r.x1, x); r.y1 = Math.max(r.y1, y); }
+      else if (ch === 'A') { ESTATICOS.push({ k: 'arvore', x: gx, y: gy, b: i, ch: (gx * 7 + gy) % 3 }); BLOQ[gy][gx] = true; }
+      else if (ch === 'l') { POSTES.push({ k: 'poste', x: gx, y: gy, b: i }); BLOQ[gy][gx] = true; }
+      else if (ch === 'T') { const t = { k: 'totem', id: `t${i}-${TOTENS.filter(q => q.b === i).length}`, x: gx, y: gy, b: i }; TOTENS.push(t); BLOQ[gy][gx] = true; }
+      else if (ch === 'N') { NPCS.push(Object.assign({ k: 'npc', x: gx + .5, y: gy + .5, tx: gx, ty: gy, b: i }, b.npc)); BLOQ[gy][gx] = true; }
+      else if (ch === 'o') BONUS.push({ k: 'bonus', id: `o${i}-${BONUS.filter(q => q.b === i).length}`, x: gx, y: gy, b: i });
+      else if (ch === 'L') { MARCOS.push({ k: 'marco', x: gx, y: gy, b: i }); for (let a = 0; a < 2; a++) for (let c = 0; c < 2; c++) BLOQ[gy + a][gx + c] = true; }
+      else if (ch === 'g') GRAMA[gy][gx] = true;
+      else if (ch === 'S') INICIO = { x: gx + .5, y: gy + .5 };
+    }));
+    Object.entries(rects).forEach(([id, r]) => {
+      const [h, cor, topo] = b.predios[id];
+      ESTATICOS.push({ k: 'predio', x: X0 + r.x0, y: Y0 + r.y0, w: r.x1 - r.x0 + 1, d: r.y1 - r.y0 + 1, h, cor, topo, b: i });
+      for (let y = r.y0; y <= r.y1; y++) for (let x = r.x0; x <= r.x1; x++) BLOQ[Y0 + y][X0 + x] = true;
+    });
+  });
+  ESTATICOS.push(...POSTES);
+  // semáforos nas esquinas das ruas (decoração, sem bloquear a calçada)
+  const SEMAFOROS = [];
+  for (let by = 0; by < 2; by++) for (let bx = 0; bx < 3; bx++) SEMAFOROS.push({ k: 'semaforo', x: GAP + bx * (BS + GAP) + BS + .2, y: GAP + by * (BS + GAP) + BS + .2 });
+
+  /* ---------- Estado ---------- */
+  const novo = () => ({ x: INICIO.x, y: INICIO.y, vidas: 5, pontos: 0, combo: 1, maxCombo: 1, pecas: 0, ok: [], bonus: [], abertos: 1, falou: [], dicas: [],
+    resp: 0, acertos: 0, porB: {}, perdeu: {}, conq: [], tutorial: false, som: true, inicio: Date.now(), fim: false, ultimo: 0 });
+  let S;
+  try { S = Object.assign(novo(), JSON.parse(localStorage.getItem(CHAVE) || 'null') || {}); } catch (e) { S = novo(); }
+  let salvoOk = true;
+  const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(S)); salvoOk = true; } catch (e) { salvoOk = false; } };
+  const hora = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const codigo = () => 'CB1-' + btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  const aberto = b => b >= 0 && b < S.abertos;
+  const feitos = b => TOTENS.filter(t => t.b === b && S.ok.includes(t.id)).length;
+  const completo = b => feitos(b) >= TOTENS_POR;
+  const atual = () => Math.min(S.abertos - 1, NB - 1);
+  function andavel(tx, ty) {
+    if (tx < 0 || ty < 0 || tx >= W || ty >= H) return false;
+    if (BLOQ[ty][tx]) return false;
+    const b = TIPO[ty][tx];
+    return b < 0 || aberto(b);
+  }
+
+  /* ---------- Cores ---------- */
+  const hex = c => { const n = parseInt(c.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const cache = {};
+  function tom(c, f) {
+    const k = c + f; if (cache[k]) return cache[k];
+    let [r, g, b] = hex(c);
+    if (f < 0) { r *= 1 + f; g *= 1 + f; b *= 1 + f; } else { r += (255 - r) * f; g += (255 - g) * f; b += (255 - b) * f; }
+    return (cache[k] = `rgb(${r | 0},${g | 0},${b | 0})`);
+  }
+  function cinza(c) {
+    const k = 'g' + c; if (cache[k]) return cache[k];
+    const [r, g, b] = hex(c), v = .3 * r + .59 * g + .11 * b, m = Math.round(150 + v * .28);
+    return (cache[k] = '#' + [m, m - 2, m - 7].map(n => Math.max(0, Math.min(255, n)).toString(16).padStart(2, '0')).join(''));
+  }
+
+  /* ---------- Desenho isométrico ---------- */
+  const cv = $('tela');
+  let g = cv.getContext('2d'), OX = 0, OY = 0, zoom = 1, CW = 800, CH = 500, dpr = 1;
+  const P = (x, y, z = 0) => [OX + (x - y) * TW / 2, OY + (x + y) * TH / 2 - z * BH];
+  const LINHA = 'rgba(25,25,25,.4)';
+  function poly(pts, fill, stroke) {
+    g.beginPath(); g.moveTo(pts[0][0], pts[0][1]); for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]); g.closePath();
+    if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = 1; g.stroke(); }
+  }
+  function pino(px, py, r, cor) {
+    const h = r * .6;
+    g.fillStyle = tom(cor, -.28); g.beginPath(); g.ellipse(px, py, r, r / 2, 0, 0, Math.PI * 2); g.fill(); g.fillRect(px - r, py - h, 2 * r, h);
+    g.fillStyle = tom(cor, .14); g.beginPath(); g.ellipse(px, py - h, r, r / 2, 0, 0, Math.PI * 2); g.fill();
+  }
+  function caixa(x, y, z, w, d, h, cor, o) {
+    o = o || {};
+    const c = o.cinza ? cinza(cor) : cor, t = z + h;
+    const A = P(x, y, t), B = P(x + w, y, t), C = P(x + w, y + d, t), D = P(x, y + d, t), B0 = P(x + w, y, z), C0 = P(x + w, y + d, z), D0 = P(x, y + d, z);
+    const ln = o.linha === undefined ? LINHA : o.linha;
+    poly([D, C, C0, D0], tom(c, -.14), ln);
+    poly([C, B, B0, C0], tom(c, -.3), ln);
+    poly([A, B, C, D], c, ln);
+    if (o.pinos) { const p = o.pinos, r = TW * .13 * p; for (let i = p / 2; i < w; i += p) for (let j = p / 2; j < d; j += p) { const q = P(x + i, y + j, t); pino(q[0], q[1], r, c); } }
+  }
+  // quadrilátero numa face da frente: face 'y' (x varia) ou 'x' (y varia)
+  function janela(face, x, y, a0, a1, z0, z1, cor) {
+    const pts = face === 'y' ? [P(x + a0, y, z0), P(x + a1, y, z0), P(x + a1, y, z1), P(x + a0, y, z1)] : [P(x, y + a0, z0), P(x, y + a1, z0), P(x, y + a1, z1), P(x, y + a0, z1)];
+    poly(pts, cor, 'rgba(25,25,25,.55)');
+  }
+  function cilindro(px, py, r, h, cor) {
+    g.fillStyle = tom(cor, -.2); g.beginPath(); g.ellipse(px, py, r, r / 2, 0, 0, Math.PI * 2); g.fill(); g.fillRect(px - r, py - h, 2 * r, h);
+    g.strokeStyle = LINHA; g.lineWidth = 1; g.beginPath(); g.moveTo(px - r, py - h); g.lineTo(px - r, py); g.moveTo(px + r, py - h); g.lineTo(px + r, py); g.stroke();
+    g.fillStyle = tom(cor, .1); g.beginPath(); g.ellipse(px, py - h, r, r / 2, 0, 0, Math.PI * 2); g.fill(); g.stroke();
+  }
+
+  /* ---------- Piso (desenhado uma vez numa tela de apoio) ---------- */
+  const off = document.createElement('canvas'), SC = Math.min(2, window.devicePixelRatio || 1);
+  const GX0 = H * TW / 2 + 8, GY0 = 8, GW = (W + H) * TW / 2 + 16, GHt = (W + H) * TH / 2 + 30;
+  off.width = Math.ceil(GW * SC); off.height = Math.ceil(GHt * SC);
+  const ehRua = (x, y) => TIPO[y] && TIPO[y][x] === -1;
+  function desenhaPiso() {
+    const oc = off.getContext('2d'), sg = g, sx = OX, sy = OY;
+    g = oc; OX = GX0; OY = GY0;
+    oc.setTransform(SC, 0, 0, SC, 0, 0); oc.clearRect(0, 0, GW, GHt);
+    // borda da placa
+    caixa(0, 0, -.8, W, H, .8, '#9aa19a', { linha: 'rgba(25,25,25,.35)' });
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const b = TIPO[y][x], pts = [P(x, y), P(x + 1, y), P(x + 1, y + 1), P(x, y + 1)];
+      if (b < 0) {
+        poly(pts, '#4f555b');
+        continue;
+      }
+      let cor = GRAMA[y][x] ? '#8fd07a' : BAIRROS[b].chao;
+      if (!aberto(b)) cor = GRAMA[y][x] ? '#b4b8ae' : '#c9c6bf';
+      poly(pts, cor, 'rgba(0,0,0,.06)');
+      for (let i = .25; i < 1; i += .5) for (let j = .25; j < 1; j += .5) { const q = P(x + i, y + j); pino(q[0], q[1], TW * .062, cor); }
+    }
+    // faixas das ruas
+    g.strokeStyle = AMARELO; g.lineWidth = 3; g.setLineDash([14, 12]);
+    for (let r = 0; r <= 2; r++) { const yy = r * (BS + GAP) + 1; for (let k = 0; k < 3; k++) { const xa = GAP + k * (BS + GAP), a = P(xa, yy), b = P(xa + BS, yy); g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); } }
+    for (let c = 0; c <= 3; c++) { const xx = c * (BS + GAP) + 1; for (let k = 0; k < 2; k++) { const ya = GAP + k * (BS + GAP), a = P(xx, ya), b = P(xx, ya + BS); g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); } }
+    g.setLineDash([]);
+    // faixas de pedestre junto aos cruzamentos
+    for (let r = 0; r <= 2; r++) for (let c = 0; c <= 3; c++) {
+      const cx = c * (BS + GAP), cy = r * (BS + GAP);
+      for (let s = 0; s < 4; s++) {
+        const f = .15 + s * .45;
+        if (cx + GAP < W - 1) poly([P(cx + GAP + .05, cy + f), P(cx + GAP + .55, cy + f), P(cx + GAP + .55, cy + f + .22), P(cx + GAP + .05, cy + f + .22)], BRANCO);
+        if (cy + GAP < H - 1) poly([P(cx + f, cy + GAP + .05), P(cx + f + .22, cy + GAP + .05), P(cx + f + .22, cy + GAP + .55), P(cx + f, cy + GAP + .55)], BRANCO);
+      }
+    }
+    g = sg; OX = sx; OY = sy;
+  }
+
+  /* ---------- Objetos ---------- */
+  function predio(o, t) {
+    const cz = !aberto(o.b), op = { cinza: cz, pinos: .5 };
+    const andar = 2, alt = o.h * andar;
+    caixa(o.x + .05, o.y + .05, 0, o.w - .1, o.d - .1, alt, o.cor, { cinza: cz });
+    // janelas por andar
+    const jc = cz ? '#d8d5cd' : '#fff4c2';
+    for (let f = 0; f < o.h; f++) {
+      const z0 = f * andar + .55, z1 = z0 + 1.05;
+      for (let u = 0; u < o.w; u++) janela('y', o.x + .05, o.y + o.d - .05, u + .22, u + .78, z0, z1, jc);
+      for (let u = 0; u < o.d; u++) janela('x', o.x + o.w - .05, o.y + .05, u + .22, u + .78, z0, z1, jc);
+    }
+    // porta
+    if (!cz) janela('y', o.x + .05, o.y + o.d - .05, o.w / 2 - .2, o.w / 2 + .2, 0, .9, '#5a3a1a');
+    caixa(o.x, o.y, alt, o.w, o.d, .45, o.topo, op);
+  }
+  function arvore(o) {
+    const cz = !aberto(o.b), x = o.x, y = o.y;
+    caixa(x + .42, y + .42, 0, .16, .16, .9, '#8a5a32', { cinza: cz });
+    if (o.ch === 0) { caixa(x + .1, y + .1, .9, .8, .8, 1.3, '#2fa865', { cinza: cz, pinos: .4 }); caixa(x + .25, y + .25, 2.2, .5, .5, 1, '#3fbf74', { cinza: cz, pinos: .5 }); }
+    else if (o.ch === 1) { caixa(x + .15, y + .15, .9, .7, .7, 2.2, '#2f9a5c', { cinza: cz, pinos: .35 }); }
+    else { caixa(x + .08, y + .08, .9, .84, .84, 1, '#3fbf74', { cinza: cz, pinos: .42 }); caixa(x + .2, y + .2, 1.9, .6, .6, .9, '#2fa865', { cinza: cz, pinos: .3 }); caixa(x + .32, y + .32, 2.8, .36, .36, .7, '#3fbf74', { cinza: cz, pinos: .36 }); }
+  }
+  function poste(o) {
+    const cz = !aberto(o.b);
+    caixa(o.x + .45, o.y + .45, 0, .1, .1, 3.6, '#4a4f55', { cinza: cz });
+    caixa(o.x + .34, o.y + .34, 3.6, .32, .32, .45, '#fff4c2', { cinza: cz });
+  }
+  function semaforo(o, t) {
+    caixa(o.x - .05, o.y - .05, 0, .1, .1, 3.2, '#3a4046');
+    caixa(o.x - .12, o.y - .12, 3.2, .24, .24, 1.3, '#23272b');
+    const fase = Math.floor(t / 2500) % 2, p1 = P(o.x + .12, o.y, 4.15), p2 = P(o.x + .12, o.y, 3.55);
+    g.fillStyle = fase ? VERMELHO : '#5a2622'; g.beginPath(); g.arc(p1[0] - 2, p1[1], 2.6, 0, 7); g.fill();
+    g.fillStyle = fase ? '#1d4a30' : '#36d17a'; g.beginPath(); g.arc(p2[0] - 2, p2[1], 2.6, 0, 7); g.fill();
+  }
+  function totem(o, t) {
+    if (!aberto(o.b)) return;
+    const feito = S.ok.includes(o.id), x = o.x + .5, y = o.y + .5;
+    caixa(x - .32, y - .32, 0, .64, .64, .35, '#5c6166', { pinos: .32 });
+    caixa(x - .16, y - .16, .35, .32, .32, 2.3, feito ? VERDE : AMARELO);
+    const bob = feito ? 0 : Math.sin(t / 320 + o.x) * 3, p = P(x, y, 3.25);
+    const cx = p[0], cy = p[1] - 8 + bob;
+    g.fillStyle = 'rgba(0,0,0,.25)'; g.beginPath(); g.arc(cx + 1.5, cy + 2, 14, 0, 7); g.fill();
+    g.fillStyle = feito ? VERDE : AMARELO; g.strokeStyle = '#111'; g.lineWidth = 2.2; g.beginPath(); g.arc(cx, cy, 14, 0, 7); g.fill(); g.stroke();
+    g.fillStyle = tom(feito ? VERDE : AMARELO, .35); g.beginPath(); g.arc(cx - 4, cy - 5, 4, 0, 7); g.fill();
+    if (feito) { g.strokeStyle = '#fff'; g.lineWidth = 3.5; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx - 6, cy); g.lineTo(cx - 1.5, cy + 5); g.lineTo(cx + 7, cy - 5); g.stroke(); g.lineCap = 'butt'; }
+    else { g.fillStyle = '#111'; g.font = '800 19px Sniglet, Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', cx, cy + 1); }
+  }
+  function brilhoTotem(o, t) {
+    if (!aberto(o.b) || S.ok.includes(o.id)) return;
+    const p = P(o.x + .5, o.y + .5), a = .28 + Math.sin(t / 400 + o.y) * .1;
+    const gr = g.createRadialGradient(p[0], p[1], 2, p[0], p[1], 34);
+    gr.addColorStop(0, `rgba(255,224,80,${a + .2})`); gr.addColorStop(1, 'rgba(255,224,80,0)');
+    g.fillStyle = gr; g.beginPath(); g.ellipse(p[0], p[1], 40, 20, 0, 0, 7); g.fill();
+  }
+  function bonus(o, t) {
+    if (!aberto(o.b) || S.bonus.includes(o.id)) return;
+    const z = .5 + Math.sin(t / 260 + o.x) * .25, x = o.x + .5, y = o.y + .5;
+    const s = P(x, y); g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.ellipse(s[0], s[1], 10, 5, 0, 0, 7); g.fill();
+    caixa(x - .25, y - .13, z, .5, .26, .45, VERMELHO, { pinos: .25 });
+  }
+  function marco(o, t) {
+    const b = BAIRROS[o.b], cz = !aberto(o.b), n = feitos(o.b), x = o.x, y = o.y;
+    caixa(x + .05, y + .05, 0, 1.9, 1.9, .35, '#5c6166', { cinza: cz, pinos: .475 });
+    const IN = [.18, .26, .34, .4, .5], HH = [1.4, 1.4, 1.4, 1.7, 1.2];
+    let z = .35;
+    for (let i = 0; i < 5; i++) {
+      const s = IN[i], cor = b.marco.cores[i % 2];
+      if (i < n) caixa(x + s, y + s, z, 2 - 2 * s, 2 - 2 * s, HH[i], cor, { cinza: cz, pinos: i === 4 || i === n - 1 ? (2 - 2 * s) / 2 : 0 });
+      else if (i === n && !cz) { g.globalAlpha = .42 + Math.sin(t / 300) * .1; caixa(x + s, y + s, z, 2 - 2 * s, 2 - 2 * s, HH[i], '#ffffff', { linha: 'rgba(25,25,25,.5)' }); g.globalAlpha = 1; }
+      z += HH[i];
+    }
+    if (n >= 5 && !cz) {
+      const e = b.marco.enfeite;
+      if (e === 'relogio') {
+        const p = P(x + 1, y + 2 - .34, .35 + 1.4 * 3 + .85);
+        g.fillStyle = '#fff'; g.strokeStyle = '#111'; g.lineWidth = 2; g.beginPath(); g.ellipse(p[0], p[1], 11, 13, 0, 0, 7); g.fill(); g.stroke();
+        const a = t / 1500; g.lineWidth = 2; g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(p[0] + Math.sin(a) * 8, p[1] - Math.cos(a) * 9); g.moveTo(p[0], p[1]); g.lineTo(p[0] + 5, p[1]); g.stroke();
+      } else if (e === 'antena') {
+        caixa(x + .95, y + .95, z, .1, .1, 4, '#5c6166');
+        const p = P(x + 1, y + 1, z + 4.1); g.fillStyle = Math.floor(t / 500) % 2 ? VERMELHO : '#7a2a22'; g.beginPath(); g.arc(p[0], p[1], 4, 0, 7); g.fill();
+      } else if (e === 'cupula') {
+        const p = P(x + 1, y + 1, z); g.fillStyle = BRANCO; g.strokeStyle = LINHA; g.beginPath(); g.ellipse(p[0], p[1], 20, 10, 0, 0, 7); g.fill(); g.stroke();
+        g.fillStyle = tom(BRANCO, -.05); g.beginPath(); g.arc(p[0], p[1], 20, Math.PI, 0); g.fill(); g.stroke();
+        g.fillStyle = '#3a4046'; g.fillRect(p[0] - 3, p[1] - 18, 6, 12);
+      }
+      if (e !== 'antena') {
+        caixa(x + .95, y + .95, z, .06, .06, 2.6, '#3a4046');
+        const p = P(x + 1, y + 1, z + 2.6), w = Math.sin(t / 250) * 2;
+        g.fillStyle = b.marco.cores[1] === BRANCO ? VERDE : b.marco.cores[1]; g.strokeStyle = '#111'; g.lineWidth = 1.2;
+        g.beginPath(); g.moveTo(p[0], p[1]); g.quadraticCurveTo(p[0] + 10, p[1] + 2 + w, p[0] + 20, p[1] + 4); g.lineTo(p[0] + 20, p[1] + 16); g.quadraticCurveTo(p[0] + 10, p[1] + 14 + w, p[0], p[1] + 12); g.closePath(); g.fill(); g.stroke();
+      }
+    }
+    if (cz) { // cadeado sobre o bairro fechado
+      const p = P(x + 1, y + 1, 4.6), cx = p[0], cy = p[1] + Math.sin(t / 500) * 3;
+      g.strokeStyle = '#3a4046'; g.lineWidth = 5; g.beginPath(); g.arc(cx, cy - 10, 10, Math.PI, 0); g.stroke();
+      g.fillStyle = AMARELO; g.strokeStyle = '#111'; g.lineWidth = 2.2; g.beginPath(); g.roundRect(cx - 16, cy - 10, 32, 26, 6); g.fill(); g.stroke();
+      g.fillStyle = '#111'; g.beginPath(); g.arc(cx, cy + 1, 4, 0, 7); g.fill(); g.fillRect(cx - 1.6, cy + 2, 3.2, 8);
+    }
+  }
+  function boneco(x, y, o, t, andando) {
+    const pulo = andando ? Math.abs(Math.sin(t / 90)) * .25 : 0;
+    const s = P(x, y); g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); g.ellipse(s[0], s[1], 11, 5.5, 0, 0, 7); g.fill();
+    const passo = andando ? Math.sin(t / 90) * .12 : 0;
+    caixa(x - .15, y - .05 + passo, pulo, .13, .14, .95, o.calca || '#3a4046');
+    caixa(x + .02, y - .05 - passo, pulo, .13, .14, .95, o.calca || '#3a4046');
+    caixa(x - .19, y - .11, pulo + .95, .38, .24, 1.05, o.cor);
+    caixa(x - .27, y - .03, pulo + 1.15, .08, .12, .8, o.cor); caixa(x + .19, y - .03, pulo + 1.15, .08, .12, .8, o.cor);
+    const h = P(x, y, pulo + 2.0); cilindro(h[0], h[1], 6.5, 11, o.pele || '#ffd23f');
+    g.fillStyle = '#111'; g.fillRect(h[0] - 3.5, h[1] - 7, 2, 2.4); g.fillRect(h[0] + 1.5, h[1] - 7, 2, 2.4);
+    g.strokeStyle = '#111'; g.lineWidth = 1.2; g.beginPath(); g.arc(h[0], h[1] - 4.5, 2.6, .3, Math.PI - .3); g.stroke();
+    if (o.chapeu) { cilindro(h[0], h[1] - 10, 7.4, 4, o.chapeu); g.fillStyle = o.chapeu; g.beginPath(); g.ellipse(h[0] + 4, h[1] - 10, 6, 2.6, 0, 0, 7); g.fill(); }
+    else if (o.cabelo) { g.fillStyle = o.cabelo; g.beginPath(); g.ellipse(h[0], h[1] - 11, 6.8, 3.6, 0, 0, 7); g.fill(); g.fillRect(h[0] - 6.8, h[1] - 11, 2.6, 6); g.fillRect(h[0] + 4.2, h[1] - 11, 2.6, 6); }
+  }
+  function npc(o, t) {
+    if (!aberto(o.b)) return;
+    boneco(o.x, o.y, o, t, false);
+    if (!S.falou.includes(o.id)) {
+      const p = P(o.x, o.y, 3.7), bob = Math.sin(t / 250) * 2;
+      g.fillStyle = '#fff'; g.strokeStyle = '#111'; g.lineWidth = 2; g.beginPath(); g.roundRect(p[0] - 9, p[1] - 22 + bob, 18, 20, 6); g.fill(); g.stroke();
+      g.fillStyle = '#111'; g.font = '800 15px Sniglet, Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('!', p[0], p[1] - 11 + bob);
+    }
+  }
+  function carro(c) {
+    const L = 1.05, Wd = .52, hx = c.dir === 'x';
+    const [w, d] = hx ? [L, Wd] : [Wd, L];
+    g.globalAlpha = c.alfa;
+    caixa(c.x - w / 2 + .06, c.y - d / 2 + .04, .02, w - .12, d - .08, .3, '#23272b');
+    caixa(c.x - w / 2, c.y - d / 2, .3, w, d, .7, c.cor, { pinos: 0 });
+    const [cw, cd] = hx ? [.52, .44] : [.44, .52], off2 = c.v > 0 ? -.08 : .08;
+    caixa(c.x - cw / 2 + (hx ? off2 : 0), c.y - cd / 2 + (hx ? 0 : off2), 1.0, cw, cd, .55, '#e9efe4');
+    caixa(c.x - cw / 2 + (hx ? off2 : 0), c.y - cd / 2 + (hx ? 0 : off2), 1.55, cw, cd, .12, c.cor);
+    g.globalAlpha = 1;
+  }
+
+  /* ---------- Carros e moradores que passeiam ---------- */
+  const CORES_CARRO = [VERMELHO, AMARELO, VERDE, LARANJA, BRANCO, '#c7d23a'];
+  const CARROS = [];
+  [[0, .5, 1], [0, 1.5, -1], [1, .5, 1], [2, 1.5, -1]].forEach(([r, f, v], i) => CARROS.push({ dir: 'x', x: (i * 9) % W, y: r * (BS + GAP) + f, v: v * (1.6 + i * .2), cor: CORES_CARRO[i] }));
+  [[1, .5, -1], [2, 1.5, 1], [3, .5, -1]].forEach(([c, f, v], i) => CARROS.push({ dir: 'y', y: (i * 7 + 3) % H, x: c * (BS + GAP) + f, v: v * (1.5 + i * .25), cor: CORES_CARRO[i + 3] }));
+  CARROS.forEach(c => { c.alfa = 1; });
+  const PELES = ['#c68642', '#8d5524', '#f1c27d', '#e0ac69'];
+  const PASSANTES = [];
+  BAIRROS.forEach((b, i) => { for (let k = 0; k < 2; k++) PASSANTES.push({ b: i, x: b.x0 + 2.5 + k * 5, y: b.y0 + 3.5 + k * 4, alvo: null, espera: Math.random() * 2, cor: CORES_CARRO[(i + k * 2) % 6], pele: PELES[(i + k) % 4], cabelo: ['#2b1a0e', '#111', '#7a3b12'][(i + k) % 3], calca: '#3a4046' }); });
+  function livreNoBairro(p) {
+    const b = BAIRROS[p.b];
+    for (let k = 0; k < 40; k++) { const x = b.x0 + Math.floor(Math.random() * BS), y = b.y0 + Math.floor(Math.random() * BS); if (!BLOQ[y][x]) return { x: x + .5, y: y + .5 }; }
+    return null;
+  }
+  PASSANTES.forEach(p => { if (BLOQ[Math.floor(p.y)][Math.floor(p.x)]) { const l = livreNoBairro(p); if (l) { p.x = l.x; p.y = l.y; } } });
+
+  function atualizaCarros(dt) {
+    CARROS.forEach(c => {
+      const ax = c.dir === 'x' ? 'x' : 'y', lim = c.dir === 'x' ? W : H, lado = c.dir === 'x' ? 'y' : 'x';
+      // para antes da personagem e de outro carro na mesma faixa
+      const ahead = (ox, oy) => { const dA = (ax === 'x' ? ox - c.x : oy - c.y) * Math.sign(c.v), dL = Math.abs((lado === 'y' ? oy : ox) - c[lado]); return dA > 0 && dA < 1.5 && dL < .55; };
+      let para = ahead(S.x, S.y) || CARROS.some(o => o !== c && o.dir === c.dir && ahead(o.x, o.y));
+      if (!para) c[ax] += c.v * dt;
+      if (c[ax] > lim + .6) c[ax] = -.6; if (c[ax] < -.6) c[ax] = lim + .6;
+      const borda = Math.min(c[ax] + .6, lim + .6 - c[ax]); c.alfa = Math.max(0, Math.min(1, borda / 1.2));
+    });
+  }
+  function atualizaPassantes(dt) {
+    PASSANTES.forEach(p => {
+      if (!aberto(p.b)) return;
+      if (p.espera > 0) { p.espera -= dt; return; }
+      if (!p.alvo) {
+        const tx = Math.floor(p.x), ty = Math.floor(p.y), op = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter(([dx, dy]) => { const nx = tx + dx, ny = ty + dy; return TIPO[ny] && TIPO[ny][nx] === p.b && !BLOQ[ny][nx]; });
+        if (!op.length) { p.espera = 1; return; }
+        const [dx, dy] = op[Math.floor(Math.random() * op.length)]; p.alvo = { x: tx + dx + .5, y: ty + dy + .5 };
+      }
+      const dx = p.alvo.x - p.x, dy = p.alvo.y - p.y, d = Math.hypot(dx, dy);
+      if (Math.hypot(p.alvo.x - S.x, p.alvo.y - S.y) < .7) { p.alvo = null; p.espera = .6; return; }
+      if (d < .04) { p.x = p.alvo.x; p.y = p.alvo.y; p.alvo = null; p.espera = Math.random() < .3 ? 1 + Math.random() * 2 : 0; return; }
+      const v = Math.min(d, 1.3 * dt); p.x += dx / d * v; p.y += dy / d * v; p.anda = true;
+    });
+  }
+
+  /* ---------- Câmera, render ---------- */
+  function ajusta() {
+    const box = $('tela-box'), larg = box.clientWidth;
+    dpr = window.devicePixelRatio || 1;
+    zoom = larg < 600 ? .7 : larg < 900 ? .85 : 1;
+    const alt = Math.round(Math.max(360, Math.min(640, larg * .56)));
+    cv.style.height = alt + 'px';
+    cv.width = Math.round(larg * dpr); cv.height = Math.round(alt * dpr);
+    CW = larg / zoom; CH = alt / zoom;
+  }
+  ajusta(); addEventListener('resize', ajusta);
+  let camX = S.x, camY = S.y;
+  const EU = { cor: VERMELHO, calca: '#2f7d4a', pele: '#f1c27d', chapeu: AMARELO };
+  function render(t) {
+    g.setTransform(dpr * zoom, 0, 0, dpr * zoom, 0, 0);
+    g.fillStyle = '#e7efd9'; g.fillRect(0, 0, CW, CH);
+    camX += (S.x - camX) * .15; camY += (S.y - camY) * .15;
+    OX = CW / 2 - (camX - camY) * TW / 2; OY = CH / 2 - (camX + camY) * TH / 2 + 30;
+    g.drawImage(off, OX - GX0, OY - GY0, off.width / SC, off.height / SC);
+    if (caminho && caminho.length) { const f = caminho[caminho.length - 1], p = P(f.x, f.y); g.strokeStyle = 'rgba(255,255,255,.9)'; g.lineWidth = 2.5; g.beginPath(); g.ellipse(p[0], p[1], 16, 8, 0, 0, 7); g.stroke(); }
+    TOTENS.forEach(o => brilhoTotem(o, t));
+    const vis = (x, y) => { const p = P(x, y); return p[0] > -220 && p[0] < CW + 220 && p[1] > -60 && p[1] < CH + 260; };
+    const lista = [];
+    ESTATICOS.forEach(o => { const w = o.w || 1, d = o.d || 1; if (vis(o.x + w / 2, o.y + d / 2)) lista.push([o.x + w / 2 + o.y + d / 2, o]); });
+    MARCOS.forEach(o => vis(o.x + 1, o.y + 1) && lista.push([o.x + o.y + 2, o]));
+    TOTENS.forEach(o => vis(o.x, o.y) && lista.push([o.x + o.y + 1, o]));
+    BONUS.forEach(o => vis(o.x, o.y) && lista.push([o.x + o.y + 1, o]));
+    NPCS.forEach(o => vis(o.x, o.y) && lista.push([o.x + o.y, o]));
+    SEMAFOROS.forEach(o => vis(o.x, o.y) && lista.push([o.x + o.y + .4, o]));
+    PASSANTES.forEach(o => aberto(o.b) && vis(o.x, o.y) && lista.push([o.x + o.y, { k: 'passante', o }]));
+    CARROS.forEach(o => vis(o.x, o.y) && lista.push([o.x + o.y, { k: 'carro', o }]));
+    lista.push([S.x + S.y + .01, { k: 'eu' }]);
+    lista.sort((a, b) => a[0] - b[0]);
+    for (const [, o] of lista) {
+      switch (o.k) {
+        case 'predio': predio(o, t); break; case 'arvore': arvore(o); break; case 'poste': poste(o); break;
+        case 'semaforo': semaforo(o, t); break; case 'marco': marco(o, t); break; case 'totem': totem(o, t); break;
+        case 'bonus': bonus(o, t); break; case 'npc': npc(o, t); break; case 'carro': carro(o.o); break;
+        case 'passante': boneco(o.o.x, o.o.y, o.o, t, !!o.o.alvo); break;
+        case 'eu': boneco(S.x, S.y, EU, t, andando); break;
+      }
+    }
+    // a personagem aparece em transparência quando passa atrás de um prédio, e uma seta mostra onde está
+    g.globalAlpha = .38; boneco(S.x, S.y, EU, t, andando); g.globalAlpha = 1;
+    const m = P(S.x, S.y, 4.1), mb = Math.sin(t / 220) * 2.5;
+    g.fillStyle = AMARELO; g.strokeStyle = '#111'; g.lineWidth = 2; g.beginPath(); g.moveTo(m[0] - 7, m[1] - 10 + mb); g.lineTo(m[0] + 7, m[1] - 10 + mb); g.lineTo(m[0], m[1] + mb); g.closePath(); g.fill(); g.stroke();
+  }
+
+  /* ---------- Minimapa ---------- */
+  const mini = $('mini'), mc = mini.getContext('2d');
+  function desenhaMini(alvo, escala) {
+    const c = alvo || mc, cw = (alvo ? alvo.canvas.width : mini.width), ch = (alvo ? alvo.canvas.height : mini.height), k = escala || 1;
+    c.clearRect(0, 0, cw, ch);
+    c.fillStyle = '#23272b'; c.beginPath(); c.roundRect(0, 0, cw, ch, 10 * k); c.fill();
+    const sx = cw / W, sy = ch / H;
+    BAIRROS.forEach((b, i) => {
+      const x = b.x0 * sx, y = b.y0 * sy, w = BS * sx, h = BS * sy;
+      const ab = aberto(i), cp = completo(i);
+      c.fillStyle = ab ? (cp ? '#7fd39c' : b.chao) : '#3a4046'; c.beginPath(); c.roundRect(x + 1, y + 1, w - 2, h - 2, 5 * k); c.fill();
+      if (i === atual() && !S.fim) { c.strokeStyle = AMARELO; c.lineWidth = 3 * k; c.stroke(); }
+      const cx = x + w / 2, cy = y + h / 2;
+      if (!ab) {
+        c.strokeStyle = '#cfcac0'; c.lineWidth = 2 * k; c.beginPath(); c.arc(cx, cy - 3 * k, 5 * k, Math.PI, 0); c.stroke();
+        c.fillStyle = AMARELO; c.fillRect(cx - 7 * k, cy - 3 * k, 14 * k, 11 * k);
+      } else if (cp) {
+        c.strokeStyle = '#111'; c.lineWidth = 3 * k; c.lineCap = 'round'; c.beginPath(); c.moveTo(cx - 7 * k, cy); c.lineTo(cx - 2 * k, cy + 5 * k); c.lineTo(cx + 8 * k, cy - 6 * k); c.stroke(); c.lineCap = 'butt';
+      } else {
+        TOTENS.filter(tt => tt.b === i).forEach(tt => { c.fillStyle = S.ok.includes(tt.id) ? VERDE : '#e8a400'; c.beginPath(); c.arc((tt.x + .5) * sx, (tt.y + .5) * sy, 2.4 * k, 0, 7); c.fill(); });
+      }
+      if (alvo) { c.fillStyle = ab ? '#111' : '#cfcac0'; c.font = `800 ${7 * k}px Sniglet, Lexend, sans-serif`; c.textAlign = 'left'; c.textBaseline = 'top'; c.fillText(String(i + 1), x + 5 * k, y + 4 * k); }
+    });
+    c.fillStyle = VERMELHO; c.strokeStyle = '#fff'; c.lineWidth = 2; c.beginPath(); c.arc(S.x * sx, S.y * sy, 4.5 * k, 0, 7); c.fill(); c.stroke();
+  }
+
+  /* ---------- HUD e painéis ---------- */
+  const CORACAO = (on) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.2 7.7 3.4 4 7 4c2.1 0 3.6 1.2 5 3 1.4-1.8 2.9-3 5-3 3.6 0 5.8 3.7 4.4 7.2C19.6 15.9 12 20.5 12 20.5z" fill="${on ? VERMELHO : '#5a5f64'}" stroke="${on ? '#fff' : '#3a3f44'}" stroke-width="1.6"/></svg>`;
+  let bairroAqui = 0;
+  function hud() {
+    $('h-vidas').innerHTML = [0, 1, 2, 3, 4].map(i => CORACAO(i < S.vidas)).join('') + `<span class="sr-only">${S.vidas} de 5 vidas</span>`;
+    $('h-pontos').textContent = S.pontos;
+    $('h-combo').textContent = 'x' + S.combo;
+    $('h-pecas').textContent = S.pecas;
+    $('h-desaf').textContent = `${S.ok.length}/${TOTENS.length}`;
+    $('h-bairro').textContent = BAIRROS[bairroAqui].nome;
+    const a = atual();
+    $('h-missao').textContent = S.fim ? 'Cidade reconstruída' : `${BAIRROS[a].marco.nome} (${feitos(a)}/5)`;
+    $('mini-nome').textContent = BAIRROS[bairroAqui].nome;
+  }
+  const falouTodos = () => NPCS.every(n => S.falou.includes(n.id));
+  const CONQUISTAS = [
+    ['primeiro', 'Primeiro totem', 'Acertar o primeiro desafio.', () => S.ok.length >= 1],
+    ['combo3', 'Combo x3', 'Chegar ao combo x3.', () => S.maxCombo >= 3],
+    ['combo5', 'Combo máximo', 'Chegar ao combo x5.', () => S.maxCombo >= 5],
+    ['marco', 'Marco reconstruído', 'Completar o marco de um bairro.', () => BAIRROS.some((b, i) => completo(i))],
+    ['perfeito', 'Sem perder vidas', 'Completar um bairro sem perder nenhuma vida.', () => BAIRROS.some((b, i) => completo(i) && !S.perdeu[i])],
+    ['vizinhos', 'Boa vizinhança', `Conversar com os ${NPCS.length} moradores.`, falouTodos],
+    ['pecas', 'Olho atento', `Encontrar as ${BONUS.length} peças escondidas.`, () => BONUS.every(o => S.bonus.includes(o.id))],
+    ['metade', 'Meio caminho', 'Liberar o quarto bairro.', () => S.abertos >= 4],
+    ['cidade', 'Cidade completa', 'Reconstruir os seis marcos.', () => S.fim],
+    ['mestre', 'Mestre dos blocos', 'Terminar com 80% ou mais de acertos.', () => S.fim && S.resp > 0 && S.acertos / S.resp >= .8]
+  ];
+  let filaToast = [], toastAtivo = false;
+  function toast(tit, txt) { filaToast.push([tit, txt]); mostraToast(); }
+  function mostraToast() {
+    if (toastAtivo || !filaToast.length) return;
+    const [tit, txt] = filaToast.shift(), el = $('toast'); toastAtivo = true;
+    el.innerHTML = `<strong>${esc(tit)}</strong>${esc(txt)}`; el.classList.add('on');
+    setTimeout(() => { el.classList.remove('on'); setTimeout(() => { toastAtivo = false; mostraToast(); }, 350); }, 2600);
+  }
+  function checaConq() { CONQUISTAS.forEach(c => { if (!S.conq.includes(c[0]) && c[3]()) { S.conq.push(c[0]); toast('Conquista: ' + c[1], c[2]); } }); }
+  function missoes(b) {
+    const B = BAIRROS[b], nb = BONUS.filter(o => o.b === b), nok = nb.filter(o => S.bonus.includes(o.id)).length;
+    return [[`Conversar com ${B.npc.nome}`, S.falou.includes(B.npc.id)], [`Responder os 5 totens (${feitos(b)}/5)`, completo(b)],
+      [`Encontrar as peças escondidas (${nok}/${nb.length})`, nok === nb.length], [`Reconstruir: ${B.marco.nome}`, completo(b)]];
+  }
+  function painel() {
+    checaConq(); hud();
+    const a = atual();
+    $('missao-tit').textContent = 'Missão: ' + BAIRROS[a].nome;
+    $('missao').innerHTML = missoes(a).map(([t, ok]) => `<li class="${ok ? 'ok' : ''}">${esc(t)}</li>`).join('');
+    $('nconq').textContent = `(${S.conq.length} de ${CONQUISTAS.length})`;
+    $('lista-conq').innerHTML = CONQUISTAS.map((c, i) => { const on = S.conq.includes(c[0]); return `<li class="${on ? 'on' : ''}"><span class="med" aria-hidden="true">${i + 1}</span><span><strong>${esc(c[1])}</strong><span class="d">${esc(c[2])}</span><span class="sr-only">${on ? ' (conquistada)' : ' (ainda não)'}</span></span></li>`; }).join('');
+    $('dicas').innerHTML = S.dicas.map(d => `<li>${esc(d)}</li>`).join('') || '<li class="muted">Converse com os moradores e leia as explicações dos totens para ganhar dicas.</li>';
+    $('ndicas').textContent = `(${S.dicas.length})`;
+    const min = Math.max(1, Math.round((Date.now() - (S.inicio || Date.now())) / 60000));
+    $('relatorio').innerHTML = `<table class="cb-rel"><tbody>
+      <tr><td>Respostas</td><td>${S.resp}</td></tr><tr><td>Acertos</td><td>${S.acertos}${S.resp ? ` (${Math.round(S.acertos / S.resp * 100)}%)` : ''}</td></tr>
+      <tr><td>Totens resolvidos</td><td>${S.ok.length} de ${TOTENS.length}</td></tr><tr><td>Bairros liberados</td><td>${S.abertos} de ${NB}</td></tr>
+      <tr><td>Maior combo</td><td>x${S.maxCombo}</td></tr><tr><td>Tempo desde o início</td><td>${min} min</td></tr></tbody></table>
+      <table class="cb-rel" style="margin-top:8px"><thead><tr><th>Tema</th><th>Acertos</th></tr></thead><tbody>
+      ${BAIRROS.map((b, i) => { const v = S.porB[i]; return `<tr><td>${esc(b.tema)}</td><td>${v ? `${v.a} de ${v.r}` : '-'}</td></tr>`; }).join('')}</tbody></table>`;
+    $('lista-bairros').innerHTML = BAIRROS.map((b, i) => `<li><span class="n" style="background:${aberto(i) ? b.chao : '#e6e3dc'}">${i + 1}</span><span><strong>${esc(b.nome)}</strong><br><span class="st">${esc(b.tema)} · ${b.habs.join(', ')}</span></span><span class="st">${completo(i) ? 'Completo' : aberto(i) ? feitos(i) + '/5' : 'Fechado'}</span></li>`).join('');
+    desenhaMini();
+  }
+  function addDica(d) { if (d && !S.dicas.includes(d)) S.dicas.push(d); }
+
+  /* ---------- Som ---------- */
+  let AC = null;
+  function bip(f, d, tipo, v, atraso) {
+    if (!S.som) return;
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      const t0 = AC.currentTime + (atraso || 0), o = AC.createOscillator(), gn = AC.createGain();
+      o.type = tipo || 'triangle'; o.frequency.value = f; gn.gain.setValueAtTime(v || .07, t0); gn.gain.exponentialRampToValueAtTime(.0001, t0 + (d || .14));
+      o.connect(gn).connect(AC.destination); o.start(t0); o.stop(t0 + (d || .14) + .02);
+    } catch (e) { /* sem som neste navegador */ }
+  }
+  const somAcerto = () => { bip(660, .12); bip(880, .12, 'triangle', .07, .1); bip(1175, .18, 'triangle', .06, .2); };
+  const somErro = () => { bip(220, .22, 'square', .035); bip(165, .3, 'square', .03, .15); };
+  const somPeca = () => { bip(990, .08, 'sine', .06); bip(1320, .1, 'sine', .05, .07); };
+  const somMarco = () => [523, 659, 784, 1047].forEach((f, i) => bip(f, .2, 'triangle', .07, i * .12));
+  function marcaSom() { const b = $('b-som'); b.setAttribute('aria-pressed', S.som ? 'true' : 'false'); b.setAttribute('aria-label', S.som ? 'Som ligado' : 'Som desligado'); }
+
+  /* ---------- Diálogos ---------- */
+  const dlg = $('dlg'), card = $('card');
+  const aberta = () => !dlg.hidden;
+  function mostra(html, foco) { dlg.hidden = false; card.innerHTML = html; segura.clear(); caminho = null; const f = foco ? $(foco) : card.querySelector('button'); if (f) f.focus({ preventScroll: true }); }
+  function fechar() { dlg.hidden = true; card.innerHTML = ''; cv.focus({ preventScroll: true }); painel(); salvar(); }
+  function falar(paginas, depois) {
+    let i = 0;
+    const pg = () => {
+      const [quem, txt] = paginas[i], ult = i === paginas.length - 1;
+      mostra(`<div class="quem">${esc(quem)}</div><div class="fala">${esc(txt)}</div>
+        <div class="acoes">${!ult ? '<button class="btn ghost" type="button" id="cb-pular">Pular conversa</button>' : ''}<button class="btn" type="button" id="cb-ok">${ult && !depois ? 'Fechar' : 'Continuar'}</button></div>`, 'cb-ok');
+      $('cb-ok').onclick = () => { if (ult) { fechar(); if (depois) depois(); } else { i++; pg(); } };
+      if ($('cb-pular')) $('cb-pular').onclick = () => { fechar(); if (depois) depois(); };
+    };
+    pg();
+  }
+
+  /* ---------- Desafios dos totens ---------- */
+  const embaralha = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  const BARALHO = {};
+  function proxPergunta(b) {
+    if (!BARALHO[b] || !BARALHO[b].length) BARALHO[b] = embaralha(BAIRROS[b].perguntas.map((q, i) => i));
+    return BAIRROS[b].perguntas[BARALHO[b].shift()];
+  }
+  const dispensa = new Set();
+  function abrirTotem(t) {
+    const B = BAIRROS[t.b], [q, ops, c, exp] = proxPergunta(t.b), ordem = embaralha(ops.map((o, i) => i));
+    mostra(`<span class="tag2">${esc(B.tema)}</span><div class="quem">Totem ${TOTENS.filter(x => x.b === t.b).indexOf(t) + 1} de 5 · ${esc(B.nome)}</div>
+      <div class="fala"><strong>${esc(q)}</strong></div>
+      <div class="cb-ops" id="cb-ops">${ordem.map(i => `<button type="button" data-i="${i}">${esc(ops[i])}</button>`).join('')}</div><div id="cb-exp"></div>
+      <div class="acoes" id="cb-sair-box"><button class="btn ghost" type="button" id="cb-sair">Responder depois</button></div>`);
+    $('cb-sair').onclick = () => { dispensa.add(t.id); fechar(); };
+    const box = $('cb-ops');
+    box.onclick = e => {
+      const btn = e.target.closest('button'); if (!btn || btn.disabled) return;
+      const ok = +btn.dataset.i === c, pb = S.porB[t.b] = S.porB[t.b] || { r: 0, a: 0 };
+      S.resp++; pb.r++;
+      box.querySelectorAll('button').forEach(x => { x.disabled = true; if (+x.dataset.i === c) x.classList.add('certa'); });
+      $('cb-sair-box').remove();
+      let ganho = '', botoes = '';
+      if (ok) {
+        const pts = 10 * S.combo; S.pontos += pts; S.acertos++; pb.a++; S.pecas++; S.ok.push(t.id);
+        S.combo = Math.min(5, S.combo + 1); S.maxCombo = Math.max(S.maxCombo, S.combo);
+        ganho = `<div class="cb-ganho"><span>+${pts} pontos</span><span>+1 peça para o marco</span><span>Combo x${S.combo}</span></div>`;
+        botoes = `<button class="btn" type="button" id="cb-nx">Continuar</button>`;
+        somAcerto(); $('p-combo').classList.remove('quente'); void $('p-combo').offsetWidth; $('p-combo').classList.add('quente');
+      } else {
+        btn.classList.add('errada'); S.vidas = Math.max(0, S.vidas - 1); S.combo = 1; S.perdeu[t.b] = (S.perdeu[t.b] || 0) + 1; addDica(exp);
+        ganho = `<div class="cb-ganho"><span>-1 vida</span><span>Combo volta para x1</span></div>`;
+        botoes = S.vidas > 0 ? `<button class="btn ghost" type="button" id="cb-sai">Sair</button><button class="btn" type="button" id="cb-nx">Tentar outra pergunta</button>` : `<button class="btn" type="button" id="cb-nx">Continuar</button>`;
+        somErro();
+      }
+      $('cb-exp').innerHTML = `<div class="cb-exp ${ok ? 'ok' : 'bad'}" role="status"><strong>${ok ? 'Certo!' : 'Ainda não.'}</strong> ${esc(exp)}</div>${ganho}<div class="acoes">${botoes}</div>`;
+      S.ultimo = Date.now(); salvar(); hud();
+      $('cb-nx').focus({ preventScroll: true });
+      if ($('cb-sai')) $('cb-sai').onclick = () => { dispensa.add(t.id); fechar(); };
+      $('cb-nx').onclick = () => {
+        if (ok) { dispensa.add(t.id); fechar(); if (completo(t.b)) bairroCompleto(t.b); }
+        else if (S.vidas <= 0) semVidas(t.b);
+        else abrirTotem(t);
+      };
+    };
+  }
+  function semVidas(b) {
+    const B = BAIRROS[b];
+    mostra(`<div class="quem">As vidas acabaram</div><div class="fala">Sem problema: as peças que você já ganhou continuam no marco. Você volta para a entrada de ${esc(B.nome)} com 5 vidas. Que tal reler as dicas do Caderno antes de tentar de novo?</div>
+      <div class="acoes"><button class="btn" type="button" id="cb-ok">Voltar com 5 vidas</button></div>`);
+    $('cb-ok').onclick = () => { S.vidas = 5; S.combo = 1; const p = entrada(b); S.x = p.x; S.y = p.y; camX = S.x; camY = S.y; TOTENS.forEach(t => dispensa.add(t.id)); fechar(); };
+  }
+  function entrada(b) {
+    const B = BAIRROS[b];
+    for (let k = 0; k < BS; k++) { const x = B.x0 + k, y = B.y0 + BS - 1; if (!BLOQ[y][x]) return { x: x + .5, y: y + .5 }; }
+    return { x: B.x0 - .5, y: B.y0 + .5 };
+  }
+  function bairroCompleto(b) {
+    const B = BAIRROS[b]; somMarco();
+    S.pontos += 50; S.vidas = 5;
+    const ultimo = b === NB - 1;
+    if (!ultimo && S.abertos === b + 1) { S.abertos++; desenhaPiso(); }
+    painel(); salvar();
+    if (ultimo) { S.fim = true; salvar(); painel(); return final(); }
+    const prox = BAIRROS[b + 1];
+    toast('Novo bairro liberado', prox.nome);
+    falar([[B.npc.nome, `O ${B.marco.nome} está de pé de novo! Você ganhou 50 pontos de bônus e as vidas voltaram para 5.`], [B.npc.nome, `A rua para ${prox.nome} está aberta. Lá os desafios são de ${prox.tema.toLowerCase()}. Procure ${prox.npc.nome}: o ponto de exclamação mostra onde fica.`]]);
+  }
+  function final() {
+    const pct = S.resp ? Math.round(S.acertos / S.resp * 100) : 100;
+    window.MDP && MDP.registrar('cidade-blocos', pct);
+    painel();
+    mostra(`<div class="cb-fim" role="status"><h2>${pct >= 80 ? 'Mestre dos blocos!' : pct >= 60 ? 'Cidade reconstruída!' : 'Você conseguiu!'}</h2>
+      <p>Os seis marcos estão de pé e todos os bairros da Cidade em Blocos estão abertos.</p>
+      <p style="font-size:19px"><b>${S.pontos}</b> pontos · <b>${S.acertos}</b> acertos em <b>${S.resp}</b> respostas (${pct}%) · maior combo x${S.maxCombo}</p>
+      <p class="small">Você passou por algoritmos, dados e listas, depuração, internet e redes, segurança digital e IA.</p>
+      <div class="acoes" style="justify-content:center"><button class="btn ghost" type="button" id="cb-explorar">Continuar explorando</button><button class="btn" type="button" id="cb-denovo">Jogar de novo</button></div></div>`, 'cb-denovo');
+    $('cb-explorar').onclick = fechar;
+    $('cb-denovo').onclick = recomecar;
+  }
+  function falarNpc(n) {
+    const primeira = !S.falou.includes(n.id), pags = n.falas.map(f => [n.nome, f]);
+    falar(primeira ? pags : [[n.nome, completo(n.b) ? `Obrigada pela ajuda com o ${BAIRROS[n.b].marco.nome}! A dica continua no seu Caderno.` : pags[pags.length - 1][1]]], () => {
+      if (!S.falou.includes(n.id)) { S.falou.push(n.id); addDica(n.dica); toast('Dica guardada', 'Veja no Caderno de dicas, abaixo do mapa.'); }
+      dispensa.add(n.id); painel(); salvar();
+    });
+  }
+
+  /* ---------- Movimento ---------- */
+  const segura = new Set();
+  let caminho = null, andando = false, pausado = false;
+  const RAIO = .2;
+  function livre(x, y) {
+    return [[-RAIO, -RAIO], [RAIO, -RAIO], [-RAIO, RAIO], [RAIO, RAIO]].every(([dx, dy]) => andavel(Math.floor(x + dx), Math.floor(y + dy)));
+  }
+  function mover(dx, dy) {
+    let mv = false;
+    if (dx && livre(S.x + dx, S.y)) { S.x += dx; mv = true; }
+    if (dy && livre(S.x, S.y + dy)) { S.y += dy; mv = true; }
+    return mv;
+  }
+  function bfs(alvo) {
+    const sx = Math.floor(S.x), sy = Math.floor(S.y), key = (x, y) => y * W + x;
+    let destinos = new Set();
+    if (andavel(alvo.x, alvo.y)) destinos.add(key(alvo.x, alvo.y));
+    else [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]].forEach(([dx, dy]) => { if (andavel(alvo.x + dx, alvo.y + dy)) destinos.add(key(alvo.x + dx, alvo.y + dy)); });
+    if (!destinos.size) return null;
+    const ant = new Map([[key(sx, sy), -1]]), fila = [[sx, sy]];
+    while (fila.length) {
+      const [x, y] = fila.shift();
+      if (destinos.has(key(x, y))) { const r = []; let k = key(x, y); while (k !== -1) { r.push({ x: k % W + .5, y: Math.floor(k / W) + .5 }); k = ant.get(k); } r.pop(); return r.reverse(); }
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, ny = y + dy, k = key(nx, ny); if (!ant.has(k) && andavel(nx, ny)) { ant.set(k, key(x, y)); fila.push([nx, ny]); } }
+    }
+    return null;
+  }
+  const DIRS = { c: [-1, -1], b: [1, 1], e: [-1, 1], d: [1, -1] }; // direções da tela em coordenadas do mapa
+  function atualiza(dt) {
+    andando = false;
+    if (aberta() || pausado) return;
+    let sx = 0, sy = 0;
+    segura.forEach(d => { const [a, b] = DIRS[d]; sx += a; sy += b; });
+    const v = 3.6 * dt;
+    if (sx || sy) { caminho = null; const n = Math.hypot(sx, sy); andando = mover(sx / n * v, sy / n * v); }
+    else if (caminho && caminho.length) {
+      const alvo = caminho[0], dx = alvo.x - S.x, dy = alvo.y - S.y, d = Math.hypot(dx, dy);
+      if (d < .06) caminho.shift(); else { const k = Math.min(d, v); andando = mover(dx / d * k, dy / d * k); if (!andando) caminho = null; }
+    }
+    const tx = Math.floor(S.x), ty = Math.floor(S.y), bt = TIPO[ty] ? TIPO[ty][tx] : -1;
+    if (bt >= 0 && bt !== bairroAqui) { bairroAqui = bt; hud(); }
+    // peças escondidas
+    BONUS.forEach(o => {
+      if (!aberto(o.b) || S.bonus.includes(o.id)) return;
+      if (Math.hypot(o.x + .5 - S.x, o.y + .5 - S.y) < .55) { S.bonus.push(o.id); S.pecas++; S.pontos += 5; somPeca(); toast('Peça escondida', '+5 pontos'); painel(); salvar(); }
+    });
+    // totens e moradores por perto
+    for (const t of TOTENS) {
+      if (!aberto(t.b) || S.ok.includes(t.id)) continue;
+      const d = Math.hypot(t.x + .5 - S.x, t.y + .5 - S.y);
+      if (d > 1.6) dispensa.delete(t.id);
+      else if (d < 1.08 && !dispensa.has(t.id)) { if (S.vidas <= 0) return semVidas(t.b); return abrirTotem(t); }
+    }
+    for (const n of NPCS) {
+      if (!aberto(n.b)) continue;
+      const d = Math.hypot(n.x - S.x, n.y - S.y);
+      if (d > 1.6) dispensa.delete(n.id);
+      else if (d < 1.08 && !dispensa.has(n.id)) return falarNpc(n);
+    }
+  }
+
+  /* ---------- Entrada ---------- */
+  const TECLAS = { ArrowUp: 'c', ArrowDown: 'b', ArrowLeft: 'e', ArrowRight: 'd', w: 'c', s: 'b', a: 'e', d: 'd', W: 'c', S: 'b', A: 'e', D: 'd' };
+  document.addEventListener('keydown', e => {
+    if (aberta()) return;
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+    if (e.key === 'p' || e.key === 'P') { pausar(); return; }
+    const d = TECLAS[e.key]; if (!d) return;
+    const r = cv.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+    e.preventDefault(); segura.add(d);
+  });
+  document.addEventListener('keyup', e => { const d = TECLAS[e.key]; if (d) segura.delete(d); });
+  addEventListener('blur', () => segura.clear());
+  document.querySelectorAll('.cb-pad button').forEach(b => {
+    b.addEventListener('pointerdown', e => { e.preventDefault(); segura.add(b.dataset.dir); });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => segura.delete(b.dataset.dir)));
+  });
+  cv.tabIndex = 0;
+  cv.addEventListener('pointerdown', e => {
+    if (aberta() || pausado) return;
+    const r = cv.getBoundingClientRect(), X = (e.clientX - r.left) / zoom - OX, Y = (e.clientY - r.top) / zoom - OY;
+    const wx = (X / (TW / 2) + Y / (TH / 2)) / 2, wy = (Y / (TH / 2) - X / (TW / 2)) / 2;
+    const alvo = { x: Math.floor(wx), y: Math.floor(wy) };
+    const c = bfs(alvo); caminho = c && c.length ? c : null;
+    if (c) { const t = TOTENS.find(q => q.x === alvo.x && q.y === alvo.y); if (t) dispensa.delete(t.id); const n = NPCS.find(q => q.tx === alvo.x && q.ty === alvo.y); if (n) dispensa.delete(n.id); }
+  });
+
+  /* ---------- Botões ---------- */
+  $('b-som').onclick = () => { S.som = !S.som; marcaSom(); salvar(); if (S.som) bip(880, .1); };
+  function pausar() {
+    if (aberta()) return;
+    pausado = true;
+    mostra(`<div class="quem">Jogo pausado</div><div class="fala">O progresso está salvo neste aparelho. Pontos: <b>${S.pontos}</b> · peças: <b>${S.pecas}</b> · desafios: <b>${S.ok.length} de ${TOTENS.length}</b>.</div>
+      <div class="acoes"><button class="btn" type="button" id="cb-ok">Continuar</button></div>`);
+    $('cb-ok').onclick = () => { pausado = false; fechar(); };
+  }
+  $('b-pausa').onclick = pausar;
+  $('b-mapa').onclick = () => {
+    if (aberta()) return;
+    mostra(`<div class="quem">Mapa dos bairros</div><div class="fala small">Os bairros abrem em ordem. O contorno amarelo marca o bairro da missão atual; os pontos mostram os totens.</div>
+      <canvas class="cb-mapa-grande" id="mapa-g" width="600" height="400" aria-hidden="true"></canvas>
+      <ul class="cb-bairros">${BAIRROS.map((b, i) => `<li><span class="n" style="background:${aberto(i) ? b.chao : '#e6e3dc'}">${i + 1}</span><span>${esc(b.nome)} <span class="st">· ${esc(b.tema)}</span></span><span class="st">${completo(i) ? 'Completo' : aberto(i) ? feitos(i) + ' de 5' : 'Fechado'}</span></li>`).join('')}</ul>
+      <div class="acoes"><button class="btn" type="button" id="cb-ok">Fechar</button></div>`, 'cb-ok');
+    desenhaMini($('mapa-g').getContext('2d'), 3);
+    $('cb-ok').onclick = fechar;
+  };
+  $('b-missoes').onclick = () => {
+    if (aberta()) return;
+    const a = atual();
+    mostra(`<div class="quem">Missão: ${esc(BAIRROS[a].marco.nome)}</div><div class="fala small">${esc(BAIRROS[a].nome)} · ${esc(BAIRROS[a].tema)}</div>
+      <ul class="cb-missao" style="margin-top:8px">${missoes(a).map(([t, ok]) => `<li class="${ok ? 'ok' : ''}">${esc(t)}</li>`).join('')}</ul>
+      <p class="small" style="margin:12px 0 4px"><strong>Conquistas: ${S.conq.length} de ${CONQUISTAS.length}</strong></p>
+      <p class="small muted" style="margin:0">${CONQUISTAS.filter(c => S.conq.includes(c[0])).map(c => esc(c[1])).join(' · ') || 'Nenhuma ainda.'}</p>
+      <div class="acoes"><button class="btn" type="button" id="cb-ok">Fechar</button></div>`, 'cb-ok');
+    $('cb-ok').onclick = fechar;
+  };
+
+  function recomecar() { S = novo(); S.tutorial = true; camX = S.x; camY = S.y; bairroAqui = 0; dispensa.clear(); desenhaPiso(); salvar(); fechar(); marcaSom(); comecar(); }
+  $('recomecar').onclick = () => { if (confirm('Recomeçar a Cidade em Blocos do início? O progresso deste aparelho será apagado.')) recomecar(); };
+  $('salvar').onclick = () => {
+    salvar();
+    $('salvo').textContent = salvoOk ? `Progresso salvo neste aparelho às ${hora()}.` : 'Este navegador não deixou salvar. Use o código abaixo para guardar o progresso.';
+    $('codigo').value = codigo();
+  };
+  $('box-salvar').querySelector('details').addEventListener('toggle', e => { if (e.target.open) $('codigo').value = codigo(); });
+  $('copiar').onclick = () => {
+    $('codigo').value = codigo(); $('codigo').select();
+    const ok = () => { $('cod-msg').textContent = 'Código copiado.'; };
+    (navigator.clipboard ? navigator.clipboard.writeText($('codigo').value).then(ok, () => { document.execCommand('copy'); ok(); }) : (document.execCommand('copy'), ok()));
+  };
+  $('carregar').onclick = () => {
+    const v = $('colar').value.trim();
+    try {
+      if (!v.startsWith('CB1-')) throw 0;
+      const d = JSON.parse(decodeURIComponent(escape(atob(v.slice(4)))));
+      if (typeof d.x !== 'number' || !Array.isArray(d.ok)) throw 0;
+      S = Object.assign(novo(), d); camX = S.x; camY = S.y; desenhaPiso(); salvar(); fechar(); marcaSom();
+      $('cod-msg').textContent = 'Progresso carregado.'; $('colar').value = '';
+    } catch (e) { $('cod-msg').textContent = 'Código inválido. Confira se copiou o código inteiro, começando por CB1-.'; }
+  };
+
+  const TUTORIAL = [
+    ['Bem-vinda, bem-vindo à Cidade em Blocos', 'Uma tempestade desmontou os marcos dos seis bairros da cidade. Cada totem com "?" guarda uma peça. Responda os desafios, recupere as peças e reconstrua o marco de cada bairro.'],
+    ['Como andar', 'Use as setas ou W, A, S e D. Também dá para clicar (ou tocar) no chão: a personagem vai sozinha até lá. No celular, há botões de direção abaixo do mapa.'],
+    ['Totens de desafio', 'Chegue perto de um totem amarelo para abrir o desafio. Resposta certa: pontos, uma peça e o totem fica verde. Resposta errada: você perde uma vida, vê a explicação e pode tentar outra pergunta.'],
+    ['Vidas, combo e peças', 'Você tem 5 vidas. Acertos seguidos aumentam o combo até x5, que multiplica os pontos. Procure também as peças vermelhas escondidas pelo chão.'],
+    ['Bairros e missão', 'Com os 5 totens certos, o marco fica pronto e o próximo bairro é liberado. O minimapa mostra os bairros, e o botão de alvo mostra a missão atual. O jogo salva sozinho neste aparelho.']
+  ];
+  function tutorial(i) {
+    if (i >= TUTORIAL.length) { S.tutorial = true; salvar(); fechar(); return comecar(); }
+    const [tit, txt] = TUTORIAL[i];
+    mostra(`<span class="tag2">Tutorial ${i + 1} de ${TUTORIAL.length}</span><div class="quem">${esc(tit)}</div><div class="fala">${esc(txt)}</div>
+      <div class="acoes"><button class="btn ghost" type="button" id="cb-skip">Pular tutorial</button>${i ? '<button class="btn ghost" type="button" id="cb-volta">Voltar</button>' : ''}<button class="btn" type="button" id="cb-ok">${i + 1 < TUTORIAL.length ? 'Próximo' : 'Começar a jogar'}</button></div>`, 'cb-ok');
+    $('cb-ok').onclick = () => tutorial(i + 1);
+    $('cb-skip').onclick = () => tutorial(TUTORIAL.length);
+    if ($('cb-volta')) $('cb-volta').onclick = () => tutorial(i - 1);
+  }
+  function comecar() {
+    if (!S.falou.includes('iara')) toast('Comece pela Praça do Algoritmo', 'Converse com a Mestra de obras Iara, marcada com "!".');
+  }
+  $('ver-tutorial').onclick = () => { if (!aberta()) tutorial(0); };
+
+  let tAnt = performance.now();
+  function loop(t) {
+    const dt = Math.min(.05, (t - tAnt) / 1000); tAnt = t;
+    atualiza(dt);
+    if (!pausado) { atualizaCarros(dt); atualizaPassantes(dt); }
+    render(t);
+    if (andando && Math.floor(t / 300) !== Math.floor((t - dt * 1000) / 300)) desenhaMini();
+    requestAnimationFrame(loop);
+  }
+
+  bairroAqui = Math.max(0, TIPO[Math.floor(S.y)] ? TIPO[Math.floor(S.y)][Math.floor(S.x)] : 0);
+  if (bairroAqui < 0) bairroAqui = atual();
+  desenhaPiso(); marcaSom(); painel();
+  TOTENS.forEach(t => { if (Math.hypot(t.x + .5 - S.x, t.y + .5 - S.y) < 1.6) dispensa.add(t.id); });
+  NPCS.forEach(n => { if (Math.hypot(n.x - S.x, n.y - S.y) < 1.6) dispensa.add(n.id); });
+  if (!S.tutorial && !S.ok.length) tutorial(0); else comecar();
+  requestAnimationFrame(loop);
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

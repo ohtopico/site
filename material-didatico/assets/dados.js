@@ -166,6 +166,8 @@ const HABILIDADES_RAW = [
   ["EF06MA32", 6, "PE", "Tabelas e gráficos", "Interpretar e resolver situações que envolvam dados de pesquisas apresentadas em tabelas e em diferentes tipos de gráficos e redigir textos para sintetizar conclusões."],
   ["EF07MA35", 7, "PE", "Média estatística", "Compreender o significado de média estatística como indicador da tendência de uma pesquisa, calcular seu valor e relacioná-lo, intuitivamente, com a amplitude do conjunto de dados."],
   ["EF07MA36", 7, "PE", "Pesquisa amostral e censitária", "Planejar e realizar pesquisa envolvendo tema da realidade social e comunicar os dados por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas."],
+  ["EF06MA28", 6, "GE", "Plantas baixas e vistas aéreas", "Interpretar, descrever e desenhar plantas baixas simples de residências e vistas aéreas."],
+  ["EF08MA25", 8, "PE", "Medidas de tendência central", "Obter os valores de medidas de tendência central de uma pesquisa estatística (média, moda e mediana) com a compreensão de seus significados e relacioná-los com a dispersão de dados, indicada pela amplitude."],
 ];
 
 const HABILIDADES = HABILIDADES_RAW.map(([codigo, ano, eixo, objeto, texto]) => ({
@@ -340,6 +342,22 @@ const RECURSOS = [
     habs: ['EF06CO08', 'EF07CO07', 'EF08CO06', 'EF09CO04'], tempo: '20–30 min',
     resumo: 'Bingo para a turma toda: cartelas numeradas para imprimir, pistas sorteadas na tela, conferência de cartela e versão para marcar no celular. Hardware, internet, segurança, programação e IA.',
     url: 'jogos/bingo.html', plano: null, ficha: null },
+  { id: 'cidade-blocos', tipo: 'jogo', interacao: 'perguntas', titulo: 'Cidade em Blocos', comp: ['CO'], anos: [7, 8, 9],
+    habs: ['EF06CO02', 'EF07CO01', 'EF07CO02', 'EF07CO06', 'EF07CO07', 'EF08CO06', 'EF08CO08', 'EF09CO05', 'EF09CO10'], tempo: '30–40 min',
+    resumo: 'Cidade de blocos de montar com seis bairros: responda os totens de desafio, junte peças, reconstrua os marcos e libere a cidade. Algoritmos, dados, depuração, redes, segurança e IA.',
+    url: 'jogos/cidade-blocos.html', plano: 'p-bugs', ficha: null },
+  { id: 'boletim', tipo: 'jogo', interacao: 'outras', titulo: 'Fórmulas do Boletim', comp: ['MA', 'CO'], anos: [7, 8, 9],
+    habs: ['EF07MA35', 'EF07MA36', 'EF06MA33', 'EF07CO01', 'EF06CO02'], tempo: '20–30 min',
+    resumo: 'Planilha eletrônica de verdade: complete o boletim de uma turma fictícia com SOMA, MÉDIA, SE, CONT.SE e MÁXIMO, copie as fórmulas para baixo e descubra quantos estudantes melhoraram.',
+    url: 'jogos/boletim.html', plano: 'p-registros', ficha: null },
+  { id: 'meteorologista', tipo: 'jogo', interacao: 'perguntas', titulo: 'Meteorologista de Dados', comp: ['MA'], anos: [8, 9],
+    habs: ['EF07MA35', 'EF08MA25', 'EF09MA22', 'EF06MA32', 'EF06MA24'], tempo: '15 min',
+    resumo: 'Temperatura e chuva de cidades do RS: leia séries, preveja a máxima de amanhã com média e tendência e confira quantas previsões acertaram.',
+    url: 'jogos/meteorologista.html', plano: 'p-ma-graficos', ficha: null },
+  { id: 'arquiteto', tipo: 'jogo', interacao: 'outras', titulo: 'Arquiteto da Sala', comp: ['MA'], anos: [6, 7, 8],
+    habs: ['EF06MA28', 'EF06MA15', 'EF07MA17', 'EF06MA24', 'EF07MA32'], tempo: '15–20 min',
+    resumo: 'Desenhe a planta baixa de uma sala de aula em escala, calcule a área, distribua as carteiras com corredores e converta as medidas para as escalas 1:50 e 1:100.',
+    url: 'jogos/arquiteto.html', plano: 'p-ma-razao', ficha: null },
   // ---------- Recursos 3D (Laboratório 3D) ----------
   { id: '3d-decimais', tipo: '3d', titulo: 'Material Dourado 3D', comp: ['MA'], anos: [6],
     habs: ['EF06MA01', 'EF06MA02', 'EF06MA08', 'EF06MA11'], tempo: '15 min',
@@ -844,7 +862,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
