@@ -84,6 +84,16 @@
     </div>
   </section>
 
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">IA, dados e redes para girar e mexer</span><h2>Laboratório 3D de Computação</h2></div>
+        <a class="btn ghost" href="../catalogo.html?comp=CO&amp;tipo=3d">Ver no catálogo →</a>
+      </div>
+      <div class="rc-grid" data-grid="3d"></div>
+    </div>
+  </section>
+
   <section class="block" id="bncc">
     <div class="wrap">
       <div class="sec-head">
@@ -119,7 +129,7 @@
 
   <section class="block">
     <div class="wrap">
-      <p class="area-rodape">Procura um material específico? O <a href="../catalogo.html?comp=CO#indice">índice completo do catálogo</a> lista todos os jogos e recursos das duas áreas. Para o Laboratório 3D, a calculadora de Bhaskara e as oficinas, veja a <a href="../matematica/">área de Matemática</a>.</p>
+      <p class="area-rodape">Procura um material específico? O <a href="../catalogo.html?comp=CO#indice">índice completo do catálogo</a> lista todos os jogos e recursos das duas áreas. Para o Laboratório 3D de Matemática, a calculadora de Bhaskara e as oficinas, veja a <a href="../matematica/">área de Matemática</a>.</p>
     </div>
   </section>
 </main>
@@ -137,7 +147,7 @@
   mdFooter();
   const COMP = 'CO';
   const doComp = t => RECURSOS.filter(r => r.tipo === t && r.comp.includes(COMP));
-  const statDef = [[doComp('jogo').length, 'jogos', '../catalogo.html?comp=CO&tipo=jogo'], [Object.keys(SLIDES).length, 'aulas com slides', '#bncc'], [doComp('plano').length, 'planos de aula', '../catalogo.html?comp=CO&tipo=plano'], [doComp('lista').length, 'listas de exercícios', '../catalogo.html?comp=CO&tipo=lista']];
+  const statDef = [[doComp('jogo').length, 'jogos', '../catalogo.html?comp=CO&tipo=jogo'], [doComp('3d').length, 'recursos 3D', '../catalogo.html?comp=CO&tipo=3d'], [Object.keys(SLIDES).length, 'aulas com slides', '#bncc'], [doComp('plano').length, 'planos de aula', '../catalogo.html?comp=CO&tipo=plano'], [doComp('lista').length, 'listas de exercícios', '../catalogo.html?comp=CO&tipo=lista']];
   document.getElementById('stats').innerHTML = statDef.map(([n, l, href]) => `<a href="${href}"><b>${n}</b><span>${l}</span></a>`).join('');
   document.querySelectorAll('[data-grid]').forEach(el => {
     const max = Number(el.dataset.max) || 99;

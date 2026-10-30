@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rede Neural por Dentro · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Uma rede neural pequena em 3D: os sinais acendem da entrada até a saída, o aluno mexe nos pesos e vê a resposta mudar, e a rede explica qual entrada mais pesou na decisão. 9º ano, Ensino Médio e formação de professores.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/rede-neural.html">
+<meta property="og:title" content="Rede Neural por Dentro · Laboratório 3D">
+<meta property="og:description" content="Uma rede neural pequena em 3D: os sinais acendem da entrada até a saída, o aluno mexe nos pesos e vê a resposta mudar, e a rede explica qual entrada mais pesou na decisão. 9º ano, Ensino Médio e formação de professores.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/rede-neural.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A rede:</strong> ela recebe três informações sobre uma fruta (cor, maciez e cheiro, de 0 a 1) e responde se a fruta está madura. As bolinhas são os neurônios e as hastes são as conexões. Haste verde é peso positivo (empurra a resposta para cima), haste vermelha é peso negativo (empurra para baixo). Quanto mais grossa, maior o peso.</p>
+    <p><strong>Experimente:</strong> mude as entradas e use “Enviar sinal” para ver a informação passar de camada em camada. Clique em uma haste (ou escolha na lista) para ver e mudar o peso dela. “Explicar a decisão” mostra quanto cada entrada contribuiu para a resposta.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="enviar">Enviar sinal</button>
+          <button class="btn ghost" type="button" id="explicar">Explicar a decisão</button>
+          <button class="btn ghost" type="button" id="testar">Testar com 3 frutas</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div id="teste"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Entradas</h3>
+          <label for="x0">Cor amarela: <b id="lx0">0,90</b></label>
+          <input type="range" id="x0" min="0" max="1" step="0.05" value="0.9">
+          <label for="x1">Maciez: <b id="lx1">0,80</b></label>
+          <input type="range" id="x1" min="0" max="1" step="0.05" value="0.8">
+          <label for="x2">Cheiro doce: <b id="lx2">0,85</b></label>
+          <input type="range" id="x2" min="0" max="1" step="0.05" value="0.85">
+          <p class="grande" id="res"></p>
+          <h3 style="margin-top:14px">Peso de uma conexão</h3>
+          <label for="sel">Conexão</label>
+          <select id="sel"></select>
+          <label for="peso">Peso: <b id="lpeso"></b></label>
+          <input type="range" id="peso" min="-5" max="5" step="0.1">
+          <div class="conta" id="conta"></div>
+          <div class="tools" style="margin-top:4px">
+            <button class="btn ghost" type="button" id="treinados">Pesos treinados</button>
+            <button class="btn ghost" type="button" id="aleatorios">Pesos aleatórios</button>
+          </div>
+          <label for="seed">Semente (seed) dos pesos aleatórios</label>
+          <input type="number" id="seed" min="1" max="9999" value="7">
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>peso positivo</li>
+            <li><span class="sw" style="background:#c8323f"></span>peso negativo</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>neurônio ativado (quanto mais amarelo, mais ativo)</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Com os pesos treinados, monte uma fruta que a rede chame de madura com mais de 90% de certeza.</li>
+            <li data-d="1">Use “Explicar a decisão” e descubra qual entrada mais pesou na resposta.</li>
+            <li data-d="2">Com pesos aleatórios, ajuste os pesos até a rede acertar as 3 frutas do teste.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> cada neurônio soma as entradas multiplicadas pelos pesos, soma um viés e passa o resultado por uma função de ativação (aqui, a sigmoide, que devolve um número entre 0 e 1). Treinar uma rede é encontrar pesos que façam a saída acertar os exemplos. Os “pesos treinados” desta página foram escolhidos à mão para que a rede funcione; numa rede de verdade eles são ajustados automaticamente, pela descida do gradiente (veja a Montanha do Erro).</p>
+    <p><strong>Metodologia sugerida:</strong> aula invertida e investigação em duplas. Antes da aula, os alunos assistem a um vídeo curto sobre o que é IA; em sala, cada dupla responde às perguntas com a página aberta.</p>
+    <ul>
+      <li>Por que uma haste vermelha grossa faz a resposta cair? O que significa um peso negativo no mundo real?</li>
+      <li>Com os pesos treinados, a fruta amarela mas dura é madura? Que entrada a rede “usou” para decidir?</li>
+      <li>Duas sementes diferentes dão redes diferentes. Por que, nas pesquisas, os resultados são repetidos com várias sementes?</li>
+      <li>“Explicar a decisão” troca cada entrada por zero e mede quanto a saída muda. Essa é uma das ideias por trás da explicabilidade em IA. Por que é importante uma IA explicar a decisão quando ela é usada para avaliar pessoas?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO07 e EF06CO05; serve de introdução a redes neurais no Ensino Médio e em formações de professores sobre IA. Material concreto equivalente: neurônios de papel na lousa, com barbantes de duas cores para os pesos e uma calculadora para as somas.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-rede-neural');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-rede-neural';
+const sig = z => 1 / (1 + Math.exp(-z));
+const f2 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const ENT = ['Cor amarela', 'Maciez', 'Cheiro doce'];
+const OCU = ['Oculto 1', 'Oculto 2', 'Oculto 3'];
+const TREINADA = {
+  w1: [[3, 1, 0], [0, 3, 3], [-2, 0.5, -2]], b1: [-2, -3, 1.5],
+  w2: [2.5, 3, -3], b2: -2
+};
+const FRUTAS = [
+  { nome: 'Banana madura', x: [1, 0.8, 0.9], madura: true },
+  { nome: 'Banana verde', x: [0.1, 0.2, 0.1], madura: false },
+  { nome: 'Fruta amarela, mas dura e sem cheiro', x: [0.9, 0.1, 0.2], madura: false }
+];
+let rede = clone(TREINADA);
+let x = [0.9, 0.8, 0.85];
+let sel = { tipo: 'w1', i: 0, j: 0 }; // w1[i][j]: entrada j -> oculto i; w2[i]: oculto i -> saída
+const feitos = new Set();
+
+function clone(r) { return JSON.parse(JSON.stringify(r)); }
+function prng(seed) { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+function aleatoria(seed) {
+  const r = prng(seed * 2654435761);
+  const v = () => Math.round((r() * 6 - 3) * 10) / 10;
+  return { w1: [[v(), v(), v()], [v(), v(), v()], [v(), v(), v()]], b1: [v(), v(), v()], w2: [v(), v(), v()], b2: v() };
+}
+function calcula(xx, r = rede) {
+  const z1 = r.w1.map((w, i) => w[0] * xx[0] + w[1] * xx[1] + w[2] * xx[2] + r.b1[i]);
+  const h = z1.map(sig);
+  const z2 = r.w2[0] * h[0] + r.w2[1] * h[1] + r.w2[2] * h[2] + r.b2;
+  return { z1, h, z2, y: sig(z2) };
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [1.2, 2.6, 16.5], alvo: [-0.4, 0.3, 0], min: 6, max: 32, chao: false, pan: false });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([1, 2.4, 24], [0, 0.3, 0]);
+const POS = {
+  ent: [[-4.5, 2.4, 0], [-4.5, 0, 0], [-4.5, -2.4, 0]],
+  ocu: [[0, 2.4, 0], [0, 0, 0], [0, -2.4, 0]],
+  sai: [4.5, 0, 0]
+};
+let gHastes, gRot, neur = {};
+const corBaixa = T && new T.Color('#d9d9d4'), corAlta = T && new T.Color(COR.amarelo);
+if (cena) {
+  gHastes = new T.Group(); gRot = new T.Group(); cena.add(gHastes, gRot);
+  const geo = new T.SphereGeometry(0.55, 40, 24);
+  const novo = (p, chave) => {
+    const m = new T.Mesh(geo, new T.MeshStandardMaterial({ color: corBaixa.clone(), roughness: 0.5, emissive: new T.Color('#000'), emissiveIntensity: 0.6 }));
+    m.position.set(...p); m.castShadow = true;
+    cena.comBordas(m, 40); cena.add(m); neur[chave] = m; return m;
+  };
+  POS.ent.forEach((p, j) => novo(p, 'e' + j));
+  POS.ocu.forEach((p, i) => novo(p, 'o' + i));
+  novo(POS.sai, 's');
+  // nomes fixos
+  ['Cor', 'Maciez', 'Cheiro'].forEach((n, j) => { const r = cena.rotulo(n, { tam: 0.42 }); r.position.set(POS.ent[j][0] - 1.8, POS.ent[j][1], 0); cena.add(r); });
+  const rs = cena.rotulo('Madura?', { tam: 0.42 }); rs.position.set(POS.sai[0] + 1.9, 0, 0); cena.add(rs);
+  const camadas = [['Entradas', -4.5], ['Camada oculta', 0], ['Saída', 4.5]];
+  camadas.forEach(([n, cx]) => { const r = cena.rotulo(n, { tam: 0.36, fundo: '#fff36b' }); r.position.set(cx, 3.9, 0); cena.add(r); });
+}
+function trocaRotulo(sp) { if (sp.material.map) sp.material.map.dispose(); sp.material.dispose(); }
+
+function desenha(c) {
+  if (!cena) return;
+  [...gHastes.children].forEach(o => { cena.esquecer(o); });
+  cena.limpar(gHastes);
+  [...gRot.children].forEach(trocaRotulo); cena.limpar(gRot);
+  const haste = (a, b, w, alvo) => {
+    const esp = 0.05 + Math.min(Math.abs(w), 5) * 0.045;
+    const eSel = alvo.tipo === sel.tipo && alvo.i === sel.i && alvo.j === sel.j;
+    const m = cena.haste(a, b, esp, w >= 0 ? COR.verde : COR.vermelho, { mat: eSel ? { emissive: new T.Color('#f2cf1d'), emissiveIntensity: 0.55 } : {} });
+    // área de clique mais larga que a haste
+    const zona = cena.haste(a, b, 0.42, '#ffffff', { material: new T.MeshBasicMaterial({ visible: false }), sombra: false });
+    gHastes.add(m, zona);
+    cena.clicavel(zona, () => escolhe(alvo));
+    if (eSel) {
+      const r = cena.rotulo('peso ' + f2(w), { tam: 0.4, fundo: '#fff36b' });
+      r.position.set((a[0] + b[0]) / 2, (a[1] + b[1]) / 2 + 0.45, (a[2] + b[2]) / 2 + 0.3);
+      gRot.add(r);
+    }
+  };
+  rede.w1.forEach((w, i) => w.forEach((wij, j) => haste(POS.ent[j], POS.ocu[i], wij, { tipo: 'w1', i, j })));
+  rede.w2.forEach((w, i) => haste(POS.ocu[i], POS.sai, w, { tipo: 'w2', i, j: 0 }));
+  // cores e valores dos neurônios
+  const pinta = (m, v) => { m.material.color.copy(corBaixa).lerp(corAlta, v); m.material.emissive.copy(corAlta).multiplyScalar(v * 0.25); };
+  x.forEach((v, j) => pinta(neur['e' + j], v));
+  c.h.forEach((v, i) => pinta(neur['o' + i], v));
+  neur.s.material.color.set(c.y >= 0.5 ? COR.verde : COR.vermelho);
+  neur.s.material.emissive.set('#000');
+  const val = (p, v, dx = 0) => { const r = cena.rotulo(f2(v), { tam: 0.36 }); r.position.set(p[0] + dx, p[1] - 0.95, p[2]); gRot.add(r); };
+  x.forEach((v, j) => val(POS.ent[j], v));
+  c.h.forEach((v, i) => val(POS.ocu[i], v));
+  val(POS.sai, c.y);
+  cena.descrever(`Rede neural com 3 entradas, 3 neurônios ocultos e 1 saída. Entradas: cor ${f2(x[0])}, maciez ${f2(x[1])}, cheiro ${f2(x[2])}. Neurônios ocultos ativados em ${c.h.map(f2).join(', ')}. Saída ${f2(c.y)}: a rede responde ${c.y >= 0.5 ? 'madura' : 'não madura'}.`);
+}
+
+/* ---------- painel ---------- */
+const nomeCon = a => a.tipo === 'w1' ? `${ENT[a.j]} → ${OCU[a.i]}` : `${OCU[a.i]} → Saída`;
+function preencheSelect() {
+  const ops = [];
+  rede.w1.forEach((w, i) => w.forEach((_, j) => ops.push({ tipo: 'w1', i, j })));
+  rede.w2.forEach((_, i) => ops.push({ tipo: 'w2', i, j: 0 }));
+  $('#sel').innerHTML = ops.map(a => `<option value="${a.tipo}-${a.i}-${a.j}">${nomeCon(a)}</option>`).join('');
+}
+const pesoSel = () => sel.tipo === 'w1' ? rede.w1[sel.i][sel.j] : rede.w2[sel.i];
+function escolhe(a) { sel = a; $('#sel').value = `${a.tipo}-${a.i}-${a.j}`; atualiza(); }
+
+function contaTexto(c) {
+  if (sel.tipo === 'w1') {
+    const w = rede.w1[sel.i];
+    return `${OCU[sel.i]} soma:\n` + w.map((wj, j) => `${f2(wj)} × ${f2(x[j])}`).join(' + ') + ` + viés ${f2(rede.b1[sel.i])}\n= ${f2(c.z1[sel.i])}  →  sigmoide = ${f2(c.h[sel.i])}`;
+  }
+  return 'Saída soma:\n' + rede.w2.map((wi, i) => `${f2(wi)} × ${f2(c.h[i])}`).join(' + ') + ` + viés ${f2(rede.b2)}\n= ${f2(c.z2)}  →  sigmoide = ${f2(c.y)}`;
+}
+function atualiza() {
+  const c = calcula(x);
+  const pct = Math.round(c.y * 100);
+  $('#res').textContent = c.y >= 0.5 ? `Madura: ${pct}%` : `Não madura: ${100 - pct}%`;
+  const w = pesoSel();
+  $('#peso').value = w; $('#lpeso').textContent = f2(w);
+  $('#conta').textContent = contaTexto(c);
+  desenha(c);
+  if (ehTreinada() && c.y > 0.9) marca(0);
+  if (!ehTreinada() && FRUTAS.every(f => (calcula(f.x).y >= 0.5) === f.madura)) marca(2);
+}
+const ehTreinada = () => JSON.stringify(rede) === JSON.stringify(TREINADA);
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+/* ---------- animação do sinal ---------- */
+let enviando = false;
+async function enviar() {
+  if (!cena || enviando) return;
+  enviando = true; $('#enviar').disabled = true;
+  const geo = new T.SphereGeometry(0.16, 16, 10);
+  const mat = new T.MeshStandardMaterial({ color: COR.amarelo, emissive: new T.Color(COR.amarelo), emissiveIntensity: 0.8 });
+  const viagem = (de, para) => { const b = new T.Mesh(geo, mat); b.position.set(...de); cena.add(b); return cena.animar(b, { position: para }, 700).then(() => cena.remove(b)); };
+  $('#fb').className = 'feedback'; $('#fb').textContent = 'Camada 1: as entradas seguem para a camada oculta.';
+  await Promise.all(POS.ent.flatMap(a => POS.ocu.map(b => viagem(a, b))));
+  $('#fb').textContent = 'Camada 2: cada neurônio oculto soma, ativa e envia para a saída.';
+  await Promise.all(POS.ocu.map(a => viagem(a, POS.sai)));
+  const c = calcula(x);
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent = `Resposta: ${c.y >= 0.5 ? 'madura' : 'não madura'} (saída ${f2(c.y)}).`;
+  enviando = false; $('#enviar').disabled = false;
+}
+
+/* ---------- explicar ---------- */
+function explicar() {
+  const base = calcula(x).y;
+  const contrib = x.map((_, j) => { const xx = x.slice(); xx[j] = 0; return base - calcula(xx).y; });
+  const tot = contrib.reduce((s, v) => s + Math.abs(v), 0) || 1;
+  const ordem = contrib.map((v, j) => ({ v, j })).sort((a, b) => Math.abs(b.v) - Math.abs(a.v));
+  const linhas = ordem.map(o => `${ENT[o.j].padEnd(12)} ${o.v >= 0 ? '+' : '−'}${f2(Math.abs(o.v))}  (${Math.round(Math.abs(o.v) / tot * 100)}% da decisão)`);
+  $('#conta').textContent = 'Quanto a saída muda se a entrada for trocada por zero:\n' + linhas.join('\n') + '\n\n+ empurra para “madura”, − empurra para “não madura”.';
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent = `A entrada que mais pesou foi “${ENT[ordem[0].j]}”.`;
+  marca(1);
+}
+
+/* ---------- teste ---------- */
+function testar() {
+  const linhas = FRUTAS.map(f => {
+    const y = calcula(f.x).y, ok = (y >= 0.5) === f.madura;
+    return `<tr><td>${f.nome}</td><td>${f.madura ? 'madura' : 'não madura'}</td><td>${y >= 0.5 ? 'madura' : 'não madura'} (${f2(y)})</td><td>${ok ? 'acertou' : 'errou'}</td></tr>`;
+  });
+  const acertos = FRUTAS.filter(f => (calcula(f.x).y >= 0.5) === f.madura).length;
+  $('#teste').innerHTML = `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">Teste com 3 frutas: ${acertos} de 3 acertos</caption><thead><tr><th>Fruta</th><th>Resposta certa</th><th>A rede disse</th><th>Resultado</th></tr></thead><tbody>${linhas.join('')}</tbody></table></div>`;
+  if (!ehTreinada() && acertos === 3) marca(2);
+}
+
+/* ---------- controles ---------- */
+[0, 1, 2].forEach(j => $('#x' + j).addEventListener('input', e => { x[j] = +e.target.value; $('#lx' + j).textContent = f2(x[j]); atualiza(); }));
+$('#sel').addEventListener('change', e => { const [t, i, j] = e.target.value.split('-'); sel = { tipo: t, i: +i, j: +j }; atualiza(); });
+$('#peso').addEventListener('input', e => { const v = +e.target.value; if (sel.tipo === 'w1') rede.w1[sel.i][sel.j] = v; else rede.w2[sel.i] = v; atualiza(); });
+$('#treinados').onclick = () => { rede = clone(TREINADA); $('#fb').className = 'feedback'; $('#fb').textContent = 'Pesos treinados carregados.'; atualiza(); };
+$('#aleatorios').onclick = () => { const s = Math.max(1, +$('#seed').value || 1); rede = aleatoria(s); $('#fb').className = 'feedback'; $('#fb').textContent = `Pesos aleatórios com a semente ${s}. Rode o teste e veja quantas frutas a rede acerta.`; atualiza(); };
+$('#enviar').onclick = enviar;
+$('#explicar').onclick = explicar;
+$('#testar').onclick = testar;
+preencheSelect();
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

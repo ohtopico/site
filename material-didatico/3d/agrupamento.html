@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvem de Pontos e Agrupamento · Laboratório 3D | ohtopico</title>
+<meta name="description" content="O algoritmo k-means em 3D: frutas viram pontos (peso, doçura e acidez) e o computador separa os grupos passo a passo, com os centros se movendo até estabilizar. Inclui normalização de escalas e o método do cotovelo.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/agrupamento.html">
+<meta property="og:title" content="Nuvem de Pontos e Agrupamento · Laboratório 3D">
+<meta property="og:description" content="O algoritmo k-means em 3D: frutas viram pontos (peso, doçura e acidez) e o computador separa os grupos passo a passo, com os centros se movendo até estabilizar. Inclui normalização de escalas e o método do cotovelo.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/agrupamento.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Os dados:</strong> cada bolinha é uma fruta medida em três características: peso (em gramas), doçura e acidez (de 0 a 10). O computador não sabe qual fruta é qual. A tarefa dele é separar as bolinhas em <em>k</em> grupos de frutas parecidas.</p>
+    <p><strong>O algoritmo k-means:</strong> (1) sorteia k centros; (2) cada fruta entra no grupo do centro mais próximo; (3) cada centro vai para o meio do seu grupo. Repete os passos 2 e 3 até nada mudar. Use os botões um de cada vez para ver o algoritmo pensar, ou “Rodar até estabilizar”.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">Peso × doçura</button>
+          <button class="chip" type="button" data-vista="cima">Peso × acidez</button>
+          <button class="chip" type="button" data-vista="lado">Acidez × doçura</button>
+        </div>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="sortear">1. Sortear centros</button>
+          <button class="btn" type="button" id="atribuir">2. Agrupar pelo centro mais próximo</button>
+          <button class="btn" type="button" id="mover">3. Mover os centros</button>
+          <button class="btn" type="button" id="rodar">Rodar até estabilizar</button>
+          <button class="btn ghost" type="button" id="verdade" aria-pressed="false">Mostrar as frutas de verdade</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div id="tabela"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <label>Número de grupos (k)</label>
+          <div class="seg" role="group" aria-label="Número de grupos">
+            <button type="button" data-k="2" aria-pressed="false">2</button>
+            <button type="button" data-k="3" aria-pressed="false">3</button>
+            <button type="button" data-k="4" aria-pressed="true">4</button>
+            <button type="button" data-k="5" aria-pressed="false">5</button>
+          </div>
+          <label for="seed">Semente (seed) dos centros</label>
+          <input type="number" id="seed" min="1" max="9999" value="5">
+          <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="norm"> Normalizar as escalas (deixar peso, doçura e acidez na mesma escala)</label>
+          <p class="grande" id="res"></p>
+          <div class="conta" id="conta"></div>
+          <ul class="leg" id="leg"></ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Rode o algoritmo até estabilizar com k = 4.</li>
+            <li data-d="1">Faça os grupos baterem com as frutas de verdade em pelo menos 95%. Dica: olhe as escalas.</li>
+            <li data-d="2">Rode até estabilizar com k = 2, 3, 4 e 5 e compare a soma das distâncias (método do cotovelo).</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> o k-means é um algoritmo de aprendizado não supervisionado: ele recebe dados sem rótulo e encontra grupos sozinho. É usado para separar clientes, músicas, regiões de uma imagem e muito mais. O resultado depende de três escolhas humanas: quantos grupos (k), onde começam os centros (a semente) e como medir a distância (as escalas).</p>
+    <p><strong>A questão das escalas:</strong> o peso vai de 4 a 220 gramas, e a doçura vai só de 0 a 10. Sem normalizar, uma diferença de 50 gramas pesa muito mais que a diferença entre uma fruta azeda e uma doce, e o algoritmo agrupa quase só pelo peso. Normalizar coloca as três características na mesma escala, de 0 a 1.</p>
+    <p><strong>Metodologia sugerida:</strong> sala de aula invertida com desafio em grupos. Antes, a turma separa frutas de verdade (ou cartões com fotos) em grupos e explica o critério. Depois, compara o critério humano com o do algoritmo.</p>
+    <ul>
+      <li>Por que o algoritmo erra tanto sem normalizar? Qual característica ele está “olhando”?</li>
+      <li>Duas sementes diferentes deram grupos diferentes? O que isso diz sobre repetir um experimento de IA?</li>
+      <li>No método do cotovelo, a soma das distâncias sempre cai quando k aumenta. Por que então não usar k igual ao número de frutas?</li>
+      <li>Para o 9º ano: monte uma tabela com os centros finais. O centro de um grupo é a média das frutas do grupo (EF09MA22: escolher a melhor forma de apresentar).</li>
+    </ul>
+    <p class="small muted">Habilidades: EF06CO01 (agrupar informações em coleções), EF09CO07 e EF09MA22; no Ensino Médio e no Superior, aprendizado de máquina não supervisionado. Os dados são fictícios.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-agrupamento');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-agrupamento';
+const f1 = n => n.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+const f2 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const L = 5; // tamanho dos eixos na cena
+const CORES = ['#1f8a4c', '#f2cf1d', '#c8323f', '#6f6f6b', '#f2a9b3'];
+const NOMES_COR = ['verde', 'amarelo', 'vermelho', 'cinza', 'rosa'];
+const FRUTAS = [
+  { nome: 'limão', peso: [60, 110], doce: [1, 3], acido: [7.5, 9.5], cor: '#9fdab4' },
+  { nome: 'banana', peso: [110, 170], doce: [7, 9], acido: [1, 2.5], cor: '#fff36b' },
+  { nome: 'maçã', peso: [140, 220], doce: [5, 7], acido: [3.5, 5.5], cor: '#f2a9b3' },
+  { nome: 'uva', peso: [4, 10], doce: [7, 9.5], acido: [3, 5], cor: '#6f6f6b' }
+];
+const MAXV = [230, 10, 10];
+function prng(seed) { let s = (seed * 2654435761) >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+// 12 frutas de cada tipo, sempre as mesmas
+const rd = prng(2026);
+const DADOS = FRUTAS.flatMap((f, t) => Array.from({ length: 12 }, () => ({ t, v: [f.peso, f.doce, f.acido].map(([a, b]) => Math.round((a + rd() * (b - a)) * 10) / 10) })));
+
+let k = 4, seed = 5, norm = false, centros = [], grupo = DADOS.map(() => -1), iter = 0, estavel = false, verdade = false, rodando = false;
+const somasK = {};
+const feitos = new Set();
+
+const escala = v => norm ? v.map((x, i) => x / MAXV[i]) : v;
+const dist = (a, b) => Math.hypot(...a.map((x, i) => x - b[i]));
+const naCena = v => [v[0] / MAXV[0] * L, v[1] / MAXV[1] * L, v[2] / MAXV[2] * L];
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [12.5, 8, 13.5], alvo: [L / 2, L / 2 - 0.6, L / 2], min: 5, max: 30 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let bolas = [], gCentros, gLinhas;
+if (cena) {
+  const eixo = (b, txt, pos) => { cena.add(cena.haste([0, 0, 0], b, 0.05, COR.tinta)); const r = cena.rotulo(txt, { tam: 0.42 }); r.position.set(...pos); cena.add(r); };
+  eixo([L + 0.4, 0, 0], 'peso (g)', [L + 1.4, 0, 0]);
+  eixo([0, L + 0.4, 0], 'doçura', [0, L + 0.9, 0]);
+  eixo([0, 0, L + 0.4], 'acidez', [0, 0, L + 1.2]);
+  // grade leve no chão
+  const gr = new T.GridHelper(L, 5, 0x999999, 0xcccccc); gr.position.set(L / 2, 0.001, L / 2); cena.add(gr);
+  const geo = new T.SphereGeometry(0.14, 20, 12);
+  bolas = DADOS.map(d => {
+    const m = new T.Mesh(geo, new T.MeshStandardMaterial({ color: COR.cinza, roughness: 0.5 }));
+    m.position.set(...naCena(d.v)); m.castShadow = true; cena.add(m);
+    return m;
+  });
+  gCentros = new T.Group(); gLinhas = new T.Group(); cena.add(gCentros, gLinhas);
+}
+
+/* ---------- algoritmo ---------- */
+function sortear() {
+  const r = prng(seed * 31 + k);
+  // centros começam em frutas sorteadas (sem repetir)
+  const idx = [];
+  while (idx.length < k) { const i = Math.floor(r() * DADOS.length); if (!idx.includes(i)) idx.push(i); }
+  centros = idx.map(i => DADOS[i].v.slice());
+  grupo = DADOS.map(() => -1); iter = 0; estavel = false;
+  desenha(); msg(`Semente ${seed}: ${k} centros sorteados em ${k} frutas. Agora agrupe cada fruta pelo centro mais próximo.`);
+}
+function atribuir() {
+  if (!centros.length) sortear();
+  let mudou = 0;
+  grupo = DADOS.map((d, i) => {
+    let best = 0, bd = Infinity;
+    centros.forEach((c, j) => { const dd = dist(escala(d.v), escala(c)); if (dd < bd) { bd = dd; best = j; } });
+    if (best !== grupo[i]) mudou++;
+    return best;
+  });
+  desenha(true);
+  return mudou;
+}
+function mover() {
+  if (grupo.includes(-1)) atribuir();
+  let deslocou = 0;
+  centros = centros.map((c, j) => {
+    const membros = DADOS.filter((_, i) => grupo[i] === j);
+    if (!membros.length) return c;
+    const novo = [0, 1, 2].map(e => membros.reduce((s, d) => s + d.v[e], 0) / membros.length);
+    deslocou += dist(escala(novo), escala(c));
+    return novo;
+  });
+  iter++;
+  desenha(false, true);
+  return deslocou;
+}
+function soma() { return DADOS.reduce((s, d, i) => s + (grupo[i] >= 0 ? dist(escala(d.v), escala(centros[grupo[i]])) : 0), 0); }
+function pureza() {
+  let ok = 0;
+  for (let j = 0; j < k; j++) {
+    const cont = FRUTAS.map((_, t) => DADOS.filter((d, i) => grupo[i] === j && d.t === t).length);
+    ok += Math.max(...cont);
+  }
+  return ok / DADOS.length;
+}
+
+const espera = ms => new Promise(r => setTimeout(r, ms));
+async function rodar() {
+  if (rodando) return;
+  rodando = true; botoes(false);
+  if (!centros.length) { sortear(); await espera(500); }
+  for (let n = 0; n < 30; n++) {
+    const mud = atribuir(); await espera(450);
+    const d = mover(); await espera(450);
+    if (mud === 0 && d < 1e-9) break;
+  }
+  estavel = true; rodando = false; botoes(true);
+  const s = soma(); somasK[k + (norm ? 'n' : '')] = s;
+  msg(`Estabilizou em ${iter} rodadas: nenhuma fruta mudou de grupo. Soma das distâncias: ${f2(s)}.`, 'ok');
+  if (k === 4) marca(0);
+  if (k === 4 && pureza() >= 0.95) marca(1);
+  const chaves = [2, 3, 4, 5].map(x => x + (norm ? 'n' : ''));
+  if (chaves.every(c => somasK[c] !== undefined)) marca(2);
+  painel();
+}
+function botoes(on) { ['sortear', 'atribuir', 'mover', 'rodar'].forEach(id => $('#' + id).disabled = !on); }
+
+/* ---------- desenho ---------- */
+function desenha(linhas = false, animar = false) {
+  if (cena) {
+    bolas.forEach((m, i) => m.material.color.set(verdade ? FRUTAS[DADOS[i].t].cor : grupo[i] >= 0 ? CORES[grupo[i]] : COR.cinza));
+    // centros: octaedros
+    if (gCentros.children.length !== centros.length) {
+      cena.limpar(gCentros);
+      centros.forEach((_, j) => {
+        const m = new T.Mesh(new T.OctahedronGeometry(0.34), cena.material(CORES[j]));
+        cena.comBordas(m, 10); m.castShadow = true; gCentros.add(m);
+      });
+    }
+    centros.forEach((c, j) => {
+      const m = gCentros.children[j], p = naCena(c);
+      if (animar) cena.animar(m, { position: p }, 420); else m.position.set(...p);
+    });
+    cena.limpar(gLinhas);
+    if (linhas && !verdade) {
+      const pts = [], cols = [], cc = new T.Color();
+      DADOS.forEach((d, i) => { if (grupo[i] < 0) return; pts.push(...naCena(d.v), ...naCena(centros[grupo[i]])); cc.set(CORES[grupo[i]]); cols.push(cc.r, cc.g, cc.b, cc.r, cc.g, cc.b); });
+      const g = new T.BufferGeometry(); g.setAttribute('position', new T.Float32BufferAttribute(pts, 3)); g.setAttribute('color', new T.Float32BufferAttribute(cols, 3));
+      gLinhas.add(new T.LineSegments(g, new T.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.55 })));
+    }
+    cena.pedeQuadro();
+  }
+  painel();
+}
+function painel() {
+  const temGrupos = !grupo.includes(-1);
+  $('#res').textContent = temGrupos ? `Acerto: ${Math.round(pureza() * 100)}%` : `k = ${k}`;
+  const linhas = centros.map((c, j) => `${NOMES_COR[j]}: ${DADOS.filter((_, i) => grupo[i] === j).length} frutas\n  centro ${f1(c[0])} g · doce ${f1(c[1])} · ácido ${f1(c[2])}`);
+  $('#conta').textContent = `Rodada ${iter}` + (temGrupos ? `\nsoma das distâncias: ${f2(soma())}` : '') + (centros.length ? '\n' + linhas.join('\n') : '\nSorteie os centros para começar.') + `\n\nDistância ${norm ? 'com escalas normalizadas (0 a 1)' : 'nas escalas originais (gramas pesam mais)'}.`;
+  $('#leg').innerHTML = verdade
+    ? FRUTAS.map(f => `<li><span class="sw" style="background:${f.cor}"></span>${f.nome} de verdade</li>`).join('')
+    : centros.map((_, j) => `<li><span class="sw" style="background:${CORES[j]}"></span>grupo ${NOMES_COR[j]} (o losango é o centro)</li>`).join('') || '<li><span class="sw" style="background:#c9c9c5"></span>fruta ainda sem grupo</li>';
+  tabela();
+  const cotovelo = [2, 3, 4, 5].filter(x => somasK[x + (norm ? 'n' : '')] !== undefined).map(x => `k=${x}: ${f2(somasK[x + (norm ? 'n' : '')])}`);
+  if (cotovelo.length) $('#conta').textContent += `\nMétodo do cotovelo:\n${cotovelo.join('\n')}`;
+  cena && cena.descrever(`Gráfico de dispersão em 3D com 48 frutas: peso, doçura e acidez. ${centros.length ? `${k} grupos, rodada ${iter}.` : 'Ainda sem grupos.'} ${temGrupos ? `Os grupos batem com as frutas de verdade em ${Math.round(pureza() * 100)}%.` : ''}`);
+}
+function tabela() {
+  if (grupo.includes(-1)) { $('#tabela').innerHTML = ''; return; }
+  const cab = FRUTAS.map(f => `<th>${f.nome}</th>`).join('');
+  const lin = centros.map((_, j) => `<tr><td><span class="sw" style="background:${CORES[j]};display:inline-block;vertical-align:-2px"></span> grupo ${NOMES_COR[j]}</td>${FRUTAS.map((_, t) => `<td>${DADOS.filter((d, i) => grupo[i] === j && d.t === t).length}</td>`).join('')}</tr>`).join('');
+  $('#tabela').innerHTML = `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">Quantas frutas de cada tipo caíram em cada grupo</caption><thead><tr><th>Grupo</th>${cab}</tr></thead><tbody>${lin}</tbody></table></div>`;
+}
+function msg(t, c = '') { $('#fb').className = 'feedback ' + c; $('#fb').textContent = t; }
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+/* ---------- controles ---------- */
+$('#sortear').onclick = sortear;
+$('#atribuir').onclick = () => { const m = atribuir(); msg(m ? `${m} frutas mudaram de grupo.` : 'Nenhuma fruta mudou de grupo: o algoritmo estabilizou.', m ? '' : 'ok'); };
+$('#mover').onclick = () => { mover(); msg('Cada centro foi para a média das frutas do seu grupo. Agrupe de novo.'); };
+$('#rodar').onclick = rodar;
+$('#verdade').onclick = () => { verdade = !verdade; $('#verdade').setAttribute('aria-pressed', verdade); $('#verdade').textContent = verdade ? 'Mostrar os grupos do algoritmo' : 'Mostrar as frutas de verdade'; desenha(); };
+document.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => { if (rodando) return; k = +b.dataset.k; document.querySelectorAll('[data-k]').forEach(x => x.setAttribute('aria-pressed', x === b)); centros = []; if (gCentros) cena.limpar(gCentros); sortear(); }));
+$('#seed').addEventListener('change', e => { if (rodando) return; seed = Math.max(1, +e.target.value || 1); centros = []; if (gCentros) cena.limpar(gCentros); sortear(); });
+$('#norm').addEventListener('change', e => { if (rodando) return; norm = e.target.checked; grupo = DADOS.map(() => -1); iter = 0; desenha(); msg(norm ? 'Escalas normalizadas: agora peso, doçura e acidez valem o mesmo na distância. Rode de novo.' : 'Escalas originais: a diferença em gramas domina a distância.'); });
+sortear();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

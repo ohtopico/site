@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viagem do Pacote · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Como a internet entrega uma mensagem: numa cidade em 3D, o texto vira pacotes numerados que seguem caminhos diferentes pelos roteadores, chegam fora de ordem e são remontados no data center. Desligue roteadores e simule perdas. BNCC EF06CO07, EF07CO06, EF08CO06.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/viagem-pacote.html">
+<meta property="og:title" content="Viagem do Pacote · Laboratório 3D">
+<meta property="og:description" content="Como a internet entrega uma mensagem: numa cidade em 3D, o texto vira pacotes numerados que seguem caminhos diferentes pelos roteadores, chegam fora de ordem e são remontados no data center. Desligue roteadores e simule perdas. BNCC EF06CO07, EF07CO06, EF08CO06.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/viagem-pacote.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A cidade:</strong> à esquerda fica a casa que envia a mensagem; à direita, o data center que recebe. No meio, as torres são roteadores ligados por cabos. Cada roteador decide para onde mandar cada pacote, conforme o trânsito na rede naquele instante.</p>
+    <p><strong>Experimente:</strong> escreva uma mensagem, escolha o tamanho dos pacotes e clique em “Enviar”. Clique em uma torre (ou use a lista) para desligar um roteador e veja a rede achar outro caminho. Ligue “Perder pacotes” para ver o destino pedir o reenvio do que faltou.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima (mapa)</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="enviar">Enviar</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div id="chegada"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <label for="msg">Mensagem</label>
+          <input type="text" id="msg" maxlength="60" value="Oi, a aula de hoje vai ser no laboratório!" style="width:100%;min-height:40px;border:1.5px solid var(--ink);border-radius:12px;padding:4px 10px;background:var(--paper)">
+          <label for="tam">Tamanho do pacote: <b id="ltam">8</b> letras</label>
+          <input type="range" id="tam" min="3" max="16" value="8">
+          <label for="rot">Roteadores</label>
+          <select id="rot"></select>
+          <div class="tools" style="margin-top:6px"><button class="btn ghost" type="button" id="liga">Desligar este roteador</button></div>
+          <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="perda"> Perder pacotes no caminho</label>
+          <div class="conta" id="conta"></div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#f2cf1d"></span>pacote viajando</li>
+            <li><span class="sw" style="background:#1f8a4c"></span>roteador ligado e pacote entregue</li>
+            <li><span class="sw" style="background:#c8323f"></span>roteador desligado ou pacote perdido</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Envie uma mensagem e veja os pacotes chegarem fora de ordem.</li>
+            <li data-d="1">Desligue um roteador e envie de novo: a mensagem ainda chega?</li>
+            <li data-d="2">Com a perda de pacotes ligada, veja o data center pedir o reenvio.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> na internet, nenhuma mensagem viaja inteira. Ela é quebrada em pacotes, cada um com um cabeçalho que diz de onde vem, para onde vai, qual é o seu número e quantos são no total. Os roteadores encaminham cada pacote pelo caminho que estiver melhor no momento (protocolo IP). No destino, os pacotes são postos em ordem e, se algum faltar, o destino pede o reenvio (protocolo TCP). Por isso a internet continua funcionando mesmo quando uma parte dela cai.</p>
+    <p><strong>Metodologia sugerida:</strong> computação desplugada seguida da simulação. A turma brinca de correio: cada aluno é um roteador, a mensagem é escrita em vários bilhetes numerados e cada roteador escolhe para quem passar. Depois, a página mostra o mesmo processo em 3D.</p>
+    <ul>
+      <li>Por que os pacotes chegam fora de ordem, se saíram em ordem? Como o destino sabe a ordem certa?</li>
+      <li>O que acontece com pacotes menores: a mensagem chega mais rápido ou mais devagar? E o número de cabeçalhos?</li>
+      <li>Desligue os dois roteadores ligados ao data center. O que acontece? Por que as redes reais têm vários caminhos?</li>
+      <li>Para o 8º ano: compare com o jogo Correio de Pacotes e com o plano de aula sobre a internet.</li>
+    </ul>
+    <p class="small muted">Habilidades: EF06CO07, EF07CO06 e EF08CO06. Material concreto equivalente: bilhetes numerados, barbante entre as carteiras e cartões de “roteador”.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-viagem-pacote');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-viagem-pacote';
+const NOS = {
+  O: { nome: 'Casa', p: [-8, 0] }, R1: { nome: 'Roteador 1', p: [-4, -3.2] }, R2: { nome: 'Roteador 2', p: [-4, 3.2] },
+  R3: { nome: 'Roteador 3', p: [0, -4.2] }, R4: { nome: 'Roteador 4', p: [0, 0] }, R5: { nome: 'Roteador 5', p: [0, 4.2] },
+  R6: { nome: 'Roteador 6', p: [4, -3.2] }, R7: { nome: 'Roteador 7', p: [4, 3.2] }, D: { nome: 'Data center', p: [8.2, 0] }
+};
+const ARESTAS = [['O', 'R1'], ['O', 'R2'], ['R1', 'R3'], ['R1', 'R4'], ['R2', 'R4'], ['R2', 'R5'], ['R3', 'R4'], ['R4', 'R5'], ['R3', 'R6'], ['R4', 'R6'], ['R4', 'R7'], ['R5', 'R7'], ['R6', 'D'], ['R7', 'D']];
+const ROTS = Object.keys(NOS).filter(k => k.startsWith('R'));
+const desligados = new Set();
+const feitos = new Set();
+let enviando = false;
+const H = 0.9; // altura dos cabos
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 15.5, 17.5], alvo: [0, 0, 0.5], min: 6, max: 40, chaoTam: 60 });
+botoesCamera(cena);
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0, 24, 21], [0, 0, 0.5]);
+const T = cena && cena.THREE;
+const torres = {}, cabos = [];
+let gPac;
+if (cena) {
+  // ruas
+  const rua = cena.bloco(22, 0.04, 13, '#e6e6e1', { base: false, bordas: false, sombra: false }); rua.position.set(0, 0.02, 0); cena.add(rua);
+  // casa
+  const casa = new T.Group();
+  casa.add(cena.bloco(1.6, 1.2, 1.6, COR.amareloClaro, { base: false }));
+  casa.children[0].position.y = 0.6;
+  const telhado = new T.Mesh(new T.ConeGeometry(1.35, 0.9, 4), cena.material(COR.vermelho)); telhado.rotation.y = Math.PI / 4; telhado.position.y = 1.65; telhado.castShadow = true; cena.comBordas(telhado, 10); casa.add(telhado);
+  casa.position.set(NOS.O.p[0] - 1, 0, NOS.O.p[1]); cena.add(casa);
+  // casas de enfeite
+  [[-6.5, -5.3], [-7.5, 4.6], [2, -6], [-2, 5.8], [6.5, 5.6]].forEach(([x, z], i) => {
+    const b = cena.bloco(1, 0.8 + (i % 3) * 0.4, 1, i % 2 ? COR.verdeClaro : COR.cinza, { base: false }); b.position.set(x, (0.8 + (i % 3) * 0.4) / 2, z); cena.add(b);
+  });
+  // data center
+  const dc = new T.Group();
+  const corpo = cena.bloco(2.6, 2.2, 3.4, COR.cinzaEscuro, { base: false }); corpo.position.y = 1.1; dc.add(corpo);
+  for (let i = 0; i < 4; i++) { const f = cena.bloco(0.05, 1.5, 0.5, COR.verde, { base: false }); f.position.set(-1.33, 1.1, -1.2 + i * 0.8); dc.add(f); }
+  dc.position.set(NOS.D.p[0] + 1.2, 0, NOS.D.p[1]); cena.add(dc);
+  const rdc = cena.rotulo('Data center', { tam: 0.45 }); rdc.position.set(NOS.D.p[0] + 1.2, 2.9, 0); cena.add(rdc);
+  const rc = cena.rotulo('Casa', { tam: 0.45 }); rc.position.set(NOS.O.p[0] - 1, 2.6, 0); cena.add(rc);
+  // cabos
+  ARESTAS.forEach(([a, b]) => {
+    const A = NOS[a].p, B = NOS[b].p;
+    const m = cena.haste([A[0], H, A[1]], [B[0], H, B[1]], 0.07, COR.tinta);
+    cena.add(m); cabos.push({ a, b, m });
+  });
+  // roteadores (torres clicáveis)
+  ROTS.forEach(r => {
+    const g = new T.Group();
+    const base = cena.cilindro(0.42, 1.1, COR.verde); g.add(base);
+    const ant = cena.cilindro(0.05, 0.7, COR.tinta, { bordas: false }); ant.position.y = 1.1; g.add(ant);
+    const luz = new T.Mesh(new T.SphereGeometry(0.12, 12, 8), new T.MeshBasicMaterial({ color: COR.amarelo })); luz.position.y = 1.85; g.add(luz);
+    g.position.set(NOS[r].p[0], 0, NOS[r].p[1]);
+    cena.add(g); torres[r] = { g, base, luz };
+    const rot = cena.rotulo(r.replace('R', ''), { tam: 0.4 }); rot.position.set(NOS[r].p[0], 2.35, NOS[r].p[1]); cena.add(rot);
+    cena.clicavel(base, () => alterna(r));
+  });
+  gPac = new T.Group(); cena.add(gPac);
+}
+
+/* ---------- rotas ---------- */
+function rota(sorteio) {
+  // Dijkstra com custo = comprimento × trânsito sorteado para este pacote
+  const custo = {}, dist = {}, ant = {}, aberto = new Set(Object.keys(NOS).filter(n => !desligados.has(n)));
+  ARESTAS.forEach(([a, b]) => { const A = NOS[a].p, B = NOS[b].p; custo[a + b] = custo[b + a] = Math.hypot(A[0] - B[0], A[1] - B[1]) * (1 + sorteio() * 1.4); });
+  aberto.forEach(n => dist[n] = Infinity); dist.O = 0;
+  while (aberto.size) {
+    let u = null; aberto.forEach(n => { if (u === null || dist[n] < dist[u]) u = n; });
+    if (dist[u] === Infinity) break;
+    aberto.delete(u);
+    if (u === 'D') break;
+    ARESTAS.forEach(([a, b]) => {
+      const v = a === u ? b : b === u ? a : null;
+      if (!v || !aberto.has(v)) return;
+      const d = dist[u] + custo[u + v];
+      if (d < dist[v]) { dist[v] = d; ant[v] = u; }
+    });
+  }
+  if (dist.D === undefined || dist.D === Infinity) return null;
+  const cam = ['D']; while (cam[0] !== 'O') cam.unshift(ant[cam[0]]);
+  return { cam, custo };
+}
+
+function alterna(r) {
+  if (enviando) return;
+  if (desligados.has(r)) desligados.delete(r); else desligados.add(r);
+  pintaRede(); preencheSelect(r);
+  $('#fb').className = 'feedback'; $('#fb').textContent = desligados.has(r) ? `${NOS[r].nome} desligado. Os pacotes vão precisar de outro caminho.` : `${NOS[r].nome} ligado de novo.`;
+}
+function pintaRede() {
+  if (!cena) return;
+  ROTS.forEach(r => { const off = desligados.has(r); torres[r].base.material = cena.material(off ? COR.vermelho : COR.verde); torres[r].luz.material.color.set(off ? COR.cinzaEscuro : COR.amarelo); });
+  cabos.forEach(c => c.m.material = cena.material(desligados.has(c.a) || desligados.has(c.b) ? COR.cinza : COR.tinta));
+  cena.pedeQuadro(); descreve();
+}
+function preencheSelect(atual) {
+  $('#rot').innerHTML = ROTS.map(r => `<option value="${r}"${r === atual ? ' selected' : ''}>${NOS[r].nome}: ${desligados.has(r) ? 'desligado' : 'ligado'}</option>`).join('');
+  atualizaBotao();
+}
+function atualizaBotao() { $('#liga').textContent = desligados.has($('#rot').value) ? 'Ligar este roteador' : 'Desligar este roteador'; }
+function descreve() {
+  cena && cena.descrever(`Mapa de uma cidade em 3D: uma casa à esquerda, um data center à direita e 7 roteadores ligados por cabos no meio. ${desligados.size ? 'Desligados: ' + [...desligados].map(r => NOS[r].nome).join(', ') + '.' : 'Todos os roteadores estão ligados.'}`);
+}
+
+/* ---------- envio ---------- */
+const espera = ms => new Promise(r => setTimeout(r, ms));
+async function enviar() {
+  if (enviando) return;
+  const texto = $('#msg').value || 'Olá!';
+  const tam = +$('#tam').value;
+  const partes = [];
+  for (let i = 0; i < texto.length; i += tam) partes.push(texto.slice(i, i + tam));
+  const total = partes.length;
+  const perda = $('#perda').checked;
+  const perdido = perda ? Math.floor(Math.random() * total) : -1;
+  const sorteio = Math.random;
+  if (!rota(sorteio)) { $('#fb').className = 'feedback bad'; $('#fb').textContent = 'Não existe caminho até o data center: todos os caminhos passam por roteadores desligados. Ligue algum deles.'; return; }
+  enviando = true; $('#enviar').disabled = true;
+  const chegada = [];
+  $('#fb').className = 'feedback'; $('#fb').textContent = `A mensagem virou ${total} pacotes de até ${tam} letras.`;
+  $('#conta').textContent = 'Cabeçalho: de casa, para o data center,\nnúmero do pacote / total\n\n' + partes.map((t, i) => `nº ${i + 1}/${total}  “${t}”`).join('\n');
+  mostraChegada(chegada, total);
+  const viagens = partes.map((t, i) => (async () => {
+    await espera(i * 380);
+    await viaja(i, total, t, i === perdido, chegada);
+  })());
+  await Promise.all(viagens);
+  if (perdido >= 0) {
+    $('#fb').className = 'feedback'; $('#fb').textContent = `O data center percebeu que falta o pacote nº ${perdido + 1} e pediu o reenvio.`;
+    await espera(900);
+    await viaja(perdido, total, partes[perdido], false, chegada, true);
+    marca(2);
+  }
+  const foraDeOrdem = chegada.some((c, i) => i > 0 && c.n < chegada[i - 1].n);
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent = `Mensagem remontada no data center: “${texto}”.` + (foraDeOrdem ? ' Os pacotes chegaram fora de ordem e foram organizados pelo número.' : ' Desta vez os pacotes chegaram em ordem; envie de novo para comparar.');
+  if (foraDeOrdem) marca(0);
+  if (desligados.size) marca(1);
+  enviando = false; $('#enviar').disabled = false;
+}
+
+async function viaja(i, total, texto, perder, chegada, reenvio = false) {
+  const r = rota(Math.random);
+  if (!r) return;
+  let pac = null;
+  if (cena) {
+    pac = cena.bloco(0.55, 0.38, 0.4, reenvio ? COR.verdeClaro : COR.amarelo, { base: false });
+    const num = cena.rotulo(String(i + 1), { tam: 0.42 }); num.position.y = 0.55; pac.add(num);
+    const P = NOS.O.p; pac.position.set(P[0], H + 0.3, P[1] + (i % 3 - 1) * 0.25);
+    gPac.add(pac); cena.pedeQuadro();
+  }
+  const caminho = r.cam;
+  for (let s = 1; s < caminho.length; s++) {
+    const a = caminho[s - 1], b = caminho[s], B = NOS[b].p;
+    const ms = r.custo[a + b] * 170;
+    if (perder && s === Math.ceil(caminho.length / 2)) {
+      if (pac) {
+        pac.material = cena.material(COR.vermelho);
+        await cena.animar(pac, { position: [pac.position.x, 0.2, pac.position.z], rotation: [0.6, 0.8, 0.3] }, 600);
+        await espera(500); gPac.remove(pac); descarta(pac); cena.pedeQuadro();
+      }
+      return;
+    }
+    if (pac) await cena.animar(pac, { position: [B[0], H + 0.3, B[1] + (i % 3 - 1) * 0.25] }, ms);
+    else await espera(ms / 4);
+  }
+  chegada.push({ n: i + 1, texto, rota: caminho });
+  mostraChegada(chegada, total);
+  if (pac) {
+    pac.material = cena.material(COR.verde);
+    await cena.animar(pac, { position: [NOS.D.p[0] + 1.2, 2.3 + chegada.length * 0.05, NOS.D.p[1]], scale: [0.4, 0.4, 0.4] }, 350);
+    gPac.remove(pac); descarta(pac); cena.pedeQuadro();
+  }
+}
+function descarta(pac) { pac.traverse(o => { if (o.isSprite) { o.material.map && o.material.map.dispose(); o.material.dispose(); } }); }
+
+function mostraChegada(chegada, total) {
+  const ordem = chegada.map(c => c.n).join(', ') || 'nenhum ainda';
+  const montada = Array.from({ length: total }, (_, i) => { const c = chegada.find(x => x.n === i + 1); return c ? c.texto : '□'.repeat(3); }).join('');
+  const linhas = chegada.map(c => `<tr><td>${c.n}</td><td>${esc(c.texto)}</td><td>${c.rota.map(n => n === 'O' ? 'casa' : n === 'D' ? 'data center' : n.replace('R', 'R')).join(' → ')}</td></tr>`).join('');
+  $('#chegada').innerHTML = `<p class="small" style="margin:10px 0 0"><strong>Ordem de chegada:</strong> ${ordem}</p><p class="small" style="margin:4px 0 0"><strong>Mensagem remontada:</strong> ${esc(montada)}</p>` + (linhas ? `<div class="lab-tabw"><table class="lab-tab"><thead><tr><th>Pacote</th><th>Conteúdo</th><th>Caminho</th></tr></thead><tbody>${linhas}</tbody></table></div>` : '');
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+/* ---------- controles ---------- */
+$('#tam').addEventListener('input', e => { $('#ltam').textContent = e.target.value; });
+$('#rot').addEventListener('change', atualizaBotao);
+$('#liga').onclick = () => alterna($('#rot').value);
+$('#enviar').onclick = enviar;
+preencheSelect('R1');
+pintaRede();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

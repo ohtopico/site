@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gráfico 3D: Honesto ou Enganoso? · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Os mesmos dados em barras 3D vistos de ângulos diferentes. Gire a câmera, corte o eixo e troque barras por cubos, acompanhando o fator de distorção: quanto o gráfico aumenta ou diminui a diferença real. BNCC EF09MA21 e EF08CO11.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/grafico-enganoso.html">
+<meta property="og:title" content="Gráfico 3D: Honesto ou Enganoso? · Laboratório 3D">
+<meta property="og:description" content="Os mesmos dados em barras 3D vistos de ângulos diferentes. Gire a câmera, corte o eixo e troque barras por cubos, acompanhando o fator de distorção: quanto o gráfico aumenta ou diminui a diferença real. BNCC EF09MA21 e EF08CO11.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/grafico-enganoso.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Os dados:</strong> livros emprestados pela biblioteca de uma escola em quatro anos (dados fictícios). O número cresceu cerca de 49% do primeiro ao último ano. A pergunta é: o gráfico mostra esse crescimento do tamanho certo?</p>
+    <p><strong>Fator de distorção:</strong> compara o crescimento que o gráfico <em>parece</em> mostrar na tela com o crescimento real dos dados. Fator 1 é um gráfico honesto. Fator 3 quer dizer que o gráfico faz a diferença parecer três vezes maior do que é. Gire a câmera, mude onde o eixo começa e veja o fator mudar.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Tipo de gráfico">
+      <button type="button" data-tipo="barras" aria-pressed="true">Barras 3D</button>
+      <button type="button" data-tipo="cubos" aria-pressed="false">Cubos que crescem</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-cam="frente">De frente (honesta)</button>
+          <button class="chip" type="button" data-cam="baixo">De baixo, perto de 2025</button>
+          <button class="chip" type="button" data-cam="inclinada">Inclinada, perto de 2022</button>
+          <button class="chip" type="button" data-cam="cima">Do alto</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <label for="base">O eixo começa em: <b id="lbase">0</b> livros</label>
+          <input type="range" id="base" min="0" max="400" step="50" value="0">
+          <label for="prof">Profundidade das barras: <b id="lprof">1,0</b></label>
+          <input type="range" id="prof" min="0.2" max="3" step="0.2" value="1">
+          <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="valores" checked> Mostrar os valores sobre as barras</label>
+          <p class="grande" id="res"></p>
+          <div class="conta" id="conta"></div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>fator perto de 1: honesto</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>exagero leve</li>
+            <li><span class="sw" style="background:#c8323f"></span>exagero forte ou diferença escondida</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Deixe o gráfico honesto: fator de distorção entre 0,9 e 1,1.</li>
+            <li data-d="1">Monte o gráfico “de propaganda”: fator acima de 3, só mudando o eixo e a câmera.</li>
+            <li data-d="2">No modo cubos, descubra quantas vezes o último cubo é maior em volume do que o primeiro.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> o fator de distorção (em inglês, <em>lie factor</em>, proposto por Edward Tufte) divide o tamanho do efeito mostrado no gráfico pelo tamanho do efeito nos dados. Os truques mais comuns da mídia aparecem aqui: eixo que não começa no zero, perspectiva 3D que aumenta as barras da frente e ícones que crescem em todas as direções (quando o lado dobra, o volume fica 8 vezes maior).</p>
+    <p><strong>Metodologia sugerida:</strong> estudo de caso. A turma traz gráficos de jornais, sites e redes sociais, recria cada um na página e mede o fator de distorção. Depois, cada grupo redesenha o gráfico de forma honesta e escreve uma legenda que explica o que melhorou nos dados.</p>
+    <ul>
+      <li>O crescimento real foi de 49%. Com o eixo começando em 400, quanto o gráfico parece ter crescido?</li>
+      <li>Por que gráficos em 3D quase nunca são a melhor escolha para comparar valores? (EF08MA23, EF09MA22.)</li>
+      <li>Quem ganha quando um gráfico exagera uma diferença? E quando esconde? Como checar um gráfico antes de compartilhar? (EF08CO11.)</li>
+      <li>Para o 9º ano: no modo cubos, se o valor cresce 1,49 vez e o lado do cubo cresce na mesma proporção, quanto cresce o volume? (1,49³ ≈ 3,3.)</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09MA21, EF08MA23 e EF08CO11. Os dados são fictícios. Para dados reais, use a página Dados da Região, que traz o Censo Escolar dos municípios.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-grafico-enganoso');</script>
+<script type="module">
+import { lab3d, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-grafico-enganoso';
+const f1 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const f2 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const DADOS = [['2022', 410], ['2023', 455], ['2024', 520], ['2025', 610]];
+const ESC = 4 / 610;   // altura máxima de 4 unidades com eixo no zero
+const ESP = 1.6;       // distância entre barras
+let tipo = 'barras', base = 0, prof = 1, valores = true;
+const feitos = new Set();
+
+const CAMS = {
+  frente: { pos: [ESP * 1.5, 2.2, 15], alvo: [ESP * 1.5, 2.2, 0] },
+  baixo: { pos: [ESP * 3 + 1.2, 0.35, 4.6], alvo: [ESP * 1.2, 1.6, -1.5] },
+  inclinada: { pos: [-6, 4, 7], alvo: [ESP * 1.5, 1.6, 0] },
+  cima: { pos: [ESP * 1.5, 13, 6], alvo: [ESP * 1.5, 1, 0] }
+};
+const cena = lab3d($('#palco'), { cam: CAMS.frente.pos, alvo: CAMS.frente.alvo, min: 2, max: 30, fov: 34, polarMax: Math.PI * 0.5, pan: true });
+const T = cena && cena.THREE;
+let grupo, gRot;
+if (cena) { grupo = new T.Group(); gRot = new T.Group(); cena.add(grupo, gRot); }
+
+function altura(v) { return Math.max(0.02, (v - base) * ESC * (base ? 610 / (610 - base) * 0.98 : 1)); }
+function desenha() {
+  if (!cena) return;
+  cena.limpar(grupo); [...gRot.children].forEach(s => { s.material.map && s.material.map.dispose(); s.material.dispose(); }); cena.limpar(gRot);
+  // chão do gráfico e eixo
+  grupo.add(cena.bloco(ESP * 4 + 0.6, 0.04, prof + 1.2, COR.cinza, { base: true, bordas: false }));
+  grupo.children[0].position.set(-0.8, -0.04, -prof / 2 - 0.6);
+  grupo.add(cena.haste([-0.8, 0, -prof / 2 - 0.6], [-0.8, 4.4, -prof / 2 - 0.6], 0.05, COR.tinta));
+  const rEixo = cena.rotulo(base ? `começa em ${base}` : 'começa em 0', { tam: 0.32, fundo: base ? COR.amareloClaro : '#ffffff' });
+  rEixo.position.set(-0.8, -0.3, prof / 2 + 0.5); gRot.add(rEixo);
+  DADOS.forEach(([ano, v], i) => {
+    const x = i * ESP;
+    let m, topo;
+    if (tipo === 'barras') {
+      const h = altura(v);
+      m = cena.bloco(1, h, prof, i === DADOS.length - 1 ? COR.verde : COR.verdeClaro, { base: false });
+      m.position.set(x, h / 2, 0); topo = h;
+    } else {
+      const lado = 1.2 * v / 610;
+      m = cena.bloco(lado, lado, lado, i === DADOS.length - 1 ? COR.verde : COR.verdeClaro, { base: false });
+      m.position.set(x, lado / 2, 0); topo = lado;
+    }
+    grupo.add(m);
+    const ra = cena.rotulo(ano, { tam: 0.34 }); ra.position.set(x, -0.3, prof / 2 + 0.3); gRot.add(ra);
+    if (valores) { const rv = cena.rotulo(String(v), { tam: 0.34, fundo: COR.amareloClaro }); rv.position.set(x, topo + 0.35, 0); gRot.add(rv); }
+  });
+  cena.pedeQuadro();
+  mede();
+}
+
+/* Mede na tela a altura (ou a área) que cada barra ocupa, do jeito que o leitor vê */
+function tamanhoNaTela(i) {
+  const cam = cena.camera, h = cena.renderer.domElement.clientHeight, w = cena.renderer.domElement.clientWidth;
+  cam.updateMatrixWorld();
+  const m = grupo.children[i + 2];
+  m.updateMatrixWorld();
+  const box = new T.Box3().setFromObject(m);
+  const pts = [];
+  for (const X of [box.min.x, box.max.x]) for (const Y of [box.min.y, box.max.y]) for (const Z of [box.min.z, box.max.z]) pts.push(new T.Vector3(X, Y, Z).project(cam));
+  const xs = pts.map(p => (p.x + 1) / 2 * w), ys = pts.map(p => (1 - p.y) / 2 * h);
+  if (tipo === 'barras') {
+    // altura vertical da face da frente da barra
+    const frente = [new T.Vector3((box.min.x + box.max.x) / 2, box.min.y, box.max.z), new T.Vector3((box.min.x + box.max.x) / 2, box.max.y, box.max.z)].map(p => p.project(cam));
+    return Math.abs(frente[1].y - frente[0].y) * h / 2;
+  }
+  return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys));
+}
+function mede() {
+  if (!cena) return;
+  const real = DADOS[3][1] / DADOS[0][1] - 1;
+  const a0 = tamanhoNaTela(0), a3 = tamanhoNaTela(3);
+  const parece = a3 / Math.max(a0, 0.01) - 1;
+  const fator = parece / real;
+  $('#res').textContent = `Fator: ${f1(fator)}`;
+  $('#res').style.color = Math.abs(fator - 1) <= 0.15 ? 'var(--ok)' : fator > 0.6 && fator < 1.8 ? '#a38900' : 'var(--bad)';
+  const vol = Math.pow(DADOS[3][1] / DADOS[0][1], 3);
+  $('#conta').textContent = `Crescimento real:   410 → 610 = +${Math.round(real * 100)}%\nNa tela parece:     +${Math.round(parece * 100)}%\nFator de distorção: ${f2(parece)} ÷ ${f2(real)} = ${f2(fator)}` + (tipo === 'cubos' ? `\n\nLado do último cubo: ${f2(DADOS[3][1] / DADOS[0][1])} vez o primeiro\nVolume: ${f2(vol)} vezes o primeiro` : '');
+  let t;
+  if (Math.abs(fator - 1) <= 0.1) { t = 'Gráfico honesto: o crescimento aparece do tamanho que ele tem.'; $('#fb').className = 'feedback ok'; }
+  else if (fator > 1) { t = `O gráfico exagera: faz o crescimento parecer ${f1(fator)} vezes maior do que é.`; $('#fb').className = 'feedback bad'; }
+  else { t = `O gráfico esconde parte do crescimento: mostra só ${Math.round(fator * 100)}% dele.`; $('#fb').className = 'feedback bad'; }
+  $('#fb').textContent = t;
+  if (tipo === 'barras' && Math.abs(fator - 1) <= 0.1) marca(0);
+  if (tipo === 'barras' && fator > 3) marca(1);
+  cena.descrever(`Gráfico de ${tipo === 'barras' ? 'barras' : 'cubos'} em 3D com os livros emprestados de 2022 a 2025: 410, 455, 520 e 610. O eixo começa em ${base}. ${t}`);
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+let agendado = false;
+if (cena) cena.controls.addEventListener('change', () => { if (agendado) return; agendado = true; requestAnimationFrame(() => { agendado = false; mede(); }); });
+document.querySelectorAll('[data-cam]').forEach(b => b.addEventListener('click', () => { const c = CAMS[b.dataset.cam]; cena && cena.posicionar(c.pos, c.alvo); mede(); }));
+$('#base').addEventListener('input', e => { base = +e.target.value; $('#lbase').textContent = base; desenha(); });
+$('#prof').addEventListener('input', e => { prof = +e.target.value; $('#lprof').textContent = f1(prof); desenha(); });
+$('#valores').addEventListener('change', e => { valores = e.target.checked; desenha(); });
+document.querySelectorAll('[data-tipo]').forEach(b => b.addEventListener('click', () => {
+  tipo = b.dataset.tipo;
+  document.querySelectorAll('[data-tipo]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  $('#base').disabled = tipo === 'cubos';
+  desenha();
+  if (tipo === 'cubos') marca(2);
+}));
+desenha();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
