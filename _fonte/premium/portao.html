@@ -35,6 +35,7 @@
 <script>
 (function () {
   const SAL = '{{SAL}}', ITER = {{ITER}}, NIVEIS = {{NIVEIS}}, PLANOS = {{PLANOS_JSON}};
+  const MESES = {{MESES_JSON}}, MES = '{{MES}}';
   const MINIMO = {{MINIMO}}, IV = '{{IV}}', DADOS = '{{DADOS}}', CHAVE = 'ohtopico:premium';
   const bin = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
   const fb = document.getElementById('fb'), msg = document.getElementById('msg');
@@ -48,12 +49,15 @@
     throw new Error('senha');
   }
   async function abrir(chaveiro) {
-    if (!chaveiro.chaves[MINIMO]) {
-      msg.innerHTML = 'Este material é do plano <b>' + PLANOS[MINIMO] + '</b> ou acima. Seu plano é <b>' + PLANOS[chaveiro.nivel] + '</b>.';
+    const chave = (chaveiro.chaves || {})[MES + ':' + MINIMO];
+    if (!chave) {
+      msg.innerHTML = chaveiro.nivel < MINIMO
+        ? 'Este material é do plano <b>' + PLANOS[MINIMO] + '</b> ou acima. Seu plano é <b>' + PLANOS[chaveiro.nivel] + '</b>.'
+        : 'Este material é liberado em <b>' + MESES[MES] + '</b>. A senha desse mês chega na mensagem do Catarse no dia 1.';
       document.getElementById('voltar').hidden = false; document.getElementById('f').hidden = false;
       fb.textContent = ''; return;
     }
-    const k = await crypto.subtle.importKey('raw', bin(chaveiro.chaves[MINIMO]), 'AES-GCM', false, ['decrypt']);
+    const k = await crypto.subtle.importKey('raw', bin(chave), 'AES-GCM', false, ['decrypt']);
     const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(IV) }, k, bin(DADOS)));
     document.open(); document.write(html); document.close();
   }
@@ -66,7 +70,7 @@
     abrir(chaveiro).catch(() => { fb.textContent = 'Não foi possível abrir. Recarregue a página.'; fb.className = 'feedback bad'; });
   };
   let salvo = null; try { salvo = JSON.parse(sessionStorage.getItem(CHAVE)); } catch (e) {}
-  if (salvo && salvo.chaves) { document.getElementById('f').hidden = true; abrir(salvo).catch(() => { try { sessionStorage.removeItem(CHAVE); } catch (e) {} location.reload(); }); }
+  if (salvo && salvo.chaves && salvo.mes) { document.getElementById('f').hidden = true; abrir(salvo).catch(() => { try { sessionStorage.removeItem(CHAVE); } catch (e) {} location.reload(); }); }
   else document.getElementById('s').focus();
 })();
 </script>

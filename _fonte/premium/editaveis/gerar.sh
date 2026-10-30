@@ -11,4 +11,9 @@ python3 _fonte/premium/editaveis/slides_pptx.py --gerador "$SLIDES" --fontes "$F
 python3 _fonte/premium/editaveis/apostila_docx.py "$APOSTILA/saida/miolo.html" $P/arquivos/apostila
 python3 _fonte/premium/editaveis/planejamento_docx.py $P/arquivos/planejamento
 python3 _fonte/premium/editaveis/jogo_html.py $P/arquivos/jogos $P/mesada-pro.html $P/treine-a-maquina.html
-python3 _fonte/premium/proteger.py --site . --fontes $P "$@"   # sh gerar.sh --novas-senhas troca as senhas do mês
+# jogos dos próximos meses (_privado/premium/meses/AAAA-MM/*.html): arquivo único em arquivos/AAAA-MM/jogos/
+for MES in $P/meses/*/; do
+  [ -d "$MES" ] || continue
+  python3 _fonte/premium/editaveis/jogo_html.py $P/arquivos/$(basename "$MES")/jogos "$MES"*.html
+done
+python3 _fonte/premium/proteger.py --site . --fontes $P "$@"   # --completar-senhas cria as senhas que faltam
