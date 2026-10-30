@@ -16,8 +16,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../material-didatico/assets/md.css">
-<link rel="stylesheet" href="../dados-da-regiao/assets/painel.css?v=202610280100">
-<link rel="stylesheet" href="assets/interesse.css?v=20261030">
+<link rel="stylesheet" href="../dados-da-regiao/assets/painel.css?v=20261029">
+<link rel="stylesheet" href="assets/interesse.css?v=20261029">
 <script>
   try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
@@ -48,7 +48,7 @@
     <div class="wrap"><div class="hero-inner">
       <span class="terminal">$ painel interativo</span>
       <h1>O interesse por <mark>inteligência artificial</mark> na Wikipédia</h1>
-      <p class="lead">Quantas vezes por mês os verbetes sobre IA, ferramentas como o ChatGPT e educação digital são lidos na Wikipédia em português, de janeiro de 2016 até <span id="ate">o último mês</span>. Os dados são abertos e o painel se atualiza sozinho todo mês.</p>
+      <p class="lead">Quantas vezes por mês os verbetes sobre IA, ferramentas como o ChatGPT e educação digital são lidos na Wikipédia em português, de janeiro de 2016 até <span id="ate">setembro de 2026</span>. Os dados são abertos e o painel se atualiza sozinho todo mês.</p>
       <p class="small muted">Dados reunidos e analisados por <a href="../curriculo/">Júlia Roberta Quoos Alves</a>.</p>
     </div></div>
   </section>
@@ -59,7 +59,14 @@
       <h2>O que os números mostram</h2>
       <div class="kpis" id="kpis"></div>
       <!-- resumo:inicio -->
-      <!-- resumo:fim -->
+<ul class="resumo-lista">
+<li>Nos últimos 12 meses, os verbetes de inteligência artificial acompanhados aqui somaram <b>1.150.661 visitas</b> na Wikipédia em português.</li>
+<li>O mês com mais visitas a esses verbetes foi <b>junho de 2024</b>, com 519.648 visitas.</li>
+<li>O verbete mais lido no período foi <b>ChatGPT</b>, com 798.475 visitas.</li>
+<li><b>OpenAI</b> teve 2,1 vezes as visitas do ano anterior ao lançamento do ChatGPT.</li>
+<li><b>Inteligência artificial</b> teve 1,7 vezes as visitas do ano anterior ao lançamento do ChatGPT.</li>
+</ul>
+<!-- resumo:fim -->
     </div>
   </section>
 
@@ -137,8 +144,8 @@
 </div></footer>
 
 <div id="tip" role="presentation"></div>
-<script src="assets/dados.js?v=20261030"></script>
-<script src="assets/interesse.js?v=20261030"></script>
+<script src="assets/dados.js?v=20261029"></script>
+<script src="assets/interesse.js?v=20261029"></script>
 <script src="/assistente/assistente.js?v=2" defer></script>
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
