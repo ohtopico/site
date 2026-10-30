@@ -48,3 +48,7 @@
 .lab-tab .ok { color: var(--ok); font-weight: 600; }
 .lab-tab .bad { color: var(--bad); font-weight: 600; }
 .barra-h { height: 10px; border-radius: 99px; background: var(--ok); min-width: 2px; }
+/* Capa antes de carregar o three.js: a cena só baixa quando a pessoa pede */
+.lab-capa { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; text-align: center; }
+.lab-capa .btn { min-height: 48px; padding: 10px 20px; font-size: 17px; }
+.lab-capa p { margin: 0; max-width: 34ch; color: var(--ink-2); background: var(--paper); border-radius: 10px; padding: 2px 8px; }
