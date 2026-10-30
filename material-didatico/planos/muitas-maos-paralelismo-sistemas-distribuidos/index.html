@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muitas mãos: paralelismo e sistemas distribuídos</title>
+<meta name="description" content="Plano de aula gratuito, Computação, 8º ano (BNCC EF08CO05). Dividir uma tarefa entre várias “máquinas”, perceber gargalos e conflitos e entender a nuvem.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/planos/muitas-maos-paralelismo-sistemas-distribuidos/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/planos/muitas-maos-paralelismo-sistemas-distribuidos/">
+<meta property="og:title" content="Muitas mãos: paralelismo e sistemas distribuídos">
+<meta property="og:description" content="Plano de aula gratuito, Computação, 8º ano (BNCC EF08CO05). Dividir uma tarefa entre várias “máquinas”, perceber gargalos e conflitos e entender a nuvem.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-planos.jpg">
+<meta property="og:image:alt" content="Plano de aula: Muitas mãos: paralelismo e sistemas distribuídos">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Muitas mãos: paralelismo e sistemas distribuídos","description":"Dividir uma tarefa entre várias “máquinas”, perceber gargalos e conflitos e entender a nuvem.","url":"https://ohtopico.com.br/material-didatico/planos/muitas-maos-paralelismo-sistemas-distribuidos/","image":"https://ohtopico.com.br/material-didatico/assets/og-planos.jpg","inLanguage":"pt-BR","learningResourceType":"Plano de aula","educationalLevel":"8º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"2 aulas","audience":{"@type":"EducationalAudience","educationalRole":"teacher"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO05","targetDescription":"Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Área do professor","item":"https://ohtopico.com.br/material-didatico/professor.html"},{"@type":"ListItem","position":4,"name":"Muitas mãos: paralelismo e sistemas distribuídos","item":"https://ohtopico.com.br/material-didatico/planos/muitas-maos-paralelismo-sistemas-distribuidos/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 20px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .doc h2 { font-size: 26px; margin-top: 34px; }
+  .habs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .habs li { display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: start; font-size: 15px; }
+  .doc ul.plain { padding-left: 20px; margin: 0; }
+  .doc ul.plain li { margin-bottom: 6px; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+  .timeline li { position: relative; padding: 0 0 22px 24px; }
+  .timeline li::before { content: ''; position: absolute; left: -8px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .timeline .t { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .timeline strong { display: block; font-size: 18px; }
+  .timeline p { margin: 4px 0 0; color: var(--ink-2); }
+  .tot { font-size: 14px; color: var(--ink-2); }
+  @media print {
+    .doc { padding: 0; }
+    .meta div, .panel { border-color: #000; }
+    .timeline li { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">Muitas mãos: paralelismo e sistemas distribuídos</h1>
+    <p class="muted">Dividir uma tarefa entre várias “máquinas”, perceber gargalos e conflitos e entender a nuvem.</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>Computação</div>
+      <div><span>Ano</span>8º ano</div>
+      <div><span>Duração</span>2 aulas de 50 min</div>
+    </div>
+
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs"><li><a class="tag code co" href="bncc/ef08co05/" title="EF08CO05 — Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.">EF08CO05</a><span>Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos. <a class="no-print" href="slides/bncc-ef08co05-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li></ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain"><li>Diferenciar processamento sequencial e paralelo.</li><li>Identificar problemas de concorrência quando várias partes usam o mesmo recurso.</li><li>Entender armazenamento e processamento distribuídos, como na nuvem.</li></ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain"><li>Pilhas de folhas para dobrar ou contar</li><li>Cronômetro</li><li>Uma única tesoura ou cola (recurso compartilhado)</li></ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: 100 minutos.</p>
+    <ol class="timeline"><li><span class="t">10 min</span><strong>Uma pessoa x muitas</strong><p>Uma pessoa dobra 40 folhas sozinha enquanto a turma cronometra. Depois, 4 pessoas dividem as mesmas 40 folhas. Comparem os tempos.</p></li><li><span class="t">25 min</span><strong>Linha de montagem</strong><p>Em grupos, montem “sanduíches de papel” com etapas: cortar, colar, carimbar. Há uma só tesoura. Observem: quem fica esperando? Isso é concorrência por um recurso.</p></li><li><span class="t">15 min</span><strong>Gargalos e combinados</strong><p>Discutam soluções: uma fila para a tesoura, dividir etapas, ter mais tesouras. Relacione com computadores com vários núcleos e com várias pessoas editando o mesmo documento on-line.</p></li><li><span class="t">30 min</span><strong>A nuvem não é nuvem</strong><p>Explique que a “nuvem” são muitos computadores em datacenters, ligados em rede. Simulação: um arquivo (texto num papel) é dividido e copiado em três “servidores” (grupos). Um servidor “queima”: dá para recuperar o arquivo?</p></li><li><span class="t">20 min</span><strong>Registro</strong><p>Cada aluno explica, com um desenho, uma situação do dia a dia que funciona em paralelo e um problema de concorrência.</p></li></ol>
+
+    <h2>Avaliação</h2>
+    <p>Desenho com exemplo correto de paralelismo e de concorrência; participação na discussão sobre a nuvem.</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">As atividades são corporais e concretas; garanta papéis para estudantes com mobilidade reduzida (cronometrar, registrar, coordenar a fila).</div>
+
+    <h2 class="no-print">Materiais relacionados</h2>
+    <div class="related no-print">
+      <a class="card" href="jogos/pacotes.html">
+        <span class="small muted">🎮 Jogo</span>
+        <strong>Correio de Pacotes</strong>
+        <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+      </a>
+      <a class="card" href="fichas/a-corrida-somas-paralelismo/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>A corrida das somas: paralelismo</strong>
+        <span class="small muted">Quarenta contas resolvidas por uma e por quatro pessoas, tarefas que dá ou não para dividir, concorrência e nuvem.</span>
+      </a>
+      <a class="card" href="listas/sistemas-distribuidos-8-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Sistemas distribuídos (8º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/revisao-ano-8-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Revisão do ano (8º ano)</strong>
+        <span class="small muted">Revisão de todas as habilidades do 8º ano, para recuperação, simulado ou fechamento do ano: múltipla escolha, verdadeiro ou falso e dissertativa.</span>
+      </a></div></main>
+<footer id="footer"></footer>
+
+<script>window.MD_ID = window.MD_REC = "p-paralelo";</script>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // plano.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
+  const r = REC[id], p = PLANOS[id];
+  const doc = document.getElementById('doc');
+  if (!r || !p) {
+    doc.innerHTML = `<h1>Plano não encontrado</h1><p><a href="professor.html">Ver todos os planos de aula</a></p>`;
+    return;
+  }
+  if (!window.MD_ID) document.title = `${r.titulo} · Plano de aula | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
+  const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
+  const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
+  doc.innerHTML = `
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">${esc(r.titulo)}</h1>
+    <p class="muted">${esc(r.resumo)}</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>${r.comp.map(c => COMPONENTES[c].nome).join(' + ')}</div>
+      <div><span>Ano</span>${anosTxt(r.anos)}</div>
+      <div><span>Duração</span>${esc(p.duracao)}</div>
+    </div>
+${p.metodologia ? `
+    <h2>Metodologia ativa</h2>
+    <div class="panel"><strong>${esc(p.metodologia[0])}</strong><p style="margin:6px 0 0">${esc(p.metodologia[1])}</p></div>` : ''}
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}${SLIDES[c] ? ` <a class="no-print" href="${slidesUrl(c)}" download>📥 Baixar slides (PDF)</a>` : ''}</span></li>`).join('')}</ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain">${p.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain">${p.materiais.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: ${minutos} minutos.</p>
+    <ol class="timeline">${p.etapas.map(([t, tit, txt]) => `<li><span class="t">${esc(t)}</span><strong>${esc(tit)}</strong><p>${esc(txt)}</p></li>`).join('')}</ol>
+
+    <h2>Avaliação</h2>
+    <p>${esc(p.avaliacao)}</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">${esc(p.inclusao)}</div>
+
+    <h2 class="no-print">${rel.length ? 'Materiais relacionados' : 'Outros planos para o mesmo ano'}</h2>
+    <div class="related no-print">${(rel.length ? rel
+      : RECURSOS.filter(o => o.tipo === 'plano' && o.id !== r.id && o.anos.some(a => r.anos.includes(a))).slice(0, 3)).map(o => `
+      <a class="card" href="${recUrl(o)}">
+        <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>
+        <strong>${esc(o.titulo)}</strong>
+        <span class="small muted">${esc(o.resumo)}</span>
+      </a>`).join('')}</div>`;
+})();
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, follow">
-<title>Plano de aula · Material didático | ohtopico</title>
+<title>Plano de aula · Material didático | Júlia Quoos</title>
 <meta name="description" content="Plano de aula alinhado à BNCC, com objetivos, etapas, avaliação e sugestões de acessibilidade.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,14 +51,16 @@
 (function () {
   mdTopbar('professor');
   mdFooter();
-  const id = new URLSearchParams(location.search).get('id');
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // plano.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
   const r = REC[id], p = PLANOS[id];
   const doc = document.getElementById('doc');
   if (!r || !p) {
     doc.innerHTML = `<h1>Plano não encontrado</h1><p><a href="professor.html">Ver todos os planos de aula</a></p>`;
     return;
   }
-  document.title = `${r.titulo} · Plano de aula | ohtopico`;
+  if (!window.MD_ID) document.title = `${r.titulo} · Plano de aula | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
   const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
   const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
   doc.innerHTML = `

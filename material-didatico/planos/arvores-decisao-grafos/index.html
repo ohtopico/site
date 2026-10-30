@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Árvores de decisão e grafos · Plano de aula | Júlia Quoos</title>
+<meta name="description" content="Plano de aula gratuito, Computação, 9º ano (BNCC EF09CO01). Do jogo das 20 perguntas à chave de classificação: construir árvores e programá-las.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/planos/arvores-decisao-grafos/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/planos/arvores-decisao-grafos/">
+<meta property="og:title" content="Árvores de decisão e grafos · Plano de aula | Júlia Quoos">
+<meta property="og:description" content="Plano de aula gratuito, Computação, 9º ano (BNCC EF09CO01). Do jogo das 20 perguntas à chave de classificação: construir árvores e programá-las.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-planos.jpg">
+<meta property="og:image:alt" content="Plano de aula: Árvores de decisão e grafos">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Árvores de decisão e grafos","description":"Do jogo das 20 perguntas à chave de classificação: construir árvores e programá-las.","url":"https://ohtopico.com.br/material-didatico/planos/arvores-decisao-grafos/","image":"https://ohtopico.com.br/material-didatico/assets/og-planos.jpg","inLanguage":"pt-BR","learningResourceType":"Plano de aula","educationalLevel":"9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"2 aulas","audience":{"@type":"EducationalAudience","educationalRole":"teacher"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO01","targetDescription":"Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Área do professor","item":"https://ohtopico.com.br/material-didatico/professor.html"},{"@type":"ListItem","position":4,"name":"Árvores de decisão e grafos","item":"https://ohtopico.com.br/material-didatico/planos/arvores-decisao-grafos/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 20px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .doc h2 { font-size: 26px; margin-top: 34px; }
+  .habs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .habs li { display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: start; font-size: 15px; }
+  .doc ul.plain { padding-left: 20px; margin: 0; }
+  .doc ul.plain li { margin-bottom: 6px; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+  .timeline li { position: relative; padding: 0 0 22px 24px; }
+  .timeline li::before { content: ''; position: absolute; left: -8px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .timeline .t { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .timeline strong { display: block; font-size: 18px; }
+  .timeline p { margin: 4px 0 0; color: var(--ink-2); }
+  .tot { font-size: 14px; color: var(--ink-2); }
+  @media print {
+    .doc { padding: 0; }
+    .meta div, .panel { border-color: #000; }
+    .timeline li { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">Árvores de decisão e grafos</h1>
+    <p class="muted">Do jogo das 20 perguntas à chave de classificação: construir árvores e programá-las.</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>Computação</div>
+      <div><span>Ano</span>9º ano</div>
+      <div><span>Duração</span>2 aulas de 50 min</div>
+    </div>
+
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs"><li><a class="tag code co" href="bncc/ef09co01/" title="EF09CO01 — Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação.">EF09CO01</a><span>Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação. <a class="no-print" href="slides/bncc-ef09co01-slides.pdf" download="">📥 Baixar slides (PDF)</a></span></li></ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain"><li>Representar informações hierárquicas e decisões com árvores.</li><li>Relacionar árvores e grafos (uma árvore é um grafo sem ciclos).</li><li>Programar uma árvore de decisão simples.</li></ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain"><li>Cartões com imagens de animais ou objetos</li><li>Papel grande</li><li>Scratch ou Python</li></ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: 100 minutos.</p>
+    <ol class="timeline"><li><span class="t">15 min</span><strong>20 perguntas</strong><p>O professor pensa num animal; a turma só pode fazer perguntas de sim ou não. Registre as perguntas como galhos no quadro: aparece uma árvore.</p></li><li><span class="t">25 min</span><strong>Chave de classificação</strong><p>Em grupos, construam uma árvore de decisão que separe 8 cartões de animais até cada um ficar sozinho numa folha. Qual a menor altura possível da árvore?</p></li><li><span class="t">10 min</span><strong>Árvores por toda parte</strong><p>Mostre outros exemplos: pastas do computador, árvore genealógica, chaveamento de campeonato. Retome o grafo de rotas: o que diferencia uma árvore de um grafo qualquer? (Não tem ciclos e há um único caminho entre dois vértices.)</p></li><li><span class="t">35 min</span><strong>Programando a árvore</strong><p>As duplas transformam a chave de classificação num programa de perguntas e respostas com condições aninhadas. Outros grupos testam tentando “quebrar” o programa.</p></li><li><span class="t">15 min</span><strong>Fechamento</strong><p>Discuta: assistentes virtuais e diagnósticos usam árvores de decisão. Quais são os riscos se a árvore tiver perguntas mal escolhidas?</p></li></ol>
+
+    <h2>Avaliação</h2>
+    <p>Árvore de classificação correta e programa que classifica todos os casos previstos.</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">Use objetos reais ou cartões táteis para a classificação; a árvore pode ser montada no chão com barbante.</div>
+
+    <h2 class="no-print">Materiais relacionados</h2>
+    <div class="related no-print">
+      <a class="card" href="jogos/rotas.html">
+        <span class="small muted">🎮 Jogo</span>
+        <strong>Rota Mais Curta</strong>
+        <span class="small muted">Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.</span>
+      </a>
+      <a class="card" href="fichas/mapa-bairros/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Mapa dos bairros</strong>
+        <span class="small muted">Grafo com distâncias entre bairros: contar arestas, achar o grau de cada vértice e calcular o caminho mais curto.</span>
+      </a>
+      <a class="card" href="fichas/arvore-decisao-adivinhe-animal/">
+        <span class="small muted">🖨️ Ficha para imprimir</span>
+        <strong>Árvore de decisão: adivinhe o animal</strong>
+        <span class="small muted">Montar uma árvore de perguntas de sim ou não que separa oito animais e descobrir a relação com as potências de 2.</span>
+      </a>
+      <a class="card" href="listas/grafos-arvores-9-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Grafos e árvores (9º ano)</strong>
+        <span class="small muted">Lista de exercícios com gabarito: múltipla escolha, verdadeiro ou falso, dissertativa.</span>
+      </a>
+      <a class="card" href="listas/revisao-ano-9-ano/">
+        <span class="small muted">📝 Lista de exercícios</span>
+        <strong>Revisão do ano (9º ano)</strong>
+        <span class="small muted">Revisão de todas as habilidades do 9º ano, para recuperação, simulado ou fechamento do ano: múltipla escolha, verdadeiro ou falso e dissertativa.</span>
+      </a></div></main>
+<footer id="footer"></footer>
+
+<script>window.MD_ID = window.MD_REC = "p-arvores";</script>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/slides.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const id = window.MD_ID || new URLSearchParams(location.search).get('id');
+  // plano.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
+  if (!window.MD_ID && typeof ESTATICAS !== 'undefined' && ESTATICAS[id]) { location.replace(MD_BASE + ESTATICAS[id] + location.hash); return; }
+  const r = REC[id], p = PLANOS[id];
+  const doc = document.getElementById('doc');
+  if (!r || !p) {
+    doc.innerHTML = `<h1>Plano não encontrado</h1><p><a href="professor.html">Ver todos os planos de aula</a></p>`;
+    return;
+  }
+  if (!window.MD_ID) document.title = `${r.titulo} · Plano de aula | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
+  const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
+  const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
+  doc.innerHTML = `
+    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <span class="eyebrow">📋 Plano de aula</span>
+    <h1 style="font-size:clamp(30px,5vw,46px)">${esc(r.titulo)}</h1>
+    <p class="muted">${esc(r.resumo)}</p>
+    <div class="btn-row no-print"><button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir ou salvar em PDF</button></div>
+    <div class="meta">
+      <div><span>Componente</span>${r.comp.map(c => COMPONENTES[c].nome).join(' + ')}</div>
+      <div><span>Ano</span>${anosTxt(r.anos)}</div>
+      <div><span>Duração</span>${esc(p.duracao)}</div>
+    </div>
+${p.metodologia ? `
+    <h2>Metodologia ativa</h2>
+    <div class="panel"><strong>${esc(p.metodologia[0])}</strong><p style="margin:6px 0 0">${esc(p.metodologia[1])}</p></div>` : ''}
+
+    <h2>Habilidades da BNCC</h2>
+    <ul class="habs">${r.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}${SLIDES[c] ? ` <a class="no-print" href="${slidesUrl(c)}" download>📥 Baixar slides (PDF)</a>` : ''}</span></li>`).join('')}</ul>
+
+    <h2>Objetivos de aprendizagem</h2>
+    <ul class="plain">${p.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Materiais</h2>
+    <ul class="plain">${p.materiais.map(o => `<li>${esc(o)}</li>`).join('')}</ul>
+
+    <h2>Desenvolvimento</h2>
+    <p class="tot">Tempo total previsto: ${minutos} minutos.</p>
+    <ol class="timeline">${p.etapas.map(([t, tit, txt]) => `<li><span class="t">${esc(t)}</span><strong>${esc(tit)}</strong><p>${esc(txt)}</p></li>`).join('')}</ol>
+
+    <h2>Avaliação</h2>
+    <p>${esc(p.avaliacao)}</p>
+
+    <h2>Acessibilidade e inclusão</h2>
+    <div class="panel">${esc(p.inclusao)}</div>
+
+    <h2 class="no-print">${rel.length ? 'Materiais relacionados' : 'Outros planos para o mesmo ano'}</h2>
+    <div class="related no-print">${(rel.length ? rel
+      : RECURSOS.filter(o => o.tipo === 'plano' && o.id !== r.id && o.anos.some(a => r.anos.includes(a))).slice(0, 3)).map(o => `
+      <a class="card" href="${recUrl(o)}">
+        <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>
+        <strong>${esc(o.titulo)}</strong>
+        <span class="small muted">${esc(o.resumo)}</span>
+      </a>`).join('')}</div>`;
+})();
+</script>
+</body>
+</html>

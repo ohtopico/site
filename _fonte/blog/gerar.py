@@ -84,7 +84,7 @@ def cabeca(titulo, descricao, url, imagem, imagem_alt, tipo_og, extra='', robots
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="{tipo_og}">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:site_name" content="ohtopico · Júlia Roberta Quoos Alves">
+<meta property="og:site_name" content="Júlia Quoos">
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{esc(titulo)}">
 <meta property="og:description" content="{esc(descricao)}">
@@ -358,7 +358,7 @@ def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
              f'<meta property="article:author" content="https://ohtopico.com.br/">\n'
              f'<meta property="article:section" content="{esc(post["secao"])}">\n'
              f'<meta property="og:image:width" content="1080">\n<meta property="og:image:height" content="1350">\n' + ld)
-    titulo_pagina = post['titulo_seo'] if 'Quoos' in post['titulo_seo'] else post['titulo_seo'] + ' · Júlia Roberta Quoos Alves'
+    titulo_pagina = post['titulo_seo'] if 'Quoos' in post['titulo_seo'] else post['titulo_seo'] + ' | Júlia Quoos'
     head = cabeca(titulo_pagina, post['descricao'], url, img_url, post['alt'], 'article', extra)
 
     from urllib.parse import quote
@@ -516,7 +516,7 @@ def pagina_mentoria(cfg, dims):
     </section>
 </article>'''
     robots = 'noindex, follow' if pendente else 'index, follow'
-    head = cabeca('Mentoria e treinamento de professores em IA · Júlia Roberta Quoos Alves', descricao, url,
+    head = cabeca('Mentoria e treinamento de professores em IA | Júlia Quoos', descricao, url,
                   f'{site}/blog/img/dia07-mentoria.png', 'Os três formatos da mentoria', 'website', ld, robots)
     return head + '\n' + moldura('mentoria.exe', 'ohtopico.com.br/mentoria', '/', conteudo, 'Pronto', 'mentoria'), pendente
 
@@ -608,7 +608,7 @@ def pagina_formacao(cfg, dims):
         <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Forma%C3%A7%C3%A3o%20continuada%20de%20professores%20em%20IA">Falar com Júlia Roberta Quoos Alves</a>
     </section>
 </article>'''
-    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/blog/img/{FORMACAO_IMAGEM}', alt, 'website',
+    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, f'{site}/blog/img/{FORMACAO_IMAGEM}', alt, 'website',
                   f'<meta property="og:image:width" content="{w}">\n<meta property="og:image:height" content="{h}">\n' + ld)
     return head + '\n' + moldura('guia-formacao.html', 'ohtopico.com.br/formacao-continuada', '/', conteudo, 'Pronto', 'formacao')
 
@@ -675,7 +675,7 @@ def pagina_assistencia(cfg):
     </section>
 </article>'''
     alt = 'Foto de Júlia Roberta Quoos Alves'
-    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/img/perfil.jpg', alt, 'website', ld)
+    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, f'{site}/img/perfil.jpg', alt, 'website', ld)
     return head + '\n' + moldura('assistencia.exe', 'ohtopico.com.br/assistencia-por-voz', '/', conteudo, 'Pronto', 'assistencia')
 
 
@@ -786,7 +786,7 @@ def pagina_prompts(cfg):
     </section>
 </article>'''
     alt = 'Exemplo de prompt com cada parte da fórmula P.A.C.T.O. marcada em uma cor: papel, alvo, comando, tom e formato, observações.'
-    head = cabeca(titulo + ' · Júlia Roberta Quoos Alves', descricao, url, f'{site}/blog/img/{PROMPTS_IMAGEM}', alt, 'website', ld)
+    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, f'{site}/blog/img/{PROMPTS_IMAGEM}', alt, 'website', ld)
     return head + '\n' + moldura('prompts.txt', 'ohtopico.com.br/prompts-para-professores', '/', conteudo,
                                  f'Pronto · {total} prompts', 'prompts')
 
@@ -904,7 +904,7 @@ def pagina_quiz(cfg):
 </article>'''
     extra = ('<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld
              + f'\n<link rel="stylesheet" href="/{QUIZ_DIR}/assets/quiz.css?v={VERSAO_QUIZ}">')
-    head = cabeca(QUIZ_TITULO + ' · Júlia Roberta Quoos Alves', descricao, url, imagem, QUIZ_IMAGEM_ALT, 'website', extra)
+    head = cabeca(QUIZ_TITULO + ' | Júlia Quoos', descricao, url, imagem, QUIZ_IMAGEM_ALT, 'website', extra)
     pagina = moldura('quiz.exe', f'ohtopico.com.br/{QUIZ_DIR}', '/', conteudo, f'Pronto · {total} perguntas', 'quiz')
     return head + '\n' + pagina.replace('</body>', f'<script src="/{QUIZ_DIR}/assets/quiz.js?v={VERSAO_QUIZ}" defer></script>\n</body>')
 

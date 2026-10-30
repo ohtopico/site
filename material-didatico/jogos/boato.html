@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boato em Rede · Material didático | ohtopico</title>
+<title>Boato em Rede: jogo de Computação | Júlia Quoos</title>
 <meta name="description" content="Jogo sobre desinformação e grafos: escolha quem checa a notícia antes de repassar e veja quantas pessoas deixam de receber o boato. BNCC EF07CO04, EF08CO11, EF09CO10.">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/boato.html">
-<meta property="og:title" content="Boato em Rede · Material didático">
+<meta property="og:title" content="Boato em Rede: jogo de Computação | Júlia Quoos">
 <meta property="og:description" content="Jogo sobre desinformação e grafos: escolha quem checa a notícia antes de repassar e veja quantas pessoas deixam de receber o boato.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/boato.html">
 <meta property="og:type" content="website">
@@ -41,11 +41,23 @@
   .lvls { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 14px 0; }
   .lvls .box { font: inherit; color: var(--ink); text-align: left; cursor: pointer; border: 1.5px solid var(--ink); border-radius: 16px; padding: 10px; background: var(--paper); }
 </style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Boato em Rede","description":"Um boato corre de amigo em amigo numa rede (grafo). Escolha quem checa a informação antes de repassar e veja quantas pessoas deixam de ser enganadas.","url":"https://ohtopico.com.br/material-didatico/jogos/boato.html","image":"https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"8º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"15–20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO04","targetDescription":"Explorar propriedades básicas de grafos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO11","targetDescription":"Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO10","targetDescription":"Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Boato em Rede","item":"https://ohtopico.com.br/material-didatico/jogos/boato.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ao 9º ano</span><span class="tag">⏱ 15–20 min</span></div>
+      <h1>Boato em Rede</h1>
+      <p class="muted" style="max-width:720px">Um boato corre de amigo em amigo numa rede (grafo). Escolha quem checa a informação antes de repassar e veja quantas pessoas deixam de ser enganadas.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef07co04/" title="EF07CO04 — Explorar propriedades básicas de grafos.">EF07CO04</a><a class="tag code co" href="../bncc/ef08co11/" title="EF08CO11 — Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.">EF08CO11</a><a class="tag code co" href="../bncc/ef09co10/" title="EF09CO10 — Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos.">EF09CO10</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como jogar</summary>
     <p>Cada bolinha é uma pessoa e cada linha liga dois amigos que trocam mensagens. O boato começa na pessoa marcada com <strong>B</strong> e cada um que recebe repassa para todos os amigos.</p>
@@ -54,8 +66,36 @@
 
   <div class="game-stage"><div id="stage"></div></div>
 
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Boato em Rede</strong> é um jogo gratuito de Computação para o 8º ao 9º ano, pensado para cerca de 15–20 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Um boato corre de amigo em amigo numa rede (grafo). Escolha quem checa a informação antes de repassar e veja quantas pessoas deixam de ser enganadas.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../bncc/ef07co04/"><strong>EF07CO04</strong></a>: Explorar propriedades básicas de grafos.</li>
+      <li><a href="../bncc/ef08co11/"><strong>EF08CO11</strong></a>: Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.</li>
+      <li><a href="../bncc/ef09co10/"><strong>EF09CO10</strong></a>: Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos.</li>
+    </ul>
+    <p>Para a aula completa, use o plano <a href="../planos/checagem-fatos-fontes-vieses-desinformacao/">Checagem de fatos: fontes, vieses e desinformação</a>, com objetivos, etapas, avaliação e acessibilidade. Para fixar, há as listas <a href="../listas/propriedades-grafos-7-ano/">Propriedades de grafos (7º ano)</a>, <a href="../listas/uso-critico-midias-digitais-8-ano/">Uso crítico das mídias digitais (8º ano)</a>, <a href="../listas/qualidade-informacao-9-ano/">Qualidade da informação (9º ano)</a>, com gabarito. Os slides da aula expositiva de EF07CO04, EF08CO11, EF09CO10 estão na página de cada habilidade.</p>
+  </details>
+  <!-- professor: fim -->
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/checagem-fatos-fontes-vieses-desinformacao/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Checagem de fatos: fontes, vieses e desinformação</strong>
+          <span class="small muted">Método simples de checagem para notícias, imagens e vídeos, incluindo conteúdo gerado por IA.</span>
+        </a>
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/pacotes.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Correio de Pacotes</strong>
+          <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Torres do MMC · Laboratório 3D | ohtopico</title>
+<title>Torres do MMC: simulação 3D de Matemática | Júlia Quoos</title>
 <meta name="description" content="Torres de blocos em 3D para descobrir o mínimo múltiplo comum: empilhe até as torres ficarem da mesma altura. BNCC EF06MA05, EF06MA06, EF07MA01.">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/mmc.html">
-<meta property="og:title" content="Torres do MMC · Laboratório 3D">
+<meta property="og:title" content="Torres do MMC: simulação 3D de Matemática | Júlia Quoos">
 <meta property="og:description" content="Torres de blocos em 3D para descobrir o mínimo múltiplo comum: empilhe até as torres ficarem da mesma altura. BNCC EF06MA05, EF06MA06, EF07MA01.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/mmc.html">
 <meta property="og:type" content="website">
@@ -22,11 +22,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/md.css">
 <link rel="stylesheet" href="../assets/lab3d.css">
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Torres do MMC","description":"Empilhe blocos de alturas diferentes na torre mais baixa até as torres se igualarem: a altura comum é o mmc.","url":"https://ohtopico.com.br/material-didatico/3d/mmc.html","image":"https://ohtopico.com.br/material-didatico/assets/og-laboratorio-3d.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"6º ao 7º ano do Ensino Fundamental","about":["Matemática"],"isAccessibleForFree":true,"timeRequired":"10 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA05","targetDescription":"Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA06","targetDescription":"Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA01","targetDescription":"Resolver e elaborar problemas com números naturais, envolvendo as noções de divisor e de múltiplo, podendo incluir máximo divisor comum ou mínimo múltiplo comum, por meio de estratégias diversas, sem a aplicação de algoritmos."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Torres do MMC","item":"https://ohtopico.com.br/material-didatico/3d/mmc.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag ma">Matemática</span><span class="tag">6º ao 7º ano</span><span class="tag">⏱ 10 min</span></div>
+      <h1>Torres do MMC</h1>
+      <p class="muted" style="max-width:720px">Empilhe blocos de alturas diferentes na torre mais baixa até as torres se igualarem: a altura comum é o mmc.</p>
+      <div class="tags"><a class="tag code ma" href="../bncc/ef06ma05/" title="EF06MA05 — Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.">EF06MA05</a><a class="tag code ma" href="../bncc/ef06ma06/" title="EF06MA06 — Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor.">EF06MA06</a><a class="tag code ma" href="../bncc/ef07ma01/" title="EF07MA01 — Resolver e elaborar problemas com números naturais, envolvendo as noções de divisor e de múltiplo, podendo incluir máximo divisor comum ou mínimo múltiplo comum, por meio de estratégias diversas, sem a aplicação de algoritmos.">EF07MA01</a></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como usar</summary>
     <p>Cada torre só cresce com blocos do mesmo tamanho: a torre A com blocos de altura <strong>a</strong>, a torre B com blocos de altura <strong>b</strong>. Empilhe sempre na torre mais baixa. Quando as duas ficam da mesma altura pela primeira vez, essa altura é o <strong>mínimo múltiplo comum</strong> de a e b. Ligue a terceira torre para três números.</p>
@@ -81,7 +93,22 @@
     <p class="small muted">Habilidades: EF06MA05, EF06MA06 e EF07MA01. Material concreto equivalente: torres de peças de encaixe (tipo Lego) ou tiras de papel de comprimentos diferentes.</p>
   </details>
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../3d/decimais.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Material Dourado 3D</strong>
+          <span class="small muted">Cubo, placa, barra e cubinho viram inteiro, décimo, centésimo e milésimo. Monte números decimais, faça trocas e resolva desafios.</span>
+        </a>
+        <a class="card" href="../3d/fracoes.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Barras de Frações 3D</strong>
+          <span class="small muted">Duas barras de frações e uma reta numérica: compare, encontre equivalentes, passe para decimal e localize racionais negativos.</span>
+        </a>
+        <a class="card" href="../3d/potencias.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Cubos das Potências</strong>
+          <span class="small muted">Fila, quadrado e cubo de cubinhos para potências; quadrados e cubos perfeitos para raízes exatas e aproximadas.</span>
+        </a><!-- rel: fim --></div>
 </main>
 <footer id="footer"></footer>
 <script>window.MD_BASE = '../';</script>
