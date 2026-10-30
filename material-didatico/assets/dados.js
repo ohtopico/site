@@ -113,6 +113,9 @@ const HABILIDADES_RAW = [
   ['EF08MA10', 8, 'AL', 'Sequências', 'Identificar a regularidade de uma sequência não recursiva e construir um fluxograma que indique os próximos termos.'],
   ['EF09MA06', 9, 'AL', 'Funções', 'Compreender as funções como relações de dependência unívoca entre duas variáveis e suas representações numérica, algébrica e gráfica, e utilizar esse conceito para analisar situações que envolvam relações funcionais entre duas variáveis.'],
   ['EF08MA22', 8, 'PE', 'Probabilidade', 'Calcular a probabilidade de eventos com base no espaço amostral, usando o princípio multiplicativo.'],
+  ['EF06MA30', 6, 'PE', 'Probabilidade', 'Calcular a probabilidade de um evento aleatório, expressando-a por número racional (forma fracionária, decimal e percentual) e comparar esse número com a probabilidade obtida por meio de experimentos sucessivos.'],
+  ['EF07MA34', 7, 'PE', 'Experimentos aleatórios', 'Planejar e realizar experimentos aleatórios ou simulações que envolvem cálculo de probabilidades ou estimativas por meio de frequência de ocorrências.'],
+  ['EF09MA20', 9, 'PE', 'Eventos independentes e dependentes', 'Reconhecer, em experimentos aleatórios, eventos independentes e dependentes e calcular a probabilidade de sua ocorrência, nos dois casos.'],
   // ---------- Matemática · oficinas (textos oficiais da BNCC) ----------
   ['EF06MA01', 6, 'NU', 'Sistema de numeração decimal', 'Comparar, ordenar, ler e escrever números naturais e números racionais cuja representação decimal é finita, fazendo uso da reta numérica.'],
   ['EF06MA02', 6, 'NU', 'Sistema de numeração decimal', 'Reconhecer o sistema de numeração decimal, como o que prevaleceu no mundo ocidental, e destacar semelhanças e diferenças com outros sistemas, de modo a sistematizar suas principais características (base, valor posicional e função do zero), utilizando, inclusive, a composição e decomposição de números naturais e números racionais em sua representação decimal.'],
@@ -476,6 +479,14 @@ const RECURSOS = [
     habs: ['EF06CO10', 'EF07CO10', 'EF09CO08'], tempo: '20 min',
     resumo: 'Racks, servidores, refrigeração e energia de um data center que treina IA. Ligue servidores, troque o resfriamento e veja o consumo de energia e de água.',
     url: '3d/data-center.html', plano: null, ficha: null },
+  { id: '3d-arvore-viva', tipo: '3d', titulo: 'Árvore Viva', comp: ['CO'], anos: [6, 9],
+    habs: ['EF09CO01', 'EF06CO08'], tempo: '20 min',
+    resumo: 'Uma árvore 3D que cresce a cada número ou pasta inserida. A busca desce pelos galhos contando comparações; compare a árvore equilibrada com a torta e descubra o caminho de um arquivo.',
+    url: '3d/arvore-viva.html', plano: 'p-arvores', ficha: null },
+  { id: '3d-olhos-ia', tipo: '3d', titulo: 'Olhos da IA', comp: ['CO'], anos: [8, 9],
+    habs: ['EF09CO07', 'EF08CO11', 'EF06CO05'], tempo: '20 min',
+    resumo: 'Uma rua em 3D vista pela câmera de um assistente para pessoas cegas: caixas de detecção, mapa de profundidade e a frase falada. Ache os erros da IA, como o poste confundido com uma pessoa.',
+    url: '3d/olhos-ia.html', plano: 'p-sociedade', ficha: null },
   { id: '3d-torre-recursao', tipo: '3d', titulo: 'Torre da Recursão', comp: ['CO'], anos: [8],
     habs: ['EF08CO01'], tempo: '20 min',
     resumo: 'Torre de Hanói em 3D: resolva com 3, 4 e 5 discos, ensine ao robô a regra recursiva e veja ele resolver 8 discos, com a pilha de chamadas e o contador de movimentos.',
@@ -496,6 +507,14 @@ const RECURSOS = [
     habs: ['EF09CO03'], tempo: '20–30 min',
     resumo: 'Catraca, semáforo e elevador em 3D controlados por um autômato que você desenha. A máquina obedece ao diagrama: faltou uma seta, ela trava; seta errada, o elevador dá a volta.',
     url: '3d/maquina-estados.html', plano: 'p-automatos', ficha: 'f-co-estados' },
+  { id: '3d-dados-verdade', tipo: '3d', titulo: 'Dados de Verdade', comp: ['MA'], anos: [6, 7, 8, 9],
+    habs: ['EF06MA30', 'EF07MA34', 'EF08MA22', 'EF09MA20'], tempo: '20 min',
+    resumo: 'Dados 3D rolando numa mesa: lance 10, 100 e 1000 vezes e veja a frequência chegar perto da probabilidade, aposte na soma mais comum de dois dados e desmascare um dado viciado.',
+    url: '3d/dados-verdade.html', plano: null, ficha: null },
+  { id: '3d-espaco-palavras', tipo: '3d', titulo: 'Espaço das Palavras', comp: ['CO'], anos: [8, 9],
+    habs: ['EF09CO07', 'EF08CO11', 'EF06CO01'], tempo: '20 min',
+    resumo: 'Uma nuvem 3D em que palavras parecidas ficam perto, como a IA guarda o significado. Teste analogias como rei − homem + mulher e meça o viés que o modelo aprende dos textos.',
+    url: '3d/espaco-palavras.html', plano: 'p-sociedade', ficha: null },
 
   // ---------- Fichas para imprimir ----------
   { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
@@ -918,7 +937,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-tanque': '🚰', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-cidade-infectada': '☣', '3d-torre-recursao': '🗼', '3d-cozinha-paralela': '🍳', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-tanque': '🚰', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-espaco-palavras': '⋰', '3d-olhos-ia': '⌖', '3d-arvore-viva': '⋔', '3d-cidade-infectada': '☣', '3d-torre-recursao': '🗼', '3d-cozinha-paralela': '🍳', '3d-dados-verdade': '⚄', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
@@ -1369,7 +1388,7 @@ const PLANOS = {
     ],
     avaliacao: 'Árvore de classificação correta e programa que classifica todos os casos previstos.',
     inclusao: 'Use objetos reais ou cartões táteis para a classificação; a árvore pode ser montada no chão com barbante.',
-    recursos: ['rotas', 'f-grafo', 'f-co-arvore']
+    recursos: ['rotas', '3d-arvore-viva', 'f-grafo', 'f-co-arvore']
   },
   'p-automatos': {
     duracao: '2 aulas de 50 min',
@@ -1426,7 +1445,7 @@ const PLANOS = {
     ],
     avaliacao: 'Qualidade dos argumentos com evidências e respeito às regras do debate; texto curto individual com a posição do aluno.',
     inclusao: 'Distribua papéis conforme o perfil (pesquisa, fala, registro). Ofereça os dados também em formato de tabela acessível.',
-    recursos: ['p-lixo', 'f-co-julgamento', 'f-co-acesso']
+    recursos: ['p-lixo', 'f-co-julgamento', 'f-co-acesso', '3d-olhos-ia', '3d-espaco-palavras']
   },
   'p-autoria': {
     duracao: '2 aulas de 50 min',
@@ -2601,6 +2620,9 @@ const ESTATICAS = {
   "hab:EF08MA10": "bncc/ef08ma10/",
   "hab:EF09MA06": "bncc/ef09ma06/",
   "hab:EF08MA22": "bncc/ef08ma22/",
+  "hab:EF06MA30": "bncc/ef06ma30/",
+  "hab:EF07MA34": "bncc/ef07ma34/",
+  "hab:EF09MA20": "bncc/ef09ma20/",
   "hab:EF06MA01": "bncc/ef06ma01/",
   "hab:EF06MA02": "bncc/ef06ma02/",
   "hab:EF06MA05": "bncc/ef06ma05/",

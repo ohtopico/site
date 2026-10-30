@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dados de Verdade: simulação 3D de Matemática | Júlia Quoos</title>
+<meta name="description" content="Dados 3D rolando numa mesa: lance 10, 100 e 1000 vezes, compare a frequência com a probabilidade e descubra qual é o dado viciado.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/dados-verdade.html">
+<meta property="og:title" content="Dados de Verdade: simulação 3D de Matemática | Júlia Quoos">
+<meta property="og:description" content="Dados 3D rolando numa mesa: o aluno lança 10, 100 e 1000 vezes, vê as colunas de frequência se aproximarem da probabilidade, aposta na soma mais comum de dois dados e desmascara um dado viciado.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/dados-verdade.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-dados-verdade.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dados de Verdade: dados 3D numa mesa e colunas de frequência comparadas com a probabilidade.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+  .placar { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; margin: 6px 0 2px; }
+  .placar .grande { margin: 0; }
+  .conv { width: 100%; height: auto; display: block; margin: 8px 0 0; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+  .conv text { font: 11px var(--body); fill: var(--ink-2, #555); }
+  .lab-tab td.num, .lab-tab th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .lab-tab tr.obs td { background: var(--ok-soft); }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Dados de Verdade","description":"Dados 3D rolando numa mesa: lance 10, 100 e 1000 vezes e veja a frequência chegar perto da probabilidade, aposte na soma mais comum de dois dados e desmascare um dado viciado.","url":"https://ohtopico.com.br/material-didatico/3d/dados-verdade.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-dados-verdade.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"6º ao 9º ano do Ensino Fundamental","about":["Matemática"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA30","targetDescription":"Calcular a probabilidade de um evento aleatório, expressando-a por número racional (forma fracionária, decimal e percentual) e comparar esse número com a probabilidade obtida por meio de experimentos sucessivos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA34","targetDescription":"Planejar e realizar experimentos aleatórios ou simulações que envolvem cálculo de probabilidades ou estimativas por meio de frequência de ocorrências."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08MA22","targetDescription":"Calcular a probabilidade de eventos com base no espaço amostral, usando o princípio multiplicativo."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09MA20","targetDescription":"Reconhecer, em experimentos aleatórios, eventos independentes e dependentes e calcular a probabilidade de sua ocorrência, nos dois casos."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Dados de Verdade","item":"https://ohtopico.com.br/material-didatico/3d/dados-verdade.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag ma">Matemática</span><span class="tag">6º ao 9º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Dados de Verdade</h1>
+      <p class="muted" style="max-width:720px">Dados 3D rolando numa mesa: lance 10, 100 e 1000 vezes e veja a frequência chegar perto da probabilidade, aposte na soma mais comum de dois dados e desmascare um dado viciado.</p>
+      <div class="tags"><a class="tag code ma" href="../bncc/ef06ma30/" title="EF06MA30 — Calcular a probabilidade de um evento aleatório, expressando-a por número racional (forma fracionária, decimal e percentual) e comparar esse número com a probabilidade obtida por meio de experimentos sucessivos.">EF06MA30</a><a class="tag code ma" href="../bncc/ef07ma34/" title="EF07MA34 — Planejar e realizar experimentos aleatórios ou simulações que envolvem cálculo de probabilidades ou estimativas por meio de frequência de ocorrências.">EF07MA34</a><a class="tag code ma" href="../bncc/ef08ma22/" title="EF08MA22 — Calcular a probabilidade de eventos com base no espaço amostral, usando o princípio multiplicativo.">EF08MA22</a><a class="tag code ma" href="../bncc/ef09ma20/" title="EF09MA20 — Reconhecer, em experimentos aleatórios, eventos independentes e dependentes e calcular a probabilidade de sua ocorrência, nos dois casos.">EF09MA20</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A mesa:</strong> os dados caem numa mesa verde e, atrás dela, cada coluna mostra a frequência de um resultado: quantas vezes ele saiu dividido pelo total de lançamentos. A plaquinha amarela em cada coluna marca a probabilidade, o valor que a frequência “deveria” ter num dado honesto.</p>
+    <p><strong>Experimente:</strong> escolha o modo (1 dado, soma de 2 dados ou dado misterioso) e lance 1, 10, 100 ou 1000 vezes. Com poucos lançamentos as colunas ficam bagunçadas; com muitos, elas encostam nas plaquinhas. O gráfico do painel mostra a frequência de um resultado ao longo dos lançamentos.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões, e a tabela do painel traz os mesmos números das colunas.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" role="group" aria-label="Lançar os dados">
+          <button class="btn" type="button" data-n="1">Lançar 1 vez</button>
+          <button class="btn" type="button" data-n="10">Lançar 10 vezes</button>
+          <button class="btn" type="button" data-n="100">Lançar 100 vezes</button>
+          <button class="btn" type="button" data-n="1000">Lançar 1000 vezes</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div class="lab-tabw"><table class="lab-tab" id="tab"></table></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Modo</h3>
+          <div class="seg" role="group" aria-label="Modo">
+            <button type="button" data-modo="um" aria-pressed="true">1 dado</button>
+            <button type="button" data-modo="dois" aria-pressed="false">2 dados</button>
+            <button type="button" data-modo="misterio" aria-pressed="false">Misterioso</button>
+          </div>
+          <p class="small muted" id="explModo"></p>
+          <div class="placar"><p class="grande" id="total">0</p><span class="muted">lançamentos</span></div>
+          <p class="small" id="ultimo"></p>
+
+          <div id="caixaAposta" hidden>
+            <label for="aposta">Sua aposta: qual soma vai sair mais?</label>
+            <select id="aposta"><option value="">escolha antes de lançar</option></select>
+          </div>
+          <div id="caixaMisterio" hidden>
+            <label for="palpite">Qual face está viciada?</label>
+            <select id="palpite"><option value="">escolha</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+            <div class="tools" style="margin-top:8px"><button class="btn ghost" type="button" id="responder">Responder</button></div>
+          </div>
+
+          <h3 style="margin-top:14px">Frequência ao longo do tempo</h3>
+          <label for="obs">Acompanhar o resultado</label>
+          <select id="obs"></select>
+          <svg class="conv" id="conv" viewBox="0 0 300 170" role="img" aria-label="Gráfico da frequência ao longo dos lançamentos"></svg>
+          <p class="small muted" id="legConv"></p>
+
+          <label for="seed">Semente (seed) do sorteio</label>
+          <input type="number" id="seed" min="1" max="99999">
+          <div class="tools" style="margin-top:8px">
+            <button class="btn ghost" type="button" id="zerar">Zerar e recomeçar</button>
+          </div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>frequência observada</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>probabilidade (dado honesto)</li>
+          </ul>
+
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Com 1 dado, lance até todas as faces ficarem a menos de 2 pontos percentuais de 16,7% (com pelo menos 1000 lançamentos).</li>
+            <li data-d="1">Com 2 dados, aposte na soma que mais sai e confirme com pelo menos 100 lançamentos.</li>
+            <li data-d="2">No modo misterioso, descubra qual face do dado está viciada.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> a probabilidade de um resultado é a razão entre os casos favoráveis e os casos possíveis: num dado honesto, cada face tem 1/6 (cerca de 16,7%). A frequência relativa é o que de fato aconteceu: vezes que a face saiu dividido pelo total de lançamentos. Em 10 lançamentos ela varia muito; em 1000, fica perto de 1/6. Esse é o efeito da lei dos grandes números, e é por isso que pesquisas e testes de remédios precisam de muitos casos. Com dois dados, o espaço amostral tem 6 × 6 = 36 pares igualmente prováveis (princípio multiplicativo), e a soma 7 aparece em 6 deles, por isso ela sai mais. Os dois dados são independentes: o que um mostra não muda o outro.</p>
+    <p><strong>Sobre a animação:</strong> a face de cada dado é sorteada pelo computador antes de ele cair, com um gerador de números pseudoaleatórios; a queda e os quiques só mostram o resultado. A mesma semente repete a mesma sequência de lançamentos, o que permite à turma inteira conferir o mesmo experimento. No modo misterioso, uma face sai com probabilidade 1/3 e as outras cinco com 2/15 cada.</p>
+    <p><strong>Metodologia sugerida:</strong> ensino por investigação em duplas. Antes de abrir a página, cada dupla lança um dado de verdade 20 vezes e anota os resultados; a turma junta tudo no quadro e compara com a simulação.</p>
+    <ul>
+      <li>Depois de 10 lançamentos alguma face não saiu nenhuma vez. O dado está viciado? Como ter certeza?</li>
+      <li>Antes de lançar 2 dados, por que muita gente aposta que todas as somas são igualmente prováveis? Liste os 36 pares e conte quantos dão 7, 2 e 12.</li>
+      <li>Duas duplas com sementes diferentes tiveram frequências diferentes com 100 lançamentos. Com 1000, as diferenças diminuíram? Por quê?</li>
+      <li>Quantos lançamentos vocês precisaram para desconfiar do dado misterioso? E para ter certeza? O que isso diz sobre conclusões tiradas de poucos dados?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF06MA30, EF07MA34, EF08MA22 e EF09MA20; a semente e o sorteio pelo computador conversam com o pensamento computacional. Material concreto equivalente: dados de verdade, uma tabela de contagem por dupla e o quadro para somar os resultados da turma.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../3d/decimais.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Material Dourado 3D</strong>
+          <span class="small muted">Cubo, placa, barra e cubinho viram inteiro, décimo, centésimo e milésimo. Monte números decimais, faça trocas e resolva desafios.</span>
+        </a>
+        <a class="card" href="../3d/fracoes.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Barras de Frações 3D</strong>
+          <span class="small muted">Duas barras de frações e uma reta numérica: compare, encontre equivalentes, passe para decimal e localize racionais negativos.</span>
+        </a>
+        <a class="card" href="../3d/mmc.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Torres do MMC</strong>
+          <span class="small muted">Empilhe blocos de alturas diferentes na torre mais baixa até as torres se igualarem: a altura comum é o mmc.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-dados-verdade');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-dados-verdade';
+const pct = (v, c = 1) => (v * 100).toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c }) + '%';
+const reduz = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- modos e probabilidades ---------- */
+const MODOS = {
+  um: { res: [1, 2, 3, 4, 5, 6], expl: 'Um dado honesto: cada face tem a mesma chance, 1 em 6.' },
+  dois: { res: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], expl: 'Dois dados lançados juntos; o resultado é a soma das faces. As somas não têm todas a mesma chance.' },
+  misterio: { res: [1, 2, 3, 4, 5, 6], expl: 'Este dado parece normal, mas uma das faces sai mais do que deveria. Lance bastante antes de responder.' }
+};
+const mdcN = (a, b) => b ? mdcN(b, a % b) : a;
+function prob(modo, r) {
+  if (modo === 'dois') return { num: 6 - Math.abs(r - 7), den: 36 };
+  return { num: 1, den: 6 }; // no misterioso, a referência é o dado honesto
+}
+const fracao = ({ num, den }) => { const g = mdcN(num, den); return `${num / g}/${den / g}`; };
+
+/* gerador pseudoaleatório com semente (mulberry32) */
+function gerador(seed) {
+  let a = seed >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+
+let modo = 'um', rnd, seq = [], cont = {}, viciada = 1, ultimo = null, lancando = false;
+const feitos = new Set();
+const face = () => 1 + Math.floor(rnd() * 6);
+function faceViciada() {
+  const u = rnd();
+  if (u < 1 / 3) return viciada;
+  const outras = [1, 2, 3, 4, 5, 6].filter(f => f !== viciada);
+  return outras[Math.min(4, Math.floor((u - 1 / 3) / (2 / 3) * 5))];
+}
+function novoMisterio() { viciada = 1 + Math.floor(rnd() * 6); }
+function zerar(msg) {
+  const s = Math.max(1, Math.floor(+$('#seed').value) || 1);
+  $('#seed').value = s;
+  rnd = gerador(s);
+  if (modo === 'misterio') novoMisterio();
+  seq = []; cont = {}; ultimo = null;
+  MODOS[modo].res.forEach(r => cont[r] = 0);
+  $('#fb').className = 'feedback'; $('#fb').textContent = msg || '';
+  atualiza(false);
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 9.5, 16], alvo: [0, 2, -0.4], min: 6, max: 34, pan: false });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0, 12, 22], [0, 2, -0.4]);
+const LADO = 0.8, MESA = { w: 11, d: 6.4, z: 1.6 }, FUNDO_Z = -3.2;
+const VAL = [3, 4, 1, 6, 2, 5]; // faces da BoxGeometry: +x, −x, +y, −y, +z, −z (opostas somam 7)
+const NORM = T && [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]].map(v => new T.Vector3(...v));
+const PIPS = { 1: [[.5, .5]], 2: [[.27, .27], [.73, .73]], 3: [[.27, .27], [.5, .5], [.73, .73]], 4: [[.27, .27], [.73, .27], [.27, .73], [.73, .73]],
+  5: [[.27, .27], [.73, .27], [.5, .5], [.27, .73], [.73, .73]], 6: [[.27, .25], [.73, .25], [.27, .5], [.73, .5], [.27, .75], [.73, .75]] };
+const texCache = {};
+function texFace(v, fundo) {
+  const k = v + fundo;
+  if (texCache[k]) return texCache[k];
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const x = c.getContext('2d');
+  x.fillStyle = fundo; x.fillRect(0, 0, 128, 128);
+  x.fillStyle = '#111111';
+  PIPS[v].forEach(([px, py]) => { x.beginPath(); x.arc(px * 128, py * 128, 11, 0, Math.PI * 2); x.fill(); });
+  const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 4;
+  return (texCache[k] = t);
+}
+const matsDado = {};
+function materiais(fundo) {
+  if (!matsDado[fundo]) matsDado[fundo] = VAL.map(v => new T.MeshStandardMaterial({ map: texFace(v, fundo), roughness: 0.45 }));
+  return matsDado[fundo];
+}
+const CORES_DADO = { a: '#ffffff', b: COR.amareloClaro, m: COR.vermelhoClaro };
+const dados = [];
+let gBarras, gRot;
+if (cena) {
+  // mesa de feltro com bordas
+  const tampo = cena.bloco(MESA.w, 0.2, MESA.d, COR.verde, { base: false });
+  tampo.position.set(0, -0.1, MESA.z); cena.add(tampo);
+  const borda = (w, d, x, z) => { const b = cena.bloco(w, 0.5, d, COR.verdeEscuro, { base: false }); b.position.set(x, 0.25, z); cena.add(b); };
+  borda(MESA.w + 0.6, 0.3, 0, MESA.z - MESA.d / 2 - 0.15);
+  borda(MESA.w + 0.6, 0.3, 0, MESA.z + MESA.d / 2 + 0.15);
+  borda(0.3, MESA.d, -MESA.w / 2 - 0.15, MESA.z);
+  borda(0.3, MESA.d, MESA.w / 2 + 0.15, MESA.z);
+  const geo = new T.BoxGeometry(LADO, LADO, LADO);
+  for (let i = 0; i < 12; i++) {
+    const m = new T.Mesh(geo, materiais('#ffffff'));
+    m.castShadow = true; m.visible = false;
+    cena.comBordas(m); cena.add(m); dados.push(m);
+  }
+  gBarras = new T.Group(); gRot = new T.Group(); cena.add(gBarras, gRot);
+  const placa = cena.rotulo('Frequência de cada resultado', { tam: 0.42, fundo: '#fff36b' });
+  placa.position.set(0, 6, FUNDO_Z); cena.add(placa);
+}
+
+/* orientação final do dado com a face v para cima, girado num ângulo qualquer em torno do eixo vertical */
+function orientacao(v, giro) {
+  const q = new T.Quaternion().setFromUnitVectors(NORM[VAL.indexOf(v)], new T.Vector3(0, 1, 0));
+  return new T.Quaternion().setFromAxisAngle(new T.Vector3(0, 1, 0), giro).multiply(q);
+}
+/* posições de pouso: até 12 dados em 3 fileiras de 4; no modo de 2 dados, os pares ficam lado a lado */
+function vagas(k, pares) {
+  const out = [];
+  for (let i = 0; i < k; i++) {
+    const col = i % 4, fila = Math.floor(i / 4);
+    const x = pares ? (Math.floor(col / 2) * 2 - 1) * 2.4 + (col % 2 ? 0.5 : -0.5) : (col - 1.5) * 2.2;
+    out.push([x + (Math.random() - 0.5) * 0.5, LADO / 2, MESA.z + (fila - 1) * 1.8 + (Math.random() - 0.5) * 0.4]);
+  }
+  return out;
+}
+
+/* animação: o dado entra pela frente, quica três vezes e para na face sorteada */
+let voos = [];
+const EIXO_Y = T && new T.Vector3(0, 1, 0);
+if (cena) cena.loop(now => {
+  if (!voos.length) return false;
+  let ativo = false;
+  voos.forEach(v => {
+    const t = Math.max(0, Math.min(1, (now - v.t0) / v.ms));
+    if (t < 1) ativo = true;
+    const e = 1 - Math.pow(1 - t, 3);
+    const m = v.m;
+    m.position.set(v.de[0] + (v.para[0] - v.de[0]) * e, v.para[1] + v.alt * Math.exp(-3.2 * t) * Math.abs(Math.cos(Math.PI * 2.5 * t)), v.de[2] + (v.para[2] - v.de[2]) * e);
+    const ang = v.giro * Math.pow(1 - t, 2);
+    m.quaternion.copy(new T.Quaternion().setFromAxisAngle(v.eixo, ang).multiply(v.qf));
+  });
+  if (!ativo) { const fim = voos; voos = []; fim.forEach(v => v.res && v.res()); }
+  return ativo;
+});
+function jogar(lista) {
+  // lista: [{ v, cor }]
+  if (!cena) return Promise.resolve();
+  const pares = modo === 'dois';
+  const pos = vagas(lista.length, pares);
+  dados.forEach((m, i) => { m.visible = i < lista.length; });
+  if (reduz()) {
+    lista.forEach((d, i) => { const m = dados[i]; m.material = materiais(CORES_DADO[d.cor]); m.position.set(...pos[i]); m.quaternion.copy(orientacao(d.v, Math.random() * 6.28)); });
+    cena.pedeQuadro(); return Promise.resolve();
+  }
+  return new Promise(res => {
+    const t0 = performance.now();
+    lista.forEach((d, i) => {
+      const m = dados[i]; m.material = materiais(CORES_DADO[d.cor]);
+      const de = [-MESA.w / 2 + 0.6 + Math.random() * 1.5, 0, MESA.z + MESA.d / 2 + 1.5 + Math.random()];
+      voos.push({ m, de, para: pos[i], alt: 2.6 + Math.random() * 1.2, ms: 1000 + Math.random() * 350, t0: t0 + i * 35,
+        qf: orientacao(d.v, Math.random() * 6.28), eixo: new T.Vector3(Math.random() - 0.5, Math.random() * 0.3, Math.random() - 0.5).normalize(),
+        giro: (5 + Math.random() * 4) * Math.PI });
+    });
+    voos[voos.length - 1].res = res;
+    cena.pedeQuadro();
+  });
+}
+
+/* ---------- colunas de frequência ---------- */
+const ESC = 22; // altura da coluna = frequência × ESC (1/6 dá 3,7)
+let barras = {};
+function montaBarras() {
+  if (!cena) return;
+  [...gRot.children].forEach(sp => { sp.material.map && sp.material.map.dispose(); sp.material.dispose(); });
+  cena.limpar(gRot); cena.limpar(gBarras); barras = {};
+  const res = MODOS[modo].res, passo = res.length > 6 ? 0.95 : 1.6, larg = passo * 0.68;
+  res.forEach((r, i) => {
+    const x = (i - (res.length - 1) / 2) * passo;
+    const col = cena.bloco(larg, 1, larg, COR.verde, { base: false });
+    col.geometry = col.geometry.clone(); col.geometry.translate(0, 0.5, 0);
+    col.children.forEach(l => { l.geometry = new T.EdgesGeometry(col.geometry, 25); });
+    col.position.set(x, 0, FUNDO_Z); col.scale.y = 0.001;
+    const p = prob(modo, r).num / prob(modo, r).den;
+    const plaq = cena.bloco(larg + 0.24, 0.08, larg + 0.24, COR.amarelo, { base: false, mat: { transparent: true, opacity: 0.85 } });
+    plaq.position.set(x, p * ESC, FUNDO_Z);
+    const nome = cena.rotulo(String(r), { tam: 0.42 }); nome.position.set(x, -0.1, FUNDO_Z + larg / 2 + 0.45);
+    gBarras.add(col, plaq); gRot.add(nome);
+    barras[r] = { col, x, rot: null };
+  });
+}
+function atualizaBarras() {
+  if (!cena) return;
+  const n = seq.length, obs = +$('#obs').value;
+  MODOS[modo].res.forEach(r => {
+    const b = barras[r], f = n ? cont[r] / n : 0;
+    const h = Math.max(0.001, f * ESC);
+    b.col.material = cena.material(r === obs ? COR.amarelo : COR.verde);
+    cena.animar(b.col, { scale: [1, h, 1] }, 500);
+    if (b.rot) { gRot.remove(b.rot); b.rot.material.map.dispose(); b.rot.material.dispose(); b.rot = null; }
+    if (n) {
+      b.rot = cena.rotulo(pct(f, MODOS[modo].res.length > 6 ? 0 : 1), { tam: MODOS[modo].res.length > 6 ? 0.3 : 0.36 });
+      b.rot.position.set(b.x, Math.max(h, prob(modo, r).num / prob(modo, r).den * ESC) + 0.45, FUNDO_Z); gRot.add(b.rot);
+    }
+  });
+}
+
+/* ---------- painel ---------- */
+function tabela() {
+  const n = seq.length, obs = +$('#obs').value;
+  const linhas = MODOS[modo].res.map(r => {
+    const p = prob(modo, r), f = n ? cont[r] / n : 0;
+    return `<tr${r === obs ? ' class="obs"' : ''}><td>${modo === 'dois' ? 'soma ' : 'face '}${r}</td><td class="num">${cont[r]}</td><td class="num">${n ? pct(f) : '—'}</td><td class="num">${fracao(p)} ≈ ${pct(p.num / p.den)}</td></tr>`;
+  });
+  const ref = modo === 'misterio' ? 'Probabilidade num dado honesto' : 'Probabilidade';
+  $('#tab').innerHTML = `<caption class="small muted" style="text-align:left">${n} lançamento${n === 1 ? '' : 's'}</caption><thead><tr><th>Resultado</th><th class="num">Vezes</th><th class="num">Frequência</th><th class="num">${ref}</th></tr></thead><tbody>${linhas.join('')}</tbody>`;
+}
+function grafico() {
+  const svg = $('#conv'), obs = +$('#obs').value, n = seq.length;
+  const W = 300, H = 170, L = 34, R = 8, Tp = 10, B = 24;
+  const p = prob(modo, obs), pv = p.num / p.den;
+  const yMax = Math.max(0.5, pv * 2);
+  const nMax = Math.max(10, n);
+  const lx = Math.log10(nMax);
+  const X = k => L + (W - L - R) * (Math.log10(k) / lx);
+  const Y = f => Tp + (H - Tp - B) * (1 - Math.min(f, yMax) / yMax);
+  let s = '';
+  [0, yMax / 2, yMax].forEach(f => { s += `<line x1="${L}" x2="${W - R}" y1="${Y(f)}" y2="${Y(f)}" stroke="currentColor" stroke-opacity=".15"/><text x="${L - 4}" y="${Y(f) + 4}" text-anchor="end">${Math.round(f * 100)}%</text>`; });
+  for (let k = 1; k <= nMax; k *= 10) s += `<text x="${X(k)}" y="${H - 8}" text-anchor="middle">${k.toLocaleString('pt-BR')}</text>`;
+  s += `<line x1="${L}" x2="${W - R}" y1="${Y(pv)}" y2="${Y(pv)}" stroke="#d4ae00" stroke-width="2.5" stroke-dasharray="6 4"/>`;
+  if (n) {
+    // até 300 pontos, espaçados em escala logarítmica
+    const pts = []; let c = 0, prox = 1;
+    const passo = Math.pow(nMax, 1 / 300);
+    for (let i = 0; i < n; i++) {
+      if (seq[i] === obs) c++;
+      if (i + 1 >= prox || i === n - 1) { pts.push(`${X(i + 1).toFixed(1)},${Y(c / (i + 1)).toFixed(1)}`); prox = Math.max(prox + 1, Math.ceil(prox * passo)); }
+    }
+    s += `<polyline points="${pts.join(' ')}" fill="none" stroke="#1f8a4c" stroke-width="2.2" stroke-linejoin="round"/>`;
+  }
+  svg.innerHTML = s;
+  svg.setAttribute('aria-label', n ? `Frequência do resultado ${obs} ao longo de ${n} lançamentos: agora em ${pct(cont[obs] / n)}; a probabilidade é ${pct(pv)}.` : 'Gráfico vazio: ainda não houve lançamentos.');
+  $('#legConv').textContent = `Linha verde: frequência do ${modo === 'dois' ? 'resultado soma ' : 'resultado '}${obs} depois de cada lançamento (eixo em escala 1, 10, 100…). Tracejado: ${modo === 'misterio' ? 'probabilidade num dado honesto' : 'probabilidade'}, ${fracao(p)}.`;
+}
+function atualiza(animado = true) {
+  const n = seq.length;
+  $('#total').textContent = n.toLocaleString('pt-BR');
+  $('#ultimo').textContent = !ultimo ? '' : modo === 'dois' ? `Último lançamento: ${ultimo[0]} e ${ultimo[1]}, soma ${ultimo[0] + ultimo[1]}.` : `Último lançamento: ${ultimo[0]}.`;
+  tabela(); grafico(); atualizaBarras();
+  if (cena) {
+    const desc = n ? MODOS[modo].res.map(r => `${r}: ${pct(cont[r] / n)}`).join('; ') : 'nenhum lançamento ainda';
+    cena.descrever(`Mesa verde com ${modo === 'dois' ? 'dois dados' : 'um dado'} e colunas de frequência ao fundo, cada uma com uma plaquinha amarela na altura da probabilidade. ${n} lançamentos. Frequências: ${desc}.`);
+  }
+  verifica();
+}
+
+/* ---------- lançar ---------- */
+async function lancar(n) {
+  if (lancando) return;
+  lancando = true;
+  document.querySelectorAll('[data-n], [data-modo], #zerar, #responder').forEach(b => b.disabled = true);
+  const mostrar = [], vis = modo === 'dois' ? 6 : 12;
+  for (let i = 0; i < n; i++) {
+    let r;
+    if (modo === 'dois') { const a = face(), b = face(); r = a + b; ultimo = [a, b]; if (i >= n - vis) mostrar.push({ v: a, cor: 'a' }, { v: b, cor: 'b' }); }
+    else { const a = modo === 'misterio' ? faceViciada() : face(); r = a; ultimo = [a]; if (i >= n - vis) mostrar.push({ v: a, cor: modo === 'misterio' ? 'm' : 'a' }); }
+    seq.push(r); cont[r]++;
+  }
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = n === 1 ? 'Rolando…' : `Rolando ${n} vezes… a mesa mostra os últimos ${Math.min(n, vis)} lançamentos.`;
+  await jogar(mostrar);
+  $('#fb').textContent = n === 1 ? '' : `Pronto: mais ${n} lançamentos contados nas colunas.`;
+  atualiza();
+  lancando = false;
+  document.querySelectorAll('[data-n], [data-modo], #zerar, #responder').forEach(b => b.disabled = false);
+}
+
+/* ---------- desafios ---------- */
+function verifica() {
+  const n = seq.length;
+  if (modo === 'um' && n >= 1000 && MODOS.um.res.every(r => Math.abs(cont[r] / n - 1 / 6) < 0.02)) {
+    if (marca(0)) { $('#fb').className = 'feedback ok'; $('#fb').textContent = `Todas as faces estão a menos de 2 pontos de 16,7% depois de ${n.toLocaleString('pt-BR')} lançamentos.`; }
+  }
+  if (modo === 'dois' && n >= 100 && $('#aposta').value) {
+    const ap = +$('#aposta').value, max = Math.max(...MODOS.dois.res.map(r => cont[r]));
+    if (ap === 7) { if (marca(1)) { $('#fb').className = 'feedback ok'; $('#fb').textContent = 'Aposta certa: a soma 7 pode sair de 6 jeitos diferentes, mais do que qualquer outra.'; } }
+    else if (!$('#aposta').dataset.avisou) {
+      $('#aposta').dataset.avisou = '1';
+      $('#fb').className = 'feedback bad';
+      $('#fb').textContent = `A soma ${ap} saiu ${cont[ap]} vezes, e a mais frequente até agora saiu ${max}. Conte de quantos jeitos dá para tirar ${ap} e de quantos dá para tirar 7, e troque a aposta se quiser.`;
+    }
+  }
+}
+function marca(d) {
+  if (feitos.has(d)) return false;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+  return true;
+}
+
+/* ---------- controles ---------- */
+function trocaModo(m) {
+  modo = m;
+  document.querySelectorAll('[data-modo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modo === m)));
+  $('#explModo').textContent = MODOS[m].expl;
+  $('#caixaAposta').hidden = m !== 'dois';
+  $('#caixaMisterio').hidden = m !== 'misterio';
+  $('#obs').innerHTML = MODOS[m].res.map(r => `<option value="${r}">${m === 'dois' ? 'soma ' : 'face '}${r}</option>`).join('');
+  $('#obs').value = m === 'dois' ? '7' : '6';
+  $('#aposta').value = ''; delete $('#aposta').dataset.avisou;
+  $('#palpite').value = '';
+  dados.forEach(d => d.visible = false);
+  montaBarras();
+  zerar(m === 'misterio' ? 'Um dado misterioso foi sorteado. Uma das faces está viciada.' : '');
+}
+$('#aposta').innerHTML += MODOS.dois.res.map(r => `<option value="${r}">${r}</option>`).join('');
+$('#aposta').addEventListener('change', () => { delete $('#aposta').dataset.avisou; verifica(); });
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => trocaModo(b.dataset.modo)));
+document.querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => lancar(+b.dataset.n)));
+$('#obs').addEventListener('change', () => { tabela(); grafico(); atualizaBarras(); });
+$('#zerar').onclick = () => { $('#aposta').value = ''; delete $('#aposta').dataset.avisou; dados.forEach(d => d.visible = false); zerar(`Contagem zerada com a semente ${$('#seed').value || 1}.`); };
+$('#responder').onclick = () => {
+  const p = +$('#palpite').value, n = seq.length;
+  if (!p) { $('#fb').className = 'feedback'; $('#fb').textContent = 'Escolha uma face antes de responder.'; return; }
+  if (n < 60) { $('#fb').className = 'feedback'; $('#fb').textContent = `Só ${n} lançamentos ainda. Com tão poucos, qualquer face pode parecer viciada: lance pelo menos 60 vezes.`; return; }
+  if (p === viciada) {
+    marca(2);
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = `Isso! A face ${viciada} sai com probabilidade 1/3 (cerca de 33%), o dobro de um dado honesto. Em ${n} lançamentos ela saiu ${pct(cont[viciada] / n)} das vezes.`;
+  } else {
+    const era = viciada;
+    novoMisterio();
+    seq = []; cont = {}; ultimo = null; MODOS.misterio.res.forEach(r => cont[r] = 0);
+    $('#palpite').value = '';
+    atualiza(false);
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = `Não era a ${p}: o dado estava viciado na face ${era}. Um novo dado misterioso foi sorteado; lance mais vezes antes de responder.`;
+  }
+};
+$('#seed').value = 1 + Math.floor(Math.random() * 9999);
+trocaModo('um');
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
