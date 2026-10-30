@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oficina do Computador · Material didático | ohtopico</title>
+<meta name="description" content="Jogo em 3D para crianças pequenas conhecerem as partes do computador: monitor, gabinete, teclado, mouse, caixas de som, impressora, webcam e fone. Depois, abra o gabinete e monte o processador, a memória, o SSD, a ventoinha e a fonte. Com leitura em voz alta. BNCC EF02CO04 e EF03CO06.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/partes-computador.html">
+<meta property="og:title" content="Oficina do Computador · jogo em 3D das partes do computador">
+<meta property="og:description" content="Conheça as partes do computador em 3D, ache cada uma, descubra para que serve e monte o computador por dentro. Para crianças pequenas, com voz.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/partes-computador.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Oficina do Computador","description":"Jogo em 3D para crianças pequenas conhecerem as partes do computador por fora e por dentro.","inLanguage":"pt-BR","isAccessibleForFree":true,"educationalLevel":"Anos iniciais do Ensino Fundamental","learningResourceType":"Jogo educativo","url":"https://ohtopico.com.br/material-didatico/jogos/partes-computador.html","author":{"@type":"Person","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/curriculo/"}}
+</script>
+<style>
+  /* Oficina do Computador: botões grandes, pouco texto e voz. Só verde, amarelo e vermelho (sem azul). */
+  .of-fases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0 0 14px; }
+  .of-fase { display: flex; align-items: center; gap: 10px; text-align: left; border: 2px solid #111; border-radius: 20px; padding: 8px 12px 8px 8px;
+    background: #fff; color: #111; font: 600 16px var(--body); cursor: pointer; min-height: 68px; box-shadow: 3px 3px 0 #111; }
+  .of-fase:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 #111; }
+  .of-fase[aria-pressed="true"] { background: #fff36b; }
+  .of-fase .n { width: 44px; height: 44px; flex: none; border-radius: 50%; border: 2px solid #111; display: grid; place-items: center;
+    font: 800 22px var(--display); background: #c6ebd4; }
+  .of-fase:nth-child(2) .n { background: #fff3a6; } .of-fase:nth-child(3) .n { background: #ffd3cb; } .of-fase:nth-child(4) .n { background: #e8e6dd; }
+  .of-fase .t { display: block; line-height: 1.15; }
+  .of-fase .est { display: flex; gap: 2px; margin-top: 3px; }
+  .estrela { width: 18px; height: 18px; }
+  .estrela path { fill: #fff; stroke: #111; stroke-width: 2; stroke-linejoin: round; }
+  .estrela.on path { fill: #f2cf1d; }
+
+  .of-balao { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 14px; align-items: center; border: 2px solid #111; border-radius: 22px;
+    background: #fffdf3; color: #111; padding: 12px 14px; margin: 0 0 12px; box-shadow: 4px 4px 0 #111; }
+  .of-balao.ok { background: #e3f4e8; } .of-balao.erro { background: #fde8e4; }
+  .of-guia { width: 78px; height: 70px; }
+  .of-fala { font: 800 clamp(21px, 3.2vw, 28px)/1.2 var(--display); margin: 0; }
+  .of-sub { font-size: 17px; margin: 4px 0 0; color: #333; }
+  .of-chip { display: inline-block; margin: 6px 6px 0 0; font: 600 14.5px var(--body); border: 1.5px solid #111; border-radius: 99px; padding: 2px 12px; background: #fff; }
+  .of-chip.entrada { background: #c6ebd4; } .of-chip.saida { background: #ffd3cb; }
+  .of-alvo { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+  .of-alvo svg { width: 64px; height: 64px; border: 2px solid #111; border-radius: 16px; background: #fff; flex: none; }
+  .of-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .of-acoes .btn { min-height: 48px; font-size: 16px; padding: 8px 18px; background: #fff; color: #111; border: 2px solid #111; }
+  .of-acoes .btn.forte { background: #111; color: #fff; border-color: #111; }
+  .of-acoes .btn[aria-pressed="true"] { background: #111; color: #fff; }
+
+  .of-palco { aspect-ratio: 16 / 10; max-height: 74vh; }
+  @media (max-width: 560px) { .of-palco { aspect-ratio: 1 / 1; } }
+  .of-placar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 10px 0 0; font-size: 16px; }
+  .of-pontos { display: flex; gap: 6px; }
+  .of-pontos span { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--ink); background: var(--paper); }
+  .of-pontos span.on { background: #9fdab4; border-color: #157f3b; }
+  .of-pontos span.agora { outline: 3px solid #f2cf1d; outline-offset: 1px; }
+
+  details.of-botoes { margin-top: 12px; border: 1.5px solid var(--ink); border-radius: 18px; padding: 10px 14px; background: var(--paper); }
+  details.of-botoes summary { cursor: pointer; font-weight: 600; }
+  .of-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 10px; }
+  .of-lista button { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); color: var(--ink);
+    padding: 6px 10px 6px 6px; font: 500 15px var(--body); cursor: pointer; min-height: 52px; text-align: left; }
+  .of-lista button svg { width: 38px; height: 38px; flex: none; }
+  .of-lista button:hover { background: var(--pill); }
+
+  .of-fim { text-align: center; padding: 6px 0 2px; }
+  .of-fim .grandes { display: flex; justify-content: center; gap: 6px; margin: 6px 0; }
+  .of-fim .grandes .estrela { width: 34px; height: 34px; }
+  @media (max-width: 760px) {
+    .of-fases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .of-balao { grid-template-columns: 54px minmax(0, 1fr); padding: 10px; }
+    .of-guia { width: 54px; height: 50px; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>O jogo tem <strong>4 fases</strong>. Em cada uma, a tela do computador fala com a criança, e o botão <strong>Ouvir de novo</strong> repete a frase. Não é preciso saber ler.</p>
+    <ol>
+      <li><strong>Conhecer:</strong> toque em cada parte do computador para saber o nome e para que serve.</li>
+      <li><strong>Onde está?</strong> A tela pede uma parte e mostra o desenho dela. Toque na parte certa.</li>
+      <li><strong>Para que serve?</strong> A tela faz uma pergunta, como "com qual parte a gente escreve?". Toque na resposta.</li>
+      <li><strong>Dentro do gabinete:</strong> o gabinete abre. Conheça as peças de dentro e depois monte o computador de novo.</li>
+    </ol>
+    <p class="small muted">Arraste o fundo da cena para girar e use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, as setas giram e as teclas + e − aproximam. Todas as partes também podem ser escolhidas pelos botões abaixo da cena.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="of-fases" role="group" aria-label="Escolher a fase">
+      <button class="of-fase" type="button" data-fase="0" aria-pressed="true"><span class="n">1</span><span><span class="t">Conhecer</span><span class="est" data-est="0"></span></span></button>
+      <button class="of-fase" type="button" data-fase="1" aria-pressed="false"><span class="n">2</span><span><span class="t">Onde está?</span><span class="est" data-est="1"></span></span></button>
+      <button class="of-fase" type="button" data-fase="2" aria-pressed="false"><span class="n">3</span><span><span class="t">Para que serve?</span><span class="est" data-est="2"></span></span></button>
+      <button class="of-fase" type="button" data-fase="3" aria-pressed="false"><span class="n">4</span><span><span class="t">Dentro do gabinete</span><span class="est" data-est="3"></span></span></button>
+    </div>
+
+    <div class="of-balao" id="balao" aria-live="polite">
+      <svg class="of-guia" viewBox="0 0 90 80" aria-hidden="true">
+        <rect x="6" y="4" width="78" height="56" rx="10" fill="#fff" stroke="#111" stroke-width="3"/>
+        <rect x="13" y="11" width="64" height="42" rx="6" fill="#9fdab4" stroke="#111" stroke-width="2"/>
+        <circle cx="33" cy="29" r="4.5" fill="#111"/><circle cx="57" cy="29" r="4.5" fill="#111"/>
+        <path d="M35 40 q10 8 20 0" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"/>
+        <rect x="38" y="60" width="14" height="10" fill="#fff" stroke="#111" stroke-width="3"/>
+        <rect x="24" y="70" width="42" height="7" rx="3" fill="#fff36b" stroke="#111" stroke-width="2.5"/>
+      </svg>
+      <div>
+        <p class="of-fala" id="fala">Olá! Vamos conhecer o computador?</p>
+        <div id="extra"></div>
+        <div class="of-acoes">
+          <button class="btn" type="button" id="ouvir">Ouvir de novo</button>
+          <button class="btn" type="button" id="som" aria-pressed="true">Voz ligada</button>
+          <span id="acoes-fase"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="palco" class="of-palco"></div>
+    <div class="of-placar">
+      <span id="placar-txt">Partes encontradas</span>
+      <span class="of-pontos" id="pontos" aria-hidden="true"></span>
+      <span class="spacer" style="flex:1"></span>
+      <div class="lab-cam" role="group" aria-label="Posição da câmera" style="margin:0">
+        <button class="chip" type="button" id="cam-inicio">Ver tudo</button>
+        <button class="chip" type="button" id="cam-gabinete">Olhar o gabinete</button>
+      </div>
+    </div>
+
+    <details class="of-botoes" id="det-botoes">
+      <summary>Prefere botões? Escolha a parte por aqui</summary>
+      <div class="of-lista" id="lista"></div>
+    </details>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Objetivo:</strong> reconhecer as partes físicas do computador (hardware), separar as que levam informação para dentro do computador (entrada: teclado, mouse, webcam) das que mostram ou tocam algo para nós (saída: monitor, caixas de som, impressora, fone) e ter uma primeira ideia do que fica dentro do gabinete.</p>
+    <p><strong>Para quem:</strong> crianças do 1º ao 5º ano, inclusive as que ainda não leem. Todas as falas podem ser ouvidas (o navegador lê em voz alta). Também funciona no celular e no tablet.</p>
+    <p><strong>Sugestão de aula (30 a 40 minutos):</strong></p>
+    <ol>
+      <li>Antes do jogo, pergunte quais partes do computador as crianças conhecem e anote no quadro.</li>
+      <li>Fases 1 a 3 em duplas: uma criança toca na tela e a outra confere.</li>
+      <li>Fase 4 no projetor, com a turma ajudando a montar.</li>
+      <li>Para fechar, separe a turma em dois grupos, "entrada" e "saída", e diga o nome das partes: cada grupo levanta a mão quando a parte for sua.</li>
+    </ol>
+    <p><strong>Comparações usadas no jogo:</strong> processador como cérebro, memória RAM que esquece quando desliga, SSD que guarda as fotos e os jogos, fonte que reparte a energia, ventoinha que sopra o ar. São simplificações para a idade e podem ser aprofundadas nos anos seguintes.</p>
+    <p><strong>Com material concreto:</strong> se a escola tiver um gabinete velho, abra com a turma e procure as mesmas peças. Retire o cabo da tomada antes.</p>
+    <p class="small muted">Habilidades: EF02CO04 (diferenciar hardware e software) e EF03CO06 (dispositivos de entrada e saída). Complementa a página <a href="../../computador-para-criancas/">Primeiros passos no computador</a>, que ensina a usar o mouse e o teclado. O jogo salva as estrelas neste aparelho, sem cadastro.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('jogos'); mdFooter(); mdJogoHead('partes-computador');</script>
+<script type="module">
+import { lab3d, COR, THREE } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = 'partes-computador', CHAVE = 'oficina-computador-v1';
+
+/* ---------------- Desenhos das partes (cartão da pergunta e botões) ---------------- */
+const T = 'stroke="#111" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
+const V = '#2fa865', A = '#ffd23f', R = '#ef5a4c', B = '#fff', C = '#d9d6cc';
+const DESENHO = {
+  monitor: `<rect x="6" y="10" width="52" height="34" rx="5" fill="${B}" ${T}/><rect x="11" y="15" width="42" height="24" rx="3" fill="#9fdab4" ${T}/><path d="M28 44h8v8h-8zM20 54h24" fill="${B}" ${T}/>`,
+  gabinete: `<rect x="18" y="6" width="28" height="52" rx="4" fill="#4a4a46" ${T}/><circle cx="32" cy="16" r="4" fill="${V}" ${T}/><path d="M24 28h16M24 34h16M24 40h16" stroke="#ddd" stroke-width="2.5" stroke-linecap="round"/>`,
+  teclado: `<rect x="4" y="20" width="56" height="26" rx="5" fill="${A}" ${T}/><g fill="${B}" stroke="#111" stroke-width="1.6"><rect x="9" y="25" width="7" height="6" rx="1"/><rect x="18" y="25" width="7" height="6" rx="1"/><rect x="27" y="25" width="7" height="6" rx="1"/><rect x="36" y="25" width="7" height="6" rx="1"/><rect x="45" y="25" width="10" height="6" rx="1"/><rect x="18" y="35" width="28" height="6" rx="1"/></g>`,
+  mouse: `<path d="M32 8c11 0 16 8 16 18v12c0 11-7 18-16 18s-16-7-16-18V26c0-10 5-18 16-18z" fill="#f2a9b3" ${T}/><path d="M32 8v18M16 26h32" ${T}/>`,
+  caixas: `<rect x="6" y="12" width="20" height="40" rx="4" fill="${R}" ${T}/><circle cx="16" cy="24" r="4" fill="#333" ${T}/><circle cx="16" cy="40" r="7" fill="#333" ${T}/><rect x="38" y="12" width="20" height="40" rx="4" fill="${R}" ${T}/><circle cx="48" cy="24" r="4" fill="#333" ${T}/><circle cx="48" cy="40" r="7" fill="#333" ${T}/>`,
+  impressora: `<rect x="16" y="6" width="32" height="16" fill="${B}" ${T}/><rect x="6" y="20" width="52" height="24" rx="5" fill="${C}" ${T}/><rect x="16" y="38" width="32" height="20" fill="${B}" ${T}/><path d="M22 46h20M22 52h14" ${T}/><circle cx="50" cy="28" r="2.5" fill="${V}"/>`,
+  webcam: `<circle cx="32" cy="26" r="16" fill="#4a4a46" ${T}/><circle cx="32" cy="26" r="8" fill="#9fdab4" ${T}/><circle cx="32" cy="26" r="3" fill="#111"/><path d="M24 42l-4 12h24l-4-12" fill="${C}" ${T}/>`,
+  fone: `<path d="M12 40V30a20 20 0 0 1 40 0v10" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/><rect x="6" y="34" width="14" height="20" rx="5" fill="${V}" ${T}/><rect x="44" y="34" width="14" height="20" rx="5" fill="${V}" ${T}/>`,
+  placa: `<rect x="6" y="8" width="52" height="48" rx="3" fill="${V}" ${T}/><rect x="14" y="16" width="14" height="14" fill="${C}" ${T}/><path d="M38 14v26M44 14v26" stroke="${A}" stroke-width="4"/><path d="M12 46h22M12 50h16" stroke="#111" stroke-width="2"/>`,
+  processador: `<rect x="14" y="14" width="36" height="36" rx="3" fill="${C}" ${T}/><rect x="22" y="22" width="20" height="20" fill="#eee" ${T}/><path d="M20 8v6M28 8v6M36 8v6M44 8v6M20 50v6M28 50v6M36 50v6M44 50v6M8 20h6M8 28h6M8 36h6M8 44h6M50 20h6M50 28h6M50 36h6M50 44h6" ${T}/><path d="M16 46l4-4v4z" fill="${A}"/>`,
+  memoria: `<rect x="6" y="20" width="52" height="18" rx="2" fill="${A}" ${T}/><g fill="#333"><rect x="10" y="24" width="8" height="10"/><rect x="21" y="24" width="8" height="10"/><rect x="35" y="24" width="8" height="10"/><rect x="46" y="24" width="8" height="10"/></g><path d="M10 38v6M16 38v6M22 38v6M28 38v6M36 38v6M42 38v6M48 38v6M54 38v6" ${T}/>`,
+  ssd: `<rect x="8" y="22" width="48" height="18" rx="2" fill="${R}" ${T}/><rect x="14" y="26" width="10" height="10" fill="#333"/><rect x="28" y="26" width="10" height="10" fill="#333"/><circle cx="50" cy="31" r="3" fill="${B}" ${T}/>`,
+  fonte: `<rect x="8" y="14" width="48" height="38" rx="3" fill="#8a8a85" ${T}/><circle cx="26" cy="33" r="12" fill="#555" ${T}/><path d="M18 33h16M26 25v16M20 27l12 12M32 27l-12 12" stroke="#ccc" stroke-width="1.6"/><path d="M44 24l-4 9h6l-4 9" fill="none" stroke="${A}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`,
+  ventoinha: `<rect x="8" y="8" width="48" height="48" rx="8" fill="#555" ${T}/><circle cx="32" cy="32" r="20" fill="#333" ${T}/><g fill="${R}" stroke="#111" stroke-width="1.6"><path d="M32 32c-2-10 4-16 10-14-1 6-4 11-10 14z"/><path d="M32 32c10-2 16 4 14 10-6-1-11-4-14-10z"/><path d="M32 32c2 10-4 16-10 14 1-6 4-11 10-14z"/><path d="M32 32c-10 2-16-4-14-10 6 1 11 4 14 10z"/></g><circle cx="32" cy="32" r="4" fill="${A}" ${T}/>`
+};
+const svg = (id, extra = '') => `<svg viewBox="0 0 64 64" ${extra}>${DESENHO[id]}</svg>`;
+
+/* ---------------- Textos ---------------- */
+const FORA = [
+  { id: 'monitor', nome: 'Monitor', o: 'o monitor', tipo: 'saida', fala: 'É a tela. Mostra as letras, os desenhos e os vídeos.' },
+  { id: 'gabinete', nome: 'Gabinete', o: 'o gabinete', tipo: null, fala: 'É a caixa onde mora o cérebro do computador. Lá dentro ficam as peças que fazem tudo funcionar.' },
+  { id: 'teclado', nome: 'Teclado', o: 'o teclado', tipo: 'entrada', fala: 'Tem letras e números. Com ele, a gente escreve.' },
+  { id: 'mouse', nome: 'Mouse', o: 'o mouse', tipo: 'entrada', fala: 'Serve para apontar e clicar nas coisas da tela.' },
+  { id: 'caixas', nome: 'Caixas de som', o: 'as caixas de som', tipo: 'saida', fala: 'Tocam música e sons para todo mundo ouvir.' },
+  { id: 'impressora', nome: 'Impressora', o: 'a impressora', tipo: 'saida', fala: 'Coloca no papel o desenho ou o texto que está na tela.' },
+  { id: 'webcam', nome: 'Webcam', o: 'a webcam', tipo: 'entrada', fala: 'É uma câmera pequena. Filma o nosso rosto nas chamadas de vídeo.' },
+  { id: 'fone', nome: 'Fone de ouvido', o: 'o fone de ouvido', tipo: 'saida', fala: 'Toca o som só para quem está usando.' }
+];
+const DENTRO = [
+  { id: 'placa', nome: 'Placa-mãe', o: 'a placa-mãe', fala: 'É a placa grande onde todas as peças se encaixam e conversam.' },
+  { id: 'processador', nome: 'Processador', o: 'o processador', fala: 'É o cérebro do computador. Faz as contas e dá as ordens.' },
+  { id: 'memoria', nome: 'Memória RAM', o: 'a memória RAM', fala: 'Guarda por pouco tempo o que o computador está usando agora. Quando desliga, ela esquece.' },
+  { id: 'ssd', nome: 'SSD', o: 'o SSD', fala: 'Guarda os arquivos, as fotos e os jogos. Ele não esquece quando o computador desliga.' },
+  { id: 'fonte', nome: 'Fonte de energia', o: 'a fonte de energia', fala: 'Recebe a energia da tomada e reparte para todas as peças.' },
+  { id: 'ventoinha', nome: 'Ventoinha', o: 'a ventoinha', fala: 'É um ventilador. Sopra o ar para as peças não esquentarem.' }
+];
+const P = Object.fromEntries([...FORA, ...DENTRO].map(p => [p.id, p]));
+const TIPO_TXT = {
+  entrada: 'Entrada: leva informação para dentro do computador.',
+  saida: 'Saída: o computador usa para mostrar ou tocar algo para nós.'
+};
+const PERGUNTAS = [
+  ['monitor', 'Qual parte mostra os desenhos e os vídeos?'],
+  ['teclado', 'Com qual parte a gente escreve?'],
+  ['mouse', 'Qual parte a gente usa para apontar e clicar?'],
+  ['caixas', 'Qual parte toca música para todo mundo ouvir?'],
+  ['impressora', 'Qual parte coloca o desenho no papel?'],
+  ['webcam', 'Qual parte filma o nosso rosto na chamada de vídeo?'],
+  ['fone', 'Qual parte toca o som só para você?'],
+  ['gabinete', 'Onde fica o cérebro do computador?']
+];
+const MONTAGEM = ['fonte', 'processador', 'ventoinha', 'memoria', 'ssd'];
+const ELOGIOS = ['Muito bem!', 'Isso mesmo!', 'Acertou!', 'Ótimo!', 'Parabéns!'];
+
+/* ---------------- Voz ---------------- */
+let vozLigada = true, ultimaFala = '', vozPt = null;
+const temVoz = 'speechSynthesis' in window;
+function escolheVoz() {
+  if (!temVoz) return;
+  const vs = speechSynthesis.getVoices();
+  vozPt = vs.find(v => /pt[-_]BR/i.test(v.lang)) || vs.find(v => /^pt/i.test(v.lang)) || null;
+}
+if (temVoz) { escolheVoz(); speechSynthesis.onvoiceschanged = escolheVoz; }
+function falar(txt) {
+  ultimaFala = txt;
+  if (!temVoz || !vozLigada) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = 'pt-BR'; u.rate = 0.92; u.pitch = 1.05;
+  if (vozPt) u.voice = vozPt;
+  speechSynthesis.speak(u);
+}
+if (!temVoz) { $('#ouvir').hidden = true; $('#som').hidden = true; }
+$('#ouvir').onclick = () => { const v = vozLigada; vozLigada = true; falar(ultimaFala); vozLigada = v; };
+$('#som').onclick = () => {
+  vozLigada = !vozLigada;
+  $('#som').setAttribute('aria-pressed', vozLigada);
+  $('#som').textContent = vozLigada ? 'Voz ligada' : 'Voz desligada';
+  if (!vozLigada && temVoz) speechSynthesis.cancel();
+};
+
+/* Balão: frase grande, texto menor, cartão com desenho e botões da fase */
+function diz(fala, op = {}) {
+  $('#fala').textContent = fala;
+  const b = $('#balao'); b.classList.remove('ok', 'erro'); if (op.humor) b.classList.add(op.humor);
+  let h = '';
+  if (op.sub) h += `<p class="of-sub">${op.sub}</p>`;
+  if (op.chips) h += op.chips;
+  if (op.alvo) h += `<div class="of-alvo">${svg(op.alvo, 'aria-hidden="true"')}</div>`;
+  if (op.html) h += op.html;
+  $('#extra').innerHTML = h;
+  $('#acoes-fase').innerHTML = op.botoes || '';
+  falar(op.voz || [fala, op.sub || ''].join(' ').replace(/<[^>]+>/g, ''));
+}
+
+/* ---------------- Estado salvo ---------------- */
+let salvo = { est: [0, 0, 0, 0] };
+try { const s = JSON.parse(localStorage.getItem(CHAVE)); if (s && Array.isArray(s.est)) salvo = s; } catch (e) {}
+function guardar() {
+  try { localStorage.setItem(CHAVE, JSON.stringify(salvo)); } catch (e) {}
+  const total = salvo.est.reduce((a, b) => a + b, 0);
+  window.MDP && MDP.registrar(ID, Math.round(total / 12 * 100));
+  pintaEstrelas();
+}
+const ESTRELA = on => `<svg class="estrela${on ? ' on' : ''}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>`;
+function pintaEstrelas() {
+  document.querySelectorAll('[data-est]').forEach(el => {
+    const n = salvo.est[+el.dataset.est] || 0;
+    el.innerHTML = [0, 1, 2].map(i => ESTRELA(i < n)).join('');
+    el.setAttribute('aria-label', `${n} de 3 estrelas`); el.setAttribute('role', 'img');
+  });
+}
+function darEstrelas(fase, n) { salvo.est[fase] = Math.max(salvo.est[fase] || 0, n); guardar(); }
+const estrelasPorErro = e => e <= 1 ? 3 : e <= 3 ? 2 : 1;
+pintaEstrelas();
+
+/* ---------------- Cena 3D ---------------- */
+// a cena fica mais longe em telas estreitas (celular), para caber a mesa inteira
+const estreito = () => { const el = $('#palco'); return el.clientWidth / Math.max(1, el.clientHeight) < 1.3; };
+const VISTA_LONGE = { pos: [0.6, 7.4, 12.6], alvo: [0.2, 1.1, -0.2] }, VISTA_PERTO = { pos: [0.6, 9.4, 15.8], alvo: [0.2, 0.9, -0.2] };
+let VISTA_TUDO = VISTA_LONGE;
+const GX = 3.2, GZ = -1.75, GW = 2.4, GH = 2.8, GD = 1.1;   // gabinete: canto, largura (x), altura, profundidade (z)
+const VISTA_GAB = { pos: [GX - 0.5, 3.2, 5.4], alvo: [GX + GW / 2, 1.45, GZ + GD / 2] };
+const cena = lab3d($('#palco'), { cam: VISTA_TUDO.pos, alvo: VISTA_TUDO.alvo, chao: false, min: 2.5, max: 28, fov: 40 });
+if (cena && estreito()) { VISTA_TUDO = VISTA_PERTO; cena.posicionar(VISTA_TUDO.pos, VISTA_TUDO.alvo); }
+const obj = {}, base = {}, rot = {};
+
+if (cena) {
+  const { bloco, cilindro, material, comBordas, rotulo, add } = cena;
+  const g = () => new THREE.Group();
+  const mesh = (geo, cor, op = {}) => { const m = new THREE.Mesh(geo, material(cor, op)); m.castShadow = true; m.receiveShadow = true; return m; };
+  const cubo = (w, h, d, cor, x, y, z) => { const m = bloco(w, h, d, cor, { base: false }); m.position.set(x, y, z); return m; };
+
+  // mesa
+  const mesa = bloco(13.6, 0.32, 5.6, '#e9d9b0'); mesa.position.set(-6.8, -0.32, -2.8); add(mesa);
+  [[-6.4, -2.4], [6.4, -2.4], [-6.4, 2.4], [6.4, 2.4]].forEach(([x, z]) => { const p = cubo(0.3, 2.4, 0.3, '#c9b68a', x, -1.52, z); add(p); });
+
+  // monitor
+  const mon = g();
+  mon.add(cubo(1.7, 0.1, 0.9, '#3a3a38', 0, 0.05, 0));
+  mon.add(cubo(0.28, 1.1, 0.2, '#3a3a38', 0, 0.6, -0.15));
+  mon.add(cubo(4.3, 2.7, 0.22, '#2b2b2a', 0, 2.35, 0));
+  const telaCv = document.createElement('canvas'); telaCv.width = 512; telaCv.height = 312;
+  const telaTex = new THREE.CanvasTexture(telaCv); telaTex.colorSpace = THREE.SRGBColorSpace;
+  const tela = new THREE.Mesh(new THREE.PlaneGeometry(4.0, 2.4), new THREE.MeshBasicMaterial({ map: telaTex }));
+  tela.position.set(0, 2.35, 0.115); mon.add(tela);
+  mon.position.set(-0.6, 0, -1.5); add(mon); obj.monitor = mon;
+
+  // webcam em cima do monitor
+  const cam = g();
+  cam.add(cubo(0.7, 0.34, 0.34, '#3a3a38', 0, 0, 0));
+  const lente = cilindro(0.12, 0.06, '#9fdab4', { bordas: false }); lente.rotation.x = Math.PI / 2; lente.position.set(0, 0, 0.17); cam.add(lente);
+  cam.add(cubo(0.4, 0.08, 0.3, '#3a3a38', 0, -0.2, -0.02));
+  cam.position.set(-0.6, 3.92, -1.48); add(cam); obj.webcam = cam;
+
+  // caixas de som
+  const caixas = g();
+  [-3.25, 2.05].forEach(x => {
+    const cx = g();
+    cx.add(cubo(0.85, 1.7, 0.8, COR.vermelho, 0, 0.85, 0));
+    [[1.25, 0.16], [0.6, 0.27]].forEach(([y, r]) => { const c = cilindro(r, 0.06, '#333333', { bordas: false }); c.rotation.x = Math.PI / 2; c.position.set(0, y, 0.4); cx.add(c); });
+    cx.position.set(x, 0, -1.3); caixas.add(cx);
+  });
+  add(caixas); obj.caixas = caixas;
+
+  // teclado
+  const tec = g();
+  tec.add(cubo(3.8, 0.16, 1.3, COR.amarelo, 0, 0.08, 0));
+  const teclas = cena.blocoGrade(15, 1, 4, 0.22, '#ffffff', { base: false }); teclas.position.set(0, 0.25, 0); tec.add(teclas);
+  tec.position.set(-0.6, 0, 1.05); tec.rotation.x = -0.04; add(tec); obj.teclado = tec;
+
+  // mouse com mousepad
+  const mp = bloco(1.5, 0.04, 1.6, '#9fdab4'); mp.position.set(1.85, 0, 0.3); add(mp);
+  const mouse = g();
+  const corpo = mesh(new THREE.SphereGeometry(0.34, 32, 20), '#f2a9b3'); corpo.scale.set(1, 0.55, 1.45); corpo.position.y = 0.17; mouse.add(corpo);
+  const risco = cubo(0.025, 0.04, 0.42, '#111111', 0, 0.36, -0.22); mouse.add(risco);
+  mouse.position.set(2.6, 0.04, 1.1); add(mouse); obj.mouse = mouse;
+
+  // impressora
+  const imp = g();
+  imp.add(cubo(2.0, 0.95, 1.5, '#d9d6cc', 0, 0.475, 0));
+  const papelAtras = cubo(1.3, 0.9, 0.04, '#ffffff', 0, 1.25, -0.62); papelAtras.rotation.x = -0.35; imp.add(papelAtras);
+  imp.add(cubo(1.3, 0.04, 0.8, '#ffffff', 0, 0.62, 1.0));
+  imp.add(cubo(1.5, 0.1, 0.25, '#555555', 0, 0.62, 0.76));
+  const luz = cubo(0.12, 0.05, 0.12, COR.verde, 0.75, 0.97, 0.45); imp.add(luz);
+  imp.position.set(-5.3, 0, -1.1); add(imp); obj.impressora = imp;
+
+  // fone de ouvido num suporte
+  const fone = g();
+  fone.add(cubo(0.9, 0.08, 0.9, '#3a3a38', 0, 0.04, 0));
+  fone.add(cubo(0.12, 1.5, 0.12, '#3a3a38', 0, 0.8, 0));
+  const arco = mesh(new THREE.TorusGeometry(0.55, 0.07, 12, 40, Math.PI), COR.verdeEscuro); arco.position.set(0, 1.5, 0); arco.rotation.z = 0; fone.add(arco);
+  [-0.55, 0.55].forEach(x => { const c = cilindro(0.26, 0.2, COR.verde); c.rotation.z = Math.PI / 2; c.position.set(x + (x < 0 ? -0.1 : 0.1), 1.25, 0); fone.add(c); });
+  fone.position.set(-4.6, 0, 1.25); add(fone); obj.fone = fone;
+
+  // gabinete: casca aberta do lado da frente da cena (+z), com vidro
+  const gab = g();
+  const corGab = '#3d3d3a';
+  gab.add(cubo(GW, GH, 0.08, corGab, GW / 2, GH / 2, 0.04));             // fundo
+  gab.add(cubo(GW, 0.08, GD, corGab, GW / 2, 0.04, GD / 2));             // chão
+  gab.add(cubo(GW, 0.08, GD, corGab, GW / 2, GH - 0.04, GD / 2));        // teto
+  gab.add(cubo(0.08, GH, GD, corGab, 0.04, GH / 2, GD / 2));             // traseira
+  gab.add(cubo(0.1, GH, GD, '#2b2b2a', GW - 0.05, GH / 2, GD / 2));      // frente
+  const led = cilindro(0.11, 0.03, '#6f6f6b', { bordas: false }); led.position.set(GW - 0.35, GH, GD / 2); gab.add(led);
+  const vidro = new THREE.Mesh(new THREE.BoxGeometry(GW - 0.04, GH - 0.04, 0.04),
+    new THREE.MeshStandardMaterial({ color: '#cfe9d8', transparent: true, opacity: 0.32, roughness: 0.1 }));
+  comBordas(vidro); vidro.position.set(GW / 2, GH / 2, GD + 0.02); gab.add(vidro);
+  gab.position.set(GX, 0, GZ); add(gab); obj.gabinete = gab;
+
+  // peças de dentro (coordenadas do gabinete)
+  const placa = cubo(1.85, 1.85, 0.06, COR.verde, 1.18, 1.68, 0.11); gab.add(placa); obj.placa = placa;
+  const soquete = cubo(0.62, 0.62, 0.02, '#555555', 0.95, 2.05, 0.15); gab.add(soquete);
+  [1.55, 1.7].forEach(x => gab.add(cubo(0.1, 0.92, 0.04, '#333333', x, 1.98, 0.16))); // encaixes da memória
+  gab.add(cubo(0.9, 0.12, 0.03, '#333333', 0.95, 1.05, 0.155));                        // encaixe do SSD
+
+  const proc = g();
+  proc.add(cubo(0.5, 0.5, 0.06, '#c9c9c5', 0, 0, 0));
+  const canto = cubo(0.1, 0.1, 0.02, COR.amarelo, -0.18, -0.18, 0.035); proc.add(canto);
+  const memo = g();
+  [-0.075, 0.075].forEach(dx => { memo.add(cubo(0.06, 0.9, 0.2, COR.amarelo, dx, 0, 0)); });
+  const ssd = g();
+  ssd.add(cubo(0.88, 0.14, 0.05, COR.vermelho, 0, 0, 0));
+  [-0.2, 0.12].forEach(dx => ssd.add(cubo(0.18, 0.1, 0.02, '#333333', dx, 0, 0.03)));
+  const font = g();
+  font.add(cubo(1.0, 0.6, 0.85, '#8a8a85', 0, 0, 0));
+  const grade = cilindro(0.25, 0.02, '#4a4a46', { bordas: false }); grade.position.set(0, 0.3, 0); font.add(grade);
+  const raio = cubo(0.06, 0.25, 0.02, COR.amarelo, 0.32, 0.05, 0.43); raio.rotation.z = 0.4; font.add(raio);
+  const vent = g();
+  const aro = mesh(new THREE.TorusGeometry(0.33, 0.05, 10, 32), '#4a4a46'); aro.rotation.y = Math.PI / 2; vent.add(aro);
+  const fundoVent = cubo(0.08, 0.76, 0.76, '#555555', 0.03, 0, 0); fundoVent.material = material('#555555', { transparent: true, opacity: 0.35 }); vent.add(fundoVent);
+  const helice = g();
+  for (let i = 0; i < 5; i++) { const pa = cubo(0.04, 0.26, 0.1, COR.vermelho, -0.02, 0.15, 0); const s = g(); s.add(pa); s.rotation.x = i * Math.PI * 2 / 5; pa.rotation.y = 0.5; helice.add(s); }
+  const cubo2 = cilindro(0.08, 0.08, COR.amarelo, { bordas: false }); cubo2.rotation.z = Math.PI / 2; cubo2.position.x = -0.05; helice.add(cubo2);
+  vent.add(helice);
+
+  // lugar de cada peça no gabinete e na mesa (para a montagem)
+  base.processador = { pos: [0.95, 2.05, 0.19], rot: [0, 0, 0] };
+  base.memoria = { pos: [1.625, 1.98, 0.28], rot: [0, 0, 0] };
+  base.ssd = { pos: [0.95, 1.05, 0.2], rot: [0, 0, 0] };
+  base.fonte = { pos: [0.62, 0.38, 0.55], rot: [0, 0, 0] };
+  base.ventoinha = { pos: [GW - 0.18, 1.95, 0.6], rot: [0, 0, 0] };
+  [['processador', proc], ['memoria', memo], ['ssd', ssd], ['fonte', font], ['ventoinha', vent]].forEach(([id, o]) => {
+    o.position.set(...base[id].pos); gab.add(o); obj[id] = o;
+  });
+  // na mesa, à frente do gabinete (coordenadas do gabinete: x da mesa - GX, z da mesa - GZ)
+  rot.ladoMesa = {
+    fonte: { position: [0.8, 0.31, 3.0], rotation: [0, 0.25, 0] },
+    ventoinha: { position: [1.95, 0.06, 3.0], rotation: [0, 0, Math.PI / 2] },
+    processador: { position: [0.6, 0.04, 3.95], rotation: [-Math.PI / 2, 0, 0] },
+    memoria: { position: [1.4, 0.11, 3.95], rotation: [-Math.PI / 2, 0, Math.PI / 2] },
+    ssd: { position: [2.3, 0.04, 3.95], rotation: [-Math.PI / 2, 0, 0.3] }
+  };
+  // contorno do lugar da peça pedida
+  const contorno = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: COR.amareloClaro, transparent: true, opacity: 0.55, depthWrite: false }));
+  contorno.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1)), new THREE.LineBasicMaterial({ color: COR.amarelo })));
+  contorno.visible = false; contorno.raycast = () => {}; contorno.children[0].raycast = () => {}; gab.add(contorno);
+  obj._contorno = contorno; obj._vidro = vidro; obj._led = led; obj._helice = helice; obj._tela = { cv: telaCv, tex: telaTex };
+
+  // ventoinha gira quando o computador está ligado
+  let ligado = false, t0 = 0;
+  obj._liga = v => { ligado = v; t0 = performance.now(); led.material = material(v ? '#2fdc6c' : '#6f6f6b', { emissive: v ? '#1f8a4c' : '#000000' }); cena.pedeQuadro(); };
+  obj._camAnim = null;
+  cena.loop(now => (obj._camAnim ? obj._camAnim(now) : false));
+  cena.loop(now => {
+    if (ligado) { helice.rotation.x = (now - t0) / 90; }
+    if (obj._contorno.visible) { const k = 1 + Math.sin(now / 180) * 0.04; obj._contorno.scale.copy(obj._contorno.userData.tam).multiplyScalar(k); }
+    return ligado || obj._contorno.visible;
+  });
+
+  // rótulos (nomes) em cima de cada parte
+  const ALTURA = { monitor: [-2.3, 4.0, -1.5], gabinete: [GX + GW / 2, GH + 0.5, GZ + GD / 2], teclado: [-0.6, 0.85, 1.1], mouse: [2.6, 0.85, 1.1],
+    caixas: [-3.25, 2.25, -1.3], impressora: [-5.3, 2.0, -1.1], webcam: [0.75, 4.3, -1.4], fone: [-4.6, 0.25, 2.55],
+    placa: [GX + 1.2, 3.12, GZ + 0.2], processador: [GX + 0.5, 2.55, GZ + 0.5], memoria: [GX + 1.62, 2.62, GZ + 0.6], ssd: [GX + 0.9, 1.25, GZ + 0.8],
+    fonte: [GX + 0.6, 0.95, GZ + 1.0], ventoinha: [GX + GW - 0.25, 1.38, GZ + 0.9] };
+  obj._rot = {};
+  Object.entries(ALTURA).forEach(([id, p]) => {
+    const r = rotulo(P[id].nome, { tam: DENTRO.some(d => d.id === id) ? 0.24 : 0.42, fundo: '#c6ebd4', depthTest: false });
+    r.position.set(...p); r.visible = false; add(r); obj._rot[id] = r;
+  });
+
+  // clique em cada parte
+  [...FORA, ...DENTRO].forEach(p => cena.clicavel(obj[p.id], () => toque(p.id)));
+  cena.descrever('Mesa com um computador em 3D: monitor com webcam em cima, gabinete com a lateral de vidro, teclado, mouse, duas caixas de som, impressora e fone de ouvido. Use os botões abaixo da cena para escolher uma parte.');
+}
+
+/* Tela do monitor: rosto que muda com o jogo */
+function rosto(humor = 'oi', texto = '') {
+  if (!obj._tela) return;
+  const { cv, tex } = obj._tela, x = cv.getContext('2d');
+  x.fillStyle = humor === 'erro' ? '#ffd3cb' : humor === 'desligado' ? '#2b2b2a' : '#9fdab4'; x.fillRect(0, 0, cv.width, cv.height);
+  if (humor !== 'desligado') {
+    x.fillStyle = '#111'; x.strokeStyle = '#111'; x.lineWidth = 12; x.lineCap = 'round';
+    const olho = (cx) => { if (humor === 'feliz') { x.beginPath(); x.arc(cx, 120, 22, Math.PI * 1.1, Math.PI * 1.9); x.stroke(); } else { x.beginPath(); x.arc(cx, 112, 20, 0, 7); x.fill(); } };
+    olho(186); olho(326);
+    x.beginPath();
+    if (humor === 'erro') { x.moveTo(206, 196); x.quadraticCurveTo(256, 176, 306, 196); }
+    else { x.moveTo(196, 176); x.quadraticCurveTo(256, humor === 'feliz' ? 250 : 222, 316, 176); }
+    x.stroke();
+    if (texto) { x.font = '800 40px Sniglet, sans-serif'; x.textAlign = 'center'; x.fillText(texto, 256, 290); }
+  }
+  tex.needsUpdate = true; cena && cena.pedeQuadro();
+}
+
+/* Animações curtas */
+function pula(id) {
+  const o = obj[id]; if (!o || !cena) return;
+  const [x, y, z] = o.position.toArray();
+  cena.animar(o, { position: [x, y + 0.45, z] }, 200).then(() => cena.animar(o, { position: [x, y, z] }, 260));
+}
+function balanca(id) {
+  const o = obj[id]; if (!o || !cena) return;
+  const r = o.rotation.toArray().slice(0, 3);
+  cena.animar(o, { rotation: [r[0], r[1] + 0.2, r[2]] }, 110)
+    .then(() => cena.animar(o, { rotation: [r[0], r[1] - 0.2, r[2]] }, 160))
+    .then(() => cena.animar(o, { rotation: r }, 120));
+}
+function mostraRotulos(ids) { if (!obj._rot) return; Object.entries(obj._rot).forEach(([id, r]) => { r.visible = ids.includes(id); }); cena.pedeQuadro(); }
+function vista(v) {
+  if (!cena) return;
+  const c = cena.camera, ct = cena.controls;
+  const de = c.position.clone(), deA = ct.target.clone(), para = new THREE.Vector3(...v.pos), paraA = new THREE.Vector3(...v.alvo);
+  const t0 = performance.now(), ms = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 700;
+  obj._camAnim = now => {
+    const k = ms ? Math.max(0, Math.min(1, (now - t0) / ms)) : 1, e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    c.position.lerpVectors(de, para, e); ct.target.lerpVectors(deA, paraA, e); ct.update();
+    if (k >= 1) obj._camAnim = null;
+    return k < 1;
+  };
+  cena.pedeQuadro();
+}
+$('#cam-inicio').onclick = () => vista(VISTA_TUDO);
+$('#cam-gabinete').onclick = () => vista(VISTA_GAB);
+
+/* Vidro do gabinete */
+let aberto = false;
+function abrirGabinete(abrir) {
+  aberto = abrir;
+  const v = obj._vidro; if (!v) return Promise.resolve();
+  if (abrir) { v.raycast = () => {}; return cena.animar(v, { position: [GW / 2, GH / 2 + 0.2, GD + 1.6] }, 600).then(() => { v.visible = false; cena.pedeQuadro(); }); }
+  v.visible = true; v.raycast = THREE.Mesh.prototype.raycast;
+  return cena.animar(v, { position: [GW / 2, GH / 2, GD + 0.02] }, 600);
+}
+
+/* ---------------- Fases ---------------- */
+let fase = 0, st = {};
+const sorteia = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const elogio = () => ELOGIOS[Math.floor(Math.random() * ELOGIOS.length)];
+const pecasVisiveis = () => fase === 3 ? DENTRO : FORA;
+
+function pontos(total, feitos, agora = -1) {
+  $('#pontos').innerHTML = Array.from({ length: total }, (_, i) => `<span class="${i < feitos ? 'on' : ''}${i === agora ? ' agora' : ''}"></span>`).join('');
+}
+function lista() {
+  $('#lista').innerHTML = pecasVisiveis().map(p => `<button type="button" data-p="${p.id}">${svg(p.id, 'aria-hidden="true"')}${p.nome}</button>`).join('');
+}
+$('#lista').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (b) toque(b.dataset.p); });
+
+function irFase(n) {
+  fase = n;
+  document.querySelectorAll('.of-fase').forEach(b => b.setAttribute('aria-pressed', +b.dataset.fase === n));
+  if (temVoz) speechSynthesis.cancel();
+  st = {};
+  if (obj._contorno) obj._contorno.visible = false;
+  if (n !== 3) { if (aberto) abrirGabinete(false); montarTudo(); obj._liga && obj._liga(false); vista(VISTA_TUDO); }
+  rosto('oi');
+  lista();
+  [comecaConhecer, comecaOnde, comecaServe, comecaDentro][n]();
+}
+document.querySelectorAll('.of-fase').forEach(b => b.addEventListener('click', () => irFase(+b.dataset.fase)));
+$('#acoes-fase').addEventListener('click', e => {
+  const b = e.target.closest('[data-acao]'); if (!b) return;
+  const a = b.dataset.acao;
+  if (a === 'proxima') irFase(Math.min(3, fase + 1));
+  else if (a === 'denovo') irFase(fase);
+  else if (a === 'montar') comecaMontagem();
+});
+const botaoProxima = (txt = 'Próxima fase') => `<button class="btn forte" type="button" data-acao="proxima">${txt}</button>`;
+const botaoDeNovo = '<button class="btn" type="button" data-acao="denovo">Jogar de novo</button>';
+
+/* Fase 1: conhecer */
+function comecaConhecer() {
+  st = { vistos: new Set() };
+  mostraRotulos([]);
+  $('#placar-txt').textContent = 'Partes que você já conhece';
+  pontos(FORA.length, 0);
+  diz('Toque em uma parte do computador.', { sub: 'Vou dizer o nome dela e para que serve.' });
+}
+function tocaConhecer(id) {
+  const p = P[id]; if (!FORA.includes(p)) return;
+  st.vistos.add(id);
+  pula(id);
+  mostraRotulos([...st.vistos]);
+  pontos(FORA.length, st.vistos.size);
+  const chips = p.tipo ? `<span class="of-chip ${p.tipo}">${p.tipo === 'entrada' ? 'Entrada' : 'Saída'}</span>` : '';
+  const fim = st.vistos.size === FORA.length;
+  if (fim && !st.fim) { st.fim = true; darEstrelas(0, 3); rosto('feliz', 'Muito bem!'); }
+  diz(p.nome, {
+    sub: p.fala, chips, alvo: null,
+    voz: `${p.nome}. ${p.fala}${p.tipo ? ' ' + TIPO_TXT[p.tipo] : ''}${fim ? ' Você conheceu todas as partes! Vamos para a próxima fase?' : ''}`,
+    html: p.tipo ? `<p class="of-sub" style="font-size:15px">${TIPO_TXT[p.tipo]}</p>` : '',
+    botoes: fim ? botaoProxima() : '', humor: fim ? 'ok' : null
+  });
+}
+
+/* Fase 2: onde está? */
+function comecaOnde() {
+  st = { fila: sorteia(FORA.map(p => p.id)), i: 0, erros: 0 };
+  mostraRotulos([]);
+  $('#placar-txt').textContent = 'Acertos';
+  pedeOnde();
+}
+function pedeOnde() {
+  const id = st.fila[st.i];
+  pontos(st.fila.length, st.i, st.i);
+  diz(`Onde está ${P[id].o}?`, { alvo: id, sub: 'Toque na parte certa.' });
+}
+function tocaOnde(id) {
+  if (st.fim) return;
+  const alvo = st.fila[st.i];
+  if (id === alvo) {
+    pula(id); rosto('feliz');
+    st.i++;
+    if (st.i === st.fila.length) {
+      st.fim = true; const n = estrelasPorErro(st.erros); darEstrelas(1, n); pontos(st.fila.length, st.i);
+      mostraRotulos(FORA.map(p => p.id));
+      diz('Você achou todas as partes!', { humor: 'ok', html: fimHtml(n), botoes: botaoProxima() + botaoDeNovo, voz: `Você achou todas as partes! Ganhou ${n} ${n === 1 ? 'estrela' : 'estrelas'}.` });
+      return;
+    }
+    diz(elogio(), { humor: 'ok', sub: `Esse é ${P[id].o}.` });
+    setTimeout(() => { if (fase === 1 && !st.fim) { rosto('oi'); pedeOnde(); } }, 1500);
+  } else {
+    st.erros++; balanca(id); rosto('erro');
+    diz(`Esse é ${P[id].o}.`, { humor: 'erro', sub: `Procure ${P[alvo].o}.`, alvo });
+    setTimeout(() => fase === 1 && rosto('oi'), 1200);
+  }
+}
+
+/* Fase 3: para que serve? */
+function comecaServe() {
+  st = { fila: sorteia(PERGUNTAS), i: 0, erros: 0 };
+  mostraRotulos([]);
+  $('#placar-txt').textContent = 'Acertos';
+  pedeServe();
+}
+function pedeServe() {
+  pontos(st.fila.length, st.i, st.i);
+  diz(st.fila[st.i][1], { sub: 'Toque na parte certa.' });
+}
+function tocaServe(id) {
+  if (st.fim) return;
+  const [alvo] = st.fila[st.i];
+  if (id === alvo) {
+    pula(id); rosto('feliz');
+    st.i++;
+    if (st.i === st.fila.length) {
+      st.fim = true; const n = estrelasPorErro(st.erros); darEstrelas(2, n); pontos(st.fila.length, st.i);
+      diz('Você sabe para que serve cada parte!', { humor: 'ok', html: fimHtml(n), botoes: botaoProxima('Abrir o gabinete') + botaoDeNovo, voz: `Você sabe para que serve cada parte! Ganhou ${n} ${n === 1 ? 'estrela' : 'estrelas'}. Agora vamos abrir o gabinete?` });
+      return;
+    }
+    diz(`${elogio()} É ${P[id].o}.`, { humor: 'ok', sub: P[id].fala });
+    setTimeout(() => { if (fase === 2 && !st.fim) { rosto('oi'); pedeServe(); } }, 2600);
+  } else {
+    st.erros++; balanca(id); rosto('erro');
+    diz(`Esse é ${P[id].o}. Tente de novo.`, { humor: 'erro', sub: st.fila[st.i][1] });
+    setTimeout(() => fase === 2 && rosto('oi'), 1200);
+  }
+}
+
+/* Fase 4: dentro do gabinete */
+function montarTudo() {
+  if (!cena) return;
+  MONTAGEM.forEach(id => cena.animar(obj[id], { position: base[id].pos, rotation: base[id].rot }, 0));
+}
+function comecaDentro() {
+  st = { etapa: 'ver', vistos: new Set() };
+  montarTudo();
+  mostraRotulos([]);
+  $('#placar-txt').textContent = 'Peças que você já conhece';
+  pontos(DENTRO.length, 0);
+  vista(VISTA_GAB);
+  abrirGabinete(true);
+  rosto('oi', 'Por dentro');
+  diz('Abri o gabinete! Toque nas peças de dentro.', { sub: 'São as peças que fazem o computador funcionar.' });
+}
+function tocaDentro(id) {
+  const p = P[id];
+  if (st.etapa === 'ver') {
+    if (!DENTRO.includes(p)) { if (id === 'gabinete') return; diz(`Esse é ${p.o}. Agora olhe dentro do gabinete.`, { sub: 'Toque nas peças de dentro.' }); return; }
+    st.vistos.add(id);
+    if (id !== 'placa') pula(id);
+    mostraRotulos([...st.vistos]);
+    pontos(DENTRO.length, st.vistos.size);
+    const fim = st.vistos.size === DENTRO.length;
+    diz(p.nome, { sub: p.fala, humor: fim ? 'ok' : null,
+      botoes: fim ? '<button class="btn forte" type="button" data-acao="montar">Agora vamos montar</button>' : '',
+      voz: `${p.nome}. ${p.fala}${fim ? ' Você conheceu todas as peças. Agora vamos montar o computador!' : ''}` });
+    return;
+  }
+  if (st.etapa === 'montar') {
+    if (!MONTAGEM.includes(id)) return;
+    const alvo = MONTAGEM[st.i];
+    if (st.colocados.has(id)) return;
+    if (id === alvo) {
+      st.colocados.add(id); st.i++;
+      if (obj._contorno) obj._contorno.visible = false;
+      if (cena) cena.animar(obj[id], { position: [base[id].pos[0], base[id].pos[1], base[id].pos[2] + 0.9], rotation: base[id].rot }, 450)
+        .then(() => cena.animar(obj[id], { position: base[id].pos }, 300));
+      mostraRotulos([...st.colocados]);
+      pontos(MONTAGEM.length, st.i, st.i);
+      if (st.i === MONTAGEM.length) { if (obj._contorno) obj._contorno.visible = false; setTimeout(terminaMontagem, 900); return; }
+      diz(elogio(), { humor: 'ok', sub: `${P[id].nome} no lugar.` });
+      setTimeout(() => { if (fase === 3 && st.etapa === 'montar') pedeMontagem(); }, 1300);
+    } else {
+      st.erros++; balanca(id);
+      diz(`Essa peça é ${P[id].o}.`, { humor: 'erro', sub: `Procure ${P[alvo].o}.`, alvo });
+    }
+  }
+}
+function comecaMontagem() {
+  st = { etapa: 'montar', i: 0, erros: 0, colocados: new Set() };
+  mostraRotulos([]);
+  $('#placar-txt').textContent = 'Peças no lugar';
+  // as peças saem do gabinete e vão para a mesa
+  if (cena) MONTAGEM.forEach((id, k) => setTimeout(() => cena.animar(obj[id], rot.ladoMesa[id], 600), k * 120));
+  vista(estreito() ? { pos: [GX + 0.4, 6.4, 8.6], alvo: [GX + GW / 2, 0.9, GZ + 1.6] } : { pos: [GX + 0.4, 4.6, 6.6], alvo: [GX + GW / 2, 0.9, GZ + 1.6] });
+  rosto('oi', 'Monte!');
+  setTimeout(() => fase === 3 && pedeMontagem(), 700);
+}
+function pedeMontagem() {
+  const id = MONTAGEM[st.i];
+  const c = obj._contorno || { userData: {}, scale: new THREE.Vector3(), position: new THREE.Vector3() }, tam = { processador: [0.56, 0.56, 0.1], memoria: [0.26, 0.96, 0.26], ssd: [0.94, 0.2, 0.1], fonte: [1.06, 0.66, 0.9], ventoinha: [0.2, 0.82, 0.82] }[id];
+  c.userData.tam = new THREE.Vector3(...tam); c.scale.set(...tam); c.position.set(...base[id].pos); c.visible = true; cena && cena.pedeQuadro();
+  pontos(MONTAGEM.length, st.i, st.i);
+  diz(`Coloque ${P[id].o} no lugar.`, { alvo: id, sub: 'Toque na peça em cima da mesa. O lugar dela está piscando em amarelo.' });
+}
+function terminaMontagem() {
+  if (fase !== 3) return;
+  const n = estrelasPorErro(st.erros); darEstrelas(3, n);
+  st.etapa = 'fim';
+  abrirGabinete(false);
+  vista(VISTA_TUDO);
+  setTimeout(() => { obj._liga && obj._liga(true); rosto('feliz', 'Ligou!'); }, 700);
+  mostraRotulos([...FORA.map(p => p.id)]);
+  pontos(MONTAGEM.length, MONTAGEM.length);
+  const total = salvo.est.reduce((a, b) => a + b, 0);
+  diz('Você montou o computador e ele ligou!', { humor: 'ok', html: fimHtml(n) + `<p class="of-sub">No total, você tem ${total} de 12 estrelas.</p>`,
+    botoes: botaoDeNovo, voz: `Você montou o computador e ele ligou! Ganhou ${n} ${n === 1 ? 'estrela' : 'estrelas'}. No total, você tem ${total} de 12 estrelas.` });
+}
+
+function fimHtml(n) { return `<div class="of-fim"><div class="grandes" role="img" aria-label="${n} de 3 estrelas">${[0, 1, 2].map(i => ESTRELA(i < n)).join('')}</div></div>`; }
+
+function toque(id) {
+  if (fase === 0) tocaConhecer(id);
+  else if (fase === 1) tocaOnde(id);
+  else if (fase === 2) tocaServe(id);
+  else tocaDentro(id);
+}
+
+/* Começo: o navegador só deixa falar depois do primeiro toque */
+rosto('oi', 'Olá!');
+lista();
+comecaConhecer();
+$('#fala').textContent = 'Olá! Vamos conhecer o computador?';
+$('#extra').innerHTML = '<p class="of-sub">Toque em uma parte. A tela vai falar com você.</p>';
+$('#acoes-fase').innerHTML = '';
+if (document.fonts) document.fonts.ready.then(() => rosto('oi', 'Olá!'));
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
