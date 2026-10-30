@@ -28,6 +28,9 @@
       <circle cx="26" cy="19" r="2" fill="#111"/><circle cx="38" cy="19" r="2" fill="#111"/><path d="M27 24q5 4 10 0" fill="none" ${T}/>
       <rect x="6" y="42" width="34" height="14" rx="3" fill="${A}" ${T}/><path d="M11 47h4M18 47h4M25 47h4M32 47h4M14 52h18" ${T}/>
       <path d="M52 40c4 0 6 3 6 7v3c0 4-2 7-6 7s-6-3-6-7v-3c0-4 2-7 6-7z" fill="${R}" ${T}/>`,
+    carreira: `<path d="M12 50c14 0 8-14 22-14s10-14 18-18" fill="none" stroke="#111" stroke-width="2.5" stroke-dasharray="4 4"/>
+      <path d="M50 30V6" ${T}/><path d="M50 6l12 5-12 5z" fill="${R}" ${T}/>
+      <circle cx="34" cy="36" r="4" fill="${A}" ${T}/><path d="M12 38a5 5 0 1 1 .01 0zM5 56c0-7 3-11 7-11s7 4 7 11z" fill="${V}" ${T}/>`,
     'vale-bits': `<path d="M6 54h52" ${T}/><path d="M10 54V30l12-10 12 10v24z" fill="${B}" ${T}/><path d="M8 32l14-13 14 13" fill="${R}" ${T}/>
       <rect x="18" y="40" width="8" height="14" fill="${V}" ${T}/><path d="M40 54V38M46 54V38M52 54V38M38 44h16M38 50h16" ${T}/>
       <path d="M48 8l7 7-7 7-7-7z" fill="${A}" ${T}/>`,
