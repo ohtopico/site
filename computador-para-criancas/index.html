@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primeiros passos no computador · para crianças | ohtopico</title>
+<meta name="description" content="Página para crianças aprenderem a usar o computador: clique esquerdo, direito e na rodinha do mouse, acentos, Shift, Fixa, Ctrl, Tab, Esc, print da tela, volume, principais programas e como desligar. Com teclado e mouse em 3D para clicar e praticar.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/computador-para-criancas/">
+<meta property="og:title" content="Primeiros passos no computador · para crianças">
+<meta property="og:description" content="Aprenda a usar o mouse e o teclado brincando: teclado e mouse em 3D, acentos, atalhos, print da tela, volume e como desligar o computador.">
+<meta property="og:url" content="https://ohtopico.com.br/computador-para-criancas/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../material-didatico/assets/lab3d.css">
+<link rel="stylesheet" href="computador.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Primeiros passos no computador","description":"Página interativa para crianças aprenderem a usar o mouse, o teclado e os principais programas do computador.","inLanguage":"pt-BR","isAccessibleForFree":true,"educationalLevel":"Educação Infantil e anos iniciais do Ensino Fundamental","learningResourceType":"Atividade interativa","url":"https://ohtopico.com.br/computador-para-criancas/","author":{"@type":"Person","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/curriculo/"}}
+</script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../">ohtopico</a>
+  <a class="brand-sub" href="../jogos/">/ jogos</a>
+  <span class="spacer"></span>
+  <span class="placar-topo" id="placar-topo" aria-live="polite">0 de 11 missões</span>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Primeiros passos no computador</h1>
+        <p class="sub">Vamos aprender a usar o mouse e o teclado, brincando. Cada parte tem uma missão. Quando terminar, ela fica verde.</p>
+        <div class="btn-row">
+          <a class="btn grande" href="#mouse">Começar</a>
+          <button class="btn ghost grande" type="button" id="voz-geral" aria-pressed="false">Ler em voz alta</button>
+        </div>
+        <p class="aviso-toque" id="aviso-toque" hidden>Você está no celular ou no tablet. Dá para ver tudo, mas as missões de teclado e mouse funcionam melhor em um computador.</p>
+      </div>
+      <svg class="hero-arte" viewBox="0 0 220 180" role="img" aria-label="Desenho de um computador com a tela verde, um teclado na frente e um mouse ao lado.">
+        <rect x="30" y="10" width="160" height="104" rx="12" fill="#fff" stroke="#111" stroke-width="3"/>
+        <rect x="42" y="22" width="136" height="80" rx="6" fill="#9fdab4" stroke="#111" stroke-width="2"/>
+        <circle cx="80" cy="56" r="7" fill="#111"/><circle cx="140" cy="56" r="7" fill="#111"/>
+        <path d="M86 76 q24 18 48 0" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+        <rect x="98" y="114" width="24" height="18" fill="#fff" stroke="#111" stroke-width="3"/>
+        <rect x="20" y="138" width="150" height="30" rx="7" fill="#fff36b" stroke="#111" stroke-width="3"/>
+        <g fill="#fff" stroke="#111" stroke-width="1.5"><rect x="28" y="144" width="14" height="8" rx="2"/><rect x="46" y="144" width="14" height="8" rx="2"/><rect x="64" y="144" width="14" height="8" rx="2"/><rect x="82" y="144" width="14" height="8" rx="2"/><rect x="100" y="144" width="14" height="8" rx="2"/><rect x="118" y="144" width="14" height="8" rx="2"/><rect x="136" y="144" width="26" height="8" rx="2"/><rect x="56" y="155" width="70" height="8" rx="2"/></g>
+        <path d="M188 134 c14 0 22 10 22 22 v6 c0 8 -8 14 -22 14 s-22 -6 -22 -14 v-6 c0 -12 8 -22 22 -22z" fill="#f2a9b3" stroke="#111" stroke-width="3"/>
+        <line x1="188" y1="134" x2="188" y2="152" stroke="#111" stroke-width="2.5"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <nav class="missoes" aria-label="Missões da página">
+      <ol id="lista-missoes"></ol>
+    </nav>
+
+    <!-- 1. Mouse -->
+    <section class="licao" id="mouse" data-missao="mouse">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">1</span>
+        <h2>O mouse e os cliques</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>O mouse tem três partes para apertar.</p>
+        <ul class="cartoes3">
+          <li class="c-verde"><b>Botão esquerdo</b> É o clique mais usado. Serve para escolher, abrir e apertar botões.</li>
+          <li class="c-vermelho"><b>Botão direito</b> Abre uma listinha com mais opções, chamada menu.</li>
+          <li class="c-amarelo"><b>Rodinha do meio</b> Gire para subir e descer a página. Ela também pode ser apertada.</li>
+        </ul>
+        <p>Para abrir uma pasta ou um programa na área de trabalho, faça um <b>clique duplo</b>: dois cliques rápidos com o botão esquerdo.</p>
+      </div>
+      <div class="pratica">
+        <h3>Missão: acerte o balão</h3>
+        <p class="pede" id="mouse-pede">Clique no balão com o botão <b>esquerdo</b>.</p>
+        <div class="campo-mouse" id="campo-mouse">
+          <button type="button" class="balao" id="balao" aria-describedby="mouse-pede"><span>Clique aqui</span></button>
+        </div>
+        <ol class="passos" id="mouse-passos">
+          <li>Clique esquerdo</li><li>Clique direito</li><li>Clique na rodinha</li><li>Clique duplo</li><li>Gire a rodinha</li>
+        </ol>
+        <div class="rolar" id="rolar" tabindex="0" aria-label="Caixa para girar a rodinha do mouse. Gire a rodinha para a bolinha descer até o fim.">
+          <div class="trilho"><div class="bola" id="bola-rolar"></div></div>
+          <p>Gire a rodinha do mouse em cima desta caixa para levar a bolinha até o fim.</p>
+        </div>
+        <p class="feedback" id="mouse-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 2. Teclado e mouse 3D -->
+    <section class="licao" id="teclado3d" data-missao="teclas3d">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">2</span>
+        <h2>Teclado e mouse em 3D</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>Este é um teclado de verdade, só que dentro da tela. Clique em uma tecla ou em um botão do mouse para saber para que serve. Se você apertar uma tecla do seu teclado, ela também afunda aqui.</p>
+      </div>
+      <div class="lab-layout">
+        <div>
+          <div id="palco" class="palco-teclado"></div>
+          <div class="lab-cam" role="group" aria-label="Posição da câmera">
+            <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+            <button class="chip" type="button" data-vista="cima">De cima</button>
+            <button class="chip" type="button" id="ver-mouse">Olhar o mouse</button>
+          </div>
+          <p class="small muted dica-palco">Arraste o fundo para girar. Use a roda do mouse para chegar mais perto.</p>
+        </div>
+        <div class="side">
+          <div class="panel info-tecla" aria-live="polite">
+            <p class="eyebrow" id="info-tipo">Clique em uma tecla</p>
+            <p class="grande" id="info-nome">Teclado</p>
+            <p id="info-texto">Cada tecla tem um trabalho. As letras escrevem, e as teclas com nomes fazem coisas especiais.</p>
+            <button class="ouvir" type="button" id="info-ouvir">Ouvir</button>
+          </div>
+          <div class="panel jogo-ache">
+            <h3>Missão: ache a tecla</h3>
+            <p id="ache-pede">Aperte o botão para começar.</p>
+            <p class="small muted" id="ache-placar"></p>
+            <button class="btn" type="button" id="ache-comecar">Começar</button>
+            <p class="feedback" id="ache-fb" role="status"></p>
+          </div>
+        </div>
+      </div>
+      <h3 class="titulo-chips">Onde fica a tecla?</h3>
+      <div class="chips" id="chips-teclas" role="group" aria-label="Mostrar uma tecla no teclado 3D"></div>
+    </section>
+
+    <!-- 3. Shift e Fixa -->
+    <section class="licao" id="shift" data-missao="shift">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">3</span>
+        <h2>Letra grande: Shift e Fixa</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <ul class="cartoes3">
+          <li class="c-verde"><b>Shift</b> Segure o <kbd>Shift</kbd> e aperte uma letra: ela sai grande, como o A de Ana. Com números, ele escreve o símbolo de cima, como o ponto de exclamação.</li>
+          <li class="c-amarelo"><b>Fixa (Caps Lock)</b> Aperte uma vez e todas as letras ficam grandes. Uma luzinha acende no teclado. Aperte de novo para voltar às letras pequenas.</li>
+        </ul>
+      </div>
+      <div class="pratica">
+        <h3>Missão: escreva as palavras</h3>
+        <p class="luz-fixa"><span class="luz" id="luz-fixa" aria-hidden="true"></span> <span id="texto-fixa">Fixa desligada</span></p>
+        <div class="digitar">
+          <label for="shift-1">Escreva <b class="modelo">Ana</b> usando o Shift só no A</label>
+          <input id="shift-1" type="text" autocomplete="off" spellcheck="false" data-alvo="Ana">
+          <label for="shift-2">Ligue a Fixa e escreva <b class="modelo">SOL</b></label>
+          <input id="shift-2" type="text" autocomplete="off" spellcheck="false" data-alvo="SOL">
+          <label for="shift-3">Escreva <b class="modelo">Oi!</b> (o ponto de exclamação é Shift + 1)</label>
+          <input id="shift-3" type="text" autocomplete="off" spellcheck="false" data-alvo="Oi!">
+        </div>
+        <p class="feedback" id="shift-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 4. Acentos -->
+    <section class="licao" id="acentos" data-missao="acento">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">4</span>
+        <h2>Como colocar acento</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>No computador, o acento vem <b>antes</b> da letra. Aperte a tecla do acento, solte, e depois aperte a letra. Na tela ainda não aparece nada quando você aperta o acento: ele espera a letra.</p>
+        <div class="receitas">
+          <div class="receita"><kbd>´</kbd><span>depois</span><kbd>a</kbd><span>=</span><b>á</b></div>
+          <div class="receita"><kbd>~</kbd><span>depois</span><kbd>a</kbd><span>=</span><b>ã</b></div>
+          <div class="receita"><kbd>Shift</kbd><span>+</span><kbd>~</kbd><span>depois</span><kbd>o</kbd><span>=</span><b>ô</b></div>
+          <div class="receita"><kbd>Shift</kbd><span>+</span><kbd>´</kbd><span>depois</span><kbd>a</kbd><span>=</span><b>à</b></div>
+          <div class="receita"><kbd>ç</kbd><span>tem tecla própria, ao lado do L</span></div>
+        </div>
+        <p>A tecla do acento agudo <kbd>´</kbd> fica ao lado do P. A tecla do til <kbd>~</kbd> fica ao lado do Ç. O chapéu <kbd>^</kbd> está na mesma tecla do til, por isso precisa do Shift.</p>
+      </div>
+      <div class="pratica">
+        <h3>Missão: escreva com acento</h3>
+        <p class="pede">Palavra <b id="acento-n">1</b> de 5: escreva <b class="palavra-grande" id="acento-palavra">pé</b></p>
+        <input id="acento-campo" class="campo-grande" type="text" autocomplete="off" spellcheck="false" aria-label="Escreva a palavra com acento">
+        <p class="small muted" id="acento-dica"></p>
+        <p class="feedback" id="acento-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 5. Ctrl -->
+    <section class="licao" id="ctrl" data-missao="ctrl">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">5</span>
+        <h2>Ctrl: copiar, colar e desfazer</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>O <kbd>Ctrl</kbd> fica no canto de baixo do teclado. Sozinho ele não faz nada. Segure o Ctrl e aperte outra tecla para fazer um atalho.</p>
+        <ul class="cartoes3">
+          <li class="c-verde"><b>Ctrl + C</b> Copia. O computador guarda o que você escolheu.</li>
+          <li class="c-amarelo"><b>Ctrl + V</b> Cola. O que foi guardado aparece onde está o cursor.</li>
+          <li class="c-vermelho"><b>Ctrl + Z</b> Desfaz. Volta o último passo, quando algo dá errado.</li>
+        </ul>
+        <p>Para escolher um texto, segure o botão esquerdo do mouse e arraste por cima dele. Ou aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> para escolher tudo.</p>
+      </div>
+      <div class="pratica">
+        <h3>Missão: copie e cole</h3>
+        <ol class="passos-texto">
+          <li>Clique na caixa amarela e aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> para escolher a palavra.</li>
+          <li>Aperte <kbd>Ctrl</kbd> + <kbd>C</kbd> para copiar.</li>
+          <li>Clique na caixa branca e aperte <kbd>Ctrl</kbd> + <kbd>V</kbd> para colar.</li>
+        </ol>
+        <div class="copiar-colar">
+          <input id="ctrl-origem" class="campo-grande origem" type="text" value="COMPUTADOR" readonly aria-label="Palavra para copiar">
+          <input id="ctrl-destino" class="campo-grande" type="text" autocomplete="off" aria-label="Cole a palavra aqui">
+        </div>
+        <ol class="passos" id="ctrl-passos"><li>Ctrl + A</li><li>Ctrl + C</li><li>Ctrl + V</li></ol>
+        <p class="feedback" id="ctrl-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 6. Tab -->
+    <section class="licao" id="tab" data-missao="tab">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">6</span>
+        <h2>Tab: pular para a próxima caixa</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>A tecla <kbd>Tab</kbd> fica do lado esquerdo, acima da Fixa. Ela pula para a próxima caixa ou o próximo botão, sem precisar do mouse. Com <kbd>Shift</kbd> + <kbd>Tab</kbd>, você volta uma caixa.</p>
+      </div>
+      <div class="pratica">
+        <h3>Missão: preencha usando o Tab</h3>
+        <p class="pede">Escreva na primeira caixa, aperte Tab, escreva na segunda, aperte Tab de novo e escreva na terceira.</p>
+        <div class="tres-caixas">
+          <label>Uma fruta <input id="tab-1" type="text" autocomplete="off"></label>
+          <label>Um animal <input id="tab-2" type="text" autocomplete="off"></label>
+          <label>Uma cor <input id="tab-3" type="text" autocomplete="off"></label>
+        </div>
+        <p class="feedback" id="tab-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 7. Esc -->
+    <section class="licao" id="esc" data-missao="esc">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">7</span>
+        <h2>Esc: a tecla de sair</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>O <kbd>Esc</kbd> fica no canto de cima, do lado esquerdo. Ele serve para sair: fecha janelinhas e menus, cancela o que você estava fazendo e tira o vídeo da tela cheia.</p>
+      </div>
+      <div class="pratica">
+        <h3>Missão: feche a janela com o Esc</h3>
+        <button class="btn" type="button" id="esc-abrir">Abrir a janela</button>
+        <p class="feedback" id="esc-fb" role="status"></p>
+      </div>
+      <dialog class="janela" id="esc-janela" aria-labelledby="esc-titulo">
+        <div class="janela-barra"><span id="esc-titulo">Janela de treino</span></div>
+        <div class="janela-corpo">
+          <p class="grande-txt">Aperte a tecla <kbd>Esc</kbd> para fechar esta janela.</p>
+          <p class="small muted">Sem teclado? <button type="button" class="link" id="esc-fechar">Fechar com o mouse</button></p>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- 8. Print -->
+    <section class="licao" id="print" data-missao="print">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">8</span>
+        <h2>Print: tirar foto da tela</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>Tirar print é tirar uma foto de tudo o que aparece na tela. Existem dois jeitos no Windows:</p>
+        <ul class="cartoes3">
+          <li class="c-verde"><b>Tela inteira</b> Aperte a tecla <kbd>PrtSc</kbd>, no alto do teclado, à direita. Às vezes ela se chama Print Screen ou PrtScn.</li>
+          <li class="c-amarelo"><b>Só um pedaço</b> Aperte <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> juntos e arraste o mouse por cima da parte que você quer.</li>
+          <li class="c-vermelho"><b>Onde a foto vai</b> Ela fica guardada. Abra o Paint ou uma mensagem e aperte <kbd>Ctrl</kbd> + <kbd>V</kbd> para colar.</li>
+        </ul>
+      </div>
+      <div class="pratica">
+        <h3>Missão: tire um print</h3>
+        <p class="pede">Aperte a tecla <kbd>PrtSc</kbd> agora. Se o computador não mostrar nada, tudo bem: a foto foi guardada mesmo assim.</p>
+        <button class="btn ghost" type="button" id="print-feito">Já tirei o print</button>
+        <p class="feedback" id="print-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 9. Volume -->
+    <section class="licao" id="volume" data-missao="volume">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">9</span>
+        <h2>Volume: som alto e baixo</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>Para mudar o som, procure o desenho de um alto-falante. Ele aparece em três lugares:</p>
+        <ul class="cartoes3">
+          <li class="c-verde"><b>No teclado</b> Teclas com o desenho do alto-falante: uma aumenta, outra diminui e outra deixa mudo. Em muitos notebooks, é preciso segurar a tecla <kbd>Fn</kbd> junto.</li>
+          <li class="c-amarelo"><b>Na barra de baixo</b> Clique no alto-falante, perto do relógio, e arraste a barrinha.</li>
+          <li class="c-vermelho"><b>No vídeo</b> Vídeos também têm o seu próprio alto-falante, embaixo da imagem.</li>
+        </ul>
+      </div>
+      <div class="pratica">
+        <h3>Missão: deixe o som bem alto e depois bem baixo</h3>
+        <div class="volume-caixa">
+          <button class="btn" type="button" id="som-tocar">Tocar música</button>
+          <label class="vol-rot" for="vol">Volume <b id="vol-n">50</b></label>
+          <div class="vol-linha">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 12h6l8-6v20l-8-6H5z" fill="currentColor"/></svg>
+            <input type="range" id="vol" min="0" max="100" value="50" step="5">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 12h6l8-6v20l-8-6H3z" fill="currentColor"/><path d="M21 11c2 2.5 2 7.5 0 10M25 7c4.5 4.5 4.5 13.5 0 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <ol class="passos" id="vol-passos"><li>Tocar</li><li>Bem alto</li><li>Bem baixo</li></ol>
+        <p class="feedback" id="vol-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 10. Programas -->
+    <section class="licao" id="programas" data-missao="programas">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">10</span>
+        <h2>Os principais programas</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <p>Programa é uma ferramenta dentro do computador. Cada um serve para uma coisa. Para abrir, clique no botão Iniciar, no canto de baixo, e procure o nome.</p>
+        <ul class="programas">
+          <li><svg viewBox="0 0 48 48" role="img" aria-label="Desenho de um globo"><circle cx="24" cy="24" r="18" fill="#9fdab4" stroke="#111" stroke-width="2.5"/><path d="M6 24h36M24 6c-8 9-8 27 0 36M24 6c8 9 8 27 0 36" fill="none" stroke="#111" stroke-width="2"/></svg><b>Navegador</b><span>Abre sites e vídeos da internet. Exemplos: Chrome e Edge.</span></li>
+          <li><svg viewBox="0 0 48 48" role="img" aria-label="Desenho de uma paleta de pintura"><path d="M24 6C13 6 6 14 6 23c0 9 7 15 13 15 4 0 3-5 6-5h5c7 0 12-4 12-11C42 13 34 6 24 6z" fill="#fff36b" stroke="#111" stroke-width="2.5"/><circle cx="16" cy="20" r="3" fill="#c8323f"/><circle cx="25" cy="14" r="3" fill="#1f8a4c"/><circle cx="33" cy="20" r="3" fill="#111"/></svg><b>Paint</b><span>Serve para desenhar e pintar. Também dá para colar um print nele.</span></li>
+          <li><svg viewBox="0 0 48 48" role="img" aria-label="Desenho de uma folha com linhas de texto"><rect x="10" y="5" width="28" height="38" rx="3" fill="#fff" stroke="#111" stroke-width="2.5"/><path d="M16 15h16M16 21h16M16 27h16M16 33h10" stroke="#111" stroke-width="2"/></svg><b>Editor de texto</b><span>Para escrever trabalhos e cartas. Exemplos: Word, Google Docs e Bloco de Notas.</span></li>
+          <li><svg viewBox="0 0 48 48" role="img" aria-label="Desenho de uma pasta amarela"><path d="M5 14h14l4 5h20v20H5z" fill="#f2cf1d" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/></svg><b>Explorador de Arquivos</b><span>Mostra as pastas e os arquivos guardados no computador.</span></li>
+          <li><svg viewBox="0 0 48 48" role="img" aria-label="Desenho de uma calculadora"><rect x="11" y="5" width="26" height="38" rx="4" fill="#f2a9b3" stroke="#111" stroke-width="2.5"/><rect x="15" y="9" width="18" height="8" fill="#fff" stroke="#111" stroke-width="1.5"/><g fill="#111"><circle cx="18" cy="24" r="2"/><circle cx="24" cy="24" r="2"/><circle cx="30" cy="24" r="2"/><circle cx="18" cy="31" r="2"/><circle cx="24" cy="31" r="2"/><circle cx="30" cy="31" r="2"/><circle cx="18" cy="38" r="2"/><circle cx="24" cy="38" r="2"/><circle cx="30" cy="38" r="2"/></g></svg><b>Calculadora</b><span>Faz contas de mais, menos, vezes e dividir.</span></li>
+          <li><svg viewBox="0 0 48 48" role="img" aria-label="Desenho de blocos de encaixar, como os de programação"><path d="M6 10h10l2 3h4l2-3h18v10H24l-2 3h-4l-2-3H6z" fill="#f2cf1d" stroke="#111" stroke-width="2"/><path d="M6 26h10l2 3h4l2-3h18v10H24l-2 3h-4l-2-3H6z" fill="#9fdab4" stroke="#111" stroke-width="2"/></svg><b>Scratch</b><span>Para criar jogos e animações encaixando blocos. É o primeiro passo da programação.</span></li>
+        </ul>
+        <p>Quer treinar o mouse desenhando? Abra o <a href="../paint.html">Paint do site</a>.</p>
+      </div>
+      <div class="pratica">
+        <h3>Missão: qual programa usar?</h3>
+        <p class="pede" id="quiz-pergunta"></p>
+        <div class="quiz-opcoes" id="quiz-opcoes" role="group" aria-labelledby="quiz-pergunta"></div>
+        <p class="small muted" id="quiz-placar"></p>
+        <p class="feedback" id="quiz-fb" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 11. Desligar -->
+    <section class="licao" id="desligar" data-missao="desligar">
+      <div class="licao-cab">
+        <span class="num" aria-hidden="true">11</span>
+        <h2>Como desligar o computador</h2>
+        <button class="ouvir" type="button">Ouvir</button>
+      </div>
+      <div class="falar">
+        <ol class="passos-texto grandes">
+          <li>Salve o que você fez e feche os programas.</li>
+          <li>Clique no botão <b>Iniciar</b>, no canto de baixo da tela.</li>
+          <li>Clique no botão <b>Energia</b>: é um círculo com um risquinho em cima.</li>
+          <li>Clique em <b>Desligar</b> e espere a tela apagar sozinha.</li>
+        </ol>
+        <p>Não tire o computador da tomada nem segure o botão de ligar para desligar. Se ele travar, peça ajuda para um adulto.</p>
+      </div>
+      <div class="pratica">
+        <h3>Missão: desligue o computador de brinquedo</h3>
+        <div class="pc-falso" id="pc-falso">
+          <div class="tela-falsa" id="tela-falsa">
+            <div class="area-trabalho">
+              <span class="icone-falso"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 14h14l4 5h20v20H5z" fill="#f2cf1d" stroke="#111" stroke-width="2.5"/></svg>Minhas coisas</span>
+            </div>
+            <div class="menu-iniciar" id="menu-iniciar" hidden>
+              <p class="small">Programas</p>
+              <span class="item-falso">Navegador</span><span class="item-falso">Paint</span><span class="item-falso">Calculadora</span>
+              <div class="menu-baixo">
+                <button type="button" class="energia" id="btn-energia" aria-label="Energia" aria-expanded="false"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4v11" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M9.5 8.5a10 10 0 1 0 13 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+                <div class="menu-energia" id="menu-energia" hidden>
+                  <button type="button" class="item-falso" id="btn-suspender">Suspender</button>
+                  <button type="button" class="item-falso" id="btn-desligar">Desligar</button>
+                  <button type="button" class="item-falso" id="btn-reiniciar">Reiniciar</button>
+                </div>
+              </div>
+            </div>
+            <div class="barra-falsa">
+              <button type="button" class="iniciar-falso" id="btn-iniciar" aria-expanded="false" aria-label="Iniciar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg></button>
+              <span class="relogio-falso">10:30</span>
+            </div>
+            <div class="tela-apagada" id="tela-apagada" hidden><p>Desligando...</p></div>
+          </div>
+        </div>
+        <button class="btn ghost" type="button" id="pc-ligar" hidden>Ligar de novo</button>
+        <p class="feedback" id="desligar-fb" role="status"></p>
+      </div>
+    </section>
+
+    <section class="parabens" id="parabens" hidden aria-live="polite">
+      <h2>Parabéns! Você completou todas as missões.</h2>
+      <p>Agora você já sabe usar o mouse, o teclado e os principais programas. Que tal jogar um pouco?</p>
+      <a class="btn grande" href="../jogos/">Ir para os jogos</a>
+    </section>
+
+    <details class="prof adultos">
+      <summary>Para pais, mães e professores</summary>
+      <ul>
+        <li>As explicações seguem o teclado brasileiro ABNT2 (com a tecla Ç) e o Windows. Em computadores Mac, o Ctrl dos atalhos é a tecla Command.</li>
+        <li>As missões são salvas só neste navegador, sem cadastro e sem enviar nada. O botão "Recomeçar as missões", no fim da página, apaga tudo.</li>
+        <li>O botão "Ouvir" usa a voz do próprio navegador. Ele ajuda quem ainda está aprendendo a ler.</li>
+        <li>Sugestão de uso: uma lição por dia, com a criança no comando do mouse e o adulto ao lado. O teclado 3D funciona também em tablets, para mostrar onde ficam as teclas.</li>
+        <li>Na BNCC Computação, estas atividades apoiam o uso de tecnologias digitais nos anos iniciais do Ensino Fundamental. Mais materiais no <a href="../material-didatico/">Material didático</a>.</li>
+      </ul>
+      <button class="btn ghost" type="button" id="recomecar">Recomeçar as missões</button>
+    </details>
+
+    <footer class="rodape-al">
+      <p>Página gratuita criada por <a href="../curriculo/">Júlia Roberta Quoos Alves</a>, professora de Computação. As missões ficam salvas só neste aparelho.</p>
+      <p>Mais atividades: <a href="../jogos/">Jogos para estudantes</a> · <a href="../material-didatico/">Material didático para professores</a></p>
+    </footer>
+  </div>
+</main>
+
+<script type="module" src="computador.js"></script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
