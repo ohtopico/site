@@ -10,5 +10,5 @@ P=_privado/premium
 python3 _fonte/premium/editaveis/slides_pptx.py --gerador "$SLIDES" --fontes "$FONTES" --saida $P/arquivos/slides
 python3 _fonte/premium/editaveis/apostila_docx.py "$APOSTILA/saida/miolo.html" $P/arquivos/apostila
 python3 _fonte/premium/editaveis/planejamento_docx.py $P/arquivos/planejamento
-python3 _fonte/premium/editaveis/mesada_html.py $P/mesada-pro.html $P/arquivos/jogos
-python3 _fonte/premium/proteger.py --site . --fontes $P
+python3 _fonte/premium/editaveis/jogo_html.py $P/arquivos/jogos $P/mesada-pro.html $P/treine-a-maquina.html
+python3 _fonte/premium/proteger.py --site . --fontes $P "$@"   # sh gerar.sh --novas-senhas troca as senhas do mês

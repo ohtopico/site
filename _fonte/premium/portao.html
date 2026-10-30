@@ -11,44 +11,62 @@
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{CSS}}">
 <style>
-  .portao { max-width: 440px; margin: 12vh auto 0; border: 1.5px solid var(--ink); border-radius: 28px; padding: 30px 26px; background: var(--paper); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
+  .portao { max-width: 460px; margin: 12vh auto 0; border: 1.5px solid var(--ink); border-radius: 28px; padding: 30px 26px; background: var(--paper); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
   .portao h1 { font-size: 34px; margin: 0 0 8px; }
   .portao input { width: 100%; box-sizing: border-box; border: 1.5px solid var(--ink); border-radius: 14px; padding: 12px; font-size: 20px; text-align: center; margin: 14px 0 12px; background: var(--paper); color: var(--ink); }
   .portao .btn { width: 100%; }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <main class="wrap">
   <form class="portao" id="f">
     <h1>Área premium</h1>
-    <p class="muted">Conteúdo exclusivo para apoiadores do Catarse. Digite a senha que você recebeu.</p>
+    <p class="muted" id="msg">Conteúdo exclusivo para apoiadores do Catarse. Digite a senha do seu plano, que chegou na mensagem do Catarse.</p>
     <label class="sr-only" for="s">Senha</label>
     <input id="s" type="password" autocomplete="current-password" required>
     <button class="btn" type="submit" id="b">Entrar</button>
     <p class="feedback" id="fb" role="status"></p>
-    <p class="small muted">Ainda não apoia? <a href="https://www.catarse.com.br/ohtopico/plans" rel="noopener">Conheça os planos no Catarse</a>.</p>
+    <p class="small muted" id="voltar" hidden><a href="/premium/">Ir para a área premium do seu plano</a></p>
+    <p class="small muted">Ainda não apoia ou quer mudar de plano? <a href="https://www.catarse.com.br/ohtopico/plans" rel="noopener">Veja os planos no Catarse</a>.</p>
     <p class="small muted"><a href="/">Voltar para o ohtopico</a></p>
   </form>
 </main>
 <script>
 (function () {
-  const SAL = '{{SAL}}', NONCE = '{{NONCE}}', DADOS = '{{DADOS}}', ITER = {{ITER}};
+  const SAL = '{{SAL}}', ITER = {{ITER}}, NIVEIS = {{NIVEIS}}, PLANOS = {{PLANOS_JSON}};
+  const MINIMO = {{MINIMO}}, IV = '{{IV}}', DADOS = '{{DADOS}}', CHAVE = 'ohtopico:premium';
   const bin = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
-  async function abrir(senha) {
+  const fb = document.getElementById('fb'), msg = document.getElementById('msg');
+  async function chaveiroDaSenha(senha) {
     const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']);
-    const chave = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: bin(SAL), iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
-    const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(NONCE) }, chave, bin(DADOS)));
-    try { sessionStorage.setItem('ohtopico:premium', senha); } catch (e) {}
+    const k = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: bin(SAL), iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    for (const n of NIVEIS) {
+      try { return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(n.iv) }, k, bin(n.d)))); }
+      catch (e) { /* não é o chaveiro desta senha */ }
+    }
+    throw new Error('senha');
+  }
+  async function abrir(chaveiro) {
+    if (!chaveiro.chaves[MINIMO]) {
+      msg.innerHTML = 'Este material é do plano <b>' + PLANOS[MINIMO] + '</b> ou acima. Seu plano é <b>' + PLANOS[chaveiro.nivel] + '</b>.';
+      document.getElementById('voltar').hidden = false; document.getElementById('f').hidden = false;
+      fb.textContent = ''; return;
+    }
+    const k = await crypto.subtle.importKey('raw', bin(chaveiro.chaves[MINIMO]), 'AES-GCM', false, ['decrypt']);
+    const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(IV) }, k, bin(DADOS)));
     document.open(); document.write(html); document.close();
   }
-  const fb = document.getElementById('fb');
   document.getElementById('f').onsubmit = async e => {
     e.preventDefault(); fb.textContent = 'Conferindo…'; fb.className = 'feedback';
-    try { await abrir(document.getElementById('s').value); }
-    catch (err) { fb.textContent = 'Senha incorreta. Confira a mensagem do Catarse.'; fb.className = 'feedback bad'; }
+    let chaveiro;
+    try { chaveiro = await chaveiroDaSenha(document.getElementById('s').value); }
+    catch (err) { fb.textContent = 'Senha incorreta. Confira a mensagem mais recente do Catarse: as senhas mudam todo mês.'; fb.className = 'feedback bad'; return; }
+    try { sessionStorage.setItem(CHAVE, JSON.stringify(chaveiro)); } catch (err) {}
+    abrir(chaveiro).catch(() => { fb.textContent = 'Não foi possível abrir. Recarregue a página.'; fb.className = 'feedback bad'; });
   };
-  let salva = null; try { salva = sessionStorage.getItem('ohtopico:premium'); } catch (e) {}
-  if (salva) abrir(salva).catch(() => { try { sessionStorage.removeItem('ohtopico:premium'); } catch (e) {} });
+  let salvo = null; try { salvo = JSON.parse(sessionStorage.getItem(CHAVE)); } catch (e) {}
+  if (salvo && salvo.chaves) { document.getElementById('f').hidden = true; abrir(salvo).catch(() => { try { sessionStorage.removeItem(CHAVE); } catch (e) {} location.reload(); }); }
   else document.getElementById('s').focus();
 })();
 </script>

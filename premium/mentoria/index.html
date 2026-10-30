@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Área premium · ohtopico</title>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<style>
+  .portao { max-width: 460px; margin: 12vh auto 0; border: 1.5px solid var(--ink); border-radius: 28px; padding: 30px 26px; background: var(--paper); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
+  .portao h1 { font-size: 34px; margin: 0 0 8px; }
+  .portao input { width: 100%; box-sizing: border-box; border: 1.5px solid var(--ink); border-radius: 14px; padding: 12px; font-size: 20px; text-align: center; margin: 14px 0 12px; background: var(--paper); color: var(--ink); }
+  .portao .btn { width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <form class="portao" id="f">
+    <h1>Área premium</h1>
+    <p class="muted" id="msg">Conteúdo exclusivo para apoiadores do Catarse. Digite a senha do seu plano, que chegou na mensagem do Catarse.</p>
+    <label class="sr-only" for="s">Senha</label>
+    <input id="s" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit" id="b">Entrar</button>
+    <p class="feedback" id="fb" role="status"></p>
+    <p class="small muted" id="voltar" hidden><a href="/premium/">Ir para a área premium do seu plano</a></p>
+    <p class="small muted">Ainda não apoia ou quer mudar de plano? <a href="https://www.catarse.com.br/ohtopico/plans" rel="noopener">Veja os planos no Catarse</a>.</p>
+    <p class="small muted"><a href="/">Voltar para o ohtopico</a></p>
+  </form>
+</main>
+<script>
+(function () {
+  const SAL = '+L/AbxB/mva8VTIU0gY0pA==', ITER = 250000, NIVEIS = [{"iv": "JiztpnVl6aqjdD/u", "d": "4wJrwMALWsqDYtRE4+n5erm3d750Qu9lf7tWmU/sBTV3VIspahw6k/euMymJBJUkoaG+Wu+ae+rlAtCp+8lu30gVnUoGJJZD8FKn3YVgZakhhWpppM7yNZLRjju/XwhyunUOzO5Y3vyCMYHLoOsFBm9BnR3pGeiZeGQLBz2UGZiD17pNpLch+PePKlSB/gQkPXM+D/AfIJaz7VAeG8T17EaNdXndDDSoZ4yxAfzQkkCKR4NmlUXS7Kv3sKBscV+b0egw0B74KQ=="}, {"iv": "lGQN6IAt2k1RdeyG", "d": "b7Y/4dalafofAVUAEKCpZGZi6zktN5pIRsXvl1PHRTHzgP2XDqgwOWmhgnR1QP8aQbz/SUUFRt3Y6tKWqqhEcnt8K+uMLh1YHX/5CakId/aKF5hGiCx2p4YG00yZkY5Ug/FLhb+UYKYvafi+PO9JrMhkKg0Tgv/fx17dZCxfNm7Gz6JBzRiNmQ0sCBoepkK2c7IPA+e0BAv5O1zwGpGnT64gFh2roLtmNHQr10oFWY9mYhHCyfiBn79Gt9k3SiEC4lEn0K4JlIl877qi7POfkKdj2MzVr0/8a4yK6SETPnLcpQ4A7K4JVp+QUFjRXTVsm+G3wHK62vT6mhwu"}, {"iv": "7zLGbi6rW9I1wpxT", "d": "FOwOkogsXlByDF9zqdmDtskMySjqOxonZKqFL49JW3ujyeBRIRi8UYBIoUGuNddUFX+hWJfMhU+loFQDRx8wRZVEVob5iMdKClIkJqVxGG99e9/0INkT8N42tDag"}, {"iv": "x3nGdHwhHWpL1Ndl", "d": "nxgmqCrx84lvdvXpxxG+DzlKrxC1nV7K83A1+GGw3sNrgyJXWLGxml2Nme497MNOk0wgOuBLGKbhdu5RJ4Qf5WdOOYpdzvYGwEmU6IU1QO65RDSfrCo16imPje2Nde+WOnuf1AF6uL0vyBNuBrcITxe61kvPo4Ze0G6oIFvzOGGXPQqdltFExo4TOYeSDTPTl0iU3lZrOZSjU3Hyi+mRol1LRwauKMwds1sFH+tHVYzXG+n2HqM4qur13LLXrkAynGmFbdJ6F+ABc2SA4D2h5IbZ10eJ2QXJFt+0B+xEbtWL06Fsxj33D4wfUK5kBZ9SKFplUMdWSGM3kfJLGDZ7eg3d+UqhEX9WoCU1eWoNqypOaEpqHW6+S5JEtpNCo+dNXVgoIX5tphzHC0pAe+W7Cf8="}, {"iv": "eMzi9FodnnHE4bc8", "d": "kTN9HxX64M2YZ/ruJb7Z77FdjXMiudT7sntyWsT0zl8uIlRdqRrhlMLJNn5bI6FWy+jsJLK0zyXz1QRzIq8UAqSjrUuXN8RtJDEU88j4albUo61qXb5Bc10SXcJ+lfJ00LoumzPCf9bJuIFa+fITh4WyIEDxCYF4A/1S1Fyr7Vr7Gh6+NOr2NfpIXY212xyjIVg="}], PLANOS = {"1": "Apoiador entusiasta", "2": "Educador na prática", "3": "Educador criativo", "4": "Educador maker", "5": "Comunidade & mentoria"};
+  const MINIMO = 5, IV = 'BvTVJ0hf888jZ0Dr', DADOS = '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', CHAVE = 'ohtopico:premium';
+  const bin = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+  const fb = document.getElementById('fb'), msg = document.getElementById('msg');
+  async function chaveiroDaSenha(senha) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']);
+    const k = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: bin(SAL), iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    for (const n of NIVEIS) {
+      try { return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(n.iv) }, k, bin(n.d)))); }
+      catch (e) { /* não é o chaveiro desta senha */ }
+    }
+    throw new Error('senha');
+  }
+  async function abrir(chaveiro) {
+    if (!chaveiro.chaves[MINIMO]) {
+      msg.innerHTML = 'Este material é do plano <b>' + PLANOS[MINIMO] + '</b> ou acima. Seu plano é <b>' + PLANOS[chaveiro.nivel] + '</b>.';
+      document.getElementById('voltar').hidden = false; document.getElementById('f').hidden = false;
+      fb.textContent = ''; return;
+    }
+    const k = await crypto.subtle.importKey('raw', bin(chaveiro.chaves[MINIMO]), 'AES-GCM', false, ['decrypt']);
+    const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bin(IV) }, k, bin(DADOS)));
+    document.open(); document.write(html); document.close();
+  }
+  document.getElementById('f').onsubmit = async e => {
+    e.preventDefault(); fb.textContent = 'Conferindo…'; fb.className = 'feedback';
+    let chaveiro;
+    try { chaveiro = await chaveiroDaSenha(document.getElementById('s').value); }
+    catch (err) { fb.textContent = 'Senha incorreta. Confira a mensagem mais recente do Catarse: as senhas mudam todo mês.'; fb.className = 'feedback bad'; return; }
+    try { sessionStorage.setItem(CHAVE, JSON.stringify(chaveiro)); } catch (err) {}
+    abrir(chaveiro).catch(() => { fb.textContent = 'Não foi possível abrir. Recarregue a página.'; fb.className = 'feedback bad'; });
+  };
+  let salvo = null; try { salvo = JSON.parse(sessionStorage.getItem(CHAVE)); } catch (e) {}
+  if (salvo && salvo.chaves) { document.getElementById('f').hidden = true; abrir(salvo).catch(() => { try { sessionStorage.removeItem(CHAVE); } catch (e) {} location.reload(); }); }
+  else document.getElementById('s').focus();
+})();
+</script>
+</body>
+</html>
