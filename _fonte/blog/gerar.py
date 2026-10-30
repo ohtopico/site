@@ -152,12 +152,16 @@ def laterais(atual):
     navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Mentoria', '/mentoria/', 'mentoria'),
                ('◆', 'Formação continuada', '/formacao-continuada/', 'formacao'),
                ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
-               ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia'),
-               ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''), ('▲', 'Material didático', '/material-didatico/', ''),
                ('☺', 'Currículo', '/curriculo/', '')]
+    projetos = [('▲', 'Material didático', '/material-didatico/', ''),
+                ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
+                ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia')]
     atual_attr = ' aria-current="page"'
-    nav = ''.join(f'<li><a href="{h}"{atual_attr if c and c == atual else ""}><span aria-hidden="true">{ic}</span> {n}</a></li>'
-                  for ic, n, h, c in navegue)
+
+    def lista(itens):
+        return ''.join(f'<li><a href="{h}"{atual_attr if c and c == atual else ""}><span aria-hidden="true">{ic}</span> {n}</a></li>'
+                       for ic, n, h, c in itens)
+    nav = lista(navegue)
     esquerda = f'''<aside class="lateral lateral-esq" aria-label="Menu do blog">
             <section class="caixa caixa-amarela">
                 <h2 class="caixa-titulo">★ Navegue</h2>
@@ -173,7 +177,11 @@ def laterais(atual):
                 <ul class="lista-recentes">{recentes}</ul>
             </section>
         </aside>'''
-    direita = '''<aside class="lateral lateral-dir" aria-label="Sobre a autora">
+    direita = f'''<aside class="lateral lateral-dir" aria-label="Projetos e sobre a autora">
+            <nav class="caixa caixa-verde caixa-projetos" aria-label="Projetos">
+                <h2 class="caixa-titulo">★ Projetos</h2>
+                <ul class="lista-menu">{lista(projetos)}</ul>
+            </nav>
             <section class="caixa">
                 <h2 class="caixa-titulo">★ Quem escreve</h2>
                 <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
