@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viagem com Câmbio · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de conversão de moedas: viaje por cinco países, converta reais em dólar, euro, libra, peso e iene, compre lembranças com orçamento e compare casa de câmbio e cartão. BNCC EF07MA12, EF07MA17, EF08MA04, EF09MA07.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/cambio.html">
+<meta property="og:title" content="Viagem com Câmbio · Material didático">
+<meta property="og:description" content="Jogo de conversão de moedas: viaje por cinco países, converta reais em dólar, euro, libra, peso e iene, compre lembranças com orçamento e compare casa de câmbio e cartão. BNCC EF07MA12, EF07MA17, EF08MA04, EF09MA07.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/cambio.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; height: auto; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+  .tab { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0; }
+  .tab th, .tab td { border-bottom: 1px solid var(--line); padding: 7px 9px; }
+  .tab th, .tab td { text-align: left; }
+  .tab .vl { text-align: right; white-space: nowrap; }
+  .tabwrap { overflow-x: auto; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); }
+  .center { text-align: center; }
+  .painel { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .painel div { border: 1.5px solid var(--ink); border-radius: 16px; padding: 8px 12px; background: var(--paper); font-size: 14px; }
+  .painel b { display: block; font-family: var(--display); font-size: 22px; }
+  .rota { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 4px 0 12px; padding: 0; list-style: none; }
+  .rota li { border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 12px; font-size: 14px; background: var(--paper); }
+  .rota li.agora { background: #fff36b; color: #111; font-weight: 600; }
+  .rota li.feito { background: var(--ok-soft); }
+  .cotacao { border: 2px dashed var(--ink); border-radius: 18px; padding: 10px 16px; background: var(--paper-2); text-align: center; max-width: 520px; margin: 0 auto 8px; }
+  .cotacao b { font-family: var(--display); font-size: 24px; display: block; }
+  .ofertas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto 10px; }
+  .ofertas .box h3 { font-size: 18px; margin: 0 0 4px; }
+  .ofertas .box p { margin: 2px 0; font-size: 15px; }
+  .regra { font-size: 14px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você vai visitar cinco países e levou <strong>R$ 400,00</strong> para comprar lembranças. Em cada parada aparece a <strong>cotação</strong> do dia, que diz quanto a moeda do país vale em reais.</p>
+    <p>Em cada país são três desafios: descobrir quanto custa uma lembrança em reais (e decidir se compra), calcular quanto dinheiro você recebe ao trocar reais pela moeda local e escolher a forma de pagamento mais vantajosa.</p>
+    <p class="regra"><strong>Regra rápida:</strong> se a cotação diz quantos reais vale 1 unidade da moeda (1 dólar = R$ 5,40), para passar da moeda para reais você <strong>multiplica</strong> e para passar de reais para a moeda você <strong>divide</strong>. Se a cotação diz quanto 1 real compra (R$ 1,00 = 220 pesos), é o contrário.</p>
+    <p class="small muted">As cotações e taxas do jogo são valores de exemplo, arredondados para facilitar as contas. Antes de uma viagem de verdade, consulte a cotação do dia.</p>
+  </details>
+  <div class="game-stage">
+    <div class="hud"><span>País <b id="pn">1</b> de 5</span><span>Contas certas <b id="ok">0</b></span><span>Lembranças <b id="lem">0</b></span></div>
+    <ul class="rota" id="rota" aria-label="Roteiro da viagem"></ul>
+    <div class="painel"><div>Orçamento para lembranças<b id="saldo"></b></div><div>Gasto em lembranças<b id="gasto"></b></div><div>Economia nas escolhas de pagamento<b id="eco"></b></div></div>
+    <div id="cot"></div>
+    <div id="etapa"></div>
+    <p class="feedback center" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('cambio');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pick = a => a[ri(0, a.length - 1)];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const c2 = v => Math.round(v * 100) / 100;
+  const num = (v, d) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const R$ = v => 'R$ ' + num(v, 2);
+  const ORCAMENTO = 400, TAXA_CARTAO = 0.04;
+  // tipo 'r': cotação em reais por 1 unidade da moeda; tipo 'k': quantas unidades 1 real compra
+  const PAISES = [
+    { pais: 'Estados Unidos', moeda: 'dólar', plural: 'dólares', tipo: 'r', sim: 'US$ ', cot: [5.2, 5.4, 5.5, 5.6], item: 'um boné', preco: [15, 18, 20, 24] },
+    { pais: 'Portugal', moeda: 'euro', plural: 'euros', tipo: 'r', sim: '€ ', cot: [6, 6.2, 6.4], item: 'um azulejo pintado à mão', preco: [8, 10, 12, 15] },
+    { pais: 'Argentina', moeda: 'peso', plural: 'pesos', tipo: 'k', cot: [200, 220, 250], item: 'uma caixa de alfajores', preco: [12, 15, 18, 20] },
+    { pais: 'Reino Unido', moeda: 'libra', plural: 'libras', tipo: 'r', sim: '£ ', cot: [7, 7.2, 7.5], item: 'uma caneca', preco: [6, 8, 10] },
+    { pais: 'Japão', moeda: 'iene', plural: 'ienes', tipo: 'k', cot: [25, 28, 30], item: 'um leque', preco: [20, 25, 30, 40] }
+  ];
+  let p, ok, saldo, gasto, eco, compras, dia, registro;
+
+  // Valor na moeda do país: com símbolo (dólar, euro, libra) ou por extenso (peso, iene)
+  function fm(P, v) {
+    if (P.sim) return P.sim + num(v, 2);
+    return num(v, Number.isInteger(v) ? 0 : 2) + ' ' + (v === 1 ? P.moeda : P.plural);
+  }
+  function cotTxt(P, c) {
+    return P.tipo === 'r' ? `1 ${P.moeda} = ${R$(c)}` : `R$ 1,00 = ${num(c, 0)} ${P.plural}`;
+  }
+  function opcoes(certo, cands) {
+    let outros = [...new Set(cands.map(c2))].filter(v => v > 0 && Math.abs(v - certo) > 0.004);
+    [1.1, 0.9, 1.25, 0.8].forEach(f => outros.length < 3 && outros.push(c2(certo * f)));
+    return shuffle([certo, ...shuffle([...new Set(outros)]).slice(0, 3)]);
+  }
+  function painel() {
+    $('#pn').textContent = Math.min(p + 1, PAISES.length); $('#ok').textContent = ok; $('#lem').textContent = compras;
+    $('#saldo').textContent = R$(saldo); $('#gasto').textContent = R$(gasto); $('#eco').textContent = R$(eco);
+    $('#rota').innerHTML = PAISES.map((P, i) => `<li class="${i < p ? 'feito' : i === p ? 'agora' : ''}">${P.pais}</li>`).join('');
+  }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback center ' + (c || ''); }
+  function proximo(rotulo, fn) {
+    $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${rotulo}</button>`;
+    $('#nx').onclick = fn; $('#nx').focus();
+  }
+  // Pergunta de múltipla escolha; depois da resposta mostra a explicação e chama depois()
+  function pergunta(txt, certo, cands, mostra, explica, depois) {
+    const ops = opcoes(certo, cands);
+    $('#etapa').innerHTML = `<p class="q">${txt}</p>
+      <div class="opts" id="opts">${ops.map(v => `<button class="btn ghost" type="button" data-v="${v}">${mostra(v)}</button>`).join('')}</div>`;
+    let feito = false;
+    $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (feito) return; feito = true;
+      const acertou = Math.abs(+b.dataset.v - certo) < 0.005;
+      $('#opts').querySelectorAll('button').forEach(o => Math.abs(+o.dataset.v - certo) < 0.005 && o.classList.add('right'));
+      if (acertou) ok++; else b.classList.add('wrong');
+      painel();
+      fb((acertou ? 'Isso! ' : 'Não foi dessa vez. ') + explica, acertou ? 'ok' : 'bad');
+      depois();
+    });
+  }
+
+  function chegada() {
+    const P = PAISES[p];
+    dia = { cot: pick(P.cot) };
+    registro.push({ pais: P.pais, moeda: P.moeda, cot: cotTxt(P, dia.cot) });
+    painel(); fb(''); $('#actions').innerHTML = '';
+    $('#cot').innerHTML = `<div class="cotacao">Cotação do dia em ${P.pais}<b>${cotTxt(P, dia.cot)}</b></div>`;
+    lembranca();
+  }
+
+  // 1. Quanto custa a lembrança em reais?
+  function lembranca() {
+    const P = PAISES[p], c = dia.cot;
+    let local, reais, cands, explica;
+    if (P.tipo === 'r') {
+      local = pick(P.preco); reais = c2(local * c);
+      cands = [local / c, local * c * 10, local + c, local * (c + 1), local * c / 10];
+      explica = `Cada ${P.moeda} vale ${R$(c)}, então ${fm(P, local)} × ${num(c, 2)} = ${R$(reais)}.`;
+    } else {
+      reais = pick(P.preco); local = reais * c;
+      cands = [local * c, reais * 10, reais / 10, local / (c + 10), reais + c];
+      explica = `R$ 1,00 compra ${num(c, 0)} ${P.plural}, então ${fm(P, local)} ÷ ${num(c, 0)} = ${R$(reais)}.`;
+    }
+    const L = registro[registro.length - 1];
+    L.item = P.item; L.local = fm(P, local); L.reais = reais; L.comprou = false;
+    pergunta(`Na loja de lembranças há ${P.item} por <strong>${fm(P, local)}</strong>. Quanto isso custa em reais?`,
+      reais, cands, R$, explica, () => decidir(reais));
+  }
+  function decidir(reais) {
+    const P = PAISES[p], L = registro[registro.length - 1], cabe = saldo >= reais;
+    $('#actions').innerHTML = `<button class="btn" type="button" id="comprar" ${cabe ? '' : 'disabled'}>Comprar por ${R$(reais)}</button>
+      <button class="btn ghost" type="button" id="pular">Guardar o dinheiro</button>`;
+    if (!cabe) fb($('#fb').textContent + ' O orçamento de lembranças não cobre essa compra.', $('#fb').className.includes('ok') ? 'ok' : 'bad');
+    $('#comprar').onclick = () => { saldo = c2(saldo - reais); gasto = c2(gasto + reais); compras++; L.comprou = true; painel(); troca(`Você comprou ${P.item}.`); };
+    $('#pular').onclick = () => troca(`Você guardou ${R$(reais)} para as próximas paradas.`);
+    $('#comprar').focus();
+  }
+
+  // 2. Quanto você recebe ao trocar reais pela moeda local?
+  function troca(msg) {
+    const P = PAISES[p], c = dia.cot;
+    fb(''); $('#actions').innerHTML = '';
+    let reais, local, cands, explica;
+    if (P.tipo === 'r') {
+      local = pick([50, 100, 150, 200]); reais = c2(local * c);
+      cands = [reais * c, local * 10, local / 2, reais / (c + 1), local + 20];
+      explica = `Para passar de reais para ${P.plural}, divida pela cotação: ${R$(reais)} ÷ ${num(c, 2)} = ${fm(P, local)}.`;
+    } else {
+      reais = pick([100, 150, 200, 300]); local = reais * c;
+      cands = [reais / c, local * 10, local / 10, reais * (c + 10), local / 2];
+      explica = `Cada real compra ${num(c, 0)} ${P.plural}: ${R$(reais)} × ${num(c, 0)} = ${fm(P, local)}.`;
+    }
+    pergunta(`${msg ? `<span class="small">${msg}</span><br>` : ''}Para os passeios, você troca <strong>${R$(reais)}</strong> por ${P.plural}. Quanto recebe?`,
+      local, cands, v => fm(P, v), explica, () => proximo('Próximo desafio →', comparar));
+  }
+
+  // 3. Qual forma de pagamento sai melhor?
+  function comparar() {
+    const P = PAISES[p], c = dia.cot;
+    fb(''); $('#actions').innerHTML = '';
+    let A, B, melhor, explica, html;
+    if (P.tipo === 'r') {
+      // Casa de câmbio com cotação mais alta e sem taxa x cartão com a cotação do dia mais 4% de taxas
+      const qtd = pick([100, 200, 300]);
+      let s, casa, cartao;
+      do { s = pick([0.1, 0.2, 0.3, 0.4]); casa = c2(qtd * (c + s)); cartao = c2(qtd * c * (1 + TAXA_CARTAO)); } while (Math.abs(casa - cartao) < 1);
+      A = { nome: 'Casa de câmbio', custo: casa }; B = { nome: 'Cartão', custo: cartao };
+      melhor = casa < cartao ? A : B;
+      html = `<p class="q">Você precisa de <strong>${fm(P, qtd)}</strong> para o hotel. Qual opção custa menos em reais?</p>
+        <div class="ofertas"><div class="box"><h3>Casa de câmbio</h3><p>1 ${P.moeda} = ${R$(c2(c + s))}</p><p>Sem taxa extra</p></div>
+        <div class="box"><h3>Cartão</h3><p>1 ${P.moeda} = ${R$(c)}</p><p>Mais ${TAXA_CARTAO * 100}% de taxas sobre o total</p></div></div>`;
+      explica = `Casa de câmbio: ${fm(P, qtd)} × ${num(c2(c + s), 2)} = ${R$(casa)}. Cartão: ${fm(P, qtd)} × ${num(c, 2)} = ${R$(c2(qtd * c))}, mais 4% (${R$(c2(qtd * c * TAXA_CARTAO))}) = ${R$(cartao)}.`;
+      registro[registro.length - 1].melhor = `${melhor.nome} (${R$(melhor.custo)})`;
+    } else {
+      // Duas casas: uma sem taxa, outra com cotação melhor e taxa fixa descontada antes da troca
+      const reais = pick([400, 500, 600]);
+      let d, taxa, qa, qb;
+      do { d = pick([10, 20, 30]) * (c >= 100 ? 1 : 0.1); d = Math.round(d) || 2; taxa = pick([20, 30, 40, 50]); qa = reais * c; qb = (reais - taxa) * (c + d); } while (qa === qb);
+      A = { nome: 'Casa A', qtd: qa }; B = { nome: 'Casa B', qtd: qb };
+      melhor = qa > qb ? A : B;
+      html = `<p class="q">Você vai trocar <strong>${R$(reais)}</strong>. Qual casa entrega mais ${P.plural}?</p>
+        <div class="ofertas"><div class="box"><h3>Casa A</h3><p>${cotTxt(P, c)}</p><p>Sem taxa</p></div>
+        <div class="box"><h3>Casa B</h3><p>${cotTxt(P, c + d)}</p><p>Cobra ${R$(taxa)} de taxa antes da troca</p></div></div>`;
+      explica = `Casa A: ${R$(reais)} × ${num(c, 0)} = ${fm(P, qa)}. Casa B: (${R$(reais)} − ${R$(taxa)}) × ${num(c + d, 0)} = ${R$(reais - taxa)} × ${num(c + d, 0)} = ${fm(P, qb)}.`;
+      registro[registro.length - 1].melhor = `${melhor.nome} (${fm(P, melhor.qtd)})`;
+    }
+    $('#etapa').innerHTML = html + `<div class="opts" id="opts"><button class="btn ghost" type="button" data-o="A">${A.nome}</button><button class="btn ghost" type="button" data-o="B">${B.nome}</button></div>`;
+    let feito = false;
+    $('#opts').querySelectorAll('button').forEach(b => b.onclick = () => {
+      if (feito) return; feito = true;
+      const escolha = b.dataset.o === 'A' ? A : B, acertou = escolha === melhor;
+      $('#opts').querySelectorAll('button').forEach(o => (o.dataset.o === 'A' ? A : B) === melhor && o.classList.add('right'));
+      if (acertou) {
+        ok++;
+        if (P.tipo === 'r') eco = c2(eco + Math.abs(A.custo - B.custo));
+        else eco = c2(eco + Math.abs(A.qtd - B.qtd) / c);
+      } else b.classList.add('wrong');
+      painel();
+      const dif = P.tipo === 'r' ? `A diferença é de ${R$(Math.abs(A.custo - B.custo))}.` : `A diferença é de ${fm(P, Math.abs(A.qtd - B.qtd))}, cerca de ${R$(c2(Math.abs(A.qtd - B.qtd) / c))}.`;
+      fb((acertou ? 'Boa escolha! ' : 'Desta vez a outra opção era melhor. ') + explica + ' ' + dif, acertou ? 'ok' : 'bad');
+      p++;
+      proximo(p < PAISES.length ? `Viajar para ${PAISES[p].pais} →` : 'Ver o resumo da viagem', () => p < PAISES.length ? chegada() : fim());
+    });
+  }
+
+  function fim() {
+    painel(); $('#pn').textContent = PAISES.length; fb(''); $('#cot').innerHTML = '';
+    const total = PAISES.length * 3;
+    window.MDP && MDP.registrar('cambio', ok / total * 100);
+    $('#etapa').innerHTML = `<p class="q">Viagem concluída! Você acertou ${ok} de ${total} contas.</p>
+      <div class="tabwrap"><table class="tab"><thead><tr><th>País</th><th>Cotação</th><th>Lembrança</th><th class="vl">Em reais</th><th>Melhor forma de pagamento</th></tr></thead><tbody>
+      ${registro.map(L => `<tr><td>${L.pais}</td><td>${L.cot}</td><td>${L.item}, ${L.local}${L.comprou ? ' (comprou)' : ''}</td><td class="vl">${R$(L.reais)}</td><td>${L.melhor}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="small">Você levou ${compras} ${compras === 1 ? 'lembrança' : 'lembranças'}, gastou ${R$(gasto)} e ainda tem ${R$(saldo)} do orçamento.${eco > 0 ? ` As boas escolhas de pagamento pouparam cerca de ${R$(eco)}.` : ''} Repare que a mesma conta aparece em todos os países: a cotação é uma razão entre duas moedas, e converter é usar essa proporção para multiplicar ou dividir.</p>`;
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Viajar de novo</button>`;
+    $('#again').onclick = start;
+  }
+  function start() { p = 0; ok = 0; saldo = ORCAMENTO; gasto = 0; eco = 0; compras = 0; registro = []; chegada(); }
+  start();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

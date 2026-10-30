@@ -269,6 +269,10 @@ const RECURSOS = [
     habs: ['EF07MA02', 'EF08MA04', 'EF09MA05'], tempo: '15 min',
     resumo: 'Seis meses com um cartão de treino: limite, fatura, parcelas com e sem juros, pagamento mínimo e os juros do rotativo.',
     url: 'jogos/cartao.html', plano: 'p-ma-financeira', ficha: null },
+  { id: 'cambio', tipo: 'jogo', titulo: 'Viagem com Câmbio', comp: ['MA'], anos: [7, 8, 9],
+    habs: ['EF07MA12', 'EF07MA17', 'EF08MA04', 'EF09MA07'], tempo: '15 min',
+    resumo: 'Cinco países, cinco moedas: converta reais em dólar, euro, peso, libra e iene, compre lembranças com orçamento e compare casa de câmbio e cartão.',
+    url: 'jogos/cambio.html', plano: 'p-ma-financeira', ficha: null },
   // ---------- Recursos 3D (Laboratório 3D) ----------
   { id: '3d-decimais', tipo: '3d', titulo: 'Material Dourado 3D', comp: ['MA'], anos: [6],
     habs: ['EF06MA01', 'EF06MA02', 'EF06MA08', 'EF06MA11'], tempo: '15 min',
@@ -744,7 +748,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
