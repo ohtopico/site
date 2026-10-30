@@ -441,7 +441,8 @@ def hub_trecho(meses):
         eds = [('slides.pptx', 'Slides da aula (PowerPoint)'), ('plano-de-aula.docx', 'Plano de aula'), ('desplugado.docx', 'Versão desplugada'),
                ('ficha-do-aluno.docx', 'Ficha do aluno'), ('avaliacao.docx', 'Avaliação com gabarito'), ('cartaz.docx', 'Cartaz')]
         bot = lambda rel, t: f'<button class="baixar" type="button" data-arquivo="{rel}">{t} <small>{{{{TAMANHO:{rel}}}}}</small></button>'
-        blocos.append(f'''    <details class="kit"{' open' if not blocos else ''}>
+        blocos.append(f'''    <!-- MES {m} kits -->
+    <details class="kit">
       <summary>{d["nome_mes"].capitalize()} · {e(d["titulo"])}</summary>
       <div class="grid">
         <div class="item" data-nivel="2" data-mes="{m}">
@@ -463,9 +464,10 @@ def hub_trecho(meses):
           <div class="acoes">{bot(f'{m}/html/{s}-painel-da-aula.html', 'Baixar o painel (.html)')}</div>
         </div>
       </div>
-    </details>''')
+    </details>
+    <!-- /MES -->''')
     return ('<!-- KITS -->\n  <h2 id="kits">Kits do mês</h2>\n  <p class="muted intro">Todo mês, um kit em volta do jogo do mês: PDFs para imprimir, arquivos editáveis e um painel da aula. '
-            'Cada kit abre no dia 1 do seu mês, e cada parte abre para o seu plano e os de cima.</p>\n' + '\n'.join(blocos) + '\n  <!-- /KITS -->')
+            'Cada kit aparece aqui no dia 1 do seu mês, e cada parte abre para o seu plano e os de cima.</p>\n' + '\n'.join(blocos) + '\n  <!-- /KITS -->')
 
 
 def main():

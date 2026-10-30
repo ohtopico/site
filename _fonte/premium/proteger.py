@@ -23,10 +23,14 @@ Marcadores na fonte das páginas:
                                com os títulos de arquivos/slides/titulos.json
     {{PLANOS_JSON}}            os nomes dos planos, para a página mostrar o plano de quem entrou
     {{MESES_JSON}}             os meses e seus nomes, por exemplo {"2026-12": "dezembro de 2026"}
-Os botões data-arquivo="pasta/arq" ganham data-nivel e data-mes automaticamente. Um item com data-mes="AAAA-MM"
+Os botões data-arquivo="pasta/arq" ganham data-nivel e data-mes automaticamente.
+Sigilo dos meses seguintes: tudo o que é de um mês depois de MESES[0] sai com nome sorteado (premium/x/<código>/ e
+premium/arquivos/x/<código>.bin), e os trechos do hub entre <!-- MES AAAA-MM alvo --> e <!-- /MES --> vão cifrados com a
+chave daquele mês. Quem não tem a senha do mês não vê nem o nome do material; o trecho aparece no lugar do primeiro
+bloco daquele alvo assim que a senha do mês chega. O código depende das senhas: trocar as senhas troca os endereços. Um item com data-mes="AAAA-MM"
 aparece como "Libera em ..." para quem ainda não tem a senha daquele mês.
 """
-import argparse, base64, getpass, html, json, os, re, secrets
+import argparse, base64, getpass, hashlib, hmac, html, json, os, re, secrets
 from pathlib import Path
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -81,15 +85,40 @@ def lista(pasta, rel):
     return ''.join(out)
 
 
-def preparar(texto, fontes, niveis):
+def codigo(segredo, nome):
+    """Nome sorteado e estável de um arquivo ou página de mês futuro (muda só se as senhas mudarem)."""
+    return hmac.new(segredo, nome.encode(), hashlib.sha256).hexdigest()[:20]
+
+
+def preparar(texto, fontes, niveis, segredo=b'', chaves=None, slugs=()):
     arqs = fontes / 'arquivos'
     texto = texto.replace('{{PLANOS_JSON}}', json.dumps(PLANOS, ensure_ascii=False)).replace('{{MESES_JSON}}', json.dumps(NOME, ensure_ascii=False))
     texto = re.sub(r'\{\{TAMANHO:([^}]+)\}\}', lambda m: tamanho((arqs / m.group(1)).stat().st_size), texto)
     texto = re.sub(r'\{\{LISTA:([^}]+)\}\}', lambda m: lista(arqs / m.group(1), m.group(1)), texto)
     def marca(m):
-        mes, pasta = m.group(1) or M0, m.group(2)
-        return f'data-nivel="{niveis[pasta]}" data-mes="{mes}" {m.group(0)}'
-    return re.sub(r'data-arquivo="(?:(\d{4}-\d{2})/)?([^"/]+)/', marca, texto)
+        mes, pasta, resto = m.group(1) or M0, m.group(2), m.group(3)
+        rel = f'{mes}/{pasta}/{resto}' if m.group(1) else f'{pasta}/{resto}'
+        if mes != M0:  # mês futuro: o endereço não revela o nome do arquivo
+            return f'data-nivel="{niveis[pasta]}" data-mes="{mes}" data-nome="{resto.split("/")[-1]}" data-arquivo="x/{codigo(segredo, "arq:" + rel)}"'
+        return f'data-nivel="{niveis[pasta]}" data-mes="{mes}" data-arquivo="{rel}"'
+    texto = re.sub(r'data-arquivo="(?:(\d{4}-\d{2})/)?([^"/]+)/([^"]+)"', marca, texto)
+    for slug in slugs:
+        texto = texto.replace(f'href="{slug}/"', f'href="x/{codigo(segredo, "pag:" + slug)}/"')
+    cofres, lugares = [], {}
+    def cofre(m):
+        mes, alvo, corpo = m.group(1), m.group(2), m.group(3)
+        if mes == M0 or chaves is None:
+            return corpo
+        iv = os.urandom(12)
+        dado = json.dumps({'mes': mes, 'alvo': alvo, 'html': corpo}, ensure_ascii=False).encode()
+        cofres.append({'iv': b64(iv), 'd': b64(AESGCM(chaves[(mes, 1)]).encrypt(iv, dado, None))})
+        if alvo in lugares:
+            return ''
+        lugares[alvo] = True
+        return f'<span data-cofre="{alvo}" hidden></span>'
+    texto = re.sub(r'[ \t]*<!-- MES (\d{4}-\d{2}) (\w+) -->\n(.*?)[ \t]*<!-- /MES -->\n?', cofre, texto, flags=re.S)
+    secrets.SystemRandom().shuffle(cofres)  # a ordem não revela o mês de cada trecho
+    return texto.replace('{{COFRES}}', json.dumps(cofres))
 
 
 def sortear():
@@ -129,13 +158,14 @@ def ler_senhas(fontes, novas, completar):
     return senhas
 
 
-def paginas(fontes):
+def paginas(fontes, segredo):
     """PAGINAS mais os jogos dos próximos meses em _privado/premium/meses/AAAA-MM/<nome>.html."""
     todas = {fontes / f: v for f, v in PAGINAS.items()}
     for f in sorted((fontes / 'meses').glob('*/*.html')):
         if f.parent.name not in MESES:
             raise SystemExit(f'{f}: a pasta precisa ser um mês de MESES ({MESES[0]} a {MESES[-1]})')
-        todas[f] = (f'premium/{f.stem}/index.html', JOGO_DO_MES, f.parent.name)
+        nome = f.stem if f.parent.name == M0 else 'x/' + codigo(segredo, 'pag:' + f.stem)
+        todas[f] = (f'premium/{nome}/index.html', JOGO_DO_MES, f.parent.name)
     return todas
 
 
@@ -147,6 +177,8 @@ def main():
     a = ap.parse_args()
     fontes, site = Path(a.fontes), Path(a.site)
     senhas = ler_senhas(fontes, a.novas_senhas, a.completar_senhas)
+    segredo = hashlib.sha256(('|'.join(f'{k[0]}:{k[1]}:{v}' for k, v in sorted(senhas.items()))).encode()).digest()
+    slugs = [f.stem for f in (fontes / 'meses').glob('*/*.html') if f.parent.name != M0]
     chaves = {(mes, n): AESGCM.generate_key(256) for mes in MESES for n in PLANOS}
     sal = os.urandom(16)
     # chaveiros: a senha (mês m, plano n) abre as chaves dos meses até m e dos planos até n
@@ -159,9 +191,11 @@ def main():
         niveis_js.append({'iv': b64(iv), 'd': b64(AESGCM(k).encrypt(iv, chaveiro, None))})
     secrets.SystemRandom().shuffle(niveis_js)  # a ordem não revela qual chaveiro é de qual plano ou mês
     niveis = json.loads((fontes / 'arquivos' / 'niveis.json').read_text(encoding='utf-8'))
-    for fonte, (destino, minimo, mes) in paginas(fontes).items():
+    feitas = set()
+    for fonte, (destino, minimo, mes) in paginas(fontes, segredo).items():
         iv = os.urandom(12)
-        dados = AESGCM(chaves[(mes, minimo)]).encrypt(iv, preparar(fonte.read_text(encoding='utf-8'), fontes, niveis).encode(), None)
+        dados = AESGCM(chaves[(mes, minimo)]).encrypt(iv, preparar(fonte.read_text(encoding='utf-8'), fontes, niveis, segredo, chaves, slugs).encode(), None)
+        feitas.add((site / destino).resolve())
         nivel = destino.count('/') - 1
         css = '../' * (nivel + 1) + 'material-didatico/assets/md.css'
         pagina = (PORTAO.replace('{{CSS}}', css).replace('{{SAL}}', b64(sal)).replace('{{ITER}}', str(ITER))
@@ -170,6 +204,12 @@ def main():
                   .replace('{{MINIMO}}', str(minimo)).replace('{{IV}}', b64(iv)).replace('{{DADOS}}', b64(dados)))
         out = site / destino; out.parent.mkdir(parents=True, exist_ok=True); out.write_text(pagina, encoding='utf-8')
         print('ok', destino, '· plano', minimo, '·', mes)
+    for velha in (site / 'premium').rglob('index.html'):
+        if 'arquivos' not in velha.parts and velha.resolve() not in feitas:
+            velha.unlink(); print('removida', velha.relative_to(site))
+            for d in (velha.parent, velha.parent.parent):
+                if d != site / 'premium' and d.is_dir() and not any(d.iterdir()):
+                    d.rmdir()
     origem, saida = fontes / 'arquivos', site / 'premium' / 'arquivos'
     feitos = set()
     for arq in sorted(p for p in origem.rglob('*') if p.is_file() and p.name not in ('titulos.json', 'niveis.json')):
@@ -178,12 +218,16 @@ def main():
         pasta = partes[1] if mes == partes[0] else partes[0]
         minimo = niveis[pasta]
         iv = os.urandom(12)
-        out = saida / (arq.relative_to(origem).as_posix() + '.bin'); out.parent.mkdir(parents=True, exist_ok=True)
+        rel = arq.relative_to(origem).as_posix()
+        out = saida / ((rel if mes == M0 else 'x/' + codigo(segredo, 'arq:' + rel)) + '.bin'); out.parent.mkdir(parents=True, exist_ok=True)
         out.write_bytes(MAGICO + bytes([minimo, MESES.index(mes)]) + iv + AESGCM(chaves[(mes, minimo)]).encrypt(iv, arq.read_bytes(), None))
         feitos.add(out)
     for velho in saida.rglob('*.bin'):
         if velho not in feitos:
             velho.unlink(); print('removido', velho.relative_to(site))
+    for d in sorted((p for p in saida.rglob('*') if p.is_dir()), key=lambda p: -len(p.parts)):
+        if not any(d.iterdir()):
+            d.rmdir()
     print('ok', len(feitos), 'arquivos em premium/arquivos/')
 
 
