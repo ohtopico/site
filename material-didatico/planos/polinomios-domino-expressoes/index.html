@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"LearningResource","name":"Polinômios com dominó de expressões","description":"Dominó de expressões equivalentes e Blocos Algébricos 3D para reduzir, somar e subtrair polinômios e calcular valor numérico.","url":"https://ohtopico.com.br/material-didatico/planos/polinomios-domino-expressoes/","image":"https://ohtopico.com.br/material-didatico/assets/og-planos.jpg","inLanguage":"pt-BR","learningResourceType":"Plano de aula","educationalLevel":"8º ano do Ensino Fundamental","about":["Matemática"],"isAccessibleForFree":true,"timeRequired":"2 aulas","audience":{"@type":"EducationalAudience","educationalRole":"teacher"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08MA06","targetDescription":"Resolver e elaborar problemas que envolvam o cálculo do valor numérico de expressões algébricas, usando as propriedades das operações."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Área do professor","item":"https://ohtopico.com.br/material-didatico/professor.html"},{"@type":"ListItem","position":4,"name":"Polinômios com dominó de expressões","item":"https://ohtopico.com.br/material-didatico/planos/polinomios-domino-expressoes/"}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Planos de aula","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=plano"},{"@type":"ListItem","position":4,"name":"Polinômios com dominó de expressões","item":"https://ohtopico.com.br/material-didatico/planos/polinomios-domino-expressoes/"}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,7 +56,7 @@
 <body>
 <header id="topbar"></header>
 <main class="doc" id="doc">
-    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <div class="crumbs no-print"><a href="catalogo.html?tipo=plano">← Planos de aula</a></div>
     <span class="eyebrow">📋 Plano de aula</span>
     <h1 style="font-size:clamp(30px,5vw,46px)">Polinômios com dominó de expressões</h1>
     <p class="muted">Dominó de expressões equivalentes e Blocos Algébricos 3D para reduzir, somar e subtrair polinômios e calcular valor numérico.</p>
@@ -117,7 +117,7 @@
 <script src="assets/slides.js"></script>
 <script>
 (function () {
-  mdTopbar('professor');
+  mdTopbar('catalogo');
   mdFooter();
   const id = window.MD_ID || new URLSearchParams(location.search).get('id');
   // plano.html?id=... antigo: vai para a página estática do material (endereço que o Google indexa)
@@ -132,7 +132,7 @@
   const rel = [...new Set([...p.recursos.map(i => REC[i]), ...RECURSOS.filter(o => o.tipo === 'lista' && o.habs.some(h => r.habs.includes(h)))])].filter(Boolean).slice(0, 9);
   const minutos = p.etapas.reduce((s, e) => s + (parseInt(e[0], 10) || 0), 0);
   doc.innerHTML = `
-    <div class="crumbs no-print"><a href="professor.html">← Área do professor</a></div>
+    <div class="crumbs no-print"><a href="catalogo.html?tipo=plano">← Planos de aula</a></div>
     <span class="eyebrow">📋 Plano de aula</span>
     <h1 style="font-size:clamp(30px,5vw,46px)">${esc(r.titulo)}</h1>
     <p class="muted">${esc(r.resumo)}</p>

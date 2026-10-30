@@ -68,13 +68,13 @@
           <h1>Do código <span class="marca">ao quadro</span></h1>
           <p class="lead">Jogos interativos, recursos 3D, slides, fichas para imprimir e planos de aula de Computação e Matemática, organizados pelas habilidades da BNCC.</p>
         </div>
-        <div class="stats" id="stats"></div>
+        <div class="stats" id="stats"><!-- stats: início (gerado por _fonte/material/gerar.js) --><a class="stat" href="catalogo.html?tipo=jogo"><b>44</b><span>jogos</span></a><a class="stat" href="catalogo.html?tipo=3d"><b>33</b><span>recursos 3D</span></a><a class="stat" href="catalogo.html?tipo=plano"><b>45</b><span>planos de aula</span></a><a class="stat" href="catalogo.html?tipo=lista"><b>58</b><span>listas de exercícios</span></a><!-- stats: fim --></div>
       </div>
       <div class="areas">
         <a class="area-door co" href="computacao/">
           <span class="mark">Computação</span>
           <h3>Material de Computação</h3>
-          <p>BNCC Computação do 1º ao 9º ano: pensamento computacional, mundo digital e cultura digital.</p>
+          <p>BNCC Computação do 6º ao 9º ano, e computação desplugada para o 1º ao 5º: pensamento computacional, mundo digital e cultura digital.</p>
           <ul>
             <li>Slides em PDF para cada habilidade do 6º ao 9º ano</li>
             <li>Jogos de algoritmos, redes e segurança</li>
@@ -96,8 +96,7 @@
       </div>
       <nav class="atalhos" aria-label="Outros caminhos">
         <a class="atalho" href="catalogo.html"><strong>Catálogo</strong><span>Busca e filtros nas duas áreas</span></a>
-        <a class="atalho" href="bncc/"><strong>BNCC Computação</strong><span>As 42 habilidades com materiais</span></a>
-        <a class="atalho" href="bncc.html"><strong>Explorar a BNCC</strong><span>Habilidades ano a ano</span></a>
+        <a class="atalho" href="bncc.html"><strong>BNCC</strong><span>Habilidades de Computação e Matemática, ano a ano</span></a>
         <a class="atalho" href="professor.html"><strong>Sou professor(a)</strong><span>Planos, slides e orientações</span></a>
         <a class="atalho destaque" href="../jogos/"><strong>Sou estudante</strong><span>Jogos do meu ano, com estrelas</span></a>
       </nav>
@@ -110,15 +109,11 @@
 
 <script>window.MD_BASE = '';</script>
 <script src="assets/dados.js"></script>
-<script src="assets/listas.js"></script>
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
 <script>
   mdTopbar('inicio');
   mdFooter();
-  const n = t => RECURSOS.filter(r => r.tipo === t).length;
-  document.getElementById('stats').innerHTML = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
-    .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

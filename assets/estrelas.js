@@ -270,6 +270,9 @@
     box-shadow: 2px 2px 0 #111; }
   .estrelas-cont:hover, .estrelas-cont:focus-visible { background: #fff6bf; outline: none; }
   .estrelas-cont .ic { width: 20px; height: 20px; }
+  .estrelas-cont { transition: transform .25s ease, opacity .25s ease; }
+  .estrelas-cont.recolhido { transform: translateY(calc(100% + 24px)); opacity: 0; pointer-events: none; }
+  @media (max-width: 560px) { .estrelas-cont { left: 8px; bottom: 8px; padding: 3px 9px 3px 5px; font-size: 12.5px; } .estrelas-cont .ic { width: 16px; height: 16px; } }
   .estrelas-cont.pulsa { animation: estrelas-pulsa .6s; }
   @keyframes estrelas-pulsa { 50% { transform: scale(1.15); } }
   .estrelas-fundo { position: fixed; inset: 0; z-index: 70; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; padding: 16px; }
@@ -303,7 +306,7 @@
   [data-theme="dark"] .estrelas-card .x { color: #f3f3f1; }
   [data-theme="dark"] .estrelas-card li { border-color: #3a3a38; }
   [data-theme="dark"] .estrelas-card a { color: #6fd08c; }
-  @media (prefers-reduced-motion: reduce) { .estrela-sec, .estrela-sec.pega, .estrelas-cont.pulsa { animation: none; transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .estrela-sec, .estrela-sec.pega, .estrelas-cont, .estrelas-cont.pulsa { animation: none; transition: none; } }
   @media print { .estrela-sec, .estrelas-cont { display: none !important; } }`;
 
   const svgEstrela = (cor, extra = '') => `<svg viewBox="0 0 24 24" aria-hidden="true" ${extra}><path d="M12 1.8l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.6l-6.2 3.3L7 14 2 9.1l6.9-1z" fill="${cor}" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
@@ -314,7 +317,8 @@
      Cada estrela escolhe, de forma sempre igual para a mesma página, um elemento visível do conteúdo
      e fica presa num canto dele. Se o elemento sumir (troca de tela, janela fechada), escolhe outro. */
   function hash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
-  const ALVOS = 'main h2, main h3, main p, main li, main img, main figure, main section, main article, .card, .rc, h2, h3, p, img, li, section';
+  // só caixas com borda ou imagens: a estrela fica no canto da caixa, sem cobrir texto
+  const ALVOS = '.card, .rc, .panel, .area-door, .game-stage, .rc-grid > *, main figure, main img, main article, details.howto, .window, .win, img';
   function visivel(el) {
     if (!el.isConnected || el.closest('.estrelas-card, .estrelas-cont, nav, header, footer, [aria-hidden="true"], #taskbar')) return false;
     const r = el.getBoundingClientRect();
@@ -464,7 +468,18 @@
     cont.title = 'Estrelas secretas';
     cont.innerHTML = `<span class="ic">${svgEstrela('#f5c400')}</span><span class="n"></span>`;
     cont.onclick = painel;
+    // páginas só de professor (planos, fichas, listas, habilidades, Área do professor) não têm estrela: lá o contador fica escondido
+    const soProfessor = !aqui.length && /^\/material-didatico\/(planos|fichas|listas|bncc)\/|^\/material-didatico\/professor/.test(location.pathname);
+    if (soProfessor) cont.hidden = true;
     document.body.appendChild(cont);
+    // como o botão do assistente: some ao rolar para baixo, volta ao rolar para cima
+    let ultimoY = scrollY;
+    addEventListener('scroll', () => {
+      const y = scrollY, fim = y + innerHeight >= document.documentElement.scrollHeight - 40;
+      if (Math.abs(y - ultimoY) < 8) return;
+      cont.classList.toggle('recolhido', y > ultimoY && y > 160 && !fim);
+      ultimoY = y;
+    }, { passive: true });
     atualizarContador(false);
     ajustarContador();
 

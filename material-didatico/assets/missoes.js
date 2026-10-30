@@ -341,6 +341,8 @@
   function atualizarBarra() {
     const bar = document.getElementById('topbar');
     if (!bar || !bar.innerHTML) return;
+    // a Área do professor e as páginas de plano, ficha, lista e habilidade são para o professor: sem o botão de Missões
+    if (/^\/material-didatico\/(planos|fichas|listas|bncc)\/|\/professor(\.html)?$/.test(location.pathname)) return;
     let a = bar.querySelector('.mis-btn');
     if (!a) {
       a = document.createElement('a');
