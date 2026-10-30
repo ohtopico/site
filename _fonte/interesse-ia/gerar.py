@@ -40,13 +40,14 @@ VERBETES = [
     ('programacao', 'Educação e tecnologia', ['Programação de computadores']),
 ]
 
-# Jogo "Qual verbete tem mais visitas?": temas de escola (além dos verbetes acima)
+# Jogo "Qual verbete tem mais visitas?": temas de escola (além dos verbetes acima).
+# "A|B": vale o primeiro título que existir e não for página de desambiguação.
 JOGO = [
-    ('Computação', ['Computador', 'Internet', 'Algoritmo', 'Linguagem de programação', 'Python', 'Scratch (linguagem de programação)',
-                    'Alan Turing', 'Ada Lovelace', 'Sistema binário', 'Byte', 'Minecraft', 'Roblox', 'Linux', 'Wikipédia', 'Robô']),
-    ('Matemática', ['Matemática', 'Número primo', 'Pi', 'Teorema de Pitágoras', 'Pitágoras', 'Fração', 'Porcentagem', 'Geometria',
-                    'Triângulo', 'Estatística', 'Probabilidade', 'Equação do segundo grau', 'Fibonacci', 'Zero']),
-    ('Ciências', ['Sistema Solar', 'Lua', 'Marte', 'Buraco negro', 'Fotossíntese', 'Célula', 'DNA', 'Dinossauro', 'Albert Einstein',
+    ('Computação', ['Computador', 'Internet', 'Algoritmo', 'Linguagem de programação', 'Python (linguagem de programação)|Python', 'Scratch (linguagem de programação)',
+                    'Alan Turing', 'Ada Lovelace', 'Sistema de numeração binário|Sistema binário (matemática)|Sistema binário', 'Byte', 'Minecraft', 'Roblox', 'Linux', 'Wikipédia', 'Robô']),
+    ('Matemática', ['Matemática', 'Número primo', 'Pi (constante)|Pi', 'Teorema de Pitágoras', 'Pitágoras', 'Fração', 'Porcentagem', 'Geometria',
+                    'Triângulo', 'Estatística', 'Probabilidade', 'Equação do segundo grau', 'Sequência de Fibonacci|Fibonacci', '0 (número)|Zero']),
+    ('Ciências', ['Sistema Solar', 'Lua (satélite)|Lua', 'Marte (planeta)|Marte', 'Buraco negro', 'Fotossíntese', 'Célula', 'DNA', 'Dinossauro', 'Albert Einstein',
                   'Marie Curie', 'Isaac Newton', 'Charles Darwin', 'Vulcão', 'Água', 'Eletricidade']),
     ('Brasil e RS', ['Brasil', 'Rio Grande do Sul', 'Porto Alegre', 'Santa Cruz do Sul', 'Santos Dumont', 'Amazônia', 'Rio Amazonas',
                      'Chimarrão', 'Pantanal', 'Machado de Assis', 'Futebol', 'Carnaval']),
@@ -71,12 +72,14 @@ def get(url):
 
 
 def canonicos(titulos):
-    """Segue redirecionamentos e diz quais títulos existem. Devolve {pedido: título canônico}."""
+    """Segue redirecionamentos e diz quais títulos existem (sem páginas de desambiguação).
+    Devolve {pedido: título canônico}."""
     saida = {}
     for i in range(0, len(titulos), 40):
         lote = titulos[i:i + 40]
         url = 'https://pt.wikipedia.org/w/api.php?' + urllib.parse.urlencode(
-            dict(action='query', titles='|'.join(lote), redirects=1, format='json', formatversion=2))
+            dict(action='query', titles='|'.join(lote), redirects=1, prop='pageprops', ppprop='disambiguation',
+                 format='json', formatversion=2))
         q = get(url)['query']
         mapa = {t: t for t in lote}
         for n in q.get('normalized', []):
@@ -88,10 +91,21 @@ def canonicos(titulos):
                 for k, v in mapa.items():
                     if v == rd['from']:
                         mapa[k] = rd['to']
-        existe = {p['title'] for p in q['pages'] if not p.get('missing') and not p.get('invalid')}
+        existe = {p['title'] for p in q['pages']
+                  if not p.get('missing') and not p.get('invalid') and 'disambiguation' not in p.get('pageprops', {})}
         saida.update({k: v for k, v in mapa.items() if v in existe})
         time.sleep(0.2)
     return saida
+
+
+def redirecionamentos(titulo):
+    """Títulos que redirecionam para o verbete. Quando um verbete muda de nome, as visitas
+    antigas ficam no título velho, que vira redirecionamento; somar tudo dá a série completa."""
+    url = 'https://pt.wikipedia.org/w/api.php?' + urllib.parse.urlencode(
+        dict(action='query', titles=titulo, prop='redirects', rdnamespace=0, rdlimit='max', format='json', formatversion=2))
+    q = get(url)['query']
+    time.sleep(0.2)
+    return [r['title'] for p in q['pages'] for r in p.get('redirects', [])]
 
 
 def meses_ate(fim):
@@ -119,7 +133,7 @@ def baixar():
     hoje = dt.date.today()
     fim = (hoje.year - (hoje.month == 1), (hoje.month - 2) % 12 + 1)  # último mês completo
     meses = meses_ate(fim)
-    pedidos = sorted({t for _, _, ts in VERBETES for t in ts} | {t for _, ts in JOGO for t in ts})
+    pedidos = sorted({t for _, _, ts in VERBETES for t in ts} | {t for _, ts in JOGO for x in ts for t in x.split('|')})
     can = canonicos(pedidos)
     series = []
     for vid, grupo, ts in VERBETES:
@@ -127,16 +141,20 @@ def baixar():
         if not t:
             print('  sem verbete:', ts, file=sys.stderr)
             continue
-        series.append(dict(id=vid, grupo=grupo, titulo=t, v=visitas(t, meses)))
-        print('  ', t, sum(series[-1]['v'][-12:]))
+        v = visitas(t, meses)
+        rds = redirecionamentos(t)
+        for r in rds:
+            v = [a + b for a, b in zip(v, visitas(r, meses))]
+        series.append(dict(id=vid, grupo=grupo, titulo=t, v=v))
+        print('  ', t, '+', len(rds), 'redirecionamentos:', sum(v[-12:]))
     jogo = []
     for tema, ts in JOGO:
         for x in ts:
-            if x not in can:
+            t = next((can[a] for a in x.split('|') if a in can), None)
+            if not t:
                 print('  jogo, sem verbete:', x, file=sys.stderr)
                 continue
-            v = visitas(can[x], meses[-12:])
-            jogo.append(dict(t=can[x], tema=tema, v=sum(v)))
+            jogo.append(dict(t=t, tema=tema, v=sum(visitas(t, meses[-12:]))))
     for s in series:
         jogo.append(dict(t=s['titulo'], tema='Inteligência artificial', v=sum(s['v'][-12:])))
     vistos, unicos = set(), []
