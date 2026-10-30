@@ -18,11 +18,15 @@
   const PONTOS = { atividade: 5, medalha: 20, estrela: 10, bonus: 15, enigma: 50, dificil: 40, semana: 60, surpresa: 25 };
 
   /* 100 níveis. Cada faixa de 10 níveis tem o nome de uma unidade de informação,
-     na linha da série Bit a Bit. Cada nível pede PONTOS_POR_NIVEL pontos a mais.
-     Ritmo de referência: 3 dias por semana cumprindo as missões dá uns 150 pontos por semana. */
-  const PONTOS_POR_NIVEL = 430; // nível 10 em uns 6 meses nesse ritmo
+     na linha da série Bit a Bit. A subida é gradual: o nível 2 pede PONTOS_INICIO pontos
+     e cada nível seguinte pede PONTOS_AUMENTO a mais que o anterior (50, 58, 66...).
+     Ritmo de referência: 3 dias por semana cumprindo as missões dá uns 150 pontos por semana,
+     o que leva ao nível 2 na primeira semana, ao 10 em cerca de um mês e ao 100 em uns 5 anos. */
+  const PONTOS_INICIO = 50, PONTOS_AUMENTO = 8;
+  const pontosParaSubir = n => PONTOS_INICIO + PONTOS_AUMENTO * (n - 1); // do nível n para o n + 1
   const FAIXAS = ['Bit', 'Nibble', 'Byte', 'Kilobyte', 'Megabyte', 'Gigabyte', 'Terabyte', 'Petabyte', 'Exabyte', 'Zettabyte', 'Yottabyte'];
-  const NIVEIS = Array.from({ length: 100 }, (_, k) => ({ n: k + 1, nome: FAIXAS[Math.floor((k + 1) / 10)], min: k * PONTOS_POR_NIVEL }));
+  const NIVEIS = [];
+  for (let n = 1, min = 0; n <= 100; min += pontosParaSubir(n), n++) NIVEIS.push({ n, nome: FAIXAS[Math.floor(n / 10)], min });
 
   /* O que cada nível libera. emBreve: seção ainda em preparação. */
   const DESBLOQUEIOS = [
@@ -359,7 +363,7 @@
   const registrarOriginal = MDP.registrar;
   MDP.registrar = function () { const r = registrarOriginal.apply(this, arguments); verificar(); return r; };
 
-  window.MDM = { NIVEIS, FAIXAS, PONTOS_POR_NIVEL, DESBLOQUEIOS, CORES, PONTOS, MISSOES, EXTRAS, pontos, nivel, nivelPorPontos, estado,
+  window.MDM = { NIVEIS, FAIXAS, PONTOS_INICIO, PONTOS_AUMENTO, pontosParaSubir, DESBLOQUEIOS, CORES, PONTOS, MISSOES, EXTRAS, pontos, nivel, nivelPorPontos, estado,
     nivelDe, verificar, visitar, trocar, escolherCor, travar, atualizarBarra, desafio, feitos, listaSurpresa };
 
   function iniciar() {

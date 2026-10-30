@@ -122,7 +122,7 @@
     const marcos = [...new Set(MDM.DESBLOQUEIOS.map(x => x.nivel))].sort((a, b) => a - b);
     return `
       <h2>Níveis e recompensas</h2>
-      <p class="muted" style="margin:0">São 100 níveis, e cada um pede ${MDM.PONTOS_POR_NIVEL} pontos a mais. A cada 10 níveis, o seu título muda para uma unidade de informação maior: ${MDM.FAIXAS.map((f, i) => `${f} (${i ? i * 10 : 1}${i < 10 ? `–${i * 10 + 9}` : ''})`).join(', ')}.</p>
+      <p class="muted" style="margin:0">São 100 níveis. Subir para o nível 2 pede ${MDM.PONTOS_INICIO} pontos, e cada nível seguinte pede ${MDM.PONTOS_AUMENTO} pontos a mais que o anterior, então os primeiros níveis vêm rápido e os últimos dão mais trabalho. A cada 10 níveis, o seu título muda para uma unidade de informação maior: ${MDM.FAIXAS.map((f, i) => `${f} (${i ? i * 10 : 1}${i < 10 ? `–${i * 10 + 9}` : ''})`).join(', ')}.</p>
       <ol class="niveis">${marcos.map(m => {
         const libs = MDM.DESBLOQUEIOS.filter(x => x.nivel === m), l = MDM.NIVEIS[m - 1];
         return `<li class="niv${n >= m ? ' ok' : ''}">

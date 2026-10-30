@@ -142,13 +142,17 @@ const HABILIDADES_RAW = [
   ['EF08MA12', 8, 'AL', 'Proporcionalidade', 'Identificar a natureza da variação de duas grandezas, diretamente, inversamente proporcionais ou não proporcionais, expressando a relação existente por meio de sentença algébrica e representá-la no plano cartesiano.'],
   ['EF08MA13', 8, 'AL', 'Proporcionalidade', 'Resolver e elaborar problemas que envolvam grandezas diretamente ou inversamente proporcionais, por meio de estratégias variadas.'],
   ['EF08MA19', 8, 'GM', 'Área de figuras planas', 'Resolver e elaborar problemas que envolvam medidas de área de figuras geométricas, utilizando expressões de cálculo de área (quadriláteros, triângulos e círculos), em situações como determinar medida de terrenos.'],
+  ['EF08MA20', 8, 'GM', 'Volume de bloco retangular e capacidade', 'Reconhecer a relação entre um litro e um decímetro cúbico e a relação entre litro e metro cúbico, para resolver problemas de cálculo de capacidade de recipientes.'],
+  ['EF08MA21', 8, 'GM', 'Volume de bloco retangular e capacidade', 'Resolver e elaborar problemas que envolvam o cálculo do volume de recipiente cujo formato é o de um bloco retangular.'],
   ['EF09MA03', 9, 'NU', 'Potências e raízes', 'Efetuar cálculos com números reais, inclusive potências com expoentes fracionários.'],
   ['EF09MA07', 9, 'AL', 'Razão entre grandezas de espécies diferentes', 'Resolver problemas que envolvam a razão entre duas grandezas de espécies diferentes, como velocidade e densidade demográfica.'],
   ['EF09MA08', 9, 'AL', 'Proporcionalidade', 'Resolver e elaborar problemas que envolvam relações de proporcionalidade direta e inversa entre duas ou mais grandezas, inclusive escalas, divisão em partes proporcionais e taxa de variação, em contextos socioculturais, ambientais e de outras áreas.'],
   ['EF09MA09', 9, 'AL', 'Expressões algébricas: fatoração e produtos notáveis', 'Compreender os processos de fatoração de expressões algébricas, com base em suas relações com os produtos notáveis, para resolver e elaborar problemas que possam ser representados por equações polinomiais do 2º grau.'],
   ['EF09MA10', 9, 'GE', 'Paralelas e transversal', 'Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.'],
   ['EF09MA12', 9, 'GE', 'Semelhança de triângulos', 'Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.'],
+  ['EF09MA13', 9, 'GE', 'Relações métricas no triângulo retângulo', 'Demonstrar relações métricas do triângulo retângulo, entre elas o teorema de Pitágoras, utilizando, inclusive, a semelhança de triângulos.'],
   ['EF09MA14', 9, 'GE', 'Tales e Pitágoras', 'Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.'],
+  ['EF09MA19', 9, 'GM', 'Volume de prismas e cilindros', 'Resolver e elaborar problemas que envolvam medidas de volumes de prismas e de cilindros retos, inclusive com uso de expressões de cálculo, em situações cotidianas.'],
   ["EF06MA31", 6, "PE", "Leitura de tabelas e gráficos", "Identificar as variáveis e suas frequências e os elementos constitutivos (título, eixos, legendas, fontes e datas) em diferentes tipos de gráfico."],
   ["EF06MA33", 6, "PE", "Coleta de dados e construção de gráficos", "Planejar e coletar dados de pesquisa referente a práticas sociais escolhidas pelos alunos e fazer uso de planilhas eletrônicas para registro, representação e interpretação das informações, em tabelas, vários tipos de gráficos e texto."],
   ["EF07MA02", 7, "NU", "Porcentagens: acréscimos e decréscimos", "Resolver e elaborar problemas que envolvam porcentagens, como os que lidam com acréscimos e decréscimos simples, utilizando estratégias pessoais, cálculo mental e calculadora, no contexto de educação financeira, entre outros."],
@@ -423,6 +427,10 @@ const RECURSOS = [
     habs: ['EF09MA14', 'EF09MA10', 'EF09MA12'], tempo: '15–20 min',
     resumo: 'Descubra a altura de um prédio pela sombra e verifique as razões entre segmentos num feixe de paralelas.',
     url: '3d/tales.html', plano: null, ficha: null },
+  { id: '3d-escada-pitagoras', tipo: '3d', titulo: 'Escada de Pitágoras', comp: ['MA'], anos: [9],
+    habs: ['EF09MA14', 'EF09MA13'], tempo: '20–30 min',
+    resumo: 'Encoste escadas em prédios 3D até o topo parar na janela, ache a maior vareta que cabe numa caixa e termine na diagonal do cubo. Pitágoras no plano e no espaço.',
+    url: '3d/escada-pitagoras.html', plano: null, ficha: null },
   { id: '3d-ladrilhos', tipo: '3d', titulo: 'Ladrilhos e Ângulos', comp: ['MA'], anos: [6, 7],
     habs: ['EF07MA27', 'EF07MA24', 'EF06MA18'], tempo: '15 min',
     resumo: 'Encaixe polígonos regulares em volta de um ponto até fechar 360° e descubra a soma dos ângulos internos por triangulação.',
@@ -431,6 +439,10 @@ const RECURSOS = [
     habs: ['EF06MA17', 'EF06MA18', 'EF06MA19', 'EF06MA20', 'EF07MA27'], tempo: '15–20 min',
     resumo: 'Polígonos, prismas, pirâmides, poliedros de Platão e corpos redondos com faces transparentes: todas as arestas aparecem, as escondidas em tracejado. Conte vértices, arestas, faces, diagonais e ângulos.',
     url: '3d/figuras.html', plano: null, ficha: null },
+  { id: '3d-tanque', tipo: '3d', titulo: 'Enche o Tanque: Volume e Capacidade', comp: ['MA'], anos: [8, 9],
+    habs: ['EF09MA19', 'EF08MA21', 'EF08MA20'], tempo: '15–20 min',
+    resumo: 'Prismas, cilindros e cones de vidro enchendo de água. Estime quantos litros cabem ou até onde a água chega, abra a torneira e compare com a conta.',
+    url: '3d/tanque.html', plano: null, ficha: null },
   // ---------- Laboratório 3D de IA, dados e computação ----------
   { id: '3d-rede-neural', tipo: '3d', titulo: 'Rede Neural por Dentro', comp: ['CO'], anos: [9],
     habs: ['EF09CO07', 'EF06CO05'], tempo: '20 min',
@@ -440,6 +452,10 @@ const RECURSOS = [
     habs: ['EF09CO07', 'EF09MA06'], tempo: '15 min',
     resumo: 'Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.',
     url: '3d/montanha-erro.html', plano: null, ficha: null },
+  { id: '3d-carro-que-aprende', tipo: '3d', titulo: 'Carro que Aprende', comp: ['CO'], anos: [8, 9],
+    habs: ['EF09CO07', 'EF09CO03'], tempo: '20–30 min',
+    resumo: 'Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.',
+    url: '3d/carro-que-aprende.html', plano: null, ficha: null },
   { id: '3d-cubo-rgb', tipo: '3d', titulo: 'Cubo das Cores RGB', comp: ['CO'], anos: [4, 5, 6, 7],
     habs: ['EF04CO05', 'EF04CO04', 'EF07CO01'], tempo: '15 min',
     resumo: 'Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.',
@@ -468,6 +484,22 @@ const RECURSOS = [
     habs: ['EF08CO01'], tempo: '20 min',
     resumo: 'Torre de Hanói em 3D: resolva com 3, 4 e 5 discos, ensine ao robô a regra recursiva e veja ele resolver 8 discos, com a pilha de chamadas e o contador de movimentos.',
     url: '3d/torre-recursao.html', plano: 'p-recursao', ficha: 'f-co-recursao' },
+  { id: '3d-cozinha-paralela', tipo: '3d', titulo: 'Cozinha Paralela', comp: ['CO'], anos: [8],
+    habs: ['EF08CO05'], tempo: '20 min',
+    resumo: 'Um restaurante em 3D com 1, 2 ou 4 cozinheiros-robôs. Distribua os pedidos, veja quanto o paralelismo ganha, ache o gargalo e provoque um impasse quando dois robôs querem a mesma panela.',
+    url: '3d/cozinha-paralela.html', plano: 'p-paralelo', ficha: null },
+  { id: '3d-cidade-infectada', tipo: '3d', titulo: 'Cidade Infectada', comp: ['CO'], anos: [8, 9],
+    habs: ['EF09CO04', 'EF08CO10'], tempo: '20 min',
+    resumo: 'Um bairro em 3D ligado em rede e um malware que se espalha de computador em computador. Com orçamento limitado, decida onde pôr firewall, atualização e backup.',
+    url: '3d/cidade-infectada.html', plano: 'p-golpes', ficha: 'f-co-incidente' },
+  { id: '3d-cofre-chaves', tipo: '3d', titulo: 'Cofre das Chaves', comp: ['CO'], anos: [8, 9],
+    habs: ['EF09CO05', 'EF08CO10'], tempo: '25 min',
+    resumo: 'Disco de César, caixa com dois cadeados e mistura de tintas em 3D: quebre uma cifra por força bruta e descubra como combinar uma chave secreta sem nunca enviá-la.',
+    url: '3d/cofre-das-chaves.html', plano: 'p-cripto', ficha: 'f-cesar' },
+  { id: '3d-maquina-estados', tipo: '3d', titulo: 'Máquina de Estados', comp: ['CO'], anos: [9],
+    habs: ['EF09CO03'], tempo: '20–30 min',
+    resumo: 'Catraca, semáforo e elevador em 3D controlados por um autômato que você desenha. A máquina obedece ao diagrama: faltou uma seta, ela trava; seta errada, o elevador dá a volta.',
+    url: '3d/maquina-estados.html', plano: 'p-automatos', ficha: 'f-co-estados' },
 
   // ---------- Fichas para imprimir ----------
   { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
@@ -890,7 +922,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-arvore-viva': '⋔', '3d-torre-recursao': '🗼', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-tanque': '🚰', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-arvore-viva': '⋔', '3d-cidade-infectada': '☣', '3d-torre-recursao': '🗼', '3d-cozinha-paralela': '🍳', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
@@ -975,7 +1007,7 @@ const PLANOS = {
     ],
     avaliacao: 'A dupla consegue cifrar e decifrar corretamente? Explica com as próprias palavras por que a Cifra de César é fraca?',
     inclusao: 'O disco pode ser ampliado em A3 ou feito com letras em relevo. No jogo, o seletor de chave funciona com as setas do teclado.',
-    recursos: ['f-cesar', 'cifra']
+    recursos: ['f-cesar', 'cifra', '3d-cofre-chaves']
   },
   'p-golpes': {
     duracao: '2 aulas de 50 min',
@@ -994,7 +1026,7 @@ const PLANOS = {
     ],
     avaliacao: 'Justificativas no checklist citam sinais concretos? A campanha traz dicas corretas e acionáveis?',
     inclusao: 'As mensagens do jogo podem ser lidas pelo leitor de tela. Para estudantes com deficiência intelectual, trabalhe com 3 sinais de alerta fixos e repetidos.',
-    recursos: ['f-golpe', 'golpe', 'f-co-seguranca7', 'f-co-incidente']
+    recursos: ['f-golpe', 'golpe', 'f-co-seguranca7', 'f-co-incidente', '3d-cidade-infectada']
   },
   'p-fracoes': {
     duracao: '2 aulas de 50 min',
@@ -1244,7 +1276,7 @@ const PLANOS = {
     ],
     avaliacao: 'Desenho com exemplo correto de paralelismo e de concorrência; participação na discussão sobre a nuvem.',
     inclusao: 'As atividades são corporais e concretas; garanta papéis para estudantes com mobilidade reduzida (cronometrar, registrar, coordenar a fila).',
-    recursos: ['pacotes', 'f-co-paralelo']
+    recursos: ['3d-cozinha-paralela', 'pacotes', 'f-co-paralelo']
   },
   'p-redes': {
     duracao: '2 aulas de 50 min',
@@ -1360,7 +1392,7 @@ const PLANOS = {
     ],
     avaliacao: 'Diagrama com estados e transições completos e programa coerente com o diagrama.',
     inclusao: 'A encenação com cartões dá sentido concreto aos estados. No programa, use sons diferentes para cada estado, o que também ajuda estudantes com baixa visão.',
-    recursos: ['f-co-estados']
+    recursos: ['f-co-estados', '3d-maquina-estados']
   },
   'p-cidade': {
     duracao: '4 aulas de 50 min',
@@ -2600,13 +2632,17 @@ const ESTATICAS = {
   "hab:EF08MA12": "bncc/ef08ma12/",
   "hab:EF08MA13": "bncc/ef08ma13/",
   "hab:EF08MA19": "bncc/ef08ma19/",
+  "hab:EF08MA20": "bncc/ef08ma20/",
+  "hab:EF08MA21": "bncc/ef08ma21/",
   "hab:EF09MA03": "bncc/ef09ma03/",
   "hab:EF09MA07": "bncc/ef09ma07/",
   "hab:EF09MA08": "bncc/ef09ma08/",
   "hab:EF09MA09": "bncc/ef09ma09/",
   "hab:EF09MA10": "bncc/ef09ma10/",
   "hab:EF09MA12": "bncc/ef09ma12/",
+  "hab:EF09MA13": "bncc/ef09ma13/",
   "hab:EF09MA14": "bncc/ef09ma14/",
+  "hab:EF09MA19": "bncc/ef09ma19/",
   "hab:EF06MA31": "bncc/ef06ma31/",
   "hab:EF06MA33": "bncc/ef06ma33/",
   "hab:EF07MA02": "bncc/ef07ma02/",

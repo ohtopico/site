@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cofre das Chaves: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Disco de César, caixa com dois cadeados e mistura de tintas em 3D: quebre uma cifra por força bruta e descubra como duas pessoas combinam uma chave secreta sem nunca enviá-la.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/cofre-das-chaves.html">
+<meta property="og:title" content="Cofre das Chaves: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Disco de César, caixa com dois cadeados e mistura de tintas em 3D: o aluno quebra uma cifra por força bruta e descobre como duas pessoas combinam uma chave secreta sem nunca enviá-la, a ideia por trás da criptografia de chave pública. 8º e 9º ano.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/cofre-das-chaves.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-cofre-das-chaves.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cofre das Chaves: disco de César, caixa com cadeados e mistura de tintas em 3D, no Laboratório 3D de Júlia Quoos.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+  .cifra { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 18px; letter-spacing: .08em; font-weight: 600; word-break: break-word; }
+  .side input[type=text] { width: 100%; min-height: 40px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 4px 10px; background: var(--paper); font: inherit; }
+  .potes { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+  .potes div { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13.5px; min-width: 64px; }
+  .potes .sw { width: 44px; height: 44px; border-radius: 12px; border-width: 1.5px; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cofre das Chaves","description":"Disco de César, caixa com dois cadeados e mistura de tintas em 3D: quebre uma cifra por força bruta e descubra como combinar uma chave secreta sem nunca enviá-la.","url":"https://ohtopico.com.br/material-didatico/3d/cofre-das-chaves.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-cofre-das-chaves.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"25 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO05","targetDescription":"Analisar técnicas de criptografia para armazenamento e transmissão de dados."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO10","targetDescription":"Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Cofre das Chaves","item":"https://ohtopico.com.br/material-didatico/3d/cofre-das-chaves.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ao 9º ano</span><span class="tag">⏱ 25 min</span></div>
+      <h1>Cofre das Chaves</h1>
+      <p class="muted" style="max-width:720px">Disco de César, caixa com dois cadeados e mistura de tintas em 3D: quebre uma cifra por força bruta e descubra como combinar uma chave secreta sem nunca enviá-la.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co05/" title="EF09CO05 — Analisar técnicas de criptografia para armazenamento e transmissão de dados.">EF09CO05</a><a class="tag code co" href="../bncc/ef08co10/" title="EF08CO10 — Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais.">EF08CO10</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A história:</strong> a Ana quer mandar segredos para o Beto, mas tudo passa pela Eva, que olha cada mensagem no caminho. São três fases. <strong>Disco:</strong> gire o disco amarelo para cifrar com a Cifra de César e tente ler uma mensagem interceptada sem saber a chave. <strong>Cofre:</strong> faça o bilhete chegar ao Beto numa caixa, usando cadeados, sem que a Eva leia. <strong>Tintas:</strong> Ana e Beto misturam tintas para combinar uma cor secreta que nunca passa pela rua.</p>
+    <p><strong>Experimente:</strong> troque de fase nos botões acima da cena. Em cada fase, os comandos ficam embaixo da cena e o painel ao lado mostra o que está acontecendo. Os desafios ficam marcados quando você conclui.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Fase">
+      <button type="button" data-modo="disco" aria-pressed="true">1. Disco de César</button>
+      <button type="button" data-modo="cofre" aria-pressed="false">2. Cofre com cadeados</button>
+      <button type="button" data-modo="tintas" aria-pressed="false">3. Mistura de tintas</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="t-disco">
+          <button class="btn ghost" type="button" id="menos" aria-label="Diminuir a chave">Chave − 1</button>
+          <button class="btn ghost" type="button" id="mais" aria-label="Aumentar a chave">Chave + 1</button>
+          <button class="btn" type="button" id="cifrar">Cifrar</button>
+          <button class="btn" type="button" id="decifrar">Decifrar</button>
+          <button class="btn ghost" type="button" id="forca">Força bruta</button>
+        </div>
+        <div class="tools" id="t-cofre" hidden>
+          <button class="btn" type="button" id="pCad">Pôr o cadeado</button>
+          <button class="btn" type="button" id="tCad">Tirar o cadeado</button>
+          <button class="btn" type="button" id="envia">Enviar a caixa</button>
+          <button class="btn ghost" type="button" id="envChave">Enviar a chave</button>
+          <button class="btn" type="button" id="abre">Abrir a caixa</button>
+          <button class="btn ghost" type="button" id="reCofre">Começar de novo</button>
+        </div>
+        <div class="tools" id="t-tintas" hidden>
+          <button class="btn" type="button" id="passo1">1. Misturar com a pública</button>
+          <button class="btn" type="button" id="passo2">2. Trocar as misturas</button>
+          <button class="btn" type="button" id="passo3">3. Juntar a cor secreta</button>
+          <button class="btn ghost" type="button" id="evaTenta">A Eva tenta</button>
+          <button class="btn ghost" type="button" id="reTintas">Começar de novo</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div id="tabela"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div id="p-disco">
+            <h3>Disco de César</h3>
+            <label for="chave">Chave: <b id="lchave">3</b> (A vira <b id="lletra">D</b>)</label>
+            <input type="range" id="chave" min="0" max="25" step="1" value="3">
+            <label for="msg">Sua mensagem</label>
+            <input type="text" id="msg" value="ENCONTRO NO PATIO" maxlength="60" autocomplete="off">
+            <div class="conta" id="saida" aria-live="polite"></div>
+            <h3 style="margin-top:14px">Mensagem interceptada</h3>
+            <p class="small muted" style="margin:0">A Eva pegou esta mensagem no caminho. Ninguém contou a chave.</p>
+            <p class="cifra" id="intercept"></p>
+            <label for="resp">O que ela diz?</label>
+            <input type="text" id="resp" maxlength="60" autocomplete="off">
+            <div class="tools" style="margin-top:8px">
+              <button class="btn" type="button" id="confere">Conferir</button>
+              <button class="btn ghost" type="button" id="outra">Outra mensagem</button>
+            </div>
+          </div>
+          <div id="p-cofre" hidden>
+            <h3>Caixa com cadeados</h3>
+            <p class="small" style="margin:0 0 6px">Cada um tem um cadeado e a única chave dele. A caixa passa sempre pela Eva, e ela abre o que conseguir abrir.</p>
+            <p class="grande" id="estadoCofre" style="font-size:22px"></p>
+            <div class="conta" id="diario" aria-live="polite"></div>
+            <ul class="leg">
+              <li><span class="sw" style="background:#f2cf1d"></span>cadeado e chave da Ana</li>
+              <li><span class="sw" style="background:#1f8a4c"></span>cadeado e chave do Beto</li>
+              <li><span class="sw" style="background:#c8323f"></span>Eva, que espia no meio do caminho</li>
+            </ul>
+          </div>
+          <div id="p-tintas" hidden>
+            <h3>Mistura de tintas</h3>
+            <p class="small" style="margin:0 0 6px">A tinta amarela é pública: todo mundo conhece, inclusive a Eva. Cada um escolhe uma cor secreta, que nunca sai de casa.</p>
+            <label for="segA">Cor secreta da Ana</label>
+            <select id="segA"></select>
+            <label for="segB">Cor secreta do Beto</label>
+            <select id="segB"></select>
+            <div class="potes" id="potes"></div>
+            <div class="conta" id="contaTinta"></div>
+          </div>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Leia a mensagem interceptada sem saber a chave.</li>
+            <li data-d="1">Faça o bilhete chegar ao Beto sem a Eva ler e sem enviar nenhuma chave.</li>
+            <li data-d="2">Faça Ana e Beto terem a mesma cor secreta e veja a Eva tentar copiar.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> as três fases contam a história da criptografia em três passos. A Cifra de César é uma cifra simétrica: a mesma chave cifra e decifra, e só existem 25 chaves úteis, então testar todas (força bruta) quebra a cifra em segundos. Cifras modernas também são simétricas, mas têm tantas chaves que testar todas levaria bilhões de anos. Sobra o problema de verdade: como combinar a chave com alguém do outro lado da internet, se tudo o que passa pela rede pode ser lido?</p>
+    <p>A caixa com dois cadeados mostra que dá para proteger algo sem nunca enviar a chave: a caixa viaja três vezes e sempre tem pelo menos um cadeado. A mistura de tintas é a analogia clássica da troca de chaves de Diffie e Hellman, usada quando o navegador mostra o cadeado do HTTPS: misturar é fácil, desmisturar é muito difícil. Ana e Beto chegam à mesma cor porque os dois potes finais têm as mesmas três tintas; a Eva só tem as misturas e, juntando as duas, fica com tinta pública em dobro. O painel mostra a mesma troca com números: elevar 5 a um expoente secreto e ficar com o resto da divisão por 23 é fácil, mas descobrir o expoente olhando o resto é difícil quando os números são enormes. A cor é a chave de uma cifra simétrica, como a do disco.</p>
+    <p><strong>Metodologia sugerida:</strong> sequência investigativa em três momentos, com duplas. Comece com o disco de papel da ficha e a fase 1; na fase 2, deixe as duplas errarem (mandar a chave junto, abrir antes da hora) antes de discutir; feche com a fase 3 e uma conversa sobre o cadeado do navegador e a criptografia de ponta a ponta dos aplicativos de mensagem.</p>
+    <ul>
+      <li>Quantas chaves a Cifra de César tem? Quanto tempo vocês levaram para testar todas? E se fossem um bilhão de chaves?</li>
+      <li>Na fase 2, por que enviar a chave pela rua estraga tudo? Em que momento a caixa ficou sem nenhum cadeado?</li>
+      <li>Por que a Eva, que viu a tinta pública e as duas misturas, não chega na mesma cor? O que ela precisaria saber fazer?</li>
+      <li>No celular: quando o aplicativo diz que a conversa tem criptografia de ponta a ponta, quem tem a chave? A empresa consegue ler?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO05 e EF08CO10. Material concreto equivalente: disco de César em papel, uma caixa de sapatos com dois cadeados de mala e copos de guache (amarelo como cor pública) para a mistura, com um aluno no papel da Eva.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/segredos-codigo-criptografia/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Segredos em código: criptografia</strong>
+          <span class="small muted">Cifra de César com disco de papel, quebra por força bruta e conversa sobre criptografia no celular.</span>
+        </a>
+        <a class="card" href="../fichas/disco-cifra-cesar/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>Disco da Cifra de César</strong>
+          <span class="small muted">Dois discos para recortar e montar com um colchete, mais mensagens para cifrar e decifrar em dupla.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/carro-que-aprende.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Carro que Aprende</strong>
+          <span class="small muted">Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-cofre-chaves');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-cofre-chaves';
+const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const feitos = new Set();
+const espera = ms => new Promise(r => setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : ms));
+function fb(txt, tipo = '') { $('#fb').className = 'feedback' + (tipo ? ' ' + tipo : ''); $('#fb').textContent = txt; }
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 12.5, 10.5], alvo: [0, 0, 0.2], min: 5, max: 40 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+const pequeno = $('#palco').clientWidth < 560;
+const CAM = {
+  disco: pequeno ? [[0, 13.5, 11.5], [0, 0, 0.2]] : [[0, 12.5, 10.5], [0, 0, 0.2]],
+  cofre: pequeno ? [[0, 12, 25], [0, 0.6, -0.6]] : [[0, 7.5, 15.5], [0, 0.6, -0.6]],
+  tintas: pequeno ? [[0, 13, 28], [0, 0.6, -0.6]] : [[0, 8.5, 18], [0, 0.6, -0.6]]
+};
+const grupos = {};
+if (cena) for (const k of ['disco', 'cofre', 'tintas']) { grupos[k] = new T.Group(); cena.add(grupos[k]); }
+
+/* rótulo que pode ser trocado sem vazar memória */
+function rotuloEm(grupo, texto, pos, op = {}) {
+  const r = cena.rotulo(texto, Object.assign({ tam: 0.42 }, op));
+  r.position.set(...pos); grupo.add(r); return r;
+}
+function tiraRotulo(r) { if (!r) return; r.parent && r.parent.remove(r); r.material.map.dispose(); r.material.dispose(); cena.pedeQuadro(); }
+function pessoa(grupo, cor, nome, pos) {
+  const g = new T.Group();
+  const corpo = cena.cilindro(0.45, 1.3, cor, { rTopo: 0.28 });
+  const cab = new T.Mesh(new T.SphereGeometry(0.36, 28, 18), cena.material(cor));
+  cab.position.y = 1.68; cab.castShadow = true; cena.comBordas(cab, 40);
+  g.add(corpo, cab);
+  g.position.set(...pos);
+  grupo.add(g);
+  rotuloEm(grupo, nome, [pos[0], 2.55, pos[2]], { fundo: '#fff36b' });
+  return g;
+}
+function mesa(grupo, x, z, larg = 3.2, prof = 2.2) {
+  const m = cena.bloco(larg, 0.12, prof, COR.cinza, { base: false });
+  m.position.set(x, -0.06, z); grupo.add(m);
+}
+
+/* =====================================================================
+   Fase 1: Disco de César
+   ===================================================================== */
+const N = 26, PASSO = Math.PI * 2 / N;
+let chave = 3, discoInterno = null, rotSeta = null;
+function texDisco(cor, raio, letras = true) {
+  const c = document.createElement('canvas'); c.width = c.height = 1024;
+  const x = c.getContext('2d');
+  x.fillStyle = cor; x.beginPath(); x.arc(512, 512, 510, 0, Math.PI * 2); x.fill();
+  x.strokeStyle = '#111'; x.lineWidth = 4;
+  if (letras) {
+    x.fillStyle = '#111'; x.font = '700 64px Lexend, system-ui, sans-serif';
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    for (let i = 0; i < N; i++) {
+      const a = i * PASSO;
+      x.save(); x.translate(512, 512); x.rotate(a);
+      x.fillText(ABC[i], 0, -raio * 512);
+      // traço de separação entre as casas
+      x.rotate(PASSO / 2); x.beginPath(); x.moveTo(0, -(raio - 0.12) * 512); x.lineTo(0, -(raio + 0.12) * 512); x.stroke();
+      x.restore();
+    }
+  }
+  const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 8;
+  return t;
+}
+if (cena) {
+  const g = grupos.disco;
+  const base = cena.cilindro(5, 0.3, COR.verdeClaro, { seg: 96 });
+  g.add(base);
+  const topoFora = new T.Mesh(new T.CircleGeometry(5, 96), new T.MeshStandardMaterial({ map: texDisco(COR.verdeClaro, 0.87), roughness: 0.7 }));
+  topoFora.rotation.x = -Math.PI / 2; topoFora.position.y = 0.302; topoFora.receiveShadow = true;
+  g.add(topoFora);
+  discoInterno = new T.Group();
+  const dIn = cena.cilindro(3.6, 0.32, COR.amarelo, { seg: 96 });
+  dIn.position.y = 0.3;
+  const topoDentro = new T.Mesh(new T.CircleGeometry(3.6, 96), new T.MeshStandardMaterial({ map: texDisco(COR.amarelo, 0.82), roughness: 0.7 }));
+  topoDentro.rotation.x = -Math.PI / 2; topoDentro.position.y = 0.622;
+  discoInterno.add(dIn, topoDentro);
+  g.add(discoInterno);
+  const pino = cena.cilindro(0.35, 0.5, COR.vermelho);
+  pino.position.y = 0.4; g.add(pino);
+  // seta em cima do A de fora
+  const seta = new T.Mesh(new T.ConeGeometry(0.32, 0.7, 24), cena.material(COR.vermelho));
+  seta.rotation.x = Math.PI / 2; seta.position.set(0, 0.75, -5.55); seta.castShadow = true;
+  cena.comBordas(seta, 40); g.add(seta);
+  rotuloEm(g, 'texto normal (fora)', [0, 0.9, 5.7], { tam: 0.38 });
+  rotuloEm(g, 'texto cifrado (dentro)', [0, 1.1, 1.6], { tam: 0.38 });
+}
+function textoChave() {
+  $('#chave').value = chave; $('#lchave').textContent = chave; $('#lletra').textContent = ABC[chave];
+  if (!cena) return;
+  tiraRotulo(rotSeta);
+  rotSeta = rotuloEm(grupos.disco, `chave ${chave}: A → ${ABC[chave]}`, [0, 1.25, -6.4], { tam: 0.5, fundo: '#fff36b' });
+  if (modo === 'disco') descreveDisco();
+}
+function giraDisco() {
+  textoChave();
+  if (cena) cena.animar(discoInterno, { rotation: [0, chave * PASSO, 0] }, 380);
+  mostraSaida();
+}
+function descreveDisco() {
+  cena && cena.descrever(`Disco de César com chave ${chave}: o disco de fora tem o alfabeto normal e o de dentro está girado ${chave} casas, então A vira ${ABC[chave]}, B vira ${ABC[(1 + chave) % N]} e assim por diante.`);
+}
+const limpa = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+const cesar = (s, k) => limpa(s).replace(/[A-Z]/g, c => ABC[(ABC.indexOf(c) + k + N * 2) % N]);
+let ultimaAcao = 'cifrar';
+function mostraSaida() {
+  const m = $('#msg').value;
+  $('#saida').textContent = ultimaAcao === 'cifrar'
+    ? `Cifrada com a chave ${chave}:\n${cesar(m, chave)}`
+    : `Decifrada com a chave ${chave}:\n${cesar(m, -chave)}`;
+}
+
+const SEGREDOS = ['O COFRE ABRE AS SETE', 'A SENHA ESTA NA GAVETA', 'LEVE O MAPA AMANHA', 'A CHAVE ESTA NO VASO', 'ENCONTRO NO PATIO', 'O TESOURO ESTA NA BIBLIOTECA'];
+let segredo = '', chaveSegredo = 0;
+function novaInterceptada() {
+  let s; do { s = SEGREDOS[Math.floor(Math.random() * SEGREDOS.length)]; } while (s === segredo && SEGREDOS.length > 1);
+  segredo = s; chaveSegredo = 1 + Math.floor(Math.random() * 25);
+  $('#intercept').textContent = cesar(segredo, chaveSegredo);
+  $('#resp').value = ''; $('#tabela').innerHTML = '';
+}
+function confere() {
+  const r = limpa($('#resp').value).replace(/[^A-Z]+/g, ' ').trim();
+  if (!r) { fb('Escreva o que você acha que a mensagem diz.'); return; }
+  if (r === segredo) {
+    fb(`Isso! A chave era ${chaveSegredo}. Sem saber a chave, você leu a mensagem: a Cifra de César não protege muito.`, 'ok');
+    marca(0);
+  } else fb('Ainda não. Gire o disco e tente decifrar com outras chaves, ou use a força bruta.', 'bad');
+}
+function forcaBruta() {
+  const c = $('#intercept').textContent;
+  const linhas = [];
+  for (let k = 1; k < N; k++) linhas.push(`<tr><td>${k}</td><td class="cifra" style="font-size:15px">${cesar(c, -k)}</td></tr>`);
+  $('#tabela').innerHTML = `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">Força bruta: a mensagem interceptada decifrada com todas as 25 chaves. Só uma faz sentido.</caption><thead><tr><th>Chave</th><th>Resultado</th></tr></thead><tbody>${linhas.join('')}</tbody></table></div>`;
+  fb('Testar todas as chaves é a força bruta. Ache a linha que faz sentido e escreva no painel.');
+}
+
+/* =====================================================================
+   Fase 2: Cofre com dois cadeados
+   ===================================================================== */
+const NOME = { ana: 'Ana', beto: 'Beto' };
+const COR_P = { ana: COR.amarelo, beto: COR.verde };
+const XLADO = { ana: -4.2, beto: 4.2 };
+let cofre, caixa, tampa, travas = {}, rotEva = null, ocupado = false;
+function novoCadeado(cor) {
+  const g = new T.Group();
+  const corpo = cena.bloco(0.56, 0.46, 0.2, cor, { base: false });
+  const arco = new T.Mesh(new T.TorusGeometry(0.18, 0.055, 10, 28, Math.PI), cena.material(COR.cinzaEscuro, { metalness: 0.4 }));
+  arco.position.y = 0.23; arco.castShadow = true;
+  g.add(corpo, arco);
+  return g;
+}
+function novaChave(cor) {
+  const g = new T.Group();
+  const anel = new T.Mesh(new T.TorusGeometry(0.2, 0.07, 10, 28), cena.material(cor));
+  const haste = cena.bloco(0.6, 0.1, 0.1, cor, { base: false });
+  haste.position.x = 0.45;
+  const dente = cena.bloco(0.1, 0.18, 0.1, cor, { base: false });
+  dente.position.set(0.68, -0.12, 0);
+  g.add(anel, haste, dente); g.rotation.x = -Math.PI / 2;
+  return g;
+}
+if (cena) {
+  const g = grupos.cofre;
+  const rua = cena.bloco(12.5, 0.04, 1.6, COR.cinza, { base: false, bordas: false });
+  rua.position.set(0, 0.02, 0); g.add(rua);
+  mesa(g, XLADO.ana, 0, 2.6, 2.6); mesa(g, XLADO.beto, 0, 2.6, 2.6);
+  pessoa(g, COR.amarelo, 'Ana', [-6.6, 0, -0.4]);
+  pessoa(g, COR.verde, 'Beto', [6.6, 0, -0.4]);
+  pessoa(g, COR.vermelho, 'Eva', [0, 0, -2.6]);
+  caixa = new T.Group();
+  const corpo = cena.bloco(1.8, 1, 1.2, '#b9824a', { base: false });
+  corpo.position.y = 0.5;
+  const bilhete = cena.bloco(1.1, 0.04, 0.7, '#ffffff', { base: false });
+  bilhete.position.y = 1.02;
+  tampa = new T.Group(); tampa.position.set(0, 1.0, -0.6);
+  const t = cena.bloco(1.9, 0.16, 1.3, '#9c6a39', { base: false });
+  t.position.set(0, 0.08, 0.6); tampa.add(t);
+  caixa.add(corpo, bilhete, tampa);
+  g.add(caixa);
+  travas.ana = novoCadeado(COR.amarelo); travas.ana.position.set(-0.45, 0.62, 0.72);
+  travas.beto = novoCadeado(COR.verde); travas.beto.position.set(0.45, 0.62, 0.72);
+  caixa.add(travas.ana, travas.beto);
+}
+const C = {};
+function zeraCofre() {
+  Object.assign(C, { lado: 'ana', cad: new Set(), evaChaves: new Set(), evaLeu: false, aberta: false, envios: 0, diario: ['A Ana escreveu o bilhete e fechou a caixa.'] });
+  ocupado = false;
+  if (cena) {
+    caixa.position.set(XLADO.ana, 0, 0); tampa.rotation.set(0, 0, 0);
+    travas.ana.visible = travas.beto.visible = false;
+    [...grupos.cofre.children].filter(o => o.userData.copia).forEach(o => grupos.cofre.remove(o));
+    tiraRotulo(rotEva); rotEva = null;
+  }
+  atualizaCofre();
+}
+function atualizaCofre() {
+  const quem = NOME[C.lado], outro = NOME[C.lado === 'ana' ? 'beto' : 'ana'];
+  const tem = C.cad.has(C.lado);
+  const dele = C.lado === 'ana' ? 'dela' : 'dele';
+  $('#pCad').textContent = `${quem} põe o cadeado ${dele}`;
+  $('#tCad').textContent = `${quem} tira o cadeado ${dele}`;
+  $('#envia').textContent = `Enviar a caixa para ${C.lado === 'ana' ? 'o' : 'a'} ${outro}`;
+  $('#envChave').textContent = `${quem} envia uma cópia da chave`;
+  $('#abre').textContent = `${quem} abre a caixa`;
+  const fim = C.aberta;
+  $('#pCad').disabled = fim || ocupado || tem;
+  $('#tCad').disabled = fim || ocupado || !tem;
+  $('#envia').disabled = fim || ocupado;
+  $('#envChave').disabled = fim || ocupado;
+  $('#abre').disabled = fim || ocupado || C.cad.size > 0;
+  $('#reCofre').disabled = ocupado;
+  const cads = [...C.cad].map(k => (k === 'ana' ? 'da Ana' : 'do Beto'));
+  $('#estadoCofre').textContent = `Caixa com: ${quem} · cadeados: ${cads.length ? cads.join(' e ') : 'nenhum'}`;
+  $('#diario').textContent = C.diario.map((l, i) => `${i + 1}. ${l}`).join('\n');
+  if (cena) {
+    travas.ana.visible = C.cad.has('ana'); travas.beto.visible = C.cad.has('beto');
+    cena.pedeQuadro();
+    if (modo === 'cofre') cena.descrever(`Caixa do bilhete com ${quem}, ${cads.length ? 'trancada com o cadeado ' + cads.join(' e o ') : 'sem cadeado'}. A Eva está no meio da rua, entre a Ana e o Beto. ${C.envios} envios até agora.`);
+  }
+}
+function evaPodeAbrir() { return [...C.cad].every(k => C.evaChaves.has(k)); }
+async function enviaCaixa() {
+  ocupado = true; atualizaCofre();
+  const para = C.lado === 'ana' ? 'beto' : 'ana';
+  if (cena) {
+    await cena.animar(caixa, { position: [0, 0, 0] }, 650);
+  }
+  C.envios++;
+  let leu = false;
+  if (evaPodeAbrir()) {
+    leu = true; C.evaLeu = true;
+    if (cena) {
+      await cena.animar(tampa, { rotation: [-1.9, 0, 0] }, 300);
+      rotEva = rotEva || rotuloEm(grupos.cofre, 'A Eva leu o bilhete!', [0, 3.3, -2.6], { tam: 0.5, fundo: COR.vermelhoClaro });
+      await espera(600);
+      await cena.animar(tampa, { rotation: [0, 0, 0] }, 300);
+    }
+  } else await espera(300);
+  if (cena) await cena.animar(caixa, { position: [XLADO[para], 0, 0] }, 650);
+  C.diario.push(`A caixa foi para ${para === 'ana' ? 'a Ana' : 'o Beto'}${leu ? (C.cad.size ? ' e a Eva abriu com a cópia da chave' : ' sem cadeado: a Eva leu tudo') : ', e a Eva não conseguiu abrir'}.`);
+  C.lado = para; ocupado = false;
+  if (leu) fb(C.cad.size ? 'A Eva tinha uma cópia da chave e abriu a caixa no caminho.' : 'A caixa passou sem cadeado e a Eva leu o bilhete.', 'bad');
+  else fb(`A caixa chegou ${para === 'ana' ? 'à Ana' : 'ao Beto'}. A Eva viu a caixa passar, mas não conseguiu abrir.`);
+  atualizaCofre();
+}
+async function enviaChave() {
+  ocupado = true; atualizaCofre();
+  const dono = C.lado, para = dono === 'ana' ? 'beto' : 'ana';
+  if (cena) {
+    const k = novaChave(COR_P[dono]); k.position.set(XLADO[dono], 1.2, 1.4); grupos.cofre.add(k);
+    await cena.animar(k, { position: [0, 1.2, 1.4] }, 600);
+    const copia = novaChave(COR_P[dono]); copia.userData.copia = true;
+    copia.position.set(0, 1.2, 1.4); grupos.cofre.add(copia);
+    await cena.animar(copia, { position: [dono === 'ana' ? -0.9 : 0.9, 0.25, -1.7] }, 450);
+    await cena.animar(k, { position: [XLADO[para], 1.2, 1.4] }, 600);
+    grupos.cofre.remove(k);
+  }
+  C.evaChaves.add(dono);
+  C.diario.push(`${NOME[dono]} mandou uma cópia da chave pela rua. A Eva fez uma cópia também.`);
+  fb('A chave passou pela Eva, e ela copiou. Agora esse cadeado não protege mais nada.', 'bad');
+  ocupado = false; atualizaCofre();
+}
+function poeCadeado() { C.cad.add(C.lado); C.diario.push(`${NOME[C.lado]} trancou a caixa com o cadeado ${C.lado === 'ana' ? 'dela' : 'dele'}.`); fb(''); atualizaCofre(); }
+function tiraCadeado() { C.cad.delete(C.lado); C.diario.push(`${NOME[C.lado]} tirou o cadeado ${C.lado === 'ana' ? 'dela' : 'dele'} com a própria chave.`); fb(''); atualizaCofre(); }
+async function abreCaixa() {
+  if (cena) await cena.animar(tampa, { rotation: [-1.9, 0, 0] }, 400);
+  if (C.lado === 'ana') { C.diario.push('A Ana abriu a caixa, mas ela ainda está do lado dela.'); fb('O bilhete ainda está com a Ana. Ela precisa fazer a caixa chegar ao Beto.'); await espera(500); if (cena) await cena.animar(tampa, { rotation: [0, 0, 0] }, 300); atualizaCofre(); return; }
+  C.aberta = true;
+  C.diario.push('O Beto abriu a caixa e leu o bilhete.');
+  if (C.evaLeu) fb('O bilhete chegou, mas a Eva leu no caminho. Comece de novo e tente outro jeito.', 'bad');
+  else if (C.evaChaves.size) fb('O bilhete chegou sem a Eva ler, mas uma chave passou pela rua. A Eva pode usar a cópia na próxima vez. Tente sem enviar nenhuma chave.', 'bad');
+  else { fb(`Conseguiu! O bilhete chegou em ${C.envios} viagens, sempre com pelo menos um cadeado, e nenhuma chave saiu de casa.`, 'ok'); marca(1); }
+  atualizaCofre();
+}
+
+/* =====================================================================
+   Fase 3: Mistura de tintas (troca de chaves de Diffie e Hellman)
+   ===================================================================== */
+const PUB = { nome: 'amarelo', cor: COR.amarelo };
+const CORES = [
+  { nome: 'vermelho', cor: '#c8323f', n: 6 }, { nome: 'verde', cor: '#1f8a4c', n: 15 }, { nome: 'preto', cor: '#2a2a2a', n: 9 },
+  { nome: 'branco', cor: '#fafaf8', n: 4 }, { nome: 'rosa', cor: '#f2a9b3', n: 11 }, { nome: 'marrom', cor: '#7a4a2a', n: 17 }, { nome: 'laranja', cor: '#e8772e', n: 13 }
+];
+const G = 5, P = 23;
+const potmod = (b, e, m) => { let r = 1; b %= m; while (e > 0) { if (e & 1) r = r * b % m; b = b * b % m; e >>= 1; } return r; };
+const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const hex = c => '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
+function mistura(partes) { // partes: [[cor, quantidade], ...]
+  const tot = partes.reduce((s, [, q]) => s + q, 0);
+  return hex([0, 1, 2].map(i => partes.reduce((s, [c, q]) => s + rgb(c)[i] * q, 0) / tot));
+}
+const TX = { ana: -5.6, beto: 5.6 };
+let latas = [], rotTintas = [];
+const TI = {};
+function novaLata(cor, pos, rot) {
+  const g = new T.Group();
+  const corpo = cena.cilindro(0.55, 0.9, COR.cinza);
+  const tinta = cena.cilindro(0.5, 0.05, cor, { material: new T.MeshStandardMaterial({ color: new T.Color(cor), roughness: 0.35 }) });
+  tinta.position.y = 0.9;
+  g.add(corpo, tinta); g.userData.tinta = tinta;
+  g.position.set(...pos); grupos.tintas.add(g); latas.push(g);
+  if (rot) g.userData.rot = rotuloEm(grupos.tintas, rot, [pos[0], 1.55, pos[2]], { tam: 0.34 });
+  return g;
+}
+function pinta(lata, cor) { lata.userData.tinta.material.color.set(cor); cena.pedeQuadro(); }
+function moveRot(lata, texto) {
+  tiraRotulo(lata.userData.rot);
+  lata.userData.rot = rotuloEm(grupos.tintas, texto, [lata.position.x, 1.55, lata.position.z], { tam: 0.34 });
+}
+if (cena) {
+  const g = grupos.tintas;
+  const rua = cena.bloco(14, 0.04, 1.6, COR.cinza, { base: false, bordas: false });
+  rua.position.set(0, 0.02, 0); g.add(rua);
+  mesa(g, TX.ana, 0, 3.4, 4.2); mesa(g, TX.beto, 0, 3.4, 4.2);
+  pessoa(g, COR.amarelo, 'Ana', [-8.2, 0, -0.6]);
+  pessoa(g, COR.verde, 'Beto', [8.2, 0, -0.6]);
+  pessoa(g, COR.vermelho, 'Eva', [0, 0, -3.8]);
+}
+const secA = () => CORES[+$('#segA').value], secB = () => CORES[+$('#segB').value];
+function zeraTintas() {
+  Object.assign(TI, { passo: 0, eva: false, ocupado: false, evaCopias: [] });
+  if (cena) {
+    latas.forEach(l => { tiraRotulo(l.userData.rot); grupos.tintas.remove(l); });
+    latas = [];
+    rotTintas.forEach(tiraRotulo); rotTintas = [];
+    TI.pub = novaLata(PUB.cor, [0, 0, 1.6], 'pública');
+    TI.sA = novaLata(secA().cor, [TX.ana - 1, 0, 1.2], 'secreta');
+    TI.sB = novaLata(secB().cor, [TX.beto + 1, 0, 1.2], 'secreta');
+  }
+  atualizaTintas();
+}
+function atualizaTintas() {
+  const a = secA(), b = secB();
+  const mA = mistura([[PUB.cor, 1], [a.cor, 1]]), mB = mistura([[PUB.cor, 1], [b.cor, 1]]);
+  const fim = mistura([[PUB.cor, 1], [a.cor, 1], [b.cor, 1]]);
+  const eva = mistura([[PUB.cor, 2], [a.cor, 1], [b.cor, 1]]);
+  TI.cores = { mA, mB, fim, eva };
+  const pote = (cor, txt) => `<div><span class="sw" style="background:${cor}"></span>${txt}</div>`;
+  const p = TI.passo;
+  $('#potes').innerHTML = [
+    pote(PUB.cor, 'pública'),
+    p >= 1 ? pote(mA, 'mistura da Ana') : '', p >= 1 ? pote(mB, 'mistura do Beto') : '',
+    p >= 3 ? pote(fim, 'final da Ana') : '', p >= 3 ? pote(fim, 'final do Beto') : '',
+    TI.eva ? pote(eva, 'tentativa da Eva') : ''
+  ].join('');
+  const A = potmod(G, a.n, P), B = potmod(G, b.n, P);
+  const linhas = [`Com números (a tinta vira número):`, `pública: base ${G}, resto da divisão por ${P}`,
+    `segredo da Ana: ${a.n}   segredo do Beto: ${b.n}`];
+  if (p >= 1) linhas.push(`Ana mistura: ${G}^${a.n} → resto ${A}`, `Beto mistura: ${G}^${b.n} → resto ${B}`);
+  if (p >= 2) linhas.push(`Pela rua passam ${A} e ${B} (a Eva vê).`);
+  if (p >= 3) linhas.push(`Ana: ${B}^${a.n} → resto ${potmod(B, a.n, P)}`, `Beto: ${A}^${b.n} → resto ${potmod(A, b.n, P)}`, `Mesmo número: essa é a chave secreta.`);
+  if (TI.eva) linhas.push(`Eva junta o que viu: ${A} × ${B} → resto ${A * B % P}. Errou.`);
+  $('#contaTinta').textContent = linhas.join('\n');
+  const o = TI.ocupado;
+  $('#passo1').disabled = o || p !== 0;
+  $('#passo2').disabled = o || p !== 1;
+  $('#passo3').disabled = o || p !== 2;
+  $('#evaTenta').disabled = o || p < 2 || TI.eva;
+  $('#segA').disabled = $('#segB').disabled = $('#reTintas').disabled = o;
+  if (cena && modo === 'tintas') {
+    const est = ['Ana e Beto têm cada um a sua tinta secreta; a tinta pública amarela está no meio da rua.',
+      'Cada um misturou a tinta pública com a sua cor secreta.',
+      'As misturas trocaram de lado e a Eva copiou as duas no caminho.',
+      'Ana e Beto juntaram a cor secreta à mistura que receberam e ficaram com a mesma cor final.'][p];
+    cena.descrever(est + (TI.eva ? ' A Eva juntou as duas misturas e chegou numa cor diferente.' : ''));
+  }
+}
+async function passo1() {
+  TI.ocupado = true; atualizaTintas();
+  if (cena) {
+    const cA = novaLata(PUB.cor, [0, 0, 1.6]), cB = novaLata(PUB.cor, [0, 0, 1.6]);
+    await Promise.all([cena.animar(cA, { position: [TX.ana + 0.6, 0, 1.2] }, 900), cena.animar(cB, { position: [TX.beto - 0.6, 0, 1.2] }, 900)]);
+    pinta(cA, TI.cores.mA); pinta(cB, TI.cores.mB);
+    moveRot(cA, 'mistura'); moveRot(cB, 'mistura');
+    TI.mA = cA; TI.mB = cB;
+  }
+  TI.passo = 1; TI.ocupado = false;
+  fb('Cada um misturou a tinta pública com a sua cor secreta. A cor secreta não saiu de casa.');
+  atualizaTintas();
+}
+async function passo2() {
+  TI.ocupado = true; atualizaTintas();
+  if (cena) {
+    for (const [lata, para, xEva] of [[TI.mA, TX.beto + 0.6, -1.1], [TI.mB, TX.ana - 0.6, 1.1]]) {
+      tiraRotulo(lata.userData.rot); lata.userData.rot = null;
+      await cena.animar(lata, { position: [0, 0, 0] }, 650);
+      const copia = novaLata('#' + lata.userData.tinta.material.color.getHexString(), [0, 0, 0]);
+      await cena.animar(copia, { position: [xEva, 0, -1.6] }, 450);
+      TI.evaCopias.push(copia);
+      await cena.animar(lata, { position: [para, 0, -0.9] }, 650);
+      moveRot(lata, 'recebida');
+    }
+    rotTintas.push(rotuloEm(grupos.tintas, 'cópias da Eva', [0, 1.55, -1.6], { tam: 0.34, fundo: COR.vermelhoClaro }));
+  }
+  TI.passo = 2; TI.ocupado = false;
+  fb('As misturas trocaram de lado pela rua, e a Eva copiou as duas. Ela tem a tinta pública e as duas misturas.');
+  atualizaTintas();
+}
+async function passo3() {
+  TI.ocupado = true; atualizaTintas();
+  if (cena) {
+    // cada um derrama um pouco da cor secreta na mistura que recebeu
+    const dA = novaLata(secA().cor, TI.sA.position.toArray()), dB = novaLata(secB().cor, TI.sB.position.toArray());
+    await Promise.all([cena.animar(dA, { position: [TX.ana - 0.6, 1.2, -0.9] }, 700), cena.animar(dB, { position: [TX.beto + 0.6, 1.2, -0.9] }, 700)]);
+    grupos.tintas.remove(dA, dB); latas = latas.filter(l => l !== dA && l !== dB);
+    pinta(TI.mB, TI.cores.fim); pinta(TI.mA, TI.cores.fim);
+    moveRot(TI.mB, 'final da Ana'); moveRot(TI.mA, 'final do Beto');
+    await Promise.all([cena.animar(TI.mB, { scale: [1.2, 1.2, 1.2] }, 300), cena.animar(TI.mA, { scale: [1.2, 1.2, 1.2] }, 300)]);
+  }
+  TI.passo = 3; TI.ocupado = false;
+  fb(`Ana e Beto chegaram à mesma cor, e ela nunca passou pela rua. ${TI.eva ? '' : 'Agora veja o que a Eva consegue com as cópias.'}`, 'ok');
+  atualizaTintas();
+  if (TI.eva) marca(2);
+}
+async function evaTenta() {
+  TI.ocupado = true; atualizaTintas();
+  if (cena) {
+    const [c1, c2] = TI.evaCopias;
+    await Promise.all([cena.animar(c1, { position: [0, 0, -1.6] }, 500), cena.animar(c2, { position: [0, 0.95, -1.6] }, 500)]);
+    grupos.tintas.remove(c2); latas = latas.filter(l => l !== c2);
+    pinta(c1, TI.cores.eva);
+    rotTintas.forEach(tiraRotulo); rotTintas = [];
+    rotTintas.push(rotuloEm(grupos.tintas, 'tentativa da Eva', [0, 1.55, -1.6], { tam: 0.34, fundo: COR.vermelhoClaro }));
+  }
+  TI.eva = true; TI.ocupado = false;
+  fb('A Eva juntou as duas misturas, mas ficou com tinta pública em dobro: a cor dela puxa para o amarelo e não é a cor de Ana e Beto. Para acertar, ela precisaria desmisturar uma tinta.', TI.passo >= 3 ? 'ok' : '');
+  atualizaTintas();
+  if (TI.passo >= 3) marca(2);
+}
+
+/* ---------- troca de fase ---------- */
+let modo = 'disco';
+function trocaModo(m) {
+  modo = m;
+  document.querySelectorAll('[data-modo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modo === m)));
+  for (const k of ['disco', 'cofre', 'tintas']) {
+    $('#t-' + k).hidden = $('#p-' + k).hidden = k !== m;
+    if (cena) grupos[k].visible = k === m;
+  }
+  $('#tabela').innerHTML = ''; fb('');
+  if (cena) cena.posicionar(...CAM[m]);
+  if (m === 'disco') descreveDisco();
+  if (m === 'cofre') atualizaCofre();
+  if (m === 'tintas') atualizaTintas();
+}
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => trocaModo(b.dataset.modo)));
+
+/* ---------- controles ---------- */
+$('#chave').addEventListener('input', e => { chave = +e.target.value; giraDisco(); });
+$('#menos').onclick = () => { chave = (chave + N - 1) % N; giraDisco(); };
+$('#mais').onclick = () => { chave = (chave + 1) % N; giraDisco(); };
+$('#cifrar').onclick = () => { ultimaAcao = 'cifrar'; mostraSaida(); fb(`Cada letra andou ${chave} casas para a frente no alfabeto.`); };
+$('#decifrar').onclick = () => { ultimaAcao = 'decifrar'; mostraSaida(); fb(`Cada letra voltou ${chave} casas no alfabeto. Use o disco: ache a letra no disco de dentro e leia a de fora.`); };
+$('#msg').addEventListener('input', mostraSaida);
+$('#forca').onclick = forcaBruta;
+$('#confere').onclick = confere;
+$('#resp').addEventListener('keydown', e => { if (e.key === 'Enter') confere(); });
+$('#outra').onclick = () => { novaInterceptada(); fb('Nova mensagem interceptada, com outra chave.'); };
+
+$('#pCad').onclick = poeCadeado;
+$('#tCad').onclick = tiraCadeado;
+$('#envia').onclick = enviaCaixa;
+$('#envChave').onclick = enviaChave;
+$('#abre').onclick = abreCaixa;
+$('#reCofre').onclick = () => { zeraCofre(); fb('A caixa voltou para a Ana, fechada e sem cadeado.'); };
+
+const opcoes = CORES.map((c, i) => `<option value="${i}">${c.nome}</option>`).join('');
+$('#segA').innerHTML = opcoes; $('#segB').innerHTML = opcoes;
+$('#segA').value = '0'; $('#segB').value = '1';
+$('#segA').onchange = $('#segB').onchange = () => { zeraTintas(); fb('Cores secretas trocadas. Comece pela mistura.'); };
+$('#passo1').onclick = passo1;
+$('#passo2').onclick = passo2;
+$('#passo3').onclick = passo3;
+$('#evaTenta').onclick = evaTenta;
+$('#reTintas').onclick = () => { zeraTintas(); fb(''); };
+
+novaInterceptada();
+textoChave();
+if (cena) discoInterno.rotation.y = chave * PASSO;
+mostraSaida();
+zeraCofre();
+zeraTintas();
+trocaModo('disco');
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -49,7 +49,9 @@
     { id: 'placa-mae', sigla: 'CPU', titulo: 'Placa-mãe em 3D', url: 'placa-mae.html', niveis: ['EF', 'EM', 'ES'],
       resumo: 'Gire uma placa-mãe em 3D, clique em cada componente para saber o que ele faz, separe as peças e acompanhe o caminho dos dados entre processador, memória, chipset e armazenamento.',
       bncc: ['EF07CO10'],
-      uso: 'Use a exploração das peças e o modo Encontre a peça para conhecer processador, memória, armazenamento e conexões. Barramentos e chipset ficam para o Médio e o Superior.' }
+      uso: 'Use a exploração das peças e o modo Encontre a peça para conhecer processador, memória, armazenamento e conexões. Barramentos e chipset ficam para o Médio e o Superior.' },
+    { id: 'cpu-por-dentro', sigla: 'ULA', titulo: 'CPU por Dentro: caminho de dados MIPS em 3D', url: 'cpu-por-dentro.html', niveis: ['ES'],
+      resumo: 'Siga uma instrução MIPS pelo caminho de dados em 3D, estágio por estágio (IF, ID, EX, MEM, WB), veja quais peças ela usa e acompanhe o pipeline com cinco instruções ao mesmo tempo, bolhas, adiantamento e desvios.' }
   ];
   window.NIVEIS = { EF: 'Ensino Fundamental', EM: 'Ensino Médio', ES: 'Ensino Superior e técnico' };
 

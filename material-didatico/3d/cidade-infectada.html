@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cidade Infectada: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Um bairro em 3D ligado em rede: um malware se espalha de computador em computador e você decide onde pôr firewall, atualização e backup com orçamento limitado.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/cidade-infectada.html">
+<meta property="og:title" content="Cidade Infectada: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Um bairro em 3D ligado em rede: um verme, um ransomware e e-mails falsos se espalham de computador em computador, e o aluno decide onde pôr firewall, atualização e backup com orçamento limitado. 8º e 9º ano.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/cidade-infectada.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-cidade-infectada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cidade Infectada: bairro em 3D com prédios ligados por cabos de rede, um vírus se espalhando e defesas de firewall, atualização e backup.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cidade Infectada","description":"Um bairro em 3D ligado em rede e um malware que se espalha de computador em computador. Com orçamento limitado, decida onde pôr firewall, atualização e backup.","url":"https://ohtopico.com.br/material-didatico/3d/cidade-infectada.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-cidade-infectada.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO04","targetDescription":"Compreender o funcionamento de malwares e outros ataques cibernéticos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO10","targetDescription":"Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Cidade Infectada","item":"https://ohtopico.com.br/material-didatico/3d/cidade-infectada.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ao 9º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Cidade Infectada</h1>
+      <p class="muted" style="max-width:720px">Um bairro em 3D ligado em rede e um malware que se espalha de computador em computador. Com orçamento limitado, decida onde pôr firewall, atualização e backup.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co04/" title="EF09CO04 — Compreender o funcionamento de malwares e outros ataques cibernéticos.">EF09CO04</a><a class="tag code co" href="../bncc/ef08co10/" title="EF08CO10 — Discutir questões sobre segurança e privacidade relacionadas ao uso dos ambientes virtuais.">EF08CO10</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>O bairro:</strong> as casas, a escola, o posto de saúde e os outros prédios estão ligados por cabos de rede. Um computador já foi infectado (ele aparece em vermelho). Quando você soltar o vírus, a cada rodada ele passa pelos cabos para todos os vizinhos que não estiverem protegidos.</p>
+    <p><strong>Suas defesas, com orçamento limitado:</strong> <strong>atualização</strong> (3 moedas) fecha a falha que o vírus usa, e aquele computador não pega o vírus. <strong>Firewall</strong> (2 moedas) bloqueia um cabo: nada passa por ele. <strong>Backup</strong> (1 moeda) não impede o vírus, mas guarda uma cópia dos arquivos, e aquele prédio não perde os dados. Cada prédio tem um valor de dados (casa 1, comércio 2, escola e prefeitura 3, posto de saúde 4).</p>
+    <p><strong>Como jogar:</strong> escolha a fase, escolha a defesa e clique num prédio ou num cabo (ou use a lista “Onde colocar”). Depois aperte “Soltar o vírus” e acompanhe as rodadas. Mudou de ideia? Mexa nas defesas e solte de novo.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões e nas listas.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="soltar">Soltar o vírus</button>
+          <button class="btn ghost" type="button" id="recomecar">Recomeçar a fase</button>
+          <button class="btn ghost" type="button" id="limpar">Tirar todas as defesas</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div id="linha"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Missão</h3>
+          <label for="fase">Fase</label>
+          <select id="fase">
+            <option value="0">Fase 1: o verme da lan house</option>
+            <option value="1">Fase 2: ransomware na prefeitura</option>
+            <option value="2">Fase 3: dois e-mails falsos</option>
+          </select>
+          <p class="small" id="missao"></p>
+          <p class="grande" id="moedas"></p>
+          <h3 style="margin-top:14px">Defesa</h3>
+          <div class="tools" role="radiogroup" aria-label="Defesa escolhida" id="ferramentas" style="margin-top:0">
+            <button class="chip" type="button" role="radio" data-f="at">Atualização (3)</button>
+            <button class="chip" type="button" role="radio" data-f="fw">Firewall (2)</button>
+            <button class="chip" type="button" role="radio" data-f="bk">Backup (1)</button>
+          </div>
+          <label for="alvo">Onde colocar</label>
+          <select id="alvo"></select>
+          <div class="tools" style="margin-top:8px">
+            <button class="btn ghost" type="button" id="aplicar">Colocar ou tirar</button>
+          </div>
+          <div class="conta" id="placar" aria-live="polite"></div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#c8323f"></span>computador infectado</li>
+            <li><span class="sw" style="background:#1f8a4c"></span>anel verde: atualizado</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>muro amarelo no cabo: firewall</li>
+            <li><span class="sw" style="background:#6f6f6b"></span>caixinha cinza ao lado: backup</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Fase 1: o vírus não pode chegar à escola nem ao posto de saúde.</li>
+            <li data-d="1">Vença a fase 1 gastando no máximo 5 moedas.</li>
+            <li data-d="2">Fase 2: o ransomware pode até se espalhar, mas a cidade perde no máximo 4 pontos de dados.</li>
+            <li data-d="3">Fase 3: proteja a escola, o posto de saúde e a prefeitura de dois vírus ao mesmo tempo.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> o bairro é um grafo. Os prédios são os vértices e os cabos são as arestas. O vírus se espalha como uma busca em largura: na rodada 1 ele chega aos vizinhos da origem, na rodada 2 aos vizinhos dos vizinhos, e assim por diante. Cada defesa corresponde a uma ideia real de segurança. A atualização corrige a falha que um verme (worm) usa para entrar sozinho no computador; o firewall filtra o tráfego de uma conexão; o backup não impede o ataque, mas tira a força do ransomware, que sequestra os arquivos e pede resgate. Na fase 3 a origem são e-mails falsos (phishing), lembrando que muitos ataques começam por uma pessoa que clica num link, e não por uma falha técnica.</p>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem baseada em problemas, em duplas. Cada dupla é a “equipe de segurança da prefeitura” e precisa defender o bairro com pouco dinheiro. Antes de soltar o vírus, a dupla escreve no caderno onde vai gastar e por quê; depois compara a previsão com o que aconteceu. Feche com uma roda de conversa comparando as soluções das duplas: há mais de um jeito de vencer cada fase.</p>
+    <ul>
+      <li>Na fase 1, por que três firewalls em volta da lan house protegem o bairro inteiro? E por que dá para vencer gastando menos, protegendo só os pontos certos?</li>
+      <li>Na fase 2, alguém venceu só com backups, sem impedir o vírus? O que isso diz sobre a importância de fazer cópias dos arquivos da escola e da família?</li>
+      <li>Quais prédios ficam “no meio do caminho” de muitos cabos? Por que proteger esses pontos vale mais do que proteger uma casa da ponta?</li>
+      <li>No mundo real, o que corresponde a cada defesa no celular de vocês? (Atualizar o sistema e os aplicativos, não instalar nada de fora da loja, fazer backup das fotos.) E o que não depende de tecnologia nenhuma? (Desconfiar de link e de anexo.)</li>
+      <li>Na simulação o vírus sempre passa por um cabo sem proteção. No mundo real a propagação depende de sorte, de horário e de quem está conectado. O que mudaria no jogo se cada cabo tivesse só uma chance de passar o vírus?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO04 (funcionamento de malwares e ataques) e EF08CO10 (segurança e privacidade em ambientes virtuais). Combina com o plano “Golpes digitais e dados pessoais” e com a ficha “Análise de incidente”. Material concreto equivalente: o mapa do bairro desenhado no chão com fita crepe, barbantes para os cabos, tampinhas vermelhas para o vírus e fichas de papel como moedas.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/golpes-digitais-dados-pessoais/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Golpes digitais e dados pessoais</strong>
+          <span class="small muted">Quais dados são sensíveis, como golpes funcionam e como se proteger, com casos fictícios.</span>
+        </a>
+        <a class="card" href="../fichas/analise-incidente-como-agem-ataques/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>Análise de incidente: como agem os ataques</strong>
+          <span class="small muted">Ligar tipos de malware às descrições e investigar um ataque de ransomware fictício numa escola.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/carro-que-aprende.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Carro que Aprende</strong>
+          <span class="small muted">Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-cidade-infectada');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-cidade-infectada';
+
+/* tipo: casa | predio; v: valor dos dados; p: posição no chão [x, z] */
+const NOS = {
+  L: { nome: 'Lan house', v: 1, p: [-8, -4], tipo: 'predio', cor: COR.amareloClaro, alt: 1.4 },
+  C1: { nome: 'Casa 1', v: 1, p: [-8.5, 2.5], tipo: 'casa' },
+  C2: { nome: 'Casa 2', v: 1, p: [-4.5, 5.5], tipo: 'casa' },
+  P: { nome: 'Padaria', v: 2, p: [-4, -0.5], tipo: 'predio', cor: COR.amareloClaro, alt: 1.3 },
+  M: { nome: 'Mercado', v: 2, p: [-3.5, -5.5], tipo: 'predio', cor: COR.verdeClaro, alt: 1.3 },
+  E: { nome: 'Escola', v: 3, p: [0, 2.5], tipo: 'predio', cor: COR.amarelo, alt: 2, larg: 2.4 },
+  B: { nome: 'Biblioteca', v: 2, p: [0.5, -3], tipo: 'predio', cor: COR.cinza, alt: 1.7 },
+  C3: { nome: 'Casa 3', v: 1, p: [4, 6], tipo: 'casa' },
+  F: { nome: 'Farmácia', v: 2, p: [4.5, -6], tipo: 'predio', cor: COR.verdeClaro, alt: 1.3 },
+  PR: { nome: 'Prefeitura', v: 3, p: [4.5, 0], tipo: 'predio', cor: COR.cinza, alt: 2.2, larg: 2.2 },
+  H: { nome: 'Posto de saúde', v: 4, p: [8.5, 3.5], tipo: 'predio', cor: '#ffffff', alt: 1.8, larg: 2.2 },
+  C4: { nome: 'Casa 4', v: 1, p: [8.5, -3.5], tipo: 'casa' }
+};
+const IDS = Object.keys(NOS);
+const TOTAL = IDS.reduce((s, k) => s + NOS[k].v, 0);
+const CABOS = [['L', 'C1'], ['L', 'P'], ['L', 'M'], ['C1', 'C2'], ['C1', 'P'], ['P', 'E'], ['P', 'M'], ['P', 'B'], ['M', 'B'], ['C2', 'E'],
+  ['E', 'C3'], ['E', 'B'], ['B', 'PR'], ['B', 'F'], ['F', 'C4'], ['PR', 'C4'], ['PR', 'H'], ['C3', 'H'], ['E', 'PR']];
+const CUSTO = { at: 3, fw: 2, bk: 1 };
+const NOME_F = { at: 'atualização', fw: 'firewall', bk: 'backup' };
+const FASES = [
+  { origem: ['L'], orc: 6, virus: 'verme',
+    missao: 'Um verme entrou pelo computador da lan house e se espalha sozinho pela rede, usando uma falha do sistema. Não deixe que ele chegue à escola nem ao posto de saúde.',
+    venceu: r => !r.inf.has('E') && !r.inf.has('H'),
+    meta: 'escola e posto de saúde sem vírus' },
+  { origem: ['PR'], orc: 8, virus: 'ransomware',
+    missao: 'Alguém na prefeitura abriu um anexo com ransomware: o vírus sequestra os arquivos de cada computador que pega. A cidade pode perder no máximo 4 pontos de dados (sem backup, cada prédio infectado perde o seu valor).',
+    venceu: r => r.perda <= 4,
+    meta: 'no máximo 4 pontos de dados perdidos' },
+  { origem: ['C2', 'F'], orc: 8, virus: 'vírus de e-mail falso',
+    missao: 'Duas pessoas clicaram no mesmo e-mail falso: o vírus começa na Casa 2 e na Farmácia ao mesmo tempo. Proteja a escola, o posto de saúde e a prefeitura.',
+    venceu: r => !['E', 'H', 'PR'].some(k => r.inf.has(k)),
+    meta: 'escola, posto de saúde e prefeitura sem vírus' }
+];
+
+let fase = 0, ferr = 'at';
+const def = { at: new Set(), fw: new Set(), bk: new Set() }; // at e bk: id do prédio; fw: índice do cabo
+let estado = 'plano'; // plano | rodando | fim
+let inf = new Set();
+const feitos = new Set();
+const gasto = () => def.at.size * CUSTO.at + def.fw.size * CUSTO.fw + def.bk.size * CUSTO.bk;
+const nomeCabo = i => `${NOS[CABOS[i][0]].nome} ↔ ${NOS[CABOS[i][1]].nome}`;
+
+/* Propagação em rodadas (busca em largura). Devolve as rodadas com as tentativas de cada uma. */
+function propagar() {
+  const F = FASES[fase];
+  const infec = new Set(F.origem);
+  let fronteira = [...F.origem];
+  const rodadas = [];
+  while (fronteira.length) {
+    const tent = [], novos = [];
+    for (const u of fronteira) CABOS.forEach(([a, b], i) => {
+      const v = a === u ? b : b === u ? a : null;
+      if (!v || infec.has(v)) return;
+      if (def.fw.has(i)) tent.push({ u, v, i, bloq: 'fw' });
+      else if (def.at.has(v)) tent.push({ u, v, i, bloq: 'at' });
+      else { infec.add(v); novos.push(v); tent.push({ u, v, i, bloq: null }); }
+    });
+    if (!tent.length) break;
+    rodadas.push({ tent, novos });
+    fronteira = novos;
+  }
+  let perda = 0; infec.forEach(k => { if (!def.bk.has(k)) perda += NOS[k].v; });
+  return { rodadas, inf: infec, perda };
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 19, 18.5], alvo: [0.2, 0, 0.3], min: 8, max: 42, chaoTam: 60 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0, 26, 21], [0, 0, 0.3]);
+const H = 0.22; // altura dos cabos
+const predios = {}, cabos = [];
+let gBola, matSaude, matInf;
+if (cena) {
+  const rua = cena.bloco(21, 0.04, 15, '#e6e6e1', { base: false, bordas: false, sombra: false }); rua.position.set(0, 0.02, 0.2); cena.add(rua);
+  matInf = new T.MeshStandardMaterial({ color: new T.Color(COR.vermelho), roughness: 0.55, emissive: new T.Color(COR.vermelho), emissiveIntensity: 0.25 });
+  // cabos (com área de clique mais larga e o muro do firewall no meio)
+  CABOS.forEach(([a, b], i) => {
+    const A = NOS[a].p, B = NOS[b].p;
+    const ini = [A[0], H, A[1]], fim = [B[0], H, B[1]];
+    const m = cena.haste(ini, fim, 0.1, COR.cinzaEscuro, { material: new T.MeshStandardMaterial({ color: new T.Color(COR.cinzaEscuro), roughness: 0.6 }) });
+    const zona = cena.haste([A[0], 0.5, A[1]], [B[0], 0.5, B[1]], 0.7, '#ffffff', { material: new T.MeshBasicMaterial({ visible: false }), sombra: false });
+    const muro = cena.bloco(1.1, 0.9, 0.22, COR.amarelo, { base: false });
+    const mx = (A[0] + B[0]) / 2, mz = (A[1] + B[1]) / 2;
+    muro.position.set(mx, 0.45, mz);
+    muro.rotation.y = -Math.atan2(B[1] - A[1], B[0] - A[0]) + Math.PI / 2;
+    muro.visible = false;
+    cena.add(m, zona, muro);
+    cena.clicavel(zona, () => clicaCabo(i));
+    cabos.push({ m, muro, meio: [mx, mz] });
+  });
+  // prédios
+  IDS.forEach(k => {
+    const n = NOS[k], g = new T.Group();
+    let corpo;
+    if (n.tipo === 'casa') {
+      corpo = cena.bloco(1.4, 1.1, 1.4, '#fff7c2', { base: false, material: new T.MeshStandardMaterial({ color: new T.Color('#fff7c2'), roughness: 0.62 }) });
+      corpo.position.y = 0.55;
+      const telhado = new T.Mesh(new T.ConeGeometry(1.2, 0.8, 4), cena.material(COR.cinzaEscuro));
+      telhado.rotation.y = Math.PI / 4; telhado.position.y = 1.5; telhado.castShadow = true; cena.comBordas(telhado, 10);
+      g.add(corpo, telhado);
+    } else {
+      const w = n.larg || 1.8;
+      corpo = cena.bloco(w, n.alt, 1.6, n.cor, { base: false, material: new T.MeshStandardMaterial({ color: new T.Color(n.cor), roughness: 0.62 }) });
+      corpo.position.y = n.alt / 2;
+      g.add(corpo);
+      if (k === 'H') { // cruz verde do posto de saúde
+        const c1 = cena.bloco(0.7, 0.22, 0.06, COR.verde, { base: false, bordas: false }), c2 = cena.bloco(0.22, 0.7, 0.06, COR.verde, { base: false, bordas: false });
+        c1.position.set(0, n.alt * 0.6, 0.83); c2.position.copy(c1.position); g.add(c1, c2);
+      }
+    }
+    // monitor do computador na frente do prédio
+    const tela = cena.bloco(0.5, 0.36, 0.06, COR.tinta, { base: false }); tela.position.set(0, 0.5, n.tipo === 'casa' ? 0.74 : 0.84); g.add(tela);
+    const anel = new T.Mesh(new T.TorusGeometry(1.35, 0.1, 10, 40), cena.material(COR.verde));
+    anel.rotation.x = -Math.PI / 2; anel.position.y = 0.12; anel.visible = false; g.add(anel);
+    const caixa = cena.bloco(0.5, 0.5, 0.5, COR.cinzaEscuro, { base: false }); caixa.position.set(1.15, 0.25, -0.55); caixa.visible = false; g.add(caixa);
+    g.position.set(n.p[0], 0, n.p[1]);
+    cena.add(g);
+    const alto = n.tipo === 'casa' ? 2.3 : n.alt + 0.6;
+    const rot = cena.rotulo(n.nome, { tam: 0.4 }); rot.position.set(n.p[0], alto, n.p[1]); cena.add(rot);
+    cena.clicavel(g, () => clicaPredio(k));
+    predios[k] = { g, corpo, matOrig: corpo.material, anel, caixa, rot };
+  });
+  gBola = new T.Group(); cena.add(gBola);
+}
+
+function pinta() {
+  if (!cena) return;
+  IDS.forEach(k => {
+    const p = predios[k];
+    p.corpo.material = inf.has(k) ? matInf : p.matOrig;
+    p.anel.visible = def.at.has(k);
+    p.caixa.visible = def.bk.has(k);
+  });
+  cabos.forEach((c, i) => { c.muro.visible = def.fw.has(i); });
+  cena.pedeQuadro();
+  const F = FASES[fase];
+  const lista = s => s.size ? [...s].map(k => NOS[k].nome).join(', ') : 'nenhum';
+  cena.descrever(`Bairro com ${IDS.length} prédios ligados por ${CABOS.length} cabos de rede. Origem do vírus: ${F.origem.map(k => NOS[k].nome).join(' e ')}. ` +
+    `Infectados: ${lista(inf)}. Atualizados: ${lista(def.at)}. Com backup: ${lista(def.bk)}. ` +
+    `Firewalls: ${def.fw.size ? [...def.fw].map(nomeCabo).join('; ') : 'nenhum'}.`);
+}
+
+/* ---------- painel ---------- */
+function preencheAlvo() {
+  const F = FASES[fase];
+  const ops = ferr === 'fw'
+    ? CABOS.map((_, i) => `<option value="${i}">${nomeCabo(i)}${def.fw.has(i) ? ' (com firewall)' : ''}</option>`)
+    : IDS.map(k => {
+      const tem = def[ferr].has(k), orig = F.origem.includes(k) && ferr === 'at';
+      return `<option value="${k}"${orig ? ' disabled' : ''}>${NOS[k].nome}, dados: ${NOS[k].v}${tem ? ` (com ${NOME_F[ferr]})` : ''}${orig ? ' (já infectado)' : ''}</option>`;
+    });
+  const atual = $('#alvo').value;
+  $('#alvo').innerHTML = ops.join('');
+  if ([...$('#alvo').options].some(o => o.value === atual && !o.disabled)) $('#alvo').value = atual;
+}
+function escolheFerr(f) {
+  ferr = f;
+  document.querySelectorAll('#ferramentas [data-f]').forEach(b => {
+    const on = b.dataset.f === f;
+    b.setAttribute('aria-checked', String(on)); b.classList.toggle('on', on);
+    b.style.background = on ? 'var(--ink)' : ''; b.style.color = on ? 'var(--paper)' : '';
+  });
+  preencheAlvo();
+}
+function placar() {
+  const F = FASES[fase], g = gasto();
+  $('#moedas').textContent = `${F.orc - g} de ${F.orc} moedas`;
+  const l = [`Gasto: ${def.at.size} atualização × 3 + ${def.fw.size} firewall × 2 + ${def.bk.size} backup × 1 = ${g}`];
+  if (estado !== 'plano') {
+    let perda = 0; inf.forEach(k => { if (!def.bk.has(k)) perda += NOS[k].v; });
+    l.push(`Infectados: ${inf.size} de ${IDS.length}`, `Dados perdidos: ${perda} de ${TOTAL} pontos`);
+  } else l.push(`Meta: ${F.meta}`);
+  $('#placar').textContent = l.join('\n');
+}
+function msg(t, cls = '') { $('#fb').className = 'feedback' + (cls ? ' ' + cls : ''); $('#fb').textContent = t; }
+
+function voltaAoPlano() {
+  if (estado === 'rodando') return false;
+  if (estado === 'fim') { estado = 'plano'; inf = new Set(FASES[fase].origem); $('#linha').innerHTML = ''; }
+  return true;
+}
+function alterna(tipo, chave) {
+  if (!voltaAoPlano()) return;
+  const F = FASES[fase], s = def[tipo];
+  if (tipo === 'at' && F.origem.includes(chave)) { msg(`${NOS[chave].nome} já está infectado: atualizar agora não tira o vírus. Proteja os vizinhos ou faça backup.`, 'bad'); return; }
+  const nome = tipo === 'fw' ? `o cabo ${nomeCabo(chave)}` : NOS[chave].nome;
+  if (s.has(chave)) { s.delete(chave); msg(`${NOME_F[tipo][0].toUpperCase() + NOME_F[tipo].slice(1)} retirado de ${nome}. As moedas voltaram.`); }
+  else if (gasto() + CUSTO[tipo] > F.orc) { msg(`Não há moedas para ${NOME_F[tipo] === 'atualização' ? 'uma' : 'um'} ${NOME_F[tipo]} (custa ${CUSTO[tipo]}). Tire alguma defesa para liberar moedas.`, 'bad'); return; }
+  else { s.add(chave); msg(`${NOME_F[tipo][0].toUpperCase() + NOME_F[tipo].slice(1)} em ${nome}.`); }
+  preencheAlvo(); pinta(); placar();
+}
+function clicaPredio(k) {
+  if (ferr === 'fw') escolheFerr('at');
+  $('#alvo').value = k;
+  alterna(ferr, k);
+}
+function clicaCabo(i) {
+  if (ferr !== 'fw') escolheFerr('fw');
+  $('#alvo').value = String(i);
+  alterna('fw', i);
+}
+
+function iniciaFase(f) {
+  fase = f; estado = 'plano';
+  def.at.clear(); def.fw.clear(); def.bk.clear();
+  inf = new Set(FASES[f].origem);
+  $('#missao').textContent = FASES[f].missao;
+  $('#linha').innerHTML = '';
+  if (cena) gBola.clear();
+  msg('Planeje as defesas e aperte “Soltar o vírus”.');
+  preencheAlvo(); pinta(); placar();
+}
+
+/* ---------- propagação animada ---------- */
+const espera = ms => new Promise(r => setTimeout(r, ms));
+async function anima(t) {
+  const A = NOS[t.u].p, B = NOS[t.v].p;
+  const bola = new T.Mesh(new T.SphereGeometry(0.24, 16, 10), matInf);
+  bola.position.set(A[0], 0.6, A[1]); gBola.add(bola); cena.pedeQuadro();
+  const ate = t.bloq === 'fw' ? 0.42 : t.bloq === 'at' ? 0.8 : 1;
+  await cena.animar(bola, { position: [A[0] + (B[0] - A[0]) * ate, 0.6, A[1] + (B[1] - A[1]) * ate] }, 750 * ate);
+  if (t.bloq) await cena.animar(bola, { scale: [0.01, 0.01, 0.01] }, 250);
+  gBola.remove(bola); bola.geometry.dispose();
+  if (!t.bloq) { inf.add(t.v); pinta(); }
+}
+async function soltar() {
+  if (estado === 'rodando') return;
+  if (estado === 'fim') voltaAoPlano();
+  estado = 'rodando';
+  ['#soltar', '#recomecar', '#limpar', '#aplicar', '#fase'].forEach(s => $(s).disabled = true);
+  const F = FASES[fase], r = propagar();
+  const linhas = [];
+  for (let n = 0; n < r.rodadas.length; n++) {
+    const rd = r.rodadas[n];
+    const bloq = rd.tent.filter(t => t.bloq);
+    msg(`Rodada ${n + 1}: o vírus tenta passar por ${rd.tent.length} ${rd.tent.length === 1 ? 'cabo' : 'cabos'}.`);
+    if (cena) await Promise.all(rd.tent.map(anima)); else rd.novos.forEach(k => inf.add(k));
+    linhas.push(`<tr><td>${n + 1}</td><td>${rd.novos.length ? rd.novos.map(k => NOS[k].nome).join(', ') : 'nenhum'}</td><td>${bloq.length ? bloq.map(t => `${NOS[t.v].nome} (${t.bloq === 'fw' ? 'firewall' : 'atualizado'})`).join(', ') : 'nenhum'}</td><td>${[...inf].length}</td></tr>`);
+    $('#linha').innerHTML = tabela(linhas);
+    placar();
+    if (cena) await espera(250);
+  }
+  inf = r.inf;
+  estado = 'fim';
+  pinta(); placar();
+  ['#soltar', '#recomecar', '#limpar', '#aplicar', '#fase'].forEach(s => $(s).disabled = false);
+  if (!r.rodadas.length) $('#linha').innerHTML = '';
+  const ok = F.venceu(r);
+  const resumo = `${r.inf.size} de ${IDS.length} computadores infectados em ${r.rodadas.length} ${r.rodadas.length === 1 ? 'rodada' : 'rodadas'}; ${r.perda} de ${TOTAL} pontos de dados perdidos.`;
+  if (ok) {
+    msg(`Missão cumprida (${F.meta}). ${resumo} Gasto: ${gasto()} moedas.`, 'ok');
+    marca([0, 2, 3][fase]);
+    if (fase === 0 && gasto() <= 5) marca(1);
+  } else msg(`O vírus venceu desta vez: a meta era ${F.meta}. ${resumo} Mexa nas defesas e tente de novo.`, 'bad');
+}
+function tabela(linhas) {
+  return `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">Rodada por rodada</caption><thead><tr><th>Rodada</th><th>Novos infectados</th><th>Bloqueados</th><th>Total infectado</th></tr></thead><tbody>${linhas.join('')}</tbody></table></div>`;
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 4 * 100));
+}
+
+/* ---------- controles ---------- */
+document.querySelectorAll('#ferramentas [data-f]').forEach(b => b.addEventListener('click', () => escolheFerr(b.dataset.f)));
+$('#aplicar').onclick = () => { const v = $('#alvo').value; if (v === '') return; alterna(ferr, ferr === 'fw' ? +v : v); };
+$('#fase').addEventListener('change', e => iniciaFase(+e.target.value));
+$('#soltar').onclick = soltar;
+$('#recomecar').onclick = () => { if (estado !== 'rodando') { voltaAoPlano(); estado = 'plano'; inf = new Set(FASES[fase].origem); $('#linha').innerHTML = ''; msg('O vírus voltou para a origem. As defesas continuam no lugar.'); pinta(); placar(); } };
+$('#limpar').onclick = () => { if (estado !== 'rodando') { const f = fase; iniciaFase(f); msg('Todas as defesas foram retiradas.'); } };
+escolheFerr('at');
+iniciaFase(0);
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
