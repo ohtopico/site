@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bingo de Informática · Material didático | ohtopico</title>
+<meta name="description" content="Bingo de informática para a turma toda: cartelas numeradas para imprimir, sorteio de pistas na tela, conferência de cartela e versão para marcar no celular. Hardware, internet, segurança, programação e IA.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/bingo.html">
+<meta property="og:title" content="Bingo de Informática · Material didático">
+<meta property="og:description" content="Cartelas para imprimir, sorteio de pistas na tela e conferência de cartela. Hardware, internet, segurança, programação e IA.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/bingo.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .bg-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .sort-box {
+    border: 1.5px solid var(--ink); border-radius: 24px; background: var(--paper); padding: 22px;
+    box-shadow: 6px 6px 0 var(--ink); text-align: center; min-height: 230px; display: flex; flex-direction: column; justify-content: center; gap: 10px;
+  }
+  .sort-box .rot { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+  .sort-box .pista { font-size: clamp(22px, 3.6vw, 38px); line-height: 1.3; font-weight: 500; max-width: 900px; margin: 0 auto; }
+  .sort-box .resp { font-family: var(--display); font-size: clamp(26px, 4vw, 44px); color: var(--accent); min-height: 1.3em; }
+  .sort-box .resp.oculta { color: var(--ink-3); font-family: var(--body); font-size: 16px; }
+  .sort-ctrl { margin-top: 18px; justify-content: center; }
+  .sorteados { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .sorteados .tag { font-size: 13.5px; padding: 4px 12px; }
+  .sorteados .tag.ult { background: var(--accent); color: var(--paper); }
+  .stage-full { background: var(--paper); padding: 4vh 4vw; overflow: auto; }
+  .stage-full .sort-box { min-height: 55vh; }
+  .stage-full .sort-box .pista { font-size: clamp(28px, 4.6vw, 60px); }
+  .stage-full .sort-box .resp { font-size: clamp(32px, 5vw, 66px); }
+
+  /* cartela */
+  .cartela { border: 2px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px; max-width: 560px; margin: 0 auto; }
+  .cartela .cab { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+  .cartela .cab strong { font-family: var(--display); font-size: 22px; }
+  .cartela .num { font-weight: 600; font-size: 15px; white-space: nowrap; }
+  .grade { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+  .cel {
+    aspect-ratio: 1 / 1; border: 1.5px solid var(--ink); border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    text-align: center; font-size: 14px; font-weight: 600; line-height: 1.15; padding: 3px; background: var(--paper); color: var(--ink);
+    overflow-wrap: break-word; hyphens: manual; position: relative;
+  }
+  .cel.longo { font-size: 11.5px; }
+  .cel.livre { background: #ffd23f; color: #111; font-family: var(--display); font-size: 16px; }
+  button.cel { cursor: pointer; font-family: var(--body); }
+  .cel.marcada { background: var(--ok-soft); border-color: var(--ok); box-shadow: inset 0 0 0 3px var(--ok); }
+  .cel.saiu-sem-marcar { outline: 3px dashed var(--bad); outline-offset: -5px; }
+  .cel.linha-bingo { background: var(--ok); color: #fff; }
+  .form-l { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 16px; }
+  .form-l label { display: grid; gap: 4px; font-size: 14px; font-weight: 600; }
+  .form-l input, .form-l select { border: 1.5px solid var(--ink); border-radius: 12px; padding: 9px 12px; width: 120px; background: var(--paper); }
+  .form-l select { width: auto; }
+  .res { margin-top: 14px; border-radius: 18px; padding: 14px 16px; font-size: 15px; }
+  .res.ok { background: var(--ok-soft); }
+  .res.bad { background: var(--bad-soft); }
+  .res.neutro { background: var(--pill); }
+  .prev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .prev-grid .cartela .cab strong { font-size: 18px; }
+  .prev-grid .cel { font-size: 11px; border-radius: 7px; }
+  .prev-grid .cel.longo { font-size: 9px; }
+  .nome-l { font-size: 13px; color: var(--ink-2); margin-top: 8px; }
+  @media (max-width: 520px) {
+    .cartela { padding: 8px; }
+    .cartela .cab strong { font-size: 17px; }
+    .grade { gap: 4px; }
+    .cel { font-size: 10.5px; border-radius: 8px; padding: 2px; }
+    .cel.longo { font-size: 8.5px; }
+    .cel.livre { font-size: 13px; }
+  }
+
+  #area-impressao { display: none; }
+  @media print {
+    @page { size: A4 portrait; margin: 10mm; }
+    body > *:not(#area-impressao) { display: none !important; }
+    #area-impressao { display: block !important; }
+    .folha { height: 276mm; display: flex; flex-direction: column; justify-content: space-between; page-break-after: always; break-after: page; }
+    .folha:last-child { page-break-after: auto; break-after: auto; }
+    .folha .cartela { border: 2px solid #000; border-radius: 4mm; padding: 4mm; max-width: none; width: 100%; height: 134mm; display: flex; flex-direction: column; box-shadow: none; }
+    .folha .cartela .cab strong { font-size: 18pt; }
+    .folha .grade { flex: 1; grid-template-rows: repeat(5, 1fr); gap: 1.5mm; }
+    .folha .cel { aspect-ratio: auto; font-size: 11pt; border: 1.2pt solid #000; border-radius: 2mm; color: #000; background: #fff; }
+    .folha .cel.longo { font-size: 9pt; }
+    .folha .cel.livre { background: #fff2bf; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .folha .nome-l, .folha .rodape { font-size: 9pt; color: #000; }
+    .folha .rodape { margin-top: 2mm; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar com a turma</summary>
+    <p><strong>1.</strong> Na aba <strong>Imprimir cartelas</strong>, escolha quantas cartelas quer e imprima (duas por folha A4). Cada cartela tem um número e 24 termos de informática diferentes. Se a turma tiver celular, cada estudante pode abrir a sua cartela pela aba <strong>Marcar no celular</strong>.</p>
+    <p><strong>2.</strong> Projete a aba <strong>Sorteio na tela</strong>. A cada sorteio aparece uma pista, como "menor unidade de informação: 0 ou 1". A turma descobre o termo e quem tiver na cartela marca. Use <strong>Mostrar resposta</strong> depois que a turma pensar.</p>
+    <p><strong>3.</strong> Quem completar uma linha, coluna ou diagonal grita "Bingo!" e diz o número da cartela. Na aba <strong>Conferir cartela</strong>, digite o número: a página mostra o que já foi sorteado e se o bingo vale.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="bg-tabs" role="tablist">
+      <button class="chip" type="button" data-aba="sorteio" aria-pressed="true">Sorteio na tela</button>
+      <button class="chip" type="button" data-aba="imprimir" aria-pressed="false">Imprimir cartelas</button>
+      <button class="chip" type="button" data-aba="conferir" aria-pressed="false">Conferir cartela</button>
+      <button class="chip" type="button" data-aba="celular" aria-pressed="false">Marcar no celular</button>
+    </div>
+    <div id="stage"></div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<div id="area-impressao" aria-hidden="true"></div>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('bingo');
+(function () {
+  // A ordem desta lista define as cartelas: mudar a ordem muda o conteúdo de cada número de cartela.
+  const TERMOS = [
+    ['Processador', 'Faz os cálculos e executa as instruções dos programas.'],
+    ['Memória RAM', 'Guarda o que está em uso agora e se apaga quando o computador desliga.'],
+    ['SSD', 'Guarda os arquivos mesmo com o computador desligado, sem peças que giram.'],
+    ['Placa-mãe', 'Placa onde todas as peças do computador se conectam.'],
+    ['Pen drive', 'Memória pequena e portátil que se liga na porta USB.'],
+    ['Teclado', 'Dispositivo de entrada com teclas para digitar.'],
+    ['Mouse', 'Dispositivo de entrada que move a seta na tela.'],
+    ['Monitor', 'Dispositivo de saída que mostra as imagens do computador.'],
+    ['Impressora', 'Dispositivo de saída que leva textos e imagens para o papel.'],
+    ['Bit', 'A menor unidade de informação: vale 0 ou 1.'],
+    ['Byte', 'Grupo de 8 bits.'],
+    ['Pixel', 'Cada pontinho colorido que forma uma imagem na tela.'],
+    ['Sistema operacional', 'Programa principal que controla o aparelho e deixa os outros programas funcionarem.'],
+    ['Aplicativo', 'Programa instalado para uma tarefa, como editar fotos ou conversar.'],
+    ['Navegador', 'Programa usado para abrir sites.'],
+    ['Arquivo', 'Documento, foto ou música salvo com um nome e uma extensão.'],
+    ['Wi-Fi', 'Rede que conecta aparelhos à internet sem fio.'],
+    ['Roteador', 'Aparelho que encaminha os dados entre a sua rede e a internet.'],
+    ['Link', 'Texto ou imagem que, ao ser clicado, leva para outra página.'],
+    ['Download', 'Trazer um arquivo da internet para o seu aparelho.'],
+    ['Upload', 'Enviar um arquivo do seu aparelho para a internet.'],
+    ['Nuvem', 'Guardar arquivos em computadores de uma empresa e acessar pela internet.'],
+    ['Servidor', 'Computador que fica ligado o tempo todo oferecendo sites e serviços para outros.'],
+    ['Pacote', 'Pedacinho de uma mensagem que viaja sozinho pela rede.'],
+    ['Endereço IP', 'Número que identifica um aparelho na rede.'],
+    ['Buscador', 'Site que encontra páginas a partir de palavras-chave.'],
+    ['URL', 'O endereço de uma página, como o que aparece na barra do navegador.'],
+    ['Senha forte', 'Longa, com letras, números e símbolos, e que não usa seu nome nem seu aniversário.'],
+    ['Malware', 'Programa feito para causar dano ou roubar dados.'],
+    ['Phishing', 'Mensagem falsa que tenta enganar você para roubar senha ou dados.'],
+    ['Backup', 'Cópia de segurança dos arquivos, guardada em outro lugar.'],
+    ['Antivírus', 'Programa que procura e bloqueia programas maliciosos.'],
+    ['Criptografia', 'Embaralha os dados para que só quem tem a chave consiga ler.'],
+    ['Verificação em duas etapas', 'Além da senha, pede um código ou confirmação no celular.'],
+    ['Cookie', 'Pequeno arquivo que um site guarda no navegador para lembrar de você.'],
+    ['Dados pessoais', 'Informações que identificam alguém, como nome completo, CPF e endereço.'],
+    ['Cyberbullying', 'Agressão repetida contra alguém feita pela internet.'],
+    ['Algoritmo', 'Sequência de passos para resolver um problema.'],
+    ['Variável', 'Espaço com nome que guarda um valor dentro do programa.'],
+    ['Laço de repetição', 'Faz o programa repetir as mesmas instruções várias vezes.'],
+    ['Condicional', 'Faz o programa escolher o caminho: se acontecer isso, faça aquilo; senão, faça outra coisa.'],
+    ['Bug', 'Erro no programa que faz ele funcionar de um jeito inesperado.'],
+    ['Inteligência artificial', 'Sistemas que aprendem com exemplos para fazer tarefas como reconhecer imagens.'],
+    ['Chatbot', 'Programa que conversa com as pessoas por texto.'],
+    ['Dados de treino', 'Exemplos usados para ensinar um modelo de inteligência artificial.'],
+    ['Viés', 'Quando a IA erra mais com um grupo porque os exemplos usados eram desequilibrados.'],
+    ['Prompt', 'O texto com o pedido que a gente escreve para uma IA.'],
+    ['Planilha', 'Organiza dados em linhas e colunas e faz contas com eles.']
+  ].map(([termo, pista], i) => ({ i, termo, pista }));
+  const LIVRE = 12; // casa do meio
+  const MAX_CARTELA = 999;
+
+  const stage = document.getElementById('stage');
+  const S = Object.assign({ ordem: [], pos: 0, mostrar: false, modo: 'pista' }, mdStore.get('bingo-sorteio', {}));
+  const salvar = () => mdStore.set('bingo-sorteio', S);
+
+  // gerador previsível: a mesma cartela sempre tem os mesmos termos
+  function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function cartela(n) {
+    const r = rng(n * 7919 + 1031), idx = TERMOS.map(t => t.i);
+    for (let k = idx.length - 1; k > 0; k--) { const j = Math.floor(r() * (k + 1)); [idx[k], idx[j]] = [idx[j], idx[k]]; }
+    const c = idx.slice(0, 24);
+    c.splice(LIVRE, 0, -1);
+    return c;
+  }
+  const LINHAS = (() => { const L = []; for (let k = 0; k < 5; k++) { L.push([0, 1, 2, 3, 4].map(c => k * 5 + c)); L.push([0, 1, 2, 3, 4].map(l => l * 5 + k)); } L.push([0, 6, 12, 18, 24], [4, 8, 12, 16, 20]); return L; })();
+  const nomeLinha = L => { const i = LINHAS.indexOf(L); return i >= 10 ? (i === 10 ? 'diagonal principal' : 'outra diagonal') : i % 2 === 0 ? `linha ${i / 2 + 1}` : `coluna ${(i - 1) / 2 + 1}`; };
+  const sorteadosSet = () => new Set(S.ordem.slice(0, S.pos));
+  const numValido = v => { const n = parseInt(v, 10); return n >= 1 && n <= MAX_CARTELA ? n : null; };
+
+  function celHtml(t, k, extra, tag) {
+    if (t === -1) return `<${tag || 'div'} class="cel livre" ${tag === 'button' ? 'type="button" disabled' : ''}>Livre</${tag || 'div'}>`;
+    const termo = TERMOS[t].termo;
+    return `<${tag || 'div'} class="cel${termo.length > 10 ? ' longo' : ''}${extra || ''}" data-k="${k}" ${tag === 'button' ? 'type="button"' : ''}>${esc(termo)}</${tag || 'div'}>`;
+  }
+  function cartelaHtml(n, op) {
+    op = op || {};
+    const c = cartela(n);
+    return `<div class="cartela">
+      <div class="cab"><strong>Bingo de Informática</strong><span class="num">Cartela ${String(n).padStart(2, '0')}</span></div>
+      <div class="grade">${c.map((t, k) => celHtml(t, k, op.classe ? op.classe(t, k) : '', op.tag)).join('')}</div>
+      ${op.rodape ? `<div class="nome-l">Nome: ____________________________________ Turma: ________</div><div class="rodape small">Júlia Roberta Quoos Alves · ohtopico.com.br/material-didatico/jogos/bingo.html</div>` : ''}
+    </div>`;
+  }
+
+  // ---------- Sorteio ----------
+  function novoSorteio() { S.ordem = TERMOS.map(t => t.i); for (let k = S.ordem.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [S.ordem[k], S.ordem[j]] = [S.ordem[j], S.ordem[k]]; } S.pos = 0; S.mostrar = false; salvar(); }
+  if (S.ordem.length !== TERMOS.length) novoSorteio();
+
+  function telaSorteio() {
+    const atual = S.pos > 0 ? TERMOS[S.ordem[S.pos - 1]] : null;
+    const fim = S.pos >= TERMOS.length;
+    const ja = S.ordem.slice(0, S.pos);
+    stage.innerHTML = `<div id="sort-area">
+      <div class="hud"><span>Sorteados <b>${S.pos}</b> de ${TERMOS.length}</span>
+        <span class="chips" role="group" aria-label="O que aparece no sorteio">
+          <button class="chip" type="button" data-m="pista" aria-pressed="${S.modo === 'pista'}">Mostrar a pista</button>
+          <button class="chip" type="button" data-m="termo" aria-pressed="${S.modo === 'termo'}">Mostrar o termo (mais fácil)</button>
+        </span></div>
+      <div class="sort-box" aria-live="polite">
+        ${!atual ? `<span class="rot">Pronto para começar</span><p class="pista">Distribua as cartelas e toque em <b>Sortear</b>.</p>`
+          : S.modo === 'termo'
+            ? `<span class="rot">Sorteio nº ${S.pos}</span><div class="resp">${esc(atual.termo)}</div><p class="small muted" style="margin:0">${esc(atual.pista)}</p>`
+            : `<span class="rot">Pista nº ${S.pos}</span><p class="pista">${esc(atual.pista)}</p><div class="resp${S.mostrar ? '' : ' oculta'}">${S.mostrar ? esc(atual.termo) : 'Qual é o termo?'}</div>`}
+      </div>
+      <div class="btn-row sort-ctrl">
+        <button class="btn" type="button" id="sortear" ${fim ? 'disabled' : ''}>${fim ? 'Todos sorteados' : 'Sortear'}</button>
+        ${atual && S.modo === 'pista' && !S.mostrar ? '<button class="btn ghost" type="button" id="mostrar">Mostrar resposta</button>' : ''}
+        <button class="btn ghost" type="button" id="tela-cheia">Tela cheia</button>
+        <button class="btn ghost" type="button" id="recomecar">Recomeçar</button>
+      </div>
+      <p class="small muted" style="text-align:center;margin:8px 0 0">Atalhos: barra de espaço sorteia, R mostra a resposta.</p>
+      ${ja.length ? `<h3 style="margin:18px 0 0;font-size:17px">Já saíram</h3><div class="sorteados">${ja.slice().reverse().map((t, k) => `<span class="tag${k === 0 ? ' ult' : ''}">${esc(TERMOS[t].termo)}</span>`).join('')}</div>` : ''}
+    </div>`;
+    const area = document.getElementById('sort-area');
+    area.querySelector('[role="group"]').onclick = e => { const b = e.target.closest('button'); if (!b) return; S.modo = b.dataset.m; salvar(); telaSorteio(); };
+    area.querySelector('#sortear').onclick = sortear;
+    const m = area.querySelector('#mostrar'); if (m) m.onclick = mostrar;
+    area.querySelector('#recomecar').onclick = () => { if (!S.pos || confirm('Começar um sorteio novo? Os termos já sorteados serão apagados.')) { novoSorteio(); telaSorteio(); } };
+    area.querySelector('#tela-cheia').onclick = () => {
+      const st = document.querySelector('.game-stage');
+      if (document.fullscreenElement) document.exitFullscreen(); else if (st.requestFullscreen) st.requestFullscreen().catch(() => {});
+    };
+  }
+  function sortear() { if (S.pos < TERMOS.length) { S.pos++; S.mostrar = false; salvar(); telaSorteio(); document.getElementById('sortear').focus(); } }
+  function mostrar() { S.mostrar = true; salvar(); telaSorteio(); }
+  document.addEventListener('fullscreenchange', () => document.querySelector('.game-stage').classList.toggle('stage-full', !!document.fullscreenElement));
+  document.addEventListener('keydown', e => {
+    if (abaAtual !== 'sorteio' || e.target.closest('input, select, textarea')) return;
+    if (e.key === ' ' && !e.target.closest('button')) { e.preventDefault(); sortear(); }
+    if (e.key === 'r' || e.key === 'R') mostrar();
+  });
+
+  // ---------- Imprimir ----------
+  const P = Object.assign({ de: 1, qtd: 30 }, mdStore.get('bingo-impressao', {}));
+  function telaImprimir() {
+    const de = P.de, ate = Math.min(MAX_CARTELA, de + P.qtd - 1);
+    stage.innerHTML = `<div class="form-l">
+        <label>Primeira cartela<input type="number" id="de" min="1" max="${MAX_CARTELA}" value="${de}"></label>
+        <label>Quantidade<input type="number" id="qtd" min="1" max="80" value="${P.qtd}"></label>
+        <button class="btn" type="button" id="imp">Imprimir ${ate - de + 1} cartela${ate > de ? 's' : ''}</button>
+      </div>
+      <p class="small muted" style="margin-top:-6px">Duas cartelas por folha A4. Os números das cartelas são fixos: a cartela 7 tem sempre os mesmos termos, aqui e no celular. Imprima de 1 até o número de estudantes.</p>
+      <div class="prev-grid">${Array.from({ length: Math.min(ate - de + 1, 6) }, (_, k) => cartelaHtml(de + k)).join('')}</div>
+      ${ate - de + 1 > 6 ? `<p class="small muted">Mostrando as 6 primeiras. Todas vão para a impressão.</p>` : ''}`;
+    const ler = () => { P.de = numValido(stage.querySelector('#de').value) || 1; P.qtd = Math.max(1, Math.min(80, parseInt(stage.querySelector('#qtd').value, 10) || 1)); mdStore.set('bingo-impressao', P); };
+    stage.querySelector('#de').onchange = () => { ler(); telaImprimir(); };
+    stage.querySelector('#qtd').onchange = () => { ler(); telaImprimir(); };
+    stage.querySelector('#imp').onclick = () => { ler(); imprimir(P.de, Math.min(MAX_CARTELA, P.de + P.qtd - 1)); };
+  }
+  function imprimir(de, ate) {
+    let html = '';
+    for (let n = de; n <= ate; n += 2) html += `<div class="folha">${cartelaHtml(n, { rodape: true })}${n + 1 <= ate ? cartelaHtml(n + 1, { rodape: true }) : ''}</div>`;
+    document.getElementById('area-impressao').innerHTML = html;
+    window.print();
+  }
+
+  // ---------- Conferir ----------
+  let conferirN = null;
+  function telaConferir() {
+    stage.innerHTML = `<div class="form-l">
+        <label>Número da cartela<input type="number" id="cn" min="1" max="${MAX_CARTELA}" value="${conferirN || ''}" inputmode="numeric"></label>
+        <button class="btn" type="button" id="cf">Conferir</button>
+      </div>
+      <p class="small muted" style="margin-top:-6px">Confere com os ${S.pos} termos já sorteados na aba Sorteio na tela, neste mesmo aparelho.</p>
+      <div id="cres"></div>`;
+    const ir = () => { conferirN = numValido(stage.querySelector('#cn').value); mostrarConferencia(); };
+    stage.querySelector('#cf').onclick = ir;
+    stage.querySelector('#cn').onkeydown = e => { if (e.key === 'Enter') ir(); };
+    if (conferirN) mostrarConferencia();
+  }
+  function mostrarConferencia() {
+    const out = document.getElementById('cres');
+    if (!conferirN) { out.innerHTML = `<div class="res bad">Digite um número de cartela entre 1 e ${MAX_CARTELA}.</div>`; return; }
+    const c = cartela(conferirN), saiu = sorteadosSet();
+    const marc = k => c[k] === -1 || saiu.has(c[k]);
+    const feitas = LINHAS.filter(L => L.every(marc));
+    const naLinha = new Set(feitas.flat());
+    const cheia = c.every((_, k) => marc(k));
+    const falta = Math.min(...LINHAS.map(L => L.filter(k => !marc(k)).length));
+    const msg = cheia ? '<strong>Cartela cheia!</strong> Todos os termos já saíram.'
+      : feitas.length ? `<strong>Bingo confirmado.</strong> Completa: ${feitas.map(nomeLinha).join(', ')}.`
+      : `<strong>Ainda não é bingo.</strong> Falta${falta > 1 ? 'm' : ''} ${falta} termo${falta > 1 ? 's' : ''} para completar a linha mais adiantada.`;
+    out.innerHTML = `<div class="res ${feitas.length ? 'ok' : 'neutro'}" role="status">${msg}</div><div style="margin-top:14px">${cartelaHtml(conferirN, { classe: (t, k) => t === -1 ? '' : (naLinha.has(k) ? ' marcada linha-bingo' : marc(k) ? ' marcada' : '') })}</div>`;
+  }
+
+  // ---------- Celular ----------
+  const params = new URLSearchParams(location.search);
+  let celN = numValido(params.get('cartela')) || mdStore.get('bingo-minha-cartela', null);
+  function telaCelular() {
+    stage.innerHTML = `<div class="form-l">
+        <label>Número da sua cartela<input type="number" id="mn" min="1" max="${MAX_CARTELA}" value="${celN || ''}" inputmode="numeric"></label>
+        <button class="btn" type="button" id="abrir">Abrir cartela</button>
+      </div>
+      <p class="small muted" style="margin-top:-6px">Toque no termo para marcar quando a pista sair no telão. Toque de novo para desmarcar.</p>
+      <div id="mres"></div>`;
+    const ir = () => { celN = numValido(stage.querySelector('#mn').value); if (celN) mdStore.set('bingo-minha-cartela', celN); desenharCelular(); };
+    stage.querySelector('#abrir').onclick = ir;
+    stage.querySelector('#mn').onkeydown = e => { if (e.key === 'Enter') ir(); };
+    if (celN) desenharCelular();
+  }
+  function desenharCelular() {
+    const out = document.getElementById('mres');
+    if (!celN) { out.innerHTML = `<div class="res bad">Digite o número que está na sua cartela, de 1 a ${MAX_CARTELA}.</div>`; return; }
+    const marcas = mdStore.get('bingo-marcas-' + celN, []);
+    const c = cartela(celN);
+    const marc = k => c[k] === -1 || marcas.includes(k);
+    const feitas = LINHAS.filter(L => L.every(marc));
+    const naLinha = new Set(feitas.flat());
+    out.innerHTML = `${feitas.length ? `<div class="res ok" role="status" style="margin-bottom:14px"><strong>Bingo!</strong> Avise a turma e diga o número da sua cartela: ${celN}.</div>` : ''}
+      ${cartelaHtml(celN, { tag: 'button', classe: (t, k) => t === -1 ? '' : (naLinha.has(k) ? ' marcada linha-bingo' : marc(k) ? ' marcada' : '') })}
+      <div class="btn-row" style="justify-content:center;margin-top:14px"><button class="btn ghost" type="button" id="limpar">Limpar marcações</button></div>`;
+    out.querySelectorAll('button.cel:not(.livre)').forEach(b => {
+      const k = +b.dataset.k;
+      b.setAttribute('aria-pressed', marc(k));
+      b.onclick = () => {
+        const m = mdStore.get('bingo-marcas-' + celN, []);
+        const i = m.indexOf(k); i >= 0 ? m.splice(i, 1) : m.push(k);
+        mdStore.set('bingo-marcas-' + celN, m);
+        const antes = feitas.length;
+        desenharCelular();
+        const agora = LINHAS.filter(L => L.every(x => c[x] === -1 || m.includes(x))).length;
+        if (agora > antes && window.MDP) MDP.registrar('bingo', 100);
+      };
+    });
+    out.querySelector('#limpar').onclick = () => { if (confirm('Apagar todas as marcações desta cartela?')) { mdStore.set('bingo-marcas-' + celN, []); desenharCelular(); } };
+  }
+
+  // ---------- Abas ----------
+  let abaAtual = 'sorteio';
+  const TELAS = { sorteio: telaSorteio, imprimir: telaImprimir, conferir: telaConferir, celular: telaCelular };
+  function aba(a) {
+    abaAtual = a;
+    document.querySelectorAll('.bg-tabs .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.aba === a));
+    TELAS[a]();
+  }
+  document.querySelector('.bg-tabs').onclick = e => { const b = e.target.closest('button'); if (b) aba(b.dataset.aba); };
+  aba(params.get('cartela') || params.get('aba') === 'celular' ? 'celular' : TELAS[params.get('aba')] ? params.get('aba') : 'sorteio');
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
