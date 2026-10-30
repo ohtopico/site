@@ -76,7 +76,7 @@
       "isRelatedTo": {
         "@type": "Service",
         "@id": "https://ohtopico.com.br/mentoria/#servico",
-        "name": "Mentoria e treinamento de professores em IA"
+        "name": "Mentoria individual de IA para professores"
       },
       "offers": {
         "@type": "Offer",
@@ -189,8 +189,20 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 </figure>
 
 <h2>As cinco etapas</h2>
-<h3>1. Diagnóstico</h3>
-<p>Antes do primeiro encontro, um questionário curto mostra o que a equipe já usa, quanto tempo gasta com tarefas burocráticas e o que mais preocupa no uso de IA na escola. As respostas definem o ponto de partida e servem de comparação no fim. <a href="/blog/formacao-continuada-professores-ia/">Veja as perguntas do diagnóstico</a>.</p>
+<h3 id="diagnostico">1. Diagnóstico</h3>
+<p>Antes do primeiro encontro, um questionário curto mostra o que a equipe já usa, quanto tempo gasta com tarefas burocráticas e o que mais preocupa no uso de IA na escola. As respostas definem o ponto de partida e servem de comparação no fim. Cinco perguntas já bastam:</p>
+<ol>
+<li>Você já usou alguma ferramenta de IA? Qual?</li>
+<li>Para quê? (planejar, corrigir, criar material, outra coisa)</li>
+<li>O que mais te preocupa no uso de IA na escola?</li>
+<li>Quanto tempo por semana você gasta com tarefas burocráticas?</li>
+<li>Que tarefa você gostaria de fazer mais rápido?</li>
+</ol>
+<figure class="infografico">
+<img src="/blog/img/dia02-diagnostico.png" width="1080" height="1350" alt="Cartão para enviar à equipe antes do primeiro encontro, com as mesmas 5 perguntas de diagnóstico da lista acima e a frase: as respostas dizem a primeira tarefa." loading="lazy" decoding="async">
+<figcaption>Salve o cartão e mande para a equipe antes do primeiro encontro. <a href="/blog/img/dia02-diagnostico.png" download>Baixar imagem</a></figcaption>
+</figure>
+<p>As respostas mostram quem pode ser multiplicador, quais medos precisam ser tratados e por qual tarefa vale começar.</p>
 
 <h3>2. Formato</h3>
 <p>Com o diagnóstico em mãos, a escola escolhe o formato: oficina para começar com a equipe inteira, encontros ao longo de algumas semanas para aprofundar ou mentoria individual para quem vai liderar a formação. <a href="/blog/treinamento-professores-ia-criterios/">Os 7 critérios de um bom treinamento de professores em IA</a> ajudam nessa escolha.</p>
@@ -199,10 +211,13 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 <p>Professor inseguro não usa. Por isso a formação vem junto de um combinado da escola: quais ferramentas são aceitas, para quais usos e com que cuidados, de acordo com a LGPD e as orientações nacionais sobre IA na educação. <a href="/blog/ia-lgpd-escola-o-que-vai-no-prompt/">Veja o que pode e o que nunca vai no prompt</a>.</p>
 
 <h3>4. Prática com apoio</h3>
-<p>Cada professor usa a IA nas tarefas reais da semana: planejar uma aula, adaptar uma atividade, escrever um comunicado. Entre os encontros há desafios curtos, troca de experiências na reunião pedagógica e um canal para dúvidas. A fórmula P.A.C.T.O., do guia <a href="/ia-pra-prof/">IA pra Prof</a>, os <a href="/blog/prompts-para-professores-planejar-aulas/">prompts prontos para planejar aulas</a> e a <a href="/prompts-para-professores/">biblioteca de prompts para professores</a> servem de ponto de partida.</p>
+<p>Antes dos prompts vêm os fundamentos: o que a IA é, por que ela erra e o que a LGPD diz sobre dados de alunos. A regra combinada com todos os grupos é <strong>a IA propõe, o professor dispõe</strong>: a autoria e a decisão pedagógica continuam com quem conhece a turma. Depois, cada professor usa a IA nas tarefas reais da semana: planejar uma aula, adaptar uma atividade, escrever um comunicado. Entre os encontros há desafios curtos, troca de experiências na reunião pedagógica e um canal para dúvidas. A fórmula P.A.C.T.O., do guia <a href="/ia-pra-prof/">IA pra Prof</a>, os <a href="/blog/prompts-para-professores-planejar-aulas/">prompts prontos para planejar aulas</a> e a <a href="/prompts-para-professores/">biblioteca de prompts para professores</a> servem de ponto de partida.</p>
 
 <h3>5. Avaliação</h3>
 <p>Cerca de 30 dias depois, um encontro de retorno responde a quatro perguntas: a equipe achou útil, sabe fazer, está usando e o que mudou no tempo de trabalho e na aula. O resultado orienta o próximo ciclo.</p>
+
+<h3>Um erro comum</h3>
+<p>Começar pela ferramenta da moda. Ferramentas mudam a cada mês; os fundamentos (como pedir, como conferir, o que nunca colocar no prompt) continuam valendo em qualquer uma delas.</p>
 
 <h2>Formatos para escolas e redes</h2>
 <div class="tabela"><table><thead><tr><th scope="col">Formato</th><th scope="col">Para quem</th><th scope="col">Como funciona</th></tr></thead><tbody><tr><td>Oficina para a escola</td><td>Equipes de professores</td><td>Presencial ou on-line, com carga horária combinada com a escola; cada professor sai com um material pronto</td></tr><tr><td>Formação continuada para redes</td><td>Secretarias de educação e redes de ensino</td><td>As cinco etapas completas: diagnóstico, oficinas por área, regras de uso, acompanhamento e retorno após 30 dias</td></tr><tr><td>Mentoria individual</td><td>Professores, coordenadores e gestores</td><td>Encontros on-line individuais, com plano de estudos e materiais da área de atuação (<a href="/mentoria/">detalhes da mentoria</a>)</td></tr></tbody></table></div>
@@ -273,7 +288,7 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
             </section>
             <section class="caixa">
                 <h2 class="caixa-titulo">★ Temas</h2>
-                <ul class="lista-menu"><li><a href="/blog/#sobre-mim">Sobre mim</a></li><li><a href="/blog/#formacao-de-professores-em-ia">Formação de professores em IA</a></li><li><a href="/blog/#ia-na-pratica">IA na prática</a></li><li><a href="/blog/#etica-e-lgpd">Ética e LGPD</a></li><li><a href="/blog/#computacao-e-bncc">Computação e BNCC</a></li><li><a href="/blog/#para-estudantes">Para estudantes</a></li><li><a href="/blog/#bit-a-bit">Bit a Bit</a></li><li><a href="/blog/#jogos">Jogos</a></li></ul>
+                <ul class="lista-menu"><li><a href="/blog/#sobre-mim">Sobre mim</a></li><li><a href="/blog/#ia-na-pratica">IA na prática</a></li><li><a href="/blog/#formacao-de-professores-em-ia">Formação de professores em IA</a></li><li><a href="/blog/#etica-e-lgpd">Ética e LGPD</a></li><li><a href="/blog/#computacao-e-bncc">Computação e BNCC</a></li><li><a href="/blog/#para-estudantes">Para estudantes</a></li><li><a href="/blog/#bit-a-bit">Bit a Bit</a></li><li><a href="/blog/#jogos">Jogos</a></li></ul>
             </section>
             <section class="caixa caixa-verde">
                 <h2 class="caixa-titulo">★ Posts recentes</h2>
@@ -293,7 +308,7 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
             </section>
             <section class="caixa caixa-amarela">
                 <h2 class="caixa-titulo">★ Mentoria</h2>
-                <p>Mentoria e treinamento em IA para professores, escolas e redes de ensino.</p>
+                <p>Mentoria individual de IA para professores, coordenadores e gestores.</p>
                 <a class="btn98 escuro" href="/mentoria/">Saiba mais</a>
                 <p class="miudo"><a href="/formacao-continuada/">Formação continuada para escolas e redes</a></p>
             </section>

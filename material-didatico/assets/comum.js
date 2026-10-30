@@ -190,6 +190,16 @@
     });
   };
 
+  /* Jogos e recursos 3D sobre o mesmo assunto: cada página mostra os outros do grupo em "relacionados" */
+  const MESMO_ASSUNTO = [
+    ['balanca', '3d-balanca'],
+    ['fracoes', '3d-fracoes'],
+    ['receitas', '3d-sucos'],
+    ['pacotes', '3d-viagem-pacote'],
+    ['graficos', '3d-grafico-enganoso'],
+    ['cofrinho', 'poupanca', 'mesada', 'cartao'],
+  ];
+
   window.mdJogoHead = function (id) {
     const r = REC[id];
     window.MD_REC = id;
@@ -206,7 +216,10 @@
       const itens = [];
       if (r.plano && REC[r.plano]) itens.push(REC[r.plano]);
       if (r.ficha && REC[r.ficha]) itens.push(REC[r.ficha]);
-      RECURSOS.filter(o => o.tipo === (r.tipo === '3d' ? '3d' : 'jogo') && o.id !== id && o.comp.some(c => r.comp.includes(c))).slice(0, r.tipo === '3d' ? 3 : 2).forEach(o => itens.push(o));
+      // o mesmo assunto em outro formato (jogo e Laboratório 3D) vem antes dos outros jogos
+      const irmaos = (MESMO_ASSUNTO.find(g => g.includes(id)) || []).filter(o => o !== id && REC[o]).map(o => REC[o]);
+      irmaos.forEach(o => itens.push(o));
+      RECURSOS.filter(o => o.tipo === (r.tipo === '3d' ? '3d' : 'jogo') && o.id !== id && !irmaos.includes(o) && o.comp.some(c => r.comp.includes(c))).slice(0, Math.max(0, (r.tipo === '3d' ? 3 : 2) - irmaos.length)).forEach(o => itens.push(o));
       rel.innerHTML = itens.map(o => `
         <a class="card" href="${recUrl(o)}">
           <span class="small muted">${TIPOS[o.tipo].icone} ${TIPOS[o.tipo].nome}</span>

@@ -196,7 +196,7 @@ def laterais(atual):
             </section>
             <section class="caixa caixa-amarela">
                 <h2 class="caixa-titulo">★ Mentoria</h2>
-                <p>Mentoria e treinamento em IA para professores, escolas e redes de ensino.</p>
+                <p>Mentoria individual de IA para professores, coordenadores e gestores.</p>
                 <a class="btn98 escuro" href="/mentoria/">Saiba mais</a>
                 <p class="miudo"><a href="/formacao-continuada/">Formação continuada para escolas e redes</a></p>
             </section>
@@ -482,17 +482,17 @@ def pagina_mentoria(cfg, dims):
                   'alt': 'Os três formatos: professor, mentoria individual, sai com um banco de prompts da sua disciplina; '
                          'escola, oficina para a equipe, cada professor sai com um material pronto; '
                          'rede, formação continuada, com diagnóstico, oficinas e retorno em 30 dias.',
-                  'legenda': 'Os três formatos e o que cada um entrega.'}, dims['dia07-mentoria.png'])
+                  'legenda': 'Os três formatos. A mentoria é o individual; para escolas e redes, veja a formação continuada.'}, dims['dia07-mentoria.png'])
     corpo = corpo.replace('<!--IMAGEM-->', fig)
     pendente = 'class="pendente"' in corpo
-    descricao = ('Mentoria individual e treinamento de professores em inteligência artificial com Júlia Roberta Quoos Alves, '
-                 'para professores, escolas e redes de ensino.')
+    descricao = ('Mentoria individual em inteligência artificial com Júlia Roberta Quoos Alves, para professores, '
+                 'coordenadores e gestores. Para escolas e redes, veja a formação continuada.')
     ld = json_ld({
         '@context': 'https://schema.org',
         '@type': 'Service',
         '@id': url + '#servico',
-        'name': 'Mentoria e treinamento de professores em IA',
-        'serviceType': 'Formação continuada de professores em inteligência artificial',
+        'name': 'Mentoria individual de IA para professores',
+        'serviceType': 'Mentoria individual em inteligência artificial para professores',
         'description': descricao,
         'url': url,
         'provider': AUTORA,
@@ -503,24 +503,25 @@ def pagina_mentoria(cfg, dims):
     conteudo = f'''<article class="texto">
     <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Mentoria</li></ol></nav>
     <p class="rotulo">Mentoria</p>
-    <h1>Mentoria e treinamento de professores em <span class="marca">IA</span></h1>
-    <p class="linha-fina">Ajudo professores, escolas e redes de ensino a usar inteligência artificial com segurança, ética e propósito pedagógico. Sem promessas mágicas e sem lista de ferramentas da moda: fundamentos, prática com o material real da escola e acompanhamento.</p>
+    <h1>Mentoria individual de <span class="marca">IA</span> para professores</h1>
+    <p class="linha-fina">Encontros individuais para você usar inteligência artificial com segurança, ética e propósito pedagógico. Sem promessas mágicas e sem lista de ferramentas da moda: fundamentos, prática com o seu material real e acompanhamento.</p>
     <div class="artigo">
 {corpo}
     </div>
     <section class="chamada" aria-labelledby="conversar">
         <h2 id="conversar">Vamos conversar</h2>
-        <p>Conte um pouco sobre a sua escola ou turma e eu respondo com uma proposta.</p>
+        <p>Conte um pouco sobre a sua disciplina ou função e eu respondo com uma proposta.</p>
         <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Mentoria%20de%20IA%20para%20professores">Falar com Júlia Roberta Quoos Alves</a>
     </section>
 </article>'''
     robots = 'noindex, follow' if pendente else 'index, follow'
-    head = cabeca('Mentoria e treinamento de professores em IA | Júlia Quoos', descricao, url,
+    head = cabeca('Mentoria individual de IA para professores | Júlia Quoos', descricao, url,
                   f'{site}/blog/img/dia07-mentoria.png', 'Os três formatos da mentoria', 'website', ld, robots)
     return head + '\n' + moldura('mentoria.exe', 'ohtopico.com.br/mentoria', '/', conteudo, 'Pronto', 'mentoria'), pendente
 
 
 FORMACAO_IMAGEM = 'dia30-guia.png'
+DIAGNOSTICO_IMAGEM = 'dia02-diagnostico.png'
 
 
 def perguntas_frequentes(corpo):
@@ -541,6 +542,11 @@ def pagina_formacao(cfg, dims):
     fig = figura({'imagem': FORMACAO_IMAGEM, 'alt': alt,
                   'legenda': 'O caminho da formação continuada em IA, em cinco etapas.'}, dims[FORMACAO_IMAGEM])
     corpo = corpo.replace('<!--IMAGEM-->', fig)
+    corpo = corpo.replace('<!--DIAGNOSTICO-->', figura({
+        'imagem': DIAGNOSTICO_IMAGEM,
+        'alt': 'Cartão para enviar à equipe antes do primeiro encontro, com as mesmas 5 perguntas de diagnóstico da lista acima '
+               'e a frase: as respostas dizem a primeira tarefa.',
+        'legenda': 'Salve o cartão e mande para a equipe antes do primeiro encontro.'}, dims[DIAGNOSTICO_IMAGEM]))
     titulo = 'Formação continuada de professores em IA'
     descricao = 'Formação continuada de professores em IA para escolas e redes de ensino, em cinco etapas: diagnóstico, formato, regras, prática com apoio e avaliação.'
     w, h = dims[FORMACAO_IMAGEM]
@@ -570,7 +576,7 @@ def pagina_formacao(cfg, dims):
                 'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
                 'availableChannel': {'@type': 'ServiceChannel', 'serviceUrl': url,
                                      'availableLanguage': 'pt-BR'},
-                'isRelatedTo': {'@type': 'Service', '@id': f'{site}/mentoria/#servico', 'name': 'Mentoria e treinamento de professores em IA'},
+                'isRelatedTo': {'@type': 'Service', '@id': f'{site}/mentoria/#servico', 'name': 'Mentoria individual de IA para professores'},
                 'offers': {'@type': 'Offer', 'priceCurrency': 'BRL',
                            'priceSpecification': {'@type': 'UnitPriceSpecification', 'price': 200, 'priceCurrency': 'BRL',
                                                   'unitText': 'hora de formação'},
@@ -937,6 +943,19 @@ def paginas_resultado_quiz(cfg):
     return paginas
 
 
+def pagina_movida(cfg, para):
+    """Post que foi juntado a outra página: o endereço antigo continua funcionando e manda para o novo."""
+    canonico = cfg['site'] + para.split('#')[0]
+    return f'''<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página movida | Júlia Quoos</title><meta name="robots" content="noindex">
+<link rel="canonical" href="{canonico}">
+<meta http-equiv="refresh" content="0; url={para}">
+<script>location.replace('{para}');</script></head>
+<body style="font-family:system-ui,sans-serif;padding:24px">Esta página mudou de endereço: <a href="{para}">continuar</a>.</body></html>
+'''
+
+
 def feed(cfg, publicados):
     site = cfg['site']
     itens = ''.join(f'''
@@ -1011,7 +1030,8 @@ def main():
 
     # Posts agendados: nada deles pode ficar no site antes da data
     imagens_do = lambda p: [p['imagem']] + [e['imagem'] for e in p.get('imagens_extra', [])]
-    em_uso = {i for p in publicados for i in imagens_do(p)} | {'dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM}
+    fixas = ['dia07-mentoria.png', FORMACAO_IMAGEM, DIAGNOSTICO_IMAGEM, PROMPTS_IMAGEM]
+    em_uso = {i for p in publicados for i in imagens_do(p)} | set(fixas)
     for p in agendados:
         shutil.rmtree(blog / p['slug'], ignore_errors=True)
         for img in imagens_do(p):
@@ -1022,7 +1042,7 @@ def main():
             (blog / 'slides' / p['slides']['pdf']).unlink(missing_ok=True)
 
     dims = {}
-    for nome in dict.fromkeys([i for p in publicados for i in imagens_do(p)] + ['dia07-mentoria.png', FORMACAO_IMAGEM, PROMPTS_IMAGEM]):
+    for nome in dict.fromkeys([i for p in publicados for i in imagens_do(p)] + fixas):
         origem = next((d / nome for d in a.imagens if (d / nome).exists()), None)
         if origem is None:
             raise SystemExit(f'Imagem não encontrada: {nome}')
@@ -1056,6 +1076,11 @@ def main():
         destino = blog / p['slug']
         destino.mkdir(exist_ok=True)
         (destino / 'index.html').write_text(pagina_post(cfg, p, ant, prox, dims, tamanhos), encoding='utf-8')
+
+    for m in cfg.get('movidos', []):
+        destino = blog / m['slug']
+        destino.mkdir(exist_ok=True)
+        (destino / 'index.html').write_text(pagina_movida(cfg, m['para']), encoding='utf-8')
 
     (blog / 'index.html').write_text(pagina_indice(cfg, publicados), encoding='utf-8')
     (blog / 'feed.xml').write_text(feed(cfg, publicados), encoding='utf-8')
