@@ -315,6 +315,7 @@ details.howto[open] summary { margin-bottom: 8px; }
 .md-trava { position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: calc(100% - 24px); text-align: center;
   background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 600;
   text-decoration: none; box-shadow: 4px 4px 0 var(--ink); }
+.trava-topo.md-travado > .md-trava { top: 120px; transform: translateX(-50%); }
 @media print { .mis-btn { display: none !important; } }
 
 /* ---------- Habilidades da BNCC nas páginas de área (mdHabArea) ---------- */
