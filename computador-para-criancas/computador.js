@@ -3,7 +3,6 @@
    Teclado ABNT2 e mouse em 3D (usa o Laboratório 3D do material didático).
    As missões ficam salvas só no navegador (localStorage), sem cadastro.
    ===================================================================== */
-import { lab3d, botoesCamera, COR } from '../material-didatico/assets/lab3d.js';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -222,6 +221,8 @@ const mouseBt = {};       // 'mouse-esq' | 'mouse-dir' | 'mouse-meio' -> mesh
 let mostrarTecla = () => {}, afundar = () => {};
 
 async function montaCena() {
+  /* importado aqui dentro: lab3d.js espera o clique em "Iniciar" e não pode travar o resto da página */
+  const { lab3d, botoesCamera } = await import('../material-didatico/assets/lab3d.js');
   await Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 1500))]);
   cena = lab3d(palco, { cam: [12.0, 21.5, 13.4], alvo: [12.0, 0, 3.2], min: 5, max: 40, chaoTam: 70 });
   if (!cena) return;

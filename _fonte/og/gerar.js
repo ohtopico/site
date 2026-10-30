@@ -34,6 +34,9 @@ const IMAGENS = [
   { arq: 'material-didatico/assets/og-laboratorio-3d.jpg', janela: 'laboratorio-3d.html', faixa: 'Gire, aproxime, experimente', t1: 'Laboratório', t2: '3D',
     sub: 'Matemática e Computação em cenas 3D que funcionam no navegador', pills: ['Material Dourado', 'Cubo RGB', 'Rede neural'],
     url: 'ohtopico.com.br/material-didatico', capturas: ['/material-didatico/3d/cubo-rgb.html'] },
+  { arq: 'para-escolas/og-para-escolas.jpg', janela: 'para-escolas.html', faixa: 'Para secretarias e coordenações', t1: 'Escolas', t2: 'e redes',
+    sub: 'Material gratuito da BNCC Computação, guia de implantação e formação', pills: ['Gratuito', 'BNCC Computação', 'Formação em IA'],
+    url: 'ohtopico.com.br/para-escolas', capturas: ['/material-didatico/bncc/'] },
   ...[
     ['index', 'Simuladores', 'no navegador', 'IA, estatística e arquitetura de computadores, sem instalar nada', ['IA', 'Estatística', 'Arquitetura'], '/simuladores/'],
     ['bases', 'Bases', 'numéricas', 'Binário, octal, hexadecimal e complemento de dois, passo a passo', ['Binário', 'Hexadecimal', 'Complemento de dois'], '/simuladores/bases.html'],
@@ -171,6 +174,9 @@ async function main() {
           const p = await browser.newPage({ viewport: { width: 1000, height: 820 }, colorScheme: 'light' });
           await p.goto(base + pag, { waitUntil: 'load' });
           await p.addStyleTag({ content: '#topbar, .topbar, header.site, .estrelas, [class*="estrela"] { display: none !important; }' });
+          // cenas 3D só carregam depois do clique em "Iniciar a cena 3D"
+          const iniciar = await p.$('.lab-iniciar');
+          if (iniciar) { await iniciar.click(); await p.waitForSelector('#palco canvas', { timeout: 15000 }).catch(() => {}); }
           await p.waitForTimeout(1500);
           cache[pag] = 'data:image/png;base64,' + (await p.screenshot()).toString('base64');
           await p.close();
