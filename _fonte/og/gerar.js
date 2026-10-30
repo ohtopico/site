@@ -59,6 +59,7 @@ const IMAGENS = [
     ['cozinha-paralela', 'Cozinha', 'paralela', 'Robôs cozinheiros dividem os pedidos, disputam a panela e caem num impasse', ['Paralelismo', 'EF08CO05', '8º ano']],
     ['cidade-infectada', 'Cidade', 'infectada', 'Um malware se espalha pelo bairro: defenda a rede com firewall, atualização e backup', ['Segurança', 'EF09CO04', '8º e 9º ano']],
     ['cofre-das-chaves', 'Cofre das', 'chaves', 'Disco de César, cadeados e mistura de tintas: como combinar uma chave secreta sem enviá-la', ['Criptografia', 'EF09CO05', '8º e 9º ano']],
+    ['maquina-estados', 'Máquina de', 'estados', 'Catraca, semáforo e elevador que obedecem ao diagrama que você desenha', ['Autômatos', 'EF09CO03', '9º ano']],
     ['escada-pitagoras', 'Escada de', 'Pitágoras', 'Encoste escadas em prédios 3D, ache a diagonal da caixa e termine na diagonal do cubo', ['Teorema de Pitágoras', 'EF09MA13', '9º ano']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/3d/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Laboratório 3D · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/3d/${nome}`, capturas: [`/material-didatico/3d/${nome}.html`] })),
