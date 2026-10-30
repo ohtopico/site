@@ -63,6 +63,16 @@
   .vb-rel { width: 100%; border-collapse: collapse; margin-top: 4px; }
   .vb-rel td { padding: 3px 0; border-bottom: 1px solid var(--line); }
   .vb-rel td:last-child { text-align: right; font-weight: 600; }
+  .vb-toast { position: absolute; z-index: 2; top: 54px; right: 10px; max-width: 260px; background: #ffd23f; color: #111; border: 2px solid #111; border-radius: 14px;
+    box-shadow: 3px 3px 0 #111; padding: 8px 12px; font-size: 14px; pointer-events: none; opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .3s; }
+  .vb-toast.on { opacity: 1; transform: none; }
+  .vb-toast strong { display: block; font-family: var(--display); font-size: 15px; }
+  .vb-conqs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+  .vb-conqs li { display: grid; grid-template-columns: 30px 1fr; gap: 8px; align-items: center; font-size: 13.5px; line-height: 1.3; }
+  .vb-conqs .med { width: 30px; height: 30px; border-radius: 50%; border: 1.5px dashed var(--ink-3); display: grid; place-items: center; font-family: var(--display); font-size: 13px; color: var(--ink-3); }
+  .vb-conqs li.on .med { border: 2px solid #111; background: #ffd23f; color: #111; }
+  .vb-conqs li:not(.on) strong { color: var(--ink-2); }
+  .vb-conqs span.d { display: block; color: var(--ink-3); }
   .vb-mochila { display: flex; flex-wrap: wrap; gap: 6px; }
   .vb-controles { display: none; margin-top: 12px; justify-content: center; }
   .vb-pad { display: grid; grid-template-columns: repeat(3, 58px); grid-template-rows: repeat(2, 58px); gap: 6px; }
@@ -71,7 +81,8 @@
   .vb-pad .c { grid-column: 2; grid-row: 1; } .vb-pad .e { grid-column: 1; grid-row: 2; } .vb-pad .b { grid-column: 2; grid-row: 2; } .vb-pad .d { grid-column: 3; grid-row: 2; }
   .vb-fim { text-align: center; padding: 26px 10px; }
   .vb-fim h2 { font-size: 30px; }
-  @media (max-width: 860px) { .vb { grid-template-columns: 1fr; } }
+  .vb-fixo { position: sticky; top: 76px; }
+  @media (max-width: 860px) { .vb { grid-template-columns: 1fr; } .vb-fixo { position: static; } }
   @media (hover: none), (max-width: 860px) { .vb-controles { display: flex; } }
   @media (max-width: 520px) { .vb-ops { grid-template-columns: 1fr; } .vb-dialogo .fala { font-size: 15px; } .game-stage { padding: 12px; } }
 </style>
@@ -88,10 +99,11 @@
 
   <div class="game-stage">
     <div class="vb">
-      <div>
+      <div class="vb-fixo">
         <div class="vb-tela">
           <canvas id="tela" width="520" height="360" role="img" aria-label="Mapa do Vale dos Bits visto de cima, com a sua personagem no centro"></canvas>
           <div class="vb-regiao" id="regiao" aria-hidden="true"></div>
+          <div class="vb-toast" id="toast" role="status" aria-live="polite"></div>
           <div class="vb-dialogo" id="dialogo" role="dialog" aria-live="polite" hidden></div>
         </div>
         <div class="vb-controles" aria-label="Controles de movimento">
@@ -109,6 +121,7 @@
         <div class="vb-box"><h2>Fragmentos do Código</h2><div class="vb-frag" id="frags"></div></div>
         <div class="vb-box"><h2>Mapa do vale</h2><canvas class="vb-mini" id="mini" width="192" height="136" aria-hidden="true"></canvas><div class="vb-legenda" id="legenda"></div></div>
         <div class="vb-box"><h2>Mochila</h2><div class="vb-mochila tags" id="mochila"></div></div>
+        <details class="vb-box" id="conquistas"><summary><strong>Conquistas</strong> <span class="muted small" id="nconq"></span></summary><ul class="vb-conqs" id="lista-conq"></ul></details>
         <details class="vb-box" id="caderno"><summary><strong>Caderno de dicas</strong> <span class="muted small" id="ndicas"></span></summary><ol class="vb-dicas" id="dicas"></ol></details>
         <div class="vb-box"><p class="small muted" id="placar"></p><details style="margin-top:8px"><summary class="small"><strong>Relatório para o professor</strong></summary><div id="relatorio" class="small" style="margin-top:6px"></div></details><div class="btn-row" style="margin-top:8px"><button class="btn ghost" type="button" id="recomecar" style="min-height:38px;padding:6px 14px;font-size:14px">Recomeçar</button></div></div>
       </aside>
@@ -283,7 +296,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
   ITENS.forEach(i => { ITEM_AT[i.x + ',' + i.y] = i; });
 
   /* ---------- Estado ---------- */
-  const novo = () => ({ x: 5, y: 12, dir: 'b', abertos: ['vila'], itens: [], dicas: [], falou: [], acertos: 0, resp: 0, fim: false, visto: ['vila'], temas: {}, inicio: Date.now() });
+  const novo = () => ({ x: 5, y: 12, dir: 'b', abertos: ['vila'], itens: [], dicas: [], falou: [], acertos: 0, resp: 0, fim: false, visto: ['vila'], temas: {}, inicio: Date.now(), conq: [], passos: 0, seq: 0, melhorSeq: 0, limpo: false, recuperou: false, errou: false });
   let S;
   try { S = Object.assign(novo(), JSON.parse(localStorage.getItem(CHAVE) || 'null') || {}); } catch (e) { S = novo(); }
   const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) {} };
@@ -442,6 +455,35 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     mctx.fillStyle = '#c21f3a'; mctx.beginPath(); mctx.arc(S.x * k + k / 2, S.y * k + k / 2, 4, 0, Math.PI * 2); mctx.fill(); mctx.strokeStyle = '#fff'; mctx.lineWidth = 1.5; mctx.stroke();
   }
 
+  /* ---------- Conquistas ---------- */
+  const MORADORES = NPCS.filter(n => n.falas).map(n => n.id);
+  const CONQUISTAS = [
+    ['passos', 'Primeiros passos', 'Andar 30 passos pelo vale.', () => S.passos >= 30],
+    ['conversa', 'Boa conversa', 'Conversar com 5 moradores.', () => S.falou.filter(id => MORADORES.includes(id)).length >= 5],
+    ['amigo', 'Amizade no vale', `Conversar com todos os ${MORADORES.length} moradores.`, () => MORADORES.every(id => S.falou.includes(id))],
+    ['portao', 'Primeiro portão', 'Abrir o primeiro portão.', () => S.abertos.length >= 2],
+    ['limpo', 'Sem tropeços', 'Abrir um portão sem errar nenhuma pergunta.', () => S.limpo],
+    ['recupera', 'Aprendendo com o erro', 'Errar uma pergunta e acertar a seguinte.', () => S.recuperou],
+    ['seq5', 'Sequência de 5', 'Acertar 5 perguntas seguidas.', () => S.melhorSeq >= 5],
+    ['pergaminhos', 'Leitura em dia', 'Ler os 4 pergaminhos.', () => ITENS.filter(i => i.tipo === 'perg').every(i => tem(i.id))],
+    ['objetos', 'Olho atento', 'Encontrar a lanterna e a concha.', () => tem('lanterna') && tem('concha')],
+    ['explorador', 'Exploração completa', 'Visitar as 5 regiões do vale.', () => ORDEM.every(r => S.visto.includes(r))],
+    ['fragmentos', 'Código reunido', 'Juntar os 4 fragmentos do Código.', () => nFrag() >= 4],
+    ['fim', 'Torre ligada', 'Vencer o desafio final do Robô Guardião.', () => S.fim],
+    ['mestre', 'Mestre do Vale', 'Terminar com 80% ou mais de acertos de primeira.', () => S.fim && S.resp > 0 && S.acertos / S.resp >= .8]
+  ];
+  let filaToast = [], toastAtivo = false;
+  function toast() {
+    if (toastAtivo || !filaToast.length) return;
+    const c = filaToast.shift(), el = $('toast'); toastAtivo = true;
+    el.innerHTML = `<strong>Conquista: ${esc(c[1])}</strong>${esc(c[2])}`; el.classList.add('on');
+    setTimeout(() => { el.classList.remove('on'); setTimeout(() => { toastAtivo = false; toast(); }, 350); }, 2600);
+  }
+  function checaConq() {
+    CONQUISTAS.forEach(c => { if (!S.conq.includes(c[0]) && c[3]()) { S.conq.push(c[0]); filaToast.push(c); } });
+    toast();
+  }
+
   /* ---------- Missões por região ---------- */
   const falouN = ids => { const n = ids.filter(id => S.falou.includes(id)).length; return n === ids.length ? true : `${n}/${ids.length}`; };
   const MISSOES = {
@@ -465,6 +507,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     return 'Você tem os 4 fragmentos. Fale com o Robô Guardião da Torre para o desafio final.';
   }
   function painel() {
+    checaConq();
     $('objetivo').textContent = objetivo();
     $('frags').innerHTML = [1, 2, 3, 4].map(n => `<span class="${tem('frag' + n) ? 'on' : ''}" aria-label="Fragmento ${n}: ${tem('frag' + n) ? 'encontrado' : 'não encontrado'}">${n}</span>`).join('');
     $('legenda').innerHTML = ORDEM.map(r => `<span class="${aberto(r) ? '' : 'bloq'}">${aberto(r) ? 'Aberto' : 'Fechado'}: ${REGIOES[r].nome}</span>`).join('');
@@ -472,6 +515,8 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     $('mochila').innerHTML = objs.length ? objs.map(i => `<span class="tag">${i.nome}</span>`).join('') : '<span class="small muted">Vazia por enquanto.</span>';
     $('dicas').innerHTML = S.dicas.map(d => `<li>${esc(d)}</li>`).join('') || '<li class="muted">Converse com os moradores para ganhar dicas.</li>';
     $('ndicas').textContent = `(${S.dicas.length})`;
+    $('nconq').textContent = `(${S.conq.length} de ${CONQUISTAS.length})`;
+    $('lista-conq').innerHTML = CONQUISTAS.map((c, i) => { const on = S.conq.includes(c[0]); return `<li class="${on ? 'on' : ''}"><span class="med" aria-hidden="true">${i + 1}</span><span><strong>${esc(c[1])}</strong><span class="d">${esc(c[2])}</span><span class="sr-only">${on ? ' (conquistada)' : ' (ainda não)'}</span></span></li>`; }).join('');
     $('placar').textContent = S.resp ? `Desafios: ${S.acertos} acertos de primeira em ${S.resp} perguntas.` : 'Nenhum desafio respondido ainda.';
     const reg = regiaoDe(S.x, S.y), mi = MISSOES[reg];
     $('missao-tit').textContent = 'Missão: ' + REGIOES[reg].nome;
@@ -480,7 +525,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     const min = Math.max(1, Math.round((Date.now() - (S.inicio || Date.now())) / 60000));
     $('relatorio').innerHTML = `<table class="vb-rel"><tbody>
       <tr><td>Perguntas respondidas</td><td>${S.resp}</td></tr><tr><td>Acertos</td><td>${S.acertos}</td></tr>
-      <tr><td>Regiões abertas</td><td>${S.abertos.length} de 5</td></tr><tr><td>Dicas no caderno</td><td>${S.dicas.length}</td></tr>
+      <tr><td>Regiões abertas</td><td>${S.abertos.length} de 5</td></tr><tr><td>Conquistas</td><td>${S.conq.length} de ${CONQUISTAS.length}</td></tr><tr><td>Melhor sequência de acertos</td><td>${S.melhorSeq}</td></tr><tr><td>Dicas no caderno</td><td>${S.dicas.length}</td></tr>
       <tr><td>Tempo desde o início</td><td>${min} min</td></tr>
       ${temas.map(([t, v]) => `<tr><td>${esc(t)}</td><td>${v.a} de ${v.r}</td></tr>`).join('')}</tbody></table>
       ${temas.length ? '' : '<p class="muted" style="margin:6px 0 0">Os acertos por tema aparecem depois do primeiro desafio.</p>'}`;
@@ -507,7 +552,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
   /* ---------- Desafios ---------- */
   const embaralha = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
   function desafio(nome, tema, chaveP, meta, aoVencer) {
-    let banco = embaralha(PERGUNTAS[chaveP].slice()), certos = 0;
+    let banco = embaralha(PERGUNTAS[chaveP].slice()), certos = 0, erros = 0;
     function pergunta() {
       if (!banco.length) banco = embaralha(PERGUNTAS[chaveP].slice());
       const [q, ops, c, exp] = banco.shift();
@@ -521,6 +566,8 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
         const b = e.target.closest('button'); if (!b || b.disabled) return;
         const i = +b.dataset.i, ok = i === c;
         S.resp++; if (ok) { S.acertos++; certos++; }
+        if (ok) { S.seq++; S.melhorSeq = Math.max(S.melhorSeq, S.seq); if (S.errou) S.recuperou = true; S.errou = false; } else { S.seq = 0; S.errou = true; erros++; }
+        if (certos >= meta && erros === 0) S.limpo = true;
         const tm = S.temas[tema] = S.temas[tema] || { r: 0, a: 0 }; tm.r++; if (ok) tm.a++;
         box.querySelectorAll('button').forEach(x => { x.disabled = true; if (+x.dataset.i === c) x.classList.add('certa'); });
         if (!ok) b.classList.add('errada');
@@ -602,11 +649,13 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     if (c === 'G') { segura = null; const p = Object.values(PORTOES).find(q => q.x === nx && q.y === ny); return interagir(NPCS.find(n => n.id === p.guardiao)); }
     if (BLOQ.has(c)) return;
     anim = { fx: S.x, fy: S.y, t: performance.now(), dur: 150 };
-    S.x = nx; S.y = ny;
+    S.x = nx; S.y = ny; S.passos++;
     const r = regiaoDe(nx, ny);
+    if (!S.visto.includes(r)) S.visto.push(r);
     if (r !== regAtual) { regAtual = r; mostraRegiao(r); painel(); }
     const it = ITEM_AT[nx + ',' + ny];
     if (it && !tem(it.id)) { segura = null; setTimeout(() => pegar(it), 160); }
+    if (S.passos === 30 || S.visto.length === 5) checaConq();
     salvar(); desenhaMini();
   }
   function interagir(n) {
