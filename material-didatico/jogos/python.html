@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horta em Python · Material didático | ohtopico</title>
+<meta name="description" content="Jogo para aprender Python cuidando da horta da escola: print, variáveis, input, if, for, while, listas e funções em 21 missões. BNCC EF07CO02, EF07CO05, EF08CO02.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/python.html">
+<meta property="og:title" content="Horta em Python · Material didático">
+<meta property="og:description" content="Jogo para aprender Python cuidando da horta da escola: print, variáveis, input, if, for, while, listas e funções em 21 missões. BNCC EF07CO02, EF07CO05, EF08CO02.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/python.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  :root { --mono: ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace; --tela: #1a1d1b; --tela-2: #242824; --tela-txt: #f1f1ee; }
+  .horta { border: 1.5px solid var(--ink); border-radius: 18px; background: #f6f1e4; padding: 8px; margin-bottom: 16px; }
+  :root[data-theme="dark"] .horta { background: #22201a; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .horta { background: #22201a; } }
+  .horta svg { display: block; width: 100%; height: auto; }
+  .horta .plot { cursor: pointer; }
+  .horta .plot:focus-visible { outline: none; }
+  .horta .plot:focus-visible rect.terra, .horta .plot.atual rect.terra { stroke: #111; stroke-width: 3; }
+  .py-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, 1fr); gap: 20px; align-items: start; }
+  .py-layout > section { min-width: 0; }
+  @media (max-width: 520px) { .editor { font-size: 13.5px; } .editor .ln .num { width: 2em; padding-right: 10px; } .peca { font-size: 14px; } }
+  @media (max-width: 860px) { .py-layout { grid-template-columns: minmax(0, 1fr); } }
+  .missao h2 { font-size: 24px; margin: 2px 0 6px; }
+  .missao .cap { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .conceito { border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 14px 14px 0; padding: 10px 14px; margin: 12px 0; font-size: 15.5px; }
+  .conceito code, .missao p code { font-family: var(--mono); font-size: .93em; background: var(--pill); padding: 1px 5px; border-radius: 6px; }
+  .rotulo { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin: 14px 0 6px; display: flex; justify-content: space-between; gap: 8px; }
+  .editor { background: var(--tela); color: var(--tela-txt); border-radius: 16px; border: 1.5px solid var(--ink); overflow-x: auto; font-family: var(--mono); font-size: 15.5px; line-height: 1.75; padding: 10px 0; }
+  .editor .ln { display: flex; min-height: 1.75em; white-space: pre; padding: 0 14px 0 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; width: 100%; }
+  .editor .ln .num { flex: none; width: 2.6em; text-align: right; padding-right: 14px; color: #7c817d; user-select: none; }
+  .editor button.ln { cursor: pointer; }
+  .editor button.ln:hover { background: var(--tela-2); }
+  .editor .ln.marcada { background: #4a1f23; }
+  .editor .ln.certa { background: #1f3b29; }
+  .k { color: #ff9a85; font-weight: 600; } .s { color: #9be3a9; } .n { color: #ffd65c; } .c { color: #9a9f9b; font-style: italic; } .f { color: #ffe3a3; }
+  .slot { font: inherit; border: 1.5px dashed #ffd65c; background: #2c2a1c; color: #ffd65c; border-radius: 8px; padding: 0 8px; margin: 0 2px; min-width: 3.2em; cursor: pointer; line-height: 1.4; }
+  .slot.cheio { border-style: solid; background: #2f3a2f; color: var(--tela-txt); }
+  .slot.ativo { outline: 3px solid #ffd65c; outline-offset: 1px; }
+  .pecas { display: flex; flex-wrap: wrap; gap: 8px; }
+  .peca { font-family: var(--mono); font-size: 15px; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 12px; padding: 7px 12px; cursor: pointer; min-height: 42px; white-space: pre; }
+  .peca:hover { background: var(--pill); }
+  .peca[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .peca .tecla { font-family: var(--body); font-size: 11px; color: var(--ink-3); margin-right: 6px; }
+  .peca[aria-pressed="true"] .tecla { color: inherit; opacity: .8; }
+  .opcoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .opcoes .peca { text-align: left; white-space: pre-wrap; line-height: 1.5; border-radius: 14px; padding: 10px 12px; }
+  .opcoes.linhas { grid-template-columns: minmax(0, 1fr); }
+  .opcoes.linhas .peca { white-space: pre; overflow-x: auto; }
+  .ordem { display: grid; gap: 6px; }
+  .ordem .peca { text-align: left; width: 100%; border-radius: 10px; min-height: 38px; padding: 5px 10px; }
+  .ordem .vazio { color: var(--ink-3); font-size: 14px; border: 1.5px dashed var(--line); border-radius: 10px; padding: 8px 10px; }
+  .terminal { background: #101210; color: #e8e8e4; border: 1.5px solid var(--ink); border-radius: 16px; overflow: hidden; }
+  .terminal .barra { display: flex; align-items: center; gap: 6px; padding: 7px 12px; background: #262a26; font-size: 12.5px; color: #b9bdb9; font-family: var(--mono); }
+  .terminal .barra i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .terminal pre { margin: 0; padding: 12px 14px; min-height: 120px; font-family: var(--mono); font-size: 15px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+  .terminal .err { color: #ff8f8f; } .terminal .in { color: #ffd65c; text-decoration: underline; text-underline-offset: 3px; } .terminal .dim { color: #8d928e; } .terminal .ok { color: #9be3a9; }
+  .alvo { font-family: var(--mono); font-size: 14.5px; background: var(--paper-2); border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px; white-space: pre-wrap; margin: 0; }
+  .dica-box { border: 1.5px dashed var(--ink-3); border-radius: 14px; padding: 8px 12px; margin-top: 10px; font-size: 15px; background: var(--paper-2); }
+  .mapa { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .mapa .capbox { border: 1.5px solid var(--line); border-radius: 16px; padding: 10px 12px; }
+  .mapa .capbox strong { display: block; font-size: 15px; margin-bottom: 6px; }
+  .mapa .chips .chip { min-width: 54px; }
+  .fim { border: 1.5px solid var(--ok); background: var(--ok-soft); border-radius: 18px; padding: 14px 18px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>A turma está cuidando da horta da escola e precisa de programas em Python para ajudar. Cada missão ensina uma parte da linguagem e faz uma planta crescer no canteiro. Há quatro tipos de missão:</p>
+    <ul>
+      <li><strong>Complete o código:</strong> clique no espaço amarelo e escolha a peça certa. Depois clique em <strong>Executar</strong>.</li>
+      <li><strong>O que aparece na tela?</strong> Leia o programa e escolha a saída correta.</li>
+      <li><strong>Monte o programa:</strong> clique nas linhas na ordem certa para chegar à saída esperada.</li>
+      <li><strong>Conserte o erro:</strong> leia a mensagem de erro, clique na linha com problema e escolha a correção.</li>
+    </ul>
+    <p>Acertar de primeira vale três estrelas. Cada tentativa errada ou dica usada tira uma estrela, mas a missão sempre pode ser refeita. O progresso fica salvo neste navegador.</p>
+    <p class="small muted">Teclado: as teclas 1 a 4 escolhem as peças, Enter executa e N vai para a próxima missão.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="hud">
+      <span>Missão <b id="m-n">1</b> de <span id="m-tot"></span></span>
+      <span id="stars-total" class="muted"></span>
+      <span id="plantas" class="muted"></span>
+    </div>
+    <div class="horta" id="horta" aria-label="Horta da escola: cada missão concluída faz uma planta crescer"></div>
+
+    <div class="py-layout">
+      <section class="missao" id="missao" aria-live="polite"></section>
+      <section>
+        <div class="rotulo"><span>Terminal</span><span class="muted" id="arquivo">horta.py</span></div>
+        <div class="terminal">
+          <div class="barra"><i style="background:#ef5a4c"></i><i style="background:#ffd23f"></i><i style="background:#2fa865"></i><span style="margin-left:6px">python horta.py</span></div>
+          <pre id="term" aria-live="polite"></pre>
+        </div>
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn" type="button" id="run">Executar</button>
+          <button class="btn ghost" type="button" id="dica">Dica</button>
+          <button class="btn ghost" type="button" id="reset">Recomeçar</button>
+          <button class="btn ghost" type="button" id="prox" hidden>Próxima missão</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div id="dica-box"></div>
+      </section>
+    </div>
+
+    <div class="rotulo" style="margin-top:22px"><span>Mapa das missões</span></div>
+    <div class="mapa" id="mapa"></div>
+    <div id="fim"></div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('python');
+(function () {
+  // Capítulos da horta. Cada um vira um canteiro com três plantas.
+  const CAPS = [
+    { nome: 'Falar com o computador', curto: 'print', planta: 'alface' },
+    { nome: 'Guardar e calcular', curto: 'variáveis', planta: 'tomate' },
+    { nome: 'Perguntar ao usuário', curto: 'input', planta: 'cenoura' },
+    { nome: 'Tomar decisões', curto: 'if', planta: 'girassol' },
+    { nome: 'Repetir tarefas', curto: 'for e while', planta: 'morango' },
+    { nome: 'Listas', curto: 'listas', planta: 'milho' },
+    { nome: 'Funções', curto: 'funções', planta: 'abobora' }
+  ];
+  // Tipos: completar (lacunas [[i]]), saida (múltipla escolha), ordenar (linhas), erro (achar a linha e corrigir).
+  // Na saída, {texto} marca o que o usuário digitou.
+  const M = [
+    { cap: 0, tipo: 'completar', titulo: 'A placa da horta',
+      historia: 'A horta precisa de uma placa na entrada. Faça o Python escrever o nome dela na tela.',
+      conceito: '<code>print()</code> mostra uma mensagem na tela. Textos (strings) ficam entre aspas: <code>"assim"</code>.',
+      codigo: ['print([[0]])'],
+      lacunas: [{ op: ['"Horta da turma"', 'Horta da turma', '"Horta da turma'], certa: 0,
+        erro: [null, ['Linha 1', 'SyntaxError: invalid syntax'], ['Linha 1', 'SyntaxError: unterminated string literal']],
+        expl: [null, 'Sem aspas, o Python acha que as palavras são nomes de variáveis.', 'Faltou fechar as aspas no fim do texto.'] }],
+      saida: 'Horta da turma',
+      dica: 'Todo texto precisa começar e terminar com aspas.' },
+    { cap: 0, tipo: 'saida', titulo: 'Duas mensagens',
+      historia: 'A professora escreveu este programa para listar as primeiras mudas. O que ele mostra?',
+      conceito: 'Cada <code>print()</code> começa uma linha nova. Dentro dele, a vírgula separa valores e coloca um espaço entre eles.',
+      codigo: ['print("Alface", "Tomate")', 'print("Cenoura")'],
+      op: ['Alface Tomate\nCenoura', 'AlfaceTomate\nCenoura', 'Alface, Tomate\nCenoura', 'Alface Tomate Cenoura'], certa: 0,
+      expl: [null, 'A vírgula do print coloca um espaço entre os valores.', 'A vírgula separa os valores, mas não aparece na tela.', 'O segundo print começa em uma linha nova.'],
+      saida: 'Alface Tomate\nCenoura',
+      dica: 'Conte quantos print existem: cada um ocupa uma linha.' },
+    { cap: 0, tipo: 'erro', titulo: 'A letra que atrapalhou',
+      historia: 'Alguém digitou a segunda placa com pressa e o programa parou. Leia o erro no terminal e conserte.',
+      conceito: 'O Python diferencia letras maiúsculas e minúsculas: <code>print</code> e <code>Print</code> são nomes diferentes. Linhas com <code>#</code> são comentários e o Python ignora.',
+      codigo: ['# placas da horta', 'print("Bem-vindos!")', 'Print("Regue com cuidado")'],
+      linha: 2, erroInicial: ['Bem-vindos!', 'Traceback (most recent call last):', '  Linha 3', "NameError: name 'Print' is not defined"],
+      op: ['print("Regue com cuidado")', 'PRINT("Regue com cuidado")', 'print(Regue com cuidado)'], certa: 0,
+      expl: [null, 'PRINT também não existe. O nome certo é todo em minúsculas.', 'Agora sumiram as aspas do texto.'],
+      saida: 'Bem-vindos!\nRegue com cuidado',
+      dica: 'O erro diz que o nome "Print" não existe. Compare com a linha 2, que funcionou.' },
+
+    { cap: 1, tipo: 'completar', titulo: 'Quantas mudas?',
+      historia: 'São 4 canteiros com 6 mudas em cada um. Complete a conta para saber o total.',
+      conceito: 'Uma variável guarda um valor com um nome: <code>canteiros = 4</code>. As contas usam <code>+</code>, <code>-</code>, <code>*</code> (vezes) e <code>/</code> (dividir).',
+      codigo: ['canteiros = 4', 'mudas_por_canteiro = 6', 'total = canteiros [[0]] mudas_por_canteiro', 'print(total)'],
+      lacunas: [{ op: ['*', 'x', '+'], certa: 0,
+        erro: [null, ['Linha 3', 'SyntaxError: invalid syntax'], null],
+        saidaErrada: [null, null, '10'],
+        expl: [null, 'Em Python, a multiplicação usa o asterisco, não a letra x.', 'O programa somou 4 + 6. Para 4 canteiros com 6 mudas, é preciso multiplicar.'] }],
+      saida: '24',
+      dica: 'O símbolo de vezes no teclado do computador é o asterisco.' },
+    { cap: 1, tipo: 'saida', titulo: 'Sementes nos saquinhos',
+      historia: 'Temos 17 sementes de feijão para dividir em saquinhos de 5. Quantos saquinhos ficam cheios e quantas sementes sobram?',
+      conceito: '<code>//</code> faz a divisão inteira (sem vírgula) e <code>%</code> dá o resto da divisão.',
+      codigo: ['sementes = 17', 'por_saquinho = 5', 'print(sementes // por_saquinho)', 'print(sementes % por_saquinho)'],
+      op: ['3\n2', '3.4\n2', '3\n3.4', '2\n3'], certa: 0,
+      expl: [null, 'A barra simples daria 3.4, mas a barra dupla descarta a parte decimal.', 'O % não divide: ele mostra o que sobra da divisão.', 'A ordem está trocada: primeiro vem a divisão inteira.'],
+      saida: '3\n2',
+      dica: '17 dividido por 5 dá 3 saquinhos cheios. Quanto sobra?' },
+    { cap: 1, tipo: 'ordenar', titulo: 'Água para o dia',
+      historia: 'Monte o programa que calcula quantos litros de água a turma usa com 3 regadores de 5 litros.',
+      conceito: 'O Python lê o programa de cima para baixo. Uma variável precisa receber um valor antes de ser usada.',
+      linhas: ['regadores = 3', 'litros = 5', 'total = regadores * litros', 'print("Litros:", total)'],
+      ordens: [[0, 1, 2, 3], [1, 0, 2, 3]],
+      saida: 'Litros: 15',
+      dica: 'A conta só pode vir depois que regadores e litros já existem.' },
+
+    { cap: 2, tipo: 'completar', titulo: 'Quem vai regar hoje?',
+      historia: 'O programa pergunta o nome de quem vai regar e cumprimenta essa pessoa.',
+      conceito: '<code>input()</code> mostra uma pergunta e espera a pessoa digitar. O que ela digitar fica guardado na variável.',
+      codigo: ['nome = input("Qual é o seu nome? ")', 'print("Olá,", [[0]])'],
+      lacunas: [{ op: ['nome', '"nome"', 'Nome'], certa: 0,
+        erro: [null, null, ['Linha 2', "NameError: name 'Nome' is not defined"]],
+        saidaErrada: [null, 'Qual é o seu nome? {Ana}\nOlá, nome', null],
+        expl: [null, 'Com aspas, o Python escreve a palavra "nome" em vez do valor guardado.', 'A variável foi criada com n minúsculo.'] }],
+      saida: 'Qual é o seu nome? {Ana}\nOlá, Ana',
+      dica: 'Para usar o valor guardado, escreva o nome da variável sem aspas.' },
+    { cap: 2, tipo: 'completar', titulo: 'Texto não é número',
+      historia: 'Chegaram mudas novas e a escola tem mais 10. O programa precisa somar os dois valores.',
+      conceito: 'O <code>input()</code> sempre devolve texto. Para fazer contas, transforme em número inteiro com <code>int()</code>.',
+      codigo: ['mudas = [[0]](input("Quantas mudas chegaram? "))', 'print("Com as 10 da escola:", mudas + 10)'],
+      lacunas: [{ op: ['int', 'str', 'len'], certa: 0,
+        erro: [null, ['Quantas mudas chegaram? {12}', 'Linha 2', 'TypeError: can only concatenate str (not "int") to str'], null],
+        saidaErrada: [null, null, 'Quantas mudas chegaram? {12}\nCom as 10 da escola: 12'],
+        expl: [null, 'str deixa o valor como texto, e texto não soma com número.', 'len conta os caracteres: "12" tem 2 caracteres, e 2 + 10 dá 12.'] }],
+      saida: 'Quantas mudas chegaram? {12}\nCom as 10 da escola: 22',
+      dica: 'Qual função transforma texto em número inteiro? Pense em "inteiro" em inglês.' },
+    { cap: 2, tipo: 'saida', titulo: 'O diário do girassol',
+      historia: 'O diário da horta usa uma f-string para montar a frase. O que aparece na tela?',
+      conceito: 'Com um <code>f</code> antes das aspas, o que estiver entre chaves é trocado pelo valor da variável: <code>f"{nome}"</code>.',
+      codigo: ['planta = "girassol"', 'dias = 7', 'print(f"O {planta} cresceu em {dias} dias")'],
+      op: ['O girassol cresceu em 7 dias', 'O {planta} cresceu em {dias} dias', 'O planta cresceu em dias dias', 'f O girassol cresceu em 7 dias'], certa: 0,
+      expl: [null, 'Por causa do f, as chaves são trocadas pelos valores.', 'O Python usa o valor guardado, não o nome da variável.', 'O f não aparece na tela: ele só avisa que é uma f-string.'],
+      saida: 'O girassol cresceu em 7 dias',
+      dica: 'Troque cada {variável} pelo valor que ela guarda.' },
+
+    { cap: 3, tipo: 'completar', titulo: 'Hora de regar?',
+      historia: 'O sensor da horta mediu 25% de umidade. Abaixo de 30%, é hora de regar.',
+      conceito: '<code>if</code> testa uma condição. Se for verdadeira, roda o bloco de baixo; senão, roda o <code>else</code>. Comparações: <code>&lt;</code>, <code>&gt;</code>, <code>==</code> (igual), <code>!=</code> (diferente).',
+      codigo: ['umidade = 25', 'if umidade [[0]] 30:', '    print("Hora de regar")', 'else:', '    print("Solo úmido")'],
+      lacunas: [{ op: ['<', '>', '='], certa: 0,
+        erro: [null, null, ['Linha 2', "SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?"]],
+        saidaErrada: [null, 'Solo úmido', null],
+        expl: [null, 'Com >, o teste deu falso (25 não é maior que 30) e a horta ficaria sem água.', 'Um sinal de igual guarda valores. Para comparar, o Python usa dois.'] }],
+      saida: 'Hora de regar',
+      dica: 'A regra é: regar quando a umidade for MENOR que 30.' },
+    { cap: 3, tipo: 'erro', titulo: 'O bloco fora do lugar',
+      historia: 'Em dias quentes, a turma abre a tela de sombra da horta. Mas o programa não roda.',
+      conceito: 'Em Python, o que pertence ao <code>if</code> fica recuado com 4 espaços. Esse recuo se chama indentação.',
+      codigo: ['temperatura = 35', 'if temperatura > 30:', 'print("Abra a tela de sombra")'],
+      linha: 2, erroInicial: ['  Linha 3', "IndentationError: expected an indented block after 'if' statement on line 2"],
+      op: ['    print("Abra a tela de sombra")', 'print("Abra a tela de sombra"):', 'if print("Abra a tela de sombra")'], certa: 0,
+      expl: [null, 'Os dois-pontos só aparecem no fim do if. O que falta é o recuo.', 'O if já está na linha 2. Esta linha precisa só de recuo.'],
+      saida: 'Abra a tela de sombra',
+      dica: 'A mensagem fala em "indented block": falta espaço no começo da linha.' },
+    { cap: 3, tipo: 'saida', titulo: 'Nota da colheita',
+      historia: 'A turma avaliou a colheita do mês com nota 7. Qual mensagem aparece?',
+      conceito: '<code>elif</code> quer dizer "senão, se". O Python testa as condições de cima para baixo e roda só o primeiro bloco verdadeiro.',
+      codigo: ['nota = 7', 'if nota >= 9:', '    print("Colheita excelente")', 'elif nota >= 6:', '    print("Boa colheita")', 'else:', '    print("Vamos caprichar mais")'],
+      op: ['Boa colheita', 'Colheita excelente', 'Boa colheita\nVamos caprichar mais', 'Vamos caprichar mais'], certa: 0,
+      expl: [null, '7 não é maior ou igual a 9, então o primeiro bloco é pulado.', 'Depois que um bloco roda, o Python pula o resto do if.', 'O else só roda se nenhum teste anterior for verdadeiro.'],
+      saida: 'Boa colheita',
+      dica: 'Teste nota >= 9 e depois nota >= 6, com nota = 7.' },
+
+    { cap: 4, tipo: 'saida', titulo: 'Regando em sequência',
+      historia: 'Um programa repete a mesma ação para vários canteiros. O que ele mostra?',
+      conceito: '<code>for i in range(3)</code> repete o bloco 3 vezes. A contagem começa em 0: a variável vale 0, depois 1, depois 2.',
+      codigo: ['for i in range(3):', '    print("Regando canteiro", i)'],
+      op: ['Regando canteiro 0\nRegando canteiro 1\nRegando canteiro 2', 'Regando canteiro 1\nRegando canteiro 2\nRegando canteiro 3', 'Regando canteiro 0\nRegando canteiro 1\nRegando canteiro 2\nRegando canteiro 3', 'Regando canteiro 3'], certa: 0,
+      expl: [null, 'O range começa a contar do 0.', 'O range(3) para antes do 3.', 'O print está dentro do for, então roda uma vez para cada volta.'],
+      saida: 'Regando canteiro 0\nRegando canteiro 1\nRegando canteiro 2',
+      dica: 'range(3) gera os números 0, 1 e 2.' },
+    { cap: 4, tipo: 'completar', titulo: 'Do canteiro 1 ao 5',
+      historia: 'A horta tem os canteiros 1, 2, 3, 4 e 5. Complete o range para regar todos.',
+      conceito: '<code>range(início, fim)</code> conta a partir do início e para antes do fim. <code>range(1, 4)</code> gera 1, 2 e 3.',
+      codigo: ['for canteiro in range(1, [[0]]):', '    print("Canteiro", canteiro, "regado")'],
+      lacunas: [{ op: ['6', '5', '5.0'], certa: 0,
+        erro: [null, null, ['Linha 1', "TypeError: 'float' object cannot be interpreted as an integer"]],
+        saidaErrada: [null, 'Canteiro 1 regado\nCanteiro 2 regado\nCanteiro 3 regado\nCanteiro 4 regado', null],
+        expl: [null, 'O range para antes do número final, então o canteiro 5 ficou sem água.', 'O range só aceita números inteiros.'] }],
+      saida: 'Canteiro 1 regado\nCanteiro 2 regado\nCanteiro 3 regado\nCanteiro 4 regado\nCanteiro 5 regado',
+      dica: 'O número final não entra na contagem. Para chegar ao 5, o fim precisa ser um a mais.' },
+    { cap: 4, tipo: 'ordenar', titulo: 'O regador esvaziando',
+      historia: 'O regador tem 10 litros e cada canteiro usa 4. Monte o programa que mostra quanto sobra a cada volta.',
+      conceito: '<code>while</code> repete o bloco enquanto a condição for verdadeira. Algo dentro do bloco precisa mudar, senão a repetição não termina.',
+      linhas: ['agua = 10', 'while agua > 0:', '    print("Ainda tem", agua, "litros")', '    agua = agua - 4', 'print("Regador vazio")'],
+      ordens: [[0, 1, 2, 3, 4]],
+      saida: 'Ainda tem 10 litros\nAinda tem 6 litros\nAinda tem 2 litros\nRegador vazio',
+      dica: 'A primeira mensagem mostra 10 litros, então o print vem antes de tirar a água.' },
+
+    { cap: 5, tipo: 'completar', titulo: 'Uma planta nova',
+      historia: 'A turma plantou rúcula. Acrescente a planta na lista e veja quantas existem agora.',
+      conceito: 'Uma lista guarda vários valores em ordem: <code>["a", "b"]</code>. <code>.append()</code> acrescenta um item no fim e <code>len()</code> conta os itens.',
+      codigo: ['plantas = ["alface", "tomate", "cenoura"]', 'plantas.[[0]]("rúcula")', 'print(len(plantas))'],
+      lacunas: [{ op: ['append', 'add', 'remove'], certa: 0,
+        erro: [null, ['Linha 2', "AttributeError: 'list' object has no attribute 'add'"], ['Linha 2', 'ValueError: list.remove(x): x not in list']],
+        expl: [null, 'Listas do Python não têm add. O nome do comando é outro.', 'remove tenta tirar um item, e a rúcula ainda não estava na lista.'] }],
+      saida: '4',
+      dica: 'Em inglês, "acrescentar no fim" é append.' },
+    { cap: 5, tipo: 'saida', titulo: 'Primeiro e último',
+      historia: 'Cada planta da lista tem uma posição (índice). Quais aparecem na tela?',
+      conceito: 'O primeiro item de uma lista tem índice <code>0</code>. O índice <code>-1</code> pega o último item.',
+      codigo: ['plantas = ["alface", "tomate", "cenoura"]', 'print(plantas[0])', 'print(plantas[-1])'],
+      op: ['alface\ncenoura', 'tomate\ncenoura', 'alface\ntomate', 'tomate\nalface'], certa: 0,
+      expl: [null, 'O índice 0 é o primeiro item, não o segundo.', 'O -1 conta de trás para frente: é o último item.', 'Os índices começam em 0, e -1 é o fim da lista.'],
+      saida: 'alface\ncenoura',
+      dica: 'Índice 0 é o primeiro; -1 é o último.' },
+    { cap: 5, tipo: 'ordenar', titulo: 'Total da colheita',
+      historia: 'A lista guarda os quilos colhidos em cada semana. Monte o programa que soma tudo.',
+      conceito: 'Um <code>for</code> pode passar por cada item de uma lista. Para somar, comece um acumulador em 0 e vá juntando os valores.',
+      linhas: ['colheita = [3, 5, 2, 6]', 'total = 0', 'for kg in colheita:', '    total = total + kg', 'print("Total:", total, "kg")'],
+      ordens: [[0, 1, 2, 3, 4], [1, 0, 2, 3, 4]],
+      saida: 'Total: 16 kg',
+      dica: 'O total começa em 0 antes do for, e o print fica fora do for (sem recuo).' },
+
+    { cap: 6, tipo: 'completar', titulo: 'A área do canteiro',
+      historia: 'Crie uma função que calcula a área de um canteiro retangular para usar sempre que precisar.',
+      conceito: '<code>def</code> cria uma função. Os valores entre parênteses são parâmetros, e <code>return</code> devolve o resultado para quem chamou.',
+      codigo: ['[[0]] area(largura, comprimento):', '    [[1]] largura * comprimento', '', 'print(area(2, 3))'],
+      lacunas: [
+        { op: ['def', 'function', 'fun'], certa: 0,
+          erro: [null, ['Linha 1', 'SyntaxError: invalid syntax'], ['Linha 1', 'SyntaxError: invalid syntax']],
+          expl: [null, 'function é usado em outras linguagens. Em Python a palavra é mais curta.', 'Quase: a palavra do Python tem três letras, mas é outra.'] },
+        { op: ['return', 'print', 'retorna'], certa: 0,
+          erro: [null, null, ['Linha 2', 'SyntaxError: invalid syntax']],
+          saidaErrada: [null, '6\nNone', null],
+          expl: [null, 'O print mostrou 6 dentro da função, mas ela não devolveu nada (None) para o print de fora.', 'Os comandos do Python são em inglês.'] }],
+      saida: '6',
+      dica: 'Uma função começa com def e devolve o resultado com return.' },
+    { cap: 6, tipo: 'erro', titulo: 'Faltou o parâmetro',
+      historia: 'A função de boas-vindas precisa do nome da visitante, mas a chamada esqueceu de enviar.',
+      conceito: 'Ao chamar uma função, coloque entre parênteses um valor para cada parâmetro que ela pede.',
+      codigo: ['def saudacao(nome):', '    return "Bem-vinda à horta, " + nome', '', 'print(saudacao())'],
+      linha: 3, erroInicial: ['Traceback (most recent call last):', '  Linha 4', "TypeError: saudacao() missing 1 required positional argument: 'nome'"],
+      op: ['print(saudacao("Bia"))', 'print(saudacao)', 'print(saudacao(nome))'], certa: 0,
+      expl: [null, 'Sem parênteses, a função não é chamada: o Python mostraria só onde ela está guardada.', 'A variável nome só existe dentro da função.'],
+      saida: 'Bem-vinda à horta, Bia',
+      dica: 'A função pede um nome. Envie um texto entre os parênteses.' },
+    { cap: 6, tipo: 'ordenar', titulo: 'Projeto final: o sensor',
+      historia: 'Junte tudo: uma função decide se é preciso regar, e o programa confere as leituras do sensor de cada canteiro.',
+      conceito: 'Funções, listas, for e if trabalham juntos. Primeiro se define a função, depois ela pode ser usada quantas vezes for preciso.',
+      linhas: ['def precisa_regar(umidade):', '    return umidade < 30', 'leituras = [42, 18, 35, 22]', 'for u in leituras:', '    if precisa_regar(u):', '        print("Regar: umidade", u)'],
+      ordens: [[0, 1, 2, 3, 4, 5], [2, 0, 1, 3, 4, 5]],
+      saida: 'Regar: umidade 18\nRegar: umidade 22',
+      dica: 'O return fica logo abaixo do def. O print tem o maior recuo, porque está dentro do if, que está dentro do for.' }
+  ];
+
+  const $ = s => document.querySelector(s);
+  const ESC = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const KW = new Set(['def', 'return', 'if', 'elif', 'else', 'for', 'in', 'while', 'and', 'or', 'not', 'True', 'False', 'None']);
+  const BI = new Set(['print', 'input', 'int', 'str', 'len', 'range', 'float']);
+  // Destaque de sintaxe simples (sem azul): palavras-chave, textos, números, comentários e funções prontas
+  function hl(code) {
+    const re = /(#.*$)|(f?"[^"]*"?|f?'[^']*'?)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_À-ú][\wÀ-ú]*)|([\s\S])/g;
+    let out = '', m;
+    while ((m = re.exec(code))) {
+      if (m[1]) out += `<span class="c">${ESC(m[1])}</span>`;
+      else if (m[2]) out += `<span class="s">${ESC(m[2])}</span>`;
+      else if (m[3]) out += `<span class="n">${m[3]}</span>`;
+      else if (m[4]) out += KW.has(m[4]) ? `<span class="k">${m[4]}</span>` : BI.has(m[4]) ? `<span class="f">${m[4]}</span>` : ESC(m[4]);
+      else out += ESC(m[5]);
+    }
+    return out;
+  }
+  // Saída no terminal: {texto} = digitado pelo usuário
+  const fmtSaida = s => ESC(s).replace(/\{([^}]*)\}/g, '<span class="in">$1</span>');
+
+  let best = mdStore.get('python-best', {});
+  let mi = 0, st = null;
+  $('#m-tot').textContent = M.length;
+
+  // ---------- Horta (SVG) ----------
+  const COR = { alface: '#2fa865', tomate: '#ef5a4c', cenoura: '#f08a24', girassol: '#ffd23f', morango: '#ef5a4c', milho: '#ffd23f', abobora: '#f08a24' };
+  function plantaSVG(tipo, x, y, n) {
+    if (!n) return `<circle cx="${x}" cy="${y + 14}" r="2.5" fill="#7a5a3a"/>`;
+    const c = COR[tipo], h = 10 + n * 6;
+    let s = `<path d="M${x} ${y + 16}V${y + 16 - h}" stroke="#2f7a3f" stroke-width="2.5" stroke-linecap="round"/>`;
+    s += `<path d="M${x} ${y + 12 - h / 3}c-7-2-9-8-9-8 6 0 9 4 9 8zM${x} ${y + 10 - h / 2}c7-2 9-8 9-8-6 0-9 4-9 8z" fill="#2fa865" stroke="#111" stroke-width="1.2"/>`;
+    if (n >= 2) {
+      const ty = y + 16 - h;
+      if (tipo === 'girassol') s += `<circle cx="${x}" cy="${ty}" r="${n * 2.6}" fill="${c}" stroke="#111" stroke-width="1.2"/><circle cx="${x}" cy="${ty}" r="${n * 1.1}" fill="#6b4423"/>`;
+      else if (tipo === 'alface') s += `<ellipse cx="${x}" cy="${ty + 4}" rx="${n * 3.2}" ry="${n * 2.2}" fill="${c}" stroke="#111" stroke-width="1.2"/>`;
+      else if (tipo === 'cenoura') s += `<path d="M${x - n * 2} ${y + 16}l${n * 2} ${n * 3}l${n * 2}-${n * 3}z" fill="${c}" stroke="#111" stroke-width="1.2"/>`;
+      else s += `<circle cx="${x}" cy="${ty}" r="${n * 2.2}" fill="${c}" stroke="#111" stroke-width="1.2"/>`;
+    }
+    return s;
+  }
+  function drawHorta() {
+    const W = 840, H = 120, cw = W / CAPS.length;
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Horta com ${CAPS.length} canteiros"><title>Horta da escola</title>`;
+    s += `<path d="M0 ${H - 18}H${W}" stroke="#111" stroke-width="2"/>`;
+    CAPS.forEach((c, ci) => {
+      const x0 = ci * cw + 8;
+      s += `<g class="plot${M[mi].cap === ci ? ' atual' : ''}" data-cap="${ci}" tabindex="0" role="button" aria-label="Canteiro ${ci + 1}: ${c.nome}">`;
+      s += `<rect class="terra" x="${x0}" y="${H - 34}" width="${cw - 16}" height="22" rx="8" fill="#a7774c" stroke="#111" stroke-width="1.5"/>`;
+      M.forEach((m, i) => {
+        if (m.cap !== ci) return;
+        const k = M.filter((o, j) => o.cap === ci && j < i).length;
+        s += plantaSVG(c.planta, x0 + (cw - 16) * (k + 1) / 4, H - 58, best[i] || 0);
+      });
+      s += `<text x="${x0 + (cw - 16) / 2}" y="${H - 2}" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" fill="currentColor">${ci + 1}. ${ESC(c.curto)}</text></g>`;
+    });
+    $('#horta').innerHTML = s + '</svg>';
+    $('#horta').style.color = 'var(--ink)';
+  }
+  $('#horta').onclick = e => { const g = e.target.closest('.plot'); if (g) irCap(+g.dataset.cap); };
+  $('#horta').onkeydown = e => { const g = e.target.closest('.plot'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); irCap(+g.dataset.cap); } };
+  function irCap(ci) { const i = M.findIndex((m, j) => m.cap === ci && !best[j]); load(i >= 0 ? i : M.findIndex(m => m.cap === ci)); }
+
+  function drawMapa() {
+    $('#mapa').innerHTML = CAPS.map((c, ci) => `<div class="capbox"><strong>${ci + 1}. ${ESC(c.nome)}</strong><div class="chips">${
+      M.map((m, i) => m.cap === ci ? `<button class="chip" type="button" data-i="${i}" aria-pressed="${i === mi}" title="${ESC(m.titulo)}">${i + 1}${best[i] ? ' ' + '★'.repeat(best[i]) : ''}</button>` : '').join('')}</div></div>`).join('');
+    const tot = Object.values(best).reduce((a, b) => a + b, 0), feitas = Object.keys(best).length;
+    $('#stars-total').textContent = `★ ${tot} de ${M.length * 3}`;
+    $('#plantas').textContent = `${feitas} de ${M.length} plantas`;
+    $('#fim').innerHTML = feitas === M.length ? `<div class="fim"><strong>A horta está completa.</strong> Você usou print, variáveis, input, if, for, while, listas e funções. ${tot === M.length * 3 ? 'E com todas as estrelas.' : 'Refaça as missões com menos estrelas para completar as ' + M.length * 3 + '.'} O próximo passo é escrever seus próprios programas em um editor de Python.</div>` : '';
+  }
+  $('#mapa').onclick = e => { const b = e.target.closest('button'); if (b) load(+b.dataset.i); };
+
+  // ---------- Missão ----------
+  function load(i) {
+    mi = i; const m = M[i];
+    st = { erros: 0, dica: false, feito: false, sel: [], ativa: 0, ordem: [], linhaOk: false, marcada: null, emb: null };
+    if (m.tipo === 'completar') st.sel = m.lacunas.map(() => null);
+    if (m.tipo === 'ordenar') { st.emb = m.linhas.map((l, k) => k); embaralhar(st.emb, m.ordens); }
+    if (m.tipo === 'saida') ordemOpcoes();
+    $('#m-n').textContent = i + 1;
+    const tipoNome = { completar: 'Complete o código', saida: 'O que aparece na tela?', ordenar: 'Monte o programa', erro: 'Conserte o erro' }[m.tipo];
+    $('#missao').innerHTML = `
+      <span class="cap">Capítulo ${m.cap + 1} · ${ESC(CAPS[m.cap].nome)}</span>
+      <h2>${i + 1}. ${ESC(m.titulo)}</h2>
+      <p style="margin:0">${ESC(m.historia)}</p>
+      <div class="conceito">${m.conceito}</div>
+      <div class="rotulo"><span>${tipoNome}</span></div>
+      <div id="area"></div>`;
+    $('#dica-box').innerHTML = '';
+    $('#prox').hidden = true;
+    $('#run').hidden = m.tipo === 'saida' || m.tipo === 'erro';
+    $('#dica').disabled = false;
+    term(m.tipo === 'erro' ? m.erroInicial.map(l => /Error/.test(l) ? `<span class="err">${ESC(l)}</span>` : /^\s|Traceback/.test(l) ? `<span class="dim">${ESC(l)}</span>` : ESC(l)).join('\n')
+      : '<span class="dim">O resultado do programa aparece aqui.</span>');
+    fb(m.tipo === 'erro' ? 'O programa parou com erro. Clique na linha que precisa ser consertada.' : '', '');
+    draw(); drawHorta(); drawMapa();
+    mdStore.set('python-ultima', i);
+  }
+  function embaralhar(a, ordens) {
+    do { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } }
+    while (ordens.some(o => o.join() === a.join()));
+  }
+  function term(h) { $('#term').innerHTML = h; }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+
+  function codigoHTML(linhas, fnLinha) {
+    return `<div class="editor">${linhas.map((l, k) => fnLinha ? fnLinha(l, k) : `<div class="ln"><span class="num">${k + 1}</span><span>${hl(l)}</span></div>`).join('')}</div>`;
+  }
+  function draw() {
+    const m = M[mi], A = $('#area');
+    if (m.tipo === 'completar') {
+      const linhas = m.codigo.map((l, k) => {
+        const partes = l.split(/\[\[(\d)\]\]/);
+        let h = '';
+        partes.forEach((p, j) => {
+          if (j % 2 === 0) h += hl(p);
+          else {
+            const li = +p, v = st.sel[li];
+            h += `<button type="button" class="slot${v != null ? ' cheio' : ''}${st.ativa === li && !st.feito ? ' ativo' : ''}" data-l="${li}" aria-label="Lacuna ${li + 1}${v != null ? ': ' + ESC(m.lacunas[li].op[v]) : ''}">${v != null ? hl(m.lacunas[li].op[v]) : '?'}</button>`;
+          }
+        });
+        return `<div class="ln"><span class="num">${k + 1}</span><span>${h}</span></div>`;
+      });
+      const lac = m.lacunas[st.ativa];
+      A.innerHTML = `<div class="editor">${linhas.join('')}</div>
+        <div class="rotulo"><span>Peças${m.lacunas.length > 1 ? ' para a lacuna ' + (st.ativa + 1) : ''}</span></div>
+        <div class="pecas">${lac.op.map((o, k) => `<button type="button" class="peca" data-k="${k}" aria-pressed="${st.sel[st.ativa] === k}"${st.feito ? ' disabled' : ''}><span class="tecla">${k + 1}</span>${ESC(o)}</button>`).join('')}</div>`;
+      A.querySelectorAll('.slot').forEach(b => b.onclick = () => { if (!st.feito) { st.ativa = +b.dataset.l; draw(); } });
+      A.querySelectorAll('.peca').forEach(b => b.onclick = () => escolherPeca(+b.dataset.k));
+    } else if (m.tipo === 'saida') {
+      A.innerHTML = codigoHTML(m.codigo) + `<div class="rotulo"><span>Escolha a saída</span></div>
+        <div class="opcoes">${st.ordemOp.map((k, j) => `<button type="button" class="peca" data-k="${k}"${st.feito ? ' disabled' : ''}${st.feito && k === m.certa ? ' aria-pressed="true"' : ''}><span class="tecla">${j + 1}</span>\n${ESC(m.op[k])}</button>`).join('')}</div>`;
+      A.querySelectorAll('.peca').forEach(b => b.onclick = () => responderSaida(+b.dataset.k));
+    } else if (m.tipo === 'ordenar') {
+      const resto = st.emb.filter(k => !st.ordem.includes(k));
+      A.innerHTML = `<div class="rotulo"><span>Saída esperada</span></div><pre class="alvo">${fmtSaida(m.saida)}</pre>
+        <div class="rotulo"><span>Seu programa</span><span class="muted">clique numa linha para devolver</span></div>
+        <div class="editor">${st.ordem.length ? st.ordem.map((k, j) => `<button type="button" class="ln" data-k="${k}" data-lado="prog"${st.feito ? ' disabled' : ''}><span class="num">${j + 1}</span><span>${hl(m.linhas[k])}</span></button>`).join('') : '<div class="ln"><span class="num">1</span><span class="c">clique nas linhas abaixo, na ordem certa</span></div>'}</div>
+        <div class="rotulo"><span>Linhas disponíveis</span></div>
+        <div class="ordem">${resto.length ? resto.map((k, j) => `<button type="button" class="peca" data-k="${k}" data-lado="banco"><span class="tecla">${j < 9 ? j + 1 : ''}</span>${ESC(m.linhas[k])}</button>`).join('') : '<div class="vazio">Todas as linhas estão no programa. Clique em Executar.</div>'}</div>`;
+      A.querySelectorAll('[data-lado]').forEach(b => b.onclick = () => moverLinha(+b.dataset.k, b.dataset.lado));
+    } else if (m.tipo === 'erro') {
+      const linhas = m.codigo.map((l, k) => {
+        const txt = st.feito && k === m.linha ? m.op[m.certa] : l;
+        const cls = st.linhaOk && k === m.linha ? ' certa' : st.marcada === k ? ' marcada' : '';
+        return st.linhaOk ? `<div class="ln${cls}"><span class="num">${k + 1}</span><span>${hl(txt)}</span></div>`
+          : `<button type="button" class="ln${cls}" data-k="${k}" aria-label="Linha ${k + 1}: ${ESC(l)}"><span class="num">${k + 1}</span><span>${hl(l)}</span></button>`;
+      });
+      A.innerHTML = `<div class="editor">${linhas.join('')}</div>` + (st.linhaOk ? `<div class="rotulo"><span>Escolha a correção da linha ${m.linha + 1}</span></div>
+        <div class="opcoes linhas">${st.ordemOp.map((k, j) => `<button type="button" class="peca" data-k="${k}"${st.feito ? ' disabled' : ''}${st.feito && k === m.certa ? ' aria-pressed="true"' : ''}><span class="tecla">${j + 1}</span>${ESC(m.op[k])}</button>`).join('')}</div>` : '');
+      A.querySelectorAll('button.ln').forEach(b => b.onclick = () => escolherLinha(+b.dataset.k));
+      A.querySelectorAll('.peca').forEach(b => b.onclick = () => corrigir(+b.dataset.k));
+    }
+  }
+  function ordemOpcoes() {
+    const m = M[mi];
+    if (!st.ordemOp) { st.ordemOp = m.op.map((o, k) => k); for (let k = st.ordemOp.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [st.ordemOp[k], st.ordemOp[j]] = [st.ordemOp[j], st.ordemOp[k]]; } }
+  }
+
+  // ---------- Ações ----------
+  function escolherPeca(k) {
+    const m = M[mi]; if (st.feito) return;
+    st.sel[st.ativa] = k;
+    const prox = st.sel.findIndex(v => v == null);
+    if (prox >= 0) st.ativa = prox;
+    draw();
+  }
+  function executarCompletar() {
+    const m = M[mi];
+    const falta = st.sel.findIndex(v => v == null);
+    if (falta >= 0) { st.ativa = falta; draw(); return fb('Ainda há espaço vazio no código. Clique nele e escolha uma peça.', 'bad'); }
+    const li = m.lacunas.findIndex((l, j) => st.sel[j] !== l.certa);
+    if (li < 0) return acertou();
+    const L = m.lacunas[li], v = st.sel[li];
+    if (L.erro && L.erro[v]) term(L.erro[v].map(l => /Error/.test(l) ? `<span class="err">${ESC(l)}</span>` : /\{/.test(l) ? fmtSaida(l) : `<span class="dim">${ESC(l)}</span>`).join('\n'));
+    else term(fmtSaida(L.saidaErrada[v]));
+    errou(L.expl[v] + (L.erro && L.erro[v] ? '' : ' A saída não é a esperada.'));
+    st.ativa = li; draw();
+  }
+  function responderSaida(k) {
+    const m = M[mi]; if (st.feito) return;
+    if (k === m.certa) return acertou();
+    errou(m.expl[k]);
+  }
+  function moverLinha(k, lado) {
+    if (st.feito) return;
+    if (lado === 'banco') st.ordem.push(k); else st.ordem = st.ordem.filter(x => x !== k);
+    fb('', ''); draw();
+  }
+  function executarOrdenar() {
+    const m = M[mi];
+    if (st.ordem.length < m.linhas.length) return fb(`Faltam ${m.linhas.length - st.ordem.length} linha(s) no programa.`, 'bad');
+    if (m.ordens.some(o => o.join() === st.ordem.join())) return acertou();
+    // primeira linha fora do lugar (comparando com a ordem válida mais próxima)
+    const pos = Math.max(...m.ordens.map(o => { let j = 0; while (o[j] === st.ordem[j]) j++; return j; }));
+    term(`<span class="dim">O programa rodou, mas a saída não bate com a esperada.</span>`);
+    errou(pos ? `${pos === 1 ? 'A linha 1 está' : 'As linhas 1 a ' + pos + ' estão'} no lugar certo. As outras voltaram para baixo: revise a partir da linha ${pos + 1}.` : 'A primeira linha já está fora do lugar. Pense no que precisa existir antes de tudo.');
+    st.ordem = st.ordem.slice(0, pos); draw();
+  }
+  function escolherLinha(k) {
+    const m = M[mi]; if (st.linhaOk) return;
+    if (k === m.linha) { st.linhaOk = true; ordemOpcoes(); fb('Isso, o problema está na linha ' + (k + 1) + '. Agora escolha a correção.', 'ok'); }
+    else { st.marcada = k; errou(`A linha ${k + 1} está correta. Releia a mensagem de erro no terminal: ela indica a linha.`); }
+    draw();
+  }
+  function corrigir(k) {
+    const m = M[mi]; if (st.feito) return;
+    if (k === m.certa) return acertou();
+    errou(m.expl[k]);
+  }
+  function errou(msg) { st.erros++; fb('Ainda não. ' + msg, 'bad'); }
+  function acertou() {
+    const m = M[mi];
+    st.feito = true;
+    term(fmtSaida(m.saida) + '\n<span class="ok">Programa executado sem erros.</span>');
+    const s = Math.max(1, 3 - st.erros - (st.dica ? 1 : 0));
+    if (!best[mi] || s > best[mi]) { best[mi] = s; mdStore.set('python-best', best); }
+    window.MDP && MDP.registrar('python', Object.values(best).reduce((a, b) => a + b, 0) / (M.length * 3) * 100);
+    fb(s === 3 ? 'Perfeito, de primeira. ★★★' : `Conseguiu! ${'★'.repeat(s)} Refaça depois para ganhar mais estrelas.`, 'ok');
+    $('#run').hidden = true; $('#dica').disabled = true;
+    $('#prox').hidden = mi === M.length - 1;
+    draw(); drawHorta(); drawMapa();
+    if (!$('#prox').hidden) $('#prox').focus();
+  }
+
+  $('#run').onclick = () => { if (st.feito) return; const t = M[mi].tipo; if (t === 'completar') executarCompletar(); else if (t === 'ordenar') executarOrdenar(); };
+  $('#dica').onclick = () => { if (st.feito) return; st.dica = true; $('#dica-box').innerHTML = `<div class="dica-box"><strong>Dica:</strong> ${ESC(M[mi].dica)}</div>`; };
+  $('#reset').onclick = () => load(mi);
+  $('#prox').onclick = () => { const i = M.findIndex((m, j) => j > mi && !best[j]); load(i >= 0 ? i : Math.min(mi + 1, M.length - 1)); };
+
+  document.addEventListener('keydown', e => {
+    if (e.target.closest('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
+    const m = M[mi];
+    if (/^[1-9]$/.test(e.key)) {
+      const n = +e.key - 1;
+      if (m.tipo === 'completar' && n < m.lacunas[st.ativa].op.length) escolherPeca(n);
+      else if (m.tipo === 'saida' && st.ordemOp && n < st.ordemOp.length) responderSaida(st.ordemOp[n]);
+      else if (m.tipo === 'erro' && st.linhaOk && n < st.ordemOp.length) corrigir(st.ordemOp[n]);
+      else if (m.tipo === 'ordenar') { const resto = st.emb.filter(k => !st.ordem.includes(k)); if (n < resto.length) moverLinha(resto[n], 'banco'); }
+    } else if (e.key === 'Enter' && !e.target.closest('button, a, [role="button"]')) { e.preventDefault(); $('#run').click(); }
+    else if ((e.key === 'n' || e.key === 'N') && !$('#prox').hidden) $('#prox').click();
+  });
+
+  const q = parseInt(new URLSearchParams(location.search).get('missao'), 10);
+  const ult = mdStore.get('python-ultima', 0);
+  load(q >= 1 && q <= M.length ? q - 1 : (typeof ult === 'number' && ult < M.length ? ult : 0));
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
