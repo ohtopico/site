@@ -42,6 +42,7 @@
   <div class="page-head">
     <span class="eyebrow">Área do professor</span>
     <h1>Como usar o repositório nas suas aulas</h1>
+    <p class="small" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">Ir para: <a class="chip" href="#planos">Planos de aula</a> <a class="chip" href="#slides">Slides</a> <a class="chip" href="#apostila">Apostilas</a> <a class="chip" href="turma.html">Painel da turma</a> <a class="chip" href="catalogo.html">Catálogo</a></p>
   </div>
   <div class="steps">
     <div class="step"><strong>Escolha a habilidade</strong><p>Parta do seu planejamento: busque o código no <a href="catalogo.html">catálogo</a> ou navegue pelo ano em <a href="bncc.html">Explorar a BNCC</a>.</p></div>
@@ -68,7 +69,7 @@
     <a class="btn" href="turma.html">Abrir o painel</a>
   </div>
 
-  <h2>Planos de aula</h2>
+  <h2 id="planos">Planos de aula</h2>
   <p class="muted">Todas as habilidades de Computação do 6º ao 9º ano têm pelo menos um plano. Filtre por ano:</p>
   <div class="chips" id="f-ano" style="margin-bottom:12px"></div>
   <div class="table-wrap">
@@ -77,6 +78,7 @@
       <tbody id="plans"></tbody>
     </table>
   </div>
+  <button class="btn ghost" type="button" id="mais-planos" style="margin-top:12px" hidden></button>
 
   <h2 id="slides" style="margin-top:40px">Slides para aula expositiva</h2>
   <p class="muted">Cada habilidade de Computação tem um conjunto de slides em PDF para uma aula de 30 minutos: pergunta de abertura, explicação com exemplos, atividade de 7 minutos, perguntas de checagem e, no último slide, o roteiro do professor com as respostas. O filtro de ano acima vale aqui também.</p>
@@ -86,6 +88,7 @@
       <tbody id="slides-list"></tbody>
     </table>
   </div>
+  <button class="btn ghost" type="button" id="mais-slides" style="margin-top:12px" hidden></button>
 
   <div class="note" style="margin-top:26px">
     <strong>Sobre o alinhamento.</strong> Os códigos seguem a BNCC (Matemática) e o complemento de Computação à BNCC (Resolução CNE/CEB nº 1/2022). Muitos materiais combinam as duas áreas — um bom caminho para trabalhar Computação de forma integrada, mesmo onde ela ainda não é componente próprio.
@@ -104,19 +107,33 @@
   mdTopbar('professor');
   mdFooter();
   let ano = 0;
+  // com "Todos", as tabelas mostram as primeiras linhas e o resto fica a um clique
+  const LIMITE = 8;
+  const abertas = { planos: false, slides: false };
+  const corta = (arr, k) => ano || abertas[k] ? arr : arr.slice(0, LIMITE);
+  function botaoMais(id, k, total, nome) {
+    const b = document.getElementById(id);
+    b.hidden = !!ano || abertas[k] || total <= LIMITE;
+    b.textContent = `Mostrar todos os ${total} ${nome}`;
+    b.onclick = () => { abertas[k] = true; renderPlans(); };
+  }
   function renderPlans() {
   document.getElementById('f-ano').innerHTML = [[0, 'Todos'], [6, '6º'], [7, '7º'], [8, '8º'], [9, '9º']].map(([v, l]) => {
     const n = RECURSOS.filter(r => r.tipo === 'plano' && (!v || r.anos.includes(v))).length;
     return `<button class="chip" type="button" data-a="${v}" aria-pressed="${v === ano}">${l} <span class="small muted">${n}</span></button>`;
   }).join('');
-  document.getElementById('plans').innerHTML = RECURSOS.filter(r => r.tipo === 'plano' && (!ano || r.anos.includes(ano))).map(r => `
+  const planos = RECURSOS.filter(r => r.tipo === 'plano' && (!ano || r.anos.includes(ano)));
+  const slides = Object.keys(SLIDES).filter(c => !ano || HAB[c].ano === ano);
+  botaoMais('mais-planos', 'planos', planos.length, 'planos');
+  botaoMais('mais-slides', 'slides', slides.length, 'slides');
+  document.getElementById('plans').innerHTML = corta(planos, 'planos').map(r => `
     <tr>
       <td><a class="ptitle" href="${recUrl(r)}">${esc(r.titulo)}</a><div class="small muted">${esc(PLANOS[r.id].duracao)}</div></td>
       <td class="hide-sm">${anosTxt(r.anos)}</td>
       <td><div class="tags">${r.habs.map(tagHab).join('')}</div></td>
       <td class="hide-sm">${PLANOS[r.id].recursos.map(id => `<a href="${recUrl(REC[id])}">${TIPOS[REC[id].tipo].icone} ${esc(REC[id].titulo)}</a>`).join('<br>') || '<span class="muted">—</span>'}</td>
     </tr>`).join('');
-  document.getElementById('slides-list').innerHTML = Object.keys(SLIDES).filter(c => !ano || HAB[c].ano === ano).map(c => `
+  document.getElementById('slides-list').innerHTML = corta(slides, 'slides').map(c => `
     <tr>
       <td><strong>${esc(SLIDES[c])}</strong><div class="small muted">${esc(HAB[c].objeto)} · 30 min</div></td>
       <td class="hide-sm">${HAB[c].ano}º ano</td>

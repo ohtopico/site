@@ -31,6 +31,10 @@
 .assist-abrir:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--a-ink); }
 .assist-abrir svg { width: 20px; height: 20px; flex: none; }
 .assist-abrir[hidden] { display: none; }
+/* some ao rolar para baixo (para não cobrir o conteúdo) e volta ao rolar para cima */
+.assist .assist-abrir { transition: transform .25s ease, opacity .25s ease; }
+.assist .assist-abrir.recolhido { transform: translateY(calc(100% + 24px)); opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .assist .assist-abrir { transition: none; } }
 
 .assist-painel {
     position: fixed; right: 16px; bottom: calc(16px + var(--a-base)); z-index: 9999;

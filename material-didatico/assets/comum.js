@@ -206,11 +206,17 @@
     const el = document.getElementById('game-head');
     if (!r || !el) return;
     // o título já vem escrito no HTML de cada página (gerado por _fonte/material/gerar.js)
+    // caminho de volta e atalhos do professor no topo, sem precisar rolar até o fim do jogo
+    const volta = r.tipo === '3d' ? ['catalogo.html?tipo=3d', 'Recursos 3D'] : ['jogos/', 'Jogos'];
+    const atalhos = [r.plano && REC[r.plano] ? `<a class="btn ghost" href="${recUrl(REC[r.plano])}">📋 Plano de aula</a>` : '',
+      r.ficha && REC[r.ficha] ? `<a class="btn ghost" href="${recUrl(REC[r.ficha])}">🖨️ Ficha para imprimir</a>` : ''].join('');
     el.innerHTML = `
+      <div class="crumbs no-print"><a href="${BASE}${volta[0]}">← ${volta[1]}</a></div>
       <div class="tags" style="margin-bottom:12px">${r.comp.map(tagComp).join('')}<span class="tag">${anosTxt(r.anos)}</span><span class="tag">⏱ ${r.tempo}</span></div>
       <h1>${esc(r.titulo)}</h1>
       <p class="muted" style="max-width:720px">${esc(r.resumo)}</p>
-      <div class="tags">${r.habs.map(tagHab).join('')}</div>`;
+      <div class="tags">${r.habs.map(tagHab).join('')}</div>${atalhos ? `
+      <div class="game-acoes no-print">${atalhos}</div>` : ''}`;
     const rel = document.getElementById('related');
     if (rel) {
       const itens = [];
@@ -231,4 +237,4 @@
 })();
 
 // Estrelas secretas do site (dicas escondidas e contador de estrelas)
-(function () { const s = document.createElement('script'); s.src = '/assets/estrelas.js?v=202610270100'; s.defer = true; document.head.appendChild(s); })();
+(function () { const s = document.createElement('script'); s.src = '/assets/estrelas.js?v=202610302300'; s.defer = true; document.head.appendChild(s); })();
