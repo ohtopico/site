@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Lenda de Numéria · Material didático | ohtopico</title>
+<meta name="description" content="RPG de matemática: crie sua heroína ou seu herói, atravesse cinco regiões e vença monstros respondendo contas, frações, números negativos, equações, porcentagem e potências. BNCC do 6º ao 9º ano.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/numeria.html">
+<meta property="og:title" content="A Lenda de Numéria · Material didático">
+<meta property="og:description" content="RPG de matemática: atravesse cinco regiões e vença monstros respondendo contas, frações, números negativos, equações, porcentagem e potências.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/numeria.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .nm { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 18px; align-items: start; }
+  .nm-tela { position: relative; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: #fff8e3; color: #111; min-height: 440px; }
+  .nm-tela h2, .nm-tela h3 { font-family: var(--display); color: #111; }
+  .nm-tela .btn { background: #111; color: #fff; border-color: #111; }
+  .nm-tela .btn.ghost { background: #fff; color: #111; }
+  .nm-pad { padding: 18px; }
+
+  /* Criar herói */
+  .nm-classes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0 14px; }
+  .nm-classe { border: 2px solid #111; border-radius: 16px; background: #fff; padding: 10px; text-align: center; cursor: pointer; font: inherit; color: #111; }
+  .nm-classe svg { width: 84px; height: 84px; display: block; margin: 0 auto 4px; }
+  .nm-classe strong { font-family: var(--display); font-size: 17px; display: block; }
+  .nm-classe span { font-size: 13px; line-height: 1.35; display: block; color: #4a4a4a; }
+  .nm-classe[aria-pressed="true"] { background: #ffe58a; box-shadow: 4px 4px 0 #111; }
+  .nm-anos { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
+  .nm-anos button { border: 2px solid #111; border-radius: 99px; background: #fff; color: #111; padding: 6px 16px; font: inherit; font-weight: 600; cursor: pointer; min-height: 42px; }
+  .nm-anos button[aria-pressed="true"] { background: #2fa865; color: #fff; }
+  .nm-campo { width: 100%; max-width: 320px; border: 2px solid #111; border-radius: 12px; padding: 8px 12px; background: #fff; color: #111; font-size: 16px; }
+  .nm-cores { display: flex; gap: 8px; margin: 6px 0 14px; }
+  .nm-cores button { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #111; cursor: pointer; }
+  .nm-cores button[aria-pressed="true"] { outline: 3px solid #111; outline-offset: 2px; }
+
+  /* Mapa */
+  .nm-mapa { position: relative; background: #f3e3b5; }
+  .nm-mapa svg.fundo { display: block; width: 100%; height: auto; }
+  .nm-no { position: absolute; transform: translate(-50%, -50%); border: 2.5px solid #111; border-radius: 50%; width: 64px; height: 64px; background: #fff; cursor: pointer; padding: 0; display: grid; place-items: center; box-shadow: 3px 3px 0 #111; }
+  .nm-no svg { width: 46px; height: 46px; }
+  .nm-no.bloq { background: #d8d2c0; cursor: not-allowed; box-shadow: none; }
+  .nm-no.feito { background: #c9ecd5; }
+  .nm-no.atual { background: #ffd23f; animation: pulsa 1.6s infinite; }
+  .nm-no.sel { outline: 4px solid #ef5a4c; outline-offset: 3px; }
+  .nm-rot { position: absolute; transform: translate(-50%, 0); font-family: var(--display); font-size: 14px; background: rgba(255,253,246,.92); border: 1.5px solid #111; border-radius: 99px; padding: 1px 10px; white-space: nowrap; pointer-events: none; }
+  @keyframes pulsa { 50% { transform: translate(-50%, -50%) scale(1.08); } }
+  .nm-info { border-top: 2px solid #111; background: #fffdf6; padding: 14px 16px; }
+  .nm-info h3 { margin: 0 0 4px; font-size: 20px; }
+  .nm-info p { margin: 0 0 8px; font-size: 15px; }
+  .nm-passos { display: flex; gap: 6px; margin: 4px 0 10px; flex-wrap: wrap; }
+  .nm-passos span { border: 1.5px solid #111; border-radius: 10px; padding: 2px 10px; font-size: 13px; background: #fff; }
+  .nm-passos span.ok { background: #2fa865; color: #fff; }
+  .nm-passos span.chefe { background: #ef5a4c; color: #fff; }
+  .nm-passos span.chefe.ok { background: #2fa865; }
+
+  /* Loja */
+  .nm-loja { display: grid; gap: 8px; margin-top: 8px; }
+  .nm-item { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; border: 1.5px solid #111; border-radius: 12px; background: #fff; padding: 8px 12px; font-size: 14.5px; }
+  .nm-item strong { font-family: var(--display); font-size: 16px; }
+  .nm-item .btn { min-height: 38px; padding: 6px 14px; font-size: 14px; }
+
+  /* Batalha */
+  .nm-arena { position: relative; height: 280px; overflow: hidden; border-bottom: 2px solid #111; }
+  .nm-arena .chao { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; }
+  .nm-lutador { position: absolute; bottom: 18px; width: 140px; height: 140px; transition: transform .2s; }
+  .nm-lutador svg { width: 100%; height: 100%; }
+  .nm-heroi { left: 8%; }
+  .nm-inimigo { right: 8%; width: 160px; height: 160px; bottom: 10px; }
+  .nm-inimigo.chefe { width: 175px; height: 175px; bottom: 6px; }
+  .nm-barra { position: absolute; z-index: 1; top: 10px; width: 44%; background: rgba(255,253,246,.94); border: 2px solid #111; border-radius: 12px; padding: 5px 10px; font-size: 13px; }
+  .nm-barra.h { left: 10px; } .nm-barra.i { right: 10px; }
+  .nm-barra strong { font-family: var(--display); font-size: 15px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nm-hp { height: 10px; border: 1.5px solid #111; border-radius: 99px; background: #fff; overflow: hidden; margin-top: 3px; }
+  .nm-hp i { display: block; height: 100%; background: #2fa865; transition: width .4s; }
+  .nm-hp.mp i { background: #ffd23f; }
+  .nm-hp.baixo i { background: #ef5a4c; }
+  .nm-dano { position: absolute; font-family: var(--display); font-size: 30px; font-weight: 800; color: #ef5a4c; -webkit-text-stroke: 1.5px #111; pointer-events: none; animation: sobe 1s forwards; }
+  .nm-dano.cura { color: #2fa865; }
+  @keyframes sobe { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-50px); } }
+  .treme { animation: treme .35s; }
+  @keyframes treme { 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+  .avanca { transform: translateX(40px); }
+  .recua { transform: translateX(-40px); }
+  .nm-painel { padding: 14px 16px; background: #fffdf6; }
+  .nm-log { font-size: 15px; line-height: 1.45; min-height: 44px; }
+  .nm-log .quem { font-family: var(--display); color: #166c40; }
+  .nm-acoes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  .nm-acoes button { border: 2px solid #111; border-radius: 12px; background: #fff; color: #111; padding: 8px 6px; font: inherit; font-weight: 600; cursor: pointer; min-height: 52px; line-height: 1.2; }
+  .nm-acoes button small { display: block; font-weight: 400; font-size: 12px; color: #4a4a4a; }
+  .nm-acoes button.atk { background: #ffd23f; }
+  .nm-acoes button.mag { background: #c9ecd5; }
+  .nm-acoes button:disabled { opacity: .45; cursor: not-allowed; }
+  .nm-perg { font-size: 19px; font-weight: 600; margin: 4px 0 2px; }
+  .nm-perg .num { white-space: nowrap; }
+  .nm-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .nm-ops button { text-align: left; border: 2px solid #111; border-radius: 12px; background: #fff; color: #111; padding: 9px 12px; font: inherit; font-size: 17px; cursor: pointer; min-height: 50px; }
+  .nm-ops button b { display: inline-block; min-width: 22px; color: #6f6f6f; font-weight: 400; font-size: 13px; }
+  .nm-ops button:hover:not(:disabled) { background: #f3f0e4; }
+  .nm-ops button.certa { background: #e3f4e8; border-color: #157f3b; }
+  .nm-ops button.errada { background: #fbe6ea; border-color: #c21f3a; }
+  .nm-ops button:disabled { cursor: default; }
+  .nm-exp { margin-top: 10px; padding: 8px 12px; border-radius: 12px; font-size: 15px; }
+  .nm-exp.ok { background: #e3f4e8; } .nm-exp.bad { background: #fbe6ea; }
+  .nm-dica { margin-top: 8px; font-size: 14.5px; background: #fff3c4; border-radius: 12px; padding: 6px 12px; }
+  .nm-combo { font-size: 13px; color: #4a4a4a; }
+
+  /* Falas e telas */
+  .nm-fala { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: start; }
+  .nm-fala svg { width: 90px; height: 90px; }
+  .nm-fala .quem { font-family: var(--display); font-size: 18px; color: #166c40; }
+  .nm-fala p { margin: 4px 0 0; font-size: 16px; line-height: 1.5; }
+  .nm-passo { font-size: 13px; color: #4a4a4a; }
+  .nm-centro { text-align: center; padding: 26px 16px; }
+  .nm-centro h2 { font-size: 30px; margin: 6px 0; }
+  .nm-centro svg { width: 120px; height: 120px; }
+  .nm-premios { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px 0 16px; }
+  .nm-premios span { border: 1.5px solid #111; border-radius: 99px; padding: 3px 12px; background: #fff; font-size: 14px; }
+
+  /* Lado */
+  .nm-lado { display: grid; gap: 12px; }
+  .nm-box { border: 1.5px solid var(--ink); border-radius: 16px; background: var(--paper); padding: 12px 14px; }
+  .nm-box h2 { font-size: 16px; margin: 0 0 6px; font-family: var(--display); }
+  .nm-box p { margin: 0; font-size: 14.5px; }
+  .nm-ficha { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: center; }
+  .nm-ficha svg { width: 56px; height: 56px; border: 1.5px solid var(--line); border-radius: 12px; background: #fff8e3; }
+  .nm-ficha strong { font-family: var(--display); font-size: 16px; display: block; }
+  .nm-stat { font-size: 13px; margin-top: 6px; }
+  .nm-stat .nm-hp { height: 9px; }
+  .nm-atrib { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; font-size: 13.5px; margin-top: 8px; }
+  .nm-conqs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+  .nm-conqs li { display: grid; grid-template-columns: 30px 1fr; gap: 8px; align-items: center; font-size: 13.5px; line-height: 1.3; }
+  .nm-conqs .med { width: 30px; height: 30px; border-radius: 50%; border: 1.5px dashed var(--ink-3); display: grid; place-items: center; font-family: var(--display); font-size: 13px; color: var(--ink-3); }
+  .nm-conqs li.on .med { border: 2px solid #111; background: #ffd23f; color: #111; }
+  .nm-conqs span.d { display: block; color: var(--ink-3); }
+  .nm-rel { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .nm-rel td { padding: 3px 0; border-bottom: 1px solid var(--line); }
+  .nm-rel td:last-child { text-align: right; font-weight: 600; }
+  .nm-mini-btns .btn { min-height: 38px; padding: 6px 14px; font-size: 14px; }
+  .nm-cod { width: 100%; box-sizing: border-box; font-family: ui-monospace, Consolas, monospace; font-size: 12px; border: 1.5px solid var(--line); border-radius: 10px; padding: 6px 8px; background: var(--paper-2); color: var(--ink); resize: vertical; }
+  .nm-toast { position: absolute; z-index: 3; top: 12px; left: 50%; transform: translate(-50%, -8px); max-width: 300px; background: #ffd23f; color: #111; border: 2px solid #111; border-radius: 14px;
+    box-shadow: 3px 3px 0 #111; padding: 8px 14px; font-size: 14px; pointer-events: none; opacity: 0; transition: opacity .3s, transform .3s; text-align: center; }
+  .nm-toast.on { opacity: 1; transform: translate(-50%, 0); }
+  .nm-toast strong { display: block; font-family: var(--display); font-size: 15px; }
+  .nm-fixo { position: sticky; top: 76px; }
+  @media (max-width: 860px) { .nm { grid-template-columns: 1fr; } .nm-fixo { position: static; } }
+  @media (max-width: 560px) {
+    .nm-classes { grid-template-columns: 1fr; } .nm-classe { display: grid; grid-template-columns: 64px 1fr; text-align: left; gap: 10px; align-items: center; }
+    .nm-classe svg { width: 64px; height: 64px; margin: 0; }
+    .nm-ops { grid-template-columns: 1fr; } .nm-acoes { grid-template-columns: 1fr 1fr; }
+    .nm-arena { height: 250px; } .nm-lutador { width: 105px; height: 105px; } .nm-inimigo { width: 120px; height: 120px; } .nm-inimigo.chefe { width: 135px; height: 135px; }
+    .nm-barra { width: 47%; font-size: 12px; } .nm-no { width: 50px; height: 50px; } .nm-no svg { width: 36px; height: 36px; } .nm-rot { font-size: 12px; }
+    .nm-fala { grid-template-columns: 60px 1fr; } .nm-fala svg { width: 60px; height: 60px; }
+    .game-stage { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Crie sua personagem, escolha o ano escolar e parta da <strong>Vila Zero</strong>. O reino tem cinco regiões, e cada uma guarda um tipo de matemática: contas, frações, números negativos, equações, porcentagem e potências. Em cada região, vença <strong>3 batalhas</strong> e depois o <strong>chefe</strong> para abrir a próxima.</p>
+    <p>Na batalha, escolha <strong>Atacar</strong> (uma pergunta do seu ano) ou <strong>Magia</strong> (uma pergunta mais difícil, que causa o dobro de dano e gasta 1 ponto de magia). Acertou, você golpeia. Errou, o monstro ataca e o jogo mostra a explicação. Três acertos seguidos dão um golpe crítico. Use as moedas na loja da vila e descanse na pousada para recuperar a vida. Dá para responder com as teclas 1, 2, 3 e 4. O jogo salva o progresso neste aparelho.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="nm">
+      <div class="nm-fixo">
+        <div class="nm-tela" id="tela" aria-live="polite"></div>
+      </div>
+      <aside class="nm-lado">
+        <div class="nm-box" id="box-heroi"><h2>Personagem</h2><div id="heroi"><p class="small muted">Crie sua personagem para começar.</p></div></div>
+        <div class="nm-box"><h2>Mochila</h2><div class="tags" id="mochila"></div></div>
+        <details class="nm-box"><summary><strong>Conquistas</strong> <span class="muted small" id="nconq"></span></summary><ul class="nm-conqs" id="lista-conq"></ul></details>
+        <div class="nm-box"><p class="small muted" id="placar"></p><details style="margin-top:8px"><summary class="small"><strong>Relatório para o professor</strong></summary><div id="relatorio" class="small" style="margin-top:6px"></div></details></div>
+        <div class="nm-box"><h2>Progresso</h2><p class="small muted" id="salvo">O jogo salva sozinho depois de cada batalha.</p>
+          <div class="btn-row nm-mini-btns" style="margin-top:8px"><button class="btn" type="button" id="salvar">Salvar</button><button class="btn ghost" type="button" id="recomecar">Recomeçar</button></div>
+          <details style="margin-top:10px"><summary class="small"><strong>Continuar em outro aparelho</strong></summary>
+            <p class="small" style="margin:6px 0">Copie este código e cole no outro aparelho, no campo abaixo.</p>
+            <textarea id="codigo" class="nm-cod" rows="3" readonly aria-label="Código do seu progresso"></textarea>
+            <div class="btn-row nm-mini-btns" style="margin:6px 0 10px"><button class="btn ghost" type="button" id="copiar">Copiar código</button></div>
+            <label class="small" for="colar"><strong>Tem um código?</strong> Cole aqui:</label>
+            <textarea id="colar" class="nm-cod" rows="2"></textarea>
+            <div class="btn-row nm-mini-btns" style="margin-top:6px"><button class="btn ghost" type="button" id="carregar">Carregar código</button></div>
+            <p class="small" id="cod-msg" role="status" style="margin:6px 0 0"></p>
+          </details></div>
+      </aside>
+    </div>
+  </div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('numeria');
+(function () {
+  const $ = s => document.getElementById(s);
+  const CHAVE = 'numeria-v1';
+  const tela = $('tela');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* ---------- Utilidades de sorteio ---------- */
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pega = arr => arr[Math.floor(Math.random() * arr.length)];
+  const embaralha = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const mdc = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
+  const neg = n => n < 0 ? '−' + Math.abs(n) : String(n);
+  const par = n => n < 0 ? '(−' + Math.abs(n) + ')' : String(n);
+  const br = n => String(n).replace('.', ',');
+  function fr(a, b) { const g = mdc(a, b); a /= g; b /= g; return b === 1 ? String(a) : a + '/' + b; }
+  // monta 4 alternativas: a certa e erros plausíveis, sem repetir
+  function alternativas(certa, erradas, extra) {
+    const set = [String(certa)];
+    // resposta numérica natural: erros também naturais (sem negativos nem decimais quebrados)
+    const vale = e => typeof certa !== 'number' || (Number.isInteger(e) && e >= 0);
+    const poe = e => { if (vale(e) && !set.includes(String(e)) && set.length < 4) set.push(String(e)); };
+    erradas.concat(extra ? extra() : []).forEach(poe);
+    let g = 0;
+    while (set.length < 4 && g++ < 50) poe(extra ? pega(extra()) : certa + rnd(-9, 9));
+    for (let k = 1; set.length < 4; k++) poe(certa + k);
+    return embaralha(set);
+  }
+  const numErr = c => [c + 1, c - 1, c + 2, c - 2, c + 10, c - 10];
+
+  /* ---------- Perguntas (nível 1 = 6º ano ... 5 = desafio do 9º) ---------- */
+  const TEMAS = {
+    contas: { nome: 'Contas com naturais', hab: 'EF06MA03' },
+    fracoes: { nome: 'Frações', hab: 'EF06MA07 / EF06MA10' },
+    inteiros: { nome: 'Números negativos', hab: 'EF07MA04' },
+    equacoes: { nome: 'Equações', hab: 'EF07MA18' },
+    porcent: { nome: 'Porcentagem e potências', hab: 'EF06MA13 / EF08MA01' }
+  };
+  const GERA = {
+    contas(n) {
+      if (n <= 1) {
+        const a = rnd(3, 9), b = rnd(3, 9), c = a * b;
+        return { txt: `Quanto é <span class="num">${a} × ${b}</span>?`, certa: c, ops: alternativas(c, [c + a, c - b, a + b, c + 1]),
+          dica: `Pense em ${a} grupos de ${b}.`, exp: `${a} × ${b} é somar ${b} um total de ${a} vezes: ${c}.` };
+      }
+      if (n === 2) {
+        if (Math.random() < .5) {
+          const d = rnd(3, 9), q = rnd(4, 12), t = d * q;
+          return { txt: `Uma caravana tem <span class="num">${t}</span> moedas para dividir igualmente entre <span class="num">${d}</span> aventureiros. Quantas cada um recebe?`, certa: q, ops: alternativas(q, [q + 1, q - 1, t - d, q + 2]),
+            dica: `Qual número vezes ${d} dá ${t}?`, exp: `${t} ÷ ${d} = ${q}, porque ${d} × ${q} = ${t}.` };
+        }
+        const p = rnd(3, 6), f = rnd(8, 15), g = rnd(4, 12), c = p * f - g;
+        return { txt: `Você comprou <span class="num">${p}</span> sacos com <span class="num">${f}</span> flechas e usou <span class="num">${g}</span>. Quantas flechas sobraram?`, certa: c, ops: alternativas(c, [p * f, p * f + g, c + 1, p + f - g]),
+          dica: 'Primeiro descubra quantas flechas havia ao todo.', exp: `${p} × ${f} = ${p * f} flechas; ${p * f} − ${g} = ${c}.` };
+      }
+      if (n === 3) {
+        const a = rnd(2, 12), b = rnd(2, 9), c = rnd(2, 9), r = a + b * c;
+        return { txt: `Quanto vale <span class="num">${a} + ${b} × ${c}</span>?`, certa: r, ops: alternativas(r, [(a + b) * c, r + 1, r - 1, a * b + c]),
+          dica: 'A multiplicação vem antes da adição.', exp: `Primeiro ${b} × ${c} = ${b * c}; depois ${a} + ${b * c} = ${r}.` };
+      }
+      if (n === 4) {
+        const a = rnd(2, 9), b = rnd(2, 9), c = rnd(2, 6), d = rnd(2, 5), e = d * rnd(1, 4), r = (a + b) * c - e / d;
+        return { txt: `Quanto vale <span class="num">(${a} + ${b}) × ${c} − ${e} ÷ ${d}</span>?`, certa: r, ops: alternativas(r, [a + b * c - e / d, (a + b) * c - e, r + 1, r - 2]),
+          dica: 'Parênteses primeiro, depois multiplicação e divisão, por fim a subtração.', exp: `(${a} + ${b}) = ${a + b}; ${a + b} × ${c} = ${(a + b) * c}; ${e} ÷ ${d} = ${e / d}; ${(a + b) * c} − ${e / d} = ${r}.` };
+      }
+      const a = rnd(12, 39), b = rnd(12, 29), r = a * b;
+      return { txt: `Quanto é <span class="num">${a} × ${b}</span>?`, certa: r, ops: alternativas(r, [r + 10, r - 10, a * (b - 10) , r + a]),
+        dica: `Separe: ${a} × ${b - b % 10} + ${a} × ${b % 10}.`, exp: `${a} × ${b - b % 10} = ${a * (b - b % 10)} e ${a} × ${b % 10} = ${a * (b % 10)}; somando, ${r}.` };
+    },
+    fracoes(n) {
+      if (n <= 1) {
+        const k = pega([2, 3, 4, 5]), m = rnd(3, 12), t = k * m;
+        return { txt: `Quanto é <span class="num">1/${k}</span> de <span class="num">${t}</span> moedas?`, certa: m, ops: alternativas(m, [t - k, m + k, t / 2 === m ? m + 2 : t / 2, m * 2]),
+          dica: `Divida ${t} em ${k} partes iguais.`, exp: `1/${k} de ${t} é ${t} ÷ ${k} = ${m}.` };
+      }
+      if (n === 2) {
+        const a = rnd(1, 4), b = a + rnd(1, 5), k = rnd(2, 5);
+        if (mdc(a, b) !== 1) return GERA.fracoes(2);
+        const c = `${a * k}/${b * k}`;
+        return { txt: `Qual fração é equivalente a <span class="num">${a}/${b}</span>?`, certa: c, ops: alternativas(c, [`${a + k}/${b + k}`, `${a}/${b * k}`, `${a * k}/${b}`, `${a * k + 1}/${b * k}`]),
+          dica: 'Multiplique o número de cima e o de baixo pelo mesmo número.', exp: `${a}/${b} = ${a} × ${k} / ${b} × ${k} = ${c}.` };
+      }
+      if (n === 3) {
+        const d = rnd(5, 12), a = rnd(1, d - 2), b = rnd(1, d - 1 - a), c = fr(a + b, d);
+        return { txt: `Quanto é <span class="num">${a}/${d} + ${b}/${d}</span>?`, certa: c, ops: alternativas(c, [`${a + b}/${d + d}`, `${a * b}/${d}`, fr(a + b + 1, d), fr(Math.abs(a - b) || 1, d)]),
+          dica: 'Com o mesmo denominador, some só os de cima.', exp: `${a}/${d} + ${b}/${d} = ${a + b}/${d}${c !== (a + b) + '/' + d ? ' = ' + c : ''}.` };
+      }
+      if (n === 4) {
+        const [b, d] = pega([[2, 3], [2, 5], [3, 4], [4, 6], [2, 7], [3, 5], [4, 5], [6, 8]]), a = rnd(1, b - 1), c = rnd(1, d - 1);
+        const den = b * d / mdc(b, d), num = a * den / b + c * den / d, r = fr(num, den);
+        return { txt: `Quanto é <span class="num">${a}/${b} + ${c}/${d}</span>?`, certa: r, ops: alternativas(r, [`${a + c}/${b + d}`, `${a + c}/${den}`, fr(num + 1, den), fr(a * c, b * d)]),
+          dica: `Escreva as duas frações com denominador ${den}.`, exp: `${a}/${b} = ${a * den / b}/${den} e ${c}/${d} = ${c * den / d}/${den}; somando, ${num}/${den}${r !== num + '/' + den ? ' = ' + r : ''}.` };
+      }
+      const [a, b] = pega([[2, 3], [3, 4], [2, 5], [3, 5], [5, 6], [3, 8]]), m = rnd(2, 12), t = b * m, r = a * m;
+      return { txt: `Um baú tem <span class="num">${t}</span> gemas. Você ganhou <span class="num">${a}/${b}</span> delas. Quantas gemas são suas?`, certa: r, ops: alternativas(r, [m, t - r, r + a, t / a % 1 ? r + b : t / a]),
+        dica: `Ache 1/${b} de ${t} e depois multiplique por ${a}.`, exp: `1/${b} de ${t} = ${m}; ${a} × ${m} = ${r}.` };
+    },
+    inteiros(n) {
+      if (n <= 1) {
+        const t = -rnd(2, 9), s = rnd(4, 14), r = t + s;
+        return { txt: `Na caverna fazia <span class="num">${neg(t)} °C</span>. A temperatura subiu <span class="num">${s} °C</span>. Quanto marca agora?`, certa: neg(r), ops: alternativas(neg(r), [neg(t - s), neg(-r), neg(s - t), neg(r + 1)]),
+          dica: `Comece em ${neg(t)} na reta numérica e ande ${s} casas para a direita.`, exp: `${neg(t)} + ${s} = ${neg(r)}.` };
+      }
+      if (n === 2) {
+        const a = rnd(-15, 15) || 3, b = -rnd(2, 15), r = a + b;
+        return { txt: `Quanto é <span class="num">${par(a)} + ${par(b)}</span>?`, certa: neg(r), ops: alternativas(neg(r), [neg(a - b), neg(-r), neg(r + 2), neg(r - 1)]),
+          dica: 'Somar um número negativo é o mesmo que subtrair.', exp: `${par(a)} + ${par(b)} = ${neg(a)} − ${Math.abs(b)} = ${neg(r)}.` };
+      }
+      if (n === 3) {
+        const a = rnd(-12, 12) || -4, b = -rnd(2, 12), r = a - b;
+        return { txt: `Quanto é <span class="num">${par(a)} − ${par(b)}</span>?`, certa: neg(r), ops: alternativas(neg(r), [neg(a + b), neg(-r), neg(r + 1), neg(r - 2)]),
+          dica: 'Subtrair um negativo é o mesmo que somar o positivo.', exp: `${par(a)} − ${par(b)} = ${neg(a)} + ${Math.abs(b)} = ${neg(r)}.` };
+      }
+      if (n === 4) {
+        const a = rnd(2, 9) * pega([1, -1]), b = rnd(2, 9) * pega([1, -1]), r = a * b;
+        return { txt: `Quanto é <span class="num">${par(a)} × ${par(b)}</span>?`, certa: neg(r), ops: alternativas(neg(r), [neg(-r), neg(a + b), neg(r + a), neg(-(r + 1))]),
+          dica: 'Sinais iguais dão positivo; sinais diferentes dão negativo.', exp: `${Math.abs(a)} × ${Math.abs(b)} = ${Math.abs(r)} e o sinal é ${r > 0 ? 'positivo (sinais iguais)' : 'negativo (sinais diferentes)'}: ${neg(r)}.` };
+      }
+      const a = -rnd(2, 6), b = rnd(2, 6), c = -rnd(2, 15), r = a * b + c;
+      return { txt: `Quanto vale <span class="num">${par(a)} × ${b} + ${par(c)}</span>?`, certa: neg(r), ops: alternativas(neg(r), [neg(a * b - c), neg(-a * b + c), neg(a * (b + c)), neg(r + 1)]),
+        dica: 'Primeiro a multiplicação, depois a soma com o negativo.', exp: `${par(a)} × ${b} = ${neg(a * b)}; ${neg(a * b)} + ${par(c)} = ${neg(r)}.` };
+    },
+    equacoes(n) {
+      const xe = x => numErr(x).filter(v => v > 0);
+      if (n <= 1) {
+        const a = rnd(3, 20), x = rnd(2, 25), b = a + x;
+        return { txt: `Que número cabe no lugar do quadrado? <span class="num">□ + ${a} = ${b}</span>`, certa: x, ops: alternativas(x, [a + b, x + 1, x - 1, b]),
+          dica: `Pense: quanto falta para ${a} chegar a ${b}?`, exp: `□ = ${b} − ${a} = ${x}.` };
+      }
+      if (n === 2) {
+        const a = rnd(2, 9), x = rnd(2, 12), b = a * x;
+        return { txt: `Que número cabe no lugar do quadrado? <span class="num">${a} × □ = ${b}</span>`, certa: x, ops: alternativas(x, [b - a, x + 1, x - 1, b + a]),
+          dica: `Faça a operação inversa: divida ${b} por ${a}.`, exp: `□ = ${b} ÷ ${a} = ${x}.` };
+      }
+      if (n === 3) {
+        const a = rnd(2, 9), x = rnd(1, 12), b = rnd(1, 20), c = a * x + b;
+        return { txt: `Resolva: <span class="num">${a}x + ${b} = ${c}</span>. Quanto vale x?`, certa: x, ops: alternativas(x, [(c + b) / a % 1 ? x + 2 : (c + b) / a, c - b, x + 1, x - 1].filter(v => v > 0), () => xe(x)),
+          dica: `Tire ${b} dos dois lados e depois divida por ${a}.`, exp: `${a}x = ${c} − ${b} = ${c - b}; x = ${c - b} ÷ ${a} = ${x}.` };
+      }
+      if (n === 4) {
+        const c = rnd(1, 5), a = c + rnd(1, 5), x = rnd(1, 10), b = rnd(1, 12), d = a * x - b - c * x;
+        const cx = k => (k === 1 ? '' : k) + 'x', dir = d >= 0 ? `${cx(c)} + ${d}` : `${cx(c)} − ${-d}`;
+        return { txt: `Resolva: <span class="num">${a}x − ${b} = ${dir}</span>. Quanto vale x?`, certa: x, ops: alternativas(x, [x + 1, x - 1, x + 2, (a + c)].filter(v => v > 0 && v !== x), () => xe(x)),
+          dica: `Junte os x de um lado (${cx(a)} − ${cx(c)}) e os números do outro.`, exp: `${cx(a)} − ${cx(c)} = ${neg(d)} + ${b}; ${cx(a - c)} = ${d + b}${a - c > 1 ? `; x = ${d + b} ÷ ${a - c} = ${x}` : ''}.` };
+      }
+      const a = rnd(2, 6), b = rnd(1, 8), x = rnd(1, 10), c = a * (x + b);
+      return { txt: `Resolva: <span class="num">${a}(x + ${b}) = ${c}</span>. Quanto vale x?`, certa: x, ops: alternativas(x, [x + b, c / a, (c - b) / a % 1 ? x + 1 : (c - b) / a, x + 2].filter(v => v !== x), () => xe(x)),
+        dica: `Divida os dois lados por ${a} e depois tire ${b}.`, exp: `x + ${b} = ${c} ÷ ${a} = ${c / a}; x = ${c / a} − ${b} = ${x}.` };
+    },
+    porcent(n) {
+      if (n <= 1) {
+        const p = pega([10, 50]), v = rnd(2, 30) * (p === 10 ? 10 : 2), r = v * p / 100;
+        return { txt: `Quanto é <span class="num">${p}%</span> de <span class="num">${v}</span> moedas?`, certa: r, ops: alternativas(r, [v - r === r ? r + 5 : v - r, r * 2, r + 10, v / 5]),
+          dica: p === 10 ? '10% é dividir por 10.' : '50% é a metade.', exp: `${p}% de ${v} = ${v} ÷ ${100 / p} = ${r}.` };
+      }
+      if (n === 2) {
+        if (Math.random() < .5) {
+          const p = pega([20, 25]), v = rnd(2, 20) * (p === 25 ? 4 : 5), r = v * p / 100;
+          return { txt: `Quanto é <span class="num">${p}%</span> de <span class="num">${v}</span>?`, certa: r, ops: alternativas(r, [r * 2, v - r, r + 5, v / 10]),
+            dica: p === 25 ? '25% é um quarto: divida por 4.' : '20% é um quinto: divida por 5.', exp: `${p}% de ${v} = ${v} ÷ ${100 / p} = ${r}.` };
+        }
+        const b = pega([2, 3, 5, 10]), e = b === 10 ? rnd(2, 5) : rnd(2, 4), r = b ** e;
+        return { txt: `Quanto vale <span class="num">${b}<sup>${e}</sup></span>?`, certa: r, ops: alternativas(r, [b * e, b + e, r * b, e ** b === r ? r + 1 : e ** b]),
+          dica: `Multiplique ${b} por ele mesmo ${e} vezes.`, exp: `${b}<sup>${e}</sup> = ${Array(e).fill(b).join(' × ')} = ${r}.` };
+      }
+      if (n === 3) {
+        const p = pega([10, 15, 20, 25, 30]), v = rnd(2, 12) * 20, d = v * p / 100, r = v - d;
+        return { txt: `Uma espada custa <span class="num">${v}</span> moedas e está com <span class="num">${p}%</span> de desconto. Qual o preço final?`, certa: r, ops: alternativas(r, [d, v - p, v + d, r - 10]),
+          dica: `Calcule ${p}% de ${v} e tire do preço.`, exp: `${p}% de ${v} = ${d}; ${v} − ${d} = ${r} moedas.` };
+      }
+      if (n === 4) {
+        if (Math.random() < .5) {
+          const b = pega([2, 3, 5]), m = rnd(2, 5), k = rnd(2, 4), r = `${b}^${m + k}`;
+          const f = s => s.replace(/\^(\d+)/, '<sup>$1</sup>');
+          const ops = alternativas(r, [`${b}^${m * k}`, `${b * b}^${m + k}`, `${b}^${m + k + 1}`, `${b * 2}^${m * k}`]);
+          return { txt: `Escreva como uma só potência: <span class="num">${b}<sup>${m}</sup> × ${b}<sup>${k}</sup></span>`, certa: f(r), ops: ops.map(f),
+            dica: 'Na multiplicação de mesma base, conserve a base e some os expoentes.', exp: `${b}<sup>${m}</sup> × ${b}<sup>${k}</sup> = ${b}<sup>${m}+${k}</sup> = ${f(r)}.` };
+        }
+        const e = rnd(1, 3), r = br((1 / 10 ** e).toFixed(e));
+        return { txt: `Quanto vale <span class="num">10<sup>−${e}</sup></span>?`, certa: r, ops: alternativas(r, [neg(-(10 ** e)), br((1 / 10 ** (e + 1)).toFixed(e + 1)), String(10 ** e), br((-1 / 10 ** e).toFixed(e))]),
+          dica: 'Expoente negativo vira fração: 10 elevado a −1 é 1/10.', exp: `10<sup>−${e}</sup> = 1/${10 ** e} = ${r}.` };
+      }
+      const q = rnd(4, 15), p = rnd(2, 5), r = q + p ** 2;
+      if (Math.random() < .5) return { txt: `Quanto vale <span class="num">√${q * q} + ${p}<sup>2</sup></span>?`, certa: r, ops: alternativas(r, [q + p * 2, q * q + p * p, r + 1, q * 2 + p * p]),
+        dica: `√${q * q} é o número que, multiplicado por ele mesmo, dá ${q * q}.`, exp: `√${q * q} = ${q} e ${p}<sup>2</sup> = ${p * p}; ${q} + ${p * p} = ${r}.` };
+      const c = rnd(2, 10) * 100, t = pega([2, 5, 10]), m = rnd(2, 6), j = c * t / 100 * m;
+      return { txt: `Você guardou <span class="num">${c}</span> moedas no banco do reino a <span class="num">${t}%</span> ao mês (juros simples). Quanto rende em <span class="num">${m}</span> meses?`, certa: j, ops: alternativas(j, [c * t / 100, j + c, c * t / 100 * (m + 1), c * m / 100]),
+        dica: `Calcule ${t}% de ${c} (um mês) e multiplique por ${m}.`, exp: `${t}% de ${c} = ${c * t / 100} por mês; ${c * t / 100} × ${m} = ${j} moedas.` };
+    }
+  };
+  const NOMES_TEMAS = Object.keys(TEMAS);
+
+  /* ---------- Desenhos (SVG, traço preto e cores do site, sem azul) ---------- */
+  const T = 'stroke="#111" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+  const V = '#2fa865', A = '#ffd23f', R = '#ef5a4c', B = '#fff', C = '#f2efe6', M = '#a8743f', G = '#9aa09c', E = '#3d4340';
+  const olhos = (x1, x2, y, r = 6, bravo) => `<circle cx="${x1}" cy="${y}" r="${r}" fill="#fff" ${T}/><circle cx="${x2}" cy="${y}" r="${r}" fill="#fff" ${T}/><circle cx="${x1 + 1}" cy="${y + 1}" r="${r / 2.4}" fill="#111"/><circle cx="${x2 + 1}" cy="${y + 1}" r="${r / 2.4}" fill="#111"/>` +
+    (bravo ? `<path d="M${x1 - r} ${y - r - 3}l${r * 1.6} ${r * .8}M${x2 + r} ${y - r - 3}l${-r * 1.6} ${r * .8}" ${T}/>` : '');
+  const MONSTROS = {
+    lesma: `<path d="M14 98c0-12 10-16 26-16h52c8 0 12 6 12 16z" fill="${V}" ${T}/><circle cx="62" cy="62" r="28" fill="${A}" ${T}/><path d="M62 62a8 8 0 1 1 8 8 16 16 0 1 1-16-16" fill="none" ${T}/>
+      <path d="M98 82l4-22M106 82l6-20" ${T}/><circle cx="102" cy="58" r="5" fill="#fff" ${T}/><circle cx="112" cy="60" r="5" fill="#fff" ${T}/><circle cx="102" cy="58" r="2" fill="#111"/><circle cx="112" cy="60" r="2" fill="#111"/>`,
+    corvo: `<path d="M24 74c0-24 18-40 40-40s34 16 34 36c0 18-16 30-36 30-22 0-38-10-38-26z" fill="${E}" ${T}/><path d="M30 64c-14 6-22 18-20 30 12-2 22-10 26-20" fill="${E}" ${T}/>
+      <path d="M96 58l20 6-20 8z" fill="${A}" ${T}/>${olhos(70, 86, 56, 6, true)}<path d="M50 100l-4 12M66 100l4 12" ${T}/><text x="42" y="88" font-family="Sniglet,sans-serif" font-weight="800" font-size="20" fill="${A}">×</text>`,
+    ogro: `<rect x="28" y="40" width="64" height="66" rx="24" fill="${V}" ${T}/><circle cx="60" cy="38" r="26" fill="${V}" ${T}/>${olhos(50, 70, 34, 6, true)}<path d="M48 52h24" ${T}/><path d="M50 52v5M70 52v5" stroke="#fff" stroke-width="3"/>
+      <path d="M92 70l20-44" stroke="${M}" stroke-width="10" stroke-linecap="round"/><path d="M92 70l20-44" fill="none" stroke="#111" stroke-width="2"/><rect x="38" y="72" width="44" height="18" rx="4" fill="${M}" ${T}/><text x="51" y="87" font-family="Sniglet,sans-serif" font-weight="800" font-size="16" fill="#fff">÷</text>`,
+    cogumelo: `<path d="M44 66h32v34c0 6-6 10-16 10s-16-4-16-10z" fill="${C}" ${T}/><path d="M14 68c0-28 20-46 46-46s46 18 46 46z" fill="${R}" ${T}/><path d="M60 22v46" stroke="#fff" stroke-width="5"/><path d="M60 22v46" stroke="#111" stroke-width="1.5"/>
+      <circle cx="34" cy="48" r="6" fill="#fff" ${T}/><circle cx="86" cy="48" r="6" fill="#fff" ${T}/>${olhos(52, 68, 82, 5)}<path d="M54 96q6 4 12 0" fill="none" ${T}/>`,
+    raposa: `<path d="M26 56l8-34 20 20zM94 56l-8-34-20 20z" fill="${R}" ${T}/><path d="M24 54c0-16 16-26 36-26s36 10 36 26c0 22-20 44-36 44S24 76 24 54z" fill="${R}" ${T}/><path d="M40 70c6 12 14 20 20 28 6-8 14-16 20-28-8 4-14 6-20 6s-12-2-20-6z" fill="#fff" ${T}/>
+      ${olhos(46, 74, 58, 5, true)}<circle cx="60" cy="90" r="4" fill="#111"/><text x="50" y="118" font-family="Sniglet,sans-serif" font-weight="800" font-size="16" fill="#111">½</text>`,
+    arvore: `<path d="M48 112V70h24v42" fill="${M}" ${T}/><path d="M60 70l-6 16 8 8-4 18" fill="none" stroke="#111" stroke-width="2.5"/><circle cx="40" cy="48" r="24" fill="${V}" ${T}/><circle cx="80" cy="48" r="24" fill="${V}" ${T}/><circle cx="60" cy="30" r="24" fill="${V}" ${T}/>
+      ${olhos(48, 72, 44, 7, true)}<path d="M46 62q14-8 28 0" fill="none" ${T}/><path d="M60 6v46" stroke="#111" stroke-width="2" stroke-dasharray="5 4"/>`,
+    morcego: `<path d="M60 46c-10-14-30-20-50-8 10 4 12 12 10 20 8-6 18-4 22 4 4-8 10-12 18-12z" fill="${E}" ${T}/><path d="M60 46c10-14 30-20 50-8-10 4-12 12-10 20-8-6-18-4-22 4-4-8-10-12-18-12z" fill="${E}" ${T}/>
+      <ellipse cx="60" cy="62" rx="18" ry="22" fill="${G}" ${T}/><path d="M48 44l-4-12 10 8M72 44l4-12-10 8" fill="${G}" ${T}/>${olhos(53, 67, 56, 5, true)}<path d="M54 72l3 5 3-5 3 5 3-5" fill="#fff" ${T}/><text x="49" y="104" font-family="Sniglet,sans-serif" font-weight="800" font-size="18" fill="${R}">−</text>`,
+    slime: `<path d="M16 106c0-30 16-62 44-62s44 32 44 62z" fill="#e9ece8" ${T}/><path d="M30 70c4-10 10-16 18-18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>${olhos(48, 72, 76, 7)}<path d="M50 94q10-6 20 0" fill="none" ${T}/>
+      <path d="M40 36l6 8M60 28v10M80 36l-6 8" ${T}/><text x="22" y="118" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="#111">−5°</text>`,
+    dragao: `<path d="M18 104c6-30 22-46 42-46s36 16 42 46z" fill="${R}" ${T}/><path d="M24 70L6 44l26 12zM96 70l18-26-26 12z" fill="${A}" ${T}/><circle cx="60" cy="48" r="28" fill="${R}" ${T}/><path d="M42 26l-6-20 16 12M78 26l6-20-16 12" fill="#fff" ${T}/>
+      ${olhos(48, 72, 44, 7, true)}<path d="M44 62h32l-6 8-4-6-4 6-4-6-4 6-4-6z" fill="#fff" ${T}/><path d="M40 84h40v14H40z" fill="${A}" ${T}/><text x="49" y="96" font-family="Sniglet,sans-serif" font-weight="800" font-size="13" fill="#111">−10</text>`,
+    golem: `<rect x="30" y="20" width="60" height="44" rx="6" fill="${G}" ${T}/><rect x="22" y="64" width="76" height="46" rx="6" fill="${G}" ${T}/><rect x="6" y="66" width="18" height="36" rx="5" fill="${G}" ${T}/><rect x="96" y="66" width="18" height="36" rx="5" fill="${G}" ${T}/>
+      <path d="M40 34h12M68 34h12" stroke="${A}" stroke-width="7" stroke-linecap="round"/><path d="M48 52h24" ${T}/><text x="46" y="98" font-family="Sniglet,sans-serif" font-weight="800" font-size="30" fill="${A}" stroke="#111" stroke-width="1.5">x</text><path d="M30 80l10 4M80 100l8-6" ${T}/>`,
+    gargula: `<path d="M34 56C14 40 6 52 6 70c10-6 18-4 24 4zM86 56c20-16 28-4 28 14-10-6-18-4-24 4z" fill="${E}" ${T}/><rect x="34" y="40" width="52" height="70" rx="20" fill="${G}" ${T}/><path d="M38 44l-4-16 12 10M82 44l4-16-12 10" fill="${G}" ${T}/>
+      ${olhos(50, 70, 58, 6, true)}<path d="M50 76h20" ${T}/><path d="M44 96h32M44 92v8M76 92v8" ${T}/><path d="M60 88v14" ${T}/>`,
+    esfinge: `<path d="M10 108c0-22 14-34 40-34h40c16 0 22 14 22 34z" fill="${A}" ${T}/><path d="M30 60c0-24 12-40 30-40s30 16 30 40c0 10-4 20-10 24H40c-6-4-10-14-10-24z" fill="${M}" ${T}/><path d="M42 50c0-12 8-20 18-20s18 8 18 20-8 26-18 26-18-14-18-26z" fill="${A}" ${T}/>
+      ${olhos(52, 68, 50, 4.5)}<path d="M54 64h12" ${T}/><text x="46" y="104" font-family="Sniglet,sans-serif" font-weight="800" font-size="18" fill="#111">x = ?</text>`,
+    cavaleiro: `<rect x="34" y="56" width="52" height="52" rx="10" fill="${G}" ${T}/><path d="M36 30c0-14 10-22 24-22s24 8 24 22v26H36z" fill="${G}" ${T}/><rect x="42" y="30" width="36" height="8" rx="3" fill="#111"/><path d="M60 8c8-8 22-4 26 4-8-2-16 0-22 6" fill="${R}" ${T}/>
+      <path d="M6 62h30v22c0 12-8 22-15 26-7-4-15-14-15-26z" fill="${A}" ${T}/><text x="10" y="90" font-family="Sniglet,sans-serif" font-weight="800" font-size="18" fill="#111">%</text><path d="M96 104V40" stroke="#111" stroke-width="5"/><path d="M90 46l6-14 6 14z" fill="#fff" ${T}/>`,
+    fantasma: `<path d="M24 110V54c0-24 16-40 36-40s36 16 36 40v56l-12-10-12 10-12-10-12 10-12-10z" fill="#fff" ${T}/>${olhos(48, 72, 52, 6)}<ellipse cx="60" cy="74" rx="7" ry="9" fill="#111"/>
+      <text x="86" y="30" font-family="Sniglet,sans-serif" font-weight="800" font-size="22" fill="${R}" stroke="#111" stroke-width="1">²</text><text x="8" y="34" font-family="Sniglet,sans-serif" font-weight="800" font-size="16" fill="${V}" stroke="#111" stroke-width=".8">10³</text>`,
+    rei: `<path d="M18 114c4-36 18-60 42-60s38 24 42 60z" fill="${E}" ${T}/><path d="M40 70l20 20 20-20" fill="none" stroke="${R}" stroke-width="5"/><circle cx="60" cy="42" r="24" fill="${G}" ${T}/><path d="M36 22l8-18 8 12 8-14 8 14 8-12 8 18z" fill="${A}" ${T}/>
+      ${olhos(50, 70, 42, 6, true)}<path d="M50 56q10-6 20 0" fill="none" ${T}/><text x="2" y="58" font-family="Sniglet,sans-serif" font-weight="800" font-size="22" fill="${R}" stroke="#111" stroke-width="1">?</text><text x="102" y="74" font-family="Sniglet,sans-serif" font-weight="800" font-size="22" fill="${A}" stroke="#111" stroke-width="1">?</text>
+      <circle cx="104" cy="96" r="9" fill="${R}" ${T}/><path d="M104 105v14" stroke="#111" stroke-width="4"/>`,
+    mestra: `<path d="M20 112c4-30 18-46 40-46s36 16 40 46z" fill="${V}" ${T}/><circle cx="60" cy="46" r="22" fill="#e8b98a" ${T}/><path d="M36 44c0-20 10-30 24-30s24 10 24 30c-6-10-14-14-24-14s-18 4-24 14z" fill="#fff" ${T}/>
+      <circle cx="52" cy="48" r="2.5" fill="#111"/><circle cx="68" cy="48" r="2.5" fill="#111"/><path d="M53 58q7 5 14 0" fill="none" ${T}/><path d="M100 112V40" stroke="${M}" stroke-width="6" stroke-linecap="round"/><circle cx="100" cy="36" r="8" fill="${A}" ${T}/>`
+  };
+  const PELES = ['#f3cfa7', '#d9a273', '#a86b43', '#6e442a'];
+  function heroiSVG(classe, pele, sz) {
+    const cor = { escudo: R, cajado: V, arco: A }[classe] || V;
+    const arma = {
+      escudo: `<path d="M84 64h26v20c0 12-7 20-13 24-6-4-13-12-13-24z" fill="${A}" ${T}/><path d="M97 70v28M88 82h18" ${T}/>`,
+      cajado: `<path d="M94 116V40" stroke="${M}" stroke-width="6" stroke-linecap="round"/><path d="M94 116V40" stroke="#111" stroke-width="1.5"/><path d="M94 18l8 12-8 12-8-12z" fill="${A}" ${T}/>`,
+      arco: `<path d="M90 30c18 18 18 52 0 70" fill="none" stroke="${M}" stroke-width="5"/><path d="M90 30c18 18 18 52 0 70" fill="none" stroke="#111" stroke-width="1.2"/><path d="M90 30v70" stroke="#111" stroke-width="1.5"/><path d="M74 66h36" ${T}/><path d="M108 62l6 4-6 4" fill="none" ${T}/>`
+    }[classe] || '';
+    return `<svg viewBox="0 0 120 120" ${sz ? `width="${sz}" height="${sz}"` : ''} aria-hidden="true"><path d="M30 116c2-28 12-48 30-48s28 20 30 48z" fill="${cor}" ${T}/><path d="M46 82h28" stroke="#111" stroke-width="2"/>
+      <circle cx="60" cy="44" r="22" fill="${pele}" ${T}/><path d="M38 42c0-18 10-26 22-26s22 8 22 26c-4-8-12-12-22-12s-18 4-22 12z" fill="#3a2a1e" ${T}/>
+      <circle cx="53" cy="47" r="2.6" fill="#111"/><circle cx="67" cy="47" r="2.6" fill="#111"/><path d="M54 56q6 4 12 0" fill="none" ${T}/>${arma}</svg>`;
+  }
+  const svg = (k, sz) => `<svg viewBox="0 0 120 120" ${sz ? `width="${sz}" height="${sz}"` : ''} aria-hidden="true">${MONSTROS[k]}</svg>`;
+
+  /* ---------- Mundo ---------- */
+  const REGIOES = [
+    { id: 'campos', nome: 'Campos da Tabuada', tema: 'contas', x: 25, y: 70, fundo: ['#fff1b8', '#9fd06b'], icone: 'lesma',
+      monstros: [['lesma', 'Lesma do Resto'], ['corvo', 'Corvo Multiplicador']], chefe: ['ogro', 'Ogro da Divisão'],
+      texto: 'Pastos dourados onde as contas cresceram sem controle. Aqui se luta com multiplicação, divisão e ordem das operações.' },
+    { id: 'floresta', nome: 'Floresta das Frações', tema: 'fracoes', x: 42, y: 34, fundo: ['#e6f2c8', '#4f9b5c'], icone: 'cogumelo',
+      monstros: [['cogumelo', 'Cogumelo Meio a Meio'], ['raposa', 'Raposa Fracionária']], chefe: ['arvore', 'Árvore Partida'],
+      texto: 'Tudo aqui foi cortado em pedaços. Para passar, é preciso entender partes, frações equivalentes e somas de frações.' },
+    { id: 'caverna', nome: 'Caverna Abaixo de Zero', tema: 'inteiros', x: 62, y: 66, fundo: ['#d9d4cb', '#6b625a'], icone: 'morcego',
+      monstros: [['morcego', 'Morcego Negativo'], ['slime', 'Geleia Gelada']], chefe: ['dragao', 'Dragão dos Sinais'],
+      texto: 'Uma caverna gelada onde os termômetros marcam abaixo de zero. Os monstros só respeitam quem domina os números negativos.' },
+    { id: 'montanha', nome: 'Montanha do X', tema: 'equacoes', x: 77, y: 30, fundo: ['#f4e6c4', '#b59a72'], icone: 'golem',
+      monstros: [['golem', 'Golem Incógnito'], ['gargula', 'Gárgula da Balança']], chefe: ['esfinge', 'Esfinge do X'],
+      texto: 'No alto da montanha, cada pedra esconde um valor desconhecido. Resolva as equações para subir.' },
+    { id: 'castelo', nome: 'Castelo do Caos', tema: 'porcent', x: 90, y: 72, fundo: ['#f6d9cf', '#8c4a3f'], icone: 'cavaleiro',
+      monstros: [['cavaleiro', 'Cavaleiro do Desconto'], ['fantasma', 'Fantasma Potente']], chefe: ['rei', 'Rei do Caos'],
+      texto: 'O castelo onde o Rei do Caos guarda o Grande Número. Porcentagens, potências e, no salão final, perguntas de todas as regiões.' }
+  ];
+  const VILA = { x: 9, y: 34 };
+  const LUTAS_POR_REGIAO = 3;
+
+  const LOJA = [
+    { id: 'pocao', nome: 'Poção de vida', desc: 'Recupera 20 de vida durante a batalha.', preco: 12, consumivel: true },
+    { id: 'eter', nome: 'Elixir de magia', desc: 'Recupera 2 pontos de magia durante a batalha.', preco: 15, consumivel: true },
+    { id: 'espada', nome: 'Lâmina de Ouro', desc: 'Ataque +3 para sempre.', preco: 60 },
+    { id: 'armadura', nome: 'Armadura de Escamas', desc: 'Os monstros causam 3 a menos de dano.', preco: 70 },
+    { id: 'amuleto', nome: 'Amuleto da Coruja', desc: 'Magia máxima +2.', preco: 55 },
+    { id: 'lupa', nome: 'Lupa da Sábia', desc: 'A dica da pergunta não custa nada.', preco: 40 }
+  ];
+
+  const CONQUISTAS = [
+    ['primeira', 'Primeira vitória', 'Vença uma batalha.'],
+    ['combo5', 'Mente afiada', 'Acerte 5 perguntas seguidas.'],
+    ['combo12', 'Sequência lendária', 'Acerte 12 perguntas seguidas.'],
+    ['magia', 'Aprendiz de magia', 'Vença um monstro com uma magia.'],
+    ['loja', 'Bem equipado', 'Compre um equipamento na loja.'],
+    ['nivel5', 'Experiência de sobra', 'Chegue ao nível 5.'],
+    ['chefe1', 'Primeiro chefe', 'Vença o primeiro chefe.'],
+    ['semdano', 'Sem um arranhão', 'Vença um chefe sem perder vida.'],
+    ['cem', 'Cem acertos', 'Acerte 100 perguntas.'],
+    ['explora', 'Reino aberto', 'Abra as cinco regiões.'],
+    ['final', 'Lenda de Numéria', 'Vença o Rei do Caos.']
+  ];
+
+  /* ---------- Estado ---------- */
+  const novo = () => ({ v: 1, nome: '', classe: '', pele: PELES[0], ano: 6, nivel: 1, xp: 0, ouro: 20, hp: 0, mp: 0,
+    itens: { pocao: 2, eter: 1 }, equip: [], lutas: [0, 0, 0, 0, 0], chefes: [false, false, false, false, false],
+    stats: {}, conq: [], combo: 0, melhorCombo: 0, intro: false, fim: false });
+  let S;
+  try { S = Object.assign(novo(), JSON.parse(localStorage.getItem(CHAVE) || 'null') || {}); } catch (e) { S = novo(); }
+  function salvar() { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) {} painel(); }
+
+  const hpMax = () => (S.classe === 'escudo' ? 42 : 32) + (S.nivel - 1) * 7;
+  const mpMax = () => (S.classe === 'cajado' ? 5 : 3) + Math.floor((S.nivel - 1) / 2) + (S.equip.includes('amuleto') ? 2 : 0);
+  const atk = () => 6 + (S.nivel - 1) * 2 + (S.equip.includes('espada') ? 3 : 0);
+  const xpProx = () => 20 + S.nivel * 15;
+  const regiaoAberta = i => i === 0 || S.chefes[i - 1];
+  const nAno = () => ({ 6: 1, 7: 2, 8: 3, 9: 4 }[S.ano] || 1);
+  const CLASSES = {
+    escudo: { nome: 'Classe do Escudo', curto: 'Escudo', txt: 'Mais vida. Ótima para quem está começando.' },
+    cajado: { nome: 'Classe do Cajado', curto: 'Cajado', txt: 'Mais magia, e a magia causa ainda mais dano.' },
+    arco: { nome: 'Classe do Arco', curto: 'Arco', txt: 'Golpes críticos mais frequentes e mais moedas.' }
+  };
+
+  function toast(tit, txt) {
+    let t = tela.querySelector('.nm-toast');
+    if (!t) { t = document.createElement('div'); t.className = 'nm-toast'; t.setAttribute('role', 'status'); tela.appendChild(t); }
+    t.innerHTML = `<strong>${esc(tit)}</strong>${esc(txt || '')}`; t.classList.add('on');
+    clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2600);
+  }
+  function conquista(id) {
+    if (S.conq.includes(id)) return;
+    S.conq.push(id); const c = CONQUISTAS.find(x => x[0] === id);
+    setTimeout(() => toast('Conquista: ' + c[1], c[2]), 300);
+  }
+
+  /* ---------- Painel lateral ---------- */
+  function barra(v, max, cls) { const p = Math.max(0, Math.min(100, v / max * 100)); return `<div class="nm-hp ${cls || ''} ${!cls && p < 30 ? 'baixo' : ''}"><i style="width:${p}%"></i></div>`; }
+  function painel() {
+    if (S.classe) {
+      $('heroi').innerHTML = `<div class="nm-ficha">${heroiSVG(S.classe, S.pele)}<div><strong>${esc(S.nome)}</strong><span class="small muted">${CLASSES[S.classe].nome} · nível ${S.nivel} · ${S.ano}º ano</span></div></div>
+        <div class="nm-stat">Vida ${S.hp}/${hpMax()}${barra(S.hp, hpMax())}</div>
+        <div class="nm-stat">Magia ${S.mp}/${mpMax()}${barra(S.mp, mpMax(), 'mp')}</div>
+        <div class="nm-stat">Experiência ${S.xp}/${xpProx()}${barra(S.xp, xpProx(), 'mp')}</div>
+        <div class="nm-atrib"><span>Ataque: <strong>${atk()}</strong></span><span>Moedas: <strong>${S.ouro}</strong></span></div>`;
+    }
+    const it = [];
+    LOJA.forEach(l => { if (l.consumivel && S.itens[l.id]) it.push(`<span class="tag">${l.nome} × ${S.itens[l.id]}</span>`); if (!l.consumivel && S.equip.includes(l.id)) it.push(`<span class="tag">${l.nome}</span>`); });
+    $('mochila').innerHTML = it.join('') || '<span class="small muted">Vazia.</span>';
+    $('nconq').textContent = `(${S.conq.length} de ${CONQUISTAS.length})`;
+    $('lista-conq').innerHTML = CONQUISTAS.map(([id, n, d]) => `<li class="${S.conq.includes(id) ? 'on' : ''}"><span class="med">${S.conq.includes(id) ? '★' : '?'}</span><span><strong>${n}</strong><span class="d">${d}</span></span></li>`).join('');
+    let ac = 0, tot = 0; Object.values(S.stats).forEach(s => { ac += s[0]; tot += s[1]; });
+    $('placar').textContent = tot ? `${ac} ${ac === 1 ? 'acerto' : 'acertos'} em ${tot} ${tot === 1 ? 'pergunta' : 'perguntas'} (${Math.round(ac / tot * 100)}%). Chefes vencidos: ${S.chefes.filter(Boolean).length} de 5.` : 'Nenhuma pergunta respondida ainda.';
+    $('relatorio').innerHTML = `<table class="nm-rel">${NOMES_TEMAS.map(t => { const s = S.stats[t] || [0, 0]; return `<tr><td>${TEMAS[t].nome} <span class="muted">(${TEMAS[t].hab})</span></td><td>${s[1] ? s[0] + '/' + s[1] : '—'}</td></tr>`; }).join('')}
+      <tr><td>Melhor sequência de acertos</td><td>${S.melhorCombo}</td></tr><tr><td>Ano escolhido</td><td>${S.ano}º</td></tr></table>`;
+    $('codigo').value = codigo();
+  }
+
+  /* ---------- Criar personagem ---------- */
+  function criar() {
+    const f = { nome: S.nome || '', classe: S.classe || 'escudo', pele: S.pele, ano: S.ano };
+    function desenha() {
+      tela.innerHTML = `<div class="nm-pad">
+        <h2 style="margin:0 0 4px;font-size:26px">A Lenda de Numéria</h2>
+        <p style="margin:0 0 12px">O Rei do Caos quebrou o Grande Número, e o reino virou bagunça: as contas não fecham, as frações se partiram e até a temperatura ficou negativa. Crie sua personagem para restaurar a ordem.</p>
+        <label for="nm-nome"><strong>Nome da personagem</strong></label><br>
+        <input id="nm-nome" class="nm-campo" maxlength="16" value="${esc(f.nome)}" placeholder="Por exemplo: Lia, Teo, Dani">
+        <p style="margin:12px 0 0"><strong>Classe</strong></p>
+        <div class="nm-classes">${Object.entries(CLASSES).map(([k, c]) => `<button type="button" class="nm-classe" data-c="${k}" aria-pressed="${f.classe === k}">${heroiSVG(k, f.pele)}<span><strong>${c.curto}</strong><span>${c.txt}</span></span></button>`).join('')}</div>
+        <p style="margin:0"><strong>Tom de pele</strong></p>
+        <div class="nm-cores">${PELES.map(p => `<button type="button" data-p="${p}" style="background:${p}" aria-label="Tom de pele" aria-pressed="${f.pele === p}"></button>`).join('')}</div>
+        <p style="margin:0"><strong>Seu ano escolar</strong> <span class="small">(define a dificuldade das perguntas)</span></p>
+        <div class="nm-anos">${[6, 7, 8, 9].map(a => `<button type="button" data-a="${a}" aria-pressed="${f.ano === a}">${a}º ano</button>`).join('')}</div>
+        <div class="btn-row"><button class="btn" type="button" id="nm-comecar">Começar a aventura</button></div>
+        <p class="small" id="nm-aviso" style="color:#c21f3a;margin:8px 0 0"></p></div>`;
+      $('nm-nome').oninput = e => { f.nome = e.target.value; };
+      tela.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { f.classe = b.dataset.c; desenha(); });
+      tela.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { f.pele = b.dataset.p; desenha(); });
+      tela.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { f.ano = +b.dataset.a; desenha(); });
+      $('nm-comecar').onclick = () => {
+        f.nome = $('nm-nome').value.trim();
+        if (!f.nome) { $('nm-aviso').textContent = 'Escreva um nome para a personagem.'; $('nm-nome').focus(); return; }
+        S = Object.assign(novo(), f); S.hp = hpMax(); S.mp = mpMax(); salvar(); introducao(0);
+      };
+    }
+    desenha();
+  }
+
+  /* ---------- Falas ---------- */
+  function fala(quem, desenho, passos, fim) {
+    let i = 0;
+    function mostra() {
+      const [t, txt] = passos[i];
+      tela.innerHTML = `<div class="nm-pad"><div class="nm-fala">${desenho}<div>${passos.length > 1 ? `<div class="nm-passo">${i + 1} de ${passos.length}</div>` : ''}<div class="quem">${esc(t || quem)}</div><p>${txt}</p>
+        <div class="btn-row" style="margin-top:14px"><button class="btn" type="button" id="nm-seg">${i < passos.length - 1 ? 'Continuar' : 'Vamos lá'}</button>${passos.length > 1 && i < passos.length - 1 ? '<button class="btn ghost" type="button" id="nm-pular">Pular</button>' : ''}</div></div></div></div>`;
+      $('nm-seg').onclick = () => { if (++i < passos.length) mostra(); else fim(); };
+      if ($('nm-pular')) $('nm-pular').onclick = fim;
+      $('nm-seg').focus({ preventScroll: true });
+    }
+    mostra();
+  }
+  function introducao() {
+    fala('Mestra Áurea', svg('mestra'), [
+      ['Mestra Áurea', `Boas-vindas, ${esc(S.nome)}! Eu sou a Mestra Áurea, guardiã da Vila Zero. O Rei do Caos quebrou o Grande Número e espalhou monstros por cinco regiões de Numéria.`],
+      ['Como lutar', 'Na batalha, escolha <strong>Atacar</strong> e responda uma pergunta. Acertou, seu golpe acerta o monstro. Errou, o monstro ataca, mas eu explico a conta para você aprender.'],
+      ['Magia e críticos', '<strong>Magia</strong> traz uma pergunta mais difícil e causa o dobro de dano. Três acertos seguidos rendem um <strong>golpe crítico</strong>. Se precisar, peça uma <strong>dica</strong>: ela ajuda, mas o golpe sai mais fraco.'],
+      ['O mapa', 'Em cada região, vença 3 batalhas e depois o chefe. Volte à vila para comprar itens e descansar na pousada. Comece pelos <strong>Campos da Tabuada</strong>.']
+    ], () => { S.intro = true; salvar(); mapa(0); });
+  }
+
+  /* ---------- Mapa ---------- */
+  let sel = 0;
+  function mapa(s) {
+    if (s !== undefined) sel = s;
+    const atual = S.chefes.indexOf(false);
+    const pts = [VILA].concat(REGIOES);
+    const caminho = pts.map((p, i) => `${i ? 'L' : 'M'}${p.x * 6} ${p.y * 3.4}`).join(' ');
+    tela.innerHTML = `<div class="nm-mapa">
+      <svg class="fundo" viewBox="0 0 600 340" aria-hidden="true">
+        <rect width="600" height="340" fill="#f3e3b5"/>
+        <path d="M0 260c80-20 140 30 230 10s160-60 250-30 120 20 120 20v80H0z" fill="#d9c58f"/>
+        <g fill="${V}" stroke="#111" stroke-width="2">${[[120, 70], [140, 90], [300, 40], [520, 110], [200, 300], [560, 300], [30, 200], [380, 290]].map(([x, y]) => `<path d="M${x} ${y}l10-22 10 22z"/>`).join('')}</g>
+        <g fill="#c8b48a" stroke="#111" stroke-width="2">${[[420, 60], [470, 40], [500, 70]].map(([x, y]) => `<path d="M${x - 26} ${y + 30}l26-40 26 40z"/>`).join('')}</g>
+        <path d="${caminho}" fill="none" stroke="#111" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>
+      </svg>
+      <button type="button" class="nm-no ${sel === -1 ? 'sel' : ''}" style="left:${VILA.x}%;top:${VILA.y}%" data-r="-1" aria-label="Vila Zero"><svg viewBox="0 0 64 64"><path d="M8 54V30l14-12 14 12v24z" fill="#fff" ${T}/><path d="M6 32l16-15 16 15" fill="${R}" ${T}/><rect x="17" y="40" width="9" height="14" fill="${V}" ${T}/><path d="M38 54V36l10-8 10 8v18z" fill="${A}" ${T}/></svg></button>
+      <span class="nm-rot" style="left:${VILA.x}%;top:calc(${VILA.y}% + 36px)">Vila Zero</span>
+      ${REGIOES.map((r, i) => { const ab = regiaoAberta(i), cls = !ab ? 'bloq' : S.chefes[i] ? 'feito' : i === atual ? 'atual' : '';
+        return `<button type="button" class="nm-no ${cls} ${sel === i ? 'sel' : ''}" style="left:${r.x}%;top:${r.y}%" data-r="${i}" aria-label="${r.nome}${ab ? '' : ' (fechada)'}">${ab ? `<svg viewBox="0 0 120 120">${MONSTROS[r.icone]}</svg>` : `<svg viewBox="0 0 64 64"><rect x="16" y="28" width="32" height="26" rx="5" fill="${G}" ${T}/><path d="M22 28v-8a10 10 0 0 1 20 0v8" fill="none" ${T}/></svg>`}</button>
+          <span class="nm-rot" style="left:${r.x}%;top:calc(${r.y}% + 36px)">${r.nome}</span>`; }).join('')}
+    </div><div class="nm-info" id="nm-info"></div>`;
+    tela.querySelectorAll('[data-r]').forEach(b => b.onclick = () => mapa(+b.dataset.r));
+    info();
+  }
+  function info() {
+    const el = $('nm-info');
+    if (sel === -1) {
+      el.innerHTML = `<h3>Vila Zero</h3><p>Sua casa. Aqui você compra itens e descansa. Moedas: <strong>${S.ouro}</strong>.</p>
+        <div class="btn-row"><button class="btn" type="button" id="nm-pousada">Descansar na pousada (grátis)</button><button class="btn ghost" type="button" id="nm-loja">Abrir a loja</button><button class="btn ghost" type="button" id="nm-mestra">Falar com a Mestra Áurea</button></div>`;
+      $('nm-pousada').onclick = () => { S.hp = hpMax(); S.mp = mpMax(); salvar(); toast('Pousada', 'Vida e magia recuperadas.'); };
+      $('nm-loja').onclick = loja;
+      $('nm-mestra').onclick = () => fala('Mestra Áurea', svg('mestra'), [['Mestra Áurea', conselho()]], () => mapa(-1));
+      return;
+    }
+    const r = REGIOES[sel];
+    if (!regiaoAberta(sel)) { el.innerHTML = `<h3>${r.nome}</h3><p>Fechada. Vença o chefe de ${REGIOES[sel - 1].nome} para abrir o caminho.</p>`; return; }
+    const n = S.lutas[sel], pronto = n >= LUTAS_POR_REGIAO;
+    el.innerHTML = `<h3>${r.nome}</h3><p>${r.texto}</p>
+      <div class="nm-passos">${Array.from({ length: LUTAS_POR_REGIAO }, (_, i) => `<span class="${i < n ? 'ok' : ''}">Batalha ${i + 1}</span>`).join('')}<span class="chefe ${S.chefes[sel] ? 'ok' : ''}">Chefe: ${r.chefe[1]}</span></div>
+      <div class="btn-row"><button class="btn" type="button" id="nm-lutar">${n < LUTAS_POR_REGIAO ? 'Explorar e batalhar' : 'Treinar (batalha extra)'}</button>
+      <button class="btn ${pronto ? '' : 'ghost'}" type="button" id="nm-chefe" ${pronto ? '' : 'disabled'}>${S.chefes[sel] ? 'Enfrentar o chefe de novo' : 'Enfrentar o chefe'}</button></div>
+      ${S.hp < hpMax() * .4 ? '<p class="small" style="margin:8px 0 0;color:#c21f3a">Sua vida está baixa. Que tal descansar na Vila Zero antes?</p>' : ''}`;
+    $('nm-lutar').onclick = () => batalha(sel, false);
+    $('nm-chefe').onclick = () => batalha(sel, true);
+  }
+  function conselho() {
+    const pior = NOMES_TEMAS.map(t => [t, S.stats[t] || [0, 0]]).filter(([, s]) => s[1] >= 4).sort((a, b) => a[1][0] / a[1][1] - b[1][0] / b[1][1])[0];
+    if (!pior) return 'Ainda conheço pouco das suas batalhas. Lembre: quando errar, leia a explicação com calma. É assim que se fica forte em Numéria.';
+    const p = Math.round(pior[1][0] / pior[1][1] * 100);
+    if (p >= 80) return `Você vai muito bem em tudo! Em ${TEMAS[pior[0]].nome.toLowerCase()}, que é o seu ponto menos forte, já acerta ${p}%. Experimente usar mais magias.`;
+    return `Seu ponto a treinar é <strong>${TEMAS[pior[0]].nome.toLowerCase()}</strong> (${p}% de acertos). Volte à região desse tema para batalhas extras e use a dica quando travar.`;
+  }
+  function loja() {
+    const el = $('nm-info');
+    el.innerHTML = `<h3>Loja da Vila</h3><p>Moedas: <strong>${S.ouro}</strong></p><div class="nm-loja">${LOJA.map(l => {
+      const tem = !l.consumivel && S.equip.includes(l.id);
+      return `<div class="nm-item"><span><strong>${l.nome}</strong> · ${l.preco} moedas<br><span class="small">${l.desc}${l.consumivel ? ` Você tem ${S.itens[l.id] || 0}.` : ''}</span></span>
+        <button class="btn ${tem ? 'ghost' : ''}" type="button" data-compra="${l.id}" ${tem || S.ouro < l.preco ? 'disabled' : ''}>${tem ? 'Comprado' : 'Comprar'}</button></div>`; }).join('')}</div>
+      <div class="btn-row" style="margin-top:10px"><button class="btn ghost" type="button" id="nm-voltar">Voltar</button></div>`;
+    el.querySelectorAll('[data-compra]').forEach(b => b.onclick = () => {
+      const l = LOJA.find(x => x.id === b.dataset.compra); if (S.ouro < l.preco) return;
+      S.ouro -= l.preco;
+      if (l.consumivel) S.itens[l.id] = (S.itens[l.id] || 0) + 1; else { S.equip.push(l.id); conquista('loja'); if (l.id === 'amuleto') S.mp = mpMax(); }
+      salvar(); loja(); toast('Comprado', l.nome);
+    });
+    $('nm-voltar').onclick = () => info();
+  }
+
+  /* ---------- Batalha ---------- */
+  let L = null;
+  function batalha(ri, chefe) {
+    const r = REGIOES[ri], final = chefe && ri === 4;
+    const [tipo, nome] = chefe ? r.chefe : pega(r.monstros);
+    const hp = chefe ? (final ? 120 : 40 + ri * 18) : 16 + ri * 9 + rnd(0, 4);
+    L = { ri, chefe, final, tipo, nome, hp, hpMax: hp, dano: (chefe ? 7 : 4) + ri * 2, perg: null, ocupado: false, hpInicio: S.hp, usouMagia: false };
+    if (S.hp <= 0) S.hp = 1;
+    desenhaBatalha();
+    log(`<span class="quem">${esc(nome)}</span> ${chefe ? 'surge diante de você. É o chefe da região!' : 'aparece no caminho!'} O que você faz?`);
+    acoes();
+  }
+  function desenhaBatalha() {
+    const r = REGIOES[L.ri];
+    tela.innerHTML = `<div class="nm-arena" style="background:linear-gradient(${r.fundo[0]} 60%, ${r.fundo[1]} 60%)">
+        <div class="nm-barra h"><strong>${esc(S.nome)} · nível ${S.nivel}</strong><span id="b-hp">Vida ${S.hp}/${hpMax()}</span>${barra(S.hp, hpMax())}<span id="b-mp">Magia ${S.mp}/${mpMax()}</span>${barra(S.mp, mpMax(), 'mp')}</div>
+        <div class="nm-barra i"><strong>${esc(L.nome)}</strong><span>Vida ${L.hp}/${L.hpMax}</span>${barra(L.hp, L.hpMax)}</div>
+        <div class="nm-lutador nm-heroi" id="lt-h">${heroiSVG(S.classe, S.pele)}</div>
+        <div class="nm-lutador nm-inimigo ${L.chefe ? 'chefe' : ''}" id="lt-i">${svg(L.tipo)}</div>
+      </div><div class="nm-painel"><div class="nm-log" id="nm-log"></div><div id="nm-zona"></div></div>`;
+  }
+  function atualizaBarras() {
+    const hs = tela.querySelectorAll('.nm-barra');
+    if (!hs.length) return;
+    hs[0].innerHTML = `<strong>${esc(S.nome)} · nível ${S.nivel}</strong><span>Vida ${S.hp}/${hpMax()}</span>${barra(S.hp, hpMax())}<span>Magia ${S.mp}/${mpMax()}</span>${barra(S.mp, mpMax(), 'mp')}`;
+    hs[1].innerHTML = `<strong>${esc(L.nome)}</strong><span>Vida ${Math.max(0, L.hp)}/${L.hpMax}</span>${barra(Math.max(0, L.hp), L.hpMax)}`;
+  }
+  const log = h => { $('nm-log').innerHTML = h; };
+  function numero(alvo, v, cura) {
+    const el = $(alvo); if (!el) return;
+    const d = document.createElement('div'); d.className = 'nm-dano' + (cura ? ' cura' : ''); d.textContent = (cura ? '+' : '−') + v;
+    d.style.left = (el.offsetLeft + el.offsetWidth / 2 - 18) + 'px'; d.style.top = (el.offsetTop - 10) + 'px';
+    el.parentNode.appendChild(d); setTimeout(() => d.remove(), 1000);
+  }
+  function anima(id, cls) { const el = $(id); if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 380); }
+
+  function acoes() {
+    const z = $('nm-zona');
+    z.innerHTML = `<div class="nm-acoes">
+      <button type="button" class="atk" data-ac="atacar">Atacar<small>pergunta do ${S.ano}º ano</small></button>
+      <button type="button" class="mag" data-ac="magia" ${S.mp < 1 ? 'disabled' : ''}>Magia<small>mais difícil, dano ×2 (1 de magia)</small></button>
+      <button type="button" data-ac="item" ${(S.itens.pocao || 0) + (S.itens.eter || 0) ? '' : 'disabled'}>Itens<small>poções e elixires</small></button>
+      <button type="button" data-ac="fugir" ${L.chefe ? 'disabled' : ''}>Fugir<small>${L.chefe ? 'não dá com chefe' : 'voltar ao mapa'}</small></button></div>
+      ${S.combo >= 2 ? `<p class="nm-combo" style="margin:8px 0 0">Sequência de acertos: ${S.combo}. ${S.combo % 3 === 2 ? 'O próximo acerto será um golpe crítico!' : ''}</p>` : ''}`;
+    z.querySelectorAll('[data-ac]').forEach(b => b.onclick = () => acao(b.dataset.ac));
+    const p = z.querySelector('button:not(:disabled)'); if (p) p.focus({ preventScroll: true });
+  }
+  function acao(a) {
+    if (a === 'fugir') { log('Você recuou para o mapa.'); salvar(); return mapa(L.ri); }
+    if (a === 'item') return itens();
+    const magia = a === 'magia';
+    if (magia) { S.mp--; L.usouMagia = true; }
+    const tema = L.final ? pega(NOMES_TEMAS) : REGIOES[L.ri].tema;
+    const nivel = Math.min(5, nAno() + (magia ? 1 : 0) + (L.final ? 1 : 0));
+    L.perg = Object.assign(GERA[tema](nivel), { tema, magia, dicaUsada: false });
+    pergunta();
+    atualizaBarras();
+  }
+  function itens() {
+    const z = $('nm-zona');
+    z.innerHTML = `<div class="nm-acoes">
+      <button type="button" data-it="pocao" ${S.itens.pocao ? '' : 'disabled'}>Poção de vida<small>+20 de vida (tem ${S.itens.pocao || 0})</small></button>
+      <button type="button" data-it="eter" ${S.itens.eter ? '' : 'disabled'}>Elixir de magia<small>+2 de magia (tem ${S.itens.eter || 0})</small></button>
+      <button type="button" data-it="voltar">Voltar<small>às ações</small></button></div>`;
+    z.querySelectorAll('[data-it]').forEach(b => b.onclick = () => {
+      const k = b.dataset.it; if (k === 'voltar') return acoes();
+      S.itens[k]--;
+      if (k === 'pocao') { const g = Math.min(20, hpMax() - S.hp); S.hp += g; numero('lt-h', g, true); log(`Você bebeu uma poção e recuperou ${g} de vida.`); }
+      else { const g = Math.min(2, mpMax() - S.mp); S.mp += g; log(`Você bebeu um elixir e recuperou ${g} de magia.`); }
+      atualizaBarras(); painel(); acoes();
+    });
+  }
+  function pergunta() {
+    const p = L.perg, z = $('nm-zona');
+    log(`<span class="quem">${p.magia ? 'Magia' : 'Ataque'}</span> · ${TEMAS[p.tema].nome}`);
+    z.innerHTML = `<div class="nm-perg">${p.txt}</div>
+      <div class="nm-ops">${p.ops.map((o, i) => `<button type="button" data-o="${i}"><b>${i + 1}</b> ${o}</button>`).join('')}</div>
+      <div class="btn-row" style="margin-top:8px"><button class="btn ghost" type="button" id="nm-dica" style="min-height:36px;padding:4px 14px;font-size:14px">Pedir dica${S.equip.includes('lupa') ? '' : ' (golpe mais fraco)'}</button></div><div id="nm-dica-txt"></div>`;
+    z.querySelectorAll('[data-o]').forEach(b => b.onclick = () => responder(+b.dataset.o));
+    $('nm-dica').onclick = () => { p.dicaUsada = true; $('nm-dica').remove(); $('nm-dica-txt').innerHTML = `<div class="nm-dica"><strong>Dica:</strong> ${p.dica}</div>`; };
+    z.querySelector('[data-o]').focus({ preventScroll: true });
+  }
+  function responder(i) {
+    const p = L.perg; if (!p || p.resp !== undefined) return;
+    p.resp = i;
+    const certo = String(p.ops[i]) === String(p.certa);
+    const bt = $('nm-zona').querySelectorAll('[data-o]');
+    bt.forEach((b, j) => { b.disabled = true; if (String(p.ops[j]) === String(p.certa)) b.classList.add('certa'); else if (j === i) b.classList.add('errada'); });
+    const d = $('nm-dica'); if (d) d.remove();
+    const st = S.stats[p.tema] || [0, 0]; st[1]++; if (certo) st[0]++; S.stats[p.tema] = st;
+    let msg;
+    if (certo) {
+      S.combo++; S.melhorCombo = Math.max(S.melhorCombo, S.combo);
+      if (S.combo >= 5) conquista('combo5'); if (S.combo >= 12) conquista('combo12');
+      const acertos = Object.values(S.stats).reduce((s, x) => s + x[0], 0); if (acertos >= 100) conquista('cem');
+      let dano = atk() + rnd(0, 2);
+      if (p.magia) dano = Math.round(dano * (S.classe === 'cajado' ? 2.5 : 2));
+      const critico = S.combo % 3 === 0 || Math.random() < (S.classe === 'arco' ? .25 : .08);
+      if (critico) dano = Math.round(dano * 1.5);
+      if (p.dicaUsada && !S.equip.includes('lupa')) dano = Math.max(1, Math.round(dano * .6));
+      L.hp -= dano; L.golpeMagia = p.magia;
+      anima('lt-h', 'avanca'); setTimeout(() => { anima('lt-i', 'treme'); numero('lt-i', dano); }, 180);
+      msg = `<div class="nm-exp ok"><strong>Certo!</strong> ${critico ? 'Golpe crítico! ' : ''}Você causou ${dano} de dano. <span class="small">${p.exp}</span></div>`;
+    } else {
+      S.combo = 0;
+      const dano = Math.max(1, L.dano + rnd(0, 3) - (S.equip.includes('armadura') ? 3 : 0) - (S.classe === 'escudo' ? 1 : 0));
+      S.hp = Math.max(0, S.hp - dano);
+      anima('lt-i', 'recua'); setTimeout(() => { anima('lt-h', 'treme'); numero('lt-h', dano); }, 180);
+      msg = `<div class="nm-exp bad"><strong>Não foi dessa vez.</strong> A resposta certa é <strong>${p.certa}</strong>. ${p.exp} ${esc(L.nome)} atacou: −${dano} de vida.</div>`;
+    }
+    setTimeout(atualizaBarras, 300);
+    const z = $('nm-zona');
+    z.insertAdjacentHTML('beforeend', msg + `<div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="nm-ok">Continuar</button></div>`);
+    $('nm-ok').onclick = depois;
+    $('nm-ok').focus({ preventScroll: true });
+    painel();
+  }
+  function depois() {
+    L.perg = null;
+    if (L.hp <= 0) return vitoria();
+    if (S.hp <= 0) return derrota();
+    acoes(); log(`<span class="quem">${esc(L.nome)}</span> ainda está de pé. Qual o próximo passo?`);
+  }
+  function vitoria() {
+    const ri = L.ri, r = REGIOES[ri];
+    let xp = L.chefe ? 30 + ri * 12 : 10 + ri * 4, ouro = (L.chefe ? 25 + ri * 8 : 6 + ri * 3) + (S.classe === 'arco' ? 3 : 0);
+    if (L.final) { xp = 120; ouro = 100; }
+    S.xp += xp; S.ouro += ouro;
+    conquista('primeira'); if (L.golpeMagia) conquista('magia');
+    const extra = [];
+    if (!L.chefe && S.lutas[ri] < LUTAS_POR_REGIAO) S.lutas[ri]++;
+    let novoChefe = false;
+    if (L.chefe) {
+      if (S.hp >= L.hpInicio) conquista('semdano');
+      if (!S.chefes[ri]) { S.chefes[ri] = true; novoChefe = true; conquista('chefe1'); if (ri === 3) conquista('explora'); }
+      if (ri === 4) { S.fim = true; conquista('final'); }
+    }
+    if (Math.random() < (L.chefe ? 1 : .3)) { const k = Math.random() < .6 ? 'pocao' : 'eter'; S.itens[k] = (S.itens[k] || 0) + 1; extra.push(k === 'pocao' ? 'Poção de vida' : 'Elixir de magia'); }
+    let subiu = 0;
+    while (S.xp >= xpProx()) { S.xp -= xpProx(); S.nivel++; subiu++; }
+    if (subiu) { S.hp = hpMax(); S.mp = mpMax(); }
+    if (S.nivel >= 5) conquista('nivel5');
+    const pct = Math.round(S.chefes.filter(Boolean).length / 5 * 100);
+    if (L.chefe) window.MDP && MDP.registrar('numeria', pct);
+    salvar();
+    if (L.final && novoChefe) return final();
+    tela.innerHTML = `<div class="nm-centro">${svg(L.tipo)}<h2>Vitória!</h2><p>${esc(L.nome)} foi derrotado.${novoChefe ? ` O caminho depois de ${r.nome} está aberto.` : ''}</p>
+      <div class="nm-premios"><span>+${xp} de experiência</span><span>+${ouro} moedas</span>${extra.map(e => `<span>${e}</span>`).join('')}${subiu ? `<span style="background:#ffd23f"><strong>Subiu para o nível ${S.nivel}!</strong> Vida e magia cheias.</span>` : ''}</div>
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="nm-mapa">Voltar ao mapa</button>${!L.chefe && S.lutas[ri] < LUTAS_POR_REGIAO ? '<button class="btn ghost" type="button" id="nm-mais">Próxima batalha</button>' : ''}</div></div>`;
+    $('nm-mapa').onclick = () => mapa(novoChefe && ri < 4 ? ri + 1 : ri);
+    if ($('nm-mais')) $('nm-mais').onclick = () => batalha(ri, false);
+    $('nm-mapa').focus({ preventScroll: true });
+  }
+  function derrota() {
+    const perde = Math.floor(S.ouro / 2);
+    S.ouro -= perde; S.hp = hpMax(); S.mp = mpMax(); S.combo = 0; salvar();
+    tela.innerHTML = `<div class="nm-centro">${heroiSVG(S.classe, S.pele, 110)}<h2>Você desmaiou</h2>
+      <p>A Mestra Áurea levou você de volta para a Vila Zero. Você perdeu ${perde} moedas, mas recuperou toda a vida e a magia.</p>
+      <p class="small">Dica: vença batalhas extras para subir de nível, compre equipamentos e use as dicas quando travar.</p>
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="nm-mapa">Voltar à vila</button></div></div>`;
+    $('nm-mapa').onclick = () => mapa(-1);
+  }
+  function final() {
+    tela.innerHTML = `<div class="nm-centro">${heroiSVG(S.classe, S.pele, 130)}<h2>A Lenda de Numéria</h2>
+      <p>${esc(S.nome)} venceu o Rei do Caos e reconstruiu o Grande Número. As contas voltaram a fechar, as frações se juntaram e o reino está em ordem outra vez.</p>
+      <div class="nm-premios"><span>Nível ${S.nivel}</span><span>${S.conq.length} de ${CONQUISTAS.length} conquistas</span><span>Melhor sequência: ${S.melhorCombo}</span></div>
+      <p class="small">Você pode continuar treinando em qualquer região, trocar o ano escolar num jogo novo ou buscar as conquistas que faltam.</p>
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="nm-mapa">Voltar ao mapa</button></div></div>`;
+    $('nm-mapa').onclick = () => mapa(4);
+  }
+
+  /* ---------- Teclado ---------- */
+  document.addEventListener('keydown', e => {
+    if (!L || !L.perg || L.perg.resp !== undefined) return;
+    if (/^[1-4]$/.test(e.key) && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); responder(+e.key - 1); }
+  });
+
+  /* ---------- Salvar e código ---------- */
+  function codigo() { try { return 'NU1-' + btoa(unescape(encodeURIComponent(JSON.stringify(S)))); } catch (e) { return ''; } }
+  $('salvar').onclick = () => { salvar(); $('salvo').textContent = 'Progresso salvo neste aparelho às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '.'; };
+  $('recomecar').onclick = () => {
+    if (!confirm('Começar uma aventura nova? O progresso atual será apagado.')) return;
+    S = novo(); L = null; salvar(); criar();
+  };
+  $('copiar').onclick = () => {
+    $('codigo').value = codigo(); $('codigo').select();
+    const ok = () => { $('cod-msg').textContent = 'Código copiado.'; };
+    (navigator.clipboard ? navigator.clipboard.writeText($('codigo').value).then(ok, () => { document.execCommand('copy'); ok(); }) : (document.execCommand('copy'), ok()));
+  };
+  $('carregar').onclick = () => {
+    const v = $('colar').value.trim();
+    try {
+      if (!v.startsWith('NU1-')) throw 0;
+      const d = JSON.parse(decodeURIComponent(escape(atob(v.slice(4)))));
+      if (!d.classe || !Array.isArray(d.chefes)) throw 0;
+      S = Object.assign(novo(), d); L = null; salvar(); mapa(Math.max(0, S.chefes.indexOf(false)));
+      $('cod-msg').textContent = 'Progresso carregado.'; $('colar').value = '';
+    } catch (e) { $('cod-msg').textContent = 'Código inválido. Confira se copiou o código inteiro, começando por NU1-.'; }
+  };
+
+  // Para conferência: window.NUMERIA_TESTE gera perguntas de todos os temas e níveis
+  window.NUMERIA_L = () => L;
+  window.NUMERIA_TESTE = () => { const out = []; NOMES_TEMAS.forEach(t => { for (let n = 1; n <= 5; n++) for (let k = 0; k < 60; k++) out.push([t, n, GERA[t](n)]); }); return out; };
+
+  painel();
+  if (!S.classe) criar();
+  else if (!S.intro) introducao();
+  else mapa(S.chefes.indexOf(false) === -1 ? 4 : S.chefes.indexOf(false));
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
