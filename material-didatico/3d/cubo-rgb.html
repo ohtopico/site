@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cubo das Cores RGB · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Cada cor da tela é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo em 3D, veja o código do pixel em decimal, binário e hexadecimal, corte o cubo em fatias e acerte as cores do desafio. BNCC EF04CO05.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/cubo-rgb.html">
+<meta property="og:title" content="Cubo das Cores RGB · Laboratório 3D">
+<meta property="og:description" content="Cada cor da tela é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo em 3D, veja o código do pixel em decimal, binário e hexadecimal, corte o cubo em fatias e acerte as cores do desafio. BNCC EF04CO05.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/cubo-rgb.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>.amostra{height:74px;border:1.5px solid var(--ink);border-radius:14px;margin:6px 0 4px;display:flex;align-items:flex-end;justify-content:flex-end;padding:6px 10px;font:600 14px ui-monospace,Consolas,monospace}.amostras{display:grid;grid-template-columns:1fr 1fr;gap:8px}.amostras small{display:block;font-size:13px;margin-top:4px}</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>O cubo:</strong> toda cor de uma tela é feita de três luzes, vermelha (R), verde (G) e azul (B), cada uma com intensidade de 0 a 255. Por isso cada cor é um ponto dentro de um cubo: um eixo para cada luz. No canto (0, 0, 0) fica o preto e no canto oposto (255, 255, 255), o branco.</p>
+    <p><strong>Explorar:</strong> mexa nos controles e veja a bolinha andar dentro do cubo, ou clique em uma das bolinhas da nuvem de cores. <strong>Fatia:</strong> corta o cubo e mostra todas as cores com o mesmo valor de vermelho. <strong>Desafio:</strong> descubra os valores de uma cor sorteada.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Modo">
+      <button type="button" data-modo="explorar" aria-pressed="true">Explorar</button>
+      <button type="button" data-modo="fatia" aria-pressed="false">Fatia do cubo</button>
+      <button type="button" data-modo="desafio" aria-pressed="false">Desafio</button>
+    </div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="nuvem" aria-pressed="true">Esconder a nuvem de cores</button>
+          <button class="btn" type="button" id="conferir" hidden>Conferir</button>
+          <button class="btn ghost" type="button" id="dica" hidden>Dica</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div class="amostras">
+            <div><div class="amostra" id="amostra"></div><small>Sua cor</small></div>
+            <div id="caixa-alvo" hidden><div class="amostra" id="alvo"></div><small>Cor do desafio</small></div>
+          </div>
+          <label for="r">R, vermelho: <b id="lr">255</b></label>
+          <input type="range" id="r" min="0" max="255" value="255">
+          <label for="g">G, verde: <b id="lg">200</b></label>
+          <input type="range" id="g" min="0" max="255" value="200">
+          <label for="b">B, azul: <b id="lb">0</b></label>
+          <input type="range" id="b" min="0" max="255" value="0">
+          <div class="conta" id="conta"></div>
+          <p class="small muted" id="placar"></p>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Visite os 8 cantos do cubo e descubra o nome de cada cor.</li>
+            <li data-d="1">Ache um cinza: o que os três números têm em comum?</li>
+            <li data-d="2">Acerte 3 cores no modo Desafio.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> cada pixel de uma foto guarda três números de 0 a 255, um para cada luz. Cada número ocupa 8 bits, então um pixel ocupa 24 bits e pode ter 256 × 256 × 256 = 16.777.216 cores. O código hexadecimal (como #FFC800) usado em sites é o mesmo trio escrito em base 16. É assim que a IA de visão “enxerga” uma foto: como uma grade de trios de números.</p>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem por descoberta, em duplas. Antes de usar a página, a turma mistura lanternas com papel celofane vermelho, verde e azul numa parede branca, ou observa a tela do celular com uma lupa. Depois confere as descobertas no cubo.</p>
+    <ul>
+      <li>Por que misturar luz vermelha e verde dá amarelo, se na pintura com tinta o resultado é outro? (Luz soma; tinta absorve.)</li>
+      <li>Onde ficam todos os cinzas dentro do cubo? (Na diagonal que vai do preto ao branco, quando R = G = B.)</li>
+      <li>Quantos bits tem um pixel? Quantos bytes ocupa uma foto de 1000 × 1000 pixels sem compressão? (3 milhões de bytes.)</li>
+      <li>Escreva a cor #00FF00 em decimal. E 128 em binário?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF04CO05, EF04CO04 e EF07CO01 (uma imagem é uma matriz de pixels). Conversa com a série Bit a Bit sobre binário, hexadecimal e imagem. Material concreto equivalente: lanternas com celofane, ou um cubo de arame com bolinhas de massinha nas cores dos cantos.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-cubo-rgb');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-cubo-rgb';
+const L = 4; // aresta do cubo na cena
+const k = v => v / 255 * L;
+const hex2 = v => v.toString(16).toUpperCase().padStart(2, '0');
+const bin8 = v => v.toString(2).padStart(8, '0');
+const hexCor = (r, g, b) => '#' + hex2(r) + hex2(g) + hex2(b);
+const CANTOS = [
+  [0, 0, 0, 'preto'], [255, 0, 0, 'vermelho'], [0, 255, 0, 'verde'], [0, 0, 255, 'azul'],
+  [255, 255, 0, 'amarelo'], [0, 255, 255, 'ciano'], [255, 0, 255, 'magenta'], [255, 255, 255, 'branco']
+];
+let cor = [255, 200, 0], modo = 'explorar', alvo = null, acertos = 0, rodadas = 0;
+const visitados = new Set(), feitos = new Set();
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [10, 7.5, 11.5], alvo: [L / 2, L / 2 - 0.3, L / 2], min: 4, max: 26 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let marcador, projecoes, nuvem, fatia, fatiaTex, fatiaCv, alvoMesh;
+if (cena) {
+  // arestas do cubo
+  const caixa = new T.LineSegments(new T.EdgesGeometry(new T.BoxGeometry(L, L, L)), new T.LineBasicMaterial({ color: 0x111111 }));
+  caixa.position.set(L / 2, L / 2, L / 2); cena.add(caixa);
+  // eixos e nomes
+  const eixo = (a, b, cor, txt, pos) => { cena.add(cena.haste(a, b, 0.06, cor)); const r = cena.rotulo(txt, { tam: 0.42 }); r.position.set(...pos); cena.add(r); };
+  eixo([0, 0, 0], [L + 0.6, 0, 0], '#c8323f', 'R vermelho', [L + 1.5, 0, 0]);
+  eixo([0, 0, 0], [0, L + 0.6, 0], '#1f8a4c', 'G verde', [0, L + 1, 0]);
+  eixo([0, 0, 0], [0, 0, L + 0.6], '#2a55c8', 'B azul', [0, 0, L + 1.3]);
+  // cantos
+  const geoC = new T.SphereGeometry(0.2, 24, 16);
+  CANTOS.forEach(([r, g, b, nome]) => {
+    const m = new T.Mesh(geoC, new T.MeshBasicMaterial({ color: hexCor(r, g, b) }));
+    m.position.set(k(r), k(g), k(b)); cena.comBordas(m, 60); cena.add(m);
+    cena.clicavel(m, () => define([r, g, b]));
+  });
+  // nuvem de cores: 6 × 6 × 6 bolinhas
+  const n = 6, geoN = new T.SphereGeometry(0.11, 12, 8);
+  nuvem = new T.InstancedMesh(geoN, new T.MeshBasicMaterial({ color: 0xffffff }), n ** 3);
+  const mtx = new T.Matrix4(), c = new T.Color();
+  let i = 0;
+  for (let a = 0; a < n; a++) for (let b2 = 0; b2 < n; b2++) for (let d = 0; d < n; d++) {
+    const v = [a, b2, d].map(t => Math.round(t / (n - 1) * 255));
+    mtx.setPosition(k(v[0]), k(v[1]), k(v[2])); nuvem.setMatrixAt(i, mtx);
+    nuvem.setColorAt(i, c.set(hexCor(...v))); i++;
+  }
+  nuvem.userData.valores = [];
+  cena.add(nuvem);
+  cena.clicavel(nuvem, (_, ponto) => define(ponto.toArray().map(t => Math.round(Math.min(L, Math.max(0, t)) / L * 5) * 51).slice(0, 3)));
+  // marcador da cor atual
+  marcador = new T.Mesh(new T.SphereGeometry(0.32, 32, 20), new T.MeshBasicMaterial({ color: 0xffffff }));
+  cena.comBordas(marcador, 60); cena.add(marcador);
+  projecoes = new T.Group(); cena.add(projecoes);
+  // fatia: plano com as cores G × B para um R fixo
+  fatiaCv = document.createElement('canvas'); fatiaCv.width = fatiaCv.height = 64;
+  fatiaTex = new T.CanvasTexture(fatiaCv); fatiaTex.colorSpace = T.SRGBColorSpace; fatiaTex.magFilter = T.LinearFilter;
+  fatia = new T.Mesh(new T.PlaneGeometry(L, L), new T.MeshBasicMaterial({ map: fatiaTex, side: T.DoubleSide, transparent: true, opacity: 0.96 }));
+  fatia.rotation.y = Math.PI / 2; fatia.visible = false; cena.add(fatia);
+  // alvo do desafio (aparece depois de conferir)
+  alvoMesh = new T.Mesh(new T.SphereGeometry(0.34, 24, 16), new T.MeshBasicMaterial({ color: 0x111111, wireframe: true }));
+  alvoMesh.visible = false; cena.add(alvoMesh);
+}
+
+function desenhaFatia(r) {
+  const x = fatiaCv.getContext('2d'), img = x.createImageData(64, 64);
+  for (let gy = 0; gy < 64; gy++) for (let bx = 0; bx < 64; bx++) {
+    const g = Math.round((63 - gy) / 63 * 255), b = Math.round(bx / 63 * 255), o = (gy * 64 + bx) * 4;
+    // depois da rotação, o eixo horizontal do plano corre ao longo de −z; inverte para B crescer com z
+    const bb = 255 - b;
+    img.data[o] = r; img.data[o + 1] = g; img.data[o + 2] = bb; img.data[o + 3] = 255;
+  }
+  x.putImageData(img, 0, 0); fatiaTex.needsUpdate = true;
+  fatia.position.set(k(r), L / 2, L / 2);
+}
+
+function define(v) {
+  cor = v.map(t => Math.max(0, Math.min(255, Math.round(t))));
+  ['r', 'g', 'b'].forEach((id, i) => { $('#' + id).value = cor[i]; $('#l' + id).textContent = cor[i]; });
+  atualiza();
+}
+
+function atualiza() {
+  const [r, g, b] = cor, h = hexCor(r, g, b);
+  $('#amostra').style.background = h;
+  $('#amostra').style.color = (r * 0.3 + g * 0.59 + b * 0.11) > 140 ? '#111' : '#fff';
+  $('#amostra').textContent = h;
+  const lin = (n, v) => `${n}  ${String(v).padStart(3)}  ${bin8(v)}  ${hex2(v)}`;
+  $('#conta').textContent = `   dec  binário   hex\n${lin('R', r)}\n${lin('G', g)}\n${lin('B', b)}\ncódigo: ${h}\n24 bits = 3 bytes por pixel`;
+  const canto = CANTOS.find(c => c[0] === r && c[1] === g && c[2] === b);
+  if (canto) {
+    visitados.add(canto[3]);
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = `Canto do ${canto[3]}. Cantos visitados: ${visitados.size} de 8.`;
+    if (visitados.size === 8) marca(0);
+  } else if (modo !== 'desafio') { $('#fb').className = 'feedback'; $('#fb').textContent = ''; }
+  if (r === g && g === b && r > 0 && r < 255) { $('#fb').className = 'feedback ok'; $('#fb').textContent = `Cinza: os três valores são iguais (${r}). Todos os cinzas ficam na diagonal do preto ao branco.`; marca(1); }
+  if (cena) {
+    marcador.material.color.set(h);
+    marcador.position.set(k(r), k(g), k(b));
+    cena.limpar(projecoes);
+    const P = [k(r), k(g), k(b)], fino = 0.025;
+    projecoes.add(cena.haste(P, [P[0], 0, P[2]], fino, COR.cinzaEscuro), cena.haste([P[0], 0, P[2]], [P[0], 0, 0], fino, '#c8323f'), cena.haste([P[0], 0, P[2]], [0, 0, P[2]], fino, '#2a55c8'), cena.haste(P, [0, P[1], P[2]], fino, '#1f8a4c'));
+    if (modo === 'fatia') desenhaFatia(r);
+    cena.descrever(`Cubo das cores RGB com eixos vermelho, verde e azul. A cor escolhida, ${h}, está no ponto R ${r}, G ${g}, B ${b}.` + (modo === 'fatia' ? ` Uma fatia corta o cubo em R ${r} e mostra todas as cores com esse vermelho.` : ''));
+  }
+}
+
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+/* ---------- desafio ---------- */
+function sorteia() {
+  const q = () => [0, 64, 128, 192, 255][Math.floor(Math.random() * 5)];
+  do { alvo = [q(), q(), q()]; } while (alvo[0] === alvo[1] && alvo[1] === alvo[2]);
+  $('#alvo').style.background = hexCor(...alvo);
+  if (alvoMesh) alvoMesh.visible = false;
+  $('#fb').className = 'feedback'; $('#fb').textContent = 'Nova cor sorteada. Ajuste R, G e B até chegar perto dela e clique em Conferir.';
+}
+function conferir() {
+  const d = Math.hypot(cor[0] - alvo[0], cor[1] - alvo[1], cor[2] - alvo[2]);
+  rodadas++;
+  if (alvoMesh) { alvoMesh.position.set(k(alvo[0]), k(alvo[1]), k(alvo[2])); alvoMesh.visible = true; cena.pedeQuadro(); }
+  if (d <= 45) {
+    acertos++;
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = `Acertou! A cor era ${hexCor(...alvo)} (R ${alvo[0]}, G ${alvo[1]}, B ${alvo[2]}); sua distância no cubo foi ${Math.round(d)}.`;
+    if (acertos >= 3) marca(2);
+    setTimeout(sorteia, 2200);
+  } else {
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = `Ainda longe: distância ${Math.round(d)} no cubo (precisa ficar até 45). A malha preta mostra onde está a cor.`;
+  }
+  $('#placar').textContent = `Acertos: ${acertos} de ${rodadas} tentativas.`;
+}
+function dica() {
+  const nomes = ['R', 'G', 'B'];
+  const i = [0, 1, 2].sort((a, b) => Math.abs(cor[b] - alvo[b]) - Math.abs(cor[a] - alvo[a]))[0];
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = `Dica: o valor de ${nomes[i]} precisa ${cor[i] < alvo[i] ? 'subir' : 'descer'}.`;
+}
+
+/* ---------- controles ---------- */
+['r', 'g', 'b'].forEach((id, i) => $('#' + id).addEventListener('input', e => { cor[i] = +e.target.value; $('#l' + id).textContent = cor[i]; atualiza(); }));
+document.querySelectorAll('[data-modo]').forEach(bt => bt.addEventListener('click', () => {
+  modo = bt.dataset.modo;
+  document.querySelectorAll('[data-modo]').forEach(x => x.setAttribute('aria-pressed', x === bt));
+  $('#caixa-alvo').hidden = $('#conferir').hidden = $('#dica').hidden = modo !== 'desafio';
+  if (fatia) fatia.visible = modo === 'fatia';
+  if (nuvem && modo !== 'explorar') { nuvem.visible = false; $('#nuvem').textContent = 'Mostrar a nuvem de cores'; }
+  if (alvoMesh) alvoMesh.visible = false;
+  if (modo === 'desafio') sorteia();
+  else { $('#fb').className = 'feedback'; $('#fb').textContent = modo === 'fatia' ? 'Mexa no R para mover a fatia pelo cubo.' : ''; }
+  atualiza();
+}));
+$('#nuvem').onclick = () => {
+  if (!nuvem) return;
+  nuvem.visible = !nuvem.visible;
+  $('#nuvem').textContent = nuvem.visible ? 'Esconder a nuvem de cores' : 'Mostrar a nuvem de cores';
+  $('#nuvem').setAttribute('aria-pressed', nuvem.visible);
+  cena.pedeQuadro();
+};
+$('#conferir').onclick = conferir;
+$('#dica').onclick = dica;
+define(cor);
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

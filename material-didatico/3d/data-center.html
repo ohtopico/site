@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Center por Dentro · Laboratório 3D | ohtopico</title>
+<meta name="description" content="Um data center que treina IA em 3D: racks, servidores, corredores frio e quente, refrigeração e energia. Ligue servidores, troque o tipo de resfriamento e a temperatura e veja o consumo de energia e de água. BNCC EF06CO10, EF07CO10, EF09CO08.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/data-center.html">
+<meta property="og:title" content="Data Center por Dentro · Laboratório 3D">
+<meta property="og:description" content="Um data center que treina IA em 3D: racks, servidores, corredores frio e quente, refrigeração e energia. Ligue servidores, troque o tipo de resfriamento e a temperatura e veja o consumo de energia e de água. BNCC EF06CO10, EF07CO10, EF09CO08.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/data-center.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>O prédio:</strong> os armários pretos são os racks, cheios de servidores com placas de vídeo que treinam e rodam modelos de IA. O ar frio entra pelo corredor do meio, atravessa os servidores e sai quente pelos corredores de trás. Lá fora ficam a refrigeração e a energia de reserva. Clique em cada parte (ou escolha na lista) para saber o que ela faz.</p>
+    <p><strong>Experimente:</strong> ligue mais servidores, troque o tipo de resfriamento e mude a temperatura do corredor frio. O painel calcula a energia e a água gastas por dia, com valores aproximados para estudo.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <label for="parte" style="display:block;font-weight:500;margin:12px 0 4px">Conhecer uma parte</label>
+        <select id="parte" style="width:100%;min-height:40px;border:1.5px solid var(--ink);border-radius:12px;padding:4px 10px;background:var(--paper)"></select>
+        <div class="conta" id="info" style="white-space:normal;font-family:inherit"></div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <label for="n">Servidores de IA ligados: <b id="ln">32</b> de 48</label>
+          <input type="range" id="n" min="0" max="48" value="32">
+          <label>Resfriamento</label>
+          <div class="seg" role="group" aria-label="Tipo de resfriamento" style="display:flex">
+            <button type="button" data-res="ar" aria-pressed="true">Ar</button>
+            <button type="button" data-res="agua" aria-pressed="false">Água</button>
+            <button type="button" data-res="liquido" aria-pressed="false">Líquido</button>
+          </div>
+          <label for="temp">Temperatura do corredor frio: <b id="ltemp">20</b> °C</label>
+          <input type="range" id="temp" min="16" max="30" value="20">
+          <p class="grande" id="res"></p>
+          <div class="conta" id="conta"></div>
+          <p class="small muted">Valores aproximados para estudo, com base em médias divulgadas pelo setor (servidor de IA de cerca de 6 kW, PUE e consumo de água por tipo de resfriamento). Data centers reais variam bastante.</p>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Conheça pelo menos 5 partes do data center.</li>
+            <li data-d="1">Com os 48 servidores ligados, encontre a configuração que gasta menos energia sem esquentar demais os servidores.</li>
+            <li data-d="2">Teste os três tipos de resfriamento e descubra qual gasta mais água e qual gasta mais energia.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> treinar e usar modelos de IA exige muitos servidores com placas de vídeo, que consomem energia e viram calor. Para medir a eficiência, o setor usa o PUE (energia total do prédio dividida pela energia dos computadores; quanto mais perto de 1, melhor) e o WUE (litros de água por kWh). Resfriamento com torre de água gasta menos energia, mas evapora muita água; o resfriamento a ar gasta pouca água, mas mais energia; o líquido direto no chip melhora as duas coisas. Subir a temperatura do corredor frio até o limite recomendado (cerca de 27 °C) também economiza energia.</p>
+    <p><strong>Metodologia sugerida:</strong> aprendizagem baseada em problemas. Problema da turma: “Uma empresa quer construir um data center de IA na nossa região. Que perguntas a cidade deveria fazer antes de aprovar?”. Os grupos usam a página para levantar números e preparam uma recomendação.</p>
+    <ul>
+      <li>Por que o ar quente e o ar frio ficam separados em corredores? O que aconteceria se se misturassem?</li>
+      <li>Na nossa região há falta de água em algum período do ano? Que tipo de resfriamento faria mais sentido aqui?</li>
+      <li>De onde vem a energia elétrica do RS? Como isso muda o impacto de um data center? (EF06CO10.)</li>
+      <li>Para onde vão os servidores quando ficam velhos? (EF07CO10, descarte de eletrônicos.)</li>
+      <li>Por que a maior parte dos data centers de IA fica em poucos países? Quem fica sem acesso? (EF09CO08.)</li>
+    </ul>
+    <p class="small muted">Habilidades: EF06CO10, EF07CO10 e EF09CO08. Conversa com o simulador da placa-mãe em 3D. Os números são aproximados e servem para comparar cenários, não para projetar um data center.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-data-center');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-data-center';
+const fint = n => Math.round(n).toLocaleString('pt-BR');
+const f2 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const KW_SERVIDOR = 6;          // servidor de IA com placas de vídeo
+const RESF = {
+  ar: { nome: 'ar refrigerado (chiller seco)', pue: 1.5, wue: 0.1 },
+  agua: { nome: 'torre de resfriamento com água', pue: 1.25, wue: 1.8 },
+  liquido: { nome: 'líquido direto no chip', pue: 1.12, wue: 0.2 }
+};
+const CASA_KWH_DIA = 5.3;       // ~160 kWh por mês numa casa brasileira
+const PESSOA_L_DIA = 150;       // ~150 litros por pessoa por dia
+const PARTES = {
+  rack: ['Rack', 'Armário de metal onde os servidores ficam empilhados. Cada rack desta sala guarda 8 servidores de IA e pode puxar perto de 50 kW, o consumo de dezenas de casas.'],
+  servidor: ['Servidor de IA', 'Computador com várias placas de vídeo (GPUs), muito boas para fazer as multiplicações de matrizes das redes neurais. A luz verde mostra que ele está ligado. Quase toda a energia que ele usa vira calor.'],
+  frio: ['Corredor frio', 'O ar frio sai pelo piso e entra pela frente dos servidores. A temperatura recomendada para a entrada fica entre 18 e 27 °C: abaixo disso gasta energia à toa, acima disso os servidores podem esquentar demais.'],
+  quente: ['Corredor quente', 'O ar sai quente pela parte de trás dos racks e é levado de volta para a refrigeração. Separar o ar quente do frio é uma das formas mais baratas de economizar energia.'],
+  crah: ['Unidade de ar da sala', 'Equipamento que puxa o ar quente, passa por serpentinas com água gelada e devolve o ar frio para o piso.'],
+  externo: ['Resfriamento externo', 'Leva o calor para fora do prédio. A torre de resfriamento evapora água (gasta pouca energia e muita água); o chiller seco usa ventiladores e compressores (gasta mais energia e quase nenhuma água).'],
+  energia: ['Nobreak e gerador', 'Baterias (nobreak) seguram a energia por alguns minutos se faltar luz, até o gerador a diesel ligar. Um data center não pode desligar de repente.'],
+  rede: ['Cabos de rede (fibra óptica)', 'Ligam os servidores entre si e à internet. No treino de IA, centenas de servidores trocam dados o tempo todo, por isso a rede é rápida e fica por cima dos racks.']
+};
+let n = 32, res = 'ar', temp = 20;
+const vistos = new Set(), resTestados = new Set(), feitos = new Set();
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [7, 10, 15], alvo: [0, 1, -1.5], min: 5, max: 40, chaoTam: 60 });
+botoesCamera(cena);
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([9, 13, 19], [0, 1, -1.5]);
+const T = cena && cena.THREE;
+const leds = [];
+let externo, vapor, ar;
+if (cena) {
+  // piso e paredes baixas
+  const piso = cena.bloco(12, 0.15, 9, '#e6e6e1', { base: false, bordas: true }); piso.position.set(0, 0.075, 0); cena.add(piso);
+  const piso2 = cena.bloco(1.6, 0.02, 7.2, COR.verdeClaro, { base: false, bordas: false }); piso2.position.set(0, 0.16, 0); cena.add(piso2);
+  cena.clicavel(piso2, () => mostra('frio'));
+  // racks: duas fileiras de 3, frentes viradas para o corredor frio (x = 0)
+  const geoLed = new T.SphereGeometry(0.05, 8, 6);
+  [-1, 1].forEach(lado => {
+    for (let i = 0; i < 3; i++) {
+      const z = -2.4 + i * 2.4, x = lado * 1.45;
+      const rack = cena.bloco(1, 2.6, 1.6, '#2a2a28', { base: false }); rack.position.set(x, 1.45, z); cena.add(rack);
+      cena.clicavel(rack, () => mostra('rack'));
+      for (let s = 0; s < 8; s++) {
+        const sv = cena.bloco(0.04, 0.24, 1.4, '#4a4a46', { base: false, bordas: false }); sv.position.set(x - lado * 0.52, 0.42 + s * 0.3, z); cena.add(sv);
+        cena.clicavel(sv, () => mostra('servidor'));
+        const led = new T.Mesh(geoLed, new T.MeshBasicMaterial({ color: COR.verde })); led.position.set(x - lado * 0.55, 0.42 + s * 0.3, z + 0.55); cena.add(led);
+        leds.push(led);
+      }
+      // corredor quente atrás
+    }
+    const q = cena.bloco(1.2, 0.02, 7.2, COR.vermelhoClaro, { base: false, bordas: false }); q.position.set(lado * 2.75, 0.16, 0); cena.add(q);
+    cena.clicavel(q, () => mostra('quente'));
+    // unidades de ar nas laterais da sala
+    const crah = cena.bloco(1, 2.2, 1.4, COR.cinza, { base: false }); crah.position.set(lado * 5, 1.25, -3.2); cena.add(crah);
+    const grade = cena.bloco(0.04, 1.4, 1, COR.cinzaEscuro, { base: false, bordas: false }); grade.position.set(lado * 4.48, 1.35, -3.2); cena.add(grade);
+    cena.clicavel(crah, () => mostra('crah'));
+  });
+  // bandeja de cabos de rede por cima
+  [-1.45, 1.45].forEach(x => { const b = cena.bloco(0.5, 0.12, 7.4, COR.amarelo, { base: false }); b.position.set(x, 3.05, 0); cena.add(b); cena.clicavel(b, () => mostra('rede')); });
+  const ponte = cena.bloco(2.9, 0.12, 0.4, COR.amarelo, { base: false }); ponte.position.set(0, 3.05, 3.3); cena.add(ponte); cena.clicavel(ponte, () => mostra('rede'));
+  // energia: nobreak e gerador
+  const ups = cena.bloco(1.6, 1.4, 1, COR.verdeEscuro, { base: false }); ups.position.set(-3.4, 0.85, -5.3); cena.add(ups); cena.clicavel(ups, () => mostra('energia'));
+  const ger = cena.bloco(2.4, 1.4, 1.2, COR.amarelo, { base: false }); ger.position.set(-3.6, 0.7, -7.2); cena.add(ger); cena.clicavel(ger, () => mostra('energia'));
+  // resfriamento externo (troca conforme o tipo)
+  externo = new T.Group(); externo.position.set(3.6, 0, -6.9); cena.add(externo);
+  // ar em movimento: bolinhas que sobem do corredor frio, atravessam os racks e voltam pelo corredor quente
+  const N_AR = 90;
+  ar = new T.InstancedMesh(new T.SphereGeometry(0.07, 8, 6), new T.MeshBasicMaterial({ color: 0xffffff }), N_AR);
+  ar.userData.fase = Array.from({ length: N_AR }, (_, i) => ({ t: i / N_AR, z: -3.2 + Math.random() * 6.4, lado: i % 2 ? 1 : -1 }));
+  cena.add(ar);
+  const m4 = new T.Matrix4(), c = new T.Color(), cf = new T.Color(COR.verdeClaro), cq = new T.Color(COR.vermelho);
+  const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t0 = performance.now();
+  cena.loop(now => {
+    const dt = reduz ? 0 : (now - t0) / 1000; t0 = now;
+    const vel = 0.08 + 0.32 * n / 48;
+    ar.userData.fase.forEach((f, i) => {
+      f.t = (f.t + dt * vel) % 1;
+      const t = f.t;
+      let x, y;
+      // 0–0.3: sobe no corredor frio; 0.3–0.55: atravessa o rack; 0.55–1: sobe e volta pelo teto
+      if (t < 0.3) { x = f.lado * 0.25; y = 0.25 + t / 0.3 * 1.8; }
+      else if (t < 0.55) { x = f.lado * (0.25 + (t - 0.3) / 0.25 * 2.4); y = 2.05; }
+      else { x = f.lado * 2.65; y = 2.05 + (t - 0.55) / 0.45 * 1.4; }
+      m4.makeTranslation(x, y, f.z); ar.setMatrixAt(i, m4);
+      c.copy(cf).lerp(cq, Math.min(1, Math.max(0, (t - 0.32) / 0.25)));
+      ar.setColorAt(i, c);
+    });
+    ar.instanceMatrix.needsUpdate = true; if (ar.instanceColor) ar.instanceColor.needsUpdate = true;
+    // vapor da torre
+    if (vapor) vapor.children.forEach((p, i) => { p.position.y = 3.2 + ((now / 1600 + i / vapor.children.length) % 1) * 1.6; p.material.opacity = 0.5 * (1 - ((now / 1600 + i / vapor.children.length) % 1)); });
+    return !reduz && n > 0;
+  });
+  // nomes
+  [['Corredor frio', [0, 0.6, 4.4]], ['Corredor quente', [2.75, 0.6, 4.4]], ['Refrigeração', [3.6, 3.6, -8.6]], ['Energia', [-3.6, 2.2, -8.4]]].forEach(([t, p]) => { const r = cena.rotulo(t, { tam: 0.4 }); r.position.set(...p); cena.add(r); });
+}
+
+function montaExterno() {
+  if (!cena) return;
+  cena.limpar(externo); vapor = null;
+  if (res === 'agua') {
+    const torre = cena.cilindro(1.1, 2.6, COR.cinza, { rTopo: 0.8 }); externo.add(torre); cena.clicavel(torre, () => mostra('externo'));
+    vapor = new T.Group();
+    for (let i = 0; i < 8; i++) { const p = new T.Mesh(new T.SphereGeometry(0.35, 12, 8), new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4, depthWrite: false })); p.position.set((i % 3 - 1) * 0.3, 3.2, (i % 2 - 0.5) * 0.4); vapor.add(p); }
+    externo.add(vapor);
+  } else if (res === 'ar') {
+    for (let i = 0; i < 3; i++) {
+      const ch = cena.bloco(1, 1, 1.6, COR.cinza, { base: false }); ch.position.set((i - 1) * 1.15, 0.5, 0); externo.add(ch); cena.clicavel(ch, () => mostra('externo'));
+      const v = cena.cilindro(0.38, 0.06, COR.cinzaEscuro); v.position.set((i - 1) * 1.15, 1, 0); externo.add(v);
+    }
+  } else {
+    const tq = cena.bloco(2.4, 1.2, 1.4, COR.verde, { base: false }); tq.position.y = 0.6; externo.add(tq); cena.clicavel(tq, () => mostra('externo'));
+    const cano = cena.haste([-0.8, 1.2, 0], [-0.8, 0.9, -1.6], 0.14, COR.verdeEscuro); externo.add(cano);
+  }
+  cena.pedeQuadro();
+}
+
+function mostra(chave) {
+  const [t, d] = PARTES[chave];
+  $('#info').innerHTML = `<strong>${t}.</strong> ${d}`;
+  $('#parte').value = chave;
+  vistos.add(chave);
+  if (vistos.size >= 5) marca(0);
+}
+
+function calcula() {
+  const r = RESF[res];
+  const ti = n * KW_SERVIDOR;
+  // cada grau a mais no corredor frio economiza cerca de 3% da energia de refrigeração (de 18 °C em diante)
+  const fatorTemp = Math.max(0.7, 1 - 0.03 * (Math.min(temp, 27) - 18));
+  const extra = (r.pue - 1) * fatorTemp;
+  const pue = 1 + extra;
+  const total = ti * pue;
+  const kwhDia = total * 24;
+  const aguaDia = ti * 24 * r.wue;
+  return { ti, pue, total, kwhDia, aguaDia };
+}
+function atualiza() {
+  const c = calcula(), base = n * KW_SERVIDOR * (1 + (RESF.ar.pue - 1) * (1 - 0.03 * 2)) * 24;
+  const quente = temp > 27, frio = temp < 18;
+  $('#res').textContent = `PUE ${f2(c.pue)}`;
+  const economia = base > 0 ? (1 - c.kwhDia / base) * 100 : 0;
+  $('#conta').textContent =
+    `Computadores:  ${fint(c.ti)} kW\nPrédio todo:   ${fint(c.total)} kW\nEnergia/dia:   ${fint(c.kwhDia)} kWh\n  ≈ ${fint(c.kwhDia / CASA_KWH_DIA)} casas num dia\nÁgua/dia:      ${fint(c.aguaDia)} litros\n  ≈ ${fint(c.aguaDia / PESSOA_L_DIA)} pessoas num dia` +
+    (economia > 0.5 ? `\n\nEconomia de energia: ${fint(economia)}%\n(comparado ao ar a 20 °C)` : '');
+  if (quente) { $('#fb').className = 'feedback bad'; $('#fb').textContent = `A ${temp} °C o ar de entrada passa do limite recomendado (cerca de 27 °C): os servidores podem esquentar e reduzir a velocidade.`; }
+  else if (frio) { $('#fb').className = 'feedback'; $('#fb').textContent = `Abaixo de 18 °C a sala fica mais fria do que precisa, e a refrigeração gasta energia à toa.`; }
+  else { $('#fb').className = 'feedback ok'; $('#fb').textContent = `Resfriamento por ${RESF[res].nome}, ar de entrada a ${temp} °C: dentro da faixa recomendada.`; }
+  leds.forEach((l, i) => l.material.color.set(i < n ? COR.verde : COR.cinzaEscuro));
+  if (ar) ar.visible = n > 0;
+  if (n === 48 && res === 'liquido' && temp === 27) marca(1);
+  resTestados.add(res); if (resTestados.size === 3) marca(2);
+  cena && (cena.pedeQuadro(), cena.descrever(`Data center em 3D com 6 racks em duas fileiras, corredor frio no meio e corredores quentes atrás. ${n} de 48 servidores ligados, resfriamento por ${RESF[res].nome}, ar de entrada a ${temp} °C. Consumo aproximado de ${fint(c.kwhDia)} kWh e ${fint(c.aguaDia)} litros de água por dia.`));
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+$('#parte').innerHTML = Object.entries(PARTES).map(([k, [t]]) => `<option value="${k}">${t}</option>`).join('');
+$('#parte').addEventListener('change', e => mostra(e.target.value));
+$('#n').addEventListener('input', e => { n = +e.target.value; $('#ln').textContent = n; atualiza(); });
+$('#temp').addEventListener('input', e => { temp = +e.target.value; $('#ltemp').textContent = temp; atualiza(); });
+document.querySelectorAll('[data-res]').forEach(b => b.addEventListener('click', () => {
+  res = b.dataset.res; document.querySelectorAll('[data-res]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  montaExterno(); mostra('externo'); atualiza();
+}));
+montaExterno();
+mostra('servidor');
+atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Montanha do Erro: Descida do Gradiente · Laboratório 3D | ohtopico</title>
+<meta name="description" content="A descida do gradiente em 3D: uma bolinha desce a superfície do erro como uma IA aprendendo. Mude a taxa de aprendizado e a semente e veja quando ela chega ao vale, pula o vale ou fica presa. 9º ano, Ensino Médio e Superior.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/montanha-erro.html">
+<meta property="og:title" content="Montanha do Erro: Descida do Gradiente · Laboratório 3D">
+<meta property="og:description" content="A descida do gradiente em 3D: uma bolinha desce a superfície do erro como uma IA aprendendo. Mude a taxa de aprendizado e a semente e veja quando ela chega ao vale, pula o vale ou fica presa. 9º ano, Ensino Médio e Superior.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/montanha-erro.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A montanha:</strong> a altura de cada ponto é o erro de um modelo de IA com aquelas configurações. Embaixo (verde) o modelo erra pouco; em cima (vermelho) erra muito. Aprender é descer a montanha.</p>
+    <p><strong>A bolinha:</strong> a cada passo ela olha a inclinação do chão onde está (o gradiente) e anda morro abaixo. A <em>taxa de aprendizado</em> é o tamanho do passo. A <em>semente</em> sorteia o ponto de partida; você também pode clicar na montanha para escolher onde começar.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima (mapa)</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="passo">Dar um passo</button>
+          <button class="btn" type="button" id="descer">Descer 40 passos</button>
+          <button class="btn ghost" type="button" id="recomecar">Recomeçar</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <label for="lr">Taxa de aprendizado: <b id="llr">0,30</b></label>
+          <input type="range" id="lr" min="0.02" max="3" step="0.02" value="0.3">
+          <label for="seed">Semente (seed) do ponto de partida</label>
+          <input type="number" id="seed" min="1" max="9999" value="3">
+          <p class="grande" id="res"></p>
+          <div class="conta" id="conta"></div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>erro baixo (o vale)</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>erro médio</li>
+            <li><span class="sw" style="background:#c8323f"></span>erro alto</li>
+            <li><span class="sw" style="background:#ffffff"></span>a bolinha e o caminho dela</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Leve a bolinha até o vale mais fundo da montanha.</li>
+            <li data-d="1">Encontre uma semente em que a bolinha para num vale raso, que não é o mais fundo.</li>
+            <li data-d="2">Aumente a taxa de aprendizado até a bolinha pular o vale e o erro subir.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> treinar uma rede neural é ajustar milhões de números (os pesos) para diminuir o erro. Aqui são só dois números, x e y, e por isso o erro vira uma paisagem que dá para ver. O gradiente é a direção de maior subida; andar no sentido contrário, multiplicado pela taxa de aprendizado, é a descida do gradiente: <code>novo ponto = ponto − taxa × gradiente</code>.</p>
+    <p><strong>Metodologia sugerida:</strong> experimentação orientada em duplas, com registro em tabela. Cada dupla testa três taxas de aprendizado e três sementes, anota o erro final e o número de passos, e a turma compara os resultados.</p>
+    <ul>
+      <li>Com taxa 0,05 e com taxa 0,3, quantos passos a bolinha precisa para parar? Por que passos pequenos demais também são um problema?</li>
+      <li>Por que a bolinha às vezes para num vale que não é o mais fundo? Como a pessoa que treina a IA poderia perceber isso? (Testar várias sementes.)</li>
+      <li>Para o 9º ano: a altura é uma função de duas variáveis. Escolha um caminho reto na vista de cima e descreva como o erro muda ao longo dele (EF09MA06).</li>
+      <li>Para o Ensino Médio e o Superior: por que se usa taxa de aprendizado decrescente, ou otimizadores como momentum e Adam? Continue no simulador <a href="../../simuladores/rede-neural.html">Treino de rede neural</a>.</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO07 e EF09MA06; no Superior, aprendizado de máquina e cálculo (derivadas parciais). Material concreto equivalente: uma bacia ou um lençol esticado com uma bolinha de gude, ou uma maquete de papelão com curvas de nível.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-montanha-erro');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-montanha-erro';
+const f2 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const LIM = 5;
+
+/* Função de erro com um vale fundo, um vale raso e pequenas ondulações */
+const g = (x, y, cx, cy, s) => Math.exp(-((x - cx) ** 2 + (y - cy) ** 2) / s);
+const erro = (x, y) => 3 + 0.05 * (x * x + y * y) - 2.4 * g(x, y, 2, 1.4, 2.2) - 1.7 * g(x, y, -2.4, -2.2, 1.8) + 0.18 * Math.sin(1.4 * x) * Math.cos(1.2 * y);
+const grad = (x, y) => { const h = 1e-4; return [(erro(x + h, y) - erro(x - h, y)) / (2 * h), (erro(x, y + h) - erro(x, y - h)) / (2 * h)]; };
+let MIN = Infinity, MAX = -Infinity;
+for (let i = 0; i <= 200; i++) for (let j = 0; j <= 200; j++) { const v = erro(-LIM + i / 20, -LIM + j / 20); MIN = Math.min(MIN, v); MAX = Math.max(MAX, v); }
+const ESC = 0.8; // escala vertical
+const alt = (x, y) => (erro(x, y) - MIN) * ESC;
+
+function prng(seed) { let s = (seed * 2654435761) >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+
+let lr = 0.3, seed = 3, p = [0, 0], passos = 0, caminho = [], parado = false, ocupado = false;
+const feitos = new Set();
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [6, 15, 12], alvo: [0, 1.2, 0.6], min: 5, max: 40, chao: false });
+botoesCamera(cena);
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([8, 19, 16], [0, 1.2, 0.6]);
+const T = cena && cena.THREE;
+let bola, trilha, sup;
+if (cena) {
+  const N = 90;
+  const geo = new T.PlaneGeometry(LIM * 2, LIM * 2, N, N);
+  geo.rotateX(-Math.PI / 2);
+  const pos = geo.attributes.position, cores = [];
+  const cv = new T.Color(COR.verde), ca = new T.Color(COR.amarelo), cr = new T.Color(COR.vermelho), c = new T.Color();
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    pos.setY(i, alt(x, z));
+    const t = Math.pow((erro(x, z) - MIN) / (MAX - MIN), 0.75);
+    if (t < 0.5) c.copy(cv).lerp(ca, t / 0.5); else c.copy(ca).lerp(cr, (t - 0.5) / 0.5);
+    cores.push(c.r, c.g, c.b);
+  }
+  geo.setAttribute('color', new T.Float32BufferAttribute(cores, 3));
+  geo.computeVertexNormals();
+  sup = new T.Mesh(geo, new T.MeshStandardMaterial({ vertexColors: true, roughness: 0.75, side: T.FrontSide }));
+  sup.receiveShadow = true;
+  cena.add(sup);
+  // linhas de grade sobre a superfície (a cada 1 unidade)
+  const linhas = [];
+  for (let k = -LIM; k <= LIM; k += 1) {
+    for (let s = -LIM; s < LIM; s += 0.1) {
+      linhas.push(k, alt(k, s) + 0.02, s, k, alt(k, s + 0.1) + 0.02, s + 0.1);
+      linhas.push(s, alt(s, k) + 0.02, k, s + 0.1, alt(s + 0.1, k) + 0.02, k);
+    }
+  }
+  const gl = new T.BufferGeometry(); gl.setAttribute('position', new T.Float32BufferAttribute(linhas, 3));
+  cena.add(new T.LineSegments(gl, new T.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.18 })));
+  bola = new T.Mesh(new T.SphereGeometry(0.28, 32, 20), new T.MeshStandardMaterial({ color: '#ffffff', roughness: 0.3 }));
+  bola.castShadow = true; cena.comBordas(bola, 60);
+  cena.add(bola);
+  trilha = new T.Line(new T.BufferGeometry(), new T.LineBasicMaterial({ color: '#ffffff' }));
+  cena.add(trilha);
+  cena.clicavel(sup, (_, ponto) => { if (!ocupado) inicia([ponto.x, ponto.z], 'Ponto de partida escolhido na montanha.'); });
+  const rx = cena.rotulo('configuração x', { tam: 0.45 }); rx.position.set(0, 3.2, LIM + 0.6); cena.add(rx);
+  const rz = cena.rotulo('configuração y', { tam: 0.45 }); rz.position.set(LIM + 0.6, 3.2, 0); cena.add(rz);
+  const re = cena.rotulo('erro', { tam: 0.45, fundo: '#fff36b' }); re.position.set(-LIM, (MAX - MIN) * ESC + 0.6, -LIM); cena.add(re);
+  cena.add(cena.haste([-LIM, 0, -LIM], [-LIM, (MAX - MIN) * ESC + 0.2, -LIM], 0.05, COR.tinta));
+}
+
+function poeBola() {
+  if (!cena) return;
+  bola.position.set(p[0], alt(p[0], p[1]) + 0.28, p[1]);
+  trilha.geometry.dispose();
+  trilha.geometry = new T.BufferGeometry().setFromPoints(caminho.map(([x, y]) => new T.Vector3(x, alt(x, y) + 0.06, y)));
+  cena.pedeQuadro();
+}
+
+function inicia(ponto, msg) {
+  p = ponto.slice(); passos = 0; caminho = [p.slice()]; parado = false;
+  $('#fb').className = 'feedback'; $('#fb').textContent = msg || '';
+  poeBola(); painel();
+}
+function partidaDaSemente() { const r = prng(seed); return [-4.4 + r() * 8.8, -4.4 + r() * 8.8]; }
+
+function painel(extra = '') {
+  const e = erro(...p), [gx, gy] = grad(...p), n = Math.hypot(gx, gy);
+  $('#res').textContent = `Erro: ${f2(e)}`;
+  $('#conta').textContent = `Passo ${passos}\nposição  x = ${f2(p[0])}   y = ${f2(p[1])}\ninclinação (gradiente) = (${f2(gx)}; ${f2(gy)})\ntamanho da inclinação = ${f2(n)}\nmenor erro da montanha = ${f2(MIN)}` + (extra ? '\n\n' + extra : '');
+  cena && cena.descrever(`Superfície do erro vista em 3D, com um vale fundo verde e um vale raso. A bolinha está no passo ${passos}, na posição x ${f2(p[0])}, y ${f2(p[1])}, com erro ${f2(e)}. O menor erro possível é ${f2(MIN)}.`);
+}
+
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+function umPasso() {
+  if (parado) return false;
+  const e0 = erro(...p), [gx, gy] = grad(...p);
+  const novo = [p[0] - lr * gx, p[1] - lr * gy];
+  const conta = `Conta do passo:\nx = ${f2(p[0])} − ${f2(lr)} × ${f2(gx)} = ${f2(novo[0])}\ny = ${f2(p[1])} − ${f2(lr)} × ${f2(gy)} = ${f2(novo[1])}`;
+  if (Math.abs(novo[0]) > LIM || Math.abs(novo[1]) > LIM) {
+    parado = true;
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = 'O passo foi tão grande que a bolinha saiu da montanha: o treino “explodiu”. Diminua a taxa de aprendizado.';
+    marca(2); painel(conta); return false;
+  }
+  p = novo; passos++; caminho.push(p.slice());
+  const e1 = erro(...p), n = Math.hypot(...grad(...p));
+  poeBola(); painel(conta);
+  if (e1 > e0 + 1e-6) {
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = `O erro subiu de ${f2(e0)} para ${f2(e1)}: o passo foi grande demais e a bolinha pulou o vale.`;
+    marca(2);
+  } else {
+    $('#fb').className = 'feedback'; $('#fb').textContent = `Passo ${passos}: o erro caiu para ${f2(e1)}.`;
+  }
+  if (n < 0.02 || Math.abs(e1 - e0) < 1e-5) {
+    parado = true;
+    const fundo = e1 - MIN < 0.08;
+    $('#fb').className = 'feedback ok';
+    $('#fb').textContent = fundo
+      ? `A bolinha parou no vale mais fundo em ${passos} passos. Erro final: ${f2(e1)}.`
+      : `A bolinha parou num vale raso (erro ${f2(e1)}). Ela aprendeu, mas não achou o melhor ponto. Tente outra semente.`;
+    marca(fundo ? 0 : 1);
+    return false;
+  }
+  return true;
+}
+
+const espera = ms => new Promise(r => setTimeout(r, ms));
+async function descer() {
+  if (ocupado) return;
+  ocupado = true; $('#descer').disabled = $('#passo').disabled = true;
+  for (let i = 0; i < 40; i++) { if (!umPasso()) break; await espera(matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 110); }
+  ocupado = false; $('#descer').disabled = $('#passo').disabled = false;
+}
+
+$('#lr').addEventListener('input', e => { lr = +e.target.value; $('#llr').textContent = f2(lr); });
+$('#seed').addEventListener('change', e => { seed = Math.max(1, +e.target.value || 1); inicia(partidaDaSemente(), `Semente ${seed}: novo ponto de partida.`); });
+$('#passo').onclick = () => { if (!ocupado) umPasso(); };
+$('#descer').onclick = descer;
+$('#recomecar').onclick = () => inicia(partidaDaSemente(), 'De volta ao ponto de partida desta semente.');
+inicia(partidaDaSemente());
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

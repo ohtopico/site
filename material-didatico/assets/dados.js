@@ -99,6 +99,7 @@ const HABILIDADES_RAW = [
   ['EF08MA06', 8, 'AL', 'Valor numérico', 'Resolver e elaborar problemas que envolvam o cálculo do valor numérico de expressões algébricas, usando as propriedades das operações.'],
   ['EF08MA08', 8, 'AL', 'Sistemas de equações', 'Resolver e elaborar problemas do contexto próximo representados por sistemas de equações de 1º grau com duas incógnitas.'],
   ['EF08MA10', 8, 'AL', 'Sequências', 'Identificar a regularidade de uma sequência não recursiva e construir um fluxograma que indique os próximos termos.'],
+  ['EF09MA06', 9, 'AL', 'Funções', 'Compreender as funções como relações de dependência unívoca entre duas variáveis e suas representações numérica, algébrica e gráfica, e utilizar esse conceito para analisar situações que envolvam relações funcionais entre duas variáveis.'],
   ['EF08MA22', 8, 'PE', 'Probabilidade', 'Calcular a probabilidade de eventos com base no espaço amostral, usando o princípio multiplicativo.'],
   // ---------- Matemática · oficinas (textos oficiais da BNCC) ----------
   ['EF06MA01', 6, 'NU', 'Sistema de numeração decimal', 'Comparar, ordenar, ler e escrever números naturais e números racionais cuja representação decimal é finita, fazendo uso da reta numérica.'],
@@ -326,6 +327,35 @@ const RECURSOS = [
     habs: ['EF06MA17', 'EF06MA18', 'EF06MA19', 'EF06MA20', 'EF07MA27'], tempo: '15–20 min',
     resumo: 'Polígonos, prismas, pirâmides, poliedros de Platão e corpos redondos com faces transparentes: todas as arestas aparecem, as escondidas em tracejado. Conte vértices, arestas, faces, diagonais e ângulos.',
     url: '3d/figuras.html', plano: null, ficha: null },
+  // ---------- Laboratório 3D de IA, dados e computação ----------
+  { id: '3d-rede-neural', tipo: '3d', titulo: 'Rede Neural por Dentro', comp: ['CO'], anos: [9],
+    habs: ['EF09CO07', 'EF06CO05'], tempo: '20 min',
+    resumo: 'Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.',
+    url: '3d/rede-neural.html', plano: null, ficha: null },
+  { id: '3d-montanha-erro', tipo: '3d', titulo: 'Montanha do Erro: Descida do Gradiente', comp: ['CO', 'MA'], anos: [9],
+    habs: ['EF09CO07', 'EF09MA06'], tempo: '15 min',
+    resumo: 'Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.',
+    url: '3d/montanha-erro.html', plano: null, ficha: null },
+  { id: '3d-cubo-rgb', tipo: '3d', titulo: 'Cubo das Cores RGB', comp: ['CO'], anos: [4, 5, 6, 7],
+    habs: ['EF04CO05', 'EF04CO04', 'EF07CO01'], tempo: '15 min',
+    resumo: 'Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.',
+    url: '3d/cubo-rgb.html', plano: null, ficha: null },
+  { id: '3d-agrupamento', tipo: '3d', titulo: 'Nuvem de Pontos e Agrupamento', comp: ['CO', 'MA'], anos: [6, 9],
+    habs: ['EF06CO01', 'EF09CO07', 'EF09MA22'], tempo: '20 min',
+    resumo: 'Frutas viram pontos em 3D (peso, doçura e acidez) e o algoritmo k-means separa os grupos passo a passo, com os centros se movendo até estabilizar.',
+    url: '3d/agrupamento.html', plano: null, ficha: null },
+  { id: '3d-grafico-enganoso', tipo: '3d', titulo: 'Gráfico 3D: Honesto ou Enganoso?', comp: ['MA', 'CO'], anos: [8, 9],
+    habs: ['EF09MA21', 'EF08MA23', 'EF08CO11'], tempo: '15 min',
+    resumo: 'Os mesmos dados em barras 3D vistos de ângulos diferentes. Gire a câmera, corte o eixo e acompanhe o fator de distorção: quanto o gráfico aumenta a diferença real.',
+    url: '3d/grafico-enganoso.html', plano: null, ficha: null },
+  { id: '3d-viagem-pacote', tipo: '3d', titulo: 'Viagem do Pacote', comp: ['CO'], anos: [6, 7, 8],
+    habs: ['EF06CO07', 'EF07CO06', 'EF08CO06'], tempo: '15 min',
+    resumo: 'Uma cidade em 3D com casas, roteadores e um data center. A mensagem vira pacotes que seguem caminhos diferentes, chegam fora de ordem e são remontados no destino.',
+    url: '3d/viagem-pacote.html', plano: null, ficha: null },
+  { id: '3d-data-center', tipo: '3d', titulo: 'Data Center por Dentro', comp: ['CO'], anos: [6, 7, 9],
+    habs: ['EF06CO10', 'EF07CO10', 'EF09CO08'], tempo: '20 min',
+    resumo: 'Racks, servidores, refrigeração e energia de um data center que treina IA. Ligue servidores, troque o resfriamento e veja o consumo de energia e de água.',
+    url: '3d/data-center.html', plano: null, ficha: null },
 
   // ---------- Fichas para imprimir ----------
   { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
@@ -748,7 +778,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));

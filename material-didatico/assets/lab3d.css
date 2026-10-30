@@ -38,3 +38,13 @@
 .seg button { border: 0; background: var(--paper); padding: 8px 14px; min-height: 40px; cursor: pointer; font-size: 15px; }
 .seg button + button { border-left: 1.5px solid var(--ink); }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+/* Tabelas dos recursos de IA e dados */
+.lab-tabw { overflow-x: auto; margin: 10px 0 0; }
+.lab-tab { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; overflow: hidden; }
+.lab-tab caption { padding: 0 0 6px; }
+.lab-tab th, .lab-tab td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.lab-tab th { font-weight: 600; background: var(--paper-2); }
+.lab-tab tr:last-child td { border-bottom: 0; }
+.lab-tab .ok { color: var(--ok); font-weight: 600; }
+.lab-tab .bad { color: var(--bad); font-weight: 600; }
+.barra-h { height: 10px; border-radius: 99px; background: var(--ok); min-width: 2px; }

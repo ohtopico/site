@@ -1,5 +1,5 @@
 /* =====================================================================
-   Laboratório 3D — base comum dos recursos manipuláveis de Matemática.
+   Laboratório 3D — base comum dos recursos manipuláveis de Matemática e Computação.
    Usa three.js (assets/vendor, licença MIT) sem dependência de CDN.
 
    Cada página chama lab3d(elemento, opções) e recebe uma "cena" com:
