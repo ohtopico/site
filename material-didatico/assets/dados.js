@@ -460,6 +460,10 @@ const RECURSOS = [
     habs: ['EF06CO10', 'EF07CO10', 'EF09CO08'], tempo: '20 min',
     resumo: 'Racks, servidores, refrigeração e energia de um data center que treina IA. Ligue servidores, troque o resfriamento e veja o consumo de energia e de água.',
     url: '3d/data-center.html', plano: null, ficha: null },
+  { id: '3d-arvore-viva', tipo: '3d', titulo: 'Árvore Viva', comp: ['CO'], anos: [6, 9],
+    habs: ['EF09CO01', 'EF06CO08'], tempo: '20 min',
+    resumo: 'Uma árvore 3D que cresce a cada número ou pasta inserida. A busca desce pelos galhos contando comparações; compare a árvore equilibrada com a torta e descubra o caminho de um arquivo.',
+    url: '3d/arvore-viva.html', plano: 'p-arvores', ficha: null },
 
   // ---------- Fichas para imprimir ----------
   { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
@@ -882,7 +886,7 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
-  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-arvore-viva': '⋔', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));
@@ -1333,7 +1337,7 @@ const PLANOS = {
     ],
     avaliacao: 'Árvore de classificação correta e programa que classifica todos os casos previstos.',
     inclusao: 'Use objetos reais ou cartões táteis para a classificação; a árvore pode ser montada no chão com barbante.',
-    recursos: ['rotas', 'f-grafo', 'f-co-arvore']
+    recursos: ['rotas', '3d-arvore-viva', 'f-grafo', 'f-co-arvore']
   },
   'p-automatos': {
     duracao: '2 aulas de 50 min',

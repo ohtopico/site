@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Árvore Viva: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Uma árvore 3D que cresce a cada número ou pasta que você insere. Veja a busca descer pelos galhos, compare árvore equilibrada e árvore torta e descubra o caminho de um arquivo.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/arvore-viva.html">
+<meta property="og:title" content="Árvore Viva: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Árvore de busca e sistema de pastas em 3D: o aluno insere números ou pastas, a árvore cresce, e a busca animada mostra quantas comparações cada caminho custa. 6º e 9º ano.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/arvore-viva.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-laboratorio-3d.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Laboratório 3D do Material didático: recursos manipuláveis de Matemática e Computação, gratuitos.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+  .side input[type=text] { width: 100%; min-height: 40px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 4px 10px; background: var(--paper); font: inherit; }
+  .side .seg { margin-top: 4px; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Árvore Viva","description":"Uma árvore 3D que cresce a cada número ou pasta inserida. A busca desce pelos galhos contando comparações; compare a árvore equilibrada com a torta e descubra o caminho de um arquivo.","url":"https://ohtopico.com.br/material-didatico/3d/arvore-viva.html","image":"https://ohtopico.com.br/material-didatico/assets/og-laboratorio-3d.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"6º, 9º anos do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO01","targetDescription":"Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO08","targetDescription":"Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Árvore Viva","item":"https://ohtopico.com.br/material-didatico/3d/arvore-viva.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">6º, 9º anos</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Árvore Viva</h1>
+      <p class="muted" style="max-width:720px">Uma árvore 3D que cresce a cada número ou pasta inserida. A busca desce pelos galhos contando comparações; compare a árvore equilibrada com a torta e descubra o caminho de um arquivo.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co01/" title="EF09CO01 — Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação.">EF09CO01</a><a class="tag code co" href="../bncc/ef06co08/" title="EF06CO08 — Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados.">EF06CO08</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Números (árvore de busca):</strong> digite um número e use “Inserir”. Ele entra pela raiz e desce pelos galhos: se for menor que o número do nó, vai para a esquerda; se for maior, vai para a direita. Onde encontrar um lugar vazio, nasce um nó novo. “Buscar” faz o mesmo caminho e conta quantas comparações foram precisas.</p>
+    <p><strong>Pastas (sistema de arquivos):</strong> escolha uma pasta, dê um nome e crie um arquivo ou uma pasta dentro dela. Clique num arquivo para ver o caminho completo dele, ou use “Procurar pelo nome” para ver o computador olhando pasta por pasta.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões, e a árvore aparece em texto no painel.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+          <button class="chip" type="button" id="virar" aria-pressed="false">Raiz em cima (como na Computação)</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <div class="seg" role="group" aria-label="Tipo de árvore">
+            <button type="button" data-modo="num" aria-pressed="true">Números</button>
+            <button type="button" data-modo="pasta" aria-pressed="false">Pastas</button>
+          </div>
+          <div id="p-num">
+            <h3>Árvore de busca</h3>
+            <label for="valor">Número (de 0 a 99)</label>
+            <input type="number" id="valor" min="0" max="99" step="1" value="35">
+            <div class="tools">
+              <button class="btn" type="button" id="inserir">Inserir</button>
+              <button class="btn ghost" type="button" id="buscar">Buscar</button>
+            </div>
+            <div class="tools">
+              <button class="btn ghost" type="button" id="sortear">Sortear 7 números</button>
+              <button class="btn ghost" type="button" id="exemploN">Exemplo</button>
+              <button class="btn ghost" type="button" id="limparN">Limpar</button>
+            </div>
+          </div>
+          <div id="p-pasta" hidden>
+            <h3>Pastas e arquivos</h3>
+            <label for="dentro">Dentro da pasta</label>
+            <select id="dentro"></select>
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" maxlength="14" value="trabalho.txt" autocomplete="off">
+            <div class="seg" role="group" aria-label="O que criar">
+              <button type="button" data-tipo="arq" aria-pressed="true">Arquivo</button>
+              <button type="button" data-tipo="pasta" aria-pressed="false">Pasta</button>
+            </div>
+            <div class="tools" style="margin-top:0">
+              <button class="btn" type="button" id="criar">Criar</button>
+              <button class="btn ghost" type="button" id="procurar">Procurar pelo nome</button>
+            </div>
+            <div class="tools">
+              <button class="btn ghost" type="button" id="exemploP">Exemplo</button>
+              <button class="btn ghost" type="button" id="limparP">Limpar</button>
+            </div>
+          </div>
+          <div class="conta" id="conta"></div>
+          <ul class="leg" id="leg-num">
+            <li><span class="sw" style="background:#9fdab4"></span>nó com filhos</li>
+            <li><span class="sw" style="background:#1f8a4c"></span>folha (nó sem filhos)</li>
+            <li><span class="sw" style="background:#f2a9b3"></span>visitado na busca</li>
+            <li><span class="sw" style="background:#c8323f"></span>encontrado</li>
+          </ul>
+          <ul class="leg" id="leg-pasta" hidden>
+            <li><span class="sw" style="background:#f2cf1d"></span>pasta</li>
+            <li><span class="sw" style="background:#ffffff"></span>arquivo</li>
+            <li><span class="sw" style="background:#fff36b;border-radius:99px"></span>pasta escolhida para criar</li>
+            <li><span class="sw" style="background:#f2a9b3"></span>visitado na busca</li>
+            <li><span class="sw" style="background:#c8323f"></span>encontrado</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Monte uma árvore de busca com 7 números em apenas 3 níveis.</li>
+            <li data-d="1">Insira 6 números de um jeito que a árvore vire um galho só, com 6 níveis.</li>
+            <li data-d="2">Busque um número que não está na árvore. Quantas comparações bastaram para ter certeza?</li>
+            <li data-d="3">No modo Pastas, crie um arquivo a 3 pastas de profundidade e descubra o caminho completo dele.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> uma árvore é um grafo sem ciclos, com um único caminho da raiz até cada nó. Na <em>árvore de busca binária</em>, cada nó guarda um número; tudo o que está à esquerda é menor e tudo o que está à direita é maior. Por isso, para achar um número, basta descer um caminho: o número de comparações é no máximo a quantidade de níveis. Uma árvore equilibrada com 7 números tem 3 níveis (e com 1.000 números, cerca de 10); se os números chegam já em ordem, a árvore vira um galho só e a busca fica tão lenta quanto olhar a lista inteira. Visto de frente, os nós aparecem da esquerda para a direita em ordem crescente: é o percurso “em ordem”. O modo Pastas mostra outra árvore do dia a dia: o sistema de arquivos. Quem sabe o caminho (Documentos/Escola/prova.pdf) vai direto; quem só sabe o nome precisa olhar pasta por pasta. Na Computação, as árvores costumam ser desenhadas com a raiz em cima; o botão “Raiz em cima” vira a árvore.</p>
+    <p><strong>Metodologia sugerida:</strong> investigação em duplas, depois de jogar a <a href="../jogos/busca-binaria.html">Estante da Busca Binária</a>. Uma dupla insere os números em ordem e outra embaralhada, e as duas comparam a altura das árvores. Use com o plano <a href="../plano.html?id=p-arvores">Árvores de decisão e grafos</a>.</p>
+    <ul>
+      <li>Com os números 1, 2, 3, 4, 5, 6 e 7, em que ordem é preciso inserir para a árvore ficar com só 3 níveis? Existe mais de uma ordem?</li>
+      <li>Numa árvore com 3 níveis, qual é o maior número de comparações de uma busca? E numa árvore torta com 7 níveis?</li>
+      <li>Por que, no computador, não pode haver dois arquivos com o mesmo nome na mesma pasta, mas pode em pastas diferentes?</li>
+      <li>Que outras árvores aparecem no dia a dia? (Árvore genealógica, chaveamento de campeonato, organograma, sumário de um livro.)</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO01 (árvores e grafos) e EF06CO08 (armazenar e recuperar arquivos). Material concreto equivalente: cartões numerados colocados no chão com barbante para os galhos, ou caixas de sapato dentro de caixas maiores para as pastas.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/arvores-decisao-grafos/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Árvores de decisão e grafos</strong>
+          <span class="small muted">Do jogo das 20 perguntas à chave de classificação: construir árvores e programá-las.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/cubo-rgb.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Cubo das Cores RGB</strong>
+          <span class="small muted">Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-arvore-viva');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-arvore-viva';
+const MAX_NUM = 15, MAX_PASTA = 18;
+const DY = 1.7, ESP_NUM = 1.25, ESP_PASTA = 1.9, BASE = 1.4;
+const COR_GALHO = '#8a5a2b';
+const reduz = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const espera = ms => new Promise(r => setTimeout(r, reduz() ? 0 : ms));
+
+let modo = 'num';
+let invertida = false; // desenho da Computação: raiz em cima
+let seq = 0;
+let ocupado = false;
+const feitos = new Set();
+// árvore de busca: nó = { id, v, esq, dir }
+let raizN = null;
+// pastas: item = { id, nome, tipo: 'pasta' | 'arq', filhos: [], pai, doAluno }
+let raizP = null, destino = null, tipoNovo = 'arq';
+const itens = new Map();
+// destaques da última busca
+let visitados = new Set(), achado = null;
+let ultima = null; // passos da última inserção ou busca, mostrados no painel
+
+/* ---------- árvore de busca ---------- */
+function caminhoNum(v) {
+  const cam = []; let a = raizN;
+  while (a) { cam.push(a); if (v === a.v) return { cam, achou: a }; a = v < a.v ? a.esq : a.dir; }
+  return { cam, achou: null };
+}
+function poeNum(v) {
+  const novo = { id: ++seq, v, esq: null, dir: null };
+  if (!raizN) { raizN = novo; return novo; }
+  let a = raizN;
+  for (;;) {
+    const lado = v < a.v ? 'esq' : 'dir';
+    if (!a[lado]) { a[lado] = novo; return novo; }
+    a = a[lado];
+  }
+}
+function contaNum(n = raizN) { return n ? 1 + contaNum(n.esq) + contaNum(n.dir) : 0; }
+function niveisNum(n = raizN) { return n ? 1 + Math.max(niveisNum(n.esq), niveisNum(n.dir)) : 0; }
+function emOrdem(n = raizN, out = []) { if (n) { emOrdem(n.esq, out); out.push(n.v); emOrdem(n.dir, out); } return out; }
+function folhasNum(n = raizN) { return !n ? 0 : (!n.esq && !n.dir) ? 1 : folhasNum(n.esq) + folhasNum(n.dir); }
+
+/* ---------- pastas ---------- */
+function novoItem(nome, tipo, pai, doAluno = false) {
+  const it = { id: ++seq, nome, tipo, filhos: [], pai: pai ? pai.id : null, doAluno };
+  itens.set(it.id, it);
+  if (pai) pai.filhos.push(it);
+  return it;
+}
+const profP = it => it.pai == null ? 0 : 1 + profP(itens.get(it.pai));
+const caminhoP = it => it.pai == null ? it.nome : caminhoP(itens.get(it.pai)) + '/' + it.nome;
+function percorreP(fn, it = raizP) { if (fn(it) === false) return false; for (const f of it.filhos) if (percorreP(fn, f) === false) return false; }
+function exemploPastas() {
+  itens.clear(); raizP = novoItem('Documentos', 'pasta', null);
+  const escola = novoItem('Escola', 'pasta', raizP);
+  const mat = novoItem('Matemática', 'pasta', escola);
+  novoItem('prova.pdf', 'arq', mat);
+  const comp = novoItem('Computação', 'pasta', escola);
+  novoItem('jogo.py', 'arq', comp);
+  const fotos = novoItem('Fotos', 'pasta', raizP);
+  novoItem('praia.jpg', 'arq', fotos);
+  novoItem('Músicas', 'pasta', raizP);
+  destino = raizP.id;
+}
+
+/* ---------- desenho em camadas: posição de cada nó ---------- */
+function layout() {
+  const out = [];
+  if (modo === 'num') {
+    let i = 0;
+    const rec = (n, p, pai) => {
+      if (!n) return;
+      rec(n.esq, p + 1, n.id);
+      out.push({ id: n.id, rot: String(n.v), tipo: n.esq || n.dir ? 'no' : 'folha', pai, prof: p, x: i++ });
+      rec(n.dir, p + 1, n.id);
+    };
+    rec(raizN, 0, null);
+    out.forEach(o => { o.x = (o.x - (out.length - 1) / 2) * ESP_NUM; });
+  } else if (raizP) {
+    let folha = 0;
+    const rec = (it, p) => {
+      const o = { id: it.id, rot: it.nome, tipo: it.tipo, pai: it.pai, prof: p };
+      out.push(o);
+      if (it.filhos.length) { const xs = it.filhos.map(f => rec(f, p + 1)); o.x = (xs[0] + xs[xs.length - 1]) / 2; }
+      else o.x = folha++;
+      return o.x;
+    };
+    rec(raizP, 0);
+    const xs = out.map(o => o.x), c = (Math.min(...xs) + Math.max(...xs)) / 2;
+    out.forEach(o => { o.x = (o.x - c) * ESP_PASTA; });
+  }
+  const maxP = Math.max(0, ...out.map(o => o.prof));
+  out.forEach(o => { o.pos = [o.x, BASE + (invertida ? maxP - o.prof : o.prof) * DY, 0]; });
+  return out;
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 6, 17], alvo: [0, 4, 0], min: 5, max: 60, chaoTam: 80 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+const vis = new Map(); // id -> { m, galho, pai, tipo, rot }
+let tronco = null, geoBola, matBola;
+const geoNo = T && new T.SphereGeometry(0.45, 40, 24);
+const geoGalho = T && new T.CylinderGeometry(0.11, 0.06, 1, 10).rotateX(Math.PI / 2); // grosso do lado do pai
+const matGalho = T && new T.MeshStandardMaterial({ color: new T.Color(COR_GALHO), roughness: 0.85 });
+if (cena) {
+  tronco = new T.Mesh(new T.CylinderGeometry(0.16, 0.26, 1, 16).translate(0, 0.5, 0), matGalho);
+  tronco.castShadow = true; cena.add(tronco);
+  geoBola = new T.SphereGeometry(0.2, 16, 10);
+  matBola = new T.MeshStandardMaterial({ color: COR.vermelho, emissive: new T.Color(COR.vermelho), emissiveIntensity: 0.5 });
+  // galhos e tronco acompanham os nós enquanto eles se mexem
+  cena.loop(() => {
+    for (const v of vis.values()) {
+      const pai = v.pai != null && vis.get(v.pai);
+      if (!v.galho || !pai) continue;
+      const A = v.m.position, B = pai.m.position;
+      v.galho.position.copy(A).add(B).multiplyScalar(0.5);
+      v.galho.scale.set(1, 1, Math.max(0.01, A.distanceTo(B)));
+      v.galho.lookAt(B);
+    }
+    const raiz = [...vis.values()].find(v => v.pai == null);
+    tronco.visible = !!raiz && !invertida;
+    if (raiz) { tronco.position.set(raiz.m.position.x, 0, 0); tronco.scale.set(1, Math.max(0.01, raiz.m.position.y), 1); }
+  });
+}
+
+function criaNo(o) {
+  let m;
+  if (modo === 'num') {
+    m = new T.Mesh(geoNo, new T.MeshStandardMaterial({ roughness: 0.55 }));
+    cena.comBordas(m, 40);
+  } else if (o.tipo === 'pasta') {
+    m = cena.bloco(1, 0.66, 0.5, '#fff', { base: false, material: new T.MeshStandardMaterial({ roughness: 0.6 }) });
+  } else {
+    m = cena.bloco(0.52, 0.7, 0.1, '#fff', { base: false, material: new T.MeshStandardMaterial({ roughness: 0.6 }) });
+  }
+  m.castShadow = true;
+  const v = { m, galho: null, pai: o.pai, tipo: o.tipo, rot: null, fundo: null };
+  if (o.pai != null) {
+    v.galho = new T.Mesh(geoGalho, matGalho); v.galho.castShadow = true;
+    cena.add(v.galho);
+  }
+  cena.add(m);
+  cena.clicavel(m, () => clicaNo(o.id));
+  return v;
+}
+function rotuloNo(v, o) {
+  const fundo = modo === 'pasta' && o.id === destino ? COR.amareloClaro : '#ffffff';
+  if (v.rot && v.rotTxt === o.rot && v.fundo === fundo) return;
+  if (v.rot) { v.m.remove(v.rot); v.rot.material.map.dispose(); v.rot.material.dispose(); }
+  const r = cena.rotulo(o.rot, { tam: modo === 'num' ? 0.5 : 0.32, fundo, depthTest: false });
+  r.position.set(0, modo === 'num' ? 0 : (o.tipo === 'pasta' ? -0.62 : -0.66), modo === 'num' ? 0 : 0.3);
+  v.m.add(r); v.rot = r; v.rotTxt = o.rot; v.fundo = fundo;
+}
+function pinta(v, id) {
+  const base = modo === 'num' ? (v.tipo === 'folha' ? COR.verde : COR.verdeClaro) : (v.tipo === 'pasta' ? COR.amarelo : '#ffffff');
+  const cor = id === achado ? COR.vermelho : visitados.has(id) ? COR.vermelhoClaro : base;
+  v.m.material.color.set(cor);
+}
+function apaga(id) {
+  const v = vis.get(id);
+  if (v.galho) cena.remove(v.galho);
+  if (v.rot) { v.rot.material.map.dispose(); v.rot.material.dispose(); }
+  v.m.material.dispose();
+  cena.remove(v.m); vis.delete(id);
+}
+
+function desenha(anima = true) {
+  const L = layout();
+  if (cena) {
+    const vivos = new Set(L.map(o => o.id));
+    [...vis.keys()].filter(id => !vivos.has(id)).forEach(apaga);
+    for (const o of L) {
+      let v = vis.get(o.id);
+      if (!v) {
+        v = criaNo(o); vis.set(o.id, v);
+        v.m.position.set(...o.pos); v.m.scale.set(0.01, 0.01, 0.01);
+        cena.animar(v.m, { scale: [1, 1, 1] }, anima ? 550 : 0);
+      } else cena.animar(v.m, { position: o.pos }, anima ? 550 : 0);
+      v.tipo = o.tipo;
+      rotuloNo(v, o); pinta(v, o.id);
+    }
+    cena.pedeQuadro();
+  }
+  painel(L);
+  return L;
+}
+const posDe = id => { const o = layout().find(o => o.id === id); return o && o.pos; };
+
+/* enquadra a árvore inteira; sem forçar, só afasta a câmera quando a árvore deixou de caber */
+function enquadra(L, forcar) {
+  if (!cena) return;
+  const xs = L.length ? L.map(o => o.pos[0]) : [0], ys = L.length ? L.map(o => o.pos[1]) : [BASE];
+  const w = Math.max(...xs) - Math.min(...xs) + 2.4, h = Math.max(...ys) + 1.4;
+  const tg = Math.tan(cena.camera.fov * Math.PI / 360);
+  const d = Math.max(9, h / (2 * tg), w / (2 * tg * cena.camera.aspect)) * 1.12;
+  const atual = cena.camera.position.distanceTo(cena.controls.target);
+  if (forcar) cena.posicionar([(Math.min(...xs) + Math.max(...xs)) / 2, h / 2 + d * 0.12, d], [(Math.min(...xs) + Math.max(...xs)) / 2, h / 2, 0]);
+  else if (d > atual) cena.enquadrar([(Math.min(...xs) + Math.max(...xs)) / 2, h / 2, 0], d);
+}
+
+/* ---------- bolinha que percorre a árvore ---------- */
+async function viajar(ids, aoChegar) {
+  if (!ids.length) return;
+  let b = null;
+  if (cena) {
+    b = new T.Mesh(geoBola, matBola);
+    const p0 = posDe(ids[0]);
+    b.position.set(p0[0], invertida ? p0[1] + 1.4 : p0[1] - 1.4, 0.6);
+    cena.add(b);
+  }
+  for (let i = 0; i < ids.length; i++) {
+    if (b) { const p = posDe(ids[i]); await cena.animar(b, { position: [p[0], p[1], 0.6] }, 420); }
+    await aoChegar(ids[i], i);
+    await espera(380);
+  }
+  if (b) cena.remove(b);
+}
+function limpaMarcas() { visitados = new Set(); achado = null; }
+function repinta() { for (const [id, v] of vis) pinta(v, id); cena && cena.pedeQuadro(); }
+function msg(t, ok) { $('#fb').className = 'feedback' + (ok === true ? ' ok' : ok === false ? ' bad' : ''); $('#fb').textContent = t; }
+
+/* ---------- ações: números ---------- */
+function leValor() {
+  const t = $('#valor').value.trim(), v = Number(t);
+  if (t === '' || !Number.isInteger(v) || v < 0 || v > 99) { msg('Digite um número inteiro de 0 a 99.', false); return null; }
+  return v;
+}
+async function inserir() {
+  if (ocupado) return;
+  const v = leValor(); if (v == null) return;
+  const { cam, achou } = caminhoNum(v);
+  if (achou) { msg(`O ${v} já está na árvore. Numa árvore de busca, cada valor aparece uma vez só.`, false); return; }
+  if (contaNum() >= MAX_NUM) { msg(`A árvore chegou a ${MAX_NUM} números. Use “Limpar” para começar outra.`, false); return; }
+  ocupado = true; limpaMarcas(); repinta();
+  const linhas = [];
+  await viajar(cam.map(n => n.id), id => {
+    const n = cam.find(n => n.id === id);
+    visitados.add(id); repinta();
+    const l = `${v} ${v < n.v ? '<' : '>'} ${n.v}: desce para a ${v < n.v ? 'esquerda' : 'direita'}`;
+    linhas.push(l); msg(l + '.');
+  });
+  poeNum(v);
+  const L = desenha(); enquadra(L);
+  msg(cam.length ? `O ${v} entrou como folha depois de ${cam.length} ${cam.length === 1 ? 'comparação' : 'comparações'}.` : `O ${v} é a raiz da árvore.`, true);
+  ultima = linhas.length ? 'Inserir ' + v + ':\n' + linhas.join('\n') : null;
+  painel(L);
+  ocupado = false;
+  setTimeout(() => { if (!ocupado) { limpaMarcas(); repinta(); } }, 1200);
+  $('#valor').select();
+}
+async function buscar() {
+  if (ocupado) return;
+  const v = leValor(); if (v == null) return;
+  if (!raizN) { msg('A árvore está vazia: insira alguns números primeiro.', false); return; }
+  ocupado = true; limpaMarcas(); repinta();
+  const { cam, achou } = caminhoNum(v);
+  const linhas = [];
+  await viajar(cam.map(n => n.id), id => {
+    const n = cam.find(n => n.id === id);
+    if (n === achou) { achado = id; linhas.push(`${v} = ${n.v}: encontrei!`); }
+    else {
+      visitados.add(id);
+      const lado = v < n.v ? 'esq' : 'dir';
+      linhas.push(`${v} ${v < n.v ? '<' : '>'} ${n.v}: ${n[lado] ? 'desce para a ' + (lado === 'esq' ? 'esquerda' : 'direita') : 'não há galho à ' + (lado === 'esq' ? 'esquerda' : 'direita')}`);
+    }
+    repinta(); msg(linhas[linhas.length - 1] + '.');
+  });
+  const c = cam.length, ct = `${c} ${c === 1 ? 'comparação' : 'comparações'}`;
+  ultima = `Buscar ${v}:\n` + linhas.join('\n') + `\nTotal: ${ct} (a árvore tem ${niveisNum()} ${niveisNum() === 1 ? 'nível' : 'níveis'}).`;
+  if (achou) msg(`Encontrei o ${v} com ${ct}.`, true);
+  else { msg(`O ${v} não está na árvore. Bastaram ${ct} para ter certeza, sem olhar os outros ${contaNum() - c} números.`, true); marca(2); }
+  painel(layout());
+  ocupado = false;
+}
+function carregaNums(lista) {
+  raizN = null; limpaMarcas(); ultima = null;
+  lista.forEach(poeNum);
+  const L = desenha(); enquadra(L, true);
+}
+function sortear() {
+  if (ocupado) return;
+  const s = new Set(); while (s.size < 7) s.add(1 + Math.floor(Math.random() * 99));
+  carregaNums([...s]);
+  msg(`Números inseridos nesta ordem: ${[...s].join(', ')}. A árvore ficou com ${niveisNum()} níveis.`);
+}
+
+/* ---------- ações: pastas ---------- */
+function clicaNo(id) {
+  if (ocupado) return;
+  if (modo === 'num') {
+    const n = (function acha(a) { return !a ? null : a.id === id ? a : acha(a.esq) || acha(a.dir); })(raizN);
+    if (n) { $('#valor').value = n.v; buscar(); }
+    return;
+  }
+  const it = itens.get(id);
+  if (it.tipo === 'pasta') { destino = id; $('#dentro').value = id; desenha(false); msg(`Pasta escolhida: ${caminhoP(it)}. O que você criar vai ficar dentro dela.`); }
+  else mostraCaminho(it);
+}
+function mostraCaminho(it) {
+  limpaMarcas();
+  let a = itens.get(it.pai);
+  while (a) { visitados.add(a.id); a = itens.get(a.pai); }
+  achado = it.id; repinta();
+  const p = profP(it);
+  msg(`Caminho: ${caminhoP(it)}  (${p} ${p === 1 ? 'pasta' : 'pastas'} de profundidade)`, true);
+  ultima = `Caminho de ${it.nome}:\n${caminhoP(it)}\nQuem sabe o caminho desce direto: ${p} ${p === 1 ? 'passo' : 'passos'}.`;
+  painel(layout());
+  if (it.doAluno && it.tipo === 'arq' && p >= 3) marca(3);
+}
+function criar() {
+  if (ocupado) return;
+  const nome = $('#nome').value.trim();
+  const pai = itens.get(+$('#dentro').value) || raizP;
+  if (!nome) { msg('Dê um nome ao arquivo ou à pasta.', false); return; }
+  if (/[\/\\]/.test(nome)) { msg('O nome não pode ter / nem \\: essas barras separam as pastas no caminho.', false); return; }
+  if (pai.filhos.some(f => f.nome.toLowerCase() === nome.toLowerCase())) { msg(`Já existe “${nome}” dentro de ${pai.nome}. Na mesma pasta, dois itens não podem ter o mesmo nome; em pastas diferentes, pode.`, false); return; }
+  if (itens.size >= MAX_PASTA) { msg(`A árvore chegou a ${MAX_PASTA} itens. Use “Limpar” para começar outra.`, false); return; }
+  const it = novoItem(nome, tipoNovo, pai, true);
+  limpaMarcas();
+  if (tipoNovo === 'pasta') destino = it.id;
+  preencheDentro();
+  const L = desenha(); enquadra(L);
+  msg(`${tipoNovo === 'pasta' ? 'Pasta criada' : 'Arquivo criado'}: ${caminhoP(it)}`, true);
+  if (tipoNovo === 'arq' && profP(it) >= 3) mostraCaminho(it);
+}
+async function procurar() {
+  if (ocupado) return;
+  const nome = $('#nome').value.trim().toLowerCase();
+  if (!nome) { msg('Digite o nome que você quer procurar.', false); return; }
+  const ordem = []; let alvo = null;
+  percorreP(it => { ordem.push(it); if (it.nome.toLowerCase() === nome) { alvo = it; return false; } });
+  ocupado = true; limpaMarcas(); repinta();
+  await viajar(ordem.map(it => it.id), (id, i) => {
+    if (alvo && id === alvo.id) achado = id; else visitados.add(id);
+    repinta(); msg(`Olhando ${i + 1}º item: ${itens.get(id).nome}`);
+  });
+  ocupado = false;
+  if (alvo) {
+    const p = profP(alvo);
+    msg(`Achei depois de olhar ${ordem.length} itens. Caminho: ${caminhoP(alvo)}`, true);
+    ultima = `Procurar “${alvo.nome}” pelo nome:\nolhou ${ordem.length} de ${itens.size} itens, pasta por pasta.\nCom o caminho ${caminhoP(alvo)},\nbastariam ${p} ${p === 1 ? 'passo' : 'passos'}.`;
+    if (alvo.doAluno && alvo.tipo === 'arq' && p >= 3) marca(3);
+  } else {
+    msg(`Nada com esse nome: o computador precisou olhar todos os ${ordem.length} itens para ter certeza.`, false);
+    ultima = null;
+  }
+  painel(layout());
+}
+function preencheDentro() {
+  const ops = [];
+  if (raizP) percorreP(it => { if (it.tipo === 'pasta') ops.push(`<option value="${it.id}">${caminhoP(it).replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;')}</option>`); });
+  $('#dentro').innerHTML = ops.join('');
+  if (destino != null) $('#dentro').value = destino;
+}
+
+/* ---------- painel em texto (também é a descrição da cena) ---------- */
+function textoPastas(it = raizP, ind = '') {
+  if (!it) return '';
+  return ind + it.nome + (it.tipo === 'pasta' ? '/' : '') + '\n' + it.filhos.map(f => textoPastas(f, ind + '   ')).join('');
+}
+function painel(L) {
+  let t;
+  if (modo === 'num') {
+    const n = contaNum(), nv = niveisNum();
+    t = `Números: ${n}   Níveis: ${nv}   Folhas: ${folhasNum()}\nEm ordem: ${n ? emOrdem().join(', ') : '(vazia)'}`;
+    cena && cena.descrever(n ? `Árvore de busca com ${n} números em ${nv} níveis. Raiz: ${raizN.v}. Da esquerda para a direita: ${emOrdem().join(', ')}.` : 'Árvore de busca vazia.');
+    if (n === 7 && nv === 3) marca(0);
+    if (n >= 6 && nv === n) marca(1);
+  } else {
+    t = textoPastas().trimEnd();
+    cena && cena.descrever(`Árvore de pastas com ${itens.size} itens: ` + textoPastas().trim().split('\n').map(s => s.trim()).join(', ') + '.');
+  }
+  $('#conta').textContent = t + (ultima ? '\n\n' + ultima : '');
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 4 * 100));
+}
+
+/* ---------- troca de modo ---------- */
+function trocaModo(m) {
+  if (ocupado || m === modo) return;
+  modo = m;
+  document.querySelectorAll('[data-modo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modo === m)));
+  $('#p-num').hidden = m !== 'num'; $('#p-pasta').hidden = m !== 'pasta';
+  $('#leg-num').hidden = m !== 'num'; $('#leg-pasta').hidden = m !== 'pasta';
+  if (cena) [...vis.keys()].forEach(apaga);
+  limpaMarcas(); ultima = null;
+  if (m === 'pasta') preencheDentro();
+  const L = desenha(); enquadra(L, true);
+  msg(m === 'num' ? 'Árvore de busca: menores à esquerda, maiores à direita.' : 'Sistema de arquivos: cada pasta pode guardar arquivos e outras pastas.');
+}
+
+/* ---------- controles ---------- */
+document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => trocaModo(b.dataset.modo)));
+document.querySelectorAll('[data-tipo]').forEach(b => b.addEventListener('click', () => {
+  tipoNovo = b.dataset.tipo;
+  document.querySelectorAll('[data-tipo]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+}));
+$('#inserir').onclick = inserir;
+$('#buscar').onclick = buscar;
+$('#valor').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); inserir(); } });
+$('#sortear').onclick = sortear;
+$('#exemploN').onclick = () => { if (!ocupado) { carregaNums([41, 20, 65, 11, 29, 50, 91, 32]); msg('Árvore de exemplo com 8 números.'); } };
+$('#limparN').onclick = () => { if (!ocupado) { carregaNums([]); msg('Árvore vazia. O primeiro número que você inserir vira a raiz.'); } };
+$('#criar').onclick = criar;
+$('#procurar').onclick = procurar;
+$('#nome').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); criar(); } });
+$('#dentro').addEventListener('change', e => { destino = +e.target.value; desenha(false); });
+$('#exemploP').onclick = () => { if (!ocupado) { exemploPastas(); limpaMarcas(); ultima = null; preencheDentro(); const L = desenha(); enquadra(L, true); msg('Pastas de exemplo.'); } };
+$('#limparP').onclick = () => { if (!ocupado) { itens.clear(); raizP = novoItem('Documentos', 'pasta', null); destino = raizP.id; limpaMarcas(); ultima = null; preencheDentro(); const L = desenha(); enquadra(L, true); msg('Só a pasta Documentos ficou. Crie pastas e arquivos dentro dela.'); } };
+$('#virar').onclick = () => {
+  invertida = !invertida;
+  $('#virar').setAttribute('aria-pressed', String(invertida));
+  const L = desenha(); enquadra(L, true);
+  msg(invertida ? 'Na Computação, a árvore costuma ser desenhada assim: a raiz em cima e as folhas embaixo.' : 'Raiz embaixo, como uma árvore de verdade.');
+};
+
+exemploPastas();
+carregaNums([41, 20, 65, 11, 29, 50, 91, 32]);
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
