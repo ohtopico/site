@@ -82,7 +82,14 @@
     'filas-pilhas': `<circle cx="10" cy="16" r="5" fill="${V}" ${T}/><rect x="4" y="22" width="12" height="16" rx="5" fill="${V}" ${T}/>
       <circle cx="26" cy="16" r="5" fill="${A}" ${T}/><rect x="20" y="22" width="12" height="16" rx="5" fill="${A}" ${T}/>
       <rect x="38" y="50" width="22" height="6" rx="2" fill="${R}" ${T}/><rect x="38" y="42" width="22" height="6" rx="2" fill="${A}" ${T}/><rect x="38" y="34" width="22" height="6" rx="2" fill="${V}" ${T}/>
-      <path d="M38 24h22M49 16v14M44 20l5-5 5 5" fill="none" ${T}/><path d="M4 46h28" ${T}/>`
+      <path d="M38 24h22M49 16v14M44 20l5-5 5 5" fill="none" ${T}/><path d="M4 46h28" ${T}/>`,
+    'linha-tempo': `<path d="M4 34h56" stroke="#111" stroke-width="3.5" stroke-linecap="round"/><path d="M52 28l8 6-8 6" fill="none" ${T}/>
+      <circle cx="14" cy="34" r="5" fill="${A}" ${T}/><circle cx="32" cy="34" r="5" fill="${V}" ${T}/><circle cx="48" cy="34" r="5" fill="${R}" ${T}/>
+      <rect x="6" y="8" width="16" height="14" rx="3" fill="${B}" ${T}/><path d="M10 13h8M10 17h5" ${T}/><path d="M14 22v7" ${T}/>
+      <rect x="40" y="44" width="16" height="14" rx="3" fill="${B}" ${T}/><path d="M44 49h8M44 53h5" ${T}/><path d="M48 39v5" ${T}/>`,
+    bingo: `<rect x="8" y="8" width="48" height="48" rx="6" fill="${B}" ${T}/><path d="M24 8v48M40 8v48M8 24h48M8 40h48" ${T}/>
+      <rect x="24" y="24" width="16" height="16" fill="${A}" ${T}/><circle cx="16" cy="16" r="5" fill="none" stroke="${V}" stroke-width="3"/>
+      <circle cx="48" cy="48" r="5" fill="none" stroke="${V}" stroke-width="3"/><circle cx="48" cy="16" r="5" fill="none" stroke="${R}" stroke-width="3"/>`
   };
   window.iconeJogo = function (id, titulo) {
     const s = window.ICONES_JOGOS[id];
