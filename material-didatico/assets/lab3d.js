@@ -7,11 +7,51 @@
      descrever() (texto alternativo do canvas), vista() e loop().
    Tudo o que dá para fazer arrastando também precisa ter um botão:
    o canvas não é acessível por teclado ou leitor de tela sozinho.
+   O three.js (cerca de 700 KB) só é baixado quando a pessoa toca em "Iniciar a cena 3D":
+   até lá a página abre leve, só com o texto e uma capa no lugar da cena. As páginas não
+   precisam mudar nada, porque este módulo espera o clique antes de terminar de carregar.
    ===================================================================== */
-import * as THREE from './vendor/three.module.min.js';
-import { OrbitControls } from './vendor/OrbitControls.js';
+await esperarInicio();
+const THREE = await import('./vendor/three.module.min.js');
+const { OrbitControls } = await import('./vendor/OrbitControls.js');
 
 export { THREE };
+
+/* Capa com o botão de iniciar dentro do #palco. Tocar em qualquer controle da atividade
+   também inicia a cena (os botões só funcionam depois que ela carrega). */
+function esperarInicio() {
+  const palco = document.getElementById('palco');
+  if (!palco || !webglOk()) return Promise.resolve();
+  return new Promise(resolve => {
+    const capa = document.createElement('div');
+    capa.className = 'lab-capa';
+    capa.innerHTML = '<button type="button" class="btn lab-iniciar">▶ Iniciar a cena 3D</button>' +
+      '<p class="small">A cena carrega só quando você pedir, para a página abrir rápido.</p>';
+    palco.classList.add('lab-palco', 'lab-espera');
+    palco.appendChild(capa);
+    const botao = capa.querySelector('button');
+    /* adianta o download quando o mouse ou o foco chegam no botão */
+    const adianta = () => {
+      ['./vendor/three.module.min.js', './vendor/OrbitControls.js'].forEach(u => {
+        const l = document.createElement('link');
+        l.rel = 'modulepreload'; l.href = new URL(u, import.meta.url).href;
+        document.head.appendChild(l);
+      });
+    };
+    botao.addEventListener('pointerenter', adianta, { once: true });
+    botao.addEventListener('focus', adianta, { once: true });
+    const area = palco.closest('.lab-layout') || palco.parentElement;
+    const inicia = ev => {
+      if (ev.type === 'click' && ev.target !== botao && !ev.target.closest('button, input, select, [data-vista]')) return;
+      area.removeEventListener('click', inicia, true);
+      botao.disabled = true; botao.textContent = 'Carregando a cena 3D…';
+      palco.setAttribute('aria-busy', 'true');
+      resolve();
+    };
+    area.addEventListener('click', inicia, true);
+    botao.addEventListener('click', inicia);
+  });
+}
 
 /* Paleta das peças: verde, amarelo e vermelho (sem azul), com cinzas */
 export const COR = {
@@ -52,6 +92,9 @@ export function lab3d(el, op = {}) {
   }
 
   el.classList.add('lab-palco');
+  el.classList.remove('lab-espera');
+  el.removeAttribute('aria-busy');
+  el.querySelector(':scope > .lab-capa')?.remove();
   el.setAttribute('role', 'img');
   el.tabIndex = 0;
 
