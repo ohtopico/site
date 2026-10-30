@@ -10,6 +10,7 @@ Uso:
 - site/prompts-para-professores/index.html é a biblioteca de prompts (prompts.json + conteudo/biblioteca-prompts.html).
 - site/quiz-pensamento-computacional/index.html é o quiz de pensamento computacional (quiz.json + conteudo/quiz-pensamento-computacional.html),
   com uma página por nível em resultado/<nível>/ (noindex) para o LinkedIn mostrar a imagem do nível.
+- site/computacao-na-escola/index.html é o guia de implantação de Computação na escola (conteudo/computacao-na-escola.html).
 - site/assistencia-por-voz/index.html apresenta o projeto de assistência por voz (teste-mestrado), com os avisos de privacidade.
 - --sitemap atualiza o bloco do blog dentro de site/sitemap.xml (entre os marcadores).
 - Posts com data depois de --ate não saem no site: a pasta, a imagem e os slides deles são apagados
@@ -162,6 +163,7 @@ def laterais(atual):
     projetos = [('▲', 'Material didático', '/material-didatico/', ''),
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
                 ('◇', 'Guia Tech pra Prof', '/tech-pra-prof/', ''),
+                ('▦', 'Computação na escola', '/computacao-na-escola/', 'computacao'),
                 ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia')]
     atual_attr = ' aria-current="page"'
 
@@ -639,6 +641,66 @@ def pagina_formacao(cfg, dims):
     return head + '\n' + moldura('guia-formacao.html', 'ohtopico.com.br/formacao-continuada', '/', conteudo, 'Pronto', 'formacao')
 
 
+def pagina_computacao(cfg):
+    site = cfg['site']
+    url = f'{site}/computacao-na-escola/'
+    corpo = (AQUI / 'conteudo' / 'computacao-na-escola.html').read_text(encoding='utf-8').strip()
+    titulo = 'Como implantar Computação na escola'
+    descricao = ('Computação na escola: o que a BNCC pede, três formatos possíveis, como fazer sem laboratório e sem professor '
+                 'da área, e um roteiro em seis passos para a coordenação.')
+    imagem = f'{site}/computacao-na-escola/og-computacao-na-escola.jpg'
+    alt = ('Card com o título Computação na escola, a frase O que a BNCC pede, formatos possíveis e um roteiro em seis passos, '
+           'e uma captura da página BNCC Computação.')
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': imagem, 'width': 1200, 'height': 630},
+                'about': {'@type': 'Thing', 'name': 'Computação na Educação Básica (complemento da BNCC)'},
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'administrator'},
+                'author': {'@id': AUTORA['@id']},
+                'isPartOf': {'@type': 'WebSite', '@id': f'{site}/#site'},
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Computação na escola', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Computação na escola</li></ol></nav>
+    <p class="rotulo">Guia para escolas</p>
+    <h1>Como implantar Computação na <span class="marca">escola</span></h1>
+    <p class="linha-fina">Um guia para coordenadores, diretores e secretarias de educação que precisam colocar a Computação da BNCC no currículo: o que a norma pede, os formatos possíveis, o que fazer sem laboratório ou sem professor da área e um roteiro em seis passos.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="levar-escola">
+        <h2 id="levar-escola">Levar para a sua escola ou rede</h2>
+        <p>Material gratuito, guia e formação da equipe estão reunidos na página <a href="/para-escolas/">para escolas e redes de ensino</a>. Conte as etapas de ensino e o que a escola já tem, e a resposta vem com uma proposta de formato.</p>
+        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Computa%C3%A7%C3%A3o%20na%20escola">Falar com Júlia Roberta Quoos Alves</a>
+    </section>
+</article>'''
+    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, imagem, alt, 'website',
+                  '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
+    return head + '\n' + moldura('guia-computacao.html', 'ohtopico.com.br/computacao-na-escola', '/', conteudo, 'Pronto', 'computacao')
+
+
 def pagina_assistencia(cfg):
     site = cfg['site']
     url = f'{site}/assistencia-por-voz/'
@@ -1070,13 +1132,13 @@ def lastmod_atual(xml, url):
 
 def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram):
     """hoje: data da publicação (lastmod no futuro faz o Google desconfiar do sitemap).
-    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'para-escolas', 'prompts-para-professores', 'assistencia-por-voz', QUIZ_DIR) cujo HTML mudou nesta execução;
+    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR) cujo HTML mudou nesta execução;
     as outras mantêm o lastmod que já estava no sitemap."""
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'prompts-para-professores', 'assistencia-por-voz', QUIZ_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -1175,6 +1237,7 @@ def main():
     for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims)),
                           ('para-escolas', pagina_para_escolas(cfg)),
                           ('prompts-para-professores', pagina_prompts(cfg)),
+                          ('computacao-na-escola', pagina_computacao(cfg)),
                           ('assistencia-por-voz', pagina_assistencia(cfg)), (QUIZ_DIR, pagina_quiz(cfg)),
                           *paginas_resultado_quiz(cfg).items()):
         caminho = a.site / pagina / 'index.html'

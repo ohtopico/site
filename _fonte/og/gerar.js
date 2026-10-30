@@ -82,7 +82,10 @@ const IMAGENS = [
     url: 'ohtopico.com.br/interesse-por-ia/notebooks', capturas: ['/interesse-por-ia/notebooks/'] },
   { arq: 'freebies/simulador/og-simulador.jpg', janela: 'simulador-financeiro.html', faixa: 'Educação financeira', t1: 'Simulador', t2: 'financeiro',
     sub: 'Juros, parcelas e poupança para simular com a turma', pills: ['Juros', 'Parcelas', 'Poupança'],
-    url: 'ohtopico.com.br/freebies/simulador', capturas: ['/freebies/simulador/'] }
+    url: 'ohtopico.com.br/freebies/simulador', capturas: ['/freebies/simulador/'] },
+  { arq: 'computacao-na-escola/og-computacao-na-escola.jpg', janela: 'guia-computacao.html', faixa: 'Guia para a coordenação', t1: 'Computação', t2: 'na escola',
+    sub: 'O que a BNCC pede, formatos possíveis e um roteiro em seis passos', pills: ['BNCC Computação', 'Sem laboratório', '6º ao 9º ano'],
+    url: 'ohtopico.com.br/computacao-na-escola', capturas: ['/material-didatico/bncc/'] }
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
