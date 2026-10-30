@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundo 3D: jogos, laboratório e simuladores | Júlia Quoos</title>
+<meta name="description" content="Passeie por um mundo 3D no navegador e abra cada parte do site: jogos de Computação e Matemática, Laboratório 3D, simuladores, material didático com BNCC, guias de IA para professores, prompts, blog, formação e mentoria.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/mundo/">
+<meta property="og:title" content="Mundo 3D: jogos, laboratório e simuladores | Júlia Quoos">
+<meta property="og:description" content="Um mundo 3D para passear pelo site: cada prédio é um jogo, um recurso 3D, um simulador, um guia ou um texto do blog. Ande com as setas ou com o dedo e abra o que encontrar.">
+<meta property="og:url" content="https://ohtopico.com.br/mundo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/mundo/og-mundo.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mundo 3D do site de Júlia Quoos: bairros de jogos, Laboratório 3D, simuladores, material didático, guias para professores e blog, em volta de uma praça.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../material-didatico/assets/lab3d.css">
+<link rel="stylesheet" href="mundo.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Mundo 3D do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","description":"Um mundo 3D para passear pelo site de Júlia Roberta Quoos Alves: jogos, Laboratório 3D, simuladores, material didático com BNCC, guias de IA para professores, prompts, blog, formação e mentoria.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Mundo 3D","item":"https://ohtopico.com.br/mundo/"}]}
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head">
+    <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag ma">Matemática</span><span class="tag">Para professores e estudantes</span></div>
+    <h1>Mundo 3D do site</h1>
+    <p class="muted" style="max-width:720px">Cada prédio deste mundo é uma página do site. Ande até ele e abra: são os <a href="../jogos/">jogos</a>, o <a href="../material-didatico/catalogo.html?tipo=3d">Laboratório 3D</a>, os <a href="../simuladores/">simuladores</a>, o <a href="../material-didatico/">material didático com BNCC</a>, os guias <a href="../ia-pra-prof/">IA pra Prof</a> e <a href="../tech-pra-prof/">Tech pra Prof</a>, os <a href="../prompts-para-professores/">prompts prontos</a>, o <a href="../blog/">blog</a>, a <a href="../formacao-continuada/">formação</a> e a <a href="../mentoria/">mentoria</a>.</p>
+  </div>
+  <details class="howto">
+    <summary>Como passear</summary>
+    <p><strong>Andar:</strong> setas ou W, A, S, D. No celular, use o direcional no canto da cena ou toque no chão para caminhar até lá. Clicar num prédio também leva você até ele.</p>
+    <p><strong>Olhar em volta:</strong> arraste o fundo da cena para girar a câmera; Q e E giram pelo teclado; roda do mouse ou dois dedos aproximam.</p>
+    <p><strong>Abrir uma página:</strong> chegue perto de um prédio e a placa dele aparece ao lado. Aperte Enter ou toque em “Abrir”. O menu “Ir para” leva direto a cada bairro, e a lista no fim da página tem todos os lugares em texto.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco">
+          <div class="mini" id="mini" aria-hidden="true"><canvas id="mini-cv" width="150" height="150"></canvas></div>
+          <div class="joy" id="joy" aria-hidden="true"><div class="joy-nub" id="joy-nub"></div></div>
+        </div>
+        <div class="lab-cam" role="group" aria-label="Câmera e atalhos">
+          <button class="chip" type="button" id="girar-esq" title="Girar a câmera para a esquerda (Q)">↺ Girar</button>
+          <button class="chip" type="button" id="girar-dir" title="Girar a câmera para a direita (E)">↻ Girar</button>
+          <button class="chip" type="button" id="aproximar">+ Aproximar</button>
+          <button class="chip" type="button" id="afastar">− Afastar</button>
+          <button class="chip" type="button" id="praca">⛲ Voltar à praça</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel lugar" id="lugar" aria-live="polite">
+          <span class="small muted" id="lugar-bairro">Praça central</span>
+          <h3 id="lugar-titulo">Bem-vindo ao mundo</h3>
+          <p id="lugar-resumo">Siga por uma das ruas até um bairro. Perto de cada prédio, a placa dele aparece aqui, com o botão para abrir a página.</p>
+          <div class="btn-row"><a class="btn" id="lugar-abrir" href="../" hidden>Abrir</a></div>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <label for="ir">Ir para</label>
+          <select id="ir"><option value="">Escolha um bairro…</option></select>
+          <p class="small muted" style="margin:10px 0 0" id="contagem"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="mapa" class="mapa">
+    <h2>Todos os lugares do mundo</h2>
+    <p class="muted">A mesma lista do mundo, em texto, para quem prefere ler ou usa leitor de tela.</p>
+    <div id="mapa-listas"></div>
+  </section>
+</main>
+<footer id="footer" class="footer"><div class="wrap">
+  <p>Mundo 3D do site de <a href="../curriculo/">Júlia Roberta Quoos Alves</a>, feito com three.js no mesmo Laboratório 3D do <a href="../material-didatico/">material didático</a>. Os prédios vêm da lista de jogos, recursos 3D, simuladores e textos do site, então tudo que entra no site aparece aqui.</p>
+  <p>Uso livre, com citação da fonte. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p>
+</div></footer>
+<script>window.MD_BASE = '../material-didatico/'; window.SIM_BASE = '../simuladores/';</script>
+<script src="../material-didatico/assets/dados.js"></script>
+<script src="../material-didatico/assets/comum.js"></script>
+<script src="../simuladores/assets/sim-comum.js"></script>
+<script>
+mdTopbar('');
+(function () {
+  const b = document.querySelector('#topbar .brand-sub'); if (b) { b.textContent = '/ mundo 3D'; b.href = './'; }
+  const nav = document.querySelector('#topbar .topnav');
+  if (nav) nav.innerHTML = [['../', 'Início'], ['../material-didatico/', 'Material didático'], ['../jogos/', 'Jogos'], ['../simuladores/', 'Simuladores'], ['../ia-pra-prof/', 'IA pra Prof'], ['../blog/', 'Blog']]
+    .map(([h, t]) => `<a href="${h}">${t}</a>`).join('');
+})();
+</script>
+<script type="module" src="mundo.js"></script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
