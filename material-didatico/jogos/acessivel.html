@@ -141,10 +141,11 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('acessivel');
   const razao = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
 
   // Cada parte da página: o que o leitor de tela fala antes e depois, o código e as opções de correção
+  // Nos exemplos de código, "\u003c" é o sinal de menor: assim o HTML da página não tem uma tag de imagem sem alt.
   const EL = {
     logo: { nome: 'Logotipo', barreira: true, quem: 'quem usa leitor de tela',
       antes: 'imagem, logo_final_v2.png', depois: 'imagem, Escola Estadual Campo Verde',
-      cAntes: '<img src="logo_final_v2.png">', cDepois: '<img src="logo_final_v2.png"\n     alt="Escola Estadual Campo Verde">',
+      cAntes: '\u003cimg src="logo_final_v2.png">', cDepois: '\u003cimg src="logo_final_v2.png"\n     alt="Escola Estadual Campo Verde">',
       prob: 'A imagem não tem texto alternativo. O leitor de tela fala o nome do arquivo, que não diz nada.',
       ops: [['Colocar alt="imagem"', 'O leitor já avisa que é uma imagem. Falta dizer o que ela mostra.'], ['Colocar alt="Escola Estadual Campo Verde"', ''], ['Colocar alt="logo_final_v2"', 'É o nome do arquivo de novo. O texto alternativo deve descrever a imagem.']], certa: 1 },
     busca: { nome: 'Botão de busca', barreira: true, quem: 'quem usa leitor de tela',
@@ -161,7 +162,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('acessivel');
       ops: [['Transformar em título de verdade (h2)', ''], ['Deixar o texto maior e sublinhado', 'Muda só a aparência. O leitor de tela continua sem saber que é um título.'], ['Escrever tudo em letras maiúsculas', 'Letras maiúsculas não criam um título e ainda dificultam a leitura.']], certa: 0 },
     foto: { nome: 'Foto da feira', barreira: true, quem: 'quem usa leitor de tela',
       antes: 'imagem, IMG_20261012_0934.jpg', depois: 'imagem, Estudantes apresentam uma maquete de casa com energia solar na feira de ciências',
-      cAntes: '<img src="IMG_20261012_0934.jpg">', cDepois: '<img src="IMG_20261012_0934.jpg"\n     alt="Estudantes apresentam uma maquete de casa\n          com energia solar na feira de ciências">',
+      cAntes: '\u003cimg src="IMG_20261012_0934.jpg">', cDepois: '\u003cimg src="IMG_20261012_0934.jpg"\n     alt="Estudantes apresentam uma maquete de casa\n          com energia solar na feira de ciências">',
       prob: 'A foto conta uma parte da notícia, mas não tem descrição.',
       ops: [['alt="foto"', 'Não diz nada sobre o que aparece na foto.'], ['alt="Estudantes apresentam uma maquete de casa com energia solar na feira de ciências"', ''], ['alt="IMG_20261012"', 'Nome de arquivo não descreve a imagem.']], certa: 1 },
     texto: { nome: 'Texto da notícia', barreira: false, antes: 'Os estudantes do 6º ao 9º ano apresentaram 32 projetos. Os mais votados vão para a feira regional.', cAntes: '<p>Os estudantes do 6º ao 9º ano ...</p>',
