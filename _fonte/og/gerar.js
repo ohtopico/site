@@ -62,7 +62,8 @@ const IMAGENS = [
     ['cofre-das-chaves', 'Cofre das', 'chaves', 'Disco de César, cadeados e mistura de tintas: como combinar uma chave secreta sem enviá-la', ['Criptografia', 'EF09CO05', '8º e 9º ano']],
     ['maquina-estados', 'Máquina de', 'estados', 'Catraca, semáforo e elevador que obedecem ao diagrama que você desenha', ['Autômatos', 'EF09CO03', '9º ano']],
     ['escada-pitagoras', 'Escada de', 'Pitágoras', 'Encoste escadas em prédios 3D, ache a diagonal da caixa e termine na diagonal do cubo', ['Teorema de Pitágoras', 'EF09MA13', '9º ano']],
-    ['dados-verdade', 'Dados de', 'verdade', 'Lance 10, 100 e 1000 vezes e veja a frequência chegar perto da probabilidade', ['Probabilidade', 'Dado viciado', '6º ao 9º ano']]
+    ['dados-verdade', 'Dados de', 'verdade', 'Lance 10, 100 e 1000 vezes e veja a frequência chegar perto da probabilidade', ['Probabilidade', 'Dado viciado', '6º ao 9º ano']],
+    ['arvore-viva', 'Árvore', 'viva', 'Árvore de busca e pastas em 3D: insira, busque e veja a árvore crescer', ['Árvores', 'EF09CO01', '6º e 9º ano']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/3d/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Laboratório 3D · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/3d/${nome}`, capturas: [`/material-didatico/3d/${nome}.html`] })),
   { arq: 'dados-da-regiao/og-dados-da-regiao.jpg', janela: 'dados-da-regiao.html', faixa: 'Censo Escolar · IBGE', t1: 'Dados da', t2: 'educação',
