@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozinha Paralela: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Um restaurante em 3D com 1, 2 ou 4 cozinheiros-robôs. Distribua os pedidos, veja quanto o paralelismo ganha e provoque um impasse quando dois robôs querem a mesma panela.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/cozinha-paralela.html">
+<meta property="og:title" content="Cozinha Paralela: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Um restaurante em 3D com 1, 2 ou 4 cozinheiros-robôs: o aluno distribui os pedidos, mede o ganho do paralelismo, descobre o gargalo da panela única e provoca (e resolve) um impasse. BNCC EF08CO05.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/cozinha-paralela.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-cozinha-paralela.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cozinha 3D com quatro robôs cozinheiros, um fogão, uma panela e uma frigideira">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+.pedidos{list-style:none;padding:0;margin:6px 0 0}.pedidos li{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line);font-size:14.5px}.pedidos li:last-child{border-bottom:0}.pedidos small{display:block;color:var(--ink-2);font-size:12.5px}.side .pedidos select{min-height:36px;padding:2px 6px}
+.regra{display:flex!important;gap:8px;align-items:flex-start}.regra input{margin-top:4px;width:18px;height:18px;accent-color:var(--ok);flex:none}
+.gantt{display:grid;gap:2px;font-size:12.5px;min-width:520px;margin-top:6px}.gantt .nm{font-weight:600;white-space:nowrap;padding-right:6px;align-self:center}.gantt .c{height:22px;border-radius:3px;border:1px solid rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px}.gantt .c.oculto{visibility:hidden}.gantt .eixo{font-size:11px;color:var(--ink-2);text-align:center}
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cozinha Paralela","description":"Um restaurante em 3D com 1, 2 ou 4 cozinheiros-robôs. Distribua os pedidos, veja quanto o paralelismo ganha, ache o gargalo e provoque um impasse quando dois robôs querem a mesma panela.","url":"https://ohtopico.com.br/material-didatico/3d/cozinha-paralela.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-cozinha-paralela.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO05","targetDescription":"Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Cozinha Paralela","item":"https://ohtopico.com.br/material-didatico/3d/cozinha-paralela.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Cozinha Paralela</h1>
+      <p class="muted" style="max-width:720px">Um restaurante em 3D com 1, 2 ou 4 cozinheiros-robôs. Distribua os pedidos, veja quanto o paralelismo ganha, ache o gargalo e provoque um impasse quando dois robôs querem a mesma panela.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef08co05/" title="EF08CO05 — Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.">EF08CO05</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>O restaurante:</strong> chegaram 8 pedidos. Cada robô cozinha os pedidos que você der a ele, um depois do outro. Cortar, picar e espremer cada robô faz na própria tábua, mas a cozinha tem <strong>uma panela e uma frigideira só</strong>, e cada robô leva 1 minuto para ir buscar cada utensílio.</p>
+    <p><strong>Experimente:</strong> escolha 1, 2 ou 4 robôs, distribua os pedidos (ou use “Distribuir automaticamente”) e aperte “Cozinhar”. Compare o tempo do turno e veja, na linha do tempo, quem trabalhou, quem esperou e quem ficou parado. O macarrão precisa da panela e da frigideira ao mesmo tempo, e o risoto também. O que acontece se cada um pegar primeiro um utensílio diferente?</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões e no painel, e a linha do tempo mostra o turno inteiro sem precisar da cena.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="cozinhar">Cozinhar</button>
+          <button class="btn ghost" type="button" id="pular" disabled>Pular para o fim</button>
+          <button class="btn ghost" type="button" id="auto">Distribuir automaticamente</button>
+        </div>
+        <label class="small" for="vel" style="display:block;margin-top:10px">Velocidade</label>
+        <select id="vel" style="min-height:40px;border:1.5px solid var(--ink);border-radius:12px;padding:4px 10px;background:var(--paper)">
+          <option value="1100">Devagar</option>
+          <option value="650" selected>Normal</option>
+          <option value="250">Rápida</option>
+        </select>
+        <p class="feedback" id="fb" role="status"></p>
+        <div class="lab-tabw" id="linha" aria-label="Linha do tempo do turno"></div>
+        <ul class="leg" style="display:flex;flex-wrap:wrap;gap:4px 16px">
+          <li><span class="sw" style="background:#1f8a4c"></span>cozinhando</li>
+          <li><span class="sw" style="background:#f2cf1d"></span>indo buscar um utensílio</li>
+          <li><span class="sw" style="background:#c8323f"></span>esperando um utensílio</li>
+          <li><span class="sw" style="background:#e4e4df"></span>parado, sem pedidos</li>
+        </ul>
+        <div id="resumo"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <p class="grande" id="relogio">Minuto 0</p>
+          <h3>Cozinheiros-robôs</h3>
+          <div class="seg" role="group" aria-label="Número de robôs">
+            <button type="button" data-n="1" aria-pressed="true">1</button>
+            <button type="button" data-n="2" aria-pressed="false">2</button>
+            <button type="button" data-n="4" aria-pressed="false">4</button>
+          </div>
+          <h3>Pedidos do turno</h3>
+          <ul class="pedidos" id="pedidos"></ul>
+          <div class="conta" id="carga"></div>
+          <label class="regra" for="regra"><input type="checkbox" id="regra"><span>Regra da cozinha: pegar sempre a panela antes da frigideira</span></label>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Cozinhe o turno com 1 robô e depois com 4 robôs. Quantas vezes mais rápido ficou? Por que não ficou 4 vezes?</li>
+            <li data-d="1">Com 2 robôs, distribua os pedidos à mão até alcançar o menor tempo possível.</li>
+            <li data-d="2">Provoque um impasse: dois robôs parados para sempre, cada um segurando o utensílio de que o outro precisa.</li>
+            <li data-d="3">Ligue a regra da cozinha e cozinhe sem impasse, com o macarrão e o risoto em robôs diferentes.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> cada robô é um processador (ou núcleo) e cada pedido é uma tarefa. Dividir as tarefas entre vários robôs é <em>paralelismo</em>: o turno acaba antes. Mas a panela e a frigideira são recursos compartilhados, e só um robô usa cada uma por vez. Quando dois robôs querem a mesma panela há <em>concorrência</em>, e um deles espera. Por isso 4 robôs não deixam a cozinha 4 vezes mais rápida: a panela vira o gargalo, e o tempo que ela fica ocupada é um limite que nenhum robô a mais consegue baixar (é a ideia da Lei de Amdahl). O desequilíbrio também pesa: se um robô recebe pedidos demais, os outros ficam parados esperando o turno acabar.</p>
+    <p><strong>O impasse (deadlock):</strong> o macarrão pega a panela e depois a frigideira; o risoto pega a frigideira e depois a panela. Se os dois começam juntos, cada robô segura um utensílio e espera o outro para sempre. Para acontecer um impasse são necessárias quatro condições ao mesmo tempo: o recurso só pode ser usado por um de cada vez, quem segura um recurso espera por outro, ninguém tira o recurso de quem está segurando e há uma espera em círculo. A regra “sempre a panela antes da frigideira” quebra o círculo: é a mesma solução usada em sistemas operacionais e bancos de dados, que dão uma ordem fixa aos recursos.</p>
+    <p><strong>Metodologia sugerida:</strong> comece com a atividade desplugada do plano de aula (dobrar folhas sozinho e em grupo, uma tesoura só para todos). Depois, em duplas, os alunos usam a página com estas perguntas:</p>
+    <ul>
+      <li>Com 1, 2 e 4 robôs, quanto tempo levou o turno? Montem uma tabela e calculem o ganho (tempo com 1 robô dividido pelo tempo com vários).</li>
+      <li>Na linha do tempo, quantos minutos a panela ficou ocupada? Seria possível terminar o turno em menos tempo do que isso?</li>
+      <li>Com 2 robôs, qual distribuição deu o menor tempo? Por que dividir o número de pedidos igualmente nem sempre é a melhor escolha?</li>
+      <li>Como vocês provocaram o impasse? Que regra o evita? Onde isso acontece fora da cozinha (duas pessoas editando o mesmo documento, dois carros num cruzamento)?</li>
+    </ul>
+    <p class="small muted">Habilidade: EF08CO05 (paralelismo, concorrência e processamento distribuído). Combina com o plano de aula “Muitas mãos: paralelismo e sistemas distribuídos”. Material concreto equivalente: cartões de tarefa com o tempo de cada passo, uma única panela de brinquedo e uma frigideira, e alunos fazendo o papel dos robôs com um cronômetro.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/muitas-maos-paralelismo-sistemas-distribuidos/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Muitas mãos: paralelismo e sistemas distribuídos</strong>
+          <span class="small muted">Dividir uma tarefa entre várias “máquinas”, perceber gargalos e conflitos e entender a nuvem.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/cubo-rgb.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Cubo das Cores RGB</strong>
+          <span class="small muted">Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-cozinha-paralela');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-cozinha-paralela';
+const fx = n => n.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+
+/* Cada passo: [ação, minutos, utensílios na ordem em que o robô vai buscá-los] */
+const TURNO = [
+  { nome: 'Macarrão ao molho', passos: [['ralando o queijo', 1], ['juntando massa e molho', 2, ['panela', 'frigideira']]] },
+  { nome: 'Salada', passos: [['cortando a salada', 3], ['montando o prato', 1]] },
+  { nome: 'Sopa', passos: [['picando legumes', 2], ['fervendo a sopa', 3, ['panela']]] },
+  { nome: 'Suco', passos: [['espremendo laranjas', 2], ['servindo o suco', 1]] },
+  { nome: 'Omelete', passos: [['batendo os ovos', 1], ['fritando a omelete', 2, ['frigideira']]] },
+  { nome: 'Risoto', passos: [['picando a cebola', 1], ['refogando o arroz', 2, ['frigideira', 'panela']]] },
+  { nome: 'Salada de frutas', passos: [['cortando as frutas', 3]] },
+  { nome: 'Ovo frito', passos: [['fritando o ovo', 2, ['frigideira']]] }
+];
+const RECS = ['panela', 'frigideira'];
+const NOME_R = { panela: 'a panela', frigideira: 'a frigideira' };
+const ROB_COR = [COR.verde, COR.amarelo, COR.vermelho, '#e8833a'];
+const COR_EST = { fazer: '#1f8a4c', usar: '#1f8a4c', pegar: '#f2cf1d', espera: '#c8323f', parado: '#e4e4df' };
+const MAC = 0, RIS = 5;
+const duracao = p => p.passos.reduce((s, [, t, r]) => s + t + (r ? r.length : 0), 0);
+
+let n = 1, atrib = TURNO.map(() => 0), regra = false, manual = false;
+let sim = null, tick = -1, timer = null, tocando = false;
+const feitos = new Set(), tempos = {};
+
+/* ---------- simulação, minuto a minuto ---------- */
+function tarefas(k, atr, reg) {
+  const t = [];
+  TURNO.forEach((p, i) => {
+    if (atr[i] !== k) return;
+    p.passos.forEach(([acao, tempo, rec]) => {
+      if (!rec) { t.push({ tipo: 'fazer', tempo, acao, pedido: i }); return; }
+      const ord = reg ? [...rec].sort((a, b) => RECS.indexOf(a) - RECS.indexOf(b)) : rec;
+      ord.forEach(r => t.push({ tipo: 'pegar', tempo: 1, r, acao: 'buscando ' + NOME_R[r], pedido: i }));
+      t.push({ tipo: 'usar', tempo, acao, pedido: i, rec });
+    });
+  });
+  return t;
+}
+function simular(atr, nr, reg) {
+  const rob = Array.from({ length: nr }, (_, k) => ({ tar: tarefas(k, atr, reg), i: 0, resta: null }));
+  const dono = { panela: null, frigideira: null };
+  const quadros = [];
+  let impasse = null;
+  for (let t = 0; t < 300 && !rob.every(r => r.i >= r.tar.length); t++) {
+    const q = [], solta = [];
+    rob.forEach((r, k) => {
+      if (r.i >= r.tar.length) { q.push({ tipo: 'parado' }); return; }
+      const ta = r.tar[r.i];
+      if (r.resta === null) {
+        if (ta.tipo === 'pegar') {
+          if (dono[ta.r] !== null) { q.push({ tipo: 'espera', r: ta.r, pedido: ta.pedido }); return; }
+          dono[ta.r] = k;
+        }
+        r.resta = ta.tempo;
+      }
+      q.push({ tipo: ta.tipo, acao: ta.acao, pedido: ta.pedido, r: ta.r, rec: ta.rec });
+      if (--r.resta === 0) { if (ta.rec) solta.push(...ta.rec); r.i++; r.resta = null; }
+    });
+    q.forEach((e, k) => { e.seg = RECS.filter(x => dono[x] === k); });
+    solta.forEach(x => { dono[x] = null; });
+    quadros.push(q);
+    const ciclo = achaCiclo(q, dono);
+    if (ciclo) { impasse = { t, ciclo }; break; }
+  }
+  const uso = Object.fromEntries(RECS.map(x => [x, quadros.filter(q => q.some(e => e.seg.includes(x))).length]));
+  return { quadros, impasse, n: nr, tempo: impasse ? null : quadros.length, uso };
+}
+/* Espera em círculo: A espera o que B segura, B espera o que A segura (ou um círculo maior) */
+function achaCiclo(q, dono) {
+  for (let a = 0; a < q.length; a++) {
+    if (q[a].tipo !== 'espera') continue;
+    const visto = [a];
+    let b = dono[q[a].r];
+    while (b !== null && q[b].tipo === 'espera' && !visto.includes(b)) { visto.push(b); b = dono[q[b].r]; }
+    if (b === a) return visto;
+  }
+  return null;
+}
+const cacheOt = {};
+function otimo(nr, reg) {
+  const k = nr + '-' + reg;
+  if (k in cacheOt) return cacheOt[k];
+  let melhor = Infinity;
+  const atr = TURNO.map(() => 0);
+  for (let c = 0; c < nr ** TURNO.length; c++) {
+    let v = c;
+    for (let i = 0; i < TURNO.length; i++) { atr[i] = v % nr; v = Math.floor(v / nr); }
+    const s = simular(atr, nr, reg);
+    if (s.tempo !== null && s.tempo < melhor) melhor = s.tempo;
+  }
+  return (cacheOt[k] = melhor);
+}
+/* Distribuição automática: o pedido mais demorado vai para o robô com menos trabalho */
+function distribuir() {
+  const carga = Array(n).fill(0);
+  TURNO.map((p, i) => ({ i, d: duracao(p) })).sort((a, b) => b.d - a.d || a.i - b.i)
+    .forEach(({ i, d }) => { const k = carga.indexOf(Math.min(...carga)); atrib[i] = k; carga[k] += d; });
+  // Se essa divisão travar a cozinha, troca o risoto de robô com outro pedido (o impasse fica para o aluno descobrir à mão)
+  if (simular(atrib, n, regra).tempo !== null) return;
+  let melhor = null;
+  TURNO.forEach((_, j) => {
+    const a = atrib.slice(); [a[RIS], a[j]] = [a[j], a[RIS]];
+    const t = simular(a, n, regra).tempo;
+    if (t !== null && (!melhor || t < melhor.t)) melhor = { a, t };
+  });
+  if (melhor) atrib = melhor.a;
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 9.5, 11.5], alvo: [0, 0.6, 0], min: 6, max: 30 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0, 13, 16], [0, 0.6, 0]);
+const ESTACAO = [-4.5, -1.5, 1.5, 4.5];
+const QUEIMADOR = { panela: [-1.1, 1.02, 2.6], frigideira: [1.1, 1.02, 2.6] };
+const robos = [], itens = {};
+if (cena) {
+  const piso = cena.bloco(15, 0.1, 9, '#efece4', { bordas: false, sombra: false }); piso.position.set(-7.5, -0.1, -4.5); cena.add(piso);
+  const balcao = cena.bloco(13, 1, 1.2, '#e8e3d6'); balcao.position.set(-6.5, 0, -3.6); cena.add(balcao);
+  ESTACAO.forEach((x, k) => {
+    const tabua = cena.bloco(1.4, 0.08, 0.8, '#c99a5b'); tabua.position.set(x - 0.7, 1, -3.4); cena.add(tabua);
+    const r = cena.rotulo('tábua ' + (k + 1), { tam: 0.3 }); r.position.set(x, 1.5, -3.0); cena.add(r);
+  });
+  const fogao = cena.bloco(4.6, 1, 1.4, '#6f6f6b'); fogao.position.set(-2.3, 0, 1.9); cena.add(fogao);
+  Object.values(QUEIMADOR).forEach(p => { const q = cena.cilindro(0.45, 0.03, '#222222', { bordas: false }); q.position.set(p[0], 1, p[2]); cena.add(q); });
+  const rf = cena.rotulo('fogão', { tam: 0.34, fundo: '#fff36b' }); rf.position.set(0, 0.55, 3.45); cena.add(rf);
+
+  const panela = new T.Group();
+  panela.add(cena.cilindro(0.36, 0.42, '#b9b9b4'));
+  [-1, 1].forEach(s => { const a = cena.bloco(0.2, 0.08, 0.12, '#3a3a38', { base: false }); a.position.set(s * 0.45, 0.34, 0); panela.add(a); });
+  const frig = new T.Group();
+  frig.add(cena.cilindro(0.42, 0.12, '#3a3a38'));
+  const cabo = cena.bloco(0.7, 0.07, 0.12, '#3a3a38', { base: false }); cabo.position.set(0, 0.08, 0.72); cabo.rotation.y = Math.PI / 2; frig.add(cabo);
+  itens.panela = panela; itens.frigideira = frig;
+  RECS.forEach(x => { itens[x].position.set(...QUEIMADOR[x]); cena.add(itens[x]); });
+
+  const cabGeo = new T.SphereGeometry(0.33, 28, 18), olhoGeo = new T.SphereGeometry(0.055, 12, 8);
+  ROB_COR.forEach((cor, k) => {
+    const g = new T.Group();
+    g.add(cena.cilindro(0.42, 0.95, cor, { rTopo: 0.34 }));
+    const cab = new T.Mesh(cabGeo, cena.material('#f4f4f0')); cab.position.y = 1.27; cab.castShadow = true; cena.comBordas(cab, 40); g.add(cab);
+    [-0.12, 0.12].forEach(x => { const o = new T.Mesh(olhoGeo, cena.material('#111111')); o.position.set(x, 1.33, 0.29); g.add(o); });
+    const touca = cena.cilindro(0.24, 0.3, '#ffffff', { rTopo: 0.3 }); touca.position.y = 1.5; g.add(touca);
+    g.position.set(ESTACAO[k], 0, -1.7); g.rotation.y = Math.PI;
+    g.userData.rot = null;
+    cena.add(g); robos.push(g);
+  });
+}
+
+/* Onde cada robô fica em cada estado */
+function lugar(e, k, q) {
+  if (e.tipo === 'pegar') return { pos: [QUEIMADOR[e.r][0], 0, 1.25], ry: 0 };
+  if (e.tipo === 'usar') return { pos: [e.rec.length > 1 ? 0 : QUEIMADOR[e.rec[0]][0], 0, 1.25], ry: 0 };
+  if (e.tipo === 'espera') {
+    const fila = q.map((o, j) => ({ o, j })).filter(x => x.o.tipo === 'espera' && x.o.r === e.r).findIndex(x => x.j === k);
+    const lado = e.r === 'panela' ? -1 : 1;
+    return { pos: [lado * 3.1, 0, 1.25 - fila * 1.1], ry: -lado * Math.PI / 2 };
+  }
+  return { pos: [ESTACAO[k], 0, -1.7], ry: Math.PI };
+}
+function textoEstado(e, k, travado) {
+  if (e.tipo === 'parado') return `${k + 1} · terminou`;
+  if (e.tipo === 'espera') return `${k + 1} · ${travado ? 'travado: ' : ''}esperando ${NOME_R[e.r]}`;
+  return `${k + 1} · ${e.acao}`;
+}
+function trocaRotulo(g, txt, op) {
+  if (g.userData.rot && g.userData.rot.userData.texto === txt) return;
+  if (g.userData.rot) { g.remove(g.userData.rot); g.userData.rot.material.map.dispose(); g.userData.rot.material.dispose(); }
+  const r = cena.rotulo(txt, Object.assign({ tam: 0.32 }, op));
+  // alturas diferentes para os rótulos de robôs vizinhos não se cobrirem
+  r.position.set(0, 2.45 + robos.indexOf(g) * 0.42, 0); g.add(r); g.userData.rot = r;
+}
+function cenaRepouso() {
+  if (!cena) return;
+  robos.forEach((g, k) => {
+    g.visible = k < n;
+    cena.animar(g, { position: [ESTACAO[k], 0, -1.7], rotation: [0, Math.PI, 0] }, 300);
+    trocaRotulo(g, `${k + 1} · pronto`);
+  });
+  RECS.forEach(x => cena.animar(itens[x], { position: QUEIMADOR[x] }, 300));
+  cena.descrever(`Cozinha com ${n} ${n === 1 ? 'robô' : 'robôs'} nas tábuas, um fogão com uma panela e uma frigideira, e 8 pedidos esperando.`);
+}
+function cenaQuadro(t) {
+  if (!cena) return;
+  const q = sim.quadros[t], ms = +$('#vel').value * 0.7;
+  const trav = sim.impasse && t === sim.impasse.t ? sim.impasse.ciclo : [];
+  const alvos = q.map((e, k) => lugar(e, k, q));
+  q.forEach((e, k) => {
+    cena.animar(robos[k], { position: alvos[k].pos, rotation: [0, alvos[k].ry, 0] }, ms);
+    const tr = trav.includes(k);
+    trocaRotulo(robos[k], textoEstado(e, k, tr), e.tipo === 'espera' ? { fundo: tr ? COR.vermelho : COR.vermelhoClaro, cor: tr ? '#ffffff' : '#111111' } : e.tipo === 'parado' ? { fundo: '#e4e4df' } : {});
+  });
+  RECS.forEach(x => {
+    const k = q.findIndex(e => e.seg.includes(x));
+    let p = QUEIMADOR[x];
+    if (k >= 0 && q[k].tipo !== 'usar') {
+      const a = alvos[k].pos, dois = q[k].seg.length > 1;
+      p = [a[0] + (dois ? (x === 'panela' ? -0.32 : 0.32) : 0), 1.95, a[2]];
+    }
+    cena.animar(itens[x], { position: p }, ms);
+  });
+  cena.descrever(`Minuto ${t + 1}. ` + q.map((e, k) => `Robô ${textoEstado(e, k, trav.includes(k)).slice(4)}${e.seg.length ? ', segurando ' + e.seg.map(x => NOME_R[x]).join(' e ') : ''}.`).join(' '));
+}
+
+/* ---------- painel ---------- */
+function painel() {
+  document.querySelectorAll('.seg [data-n]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.n === n)));
+  $('#pedidos').innerHTML = TURNO.map((p, i) => {
+    const rec = [...new Set(p.passos.flatMap(s => s[2] || []))];
+    return `<li><span>${p.nome}<small>${duracao(p)} min${rec.length ? ' · usa ' + rec.map(x => NOME_R[x]).join(' e ') : ''}</small></span>
+      <select data-i="${i}" aria-label="Robô que cozinha: ${p.nome}"${n === 1 || tocando ? ' disabled' : ''}>${Array.from({ length: n }, (_, k) => `<option value="${k}"${atrib[i] === k ? ' selected' : ''}>Robô ${k + 1}</option>`).join('')}</select></li>`;
+  }).join('');
+  const carga = Array(n).fill(0);
+  TURNO.forEach((p, i) => { carga[atrib[i]] += duracao(p); });
+  $('#carga').textContent = 'Trabalho de cada robô (sem contar esperas):\n' + carga.map((c, k) => `Robô ${k + 1}: ${c} min`).join('\n');
+  $('#regra').checked = regra;
+}
+function linhaDoTempo(ate) {
+  if (!sim) { $('#linha').innerHTML = ''; return; }
+  const T_ = sim.quadros.length, oc = t => t > ate ? ' oculto' : '';
+  let h = `<div class="gantt" style="grid-template-columns:auto repeat(${T_},minmax(14px,1fr))"><span></span>`;
+  for (let t = 0; t < T_; t++) h += `<span class="eixo">${(t + 1) % 5 === 0 || t === 0 ? t + 1 : ''}</span>`;
+  for (let k = 0; k < sim.n; k++) {
+    h += `<span class="nm">Robô ${k + 1}</span>`;
+    sim.quadros.forEach((q, t) => {
+      const e = q[k], dica = `Minuto ${t + 1}: ${textoEstado(e, k, false).slice(4)}${e.pedido !== undefined ? ' (' + TURNO[e.pedido].nome + ')' : ''}`;
+      h += `<span class="c${oc(t)}" style="background:${COR_EST[e.tipo]}" title="${dica}"></span>`;
+    });
+  }
+  RECS.forEach(x => {
+    h += `<span class="nm">${x[0].toUpperCase() + x.slice(1)}</span>`;
+    sim.quadros.forEach((q, t) => {
+      const k = q.findIndex(e => e.seg.includes(x));
+      h += `<span class="c${oc(t)}" style="background:${k >= 0 ? '#6f6f6b' : 'transparent'};color:#fff" title="Minuto ${t + 1}: ${k >= 0 ? 'com o robô ' + (k + 1) : 'livre'}">${k >= 0 ? k + 1 : ''}</span>`;
+    });
+  });
+  $('#linha').innerHTML = h + '</div>';
+}
+function mostra(t) {
+  tick = t;
+  $('#relogio').textContent = 'Minuto ' + (t + 1);
+  linhaDoTempo(t);
+  cenaQuadro(t);
+}
+
+/* ---------- jogar ---------- */
+function trava(on) {
+  tocando = on;
+  $('#cozinhar').disabled = on; $('#pular').disabled = !on; $('#auto').disabled = on; $('#regra').disabled = on;
+  document.querySelectorAll('.seg button').forEach(b => { b.disabled = on; });
+  painel();
+}
+function cozinhar() {
+  sim = simular(atrib, n, regra);
+  $('#fb').className = 'feedback'; $('#fb').textContent = 'Cozinhando…'; $('#resumo').innerHTML = '';
+  trava(true); avanca(-1);
+}
+function avanca(t) {
+  if (t + 1 >= sim.quadros.length) { fim(); return; }
+  mostra(t + 1);
+  timer = setTimeout(() => avanca(t + 1), +$('#vel').value);
+}
+function pular() { clearTimeout(timer); mostra(sim.quadros.length - 1); fim(); }
+function fim() {
+  clearTimeout(timer); trava(false);
+  const s = sim, seq = simular(TURNO.map(() => 0), 1, regra).tempo;
+  if (s.impasse) {
+    const [a, b] = s.impasse.ciclo;
+    $('#fb').className = 'feedback bad';
+    $('#fb').textContent = `Impasse no minuto ${s.impasse.t + 1}! O robô ${a + 1} segura ${s.quadros[s.impasse.t][a].seg.map(x => NOME_R[x]).join(' e ')} e espera ${NOME_R[s.quadros[s.impasse.t][a].r]}; o robô ${b + 1} segura ${s.quadros[s.impasse.t][b].seg.map(x => NOME_R[x]).join(' e ')} e espera ${NOME_R[s.quadros[s.impasse.t][b].r]}. Nenhum dos dois solta o que tem, então o turno nunca acaba.`;
+    $('#resumo').innerHTML = '';
+    marca(2);
+    return;
+  }
+  tempos[n] = s.tempo;
+  const ganho = seq / s.tempo;
+  const parado = s.quadros.reduce((c, q) => c + q.filter(e => e.tipo === 'parado').length, 0);
+  const espera = s.quadros.reduce((c, q) => c + q.filter(e => e.tipo === 'espera').length, 0);
+  const garg = RECS.reduce((a, x) => s.uso[x] > s.uso[a] ? x : a);
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent = n === 1
+    ? `Turno pronto em ${s.tempo} minutos com 1 robô. Agora tente com mais robôs.`
+    : `Turno pronto em ${s.tempo} minutos com ${n} robôs: ${fx(ganho)} vezes mais rápido que 1 robô sozinho (${seq} min). O máximo imaginável seria ${n} vezes.`;
+  const linhas = [
+    ['Tempo do turno', `${s.tempo} min`],
+    ['Ganho em relação a 1 robô', `${fx(ganho)}× (${seq} ÷ ${s.tempo})`],
+    ['Minutos de robô esperando utensílio', espera],
+    ['Minutos de robô parado, sem pedidos', parado],
+    ['Panela ocupada', `${s.uso.panela} de ${s.tempo} min`],
+    ['Frigideira ocupada', `${s.uso.frigideira} de ${s.tempo} min`]
+  ];
+  $('#resumo').innerHTML = `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">Resumo do turno com ${n} ${n === 1 ? 'robô' : 'robôs'}${n > 1 ? `. Gargalo: ${NOME_R[garg]}, ocupada ${s.uso[garg]} minutos; o turno não acaba antes disso.` : ''}</caption><tbody>${linhas.map(([a, b]) => `<tr><th scope="row">${a}</th><td>${b}</td></tr>`).join('')}</tbody></table></div>`;
+  if (tempos[1] && tempos[4]) marca(0);
+  if (n === 2 && manual && s.tempo === otimo(2, regra)) marca(1);
+  if (n === 2 && !manual && s.tempo > otimo(2, regra)) $('#fb').textContent += ` Dá para fazer em ${otimo(2, regra)} minutos: mude a distribuição à mão.`;
+  if (regra && n > 1 && atrib[MAC] !== atrib[RIS]) marca(3);
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 4 * 100));
+}
+function mudou() {
+  if (tocando) return;
+  sim = null; tick = -1;
+  $('#relogio').textContent = 'Minuto 0'; $('#fb').textContent = ''; $('#resumo').innerHTML = '';
+  linhaDoTempo(-1); painel(); cenaRepouso();
+}
+
+/* ---------- controles ---------- */
+document.querySelectorAll('.seg [data-n]').forEach(b => b.addEventListener('click', () => {
+  n = +b.dataset.n; manual = false;
+  if (n === 1) atrib = TURNO.map(() => 0); else distribuir();
+  mudou();
+}));
+$('#pedidos').addEventListener('change', e => { const i = e.target.dataset.i; if (i === undefined) return; atrib[+i] = +e.target.value; manual = true; mudou(); });
+$('#regra').addEventListener('change', e => { regra = e.target.checked; mudou(); });
+$('#auto').onclick = () => { if (n === 1) return; distribuir(); manual = false; mudou(); $('#fb').textContent = 'O pedido mais demorado foi para o robô com menos trabalho, e assim por diante.'; };
+$('#cozinhar').onclick = cozinhar;
+$('#pular').onclick = pular;
+mudou();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
