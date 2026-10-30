@@ -43,6 +43,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Interesse por IA: dados da Wikipédia até $(date +%m/%Y)"
+          git commit -m "Interesse por IA: dados da Wikipédia atualizados em $(date +%d/%m/%Y)"
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
