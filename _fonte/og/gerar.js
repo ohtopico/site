@@ -53,7 +53,8 @@ const IMAGENS = [
   /* Laboratório 3D: uma imagem por página, em material-didatico/3d/img/og-<página>.jpg. Cada página nova entra
      aqui e aponta o og:image para esse arquivo; o gerar.js do material usa a mesma imagem nos dados estruturados. */
   ...[
-    ['torre-recursao', 'Torre da', 'recursão', 'Torre de Hanói em 3D: resolva, ensine a regra ao robô e veja a pilha de chamadas', ['Recursão', 'EF08CO01', '8º ano']]
+    ['torre-recursao', 'Torre da', 'recursão', 'Torre de Hanói em 3D: resolva, ensine a regra ao robô e veja a pilha de chamadas', ['Recursão', 'EF08CO01', '8º ano']],
+    ['escada-pitagoras', 'Escada de', 'Pitágoras', 'Encoste escadas em prédios 3D, ache a diagonal da caixa e termine na diagonal do cubo', ['Teorema de Pitágoras', 'EF09MA13', '9º ano']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/3d/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Laboratório 3D · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/3d/${nome}`, capturas: [`/material-didatico/3d/${nome}.html`] })),
   { arq: 'dados-da-regiao/og-dados-da-regiao.jpg', janela: 'dados-da-regiao.html', faixa: 'Censo Escolar · IBGE', t1: 'Dados da', t2: 'educação',

@@ -2607,6 +2607,7 @@ const ESTATICAS = {
   "hab:EF09MA09": "bncc/ef09ma09/",
   "hab:EF09MA10": "bncc/ef09ma10/",
   "hab:EF09MA12": "bncc/ef09ma12/",
+  "hab:EF09MA13": "bncc/ef09ma13/",
   "hab:EF09MA14": "bncc/ef09ma14/",
   "hab:EF06MA31": "bncc/ef06ma31/",
   "hab:EF06MA33": "bncc/ef06ma33/",
