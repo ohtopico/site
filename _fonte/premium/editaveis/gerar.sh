@@ -16,4 +16,6 @@ for MES in $P/meses/*/; do
   [ -d "$MES" ] || continue
   python3 _fonte/premium/editaveis/jogo_html.py $P/arquivos/$(basename "$MES")/jogos "$MES"*.html
 done
+# kits mensais (PDFs, editáveis e painel da aula) a partir de $P/kits/dados.py e dos guias dos jogos
+python3 _fonte/premium/editaveis/kit_mes.py --fontes $P --tipos "$FONTES"
 python3 _fonte/premium/proteger.py --site . --fontes $P "$@"   # --completar-senhas cria as senhas que faltam
