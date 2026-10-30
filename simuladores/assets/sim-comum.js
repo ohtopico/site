@@ -92,7 +92,7 @@
   window.simHead = function (id) {
     const s = SIMULADORES.find(x => x.id === id), el = document.getElementById('sim-head');
     if (!s || !el) return;
-    document.title = `${s.titulo} · Simuladores | Júlia Quoos`;
+    // título, cabeçalho e dados estruturados já vêm escritos no HTML (gerados por _fonte/material/gerar.js)
     el.innerHTML = `
       <div class="crumbs"><a href="${BASE}index.html">← Todos os simuladores</a></div>
       <span class="eyebrow">Simulador</span>

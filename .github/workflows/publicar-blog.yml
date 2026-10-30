@@ -40,6 +40,16 @@ jobs:
             --slides _fonte/blog/slides \
             --ate "$(date +%F)" --sitemap
 
+      # Páginas estáticas de planos, fichas, listas e habilidades da BNCC, e o título e o texto dos jogos,
+      # dos recursos 3D e dos simuladores escritos no HTML. Usa o Chrome que já vem no runner.
+      - name: Instalar o playwright-core (para desenhar as páginas do material didático)
+        run: npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright-core@1.48.2
+
+      - name: Gerar as páginas estáticas do material didático
+        env:
+          NODE_PATH: ${{ runner.temp }}/pw/node_modules
+        run: node _fonte/material/gerar.js
+
       - name: Atualizar o índice do assistente (chatbot) com as páginas publicadas
         run: python _fonte/assistente/indexar.py --site .
 
@@ -49,7 +59,7 @@ jobs:
       - name: Publicar se algo mudou
         run: |
           # O checkout começa limpo, então tudo o que mudou aqui saiu do gerador
-          # (blog, mentoria, formação continuada, biblioteca de prompts, sitemap e o que vier depois)
+          # (blog, mentoria, formação continuada, biblioteca de prompts, material didático, sitemap e o que vier depois)
           git add -A
           if git diff --cached --quiet; then
             echo "Nada novo para publicar hoje."

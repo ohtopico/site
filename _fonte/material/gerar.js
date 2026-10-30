@@ -4,8 +4,8 @@
    - material-didatico/fichas/<slug>/   uma ficha para imprimir por página
    - material-didatico/listas/<slug>/   uma lista de exercícios por página
    - material-didatico/bncc/<código>/   uma página por habilidade da BNCC, com plano, slides, jogos, fichas e listas
-   - nos jogos e recursos 3D: título (h1), texto para o professor, materiais relacionados e dados estruturados
-     já escritos no HTML (antes vinham só do JavaScript)
+   - nos jogos, recursos 3D e simuladores: título (h1), texto para o professor, materiais relacionados e dados
+     estruturados já escritos no HTML (antes vinham só do JavaScript)
    - o mapa de endereços (ESTATICAS) no fim de material-didatico/assets/dados.js
    - o bloco "material" do sitemap.xml
 
@@ -367,7 +367,7 @@ async function jogosE3d(browser) {
         (x, b) => x.replace(/(\n[ \t]*(?:<h2[^>]*>Continue explorando<\/h2>\s*)?<div class="related" id="related">)/, `\n  ${b}$1`));
     }
     // título pensado para a busca: nome do jogo, o que é, para quem
-    const oque = r.tipo === 'jogo' ? 'jogo de' : 'simulação 3D de';
+    const oque = r.tipo === 'jogo' ? 'jogo de' : /3D/.test(r.titulo) ? 'simulação de' : 'simulação 3D de';
     const novoTitulo = titulo(`${r.titulo}: ${oque} ${compTxt(r)}, ${anosTxt(r.anos)}${ASSINATURA}`,
       `${r.titulo}: ${oque} ${compTxt(r)}${ASSINATURA}`, `${r.titulo}: ${oque} ${compTxt(r)}`, r.titulo + ASSINATURA, r.titulo);
     t = t.replace(/<title>[^<]*<\/title>/, `<title>${esc(novoTitulo)}</title>`)
@@ -376,6 +376,39 @@ async function jogosE3d(browser) {
     const img = `${SITE}/material-didatico/${OG[r.tipo]}`;
     const dados = [recursoLD(r, url, img), migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`],
       r.tipo === 'jogo' ? ['Jogos', `${SITE}/material-didatico/jogos/`] : ['Laboratório 3D', `${SITE}/material-didatico/catalogo.html?tipo=3d`], [r.titulo, url]])];
+    t = blocoMarcado(t, 'dados estruturados', '\n' + dados.map(ld).join('\n') + '\n', (x, b) => x.replace(/\n<\/head>/, `\n${b}\n</head>`));
+    if (escrever(arq, t)) mudou++;
+  }
+  return mudou;
+}
+
+/* ---------- simuladores: cabeçalho, título e dados estruturados no HTML ---------- */
+async function simuladores(browser) {
+  const ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(ler(path.join(RAIZ, 'simuladores', 'assets', 'sim-comum.js')), ctx);
+  const NIV = { EF: 'Ensino Fundamental', EM: 'Ensino Médio', ES: 'Ensino Superior' };
+  let mudou = 0;
+  for (const s of ctx.window.SIMULADORES) {
+    const arq = path.join(RAIZ, 'simuladores', s.url);
+    if (!fs.existsSync(arq)) continue;
+    let t = ler(arq);
+    if (!t.includes('id="sim-head"')) continue;
+    const [cab] = await desenhar(browser, `/simuladores/${s.url}`, ['#sim-head']);
+    t = blocoMarcado(t, 'cab', (cab || '').replace(/<!--[\s\S]*?-->/g, ''), (x, b) => x.replace(/(<div class="page-head" id="sim-head">)(<\/div>)/, `$1${b}$2`));
+    const novoTitulo = titulo(`${s.titulo}: simulador online${ASSINATURA}`, `${s.titulo}: simulador${ASSINATURA}`, s.titulo + ASSINATURA, s.titulo);
+    t = t.replace(/<title>[^<]*<\/title>/, `<title>${esc(novoTitulo)}</title>`)
+      .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(novoTitulo)}$2`);
+    const url = `${SITE}/simuladores/${s.url}`;
+    const nome = s.url.replace(/\.html$/, '');
+    const dados = [{
+      '@type': ['LearningResource', 'WebApplication'], name: s.titulo, description: s.resumo, url,
+      image: `${SITE}/simuladores/img/og-${nome}.jpg`, inLanguage: 'pt-BR', applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Navegador', offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' }, isAccessibleForFree: true,
+      learningResourceType: 'Simulação', educationalLevel: s.niveis.map(n => NIV[n]),
+      ...(s.bncc ? { educationalAlignment: alinhamentos(s.bncc) } : {}),
+      author: AUTORA, license: 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
+    }, migalhas([['Início', `${SITE}/`], ['Simuladores', `${SITE}/simuladores/`], [s.titulo, url]])];
     t = blocoMarcado(t, 'dados estruturados', '\n' + dados.map(ld).join('\n') + '\n', (x, b) => x.replace(/\n<\/head>/, `\n${b}\n</head>`));
     if (escrever(arq, t)) mudou++;
   }
@@ -441,6 +474,8 @@ async function main() {
       sitemap.push([`${SITE}/material-didatico/${EST['hab:' + h.codigo]}`, hash(t)]);
     }
     const jogos = await jogosE3d(browser);
+    const sims = await simuladores(browser);
+    console.log(`${sims} simuladores atualizados.`);
     // jogos e recursos 3D que ainda não estão no sitemap (os outros têm a data escrita à mão fora do bloco gerado)
     const foraDoBloco = ler(path.join(RAIZ, 'sitemap.xml')).replace(/<!-- material: início[\s\S]*?<!-- material: fim -->/, '');
     for (const r of D.RECURSOS.filter(r => (r.tipo === 'jogo' || r.tipo === '3d') && /^(jogos|3d)\/[\w-]+\.html$/.test(r.url))) {

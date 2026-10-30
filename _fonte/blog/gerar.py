@@ -410,8 +410,7 @@ def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
 def pagina_indice(cfg, publicados):
     site = cfg['site']
     url = f'{site}/blog/'
-    descricao = ('Blog de Júlia Roberta Quoos Alves sobre formação continuada de professores em inteligência artificial, '
-                 'prompts para planejar aulas, ética e LGPD na escola e Computação na BNCC.')
+    descricao = 'Blog de Júlia Quoos sobre formação de professores em IA, prompts para planejar aulas, ética e LGPD na escola e Computação na BNCC.'
     ld = json_ld({
         '@context': 'https://schema.org',
         '@type': 'Blog',
@@ -467,7 +466,7 @@ def pagina_indice(cfg, publicados):
     </section>
 </div>'''
     img = f'{site}/blog/img/{publicados[0]["imagem"]}' if publicados else f'{site}/img/perfil.jpg'
-    head = cabeca('Blog de Júlia Roberta Quoos Alves · formação de professores em IA', descricao, url, img,
+    head = cabeca('Blog da Júlia Quoos: formação de professores em IA', descricao, url, img,
                   'Infográfico do blog de Júlia Roberta Quoos Alves', 'website', ld)
     n = len(publicados)
     return head + '\n' + moldura('blog.txt', 'ohtopico.com.br/blog', '/', conteudo,
@@ -543,8 +542,7 @@ def pagina_formacao(cfg, dims):
                   'legenda': 'O caminho da formação continuada em IA, em cinco etapas.'}, dims[FORMACAO_IMAGEM])
     corpo = corpo.replace('<!--IMAGEM-->', fig)
     titulo = 'Formação continuada de professores em IA'
-    descricao = ('Formação continuada de professores em inteligência artificial para escolas e redes de ensino, em cinco etapas: '
-                 'diagnóstico, formato, regras, prática com apoio e avaliação. Com Júlia Roberta Quoos Alves.')
+    descricao = 'Formação continuada de professores em IA para escolas e redes de ensino, em cinco etapas: diagnóstico, formato, regras, prática com apoio e avaliação.'
     w, h = dims[FORMACAO_IMAGEM]
     ld = json_ld({
         '@context': 'https://schema.org',
@@ -618,8 +616,7 @@ def pagina_assistencia(cfg):
     url = f'{site}/assistencia-por-voz/'
     corpo = (AQUI / 'conteudo' / 'assistencia-por-voz.html').read_text(encoding='utf-8').strip()
     titulo = 'Assistência por voz para pessoas cegas'
-    descricao = ('Projeto pessoal de Júlia Roberta Quoos Alves: um site para o celular que reconhece objetos, obstáculos, '
-                 'lugares e textos pela câmera e responde por voz. Com o que é guardado, o que é enviado e os cuidados de LGPD.')
+    descricao = 'Protótipo do mestrado de Júlia Quoos: um site para celular que reconhece objetos, obstáculos, lugares e textos pela câmera e responde por voz.'
     ld = json_ld({
         '@context': 'https://schema.org',
         '@graph': [
@@ -727,8 +724,7 @@ def pagina_prompts(cfg):
              'Tente outra etapa ou limpe os filtros.</p>\n' + '\n'.join(secoes))
     corpo = (AQUI / 'conteudo' / 'biblioteca-prompts.html').read_text(encoding='utf-8').strip().replace('<!--PROMPTS-->', bloco)
     titulo = 'Biblioteca de prompts para professores'
-    descricao = (f'{total} prompts de IA prontos para professores, por disciplina e etapa de ensino, da Educação Infantil ao ensino médio. '
-                 'Gratuitos, para copiar e adaptar, com orientações de LGPD. Por Júlia Roberta Quoos Alves.')
+    descricao = f'{total} prompts de IA prontos para professores, por disciplina e etapa de ensino, da Educação Infantil ao ensino médio, com orientações de LGPD.'
     ld = json_ld({
         '@context': 'https://schema.org',
         '@graph': [
@@ -843,8 +839,7 @@ def pagina_quiz(cfg):
 <section class="quiz-resultado" id="quiz-resultado" aria-labelledby="res-nivel" tabindex="-1" hidden></section>
 </section>'''
     corpo = (AQUI / 'conteudo' / 'quiz-pensamento-computacional.html').read_text(encoding='utf-8').strip().replace('<!--QUIZ-->', quiz)
-    descricao = ('Quiz gratuito de pensamento computacional para professores: 12 perguntas sobre decomposição, padrões, '
-                 'abstração e algoritmos, com explicação e resultado para compartilhar no LinkedIn. Por Júlia Roberta Quoos Alves.')
+    descricao = 'Quiz gratuito de pensamento computacional para professores: 12 perguntas sobre decomposição, padrões, abstração e algoritmos, com resultado para compartilhar.'
     imagem = f'{site}/{QUIZ_DIR}/img/quiz-pensamento-computacional.png'
     ld = json_ld({
         '@context': 'https://schema.org',
