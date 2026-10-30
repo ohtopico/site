@@ -1,5 +1,5 @@
 {
-  "_leia": "Fonte dos cartões do Tech pra Prof. Cada chave de 'capitulos' é o id de um capítulo do modelo.html (marcador <!--FERRAMENTAS:id-->). tags: gratuito | limites | offline | celular | sem-conta | pt. para: organizar | avaliar | engajar | memorizar | criar | programar | incluir | proteger. Depois de editar, rode: python _fonte/tech-pra-prof/gerar.py",
+  "_leia": "Fonte dos cartões do Tech pra Prof. Cada chave de 'capitulos' é o id de um capítulo do modelo.html (marcador <!--FERRAMENTAS:id-->). tags: gratuito | limites | offline | celular | sem-conta | pt. para: organizar | pesquisar | avaliar | engajar | memorizar | criar | programar | incluir | proteger. Depois de editar, rode: python _fonte/tech-pra-prof/gerar.py",
   "tags": {
     "gratuito": "Gratuito",
     "limites": "Gratuito com limites",
@@ -10,206 +10,817 @@
   },
   "capitulos": {
     "rotina": [
-      {"id": "google-agenda", "nome": "Google Agenda", "url": "https://calendar.google.com/", "tags": ["gratuito", "celular", "pt"], "para": ["organizar"],
-       "serve": "Concentra horários de aula, reuniões, conselhos de classe e prazos de entrega em um só lugar, com lembretes no celular.",
-       "ideia": "Crie uma agenda separada para cada escola ou turno e compartilhe com a coordenação as datas de avaliação.",
-       "atencao": "Evite colocar dados pessoais de alunos na descrição dos eventos."},
-      {"id": "google-keep", "nome": "Google Keep", "url": "https://keep.google.com/", "tags": ["gratuito", "celular", "pt"], "para": ["organizar"],
-       "serve": "Bloco de notas rápido para ideias de aula, listas de materiais e lembretes, sincronizado entre celular e computador.",
-       "ideia": "Fotografe o quadro ao fim da aula e guarde a foto em uma nota com o nome da turma e a data.",
-       "atencao": "Notas soltas se perdem: use etiquetas por turma ou componente desde o começo."},
-      {"id": "trello", "nome": "Trello", "url": "https://trello.com/", "tags": ["limites", "celular", "pt"], "para": ["organizar"],
-       "serve": "Quadro de tarefas em colunas (a fazer, fazendo, feito), ótimo para acompanhar projetos e o planejamento do bimestre.",
-       "ideia": "Monte um quadro por projeto interdisciplinar, com um cartão para cada etapa e o responsável por ela.",
-       "atencao": "O plano gratuito tem limites de recursos avançados; para a rotina de um professor ele costuma bastar."},
-      {"id": "notion", "nome": "Notion", "url": "https://www.notion.com/", "tags": ["limites", "celular", "pt"], "para": ["organizar", "criar"],
-       "serve": "Caderno digital que junta textos, tabelas, listas e links. Serve para montar um banco de aulas pesquisável.",
-       "ideia": "Crie uma tabela de planos de aula com colunas para ano, habilidade da BNCC, duração e materiais.",
-       "atencao": "Tem curva de aprendizagem maior que um bloco de notas comum. Comece com um modelo pronto."}
+      {
+        "id": "google-agenda",
+        "nome": "Google Agenda",
+        "url": "https://calendar.google.com/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar"
+        ],
+        "serve": "Concentra horários de aula, reuniões, conselhos de classe e prazos de entrega em um só lugar, com lembretes no celular.",
+        "ideia": "Crie uma agenda separada para cada escola ou turno e compartilhe com a coordenação as datas de avaliação.",
+        "atencao": "Evite colocar dados pessoais de alunos na descrição dos eventos."
+      },
+      {
+        "id": "google-keep",
+        "nome": "Google Keep",
+        "url": "https://keep.google.com/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar"
+        ],
+        "serve": "Bloco de notas rápido para ideias de aula, listas de materiais e lembretes, sincronizado entre celular e computador.",
+        "ideia": "Fotografe o quadro ao fim da aula e guarde a foto em uma nota com o nome da turma e a data.",
+        "atencao": "Notas soltas se perdem: use etiquetas por turma ou componente desde o começo."
+      },
+      {
+        "id": "trello",
+        "nome": "Trello",
+        "url": "https://trello.com/",
+        "tags": [
+          "limites",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar"
+        ],
+        "serve": "Quadro de tarefas em colunas (a fazer, fazendo, feito), ótimo para acompanhar projetos e o planejamento do bimestre.",
+        "ideia": "Monte um quadro por projeto interdisciplinar, com um cartão para cada etapa e o responsável por ela.",
+        "atencao": "O plano gratuito tem limites de recursos avançados; para a rotina de um professor ele costuma bastar."
+      },
+      {
+        "id": "notion",
+        "nome": "Notion",
+        "url": "https://www.notion.com/",
+        "tags": [
+          "limites",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar",
+          "criar"
+        ],
+        "serve": "Caderno digital que junta textos, tabelas, listas e links. Serve para montar um banco de aulas pesquisável.",
+        "ideia": "Crie uma tabela de planos de aula com colunas para ano, habilidade da BNCC, duração e materiais.",
+        "atencao": "Tem curva de aprendizagem maior que um bloco de notas comum. Comece com um modelo pronto."
+      }
     ],
     "arquivos": [
-      {"id": "google-drive", "nome": "Google Drive", "url": "https://drive.google.com/", "tags": ["limites", "celular", "pt"], "para": ["organizar"],
-       "serve": "Guarda arquivos na nuvem e permite editar documentos, planilhas e apresentações em conjunto com outros professores.",
-       "ideia": "Crie uma pasta compartilhada da área (por exemplo, Matemática) para reunir provas e listas já revisadas pela equipe.",
-       "atencao": "Revise com quem cada pasta está compartilhada, principalmente se tiver notas ou dados de alunos."},
-      {"id": "onedrive", "nome": "Microsoft OneDrive", "url": "https://www.microsoft.com/pt-br/microsoft-365/onedrive/online-cloud-storage", "tags": ["limites", "celular", "pt"], "para": ["organizar"],
-       "serve": "Equivalente da Microsoft ao Drive, integrado ao Word, Excel e PowerPoint. Útil em redes que usam Microsoft 365.",
-       "ideia": "Ative a sincronização da pasta de aulas no computador da escola para ter os arquivos mesmo quando a internet cair.",
-       "atencao": "O espaço gratuito é pequeno; contas institucionais costumam ter muito mais."}
+      {
+        "id": "google-drive",
+        "nome": "Google Drive",
+        "url": "https://drive.google.com/",
+        "tags": [
+          "limites",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar"
+        ],
+        "serve": "Guarda arquivos na nuvem e permite editar documentos, planilhas e apresentações em conjunto com outros professores.",
+        "ideia": "Crie uma pasta compartilhada da área (por exemplo, Matemática) para reunir provas e listas já revisadas pela equipe.",
+        "atencao": "Revise com quem cada pasta está compartilhada, principalmente se tiver notas ou dados de alunos."
+      },
+      {
+        "id": "onedrive",
+        "nome": "Microsoft OneDrive",
+        "url": "https://www.microsoft.com/pt-br/microsoft-365/onedrive/online-cloud-storage",
+        "tags": [
+          "limites",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar"
+        ],
+        "serve": "Equivalente da Microsoft ao Drive, integrado ao Word, Excel e PowerPoint. Útil em redes que usam Microsoft 365.",
+        "ideia": "Ative a sincronização da pasta de aulas no computador da escola para ter os arquivos mesmo quando a internet cair.",
+        "atencao": "O espaço gratuito é pequeno; contas institucionais costumam ter muito mais."
+      }
     ],
     "turma-virtual": [
-      {"id": "google-sala-de-aula", "nome": "Google Sala de Aula", "url": "https://classroom.google.com/", "tags": ["gratuito", "celular", "pt"], "para": ["organizar", "avaliar"],
-       "serve": "Ambiente virtual para publicar materiais, receber trabalhos, dar notas e devolver comentários aos alunos.",
-       "ideia": "Publique o roteiro da aula antes de entrar em sala: quem faltou consegue acompanhar o que foi feito.",
-       "atencao": "Funciona melhor com contas institucionais da escola (Google Workspace for Education)."},
-      {"id": "moodle", "nome": "Moodle", "url": "https://moodle.org/", "tags": ["gratuito", "pt"], "para": ["organizar", "avaliar"],
-       "serve": "Plataforma de cursos de código aberto, usada por universidades e redes de ensino. Muito completa em atividades e relatórios.",
-       "ideia": "Se a sua rede já tem Moodle, use o banco de questões para reaproveitar avaliações de um ano para o outro.",
-       "atencao": "Precisa de um servidor instalado pela instituição. Não é algo que o professor monte sozinho."},
-      {"id": "teams", "nome": "Microsoft Teams", "url": "https://www.microsoft.com/pt-br/microsoft-teams/education", "tags": ["limites", "celular", "pt"], "para": ["organizar"],
-       "serve": "Reúne turmas, conversas, chamadas de vídeo e tarefas, integrado ao Microsoft 365.",
-       "ideia": "Use o canal da turma para avisos e deixe as dúvidas sobre conteúdo em um canal separado.",
-       "atencao": "Os recursos de educação dependem de a escola ter licença do Microsoft 365."}
+      {
+        "id": "google-sala-de-aula",
+        "nome": "Google Sala de Aula",
+        "url": "https://classroom.google.com/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar",
+          "avaliar"
+        ],
+        "serve": "Ambiente virtual para publicar materiais, receber trabalhos, dar notas e devolver comentários aos alunos.",
+        "ideia": "Publique o roteiro da aula antes de entrar em sala: quem faltou consegue acompanhar o que foi feito.",
+        "atencao": "Funciona melhor com contas institucionais da escola (Google Workspace for Education)."
+      },
+      {
+        "id": "moodle",
+        "nome": "Moodle",
+        "url": "https://moodle.org/",
+        "tags": [
+          "gratuito",
+          "pt"
+        ],
+        "para": [
+          "organizar",
+          "avaliar"
+        ],
+        "serve": "Plataforma de cursos de código aberto, usada por universidades e redes de ensino. Muito completa em atividades e relatórios.",
+        "ideia": "Se a sua rede já tem Moodle, use o banco de questões para reaproveitar avaliações de um ano para o outro.",
+        "atencao": "Precisa de um servidor instalado pela instituição. Não é algo que o professor monte sozinho."
+      },
+      {
+        "id": "teams",
+        "nome": "Microsoft Teams",
+        "url": "https://www.microsoft.com/pt-br/microsoft-teams/education",
+        "tags": [
+          "limites",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "organizar"
+        ],
+        "serve": "Reúne turmas, conversas, chamadas de vídeo e tarefas, integrado ao Microsoft 365.",
+        "ideia": "Use o canal da turma para avisos e deixe as dúvidas sobre conteúdo em um canal separado.",
+        "atencao": "Os recursos de educação dependem de a escola ter licença do Microsoft 365."
+      }
     ],
     "formularios": [
-      {"id": "google-forms", "nome": "Google Formulários", "url": "https://www.google.com/forms/about/", "tags": ["gratuito", "sem-conta", "pt"], "para": ["avaliar"],
-       "serve": "Cria questionários, pesquisas e testes com correção automática. As respostas vão direto para uma planilha.",
-       "ideia": "Faça um teste de saída de 3 questões no fim da aula para ver quem entendeu o conteúdo.",
-       "atencao": "Se não pedir login, qualquer pessoa com o link responde. Peça só os dados realmente necessários."},
-      {"id": "microsoft-forms", "nome": "Microsoft Forms", "url": "https://forms.office.com/", "tags": ["gratuito", "sem-conta", "pt"], "para": ["avaliar"],
-       "serve": "Formulários e testes com correção automática, integrados ao Excel e ao Teams.",
-       "ideia": "Use a ramificação para mandar o aluno a uma questão de reforço quando errar a anterior.",
-       "atencao": "Algumas opções dependem da conta ser pessoal ou institucional."}
+      {
+        "id": "google-forms",
+        "nome": "Google Formulários",
+        "url": "https://www.google.com/forms/about/",
+        "tags": [
+          "gratuito",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "avaliar"
+        ],
+        "serve": "Cria questionários, pesquisas e testes com correção automática. As respostas vão direto para uma planilha.",
+        "ideia": "Faça um teste de saída de 3 questões no fim da aula para ver quem entendeu o conteúdo.",
+        "atencao": "Se não pedir login, qualquer pessoa com o link responde. Peça só os dados realmente necessários."
+      },
+      {
+        "id": "microsoft-forms",
+        "nome": "Microsoft Forms",
+        "url": "https://forms.office.com/",
+        "tags": [
+          "gratuito",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "avaliar"
+        ],
+        "serve": "Formulários e testes com correção automática, integrados ao Excel e ao Teams.",
+        "ideia": "Use a ramificação para mandar o aluno a uma questão de reforço quando errar a anterior.",
+        "atencao": "Algumas opções dependem da conta ser pessoal ou institucional."
+      }
     ],
     "quizzes": [
-      {"id": "kahoot", "nome": "Kahoot!", "url": "https://kahoot.com/", "tags": ["limites", "sem-conta", "celular"], "para": ["engajar", "avaliar"],
-       "serve": "Quiz em formato de jogo, projetado no quadro, que os alunos respondem pelo celular com um código (PIN).",
-       "ideia": "Use como revisão antes da prova e discuta as perguntas que a maioria errou.",
-       "atencao": "O ritmo é rápido e premia velocidade. Desative o cronômetro curto para alunos que precisam de mais tempo."},
-      {"id": "wayground", "nome": "Wayground (antigo Quizizz)", "url": "https://wayground.com/", "tags": ["limites", "sem-conta", "pt"], "para": ["engajar", "avaliar"],
-       "serve": "Quizzes em que cada aluno avança no próprio ritmo, com relatórios por questão. Pode ser usado em aula ou como tarefa de casa.",
-       "ideia": "Passe como tarefa de casa e use o relatório para decidir o que retomar na próxima aula.",
-       "atencao": "Há muitos quizzes prontos da comunidade, mas eles precisam ser revisados antes do uso."},
-      {"id": "plickers", "nome": "Plickers", "url": "https://www.plickers.com/", "tags": ["limites", "sem-conta", "offline"], "para": ["engajar", "avaliar"],
-       "serve": "Os alunos levantam cartões de papel impressos e o professor lê as respostas com a câmera do celular. Só o professor precisa de aparelho.",
-       "ideia": "Ideal para escolas sem celular para os alunos ou com internet fraca: imprima os cartões uma vez e reutilize o ano todo.",
-       "atencao": "O celular do professor precisa de internet para sincronizar os resultados."},
-      {"id": "mentimeter", "nome": "Mentimeter", "url": "https://www.mentimeter.com/", "tags": ["limites", "sem-conta"], "para": ["engajar"],
-       "serve": "Enquetes, nuvens de palavras e perguntas ao vivo, com os resultados aparecendo na tela enquanto a turma responde.",
-       "ideia": "Abra a aula com uma nuvem de palavras: \"O que vem à cabeça quando você ouve a palavra energia?\"",
-       "atencao": "O plano gratuito limita a quantidade de participantes e de perguntas por apresentação."},
-      {"id": "wordwall", "nome": "Wordwall", "url": "https://wordwall.net/pt", "tags": ["limites", "sem-conta", "pt"], "para": ["engajar", "memorizar"],
-       "serve": "Cria jogos como roleta, caça-palavras, ligar pontos e questionário a partir de uma única lista de conteúdo.",
-       "ideia": "Monte uma lista de termos e definições e troque o formato do jogo a cada aula sem reescrever nada.",
-       "atencao": "O plano gratuito permite poucas atividades ao mesmo tempo. Apague as que não usa mais."}
+      {
+        "id": "kahoot",
+        "nome": "Kahoot!",
+        "url": "https://kahoot.com/",
+        "tags": [
+          "limites",
+          "sem-conta",
+          "celular"
+        ],
+        "para": [
+          "engajar",
+          "avaliar"
+        ],
+        "serve": "Quiz em formato de jogo, projetado no quadro, que os alunos respondem pelo celular com um código (PIN).",
+        "ideia": "Use como revisão antes da prova e discuta as perguntas que a maioria errou.",
+        "atencao": "O ritmo é rápido e premia velocidade. Desative o cronômetro curto para alunos que precisam de mais tempo."
+      },
+      {
+        "id": "wayground",
+        "nome": "Wayground (antigo Quizizz)",
+        "url": "https://wayground.com/",
+        "tags": [
+          "limites",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "engajar",
+          "avaliar"
+        ],
+        "serve": "Quizzes em que cada aluno avança no próprio ritmo, com relatórios por questão. Pode ser usado em aula ou como tarefa de casa.",
+        "ideia": "Passe como tarefa de casa e use o relatório para decidir o que retomar na próxima aula.",
+        "atencao": "Há muitos quizzes prontos da comunidade, mas eles precisam ser revisados antes do uso."
+      },
+      {
+        "id": "plickers",
+        "nome": "Plickers",
+        "url": "https://www.plickers.com/",
+        "tags": [
+          "limites",
+          "sem-conta",
+          "offline"
+        ],
+        "para": [
+          "engajar",
+          "avaliar"
+        ],
+        "serve": "Os alunos levantam cartões de papel impressos e o professor lê as respostas com a câmera do celular. Só o professor precisa de aparelho.",
+        "ideia": "Ideal para escolas sem celular para os alunos ou com internet fraca: imprima os cartões uma vez e reutilize o ano todo.",
+        "atencao": "O celular do professor precisa de internet para sincronizar os resultados."
+      },
+      {
+        "id": "mentimeter",
+        "nome": "Mentimeter",
+        "url": "https://www.mentimeter.com/",
+        "tags": [
+          "limites",
+          "sem-conta"
+        ],
+        "para": [
+          "engajar"
+        ],
+        "serve": "Enquetes, nuvens de palavras e perguntas ao vivo, com os resultados aparecendo na tela enquanto a turma responde.",
+        "ideia": "Abra a aula com uma nuvem de palavras: \"O que vem à cabeça quando você ouve a palavra energia?\"",
+        "atencao": "O plano gratuito limita a quantidade de participantes e de perguntas por apresentação."
+      },
+      {
+        "id": "wordwall",
+        "nome": "Wordwall",
+        "url": "https://wordwall.net/pt",
+        "tags": [
+          "limites",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "engajar",
+          "memorizar"
+        ],
+        "serve": "Cria jogos como roleta, caça-palavras, ligar pontos e questionário a partir de uma única lista de conteúdo.",
+        "ideia": "Monte uma lista de termos e definições e troque o formato do jogo a cada aula sem reescrever nada.",
+        "atencao": "O plano gratuito permite poucas atividades ao mesmo tempo. Apague as que não usa mais."
+      }
     ],
     "murais": [
-      {"id": "padlet", "nome": "Padlet", "url": "https://padlet.com/", "tags": ["limites", "sem-conta", "pt"], "para": ["engajar", "criar"],
-       "serve": "Mural digital onde a turma publica textos, imagens, links e vídeos. Funciona para chuva de ideias, galerias e linhas do tempo.",
-       "ideia": "Crie uma linha do tempo coletiva em que cada grupo adiciona um acontecimento com imagem e fonte.",
-       "atencao": "Ative a moderação para aprovar as postagens antes de aparecerem e não peça nomes completos."},
-      {"id": "miro", "nome": "Miro", "url": "https://miro.com/education/", "tags": ["limites", "pt"], "para": ["criar", "engajar"],
-       "serve": "Quadro branco infinito para mapas mentais, fluxogramas e trabalho em grupo com notas adesivas.",
-       "ideia": "Organize uma sequência didática em colunas por aula e mova as atividades conforme o planejamento muda.",
-       "atencao": "Tem plano para educação, mas exige cadastro. Para uso rápido em aula, o Padlet é mais simples."}
+      {
+        "id": "padlet",
+        "nome": "Padlet",
+        "url": "https://padlet.com/",
+        "tags": [
+          "limites",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "engajar",
+          "criar"
+        ],
+        "serve": "Mural digital onde a turma publica textos, imagens, links e vídeos. Funciona para chuva de ideias, galerias e linhas do tempo.",
+        "ideia": "Crie uma linha do tempo coletiva em que cada grupo adiciona um acontecimento com imagem e fonte.",
+        "atencao": "Ative a moderação para aprovar as postagens antes de aparecerem e não peça nomes completos."
+      },
+      {
+        "id": "miro",
+        "nome": "Miro",
+        "url": "https://miro.com/education/",
+        "tags": [
+          "limites",
+          "pt"
+        ],
+        "para": [
+          "criar",
+          "engajar"
+        ],
+        "serve": "Quadro branco infinito para mapas mentais, fluxogramas e trabalho em grupo com notas adesivas.",
+        "ideia": "Organize uma sequência didática em colunas por aula e mova as atividades conforme o planejamento muda.",
+        "atencao": "Tem plano para educação, mas exige cadastro. Para uso rápido em aula, o Padlet é mais simples."
+      }
     ],
     "videos": [
-      {"id": "edpuzzle", "nome": "Edpuzzle", "url": "https://edpuzzle.com/", "tags": ["limites", "pt"], "para": ["avaliar", "engajar"],
-       "serve": "Insere perguntas dentro de vídeos (inclusive do YouTube): o vídeo pausa e o aluno responde antes de continuar.",
-       "ideia": "Use na sala de aula invertida: o aluno assiste em casa e você vê quem chegou ao fim e o que errou.",
-       "atencao": "O plano gratuito limita o número de vídeos guardados."},
-      {"id": "lumi-h5p", "nome": "Lumi (H5P)", "url": "https://lumi.education/", "tags": ["gratuito", "offline", "sem-conta"], "para": ["criar", "engajar"],
-       "serve": "Programa de computador para criar conteúdo interativo H5P (vídeo com perguntas, arrastar e soltar, cartões) sem internet.",
-       "ideia": "Exporte a atividade como um único arquivo HTML e abra no laboratório da escola, mesmo sem conexão.",
-       "atencao": "A interface é em inglês em várias partes; o conteúdo criado pode ser todo em português."}
+      {
+        "id": "edpuzzle",
+        "nome": "Edpuzzle",
+        "url": "https://edpuzzle.com/",
+        "tags": [
+          "limites",
+          "pt"
+        ],
+        "para": [
+          "avaliar",
+          "engajar"
+        ],
+        "serve": "Insere perguntas dentro de vídeos (inclusive do YouTube): o vídeo pausa e o aluno responde antes de continuar.",
+        "ideia": "Use na sala de aula invertida: o aluno assiste em casa e você vê quem chegou ao fim e o que errou.",
+        "atencao": "O plano gratuito limita o número de vídeos guardados."
+      },
+      {
+        "id": "lumi-h5p",
+        "nome": "Lumi (H5P)",
+        "url": "https://lumi.education/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "sem-conta"
+        ],
+        "para": [
+          "criar",
+          "engajar"
+        ],
+        "serve": "Programa de computador para criar conteúdo interativo H5P (vídeo com perguntas, arrastar e soltar, cartões) sem internet.",
+        "ideia": "Exporte a atividade como um único arquivo HTML e abra no laboratório da escola, mesmo sem conexão.",
+        "atencao": "A interface é em inglês em várias partes; o conteúdo criado pode ser todo em português."
+      }
+    ],
+    "conteudo": [
+      {
+        "id": "khan-academy",
+        "nome": "Khan Academy",
+        "url": "https://pt.khanacademy.org/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "pesquisar",
+          "avaliar"
+        ],
+        "serve": "Videoaulas e exercícios com correção imediata, principalmente de matemática e ciências, em português. O professor cria a turma, atribui atividades e acompanha o progresso de cada aluno.",
+        "ideia": "Atribua uma lista de exercícios de revisão antes da avaliação e use o relatório da turma para ver quais habilidades precisam ser retomadas.",
+        "atencao": "Para o professor acompanhar, os alunos precisam de conta (há opção de cadastro pela turma). Parte do catálogo existe só em inglês. A tutoria com IA (Khanmigo) está no IA pra Prof."
+      },
+      {
+        "id": "mec-red",
+        "nome": "MEC RED (Plataforma Integrada do MEC)",
+        "url": "https://plataformaintegrada.mec.gov.br/",
+        "tags": [
+          "gratuito",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "pesquisar",
+          "criar"
+        ],
+        "serve": "Plataforma do Ministério da Educação que reúne recursos educacionais digitais abertos de instituições públicas e de professores: vídeos, jogos, simuladores, planos de aula e atividades, com busca por etapa e componente.",
+        "ideia": "Antes de criar um material do zero, pesquise o tema na plataforma. Depois, publique lá os seus próprios materiais para outros professores usarem.",
+        "atencao": "Confira a licença de uso de cada recurso e se ele está atualizado em relação à BNCC."
+      },
+      {
+        "id": "educapes",
+        "nome": "eduCAPES",
+        "url": "https://educapes.capes.gov.br/",
+        "tags": [
+          "gratuito",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "pesquisar"
+        ],
+        "serve": "Repositório de objetos educacionais abertos da CAPES: livros, apostilas, videoaulas, artigos e materiais dos cursos da Universidade Aberta do Brasil (UAB).",
+        "ideia": "Use para encontrar materiais de formação continuada e textos de apoio para planejar uma unidade nova.",
+        "atencao": "Boa parte do acervo é voltada ao ensino superior. Filtre por assunto e tipo de material."
+      },
+      {
+        "id": "google-academico",
+        "nome": "Google Acadêmico (Google Scholar)",
+        "url": "https://scholar.google.com.br/",
+        "tags": [
+          "gratuito",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "pesquisar"
+        ],
+        "serve": "Buscador de artigos científicos, teses, dissertações e livros, com contagem de citações e alertas por e-mail quando sai algo novo sobre um tema.",
+        "ideia": "Embase um projeto da escola com pesquisas recentes, ou mostre aos alunos do ensino médio como encontrar fontes confiáveis para um trabalho.",
+        "atencao": "Nem todo texto é aberto. Procure o link para PDF ao lado do resultado ou a versão no repositório da universidade."
+      },
+      {
+        "id": "periodicos-capes",
+        "nome": "Portal de Periódicos da CAPES",
+        "url": "https://www.periodicos.capes.gov.br/",
+        "tags": [
+          "gratuito",
+          "pt"
+        ],
+        "para": [
+          "pesquisar"
+        ],
+        "serve": "Acervo de milhares de revistas científicas, livros e bases de dados nacionais e internacionais, mantido pela CAPES.",
+        "ideia": "Ao preparar um curso de formação ou uma pós-graduação, busque artigos revisados por pares sobre o tema.",
+        "atencao": "Parte do acervo é de acesso aberto a qualquer pessoa. O acervo completo é liberado pelo acesso CAFe para quem tem vínculo com uma instituição participante, como universidades e institutos federais."
+      }
     ],
     "anki": [
-      {"id": "anki", "nome": "Anki", "url": "https://apps.ankiweb.net/", "tags": ["gratuito", "offline", "pt"], "para": ["memorizar"],
-       "serve": "Flashcards com repetição espaçada: o programa decide quando mostrar cada cartão de novo, conforme a dificuldade que a pessoa marcou.",
-       "ideia": "Prepare um baralho com o vocabulário ou as fórmulas da unidade e distribua o arquivo para a turma estudar em casa.",
-       "atencao": "Gratuito no computador (Windows, Mac e Linux), no navegador (AnkiWeb) e no Android. No iPhone o app oficial é pago."},
-      {"id": "ankidroid", "nome": "AnkiDroid", "url": "https://ankidroid.org/", "tags": ["gratuito", "offline", "celular", "pt"], "para": ["memorizar"],
-       "serve": "Versão gratuita e de código aberto do Anki para Android. Sincroniza com o computador pela conta do AnkiWeb.",
-       "ideia": "Para alunos que estudam no ônibus ou sem internet em casa: o baralho fica salvo no celular.",
-       "atencao": "A sincronização precisa de conta AnkiWeb; sem ela, o baralho fica só no aparelho."},
-      {"id": "anki-baralhos", "nome": "Baralhos compartilhados do AnkiWeb", "url": "https://ankiweb.net/shared/decks", "tags": ["gratuito", "pt"], "para": ["memorizar"],
-       "serve": "Biblioteca de baralhos prontos feitos pela comunidade, de vocabulário de idiomas a anatomia e geografia.",
-       "ideia": "Procure um baralho pronto, revise e corrija o que não serve antes de indicar aos alunos.",
-       "atencao": "Qualidade variável: confira o conteúdo como faria com qualquer material da internet."}
+      {
+        "id": "anki",
+        "nome": "Anki",
+        "url": "https://apps.ankiweb.net/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "pt"
+        ],
+        "para": [
+          "memorizar"
+        ],
+        "serve": "Flashcards com repetição espaçada: o programa decide quando mostrar cada cartão de novo, conforme a dificuldade que a pessoa marcou.",
+        "ideia": "Prepare um baralho com o vocabulário ou as fórmulas da unidade e distribua o arquivo para a turma estudar em casa.",
+        "atencao": "Gratuito no computador (Windows, Mac e Linux), no navegador (AnkiWeb) e no Android. No iPhone o app oficial é pago."
+      },
+      {
+        "id": "ankidroid",
+        "nome": "AnkiDroid",
+        "url": "https://ankidroid.org/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "memorizar"
+        ],
+        "serve": "Versão gratuita e de código aberto do Anki para Android. Sincroniza com o computador pela conta do AnkiWeb.",
+        "ideia": "Para alunos que estudam no ônibus ou sem internet em casa: o baralho fica salvo no celular.",
+        "atencao": "A sincronização precisa de conta AnkiWeb; sem ela, o baralho fica só no aparelho."
+      },
+      {
+        "id": "anki-baralhos",
+        "nome": "Baralhos compartilhados do AnkiWeb",
+        "url": "https://ankiweb.net/shared/decks",
+        "tags": [
+          "gratuito",
+          "pt"
+        ],
+        "para": [
+          "memorizar"
+        ],
+        "serve": "Biblioteca de baralhos prontos feitos pela comunidade, de vocabulário de idiomas a anatomia e geografia.",
+        "ideia": "Procure um baralho pronto, revise e corrija o que não serve antes de indicar aos alunos.",
+        "atencao": "Qualidade variável: confira o conteúdo como faria com qualquer material da internet."
+      }
     ],
     "flashcards": [
-      {"id": "quizlet", "nome": "Quizlet", "url": "https://quizlet.com/", "tags": ["limites", "celular", "pt"], "para": ["memorizar", "engajar"],
-       "serve": "Flashcards on-line com modos de estudo e jogos. Mais simples de começar que o Anki, mas com menos controle da revisão.",
-       "ideia": "Use o modo de jogo em equipes na sala para revisar vocabulário antes de uma avaliação.",
-       "atencao": "Vários recursos ficaram restritos ao plano pago e há anúncios na versão gratuita."}
+      {
+        "id": "quizlet",
+        "nome": "Quizlet",
+        "url": "https://quizlet.com/",
+        "tags": [
+          "limites",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "memorizar",
+          "engajar"
+        ],
+        "serve": "Flashcards on-line com modos de estudo e jogos. Mais simples de começar que o Anki, mas com menos controle da revisão.",
+        "ideia": "Use o modo de jogo em equipes na sala para revisar vocabulário antes de uma avaliação.",
+        "atencao": "Vários recursos ficaram restritos ao plano pago e há anúncios na versão gratuita."
+      }
     ],
     "design": [
-      {"id": "canva", "nome": "Canva para Educação", "url": "https://www.canva.com/pt_br/educacao/", "tags": ["gratuito", "celular", "pt"], "para": ["criar"],
-       "serve": "Modelos de apresentações, cartazes, infográficos, vídeos e atividades. Gratuito para professores da educação básica após verificação.",
-       "ideia": "Crie a identidade visual da sua disciplina (cores e fontes) e use o mesmo modelo em todos os slides do ano.",
-       "atencao": "A verificação de professor pode pedir comprovante de vínculo com a escola."},
-      {"id": "google-apresentacoes", "nome": "Google Apresentações", "url": "https://www.google.com/slides/about/", "tags": ["gratuito", "pt"], "para": ["criar"],
-       "serve": "Slides on-line com edição em grupo e histórico de versões. Abre em qualquer computador com navegador.",
-       "ideia": "Peça que cada grupo edite um slide da mesma apresentação durante a aula.",
-       "atencao": "Para usar sem internet, ative o modo off-line antes, ainda com conexão."},
-      {"id": "genially", "nome": "Genially", "url": "https://genially.com/", "tags": ["limites", "pt"], "para": ["criar", "engajar"],
-       "serve": "Apresentações e jogos interativos, como escape rooms digitais, com botões e áreas clicáveis.",
-       "ideia": "Comece pelos modelos de escape room e troque as perguntas pelo conteúdo da sua turma.",
-       "atencao": "Materiais muito pesados ficam lentos em computadores antigos."}
+      {
+        "id": "canva",
+        "nome": "Canva para Educação",
+        "url": "https://www.canva.com/pt_br/educacao/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "criar"
+        ],
+        "serve": "Modelos de apresentações, cartazes, infográficos, vídeos e atividades. Gratuito para professores da educação básica após verificação.",
+        "ideia": "Crie a identidade visual da sua disciplina (cores e fontes) e use o mesmo modelo em todos os slides do ano.",
+        "atencao": "A verificação de professor pode pedir comprovante de vínculo com a escola."
+      },
+      {
+        "id": "google-apresentacoes",
+        "nome": "Google Apresentações",
+        "url": "https://www.google.com/slides/about/",
+        "tags": [
+          "gratuito",
+          "pt"
+        ],
+        "para": [
+          "criar"
+        ],
+        "serve": "Slides on-line com edição em grupo e histórico de versões. Abre em qualquer computador com navegador.",
+        "ideia": "Peça que cada grupo edite um slide da mesma apresentação durante a aula.",
+        "atencao": "Para usar sem internet, ative o modo off-line antes, ainda com conexão."
+      },
+      {
+        "id": "genially",
+        "nome": "Genially",
+        "url": "https://genially.com/",
+        "tags": [
+          "limites",
+          "pt"
+        ],
+        "para": [
+          "criar",
+          "engajar"
+        ],
+        "serve": "Apresentações e jogos interativos, como escape rooms digitais, com botões e áreas clicáveis.",
+        "ideia": "Comece pelos modelos de escape room e troque as perguntas pelo conteúdo da sua turma.",
+        "atencao": "Materiais muito pesados ficam lentos em computadores antigos."
+      }
     ],
     "video-audio": [
-      {"id": "obs", "nome": "OBS Studio", "url": "https://obsproject.com/", "tags": ["gratuito", "offline", "pt"], "para": ["criar"],
-       "serve": "Grava a tela do computador, a câmera e o microfone ao mesmo tempo. Gratuito, de código aberto e sem marca-d'água.",
-       "ideia": "Grave a resolução de um exercício no computador para os alunos reverem em casa.",
-       "atencao": "Na primeira vez, faça uma gravação de teste para conferir o áudio."},
-      {"id": "clipchamp", "nome": "Clipchamp", "url": "https://clipchamp.com/", "tags": ["limites", "pt"], "para": ["criar"],
-       "serve": "Editor de vídeo simples no navegador (e já instalado no Windows 11), com cortes, legendas e textos.",
-       "ideia": "Junte trechos curtos gravados pela turma em um vídeo de apresentação do projeto.",
-       "atencao": "Alguns recursos de estoque e de exportação são pagos."},
-      {"id": "audacity", "nome": "Audacity", "url": "https://www.audacityteam.org/", "tags": ["gratuito", "offline", "pt"], "para": ["criar", "incluir"],
-       "serve": "Grava e edita áudio: remove ruído, corta trechos e ajusta o volume. Gratuito e de código aberto.",
-       "ideia": "Grave a leitura de textos para alunos com dificuldade de leitura ou para um podcast da turma.",
-       "atencao": "Exporte em MP3 para o arquivo ficar leve e abrir em qualquer celular."}
+      {
+        "id": "obs",
+        "nome": "OBS Studio",
+        "url": "https://obsproject.com/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "pt"
+        ],
+        "para": [
+          "criar"
+        ],
+        "serve": "Grava a tela do computador, a câmera e o microfone ao mesmo tempo. Gratuito, de código aberto e sem marca-d'água.",
+        "ideia": "Grave a resolução de um exercício no computador para os alunos reverem em casa.",
+        "atencao": "Na primeira vez, faça uma gravação de teste para conferir o áudio."
+      },
+      {
+        "id": "clipchamp",
+        "nome": "Clipchamp",
+        "url": "https://clipchamp.com/",
+        "tags": [
+          "limites",
+          "pt"
+        ],
+        "para": [
+          "criar"
+        ],
+        "serve": "Editor de vídeo simples no navegador (e já instalado no Windows 11), com cortes, legendas e textos.",
+        "ideia": "Junte trechos curtos gravados pela turma em um vídeo de apresentação do projeto.",
+        "atencao": "Alguns recursos de estoque e de exportação são pagos."
+      },
+      {
+        "id": "audacity",
+        "nome": "Audacity",
+        "url": "https://www.audacityteam.org/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "pt"
+        ],
+        "para": [
+          "criar",
+          "incluir"
+        ],
+        "serve": "Grava e edita áudio: remove ruído, corta trechos e ajusta o volume. Gratuito e de código aberto.",
+        "ideia": "Grave a leitura de textos para alunos com dificuldade de leitura ou para um podcast da turma.",
+        "atencao": "Exporte em MP3 para o arquivo ficar leve e abrir em qualquer celular."
+      }
     ],
     "exatas": [
-      {"id": "geogebra", "nome": "GeoGebra", "url": "https://www.geogebra.org/", "tags": ["gratuito", "offline", "celular", "pt"], "para": ["criar", "engajar"],
-       "serve": "Geometria, gráficos de funções, álgebra e 3D em um só programa, com milhares de atividades prontas em português.",
-       "ideia": "Mostre como muda a parábola ao arrastar os coeficientes a, b e c de uma função do 2º grau.",
-       "atencao": "Tem versão para instalar e usar sem internet, útil no laboratório."},
-      {"id": "desmos", "nome": "Desmos", "url": "https://www.desmos.com/", "tags": ["gratuito", "celular", "pt"], "para": ["criar", "engajar"],
-       "serve": "Calculadora gráfica on-line muito rápida e fácil de usar, ótima para explorar funções projetando no quadro.",
-       "ideia": "Desafie a turma a desenhar uma figura usando apenas gráficos de funções.",
-       "atencao": "Precisa de internet."},
-      {"id": "phet", "nome": "PhET (simulações)", "url": "https://phet.colorado.edu/pt_BR/", "tags": ["gratuito", "offline", "sem-conta", "pt"], "para": ["engajar"],
-       "serve": "Simulações gratuitas de física, química, biologia e matemática da Universidade do Colorado, traduzidas para o português.",
-       "ideia": "Use a simulação de circuitos para os alunos testarem hipóteses antes da aula prática.",
-       "atencao": "As simulações em HTML5 podem ser baixadas para usar sem internet."}
+      {
+        "id": "geogebra",
+        "nome": "GeoGebra",
+        "url": "https://www.geogebra.org/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "criar",
+          "engajar"
+        ],
+        "serve": "Geometria, gráficos de funções, álgebra e 3D em um só programa, com milhares de atividades prontas em português.",
+        "ideia": "Mostre como muda a parábola ao arrastar os coeficientes a, b e c de uma função do 2º grau.",
+        "atencao": "Tem versão para instalar e usar sem internet, útil no laboratório."
+      },
+      {
+        "id": "desmos",
+        "nome": "Desmos",
+        "url": "https://www.desmos.com/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "criar",
+          "engajar"
+        ],
+        "serve": "Calculadora gráfica on-line muito rápida e fácil de usar, ótima para explorar funções projetando no quadro.",
+        "ideia": "Desafie a turma a desenhar uma figura usando apenas gráficos de funções.",
+        "atencao": "Precisa de internet."
+      },
+      {
+        "id": "phet",
+        "nome": "PhET (simulações)",
+        "url": "https://phet.colorado.edu/pt_BR/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "engajar"
+        ],
+        "serve": "Simulações gratuitas de física, química, biologia e matemática da Universidade do Colorado, traduzidas para o português.",
+        "ideia": "Use a simulação de circuitos para os alunos testarem hipóteses antes da aula prática.",
+        "atencao": "As simulações em HTML5 podem ser baixadas para usar sem internet."
+      }
     ],
     "computacao": [
-      {"id": "scratch", "nome": "Scratch", "url": "https://scratch.mit.edu/", "tags": ["gratuito", "offline", "pt"], "para": ["programar", "criar"],
-       "serve": "Programação em blocos para criar jogos, histórias e animações. Tem versão para instalar e usar sem internet.",
-       "ideia": "Peça uma história animada que explique um conteúdo de outra disciplina, como o ciclo da água.",
-       "atencao": "Para os alunos publicarem projetos na comunidade, é preciso conta; para programar, não."},
-      {"id": "code-org", "nome": "Code.org", "url": "https://code.org/", "tags": ["gratuito", "pt"], "para": ["programar"],
-       "serve": "Cursos de programação e pensamento computacional em níveis, incluindo a Hora do Código.",
-       "ideia": "Comece o ano com uma atividade da Hora do Código para diagnosticar o nível da turma.",
-       "atencao": "Nem todos os cursos estão traduzidos para o português."},
-      {"id": "tinkercad", "nome": "Tinkercad", "url": "https://www.tinkercad.com/", "tags": ["gratuito", "pt"], "para": ["programar", "criar"],
-       "serve": "Modelagem 3D, circuitos eletrônicos e Arduino simulados no navegador, sem precisar de peças físicas.",
-       "ideia": "Simule o circuito do semáforo com Arduino antes de montar com a turma.",
-       "atencao": "O professor pode criar a turma e dar acesso aos alunos por um código."},
-      {"id": "makecode", "nome": "MakeCode (micro:bit)", "url": "https://makecode.microbit.org/", "tags": ["gratuito", "sem-conta", "pt"], "para": ["programar"],
-       "serve": "Programação em blocos ou em JavaScript e Python para a placa micro:bit, com simulador na tela.",
-       "ideia": "Mesmo sem a placa, o simulador permite programar e testar um contador de passos ou um termômetro.",
-       "atencao": "Para gravar na placa, é preciso um cabo USB."}
+      {
+        "id": "scratch",
+        "nome": "Scratch",
+        "url": "https://scratch.mit.edu/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "pt"
+        ],
+        "para": [
+          "programar",
+          "criar"
+        ],
+        "serve": "Programação em blocos para criar jogos, histórias e animações. Tem versão para instalar e usar sem internet.",
+        "ideia": "Peça uma história animada que explique um conteúdo de outra disciplina, como o ciclo da água.",
+        "atencao": "Para os alunos publicarem projetos na comunidade, é preciso conta; para programar, não."
+      },
+      {
+        "id": "code-org",
+        "nome": "Code.org",
+        "url": "https://code.org/",
+        "tags": [
+          "gratuito",
+          "pt"
+        ],
+        "para": [
+          "programar"
+        ],
+        "serve": "Cursos de programação e pensamento computacional em níveis, incluindo a Hora do Código.",
+        "ideia": "Comece o ano com uma atividade da Hora do Código para diagnosticar o nível da turma.",
+        "atencao": "Nem todos os cursos estão traduzidos para o português."
+      },
+      {
+        "id": "tinkercad",
+        "nome": "Tinkercad",
+        "url": "https://www.tinkercad.com/",
+        "tags": [
+          "gratuito",
+          "pt"
+        ],
+        "para": [
+          "programar",
+          "criar"
+        ],
+        "serve": "Modelagem 3D, circuitos eletrônicos e Arduino simulados no navegador, sem precisar de peças físicas.",
+        "ideia": "Simule o circuito do semáforo com Arduino antes de montar com a turma.",
+        "atencao": "O professor pode criar a turma e dar acesso aos alunos por um código."
+      },
+      {
+        "id": "makecode",
+        "nome": "MakeCode (micro:bit)",
+        "url": "https://makecode.microbit.org/",
+        "tags": [
+          "gratuito",
+          "sem-conta",
+          "pt"
+        ],
+        "para": [
+          "programar"
+        ],
+        "serve": "Programação em blocos ou em JavaScript e Python para a placa micro:bit, com simulador na tela.",
+        "ideia": "Mesmo sem a placa, o simulador permite programar e testar um contador de passos ou um termômetro.",
+        "atencao": "Para gravar na placa, é preciso um cabo USB."
+      }
     ],
     "inclusao": [
-      {"id": "vlibras", "nome": "VLibras", "url": "https://www.gov.br/governodigital/pt-br/vlibras", "tags": ["gratuito", "offline", "celular", "pt"], "para": ["incluir"],
-       "serve": "Ferramenta do governo federal que traduz textos em português para Libras com um avatar 3D.",
-       "ideia": "Use como apoio para estudantes surdos em textos curtos, sempre em parceria com o intérprete e o AEE.",
-       "atencao": "É apoio, não substitui o intérprete de Libras nem o ensino da língua."},
-      {"id": "leitor-imersivo", "nome": "Leitor Imersivo (Microsoft)", "url": "", "tags": ["gratuito", "pt"], "para": ["incluir"],
-       "serve": "Recurso que já vem no navegador Edge e no Word: lê o texto em voz alta, destaca as linhas e separa sílabas.",
-       "ideia": "Ative o foco de linha para alunos que se perdem na leitura de textos longos.",
-       "atencao": "No Edge, aparece no ícone de livro na barra de endereço em páginas de texto."},
-      {"id": "nvda", "nome": "NVDA", "url": "https://www.nvaccess.org/", "tags": ["gratuito", "offline", "pt"], "para": ["incluir"],
-       "serve": "Leitor de tela gratuito para Windows, usado por pessoas cegas ou com baixa visão.",
-       "ideia": "Teste os seus materiais digitais com o NVDA: se fizer sentido ouvindo, está mais acessível para todos.",
-       "atencao": "Imagens sem texto alternativo não são lidas. Descreva sempre as imagens importantes."},
-      {"id": "be-my-eyes", "nome": "Be My Eyes", "url": "https://www.bemyeyes.com/", "tags": ["gratuito", "celular", "pt"], "para": ["incluir"],
-       "serve": "Aplicativo que conecta pessoas cegas ou com baixa visão a voluntários, por vídeo, para descrever o que a câmera mostra.",
-       "ideia": "Apresente o aplicativo às famílias de estudantes com deficiência visual como apoio fora da escola.",
-       "atencao": "Não use para ler documentos com dados pessoais de terceiros."}
+      {
+        "id": "vlibras",
+        "nome": "VLibras",
+        "url": "https://www.gov.br/governodigital/pt-br/vlibras",
+        "tags": [
+          "gratuito",
+          "offline",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "incluir"
+        ],
+        "serve": "Ferramenta do governo federal que traduz textos em português para Libras com um avatar 3D.",
+        "ideia": "Use como apoio para estudantes surdos em textos curtos, sempre em parceria com o intérprete e o AEE.",
+        "atencao": "É apoio, não substitui o intérprete de Libras nem o ensino da língua."
+      },
+      {
+        "id": "leitor-imersivo",
+        "nome": "Leitor Imersivo (Microsoft)",
+        "url": "",
+        "tags": [
+          "gratuito",
+          "pt"
+        ],
+        "para": [
+          "incluir"
+        ],
+        "serve": "Recurso que já vem no navegador Edge e no Word: lê o texto em voz alta, destaca as linhas e separa sílabas.",
+        "ideia": "Ative o foco de linha para alunos que se perdem na leitura de textos longos.",
+        "atencao": "No Edge, aparece no ícone de livro na barra de endereço em páginas de texto."
+      },
+      {
+        "id": "nvda",
+        "nome": "NVDA",
+        "url": "https://www.nvaccess.org/",
+        "tags": [
+          "gratuito",
+          "offline",
+          "pt"
+        ],
+        "para": [
+          "incluir"
+        ],
+        "serve": "Leitor de tela gratuito para Windows, usado por pessoas cegas ou com baixa visão.",
+        "ideia": "Teste os seus materiais digitais com o NVDA: se fizer sentido ouvindo, está mais acessível para todos.",
+        "atencao": "Imagens sem texto alternativo não são lidas. Descreva sempre as imagens importantes."
+      },
+      {
+        "id": "be-my-eyes",
+        "nome": "Be My Eyes",
+        "url": "https://www.bemyeyes.com/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "incluir"
+        ],
+        "serve": "Aplicativo que conecta pessoas cegas ou com baixa visão a voluntários, por vídeo, para descrever o que a câmera mostra.",
+        "ideia": "Apresente o aplicativo às famílias de estudantes com deficiência visual como apoio fora da escola.",
+        "atencao": "Não use para ler documentos com dados pessoais de terceiros."
+      }
     ],
     "seguranca": [
-      {"id": "bitwarden", "nome": "Bitwarden", "url": "https://bitwarden.com/", "tags": ["gratuito", "celular", "pt"], "para": ["proteger"],
-       "serve": "Gerenciador de senhas gratuito e de código aberto: guarda e preenche senhas fortes, diferentes para cada site.",
-       "ideia": "Use uma senha forte só para o Bitwarden e deixe que ele crie as outras.",
-       "atencao": "Ative a verificação em duas etapas na conta do gerenciador."},
-      {"id": "google-autenticador", "nome": "Google Authenticator", "url": "https://support.google.com/accounts/answer/1066447?hl=pt-BR", "tags": ["gratuito", "offline", "celular", "pt"], "para": ["proteger"],
-       "serve": "Gera os códigos da verificação em duas etapas, que protegem a conta mesmo se a senha vazar.",
-       "ideia": "Comece pelas contas mais importantes: e-mail institucional, Drive e plataforma de notas.",
-       "atencao": "Guarde os códigos de recuperação em lugar seguro para não perder o acesso se trocar de celular."}
+      {
+        "id": "bitwarden",
+        "nome": "Bitwarden",
+        "url": "https://bitwarden.com/",
+        "tags": [
+          "gratuito",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "proteger"
+        ],
+        "serve": "Gerenciador de senhas gratuito e de código aberto: guarda e preenche senhas fortes, diferentes para cada site.",
+        "ideia": "Use uma senha forte só para o Bitwarden e deixe que ele crie as outras.",
+        "atencao": "Ative a verificação em duas etapas na conta do gerenciador."
+      },
+      {
+        "id": "google-autenticador",
+        "nome": "Google Authenticator",
+        "url": "https://support.google.com/accounts/answer/1066447?hl=pt-BR",
+        "tags": [
+          "gratuito",
+          "offline",
+          "celular",
+          "pt"
+        ],
+        "para": [
+          "proteger"
+        ],
+        "serve": "Gera os códigos da verificação em duas etapas, que protegem a conta mesmo se a senha vazar.",
+        "ideia": "Comece pelas contas mais importantes: e-mail institucional, Drive e plataforma de notas.",
+        "atencao": "Guarde os códigos de recuperação em lugar seguro para não perder o acesso se trocar de celular."
+      }
     ]
   }
 }
