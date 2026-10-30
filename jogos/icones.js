@@ -24,6 +24,10 @@
       <circle cx="50" cy="22" r="7" fill="${A}" ${T}/><path d="M39 54c0-12 5-20 11-20s11 8 11 20z" fill="${A}" ${T}/>
       <circle cx="32" cy="18" r="8" fill="${R}" ${T}/><path d="M19 56c0-14 6-24 13-24s13 10 13 24z" fill="${R}" ${T}/>
       <text x="27" y="51" font-family="Sniglet,sans-serif" font-weight="800" font-size="15" fill="${B}">?</text>`,
+    'partes-computador': `<rect x="12" y="6" width="40" height="28" rx="4" fill="${B}" ${T}/><rect x="16" y="10" width="32" height="20" rx="2" fill="#9fdab4" ${T}/>
+      <circle cx="26" cy="19" r="2" fill="#111"/><circle cx="38" cy="19" r="2" fill="#111"/><path d="M27 24q5 4 10 0" fill="none" ${T}/>
+      <rect x="6" y="42" width="34" height="14" rx="3" fill="${A}" ${T}/><path d="M11 47h4M18 47h4M25 47h4M32 47h4M14 52h18" ${T}/>
+      <path d="M52 40c4 0 6 3 6 7v3c0 4-2 7-6 7s-6-3-6-7v-3c0-4 2-7 6-7z" fill="${R}" ${T}/>`,
     'vale-bits': `<path d="M6 54h52" ${T}/><path d="M10 54V30l12-10 12 10v24z" fill="${B}" ${T}/><path d="M8 32l14-13 14 13" fill="${R}" ${T}/>
       <rect x="18" y="40" width="8" height="14" fill="${V}" ${T}/><path d="M40 54V38M46 54V38M52 54V38M38 44h16M38 50h16" ${T}/>
       <path d="M48 8l7 7-7 7-7-7z" fill="${A}" ${T}/>`,

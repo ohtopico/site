@@ -87,6 +87,9 @@
     background: #fff3a6; color: #111; text-decoration: none; box-shadow: 4px 4px 0 #111; }
   .primeiros svg { width: 64px; height: 64px; flex: none; }
   .primeiros b { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(20px, 3.4vw, 24px); }
+  .primeiros-par { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin: 24px 0 0; }
+  .primeiros-par .primeiros { margin: 0; }
+  .primeiros.oficina { background: #c6ebd4; }
   .primeiros:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #111; }
   .rodape-al { margin-top: 40px; padding: 30px 0 70px; border-top: 1.5px solid var(--line); color: var(--ink-2); font-size: 14.5px; }
   .rodape-al a { color: var(--ink); }
@@ -148,10 +151,16 @@
   </section>
 
   <div class="wrap">
+    <div class="primeiros-par">
     <a class="primeiros" href="../computador-para-criancas/">
       <svg viewBox="0 0 64 64" role="img" aria-label="Desenho de um teclado com um mouse ao lado"><rect x="4" y="22" width="40" height="22" rx="5" fill="#fff36b" stroke="#111" stroke-width="2.5"/><g fill="#fff" stroke="#111" stroke-width="1.5"><rect x="9" y="27" width="6" height="5" rx="1"/><rect x="17" y="27" width="6" height="5" rx="1"/><rect x="25" y="27" width="6" height="5" rx="1"/><rect x="33" y="27" width="6" height="5" rx="1"/><rect x="14" y="35" width="20" height="5" rx="1"/></g><path d="M54 22c5 0 8 4 8 9v4c0 5-3 9-8 9s-8-4-8-9v-4c0-5 3-9 8-9z" fill="#f2a9b3" stroke="#111" stroke-width="2.5"/><line x1="54" y1="22" x2="54" y2="31" stroke="#111" stroke-width="2"/></svg>
       <span><b>Primeiros passos no computador</b>Ainda está aprendendo a usar o mouse e o teclado? Comece por aqui, com um teclado em 3D.</span>
     </a>
+    <a class="primeiros oficina" href="../material-didatico/jogos/partes-computador.html">
+      <svg viewBox="0 0 64 64" role="img" aria-label="Desenho de um gabinete de computador aberto, com peças coloridas dentro"><rect x="14" y="6" width="36" height="52" rx="4" fill="#4a4a46" stroke="#111" stroke-width="2.5"/><rect x="19" y="11" width="26" height="30" rx="2" fill="#2fa865" stroke="#111" stroke-width="2"/><rect x="23" y="15" width="9" height="9" fill="#d9d6cc" stroke="#111" stroke-width="1.6"/><path d="M37 14v20M41 14v20" stroke="#ffd23f" stroke-width="3"/><rect x="19" y="45" width="16" height="9" rx="1" fill="#8a8a85" stroke="#111" stroke-width="2"/><circle cx="43" cy="49" r="4" fill="#ef5a4c" stroke="#111" stroke-width="2"/></svg>
+      <span><b>Oficina do Computador</b>Para os menores: conheça as partes do computador em 3D, com voz, e monte ele por dentro.</span>
+    </a>
+    </div>
     <div id="continuar"></div>
     <div class="temas" id="temas" role="group" aria-label="Escolher um tema"></div>
     <div id="lista" aria-live="polite"></div>
@@ -172,7 +181,7 @@
   const $ = s => document.querySelector(s);
   // Temas pensados para o estudante (no lugar de "Computação" e "Matemática")
   const TEMAS = [
-    { id: 'digital', nome: 'Robôs, internet e segurança', icone: 'robo', jogos: ['vale-bits', 'python', 'digitacao', 'impostor', 'robo', 'pacotes', 'golpe'] },
+    { id: 'digital', nome: 'Robôs, internet e segurança', icone: 'robo', jogos: ['partes-computador', 'vale-bits', 'python', 'digitacao', 'impostor', 'robo', 'pacotes', 'golpe'] },
     { id: 'numeros', nome: 'Números e contas', icone: 'fracoes', jogos: ['numeria', 'tabuada', 'fracoes', 'balanca', 'receitas', 'bhaskara'] },
     { id: 'formas', nome: 'Formas, mapas e ângulos', icone: 'tangram', jogos: ['tangram', 'cartesiano', 'angulos', 'rotas'] },
     { id: 'dinheiro', nome: 'Dinheiro e mesada', icone: 'cofrinho', jogos: ['cofrinho', 'mesada', 'cambio', 'empresa-sucos', 'poupanca', 'cartao'] },
@@ -194,7 +203,8 @@
     digitacao: 'Digite rápido e sem errar, com acentos e tudo.',
     impostor: 'Todos sabem a palavra, menos um. Descubram quem.',
     python: 'Aprenda Python e faça a horta da escola crescer.',
-    numeria: 'Vença monstros e chefes com contas certas.'
+    numeria: 'Vença monstros e chefes com contas certas.',
+    'partes-computador': 'Conheça as partes do computador em 3D e monte ele por dentro.'
   };
   const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo');
   // jogo novo que ainda não está em nenhum tema entra pelo componente

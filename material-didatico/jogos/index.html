@@ -115,7 +115,7 @@
   const $ = s => document.querySelector(s);
   const params = new URLSearchParams(location.search);
   const SITE = 'https://ohtopico.com.br/';
-  let ano = [6, 7, 8, 9].includes(+params.get('ano')) ? +params.get('ano') : 0;
+  let ano = [1, 6, 7, 8, 9].includes(+params.get('ano')) ? +params.get('ano') : 0;
   let comp = ['CO', 'MA'].includes((params.get('area') || '').toUpperCase()) ? params.get('area').toUpperCase() : '';
   let curto = params.get('tempo') === '15';
   // maior número de minutos do campo tempo ("10–15 min" vira 15)
@@ -123,6 +123,7 @@
 
   $('#qtd').textContent = JOGOS.length;
   $('#anos').outerHTML = `<button class="pill" type="button" data-ano="0" aria-pressed="false">Todos os anos</button>` +
+    `<button class="pill" type="button" data-ano="1" aria-pressed="false">1º ao 5º</button>` +
     [6, 7, 8, 9].map(a => `<button class="pill" type="button" data-ano="${a}" aria-pressed="false">${a}º</button>`).join('');
 
   function copiar(txt, btn) {
@@ -143,7 +144,7 @@
     document.querySelectorAll('[data-comp]').forEach(b => b.setAttribute('aria-pressed', b.dataset.comp === comp));
     $('#curto').setAttribute('aria-pressed', curto);
     $('#link-turma').textContent = linkTurma();
-    const lista = JOGOS.filter(j => (!ano || j.anos.includes(ano)) && (!comp || j.comp.includes(comp)) && (!curto || minutos(j.tempo) <= 15));
+    const lista = JOGOS.filter(j => (!ano || (ano === 1 ? j.anos.some(x => x <= 5) : j.anos.includes(ano))) && (!comp || j.comp.includes(comp)) && (!curto || minutos(j.tempo) <= 15));
     const cab = `<div class="linha th" role="row"><div>Jogo</div><div>Ano</div><div>Habilidades BNCC</div><div>Tempo</div><div>Para a aula</div></div>`;
     $('#tabela').innerHTML = cab + (lista.length ? lista.map(j => {
       const plano = j.plano && REC[j.plano], ficha = j.ficha && REC[j.ficha];
