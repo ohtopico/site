@@ -15,7 +15,7 @@
   const hoje = MDP.hoje;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const PONTOS = { atividade: 5, medalha: 20, estrela: 10, bonus: 15, enigma: 50, dificil: 40, semana: 60 };
+  const PONTOS = { atividade: 5, medalha: 20, estrela: 10, bonus: 15, enigma: 50, dificil: 40, semana: 60, surpresa: 25 };
 
   /* 100 níveis. Cada faixa de 10 níveis tem o nome de uma unidade de informação,
      na linha da série Bit a Bit. Cada nível pede PONTOS_POR_NIVEL pontos a mais.
@@ -30,7 +30,7 @@
     { nivel: 3, id: 'extra', nome: 'Missão extra', desc: 'Uma quarta missão por dia, mais difícil, que vale 30 pontos.' },
     { nivel: 5, id: 'trocar', nome: 'Trocar missão', desc: 'Troque uma missão do dia por outra, uma vez por dia.' },
     { nivel: 10, id: 'sala', nome: 'Sala dos desafios', desc: 'Enigmas da série Bit a Bit, fases difíceis dos jogos e o desafio da semana.', link: 'desafios.html' },
-    { nivel: 20, id: 'votacao', nome: 'Votação do próximo jogo', desc: 'Vote em qual jogo ou simulador vai ser criado a seguir.', emBreve: true },
+    { nivel: 20, id: 'surpresa', nome: 'Lista surpresa', desc: 'Todo dia, 10 questões sorteadas de todas as listas do seu ano. Vale 25 pontos por dia.', link: 'lista.html?id=surpresa' },
     { nivel: 30, id: 'criador', nome: 'Criador de enigmas', desc: 'Crie enigmas em binário, hexadecimal ou na Cifra de César para os colegas.', link: 'criador.html' },
     { nivel: 70, id: 'monitor', nome: 'Distintivo de monitor', desc: 'O relatório para a professora mostra que você pode ajudar os colegas.' },
     { nivel: 80, id: 'certificado', nome: 'Certificado de conquista', desc: 'Certificado para imprimir ou salvar em PDF, com o seu nível e os seus pontos.', link: 'certificado.html' }
@@ -108,7 +108,7 @@
     const jg = p.jg || {};
     return {
       desde: jg.desde || hoje(), pts: jg.pts || 0, dias: jg.dias || {}, vd: jg.vd || {},
-      tr: jg.tr || {}, nv: jg.v === 2 ? jg.nv || 0 : 0, v: 2, cor: jg.cor || '', ds: jg.ds || {}, sem: jg.sem || {}
+      tr: jg.tr || {}, nv: jg.v === 2 ? jg.nv || 0 : 0, v: 2, cor: jg.cor || '', ds: jg.ds || {}, sem: jg.sem || {}, ls: jg.ls || {}
     };
   }
   function salvar(jg) { MDP.atualizar({ jg }); }
@@ -234,6 +234,19 @@
     verificar();
     return true;
   }
+  /* Lista surpresa (lista.html?id=surpresa): 70% ou mais vale pontos uma vez por dia */
+  function listaSurpresa(pct) {
+    const p = MDP.perfil();
+    if (!p || nivel(p).n < nivelDe('surpresa')) return false;
+    const jg = jgDe(p), d = hoje();
+    if (pct < 70 || jg.ls[d]) return false;
+    jg.ls[d] = Math.round(pct); jg.pts += PONTOS.surpresa;
+    Object.keys(jg.ls).forEach(k => { if (+k < d - 60) delete jg.ls[k]; });
+    salvar(jg);
+    aviso(`+${PONTOS.surpresa}`, 'Lista surpresa concluída', 'Amanhã sai uma lista nova.');
+    verificar();
+    return true;
+  }
   function feitos() { const p = MDP.perfil(); return p ? jgDe(p).ds : {}; }
 
   /* Troca uma missão de hoje que ainda não foi cumprida (nível 4) */
@@ -347,7 +360,7 @@
   MDP.registrar = function () { const r = registrarOriginal.apply(this, arguments); verificar(); return r; };
 
   window.MDM = { NIVEIS, FAIXAS, PONTOS_POR_NIVEL, DESBLOQUEIOS, CORES, PONTOS, MISSOES, EXTRAS, pontos, nivel, nivelPorPontos, estado,
-    nivelDe, verificar, visitar, trocar, escolherCor, travar, atualizarBarra, desafio, feitos };
+    nivelDe, verificar, visitar, trocar, escolherCor, travar, atualizarBarra, desafio, feitos, listaSurpresa };
 
   function iniciar() {
     const rec = window.MD_REC || (/\/(lista|ficha|plano)\.html$/.test(location.pathname) && new URLSearchParams(location.search).get('id'));

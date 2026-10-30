@@ -83,15 +83,32 @@
   mdTopbar('catalogo');
   mdFooter();
   const id = new URLSearchParams(location.search).get('id');
-  const L = LISTAS.find(l => l.id === id), r = REC[id];
   const doc = document.getElementById('doc');
+  /* Embaralha as alternativas de forma fixa (mesma ordem sempre, para a lista impressa bater com a da tela) */
+  const seed = str => { let h = 2166136261; for (const c of str) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296; };
+  let L = LISTAS.find(l => l.id === id), r = REC[id];
+
+  /* ?id=surpresa: recompensa de nível das missões. 10 questões objetivas sorteadas
+     de todas as listas do ano do perfil, as mesmas o dia todo. */
+  const SURPRESA = id === 'surpresa';
+  if (SURPRESA) {
+    const p = window.MDP && MDP.perfil(), ano = (p && p.ano) || 6, dia = MDP.hoje();
+    const rnd = seed(`surpresa:${ano}:${dia}`);
+    const pool = LISTAS.filter(l => l.ano === ano).flatMap(l => l.ex.filter(e => e[0] !== 'ab').map(e => ({ e, l })));
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    const sorteadas = pool.slice(0, 10), comps = [...new Set(sorteadas.map(x => x.l.comp || 'CO'))];
+    L = { id: `surpresa-${ano}-${dia}`, objeto: 'Lista surpresa do dia', comp: comps.length === 1 ? comps[0] : null,
+      habs: [...new Set(sorteadas.flatMap(x => x.l.habs))].filter(c => HAB[c]), ex: sorteadas.map(x => x.e) };
+    r = { anos: [ano], titulo: 'Lista surpresa' };
+    doc.dataset.nivel = 'surpresa';
+    doc.classList.add('trava-topo');
+  }
   if (!L || !r) {
     doc.innerHTML = `<h1>Lista não encontrada</h1><p><a href="catalogo.html?tipo=lista">Ver todas as listas de exercícios</a></p>`;
     return;
   }
   document.title = `${r.titulo} · Lista de exercícios | ohtopico`;
-  /* Embaralha as alternativas de forma fixa (mesma ordem sempre, para a lista impressa bater com a da tela) */
-  const seed = str => { let h = 2166136261; for (const c of str) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296; };
+  const compNome = L.comp === null ? 'Computação e Matemática' : COMPONENTES[L.comp || 'CO'].nome;
   L.ex = L.ex.map((e, n) => {
     if (e[0] !== 'me') return e;
     const rnd = seed(L.id + ':' + n), idx = e[2].map((_, i) => i);
@@ -124,13 +141,14 @@
 
   const planos = RECURSOS.filter(o => o.tipo === 'plano' && o.habs.some(h => L.habs.includes(h)));
   const jogos = RECURSOS.filter(o => (o.tipo === 'jogo' || o.tipo === 'ficha' || o.tipo === '3d') && o.habs.some(h => L.habs.includes(h)));
-  const outras = RECURSOS.filter(o => o.tipo === 'lista' && o.id !== id && o.anos.some(a => r.anos.includes(a)) && o.comp[0] === (L.comp || 'CO'));
+  const outras = RECURSOS.filter(o => o.tipo === 'lista' && o.id !== id && o.anos.some(a => r.anos.includes(a)) && (L.comp === null || o.comp[0] === (L.comp || 'CO')));
   const rel = [...planos, ...jogos, ...outras].slice(0, 6);
 
   doc.innerHTML = `
     <div class="crumbs no-print"><a href="catalogo.html?tipo=lista">← Listas de exercícios</a></div>
-    <span class="eyebrow">📝 Lista de exercícios · ${COMPONENTES[L.comp || 'CO'].nome} · ${anosTxt(r.anos)}</span>
+    <span class="eyebrow">📝 Lista de exercícios · ${compNome} · ${anosTxt(r.anos)}</span>
     <h1 style="font-size:clamp(30px,5vw,46px)">${esc(L.objeto)}</h1>
+    ${SURPRESA ? `<p class="muted no-print" style="max-width:760px">Dez questões sorteadas de todas as listas do ${r.anos[0]}º ano. Acertando 70% ou mais, você ganha ${window.MDM ? MDM.PONTOS.surpresa : 25} pontos (uma vez por dia). Amanhã sai uma lista nova. <a href="missoes.html">Voltar para as missões</a></p>` : ''}
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
     <div class="btn-row no-print" style="margin-top:18px">
@@ -195,7 +213,8 @@
         sec.querySelector('.fb').classList.add('show');
       }
     });
-    if (total - vazias > 0) window.MDP && MDP.registrar(id, acertos / total * 100);
+    if (SURPRESA) { if (total - vazias > 0 && window.MDM) MDM.listaSurpresa(acertos / total * 100); }
+    else if (total - vazias > 0) window.MDP && MDP.registrar(id, acertos / total * 100);
     $('#score').textContent = `Você acertou ${acertos} de ${total} questões objetivas` + (vazias ? ` (${vazias} sem resposta).` : '.') + (acertos === total ? ' 🎉' : '');
   };
   $('#reset').onclick = () => {
