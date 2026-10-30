@@ -1,0 +1,13 @@
+{
+  "name": "testes-assistencia-por-voz",
+  "private": true,
+  "type": "module",
+  "description": "Testes automáticos do site teste-mestrado (assistência por voz)",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 \"testes/*.test.mjs\""
+  },
+  "devDependencies": {
+    "axe-core": "4.10.3",
+    "playwright": "1.63.0"
+  }
+}

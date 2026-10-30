@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151515" media="(prefers-color-scheme: dark)">
   <meta name="robots" content="noindex">
   <meta name="description" content="Protótipo de assistência por voz para pessoas cegas: reconhece objetos e o ambiente pela câmera do celular.">
   <title>Assistência por voz</title>
@@ -28,6 +29,7 @@
     <p id="aviso" class="aviso" role="alert"></p>
     <details id="comandos" class="config">
       <summary>Todos os comandos, por grupo</summary>
+      <h2 class="sr-only">Comandos por grupo</h2>
       <p>Toque na tela e fale. Também dá para dizer menu e ouvir esta lista por grupos.</p>
       <div id="lista-comandos" class="lista-comandos"></div>
     </details>
@@ -66,8 +68,9 @@
     <p class="sobre"><a href="/assistencia-por-voz/#privacidade">Sobre o projeto, privacidade e LGPD</a></p>
   </main>
 
-  <!-- Tutorial: o texto fica na tela para o leitor de tela e também é falado, parte por parte -->
-  <section id="tela-tutorial" class="inicio" hidden aria-labelledby="titulo-tutorial">
+  <!-- Tutorial: o texto fica na tela para o leitor de tela e também é falado, parte por parte.
+       Cada tela é um <main>; só uma aparece por vez, então o leitor de tela sempre acha a região principal. -->
+  <main id="tela-tutorial" class="inicio" hidden aria-labelledby="titulo-tutorial">
     <h1 id="titulo-tutorial" class="titulo-tutorial" tabindex="-1">Como funciona</h1>
     <ol id="partes" class="partes"></ol>
     <button id="tutorial-comecar" class="grande">
@@ -76,10 +79,10 @@
     <button id="tutorial-voltar" class="grande secundario">
       <span class="titulo">Voltar</span>
     </button>
-  </section>
+  </main>
 
   <!-- Durante o uso, a tela inteira é um botão: toque (ou toque duplo com leitor de tela) pausa ou retoma -->
-  <section id="uso" class="uso" hidden>
+  <main id="uso" class="uso" hidden>
     <video id="video" playsinline muted aria-hidden="true"></video>
     <canvas id="caixas" aria-hidden="true"></canvas>
     <button id="pausar" class="tela-toda" aria-label="Assistência ativa. Toque e fale um pedido."></button>
@@ -90,10 +93,11 @@
       <button>Enviar</button>
     </form>
     <div id="estado" class="estado" aria-hidden="true"></div>
-  </section>
+  </main>
 
   <!-- Versão do código carregado (preenchida pelo app.js): mostra se o celular já pegou a atualização -->
-  <p id="versao" class="versao"></p>
+  <!-- role="note": num <p> comum o leitor de tela ignora o aria-label que o app.js põe ("Versão 47, de 29/10") -->
+  <footer><p id="versao" class="versao" role="note"></p></footer>
 
   <script type="module" src="app.js"></script>
 </body>
