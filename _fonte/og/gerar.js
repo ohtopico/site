@@ -58,6 +58,7 @@ const IMAGENS = [
     ['carro-que-aprende', 'Carro que', 'aprende', 'Um carrinho 3D aprende a pista por tentativa e erro: ajuste as recompensas e veja a IA trapacear', ['IA', 'Aprendizado por reforço', '8º e 9º ano']],
     ['cozinha-paralela', 'Cozinha', 'paralela', 'Robôs cozinheiros dividem os pedidos, disputam a panela e caem num impasse', ['Paralelismo', 'EF08CO05', '8º ano']],
     ['cidade-infectada', 'Cidade', 'infectada', 'Um malware se espalha pelo bairro: defenda a rede com firewall, atualização e backup', ['Segurança', 'EF09CO04', '8º e 9º ano']],
+    ['tanque', 'Enche o', 'tanque', 'Prismas, cilindros e cones enchendo de água: estime o volume antes de ver', ['Volume', 'EF09MA19', '8º e 9º ano']],
     ['cofre-das-chaves', 'Cofre das', 'chaves', 'Disco de César, cadeados e mistura de tintas: como combinar uma chave secreta sem enviá-la', ['Criptografia', 'EF09CO05', '8º e 9º ano']],
     ['maquina-estados', 'Máquina de', 'estados', 'Catraca, semáforo e elevador que obedecem ao diagrama que você desenha', ['Autômatos', 'EF09CO03', '9º ano']],
     ['escada-pitagoras', 'Escada de', 'Pitágoras', 'Encoste escadas em prédios 3D, ache a diagonal da caixa e termine na diagonal do cubo', ['Teorema de Pitágoras', 'EF09MA13', '9º ano']]
