@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="{{CSS}}">
 <style>
   .portao { max-width: 440px; margin: 12vh auto 0; border: 1.5px solid var(--ink); border-radius: 28px; padding: 30px 26px; background: var(--paper); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
-  .portao h1 { font-size: 34px; margin: 6px 0 8px; }
+  .portao h1 { font-size: 34px; margin: 0 0 8px; }
   .portao input { width: 100%; box-sizing: border-box; border: 1.5px solid var(--ink); border-radius: 14px; padding: 12px; font-size: 20px; text-align: center; margin: 14px 0 12px; background: var(--paper); color: var(--ink); }
   .portao .btn { width: 100%; }
 </style>
@@ -20,13 +20,13 @@
 <body>
 <main class="wrap">
   <form class="portao" id="f">
-    <div style="font-size:44px">🔒</div>
     <h1>Área premium</h1>
     <p class="muted">Conteúdo exclusivo para apoiadores do Catarse. Digite a senha que você recebeu.</p>
     <label class="sr-only" for="s">Senha</label>
     <input id="s" type="password" autocomplete="current-password" required>
     <button class="btn" type="submit" id="b">Entrar</button>
     <p class="feedback" id="fb" role="status"></p>
+    <p class="small muted">Ainda não apoia? <a href="https://www.catarse.com.br/ohtopico/plans" rel="noopener">Conheça os planos no Catarse</a>.</p>
     <p class="small muted"><a href="/">Voltar para o ohtopico</a></p>
   </form>
 </main>

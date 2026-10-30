@@ -4,3 +4,6 @@ _privado/
 
 # HTML intermediário do planejamento por meses (o PDF fica em freebies/)
 _fonte/planejamento/saida/
+
+# Cache do Python dos geradores
+__pycache__/
