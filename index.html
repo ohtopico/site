@@ -209,9 +209,9 @@
         z-index: 5;
     }
 
-    /* Desktop baixo (notebooks 1366x768, 1280x720): ícones mais compactos
+    /* Desktop até 1020 px de altura (notebooks e a maioria dos monitores): ícones mais compactos
        e, se ainda faltar altura, quebram em uma segunda coluna */
-    @media (min-width: 769px) and (max-height: 820px) {
+    @media (min-width: 769px) and (max-height: 1020px) {
         .desktop-icons {
             align-content: flex-start;
             bottom: 12px;
@@ -754,6 +754,14 @@
             <span class="tile"><i class="fa-solid fa-gamepad" aria-hidden="true"></i></span>
             <span class="icon-label">Jogos</span>
         </a>
+        <a class="icon-item" href="simuladores/">
+            <span class="tile"><i class="fa-solid fa-flask" aria-hidden="true"></i></span>
+            <span class="icon-label">Simuladores</span>
+        </a>
+        <a class="icon-item" href="assistencia-por-voz/">
+            <span class="tile"><i class="fa-solid fa-ear-listen" aria-hidden="true"></i></span>
+            <span class="icon-label">Assistência por voz</span>
+        </a>
         <a class="icon-item" href="blog/">
             <span class="tile"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
             <span class="icon-label">Blog</span>
@@ -787,7 +795,7 @@
             </div>
 
             <p>
-                Trabalho onde dados, inteligência artificial e educação se encontram. No mestrado, pesquiso IA para auxiliar pessoas com deficiência visual. Na sala de aula, ensino lógica e pensamento computacional e formo professores para usar tecnologia.
+                Trabalho onde dados, inteligência artificial e educação se encontram. No mestrado, pesquiso IA para auxiliar pessoas com deficiência visual (veja o protótipo de <a href="assistencia-por-voz/">assistência por voz</a>). Na sala de aula, ensino lógica e pensamento computacional e formo professores para usar tecnologia.
             </p>
 
             <ul>
@@ -801,6 +809,8 @@
                 <a class="pill-btn" href="curriculo/?perfil=dados#sec-projetos"><i class="fa-solid fa-code" aria-hidden="true"></i> Ver projetos</a>
                 <a class="pill-btn" href="curriculo/?perfil=docencia"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Ver experiência docente</a>
             </div>
+
+            <p>Nas redes, sou <b>Júlia Quoos</b>: ohtopico no <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a>, no <a href="https://www.youtube.com/@ohtopico" rel="me">YouTube</a> e no <a href="https://github.com/ohtopico" rel="me">GitHub</a>, e <a href="https://www.instagram.com/topico.tech/" rel="me">@topico.tech</a> no Instagram.</p>
 
             <p class="dica">As janelas podem ser arrastadas. As brincadeiras do site estão em Diversão, no menu Iniciar.</p>
         </div>
@@ -817,6 +827,11 @@
         </div>
         <div class="janela-conteudo">
             <h2 class="sr-only">Atualizações</h2>
+            <article class="post">
+                <h3>Uma página para cada plano de aula</h3>
+                <p class="data">30 de outubro de 2026</p>
+                <p>Cada <a href="material-didatico/professor.html">plano de aula</a>, ficha e lista de exercícios do material didático agora tem endereço próprio, e cada habilidade da BNCC ganhou uma página com plano, slides, jogos e fichas, como a <a href="material-didatico/bncc/ef06co02/">EF06CO02</a>. Os <a href="simuladores/">simuladores</a> de IA, estatística e arquitetura também ganharam atalho na área de trabalho.</p>
+            </article>
             <article class="post">
                 <h3>Quiz de pensamento computacional</h3>
                 <p class="data">30 de outubro de 2026</p>
@@ -996,6 +1011,8 @@
     <a class="menu-item" href="tech-pra-prof/"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Tech pra Prof</a>
     <a class="menu-item" href="material-didatico/"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Material didático</a>
     <a class="menu-item" href="jogos/"><i class="fa-solid fa-gamepad" aria-hidden="true"></i> Jogos para estudantes</a>
+    <a class="menu-item" href="simuladores/"><i class="fa-solid fa-flask" aria-hidden="true"></i> Simuladores</a>
+    <a class="menu-item" href="assistencia-por-voz/"><i class="fa-solid fa-ear-listen" aria-hidden="true"></i> Assistência por voz (mestrado)</a>
     <a class="menu-item" href="blog/"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Blog</a>
     <a class="menu-item" href="mentoria/"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> Mentoria</a>
     <a class="menu-item" href="formacao-continuada/"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Formação continuada</a>
