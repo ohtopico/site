@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impostor Digital · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de grupo para a sala de aula: de 3 a 15 pessoas passam o mesmo aparelho, todos recebem a mesma palavra de informática, menos o impostor. Vocabulário de computação para o 6º ao 9º ano.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/impostor.html">
+<meta property="og:title" content="Impostor Digital · Material didático">
+<meta property="og:description" content="Jogo de grupo para a sala de aula: todos recebem a mesma palavra de informática, menos o impostor. Descubram quem é.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/impostor.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .center { text-align: center; }
+  #stage { scroll-margin-top: 80px; }
+  .grupo { margin: 0 0 20px; }
+  .grupo > h3 { font-size: 20px; margin-bottom: 8px; }
+  .nomes { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin-bottom: 10px; }
+  .nome { display: flex; gap: 6px; align-items: center; }
+  .nome span { font-family: var(--display); font-weight: 800; min-width: 22px; text-align: right; color: var(--ink-2); }
+  .nome input, .campo { flex: 1; min-width: 0; border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 16px; font: inherit; font-size: 16px; background: var(--paper); color: var(--ink); min-height: 44px; }
+  .x { border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); border-radius: 99px; width: 40px; height: 40px; font-size: 18px; cursor: pointer; flex: none; }
+  .x:hover { background: var(--pill); }
+  .temas { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; font-size: 15px; }
+  .opts label { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; }
+  .opts select { border: 1.5px solid var(--ink); border-radius: 99px; padding: 6px 12px; font: inherit; background: var(--paper); color: var(--ink); }
+  /* tela de passar o aparelho */
+  .passe { text-align: center; padding: 18px 0 8px; }
+  .passe .vez { font-size: 15px; color: var(--ink-2); margin: 0; }
+  .passe .quem { font-family: var(--display); font-weight: 800; font-size: clamp(36px, 8vw, 60px); line-height: 1.1; margin: 6px 0 18px; word-break: break-word; }
+  .segredo { max-width: 520px; margin: 0 auto; border: 1.5px solid var(--ink); border-radius: 26px; padding: 22px 20px; background: var(--paper); box-shadow: 6px 6px 0 var(--ink); text-align: center; }
+  .segredo .rot { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); margin: 0; }
+  .segredo .palavra { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 7vw, 50px); line-height: 1.1; margin: 10px 0; word-break: break-word; }
+  .segredo .def { font-size: 15px; color: var(--ink-2); margin: 0 0 6px; }
+  .bolinhas { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 4px 0 14px; }
+  .bolinhas i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--ink); }
+  .bolinhas i.ja { background: var(--accent); }
+  /* conversa e votação */
+  .ordem { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; counter-reset: o; margin: 8px 0 14px; }
+  .ordem li { counter-increment: o; border: 1.5px solid var(--ink); border-radius: 99px; padding: 4px 14px 4px 6px; background: var(--paper); font-weight: 500; }
+  .ordem li::before { content: counter(o); display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: var(--paper); font-size: 13px; margin-right: 8px; }
+  .relogio { font-family: var(--display); font-weight: 800; font-size: 46px; line-height: 1; margin: 6px 0; }
+  .relogio.fim { color: var(--bad); }
+  .votos { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin: 12px 0; }
+  .votos button, .chutes button { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); color: var(--ink); padding: 14px 12px; font: inherit; font-weight: 600; font-size: 17px; cursor: pointer; min-height: 56px; word-break: break-word; }
+  .votos button:hover, .chutes button:hover { background: var(--pill); }
+  .chutes { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 12px 0; }
+  .chutes button.certa { background: var(--ok-soft); border-color: var(--ok); }
+  .chutes button.errada { background: var(--bad-soft); border-color: var(--bad); }
+  .veredito { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 6vw, 40px); line-height: 1.15; margin: 6px 0 8px; }
+  .placar { width: 100%; max-width: 520px; margin: 12px auto; border-collapse: collapse; font-size: 16px; }
+  .placar th, .placar td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  .placar td.n { text-align: right; font-family: var(--display); font-weight: 800; font-size: 20px; }
+  .placar tr.sobe td { background: var(--accent-soft); }
+  .btn-row.center { justify-content: center; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Joguem juntos, na mesma sala, com <strong>um único aparelho</strong> (celular, tablet ou computador). São de 3 a 15 pessoas.</p>
+    <ol>
+      <li>Escrevam os nomes de todos e escolham um tema.</li>
+      <li>Passem o aparelho de mão em mão. Cada pessoa vê a palavra secreta sozinha e esconde antes de passar adiante. Todos recebem a <strong>mesma palavra</strong>, menos o <strong>impostor</strong>, que só sabe o tema.</li>
+      <li>Na ordem mostrada na tela, cada pessoa diz <strong>uma palavra ou frase curta</strong> ligada à palavra secreta, sem falar a própria palavra. Quem sabe a palavra precisa provar isso sem entregar a resposta. O impostor precisa disfarçar.</li>
+      <li>Depois de duas ou três voltas, o grupo conversa e vota em quem acha que é o impostor.</li>
+      <li>Se o grupo acertar, o impostor ainda tem uma chance: se adivinhar a palavra secreta, vence a rodada.</li>
+    </ol>
+    <p><strong>Pontos:</strong> quem não é impostor ganha 1 ponto quando o grupo descobre o impostor. O impostor ganha 3 pontos se não for descoberto e 2 se for descoberto mas acertar a palavra.</p>
+    <p><strong>Na sala de aula:</strong> formem grupos de 4 a 8 estudantes. Ao fim de cada rodada, a tela mostra o significado da palavra; vale ler em voz alta e pedir um exemplo do dia a dia.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('impostor');
+(function () {
+  // Banco de palavras: cada tema tem palavras com uma explicação curta, mostrada a quem recebe a palavra e no fim da rodada.
+  const TEMAS = [
+    { id: 'hardware', nome: 'Peças do computador', palavras: [
+      ['Processador', 'O "cérebro" do computador: faz os cálculos e executa as instruções dos programas.'],
+      ['Memória RAM', 'Memória rápida e temporária onde ficam os programas abertos. Apaga quando o computador desliga.'],
+      ['Placa-mãe', 'A placa principal, onde todas as outras peças se encaixam e conversam entre si.'],
+      ['Teclado', 'Dispositivo de entrada com teclas para digitar letras, números e comandos.'],
+      ['Mouse', 'Dispositivo de entrada que move a seta na tela e permite clicar.'],
+      ['Monitor', 'Tela que mostra as imagens geradas pelo computador. É um dispositivo de saída.'],
+      ['Pen drive', 'Pequena memória portátil que se conecta pela porta USB para levar arquivos.'],
+      ['SSD', 'Unidade de armazenamento sem partes móveis, mais rápida que o HD, onde ficam os arquivos.'],
+      ['Webcam', 'Câmera ligada ao computador, usada em chamadas de vídeo.'],
+      ['Impressora', 'Dispositivo de saída que passa para o papel o que está na tela.'],
+      ['Placa de vídeo', 'Peça que gera as imagens da tela. É muito usada em jogos e também para treinar IA.'],
+      ['Cooler', 'Ventoinha que resfria o processador para ele não esquentar demais.'],
+      ['Fone de ouvido', 'Dispositivo de saída que transforma o som do computador em áudio só para você.'],
+      ['Microfone', 'Dispositivo de entrada que capta a voz e transforma o som em dados.']
+    ] },
+    { id: 'internet', nome: 'Internet e redes', palavras: [
+      ['Roteador', 'Aparelho que distribui a internet para os dispositivos da casa ou da escola, com fio ou Wi-Fi.'],
+      ['Wi-Fi', 'Tecnologia que conecta dispositivos a uma rede sem fio, por ondas de rádio.'],
+      ['Navegador', 'Programa usado para abrir sites, como Chrome, Firefox ou Edge.'],
+      ['E-mail', 'Correio eletrônico: mensagens enviadas de um endereço para outro pela internet.'],
+      ['Nuvem', 'Computadores de empresas que guardam seus arquivos e você acessa pela internet.'],
+      ['Download', 'Trazer um arquivo da internet para o seu aparelho.'],
+      ['Link', 'Endereço clicável que leva para outra página ou arquivo.'],
+      ['Bluetooth', 'Conexão sem fio de curta distância, usada em fones e caixas de som.'],
+      ['Servidor', 'Computador que fica ligado o tempo todo para oferecer sites, arquivos ou serviços.'],
+      ['Endereço IP', 'Número que identifica cada dispositivo numa rede, como um endereço de casa.'],
+      ['Streaming', 'Assistir ou ouvir algo pela internet enquanto os dados chegam, sem baixar o arquivo inteiro.'],
+      ['Buscador', 'Site que procura páginas na internet a partir de palavras-chave.'],
+      ['Cabo de rede', 'Fio que liga o computador ao roteador. Costuma ser mais estável que o Wi-Fi.'],
+      ['Site', 'Conjunto de páginas na internet com um mesmo endereço.']
+    ] },
+    { id: 'programacao', nome: 'Programação', palavras: [
+      ['Algoritmo', 'Sequência de passos bem definidos para resolver um problema, como uma receita.'],
+      ['Variável', 'Espaço com nome que guarda um valor que pode mudar durante o programa, como a pontuação de um jogo.'],
+      ['Laço de repetição', 'Bloco que repete instruções várias vezes, como "repita 10 vezes".'],
+      ['Bug', 'Erro num programa que faz ele funcionar de um jeito diferente do esperado.'],
+      ['Condicional', 'Instrução "se... senão": o programa escolhe um caminho de acordo com uma condição.'],
+      ['Scratch', 'Linguagem de programação com blocos coloridos de encaixar, criada para aprender programando.'],
+      ['Python', 'Linguagem de programação muito usada em escolas, ciência de dados e IA.'],
+      ['Função', 'Bloco de código com nome que pode ser usado várias vezes, sem reescrever tudo.'],
+      ['Lista', 'Estrutura que guarda vários valores em ordem, como os nomes de uma turma.'],
+      ['Código-fonte', 'O texto do programa escrito pelas pessoas programadoras.'],
+      ['Depurar', 'Procurar e corrigir os erros (bugs) de um programa.'],
+      ['Aplicativo', 'Programa feito para uma tarefa, como mensagens, mapas ou jogos.'],
+      ['Robô', 'Máquina programada para sentir o ambiente com sensores e agir sozinha.'],
+      ['Sensor', 'Peça que mede algo do ambiente, como luz, distância ou temperatura, e transforma em dados.']
+    ] },
+    { id: 'seguranca', nome: 'Segurança digital', palavras: [
+      ['Senha', 'Combinação secreta que protege uma conta. Quanto mais longa, melhor.'],
+      ['Antivírus', 'Programa que procura e remove programas maliciosos do aparelho.'],
+      ['Vírus', 'Programa malicioso que se espalha e pode danificar arquivos ou roubar dados.'],
+      ['Phishing', 'Golpe com mensagens falsas que imitam bancos ou lojas para roubar senhas.'],
+      ['Backup', 'Cópia de segurança dos arquivos, para recuperar tudo se algo der errado.'],
+      ['Criptografia', 'Técnica que embaralha os dados para que só quem tem a chave consiga ler.'],
+      ['Verificação em duas etapas', 'Além da senha, a conta pede um código extra, enviado ao celular, por exemplo.'],
+      ['Cadeado do navegador', 'Símbolo que indica conexão protegida (HTTPS) com o site.'],
+      ['Firewall', 'Barreira que controla o que pode entrar e sair de um computador ou de uma rede.'],
+      ['Captcha', 'Teste que pede para identificar imagens ou letras e prova que você não é um robô.'],
+      ['Spam', 'Mensagens em massa que ninguém pediu, muitas vezes propaganda ou golpe.'],
+      ['Atualização', 'Nova versão de um programa que corrige erros e falhas de segurança.'],
+      ['Dados pessoais', 'Informações que identificam alguém, como nome, CPF, endereço e foto.'],
+      ['Cyberbullying', 'Intimidação ou humilhação repetida feita por meios digitais.']
+    ] },
+    { id: 'ia', nome: 'IA e dados', palavras: [
+      ['Inteligência artificial', 'Área da computação que cria sistemas capazes de aprender com exemplos e tomar decisões.'],
+      ['Chatbot', 'Programa que conversa por texto ou voz respondendo perguntas.'],
+      ['Planilha', 'Tabela digital que organiza dados em linhas e colunas e faz cálculos.'],
+      ['Gráfico', 'Desenho que mostra dados de forma visual, como barras ou setores.'],
+      ['Recomendação', 'Quando o aplicativo sugere vídeos, músicas ou produtos com base no que você já viu.'],
+      ['Assistente de voz', 'Programa que entende comandos falados e responde com voz.'],
+      ['Deepfake', 'Vídeo ou áudio falso criado por IA que imita uma pessoa real.'],
+      ['Pixel', 'O menor pontinho de cor de uma imagem digital.'],
+      ['QR Code', 'Código em quadradinhos que o celular lê com a câmera para abrir um link ou um pagamento.'],
+      ['Fake news', 'Notícia falsa espalhada como se fosse verdadeira.'],
+      ['Reconhecimento facial', 'Tecnologia que identifica uma pessoa pelo rosto numa foto ou vídeo.'],
+      ['Banco de dados', 'Sistema que guarda e organiza grandes quantidades de informação para consultar depois.'],
+      ['Tradutor automático', 'Programa que traduz textos de uma língua para outra usando IA.'],
+      ['Dados de treino', 'Exemplos usados para ensinar um modelo de IA a reconhecer padrões.']
+    ] },
+    { id: 'arquivos', nome: 'Arquivos e programas', palavras: [
+      ['Pasta', 'Lugar no computador onde se guardam e organizam arquivos.'],
+      ['Lixeira', 'Onde vão os arquivos apagados, antes de serem removidos de vez.'],
+      ['Área de trabalho', 'A tela inicial do computador, com ícones e atalhos.'],
+      ['Editor de texto', 'Programa para escrever e formatar documentos.'],
+      ['Captura de tela', 'Imagem do que aparece na tela naquele momento, também chamada de print.'],
+      ['Apresentação de slides', 'Arquivo com telas em sequência, usado para apresentar trabalhos.'],
+      ['Ícone', 'Pequena imagem que representa um programa, arquivo ou ação.'],
+      ['Copiar e colar', 'Comando que duplica um texto ou arquivo para outro lugar (Ctrl+C e Ctrl+V).'],
+      ['Sistema operacional', 'Programa principal que controla o computador, como Windows, Linux ou Android.'],
+      ['Extensão de arquivo', 'As letras depois do ponto no nome, como .pdf ou .png, que indicam o tipo do arquivo.'],
+      ['Compactar', 'Juntar e diminuir arquivos num só, como um .zip, para enviar mais fácil.'],
+      ['Videogame', 'Aparelho ou programa feito para jogar.'],
+      ['Teclas de atalho', 'Combinações de teclas que fazem uma ação rápido, como Ctrl+Z para desfazer.'],
+      ['Imprimir', 'Mandar um documento da tela para o papel.']
+    ] }
+  ];
+  const TODOS = { id: 'todos', nome: 'Tudo misturado' };
+  const MIN = 3, MAX = 15, CHAVE = 'impostor';
+  const stage = document.getElementById('stage');
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const sorteia = a => a[Math.floor(Math.random() * a.length)];
+  const embaralha = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // Estado salvo neste aparelho: nomes, tema, opções e placar
+  const salvo = mdStore.get(CHAVE, {});
+  let nomes = Array.isArray(salvo.nomes) && salvo.nomes.length >= MIN ? salvo.nomes.slice(0, MAX) : ['', '', ''];
+  let tema = salvo.tema || 'todos';
+  let dicaTema = salvo.dicaTema !== false;
+  let tempo = salvo.tempo == null ? 3 : salvo.tempo;
+  let placar = salvo.placar || {};
+  let usadas = salvo.usadas || [];
+  let comeca = 0, rodada = null, timer = null;
+  // a cada tela nova, volta o palco para o topo (no celular, a palavra fica visível sem rolar)
+  const topo = () => { const r = stage.getBoundingClientRect(); if (r.top < 0 || r.top > innerHeight / 2) stage.scrollIntoView({ block: 'start' }); };
+  const guardar = () => mdStore.set(CHAVE, { nomes, tema, dicaTema, tempo, placar, usadas });
+
+  // ---------- 1. Jogadores e opções ----------
+  function inicio(aviso) {
+    pararRelogio();
+    stage.innerHTML = `
+      <div class="grupo">
+        <h3>Quem vai jogar?</h3>
+        <p class="muted" style="margin-top:0">Escrevam um nome por pessoa, de ${MIN} a ${MAX}. Todos precisam estar na mesma sala.</p>
+        <div class="nomes" id="nomes"></div>
+        <button class="btn ghost" type="button" id="mais">+ Adicionar pessoa</button>
+      </div>
+      <div class="grupo">
+        <h3>Tema das palavras</h3>
+        <div class="temas" id="temas">${[TODOS].concat(TEMAS).map(t => `<button type="button" class="chip" data-t="${t.id}" aria-pressed="${t.id === tema}">${t.nome}</button>`).join('')}</div>
+      </div>
+      <div class="grupo opts">
+        <label><input type="checkbox" id="dica" ${dicaTema ? 'checked' : ''}> O impostor fica sabendo o tema</label>
+        <label>Tempo de conversa
+          <select id="tempo">${[[0, 'sem relógio'], [2, '2 minutos'], [3, '3 minutos'], [5, '5 minutos']].map(([v, t]) => `<option value="${v}" ${v === tempo ? 'selected' : ''}>${t}</option>`).join('')}</select>
+        </label>
+      </div>
+      <button class="btn" type="button" id="comecar">Começar rodada</button>
+      <p class="feedback bad" id="fb" role="status">${aviso || ''}</p>`;
+    desenhaNomes();
+    document.getElementById('mais').onclick = () => { lerNomes(); if (nomes.length < MAX) { nomes.push(''); desenhaNomes(nomes.length - 1); } };
+    document.querySelectorAll('#temas .chip').forEach(b => b.onclick = () => {
+      tema = b.dataset.t;
+      document.querySelectorAll('#temas .chip').forEach(x => x.setAttribute('aria-pressed', x === b));
+    });
+    document.getElementById('comecar').onclick = comecar;
+  }
+  function desenhaNomes(foco) {
+    const el = document.getElementById('nomes');
+    el.innerHTML = nomes.map((n, i) => `<div class="nome"><span>${i + 1}</span>
+      <label class="sr-only" for="n${i}">Nome da pessoa ${i + 1}</label>
+      <input id="n${i}" maxlength="20" autocomplete="off" value="${esc(n)}" placeholder="Nome">
+      ${nomes.length > MIN ? `<button type="button" class="x" data-i="${i}" aria-label="Remover pessoa ${i + 1}">×</button>` : ''}</div>`).join('');
+    el.querySelectorAll('.x').forEach(b => b.onclick = () => { lerNomes(); nomes.splice(+b.dataset.i, 1); desenhaNomes(); });
+    el.querySelectorAll('input').forEach((inp, i) => inp.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault(); lerNomes();
+      if (i === nomes.length - 1 && nomes.length < MAX && inp.value.trim()) { nomes.push(''); desenhaNomes(i + 1); }
+      else { const prox = el.querySelectorAll('input')[i + 1]; if (prox) prox.focus(); }
+    }));
+    document.getElementById('mais').disabled = nomes.length >= MAX;
+    if (foco != null) el.querySelectorAll('input')[foco].focus();
+  }
+  function lerNomes() { nomes = [...document.querySelectorAll('#nomes input')].map(i => i.value.replace(/\s+/g, ' ').trim()); }
+  function comecar() {
+    lerNomes();
+    const lista = nomes.filter(Boolean);
+    const fb = document.getElementById('fb');
+    if (lista.length < MIN) return fb.textContent = `Precisa de pelo menos ${MIN} nomes para jogar.`;
+    const repetido = lista.find((n, i) => lista.findIndex(m => m.toLowerCase() === n.toLowerCase()) !== i);
+    if (repetido) return fb.textContent = `O nome "${repetido}" aparece duas vezes. Use um apelido ou a inicial do sobrenome.`;
+    nomes = lista;
+    dicaTema = document.getElementById('dica').checked;
+    tempo = +document.getElementById('tempo').value;
+    Object.keys(placar).forEach(n => { if (!nomes.includes(n)) delete placar[n]; });
+    nomes.forEach(n => { if (placar[n] == null) placar[n] = 0; });
+    comeca = Math.floor(Math.random() * nomes.length);
+    novaRodada();
+  }
+
+  // ---------- 2. Sorteio e passar o aparelho ----------
+  function novaRodada() {
+    const t = tema === 'todos' ? sorteia(TEMAS) : TEMAS.find(x => x.id === tema);
+    let livres = t.palavras.filter(p => !usadas.includes(p[0]));
+    if (!livres.length) { usadas = usadas.filter(u => !t.palavras.some(p => p[0] === u)); livres = t.palavras; }
+    const p = sorteia(livres);
+    usadas.push(p[0]);
+    rodada = { tema: t, palavra: p[0], def: p[1], impostor: Math.floor(Math.random() * nomes.length), vez: 0 };
+    guardar();
+    passe();
+  }
+  function bolinhas() { return `<div class="bolinhas" aria-hidden="true">${nomes.map((_, i) => `<i class="${i < rodada.vez ? 'ja' : ''}"></i>`).join('')}</div>`; }
+  function passe() {
+    if (rodada.vez >= nomes.length) return conversa();
+    const n = nomes[rodada.vez];
+    stage.innerHTML = `<div class="passe">
+      ${bolinhas()}
+      <p class="vez">Passe o aparelho para</p>
+      <p class="quem">${esc(n)}</p>
+      <p class="muted">Só ${esc(n)} pode olhar a tela agora.</p>
+      <button class="btn" type="button" id="ver">Sou ${esc(n)}: ver minha palavra</button>
+    </div>`;
+    topo();
+    document.getElementById('ver').onclick = mostra;
+    document.getElementById('ver').focus({ preventScroll: true });
+  }
+  function mostra() {
+    const n = nomes[rodada.vez], imp = rodada.vez === rodada.impostor;
+    const cartao = imp
+      ? `<div class="segredo imp"><p class="rot">${esc(n)}, você é</p><p class="palavra">o impostor</p>
+          <p class="def">${dicaTema ? `O tema é <strong>${rodada.tema.nome}</strong>. ` : ''}Preste atenção no que os outros dizem, tente descobrir a palavra e não se entregue.</p></div>`
+      : `<div class="segredo"><p class="rot">${esc(n)}, a palavra secreta é</p><p class="palavra">${esc(rodada.palavra)}</p>
+          <p class="def">${esc(rodada.def)}</p></div>`;
+    stage.innerHTML = `<div class="passe">${bolinhas()}${cartao}
+      <p class="muted" style="margin-top:18px">Guarde na memória e não conte para ninguém.</p>
+      <button class="btn" type="button" id="esconder">Já vi. Esconder e passar</button></div>`;
+    topo();
+    document.getElementById('esconder').onclick = () => { rodada.vez++; passe(); };
+    document.getElementById('esconder').focus({ preventScroll: true });
+  }
+
+  // ---------- 3. Conversa ----------
+  function pararRelogio() { if (timer) { clearInterval(timer); timer = null; } }
+  function conversa() {
+    const ordem = nomes.map((_, i) => nomes[(comeca + i) % nomes.length]);
+    stage.innerHTML = `
+      <div class="hud"><span>Tema <b>${dicaTema ? rodada.tema.nome : 'segredo'}</b></span><span>Pessoas <b>${nomes.length}</b></span></div>
+      <h2>Hora da conversa</h2>
+      <p>Na ordem abaixo, cada pessoa diz <strong>uma palavra ou frase curta</strong> sobre a palavra secreta, sem dizer a própria palavra. Façam duas ou três voltas.</p>
+      <ol class="ordem">${ordem.map(n => `<li>${esc(n)}</li>`).join('')}</ol>
+      ${tempo ? `<div class="center"><div class="relogio" id="rel" role="timer" aria-live="off">${fmt(tempo * 60)}</div>
+        <div class="btn-row center"><button class="btn ghost" type="button" id="play">Iniciar relógio</button></div></div>` : ''}
+      <p class="note" style="margin-top:16px">Dica: respostas muito óbvias ajudam o impostor; respostas muito vagas fazem o grupo desconfiar de você.</p>
+      <div class="btn-row" style="margin-top:16px"><button class="btn" type="button" id="votar">Ir para a votação</button></div>`;
+    topo();
+    if (tempo) {
+      let resta = tempo * 60, rodando = false;
+      const rel = document.getElementById('rel'), play = document.getElementById('play');
+      play.onclick = () => {
+        rodando = !rodando; play.textContent = rodando ? 'Pausar' : 'Continuar';
+        if (!rodando) return pararRelogio();
+        timer = setInterval(() => {
+          resta--; rel.textContent = fmt(Math.max(resta, 0));
+          if (resta <= 0) { pararRelogio(); rel.classList.add('fim'); rel.textContent = 'Tempo!'; play.hidden = true; }
+        }, 1000);
+      };
+    }
+    document.getElementById('votar').onclick = () => { pararRelogio(); votacao(); };
+  }
+  const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
+  // ---------- 4. Votação e chance do impostor ----------
+  function votacao() {
+    stage.innerHTML = `<h2>Quem é o impostor?</h2>
+      <p>Conversem e decidam juntos. Pode ser por contagem de mãos: cada pessoa aponta para alguém ao mesmo tempo. Depois toquem no nome escolhido pela maioria.</p>
+      <div class="votos">${nomes.map((n, i) => `<button type="button" data-i="${i}">${esc(n)}</button>`).join('')}</div>
+      <p class="muted small">Empate? Quem empatou se defende em uma frase e o grupo vota de novo.</p>`;
+    topo();
+    stage.querySelectorAll('.votos button').forEach(b => b.onclick = () => resultadoVoto(+b.dataset.i));
+  }
+  function resultadoVoto(i) {
+    const imp = nomes[rodada.impostor];
+    if (i !== rodada.impostor) return fim('impostor', `${esc(nomes[i])} não era o impostor.`);
+    // descoberto: o impostor tenta adivinhar a palavra
+    const opcoes = embaralha([rodada.palavra].concat(embaralha(rodada.tema.palavras.map(p => p[0]).filter(p => p !== rodada.palavra)).slice(0, 7)));
+    stage.innerHTML = `<div class="center">
+      <p class="veredito">Acertaram: ${esc(imp)} era o impostor.</p>
+      <p>Mas ainda não acabou. <strong>${esc(imp)}</strong>, qual era a palavra secreta? Se acertar, você vence a rodada.</p></div>
+      <div class="chutes">${opcoes.map(o => `<button type="button" data-p="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+      <p class="feedback" id="fb" role="status"></p>`;
+    topo();
+    stage.querySelectorAll('.chutes button').forEach(b => b.onclick = () => {
+      const certo = b.dataset.p === rodada.palavra;
+      stage.querySelectorAll('.chutes button').forEach(x => { x.disabled = true; if (x.dataset.p === rodada.palavra) x.classList.add('certa'); });
+      if (!certo) b.classList.add('errada');
+      setTimeout(() => fim(certo ? 'chute' : 'grupo'), 900);
+    });
+  }
+
+  // ---------- 5. Fim da rodada ----------
+  function fim(quem, antes) {
+    const imp = nomes[rodada.impostor];
+    const ganhou = [];
+    if (quem === 'grupo') nomes.forEach(n => { if (n !== imp) { placar[n]++; ganhou.push(n); } });
+    if (quem === 'impostor') { placar[imp] += 3; ganhou.push(imp); }
+    if (quem === 'chute') { placar[imp] += 2; ganhou.push(imp); }
+    comeca = (comeca + 1) % nomes.length;
+    guardar();
+    window.MDP && MDP.registrar('impostor', quem === 'grupo' ? 100 : 70);
+    const titulo = quem === 'grupo' ? 'O grupo venceu!' : `${esc(imp)} venceu!`;
+    const texto = quem === 'grupo' ? `${esc(imp)} era o impostor e não adivinhou a palavra.`
+      : quem === 'chute' ? `O grupo descobriu ${esc(imp)}, mas a palavra foi adivinhada.`
+      : `${antes} O impostor era <strong>${esc(imp)}</strong>, e o grupo não desconfiou.`;
+    const ordem = nomes.slice().sort((a, b) => placar[b] - placar[a]);
+    stage.innerHTML = `<div class="center">
+      <p class="veredito">${titulo}</p>
+      <p>${texto}</p>
+      <div class="segredo" style="margin:18px auto"><p class="rot">A palavra secreta era</p><p class="palavra">${esc(rodada.palavra)}</p>
+        <p class="def">${esc(rodada.def)}</p><p class="def"><strong>Tema:</strong> ${rodada.tema.nome}</p></div>
+      <table class="placar"><caption class="sr-only">Placar</caption><thead><tr><th colspan="2">Placar</th></tr></thead>
+        <tbody>${ordem.map(n => `<tr class="${ganhou.includes(n) ? 'sobe' : ''}"><td>${esc(n)}${ganhou.includes(n) ? ' <span class="small muted">pontuou nesta rodada</span>' : ''}</td><td class="n">${placar[n]}</td></tr>`).join('')}</tbody></table>
+      <div class="btn-row center" style="margin-top:16px">
+        <button class="btn" type="button" id="nova">Nova rodada</button>
+        <button class="btn ghost" type="button" id="trocar">Trocar pessoas ou tema</button>
+        <button class="btn ghost" type="button" id="zerar">Zerar placar</button>
+      </div></div>`;
+    topo();
+    document.getElementById('nova').onclick = novaRodada;
+    document.getElementById('nova').focus({ preventScroll: true });
+    document.getElementById('trocar').onclick = () => inicio();
+    document.getElementById('zerar').onclick = () => { nomes.forEach(n => placar[n] = 0); guardar(); inicio('Placar zerado. Podem começar uma nova partida.'); document.getElementById('fb').className = 'feedback ok'; };
+  }
+
+  inicio();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
