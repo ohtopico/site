@@ -479,6 +479,10 @@ const RECURSOS = [
     habs: ['EF09CO04', 'EF08CO10'], tempo: '20 min',
     resumo: 'Um bairro em 3D ligado em rede e um malware que se espalha de computador em computador. Com orçamento limitado, decida onde pôr firewall, atualização e backup.',
     url: '3d/cidade-infectada.html', plano: 'p-golpes', ficha: 'f-co-incidente' },
+  { id: '3d-cofre-chaves', tipo: '3d', titulo: 'Cofre das Chaves', comp: ['CO'], anos: [8, 9],
+    habs: ['EF09CO05', 'EF08CO10'], tempo: '25 min',
+    resumo: 'Disco de César, caixa com dois cadeados e mistura de tintas em 3D: quebre uma cifra por força bruta e descubra como combinar uma chave secreta sem nunca enviá-la.',
+    url: '3d/cofre-das-chaves.html', plano: 'p-cripto', ficha: 'f-cesar' },
 
   // ---------- Fichas para imprimir ----------
   { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
@@ -986,7 +990,7 @@ const PLANOS = {
     ],
     avaliacao: 'A dupla consegue cifrar e decifrar corretamente? Explica com as próprias palavras por que a Cifra de César é fraca?',
     inclusao: 'O disco pode ser ampliado em A3 ou feito com letras em relevo. No jogo, o seletor de chave funciona com as setas do teclado.',
-    recursos: ['f-cesar', 'cifra']
+    recursos: ['f-cesar', 'cifra', '3d-cofre-chaves']
   },
   'p-golpes': {
     duracao: '2 aulas de 50 min',
