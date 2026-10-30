@@ -21,7 +21,7 @@
 .side .grande { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1.1; margin: 4px 0 8px; }
 .side label { display: block; font-size: 14.5px; font-weight: 500; margin: 12px 0 4px; }
 .side input[type=range] { width: 100%; accent-color: var(--ok); }
-.side select, .side input[type=number] { width: 100%; min-height: 40px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 4px 10px; background: var(--paper); }
+.side select, .side input[type=number], .side input[type=text] { width: 100%; min-height: 40px; border: 1.5px solid var(--ink); border-radius: 12px; padding: 4px 10px; background: var(--paper); }
 .conta { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 15px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; white-space: pre-wrap; margin: 8px 0; }
 .leg { list-style: none; padding: 0; margin: 8px 0; font-size: 14.5px; }
 .leg li { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
