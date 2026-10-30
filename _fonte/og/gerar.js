@@ -79,8 +79,8 @@ const IMAGENS = [
     ['sitio-binario', 'Sítio', 'Binário', 'Jogo de fazenda: plante, colha e monte peças que ensinam binário, repetição, pilha, fila e redes', ['Computação', 'Jogo', '6º ao 9º ano']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/jogos/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Jogo · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/jogos/${nome}`, capturas: [`/material-didatico/jogos/${nome}.html#captura`] })),
-  { arq: 'mundo/og-mundo.jpg', janela: 'mundo.html', faixa: 'Passeie pelo site', t1: 'Mundo', t2: '3D',
-    sub: 'Cada prédio é uma página: jogos, Laboratório 3D, simuladores, material didático e blog', pills: ['Jogos e 3D', 'Simuladores', 'Para professores'],
+  { arq: 'mundo/og-mundo.jpg', janela: 'mundo.html', faixa: 'Jogo para explorar o site', t1: 'Mundo', t2: 'do site',
+    sub: 'Missões, perguntas da BNCC e itens: cada casa abre um jogo, um recurso 3D ou um simulador', pills: ['Missões', 'Jogos e 3D', 'Simuladores'],
     url: 'ohtopico.com.br/mundo', capturas: ['/mundo/'] },
   { arq: 'dados-da-regiao/og-dados-da-regiao.jpg', janela: 'dados-da-regiao.html', faixa: 'Censo Escolar · IBGE', t1: 'Dados da', t2: 'educação',
     sub: 'Escolas e matrículas de Santa Cruz do Sul, Candelária e Novo Cabrais', pills: ['Mapa', 'Escolas', 'Matrículas'],
