@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regressão linear · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador de regressão linear: arraste os pontos e veja a reta de mínimos quadrados, os resíduos, o erro quadrático médio e o R² mudarem. Tente ajustar a sua própria reta e compare.">
+<meta property="og:title" content="Regressão linear | ohtopico">
+<meta property="og:description" content="Arraste pontos e veja a reta se ajustar, com erro quadrático, R² e o efeito de um ponto fora da curva.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/regressao.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/regressao.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .rg-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .rg-layout { grid-template-columns: minmax(0, 1fr); } }
+  .rg-layout > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  #plot { width: 100%; height: auto; display: block; touch-action: none; user-select: none; -webkit-user-select: none; background: var(--paper); border-radius: 12px; cursor: crosshair; }
+  #plot text { font-family: var(--body); fill: var(--ink-2); font-size: 12px; }
+  #plot .grid { stroke: var(--line); stroke-width: 1; }
+  #plot .axis { stroke: var(--ink); stroke-width: 1.5; }
+  #plot .pt { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; cursor: grab; }
+  #plot .pt.out { stroke: var(--bad); fill: var(--bad-soft); }
+  #plot .pt:hover, #plot .pt.drag { fill: var(--accent-soft); stroke: var(--accent); }
+  #plot .fit { stroke: var(--accent); stroke-width: 3.5; }
+  #plot .mine { stroke: var(--bad); stroke-width: 3; stroke-dasharray: 9 6; }
+  #plot .res { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+  #plot .sq { fill: var(--accent); fill-opacity: .12; stroke: var(--accent); stroke-opacity: .5; }
+  #plot .sq.mine-sq { fill: var(--bad); stroke: var(--bad); }
+  #plot .pred { fill: #c79a00; stroke: var(--ink); stroke-width: 1.5; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; align-items: center; font-size: 14px; }
+  .presets button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; color: var(--ink); }
+  .presets button:hover { border-style: solid; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .metric { border: 1.5px solid var(--line); border-radius: 14px; padding: 8px 10px; background: var(--paper); }
+  .metric span { display: block; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+  .metric b { font-family: var(--display); font-size: 21px; line-height: 1.2; }
+  .metric.key { border-color: var(--ink); }
+  .eq { font-family: ui-monospace, Consolas, monospace; font-size: 18px; font-weight: 700; margin: 4px 0 10px; color: var(--accent); }
+  .eq.mine { color: var(--bad); }
+  .opts { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14.5px; margin-top: 8px; }
+  .opts label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+  .opts input { accent-color: var(--accent); width: 17px; height: 17px; }
+  .ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 8px 0; }
+  .ctrl input[type=range] { width: 100%; accent-color: var(--bad); }
+  .ctrl output { font-family: var(--display); font-size: 17px; color: var(--ink); }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+  .btns button { font: inherit; font-size: 14px; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 6px 13px; cursor: pointer; color: var(--ink); }
+  .btns button.primary { background: var(--ink); color: var(--paper); }
+  .btns button:hover { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
+  .placar { font-size: 15px; margin: 8px 0 0; }
+  .note-small { font-size: 14px; margin: 8px 0 0; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .legend i { display: inline-block; width: 20px; height: 0; border-top: 3px solid; vertical-align: middle; margin-right: 4px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim">
+    <div class="rg-layout">
+      <div>
+        <div class="box">
+          <h3>Gráfico</h3>
+          <div class="presets" id="presets"><span class="muted">Exemplos:</span></div>
+          <svg id="plot" viewBox="0 0 560 420" role="img" aria-label="Gráfico de dispersão com a reta de regressão"></svg>
+          <div class="legend"><span><i style="border-color:var(--accent)"></i>reta de mínimos quadrados</span><span id="leg-mine" hidden><i style="border-color:var(--bad);border-top-style:dashed"></i>sua reta</span></div>
+          <p class="small muted" style="margin:6px 0 0">Toque ou clique num espaço vazio para criar um ponto. Arraste um ponto para movê-lo. Toque ou clique duas vezes num ponto para apagá-lo.</p>
+          <div class="opts">
+            <label><input type="checkbox" id="o-res" checked> Mostrar resíduos</label>
+            <label><input type="checkbox" id="o-sq"> Mostrar os quadrados dos erros</label>
+            <label><input type="checkbox" id="o-mine"> Ajustar a minha reta</label>
+          </div>
+          <div class="btns">
+            <button type="button" id="b-out">Adicionar ponto fora da curva</button>
+            <button type="button" id="b-limpar">Apagar todos os pontos</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="box">
+          <h3>Reta de mínimos quadrados</h3>
+          <div class="eq" id="eq"></div>
+          <div class="metrics" id="metrics"></div>
+          <p class="note-small" id="interp"></p>
+        </div>
+        <div class="box" id="box-mine" hidden>
+          <h3>Desafio: a sua reta</h3>
+          <p class="small muted" style="margin:0 0 6px">Mexa na inclinação e no ponto de partida. Consegue chegar perto do menor erro possível?</p>
+          <div class="eq mine" id="eq-mine"></div>
+          <div class="ctrl">
+            <label class="field">Inclinação (b) <output id="b-out-v"></output><input type="range" id="m-b" min="-3" max="3" step="0.02" value="0.5"></label>
+            <label class="field">Intercepto (a) <output id="a-out-v"></output><input type="range" id="m-a" min="-5" max="15" step="0.05" value="2"></label>
+          </div>
+          <p class="placar" id="placar"></p>
+        </div>
+        <div class="box">
+          <h3>Fazer uma previsão</h3>
+          <label class="field">Valor de x <input type="number" id="px" value="7" step="0.5"></label>
+          <p class="placar" id="pred"></p>
+        </div>
+        <div class="box"><h3>O mesmo em Python</h3><pre id="code" style="margin:0"></pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="box">
+      <h3>Como a reta é calculada</h3>
+      <p style="margin-top:0">O resíduo de cada ponto é a distância vertical até a reta: <code>y − ŷ</code>. A reta de mínimos quadrados é a única que deixa a <strong>soma dos quadrados dos resíduos</strong> a menor possível. As fórmulas são <code>b = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</code> e <code>a = ȳ − b·x̄</code>. Ela sempre passa pelo ponto médio (x̄, ȳ).</p>
+      <p>O <strong>R²</strong> diz quanto da variação de y a reta explica: 1 é um ajuste perfeito e 0 significa que a reta não explica nada melhor do que a média. Como os erros entram ao quadrado, um único ponto muito longe pesa bastante e puxa a reta. Por isso vale olhar o gráfico antes de confiar no número.</p>
+      <p style="margin-bottom:0"><strong>Ligação com IA:</strong> a regressão linear é o modelo de aprendizado de máquina mais simples. Treinar o modelo é exatamente encontrar a e b que diminuem o erro. Redes neurais fazem o mesmo, com milhões de números em vez de dois.</p>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+simTopbar('sim'); simFooter(); simHead('regressao');
+(function () {
+  const $ = s => document.querySelector(s);
+  const svg = $('#plot'), W = 560, H = 420, L = 46, R = 14, T = 14, B = 40;
+  const fmt = (v, d = 2) => Number.isFinite(v) ? v.toLocaleString('pt-BR', { maximumFractionDigits: d }) : '—';
+  const py = v => String(+v.toFixed(2));
+  const PRESETS = {
+    estudo: { nome: 'Horas de estudo x nota', xl: 'horas de estudo na semana', yl: 'nota', xmax: 10, ymax: 10,
+      p: [[1, 3.5], [1.5, 4.2], [2, 4], [3, 5.5], [3.5, 5], [4, 6.2], [5, 6.5], [5.5, 7.4], [6, 7], [7, 8.3], [8, 8.1], [9, 9.2]] },
+    sorvete: { nome: 'Temperatura x sorvetes vendidos', xl: 'temperatura (°C)', yl: 'sorvetes (dezenas)', xmax: 40, ymax: 20,
+      p: [[14, 3], [16, 4.5], [18, 4], [20, 6.5], [22, 7], [24, 9.5], [25, 9], [27, 12], [29, 12.5], [31, 15], [33, 15.5], [35, 18]] },
+    nada: { nome: 'Sem relação', xl: 'número do calçado', yl: 'nota', xmax: 45, ymax: 10,
+      p: [[33, 7], [34, 4.5], [35, 8], [36, 6], [36, 3.5], [37, 7.5], [38, 5], [39, 8.5], [40, 4], [41, 6.5], [42, 7], [43, 5]] },
+    outlier: { nome: 'Com um ponto fora da curva', xl: 'horas de estudo na semana', yl: 'nota', xmax: 10, ymax: 10,
+      p: [[1, 3.5], [2, 4.4], [3, 5.1], [4, 5.9], [5, 6.6], [6, 7.2], [7, 8], [8, 8.6], [9, 1]] }
+  };
+  let cfg, pts = [], drag = null, moved = false;
+  $('#presets').innerHTML += Object.entries(PRESETS).map(([k, v]) => `<button type="button" data-k="${k}">${v.nome}</button>`).join('');
+  $('#presets').onclick = e => { const b = e.target.closest('button[data-k]'); if (b) load(b.dataset.k); };
+
+  const X = x => L + x / cfg.xmax * (W - L - R), Y = y => H - B - y / cfg.ymax * (H - T - B);
+  const iX = px => (px - L) / (W - L - R) * cfg.xmax, iY = py => (H - B - py) / (H - T - B) * cfg.ymax;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  function load(k) {
+    cfg = PRESETS[k]; pts = cfg.p.map(([x, y]) => ({ x, y }));
+    const bs = cfg.ymax / cfg.xmax;
+    $('#m-b').min = (-3 * bs).toFixed(3); $('#m-b').max = (3 * bs).toFixed(3); $('#m-b').step = (bs / 100).toFixed(4);
+    $('#m-a').min = (-cfg.ymax / 2).toFixed(2); $('#m-a').max = (cfg.ymax * 1.5).toFixed(2); $('#m-a').step = (cfg.ymax / 400).toFixed(4);
+    $('#m-b').value = 0; $('#m-a').value = (cfg.ymax / 2).toFixed(2);
+    $('#px').value = +(cfg.xmax * 0.7).toFixed(1);
+    draw();
+  }
+  function fit(ps) {
+    const n = ps.length; if (n < 2) return null;
+    const mx = ps.reduce((s, p) => s + p.x, 0) / n, my = ps.reduce((s, p) => s + p.y, 0) / n;
+    let sxy = 0, sxx = 0, syy = 0; ps.forEach(p => { sxy += (p.x - mx) * (p.y - my); sxx += (p.x - mx) ** 2; syy += (p.y - my) ** 2; });
+    if (sxx === 0) return null;
+    const b = sxy / sxx, a = my - b * mx;
+    const sse = ps.reduce((s, p) => s + (p.y - (a + b * p.x)) ** 2, 0);
+    return { a, b, mx, my, sse, mse: sse / n, rmse: Math.sqrt(sse / n), r2: syy ? 1 - sse / syy : NaN, r: syy ? sxy / Math.sqrt(sxx * syy) : NaN, n };
+  }
+  const sseOf = (a, b) => pts.reduce((s, p) => s + (p.y - (a + b * p.x)) ** 2, 0);
+  function linha(a, b, cls) {
+    const x1 = 0, x2 = cfg.xmax;
+    return `<line class="${cls}" x1="${X(x1)}" y1="${Y(a + b * x1)}" x2="${X(x2)}" y2="${Y(a + b * x2)}"/>`;
+  }
+  function draw() {
+    const f = fit(pts), mine = $('#o-mine').checked, ma = +$('#m-a').value, mb = +$('#m-b').value;
+    let s = `<defs><clipPath id="area"><rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}"/></clipPath></defs>`;
+    for (let i = 0; i <= 10; i++) {
+      const gx = cfg.xmax * i / 10, gy = cfg.ymax * i / 10;
+      s += `<line class="grid" x1="${X(gx)}" y1="${T}" x2="${X(gx)}" y2="${H - B}"/><line class="grid" x1="${L}" y1="${Y(gy)}" x2="${W - R}" y2="${Y(gy)}"/>`;
+      if (i % 2 === 0) s += `<text x="${X(gx)}" y="${H - B + 16}" text-anchor="middle">${fmt(gx, 1)}</text><text x="${L - 6}" y="${Y(gy) + 4}" text-anchor="end">${fmt(gy, 1)}</text>`;
+    }
+    s += `<line class="axis" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"/><line class="axis" x1="${L}" y1="${T}" x2="${L}" y2="${H - B}"/>`;
+    s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">${esc(cfg.xl)}</text><text transform="translate(13 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle">${esc(cfg.yl)}</text>`;
+    s += '<g clip-path="url(#area)">';
+    const quadrado = (p, a, b, cls) => { const yh = a + b * p.x, d = p.y - yh, side = Math.abs(Y(p.y) - Y(yh)); return `<rect class="sq ${cls}" x="${d > 0 ? X(p.x) : X(p.x) - side}" y="${Math.min(Y(p.y), Y(yh))}" width="${side}" height="${side}"/>`; };
+    if (f && $('#o-sq').checked) pts.forEach(p => { s += quadrado(p, f.a, f.b, ''); if (mine) s += quadrado(p, ma, mb, 'mine-sq'); });
+    if (f && $('#o-res').checked) pts.forEach(p => { s += `<line class="res" x1="${X(p.x)}" y1="${Y(p.y)}" x2="${X(p.x)}" y2="${Y(f.a + f.b * p.x)}"/>`; });
+    if (f) s += linha(f.a, f.b, 'fit');
+    if (mine) s += linha(ma, mb, 'mine');
+    const px = +$('#px').value;
+    if (f && Number.isFinite(px)) s += `<circle class="pred" cx="${X(px)}" cy="${Y(f.a + f.b * px)}" r="6"><title>previsão</title></circle>`;
+    s += '</g>';
+    let outIdx = -1;
+    if (f && pts.length > 3) { let mx = 0; const rm = f.rmse; pts.forEach((p, i) => { const r = Math.abs(p.y - (f.a + f.b * p.x)); if (r > mx) { mx = r; outIdx = i; } }); if (mx < 2.2 * rm) outIdx = -1; }
+    pts.forEach((p, i) => { s += `<circle class="pt${i === outIdx ? ' out' : ''}${drag === i ? ' drag' : ''}" data-i="${i}" cx="${X(p.x)}" cy="${Y(p.y)}" r="9"><title>(${fmt(p.x)}; ${fmt(p.y)})</title></circle>`; });
+    svg.innerHTML = s;
+
+    $('#leg-mine').hidden = !mine; $('#box-mine').hidden = !mine;
+    if (!f) {
+      $('#eq').textContent = 'Coloque pelo menos dois pontos com x diferentes.'; $('#metrics').innerHTML = ''; $('#interp').textContent = ''; $('#pred').textContent = ''; $('#code').textContent = ''; return;
+    }
+    const sinal = f.b >= 0 ? '+' : '−';
+    $('#eq').textContent = `ŷ = ${fmt(f.a, 3)} ${sinal} ${fmt(Math.abs(f.b), 3)}·x`;
+    const M = [['Pontos (n)', f.n], ['Inclinação (b)', fmt(f.b, 3), 1], ['Intercepto (a)', fmt(f.a, 3)], ['R²', fmt(f.r2, 3), 1], ['Correlação (r)', fmt(f.r, 3)],
+      ['Erro quadrático médio', fmt(f.mse, 3), 1], ['Raiz do EQM', fmt(f.rmse, 3)], ['Soma dos quadrados', fmt(f.sse, 2)]];
+    $('#metrics').innerHTML = M.map(([k, v, key]) => `<div class="metric${key ? ' key' : ''}"><span>${k}</span><b>${v}</b></div>`).join('');
+    const r2 = f.r2, forca = r2 >= 0.8 ? 'forte' : r2 >= 0.5 ? 'moderada' : r2 >= 0.2 ? 'fraca' : 'muito fraca ou inexistente';
+    $('#interp').innerHTML = `A reta explica <strong>${fmt(r2 * 100, 0)}%</strong> da variação de “${esc(cfg.yl)}”: relação linear ${forca}. ` +
+      (Math.abs(f.b) > 1e-9 ? `Cada 1 unidade a mais em “${esc(cfg.xl)}” ${f.b > 0 ? 'aumenta' : 'diminui'} a previsão em ${fmt(Math.abs(f.b), 2)}.` : '') +
+      (outIdx >= 0 ? ' O ponto em vermelho está muito longe da reta e a puxa na direção dele: experimente arrastá-lo.' : '') +
+      (r2 >= 0.5 ? ' Lembre: relação não é o mesmo que causa.' : '');
+    if (mine) {
+      const s2 = sseOf(ma, mb), dif = (s2 / f.sse - 1) * 100;
+      $('#eq-mine').textContent = `ŷ = ${fmt(ma, 2)} ${mb >= 0 ? '+' : '−'} ${fmt(Math.abs(mb), 3)}·x`;
+      $('#a-out-v').textContent = fmt(ma, 2); $('#b-out-v').textContent = fmt(mb, 3);
+      $('#placar').innerHTML = `Soma dos quadrados da sua reta: <strong>${fmt(s2, 2)}</strong> (mínima possível: ${fmt(f.sse, 2)}). ` +
+        (dif < 2 ? '<span class="good">Excelente: praticamente a reta ótima.</span>' : dif < 15 ? '<span class="good">Muito perto.</span>' : `Ainda ${fmt(dif, 0)}% acima do mínimo.`);
+    }
+    if (Number.isFinite(px)) {
+      const yp = f.a + f.b * px, minX = Math.min(...pts.map(p => p.x)), maxX = Math.max(...pts.map(p => p.x));
+      $('#pred').innerHTML = `Previsão para x = ${fmt(px)}: <strong>ŷ = ${fmt(yp, 2)}</strong>.` + (px < minX || px > maxX ? ' <span class="warn">Atenção: esse x está fora da faixa dos dados (extrapolação), e a previsão fica pouco confiável.</span>' : '');
+    }
+    $('#code').textContent = `import numpy as np
+x = np.array([${pts.map(p => py(p.x)).join(', ')}])
+y = np.array([${pts.map(p => py(p.y)).join(', ')}])
+b, a = np.polyfit(x, y, 1)      # b = ${f.b.toFixed(4)}, a = ${f.a.toFixed(4)}
+y_prev = a + b * x
+r2 = 1 - ((y - y_prev)**2).sum() / ((y - y.mean())**2).sum()   # ${f.r2.toFixed(4)}
+
+# com scikit-learn
+from sklearn.linear_model import LinearRegression
+modelo = LinearRegression().fit(x.reshape(-1, 1), y)
+modelo.predict([[${py(+$('#px').value || 0)}]])   # ${(f.a + f.b * (+$('#px').value || 0)).toFixed(4)}`;
+  }
+
+  function svgPoint(e) {
+    const r = svg.getBoundingClientRect();
+    return { px: (e.clientX - r.left) / r.width * W, py: (e.clientY - r.top) / r.height * H };
+  }
+  svg.addEventListener('pointerdown', e => {
+    const c = e.target.closest('.pt');
+    if (c) { drag = +c.dataset.i; moved = false; svg.setPointerCapture(e.pointerId); draw(); return; }
+    const { px, py } = svgPoint(e);
+    if (px < L || px > W - R || py < T || py > H - B) return;
+    pts.push({ x: +iX(px).toFixed(2), y: +iY(py).toFixed(2) });
+    drag = pts.length - 1; moved = true; svg.setPointerCapture(e.pointerId); draw();
+  });
+  svg.addEventListener('pointermove', e => {
+    if (drag === null) return;
+    const { px, py } = svgPoint(e);
+    if (!moved && Math.hypot(px - X(pts[drag].x), py - Y(pts[drag].y)) < 3) return;
+    pts[drag] = { x: +clamp(iX(px), 0, cfg.xmax).toFixed(2), y: +clamp(iY(py), 0, cfg.ymax).toFixed(2) };
+    moved = true; draw();
+  });
+  // Dois toques seguidos no mesmo ponto (sem arrastar) apagam o ponto
+  let ultimoToque = { i: -1, t: 0 };
+  const solta = () => {
+    if (drag === null) return;
+    const i = drag, agora = Date.now(); drag = null;
+    if (!moved) {
+      if (ultimoToque.i === i && agora - ultimoToque.t < 450) { pts.splice(i, 1); ultimoToque = { i: -1, t: 0 }; }
+      else ultimoToque = { i, t: agora };
+    } else ultimoToque = { i: -1, t: 0 };
+    draw();
+  };
+  svg.addEventListener('pointerup', solta); svg.addEventListener('pointercancel', solta);
+
+  $('#b-out').onclick = () => { const f = fit(pts); const x = cfg.xmax * 0.9; const yh = f ? f.a + f.b * x : cfg.ymax / 2; pts.push({ x: +x.toFixed(2), y: +(yh > cfg.ymax / 2 ? cfg.ymax * 0.08 : cfg.ymax * 0.92).toFixed(2) }); draw(); };
+  $('#b-limpar').onclick = () => { pts = []; draw(); };
+  ['#o-res', '#o-sq', '#o-mine'].forEach(id => $(id).addEventListener('change', draw));
+  ['#m-a', '#m-b', '#px'].forEach(id => $(id).addEventListener('input', draw));
+  load('estudo');
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

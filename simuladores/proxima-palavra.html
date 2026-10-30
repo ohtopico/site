@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Como a IA escolhe a próxima palavra · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador gratuito que mostra como um modelo de linguagem (como o ChatGPT) quebra o texto em tokens, calcula a probabilidade das próximas palavras e sorteia uma delas conforme a temperatura.">
+<meta property="og:title" content="Como a IA escolhe a próxima palavra | ohtopico">
+<meta property="og:description" content="Tokens, probabilidades e temperatura de um modelo de linguagem, no navegador e sem cadastro.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/proxima-palavra.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/proxima-palavra.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .pp-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .pp-layout { grid-template-columns: minmax(0, 1fr); } }
+  .pp-layout > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  .toks { display: flex; flex-wrap: wrap; gap: 4px 10px; font-family: ui-monospace, Consolas, monospace; font-size: 15px; line-height: 1.2; }
+  .word { display: inline-flex; gap: 2px; }
+  .tok { border: 1.5px solid var(--ink); border-radius: 7px; padding: 3px 5px; background: var(--paper); position: relative; }
+  .tok.c0 { background: var(--accent-soft); border-color: var(--accent); }
+  .tok.c1 { background: #fff4cc; border-color: #9a7a00; }
+  .tok.c2 { background: var(--bad-soft); border-color: var(--bad); }
+  :root[data-theme="dark"] .tok.c1 { background: #3a3110; border-color: #e0c45a; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tok.c1 { background: #3a3110; border-color: #e0c45a; } }
+  .tok small { display: block; font-size: 10px; color: var(--ink-3); text-align: center; margin-top: 1px; }
+  .counts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .counts span { border: 1.5px solid var(--line); border-radius: 99px; padding: 2px 10px; font-size: 13.5px; }
+  .counts b { font-family: var(--display); }
+  .ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 8px 0; }
+  .ctrl input[type=range] { width: 100%; accent-color: var(--accent); }
+  .ctrl output { font-family: var(--display); font-size: 18px; color: var(--ink); }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .btns button { font: inherit; font-size: 14.5px; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 7px 14px; cursor: pointer; color: var(--ink); }
+  .btns button.primary { background: var(--ink); color: var(--paper); }
+  .btns button:hover { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
+  .btns button:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
+  .texto { font-size: 20px; line-height: 1.6; padding: 10px 12px; border: 1.5px dashed var(--ink-2); border-radius: 14px; min-height: 64px; background: var(--paper-2); }
+  .texto .gen { background: var(--accent-soft); border-bottom: 2px solid var(--accent); border-radius: 4px; padding: 0 2px; }
+  .texto .gen.raro { background: #fff4cc; border-bottom-color: #9a7a00; }
+  :root[data-theme="dark"] .texto .gen.raro { background: #3a3110; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .texto .gen.raro { background: #3a3110; } }
+  .texto .cursor { display: inline-block; width: 2px; height: 1.1em; background: var(--ink); vertical-align: text-bottom; animation: pisca 1s steps(1) infinite; }
+  @keyframes pisca { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .texto .cursor { animation: none; } }
+  .cands { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .cands th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); text-align: left; padding: 4px 6px; border-bottom: 1.5px solid var(--ink); }
+  .cands td { padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .cands td.w { font-family: ui-monospace, Consolas, monospace; font-weight: 700; white-space: nowrap; }
+  .cands tr.fora td { opacity: .4; }
+  .cands tr.escolhida td { background: var(--accent-soft); }
+  .barra { position: relative; height: 16px; border-radius: 6px; background: var(--pill); min-width: 80px; }
+  .barra i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
+  .barra .orig { background: var(--pill-2); border: 1px solid var(--ink-3); }
+  .barra .temp { background: var(--accent); height: 8px; top: 4px; }
+  .barra-num { font-family: ui-monospace, Consolas, monospace; font-size: 13px; white-space: nowrap; text-align: right; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 8px; }
+  .legend i { display: inline-block; width: 18px; height: 10px; border-radius: 3px; vertical-align: middle; margin-right: 4px; }
+  .nivel-ctx { font-size: 13.5px; color: var(--ink-2); margin: 4px 0 8px; }
+  .varias li { margin-bottom: 6px; font-size: 16px; }
+  .note-small { font-size: 14px; margin: 8px 0 0; }
+  .formula { font-family: ui-monospace, Consolas, monospace; font-size: 14px; background: var(--paper-2); border: 1.5px solid var(--line); border-radius: 10px; padding: 6px 10px; display: inline-block; }
+  .discuss li { margin-bottom: 6px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; align-items: center; font-size: 14px; }
+  .presets button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; color: var(--ink); }
+  .presets button:hover { border-style: solid; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim" aria-labelledby="t1">
+    <h2 id="t1">1. O texto vira tokens</h2>
+    <p class="muted" style="max-width:780px;margin-top:0">Antes de qualquer conta, o modelo quebra o texto em pedaços chamados <strong>tokens</strong>. Cada token recebe um número. Aqui o vocabulário é aprendido com o método BPE (codificação por pares de bytes): ele começa com letras soltas e junta, várias vezes, o par de pedaços que mais aparece nos textos de treino.</p>
+    <div class="pp-layout">
+      <div class="box">
+        <h3>Texto</h3>
+        <label class="field"><span class="sr-only">Texto para quebrar em tokens</span><textarea id="tok-in" rows="3" spellcheck="false">A professora prepara a aula de computação com inteligência artificial.</textarea></label>
+        <div class="ctrl">
+          <label class="field">Junções aprendidas (tamanho do vocabulário) <output id="merges-out">150</output>
+            <input type="range" id="merges" min="0" max="400" step="10" value="150"></label>
+        </div>
+        <p class="small muted" style="margin:0">Com 0 junções, cada letra é um token. Quanto mais junções, maiores os pedaços e menos tokens por frase. Palavras raras continuam picadas.</p>
+      </div>
+      <div class="box">
+        <h3>Tokens</h3>
+        <div class="toks" id="toks" aria-live="polite"></div>
+        <div class="counts" id="tok-counts"></div>
+        <p class="note-small muted">O número embaixo de cada pedaço é o identificador do token no vocabulário. É com esses números que a rede neural trabalha.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sim" aria-labelledby="t2">
+    <h2 id="t2">2. Probabilidade da próxima palavra</h2>
+    <p class="muted" style="max-width:780px;margin-top:0">O modelo olha as últimas palavras e calcula a chance de cada palavra vir depois. Este modelo de demonstração aprendeu com cerca de 50 frases sobre escola e tecnologia, contando quais palavras costumam aparecer depois de quais. Um modelo de verdade faz a mesma pergunta, mas com bilhões de textos e uma rede neural no lugar da contagem.</p>
+    <div class="pp-layout">
+      <div>
+        <div class="box">
+          <h3>Texto gerado</h3>
+          <div class="presets" id="presets"><span class="muted">Começar com:</span></div>
+          <form class="row" id="f-inicio" style="margin:6px 0 10px"><label class="field" style="flex:1;min-width:180px">Ou digite um começo<input type="text" id="inicio-txt" placeholder="por exemplo: o professor" autocomplete="off"></label><div class="btns" style="margin:0"><button type="submit">Usar</button></div></form>
+          <div class="texto" id="texto" aria-live="polite"></div>
+          <div class="btns">
+            <button type="button" class="primary" id="b-sortear">Sortear a próxima palavra</button>
+            <button type="button" id="b-maior">Escolher a mais provável</button>
+            <button type="button" id="b-frase">Completar a frase</button>
+            <button type="button" id="b-desfazer">Desfazer</button>
+          </div>
+          <p class="small muted" style="margin:0">Palavras em verde foram sorteadas entre as mais prováveis; em amarelo, palavras que tinham menos de 15% de chance e saíram mesmo assim.</p>
+        </div>
+        <div class="box">
+          <h3>Controles do sorteio</h3>
+          <div class="ctrl">
+            <label class="field">Temperatura <output id="temp-out">1,0</output>
+              <input type="range" id="temp" min="0.1" max="2.5" step="0.1" value="1"></label>
+            <label class="field">Palavras no sorteio (top-k)
+              <select id="topk"><option value="3">3 primeiras</option><option value="5">5 primeiras</option><option value="0" selected>todas</option></select></label>
+            <label class="field">Semente (seed)
+              <input type="number" id="seed" value="42" min="0" step="1"></label>
+          </div>
+          <p class="note-small">A temperatura muda as chances antes do sorteio: <span class="formula">p'(palavra) ∝ p(palavra)<sup>1/T</sup></span>. Com T baixa, a palavra mais provável fica com quase toda a chance e o texto fica repetitivo. Com T alta, as chances se igualam e aparecem palavras inesperadas. A semente fixa a sequência de sorteios: a mesma semente sempre gera o mesmo texto.</p>
+        </div>
+      </div>
+      <div class="box">
+        <h3>Candidatas para a próxima palavra</h3>
+        <p class="nivel-ctx" id="ctx"></p>
+        <div class="tbl-wrap"><table class="cands" id="cands"></table></div>
+        <div class="legend"><span><i style="background:var(--pill-2);border:1px solid var(--ink-3)"></i>chance no modelo</span><span><i style="background:var(--accent)"></i>chance depois da temperatura e do top-k</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sim" aria-labelledby="t3">
+    <h2 id="t3">3. Mesma pergunta, respostas diferentes</h2>
+    <p class="muted" style="max-width:780px;margin-top:0">Gere cinco continuações para o mesmo começo, com a temperatura escolhida. É por isso que o ChatGPT responde de jeitos diferentes à mesma pergunta.</p>
+    <div class="btns"><button type="button" class="primary" id="b-varias">Gerar 5 continuações</button></div>
+    <ol class="varias" id="varias"></ol>
+    <div class="box" style="margin-top:14px">
+      <h3>Para conversar com a turma</h3>
+      <ul class="discuss">
+        <li>Por que o modelo às vezes junta palavras que fazem sentido gramatical, mas dizem algo falso? O que isso ensina sobre conferir as fontes de uma resposta de IA?</li>
+        <li>Com temperatura 0,1, a frase sai sempre igual. Em que situações isso é bom (um resumo) e em quais é ruim (ideias para uma redação)?</li>
+        <li>O modelo só sabe o que estava nos textos de treino. Experimente começar com uma palavra que não está nas frases de treino: o que acontece?</li>
+        <li>A palavra "inteligência" vira vários tokens com poucas junções. Por que palavras comuns ganham tokens próprios e palavras raras não?</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+simTopbar('sim'); simFooter(); simHead('proxima-palavra');
+(function () {
+  const $ = s => document.querySelector(s);
+  const fmtPct = p => (p * 100).toLocaleString('pt-BR', { maximumFractionDigits: p < 0.01 ? 2 : 1 }) + '%';
+
+  /* Frases de treino do modelo de demonstração */
+  const FRASES = `a professora explica o conteúdo para a turma .
+a professora corrige as provas da turma .
+a professora prepara a aula de matemática .
+a professora prepara a aula de computação .
+a professora usa os dados para planejar a aula .
+a professora explica como a inteligência artificial funciona .
+a turma faz a atividade em grupo .
+a turma gosta da aula de computação .
+a turma gosta de jogos de matemática .
+a turma confere as fontes da pesquisa .
+a turma programa o robô com blocos .
+a turma aprende a criar uma senha forte .
+o aluno faz a atividade no caderno .
+o aluno faz a pergunta para a professora .
+o aluno faz a pesquisa na biblioteca .
+o aluno usa o computador da escola .
+o aluno aprende a programar com blocos .
+a escola tem um laboratório de informática .
+a escola tem uma biblioteca nova .
+a escola fica no interior do rio grande do sul .
+a inteligência artificial ajuda a professora a planejar a aula .
+a inteligência artificial pode errar e inventar fatos .
+a inteligência artificial aprende com muitos exemplos .
+a inteligência artificial escolhe a próxima palavra pela probabilidade .
+o modelo de linguagem escolhe a próxima palavra .
+o modelo de linguagem aprende com muitos textos .
+o modelo aprende padrões nos dados .
+o computador guarda os dados na memória .
+o computador executa o programa passo a passo .
+o programa recebe os dados e mostra o resultado .
+os dados da turma mostram que as notas melhoraram .
+os dados ajudam a escola a tomar decisões .
+a aula de hoje fala sobre inteligência artificial .
+a aula de hoje fala sobre dados .
+a aula de matemática usa gráficos e tabelas .
+o gráfico mostra que a frequência melhorou .
+a formação de professores ensina a usar a inteligência artificial com cuidado .
+a formação de professores acontece na escola .
+o professor revisa o texto antes de publicar .
+o professor confere as fontes antes de usar a resposta .
+a pesquisa da turma usa dados da escola .
+o robô segue a linha preta no chão .
+o robô desvia do obstáculo .
+o celular tem um processador e uma memória .
+a senha forte protege os dados .
+a resposta da inteligência artificial precisa de revisão .
+o professor usa a inteligência artificial para criar exercícios .
+a aula de computação ensina a pensar passo a passo .`.split('\n').map(l => l.trim().split(/\s+/));
+
+  /* ---------- 1. Tokenização BPE ---------- */
+  const palavrasTreino = new Map();
+  FRASES.flat().filter(w => /\p{L}/u.test(w)).forEach(w => palavrasTreino.set(w, (palavrasTreino.get(w) || 0) + 1));
+  // Junções aprendidas uma vez (até 400); o controle escolhe quantas usar
+  const JUNCOES = (function () {
+    let pal = [...palavrasTreino].map(([w, f]) => [[...w], f]);
+    const out = [];
+    for (let m = 0; m < 400; m++) {
+      const pares = new Map();
+      pal.forEach(([ps, f]) => { for (let i = 0; i < ps.length - 1; i++) { const k = ps[i] + '\u0001' + ps[i + 1]; pares.set(k, (pares.get(k) || 0) + f); } });
+      let melhor = null, mf = 1;
+      pares.forEach((f, k) => { if (f > mf || (f === mf && melhor !== null && k < melhor)) { melhor = k; mf = f; } });
+      if (!melhor) break;
+      const [a, b] = melhor.split('\u0001');
+      out.push([a, b]);
+      pal = pal.map(([ps, f]) => { const n = []; for (let i = 0; i < ps.length; i++) { if (i < ps.length - 1 && ps[i] === a && ps[i + 1] === b) { n.push(a + b); i++; } else n.push(ps[i]); } return [n, f]; });
+    }
+    return out;
+  })();
+  const LETRAS = [...new Set([...palavrasTreino.keys()].join(''))].sort();
+
+  function tokenizar(texto, nJ) {
+    const rank = new Map(JUNCOES.slice(0, nJ).map(([a, b], i) => [a + '\u0001' + b, i]));
+    const vocab = new Map(LETRAS.map((c, i) => [c, i]));
+    JUNCOES.slice(0, nJ).forEach(([a, b]) => { if (!vocab.has(a + b)) vocab.set(a + b, vocab.size); });
+    const palavras = texto.toLowerCase().match(/[\p{L}\p{N}]+|[^\s\p{L}\p{N}]/gu) || [];
+    return palavras.map(w => {
+      let ps = [...w];
+      while (ps.length > 1) {
+        let best = -1, br = Infinity;
+        for (let i = 0; i < ps.length - 1; i++) { const r = rank.get(ps[i] + '\u0001' + ps[i + 1]); if (r !== undefined && r < br) { br = r; best = i; } }
+        if (best < 0) break;
+        ps.splice(best, 2, ps[best] + ps[best + 1]);
+      }
+      return ps.map(p => ({ t: p, id: vocab.has(p) ? vocab.get(p) : null }));
+    });
+  }
+  function renderTokens() {
+    const nJ = +$('#merges').value; $('#merges-out').textContent = nJ;
+    const txt = $('#tok-in').value, ws = tokenizar(txt, nJ);
+    let k = 0, total = 0;
+    $('#toks').innerHTML = ws.map(w => `<span class="word">${w.map(p => { total++; return `<span class="tok c${k++ % 3}">${esc(p.t)}<small>${p.id === null ? '?' : p.id}</small></span>`; }).join('')}</span>`).join('');
+    const nPal = ws.filter(w => /[\p{L}\p{N}]/u.test(w[0].t)).length;
+    $('#tok-counts').innerHTML = `<span><b>${txt.length}</b> caracteres</span><span><b>${nPal}</b> palavras</span><span><b>${total}</b> tokens</span><span>vocabulário: <b>${LETRAS.length + Math.min(nJ, JUNCOES.length)}</b> tokens</span>`;
+  }
+  $('#merges').addEventListener('input', renderTokens);
+  $('#tok-in').addEventListener('input', renderTokens);
+  renderTokens();
+
+  /* ---------- 2. Modelo de linguagem (contagem de trigramas com recuo) ---------- */
+  // ini guarda o que vem depois do começo exato da frase ("<s> a professora"), para a frase começar do jeito certo
+  const ini = new Map(), tri = new Map(), bi = new Map(), uni = new Map();
+  const add = (m, k, w) => { if (!m.has(k)) m.set(k, new Map()); const c = m.get(k); c.set(w, (c.get(w) || 0) + 1); };
+  FRASES.forEach(f => {
+    const s = ['<s>', '<s>', ...f];
+    for (let i = 3; i < s.length && i <= 4; i++) add(ini, s.slice(1, i).join(' '), s[i]);
+    for (let i = 2; i < s.length; i++) { add(tri, s[i - 2] + ' ' + s[i - 1], s[i]); add(bi, s[i - 1], s[i]); uni.set(s[i], (uni.get(s[i]) || 0) + 1); }
+  });
+  function distribuicao(palavras) {
+    const s = ['<s>', '<s>', ...palavras], a = s[s.length - 2], b = s[s.length - 1];
+    let fonte, nivel;
+    const chaveIni = s.slice(1).join(' ');
+    if (palavras.length <= 3 && ini.has(chaveIni)) { fonte = ini.get(chaveIni); nivel = 3; }
+    else if (tri.has(a + ' ' + b)) { fonte = tri.get(a + ' ' + b); nivel = 2; }
+    else if (bi.has(b)) { fonte = bi.get(b); nivel = 1; }
+    else { fonte = new Map([...uni].filter(([w]) => w !== '.')); nivel = 0; }
+    const tot = [...fonte.values()].reduce((x, y) => x + y, 0);
+    return { nivel, lista: [...fonte].map(([w, c]) => ({ w, p: c / tot })).sort((x, y) => y.p - x.p || x.w.localeCompare(y.w)) };
+  }
+  function ajustar(lista, T, k) {
+    const dentro = lista.map((c, i) => k === 0 || i < k);
+    const pesos = lista.map((c, i) => dentro[i] ? Math.pow(c.p, 1 / T) : 0);
+    const soma = pesos.reduce((x, y) => x + y, 0);
+    return lista.map((c, i) => ({ ...c, q: pesos[i] / soma, dentro: dentro[i] }));
+  }
+  function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  let rng = mulberry32(42);
+  function sortear(adj, r) {
+    let x = r(), acc = 0;
+    for (const c of adj) { acc += c.q; if (x < acc) return c; }
+    return adj.filter(c => c.q > 0).pop();
+  }
+
+  const INICIOS = ['a professora', 'o aluno', 'a inteligência artificial', 'os dados', 'o robô', 'a turma'];
+  $('#presets').innerHTML += INICIOS.map((p, i) => `<button type="button" data-i="${i}">${p}</button>`).join('');
+  let inicio = 'a professora'.split(' '), gerado = [];
+  $('#f-inicio').onsubmit = e => {
+    e.preventDefault();
+    const ws = $('#inicio-txt').value.toLowerCase().match(/[\p{L}\p{N}]+/gu);
+    if (!ws) return;
+    inicio = ws; gerado = []; resetRng(); render();
+  };
+  $('#presets').onclick = e => { const b = e.target.closest('button[data-i]'); if (!b) return; inicio = INICIOS[+b.dataset.i].split(' '); gerado = []; resetRng(); render(); };
+
+  const T = () => +$('#temp').value, K = () => +$('#topk').value;
+  function resetRng() { rng = mulberry32(+$('#seed').value || 0); }
+  function atual() { return [...inicio, ...gerado.map(g => g.w)]; }
+  function terminou() { const a = atual(); return a[a.length - 1] === '.'; }
+
+  function render(ultima) {
+    const tx = $('#texto');
+    const partes = inicio.map(esc).concat(gerado.map(g => `<span class="gen${g.q < 0.15 ? ' raro' : ''}" title="chance ${fmtPct(g.q)}">${esc(g.w)}</span>`));
+    tx.innerHTML = partes.join(' ').replace(/ (<span[^>]*>)\.<\/span>/g, '$1.</span>') + (terminou() ? '' : ' <span class="cursor" aria-hidden="true"></span>');
+    const fim = terminou();
+    $('#b-sortear').disabled = $('#b-maior').disabled = $('#b-frase').disabled = fim;
+    $('#b-desfazer').disabled = gerado.length === 0;
+    const d = distribuicao(atual()), adj = ajustar(d.lista, T(), K()), a = atual();
+    $('#ctx').innerHTML = fim ? 'A frase terminou com um ponto final. Desfaça ou escolha outro começo.'
+      : d.nivel === 3 ? `O modelo olhou o começo da frase: <strong>“${esc(a.join(' '))}”</strong>.`
+      : d.nivel === 2 ? `O modelo olhou as duas últimas palavras: <strong>“${esc(a.slice(-2).join(' '))}”</strong>.`
+      : d.nivel === 1 ? `Nunca viu “${esc(a.slice(-2).join(' '))}” no treino, então olhou só a última palavra: <strong>“${esc(a[a.length - 1])}”</strong>.`
+      : 'Não conhece essa palavra, então usou só a frequência geral de cada palavra.';
+    if (fim) { $('#cands').innerHTML = ''; return; }
+    const top = adj.slice(0, 10), mx = Math.max(...top.map(c => Math.max(c.p, c.q)));
+    $('#cands').innerHTML = `<thead><tr><th>Palavra</th><th style="width:55%">Chance</th><th>Modelo</th><th>Sorteio</th></tr></thead><tbody>` +
+      top.map(c => `<tr class="${c.dentro ? '' : 'fora'}${ultima && ultima === c.w ? ' escolhida' : ''}"><td class="w">${esc(c.w)}</td>
+        <td><div class="barra"><i class="orig" style="width:${c.p / mx * 100}%"></i><i class="temp" style="width:${c.q / mx * 100}%"></i></div></td>
+        <td class="barra-num">${fmtPct(c.p)}</td><td class="barra-num">${fmtPct(c.q)}</td></tr>`).join('') +
+      (adj.length > 10 ? `<tr><td colspan="4" class="muted small">e mais ${adj.length - 10} palavras com chance menor</td></tr>` : '') + '</tbody>';
+  }
+  function passo(modo) {
+    if (terminou()) return;
+    const d = distribuicao(atual()), adj = ajustar(d.lista, T(), K());
+    const c = modo === 'maior' ? adj[0] : sortear(adj, rng);
+    gerado.push({ w: c.w, q: c.q });
+    render(c.w);
+  }
+  $('#b-sortear').onclick = () => passo('sortear');
+  $('#b-maior').onclick = () => passo('maior');
+  $('#b-frase').onclick = () => { for (let i = 0; i < 25 && !terminou(); i++) passo('sortear'); };
+  $('#b-desfazer').onclick = () => { gerado.pop(); render(); };
+  $('#temp').addEventListener('input', () => { $('#temp-out').textContent = T().toLocaleString('pt-BR', { minimumFractionDigits: 1 }); render(); });
+  $('#topk').addEventListener('change', () => render());
+  $('#seed').addEventListener('change', () => { resetRng(); gerado = []; render(); });
+
+  $('#b-varias').onclick = () => {
+    const r = mulberry32((+$('#seed').value || 0) + 1000 + Math.floor(Math.random() * 1e6));
+    const lis = [];
+    for (let n = 0; n < 5; n++) {
+      const ws = [...inicio];
+      for (let i = 0; i < 25; i++) { const adj = ajustar(distribuicao(ws).lista, T(), K()); const c = sortear(adj, r); ws.push(c.w); if (c.w === '.') break; }
+      lis.push(`<li><strong>${esc(inicio.join(' '))}</strong> ${esc(ws.slice(inicio.length).join(' ').replace(/ \.$/, '.'))}</li>`);
+    }
+    $('#varias').innerHTML = lis.join('');
+  };
+  render();
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

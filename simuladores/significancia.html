@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Significância entre modelos · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador para comparar dois modelos de IA treinados com 10 seeds: teste t pareado, teste t de Welch, teste de permutação, intervalo de confiança e tamanho de efeito, para saber quando a diferença é só sorte.">
+<meta property="og:title" content="Significância entre modelos | ohtopico">
+<meta property="og:description" content="Teste t pareado e teste de permutação para comparar dois modelos rodados com várias seeds.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/significancia.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/significancia.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .sg-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .sg-layout { grid-template-columns: minmax(0, 1fr); } }
+  .sg-layout > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; align-items: center; font-size: 14px; }
+  .presets button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; color: var(--ink); }
+  .presets button:hover { border-style: solid; }
+  table.seeds { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.seeds th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); text-align: left; padding: 4px 4px; border-bottom: 1.5px solid var(--ink); }
+  table.seeds td { padding: 3px 4px; border-bottom: 1px solid var(--line); }
+  table.seeds input { width: 100%; max-width: 92px; font: inherit; font-size: 15px; border: 1.5px solid var(--line); border-radius: 8px; padding: 4px 6px; background: var(--paper); color: var(--ink); }
+  table.seeds input:focus { border-color: var(--ink); outline: none; }
+  table.seeds td.d { font-family: ui-monospace, Consolas, monospace; font-weight: 700; }
+  table.seeds td.d.pos { color: var(--ok); }
+  table.seeds td.d.neg { color: var(--bad); }
+  table.seeds tfoot td { font-weight: 600; border-top: 1.5px solid var(--ink); border-bottom: 0; padding-top: 6px; }
+  .ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .ctrl input[type=range] { width: 100%; accent-color: var(--accent); }
+  .ctrl output { font-family: var(--display); font-size: 16px; color: var(--ink); }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+  .btns button { font: inherit; font-size: 14px; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 6px 13px; cursor: pointer; color: var(--ink); }
+  .btns button.primary { background: var(--ink); color: var(--paper); }
+  .btns button:hover { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
+  .veredito { border: 1.5px solid var(--ink); border-radius: 16px; padding: 12px 14px; font-size: 16px; margin-bottom: 12px; }
+  .veredito.sim { background: var(--accent-soft); border-color: var(--accent); }
+  .veredito.nao { background: var(--paper-2); }
+  .veredito b.big { display: block; font-family: var(--display); font-size: 22px; margin-bottom: 4px; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+  .metric { border: 1.5px solid var(--line); border-radius: 14px; padding: 8px 10px; background: var(--paper); }
+  .metric span { display: block; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+  .metric b { font-family: var(--display); font-size: 21px; line-height: 1.2; }
+  .metric small { display: block; font-size: 11.5px; color: var(--ink-3); margin-top: 2px; }
+  .metric.key { border-color: var(--ink); }
+  .chart { width: 100%; height: auto; display: block; }
+  .chart text { font-family: var(--body); fill: var(--ink-2); font-size: 11px; }
+  .chart .axis { stroke: var(--ink); stroke-width: 1.5; }
+  .chart .bar { fill: var(--pill-2); stroke: var(--ink-3); stroke-width: 1; }
+  .chart .bar.ext { fill: var(--bad-soft); stroke: var(--bad); }
+  .chart .obs { stroke: var(--bad); stroke-width: 3; }
+  .chart .zero { stroke: var(--ink-3); stroke-dasharray: 4 4; }
+  .chart .ptA { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+  .chart .ptB { fill: var(--accent); stroke: var(--ink); stroke-width: 1.5; }
+  .chart .lig { stroke: var(--ink-3); stroke-width: 1.2; }
+  .chart .ci { stroke: var(--accent); stroke-width: 4; stroke-linecap: round; }
+  .chart .mean { fill: var(--accent); stroke: var(--ink); stroke-width: 2; }
+  .note-small { font-size: 14px; margin: 8px 0 0; }
+  .rep { font-size: 15px; margin: 10px 0 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim">
+    <div class="presets" id="presets"><span class="muted">Situações:</span></div>
+    <div class="sg-layout">
+      <div>
+        <div class="box">
+          <h3>Acerto de cada modelo por seed (%)</h3>
+          <div class="tbl-wrap"><table class="seeds" id="tab"></table></div>
+          <p class="small muted" style="margin:8px 0 0">Os dois modelos foram treinados com as mesmas 10 seeds (mesma divisão dos dados e mesma ordem). Edite qualquer valor.</p>
+        </div>
+        <div class="box">
+          <h3>Gerar um experimento</h3>
+          <div class="ctrl">
+            <label class="field">Diferença verdadeira (B − A) <output id="delta-out"></output><input type="range" id="delta" min="-3" max="5" step="0.1" value="1"></label>
+            <label class="field">Variação entre seeds <output id="var-out"></output><input type="range" id="var" min="0.2" max="4" step="0.1" value="1.5"></label>
+            <label class="field">Quanto a seed afeta os dois igualmente <output id="cor-out"></output><input type="range" id="cor" min="0" max="0.95" step="0.05" value="0.7"></label>
+          </div>
+          <div class="btns">
+            <button type="button" class="primary" id="b-gerar">Rodar 10 seeds novas</button>
+            <button type="button" id="b-rep">Repetir o experimento 1000 vezes</button>
+          </div>
+          <p class="rep" id="rep"></p>
+        </div>
+      </div>
+      <div>
+        <div class="veredito" id="veredito"></div>
+        <div class="box">
+          <h3>Resultados</h3>
+          <div class="metrics" id="metrics"></div>
+          <label class="field" style="max-width:260px;margin-top:10px">Nível de significância (α)
+            <select id="alfa"><option value="0.01">0,01</option><option value="0.05" selected>0,05</option><option value="0.1">0,10</option></select></label>
+        </div>
+        <div class="box">
+          <h3>Seed a seed</h3>
+          <svg class="chart" id="pares" viewBox="0 0 520 200" role="img" aria-label="Acerto dos modelos A e B em cada seed"></svg>
+          <p class="small muted" style="margin:4px 0 0">Círculo vazado: modelo A. Círculo verde: modelo B. A linha liga os dois resultados da mesma seed.</p>
+        </div>
+        <div class="box">
+          <h3>Teste de permutação</h3>
+          <svg class="chart" id="perm" viewBox="0 0 520 200" role="img" aria-label="Distribuição das diferenças médias trocando os rótulos A e B"></svg>
+          <p class="note-small" id="perm-txt"></p>
+        </div>
+        <div class="box"><h3>O mesmo em Python</h3><pre id="code" style="margin:0"></pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="box">
+      <h3>Por que isso importa</h3>
+      <p style="margin-top:0">Treinar a mesma rede com outra seed muda o resultado (veja o simulador <a href="rede-neural.html">Treino de rede neural</a>). Se o modelo B ganhou do A numa única rodada, pode ter sido só sorte. Com várias seeds, os testes respondem: <strong>se os dois modelos fossem igualmente bons, qual seria a chance de ver uma diferença tão grande quanto essa?</strong> Essa chance é o valor-p.</p>
+      <ul style="padding-left:20px">
+        <li><strong>Teste t pareado</strong> olha a diferença dentro de cada seed. Como a seed afeta os dois modelos parecido, comparar seed a seed tira esse ruído e o teste fica mais sensível.</li>
+        <li><strong>Teste t de Welch</strong> trata os dois grupos como independentes. Aqui ele aparece para mostrar o que se perde ao ignorar o pareamento.</li>
+        <li><strong>Teste de permutação</strong> não supõe distribuição normal: troca A e B dentro de cada seed de todas as 1024 formas possíveis e conta quantas vezes a diferença ficou tão grande quanto a observada.</li>
+        <li>Valor-p pequeno não diz que a diferença é grande. Olhe também o <strong>intervalo de confiança</strong> e o <strong>tamanho de efeito</strong>.</li>
+      </ul>
+      <p style="margin-bottom:0">Com diferença verdadeira zero, cerca de 5% dos experimentos dão p &lt; 0,05 mesmo assim. São falsos positivos, e o botão "Repetir o experimento 1000 vezes" mostra isso acontecendo.</p>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+simTopbar('sim'); simFooter(); simHead('significancia');
+(function () {
+  const $ = s => document.querySelector(s);
+  const fmt = (v, d = 2) => Number.isFinite(v) ? v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+  const fmtP = p => !Number.isFinite(p) ? '—' : p < 0.001 ? '< 0,001' : fmt(p, 3);
+  function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(r) { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
+
+  /* ---------- Distribuição t (beta incompleta regularizada) ---------- */
+  function lgamma(x) {
+    const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+    let y = x, tmp = x + 5.5; tmp -= (x + 0.5) * Math.log(tmp); let ser = 1.000000000190015;
+    for (let j = 0; j < 6; j++) ser += c[j] / ++y;
+    return -tmp + Math.log(2.5066282746310005 * ser / x);
+  }
+  function betacf(a, b, x) {
+    const MAXIT = 200, EPS = 3e-14, FPMIN = 1e-300;
+    let qab = a + b, qap = a + 1, qam = a - 1, c = 1, d = 1 - qab * x / qap;
+    if (Math.abs(d) < FPMIN) d = FPMIN; d = 1 / d; let h = d;
+    for (let m = 1; m <= MAXIT; m++) {
+      const m2 = 2 * m; let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      d = 1 + aa * d; if (Math.abs(d) < FPMIN) d = FPMIN; c = 1 + aa / c; if (Math.abs(c) < FPMIN) c = FPMIN; d = 1 / d; h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      d = 1 + aa * d; if (Math.abs(d) < FPMIN) d = FPMIN; c = 1 + aa / c; if (Math.abs(c) < FPMIN) c = FPMIN; d = 1 / d;
+      const del = d * c; h *= del; if (Math.abs(del - 1) < EPS) break;
+    }
+    return h;
+  }
+  function ibeta(a, b, x) {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    const bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+    return x < (a + 1) / (a + b + 2) ? bt * betacf(a, b, x) / a : 1 - bt * betacf(b, a, 1 - x) / b;
+  }
+  const pT = (t, df) => Number.isFinite(t) ? ibeta(df / 2, 0.5, df / (df + t * t)) : (Number.isNaN(t) ? NaN : 0);   // bicaudal
+  function tCrit(df, alfa) { let lo = 0, hi = 50; for (let i = 0; i < 80; i++) { const m = (lo + hi) / 2; if (pT(m, df) > alfa) lo = m; else hi = m; } return (lo + hi) / 2; }
+
+  /* ---------- Estatísticas ---------- */
+  const media = v => v.reduce((a, b) => a + b, 0) / v.length;
+  const dp = v => { const m = media(v); return Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / (v.length - 1)); };
+  function testes(A, B, alfa) {
+    const n = A.length, D = B.map((b, i) => b - A[i]), md = media(D), sd = dp(D), se = sd / Math.sqrt(n), df = n - 1;
+    const t = se > 0 ? md / se : (md === 0 ? NaN : Infinity * Math.sign(md)), p = pT(t, df), tc = tCrit(df, alfa);
+    const vA = dp(A) ** 2 / n, vB = dp(B) ** 2 / n, tw = (media(B) - media(A)) / Math.sqrt(vA + vB);
+    const dfw = (vA + vB) ** 2 / (vA ** 2 / (n - 1) + vB ** 2 / (n - 1)), pw = pT(tw, dfw);
+    // Permutação exata trocando o sinal de cada diferença (2^n combinações)
+    const perms = [], obs = Math.abs(md);
+    let extremos = 0;
+    for (let m = 0; m < (1 << n); m++) { let s = 0; for (let i = 0; i < n; i++) s += (m >> i & 1) ? -D[i] : D[i]; const v = s / n; perms.push(v); if (Math.abs(v) >= obs - 1e-12) extremos++; }
+    return { n, D, md, sd, se, df, t, p, tc, ci: [md - tc * se, md + tc * se], tw, pw, dfw, perms, pp: extremos / perms.length, dz: sd > 0 ? md / sd : NaN, ganhos: D.filter(d => d > 0).length };
+  }
+
+  /* ---------- Dados ---------- */
+  const PRESETS = {
+    real: { nome: 'Diferença real e consistente', A: [84.1, 85.3, 83.6, 86.0, 84.8, 83.9, 85.6, 84.4, 85.1, 84.0], B: [85.6, 86.4, 85.2, 87.1, 86.5, 85.0, 86.9, 85.8, 86.0, 85.7] },
+    sorte: { nome: 'Só sorte (dois modelos iguais)', A: [84.1, 85.3, 83.6, 86.0, 84.8, 83.9, 85.6, 84.4, 85.1, 84.0], B: [84.9, 84.7, 84.1, 85.2, 85.6, 83.5, 85.1, 85.3, 84.6, 84.4] },
+    pareado: { nome: 'Diferença pequena, mas em todas as seeds', A: [82.0, 86.5, 84.0, 88.1, 83.2, 85.7, 87.4, 81.6, 84.9, 86.2], B: [82.6, 87.0, 84.7, 88.5, 83.9, 86.1, 88.0, 82.3, 85.4, 86.9] },
+    sortuda: { nome: 'Uma seed sortuda', A: [84.1, 85.3, 83.6, 86.0, 84.8, 83.9, 85.6, 84.4, 85.1, 84.0], B: [84.3, 85.0, 83.9, 85.8, 84.9, 83.7, 85.5, 84.6, 85.0, 92.4] }
+  };
+  let A = [...PRESETS.real.A], B = [...PRESETS.real.B], geradorSeed = 100;
+  $('#presets').innerHTML += Object.entries(PRESETS).map(([k, v]) => `<button type="button" data-k="${k}">${v.nome}</button>`).join('');
+  $('#presets').onclick = e => { const b = e.target.closest('button[data-k]'); if (!b) return; A = [...PRESETS[b.dataset.k].A]; B = [...PRESETS[b.dataset.k].B]; montaTabela(); calc(); };
+
+  function montaTabela() {
+    $('#tab').innerHTML = `<thead><tr><th>Seed</th><th>Modelo A</th><th>Modelo B</th><th>B − A</th></tr></thead><tbody>` +
+      A.map((a, i) => `<tr><td>${i + 1}</td><td><input type="number" step="0.1" data-m="A" data-i="${i}" value="${a}" aria-label="Modelo A, seed ${i + 1}"></td><td><input type="number" step="0.1" data-m="B" data-i="${i}" value="${B[i]}" aria-label="Modelo B, seed ${i + 1}"></td><td class="d" id="d${i}"></td></tr>`).join('') +
+      `</tbody><tfoot><tr><td>Média</td><td id="mA"></td><td id="mB"></td><td id="mD"></td></tr></tfoot>`;
+  }
+  $('#tab').addEventListener('input', e => {
+    const inp = e.target.closest('input'); if (!inp) return;
+    const v = parseFloat(inp.value.replace(',', '.')); if (!Number.isFinite(v)) return;
+    (inp.dataset.m === 'A' ? A : B)[+inp.dataset.i] = v; calc();
+  });
+  function gerar(r, delta, sv, cor) {
+    const a = [], b = [];
+    for (let i = 0; i < 10; i++) {
+      const comum = gauss(r) * sv * Math.sqrt(cor), ea = gauss(r) * sv * Math.sqrt(1 - cor), eb = gauss(r) * sv * Math.sqrt(1 - cor);
+      a.push(+(84 + comum + ea).toFixed(1)); b.push(+(84 + delta + comum + eb).toFixed(1));
+    }
+    return [a, b];
+  }
+  const params = () => [+$('#delta').value, +$('#var').value, +$('#cor').value];
+  function rotulos() {
+    const [d, v, c] = params();
+    $('#delta-out').textContent = (d > 0 ? '+' : '') + fmt(d, 1) + ' p.p.'; $('#var-out').textContent = fmt(v, 1) + ' p.p.'; $('#cor-out').textContent = Math.round(c * 100) + '%';
+  }
+  ['#delta', '#var', '#cor'].forEach(id => $(id).addEventListener('input', () => { rotulos(); $('#rep').textContent = ''; }));
+  $('#b-gerar').onclick = () => { const [d, v, c] = params(); [A, B] = gerar(mulberry32(geradorSeed++), d, v, c); montaTabela(); calc(); };
+  $('#b-rep').onclick = () => {
+    const [d, v, c] = params(), alfa = +$('#alfa').value, r = mulberry32(geradorSeed * 31 + 7);
+    let sigP = 0, sigW = 0;
+    for (let k = 0; k < 1000; k++) {
+      const [a, b] = gerar(r, d, v, c), D = b.map((x, i) => x - a[i]), md = media(D), se = dp(D) / Math.sqrt(10);
+      if (pT(se > 0 ? md / se : 0, 9) < alfa) sigP++;
+      const vA = dp(a) ** 2 / 10, vB = dp(b) ** 2 / 10, tw = (media(b) - media(a)) / Math.sqrt(vA + vB), dfw = (vA + vB) ** 2 / (vA ** 2 / 9 + vB ** 2 / 9);
+      if (pT(tw, dfw) < alfa) sigW++;
+    }
+    const a = fmt(alfa, 2);
+    $('#rep').innerHTML = `Em 1000 experimentos, o teste t pareado deu p &lt; ${a} em <strong>${(sigP / 10).toLocaleString('pt-BR')}%</strong> das vezes, e o de Welch em <strong>${(sigW / 10).toLocaleString('pt-BR')}%</strong>. ` +
+      (d === 0 ? `Como a diferença verdadeira é zero, esses são falsos positivos: o esperado é perto de ${Math.round(alfa * 100)}%.` : `Como a diferença verdadeira é de ${fmt(d, 1)} ponto(s), esse é o poder do teste: a chance de detectar uma diferença que existe.`);
+  };
+
+  function calc() {
+    const alfa = +$('#alfa').value, r = testes(A, B, alfa);
+    r.D.forEach((d, i) => { const el = $('#d' + i); el.textContent = (d > 0 ? '+' : '') + fmt(d, 1); el.className = 'd ' + (d > 0 ? 'pos' : d < 0 ? 'neg' : ''); });
+    $('#mA').textContent = fmt(media(A), 2); $('#mB').textContent = fmt(media(B), 2); $('#mD').textContent = (r.md > 0 ? '+' : '') + fmt(r.md, 2);
+    const sig = r.p < alfa, melhor = r.md > 0 ? 'B' : 'A';
+    $('#veredito').className = 'veredito ' + (sig ? 'sim' : 'nao');
+    $('#veredito').innerHTML = sig
+      ? `<b class="big">A diferença é estatisticamente significativa.</b>O modelo ${melhor} foi melhor por ${fmt(Math.abs(r.md), 2)} ponto(s) percentual(is) em média, e ganhou em ${melhor === 'B' ? r.ganhos : 10 - r.ganhos - r.D.filter(d => d === 0).length} de 10 seeds. Se os modelos fossem iguais, uma diferença assim apareceria em ${fmtP(r.p).replace('< ', 'menos de ')} dos experimentos (valor-p).`
+      : `<b class="big">Não dá para dizer que um modelo é melhor.</b>A diferença média de ${fmt(r.md, 2)} ponto(s) é compatível com a variação entre seeds (valor-p = ${fmtP(r.p)}, acima de ${fmt(alfa, 2)}). Isso não prova que os modelos são iguais: talvez faltem seeds para enxergar uma diferença pequena.`;
+    const M = [['Diferença média (B − A)', (r.md > 0 ? '+' : '') + fmt(r.md, 2) + ' p.p.', '', 1],
+      [`Intervalo de ${Math.round((1 - alfa) * 100)}%`, `${fmt(r.ci[0], 2)} a ${fmt(r.ci[1], 2)}`, r.ci[0] > 0 || r.ci[1] < 0 ? 'não inclui o zero' : 'inclui o zero'],
+      ['t pareado', fmt(r.t, 2), `${r.df} graus de liberdade`], ['Valor-p pareado', fmtP(r.p), 'teste t pareado', 1],
+      ['Valor-p permutação', fmtP(r.pp), '1024 trocas exatas', 1], ['Valor-p Welch', fmtP(r.pw), 'ignora o pareamento'],
+      ['Tamanho de efeito (dz)', fmt(r.dz, 2), Math.abs(r.dz) < 0.2 ? 'desprezível' : Math.abs(r.dz) < 0.5 ? 'pequeno' : Math.abs(r.dz) < 0.8 ? 'médio' : 'grande'],
+      ['Seeds em que B ganhou', `${r.ganhos} de 10`, '']];
+    $('#metrics').innerHTML = M.map(([k, v, s, key]) => `<div class="metric${key ? ' key' : ''}"><span>${k}</span><b>${v}</b>${s ? `<small>${s}</small>` : ''}</div>`).join('');
+    desenhaPares(r); desenhaPerm(r); codigo(r);
+  }
+  function desenhaPares(r) {
+    const W = 520, H = 200, L = 40, R = 90, T = 12, Bm = 26, all = [...A, ...B], lo = Math.floor(Math.min(...all) - .5), hi = Math.ceil(Math.max(...all) + .5);
+    const X = i => L + (i + .5) / 10 * (W - L - R), Y = v => T + (1 - (v - lo) / (hi - lo)) * (H - T - Bm);
+    let s = `<line class="axis" x1="${L}" y1="${H - Bm}" x2="${W - R}" y2="${H - Bm}"/><line class="axis" x1="${L}" y1="${T}" x2="${L}" y2="${H - Bm}"/>`;
+    s += `<text x="${L - 4}" y="${Y(hi) + 4}" text-anchor="end">${hi}%</text><text x="${L - 4}" y="${Y(lo) + 4}" text-anchor="end">${lo}%</text>`;
+    A.forEach((a, i) => { s += `<line class="lig" x1="${X(i)}" y1="${Y(a)}" x2="${X(i)}" y2="${Y(B[i])}"/><circle class="ptA" cx="${X(i)}" cy="${Y(a)}" r="5"/><circle class="ptB" cx="${X(i)}" cy="${Y(B[i])}" r="5"/><text x="${X(i)}" y="${H - 8}" text-anchor="middle">${i + 1}</text>`; });
+    // Intervalo de confiança da diferença, à direita
+    const dlo = Math.min(r.ci[0], 0, ...r.D), dhi = Math.max(r.ci[1], 0, ...r.D), dx = W - R + 50, DY = v => T + (1 - (v - dlo) / ((dhi - dlo) || 1)) * (H - T - Bm);
+    s += `<line class="zero" x1="${W - R + 20}" y1="${DY(0)}" x2="${W - 6}" y2="${DY(0)}"/><text x="${W - R + 18}" y="${DY(0) + 4}" text-anchor="end">0</text>`;
+    s += `<line class="ci" x1="${dx}" y1="${DY(r.ci[0])}" x2="${dx}" y2="${DY(r.ci[1])}"/><circle class="mean" cx="${dx}" cy="${DY(r.md)}" r="6"/><text x="${dx}" y="${T + 2}" text-anchor="middle" style="font-weight:600">B − A</text>`;
+    $('#pares').innerHTML = s;
+  }
+  function desenhaPerm(r) {
+    const W = 520, H = 200, L = 14, R = 14, T = 12, B = 30, NB = 31;
+    const ext = Math.max(...r.perms.map(Math.abs), Math.abs(r.md)) * 1.05 || 1, w = 2 * ext / NB, bins = Array(NB).fill(0);
+    r.perms.forEach(v => { bins[Math.min(NB - 1, Math.floor((v + ext) / w))]++; });
+    const top = Math.max(...bins), X = v => L + (v + ext) / (2 * ext) * (W - L - R), ph = H - T - B;
+    let s = `<line class="axis" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"/>`;
+    bins.forEach((c, i) => { const x0 = -ext + i * w, cen = x0 + w / 2, h = c / top * ph; s += `<rect class="bar${Math.abs(cen) >= Math.abs(r.md) - w / 2 ? ' ext' : ''}" x="${X(x0) + .5}" y="${H - B - h}" width="${Math.max(0, X(x0 + w) - X(x0) - 1)}" height="${h}"/>`; });
+    s += `<line class="obs" x1="${X(r.md)}" y1="${T}" x2="${X(r.md)}" y2="${H - B}"/><line class="obs" x1="${X(-r.md)}" y1="${T}" x2="${X(-r.md)}" y2="${H - B}" style="stroke-dasharray:4 4;opacity:.6"/>`;
+    s += `<text x="${X(0)}" y="${H - 12}" text-anchor="middle">0</text><text x="${X(r.md)}" y="${H - 12}" text-anchor="middle" style="fill:var(--bad);font-weight:600">${fmt(r.md, 2)}</text>`;
+    s += `<text x="${L}" y="${H - 12}">${fmt(-ext, 1)}</text><text x="${W - R}" y="${H - 12}" text-anchor="end">${fmt(ext, 1)}</text>`;
+    $('#perm').innerHTML = s;
+    const k = Math.round(r.pp * r.perms.length);
+    $('#perm-txt').innerHTML = `Trocando A e B dentro de cada seed de todas as formas, ${k} das 1024 combinações deram uma diferença tão grande quanto a observada (linha vermelha), em qualquer direção. Valor-p = ${k}/1024 = ${fmtP(r.pp)}. As barras vermelhas são essas combinações.`;
+  }
+  function codigo(r) {
+    $('#code').textContent = `from scipy import stats
+a = [${A.join(', ')}]
+b = [${B.join(', ')}]
+stats.ttest_rel(b, a)                     # t = ${r.t.toFixed(3)}, p = ${r.p.toFixed(4)}
+stats.ttest_ind(b, a, equal_var=False)    # Welch: p = ${r.pw.toFixed(4)}
+
+import numpy as np
+d = np.array(b) - np.array(a)
+stats.permutation_test((d,), np.mean, permutation_type='samples',
+                       n_resamples=np.inf)   # p = ${r.pp.toFixed(4)}`;
+  }
+  $('#alfa').addEventListener('change', () => { calc(); $('#rep').textContent = ''; });
+  rotulos(); montaTabela(); calc();
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

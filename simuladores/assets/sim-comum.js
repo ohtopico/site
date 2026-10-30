@@ -14,6 +14,20 @@
   /* niveis: EF = Ensino Fundamental, EM = Ensino Médio, ES = Ensino Superior/técnico.
      bncc: habilidades do Ensino Fundamental que o simulador apoia; uso: parte indicada para o Fundamental. */
   window.SIMULADORES = [
+    { id: 'proxima-palavra', sigla: 'GPT', titulo: 'Como a IA escolhe a próxima palavra', url: 'proxima-palavra.html', niveis: ['EF', 'EM', 'ES'], ia: true,
+      resumo: 'Veja o texto virar tokens, as probabilidades das próximas palavras e o efeito da temperatura e da seed no sorteio, como num modelo de linguagem do tipo ChatGPT.',
+      bncc: ['EF09CO07', 'EF09CO10'],
+      uso: 'No 9º ano, use a parte de probabilidades e temperatura para discutir por que a IA responde diferente a cada vez e por que é preciso conferir o que ela escreve.' },
+    { id: 'regressao', sigla: 'ŷ=a+bx', titulo: 'Regressão linear', url: 'regressao.html', niveis: ['EF', 'EM', 'ES'], ia: true,
+      resumo: 'Arraste pontos e veja a reta de mínimos quadrados se ajustar, com resíduos, erro quadrático médio, R², previsões e o efeito de um ponto fora da curva.',
+      bncc: ['EF09MA06'],
+      uso: 'No 9º ano, use os exemplos prontos para relacionar duas grandezas, ler a reta como função e fazer previsões. R², erro quadrático e o código ficam para o Médio e o Superior.' },
+    { id: 'matriz-confusao', sigla: 'VP FP', titulo: 'Matriz de confusão e métricas', url: 'matriz-confusao.html', niveis: ['EM', 'ES'], ia: true,
+      resumo: 'Arraste o limiar de decisão de um classificador e veja acurácia, precisão, revocação, F1, coeficiente Dice, IoU e as curvas ROC e precisão-revocação mudarem juntas.' },
+    { id: 'rede-neural', sigla: 'NN', titulo: 'Treino de rede neural', url: 'rede-neural.html', niveis: ['EM', 'ES'], ia: true,
+      resumo: 'Uma rede neural pequena treinando ao vivo. Ajuste taxa de aprendizado, lote, camadas, regularização e seed, e veja nas curvas de treino e validação quando o sobreajuste começa.' },
+    { id: 'significancia', sigla: 'p<0,05', titulo: 'Significância entre modelos', url: 'significancia.html', niveis: ['ES'], ia: true,
+      resumo: 'Compare dois modelos treinados com 10 seeds usando teste t pareado, teste de Welch e teste de permutação, com intervalo de confiança e tamanho de efeito.' },
     { id: 'bases', sigla: '1010', titulo: 'Bases numéricas e complemento de dois', url: 'bases.html', niveis: ['EF', 'EM', 'ES'],
       resumo: 'Conversão entre as bases 2, 10 e 16, complemento de dois, overflow e ponto flutuante IEEE 754.',
       bncc: ['EF04CO04', 'EF04CO05', 'EF06MA02'],
@@ -66,7 +80,7 @@
     const el = document.getElementById('footer'); if (!el) return;
     el.className = 'footer';
     el.innerHTML = `<div class="wrap">
-      <p>Simuladores interativos de Computação e Estatística, organizados por
+      <p>Simuladores interativos de Computação, Inteligência Artificial e Estatística, organizados por
       <a href="${BASE}../curriculo/">Júlia Roberta Quoos Alves</a>. Veja também o <a href="${BASE}../material-didatico/">material didático para o Ensino Fundamental</a>.</p>
       <p>Uso livre em aulas, com citação da fonte. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p>
     </div>`;

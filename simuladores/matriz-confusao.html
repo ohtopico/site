@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matriz de confusão e métricas · Simuladores | ohtopico</title>
+<meta name="description" content="Simulador de matriz de confusão: arraste o limiar de decisão de um classificador e veja acurácia, precisão, revocação, especificidade, F1, coeficiente Dice, IoU e as curvas ROC e precisão-revocação mudarem juntas.">
+<meta property="og:title" content="Matriz de confusão e métricas | ohtopico">
+<meta property="og:description" content="Limiar de decisão, acurácia, precisão, revocação, F1, Dice e curva ROC no navegador.">
+<meta property="og:url" content="https://ohtopico.com.br/simuladores/matriz-confusao.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/simuladores/matriz-confusao.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../material-didatico/assets/md.css">
+<link rel="stylesheet" href="assets/sim.css">
+<style>
+  .mc-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .mc-layout { grid-template-columns: minmax(0, 1fr); } }
+  .mc-layout > * { min-width: 0; }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 14px; margin-bottom: 16px; }
+  .box h3 { font-size: 15px; font-family: var(--body); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 0 0 8px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; align-items: center; font-size: 14px; }
+  .presets button { border: 1.5px dashed var(--ink-2); background: var(--paper); border-radius: 99px; padding: 3px 12px; cursor: pointer; font-size: 13.5px; color: var(--ink); }
+  .presets button:hover { border-style: solid; }
+  .presets button[aria-pressed="true"] { border-style: solid; background: var(--ink); color: var(--paper); }
+  .cenario { font-size: 15px; margin: 0 0 8px; }
+  .ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 8px 0; }
+  .ctrl input[type=range] { width: 100%; accent-color: var(--accent); }
+  .ctrl output { font-family: var(--display); font-size: 17px; color: var(--ink); }
+  .chart { width: 100%; height: auto; display: block; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .chart text { font-family: var(--body); fill: var(--ink-2); font-size: 11px; }
+  .chart .axis { stroke: var(--ink); stroke-width: 1.5; }
+  .chart .grid { stroke: var(--line); }
+  .chart .vp { fill: var(--bad); }
+  .chart .fn { fill: var(--bad-soft); stroke: var(--bad); stroke-width: 1.2; }
+  .chart .vn { fill: var(--accent); }
+  .chart .fp { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.2; }
+  .chart text.halo { font-weight: 600; fill: var(--ink); paint-order: stroke; stroke: var(--paper); stroke-width: 4px; stroke-linejoin: round; }
+  .chart .thr { stroke: var(--ink); stroke-width: 3; }
+  .chart .thr-hit { fill: transparent; cursor: ew-resize; }
+  .chart .thr-knob { fill: var(--ink); cursor: ew-resize; }
+  .chart .curve { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+  .chart .area { fill: var(--accent); fill-opacity: .12; }
+  .chart .diag { stroke: var(--ink-3); stroke-dasharray: 5 4; }
+  .chart .cur { fill: var(--bad); stroke: var(--paper); stroke-width: 2; }
+  .thr-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+  .thr-row input[type=range] { flex: 1; min-width: 160px; accent-color: var(--ink); }
+  .thr-row output { font-family: var(--display); font-size: 22px; min-width: 56px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+  .btns button { font: inherit; font-size: 13.5px; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 5px 12px; cursor: pointer; color: var(--ink); }
+  .btns button:hover { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
+  table.cm { border-collapse: separate; border-spacing: 6px; margin: 0 auto; font-size: 14px; }
+  table.cm th { font-size: 12px; color: var(--ink-2); font-weight: 600; text-align: center; padding: 2px 4px; }
+  table.cm td { border: 1.5px solid var(--ink); border-radius: 14px; text-align: center; padding: 10px 14px; min-width: 110px; }
+  table.cm td b { display: block; font-family: var(--display); font-size: 30px; line-height: 1.1; }
+  table.cm td span { font-size: 12.5px; color: var(--ink-2); }
+  table.cm td.ok { background: var(--accent-soft); }
+  table.cm td.err { background: var(--bad-soft); }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+  .metric { border: 1.5px solid var(--line); border-radius: 14px; padding: 8px 10px; background: var(--paper); }
+  .metric span { display: block; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+  .metric b { font-family: var(--display); font-size: 22px; line-height: 1.2; }
+  .metric small { display: block; font-family: ui-monospace, Consolas, monospace; font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+  .metric.key { border-color: var(--ink); }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); margin-top: 6px; }
+  .legend i { display: inline-block; width: 14px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 4px; }
+  .curvas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .curvas { grid-template-columns: 1fr; } }
+  .curvas h4 { font-size: 14px; margin: 0 0 4px; font-family: var(--body); font-weight: 600; }
+  .alerta { border-left: 4px solid var(--bad); background: var(--bad-soft); border-radius: 0 12px 12px 0; padding: 10px 12px; font-size: 14.5px; margin: 10px 0 0; }
+  .note-small { font-size: 14px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap" style="padding-bottom:40px">
+  <div class="page-head" id="sim-head"></div>
+
+  <section class="sim">
+    <div class="presets" id="presets" role="group" aria-label="Cenário"></div>
+    <p class="cenario" id="cenario"></p>
+    <div class="mc-layout">
+      <div>
+        <div class="box">
+          <h3>Notas do classificador</h3>
+          <p class="small muted" style="margin:0 0 4px">Cada caso recebe uma nota de 0 a 1. Acima do limiar, o modelo diz <strong id="lab-pos">positivo</strong>. Em cima do eixo ficam os casos que são positivos de verdade; embaixo, os negativos (cada metade tem a sua escala). Arraste a linha preta.</p>
+          <svg class="chart" id="hist" viewBox="0 0 560 300" role="img" aria-label="Distribuição das notas por classe com o limiar de decisão"></svg>
+          <div class="legend"><span><i style="background:var(--bad)"></i>verdadeiro positivo</span><span><i style="background:var(--bad-soft);border:1px solid var(--bad)"></i>falso negativo</span><span><i style="background:var(--accent)"></i>verdadeiro negativo</span><span><i style="background:var(--accent-soft);border:1px solid var(--accent)"></i>falso positivo</span></div>
+          <div class="thr-row">
+            <label for="thr" class="small" style="font-weight:600">Limiar</label>
+            <input type="range" id="thr" min="0" max="1" step="0.01" value="0.5">
+            <output id="thr-out">0,50</output>
+          </div>
+          <div class="btns">
+            <button type="button" data-a="meio">Limiar 0,5</button>
+            <button type="button" data-a="f1">Maior F1</button>
+            <button type="button" data-a="acc">Maior acurácia</button>
+            <button type="button" data-a="rec95">Revocação de pelo menos 95%</button>
+            <button type="button" data-a="prec90">Precisão de pelo menos 90%</button>
+          </div>
+        </div>
+        <div class="box">
+          <h3>Dados do experimento</h3>
+          <div class="ctrl">
+            <label class="field">Qualidade do modelo (separação) <output id="sep-out"></output><input type="range" id="sep" min="0" max="4" step="0.1" value="2"></label>
+            <label class="field">Positivos na população <output id="prev-out"></output><input type="range" id="prev" min="1" max="60" step="1" value="40"></label>
+            <label class="field">Número de casos <select id="n"><option>100</option><option selected>300</option><option>1000</option></select></label>
+            <label class="field">Semente (seed) <input type="number" id="seed" value="7" min="0" step="1"></label>
+          </div>
+          <p class="small muted" style="margin:0">Separação 0 é um modelo que chuta; 4 é um modelo quase perfeito. A semente sorteia outro conjunto de casos com as mesmas características.</p>
+        </div>
+      </div>
+      <div>
+        <div class="box">
+          <h3>Matriz de confusão</h3>
+          <table class="cm" id="cm"></table>
+          <div id="alerta"></div>
+        </div>
+        <div class="box">
+          <h3>Métricas</h3>
+          <div class="metrics" id="metrics"></div>
+          <p class="note-small muted">Em problemas com duas classes, o coeficiente Dice é igual ao F1. Ele é muito usado para avaliar a segmentação de imagens médicas, comparando os pixels que o modelo marcou com os marcados por um especialista.</p>
+        </div>
+        <div class="box">
+          <h3>Curvas</h3>
+          <div class="curvas">
+            <div><h4>ROC</h4><svg class="chart" id="roc" viewBox="0 0 240 240" role="img" aria-label="Curva ROC"></svg></div>
+            <div><h4>Precisão e revocação</h4><svg class="chart" id="pr" viewBox="0 0 240 240" role="img" aria-label="Curva de precisão e revocação"></svg></div>
+          </div>
+          <p class="note-small" id="auc"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="box">
+      <h3>Qual métrica olhar?</h3>
+      <ul style="margin:0;padding-left:20px">
+        <li><strong>Acurácia</strong> é a fração de acertos. Engana quando uma classe é rara: num exame em que só 5% têm a doença, dizer "negativo" para todos acerta 95%.</li>
+        <li><strong>Precisão</strong> responde: dos que o modelo marcou como positivos, quantos são mesmo? Importa quando o falso alarme custa caro (um e-mail importante indo para o spam).</li>
+        <li><strong>Revocação</strong> (sensibilidade) responde: dos positivos de verdade, quantos o modelo encontrou? Importa quando deixar passar é grave (uma doença não detectada).</li>
+        <li><strong>F1 e Dice</strong> equilibram precisão e revocação numa nota só. <strong>IoU</strong> (índice de Jaccard) é parecido e sempre um pouco menor.</li>
+        <li><strong>Curva ROC e AUC</strong> avaliam o modelo em todos os limiares de uma vez. AUC 0,5 é um chute; 1 separa tudo. Com classes muito desbalanceadas, a curva de precisão e revocação mostra melhor as diferenças.</li>
+      </ul>
+      <p style="margin-bottom:0">Mudar o limiar não deixa o modelo melhor nem pior: só troca um tipo de erro pelo outro. Para melhorar de verdade, é preciso aumentar a separação entre as classes, com dados melhores ou outro modelo.</p>
+    </div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>window.SIM_BASE = '';</script>
+<script src="assets/sim-comum.js"></script>
+<script>
+simTopbar('sim'); simFooter(); simHead('matriz-confusao');
+(function () {
+  const $ = s => document.querySelector(s);
+  const fmt = (v, d = 2) => Number.isFinite(v) ? v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+  const pct = v => Number.isFinite(v) ? (v * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%' : '—';
+  const CENARIOS = {
+    spam: { nome: 'Filtro de spam', pos: 'spam', neg: 'e-mail normal', prev: 40, sep: 2.2, n: 300,
+      texto: 'Um filtro dá a cada e-mail uma nota de 0 a 1. Positivo é <strong>spam</strong>. Um falso positivo manda um e-mail importante para a lixeira.' },
+    doenca: { nome: 'Triagem de doença rara', pos: 'doente', neg: 'saudável', prev: 5, sep: 2.4, n: 1000,
+      texto: 'Um exame de triagem em que só 5% das pessoas têm a doença. Positivo é <strong>ter a doença</strong>. Deixar passar um caso (falso negativo) é o erro mais grave.' },
+    reforco: { nome: 'Alunos que precisam de reforço', pos: 'precisa de reforço', neg: 'não precisa', prev: 25, sep: 1.6, n: 300,
+      texto: 'Um sistema usa notas e frequência para indicar quem precisa de reforço escolar. Positivo é <strong>precisa de reforço</strong>. Vale a pena revisar cada indicação com a equipe pedagógica.' },
+    pixel: { nome: 'Segmentação de imagem médica', pos: 'pixel do tumor', neg: 'pixel normal', prev: 12, sep: 2.8, n: 1000,
+      texto: 'Cada caso é um pixel de uma imagem de exame. Positivo é <strong>pixel que pertence ao tumor</strong>. Aqui a métrica mais usada é o coeficiente Dice.' }
+  };
+  let cen = 'spam', casos = [], thr = 0.5;
+  $('#presets').innerHTML = '<span class="muted">Cenário:</span>' + Object.entries(CENARIOS).map(([k, c]) => `<button type="button" data-k="${k}" aria-pressed="${k === cen}">${c.nome}</button>`).join('');
+  $('#presets').onclick = e => { const b = e.target.closest('button[data-k]'); if (!b) return; aplicaCenario(b.dataset.k); };
+
+  function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(r) { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
+
+  function aplicaCenario(k) {
+    cen = k; const c = CENARIOS[k];
+    document.querySelectorAll('#presets button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === k));
+    $('#cenario').innerHTML = c.texto; $('#lab-pos').textContent = c.pos;
+    $('#sep').value = c.sep; $('#prev').value = c.prev; $('#n').value = c.n; thr = 0.5;
+    gerar();
+  }
+  function gerar() {
+    const r = mulberry32(+$('#seed').value || 0), sep = +$('#sep').value, prev = +$('#prev').value / 100, n = +$('#n').value;
+    const nPos = Math.max(1, Math.round(n * prev));
+    casos = [];
+    for (let i = 0; i < n; i++) {
+      const y = i < nPos ? 1 : 0, z = gauss(r) + (y ? sep : 0);
+      casos.push({ y, s: 1 / (1 + Math.exp(-1.3 * (z - sep / 2))) });
+    }
+    $('#sep-out').textContent = fmt(sep, 1); $('#prev-out').textContent = Math.round(prev * 100) + '%';
+    curvas = calcCurvas();
+    draw();
+  }
+  function conta(t) {
+    let vp = 0, fp = 0, fn = 0, vn = 0;
+    casos.forEach(c => { const p = c.s >= t; if (c.y) p ? vp++ : fn++; else p ? fp++ : vn++; });
+    return { vp, fp, fn, vn };
+  }
+  function metr(m) {
+    const { vp, fp, fn, vn } = m, n = vp + fp + fn + vn, div = (a, b) => b ? a / b : NaN;
+    const prec = div(vp, vp + fp), rec = div(vp, vp + fn), esp = div(vn, vn + fp);
+    const mccDen = Math.sqrt((vp + fp) * (vp + fn) * (vn + fp) * (vn + fn));
+    return { acc: div(vp + vn, n), prec, rec, esp, f1: div(2 * vp, 2 * vp + fp + fn), iou: div(vp, vp + fp + fn), bal: (rec + esp) / 2,
+      mcc: mccDen ? (vp * vn - fp * fn) / mccDen : NaN, fpr: div(fp, fp + vn) };
+  }
+  let curvas;
+  function calcCurvas() {
+    const ts = [...new Set(casos.map(c => c.s))].sort((a, b) => b - a);
+    const P = casos.filter(c => c.y).length, N = casos.length - P;
+    const roc = [[0, 0]], pr = [];
+    ts.forEach(t => { const m = conta(t); roc.push([m.fp / N, m.vp / P]); if (m.vp + m.fp) pr.push([m.vp / P, m.vp / (m.vp + m.fp)]); });
+    roc.push([1, 1]);
+    let auc = 0; for (let i = 1; i < roc.length; i++) auc += (roc[i][0] - roc[i - 1][0]) * (roc[i][1] + roc[i - 1][1]) / 2;
+    return { roc, pr, auc, P, N };
+  }
+
+  /* Histograma espelhado */
+  const HW = 560, HH = 300, HL = 34, HR = 12, HT = 10, HB = 26, BINS = 25, mid = (HT + HH - HB) / 2;
+  const hx = s => HL + s * (HW - HL - HR);
+  function draw() {
+    $('#thr').value = thr; $('#thr-out').textContent = fmt(thr, 2);
+    const pos = Array(BINS).fill(0), neg = Array(BINS).fill(0);
+    casos.forEach(c => { const b = Math.min(BINS - 1, Math.floor(c.s * BINS)); (c.y ? pos : neg)[b]++; });
+    const topP = Math.max(1, ...pos), topN = Math.max(1, ...neg), hh = (HH - HT - HB) / 2 - 4, bw = (HW - HL - HR) / BINS;
+    let s = `<line class="axis" x1="${HL}" y1="${mid}" x2="${HW - HR}" y2="${mid}"/>`;
+    for (let i = 0; i <= 10; i++) s += `<text x="${hx(i / 10)}" y="${HH - 8}" text-anchor="middle">${fmt(i / 10, 1)}</text>`;
+    s += `<text x="${HL - 4}" y="${HT + 10}" text-anchor="end">${topP}</text><text x="${HL - 4}" y="${HH - HB - 2}" text-anchor="end">${topN}</text>`;
+    const c = CENARIOS[cen];
+    // Cada barra é dividida pelo limiar quando ele cai dentro dela
+    function barras(arr, cima, clsAcima, clsAbaixo) {
+      let out = ''; const top = cima ? topP : topN;
+      arr.forEach((v, i) => {
+        if (!v) return;
+        const h = v / top * hh, x0 = HL + i * bw, y = cima ? mid - h : mid, xt = hx(thr);
+        if (xt <= x0) out += `<rect class="${clsAcima}" x="${x0 + .5}" y="${y}" width="${bw - 1}" height="${h}"/>`;
+        else if (xt >= x0 + bw) out += `<rect class="${clsAbaixo}" x="${x0 + .5}" y="${y}" width="${bw - 1}" height="${h}"/>`;
+        else out += `<rect class="${clsAbaixo}" x="${x0 + .5}" y="${y}" width="${Math.max(0, xt - x0 - .5)}" height="${h}"/><rect class="${clsAcima}" x="${xt}" y="${y}" width="${Math.max(0, x0 + bw - xt - .5)}" height="${h}"/>`;
+      });
+      return out;
+    }
+    s += barras(pos, true, 'vp', 'fn') + barras(neg, false, 'fp', 'vn');
+    s += `<text x="${HL + 4}" y="${HT + 10}" class="halo">${esc(c.pos)} (positivos)</text><text x="${HL + 4}" y="${HH - HB - 4}" class="halo">${esc(c.neg)} (negativos)</text>`;
+    const xt = hx(thr);
+    s += `<line class="thr" x1="${xt}" y1="${HT}" x2="${xt}" y2="${HH - HB}"/><circle class="thr-knob" cx="${xt}" cy="${mid}" r="8"/><rect class="thr-hit" x="${xt - 16}" y="${HT}" width="32" height="${HH - HT - HB}"/>`;
+    s += `<text x="${xt + 6}" y="${HT + 24}" style="font-weight:600;fill:var(--ink)">diz “${esc(c.pos)}” →</text><text x="${xt - 6}" y="${HT + 24}" text-anchor="end" style="font-weight:600;fill:var(--ink)">← diz “${esc(c.neg)}”</text>`;
+    $('#hist').innerHTML = s;
+
+    const m = conta(thr), q = metr(m);
+    $('#cm').innerHTML = `<tr><th></th><th>Modelo diz:<br>${esc(c.pos)}</th><th>Modelo diz:<br>${esc(c.neg)}</th></tr>
+      <tr><th>Na verdade:<br>${esc(c.pos)}</th><td class="ok"><b>${m.vp}</b><span>verdadeiros positivos (VP)</span></td><td class="err"><b>${m.fn}</b><span>falsos negativos (FN)</span></td></tr>
+      <tr><th>Na verdade:<br>${esc(c.neg)}</th><td class="err"><b>${m.fp}</b><span>falsos positivos (FP)</span></td><td class="ok"><b>${m.vn}</b><span>verdadeiros negativos (VN)</span></td></tr>`;
+    const M = [['Acurácia', q.acc, '(VP+VN)/total', 1], ['Precisão', q.prec, 'VP/(VP+FP)', 1], ['Revocação', q.rec, 'VP/(VP+FN)', 1], ['Especificidade', q.esp, 'VN/(VN+FP)'],
+      ['F1', q.f1, '2·P·R/(P+R)', 1], ['Dice', q.f1, '2VP/(2VP+FP+FN)', cen === 'pixel' ? 1 : 0], ['IoU (Jaccard)', q.iou, 'VP/(VP+FP+FN)'], ['Acurácia balanceada', q.bal, '(Rev+Esp)/2'], ['MCC', q.mcc, 'correlação de Matthews']];
+    $('#metrics').innerHTML = M.map(([k, v, f, key]) => `<div class="metric${key ? ' key' : ''}"><span>${k}</span><b>${k === 'MCC' ? fmt(v, 2) : pct(v)}</b><small>${f}</small></div>`).join('');
+
+    const P = curvas.P, N = curvas.N, accTodosNeg = N / (P + N);
+    let al = '';
+    if (P / (P + N) <= 0.15 && q.acc > 0.85 && q.rec < 0.7) al = `<p class="alerta"><strong>Cuidado com a acurácia.</strong> Ela está em ${pct(q.acc)}, mas o modelo encontra só ${pct(q.rec)} dos casos “${esc(c.pos)}”. Um modelo que dissesse “${esc(c.neg)}” para todo mundo teria ${pct(accTodosNeg)} de acurácia sem encontrar ninguém.</p>`;
+    else if (thr <= 0.02) al = `<p class="alerta">Com limiar quase zero, o modelo diz “${esc(c.pos)}” para todos: revocação de 100%, mas a precisão cai para a proporção de positivos (${pct(P / (P + N))}).</p>`;
+    else if (thr >= 0.98) al = `<p class="alerta">Com limiar quase um, o modelo quase nunca diz “${esc(c.pos)}”: poucos falsos alarmes, mas quase todos os positivos passam despercebidos.</p>`;
+    $('#alerta').innerHTML = al;
+    drawCurvas(q);
+  }
+  function eixo(W, H, L, B, xl, yl) {
+    const T = 8, R = 8; let s = '';
+    for (let i = 0; i <= 4; i++) { const g = i / 4; s += `<line class="grid" x1="${L + g * (W - L - R)}" y1="${T}" x2="${L + g * (W - L - R)}" y2="${H - B}"/><line class="grid" x1="${L}" y1="${T + g * (H - T - B)}" x2="${W - R}" y2="${T + g * (H - T - B)}"/>`; }
+    s += `<line class="axis" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"/><line class="axis" x1="${L}" y1="${T}" x2="${L}" y2="${H - B}"/>`;
+    s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">${xl}</text><text transform="translate(11 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle">${yl}</text>`;
+    s += `<text x="${L}" y="${H - B + 12}" text-anchor="middle">0</text><text x="${W - R}" y="${H - B + 12}" text-anchor="middle">1</text><text x="${L - 3}" y="${T + 8}" text-anchor="end">1</text>`;
+    return { s, x: v => L + v * (W - L - R), y: v => H - B - v * (H - T - B) };
+  }
+  function drawCurvas(q) {
+    let a = eixo(240, 240, 26, 30, 'falsos positivos (1 − especificidade)', 'revocação');
+    let s = a.s + `<line class="diag" x1="${a.x(0)}" y1="${a.y(0)}" x2="${a.x(1)}" y2="${a.y(1)}"/>`;
+    const pts = curvas.roc.map(([x, y]) => `${a.x(x).toFixed(1)},${a.y(y).toFixed(1)}`).join(' ');
+    s += `<polygon class="area" points="${a.x(0)},${a.y(0)} ${pts} ${a.x(1)},${a.y(0)}"/><polyline class="curve" points="${pts}"/>`;
+    if (Number.isFinite(q.fpr) && Number.isFinite(q.rec)) s += `<circle class="cur" cx="${a.x(q.fpr)}" cy="${a.y(q.rec)}" r="6"/>`;
+    $('#roc').innerHTML = s;
+    a = eixo(240, 240, 26, 30, 'revocação', 'precisão');
+    const base = curvas.P / (curvas.P + curvas.N);
+    s = a.s + `<line class="diag" x1="${a.x(0)}" y1="${a.y(base)}" x2="${a.x(1)}" y2="${a.y(base)}"/>`;
+    s += `<polyline class="curve" points="${curvas.pr.map(([x, y]) => `${a.x(x).toFixed(1)},${a.y(y).toFixed(1)}`).join(' ')}"/>`;
+    if (Number.isFinite(q.prec) && Number.isFinite(q.rec)) s += `<circle class="cur" cx="${a.x(q.rec)}" cy="${a.y(q.prec)}" r="6"/>`;
+    $('#pr').innerHTML = s;
+    const auc = curvas.auc;
+    $('#auc').innerHTML = `<strong>AUC = ${fmt(auc, 3)}</strong>: escolhendo ao acaso um caso positivo e um negativo, o modelo dá nota maior ao positivo em ${pct(auc)} das vezes. ` +
+      (auc < 0.6 ? 'Quase um chute.' : auc < 0.8 ? 'Separação razoável.' : auc < 0.95 ? 'Boa separação.' : 'Separação excelente.') +
+      ' O ponto vermelho é o limiar atual. A linha tracejada é o desempenho de um chute.';
+  }
+
+  function melhor(fn, filtro) {
+    let best = null, bv = -Infinity;
+    for (let t = 0.01; t <= 0.99; t += 0.01) { const q = metr(conta(t)); if (filtro && !filtro(q)) continue; const v = fn(q); if (v > bv) { bv = v; best = t; } }
+    return best;
+  }
+  document.querySelector('.btns').onclick = e => {
+    const b = e.target.closest('button[data-a]'); if (!b) return;
+    const a = b.dataset.a; let t = null;
+    if (a === 'meio') t = 0.5;
+    if (a === 'f1') t = melhor(q => q.f1 || 0);
+    if (a === 'acc') t = melhor(q => q.acc);
+    if (a === 'rec95') t = melhor(q => q.prec || 0, q => q.rec >= 0.95);
+    if (a === 'prec90') t = melhor(q => q.rec || 0, q => q.prec >= 0.9);
+    if (t === null) { $('#alerta').innerHTML = '<p class="alerta">Nenhum limiar atinge essa meta com este modelo. Aumente a separação.</p>'; return; }
+    thr = Math.round(t * 100) / 100; draw();
+  };
+  $('#thr').addEventListener('input', () => { thr = +$('#thr').value; draw(); });
+  ['#sep', '#prev', '#n', '#seed'].forEach(id => $(id).addEventListener(id === '#sep' || id === '#prev' ? 'input' : 'change', gerar));
+
+  // Arrastar o limiar direto no gráfico
+  const hist = $('#hist'); let arrastando = false;
+  function moveThr(e) {
+    const r = hist.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * HW;
+    thr = Math.round(Math.max(0, Math.min(1, (x - HL) / (HW - HL - HR))) * 100) / 100; draw();
+  }
+  hist.addEventListener('pointerdown', e => { arrastando = true; hist.setPointerCapture(e.pointerId); moveThr(e); });
+  hist.addEventListener('pointermove', e => { if (arrastando) moveThr(e); });
+  hist.addEventListener('pointerup', () => { arrastando = false; });
+  hist.addEventListener('pointercancel', () => { arrastando = false; });
+  aplicaCenario('spam');
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simuladores de Computação e Estatística | ohtopico</title>
-<meta name="description" content="Simuladores interativos e gratuitos no navegador: bases numéricas, portas lógicas, estatística descritiva, assembly MIPS, pipeline MIPS, memória cache e placa-mãe em 3D, com indicação de uso no Ensino Fundamental e habilidades da BNCC.">
-<meta property="og:title" content="Simuladores de Computação e Estatística | ohtopico">
-<meta property="og:description" content="Bases numéricas, portas lógicas, estatística, MIPS, pipeline, cache e placa-mãe em 3D no navegador, sem cadastro.">
+<title>Simuladores de Computação, IA e Estatística | ohtopico</title>
+<meta name="description" content="Simuladores interativos e gratuitos no navegador: como a IA escolhe a próxima palavra, treino de rede neural, matriz de confusão, regressão linear, significância entre modelos, bases numéricas, portas lógicas, estatística descritiva, assembly MIPS, pipeline MIPS, memória cache e placa-mãe em 3D, com indicação de uso no Ensino Fundamental e habilidades da BNCC.">
+<meta property="og:title" content="Simuladores de Computação, IA e Estatística | ohtopico">
+<meta property="og:description" content="Inteligência artificial, redes neurais, métricas de modelos, regressão, bases numéricas, portas lógicas, estatística, MIPS, pipeline, cache e placa-mãe em 3D no navegador, sem cadastro.">
 <meta property="og:url" content="https://ohtopico.com.br/simuladores/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -36,8 +36,8 @@
   <section class="hero">
     <div class="wrap"><div class="hero-inner">
       <span class="terminal">$ simular no navegador</span>
-      <h1>Simuladores para ver a Computação funcionando.</h1>
-      <p class="lead">Experimentos interativos de Computação e Estatística, sem cadastro e sem instalar nada. Funcionam no computador e no celular. Cada simulador indica em quais etapas de ensino pode ser usado e, no Ensino Fundamental, quais habilidades da BNCC apoia.</p>
+      <h1>Simuladores para ver a Computação e a IA funcionando.</h1>
+      <p class="lead">Experimentos interativos de Computação, Inteligência Artificial e Estatística, sem cadastro e sem instalar nada. Funcionam no computador e no celular. Cada simulador indica em quais etapas de ensino pode ser usado e, no Ensino Fundamental, quais habilidades da BNCC apoia.</p>
     </div></div>
   </section>
 
@@ -47,6 +47,7 @@
       <h2>Escolha um simulador</h2>
       <div class="seg filtro" role="group" aria-label="Filtrar por etapa de ensino">
         <button type="button" data-n="" aria-pressed="true">Todos</button>
+        <button type="button" data-n="IA" aria-pressed="false">IA e ciência de dados</button>
         <button type="button" data-n="EF" aria-pressed="false">Ensino Fundamental</button>
         <button type="button" data-n="EM" aria-pressed="false">Ensino Médio</button>
         <button type="button" data-n="ES" aria-pressed="false">Ensino Superior e técnico</button>
@@ -62,7 +63,7 @@
 <script>
   simTopbar('inicio'); simFooter();
   function render(n) {
-    document.getElementById('sims').innerHTML = SIMULADORES.filter(s => !n || s.niveis.includes(n)).map(s => `
+    document.getElementById('sims').innerHTML = SIMULADORES.filter(s => !n || (n === 'IA' ? s.ia : s.niveis.includes(n))).map(s => `
       <article class="u-card">
         <span class="sig" aria-hidden="true">${esc(s.sigla)}</span>
         <h3><a href="${s.url}">${esc(s.titulo)}</a></h3>
