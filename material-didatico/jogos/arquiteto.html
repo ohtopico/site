@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquiteto da Sala · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de escala e proporção: desenhe a planta baixa de uma sala de aula em escala, calcule a área, distribua as carteiras com corredores e converta medidas para 1:50 e 1:100. BNCC EF06MA28, EF06MA15, EF07MA17.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/arquiteto.html">
+<meta property="og:title" content="Arquiteto da Sala · Material didático">
+<meta property="og:description" content="Jogo de escala e proporção: desenhe a planta baixa de uma sala de aula em escala, calcule a área, distribua as carteiras e converta medidas para 1:50 e 1:100.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/arquiteto.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .missao { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); margin-bottom: 12px; }
+  .missao h2 { font-size: 20px; margin: 0 0 6px; }
+  .missao p { margin: 4px 0; }
+  .passos { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 12px; }
+  .passos li { width: 30px; height: 30px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 13px; background: var(--paper); }
+  .passos li.feito { background: var(--ok-soft); border-color: var(--ok); }
+  .passos li.agora { background: #fff36b; color: #111; font-weight: 600; }
+  .planta { max-width: 720px; margin: 0 auto; overflow-x: auto; }
+  .planta svg { display: block; margin: 0 auto; max-width: 100%; height: auto; touch-action: manipulation; }
+  .planta svg text { font-family: var(--body); }
+  .planta.editavel svg { cursor: pointer; max-width: none; }
+  .escala { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; font-size: 14px; color: var(--ink-2); margin: 6px 0; }
+  .escala span { border: 1.5px solid var(--line); border-radius: 99px; padding: 3px 10px; background: var(--paper); }
+  .ajuste { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+  .ajuste div { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); border-radius: 18px; padding: 6px 10px; background: var(--paper); }
+  .ajuste b { font-family: var(--display); font-size: 22px; min-width: 40px; text-align: center; }
+  .ajuste .icon-btn { width: 40px; height: 40px; font-size: 20px; }
+  .resp { display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; margin: 10px 0; }
+  .resp input { font: 20px var(--body); width: 130px; padding: 8px 12px; border: 1.5px solid var(--ink); border-radius: 12px; text-align: center; background: var(--paper); color: var(--ink); }
+  .resp input:focus { outline: 3px solid #ffd23f; outline-offset: 1px; }
+  .contador { text-align: center; font-size: 15px; margin: 6px 0; }
+  .contador b { font-family: var(--display); font-size: 22px; }
+  .dica { border-left: 4px solid #ffd23f; padding: 6px 12px; background: var(--paper-2); border-radius: 0 10px 10px 0; margin: 8px 0; }
+  .final { text-align: center; }
+  .final b.grande { font-family: var(--display); font-size: 30px; display: block; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>A escola vai ganhar uma sala nova e você é a pessoa responsável pela planta baixa. Na planta, <strong>cada quadradinho vale 50 cm</strong> de verdade, ou seja, 2 quadradinhos fazem 1 metro.</p>
+    <p>São 7 missões: ler uma planta, desenhar a sala nova com as medidas certas, calcular a área, distribuir as carteiras, medir distâncias e preparar a planta para imprimir nas escalas 1:50 e 1:100.</p>
+    <p><strong>Regras das carteiras:</strong> cada carteira com cadeira ocupa 1 quadradinho de largura por 2 de profundidade (50 cm por 1 m). A faixa de 1 m na frente do quadro fica livre para a mesa do professor e a passagem. Toda carteira precisa de um corredor livre de pelo menos um dos lados, então dá para formar duplas, mas não fileiras de três lado a lado.</p>
+    <p class="small muted">As medidas são de exemplo e mudam a cada partida.</p>
+  </details>
+  <div class="game-stage">
+    <ol class="passos" id="passos" aria-label="Missões"></ol>
+    <div class="missao" id="missao" aria-live="polite"></div>
+    <div class="planta" id="planta"></div>
+    <div class="escala" id="escala"></div>
+    <div id="ctrl"></div>
+    <p class="feedback" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('arquiteto');
+(function () {
+  const $ = s => document.querySelector(s);
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  const fmt = v => (Math.round(v * 100) / 100).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  const lerNum = s => { const t = String(s).trim().replace(/\s/g, '').replace(/(m²|m2|cm|m)$/i, '').replace(',', '.'); return t === '' || isNaN(+t) ? null : +t; };
+  const V = '#2fa865', A = '#ffd23f', R = '#ef5a4c', CEL = 30, FRENTE = 2, META = 16;
+
+  let ex, sala, cols, rows, carteiras, m, pontos, erros, viu;
+
+  /* ---------- desenho da planta ---------- */
+  function planta({ c, r, desks = [], zona = false, destaque = null, regua = false, titulo = '' }) {
+    const pad = 34, W = c * CEL + pad * 2 + 24, H = r * CEL + pad * 2 + 6;
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${titulo}">`;
+    s += `<rect x="${pad}" y="${pad}" width="${c * CEL}" height="${r * CEL}" fill="var(--paper)"/>`;
+    if (zona) s += `<rect x="${pad}" y="${pad}" width="${c * CEL}" height="${FRENTE * CEL}" fill="${A}" opacity=".28"/><text x="${pad + c * CEL / 2}" y="${pad + FRENTE * CEL / 2 + 5}" text-anchor="middle" font-size="12" fill="var(--ink-2)">faixa livre de 1 m</text>`;
+    for (let i = 1; i < c; i++) s += `<line x1="${pad + i * CEL}" y1="${pad}" x2="${pad + i * CEL}" y2="${pad + r * CEL}" stroke="var(--line)" stroke-width="1"/>`;
+    for (let j = 1; j < r; j++) s += `<line x1="${pad}" y1="${pad + j * CEL}" x2="${pad + c * CEL}" y2="${pad + j * CEL}" stroke="var(--line)" stroke-width="1"/>`;
+    // paredes, quadro e porta
+    s += `<rect x="${pad}" y="${pad}" width="${c * CEL}" height="${r * CEL}" fill="none" stroke="var(--ink)" stroke-width="5"/>`;
+    s += `<rect x="${pad + c * CEL * .2}" y="${pad - 9}" width="${c * CEL * .6}" height="8" rx="2" fill="${V}" stroke="#111" stroke-width="1.5"/><text x="${pad + c * CEL / 2}" y="${pad - 14}" text-anchor="middle" font-size="12" fill="var(--ink)">quadro</text>`;
+    s += `<rect x="${pad + c * CEL - 3}" y="${pad + 4}" width="7" height="${CEL * 1.6}" fill="var(--paper)"/><path d="M${pad + c * CEL} ${pad + 4} a${CEL * 1.6} ${CEL * 1.6} 0 0 0 -${CEL * 1.6} ${CEL * 1.6}" fill="none" stroke="var(--ink-2)" stroke-dasharray="3 3"/><text x="${pad + c * CEL + 8}" y="${pad + CEL}" font-size="12" fill="var(--ink)">porta</text>`;
+    if (regua) {
+      for (let i = 0; i <= c; i += 2) s += `<line x1="${pad + i * CEL}" y1="${pad + r * CEL + 6}" x2="${pad + i * CEL}" y2="${pad + r * CEL + 13}" stroke="var(--ink)" stroke-width="1.5"/><text x="${pad + i * CEL}" y="${pad + r * CEL + 27}" text-anchor="middle" font-size="11" fill="var(--ink-2)">${i}</text>`;
+      for (let j = 0; j <= r; j += 2) s += `<text x="${pad - 10}" y="${pad + j * CEL + 4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${j}</text>`;
+    }
+    desks.forEach(([x, y], k) => {
+      const X = pad + x * CEL, Y = pad + y * CEL, d = destaque && destaque[0] === x && destaque[1] === y;
+      s += `<rect x="${X + 3}" y="${Y + 3}" width="${CEL - 6}" height="${CEL - 8}" rx="3" fill="${d ? R : A}" stroke="#111" stroke-width="1.8"/><rect x="${X + 7}" y="${Y + CEL + 4}" width="${CEL - 14}" height="${CEL - 12}" rx="5" fill="${d ? R : V}" stroke="#111" stroke-width="1.8"/>`;
+    });
+    return s + '</svg>';
+  }
+  function escalaInfo(extra = '') { $('#escala').innerHTML = `<span>1 quadradinho = 50 cm</span><span>2 quadradinhos = 1 m</span>${extra}`; }
+
+  /* ---------- carteiras ---------- */
+  const ocupado = (x, y) => carteiras.some(([a, b]) => a === x && (b === y || b + 1 === y));
+  function podeColocar(x, y) {
+    if (x < 0 || x >= cols || y < FRENTE || y + 1 >= rows) return y < FRENTE ? 'A faixa de 1 m na frente do quadro precisa ficar livre.' : 'A carteira com a cadeira precisa caber dentro da sala.';
+    if (ocupado(x, y) || ocupado(x, y + 1)) return 'Já tem uma carteira aí.';
+    const temLado = xx => xx >= 0 && xx < cols && (ocupado(xx, y) || ocupado(xx, y + 1));
+    const livre = xx => xx >= 0 && xx < cols && !temLado(xx);
+    if (!livre(x - 1) && !livre(x + 1)) return 'Essa carteira ficaria sem corredor dos dois lados.';
+    // não pode tirar o último corredor de um vizinho
+    for (const viz of carteiras) {
+      if (Math.abs(viz[1] - y) > 1 || Math.abs(viz[0] - x) !== 1) continue;
+      const vx = viz[0], outro = vx + (vx - x);
+      const outroLivre = outro >= 0 && outro < cols && !carteiras.some(([a, b]) => a === outro && Math.abs(b - viz[1]) <= 1);
+      if (!outroLivre) return 'Assim a carteira ao lado ficaria sem corredor.';
+    }
+    return '';
+  }
+
+  /* ---------- missões ---------- */
+  const MISSOES = [
+    { titulo: 'Ler a planta', tipo: 'num' },
+    { titulo: 'Desenhar a sala nova', tipo: 'ajuste' },
+    { titulo: 'Calcular a área', tipo: 'num' },
+    { titulo: 'Distribuir as carteiras', tipo: 'carteiras' },
+    { titulo: 'Medir a distância', tipo: 'num' },
+    { titulo: 'Imprimir em 1:50', tipo: 'num' },
+    { titulo: 'Reduzir para 1:100', tipo: 'num' }
+  ];
+  function passos() { $('#passos').innerHTML = MISSOES.map((x, i) => `<li class="${i < m ? 'feito' : i === m ? 'agora' : ''}" aria-label="Missão ${i + 1}${i < m ? ', feita' : i === m ? ', atual' : ''}">${i + 1}</li>`).join(''); }
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback ' + (c || ''); }
+  function cabecalho(txt) { $('#missao').innerHTML = `<p class="small muted">Missão ${m + 1} de ${MISSOES.length}</p><h2>${MISSOES[m].titulo}</h2>${txt}<div id="dicabox"></div>`; }
+  function botoesAjuda(dica, resposta) {
+    $('#actions').innerHTML = '<button class="btn ghost" type="button" id="bdica">Dica</button>' + (resposta ? '<button class="btn ghost" type="button" id="bresp">Mostrar a resposta</button>' : '');
+    $('#bdica').onclick = () => { $('#dicabox').innerHTML = `<p class="dica">${dica}</p>`; };
+    if (resposta) $('#bresp').onclick = () => { viu = true; $('#dicabox').innerHTML = `<p class="dica">${resposta}</p>`; };
+  }
+  function pergunta(certo, unidade, explica, tol = 0.01) {
+    $('#ctrl').innerHTML = `<div class="resp"><label for="r" class="sr-only">Resposta</label><input id="r" inputmode="decimal" autocomplete="off" placeholder="?"><span>${unidade}</span><button class="btn" type="button" id="conf">Conferir</button></div>`;
+    const go = () => {
+      const v = lerNum($('#r').value);
+      if (v === null) return fb('Digite um número. Pode usar vírgula, como 3,5.', 'bad');
+      if (Math.abs(v - certo) <= tol) return acerto(explica);
+      erros++;
+      if (Math.abs(v - certo * 100) < 0.01 || Math.abs(v * 100 - certo) < 0.01) return fb('Confira a unidade: a resposta é em ' + unidade + '.', 'bad');
+      fb(`Ainda não. ${v > certo ? 'Ficou maior' : 'Ficou menor'} que a medida certa. Use a dica se precisar.`, 'bad');
+    };
+    $('#conf').onclick = go; $('#r').onkeydown = e => { if (e.key === 'Enter') go(); };
+    setTimeout(() => { const r = $('#r'); if (r) r.focus({ preventScroll: true }); }, 50);
+  }
+  function acerto(msg) {
+    if (!viu) pontos++;
+    fb((erros === 0 && !viu ? 'Certo de primeira! ' : 'Certo! ') + msg, 'ok');
+    $('#ctrl').innerHTML = ''; m++; passos();
+    $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${m < MISSOES.length ? 'Próxima missão' : 'Ver resultado'}</button>`;
+    $('#nx').onclick = abre; $('#nx').focus();
+  }
+  function abre() {
+    erros = 0; viu = false; fb('', ''); $('#ctrl').innerHTML = ''; $('#planta').classList.remove('editavel'); passos();
+    escalaInfo();
+    if (m === 0) {
+      cabecalho(`<p>Esta é a planta da sala de artes. Conte os quadradinhos: quanto mede de verdade a parede do quadro, em metros?</p>`);
+      $('#planta').innerHTML = planta({ c: ex.c, r: ex.r, regua: true, titulo: `Planta da sala de artes com ${ex.c} quadradinhos de largura e ${ex.r} de profundidade` });
+      pergunta(ex.c / 2, 'm', `${ex.c} quadradinhos × 50 cm = ${ex.c * 50} cm = ${fmt(ex.c / 2)} m.`);
+      botoesAjuda('A régua embaixo da planta conta os quadradinhos. Cada 2 quadradinhos são 1 metro.', `${ex.c} ÷ 2 = ${fmt(ex.c / 2)} m`);
+    } else if (m === 1) {
+      cabecalho(`<p>A sala nova terá <strong>${fmt(sala.l)} m de largura</strong> (parede do quadro) e <strong>${fmt(sala.p)} m de profundidade</strong>. Ajuste a planta com a quantidade certa de quadradinhos.</p>`);
+      let c = 10, r = 8;
+      const desenha = () => { $('#planta').innerHTML = planta({ c, r, regua: true, titulo: `Planta da sala nova com ${c} por ${r} quadradinhos` }); $('#qc').textContent = c; $('#qr').textContent = r; };
+      $('#ctrl').innerHTML = `<div class="ajuste"><div><span>Largura</span><button class="icon-btn" type="button" data-d="c-" aria-label="Diminuir largura">−</button><b id="qc"></b><button class="icon-btn" type="button" data-d="c+" aria-label="Aumentar largura">+</button><span class="small">quadradinhos</span></div>
+        <div><span>Profundidade</span><button class="icon-btn" type="button" data-d="r-" aria-label="Diminuir profundidade">−</button><b id="qr"></b><button class="icon-btn" type="button" data-d="r+" aria-label="Aumentar profundidade">+</button><span class="small">quadradinhos</span></div></div>
+        <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="conf">Conferir a planta</button></div>`;
+      $('#ctrl').querySelector('.ajuste').onclick = e => {
+        const b = e.target.closest('button'); if (!b) return;
+        const d = b.dataset.d; if (d === 'c-') c = Math.max(6, c - 1); if (d === 'c+') c = Math.min(22, c + 1); if (d === 'r-') r = Math.max(6, r - 1); if (d === 'r+') r = Math.min(20, r + 1);
+        desenha();
+      };
+      $('#conf').onclick = () => {
+        if (c === sala.l * 2 && r === sala.p * 2) { cols = c; rows = r; return acerto(`${fmt(sala.l)} m = ${c} quadradinhos e ${fmt(sala.p)} m = ${r} quadradinhos. A planta está em escala.`); }
+        erros++;
+        if (c === sala.l && r === sala.p) return fb('Você usou 1 quadradinho por metro. Lembre: cada quadradinho vale 50 cm.', 'bad');
+        fb(`${c === sala.l * 2 ? 'A largura está certa.' : 'Confira a largura.'} ${r === sala.p * 2 ? 'A profundidade está certa.' : 'Confira a profundidade.'}`, 'bad');
+      };
+      desenha();
+      botoesAjuda('Para saber quantos quadradinhos, multiplique os metros por 2. Por exemplo, 3,5 m = 7 quadradinhos.', `Largura ${sala.l * 2} quadradinhos e profundidade ${sala.p * 2} quadradinhos.`);
+    } else if (m === 2) {
+      cabecalho(`<p>Qual é a área da sala nova, em metros quadrados?</p>`);
+      $('#planta').innerHTML = planta({ c: cols, r: rows, regua: true, titulo: 'Planta da sala nova' });
+      escalaInfo(`<span>${fmt(sala.l)} m × ${fmt(sala.p)} m</span>`);
+      const a = sala.l * sala.p;
+      pergunta(a, 'm²', `${fmt(sala.l)} × ${fmt(sala.p)} = ${fmt(a)} m². Na planta são ${cols * rows} quadradinhos, e cada 4 quadradinhos formam 1 m².`);
+      botoesAjuda('A área de um retângulo é a largura vezes a profundidade, as duas em metros.', `${fmt(sala.l)} × ${fmt(sala.p)} = ${fmt(a)} m²`);
+    } else if (m === 3) {
+      carteiras = [];
+      cabecalho(`<p>Clique na planta para colocar <strong>${META} carteiras</strong>. Clique de novo numa carteira para tirar. Deixe livre a faixa de 1 m na frente do quadro e garanta um corredor de pelo menos um dos lados de cada carteira.</p>`);
+      $('#planta').classList.add('editavel');
+      const desenha = () => {
+        $('#planta').innerHTML = planta({ c: cols, r: rows, desks: carteiras, zona: true, titulo: `Planta da sala com ${carteiras.length} carteiras` });
+        $('#ctrl').innerHTML = `<p class="contador"><b>${carteiras.length}</b> de ${META} carteiras</p><div class="btn-row" style="justify-content:center"><button class="btn ghost" type="button" id="limpa">Recomeçar</button>${carteiras.length >= META ? '<button class="btn" type="button" id="pronto">Pronto</button>' : ''}</div>`;
+        $('#limpa').onclick = () => { carteiras = []; desenha(); fb('', ''); };
+        const p = $('#pronto'); if (p) p.onclick = () => { $('#planta').classList.remove('editavel'); acerto(`As ${carteiras.length} carteiras cabem com corredores e com a frente livre. Na vida real, arquitetos também deixam espaço de circulação para todos chegarem à porta.`); };
+      };
+      $('#planta').onclick = e => {
+        if (m !== 3 || !$('#planta').classList.contains('editavel')) return;
+        const svg = $('#planta svg'), pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+        const q = pt.matrixTransform(svg.getScreenCTM().inverse()), x = Math.floor((q.x - 34) / CEL), y = Math.floor((q.y - 34) / CEL);
+        const i = carteiras.findIndex(([a, b]) => a === x && (b === y || b + 1 === y));
+        if (i >= 0) { carteiras.splice(i, 1); fb('', ''); return desenha(); }
+        if (carteiras.length >= META) return fb(`Já são ${META} carteiras. Clique em Pronto ou tire uma para mudar de lugar.`, '');
+        const motivo = podeColocar(x, y);
+        if (motivo) return fb(motivo, 'bad');
+        carteiras.push([x, y]); fb('', ''); desenha();
+      };
+      desenha();
+      $('#actions').innerHTML = '<button class="btn ghost" type="button" id="bdica">Dica</button>';
+      $('#bdica').onclick = () => { $('#dicabox').innerHTML = '<p class="dica">Um jeito organizado é fazer duplas de carteiras com um corredor de um quadradinho entre as duplas, começando logo abaixo da faixa amarela.</p>'; };
+      erros = 0;
+    } else if (m === 4) {
+      const longe = carteiras.reduce((a, b) => (b[1] > a[1] ? b : a));
+      cabecalho(`<p>A carteira vermelha é a mais distante do quadro. Qual é a distância, em metros, da parede do quadro até a frente dessa carteira?</p>`);
+      $('#planta').innerHTML = planta({ c: cols, r: rows, desks: carteiras, zona: true, destaque: longe, regua: true, titulo: 'Planta com a carteira mais distante destacada' });
+      pergunta(longe[1] / 2, 'm', `São ${longe[1]} quadradinhos da parede até a carteira: ${longe[1]} × 50 cm = ${fmt(longe[1] / 2)} m. É a distância que um estudante precisa enxergar.`);
+      botoesAjuda('Conte os quadradinhos na lateral da planta, da parede do quadro até a frente da carteira vermelha.', `${longe[1]} ÷ 2 = ${fmt(longe[1] / 2)} m`);
+      dist = longe[1] / 2;
+    } else if (m === 5) {
+      cabecalho(`<p>Para imprimir, a planta vai na <strong>escala 1:50</strong>: 1 cm no papel representa 50 cm de verdade. Quanto mede no papel a parede do quadro, que tem ${fmt(sala.l)} m?</p>`);
+      $('#planta').innerHTML = planta({ c: cols, r: rows, desks: carteiras, titulo: 'Planta final da sala' });
+      escalaInfo('<span>1:50 → 1 cm no papel = 50 cm reais</span>');
+      pergunta(sala.l * 2, 'cm', `${fmt(sala.l)} m = ${fmt(sala.l * 100)} cm. Dividindo por 50: ${fmt(sala.l * 2)} cm no papel.`);
+      botoesAjuda('Passe a medida para centímetros e divida por 50.', `${fmt(sala.l * 100)} ÷ 50 = ${fmt(sala.l * 2)} cm`);
+    } else if (m === 6) {
+      cabecalho(`<p>A secretaria pediu uma versão menor, na <strong>escala 1:100</strong>. Quanto mede agora no papel a parede de ${fmt(sala.l)} m?</p>`);
+      $('#planta').innerHTML = planta({ c: cols, r: rows, desks: carteiras, titulo: 'Planta final da sala' });
+      escalaInfo('<span>1:100 → 1 cm no papel = 100 cm reais</span>');
+      pergunta(sala.l, 'cm', `${fmt(sala.l * 100)} ÷ 100 = ${fmt(sala.l)} cm. Quando a escala passa de 1:50 para 1:100, o desenho fica com a metade do tamanho.`);
+      botoesAjuda('Agora cada centímetro do papel vale 100 cm, o dobro de antes. Então o desenho fica menor.', `${fmt(sala.l * 100)} ÷ 100 = ${fmt(sala.l)} cm`);
+    } else fim();
+  }
+  let dist = 0;
+  function fim() {
+    window.MDP && MDP.registrar('arquiteto', pontos / MISSOES.length * 100);
+    const a = sala.l * sala.p, porAluno = a / META;
+    $('#ctrl').innerHTML = ''; escalaInfo(); passos();
+    $('#planta').innerHTML = planta({ c: cols, r: rows, desks: carteiras, zona: true, regua: true, titulo: `Planta final da sala com ${carteiras.length} carteiras` });
+    $('#missao').innerHTML = `<div class="final"><p class="small muted">Planta entregue</p><b class="grande">${pontos} de ${MISSOES.length} missões</b><p>sem precisar ver a resposta.</p>
+      <p>Sua sala tem <strong>${fmt(a)} m²</strong>, o que dá <strong>${fmt(porAluno)} m² por estudante</strong>, e a carteira mais distante fica a ${fmt(dist)} m do quadro.</p></div>`;
+    fb('Escala é proporção: o desenho muda de tamanho, mas todas as medidas mudam na mesma razão.', 'ok');
+    $('#actions').innerHTML = '<button class="btn" type="button" id="again">Nova sala</button>';
+    $('#again').onclick = inicio;
+  }
+  function inicio() {
+    ex = pick([{ c: 14, r: 10 }, { c: 16, r: 12 }, { c: 18, r: 12 }, { c: 15, r: 11 }]);
+    sala = pick([{ l: 8, p: 7 }, { l: 7.5, p: 7 }, { l: 9, p: 6.5 }, { l: 8.5, p: 7.5 }, { l: 7, p: 7.5 }]);
+    m = 0; pontos = 0; carteiras = []; dist = 0; abre();
+  }
+  inicio();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

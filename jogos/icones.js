@@ -92,7 +92,17 @@
       <rect x="40" y="44" width="16" height="14" rx="3" fill="${B}" ${T}/><path d="M44 49h8M44 53h5" ${T}/><path d="M48 39v5" ${T}/>`,
     bingo: `<rect x="8" y="8" width="48" height="48" rx="6" fill="${B}" ${T}/><path d="M24 8v48M40 8v48M8 24h48M8 40h48" ${T}/>
       <rect x="24" y="24" width="16" height="16" fill="${A}" ${T}/><circle cx="16" cy="16" r="5" fill="none" stroke="${V}" stroke-width="3"/>
-      <circle cx="48" cy="48" r="5" fill="none" stroke="${V}" stroke-width="3"/><circle cx="48" cy="16" r="5" fill="none" stroke="${R}" stroke-width="3"/>`
+      <circle cx="48" cy="48" r="5" fill="none" stroke="${V}" stroke-width="3"/><circle cx="48" cy="16" r="5" fill="none" stroke="${R}" stroke-width="3"/>`,
+    boletim: `<rect x="6" y="8" width="52" height="48" rx="5" fill="${B}" ${T}/><rect x="6" y="8" width="52" height="10" rx="5" fill="${V}" ${T}/>
+      <path d="M6 30h52M6 43h52M22 18v38M40 18v38" stroke="#111" stroke-width="2"/><rect x="40" y="30" width="18" height="13" fill="${A}" ${T}/>
+      <text x="9" y="16" font-family="Sniglet,sans-serif" font-weight="800" font-size="8" fill="#111">=SOMA</text>`,
+    meteorologista: `<circle cx="22" cy="20" r="10" fill="${A}" ${T}/><path d="M22 4v4M8 20H4M11 9l-3-3M36 9l3-3" ${T}/>
+      <path d="M20 40a10 10 0 0 1 4-19 13 13 0 0 1 24 4 8 8 0 0 1 2 15z" fill="${B}" ${T}/>
+      <path d="M8 58l12-8 10 4 14-10 12 6" fill="none" stroke="${V}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="56" cy="50" r="3.5" fill="${R}" ${T}/>`,
+    arquiteto: `<rect x="6" y="10" width="52" height="44" fill="${B}" stroke="#111" stroke-width="4"/><path d="M18 8h28" stroke="${V}" stroke-width="5" stroke-linecap="round"/>
+      <g fill="${A}" stroke="#111" stroke-width="1.8"><rect x="12" y="24" width="8" height="7" rx="1.5"/><rect x="22" y="24" width="8" height="7" rx="1.5"/><rect x="36" y="24" width="8" height="7" rx="1.5"/><rect x="46" y="24" width="8" height="7" rx="1.5"/>
+      <rect x="12" y="38" width="8" height="7" rx="1.5"/><rect x="22" y="38" width="8" height="7" rx="1.5"/><rect x="36" y="38" width="8" height="7" rx="1.5"/><rect x="46" y="38" width="8" height="7" rx="1.5"/></g>
+      <path d="M4 60h24M4 57v6M28 57v6" stroke="${R}" stroke-width="2.5" stroke-linecap="round"/>`
   };
   window.iconeJogo = function (id, titulo) {
     const s = window.ICONES_JOGOS[id];
