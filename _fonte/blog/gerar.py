@@ -106,6 +106,7 @@ MENU_INICIAR = [
         ('fa-regular fa-id-card', 'Currículo', '/curriculo/'),
         ('fa-solid fa-magnifying-glass', 'Busca no site', '/#abrir=win-navegador'),
         ('fa-solid fa-book-open', 'IA pra Prof', '/ia-pra-prof/'),
+        ('fa-solid fa-toolbox', 'Tech pra Prof', '/tech-pra-prof/'),
         ('fa-solid fa-shapes', 'Material didático', '/material-didatico/'),
         ('fa-regular fa-newspaper', 'Blog', '/blog/'),
         ('fa-solid fa-chalkboard-user', 'Mentoria', '/mentoria/'),
@@ -155,6 +156,7 @@ def laterais(atual):
                ('☺', 'Currículo', '/curriculo/', '')]
     projetos = [('▲', 'Material didático', '/material-didatico/', ''),
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
+                ('◇', 'Guia Tech pra Prof', '/tech-pra-prof/', ''),
                 ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia')]
     atual_attr = ' aria-current="page"'
 
@@ -221,7 +223,8 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
                     '<a href="/mentoria/">✦ Mentoria para professores e escolas</a>'
                     '<a href="/formacao-continuada/">✦ Formação continuada em IA para escolas e redes</a>'
                     '<a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a>'
-                    '<a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a>')
+                    '<a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a>'
+                    '<a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a>')
     contador = ''
     if CONTEXTO['contador']:
         contador = (f'<script data-goatcounter="https://{CONTEXTO["contador"]}.goatcounter.com/count" '
