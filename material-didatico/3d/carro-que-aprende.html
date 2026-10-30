@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carro que Aprende: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Um carrinho 3D aprende a pista por tentativa e erro (aprendizado por reforço). Ajuste as recompensas e veja o que a IA aprende, inclusive a trapacear.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/carro-que-aprende.html">
+<meta property="og:title" content="Carro que Aprende: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Um carrinho 3D aprende a fazer a pista por tentativa e erro, como no aprendizado por reforço. O aluno ajusta as recompensas, acompanha a curva de aprendizado e descobre que a IA faz o que a recompensa manda, não o que a gente quis. 8º e 9º ano e Ensino Médio.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/carro-que-aprende.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-carro-que-aprende.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pista 3D com um carrinho vermelho, gramado e linha de chegada quadriculada">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+  .grafico { width: 100%; height: 110px; display: block; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); margin: 6px 0 0; }
+  .caminho { font-size: 18px; letter-spacing: 2px; word-break: break-word; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Carro que Aprende","description":"Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.","url":"https://ohtopico.com.br/material-didatico/3d/carro-que-aprende.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-carro-que-aprende.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20–30 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO07","targetDescription":"Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO03","targetDescription":"Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Carro que Aprende","item":"https://ohtopico.com.br/material-didatico/3d/carro-que-aprende.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ao 9º ano</span><span class="tag">⏱ 20–30 min</span></div>
+      <h1>Carro que Aprende</h1>
+      <p class="muted" style="max-width:720px">Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co07/" title="EF09CO07 — Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.">EF09CO07</a><a class="tag code co" href="../bncc/ef09co03/" title="EF09CO03 — Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.">EF09CO03</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>O carrinho:</strong> ele não sabe dirigir e não conhece a pista. A cada passo escolhe ir para a frente, para trás ou para os lados e recebe uma recompensa: pontos quando chega na linha de chegada, um pequeno castigo por passo (para ter pressa) e um castigo maior quando bate no gramado. Repetindo a pista muitas vezes (cada volta é um <em>episódio</em>), ele anota quais escolhas dão mais pontos em cada casa.</p>
+    <p><strong>Experimente:</strong> clique em “Ver o carro dirigir” antes de treinar e veja o carro perdido. Depois use “Treinar 1 episódio” para acompanhar o aprendizado passo a passo, ou “Treinar 10” e “Treinar 100” para treinar rápido. “Mostrar o que aprendeu” pinta cada casa com uma seta: é a melhor escolha que o carro anotou ali. Mude as recompensas e treine de novo para ver o comportamento mudar.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões, e o caminho aprendido aparece escrito no painel.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="ver">Ver o carro dirigir</button>
+          <button class="btn ghost" type="button" id="treina1">Treinar 1 episódio</button>
+          <button class="btn ghost" type="button" id="treina10">Treinar 10</button>
+          <button class="btn ghost" type="button" id="treina100">Treinar 100</button>
+          <button class="btn ghost" type="button" id="parar" disabled>Parar</button>
+        </div>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="mapa" aria-pressed="false">Mostrar o que aprendeu</button>
+          <label class="small" for="vel" style="display:flex;align-items:center;gap:6px">Velocidade
+            <select id="vel" style="min-height:40px;border:1.5px solid var(--ink);border-radius:12px;padding:4px 8px;background:var(--paper);color:var(--ink)">
+              <option value="380">devagar</option>
+              <option value="170" selected>normal</option>
+              <option value="60">rápida</option>
+            </select>
+          </label>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <h3 style="margin:14px 0 4px;font-size:18px">Curva de aprendizado</h3>
+        <canvas class="grafico" id="grafico" role="img" aria-label="Ainda não há episódios de treino."></canvas>
+        <ul class="leg">
+          <li><span class="sw" style="background:#1f8a4c"></span>passos de um episódio em que o carro chegou</li>
+          <li><span class="sw" style="background:#c8323f"></span>episódio em que o carro não chegou (parou em 100 passos)</li>
+        </ul>
+        <p class="small" id="aprendido"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Episódios de treino</h3>
+          <p class="grande" id="eps">0</p>
+          <p class="small muted" id="resumo">O carro ainda não treinou.</p>
+          <h3 style="margin-top:14px">Recompensas</h3>
+          <label for="rChegada">Chegar na linha de chegada: <b id="lChegada"></b></label>
+          <input type="range" id="rChegada" min="0" max="20" step="1" value="10">
+          <label for="rPasso">Cada passo (pressa): <b id="lPasso"></b></label>
+          <input type="range" id="rPasso" min="-1" max="0" step="0.05" value="-0.1">
+          <label for="rBatida">Bater no gramado: <b id="lBatida"></b></label>
+          <input type="range" id="rBatida" min="-5" max="0" step="0.5" value="-1">
+          <label for="rEstrela">Passar pela estrela (vale toda vez): <b id="lEstrela"></b></label>
+          <input type="range" id="rEstrela" min="0" max="5" step="0.5" value="0">
+          <h3 style="margin-top:14px">Como o carro aprende</h3>
+          <label for="eps-cur">Curiosidade (chance de testar um caminho ao acaso): <b id="lCur"></b></label>
+          <input type="range" id="eps-cur" min="0" max="0.6" step="0.05" value="0.2">
+          <label for="alfa">Taxa de aprendizado (quanto cada tentativa muda a anotação): <b id="lAlfa"></b></label>
+          <input type="range" id="alfa" min="0.05" max="1" step="0.05" value="0.5">
+          <label for="seed">Semente (seed) do sorteio</label>
+          <input type="number" id="seed" min="1" max="9999" value="7">
+          <div class="tools">
+            <button class="btn ghost" type="button" id="zerar">Recomeçar do zero</button>
+          </div>
+          <div class="conta" id="conta" style="white-space:pre-wrap">Aqui aparece a conta que o carro faz a cada passo quando você treina 1 episódio.</div>
+          <ul class="leg">
+            <li><span class="sw" style="background:#1f8a4c"></span>casa que vale muito (perto da chegada)</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>casa que vale pouco</li>
+            <li><span class="sw" style="background:#c8323f"></span>casa que o carro aprendeu a evitar</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Veja o carro dirigir sem treino. Depois treine até ele chegar sozinho na linha de chegada.</li>
+            <li data-d="1">Ligue a estrela (1 ponto ou mais), recomece do zero, treine 100 episódios e veja a IA “trapacear”: ela fica rodando na estrela e não termina a pista.</li>
+            <li data-d="2">Recomece do zero e ache um ajuste em que o carro aprenda o caminho mais curto (12 passos) com até 10 episódios de treino.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> é o aprendizado por reforço, o mesmo tipo de IA que aprende a jogar videogame, controla robôs e foi usado para ajustar os chatbots com notas dadas por pessoas. Ninguém mostra ao carro o caminho certo: ele só recebe recompensas e castigos. O algoritmo desta página é o Q-learning. Para cada casa e cada direção o carro guarda uma nota (o valor Q). Depois de cada passo ele corrige a nota: nota nova = nota antiga + taxa de aprendizado × (recompensa + 0,9 × melhor nota da próxima casa − nota antiga). O 0,9 é o desconto: pontos que estão longe valem um pouco menos que pontos agora, e é por isso que o carro prefere o caminho curto. A “curiosidade” é a chance de o carro ignorar as notas e testar uma direção ao acaso; sem ela, ele pode ficar preso no primeiro caminho que funcionou.</p>
+    <p><strong>A estrela:</strong> ela dá pontos toda vez que o carro passa por ela. Mesmo valendo só 1 ponto, ir e voltar da estrela rende mais que terminar a pista, porque o prêmio da chegada vem uma vez só e a estrela paga de novo a cada passagem. O carro aprende exatamente isso. Pesquisadores chamam esse problema de <em>reward hacking</em> (trapaça da recompensa) ou falha de especificação: num caso famoso, um barco de corrida treinado por reforço descobriu que ganhava mais pontos girando em círculos sobre bônus do que completando a corrida. A IA não “quis” trapacear; ela fez o que a recompensa mandava, e não o que as pessoas queriam.</p>
+    <p><strong>Metodologia sugerida:</strong> investigação em duplas, com registro numa tabela (ajuste usado, episódios até aprender, o que o carro fez). Comece com a turma prevendo o que vai acontecer antes de cada mudança, e só então treine.</p>
+    <ul>
+      <li>Antes de treinar, o carro anda sem rumo. Por que ele bate tanto no gramado? O que mudou depois do treino, já que ninguém ensinou o caminho?</li>
+      <li>Zere o castigo por passo e o castigo por batida. O carro ainda aprende? Por que ele chega mais devagar, em mais episódios?</li>
+      <li>A estrela fez o carro desistir da corrida. Pense num aplicativo que ganha “pontos” cada vez que você assiste a mais um vídeo. O que ele aprende a fazer com você?</li>
+      <li>Com taxa de aprendizado 0,05 o carro demora muito; com 1 ele aprende rápido nesta pista. Numa pista com surpresas (gelo, vento), por que uma taxa muito alta pode atrapalhar?</li>
+      <li>Quem decide as recompensas de uma IA de verdade? Que cuidados essa pessoa precisa ter?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO07 (implicações da tecnologia, aqui com a trapaça da recompensa) e EF09CO03 (o carro segue uma regra para cada estado, como um autômato; veja o plano <a href="../plano.html?id=p-automatos">Máquinas de estados</a>). No 8º ano e no Ensino Médio funciona como introdução à IA. Para comparar com outra forma de aprender, use a <a href="rede-neural.html">Rede Neural por Dentro</a> e a <a href="montanha-erro.html">Montanha do Erro</a>. Versão desplugada: uma pista de papel quadriculado no chão, um aluno-carro com venda nos olhos, um colega que só diz a recompensa (+10, −1) e uma tabela no quadro com a melhor direção anotada em cada casa.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/cubo-rgb.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Cubo das Cores RGB</strong>
+          <span class="small muted">Cada cor é um ponto dentro de um cubo de vermelho, verde e azul. Navegue pelo cubo, veja o código do pixel em decimal, binário e hexadecimal e acerte as cores do desafio.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-carro-que-aprende');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-carro-que-aprende';
+const f2 = n => (Math.abs(n) < 0.005 ? 0 : n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const sinal = n => (n > 0 ? '+' : n < 0 ? '−' : '') + f2(Math.abs(n));
+
+/* ---------- a pista ---------- */
+// # gramado, . pista, S largada, F chegada, * estrela
+const PISTA = [
+  '###########',
+  '#S...#....#',
+  '###.##.##.#',
+  '#*........#',
+  '#####.###.#',
+  '#F........#',
+  '###########'
+];
+const W = PISTA[0].length, H = PISTA.length;
+const CURTO = 12;      // passos do caminho mais curto da largada até a chegada
+const MAX_PASSOS = 100; // um episódio de treino para aqui se o carro não chegar
+const GAMA = 0.9;      // desconto: pontos longe valem menos
+const ACOES = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+const SETA = ['→', '↓', '←', '↑'];
+const NOME_ACAO = ['direita', 'baixo', 'esquerda', 'cima'];
+const casa = (x, z) => PISTA[z][x];
+const acha = ch => { for (let z = 0; z < H; z++) { const x = PISTA[z].indexOf(ch); if (x >= 0) return [x, z]; } };
+const LARGADA = acha('S'), ESTRELA = acha('*');
+const idx = p => p[1] * W + p[0];
+
+let R = { chegada: 10, passo: -0.1, batida: -1, estrela: 0 };
+let cur = 0.2, alfa = 0.5, seed = 7;
+let Q, rnd, episodios, historico, primeiroCurto;
+const feitos = new Set();
+
+function prng(s0) { let s = s0 >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+function zerar() {
+  Q = Array.from({ length: W * H }, () => [0, 0, 0, 0]);
+  rnd = prng(seed * 2654435761);
+  episodios = 0; historico = []; primeiroCurto = null;
+}
+// melhor ação da casa; empates são sorteados (no começo tudo vale zero e o carro anda ao acaso)
+function melhor(i) {
+  const q = Q[i], m = Math.max(...q);
+  const c = [0, 1, 2, 3].filter(a => q[a] === m);
+  return c[Math.floor(rnd() * c.length)];
+}
+function passo(p, a) {
+  const n = [p[0] + ACOES[a][0], p[1] + ACOES[a][1]];
+  const ch = casa(n[0], n[1]);
+  if (ch === '#') return { n: p, r: R.passo + R.batida, fim: false, bateu: true };
+  if (ch === 'F') return { n, r: R.passo + R.chegada, fim: true };
+  return { n, r: R.passo + (ch === '*' ? R.estrela : 0), fim: false, estrela: ch === '*' };
+}
+// um passo de treino: escolhe (com curiosidade), anda e corrige a nota
+function aprende(p) {
+  const i = idx(p);
+  const acaso = rnd() < cur;
+  const a = acaso ? Math.floor(rnd() * 4) : melhor(i);
+  const s = passo(p, a);
+  const prox = s.fim ? 0 : Math.max(...Q[idx(s.n)]);
+  const antes = Q[i][a];
+  Q[i][a] = antes + alfa * (s.r + GAMA * prox - antes);
+  return { ...s, a, acaso, antes, prox, depois: Q[i][a], de: p };
+}
+function fimEpisodio(k, chegou, total) {
+  episodios++;
+  historico.push({ k, chegou, total });
+  const g = guiado();
+  if (!primeiroCurto && g.chegou && g.k === CURTO) primeiroCurto = episodios;
+  if (primeiroCurto && primeiroCurto <= 10) marca(2);
+}
+function treinaRapido(n) {
+  for (let e = 0; e < n; e++) {
+    let p = LARGADA, total = 0, k = 0, chegou = false;
+    while (k < MAX_PASSOS) { const s = aprende(p); k++; total += s.r; p = s.n; if (s.fim) { chegou = true; break; } }
+    fimEpisodio(k, chegou, total);
+  }
+}
+// o carro dirigindo só com o que aprendeu (sem curiosidade e sem aprender)
+function guiado(lim = 40) {
+  let p = LARGADA, k = 0, estrelas = 0;
+  const rota = [];
+  while (k < lim) {
+    const q = Q[idx(p)], a = q.indexOf(Math.max(...q));
+    const s = passo(p, a); k++; rota.push({ a, s, de: p }); p = s.n;
+    if (s.estrela) estrelas++;
+    if (s.fim) return { k, chegou: true, rota, estrelas };
+  }
+  return { k, chegou: false, rota, estrelas };
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0, 10.5, 8.2], alvo: [0, 0, 0.4], min: 5, max: 30, chaoTam: 34 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0, 15, 12], [0, 0, 0.4]);
+const mundo = (x, z) => [x - W / 2 + 0.5, z - H / 2 + 0.5];
+const ROT = [0, -Math.PI / 2, Math.PI, Math.PI / 2]; // rotação do carro para cada ação
+let carro, ladrilhos = {}, setas = {}, estrela, rotEstrela;
+const corPista = T && new T.Color('#9a9a95');
+if (cena) {
+  for (let z = 0; z < H; z++) for (let x = 0; x < W; x++) {
+    const ch = casa(x, z), [wx, wz] = mundo(x, z);
+    if (ch === '#') {
+      const g = cena.bloco(1, 0.28, 1, COR.verdeClaro, { base: false });
+      g.position.set(wx, 0.14, wz); cena.add(g);
+      // árvores na borda, num padrão fixo
+      if ((x === 0 || z === 0 || x === W - 1 || z === H - 1) && (x * 3 + z * 5) % 4 === 0) {
+        const tronco = cena.cilindro(0.08, 0.3, '#7a5a2e', { bordas: false }); tronco.position.set(wx, 0.28, wz);
+        const copa = cena.cilindro(0.34, 0.75, COR.verdeEscuro, { rTopo: 0, seg: 16 }); copa.position.set(wx, 0.5, wz);
+        cena.add(tronco, copa);
+      }
+      continue;
+    }
+    let mat;
+    if (ch === 'F') {
+      const cv = document.createElement('canvas'); cv.width = cv.height = 64;
+      const c = cv.getContext('2d');
+      for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { c.fillStyle = (i + j) % 2 ? '#111' : '#fff'; c.fillRect(i * 16, j * 16, 16, 16); }
+      const tex = new T.CanvasTexture(cv); tex.colorSpace = T.SRGBColorSpace;
+      mat = new T.MeshStandardMaterial({ map: tex, roughness: 0.7 });
+    } else {
+      mat = new T.MeshStandardMaterial({ color: ch === 'S' ? new T.Color(COR.amarelo) : corPista.clone(), roughness: 0.75 });
+    }
+    const l = cena.bloco(0.98, 0.06, 0.98, null, { base: false, material: mat });
+    l.position.set(wx, 0.03, wz); cena.add(l);
+    ladrilhos[x + ',' + z] = l;
+    // seta do "mapa do que aprendeu"
+    const piv = new T.Group(); piv.position.set(wx, 0.12, wz);
+    const cone = new T.Mesh(new T.ConeGeometry(0.17, 0.42, 3), new T.MeshStandardMaterial({ color: new T.Color(COR.tinta), roughness: 0.5 }));
+    cone.rotation.z = -Math.PI / 2;
+    piv.add(cone); piv.visible = false; cena.add(piv);
+    if (ch !== 'F') setas[x + ',' + z] = piv;
+  }
+  const rl = cena.rotulo('Largada', { tam: 0.36, fundo: '#fff36b' }); const [lx, lz] = mundo(...LARGADA); rl.position.set(lx, 0.95, lz - 0.2); cena.add(rl);
+  const [fx, fz] = mundo(...acha('F')); const rf = cena.rotulo('Chegada', { tam: 0.36 }); rf.position.set(fx, 0.95, fz - 0.2); cena.add(rf);
+  // estrela de bônus
+  const [ex, ez] = mundo(...ESTRELA);
+  estrela = new T.Mesh(new T.OctahedronGeometry(0.28), new T.MeshStandardMaterial({ color: COR.amarelo, emissive: new T.Color(COR.amarelo), emissiveIntensity: 0.35 }));
+  cena.comBordas(estrela, 10); estrela.position.set(ex, 0.55, ez); estrela.castShadow = true; cena.add(estrela);
+  // carro: chassi, cabine e rodas
+  carro = new T.Group();
+  const chassi = cena.bloco(0.62, 0.2, 0.42, COR.vermelho, { base: false }); chassi.position.y = 0.2;
+  const cabine = cena.bloco(0.3, 0.16, 0.34, COR.amareloClaro, { base: false }); cabine.position.set(-0.04, 0.38, 0);
+  carro.add(chassi, cabine);
+  for (const [dx, dz] of [[0.2, 0.22], [-0.2, 0.22], [0.2, -0.22], [-0.2, -0.22]]) {
+    const r = cena.cilindro(0.1, 0.08, COR.tinta, { bordas: false, seg: 16 });
+    r.rotation.x = Math.PI / 2; r.position.set(dx, 0.1, dz + (dz > 0 ? -0.04 : 0.04)); carro.add(r);
+  }
+  carro.traverse(o => { if (o.isMesh) o.castShadow = true; });
+  cena.add(carro);
+}
+function poeCarro(p, a = 0) {
+  if (!cena) return;
+  const [wx, wz] = mundo(...p);
+  carro.position.set(wx, 0, wz); carro.rotation.set(0, ROT[a], 0); cena.pedeQuadro();
+}
+function rotRotulo(sp) { if (sp) { cena.scene.remove(sp); sp.material.map.dispose(); sp.material.dispose(); } }
+function atualizaEstrela() {
+  if (!cena) return;
+  rotRotulo(rotEstrela); rotEstrela = null;
+  estrela.visible = R.estrela > 0;
+  if (R.estrela > 0) {
+    rotEstrela = cena.rotulo('Estrela ' + sinal(R.estrela), { tam: 0.34, fundo: '#fff36b' });
+    const [ex, ez] = mundo(...ESTRELA); rotEstrela.position.set(ex, 1.15, ez); cena.add(rotEstrela);
+  }
+  cena.pedeQuadro();
+}
+// diferença de ângulo pelo lado mais curto, para o carro não dar uma volta inteira ao virar
+const anguloPerto = (de, para) => de + Math.atan2(Math.sin(para - de), Math.cos(para - de));
+const espera = ms => new Promise(r => setTimeout(r, ms));
+async function anima(de, s, a, ms) {
+  if (!cena) { await espera(ms); return; }
+  const ry = anguloPerto(carro.rotation.y, ROT[a]);
+  const [wx, wz] = mundo(...de);
+  if (s.bateu) {
+    // vai até a borda e volta
+    await Promise.all([cena.animar(carro, { position: [wx + ACOES[a][0] * 0.35, 0, wz + ACOES[a][1] * 0.35], rotation: [0, ry, 0] }, ms / 2), espera(ms / 2)]);
+    await Promise.all([cena.animar(carro, { position: [wx, 0, wz] }, ms / 2), espera(ms / 2)]);
+  } else {
+    const [nx, nz] = mundo(...s.n);
+    await Promise.all([cena.animar(carro, { position: [nx, 0, nz], rotation: [0, ry, 0] }, ms), espera(ms)]);
+  }
+}
+
+/* ---------- o que o carro aprendeu: cores e setas ---------- */
+let mostraMapa = false;
+const cVerm = T && new T.Color(COR.vermelho), cAmar = T && new T.Color(COR.amarelo), cVerde = T && new T.Color(COR.verde);
+function pintaMapa() {
+  if (!cena) return;
+  const vals = [];
+  for (const k in setas) { const [x, z] = k.split(',').map(Number); vals.push(Math.max(...Q[idx([x, z])])); }
+  const max = Math.max(0.01, ...vals), min = Math.min(-0.01, ...vals);
+  for (const k in ladrilhos) {
+    const [x, z] = k.split(',').map(Number), ch = casa(x, z), l = ladrilhos[k], sp = setas[k];
+    if (ch === 'F') continue;
+    const q = Q[idx([x, z])], v = Math.max(...q), aprendeu = q.some(n => n !== 0);
+    if (!mostraMapa) {
+      l.material.color.set(ch === 'S' ? COR.amarelo : corPista);
+      if (sp) sp.visible = false;
+      continue;
+    }
+    const c = v >= 0 ? cAmar.clone().lerp(cVerde, v / max) : cAmar.clone().lerp(cVerm, v / min);
+    l.material.color.copy(aprendeu ? c : corPista);
+    sp.visible = aprendeu;
+    sp.rotation.y = ROT[q.indexOf(v)];
+  }
+  cena.pedeQuadro();
+}
+
+/* ---------- painel ---------- */
+const nomes = { rChegada: ['chegada', 'lChegada'], rPasso: ['passo', 'lPasso'], rBatida: ['batida', 'lBatida'], rEstrela: ['estrela', 'lEstrela'] };
+function rotulosPainel() {
+  for (const id in nomes) { const [k, l] = nomes[id]; $('#' + l).textContent = sinal(R[k]); }
+  $('#lCur').textContent = Math.round(cur * 100) + '%';
+  $('#lAlfa').textContent = f2(alfa);
+}
+function grafico() {
+  const cv = $('#grafico'), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = cv.clientWidth || 300, h = cv.clientHeight || 110;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
+  const est = getComputedStyle(document.body), tinta = est.color;
+  const ult = historico.slice(-80), base = historico.length - ult.length;
+  const esq = 30, dir = 6, topo = 8, pe = 18, aw = w - esq - dir, ah = h - topo - pe;
+  c.font = '11px Lexend, system-ui, sans-serif'; c.fillStyle = tinta; c.strokeStyle = tinta; c.globalAlpha = 0.6;
+  c.textAlign = 'right'; c.textBaseline = 'middle';
+  [0, 50, 100].forEach(v => { const y = topo + ah - v / MAX_PASSOS * ah; c.fillText(v, esq - 5, y); });
+  c.beginPath(); c.moveTo(esq, topo); c.lineTo(esq, topo + ah); c.lineTo(esq + aw, topo + ah); c.stroke();
+  // linha do caminho mais curto
+  const yc = topo + ah - CURTO / MAX_PASSOS * ah;
+  c.setLineDash([4, 3]); c.beginPath(); c.moveTo(esq, yc); c.lineTo(esq + aw, yc); c.stroke(); c.setLineDash([]);
+  c.textAlign = 'left'; c.textBaseline = 'bottom';
+  c.fillText(historico.length ? `episódios ${base + 1} a ${historico.length}` : 'passos por episódio', esq + 4, h - 1);
+  c.globalAlpha = 1;
+  const bw = aw / 80;
+  ult.forEach((e, i) => {
+    const bh = Math.max(1.5, e.k / MAX_PASSOS * ah);
+    c.fillStyle = e.chegou ? COR.verde : COR.vermelho;
+    c.fillRect(esq + 1 + i * bw, topo + ah - bh, Math.max(1, bw - 1), bh);
+  });
+  const ue = historico[historico.length - 1];
+  cv.setAttribute('aria-label', !ue ? 'Ainda não há episódios de treino.' :
+    `Passos por episódio nos últimos ${ult.length} episódios. O último episódio ${ue.chegou ? `chegou em ${ue.k} passos` : 'não chegou'}; o caminho mais curto tem ${CURTO} passos.`);
+}
+function atualiza() {
+  rotulosPainel();
+  $('#eps').textContent = episodios;
+  const ue = historico[historico.length - 1];
+  const g = guiado();
+  $('#resumo').textContent = !ue ? 'O carro ainda não treinou.' :
+    `Último episódio: ${ue.chegou ? `chegou em ${ue.k} passos` : `não chegou em ${MAX_PASSOS} passos`}, recompensa total ${sinal(ue.total)}.` +
+    (primeiroCurto ? ` Aprendeu o caminho mais curto no episódio ${primeiroCurto}.` : '');
+  const setasTxt = g.rota.slice(0, 24).map(r => SETA[r.a]).join(' ') + (g.rota.length > 24 ? ' …' : '');
+  $('#aprendido').innerHTML = !episodios ? '' : g.chegou
+    ? `<strong>Caminho aprendido (${g.k} passos):</strong> <span class="caminho">${setasTxt}</span>`
+    : `<strong>O carro ainda não sabe chegar.</strong> Seguindo só as anotações, ele faz: <span class="caminho">${setasTxt}</span>${g.estrelas ? ` (passa ${g.estrelas} vezes pela estrela)` : ''}`;
+  grafico(); pintaMapa();
+  cena && cena.descrever(`Pista em 3D vista do alto, com gramado em volta, largada amarela no canto de cima, chegada quadriculada embaixo${R.estrela > 0 ? ' e uma estrela de bônus num beco à esquerda' : ''}. O carrinho vermelho treinou ${episodios} episódios. ${!episodios ? 'Ainda não aprendeu nada.' : g.chegou ? `Ele sabe chegar em ${g.k} passos.` : 'Ele ainda não sabe chegar.'}`);
+}
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+function avisa(txt, ok) { $('#fb').className = 'feedback' + (ok === true ? ' ok' : ok === false ? ' bad' : ''); $('#fb').textContent = txt; }
+
+/* ---------- ações ---------- */
+let rodando = false, parar = false;
+const botoes = ['#ver', '#treina1', '#treina10', '#treina100', '#zerar'];
+function ocupado(sim) { rodando = sim; botoes.forEach(b => { $(b).disabled = sim; }); $('#parar').disabled = !sim; }
+async function ver() {
+  if (rodando) return;
+  ocupado(true); parar = false;
+  const g = guiado();
+  poeCarro(LARGADA);
+  avisa(episodios ? 'O carro dirige só com o que anotou, sem testar nada novo.' : 'Sem treino, todas as escolhas valem zero: o carro sorteia cada direção.');
+  let rota = g.rota;
+  if (!episodios) { // sem treino: anda ao acaso
+    rota = []; let p = LARGADA;
+    for (let k = 0; k < 30; k++) { const a = Math.floor(Math.random() * 4); const s = passo(p, a); rota.push({ a, s, de: p }); p = s.n; if (s.fim) break; }
+  }
+  const ms = +$('#vel').value;
+  for (const r of rota) { if (parar) break; await anima(r.de, r.s, r.a, ms); }
+  const chegou = rota.length && rota[rota.length - 1].s.fim;
+  if (parar) avisa('Parado.');
+  else if (!episodios) { avisa(`Sem treino o carro ${chegou ? 'chegou por sorte' : 'não chegou'}. Agora treine e veja de novo.`, false); }
+  else if (g.chegou) { avisa(`Chegou em ${g.k} passos${g.k === CURTO ? ', pelo caminho mais curto' : ''}.`, true); marca(0); }
+  else if (g.estrelas >= 5 && R.estrela > 0) { avisa(`O carro passou ${g.estrelas} vezes pela estrela e não terminou a pista: ganhar a estrela de novo rende mais pontos que chegar. A IA fez o que a recompensa mandava, não o que a gente queria.`, false); marca(1); }
+  else avisa('Ainda não chegou. Treine mais alguns episódios.', false);
+  ocupado(false); atualiza();
+}
+async function treinaUm() {
+  if (rodando) return;
+  ocupado(true); parar = false;
+  let p = LARGADA, total = 0, k = 0, chegou = false;
+  poeCarro(p);
+  avisa(`Episódio ${episodios + 1}: o carro tenta, erra e anota.`);
+  while (k < MAX_PASSOS && !parar) {
+    const s = aprende(p); k++; total += s.r;
+    const i = `(${s.de[0]}, ${s.de[1]})`;
+    $('#conta').textContent = `Passo ${k}, casa ${i}: ${s.acaso ? 'curiosidade, sorteou' : 'escolheu'} ${NOME_ACAO[s.a]} ${SETA[s.a]}\n` +
+      `${s.bateu ? 'bateu no gramado, ' : s.fim ? 'chegou! ' : s.estrela ? 'pegou a estrela, ' : ''}recompensa ${sinal(s.r)}\n` +
+      `nota nova = ${f2(s.antes)} + ${f2(alfa)} × (${f2(s.r)} + 0,9 × ${f2(s.prox)} − ${f2(s.antes)})\n= ${f2(s.depois)}`;
+    if (mostraMapa) pintaMapa();
+    await anima(s.de, s, s.a, +$('#vel').value);
+    p = s.n;
+    if (s.fim) { chegou = true; break; }
+  }
+  if (!parar || chegou) {
+    fimEpisodio(k, chegou, total);
+    avisa(chegou ? `Episódio ${episodios}: chegou em ${k} passos, recompensa total ${sinal(total)}.` : `Episódio ${episodios}: não chegou em ${MAX_PASSOS} passos. As anotações ficam para a próxima tentativa.`, chegou);
+  } else avisa('Parado no meio do episódio. As anotações feitas até aqui ficam valendo.');
+  ocupado(false); atualiza();
+}
+function treina(n) {
+  if (rodando) return;
+  treinaRapido(n);
+  poeCarro(LARGADA);
+  const g = guiado();
+  avisa(`Treinou mais ${n} episódios (${episodios} no total). ${g.chegou ? `Agora o carro sabe chegar em ${g.k} passos. Clique em “Ver o carro dirigir”.` : 'Ele ainda não sabe chegar sozinho.'}`, g.chegou || undefined);
+  atualiza();
+}
+function recomecar(msg = true) {
+  seed = Math.max(1, Math.min(9999, Math.round(+$('#seed').value) || 1));
+  zerar(); poeCarro(LARGADA);
+  $('#conta').textContent = 'Aqui aparece a conta que o carro faz a cada passo quando você treina 1 episódio.';
+  if (msg) avisa(`O carro esqueceu tudo (semente ${seed}).`);
+  atualiza();
+}
+
+/* ---------- controles ---------- */
+for (const id in nomes) $('#' + id).addEventListener('input', e => {
+  R[nomes[id][0]] = +e.target.value;
+  if (id === 'rEstrela') atualizaEstrela();
+  rotulosPainel();
+  if (episodios) avisa('Recompensa mudou. O carro só percebe treinando de novo (ou recomeçando do zero).');
+});
+$('#eps-cur').addEventListener('input', e => { cur = +e.target.value; rotulosPainel(); });
+$('#alfa').addEventListener('input', e => { alfa = +e.target.value; rotulosPainel(); });
+$('#seed').addEventListener('change', () => recomecar());
+$('#ver').onclick = ver;
+$('#treina1').onclick = treinaUm;
+$('#treina10').onclick = () => treina(10);
+$('#treina100').onclick = () => treina(100);
+$('#parar').onclick = () => { parar = true; };
+$('#zerar').onclick = () => recomecar();
+$('#mapa').onclick = () => {
+  mostraMapa = !mostraMapa;
+  $('#mapa').setAttribute('aria-pressed', String(mostraMapa));
+  $('#mapa').textContent = mostraMapa ? 'Esconder o que aprendeu' : 'Mostrar o que aprendeu';
+  pintaMapa();
+};
+new ResizeObserver(grafico).observe($('#grafico'));
+if (cena) cena.aoFontes = () => grafico();
+zerar(); poeCarro(LARGADA); atualizaEstrela(); atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -44,6 +44,7 @@ const IMAGENS = [
     ['mips', 'Mini', 'MIPS', 'Assembly MIPS passo a passo: registradores, memória e formatos R, I e J', ['Assembly', 'Registradores', 'Ciclo da instrução'], '/simuladores/mips.html'],
     ['pipeline-mips', 'Pipeline', 'MIPS', 'As cinco etapas do pipeline, conflitos e adiantamento, ciclo a ciclo', ['Pipeline', 'Conflitos', 'Adiantamento'], '/simuladores/pipeline-mips.html'],
     ['placa-mae', 'Placa-mãe', 'em 3D', 'Gire a placa e descubra o que faz cada componente do computador', ['Processador', 'Memória', 'Barramentos'], '/simuladores/placa-mae.html'],
+    ['cpu-por-dentro', 'CPU por', 'dentro', 'O caminho de dados do MIPS em 3D, com a instrução viajando pelo pipeline', ['Caminho de dados', 'Pipeline', '3D'], '/simuladores/cpu-por-dentro.html'],
     ['proxima-palavra', 'A próxima', 'palavra', 'Como um modelo de linguagem escolhe a próxima palavra: probabilidade e temperatura', ['IA generativa', 'Probabilidade', 'Temperatura'], '/simuladores/proxima-palavra.html'],
     ['rede-neural', 'Rede neural', 'treinando', 'Taxa de aprendizado, lote, camadas e sobreajuste, ao vivo', ['Aprendizado de máquina', 'Sobreajuste', 'Ao vivo'], '/simuladores/rede-neural.html'],
     ['regressao', 'Regressão', 'linear', 'Ajuste a reta, veja o erro e faça previsões com os seus pontos', ['Mínimos quadrados', 'Erro', 'Previsão'], '/simuladores/regressao.html'],
@@ -54,6 +55,7 @@ const IMAGENS = [
      aqui e aponta o og:image para esse arquivo; o gerar.js do material usa a mesma imagem nos dados estruturados. */
   ...[
     ['torre-recursao', 'Torre da', 'recursão', 'Torre de Hanói em 3D: resolva, ensine a regra ao robô e veja a pilha de chamadas', ['Recursão', 'EF08CO01', '8º ano']],
+    ['carro-que-aprende', 'Carro que', 'aprende', 'Um carrinho 3D aprende a pista por tentativa e erro: ajuste as recompensas e veja a IA trapacear', ['IA', 'Aprendizado por reforço', '8º e 9º ano']],
     ['cozinha-paralela', 'Cozinha', 'paralela', 'Robôs cozinheiros dividem os pedidos, disputam a panela e caem num impasse', ['Paralelismo', 'EF08CO05', '8º ano']],
     ['cidade-infectada', 'Cidade', 'infectada', 'Um malware se espalha pelo bairro: defenda a rede com firewall, atualização e backup', ['Segurança', 'EF09CO04', '8º e 9º ano']],
     ['tanque', 'Enche o', 'tanque', 'Prismas, cilindros e cones enchendo de água: estime o volume antes de ver', ['Volume', 'EF09MA19', '8º e 9º ano']],
