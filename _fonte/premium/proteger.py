@@ -49,7 +49,9 @@ PAGINAS = {'hub.html': ('premium/index.html', 1, M0),
            'mesada-pro.html': ('premium/mesada-pro/index.html', 4, M0),
            'tutorial-jogos-html.html': ('premium/tutorial-jogos-html/index.html', 4, M0),
            'treine-a-maquina.html': ('premium/treine-a-maquina/index.html', 4, M0),
-           'mentoria.html': ('premium/mentoria/index.html', 5, M0)}
+           'mentoria.html': ('premium/mentoria/index.html', 5, M0),
+           'diagnostico.html': ('premium/diagnostico/index.html', 2, M0),
+           'provas.html': ('premium/provas/index.html', 3, M0)}
 # jogos dos próximos meses: _privado/premium/meses/AAAA-MM/<nome>.html -> premium/<nome>/index.html, plano 4
 JOGO_DO_MES = 4
 PRECOS = {1: 5, 2: 25, 3: 45, 4: 80, 5: 300}

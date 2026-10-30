@@ -4,8 +4,8 @@ O conteúdo vem de dois lugares no seu computador (fora do repositório, porque 
   - o guia do professor de cada jogo (_privado/premium/meses/AAAA-MM/*.html e treine-a-maquina.html), lido por kits/extrair.py;
   - kits/dados.py, com objetivos, versão desplugada, ficha do aluno e avaliação de cada mês.
 Saída, em _privado/premium/arquivos/AAAA-MM/:
-  pdf/       desplugado, ficha do aluno, cartaz e avaliação com gabarito (plano Educador na prática)
-  editaveis/ slides (.pptx), plano de aula, desplugado, ficha, avaliação e cartaz (.docx) (plano Educador criativo)
+  pdf/       desplugado, ficha do aluno, cartaz, avaliação com gabarito e versão acessível (plano Educador na prática)
+  editaveis/ slides (.pptx), plano de aula, desplugado, ficha, avaliação, cartaz e versão acessível (.docx) (plano Educador criativo)
   html/      painel da aula para projetar (plano Educador maker)
 e o trecho "Kits do mês" do hub.html, entre <!-- KITS --> e <!-- /KITS -->.
 
@@ -148,6 +148,94 @@ def pdf_avaliacao(d):
              f'<tr><td>Completa (5 pontos)</td><td>{e(rub[0])}</td></tr><tr><td>Parcial (3 pontos)</td><td>{e(rub[1])}</td></tr><tr><td>Inicial (1 ponto)</td><td>{e(rub[2])}</td></tr></table>'
              f'<h2>Respostas esperadas do jogo</h2><ul>{"".join(f"<li>{e(x)}</li>" for x in d["respostas"])}</ul>')
     return doc_html('Avaliação', corpo, d)
+
+
+# ---------------------------------------------------------------- versão acessível (letra ampliada, alto contraste, roteiro visual)
+CSS_ACESSIVEL = '''
+@page { size: A4; margin: 16mm 16mm 20mm; }
+@font-face { font-family: 'Lexend'; font-weight: 400; src: url('file://TIPOS/Lexend-400.ttf'); }
+@font-face { font-family: 'Lexend'; font-weight: 600; src: url('file://TIPOS/Lexend-600.ttf'); }
+* { box-sizing: border-box; }
+body { font-family: 'Lexend', Arial, sans-serif; font-size: 17pt; line-height: 1.7; color: #000; background: #fff; margin: 0; letter-spacing: .01em; word-spacing: .08em; }
+h1 { font-size: 28pt; font-weight: 600; line-height: 1.2; margin: 4px 0 8px; }
+h2 { font-size: 21pt; font-weight: 600; margin: 18px 0 6px; }
+p { margin: 0 0 10px; max-width: 165mm; }
+.faixa { border-bottom: 3px solid #000; padding-bottom: 6px; font-size: 12pt; margin-bottom: 6px; }
+.dica { border: 3px solid #000; border-radius: 12px; padding: 8px 14px; font-size: 14pt; margin: 8px 0 14px; }
+.passo { display: flex; gap: 16px; align-items: center; border: 3px solid #000; border-radius: 14px; padding: 10px 16px; margin: 0 0 10px; break-inside: avoid; }
+.passo b { flex: none; font-size: 13pt; min-width: 88px; }
+.q { break-inside: avoid; margin: 0 0 18px; padding-top: 6px; border-top: 2px solid #000; }
+.q p { font-weight: 600; }
+.linha { border-bottom: 2px solid #000; height: 46px; }
+.alt { display: flex; gap: 14px; align-items: center; margin: 0 0 8px; }
+.alt span { flex: none; width: 38px; height: 38px; border: 3px solid #000; border-radius: 8px; display: grid; place-items: center; font-weight: 600; font-size: 15pt; }
+.nome { font-size: 15pt; margin: 6px 0 12px; }
+.quebra { break-before: page; }
+table { border-collapse: collapse; width: 100%; font-size: 14pt; }
+th, td { border: 2px solid #000; padding: 6px 10px; text-align: left; vertical-align: top; }
+'''
+
+
+def roteiro_visual(d):
+    """Os passos da aula, um por caixa: ajuda a antecipar o que vem (TEA, TDAH) e a retomar quando a atenção se perde."""
+    etapas = [('Primeiro', 'Ouvir a pergunta da aula: ' + d['pergunta'])]
+    etapas += [(f'Fase {i}', f'No jogo: {f}') for i, f in enumerate(d['fases'], 1)]
+    etapas += [('Depois', 'Responder a ficha, uma pergunta de cada vez.'), ('No fim', d['saida'])]
+    return etapas
+
+
+def pdf_acessivel(d):
+    letras = 'abcd'
+    passos = ''.join(f'<div class="passo"><b>{e(t)}</b><span>{e(x)}</span></div>' for t, x in roteiro_visual(d))
+    ficha = ''.join(f'<div class="q"><p>{i}. {e(q)}</p>{"<div class=linha></div>" * max(2, n)}</div>' for i, (q, n) in enumerate(d['ficha'], 1))
+    objs = ''.join(f'<div class="q"><p>{i}. {e(q)}</p>{"".join(f"<div class=alt><span>{letras[a]}</span>{e(x)}</div>" for a, x in enumerate(alts))}</div>'
+                   for i, (q, alts, _) in enumerate(d['objetivas'], 1))
+    n = len(d['objetivas']) + 1
+    gab = ''.join(f'<tr><td>{i}</td><td>{letras[c]}) {e(alts[c])}</td></tr>' for i, (_, alts, c) in enumerate(d['objetivas'], 1))
+    corpo = (f'<div class="faixa">ohtopico · Kit de {d["nome_mes"]} · Versão acessível</div><h1>{e(d["titulo"])}: como vai ser a aula</h1>'
+             f'<div class="dica">Letra ampliada, alto contraste e uma tarefa por vez. Pode ser lida em voz alta por um colega ou pelo leitor de tela (use a versão em Word).</div>{passos}'
+             f'<div class="quebra"></div><div class="faixa">Ficha do aluno · versão acessível</div><p class="nome">Nome: ______________________________</p><h1>Ficha do aluno</h1>'
+             f'<div class="dica">Responda do seu jeito: escrevendo, desenhando ou contando para a professora.</div>{ficha}'
+             f'<div class="quebra"></div><div class="faixa">Avaliação · versão acessível</div><p class="nome">Nome: ______________________________</p><h1>Avaliação</h1>'
+             f'<div class="dica">Leia uma pergunta de cada vez. Marque um X em uma letra. Pode pedir para alguém ler a pergunta para você.</div>{objs}'
+             f'<div class="q"><p>{n}. {e(d["discursiva"][0])}</p><p style="font-weight:400;font-size:14pt">Pode responder escrevendo, desenhando ou falando.</p>{"<div class=linha></div>" * 5}</div>'
+             f'<div class="quebra"></div><div class="faixa">Para o professor</div><h1>Gabarito</h1><table><tr><th>Questão</th><th>Resposta</th></tr>{gab}</table>'
+             f'<h2>Questão {n}</h2><p>{e(d["discursiva"][1][0])}</p>'
+             '<h2>Sugestões de adaptação</h2><p>Mostre o roteiro antes de começar e risque cada etapa ao terminar. Reduza a ficha a 2 ou 3 perguntas, se for preciso, e aceite respostas orais, desenhos ou palavras-chave. '
+             'Ofereça tempo extra na avaliação e leitura em voz alta. Para estudantes cegos, use a versão em Word com o leitor de tela. O guia de adaptação da área premium traz orientações por perfil.</p>')
+    return (f'<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>{e(d["titulo"])} · versão acessível</title><meta name="author" content="{AUTORA}">'
+            f'<style>{CSS_ACESSIVEL}</style></head><body>{corpo}</body></html>')
+
+
+def docx_acessivel(d, destino):
+    """Word com títulos de verdade (o leitor de tela navega por eles), Arial 16 e espaçamento amplo."""
+    doc = word(d); st = doc.styles['Normal']; st.font.size = Pt(16); st.paragraph_format.line_spacing = 1.5
+    for nome, tam in (('Title', 28), ('Heading 1', 22), ('Heading 2', 18)):
+        doc.styles[nome].font.size = Pt(tam)
+    doc.add_heading(f'{d["titulo"]}: como vai ser a aula', level=0)
+    doc.add_paragraph('Versão acessível: letra ampliada e uma tarefa por vez. Pode ser lida pelo leitor de tela.')
+    for t, x in roteiro_visual(d):
+        p = doc.add_paragraph(style='List Number'); p.add_run(t + ': ').bold = True; p.add_run(x)
+    doc.add_page_break(); doc.add_paragraph('Nome: ______________________________')
+    doc.add_heading('Ficha do aluno', level=1)
+    doc.add_paragraph('Responda do seu jeito: escrevendo, desenhando ou contando para a professora.')
+    for i, (q, n) in enumerate(d['ficha'], 1):
+        doc.add_heading(f'Pergunta {i}', level=2); doc.add_paragraph(q); doc.add_paragraph('Resposta: ')
+    doc.add_page_break(); doc.add_paragraph('Nome: ______________________________')
+    doc.add_heading('Avaliação', level=1)
+    doc.add_paragraph('Leia uma pergunta de cada vez e escolha uma letra.')
+    for i, (q, alts, _) in enumerate(d['objetivas'], 1):
+        doc.add_heading(f'Questão {i}', level=2); doc.add_paragraph(q)
+        for a, x in zip('abcd', alts):
+            doc.add_paragraph(f'Letra {a}: {x}')
+        doc.add_paragraph('Minha resposta: letra ')
+    n = len(d['objetivas']) + 1
+    doc.add_heading(f'Questão {n}', level=2); doc.add_paragraph(d['discursiva'][0]); doc.add_paragraph('Pode responder escrevendo, desenhando ou falando. Resposta: ')
+    doc.add_page_break(); doc.add_heading('Gabarito (para o professor)', level=1)
+    for i, (_, alts, c) in enumerate(d['objetivas'], 1):
+        doc.add_paragraph(f'Questão {i}: letra {"abcd"[c]} ({alts[c]})', style='List Bullet')
+    doc.add_paragraph(f'Questão {n}: {d["discursiva"][1][0]}')
+    rodape(doc); doc.save(destino)
 
 
 RODAPE_KIT = 'para os apoiadores do Catarse (ohtopico.com.br). Uso livre em sala de aula, com citação da fonte. Por favor, não compartilhe os arquivos.'
@@ -444,8 +532,11 @@ def hub_trecho(meses):
         pdfs = [('1-desplugado', 'Versão desplugada'), ('2-ficha-do-aluno', 'Ficha do aluno'), ('3-cartaz', 'Cartaz'), ('4-avaliacao', 'Avaliação com gabarito')]
         if d.get('sem_desplugado'):
             pdfs = pdfs[1:]
+        n_pdfs = len(pdfs)
+        pdfs.append(('5-acessivel', 'Versão acessível (letra ampliada)'))
         eds = [('slides.pptx', 'Slides da aula (PowerPoint)'), ('plano-de-aula.docx', 'Plano de aula'), ('desplugado.docx', 'Versão desplugada'),
-               ('ficha-do-aluno.docx', 'Ficha do aluno'), ('avaliacao.docx', 'Avaliação com gabarito'), ('cartaz.docx', 'Cartaz')]
+               ('ficha-do-aluno.docx', 'Ficha do aluno'), ('avaliacao.docx', 'Avaliação com gabarito'), ('cartaz.docx', 'Cartaz'),
+               ('acessivel.docx', 'Versão acessível (para leitor de tela)')]
         bot = lambda rel, t: f'<button class="baixar" type="button" data-arquivo="{rel}">{t} <small>{{{{TAMANHO:{rel}}}}}</small></button>'
         blocos.append(f'''    <!-- MES {m} kits -->
     <details class="kit">
@@ -453,14 +544,14 @@ def hub_trecho(meses):
       <div class="grid">
         <div class="item" data-nivel="2" data-mes="{m}">
           <span class="tipo">PDF · para imprimir</span>
-          <strong>Pacote de {len(pdfs)} PDFs</strong>
-          <span>{'Ficha do aluno, cartaz para a sala e avaliação com gabarito e rubrica. A versão desplugada deste mês está em Guia do professor e materiais para imprimir.' if d.get('sem_desplugado') else f'Versão desplugada ({e(d["desplugado"]["titulo"])}), ficha do aluno, cartaz para a sala e avaliação com gabarito e rubrica.'}</span>
+          <strong>Pacote de {n_pdfs} PDFs e versão acessível</strong>
+          <span>{'Ficha do aluno, cartaz para a sala e avaliação com gabarito e rubrica. A versão desplugada deste mês está em Guia do professor e materiais para imprimir.' if d.get('sem_desplugado') else f'Versão desplugada ({e(d["desplugado"]["titulo"])}), ficha do aluno, cartaz para a sala e avaliação com gabarito e rubrica.'} A versão acessível traz o roteiro visual da aula, a ficha e a avaliação em letra ampliada e alto contraste.</span>
           <div class="acoes">{''.join(bot(f'{m}/pdf/{s}-{a}.pdf', t) for a, t in pdfs)}</div>
         </div>
         <div class="item" data-nivel="3" data-mes="{m}">
           <span class="tipo">PowerPoint e Word · editáveis</span>
-          <strong>Pacote de 6 arquivos editáveis</strong>
-          <span>Slides da aula, plano de aula com roteiro e BNCC, versão desplugada, ficha, avaliação e cartaz, para adaptar à sua turma.</span>
+          <strong>Pacote de 7 arquivos editáveis</strong>
+          <span>Slides da aula, plano de aula com roteiro e BNCC, versão desplugada, ficha, avaliação, cartaz e versão acessível em Word (com títulos para o leitor de tela), para adaptar à sua turma.</span>
           <div class="acoes">{''.join(bot(f'{m}/editaveis/{s}-{a}', t) for a, t in eds)}</div>
         </div>
         <div class="item" data-nivel="4" data-mes="{m}">
@@ -495,10 +586,12 @@ def main():
             (base / p).mkdir(parents=True, exist_ok=True)
         if not d.get('sem_desplugado'):
             pares.append((pdf_desplugado(d), base / 'pdf' / f'{s}-1-desplugado.pdf'))
-        pares += [(pdf_ficha(d), base / 'pdf' / f'{s}-2-ficha-do-aluno.pdf'), (pdf_cartaz(d), base / 'pdf' / f'{s}-3-cartaz.pdf'), (pdf_avaliacao(d), base / 'pdf' / f'{s}-4-avaliacao.pdf')]
+        pares += [(pdf_ficha(d), base / 'pdf' / f'{s}-2-ficha-do-aluno.pdf'), (pdf_cartaz(d), base / 'pdf' / f'{s}-3-cartaz.pdf'), (pdf_avaliacao(d), base / 'pdf' / f'{s}-4-avaliacao.pdf'),
+                  (pdf_acessivel(d), base / 'pdf' / f'{s}-5-acessivel.pdf')]
         pptx_slides(d, base / 'editaveis' / f'{s}-slides.pptx')
         docx_plano(d, base / 'editaveis' / f'{s}-plano-de-aula.docx'); docx_desplugado(d, base / 'editaveis' / f'{s}-desplugado.docx')
         docx_ficha(d, base / 'editaveis' / f'{s}-ficha-do-aluno.docx'); docx_avaliacao(d, base / 'editaveis' / f'{s}-avaliacao.docx'); docx_cartaz(d, base / 'editaveis' / f'{s}-cartaz.docx')
+        docx_acessivel(d, base / 'editaveis' / f'{s}-acessivel.docx')
         (base / 'html' / f'{s}-painel-da-aula.html').write_text(painel(d), encoding='utf-8')
         print('ok kit', d['mes'], s)
     imprimir(pares, a.tipos)

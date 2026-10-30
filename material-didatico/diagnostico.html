@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Diagnóstico da turma · Material didático | ohtopico</title>
+<meta name="description" content="Diagnóstico de Computação do 6º ao 9º ano: o estudante entra com a senha que recebeu da professora, responde e envia o código de resposta.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 820px; margin: 0 auto; padding: 32px 16px 48px; }
+  .doc h1 { font-size: clamp(30px, 5vw, 44px); margin: 4px 0 8px; }
+  .who { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 14px 0 0; }
+  .who label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; color: var(--ink-2); flex: 1 1 220px; }
+  input, textarea { font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; padding: 9px 12px; min-height: 44px; }
+  textarea { width: 100%; font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
+  .msg { font-size: 14px; font-weight: 600; min-height: 1.4em; margin: 8px 0 0; }
+  .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+  .barra { height: 12px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; margin: 14px 0 6px; }
+  .barra span { display: block; height: 100%; background: var(--accent); transition: width .2s; }
+  .q { font-size: clamp(19px, 2.6vw, 24px); font-weight: 600; line-height: 1.35; margin: 18px 0 14px; }
+  .alts { display: grid; gap: 10px; }
+  .alt { text-align: left; font: inherit; font-size: 17px; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px;
+    cursor: pointer; display: flex; gap: 12px; align-items: center; min-height: 52px; }
+  .alt b { flex: none; width: 30px; height: 30px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 14px; }
+  .alt:hover, .alt:focus-visible { background: var(--pill); }
+  .alt[aria-pressed="true"] { background: var(--accent-soft); outline: 3px solid var(--accent); outline-offset: 1px; }
+  .nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .res { display: grid; gap: 10px; margin-top: 14px; }
+  .res div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; }
+  .res div strong { display: block; }
+  .res a { font-size: 14px; }
+  .tag-hab { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc"></main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/diagnostico.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('');
+  mdFooter();
+  const doc = document.getElementById('doc');
+  const $ = s => doc.querySelector(s);
+  const CHAVE_LOCAL = 'md-diagnostico-v1'; // respostas em andamento, para não perder se a página recarregar
+  let turma = null, senha = '', numero = 0, qs = [], resp = [], atual = 0, ordem = [];
+
+  const lerLocal = () => { try { return JSON.parse(sessionStorage.getItem(CHAVE_LOCAL)) || null; } catch (e) { return null; } };
+  const salvarLocal = () => { try { sessionStorage.setItem(CHAVE_LOCAL, JSON.stringify({ t: location.hash, senha, resp, atual, ordem })); } catch (e) {} };
+
+  function semTurma() {
+    doc.innerHTML = `<span class="eyebrow">Diagnóstico da turma</span>
+      <h1>Abra o link que a sua professora enviou</h1>
+      <p class="muted">O diagnóstico funciona com o link da sua turma. Se você recebeu um código que começa com DT1, cole aqui.</p>
+      <form class="who" id="f"><label>Código da turma<input id="c" required autocomplete="off" placeholder="DT1..."></label><button class="btn" type="submit">Abrir</button></form>
+      <p class="msg" id="m" role="status"></p>
+      <div class="panel" style="margin-top:28px"><h2 style="margin:0 0 6px;font-size:22px">É professora ou professor?</h2>
+      <p class="small" style="margin:0">O painel que cria a turma, gera as senhas dos estudantes e monta o mapa de habilidades fica na área premium dos apoiadores do Catarse.
+      <a href="../premium/">Ir para a área premium</a></p></div>`;
+    $('#f').onsubmit = e => { e.preventDefault(); const c = $('#c').value.trim(); try { MDD.lerTurma(c); location.hash = c.replace(/^#/, ''); } catch (x) { $('#m').textContent = 'Código da turma inválido. Confira se copiou o código inteiro.'; $('#m').className = 'msg bad'; } };
+  }
+
+  function entrar() {
+    doc.innerHTML = `<span class="eyebrow">Diagnóstico da turma · ${turma.ano}º ano</span>
+      <h1>${esc(turma.nome || 'Diagnóstico de Computação')}</h1>
+      <p class="muted">São ${qs.length} perguntas sobre Computação. Não vale nota: serve para a professora saber o que a turma já sabe e por onde começar. Responda com calma e, se não souber, escolha a que parecer melhor.</p>
+      <form class="who" id="f"><label>Sua senha<input id="s" required autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Ex.: lua27"></label><button class="btn" type="submit">Começar</button></form>
+      <p class="msg" id="m" role="status"></p>`;
+    $('#s').focus();
+    $('#f').onsubmit = async e => {
+      e.preventDefault();
+      const s = $('#s').value, n = await MDD.numeroDaSenha(turma, s);
+      if (!n) { $('#m').textContent = 'Senha não encontrada nesta turma. Confira o cartão que você recebeu.'; $('#m').className = 'msg bad'; return; }
+      senha = MDD.normal(s); numero = n;
+      if (!resp.length) { resp = qs.map(() => '-'); ordem = qs.map(() => embaralhar([0, 1, 2, 3])); }
+      salvarLocal(); pergunta();
+    };
+  }
+
+  function embaralhar(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+  function pergunta() {
+    const q = qs[atual], feitas = resp.filter(x => x !== '-').length;
+    doc.innerHTML = `<span class="eyebrow">Estudante ${numero} · ${esc(turma.nome || turma.ano + 'º ano')}</span>
+      <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="${qs.length}" aria-valuenow="${feitas}" aria-label="Perguntas respondidas"><span style="width:${feitas / qs.length * 100}%"></span></div>
+      <p class="small muted" style="margin:0">Pergunta ${atual + 1} de ${qs.length}</p>
+      <p class="q" id="q">${esc(q.txt)}</p>
+      <div class="alts" role="group" aria-labelledby="q">${ordem[atual].map((o, k) => `<button class="alt" type="button" data-o="${o}" aria-pressed="${resp[atual] === 'abcd'[o]}"><b>${'ABCD'[k]}</b><span>${esc(q.alts[o])}</span></button>`).join('')}</div>
+      <div class="nav"><button class="btn ghost" type="button" id="ant" ${atual === 0 ? 'disabled' : ''}>Anterior</button>
+      ${atual < qs.length - 1 ? `<button class="btn" type="button" id="prox">Próxima</button>` : `<button class="btn" type="button" id="fim">Terminar</button>`}</div>`;
+    doc.querySelectorAll('.alt').forEach(b => b.onclick = () => {
+      resp[atual] = 'abcd'[+b.dataset.o]; salvarLocal();
+      doc.querySelectorAll('.alt').forEach(x => x.setAttribute('aria-pressed', x === b));
+      if (atual < qs.length - 1) setTimeout(() => { atual++; salvarLocal(); pergunta(); }, 250);
+    });
+    $('#ant').onclick = () => { atual--; salvarLocal(); pergunta(); };
+    if ($('#prox')) $('#prox').onclick = () => { atual++; salvarLocal(); pergunta(); };
+    if ($('#fim')) $('#fim').onclick = terminar;
+  }
+
+  async function terminar() {
+    const faltam = resp.map((x, i) => x === '-' ? i + 1 : 0).filter(Boolean);
+    if (faltam.length && !confirm(`Faltam ${faltam.length} pergunta(s): ${faltam.join(', ')}. Terminar mesmo assim?`)) { atual = faltam[0] - 1; pergunta(); return; }
+    const code = await MDD.codigoResposta(turma, senha, numero, resp.join(''));
+    const r = MDD.corrigir(turma.ano, resp.join(''));
+    const habs = Object.entries(r.porHab);
+    const sabe = habs.filter(([, v]) => v.ac === v.tot), aprender = habs.filter(([, v]) => v.ac < v.tot);
+    const atividade = c => { const rec = RECURSOS.find(o => o.habs.includes(c) && (o.tipo === 'jogo' || o.tipo === 'lista')) || RECURSOS.find(o => o.habs.includes(c)); return rec ? `<a href="${recUrl(rec)}">${esc(rec.titulo)}</a>` : ''; };
+    const nomeHab = c => esc((HAB[c] && HAB[c].objeto) || c);
+    doc.innerHTML = `<span class="eyebrow">Diagnóstico concluído</span>
+      <h1>Pronto, estudante ${numero}</h1>
+      <p>Agora falta um passo: copie o código abaixo e envie para a sua professora, do jeito que ela combinou (Classroom, e-mail ou mensagem).</p>
+      <textarea id="code" rows="3" readonly aria-label="Código de resposta">${code}</textarea>
+      <div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="cp">Copiar o código</button>${navigator.share ? '<button class="btn ghost" type="button" id="sh">Enviar</button>' : ''}</div>
+      <p class="msg" id="m" role="status"></p>
+      ${sabe.length ? `<h2 style="font-size:24px;margin:30px 0 4px">O que você já sabe</h2><div class="res">${sabe.map(([c]) => `<div><strong>${nomeHab(c)}</strong><span class="tag-hab">${c}</span></div>`).join('')}</div>` : ''}
+      ${aprender.length ? `<h2 style="font-size:24px;margin:30px 0 4px">Para aprender neste ano</h2><p class="small muted" style="margin:0">Se quiser começar já, cada tema tem uma atividade no site.</p>
+      <div class="res">${aprender.map(([c]) => `<div><strong>${nomeHab(c)}</strong><span class="tag-hab">${c}</span> ${atividade(c)}</div>`).join('')}</div>` : ''}
+      <p class="small muted" style="margin-top:28px">As respostas não ficam guardadas em nenhum servidor: só o código que você enviar chega à professora.</p>`;
+    $('#cp').onclick = async () => { const ta = $('#code'); try { await navigator.clipboard.writeText(ta.value); } catch (e) { ta.select(); try { document.execCommand('copy'); } catch (x) {} } $('#m').textContent = 'Código copiado.'; $('#m').className = 'msg ok'; };
+    if ($('#sh')) $('#sh').onclick = () => navigator.share({ text: 'Diagnóstico, estudante ' + numero + ': ' + code }).catch(() => {});
+    try { sessionStorage.removeItem(CHAVE_LOCAL); } catch (e) {}
+  }
+
+  function iniciar() {
+    const h = location.hash.slice(1);
+    turma = null; resp = []; atual = 0; ordem = []; senha = ''; numero = 0;
+    if (!h) return semTurma();
+    try { turma = MDD.lerTurma(h); } catch (e) { semTurma(); $('#m').textContent = 'O link da turma está incompleto. Peça o link de novo à professora.'; $('#m').className = 'msg bad'; return; }
+    qs = MDD.doAno(turma.ano);
+    const salvo = lerLocal();
+    if (salvo && salvo.t === location.hash && salvo.resp && salvo.resp.length === qs.length) { resp = salvo.resp; atual = salvo.atual || 0; ordem = salvo.ordem; }
+    entrar();
+  }
+  window.addEventListener('hashchange', iniciar);
+  iniciar();
+})();
+</script>
+</body>
+</html>
