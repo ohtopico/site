@@ -235,7 +235,7 @@ const RECURSOS = [
     url: 'jogos/wikipedia.html', plano: 'p-wikipedia', ficha: null },
   { id: 'mesada', tipo: 'jogo', titulo: 'Desafio da Mesada', comp: ['MA'], anos: [6, 7, 8, 9],
     habs: ['EF06MA13', 'EF07MA02', 'EF08MA04', 'EF09MA05'], tempo: '20–30 min',
-    resumo: 'Um ano de mesada para chegar à meta: poupança e aplicação com juros compostos, à vista ou parcelado, feira da escola, bicos, imprevistos e cheque especial.',
+    resumo: 'Dois anos de mesada para chegar às metas: poupança e aplicação com juros compostos, à vista ou parcelado, feiras, bicos, imprevistos, cheque especial e um 2º ano com bônus ou penalidades.',
     url: 'jogos/mesada.html', plano: 'p-ma-financeira', ficha: null },
   { id: 'poupanca', tipo: 'jogo', titulo: 'Juros que Crescem', comp: ['MA'], anos: [7, 8, 9],
     habs: ['EF07MA02', 'EF08MA04', 'EF09MA05'], tempo: '10–15 min',
