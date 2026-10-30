@@ -34,6 +34,9 @@ const IMAGENS = [
   { arq: 'material-didatico/assets/og-laboratorio-3d.jpg', janela: 'laboratorio-3d.html', faixa: 'Gire, aproxime, experimente', t1: 'Laboratório', t2: '3D',
     sub: 'Matemática e Computação em cenas 3D que funcionam no navegador', pills: ['Material Dourado', 'Cubo RGB', 'Rede neural'],
     url: 'ohtopico.com.br/material-didatico', capturas: ['/material-didatico/3d/cubo-rgb.html'] },
+  { arq: 'para-escolas/og-para-escolas.jpg', janela: 'para-escolas.html', faixa: 'Para secretarias e coordenações', t1: 'Escolas', t2: 'e redes',
+    sub: 'Material gratuito da BNCC Computação, guia de implantação e formação', pills: ['Gratuito', 'BNCC Computação', 'Formação em IA'],
+    url: 'ohtopico.com.br/para-escolas', capturas: ['/material-didatico/bncc/'] },
   ...[
     ['index', 'Simuladores', 'no navegador', 'IA, estatística e arquitetura de computadores, sem instalar nada', ['IA', 'Estatística', 'Arquitetura'], '/simuladores/'],
     ['bases', 'Bases', 'numéricas', 'Binário, octal, hexadecimal e complemento de dois, passo a passo', ['Binário', 'Hexadecimal', 'Complemento de dois'], '/simuladores/bases.html'],
