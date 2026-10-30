@@ -24,11 +24,12 @@
   const q = new URLSearchParams(location.search);
   const PER = [['tudo', 'Desde 2016', N], ['5a', '5 anos', 60], ['2a', '2 anos', 24]];
   const st = {
-    v: (q.get('v') || 'ia,chatgpt,aprendizado').split(',').filter(id => POR[id]).slice(0, 5),
-    p: PER.some(p => p[0] === q.get('p')) ? q.get('p') : 'tudo'
+    v: (q.get('v') || 'ia,openai,generativa').split(',').filter(id => POR[id]).slice(0, 5),
+    p: PER.some(p => p[0] === q.get('p')) ? q.get('p') : 'tudo',
+    e: q.get('e') === 'rel' ? 'rel' : 'abs'
   };
   if (!st.v.length) st.v = S.slice(0, 3).map(s => s.id);
-  function salvaUrl() { history.replaceState(null, '', '?v=' + st.v.join(',') + (st.p !== 'tudo' ? '&p=' + st.p : '')); }
+  function salvaUrl() { history.replaceState(null, '', '?v=' + st.v.join(',') + (st.p !== 'tudo' ? '&p=' + st.p : '') + (st.e === 'rel' ? '&e=rel' : '')); }
 
   /* ---------- Resumo ---------- */
   function kpis() {
@@ -50,6 +51,7 @@
   /* ---------- Seletores ---------- */
   function seletores() {
     $('f-per').innerHTML = PER.map(([id, nome]) => `<button type="button" data-p="${id}" aria-pressed="${st.p === id}">${nome}</button>`).join('');
+    $('f-esc').innerHTML = [['abs', 'Número de visitas'], ['rel', '% do recorde de cada verbete']].map(([id, nome]) => `<button type="button" data-e="${id}" aria-pressed="${st.e === id}">${nome}</button>`).join('');
     let html = '', g = '';
     S.forEach(s => {
       if (s.grupo !== g) { g = s.grupo; html += `<span class="gr">${esc(g)}</span>`; }
@@ -59,6 +61,7 @@
     $('f-ver').innerHTML = html;
   }
   $('f-per').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { st.p = b.dataset.p; atualiza(); } });
+  $('f-esc').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { st.e = b.dataset.e; atualiza(); } });
   $('f-ver').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     const id = b.dataset.v, i = st.v.indexOf(id);
@@ -69,32 +72,39 @@
   });
 
   /* ---------- Gráfico de linhas ---------- */
-  const W = 760, H = 340, L = 58, R = 18, T = 26, B = 34;
+  let W = 760, H = 340, L = 58, R = 18, T = 26, B = 34, estreito = false;
   let janela = [];
   function passo(max) {
     const bruto = max / 4, e = Math.pow(10, Math.floor(Math.log10(bruto || 1)));
     return [1, 2, 2.5, 5, 10].map(f => f * e).find(p => p >= bruto);
   }
   function linha() {
+    estreito = $('linha').clientWidth < 600;
+    [W, H, L] = estreito ? [400, 300, 46] : [760, 340, 58];
     const n = PER.find(p => p[0] === st.p)[2], i0 = Math.max(0, N - n);
     janela = M.slice(i0).map((m, k) => i0 + k);
     const sel = st.v.map(id => POR[id]);
-    const max = Math.max(1, ...sel.flatMap(s => janela.map(i => s.v[i])));
-    const pa = passo(max), top = Math.ceil(max / pa) * pa;
+    // Na escala relativa, cada verbete vira % do próprio recorde no período: dá para comparar o formato das curvas
+    const val = st.e === 'rel'
+      ? Object.fromEntries(sel.map(se => { const mx = Math.max(1, ...janela.map(i => se.v[i])); return [se.id, se.v.map(v => v / mx * 100)]; }))
+      : Object.fromEntries(sel.map(se => [se.id, se.v]));
+    const rot = v => st.e === 'rel' ? nf(v) + '%' : curto(v);
+    const max = st.e === 'rel' ? 100 : Math.max(1, ...sel.flatMap(s => janela.map(i => s.v[i])));
+    const pa = st.e === 'rel' ? 25 : passo(max), top = Math.ceil(max / pa) * pa;
     const x = k => L + (W - L - R) * (janela.length === 1 ? 0 : k / (janela.length - 1));
     const y = v => T + (H - T - B) * (1 - v / top);
     let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="linha-titulo linha-desc"><desc id="linha-desc">${esc(descricao(sel))}</desc>`;
-    for (let v = 0; v <= top + 1e-9; v += pa) s += `<line class="grade" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${curto(v)}</text>`;
+    for (let v = 0; v <= top + 1e-9; v += pa) s += `<line class="grade" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${rot(v)}</text>`;
     janela.forEach((i, k) => {
       const m = M[i], jan = m.endsWith('-01');
-      if (janela.length <= 30 ? +m.slice(5) % 3 === 1 : jan) s += `<text x="${x(k)}" y="${H - B + 18}" text-anchor="middle">${janela.length <= 30 ? mes(m) : m.slice(0, 4)}</text>`;
+      if (janela.length <= 30 ? +m.slice(5) % (estreito ? 6 : 3) === 1 : jan && (!estreito || janela.length <= 60 || +m.slice(0, 4) % 2 === 0)) s += `<text x="${x(k)}" y="${H - B + 18}" text-anchor="middle">${janela.length <= 30 ? mes(m) : m.slice(0, 4)}</text>`;
     });
     EVENTOS.forEach(([m, nome], j) => {
       const k = janela.indexOf(M.indexOf(m)); if (k < 0) return;
-      s += `<g class="evento"><line x1="${x(k)}" x2="${x(k)}" y1="${T - 6}" y2="${H - B}"/><text x="${x(k) - 5}" y="${T + 6 + j * 14}" text-anchor="end">${nome}</text></g>`;
+      s += `<g class="evento"><line x1="${x(k)}" x2="${x(k)}" y1="${T - 6}" y2="${H - B}"/><text x="${x(k) - 5}" y="${T + 6 + j * 14}" text-anchor="end">${estreito ? nome.replace('Lançamento do ', '') : nome}</text></g>`;
     });
     sel.forEach((se, j) => {
-      const d = janela.map((i, k) => (k ? 'L' : 'M') + x(k).toFixed(1) + ',' + y(se.v[i]).toFixed(1)).join('');
+      const d = janela.map((i, k) => (k ? 'L' : 'M') + x(k).toFixed(1) + ',' + y(val[se.id][i]).toFixed(1)).join('');
       s += `<path class="serie" d="${d}" stroke="${CORES[j]}"${TRACO[j] ? ` stroke-dasharray="${TRACO[j]}"` : ''}/>`;
     });
     s += `<line class="eixo" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="cursor" id="cursor" x1="0" x2="0" y1="${T}" y2="${H - B}" visibility="hidden"/>`;
@@ -109,8 +119,8 @@
       const k = Math.max(0, Math.min(janela.length - 1, Math.round((px - L) / (W - L - R) * (janela.length - 1))));
       const i = janela[k], c = $('cursor');
       c.setAttribute('x1', x(k)); c.setAttribute('x2', x(k)); c.setAttribute('visibility', 'visible');
-      sel.forEach((se, j) => { const p = $('pt' + j); p.setAttribute('cx', x(k)); p.setAttribute('cy', y(se.v[i])); p.setAttribute('visibility', 'visible'); });
-      tip.innerHTML = `<b>${mesLongo(M[i])}</b>` + sel.map(se => `${esc(se.titulo)}: ${nf(se.v[i])}`).join('<br>');
+      sel.forEach((se, j) => { const p = $('pt' + j); p.setAttribute('cx', x(k)); p.setAttribute('cy', y(val[se.id][i])); p.setAttribute('visibility', 'visible'); });
+      tip.innerHTML = `<b>${mesLongo(M[i])}</b>` + sel.map(se => `${esc(se.titulo)}: ${nf(se.v[i])}${st.e === 'rel' ? ` (${nf(val[se.id][i])}% do recorde)` : ''}`).join('<br>');
       tip.classList.add('on');
       const tx = Math.min(innerWidth - 270, ev.clientX + 14);
       tip.style.left = tx + 'px'; tip.style.top = (ev.clientY + 14) + 'px';
@@ -170,6 +180,8 @@
   });
 
   function atualiza() { seletores(); linha(); tabela(); salvaUrl(); }
+  let largura = innerWidth;
+  addEventListener('resize', () => { if (Math.abs(innerWidth - largura) > 40) { largura = innerWidth; linha(); } });
   $('ate').textContent = mesLongo(M[N - 1]);
   kpis(); rankings(); atualiza();
 })();

@@ -156,7 +156,7 @@ def baixar():
                 continue
             jogo.append(dict(t=t, tema=tema, v=sum(visitas(t, meses[-12:]))))
     for s in series:
-        jogo.append(dict(t=s['titulo'], tema='Inteligência artificial', v=sum(s['v'][-12:])))
+        jogo.append(dict(t=s['titulo'], tema='Computação' if s['grupo'] == 'Educação e tecnologia' else 'Inteligência artificial', v=sum(s['v'][-12:])))
     vistos, unicos = set(), []
     for j in jogo:
         if j['t'] not in vistos and j['v'] > 0:
