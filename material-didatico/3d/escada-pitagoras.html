@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escada de Pitágoras: jogo 3D de Matemática, 9º ano | Júlia Quoos</title>
+<meta name="description" content="Jogo 3D do Teorema de Pitágoras: encoste escadas em prédios, ache a maior vareta que cabe numa caixa e termine na diagonal do cubo. BNCC EF09MA13 e EF09MA14.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/escada-pitagoras.html">
+<meta property="og:title" content="Escada de Pitágoras: jogo 3D de Matemática, 9º ano | Júlia Quoos">
+<meta property="og:description" content="Encoste escadas em prédios 3D, ache a diagonal de caixas e termine na diagonal do cubo. Teorema de Pitágoras no plano e no espaço, com os quadrados dos lados à vista. 9º ano, BNCC EF09MA13 e EF09MA14.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/escada-pitagoras.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-laboratorio-3d.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Laboratório 3D de Júlia Roberta Quoos Alves: recursos 3D de Matemática e Computação para girar, aproximar e experimentar.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>Escadas (fases 1 a 4):</strong> os bombeiros precisam alcançar uma janela. Você sabe a altura da janela e a distância do pé da escada até a parede (ou o tamanho da escada). Calcule o que falta, digite e encoste a escada: se a conta estiver certa, o topo para bem na janela. Se não, a escada mostra até onde chegou.</p>
+    <p><strong>Caixas (fases 5 a 7):</strong> qual a maior vareta reta que cabe dentro de uma caixa? Primeiro ache a diagonal do fundo, depois use essa diagonal e a altura. A última fase é o cubo.</p>
+    <p>Marque “Mostrar os quadrados dos lados” para ver, nas escadas, um quadrado quadriculado em cada lado do triângulo: a área do quadrado da escada é a soma das outras duas. “Dica” mostra a conta aos poucos.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="seg" role="group" aria-label="Fase" id="fases"></div>
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3 id="tit"></h3>
+          <p id="enun" style="margin:0 0 6px"></p>
+          <div class="conta" id="conta"></div>
+          <label for="resp" id="lresp"></label>
+          <input type="text" id="resp" inputmode="decimal" autocomplete="off">
+          <div class="tools">
+            <button class="btn" type="button" id="tentar"></button>
+            <button class="btn ghost" type="button" id="dica">Dica</button>
+            <button class="btn ghost" type="button" id="prox" hidden>Próxima fase</button>
+          </div>
+          <label id="lquad"><input type="checkbox" id="quad"> Mostrar os quadrados dos lados</label>
+          <ul class="leg">
+            <li><span class="sw" style="background:#c8323f"></span><span class="sw" style="background:#1f8a4c"></span>catetos (os lados do ângulo reto)</li>
+            <li><span class="sw" style="background:#f2cf1d"></span>hipotenusa (escada ou vareta)</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Encoste as quatro escadas na janela certa (fases 1 a 4).</li>
+            <li data-d="1">Ache a maior vareta que cabe no poço do elevador e no baú (fases 5 e 6).</li>
+            <li data-d="2">Descubra a diagonal do cubo (fase 7).</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> em todo triângulo retângulo, o quadrado da hipotenusa é igual à soma dos quadrados dos catetos. A escada, a parede e o chão formam esse triângulo. Na caixa, o teorema é usado duas vezes: no fundo, a diagonal d₁ vem de d₁² = a² + b²; em pé, a diagonal da caixa vem de D² = d₁² + c² = a² + b² + c². No cubo de aresta a, isso dá a diagonal a√3. As fases 4, 6 e 7 têm respostas irracionais (√65, √45, √2 e √3), o que abre a conversa sobre números reais e aproximações.</p>
+    <p><strong>Metodologia sugerida:</strong> resolução de problemas em duplas, com uma calculadora por dupla. Antes de encostar a escada, cada dupla escreve a conta no caderno e dá um palpite. Depois de errar, a escada mostra até onde chegou, e a dupla discute se o número estava grande ou pequeno demais.</p>
+    <ul>
+      <li>Ligue “Mostrar os quadrados dos lados” na fase 1 e conte os quadradinhos: 9 + 16 = 25. Essa é a ideia de uma das demonstrações do teorema (EF09MA13). Peça que a turma recorte os quadrados em papel quadriculado e confira.</li>
+      <li>Na fase 3, a incógnita é um cateto. Por que agora a conta é uma subtração?</li>
+      <li>Na fase 6, quem arredondou a diagonal do fundo (6,71) e elevou ao quadrado chegou em 45,02 e não em 45. Por que é melhor guardar d₁² = 45 e só tirar a raiz no fim?</li>
+      <li>Para um cubo de aresta 2, qual é a diagonal? E de aresta 10? Que regra aparece?</li>
+      <li>Escadas de verdade ficam com o pé a cerca de um quarto do comprimento da escada, por segurança. Na fase 2, a escada está segura?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09MA13 e EF09MA14. Combina com o recurso <a href="tales.html">Teorema de Tales: Sombras e Paralelas</a>, que também trabalha a EF09MA14. Material concreto equivalente: papel quadriculado para os quadrados dos lados, uma caixa de sapato e um palito de churrasco para a diagonal, e um cabo de vassoura encostado na parede da sala.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-escada-pitagoras');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, fmt } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-escada-pitagoras';
+const f2 = n => fmt(n, 2);
+const num = s => parseFloat(String(s).replace(',', '.'));
+const TOL = 0.05;
+
+/* Fases: escadas (pede o comprimento L ou a distância d do pé até a parede), caixas e o cubo.
+   Na caixa, a é o comprimento (x), b a largura (z) e c a altura (y). */
+const FASES = [
+  { tipo: 'escada', pede: 'L', d: 3, h: 4, nome: 'A primeira janela',
+    enun: 'A janela está a 4 m do chão e o pé da escada fica a 3 m da parede. Qual o comprimento da escada?' },
+  { tipo: 'escada', pede: 'L', d: 6, h: 8, nome: 'O segundo andar',
+    enun: 'Agora a janela está a 8 m e o caminhão só consegue parar com o pé da escada a 6 m da parede. Que escada alcança a janela?' },
+  { tipo: 'escada', pede: 'd', L: 13, h: 12, nome: 'A escada já está pronta',
+    enun: 'A escada tem 13 m e o topo precisa parar na janela, a 12 m do chão. A que distância da parede fica o pé da escada?' },
+  { tipo: 'escada', pede: 'L', d: 4, h: 7, nome: 'Sem número inteiro',
+    enun: 'Janela a 7 m, pé da escada a 4 m da parede. Desta vez a conta não dá um número inteiro: responda com duas casas decimais.' },
+  { tipo: 'caixa', a: 4, b: 3, c: 12, nome: 'O poço do elevador',
+    enun: 'O poço do elevador tem fundo de 4 m por 3 m e 12 m de altura. Qual a maior vareta reta que cabe dentro dele, de um canto do chão até o canto oposto do teto?' },
+  { tipo: 'caixa', a: 6, b: 3, c: 2, nome: 'O baú do caminhão',
+    enun: 'O baú do caminhão tem 6 m de comprimento, 3 m de largura e 2 m de altura. Qual o maior cano reto que cabe dentro dele?' },
+  { tipo: 'caixa', a: 1, b: 1, c: 1, cubo: true, nome: 'A diagonal do cubo',
+    enun: 'Um cubo tem aresta de 1 m. Qual a diagonal de uma face? E a diagonal do cubo, de um vértice ao vértice oposto?' }
+];
+FASES.forEach(f => {
+  if (f.tipo === 'escada') { if (f.pede === 'L') f.L = Math.hypot(f.d, f.h); else f.d = Math.sqrt(f.L ** 2 - f.h ** 2); }
+  else { f.base = Math.hypot(f.a, f.b); f.diag = Math.hypot(f.a, f.b, f.c); }
+});
+const GRUPOS = [[0, 1, 2, 3], [4, 5], [6]];
+
+let fi = 0, etapa = 0, dicaN = 0, ocupado = false, resolvida = false, tent = null;
+const feitos = new Set();
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [10, 9, 22], alvo: [1, 3, 0], min: 1.5, max: 120, chaoTam: 160 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+let gE, gC;
+if (cena) {
+  gE = new T.Group(); gC = new T.Group(); cena.add(gE, gC);
+  const sc = cena.sol.shadow.camera; sc.left = -32; sc.right = 32; sc.top = 32; sc.bottom = -32; sc.far = 90; sc.updateProjectionMatrix();
+  cena.sol.position.set(14, 26, 18);
+}
+const estreito = () => $('#palco').clientWidth < 560;
+function rot(txt, pos, tam, fundo, extra) {
+  const r = cena.rotulo(txt, Object.assign({ tam }, fundo ? { fundo } : {}, extra));
+  r.position.set(...pos); return r;
+}
+
+function novaEscada(L) {
+  const g = new T.Group();
+  [-0.35, 0.35].forEach(z => { const r = cena.bloco(0.12, L, 0.12, COR.amarelo, { base: false }); r.position.set(0, L / 2, z); g.add(r); });
+  for (let y = 0.35; y < L - 0.1; y += 0.4) { const d = cena.bloco(0.07, 0.07, 0.7, COR.amarelo, { base: false, bordas: false }); d.position.set(0, y, 0); g.add(d); }
+  return g;
+}
+// onde a escada para: comprimento L com o pé a d da parede
+function topo(L, d) { return L > d ? Math.sqrt(L * L - d * d) : 0; }
+
+function montaEscada(f, anima) {
+  cena.limpar(gE);
+  const quad = $('#quad').checked;
+  const S = Math.max(f.h, f.L);
+  const tr = Math.max(0.55, S * (quad ? 0.075 : 0.05));
+  const Hp = f.h + 4;
+  // prédio, chão e janelas
+  const matP = new T.MeshStandardMaterial({ color: COR.cinza, roughness: 0.62, transparent: quad, opacity: quad ? 0.16 : 1, depthWrite: !quad });
+  const predio = cena.bloco(6, Hp, 20, null, { material: matP }); predio.position.set(-6, 0, -18.5); predio.castShadow = !quad; gE.add(predio);
+  if (!quad) {
+    const piso = cena.bloco(60, 0.02, 40, '#e9ece6', { base: false, bordas: false, sombra: false }); piso.position.set(18, -0.011, -6); gE.add(piso);
+    for (let y = 1.5; y < Hp - 1.5; y += 3) [-5, -10, -15].forEach(z => {
+      const j = cena.bloco(0.05, 1.4, 1.6, COR.cinzaEscuro, { bordas: false }); j.position.set(0, y, z); gE.add(j);
+    });
+  }
+  const jan = cena.bloco(0.08, 1.5, 1.6, COR.amareloClaro); jan.position.set(0, f.h, -0.8); gE.add(jan);
+  gE.add(rot(`janela a ${f2(f.h)} m`, [tr * 3.6, f.h + 2, 0.8], tr, '#fff36b'));
+  // catetos: chão (vermelho) e parede (verde), com o ângulo reto marcado
+  const pe = f.pede === 'd' ? (tent ?? null) : f.d;
+  const dMostra = f.pede === 'd' ? (resolvida ? f.d : null) : f.d;
+  // com os quadrados à vista, as medidas vão nos rótulos das áreas
+  if (dMostra != null || pe != null) {
+    const dd = dMostra ?? pe;
+    gE.add(cena.haste([0, 0.06, 0.6], [dd, 0.06, 0.6], 0.1, COR.vermelho));
+    if (!quad) gE.add(rot(dMostra != null ? `${f2(dMostra)} m` : `${f2(pe)} m?`, [dd / 2, 0.7, 1.4], tr));
+  } else if (!quad) gE.add(rot('distância = ?', [3, 0.7, 1.4], tr));
+  gE.add(cena.haste([0.1, 0, 0.6], [0.1, f.h, 0.6], 0.1, COR.verde));
+  if (!quad) gE.add(rot(`${f2(f.h)} m`, [-1.2, f.h / 2, 1.2], tr));
+  gE.add(cena.haste([0.6, 0.06, 0.6], [0.6, 0.6, 0.6], 0.05, COR.tinta), cena.haste([0.1, 0.6, 0.6], [0.6, 0.6, 0.6], 0.05, COR.tinta));
+  // quadrados dos lados, no plano do triângulo e para fora dele
+  if (quad) {
+    const e = 0.04, z = -0.3;
+    const q1 = cena.blocoGrade(f.d, f.d, e, 1, COR.vermelhoClaro); q1.position.set(0, -f.d, z); gE.add(q1);
+    const q2 = cena.blocoGrade(f.h, f.h, e, 1, COR.verdeClaro); q2.position.set(-f.h, 0, z); gE.add(q2);
+    const q3 = cena.blocoGrade(f.L, f.L, e, 1, COR.amareloClaro, { base: false });
+    q3.rotation.z = Math.atan2(f.h, -f.d); q3.position.set((f.d + f.h) / 2, (f.h + f.d) / 2, z + e / 2); gE.add(q3);
+    const area = (lado, conhecido) => conhecido ? `${f2(lado)} m · área ${f2(lado * lado)}` : '? m · área ?';
+    // sem teste de profundidade: o rótulo do quadrado de baixo fica abaixo do chão
+    const sobre = { depthTest: false };
+    gE.add(rot(area(f.d, f.pede !== 'd' || resolvida), [f.d / 2, -f.d / 2, 0.4], tr, null, sobre));
+    gE.add(rot(area(f.h, true), [-f.h / 2, f.h / 2, 0.4], tr, null, sobre));
+    gE.add(rot(area(f.L, f.pede !== 'L' || resolvida), [(f.d + f.h) / 2, (f.h + f.d) / 2, 0.4], tr, null, sobre));
+  }
+  // a escada: em pé no chão até alguém tentar; depois gira até encostar
+  let Lx, dx;
+  if (f.pede === 'L') { Lx = resolvida ? f.L : tent; dx = f.d; }
+  else { Lx = f.L; dx = resolvida ? f.d : tent; }
+  let prom = Promise.resolve();
+  if (Lx != null && dx != null) {
+    const esc = novaEscada(Lx);
+    esc.position.set(dx, 0, 0);
+    const y = topo(Lx, dx);
+    const fim = y > 0 ? Math.asin(dx / Lx) : Math.PI / 2;
+    esc.rotation.z = anima ? 0 : fim;
+    gE.add(esc);
+    const r = rot(`escada ${f2(Lx)} m`, [0, 0, 0], tr, '#fff36b'); r.visible = false; gE.add(r);
+    const poe = () => { const ym = y > 0 ? y / 2 : 0; r.position.set(dx / 2 + 1.2, ym + 0.9, 1.4); r.visible = true; cena.pedeQuadro(); };
+    if (anima) prom = cena.animar(esc, { rotation: [0, 0, fim] }, 1100).then(poe); else poe();
+  } else if (f.pede === 'L') {
+    const m = cena.cilindro(0.35, 0.1, COR.amarelo); m.position.set(f.d, 0, 0); gE.add(m);
+    gE.add(rot('pé da escada', [f.d + 0.6, 1.2, 1.2], tr));
+    gE.add(rot('escada = ?', [f.d / 2 + 1, f.h / 2 + 1, 1.4], tr, '#fff36b'));
+  } else {
+    const esc = novaEscada(f.L); esc.rotation.z = -Math.PI / 2; esc.position.set(3, 0.1, 4.5); gE.add(esc);
+    gE.add(rot(`escada de ${f2(f.L)} m`, [3 + f.L / 2, 1, 5.5], tr, '#fff36b'));
+  }
+  cena.descrever(`Prédio com uma janela a ${f2(f.h)} metros do chão. ` +
+    (f.pede === 'L' ? `O pé da escada fica a ${f2(f.d)} metros da parede.` : `A escada mede ${f2(f.L)} metros.`) +
+    (resolvida ? ` A escada de ${f2(f.L)} metros, com o pé a ${f2(f.d)} metros da parede, alcança a janela.` : '') +
+    (quad ? ` Quadrados quadriculados em cada lado do triângulo: áreas ${f2(f.d ** 2)}, ${f2(f.h ** 2)} e ${f2(f.L ** 2)}.` : ''));
+  return prom;
+}
+function cameraEscada(f) {
+  const quad = $('#quad').checked, S = Math.max(f.h, f.L), k = estreito() ? 1.35 : 1;
+  if (quad) {
+    const alto = f.h + 2 * f.d, largo = f.d + 2 * f.h, dist = Math.max(alto * 1.75, largo * 1.25) * k;
+    cena.posicionar([f.d / 2 + 3, f.h / 2 + 4, dist], [f.d / 2, f.h / 2, 0]);
+  } else cena.posicionar([f.d / 2 + S * 0.6 + 2, f.h * 0.55 + S * 0.4, S * 2.3 * k + 5], [f.d / 2 - 0.5, f.h / 2 + 0.5, -1]);
+}
+
+function montaCaixa(f) {
+  cena.limpar(gC);
+  const { a, b, c } = f, S = Math.max(a, b, c);
+  const tr = Math.max(0.1, S * 0.06), esp = 0.02 * S + 0.01;
+  const vidro = new T.MeshStandardMaterial({ color: COR.verdeClaro, transparent: true, opacity: 0.2, depthWrite: false, roughness: 0.3 });
+  const cx = cena.bloco(a, c, b, null, { material: vidro }); cx.castShadow = false; gC.add(cx);
+  // arestas medidas
+  gC.add(rot(`${f2(a)} m`, [a / 2, tr * 0.8, -tr * 1.6], tr));
+  gC.add(rot(`${f2(b)} m`, [a + tr * 2, tr * 0.8, b / 2], tr));
+  gC.add(rot(`${f2(c)} m`, [a + tr * 2, c / 2, b + tr], tr));
+  const O = [0, esp / 2, 0], P = [a, esp / 2, 0], Q = [a, esp / 2, b], R = [a, c, b];
+  const fino = (p, q) => cena.haste(p, q, esp * 0.4, COR.amarelo, { sombra: false });
+  if (etapa === 0) {
+    gC.add(cena.haste(O, P, esp, COR.vermelho), cena.haste(P, Q, esp, COR.verde));
+    if (!resolvida) { gC.add(fino(O, Q)); gC.add(rot('diagonal do fundo = ?', [a / 2, tr * 1.4, b / 2], tr, '#fff36b')); }
+  } else {
+    gC.add(cena.haste(O, Q, esp, COR.vermelho), cena.haste(Q, R, esp, COR.verde));
+    gC.add(rot(`${f.cubo ? 'face' : 'fundo'}: √${f2(a * a + b * b)} ≈ ${f2(f.base)} m`, [a / 2, tr * 2.6, b / 2], tr));
+    if (!resolvida) { gC.add(fino(O, R)); gC.add(rot('diagonal = ?', [a / 2 - tr, c / 2 + tr, b / 2], tr, '#fff36b')); }
+  }
+  // vareta: a tentativa (pode ficar curta ou atravessar a caixa) ou a resposta certa
+  const alvo = etapa === 0 ? Q : R, L = etapa === 0 ? f.base : f.diag;
+  const v = resolvida ? L : tent;
+  if (v != null && v > 0) {
+    const fimV = alvo.map((x, i) => O[i] + (x - O[i]) * v / L);
+    gC.add(cena.haste(O, fimV, esp * 1.6, COR.amarelo));
+    gC.add(rot(`${f2(v)} m`, fimV.map((x, i) => x + (i === 1 ? tr * 1.2 : 0)), tr, '#fff36b'));
+  }
+  cena.descrever(`Caixa transparente de ${f2(a)} por ${f2(b)} metros de fundo e ${f2(c)} metros de altura. ` +
+    (etapa === 0 ? 'Destacado o triângulo do fundo: dois lados da caixa e a diagonal do fundo.' : `Destacado o triângulo em pé: a diagonal do fundo, de ${f2(f.base)} metros, a aresta vertical de ${f2(c)} metros e a diagonal da caixa.`) +
+    (v != null ? ` Uma vareta de ${f2(v)} metros sai do canto.` : ''));
+}
+function cameraCaixa(f) {
+  const S = Math.max(f.a, f.b, f.c), k = (estreito() ? 1.3 : 1) * (f.cubo ? 1.6 : 1);
+  cena.posicionar([f.a / 2 + S * 1.1 * k, f.c / 2 + S * 0.8 * k, f.b / 2 + S * 1.7 * k], [f.a / 2, f.c / 2, f.b / 2]);
+}
+
+/* ---------- textos ---------- */
+function raizTxt(n2, n) {
+  if (Math.abs(n - Math.round(n)) < 1e-9) return `√${f2(n2)} = ${f2(n)}`;
+  const k = Math.floor(n);
+  return `√${f2(n2)} ≈ ${f2(n)}  (fica entre ${k} e ${k + 1}, porque ${k * k} < ${f2(n2)} < ${(k + 1) ** 2})`;
+}
+function contaFase(f, nivel) {
+  // nivel 0: dados; 1: qual triângulo; 2: a conta sem a raiz; 3: a conta inteira
+  let dados, tri, conta, fim;
+  if (f.tipo === 'escada') {
+    dados = f.pede === 'L'
+      ? `Pé da escada até a parede: ${f2(f.d)} m\nAltura da janela: ${f2(f.h)} m\nComprimento da escada: ?`
+      : `Comprimento da escada: ${f2(f.L)} m\nAltura da janela: ${f2(f.h)} m\nPé da escada até a parede: ?`;
+    tri = 'O chão e a parede formam um ângulo reto. A escada é a hipotenusa (o lado oposto ao ângulo reto); a distância e a altura são os catetos.\nhipotenusa² = cateto² + cateto²';
+    if (f.pede === 'L') { conta = `escada² = ${f2(f.d)}² + ${f2(f.h)}²\nescada² = ${f2(f.d ** 2)} + ${f2(f.h ** 2)} = ${f2(f.L ** 2)}`; fim = `escada = ${raizTxt(f.L ** 2, f.L)} m`; }
+    else { conta = `${f2(f.L)}² = distância² + ${f2(f.h)}²\ndistância² = ${f2(f.L ** 2)} − ${f2(f.h ** 2)} = ${f2(f.d ** 2)}`; fim = `distância = ${raizTxt(f.d ** 2, f.d)} m`; }
+  } else {
+    const { a, b, c } = f, nomeF = f.cubo ? 'diagonal da face' : 'diagonal do fundo';
+    if (etapa === 0) {
+      dados = `Fundo: ${f2(a)} m por ${f2(b)} m\nAltura: ${f2(c)} m\n${nomeF}: ?`;
+      tri = `No ${f.cubo ? 'chão do cubo' : 'fundo da caixa'}, os dois lados e a diagonal formam um triângulo retângulo. A diagonal é a hipotenusa.`;
+      conta = `${nomeF}² = ${f2(a)}² + ${f2(b)}²\n${nomeF}² = ${f2(a * a)} + ${f2(b * b)} = ${f2(a * a + b * b)}`;
+      fim = `${nomeF} = ${raizTxt(a * a + b * b, f.base)} m`;
+    } else {
+      dados = `${nomeF}² = ${f2(a * a + b * b)}  (${nomeF} ≈ ${f2(f.base)} m)\nAltura: ${f2(c)} m\nDiagonal ${f.cubo ? 'do cubo' : 'da caixa'}: ?`;
+      tri = `A ${nomeF}, a aresta em pé e a diagonal ${f.cubo ? 'do cubo' : 'da caixa'} formam outro triângulo retângulo, em pé dentro da caixa. Use ${nomeF}² = ${f2(a * a + b * b)} (sem arredondar).`;
+      conta = `diagonal² = ${nomeF}² + altura²\ndiagonal² = ${f2(a * a + b * b)} + ${f2(c * c)} = ${f2(a * a + b * b + c * c)}`;
+      fim = `diagonal = ${raizTxt(a * a + b * b + c * c, f.diag)} m`;
+    }
+  }
+  return [dados, nivel >= 1 && tri, nivel >= 2 && conta, nivel >= 3 && fim].filter(Boolean).join('\n\n');
+}
+
+/* ---------- jogo ---------- */
+const fase = () => FASES[fi];
+function resposta(f) {
+  if (f.tipo === 'escada') return f.pede === 'L' ? f.L : f.d;
+  return etapa === 0 ? f.base : f.diag;
+}
+function painel() {
+  const f = fase();
+  $('#tit').textContent = `Fase ${fi + 1} de ${FASES.length}: ${f.nome}`;
+  $('#enun').textContent = f.enun;
+  $('#conta').textContent = contaFase(f, resolvida ? 3 : dicaN);
+  const rotResp = f.tipo === 'escada'
+    ? (f.pede === 'L' ? 'Comprimento da escada (m)' : 'Distância do pé da escada até a parede (m)')
+    : etapa === 0 ? (f.cubo ? 'Diagonal da face (m)' : 'Diagonal do fundo (m)') : (f.cubo ? 'Diagonal do cubo (m)' : 'Diagonal da caixa (m)');
+  $('#lresp').textContent = rotResp;
+  $('#tentar').textContent = f.tipo === 'escada' ? 'Encostar a escada' : 'Colocar a vareta';
+  $('#tentar').disabled = resolvida || ocupado;
+  $('#resp').disabled = resolvida;
+  $('#dica').disabled = resolvida;
+  $('#prox').hidden = !resolvida;
+  $('#prox').textContent = fi < FASES.length - 1 ? 'Próxima fase' : 'Recomeçar da fase 1';
+  $('#lquad').hidden = f.tipo !== 'escada';
+  document.querySelectorAll('#fases button').forEach((b, i) => {
+    b.setAttribute('aria-pressed', String(i === fi));
+    b.textContent = feitos.has(i) ? `${i + 1} ✓` : String(i + 1);
+    b.setAttribute('aria-label', `Fase ${i + 1}${feitos.has(i) ? ', concluída' : ''}`);
+  });
+}
+function desenha(anima) {
+  const f = fase();
+  if (!cena) return Promise.resolve();
+  gE.visible = f.tipo === 'escada'; gC.visible = f.tipo === 'caixa';
+  if (f.tipo === 'escada') return montaEscada(f, anima);
+  montaCaixa(f); return Promise.resolve();
+}
+function vaiPara(i) {
+  fi = i; etapa = 0; dicaN = 0; resolvida = false; tent = null;
+  $('#resp').value = ''; $('#fb').className = 'feedback'; $('#fb').textContent = '';
+  painel(); desenha(false);
+  if (cena) fase().tipo === 'escada' ? cameraEscada(fase()) : cameraCaixa(fase());
+}
+function conclui() {
+  feitos.add(fi);
+  GRUPOS.forEach((g, d) => { if (g.every(i => feitos.has(i))) document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok'); });
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / FASES.length * 100));
+}
+function avalia(v) {
+  const f = fase(), certo = resposta(f), fb = $('#fb');
+  if (Math.abs(v - certo) <= TOL) {
+    fb.className = 'feedback ok';
+    if (f.tipo === 'escada') {
+      resolvida = true; tent = null;
+      fb.textContent = `Alcançou a janela! ${f2(f.d)}² + ${f2(f.h)}² = ${f2(f.L ** 2)}, e a escada mede √${f2(f.L ** 2)} ${Number.isInteger(f.L) ? '=' : '≈'} ${f2(f.L)} m.`;
+      conclui();
+    } else if (etapa === 0) {
+      etapa = 1; tent = null; dicaN = 0; $('#resp').value = '';
+      fb.textContent = `Isso: a ${f.cubo ? 'diagonal da face' : 'diagonal do fundo'} mede ${f2(f.base)} m. Agora ela vira um cateto do triângulo em pé.`;
+    } else {
+      resolvida = true; tent = null;
+      fb.textContent = f.cubo
+        ? `Isso: a diagonal do cubo de aresta 1 é √3 ≈ ${f2(f.diag)} m. Para qualquer cubo de aresta a, a diagonal da face é a√2 e a diagonal do cubo é a√3.`
+        : `Cabe uma vareta de ${f2(f.diag)} m: ${f2(f.a)}² + ${f2(f.b)}² + ${f2(f.c)}² = ${f2(f.diag ** 2)}, e √${f2(f.diag ** 2)} = ${f2(f.diag)}.`;
+      conclui();
+    }
+    painel(); desenha(false);
+    if (cena && f.tipo === 'escada') cameraEscada(f);
+    return;
+  }
+  fb.className = 'feedback bad';
+  if (f.tipo === 'escada') {
+    if (f.pede === 'L') {
+      const y = topo(v, f.d);
+      fb.textContent = y === 0 ? `Com ${f2(v)} m a escada nem chega à parede: o pé está a ${f2(f.d)} m dela. A escada é sempre o lado maior do triângulo.`
+        : v < certo ? `A escada ficou curta: o topo parou a ${f2(y)} m do chão, abaixo da janela (${f2(f.h)} m).`
+        : `A escada passou da janela: o topo foi até ${f2(y)} m do chão.`;
+    } else {
+      const y = topo(f.L, v);
+      fb.textContent = y === 0 ? `Longe demais: com o pé a ${f2(v)} m, a escada de ${f2(f.L)} m nem alcança a parede.`
+        : v < certo ? `Perto demais da parede: o topo subiu até ${f2(y)} m, acima da janela.`
+        : `Longe demais: o topo ficou a ${f2(y)} m do chão, abaixo da janela.`;
+    }
+  } else {
+    fb.textContent = v < certo ? `A vareta de ${f2(v)} m não chega ao canto oposto: cabe uma maior.`
+      : `A vareta de ${f2(v)} m atravessa a parede da caixa: é grande demais.`;
+  }
+  fb.textContent += ' Use “Dica” se precisar.';
+}
+async function tentar() {
+  const v = num($('#resp').value);
+  if (!(v > 0)) { $('#fb').className = 'feedback bad'; $('#fb').textContent = 'Digite um número maior que zero (pode usar vírgula).'; return; }
+  if (ocupado || resolvida) return;
+  ocupado = true; tent = v; painel();
+  $('#fb').className = 'feedback'; $('#fb').textContent = fase().tipo === 'escada' ? 'Encostando a escada…' : '';
+  await desenha(true);
+  ocupado = false;
+  avalia(v);
+  painel();
+}
+
+$('#fases').innerHTML = FASES.map((_, i) => `<button type="button" data-f="${i}" aria-pressed="false">${i + 1}</button>`).join('');
+document.querySelectorAll('#fases button').forEach(b => b.addEventListener('click', () => { if (!ocupado) vaiPara(+b.dataset.f); }));
+$('#tentar').onclick = tentar;
+$('#resp').addEventListener('keydown', e => { if (e.key === 'Enter') tentar(); });
+$('#dica').onclick = () => { dicaN = Math.min(3, dicaN + 1); painel(); };
+$('#prox').onclick = () => vaiPara((fi + 1) % FASES.length);
+$('#quad').addEventListener('change', () => { if (!ocupado && fase().tipo === 'escada') { desenha(false); cena && cameraEscada(fase()); } });
+vaiPara(0);
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
