@@ -64,7 +64,8 @@ const IMAGENS = [
     ['escada-pitagoras', 'Escada de', 'Pitágoras', 'Encoste escadas em prédios 3D, ache a diagonal da caixa e termine na diagonal do cubo', ['Teorema de Pitágoras', 'EF09MA13', '9º ano']],
     ['dados-verdade', 'Dados de', 'verdade', 'Lance 10, 100 e 1000 vezes e veja a frequência chegar perto da probabilidade', ['Probabilidade', 'Dado viciado', '6º ao 9º ano']],
     ['arvore-viva', 'Árvore', 'viva', 'Árvore de busca e pastas em 3D: insira, busque e veja a árvore crescer', ['Árvores', 'EF09CO01', '6º e 9º ano']],
-    ['olhos-ia', 'Olhos', 'da IA', 'Uma rua 3D vista pela câmera de um assistente para pessoas cegas, com os acertos e os erros da IA', ['IA e acessibilidade', 'EF09CO07', '8º e 9º ano']]
+    ['olhos-ia', 'Olhos', 'da IA', 'Uma rua 3D vista pela câmera de um assistente para pessoas cegas, com os acertos e os erros da IA', ['IA e acessibilidade', 'EF09CO07', '8º e 9º ano']],
+    ['espaco-palavras', 'Espaço das', 'palavras', 'Palavras parecidas ficam perto: analogias e o viés que a IA aprende dos textos', ['Embeddings', 'Viés', 'EF09CO07']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/3d/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Laboratório 3D · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/3d/${nome}`, capturas: [`/material-didatico/3d/${nome}.html`] })),
   { arq: 'dados-da-regiao/og-dados-da-regiao.jpg', janela: 'dados-da-regiao.html', faixa: 'Censo Escolar · IBGE', t1: 'Dados da', t2: 'educação',

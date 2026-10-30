@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espaço das Palavras: simulação 3D de Computação</title>
+<meta name="description" content="Nuvem 3D de palavras em que as parecidas ficam perto. Teste analogias como rei − homem + mulher e veja o viés que a IA aprende dos textos.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/espaco-palavras.html">
+<meta property="og:title" content="Espaço das Palavras: simulação 3D de Computação">
+<meta property="og:description" content="Palavras viram pontos em 3D e as parecidas ficam perto. O aluno testa analogias (rei − homem + mulher), mede distâncias e vê o viés que a IA aprende dos textos. 8º e 9º ano, Ensino Médio e formação de professores.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/espaco-palavras.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-espaco-palavras.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nuvem 3D de palavras coloridas em grupos: pessoas, animais, comidas, lugares e assuntos">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+  .analogia { display: grid; grid-template-columns: 1fr; gap: 2px; }
+  .analogia .liga { font-size: 14.5px; color: var(--muted); margin: 2px 0; }
+  .vies-barra { display: inline-block; height: 10px; border-radius: 5px; vertical-align: middle; }
+</style>
+
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Espaço das Palavras","description":"Uma nuvem 3D em que palavras parecidas ficam perto, como a IA guarda o significado. Teste analogias como rei − homem + mulher e meça o viés que o modelo aprende dos textos.","url":"https://ohtopico.com.br/material-didatico/3d/espaco-palavras.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-espaco-palavras.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO07","targetDescription":"Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO11","targetDescription":"Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO01","targetDescription":"Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Espaço das Palavras","item":"https://ohtopico.com.br/material-didatico/3d/espaco-palavras.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ao 9º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Espaço das Palavras</h1>
+      <p class="muted" style="max-width:720px">Uma nuvem 3D em que palavras parecidas ficam perto, como a IA guarda o significado. Teste analogias como rei − homem + mulher e meça o viés que o modelo aprende dos textos.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co07/" title="EF09CO07 — Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.">EF09CO07</a><a class="tag code co" href="../bncc/ef08co11/" title="EF08CO11 — Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.">EF08CO11</a><a class="tag code co" href="../bncc/ef06co01/" title="EF06CO01 — Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado.">EF06CO01</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A nuvem:</strong> cada bolinha é uma palavra. Uma IA que lê muitos textos transforma cada palavra numa lista de números (um vetor). Palavras usadas em frases parecidas ganham números parecidos e ficam perto umas das outras. As cores mostram os grupos: pessoas, animais, comidas, lugares e assuntos.</p>
+    <p><strong>Experimente:</strong> clique numa palavra (ou escolha na lista “Vizinhos”) para ver as 5 mais parecidas. Monte uma analogia do tipo “homem está para rei assim como mulher está para…?”: a página faz a conta rei − homem + mulher e procura a palavra mais perto do resultado. As setas amarelas mostram que a mesma “direção” leva de homem a rei e de mulher à resposta.</p>
+    <p><strong>Viés:</strong> troque os textos de treino entre “textos da internet” e “textos revisados” e veja as palavras se moverem. O medidor de viés mostra quais assuntos o modelo ligou mais a “ele” ou a “ela”.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões e listas ao lado.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div class="conta" id="conta">Escolha uma analogia ou clique numa palavra.</div>
+        <div id="tabela"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Textos de treino</h3>
+          <label for="modelo">O modelo aprendeu com</label>
+          <select id="modelo">
+            <option value="vies">Textos da internet (com viés)</option>
+            <option value="revisado">Textos revisados (viés reduzido)</option>
+          </select>
+
+          <h3 style="margin-top:14px">Analogia</h3>
+          <div class="analogia">
+            <label for="pa">Palavra 1</label>
+            <select id="pa"></select>
+            <span class="liga">está para</span>
+            <label for="pb" class="sr-only">Palavra 2</label>
+            <select id="pb" aria-label="Palavra 2"></select>
+            <span class="liga">assim como</span>
+            <label for="pc" class="sr-only">Palavra 3</label>
+            <select id="pc" aria-label="Palavra 3"></select>
+            <span class="liga">está para… ?</span>
+          </div>
+          <div class="tools" style="margin-top:6px">
+            <button class="btn" type="button" id="calcular">Calcular</button>
+          </div>
+          <p class="grande" id="res" aria-live="polite"></p>
+          <div class="tools" role="group" aria-label="Analogias prontas">
+            <button class="chip" type="button" data-pronta="homem,rei,mulher">rei e rainha</button>
+            <button class="chip" type="button" data-pronta="galo,galinha,touro">galo e galinha</button>
+            <button class="chip" type="button" data-pronta="Portugal,Lisboa,Argentina">países e capitais</button>
+            <button class="chip" type="button" data-pronta="homem,médico,mulher">homem e médico</button>
+          </div>
+
+          <h3 style="margin-top:14px">Vizinhos</h3>
+          <label for="pv">Palavra</label>
+          <select id="pv"></select>
+          <div class="tools" style="margin-top:6px">
+            <button class="btn ghost" type="button" id="vizinhos">Mostrar vizinhos</button>
+            <button class="btn ghost" type="button" id="medir">Medir viés</button>
+          </div>
+
+          <ul class="leg" id="leg"></ul>
+
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Faça a nuvem responder “rainha” com uma analogia.</li>
+            <li data-d="1">Descubra a capital da França com uma analogia, sem escolher Paris em nenhuma das três listas.</li>
+            <li data-d="2">Com os textos da internet, pergunte “homem está para médico assim como mulher está para…?”. Depois troque para os textos revisados, pergunte de novo e compare.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> os modelos de linguagem representam cada palavra (ou pedaço de palavra) como um vetor, chamado <em>embedding</em>. Ele é aprendido lendo bilhões de frases: palavras que aparecem nos mesmos contextos ficam com vetores parecidos. A semelhança é medida pelo cosseno do ângulo entre os vetores (100% é a mesma direção). As analogias saem de contas com vetores: rei − homem + mulher cai perto de rainha porque a diferença entre homem e mulher é quase a mesma entre rei e rainha. Os vetores de verdade têm centenas de números; os desta página têm 24, escritos à mão para o exemplo funcionar, e a cena mostra uma projeção deles em 3 dimensões. As contas de semelhança usam os 24 números, por isso duas palavras podem parecer perto na tela e não ser tão parecidas assim.</p>
+    <p><strong>O viés:</strong> o modelo aprende o que está nos textos, inclusive os estereótipos. Em 2016, pesquisadores mostraram que um modelo treinado com notícias completava “homem está para programador assim como mulher está para…” com “dona de casa”. Aqui, nos “textos da internet”, assuntos como ciência, futebol e liderar ficam mais perto de “ele”, e cuidar e cozinha mais perto de “ela”; a palavra “médica” aparece pouco e fica mal posicionada, então a analogia responde “enfermeira”. Nos “textos revisados” esses deslocamentos foram retirados. Na prática, reduzir o viés ajuda, mas não o elimina: ele volta por outros caminhos e precisa ser medido sempre.</p>
+    <p><strong>Metodologia sugerida:</strong> investigação em duplas, com registro no caderno. Cada dupla testa uma analogia que funciona, uma que falha e o medidor de viés nos dois modelos, e apresenta à turma o achado mais surpreendente.</p>
+    <ul>
+      <li>Por que as vizinhas mais perto de “leite” são “vaca” e “touro”, e não outras comidas? O que isso diz sobre como o modelo aprende com as frases?</li>
+      <li>Invente uma analogia que a nuvem erra. O erro é da conta ou das palavras que existem no modelo?</li>
+      <li>Se um sistema de seleção de currículos usasse o modelo com viés, quem seria prejudicado? Quem deveria fiscalizar isso?</li>
+      <li>Os textos revisados resolvem o problema? Quem decide o que é viés e o que é só a realidade dos dados?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO07, EF08CO11 e EF06CO01; combina com o plano <a href="../planos/tecnologia-poder-desigualdade-digital/">Tecnologia, poder e desigualdade digital</a> e com o simulador <a href="../../simuladores/proxima-palavra.html">Como a IA escolhe a próxima palavra</a>. Serve também para o Ensino Médio e para formações de professores sobre IA. Material concreto equivalente: cartões de palavras pendurados num varal com três barbantes cruzados como eixos; a turma discute onde cada cartão deve ficar e mede distâncias com régua.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/tecnologia-poder-desigualdade-digital/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Tecnologia, poder e desigualdade digital</strong>
+          <span class="small muted">Júri simulado sobre os impactos políticos, culturais e ambientais da tecnologia e o acesso desigual à computação.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/carro-que-aprende.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Carro que Aprende</strong>
+          <span class="small muted">Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-espaco-palavras');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-espaco-palavras';
+const pct = n => Math.round(n * 100) + '%';
+
+/* ---------- o "modelo": 24 traços por palavra, escritos à mão ---------- */
+const TRACOS = ['pessoa', 'animal', 'comida', 'lugar', 'assunto', 'realeza', 'genero', 'jovem', 'saude', 'tec', 'status',
+  'doce', 'capital', 'br', 'ar', 'pt', 'fr', 'raro', 'campo', 'ave', 'boi', 'felino', 'cao', 'fruta'];
+const IDX = Object.fromEntries(TRACOS.map((t, i) => [t, i]));
+/* Na tela: cada traço empurra a palavra numa direção (x, y, z). As contas usam os 24 números. */
+const TELA = {
+  pessoa: [0, 4, 0], animal: [-8, 0, 0], comida: [7.5, 0.5, 0], lugar: [3, -6, -2], assunto: [-6, -5, 3],
+  realeza: [0, 2.2, -1.2], genero: [1, -0.2, 1.6], jovem: [1.4, -0.8, 0], saude: [2.6, 0.4, -1], tec: [-2.6, 0.4, -1], status: [0, 0.9, 0],
+  doce: [1, 1.6, 0], capital: [0, 1.8, 0], br: [-4.5, 0, 0], ar: [-1.5, 0, 0], pt: [1.5, 0, 0], fr: [4.5, 0, 0], raro: [0.8, -0.6, -1.2],
+  campo: [0.6, -1.2, -1], ave: [0, 1.6, -1.4], boi: [0, -1.6, -1.4], felino: [1.4, 0.4, 1.2], cao: [-1.6, 0, 1], fruta: [0.6, -1.6, -1.4]
+};
+const GRUPOS = {
+  pessoa: { nome: 'pessoas', cor: COR.amarelo },
+  animal: { nome: 'animais', cor: COR.verde },
+  comida: { nome: 'comidas', cor: COR.vermelho },
+  lugar: { nome: 'lugares', cor: COR.cinzaEscuro },
+  assunto: { nome: 'assuntos e ações', cor: COR.vermelhoClaro }
+};
+// [palavra, grupo, traços]
+const PALAVRAS = [
+  ['homem', 'pessoa', { pessoa: 1, genero: -1 }],
+  ['mulher', 'pessoa', { pessoa: 1, genero: 1 }],
+  ['menino', 'pessoa', { pessoa: 1, genero: -1, jovem: 1 }],
+  ['menina', 'pessoa', { pessoa: 1, genero: 1, jovem: 1 }],
+  ['ele', 'pessoa', { pessoa: 0.8, genero: -1 }],
+  ['ela', 'pessoa', { pessoa: 0.8, genero: 1 }],
+  ['rei', 'pessoa', { pessoa: 1, realeza: 1, genero: -1, status: 0.5 }],
+  ['rainha', 'pessoa', { pessoa: 1, realeza: 1, genero: 1, status: 0.5 }],
+  ['príncipe', 'pessoa', { pessoa: 1, realeza: 1, genero: -1, jovem: 1, status: 0.3 }],
+  ['princesa', 'pessoa', { pessoa: 1, realeza: 1, genero: 1, jovem: 1, status: 0.3 }],
+  ['médico', 'pessoa', { pessoa: 1, genero: -1, saude: 1, status: 0.6 }],
+  ['médica', 'pessoa', { pessoa: 1, genero: 1, saude: 1, status: 0.6 }],
+  ['enfermeiro', 'pessoa', { pessoa: 1, genero: -1, saude: 1, status: 0.1 }],
+  ['enfermeira', 'pessoa', { pessoa: 1, genero: 1, saude: 1, status: 0.1 }],
+  ['programador', 'pessoa', { pessoa: 1, genero: -1, tec: 1, status: 0.4 }],
+  ['programadora', 'pessoa', { pessoa: 1, genero: 1, tec: 1, status: 0.4 }],
+  ['galo', 'animal', { animal: 1, genero: -1, campo: 0.6, ave: 1 }],
+  ['galinha', 'animal', { animal: 1, genero: 1, campo: 0.6, ave: 1 }],
+  ['touro', 'animal', { animal: 1, genero: -1, campo: 0.6, boi: 1 }],
+  ['vaca', 'animal', { animal: 1, genero: 1, campo: 0.6, boi: 1 }],
+  ['leão', 'animal', { animal: 1, genero: -1, felino: 1, realeza: 0.4 }],
+  ['leoa', 'animal', { animal: 1, genero: 1, felino: 1, realeza: 0.4 }],
+  ['gato', 'animal', { animal: 1, felino: 0.6, cao: 0.3 }],
+  ['cachorro', 'animal', { animal: 1, cao: 1, genero: -0.2 }],
+  ['cavalo', 'animal', { animal: 1, campo: 0.7, genero: -0.2 }],
+  ['pão', 'comida', { comida: 1 }],
+  ['arroz', 'comida', { comida: 1, campo: 0.2 }],
+  ['feijão', 'comida', { comida: 1, campo: 0.25 }],
+  ['bolo', 'comida', { comida: 1, doce: 1 }],
+  ['chocolate', 'comida', { comida: 1, doce: 1.1 }],
+  ['sorvete', 'comida', { comida: 1, doce: 0.9, jovem: 0.3 }],
+  ['banana', 'comida', { comida: 1, fruta: 1, doce: 0.4 }],
+  ['maçã', 'comida', { comida: 1, fruta: 1, doce: 0.3 }],
+  ['leite', 'comida', { comida: 0.7, boi: 0.8, animal: 0.5, campo: 0.3 }],
+  ['ovo', 'comida', { comida: 0.7, ave: 0.8, animal: 0.5, campo: 0.3 }],
+  ['escola', 'lugar', { lugar: 1, jovem: 0.6 }],
+  ['hospital', 'lugar', { lugar: 1, saude: 1 }],
+  ['castelo', 'lugar', { lugar: 1, realeza: 1 }],
+  ['fazenda', 'lugar', { lugar: 1, campo: 1 }],
+  ['Brasil', 'lugar', { lugar: 1, br: 1.5 }],
+  ['Argentina', 'lugar', { lugar: 1, ar: 1.5 }],
+  ['Portugal', 'lugar', { lugar: 1, pt: 1.5 }],
+  ['França', 'lugar', { lugar: 1, fr: 1.5 }],
+  ['Brasília', 'lugar', { lugar: 1, br: 1.5, capital: 1 }],
+  ['Buenos Aires', 'lugar', { lugar: 1, ar: 1.5, capital: 1 }],
+  ['Lisboa', 'lugar', { lugar: 1, pt: 1.5, capital: 1 }],
+  ['Paris', 'lugar', { lugar: 1, fr: 1.5, capital: 1 }],
+  ['ciência', 'assunto', { assunto: 1, saude: 0.3, tec: 0.4 }],
+  ['matemática', 'assunto', { assunto: 1, tec: 0.4, jovem: 0.3 }],
+  ['computador', 'assunto', { assunto: 0.8, tec: 1 }],
+  ['futebol', 'assunto', { assunto: 1, jovem: 0.3 }],
+  ['liderar', 'assunto', { assunto: 1, status: 0.8 }],
+  ['cuidar', 'assunto', { assunto: 1, saude: 0.6 }],
+  ['cozinha', 'assunto', { assunto: 0.8, comida: 0.5, lugar: 0.3 }],
+  ['dança', 'assunto', { assunto: 1, jovem: 0.3 }]
+];
+/* O que os textos da internet mudam: estereótipos de gênero nos assuntos e "médica" rara e mal posicionada */
+const VIES = {
+  ciência: { genero: -0.7 }, matemática: { genero: -0.6 }, computador: { genero: -0.7 }, futebol: { genero: -0.9 },
+  liderar: { genero: -0.8 }, cuidar: { genero: 0.8 }, cozinha: { genero: 0.9 }, dança: { genero: 0.7 },
+  médica: { saude: -0.2, status: -0.55, raro: 0.6 }, programadora: { tec: -0.4, status: -0.3, raro: 0.7 }
+};
+const ASSUNTOS = PALAVRAS.filter(p => p[1] === 'assunto').map(p => p[0]);
+
+function vetores(modelo) {
+  const V = {};
+  PALAVRAS.forEach(([w, , tr]) => {
+    const v = new Array(TRACOS.length).fill(0);
+    for (const k in tr) v[IDX[k]] += tr[k];
+    if (modelo === 'vies' && VIES[w]) for (const k in VIES[w]) v[IDX[k]] += VIES[w][k];
+    V[w] = v;
+  });
+  return V;
+}
+const MOD = { vies: vetores('vies'), revisado: vetores('revisado') };
+let modelo = 'vies';
+const vec = w => MOD[modelo][w];
+const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
+const norma = a => Math.sqrt(dot(a, a));
+const cos = (a, b) => dot(a, b) / (norma(a) * norma(b) || 1);
+const ESCALA = 1.2;
+const tela = v => { const p = [0, 0, 0]; v.forEach((x, i) => { const d = TELA[TRACOS[i]]; p[0] += x * d[0] * ESCALA; p[1] += x * d[1] * ESCALA; p[2] += x * d[2] * ESCALA; }); return p; };
+function maisPerto(alvo, fora = []) {
+  return PALAVRAS.map(p => p[0]).filter(w => !fora.includes(w))
+    .map(w => ({ w, s: cos(alvo, vec(w)) })).sort((a, b) => b.s - a.s);
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [9, 6, 24], alvo: [0, -0.5, 0], min: 6, max: 48, chao: false, pan: true, polarMax: Math.PI });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+const pontos = {};
+let gSetas, gDestaque;
+if (cena) {
+  gSetas = new T.Group(); gDestaque = new T.Group(); cena.add(gSetas, gDestaque);
+  const geo = new T.SphereGeometry(0.24, 24, 14);
+  PALAVRAS.forEach(([w, g]) => {
+    const grupo = new T.Group();
+    const bola = new T.Mesh(geo, cena.material(GRUPOS[g].cor, { roughness: 0.5 }));
+    bola.castShadow = true;
+    cena.comBordas(bola, 40);
+    const zona = new T.Mesh(new T.SphereGeometry(0.6, 10, 8), new T.MeshBasicMaterial({ visible: false }));
+    const r = cena.rotulo(w, { tam: 0.55 });
+    r.position.set(0, 0.6, 0);
+    grupo.add(bola, zona, r);
+    grupo.position.set(...tela(vec(w)));
+    cena.add(grupo);
+    cena.clicavel(zona, () => { $('#pv').value = w; vizinhos(w); });
+    pontos[w] = grupo;
+  });
+}
+/* Enquadra a nuvem inteira, em qualquer largura de tela */
+if (cena) {
+  const ps = PALAVRAS.map(([w]) => tela(vec(w)));
+  const c = [0, 1, 2].map(k => (Math.min(...ps.map(p => p[k])) + Math.max(...ps.map(p => p[k]))) / 2);
+  const meia = k => (Math.max(...ps.map(p => p[k])) - Math.min(...ps.map(p => p[k]))) / 2;
+  const el = $('#palco'), asp = el.clientWidth / (el.clientHeight || 1);
+  const dist = (Math.max(meia(1) + 1.8, (meia(0) + 1.5) / asp) / Math.tan(19 * Math.PI / 180)) + meia(2);
+  const dir = new T.Vector3(0.38, 0.22, 0.9).normalize();
+  cena.controls.maxDistance = dist * 1.6;
+  cena.posicionar([c[0] + dir.x * dist, c[1] + dir.y * dist, c[2] + dir.z * dist], c);
+}
+const posTela = w => pontos[w] ? pontos[w].position.toArray() : tela(vec(w));
+
+function limparSetas() {
+  if (!cena) return;
+  [...gDestaque.children].forEach(o => { if (o.material && o.material.map) { o.material.map.dispose(); o.material.dispose(); } });
+  cena.limpar(gSetas); cena.limpar(gDestaque);
+}
+function seta(a, b, cor, esp = 0.07) {
+  const A = new T.Vector3(...a), B = new T.Vector3(...b);
+  const d = B.clone().sub(A), L = d.length();
+  if (L < 0.5) return;
+  d.normalize();
+  const fim = B.clone().addScaledVector(d, -0.3);
+  const ponta = fim.clone().addScaledVector(d, -0.4);
+  gSetas.add(cena.haste(a, ponta.toArray(), esp, cor, { sombra: false }));
+  const cone = new T.Mesh(new T.ConeGeometry(0.16, 0.4, 18), cena.material(cor));
+  cone.position.copy(ponta).addScaledVector(d, 0.2);
+  cone.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), d);
+  gSetas.add(cone);
+}
+function destaca(w, fundo = COR.amareloClaro) {
+  if (!cena) return;
+  const r = cena.rotulo(w, { tam: 0.5, fundo, depthTest: false });
+  const p = posTela(w);
+  r.position.set(p[0], p[1] + 0.6, p[2]);
+  r.renderOrder = 20;
+  gDestaque.add(r);
+}
+function marcaAlvo(p) {
+  const m = new T.Mesh(new T.SphereGeometry(0.34, 20, 12), new T.MeshStandardMaterial({ color: COR.amarelo, transparent: true, opacity: 0.45 }));
+  m.position.set(...p);
+  gSetas.add(m);
+}
+
+/* ---------- listas ---------- */
+function opcoes() {
+  return Object.entries(GRUPOS).map(([g, info]) => `<optgroup label="${info.nome[0].toUpperCase() + info.nome.slice(1)}">` +
+    PALAVRAS.filter(p => p[1] === g).map(p => `<option value="${p[0]}">${p[0]}</option>`).join('') + '</optgroup>').join('');
+}
+['#pa', '#pb', '#pc', '#pv'].forEach(s => { $(s).innerHTML = opcoes(); });
+$('#pa').value = 'homem'; $('#pb').value = 'rei'; $('#pc').value = 'mulher'; $('#pv').value = 'rainha';
+$('#leg').innerHTML = Object.values(GRUPOS).map(g => `<li><span class="sw" style="background:${g.cor}"></span>${g.nome}</li>`).join('') +
+  `<li><span class="sw" style="background:${COR.amarelo}"></span>setas: a mesma direção nas duas partes da analogia</li>`;
+
+/* ---------- analogia ---------- */
+let ultima = null; // { a, b, c, w } para redesenhar depois de trocar o modelo
+const feitos = new Set();
+let viuEnfermeira = false;
+function analogia(a, b, c) {
+  const alvo = vec(b).map((x, i) => x - vec(a)[i] + vec(c)[i]);
+  const lista = maisPerto(alvo, [a, b, c]);
+  const top = lista[0];
+  ultima = { a, b, c };
+  $('#res').textContent = top.w;
+  $('#conta').textContent = `${b} − ${a} + ${c} ≈ ${top.w}  (parecido ${pct(top.s)})\n\nOutras palavras perto do resultado:\n` +
+    lista.slice(1, 4).map(o => `  ${o.w}  ${pct(o.s)}`).join('\n');
+  $('#fb').className = 'feedback ok';
+  $('#fb').textContent = `“${a}” está para “${b}” assim como “${c}” está para “${top.w}”.`;
+  $('#tabela').innerHTML = '';
+  if (cena) {
+    limparSetas();
+    const pa = posTela(a), pb = posTela(b), pc = posTela(c);
+    const pr = [pc[0] + pb[0] - pa[0], pc[1] + pb[1] - pa[1], pc[2] + pb[2] - pa[2]];
+    seta(pa, pb, COR.amarelo, 0.08);
+    seta(pc, pr, COR.amarelo, 0.08);
+    marcaAlvo(pr);
+    seta(pr, posTela(top.w), COR.verde, 0.04);
+    [a, b, c].forEach(w => destaca(w, '#ffffff'));
+    destaca(top.w);
+    cena.descrever(`Nuvem de ${PALAVRAS.length} palavras em 3D. Analogia: ${b} menos ${a} mais ${c}. A palavra mais perto do resultado é ${top.w}, ${pct(top.s)} parecida.`);
+  }
+  if (top.w === 'rainha') marca(0);
+  if (top.w === 'Paris' && ![a, b, c].includes('Paris')) marca(1);
+  if (a === 'homem' && b === 'médico' && c === 'mulher') {
+    if (modelo === 'vies' && top.w === 'enfermeira') {
+      viuEnfermeira = true;
+      $('#fb').className = 'feedback';
+      $('#fb').textContent = 'O modelo respondeu “enfermeira”, e não “médica”. De onde veio essa ideia? Troque os textos de treino e pergunte de novo.';
+    }
+    if (modelo === 'revisado' && top.w === 'médica' && viuEnfermeira) marca(2);
+  }
+}
+function calcular() { analogia($('#pa').value, $('#pb').value, $('#pc').value); }
+
+/* ---------- vizinhos ---------- */
+function vizinhos(w) {
+  ultima = { viz: w };
+  const lista = maisPerto(vec(w), [w]).slice(0, 5);
+  $('#res').textContent = '';
+  $('#conta').textContent = `Palavras mais parecidas com “${w}”:\n` + lista.map((o, i) => `${i + 1}. ${o.w}  ${pct(o.s)}`).join('\n');
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = `A vizinha mais perto de “${w}” é “${lista[0].w}”.`;
+  $('#tabela').innerHTML = '';
+  if (cena) {
+    limparSetas();
+    lista.forEach((o, i) => seta(posTela(w), posTela(o.w), COR.verde, i === 0 ? 0.06 : 0.035));
+    destaca(w);
+    lista.forEach(o => destaca(o.w, '#ffffff'));
+    cena.descrever(`Nuvem de ${PALAVRAS.length} palavras em 3D. Vizinhas de ${w}: ${lista.map(o => `${o.w} (${pct(o.s)})`).join(', ')}.`);
+  }
+}
+
+/* ---------- medidor de viés ---------- */
+function medir() {
+  const ele = vec('ele'), ela = vec('ela');
+  const linhas = ASSUNTOS.map(w => ({ w, ele: cos(vec(w), ele), ela: cos(vec(w), ela) })).map(l => ({ ...l, d: l.ela - l.ele })).sort((x, y) => x.d - y.d);
+  const lado = d => Math.abs(d) < 0.05 ? 'neutro' : (d < 0 ? 'mais perto de “ele”' : 'mais perto de “ela”');
+  const barra = d => `<span class="vies-barra" style="width:${Math.round(Math.abs(d) * 60) + 2}px;background:${d < 0 ? COR.verde : COR.vermelho}"></span>`;
+  const nome = modelo === 'vies' ? 'textos da internet' : 'textos revisados';
+  $('#tabela').innerHTML = `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">Viés de gênero dos assuntos (${nome}): quanto cada palavra se parece com “ele” e com “ela”</caption><thead><tr><th>Palavra</th><th>Parecida com “ele”</th><th>Parecida com “ela”</th><th>Resultado</th></tr></thead><tbody>${
+    linhas.map(l => `<tr><td>${l.w}</td><td>${pct(Math.max(0, l.ele))}</td><td>${pct(Math.max(0, l.ela))}</td><td>${barra(l.d)} ${lado(l.d)}</td></tr>`).join('')}</tbody></table></div>`;
+  const pior = linhas.reduce((m, l) => Math.abs(l.d) > Math.abs(m.d) ? l : m);
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = Math.abs(pior.d) < 0.05
+    ? 'Nenhum assunto ficou ligado a um gênero nestes textos.'
+    : `O assunto mais desequilibrado é “${pior.w}”, ${lado(pior.d)}.`;
+  if (cena) {
+    limparSetas();
+    linhas.filter(l => Math.abs(l.d) >= 0.05).forEach(l => seta(posTela(l.w), posTela(l.d < 0 ? 'ele' : 'ela'), l.d < 0 ? COR.verde : COR.vermelho, 0.03));
+    destaca('ele'); destaca('ela');
+  }
+}
+
+/* ---------- trocar o modelo: as palavras andam ---------- */
+async function trocaModelo() {
+  modelo = $('#modelo').value;
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = modelo === 'vies'
+    ? 'Modelo treinado com textos da internet: os estereótipos dos textos entraram nos números.'
+    : 'Modelo treinado com textos revisados: os deslocamentos de gênero dos assuntos foram retirados.';
+  if (cena) {
+    limparSetas();
+    await Promise.all(PALAVRAS.map(([w]) => cena.animar(pontos[w], { position: tela(vec(w)) }, 900)));
+  }
+  if (ultima && ultima.viz) vizinhos(ultima.viz);
+  else if (ultima) analogia(ultima.a, ultima.b, ultima.c);
+}
+
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+/* ---------- controles ---------- */
+$('#calcular').onclick = calcular;
+document.querySelectorAll('[data-pronta]').forEach(b => b.addEventListener('click', () => {
+  const [a, bb, c] = b.dataset.pronta.split(',');
+  $('#pa').value = a; $('#pb').value = bb; $('#pc').value = c;
+  calcular();
+}));
+$('#vizinhos').onclick = () => vizinhos($('#pv').value);
+$('#medir').onclick = medir;
+$('#modelo').addEventListener('change', trocaModelo);
+if (cena) cena.descrever(`Nuvem de ${PALAVRAS.length} palavras em 3D, separadas em pessoas, animais, comidas, lugares e assuntos. Palavras parecidas ficam perto.`);
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
