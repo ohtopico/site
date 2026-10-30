@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vila Cidadã · Material didático | ohtopico</title>
+<meta name="description" content="Jogo de cidadania digital em um mundo de blocos 3D: ande pela vila, ajude os moradores em situações de respeito, privacidade, autoria, checagem de informação, bem-estar e termos de uso, e veja a vila crescer. BNCC EF06CO09, EF07CO08, EF07CO09, EF07CO10, EF08CO08, EF08CO09, EF09CO09, EF09CO10.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/vila-cidada.html">
+<meta property="og:title" content="Vila Cidadã · Material didático">
+<meta property="og:description" content="Jogo de cidadania digital em um mundo de blocos 3D: cada boa escolha na internet ajuda a construir a vila.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/vila-cidada.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .vc { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; }
+  .vc-palco { position: relative; }
+  .vc-tela { position: relative; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: #f7e7bf; aspect-ratio: 16 / 10; touch-action: none; }
+  .vc-tela canvas { display: block; width: 100%; height: 100%; outline: none; }
+  .vc-hud { position: absolute; top: 10px; left: 10px; display: flex; gap: 8px; flex-wrap: wrap; pointer-events: none; }
+  .vc-hud span { background: rgba(17,17,17,.82); color: #fff; font-size: 14px; padding: 5px 12px; border-radius: 99px; }
+  .vc-hud b { color: #ffd23f; font-weight: 700; }
+  .vc-lugar { position: absolute; top: 10px; right: 10px; background: rgba(17,17,17,.82); color: #fff; font-family: var(--display); font-size: 16px; padding: 5px 14px; border-radius: 99px; pointer-events: none; opacity: 0; transition: opacity .4s; }
+  .vc-lugar.on { opacity: 1; }
+  .vc-falar { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); min-height: 46px; padding: 8px 20px; font-size: 16px; background: #ffd23f; color: #111; border: 2px solid #111; border-radius: 99px; font-family: var(--display); box-shadow: 3px 3px 0 #111; cursor: pointer; }
+  .vc-falar[hidden] { display: none; }
+  .vc-aviso { position: absolute; left: 50%; top: 50px; transform: translateX(-50%); background: #fffdf6; color: #111; border: 2px solid #111; border-radius: 14px; padding: 8px 16px; font-size: 15px; box-shadow: 3px 3px 0 #111; max-width: 86%; text-align: center; opacity: 0; transition: opacity .35s; pointer-events: none; }
+  .vc-aviso.on { opacity: 1; }
+  .vc-dialogo { position: absolute; left: 10px; right: 10px; bottom: 10px; background: #fffdf6; color: #111; border: 2px solid #111; border-radius: 16px; padding: 12px 14px; box-shadow: 4px 4px 0 #111; max-height: calc(100% - 20px); overflow: auto; }
+  .vc-dialogo[hidden] { display: none; }
+  .vc-dialogo .quem { font-family: var(--display); font-size: 17px; color: #166c40; margin-bottom: 2px; }
+  .vc-dialogo .tema { font-size: 12.5px; color: #4a4a4a; margin-bottom: 6px; }
+  .vc-dialogo .fala { font-size: 16px; line-height: 1.45; }
+  .vc-ops { display: grid; gap: 8px; margin-top: 10px; }
+  .vc-ops button { text-align: left; border: 1.5px solid #111; border-radius: 12px; background: #fff; color: #111; padding: 9px 12px; font: inherit; font-size: 15px; cursor: pointer; min-height: 44px; }
+  .vc-ops button:hover:not(:disabled) { background: #f3f0e4; }
+  .vc-ops button.melhor { background: #e3f4e8; border-color: #157f3b; }
+  .vc-ops button.meio { background: #fff6cc; border-color: #9a7b00; }
+  .vc-ops button.escolhida { box-shadow: inset 0 0 0 2px #111; }
+  .vc-ops button:disabled { cursor: default; }
+  .vc-exp { margin-top: 10px; padding: 10px 12px; border-radius: 12px; font-size: 14.5px; background: #e3f4e8; }
+  .vc-exp.meio { background: #fff6cc; }
+  .vc-exp.outra { background: #fbe6ea; }
+  .vc-dialogo .acoes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+  .vc-dialogo .btn { min-height: 40px; padding: 8px 16px; font-size: 15px; background: #111; color: #fff; border-color: #111; }
+  .vc-controles { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; }
+  .vc-pad { display: grid; grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(2, 48px); gap: 6px; }
+  .vc-pad button, .vc-girar button { border: 1.5px solid var(--ink); border-radius: 12px; background: var(--paper); color: var(--ink); font-size: 20px; cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .vc-pad button:active, .vc-girar button:active { background: var(--pill); }
+  .vc-pad .f { grid-column: 2; grid-row: 1; } .vc-pad .e { grid-column: 1; grid-row: 2; } .vc-pad .t { grid-column: 2; grid-row: 2; } .vc-pad .d { grid-column: 3; grid-row: 2; }
+  .vc-girar { display: flex; gap: 6px; }
+  .vc-girar button { width: 52px; height: 48px; font-size: 15px; }
+  .vc-lado { display: grid; gap: 12px; }
+  .vc-box { border: 1.5px solid var(--ink); border-radius: 16px; background: var(--paper); padding: 12px 14px; }
+  .vc-box h2 { font-size: 16px; margin: 0 0 6px; font-family: var(--display); }
+  .vc-box p { margin: 0; font-size: 14.5px; }
+  .vc-mini { width: 100%; height: auto; image-rendering: pixelated; border-radius: 8px; border: 1px solid var(--line); display: block; }
+  .vc-moradores { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .vc-moradores li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; font-size: 14px; }
+  .vc-moradores .nome { font-weight: 600; }
+  .vc-moradores .st { grid-column: 1; font-size: 12.5px; color: var(--ink-2); }
+  .vc-moradores .st.ok { color: var(--ok); font-weight: 600; }
+  .vc-moradores button { grid-column: 2; grid-row: 1 / span 2; border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); color: var(--ink); font: inherit; font-size: 13px; padding: 4px 10px; cursor: pointer; }
+  .vc-barra { height: 12px; border-radius: 99px; border: 1.5px solid var(--ink); overflow: hidden; background: var(--paper-2); margin-top: 6px; }
+  .vc-barra span { display: block; height: 100%; width: 0; background: #2fa865; transition: width .6s; }
+  .vc-cores { display: flex; gap: 8px; margin-top: 6px; }
+  .vc-cores button { width: 34px; height: 34px; border-radius: 10px; border: 1.5px solid var(--ink); cursor: pointer; }
+  .vc-cores button[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink); }
+  .vc-rel { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 8px; }
+  .vc-rel th, .vc-rel td { border-bottom: 1px solid var(--line); padding: 5px 4px; text-align: left; vertical-align: top; }
+  .vc-fim { text-align: center; padding: 6px 0 2px; }
+  .vc-fim .big { font-family: var(--display); font-size: 30px; }
+  .sem3d .vc-tela, .sem3d .vc-controles { display: none; }
+  .vc-sem3d-msg { display: none; }
+  .sem3d .vc-sem3d-msg { display: block; margin-bottom: 12px; }
+  .sem3d .vc { grid-template-columns: 1fr; }
+  .sem3d .vc-dialogo { position: static; margin-bottom: 14px; }
+  .vc-dialogo.solto { position: static; margin-bottom: 14px; }
+  @media (max-width: 600px) {
+    .vc-lugar { display: none; }
+    .vc-hud span { font-size: 12.5px; padding: 4px 10px; }
+  }
+  @media (max-width: 900px) {
+    .vc { grid-template-columns: 1fr; }
+    .vc-tela { aspect-ratio: 4 / 3.4; }
+    .vc-dialogo .fala { font-size: 15px; }
+    .vc-dialogo { position: static; margin-top: 10px; max-height: none; }
+    .vc-palco:has(.vc-dialogo:not([hidden])) + .vc-controles { display: none; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>A Vila Cidadã é um mundo feito de blocos. Seis moradores estão esperando ajuda, cada um em um bairro, com duas situações do dia a dia na internet. Escolha o que você faria. As escolhas que cuidam das pessoas rendem <strong>blocos de confiança</strong>, e cada bairro ajudado ganha uma construção nova. A torre do centro sobe um andar por bairro.</p>
+    <p>Ande com as <strong>setas</strong> ou <strong>W, A, S, D</strong>. Gire a câmera com <strong>Q</strong> e <strong>E</strong> ou arrastando a tela. Perto de um morador, aperte <strong>Espaço</strong> ou o botão <strong>Conversar</strong>. No celular, use os botões abaixo da tela. Também dá para ir direto a cada morador pela lista ao lado. Todos os nomes e situações são inventados.</p>
+  </details>
+
+  <div class="game-stage" id="jogo">
+    <p class="note vc-sem3d-msg">Este navegador não conseguiu abrir o mundo 3D. O jogo continua pela lista de moradores: escolha um morador e responda às situações.</p>
+    <div class="vc">
+      <div>
+        <div class="vc-palco">
+        <div class="vc-tela" id="tela">
+          <div class="vc-hud" aria-hidden="true"><span>Blocos de confiança: <b id="hud-blocos">0</b></span><span>Construções: <b id="hud-obras">0</b>/6</span></div>
+          <div class="vc-lugar" id="lugar" aria-hidden="true"></div>
+          <div class="vc-aviso" id="aviso" role="status" aria-live="polite"></div>
+          <button class="vc-falar" id="falar" type="button" hidden>Conversar</button>
+        </div>
+        <div class="vc-dialogo" id="dialogo" role="dialog" aria-modal="false" aria-labelledby="dlg-quem" hidden></div>
+        </div>
+        <div class="vc-controles" aria-label="Controles de movimento">
+          <div class="vc-pad">
+            <button type="button" class="f" data-mov="f" aria-label="Andar para a frente">&#9650;</button>
+            <button type="button" class="e" data-mov="e" aria-label="Andar para a esquerda">&#9664;</button>
+            <button type="button" class="t" data-mov="t" aria-label="Andar para trás">&#9660;</button>
+            <button type="button" class="d" data-mov="d" aria-label="Andar para a direita">&#9654;</button>
+          </div>
+          <div class="vc-girar">
+            <button type="button" data-gira="-1" aria-label="Girar a câmera para a esquerda">&#8634;</button>
+            <button type="button" data-gira="1" aria-label="Girar a câmera para a direita">&#8635;</button>
+          </div>
+        </div>
+      </div>
+      <aside class="vc-lado">
+        <div class="vc-box"><h2>Objetivo</h2><p id="objetivo">Ajude os seis moradores e complete a torre do centro da vila.</p><div class="vc-barra" aria-hidden="true"><span id="barra"></span></div></div>
+        <div class="vc-box"><h2>Moradores</h2><ul class="vc-moradores" id="moradores"></ul></div>
+        <div class="vc-box"><h2>Mapa da vila</h2><canvas class="vc-mini" id="mini" width="176" height="176" aria-hidden="true"></canvas></div>
+        <div class="vc-box"><h2>Sua personagem</h2><p class="small muted">Cor da roupa</p><div class="vc-cores" id="cores"></div></div>
+        <div class="vc-box"><p class="small muted" id="placar">Nenhuma situação respondida ainda.</p>
+          <details style="margin-top:8px"><summary class="small"><strong>Relatório para o professor</strong></summary><div id="relatorio"></div></details>
+          <div class="btn-row" style="margin-top:10px"><button class="btn ghost" type="button" id="recomecar">Recomeçar</button></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <details class="howto" style="margin-top:22px">
+    <summary>Para o professor</summary>
+    <p><strong>Objetivo:</strong> discutir conduta, privacidade, autoria, qualidade da informação, bem-estar e termos de uso a partir de situações próximas da vida dos estudantes. Nenhuma escolha tira pontos: a melhor rende 2 blocos, a intermediária rende 1, e todas têm explicação.</p>
+    <p><strong>Sugestão de aula (50 min):</strong> 10 min de conversa sobre o que é cidadania digital; 25 min de jogo em duplas, com a combinação de discutir antes de cada escolha; 15 min de roda de conversa com o relatório da turma. Boas perguntas para a roda: qual situação gerou mais dúvida na dupla? Alguma delas já aconteceu com alguém da turma? O que muda quando a escolha é feita na frente de todo mundo e quando é feita sozinho?</p>
+    <p><strong>Sem projetor ou sem 3D:</strong> a lista de moradores abre todas as situações sem precisar andar pela vila, o que também serve para leitura em voz alta com a turma toda.</p>
+  </details>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('jogos'); mdFooter(); mdJogoHead('vila-cidada');</script>
+<script type="module">
+import * as THREE from '../assets/vendor/three.module.min.js';
+
+/* =====================================================================
+   Vila Cidadã: mundo de blocos 3D com situações de cidadania digital.
+   Texturas desenhadas no próprio navegador (pixel art 16x16), sem arquivos extras.
+   Cores do site: verde, amarelo e vermelho (sem azul).
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const KEY = 'vila-cidada-v1';
+const N = 44;                          // tamanho do mundo (blocos)
+const reduz = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- moradores e situações ---------- */
+const MORADORES = [
+  { id: 'abel', nome: 'Seu Abel', bairro: 'Praça da Conversa', tema: 'Respeito e cyberbullying', x: 22, z: 9, roupa: '#ef5a4c', obra: 'coreto', obraNome: 'o coreto da praça',
+    sit: [
+      { txt: 'No grupo da turma, alguém postou uma montagem rindo da aparência de um colega, e várias pessoas mandaram risadas. O que você faz?',
+        ops: [
+          ['Não repasso, mando uma mensagem de apoio para o colega e aviso um adulto de confiança ou a professora.', 2],
+          ['Saio do grupo sem dizer nada.', 1],
+          ['Mando uma risada também, porque todo mundo mandou.', 0]],
+        exp: 'Rir junto aumenta o alcance da humilhação. Apoiar quem foi exposto e chamar um adulto interrompe o cyberbullying. Sair do grupo protege você, mas deixa o colega sozinho.' },
+      { txt: 'Num vídeo sobre o seu jogo favorito, uma pessoa comentou que discorda totalmente da sua opinião.',
+        ops: [
+          ['Respondo com meus argumentos, sem atacar a pessoa, e reconheço o que faz sentido no que ela disse.', 2],
+          ['Deixo para lá e sigo assistindo.', 1],
+          ['Respondo com xingamentos e chamo amigos para atacar junto.', 0]],
+        exp: 'Discordar faz parte. Conversar com argumentos e respeito ajuda os dois lados a pensar melhor. Ignorar também é uma escolha tranquila. Chamar outros para atacar transforma a discordância em perseguição.' }
+    ] },
+  { id: 'lurdes', nome: 'Dona Lurdes', bairro: 'Rua da Privacidade', tema: 'Dados pessoais e privacidade', x: 35, z: 14, roupa: '#ffd23f', obra: 'jardim', obraNome: 'o jardim com portão',
+    sit: [
+      { txt: 'Um aplicativo de filtros para fotos pede acesso aos seus contatos, à sua localização e ao microfone.',
+        ops: [
+          ['Libero só o que faz sentido para a função, como a câmera e as fotos, e nego o resto.', 2],
+          ['Desisto de instalar.', 1],
+          ['Aceito tudo para terminar logo.', 0]],
+        exp: 'Um filtro de fotos não precisa dos seus contatos nem da sua localização. Cada permissão é um dado pessoal entregue. Dá para usar o aplicativo liberando só o necessário.' },
+      { txt: 'Você quer postar uma foto do primeiro dia de aula, com o uniforme, o nome da escola aparecendo e a localização marcada.',
+        ops: [
+          ['Posto só para amigos, sem a localização e sem o nome da escola na foto.', 2],
+          ['Prefiro não postar.', 1],
+          ['Posto em modo público, com a localização em tempo real.', 0]],
+        exp: 'Uniforme, nome da escola e localização juntos contam a qualquer pessoa onde você está todos os dias. Tirando esses detalhes e limitando quem vê, a foto continua sendo sua lembrança.' }
+    ] },
+  { id: 'iara', nome: 'Iara', bairro: 'Biblioteca dos Créditos', tema: 'Autoria e uso de imagem', x: 35, z: 30, roupa: '#2fa865', obra: 'livros', obraNome: 'a torre de livros',
+    sit: [
+      { txt: 'Para a capa de um trabalho, você achou na internet uma ilustração perfeita.',
+        ops: [
+          ['Procuro uma imagem com licença livre, como Creative Commons, e coloco o nome do autor.', 2],
+          ['Uso a imagem e escrevo só "fonte: internet".', 1],
+          ['Uso a imagem e digo que fui eu que fiz.', 0]],
+        exp: 'Toda imagem tem um autor. Licenças livres permitem o uso desde que o crédito seja dado. "Internet" não é autor: o crédito certo tem nome e endereço de onde a obra veio.' },
+      { txt: 'Seu amigo gravou um vídeo engraçado na escola, e você quer repostar no seu perfil.',
+        ops: [
+          ['Peço autorização ao amigo e às pessoas que aparecem no vídeo, e marco quem fez.', 2],
+          ['Reposto marcando o amigo, sem perguntar.', 1],
+          ['Baixo, corto a marca dele e posto como se fosse meu.', 0]],
+        exp: 'O vídeo tem um autor e mostra pessoas que têm direito à própria imagem. Pedir autorização e dar o crédito respeita os dois. Marcar o amigo é um bom começo, mas não substitui o pedido.' }
+    ] },
+  { id: 'nilo', nome: 'Seu Nilo', bairro: 'Banca da Checagem', tema: 'Qualidade da informação', x: 22, z: 35, roupa: '#9a6b3c', obra: 'radio', obraNome: 'a rádio comunitária',
+    sit: [
+      { txt: 'Chega no grupo da família: "Amanhã não vai ter aula em nenhuma escola do RS, repassem!". A mensagem não tem fonte.',
+        ops: [
+          ['Confiro no site da Secretaria de Educação e nos canais da escola antes de repassar.', 2],
+          ['Não repasso e espero para ver.', 1],
+          ['Repasso para todos os grupos, por garantia.', 0]],
+        exp: 'Mensagens sem fonte e com pedido de "repassem" são o formato típico de boato. Conferir em canais oficiais leva um minuto e evita que muita gente se organize por uma informação falsa.' },
+      { txt: 'Circula uma "foto real" de uma tempestade enorme sobre Porto Alegre. Olhando bem, as mãos das pessoas na foto estão deformadas.',
+        ops: [
+          ['Faço uma busca reversa da imagem, vejo se veículos confiáveis publicaram e observo os sinais de imagem gerada por IA.', 2],
+          ['Pergunto no grupo se alguém sabe se é verdade.', 1],
+          ['Compartilho, porque muita gente já curtiu.', 0]],
+        exp: 'Curtidas não confirmam nada. Detalhes estranhos, como mãos e textos deformados, são sinais comuns de imagem gerada por IA. A busca reversa mostra onde e quando a imagem apareceu primeiro.' }
+    ] },
+  { id: 'cida', nome: 'Dona Cida', bairro: 'Horta do Equilíbrio', tema: 'Bem-estar e descarte', x: 9, z: 30, roupa: '#c8323f', obra: 'horta', obraNome: 'a horta e o ponto de coleta',
+    sit: [
+      { txt: 'É meia-noite, amanhã tem prova, e o jogo avisa: "Volte agora ou perca o bônus diário!".',
+        ops: [
+          ['Percebo que o aviso foi feito para me prender, desligo e vou dormir.', 2],
+          ['Jogo só mais dez minutos.', 1],
+          ['Fico até conseguir o bônus.', 0]],
+        exp: 'Bônus diários e contagens regressivas são pensados para segurar a atenção. Saber disso ajuda a decidir com calma. Sono é o que mais pesa no desempenho da prova.' },
+      { txt: 'Seu celular antigo parou de funcionar e a bateria está estufada.',
+        ops: [
+          ['Apago os dados, se possível, e levo a um ponto de coleta de eletrônicos.', 2],
+          ['Guardo na gaveta.', 1],
+          ['Jogo no lixo comum.', 0]],
+        exp: 'Baterias e placas têm metais que contaminam solo e água no lixo comum, e bateria estufada pode pegar fogo. Pontos de coleta reaproveitam os materiais. Na gaveta não contamina, mas também não volta a ser útil.' }
+    ] },
+  { id: 'davi', nome: 'Professor Davi', bairro: 'Mirante dos Termos', tema: 'Termos de uso e pegada digital', x: 9, z: 14, roupa: '#6f6f6b', obra: 'mirante', obraNome: 'o mirante',
+    sit: [
+      { txt: 'Uma rede social nova pede que você aceite os termos de uso. O texto tem 30 páginas.',
+        ops: [
+          ['Leio o resumo e procuro as partes sobre idade mínima, dados coletados e com quem eles são compartilhados.', 2],
+          ['Leio só o primeiro parágrafo.', 1],
+          ['Aceito sem ler nada.', 0]],
+        exp: 'Ninguém precisa decorar 30 páginas, mas três perguntas resolvem muito: posso usar com a minha idade? Que dados eles guardam? Com quem dividem? Muitas plataformas têm um resumo para isso.' },
+      { txt: 'Um comentário grosseiro que você escreveu há dois anos aparece quando alguém pesquisa o seu apelido.',
+        ops: [
+          ['Apago o comentário, peço desculpas a quem foi atingido e passo a pensar antes de postar.', 2],
+          ['Crio outro perfil e abandono o antigo.', 1],
+          ['Deixo lá, porque a internet esquece.', 0]],
+        exp: 'A internet não esquece sozinha: o que é publicado vira pegada digital. Apagar e reparar mostra amadurecimento. Um perfil novo esconde o problema, mas o comentário antigo continua lá.' }
+    ] }
+];
+const SITS = [];
+MORADORES.forEach(m => m.sit.forEach((s, i) => SITS.push({ m, i, id: m.id + i })));
+const MAXPTS = SITS.length * 2;
+
+/* ---------- estado salvo ---------- */
+const CORES = ['#2fa865', '#ffd23f', '#ef5a4c'];
+let est = { resp: {}, cor: CORES[0], pos: null, registrado: false };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.resp) est = Object.assign(est, s); } catch (e) {}
+const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(est)); } catch (e) {} };
+const pontos = () => Object.values(est.resp).reduce((a, r) => a + r.p, 0);
+const moradorFeito = m => m.sit.every((s, i) => est.resp[m.id + i]);
+const obrasFeitas = () => MORADORES.filter(moradorFeito).length;
+
+/* =====================================================================
+   Mundo 3D
+   ===================================================================== */
+function webglOk() { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; } }
+const tem3d = webglOk();
+if (!tem3d) { $('#jogo').classList.add('sem3d'); $('.vc').before($('#dialogo')); }
+
+/* texturas em pixel art */
+function rnd(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+function textura(fn, seed) {
+  const c = document.createElement('canvas'); c.width = c.height = 16;
+  const g = c.getContext('2d'); const r = rnd(seed || 7);
+  fn(g, r);
+  const t = new THREE.CanvasTexture(c);
+  t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+function ruido(g, r, cores) { for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { g.fillStyle = cores[Math.floor(r() * cores.length)]; g.fillRect(x, y, 1, 1); } }
+const TX = {};
+function criarTexturas() {
+  TX.gramaTopo = textura((g, r) => ruido(g, r, ['#5fb04a', '#55a443', '#6cbd55', '#4f9a3e']), 1);
+  TX.terra = textura((g, r) => ruido(g, r, ['#8a5a36', '#7d5030', '#966540', '#74492b']), 2);
+  TX.gramaLado = textura((g, r) => { ruido(g, r, ['#8a5a36', '#7d5030', '#966540', '#74492b']); for (let x = 0; x < 16; x++) { const h = 3 + Math.floor(r() * 3); for (let y = 0; y < h; y++) { g.fillStyle = r() < .5 ? '#5fb04a' : '#55a443'; g.fillRect(x, y, 1, 1); } } }, 3);
+  TX.pedra = textura((g, r) => ruido(g, r, ['#9a9a95', '#8c8c87', '#a6a6a0', '#80807b']), 4);
+  TX.caminho = textura((g, r) => ruido(g, r, ['#c9b48a', '#bda77c', '#d4c096', '#b39d73']), 5);
+  TX.tronco = textura((g, r) => { ruido(g, r, ['#6b4a2b', '#5e4126', '#77532f']); g.fillStyle = '#4e3520'; for (let x = 1; x < 16; x += 4) g.fillRect(x, 0, 1, 16); }, 6);
+  TX.folhas = textura((g, r) => ruido(g, r, ['#2f8a3c', '#3a9a46', '#26773a', '#45a650', '#1f6a31']), 7);
+  TX.tabua = textura((g, r) => { ruido(g, r, ['#d4a95c', '#c99d52', '#ddb468']); g.fillStyle = '#9c7337'; for (let y = 3; y < 16; y += 4) g.fillRect(0, y, 16, 1); g.fillRect(7, 0, 1, 4); g.fillRect(3, 4, 1, 4); g.fillRect(11, 8, 1, 4); g.fillRect(5, 12, 1, 4); }, 8);
+  TX.tijolo = textura((g, r) => { ruido(g, r, ['#b8423a', '#a83a33', '#c44a40']); g.fillStyle = '#e6d8c0'; for (let y = 3; y < 16; y += 4) g.fillRect(0, y, 16, 1); for (let y = 0; y < 16; y += 4) { const o = (y / 4) % 2 ? 4 : 0; for (let x = o; x < 16; x += 8) g.fillRect(x, y, 1, 3); } }, 9);
+  TX.telhado = textura((g, r) => { ruido(g, r, ['#8f2a2f', '#a33036', '#7e2328']); g.fillStyle = '#5f1a1e'; for (let y = 1; y < 16; y += 3) g.fillRect(0, y, 16, 1); }, 10);
+  TX.metal = textura((g, r) => { ruido(g, r, ['#b5b5b0', '#a9a9a4', '#c0c0bb']); g.fillStyle = '#7c7c78'; g.fillRect(0, 0, 16, 1); g.fillRect(0, 0, 1, 16); }, 11);
+  TX.luz = textura((g, r) => { ruido(g, r, ['#ffe680', '#fff09e', '#ffd84d']); g.fillStyle = '#c9a224'; g.strokeStyle = '#c9a224'; g.fillRect(0, 0, 16, 1); g.fillRect(0, 15, 16, 1); g.fillRect(0, 0, 1, 16); g.fillRect(15, 0, 1, 16); }, 12);
+  const livro = (cores, seed) => textura((g, r) => { g.fillStyle = '#6b4a2b'; g.fillRect(0, 0, 16, 16); let x = 1; while (x < 15) { const w = 1 + Math.floor(r() * 3); g.fillStyle = cores[Math.floor(r() * cores.length)]; g.fillRect(x, 2 + Math.floor(r() * 2), w, 12); x += w; } g.fillStyle = '#4e3520'; g.fillRect(0, 7, 16, 1); }, seed);
+  TX.livros = livro(['#c8323f', '#2fa865', '#ffd23f', '#e8e2d0', '#8f2a2f'], 13);
+  TX.areia = textura((g, r) => ruido(g, r, ['#efe0a8', '#e6d59a', '#f3e7b8']), 14);
+  TX.arada = textura((g, r) => { ruido(g, r, ['#6e4527', '#5f3b21', '#7a4d2c']); g.fillStyle = '#4b2e18'; for (let y = 2; y < 16; y += 4) g.fillRect(0, y, 16, 1); }, 15);
+  TX.cerca = textura((g, r) => ruido(g, r, ['#2a7a36', '#348a40', '#21672e', '#3e9a49']), 16);
+  TX.coleta = textura((g, r) => { ruido(g, r, ['#f2cf1d', '#e8c418']); g.fillStyle = '#111'; g.fillRect(4, 4, 8, 1); g.fillRect(5, 5, 1, 7); g.fillRect(10, 5, 1, 7); g.fillRect(5, 11, 6, 1); g.fillRect(7, 6, 1, 4); g.fillRect(8, 6, 1, 4); }, 17);
+}
+
+/* tipos de bloco: material de cada face (+x, -x, +y, -y, +z, -z) */
+let TIPOS = {};
+function criarTipos() {
+  const m = (t, extra) => new THREE.MeshLambertMaterial(Object.assign({ map: t }, extra || {}));
+  const um = (t, extra) => { const mm = m(t, extra); return [mm, mm, mm, mm, mm, mm]; };
+  const lado = m(TX.gramaLado), topo = m(TX.gramaTopo), terra = m(TX.terra);
+  const tronco = m(TX.tronco), troncoTopo = m(TX.tabua);
+  TIPOS = {
+    grama: [lado, lado, topo, terra, lado, lado],
+    terra: um(TX.terra), pedra: um(TX.pedra), caminho: um(TX.caminho), areia: um(TX.areia),
+    tronco: [tronco, tronco, troncoTopo, troncoTopo, tronco, tronco],
+    folhas: um(TX.folhas), tabua: um(TX.tabua), tijolo: um(TX.tijolo), telhado: um(TX.telhado),
+    metal: um(TX.metal), luz: um(TX.luz, { emissive: 0x6b5a10 }), livros: um(TX.livros), arada: um(TX.arada), cerca: um(TX.cerca),
+    coleta: um(TX.coleta)
+  };
+}
+
+/* blocos do mundo */
+const mundo = new Map();          // "x,y,z" -> tipo
+const k = (x, y, z) => x + ',' + y + ',' + z;
+const solido = (x, y, z) => { const t = mundo.get(k(x, y, z)); return !!t && t !== 'flor'; };
+const alturaBase = new Int8Array(N * N);
+const ALT = (x, z) => alturaBase[z * N + x];
+
+function gerarTerreno() {
+  const r = rnd(42);
+  // relevo suave: um morro no noroeste (mirante) e ondulações leves
+  for (let z = 0; z < N; z++) for (let x = 0; x < N; x++) {
+    const dm = Math.hypot(x - 7, z - 11);
+    let h = 1 + Math.max(0, 3.6 - dm * 0.42);
+    h += 0.5 * Math.sin(x * 0.35) * Math.cos(z * 0.3);
+    if (x < 2 || z < 2 || x > N - 3 || z > N - 3) h += 1.4;   // borda da vila
+    alturaBase[z * N + x] = Math.max(1, Math.round(h));
+  }
+  // deixa a praça central e os pontos dos moradores planos
+  const aplainar = (cx, cz, raio) => { const h0 = ALT(cx, cz); for (let z = cz - raio; z <= cz + raio; z++) for (let x = cx - raio; x <= cx + raio; x++) if (x >= 0 && z >= 0 && x < N && z < N) alturaBase[z * N + x] = h0; };
+  aplainar(22, 22, 4);
+  MORADORES.forEach(m => aplainar(m.x, m.z, 6));
+  // garante degraus de no máximo 1 bloco
+  for (let it = 0; it < 30; it++) for (let z = 0; z < N; z++) for (let x = 0; x < N; x++) {
+    const h = ALT(x, z);
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dx, dz]) => { const nx = x + dx, nz = z + dz; if (nx < 0 || nz < 0 || nx >= N || nz >= N) return; if (ALT(nx, nz) > h + 1) alturaBase[nz * N + nx] = h + 1; });
+  }
+  for (let z = 0; z < N; z++) for (let x = 0; x < N; x++) {
+    const h = ALT(x, z);
+    for (let y = 0; y < h; y++) mundo.set(k(x, y, z), y === h - 1 ? 'grama' : 'terra');
+  }
+  // caminhos do centro até cada morador
+  const marcarCaminho = (x, z) => { const h = ALT(x, z); mundo.set(k(x, h - 1, z), 'caminho'); };
+  MORADORES.forEach(m => {
+    const passos = Math.max(Math.abs(m.x - 22), Math.abs(m.z - 22)) * 2;
+    for (let i = 0; i <= passos; i++) { const x = Math.round(22 + (m.x - 22) * i / passos), z = Math.round(22 + (m.z - 22) * i / passos); marcarCaminho(x, z); marcarCaminho(Math.min(N - 1, x + 1), z); }
+  });
+  for (let z = 19; z <= 25; z++) for (let x = 19; x <= 25; x++) mundo.set(k(x, ALT(x, z) - 1, z), 'pedra');
+  // árvores longe dos caminhos e das construções
+  const livre = (x, z) => { if (Math.hypot(x - 22, z - 22) < 8) return false; if (MORADORES.some(m => Math.hypot(x - m.x, z - m.z) < 8)) return false; for (let dz = -3; dz <= 3; dz++) for (let dx = -3; dx <= 3; dx++) { const t = mundo.get(k(x + dx, ALT(x + dx, z + dz) - 1, z + dz)); if (t === 'caminho') return false; } return true; };
+  let arvores = 0;
+  for (let tent = 0; tent < 600 && arvores < 26; tent++) {
+    const x = 3 + Math.floor(r() * (N - 6)), z = 3 + Math.floor(r() * (N - 6));
+    if (!livre(x, z)) continue;
+    arvore(x, z, 3 + Math.floor(r() * 2)); arvores++;
+  }
+  // flores espalhadas (aparecem conforme a vila melhora)
+  for (let i = 0; i < 160; i++) {
+    const x = 2 + Math.floor(r() * (N - 4)), z = 2 + Math.floor(r() * (N - 4));
+    const h = ALT(x, z);
+    if (mundo.get(k(x, h - 1, z)) === 'grama' && !mundo.get(k(x, h, z))) FLORES.push({ x, y: h, z, cor: r() < .5 ? '#ef5a4c' : (r() < .5 ? '#ffd23f' : '#fff4e0'), lim: Math.floor(r() * 7) });
+  }
+}
+const FLORES = [];
+function arvore(x, z, alt) {
+  const h = ALT(x, z);
+  for (let y = 0; y < alt; y++) mundo.set(k(x, h + y, z), 'tronco');
+  const topo = h + alt;
+  for (let dy = -1; dy <= 1; dy++) for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 2; dx++) {
+    const raio = dy === 1 ? 1 : 2;
+    if (Math.abs(dx) > raio || Math.abs(dz) > raio) continue;
+    if (Math.abs(dx) === 2 && Math.abs(dz) === 2) continue;
+    const kk = k(x + dx, topo + dy, z + dz);
+    if (!mundo.has(kk)) mundo.set(kk, 'folhas');
+  }
+}
+
+/* casas de cada morador (ficam atrás dele, olhando para o centro) */
+function direcaoCentro(m) { const dx = 22 - m.x, dz = 22 - m.z; return Math.abs(dx) > Math.abs(dz) ? [Math.sign(dx), 0] : [0, Math.sign(dz)]; }
+function casa(m) {
+  const [fx, fz] = direcaoCentro(m);
+  const cx = m.x - fx * 4, cz = m.z - fz * 4;      // centro da casa
+  const h = ALT(m.x, m.z);
+  const parede = m.id === 'lurdes' || m.id === 'nilo' ? 'tijolo' : 'tabua';
+  for (let y = 0; y < 3; y++) for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 2; dx++) {
+    if (Math.abs(dx) < 2 && Math.abs(dz) < 2) continue;
+    const quina = Math.abs(dx) === 2 && Math.abs(dz) === 2;
+    // porta voltada para o morador
+    if (y < 2 && dx === fx * 2 && dz === fz * 2) continue;
+    if (y === 1 && !quina && ((fx === 0 && Math.abs(dx) === 2 && dz === 0) || (fz === 0 && Math.abs(dz) === 2 && dx === 0))) { mundo.set(k(cx + dx, h + y, cz + dz), 'luz'); continue; }
+    mundo.set(k(cx + dx, h + y, cz + dz), quina ? 'tronco' : parede);
+  }
+  for (let n = 0; n < 3; n++) for (let dz = -3 + n; dz <= 3 - n; dz++) for (let dx = -3 + n; dx <= 3 - n; dx++) {
+    if (n < 2 && Math.abs(dx) < 3 - n && Math.abs(dz) < 3 - n) continue;
+    mundo.set(k(cx + dx, h + 3 + n, cz + dz), 'telhado');
+  }
+  mundo.set(k(cx, h + 5, cz), 'telhado');
+}
+
+/* construções que aparecem quando o bairro é ajudado */
+function lugarObra(m) { const [fx, fz] = direcaoCentro(m); const lx = fz, lz = -fx; return [m.x + lx * 5 + fx, m.z + lz * 5 + fz]; }
+function obraBlocos(m) {
+  const [ox, oz] = lugarObra(m); const h = ALT(ox, oz); const b = [];
+  const p = (dx, y, dz, t) => b.push([ox + dx, h + y, oz + dz, t]);
+  if (m.obra === 'coreto') {
+    for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 2; dx++) p(dx, 0, dz, 'pedra');
+    [[-2, -2], [2, -2], [-2, 2], [2, 2]].forEach(([a, c]) => { for (let y = 1; y <= 3; y++) p(a, y, c, 'tronco'); });
+    for (let n = 0; n < 3; n++) for (let dz = -2 + n; dz <= 2 - n; dz++) for (let dx = -2 + n; dx <= 2 - n; dx++) if (n === 2 || Math.abs(dx) === 2 - n || Math.abs(dz) === 2 - n) p(dx, 4 + n, dz, 'telhado');
+    p(0, 1, 0, 'luz');
+  } else if (m.obra === 'jardim') {
+    for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 2; dx++) if (Math.abs(dx) === 2 || Math.abs(dz) === 2) { if (dx === 0 && dz === 2) continue; p(dx, 0, dz, 'cerca'); p(dx, 1, dz, 'cerca'); }
+    p(-1, 2, 2, 'tronco'); p(1, 2, 2, 'tronco'); p(0, 2, 2, 'tabua'); p(-1, 0, 2, 'tronco'); p(1, 0, 2, 'tronco');
+    p(0, 0, 0, 'luz');
+  } else if (m.obra === 'livros') {
+    for (let y = 0; y < 7; y++) for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) p(dx, y, dz, y === 0 ? 'pedra' : (y === 6 ? 'tabua' : 'livros'));
+    p(0, 7, 0, 'luz');
+  } else if (m.obra === 'radio') {
+    for (let y = 0; y < 2; y++) for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) p(dx, y, dz, y === 1 && dx === 0 && dz !== 0 ? 'luz' : 'tijolo');
+    for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) p(dx, 2, dz, 'telhado');
+    for (let y = 3; y < 10; y++) p(0, y, 0, 'metal');
+    p(-1, 8, 0, 'metal'); p(1, 8, 0, 'metal'); p(0, 8, -1, 'metal'); p(0, 8, 1, 'metal');
+    p(0, 10, 0, 'luz');
+  } else if (m.obra === 'horta') {
+    for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 1; dx++) b.push([ox + dx, h - 1, oz + dz, dz % 2 === 0 ? 'arada' : 'caminho']);
+    for (let dz = -2; dz <= 2; dz += 2) for (let dx = -2; dx <= 1; dx++) p(dx, 0, dz, 'folhas');
+    p(3, 0, -1, 'coleta'); p(3, 0, 0, 'coleta'); p(3, 1, -1, 'coleta'); p(3, 1, 0, 'coleta'); p(3, 2, -1, 'luz');
+  } else if (m.obra === 'mirante') {
+    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, c]) => { for (let y = 0; y < 4; y++) p(a, y, c, 'tronco'); });
+    for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 2; dx++) p(dx, 4, dz, 'tabua');
+    for (let dz = -2; dz <= 2; dz++) for (let dx = -2; dx <= 2; dx++) if (Math.abs(dx) === 2 || Math.abs(dz) === 2) p(dx, 5, dz, 'tronco');
+    p(0, 5, 0, 'luz'); p(0, 6, 0, 'luz');
+  }
+  return b;
+}
+/* torre do centro: um andar por bairro ajudado */
+function torreAndar(n) {
+  const b = []; const h = ALT(22, 22); const cores = ['tijolo', 'tabua', 'livros', 'tijolo', 'tabua', 'pedra'];
+  for (let y = 0; y < 2; y++) for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) {
+    const y0 = h + n * 2 + y;
+    const janela = y === 1 && (dx === 0 || dz === 0) && !(dx === 0 && dz === 0);
+    b.push([22 + dx, y0, 22 + dz, janela ? 'luz' : (dx === 0 && dz === 0 ? 'pedra' : cores[n])]);
+  }
+  if (n === 5) { b.push([22, h + 12, 22, 'luz']); b.push([22, h + 13, 22, 'luz']); }
+  return b;
+}
+
+/* ---------- renderização com InstancedMesh ---------- */
+let renderer, scene, camera, geo, malhas = {};
+const CAP = { grama: 2600, terra: 6000, caminho: 400, pedra: 400, tronco: 500, folhas: 2400, tabua: 500, tijolo: 300, telhado: 400, metal: 40, luz: 60, livros: 80, arada: 40, cerca: 60, areia: 10, coleta: 10 };
+const mat4 = new THREE.Matrix4();
+function addMalha(x, y, z, t) {
+  const mm = malhas[t]; if (!mm) return;
+  if (mm.count >= CAP[t]) return;
+  mat4.makeTranslation(x, y + 0.5, z);
+  mm.setMatrixAt(mm.count++, mat4);
+  mm.instanceMatrix.needsUpdate = true;
+}
+/* só desenha blocos com alguma face exposta */
+function exposto(x, y, z) { return !solido(x + 1, y, z) || !solido(x - 1, y, z) || !solido(x, y + 1, z) || !solido(x, y - 1, z) && y > 0 || !solido(x, y, z + 1) || !solido(x, y, z - 1); }
+function desenharMundo() {
+  Object.values(malhas).forEach(mm => { mm.count = 0; });
+  mundo.forEach((t, kk) => { const [x, y, z] = kk.split(',').map(Number); if (x < 0 || z < 0 || x >= N || z >= N) return; if (exposto(x, y, z)) addMalha(x, y, z, t); });
+}
+
+/* flores: cubinhos pequenos */
+let malhaFlores, malhaCaules, florMatriz = new THREE.Matrix4(), florCor = new THREE.Color();
+function desenharFlores() {
+  if (!malhaFlores) return;
+  const nivel = obrasFeitas() + Math.floor(pontos() / 6);
+  let n = 0;
+  FLORES.forEach(f => {
+    if (f.lim > nivel || mundo.get(k(f.x, f.y, f.z))) return;
+    florMatriz.makeScale(0.22, 0.2, 0.22).setPosition(f.x, f.y + 0.42, f.z);
+    malhaFlores.setMatrixAt(n, florMatriz); malhaFlores.setColorAt(n, florCor.set(f.cor));
+    florMatriz.makeScale(0.06, 0.34, 0.06).setPosition(f.x, f.y + 0.17, f.z);
+    malhaCaules.setMatrixAt(n, florMatriz); n++;
+  });
+  malhaFlores.count = malhaCaules.count = n; malhaFlores.instanceMatrix.needsUpdate = malhaCaules.instanceMatrix.needsUpdate = true; if (malhaFlores.instanceColor) malhaFlores.instanceColor.needsUpdate = true;
+}
+
+/* ---------- personagens de blocos ---------- */
+function rostoTex(pele, cabelo) {
+  const c = document.createElement('canvas'); c.width = c.height = 8; const g = c.getContext('2d');
+  g.fillStyle = pele; g.fillRect(0, 0, 8, 8); g.fillStyle = cabelo; g.fillRect(0, 0, 8, 2); g.fillRect(0, 2, 1, 2); g.fillRect(7, 2, 1, 2);
+  g.fillStyle = '#fff'; g.fillRect(1, 4, 2, 1); g.fillRect(5, 4, 2, 1); g.fillStyle = '#111'; g.fillRect(2, 4, 1, 1); g.fillRect(5, 4, 1, 1);
+  g.fillStyle = '#8a4a3a'; g.fillRect(3, 6, 2, 1);
+  const t = new THREE.CanvasTexture(c); t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+function boneco(o) {
+  const g = new THREE.Group();
+  const L = c => new THREE.MeshLambertMaterial({ color: c });
+  const pele = L(o.pele), cab = L(o.cabelo), roupa = L(o.roupa), calca = L(o.calca || '#3a3a38');
+  const cabeca = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), [pele, pele, cab, pele, new THREE.MeshLambertMaterial({ map: rostoTex(o.pele, o.cabelo) }), cab]);
+  cabeca.position.y = 1.55;
+  const corpo = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.65, 0.28), roupa); corpo.position.y = 0.98;
+  const braco = () => { const p = new THREE.Group(); const m = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.62, 0.22), roupa); m.position.y = -0.26; const mao = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.12, 0.2), pele); mao.position.y = -0.6; p.add(m, mao); return p; };
+  const perna = () => { const p = new THREE.Group(); const m = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.65, 0.24), calca); m.position.y = -0.32; p.add(m); return p; };
+  const be = braco(), bd = braco(), pe = perna(), pd = perna();
+  be.position.set(-0.36, 1.28, 0); bd.position.set(0.36, 1.28, 0); pe.position.set(-0.13, 0.65, 0); pd.position.set(0.13, 0.65, 0);
+  g.add(cabeca, corpo, be, bd, pe, pd);
+  g.userData = { be, bd, pe, pd, roupa };
+  return g;
+}
+function animarBoneco(b, fase, andando) {
+  const a = andando ? Math.sin(fase) * 0.7 : 0;
+  b.userData.be.rotation.x = a; b.userData.bd.rotation.x = -a; b.userData.pe.rotation.x = -a; b.userData.pd.rotation.x = a;
+}
+function placa(texto, cor) {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 72; const g = c.getContext('2d');
+  g.font = '600 26px Lexend, sans-serif'; const w = Math.min(250, g.measureText(texto).width + 60);
+  g.fillStyle = 'rgba(17,17,17,.85)'; const x0 = (256 - w) / 2; g.beginPath(); g.roundRect(x0, 14, w, 44, 22); g.fill();
+  g.fillStyle = cor; g.beginPath(); g.arc(x0 + 24, 36, 11, 0, 7); g.fill();
+  g.fillStyle = '#111'; g.font = '800 17px Sniglet, sans-serif'; g.textAlign = 'center'; g.fillText(cor === '#2fa865' ? '✓' : '!', x0 + 24, 42);
+  g.fillStyle = '#fff'; g.font = '600 24px Lexend, sans-serif'; g.textAlign = 'left'; g.fillText(texto, x0 + 44, 45);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false })); s.scale.set(3.4, 0.96, 1); s.renderOrder = 10; return s;
+}
+
+/* ---------- jogador e câmera ---------- */
+const jog = { x: 22, z: 26.5, y: 2, rot: Math.PI, fase: 0 };
+let yaw = 0, boneJog, npcs = [];
+const RAIO = 0.3;
+function chaoEm(cx, cz, py) {
+  // maior bloco sólido que dá para pisar (no máximo 1 acima dos pés), com 2 blocos livres em cima
+  for (let y = Math.floor(py + 1.01); y >= 0; y--) {
+    if (solido(cx, y - 1, cz) || y === 0) {
+      if (solido(cx, y, cz) || solido(cx, y + 1, cz)) return null;
+      return y;
+    }
+  }
+  return 0;
+}
+function podeIr(nx, nz) {
+  if (nx < 1 || nz < 1 || nx > N - 2 || nz > N - 2) return null;
+  let alto = -1;
+  for (const [ox, oz] of [[-RAIO, -RAIO], [RAIO, -RAIO], [-RAIO, RAIO], [RAIO, RAIO]]) {
+    const c = chaoEm(Math.round(nx + ox), Math.round(nz + oz), jog.y);
+    if (c === null) return null;
+    alto = Math.max(alto, c);
+  }
+  if (npcs.some(n => Math.hypot(n.m.x - nx, n.m.z - nz) < 0.7)) return null;
+  return alto;
+}
+function posicionarCamera(suave) {
+  const dist = 7.5, alt = 4.6;
+  const alvo = new THREE.Vector3(jog.x - Math.sin(yaw) * dist, jog.y + alt, jog.z + Math.cos(yaw) * dist);
+  // não deixa a câmera entrar nos blocos: aproxima até achar espaço livre
+  for (let f = 1; f > 0.25; f -= 0.08) {
+    const cx = jog.x - Math.sin(yaw) * dist * f, cz = jog.z + Math.cos(yaw) * dist * f, cy = jog.y + alt * Math.max(0.6, f);
+    if (!solido(Math.round(cx), Math.floor(cy), Math.round(cz)) && !solido(Math.round(cx), Math.floor(cy) - 1, Math.round(cz))) { alvo.set(cx, cy, cz); break; }
+  }
+  if (suave) camera.position.lerp(alvo, 0.15); else camera.position.copy(alvo);
+  camera.lookAt(jog.x, jog.y + 1.3, jog.z);
+}
+
+/* ---------- construção animada ---------- */
+const filaObras = [];
+function construir(blocos, aoTerminar) {
+  if (!tem3d) { blocos.forEach(([x, y, z, t]) => mundo.set(k(x, y, z), t)); aoTerminar && aoTerminar(); return; }
+  filaObras.push({ blocos: blocos.slice(), i: 0, aoTerminar });
+}
+function passoObras() {
+  if (!filaObras.length) return;
+  const o = filaObras[0];
+  const n = reduz ? o.blocos.length : 3;
+  for (let j = 0; j < n && o.i < o.blocos.length; j++, o.i++) { const [x, y, z, t] = o.blocos[o.i]; mundo.set(k(x, y, z), t); addMalha(x, y, z, t); }
+  if (o.i >= o.blocos.length) { filaObras.shift(); desenharMundo(); desenharFlores(); o.aoTerminar && o.aoTerminar(); }
+}
+
+/* ---------- montagem da cena ---------- */
+const tela = $('#tela');
+let mini, miniG;
+function iniciar3d() {
+  criarTexturas(); criarTipos();
+  renderer = new THREE.WebGLRenderer({ antialias: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.domElement.tabIndex = 0;
+  renderer.domElement.setAttribute('role', 'img');
+  renderer.domElement.setAttribute('aria-label', 'Vila de blocos vista de trás da sua personagem. Use as setas para andar e a lista de moradores para ir direto a cada um.');
+  tela.prepend(renderer.domElement);
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color('#f7e7bf');
+  scene.fog = new THREE.Fog('#f7e7bf', 26, 58);
+  camera = new THREE.PerspectiveCamera(60, 1.6, 0.1, 200);
+  scene.add(new THREE.HemisphereLight('#fff6e0', '#7a6a4a', 1.15));
+  const sol = new THREE.DirectionalLight('#fff1cc', 1.1); sol.position.set(20, 40, 12); scene.add(sol);
+  geo = new THREE.BoxGeometry(1, 1, 1);
+  Object.entries(TIPOS).forEach(([t, mats]) => { const mm = new THREE.InstancedMesh(geo, mats, CAP[t]); mm.count = 0; mm.frustumCulled = false; malhas[t] = mm; scene.add(mm); });
+  malhaFlores = new THREE.InstancedMesh(geo, new THREE.MeshLambertMaterial({ color: '#ffffff' }), 200); malhaFlores.count = 0; malhaFlores.frustumCulled = false; scene.add(malhaFlores);
+  malhaCaules = new THREE.InstancedMesh(geo, new THREE.MeshLambertMaterial({ color: '#2f8a3c' }), 200); malhaCaules.count = 0; malhaCaules.frustumCulled = false; scene.add(malhaCaules);
+  desenharMundo(); desenharFlores();
+  // moradores
+  const peles = ['#e0ac7e', '#8d5a3b', '#f1c7a0', '#6b4128', '#c98e62', '#a8714c'], cabelos = ['#3a2416', '#111', '#c9c9c5', '#5a3a20', '#111', '#e8e2d0'];
+  MORADORES.forEach((m, i) => {
+    const b = boneco({ pele: peles[i], cabelo: cabelos[i], roupa: m.roupa });
+    const [fx, fz] = direcaoCentro(m);
+    b.position.set(m.x, ALT(m.x, m.z), m.z); b.rotation.y = Math.atan2(fx, fz);
+    scene.add(b);
+    const s = placa(m.nome, moradorFeito(m) ? '#2fa865' : '#ffd23f'); s.position.set(m.x, ALT(m.x, m.z) + 2.5, m.z); scene.add(s);
+    npcs.push({ m, b, s, fase: i });
+  });
+  boneJog = boneco({ pele: '#c98e62', cabelo: '#3a2416', roupa: est.cor, calca: '#2b2b2a' });
+  scene.add(boneJog);
+  if (est.pos) { jog.x = est.pos[0]; jog.z = est.pos[1]; yaw = est.pos[2] || 0; }
+  jog.y = chaoEm(Math.round(jog.x), Math.round(jog.z), 20) || ALT(Math.round(jog.x), Math.round(jog.z));
+  redimensionar(); posicionarCamera(false);
+  new ResizeObserver(redimensionar).observe(tela);
+  mini = $('#mini'); miniG = mini.getContext('2d');
+  requestAnimationFrame(loop);
+}
+function redimensionar() {
+  const w = tela.clientWidth, h = tela.clientHeight; if (!w || !h) return;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+
+/* ---------- controles ---------- */
+const teclas = new Set();
+const MAPA = { ArrowUp: 'f', KeyW: 'f', ArrowDown: 't', KeyS: 't', ArrowLeft: 'e', KeyA: 'e', ArrowRight: 'd', KeyD: 'd', KeyQ: 'gl', KeyE: 'gr' };
+const dialogoAberto = () => !$('#dialogo').hidden;
+document.addEventListener('keydown', ev => {
+  if (!tem3d) return;
+  const alvo = ev.target; if (alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA')) return;
+  const dentro = tela.contains(alvo) || alvo === document.body;
+  if (!dentro) return;
+  if ((ev.code === 'Space' || ev.code === 'Enter') && !dialogoAberto() && perto) { ev.preventDefault(); abrirMorador(perto.m); return; }
+  if (MAPA[ev.code] && !dialogoAberto()) { teclas.add(MAPA[ev.code]); ev.preventDefault(); }
+});
+document.addEventListener('keyup', ev => { if (MAPA[ev.code]) teclas.delete(MAPA[ev.code]); });
+window.addEventListener('blur', () => teclas.clear());
+document.querySelectorAll('[data-mov]').forEach(b => {
+  const on = e => { e.preventDefault(); teclas.add(b.dataset.mov); }, off = () => teclas.delete(b.dataset.mov);
+  b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointerleave', off); b.addEventListener('pointercancel', off);
+});
+document.querySelectorAll('[data-gira]').forEach(b => {
+  const g = b.dataset.gira === '1' ? 'gr' : 'gl';
+  const on = e => { e.preventDefault(); teclas.add(g); }, off = () => teclas.delete(g);
+  b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointerleave', off); b.addEventListener('pointercancel', off);
+});
+// arrastar a tela gira a câmera; um toque num morador abre a conversa
+let arrasto = null;
+tela.addEventListener('pointerdown', e => { if (e.target.closest('button, .vc-dialogo')) return; arrasto = { x: e.clientX, y: e.clientY, mov: 0 }; tela.setPointerCapture(e.pointerId); renderer && renderer.domElement.focus({ preventScroll: true }); });
+tela.addEventListener('pointermove', e => { if (!arrasto) return; const dx = e.clientX - arrasto.x; arrasto.mov += Math.abs(dx); yaw += dx * 0.008; arrasto.x = e.clientX; });
+tela.addEventListener('pointerup', e => {
+  if (arrasto && arrasto.mov < 6 && renderer) {
+    const r = renderer.domElement.getBoundingClientRect();
+    const v = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    const ray = new THREE.Raycaster(); ray.setFromCamera(v, camera);
+    const hit = npcs.find(n => ray.intersectObject(n.b, true).length);
+    if (hit) { if (Math.hypot(hit.m.x - jog.x, hit.m.z - jog.z) < 6) abrirMorador(hit.m); else aviso('Chegue mais perto de ' + hit.m.nome + ' para conversar.'); }
+  }
+  arrasto = null;
+});
+$('#falar').addEventListener('click', () => perto && abrirMorador(perto.m));
+
+/* ---------- laço principal ---------- */
+let ultimo = performance.now(), perto = null, lugarAtual = '', salvarEm = 0;
+function loop(t) {
+  const dt = Math.min(0.1, (t - ultimo) / 1000); ultimo = t;
+  let fx = 0, fz = 0;
+  if (!dialogoAberto()) {
+    if (teclas.has('gl')) yaw -= 1.9 * dt; if (teclas.has('gr')) yaw += 1.9 * dt;
+    const f = (teclas.has('f') ? 1 : 0) - (teclas.has('t') ? 1 : 0), l = (teclas.has('d') ? 1 : 0) - (teclas.has('e') ? 1 : 0);
+    // frente = direção para onde a câmera olha
+    fx = Math.sin(yaw) * f + Math.cos(yaw) * l; fz = -Math.cos(yaw) * f + Math.sin(yaw) * l;
+  }
+  const andando = fx || fz;
+  if (andando) {
+    const len = Math.hypot(fx, fz), vel = 4.2 * dt;
+    const nx = jog.x + fx / len * vel, nz = jog.z + fz / len * vel;
+    let c = podeIr(nx, nz);
+    if (c !== null) { jog.x = nx; jog.z = nz; }
+    else if ((c = podeIr(nx, jog.z)) !== null) jog.x = nx;
+    else if ((c = podeIr(jog.x, nz)) !== null) jog.z = nz;
+    jog.rot = Math.atan2(fx, fz);
+    jog.fase += dt * 10;
+  }
+  const chao = podeIr(jog.x, jog.z);
+  if (chao !== null) jog.y += (chao - jog.y) * Math.min(1, dt * 14);
+  boneJog.position.set(jog.x, jog.y, jog.z);
+  let dr = jog.rot - boneJog.rotation.y; dr = Math.atan2(Math.sin(dr), Math.cos(dr)); boneJog.rotation.y += dr * Math.min(1, dt * 12);
+  animarBoneco(boneJog, jog.fase, andando);
+  npcs.forEach(n => { n.fase += dt; n.b.userData.bd.rotation.x = Math.sin(n.fase * 2) * 0.15; n.s.position.y = ALT(n.m.x, n.m.z) + 2.5 + Math.sin(n.fase * 2) * 0.06; });
+  passoObras();
+  posicionarCamera(true);
+  renderer.render(scene, camera);
+  // morador por perto
+  const p = npcs.find(n => Math.hypot(n.m.x - jog.x, n.m.z - jog.z) < 2.4) || null;
+  if (p !== perto) { perto = p; const b = $('#falar'); b.hidden = !p || dialogoAberto(); if (p) b.textContent = 'Conversar com ' + p.m.nome + ' (Espaço)'; }
+  if (dialogoAberto()) $('#falar').hidden = true; else if (perto) $('#falar').hidden = false;
+  // nome do bairro
+  const bairro = MORADORES.find(m => Math.hypot(m.x - jog.x, m.z - jog.z) < 7);
+  const nome = bairro ? bairro.bairro : (Math.hypot(jog.x - 22, jog.z - 22) < 6 ? 'Torre da Vila' : '');
+  if (nome !== lugarAtual) { lugarAtual = nome; const el = $('#lugar'); el.textContent = nome; el.classList.toggle('on', !!nome); }
+  if (t - salvarEm > 2000) { salvarEm = t; est.pos = [+jog.x.toFixed(2), +jog.z.toFixed(2), +yaw.toFixed(2)]; salvar(); desenharMini(); }
+  requestAnimationFrame(loop);
+}
+
+/* ---------- minimapa ---------- */
+const COR_MINI = { grama: '#5fb04a', caminho: '#c9b48a', pedra: '#9a9a95', tronco: '#2f8a3c', folhas: '#2f8a3c', tabua: '#d4a95c', tijolo: '#b8423a', telhado: '#8f2a2f', metal: '#b5b5b0', luz: '#ffd84d', livros: '#c8323f', arada: '#6e4527', cerca: '#2a7a36', coleta: '#f2cf1d', terra: '#8a5a36' };
+function desenharMini() {
+  if (!miniG) return;
+  const s = mini.width / N;
+  for (let z = 0; z < N; z++) for (let x = 0; x < N; x++) {
+    let t = 'grama';
+    for (let y = 16; y >= 0; y--) { const tt = mundo.get(k(x, y, z)); if (tt && tt !== 'flor') { t = tt; break; } }
+    miniG.fillStyle = COR_MINI[t] || '#5fb04a'; miniG.fillRect(x * s, z * s, s + 0.5, s + 0.5);
+  }
+  MORADORES.forEach(m => { miniG.fillStyle = moradorFeito(m) ? '#2fa865' : '#ffd23f'; miniG.strokeStyle = '#111'; miniG.lineWidth = 1.5; miniG.beginPath(); miniG.arc(m.x * s, m.z * s, 4.5, 0, 7); miniG.fill(); miniG.stroke(); });
+  miniG.save(); miniG.translate(jog.x * s, jog.z * s); miniG.rotate(Math.PI - jog.rot);
+  miniG.fillStyle = '#ef5a4c'; miniG.strokeStyle = '#111'; miniG.beginPath(); miniG.moveTo(0, -6); miniG.lineTo(4.5, 4.5); miniG.lineTo(-4.5, 4.5); miniG.closePath(); miniG.fill(); miniG.stroke(); miniG.restore();
+}
+
+/* =====================================================================
+   Conversas
+   ===================================================================== */
+let avisoT;
+function aviso(txt) { const el = $('#aviso'); el.textContent = txt; el.classList.add('on'); clearTimeout(avisoT); avisoT = setTimeout(() => el.classList.remove('on'), 3200); }
+function embaralhar(a, seed) { const r = rnd(seed); const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+
+let emConversa = null;
+function abrirMorador(m) {
+  teclas.clear();
+  const i = m.sit.findIndex((s, j) => !est.resp[m.id + j]);
+  emConversa = m;
+  const dlg = $('#dialogo');
+  if (i < 0) {
+    dlg.innerHTML = `<div class="quem" id="dlg-quem">${esc(m.nome)}</div><div class="tema">${esc(m.bairro)} · ${esc(m.tema)}</div>
+      <p class="fala">Obrigado pela ajuda! Graças às suas escolhas, o bairro ganhou ${esc(m.obraNome)}. Você pode rever as situações no relatório para o professor.</p>
+      <div class="acoes"><button class="btn" type="button" data-fechar>Continuar explorando</button></div>`;
+  } else mostrarSituacao(m, i);
+  dlg.hidden = false;
+  if (getComputedStyle(dlg).position === 'static') dlg.scrollIntoView({ block: 'nearest' });
+  const b = dlg.querySelector('button'); b && b.focus({ preventScroll: true });
+  dlg.querySelectorAll('[data-fechar]').forEach(b => b.onclick = fecharDialogo);
+}
+function mostrarSituacao(m, i) {
+  const s = m.sit[i], id = m.id + i;
+  const ops = embaralhar(s.ops.map((o, j) => ({ txt: o[0], p: o[1], j })), id.length * 31 + i);
+  const dlg = $('#dialogo');
+  dlg.innerHTML = `<div class="quem" id="dlg-quem">${esc(m.nome)}</div><div class="tema">${esc(m.bairro)} · ${esc(m.tema)} · situação ${i + 1} de ${m.sit.length}</div>
+    <p class="fala">${esc(s.txt)}</p><div class="vc-ops" role="group" aria-label="O que você faz?">${ops.map(o => `<button type="button" data-j="${o.j}">${esc(o.txt)}</button>`).join('')}</div><div id="dlg-res" aria-live="polite"></div>`;
+  dlg.querySelectorAll('.vc-ops button').forEach(b => b.onclick = () => responder(m, i, +b.dataset.j));
+}
+function responder(m, i, j) {
+  const s = m.sit[i], id = m.id + i, p = s.ops[j][1];
+  if (est.resp[id]) return;
+  est.resp[id] = { j, p };
+  salvar();
+  const dlg = $('#dialogo');
+  dlg.querySelectorAll('.vc-ops button').forEach(b => {
+    const jj = +b.dataset.j, pp = s.ops[jj][1];
+    b.disabled = true;
+    if (pp === 2) b.classList.add('melhor'); else if (pp === 1) b.classList.add('meio');
+    if (jj === j) b.classList.add('escolhida');
+  });
+  const melhor = s.ops.find(o => o[1] === 2)[0];
+  const titulo = p === 2 ? 'Boa escolha! +2 blocos de confiança.' : p === 1 ? 'Escolha segura. +1 bloco de confiança.' : 'A escolha que mais ajuda é outra.';
+  const extra = p === 2 ? '' : `<br><strong>O que mais ajuda:</strong> ${esc(melhor)}`;
+  const ultima = i === m.sit.length - 1;
+  $('#dlg-res').innerHTML = `<div class="vc-exp ${p === 2 ? '' : p === 1 ? 'meio' : 'outra'}"><strong>${titulo}</strong> ${esc(s.exp)}${extra}</div>
+    <div class="acoes"><button class="btn" type="button" id="dlg-seguir">${ultima ? 'Ver o bairro crescer' : 'Próxima situação'}</button></div>`;
+  $('#dlg-seguir').focus({ preventScroll: true });
+  $('#dlg-seguir').onclick = () => {
+    if (!ultima) { mostrarSituacao(m, i + 1); const b = $('#dialogo').querySelector('.vc-ops button'); b && b.focus({ preventScroll: true }); return; }
+    fecharDialogo();
+    concluirBairro(m);
+  };
+  atualizarPainel();
+}
+function fecharDialogo() {
+  $('#dialogo').hidden = true; emConversa = null;
+  if (tem3d && getComputedStyle($('#dialogo')).position === 'static') tela.scrollIntoView({ block: 'nearest' });
+  if (renderer) renderer.domElement.focus({ preventScroll: true });
+}
+function concluirBairro(m) {
+  const n = obrasFeitas() - 1;  // índice do andar novo da torre
+  const npc = npcs.find(x => x.m === m);
+  if (npc) { scene.remove(npc.s); npc.s = placa(m.nome, '#2fa865'); npc.s.position.set(m.x, ALT(m.x, m.z) + 2.5, m.z); scene.add(npc.s); }
+  aviso(`${m.bairro} ganhou ${m.obraNome}. A torre da vila subiu um andar.`);
+  construir(obraBlocos(m), () => construir(torreAndar(n), () => { desenharMini(); if (obrasFeitas() === MORADORES.length) final(); }));
+  atualizarPainel();
+}
+function final() {
+  const pct = Math.round(pontos() / MAXPTS * 100);
+  if (!est.registrado) { window.MDP && MDP.registrar('vila-cidada', pct); est.registrado = true; salvar(); }
+  const dlg = $('#dialogo');
+  dlg.innerHTML = `<div class="vc-fim"><div class="quem" id="dlg-quem">A Vila Cidadã está completa</div>
+    <p class="big">${pontos()} de ${MAXPTS} blocos</p>
+    <p class="fala">Os seis bairros ganharam construções novas e a torre do centro acendeu a luz do topo. Cada escolha que cuidou das pessoas ajudou a vila a crescer.</p>
+    <div class="acoes" style="justify-content:center"><button class="btn" type="button" data-fechar>Passear pela vila</button><button class="btn" type="button" id="fim-rel">Ver relatório</button></div></div>`;
+  dlg.hidden = false;
+  dlg.querySelector('[data-fechar]').onclick = fecharDialogo;
+  $('#fim-rel').onclick = () => { fecharDialogo(); const d = $('#relatorio').closest('details'); d.open = true; d.scrollIntoView({ behavior: reduz ? 'auto' : 'smooth', block: 'center' }); };
+}
+
+/* ---------- painel lateral ---------- */
+function atualizarPainel() {
+  const pts = pontos(), obras = obrasFeitas(), feitas = Object.keys(est.resp).length;
+  $('#hud-blocos').textContent = pts; $('#hud-obras').textContent = obras;
+  $('#barra').style.width = (feitas / SITS.length * 100) + '%';
+  $('#objetivo').textContent = obras === MORADORES.length ? 'Vila completa. Você pode recomeçar para tentar outras escolhas.' : `Ajude os seis moradores e complete a torre do centro da vila. Faltam ${MORADORES.length - obras} bairros.`;
+  $('#moradores').innerHTML = MORADORES.map(m => {
+    const n = m.sit.filter((s, i) => est.resp[m.id + i]).length, ok = n === m.sit.length;
+    return `<li><span class="nome">${esc(m.nome)}</span><span class="st${ok ? ' ok' : ''}">${esc(m.bairro)} · ${ok ? 'ajudado' : n + ' de ' + m.sit.length}</span><button type="button" data-ir="${m.id}">${tem3d ? 'Ir até lá' : (ok ? 'Rever' : 'Conversar')}</button></li>`;
+  }).join('');
+  $('#moradores').querySelectorAll('[data-ir]').forEach(b => b.onclick = () => irAte(MORADORES.find(m => m.id === b.dataset.ir)));
+  $('#placar').textContent = feitas ? `${feitas} de ${SITS.length} situações respondidas · ${pts} de ${MAXPTS} blocos de confiança.` : 'Nenhuma situação respondida ainda.';
+  const linhas = SITS.filter(s => est.resp[s.id]).map(s => { const r = est.resp[s.id], sit = s.m.sit[s.i]; return `<tr><td>${esc(s.m.tema)}</td><td>${esc(sit.ops[r.j][0])}</td><td>${r.p}</td></tr>`; });
+  $('#relatorio').innerHTML = linhas.length ? `<table class="vc-rel"><thead><tr><th>Tema</th><th>Escolha</th><th>Blocos</th></tr></thead><tbody>${linhas.join('')}</tbody></table>
+    <div class="btn-row" style="margin-top:8px"><button class="btn ghost" type="button" id="copiar-rel">Copiar relatório</button></div>` : '<p class="small muted" style="margin-top:6px">O relatório aparece aqui conforme as situações forem respondidas.</p>';
+  const c = $('#copiar-rel');
+  if (c) c.onclick = () => {
+    const txt = 'Vila Cidadã: ' + pts + ' de ' + MAXPTS + ' blocos\n' + SITS.filter(s => est.resp[s.id]).map(s => { const r = est.resp[s.id]; return s.m.tema + ': ' + s.m.sit[s.i].ops[r.j][0] + ' (' + r.p + ')'; }).join('\n');
+    navigator.clipboard && navigator.clipboard.writeText(txt).then(() => { c.textContent = 'Copiado'; setTimeout(() => c.textContent = 'Copiar relatório', 1800); });
+  };
+  desenharFlores(); desenharMini();
+}
+function irAte(m) {
+  if (!tem3d) { abrirMorador(m); return; }
+  const [fx, fz] = direcaoCentro(m);
+  jog.x = m.x + fx * 2 + fz * 0.9; jog.z = m.z + fz * 2 - fx * 0.9;
+  jog.y = chaoEm(Math.round(jog.x), Math.round(jog.z), 20) || ALT(Math.round(jog.x), Math.round(jog.z));
+  const vx = m.x - jog.x, vz = m.z - jog.z;
+  jog.rot = Math.atan2(vx, vz); boneJog.rotation.y = jog.rot;
+  yaw = Math.atan2(vx, -vz);   // câmera atrás da personagem, olhando para o morador
+  posicionarCamera(false);
+  abrirMorador(m);
+  (getComputedStyle($('#dialogo')).position === 'static' ? $('#dialogo') : tela).scrollIntoView({ behavior: reduz ? 'auto' : 'smooth', block: 'nearest' });
+}
+
+/* ---------- cor da personagem e recomeçar ---------- */
+$('#cores').innerHTML = CORES.map((c, i) => `<button type="button" style="background:${c}" data-cor="${c}" aria-label="${['Verde', 'Amarela', 'Vermelha'][i]}" aria-pressed="${c === est.cor}"></button>`).join('');
+$('#cores').querySelectorAll('button').forEach(b => b.onclick = () => {
+  est.cor = b.dataset.cor; salvar();
+  $('#cores').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  if (boneJog) boneJog.userData.roupa.color.set(est.cor);
+});
+$('#recomecar').onclick = () => {
+  if (!confirm('Recomeçar apaga as respostas e as construções desta vila. Continuar?')) return;
+  est = { resp: {}, cor: est.cor, pos: null, registrado: false }; salvar(); location.reload();
+};
+
+/* ---------- início ---------- */
+gerarTerreno();
+MORADORES.forEach(casa);
+// bairros já ajudados voltam construídos
+let andar = 0;
+MORADORES.forEach(m => { if (moradorFeito(m)) { obraBlocos(m).forEach(([x, y, z, t]) => mundo.set(k(x, y, z), t)); torreAndar(andar++).forEach(([x, y, z, t]) => mundo.set(k(x, y, z), t)); } });
+if (tem3d) iniciar3d();
+atualizarPainel();
+</script>
+</body>
+</html>

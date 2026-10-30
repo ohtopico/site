@@ -31,6 +31,10 @@
     'vale-bits': `<path d="M6 54h52" ${T}/><path d="M10 54V30l12-10 12 10v24z" fill="${B}" ${T}/><path d="M8 32l14-13 14 13" fill="${R}" ${T}/>
       <rect x="18" y="40" width="8" height="14" fill="${V}" ${T}/><path d="M40 54V38M46 54V38M52 54V38M38 44h16M38 50h16" ${T}/>
       <path d="M48 8l7 7-7 7-7-7z" fill="${A}" ${T}/>`,
+    'vila-cidada': `<rect x="8" y="34" width="16" height="16" fill="${V}" ${T}/><rect x="8" y="34" width="16" height="5" fill="#5fb04a" ${T}/>
+      <rect x="24" y="34" width="16" height="16" fill="#8a5a36" ${T}/><rect x="24" y="34" width="16" height="5" fill="#5fb04a" ${T}/>
+      <rect x="40" y="18" width="16" height="32" fill="${A}" ${T}/><rect x="45" y="24" width="6" height="6" fill="${B}" ${T}/><path d="M38 18l10-10 10 10z" fill="${R}" ${T}/>
+      <rect x="16" y="14" width="10" height="10" fill="#c98e62" ${T}/><rect x="15" y="24" width="12" height="10" fill="${R}" ${T}/>`,
     python: `<rect x="6" y="10" width="52" height="38" rx="6" fill="#111" ${T}/><path d="M14 22l7 5-7 5" fill="none" stroke="${V}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M25 33h10" stroke="${A}" stroke-width="3" stroke-linecap="round"/><path d="M40 56c0-8 4-12 10-12" fill="none" stroke="#2f7a3f" stroke-width="2.5"/>
       <path d="M44 50c-6 0-8-5-8-5 5-1 8 2 8 5z" fill="${V}" ${T}/><circle cx="51" cy="42" r="5" fill="${R}" ${T}/>`,
