@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech pra Prof: tecnologias e sites que facilitam a vida do professor</title>
+<meta name="description" content="Guia gratuito de tecnologias para professores, por Júlia Roberta Quoos Alves: organização, quizzes, murais, flashcards com Anki, criação de materiais, inclusão e segurança digital, com filtros para ferramentas gratuitas e sem internet.">
+<meta property="og:title" content="Tech pra Prof: tecnologias e sites que facilitam a vida do professor">
+<meta property="og:description" content="Ferramentas gratuitas para organizar a rotina, avaliar, engajar a turma, criar flashcards no Anki, produzir materiais e incluir todos os alunos. Guia de Júlia Roberta Quoos Alves.">
+<meta property="og:url" content="https://ohtopico.com.br/tech-pra-prof/">
+<meta property="og:type" content="book">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/tech-pra-prof/img/og-tech-pra-prof.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="Capa do guia Tech pra Prof: tecnologias e sites que facilitam a vida do professor, de Júlia Roberta Quoos Alves">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ohtopico.com.br/tech-pra-prof/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "Tech pra Prof: tecnologias e sites que facilitam a vida do professor",
+  "url": "https://ohtopico.com.br/tech-pra-prof/",
+  "image": "https://ohtopico.com.br/tech-pra-prof/img/og-tech-pra-prof.jpg",
+  "inLanguage": "pt-BR",
+  "bookFormat": "https://schema.org/EBook",
+  "isAccessibleForFree": true,
+  "about": ["Tecnologia educacional", "Formação de professores", "Repetição espaçada", "Acessibilidade digital", "Segurança digital"],
+  "audience": {"@type": "EducationalAudience", "educationalRole": "teacher"},
+  "isPartOf": {"@type": "WebSite", "url": "https://ohtopico.com.br/"},
+  "author": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}
+}
+</script>
+<!-- Tema salvo (o mesmo do IA pra Prof e do site), aplicado antes de desenhar a página -->
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #ffffff;
+    --paper-2: #f4f4f2;
+    --pill: #efefed;
+    --pill-2: #e2e2df;
+    --ink: #111111;
+    --ink-2: #4a4a4a;
+    --ink-3: #6f6f6f;
+    --line: #d9d9d6;
+    --accent: #157f3b;
+    --accent-soft: #e3f4e8;
+    --ok: #157f3b;
+    --ok-soft: #e3f4e8;
+    --bad: #c21f3a;
+    --bad-soft: #fbe6ea;
+    --warn: #9a6400;
+    --warn-soft: #fbf1d9;
+    --radius: 28px;
+    --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+    --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+      --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+      --accent: #5fd08a; --accent-soft: #173322; --ok: #5fd08a; --ok-soft: #173322;
+      --bad: #ff7d93; --bad-soft: #3b1a21; --warn: #f2b84b; --warn-soft: #3a2c10;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #151515; --paper-2: #1d1d1d; --pill: #242424; --pill-2: #2f2f2f;
+    --ink: #f3f3f1; --ink-2: #c9c9c6; --ink-3: #9a9a97; --line: #3a3a38;
+    --accent: #5fd08a; --accent-soft: #173322; --ok: #5fd08a; --ok-soft: #173322;
+    --bad: #ff7d93; --bad-soft: #3b1a21; --warn: #f2b84b; --warn-soft: #3a2c10;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-weight: 400; font-size: 17px; line-height: 1.6;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  img { max-width: 100%; height: auto; display: block; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- Barra superior ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40; background: var(--paper);
+    border-bottom: 1.5px solid var(--ink);
+    display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+  }
+  .brand {
+    font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink); text-decoration: none; white-space: nowrap;
+  }
+  .topbar .spacer { flex: 1; }
+  .progress-wrap { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+  .progress { width: 120px; height: 8px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; }
+  .progress > span { display: block; height: 100%; width: 0; background: var(--ink); transition: width .4s ease; }
+  .icon-btn {
+    border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px;
+    padding: 6px 14px; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px; min-height: 38px;
+  }
+  .icon-btn:hover { background: var(--pill); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  #toc-btn { display: none; }
+  .back-btn { color: var(--ink); text-decoration: none; font-family: var(--display); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: 13px; }
+  .back-btn:hover { background: var(--ink); color: var(--paper); }
+  .toc-back {
+    align-items: center; border: 1.5px solid var(--ink); border-radius: 99px; color: var(--ink);
+    display: flex; font-size: 14px; font-weight: 500; gap: 6px; justify-content: center;
+    margin: 0 4px 18px; min-height: 40px; padding: 6px 14px; text-decoration: none;
+  }
+  .toc-back:hover { background: var(--ink); color: var(--paper); }
+
+  /* ---------- Layout ---------- */
+  .layout { display: grid; grid-template-columns: 290px 1fr; max-width: 1180px; margin: 0 auto; }
+  .toc {
+    position: sticky; top: 60px; align-self: start; height: calc(100vh - 60px); overflow-y: auto;
+    padding: 24px 16px 40px 16px; border-right: 1.5px solid var(--line);
+  }
+  .toc h2 {
+    font-family: var(--display); font-weight: 800; font-size: 14px; letter-spacing: .14em;
+    text-transform: uppercase; margin: 22px 8px 8px; color: var(--ink);
+  }
+  .toc h2:first-child { margin-top: 0; }
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc a {
+    display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 12px;
+    color: var(--ink-2); text-decoration: none; font-size: 15px; line-height: 1.35;
+  }
+  .toc a:hover { background: var(--pill); color: var(--ink); }
+  .toc a[aria-current="page"] { background: var(--ink); color: var(--paper); }
+  .toc a .dot {
+    flex: none; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid currentColor;
+    display: grid; place-items: center; font-size: 10px; opacity: .55;
+  }
+  .toc a.done .dot { background: currentColor; opacity: 1; }
+  .toc a.done .dot::after { content: '✓'; color: var(--paper); font-weight: 700; }
+  .toc a[aria-current="page"].done .dot::after { color: var(--ink); }
+  .toc .sub { padding-left: 34px; font-size: 14px; }
+
+  main { padding: 36px 48px 80px; min-width: 0; }
+  .chapter { display: none; max-width: 720px; margin: 0 auto; }
+  .chapter.active { display: block; animation: fade .35s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .part-label {
+    font-family: var(--display); font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-3); margin: 0 0 6px;
+  }
+  .chapter > h2, .cover h1 {
+    font-family: var(--display); font-weight: 800; text-transform: uppercase;
+    letter-spacing: .12em; font-size: clamp(28px, 5.4vw, 42px); line-height: 1.15; margin: 0 0 6px;
+  }
+  .chapter .kicker {
+    font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 14px;
+    color: var(--ink-2); margin: 0 0 22px;
+  }
+  .chapter h3 {
+    font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+    font-size: 17px; margin: 34px 0 10px;
+  }
+  .chapter p { margin: 0 0 14px; }
+  .chapter ul, .chapter ol { padding-left: 22px; margin: 0 0 16px; }
+  .chapter li { margin-bottom: 6px; }
+  .u { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+  .signature { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; text-align: center; margin-top: 30px; }
+
+  /* Pílulas no estilo do livro */
+  .pill { background: var(--pill); border-radius: 999px; padding: 18px 28px; text-align: center; }
+  .pill.dark { background: var(--pill-2); }
+  .pill strong, .pill-title { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-weight: 800; display: block; }
+  .pill-row { display: grid; gap: 12px; margin: 18px 0 26px; }
+  @media (min-width: 640px) { .pill-row.three { grid-template-columns: repeat(3, 1fr); } .pill-row.two { grid-template-columns: 1fr 1fr; } }
+  .callout {
+    font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+    font-size: 17px; line-height: 1.5; margin: 22px 0;
+  }
+
+  /* Tabelas */
+  .table-wrap { overflow-x: auto; margin: 16px 0 24px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.45; }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; font-weight: 800; font-size: 14px; }
+  table.ruled th, table.ruled td { border: 0; border-bottom: 2px solid var(--ink); text-align: center; }
+  table.ruled th:first-child, table.ruled td:first-child { text-align: left; font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; font-weight: 800; }
+
+  /* Prompts */
+  .prompt {
+    margin: 14px 0 18px; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--paper);
+  }
+  .prompt figcaption {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 8px 8px 8px 16px; background: var(--pill); border-bottom: 1.5px solid var(--ink);
+    font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-weight: 800; font-size: 14px;
+  }
+  .prompt .body { padding: 14px 16px; margin: 0; font-size: 16px; white-space: pre-line; }
+  .copy-btn {
+    border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 4px 12px;
+    font-family: var(--body); font-size: 13px; text-transform: none; letter-spacing: 0; font-weight: 500;
+    cursor: pointer; min-height: 32px; white-space: nowrap;
+  }
+  .copy-btn:hover { background: var(--ink); color: var(--paper); }
+  .copy-btn.copied { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .ph {
+    background: var(--accent-soft); color: var(--accent); border-radius: 6px; padding: 0 4px;
+    font-weight: 500; white-space: normal;
+  }
+  .ph.filled { background: var(--ok-soft); color: var(--ok); }
+
+  /* Personalizador */
+  .personalize {
+    position: fixed; z-index: 60; right: 16px; bottom: 16px; width: min(360px, calc(100vw - 32px));
+    background: var(--paper); border: 1.5px solid var(--ink); border-radius: 22px; padding: 18px;
+    box-shadow: 6px 6px 0 var(--ink); display: none;
+  }
+  .personalize.open { display: block; }
+  body:has(.personalize.open) .assist-abrir { display: none; } /* botão "Pergunte ao site" sai da frente do painel */
+  .personalize h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 17px; margin: 0 0 4px; }
+  .personalize p { font-size: 14px; color: var(--ink-2); margin: 0 0 12px; line-height: 1.45; }
+  .field { display: grid; gap: 4px; margin-bottom: 10px; }
+  .field label { font-size: 13px; font-weight: 500; }
+  .field input, .field textarea {
+    font: inherit; font-size: 16px; color: var(--ink); background: var(--paper-2);
+    border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px; width: 100%;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--ink); outline: none; }
+  .personalize .row { display: flex; gap: 8px; justify-content: space-between; margin-top: 6px; }
+  .personalize .close { position: absolute; top: 10px; right: 10px; border: 0; background: none; font-size: 22px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; }
+  .personalize .close:hover { background: var(--pill); }
+
+  /* Navegação entre capítulos */
+  .pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 50px; padding-top: 20px; border-top: 1.5px solid var(--line); }
+  .pager a {
+    flex: 1; max-width: 48%; text-decoration: none; color: var(--ink);
+    border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; line-height: 1.3;
+  }
+  .pager a:hover { background: var(--pill); }
+  .pager small { display: block; color: var(--ink-3); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2px; }
+  .pager .next { text-align: right; margin-left: auto; }
+
+  /* Capa */
+  .cover { text-align: center; padding: 30px 0 10px; }
+  .cover .stack { font-family: var(--display); font-weight: 800; font-size: clamp(56px, 13vw, 104px); line-height: .95; letter-spacing: .12em; margin: 10px 0 24px; }
+  .cover .sub { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 15px; color: var(--ink-2); max-width: 520px; margin: 0 auto 8px; }
+  .cover .author { font-family: var(--display); text-transform: uppercase; letter-spacing: .12em; margin: 22px 0 28px; }
+  .cover-cta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--paper);
+    border: 1.5px solid var(--ink); border-radius: 99px; padding: 12px 22px; text-decoration: none;
+    font-weight: 500; cursor: pointer; min-height: 46px;
+  }
+  .btn-primary:hover { opacity: .88; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--ink);
+    border: 1.5px solid var(--ink); border-radius: 99px; padding: 12px 22px; text-decoration: none;
+    font-weight: 500; cursor: pointer; min-height: 46px;
+  }
+  .btn-ghost:hover { background: var(--pill); }
+  .parts { display: grid; gap: 14px; margin: 40px 0 10px; text-align: left; }
+  @media (min-width: 700px) { .parts { grid-template-columns: repeat(3, 1fr); } }
+  .part-card { border: 1.5px solid var(--ink); border-radius: 22px; padding: 18px; text-decoration: none; color: var(--ink); display: block; }
+  .part-card:hover { background: var(--pill); }
+  .part-card strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 18px; display: block; margin-bottom: 4px; }
+  .part-card span { font-size: 14px; color: var(--ink-2); line-height: 1.45; display: block; }
+
+  /* Fluxo (conceitos) */
+  .flow { display: grid; gap: 10px; margin: 20px 0; }
+  @media (min-width: 640px) { .flow { grid-template-columns: repeat(4, 1fr); } }
+  .flow button {
+    border: 1.5px solid var(--ink); background: var(--paper); border-radius: 18px; padding: 14px 10px;
+    cursor: pointer; text-align: center; min-height: 70px;
+  }
+  .flow button strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; display: block; font-size: 14px; }
+  .flow button span { font-size: 13px; color: var(--ink-2); }
+  .flow button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .flow button[aria-pressed="true"] span { color: var(--paper); opacity: .8; }
+  .flow-out { background: var(--pill); border-radius: 18px; padding: 14px 18px; min-height: 56px; }
+
+  /* Jogos e atividades */
+  .activity { border: 1.5px dashed var(--ink); border-radius: 22px; padding: 18px; margin: 26px 0; }
+  .activity > .tag {
+    display: inline-block; font-family: var(--display); text-transform: uppercase; letter-spacing: .12em;
+    font-size: 12px; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 3px 10px; margin-bottom: 8px;
+  }
+  .activity h4 { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-size: 17px; margin: 0 0 6px; }
+  .sort-card { background: var(--pill); border-radius: 18px; padding: 18px; text-align: center; font-size: 18px; font-weight: 500; margin: 12px 0; min-height: 70px; display: grid; place-items: center; }
+  .choice-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .choice-row button { min-width: 140px; }
+  .feedback { margin-top: 12px; border-radius: 14px; padding: 10px 14px; font-size: 15px; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--ok-soft); color: var(--ok); }
+  .feedback.bad { background: var(--bad-soft); color: var(--bad); }
+  .score { font-size: 14px; color: var(--ink-2); text-align: center; margin-top: 8px; }
+
+  .flip-grid { display: grid; gap: 12px; margin: 18px 0; }
+  @media (min-width: 640px) { .flip-grid { grid-template-columns: 1fr 1fr; } }
+  .flip {
+    border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 16px; text-align: center;
+    cursor: pointer; min-height: 110px; display: grid; place-items: center; gap: 4px;
+  }
+  .flip strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; font-size: 15px; display: block; }
+  .flip .hint { font-size: 12px; color: var(--ink-3); }
+  .flip.on { background: var(--ink); color: var(--paper); }
+  .flip.on .hint { color: var(--paper); opacity: .7; }
+
+  .checklist { list-style: none; padding: 0 !important; }
+  .checklist label { display: flex; gap: 12px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; cursor: pointer; font-family: var(--display); text-transform: uppercase; letter-spacing: .05em; font-weight: 800; font-size: 15px; }
+  .checklist label:hover { background: var(--pill); }
+  .checklist input { width: 22px; height: 22px; accent-color: var(--ink); flex: none; margin-top: 1px; }
+  .all-done { display: none; margin-top: 8px; }
+  .all-done.show { display: block; }
+
+  .two-col { display: grid; gap: 26px; }
+  @media (min-width: 720px) { .two-col { grid-template-columns: 1fr 1fr; } }
+
+  .shots { display: grid; gap: 14px; margin: 16px 0 22px; }
+  .shots figure { margin: 0; }
+  .shots figcaption, .figcap { font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
+  .shot { border: 1.5px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; }
+
+  .steps { counter-reset: s; list-style: none; padding: 0 !important; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 46px; margin-bottom: 16px; }
+  .steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px; width: 32px; height: 32px; border-radius: 50%;
+    border: 1.5px solid var(--ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800;
+  }
+
+  .link-cards { display: grid; gap: 12px; margin: 16px 0; }
+  @media (min-width: 640px) { .link-cards { grid-template-columns: 1fr 1fr; } }
+  .link-card { border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; text-decoration: none; color: var(--ink); display: flex; flex-direction: column; }
+  .link-card:hover { background: var(--pill); }
+  .link-card img { border-bottom: 1.5px solid var(--line); background: #fff; max-height: 220px; object-fit: cover; object-position: top; width: 100%; }
+  .link-card span { padding: 10px 14px; font-weight: 500; }
+  .link-card span::after { content: ' ↗'; }
+
+  /* Semáforo */
+  .traffic { display: grid; gap: 18px; align-items: start; margin: 18px 0; }
+  @media (min-width: 640px) { .traffic { grid-template-columns: 120px 1fr; } }
+  .lights { background: #222; border-radius: 26px; padding: 12px; display: flex; gap: 10px; justify-content: center; width: fit-content; margin: 0 auto; }
+  @media (min-width: 640px) { .lights { flex-direction: column; } }
+  .light { width: 64px; height: 64px; border-radius: 50%; border: 3px solid #000; cursor: pointer; opacity: .35; transition: opacity .2s, transform .2s; }
+  .light[data-c="vermelho"] { background: #e23b3b; }
+  .light[data-c="amarelo"] { background: #f4c430; }
+  .light[data-c="verde"] { background: #2fb45a; }
+  .light[aria-pressed="true"] { opacity: 1; transform: scale(1.06); box-shadow: 0 0 22px currentColor; }
+  .light-out { background: var(--pill); border-radius: 22px; padding: 18px 20px; min-height: 140px; }
+  .light-out strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; display: block; margin-bottom: 4px; }
+
+  /* Glossário */
+  .search { width: 100%; font: inherit; font-size: 16px; padding: 12px 16px; border-radius: 99px; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); margin: 6px 0 16px; }
+  .gloss { display: grid; gap: 12px; }
+  .gloss article { border: 1.5px solid var(--line); border-radius: 18px; padding: 14px 16px; }
+  .gloss h4 { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; margin: 0 0 4px; font-size: 16px; }
+  .gloss p { margin: 0 0 6px; font-size: 15px; }
+  .gloss em { color: var(--ink-2); font-size: 14px; }
+
+  /* Acordeão */
+  details.acc { border: 1.5px solid var(--line); border-radius: 18px; margin-bottom: 10px; overflow: hidden; }
+  details.acc summary { cursor: pointer; padding: 14px 16px; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+  details.acc summary::-webkit-details-marker { display: none; }
+  details.acc summary::after { content: '+'; font-family: var(--display); font-size: 20px; line-height: 1; }
+  details.acc[open] summary::after { content: '–'; }
+  details.acc[open] summary { background: var(--pill); }
+  details.acc .inner { padding: 12px 16px 16px; font-size: 15px; }
+  details.acc .inner p { margin: 0 0 8px; }
+
+  .tool-cards { display: grid; gap: 12px; }
+  .tool { border: 1.5px solid var(--line); border-radius: 18px; padding: 16px; }
+  .tool h4 { margin: 0 0 8px; font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; font-size: 17px; }
+  .tool dl { margin: 0; display: grid; gap: 6px; font-size: 15px; }
+  .tool dt { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .tool dd { margin: 0 0 4px; }
+
+  /* Quiz */
+  .quiz-q { font-weight: 500; margin-bottom: 10px; }
+  .quiz-opts { display: grid; gap: 8px; }
+  .quiz-opts button { text-align: left; border: 1.5px solid var(--ink); background: var(--paper); border-radius: 14px; padding: 10px 14px; cursor: pointer; min-height: 44px; }
+  .quiz-opts button:hover:not(:disabled) { background: var(--pill); }
+  .quiz-opts button.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .quiz-opts button.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 10px; }
+
+  .builder-out { background: var(--pill); border-radius: 18px; padding: 14px 16px; white-space: pre-line; font-size: 15px; min-height: 80px; margin: 10px 0; }
+
+  .refs p { padding-left: 24px; text-indent: -24px; font-size: 15px; word-break: break-word; }
+
+  .site-foot { text-align: center; font-family: var(--display); text-transform: uppercase; letter-spacing: .12em; font-size: 12px; color: var(--ink-3); margin-top: 40px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0;
+    background: var(--ink); color: var(--paper); border-radius: 99px; padding: 10px 18px; font-size: 14px;
+    transition: all .25s ease; z-index: 80; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .scrim { display: none; }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    #toc-btn { display: inline-flex; }
+    .toc {
+      position: fixed; top: 0; left: 0; bottom: 0; width: min(320px, 86vw); height: 100dvh; z-index: 70;
+      background: var(--paper); border-right: 1.5px solid var(--ink); transform: translateX(-102%);
+      transition: transform .25s ease; padding-top: 20px;
+    }
+    .toc.open { transform: none; }
+    .scrim.open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 65; }
+    main { padding: 26px 16px 70px; }
+    .progress { width: 70px; }
+    .brand { font-size: 18px; }
+  }
+  @media (max-width: 520px) {
+    .progress-wrap .pct-label { display: none; }
+    .icon-btn .lbl { display: none; }
+    .back-btn .lbl-site { display: none; }
+    .icon-btn { padding: 6px 9px; }
+    .topbar { gap: 6px; padding: 10px 12px; }
+    .brand { font-size: 16px; letter-spacing: .08em; }
+    .progress { width: 48px; }
+    body { font-size: 16px; }
+    .pill { border-radius: 24px; padding: 16px 18px; }
+    .pager a { max-width: none; }
+    .pager { flex-direction: column; }
+  }
+  @media print {
+    .topbar, .toc, .pager, .personalize, .copy-btn { display: none !important; }
+    .chapter { display: block !important; page-break-after: always; }
+    .layout { display: block; }
+  }
+
+  /* ---------- Próprio do Tech pra Prof ---------- */
+  .tool-cards { margin: 18px 0 8px; }
+  .tool-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .tool-top h4 { margin: 0; }
+  .tool h4 a { color: var(--ink); text-decoration-color: var(--accent); }
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0 !important; margin: 0 0 10px !important; }
+  .tags li { margin: 0; font-size: 12px; border: 1.5px solid var(--line); border-radius: 99px; padding: 1px 10px; color: var(--ink-2); }
+  .tags li.t-gratuito, .tags li.t-offline, .tags li.t-sem-conta { background: var(--ok-soft); color: var(--ok); border-color: transparent; }
+  .tags li.t-limites { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+  .fav-btn {
+    border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 4px 12px;
+    font-size: 13px; font-weight: 500; cursor: pointer; min-height: 32px; white-space: nowrap; flex: none;
+  }
+  .fav-btn:hover { background: var(--pill); }
+  .fav-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .tool.oculto { display: none; }
+  .filtro-aviso { display: none; font-size: 14px; color: var(--ink-2); background: var(--pill); border-radius: 14px; padding: 8px 14px; margin: 10px 0 0; }
+  .filtro-aviso.show { display: block; }
+  .legenda { display: grid; gap: 8px; margin: 14px 0 22px; }
+  .legenda > div { margin: 0; font-size: 15px; display: flex; gap: 10px; align-items: baseline; }
+  .legenda .tags { margin: 0 !important; flex: none; }
+
+  /* Painel de filtros (mesmo visual do personalizador do IA pra Prof) */
+  .personalize .opcao { display: flex; gap: 10px; align-items: flex-start; padding: 8px 4px; font-size: 15px; cursor: pointer; }
+  .personalize .opcao input { width: 20px; height: 20px; accent-color: var(--ink); flex: none; margin-top: 2px; }
+
+  /* Escolha rápida */
+  .need-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+  .need-row button { border: 1.5px solid var(--ink); background: var(--paper); border-radius: 99px; padding: 8px 16px; cursor: pointer; min-height: 42px; }
+  .need-row button:hover { background: var(--pill); }
+  .need-row button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .need-out { background: var(--pill); border-radius: 18px; padding: 14px 18px; min-height: 64px; }
+  .need-out ul { margin: 6px 0 0; }
+  .need-out small { color: var(--ink-2); }
+
+  /* Flashcard de demonstração */
+  .fc-card {
+    background: var(--pill); border-radius: 22px; padding: 22px 18px; text-align: center; min-height: 150px;
+    display: grid; place-items: center; gap: 6px; margin: 12px 0;
+  }
+  .fc-card .fc-front { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: 20px; }
+  .fc-card .fc-back { font-size: 16px; color: var(--ink-2); max-width: 520px; }
+  .grade-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .grade-row button { border: 1.5px solid var(--ink); background: var(--paper); border-radius: 14px; padding: 8px 6px; cursor: pointer; min-height: 56px; line-height: 1.25; }
+  .grade-row button:hover { background: var(--pill); }
+  .grade-row button small { display: block; color: var(--ink-3); font-size: 12px; }
+  .grade-row button[data-g="0"] { border-color: var(--bad); color: var(--bad); }
+  .grade-row button[data-g="3"] { border-color: var(--ok); color: var(--ok); }
+  @media (max-width: 520px) { .grade-row { grid-template-columns: 1fr 1fr; } }
+  .fila { font-size: 14px; color: var(--ink-2); text-align: center; margin-top: 10px; }
+
+  /* Montador de baralho */
+  .builder textarea { min-height: 170px; font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 15px; }
+  .builder .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .builder-out { white-space: normal; }
+  .builder-out table { font-size: 14px; }
+
+  /* Minha caixa */
+  .caixa-lista { list-style: none; padding: 0 !important; display: grid; gap: 8px; }
+  .caixa-lista li { display: flex; justify-content: space-between; align-items: center; gap: 10px; border: 1.5px solid var(--line); border-radius: 14px; padding: 8px 8px 8px 14px; margin: 0; }
+  .caixa-lista li span small { display: block; color: var(--ink-3); font-size: 13px; }
+
+  .gloss article.oculto { display: none; }
+  @media (max-width: 520px) { .brand { font-size: 14px; letter-spacing: .04em; } }
+  @media (max-width: 360px) { .progress-wrap { display: none; } }
+  .see-also { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; margin: 30px 0 0; }
+  .see-also strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 4px; }
+</style>
+<!-- Meta Pixel Code -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '2280257989421593'); fbq('track', 'PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2280257989421593&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+</head>
+<body>
+
+<header class="topbar">
+  <button class="icon-btn" id="toc-btn" aria-controls="toc" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <span class="lbl">Sumário</span>
+  </button>
+  <a class="icon-btn back-btn" href="../" aria-label="Voltar ao site ohtopico.com.br">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    <span class="lbl-site">ohtopico</span>
+  </a>
+  <a class="brand" href="#/inicio">Tech pra Prof</a>
+  <div class="spacer"></div>
+  <div class="progress-wrap" title="Capítulos lidos">
+    <span class="pct-label" id="pct-label">0% lido</span>
+    <div class="progress" role="progressbar" aria-label="Progresso de leitura" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="pbar"></span></div>
+  </div>
+  <button class="icon-btn" id="perso-btn" aria-controls="personalize" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8Z"/></svg>
+    <span class="lbl">Filtrar ferramentas</span>
+  </button>
+  <button class="icon-btn" id="theme-btn" aria-label="Alternar tema claro/escuro">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+  </button>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Sumário">
+    <a class="toc-back" href="../">← Voltar ao ohtopico.com.br</a>
+    <h2>Início</h2>
+    <ol>
+      <li><a href="#/inicio" data-ch="inicio"><span class="dot"></span>Capa</a></li>
+      <li><a href="#/apresentacao" data-ch="apresentacao"><span class="dot"></span>Apresentação</a></li>
+      <li><a href="#/como-escolher" data-ch="como-escolher"><span class="dot"></span>Como escolher uma ferramenta</a></li>
+    </ol>
+    <h2>Organização</h2>
+    <ol>
+      <li><a href="#/rotina" data-ch="rotina"><span class="dot"></span>Agenda, tarefas e anotações</a></li>
+      <li><a href="#/arquivos" data-ch="arquivos"><span class="dot"></span>Arquivos na nuvem</a></li>
+      <li><a href="#/turma-virtual" data-ch="turma-virtual"><span class="dot"></span>Turma virtual</a></li>
+      <li><a href="#/formularios" data-ch="formularios"><span class="dot"></span>Formulários e testes autocorrigíveis</a></li>
+    </ol>
+    <h2>Em sala</h2>
+    <ol>
+      <li><a href="#/quizzes" data-ch="quizzes"><span class="dot"></span>Quizzes e jogos de revisão</a></li>
+      <li><a href="#/murais" data-ch="murais"><span class="dot"></span>Murais e quadros colaborativos</a></li>
+      <li><a href="#/videos" data-ch="videos"><span class="dot"></span>Vídeos e atividades interativas</a></li>
+    </ol>
+    <h2>Estudo e memória</h2>
+    <ol>
+      <li><a href="#/anki" data-ch="anki"><span class="dot"></span>Flashcards com Anki</a></li>
+      <li><a href="#/anki-passo" data-ch="anki-passo" class="sub"><span class="dot"></span>Passo a passo do Anki</a></li>
+      <li><a href="#/anki-montador" data-ch="anki-montador" class="sub"><span class="dot"></span>Monte um baralho para a turma</a></li>
+      <li><a href="#/flashcards" data-ch="flashcards" class="sub"><span class="dot"></span>Outras opções de flashcards</a></li>
+    </ol>
+    <h2>Criação</h2>
+    <ol>
+      <li><a href="#/design" data-ch="design"><span class="dot"></span>Slides, cartazes e design</a></li>
+      <li><a href="#/video-audio" data-ch="video-audio"><span class="dot"></span>Gravar tela, vídeo e áudio</a></li>
+    </ol>
+    <h2>Por área</h2>
+    <ol>
+      <li><a href="#/exatas" data-ch="exatas"><span class="dot"></span>Matemática e ciências</a></li>
+      <li><a href="#/computacao" data-ch="computacao"><span class="dot"></span>Computação e robótica</a></li>
+    </ol>
+    <h2>Inclusão e segurança</h2>
+    <ol>
+      <li><a href="#/inclusao" data-ch="inclusao"><span class="dot"></span>Acessibilidade e inclusão</a></li>
+      <li><a href="#/seguranca" data-ch="seguranca"><span class="dot"></span>Senhas e segurança digital</a></li>
+    </ol>
+    <h2>Guia de bolso</h2>
+    <ol>
+      <li><a href="#/escolha-rapida" data-ch="escolha-rapida"><span class="dot"></span>Escolha rápida: o que você quer fazer?</a></li>
+      <li><a href="#/minha-caixa" data-ch="minha-caixa"><span class="dot"></span>Minha caixa de ferramentas</a></li>
+      <li><a href="#/teste" data-ch="teste"><span class="dot"></span>Teste rápido</a></li>
+      <li><a href="#/glossario" data-ch="glossario"><span class="dot"></span>Glossário</a></li>
+      <li><a href="#/autora" data-ch="autora"><span class="dot"></span>Sobre a autora</a></li>
+    </ol>
+  </nav>
+
+  <main id="main">
+
+    <!-- ================= CAPA ================= -->
+    <section class="chapter" id="inicio" data-title="Capa">
+      <div class="cover">
+        <div class="stack" aria-hidden="true">TECH<br>PRA<br>PROF</div>
+        <h1 class="sr-only">Tech pra Prof: tecnologias e sites que facilitam a vida do professor</h1>
+        <p class="sub">Tecnologias e sites que facilitam a vida do professor</p>
+        <p class="sub" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:15px">Guia gratuito com ferramentas testadas em sala para organizar a rotina, avaliar, engajar a turma, estudar com flashcards, criar materiais e incluir todos os alunos.</p>
+        <p class="author">Júlia Roberta Quoos Alves<br><small style="color:var(--ink-3)">1ª edição · <a href="../dados-da-regiao/novo-cabrais/" style="color:inherit">Novo Cabrais – RS</a> · 2026</small></p>
+        <div class="cover-cta">
+          <a class="btn-primary" href="#/apresentacao" id="start-btn">Começar a leitura →</a>
+          <a class="btn-ghost" href="#/escolha-rapida">Ir direto à escolha rápida</a>
+        </div>
+        <div class="parts">
+          <a class="part-card" href="#/rotina"><strong>Organização</strong><span>Agenda, arquivos na nuvem, turma virtual e testes que se corrigem sozinhos.</span></a>
+          <a class="part-card" href="#/quizzes"><strong>Em sala e estudo</strong><span>Quizzes, murais, vídeos interativos e flashcards com Anki.</span></a>
+          <a class="part-card" href="#/inclusao"><strong>Inclusão e segurança</strong><span>Libras, leitura em voz alta, leitor de tela, senhas e verificação em duas etapas.</span></a>
+        </div>
+        <p style="font-size:14px;color:var(--ink-2);margin-top:26px">Dica: use <strong>Filtrar ferramentas</strong> no topo para ver só as gratuitas, as que funcionam sem internet ou as que não pedem conta dos alunos. O filtro vale para o guia inteiro.</p>
+      </div>
+    </section>
+
+    <!-- ================= APRESENTAÇÃO ================= -->
+    <section class="chapter" id="apresentacao" data-title="Apresentação">
+      <h2>Apresentação</h2>
+      <p>Boa parte do tempo do professor vai para tarefas que se repetem: organizar arquivos, corrigir testes curtos, montar revisões, lembrar prazos, adaptar materiais. Existem tecnologias gratuitas, muitas delas sem inteligência artificial, que tiram esse peso da rotina e deixam mais tempo para o que importa em sala.</p>
+      <p>Este guia reúne essas ferramentas por necessidade, e não por moda. Cada uma traz para que serve, uma ideia concreta de uso em aula e um ponto de atenção, além de etiquetas que mostram se é gratuita, se funciona sem internet e se os alunos precisam criar conta.</p>
+      <p>A seleção prioriza o que funciona na realidade da escola pública do Rio Grande do Sul: laboratórios com computadores antigos, internet que cai, turmas em que nem todos têm celular. Por isso, sempre que possível, há uma alternativa que roda sem conexão ou que exige aparelho só do professor.</p>
+      <p>Um capítulo inteiro é dedicado ao <strong>Anki</strong>, o programa de flashcards com repetição espaçada, com um passo a passo e um montador de baralhos que gera o arquivo pronto para importar.</p>
+      <p>Para ferramentas de inteligência artificial (assistentes, prompts e cuidados com a LGPD), consulte o guia irmão, <a href="../ia-pra-prof/">IA pra Prof</a>.</p>
+      <p class="signature">Obrigada e boa leitura,<br>Júlia Roberta Quoos Alves</p>
+    </section>
+
+    <!-- ================= COMO ESCOLHER ================= -->
+    <section class="chapter" id="como-escolher" data-title="Como escolher uma ferramenta">
+      <h2>Como escolher uma ferramenta</h2>
+      <p class="kicker">Seis perguntas antes de levar para a turma</p>
+      <p>Uma ferramenta boa para um colega pode não servir para a sua turma. Antes de adotar qualquer site ou aplicativo, passe por esta lista. Marque o que já conferiu: o guia lembra das suas marcações neste navegador.</p>
+      <ul class="checklist" id="checklist">
+        <li><label><input type="checkbox"> O plano gratuito resolve o que eu preciso?</label></li>
+        <li><label><input type="checkbox"> Os alunos precisam criar conta? Qual a idade mínima?</label></li>
+        <li><label><input type="checkbox"> Funciona no celular e com internet fraca?</label></li>
+        <li><label><input type="checkbox"> Está em português ou é fácil de entender sem traduzir?</label></li>
+        <li><label><input type="checkbox"> Onde ficam os dados dos alunos e quem tem acesso?</label></li>
+        <li><label><input type="checkbox"> A escola ou a rede autoriza o uso?</label></li>
+      </ul>
+      <div class="pill all-done" id="check-done"><strong>Tudo conferido</strong>Pode testar com a turma. Comece com uma atividade curta e ajuste depois.</div>
+      <h3>O que significam as etiquetas</h3>
+      <div class="legenda">
+        <div><ul class="tags"><li class="t-gratuito">Gratuito</li></ul> Todo o uso necessário em sala é gratuito.</div>
+        <div><ul class="tags"><li class="t-limites">Gratuito com limites</li></ul> Tem plano gratuito, com limite de atividades, participantes ou recursos.</div>
+        <div><ul class="tags"><li class="t-offline">Funciona sem internet</li></ul> Pode ser instalado ou baixado para usar sem conexão.</div>
+        <div><ul class="tags"><li class="t-sem-conta">Alunos sem conta</li></ul> Os alunos participam sem criar cadastro (por código, link ou cartão).</div>
+        <div><ul class="tags"><li>Tem app de celular</li></ul> Existe aplicativo para Android ou iPhone.</div>
+        <div><ul class="tags"><li>Em português</li></ul> A interface tem versão em português.</div>
+      </div>
+      <p>Planos e preços mudam com frequência. As etiquetas refletem a situação em outubro de 2026; confira no site de cada ferramenta antes de indicar para a escola.</p>
+      <p>Sobre dados pessoais: a regra é a mesma das ferramentas de IA. Nome completo, foto, laudo e notas identificáveis só vão para plataformas aprovadas pela escola. Veja o capítulo <a href="../ia-pra-prof/#/lgpd">LGPD do IA pra Prof</a>.</p>
+    </section>
+
+    <!-- ================= ROTINA ================= -->
+    <section class="chapter" id="rotina" data-title="Agenda, tarefas e anotações" data-part="Organização">
+      <h2>Agenda, tarefas e anotações</h2>
+      <p>Quem dá aula em mais de uma escola conhece o problema: horários diferentes, reuniões em cima da hora, prazos de notas que mudam. Ter tudo em um só lugar, com lembrete no celular, evita esquecimentos e libera a cabeça para planejar.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="google-agenda" data-nome="Google Agenda" data-url="https://calendar.google.com/" data-tags="gratuito celular pt" data-para="organizar">
+          <div class="tool-top"><h4><a href="https://calendar.google.com/" target="_blank" rel="noopener">Google Agenda ↗</a></h4><button class="fav-btn" type="button" data-id="google-agenda" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Concentra horários de aula, reuniões, conselhos de classe e prazos de entrega em um só lugar, com lembretes no celular.</dd><dt>Ideia para a aula</dt><dd>Crie uma agenda separada para cada escola ou turno e compartilhe com a coordenação as datas de avaliação.</dd><dt>Atenção</dt><dd>Evite colocar dados pessoais de alunos na descrição dos eventos.</dd></dl>
+        </article>
+        <article class="tool" data-id="google-keep" data-nome="Google Keep" data-url="https://keep.google.com/" data-tags="gratuito celular pt" data-para="organizar">
+          <div class="tool-top"><h4><a href="https://keep.google.com/" target="_blank" rel="noopener">Google Keep ↗</a></h4><button class="fav-btn" type="button" data-id="google-keep" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Bloco de notas rápido para ideias de aula, listas de materiais e lembretes, sincronizado entre celular e computador.</dd><dt>Ideia para a aula</dt><dd>Fotografe o quadro ao fim da aula e guarde a foto em uma nota com o nome da turma e a data.</dd><dt>Atenção</dt><dd>Notas soltas se perdem: use etiquetas por turma ou componente desde o começo.</dd></dl>
+        </article>
+        <article class="tool" data-id="trello" data-nome="Trello" data-url="https://trello.com/" data-tags="limites celular pt" data-para="organizar">
+          <div class="tool-top"><h4><a href="https://trello.com/" target="_blank" rel="noopener">Trello ↗</a></h4><button class="fav-btn" type="button" data-id="trello" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Quadro de tarefas em colunas (a fazer, fazendo, feito), ótimo para acompanhar projetos e o planejamento do bimestre.</dd><dt>Ideia para a aula</dt><dd>Monte um quadro por projeto interdisciplinar, com um cartão para cada etapa e o responsável por ela.</dd><dt>Atenção</dt><dd>O plano gratuito tem limites de recursos avançados; para a rotina de um professor ele costuma bastar.</dd></dl>
+        </article>
+        <article class="tool" data-id="notion" data-nome="Notion" data-url="https://www.notion.com/" data-tags="limites celular pt" data-para="organizar criar">
+          <div class="tool-top"><h4><a href="https://www.notion.com/" target="_blank" rel="noopener">Notion ↗</a></h4><button class="fav-btn" type="button" data-id="notion" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Caderno digital que junta textos, tabelas, listas e links. Serve para montar um banco de aulas pesquisável.</dd><dt>Ideia para a aula</dt><dd>Crie uma tabela de planos de aula com colunas para ano, habilidade da BNCC, duração e materiais.</dd><dt>Atenção</dt><dd>Tem curva de aprendizagem maior que um bloco de notas comum. Comece com um modelo pronto.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Dica de rotina</h3>
+      <p>Reserve 15 minutos fixos por semana (por exemplo, na sexta) para revisar a agenda da semana seguinte e esvaziar a caixa de anotações soltas. É o hábito, mais do que a ferramenta, que faz a organização funcionar.</p>
+    </section>
+
+    <!-- ================= ARQUIVOS ================= -->
+    <section class="chapter" id="arquivos" data-title="Arquivos na nuvem" data-part="Organização">
+      <h2>Arquivos na nuvem</h2>
+      <p>Guardar materiais na nuvem significa poder abrir a aula em qualquer computador, não perder tudo quando o pen drive estraga e trabalhar no mesmo arquivo com outros professores.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="google-drive" data-nome="Google Drive" data-url="https://drive.google.com/" data-tags="limites celular pt" data-para="organizar">
+          <div class="tool-top"><h4><a href="https://drive.google.com/" target="_blank" rel="noopener">Google Drive ↗</a></h4><button class="fav-btn" type="button" data-id="google-drive" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Guarda arquivos na nuvem e permite editar documentos, planilhas e apresentações em conjunto com outros professores.</dd><dt>Ideia para a aula</dt><dd>Crie uma pasta compartilhada da área (por exemplo, Matemática) para reunir provas e listas já revisadas pela equipe.</dd><dt>Atenção</dt><dd>Revise com quem cada pasta está compartilhada, principalmente se tiver notas ou dados de alunos.</dd></dl>
+        </article>
+        <article class="tool" data-id="onedrive" data-nome="Microsoft OneDrive" data-url="https://www.microsoft.com/pt-br/microsoft-365/onedrive/online-cloud-storage" data-tags="limites celular pt" data-para="organizar">
+          <div class="tool-top"><h4><a href="https://www.microsoft.com/pt-br/microsoft-365/onedrive/online-cloud-storage" target="_blank" rel="noopener">Microsoft OneDrive ↗</a></h4><button class="fav-btn" type="button" data-id="onedrive" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Equivalente da Microsoft ao Drive, integrado ao Word, Excel e PowerPoint. Útil em redes que usam Microsoft 365.</dd><dt>Ideia para a aula</dt><dd>Ative a sincronização da pasta de aulas no computador da escola para ter os arquivos mesmo quando a internet cair.</dd><dt>Atenção</dt><dd>O espaço gratuito é pequeno; contas institucionais costumam ter muito mais.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Uma estrutura de pastas que funciona</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nível</th><th>Exemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Ano letivo</td><td>2026</td></tr>
+            <tr><td>Escola ou componente</td><td>2026 › Matemática</td></tr>
+            <tr><td>Turma ou unidade</td><td>2026 › Matemática › 7º ano › Frações</td></tr>
+            <tr><td>Nome do arquivo</td><td>2026-11-03 Frações lista 2.pdf</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Começar o nome do arquivo pela data (ano-mês-dia) deixa tudo em ordem cronológica automaticamente.</p>
+    </section>
+
+    <!-- ================= TURMA VIRTUAL ================= -->
+    <section class="chapter" id="turma-virtual" data-title="Turma virtual" data-part="Organização">
+      <h2>Turma virtual</h2>
+      <p>Um ambiente virtual de aprendizagem (AVA) é o lugar onde ficam os materiais, as tarefas e os comentários da turma. Mesmo em aulas presenciais, ele ajuda quem faltou, organiza as entregas e reduz papel.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="google-sala-de-aula" data-nome="Google Sala de Aula" data-url="https://classroom.google.com/" data-tags="gratuito celular pt" data-para="organizar avaliar">
+          <div class="tool-top"><h4><a href="https://classroom.google.com/" target="_blank" rel="noopener">Google Sala de Aula ↗</a></h4><button class="fav-btn" type="button" data-id="google-sala-de-aula" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Ambiente virtual para publicar materiais, receber trabalhos, dar notas e devolver comentários aos alunos.</dd><dt>Ideia para a aula</dt><dd>Publique o roteiro da aula antes de entrar em sala: quem faltou consegue acompanhar o que foi feito.</dd><dt>Atenção</dt><dd>Funciona melhor com contas institucionais da escola (Google Workspace for Education).</dd></dl>
+        </article>
+        <article class="tool" data-id="moodle" data-nome="Moodle" data-url="https://moodle.org/" data-tags="gratuito pt" data-para="organizar avaliar">
+          <div class="tool-top"><h4><a href="https://moodle.org/" target="_blank" rel="noopener">Moodle ↗</a></h4><button class="fav-btn" type="button" data-id="moodle" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Plataforma de cursos de código aberto, usada por universidades e redes de ensino. Muito completa em atividades e relatórios.</dd><dt>Ideia para a aula</dt><dd>Se a sua rede já tem Moodle, use o banco de questões para reaproveitar avaliações de um ano para o outro.</dd><dt>Atenção</dt><dd>Precisa de um servidor instalado pela instituição. Não é algo que o professor monte sozinho.</dd></dl>
+        </article>
+        <article class="tool" data-id="teams" data-nome="Microsoft Teams" data-url="https://www.microsoft.com/pt-br/microsoft-teams/education" data-tags="limites celular pt" data-para="organizar">
+          <div class="tool-top"><h4><a href="https://www.microsoft.com/pt-br/microsoft-teams/education" target="_blank" rel="noopener">Microsoft Teams ↗</a></h4><button class="fav-btn" type="button" data-id="teams" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Reúne turmas, conversas, chamadas de vídeo e tarefas, integrado ao Microsoft 365.</dd><dt>Ideia para a aula</dt><dd>Use o canal da turma para avisos e deixe as dúvidas sobre conteúdo em um canal separado.</dd><dt>Atenção</dt><dd>Os recursos de educação dependem de a escola ter licença do Microsoft 365.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <p>Antes de escolher, pergunte à coordenação qual plataforma a rede já usa. Contas institucionais costumam ter mais recursos e resolvem a questão da idade mínima e da proteção de dados.</p>
+    </section>
+
+    <!-- ================= FORMULÁRIOS ================= -->
+    <section class="chapter" id="formularios" data-title="Formulários e testes autocorrigíveis" data-part="Organização">
+      <h2>Formulários e testes autocorrigíveis</h2>
+      <p>Testes curtos com correção automática mostram, em minutos, quem entendeu o conteúdo e em que questão a turma travou. As respostas vão para uma planilha, o que facilita acompanhar a evolução ao longo do bimestre.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="google-forms" data-nome="Google Formulários" data-url="https://www.google.com/forms/about/" data-tags="gratuito sem-conta pt" data-para="avaliar">
+          <div class="tool-top"><h4><a href="https://www.google.com/forms/about/" target="_blank" rel="noopener">Google Formulários ↗</a></h4><button class="fav-btn" type="button" data-id="google-forms" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Cria questionários, pesquisas e testes com correção automática. As respostas vão direto para uma planilha.</dd><dt>Ideia para a aula</dt><dd>Faça um teste de saída de 3 questões no fim da aula para ver quem entendeu o conteúdo.</dd><dt>Atenção</dt><dd>Se não pedir login, qualquer pessoa com o link responde. Peça só os dados realmente necessários.</dd></dl>
+        </article>
+        <article class="tool" data-id="microsoft-forms" data-nome="Microsoft Forms" data-url="https://forms.office.com/" data-tags="gratuito sem-conta pt" data-para="avaliar">
+          <div class="tool-top"><h4><a href="https://forms.office.com/" target="_blank" rel="noopener">Microsoft Forms ↗</a></h4><button class="fav-btn" type="button" data-id="microsoft-forms" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Formulários e testes com correção automática, integrados ao Excel e ao Teams.</dd><dt>Ideia para a aula</dt><dd>Use a ramificação para mandar o aluno a uma questão de reforço quando errar a anterior.</dd><dt>Atenção</dt><dd>Algumas opções dependem da conta ser pessoal ou institucional.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Passo a passo: teste autocorrigível no Google Formulários</h3>
+      <ol class="steps">
+        <li>Crie um formulário em branco e, em <strong>Configurações</strong>, ative <strong>Transformar em um teste</strong>.</li>
+        <li>Escreva as questões de múltipla escolha e, em cada uma, clique em <strong>Chave de resposta</strong> para marcar a alternativa certa e a pontuação.</li>
+        <li>Na mesma tela, adicione um <strong>feedback</strong> para a resposta errada, explicando o caminho certo.</li>
+        <li>Em <strong>Configurações</strong>, escolha se o aluno vê a nota logo depois de enviar ou só quando você liberar.</li>
+        <li>Envie o link (ou um código QR projetado no quadro) e acompanhe a aba <strong>Respostas</strong>, que mostra o gráfico de cada questão.</li>
+      </ol>
+      <p>Para gerar um código QR do link, no navegador Chrome ou Edge clique com o botão direito na página do formulário aberto e escolha a opção de criar código QR.</p>
+    </section>
+
+    <!-- ================= QUIZZES ================= -->
+    <section class="chapter" id="quizzes" data-title="Quizzes e jogos de revisão" data-part="Em sala">
+      <h2>Quizzes e jogos de revisão</h2>
+      <p>Jogos de perguntas transformam a revisão em um momento que a turma espera, e ainda geram um retrato do que precisa ser retomado. O segredo é usar o resultado: discutir as questões com mais erros vale mais do que o placar.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="kahoot" data-nome="Kahoot!" data-url="https://kahoot.com/" data-tags="limites sem-conta celular" data-para="engajar avaliar">
+          <div class="tool-top"><h4><a href="https://kahoot.com/" target="_blank" rel="noopener">Kahoot! ↗</a></h4><button class="fav-btn" type="button" data-id="kahoot" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-celular">Tem app de celular</li></ul>
+          <dl><dt>Para que serve</dt><dd>Quiz em formato de jogo, projetado no quadro, que os alunos respondem pelo celular com um código (PIN).</dd><dt>Ideia para a aula</dt><dd>Use como revisão antes da prova e discuta as perguntas que a maioria errou.</dd><dt>Atenção</dt><dd>O ritmo é rápido e premia velocidade. Desative o cronômetro curto para alunos que precisam de mais tempo.</dd></dl>
+        </article>
+        <article class="tool" data-id="wayground" data-nome="Wayground (antigo Quizizz)" data-url="https://wayground.com/" data-tags="limites sem-conta pt" data-para="engajar avaliar">
+          <div class="tool-top"><h4><a href="https://wayground.com/" target="_blank" rel="noopener">Wayground (antigo Quizizz) ↗</a></h4><button class="fav-btn" type="button" data-id="wayground" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Quizzes em que cada aluno avança no próprio ritmo, com relatórios por questão. Pode ser usado em aula ou como tarefa de casa.</dd><dt>Ideia para a aula</dt><dd>Passe como tarefa de casa e use o relatório para decidir o que retomar na próxima aula.</dd><dt>Atenção</dt><dd>Há muitos quizzes prontos da comunidade, mas eles precisam ser revisados antes do uso.</dd></dl>
+        </article>
+        <article class="tool" data-id="plickers" data-nome="Plickers" data-url="https://www.plickers.com/" data-tags="limites sem-conta offline" data-para="engajar avaliar">
+          <div class="tool-top"><h4><a href="https://www.plickers.com/" target="_blank" rel="noopener">Plickers ↗</a></h4><button class="fav-btn" type="button" data-id="plickers" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-offline">Funciona sem internet</li></ul>
+          <dl><dt>Para que serve</dt><dd>Os alunos levantam cartões de papel impressos e o professor lê as respostas com a câmera do celular. Só o professor precisa de aparelho.</dd><dt>Ideia para a aula</dt><dd>Ideal para escolas sem celular para os alunos ou com internet fraca: imprima os cartões uma vez e reutilize o ano todo.</dd><dt>Atenção</dt><dd>O celular do professor precisa de internet para sincronizar os resultados.</dd></dl>
+        </article>
+        <article class="tool" data-id="mentimeter" data-nome="Mentimeter" data-url="https://www.mentimeter.com/" data-tags="limites sem-conta" data-para="engajar">
+          <div class="tool-top"><h4><a href="https://www.mentimeter.com/" target="_blank" rel="noopener">Mentimeter ↗</a></h4><button class="fav-btn" type="button" data-id="mentimeter" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-sem-conta">Alunos sem conta</li></ul>
+          <dl><dt>Para que serve</dt><dd>Enquetes, nuvens de palavras e perguntas ao vivo, com os resultados aparecendo na tela enquanto a turma responde.</dd><dt>Ideia para a aula</dt><dd>Abra a aula com uma nuvem de palavras: &quot;O que vem à cabeça quando você ouve a palavra energia?&quot;</dd><dt>Atenção</dt><dd>O plano gratuito limita a quantidade de participantes e de perguntas por apresentação.</dd></dl>
+        </article>
+        <article class="tool" data-id="wordwall" data-nome="Wordwall" data-url="https://wordwall.net/pt" data-tags="limites sem-conta pt" data-para="engajar memorizar">
+          <div class="tool-top"><h4><a href="https://wordwall.net/pt" target="_blank" rel="noopener">Wordwall ↗</a></h4><button class="fav-btn" type="button" data-id="wordwall" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Cria jogos como roleta, caça-palavras, ligar pontos e questionário a partir de uma única lista de conteúdo.</dd><dt>Ideia para a aula</dt><dd>Monte uma lista de termos e definições e troque o formato do jogo a cada aula sem reescrever nada.</dd><dt>Atenção</dt><dd>O plano gratuito permite poucas atividades ao mesmo tempo. Apague as que não usa mais.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Qual usar em cada situação</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Situação</th><th>Ferramenta</th></tr></thead>
+          <tbody>
+            <tr><td>Alunos sem celular ou internet fraca</td><td>Plickers</td></tr>
+            <tr><td>Revisão animada, todos ao mesmo tempo</td><td>Kahoot!</td></tr>
+            <tr><td>Cada aluno no seu ritmo, inclusive em casa</td><td>Wayground</td></tr>
+            <tr><td>Abrir a aula ouvindo a turma</td><td>Mentimeter</td></tr>
+            <tr><td>Fixar vocabulário com vários formatos de jogo</td><td>Wordwall</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= MURAIS ================= -->
+    <section class="chapter" id="murais" data-title="Murais e quadros colaborativos" data-part="Em sala">
+      <h2>Murais e quadros colaborativos</h2>
+      <p>Murais digitais dão voz a quem não costuma falar em sala: todos contribuem ao mesmo tempo, e o resultado fica salvo para retomar depois.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="padlet" data-nome="Padlet" data-url="https://padlet.com/" data-tags="limites sem-conta pt" data-para="engajar criar">
+          <div class="tool-top"><h4><a href="https://padlet.com/" target="_blank" rel="noopener">Padlet ↗</a></h4><button class="fav-btn" type="button" data-id="padlet" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Mural digital onde a turma publica textos, imagens, links e vídeos. Funciona para chuva de ideias, galerias e linhas do tempo.</dd><dt>Ideia para a aula</dt><dd>Crie uma linha do tempo coletiva em que cada grupo adiciona um acontecimento com imagem e fonte.</dd><dt>Atenção</dt><dd>Ative a moderação para aprovar as postagens antes de aparecerem e não peça nomes completos.</dd></dl>
+        </article>
+        <article class="tool" data-id="miro" data-nome="Miro" data-url="https://miro.com/education/" data-tags="limites pt" data-para="criar engajar">
+          <div class="tool-top"><h4><a href="https://miro.com/education/" target="_blank" rel="noopener">Miro ↗</a></h4><button class="fav-btn" type="button" data-id="miro" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Quadro branco infinito para mapas mentais, fluxogramas e trabalho em grupo com notas adesivas.</dd><dt>Ideia para a aula</dt><dd>Organize uma sequência didática em colunas por aula e mova as atividades conforme o planejamento muda.</dd><dt>Atenção</dt><dd>Tem plano para educação, mas exige cadastro. Para uso rápido em aula, o Padlet é mais simples.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Três usos que funcionam</h3>
+      <ul>
+        <li><strong>Chuva de ideias:</strong> uma pergunta aberta no início da unidade, e cada aluno publica uma hipótese.</li>
+        <li><strong>Galeria de trabalhos:</strong> fotos das produções em papel, com uma frase de cada autor.</li>
+        <li><strong>Mural de dúvidas:</strong> perguntas anônimas sobre o conteúdo, respondidas na aula seguinte.</li>
+      </ul>
+    </section>
+
+    <!-- ================= VÍDEOS ================= -->
+    <section class="chapter" id="videos" data-title="Vídeos e atividades interativas" data-part="Em sala">
+      <h2>Vídeos e atividades interativas</h2>
+      <p>Um vídeo de dez minutos assistido de forma passiva rende pouco. Com perguntas no meio, o aluno precisa prestar atenção, e o professor fica sabendo onde cada um parou ou errou.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="edpuzzle" data-nome="Edpuzzle" data-url="https://edpuzzle.com/" data-tags="limites pt" data-para="avaliar engajar">
+          <div class="tool-top"><h4><a href="https://edpuzzle.com/" target="_blank" rel="noopener">Edpuzzle ↗</a></h4><button class="fav-btn" type="button" data-id="edpuzzle" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Insere perguntas dentro de vídeos (inclusive do YouTube): o vídeo pausa e o aluno responde antes de continuar.</dd><dt>Ideia para a aula</dt><dd>Use na sala de aula invertida: o aluno assiste em casa e você vê quem chegou ao fim e o que errou.</dd><dt>Atenção</dt><dd>O plano gratuito limita o número de vídeos guardados.</dd></dl>
+        </article>
+        <article class="tool" data-id="lumi-h5p" data-nome="Lumi (H5P)" data-url="https://lumi.education/" data-tags="gratuito offline sem-conta" data-para="criar engajar">
+          <div class="tool-top"><h4><a href="https://lumi.education/" target="_blank" rel="noopener">Lumi (H5P) ↗</a></h4><button class="fav-btn" type="button" data-id="lumi-h5p" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-sem-conta">Alunos sem conta</li></ul>
+          <dl><dt>Para que serve</dt><dd>Programa de computador para criar conteúdo interativo H5P (vídeo com perguntas, arrastar e soltar, cartões) sem internet.</dd><dt>Ideia para a aula</dt><dd>Exporte a atividade como um único arquivo HTML e abra no laboratório da escola, mesmo sem conexão.</dd><dt>Atenção</dt><dd>A interface é em inglês em várias partes; o conteúdo criado pode ser todo em português.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <p>Quer criar o próprio material interativo em HTML com ajuda de IA? O capítulo <a href="../ia-pra-prof/#/interativos">Materiais interativos do IA pra Prof</a> mostra como, e o <a href="../material-didatico/">Material didático</a> do site tem jogos prontos para usar.</p>
+    </section>
+
+    <!-- ================= ANKI ================= -->
+    <section class="chapter" id="anki" data-title="Flashcards com Anki" data-part="Estudo e memória">
+      <h2>Flashcards com Anki</h2>
+      <p class="kicker">Estudar menos vezes, no momento certo</p>
+      <p>O Anki é um programa gratuito de flashcards (cartões com pergunta na frente e resposta no verso) que usa <strong>repetição espaçada</strong>. Em vez de revisar tudo todos os dias, ele mostra cada cartão pouco antes de você esquecê-lo. Cartões fáceis voltam depois de dias ou semanas; os difíceis voltam logo.</p>
+      <p>A ideia vem de pesquisas sobre a curva do esquecimento, iniciadas por Hermann Ebbinghaus no século XIX: lembramos melhor quando revisamos em intervalos crescentes do que quando estudamos tudo de uma vez na véspera da prova.</p>
+      <div class="pill-row three">
+        <div class="pill"><strong>Lembrar</strong>Você tenta responder antes de virar o cartão.</div>
+        <div class="pill dark"><strong>Avaliar</strong>Marca se errou, achou difícil, bom ou fácil.</div>
+        <div class="pill"><strong>Espaçar</strong>O Anki agenda a próxima revisão sozinho.</div>
+      </div>
+      <div class="activity" id="fc-demo">
+        <span class="tag">Experimente</span>
+        <h4>Uma sessão de Anki em miniatura</h4>
+        <p style="font-size:15px;color:var(--ink-2)">Tente lembrar a resposta, vire o cartão e diga como foi. Os intervalos abaixo são ilustrativos: no Anki eles se ajustam ao seu histórico com cada cartão.</p>
+        <div class="fc-card" aria-live="polite"><span class="fc-front" id="fc-front"></span><span class="fc-back" id="fc-back" hidden></span></div>
+        <div style="text-align:center" id="fc-show-wrap"><button class="btn-primary" id="fc-show" type="button">Mostrar resposta</button></div>
+        <div class="grade-row" id="fc-grades" hidden>
+          <button type="button" data-g="0">Errei<small>volta em 1 min</small></button>
+          <button type="button" data-g="1">Difícil<small>volta em 10 min</small></button>
+          <button type="button" data-g="2">Bom<small>volta em 1 dia</small></button>
+          <button type="button" data-g="3">Fácil<small>volta em 4 dias</small></button>
+        </div>
+        <p class="fila" id="fc-fila"></p>
+      </div>
+      <div class="tool-cards">
+        <article class="tool" data-id="anki" data-nome="Anki" data-url="https://apps.ankiweb.net/" data-tags="gratuito offline pt" data-para="memorizar">
+          <div class="tool-top"><h4><a href="https://apps.ankiweb.net/" target="_blank" rel="noopener">Anki ↗</a></h4><button class="fav-btn" type="button" data-id="anki" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Flashcards com repetição espaçada: o programa decide quando mostrar cada cartão de novo, conforme a dificuldade que a pessoa marcou.</dd><dt>Ideia para a aula</dt><dd>Prepare um baralho com o vocabulário ou as fórmulas da unidade e distribua o arquivo para a turma estudar em casa.</dd><dt>Atenção</dt><dd>Gratuito no computador (Windows, Mac e Linux), no navegador (AnkiWeb) e no Android. No iPhone o app oficial é pago.</dd></dl>
+        </article>
+        <article class="tool" data-id="ankidroid" data-nome="AnkiDroid" data-url="https://ankidroid.org/" data-tags="gratuito offline celular pt" data-para="memorizar">
+          <div class="tool-top"><h4><a href="https://ankidroid.org/" target="_blank" rel="noopener">AnkiDroid ↗</a></h4><button class="fav-btn" type="button" data-id="ankidroid" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Versão gratuita e de código aberto do Anki para Android. Sincroniza com o computador pela conta do AnkiWeb.</dd><dt>Ideia para a aula</dt><dd>Para alunos que estudam no ônibus ou sem internet em casa: o baralho fica salvo no celular.</dd><dt>Atenção</dt><dd>A sincronização precisa de conta AnkiWeb; sem ela, o baralho fica só no aparelho.</dd></dl>
+        </article>
+        <article class="tool" data-id="anki-baralhos" data-nome="Baralhos compartilhados do AnkiWeb" data-url="https://ankiweb.net/shared/decks" data-tags="gratuito pt" data-para="memorizar">
+          <div class="tool-top"><h4><a href="https://ankiweb.net/shared/decks" target="_blank" rel="noopener">Baralhos compartilhados do AnkiWeb ↗</a></h4><button class="fav-btn" type="button" data-id="anki-baralhos" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Biblioteca de baralhos prontos feitos pela comunidade, de vocabulário de idiomas a anatomia e geografia.</dd><dt>Ideia para a aula</dt><dd>Procure um baralho pronto, revise e corrija o que não serve antes de indicar aos alunos.</dd><dt>Atenção</dt><dd>Qualidade variável: confira o conteúdo como faria com qualquer material da internet.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Ideias por componente</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Componente</th><th>Frente do cartão</th><th>Verso</th></tr></thead>
+          <tbody>
+            <tr><td>Língua Inglesa</td><td>to borrow</td><td>pegar emprestado</td></tr>
+            <tr><td>Matemática</td><td>Área do trapézio</td><td>(B + b) × h ÷ 2</td></tr>
+            <tr><td>Geografia</td><td>Capital do Rio Grande do Sul</td><td>Porto Alegre</td></tr>
+            <tr><td>Ciências</td><td>Organela responsável pela respiração celular</td><td>Mitocôndria</td></tr>
+            <tr><td>Computação</td><td>Quantos bits tem um byte?</td><td>8 bits</td></tr>
+            <tr><td>História</td><td>Ano da Revolução Farroupilha (início)</td><td>1835</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Boas práticas</h3>
+      <ul>
+        <li><strong>Uma ideia por cartão.</strong> Cartões longos viram leitura, não lembrança.</li>
+        <li><strong>Pergunta que exige pensar.</strong> "Por que a Lua tem fases?" ensina mais que "Fases da Lua".</li>
+        <li><strong>Pouco e todo dia.</strong> Dez minutos diários rendem mais que uma hora no domingo.</li>
+        <li><strong>Imagens ajudam,</strong> principalmente em mapas, anatomia e vocabulário de objetos.</li>
+        <li><strong>Revise o baralho pronto</strong> antes de indicar: baralhos da internet podem ter erros.</li>
+      </ul>
+    </section>
+
+    <!-- ================= ANKI PASSO A PASSO ================= -->
+    <section class="chapter" id="anki-passo" data-title="Passo a passo do Anki" data-part="Estudo e memória">
+      <h2>Passo a passo do Anki</h2>
+      <p class="kicker">Do download ao primeiro baralho compartilhado</p>
+      <ol class="steps">
+        <li><strong>Instale.</strong> Baixe o Anki em <a href="https://apps.ankiweb.net/" target="_blank" rel="noopener">apps.ankiweb.net</a> (Windows, Mac ou Linux). No Android, instale o AnkiDroid pela loja de aplicativos. A interface pode ser colocada em português na primeira abertura.</li>
+        <li><strong>Crie um baralho.</strong> Na tela inicial, clique em <strong>Criar baralho</strong> e dê um nome claro, como "7º ano · Frações".</li>
+        <li><strong>Adicione cartões.</strong> Clique em <strong>Adicionar</strong>, escolha o tipo de nota e preencha a frente e o verso. Os tipos mais úteis:
+          <ul>
+            <li><strong>Básico:</strong> pergunta na frente, resposta no verso.</li>
+            <li><strong>Básico com cartão invertido:</strong> gera dois cartões (palavra → tradução e tradução → palavra).</li>
+            <li><strong>Omissão de palavras (cloze):</strong> esconde um trecho de uma frase, como "A capital do RS é {{c1::Porto Alegre}}".</li>
+          </ul>
+        </li>
+        <li><strong>Estude.</strong> Clique no baralho e em <strong>Estudar agora</strong>. Tente lembrar, mostre a resposta e escolha <strong>De novo</strong>, <strong>Difícil</strong>, <strong>Bom</strong> ou <strong>Fácil</strong>.</li>
+        <li><strong>Compartilhe com a turma.</strong> Em <strong>Arquivo › Exportar</strong>, escolha o formato de pacote de baralho (.apkg) e envie o arquivo pelo Drive ou pela turma virtual. O aluno abre o arquivo com o Anki ou o AnkiDroid instalado, e o baralho é importado.</li>
+        <li><strong>Sincronize (opcional).</strong> Com uma conta gratuita no AnkiWeb, o mesmo baralho fica atualizado no computador e no celular.</li>
+      </ol>
+      <h3>Importar de uma planilha</h3>
+      <p>Se você já tem uma lista de perguntas e respostas no Excel ou no Google Planilhas, não precisa digitar cartão por cartão. Salve como texto com as duas colunas separadas e use <strong>Arquivo › Importar</strong> no Anki. O próximo capítulo gera esse arquivo para você.</p>
+      <div class="pill" style="margin-top:24px"><strong>Para os alunos</strong>Ensine o Anki em sala uma vez, com um baralho pequeno (10 a 15 cartões). Depois que eles sentem o efeito na prova, passam a usar sozinhos.</div>
+    </section>
+
+    <!-- ================= MONTADOR ================= -->
+    <section class="chapter" id="anki-montador" data-title="Monte um baralho para a turma" data-part="Estudo e memória">
+      <h2>Monte um baralho para a turma</h2>
+      <p>Escreva um cartão por linha, com a frente e o verso separados por ponto e vírgula. O montador gera um arquivo de texto pronto para o <strong>Arquivo › Importar</strong> do Anki, já com o nome do baralho. Nada sai do seu navegador.</p>
+      <div class="builder">
+        <div class="field"><label for="deck-nome">Nome do baralho</label><input id="deck-nome" placeholder="ex.: 7º ano · Frações"></div>
+        <div class="field"><label for="deck-cartoes">Cartões (frente ; verso)</label><textarea id="deck-cartoes" placeholder="Quanto é 1/2 + 1/4? ; 3/4&#10;O que é o denominador? ; O número de partes iguais em que o inteiro foi dividido"></textarea></div>
+        <div class="row">
+          <button class="btn-primary" id="deck-baixar" type="button">Baixar arquivo para o Anki</button>
+          <button class="btn-ghost" id="deck-exemplo" type="button">Usar exemplo</button>
+          <button class="btn-ghost" id="deck-limpar" type="button">Limpar</button>
+        </div>
+        <div class="builder-out" id="deck-previa" aria-live="polite"></div>
+      </div>
+      <h3>Como importar o arquivo</h3>
+      <ol class="steps">
+        <li>Abra o Anki no computador e clique em <strong>Arquivo › Importar</strong>.</li>
+        <li>Escolha o arquivo baixado (termina em .txt).</li>
+        <li>Confira a prévia: a primeira coluna vira a <strong>Frente</strong> e a segunda o <strong>Verso</strong>. O baralho é criado com o nome que você escolheu.</li>
+        <li>Clique em <strong>Importar</strong>. Depois, se quiser enviar para os alunos, exporte como pacote .apkg (passo 5 do capítulo anterior).</li>
+      </ol>
+      <p style="font-size:15px;color:var(--ink-2)">O arquivo usa tabulação como separador e cabeçalhos reconhecidos pelas versões atuais do Anki. Em versões muito antigas, escolha o baralho e os campos manualmente na tela de importação.</p>
+    </section>
+
+    <!-- ================= OUTROS FLASHCARDS ================= -->
+    <section class="chapter" id="flashcards" data-title="Outras opções de flashcards" data-part="Estudo e memória">
+      <h2>Outras opções de flashcards</h2>
+      <p>O Anki é o mais completo e totalmente gratuito no computador e no Android, mas há alternativas mais simples para começar ou para usar como jogo em sala.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="quizlet" data-nome="Quizlet" data-url="https://quizlet.com/" data-tags="limites celular pt" data-para="memorizar engajar">
+          <div class="tool-top"><h4><a href="https://quizlet.com/" target="_blank" rel="noopener">Quizlet ↗</a></h4><button class="fav-btn" type="button" data-id="quizlet" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Flashcards on-line com modos de estudo e jogos. Mais simples de começar que o Anki, mas com menos controle da revisão.</dd><dt>Ideia para a aula</dt><dd>Use o modo de jogo em equipes na sala para revisar vocabulário antes de uma avaliação.</dd><dt>Atenção</dt><dd>Vários recursos ficaram restritos ao plano pago e há anúncios na versão gratuita.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <p>O <a href="#/quizzes">Wordwall</a>, do capítulo de quizzes, também transforma uma lista de termos e definições em cartões e jogos de memória.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Critério</th><th>Anki</th><th>Quizlet</th></tr></thead>
+          <tbody>
+            <tr><td>Preço</td><td>Gratuito (exceto app oficial de iPhone)</td><td>Gratuito com limites e anúncios</td></tr>
+            <tr><td>Repetição espaçada</td><td>Sim, completa e ajustável</td><td>Parcial, nos modos de estudo</td></tr>
+            <tr><td>Sem internet</td><td>Sim</td><td>Limitado</td></tr>
+            <tr><td>Jogo em sala</td><td>Não</td><td>Sim</td></tr>
+            <tr><td>Facilidade inicial</td><td>Média</td><td>Alta</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= DESIGN ================= -->
+    <section class="chapter" id="design" data-title="Slides, cartazes e design" data-part="Criação">
+      <h2>Slides, cartazes e design</h2>
+      <p>Materiais bonitos não são vaidade: letra grande, contraste bom e pouco texto por slide ajudam a turma toda, principalmente quem tem baixa visão ou dificuldade de atenção.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="canva" data-nome="Canva para Educação" data-url="https://www.canva.com/pt_br/educacao/" data-tags="gratuito celular pt" data-para="criar">
+          <div class="tool-top"><h4><a href="https://www.canva.com/pt_br/educacao/" target="_blank" rel="noopener">Canva para Educação ↗</a></h4><button class="fav-btn" type="button" data-id="canva" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Modelos de apresentações, cartazes, infográficos, vídeos e atividades. Gratuito para professores da educação básica após verificação.</dd><dt>Ideia para a aula</dt><dd>Crie a identidade visual da sua disciplina (cores e fontes) e use o mesmo modelo em todos os slides do ano.</dd><dt>Atenção</dt><dd>A verificação de professor pode pedir comprovante de vínculo com a escola.</dd></dl>
+        </article>
+        <article class="tool" data-id="google-apresentacoes" data-nome="Google Apresentações" data-url="https://www.google.com/slides/about/" data-tags="gratuito pt" data-para="criar">
+          <div class="tool-top"><h4><a href="https://www.google.com/slides/about/" target="_blank" rel="noopener">Google Apresentações ↗</a></h4><button class="fav-btn" type="button" data-id="google-apresentacoes" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Slides on-line com edição em grupo e histórico de versões. Abre em qualquer computador com navegador.</dd><dt>Ideia para a aula</dt><dd>Peça que cada grupo edite um slide da mesma apresentação durante a aula.</dd><dt>Atenção</dt><dd>Para usar sem internet, ative o modo off-line antes, ainda com conexão.</dd></dl>
+        </article>
+        <article class="tool" data-id="genially" data-nome="Genially" data-url="https://genially.com/" data-tags="limites pt" data-para="criar engajar">
+          <div class="tool-top"><h4><a href="https://genially.com/" target="_blank" rel="noopener">Genially ↗</a></h4><button class="fav-btn" type="button" data-id="genially" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Apresentações e jogos interativos, como escape rooms digitais, com botões e áreas clicáveis.</dd><dt>Ideia para a aula</dt><dd>Comece pelos modelos de escape room e troque as perguntas pelo conteúdo da sua turma.</dd><dt>Atenção</dt><dd>Materiais muito pesados ficam lentos em computadores antigos.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Regras rápidas de legibilidade</h3>
+      <ul>
+        <li>No máximo seis linhas por slide e fonte de pelo menos 24 pontos.</li>
+        <li>Texto escuro em fundo claro (ou o contrário), nunca cinza sobre cinza.</li>
+        <li>Não use só a cor para passar uma informação: acrescente um ícone ou uma palavra.</li>
+        <li>Toda imagem com conteúdo importante precisa de texto alternativo.</li>
+      </ul>
+    </section>
+
+    <!-- ================= VÍDEO E ÁUDIO ================= -->
+    <section class="chapter" id="video-audio" data-title="Gravar tela, vídeo e áudio" data-part="Criação">
+      <h2>Gravar tela, vídeo e áudio</h2>
+      <p>Uma explicação gravada uma vez serve para o aluno que faltou, para quem precisa ouvir de novo e para a família que quer acompanhar. Vídeos curtos, de três a seis minutos, costumam ser assistidos até o fim.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="obs" data-nome="OBS Studio" data-url="https://obsproject.com/" data-tags="gratuito offline pt" data-para="criar">
+          <div class="tool-top"><h4><a href="https://obsproject.com/" target="_blank" rel="noopener">OBS Studio ↗</a></h4><button class="fav-btn" type="button" data-id="obs" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Grava a tela do computador, a câmera e o microfone ao mesmo tempo. Gratuito, de código aberto e sem marca-d&#x27;água.</dd><dt>Ideia para a aula</dt><dd>Grave a resolução de um exercício no computador para os alunos reverem em casa.</dd><dt>Atenção</dt><dd>Na primeira vez, faça uma gravação de teste para conferir o áudio.</dd></dl>
+        </article>
+        <article class="tool" data-id="clipchamp" data-nome="Clipchamp" data-url="https://clipchamp.com/" data-tags="limites pt" data-para="criar">
+          <div class="tool-top"><h4><a href="https://clipchamp.com/" target="_blank" rel="noopener">Clipchamp ↗</a></h4><button class="fav-btn" type="button" data-id="clipchamp" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-limites">Gratuito com limites</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Editor de vídeo simples no navegador (e já instalado no Windows 11), com cortes, legendas e textos.</dd><dt>Ideia para a aula</dt><dd>Junte trechos curtos gravados pela turma em um vídeo de apresentação do projeto.</dd><dt>Atenção</dt><dd>Alguns recursos de estoque e de exportação são pagos.</dd></dl>
+        </article>
+        <article class="tool" data-id="audacity" data-nome="Audacity" data-url="https://www.audacityteam.org/" data-tags="gratuito offline pt" data-para="criar incluir">
+          <div class="tool-top"><h4><a href="https://www.audacityteam.org/" target="_blank" rel="noopener">Audacity ↗</a></h4><button class="fav-btn" type="button" data-id="audacity" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Grava e edita áudio: remove ruído, corta trechos e ajusta o volume. Gratuito e de código aberto.</dd><dt>Ideia para a aula</dt><dd>Grave a leitura de textos para alunos com dificuldade de leitura ou para um podcast da turma.</dd><dt>Atenção</dt><dd>Exporte em MP3 para o arquivo ficar leve e abrir em qualquer celular.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <p>Sempre que publicar um vídeo, ative ou revise as legendas automáticas. Elas ajudam estudantes surdos e quem assiste sem som.</p>
+    </section>
+
+    <!-- ================= EXATAS ================= -->
+    <section class="chapter" id="exatas" data-title="Matemática e ciências" data-part="Por área">
+      <h2>Matemática e ciências</h2>
+      <p>Simuladores permitem testar hipóteses que seriam caras, perigosas ou impossíveis no laboratório da escola: mudar a gravidade, montar um circuito, arrastar o vértice de um triângulo e ver o que acontece com os ângulos.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="geogebra" data-nome="GeoGebra" data-url="https://www.geogebra.org/" data-tags="gratuito offline celular pt" data-para="criar engajar">
+          <div class="tool-top"><h4><a href="https://www.geogebra.org/" target="_blank" rel="noopener">GeoGebra ↗</a></h4><button class="fav-btn" type="button" data-id="geogebra" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Geometria, gráficos de funções, álgebra e 3D em um só programa, com milhares de atividades prontas em português.</dd><dt>Ideia para a aula</dt><dd>Mostre como muda a parábola ao arrastar os coeficientes a, b e c de uma função do 2º grau.</dd><dt>Atenção</dt><dd>Tem versão para instalar e usar sem internet, útil no laboratório.</dd></dl>
+        </article>
+        <article class="tool" data-id="desmos" data-nome="Desmos" data-url="https://www.desmos.com/" data-tags="gratuito celular pt" data-para="criar engajar">
+          <div class="tool-top"><h4><a href="https://www.desmos.com/" target="_blank" rel="noopener">Desmos ↗</a></h4><button class="fav-btn" type="button" data-id="desmos" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Calculadora gráfica on-line muito rápida e fácil de usar, ótima para explorar funções projetando no quadro.</dd><dt>Ideia para a aula</dt><dd>Desafie a turma a desenhar uma figura usando apenas gráficos de funções.</dd><dt>Atenção</dt><dd>Precisa de internet.</dd></dl>
+        </article>
+        <article class="tool" data-id="phet" data-nome="PhET (simulações)" data-url="https://phet.colorado.edu/pt_BR/" data-tags="gratuito offline sem-conta pt" data-para="engajar">
+          <div class="tool-top"><h4><a href="https://phet.colorado.edu/pt_BR/" target="_blank" rel="noopener">PhET (simulações) ↗</a></h4><button class="fav-btn" type="button" data-id="phet" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Simulações gratuitas de física, química, biologia e matemática da Universidade do Colorado, traduzidas para o português.</dd><dt>Ideia para a aula</dt><dd>Use a simulação de circuitos para os alunos testarem hipóteses antes da aula prática.</dd><dt>Atenção</dt><dd>As simulações em HTML5 podem ser baixadas para usar sem internet.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <p>No próprio site há <a href="../simuladores/">simuladores</a> e um <a href="../material-didatico/">Laboratório 3D de Matemática</a> que funcionam direto no navegador, sem cadastro.</p>
+    </section>
+
+    <!-- ================= COMPUTAÇÃO ================= -->
+    <section class="chapter" id="computacao" data-title="Computação e robótica" data-part="Por área">
+      <h2>Computação e robótica</h2>
+      <p>Com a BNCC Computação, o pensamento computacional passou a fazer parte do currículo da educação básica. Estas ferramentas permitem ensinar programação e eletrônica mesmo sem kit de robótica na escola.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="scratch" data-nome="Scratch" data-url="https://scratch.mit.edu/" data-tags="gratuito offline pt" data-para="programar criar">
+          <div class="tool-top"><h4><a href="https://scratch.mit.edu/" target="_blank" rel="noopener">Scratch ↗</a></h4><button class="fav-btn" type="button" data-id="scratch" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Programação em blocos para criar jogos, histórias e animações. Tem versão para instalar e usar sem internet.</dd><dt>Ideia para a aula</dt><dd>Peça uma história animada que explique um conteúdo de outra disciplina, como o ciclo da água.</dd><dt>Atenção</dt><dd>Para os alunos publicarem projetos na comunidade, é preciso conta; para programar, não.</dd></dl>
+        </article>
+        <article class="tool" data-id="code-org" data-nome="Code.org" data-url="https://code.org/" data-tags="gratuito pt" data-para="programar">
+          <div class="tool-top"><h4><a href="https://code.org/" target="_blank" rel="noopener">Code.org ↗</a></h4><button class="fav-btn" type="button" data-id="code-org" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Cursos de programação e pensamento computacional em níveis, incluindo a Hora do Código.</dd><dt>Ideia para a aula</dt><dd>Comece o ano com uma atividade da Hora do Código para diagnosticar o nível da turma.</dd><dt>Atenção</dt><dd>Nem todos os cursos estão traduzidos para o português.</dd></dl>
+        </article>
+        <article class="tool" data-id="tinkercad" data-nome="Tinkercad" data-url="https://www.tinkercad.com/" data-tags="gratuito pt" data-para="programar criar">
+          <div class="tool-top"><h4><a href="https://www.tinkercad.com/" target="_blank" rel="noopener">Tinkercad ↗</a></h4><button class="fav-btn" type="button" data-id="tinkercad" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Modelagem 3D, circuitos eletrônicos e Arduino simulados no navegador, sem precisar de peças físicas.</dd><dt>Ideia para a aula</dt><dd>Simule o circuito do semáforo com Arduino antes de montar com a turma.</dd><dt>Atenção</dt><dd>O professor pode criar a turma e dar acesso aos alunos por um código.</dd></dl>
+        </article>
+        <article class="tool" data-id="makecode" data-nome="MakeCode (micro:bit)" data-url="https://makecode.microbit.org/" data-tags="gratuito sem-conta pt" data-para="programar">
+          <div class="tool-top"><h4><a href="https://makecode.microbit.org/" target="_blank" rel="noopener">MakeCode (micro:bit) ↗</a></h4><button class="fav-btn" type="button" data-id="makecode" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-sem-conta">Alunos sem conta</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Programação em blocos ou em JavaScript e Python para a placa micro:bit, com simulador na tela.</dd><dt>Ideia para a aula</dt><dd>Mesmo sem a placa, o simulador permite programar e testar um contador de passos ou um termômetro.</dd><dt>Atenção</dt><dd>Para gravar na placa, é preciso um cabo USB.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <p>Para atividades sem computador, veja o post sobre a <a href="../blog/bncc-computacao-6-ao-9-ano/">BNCC Computação do 6º ao 9º ano</a> no blog.</p>
+    </section>
+
+    <!-- ================= INCLUSÃO ================= -->
+    <section class="chapter" id="inclusao" data-title="Acessibilidade e inclusão" data-part="Inclusão e segurança">
+      <h2>Acessibilidade e inclusão</h2>
+      <p>Tecnologia assistiva é qualquer recurso que amplia a autonomia de quem tem deficiência. Muitas já estão no computador da escola e não custam nada; o que falta, em geral, é saber que existem.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="vlibras" data-nome="VLibras" data-url="https://www.gov.br/governodigital/pt-br/vlibras" data-tags="gratuito offline celular pt" data-para="incluir">
+          <div class="tool-top"><h4><a href="https://www.gov.br/governodigital/pt-br/vlibras" target="_blank" rel="noopener">VLibras ↗</a></h4><button class="fav-btn" type="button" data-id="vlibras" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Ferramenta do governo federal que traduz textos em português para Libras com um avatar 3D.</dd><dt>Ideia para a aula</dt><dd>Use como apoio para estudantes surdos em textos curtos, sempre em parceria com o intérprete e o AEE.</dd><dt>Atenção</dt><dd>É apoio, não substitui o intérprete de Libras nem o ensino da língua.</dd></dl>
+        </article>
+        <article class="tool" data-id="leitor-imersivo" data-nome="Leitor Imersivo (Microsoft)" data-url="" data-tags="gratuito pt" data-para="incluir">
+          <div class="tool-top"><h4>Leitor Imersivo (Microsoft)</h4><button class="fav-btn" type="button" data-id="leitor-imersivo" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Recurso que já vem no navegador Edge e no Word: lê o texto em voz alta, destaca as linhas e separa sílabas.</dd><dt>Ideia para a aula</dt><dd>Ative o foco de linha para alunos que se perdem na leitura de textos longos.</dd><dt>Atenção</dt><dd>No Edge, aparece no ícone de livro na barra de endereço em páginas de texto.</dd></dl>
+        </article>
+        <article class="tool" data-id="nvda" data-nome="NVDA" data-url="https://www.nvaccess.org/" data-tags="gratuito offline pt" data-para="incluir">
+          <div class="tool-top"><h4><a href="https://www.nvaccess.org/" target="_blank" rel="noopener">NVDA ↗</a></h4><button class="fav-btn" type="button" data-id="nvda" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Leitor de tela gratuito para Windows, usado por pessoas cegas ou com baixa visão.</dd><dt>Ideia para a aula</dt><dd>Teste os seus materiais digitais com o NVDA: se fizer sentido ouvindo, está mais acessível para todos.</dd><dt>Atenção</dt><dd>Imagens sem texto alternativo não são lidas. Descreva sempre as imagens importantes.</dd></dl>
+        </article>
+        <article class="tool" data-id="be-my-eyes" data-nome="Be My Eyes" data-url="https://www.bemyeyes.com/" data-tags="gratuito celular pt" data-para="incluir">
+          <div class="tool-top"><h4><a href="https://www.bemyeyes.com/" target="_blank" rel="noopener">Be My Eyes ↗</a></h4><button class="fav-btn" type="button" data-id="be-my-eyes" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Aplicativo que conecta pessoas cegas ou com baixa visão a voluntários, por vídeo, para descrever o que a câmera mostra.</dd><dt>Ideia para a aula</dt><dd>Apresente o aplicativo às famílias de estudantes com deficiência visual como apoio fora da escola.</dd><dt>Atenção</dt><dd>Não use para ler documentos com dados pessoais de terceiros.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Recursos que já estão no aparelho</h3>
+      <ul>
+        <li><strong>Digitação por voz</strong> no Google Documentos (menu Ferramentas) e no teclado do celular.</li>
+        <li><strong>Leitura em voz alta</strong> no navegador Edge e nas opções de acessibilidade do Android e do iPhone.</li>
+        <li><strong>Lupa e alto contraste</strong> nas configurações de acessibilidade do Windows.</li>
+        <li><strong>Legendas automáticas</strong> em vídeos do YouTube e em chamadas de vídeo.</li>
+      </ul>
+      <p>Adaptações com apoio de IA para estudantes com TDAH, TEA e dificuldades de leitura estão no capítulo <a href="../ia-pra-prof/#/aee">Facilitando o AEE do IA pra Prof</a>.</p>
+    </section>
+
+    <!-- ================= SEGURANÇA ================= -->
+    <section class="chapter" id="seguranca" data-title="Senhas e segurança digital" data-part="Inclusão e segurança">
+      <h2>Senhas e segurança digital</h2>
+      <p>O e-mail do professor dá acesso a notas, documentos da escola e contatos de famílias. Duas medidas simples protegem a maior parte das contas: senhas diferentes para cada serviço e verificação em duas etapas.</p>
+      <div class="tool-cards">
+        <article class="tool" data-id="bitwarden" data-nome="Bitwarden" data-url="https://bitwarden.com/" data-tags="gratuito celular pt" data-para="proteger">
+          <div class="tool-top"><h4><a href="https://bitwarden.com/" target="_blank" rel="noopener">Bitwarden ↗</a></h4><button class="fav-btn" type="button" data-id="bitwarden" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Gerenciador de senhas gratuito e de código aberto: guarda e preenche senhas fortes, diferentes para cada site.</dd><dt>Ideia para a aula</dt><dd>Use uma senha forte só para o Bitwarden e deixe que ele crie as outras.</dd><dt>Atenção</dt><dd>Ative a verificação em duas etapas na conta do gerenciador.</dd></dl>
+        </article>
+        <article class="tool" data-id="google-autenticador" data-nome="Google Authenticator" data-url="https://support.google.com/accounts/answer/1066447?hl=pt-BR" data-tags="gratuito offline celular pt" data-para="proteger">
+          <div class="tool-top"><h4><a href="https://support.google.com/accounts/answer/1066447?hl=pt-BR" target="_blank" rel="noopener">Google Authenticator ↗</a></h4><button class="fav-btn" type="button" data-id="google-autenticador" aria-pressed="false">Guardar</button></div>
+          <ul class="tags" aria-label="Características"><li class="t-gratuito">Gratuito</li><li class="t-offline">Funciona sem internet</li><li class="t-celular">Tem app de celular</li><li class="t-pt">Em português</li></ul>
+          <dl><dt>Para que serve</dt><dd>Gera os códigos da verificação em duas etapas, que protegem a conta mesmo se a senha vazar.</dd><dt>Ideia para a aula</dt><dd>Comece pelas contas mais importantes: e-mail institucional, Drive e plataforma de notas.</dd><dt>Atenção</dt><dd>Guarde os códigos de recuperação em lugar seguro para não perder o acesso se trocar de celular.</dd></dl>
+        </article>
+      </div>
+      <p class="filtro-aviso" role="status"></p>
+      <h3>Checklist de segurança do professor</h3>
+      <ul>
+        <li>Saia da conta (logout) nos computadores da escola e do laboratório.</li>
+        <li>Não salve senhas no navegador de computadores compartilhados.</li>
+        <li>Desconfie de e-mails urgentes pedindo senha, código ou pagamento, mesmo que pareçam da secretaria.</li>
+        <li>Mantenha o celular com bloqueio de tela, porque é nele que chegam os códigos de verificação.</li>
+      </ul>
+    </section>
+
+    <!-- ================= ESCOLHA RÁPIDA ================= -->
+    <section class="chapter" id="escolha-rapida" data-title="Escolha rápida" data-part="Guia de bolso">
+      <h2>Escolha rápida</h2>
+      <p class="kicker">O que você quer fazer?</p>
+      <p style="font-size:15px;color:var(--ink-2)">Toque em uma necessidade para ver as ferramentas indicadas. Os filtros do topo também valem aqui.</p>
+      <div class="need-row" id="need-row">
+        <button type="button" data-need="organizar" aria-pressed="false">Organizar a rotina</button>
+        <button type="button" data-need="avaliar" aria-pressed="false">Avaliar e acompanhar</button>
+        <button type="button" data-need="engajar" aria-pressed="false">Engajar a turma</button>
+        <button type="button" data-need="memorizar" aria-pressed="false">Estudar e memorizar</button>
+        <button type="button" data-need="criar" aria-pressed="false">Criar materiais</button>
+        <button type="button" data-need="programar" aria-pressed="false">Ensinar programação</button>
+        <button type="button" data-need="incluir" aria-pressed="false">Incluir todos os alunos</button>
+        <button type="button" data-need="proteger" aria-pressed="false">Proteger contas e dados</button>
+      </div>
+      <div class="need-out" id="need-out" aria-live="polite">Escolha uma necessidade acima.</div>
+    </section>
+
+    <!-- ================= MINHA CAIXA ================= -->
+    <section class="chapter" id="minha-caixa" data-title="Minha caixa de ferramentas" data-part="Guia de bolso">
+      <h2>Minha caixa de ferramentas</h2>
+      <p>Use o botão <strong>Guardar</strong> nos cartões das ferramentas para montar a sua lista. Ela fica salva neste navegador e pode ser copiada para enviar a colegas ou colar no planejamento.</p>
+      <div id="caixa"></div>
+    </section>
+
+    <!-- ================= TESTE ================= -->
+    <section class="chapter" id="teste" data-title="Teste rápido" data-part="Guia de bolso">
+      <h2>Teste rápido</h2>
+      <p class="kicker">Cinco situações do dia a dia</p>
+      <div class="activity">
+        <span class="tag">Teste</span>
+        <p class="score" id="quiz-count" style="text-align:left;margin:0 0 6px"></p>
+        <p class="quiz-q" id="quiz-q"></p>
+        <div class="quiz-opts" id="quiz-opts"></div>
+        <div class="feedback" id="quiz-fb" role="status"></div>
+        <div class="quiz-nav"><span class="score" id="quiz-score"></span><button class="btn-primary" id="quiz-next" type="button" style="display:none">Próxima →</button></div>
+      </div>
+    </section>
+
+    <!-- ================= GLOSSÁRIO ================= -->
+    <section class="chapter" id="glossario" data-title="Glossário" data-part="Guia de bolso">
+      <h2>Glossário</h2>
+      <p class="kicker">Termos que aparecem no guia</p>
+      <label class="sr-only" for="gloss-search">Buscar termo</label>
+      <input class="search" id="gloss-search" type="search" placeholder="Buscar termo… (ex.: nuvem)">
+      <div class="gloss" id="gloss">
+        <article><h4>AVA (ambiente virtual de aprendizagem)</h4><p>Plataforma on-line onde ficam materiais, tarefas e notas de uma turma.</p><em>"O Google Sala de Aula é o AVA da nossa escola."</em></article>
+        <article><h4>Baralho</h4><p>No Anki, um conjunto de cartões sobre o mesmo assunto.</p><em>"Criei um baralho com os verbos irregulares."</em></article>
+        <article><h4>Código aberto</h4><p>Programa cujo código-fonte é público e pode ser estudado, modificado e distribuído, como o Moodle, o OBS e o NVDA.</p><em>"O Audacity é gratuito e de código aberto."</em></article>
+        <article><h4>Código QR</h4><p>Imagem quadrada que o celular lê com a câmera para abrir um link sem digitar.</p><em>"Projetei o código QR do formulário no quadro."</em></article>
+        <article><h4>Flashcard</h4><p>Cartão com uma pergunta na frente e a resposta no verso, usado para estudar lembrando ativamente.</p><em>"Os alunos revisaram as fórmulas com flashcards."</em></article>
+        <article><h4>Freemium</h4><p>Modelo em que o básico é gratuito e os recursos avançados são pagos.</p><em>"O Padlet é freemium: o plano gratuito tem poucos murais."</em></article>
+        <article><h4>Leitor de tela</h4><p>Programa que lê em voz alta o que aparece na tela, usado por pessoas cegas ou com baixa visão.</p><em>"Testei a apostila com o NVDA."</em></article>
+        <article><h4>Nuvem</h4><p>Armazenamento em servidores na internet, acessível de qualquer aparelho com a sua conta.</p><em>"Os planos de aula estão na nuvem, não no pen drive."</em></article>
+        <article><h4>Off-line</h4><p>Uso sem conexão com a internet.</p><em>"O GeoGebra instalado funciona off-line no laboratório."</em></article>
+        <article><h4>Repetição espaçada</h4><p>Técnica de estudo que revisa cada conteúdo em intervalos cada vez maiores, pouco antes de esquecer.</p><em>"O Anki usa repetição espaçada para agendar as revisões."</em></article>
+        <article><h4>Tecnologia assistiva</h4><p>Recursos que ampliam a autonomia de pessoas com deficiência, como leitores de tela e tradutores para Libras.</p><em>"O VLibras é uma tecnologia assistiva gratuita."</em></article>
+        <article><h4>Verificação em duas etapas</h4><p>Proteção que pede, além da senha, um código enviado ao celular ou gerado por um aplicativo.</p><em>"Mesmo com a senha vazada, a conta ficou protegida pela verificação em duas etapas."</em></article>
+      </div>
+    </section>
+
+    <!-- ================= AUTORA ================= -->
+    <section class="chapter" id="autora" data-title="Sobre a autora" data-part="Guia de bolso">
+      <h2>Sobre a autora</h2>
+      <p>Júlia Roberta Quoos Alves une tecnologia e educação. No mestrado em Ciência da Computação, na Universidade Federal de Santa Maria (UFSM), desenvolveu uma pesquisa sobre inteligência artificial para auxiliar pessoas com deficiência visual, usando deep learning e visão computacional.</p>
+      <p>Licenciada em Informática e formada em Ciência da Computação, Administração e Marketing na UNISC, também tem quatro pós-graduações voltadas à educação: robótica educacional, tecnologias educacionais, gestão escolar e atendimento educacional especializado (AEE). Atua como professora de informática e ministra oficinas de formação continuada para professores. É autora do guia <a href="../ia-pra-prof/">IA pra Prof</a>.</p>
+      <div style="text-align:right;margin-top:30px">
+        <a href="https://ohtopico.com.br/" style="font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:clamp(30px,7vw,44px);line-height:1.05;display:inline-block">Júlia<br>Roberta<br>Quoos<br>Alves</a>
+        <div style="font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;margin-top:4px">clique!</div>
+      </div>
+      <div class="see-also">
+        <strong>Quer levar isso para a sua escola?</strong>
+        Conheça a <a href="../formacao-continuada/">formação continuada para professores</a> e a <a href="../mentoria/">mentoria individual</a>.
+      </div>
+      <div class="pill" style="margin-top:36px">
+        <strong>Chegou ao fim!</strong>
+        <span id="end-msg">Obrigada pela leitura.</span>
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-ghost" id="share-btn" type="button">Compartilhar o guia</button>
+          <a class="btn-ghost" href="../ia-pra-prof/">Ler o IA pra Prof</a>
+        </div>
+      </div>
+    </section>
+
+    <nav class="pager" id="pager" aria-label="Navegação entre capítulos"></nav>
+    <p class="site-foot">Júlia Roberta Quoos Alves @2026 Tech pra Prof · <a href="https://ohtopico.com.br/" style="color:inherit">ohtopico.com.br</a></p>
+  </main>
+</div>
+
+<!-- Filtros -->
+<aside class="personalize" id="personalize" aria-label="Filtrar ferramentas">
+  <button class="close" id="perso-close" aria-label="Fechar" type="button">×</button>
+  <h2>Filtrar ferramentas</h2>
+  <p>Mostra só as ferramentas que atendem a todos os critérios marcados, em todos os capítulos. A escolha fica salva neste navegador.</p>
+  <label class="opcao"><input type="checkbox" data-filtro="gratuito"> Totalmente gratuitas</label>
+  <label class="opcao"><input type="checkbox" data-filtro="offline"> Funcionam sem internet</label>
+  <label class="opcao"><input type="checkbox" data-filtro="sem-conta"> Alunos não precisam de conta</label>
+  <label class="opcao"><input type="checkbox" data-filtro="celular"> Têm app de celular</label>
+  <div class="row">
+    <button class="btn-ghost" id="perso-clear" type="button" style="min-height:40px;padding:8px 16px">Limpar</button>
+    <button class="btn-primary" id="perso-done" type="button" style="min-height:40px;padding:8px 16px">Pronto</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  // ---------- armazenamento seguro ----------
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('techpraprof:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem('techpraprof:' + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  // O tema é o mesmo do IA pra Prof e da página inicial
+  const tema = {
+    get() { try { return JSON.parse(localStorage.getItem('iapraprof:theme')); } catch (e) { return null; } },
+    set(v) { try { localStorage.setItem('iapraprof:theme', JSON.stringify(v)); } catch (e) {} }
+  };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function toast(msg) {
+    const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch (e) {
+      const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand('copy'); } catch (e2) {}
+      ta.remove(); return ok;
+    }
+  }
+
+  // ---------- tema ----------
+  $('#theme-btn').addEventListener('click', () => {
+    const isDark = document.documentElement.dataset.theme === 'dark' ||
+      (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next; tema.set(next);
+  });
+
+  // ---------- capítulos / navegação ----------
+  const chapters = $$('.chapter');
+  const ids = chapters.map(c => c.id);
+  const tocLinks = $$('.toc a[data-ch]');
+  let visited = new Set(store.get('visited', []));
+  const countable = ids.filter(id => id !== 'inicio');
+
+  function updateProgress() {
+    const n = countable.filter(id => visited.has(id)).length;
+    const pct = Math.round(n / countable.length * 100);
+    $('#pbar').style.width = pct + '%';
+    $('#pct-label').textContent = pct + '% lido';
+    $('.progress').setAttribute('aria-valuenow', pct);
+    tocLinks.forEach(a => a.classList.toggle('done', visited.has(a.dataset.ch)));
+    const startBtn = $('#start-btn');
+    const last = store.get('last', null);
+    if (startBtn && last && last !== 'inicio' && ids.includes(last)) {
+      startBtn.textContent = 'Continuar de onde parei →';
+      startBtn.setAttribute('href', '#/' + last);
+    }
+    const end = $('#end-msg');
+    if (end) end.textContent = pct === 100 ? 'Você leu todos os capítulos. Obrigada pela leitura!' : `Você já leu ${pct}% do guia. Obrigada pela leitura!`;
+  }
+
+  function titleOf(id) { const c = document.getElementById(id); return c.dataset.title || id; }
+
+  function show(id) {
+    if (!ids.includes(id)) id = 'inicio';
+    chapters.forEach(c => c.classList.toggle('active', c.id === id));
+    tocLinks.forEach(a => { if (a.dataset.ch === id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    const i = ids.indexOf(id);
+    const prev = ids[i - 1], next = ids[i + 1];
+    $('#pager').innerHTML =
+      (prev ? `<a class="prev" href="#/${prev}"><small>← Anterior</small>${titleOf(prev)}</a>` : '') +
+      (next ? `<a class="next" href="#/${next}"><small>Próximo →</small>${titleOf(next)}</a>` : '');
+    if (id !== 'inicio') { visited.add(id); store.set('visited', [...visited]); store.set('last', id); }
+    updateProgress();
+    if (id === 'minha-caixa') renderCaixa();
+    document.title = (id === 'inicio' ? '' : titleOf(id) + ' · ') + 'Tech pra Prof';
+    closeToc();
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function route() {
+    const h = location.hash.replace(/^#\/?/, '');
+    show(h || 'inicio');
+  }
+  window.addEventListener('hashchange', route);
+
+  // ---------- sumário mobile ----------
+  const toc = $('#toc'), scrim = $('#scrim'), tocBtn = $('#toc-btn');
+  function openToc() { toc.classList.add('open'); scrim.classList.add('open'); tocBtn.setAttribute('aria-expanded', 'true'); }
+  function closeToc() { toc.classList.remove('open'); scrim.classList.remove('open'); tocBtn.setAttribute('aria-expanded', 'false'); }
+  tocBtn.addEventListener('click', () => toc.classList.contains('open') ? closeToc() : openToc());
+  scrim.addEventListener('click', closeToc);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeToc(); closePerso(); }
+    if (e.target.matches('input, textarea')) return;
+    const i = ids.indexOf(document.querySelector('.chapter.active')?.id);
+    if (e.key === 'ArrowRight' && ids[i + 1]) location.hash = '#/' + ids[i + 1];
+    if (e.key === 'ArrowLeft' && ids[i - 1]) location.hash = '#/' + ids[i - 1];
+  });
+
+  // ---------- filtros ----------
+  const perso = $('#personalize'), persoBtn = $('#perso-btn');
+  function openPerso() { perso.classList.add('open'); persoBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => perso.querySelector('input').focus(), 30); }
+  function closePerso() { perso.classList.remove('open'); persoBtn.setAttribute('aria-expanded', 'false'); }
+  persoBtn.addEventListener('click', () => perso.classList.contains('open') ? closePerso() : openPerso());
+  $('#perso-close').addEventListener('click', closePerso);
+  $('#perso-done').addEventListener('click', closePerso);
+  let filtros = store.get('filtros', []);
+  const caixasFiltro = $$('#personalize input[data-filtro]');
+  caixasFiltro.forEach(c => {
+    c.checked = filtros.includes(c.dataset.filtro);
+    c.addEventListener('change', () => { filtros = caixasFiltro.filter(x => x.checked).map(x => x.dataset.filtro); store.set('filtros', filtros); aplicarFiltros(); });
+  });
+  $('#perso-clear').addEventListener('click', () => { caixasFiltro.forEach(c => c.checked = false); filtros = []; store.set('filtros', filtros); aplicarFiltros(); });
+
+  const tools = $$('.tool[data-id]');
+  const passa = t => filtros.every(f => t.dataset.tags.split(' ').includes(f));
+  function aplicarFiltros() {
+    tools.forEach(t => t.classList.toggle('oculto', !passa(t)));
+    $$('.tool-cards').forEach(lista => {
+      const aviso = lista.nextElementSibling;
+      if (!aviso || !aviso.classList.contains('filtro-aviso')) return;
+      const escondidas = $$('.tool.oculto', lista).length;
+      aviso.classList.toggle('show', escondidas > 0);
+      aviso.textContent = escondidas === $$('.tool', lista).length
+        ? 'Nenhuma ferramenta deste capítulo atende aos filtros marcados.'
+        : `${escondidas} ferramenta${escondidas > 1 ? 's' : ''} escondida${escondidas > 1 ? 's' : ''} pelos filtros.`;
+    });
+    persoBtn.querySelector('.lbl').textContent = filtros.length ? `Filtros (${filtros.length})` : 'Filtrar ferramentas';
+    renderNeed();
+  }
+
+  // ---------- minha caixa ----------
+  let caixa = store.get('caixa', []);
+  const nomeDe = id => { const t = $(`.tool[data-id="${id}"]`); return t ? t.dataset.nome : null; };
+  function syncFav() {
+    $$('.fav-btn').forEach(b => {
+      const on = caixa.includes(b.dataset.id);
+      b.setAttribute('aria-pressed', on); b.textContent = on ? 'Guardada' : 'Guardar';
+    });
+  }
+  $$('.fav-btn').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.id;
+    caixa = caixa.includes(id) ? caixa.filter(x => x !== id) : [...caixa, id];
+    store.set('caixa', caixa); syncFav();
+    toast(caixa.includes(id) ? 'Guardada na sua caixa de ferramentas' : 'Removida da sua caixa');
+  }));
+  function renderCaixa() {
+    const itens = caixa.filter(nomeDe);
+    const el = $('#caixa');
+    if (!itens.length) { el.innerHTML = '<div class="pill"><strong>Caixa vazia</strong>Guarde ferramentas nos capítulos para vê-las aqui.</div>'; return; }
+    el.innerHTML = `<ul class="caixa-lista">${itens.map(id => {
+      const t = $(`.tool[data-id="${id}"]`), cap = t.closest('.chapter');
+      return `<li><span><a href="#/${cap.id}">${esc(t.dataset.nome)}</a><small>${esc(cap.dataset.title)}</small></span><button class="copy-btn" type="button" data-rm="${id}">Remover</button></li>`;
+    }).join('')}</ul><div style="margin-top:14px"><button class="btn-primary" type="button" id="caixa-copiar">Copiar a lista</button></div>`;
+    $$('[data-rm]', el).forEach(b => b.addEventListener('click', () => { caixa = caixa.filter(x => x !== b.dataset.rm); store.set('caixa', caixa); syncFav(); renderCaixa(); }));
+    $('#caixa-copiar').addEventListener('click', async () => {
+      const txt = 'Minha caixa de ferramentas (Tech pra Prof)\n' + itens.map(id => {
+        const t = $(`.tool[data-id="${id}"]`); return `- ${t.dataset.nome}${t.dataset.url ? ': ' + t.dataset.url : ''}`;
+      }).join('\n') + '\nhttps://ohtopico.com.br/tech-pra-prof/';
+      if (await copyText(txt)) toast('Lista copiada');
+    });
+  }
+  syncFav();
+
+  // ---------- escolha rápida ----------
+  const NEEDS = { organizar: 'organizar a rotina', avaliar: 'avaliar e acompanhar', engajar: 'engajar a turma', memorizar: 'estudar e memorizar', criar: 'criar materiais', programar: 'ensinar programação', incluir: 'incluir todos os alunos', proteger: 'proteger contas e dados' };
+  let need = null;
+  function renderNeed() {
+    if (!need) return;
+    const lista = tools.filter(t => t.dataset.para.split(' ').includes(need) && passa(t));
+    $('#need-out').innerHTML = lista.length
+      ? `<strong>Para ${NEEDS[need]}:</strong><ul>${lista.map(t => `<li><a href="#/${t.closest('.chapter').id}">${esc(t.dataset.nome)}</a> <small>· ${esc(t.closest('.chapter').dataset.title)}</small></li>`).join('')}</ul>`
+      : 'Nenhuma ferramenta para essa necessidade atende aos filtros marcados. Ajuste em Filtrar ferramentas.';
+  }
+  $$('#need-row button').forEach(b => b.addEventListener('click', () => {
+    need = b.dataset.need;
+    $$('#need-row button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    renderNeed();
+  }));
+  aplicarFiltros();
+
+  // ---------- checklist ----------
+  const checks = $$('#checklist input');
+  const cSaved = store.get('checks', []);
+  checks.forEach((c, i) => {
+    c.checked = !!cSaved[i];
+    c.addEventListener('change', () => { store.set('checks', checks.map(x => x.checked)); checkDone(); });
+  });
+  function checkDone() { $('#check-done').classList.toggle('show', checks.every(c => c.checked)); }
+  checkDone();
+
+  // ---------- mini sessão de Anki ----------
+  const fcCards = [
+    ['Quantos bits tem um byte?', '8 bits.'],
+    ['Capital do Rio Grande do Sul', 'Porto Alegre.'],
+    ['O que é repetição espaçada?', 'Revisar em intervalos cada vez maiores, pouco antes de esquecer.'],
+    ['to borrow', 'pegar emprestado'],
+    ['Área do trapézio', '(B + b) × h ÷ 2']
+  ];
+  let fila = fcCards.map((_, i) => i), feitos = 0;
+  const NOMES = ['Errei', 'Difícil', 'Bom', 'Fácil'];
+  function fcRender() {
+    const front = $('#fc-front'), back = $('#fc-back');
+    $('#fc-grades').hidden = true;
+    if (!fila.length) {
+      front.textContent = 'Sessão concluída';
+      back.hidden = false;
+      back.textContent = `Você revisou ${feitos} vezes. No Anki, os cartões marcados como Bom ou Fácil só voltariam nos próximos dias.`;
+      $('#fc-show-wrap').innerHTML = '<button class="btn-ghost" id="fc-again" type="button">Começar de novo</button>';
+      $('#fc-again').addEventListener('click', () => { fila = fcCards.map((_, i) => i); feitos = 0; fcReset(); });
+      $('#fc-fila').textContent = '';
+      return;
+    }
+    front.textContent = fcCards[fila[0]][0];
+    back.textContent = fcCards[fila[0]][1]; back.hidden = true;
+    $('#fc-show-wrap').hidden = false;
+    $('#fc-fila').textContent = `${fila.length} ${fila.length > 1 ? 'cartões' : 'cartão'} para hoje`;
+  }
+  function fcReset() {
+    $('#fc-show-wrap').innerHTML = '<button class="btn-primary" id="fc-show" type="button">Mostrar resposta</button>';
+    $('#fc-show').addEventListener('click', fcShow);
+    fcRender();
+  }
+  function fcShow() {
+    $('#fc-back').hidden = false; $('#fc-show-wrap').hidden = true; $('#fc-grades').hidden = false;
+    $('#fc-grades button').focus();
+  }
+  $$('#fc-grades button').forEach(b => b.addEventListener('click', () => {
+    const g = +b.dataset.g, c = fila.shift(); feitos++;
+    if (g === 0) fila.splice(Math.min(2, fila.length), 0, c);   // volta logo, ainda nesta sessão
+    else if (g === 1) fila.push(c);                               // volta no fim da sessão
+    toast(g >= 2 ? `${NOMES[g]}: este cartão sai da sessão de hoje` : `${NOMES[g]}: este cartão volta ainda hoje`);
+    $('#fc-show-wrap').hidden = false;
+    fcRender();
+  }));
+  fcReset();
+
+  // ---------- montador de baralho ----------
+  const deckNome = $('#deck-nome'), deckCartoes = $('#deck-cartoes');
+  const dSaved = store.get('deck', {});
+  deckNome.value = dSaved.nome || ''; deckCartoes.value = dSaved.cartoes || '';
+  const limpaCampo = s => s.replace(/[\t\r\n]+/g, ' ').trim();
+  function lerCartoes() {
+    return deckCartoes.value.split('\n').map(l => {
+      const i = l.indexOf(';'); if (i < 0) return null;
+      const f = limpaCampo(l.slice(0, i)), v = limpaCampo(l.slice(i + 1));
+      return f && v ? [f, v] : null;
+    }).filter(Boolean);
+  }
+  function deckPrevia() {
+    store.set('deck', { nome: deckNome.value, cartoes: deckCartoes.value });
+    const cs = lerCartoes();
+    const linhas = deckCartoes.value.split('\n').filter(l => l.trim()).length;
+    const ignoradas = linhas - cs.length;
+    $('#deck-previa').innerHTML = cs.length
+      ? `<strong>${cs.length} ${cs.length > 1 ? 'cartões' : 'cartão'} pronto${cs.length > 1 ? 's' : ''}</strong>${ignoradas ? ` · ${ignoradas} linha${ignoradas > 1 ? 's' : ''} sem ponto e vírgula ignorada${ignoradas > 1 ? 's' : ''}` : ''}
+         <div class="table-wrap" style="margin:8px 0 0"><table><thead><tr><th>Frente</th><th>Verso</th></tr></thead><tbody>${cs.slice(0, 8).map(([f, v]) => `<tr><td>${esc(f)}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table></div>${cs.length > 8 ? `<small>e mais ${cs.length - 8}.</small>` : ''}`
+      : 'A prévia dos cartões aparece aqui.';
+  }
+  [deckNome, deckCartoes].forEach(el => el.addEventListener('input', deckPrevia));
+  $('#deck-exemplo').addEventListener('click', () => {
+    deckNome.value = '7º ano · Frações';
+    deckCartoes.value = 'Quanto é 1/2 + 1/4? ; 3/4\nO que é o denominador? ; O número de partes iguais em que o inteiro foi dividido\nO que é o numerador? ; Quantas partes do inteiro foram consideradas\n2/4 é equivalente a qual fração simplificada? ; 1/2\nComo se lê 3/8? ; Três oitavos';
+    deckPrevia();
+  });
+  $('#deck-limpar').addEventListener('click', () => { deckNome.value = ''; deckCartoes.value = ''; deckPrevia(); });
+  $('#deck-baixar').addEventListener('click', () => {
+    const cs = lerCartoes();
+    if (!cs.length) { toast('Escreva pelo menos um cartão no formato frente ; verso'); deckCartoes.focus(); return; }
+    const nome = limpaCampo(deckNome.value) || 'Tech pra Prof';
+    const txt = ['#separator:tab', '#html:false', '#deck:' + nome, ...cs.map(c => c.join('\t'))].join('\n') + '\n';
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([txt], { type: 'text/plain;charset=utf-8' }));
+    a.download = (nome.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'baralho') + '-anki.txt';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast('Arquivo baixado. No Anki: Arquivo › Importar');
+  });
+  deckPrevia();
+
+  // ---------- glossário ----------
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  $('#gloss-search').addEventListener('input', e => {
+    const q = norm(e.target.value);
+    $$('#gloss article').forEach(a => a.classList.toggle('oculto', !!q && !norm(a.textContent).includes(q)));
+  });
+
+  // ---------- teste rápido ----------
+  const quiz = [
+    ['Sua turma não tem celular e a internet da escola é fraca. Qual ferramenta de quiz combina melhor?', ['Kahoot!', 'Plickers', 'Mentimeter'], 1, 'No Plickers os alunos usam cartões de papel; só o professor precisa do celular.'],
+    ['Você quer que os alunos revisem vocabulário um pouco por dia, no momento certo. O que usar?', ['Anki, com repetição espaçada', 'Um mural no Padlet', 'Uma apresentação no Canva'], 0, 'A repetição espaçada agenda cada cartão para pouco antes de ser esquecido.'],
+    ['Qual medida mais protege a conta de e-mail do professor se a senha vazar?', ['Trocar a foto de perfil', 'Verificação em duas etapas', 'Usar a mesma senha em tudo, mas longa'], 1, 'Com a verificação em duas etapas, a senha sozinha não basta para entrar.'],
+    ['Antes de pedir que os alunos criem conta em um site novo, o que conferir?', ['Só se o site é bonito', 'Idade mínima, onde ficam os dados e se a escola autoriza', 'Se tem modo escuro'], 1, 'Conta de aluno envolve dados pessoais: idade mínima, LGPD e autorização da escola vêm primeiro.'],
+    ['Um estudante surdo vai ler um texto curto de instruções. Qual recurso gratuito pode apoiar, junto com o intérprete?', ['VLibras', 'OBS Studio', 'Trello'], 0, 'O VLibras traduz textos em português para Libras com um avatar. É apoio, não substitui o intérprete.']
+  ];
+  let qi = 0, qScore = 0;
+  function quizRender() {
+    const fb = $('#quiz-fb'); fb.className = 'feedback';
+    $('#quiz-next').style.display = 'none';
+    if (qi >= quiz.length) {
+      $('#quiz-count').textContent = 'Resultado';
+      $('#quiz-q').innerHTML = `Você acertou <strong>${qScore} de ${quiz.length}</strong>. ${qScore === quiz.length ? 'Caixa de ferramentas completa!' : 'Vale rever os capítulos das questões que errou.'}`;
+      $('#quiz-opts').innerHTML = `<button class="btn-ghost" id="quiz-restart" type="button" style="justify-self:start">Refazer o teste</button>`;
+      $('#quiz-restart').addEventListener('click', () => { qi = 0; qScore = 0; quizRender(); });
+      $('#quiz-score').textContent = '';
+      return;
+    }
+    const [q, opts] = quiz[qi];
+    $('#quiz-count').textContent = `Pergunta ${qi + 1} de ${quiz.length}`;
+    $('#quiz-q').textContent = q;
+    $('#quiz-opts').innerHTML = opts.map((o, i) => `<button type="button" data-i="${i}">${o}</button>`).join('');
+    $('#quiz-score').textContent = `${qScore} acerto${qScore === 1 ? '' : 's'}`;
+    $$('#quiz-opts button').forEach(b => b.addEventListener('click', () => {
+      const [, , right, why] = quiz[qi];
+      const i = +b.dataset.i;
+      $$('#quiz-opts button').forEach(x => { x.disabled = true; if (+x.dataset.i === right) x.classList.add('right'); });
+      if (i === right) qScore++; else b.classList.add('wrong');
+      fb.className = 'feedback show ' + (i === right ? 'ok' : 'bad');
+      fb.textContent = (i === right ? 'Isso! ' : 'Quase. ') + why;
+      $('#quiz-score').textContent = `${qScore} acerto${qScore === 1 ? '' : 's'}`;
+      const nx = $('#quiz-next'); nx.style.display = 'inline-flex';
+      nx.textContent = qi === quiz.length - 1 ? 'Ver resultado →' : 'Próxima →';
+      nx.focus();
+    }));
+  }
+  $('#quiz-next').addEventListener('click', () => { qi++; quizRender(); });
+  quizRender();
+
+  // ---------- compartilhar ----------
+  $('#share-btn').addEventListener('click', async () => {
+    const data = { title: 'Tech pra Prof', text: 'Tecnologias e sites que facilitam a vida do professor, de Júlia Roberta Quoos Alves', url: 'https://ohtopico.com.br/tech-pra-prof/' };
+    if (navigator.share) { try { await navigator.share(data); } catch (e) {} }
+    else if (await copyText(data.url)) toast('Link copiado');
+  });
+
+  route();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/assistente/assistente.js?v=2" defer></script>
+</body>
+</html>

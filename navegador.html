@@ -265,6 +265,7 @@
         <a href="formacao-continuada/" target="_top" class="opcional">Formação continuada</a>
         <a href="curriculo/" target="_top" class="opcional">Currículo</a>
         <a href="ia-pra-prof/" target="_top" class="opcional">IA pra Prof</a>
+        <a href="tech-pra-prof/" target="_top" class="opcional">Tech pra Prof</a>
         <a href="material-didatico/" target="_top" class="opcional">Material didático</a>
     </nav>
     </header>
@@ -404,6 +405,20 @@ feita em panela de vó.</div>
                 });
             });
         } catch (e) { console.warn('Não foi possível ler o IA pra Prof', e); }
+
+        // Tech pra Prof: cada capítulo
+        try {
+            const d = await lerPagina('tech-pra-prof/index.html');
+            d.querySelectorAll('section.chapter').forEach(sec => {
+                if (sec.id === 'inicio') return;
+                docs.push({
+                    titulo: sec.dataset.title || sec.id,
+                    onde: 'Tech pra Prof' + (sec.dataset.part ? ' › ' + sec.dataset.part : ''),
+                    texto: limparTexto(semScripts(sec).textContent),
+                    url: 'tech-pra-prof/#/' + sec.id
+                });
+            });
+        } catch (e) { console.warn('Não foi possível ler o Tech pra Prof', e); }
 
         // Blog: cada post listado no índice do blog
         try {
