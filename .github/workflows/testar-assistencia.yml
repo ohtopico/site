@@ -1,0 +1,37 @@
+# Testa o site de assistência por voz (teste-mestrado/) em cada pull request que mexe nele:
+# módulos ES, frases de comando, fluxo no Chromium com câmera e voz simuladas e auditoria de acessibilidade.
+# Também dá para rodar à mão (aba Actions > Testar assistência por voz > Run workflow).
+name: Testar assistência por voz
+
+on:
+  pull_request:
+    paths:
+      - 'teste-mestrado/**'
+      - '_fonte/teste-mestrado/**'
+      - '.github/workflows/testar-assistencia.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: _fonte/teste-mestrado
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependências e o Chromium
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Rodar os testes
+        run: npm test
