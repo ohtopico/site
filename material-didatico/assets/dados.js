@@ -150,6 +150,7 @@ const HABILIDADES_RAW = [
   ['EF09MA09', 9, 'AL', 'Expressões algébricas: fatoração e produtos notáveis', 'Compreender os processos de fatoração de expressões algébricas, com base em suas relações com os produtos notáveis, para resolver e elaborar problemas que possam ser representados por equações polinomiais do 2º grau.'],
   ['EF09MA10', 9, 'GE', 'Paralelas e transversal', 'Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.'],
   ['EF09MA12', 9, 'GE', 'Semelhança de triângulos', 'Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.'],
+  ['EF09MA13', 9, 'GE', 'Relações métricas no triângulo retângulo', 'Demonstrar relações métricas do triângulo retângulo, entre elas o teorema de Pitágoras, utilizando, inclusive, a semelhança de triângulos.'],
   ['EF09MA14', 9, 'GE', 'Tales e Pitágoras', 'Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.'],
   ['EF09MA19', 9, 'GM', 'Volume de prismas e cilindros', 'Resolver e elaborar problemas que envolvam medidas de volumes de prismas e de cilindros retos, inclusive com uso de expressões de cálculo, em situações cotidianas.'],
   ["EF06MA31", 6, "PE", "Leitura de tabelas e gráficos", "Identificar as variáveis e suas frequências e os elementos constitutivos (título, eixos, legendas, fontes e datas) em diferentes tipos de gráfico."],
@@ -426,6 +427,10 @@ const RECURSOS = [
     habs: ['EF09MA14', 'EF09MA10', 'EF09MA12'], tempo: '15–20 min',
     resumo: 'Descubra a altura de um prédio pela sombra e verifique as razões entre segmentos num feixe de paralelas.',
     url: '3d/tales.html', plano: null, ficha: null },
+  { id: '3d-escada-pitagoras', tipo: '3d', titulo: 'Escada de Pitágoras', comp: ['MA'], anos: [9],
+    habs: ['EF09MA14', 'EF09MA13'], tempo: '20–30 min',
+    resumo: 'Encoste escadas em prédios 3D até o topo parar na janela, ache a maior vareta que cabe numa caixa e termine na diagonal do cubo. Pitágoras no plano e no espaço.',
+    url: '3d/escada-pitagoras.html', plano: null, ficha: null },
   { id: '3d-ladrilhos', tipo: '3d', titulo: 'Ladrilhos e Ângulos', comp: ['MA'], anos: [6, 7],
     habs: ['EF07MA27', 'EF07MA24', 'EF06MA18'], tempo: '15 min',
     resumo: 'Encaixe polígonos regulares em volta de um ponto até fechar 360° e descubra a soma dos ângulos internos por triangulação.',
@@ -487,6 +492,10 @@ const RECURSOS = [
     habs: ['EF09CO05', 'EF08CO10'], tempo: '25 min',
     resumo: 'Disco de César, caixa com dois cadeados e mistura de tintas em 3D: quebre uma cifra por força bruta e descubra como combinar uma chave secreta sem nunca enviá-la.',
     url: '3d/cofre-das-chaves.html', plano: 'p-cripto', ficha: 'f-cesar' },
+  { id: '3d-maquina-estados', tipo: '3d', titulo: 'Máquina de Estados', comp: ['CO'], anos: [9],
+    habs: ['EF09CO03'], tempo: '20–30 min',
+    resumo: 'Catraca, semáforo e elevador em 3D controlados por um autômato que você desenha. A máquina obedece ao diagrama: faltou uma seta, ela trava; seta errada, o elevador dá a volta.',
+    url: '3d/maquina-estados.html', plano: 'p-automatos', ficha: 'f-co-estados' },
 
   // ---------- Fichas para imprimir ----------
   { id: 'datas-festivas', tipo: 'ficha', titulo: 'Computação desplugada nas datas festivas', comp: ['CO'], anos: [1, 2, 3, 4, 5],
@@ -1379,7 +1388,7 @@ const PLANOS = {
     ],
     avaliacao: 'Diagrama com estados e transições completos e programa coerente com o diagrama.',
     inclusao: 'A encenação com cartões dá sentido concreto aos estados. No programa, use sons diferentes para cada estado, o que também ajuda estudantes com baixa visão.',
-    recursos: ['f-co-estados']
+    recursos: ['f-co-estados', '3d-maquina-estados']
   },
   'p-cidade': {
     duracao: '4 aulas de 50 min',
@@ -2627,6 +2636,7 @@ const ESTATICAS = {
   "hab:EF09MA09": "bncc/ef09ma09/",
   "hab:EF09MA10": "bncc/ef09ma10/",
   "hab:EF09MA12": "bncc/ef09ma12/",
+  "hab:EF09MA13": "bncc/ef09ma13/",
   "hab:EF09MA14": "bncc/ef09ma14/",
   "hab:EF09MA19": "bncc/ef09ma19/",
   "hab:EF06MA31": "bncc/ef06ma31/",

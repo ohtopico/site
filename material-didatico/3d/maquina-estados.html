@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máquina de Estados: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Catraca, semáforo e elevador em 3D controlados por um autômato que o aluno desenha: estados, eventos e transições. A máquina obedece ao diagrama, até quando ele está errado.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/maquina-estados.html">
+<meta property="og:title" content="Máquina de Estados: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Catraca, semáforo e elevador em 3D controlados por um autômato que o aluno desenha. Faltou uma seta? A máquina trava. Seta errada? O elevador dá a volta. BNCC EF09CO03.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/maquina-estados.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-maquina-estados.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Catraca, semáforo e elevador em 3D ao lado de um diagrama de estados com setas">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>.tab-est select{width:100%;min-height:38px;border:1.5px solid var(--ink);border-radius:10px;padding:2px 6px;background:var(--paper);font-size:14.5px}.tab-est td.falta select{border-color:var(--bad)}.regras{list-style:none;padding:0;margin:8px 0;font-size:14.5px}.regras li{margin:5px 0;padding-left:24px;position:relative}.regras li::before{content:'•';position:absolute;left:6px}.regras li.ok::before{content:'✓';color:var(--ok);font-weight:700;left:2px}.regras li.bad::before{content:'✗';color:var(--bad);font-weight:700;left:2px}</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Máquina de Estados","description":"Catraca, semáforo e elevador em 3D controlados por um autômato que você desenha. A máquina obedece ao diagrama: faltou uma seta, ela trava; seta errada, o elevador dá a volta.","url":"https://ohtopico.com.br/material-didatico/3d/maquina-estados.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-maquina-estados.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20–30 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO03","targetDescription":"Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Máquina de Estados","item":"https://ohtopico.com.br/material-didatico/3d/maquina-estados.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">9º ano</span><span class="tag">⏱ 20–30 min</span></div>
+      <h1>Máquina de Estados</h1>
+      <p class="muted" style="max-width:720px">Catraca, semáforo e elevador em 3D controlados por um autômato que você desenha. A máquina obedece ao diagrama: faltou uma seta, ela trava; seta errada, o elevador dá a volta.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co03/" title="EF09CO03 — Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.">EF09CO03</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A ideia:</strong> à esquerda está a máquina; à direita, o diagrama que manda nela. Cada disco é um <em>estado</em> (catraca travada, semáforo verde, elevador no térreo). Cada seta é uma <em>transição</em>: “se estou neste estado e acontece este evento, vou para aquele estado”. A seta solta, sem origem, aponta o estado inicial. O disco amarelo é o estado em que a máquina está agora.</p>
+    <p><strong>Experimente:</strong> escolha a máquina, desenhe as setas na tabela abaixo da cena e dispare eventos com os botões. A máquina faz exatamente o que o diagrama diz, mesmo quando ele está errado. Se o estado atual não tem seta para o evento, a máquina trava. Quando achar que acabou, use “Conferir as regras”.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Clique em um disco para colocar a máquina naquele estado. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões e na tabela.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools" id="eventos" role="group" aria-label="Eventos"></div>
+        <div class="tools">
+          <button class="btn ghost" type="button" id="reiniciar">Voltar ao estado inicial</button>
+          <button class="btn ghost" type="button" id="exemplo">Rodar uma sequência</button>
+          <button class="btn ghost" type="button" id="conferir">Conferir as regras</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <h3 style="margin:18px 0 6px">Diagrama em tabela</h3>
+        <p class="small muted" style="margin:0 0 6px">Cada caixa é uma seta do diagrama: do estado da linha, com o evento da coluna, a máquina vai para o estado escolhido. “?” quer dizer que ainda não há seta.</p>
+        <label for="inicial" class="small">Estado inicial</label>
+        <select id="inicial" style="min-height:38px;border:1.5px solid var(--ink);border-radius:10px;padding:2px 8px;background:var(--paper);margin:4px 0 8px"></select>
+        <div class="lab-tabw"><table class="lab-tab tab-est" id="tabela"></table></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>Máquina</h3>
+          <div class="seg" role="group" aria-label="Escolha a máquina" id="maquinas">
+            <button type="button" data-m="catraca" aria-pressed="true">Catraca</button>
+            <button type="button" data-m="semaforo" aria-pressed="false">Semáforo</button>
+            <button type="button" data-m="elevador" aria-pressed="false">Elevador</button>
+          </div>
+          <p class="small muted" style="margin:0">Estado atual</p>
+          <p class="grande" id="estado"></p>
+          <h3 style="margin-top:14px">Regras da máquina</h3>
+          <p class="small muted" style="margin:0">O diagrama precisa cumprir todas:</p>
+          <ul class="regras" id="regras"></ul>
+          <ul class="leg">
+            <li><span class="sw" style="background:#f2cf1d"></span>estado atual</li>
+            <li><span class="sw" style="background:#1f8a4c"></span>última transição usada</li>
+            <li><span class="sw" style="background:#fafaf8"></span>sem seta: a máquina não sabe o que fazer</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Faça a máquina travar: dispare um evento para o qual o estado atual ainda não tem seta.</li>
+            <li data-d="1">Complete o diagrama da catraca até cumprir todas as regras.</li>
+            <li data-d="2">Desenhe o semáforo inteiro, com o botão do pedestre.</li>
+            <li data-d="3">Conserte o elevador: há uma seta errada e faltam outras.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> um autômato finito descreve um comportamento com três ingredientes: um conjunto pequeno de <em>estados</em>, os <em>eventos</em> que podem acontecer e as <em>transições</em> que dizem para onde ir em cada caso. A mesma descrição serve para a catraca, o semáforo, o elevador, um personagem de jogo ou a validação de uma senha. A tabela abaixo da cena é a forma de tabela do mesmo diagrama: cada caixa é uma seta. Nesta página o comportamento é <em>determinístico</em> (cada estado tem no máximo uma seta por evento) e o aluno descobre na prática o que é um autômato <em>completo</em>: quando falta uma seta, a máquina trava.</p>
+    <p><strong>Metodologia sugerida:</strong> encenação e depois investigação em duplas, como no plano <a href="../planos/maquinas-estados-semaforo-ao-jogo/">Máquinas de estados: do semáforo ao jogo</a>. Primeiro a turma encena a catraca com cartões de estado; depois as duplas desenham o semáforo na página e só então o elevador, que já vem com um defeito para consertar. Para levar ao Scratch, a variável “estado” e os blocos “quando receber” fazem o mesmo papel da tabela; a ficha <a href="../fichas/maquina-estados-personagem/">Máquina de estados de um personagem</a> ajuda nesse passo.</p>
+    <ul>
+      <li>Por que a catraca precisa de uma seta de “Travada” para “Travada” com o evento “Empurrar”? O que aconteceria numa catraca de verdade sem essa regra?</li>
+      <li>No elevador que vem pronto, o que acontece quando alguém aperta “Subir” no 2º andar? Como uma regra errada vira um problema de segurança?</li>
+      <li>O semáforo tem 3 estados e 2 eventos. Quantas setas o diagrama completo precisa ter? E uma máquina com 4 estados e 3 eventos?</li>
+      <li>Onde mais vocês encontram máquinas de estados? Pensem em jogos (parado, andando, pulando), no micro-ondas, no celular bloqueado e desbloqueado, num <a href="../jogos/chatbot.html">chatbot</a> que segue um roteiro.</li>
+    </ul>
+    <p class="small muted">Habilidade: EF09CO03; também serve para Ensino Médio e para cursos introdutórios de linguagens formais. Material concreto equivalente: discos de papel com o nome de cada estado, barbantes ou setas recortadas com o nome do evento e um aluno que faz o papel da máquina, andando de disco em disco.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/maquinas-estados-semaforo-ao-jogo/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Máquinas de estados: do semáforo ao jogo</strong>
+          <span class="small muted">Descrever comportamentos com estados e transições e implementá-los com programação por eventos.</span>
+        </a>
+        <a class="card" href="../fichas/maquina-estados-personagem/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>Máquina de estados do personagem</strong>
+          <span class="small muted">Seguir a máquina de estados de uma catraca e desenhar a de um personagem de jogo, com tabela de transições.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/carro-que-aprende.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Carro que Aprende</strong>
+          <span class="small muted">Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-maquina-estados');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-maquina-estados';
+const X0 = -4.5; // posição da máquina; o diagrama fica à direita
+
+/* Cada máquina: estados, eventos, posição dos discos no diagrama, regras certas e o diagrama com que começa.
+   tab[estado][evento] = estado de destino (-1 = sem seta) */
+const MAQ = {
+  catraca: {
+    nome: 'Catraca', artigo: 'a catraca', est: ['Travada', 'Livre'], ev: ['Cartão', 'Empurrar'], d: 1,
+    pos: [[1.6, 3.1], [5.6, 3.1]], centro: [3.6, 3.1], entra: [0, -1],
+    comeca: [[1, -1], [-1, -1]],
+    regras: [
+      [0, 0, 1, 'Travada, alguém passou o cartão: a catraca fica livre.'],
+      [0, 1, 0, 'Travada, alguém empurrou: continua travada (ninguém passa sem pagar).'],
+      [1, 1, 0, 'Livre, a pessoa empurrou: ela passa e a catraca trava de novo.'],
+      [1, 0, 1, 'Livre, passaram outro cartão: continua livre.']
+    ],
+    seq: [1, 0, 1, 1, 0, 0, 1]
+  },
+  semaforo: {
+    nome: 'Semáforo', artigo: 'o semáforo', est: ['Verde', 'Amarelo', 'Vermelho'], ev: ['Tempo', 'Botão do pedestre'], d: 2,
+    pos: [[1.5, 1.4], [3.6, 4.6], [5.7, 1.4]], centro: [3.6, 2.5], entra: [-0.6, 0.8],
+    comeca: [[1, -1], [-1, -1], [-1, -1]],
+    regras: [
+      [0, 0, 1, 'No verde, acabou o tempo: vai para o amarelo.'],
+      [1, 0, 2, 'No amarelo, acabou o tempo: vai para o vermelho.'],
+      [2, 0, 0, 'No vermelho, acabou o tempo: volta para o verde.'],
+      [0, 1, 1, 'No verde, o pedestre apertou o botão: começa a fechar (amarelo).'],
+      [1, 1, 1, 'No amarelo, o botão não muda nada: continua amarelo.'],
+      [2, 1, 2, 'No vermelho, o botão não muda nada: o pedestre já pode atravessar.']
+    ],
+    seq: [0, 0, 0, 1, 0, 1, 0]
+  },
+  elevador: {
+    nome: 'Elevador', artigo: 'o elevador', est: ['Térreo', '1º andar', '2º andar'], ev: ['Subir', 'Descer'], d: 3,
+    pos: [[2.3, 1.2], [5.0, 3.0], [2.3, 4.8]], centro: [3.2, 3.0], entra: [0.9, -0.6],
+    comeca: [[1, -1], [2, -1], [0, -1]],
+    regras: [
+      [0, 0, 1, 'No térreo, apertou subir: vai para o 1º andar.'],
+      [1, 0, 2, 'No 1º andar, apertou subir: vai para o 2º andar.'],
+      [2, 0, 2, 'No 2º andar, apertou subir: não há mais andares, fica no 2º.'],
+      [2, 1, 1, 'No 2º andar, apertou descer: vai para o 1º andar.'],
+      [1, 1, 0, 'No 1º andar, apertou descer: vai para o térreo.'],
+      [0, 1, 0, 'No térreo, apertou descer: fica no térreo.']
+    ],
+    seq: [0, 0, 0, 1, 1, 1]
+  }
+};
+const tabs = {}, iniciais = {};
+for (const k in MAQ) { tabs[k] = MAQ[k].comeca.map(l => l.slice()); iniciais[k] = 0; }
+let mk = 'catraca', M = MAQ[mk], atual = 0, ultima = null, ocupado = false, emSeq = false;
+const feitos = new Set();
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [0.6, 4.6, 16.5], alvo: [0.6, 3.5, 0], min: 7, max: 38, chaoTam: 60 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([0.6, 4.4, 22], [0.6, 3.5, 0]);
+let gMaq, gDia, maq = null;
+const espera = ms => new Promise(r => setTimeout(r, ms));
+function trocaRotulo(sp) { if (sp.material.map) sp.material.map.dispose(); sp.material.dispose(); }
+
+if (cena) {
+  gMaq = new T.Group(); gMaq.position.set(X0, 0, 0);
+  gDia = new T.Group();
+  cena.add(gMaq, gDia);
+  // quadro branco do diagrama
+  const quadro = cena.bloco(8, 6.8, 0.14, COR.papel, { mat: { emissive: new T.Color('#ffffff'), emissiveIntensity: 0.35 } }); quadro.position.set(-0.4, 0, -0.5); cena.add(quadro);
+  const tq = cena.rotulo('Diagrama de estados', { tam: 0.42, fundo: COR.amareloClaro }); tq.position.set(3.6, 7.25, 0); cena.add(tq);
+}
+
+/* lâmpada: material próprio para poder acender e apagar */
+function lampada(r, cor) {
+  const m = new T.Mesh(new T.SphereGeometry(r, 28, 18), new T.MeshStandardMaterial({ color: new T.Color(cor), roughness: 0.4, emissive: new T.Color('#000') }));
+  m.castShadow = true; return m;
+}
+function acende(m, cor, liga) { m.material.color.set(liga ? cor : '#4b4b47'); m.material.emissive.set(liga ? cor : '#000'); m.material.emissiveIntensity = liga ? 0.7 : 0; }
+function pessoa(corpo) {
+  const g = new T.Group();
+  const c = cena.cilindro(0.26, 1.0, corpo); g.add(c);
+  const h = new T.Mesh(new T.SphereGeometry(0.23, 24, 16), cena.material(COR.amareloClaro)); h.position.y = 1.27; h.castShadow = true; cena.comBordas(h, 40); g.add(h);
+  return g;
+}
+
+/* ---------- as três máquinas ---------- */
+const MODELOS = {
+  catraca(g) {
+    const cab = cena.bloco(0.9, 1.9, 0.8, COR.cinza); cab.position.set(-1.9, 0, -0.4); g.add(cab);
+    const leitor = cena.bloco(0.6, 0.1, 0.5, COR.cinzaEscuro); leitor.position.set(-1.75, 1.9, -0.25); g.add(leitor);
+    const luz = lampada(0.17, COR.vermelho); luz.position.set(-1.45, 2.2, 0); g.add(luz);
+    g.add(cena.cilindro(0.09, 1.9, COR.cinzaEscuro));
+    const grade = cena.bloco(0.15, 1.3, 1.8, COR.cinza); grade.position.set(1.35, 0, -0.9); g.add(grade);
+    const rotor = new T.Group(); g.add(rotor);
+    for (let k = 0; k < 3; k++) {
+      const a = k * 2 * Math.PI / 3;
+      for (const h of [0.75, 1.15, 1.55]) rotor.add(cena.haste([0, h, 0], [1.15 * Math.cos(a), h, -1.15 * Math.sin(a)], 0.08, COR.amarelo, { bordas: true }));
+    }
+    const p = pessoa(COR.verdeClaro); p.position.set(0.68, 0, 2.4); g.add(p);
+    return {
+      mostra(s) { acende(luz, s === 1 ? COR.verde : COR.vermelho, true); },
+      async anima(de, e) {
+        if (e === 0) { await cena.animar(luz, { scale: [1.6, 1.6, 1.6] }, 160); await cena.animar(luz, { scale: [1, 1, 1] }, 160); return; }
+        if (de === 1) {
+          const r0 = rotor.rotation.y;
+          await Promise.all([cena.animar(rotor, { rotation: [0, r0 + 2 * Math.PI / 3, 0] }, 900), cena.animar(p, { position: [0.68, 0, -2.4] }, 900)]);
+          p.position.set(0.68, 0, 2.4); cena.pedeQuadro();
+        } else {
+          const r0 = rotor.rotation.y;
+          await cena.animar(p, { position: [0.68, 0, 1.3] }, 300);
+          await cena.animar(rotor, { rotation: [0, r0 + 0.1, 0] }, 90);
+          await cena.animar(rotor, { rotation: [0, r0, 0] }, 90);
+          await cena.animar(p, { position: [0.68, 0, 2.4] }, 300);
+        }
+      }
+    };
+  },
+  semaforo(g) {
+    g.add(cena.cilindro(0.12, 2.7, COR.cinzaEscuro));
+    const caixa = cena.bloco(0.95, 2.3, 0.7, '#3a3a37'); caixa.position.set(-0.475, 2.6, -0.35); g.add(caixa);
+    const cores = [COR.verde, COR.amarelo, COR.vermelho];
+    const lamp = [3.05, 3.75, 4.45].map(y => { const l = lampada(0.28, COR.verde); l.position.set(0, y, 0.38); g.add(l); return l; });
+    const caixaB = cena.bloco(0.34, 0.5, 0.3, COR.amarelo); caixaB.position.set(0.1, 1.0, -0.15); g.add(caixaB);
+    const botao = lampada(0.09, COR.tinta); botao.position.set(0.27, 1.27, 0.02); g.add(botao);
+    for (let i = 0; i < 4; i++) { const f = cena.bloco(0.32, 0.03, 2.6, '#ffffff', { bordas: false }); f.position.set(1.0 + i * 0.6, 0, -1.3); g.add(f); }
+    const p = pessoa(COR.vermelhoClaro); p.position.set(1.9, 0, 1.9); g.add(p);
+    return {
+      mostra(s) { lamp.forEach((l, i) => acende(l, cores[i], i === s)); },
+      async anima(de, e, para) {
+        if (e === 1) { await cena.animar(botao, { scale: [0.5, 0.5, 0.5] }, 140); await cena.animar(botao, { scale: [1, 1, 1] }, 140); }
+        this.mostra(para);
+        if (para === 2 && de !== 2) { await cena.animar(p, { position: [1.9, 0, -1.9] }, 1000); p.position.set(1.9, 0, 1.9); cena.pedeQuadro(); }
+      }
+    };
+  },
+  elevador(g) {
+    const A = 1.85;
+    for (const [x, z] of [[-1.05, -0.85], [1.05, -0.85], [-1.05, 0.85], [1.05, 0.85]]) g.add(cena.haste([x, 0, z], [x, 5.6, z], 0.1, COR.cinzaEscuro));
+    ['Térreo', '1º', '2º'].forEach((n, f) => {
+      const laje = cena.bloco(2.3, 0.08, 1.9, COR.cinza); laje.position.set(-1.15, f * A - 0.08, -0.95); g.add(laje);
+      const r = cena.rotulo(n, { tam: 0.38 }); r.position.set(-1.9, f * A + 0.6, 0.6); g.add(r);
+    });
+    const cab = new T.Group(); g.add(cab);
+    const caixa = cena.bloco(1.5, 1.55, 1.3, COR.amarelo); caixa.position.set(-0.75, 0.02, -0.65); cab.add(caixa);
+    const porta = cena.bloco(0.04, 1.3, 0.04, COR.tinta, { bordas: false }); porta.position.set(-0.02, 0.1, 0.66); cab.add(porta);
+    return {
+      mostra(s) { cab.position.set(0, s * A, 0); cena.pedeQuadro(); },
+      async anima(de, e, para) { await cena.animar(cab, { position: [0, para * A, 0] }, 250 + 600 * Math.abs(para - de)); }
+    };
+  }
+};
+
+function montaMaquina() {
+  if (!cena) return;
+  cena.limpar(gMaq);
+  maq = MODELOS[mk](gMaq);
+  const r = cena.rotulo(M.nome, { tam: 0.42, fundo: COR.amareloClaro }); r.position.set(0, 6.3, 0); gMaq.add(r);
+  maq.mostra(atual);
+}
+
+/* ---------- diagrama ---------- */
+let discos = [];
+function seta(a, b, cor, larg = 0.07) {
+  const d = new T.Vector2(b[0] - a[0], b[1] - a[1]).normalize();
+  const fim = [b[0] - d.x * 0.3, b[1] - d.y * 0.3, 0.1];
+  gDia.add(cena.haste([a[0], a[1], 0.1], fim, larg, cor, { sombra: false }));
+  ponta([b[0] - d.x * 0.15, b[1] - d.y * 0.15], d, cor);
+}
+function ponta(p, d, cor) {
+  const c = new T.Mesh(new T.ConeGeometry(0.17, 0.36, 18), cena.material(cor));
+  c.position.set(p[0], p[1], 0.1); c.rotation.z = Math.atan2(d.y, d.x) - Math.PI / 2;
+  gDia.add(c);
+}
+function rotuloDia(txt, x, y, fundo = '#ffffff') { const r = cena.rotulo(txt, { tam: 0.32, fundo }); r.position.set(x, y, 0.4); gDia.add(r); }
+
+function desenha() {
+  if (!cena) return;
+  [...gDia.children].forEach(o => { if (o.isSprite) trocaRotulo(o); });
+  cena.limpar(gDia);
+  const tab = tabs[mk], P = M.pos, n = M.est.length;
+  // agrupa os eventos por par de estados: uma seta só, com todos os nomes
+  const pares = {};
+  tab.forEach((l, s) => l.forEach((p, e) => { if (p >= 0) (pares[s + '>' + p] = pares[s + '>' + p] || []).push(e); }));
+  const tinta = '#2b2b28';
+  for (const k in pares) {
+    const [s, p] = k.split('>').map(Number);
+    const usada = ultima && ultima.de === s && ultima.para === p;
+    const cor = usada ? COR.verde : tinta;
+    const nomes = pares[k].map(e => M.ev[e]).join(', ');
+    if (s === p) {
+      // laço: um anel do lado de fora do disco
+      const u = new T.Vector2(P[s][0] - M.centro[0], P[s][1] - M.centro[1]).normalize();
+      const v = new T.Vector2(-u.y, u.x);
+      const C = [P[s][0] + u.x * 0.95, P[s][1] + u.y * 0.95];
+      const anel = new T.Mesh(new T.TorusGeometry(0.42, usada ? 0.06 : 0.045, 8, 40), cena.material(cor));
+      anel.position.set(C[0], C[1], 0.1); gDia.add(anel);
+      const th = 2.25, q = [C[0] + 0.42 * (Math.cos(th) * u.x + Math.sin(th) * v.x), C[1] + 0.42 * (Math.cos(th) * u.y + Math.sin(th) * v.y)];
+      ponta(q, new T.Vector2(-Math.sin(th) * u.x + Math.cos(th) * v.x, -Math.sin(th) * u.y + Math.cos(th) * v.y), cor);
+      rotuloDia(nomes, P[s][0] + u.x * 1.75, P[s][1] + u.y * 1.75, usada ? COR.verdeClaro : '#ffffff');
+    } else {
+      const d = new T.Vector2(P[p][0] - P[s][0], P[p][1] - P[s][1]).normalize();
+      const v = new T.Vector2(-d.y, d.x);
+      const volta = pares[p + '>' + s] ? 0.26 : 0;
+      const a = [P[s][0] + d.x * 0.68 + v.x * volta, P[s][1] + d.y * 0.68 + v.y * volta];
+      const b = [P[p][0] - d.x * 0.68 + v.x * volta, P[p][1] - d.y * 0.68 + v.y * volta];
+      seta(a, b, cor, usada ? 0.1 : 0.07);
+      const lado = volta ? 0.62 : 0.4;
+      rotuloDia(nomes, (a[0] + b[0]) / 2 + v.x * lado, (a[1] + b[1]) / 2 + v.y * lado, usada ? COR.verdeClaro : '#ffffff');
+    }
+  }
+  // seta solta do estado inicial
+  const i0 = iniciais[mk], ent = new T.Vector2(...M.entra).normalize();
+  seta([P[i0][0] + ent.x * 1.5, P[i0][1] + ent.y * 1.5], [P[i0][0] + ent.x * 0.68, P[i0][1] + ent.y * 0.68], tinta);
+  // discos dos estados
+  discos = P.map((p, s) => {
+    const m = new T.Mesh(new T.CylinderGeometry(0.62, 0.62, 0.22, 48), new T.MeshStandardMaterial({ color: new T.Color(s === atual ? COR.amarelo : '#ffffff'), roughness: 0.5 }));
+    m.rotation.x = Math.PI / 2; m.position.set(p[0], p[1], 0.05);
+    cena.comBordas(m, 40); gDia.add(m);
+    cena.clicavel(m, () => colocaEm(s));
+    const r = cena.rotulo(M.est[s], { tam: 0.34, fundo: s === atual ? COR.amareloClaro : '#ffffff' }); r.position.set(p[0], p[1], 0.45); gDia.add(r);
+    return m;
+  });
+  const setas = [];
+  tab.forEach((l, s) => l.forEach((p, e) => { if (p >= 0) setas.push(`${M.est[s]} com ${M.ev[e]} vai para ${M.est[p]}`); }));
+  cena.descrever(`${M.nome} no estado ${M.est[atual]}. Diagrama com ${n} estados, estado inicial ${M.est[i0]}. ` + (setas.length ? `Setas: ${setas.join('; ')}.` : 'Ainda não há setas.'));
+}
+
+/* ---------- tabela (o diagrama em forma de tabela) ---------- */
+function montaTabela() {
+  const tab = tabs[mk];
+  const op = sel => `<option value="-1"${sel === -1 ? ' selected' : ''}>?</option>` + M.est.map((n, i) => `<option value="${i}"${sel === i ? ' selected' : ''}>${n}</option>`).join('');
+  $('#tabela').innerHTML = `<caption class="small muted" style="text-align:left">Linhas: estado atual. Colunas: evento. Caixa: para onde a máquina vai.</caption>
+    <thead><tr><th>Estado</th>${M.ev.map(e => `<th>${e}</th>`).join('')}</tr></thead>
+    <tbody>${M.est.map((n, s) => `<tr><th>${n}</th>${M.ev.map((ev, e) => `<td><select data-s="${s}" data-e="${e}" aria-label="No estado ${n}, com o evento ${ev}, vai para">${op(tab[s][e])}</select></td>`).join('')}</tr>`).join('')}</tbody>`;
+  $('#inicial').innerHTML = M.est.map((n, i) => `<option value="${i}"${iniciais[mk] === i ? ' selected' : ''}>${n}</option>`).join('');
+}
+$('#tabela').addEventListener('change', ev => {
+  const s = ev.target.dataset.s, e = ev.target.dataset.e;
+  if (s === undefined) return;
+  tabs[mk][+s][+e] = +ev.target.value;
+  ev.target.parentElement.classList.remove('falta');
+  ultima = null; desenha(); limpaRegras();
+});
+$('#inicial').addEventListener('change', ev => { iniciais[mk] = +ev.target.value; reinicia(); });
+
+function regrasHtml(res) {
+  $('#regras').innerHTML = M.regras.map((r, i) => `<li${res ? ` class="${res[i] ? 'ok' : 'bad'}"` : ''}>${r[3]}</li>`).join('');
+}
+function limpaRegras() { regrasHtml(null); }
+
+/* ---------- funcionamento ---------- */
+function mostraEstado() { $('#estado').textContent = M.est[atual]; }
+function fb(txt, tipo = '') { $('#fb').className = 'feedback' + (tipo ? ' ' + tipo : ''); $('#fb').textContent = txt; }
+function colocaEm(s) {
+  if (ocupado || emSeq) return;
+  atual = s; ultima = null;
+  maq && maq.mostra(s); mostraEstado(); desenha();
+  fb(`A máquina foi colocada no estado “${M.est[s]}”.`);
+}
+function reinicia() {
+  atual = iniciais[mk]; ultima = null;
+  maq && maq.mostra(atual); mostraEstado(); desenha();
+  fb(`De volta ao estado inicial: “${M.est[atual]}”.`);
+}
+async function dispara(e, daSeq = false) {
+  if (ocupado || (emSeq && !daSeq)) return false;
+  const de = atual, para = tabs[mk][de][e];
+  if (para < 0) {
+    fb(`A máquina travou: no estado “${M.est[de]}” o diagrama não diz o que fazer com “${M.ev[e]}”. Desenhe essa seta na tabela.`, 'bad');
+    const cel = $(`#tabela select[data-s="${de}"][data-e="${e}"]`); if (cel) cel.parentElement.classList.add('falta');
+    marca(0);
+    if (cena) {
+      ocupado = true;
+      const d = discos[de], p0 = d.position.toArray();
+      for (const dx of [0.14, -0.14, 0.1, 0]) await Promise.all([
+        cena.animar(gMaq, { position: [X0 + dx, 0, 0] }, 70),
+        cena.animar(d, { position: [p0[0] + dx, p0[1], p0[2]] }, 70)]);
+      ocupado = false;
+    }
+    return false;
+  }
+  ocupado = true; botoes(false);
+  if (maq) await maq.anima(de, e, para);
+  atual = para; ultima = { de, para };
+  maq && maq.mostra(para); mostraEstado(); desenha();
+  fb(de === para ? `“${M.est[de]}” com “${M.ev[e]}”: a seta volta para o mesmo estado, a máquina continua em “${M.est[para]}”.`
+    : `“${M.est[de]}” com “${M.ev[e]}”: a máquina seguiu a seta e foi para “${M.est[para]}”.`, 'ok');
+  ocupado = false; botoes(!emSeq);
+  return true;
+}
+function botoes(liga) { document.querySelectorAll('#eventos button, #exemplo').forEach(b => { b.disabled = !liga; }); }
+
+async function sequencia() {
+  if (ocupado) return;
+  reinicia();
+  const nomes = M.seq.map(e => M.ev[e]).join(', ');
+  fb(`Sequência de eventos: ${nomes}.`);
+  emSeq = true; botoes(false);
+  await espera(700);
+  for (const e of M.seq) {
+    const ok = await dispara(e, true);
+    if (!ok) { emSeq = false; botoes(true); return; }
+    await espera(500);
+  }
+  emSeq = false; botoes(true);
+  fb(`Fim da sequência (${nomes}). A máquina terminou em “${M.est[atual]}”.`, 'ok');
+}
+
+function conferir() {
+  const res = M.regras.map(([s, e, p]) => tabs[mk][s][e] === p);
+  regrasHtml(res);
+  const ok = res.filter(Boolean).length;
+  const iniOk = iniciais[mk] === 0;
+  if (ok === res.length && iniOk) { fb(`Diagrama certo: ${M.artigo} cumpre as ${ok} regras.`, 'ok'); marca(M.d); }
+  else if (ok === res.length) fb(`As ${ok} regras estão certas, mas o estado inicial deveria ser “${M.est[0]}”.`, 'bad');
+  else fb(`${ok} de ${res.length} regras certas. As marcadas com ✗ ainda não batem com o diagrama.`, 'bad');
+}
+
+function marca(d) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 4 * 100));
+}
+
+function escolheMaquina(k) {
+  if (ocupado || emSeq) return;
+  mk = k; M = MAQ[k]; atual = iniciais[k]; ultima = null;
+  document.querySelectorAll('#maquinas button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === k)));
+  $('#eventos').innerHTML = M.ev.map((e, i) => `<button class="btn" type="button" data-e="${i}">${e}</button>`).join('');
+  montaTabela(); limpaRegras(); montaMaquina(); mostraEstado(); desenha();
+  fb(`${M.nome}: escolha um evento ou desenhe as setas na tabela.`);
+}
+
+$('#maquinas').addEventListener('click', ev => { const b = ev.target.closest('button'); if (b) escolheMaquina(b.dataset.m); });
+$('#eventos').addEventListener('click', ev => { const b = ev.target.closest('button'); if (b) dispara(+b.dataset.e); });
+$('#reiniciar').onclick = () => { if (!ocupado && !emSeq) reinicia(); };
+$('#exemplo').onclick = sequencia;
+$('#conferir').onclick = conferir;
+escolheMaquina('catraca');
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
