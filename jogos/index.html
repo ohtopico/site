@@ -172,7 +172,7 @@
   const $ = s => document.querySelector(s);
   // Temas pensados para o estudante (no lugar de "Computação" e "Matemática")
   const TEMAS = [
-    { id: 'digital', nome: 'Robôs, internet e segurança', icone: 'robo', jogos: ['vale-bits', 'robo', 'pacotes', 'golpe'] },
+    { id: 'digital', nome: 'Robôs, internet e segurança', icone: 'robo', jogos: ['vale-bits', 'digitacao', 'robo', 'pacotes', 'golpe'] },
     { id: 'numeros', nome: 'Números e contas', icone: 'fracoes', jogos: ['tabuada', 'fracoes', 'balanca', 'receitas', 'bhaskara'] },
     { id: 'formas', nome: 'Formas, mapas e ângulos', icone: 'tangram', jogos: ['tangram', 'cartesiano', 'angulos', 'rotas'] },
     { id: 'dinheiro', nome: 'Dinheiro e mesada', icone: 'cofrinho', jogos: ['cofrinho', 'mesada', 'cambio', 'empresa-sucos', 'poupanca', 'cartao'] },
@@ -190,7 +190,8 @@
     angulos: 'Mire o laser no ângulo certo.', cofrinho: 'Guarde ou gaste e veja o cofrinho render.',
     tabelas: 'Organize os votos da gincana.', receitas: 'Aumente a receita sem estragar o sabor.',
     cartao: 'Use um cartão de treino sem cair nos juros.', cambio: 'Viaje por cinco países trocando dinheiro.',
-    'vale-bits': 'Explore o vale e abra os portões com desafios.'
+    'vale-bits': 'Explore o vale e abra os portões com desafios.',
+    digitacao: 'Digite rápido e sem errar, com acentos e tudo.'
   };
   const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo');
   // jogo novo que ainda não está em nenhum tema entra pelo componente

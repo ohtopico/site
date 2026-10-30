@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dedos Ligeiros: Teste de Digitação · Material didático | ohtopico</title>
+<meta name="description" content="Teste de velocidade de digitação em português, com acentos e cedilha: veja palavras por minuto, precisão e as teclas para treinar, com teclado ABNT2 na tela.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/digitacao.html">
+<meta property="og:title" content="Dedos Ligeiros: Teste de Digitação · Material didático">
+<meta property="og:description" content="Teste de velocidade de digitação em português, com acentos e cedilha: veja palavras por minuto, precisão e as teclas para treinar, com teclado ABNT2 na tela.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/digitacao.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Capa do Material didático de Júlia Roberta Quoos Alves: jogos, fichas e planos de aula de Computação e Matemática, BNCC do 6º ao 9º ano, gratuito.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .niveis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 6px 0 18px; }
+  .nivel { text-align: left; border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+  .nivel:hover { background: var(--pill); }
+  .nivel b { font-family: var(--display); font-size: 21px; }
+  .nivel .rec { font-size: 13px; color: var(--accent); font-weight: 600; }
+  .opts { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; font-size: 15px; margin-bottom: 8px; }
+  .opts label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+  .hud .vivo b { color: var(--accent); }
+  .texto { position: relative; border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 18px 20px;
+    font-size: clamp(20px, 3.2vw, 26px); line-height: 1.7; letter-spacing: .01em; cursor: text; box-shadow: 6px 6px 0 var(--ink); word-wrap: break-word; }
+  .texto.foco { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .texto span { border-radius: 4px; }
+  .texto .ok { color: var(--ok); }
+  .texto .er { color: var(--bad); background: var(--bad-soft); text-decoration: underline wavy; }
+  .texto .er.esp { background: var(--bad); }
+  .texto .falta { color: var(--ink-3); }
+  .texto .cur { color: var(--ink); background: #fff36b; box-shadow: 0 3px 0 var(--ink); }
+  :root[data-theme="dark"] .texto .cur { color: #111; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .texto .cur { color: #111; } }
+  .entrada { position: absolute; left: 0; top: 0; width: 1px; height: 1px; opacity: 0; border: 0; padding: 0; resize: none; }
+  .dica { min-height: 30px; margin: 14px 0 6px; font-size: 16px; color: var(--ink-2); }
+  .dica kbd, .resumo kbd { font-family: var(--body); font-weight: 600; border: 1.5px solid var(--ink); border-bottom-width: 3px; border-radius: 6px; padding: 0 6px; background: var(--paper); color: var(--ink); }
+  .clique { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+  /* teclado ABNT2 na tela */
+  .teclado { margin-top: 12px; padding: 10px; border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper-2); user-select: none; }
+  .teclado .lin { display: flex; gap: 4px; margin-bottom: 4px; }
+  .teclado .tc { flex: 1 1 0; min-width: 0; height: 40px; border: 1.5px solid #111; border-radius: 7px; color: #111; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; position: relative; transition: transform .08s; }
+  .teclado .tc small { position: absolute; top: 1px; left: 4px; font-size: 10px; font-weight: 400; }
+  .teclado .tc.base::after { content: ''; position: absolute; bottom: 5px; width: 10px; height: 2px; background: #111; border-radius: 2px; }
+  .teclado .tc.alvo { outline: 4px solid var(--ink); outline-offset: 1px; transform: translateY(2px); background: #fff !important; box-shadow: inset 0 0 0 4px #166c40; }
+  .teclado .tc.alvo2 { outline: 3px dashed var(--ink); outline-offset: 1px; }
+  .dedos { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .dedos i { display: inline-block; width: 14px; height: 14px; border: 1.5px solid #111; border-radius: 4px; vertical-align: -2px; margin-right: 4px; }
+  @media (max-width: 640px) { .teclado { padding: 6px; } .teclado .tc { height: 32px; font-size: 11px; overflow: hidden; letter-spacing: -.02em; } .teclado .tc small { display: none; } .teclado .lin { gap: 2px; } }
+  /* resultado */
+  .resultado { text-align: center; padding: 6px 0 10px; }
+  .numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+  .numero { border: 1.5px solid var(--ink); border-radius: 20px; padding: 12px; background: var(--paper); }
+  .numero b { display: block; font-family: var(--display); font-size: 40px; line-height: 1.1; }
+  .numero span { font-size: 14px; color: var(--ink-2); }
+  .melhoras { list-style: none; padding: 0; margin: 0 auto 14px; max-width: 560px; text-align: left; }
+  .melhoras li { background: var(--ok-soft); border-left: 4px solid var(--ok); border-radius: 0 14px 14px 0; padding: 10px 14px; margin-bottom: 8px; font-size: 16px; }
+  .historico { display: flex; align-items: flex-end; justify-content: center; gap: 8px; height: 120px; margin: 10px auto 4px; max-width: 420px; }
+  .historico div { flex: 1; max-width: 46px; background: var(--pill-2); border: 1.5px solid var(--ink); border-radius: 8px 8px 0 0; position: relative; }
+  .historico div.top { background: #2fa865; }
+  .historico div.agora { outline: 3px solid #e0a800; outline-offset: 2px; }
+  .historico div span { position: absolute; top: -22px; left: 0; right: 0; font-size: 13px; font-weight: 600; }
+  .resumo { max-width: 560px; margin: 0 auto 16px; text-align: left; }
+  .center-btns { justify-content: center; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Escolha um nível e comece a digitar: o relógio só começa na primeira tecla. A letra da vez fica marcada em amarelo. Se errar, a letra fica vermelha; você pode apagar com <strong>Backspace</strong> ou seguir em frente.</p>
+    <p>No fim aparecem as <strong>palavras por minuto</strong> (cada 5 letras certas contam como uma palavra) e a <strong>precisão</strong> (quantas teclas saíram certas na primeira vez). Primeiro busque precisão; a velocidade vem com o treino.</p>
+    <p><strong>Acentos no teclado ABNT2:</strong> aperte a tecla do acento, solte, e depois a vogal. <kbd>´</kbd> + <kbd>a</kbd> = á, <kbd>~</kbd> + <kbd>a</kbd> = ã, <kbd>Shift</kbd> + <kbd>~</kbd> e depois <kbd>e</kbd> = ê, <kbd>Shift</kbd> + <kbd>´</kbd> e depois <kbd>a</kbd> = à. O <kbd>ç</kbd> tem tecla própria, ao lado do L.</p>
+  </details>
+
+  <div class="game-stage" id="stage"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('digitacao');
+(function () {
+  /* ---------- textos ---------- */
+  const NIVEIS = [
+    { id: 'base', nome: 'Linha da base', desc: 'Só as teclas onde os dedos descansam: A S D F G H J K L Ç, mais o acento agudo.', meta: 12,
+      gerar: () => sortear(['asa', 'sala', 'fala', 'salada', 'fada', 'gala', 'alga', 'haja', 'lá', 'já', 'há', 'dá', 'falha', 'galha', 'saga', 'fadas', 'salas', 'falas', 'asas', 'gás', 'ás', 'sal', 'ala', 'alfa', 'gala', 'saladas', 'dada'], 14).join(' ') },
+    { id: 'palavras', nome: 'Palavras', desc: 'Palavras curtas com acento, til e cedilha.', meta: 18,
+      gerar: () => sortear(['pão', 'mão', 'céu', 'avó', 'avô', 'maçã', 'ônibus', 'lápis', 'café', 'chá', 'pé', 'você', 'árvore', 'música', 'escola', 'teclado', 'mouse', 'tela', 'janela', 'peixe', 'coração', 'canção', 'lição', 'último', 'régua', 'mochila', 'chimarrão', 'pinhão', 'açúcar', 'número', 'fácil', 'jogo', 'robô', 'botão', 'código', 'dados', 'vírgula', 'irmã', 'três', 'caderno'], 12).join(' ') },
+    { id: 'frases', nome: 'Frases', desc: 'Frases completas, com letra maiúscula, vírgula e ponto final.', meta: 25,
+      gerar: () => sortear([
+        'O computador só faz o que a gente manda.',
+        'A professora pediu para salvar o arquivo antes de sair.',
+        'No inverno do Rio Grande do Sul, o chimarrão esquenta a conversa.',
+        'Uma senha forte mistura letras, números e símbolos.',
+        'O robô andou três casas e virou à direita.',
+        'Antes de clicar num link, confira quem mandou a mensagem.',
+        'A internet liga computadores do mundo inteiro.',
+        'Na feira de ciências, a turma mostrou um jogo feito no Scratch.',
+        'Os dados da pesquisa viraram um gráfico colorido.',
+        'Cada letra que você digita vira um número dentro do computador.',
+        'O pinhão cozido é uma delícia nas tardes frias de junho.',
+        'Aprender a digitar é como andar de bicicleta: no começo é devagar.'
+      ], 3).join(' ') },
+    { id: 'textos', nome: 'Textos', desc: 'Um parágrafo sobre computação, dados e inteligência artificial.', meta: 32,
+      gerar: () => sortear([
+        'A inteligência artificial aprende com exemplos. Para reconhecer gatos em fotos, ela olha milhares de imagens e procura padrões. Se os exemplos forem ruins, ela também aprende errado, por isso os dados precisam ser escolhidos com cuidado.',
+        'Um algoritmo é uma sequência de passos para resolver um problema. A receita de bolo, o caminho até a escola e as regras de um jogo são algoritmos do dia a dia. O computador segue os passos sem pular nenhum e sem se cansar.',
+        'Tudo o que fica guardado no computador vira zeros e uns. Uma letra, uma música e uma foto são números organizados de um jeito combinado. Quando você aperta uma tecla, o teclado envia um código e a tela mostra a letra certa.',
+        'Antes de compartilhar uma notícia, vale fazer três perguntas: quem escreveu, quando foi publicada e se outros sites sérios dizem a mesma coisa. Essa pausa curta ajuda a não espalhar informação falsa.',
+        'Os satélites, os celulares e as previsões do tempo usam muitos dados. No Rio Grande do Sul, as estações meteorológicas medem chuva, vento e temperatura o dia inteiro, e esses números ajudam a planejar a colheita.'
+      ], 1).join(' ') }
+  ];
+  function sortear(lista, n) {
+    const a = lista.slice();
+    for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; }
+    return a.slice(0, n);
+  }
+
+  /* ---------- teclado ABNT2 simplificado ----------
+     [rótulo de baixo, rótulo de cima, dedo, largura]; dedos: 1 mindinho, 2 anelar, 3 médio, 4 indicador (esquerda E, direita D), 0 polegar */
+  const T = (b, c, d, w) => ({ b, c, d, w: w || 1 });
+  const LINHAS = [
+    [T("'", '"', 'E1'), T('1', '!', 'E1'), T('2', '@', 'E2'), T('3', '#', 'E3'), T('4', '$', 'E4'), T('5', '%', 'E4'), T('6', '¨', 'D4'), T('7', '&', 'D4'), T('8', '*', 'D3'), T('9', '(', 'D2'), T('0', ')', 'D1'), T('-', '_', 'D1'), T('=', '+', 'D1'), T('Apagar', '', 'D1', 1.8)],
+    [T('Tab', '', 'E1', 1.4), ...'qwert'.split('').map((l, i) => T(l, '', ['E1', 'E2', 'E3', 'E4', 'E4'][i])), ...'yuiop'.split('').map((l, i) => T(l, '', ['D4', 'D4', 'D3', 'D2', 'D1'][i])), T('´', '`', 'D1'), T('[', '{', 'D1'), T('Enter', '', 'D1', 1.4)],
+    [T('Fixa', '', 'E1', 1.7), ...'asdfg'.split('').map((l, i) => T(l, '', ['E1', 'E2', 'E3', 'E4', 'E4'][i])), ...'hjklç'.split('').map((l, i) => T(l, '', ['D4', 'D4', 'D3', 'D2', 'D1'][i])), T('~', '^', 'D1'), T(']', '}', 'D1'), T('', '', 'D1', 1.1)],
+    [T('Shift', '', 'E1', 1.3), T('\\', '|', 'E1'), ...'zxcvb'.split('').map((l, i) => T(l, '', ['E1', 'E2', 'E3', 'E4', 'E4'][i])), ...'nm'.split('').map(l => T(l, '', 'D4')), T(',', '<', 'D3'), T('.', '>', 'D2'), T(';', ':', 'D1'), T('/', '?', 'D1'), T('Shift', '', 'D1', 2.2)],
+    [T('', '', '', 3.4), T('Espaço', '', '0', 7), T('', '', '', 3.4)]
+  ];
+  const COR = { E1: '#f2a9b3', D1: '#f2a9b3', E2: '#fff36b', D2: '#fff36b', E3: '#9fdab4', D3: '#9fdab4', E4: '#ffd2a1', D4: '#ffd2a1', 0: '#e2e2df' };
+  const NOME_DEDO = { 1: 'mindinho', 2: 'anelar', 3: 'médio', 4: 'indicador' };
+  // como fazer cada caractere: lista de teclas (rótulo de baixo) a apertar, em ordem
+  const ACENTO = { 'á': '´a', 'é': '´e', 'í': '´i', 'ó': '´o', 'ú': '´u', 'ã': '~a', 'õ': '~o', 'â': '^a', 'ê': '^e', 'ô': '^o', 'à': '`a' };
+  function passos(ch) {
+    const min = ch.toLowerCase();
+    const maiusc = ch !== min && ch.toUpperCase() === ch;
+    if (ACENTO[min]) {
+      const [a, v] = [...ACENTO[min]];
+      const tecAcento = a === '^' ? { k: '~', shift: true } : a === '`' ? { k: '´', shift: true } : { k: a, shift: false };
+      return [tecAcento, { k: v, shift: maiusc }];
+    }
+    if (ch === ' ') return [{ k: 'Espaço', shift: false }];
+    for (const lin of LINHAS) for (const t of lin) {
+      if (t.b === min && /[a-zç]/.test(min)) return [{ k: t.b, shift: maiusc }];
+      if (t.b === ch) return [{ k: t.b, shift: false }];
+      if (t.c === ch) return [{ k: t.b, shift: true }];
+    }
+    return [];
+  }
+  const tecla = k => { for (const lin of LINHAS) for (const t of lin) if (t.b === k) return t; return null; };
+  function dicaTxt(ch) {
+    const p = passos(ch);
+    if (!p.length) return '';
+    const kb = s => `<kbd>${esc(s)}</kbd>`;
+    const um = s => {
+      const t = tecla(s.k);
+      const shiftLado = t && t.d.startsWith('E') ? 'da direita' : 'da esquerda';
+      return (s.shift ? `${kb('Shift')} ${shiftLado} + ` : '') + kb(s.k === 'Espaço' ? 'Espaço' : s.k);
+    };
+    const t = tecla(p[p.length - 1].k);
+    const dedo = t && t.d === '0' ? 'polegar' : t ? `${NOME_DEDO[t.d[1]]} ${t.d[0] === 'E' ? 'esquerdo' : 'direito'}` : '';
+    const nome = ch === ' ' ? 'espaço' : `“${esc(ch)}”`;
+    if (p.length === 2) return `Próxima: ${nome}. Aperte ${um(p[0])}, solte, e depois ${um(p[1])}.`;
+    return `Próxima: ${nome}. ${um(p[0])}${dedo ? `, com o ${dedo}` : ''}.`;
+  }
+
+  /* ---------- histórico neste aparelho ---------- */
+  const CHAVE = 'ohtopico-digitacao';
+  const hist = {
+    ler() { try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; } },
+    gravar(d) { try { localStorage.setItem(CHAVE, JSON.stringify(d)); } catch (e) {} }
+  };
+  const opcoes = Object.assign({ teclado: true, dica: true }, hist.ler().opcoes || {});
+
+  /* ---------- tela inicial ---------- */
+  const stage = document.getElementById('stage');
+  let nivel = null, alvo = '', digitado = '', teclas = 0, erros = 0, errosPorLetra = {}, inicio = 0, timer = 0, terminou = false;
+
+  function menu() {
+    clearInterval(timer);
+    const h = hist.ler();
+    stage.innerHTML = `
+      <p style="margin-top:0"><strong>Escolha um nível.</strong> Comece pela linha da base se ainda olha muito para o teclado.</p>
+      <div class="niveis">${NIVEIS.map(n => {
+        const r = h[n.id];
+        return `<button class="nivel" type="button" data-n="${n.id}"><b>${esc(n.nome)}</b><span class="small muted">${esc(n.desc)}</span>
+          ${r ? `<span class="rec">Seu recorde: ${r.melhorPpm} ppm, ${r.melhorPrec}% de precisão</span>` : `<span class="small muted">Meta para começar: ${n.meta} ppm</span>`}</button>`;
+      }).join('')}</div>
+      <div class="opts">
+        <label><input type="checkbox" id="op-teclado" ${opcoes.teclado ? 'checked' : ''}> Mostrar teclado na tela</label>
+        <label><input type="checkbox" id="op-dica" ${opcoes.dica ? 'checked' : ''}> Mostrar dica da próxima tecla</label>
+      </div>
+      <p class="small muted" style="margin:6px 0 0">Ainda está aprendendo onde fica cada tecla? Visite os <a href="../../computador-para-criancas/">Primeiros passos no computador</a>, com um teclado em 3D.</p>`;
+    stage.querySelectorAll('.nivel').forEach(b => b.onclick = () => jogar(b.dataset.n));
+    ['teclado', 'dica'].forEach(k => {
+      document.getElementById('op-' + k).onchange = e => { opcoes[k] = e.target.checked; const d = hist.ler(); d.opcoes = opcoes; hist.gravar(d); };
+    });
+  }
+
+  /* ---------- partida ---------- */
+  function jogar(id) {
+    nivel = NIVEIS.find(n => n.id === id);
+    alvo = nivel.gerar().normalize('NFC');
+    digitado = ''; teclas = 0; erros = 0; errosPorLetra = {}; inicio = 0; terminou = false;
+    stage.innerHTML = `
+      <div class="hud">
+        <span>Nível <b>${esc(nivel.nome)}</b></span>
+        <span class="vivo">Palavras por minuto <b id="h-ppm">0</b></span>
+        <span class="vivo">Precisão <b id="h-prec">100%</b></span>
+        <span>Tempo <b id="h-tempo">0:00</b></span>
+      </div>
+      <div class="texto" id="texto" aria-hidden="true"></div>
+      <label class="sr-only" for="entrada">Digite o texto: ${esc(alvo)}</label>
+      <textarea class="entrada" id="entrada" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+      <div class="dica" id="dica" aria-live="polite"></div>
+      ${opcoes.teclado ? `<div class="teclado" id="teclado" aria-hidden="true">${LINHAS.map(lin => `<div class="lin">${lin.map(t =>
+        `<div class="tc${['f', 'j'].includes(t.b) ? ' base' : ''}" data-k="${esc(t.b)}" style="flex-grow:${t.w};background:${t.d === '' ? 'transparent;border-color:transparent' : COR[t.d]}">${t.c ? `<small>${esc(t.c)}</small>` : ''}${esc(t.b.length === 1 ? t.b.toUpperCase() : t.b)}</div>`).join('')}</div>`).join('')}
+        <div class="dedos"><span><i style="background:#f2a9b3"></i>mindinho</span><span><i style="background:#fff36b"></i>anelar</span><span><i style="background:#9fdab4"></i>médio</span><span><i style="background:#ffd2a1"></i>indicador</span><span><i style="background:#e2e2df"></i>polegar</span><span>Os tracinhos no F e no J marcam onde ficam os indicadores.</span></div>
+      </div>` : ''}
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn ghost" type="button" id="outro">Outro texto</button>
+        <button class="btn ghost" type="button" id="voltar">Trocar de nível</button>
+      </div>`;
+    const ent = document.getElementById('entrada'), caixa = document.getElementById('texto');
+    caixa.onclick = () => ent.focus();
+    ent.onfocus = () => caixa.classList.add('foco');
+    ent.onblur = () => caixa.classList.remove('foco');
+    ent.addEventListener('paste', e => e.preventDefault());
+    ent.addEventListener('drop', e => e.preventDefault());
+    // no Mac e no Linux o acento aparece sozinho enquanto espera a vogal; só conta a letra quando ela sai pronta
+    ent.addEventListener('input', e => { if (e.isComposing && /[´`~^¨]$/.test(ent.value)) return; digitar(ent); });
+    ent.addEventListener('compositionend', () => digitar(ent));
+    ent.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(); });
+    document.getElementById('outro').onclick = () => jogar(nivel.id);
+    document.getElementById('voltar').onclick = menu;
+    desenhar();
+    ent.focus();
+  }
+
+  function digitar(ent) {
+    if (terminou) return;
+    let v = ent.value.normalize('NFC').replace(/\n/g, '');
+    if (v.length > alvo.length) v = v.slice(0, alvo.length);
+    if (!inicio && v.length) { inicio = performance.now(); timer = setInterval(atualizarHud, 250); }
+    // cada caractere novo conta como uma tecla; o erro é guardado pela letra que deveria sair
+    if (v.length > digitado.length) {
+      for (let i = digitado.length; i < v.length; i++) {
+        teclas++;
+        if (v[i] !== alvo[i]) { erros++; errosPorLetra[alvo[i]] = (errosPorLetra[alvo[i]] || 0) + 1; }
+      }
+    }
+    digitado = v;
+    if (ent.value !== v) ent.value = v;
+    desenhar(); atualizarHud();
+    if (digitado.length === alvo.length) fim();
+  }
+
+  function desenhar() {
+    const caixa = document.getElementById('texto');
+    if (!caixa) return;
+    let html = '';
+    for (let i = 0; i < alvo.length; i++) {
+      const c = alvo[i];
+      let cls = 'falta';
+      if (i < digitado.length) cls = digitado[i] === c ? 'ok' : 'er' + (c === ' ' ? ' esp' : '');
+      else if (i === digitado.length) cls = 'cur';
+      html += `<span class="${cls}">${c === ' ' ? ' ' : esc(c)}</span>`;
+    }
+    caixa.innerHTML = html;
+    const prox = alvo[digitado.length];
+    const dica = document.getElementById('dica');
+    if (dica) dica.innerHTML = opcoes.dica && prox !== undefined ? dicaTxt(prox) : '';
+    document.querySelectorAll('#teclado .tc').forEach(el => el.classList.remove('alvo', 'alvo2'));
+    if (prox !== undefined) {
+      const p = passos(prox);
+      p.forEach((s, idx) => {
+        const els = [...document.querySelectorAll(`#teclado .tc[data-k="${CSS.escape(s.k)}"]`)];
+        els.forEach(el => el.classList.add(idx === p.length - 1 ? 'alvo' : 'alvo2'));
+        if (s.shift) {
+          const t = tecla(s.k);
+          const shifts = [...document.querySelectorAll('#teclado .tc[data-k="Shift"]')];
+          const sh = t && t.d.startsWith('E') ? shifts[1] : shifts[0];
+          if (sh) sh.classList.add('alvo2');
+        }
+      });
+    }
+  }
+
+  function medidas() {
+    const ms = inicio ? performance.now() - inicio : 0;
+    let certos = 0;
+    for (let i = 0; i < digitado.length; i++) if (digitado[i] === alvo[i]) certos++;
+    const min = ms / 60000;
+    const ppm = min > 0.02 ? Math.round(certos / 5 / min) : 0;
+    const prec = teclas ? Math.floor((teclas - erros) / teclas * 100) : 100;
+    return { ms, ppm, prec, certos };
+  }
+  const relogio = ms => { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+  function atualizarHud() {
+    const m = medidas(), $ = id => document.getElementById(id);
+    if (!$('h-ppm')) return clearInterval(timer);
+    $('h-ppm').textContent = m.ppm; $('h-prec').textContent = m.prec + '%'; $('h-tempo').textContent = relogio(m.ms);
+  }
+
+  /* ---------- resultado: sempre destaca o que melhorou ---------- */
+  function fim() {
+    terminou = true; clearInterval(timer);
+    const m = medidas();
+    const d = hist.ler();
+    const ant = d[nivel.id] || null;
+    const reg = ant ? Object.assign({}, ant) : { melhorPpm: 0, melhorPrec: 0, partidas: 0, ultimas: [] };
+    reg.partidas++;
+    reg.ultimas = (reg.ultimas || []).concat([[m.ppm, m.prec]]).slice(-8);
+    reg.melhorPpm = Math.max(reg.melhorPpm, m.ppm);
+    reg.melhorPrec = Math.max(reg.melhorPrec, m.prec);
+    reg.ultPpm = m.ppm; reg.ultPrec = m.prec;
+    d[nivel.id] = reg; hist.gravar(d);
+    // nota para o progresso do material: precisão ponderada pela meta de velocidade do nível
+    window.MDP && MDP.registrar('digitacao', m.prec * Math.min(1, m.ppm / nivel.meta));
+
+    const melhoras = [];
+    if (!ant) melhoras.push(`Primeira partida no nível ${esc(nivel.nome)}: agora você já tem uma marca para superar.`);
+    else {
+      if (m.ppm > ant.melhorPpm) melhoras.push(`Novo recorde de velocidade: <b>${m.ppm} ppm</b> (o anterior era ${ant.melhorPpm}).`);
+      else if (m.ppm > ant.ultPpm) melhoras.push(`<b>${m.ppm - ant.ultPpm} ppm a mais</b> do que na partida anterior.`);
+      if (m.prec > ant.melhorPrec) melhoras.push(`Nova melhor precisão: <b>${m.prec}%</b>.`);
+      else if (m.prec > ant.ultPrec) melhoras.push(`Precisão <b>${m.prec - ant.ultPrec} pontos maior</b> que na partida anterior.`);
+    }
+    if (erros === 0) melhoras.push('Nenhuma tecla errada. Precisão perfeita.');
+    if (m.ppm >= nivel.meta && (!ant || ant.melhorPpm < nivel.meta)) melhoras.push(`Você alcançou a meta do nível (${nivel.meta} ppm).`);
+    if (!melhoras.length) melhoras.push(`Partida número ${reg.partidas} concluída neste nível. Seu recorde continua em <b>${reg.melhorPpm} ppm</b>, e cada treino deixa os dedos mais firmes.`);
+
+    const proximo = NIVEIS[NIVEIS.indexOf(nivel) + 1];
+    const treinar = Object.entries(errosPorLetra).sort((a, b) => b[1] - a[1]).slice(0, 4);
+    const mx = Math.max(...reg.ultimas.map(u => u[0]), 1);
+    const titulo = m.prec >= 95 && m.ppm >= nivel.meta ? 'Dedos ligeiros!' : m.prec >= 90 ? 'Muito bem!' : 'Texto concluído!';
+    stage.innerHTML = `<div class="resultado" role="status">
+      <h2>${titulo}</h2>
+      <div class="numeros">
+        <div class="numero"><b>${m.ppm}</b><span>palavras por minuto</span></div>
+        <div class="numero"><b>${m.prec}%</b><span>de precisão</span></div>
+        <div class="numero"><b>${relogio(m.ms)}</b><span>de tempo</span></div>
+      </div>
+      <ul class="melhoras">${melhoras.map(t => `<li>${t}</li>`).join('')}</ul>
+      ${reg.ultimas.length > 1 ? `<p class="small muted" style="margin:18px 0 26px">Suas últimas partidas neste nível (palavras por minuto). Verde = recorde.</p>
+        <div class="historico" role="img" aria-label="Gráfico de barras das últimas partidas: ${reg.ultimas.map(u => u[0]).join(', ')} palavras por minuto">
+          ${reg.ultimas.map((u, i) => `<div class="${u[0] === reg.melhorPpm ? 'top' : ''}${i === reg.ultimas.length - 1 ? ' agora' : ''}" style="height:${Math.max(6, u[0] / mx * 100)}%"><span>${u[0]}</span></div>`).join('')}
+        </div>` : ''}
+      ${treinar.length ? `<div class="note resumo"><strong>Teclas para treinar:</strong> ${treinar.map(([c]) => `<kbd>${c === ' ' ? 'espaço' : esc(c)}</kbd>`).join(' ')}. Digite essas devagar na próxima partida, olhando para a tela.</div>` : ''}
+      <div class="btn-row center-btns">
+        <button class="btn" type="button" id="de-novo">Jogar de novo</button>
+        ${proximo ? `<button class="btn ghost" type="button" id="prox">Próximo nível: ${esc(proximo.nome)}</button>` : ''}
+        <button class="btn ghost" type="button" id="menu">Escolher nível</button>
+      </div></div>`;
+    document.getElementById('de-novo').onclick = () => jogar(nivel.id);
+    if (proximo) document.getElementById('prox').onclick = () => jogar(proximo.id);
+    document.getElementById('menu').onclick = menu;
+    document.getElementById('de-novo').focus();
+  }
+
+  menu();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
