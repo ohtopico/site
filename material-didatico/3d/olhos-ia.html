@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olhos da IA: simulação 3D de Computação | Júlia Quoos</title>
+<meta name="description" content="Uma rua em 3D vista pela câmera de um assistente para pessoas cegas: caixas de detecção, mapa de profundidade, a frase que seria falada e os erros da IA.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/3d/olhos-ia.html">
+<meta property="og:title" content="Olhos da IA: simulação 3D de Computação | Júlia Quoos">
+<meta property="og:description" content="Caminhe por uma rua 3D com um assistente de visão para pessoas cegas: veja o que a IA detecta, a que distância, a frase que ela fala e quando ela erra, como o poste confundido com uma pessoa. 8º e 9º ano, Ensino Médio e formação de professores.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/3d/olhos-ia.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/3d/img/og-olhos-ia.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Rua em 3D com uma pessoa cega de bengala e as caixas que a IA desenha em volta de poste, cachorro e carro">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<link rel="stylesheet" href="../assets/lab3d.css">
+<style>
+  .olho { position: relative; width: 100%; aspect-ratio: 4 / 3; border: 1.5px solid var(--ink); border-radius: 14px; overflow: hidden; background: #141413; }
+  .olho canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; }
+  .olho .rec { position: absolute; left: 8px; top: 6px; font-size: 12px; color: #fff; background: rgba(0,0,0,.55); border-radius: 99px; padding: 1px 8px; pointer-events: none; }
+  .frase { font-size: 17px; line-height: 1.45; border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); padding: 10px 12px; margin: 8px 0; min-height: 3.2em; }
+  .treino { list-style: none; padding: 0; margin: 6px 0 10px; font-size: 14px; }
+  .treino li { display: grid; grid-template-columns: 76px 1fr 54px; gap: 8px; align-items: center; margin: 3px 0; }
+  .treino .n { text-align: right; font-variant-numeric: tabular-nums; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Olhos da IA","description":"Uma rua em 3D vista pela câmera de um assistente para pessoas cegas: caixas de detecção, mapa de profundidade e a frase falada. Ache os erros da IA, como o poste confundido com uma pessoa.","url":"https://ohtopico.com.br/material-didatico/3d/olhos-ia.html","image":"https://ohtopico.com.br/material-didatico/3d/img/og-olhos-ia.jpg","inLanguage":"pt-BR","learningResourceType":"Simulação 3D","educationalLevel":"8º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO07","targetDescription":"Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO11","targetDescription":"Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO05","targetDescription":"Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Laboratório 3D","item":"https://ohtopico.com.br/material-didatico/catalogo.html?tipo=3d"},{"@type":"ListItem","position":4,"name":"Olhos da IA","item":"https://ohtopico.com.br/material-didatico/3d/olhos-ia.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">8º ao 9º ano</span><span class="tag">⏱ 20 min</span></div>
+      <h1>Olhos da IA</h1>
+      <p class="muted" style="max-width:720px">Uma rua em 3D vista pela câmera de um assistente para pessoas cegas: caixas de detecção, mapa de profundidade e a frase falada. Ache os erros da IA, como o poste confundido com uma pessoa.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef09co07/" title="EF09CO07 — Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.">EF09CO07</a><a class="tag code co" href="../bncc/ef08co11/" title="EF08CO11 — Avaliar precisão, relevância, adequação, abrangência e vieses de fontes de informação eletrônica.">EF08CO11</a><a class="tag code co" href="../bncc/ef06co05/" title="EF06CO05 — Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.">EF06CO05</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como usar</summary>
+    <p><strong>A situação:</strong> uma pessoa cega caminha pela calçada com a bengala e um celular no peito. Um aplicativo de IA olha pela câmera, procura objetos, estima a distância e fala uma frase curta, como “Pessoa a 4 metros, à frente”. A faixa amarela na cena mostra o que a câmera enxerga.</p>
+    <p><strong>Experimente:</strong> use “Andar 1 m” e “Virar” para caminhar. No painel, a tela do celular mostra as caixas que a IA desenhou e o mapa de profundidade (perto é claro, longe é escuro). Na rua, cada objeto ganha uma etiqueta: verde quando a IA acertou, vermelha quando errou e cinza quando ela nem viu. Troque a luz do dia, mexa no limiar de confiança e veja os erros aparecerem e sumirem.</p>
+    <p class="small muted">Arraste o fundo da cena para girar; use a roda do mouse ou dois dedos para aproximar. Pelo teclado: Tab até a cena, setas giram e as teclas + e − aproximam. Todos os comandos também estão nos botões, e a tabela abaixo da cena lista tudo o que a câmera vê.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="lab-layout">
+      <div>
+        <div id="palco"></div>
+        <div class="lab-cam" role="group" aria-label="Posição da câmera">
+          <button class="chip" type="button" data-vista="inicio">Vista inicial</button>
+          <button class="chip" type="button" data-vista="frente">De frente</button>
+          <button class="chip" type="button" data-vista="cima">De cima</button>
+          <button class="chip" type="button" data-vista="lado">De lado</button>
+        </div>
+        <div class="tools">
+          <button class="btn" type="button" id="andar">Andar 1 m</button>
+          <button class="btn ghost" type="button" id="voltar">Voltar 1 m</button>
+          <button class="btn ghost" type="button" id="esq">Virar à esquerda</button>
+          <button class="btn ghost" type="button" id="dir">Virar à direita</button>
+          <button class="btn ghost" type="button" id="reinicia">Voltar ao início</button>
+        </div>
+        <p class="feedback" id="fb" role="status"></p>
+        <div id="tabela"></div>
+      </div>
+      <div class="side">
+        <div class="panel">
+          <h3>O que o celular vê</h3>
+          <div class="seg" role="group" aria-label="Imagem do celular">
+            <button type="button" id="v-img" aria-pressed="true">Imagem</button>
+            <button type="button" id="v-prof" aria-pressed="false">Profundidade</button>
+          </div>
+          <div class="olho" id="olho" role="img" aria-label="Imagem da câmera do celular"><span class="rec" id="rec">câmera</span></div>
+          <h3 style="margin-top:12px">Frase falada</h3>
+          <p class="frase" id="frase" aria-live="polite"></p>
+          <button class="btn ghost" type="button" id="ouvir">Ouvir a frase</button>
+          <h3 style="margin-top:14px">Luz</h3>
+          <div class="seg" role="group" aria-label="Luz do dia">
+            <button type="button" data-luz="dia" aria-pressed="true">Dia</button>
+            <button type="button" data-luz="tarde" aria-pressed="false">Fim de tarde</button>
+            <button type="button" data-luz="noite" aria-pressed="false">Noite</button>
+          </div>
+          <label for="limiar">Limiar de confiança: <b id="llimiar"></b></label>
+          <input type="range" id="limiar" min="0.1" max="0.9" step="0.05" value="0.3">
+          <p class="small muted" style="margin:2px 0 10px">A IA só avisa quando tem pelo menos essa certeza.</p>
+          <h3 style="margin-top:14px">Fotos usadas no treino</h3>
+          <ul class="treino" id="treino"></ul>
+          <button class="btn ghost" type="button" id="retreinar">Treinar com fotos de buracos</button>
+          <ul class="leg">
+            <li><span class="sw" style="background:#9fdab4"></span>a IA acertou</li>
+            <li><span class="sw" style="background:#f2a9b3"></span>a IA errou (objeto trocado ou alarme falso)</li>
+            <li><span class="sw" style="background:#d9d9d4"></span>a IA não viu</li>
+          </ul>
+          <h3 style="margin-top:14px">Desafios</h3>
+          <ol class="desafios" id="desafios">
+            <li data-d="0">Encontre um lugar e uma luz em que a IA confunde o poste com uma pessoa.</li>
+            <li data-d="1">Descubra um obstáculo que a IA nunca viu no treino e ensine a IA a reconhecê-lo.</li>
+            <li data-d="2">De dia, com pelo menos 3 objetos a até 10 m na tela, ajuste o limiar até a IA acertar todos sem nenhum alarme falso.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>O que está por trás:</strong> assistentes de visão para pessoas cegas usam um modelo de <em>detecção de objetos</em>: para cada parte da imagem, a IA dá uma nota de confiança para cada tipo de objeto que aprendeu (pessoa, carro, poste…) e desenha uma caixa quando a nota passa de um limiar. Outra parte estima a distância (o mapa de profundidade) e um programa simples junta tudo numa frase. Nesta página o modelo é simulado com regras: a confiança cai com a distância, com objetos pequenos e com pouca luz, e cada tipo de objeto tem uma confiança máxima que depende de quantas fotos dele havia no treino. O poste fino e alto, de longe e no escuro, “parece” uma pessoa; o cartaz e o reflexo da vitrine também. O buraco não tinha nenhuma foto no treino, então a IA nunca o vê, por mais perto que esteja.</p>
+    <p><strong>Metodologia sugerida:</strong> investigação em duplas com registro. Uma pessoa da dupla só ouve a frase (de costas para a tela) e diz o que faria; a outra confere na tabela se a frase estava certa. Depois trocam. No fim, a turma monta no quadro uma lista dos erros encontrados e de quem seria prejudicado por cada um.</p>
+    <ul>
+      <li>Limiar baixo dá alarmes falsos; limiar alto deixa de avisar obstáculos. Para uma pessoa cega, qual erro é mais perigoso? E qual é mais cansativo?</li>
+      <li>Por que a IA nunca vê o buraco? O que isso diz sobre os dados usados no treino? Que outros obstáculos das calçadas da nossa cidade podem estar faltando?</li>
+      <li>Havia só 800 fotos de cachorros. O que acontece com grupos de pessoas ou objetos que aparecem pouco nos dados de treino de uma IA?</li>
+      <li>Quem deveria testar um aplicativo como esse antes de ele ser lançado? Por que é importante que pessoas cegas participem do projeto?</li>
+    </ul>
+    <p class="small muted">Habilidades: EF09CO07, EF08CO11 e EF06CO05; também serve para o Ensino Médio e para formações de professores sobre IA e acessibilidade. Combina com o plano “Tecnologia, poder e desigualdade digital” e com o jogo <a href="../jogos/acessivel.html">Site para Todos</a>. Material concreto equivalente: fotos de rua impressas, com a turma desenhando as caixas e escrevendo a frase que o aplicativo deveria falar; depois, uma pessoa de olhos vendados ouve as frases e diz se conseguiria andar com elas.</p>
+  </details>
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/tecnologia-poder-desigualdade-digital/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Tecnologia, poder e desigualdade digital</strong>
+          <span class="small muted">Júri simulado sobre os impactos políticos, culturais e ambientais da tecnologia e o acesso desigual à computação.</span>
+        </a>
+        <a class="card" href="../3d/rede-neural.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Rede Neural por Dentro</strong>
+          <span class="small muted">Camadas de neurônios em 3D com o sinal acendendo da entrada até a saída. Mexa nos pesos, veja a resposta mudar e peça à rede que explique a decisão.</span>
+        </a>
+        <a class="card" href="../3d/montanha-erro.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Montanha do Erro: Descida do Gradiente</strong>
+          <span class="small muted">Uma bolinha desce a superfície do erro, como a IA aprende. Taxa de aprendizado alta pula o vale, baixa anda devagar, e a semente muda o ponto de partida.</span>
+        </a>
+        <a class="card" href="../3d/carro-que-aprende.html">
+          <span class="small muted">🧊 Recurso 3D</span>
+          <strong>Carro que Aprende</strong>
+          <span class="small muted">Um carrinho 3D aprende a pista por tentativa e erro, como no aprendizado por reforço. Ajuste as recompensas, acompanhe a curva de aprendizado e veja a IA trapacear quando a recompensa está mal pensada.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>mdTopbar('lab3d'); mdFooter(); mdJogoHead('3d-olhos-ia');</script>
+<script type="module">
+import { lab3d, botoesCamera, COR, modoLeve } from '../assets/lab3d.js';
+const $ = s => document.querySelector(s);
+const ID = '3d-olhos-ia';
+const pct = v => Math.round(v * 100) + '%';
+const f2 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const reduz = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- o "modelo" de IA (simulado) ---------- */
+const TREINO = { pessoa: 12000, carro: 9000, poste: 3000, bicicleta: 2500, lixeira: 1500, arvore: 4000, cachorro: 800, buraco: 0 };
+const NOME = { pessoa: 'pessoa', carro: 'carro', poste: 'poste', bicicleta: 'bicicleta', lixeira: 'lixeira', arvore: 'árvore', cachorro: 'cachorro', buraco: 'buraco' };
+// confiança máxima de cada tipo: cresce com o número de fotos do treino
+const base = c => TREINO[c] ? Math.min(0.97, 0.55 + 0.1 * Math.log10(TREINO[c])) : 0;
+const LUZ = { dia: 1, tarde: 0.75, noite: 0.45 };
+const SEMI = 0.15; // altura aparente (altura ÷ distância) a partir da qual o objeto fica "grande o bastante"
+
+/* Objetos da rua: x e z em metros; h é a altura usada para saber se ele parece grande na imagem.
+   real: false são coisas que não são obstáculos, mas podem enganar a IA (fantasma = confiança de "pessoa"). */
+const OBJ = [
+  { id: 'poste1', nome: 'Poste', classe: 'poste', x: 1.9, z: -4, h: 5, real: true },
+  { id: 'cao', nome: 'Cachorro', classe: 'cachorro', x: 0.4, z: -6.5, h: 0.55, real: true },
+  { id: 'carro', nome: 'Carro estacionado', classe: 'carro', x: 4.4, z: -8, h: 1.5, real: true },
+  { id: 'pessoa', nome: 'Pessoa', classe: 'pessoa', x: -0.9, z: -10, h: 1.7, real: true },
+  { id: 'vitrine', nome: 'Reflexo na vitrine', classe: null, x: -2.45, z: -12, h: 1.8, real: false, fantasma: 0.34 },
+  { id: 'lixeira', nome: 'Lixeira', classe: 'lixeira', x: 1.7, z: -14, h: 1, real: true },
+  { id: 'buraco', nome: 'Buraco na calçada', classe: 'buraco', x: -0.3, z: -17, h: 0.6, real: true },
+  { id: 'bici', nome: 'Bicicleta encostada', classe: 'bicicleta', x: 1.8, z: -19.5, h: 1, real: true },
+  { id: 'cartaz', nome: 'Cartaz com foto de pessoa', classe: null, x: -2.45, z: -21, h: 1.4, real: false, fantasma: 0.58 },
+  { id: 'poste2', nome: 'Poste', classe: 'poste', x: 1.9, z: -23, h: 5, real: true },
+  { id: 'arvore', nome: 'Árvore', classe: 'arvore', x: 1.8, z: -27, h: 4, real: true }
+];
+OBJ.forEach((o, i) => { o.semente = i * 1.7 + 0.4; });
+
+const INICIO = { z: 4, ang: 0 };
+let est = { z: INICIO.z, ang: INICIO.ang, luz: 'dia', limiar: 0.3, treinouBuraco: false, prof: false };
+const feitos = new Set();
+
+/* notas de cada tipo para um objeto visto a d metros (fora: 0 a 1, parte do objeto fora da tela) */
+function notas(o, d, fora) {
+  const L = LUZ[est.luz];
+  const vis = Math.sqrt(Math.min(1, o.h / d / SEMI)) * (fora > 0.5 ? 0.6 : 1);
+  const tremor = 0.03 * Math.sin(d * 2.3 + o.semente);
+  const n = {};
+  if (o.real) {
+    const b = o.classe === 'buraco' ? (est.treinouBuraco ? 0.82 : 0) : base(o.classe);
+    if (b) n[o.classe] = b * vis * L + tremor;
+    // fino e alto: de longe ou no escuro o poste "parece" uma pessoa
+    if (o.classe === 'poste') n.pessoa = 0.25 + 0.35 * (1 - L) + 0.02 * d - tremor;
+  } else {
+    n.pessoa = o.fantasma * vis * (1 + 0.4 * (1 - L)) + tremor;
+  }
+  Object.keys(n).forEach(k => { n[k] = Math.max(0, Math.min(0.99, n[k])); });
+  return n;
+}
+
+/* ---------- cena ---------- */
+const cena = lab3d($('#palco'), { cam: [9, 8, 13], alvo: [0, 0.5, -4], min: 4, max: 45, pan: false, chaoTam: 80 });
+botoesCamera(cena);
+const T = cena && cena.THREE;
+if (cena && $('#palco').clientWidth < 560) cena.posicionar([12, 11, 17], [0, 0.5, -4]);
+const CALCADA = 0.15;
+const so1 = ob => { ob.traverse(c => c.layers.set(1)); return ob; }; // camada 1: só a vista de fora vê, o celular não
+let celular, usuario, cam, olhoR, olhoCtx, olhoCv, matProf, luzesPoste = [], lampadas = [], etiquetas;
+const caixa = {};
+
+if (cena) {
+  cena.camera.layers.enable(1);
+  // chão: calçada, meio-fio, rua e prédio
+  const add = (m, x, y, z) => { m.position.set(x, y, z); cena.add(m); return m; };
+  add(cena.bloco(5, CALCADA, 52, '#d9d9d4', { sombra: false }), -2.5, 0, -40);
+  add(cena.bloco(0.25, CALCADA + 0.04, 52, COR.cinza, { sombra: false }), 2.5, 0, -40);
+  add(cena.bloco(9, 0.02, 52, '#55554f', { sombra: false, bordas: false }), 2.75, 0, -40);
+  for (let z = -38; z < 10; z += 4) add(cena.bloco(0.15, 0.03, 2, COR.amarelo, { sombra: false, bordas: false }), 7.2, 0, z);
+  for (let x = 3.3; x < 11; x += 1.1) add(cena.bloco(0.6, 0.03, 3, '#f4f4f0', { sombra: false, bordas: false }), x, 0, -33);
+  add(cena.bloco(1, 6, 52, '#e7d9c4'), -3.5, 0, -40);
+  for (let z = -36; z < 8; z += 6) add(cena.bloco(0.06, 1.3, 1.6, '#8c8c86', { sombra: false }), -2.54, 2.6, z);
+  // linhas do piso tátil (a faixa que a bengala segue)
+  add(cena.bloco(0.4, 0.02, 52, COR.amarelo, { sombra: false, bordas: false }), -0.2, CALCADA, -40);
+
+  const grupo = (o, ...pecas) => { const g = new T.Group(); pecas.forEach(p => g.add(p)); g.position.set(o.x, CALCADA, o.z); cena.add(g); caixa[o.id] = g; return g; };
+  const esfera = (r, cor, y) => { const m = new T.Mesh(new T.SphereGeometry(r, 28, 18), cena.material(cor)); m.position.y = y; m.castShadow = true; return cena.comBordas(m, 40); };
+  const pos = (m, x, y, z) => { m.position.set(x, y, z); return m; };
+  for (const o of OBJ) {
+    if (o.classe === 'poste') {
+      const lamp = esfera(0.28, '#fff6c8', 5.1);
+      lamp.material = new T.MeshStandardMaterial({ color: '#fff6c8', emissive: new T.Color('#ffe58a'), emissiveIntensity: 0 });
+      lampadas.push(lamp);
+      const luz = new T.PointLight('#ffe7a8', 0, 14, 1.6); luz.position.y = 4.9; luzesPoste.push(luz);
+      grupo(o, cena.cilindro(0.11, 5, '#6f6f6b'), pos(cena.haste([0, 5, 0], [-0.6, 5.2, 0], 0.1, '#6f6f6b'), 0, 0, 0), pos(lamp, -0.6, 0, 0), luz);
+    } else if (o.classe === 'pessoa') {
+      grupo(o, pos(cena.cilindro(0.09, 0.85, '#3f3f3c'), -0.11, 0, 0), pos(cena.cilindro(0.09, 0.85, '#3f3f3c'), 0.11, 0, 0),
+        pos(cena.cilindro(0.24, 0.6, COR.vermelho, { rTopo: 0.2 }), 0, 0.85, 0), esfera(0.17, '#c98b62', 1.6));
+    } else if (o.classe === 'cachorro') {
+      const corpo = pos(cena.bloco(0.7, 0.25, 0.28, '#a0682c', { base: false }), 0, 0.38, 0);
+      const pernas = [-0.25, 0.25].flatMap(x => [-0.09, 0.09].map(z => pos(cena.cilindro(0.04, 0.26, '#7a4d1f'), x, 0, z)));
+      grupo(o, corpo, pos(cena.bloco(0.24, 0.22, 0.22, '#a0682c', { base: false }), 0.42, 0.52, 0), ...pernas).rotation.y = 0.6;
+    } else if (o.classe === 'carro') {
+      const g = grupo(o, pos(cena.bloco(1.8, 0.75, 4.2, COR.verde, { base: false }), 0, 0.6, 0), pos(cena.bloco(1.6, 0.55, 2.2, COR.verdeClaro, { base: false }), 0, 1.25, 0.2),
+        ...[-0.95, 0.95].flatMap(x => [-1.3, 1.3].map(z => { const r = cena.cilindro(0.33, 0.24, '#222'); r.rotation.z = Math.PI / 2; r.position.set(x, 0.33, z); return r; })));
+      g.position.y = 0.02;
+    } else if (o.classe === 'lixeira') {
+      grupo(o, cena.cilindro(0.32, 1, COR.verdeEscuro, { rTopo: 0.36 }));
+    } else if (o.classe === 'buraco') {
+      const b = cena.cilindro(0.55, 0.012, '#2b2b28', { bordas: false }); b.scale.set(1.3, 1, 1); b.receiveShadow = true;
+      grupo(o, b);
+    } else if (o.classe === 'bicicleta') {
+      const roda = x => { const r = new T.Mesh(new T.TorusGeometry(0.33, 0.035, 10, 32), cena.material('#222')); r.position.set(0, 0.36, x); r.rotation.y = Math.PI / 2; r.castShadow = true; return r; };
+      grupo(o, roda(-0.55), roda(0.55), cena.haste([0, 0.36, -0.55], [0, 0.85, 0], 0.05, COR.vermelho), cena.haste([0, 0.36, 0.55], [0, 0.85, 0], 0.05, COR.vermelho),
+        cena.haste([0, 0.85, -0.2], [0, 0.85, 0.5], 0.05, COR.vermelho), cena.haste([0, 0.85, -0.45], [0, 1.05, -0.45], 0.04, '#222'));
+    } else if (o.classe === 'arvore') {
+      grupo(o, cena.cilindro(0.18, 2.2, '#7a4d1f'), esfera(1.1, COR.verde, 2.9));
+    } else if (o.id === 'vitrine') {
+      const g = grupo(o, cena.bloco(0.06, 1.8, 2.6, '#f4f2ea', { base: false, mat: { roughness: 0.15, metalness: 0.3 } }));
+      g.children[0].position.y = 1.5;
+    } else if (o.id === 'cartaz') {
+      const cv = document.createElement('canvas'); cv.width = 128; cv.height = 180;
+      const x = cv.getContext('2d');
+      x.fillStyle = COR.amareloClaro; x.fillRect(0, 0, 128, 180);
+      x.fillStyle = '#222'; x.beginPath(); x.arc(64, 52, 22, 0, 7); x.fill();
+      x.beginPath(); x.roundRect(30, 80, 68, 80, 18); x.fill();
+      x.fillStyle = COR.vermelho; x.font = '800 26px Lexend, sans-serif'; x.textAlign = 'center'; x.fillText('SHOW', 64, 26);
+      const tex = new T.CanvasTexture(cv); tex.colorSpace = T.SRGBColorSpace;
+      const m = new T.Mesh(new T.PlaneGeometry(1, 1.4), new T.MeshStandardMaterial({ map: tex, roughness: 0.7 }));
+      m.rotation.y = Math.PI / 2; m.position.set(0.04, 1.5, 0);
+      grupo(o, cena.comBordas(m));
+    }
+  }
+
+  // pessoa que usa o aplicativo: corpo, bengala e celular no peito (o celular não vê o próprio corpo)
+  usuario = new T.Group();
+  usuario.add(pos(cena.cilindro(0.1, 0.85, '#3f3f3c'), -0.12, 0, 0), pos(cena.cilindro(0.1, 0.85, '#3f3f3c'), 0.12, 0, 0),
+    pos(cena.cilindro(0.26, 0.62, COR.amarelo, { rTopo: 0.22 }), 0, 0.85, 0), esfera(0.18, '#8a5a3c', 1.65),
+    cena.haste([0.3, 0.95, -0.1], [0.45, 0.02, -1.25], 0.035, '#f4f4f0'), cena.haste([0.43, 0.15, -1.07], [0.45, 0.02, -1.25], 0.05, COR.vermelho),
+    pos(cena.bloco(0.16, 0.26, 0.04, '#111', { base: false }), 0, 1.3, -0.24));
+  usuario.position.y = CALCADA;
+  cena.add(so1(usuario));
+
+  // câmera do celular e o "campo de visão" desenhado na cena
+  cam = new T.PerspectiveCamera(50, 4 / 3, 0.3, 26);
+  cam.layers.set(0);
+  const D = 9, ty = Math.tan(T.MathUtils.degToRad(25)) * D, tx = ty * 4 / 3;
+  const cantos = [[-tx, -ty], [tx, -ty], [tx, ty], [-tx, ty]].map(([a, b]) => new T.Vector3(a, b, -D));
+  const pts = [];
+  cantos.forEach((c, i) => { pts.push(new T.Vector3(), c, c, cantos[(i + 1) % 4]); });
+  const linhas = new T.LineSegments(new T.BufferGeometry().setFromPoints(pts), new T.LineBasicMaterial({ color: '#c9a400' }));
+  const pir = new T.BufferGeometry().setFromPoints(cantos.flatMap((c, i) => [new T.Vector3(), c, cantos[(i + 1) % 4]]));
+  pir.computeVertexNormals();
+  const vela = new T.Mesh(pir, new T.MeshBasicMaterial({ color: COR.amarelo, transparent: true, opacity: 0.14, side: T.DoubleSide, depthWrite: false }));
+  linhas.raycast = vela.raycast = () => {};
+  cam.add(linhas, vela);
+  cena.add(so1(cam));
+  cam.layers.set(0);
+  etiquetas = new T.Group(); cena.add(etiquetas);
+
+  // segunda tela: a imagem do celular
+  olhoCv = document.createElement('canvas');
+  const leve = modoLeve();
+  olhoR = new T.WebGLRenderer({ canvas: olhoCv, antialias: !leve });
+  olhoR.setPixelRatio(leve ? 1 : Math.min(window.devicePixelRatio || 1, 2));
+  olhoR.setSize(320, 240, false);
+  olhoR.outputColorSpace = T.SRGBColorSpace;
+  olhoR.shadowMap.enabled = !leve; olhoR.shadowMap.type = T.PCFSoftShadowMap;
+  const cx = document.createElement('canvas'); cx.width = 640; cx.height = 480;
+  $('#olho').prepend(olhoCv); $('#olho').insertBefore(cx, $('#rec'));
+  olhoCtx = cx.getContext('2d');
+  matProf = new T.MeshDepthMaterial();
+} else {
+  $('#olho').innerHTML = '<p class="small" style="color:#fff;padding:10px">Sem 3D neste navegador: use a tabela e a frase.</p>';
+}
+
+/* ---------- onde está o celular e o que ele vê ---------- */
+function frente() { return [-Math.sin(est.ang), -Math.cos(est.ang)]; }
+function posicionaCelular(z = est.z) {
+  if (!cena) return;
+  const [fx, fz] = frente();
+  usuario.position.set(0, CALCADA, z); usuario.rotation.y = est.ang;
+  cam.position.set(fx * 0.3, CALCADA + 1.3, z + fz * 0.3);
+  cam.lookAt(cam.position.x + fx * 10, CALCADA + 1.3 - 1.25, cam.position.z + fz * 10);
+  cam.updateMatrixWorld(); cam.updateProjectionMatrix();
+}
+
+/* Para cada objeto: está na tela? a que distância? o que a IA disse? */
+function analisa() {
+  const lista = [];
+  const caixaObj = new T.Box3(), v = new T.Vector3();
+  const [fx, fz] = frente();
+  const px = fx * 0.3, pz = est.z + fz * 0.3;
+  for (const o of OBJ) {
+    const dx = o.x - px, dz = o.z - pz;
+    const d = Math.hypot(dx, dz);
+    const naFrente = dx * fx + dz * fz;
+    if (naFrente < 0.6 || d > 24) continue;
+    // caixa do objeto na imagem (coordenadas de -1 a 1)
+    let r = null;
+    if (cena) {
+      caixaObj.setFromObject(caixa[o.id]);
+      let x0 = 9, x1 = -9, y0 = 9, y1 = -9;
+      for (let i = 0; i < 8; i++) {
+        v.set(i & 1 ? caixaObj.max.x : caixaObj.min.x, i & 2 ? caixaObj.max.y : caixaObj.min.y, i & 4 ? caixaObj.max.z : caixaObj.min.z).project(cam);
+        x0 = Math.min(x0, v.x); x1 = Math.max(x1, v.x); y0 = Math.min(y0, v.y); y1 = Math.max(y1, v.y);
+      }
+      const cx0 = Math.max(-1, x0), cx1 = Math.min(1, x1), cy0 = Math.max(-1, y0), cy1 = Math.min(1, y1);
+      if (cx1 <= cx0 || cy1 <= cy0) continue;
+      const fora = 1 - ((cx1 - cx0) * (cy1 - cy0)) / Math.max(1e-6, (x1 - x0) * (y1 - y0));
+      r = { x0: cx0, x1: cx1, y0: cy0, y1: cy1, fora };
+    } else {
+      const ang = Math.atan2(dx * -fz + dz * fx, naFrente);
+      if (Math.abs(ang) > 0.55) continue;
+      r = { fora: 0 };
+    }
+    // direção: ângulo para o lado, a partir de onde o celular aponta
+    const lado = Math.atan2(-(dx * -fz + dz * fx), naFrente) * 180 / Math.PI; // positivo = esquerda
+    const n = notas(o, d, r.fora);
+    const melhor = Object.entries(n).sort((a, b) => b[1] - a[1])[0];
+    const det = melhor && melhor[1] >= est.limiar ? { classe: melhor[0], conf: melhor[1] } : null;
+    let res;
+    if (o.real) res = !det ? 'naoviu' : det.classe === o.classe ? 'acertou' : 'trocou';
+    else res = det ? 'falso' : 'ignorou';
+    lista.push({ o, d, lado, r, det, res, confReal: n[o.classe] || 0 });
+  }
+  return lista.sort((a, b) => a.d - b.d);
+}
+
+const distTxt = d => d < 1 ? 'a menos de 1 metro' : `a ${Math.round(d)} ${Math.round(d) === 1 ? 'metro' : 'metros'}`;
+const ladoTxt = g => Math.abs(g) < 9 ? 'à frente' : g > 0 ? 'à esquerda' : 'à direita';
+function fraseDe(lista) {
+  const avisos = lista.filter(a => a.det).slice(0, 3);
+  if (!avisos.length) return 'Caminho livre.';
+  const p = avisos.map(a => `${NOME[a.det.classe][0].toUpperCase() + NOME[a.det.classe].slice(1)} ${distTxt(a.d)}, ${ladoTxt(a.lado)}.`);
+  return (avisos[0].d < 2.5 ? 'Atenção! ' : '') + p.join(' ');
+}
+
+/* ---------- desenho ---------- */
+const COR_RES = { acertou: COR.verdeClaro, trocou: COR.vermelhoClaro, falso: COR.vermelhoClaro, naoviu: '#d9d9d4' };
+function desenhaEtiquetas(lista) {
+  [...etiquetas.children].forEach(sp => { sp.material.map.dispose(); sp.material.dispose(); });
+  cena.limpar(etiquetas);
+  for (const a of lista) {
+    if (a.res === 'ignorou') continue;
+    const txt = a.det ? `IA: ${NOME[a.det.classe]} ${pct(a.det.conf)}` : 'IA não viu';
+    const sp = cena.rotulo(txt, { tam: 0.42, fundo: COR_RES[a.res] });
+    const topo = a.o.classe === 'poste' ? 3.2 : a.o.classe === 'arvore' ? 4.4 : a.o.classe === 'buraco' ? 0.7 : a.o.h + 0.6;
+    sp.position.set(a.o.x, CALCADA + topo, a.o.z);
+    sp.layers.set(1);
+    etiquetas.add(sp);
+  }
+}
+function desenhaOlho(lista) {
+  if (!cena) return;
+  const L = est.luz;
+  const fundo = est.prof ? '#000000' : { dia: '#ecebe5', tarde: '#f3cfa4', noite: '#141413' }[L];
+  olhoR.setClearColor(fundo, 1);
+  etiquetas.visible = false;
+  if (est.prof) cena.scene.overrideMaterial = matProf;
+  olhoR.render(cena.scene, cam);
+  cena.scene.overrideMaterial = null;
+  etiquetas.visible = true;
+  const W = olhoCtx.canvas.width, H = olhoCtx.canvas.height;
+  olhoCtx.clearRect(0, 0, W, H);
+  olhoCtx.font = '600 22px Lexend, system-ui, sans-serif';
+  olhoCtx.lineWidth = 4;
+  for (const a of lista) {
+    if (!a.det || a.r.x0 === undefined) continue;
+    const x = (a.r.x0 + 1) / 2 * W, y = (1 - a.r.y1) / 2 * H, w = (a.r.x1 - a.r.x0) / 2 * W, h = (a.r.y1 - a.r.y0) / 2 * H;
+    olhoCtx.strokeStyle = COR.amarelo; olhoCtx.strokeRect(x, y, w, h);
+    const t = `${NOME[a.det.classe]} ${pct(a.det.conf)}`;
+    const tw = olhoCtx.measureText(t).width + 12;
+    const ty = y > 30 ? y - 30 : y;
+    olhoCtx.fillStyle = COR.amarelo; olhoCtx.fillRect(x - 2, ty, tw, 30);
+    olhoCtx.fillStyle = '#111'; olhoCtx.fillText(t, x + 4, ty + 22);
+  }
+  $('#rec').textContent = est.prof ? 'profundidade: claro = perto, escuro = longe' : 'câmera';
+}
+
+const RES_TXT = { acertou: 'acertou', trocou: 'errou: trocou o objeto', naoviu: 'não viu', falso: 'alarme falso', ignorou: 'ignorou (certo)' };
+function desenhaTabela(lista) {
+  const linhas = lista.filter(a => a.res !== 'ignorou').map(a => {
+    const disse = a.det ? `${NOME[a.det.classe]} (${pct(a.det.conf)})` : `nada${a.o.real ? ` (${pct(a.confReal)})` : ''}`;
+    const cls = a.res === 'acertou' ? 'ok' : 'bad';
+    return `<tr><td>${a.o.nome}</td><td>${a.d.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} m, ${ladoTxt(a.lado)}</td><td>${disse}</td><td class="${cls}">${RES_TXT[a.res]}</td></tr>`;
+  });
+  const acertos = lista.filter(a => a.res === 'acertou').length;
+  const erros = lista.filter(a => a.res === 'trocou' || a.res === 'falso' || a.res === 'naoviu').length;
+  $('#tabela').innerHTML = linhas.length ? `<div class="lab-tabw"><table class="lab-tab"><caption class="small muted" style="text-align:left">O que a câmera vê agora: ${acertos} ${acertos === 1 ? 'acerto' : 'acertos'} e ${erros} ${erros === 1 ? 'erro' : 'erros'} da IA</caption><thead><tr><th>Objeto de verdade</th><th>Onde está</th><th>A IA disse</th><th>Resultado</th></tr></thead><tbody>${linhas.join('')}</tbody></table></div>` : '<p class="small muted">Nada na frente da câmera.</p>';
+}
+
+function aplicaLuz() {
+  if (!cena) return;
+  const ceu = cena.scene.children.find(o => o.isHemisphereLight);
+  const L = est.luz;
+  cena.sol.intensity = { dia: 1.6, tarde: 1.0, noite: 0.12 }[L];
+  cena.sol.color.set(L === 'tarde' ? '#ffc58a' : '#ffffff');
+  if (ceu) ceu.intensity = { dia: 1.7, tarde: 1.05, noite: 0.3 }[L];
+  luzesPoste.forEach(l => { l.intensity = L === 'noite' ? 30 : 0; });
+  lampadas.forEach(m => { m.material.emissiveIntensity = L === 'noite' ? 1.2 : 0; });
+  $('#palco').style.background = L === 'noite' ? '#1d1d1b' : L === 'tarde' ? '#f6dcc0' : '';
+}
+
+let lista = [];
+function atualiza() {
+  posicionaCelular();
+  lista = analisa();
+  const frase = fraseDe(lista);
+  $('#frase').textContent = '“' + frase + '”';
+  $('#llimiar').textContent = pct(est.limiar);
+  if (cena) {
+    desenhaEtiquetas(lista);
+    desenhaOlho(lista);
+    cena.pedeQuadro();
+    const resumo = lista.filter(a => a.res !== 'ignorou').map(a => `${a.o.nome} ${distTxt(a.d)}: ${RES_TXT[a.res]}`).join('; ');
+    cena.descrever(`Rua em 3D. Uma pessoa cega está na calçada, a ${Math.round(4 - est.z)} metros do início, com o celular no peito. Luz: ${{ dia: 'dia', tarde: 'fim de tarde', noite: 'noite' }[est.luz]}. Na frente da câmera: ${resumo || 'nada'}.`);
+    $('#olho').setAttribute('aria-label', `Imagem do celular. A IA desenhou ${lista.filter(a => a.det).length} caixas. Frase: ${frase}`);
+  }
+  desenhaTabela(lista);
+  confere();
+}
+
+/* ---------- desafios ---------- */
+function confere() {
+  if (lista.some(a => a.o.classe === 'poste' && a.det && a.det.classe === 'pessoa')) marca(0, 'A IA chamou o poste de pessoa: de longe, ou com pouca luz, um poste fino e alto “parece” uma pessoa.');
+  if (lista.some(a => a.o.classe === 'buraco' && a.res === 'acertou')) marca(1, 'Com fotos de buracos no treino, a IA passou a avisar o buraco.');
+  const perto = lista.filter(a => a.o.real && a.d <= 10);
+  if (est.luz === 'dia' && perto.length >= 3 && perto.every(a => a.res === 'acertou') && !lista.some(a => a.res === 'falso' || a.res === 'trocou')) marca(2, 'Tudo certo: todos os objetos avisados e nenhum alarme falso.');
+}
+function marca(d, msg) {
+  if (feitos.has(d)) return;
+  feitos.add(d);
+  document.querySelector(`#desafios [data-d="${d}"]`).classList.add('ok');
+  $('#fb').className = 'feedback ok'; $('#fb').textContent = msg;
+  window.MDP && MDP.registrar(ID, Math.round(feitos.size / 3 * 100));
+}
+
+/* ---------- caminhar ---------- */
+let anim = null;
+function move(dz, dAng) {
+  if (anim) return;
+  const [fx, fz] = frente();
+  const novoZ = Math.max(-30, Math.min(6, est.z + fz * dz));
+  const novoAng = Math.max(-1.05, Math.min(1.05, est.ang + dAng));
+  if (novoZ === est.z && novoAng === est.ang) { $('#fb').className = 'feedback'; $('#fb').textContent = 'Fim da calçada por aqui.'; return; }
+  if (!cena || reduz()) { segue(novoZ - est.z); est.z = novoZ; est.ang = novoAng; atualiza(); return; }
+  anim = { t0: performance.now(), z0: est.z, a0: est.ang, z1: novoZ, a1: novoAng };
+  cena.pedeQuadro();
+}
+if (cena) cena.loop(now => {
+  if (!anim) return false;
+  const k = Math.min(1, (now - anim.t0) / 380), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+  const zAnt = est.z;
+  est.z = anim.z0 + (anim.z1 - anim.z0) * e; est.ang = anim.a0 + (anim.a1 - anim.a0) * e;
+  segue(est.z - zAnt);
+  posicionaCelular();
+  desenhaOlho(analisa());
+  if (k >= 1) { anim = null; atualiza(); return false; }
+  return true;
+});
+// a vista de fora acompanha a pessoa
+function segue(dz) {
+  if (!cena || !dz) return;
+  cena.camera.position.z += dz; cena.controls.target.z += dz; cena.controls.update();
+}
+
+/* ---------- controles ---------- */
+$('#andar').onclick = () => move(1, 0);
+$('#voltar').onclick = () => move(-1, 0);
+$('#esq').onclick = () => move(0, 0.26);
+$('#dir').onclick = () => move(0, -0.26);
+$('#reinicia').onclick = () => {
+  segue(INICIO.z - est.z); est.z = INICIO.z; est.ang = INICIO.ang;
+  $('#fb').className = 'feedback'; $('#fb').textContent = 'De volta ao começo da calçada.'; atualiza();
+};
+document.querySelectorAll('[data-luz]').forEach(b => b.addEventListener('click', () => {
+  est.luz = b.dataset.luz;
+  document.querySelectorAll('[data-luz]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  aplicaLuz(); atualiza();
+}));
+$('#limiar').addEventListener('input', e => { est.limiar = +e.target.value; atualiza(); });
+[['#v-img', false], ['#v-prof', true]].forEach(([s, v]) => $(s).addEventListener('click', () => {
+  est.prof = v; $('#v-img').setAttribute('aria-pressed', String(!v)); $('#v-prof').setAttribute('aria-pressed', String(v)); atualiza();
+}));
+$('#retreinar').onclick = () => {
+  est.treinouBuraco = !est.treinouBuraco;
+  TREINO.buraco = est.treinouBuraco ? 500 : 0;
+  $('#retreinar').textContent = est.treinouBuraco ? 'Tirar as fotos de buracos do treino' : 'Treinar com fotos de buracos';
+  $('#fb').className = 'feedback';
+  $('#fb').textContent = est.treinouBuraco ? 'A IA foi treinada de novo, agora com 500 fotos de buracos em calçadas.' : 'Voltamos ao treino original, sem nenhuma foto de buraco.';
+  desenhaTreino(); atualiza();
+};
+$('#ouvir').onclick = () => {
+  const s = window.speechSynthesis;
+  if (!s) { $('#fb').className = 'feedback'; $('#fb').textContent = 'Este navegador não tem leitura em voz alta. Leia a frase em voz alta para a dupla.'; return; }
+  s.cancel();
+  const u = new SpeechSynthesisUtterance(fraseDe(lista)); u.lang = 'pt-BR'; u.rate = 1.05;
+  s.speak(u);
+};
+function desenhaTreino() {
+  const max = Math.max(...Object.values(TREINO));
+  $('#treino').innerHTML = Object.entries(TREINO).map(([c, n]) =>
+    `<li><span>${NOME[c]}</span><span class="barra-h" style="width:${Math.max(1, n / max * 100)}%;${n ? '' : 'background:var(--bad)'}"></span><span class="n">${n.toLocaleString('pt-BR')}</span></li>`).join('');
+}
+desenhaTreino();
+aplicaLuz();
+atualiza();
+if (cena) cena.aoFontes = () => atualiza();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
