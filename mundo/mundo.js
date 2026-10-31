@@ -3423,8 +3423,11 @@
   }
   function nivelHud() {
     const el = $('#h-nivel'), a = $('#h-nivel-l'); if (!el) return;
+    // sem perfil no Meu progresso, o Mundo cria um (só neste navegador, com o apelido do Mundo) para o nível aparecer e contar desde já
+    if (window.MDP && window.MDM && !perfilMD()) { try { MDP.criar(S.apelido || 'Estudante', 6); } catch (e) {} }
     const p = perfilMD(), nv = p && window.MDM ? MDM.nivel(p) : null;
     el.textContent = nv ? `N${nv.n}` : '—';
+    const rot = a.querySelector('span'); if (rot) rot.textContent = nv ? `📈 Nível · ${nv.nome}` : '📈 Nível';
     a.title = nv ? `Nível ${nv.n} (${nv.nome}) no Meu progresso · ${nv.total} pontos. Acertos no Mundo valem ${MDM.PONTOS.mundo} pontos (até ${MDM.MUNDO_DIA} por dia).` : 'Crie seu perfil no Meu progresso: acertos, nível e medalhas do Mundo contam lá';
   }
   const bloqueios = () => S.bloq || (S.bloq = {});
