@@ -101,7 +101,7 @@
         const estudar = chaves.filter(k => fracao(k) < 1).sort((x, y) => fracao(x) - fracao(y)).slice(0, 2);
         const fortes = chaves.filter(k => fracao(k) === 1);
         const anterior = ler();
-        gravar({ nota, nivel: nivel.id, data: new Date().toISOString().slice(0, 10) });
+        gravar({ nota, nivel: nivel.id, data: new Date().toISOString().slice(0, 10), areas: Object.fromEntries(chaves.map(k => [k, [area[k].acertos, area[k].total]])), estudar });   // o Mundo do site lê este resultado para o teletransporte
 
         const comparacao = anterior && anterior.nota != null
             ? `<p class="quiz-miudo">Da última vez neste navegador${anterior.data ? ` (${anterior.data.split('-').reverse().join('/')})` : ''}: ${anterior.nota} de ${total}.`
@@ -137,6 +137,7 @@ ${fraseFortes ? `<div class="res-forte"><p>${fraseFortes}</p></div>` : ''}
 </ul>
 <p class="quiz-miudo">Os eixos são os da BNCC Computação: pensamento computacional, mundo digital e cultura digital.</p>
 <p><strong>Próximo passo:</strong> ${esc(nivel.proximo)}</p>
+<p><a class="btn98" href="/mundo/?teleporte=1">🌀 Treinar no Mundo do site, no seu nível</a> <span class="quiz-miudo">O portal de teletransporte leva você a um mundo com as habilidades do nível ${esc(nivel.nome)}.</span></p>
 ${blocoEstudar}
 <section class="res-compartilhar" aria-labelledby="res-comp-titulo">
   <h4 id="res-comp-titulo">Guardar e compartilhar</h4>

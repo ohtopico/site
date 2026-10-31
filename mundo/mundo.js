@@ -316,6 +316,11 @@
       search: for (const yy of [MEIO + 3, MEIO + 4, MEIO + 2, MEIO + 5]) for (const xx of [3, 4, 2, 5, 6]) if (cabe(xx, yy)) { hx = xx; hy = yy; break search; }
       for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
       f.projetos = { gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
+      // portal de teletransporte para os mundos do teste de proficiência, perto do começo
+      const livre2 = (hx, hy) => { for (let j = hy - 1; j <= hy + 3; j++) for (let k = hx - 1; k <= hx + 2; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama || f.sol[pos(k, j)]) return false; return true; };
+      let px = -1, py = -1;
+      busca: for (let dy = 0; dy < 8; dy++) for (const yy of [MEIO + 2 + dy, MEIO - 5 - dy]) for (let xx = 8; xx < 18; xx++) if (livre2(xx, yy)) { px = xx; py = yy; break busca; }
+      if (px >= 0) { for (let j = py; j < py + 2; j++) for (let k = px; k < px + 2; k++) f.sol[pos(k, j)] = 1; f.portalTele = { gx: f.x0 + px, x: px, y: py, w: 2, d: 2, porta: { x: f.x0 + px + 1, y: py + 2.7 } }; }
     }
     // banco na Praça dos Números, do lado de baixo da estrada
     if (f.idx === 1) {
@@ -1128,6 +1133,7 @@
     if (f.minhaCasa) tenta(f.minhaCasa.porta.x, f.minhaCasa.porta.y, { tipo: 'minhacasa' });
     if (f.enigma) tenta(f.enigma.porta.x, f.enigma.porta.y, { tipo: 'enigma' });
     for (const c of f.salas || []) tenta(c.porta.x, c.porta.y, { tipo: 'sala', sala: c });
+    if (f.portalTele) tenta(f.portalTele.porta.x, f.portalTele.porta.y, { tipo: 'portalTele' });
     if (f.loja) tenta(f.loja.porta.x, f.loja.porta.y, { tipo: 'loja' });
     if (f.projetos) tenta(f.projetos.porta.x, f.projetos.porta.y, { tipo: 'projetos' });
     if (f.banco) tenta(f.banco.porta.x, f.banco.porta.y, { tipo: 'banco' });
@@ -1197,9 +1203,9 @@
     if (visita && Math.hypot(NPC_CASA.x - P.x, NPC_CASA.y - P.y) < Math.min(1.2, dm + 0.2)) melhor = { tipo: 'npc', npc: visita };
     return melhor;
   }
-  const portaSala = () => { const c = faseMat().salas.find(c => c.id === sala); return { x: c.porta.x, y: c.porta.y + 0.4 }; };
+  const portaSala = () => { const l = SALAS[sala].local(); return { x: l.x, y: l.y }; };
   const posMundo = () => sala ? portaSala() : noEnigma ? { x: fases[1].enigma.porta.x, y: fases[1].enigma.porta.y + 0.4 } : dentro && visita ? { x: visita.x + 0.9, y: visita.y } : dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
-  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = sala ? faseMat().idx : noEnigma ? 1 : dentro && visita ? visita.fase.idx : dentro ? 0 : atual.idx; }
+  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = sala ? SALAS[sala].local().f.idx : noEnigma ? 1 : dentro && visita ? visita.fase.idx : dentro ? 0 : atual.idx; }
   function entraCasa() {
     fechaJanela(); ajustaCasa(S.casa.amp || 0); destino = null; dentro = true; mouse = null;
     P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; petPerto(); hud();
@@ -2262,9 +2268,9 @@
     Z.boasVindas();
   }
   function saiSala() {
-    const f = faseMat(), c = f.salas.find(c => c.id === sala);
-    if (atual.idx !== f.idx) trocaFase(f.idx);
-    sala = null; destino = null; P.x = c.porta.x; P.y = c.porta.y + 0.4; P.dir = 'y+'; cam.ok = false; petPerto();
+    const l = SALAS[sala].local();
+    if (atual.idx !== l.f.idx) trocaFase(l.f.idx);
+    sala = null; destino = null; P.x = l.x; P.y = l.y; P.dir = 'y+'; cam.ok = false; petPerto();
     for (const k in teclas) teclas[k] = false;
     hud();
   }
@@ -2422,12 +2428,85 @@
   }
   const naTelaSala = (x, y) => { const [sx, sy] = iso(x, y); return sx > cam.x - 80 && sx < cam.x + W / zoom + 80 && sy > cam.y - 120 && sy < cam.y + HH / zoom + 80; };
 
+  const localSala = id => { const f = faseMat(), c = f.salas.find(c => c.id === id); return { f, x: c.porta.x, y: c.porta.y + 0.4 }; };
+  /* --- Teletransporte: o resultado do teste de proficiência em informática (guardado neste navegador) escolhe o mundo especial do nível */
+  const TP = window.TELEPORTE || { niveis: {}, areas: {}, perguntas: {} };
+  const ORDEM_NIVEIS = ['iniciante', 'basico', 'intermediario', 'avancado'];
+  const EIXO_AREA = { computador: ['MD'], arquivos: ['MD'], internet: ['MD', 'CD'], seguranca: ['CD'], aplicativos: ['CD'], logica: ['PC'] };
+  const resultadoTeste = () => { try { const r = JSON.parse(localStorage.getItem('teste-informatica-ultimo')); return r && TP.niveis[r.nivel] ? r : null; } catch (e) { return null; } };
+  let teleNivel = 'iniciante';
+  const EST_TELE = () => { const T = S.tele || (S.tele = { feitos: {}, premios: {} }); return T; };
+  const perguntasTele = (nv, area) => (TP.perguntas[nv] && TP.perguntas[nv][area] || []).map(([enun, alts, certa, coment], i) => ({ id: `t:${nv}:${area}:${i}`, enun, alts, certa, coment, eixos: EIXO_AREA[area] }));
+  const feitasTele = (nv, area) => perguntasTele(nv, area).filter(p => S.resp[p.id] === true).length;
+  const ESTACOES_TELE = Object.keys(TP.areas).map((area, i) => ({ id: 'estacao', area, x: [1, 4.5, 8, 1, 8, 4.5][i], y: [1, 0.8, 1, 4.5, 4.5, 4][i], w: 1, d: 1, acao: `estação ${TP.areas[area].nome}` }));
+  function portalTele() {
+    const r = resultadoTeste(), fecha = { txt: 'Fechar', fn: fechaDialogo };
+    if (!r) return dialogo('🌀', 'Portal de teletransporte', '<p>Este portal leva você a um <b>mundo especial do seu nível em informática</b>, só com as habilidades que você precisa treinar.</p><p>Para descobrir o seu nível, faça antes o <b>teste de proficiência em informática</b> (24 perguntas, neste mesmo navegador). Depois volte aqui!</p>',
+      [{ txt: '📝 Fazer o teste', classe: 'principal', href: '../teste-proficiencia-informatica/' }, fecha]);
+    const meu = ORDEM_NIVEIS.indexOf(r.nivel), N = TP.niveis[r.nivel];
+    const fracas = (r.estudar || []).filter(k => TP.areas[k]).map(k => `${TP.areas[k].ic} ${TP.areas[k].nome}`);
+    dialogo('🌀', 'Portal de teletransporte', `<p>No teste${r.data ? ` de ${r.data.split('-').reverse().join('/')}` : ''}, você ficou no nível <b>${N.ic} ${N.nome}</b>, com ${r.nota} de 24 acertos.</p>${fracas.length ? `<p>No mundo do seu nível, comece por: <b>${fracas.join('</b> e <b>')}</b>.</p>` : ''}<p class="muted small">Refez o teste e subiu de nível? O portal leva você ao mundo novo. Também dá para revisar os níveis anteriores.</p>`,
+      ORDEM_NIVEIS.slice(0, meu + 1).reverse().map((nv, i) => ({ txt: `${TP.niveis[nv].ic} Mundo ${TP.niveis[nv].nome}${i ? ' (revisão)' : ''}`, classe: i ? '' : 'principal', fn: () => { fechaDialogo(); entraTele(nv); } }))
+        .concat([{ txt: '📝 Refazer o teste', href: '../teste-proficiencia-informatica/' }, fecha]));
+  }
+  function entraTele(nv) {
+    teleNivel = nv;
+    if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala();
+    if (atual.idx !== 0) trocaFase(0);
+    SOM.toca('portao'); entraSala('tele');
+  }
+  function usaTele(o) {
+    const nv = teleNivel, A = TP.areas[o.area], ps = perguntasTele(nv, o.area), feitas = feitasTele(nv, o.area), r = resultadoTeste(), fecha = { txt: 'Fechar', fn: fechaDialogo };
+    const fraca = r && r.nivel === nv && (r.estudar || []).includes(o.area);
+    const prox = ps.find(p => S.resp[p.id] !== true);
+    dialogo(A.ic, A.nome, `<p>${fraca ? '⭐ <b>Comece por aqui:</b> foi uma das áreas com menos acertos no seu teste. ' : ''}Nível ${TP.niveis[nv].ic} ${TP.niveis[nv].nome}: <b>${feitas} de ${ps.length}</b> perguntas certas.</p>${prox ? '' : '<p>✅ Você completou esta estação!</p>'}<p class="muted small">Os materiais abrem em outra aba.</p>`,
+      (prox ? [{ txt: 'Responder uma pergunta', classe: 'principal', fn: () => pergunta(A.nome, A.ic, embaralhaTele(prox), certo => { if (certo) confereTele(); }) }] : [])
+        .concat(A.links.map(([href, nome]) => ({ txt: `📖 ${nome}`, href: '..' + href })), [fecha]));
+  }
+  const embaralhaTele = p => { const ordem = p.alts.map((_, i) => i).sort(() => Math.random() - 0.5); return Object.assign({}, p, { alts: ordem.map(i => p.alts[i]), certa: ordem.indexOf(p.certa) }); };
+  function confereTele() {
+    const nv = teleNivel, T = EST_TELE();
+    if (T.premios[nv] || !Object.keys(TP.areas).every(a => feitasTele(nv, a) >= perguntasTele(nv, a).length)) return;
+    T.premios[nv] = true; pontos(100); SOM.toca('vitoria'); salvar();
+    setTimeout(() => { ganhaFigurinha(null, `pelo mundo ${TP.niveis[nv].nome}`); D.texto.innerHTML += `<p>🌀 <b>Você completou o mundo ${TP.niveis[nv].nome}!</b> +100 ⭐. Refaça o teste de proficiência para ver se subiu de nível.</p>`; }, 200);
+  }
+  function desenhaTele() {
+    return ESTACOES_TELE.map(o => ({ k: o.x + o.y + 1, d: () => {
+      const ok = feitasTele(teleNivel, o.area) >= perguntasTele(teleNivel, o.area).length, r = resultadoTeste(), fraca = r && r.nivel === teleNivel && (r.estudar || []).includes(o.area);
+      caixa(o.x + 0.1, o.y + 0.1, 0, 0.8, 0.8, 0.5, ok ? '#a8e6b8' : '#fff7e8'); caixa(o.x + 0.2, o.y + 0.2, 0.5, 0.6, 0.6, 0.08, TP.niveis[teleNivel].cor);
+      const [sx, sy] = iso(o.x + 0.5, o.y + 0.5, 1.05 + Math.sin(agora / 500 + o.x) * 0.06);
+      ctx.font = '22px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(ok ? '✅' : TP.areas[o.area].ic, sx, sy);
+      if (fraca && !ok) { ctx.font = '14px system-ui, sans-serif'; ctx.fillText('⭐', sx + 16, sy - 14); }
+    } }));
+  }
+  function desenhaPortalTele(c, perto) {
+    const x = c.gx, y = c.y;
+    sombra(x + 1, y + 1, 1.6);
+    caixa(x + 0.1, y + 0.1, 0, 1.8, 1.8, 0.2, '#c7b4f2');
+    caixa(x + 0.2, y + 0.8, 0.2, 0.3, 0.4, 2.0, '#9a6bd6'); caixa(x + 1.5, y + 0.8, 0.2, 0.3, 0.4, 2.0, '#9a6bd6'); caixa(x + 0.2, y + 0.8, 2.2, 1.6, 0.4, 0.3, '#9a6bd6');
+    const [sx, sy] = iso(x + 1, y + 1, 1.2), g = ctx.createRadialGradient(sx, sy, 2, sx, sy, 30 + Math.sin(agora / 300) * 4);
+    g.addColorStop(0, 'rgba(255,255,255,.95)'); g.addColorStop(0.5, 'rgba(199,180,242,.7)'); g.addColorStop(1, 'rgba(199,180,242,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(sx, sy, 26, 34, 0, 0, Math.PI * 2); ctx.fill();
+    const [ix, iy] = iso(x + 1, y + 1, 3.0); ctx.font = '20px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText('🌀', ix, iy);
+    if (perto) rotulo('Portal de teletransporte', ix, iy - 26, '#fff7e8');
+  }
+  const SALA_TELE = {
+    nome: 'Mundo do teletransporte', ic: '🌀', get sub() { const N = TP.niveis[teleNivel]; return `${N.ic} Nível ${N.nome} · teste de proficiência`; }, W: 10, D: 8, saida: { x: 5, y: 7.5 }, alturaParede: 2.2,
+    fundo: '#2a2140', base: '#5b3f8f', get parede() { return TP.niveis[teleNivel].parede; }, get piso() { return [TP.niveis[teleNivel].parede, '#ffffff']; },
+    local: () => { const c = fases[0].portalTele; return { f: fases[0], x: c ? c.porta.x : 3.5, y: c ? c.porta.y + 0.4 : MEIO }; },
+    estado: EST_TELE, objs: () => ESTACOES_TELE, livre: (x, y) => livreObjs(SALA_TELE, x, y), usa: usaTele, desenha: desenhaTele,
+    mini: (c, ox, oy, s) => { for (const o of ESTACOES_TELE) { c.fillStyle = feitasTele(teleNivel, o.area) >= perguntasTele(teleNivel, o.area).length ? '#4bb259' : '#9a6bd6'; c.fillRect(ox + o.x * s, oy + o.y * s, s, s); } },
+    missoes: () => Object.keys(TP.areas).map(a => ({ nome: `${TP.areas[a].ic} ${TP.areas[a].nome}`, n: feitasTele(teleNivel, a), meta: perguntasTele(teleNivel, a).length, ok: feitasTele(teleNivel, a) >= perguntasTele(teleNivel, a).length })),
+    boasVindas: () => { const N = TP.niveis[teleNivel], r = resultadoTeste(), fr = r && r.nivel === teleNivel ? (r.estudar || []).filter(k => TP.areas[k]) : [];
+      dialogo('🌀', `Mundo ${N.nome}`, `<p>Bem-vindo ao mundo ${N.ic} <b>${N.nome}</b>! Cada estação é uma das 6 áreas do teste, com perguntas deste nível e materiais para estudar.</p>${fr.length ? `<p>As estações com ⭐ foram as áreas com menos acertos no seu teste: ${fr.map(k => TP.areas[k].ic + ' ' + TP.areas[k].nome).join(' e ')}.</p>` : ''}<p class="muted">Complete as 6 estações para ganhar +100 ⭐ e uma figurinha. Depois, refaça o teste!</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }]); }
+  };
   const SALAS = {
+    tele: SALA_TELE,
     emat: {
       nome: 'Escape da Matemática', ic: '🧮', sub: 'Escape room · sem cronômetro', W: 8, D: 6, saida: { x: 4, y: 5.5 }, alturaParede: 2.5,
       fundo: '#20302a', base: '#4f7a5f', parede: '#9fd1b0', piso: ['#cfe8d6', '#e3f3e8'],
       estilo: { base: '#a8e6b8', telhado: '#3f7a52', porta: '#f6b73c', ic: '🧮', nome: 'Escape da Matemática' },
-      estado: EST_EM, objs: () => EMOBJ, livre: (x, y) => livreObjs(SALAS.emat, x, y), usa: usaEmat, desenha: desenhaEmat,
+      local: () => localSala('emat'), estado: EST_EM, objs: () => EMOBJ, livre: (x, y) => livreObjs(SALAS.emat, x, y), usa: usaEmat, desenha: desenhaEmat,
       mini: (c, ox, oy, s) => { c.fillStyle = '#3f7a52'; for (const o of EMOBJ) c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, Math.max(4, o.d * s)); },
       missoes: () => { const E = EST_EM(); return [[`① Lousa${E.a ? ': ' + EMAT.A : ''}`, E.a], [`② Balança${E.b ? ': ' + EMAT.B : ''}`, E.b], [`③ Pizza${E.c ? ': ' + EMAT.C : ''}`, E.c], ['Abrir o cofre', E.cofre], ['Abrir a porta de saída', E.fim]].map(([nome, ok]) => ({ nome, n: ok ? 1 : 0, meta: 1, ok: !!ok })); },
       boasVindas: () => dialogo('🧮', 'Escape da Matemática', '<p>A porta de saída está trancada, e a chave está num cofre de <b>3 algarismos</b>. Cada algarismo é a resposta de um desafio: a <b>lousa ①</b>, a <b>balança ②</b> e a <b>pizza ③</b>.</p><p class="muted">Não tem cronômetro: pense com calma e use papel se quiser. O que você descobrir fica guardado, e os desafios mudam toda segunda-feira.</p>', [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }])
@@ -2436,7 +2515,7 @@
       nome: 'Labirinto', ic: '🌀', sub: 'Portões com perguntas de Matemática', W: LAB.T, D: LAB.T, saida: { x: 1.5, y: LAB.T - 0.5 }, alturaParede: 0.9,
       fundo: '#cfe9c4', base: '#8a6a4a', parede: '#5aa85a', piso: ['#e9dcb5', '#f3e8c8'],
       estilo: { base: '#c9e8a8', telhado: '#4f9a4b', porta: '#c08a52', ic: '🌀', nome: 'Labirinto' },
-      estado: EST_LAB, objs: objsLab, livre: livreLab, usa: usaLab, desenha: desenhaLab,
+      local: () => localSala('labirinto'), estado: EST_LAB, objs: objsLab, livre: livreLab, usa: usaLab, desenha: desenhaLab,
       mini: (c, ox, oy, s) => { c.fillStyle = '#4f9a4b'; for (let y = 0; y < LAB.T; y++) for (let x = 0; x < LAB.T; x++) if (LAB.parede[y][x]) c.fillRect(ox + x * s, oy + y * s, Math.ceil(s), Math.ceil(s)); const E = EST_LAB(); c.fillStyle = '#c08a52'; LAB.portoes.forEach(([x, y], i) => { if (!E.abertos[i]) c.fillRect(ox + x * s, oy + y * s, Math.ceil(s), Math.ceil(s)); }); c.fillStyle = '#f6b73c'; c.fillRect(ox + LAB.fim[0] * s, oy + LAB.fim[1] * s, Math.ceil(s), Math.ceil(s)); },
       missoes: () => { const E = EST_LAB(); return LAB.portoes.map((_, i) => [`Abrir o portão ${i + 1}`, E.abertos[i]]).concat([['Chegar ao troféu 🏆', E.fim]]).map(([nome, ok]) => ({ nome, n: ok ? 1 : 0, meta: 1, ok: !!ok })); },
       boasVindas: () => dialogo('🌀', 'Labirinto', `<p>Encontre o caminho até o <b>🏆 troféu</b>. No caminho há <b>${LAB.portoes.length} portões</b> trancados: cada um abre com uma pergunta de Matemática certa.</p><p class="muted">Use o minimapa no canto. O labirinto muda toda segunda-feira.</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }])
@@ -2887,6 +2966,7 @@
     const alvo = !dialogoAberto && alvoPerto();
     for (const f of visiveisFases()) {
       if (f.enigma) { const c = f.enigma; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4, true) }); }
+      if (f.portalTele) { const c = f.portalTele; lista.push({ k: c.gx + c.y + 2, d: () => desenhaPortalTele(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       for (const c of f.salas || []) lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4, false, SALAS[c.id].estilo) });
       if (f.banco) { const c = f.banco; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaBanco(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       if (f.projetos) { const c = f.projetos; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaProjetos(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
@@ -2914,7 +2994,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'sala' ? `E · entrar: ${SALAS[alvo.sala.id].nome}` : alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? `E · conversar${entregaPara(alvo.npc) ? ' · 📦 entrega' : papelNpc(alvo.npc) ? ' · ' + PAPEIS[papelNpc(alvo.npc)].rotulo : ''}` : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'pesca' ? (S.loja.tem['ferr:vara'] ? `E · pescar (🪱 ${S.inv.isca || 0})` : 'Laguinho · precisa de 🎣 vara') : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
+      const t = alvo.tipo === 'portalTele' ? 'E · usar o portal de teletransporte' : alvo.tipo === 'sala' ? `E · entrar: ${SALAS[alvo.sala.id].nome}` : alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? `E · conversar${entregaPara(alvo.npc) ? ' · 📦 entrega' : papelNpc(alvo.npc) ? ' · ' + PAPEIS[papelNpc(alvo.npc)].rotulo : ''}` : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'pesca' ? (S.loja.tem['ferr:vara'] ? `E · pescar (🪱 ${S.inv.isca || 0})` : 'Laguinho · precisa de 🎣 vara') : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
       anuncia((alvo.tipo === 'casa' ? alvo.casa.lugar.titulo + '. ' : '') + t);
     } else anuncia('');
@@ -3351,7 +3431,7 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pesca') return pesca(); if (a.tipo === 'sala') return entraSala(a.sala.id); if (a.tipo === 'sobj') return SALAS[sala].usa(a.obj); if (a.tipo === 'ssaida') return saiSala(); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pesca') return pesca(); if (a.tipo === 'sala') return entraSala(a.sala.id); if (a.tipo === 'portalTele') return portalTele(); if (a.tipo === 'sobj') return SALAS[sala].usa(a.obj); if (a.tipo === 'ssaida') return saiSala(); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
@@ -3613,6 +3693,7 @@
     const a = alvoPerto();
     if (a && a.tipo === 'pet' && Math.hypot(wx - PET.x, wy - PET.y) < 0.8) return interage();
     if (a && a.tipo === 'enigma') { const c = fases[1].enigma; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
+    if (a && a.tipo === 'portalTele') { const c = atual.portalTele; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'sala') { const c = a.sala; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'banco') { const c = atual.banco; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'projetos') { const c = atual.projetos; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
@@ -3630,6 +3711,7 @@
   });
   $('#esp-cv').addEventListener('click', ev => { const r = ev.currentTarget.getBoundingClientRect(); moveEspecial(Math.floor((ev.clientY - r.top) / r.height * 3) * 3 + Math.floor((ev.clientX - r.left) / r.width * 3)); });
   $('#esp-de-novo').addEventListener('click', janelaEspecial);
+  $('#b-tele').addEventListener('click', () => { fechaJanela(); portalTele(); });
   $('#b-casa').addEventListener('click', () => { if (sala) saiSala(); if (noEnigma) saiEnigma(); dentro ? abreJanela('casa') : entraCasa(); });
 
   /* ---------- teclado ---------- */
@@ -3681,7 +3763,8 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
+  window.MUNDO_DEBUG = { portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
