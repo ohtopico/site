@@ -116,7 +116,7 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .pet-b { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; border: 2px solid var(--borda); border-radius: 14px; background: #fff; padding: 8px 12px; cursor: pointer; font: 500 14px Lexend, sans-serif; color: var(--ink); }
 .pet-b small { color: #5a6a5c; font-size: 12px; } .pet-b:hover:not(:disabled) { background: #fff6dd; } .pet-b:disabled { opacity: .5; cursor: not-allowed; }
 .campo { font: 15px Lexend, sans-serif; padding: 8px 12px; border: 2px solid var(--borda); border-radius: 12px; width: min(260px, 100%); }
-@media (max-width: 600px) { .pet-topo { grid-template-columns: 1fr; justify-items: center; } .nec { grid-template-columns: 120px 1fr; } .pet-topo > div { width: 100%; } #b-salvar { display: none; } }
+@media (max-width: 600px) { .pet-topo { grid-template-columns: 1fr; justify-items: center; } .nec { grid-template-columns: 120px 1fr; } .pet-topo > div { width: 100%; } }
 
 /* habilidades e amigos */
 .habs { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
@@ -137,3 +137,5 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 #esp-movs { text-align: center; font-weight: 600; }
 .lampadas { font-size: 24px; line-height: 1.5; text-align: center; letter-spacing: 4px; }
 .cifra { font: 700 28px monospace; letter-spacing: 6px; text-align: center; color: #5b3f8f; background: #f1ebff; border-radius: 12px; padding: 8px; }
+.perigo { margin-top: 18px; } .perigo summary { cursor: pointer; color: #8a3b30; font-weight: 600; }
+#mapa-cv { width: min(700px, 100%); height: auto; display: block; margin: 0 auto; }
