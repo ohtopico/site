@@ -80,6 +80,12 @@
       <circle cx="44" cy="20" r="8" fill="${V}" ${T}/><path d="M44 12v16M36 20h16" stroke="#111" stroke-width="1.5"/>`,
     angulos: `<path d="M8 46a24 24 0 0 1 48 0z" fill="${A}" ${T}/><path d="M32 46L50 18" stroke="${R}" stroke-width="4" stroke-linecap="round"/>
       <path d="M14 46a18 18 0 0 1 3-10M50 46a18 18 0 0 0-3-10M32 28v4" ${T}/><circle cx="32" cy="46" r="3" fill="#111"/>`,
+    'valor-moeda': `<circle cx="24" cy="38" r="16" fill="${A}" ${T}/><circle cx="24" cy="38" r="11" fill="none" stroke="#111" stroke-width="1.5" stroke-dasharray="2 3"/>
+      <circle cx="44" cy="24" r="14" fill="#d9dde1" ${T}/><text x="44" y="30" text-anchor="middle" font-family="Sniglet,sans-serif" font-weight="800" font-size="17" fill="#111">?</text>
+      <text x="24" y="44" text-anchor="middle" font-family="Sniglet,sans-serif" font-weight="800" font-size="15" fill="#111">25</text>`,
+    'cunhe-moeda': `<ellipse cx="30" cy="50" rx="20" ry="7" fill="${A}" ${T}/><path d="M10 50v-4c0-4 9-7 20-7s20 3 20 7v4" fill="${A}" ${T}/>
+      <path d="M36 12l14 14" stroke="#8a5a2b" stroke-width="6" stroke-linecap="round"/><rect x="20" y="22" width="22" height="12" rx="3" fill="${R}" ${T} transform="rotate(-45 31 28)"/>
+      <path d="M14 34l-4-4M22 32l-1-5M46 36l5-3" stroke="${V}" stroke-width="3" stroke-linecap="round"/>`,
     cofrinho: `<ellipse cx="32" cy="36" rx="22" ry="16" fill="#ffb3b0" ${T}/><path d="M22 23l-2-9 9 5" fill="#ffb3b0" ${T}/><rect x="26" y="20" width="12" height="3" rx="1.5" fill="#111"/>
       <path d="M20 50v6M44 50v6" ${T}/><circle cx="44" cy="32" r="2" fill="#111"/><ellipse cx="54" cy="38" rx="4" ry="5" fill="#ff9d99" ${T}/><circle cx="32" cy="8" r="6" fill="${A}" ${T}/>`,
     tabelas: `<rect x="8" y="10" width="48" height="44" rx="5" fill="${B}" ${T}/><path d="M8 22h48M8 34h48M8 46h48M24 10v44M40 10v44" ${T}/>
