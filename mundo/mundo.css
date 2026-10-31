@@ -126,3 +126,14 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .hab-txt a { color: #2b6cb0; }
 .coracoes { font-size: 13px; letter-spacing: -1px; white-space: nowrap; }
 .hab-sub { display: block; }
+
+/* quebra-cabeça, jogo especial e Casa do Enigma */
+.quebra-box { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.quebra-box p { margin: 0 0 6px; }
+.quebra { display: grid; grid-template-columns: 60px 60px; gap: 3px; flex: none; }
+.q-peca { width: 60px; height: 60px; border-radius: 8px; border: 2px dashed var(--borda); display: grid; place-items: center; font-size: 22px; opacity: .55; background: #fff; }
+.q-peca.ok { border: 2px solid #5b3f8f; opacity: 1; background-image: var(--img); background-size: 200% 200%; }
+#esp-cv { display: block; margin: 8px auto; width: min(300px, 80vw); height: auto; aspect-ratio: 1; border-radius: 14px; border: 3px solid var(--ink); cursor: pointer; touch-action: manipulation; }
+#esp-movs { text-align: center; font-weight: 600; }
+.lampadas { font-size: 24px; line-height: 1.5; text-align: center; letter-spacing: 4px; }
+.cifra { font: 700 28px monospace; letter-spacing: 6px; text-align: center; color: #5b3f8f; background: #f1ebff; border-radius: 12px; padding: 8px; }
