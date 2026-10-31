@@ -64,7 +64,17 @@
   const ROUPAS = ['#3f8fe0', '#e0564a', '#4bb259', '#f6b73c', '#9a6bd6', '#2bb3b1', '#e07bb0', '#ffffff', '#333333'];
 
   /* itens do chão: livro mostra uma dica, diamante pede uma pergunta, os outros vão para o inventário */
-  const ITENS = { livro: ['📘', 'Livro'], diamante: ['💎', 'Diamante'], estrela: ['⭐', 'Estrela'], maca: ['🍎', 'Maçã'], chave: ['🔑', 'Chave'], peca: ['🧩', 'Peça de quebra-cabeça'] };
+  const ITENS = { livro: ['📘', 'Livro'], diamante: ['💎', 'Diamante'], estrela: ['⭐', 'Estrela'], maca: ['🍎', 'Maçã'], chave: ['🔑', 'Chave'], peca: ['🧩', 'Peça de quebra-cabeça'],
+    // vendidos nas lojas (só aparecem no inventário depois de comprados)
+    petisco: ['🦴', 'Petisco'], sabonete: ['🧼', 'Sabonete'], brinquedo: ['🧸', 'Brinquedo'], suco: ['🧃', 'Suco'], bolo: ['🍰', 'Bolo'], sanduiche: ['🥪', 'Sanduíche'],
+    panetone: ['🍞', 'Panetone'], uvas: ['🍇', 'Uvas da sorte'], picole: ['🍦', 'Picolé'], ovoChoc: ['🍫', 'Ovo de chocolate'], pipoca: ['🍿', 'Pipoca'], pirulito: ['🍭', 'Pirulito'], cupcake: ['🧁', 'Cupcake'], docinho: ['🍬', 'Doce de abóbora'] };
+  const LOJAS = {
+    roupa: { fase: 0, nome: 'Loja de Roupas', ic: '👕', cor: '#f7a8c4', toldo: '#e0564a', texto: 'Acessórios e cores novas para o seu avatar.' },
+    comida: { fase: 1, nome: 'Mercadinho', ic: '🍎', cor: '#ffd58a', toldo: '#4bb259', texto: 'Comidinhas para dar ao pet ou de presente aos moradores.' },
+    pet: { fase: 2, nome: 'Pet Shop', ic: '🐾', cor: '#a8d8f7', toldo: '#3f8fe0', texto: 'Petiscos, banho e acessórios para o seu bichinho.' },
+    moveis: { fase: 3, nome: 'Loja de Móveis', ic: '🛋️', cor: '#c7b4f2', toldo: '#9a6bd6', texto: 'Móveis prontos para a sua casa, sem precisar da bancada.' }
+  };
+  const ITENS_LOJA = new Set(['petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
   const SORTEIO_ITENS = ['livro', 'diamante', 'estrela', 'livro', 'maca', 'diamante', 'chave', 'peca'];
   const DICAS = [
     'O computador guarda tudo em <strong>binário</strong>: só 0 e 1. Com 8 bits (um byte) dá para escrever 256 números diferentes, de 0 a 255.',
@@ -187,6 +197,17 @@
       for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
       for (let j = hy + d; j < MEIO - 1; j++) for (const k of [hx + 1, hx + 2]) f.tile[pos(k, j)] = T.caminho;
       f[f.idx === 0 ? 'minhaCasa' : 'enigma'] = { gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
+    }
+    // uma loja em cada uma das 4 primeiras vilas, do outro lado da estrada
+    const loja = Object.keys(LOJAS).find(k => LOJAS[k].fase === f.idx);
+    if (loja) {
+      const w = 4, d = 4;
+      const cabe = (hx, hy) => { for (let j = hy - 1; j <= hy + d; j++) for (let k = hx - 1; k <= hx + w; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama) return false; return true; };
+      let hx = L - 8, hy = MEIO - 2 - 2 - d;
+      search: for (const yy of [hy, hy - 1, hy - 2, hy + 1, hy - 3]) for (const xx of [L - 8, L - 7, L - 9, L - 6, L - 10]) if (cabe(xx, yy)) { hx = xx; hy = yy; break search; }
+      for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
+      for (let j = hy + d; j < MEIO - 1; j++) for (const k of [hx + 1, hx + 2]) f.tile[pos(k, j)] = T.caminho;
+      f.loja = { id: loja, gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
     }
     // casas em volta do anel, metade por dentro e metade por fora, longe da estrada
     f.casas = [];
@@ -312,6 +333,10 @@
     robo: { nome: 'Robozinho', ic: '🤖', w: 1, d: 1, custo: { diamante: 2, chave: 1 }, requer: 'luminaria', acao: 'responder ao robô', des: (x, y) => { const z = Math.abs(Math.sin(agora / 400)) * 0.06; caixa(x + 0.3, y + 0.3, z, 0.4, 0.4, 0.45, '#a8e6b8'); caixa(x + 0.32, y + 0.32, z + 0.45, 0.36, 0.36, 0.3, '#c9efd9'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.07, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.22, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); caixa(x + 0.47, y + 0.47, z + 0.75, 0.06, 0.06, 0.2, '#888888', { blocos: false }); caixa(x + 0.44, y + 0.44, z + 0.95, 0.12, 0.12, 0.08, '#e0564a', { blocos: false }); } },
     telescopio: { nome: 'Telescópio', ic: '🔭', w: 1, d: 1, custo: { diamante: 3, estrela: 2 }, requer: 'robo', acao: 'olhar o mapa', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 0.95, '#555555', { blocos: false }); caixa(x + 0.3, y + 0.35, 0.05, 0.4, 0.3, 0.05, '#555555', { blocos: false }); caixa(x + 0.38, y + 0.1, 0.95, 0.24, 0.8, 0.24, '#3f8fe0'); caixa(x + 0.35, y + 0.05, 0.92, 0.3, 0.12, 0.3, '#ffd58a'); } },
     arcade: { nome: 'Fliperama', ic: '🕹️', w: 1, d: 1, custo: { chave: 2, diamante: 2 }, requer: 'robo', acao: 'jogar', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 0.8, 0.7, 1.75, '#9a6bd6'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.12, 0, 0.56, 1.0, 0.5, '#1b2531'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.25 + ((agora / 300 | 0) % 3) * 0.1, 0, 0.08, 1.2, 0.08, '#a8e6b8'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.2, 0, 0.1, 0.75, 0.1, '#e0564a'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.45, 0, 0.1, 0.75, 0.1, '#ffd58a'); } },
+    // móveis que só existem na Loja de Móveis
+    sofa: { nome: 'Sofá', ic: '🛋️', w: 2, d: 1, loja: true, acao: 'sentar um pouco', des: (x, y) => { caixa(x + 0.08, y + 0.1, 0, 1.84, 0.25, 1.0, '#3f8fe0'); caixa(x + 0.08, y + 0.3, 0, 1.84, 0.6, 0.45, '#6aa9ec'); caixa(x + 0.02, y + 0.3, 0.2, 0.18, 0.6, 0.45, '#3f8fe0'); caixa(x + 1.8, y + 0.3, 0.2, 0.18, 0.6, 0.45, '#3f8fe0'); caixa(x + 0.35, y + 0.18, 0.45, 0.4, 0.15, 0.35, '#ffd58a'); } },
+    tv: { nome: 'Televisão', ic: '📺', w: 2, d: 1, loja: true, acao: 'ver um vídeo', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 1.8, 0.7, 0.5, '#a0703f'); caixa(x + 0.3, y + 0.35, 0.5, 1.4, 0.12, 0.85, '#222222'); const k = Math.floor(agora / 600) % 3; naFace('y', x + 0.3, y + 0.35, 1.4, 0.12, 0.08, 0, 1.24, 0.58, 0.7, ['#7fd3f7', '#a8e6b8', '#f7a8c4'][k]); naFace('y', x + 0.3, y + 0.35, 1.4, 0.12, 0.3 + k * 0.2, 0, 0.3, 0.7, 0.25, '#ffffff'); } },
+    piano: { nome: 'Piano', ic: '🎹', w: 2, d: 1, loja: true, acao: 'tocar uma música', des: (x, y) => { caixa(x + 0.1, y + 0.05, 0, 1.8, 0.45, 1.3, '#1d1d24'); caixa(x + 0.1, y + 0.5, 0.65, 1.8, 0.35, 0.1, '#1d1d24'); for (let i = 0; i < 9; i++) caixa(x + 0.14 + i * 0.19, y + 0.52, 0.75, 0.17, 0.3, 0.04, '#ffffff', { blocos: false }); for (const i of [0, 1, 3, 4, 5, 7]) caixa(x + 0.27 + i * 0.19, y + 0.52, 0.79, 0.09, 0.16, 0.04, '#111111', { blocos: false, contorno: false }); caixa(x + 0.15, y + 0.6, 0, 0.1, 0.1, 0.65, '#1d1d24'); caixa(x + 1.75, y + 0.6, 0, 0.1, 0.1, 0.65, '#1d1d24'); } },
     // móveis de evento: só se ganham completando as missões das datas comemorativas
     pinheiro: { nome: 'Árvore de Natal', ic: '🎄', w: 1, d: 1, evento: true, acao: 'acender as luzes', des: (x, y) => { caixa(x + 0.42, y + 0.42, 0, 0.16, 0.16, 0.3, '#a0703f', { blocos: false }); [[0.1, 0.3, 0.8], [0.2, 0.75, 0.6], [0.3, 1.15, 0.4]].forEach(([o, z, w]) => caixa(x + o, y + o, z, w, w, 0.45, '#3f9a5a')); caixa(x + 0.42, y + 0.42, 1.6, 0.16, 0.16, 0.16, '#ffd84a', { blocos: false }); luzinhas(x + 0.5, y + 0.5, 0.5, 1.3, 0.35); } },
     bolaEspelhada: { nome: 'Bola espelhada de Ano Novo', ic: '🪩', w: 1, d: 1, evento: true, acao: 'girar a bola', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 1.1, '#888888', { blocos: false }); caixa(x + 0.25, y + 0.25, 1.1, 0.5, 0.5, 0.5, '#d9e3ea'); luzinhas(x + 0.5, y + 0.5, 1.15, 1.5, 0.3, ['#ffffff', '#c7f0ff', '#ffe9a8']); } },
@@ -334,14 +359,16 @@
   const casaNova = () => ({ cor: '#f7a8c4', guardados: {}, feitos: {}, visitou: false, dormiu: '',
     moveis: [{ id: 'estante', x: 0, y: 1 }, { id: 'computador', x: 2, y: 0 }, { id: 'bau', x: 4, y: 0 }, { id: 'espelho', x: 6, y: 0 }, { id: 'cama', x: 8, y: 0 }, { id: 'bancada', x: 10, y: 0 }] });
 
+  const lojaNova = () => ({ tem: {}, dividas: [], compras: 0 });
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
-  const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
   S.casa = Object.assign(casaNova(), S.casa);
+  S.loja = Object.assign(lojaNova(), S.loja);
   // versão anterior (casas em fileiras): a posição salva não serve mais, e os itens antigos contam para a missão
   if (!S.cont || !Object.keys(S.cont).length) for (const k of Object.keys(S.itens || {})) { const fid = k.split('-')[0]; S.cont[fid] = (S.cont[fid] || 0) + 1; }
   for (const k of Object.keys(S.itens)) if (!k.includes('-s' + SEMANA + '-')) delete S.itens[k];   // só os desta semana
@@ -524,6 +551,25 @@
     ctx.font = '20px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(enigma ? '🔐' : '🏠', sx, sy - 1);
     if (perto) rotulo(enigma ? 'Casa do Enigma' : 'Sua casa', sx, sy - 34, '#fff7e8');
   }
+  /* loja: vitrines, toldo listrado e a placa com o ícone */
+  function desenhaLoja(c, perto) {
+    const Lj = LOJAS[c.id], x = c.gx, y = c.y, w = c.w, d = c.d, base = Lj.cor;
+    sombra(x + w / 2, y + d / 2, 2.4);
+    caixa(x + 0.2, y + 0.2, 0, w - 0.4, d - 0.4, 2.4, base);
+    caixa(x + 0.1, y + 0.1, 2.4, w - 0.2, d - 0.2, 0.3, escuro(base, 0.25));
+    const bx = x + 0.2, by = y + 0.2, ww = w - 0.4, dd = d - 0.4;
+    for (const a of [0.2, ww - 1.25]) { naFace('y', bx, by, ww, dd, a, 0, 1.05, 0.35, 1.0, '#ffffff'); naFace('y', bx, by, ww, dd, a + 0.07, 0, 0.91, 0.42, 0.86, '#cfefff'); naFace('y', bx, by, ww, dd, a + 0.25, 0, 0.5, 0.45, 0.25, Lj.toldo); }
+    naFace('x', bx, by, ww, dd, 0.6, 0, 1.6, 0.6, 0.9, '#ffffff'); naFace('x', bx, by, ww, dd, 0.67, 0, 1.46, 0.67, 0.76, '#cfefff');
+    naFace('y', bx, by, ww, dd, ww / 2 - 0.4, 0, 0.8, 0, 1.45, '#ffffff'); naFace('y', bx, by, ww, dd, ww / 2 - 0.33, 0, 0.66, 0, 1.38, '#9a6a3a');
+    naFace('y', bx, by, ww, dd, ww / 2 + 0.15, 0, 0.08, 0.65, 0.08, '#ffd58a');
+    const n = 8; for (let i = 0; i < n; i++) caixa(bx + i * ww / n, by + dd, 1.75, ww / n, 0.5, 0.12, i % 2 ? '#ffffff' : Lj.toldo, { blocos: false });
+    const [sx, sy] = iso(x + w / 2, y + d / 2, 3.4 + Math.sin(agora / 500) * 0.06);
+    ctx.fillStyle = '#ffffff'; ctx.strokeStyle = escuro(Lj.toldo, 0.1); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(sx - 18, sy - 18, 36, 34, 9); ctx.fill(); ctx.stroke();
+    ctx.font = '20px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(Lj.ic, sx, sy - 1);
+    if (eventosAtivos.length) { ctx.font = '14px system-ui, sans-serif'; ctx.fillText(eventosAtivos[0].ic, sx + 18, sy - 16); }
+    if (perto) rotulo(Lj.nome, sx, sy - 34, '#fff7e8');
+  }
   function sombra(x, y, r) { const [sx, sy] = iso(x, y); ctx.fillStyle = 'rgba(40,60,40,.16)'; ctx.beginPath(); ctx.ellipse(sx, sy + 2, r * TW / 2.2, r * TH / 2.2, 0, 0, Math.PI * 2); ctx.fill(); }
   function rotulo(t, sx, sy, cor = '#ffffff', tinta = '#1d2a1f') {
     ctx.font = '600 13px Lexend, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -593,6 +639,26 @@
     if (it.tipo === 'diamante') { ctx.fillStyle = 'rgba(160,230,255,.35)'; ctx.beginPath(); ctx.arc(sx, sy, 17, 0, Math.PI * 2); ctx.fill(); }
     ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(ic, sx, sy);
   }
+  /* enfeites de cabeça, para o avatar e para o pet: medidas em fração do tamanho da cabeça (s) */
+  function enfeite(k, hx, hy, hz, s, dir, topo) {
+    if (!k || k === 'nada') return;
+    const q = v => v * s, sem = { blocos: false }, frente = dir === 'y+' || dir === 'x+', fc = dir === 'y+' ? 'y' : 'x';
+    const aba = (cor, m = 0.12) => caixa(hx - q(m), hy - q(m), topo, s + q(2 * m), s + q(2 * m), q(0.08), cor, sem);
+    const bloco = (o, z, l, h, cor) => caixa(hx + q(o), hy + q(o), topo + q(z), q(l), q(l), q(h), cor, sem);
+    if (k === 'oculos') { if (frente) { naFace(fc, hx, hy, s, s, q(0.05), 0, q(0.9), hz + q(0.38), q(0.28), 'rgba(20,20,40,.88)'); naFace(fc, hx, hy, s, s, q(0.15), 0, q(0.15), hz + q(0.55), q(0.06), 'rgba(255,255,255,.6)'); } }
+    else if (k === 'laco') bloco(0.25, 0, 0.5, 0.22, '#e0564a');
+    else if (k === 'chapeu') { aba('#3f8fe0'); bloco(0.19, 0.08, 0.62, 0.42, '#3f8fe0'); }
+    else if (k === 'coroa') { bloco(0.15, 0, 0.7, 0.3, '#ffd58a'); if (frente) naFace(fc, hx + q(0.15), hy + q(0.15), q(0.7), q(0.7), q(0.28), 0, q(0.14), topo + q(0.08), q(0.12), '#e0564a'); }
+    else if (k === 'cachecol' || k === 'lenco') caixa(hx - q(0.06), hy - q(0.06), hz - q(0.2), s + q(0.12), s + q(0.12), q(0.24), k === 'lenco' ? '#e0564a' : '#4bb259', sem);
+    else if (k === 'gorro') { bloco(-0.05, 0, 1.1, 0.18, '#ffffff'); bloco(0.1, 0.18, 0.8, 0.3, '#e0564a'); bloco(0.28, 0.48, 0.44, 0.26, '#e0564a'); bloco(0.38, 0.74, 0.24, 0.2, '#ffffff'); }
+    else if (k === 'cartola') { aba('#1d1d24', 0.16); bloco(0.15, 0.08, 0.7, 0.75, '#1d1d24'); bloco(0.14, 0.12, 0.72, 0.12, '#ffd84a'); }
+    else if (k === 'mascara') { if (frente) naFace(fc, hx, hy, s, s, 0, 0, s, hz + q(0.38), q(0.26), '#9a6bd6'); bloco(0.42, 0, 0.16, 0.45, '#ffd84a'); bloco(0.22, 0, 0.14, 0.32, '#4bb259'); }
+    else if (k === 'orelhas') { caixa(hx + q(0.12), hy + q(0.4), topo, q(0.18), q(0.18), q(0.75), '#ffffff', sem); caixa(hx + q(0.7), hy + q(0.4), topo, q(0.18), q(0.18), q(0.75), '#ffffff', sem); }
+    else if (k === 'palha') { aba('#e8c35a', 0.3); bloco(0.15, 0.08, 0.7, 0.32, '#e8c35a'); bloco(0.14, 0.1, 0.72, 0.08, '#e0564a'); }
+    else if (k === 'helice') { bloco(0, 0, 1, 0.2, '#3f8fe0'); bloco(0, 0, 0.5, 0.2, '#ffd84a'); bloco(0.45, 0.2, 0.1, 0.18, '#888888'); const [px, py] = iso(hx + s / 2, hy + s / 2, topo + q(0.4)), a = agora / 90; ctx.strokeStyle = '#e0564a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(px - Math.cos(a) * 9, py - Math.sin(a) * 3); ctx.lineTo(px + Math.cos(a) * 9, py + Math.sin(a) * 3); ctx.stroke(); }
+    else if (k === 'capelo') { bloco(0.12, 0, 0.76, 0.22, '#1d1d24'); aba('#1d1d24', 0.22); caixa(hx + s + q(0.1), hy + q(0.5), topo - q(0.3), q(0.06), q(0.06), q(0.35), '#ffd84a', sem); }
+    else if (k === 'gorroSaci') { bloco(0, 0, 1, 0.25, '#d32f2f'); bloco(0.15, 0.25, 0.7, 0.3, '#d32f2f'); bloco(0.3, 0.55, 0.4, 0.3, '#d32f2f'); bloco(0.42, 0.85, 0.16, 0.2, '#d32f2f'); }
+  }
   /* personagem de blocos: pernas, corpo, braços e cabeça cúbica; o rosto aparece na face para onde olha */
   function desenhaPessoa(px, py, av, op = {}) {
     const pulo = op.pulo || 0, dir = op.dir || 'y+', anda = op.andando ? Math.sin(op.passo || 0) * 0.08 : 0;
@@ -621,6 +687,7 @@
     // cabelo / boné
     if (av.estilo === 'bone') { caixa(hx - 0.02, hy - 0.02, hz + 0.36, 0.44, 0.44, 0.12, av.cabelo, { blocos: false }); const aba = { 'y+': [hx + 0.05, hy + 0.4, 0.3, 0.16], 'y-': [hx + 0.05, hy - 0.16, 0.3, 0.16], 'x+': [hx + 0.4, hy + 0.05, 0.16, 0.3], 'x-': [hx - 0.16, hy + 0.05, 0.16, 0.3] }[dir]; caixa(aba[0], aba[1], hz + 0.36, aba[2], aba[3], 0.05, av.cabelo, { blocos: false }); }
     else { caixa(hx - 0.02, hy - 0.02, hz + 0.34, 0.44, 0.44, 0.1, av.cabelo, { blocos: false }); if (av.estilo === 'coque') caixa(hx + 0.12, hy + 0.12, hz + 0.44, 0.16, 0.16, 0.14, av.cabelo, { blocos: false }); }
+    enfeite(av.acessorio, hx, hy, hz, 0.4, dir, hz + (av.estilo === 'bone' ? 0.48 : av.estilo === 'coque' ? 0.5 : 0.44));
   }
 
   /* ---------- jogador e movimento ---------- */
@@ -679,6 +746,7 @@
     for (const c of f.casas) tenta(c.porta.x, c.porta.y, { tipo: 'casa', casa: c });
     if (f.minhaCasa) tenta(f.minhaCasa.porta.x, f.minhaCasa.porta.y, { tipo: 'minhacasa' });
     if (f.enigma) tenta(f.enigma.porta.x, f.enigma.porta.y, { tipo: 'enigma' });
+    if (f.loja) tenta(f.loja.porta.x, f.loja.porta.y, { tipo: 'loja' });
     if (S.pet && !S.pet.dorme) tenta(PET.x, PET.y + 0.3, { tipo: 'pet' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
     tenta(f.placa.x, f.placa.y + 0.8, { tipo: 'placa', fase: f });
@@ -891,7 +959,6 @@
         const fc = dir === 'y+' ? 'y' : 'x';
         naFace(fc, hx, hy, s, s, 0.06, 0, 0.06, hz + 0.15, 0.08, '#1d2a1f'); naFace(fc, hx, hy, s, s, 0.2, 0, 0.06, hz + 0.15, 0.08, '#1d2a1f');
         naFace(fc, hx, hy, s, s, 0.12, 0, 0.08, hz + 0.06, 0.05, p.especie === 'dragao' ? '#2e7d32' : '#e07bb0');
-        if (p.acessorio === 'oculos') naFace(fc, hx, hy, s, s, 0.02, 0, 0.28, hz + 0.13, 0.1, 'rgba(20,20,40,.85)');
       }
       // orelhas
       const o = ax ? [[hx + 0.1, hy + 0.02], [hx + 0.1, hy + s - 0.09]] : [[hx + 0.02, hy + 0.1], [hx + s - 0.09, hy + 0.1]];
@@ -899,9 +966,7 @@
       else if (p.especie === 'coelho') o.forEach(([a, b]) => caixa(a, b, hz + s, 0.07, 0.07, 0.34, cl, sem));
       else if (p.especie === 'cachorro') (ax ? [[hx + 0.1, hy - 0.05], [hx + 0.1, hy + s - 0.01]] : [[hx - 0.05, hy + 0.1], [hx + s - 0.01, hy + 0.1]]).forEach(([a, b]) => caixa(a, b, hz + 0.08, 0.06 + (ax ? 0.06 : 0), 0.06 + (ax ? 0 : 0.06), 0.22, esc2, sem));
       else o.forEach(([a, b]) => caixa(a, b, hz + s, 0.06, 0.06, 0.12, '#ffd58a', sem));
-      if (p.acessorio === 'laco') caixa(hx + 0.08, hy + 0.08, hz + s, 0.16, 0.16, 0.07, '#e0564a', sem);
-      if (p.acessorio === 'chapeu') { caixa(hx - 0.03, hy - 0.03, hz + s, s + 0.06, s + 0.06, 0.03, '#3f8fe0', sem); caixa(hx + 0.06, hy + 0.06, hz + s + 0.03, 0.2, 0.2, 0.14, '#3f8fe0', sem); }
-      if (p.acessorio === 'coroa') caixa(hx + 0.05, hy + 0.05, hz + s, 0.22, 0.22, 0.1, '#ffd58a', sem);
+      enfeite(p.acessorio, hx, hy, hz, s, dir, hz + s);
     };
     if (f[0] + f[1] < 0) { cabeca(); corpo(); rabo(); } else { rabo(); corpo(); cabeca(); }
   }
@@ -932,6 +997,7 @@
       ['bola', '🎾 Brincar de bola', espera('bola', 20) ? `de novo em ${espera('bola', 20)} min` : 'gasta energia', !!espera('bola', 20) || p.dorme || p.energia < 10],
       ['quiz', '❓ Quiz com o pet', 'acerte e ele fica feliz', p.dorme],
       ['banho', '🛁 Banho', espera('banho', 30) ? `de novo em ${espera('banho', 30)} min` : 'deixa limpinho', !!espera('banho', 30) || p.dorme],
+      ...Object.keys(COMIDA).concat(['sabonete', 'brinquedo']).filter(k => S.inv[k] > 0).map(k => [k, `${ITENS[k][0]} ${k === 'sabonete' ? 'Banho de espuma' : k === 'brinquedo' ? 'Brinquedo novo' : ITENS[k][1]}`, `você tem ${S.inv[k]}`, p.dorme]),
       ['estrela', '⭐ Petisco especial', (S.inv.estrela || 0) ? `você tem ${S.inv.estrela}` : 'precisa de uma estrela', !(S.inv.estrela || 0) || p.dorme],
       ['dormir', p.dorme ? '☀️ Acordar' : '😴 Soneca na sua casa', p.dorme ? 'ele está recuperando energia' : 'recupera a energia', false]
     ];
@@ -941,7 +1007,7 @@
       <div class="barra pet-xp" title="Experiência"><span style="width:${Math.round(100 * p.xp / (20 * p.nivel))}%"></span></div>
       ${NECESSIDADES.map(([k, ic2, nome]) => `<div class="nec"><span>${ic2} ${nome}</span><div class="barra ${p[k] < 30 ? 'baixa' : ''}"><span style="width:${Math.round(p[k])}%"></span></div></div>`).join('')}</div></div>
       <div class="pet-acoes">${acoes.map(([k, t, sub, off]) => `<button type="button" class="pet-b" data-acao="${k}" ${off ? 'disabled' : ''}><strong>${t}</strong><small>${sub}</small></button>`).join('')}</div>
-      <div class="av-grupo"><h3>Acessório</h3><div class="av-cores">${ACESSORIOS.map(([k, n, nv]) => p.nivel >= nv ? `<button type="button" data-acess="${k}" aria-pressed="${p.acessorio === k}">${n}</button>` : `<button type="button" disabled title="Nível ${nv}">🔒 ${n} (nível ${nv})</button>`).join('')}</div></div>
+      <div class="av-grupo"><h3>Acessório</h3><div class="av-cores">${ACESSORIOS.map(([k, n, nv]) => p.nivel >= nv ? `<button type="button" data-acess="${k}" aria-pressed="${p.acessorio === k}">${n}</button>` : `<button type="button" disabled title="Nível ${nv}">🔒 ${n} (nível ${nv})</button>`).join('')}${Object.keys(S.loja.tem).filter(c => c.startsWith('pet:')).map(c => c.slice(4)).map(k => `<button type="button" data-acess="${k}" aria-pressed="${p.acessorio === k}">🛍️ ${esc(NOMES_ENFEITE[k] || k)}</button>`).join('')}</div></div>
       <div class="av-grupo"><h3>Cor</h3><div class="av-cores">${CORES_PET.map(c => `<button type="button" data-cor-pet="${c}" aria-pressed="${p.cor === c}" aria-label="Cor ${c}" style="background:${c}"></button>`).join('')}</div></div>
       <p class="muted small">As necessidades caem com o tempo, mesmo com o site fechado. Volte algumas vezes por dia para cuidar de ${esc(p.nome)}. ${lib.length < ACESSORIOS.length ? 'Cuidando, ele sobe de nível e libera acessórios.' : ''}</p>`;
     const g = $('#pet-preview').getContext('2d');
@@ -959,6 +1025,9 @@
     else if (k === 'bola') { p.cd.bola = Date.now(); mais('alegria', 25); p.energia = Math.max(0, p.energia - 10); p.fome = Math.max(0, p.fome - 5); cuidou(3, `🎾 ${p.nome} correu atrás da bola!`); }
     else if (k === 'banho') { p.cd.banho = Date.now(); p.limpeza = 100; mais('alegria', 5); cuidou(2, `🛁 ${p.nome} está cheiroso!`); }
     else if (k === 'estrela' && S.inv.estrela > 0) { S.inv.estrela--; for (const [n] of NECESSIDADES) mais(n, 15); cuidou(8, `⭐ ${p.nome} ganhou um petisco especial!`); }
+    else if (k in COMIDA && S.inv[k] > 0) { S.inv[k]--; mais('fome', COMIDA[k][0]); mais('alegria', COMIDA[k][1]); cuidou(4, `${ITENS[k][0]} ${p.nome} adorou!`); }
+    else if (k === 'sabonete' && S.inv.sabonete > 0) { S.inv.sabonete--; p.limpeza = 100; mais('alegria', 15); cuidou(4, `🧼 ${p.nome} ficou cheio de espuma e cheiroso!`); }
+    else if (k === 'brinquedo' && S.inv.brinquedo > 0) { S.inv.brinquedo--; mais('alegria', 45); cuidou(5, `🧸 ${p.nome} amou o brinquedo novo!`); }
     else if (k === 'dormir') { p.dorme = !p.dorme; if (!p.dorme) petPerto(); salvar(); aviso(p.dorme ? `😴 ${p.nome} foi dormir no quarto da sua casa.` : `☀️ ${p.nome} acordou!`); }
     else if (k === 'quiz') {
       fechaJanela();
@@ -966,6 +1035,136 @@
     }
     janelaPet();
   }
+  /* ---------- lojas: as ⭐ compram coisas, mas só depois de acertar a conta ----------
+     À vista tem 10% de desconto; parcelado tem 5% de juros por parcela. A primeira parcela é paga na hora
+     e as outras, uma por dia. Nunca dá para gastar mais do que o saldo + o crédito que ainda sobra. */
+  const COMIDA = { petisco: [25, 15], suco: [15, 10], sanduiche: [40, 5], bolo: [30, 25], panetone: [35, 30], uvas: [20, 30], picole: [15, 35], ovoChoc: [25, 35], pipoca: [20, 30], pirulito: [10, 40], cupcake: [25, 30], docinho: [20, 35] };   // [fome, alegria] para o pet
+  const EXCLUSIVOS = {
+    natal: [['gorro', '🎅', 'Gorro de Papai Noel'], ['panetone']], anonovo: [['cartola', '🎩', 'Cartola de Ano Novo'], ['uvas']],
+    carnaval: [['mascara', '🎭', 'Máscara de Carnaval'], ['picole']], pascoa: [['orelhas', '🐰', 'Orelhas de coelho'], ['ovoChoc']],
+    junina: [['palha', '👒', 'Chapéu de palha'], ['pipoca']], criancas: [['helice', '🧢', 'Boné de hélice'], ['pirulito']],
+    professor: [['capelo', '🎓', 'Capelo de formatura'], ['cupcake']], saci: [['gorroSaci', '🔴', 'Gorro do Saci'], ['docinho']]
+  };
+  const NOMES_ENFEITE = Object.assign({ oculos: 'Óculos escuros', laco: 'Laço', chapeu: 'Chapéu azul', coroa: 'Coroa', cachecol: 'Cachecol', lenco: 'Lenço' }, ...Object.values(EXCLUSIVOS).map(([[k, , n]]) => ({ [k]: n })));
+  function produtos(loja) {
+    const base = {
+      roupa: [['av', 'oculos', '🕶️', 40], ['av', 'laco', '🎀', 40], ['av', 'chapeu', '🎩', 50], ['av', 'cachecol', '🧣', 60], ['av', 'coroa', '👑', 160],
+        ['cor', 'camisa:#2b2d6e', '👕', 60, 'Camiseta galáxia'], ['cor', 'camisa:#ff8fab', '👕', 60, 'Camiseta chiclete'], ['cor', 'calca:#7aa6d6', '👖', 40, 'Calça jeans clara']],
+      comida: [['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
+      pet: [['inv', 'petisco', '🦴', 20, '2 petiscos', 2], ['inv', 'sabonete', '🧼', 20], ['inv', 'brinquedo', '🧸', 40], ['pet', 'lenco', '🧣', 50], ['pet', 'cachecol', '🧣', 50]],
+      moveis: [['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]]
+    }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco, nome, qtd }));
+    for (const ev of eventosAtivos) {
+      const [[hat, hic, hnome], [comida]] = EXCLUSIVOS[ev.id], so = { ev };
+      if (loja === 'roupa') base.unshift(Object.assign({ tipo: 'av', id: hat, ic: hic, preco: 80, nome: hnome }, so));
+      if (loja === 'pet') base.unshift(Object.assign({ tipo: 'pet', id: hat, ic: hic, preco: 60, nome: hnome + ' para o pet' }, so));
+      if (loja === 'comida') base.unshift(Object.assign({ tipo: 'inv', id: comida, ic: ITENS[comida][0], preco: 30 }, so));
+      if (loja === 'moveis') base.unshift(Object.assign({ tipo: 'movel', id: ev.movel, preco: 200 }, so));
+    }
+    for (const p of base) {
+      if (p.tipo === 'movel') { p.ic = MOVEIS[p.id].ic; p.nome = p.nome || MOVEIS[p.id].nome; }
+      if (p.tipo === 'inv') { p.ic = p.ic || ITENS[p.id][0]; p.nome = p.nome || ITENS[p.id][1]; }
+      if (p.tipo === 'av' || p.tipo === 'pet') p.nome = p.nome || NOMES_ENFEITE[p.id];
+      p.chave = p.tipo + ':' + p.id;
+      p.unico = p.tipo === 'av' || p.tipo === 'pet' || p.tipo === 'cor';
+    }
+    return base;
+  }
+  const diaN = d => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(2020, 0, 1)) / 864e5);
+  const diaHoje = () => diaN(new Date(Math.max(HOJE, new Date())));
+  const limiteCredito = () => 100 + 25 * Object.keys(S.concluidas).length;
+  const divida = () => S.loja.dividas.reduce((a, d) => a + d.parcela * d.faltam, 0);
+  const atrasada = () => S.loja.dividas.some(d => d.prox <= diaHoje());
+  const credito = () => atrasada() ? 0 : Math.max(0, limiteCredito() - divida());
+  /* cobra as parcelas do dia (e as atrasadas) se houver saldo; o saldo nunca fica negativo */
+  function cobra() {
+    const hj = diaHoje(); let pagou = 0;
+    for (const d of S.loja.dividas) while (d.faltam > 0 && d.prox <= hj && S.pontos >= d.parcela) { S.pontos -= d.parcela; d.faltam--; d.prox++; pagou += d.parcela; }
+    S.loja.dividas = S.loja.dividas.filter(d => d.faltam > 0);
+    if (pagou) { aviso(`💳 Parcela paga: −${pagou} ⭐`); hud(); salvar(); }
+    else if (atrasada() && !cobra.avisou) { cobra.avisou = true; aviso('💳 Você tem parcela atrasada. Junte ⭐ para pagar!'); }
+  }
+  function planos(p) {
+    const vista = Math.round(p.preco * 0.9);
+    const out = [{ n: 1, total: vista, agora: vista, txt: `À vista: ${vista} ⭐ (10% de desconto)` }];
+    for (const n of [2, 3, 4]) { const parc = Math.ceil(p.preco * (1 + 0.05 * n) / n); out.push({ n, parcela: parc, total: parc * n, agora: parc, txt: `${n}x de ${parc} ⭐ (total ${parc * n} ⭐, juros de ${5 * n}%)` }); }
+    for (const o of out) o.motivo = S.pontos < o.agora ? `faltam ${o.agora - S.pontos} ⭐ no saldo` : o.n > 1 && atrasada() ? 'pague a parcela atrasada antes' : o.n > 1 && o.total - o.agora > credito() ? `passa do seu crédito (${credito()} ⭐)` : '';
+    return out;
+  }
+  let lojaAtual = 'roupa', lojaEscolha = null;
+  function abreLoja(id) { lojaAtual = id; lojaEscolha = null; abreJanela('loja'); }
+  const temProduto = p => p.unico && !!S.loja.tem[p.chave];
+  function janelaLoja() {
+    cobra();
+    const Lj = LOJAS[lojaAtual], el = $('#loja-conteudo');
+    $('#j-loja-t').textContent = `${Lj.ic} ${Lj.nome}`;
+    const conta = `<div class="conta"><span>Saldo <b>${S.pontos} ⭐</b></span><span>Devendo <b>${divida()} ⭐</b></span><span>Crédito livre <b>${credito()} ⭐</b> <small class="muted">de ${limiteCredito()}</small></span></div>
+      ${S.loja.dividas.length ? `<div class="parcelas">${S.loja.dividas.map((d, i) => `<div class="parc ${d.prox <= diaHoje() ? 'atraso' : ''}"><span>${d.ic} ${esc(d.nome)}: faltam ${d.faltam}x de ${d.parcela} ⭐${d.prox <= diaHoje() ? ' · <b>atrasada</b>' : ''}</span><button type="button" class="hb azul" data-adianta="${i}" ${S.pontos >= d.parcela ? '' : 'disabled'}>Pagar 1 parcela</button></div>`).join('')}</div>` : ''}`;
+    if (lojaEscolha) {
+      const p = lojaEscolha;
+      el.innerHTML = conta + `<h3>${p.ic} ${esc(p.nome)} · ${p.preco} ⭐</h3><p>Como você quer pagar? Depois de escolher, responda a conta certinho para levar.</p>
+        <div class="planos">${planos(p).map((o, i) => `<button type="button" class="pet-b" data-plano="${i}" ${o.motivo ? 'disabled' : ''}><strong>${o.txt}</strong><small>${o.motivo || (o.n > 1 ? `paga ${o.agora} ⭐ agora e o resto, uma parcela por dia` : 'paga tudo agora')}</small></button>`).join('')}</div>
+        <button type="button" class="hb azul" id="loja-volta">← Voltar</button>`;
+      el.querySelectorAll('[data-plano]').forEach(b => b.addEventListener('click', () => perguntaLoja(p, planos(p)[+b.dataset.plano])));
+      $('#loja-volta').addEventListener('click', () => { lojaEscolha = null; janelaLoja(); });
+    } else {
+      const lista = produtos(lojaAtual);
+      el.innerHTML = conta + `<p class="muted small">${Lj.texto} À vista tem 10% de desconto; parcelado tem juros. Para levar, acerte a conta do pagamento.</p>
+        <div class="produtos">${lista.map((p, i) => `<button type="button" class="prod ${p.ev ? 'exclusivo' : ''}" data-prod="${i}" ${temProduto(p) ? 'disabled' : ''}>
+          ${p.ev ? `<span class="selo">${p.ev.ic} Só no ${esc(p.ev.nome)}</span>` : ''}<span class="p-ic">${p.ic}</span><span class="p-nome">${esc(p.nome)}</span>
+          <span class="p-preco">${temProduto(p) ? '✓ Já é seu' : `${p.preco} ⭐`}</span>${p.tipo === 'inv' || p.tipo === 'movel' ? `<small class="muted">você tem ${p.tipo === 'inv' ? S.inv[p.id] || 0 : S.casa.guardados[p.id] || 0}${p.tipo === 'movel' ? ' guardado(s)' : ''}</small>` : ''}</button>`).join('')}</div>
+        <p class="muted small">Crédito: 100 ⭐ + 25 por fase concluída. As parcelas são cobradas uma por dia; com parcela atrasada, só dá para comprar à vista.</p>`;
+      el.querySelectorAll('[data-prod]').forEach(b => b.addEventListener('click', () => { lojaEscolha = lista[+b.dataset.prod]; janelaLoja(); }));
+    }
+    el.querySelectorAll('[data-adianta]').forEach(b => b.addEventListener('click', () => { const d = S.loja.dividas[+b.dataset.adianta]; if (d && S.pontos >= d.parcela) { S.pontos -= d.parcela; d.faltam--; S.loja.dividas = S.loja.dividas.filter(x => x.faltam > 0); aviso(`💳 Parcela paga: −${d.parcela} ⭐`); hud(); salvar(); janelaLoja(); } }));
+  }
+  /* a conta do pagamento: três alternativas, só uma certa */
+  function contaLoja(p, o) {
+    const r = Math.random() < 0.5;
+    let enun, certa, erradas;
+    if (o.n === 1) {
+      if (r) { enun = `${p.ic} ${esc(p.nome)} custa <b>${p.preco} ⭐</b>. À vista tem <b>10% de desconto</b>. Quanto você vai pagar?`; certa = o.total; erradas = [p.preco, p.preco - 10, p.preco - p.preco / 5]; }
+      else { enun = `${p.ic} ${esc(p.nome)} custa <b>${p.preco} ⭐</b>. Pagando à vista, você ganha <b>10% de desconto</b>. Quantas ⭐ você economiza?`; certa = p.preco - o.total; erradas = [10, certa * 2, certa + 5, 1]; }
+    } else if (r) { enun = `Você vai pagar <b>${o.n} parcelas de ${o.parcela} ⭐</b>. Quanto vai pagar no total?`; certa = o.total; erradas = [p.preco, o.total + o.parcela, o.parcela + o.n, o.total - o.n]; }
+    else { enun = `${p.ic} ${esc(p.nome)} custa <b>${p.preco} ⭐</b> à vista sem desconto. Em <b>${o.n}x de ${o.parcela} ⭐</b>, quanto você paga de juros?`; certa = o.total - p.preco; erradas = [o.total, o.parcela, certa + o.n, certa * 2]; }
+    const alts = [certa];
+    for (const e of erradas) if (alts.length < 3 && e > 0 && Number.isInteger(e) && !alts.includes(e)) alts.push(e);
+    for (let k = 1; alts.length < 3; k++) if (!alts.includes(certa + k * 3)) alts.push(certa + k * 3);
+    alts.sort(() => Math.random() - 0.5);
+    return { enun, alts, certa: alts.indexOf(certa) };
+  }
+  function perguntaLoja(p, o) {
+    fechaJanela();
+    const q = perguntaLoja.ultima = contaLoja(p, o), Lj = LOJAS[lojaAtual];
+    const volta = { txt: '🛍️ Voltar à loja', fn: () => { fechaDialogo(); lojaEscolha = null; abreJanela('loja'); } };
+    dialogo(Lj.ic, Lj.nome, `<p>${q.enun}</p><p class="muted small">Dica: 10% é o mesmo que dividir por 10.</p>`, q.alts.map((a, i) => ({ txt: `${a} ⭐`, fn: () => {
+      if (D.op.dataset.respondida) return;
+      D.op.dataset.respondida = '1';
+      [...D.op.children].forEach((b, j) => { b.disabled = true; if (j === q.certa) b.classList.add('certa'); else if (j === i) b.classList.add('errada'); });
+      let msg;
+      if (i !== q.certa) msg = '❌ A conta não bateu, então a loja não vende ainda. Tente de novo!';
+      else if (o.motivo || S.pontos < o.agora) msg = 'Seu saldo mudou e não dá mais para pagar assim.';
+      else { compra(p, o); msg = `✅ Conta certa! ${p.ic} ${esc(p.nome)} é seu${o.n > 1 ? `. Faltam ${o.n - 1} parcela(s) de ${o.parcela} ⭐, uma por dia.` : '.'} ${dicaUso(p)}`; }
+      D.texto.innerHTML += `<p><strong>${msg}</strong></p>`;
+      const opc = i === q.certa ? [volta] : [{ txt: 'Tentar de novo', classe: 'principal', fn: () => perguntaLoja(p, o) }, volta];
+      D.op.innerHTML = ''; opc.forEach(x => { const b = document.createElement('button'); b.type = 'button'; b.className = x.classe || 'principal'; b.textContent = x.txt; b.addEventListener('click', x.fn); D.op.appendChild(b); });
+      D.op.querySelector('button').focus();
+    } })));
+    delete D.op.dataset.respondida;
+  }
+  function compra(p, o) {
+    S.pontos -= o.agora;
+    if (o.n > 1) S.loja.dividas.push({ nome: p.nome, ic: p.ic, parcela: o.parcela, faltam: o.n - 1, prox: diaHoje() + 1 });
+    if (p.unico) S.loja.tem[p.chave] = true;
+    if (p.tipo === 'inv') S.inv[p.id] = (S.inv[p.id] || 0) + (p.qtd || 1);
+    if (p.tipo === 'movel') { S.casa.guardados[p.id] = (S.casa.guardados[p.id] || 0) + 1; S.casa.feitos[p.id] = true; }
+    if (p.tipo === 'av') S.av.acessorio = p.id;
+    if (p.tipo === 'cor') { const [k, v] = p.id.split(':'); S.av[k] = v; }
+    if (p.tipo === 'pet' && S.pet) S.pet.acessorio = p.id;
+    S.loja.compras++;
+    lojaEscolha = null; hud(); salvar();
+  }
+  const dicaUso = p => p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
   /* ---------- Casa do Enigma: um escape room sem cronômetro (código binário, Cifra de César e uma chave do inventário) ---------- */
   const EW = 7, ED = 6, ESAIDA = { x: 3.5, y: ED - 0.5 };
   const PALAVRAS = ['CHAVE', 'DADOS', 'PIXEL', 'REDES', 'TECLA', 'ROBOS', 'LOGICA', 'CODIGO'];
@@ -1425,6 +1624,7 @@
     const alvo = !dialogoAberto && alvoPerto();
     for (const f of visiveisFases()) {
       if (f.enigma) { const c = f.enigma; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4, true) }); }
+      if (f.loja) { const c = f.loja; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaLoja(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       if (f.minhaCasa) { const c = f.minhaCasa; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       for (const c of f.casas) if (naTela(c.gx + 1.5, c.y + 1.5, 220)) lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) });
       for (const a of f.arvores) if (naTela(a.x, a.y)) lista.push({ k: a.x + a.y + 1, d: () => desenhaArvore(a) });
@@ -1445,7 +1645,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     minimapa(faseDeX(P.x));
@@ -1468,6 +1668,7 @@
     c.fillStyle = '#3f8f4b'; for (const a of f.arvores) c.fillRect(ox + (a.x - f.x0) * s, oy + a.y * s, Math.ceil(s), Math.ceil(s));
     if (f.minhaCasa) { const m = f.minhaCasa; c.fillStyle = S.casa.cor; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (f.enigma) { const m = f.enigma; c.fillStyle = '#9a6bd6'; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
+    if (f.loja) { const m = f.loja; c.fillStyle = LOJAS[m.id].toldo; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (comCasas) for (const casa of f.casas) { c.fillStyle = S.feitos[casa.lugar.id] ? casa.cor : '#b9b9b4'; c.fillRect(ox + casa.x * s, oy + casa.y * s, casa.w * s, casa.d * s); }
   }
   function minimapa(f) {
@@ -1548,7 +1749,7 @@
   function presente(n) {
     const dia = S.diaNpc[n.id] || (S.diaNpc[n.id] = {});
     if (dia.presente === hoje()) return dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>Você já me deu um presente hoje. Volte amanhã!</p>`, [{ txt: 'Tá bom', fn: fechaDialogo }]);
-    const tem = GOSTOS.filter(k => S.inv[k] > 0);
+    const tem = GOSTOS.concat(Object.keys(COMIDA)).filter(k => S.inv[k] > 0);
     const dica = S.gostos[n.id] ? `<p class="muted">${esc(n.nome)} adora ${ITENS[favorito(n)][0]} ${ITENS[favorito(n)][1].toLowerCase()}.</p>` : '<p class="muted">Cada morador tem um presente preferido. Descubra qual é!</p>';
     if (!tem.length) return dialogo('🎁', 'Presente', `<p>Você não tem itens para dar. Pegue maçãs, livros, estrelas, diamantes e chaves pela vila.</p>${dica}`, [{ txt: 'Ok', fn: fechaDialogo }]);
     dialogo('🎁', `Presente para ${n.nome}`, `<p>O que você quer dar?</p>${dica}`, tem.map(k => ({ txt: `${ITENS[k][0]} ${ITENS[k][1]} (${S.inv[k]})`, fn: () => {
@@ -1649,7 +1850,7 @@
   }
   function lePlaca(f) {
     const ms = missoes(f);
-    dialogo('🪧', f.nome, `<p>${esc(f.placa)}</p><p class="muted">Missões desta fase: ${ms.map(m => `${m.ok ? '✅' : '⬜'} ${esc(m.nome)}`).join(' · ')}</p><p class="muted">Os itens do chão mudam de lugar toda segunda-feira, para você voltar e revisar.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
+    dialogo('🪧', f.nome, `<p>${esc(f.placa)}</p>${f.loja ? `<p>${LOJAS[f.loja.id].ic} Nesta vila fica a <strong>${LOJAS[f.loja.id].nome}</strong>: troque suas ⭐ por coisas novas.</p>` : ''}<p class="muted">Missões desta fase: ${ms.map(m => `${m.ok ? '✅' : '⬜'} ${esc(m.nome)}`).join(' · ')}</p><p class="muted">Os itens do chão mudam de lugar toda segunda-feira, para você voltar e revisar.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
   }
   function portao(f, p) {
     const prox = fases[p.para];
@@ -1662,13 +1863,13 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -1713,7 +1914,7 @@
     $('#mapa-fases').querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => teleporta(fases[+b.dataset.ir])));
   }
   function inventario() {
-    $('#inv-itens').innerHTML = Object.entries(ITENS).map(([k, [ic, nome]]) => `<div class="it ${S.inv[k] ? '' : 'falta'}"><span style="font-size:26px">${ic}</span><span>${nome}<br><b>${S.inv[k] || 0}</b></span></div>`).join('') +
+    $('#inv-itens').innerHTML = Object.entries(ITENS).filter(([k]) => !ITENS_LOJA.has(k) || S.inv[k]).map(([k, [ic, nome]]) => `<div class="it ${S.inv[k] ? '' : 'falta'}"><span style="font-size:26px">${ic}</span><span>${nome}<br><b>${S.inv[k] || 0}</b></span></div>`).join('') +
       `<p class="muted small" style="flex-basis:100%;margin:4px 0 0">Na bancada da sua casa 🏠, os itens viram móveis. Maçãs e estrelas também alimentam o seu pet 🐾. As 🔑 chaves abrem o baú da Casa do Enigma e as 🧩 peças montam o quebra-cabeça abaixo.</p>`;
     $('#inv-quebra').innerHTML = `<div class="quebra">${[0, 1, 2, 3].map(i => `<span class="q-peca ${i < S.quebra ? 'ok' : ''}" style="background-position:${i % 2 * 100}% ${Math.floor(i / 2) * 100}%">${i < S.quebra ? '' : '🧩'}</span>`).join('')}</div>
       <div><p>${S.quebra >= 4 ? 'Quebra-cabeça completo! O jogo especial está liberado.' : `Encaixe 4 peças para liberar um <strong>jogo especial</strong>. Encaixadas: ${S.quebra}/4 · no inventário: ${S.inv.peca || 0}.`}</p>
@@ -1751,7 +1952,7 @@
   }
   /* oficina da casa: construir, colocar, guardar e pintar */
   function janelaCasa() {
-    $('#casa-inv').innerHTML = 'No seu inventário: ' + Object.entries(ITENS).map(([k, [ic]]) => `${ic} <b>${S.inv[k] || 0}</b>`).join(' · ');
+    $('#casa-inv').innerHTML = 'No seu inventário: ' + Object.entries(ITENS).filter(([k]) => !ITENS_LOJA.has(k)).map(([k, [ic]]) => `${ic} <b>${S.inv[k] || 0}</b>`).join(' · ');
     $('#casa-receitas').innerHTML = Object.entries(MOVEIS).filter(([, M]) => M.custo).map(([id, M]) => {
       const trava = M.requer && !S.casa.feitos[M.requer];
       const custo = Object.entries(M.custo).map(([k, n]) => `<span class="${(S.inv[k] || 0) >= n ? 'tem' : 'falta'}">${ITENS[k][0]} ${n}</span>`).join(' ');
@@ -1775,7 +1976,11 @@
     ['camisa', 'Camiseta', ROUPAS], ['calca', 'Calça', ['#2f3b6b', '#5a3b2a', '#333333', '#4bb259', '#e07bb0', '#f6b73c']]
   ];
   function editorAvatar() {
-    $('#av-opcoes').innerHTML = OPCOES_AV.map(([k, nome, ops]) => `<div class="av-grupo"><h3>${nome}</h3><div class="av-cores">${ops.map(o => {
+    const comprados = Object.keys(S.loja.tem);
+    const ops = OPCOES_AV.map(([k, n, o]) => [k, n, o.concat(comprados.filter(c => c.startsWith(`cor:${k}:`)).map(c => c.split(':')[2]))]);
+    const acess = comprados.filter(c => c.startsWith('av:')).map(c => c.slice(3));
+    if (acess.length) ops.push(['acessorio', 'Acessório (da loja)', [['nada', 'Nada']].concat(acess.map(k => [k, NOMES_ENFEITE[k] || k]))]);
+    $('#av-opcoes').innerHTML = ops.map(([k, nome, ops]) => `<div class="av-grupo"><h3>${nome}</h3><div class="av-cores">${ops.map(o => {
       const [v, txt] = Array.isArray(o) ? o : [o, ''];
       return `<button type="button" data-k="${k}" data-v="${v}" aria-pressed="${S.av[k] === v}" aria-label="${esc(nome)}: ${esc(txt || v)}" style="${txt ? '' : `background:${v}`}">${esc(txt)}</button>`;
     }).join('')}</div></div>`).join('');
@@ -1836,6 +2041,7 @@
     const a = alvoPerto();
     if (a && a.tipo === 'pet' && Math.hypot(wx - PET.x, wy - PET.y) < 0.8) return interage();
     if (a && a.tipo === 'enigma') { const c = fases[1].enigma; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
+    if (a && a.tipo === 'loja') { const c = atual.loja; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'minhacasa') { const c = fases[0].minhaCasa; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'casa' && wx > a.casa.gx - 0.5 && wx < a.casa.gx + a.casa.w + 0.5 && wy > a.casa.y - 0.5 && wy < a.casa.y + a.casa.d + 0.5) return interage();
     if (a && a.tipo === 'npc' && Math.hypot(wx - a.npc.x, wy - a.npc.y) < 0.9) return interage();
@@ -1876,14 +2082,14 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { confereJogos(); hud(); } });
   window.addEventListener('focus', () => { confereJogos(); hud(); });
   window.addEventListener('storage', ev => { if (ev.key === 'md-progresso-v1') { confereJogos(); hud(); } });
-  setInterval(() => { guardaPos(); atualizaPet(); salvar(); }, 10000);
+  setInterval(() => { guardaPos(); atualizaPet(); cobra(); salvar(); }, 10000);
   window.addEventListener('pagehide', () => { guardaPos(); salvar(); });
 
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
-  hud(); confereJogos(); confereFases();
+  window.MUNDO_DEBUG = { abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  hud(); confereJogos(); confereFases(); cobra();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
       setTimeout(() => aviso(aniversariantes.length ? `🎂 Hoje é aniversário de ${aniversariantes[0].nome}! Desafio do dia no botão de evento.` : `${eventosAtivos[0].ic} Evento: ${eventosAtivos[0].nome}! Veja as missões especiais.`), 2600); } }
