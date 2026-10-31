@@ -136,6 +136,15 @@ const PINS = [
   { arq: 'mundo', janela: 'mundo.html', faixa: 'Jogo gratuito · no navegador', t1: 'Mundo', t2: 'do site',
     sub: 'Uma vila para explorar: missões com perguntas da BNCC, casa, pet e jogos em cada porta', pills: ['Missões', 'BNCC', 'Pet e casa'],
     url: 'ohtopico.com.br/mundo', captura: '/mundo/' },
+  // jogos: cada pin leva para a página do jogo, que já traz o plano de aula
+  ...[
+    ['robo', 'Robô', 'Coletor', 'Monte a sequência de comandos com repetição e leve o robô até as estrelas', ['Algoritmos', 'EF06CO02', '6º e 7º ano']],
+    ['golpe', 'Golpe ou', 'seguro?', 'Mensagens, links e pedidos de dados: decida o que é golpe e aprenda os sinais', ['Segurança digital', 'EF07CO07', '7º ao 9º ano']],
+    ['fabrica-logica', 'Fábrica', 'Lógica', 'Uma fábrica com um andar por setor: algoritmos, dados, planilhas e decisões', ['Computação', 'Simulação', '6º ao 9º ano']],
+    ['python', 'Horta em', 'Python', 'Aprenda Python cuidando da horta da escola, em 21 missões', ['Programação', 'Python', '7º ao 9º ano']],
+    ['tangram', 'Tangram', 'online', 'Monte figuras com as 7 peças e descubra a fração e a área de cada uma', ['Geometria', 'Frações', '6º e 7º ano']]
+  ].map(([nome, t1, t2, sub, pills]) => ({ arq: `jogo-${nome}`, janela: `${nome}.html`, faixa: 'Jogo gratuito · no navegador',
+    t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/jogos/${nome}`, captura: `/material-didatico/jogos/${nome}.html#captura`, rolar: true })),
   ...[
     ['programando-colega-robo', 'Colega', 'robô', 'Um aluno programa, o outro executa: algoritmos sem computador', ['Algoritmos', 'EF06CO02', '6º e 7º ano']],
     ['disco-cifra-cesar', 'Cifra de', 'César', 'Disco para recortar e montar, com mensagens para cifrar e decifrar', ['Criptografia', 'EF09CO05', '8º e 9º ano']],
@@ -264,13 +273,15 @@ async function navegador() {
 }
 
 // captura a página como o professor vê no notebook: tema claro, sem a barra do topo
-async function capturar(browser, url, viewport) {
+async function capturar(browser, url, viewport, rolar) {
   const p = await browser.newPage({ viewport, colorScheme: 'light' });
   await p.goto(url, { waitUntil: 'load' });
   await p.addStyleTag({ content: '#topbar, .topbar, header.site, .estrelas, [class*="estrela"] { display: none !important; }' });
   // cenas 3D só carregam depois do clique em "Iniciar a cena 3D"
   const iniciar = await p.$('.lab-iniciar');
   if (iniciar) { await iniciar.click(); await p.waitForSelector('#palco canvas', { timeout: 15000 }).catch(() => {}); }
+  // rolar: pula o cabeçalho da página do jogo (título, habilidades, "Como jogar") e mostra o jogo
+  if (rolar) await p.evaluate(() => { const d = document.querySelector('details'); if (d) window.scrollTo(0, d.getBoundingClientRect().bottom + scrollY - 8); });
   await p.waitForTimeout(1500);
   const png = 'data:image/png;base64,' + (await p.screenshot()).toString('base64');
   await p.close();
@@ -301,14 +312,14 @@ async function main() {
   const base = `http://127.0.0.1:${srv.address().port}`;
   const browser = await navegador();
   const cache = {};
-  const foto = async (pag, viewport) => cache[pag + viewport.height] || (cache[pag + viewport.height] = await capturar(browser, base + pag, viewport));
+  const foto = async (pag, viewport, rolar) => cache[pag + viewport.height + !!rolar] || (cache[pag + viewport.height + !!rolar] = await capturar(browser, base + pag, viewport, rolar));
   try {
     if (pinterest) {
       const pasta = path.resolve(args[1] || path.join(__dirname, 'pinterest'));
       for (const o of PINS) {
         // captura em pé, no formato do espaço que sobra embaixo do título
         const saida = path.join(pasta, `pin-${o.arq}.jpg`);
-        await renderizar(browser, modeloPin(o, await foto(o.captura, { width: 1000, height: 1150 })), { width: 1000, height: 1500 }, saida, 560);
+        await renderizar(browser, modeloPin(o, await foto(o.captura, { width: 1000, height: 1150 }, o.rolar)), { width: 1000, height: 1500 }, saida, 560);
         console.log('gerado', path.relative(process.cwd(), saida));
       }
       return;
