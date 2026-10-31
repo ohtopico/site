@@ -379,7 +379,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -698,6 +698,11 @@
     else if (k === 'palha') { aba('#e8c35a', 0.3); bloco(0.15, 0.08, 0.7, 0.32, '#e8c35a'); bloco(0.14, 0.1, 0.72, 0.08, '#e0564a'); }
     else if (k === 'helice') { bloco(0, 0, 1, 0.2, '#3f8fe0'); bloco(0, 0, 0.5, 0.2, '#ffd84a'); bloco(0.45, 0.2, 0.1, 0.18, '#888888'); const [px, py] = iso(hx + s / 2, hy + s / 2, topo + q(0.4)), a = agora / 90; ctx.strokeStyle = '#e0564a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(px - Math.cos(a) * 9, py - Math.sin(a) * 3); ctx.lineTo(px + Math.cos(a) * 9, py + Math.sin(a) * 3); ctx.stroke(); }
     else if (k === 'capelo') { bloco(0.12, 0, 0.76, 0.22, '#1d1d24'); aba('#1d1d24', 0.22); caixa(hx + s + q(0.1), hy + q(0.5), topo - q(0.3), q(0.06), q(0.06), q(0.35), '#ffd84a', sem); }
+    else if (k === 'fone') { caixa(hx - q(0.04), hy + q(0.42), topo - q(0.02), s + q(0.08), q(0.16), q(0.1), '#333333', sem); caixa(hx - q(0.12), hy + q(0.3), hz + q(0.3), q(0.14), q(0.4), q(0.4), '#e0564a', sem); caixa(hx + s - q(0.02), hy + q(0.3), hz + q(0.3), q(0.14), q(0.4), q(0.4), '#e0564a', sem); }
+    else if (k === 'oculosRedondos') { if (frente) { naFace(fc, hx, hy, s, s, q(0.08), 0, q(0.34), hz + q(0.34), q(0.32), '#3a2416'); naFace(fc, hx, hy, s, s, q(0.58), 0, q(0.34), hz + q(0.34), q(0.32), '#3a2416'); naFace(fc, hx, hy, s, s, q(0.13), 0, q(0.24), hz + q(0.39), q(0.22), '#d8f3ff'); naFace(fc, hx, hy, s, s, q(0.63), 0, q(0.24), hz + q(0.39), q(0.22), '#d8f3ff'); } }
+    else if (k === 'boina') { caixa(hx - q(0.12), hy - q(0.04), topo, s + q(0.16), s + q(0.08), q(0.16), '#e0564a', sem); bloco(0.45, 0.16, 0.1, 0.1, '#e0564a'); }
+    else if (k === 'capacete') { aba('#f6c93c', 0.1); bloco(0.05, 0.08, 0.9, 0.3, '#f6c93c'); bloco(0.4, 0.38, 0.2, 0.08, '#f6c93c'); }
+    else if (k === 'antena') { caixa(hx - q(0.04), hy + q(0.42), topo - q(0.02), s + q(0.08), q(0.16), q(0.08), '#9a6bd6', sem); caixa(hx + q(0.45), hy + q(0.45), topo, q(0.08), q(0.08), q(0.5), '#888888', sem); bloco(0.38, 0.5, 0.24, 0.2, Math.floor(agora / 500) % 2 ? '#7dff8a' : '#2bb3b1'); }
     else if (k === 'gorroSaci') { bloco(0, 0, 1, 0.25, '#d32f2f'); bloco(0.15, 0.25, 0.7, 0.3, '#d32f2f'); bloco(0.3, 0.55, 0.4, 0.3, '#d32f2f'); bloco(0.42, 0.85, 0.16, 0.2, '#d32f2f'); }
   }
   /* personagem de blocos: pernas, corpo, braços e cabeça cúbica; o rosto aparece na face para onde olha */
@@ -789,6 +794,7 @@
     if (f.enigma) tenta(f.enigma.porta.x, f.enigma.porta.y, { tipo: 'enigma' });
     if (f.loja) tenta(f.loja.porta.x, f.loja.porta.y, { tipo: 'loja' });
     if (f.projetos) tenta(f.projetos.porta.x, f.projetos.porta.y, { tipo: 'projetos' });
+    if (profDe(f)) { const q = posProf(f); tenta(q.x, q.y, { tipo: 'prof' }); }
     if (S.pet && !S.pet.dorme) tenta(PET.x, PET.y + 0.3, { tipo: 'pet' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
     tenta(f.placa.x, f.placa.y + 0.8, { tipo: 'placa', fase: f });
@@ -1087,7 +1093,7 @@
     junina: [['palha', '👒', 'Chapéu de palha'], ['pipoca']], criancas: [['helice', '🧢', 'Boné de hélice'], ['pirulito']],
     professor: [['capelo', '🎓', 'Capelo de formatura'], ['cupcake']], saci: [['gorroSaci', '🔴', 'Gorro do Saci'], ['docinho']]
   };
-  const NOMES_ENFEITE = Object.assign({ oculos: 'Óculos escuros', laco: 'Laço', chapeu: 'Chapéu azul', coroa: 'Coroa', cachecol: 'Cachecol', lenco: 'Lenço' }, ...Object.values(EXCLUSIVOS).map(([[k, , n]]) => ({ [k]: n })));
+  const NOMES_ENFEITE = Object.assign({ fone: 'Fone de programadora', oculosRedondos: 'Óculos de cientista', boina: 'Boina de designer', capacete: 'Capacete de técnico', antena: 'Tiara com antena', oculos: 'Óculos escuros', laco: 'Laço', chapeu: 'Chapéu azul', coroa: 'Coroa', cachecol: 'Cachecol', lenco: 'Lenço' }, ...Object.values(EXCLUSIVOS).map(([[k, , n]]) => ({ [k]: n })));
   function produtos(loja) {
     const base = {
       roupa: [['av', 'oculos', '🕶️', 40], ['av', 'laco', '🎀', 40], ['av', 'chapeu', '🎩', 50], ['av', 'cachecol', '🧣', 60], ['av', 'coroa', '👑', 160],
@@ -1284,6 +1290,100 @@
         pontos(40, `${P.ic} Projeto concluído pela turma ${o.t}: ${P.nome}!`); salvar(); janelaProjetos();
       } catch (e) { aviso('Código de conclusão inválido. Confira se copiou inteiro.'); }
     });
+  }
+  /* ---------- profissões da computação: um profissional em cada uma das 5 primeiras vilas, com uma missão em 4 etapas ---------- */
+  const PROFISSOES = [
+    { fase: 0, id: 'programadora', nome: 'Lia', prof: 'Programadora', ic: '🧑‍💻', eixos: ['PC'], premio: 'fone',
+      av: { pele: PELES[2], cabelo: CABELOS[6], estilo: 'longo', camisa: '#333333', calca: '#2f3b6b', acessorio: 'fone' },
+      ola: 'Eu escrevo programas: passo a passo, digo ao computador exatamente o que fazer. Topa aprender como é o meu trabalho?',
+      passos: [
+        { tipo: 'pergunta', txt: 'Entender o que é um algoritmo', enun: 'Tudo começa com um algoritmo. O que é um algoritmo?', alts: ['Uma sequência finita de passos para resolver um problema', 'Um tipo de computador muito rápido', 'Um vírus que apaga arquivos', 'Um aplicativo de mensagens'], coment: 'Uma receita de bolo também é um algoritmo!' },
+        { tipo: 'item', txt: 'Trazer 2 📘 livros para estudar lógica', item: 'livro', n: 2 },
+        { tipo: 'jogos', txt: 'Concluir 2 atividades desta vila', n: 2 },
+        { tipo: 'pergunta', txt: 'Resolver o desafio do laço', enun: 'Meu robô pula 4 vezes, mas eu escrevi o comando "pule" uma vez só. Que estrutura eu usei?', alts: ['Repetição (laço)', 'Condição (se/senão)', 'Variável', 'Comentário'], coment: 'Laços repetem comandos sem precisar escrever tudo de novo.' }
+      ] },
+    { fase: 1, id: 'dados', nome: 'Caio', prof: 'Cientista de dados', ic: '📊', eixos: ['PE'], premio: 'oculosRedondos',
+      av: { pele: PELES[4], cabelo: CABELOS[1], estilo: 'curto', camisa: '#ffffff', calca: '#333333', acessorio: 'oculosRedondos' },
+      ola: 'Eu transformo números em respostas: junto dados, organizo em tabelas e gráficos e descubro o que eles contam.',
+      passos: [
+        { tipo: 'pergunta', txt: 'Calcular uma média', enun: 'Anotei as notas 6, 8 e 10. Qual é a média dessas notas?', alts: ['8', '6', '10', '24'], coment: 'Média: some tudo (24) e divida pela quantidade (3).' },
+        { tipo: 'item', txt: 'Trazer 2 🍎 maçãs para a pesquisa da feira', item: 'maca', n: 2 },
+        { tipo: 'acertos', txt: 'Acertar 3 perguntas desta vila', n: 3 },
+        { tipo: 'pergunta', txt: 'Ler um gráfico de barras', enun: 'Num gráfico de barras sobre as frutas preferidas da turma, a barra mais alta mostra...', alts: ['A fruta escolhida por mais pessoas', 'A fruta mais cara', 'A fruta mais pesada', 'A última fruta da lista'], coment: 'A altura da barra mostra a quantidade (a frequência).' }
+      ] },
+    { fase: 2, id: 'designer', nome: 'Tati', prof: 'Designer de jogos', ic: '🎨', eixos: ['MD'], premio: 'boina',
+      av: { pele: PELES[0], cabelo: CABELOS[5], estilo: 'coque', camisa: '#9a6bd6', calca: '#2f3b6b', acessorio: 'boina' },
+      ola: 'Eu invento jogos: as regras, as fases, os personagens e o que acontece quando a gente aperta cada botão.',
+      passos: [
+        { tipo: 'pergunta', txt: 'Achar o nome do problema', enun: 'No meu jogo, o personagem atravessa a parede quando não devia. Como chamamos esse erro?', alts: ['Bug', 'Pixel', 'Backup', 'Download'], coment: 'Procurar e corrigir bugs se chama depurar.' },
+        { tipo: 'item', txt: 'Trazer 1 💎 diamante e 1 ⭐ estrela para o cenário', item: 'diamante', n: 1, item2: 'estrela', n2: 1 },
+        { tipo: 'jogos', txt: 'Concluir 2 atividades desta vila', n: 2 },
+        { tipo: 'pergunta', txt: 'Entender a imagem na tela', enun: 'As imagens do jogo na tela são formadas por pontinhos coloridos chamados...', alts: ['Pixels', 'Bytes de som', 'Pastas', 'Links'], coment: 'Cada pixel guarda uma cor, em números.' }
+      ] },
+    { fase: 3, id: 'redes', nome: 'Rui', prof: 'Técnico de redes', ic: '🛜', eixos: ['MD', 'CD'], premio: 'capacete',
+      av: { pele: PELES[3], cabelo: CABELOS[0], estilo: 'bone', camisa: '#f6b73c', calca: '#2f3b6b', acessorio: 'capacete' },
+      ola: 'Eu ligo os computadores uns aos outros: cabos, roteadores, Wi-Fi e a segurança de tudo isso.',
+      passos: [
+        { tipo: 'pergunta', txt: 'Descobrir como um computador é achado na rede', enun: 'Para ser encontrado numa rede, cada computador tem um número de identificação. Como ele se chama?', alts: ['Endereço IP', 'Senha do Wi-Fi', 'Nome de usuário', 'Tamanho da tela'], coment: 'O IP funciona como o endereço de uma casa na rede.' },
+        { tipo: 'item', txt: 'Trazer 1 🔑 chave e 1 💎 diamante para o rack', item: 'chave', n: 1, item2: 'diamante', n2: 1 },
+        { tipo: 'acertos', txt: 'Acertar 3 perguntas desta vila', n: 3 },
+        { tipo: 'pergunta', txt: 'Escolher uma senha forte', enun: 'Qual destas senhas é a mais segura?', alts: ['Gat0!Azul#Pula7', '123456', 'senha', 'A data do seu aniversário'], coment: 'Senhas longas, com letras, números e símbolos, são mais difíceis de adivinhar.' }
+      ] },
+    { fase: 4, id: 'ia', nome: 'Nara', prof: 'Engenheira de IA', ic: '🤖', eixos: ['PC', 'CD'], premio: 'antena',
+      av: { pele: PELES[1], cabelo: CABELOS[3], estilo: 'longo', camisa: '#2bb3b1', calca: '#333333', acessorio: 'antena' },
+      ola: 'Eu ensino computadores a aprender com exemplos. Mas IA boa depende de dados bons e de gente cuidadosa.',
+      passos: [
+        { tipo: 'pergunta', txt: 'Preparar o treino de uma IA', enun: 'Para treinar uma IA que reconhece gatos em fotos, o mais importante é ter...', alts: ['Muitas fotos com e sem gatos, bem identificadas', 'Um teclado colorido', 'Uma tela bem grande', 'Nenhum exemplo, a IA já sabe'], coment: 'A IA aprende com exemplos rotulados.' },
+        { tipo: 'item', txt: 'Trazer 2 📘 livros e 1 💎 diamante', item: 'livro', n: 2, item2: 'diamante', n2: 1 },
+        { tipo: 'jogos', txt: 'Concluir 2 atividades desta vila', n: 2 },
+        { tipo: 'pergunta', txt: 'Perceber um viés', enun: 'Se a IA só viu gatos laranja no treino, ela pode errar com gatos pretos. Isso mostra que...', alts: ['Os dados de treino precisam ser variados para evitar vieses', 'A IA nunca erra', 'Gatos pretos não são gatos', 'IA não usa dados'], coment: 'Dados pouco variados geram vieses: por isso pessoas precisam revisar a IA.' }
+      ] }
+  ];
+  const profDe = f => PROFISSOES.find(p => p.fase === f.idx);
+  const posProf = f => ({ x: f.x0 + f.cx - 2.3, y: f.cy + 2.3 });
+  const estProf = p => S.prof[p.id] || (S.prof[p.id] = { passo: 0, feito: false });
+  function condicaoProf(p, f) {
+    const ps = p.passos[estProf(p).passo];
+    if (ps.tipo === 'jogos') { const n = f.lugares.filter(l => S.feitos[l.id]).length; return [n >= ps.n, `${Math.min(n, ps.n)}/${ps.n}`]; }
+    if (ps.tipo === 'acertos') { const n = f.perguntas.filter(q => S.resp[q.id] === true).length; return [n >= ps.n, `${Math.min(n, ps.n)}/${ps.n}`]; }
+    if (ps.tipo === 'item') { const ok = (S.inv[ps.item] || 0) >= ps.n && (!ps.item2 || (S.inv[ps.item2] || 0) >= ps.n2); return [ok, ok ? 'você tem os itens' : 'ainda faltam itens']; }
+    return [true, ''];
+  }
+  function avancaProf(p, f) {
+    const E = estProf(p);
+    E.passo++;
+    if (E.passo >= p.passos.length) {
+      E.feito = true; E.passo = p.passos.length - 1;
+      S.loja.tem['av:' + p.premio] = true; S.medalhas['prof-' + p.id] = { ic: p.ic, nome: p.prof };
+      ganhaHabilidade(p.eixos, 30); pontos(60, `${p.ic} Missão de ${p.prof} completa! Você ganhou: ${NOMES_ENFEITE[p.premio]}.`);
+    } else aviso(`${p.ic} Etapa concluída! (${E.passo}/${p.passos.length})`);
+    salvar(); falaProf(f);
+  }
+  function falaProf(f) {
+    const p = profDe(f), E = estProf(p), fecha = { txt: 'Até mais!', fn: fechaDialogo };
+    const lista = `<ol class="etapas">${p.passos.map((ps, i) => `<li class="${E.feito || i < E.passo ? 'ok' : i === E.passo ? 'agora' : ''}">${E.feito || i < E.passo ? '✅' : i === E.passo ? '👉' : '⬜'} ${esc(ps.txt)}</li>`).join('')}</ol>`;
+    if (E.feito) return dialogo(p.ic, `${p.nome} · ${p.prof}`, `<p>Você já sabe um pouco do meu trabalho! Continue estudando: o mundo precisa de mais gente na computação.</p>${lista}<p class="muted small">Seu prêmio, ${esc(NOMES_ENFEITE[p.premio])}, está no 🧑 Avatar.</p>`, [fecha]);
+    const ps = p.passos[E.passo], [ok, prog] = condicaoProf(p, f);
+    const intro = E.passo === 0 ? `<p>Oi! Eu sou ${esc(p.nome)}, ${p.prof.toLowerCase()}. ${esc(p.ola)}</p>` : '<p>Que bom te ver! Vamos para a próxima etapa?</p>';
+    const ops = [];
+    if (ps.tipo === 'pergunta') ops.push({ txt: 'Responder', classe: 'principal', fn: () => perguntaProf(p, f) });
+    else if (ps.tipo === 'item') ops.push({ txt: ok ? `Entregar ${ITENS[ps.item][0]}${ps.item2 ? ' e ' + ITENS[ps.item2][0] : ''}` : 'Ainda não tenho', classe: ok ? 'principal' : '', fn: () => { if (!condicaoProf(p, f)[0]) return fechaDialogo(); S.inv[ps.item] -= ps.n; if (ps.item2) S.inv[ps.item2] -= ps.n2; avancaProf(p, f); } });
+    else ops.push({ txt: ok ? 'Já fiz!' : 'Vou fazer', classe: ok ? 'principal' : '', fn: () => ok ? avancaProf(p, f) : fechaDialogo() });
+    ops.push(fecha);
+    dialogo(p.ic, `${p.nome} · ${p.prof}`, `${intro}<p><strong>Missão em ${p.passos.length} etapas</strong></p>${lista}${prog && ps.tipo !== 'pergunta' ? `<p class="muted small">Agora: ${esc(ps.txt)} · ${prog}</p>` : ''}`, ops);
+  }
+  function perguntaProf(p, f) {
+    const ps = p.passos[estProf(p).passo], ordem = ps.alts.map((a, i) => i).sort(() => Math.random() - 0.5);
+    dialogo(p.ic, `${p.nome} · ${p.prof}`, `<p>${esc(ps.enun)}</p>`, ordem.map(i => ({ txt: ps.alts[i], fn: () => {
+      if (D.op.dataset.respondida) return;
+      D.op.dataset.respondida = '1';
+      const certo = i === 0;
+      [...D.op.children].forEach((b, j) => { b.disabled = true; if (ordem[j] === 0) b.classList.add('certa'); else if (ordem[j] === i) b.classList.add('errada'); });
+      D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${esc(ps.coment)}</p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Continuar' : 'Tentar de novo';
+      b.addEventListener('click', () => certo ? avancaProf(p, f) : perguntaProf(p, f)); D.op.appendChild(b); b.focus();
+    } })));
+    delete D.op.dataset.respondida;
   }
   /* ---------- Casa do Enigma: um escape room sem cronômetro (código binário, Cifra de César e uma chave do inventário) ---------- */
   const EW = 7, ED = 6, ESAIDA = { x: 3.5, y: ED - 0.5 };
@@ -1753,6 +1853,7 @@
       lista.push({ k: f.placa.x + f.placa.y, d: () => desenhaPlaca(f) });
       for (const p of f.portais) lista.push({ k: p.x + p.y + 1.5, d: () => desenhaPortao(p) });
       for (const c of f.cercas) lista.push({ k: c.x + c.y + 1, d: () => desenhaCerca(c) });
+      const pf = profDe(f); if (pf) { const q = posProf(f); lista.push({ k: q.x + q.y, d: () => { desenhaPessoa(q.x, q.y, pf.av, { dir: 'y+' }); const [sx, sy] = iso(q.x, q.y, 1.75); if (!estProf(pf).feito) balao(sx, sy - 6, pf.ic); if (Math.hypot(q.x - P.x, q.y - P.y) < 4) rotulo(`${pf.nome} · ${pf.prof}`, sx, sy - 52); } }); }
       for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? '👩‍🏫' : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
       for (const it of f.evItens) if (!estEv(it.ev).itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => { sombra(it.x, it.y, 0.35); const [sx, sy] = iso(it.x, it.y, 0.55 + Math.sin(agora / 300 + it.x * 3) * 0.12); ctx.fillStyle = 'rgba(255,240,170,.45)'; ctx.beginPath(); ctx.arc(sx, sy, 16, 0, Math.PI * 2); ctx.fill(); ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(it.ev.item[0], sx, sy); } });
       eventosAtivos.slice(0, 2).forEach((ev, i) => { const px = f.cx + (i ? -2.9 : 2.9), py = f.cy - 2.9; lista.push({ k: px + py, d: () => { const [ox, oy] = iso(px, py); ctx.save(); ctx.translate(ox, oy); ctx.scale(2, 2); ctx.translate(-ox, -oy); try { MOVEIS[ev.movel].des(px - 0.5, py - 0.5, { on: true }); } finally { ctx.restore(); } } }); });
@@ -1766,7 +1867,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     minimapa(faseDeX(P.x));
@@ -1985,7 +2086,7 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
@@ -2211,7 +2312,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
