@@ -1,5 +1,5 @@
 /* Botão "Usar na minha aula" dos jogos e recursos 3D: código para incorporar no Google Sites e link para o
-   Google Classroom. Liberado para apoiadores do Catarse a partir do plano NIVEL, com a senha do mês da área
+   Google Classroom. Liberado para apoiadores do Catarse a partir do plano NIVEL, com a senha da área
    premium. A senha é conferida aqui mesmo: o script lê os chaveiros cifrados do portão de /premium/ (gerado por
    _fonte/premium/proteger.py), então continua funcionando quando as senhas e as chaves mudam. */
 (function () {
@@ -19,8 +19,10 @@
     const a = ler(sessionStorage, CHAVE) || ler(localStorage, LEMBRA);
     return a && a.nivel && a.mes ? { nivel: +a.nivel, mes: a.mes } : null;
   }
-  // a senha de um mês vale até o fim daquele mês: quem cancelou o apoio não recebe a do mês seguinte
-  const valido = a => a && a.mes >= MES_ATUAL;
+  // Júlia (31/10/2026): a senha de cada plano não muda todo mês enquanto o Catarse não passar de R$ 500 por mês.
+  // Para voltar à troca mensal (a senha vale até o fim do mês dela), mude SENHA_FIXA para false.
+  const SENHA_FIXA = true;
+  const valido = a => a && (SENHA_FIXA || a.mes >= MES_ATUAL);
 
   async function conferir(senha) {
     const portao = await (await fetch('/premium/', { cache: 'no-cache' })).text();
@@ -72,7 +74,7 @@
       <p class="muted">Coloque este jogo no site da sua turma (Google Sites) ou mande para os alunos pelo Google Classroom. É um recurso para apoiadores do Catarse do plano <b>${plano}</b> ou acima.</p>
       ${aviso ? `<p class="usar-aula-aviso">${aviso}</p>` : ''}
       <form id="usar-aula-f">
-        <label for="usar-aula-s">Senha do mês da área premium</label>
+        <label for="usar-aula-s">Senha da área premium</label>
         <input id="usar-aula-s" type="password" autocomplete="current-password" required>
         <button class="btn" type="submit">Liberar</button>
         <p class="feedback" id="usar-aula-fb" role="status"></p>
@@ -85,7 +87,7 @@
       let ch;
       try { ch = await conferir(caixa.querySelector('#usar-aula-s').value); }
       catch (err) { fb.textContent = 'Não foi possível conferir agora. Verifique a internet e tente de novo.'; fb.className = 'feedback bad'; return; }
-      if (!ch) { fb.textContent = 'Senha incorreta. Confira a mensagem mais recente do Catarse: as senhas mudam todo mês.'; fb.className = 'feedback bad'; return; }
+      if (!ch) { fb.textContent = 'Senha incorreta. Confira a senha que chegou pelo Catarse.'; fb.className = 'feedback bad'; return; }
       try { sessionStorage.setItem(CHAVE, JSON.stringify(ch)); } catch (err) {}
       try { localStorage.setItem(LEMBRA, JSON.stringify({ nivel: ch.nivel, mes: ch.mes })); } catch (err) {}
       if (!valido(ch)) return desenhar('Esta senha é de um mês que já passou. Use a senha que chegou no Catarse neste mês.');
@@ -118,7 +120,7 @@
         <a class="btn" href="${classroom}" target="_blank" rel="noopener">Compartilhar no Classroom</a>
         <button class="btn ghost" type="button" data-copiar="usar-aula-url">Copiar link</button>
       </div>
-      <p class="small muted">Liberado pelo seu plano do Catarse até o fim do mês da sua senha.</p>`;
+      <p class="small muted">Liberado pelo seu plano do Catarse.</p>`;
   }
 
   function copiar(botao) {

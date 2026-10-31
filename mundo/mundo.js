@@ -4872,15 +4872,16 @@
     setTimeout(() => aviso(`📍 Você está na porta de ${o.nome} (${o.f.nome}, ${o.onde}). Aperte E para entrar.`), 900);   // depois do aviso com o nome da vila
   }
   /* ---------- Cursos do Mundo para apoiadores do Catarse: percursos que juntam várias atividades do Mundo.
-     Liberados com a senha do mês da área premium (a mesma do "Usar na minha aula", conferida aqui pelo chaveiro cifrado de /premium/).
+     Liberados com a senha da área premium (a mesma do "Usar na minha aula", conferida aqui pelo chaveiro cifrado de /premium/).
      O acesso fica lembrado neste navegador até o fim do mês da senha. */
   const NIVEL_CURSOS = 1;   // qualquer plano do Catarse (1 = Apoiador entusiasta)
   const PREMIUM_SESSAO = 'ohtopico:premium', PREMIUM_LEMBRA = 'ohtopico:premium-aula', PLANOS_CATARSE = 'https://www.catarse.com.br/ohtopico/plans';
+  const SENHA_FIXA = true;   // Júlia (31/10/2026): a senha não muda todo mês enquanto o Catarse não passar de R$ 500 por mês
   const mesAtual = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
   function acessoPremium() {
     const ler = (st, k) => { try { return JSON.parse(st.getItem(k)); } catch (e) { return null; } };
     const a = ler(sessionStorage, PREMIUM_SESSAO) || ler(localStorage, PREMIUM_LEMBRA);
-    return a && a.nivel && a.mes && a.mes >= mesAtual() ? { nivel: +a.nivel, mes: a.mes } : null;
+    return a && a.nivel && a.mes && (SENHA_FIXA || a.mes >= mesAtual()) ? { nivel: +a.nivel, mes: a.mes } : null;
   }
   async function conferePremium(senha) {
     const b64 = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
@@ -4921,9 +4922,9 @@
     const el = $('#cursos-conteudo'), a = acessoPremium();
     if (!a || a.nivel < NIVEL_CURSOS) {
       el.innerHTML = `<p>Os <b>cursos do Mundo</b> são percursos que juntam várias atividades: ${CURSOS.map(c => `${c.ic} ${c.nome}`).join(', ')}. Cada um termina com um selo de conclusão, 150 ⭐ e uma figurinha.</p>
-        <p class="muted">São exclusivos para quem apoia o projeto no Catarse. A professora ou o professor que apoia digita a <b>senha do mês da área premium</b> uma vez neste aparelho, e ele fica liberado até o fim do mês.</p>
+        <p class="muted">São exclusivos para quem apoia o projeto no Catarse. A professora ou o professor que apoia digita a <b>senha da área premium</b> uma vez neste aparelho, e ele fica liberado.</p>
         ${aviso2 ? `<p class="aviso-erro">${aviso2}</p>` : ''}
-        <form id="cu-form" class="btn-row"><label>Senha do mês <input id="cu-senha" class="campo" type="password" autocomplete="current-password" required></label><button type="submit" class="hb verde">Liberar</button></form>
+        <form id="cu-form" class="btn-row"><label>Senha da área premium <input id="cu-senha" class="campo" type="password" autocomplete="current-password" required></label><button type="submit" class="hb verde">Liberar</button></form>
         <p class="small" id="cu-fb" role="status"></p>
         <p class="small muted">Ainda não apoia? <a href="${PLANOS_CATARSE}" target="_blank" rel="noopener">Veja os planos no Catarse</a>.</p>`;
       $('#cu-form').addEventListener('submit', async e => {
@@ -4932,7 +4933,7 @@
         if (!ch) { fb.textContent = 'Senha incorreta. Confira a mensagem mais recente do Catarse: a senha muda todo mês.'; return; }
         try { sessionStorage.setItem(PREMIUM_SESSAO, JSON.stringify(ch)); } catch (err) {}
         try { localStorage.setItem(PREMIUM_LEMBRA, JSON.stringify({ nivel: ch.nivel, mes: ch.mes })); } catch (err) {}
-        if (!(ch.mes >= mesAtual())) return janelaCursos('Esta senha é de um mês que já passou. Use a senha deste mês.');
+        if (!SENHA_FIXA && !(ch.mes >= mesAtual())) return janelaCursos('Esta senha é de um mês que já passou. Use a senha deste mês.');
         janelaCursos();
       });
       return;
@@ -4942,7 +4943,7 @@
       C.feitos[c.id] = new Date().toLocaleDateString('pt-BR'); pontos(150, `🎓 Curso concluído: ${c.nome}!`); ganhaHabilidade(['PC', 'CD'], 20); SOM.toca('vitoria'); salvar();
       setTimeout(() => ganhaFigurinha(null, `pelo curso ${c.nome}`), 1500);
     }
-    el.innerHTML = `<p class="muted small">✨ Liberado pelo apoio no Catarse até o fim de ${a.mes.split('-').reverse().join('/')}. Obrigada por apoiar!</p>
+    el.innerHTML = `<p class="muted small">✨ Liberado pelo apoio no Catarse${SENHA_FIXA ? '' : ` até o fim de ${a.mes.split('-').reverse().join('/')}`}. Obrigada por apoiar!</p>
       ${CURSOS.map(c => { const feito = C.feitos[c.id]; return `<section class="curso${feito ? ' ok' : ''}" id="curso-${c.id}"><h3>${c.ic} ${c.nome} <span class="muted small">· ${c.tema}</span></h3>
         ${feito ? `<p class="selo-curso">🏅 <b>Selo de conclusão</b>: ${esc(S.apelido || 'Estudante')} completou o percurso <b>${c.nome}</b> em ${feito}.</p>` : ''}
         <ol class="etapas">${c.passos.map(([txt, f, meta, onde], i) => { const n = Math.min(f(), meta); return `<li class="${n >= meta ? 'ok' : ''}">${n >= meta ? '✅' : '⬜'} ${txt} <b>(${n}/${meta})</b>${n < meta ? ` <button type="button" class="hb azul mini" data-cu="${c.id}:${i}">Como fazer</button>` : ''}</li>`; }).join('')}</ol></section>`; }).join('')}`;

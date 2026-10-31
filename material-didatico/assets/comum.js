@@ -266,7 +266,7 @@
       // código para o Google Sites e link para o Classroom (apoiadores do Catarse); some quando o jogo já está incorporado
       window.top === window ? '<button class="btn ghost" type="button" data-usar-aula>🏫 Usar na minha aula</button>' : ''].join('');
     if (window.top === window && !document.querySelector('script[src*="usar-na-aula.js"]')) {
-      const s = document.createElement('script'); s.src = BASE + 'assets/usar-na-aula.js?v=202610310700'; s.defer = true; document.head.appendChild(s);
+      const s = document.createElement('script'); s.src = BASE + 'assets/usar-na-aula.js?v=202610311830'; s.defer = true; document.head.appendChild(s);
     }
     el.innerHTML = `
       <div class="crumbs no-print"><a href="${BASE}${volta[0]}">← ${volta[1]}</a></div>
