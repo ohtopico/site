@@ -158,6 +158,7 @@
     ia: [B('criptografia', '🕵️', ['MD'], cripto, ['EF09CO05']), B('grafos', '🕸️', ['PC'], grafos, ['EF07CO04', 'EF09CO01']), B('IA e acurácia', '🤖', ['CD', 'PC'], ia, ['EM13CO10', 'EF09CO10']), B('lógica booleana', '💡', ['PC'], logica, ['EF09CO03'])],
     lab: [B('hexadecimal', '🔣', ['MD'], hex, ['EF06CO08']), B('neurônio artificial', '🧠', ['PC'], neuronio, ['EM13CO10']), B('regressão linear', '📈', ['AL'], regressao, ['EM13CO11', 'EM13CO12']), B('pipeline do processador', '🏭', ['MD'], pipeline, ['EF08CO05', 'EM13CO03'])],
     medio: [B('endereços IP', '🌐', ['MD'], ip, ['EM13CO07']), B('consultas SQL', '🗃️', ['PC'], sql, ['EM13CO13']), B('estatística', '📊', ['CD'], estat, ['EM13CO12', 'EF08MA25']), B('busca e eficiência', '🔍', ['PC'], busca, ['EM13CO03', 'EF08CO03']), B('Python', '🐍', ['PC'], python, ['EM13CO01', 'EM13CO02'])],
+    matematica: [B('frações', '🍕', ['NU'], fracoes, ['EF06MA07', 'EF06MA10']), B('potências, MDC e MMC', '🧮', ['NU'], potencias, ['EF06MA05', 'EF06MA06']), B('porcentagem', '💯', ['NU'], porcentagem, ['EF06MA13', 'EF07MA02'])],
     escola: [B('BNCC Computação', '📚', ['CD'], bncc), B('prompts', '💬', ['CD'], prompts), B('IA na educação: verdade ou mito', '🤔', ['CD'], mitos), B('planejamento de aula', '🗓️', ['GM'], planejamento), B('avaliação da turma', '📝', ['NU'], avaliacao)]
   };
 })();
