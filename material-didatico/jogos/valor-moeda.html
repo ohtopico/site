@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adivinhe o Valor da Moeda: jogo de Matemática | Júlia Quoos</title>
+<meta name="description" content="Jogo de numismática: descubra a moeda do Real pelas pistas, conte o porta-moedas, converta cruzeiros em reais e calcule o preço de moedas de coleção.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/valor-moeda.html">
+<meta property="og:title" content="Adivinhe o Valor da Moeda: jogo de Matemática | Júlia Quoos">
+<meta property="og:description" content="Jogo de numismática para a sala de aula: descubra a moeda do Real pelas pistas, conte o porta-moedas, converta cruzeiros em reais e calcule o preço de moedas de coleção. BNCC EF06MA11, EF07MA17.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/valor-moeda.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/jogos/img/og-valor-moeda.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Adivinhe o Valor da Moeda: jogo de numismática com moedas do Real desenhadas em tamanho proporcional e pistas">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .q { font-size: 20px; text-align: center; margin: 14px 0 10px; font-weight: 500; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; max-width: 760px; margin: 0 auto; }
+  .opts .btn { min-height: 52px; height: auto; }
+  .opts .btn.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ink); }
+  .opts .btn.wrong { background: var(--bad-soft); border-color: var(--bad); color: var(--ink); }
+  .num { border: 1.5px solid var(--ink); border-radius: 99px; padding: 8px 14px; width: 150px; font-size: 18px; background: var(--paper); color: var(--ink); text-align: center; }
+  .num.right { background: var(--ok-soft); border-color: var(--ok); }
+  .num.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .resp { display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .center { text-align: center; }
+  .fases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+  .fases div { border: 1.5px solid var(--line); border-radius: 14px; padding: 6px 8px; font-size: 13px; text-align: center; color: var(--ink-2); }
+  .fases div.atual { border-color: var(--ink); color: var(--ink); background: #fff6d6; }
+  .fases div.feita { border-color: var(--ok); color: var(--ok); }
+  @media (prefers-color-scheme: dark) { .fases div.atual { background: #3a3110; } }
+  .fases b { display: block; font-family: var(--display); font-size: 15px; }
+  .cena { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: flex-end; min-height: 120px; margin: 6px 0; }
+  .cena svg { display: block; overflow: visible; }
+  .pilha { border: 1.5px dashed var(--line); border-radius: 18px; padding: 10px 12px 6px; text-align: center; }
+  .pilha .moedas { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; max-width: 300px; }
+  .pilha h3 { font-size: 18px; margin: 6px 0 0; }
+  .pistas { list-style: none; padding: 0; margin: 8px auto; max-width: 520px; }
+  .pistas li { border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; margin: 6px 0; background: var(--paper); }
+  .pistas li.oculta { border-style: dashed; color: var(--ink-2); border-color: var(--line); }
+  .ficha { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; background: var(--paper); display: flex; gap: 12px; align-items: center; min-width: 230px; text-align: left; }
+  .ficha dl { margin: 0; font-size: 14px; display: grid; grid-template-columns: auto auto; gap: 2px 10px; }
+  .ficha dt { color: var(--ink-2); }
+  .ficha dd { margin: 0; font-weight: 600; }
+  .ficha h3 { font-size: 17px; margin: 0 0 4px; }
+  .regras { width: 100%; max-width: 640px; margin: 8px auto; border-collapse: collapse; font-size: 14px; }
+  .regras th, .regras td { border-bottom: 1px solid var(--line); padding: 5px 8px; text-align: left; }
+  .linha { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 10px 0; font-size: 13px; }
+  .linha span { border: 1.5px solid var(--ink); border-radius: 99px; padding: 3px 10px; background: var(--paper); }
+  .linha span b { font-family: var(--display); }
+  .box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; background: var(--paper); max-width: 760px; margin: 10px auto; }
+  .glossario dt { font-weight: 600; }
+  .glossario dd { margin: 0 0 6px; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Adivinhe o Valor da Moeda","description":"Museu de numismática em quatro salas: descubra a moeda do Real pelas pistas, conte o porta-moedas, converta cruzeiros em reais e calcule o preço de moedas de coleção.","url":"https://ohtopico.com.br/material-didatico/jogos/valor-moeda.html","image":"https://ohtopico.com.br/material-didatico/jogos/img/og-valor-moeda.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"6º ao 7º ano do Ensino Fundamental","about":["Matemática"],"isAccessibleForFree":true,"timeRequired":"15–20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA11","targetDescription":"Resolver e elaborar problemas com números racionais positivos na representação decimal, envolvendo as quatro operações fundamentais e a potenciação, por meio de estratégias diversas, utilizando estimativas e arredondamentos para verificar a razoabilidade de respostas, com e sem uso de calculadora."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA03","targetDescription":"Resolver e elaborar problemas com cálculos (mentais ou escritos, exatos ou aproximados) envolvendo números naturais, com ou sem calculadora."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA17","targetDescription":"Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA05","targetDescription":"Resolver um mesmo problema utilizando diferentes algoritmos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA24","targetDescription":"Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Adivinhe o Valor da Moeda","item":"https://ohtopico.com.br/material-didatico/jogos/valor-moeda.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="crumbs no-print"><a href="../jogos/">← Jogos</a></div>
+      <div class="tags" style="margin-bottom:12px"><span class="tag ma">Matemática</span><span class="tag">6º ao 7º ano</span><span class="tag">⏱ 15–20 min</span></div>
+      <h1>Adivinhe o Valor da Moeda</h1>
+      <p class="muted" style="max-width:720px">Museu de numismática em quatro salas: descubra a moeda do Real pelas pistas, conte o porta-moedas, converta cruzeiros em reais e calcule o preço de moedas de coleção.</p>
+      <div class="tags"><a class="tag code ma" href="../bncc/ef06ma11/" title="EF06MA11 — Resolver e elaborar problemas com números racionais positivos na representação decimal, envolvendo as quatro operações fundamentais e a potenciação, por meio de estratégias diversas, utilizando estimativas e arredondamentos para verificar a razoabilidade de respostas, com e sem uso de calculadora.">EF06MA11</a><a class="tag code ma" href="../bncc/ef06ma03/" title="EF06MA03 — Resolver e elaborar problemas com cálculos (mentais ou escritos, exatos ou aproximados) envolvendo números naturais, com ou sem calculadora.">EF06MA03</a><a class="tag code ma" href="../bncc/ef07ma17/" title="EF07MA17 — Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas.">EF07MA17</a><a class="tag code ma" href="../bncc/ef07ma05/" title="EF07MA05 — Resolver um mesmo problema utilizando diferentes algoritmos.">EF07MA05</a><a class="tag code ma" href="../bncc/ef06ma24/" title="EF06MA24 — Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento.">EF06MA24</a></div>
+      <div class="game-acoes no-print"><a class="btn ghost" href="../planos/mesada-descontos-juros-decisoes-porcentagem/">📋 Plano de aula</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p><strong>Numismática</strong> é o estudo e a coleção de moedas e cédulas. Neste jogo você passa por quatro salas de um museu de moedas, com três desafios em cada uma:</p>
+    <ol>
+      <li><strong>Qual é a moeda?</strong> Uma moeda do Real aparece desenhada no tamanho proporcional, com o valor escondido. Descubra qual é. Cada pista extra custa 1 ponto.</li>
+      <li><strong>Porta-moedas.</strong> Some as moedas, compare duas pilhas e pague um valor com o menor número de moedas.</li>
+      <li><strong>Dinheiro no tempo.</strong> O Brasil já teve réis, cruzeiro, cruzado e cruzeiro real. Converta preços antigos com as regras de cada troca.</li>
+      <li><strong>Feira de numismática.</strong> Para um colecionador, uma moeda pode valer muito mais que o número escrito nela. Use as regras do catálogo para calcular.</li>
+    </ol>
+    <p>Para digitar valores em reais, use vírgula: <strong>1,35</strong>.</p>
+    <dl class="glossario small">
+      <dt>Valor de face</dt><dd>O valor escrito na moeda, que vale para pagar compras.</dd>
+      <dt>Anverso e reverso</dt><dd>Os dois lados da moeda: o anverso costuma ter a figura principal e o reverso, o valor.</dd>
+      <dt>Tiragem</dt><dd>Quantas moedas iguais foram fabricadas. Tiragem pequena deixa a moeda mais rara.</dd>
+      <dt>Estado de conservação</dt><dd>Quanto a moeda está gasta. Flor de cunho (FC) é a moeda como saiu da fábrica, sem marcas de uso.</dd>
+    </dl>
+  </details>
+  <div class="game-stage">
+    <div class="fases" id="fases" aria-label="Salas do museu"></div>
+    <div class="hud"><span>Desafio <b id="rn">1</b> de 12</span><span>Pontos <b id="pts">0</b></span><span>Acertos <b id="ok">0</b></span></div>
+    <div id="etapa"></div>
+    <p class="feedback center" id="fb" role="status"></p>
+    <div class="btn-row" id="actions" style="justify-content:center"></div>
+  </div>
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Adivinhe o Valor da Moeda</strong> é um jogo gratuito de Matemática para o 6º ao 7º ano, pensado para cerca de 15–20 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Museu de numismática em quatro salas: descubra a moeda do Real pelas pistas, conte o porta-moedas, converta cruzeiros em reais e calcule o preço de moedas de coleção.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../bncc/ef06ma11/"><strong>EF06MA11</strong></a>: Resolver e elaborar problemas com números racionais positivos na representação decimal, envolvendo as quatro operações fundamentais e a potenciação, por meio de estratégias diversas, utilizando estimativas e arredondamentos para verificar a razoabilidade de respostas, com e sem uso de calculadora.</li>
+      <li><a href="../bncc/ef06ma03/"><strong>EF06MA03</strong></a>: Resolver e elaborar problemas com cálculos (mentais ou escritos, exatos ou aproximados) envolvendo números naturais, com ou sem calculadora.</li>
+      <li><a href="../bncc/ef07ma17/"><strong>EF07MA17</strong></a>: Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas.</li>
+      <li><a href="../bncc/ef07ma05/"><strong>EF07MA05</strong></a>: Resolver um mesmo problema utilizando diferentes algoritmos.</li>
+      <li><a href="../bncc/ef06ma24/"><strong>EF06MA24</strong></a>: Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento.</li>
+    </ul>
+    <p>Para a aula completa, use o plano <a href="../planos/mesada-descontos-juros-decisoes-porcentagem/">Mesada, descontos e juros: decisões com porcentagem</a>, com objetivos, etapas, avaliação e acessibilidade. Para fixar, há as listas <a href="../listas/area-perimetro-6-ano/">Área e perímetro (6º ano)</a>, <a href="../listas/regra-tres-7-ano/">Regra de três (7º ano)</a>, <a href="../listas/simulado-obmep-nivel-1-n-1/">Simulado OBMEP Nível 1 · nº 1</a>, com gabarito.</p>
+  </details>
+  <!-- professor: fim -->
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/mesada-descontos-juros-decisoes-porcentagem/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Mesada, descontos e juros: decisões com porcentagem</strong>
+          <span class="small muted">Dilemas de dinheiro do dia a dia: dividir a mesada, avaliar promoções e comparar juros simples e compostos na poupança.</span>
+        </a>
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/rotas.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Rota Mais Curta</strong>
+          <span class="small muted">Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('valor-moeda');
+(function () {
+  const $ = s => document.querySelector(s);
+  const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pick = a => a[ri(0, a.length - 1)];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const R$ = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const n$ = v => v.toLocaleString('pt-BR', { maximumFractionDigits: 3 });
+  const c2 = v => Math.round(v * 100) / 100;
+
+  /* Moedas da 2ª família do Real (desde 1998). Os desenhos são simplificados: cor, tamanho e valor. */
+  const REAL = [
+    { v: 0.01, d: 17, metal: 'cobre', massa: '2,43', mat: 'aço revestido de cobre', pers: 'Pedro Álvares Cabral',
+      obs: 'É a menor de todas. Deixou de ser fabricada em 2004, porque custava mais para fazer do que valia, mas continua valendo.' },
+    { v: 0.05, d: 22, metal: 'cobre', massa: '4,10', mat: 'aço revestido de cobre', pers: 'Tiradentes',
+      obs: 'É maior que a de 10 centavos, mesmo valendo menos. O tamanho não segue a ordem do valor!' },
+    { v: 0.10, d: 20, metal: 'bronze', massa: '4,80', mat: 'aço revestido de bronze', pers: 'Dom Pedro I',
+      obs: 'Tem 20 mm, menos que a de 5 centavos (22 mm). A cor dourada ajuda a diferenciar as duas.' },
+    { v: 0.25, d: 25, metal: 'bronze', massa: '7,55', mat: 'aço revestido de bronze', pers: 'Marechal Deodoro da Fonseca',
+      obs: 'É a maior das moedas de centavos: 25 mm de diâmetro.' },
+    { v: 0.50, d: 23, metal: 'prata', massa: '7,81', mat: 'aço inoxidável', pers: 'Barão do Rio Branco',
+      obs: 'É prateada e a mais pesada de todas: 7,81 gramas, mais que a de 1 real.' },
+    { v: 1, d: 27, metal: 'bimetal', massa: '7,00', mat: 'centro prateado e anel dourado, de metais diferentes', pers: 'a Efígie da República',
+      obs: 'É bimetálica: o centro e o anel são feitos separados e encaixados. Isso dificulta a falsificação.' }
+  ];
+  const nomeV = v => v >= 1 ? (v === 1 ? '1 real' : `${v} reais`) : `${Math.round(v * 100)} ${v === 0.01 ? 'centavo' : 'centavos'}`;
+  const METAIS = {
+    cobre: ['#f6b98c', '#c8743f', '#7a3f1e'],
+    bronze: ['#fde59a', '#d6a432', '#7f5f12'],
+    prata: ['#ffffff', '#c3c8ce', '#6f767f']
+  };
+  let gid = 0;
+  const grad = (id, m) => `<radialGradient id="${id}" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="${m[0]}"/><stop offset=".55" stop-color="${m[1]}"/><stop offset="1" stop-color="${m[2]}"/></radialGradient>`;
+  /* Desenha o lado do valor de uma moeda. k = pixels por milímetro. */
+  function moeda(o, k, rotulo) {
+    const r = o.d * k / 2, id = 'm' + (++gid), bi = o.metal === 'bimetal';
+    const M = METAIS[bi ? 'prata' : o.metal], A = bi ? METAIS.bronze : M;
+    const txt = rotulo !== undefined ? rotulo : (o.v >= 1 ? String(o.v) : String(Math.round(o.v * 100)));
+    const sub = rotulo === '?' ? '' : o.v >= 1 ? (o.v === 1 ? 'REAL' : 'REAIS') : 'CENTAVOS';
+    let s = `<svg width="${2 * r + 4}" height="${2 * r + 4}" viewBox="${-r - 2} ${-r - 2} ${2 * r + 4} ${2 * r + 4}" aria-hidden="true">
+      <defs>${grad(id + 'a', M)}${bi ? grad(id + 'b', A) : ''}</defs>
+      <circle r="${r}" fill="url(#${bi ? id + 'b' : id + 'a'})" stroke="${A[2]}" stroke-width="1.5"/>
+      <circle r="${r * 0.92}" fill="none" stroke="${A[2]}" stroke-opacity=".5" stroke-width="${Math.max(1, r * 0.03)}"/>`;
+    if (bi) s += `<circle r="${r * 0.68}" fill="url(#${id}a)" stroke="${M[2]}" stroke-width="1"/>`;
+    const nd = Math.max(24, Math.round(r * 0.9)), rr = r * (bi ? 0.6 : 0.82);
+    for (let i = 0; i < nd; i++) { const a = i / nd * 2 * Math.PI; s += `<circle cx="${(rr * Math.cos(a)).toFixed(1)}" cy="${(rr * Math.sin(a)).toFixed(1)}" r="${Math.max(0.6, r * 0.018).toFixed(2)}" fill="${M[2]}" fill-opacity=".7"/>`; }
+    const fs = r * (txt.length > 1 ? 0.62 : 0.8) * (bi ? 0.85 : 1);
+    s += `<text y="${sub ? fs * 0.18 : fs * 0.35}" text-anchor="middle" font-family="Sniglet, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${M[0]}" transform="translate(1 1)">${txt}</text>
+      <text y="${sub ? fs * 0.18 : fs * 0.35}" text-anchor="middle" font-family="Sniglet, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${M[2]}">${txt}</text>`;
+    if (sub && r > 22) s += `<text y="${(fs * 0.18 + r * 0.3).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="${(r * (bi ? 0.13 : 0.15)).toFixed(1)}" fill="${M[2]}" letter-spacing="1">${sub}</text>`;
+    return s + '</svg>';
+  }
+  function regua(mm, k) {
+    const w = mm * k;
+    let s = `<svg width="${w + 20}" height="34" viewBox="-10 0 ${w + 20} 34" aria-hidden="true"><rect x="0" y="2" width="${w}" height="16" rx="3" fill="#fde59a" stroke="#111" stroke-width="1.2"/>`;
+    for (let i = 0; i <= mm; i++) s += `<line x1="${i * k}" x2="${i * k}" y1="2" y2="${i % 10 === 0 ? 14 : i % 5 === 0 ? 11 : 7}" stroke="#111" stroke-width="1"/>`;
+    for (let i = 0; i <= mm; i += 10) s += `<text x="${i * k}" y="30" text-anchor="middle" font-size="11" fill="currentColor">${i}</text>`;
+    return s + `<text x="${w + 8}" y="30" font-size="11" fill="currentColor">mm</text></svg>`;
+  }
+
+  /* ---------- Sala 1: qual é a moeda? ---------- */
+  let usadas = [];
+  function identificar() {
+    const c = pick(REAL.filter(m => !usadas.includes(m)));
+    usadas.push(c);
+    const k = 6;
+    const pistas = [`Tem ${c.d} mm de diâmetro e massa de ${c.massa} gramas.`, `É feita de ${c.mat}.`, `Do outro lado aparece ${c.pers}.`];
+    let abertas = 0, rev = false;
+    return {
+      cena: () => `<div style="text-align:center">${moeda(c, k, rev ? undefined : '?')}<div style="margin-top:6px;color:var(--ink-2)">${regua(30, k)}</div></div>`,
+      extra: () => `<ul class="pistas">${pistas.map((p, i) => i < abertas ? `<li>🔎 ${p}</li>` : `<li class="oculta">Pista ${i + 1} escondida</li>`).join('')}</ul>
+        ${abertas < pistas.length ? `<div class="center"><button class="btn ghost" type="button" id="pista">Ver mais uma pista (−1 ponto)</button></div>` : ''}`,
+      depois: () => { const b = $('#pista'); if (b) b.onclick = () => { abertas++; atual.rerender(); }; },
+      q: 'Olhe a cor e o tamanho na régua. Que moeda é essa?',
+      opcoes: REAL.map(m => ({ t: nomeV(m.v), certo: m === c })),
+      pontos: () => Math.max(1, 3 - abertas),
+      explica: `É a moeda de ${nomeV(c.v)}. ${c.obs}`,
+      revela: () => { rev = true; }
+    };
+  }
+
+  /* ---------- Sala 2: porta-moedas ---------- */
+  const CIRC = REAL.filter(m => m.v >= 0.05);
+  const porValor = v => REAL.find(m => Math.abs(m.v - v) < 1e-9);
+  const total = l => c2(l.reduce((s, m) => s + m.v, 0));
+  const pilha = (l, k) => `<div class="moedas">${l.slice().sort((a, b) => b.v - a.v).map(m => moeda(m, k)).join('')}</div>`;
+  function somar() {
+    const l = Array.from({ length: ri(4, 7) }, () => pick(CIRC));
+    const t = total(l);
+    const grupos = REAL.slice().reverse().map(m => [m, l.filter(x => x === m).length]).filter(([, n]) => n);
+    return {
+      cena: () => `<div class="pilha"><div class="moedas">${pilha(l, 3.4)}</div><h3>Porta-moedas</h3></div>`,
+      q: 'Quanto dinheiro tem no porta-moedas? Responda em reais.',
+      numero: t, unidade: 'R$',
+      explica: `${grupos.map(([m, n]) => `${n} × ${R$(m.v)}`).join(' + ')} = ${R$(t)}.`
+    };
+  }
+  function guloso() {
+    const alvo = ri(3, 39) * 5; // em centavos
+    const passos = [];
+    let falta = alvo;
+    [100, 50, 25, 10, 5].forEach(c => { while (falta >= c) { passos.push(c); falta -= c; } });
+    return {
+      cena: () => `<div class="pilha"><div class="moedas">${CIRC.slice().reverse().map(m => moeda(m, 2.8)).join('')}</div><h3>Pode usar quantas quiser de cada</h3></div>`,
+      q: `Você precisa pagar ${R$(alvo / 100)} só com moedas. Qual é o menor número de moedas que dá o valor certinho?`,
+      numero: passos.length, unidade: 'moedas',
+      explica: `${passos.map(c => c === 100 ? 'R$ 1' : c + '¢').join(' + ')} = ${R$(alvo / 100)}: ${passos.length} ${passos.length === 1 ? 'moeda' : 'moedas'}. A estratégia é pegar sempre a maior moeda que ainda cabe no que falta. Esse passo a passo se chama algoritmo guloso, e com as moedas do Real ele sempre encontra o menor número.`
+    };
+  }
+  function comparar() {
+    const a = Array.from({ length: ri(3, 5) }, () => pick(CIRC));
+    let b;
+    const igual = Math.random() < 0.35;
+    if (igual) {
+      b = a.slice();
+      const quebra = { 1: [0.5, 0.5], 0.5: [0.25, 0.25], 0.25: [0.1, 0.1, 0.05], 0.1: [0.05, 0.05] };
+      for (let n = 0; n < 2; n++) { const i = b.findIndex(m => quebra[m.v]); if (i < 0) break; const [m] = b.splice(i, 1); b.push(...quebra[m.v].map(porValor)); }
+    } else {
+      do { b = Array.from({ length: a.length + ri(1, 3) }, () => pick(CIRC.filter(m => m.v <= 0.25))); } while (total(b) === total(a));
+    }
+    const ta = total(a), tb = total(b);
+    return {
+      cena: () => `<div class="pilha">${pilha(a, 3)}<h3>Pilha A</h3></div><div class="pilha">${pilha(b, 3)}<h3>Pilha B</h3></div>`,
+      q: 'Qual pilha vale mais?',
+      opcoes: [{ t: 'Pilha A', certo: ta > tb }, { t: 'Pilha B', certo: tb > ta }, { t: 'As duas valem igual', certo: ta === tb }],
+      fixas: true,
+      explica: `A pilha A tem ${a.length} moedas e vale ${R$(ta)}; a B tem ${b.length} moedas e vale ${R$(tb)}. ${ta === tb ? 'Valores iguais com quantidades diferentes de moedas.' : 'Mais moedas não quer dizer mais dinheiro.'}`
+    };
+  }
+
+  /* ---------- Sala 3: dinheiro no tempo ---------- */
+  const LINHA = [
+    ['Réis', 'até 1942'], ['Cruzeiro', 1942], ['Cruzeiro novo', 1967], ['Cruzeiro', 1970], ['Cruzado', 1986],
+    ['Cruzado novo', 1989], ['Cruzeiro', 1990], ['Cruzeiro real', 1993], ['Real', 1994]
+  ];
+  const linhaHTML = () => `<div class="linha">${LINHA.map(([n, a]) => `<span><b>${a}</b> ${n}</span>`).join('')}</div>`;
+  const TROCAS = [
+    { ano: 1942, de: 'réis', para: 'cruzeiro', paraPl: 'cruzeiros', obj: 'Um sorvete', x: [500, 1500, 2000, 3000] },
+    { ano: 1967, de: 'cruzeiros', para: 'cruzeiro novo', paraPl: 'cruzeiros novos', obj: 'Uma revista em quadrinhos', x: [500, 1500, 2500, 4000] },
+    { ano: 1986, de: 'cruzeiros', para: 'cruzado', paraPl: 'cruzados', obj: 'Um pacote de pão', x: [6000, 12000, 25000, 40000] },
+    { ano: 1989, de: 'cruzados', para: 'cruzado novo', paraPl: 'cruzados novos', obj: 'Um caderno', x: [80000, 150000, 250000] },
+    { ano: 1993, de: 'cruzeiros', para: 'cruzeiro real', paraPl: 'cruzeiros reais', obj: 'Uma passagem de ônibus', x: [45000, 90000, 120000] }
+  ];
+  function urv() {
+    const r = pick([0.5, 2, 3, 4, 10]), cr = r * 2750;
+    const ida = Math.random() < 0.5;
+    const opc = ida ? [r, r * 10, c2(r / 10), r * 2.75] : [cr, cr * 10, cr / 10, r * 275];
+    const fmt = ida ? R$ : (v => 'CR$ ' + n$(v));
+    return {
+      cena: () => linhaHTML() + `<div class="box center"><strong>1º de julho de 1994:</strong> começa o Real. Cada <strong>R$ 1,00</strong> passou a valer <strong>CR$ 2.750,00</strong> (cruzeiros reais).</div>`,
+      q: ida ? `Uma lancheira custava CR$ ${n$(cr)}. Quanto ela passou a custar em reais?` : `Uma pipoca custava ${R$(r)} em julho de 1994. Quanto isso dava em cruzeiros reais?`,
+      opcoes: [...new Set(opc)].map(v => ({ t: fmt(v), certo: v === (ida ? r : cr) })),
+      explica: ida ? `CR$ ${n$(cr)} ÷ 2.750 = ${R$(r)}. A troca é uma proporção: o preço em reais é 2.750 vezes menor.` : `${n$(r)} × 2.750 = CR$ ${n$(cr)}. Cada real equivale a 2.750 cruzeiros reais.`
+    };
+  }
+  function cortes() {
+    const t = pick(TROCAS), x = pick(t.x), y = x / 1000;
+    const opc = [y, x / 100, x / 10000, y * 2];
+    return {
+      cena: () => linhaHTML() + `<div class="box center"><strong>${t.ano}:</strong> cada <strong>1.000 ${t.de}</strong> viraram <strong>1 ${t.para}</strong>. Na prática, o governo cortou três zeros dos preços.</div>`,
+      q: `${t.obj} custava ${n$(x)} ${t.de}. Quanto passou a custar em ${t.paraPl}?`,
+      opcoes: [...new Set(opc)].map(v => ({ t: `${n$(v)} ${v === 1 ? t.para : t.paraPl}`, certo: v === y })),
+      explica: `${n$(x)} ÷ 1.000 = ${n$(y)}. Dividir por 1.000 é andar com a vírgula três casas para a esquerda. A inflação alta fazia os preços ficarem com zeros demais, e o corte deixava as contas mais fáceis.`
+    };
+  }
+  function ordem() {
+    const sem = LINHA.filter(([n]) => n !== 'Cruzeiro');
+    const tres = shuffle(sem).slice(0, 3);
+    const primeiro = Math.random() < 0.5;
+    const idx = l => sem.indexOf(l);
+    const alvo = tres.slice().sort((a, b) => primeiro ? idx(a) - idx(b) : idx(b) - idx(a))[0];
+    return {
+      cena: () => `<div class="box center">O dinheiro brasileiro já mudou de nome várias vezes, quase sempre para combater a inflação, que é a subida geral dos preços.</div>`,
+      q: primeiro ? 'Qual destas moedas o Brasil usou primeiro?' : 'Qual destas moedas o Brasil usou por último?',
+      opcoes: tres.map(l => ({ t: l[0], certo: l === alvo })),
+      explica: `${alvo[0]} (${alvo[1]}). Veja a linha do tempo completa:` ,
+      revelaHTML: linhaHTML
+    };
+  }
+
+  /* ---------- Sala 4: feira de numismática ---------- */
+  const BASE = 2;
+  const CONS = [['BC', 'bem conservada', 1], ['MBC', 'muito bem conservada', 2], ['SOB', 'soberba', 4], ['FC', 'flor de cunho', 8]];
+  const TIR = [['comum', 'mais de 1 milhão', 1], ['escassa', '10 mil a 1 milhão', 5], ['rara', 'menos de 10 mil', 20]];
+  const regras = () => `<table class="regras"><caption class="small muted" style="caption-side:top;text-align:left">Catálogo da feira (regras de brincadeira): valor = R$ ${BASE},00 × conservação × raridade</caption>
+    <tr><th>Conservação</th><th>×</th><th>Tiragem</th><th>×</th></tr>
+    ${[0, 1, 2, 3].map(i => `<tr><td>${CONS[i][0]}: ${CONS[i][1]}</td><td>${CONS[i][2]}</td><td>${TIR[i] ? `${TIR[i][0]} (${TIR[i][1]})` : ''}</td><td>${TIR[i] ? TIR[i][2] : ''}</td></tr>`).join('')}</table>`;
+  function peca() {
+    const c = pick(CONS), t = pick(TIR), m = pick(REAL);
+    return { c, t, m, ano: ri(1998, m.v === 0.01 ? 2004 : 2024), v: BASE * c[2] * t[2] };
+  }
+  const fichaHTML = (p, nome) => `<div class="ficha">${moeda(p.m, 2.6)}<div><h3>${nome}</h3><dl><dt>Moeda</dt><dd>${nomeV(p.m.v)}, ${p.ano}</dd><dt>Estado</dt><dd>${p.c[0]}</dd><dt>Tiragem</dt><dd>${p.t[0]}</dd></dl></div></div>`;
+  function valorColecao() {
+    const p = peca();
+    const opc = [p.v, BASE * p.c[2], BASE * p.t[2], BASE + p.c[2] + p.t[2], p.v * 2];
+    return {
+      cena: () => fichaHTML(p, 'Peça da banca') + regras(),
+      q: 'Pelo catálogo, quanto vale esta moeda para um colecionador?',
+      opcoes: [...new Set(opc)].slice(0, 4).map(v => ({ t: R$(v), certo: v === p.v })),
+      explica: `R$ ${BASE},00 × ${p.c[2]} (${p.c[0]}) × ${p.t[2]} (${p.t[0]}) = ${R$(p.v)}. O valor de face é só ${R$(p.m.v)}: o que pesa para o colecionador é a raridade e o estado.`
+    };
+  }
+  function compararColecao() {
+    let a, b;
+    do { a = peca(); b = peca(); } while (a.v === b.v && Math.random() < 0.7);
+    return {
+      cena: () => fichaHTML(a, 'Moeda A') + fichaHTML(b, 'Moeda B') + regras(),
+      q: 'Qual moeda vale mais para um colecionador?',
+      opcoes: [{ t: 'Moeda A', certo: a.v > b.v }, { t: 'Moeda B', certo: b.v > a.v }, { t: 'Valem igual', certo: a.v === b.v }],
+      fixas: true,
+      explica: `A: R$ ${BASE} × ${a.c[2]} × ${a.t[2]} = ${R$(a.v)}. B: R$ ${BASE} × ${b.c[2]} × ${b.t[2]} = ${R$(b.v)}.`
+    };
+  }
+  function vezes() {
+    let i, j;
+    do { i = ri(0, 3); j = ri(0, 3); } while (i <= j);
+    const r = CONS[i][2] / CONS[j][2];
+    return {
+      cena: () => regras(),
+      q: `A mesma moeda, com a mesma tiragem, aparece em dois estados: ${CONS[i][0]} (${CONS[i][1]}) e ${CONS[j][0]} (${CONS[j][1]}). A moeda ${CONS[i][0]} vale quantas vezes a ${CONS[j][0]}?`,
+      opcoes: [...new Set([r, CONS[i][2], CONS[i][2] - CONS[j][2] || 3, r * 2])].map(v => ({ t: `${v} vezes`, certo: v === r })),
+      explica: `${CONS[i][2]} ÷ ${CONS[j][2]} = ${r}. O preço é proporcional ao multiplicador de conservação. Por isso colecionadores guardam moedas sem tocar nelas com os dedos: a gordura da pele mancha o metal.`
+    };
+  }
+
+  const SALAS = [
+    { nome: 'Qual é a moeda?', rodadas: [identificar, identificar, identificar] },
+    { nome: 'Porta-moedas', rodadas: [somar, comparar, guloso] },
+    { nome: 'Dinheiro no tempo', rodadas: [cortes, urv, ordem] },
+    { nome: 'Feira de numismática', rodadas: [valorColecao, compararColecao, vezes] }
+  ];
+
+  let n, pts, ok, atual;
+  const num = s => {
+    s = String(s).replace(/R\$|CR\$|\s/g, '');
+    if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+    else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+    return s === '' ? NaN : Number(s);
+  };
+  function fb(t, c) { const el = $('#fb'); el.textContent = t; el.className = 'feedback center ' + (c || ''); }
+  function hud() {
+    $('#rn').textContent = Math.min(n + 1, 12); $('#pts').textContent = pts; $('#ok').textContent = ok;
+    const s = Math.floor(n / 3);
+    $('#fases').innerHTML = SALAS.map((x, i) => `<div class="${i < s ? 'feita' : i === s ? 'atual' : ''}"><b>Sala ${i + 1}</b>${x.nome}</div>`).join('');
+  }
+  function rodada() {
+    hud(); fb(''); $('#actions').innerHTML = '';
+    const R = SALAS[Math.floor(n / 3)].rodadas[n % 3]();
+    atual = R;
+    if (R.opcoes) R.ordem = R.fixas ? R.opcoes : shuffle(R.opcoes);
+    let feito = false;
+    R.rerender = () => {
+      $('#etapa').innerHTML = `<div class="cena">${R.cena()}</div>${R.extra ? R.extra() : ''}<p class="q">${R.q}</p>
+        ${R.opcoes ? `<div class="opts" id="opts">${R.ordem.map((o, i) => `<button class="btn ghost" type="button" data-i="${i}">${o.t}</button>`).join('')}</div>`
+          : `<div class="resp">${R.unidade === 'R$' ? '<span>R$</span>' : ''}<input class="num" id="num" inputmode="decimal" autocomplete="off" aria-label="Sua resposta">${R.unidade !== 'R$' ? `<span>${R.unidade}</span>` : ''}<button class="btn" type="button" id="conf">Conferir</button></div>`}`;
+      if (R.depois) R.depois();
+      if (R.opcoes) {
+        const lista = [...$('#opts').querySelectorAll('button')], ord = R.ordem;
+        lista.forEach((b, i) => b.onclick = () => { if (!feito) { feito = true; responder(ord[i].certo, () => { lista.forEach((o, j) => ord[j].certo && o.classList.add('right')); if (!ord[i].certo) b.classList.add('wrong'); }); } });
+      } else {
+        const go = () => {
+          const v = num($('#num').value);
+          if (isNaN(v)) { fb('Digite um número. Para centavos, use vírgula: 1,35.'); return; }
+          if (feito) return; feito = true;
+          const certo = Math.abs(v - R.numero) < 0.005;
+          responder(certo, () => { $('#num').classList.add(certo ? 'right' : 'wrong'); $('#num').disabled = true; $('#conf').disabled = true; });
+        };
+        $('#conf').onclick = go; $('#num').onkeydown = e => { if (e.key === 'Enter') go(); };
+        $('#num').focus({ preventScroll: true });
+      }
+    };
+    function responder(certo, marcar) {
+      marcar();
+      const b = $('#pista'); if (b) b.remove();
+      const ganho = certo ? (R.pontos ? R.pontos() : 3) : 0;
+      if (certo) ok++;
+      pts += ganho; n++;
+      if (R.revela) { R.revela(); $('.cena').innerHTML = R.cena(); }
+      if (R.revelaHTML) $('.q').insertAdjacentHTML('afterend', R.revelaHTML());
+      fb((certo ? `Isso! +${ganho} ${ganho === 1 ? 'ponto' : 'pontos'}. ` : 'Não foi dessa vez. ') + (R.numero !== undefined && !certo ? `A resposta é ${R.unidade === 'R$' ? R$(R.numero) : R.numero + ' ' + R.unidade}. ` : '') + R.explica, certo ? 'ok' : 'bad');
+      hud();
+      const fimSala = n % 3 === 0;
+      $('#actions').innerHTML = `<button class="btn" type="button" id="nx">${n >= 12 ? 'Ver resultado' : fimSala ? `Ir para a sala ${n / 3 + 1} →` : 'Próximo desafio →'}</button>`;
+      $('#nx').onclick = () => n >= 12 ? fim() : rodada(); $('#nx').focus({ preventScroll: true });
+    }
+    R.rerender();
+  }
+  function fim() {
+    hud(); fb(''); $('#rn').textContent = 12;
+    window.MDP && MDP.registrar('valor-moeda', pts / 36 * 100);
+    const titulo = pts >= 30 ? 'Numismata de museu' : pts >= 20 ? 'Colecionador atento' : 'Aprendiz de numismática';
+    $('#etapa').innerHTML = `<div class="cena">${REAL.map(m => moeda(m, 4)).join('')}</div>
+      <p class="q">${titulo}: ${pts} de 36 pontos, ${ok} de 12 acertos.</p>
+      <div class="box"><p><strong>Para lembrar:</strong> nas moedas do Real, tamanho não é valor (a de 5 centavos é maior que a de 10). Para trocar dinheiro antigo, divida ou multiplique pela regra da troca, como numa proporção. E para um colecionador, o valor de uma moeda depende da raridade e do estado, não do número escrito nela.</p>
+      <p class="small muted">As regras da feira são de brincadeira, para treinar as contas. No mercado de verdade, o preço de uma moeda de coleção depende da procura e é consultado em catálogos especializados.</p></div>`;
+    $('#actions').innerHTML = `<button class="btn" type="button" id="again">Jogar de novo</button><a class="btn ghost" href="cunhe-moeda.html">Agora cunhe sua própria moeda →</a>`;
+    $('#again').onclick = start;
+  }
+  function start() { n = 0; pts = 0; ok = 0; usadas = []; rodada(); }
+  start();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
