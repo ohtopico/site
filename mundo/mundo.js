@@ -39,6 +39,42 @@
   ].map(p => Object.assign(p, { tipo: 'pagina', extra: 'Para professores' }));
 
   /* caminho: cor do caminho de cada fase (tons pastel); marco: o monumento da praça */
+  /* Campus do Ensino Médio: desafios dentro do próprio mundo (redes, banco de dados e IA); a 1ª alternativa é a certa */
+  const TAB_ALUNOS = '<table class="em-tab"><tr><th>nome</th><th>idade</th><th>turma</th></tr><tr><td>Ana</td><td>16</td><td>2A</td></tr><tr><td>Bruno</td><td>17</td><td>3A</td></tr><tr><td>Carla</td><td>15</td><td>1A</td></tr><tr><td>Davi</td><td>17</td><td>2A</td></tr></table><p class="muted small">Tabela <code>alunos</code></p>';
+  const DESAFIOS_EM = [
+    { id: 'em-rotas', titulo: 'Rota do pacote', icone: '📦', eixos: ['MD'], resumo: 'Como os dados viajam pela internet: rotas, TCP, UDP e DNS.', qs: [
+      { html: '<p class="em-grafo">A ─2 ms─ B ─2 ms─ D<br>A ─1 ms─ C ─5 ms─ D</p>', enun: 'Um pacote sai do roteador A e vai até D. Qual é o caminho mais rápido?', alts: ['A → B → D (4 ms)', 'A → C → D (6 ms)', 'A → D direto', 'A → C → B → D'], coment: 'Somamos os tempos de cada caminho: 2 + 2 = 4 ms contra 1 + 5 = 6 ms. Não há ligação direta A–D nem C–B.' },
+      { enun: 'Qual protocolo confere se todos os pacotes chegaram e na ordem certa, pedindo de novo os que se perderam?', alts: ['TCP', 'UDP', 'HTML', 'USB'], coment: 'O TCP numera os pacotes e confirma a entrega. O UDP só envia, sem conferir.' },
+      { enun: 'Para que serve o DNS?', alts: ['Traduzir nomes como ohtopico.com.br em endereços IP', 'Apagar vírus do computador', 'Guardar as senhas dos sites', 'Desenhar as páginas na tela'], coment: 'O DNS funciona como uma agenda: você sabe o nome, ele descobre o número (IP).' },
+      { enun: 'Chamadas de vídeo ao vivo costumam usar UDP. Por quê?', alts: ['É mais rápido, e perder um pedacinho é melhor do que esperar', 'É mais seguro que o TCP', 'Só ele funciona no Wi-Fi', 'Ele comprime o vídeo sozinho'], coment: 'No ao vivo, esperar um pacote perdido atrasaria tudo; melhor seguir em frente.' } ] },
+    { id: 'em-ip', titulo: 'Endereços e máscaras', icone: '🌐', eixos: ['MD'], resumo: 'Endereços IPv4 e IPv6, redes /24 e máscaras.', qs: [
+      { enun: 'Na rede 192.168.1.0/24, qual endereço está na mesma rede que 192.168.1.10?', alts: ['192.168.1.200', '192.168.2.10', '10.0.0.10', '192.169.1.10'], coment: 'Com /24, os três primeiros números (24 bits) identificam a rede: 192.168.1.' },
+      { enun: 'Quantos bits tem um endereço IPv4?', alts: ['32', '8', '64', '128'], coment: 'São 4 números de 8 bits (0 a 255): 4 × 8 = 32 bits. O IPv6 tem 128.' },
+      { enun: 'Por que o IPv6 foi criado?', alts: ['Os endereços IPv4 estavam acabando', 'O IPv4 não funcionava no celular', 'Para deixar os sites coloridos', 'Para acabar com o Wi-Fi'], coment: '32 bits dão cerca de 4,3 bilhões de endereços: pouco para tantos aparelhos.' },
+      { enun: 'Numa rede /24, quantos bits sobram para numerar os computadores?', alts: ['8', '24', '16', '4'], coment: '32 − 24 = 8 bits, ou seja, 256 combinações (254 aparelhos, tirando rede e broadcast).' } ] },
+    { id: 'em-sql', titulo: 'Consultas SQL', icone: '🗃️', eixos: ['PC'], resumo: 'Perguntas a um banco de dados com SELECT, WHERE, COUNT e ORDER BY.', qs: [
+      { html: TAB_ALUNOS, enun: 'O que esta consulta devolve? <code>SELECT nome FROM alunos WHERE idade = 17;</code>', alts: ['Bruno e Davi', 'Ana e Davi', 'Só Bruno', 'Todos os alunos'], coment: 'O WHERE filtra as linhas: só Bruno e Davi têm 17 anos.' },
+      { html: TAB_ALUNOS, enun: 'E esta? <code>SELECT COUNT(*) FROM alunos WHERE turma = \'2A\';</code>', alts: ['2', '1', '3', '4'], coment: 'COUNT conta as linhas que passaram no filtro: Ana e Davi.' },
+      { html: TAB_ALUNOS, enun: 'Qual consulta lista os nomes do mais novo para o mais velho?', alts: ['SELECT nome FROM alunos ORDER BY idade;', 'SELECT nome FROM alunos ORDER BY idade DESC;', 'SELECT idade FROM nome;', 'DELETE FROM alunos;'], coment: 'ORDER BY ordena em ordem crescente; DESC inverte. E cuidado: DELETE apaga!' },
+      { html: TAB_ALUNOS, enun: 'O que devolve <code>SELECT nome FROM alunos WHERE idade &gt; 15 AND turma = \'2A\';</code>?', alts: ['Ana e Davi', 'Só Carla', 'Bruno e Davi', 'Só Ana'], coment: 'Com AND, as duas condições precisam valer: mais de 15 anos e turma 2A.' } ] },
+    { id: 'em-chaves', titulo: 'Tabelas e chaves', icone: '🔑', eixos: ['PC', 'CD'], resumo: 'Chave primária, chave estrangeira, redundância e LGPD.', qs: [
+      { enun: 'Qual coluna é a melhor chave primária para a tabela de alunos de uma escola?', alts: ['Número de matrícula', 'Nome', 'Idade', 'Turma'], coment: 'A chave primária não pode se repetir. Dois alunos podem ter o mesmo nome, mas não a mesma matrícula.' },
+      { enun: 'Para que serve uma chave estrangeira?', alts: ['Ligar uma tabela a outra, apontando para a chave primária dela', 'Trancar o banco com senha', 'Traduzir os dados para outra língua', 'Apagar linhas repetidas'], coment: 'Ex.: a tabela de notas guarda a matrícula do aluno para ligar cada nota à pessoa certa.' },
+      { enun: 'O nome da professora está repetido em 300 linhas e ela muda de nome. Qual é o problema?', alts: ['É preciso mudar 300 linhas, e se faltar alguma os dados ficam inconsistentes', 'Nenhum problema', 'O banco apaga a professora sozinho', 'O computador fica sem bateria'], coment: 'Por isso separamos os dados em tabelas ligadas por chaves (normalização).' },
+      { enun: 'Pela LGPD, o que a escola deve fazer com os dados dos estudantes no banco de dados?', alts: ['Usar só para a finalidade informada e protegê-los', 'Vender para empresas de propaganda', 'Publicar todos na internet', 'Guardar para sempre sem cuidado'], coment: 'A Lei Geral de Proteção de Dados exige finalidade, transparência e segurança.' } ] },
+    { id: 'em-knn', titulo: 'Como uma IA aprende', icone: '🧭', eixos: ['PC', 'CD'], resumo: 'Vizinhos mais próximos, treino e teste, sobreajuste e acurácia.', qs: [
+      { enun: 'Um classificador k-NN com k = 3 olha as 3 frutas mais parecidas com uma fruta nova: 2 são laranjas e 1 é limão. O que ele prevê?', alts: ['Laranja', 'Limão', 'Metade de cada', 'Não dá para prever'], coment: 'O k-NN vota pela maioria dos vizinhos mais próximos.' },
+      { enun: 'Por que separamos os dados em treino e teste?', alts: ['Para medir se o modelo acerta exemplos que ele nunca viu', 'Para gastar menos energia', 'Porque os dados de teste são mais bonitos', 'Para o modelo decorar as respostas'], coment: 'Testar com dados novos mostra se o modelo aprendeu ou só decorou.' },
+      { enun: 'Um modelo acertou 99% no treino e só 60% no teste. Isso indica...', alts: ['Sobreajuste: ele decorou os exemplos de treino', 'Que o teste está errado', 'Que o modelo é perfeito', 'Falta de internet'], coment: 'Sobreajuste (overfitting): vai muito bem no que já viu e mal no que é novo.' },
+      { enun: 'De 100 e-mails, 90 são normais e 10 são spam. Um modelo que responde "normal" para todos tem que acurácia?', alts: ['90%, mas não acha nenhum spam', '100%', '10%', '50%'], coment: 'Acurácia alta pode enganar quando as classes são desiguais. Por isso olhamos também a matriz de confusão.' } ] },
+    { id: 'em-etica', titulo: 'IA responsável', icone: '⚖️', eixos: ['CD'], resumo: 'Viés, alucinação, consentimento e deepfakes.', qs: [
+      { enun: 'Uma IA que escolhe estagiários foi treinada com currículos antigos, quase todos de homens. Qual é o risco?', alts: ['Repetir o viés e prejudicar as candidatas', 'Nenhum: IA é sempre neutra', 'A IA ficar mais lenta', 'Os currículos sumirem'], coment: 'A IA aprende os padrões dos dados, inclusive os injustos.' },
+      { enun: 'Um chatbot inventou uma referência de livro que não existe. Como isso se chama?', alts: ['Alucinação', 'Criptografia', 'Compilação', 'Backup'], coment: 'Modelos de linguagem geram texto provável, não verificado: sempre confira as fontes.' },
+      { enun: 'Antes de usar fotos de rostos de pessoas para treinar uma IA, é preciso...', alts: ['Ter o consentimento delas e seguir a LGPD', 'Só baixar da internet', 'Mudar as cores das fotos', 'Nada, foto é pública'], coment: 'Rosto é dado pessoal sensível (biométrico).' },
+      { enun: 'O que é um deepfake?', alts: ['Um vídeo, áudio ou imagem falso feito com IA para parecer real', 'Um tipo de antivírus', 'Uma rede social', 'Um cabo de internet'], coment: 'Desconfie de vídeos chocantes e confira em fontes confiáveis antes de compartilhar.' } ] }
+  ];
+  const LUGARES_EM = DESAFIOS_EM.map(d => ({ id: d.id, titulo: d.titulo, icone: d.icone, resumo: d.resumo, tipo: 'em', desafio: d }));
+  const PERGUNTAS_EM = DESAFIOS_EM.flatMap(d => d.qs.map((q, i) => ({ id: `${d.id}-${i}`, enun: (q.html || '') + q.enun, alts: q.alts, certa: 0, coment: q.coment, eixos: d.eixos })));
   const FASES = [
     { id: 'vila', nome: 'Vila do Começo', sub: 'Primeiros passos · Computação do 6º ano', ano: 6, caminho: '#f7c6d9', marco: 'fonte', icone: '🏡', filtro: r => anoDe(r) <= 6 && r.comp.includes('CO'),
       placa: 'Bem-vindo! Cada casa desta vila é um jogo. Ela fica cinza até você jogar e vira colorida quando a atividade é concluída. Converse com as pessoas, pegue os livros e diamantes do chão e entre nas casas.' },
@@ -54,6 +90,8 @@
       lugares: SIM.map(s => ({ id: 'sim-' + s.id, titulo: s.titulo, url: '../simuladores/' + s.url, icone: s.ia ? '🧠' : '🔬', resumo: s.resumo || '', tipo: 'sim',
         extra: (s.niveis || []).map(n => (typeof NIVEIS !== 'undefined' && NIVEIS[n]) || n).join(' · ') })),
       placa: 'Cada prédio é um simulador: redes neurais, regressão, bases numéricas, cache, pipeline... Abra e experimente.' },
+    { id: 'medio', nome: 'Campus do Ensino Médio', sub: 'Redes, banco de dados e IA', ano: 10, caminho: '#d6e4f0', marco: 'servidor', icone: '🎓', lugares: LUGARES_EM, perguntasProprias: PERGUNTAS_EM,
+      placa: 'Bem-vindo ao Ensino Médio! Cada prédio é um desafio aqui mesmo no mundo: redes, banco de dados e inteligência artificial.' },
     { id: 'escola', nome: 'Escola dos Professores', sub: 'Guias, formação e mentoria', ano: 9, caminho: '#f5d6e6', marco: 'sino', icone: '🍎', lugares: PROF,
       placa: 'A escola é para quem ensina: guias de IA e tecnologia, prompts, planos de aula, formação e mentoria.' }
   ];
@@ -139,10 +177,10 @@
     const lugares = f.lugares || jogaveis.filter(f.filtro).map(lugarRec);
     const n = Math.max(1, lugares.length);
     const raio = Math.max(8, Math.ceil(5 + 0.42 * n));
-    const perguntas = perguntasDoAno(f.ano);
+    const perguntas = f.perguntasProprias || perguntasDoAno(f.ano);
     return Object.assign({}, f, { idx: i, lugares, raio, perguntas,
-      metaPerg: Math.min(perguntas.length, [4, 5, 6, 6, 6, 4, 3][i] || 4),
-      metaJogar: Math.min(n, f.id === 'escola' ? 3 : 3 + Math.floor(i / 2)),
+      metaPerg: Math.min(perguntas.length, [4, 5, 6, 6, 6, 4, 6, 3][i] || 4),
+      metaJogar: Math.min(n, f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2)),
       nNpc: 2 + Math.floor(i / 2), nItens: 5 + i });
   });
   /* as vilas são quadradas e ficam numa grade de 3 colunas (em zigue-zague): cada uma liga-se à anterior e à seguinte
@@ -150,7 +188,7 @@
      desmontada (ela é refeita igualzinha quando a pessoa volta, porque o sorteio é fixo). */
   const ALT = Math.max(...fases.map(f => 2 * (f.raio + 9)));
   const MEIO = Math.floor(ALT / 2);                              // as duas estradas se cruzam no meio
-  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2]];
+  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2]];
   const LADOS = { L: { x: ALT - 0.5, y: MEIO, nome: 'leste' }, O: { x: 0.5, y: MEIO, nome: 'oeste' }, S: { x: MEIO, y: ALT - 0.5, nome: 'sul' }, N: { x: MEIO, y: 0.5, nome: 'norte' } };
   const ladoPara = (a, b) => { const [ax, ay] = GRADE[a], [bx, by] = GRADE[b]; return bx > ax ? 'L' : bx < ax ? 'O' : by > ay ? 'S' : 'N'; };
   for (const f of fases) {
@@ -388,7 +426,8 @@
   // versão anterior (casas em fileiras): a posição salva não serve mais, e os itens antigos contam para a missão
   if (!S.cont || !Object.keys(S.cont).length) for (const k of Object.keys(S.itens || {})) { const fid = k.split('-')[0]; S.cont[fid] = (S.cont[fid] || 0) + 1; }
   for (const k of Object.keys(S.itens)) if (!k.includes('-s' + SEMANA + '-')) delete S.itens[k];   // só os desta semana
-  if (S.versao !== 3) { S.x = 3.5; S.y = MEIO; S.fase = 0; S.versao = 3; }   // versão 3: vilas em grade
+  if (S.versao !== 3 && S.versao !== 4) { S.x = 3.5; S.y = MEIO; S.fase = 0; S.versao = 3; }   // versão 3: vilas em grade
+  if (S.versao === 3) { if (S.fase === 6) S.fase = 7; S.versao = 4; }                               // versão 4: Campus do Ensino Médio antes da escola
   function salvar(avisa) { try { localStorage.setItem(CHAVE, JSON.stringify(S)); if (avisa) aviso('💾 Progresso salvo!'); } catch (e) { if (avisa) aviso('Não deu para salvar neste navegador.'); } }
 
   /* ---------- missões ---------- */
@@ -396,8 +435,8 @@
     const jog = f.lugares.filter(l => S.feitos[l.id]).length;
     const perg = Object.keys(S.resp).filter(id => f.perguntas.some(p => p.id === id)).length;
     const falas = f.npcs.filter(n => S.falas[n.id]).length;
-    const verbo = f.id === 'escola' ? 'Visitar' : f.id === 'lab' ? 'Experimentar' : 'Jogar';
-    const coisa = f.id === 'escola' ? 'páginas' : f.id === 'lab' ? 'simuladores' : 'jogos';
+    const verbo = f.id === 'escola' ? 'Visitar' : f.id === 'lab' ? 'Experimentar' : f.id === 'medio' ? 'Concluir' : 'Jogar';
+    const coisa = f.id === 'escola' ? 'páginas' : f.id === 'lab' ? 'simuladores' : f.id === 'medio' ? 'desafios' : 'jogos';
     return [
       { nome: `${verbo} ${f.metaJogar} ${coisa}`, n: jog, meta: f.metaJogar },
       { nome: `Responder ${f.metaPerg} perguntas`, n: perg, meta: f.metaPerg },
@@ -646,6 +685,9 @@
     } else if (f.marco === 'robo') {
       caixa(x + 0.2, y + 0.2, 0, 1.6, 1.6, 0.4, '#e6e0d4'); caixa(x + 0.55, y + 0.55, 0.4, 0.9, 0.9, 1.2, '#a8e6b8'); caixa(x + 0.35, y + 0.75, 0.9, 0.2, 0.5, 0.6, '#9fe3dc'); caixa(x + 1.45, y + 0.75, 0.9, 0.2, 0.5, 0.6, '#9fe3dc');
       caixa(x + 0.6, y + 0.6, 1.6, 0.8, 0.8, 0.7, '#c9efd9'); naFace('y', x + 0.6, y + 0.6, 0.8, 0.8, 0.15, 0, 0.15, 1.95, 0.15, '#2b6cb0'); naFace('y', x + 0.6, y + 0.6, 0.8, 0.8, 0.5, 0, 0.15, 1.95, 0.15, '#2b6cb0');
+    } else if (f.marco === 'servidor') {
+      caixa(x + 0.1, y + 0.1, 0, 1.8, 1.8, 0.3, '#e6e0d4');
+      for (const [a, b] of [[0.3, 0.3], [1.1, 0.3], [0.3, 1.1], [1.1, 1.1]]) { caixa(x + a, y + b, 0.3, 0.6, 0.6, 2.2, '#3a4250'); for (let k = 0; k < 4; k++) naFace('y', x + a, y + b, 0.6, 0.6, 0.1, 0, 0.4, 0.55 + k * 0.45, 0.08, (Math.floor(agora / 300) + k + a * 10) % 3 ? '#7dff8a' : '#2b6cb0'); }
     } else if (f.marco === 'cupula') {
       caixa(x, y, 0, 2, 2, 0.6, '#e6e0d4'); caixa(x + 0.3, y + 0.3, 0.6, 1.4, 1.4, 0.5, '#bdeffa'); caixa(x + 0.55, y + 0.55, 1.1, 0.9, 0.9, 0.45, '#bdeffa'); caixa(x + 0.8, y + 0.8, 1.55, 0.4, 0.4, 0.35, '#bdeffa');
     } else {
@@ -873,7 +915,7 @@
     if (m.id === 'computador') {
       const lista = faltando(false).slice(0, 6);
       return dialogo('💻', 'Computador', lista.length ? '<p>Atividades que ainda faltam nas fases abertas. Abra uma e a casa dela ganha cor:</p>' : '<p>Você já fez todas as atividades das fases abertas! 🎉 Cumpra as missões para abrir a próxima fase.</p>',
-        lista.map(l => ({ txt: `${l.icone} ${l.titulo}`, href: l.url, fn: () => abriu(l) })).concat([fecha]));
+        lista.map(l => l.tipo === 'em' ? { txt: `${l.icone} ${l.titulo}`, fn: () => desafioEM(l, 0) } : { txt: `${l.icone} ${l.titulo}`, href: l.url, fn: () => abriu(l) }).concat([fecha]));
     }
     if (m.id === 'arcade') {
       const js = faltando(true), l = js.length ? js[Math.floor(Math.random() * js.length)] : jogaveis.length ? lugarRec(jogaveis[Math.floor(Math.random() * jogaveis.length)]) : null;
@@ -1972,7 +2014,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     minimapa(faseDeX(P.x));
@@ -2109,6 +2151,7 @@
 
   function abreCasa(c) {
     const l = c.lugar, feito = S.feitos[l.id];
+    if (l.tipo === 'em') return dialogo(l.icone, l.titulo, `<p>${esc(l.resumo)}</p><p class="muted">${feito ? '✅ Desafio concluído. Pode refazer quando quiser.' : `Um desafio de ${l.desafio.qs.length} perguntas aqui mesmo. Acertando todas, o prédio ganha cor.`}</p>`, [{ txt: feito ? 'Refazer' : 'Começar', classe: 'principal', fn: () => desafioEM(l, 0) }, { txt: 'Agora não', fn: fechaDialogo }]);
     const verbo = l.tipo === 'pagina' ? 'Visitar' : l.tipo === 'sim' ? 'Experimentar' : 'Jogar';
     let status;
     if (feito) status = `<p class="muted">✅ Concluída${typeof feito === 'number' && l.rec && feito > 1 ? ` · melhor resultado: ${feito}%` : ''}. A casa já ganhou cor; pode jogar de novo quando quiser.</p>`;
@@ -2118,6 +2161,27 @@
       { txt: `${verbo} agora`, href: l.url, classe: 'principal', fn: () => abriu(l) },
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
+  }
+  function desafioEM(l, i) {
+    const d = l.desafio, q = d.qs[i], ordem = q.alts.map((a, k) => k).sort(() => Math.random() - 0.5);
+    dialogo(l.icone, `${l.titulo} · ${i + 1}/${d.qs.length}`, `${q.html || ''}<p>${q.enun}</p>`, ordem.map(k => ({ txt: q.alts[k], fn: () => {
+      if (D.op.dataset.respondida) return;
+      D.op.dataset.respondida = '1';
+      const certo = k === 0, id = `${d.id}-${i}`;
+      [...D.op.children].forEach((b, j) => { b.disabled = true; if (ordem[j] === 0) b.classList.add('certa'); else if (ordem[j] === k) b.classList.add('errada'); });
+      if (certo) { const nova = S.resp[id] !== true; S.resp[id] = true; ganhaHabilidade(d.eixos, 10); if (nova) { S.acertos++; pontos(5); } } else { S.erros++; if (S.resp[id] !== true) S.resp[id] = false; hud(); }
+      D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${esc(q.coment)}</p>`;
+      const ultimo = i === d.qs.length - 1;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = !certo ? 'Tentar de novo' : ultimo ? 'Terminar' : 'Próxima';
+      b.addEventListener('click', () => {
+        if (!certo) return desafioEM(l, i);
+        if (!ultimo) return desafioEM(l, i + 1);
+        if (!S.feitos[l.id]) { S.feitos[l.id] = true; pontos(20, `${l.icone} ${l.titulo}: o prédio ganhou cor!`); }
+        confereFases(); salvar(); fechaDialogo();
+      });
+      D.op.appendChild(b); b.focus(); salvar();
+    } })));
+    delete D.op.dataset.respondida;
   }
   function abriu(l) { S.abertos[l.id] = Date.now(); if (!l.rec && !S.feitos[l.id]) { S.feitos[l.id] = true; pontos(15, `${l.titulo}: a casa ganhou cor!`); confereFases(); } salvar(); fechaDialogo(); }
   /* pergunta da fase: primeiro as que a pessoa errou (revisão), depois as novas */
@@ -2274,7 +2338,7 @@
   }
   function biblioteca() {
     $('#bib-lista').innerHTML = '<div class="bib">' + fases.map(f => `<h3>${f.icone} ${f.idx + 1}. ${esc(f.nome)} <small class="muted">· ${esc(f.sub)}</small></h3><ul>${
-      f.lugares.map(l => `<li class="${S.feitos[l.id] ? 'feito' : ''}"><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.icone)} ${esc(l.titulo)}</a></li>`).join('')}</ul>`).join('') +
+      f.lugares.map(l => `<li class="${S.feitos[l.id] ? 'feito' : ''}">${l.tipo === 'em' ? `${esc(l.icone)} ${esc(l.titulo)} <small class="muted">(desafio no Campus)</small>` : `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.icone)} ${esc(l.titulo)}</a>`}</li>`).join('')}</ul>`).join('') +
       `<h3>📘 Dicas que você já leu</h3><ul>${Object.keys(S.dicas).map(i => `<li class="feito" style="grid-column:1/-1">${DICAS[i]}</li>`).join('') || '<li>Pegue os livros pelo chão para ler dicas de computação.</li>'}</ul>` +
       `<h3>📚 Mais do site</h3><ul><li><a href="../">Página inicial</a></li><li><a href="../jogos/">Todos os jogos</a></li><li><a href="${MD}catalogo.html?tipo=3d">Laboratório 3D</a></li><li><a href="../simuladores/">Simuladores</a></li><li><a href="${MD}meu-progresso.html">Meu progresso</a></li><li><a href="../curriculo/">Quem é Júlia Quoos</a></li></ul></div>`;
   }
@@ -2417,7 +2481,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;

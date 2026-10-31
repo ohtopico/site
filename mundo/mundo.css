@@ -188,3 +188,9 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .bl.rep, .bl.fim { background: #f6b73c; color: #3a2a00; } .bl.fim { font-size: 11px; padding: 1px 8px; opacity: .8; }
 .bl.cursor { background: none; color: #9a6bd6; border: 1px dashed #9a6bd6; font-size: 11px; }
 .of-msg { font-weight: 600; min-height: 1.4em; }
+
+/* Campus do Ensino Médio */
+.em-tab { border-collapse: collapse; font-size: 13px; margin: 4px 0; background: #fff; }
+.em-tab th, .em-tab td { border: 1px solid var(--borda); padding: 3px 10px; text-align: left; } .em-tab th { background: #eaf3fd; }
+.em-grafo { font: 600 14px ui-monospace, Consolas, monospace; background: #fff; border: 1px solid var(--borda); border-radius: 10px; padding: 8px 12px; display: inline-block; }
+#d-texto code { background: #f1ede2; border-radius: 6px; padding: 1px 5px; font-size: 13px; }
