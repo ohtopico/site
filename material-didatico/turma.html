@@ -33,6 +33,7 @@
   .warn { color: var(--bad); font-weight: 700; }
   .rm { border: 0; background: none; cursor: pointer; color: var(--ink-2); font-size: 14px; padding: 2px 6px; border-radius: 8px; }
   .rm:hover { background: var(--pill); color: var(--ink); }
+  a.rm { text-decoration: none; }
   .attn { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
   .attn a { text-decoration: none; color: var(--ink); }
   .attn a:hover { background: var(--pill); }
@@ -151,13 +152,14 @@
         <tbody>${alunos.map((x, i) => `<tr>
           <td class="name"><strong>${esc(x.a)}</strong>${x.valido ? '' : ' <span class="warn" title="O código foi alterado depois de gerado">⚠</span>'}${x.valido && x.n >= (window.MDM ? MDM.nivelDe('monitor') : 70) ? ` <span class="nv nv4" title="Chegou ao nível ${x.n} nas missões e pode ajudar os colegas">Monitor</span>` : ''}<small>${x.y}º ano · ${dataTxt(x.d)}${x.n ? ` · nível ${x.n}` : ''}</small></td>
           ${habs.map(h => `<td>${nv(x.l[h.codigo] || 0)}</td>`).join('')}
-          <td class="no-print"><button class="rm" type="button" data-i="${i}" aria-label="Remover ${esc(x.a)}">✕</button></td></tr>`).join('')}</tbody>
+          <td class="no-print"><a class="rm" href="relatorio-familia.html#${x.code}" title="Relatório para a família" aria-label="Relatório para a família de ${esc(x.a)}">👪</a><button class="rm" type="button" data-i="${i}" aria-label="Remover ${esc(x.a)}">✕</button></td></tr>`).join('')}</tbody>
         <tfoot><tr><td class="name">Proficientes</td>${habs.map(h => `<td title="${prof(h)} de ${alunos.length}">${pct(h)}%</td>`).join('')}<td class="no-print"></td></tr></tfoot>
       </table></div>
       ${alunos.some(x => !x.valido) ? '<p class="small"><span class="warn">⚠</span> Relatório que não confere com a assinatura (foi editado depois de gerado).</p>' : ''}
       <div class="btn-row no-print" style="margin-top:14px">
         <button class="btn ghost" type="button" id="csv">Baixar planilha (CSV)</button>
         <button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir</button>
+        <a class="btn ghost" href="relatorio-familia.html?turma=1">👪 Relatórios para as famílias</a>
         <button class="btn ghost" type="button" id="clear">Limpar turma</button>
       </div>
       ${atencao.length ? `<h2>Habilidades que mais pedem atenção</h2>

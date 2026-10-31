@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Relatório para a família · Material didático | Júlia Quoos</title>
+<meta name="description" content="Relatório para imprimir com o progresso do estudante nas habilidades da BNCC e sugestões do que fazer em casa, sem computador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 900px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc > h1 { font-size: clamp(30px, 5vw, 44px); margin: 4px 0 6px; }
+  .ctl { margin: 18px 0 26px; }
+  .ctl textarea { width: 100%; font: 13px ui-monospace, Consolas, monospace; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; resize: vertical; word-break: break-all; }
+  .msg { font-size: 14px; font-weight: 600; min-height: 1.4em; margin: 8px 0 0; }
+  .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+
+  /* ---------- o relatório (uma folha por estudante) ---------- */
+  .rel { border: 1.5px solid var(--ink); border-radius: 24px; padding: 26px 28px; margin: 0 0 26px; background: var(--paper); }
+  .rel-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; border-bottom: 1.5px solid var(--line); padding-bottom: 14px; }
+  .rel-head h2 { font-size: 30px; margin: 0; }
+  .rel-head .quem { font-size: 15px; color: var(--ink-2); }
+  .rel-head .quem strong { color: var(--ink); }
+  .nome { display: flex; gap: 8px; align-items: flex-end; font-size: 14px; margin-top: 10px; flex: 1 1 100%; }
+  .nome span.l { flex: 1; border-bottom: 1px solid var(--ink-2); min-height: 1.3em; }
+  .rel h3 { font-size: 20px; margin: 22px 0 6px; }
+  .rel p { margin: 0 0 8px; }
+  .nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 16px 0 0; }
+  .num { border: 1.5px solid var(--ink); border-radius: 16px; padding: 10px 12px; }
+  .num b { display: block; font-family: var(--display); font-size: 28px; line-height: 1.05; }
+  .num span { font-size: 13px; color: var(--ink-2); }
+  .niveis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 8px; font-size: 13.5px; }
+  .niveis div { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+  .habs { list-style: none; margin: 6px 0 0; padding: 0; }
+  .habs li { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; padding: 7px 0; border-bottom: 1px solid var(--line); break-inside: avoid; }
+  .habs li .nv { grid-row: span 2; align-self: start; min-width: 104px; }
+  .habs li strong { font-size: 15px; }
+  .habs li span.t { font-size: 13.5px; color: var(--ink-2); }
+  .grupos { margin: 6px 0 0; }
+  .grupos > div { display: grid; grid-template-columns: 190px 1fr; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); break-inside: avoid; }
+  .grupos dt { font-weight: 600; font-size: 14px; }
+  .grupos dd { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 6px; font-size: 14px; }
+  .grupos dd span { border: 1px solid var(--line); border-radius: 99px; padding: 1px 10px; background: var(--accent-soft); }
+  .grupos dd small { color: var(--ink-2); font-size: 11px; }
+  .vazio { font-size: 14.5px; color: var(--ink-2); font-style: italic; }
+  .casa { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 8px; }
+  .casa > div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; break-inside: avoid; }
+  .casa h4 { margin: 0 0 6px; font-size: 16px; }
+  .casa ul { margin: 0; padding-left: 18px; font-size: 14px; }
+  .casa li { margin: 0 0 5px; }
+  .casa .perg { font-size: 13.5px; color: var(--ink-2); margin: 6px 0 0; }
+  .links { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
+  .links li { margin: 0 0 5px; }
+  .links .url { font-size: 12.5px; color: var(--ink-2); word-break: break-all; }
+  .recado { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 8px; }
+  .recado h4 { margin: 0 0 4px; font-size: 15px; }
+  .linhas { min-height: 96px; background: repeating-linear-gradient(transparent 0 31px, var(--ink-3) 31px 32px); font-size: 14px; line-height: 32px; white-space: pre-wrap; }
+  .recado textarea { width: 100%; min-height: 96px; font: 14px/32px inherit; font-family: inherit; color: var(--ink); background: repeating-linear-gradient(transparent 0 31px, var(--ink-3) 31px 32px); border: 0; border-bottom: 1px dashed var(--ink-3); padding: 0; resize: vertical; }
+  .assina { display: flex; gap: 8px; align-items: flex-end; font-size: 13px; margin-top: 14px; }
+  .assina span.l { flex: 1; border-bottom: 1px solid var(--ink-2); min-height: 1.3em; }
+  .rodape { font-size: 12px; color: var(--ink-2); margin-top: 18px; border-top: 1.5px solid var(--line); padding-top: 10px; }
+  .warn { color: var(--bad); font-weight: 600; }
+  .so-print { display: none; }
+  @media (max-width: 700px) {
+    .rel { padding: 18px 16px; border-radius: 18px; }
+    .nums, .niveis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .casa, .recado, .grupos > div { grid-template-columns: minmax(0, 1fr); }
+    .grupos > div { gap: 4px; }
+    .ctl textarea { font-size: 16px; }
+  }
+  @page { size: A4; margin: 12mm; }
+  @media print {
+    /* cores claras na impressão, mesmo com o tema escuro ligado */
+    html:root:not(.x) { --ink: #111; --ink-2: #444; --ink-3: #999; --line: #ccc; --paper: #fff; --paper-2: #fff; --pill: #eee; --pill-2: #e2e2df;
+      --accent: #166c40; --accent-soft: #e3f1e8; }
+    body { font-size: 11pt; }
+    .doc { padding: 0; max-width: none; }
+    .doc > .eyebrow, .doc > h1, .doc > .intro, .ctl { display: none !important; }
+    .rel { border: 0; border-radius: 0; padding: 0; margin: 0; break-after: page; }
+    .rel:last-child { break-after: auto; }
+    .rel h3 { break-after: avoid; font-size: 16pt; margin-top: 14px; }
+    .habs li { padding: 4px 0; }
+    .grupos dd span, .linhas { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .casa { display: block; columns: 2; column-gap: 12px; }
+    .casa > div { margin-bottom: 12px; }
+    .nv { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .recado textarea { display: none; }
+    .so-print { display: block; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc"></main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/missoes.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+/* Relatório para a família: uma folha para imprimir com o progresso e sugestões para casa.
+   Três jeitos de abrir:
+   - sem nada: usa o perfil deste navegador (página Meu progresso);
+   - relatorio-familia.html#MDR1…: um relatório que o estudante mandou para a professora;
+   - relatorio-familia.html?turma=1: todos os relatórios guardados no painel da turma, uma folha por estudante.
+   O código vai depois do # para nunca sair do navegador. */
+(function () {
+  mdTopbar('progresso');
+  mdFooter();
+  const doc = document.getElementById('doc');
+  const $ = s => doc.querySelector(s);
+  const params = new URLSearchParams(location.search);
+  const dataTxt = d => new Date(d * 864e5).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+  const nv = n => `<span class="nv nv${n}">${MDP.NIVEIS[n].nome}</span>`;
+  const linkCurto = r => { const u = new URL(recUrl(r), location.href); return u.host + u.pathname + u.search; };
+
+  /* O que fazer em casa, sem computador, para cada eixo (Computação) ou unidade temática (Matemática) */
+  const CASA = {
+    PC: { t: '🧩 Pensamento computacional', dicas: [
+      'Peça que escreva o passo a passo de uma tarefa da casa (fazer um sanduíche, arrumar a mochila) e siga exatamente o que está escrito. Quando der errado, procurem juntos o “erro no programa”.',
+      'Planejem algo em família quebrando em partes menores: o almoço de domingo, uma ida ao mercado, a rotina da semana.',
+      'Joguem jogos de regras e estratégia (dominó, damas, sudoku, cartas) e conversem sobre o padrão que ajuda a ganhar.'],
+      perg: 'Pergunte: “Que passo ficou faltando?” e “Tem alguma parte que se repete?”' },
+    MD: { t: '💻 Mundo digital', dicas: [
+      'Peça que explique como uma mensagem sai do seu celular e chega no celular de outra pessoa. Vale desenhar o caminho no papel.',
+      'Contem até 15 com os dedos usando só “levantado” e “abaixado” (números binários) e desafiem um ao outro.',
+      'Olhem juntos as configurações do celular ou do computador de casa: memória, armazenamento, Wi-Fi. Peça que diga para que serve cada um.'],
+      perg: 'Pergunte: “O que acontece por dentro quando você toca em enviar?”' },
+    CD: { t: '🌐 Cultura digital', dicas: [
+      'Combinem por escrito as regras de uso de telas da família: horários, lugares sem celular e o que fazer quando algo estranho aparece.',
+      'Antes de compartilhar uma notícia, confiram juntos: quem publicou, a data e se outro site sério fala a mesma coisa.',
+      'Criem juntos uma frase-senha de exemplo (sem usar a senha real) e revisem quem pode ver as fotos e o perfil nas redes.'],
+      perg: 'Pergunte: “Como você sabe se uma informação da internet é confiável?”' },
+    NU: { t: '🔢 Números', dicas: [
+      'No mercado, peça que estime o total da compra e calcule o troco antes do caixa.',
+      'Usem uma receita para trabalhar frações: dobrar ou fazer metade da receita.'],
+      perg: 'Pergunte: “Como você fez essa conta de cabeça?”' },
+    AL: { t: '🔣 Álgebra', dicas: [
+      'Brinquem de “pensei num número”: multiplique por 2, some 3… e peça que descubra o número inicial.',
+      'Procurem sequências e padrões no dia a dia (azulejos, calendário, preços por quantidade).'],
+      perg: 'Pergunte: “Qual é a regra que faz essa sequência continuar?”' },
+    GE: { t: '📐 Geometria', dicas: [
+      'Desenhem juntos a planta de um cômodo da casa, com portas e janelas.',
+      'Procurem ângulos e simetrias em casa: os ponteiros do relógio, o piso, os objetos da cozinha.'],
+      perg: 'Pergunte: “Que forma é essa e como você sabe?”' },
+    GM: { t: '📏 Grandezas e medidas', dicas: [
+      'Meçam juntos o comprimento de um móvel ou de um cômodo e comparem com uma estimativa feita antes.',
+      'Na cozinha, convertam medidas: xícaras, gramas, mililitros e o tempo de forno.'],
+      perg: 'Pergunte: “Qual unidade é melhor para medir isso?”' },
+    PE: { t: '📊 Probabilidade e estatística', dicas: [
+      'Anotem durante uma semana quem faz cada tarefa da casa e montem um gráfico de barras no papel.',
+      'Joguem dados e anotem os resultados: qual soma sai mais? Por quê?'],
+      perg: 'Pergunte: “O que esse gráfico mostra que a tabela não mostrava?”' }
+  };
+
+  /* Normaliza o perfil do navegador e o relatório MDR1 no mesmo formato */
+  function doPerfil(p) {
+    const l = {}, best = {};
+    HABILIDADES.forEach(h => { const i = MDP.infoHab(h.codigo, p); if (i.nivel) { l[h.codigo] = i.nivel; best[h.codigo] = i.best; } });
+    const notas = {}; Object.entries(p.r).forEach(([id, x]) => { if (REC[id]) notas[id] = x.b; });
+    const med = MDP.medalhas(p).filter(m => m.tem);
+    return { apelido: p.apelido, ano: p.ano || 6, data: MDP.hoje(), l, best, notas, medalhas: med, missao: window.MDM ? MDM.nivel(p) : null, valido: true };
+  }
+  function doRelatorio(o) {
+    const l = o.l || {}, notas = o.r || {}, best = {};
+    Object.entries(notas).forEach(([id, b]) => (REC[id] ? REC[id].habs : []).forEach(c => { if (l[c]) best[c] = Math.max(best[c] || 0, b); }));
+    return { apelido: String(o.a || 'Estudante'), ano: o.y || 6, data: o.d, l, best, notas, medalhas: null,
+      missao: o.n ? { n: o.n } : null, valido: o.valido };
+  }
+
+  /* Jogo ou lista para a habilidade: o que ainda não fez ou fez com a nota mais baixa */
+  function atividade(codigo, notas) {
+    const recs = RECURSOS.filter(r => r.habs.includes(codigo) && (r.tipo === 'jogo' || r.tipo === 'lista'));
+    const nota = r => notas[r.id] === undefined ? -1 : notas[r.id];
+    return recs.sort((a, b) => nota(a) - nota(b) || (a.tipo === 'jogo' ? -1 : 1))[0] || null;
+  }
+
+  function folha(e) {
+    const habsAno = HABILIDADES.filter(h => h.ano === e.ano);
+    // Matemática só entra se o estudante já praticou alguma habilidade dela
+    const temMA = Object.keys(e.l).some(c => HAB[c] && HAB[c].comp === 'MA');
+    const doAno = habsAno.filter(h => h.comp === 'CO' || temMA);
+    const niv = c => e.l[c] || 0;
+    // habilidades de outros anos que o estudante já praticou também aparecem
+    const praticadas = HABILIDADES.filter(h => niv(h.codigo) && h.ano !== e.ano);
+    const todas = [...doAno, ...praticadas];
+    const aprendeu = todas.filter(h => niv(h.codigo) >= 3).sort((a, b) => niv(b.codigo) - niv(a.codigo));
+    // em prática: só o ano do estudante (de outros anos entra apenas o que já aprendeu)
+    const praticando = doAno.filter(h => niv(h.codigo) === 1 || niv(h.codigo) === 2).sort((a, b) => niv(b.codigo) - niv(a.codigo));
+    const proximas = doAno.filter(h => !niv(h.codigo) && atividade(h.codigo, e.notas)).slice(0, 4);
+    const coAno = habsAno.filter(h => h.comp === 'CO');
+    const coOk = coAno.filter(h => niv(h.codigo) >= 3).length;
+
+    // foco para casa: o que está praticando, depois o que vem a seguir
+    const foco = [...praticando, ...proximas];
+    const eixos = [...new Set((foco.length ? foco : coAno).map(h => h.eixo))].filter(x => CASA[x]).slice(0, 4);
+    const focoCod = foco.map(h => h.codigo);
+    const fichas = RECURSOS.filter(r => r.tipo === 'ficha' && r.url.startsWith('ficha.html') && (r.anos || []).includes(e.ano) && r.habs.some(c => focoCod.includes(c))).slice(0, 3);
+    const jogos = [...new Set(foco.map(h => atividade(h.codigo, e.notas)).filter(Boolean))].slice(0, 3);
+
+    // lista compacta por eixo; assuntos com o mesmo nome viram um só (com os códigos juntos)
+    const compacta = (hs, vazio) => {
+      if (!hs.length) return `<p class="vazio">${vazio}</p>`;
+      const grupos = {};
+      hs.forEach(h => { const g = grupos[h.eixo] = grupos[h.eixo] || {}; (g[h.objeto] = g[h.objeto] || []).push(h); });
+      return `<dl class="grupos">${Object.entries(grupos).map(([ex, g]) => `<div><dt>${EIXOS[ex].nome}${EIXOS[ex].comp === 'MA' ? ' (Matemática)' : ''}</dt><dd>${Object.entries(g).map(([obj, l]) =>
+        `<span title="${esc(l.map(h => h.texto).join(' '))}">${l.some(h => niv(h.codigo) === 4) ? '🏅 ' : ''}${esc(obj)} <small>${l.map(h => h.codigo).join(', ')}</small></span>`).join('')}</dd></div>`).join('')}</dl>`;
+    };
+    const item = h => `<li>${nv(niv(h.codigo))}<strong>${esc(h.objeto)}</strong><span class="t">${esc(h.texto)}${e.best[h.codigo] !== undefined ? ` Melhor nota: ${e.best[h.codigo]}%.` : ''} <span class="muted">(${h.codigo})</span></span></li>`;
+    const lista = (hs, vazio) => hs.length ? `<ul class="habs">${hs.map(item).join('')}</ul>` : `<p class="vazio">${vazio}</p>`;
+    const feitas = Object.keys(e.notas).length;
+
+    return `<article class="rel">
+      <div class="rel-head">
+        <div><span class="eyebrow" style="margin:0">Computação na escola · ${anoNome(e.ano)}</span><h2>Relatório para a família</h2></div>
+        <div class="quem">Estudante: <strong>${esc(e.apelido)}</strong><br>Progresso até ${dataTxt(e.data)}${e.valido ? '' : '<br><span class="warn">⚠ Este relatório foi alterado depois de gerado.</span>'}</div>
+        <div class="nome">Nome completo:<span class="l"></span></div>
+      </div>
+
+      <p style="margin-top:14px">Este relatório mostra o que ${esc(e.apelido)} já aprendeu nas habilidades de Computação da BNCC${temMA ? ' e de Matemática' : ''}, a partir dos jogos e das listas de exercícios feitos no site. No fim há ideias simples para fazer em casa, quase todas sem computador.</p>
+
+      <div class="nums">
+        <div class="num"><b>${feitas}</b><span>atividades feitas</span></div>
+        <div class="num"><b>${coOk}<small style="font-size:16px">/${coAno.length}</small></b><span>habilidades de Computação do ${anoNome(e.ano)} aprendidas</span></div>
+        <div class="num"><b>${todas.filter(h => niv(h.codigo) === 4).length}</b><span>habilidades dominadas</span></div>
+        ${e.medalhas ? `<div class="num"><b>${e.medalhas.length}</b><span>medalhas conquistadas</span></div>` : e.missao ? `<div class="num"><b>${e.missao.n}</b><span>nível nas missões</span></div>` : `<div class="num"><b>${praticando.length}</b><span>em prática agora</span></div>`}
+      </div>
+
+      <h3>Como ler os níveis</h3>
+      <div class="niveis">
+        <div>${nv(1)}<span>Já começou a praticar.</span></div>
+        <div>${nv(2)}<span>Acertou 60% ou mais. Está no caminho.</span></div>
+        <div>${nv(3)}<span>Acertou 80% ou mais. Aprendeu.</span></div>
+        <div>${nv(4)}<span>Voltou dias depois e acertou de novo. Não esquece mais.</span></div>
+      </div>
+
+      <h3>✅ O que já aprendeu</h3>
+      ${aprendeu.length ? `<p class="small muted">Proficiente ou dominado (🏅).</p>` : ''}
+      ${compacta(aprendeu, 'Ainda nenhuma habilidade chegou a Proficiente. Isso é normal no começo: cada atividade feita conta.')}
+
+      <h3>📈 O que está praticando</h3>
+      ${lista(praticando.slice(0, 5), aprendeu.length ? 'Nenhuma habilidade em andamento agora.' : 'Ainda não há atividades registradas.')}
+      ${praticando.length > 5 ? compacta(praticando.slice(5), '') : ''}
+
+      ${proximas.length ? `<h3>✨ Próximos assuntos do ${anoNome(e.ano)}</h3>${compacta(proximas, '')}` : ''}
+
+      ${e.medalhas && e.medalhas.length ? `<h3>🏅 Medalhas</h3><p>${e.medalhas.map(m => `${m.icone} <strong>${esc(m.nome)}</strong>`).join(' · ')}</p>` : ''}
+
+      <h3>🏠 Para fazer em casa</h3>
+      <p>Não precisa saber Computação para ajudar. O que mais faz diferença é perguntar o que aprendeu, pedir que ensine para alguém da casa e elogiar o esforço, não só o acerto. Quinze minutos de conversa já valem.</p>
+      <div class="casa">${eixos.map(x => `<div><h4>${CASA[x].t}</h4><ul>${CASA[x].dicas.map(d => `<li>${d}</li>`).join('')}</ul><p class="perg">${CASA[x].perg}</p></div>`).join('')}</div>
+
+      ${fichas.length || jogos.length ? `<h3>🔗 Atividades do site para continuar</h3>
+      <ul class="links">
+        ${fichas.map(r => `<li>🖨️ <a href="${recUrl(r)}">${esc(r.titulo)}</a>: ${esc(r.resumo)} <span class="url">${linkCurto(r)}</span></li>`).join('')}
+        ${jogos.map(r => `<li>${TIPOS[r.tipo].icone} <a href="${recUrl(r)}">${esc(r.titulo)}</a> (${TIPOS[r.tipo].nome.toLowerCase()}) <span class="url">${linkCurto(r)}</span></li>`).join('')}
+      </ul>` : ''}
+
+      <h3>✍️ Recados</h3>
+      <div class="recado">
+        <div><h4>Da professora</h4><textarea class="rec-prof" aria-label="Recado da professora" placeholder="Escreva aqui antes de imprimir (opcional)"></textarea><div class="linhas so-print rec-prof-p"></div></div>
+        <div><h4>Da família</h4><div class="linhas"></div><div class="assina">Assinatura do responsável:<span class="l"></span></div></div>
+      </div>
+
+      <p class="rodape">Sem cadastro: o progresso fica salvo só no navegador do estudante, com um apelido. Para ver o progresso completo, abra <strong>ohtopico.com.br/material-didatico/meu-progresso.html</strong> no mesmo aparelho em que as atividades foram feitas.</p>
+    </article>`;
+  }
+
+  function montar(estudantes, aviso) {
+    doc.innerHTML = `
+      <span class="eyebrow">👪 Relatório para a família</span>
+      <h1>${estudantes.length > 1 ? `Relatórios da turma (${estudantes.length})` : 'Relatório para a família'}</h1>
+      <p class="intro muted" style="max-width:720px;margin:0">Uma folha para imprimir ou salvar em PDF com o que o estudante já aprendeu e ideias do que fazer em casa. ${estudantes.length > 1 ? 'Cada estudante sai em uma página.' : ''}</p>
+      <div class="ctl">
+        <div class="btn-row"><button class="btn" type="button" id="imp">🖨️ Imprimir ou salvar em PDF</button>
+        <a class="btn ghost" href="meu-progresso.html">📈 Meu progresso</a>${params.has('turma') || location.hash ? '<a class="btn ghost" href="turma.html">👩‍🏫 Painel da turma</a>' : ''}</div>
+        ${aviso ? `<p class="small muted" style="margin-top:12px">${aviso}</p>` : ''}
+      </div>
+      ${estudantes.map(folha).join('')}`;
+    $('#imp').onclick = () => window.print();
+    // o recado digitado vira texto na impressão
+    doc.querySelectorAll('.rec-prof').forEach(t => t.oninput = () => { t.nextElementSibling.textContent = t.value; });
+  }
+
+  function semDados() {
+    doc.innerHTML = `
+      <span class="eyebrow">👪 Relatório para a família</span>
+      <h1>Relatório para a família</h1>
+      <p class="muted" style="max-width:720px">Ainda não há progresso salvo neste navegador. O relatório mostra o que o estudante aprendeu nos jogos e nas listas de exercícios do site, com sugestões do que fazer em casa.</p>
+      <div class="btn-row" style="margin-top:18px"><a class="btn" href="meu-progresso.html">📈 Começar em Meu progresso</a><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Ver os jogos</a></div>
+      <div class="panel ctl" style="max-width:640px;margin-top:26px">
+        <h2 style="margin:0 0 6px;font-size:20px">É professora ou professor?</h2>
+        <p class="small" style="margin:0 0 10px">Cole o relatório que o estudante enviou (começa com MDR1) para gerar a folha da família. Para a turma inteira, use o botão no <a href="turma.html">painel da turma</a>.</p>
+        <textarea id="code" rows="3" aria-label="Relatório do estudante" placeholder="MDR1…"></textarea>
+        <div class="btn-row" style="margin-top:10px"><button class="btn" type="button" id="go">Gerar relatório</button></div>
+        <p class="msg" id="msg" role="status"></p>
+      </div>`;
+    $('#go').onclick = async () => {
+      const m = $('#code').value.match(/MDR1[jz]\.[A-Za-z0-9_-]+/);
+      if (!m) { $('#msg').textContent = 'Código inválido. Confira se copiou o relatório inteiro (começa com MDR1).'; $('#msg').className = 'msg bad'; return; }
+      location.hash = m[0];
+    };
+  }
+
+  async function iniciar() {
+    const hash = decodeURIComponent(location.hash.slice(1));
+    if (params.has('turma')) {
+      let codes = [];
+      try { codes = JSON.parse(localStorage.getItem('md-turma-v1')) || []; } catch (e) {}
+      const lidos = [];
+      for (const c of codes) { try { lidos.push(doRelatorio(await MDP.lerRelatorio(c))); } catch (e) {} }
+      lidos.sort((a, b) => a.apelido.localeCompare(b.apelido, 'pt-BR'));
+      if (lidos.length) return montar(lidos, 'Folhas feitas a partir dos relatórios guardados no painel da turma deste navegador.');
+    }
+    if (/^MDR1[jz]\./.test(hash)) {
+      try { return montar([doRelatorio(await MDP.lerRelatorio(hash))], 'Folha feita a partir do relatório enviado pelo estudante.'); }
+      catch (e) { /* código quebrado: cai no perfil local ou na tela inicial */ }
+    }
+    const p = MDP.perfil();
+    if (p && Object.keys(p.r).some(id => REC[id])) return montar([doPerfil(p)]);
+    semDados();
+  }
+  window.addEventListener('hashchange', iniciar);
+  iniciar();
+})();
+</script>
+</body>
+</html>
