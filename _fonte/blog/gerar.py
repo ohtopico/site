@@ -14,6 +14,7 @@ Uso:
 - site/teste-proficiencia-informatica/index.html é o teste de proficiência em informática (teste-informatica.json +
   conteudo/teste-proficiencia-informatica.html); usa o quiz.css do quiz e o próprio assets/teste.js.
 - site/computacao-na-escola/index.html é o guia de implantação de Computação na escola (conteudo/computacao-na-escola.html).
+- site/lei-do-celular-nas-escolas/index.html é o guia da Lei 15.100/2025 para professores (conteudo/lei-do-celular-nas-escolas.html).
 - site/assistencia-por-voz/index.html apresenta o projeto de assistência por voz (teste-mestrado), com os avisos de privacidade.
 - --sitemap atualiza o bloco do blog dentro de site/sitemap.xml (entre os marcadores).
 - Posts com data depois de --ate não saem no site: a pasta, a imagem e os slides deles são apagados
@@ -169,6 +170,7 @@ def laterais(atual):
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
                 ('◇', 'Guia Tech pra Prof', '/tech-pra-prof/', ''),
                 ('▦', 'Computação na escola', '/computacao-na-escola/', 'computacao'),
+                ('▯', 'Lei do celular nas escolas', '/lei-do-celular-nas-escolas/', 'celular'),
                 ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia'),
                 ('⬢', 'Mundo para professores', '/mundo/professores/', 'mundo')]
     atual_attr = ' aria-current="page"'
@@ -708,6 +710,70 @@ def pagina_computacao(cfg):
     head = cabeca(titulo + ' | Júlia Quoos', descricao, url, imagem, alt, 'website',
                   '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
     return head + '\n' + moldura('guia-computacao.html', 'ohtopico.com.br/computacao-na-escola', '/', conteudo, 'Pronto', 'computacao')
+
+
+def pagina_lei_celular(cfg):
+    site = cfg['site']
+    url = f'{site}/lei-do-celular-nas-escolas/'
+    corpo = (AQUI / 'conteudo' / 'lei-do-celular-nas-escolas.html').read_text(encoding='utf-8').strip()
+    titulo = 'Lei do celular nas escolas: guia para professores'
+    descricao = ('O que a Lei 15.100/2025 diz sobre celular na escola, quando o uso pedagógico vale e atividades '
+                 'de cultura digital da BNCC Computação do 6º ano ao Ensino Médio.')
+    imagem = f'{site}/lei-do-celular-nas-escolas/og-lei-do-celular-nas-escolas.jpg'
+    alt = ('Card com o título Lei do celular nas escolas, a frase O que a Lei 15.100 permite e atividades de cultura digital '
+           'da BNCC, e uma captura da página BNCC Computação.')
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': imagem, 'width': 1200, 'height': 630},
+                'about': [{'@type': 'Legislation', 'name': 'Lei nº 15.100, de 13 de janeiro de 2025', 'legislationIdentifier': 'Lei 15.100/2025',
+                           'url': 'https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/L15100.htm'},
+                          {'@type': 'Thing', 'name': 'Cultura digital (BNCC Computação)'}],
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
+                'author': {'@id': AUTORA['@id']},
+                'isPartOf': {'@type': 'WebSite', '@id': f'{site}/#site'},
+                'relatedLink': [f'{site}/material-didatico/bncc/', f'{site}/computacao-na-escola/'],
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Lei do celular nas escolas', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Lei do celular nas escolas</li></ol></nav>
+    <p class="rotulo">Guia para professores</p>
+    <h1>Lei do celular nas escolas: guia para <span class="marca">professores</span></h1>
+    <p class="linha-fina">O que a Lei 15.100/2025 e o decreto que a regulamenta dizem, quando o celular pode entrar na aula e três atividades de cultura digital ligadas à BNCC Computação, para o 6º ao 9º ano e o Ensino Médio.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="levar-escola">
+        <h2 id="levar-escola">Formação da equipe sobre a lei</h2>
+        <p>O decreto pede formação dos professores para o uso seguro, responsável e equilibrado dos aparelhos. A <a href="/formacao-continuada/">formação continuada</a> pode incluir esse tema, junto com Computação e IA. Conte as etapas de ensino e o que a escola já definiu no regimento.</p>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Lei%20do%20celular%20nas%20escolas." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Lei%20do%20celular%20nas%20escolas">Enviar e-mail</a>
+    </section>
+</article>'''
+    head = cabeca('Lei do celular nas escolas: guia | Júlia Quoos', descricao, url, imagem, alt, 'website',
+                  '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
+    return head + '\n' + moldura('lei-celular.html', 'ohtopico.com.br/lei-do-celular-nas-escolas', '/', conteudo, 'Pronto', 'celular')
 
 
 def pagina_assistencia(cfg):
@@ -1490,13 +1556,13 @@ def lastmod_atual(xml, url):
 
 def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram):
     """hoje: data da publicação (lastmod no futuro faz o Google desconfiar do sitemap).
-    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR) cujo HTML mudou nesta execução;
+    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR) cujo HTML mudou nesta execução;
     as outras mantêm o lastmod que já estava no sitemap."""
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -1597,6 +1663,7 @@ def main():
                           ('mundo/professores', pagina_mundo_professores(cfg)),
                           ('prompts-para-professores', pagina_prompts(cfg)),
                           ('computacao-na-escola', pagina_computacao(cfg)),
+                          ('lei-do-celular-nas-escolas', pagina_lei_celular(cfg)),
                           ('assistencia-por-voz', pagina_assistencia(cfg)), (QUIZ_DIR, pagina_quiz(cfg)),
                           (TESTE_DIR, pagina_teste(cfg)),
                           *paginas_resultado_quiz(cfg).items()):
