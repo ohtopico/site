@@ -42,6 +42,47 @@
   };
   window.recUrl = r => BASE + (EST[r.id] || r.url);
 
+  /* Ordenação das listas de jogos (/jogos/ e material-didatico/jogos/).
+     Popularidade = visitas de cada página de jogo no GoatCounter, o contador de visitas do site (total desde o início da contagem). */
+  window.ORDENS_JOGOS = {
+    az: 'A a Z',
+    ano: 'Por ano',
+    populares: 'Mais jogados',
+    dificuldade: 'Mais fácil primeiro'
+  };
+  const porNome = (a, b) => a.titulo.localeCompare(b.titulo, 'pt-BR');
+  window.mdOrdenarJogos = function (lista, ordem, visitas) {
+    const v = visitas || {};
+    const cmp = {
+      az: porNome,
+      ano: (a, b) => Math.min(...a.anos) - Math.min(...b.anos) || Math.max(...a.anos) - Math.max(...b.anos) || porNome(a, b),
+      populares: (a, b) => (v[b.id] || 0) - (v[a.id] || 0) || porNome(a, b),
+      dificuldade: (a, b) => dificuldadeDe(a) - dificuldadeDe(b) || porNome(a, b)
+    }[ordem];
+    return cmp ? lista.slice().sort(cmp) : lista.slice();
+  };
+  // Visitas por jogo, buscadas só quando alguém escolhe "Mais jogados"; ficam 1 hora guardadas na sessão
+  let visitasPromessa = null;
+  window.mdVisitasJogos = function (jogos) {
+    if (visitasPromessa) return visitasPromessa;
+    try {
+      const c = JSON.parse(sessionStorage.getItem('md-visitas-jogos') || 'null');
+      if (c && Date.now() - c.t < 3600e3) return (visitasPromessa = Promise.resolve(c.v));
+    } catch (e) {}
+    const um = j => {
+      const caminho = new URL(recUrl(j), location.href).pathname;
+      return fetch('https://ohtopico.goatcounter.com/counter/' + encodeURIComponent(caminho) + '.json')
+        .then(r => (r.ok ? r.json() : r.status === 404 ? { count: '0' } : Promise.reject(r.status)))
+        .then(d => [j.id, +String(d.count).replace(/\D/g, '') || 0]);
+    };
+    visitasPromessa = Promise.all(jogos.map(um)).then(pares => {
+      const v = Object.fromEntries(pares);
+      try { sessionStorage.setItem('md-visitas-jogos', JSON.stringify({ t: Date.now(), v })); } catch (e) {}
+      return v;
+    }, err => { visitasPromessa = null; throw err; });
+    return visitasPromessa;
+  };
+
   const sun = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
 
   window.mdTopbar = function (atual) {

@@ -30,6 +30,21 @@ const INTERACOES = {
 };
 const interacaoDe = r => (r.interacao === 'perguntas' ? 'perguntas' : 'outras');
 
+/* Dificuldade de cada jogo, usada para ordenar as listas de jogos (1 = fácil, 2 = médio, 3 = desafiador).
+   Critério: quantos conceitos o jogo junta, quanto cálculo ou programação pede e quantos passos tem cada fase.
+   Jogo novo sem nota entra como médio. */
+const DIFICULDADE_NOMES = { 1: 'Fácil', 2: 'Médio', 3: 'Desafiador' };
+const DIFICULDADE = {
+  'partes-computador': 1, digitacao: 1, tabuada: 1, fracoes: 1, cartesiano: 1, golpe: 1, senha: 1, wikipedia: 1,
+  pacotes: 1, 'busca-binaria': 1, 'linha-tempo': 1, bingo: 1, impostor: 1, 'vila-cidada': 1,
+  robo: 2, rotas: 2, cifra: 2, balanca: 2, tangram: 2, graficos: 2, poupanca: 2, 'empresa-sucos': 2, angulos: 2,
+  cofrinho: 2, tabelas: 2, receitas: 2, cambio: 2, 'vale-bits': 2, carreira: 2, numeria: 2, paridade: 2,
+  'filas-pilhas': 2, bolha: 2, boato: 2,
+  mesada: 3, bhaskara: 3, cartao: 3, python: 3, 'cidade-blocos': 3, 'sitio-binario': 3, boletim: 3,
+  meteorologista: 3, arquiteto: 3, chatbot: 3, acessivel: 3
+};
+const dificuldadeDe = r => DIFICULDADE[r.id] || 2;
+
 /* Eixos (Computação) e unidades temáticas (Matemática) */
 const EIXOS = {
   PC: { comp: 'CO', nome: 'Pensamento computacional' },
