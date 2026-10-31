@@ -194,3 +194,8 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .em-tab th, .em-tab td { border: 1px solid var(--borda); padding: 3px 10px; text-align: left; } .em-tab th { background: #eaf3fd; }
 .em-grafo { font: 600 14px ui-monospace, Consolas, monospace; background: #fff; border: 1px solid var(--borda); border-radius: 10px; padding: 8px 12px; display: inline-block; }
 #d-texto code { background: #f1ede2; border-radius: 6px; padding: 1px 5px; font-size: 13px; }
+
+/* banco */
+.banco-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 10px 0; }
+.extrato { list-style: none; padding: 0; margin: 4px 0; font-size: 13px; } .extrato li { padding: 3px 0; border-bottom: 1px dashed var(--borda); } .extrato b { float: right; color: #2e7d32; } .extrato b.neg { color: #c0392b; }
+details.proj summary { cursor: pointer; }

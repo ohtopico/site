@@ -252,6 +252,15 @@
       for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
       f.projetos = { gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
     }
+    // banco na Praça dos Números, do lado de baixo da estrada
+    if (f.idx === 1) {
+      const w = 4, d = 4;
+      const cabe = (hx, hy) => { for (let j = hy - 1; j <= hy + d; j++) for (let k = hx - 1; k <= hx + w; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama) return false; return true; };
+      let hx = 3, hy = MEIO + 3;
+      search: for (const yy of [MEIO + 3, MEIO + 4, MEIO + 2, MEIO + 5]) for (const xx of [3, 4, 2, 5, 6]) if (cabe(xx, yy)) { hx = xx; hy = yy; break search; }
+      for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
+      f.banco = { gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
+    }
     // uma loja em cada uma das 4 primeiras vilas, do outro lado da estrada
     const loja = Object.keys(LOJAS).find(k => LOJAS[k].fase === f.idx);
     if (loja) {
@@ -417,12 +426,13 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, oficina: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, oficina: {}, banco: { poup: 0, dia: 0, mesada: 0, meta: null, extrato: [] }, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
   S.casa = Object.assign(casaNova(), S.casa);
   S.loja = Object.assign(lojaNova(), S.loja);
+  S.banco = Object.assign({ poup: 0, dia: 0, mesada: 0, meta: null, extrato: [] }, S.banco);
   // versão anterior (casas em fileiras): a posição salva não serve mais, e os itens antigos contam para a missão
   if (!S.cont || !Object.keys(S.cont).length) for (const k of Object.keys(S.itens || {})) { const fid = k.split('-')[0]; S.cont[fid] = (S.cont[fid] || 0) + 1; }
   for (const k of Object.keys(S.itens)) if (!k.includes('-s' + SEMANA + '-')) delete S.itens[k];   // só os desta semana
@@ -650,6 +660,21 @@
     });
     if (perto) { const [sx, sy] = iso(x + c.w / 2, y + c.d / 2, 3); rotulo('Projetos da turma', sx, sy - 10, '#fff7e8'); }
   }
+  /* banco: prédio claro com colunas, frontão e o cofrinho na placa */
+  function desenhaBanco(c, perto) {
+    const x = c.gx, y = c.y, w = c.w, d = c.d;
+    sombra(x + w / 2, y + d / 2, 2.4);
+    caixa(x, y, 0, w, d, 0.25, '#e6e0d4');
+    caixa(x + 0.3, y + 0.3, 0.25, w - 0.6, d - 1.1, 2.0, '#f3ecda');
+    for (let i = 0; i < 4; i++) caixa(x + 0.35 + i * (w - 0.9) / 3, y + d - 0.75, 0.25, 0.2, 0.2, 2.0, '#ffffff');
+    caixa(x + 0.1, y + 0.1, 2.25, w - 0.2, d - 0.2, 0.25, '#d9cfb6'); caixa(x + 0.5, y + 0.5, 2.5, w - 1, d - 1, 0.25, '#cfc3a5');
+    naFace('y', x + 0.3, y + 0.3, w - 0.6, d - 1.1, (w - 0.6) / 2 - 0.4, 0, 0.8, 0.25, 1.3, '#4f9a6b');
+    const [sx, sy] = iso(x + w / 2, y + d / 2, 3.6 + Math.sin(agora / 500) * 0.06);
+    ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#4f9a6b'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(sx - 18, sy - 18, 36, 34, 9); ctx.fill(); ctx.stroke();
+    ctx.font = '20px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText('🏦', sx, sy - 1);
+    if (perto) rotulo('Banco da Praça', sx, sy - 34, '#fff7e8');
+  }
   function sombra(x, y, r) { const [sx, sy] = iso(x, y); ctx.fillStyle = 'rgba(40,60,40,.16)'; ctx.beginPath(); ctx.ellipse(sx, sy + 2, r * TW / 2.2, r * TH / 2.2, 0, 0, Math.PI * 2); ctx.fill(); }
   function rotulo(t, sx, sy, cor = '#ffffff', tinta = '#1d2a1f') {
     ctx.font = '600 13px Lexend, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -836,6 +861,7 @@
     if (f.enigma) tenta(f.enigma.porta.x, f.enigma.porta.y, { tipo: 'enigma' });
     if (f.loja) tenta(f.loja.porta.x, f.loja.porta.y, { tipo: 'loja' });
     if (f.projetos) tenta(f.projetos.porta.x, f.projetos.porta.y, { tipo: 'projetos' });
+    if (f.banco) tenta(f.banco.porta.x, f.banco.porta.y, { tipo: 'banco' });
     if (profDe(f)) { const q = posProf(f); tenta(q.x, q.y, { tipo: 'prof' }); }
     if (S.pet && !S.pet.dorme) tenta(PET.x, PET.y + 0.3, { tipo: 'pet' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
@@ -1199,7 +1225,8 @@
       $('#loja-volta').addEventListener('click', () => { lojaEscolha = null; janelaLoja(); });
     } else {
       const lista = produtos(lojaAtual);
-      el.innerHTML = conta + `<p class="muted small">${Lj.texto} À vista tem 10% de desconto; parcelado tem juros. Para levar, acerte a conta do pagamento.</p>
+      const meta = S.banco.meta && S.banco.meta.loja === lojaAtual ? `<p class="small">🎯 Sua meta no banco: ${S.banco.meta.ic} ${esc(S.banco.meta.nome)}. Você tem ${S.pontos} ⭐ no saldo e ${Math.floor(S.banco.poup)} ⭐ na poupança.</p>` : '';
+      el.innerHTML = conta + meta + `<p class="muted small">${Lj.texto} À vista tem 10% de desconto; parcelado tem juros. Para levar, acerte a conta do pagamento.</p>
         <div class="produtos">${lista.map((p, i) => `<button type="button" class="prod ${p.ev ? 'exclusivo' : ''}" data-prod="${i}" ${temProduto(p) ? 'disabled' : ''}>
           ${p.ev ? `<span class="selo">${p.ev.ic} Só no ${esc(p.ev.nome)}</span>` : ''}<span class="p-ic">${p.ic}</span><span class="p-nome">${esc(p.nome)}</span>
           <span class="p-preco">${temProduto(p) ? '✓ Já é seu' : `${p.preco} ⭐`}</span>${p.tipo === 'inv' || p.tipo === 'movel' ? `<small class="muted">você tem ${p.tipo === 'inv' ? S.inv[p.id] || 0 : S.casa.guardados[p.id] || 0}${p.tipo === 'movel' ? ' guardado(s)' : ''}</small>` : ''}</button>`).join('')}</div>
@@ -1531,6 +1558,78 @@
       desenhaOF(); setTimeout(passo, 280);
     };
     setTimeout(passo, 250);
+  }
+  /* ---------- banco: mesada diária (com uma conta de juros), poupança que rende 1% ao dia (juros compostos) e metas ---------- */
+  const TAXA = 0.01;
+  const mesadaHoje = () => 10 + 5 * Object.keys(S.concluidas).length;
+  const anota = (ic, txt, v) => { S.banco.extrato.unshift({ ic, txt, v, d: diaHoje() }); S.banco.extrato.length = Math.min(S.banco.extrato.length, 12); };
+  function rende() {
+    const B = S.banco, hj = diaHoje();
+    if (!B.dia) { B.dia = hj; return; }
+    const n = Math.min(60, hj - B.dia); if (n <= 0) return;
+    const antes = B.poup; B.poup = B.poup * Math.pow(1 + TAXA, n); B.dia = hj;
+    const ganho = Math.floor(B.poup) - Math.floor(antes);
+    if (ganho > 0) { anota('📈', `Rendimento de ${n} dia(s)`, ganho); aviso(`🏦 Sua poupança rendeu ${ganho} ⭐`); }
+    salvar();
+  }
+  function metaInfo() {
+    const m = S.banco.meta; if (!m) return null;
+    const tem = S.pontos + Math.floor(S.banco.poup), falta = Math.max(0, m.preco - tem);
+    let dias = 0, p = S.banco.poup, s2 = S.pontos;   // estimativa: guardando a mesada toda na poupança
+    while (s2 + Math.floor(p) < m.preco && dias < 365) { dias++; p = (p + mesadaHoje()) * (1 + TAXA); }
+    return { m, tem, falta, dias, pct: Math.min(100, Math.round(100 * tem / m.preco)) };
+  }
+  function janelaBanco() {
+    rende();
+    const B = S.banco, el = $('#banco-conteudo'), pegou = B.mesada === diaHoje(), mi = metaInfo(), poup = Math.floor(B.poup);
+    const tab = [7, 30, 90].map(n => `<tr><td>${n} dias</td><td>${Math.floor(Math.max(poup, 100) * (1 + TAXA * n))}</td><td>${Math.floor(Math.max(poup, 100) * Math.pow(1 + TAXA, n))}</td></tr>`).join('');
+    const todos = Object.keys(LOJAS).flatMap(l => produtos(l).filter(p => !temProduto(p)).map(p => Object.assign({ loja: l }, p)));
+    el.innerHTML = `<div class="conta"><span>Saldo <b>${S.pontos} ⭐</b></span><span>Poupança <b>${poup} ⭐</b></span><span class="muted small">rende ${TAXA * 100}% ao dia</span></div>
+      <div class="banco-grid">
+        <div class="proj"><h3>💰 Mesada</h3><p class="small">Todo dia, ${mesadaHoje()} ⭐ (10 + 5 por fase concluída). Para receber, acerte uma conta de juros.</p>
+          <button type="button" class="hb verde" id="bc-mesada" ${pegou ? 'disabled' : ''}>${pegou ? '✅ Já recebeu hoje' : 'Receber a mesada'}</button></div>
+        <div class="proj"><h3>🐷 Poupança</h3><p class="small">O dinheiro guardado rende todo dia, e o rendimento também rende (juros compostos). Para gastar, saque para o saldo.</p>
+          <div class="btn-row"><input id="bc-valor" class="campo" type="number" min="1" step="1" value="${Math.min(50, Math.max(1, S.pontos))}" aria-label="Valor" style="width:110px">
+          <button type="button" class="hb azul" id="bc-dep" ${S.pontos > 0 ? '' : 'disabled'}>Guardar</button><button type="button" class="hb azul" id="bc-saq" ${poup > 0 ? '' : 'disabled'}>Sacar</button></div></div>
+      </div>
+      <div class="proj"><h3>🎯 Meta de compra</h3>${mi ? `<p class="small">${mi.m.ic} <b>${esc(mi.m.nome)}</b> (${LOJAS[mi.m.loja].ic} ${LOJAS[mi.m.loja].nome}) · ${mi.m.preco} ⭐ à vista</p>
+        <div class="barra"><span style="width:${mi.pct}%"></span></div><p class="small">${mi.falta ? `Você tem ${mi.tem} ⭐ (saldo + poupança). Faltam ${mi.falta} ⭐: guardando a mesada na poupança, chega lá em uns <b>${mi.dias} dia(s)</b>.` : '🎉 Meta alcançada! Saque a poupança e vá à loja.'}</p>
+        <button type="button" class="hb azul" id="bc-tira">Trocar a meta</button>` : `<p class="small">Escolha algo das lojas para juntar ⭐ até lá. O banco calcula quantos dias faltam.</p>
+        <select id="bc-meta" class="campo" style="width:100%">${todos.map((p, i) => `<option value="${i}">${p.ic} ${esc(p.nome)} · ${Math.round(p.preco * 0.9)} ⭐ (${LOJAS[p.loja].nome})</option>`).join('')}</select>
+        <div class="btn-row"><button type="button" class="hb verde" id="bc-poe">Definir meta</button></div>`}</div>
+      <details class="proj"><summary><b>📊 Simples ou composto?</b></summary><p class="small">Com ${Math.max(poup, 100)} ⭐ guardadas a 1% ao dia:</p><table class="em-tab"><tr><th>Tempo</th><th>Juros simples</th><th>Juros compostos</th></tr>${tab}</table><p class="muted small">No composto, o rendimento de cada dia entra na conta do dia seguinte.</p></details>
+      ${B.extrato.length ? `<h3>🧾 Extrato</h3><ul class="extrato">${B.extrato.map(e => `<li>${e.ic} ${esc(e.txt)} <b class="${e.v < 0 ? 'neg' : ''}">${e.v > 0 ? '+' : ''}${e.v} ⭐</b></li>`).join('')}</ul>` : ''}`;
+    const valor = () => Math.max(0, Math.floor(+$('#bc-valor').value || 0));
+    $('#bc-dep').addEventListener('click', () => { const v = Math.min(valor(), S.pontos); if (!v) return; S.pontos -= v; B.poup += v; anota('🐷', 'Guardou na poupança', v); hud(); salvar(); janelaBanco(); });
+    $('#bc-saq').addEventListener('click', () => { const v = Math.min(valor(), Math.floor(B.poup)); if (!v) return; B.poup -= v; S.pontos += v; anota('💸', 'Sacou para o saldo', -v); hud(); salvar(); cobra(); janelaBanco(); });
+    $('#bc-mesada').addEventListener('click', perguntaMesada);
+    if ($('#bc-poe')) $('#bc-poe').addEventListener('click', () => { const p = todos[+$('#bc-meta').value]; if (p) { B.meta = { loja: p.loja, nome: p.nome, ic: p.ic, preco: Math.round(p.preco * 0.9) }; salvar(); janelaBanco(); } });
+    if ($('#bc-tira')) $('#bc-tira').addEventListener('click', () => { B.meta = null; salvar(); janelaBanco(); });
+  }
+  /* a mesada vem com uma conta: rendimento de um dia, juros de dois dias ou porcentagem */
+  function contaMesada() {
+    const base = [100, 200, 300, 400, 500][Math.floor(Math.random() * 5)], tipo = Math.floor(Math.random() * 3);
+    if (tipo === 0) return { enun: `Você tem <b>${base} ⭐</b> na poupança, que rende <b>1% ao dia</b>. Quanto ela rende hoje?`, certa: base / 100, erradas: [base / 10, 1, base / 50] };
+    if (tipo === 1) { const um = base * 1.01, dois = Math.round(base * 1.0201 * 100) / 100; return { enun: `Com <b>${base} ⭐</b> rendendo <b>1% ao dia</b> em juros compostos, quanto você terá depois de 2 dias?`, certa: dois, erradas: [base * 1.02, um, base + 2] }; }
+    const pct = [10, 20, 25, 50][Math.floor(Math.random() * 4)]; return { enun: `Quanto é <b>${pct}%</b> de <b>${base} ⭐</b>?`, certa: base * pct / 100, erradas: [pct, base / pct, base * pct / 10] };
+  }
+  function perguntaMesada() {
+    if (S.banco.mesada === diaHoje()) return;
+    fechaJanela();
+    const q = contaMesada(), fmt = v => String(Math.round(v * 100) / 100).replace('.', ',');
+    const alts = [q.certa]; for (const e of q.erradas) if (alts.length < 4 && !alts.some(a => Math.abs(a - e) < 1e-9)) alts.push(e);
+    alts.sort(() => Math.random() - 0.5);
+    dialogo('🏦', 'Banco da Praça', `<p>${q.enun}</p>`, alts.map(a => ({ txt: `${fmt(a)} ⭐`, fn: () => {
+      if (D.op.dataset.respondida) return;
+      D.op.dataset.respondida = '1';
+      const certo = Math.abs(a - q.certa) < 1e-9;
+      [...D.op.children].forEach((b, j) => { b.disabled = true; if (Math.abs(alts[j] - q.certa) < 1e-9) b.classList.add('certa'); else if (alts[j] === a) b.classList.add('errada'); });
+      if (certo) { S.banco.mesada = diaHoje(); S.pontos += mesadaHoje(); anota('💰', 'Mesada do dia', mesadaHoje()); hud(); salvar(); cobra(); }
+      D.texto.innerHTML += `<p><strong>${certo ? `✅ Certo! A mesada de ${mesadaHoje()} ⭐ caiu no saldo.` : '❌ Não foi dessa vez. Tente outra conta!'}</strong></p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Voltar ao banco' : 'Outra conta';
+      b.addEventListener('click', () => { if (certo) { fechaDialogo(); abreJanela('banco'); } else perguntaMesada(); }); D.op.appendChild(b); b.focus();
+    } })));
+    delete D.op.dataset.respondida;
   }
   /* ---------- Casa do Enigma: um escape room sem cronômetro (código binário, Cifra de César e uma chave do inventário) ---------- */
   const EW = 7, ED = 6, ESAIDA = { x: 3.5, y: ED - 0.5 };
@@ -1991,6 +2090,7 @@
     const alvo = !dialogoAberto && alvoPerto();
     for (const f of visiveisFases()) {
       if (f.enigma) { const c = f.enigma; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4, true) }); }
+      if (f.banco) { const c = f.banco; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaBanco(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       if (f.projetos) { const c = f.projetos; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaProjetos(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       if (f.loja) { const c = f.loja; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaLoja(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       if (f.minhaCasa) { const c = f.minhaCasa; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
@@ -2014,7 +2114,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     minimapa(faseDeX(P.x));
@@ -2037,6 +2137,7 @@
     c.fillStyle = '#3f8f4b'; for (const a of f.arvores) c.fillRect(ox + (a.x - f.x0) * s, oy + a.y * s, Math.ceil(s), Math.ceil(s));
     if (f.minhaCasa) { const m = f.minhaCasa; c.fillStyle = S.casa.cor; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (f.enigma) { const m = f.enigma; c.fillStyle = '#9a6bd6'; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
+    if (f.banco) { const m = f.banco; c.fillStyle = '#4f9a6b'; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (f.projetos) { const m = f.projetos; c.fillStyle = '#c08a52'; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (f.loja) { const m = f.loja; c.fillStyle = LOJAS[m.id].toldo; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (comCasas) for (const casa of f.casas) { c.fillStyle = S.feitos[casa.lugar.id] ? casa.cor : '#b9b9b4'; c.fillRect(ox + casa.x * s, oy + casa.y * s, casa.w * s, casa.d * s); }
@@ -2255,13 +2356,13 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2433,6 +2534,7 @@
     const a = alvoPerto();
     if (a && a.tipo === 'pet' && Math.hypot(wx - PET.x, wy - PET.y) < 0.8) return interage();
     if (a && a.tipo === 'enigma') { const c = fases[1].enigma; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
+    if (a && a.tipo === 'banco') { const c = atual.banco; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'projetos') { const c = atual.projetos; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'loja') { const c = atual.loja; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'minhacasa') { const c = fases[0].minhaCasa; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
@@ -2475,14 +2577,14 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { confereJogos(); hud(); } });
   window.addEventListener('focus', () => { confereJogos(); hud(); });
   window.addEventListener('storage', ev => { if (ev.key === 'md-progresso-v1') { confereJogos(); hud(); } });
-  setInterval(() => { guardaPos(); atualizaPet(); cobra(); salvar(); }, 10000);
+  setInterval(() => { guardaPos(); atualizaPet(); cobra(); rende(); salvar(); }, 10000);
   window.addEventListener('pagehide', () => { guardaPos(); salvar(); });
 
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
-  hud(); confereJogos(); confereFases(); cobra();
+  window.MUNDO_DEBUG = { rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
       setTimeout(() => aviso(aniversariantes.length ? `🎂 Hoje é aniversário de ${aniversariantes[0].nome}! Desafio do dia no botão de evento.` : `${eventosAtivos[0].ic} Evento: ${eventosAtivos[0].nome}! Veja as missões especiais.`), 2600); } }
