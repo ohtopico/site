@@ -447,7 +447,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, oficina: {}, banco: { poup: 0, dia: 0, mesada: 0, meta: null, extrato: [] }, estacoes: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, album: { tem: {}, paginas: {} }, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, oficina: {}, banco: { poup: 0, dia: 0, mesada: 0, meta: null, extrato: [] }, estacoes: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -480,7 +480,7 @@
   function pontos(n, txt) { S.pontos += n; if (txt) aviso(`+${n} ⭐ ${txt}`); hud(); }
   function confereFases() {
     for (const f of fases) if (concluida(f) && !S.concluidas[f.id]) {
-      S.concluidas[f.id] = true; S.inv.peca = (S.inv.peca || 0) + 1;
+      S.concluidas[f.id] = true; S.inv.peca = (S.inv.peca || 0) + 1; setTimeout(() => ganhaFigurinha(null, 'pela fase concluída'), 1800);
       pontos(100, `Fase concluída: ${f.nome}! +🧩` + (f.idx < fases.length - 1 ? ` O caminho para ${fases[f.idx + 1].nome} está aberto.` : ''));
     }
     salvar();
@@ -1188,7 +1188,7 @@
     const base = {
       roupa: [['av', 'oculos', '🕶️', 40], ['av', 'laco', '🎀', 40], ['av', 'chapeu', '🎩', 50], ['av', 'cachecol', '🧣', 60], ['av', 'coroa', '👑', 160],
         ['cor', 'camisa:#2b2d6e', '👕', 60, 'Camiseta galáxia'], ['cor', 'camisa:#ff8fab', '👕', 60, 'Camiseta chiclete'], ['cor', 'calca:#7aa6d6', '👖', 40, 'Calça jeans clara']],
-      comida: [['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
+      comida: [['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
       pet: [['inv', 'petisco', '🦴', 20, '2 petiscos', 2], ['inv', 'sabonete', '🧼', 20], ['inv', 'brinquedo', '🧸', 40], ['pet', 'lenco', '🧣', 50], ['pet', 'cachecol', '🧣', 50]],
       moveis: [['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]]
     }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco: caro(preco), nome, qtd }));
@@ -1300,6 +1300,7 @@
     if (p.tipo === 'av') S.av.acessorio = p.id;
     if (p.tipo === 'cor') { const [k, v] = p.id.split(':'); S.av[k] = v; }
     if (p.tipo === 'pet' && S.pet) S.pet.acessorio = p.id;
+    if (p.tipo === 'fig') setTimeout(() => { for (let k = 0; k < 3; k++) ganhaFigurinha(null, 'no pacotinho', true); }, 600);
     S.loja.compras++;
     lojaEscolha = null; hud(); salvar();
   }
@@ -1378,7 +1379,7 @@
         if (T.codigo && o.t !== T.codigo) return aviso(`Este código é da turma ${o.t}, e a sua é ${T.codigo}.`);
         if (S.projetos.prontos[P.id]) return aviso(`${P.ic} Este projeto já foi concluído.`);
         S.projetos.prontos[P.id] = true; S.medalhas['projeto-' + P.id] = { ic: P.ic, nome: `${P.nome} (turma ${o.t})` };
-        pontos(40, `${P.ic} Projeto concluído pela turma ${o.t}: ${P.nome}!`); salvar(); janelaProjetos();
+        pontos(40, `${P.ic} Projeto concluído pela turma ${o.t}: ${P.nome}!`); ganhaFigurinha(null, 'pelo projeto da turma'); salvar(); janelaProjetos();
       } catch (e) { aviso('Código de conclusão inválido. Confira se copiou inteiro.'); }
     });
   }
@@ -1446,7 +1447,7 @@
     if (E.passo >= p.passos.length) {
       E.feito = true; E.passo = p.passos.length - 1;
       S.loja.tem['av:' + p.premio] = true; S.medalhas['prof-' + p.id] = { ic: p.ic, nome: p.prof };
-      ganhaHabilidade(p.eixos, 30); pontos(60, `${p.ic} Missão de ${p.prof} completa! Você ganhou: ${NOMES_ENFEITE[p.premio]}.`);
+      ganhaHabilidade(p.eixos, 30); pontos(60, `${p.ic} Missão de ${p.prof} completa! Você ganhou: ${NOMES_ENFEITE[p.premio]}.`); setTimeout(() => ganhaFigurinha(null, 'pela missão de ' + p.prof), 1800);
     } else aviso(`${p.ic} Etapa concluída! (${E.passo}/${p.passos.length})`);
     salvar(); falaProf(f);
   }
@@ -1565,7 +1566,7 @@
         if (!antes) { pontos(10, `🧩 Nível ${OF.nivel + 1} da oficina concluído!`); ganhaHabilidade(['PC'], 8); }
         else if (est > antes) pontos(5, `🧩 Mais estrelas no nível ${OF.nivel + 1}!`);
         S.oficina[OF.nivel] = Math.max(antes, est);
-        if (NIVEIS_OF.every((_, k) => S.oficina[k]) && !S.medalhas.oficina) { S.medalhas.oficina = { ic: '🧩', nome: 'Programadora/programador da oficina' }; pontos(40, '🧩 Você terminou todos os níveis da oficina!'); }
+        if (NIVEIS_OF.every((_, k) => S.oficina[k]) && !S.medalhas.oficina) { S.medalhas.oficina = { ic: '🧩', nome: 'Programadora/programador da oficina' }; pontos(40, '🧩 Você terminou todos os níveis da oficina!'); setTimeout(() => ganhaFigurinha(null, 'pela oficina de código'), 1800); }
         salvar();
         return fim(`🎉 Conseguiu com ${n} bloco(s): ${'⭐'.repeat(est)}${est < 3 ? ` · Dá para fazer com ${par}?` : ''}`);
       }
@@ -1886,7 +1887,7 @@
     if (E.ganhou || !missoesEvento(ev).every(m => m.ok)) return;
     E.ganhou = true; S.casa.guardados[ev.movel] = (S.casa.guardados[ev.movel] || 0) + 1; S.casa.feitos[ev.movel] = true;
     S.medalhas[ev.chave] = { ic: ev.ic, nome: `${ev.nome} ${ev.dataEv.getFullYear()}` };
-    pontos(50, `${ev.ic} Missão de ${ev.nome} completa! Você ganhou ${MOVEIS[ev.movel].ic} ${MOVEIS[ev.movel].nome} para a sua casa.`);
+    pontos(50, `${ev.ic} Missão de ${ev.nome} completa! Você ganhou ${MOVEIS[ev.movel].ic} ${MOVEIS[ev.movel].nome} para a sua casa.`); setTimeout(() => ganhaFigurinha(null, 'pela missão de ' + ev.nome), 1800);
     salvar(); janelaEvento();
   }
   /* itens do evento: 3 por vila, sempre nos mesmos lugares durante o evento */
@@ -1930,6 +1931,50 @@
     ['wozniak', 'Steve Wozniak', 1950, 8, 11, 'projetou os computadores Apple I e Apple II', ['Qual destas é uma peça de hardware?', ['Processador', 'Navegador', 'Aplicativo de mensagens'], 0]]
   ].map(([id, nome, ano, mes, dia, feito, conceito]) => ({ id, nome, ano, mes, dia, feito, conceito }));
   const aniversariantes = PESSOAS.filter(p => p.mes === HOJE.getMonth() + 1 && p.dia === HOJE.getDate());
+  /* ---------- álbum de figurinhas: uma figurinha por personalidade, em páginas de 6 ----------
+     Figurinhas vêm dos desafios de aniversário (a da própria pessoa), dos aniversários dos moradores, das missões
+     (fases, profissões, eventos, estações, oficina, projetos) e dos pacotinhos do Mercadinho. 3 repetidas viram 1 nova. */
+  const PAGINAS_ALBUM = [];
+  for (let i = 0; i < PESSOAS.length; i += 6) PAGINAS_ALBUM.push(PESSOAS.slice(i, i + 6));
+  const CORES_FIG = ['#ffd58a', '#c7e8a5', '#f6c1d6', '#c9d7f2', '#e3cdf5', '#ffe0b3'];
+  const temFig = id => (S.album.tem[id] || 0) > 0;
+  const repetidas = () => Object.values(S.album.tem).reduce((a, n) => a + Math.max(0, n - 1), 0);
+  function ganhaFigurinha(id, origem, sorteio) {
+    const faltam = PESSOAS.filter(p => !temFig(p.id));
+    // nas missões vem uma figurinha que falta; no pacotinho, qualquer uma (pode vir repetida)
+    const p = id ? PESSOAS.find(q => q.id === id) : sorteio || !faltam.length ? PESSOAS[Math.floor(Math.random() * PESSOAS.length)] : faltam[Math.floor(Math.random() * faltam.length)];
+    const nova = !temFig(p.id);
+    S.album.tem[p.id] = (S.album.tem[p.id] || 0) + 1;
+    aviso(`📒 Figurinha ${nova ? 'nova' : 'repetida'} ${origem}: ${p.nome}!`);
+    confereAlbum(); salvar(); if (janelaAberta === 'album') janelaAlbum();
+  }
+  function confereAlbum() {
+    PAGINAS_ALBUM.forEach((pg, i) => {
+      if (S.album.paginas[i] || !pg.every(p => temFig(p.id))) return;
+      S.album.paginas[i] = true; S.medalhas['album-p' + (i + 1)] = { ic: '📒', nome: `Página ${i + 1} do álbum` };
+      setTimeout(() => pontos(50, `📒 Página ${i + 1} do álbum completa!`), 1500);
+    });
+    if (!S.album.completo && PESSOAS.every(p => temFig(p.id))) {
+      S.album.completo = true; S.medalhas.album = { ic: '🏆', nome: 'Álbum completo' };
+      setTimeout(() => pontos(200, '🏆 Você completou o álbum de figurinhas!'), 3000);
+    }
+  }
+  const iniciais = nome => nome.split(' ').filter(w => w.length > 2 && w[0] === w[0].toUpperCase()).map(w => w[0]).slice(0, 2).join('');
+  function janelaAlbum() {
+    const el = $('#album-conteudo'), total = PESSOAS.filter(p => temFig(p.id)).length, rep = repetidas();
+    el.innerHTML = `<p>Você tem <b>${total} de ${PESSOAS.length}</b> figurinhas e <b>${rep}</b> repetida${rep === 1 ? '' : 's'}. Cada página completa vale +50 ⭐ e uma medalha; o álbum inteiro vale +200 ⭐.</p>
+      <div class="btn-row"><button type="button" class="hb verde" id="al-troca" ${rep >= 3 && total < PESSOAS.length ? '' : 'disabled'}>🔁 Trocar 3 repetidas por 1 nova</button></div>
+      ${PAGINAS_ALBUM.map((pg, i) => `<section class="album-pag"><h3>Página ${i + 1} ${S.album.paginas[i] ? '✅' : `<small class="muted">(${pg.filter(p => temFig(p.id)).length}/${pg.length})</small>`}</h3><div class="figs">${pg.map((p, j) => temFig(p.id)
+        ? `<div class="fig" style="--c:${CORES_FIG[(i + j) % CORES_FIG.length]}"><span class="fig-rosto">${iniciais(p.nome)}</span><b>${esc(p.nome)}</b><small>${p.ano} · 🎂 ${String(p.dia).padStart(2, '0')}/${String(p.mes).padStart(2, '0')}</small><span class="fig-txt">${esc(p.feito[0].toUpperCase() + p.feito.slice(1))}.</span>${S.album.tem[p.id] > 1 ? `<span class="fig-rep">×${S.album.tem[p.id]}</span>` : ''}</div>`
+        : `<div class="fig falta"><span class="fig-rosto">?</span><b>Nº ${PESSOAS.indexOf(p) + 1}</b><small>🎂 ${String(p.dia).padStart(2, '0')}/${String(p.mes).padStart(2, '0')}</small></div>`).join('')}</div></section>`).join('')}
+      <p class="muted small">Como ganhar: acerte o desafio de aniversário de uma personalidade (no dia dela), dê presente a um morador no aniversário dele, complete missões de fases, profissões, eventos, estações, a oficina de código e os projetos da turma, ou compre um pacotinho no 🍎 Mercadinho.</p>`;
+    const t = $('#al-troca'); if (t) t.addEventListener('click', () => {
+      if (repetidas() < 3) return;
+      let tirar = 3;
+      for (const id of Object.keys(S.album.tem)) while (tirar && S.album.tem[id] > 1) { S.album.tem[id]--; tirar--; }
+      ganhaFigurinha(null, 'na troca'); janelaAlbum();
+    });
+  }
   const embaralhaAlts = (alts, certa) => { const ord = alts.map((a, i) => i).sort(() => Math.random() - 0.5); return { alts: ord.map(i => alts[i]), certa: ord.indexOf(certa) }; };
   function desafioAniversario(p) {
     const outros = PESSOAS.filter(o => o !== p).sort(() => Math.random() - 0.5).slice(0, 2);
@@ -1943,7 +1988,7 @@
     const passo = i => {
       if (i >= qs.length) {
         const chave = `${p.id}-${HOJE.getFullYear()}`;
-        if (acertos === 3 && !S.medalhas[chave]) { S.medalhas[chave] = { ic: '🏅', nome: `${p.nome} (${ddmm(HOJE)}/${HOJE.getFullYear()})` }; pontos(40); salvar(); }
+        if (acertos === 3 && !S.medalhas[chave]) { S.medalhas[chave] = { ic: '🏅', nome: `${p.nome} (${ddmm(HOJE)}/${HOJE.getFullYear()})` }; pontos(40); ganhaFigurinha(p.id, 'pelo desafio de aniversário'); salvar(); }
         return dialogo(acertos === 3 ? '🏅' : '🎂', acertos === 3 ? 'Medalha conquistada!' : 'Quase!', acertos === 3 ? `<p>Você acertou as 3 e ganhou a <strong>medalha de ${esc(p.nome)}</strong> (+40 ⭐). Ela fica no seu inventário.</p>` : `<p>Você acertou ${acertos} de 3. Para ganhar a medalha, acerte as três. Pode tentar de novo hoje!</p>`,
           [{ txt: acertos === 3 ? 'Oba!' : 'Tentar de novo', classe: 'principal', fn: () => acertos === 3 ? fechaDialogo() : desafioAniversario(p) }, { txt: 'Fechar', fn: fechaDialogo }]);
       }
@@ -2015,7 +2060,7 @@
   }
   function ligaEstacao(el) {
     const b = el.querySelector('#b-boletim'); if (b) b.addEventListener('click', () => { fechaJanela(); boletim(); });
-    const p = el.querySelector('#b-premio-est'); if (p) p.addEventListener('click', () => { const E = estEst(); if (E.ganhou || !missoesEstacao().every(m => m.ok)) return; E.ganhou = true; S.medalhas['estacao-' + ESTACAO.chave] = { ic: ESTACAO.ic, nome: `${ESTACAO.nome} ${ESTACAO.chave.split('-')[1]}` }; pontos(40, `${ESTACAO.ic} Missão do ${ESTACAO.nome.toLowerCase()} completa!`); salvar(); janelaEvento(); });
+    const p = el.querySelector('#b-premio-est'); if (p) p.addEventListener('click', () => { const E = estEst(); if (E.ganhou || !missoesEstacao().every(m => m.ok)) return; E.ganhou = true; S.medalhas['estacao-' + ESTACAO.chave] = { ic: ESTACAO.ic, nome: `${ESTACAO.nome} ${ESTACAO.chave.split('-')[1]}` }; pontos(40, `${ESTACAO.ic} Missão do ${ESTACAO.nome.toLowerCase()} completa!`); setTimeout(() => ganhaFigurinha(null, 'pela missão da estação'), 1800); salvar(); janelaEvento(); });
   }
   /* clima por cima do mundo: chuva, nuvens, neblina, vento com folhas e um brilho de sol */
   const semMovimento = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2288,7 +2333,7 @@
   const todosNpcs = () => fases.flatMap(f => f.npcs);
   const coracoesHtml = n => '<span class="coracoes" aria-label="' + coracoes(n) + ' de 10 corações">' + '❤️'.repeat(coracoes(n)) + '🤍'.repeat(10 - coracoes(n)) + '</span>';
   /* no máximo 1 coração (10 pontos) por semana com cada morador; o presente de aniversário é um bônus fora desse limite.
-     Cada morador faz aniversário no mesmo dia de uma personalidade da computação (7 é primo com 24, então não se repetem). */
+     Cada morador faz aniversário no mesmo dia de uma personalidade da computação (7 e 23 não têm divisor comum, então não se repetem). */
   const LIMITE_SEMANA = 10;
   const semNpc = n => { const A = S.amizadeSem || (S.amizadeSem = {}); return A[n.id] && A[n.id].s === SEMANA ? A[n.id] : (A[n.id] = { s: SEMANA, v: 0 }); };
   const restaSemana = n => Math.max(0, LIMITE_SEMANA - semNpc(n).v);
@@ -2320,7 +2365,7 @@
       const ama = k === favorito(n), aniv = aniversarioNpc(n) && dia.aniv !== HOJE.getFullYear();
       if (ama) S.gostos[n.id] = true;
       ganhaAmizade(n, ama ? 25 : 10);
-      if (aniv) { dia.aniv = HOJE.getFullYear(); ganhaAmizade(n, ama ? 20 : 10, true); }
+      if (aniv) { dia.aniv = HOJE.getFullYear(); ganhaAmizade(n, ama ? 20 : 10, true); setTimeout(() => ganhaFigurinha(pessoaNpc(n).id, `pelo aniversário de ${n.nome}`), 1800); }
       salvar();
       const fala = aniv ? `Você lembrou do meu aniversário! ${ama ? 'E ainda é o meu preferido! 🥳😍' : 'Muito obrigado! 🥳'} Ganhou um bônus de amizade de ${ama ? 2 : 1} ${ama ? 'corações' : 'coração'}.` : ama ? 'Eu amei! É o meu preferido! 😍' : 'Que legal, valeu pelo presente! 😊';
       dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>${fala}</p>${aniv ? '' : limiteHtml(n)}`, [{ txt: 'De nada!', classe: 'principal', fn: fechaDialogo }]);
@@ -2458,7 +2503,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2679,7 +2724,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
