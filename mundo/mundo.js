@@ -2194,6 +2194,8 @@
       { txt: 'Tentar', classe: 'principal', fn: () => { const v = ($('#e-campo').value || '').trim().toUpperCase().normalize('NFD').replace(/[̀-ͯ\s]/g, ''); if (v === certo) aoAcertar(); else aoErrar(v); } },
       { txt: 'Fechar', fn: fechaDialogo }
     ]);
+    const novaPerg = RASC.perg !== titulo + html; RASC.perg = titulo + html;
+    rascunhoBotao(true, novaPerg);
     setTimeout(() => { const c = $('#e-campo'); if (c) c.focus(); }, 30);
   }
   function usaEnigma(o) {
@@ -3385,7 +3387,37 @@
   /* ---------- diálogos ---------- */
   const D = { el: $('#dialogo'), ic: $('#d-ic'), nome: $('#d-nome'), texto: $('#d-texto'), op: $('#d-opcoes') };
   let dialogoNpc = null;
+  /* ---------- rascunho: um quadro quadriculado para fazer contas ao responder (botão ✏️ no diálogo das perguntas) ---------- */
+  const RASC = { cor: '#1d2a1f', apaga: false, risco: false, ultimo: null };
+  function rascunhoBotao(mostra, limpa) {
+    $('#d-rasc').hidden = !mostra;
+    if (!mostra) { $('#rascunho').hidden = true; $('#d-rasc').setAttribute('aria-expanded', 'false'); }
+    if (limpa) limpaRascunho();
+  }
+  function limpaRascunho() {
+    const c = $('#rasc-cv'), g = c.getContext('2d');
+    g.fillStyle = '#fffdf6'; g.fillRect(0, 0, c.width, c.height);
+    g.strokeStyle = '#d7e3f0'; g.lineWidth = 1;
+    for (let x = 20; x < c.width; x += 20) { g.beginPath(); g.moveTo(x + 0.5, 0); g.lineTo(x + 0.5, c.height); g.stroke(); }
+    for (let y = 20; y < c.height; y += 20) { g.beginPath(); g.moveTo(0, y + 0.5); g.lineTo(c.width, y + 0.5); g.stroke(); }
+  }
+  (() => {
+    const c = $('#rasc-cv'); if (!c) return; limpaRascunho();
+    const ponto = ev => { const r = c.getBoundingClientRect(); return [(ev.clientX - r.left) * c.width / r.width, (ev.clientY - r.top) * c.height / r.height]; };
+    c.addEventListener('pointerdown', ev => { RASC.risco = true; RASC.ultimo = ponto(ev); c.setPointerCapture(ev.pointerId); ev.preventDefault(); });
+    c.addEventListener('pointermove', ev => {
+      if (!RASC.risco) return; const g = c.getContext('2d'), p = ponto(ev);
+      g.strokeStyle = RASC.apaga ? '#fffdf6' : RASC.cor; g.lineWidth = RASC.apaga ? 18 : 2.6; g.lineCap = 'round'; g.lineJoin = 'round';
+      g.beginPath(); g.moveTo(...RASC.ultimo); g.lineTo(...p); g.stroke(); RASC.ultimo = p;
+    });
+    const solta = () => { RASC.risco = false; }; c.addEventListener('pointerup', solta); c.addEventListener('pointercancel', solta);
+    $('#d-rasc').addEventListener('click', () => { const r = $('#rascunho'); r.hidden = !r.hidden; $('#d-rasc').setAttribute('aria-expanded', String(!r.hidden)); });
+    $('#rasc-fechar').addEventListener('click', () => { $('#rascunho').hidden = true; $('#d-rasc').setAttribute('aria-expanded', 'false'); });
+    $('#rasc-limpa').addEventListener('click', limpaRascunho);
+    document.querySelectorAll('[data-rasc]').forEach(b => b.addEventListener('click', () => { RASC.apaga = b.dataset.rasc === 'apaga'; if (!RASC.apaga) RASC.cor = b.dataset.rasc; document.querySelectorAll('[data-rasc]').forEach(o => o.setAttribute('aria-pressed', String(o === b))); }));
+  })();
   function dialogo(ic, nome, html, opcoes) {
+    rascunhoBotao(false);
     dialogoAberto = true; D.el.hidden = false; D.ic.textContent = ic; D.nome.textContent = nome; D.texto.innerHTML = html;
     D.op.innerHTML = '';
     opcoes.forEach((o, i) => {
@@ -3397,7 +3429,7 @@
     });
     const primeiro = D.op.querySelector('button, a'); if (primeiro) primeiro.focus();
   }
-  function fechaDialogo() { dialogoAberto = false; dialogoNpc = null; D.el.hidden = true; for (const k in teclas) teclas[k] = false; cv.focus(); }
+  function fechaDialogo() { rascunhoBotao(false); dialogoAberto = false; dialogoNpc = null; D.el.hidden = true; for (const k in teclas) teclas[k] = false; cv.focus(); }
   $('#d-fechar').addEventListener('click', fechaDialogo);
 
   function abreCasa(c) {
@@ -3513,6 +3545,7 @@
     return lista[Math.floor(Math.random() * lista.length)];
   }
   function pergunta(titulo, ic, p, aoResponder) {
+    const novaPerg = RASC.perg !== p.id; RASC.perg = p.id;
     dialogo(ic, titulo, `<p>${p.enun}</p>`, p.alts.map((a, i) => ({ txt: a, fn: () => {
       if (D.op.dataset.respondida) return;
       D.op.dataset.respondida = '1';
@@ -3530,6 +3563,7 @@
       confereFases(); salvar();
     } })));
     delete D.op.dataset.respondida;
+    rascunhoBotao(true, novaPerg);
   }
   function falaNpc(n) {
     const f = n.fase, primeira = !S.falas[n.id];
@@ -4499,7 +4533,7 @@
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
