@@ -1100,7 +1100,14 @@
     else if (k === 'capacete') { aba('#f6c93c', 0.1); bloco(0.05, 0.08, 0.9, 0.3, '#f6c93c'); bloco(0.4, 0.38, 0.2, 0.08, '#f6c93c'); }
     else if (k === 'antena') { caixa(hx - q(0.04), hy + q(0.42), topo - q(0.02), s + q(0.08), q(0.16), q(0.08), '#9a6bd6', sem); caixa(hx + q(0.45), hy + q(0.45), topo, q(0.08), q(0.08), q(0.5), '#888888', sem); bloco(0.38, 0.5, 0.24, 0.2, Math.floor(agora / 500) % 2 ? '#7dff8a' : '#2bb3b1'); }
     else if (k === 'capaceteRobo') { bloco(-0.04, 0, 1.08, 0.3, '#9aa3ad'); bloco(0.1, 0.3, 0.8, 0.1, '#7c8590'); caixa(hx - q(0.14), hy + q(0.35), hz + q(0.35), q(0.14), q(0.3), q(0.3), '#5b6270', sem); caixa(hx + s, hy + q(0.35), hz + q(0.35), q(0.14), q(0.3), q(0.3), '#5b6270', sem); caixa(hx + q(0.46), hy + q(0.46), topo + q(0.4), q(0.08), q(0.08), q(0.35), '#5b6270', sem); bloco(0.4, 0.75, 0.2, 0.18, Math.floor(agora / 400) % 2 ? '#ff5252' : '#7dff8a'); }
-    else if (k === 'astronauta') { bloco(-0.08, 0, 1.16, 0.32, '#f4f6fa'); caixa(hx - q(0.1), hy - q(0.1), hz + q(0.05), s + q(0.2), s + q(0.2), q(0.12), '#f4f6fa', sem); if (frente) naFace(fc, hx, hy, s, s, q(0.08), 0, q(0.84), hz + q(0.3), q(0.42), 'rgba(246,183,60,.55)'); bloco(0.7, 0.32, 0.1, 0.3, '#c7ccd6'); }
+    else if (k === 'astronauta') {   // capacete de vidro (aquário) com gola branca e luz no topo: o rosto continua aparecendo
+      caixa(hx - q(0.1), hy - q(0.1), hz - q(0.16), s + q(0.2), s + q(0.2), q(0.16), '#f4f6fa', { blocos: false, contorno: false, topo: 'rgba(0,0,0,0)' });   // gola: sem a face de cima, que cobriria o rosto
+      const alto = topo - hz + q(0.2);
+      caixa(hx - q(0.1), hy - q(0.1), hz, s + q(0.2), s + q(0.2), alto, '#dff0ff', { blocos: false, esq: 'rgba(214,236,255,.32)', dir: 'rgba(190,220,250,.38)', topo: 'rgba(236,247,255,.55)' });
+      if (frente) naFace(fc, hx - q(0.1), hy - q(0.1), s + q(0.2), s + q(0.2), q(0.12), 0, q(0.12), hz + q(0.2), alto - q(0.35), 'rgba(255,255,255,.7)');
+      caixa(hx + q(0.42), hy + q(0.42), hz + alto, q(0.16), q(0.16), q(0.1), '#c7ccd6', sem);
+      caixa(hx + q(0.45), hy + q(0.45), hz + alto + q(0.1), q(0.1), q(0.1), q(0.1), Math.floor(agora / 600) % 2 ? '#ff6b6b' : '#ffd84a', sem);
+    }
     else if (k === 'chapeuMago') { aba('#6a1b9a', 0.22); bloco(0.12, 0.08, 0.76, 0.3, '#6a1b9a'); bloco(0.24, 0.38, 0.52, 0.3, '#6a1b9a'); bloco(0.36, 0.68, 0.28, 0.28, '#6a1b9a'); bloco(0.43, 0.96, 0.14, 0.14, '#ffd84a'); bloco(0.11, 0.1, 0.78, 0.08, '#ffd84a'); }
     else if (k === 'viseira') { caixa(hx - q(0.04), hy - q(0.04), hz + q(0.36), s + q(0.08), s + q(0.08), q(0.22), '#222222', sem); if (frente) naFace(fc, hx, hy, s, s, q(0.04), 0, q(0.92), hz + q(0.39), q(0.16), Math.floor(agora / 300) % 3 ? '#39ff88' : '#ff4fa3'); }
     else if (k === 'gorroSaci') { bloco(0, 0, 1, 0.25, '#d32f2f'); bloco(0.15, 0.25, 0.7, 0.3, '#d32f2f'); bloco(0.3, 0.55, 0.4, 0.3, '#d32f2f'); bloco(0.42, 0.85, 0.16, 0.2, '#d32f2f'); }
