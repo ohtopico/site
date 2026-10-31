@@ -117,3 +117,12 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .pet-b small { color: #5a6a5c; font-size: 12px; } .pet-b:hover:not(:disabled) { background: #fff6dd; } .pet-b:disabled { opacity: .5; cursor: not-allowed; }
 .campo { font: 15px Lexend, sans-serif; padding: 8px 12px; border: 2px solid var(--borda); border-radius: 12px; width: min(260px, 100%); }
 @media (max-width: 600px) { .pet-topo { grid-template-columns: 1fr; justify-items: center; } .nec { grid-template-columns: 120px 1fr; } .pet-topo > div { width: 100%; } #b-salvar { display: none; } }
+
+/* habilidades e amigos */
+.habs { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.hab { display: flex; gap: 10px; align-items: flex-start; border: 2px solid var(--borda); border-radius: 14px; background: #fff; padding: 8px 12px; }
+.hab-ic { font-size: 24px; } .hab-txt { flex: 1; min-width: 0; font-size: 14px; }
+.hab-txt .barra { display: block; height: 8px; margin: 5px 0; } .hab-txt .barra span { background: linear-gradient(90deg, #9a6bd6, #c7b4f2); }
+.hab-txt a { color: #2b6cb0; }
+.coracoes { font-size: 13px; letter-spacing: -1px; white-space: nowrap; }
+.hab-sub { display: block; }
