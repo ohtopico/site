@@ -157,7 +157,7 @@
       </section>
 
       <h2>Missões de hoje</h2>
-      <p class="muted" style="margin:0">${feitas} de ${e.missoes.length} feitas. Cumprindo todas, você ganha mais ${MDM.PONTOS.bonus} pontos de bônus. Amanhã aparecem missões novas.</p>
+      <p class="muted" style="margin:0">${feitas} de ${e.missoes.length} feitas. Cumprindo todas, você ganha mais ${MDM.PONTOS.bonus} pontos de bônus. Amanhã aparecem missões novas.${e.missoes.some(m => m.mundo) ? ' Como você joga o <a href="../mundo/">Mundo do site</a>, uma das missões é feita lá.' : ''}</p>
       <ul class="missoes">${e.missoes.map(m => `
         <li class="mis${m.feita ? ' feita' : ''}${m.extra ? ' extra' : ''}">
           <span class="ck">${m.feita ? check : ''}</span>
