@@ -72,7 +72,7 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .bib ul { list-style: none; padding: 0; margin: 0 0 6px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 14px; font-size: 14.5px; }
 .bib li a { color: var(--ink); } .bib li.feito::before { content: '✅ '; } .bib li::before { content: '⬜ '; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-@media (max-width: 900px) {
+@media (max-width: 900px), (max-height: 500px) {
   .hud-topo { max-width: calc(100vw - 20px); gap: 5px; flex-wrap: nowrap; } .stat { min-width: 0; flex: 1; padding: 4px 5px; } .stat b { font-size: 15px; } .stat span { font-size: 8px; letter-spacing: 0; }
   .hud-botoes { top: auto; bottom: 10px; right: 10px; left: 10px; max-width: none; justify-content: center; }
   .hb { font-size: 13px; padding: 7px 10px; }
@@ -209,3 +209,24 @@ details.proj summary { cursor: pointer; }
 .fig.falta { background: repeating-linear-gradient(45deg, #f1ece0, #f1ece0 6px, #e8e2d3 6px, #e8e2d3 12px); border-style: dashed; color: #888; }
 .fig.falta .fig-rosto { color: #aaa; }
 .amostra { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; border: 1px solid rgba(0,0,0,.25); }
+/* celular: os botões ficam num painel que abre e fecha pelo ☰, e o resto da tela fica livre */
+#b-mais { display: none; }
+@media (max-width: 900px), (max-height: 500px) {
+  #b-mais { display: grid; place-items: center; position: fixed; z-index: 9; top: 10px; right: 10px; width: 46px; height: 46px; padding: 0; font-size: 22px; }
+  .hud-topo { left: 10px; right: 64px; top: 10px; max-width: none; }
+  .hud-topo .stat:nth-child(n+4) { display: none; } .hud-topo .stat { max-width: 130px; }
+  .hud-botoes { display: none; top: 62px; right: 10px; left: auto; bottom: auto; width: min(330px, calc(100vw - 20px)); max-height: calc(100vh - 76px); overflow-y: auto;
+    grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px; background: rgba(255,253,246,.97); border: 2px solid var(--borda); border-radius: 18px; box-shadow: var(--sombra); z-index: 9; }
+  .hud-botoes.aberto { display: grid; }
+  .hud-botoes .hb { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; font-size: 20px; }
+  .hud-botoes .hb .t { display: block; font-size: 12px; }
+  .hud-botoes .hb[hidden] { display: none; }
+  .missoes { top: 62px; }
+  .minimapa { bottom: 10px; } .toque .dpad { bottom: 12px; } .toque .acoes { bottom: 118px; }
+  .aviso { top: 112px; }
+}
+@media (max-height: 500px) {
+  .missoes { top: 58px; } .minimapa canvas { width: 108px; height: 72px; }
+  .toque .dpad { width: 126px; height: 126px; } .toque .acoes { bottom: 104px; gap: 8px; } .toque .acoes button { width: 56px; height: 56px; font-size: 22px; }
+  .aviso { top: 60px; left: 50%; max-width: 46vw; font-size: 14px; }
+}

@@ -2674,6 +2674,12 @@
     teleporta(f); salvar(); aviso('🔄 Fase reiniciada');
   });
   $('#b-zerar').addEventListener('click', () => { if (!confirm('Apagar todo o progresso do mundo? (O Meu progresso dos jogos não é apagado.)')) return; const av = S.av; S = novo(); S.av = av; dentro = false; noEnigma = false; colocando = null; trocaFase(0); S.versao = 2; P.x = S.x; P.y = S.y; cam.ok = false; salvar(); fechaJanela(); hud(); confereJogos(); });
+  /* no celular os botões ficam escondidos num painel que abre pelo ☰ */
+  const bMais = $('#b-mais'), painelBotoes = $('#hud-botoes');
+  function painel(abre) { painelBotoes.classList.toggle('aberto', abre); bMais.setAttribute('aria-expanded', abre); bMais.textContent = abre ? '✕' : '☰'; bMais.setAttribute('aria-label', abre ? 'Esconder os botões' : 'Mostrar os botões'); }
+  bMais.addEventListener('click', () => painel(!painelBotoes.classList.contains('aberto')));
+  painelBotoes.addEventListener('click', e => { if (e.target.closest('button') && e.target.closest('button').id !== 'b-toque') painel(false); });
+  cv.addEventListener('pointerdown', () => painel(false));
   const toqueEl = $('#toque'), bToque = $('#b-toque');
   function ligaToque(liga) { toqueEl.hidden = !liga; bToque.setAttribute('aria-pressed', String(liga)); document.body.classList.toggle('com-toque', liga); }
   bToque.addEventListener('click', () => ligaToque(toqueEl.hidden));
