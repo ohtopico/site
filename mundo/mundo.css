@@ -214,7 +214,7 @@ details.proj summary { cursor: pointer; }
 @media (max-width: 900px), (max-height: 500px) {
   #b-mais { display: grid; place-items: center; position: fixed; z-index: 9; top: 10px; right: 10px; width: 46px; height: 46px; padding: 0; font-size: 22px; }
   .hud-topo { left: 10px; right: 64px; top: 10px; max-width: none; }
-  .hud-topo .stat:nth-child(n+4) { display: none; } .hud-topo .stat { max-width: 130px; }
+  .hud-topo .stat:nth-child(2), .hud-topo .stat:nth-child(4) { display: none; } .hud-topo .stat { max-width: 130px; }   /* no celular: pontos, acertos e nível */
   .hud-botoes { display: none; top: 62px; right: 10px; left: auto; bottom: auto; width: min(330px, calc(100vw - 20px)); max-height: calc(100vh - 76px); overflow-y: auto;
     grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px; background: rgba(255,253,246,.97); border: 2px solid var(--borda); border-radius: 18px; box-shadow: var(--sombra); z-index: 9; }
   .hud-botoes.aberto { display: grid; }
@@ -306,3 +306,5 @@ a.stat { color: inherit; text-decoration: none; }
 .museu-pixel { display: flex; flex-wrap: wrap; gap: 10px; }
 .museu-pixel figure { margin: 0; text-align: center; font-size: .8rem; }
 .museu-pixel img { image-rendering: pixelated; border: 3px solid #7a523a; border-radius: 4px; display: block; }
+
+#h-nivel-l { border-color: #e8a400; background: #fff6d6; }
