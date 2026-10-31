@@ -271,7 +271,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 <footer class="rodape">
     <nav class="letreiro" aria-label="Destaques">{letreiro}</nav>
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
-    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
 </footer>
 {contador}<script src="/blog/assets/blog.js?v={VERSAO_CSS}" defer></script>
 <script src="/assistente/assistente.js?v={VERSAO_ASSISTENTE}" defer></script>
@@ -906,6 +906,7 @@ def pagina_para_escolas(cfg):
         <p>Conte quantas escolas e professores são, as etapas de ensino e o que já foi feito com Computação e IA. A resposta vem com uma sugestão de por onde começar.</p>
         <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Computa%C3%A7%C3%A3o%20e%20IA%20para%20escolas%20e%20redes." target="_blank" rel="noopener">Conversar no WhatsApp</a>
         <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Computa%C3%A7%C3%A3o%20e%20IA%20para%20escolas%20e%20redes">Enviar e-mail</a>
+        <p>Para receber os materiais novos e as datas do Mundo, siga o <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" target="_blank" rel="noopener">canal no WhatsApp</a>.</p>
     </section>
 </article>'''
     head = cabeca('Computação e IA para escolas e redes | Júlia Quoos', descricao, url, imagem, alt, 'website',
