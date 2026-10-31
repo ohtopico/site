@@ -2269,8 +2269,9 @@
     Z.boasVindas();
   }
   function saiSala() {
-    const l = SALAS[sala].local();
-    if (atual.idx !== l.f.idx) trocaFase(l.f.idx);
+    if (!sala) return;
+    const Z = SALAS[sala]; let l = Z.local();
+    if (atual.idx !== l.f.idx) { trocaFase(l.f.idx); l = Z.local(); }
     sala = null; destino = null; P.x = l.x; P.y = l.y; P.dir = 'y+'; cam.ok = false; petPerto();
     for (const k in teclas) teclas[k] = false;
     hud();
@@ -2307,65 +2308,127 @@
     return primeira;
   }
 
-  /* --- Escape da Matemática: três desafios dão os algarismos do cofre; a porta pede um desconto em porcentagem. Sem cronômetro, muda toda segunda. */
+  /* --- Escape da Matemática: 4 fases seguidas. Em cada uma, três desafios dão os algarismos do cofre e a porta pede mais uma conta.
+     Sem cronômetro, muda toda segunda. */
   const EMAT = (() => {
-    const r = rng(SEMANA * 53 + 11), int = (a, b) => a + Math.floor(r() * (b - a + 1));
-    const A = int(2, 9), n = A >= 9 ? int(4, 5) : int(3, 5), m = n * n - A;                    // ① potência: n² − m
-    const B = int(2, 9), k = int(2, 5), c = int(1, 9), t = k * B + c;                         // ② equação: k·x + c = t
-    const [p, q] = [[1, 2], [1, 4], [3, 4], [1, 8], [3, 8], [5, 8], [7, 8]][int(0, 6)], C = 8 - 8 * p / q;   // ③ fatias que sobraram
-    const [pct, preco] = [[10, 50], [20, 60], [25, 80], [50, 90], [30, 70], [40, 50]][int(0, 5)];
-    return { A, n, m, B, k, c, t, C, p, q, pct, preco, final: preco - preco * pct / 100, codigo: `${A}${B}${C}` };
+    const sorteio = i => { const r = rng(SEMANA * 53 + 11 + i * 1000); return [(a, b) => a + Math.floor(r() * (b - a + 1)), l => l.map(v => [r(), v]).sort((x, y) => x[0] - y[0]).map(x => x[1])]; };
+    const fases = [];
+    { // 1. Sala de aula: potência, equação, fração e porcentagem
+      const [int] = sorteio(0);
+      const A = int(2, 9), n = A >= 9 ? int(4, 5) : int(3, 5), m = n * n - A;
+      const B = int(2, 9), k = int(2, 5), c = int(1, 9), t = k * B + c;
+      const [p, q] = [[1, 2], [1, 4], [3, 4], [1, 8], [3, 8], [5, 8], [7, 8]][int(0, 6)], C = 8 - 8 * p / q;
+      const [pct, preco] = [[10, 50], [20, 60], [25, 80], [50, 90], [30, 70], [40, 50]][int(0, 5)];
+      fases.push({ nome: 'Sala de aula', ic: '🧮', parede: '#9fd1b0', piso: ['#cfe8d6', '#e3f3e8'], temas: ['potência', 'equação', 'fração', 'porcentagem'], lousa: `① = ${n}² − ${m}`,
+        d: [
+          { nome: 'Lousa', ic: '🧮', r: A, html: `<p>Na lousa está escrito:</p><p class="cifra">① = ${n}² − ${m}</p><p class="muted small">Lembre: ${n}² é ${n} × ${n}. Primeiro a potência, depois a subtração.</p>`, feito: `<p class="cifra">① = ${n}² − ${m} = ${A}</p>`, dica: `Calcule ${n} × ${n} e depois tire ${m}.` },
+          { nome: 'Balança', ic: '⚖️', r: B, html: `<p>A balança está em equilíbrio. De um lado tem <b>${k} caixas iguais</b> e <b>${c} pesinhos de 1 kg</b>; do outro, <b>${t} kg</b>.</p><p class="cifra">${k}·x + ${c} = ${t}</p><p>Quanto pesa cada caixa? Esse é o algarismo ②.</p>`, feito: `<p class="cifra">${k}·x + ${c} = ${t} → x = ${B}</p>`, dica: `Tire ${c} dos dois lados e depois divida por ${k}.` },
+          { nome: 'Pizza', ic: '🍕', r: C, html: `<p>A pizza tinha <b>8 fatias</b> iguais. A turma comeu <b>${p}/${q}</b> da pizza.</p><p>Quantas fatias sobraram? Esse é o algarismo ③.</p>`, feito: `<p>Sobraram <b>${C}</b> fatias.</p>`, dica: `${p}/${q} de 8 fatias é 8 ÷ ${q} × ${p}. Depois veja quanto falta para 8.` }
+        ],
+        porta: { r: preco - preco * pct / 100, html: `<p class="cifra">${preco} ⭐ com ${pct}% de desconto = ?</p>`, dica: `${pct}% de ${preco} é ${preco} × ${pct} ÷ 100. Depois tire esse valor de ${preco}.` } });
+    }
+    { // 2. Oficina de Geometria: área, ângulos de polígonos, perímetro e área do triângulo
+      const [int] = sorteio(1);
+      const L = int(2, 9), lados = int(3, 9), soma = (lados - 2) * 180, b2 = int(1, 9), a2 = int(2, 12), per = 2 * (a2 + b2), bt = 2 * int(2, 6), ht = int(3, 9);
+      fases.push({ nome: 'Oficina de Geometria', ic: '📐', parede: '#f2c58a', piso: ['#f6e2c0', '#fbefd9'], temas: ['área', 'ângulos', 'perímetro', 'área do triângulo'], lousa: `① área ${L * L} cm²`,
+        d: [
+          { nome: 'Lousa', ic: '🟩', r: L, html: `<p>Na lousa tem um <b>quadrado</b> e está escrito:</p><p class="cifra">área = ${L * L} cm²</p><p>Quanto mede o lado do quadrado, em cm? Esse é o algarismo ①.</p>`, feito: `<p class="cifra">lado × lado = ${L * L} → lado = ${L} cm</p>`, dica: `Procure um número que, vezes ele mesmo, dá ${L * L}.` },
+          { nome: 'Esquadro', ic: '📐', r: lados, html: `<p>Na mesa tem um polígono de papel. A etiqueta diz:</p><p class="cifra">soma dos ângulos internos = ${soma}°</p><p>Quantos lados ele tem? Esse é o algarismo ②.</p><p class="muted small">Um triângulo soma 180°; cada lado a mais acrescenta outros 180°.</p>`, feito: `<p class="cifra">${soma} ÷ 180 + 2 = ${lados} lados</p>`, dica: `Divida ${soma} por 180 e some 2.` },
+          { nome: 'Tapete', ic: '🟫', r: b2, html: `<p>O tapete é um <b>retângulo</b> com perímetro de <b>${per} m</b>. Um dos lados mede <b>${a2} m</b>.</p><p>Quanto mede o outro lado? Esse é o algarismo ③.</p>`, feito: `<p class="cifra">${per} ÷ 2 − ${a2} = ${b2} m</p>`, dica: `Metade do perímetro (${per / 2}) é a soma de dois lados diferentes. Tire ${a2}.` }
+        ],
+        porta: { r: bt * ht / 2, html: `<p>O visor mostra um <b>triângulo</b> com base de ${bt} cm e altura de ${ht} cm.</p><p class="cifra">área do triângulo = ? cm²</p>`, dica: `Área do triângulo é base × altura ÷ 2: ${bt} × ${ht} ÷ 2.` } });
+    }
+    { // 3. Loja de Estatística: média, moda, mediana e proporção
+      const [int, mistura] = sorteio(2);
+      const md = int(3, 9), dm = int(1, Math.max(1, Math.min(md - 1, 10 - md))), notas = mistura([md - dm, md, md + dm]);
+      const mo = int(1, 9), outros = mistura([1, 2, 3, 4, 5, 6, 7, 8, 9].filter(v => v !== mo)).slice(0, 4), listaMo = mistura([mo, mo, mo, ...outros]);
+      const me = int(3, 7), baixo = mistura([...Array(me - 1)].map((_, i) => i + 1)).slice(0, 2), alto = mistura([...Array(6)].map((_, i) => me + 1 + i)).slice(0, 2), listaMe = mistura([me, ...baixo, ...alto]);
+      const bolos = int(2, 3), ovos = int(2, 4), pedido = bolos * int(2, 4);
+      fases.push({ nome: 'Loja de Estatística', ic: '📊', parede: '#e9b7c8', piso: ['#f6dbe4', '#fbecf1'], temas: ['média', 'moda', 'mediana', 'proporção'], lousa: `① notas ${notas.join(' · ')}`,
+        d: [
+          { nome: 'Lousa', ic: '📝', r: md, html: `<p>Na lousa estão as notas de um aluno em três provas:</p><p class="cifra">${notas.join(' · ')}</p><p>Qual é a <b>média</b> das notas? Esse é o algarismo ①.</p>`, feito: `<p class="cifra">(${notas.join(' + ')}) ÷ 3 = ${md}</p>`, dica: `Some as três notas e divida por 3.` },
+          { nome: 'Cartaz', ic: '📊', r: mo, html: `<p>O cartaz mostra quantos picolés cada cliente comprou hoje:</p><p class="cifra">${listaMo.join(' · ')}</p><p>Qual é a <b>moda</b>? Esse é o algarismo ②.</p>`, feito: `<p>O ${mo} aparece mais vezes: a moda é <b>${mo}</b>.</p>`, dica: 'A moda é o valor que aparece mais vezes na lista.' },
+          { nome: 'Caixa de preços', ic: '🏷️', r: me, html: `<p>Cinco produtos da loja custam (em ⭐):</p><p class="cifra">${listaMe.join(' · ')}</p><p>Qual é a <b>mediana</b> dos preços? Esse é o algarismo ③.</p>`, feito: `<p class="cifra">${[...listaMe].sort((x, y) => x - y).join(' · ')} → mediana ${me}</p>`, dica: 'Coloque os preços em ordem crescente: a mediana é o do meio.' }
+        ],
+        porta: { r: pedido * ovos, html: `<p>Na porta tem uma receita: <b>${bolos} bolos</b> usam <b>${bolos * ovos} ovos</b>.</p><p class="cifra">ovos para ${pedido} bolos = ?</p>`, dica: `Descubra quantos ovos vão em 1 bolo (${bolos * ovos} ÷ ${bolos}) e multiplique por ${pedido}.` } });
+    }
+    { // 4. Observatório dos Inteiros: números negativos, MDC e ordem das operações
+      const [int] = sorteio(3);
+      const fri = int(2, 8), T = int(1, 9), sobe = fri + T;
+      const g = int(2, 9), [u, v] = [[2, 3], [3, 4], [2, 5], [3, 5], [4, 5], [3, 7], [5, 6]][int(0, 6)];
+      const R = int(1, 9), y = int(2, 4), z = int(2, 5), w = int(1, 6) + Math.max(0, y * z - R), x = R + w - y * z;
+      const pa = int(2, 6), pb = int(2, 6), pc = int(1, pa * pb - 1);
+      fases.push({ nome: 'Observatório dos Inteiros', ic: '🔭', parede: '#c7b4f2', piso: ['#e2d8f8', '#efe9fb'], temas: ['números negativos', 'MDC', 'ordem das operações', 'regra de sinais'], lousa: `① −${fri} + ${sobe}`,
+        d: [
+          { nome: 'Lousa', ic: '🌡️', r: T, html: `<p>Na lousa: de madrugada o termômetro do observatório marcava <b>−${fri} °C</b>. Até o meio-dia, a temperatura subiu <b>${sobe} °C</b>.</p><p class="cifra">−${fri} + ${sobe} = ?</p><p>Quantos graus marcou ao meio-dia? Esse é o algarismo ①.</p>`, feito: `<p class="cifra">−${fri} + ${sobe} = ${T} °C</p>`, dica: `Para sair de −${fri} até 0 são ${fri} graus. O que sobrar de ${sobe} fica acima de zero.` },
+          { nome: 'Cordões de luz', ic: '💡', r: g, html: `<p>Há dois cordões de luz, um de <b>${g * u} cm</b> e outro de <b>${g * v} cm</b>. Queremos cortar os dois em pedaços <b>iguais</b>, do <b>maior tamanho possível</b>, sem sobrar nada.</p><p>Quantos cm tem cada pedaço? Esse é o algarismo ②.</p>`, feito: `<p class="cifra">MDC(${g * u}, ${g * v}) = ${g}</p>`, dica: `Procure o maior número que divide ${g * u} e ${g * v} ao mesmo tempo (o MDC).` },
+          { nome: 'Painel', ic: '🖥️', r: R, html: `<p>O painel do telescópio pede:</p><p class="cifra">${x} + ${y} × ${z} − ${w} = ?</p><p>Esse é o algarismo ③.</p>`, feito: `<p class="cifra">${x} + ${y * z} − ${w} = ${R}</p>`, dica: `Primeiro a multiplicação (${y} × ${z}), depois a adição e a subtração, da esquerda para a direita.` }
+        ],
+        porta: { r: pa * pb - pc, html: `<p class="cifra">(−${pa}) × (−${pb}) + (−${pc}) = ?</p><p class="muted small">Se der negativo, digite o sinal de menos (-) antes do número.</p>`, dica: `Menos vezes menos dá mais: (−${pa}) × (−${pb}) = ${pa * pb}. Depois some −${pc}.` } });
+    }
+    return fases;
   })();
   const EMOBJ = [
-    { id: 'lousa', x: 0.6, y: 0, w: 2, d: 0.15, parede: true, acao: 'ler a lousa ①' },
+    { id: 'lousa', x: 0.6, y: 0, w: 2, d: 0.15, parede: true, i: 0 },
     { id: 'porta', x: 3.5, y: 0, w: 1, d: 0.15, parede: true, acao: 'abrir a porta de saída' },
     { id: 'cofre', x: 5.6, y: 0.1, w: 1, d: 1, acao: 'abrir o cofre' },
-    { id: 'balanca', x: 6.6, y: 2.6, w: 1, d: 1, acao: 'olhar a balança ②' },
-    { id: 'pizza', x: 0.2, y: 2.8, w: 1, d: 1, acao: 'olhar a pizza ③' }
+    { id: 'mesa2', x: 6.6, y: 2.6, w: 1, d: 1, i: 1 },
+    { id: 'mesa3', x: 0.2, y: 2.8, w: 1, d: 1, i: 2 }
   ];
-  const EST_EM = () => { const E = S.emat || (S.emat = {}); if (E.semana !== SEMANA) S.emat = { semana: SEMANA, vitorias: E.vitorias || 0, premio: E.premio }; return S.emat; };
+  const NUM_EM = ['①', '②', '③'];
+  const EST_EM = () => {
+    const E = S.emat || (S.emat = {});
+    if (E.semana !== SEMANA) S.emat = { semana: SEMANA, fase: 0, vitorias: E.vitorias || 0, premio: E.premio };
+    else if (E.fase === undefined) { E.fase = 0; if (E.fim) { E.fim = false; E.fase = 1; ['a', 'b', 'c', 'cofre'].forEach(k => delete E[k]); } }   // quem já tinha escapado antes das 4 fases segue para a fase 2
+    return S.emat;
+  };
+  const faseEM = () => EMAT[Math.min(EST_EM().fase, EMAT.length - 1)];
+  const objsEM = () => { const F = faseEM(); return EMOBJ.map(o => o.i === undefined ? o : Object.assign({}, o, { acao: `${o.i ? 'olhar' : 'ler'} ${o.i ? F.d[o.i].nome.toLowerCase() : 'a lousa'} ${NUM_EM[o.i]}` })); };
   function campoNumero(titulo, ic, html, certo, aoAcertar, dica, volta) {
     const fecha = { txt: 'Fechar', fn: fechaDialogo };
     tentaCampo(titulo, ic, html, String(certo), aoAcertar, () => dialogo(ic, titulo, `<p>Ainda não. ${dica}</p>`, [{ txt: 'Tentar de novo', classe: 'principal', fn: volta }, fecha]));
   }
   function usaEmat(o) {
-    const E = EST_EM(), M = EMAT, fecha = { txt: 'Fechar', fn: fechaDialogo }, volta = () => usaEmat(o);
-    const ok = (chave, algarismo, ic) => { E[chave] = true; ganhaHabilidade(['NU', 'AL'], 10); pontos(10); salvar(); hud(); dialogo(ic, 'Certo!', `<p>O algarismo ${chave === 'a' ? '①' : chave === 'b' ? '②' : '③'} do cofre é <b>${algarismo}</b>. Ele fica anotado no painel de missões.</p>`, [fecha]); };
-    if (o.id === 'lousa') {
-      if (E.a) return dialogo('🧮', 'Lousa ①', `<p class="cifra">① = ${M.n}² − ${M.m} = ${M.A}</p><p>Você já resolveu esta.</p>`, [fecha]);
-      return campoNumero('Lousa ①', '🧮', `<p>Na lousa está escrito:</p><p class="cifra">① = ${M.n}² − ${M.m}</p><p class="muted small">Lembre: ${M.n}² é ${M.n} × ${M.n}. Primeiro a potência, depois a subtração.</p>`, M.A, () => ok('a', M.A, '🧮'), `Calcule ${M.n} × ${M.n} e depois tire ${M.m}.`, volta);
-    }
-    if (o.id === 'balanca') {
-      if (E.b) return dialogo('⚖️', 'Balança ②', `<p class="cifra">${M.k}·x + ${M.c} = ${M.t} → x = ${M.B}</p><p>Você já resolveu esta.</p>`, [fecha]);
-      return campoNumero('Balança ②', '⚖️', `<p>A balança está em equilíbrio. De um lado tem <b>${M.k} caixas iguais</b> e <b>${M.c} pesinhos de 1 kg</b>; do outro, <b>${M.t} kg</b>.</p><p class="cifra">${M.k}·x + ${M.c} = ${M.t}</p><p>Quanto pesa cada caixa? Esse é o algarismo ②.</p>`, M.B, () => ok('b', M.B, '⚖️'), `Tire ${M.c} dos dois lados e depois divida por ${M.k}.`, volta);
-    }
-    if (o.id === 'pizza') {
-      if (E.c) return dialogo('🍕', 'Pizza ③', `<p>Sobraram <b>${M.C}</b> fatias. Você já resolveu esta.</p>`, [fecha]);
-      return campoNumero('Pizza ③', '🍕', `<p>A pizza tinha <b>8 fatias</b> iguais. A turma comeu <b>${M.p}/${M.q}</b> da pizza.</p><p>Quantas fatias sobraram? Esse é o algarismo ③.</p>`, M.C, () => ok('c', M.C, '🍕'), `${M.p}/${M.q} de 8 fatias é 8 ÷ ${M.q} × ${M.p}. Depois veja quanto falta para 8.`, volta);
+    const E = EST_EM(), F = faseEM(), nf = E.fase + 1, fecha = { txt: 'Fechar', fn: fechaDialogo }, volta = () => usaEmat(o), chaves = ['a', 'b', 'c'];
+    if (o.i !== undefined) {
+      const d = F.d[o.i], ch = chaves[o.i], titulo = `${d.nome} ${NUM_EM[o.i]}`;
+      if (E[ch]) return dialogo(d.ic, titulo, `${d.feito}<p>Você já resolveu esta.</p>`, [fecha]);
+      return campoNumero(titulo, d.ic, d.html, d.r, () => { E[ch] = true; ganhaHabilidade(['NU', 'AL'], 10); pontos(10); salvar(); hud(); dialogo(d.ic, 'Certo!', `<p>O algarismo ${NUM_EM[o.i]} do cofre é <b>${d.r}</b>. Ele fica anotado no painel de missões.</p>`, [fecha]); }, d.dica, volta);
     }
     if (o.id === 'cofre') {
       if (E.cofre) return dialogo('🔓', 'Cofre', '<p>O cofre está aberto. Você já pegou a 🗝️ chave da porta.</p>', [fecha]);
-      const falta = ['a', 'b', 'c'].filter(k => !E[k]).length;
-      return campoNumero('Cofre', '🔒', `<p>O cofre pede um código de <b>3 algarismos</b>, na ordem ① ② ③.</p>${falta ? `<p class="muted small">Ainda falta descobrir ${falta} algarismo(s): veja a lousa, a balança e a pizza.</p>` : ''}`, M.codigo,
+      const falta = chaves.filter(k => !E[k]).length;
+      return campoNumero('Cofre', '🔒', `<p>O cofre pede um código de <b>3 algarismos</b>, na ordem ① ② ③.</p>${falta ? `<p class="muted small">Ainda falta descobrir ${falta} algarismo(s): veja ${F.d.map(d => d.nome.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ' e $1')}.</p>` : ''}`, F.d.map(d => d.r).join(''),
         () => { E.cofre = true; salvar(); hud(); pontos(10); dialogo('🔓', 'Cofre aberto!', '<p>Dentro do cofre tem uma <b>🗝️ chave</b> com uma etiqueta: <em>“A porta também tem uma conta.”</em></p>', [fecha]); },
         'Confira os três algarismos no painel de missões e digite na ordem ① ② ③.', volta);
     }
     if (o.id === 'porta') {
+      if (E.fim) return dialogo('🎉', 'Porta de saída', '<p>Você já escapou das 4 fases desta semana! Os desafios mudam na segunda-feira.</p>', [{ txt: 'Sair da sala', classe: 'principal', fn: () => { fechaDialogo(); saiSala(); } }, fecha]);
       if (!E.cofre) return dialogo('🚪', 'Porta de saída', '<p>Trancada. A chave está no cofre.</p>', [fecha]);
-      return campoNumero('Porta de saída', '🚪', `<p>Você girou a chave, e o visor da porta pergunta:</p><p class="cifra">${M.preco} ⭐ com ${M.pct}% de desconto = ?</p><p class="muted small">Digite só o número.</p>`, M.final,
-        () => { const primeira = premioSala(E, ['NU', 'AL']); dialogo('🎉', 'Você escapou!', `<p>A porta se abriu! ${primeira ? 'Prêmio: <b>+80 ⭐ e uma figurinha</b>.' : '+10 ⭐.'}</p><p class="muted">Você usou <b>potência</b>, <b>equação</b>, <b>fração</b> e <b>porcentagem</b>. Os desafios mudam toda segunda-feira.</p>`, [{ txt: 'Sair da sala', classe: 'principal', fn: () => { fechaDialogo(); saiSala(); } }, fecha]); },
-        `${M.pct}% de ${M.preco} é ${M.preco} × ${M.pct} ÷ 100. Depois tire esse valor de ${M.preco}.`, volta);
+      return campoNumero('Porta de saída', '🚪', `<p>Você girou a chave, e o visor da porta pergunta:</p>${F.porta.html}<p class="muted small">Digite só o número.</p>`, F.porta.r,
+        () => {
+          if (nf < EMAT.length) {
+            E.fase = nf; chaves.concat('cofre').forEach(k => delete E[k]); ganhaHabilidade(['NU', 'AL'], 10); pontos(20); SOM.toca('portao'); salvar(); hud();
+            P.x = SALAS.emat.saida.x; P.y = SALAS.emat.D - 1.3; P.dir = 'y-';
+            const N = EMAT[nf];
+            return dialogo(N.ic, `Fase ${nf + 1} de ${EMAT.length}: ${N.nome}`, `<p>A porta se abriu… para outra sala! +20 ⭐.</p><p>Você passou pela fase <b>${F.nome}</b> (${F.temas.join(', ')}). Agora os desafios são de <b>${N.temas.join(', ')}</b>.</p><p class="muted">O que você resolve fica guardado. Pode sair e voltar depois.</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }]);
+          }
+          const primeira = premioSala(E, ['NU', 'AL']);
+          dialogo('🎉', 'Você escapou!', `<p>Você passou pelas <b>${EMAT.length} fases</b> e a última porta se abriu! ${primeira ? 'Prêmio: <b>+80 ⭐ e uma figurinha</b>.' : '+10 ⭐.'}</p><p class="muted">Você usou ${EMAT.map(f => f.temas.join(', ')).join('; ')}. Os desafios mudam toda segunda-feira.</p>`, [{ txt: 'Sair da sala', classe: 'principal', fn: () => { fechaDialogo(); saiSala(); } }, fecha]);
+        }, F.porta.dica, volta);
     }
   }
   function desenhaEmat() {
-    const E = EST_EM();
+    const E = EST_EM(), F = faseEM();
     naFace('y', 0, -0.25, 8, 0.25, 0.6, 0, 2, 0.8, 1.2, '#2f4a3a');   // lousa
-    const [lx, ly] = iso(1.6, -0.2, 1.45); ctx.font = '700 12px Lexend, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.fillText(`① = ${EMAT.n}² − ${EMAT.m}`, lx, ly);
+    const [lx, ly] = iso(1.6, -0.2, 1.45); ctx.font = '700 12px Lexend, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.fillText(F.lousa, lx, ly);
     naFace('y', 0, -0.25, 8, 0.25, 3.4, 0, 1.2, 0, 1.9, '#fff3c4'); naFace('y', 0, -0.25, 8, 0.25, 3.5, 0, 1, 0, 1.8, E.fim ? '#a8e6b8' : '#4f9a6b'); naFace('y', 0, -0.25, 8, 0.25, 4.25, 0, 0.1, 0.85, 0.12, '#ffd58a');
+    const mesa = (x, y, i) => { caixa(x + 0.1, y + 0.1, 0, 0.8, 0.8, 0.6, '#a0703f'); const [sx, sy] = iso(x + 0.5, y + 0.5, 1.0 + Math.sin(agora / 500 + i) * 0.05); ctx.font = '22px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(E['abc'[i]] ? '✅' : F.d[i].ic, sx, sy); };
+    const primeira = E.fase === 0;
     return [
       { k: 6.1 + 0.6 + 1, d: () => { caixa(5.7, 0.2, 0, 0.8, 0.8, 0.95, '#7d8790'); naFace('y', 5.7, 0.2, 0.8, 0.8, 0.28, 0, 0.24, 0.38, 0.24, E.cofre ? '#2b2b2b' : '#e6e6e6'); } },
-      { k: 7.1 + 3.1 + 1, d: () => { caixa(6.75, 2.75, 0, 0.7, 0.7, 0.5, '#c08a52'); caixa(7.05, 3.05, 0.5, 0.1, 0.1, 0.5, '#9aa3ad', { blocos: false }); caixa(6.7, 3.05, 1.0, 0.8, 0.1, 0.06, '#9aa3ad', { blocos: false }); caixa(6.72, 2.95, 0.7, 0.26, 0.3, 0.2, '#f6b73c'); caixa(7.22, 2.95, 0.7, 0.26, 0.3, 0.12, '#e0564a'); } },
-      { k: 0.7 + 3.3 + 1, d: () => { caixa(0.3, 2.9, 0, 0.8, 0.8, 0.6, '#a0703f'); caixa(0.35, 2.95, 0.6, 0.7, 0.7, 0.06, '#f6b73c', { blocos: false }); caixa(0.45, 3.05, 0.66, 0.5, 0.5, 0.03, '#e0564a', { blocos: false, contorno: false }); } }
+      { k: 7.1 + 3.1 + 1, d: () => { if (!primeira) return mesa(6.6, 2.6, 1); caixa(6.75, 2.75, 0, 0.7, 0.7, 0.5, '#c08a52'); caixa(7.05, 3.05, 0.5, 0.1, 0.1, 0.5, '#9aa3ad', { blocos: false }); caixa(6.7, 3.05, 1.0, 0.8, 0.1, 0.06, '#9aa3ad', { blocos: false }); caixa(6.72, 2.95, 0.7, 0.26, 0.3, 0.2, '#f6b73c'); caixa(7.22, 2.95, 0.7, 0.26, 0.3, 0.12, '#e0564a'); } },
+      { k: 0.7 + 3.3 + 1, d: () => { if (!primeira) return mesa(0.2, 2.8, 2); caixa(0.3, 2.9, 0, 0.8, 0.8, 0.6, '#a0703f'); caixa(0.35, 2.95, 0.6, 0.7, 0.7, 0.06, '#f6b73c', { blocos: false }); caixa(0.45, 3.05, 0.66, 0.5, 0.5, 0.03, '#e0564a', { blocos: false, contorno: false }); } }
     ];
   }
 
@@ -2429,7 +2492,7 @@
   }
   const naTelaSala = (x, y) => { const [sx, sy] = iso(x, y); return sx > cam.x - 80 && sx < cam.x + W / zoom + 80 && sy > cam.y - 120 && sy < cam.y + HH / zoom + 80; };
 
-  const localSala = id => { const f = faseMat(), c = f.salas.find(c => c.id === id); return { f, x: c.porta.x, y: c.porta.y + 0.4 }; };
+  const localSala = id => { const f = faseMat(), c = (f.salas || []).find(c => c.id === id); return c ? { f, x: c.porta.x, y: c.porta.y + 0.4 } : { f, x: 0, y: 0 }; };   // fase ainda não montada: saiSala monta e pergunta de novo
   /* --- Teletransporte: o resultado do teste de proficiência em informática (guardado neste navegador) escolhe o mundo especial do nível */
   const TP = window.TELEPORTE || { niveis: {}, areas: {}, perguntas: {} };
   const ORDEM_NIVEIS = ['iniciante', 'basico', 'intermediario', 'avancado'];
@@ -2504,13 +2567,16 @@
   const SALAS = {
     tele: SALA_TELE,
     emat: {
-      nome: 'Escape da Matemática', ic: '🧮', sub: 'Escape room · sem cronômetro', W: 8, D: 6, saida: { x: 4, y: 5.5 }, alturaParede: 2.5,
-      fundo: '#20302a', base: '#4f7a5f', parede: '#9fd1b0', piso: ['#cfe8d6', '#e3f3e8'],
+      nome: 'Escape da Matemática', ic: '🧮', get sub() { const F = faseEM(); return `Fase ${Math.min(EST_EM().fase, EMAT.length - 1) + 1} de ${EMAT.length}: ${F.ic} ${F.nome} · sem cronômetro`; }, W: 8, D: 6, saida: { x: 4, y: 5.5 }, alturaParede: 2.5,
+      fundo: '#20302a', base: '#4f7a5f', get parede() { return faseEM().parede; }, get piso() { return faseEM().piso; },
       estilo: { base: '#a8e6b8', telhado: '#3f7a52', porta: '#f6b73c', ic: '🧮', nome: 'Escape da Matemática' },
-      local: () => localSala('emat'), estado: EST_EM, objs: () => EMOBJ, livre: (x, y) => livreObjs(SALAS.emat, x, y), usa: usaEmat, desenha: desenhaEmat,
+      local: () => localSala('emat'), estado: EST_EM, objs: objsEM, livre: (x, y) => livreObjs(SALAS.emat, x, y), usa: usaEmat, desenha: desenhaEmat,
       mini: (c, ox, oy, s) => { c.fillStyle = '#3f7a52'; for (const o of EMOBJ) c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, Math.max(4, o.d * s)); },
-      missoes: () => { const E = EST_EM(); return [[`① Lousa${E.a ? ': ' + EMAT.A : ''}`, E.a], [`② Balança${E.b ? ': ' + EMAT.B : ''}`, E.b], [`③ Pizza${E.c ? ': ' + EMAT.C : ''}`, E.c], ['Abrir o cofre', E.cofre], ['Abrir a porta de saída', E.fim]].map(([nome, ok]) => ({ nome, n: ok ? 1 : 0, meta: 1, ok: !!ok })); },
-      boasVindas: () => dialogo('🧮', 'Escape da Matemática', '<p>A porta de saída está trancada, e a chave está num cofre de <b>3 algarismos</b>. Cada algarismo é a resposta de um desafio: a <b>lousa ①</b>, a <b>balança ②</b> e a <b>pizza ③</b>.</p><p class="muted">Não tem cronômetro: pense com calma e use papel se quiser. O que você descobrir fica guardado, e os desafios mudam toda segunda-feira.</p>', [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }])
+      missoes: () => { const E = EST_EM(), F = faseEM(), nf = Math.min(E.fase, EMAT.length - 1) + 1, fase = `Fase ${nf}/${EMAT.length} · `;
+        return F.d.map((d, i) => [`${fase}${NUM_EM[i]} ${d.nome}${E['abc'[i]] ? ': ' + d.r : ''}`, E['abc'[i]]]).concat([[`${fase}Abrir o cofre`, E.cofre], [`Escapar das ${EMAT.length} fases`, E.fim]]).map(([nome, ok]) => ({ nome, n: ok ? 1 : 0, meta: 1, ok: !!ok })); },
+      boasVindas: () => { const E = EST_EM(), F = faseEM();
+        if (E.fim) return dialogo('🧮', 'Escape da Matemática', '<p>Você já escapou das 4 fases desta semana! Pode rever os desafios. Na segunda-feira chegam desafios novos.</p>', [{ txt: 'Combinado', classe: 'principal', fn: fechaDialogo }]);
+        dialogo(F.ic, `Escape da Matemática · fase ${E.fase + 1} de ${EMAT.length}`, `<p>São <b>${EMAT.length} salas</b> seguidas: ${EMAT.map((f, i) => `${i === E.fase ? '<b>' : ''}${f.ic} ${f.nome}${i === E.fase ? '</b>' : ''}`).join(', ')}.</p><p>Em cada uma, a porta está trancada e a chave está num cofre de <b>3 algarismos</b>. Cada algarismo é a resposta de um desafio: ${F.d.map((d, i) => `${d.nome.toLowerCase()} ${NUM_EM[i]}`).join(', ')}. Nesta sala: <b>${F.temas.join(', ')}</b>.</p><p class="muted">Não tem cronômetro: pense com calma e use papel se quiser. O que você descobrir fica guardado, e os desafios mudam toda segunda-feira.</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }]); }
     },
     labirinto: {
       nome: 'Labirinto', ic: '🌀', sub: 'Portões com perguntas de Matemática', W: LAB.T, D: LAB.T, saida: { x: 1.5, y: LAB.T - 0.5 }, alturaParede: 0.9,
