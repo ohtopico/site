@@ -70,7 +70,19 @@
     { id: 'x-dupla', pts: 30, extra: true, txt: 'Pratique Computação e Matemática no mesmo dia', link: 'catalogo.html', ok: a => tem(a, x => x.rec.comp.includes('CO')) && tem(a, x => x.rec.comp.includes('MA')) },
     { id: 'x-tres3d', pts: 30, extra: true, txt: 'Explore três recursos 3D diferentes', link: 'catalogo.html?tipo=3d', ok: a => new Set(a.vis.filter(r => r.tipo === '3d').map(r => r.id)).size >= 3 }
   ];
-  const TODAS = {}; MISSOES.concat(EXTRAS).forEach(m => { TODAS[m.id] = m; });
+  /* Missões do Mundo do site (mundo/): quem já jogou o Mundo num dia anterior ganha uma delas no lugar da 3ª missão.
+     a.mu = acertos no Mundo no dia; a.mf = o que fez no Mundo no dia (o Mundo avisa com MDM.mundoFeito). */
+  const fezMundo = t => a => (a.mf || []).includes(t);
+  const MUNDO_MISSOES = [
+    { id: 'm-acertos', pts: 15, mundo: true, txt: 'No Mundo, acerte 3 perguntas dos moradores ou das casas', link: '../mundo/', ok: a => (a.mu || 0) >= 3 },
+    { id: 'm-horta', pts: 10, mundo: true, txt: 'No Mundo, regue a horta da sua casa', link: '../mundo/', ok: fezMundo('horta') },
+    { id: 'm-golpe', pts: 15, mundo: true, txt: 'No Mundo, investigue uma mensagem suspeita com um carteiro', link: '../mundo/', ok: fezMundo('golpe') },
+    { id: 'm-trem', pts: 15, mundo: true, txt: 'No Mundo, programe o trenzinho para chegar a outra vila', link: '../mundo/', ok: fezMundo('trem') },
+    { id: 'm-circuito', pts: 15, mundo: true, txt: 'No Mundo, abra um portão com circuito ou vença uma sala da Sala da Matemática', link: '../mundo/', ok: a => fezMundo('circuito')(a) || fezMundo('sala')(a) },
+    { id: 'm-pixel', pts: 15, mundo: true, txt: 'No Mundo, pinte um desenho por coordenadas no Museu', link: '../mundo/', ok: fezMundo('pixel') },
+    { id: 'm-bilhete', pts: 10, mundo: true, txt: 'No Mundo, mande ou decifre um bilhete secreto', link: '../mundo/', ok: fezMundo('bilhete') }
+  ];
+  const TODAS = {}; MISSOES.concat(EXTRAS, MUNDO_MISSOES).forEach(m => { TODAS[m.id] = m; });
 
   /* ---------- desafio da semana (nível 5) ----------
      ok(p, jg, dias): dias = os dias desta semana, de segunda até hoje */
@@ -113,7 +125,7 @@
     const jg = p.jg || {};
     return {
       desde: jg.desde || hoje(), pts: jg.pts || 0, dias: jg.dias || {}, vd: jg.vd || {},
-      tr: jg.tr || {}, nv: jg.v === 2 ? jg.nv || 0 : 0, v: 2, cor: jg.cor || '', ds: jg.ds || {}, sem: jg.sem || {}, ls: jg.ls || {}, mu: jg.mu || {}, mt: jg.mt || 0
+      tr: jg.tr || {}, nv: jg.v === 2 ? jg.nv || 0 : 0, v: 2, cor: jg.cor || '', ds: jg.ds || {}, sem: jg.sem || {}, ls: jg.ls || {}, mu: jg.mu || {}, mt: jg.mt || 0, mf: jg.mf || {}, md: jg.md || 0
     };
   }
   function salvar(jg) { MDP.atualizar({ jg }); }
@@ -123,6 +135,8 @@
     const rnd = sorteio(p.id + ':' + d);
     const base = embaralhar(MISSOES, rnd);
     let lista = base.slice(0, 3);
+    // jogou o Mundo antes de hoje: a 3ª missão vira uma do Mundo (o mesmo sorteio o dia todo)
+    if (jg.md && jg.md < d) lista[2] = MUNDO_MISSOES[Math.floor(rnd() * MUNDO_MISSOES.length)];
     const t = jg.tr[d];
     if (t && TODAS[t.para]) lista = lista.map(m => (m.id === t.de ? TODAS[t.para] : m));
     if ((nivelN || nivel(p).n) >= nivelDe('extra')) lista.push(EXTRAS[Math.floor(rnd() * EXTRAS.length)]);
@@ -136,8 +150,8 @@
       const e = r.h.find(x => x[0] === d);
       if (e) regs.push({ rec: REC[id], pct: e[1], novo: r.h[0][0] === d });
     });
-    const vis = (jgDe(p).vd[d] || []).filter(id => REC[id]).map(id => REC[id]);
-    return { regs, vis };
+    const jg = jgDe(p), vis = (jg.vd[d] || []).filter(id => REC[id]).map(id => REC[id]);
+    return { regs, vis, mu: jg.mu[d] || 0, mf: jg.mf[d] || [] };
   }
 
   /* ---------- pontos e nível ---------- */
@@ -196,6 +210,7 @@
     Object.keys(jg.dias).forEach(k => { if (+k < d - 400) delete jg.dias[k]; });
     Object.keys(jg.vd).forEach(k => { if (+k < d - 7) delete jg.vd[k]; });
     Object.keys(jg.tr).forEach(k => { if (+k < d - 7) delete jg.tr[k]; });
+    Object.keys(jg.mf).forEach(k => { if (+k < d - 7) delete jg.mf[k]; });
     let semana = false;
     if (nv >= nivelDe('sala')) {
       const s = desafioSemana(p, jg, d);
@@ -234,11 +249,32 @@
     const p = MDP.perfil();
     if (!p || !certo) return 0;
     const jg = jgDe(p), d = hoje();
+    if (!jg.md) jg.md = d;
     if ((jg.mu[d] || 0) >= MUNDO_DIA) return 0;
     jg.mu[d] = (jg.mu[d] || 0) + 1; jg.mt += PONTOS.mundo;
     Object.keys(jg.mu).forEach(k => { if (+k < d - 7) delete jg.mu[k]; });
     salvar(jg);
-    return verificar(true).subiu;
+    const r = verificar(true); mundoNovas = r.novas;
+    return r.subiu;
+  }
+  /* O Mundo avisa o que o estudante fez hoje (horta, golpe, trem, circuito, sala, pixel, bilhete).
+     Devolve as missões do dia que isso acabou de cumprir. */
+  let mundoNovas = [];
+  function mundoFeito(tipo) {
+    const p = MDP.perfil();
+    if (!p || !tipo) return [];
+    const jg = jgDe(p), d = hoje(), f = jg.mf[d] || [];
+    if (!jg.md) jg.md = d;
+    if (!f.includes(tipo)) { f.push(tipo); jg.mf[d] = f; }
+    salvar(jg);
+    return verificar(true).novas;
+  }
+  /* missões cumpridas pelo último acerto no Mundo (MDM.mundo), para o Mundo mostrar */
+  const mundoMissoes = () => { const n = mundoNovas; mundoNovas = []; return n; };
+  /* a missão do Mundo de hoje, se houver, para o Mundo lembrar o estudante */
+  function missaoMundoHoje() {
+    const e = estado(); if (!e) return null;
+    const m = e.missoes.find(x => x.mundo); return m ? { txt: m.txt, pts: m.pts, feita: m.feita } : null;
   }
 
   /* Desafios da Sala (nível 5): enigmas e modos difíceis valem pontos uma vez só */
@@ -380,7 +416,7 @@
   MDP.registrar = function () { const r = registrarOriginal.apply(this, arguments); verificar(); return r; };
 
   window.MDM = { NIVEIS, FAIXAS, PONTOS_INICIO, PONTOS_AUMENTO, pontosParaSubir, DESBLOQUEIOS, CORES, PONTOS, MISSOES, EXTRAS, pontos, nivel, nivelPorPontos, estado,
-    nivelDe, verificar, visitar, mundo, MUNDO_DIA, trocar, escolherCor, travar, atualizarBarra, desafio, feitos, listaSurpresa };
+    nivelDe, verificar, visitar, mundo, mundoFeito, mundoMissoes, missaoMundoHoje, MUNDO_DIA, trocar, escolherCor, travar, atualizarBarra, desafio, feitos, listaSurpresa };
 
   function iniciar() {
     const rec = window.MD_REC || (/\/(lista|ficha|plano)\.html$/.test(location.pathname) && new URLSearchParams(location.search).get('id'));
