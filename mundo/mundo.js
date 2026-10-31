@@ -3727,10 +3727,66 @@
     for (const c of cs) { const s = SEMENTES[c.s]; g.strokeStyle = s.cor; g.fillStyle = s.cor; g.lineWidth = 3; g.beginPath(); c.h.forEach(([, v], d) => d ? g.lineTo(X(d), Y(v)) : g.moveTo(X(d), Y(v))); g.stroke(); c.h.forEach(([, v], d) => { g.beginPath(); g.arc(X(d), Y(v), 3.5, 0, Math.PI * 2); g.fill(); }); g.setLineDash([4, 4]); g.lineWidth = 1; g.beginPath(); g.moveTo(m.l, Y(s.meta)); g.lineTo(W2 - m.r, Y(s.meta)); g.stroke(); g.setLineDash([]); }
     if (!cs.length) { g.fillStyle = '#5a6a5c'; g.font = '13px Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('Plante uma semente para ver o gráfico do crescimento.', W2 / 2, H2 / 2); }
   }
+  /* --- Bilhetes secretos: o estudante cifra um bilhete com a Cifra de César e manda o código (MUNB1) para um amigo.
+     A chave não vai no código: o amigo combina a chave com quem mandou ou testa as 25 possíveis (força bruta).
+     O código leva só um resumo do texto, para o Mundo saber quando o bilhete foi decifrado. */
+  const semAcento = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+  const cifraTexto = (t, k) => cesar(semAcento(t), k);   // a mesma cifra da Casa do Enigma, sem acentos
+  const resumoTexto = t => { let h = 7; for (const ch of semAcento(t)) h = (h * 31 + ch.charCodeAt(0)) % 1000003; return h; };
+  let bilheteAberto = null;
+  function janelaBilhetes() {
+    const B = S.bilhetes || (S.bilhetes = { lidos: {}, dia: 0, n: 0 });
+    $('#bilhetes-conteudo').innerHTML = `<p>Escreva um bilhete, escolha uma <b>chave</b> de 1 a 25 e o Mundo troca cada letra pela que está tantas posições à frente no alfabeto. É a <b>Cifra de César</b>, usada há mais de 2 mil anos. Mande o código para um amigo e combine a chave com ele, ou desafie-o a descobrir!</p>
+      <h3>✍️ Escrever</h3>
+      <label>Seu apelido <input id="bi-de" class="campo" maxlength="20" value="${esc(S.apelido || '')}" autocomplete="off" placeholder="Ex.: Bia do 8A"></label>
+      <label>Bilhete <input id="bi-txt" class="campo" maxlength="80" autocomplete="off" placeholder="Ex.: Te encontro na Sala da Matemática"></label>
+      <label>Chave <select id="bi-k" class="campo">${Array.from({ length: 25 }, (_, i) => `<option value="${i + 1}"${i + 1 === 3 ? ' selected' : ''}>${i + 1}</option>`).join('')}</select></label>
+      <p class="muted small">Não escreva nome completo, telefone, endereço nem senhas.</p>
+      <p class="cifra" id="bi-prev">…</p>
+      <div class="btn-row"><button type="button" class="hb verde" id="bi-gerar">🔐 Gerar código do bilhete</button></div>
+      <div id="bi-saida" hidden><textarea id="bi-codigo" class="campo" rows="2" readonly aria-label="Código do bilhete"></textarea><div class="btn-row"><button type="button" class="hb azul" id="bi-copiar">📋 Copiar</button></div></div>
+      <h3>📩 Ler um bilhete</h3>
+      <textarea id="bi-colar" class="campo" rows="2" placeholder="Cole aqui o código do bilhete (começa com MUNB1)" aria-label="Colar código de bilhete"></textarea>
+      <div class="btn-row"><button type="button" class="hb verde" id="bi-abrir">📬 Abrir</button></div>
+      <div id="bi-ler"></div>`;
+    const prev = () => { $('#bi-prev').textContent = $('#bi-txt').value ? cifraTexto($('#bi-txt').value, +$('#bi-k').value) : 'O bilhete cifrado aparece aqui.'; };
+    $('#bi-txt').addEventListener('input', prev); $('#bi-k').addEventListener('change', prev); prev();
+    $('#bi-gerar').addEventListener('click', async () => {
+      const de = $('#bi-de').value.trim().slice(0, 20), t = $('#bi-txt').value.trim().slice(0, 80);
+      if (!de || !t) return aviso('Escreva o seu apelido e o bilhete.');
+      S.apelido = S.apelido || de; salvar();
+      try { $('#bi-codigo').value = await MDP.pacote.empacotar('MUNB1', { de, c: cifraTexto(t, +$('#bi-k').value), h: resumoTexto(t) }); $('#bi-saida').hidden = false; $('#bi-codigo').select(); } catch (e) { aviso('Não deu para gerar o código neste navegador.'); }
+    });
+    $('#bi-copiar').addEventListener('click', async () => { $('#bi-codigo').select(); try { await navigator.clipboard.writeText($('#bi-codigo').value); aviso('📋 Código copiado! Mande para o seu amigo.'); } catch (e) { document.execCommand('copy'); } });
+    $('#bi-abrir').addEventListener('click', async () => {
+      const c = (String($('#bi-colar').value).match(/MUNB1[jz]\.[A-Za-z0-9_-]+/) || [])[0];
+      if (!c) return aviso('Não achei um código de bilhete (começa com MUNB1).');
+      try { const o = await MDP.pacote.desempacotar('MUNB1', c); if (!o || typeof o.c !== 'string') throw 0; bilheteAberto = { de: String(o.de || 'Alguém').slice(0, 20), c: o.c.slice(0, 80), h: +o.h }; mostraBilhete(); } catch (e) { aviso('Esse código não abriu. Confira se copiou inteiro.'); }
+    });
+    if (bilheteAberto) mostraBilhete();
+  }
+  function mostraBilhete() {
+    const b = bilheteAberto, B = S.bilhetes, chave = `${b.de}:${b.h}`, lido = B.lidos[chave];
+    $('#bi-ler').innerHTML = `<p>✉️ Bilhete de <b>${esc(b.de)}</b>:</p><p class="cifra">${esc(b.c)}</p>
+      <label>Voltar quantas posições? <input type="range" id="bi-volta" min="0" max="25" value="${lido ? lido : 0}"> <b id="bi-vk">${lido || 0}</b></label>
+      <p class="cifra" id="bi-dec"></p><div class="btn-row"><button type="button" class="hb verde" id="bi-ok">🔓 É essa a mensagem!</button></div>
+      <p class="muted small">Não sabe a chave? Teste uma por uma: são só 25. Isso se chama <b>força bruta</b>, e é por isso que a Cifra de César não protege segredos de verdade.</p>`;
+    const dec = () => { const k = +$('#bi-volta').value; $('#bi-vk').textContent = k; $('#bi-dec').textContent = cifraTexto(b.c, -k); };
+    $('#bi-volta').addEventListener('input', dec); dec();
+    $('#bi-ok').addEventListener('click', () => {
+      const k = +$('#bi-volta').value;
+      if (resumoTexto(cifraTexto(b.c, -k)) !== b.h) return aviso('Ainda não é essa. Tente outra chave!');
+      if (B.lidos[chave]) return aviso('🔓 Você já tinha decifrado este bilhete.');
+      B.lidos[chave] = k || 26; const hoje = diaHoje(); if (B.dia !== hoje) { B.dia = hoje; B.n = 0; }
+      ganhaHabilidade(['PC', 'CD'], 8);
+      if (B.n < 3 && b.de !== S.apelido) { B.n++; pontos(15, `🔓 Bilhete decifrado! A chave era ${k}.`); } else aviso(`🔓 Bilhete decifrado! A chave era ${k}.`);
+      SOM.toca('vitoria'); salvar(); mostraBilhete();
+    });
+  }
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4066,7 +4122,7 @@
   setTimeout(() => confereEstrelasSite(), 2500);   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
