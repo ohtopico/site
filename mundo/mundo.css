@@ -336,7 +336,7 @@ a.stat { color: inherit; text-decoration: none; }
 .curso { border: 2px solid #e2d6bd; border-radius: 14px; padding: 8px 12px; margin: 10px 0; background: #fffdf6; }
 .curso.ok { border-color: #4bb259; background: #f1fbef; }
 .curso h3 { margin: 4px 0; }
-.diploma { background: #fff6d6; border: 2px dashed #e8a400; border-radius: 10px; padding: 6px 10px; }
+.selo-curso { background: #fff6d6; border: 2px dashed #e8a400; border-radius: 10px; padding: 6px 10px; }
 .hb.mini { font-size: .75rem; padding: 3px 8px; margin-left: 4px; }
 .aviso-erro { color: #b3261e; font-weight: 700; }
 /* kits de apoiador: código de resgate nas lojas */

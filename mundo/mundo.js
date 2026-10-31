@@ -4482,7 +4482,7 @@
   function janelaCursos(aviso2) {
     const el = $('#cursos-conteudo'), a = acessoPremium();
     if (!a || a.nivel < NIVEL_CURSOS) {
-      el.innerHTML = `<p>Os <b>cursos do Mundo</b> são percursos que juntam várias atividades: ${CURSOS.map(c => `${c.ic} ${c.nome}`).join(', ')}. Cada um termina com um diploma, 150 ⭐ e uma figurinha.</p>
+      el.innerHTML = `<p>Os <b>cursos do Mundo</b> são percursos que juntam várias atividades: ${CURSOS.map(c => `${c.ic} ${c.nome}`).join(', ')}. Cada um termina com um selo de conclusão, 150 ⭐ e uma figurinha.</p>
         <p class="muted">São exclusivos para quem apoia o projeto no Catarse. A professora ou o professor que apoia digita a <b>senha do mês da área premium</b> uma vez neste aparelho, e ele fica liberado até o fim do mês.</p>
         ${aviso2 ? `<p class="aviso-erro">${aviso2}</p>` : ''}
         <form id="cu-form" class="btn-row"><label>Senha do mês <input id="cu-senha" class="campo" type="password" autocomplete="current-password" required></label><button type="submit" class="hb verde">Liberar</button></form>
@@ -4506,7 +4506,7 @@
     }
     el.innerHTML = `<p class="muted small">✨ Liberado pelo apoio no Catarse até o fim de ${a.mes.split('-').reverse().join('/')}. Obrigada por apoiar!</p>
       ${CURSOS.map(c => { const feito = C.feitos[c.id]; return `<section class="curso${feito ? ' ok' : ''}"><h3>${c.ic} ${c.nome} <span class="muted small">· ${c.tema}</span></h3>
-        ${feito ? `<p class="diploma">🎓 <b>Diploma</b>: ${esc(S.apelido || 'Estudante')} concluiu o curso <b>${c.nome}</b> em ${feito}.</p>` : ''}
+        ${feito ? `<p class="selo-curso">🏅 <b>Selo de conclusão</b>: ${esc(S.apelido || 'Estudante')} completou o percurso <b>${c.nome}</b> em ${feito}.</p>` : ''}
         <ol class="etapas">${c.passos.map(([txt, f, meta, onde], i) => { const n = Math.min(f(), meta); return `<li class="${n >= meta ? 'ok' : ''}">${n >= meta ? '✅' : '⬜'} ${txt} <b>(${n}/${meta})</b>${n < meta ? ` <button type="button" class="hb azul mini" data-cu="${c.id}:${i}">Como fazer</button>` : ''}</li>`; }).join('')}</ol></section>`; }).join('')}`;
     el.querySelectorAll('[data-cu]').forEach(b => b.addEventListener('click', () => { const [cid, i] = b.dataset.cu.split(':'), passo = CURSOS.find(c => c.id === cid).passos[+i]; comoFazer(passo[3]); }));
   }
