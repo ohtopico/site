@@ -1183,6 +1183,7 @@
     professor: [['capelo', '🎓', 'Capelo de formatura'], ['cupcake']], saci: [['gorroSaci', '🔴', 'Gorro do Saci'], ['docinho']]
   };
   const NOMES_ENFEITE = Object.assign({ fone: 'Fone de programadora', oculosRedondos: 'Óculos de cientista', boina: 'Boina de designer', capacete: 'Capacete de técnico', antena: 'Tiara com antena', oculos: 'Óculos escuros', laco: 'Laço', chapeu: 'Chapéu azul', coroa: 'Coroa', cachecol: 'Cachecol', lenco: 'Lenço' }, ...Object.values(EXCLUSIVOS).map(([[k, , n]]) => ({ [k]: n })));
+  const caro = v => Math.round(v * 2.5 / 10) * 10;   // preços em dezenas, para o desconto de 10% dar conta exata
   function produtos(loja) {
     const base = {
       roupa: [['av', 'oculos', '🕶️', 40], ['av', 'laco', '🎀', 40], ['av', 'chapeu', '🎩', 50], ['av', 'cachecol', '🧣', 60], ['av', 'coroa', '👑', 160],
@@ -1190,13 +1191,13 @@
       comida: [['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
       pet: [['inv', 'petisco', '🦴', 20, '2 petiscos', 2], ['inv', 'sabonete', '🧼', 20], ['inv', 'brinquedo', '🧸', 40], ['pet', 'lenco', '🧣', 50], ['pet', 'cachecol', '🧣', 50]],
       moveis: [['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]]
-    }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco, nome, qtd }));
+    }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco: caro(preco), nome, qtd }));
     for (const ev of eventosAtivos) {
       const [[hat, hic, hnome], [comida]] = EXCLUSIVOS[ev.id], so = { ev };
-      if (loja === 'roupa') base.unshift(Object.assign({ tipo: 'av', id: hat, ic: hic, preco: 80, nome: hnome }, so));
-      if (loja === 'pet') base.unshift(Object.assign({ tipo: 'pet', id: hat, ic: hic, preco: 60, nome: hnome + ' para o pet' }, so));
-      if (loja === 'comida') base.unshift(Object.assign({ tipo: 'inv', id: comida, ic: ITENS[comida][0], preco: 30 }, so));
-      if (loja === 'moveis') base.unshift(Object.assign({ tipo: 'movel', id: ev.movel, preco: 200 }, so));
+      if (loja === 'roupa') base.unshift(Object.assign({ tipo: 'av', id: hat, ic: hic, preco: caro(80), nome: hnome }, so));
+      if (loja === 'pet') base.unshift(Object.assign({ tipo: 'pet', id: hat, ic: hic, preco: caro(60), nome: hnome + ' para o pet' }, so));
+      if (loja === 'comida') base.unshift(Object.assign({ tipo: 'inv', id: comida, ic: ITENS[comida][0], preco: caro(30) }, so));
+      if (loja === 'moveis') base.unshift(Object.assign({ tipo: 'movel', id: ev.movel, preco: caro(200) }, so));
     }
     for (const p of base) {
       if (p.tipo === 'movel') { p.ic = MOVEIS[p.id].ic; p.nome = p.nome || MOVEIS[p.id].nome; }
@@ -1209,7 +1210,7 @@
   }
   const diaN = d => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(2020, 0, 1)) / 864e5);
   const diaHoje = () => diaN(new Date(Math.max(HOJE, new Date())));
-  const limiteCredito = () => 100 + 25 * Object.keys(S.concluidas).length;
+  const limiteCredito = () => 250 + 60 * Object.keys(S.concluidas).length;
   const divida = () => S.loja.dividas.reduce((a, d) => a + d.parcela * d.faltam, 0);
   const atrasada = () => S.loja.dividas.some(d => d.prox <= diaHoje());
   const credito = () => atrasada() ? 0 : Math.max(0, limiteCredito() - divida());
@@ -1251,7 +1252,7 @@
         <div class="produtos">${lista.map((p, i) => `<button type="button" class="prod ${p.ev ? 'exclusivo' : ''}" data-prod="${i}" ${temProduto(p) ? 'disabled' : ''}>
           ${p.ev ? `<span class="selo">${p.ev.ic} Só no ${esc(p.ev.nome)}</span>` : ''}<span class="p-ic">${p.ic}</span><span class="p-nome">${esc(p.nome)}</span>
           <span class="p-preco">${temProduto(p) ? '✓ Já é seu' : `${p.preco} ⭐`}</span>${p.tipo === 'inv' || p.tipo === 'movel' ? `<small class="muted">você tem ${p.tipo === 'inv' ? S.inv[p.id] || 0 : S.casa.guardados[p.id] || 0}${p.tipo === 'movel' ? ' guardado(s)' : ''}</small>` : ''}</button>`).join('')}</div>
-        <p class="muted small">Crédito: 100 ⭐ + 25 por fase concluída. As parcelas são cobradas uma por dia; com parcela atrasada, só dá para comprar à vista.</p>`;
+        <p class="muted small">Crédito: 250 ⭐ + 60 por fase concluída. As parcelas são cobradas uma por dia; com parcela atrasada, só dá para comprar à vista.</p>`;
       el.querySelectorAll('[data-prod]').forEach(b => b.addEventListener('click', () => { lojaEscolha = lista[+b.dataset.prod]; janelaLoja(); }));
     }
     el.querySelectorAll('[data-adianta]').forEach(b => b.addEventListener('click', () => { const d = S.loja.dividas[+b.dataset.adianta]; if (d && S.pontos >= d.parcela) { S.pontos -= d.parcela; d.faltam--; S.loja.dividas = S.loja.dividas.filter(x => x.faltam > 0); aviso(`💳 Parcela paga: −${d.parcela} ⭐`); hud(); salvar(); janelaLoja(); } }));
@@ -2286,7 +2287,16 @@
   const favorito = n => GOSTOS[(n.fase.idx * 3 + +n.id.slice(-1)) % GOSTOS.length];
   const todosNpcs = () => fases.flatMap(f => f.npcs);
   const coracoesHtml = n => '<span class="coracoes" aria-label="' + coracoes(n) + ' de 10 corações">' + '❤️'.repeat(coracoes(n)) + '🤍'.repeat(10 - coracoes(n)) + '</span>';
-  function ganhaAmizade(n, v) {
+  /* no máximo 1 coração (10 pontos) por semana com cada morador; o presente de aniversário é um bônus fora desse limite.
+     Cada morador faz aniversário no mesmo dia de uma personalidade da computação (7 é primo com 24, então não se repetem). */
+  const LIMITE_SEMANA = 10;
+  const semNpc = n => { const A = S.amizadeSem || (S.amizadeSem = {}); return A[n.id] && A[n.id].s === SEMANA ? A[n.id] : (A[n.id] = { s: SEMANA, v: 0 }); };
+  const restaSemana = n => Math.max(0, LIMITE_SEMANA - semNpc(n).v);
+  const pessoaNpc = n => PESSOAS[(todosNpcs().indexOf(n) * 7) % PESSOAS.length];
+  const aniversarioNpc = n => { const p = pessoaNpc(n); return p.mes === HOJE.getMonth() + 1 && p.dia === HOJE.getDate(); };
+  const dataNpc = n => { const p = pessoaNpc(n); return `${String(p.dia).padStart(2, '0')}/${String(p.mes).padStart(2, '0')}`; };
+  function ganhaAmizade(n, v, bonus) {
+    if (!bonus) { const E = semNpc(n); v = Math.min(v, LIMITE_SEMANA - E.v); if (v <= 0) return 0; E.v += v; }
     const antes = coracoes(n);
     S.amizade[n.id] = Math.min(100, amizade(n) + v);
     const depois = coracoes(n);
@@ -2298,6 +2308,7 @@
     }
     setTimeout(() => aviso(msg), 900); salvar();
   }
+  const limiteHtml = n => restaSemana(n) ? '' : `<p class="muted small">💗 A amizade com ${esc(n.nome)} já cresceu o máximo desta semana. Volte na segunda-feira!</p>`;
   function presente(n) {
     const dia = S.diaNpc[n.id] || (S.diaNpc[n.id] = {});
     if (dia.presente === hoje()) return dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>Você já me deu um presente hoje. Volte amanhã!</p>`, [{ txt: 'Tá bom', fn: fechaDialogo }]);
@@ -2306,10 +2317,13 @@
     if (!tem.length) return dialogo('🎁', 'Presente', `<p>Você não tem itens para dar. Pegue maçãs, livros, estrelas, diamantes e chaves pela vila.</p>${dica}`, [{ txt: 'Ok', fn: fechaDialogo }]);
     dialogo('🎁', `Presente para ${n.nome}`, `<p>O que você quer dar?</p>${dica}`, tem.map(k => ({ txt: `${ITENS[k][0]} ${ITENS[k][1]} (${S.inv[k]})`, fn: () => {
       S.inv[k]--; dia.presente = hoje();
-      const ama = k === favorito(n);
+      const ama = k === favorito(n), aniv = aniversarioNpc(n) && dia.aniv !== HOJE.getFullYear();
       if (ama) S.gostos[n.id] = true;
-      ganhaAmizade(n, ama ? 25 : 10); salvar();
-      dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>${ama ? 'Eu amei! É o meu preferido! 😍' : 'Que legal, valeu pelo presente! 😊'}</p>`, [{ txt: 'De nada!', classe: 'principal', fn: fechaDialogo }]);
+      ganhaAmizade(n, ama ? 25 : 10);
+      if (aniv) { dia.aniv = HOJE.getFullYear(); ganhaAmizade(n, ama ? 20 : 10, true); }
+      salvar();
+      const fala = aniv ? `Você lembrou do meu aniversário! ${ama ? 'E ainda é o meu preferido! 🥳😍' : 'Muito obrigado! 🥳'} Ganhou um bônus de amizade de ${ama ? 2 : 1} ${ama ? 'corações' : 'coração'}.` : ama ? 'Eu amei! É o meu preferido! 😍' : 'Que legal, valeu pelo presente! 😊';
+      dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>${fala}</p>${aniv ? '' : limiteHtml(n)}`, [{ txt: 'De nada!', classe: 'principal', fn: fechaDialogo }]);
     } })).concat([{ txt: 'Agora não', fn: fechaDialogo }]));
   }
 
@@ -2399,7 +2413,7 @@
     const c = coracoes(n);
     const ola = primeira ? (n.prof ? `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. ` : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
     const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
-    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.</p><p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade.${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}</p>`, [
+    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}</p>${limiteHtml(n)}`, [
       { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, '❓', sorteiaPergunta(f), certo => { if (certo) ganhaAmizade(n, 8); }) },
       { txt: '🎁 Dar um presente', fn: () => presente(n) },
       { txt: 'Agora não', fn: fechaDialogo }
@@ -2509,7 +2523,7 @@
     const meds = Object.values(S.medalhas);
     $('#inv-medalhas').innerHTML = meds.length ? meds.map(m => `<div class="it"><span style="font-size:24px">${m.ic}</span><span>${esc(m.nome)}</span></div>`).join('') : '<p class="muted small">Ganhe medalhas nas missões das datas comemorativas e nos desafios de aniversário de personalidades da computação.</p>';
     const conhecidos = todosNpcs().filter(n => S.falas[n.id] || amizade(n));
-    $('#inv-amigos').innerHTML = conhecidos.length ? conhecidos.map(n => `<div class="it"><span style="font-size:22px">${n.prof ? '👩‍🏫' : '🙂'}</span><span>${esc(n.nome)} <small class="muted">· ${esc(n.fase.nome)}</small><br>${coracoesHtml(n)}${S.gostos[n.id] ? ` <small>adora ${ITENS[favorito(n)][0]}</small>` : ''}</span></div>`).join('')
+    $('#inv-amigos').innerHTML = conhecidos.length ? conhecidos.map(n => `<div class="it"><span style="font-size:22px">${n.prof ? '👩‍🏫' : '🙂'}</span><span>${esc(n.nome)} <small class="muted">· ${esc(n.fase.nome)}</small><br>${coracoesHtml(n)}${S.gostos[n.id] ? ` <small>adora ${ITENS[favorito(n)][0]}</small>` : ''} <small>${aniversarioNpc(n) ? '🎂 hoje!' : '🎂 ' + dataNpc(n)}</small></span></div>`).join('')
       : '<p class="muted small">Converse com os moradores da vila para fazer amigos.</p>';
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     const conq = [
