@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="icone-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mundo">
-<link rel="stylesheet" href="mundo.css?v=20261031zze">
+<link rel="stylesheet" href="mundo.css?v=20261031zzf">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -52,6 +52,7 @@
   <button type="button" class="hb azul" data-abrir="mapa" title="Mapa" aria-label="Mapa">🗺️ <span class="t">Mapa</span></button>
   <button type="button" class="hb amarelo" data-abrir="inventario" title="Inventário" aria-label="Inventário">🎒 <span class="t">Inventário</span></button>
   <button type="button" class="hb azul" data-abrir="biblioteca" title="Biblioteca" aria-label="Biblioteca">📖 <span class="t">Biblioteca</span></button>
+  <button type="button" class="hb verde" data-abrir="busca" title="Buscar conteúdo no Mundo" aria-label="Buscar">🔎 <span class="t">Buscar</span></button>
   <button type="button" class="hb rosa" id="b-casa" title="Casa" aria-label="Casa">🏠 <span class="t">Casa</span></button>
   <button type="button" class="hb amarelo" data-abrir="pet" title="Pet" aria-label="Pet">🐾 <span class="t">Pet</span></button>
   <button type="button" class="hb rosa" data-abrir="avatar" title="Avatar" aria-label="Avatar">🧑 <span class="t">Avatar</span></button>
@@ -219,6 +220,12 @@
     <div id="bilhetes-conteudo"></div>
   </div>
 </div>
+<div class="janela" id="j-busca" hidden role="dialog" aria-labelledby="j-busca-t">
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-busca-t">🔎 Buscar no Mundo</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <p>Procure um assunto ou um lugar: o Mundo diz em que vila ele fica, para que lado da praça, e leva você até a porta.</p>
+    <div id="busca-conteudo"></div>
+  </div>
+</div>
 <div class="janela" id="j-pixel" hidden role="dialog" aria-labelledby="j-pixel-t">
   <div class="j-caixa"><div class="j-cab"><h2 id="j-pixel-t">🎨 Ateliê de pixel art</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="pixel-conteudo"></div>
@@ -331,7 +338,7 @@
 <script src="../simuladores/assets/sim-comum.js"></script>
 <script src="perguntas-npc.js?v=20261031zn"></script>
 <script src="teleporte.js?v=20261031zn"></script>
-<script src="mundo.js?v=20261031zze"></script>
+<script src="mundo.js?v=20261031zzf"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
