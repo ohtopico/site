@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Guia do Mundo do site para professores</title>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 16mm 15mm 18mm; }
+  * { box-sizing: border-box; }
+  body { font: 400 10.5pt/1.5 Lexend, sans-serif; color: #1d2a1f; margin: 0; }
+  h1, h2, h3 { font-family: Sniglet, Lexend, sans-serif; font-weight: 800; line-height: 1.15; }
+  h1 { font-size: 30pt; margin: 0 0 6mm; }
+  h2 { font-size: 17pt; margin: 0 0 4mm; padding-bottom: 2mm; border-bottom: 3px solid #f7c6d9; }
+  h3 { font-size: 12.5pt; margin: 5mm 0 2mm; }
+  p { margin: 0 0 3mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; } li { margin: 0 0 1.4mm; }
+  .pagina { page-break-after: always; } .pagina:last-child { page-break-after: auto; }
+  .capa { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; background: #fdf3f7; border-radius: 8mm; padding: 16mm 14mm; }
+  .capa .rot { font: 600 10pt Lexend; letter-spacing: .12em; text-transform: uppercase; color: #9a4e72; }
+  .capa .sub { font-size: 14pt; max-width: 150mm; }
+  .capa img { width: 100%; border-radius: 5mm; border: 2px solid #f0d3e0; }
+  .capa .assina { font-size: 10pt; color: #4a4a4a; }
+  .caixa { background: #fffbea; border: 2px solid #f3e1a2; border-radius: 4mm; padding: 4mm 5mm; margin: 0 0 4mm; break-inside: avoid; }
+  .caixa.verde { background: #eef8ef; border-color: #bfe3c4; } .caixa.rosa { background: #fdf0f5; border-color: #f2cbdc; }
+  table { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 0 0 4mm; }
+  th, td { text-align: left; vertical-align: top; padding: 1.8mm 2mm; border-bottom: 1px solid #e6dcc0; }
+  th { background: #f7efd9; font-weight: 600; }
+  code, .cod { font: 600 8.5pt Lexend; background: #eef0f4; border-radius: 2mm; padding: .3mm 1.4mm; white-space: nowrap; }
+  .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .print { display: block; max-width: 100%; max-height: 78mm; margin-left: auto !important; margin-right: auto !important; width: auto; border-radius: 3mm; border: 1px solid #ddd; margin: 1mm 0 3mm; }
+  .passos { counter-reset: p; list-style: none; padding: 0; }
+  .passos li { counter-increment: p; position: relative; padding-left: 9mm; margin-bottom: 2.4mm; }
+  .passos li::before { content: counter(p); position: absolute; left: 0; top: 0; width: 6mm; height: 6mm; border-radius: 50%; background: #4bb259; color: #fff; font: 600 9pt/6mm Lexend; text-align: center; }
+  .aula { break-inside: avoid; border-left: 4px solid #f6b73c; padding: 1mm 0 1mm 4mm; margin: 0 0 4mm; }
+  .aula b.t { font-family: Sniglet, Lexend; font-size: 11.5pt; }
+  .muted { color: #5a5a5a; font-size: 9pt; }
+</style>
+</head>
+<body>
+
+<section class="pagina capa">
+  <div>
+    <p class="rot">Guia para professores</p>
+    <h1>Mundo do site</h1>
+    <p class="sub">Como usar o jogo nas aulas de Computação e Matemática do 6º ao 9º ano, com a BNCC, o painel da turma e as suas próprias missões.</p>
+  </div>
+  <img src="{{VILA}}" alt="Vila do Começo no Mundo do site">
+  <div class="assina">Júlia Roberta Quoos Alves · ohtopico.com.br/mundo · gratuito, sem cadastro<br>Licença CC BY-NC-SA 4.0</div>
+</section>
+
+<section class="pagina">
+  <h2>1. O que é o Mundo</h2>
+  <p>O Mundo do site é um jogo de vila em blocos que funciona no navegador do computador, do tablet e do celular. O estudante cria um avatar, anda pelas vilas, conversa com os moradores, responde perguntas e entra nas casas. Cada casa é um jogo, um simulador ou uma página do site.</p>
+  <div class="caixa verde">
+    <b>Para começar:</b> abra <b>ohtopico.com.br/mundo</b>. Não tem cadastro, nem anúncio, nem coleta de dados. O progresso fica salvo no próprio navegador do estudante.
+  </div>
+  <h3>Como o estudante avança</h3>
+  <ul>
+    <li>Cada vila tem 4 missões: jogar algumas casas, responder perguntas dos moradores, coletar itens e conversar.</li>
+    <li>Cumpridas as missões, o portão para a próxima vila se abre. As casas ficam coloridas quando a atividade é concluída.</li>
+    <li>Os acertos dão estrelas ⭐, que compram roupas, móveis e comida para o pet. As compras pedem uma conta de Matemática.</li>
+    <li>Cada missão mostra as <b>habilidades da BNCC</b> que trabalha (na placa da vila). Os códigos verdes já foram trabalhados.</li>
+  </ul>
+  <h3>Funciona sem internet e em computadores compartilhados</h3>
+  <ul>
+    <li><b>Sem internet:</b> depois da primeira visita, o Mundo abre mesmo sem conexão. Só os jogos das casas, que ficam em outras páginas, precisam de internet. No celular, dá para instalar como app pelo Menu.</li>
+    <li><b>Trocar de aparelho:</b> no Menu → 📲 Levar para outro aparelho, o estudante gera um código (ou um arquivo) e continua de onde parou em outro computador. Útil no laboratório, quando o computador muda a cada aula.</li>
+  </ul>
+  <img class="print" src="{{PLACA}}" alt="Placa da vila com as missões e as habilidades da BNCC">
+</section>
+
+<section class="pagina">
+  <h2>2. As vilas e a BNCC</h2>
+  <p>As vilas seguem os anos da BNCC Computação. Os moradores de cada vila fazem perguntas sobre os temas abaixo, com pelo menos 50 perguntas por morador e explicação em cada resposta.</p>
+  {{VILAS}}
+  <p class="muted">Além das perguntas, as casas trazem os jogos e simuladores do site, cada um com as suas habilidades. A lista completa de cada missão aparece na placa da vila, dentro do jogo.</p>
+</section>
+
+<section class="pagina">
+  <h2>3. Modo turma e painel</h2>
+  <p>O site não tem servidor nem login. A turma manda o progresso para você por um <b>código</b>, e o painel junta os códigos no seu navegador.</p>
+  <ol class="passos">
+    <li>Escolha um código para a turma, por exemplo <code>8A-2026</code>, e passe para os estudantes.</li>
+    <li>No jogo, cada estudante abre <b>☰ Menu → 👥 Modo turma</b>, escreve o nome e o código da turma e toca em <b>Gerar código de progresso</b>.</li>
+    <li>O estudante copia o código e envia pelo canal da turma (Classroom, WhatsApp, formulário).</li>
+    <li>Você abre <b>ohtopico.com.br/material-didatico/turma-mundo.html</b> e cola todos os códigos de uma vez.</li>
+    <li>O painel mostra o ranking, as fases e os jogos de cada um, as missões, os projetos coletivos e as <b>habilidades da BNCC trabalhadas</b>, com quem ainda não trabalhou cada uma.</li>
+  </ol>
+  <div class="caixa">O código é assinado: se alguém editar os números, o painel avisa. O código não atualiza sozinho; peça um novo quando quiser ver o progresso atual. A planilha (CSV) baixa tudo para o seu controle de notas.</div>
+  <img class="print" src="{{PAINEL}}" alt="Painel da turma com as habilidades da BNCC trabalhadas">
+</section>
+
+<section class="pagina">
+  <h2>4. Missões da professora</h2>
+  <p>Você escreve perguntas suas e o Mundo vira o lugar da revisão da semana.</p>
+  <ol class="passos">
+    <li>No painel da turma, desça até <b>📝 Missões da professora</b>.</li>
+    <li>Escreva o título, o código da turma e até 10 perguntas de múltipla escolha, com explicação opcional.</li>
+    <li>Se quiser, marque as <b>habilidades da BNCC</b> da missão (por exemplo, <code>EF07CO07</code>). O painel sugere os códigos enquanto você digita.</li>
+    <li>Toque em <b>Gerar código da missão</b> e envie o código para a turma.</li>
+    <li>No jogo, o estudante abre <b>☰ Menu → 📝 Missões da professora</b>, cola o código e responde.</li>
+    <li>O resultado volta no código de progresso e aparece numa tabela no painel. Conta a primeira resposta de cada pergunta.</li>
+  </ol>
+  <h3>Outras atividades prontas no Mundo</h3>
+  <table>
+    <tr><th>Atividade</th><th>Onde fica</th><th>O que trabalha</th></tr>
+    <tr><td>🕵️ Mistério de cibersegurança</td><td>Bairro dos Padrões</td><td>Phishing, senhas, golpes em massa e domínios falsos (<span class="cod">EF07CO07</span>, <span class="cod">EF08CO10</span>, <span class="cod">EF09CO04</span>)</td></tr>
+    <tr><td>🧩 Oficina de código</td><td>Menu</td><td>Programação em blocos com 10 níveis para o robô e o pet</td></tr>
+    <tr><td>🧺 Feira da vila</td><td>Menu</td><td>Oferta e procura: o preço cai a cada venda, e a venda pede uma conta</td></tr>
+    <tr><td>🏦 Banco</td><td>Praça dos Números</td><td>Poupança, juros compostos e metas</td></tr>
+    <tr><td>🏗️ Projetos coletivos</td><td>Vila do Começo</td><td>A turma doa itens para construir a biblioteca, o laboratório, a horta e o observatório</td></tr>
+    <tr><td>🎮 Missões dos jogos</td><td>Menu</td><td>Pares de jogos do site que dão roupas exclusivas para o avatar</td></tr>
+  </table>
+</section>
+
+<section class="pagina">
+  <h2>5. Sugestões de aula</h2>
+  <div class="aula"><b class="t">Primeira aula: conhecer o Mundo (50 min)</b>
+    <p>10 min de combinados (o que é, como salvar, o código da turma). 30 min de exploração livre na Vila do Começo, com a meta de cumprir as 4 missões. 10 min finais: cada um gera o código de progresso e envia.</p></div>
+  <div class="aula"><b class="t">Revisão antes da avaliação (50 min)</b>
+    <p>Crie uma missão da professora com 8 a 10 perguntas do conteúdo, marcada com as habilidades. A turma responde no Mundo e você olha a tabela do painel para ver as perguntas que mais erraram e retomar na aula seguinte.</p></div>
+  <div class="aula"><b class="t">Cibersegurança (2 aulas)</b>
+    <p>Aula 1: em duplas, a turma resolve o mistério do Seu Juca no Bairro dos Padrões e anota cada pista. Aula 2: roda de conversa sobre as pistas e produção de um cartaz "Como não cair em golpe" para a escola.</p></div>
+  <div class="aula"><b class="t">Educação financeira na feira (50 min)</b>
+    <p>Cada dupla vende na feira e registra numa tabela o preço de cada venda. Depois, a turma faz um gráfico do preço caindo e discute por que isso acontece (oferta e procura).</p></div>
+  <div class="aula"><b class="t">Projeto da turma (ao longo do bimestre)</b>
+    <p>Escolham juntos um projeto coletivo (horta com sensores, observatório…). Cada estudante contribui com itens das atividades, e o painel mostra quanto falta. Quando a turma completa, você gera o código de conclusão e todos ganham a construção na vila.</p></div>
+  <div class="caixa rosa"><b>Dica:</b> no início de cada aula, projete o ranking do painel (botão de projetor) e celebre quem avançou e quem ajudou no projeto coletivo, não só quem tem mais pontos.</div>
+</section>
+
+<section class="pagina">
+  <h2>6. Perguntas frequentes</h2>
+  <h3>Precisa de laboratório?</h3>
+  <p>Não. O Mundo funciona no celular e em computadores simples. A turma pode jogar em duplas ou em casa, e você acompanha pelos códigos.</p>
+  <h3>O Mundo coleta dados dos estudantes?</h3>
+  <p>Não. O progresso fica no aparelho do estudante. O código de progresso leva só o nome que ele escreveu, os pontos e as habilidades, e chega a você apenas se ele enviar.</p>
+  <h3>E se o estudante limpar o navegador ou trocar de computador?</h3>
+  <p>Ele perde o progresso daquele aparelho, a não ser que tenha guardado um código em 📲 Levar para outro aparelho. Peça que guardem o código ou o arquivo ao fim de cada aula.</p>
+  <h3>Funciona sem internet?</h3>
+  <p>Sim, depois da primeira visita com internet. As perguntas, as missões, a casa, o pet, a feira e o mistério funcionam offline. Os jogos das casas abrem outras páginas e precisam de conexão.</p>
+  <h3>Posso usar com outras turmas e escolas?</h3>
+  <p>Sim. O jogo e o material são gratuitos (CC BY-NC-SA 4.0). Para formar a equipe da escola ou da rede, veja a formação continuada em ohtopico.com.br/formacao-continuada.</p>
+  <div class="caixa verde" style="margin-top:8mm">
+    <b>Links</b><br>
+    Jogo: ohtopico.com.br/mundo<br>
+    Guia online: ohtopico.com.br/mundo/professores<br>
+    Painel da turma: ohtopico.com.br/material-didatico/turma-mundo.html<br>
+    Material da BNCC Computação: ohtopico.com.br/material-didatico/bncc
+  </div>
+</section>
+
+</body>
+</html>

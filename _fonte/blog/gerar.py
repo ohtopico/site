@@ -906,7 +906,7 @@ def pagina_mundo_professores(cfg):
     <p class="rotulo">Para professores</p>
     <h1>Mundo do site: BNCC Computação e IA <span class="marca">em jogo</span></h1>
     <p class="linha-fina">Um jogo gratuito para as aulas de Computação do 6º ao 9º ano, com vilas por ano, ranking da turma e missões que a professora cria, sem cadastro e sem servidor.</p>
-    <p><a class="btn98" href="/mundo/">Abrir o Mundo</a> <a class="btn98 escuro" href="/material-didatico/turma-mundo.html">Abrir o painel da turma</a></p>
+    <p><a class="btn98" href="/mundo/">Abrir o Mundo</a> <a class="btn98 escuro" href="/material-didatico/turma-mundo.html">Abrir o painel da turma</a> <a class="btn98 escuro" href="/mundo/professores/guia-mundo-professores.pdf" download>Baixar o guia em PDF</a></p>
     <div class="artigo">
 {corpo}
     </div>
