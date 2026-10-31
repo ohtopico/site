@@ -67,10 +67,13 @@ function carregarDados() {
 }
 const D = carregarDados();
 const anosTxt = anos => {
-  if (anos.length === 1) return `${anos[0]}º ano`;
-  const seq = anos.every((a, i) => i === 0 || a === anos[i - 1] + 1);
-  return seq ? `${anos[0]}º ao ${anos[anos.length - 1]}º ano` : anos.map(a => a + 'º').join(', ') + ' anos';
+  const ef = anos.filter(a => a < 10), em = anos.includes(10);
+  if (!ef.length) return em ? 'Ensino Médio' : '';
+  const seq = ef.every((a, i) => i === 0 || a === ef[i - 1] + 1);
+  const t = ef.length === 1 ? `${ef[0]}º ano` : seq ? `${ef[0]}º ao ${ef[ef.length - 1]}º ano` : ef.map(a => a + 'º').join(', ') + ' anos';
+  return em ? `${t} e Ensino Médio` : t;
 };
+const anoNome = a => a === 10 ? 'Ensino Médio' : a + 'º ano';
 const compTxt = r => r.comp.map(c => D.COMPONENTES[c].nome).join(' e ');
 
 /* ---------- endereços ---------- */
@@ -85,7 +88,9 @@ for (const r of estaticos) {
   EST[r.id] = s;
 }
 const materiaisDe = c => D.RECURSOS.filter(r => (r.habs || []).includes(c) && r.url);
-const habs = D.HABILIDADES.filter(h => h.ano >= 6 && (materiaisDe(h.codigo).length || D.SLIDES[h.codigo]));
+const SIMS = (() => { const ctx = { window: {} }; vm.createContext(ctx); vm.runInContext(ler(path.join(RAIZ, 'simuladores', 'assets', 'sim-comum.js')), ctx); return ctx.window.SIMULADORES; })();
+const simuladoresDe = c => SIMS.filter(s => (s.bncc || []).includes(c));
+const habs = D.HABILIDADES.filter(h => h.ano >= 6 && (materiaisDe(h.codigo).length || D.SLIDES[h.codigo] || simuladoresDe(h.codigo).length));
 for (const h of habs) EST['hab:' + h.codigo] = `bncc/${h.codigo.toLowerCase()}/`;
 
 function gravarMapa() {
@@ -234,10 +239,12 @@ function paginaHab(h) {
   const eixo = D.EIXOS[h.eixo].nome;
   const slides = D.SLIDES[c];
   const tipos = ORDEM.filter(t => mats.some(r => r.tipo === t));
-  const resumoMats = [slides ? 'slides em PDF' : '', ...tipos.map(t => ROTULO[t].toLowerCase())].filter(Boolean);
+  const sims = simuladoresDe(c);
+  const resumoMats = [slides ? 'slides em PDF' : '', ...tipos.map(t => ROTULO[t].toLowerCase()), sims.length ? 'simuladores' : ''].filter(Boolean);
+  const anoH = anoNome(h.ano), em = h.ano === 10;
   const listaTxt = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1] : a[0] || 'materiais';
-  const title = titulo(`${c}: ${h.objeto} (${h.ano}º ano)${ASSINATURA}`, `${c}: ${h.objeto} (${h.ano}º ano)`, `${c}: ${h.objeto}`);
-  const desc = cortar(`${c} da BNCC (${area}, ${h.ano}º ano): ${listaTxt(resumoMats)} gratuitos. ${h.texto}`, 155);
+  const title = titulo(`${c}: ${h.objeto} (${anoH})${ASSINATURA}`, `${c}: ${h.objeto} (${anoH})`, `${c}: ${h.objeto}${ASSINATURA}`, `${c}: ${h.objeto}`);
+  const desc = cortar(`${c} da BNCC (${area}, ${anoH}): ${listaTxt(resumoMats)} gratuitos. ${h.texto}`, 155);
   const img = `${SITE}/material-didatico/${OG.hab}`;
   const pagApostila = h.comp === 'CO' && APOSTILA[h.ano] ? APOSTILA[h.ano] + 3 * (parseInt(c.slice(-2), 10) - 1) : 0;
   const card = r => `
@@ -251,7 +258,8 @@ function paginaHab(h) {
     '@type': 'CollectionPage', name: title, description: desc, url, inLanguage: 'pt-BR', image: img,
     about: { '@type': 'DefinedTerm', name: `${c}: ${h.objeto}`, description: h.texto, inDefinedTermSet: 'BNCC' },
     educationalAlignment: alinhamentos([c]), author: AUTORA,
-    hasPart: mats.map(r => ({ '@type': 'LearningResource', name: r.titulo, url: `${SITE}/material-didatico/${EST[r.id] || r.url}` }))
+    hasPart: [...mats.map(r => ({ '@type': 'LearningResource', name: r.titulo, url: `${SITE}/material-didatico/${EST[r.id] || r.url}` })),
+      ...sims.map(s => ({ '@type': 'LearningResource', name: s.titulo, url: `${SITE}/simuladores/${s.url}` }))]
   };
   return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -282,14 +290,14 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: 
 <header id="topbar"></header>
 <main class="doc" id="doc">
   <div class="crumbs">${h.comp === 'CO' ? `<a href="${HUB_CO}#ano-${h.ano}">← BNCC Computação</a>` : `<a href="bncc.html?comp=${h.comp}&amp;ano=${h.ano}">← Explorar a BNCC</a>`}</div>
-  <span class="eyebrow">${h.comp === 'CO' ? '💻' : '📐'} Habilidade da BNCC · ${area} · ${h.ano}º ano</span>
+  <span class="eyebrow">${h.comp === 'CO' ? '💻' : '📐'} Habilidade da BNCC · ${area} · ${anoH}</span>
   <h1>${c}: ${esc(h.objeto)}</h1>
   <p class="lead">${esc(h.texto)}</p>
   <div class="meta">
     <div><span>Componente</span>${area}</div>
     <div><span>${h.comp === 'CO' ? 'Eixo' : 'Unidade temática'}</span>${eixo}</div>
-    <div><span>Ano</span>${h.ano}º ano do Ensino Fundamental</div>
-    <div><span>Materiais</span>${mats.length + (slides ? 1 : 0)} gratuitos</div>
+    <div>${em ? '<span>Etapa</span>Ensino Médio (1ª a 3ª série)' : `<span>Ano</span>${h.ano}º ano do Ensino Fundamental`}</div>
+    <div><span>Materiais</span>${mats.length + sims.length + (slides ? 1 : 0)} gratuitos</div>
   </div>
   <p>Nesta página estão os materiais gratuitos para trabalhar a habilidade <strong>${c}</strong> em sala de aula: ${listaTxt(resumoMats)}. Tudo funciona no navegador, sem cadastro, e pode ser impresso ou projetado.</p>
 ${slides || pagApostila ? `
@@ -302,8 +310,17 @@ ${tipos.map(t => `
   <h2>${ROTULO[t]}</h2>
   <div class="related">${mats.filter(r => r.tipo === t).map(card).join('')}
   </div>`).join('\n')}
+${sims.length ? `
+  <h2>Simuladores</h2>
+  <div class="related">${sims.map(x => `
+      <a class="card" href="/simuladores/${x.url}">
+        <span class="small muted">🧪 Simulador · ${x.niveis.map(n => ({ EF: 'Fundamental', EM: 'Médio', ES: 'Superior' })[n]).join(', ')}</span>
+        <strong>${esc(x.titulo)}</strong>
+        <span class="small muted">${esc(x.resumo)}</span>
+      </a>`).join('')}
+  </div>` : ''}
 ${vizinhas.length ? `
-  <h2>Outras habilidades do ${h.ano}º ano</h2>
+  <h2>Outras habilidades do ${anoH}</h2>
   <div class="vizinhas">${vizinhas.map(o => `<a class="tag code ${o.comp.toLowerCase()}" href="${EST['hab:' + o.codigo]}" title="${esc(o.objeto)}">${o.codigo}</a>`).join('')}</div>` : ''}
 </main>
 <footer id="footer"></footer>
@@ -324,10 +341,13 @@ const HUB_CO = 'bncc/';
 function paginaHubComputacao() {
   const url = `${SITE}/material-didatico/${HUB_CO}`;
   const cos = habs.filter(h => h.comp === 'CO');
-  const anos = [...new Set(cos.map(h => h.ano))].sort();
+  const anos = [...new Set(cos.map(h => h.ano))].sort((a, b) => a - b);
+  const temEM = anos.includes(10);
+  const faixa = temEM ? 'do 6º ano ao Ensino Médio' : 'do 6º ao 9º ano';
+  const nEF = cos.filter(h => h.ano < 10).length, nEM = cos.length - nEF;
   const totalMats = new Set(cos.flatMap(h => materiaisDe(h.codigo).map(r => r.id))).size;
   const title = titulo(`BNCC Computação: ${cos.length} habilidades com materiais${ASSINATURA}`, `BNCC Computação: ${cos.length} habilidades com materiais`);
-  const desc = cortar(`BNCC Computação do 6º ao 9º ano: as ${cos.length} habilidades por ano e eixo, com plano de aula, slides, jogos, fichas e listas gratuitos.`, 155);
+  const desc = cortar(`BNCC Computação ${faixa}: as ${cos.length} habilidades por ano e eixo, com plano de aula, slides, jogos, simuladores e fichas gratuitos.`, 155);
   const img = `${SITE}/material-didatico/${OG.hab}`;
   const eixos = ['PC', 'MD', 'CD'];
   const nEixo = e => cos.filter(h => h.eixo === e).length;
@@ -342,7 +362,7 @@ function paginaHubComputacao() {
   };
   const ldPagina = {
     '@type': 'CollectionPage', name: title, description: desc, url, inLanguage: 'pt-BR', image: img, author: AUTORA,
-    about: { '@type': 'DefinedTermSet', name: 'BNCC Computação (Ensino Fundamental, anos finais)' },
+    about: { '@type': 'DefinedTermSet', name: temEM ? 'BNCC Computação (Ensino Fundamental, anos finais, e Ensino Médio)' : 'BNCC Computação (Ensino Fundamental, anos finais)' },
     mainEntity: {
       '@type': 'ItemList', numberOfItems: cos.length,
       itemListElement: cos.map((h, i) => ({ '@type': 'ListItem', position: i + 1, name: `${h.codigo}: ${h.objeto}`, url: `${SITE}/material-didatico/${EST['hab:' + h.codigo]}` }))
@@ -377,16 +397,16 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e m
 <header id="topbar"></header>
 <main class="doc" id="doc">
   <div class="crumbs"><a href="./">← Material didático</a></div>
-  <span class="eyebrow">💻 BNCC Computação · Ensino Fundamental, 6º ao 9º ano</span>
-  <h1>BNCC Computação: as ${cos.length} habilidades do 6º ao 9º ano</h1>
-  <p class="lead">Todas as habilidades de Computação dos anos finais do Ensino Fundamental, organizadas por ano e por eixo, cada uma com plano de aula, slides, jogos, fichas e listas de exercícios gratuitos.</p>
+  <span class="eyebrow">💻 BNCC Computação · ${temEM ? 'Ensino Fundamental (6º ao 9º ano) e Ensino Médio' : 'Ensino Fundamental, 6º ao 9º ano'}</span>
+  <h1>BNCC Computação: as ${cos.length} habilidades ${faixa}</h1>
+  <p class="lead">Todas as habilidades de Computação dos anos finais do Ensino Fundamental${temEM ? ' e do Ensino Médio' : ''}, organizadas por ano e por eixo, cada uma com plano de aula, slides, jogos, fichas e listas de exercícios gratuitos.</p>
   <div class="meta">
-    <div><span>Habilidades</span>${cos.length}, do 6º ao 9º ano</div>
+    <div><span>Habilidades</span>${temEM ? `${nEF} do 6º ao 9º ano e ${nEM} do Ensino Médio` : `${cos.length}, do 6º ao 9º ano`}</div>
     <div><span>Materiais</span>${totalMats} gratuitos</div>
     <div><span>Eixos</span>${eixos.length}: ${eixos.map(e => D.EIXOS[e].nome.toLowerCase()).join(', ')}</div>
     <div><span>Licença</span>CC BY-NC-SA 4.0</div>
   </div>
-  <nav class="saltos" aria-label="Ir para o ano">${anos.map(a => `<a class="btn ghost" href="bncc/#ano-${a}">${a}º ano</a>`).join('')}</nav>
+  <nav class="saltos" aria-label="Ir para o ano">${anos.map(a => `<a class="btn ghost" href="bncc/#ano-${a}">${anoNome(a)}</a>`).join('')}</nav>
 
   <h2>O que é a BNCC Computação</h2>
   <p>A BNCC Computação é o complemento da Base Nacional Comum Curricular que tornou a Computação parte da formação de todos os estudantes da Educação Básica. Foi aprovada pelo Conselho Nacional de Educação no Parecer CNE/CEB nº 2/2022 e homologada na Resolução CNE/CEB nº 1/2022. Ela não exige uma disciplina nova nem laboratório de informática: as habilidades podem ser trabalhadas dentro de outros componentes, em projetos ou em aulas próprias, com ou sem computador. O guia <a href="/computacao-na-escola/">como implantar Computação na escola</a> compara esses formatos e traz um roteiro em seis passos para a coordenação.</p>
@@ -396,9 +416,10 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e m
     <li><strong>Mundo digital</strong> (${nEixo('MD')} habilidades): como computadores, redes, internet e dados funcionam por dentro.</li>
     <li><strong>Cultura digital</strong> (${nEixo('CD')} habilidades): uso crítico, ético e seguro da tecnologia, direitos autorais, privacidade e convivência on-line.</li>
   </ul>
-  <p>Abaixo estão as ${cos.length} habilidades. Cada link leva a uma página com tudo o que está pronto para a aula: plano, slides em PDF, jogos que funcionam no navegador e no celular, fichas desplugadas para imprimir e listas com gabarito.</p>
+${temEM ? `  <p>No <strong>Ensino Médio</strong>, as ${nEM} habilidades seguem o código <strong>EM13CO00</strong> e valem para as três séries. Elas se organizam em competências específicas (limites da computação, segurança, aplicação, produção ética, projetos, comunicação e ação responsável), e não por eixos; aqui cada uma aparece também com o eixo mais próximo, para facilitar o planejamento junto com o Fundamental.</p>
+` : ''}  <p>Abaixo estão as ${cos.length} habilidades. Cada link leva a uma página com tudo o que está pronto para a aula: plano, slides em PDF, jogos que funcionam no navegador e no celular, fichas desplugadas para imprimir e listas com gabarito.</p>
 ${anos.map(a => `
-  <h2 id="ano-${a}">${a}º ano</h2>
+  <h2 id="ano-${a}">${anoNome(a)}</h2>
   <div class="related">${cos.filter(h => h.ano === a).map(linha).join('')}
   </div>`).join('\n')}
 

@@ -137,7 +137,7 @@
     <span class="eyebrow">Catálogo</span>
     <p class="small" id="cat-area" style="margin:0 0 6px"></p>
     <h1>Todos os materiais</h1>
-    <p>Jogos, fichas para imprimir e planos de aula de Computação e Matemática, do 6º ao 9º ano. Para o 1º ao 5º ano, veja o caderno <a href="datas-festivas/">Computação desplugada nas datas festivas</a>.</p>
+    <p>Jogos, fichas para imprimir e planos de aula de Computação e Matemática, do 6º ao 9º ano, e Computação para o <a href="catalogo.html?ano=10">Ensino Médio</a>. Para o 1º ao 5º ano, veja o caderno <a href="datas-festivas/">Computação desplugada nas datas festivas</a>.</p>
     <div class="search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
       <label class="sr-only" for="q">Buscar materiais</label>
@@ -360,7 +360,7 @@
     const opt = (key, val, label, extra) => `<button class="opt${extra && extra.sub ? ' sub' : ''}" type="button" data-k="${key}" data-v="${val}" aria-pressed="${String(state[key]) === String(val)}">
         <span class="box"></span>${extra && extra.dot ? `<span class="dot ${extra.dot}"></span>` : ''}${label}<span class="n">${countFor(key, val)}</span></button>`;
     $('#f-comp').innerHTML = opt('comp', 'todos', 'Todos') + opt('comp', 'CO', 'Computação', { dot: 'co' }) + opt('comp', 'MA', 'Matemática', { dot: 'ma' });
-    $('#f-ano').innerHTML = [6, 7, 8, 9].map(a => `<button type="button" data-k="ano" data-v="${a}" aria-pressed="${state.ano === a}" aria-label="${a}º ano">${a}º</button>`).join('');
+    $('#f-ano').innerHTML = [6, 7, 8, 9, 10].map(a => `<button type="button" data-k="ano" data-v="${a}" aria-pressed="${state.ano === a}" aria-label="${anoNome(a)}">${a === 10 ? 'EM' : a + 'º'}</button>`).join('');
     const comps = state.comp === 'todos' ? ['CO', 'MA'] : [state.comp];
     $('#f-eixo').innerHTML = opt('eixo', 'todos', 'Todos') + comps.map(c =>
       `<div class="opt-label">${COMPONENTES[c].nome}</div>` +

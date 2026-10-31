@@ -123,7 +123,7 @@
     b.onclick = () => { abertas[k] = true; renderPlans(); };
   }
   function renderPlans() {
-  document.getElementById('f-ano').innerHTML = [[0, 'Todos'], [6, '6º'], [7, '7º'], [8, '8º'], [9, '9º']].map(([v, l]) => {
+  document.getElementById('f-ano').innerHTML = [[0, 'Todos'], [6, '6º'], [7, '7º'], [8, '8º'], [9, '9º'], [10, 'Médio']].map(([v, l]) => {
     const n = RECURSOS.filter(r => r.tipo === 'plano' && (!v || r.anos.includes(v))).length;
     return `<button class="chip" type="button" data-a="${v}" aria-pressed="${v === ano}">${l} <span class="small muted">${n}</span></button>`;
   }).join('');
@@ -141,7 +141,7 @@
   document.getElementById('slides-list').innerHTML = corta(slides, 'slides').map(c => `
     <tr>
       <td><strong>${esc(SLIDES[c])}</strong><div class="small muted">${esc(HAB[c].objeto)} · 30 min</div></td>
-      <td class="hide-sm">${HAB[c].ano}º ano</td>
+      <td class="hide-sm">${anoNome(HAB[c].ano)}</td>
       <td>${tagHab(c)}</td>
       <td>${slidesBtn(c)}</td>
     </tr>`).join('');
