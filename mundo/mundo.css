@@ -277,3 +277,5 @@ a.stat { color: inherit; text-decoration: none; }
 .canteiro .barra { display: block; height: 10px; border-radius: 99px; background: #fff; overflow: hidden; }
 .canteiro .barra span { display: block; height: 100%; }
 #horta-graf { width: 100%; max-width: 560px; height: auto; border: 2px solid var(--borda); border-radius: 12px; }
+#tr-cv { width: 100%; max-width: 520px; height: auto; border: 2px solid var(--borda); border-radius: 12px; display: block; }
+.trem-prog span { display: inline-block; font-size: 20px; margin: 0 2px; }

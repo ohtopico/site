@@ -3783,10 +3783,76 @@
       SOM.toca('vitoria'); salvar(); mostraBilhete();
     });
   }
+  /* --- Trenzinho programável: o estudante monta a sequência de comandos (norte, sul, leste, oeste) que leva o trem da vila
+     atual até o destino, pelos trilhos (as ligações entre vilas abertas). Programa errado: o trem para e mostra onde. */
+  const DIRS_TREM = { N: [0, -1, '⬆️', 'norte'], S: [0, 1, '⬇️', 'sul'], L: [1, 0, '➡️', 'leste'], O: [-1, 0, '⬅️', 'oeste'] };
+  const temTrilho = (a, b) => LIGACOES.some(([x, y]) => (x === a && y === b) || (x === b && y === a)) && liberada(fases[a]) && liberada(fases[b]);
+  const vizinhoTrem = (i, d) => { const [dx, dy] = DIRS_TREM[d], [x, y] = GRADE[i]; return GRADE.findIndex(([gx, gy]) => gx === x + dx && gy === y + dy); };
+  function menorCaminhoTrem(a, b) {
+    const dist = { [a]: 0 }, fila = [a];
+    while (fila.length) { const i = fila.shift(); for (const d in DIRS_TREM) { const j = vizinhoTrem(i, d); if (j >= 0 && dist[j] === undefined && temTrilho(i, j)) { dist[j] = dist[i] + 1; fila.push(j); } } }
+    return dist[b];
+  }
+  const TREM = { prog: [], destino: null, pos: null, anim: null };
+  function janelaTrem() {
+    clearInterval(TREM.anim); TREM.pos = null;
+    const opcoes = fases.filter(f => liberada(f) && f !== atual && menorCaminhoTrem(atual.idx, f.idx) !== undefined);
+    if (!opcoes.some(f => f.idx === TREM.destino)) TREM.destino = opcoes.length ? opcoes[0].idx : null;
+    $('#trem-conteudo').innerHTML = `<p>Monte o <b>programa</b> do trem: a sequência de direções que leva da vila onde você está até o destino. O trem só anda pelos trilhos entre vilas abertas.</p>
+      ${opcoes.length ? `<label>Destino <select id="tr-dest" class="campo">${opcoes.map(f => `<option value="${f.idx}"${f.idx === TREM.destino ? ' selected' : ''}>${f.icone} ${esc(f.nome)}</option>`).join('')}</select></label>` : '<p class="muted">Abra mais vilas para ter para onde ir de trem!</p>'}
+      <canvas id="tr-cv" width="520" height="300" aria-label="Mapa dos trilhos entre as vilas"></canvas>
+      <p><b>Programa:</b> <span id="tr-prog" class="trem-prog"></span></p>
+      <div class="btn-row">${Object.entries(DIRS_TREM).map(([k, [, , ic, nome]]) => `<button type="button" class="hb azul" data-dir="${k}" aria-label="${nome}">${ic} ${nome}</button>`).join('')}</div>
+      <div class="btn-row"><button type="button" class="hb cinza" id="tr-apaga">⌫ Apagar o último</button><button type="button" class="hb cinza" id="tr-limpa">🗑️ Limpar</button><button type="button" class="hb verde" id="tr-vai" ${opcoes.length ? '' : 'disabled'}>🚂 Partir!</button></div>
+      <p class="muted small" id="tr-msg"></p>`;
+    const sel = $('#tr-dest'); if (sel) sel.addEventListener('change', () => { TREM.destino = +sel.value; desenhaTrem(); });
+    $('#j-trem').querySelectorAll('[data-dir]').forEach(b => b.addEventListener('click', () => { if (TREM.prog.length < 12) TREM.prog.push(b.dataset.dir); desenhaTrem(); }));
+    $('#tr-apaga').addEventListener('click', () => { TREM.prog.pop(); desenhaTrem(); });
+    $('#tr-limpa').addEventListener('click', () => { TREM.prog = []; desenhaTrem(); });
+    $('#tr-vai').addEventListener('click', partirTrem);
+    desenhaTrem();
+  }
+  function desenhaTrem() {
+    const cv2 = $('#tr-cv'); if (!cv2) return;
+    const g = cv2.getContext('2d'), xs = GRADE.map(p => p[0]), x0 = Math.min(...xs), cw = cv2.width / (Math.max(...xs) - x0 + 1), ch = cv2.height / 3;
+    const c = i => [(GRADE[i][0] - x0 + 0.5) * cw, (GRADE[i][1] + 0.5) * ch];
+    g.fillStyle = '#cfe9c4'; g.fillRect(0, 0, cv2.width, cv2.height);
+    for (const [a, b] of LIGACOES) { const [ax, ay] = c(a), [bx, by] = c(b), ok = temTrilho(a, b); g.strokeStyle = ok ? '#7a523a' : 'rgba(122,82,58,.2)'; g.lineWidth = 8; g.setLineDash(ok ? [] : [6, 6]); g.beginPath(); g.moveTo(ax, ay); g.lineTo(bx, by); g.stroke(); g.setLineDash([]);
+      if (ok) { g.strokeStyle = '#d9c99a'; g.lineWidth = 2; for (let t = 0.1; t < 1; t += 0.12) { const px = ax + (bx - ax) * t, py = ay + (by - ay) * t, hor = ay === by; g.beginPath(); g.moveTo(px - (hor ? 0 : 7), py - (hor ? 7 : 0)); g.lineTo(px + (hor ? 0 : 7), py + (hor ? 7 : 0)); g.stroke(); } } }
+    fases.forEach((f, i) => { const [x, y] = c(i), ok = liberada(f); g.fillStyle = i === TREM.destino ? '#f6b73c' : ok ? '#fffdf6' : '#9aa3ad'; g.strokeStyle = i === atual.idx ? '#e0564a' : '#3f8f4b'; g.lineWidth = i === atual.idx ? 4 : 2; g.beginPath(); g.arc(x, y, 26, 0, Math.PI * 2); g.fill(); g.stroke();
+      g.font = '22px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#000'; g.fillText(ok ? f.icone : '🔒', x, y); g.font = '600 10px Lexend, sans-serif'; g.fillStyle = '#1d2a1f'; g.fillText(f.nome.slice(0, 22), x, y + 38); });
+    const [tx, ty] = TREM.pos || c(atual.idx); g.font = '26px system-ui, sans-serif'; g.fillText('🚂', tx + (TREM.pos ? 0 : -20), ty - 22);
+    $('#tr-prog').innerHTML = TREM.prog.length ? TREM.prog.map(d => `<span>${DIRS_TREM[d][2]}</span>`).join('') : '<span class="muted small">vazio: use os botões abaixo</span>';
+  }
+  function partirTrem() {
+    if (TREM.destino === null || !TREM.prog.length) return aviso('Monte um programa com pelo menos um comando.');
+    const xs = GRADE.map(p => p[0]), x0 = Math.min(...xs), cv2 = $('#tr-cv'), cw = cv2.width / (Math.max(...xs) - x0 + 1), ch = cv2.height / 3, c = i => [(GRADE[i][0] - x0 + 0.5) * cw, (GRADE[i][1] + 0.5) * ch];
+    let i = atual.idx, passo = 0, t = 0, prox = null; const msg = $('#tr-msg');
+    clearInterval(TREM.anim); $('#tr-vai').disabled = true;
+    const fim = (txt, ok) => { clearInterval(TREM.anim); msg.innerHTML = txt; $('#tr-vai').disabled = false; if (!ok) { TREM.pos = null; setTimeout(desenhaTrem, 1500); } };
+    TREM.anim = setInterval(() => {
+      if (!prox) {
+        if (passo >= TREM.prog.length) {
+          if (i !== TREM.destino) return fim(`🛑 O programa acabou em <b>${esc(fases[i].nome)}</b>, não no destino. Ajuste os comandos e tente de novo.`);
+          const menor = menorCaminhoTrem(atual.idx, TREM.destino), curto = TREM.prog.length === menor, R = S.trem && S.trem.dia === diaHoje() ? S.trem : (S.trem = { dia: diaHoje(), viagens: 0 });
+          R.viagens++; ganhaHabilidade(['PC'], 8);
+          if (R.viagens <= 3) pontos(10 + (curto ? 5 : 0), curto ? 'Programa mais curto possível! 🚂' : 'Chegou de trem! 🚂'); else aviso('🚂 Chegou!');
+          SOM.toca('portao'); salvar();
+          fim(`✅ Chegou em <b>${esc(fases[i].nome)}</b> com ${TREM.prog.length} comando(s).${curto ? ' É o programa mais curto possível!' : ` Dava para chegar com ${menor}.`}`, true);
+          const destino = fases[i]; TREM.prog = []; setTimeout(() => { TREM.pos = null; teleporta(destino); }, 1300); return;
+        }
+        const d = TREM.prog[passo], j = vizinhoTrem(i, d);
+        if (j < 0 || !temTrilho(i, j)) return fim(`🛑 No comando ${passo + 1} (${DIRS_TREM[d][2]} ${DIRS_TREM[d][3]}), não tem trilho saindo de <b>${esc(fases[i].nome)}</b> para esse lado.`);
+        prox = j; t = 0;
+      }
+      t += 0.1; const [ax, ay] = c(i), [bx, by] = c(prox); TREM.pos = [ax + (bx - ax) * t, ay + (by - ay) * t]; desenhaTrem();
+      if (t >= 1) { i = prox; prox = null; passo++; }
+    }, 40);
+  }
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4122,7 +4188,7 @@
   setTimeout(() => confereEstrelasSite(), 2500);   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
