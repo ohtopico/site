@@ -190,6 +190,7 @@
     if (id.startsWith('n:')) { const [, fid, k] = id.split(':'), b = bancosDe(fid)[+k]; return b ? b.habs || [] : []; }
     if (id.startsWith('golpe:')) return ['EF07CO07', 'EF08CO08'];
     if (id.startsWith('circ:')) return ['EF06CO01', 'EF06CO02'];
+    if (id.startsWith('pixel:')) return ['EF06MA16'];
     if (id.startsWith('em-')) return HABS_EM[id.replace(/-\d+$/, '')] || [];
     const p = PERG_POR_ID.get(id); return p ? p.habs || [] : [];
   }
@@ -2615,7 +2616,8 @@
     { id: 'estrelas', x: 4, y: 0.6, w: 2, d: 1, ic: '🌟', cor: '#f5c400', acao: 'ver as estrelas secretas' },
     { id: 'medalhas', x: 7.2, y: 0.6, w: 2, d: 1, ic: '🏅', cor: '#e0564a', acao: 'ver as medalhas' },
     { id: 'trofeus', x: 0.8, y: 4, w: 1, d: 1, ic: '🏆', cor: '#9a6bd6', acao: 'ver os troféus do Mundo' },
-    { id: 'figurinhas', x: 8.2, y: 4, w: 1, d: 1, ic: '📒', cor: '#4bb259', acao: 'ver o álbum de figurinhas' }
+    { id: 'figurinhas', x: 8.2, y: 4, w: 1, d: 1, ic: '📒', cor: '#4bb259', acao: 'ver o álbum de figurinhas' },
+    { id: 'pixel', x: 4.5, y: 3, w: 1, d: 1, ic: '🎨', cor: '#e07a3c', acao: 'ver a galeria de pixel art' }
   ];
   const vitoriasSalas = () => ((S.emat || {}).vitorias || 0) + ((S.labirinto || {}).vitorias || 0);
   function usaMuseu(o) {
@@ -2648,6 +2650,11 @@
         <li class="${tele.length ? 'ok' : ''}">🌀 Mundos do teletransporte completos: <b>${tele.length ? tele.map(k => TP.niveis[k].ic + ' ' + TP.niveis[k].nome).join(', ') : 'nenhum ainda'}</b></li>
         <li class="${S.misterio && S.misterio.resolvido ? 'ok' : ''}">🕵️ Mistério da vila ${S.misterio && S.misterio.resolvido ? 'resolvido' : 'ainda sem solução'}</li></ul>`, [fecha]);
     }
+    if (o.id === 'pixel') {
+      const G = EST_PX().galeria;
+      return dialogo('🎨', 'Galeria de pixel art', G.length ? `<p>Desenhos que você pintou por coordenadas (os 8 mais novos):</p><div class="museu-pixel">${G.map(d => `<figure><img src="${imgPx(d.px, 96)}" alt="${esc(d.nome)}" width="96" height="96"><figcaption>${esc(d.nome)}</figcaption></figure>`).join('')}</div>` : '<p>A galeria ainda está vazia. No ateliê, você pinta desenhos de 16 × 16 quadradinhos usando <b>coordenadas</b> (x, y), como no plano cartesiano.</p>',
+        [{ txt: '🎨 Abrir o ateliê', classe: 'principal', fn: () => { fechaDialogo(); abreJanela('pixel'); } }, fecha]);
+    }
     if (o.id === 'figurinhas') {
       const tem = PESSOAS.filter(p => temFig(p.id)).length;
       return dialogo('📒', 'Álbum de figurinhas', `<p>Você tem <b>${tem} de ${PESSOAS.length}</b> figurinhas de pessoas importantes da Computação e da Matemática.</p>`, [{ txt: '📒 Abrir o álbum', classe: 'principal', fn: () => { fechaDialogo(); abreJanela('album'); } }, fecha]);
@@ -2658,6 +2665,7 @@
       caixa(o.x + 0.1, o.y + 0.1, 0, o.w - 0.2, o.d - 0.2, 0.55, '#efe6d2'); caixa(o.x + 0.15, o.y + 0.15, 0.55, o.w - 0.3, o.d - 0.3, 0.06, o.cor, { blocos: false });
       const [sx, sy] = iso(o.x + o.w / 2, o.y + o.d / 2, 1.15 + Math.sin(agora / 600 + o.x) * 0.05);
       ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(o.ic, sx, sy);
+      if (o.id === 'pixel' && EST_PX().galeria.length) { const px = EST_PX().galeria[0].px, [qx, qy] = iso(o.x + o.w / 2, o.y + o.d / 2, 1.9); ctx.fillStyle = '#7a523a'; ctx.fillRect(qx - 19, qy - 19, 38, 38); ctx.fillStyle = '#fbf7ee'; ctx.fillRect(qx - 16, qy - 16, 32, 32); for (let i = 0; i < 256; i++) if (CORES_PX[px[i]]) { ctx.fillStyle = CORES_PX[px[i]][0]; ctx.fillRect(qx - 16 + (i % 16) * 2, qy - 16 + Math.floor(i / 16) * 2, 2, 2); } }
       if (o.id === 'moedas') moedasCunhadas().slice(0, 3).forEach((m, i) => { const c = METAL_MOEDA[m.metal] || METAL_MOEDA.bronze, [mx, my] = iso(o.x + 0.45 + i * 0.55, o.y + 0.5, 0.63); ctx.fillStyle = c[1]; ctx.strokeStyle = c[2]; ctx.beginPath(); ctx.ellipse(mx, my, 9, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); });
     } }));
   }
@@ -2671,9 +2679,9 @@
       local: () => localSala('museu', fases[0]), estado: EST_MUSEU, objs: () => MUSEU_OBJ, livre: (x, y) => livreObjs(SALAS.museu, x, y), usa: usaMuseu, desenha: desenhaMuseu,
       mini: (c, ox, oy, s) => { for (const o of MUSEU_OBJ) { c.fillStyle = o.cor; c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, o.d * s); } },
       missoes: () => { const md = window.MDP && MDP.perfil() ? MDP.medalhas() : [];
-        return [['🪙 Moedas cunhadas', moedasCunhadas().length, 12], ['🌟 Estrelas secretas', estrelasSite().length, ESPECIAIS().slice(-1)[0][1].estrelas], ['🏅 Medalhas', md.filter(m => m.tem).length, md.length || MDP.MEDALHAS.length], ['🏡 Vilas concluídas', Object.keys(S.concluidas).length, fases.length], ['📒 Figurinhas', PESSOAS.filter(p => temFig(p.id)).length, PESSOAS.length]]
+        return [['🪙 Moedas cunhadas', moedasCunhadas().length, 12], ['🌟 Estrelas secretas', estrelasSite().length, ESPECIAIS().slice(-1)[0][1].estrelas], ['🏅 Medalhas', md.filter(m => m.tem).length, md.length || MDP.MEDALHAS.length], ['🏡 Vilas concluídas', Object.keys(S.concluidas).length, fases.length], ['📒 Figurinhas', PESSOAS.filter(p => temFig(p.id)).length, PESSOAS.length], ['🎨 Pixel art por coordenadas', Object.keys(EST_PX().feitos).length, MODELOS_PX.length]]
           .map(([nome, n, meta]) => ({ nome, n, meta, ok: n >= meta })); },
-      boasVindas: () => { confereEstrelasSite(); dialogo('🏛️', 'Museu', '<p>Bem-vindo ao seu museu! Aqui ficam expostas as coisas que você fez pelo site: as <b>moedas que você cunhou</b>, as <b>estrelas secretas</b> que achou no material didático, as <b>medalhas</b> do Meu progresso, os <b>troféus</b> do Mundo e o seu <b>álbum de figurinhas</b>.</p><p class="muted">Chegue perto de uma vitrine e aperte E. Tudo vem deste navegador: nada é enviado para a internet.</p>', [{ txt: 'Vamos ver!', classe: 'principal', fn: fechaDialogo }]); }
+      boasVindas: () => { confereEstrelasSite(); dialogo('🏛️', 'Museu', '<p>Bem-vindo ao seu museu! Aqui ficam expostas as coisas que você fez pelo site: as <b>moedas que você cunhou</b>, as <b>estrelas secretas</b> que achou no material didático, as <b>medalhas</b> do Meu progresso, os <b>troféus</b> do Mundo, o seu <b>álbum de figurinhas</b> e a <b>galeria de pixel art</b> que você pinta por coordenadas.</p><p class="muted">Chegue perto de uma vitrine e aperte E. Tudo vem deste navegador: nada é enviado para a internet.</p>', [{ txt: 'Vamos ver!', classe: 'principal', fn: fechaDialogo }]); }
     },
     emat: {
       nome: 'Escape da Matemática', ic: '🧮', get sub() { const F = faseEM(); return `Fase ${Math.min(EST_EM().fase, EMAT.length - 1) + 1} de ${EMAT.length}: ${F.ic} ${F.nome} · sem cronômetro`; }, W: 8, D: 6, saida: { x: 4, y: 5.5 }, alturaParede: 2.5,
@@ -3988,10 +3996,99 @@
       if (t >= 1) { i = prox; prox = null; passo++; }
     }, 40);
   }
+  /* ---------- pixel art por coordenadas (plano cartesiano): 16×16, x de 0 a 15 para a direita, y de 0 a 15 para cima ----------
+     Desenhos guardados como texto de 256 letras (linha de cima primeiro); '.' é vazio. Ficam expostos no Museu. */
+  const CORES_PX = { r: ['#e04848', 'vermelho'], o: ['#f08a24', 'laranja'], y: ['#f5c400', 'amarelo'], g: ['#3fa34d', 'verde'], m: ['#8a5a3b', 'marrom'], k: ['#f29bb8', 'rosa'], a: ['#4a90d9', 'azul'], c: ['#9a9a9a', 'cinza'], p: ['#2b2b2b', 'preto'], b: ['#ffffff', 'branco'] };
+  const PX_N = 16, PX_VAZIO = '.'.repeat(PX_N * PX_N);
+  const pxDe = linhas => { const t = linhas.join(''); return t.length === PX_N * PX_N ? t : PX_VAZIO; };
+  const L_ = '................';
+  const MODELOS_PX = [
+    { id: 'coracao', nome: 'Coração', ic: '❤️', px: pxDe([L_, L_, L_, '...rrr....rrr...', '..rrrrr..rrrrr..', '..rrrrrrrrrrrr..', '..rrrrrrrrrrrr..', '...rrrrrrrrrr...', '....rrrrrrrr....', '.....rrrrrr.....', '......rrrr......', '.......rr.......', L_, L_, L_, L_]) },
+    { id: 'arvore', nome: 'Macieira', ic: '🌳', px: pxDe([L_, '......gggg......', '....gggggggg....', '...gggggrgggg...', '..gggrgggggggg..', '..gggggggggrgg..', '...gggggggggg...', '....gggrgggg....', '......gggg......', '.......mm.......', '.......mm.......', '.......mm.......', '.....mmmmmm.....', L_, L_, L_]) },
+    { id: 'casa', nome: 'Casinha', ic: '🏠', px: pxDe([L_, L_, '.......rr.......', '......rrrr......', '.....rrrrrr.....', '....rrrrrrrr....', '...rrrrrrrrrr...', '....yyyyyyyy....', '....yaayyyyy....', '....yaayymmy....', '....yyyyymmy....', '....yyyyymmy....', 'gggggggggggggggg', L_, L_, L_]) },
+    { id: 'peixe', nome: 'Peixe', ic: '🐟', px: pxDe([L_, L_, L_, '.......oo.......', '.....oooooo...o.', '...oooooooooooo.', '..oobpoooooooo..', '..oooooooooooo..', '...oooooooooooo.', '.....oooooo...o.', '.......oo.......', L_, L_, L_, L_, L_]) },
+    { id: 'sorvete', nome: 'Sorvete', ic: '🍦', px: pxDe([L_, '......kkkk......', '.....kkkkkk.....', '....kkkrkkkk....', '....kkkkkkkk....', '....bbbbbbbb....', '....bbbbbbbb....', '.....oooooo.....', '.....omoomo.....', '......oooo......', '......omoo......', '.......oo.......', '.......o........', L_, L_, L_]) },
+    { id: 'robo', nome: 'Robô', ic: '🤖', px: pxDe(['.......rr.......', '.......cc.......', '...cccccccccc...', '...cbbccccbbc...', '...cbpccccbpc...', '...cccccccccc...', '...cccppppccc...', '...cccccccccc...', '.....aaaaaa.....', '...aaaaaaaaaa...', '...aaayyyyaaa...', '...aaaaaaaaaa...', '....pp....pp....', L_, L_, L_]) }
+  ];
+  const EST_PX = () => S.pixel || (S.pixel = { feitos: {}, galeria: [] });
+  const PX = { modelo: 0, cor: 'r', px: PX_VAZIO, pintando: false, nome: '' };   // modelo: índice em MODELOS_PX ou -1 (livre)
+  const pxY = r => PX_N - 1 - r;   // linha do texto → coordenada y
+  // instruções do modelo: para cada cor, os trechos de cada linha (y) com o x inicial e final
+  function instrucoesPx(px) {
+    const por = {};
+    for (let r = 0; r < PX_N; r++) for (let x = 0; x < PX_N;) {
+      const ch = px[r * PX_N + x]; if (ch === '.') { x++; continue; }
+      let f = x; while (f + 1 < PX_N && px[r * PX_N + f + 1] === ch) f++;
+      (por[ch] = por[ch] || []).push(x === f ? `(${x}, ${pxY(r)})` : `(${x}, ${pxY(r)}) até (${f}, ${pxY(r)})`); x = f + 1;
+    }
+    return por;
+  }
+  function imgPx(px, tam) {
+    const c = document.createElement('canvas'), s = Math.max(1, Math.floor(tam / PX_N)); c.width = c.height = s * PX_N; const g = c.getContext('2d');
+    g.fillStyle = '#fbf7ee'; g.fillRect(0, 0, c.width, c.height);
+    for (let i = 0; i < PX_N * PX_N; i++) if (CORES_PX[px[i]]) { g.fillStyle = CORES_PX[px[i]][0]; g.fillRect((i % PX_N) * s, Math.floor(i / PX_N) * s, s, s); }
+    return c.toDataURL();
+  }
+  function janelaPixel() {
+    const M = MODELOS_PX[PX.modelo], E = EST_PX();
+    const cores = M ? [...new Set(M.px.replace(/\./g, ''))] : Object.keys(CORES_PX);
+    if (!cores.includes(PX.cor)) PX.cor = cores[0];
+    const ins = M ? instrucoesPx(M.px) : null;
+    $('#pixel-conteudo').innerHTML = `<p>Pinte quadradinhos usando <b>coordenadas</b>: o primeiro número é o <b>x</b> (anda para a direita) e o segundo é o <b>y</b> (sobe). O ponto (0, 0) fica no canto de baixo, à esquerda.</p>
+      <label>Desenho <select id="px-modelo" class="campo"><option value="-1"${PX.modelo < 0 ? ' selected' : ''}>✏️ Desenho livre</option>${MODELOS_PX.map((m, i) => `<option value="${i}"${i === PX.modelo ? ' selected' : ''}>${m.ic} ${esc(m.nome)}${E.feitos[m.id] ? ' ✅' : ''}</option>`).join('')}</select></label>
+      <div class="px-area"><div><canvas id="px-cv" width="392" height="392" aria-label="Quadro de pixel art 16 por 16 com coordenadas"></canvas><p class="small" id="px-coord">Passe o mouse no quadro para ver a coordenada.</p></div>
+      <div class="px-lado"><div class="px-cores" role="group" aria-label="Cores">${cores.map(k => `<button type="button" class="px-cor${k === PX.cor ? ' sel' : ''}" data-cor="${k}" style="--c:${CORES_PX[k][0]}" title="${CORES_PX[k][1]}">${CORES_PX[k][1]}</button>`).join('')}<button type="button" class="px-cor${PX.cor === '.' ? ' sel' : ''}" data-cor="." style="--c:#fbf7ee">🧽 apagar</button></div>
+      <p class="px-digita"><label>Pintar o ponto <input id="px-xy" class="campo" size="7" placeholder="ex.: 3, 12" inputmode="numeric"></label> <button type="button" class="hb azul" id="px-pinta">Pintar</button></p>
+      ${M ? `<h3>${M.ic} Modelo: ${esc(M.nome)}</h3><ul class="px-ins">${Object.entries(ins).map(([k, l]) => `<li><span class="px-amostra" style="background:${CORES_PX[k][0]}"></span><b>${CORES_PX[k][1]}</b>: ${l.join(' · ')}</li>`).join('')}</ul>` : '<p class="muted small">Desenhe o que quiser e guarde no Museu (até 8 desenhos ficam expostos).</p><label>Nome do desenho <input id="px-nome" class="campo" maxlength="24" placeholder="Meu desenho"></label>'}
+      <div class="btn-row">${M ? '<button type="button" class="hb verde" id="px-confere">✅ Conferir</button>' : '<button type="button" class="hb verde" id="px-guarda">🏛️ Guardar no Museu</button>'}<button type="button" class="hb cinza" id="px-limpa">🗑️ Limpar</button></div>
+      <p id="px-msg" class="small" aria-live="polite"></p></div></div>`;
+    $('#px-modelo').addEventListener('change', e => { PX.modelo = +e.target.value; PX.px = PX_VAZIO; janelaPixel(); });
+    document.querySelectorAll('.px-cor').forEach(b => b.addEventListener('click', () => { PX.cor = b.dataset.cor; document.querySelectorAll('.px-cor').forEach(o => o.classList.toggle('sel', o === b)); }));
+    const cv2 = $('#px-cv'), M0 = 28, T = (cv2.width - M0) / PX_N;
+    const celula = ev => { const r = cv2.getBoundingClientRect(), x = Math.floor(((ev.clientX - r.left) * cv2.width / r.width - M0) / T), rr = Math.floor((ev.clientY - r.top) * cv2.height / r.height / T); return x >= 0 && x < PX_N && rr >= 0 && rr < PX_N ? [x, rr] : null; };
+    const pinta = (x, r) => { const i = r * PX_N + x; if (PX.px[i] === PX.cor) return; PX.px = PX.px.slice(0, i) + PX.cor + PX.px.slice(i + 1); desenhaPixel(); };
+    cv2.addEventListener('pointerdown', ev => { const c = celula(ev); if (!c) return; PX.pintando = true; cv2.setPointerCapture(ev.pointerId); pinta(...c); });
+    cv2.addEventListener('pointermove', ev => { const c = celula(ev); $('#px-coord').textContent = c ? `Coordenada: (${c[0]}, ${pxY(c[1])})` : ' '; if (c && PX.pintando) pinta(...c); });
+    cv2.addEventListener('pointerup', () => { PX.pintando = false; });
+    const digita = () => { const m = $('#px-xy').value.match(/(-?\d+)\D+(-?\d+)/); if (!m || +m[1] < 0 || +m[1] > 15 || +m[2] < 0 || +m[2] > 15) return ($('#px-msg').textContent = 'Escreva x e y de 0 a 15, separados por vírgula. Ex.: 3, 12'); pinta(+m[1], PX_N - 1 - +m[2]); $('#px-msg').textContent = `Pintou (${+m[1]}, ${+m[2]}).`; $('#px-xy').select(); };
+    $('#px-pinta').addEventListener('click', digita); $('#px-xy').addEventListener('keydown', e => { if (e.key === 'Enter') digita(); });
+    $('#px-limpa').addEventListener('click', () => { PX.px = PX_VAZIO; desenhaPixel(); });
+    if (M) $('#px-confere').addEventListener('click', conferePixel); else $('#px-guarda').addEventListener('click', guardaPixel);
+    desenhaPixel();
+  }
+  function desenhaPixel() {
+    const cv2 = $('#px-cv'); if (!cv2) return; const g = cv2.getContext('2d'), M0 = 28, T = (cv2.width - M0) / PX_N;
+    g.clearRect(0, 0, cv2.width, cv2.height); g.fillStyle = '#fbf7ee'; g.fillRect(M0, 0, T * PX_N, T * PX_N);
+    for (let i = 0; i < PX_N * PX_N; i++) { const ch = PX.px[i]; if (CORES_PX[ch]) { g.fillStyle = CORES_PX[ch][0]; g.fillRect(M0 + (i % PX_N) * T, Math.floor(i / PX_N) * T, T, T); } }
+    g.strokeStyle = 'rgba(0,0,0,.12)'; g.lineWidth = 1;
+    for (let k = 0; k <= PX_N; k++) { g.beginPath(); g.moveTo(M0 + k * T + 0.5, 0); g.lineTo(M0 + k * T + 0.5, T * PX_N); g.stroke(); g.beginPath(); g.moveTo(M0, k * T + 0.5); g.lineTo(M0 + T * PX_N, k * T + 0.5); g.stroke(); }
+    g.fillStyle = '#5c4a36'; g.font = '11px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    for (let k = 0; k < PX_N; k++) { g.fillText(String(k), M0 + (k + 0.5) * T, T * PX_N + 14); g.fillText(String(PX_N - 1 - k), M0 / 2, (k + 0.5) * T); }
+  }
+  function conferePixel() {
+    const M = MODELOS_PX[PX.modelo], E = EST_PX(), msg = $('#px-msg');
+    let r = 0; while (r < PX_N && PX.px.slice(r * PX_N, (r + 1) * PX_N) === M.px.slice(r * PX_N, (r + 1) * PX_N)) r++;
+    if (r < PX_N) { msg.innerHTML = `Ainda não está igual ao modelo. Confira a linha <b>y = ${pxY(r)}</b>: compare cada (x, ${pxY(r)}) com as instruções.`; return; }
+    const nova = !E.feitos[M.id]; E.feitos[M.id] = true;
+    E.galeria = [{ nome: M.ic + ' ' + M.nome, px: M.px }].concat(E.galeria.filter(d => d.px !== M.px)).slice(0, 8);
+    contaResposta(); progressoMundo('pixel:' + M.id, true); ganhaHabilidade(['GE'], nova ? 12 : 4); feitoMundo('pixel');
+    if (nova) { S.acertos++; pontos(30, `🎨 ${M.nome} pintado por coordenadas!`); } else pontos(5, '🎨 Pintou de novo!');
+    SOM.toca('vitoria'); salvar();
+    msg.innerHTML = `✅ Igualzinho ao modelo! O desenho foi para a galeria do 🏛️ Museu.${MODELOS_PX.some(m => !E.feitos[m.id]) ? ' Escolha outro modelo no menu acima.' : ' Você pintou todos os modelos: agora crie os seus no desenho livre!'}`;
+  }
+  function guardaPixel() {
+    const E = EST_PX(), msg = $('#px-msg');
+    if (!/[^.]/.test(PX.px)) return (msg.textContent = 'Pinte pelo menos um quadradinho antes de guardar.');
+    const nome = ($('#px-nome').value || 'Meu desenho').trim().slice(0, 24);
+    E.galeria = [{ nome: '✏️ ' + nome, px: PX.px }].concat(E.galeria.filter(d => d.px !== PX.px)).slice(0, 8);
+    if (!E.livreDia || E.livreDia !== diaHoje()) { E.livreDia = diaHoje(); pontos(10, '🎨 Desenho guardado no Museu!'); } else aviso('🎨 Desenho guardado no Museu!');
+    feitoMundo('pixel'); salvar();
+    msg.textContent = '✅ Guardado! Ele está exposto na galeria de pixel art do Museu.';
+  }
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4328,7 +4425,7 @@
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
