@@ -323,7 +323,12 @@
       const livre2 = (hx, hy) => { for (let j = hy - 1; j <= hy + 3; j++) for (let k = hx - 1; k <= hx + 2; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama || f.sol[pos(k, j)]) return false; return true; };
       let px = -1, py = -1;
       busca: for (let dy = 0; dy < 8; dy++) for (const yy of [MEIO + 2 + dy, MEIO - 5 - dy]) for (let xx = 8; xx < 18; xx++) if (livre2(xx, yy)) { px = xx; py = yy; break busca; }
-      if (px >= 0) { for (let j = py; j < py + 2; j++) for (let k = px; k < px + 2; k++) f.sol[pos(k, j)] = 1; f.portalTele = { gx: f.x0 + px, x: px, y: py, w: 2, d: 2, porta: { x: f.x0 + px + 1, y: py + 2.7 } }; }
+      if (px >= 0) {
+        for (let j = py; j < py + 2; j++) for (let k = px; k < px + 2; k++) f.sol[pos(k, j)] = 1; f.portalTele = { gx: f.x0 + px, x: px, y: py, w: 2, d: 2, porta: { x: f.x0 + px + 1, y: py + 2.7 } };
+        // reserva uma folga de 2 blocos em volta e 3 na frente da porta, para nenhuma casa ficar colada no portal (liberada no fim da montagem)
+        f.reserva = [];
+        for (let j = py - 2; j <= py + 4; j++) for (let k = px - 2; k <= px + 3; k++) if (at(k, j) && !f.sol[pos(k, j)]) { f.sol[pos(k, j)] = 1; f.reserva.push(pos(k, j)); }
+      }
       // Museu: perto do portal, com 4 × 3 blocos
       const livre3 = (hx, hy) => { for (let j = hy - 1; j <= hy + 4; j++) for (let k = hx - 1; k <= hx + 4; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama || f.sol[pos(k, j)]) return false; return true; };
       let mx = -1, my = -1;
@@ -431,6 +436,8 @@
     for (let y = 0; y < ALT; y++) { arvore(0, y); arvore(L - 1, y); if (r() < 0.6) arvore(1, y); if (r() < 0.6) arvore(L - 2, y); }
     const pertoDeCoisa = (x, y) => { for (let j = y - 1; j <= y + 1; j++) for (let i = x - 1; i <= x + 1; i++) if (at(i, j) && (f.tile[pos(i, j)] !== T.grama || f.sol[pos(i, j)])) return true; return false; };
     for (let k = 0; k < L * ALT * 0.05; k++) { const x = Math.floor(r() * L), y = Math.floor(r() * ALT); if (!pertoDeCoisa(x, y)) arvore(x, y); }
+    // a folga em volta do portal volta a ser chão livre (depois das casas e do bosque)
+    if (f.reserva) { for (const k of f.reserva) f.sol[k] = 0; delete f.reserva; }
     // rochas: dão pedra com a picareta
     f.rochas = [];
     for (let k = 0; k < 7 + f.idx % 3; k++) { const x = 3 + Math.floor(r() * (L - 6)), y = 3 + Math.floor(r() * (ALT - 6)); if (!pertoDeCoisa(x, y)) { f.sol[pos(x, y)] = 1; f.rochas.push({ x: f.x0 + x, y, t: r() }); } }
@@ -2302,16 +2309,18 @@
     const Z = SALAS[sala], vw = W / zoom, vh = HH / zoom;
     ctx.fillStyle = Z.fundo; ctx.fillRect(cam.x, cam.y, vw, vh);
     caixa(0, 0, -0.5, Z.W, Z.D, 0.5, Z.base, { blocos: false });
-    for (let y = 0; y < Z.D; y++) for (let x = 0; x < Z.W; x++) { const [sx, sy] = iso(x, y); ctx.drawImage(textura((x + y) % 2 ? Z.piso[0] : Z.piso[1], (x * 5 + y) % 4), sx - TW / 2, sy); }
-    caixa(-0.25, -0.25, 0, Z.W + 0.25, 0.25, Z.alturaParede, Z.parede, { blocos: false, topo: '#fff7e8' });
-    caixa(-0.25, 0, 0, 0.25, Z.D, Z.alturaParede, Z.parede, { blocos: false, dir: escuro(Z.parede, 0.08), topo: '#fff7e8' });
-    caixa(Z.saida.x - 0.4, Z.D - 0.9, 0, 0.8, 0.8, 0.03, '#e0564a', { blocos: false });
+    for (let y = 0; y < Z.D; y++) for (let x = 0; x < Z.W; x++) { const [sx, sy] = iso(x, y); ctx.drawImage(textura(Z.pisoEm ? Z.pisoEm(x, y) : (x + y) % 2 ? Z.piso[0] : Z.piso[1], (x * 5 + y) % 4), sx - TW / 2, sy); }
+    if (!Z.aberto) {
+      caixa(-0.25, -0.25, 0, Z.W + 0.25, 0.25, Z.alturaParede, Z.parede, { blocos: false, topo: '#fff7e8' });
+      caixa(-0.25, 0, 0, 0.25, Z.D, Z.alturaParede, Z.parede, { blocos: false, dir: escuro(Z.parede, 0.08), topo: '#fff7e8' });
+      caixa(Z.saida.x - 0.4, Z.D - 0.9, 0, 0.8, 0.8, 0.03, '#e0564a', { blocos: false });
+    }
     const lista = Z.desenha();
     lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
     lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(80,60,90,.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     const alvo = !dialogoAberto && alvoSala();
-    if (alvo) { const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(alvo.tipo === 'ssaida' ? 'E · sair' : `E · ${alvo.obj.acao}`, sx, sy - 10, '#1d2a1f', '#ffffff'); }
+    if (alvo) { const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(alvo.tipo === 'ssaida' ? (Z.aberto ? 'E · voltar pelo portal' : 'E · sair') : `E · ${alvo.obj.acao}`, sx, sy - 10, '#1d2a1f', '#ffffff'); }
     miniFase = null; $('#mini-nome').textContent = Z.nome;
     mctx.fillStyle = '#1b2531'; mctx.fillRect(0, 0, 300, 200);
     const s = Math.min(280 / Z.W, 180 / Z.D), ox = (300 - Z.W * s) / 2, oy = (200 - Z.D * s) / 2;
@@ -2523,7 +2532,32 @@
   const EST_TELE = () => { const T = S.tele || (S.tele = { feitos: {}, premios: {} }); return T; };
   const perguntasTele = (nv, area) => (TP.perguntas[nv] && TP.perguntas[nv][area] || []).map(([enun, alts, certa, coment], i) => ({ id: `t:${nv}:${area}:${i}`, enun, alts, certa, coment, eixos: EIXO_AREA[area] }));
   const feitasTele = (nv, area) => perguntasTele(nv, area).filter(p => S.resp[p.id] === true).length;
-  const ESTACOES_TELE = Object.keys(TP.areas).map((area, i) => ({ id: 'estacao', area, x: [1, 4.5, 8, 1, 8, 4.5][i], y: [1, 0.8, 1, 4.5, 4.5, 4][i], w: 1, d: 1, acao: `estação ${TP.areas[area].nome}` }));
+  /* cada nível é outro mundo, com chão, árvores, prédios e céu próprios (não é uma sala com paredes) */
+  const TEMAS_TELE = {
+    iniciante: { nome: 'Ilha dos Primeiros Cliques', chao: ['#c3e9a2', '#b6e094'], caminho: '#f3e3b0', fundo: '#6cc6e0', arvore: 'coqueiro', predio: ['#fbe7c0', '#d9a35a'], deco: ['🌺', '🐚', '🦀'] },
+    basico: { nome: 'Floresta das Pastas', chao: ['#93c97c', '#86bd70'], caminho: '#d8b98a', fundo: '#24452f', arvore: 'pinheiro', predio: ['#c99a6b', '#7a4a2a'], deco: ['🍄', '🪵', '🦔'] },
+    intermediario: { nome: 'Deserto da Conexão', chao: ['#f1dca3', '#e9d193'], caminho: '#d9b47a', fundo: '#f2a65e', arvore: 'cacto', predio: ['#e9bf90', '#c97d4a'], deco: ['🪨', '🦎', '🌵'] },
+    avancado: { nome: 'Cidade de Cristal', chao: ['#eef3fa', '#e1eaf4'], caminho: '#c6cff0', fundo: '#1c2342', arvore: 'cristal', predio: ['#d6dcff', '#7b6cd6'], deco: ['❄️', '💠', '⛄'] }
+  };
+  const temaTele = () => TEMAS_TELE[teleNivel] || TEMAS_TELE.iniciante;
+  const TW_TELE = 20, TD_TELE = 14;
+  const ESTACOES_TELE = Object.keys(TP.areas).map((area, i) => ({ id: 'estacao', area, x: [2, 9, 16, 2, 16, 5][i], y: [1, 0.6, 1, 7.5, 7.5, 10][i], w: 2, d: 2, acao: `estação ${TP.areas[area].nome}` }));
+  // caminhos: do portal de volta (embaixo) até a rua do meio, e de lá até a porta de cada estação
+  const caminhoTele = (() => { const c = new Set(), m = (x, y) => c.add(x + ',' + y);
+    for (let y = 4; y < TD_TELE; y++) { m(9, y); m(10, y); }
+    for (let x = 2; x < 18; x++) { m(x, 4); m(x, 5); }
+    for (const o of ESTACOES_TELE) { const px = Math.floor(o.x + 1); for (let y = Math.floor(o.y + 2); y <= (o.y + 2 < 4 ? 4 : o.y + 2); y++) m(px, y); if (o.y > 5) for (let y = 6; y <= o.y + 2.5 && y < TD_TELE; y++) m(px, y); if (o.y > 5) for (let x = Math.min(px, 9); x <= Math.max(px, 10); x++) { m(x, Math.min(TD_TELE - 1, Math.floor(o.y + 2))); } }
+    return c; })();
+  const naoTemCoisa = (x, y, m) => !ESTACOES_TELE.some(o => x > o.x - m && x < o.x + o.w + m && y > o.y - m && y < o.y + o.d + m + 0.6) && !caminhoTele.has(Math.floor(x) + ',' + Math.floor(y)) && Math.hypot(x - 10, y - (TD_TELE - 1)) > 2.2;
+  const ENFEITES_TELE = {};
+  function enfeitesTele(nv) {
+    if (ENFEITES_TELE[nv]) return ENFEITES_TELE[nv];
+    const r = rng(777 + ORDEM_NIVEIS.indexOf(nv) * 91), arv = [], deco = [];
+    for (let t = 0; t < 400 && arv.length < 26; t++) { const x = 0.6 + r() * (TW_TELE - 1.6), y = 0.4 + r() * (TD_TELE - 1.4); if (naoTemCoisa(x, y, 0.8) && arv.every(a => Math.hypot(a.x - x, a.y - y) > 1.4)) arv.push({ id: 'arvore', x, y, w: 0.55, d: 0.55, semAcao: true, v: r() }); }
+    for (let t = 0; t < 300 && deco.length < 14; t++) { const x = 0.5 + r() * (TW_TELE - 1), y = 0.5 + r() * (TD_TELE - 1); if (naoTemCoisa(x, y, 0.4) && arv.every(a => Math.hypot(a.x - x, a.y - y) > 0.9)) deco.push({ id: 'deco', x, y, w: 0.3, d: 0.3, semAcao: true, parede: true, ic: Math.floor(r() * 3) }); }
+    return (ENFEITES_TELE[nv] = { arv, deco });
+  }
+  const objsTele = () => { const E = enfeitesTele(teleNivel); return ESTACOES_TELE.concat(E.arv, E.deco); };
   function portalTele() {
     const r = resultadoTeste(), fecha = { txt: 'Fechar', fn: fechaDialogo };
     if (!r) return dialogo('🌀', 'Portal de teletransporte', '<p>Este portal leva você a um <b>mundo especial do seu nível em informática</b>, só com as habilidades que você precisa treinar.</p><p>Para descobrir o seu nível, faça antes o <b>teste de proficiência em informática</b> (24 perguntas, neste mesmo navegador). Depois volte aqui!</p>',
@@ -2555,16 +2589,52 @@
     T.premios[nv] = true; pontos(100); SOM.toca('vitoria'); salvar();
     setTimeout(() => { ganhaFigurinha(null, `pelo mundo ${TP.niveis[nv].nome}`); D.texto.innerHTML += `<p>🌀 <b>Você completou o mundo ${TP.niveis[nv].nome}!</b> +100 ⭐. Refaça o teste de proficiência para ver se subiu de nível.</p>`; }, 200);
   }
-  function desenhaTele() {
-    return ESTACOES_TELE.map(o => ({ k: o.x + o.y + 1, d: () => {
-      const ok = feitasTele(teleNivel, o.area) >= perguntasTele(teleNivel, o.area).length, r = resultadoTeste(), fraca = r && r.nivel === teleNivel && (r.estudar || []).includes(o.area);
-      caixa(o.x + 0.1, o.y + 0.1, 0, 0.8, 0.8, 0.5, ok ? '#a8e6b8' : '#fff7e8'); caixa(o.x + 0.2, o.y + 0.2, 0.5, 0.6, 0.6, 0.08, TP.niveis[teleNivel].cor);
-      const [sx, sy] = iso(o.x + 0.5, o.y + 0.5, 1.05 + Math.sin(agora / 500 + o.x) * 0.06);
-      ctx.font = '22px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(ok ? '✅' : TP.areas[o.area].ic, sx, sy);
-      if (fraca && !ok) { ctx.font = '14px system-ui, sans-serif'; ctx.fillText('⭐', sx + 16, sy - 14); }
-    } }));
+  function arvoreTele(a) {
+    const x = a.x + a.w / 2, y = a.y + a.d / 2, tipo = temaTele().arvore, h = 1 + a.v * 0.6;
+    sombra(x, y, 0.7);
+    if (tipo === 'coqueiro') {
+      for (let k = 0; k < 4; k++) caixa(x - 0.1 + Math.sin(k * 0.6) * 0.06 * k, y - 0.1, k * h * 0.45, 0.2, 0.2, h * 0.45, '#9a6b3f', { blocos: false });
+      const [sx, sy] = iso(x + 0.15, y, h * 1.8 + 0.1);
+      ctx.fillStyle = '#3fa34d'; for (let k = 0; k < 6; k++) { ctx.beginPath(); ctx.ellipse(sx + Math.cos(k * 1.05) * 12, sy + Math.sin(k * 1.05) * 5 + 3, 15, 5, k * 1.05, 0, Math.PI * 2); ctx.fill(); }
+      ctx.fillStyle = '#7a4a2a'; ctx.beginPath(); ctx.arc(sx - 3, sy + 4, 3, 0, 7); ctx.arc(sx + 3, sy + 5, 3, 0, 7); ctx.fill();
+    } else if (tipo === 'pinheiro') {
+      caixa(x - 0.1, y - 0.1, 0, 0.2, 0.2, 0.5, '#6b4628', { blocos: false });
+      [[0.9, 0.5], [0.7, 0.95], [0.5, 1.35], [0.28, 1.7]].forEach(([l, z]) => caixa(x - l / 2, y - l / 2, z * h, l, l, 0.42 * h, a.v > 0.5 ? '#2f7d45' : '#367f3e', { blocos: false }));
+    } else if (tipo === 'cacto') {
+      caixa(x - 0.17, y - 0.17, 0, 0.34, 0.34, 1.5 * h, '#4f9a4b', { blocos: false });
+      caixa(x + 0.17, y - 0.08, 0.6 * h, 0.3, 0.16, 0.16, '#4f9a4b', { blocos: false }); caixa(x + 0.33, y - 0.08, 0.6 * h, 0.16, 0.16, 0.55, '#4f9a4b', { blocos: false });
+      if (a.v > 0.4) { caixa(x - 0.47, y - 0.08, 0.85 * h, 0.3, 0.16, 0.16, '#4f9a4b', { blocos: false }); caixa(x - 0.47, y - 0.08, 0.85 * h, 0.16, 0.16, 0.45, '#4f9a4b', { blocos: false }); }
+      if (a.v > 0.7) { const [fx, fy] = iso(x, y, 1.5 * h + 0.1); ctx.font = '12px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🌸', fx, fy); }
+    } else {
+      const cores = ['#b9a8ff', '#9fe3f5', '#f7b8e6'], c = cores[Math.floor(a.v * 3)];
+      ctx.globalAlpha = 0.85;
+      caixa(x - 0.14, y - 0.14, 0, 0.28, 0.28, 1.9 * h, c, { blocos: false, topo: '#ffffff' });
+      caixa(x + 0.1, y + 0.05, 0, 0.2, 0.2, 1.1 * h, cores[(Math.floor(a.v * 3) + 1) % 3], { blocos: false, topo: '#ffffff' });
+      caixa(x - 0.32, y + 0.08, 0, 0.18, 0.18, 0.8 * h, cores[(Math.floor(a.v * 3) + 2) % 3], { blocos: false, topo: '#ffffff' });
+      ctx.globalAlpha = 1;
+    }
   }
-  function desenhaPortalTele(c, perto) {
+  function predioTele(o) {
+    const ok = feitasTele(teleNivel, o.area) >= perguntasTele(teleNivel, o.area).length, r = resultadoTeste(), fraca = r && r.nivel === teleNivel && (r.estudar || []).includes(o.area);
+    const [base, teto] = temaTele().predio, tipo = temaTele().arvore, x = o.x + 0.1, y = o.y + 0.1, w = o.w - 0.2, d = o.d - 0.2;
+    sombra(o.x + 1, o.y + 1, 1.5);
+    if (tipo === 'cristal') { caixa(x + 0.2, y + 0.2, 0, w - 0.4, d - 0.4, 2.6, base); caixa(x + 0.4, y + 0.4, 2.6, w - 0.8, d - 0.8, 0.6, teto); }
+    else if (tipo === 'cacto') { caixa(x, y, 0, w, d, 1.5, base); caixa(x - 0.05, y - 0.05, 1.5, w + 0.1, d + 0.1, 0.18, teto, { blocos: false }); }
+    else { caixa(x, y, 0, w, d, 1.4, base); caixa(x - 0.15, y - 0.15, 1.4, w + 0.3, d + 0.3, 0.25, teto, { blocos: false }); caixa(x + 0.25, y + 0.25, 1.65, w - 0.5, d - 0.5, 0.3, teto, { blocos: false }); caixa(x + 0.55, y + 0.55, 1.95, w - 1.1, d - 1.1, 0.25, teto, { blocos: false }); }
+    caixa(o.x + 0.8, o.y + o.d - 0.12, 0, 0.4, 0.06, 0.8, '#7a523a', { blocos: false });   // porta
+    const alto = tipo === 'cristal' ? 3.6 : tipo === 'cacto' ? 2.2 : 2.6, [sx, sy] = iso(o.x + 1, o.y + 1, alto + Math.sin(agora / 500 + o.x) * 0.08);
+    ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(ok ? '✅' : TP.areas[o.area].ic, sx, sy);
+    if (fraca && !ok) { ctx.font = '15px system-ui, sans-serif'; ctx.fillText('⭐', sx + 18, sy - 14); }
+    if (Math.hypot(o.x + 1 - P.x, o.y + 2.4 - P.y) < 3.2) rotulo(TP.areas[o.area].nome, sx, sy - 22, '#fff7e8');
+  }
+  function desenhaTele() {
+    const E = enfeitesTele(teleNivel), T2 = temaTele();
+    return ESTACOES_TELE.map(o => ({ k: o.x + o.y + o.w / 2 + o.d / 2, d: () => predioTele(o) }))
+      .concat(E.arv.map(a => ({ k: a.x + a.y + 0.6, d: () => arvoreTele(a) })))
+      .concat(E.deco.map(o => ({ k: o.x + o.y, d: () => { const [sx, sy] = iso(o.x + 0.15, o.y + 0.15, 0.2); ctx.font = '15px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(T2.deco[o.ic], sx, sy); } })))
+      .concat([{ k: 10 + TD_TELE - 1.6, d: () => { const z = SALA_TELE.saida; desenhaPortalTele({ gx: z.x - 1, y: z.y - 1.8 }, Math.hypot(z.x - P.x, z.y - P.y) < 3, 'Portal de volta para a Vila'); } }]);
+  }
+  function desenhaPortalTele(c, perto, txt) {
     const x = c.gx, y = c.y;
     sombra(x + 1, y + 1, 1.6);
     caixa(x + 0.1, y + 0.1, 0, 1.8, 1.8, 0.2, '#c7b4f2');
@@ -2573,17 +2643,18 @@
     g.addColorStop(0, 'rgba(255,255,255,.95)'); g.addColorStop(0.5, 'rgba(199,180,242,.7)'); g.addColorStop(1, 'rgba(199,180,242,0)');
     ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(sx, sy, 26, 34, 0, 0, Math.PI * 2); ctx.fill();
     const [ix, iy] = iso(x + 1, y + 1, 3.0); ctx.font = '20px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText('🌀', ix, iy);
-    if (perto) rotulo('Portal de teletransporte', ix, iy - 26, '#fff7e8');
+    if (perto) rotulo(txt || 'Portal de teletransporte', ix, iy - 26, '#fff7e8');
   }
   const SALA_TELE = {
-    nome: 'Mundo do teletransporte', ic: '🌀', get sub() { const N = TP.niveis[teleNivel]; return `${N.ic} Nível ${N.nome} · teste de proficiência`; }, W: 10, D: 8, saida: { x: 5, y: 7.5 }, alturaParede: 2.2,
-    fundo: '#2a2140', base: '#5b3f8f', get parede() { return TP.niveis[teleNivel].parede; }, get piso() { return [TP.niveis[teleNivel].parede, '#ffffff']; },
+    aberto: true, get nome() { return temaTele().nome; }, ic: '🌀', get sub() { const N = TP.niveis[teleNivel]; return `${N.ic} Mundo do nível ${N.nome} · teste de proficiência`; }, W: TW_TELE, D: TD_TELE, saida: { x: 10, y: TD_TELE - 0.5 }, alturaParede: 0,
+    get fundo() { return temaTele().fundo; }, get base() { return escuro(temaTele().chao[0], 0.25); }, parede: '#ffffff', get piso() { return temaTele().chao; },
+    pisoEm: (x, y) => caminhoTele.has(x + ',' + y) ? temaTele().caminho : temaTele().chao[(x * 7 + y * 3) % 5 ? 0 : 1],
     local: () => { const c = fases[0].portalTele; return { f: fases[0], x: c ? c.porta.x : 3.5, y: c ? c.porta.y + 0.4 : MEIO }; },
-    estado: EST_TELE, objs: () => ESTACOES_TELE, livre: (x, y) => livreObjs(SALA_TELE, x, y), usa: usaTele, desenha: desenhaTele,
-    mini: (c, ox, oy, s) => { for (const o of ESTACOES_TELE) { c.fillStyle = feitasTele(teleNivel, o.area) >= perguntasTele(teleNivel, o.area).length ? '#4bb259' : '#9a6bd6'; c.fillRect(ox + o.x * s, oy + o.y * s, s, s); } },
+    estado: EST_TELE, objs: objsTele, livre: (x, y) => livreObjs(SALA_TELE, x, y), usa: usaTele, desenha: desenhaTele,
+    mini: (c, ox, oy, s) => { c.fillStyle = temaTele().caminho; for (const k of caminhoTele) { const [x, y] = k.split(',').map(Number); c.fillRect(ox + x * s, oy + y * s, s, s); } c.fillStyle = '#2f7d45'; for (const a of enfeitesTele(teleNivel).arv) c.fillRect(ox + a.x * s, oy + a.y * s, s * 0.6, s * 0.6); for (const o of ESTACOES_TELE) { c.fillStyle = feitasTele(teleNivel, o.area) >= perguntasTele(teleNivel, o.area).length ? '#4bb259' : '#9a6bd6'; c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, o.d * s); } },
     missoes: () => Object.keys(TP.areas).map(a => ({ nome: `${TP.areas[a].ic} ${TP.areas[a].nome}`, n: feitasTele(teleNivel, a), meta: perguntasTele(teleNivel, a).length, ok: feitasTele(teleNivel, a) >= perguntasTele(teleNivel, a).length })),
     boasVindas: () => { const N = TP.niveis[teleNivel], r = resultadoTeste(), fr = r && r.nivel === teleNivel ? (r.estudar || []).filter(k => TP.areas[k]) : [];
-      dialogo('🌀', `Mundo ${N.nome}`, `<p>Bem-vindo ao mundo ${N.ic} <b>${N.nome}</b>! Cada estação é uma das 6 áreas do teste, com perguntas deste nível e materiais para estudar.</p>${fr.length ? `<p>As estações com ⭐ foram as áreas com menos acertos no seu teste: ${fr.map(k => TP.areas[k].ic + ' ' + TP.areas[k].nome).join(' e ')}.</p>` : ''}<p class="muted">Complete as 6 estações para ganhar +100 ⭐ e uma figurinha. Depois, refaça o teste!</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }]); }
+      dialogo('🌀', temaTele().nome, `<p>Bem-vindo à <b>${temaTele().nome}</b>, o mundo do nível ${N.ic} <b>${N.nome}</b>! Cada prédio é uma das 6 áreas do teste, com perguntas deste nível e materiais para estudar.</p>${fr.length ? `<p>As estações com ⭐ foram as áreas com menos acertos no seu teste: ${fr.map(k => TP.areas[k].ic + ' ' + TP.areas[k].nome).join(' e ')}.</p>` : ''}<p class="muted">Complete as 6 estações para ganhar +100 ⭐ e uma figurinha. Depois, refaça o teste!</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }]); }
   };
   /* --- Museu (Vila do Começo): expõe o que o estudante fez pelo site. As moedas do jogo Cunhe sua Própria Moeda,
      as estrelas secretas do material didático (que dão itens especiais para a casa, sem gastar a contagem), as medalhas
