@@ -312,5 +312,6 @@
   function resultado(recId) { const p = perfilAtual(false); return p && p.r[recId] ? p.r[recId] : null; }
 
   window.MDP = { NIVEIS, MEDALHAS, hoje, registrar, resultado, infoHab, nivelHab, revisoes, recursoPara, medalhas,
-    perfil: () => perfilAtual(false), perfis, _inflar: inflar, criar, trocar, atualizar, excluir, exportar, importar, relatorio, lerRelatorio };
+    perfil: () => perfilAtual(false), perfis, _inflar: inflar, criar, trocar, atualizar, excluir, exportar, importar, relatorio, lerRelatorio,
+    pacote: { empacotar, desempacotar, assinatura } };   // usado pelo Mundo (código do modo turma)
 })();

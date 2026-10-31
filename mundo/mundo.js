@@ -363,7 +363,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -1165,6 +1165,45 @@
     lojaEscolha = null; hud(); salvar();
   }
   const dicaUso = p => p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
+  /* ---------- modo turma: sem servidor, o aluno gera um código de progresso e envia para a professora,
+     que cola os códigos no painel (material-didatico/turma-mundo.html) para ver o ranking e o progresso ---------- */
+  function resumoTurma() {
+    const x = xpHabilidades(), h = {};
+    for (const k of Object.keys(x)) if (x[k] > 0) h[k] = Math.round(x[k]);
+    return { a: S.turma.nome, t: S.turma.codigo, d: Math.floor(Date.now() / 864e5), p: S.pontos, c: S.acertos, e: S.erros,
+      f: Object.keys(S.concluidas).length, j: Object.keys(S.feitos).length, i: Object.values(S.cont).reduce((a, b) => a + b, 0),
+      h, m: Object.keys(S.medalhas).length, am: Object.values(S.amizade).reduce((a, b) => a + Math.floor(b / 10), 0) };
+  }
+  const camposTurma = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am];
+  async function codigoTurma() {
+    const P = window.MDP && MDP.pacote; if (!P) throw new Error('sem pacote');
+    const o = resumoTurma(); o.s = await P.assinatura(JSON.stringify(camposTurma(o)));
+    return P.empacotar('MUN1', o);
+  }
+  const limpaTurma = t => String(t || '').toUpperCase().replace(/[^A-Z0-9º°-]/g, '').slice(0, 16);
+  function janelaTurma() {
+    const el = $('#turma-conteudo'), T = S.turma;
+    el.innerHTML = `<p>Use o modo turma nas aulas: escreva o seu nome e o código que a professora passou (por exemplo, <b>8A-2026</b>). Depois gere o código de progresso e envie para ela pelo canal da turma.</p>
+      <div class="turma-form"><label>Seu nome <input id="tu-nome" class="campo" maxlength="30" value="${esc(T.nome)}" autocomplete="off"></label>
+      <label>Código da turma <input id="tu-cod" class="campo" maxlength="16" value="${esc(T.codigo)}" autocomplete="off" placeholder="8A-2026"></label></div>
+      <div class="btn-row"><button type="button" class="hb verde" id="tu-gerar">📤 Gerar código de progresso</button></div>
+      <div id="tu-saida" hidden><textarea id="tu-codigo" class="campo" rows="3" readonly></textarea>
+      <div class="btn-row"><button type="button" class="hb azul" id="tu-copiar">📋 Copiar</button></div>
+      <p class="muted small">O código leva os seus pontos, as fases e os jogos concluídos, os acertos, as habilidades da BNCC e as medalhas. Ele não atualiza sozinho: gere outro quando quiser mandar o progresso novo.</p></div>
+      <p class="muted small">Professora ou professor: cole os códigos dos alunos no <a href="../material-didatico/turma-mundo.html" target="_blank" rel="noopener">painel da turma do Mundo</a> para ver o ranking e o progresso de cada um.</p>`;
+    $('#tu-gerar').addEventListener('click', async () => {
+      const nome = $('#tu-nome').value.trim().slice(0, 30), cod = limpaTurma($('#tu-cod').value);
+      if (!nome || !cod) { aviso('Escreva o seu nome e o código da turma.'); return; }
+      T.nome = nome; T.codigo = cod; $('#tu-cod').value = cod; salvar();
+      try { $('#tu-codigo').value = await codigoTurma(); $('#tu-saida').hidden = false; $('#tu-codigo').select(); }
+      catch (e) { aviso('Não deu para gerar o código neste navegador.'); }
+    });
+    $('#tu-copiar').addEventListener('click', async () => {
+      const t = $('#tu-codigo'); t.select();
+      try { await navigator.clipboard.writeText(t.value); aviso('📋 Código copiado! Agora é só colar para a professora.'); }
+      catch (e) { document.execCommand && document.execCommand('copy'); aviso('📋 Código selecionado: copie e envie.'); }
+    });
+  }
   /* ---------- Casa do Enigma: um escape room sem cronômetro (código binário, Cifra de César e uma chave do inventário) ---------- */
   const EW = 7, ED = 6, ESAIDA = { x: 3.5, y: ED - 0.5 };
   const PALAVRAS = ['CHAVE', 'DADOS', 'PIXEL', 'REDES', 'TECLA', 'ROBOS', 'LOGICA', 'CODIGO'];
@@ -1869,7 +1908,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2088,7 +2127,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;

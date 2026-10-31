@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Painel da turma do Mundo | Júlia Quoos</title>
+<meta name="description" content="Junte os códigos de progresso do Mundo do site e veja o ranking da turma e o progresso de cada estudante.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 1180px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 46px); margin: 4px 0 6px; }
+  .doc h2 { font-size: 24px; margin: 34px 0 8px; }
+  textarea { width: 100%; font: 13px ui-monospace, Consolas, monospace; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px; padding: 10px 12px; resize: vertical; word-break: break-all; }
+  .tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 12px 0; }
+  .msg { font-size: 14px; font-weight: 600; min-height: 1.4em; margin: 8px 0 0; }
+  .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+  .scroll { overflow-x: auto; border: 1.5px solid var(--ink); border-radius: 18px; max-width: 100%; }
+  table { border-collapse: collapse; font-size: 13.5px; min-width: 100%; }
+  th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: center; white-space: nowrap; }
+  thead th { position: sticky; top: 0; background: var(--paper-2); font-weight: 600; vertical-align: bottom; }
+  thead th.code { writing-mode: vertical-rl; transform: rotate(180deg); font-family: ui-monospace, Consolas, monospace; font-size: 12px; padding: 8px 4px; }
+  th.name, td.name { text-align: left; position: sticky; left: 0; background: var(--paper); z-index: 1; }
+  thead th.name { z-index: 2; background: var(--paper-2); }
+  td.name small { display: block; color: var(--ink-2); font-weight: 400; }
+  .cell { display: inline-block; width: 28px; height: 22px; border-radius: 7px; border: 1.5px solid var(--ink); font-size: 11.5px; font-weight: 700; line-height: 19px; }
+  .cell.nv0 { border-style: dashed; }
+  tfoot td { font-weight: 700; background: var(--paper-2); }
+  tfoot td.name { background: var(--paper-2); }
+  .warn { color: var(--bad); font-weight: 700; }
+  .rm { border: 0; background: none; cursor: pointer; color: var(--ink-2); font-size: 14px; padding: 2px 6px; border-radius: 8px; }
+  .rm:hover { background: var(--pill); color: var(--ink); }
+  .attn { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .attn a { text-decoration: none; color: var(--ink); }
+  .attn a:hover { background: var(--pill); }
+  .empty { border: 1.5px dashed var(--ink); border-radius: 18px; padding: 22px; color: var(--ink-2); }
+  .rank td.pos { font-size: 18px; width: 40px; }
+  .rank td.pts { font-weight: 700; }
+  .bars { display: inline-flex; gap: 3px; align-items: flex-end; height: 26px; }
+  .bars span { display: block; width: 9px; border-radius: 3px 3px 0 0; background: var(--ink-2); min-height: 2px; }
+  .bars span.co { background: #3f8fe0; } .bars span.ma { background: #f6b73c; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--ink-2); }
+  body.projetor .doc > :not(#out), body.projetor #topbar, body.projetor footer, body.projetor .no-proj { display: none !important; }
+  body.projetor .doc { max-width: none; }
+  body.projetor .rank, body.projetor .rank td.pos { font-size: 26px; } body.projetor h2 { font-size: 40px; } body.projetor .rank td, body.projetor .rank th { padding: 12px 18px; }
+  body.projetor #sair-proj { display: inline-flex !important; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc">
+  <div class="no-print" style="font-size:14px;margin-bottom:18px"><a href="professor.html" style="color:var(--ink-2)">← Área do professor</a></div>
+  <span class="eyebrow">👩‍🏫 Área do professor</span>
+  <h1>Painel da turma do Mundo</h1>
+  <p class="muted" style="max-width:780px">No <a href="../mundo/">Mundo do site</a>, cada estudante abre <strong>☰ Menu → 👥 Modo turma</strong>, escreve o nome e o código da turma que você combinou (por exemplo, 8A-2026) e gera um código de progresso. Ele envia o código para você (no chat da turma, por e-mail ou como arquivo) e você cola aqui. Os dados ficam só neste navegador: não há cadastro nem servidor, e o painel só muda quando chega um código novo.</p>
+
+  <div class="panel no-print" style="margin-top:18px">
+    <label for="codes" style="font-weight:600">Códigos dos estudantes (pode colar vários de uma vez)</label>
+    <textarea id="codes" rows="4" placeholder="MUN1z.…" style="margin-top:6px"></textarea>
+    <div class="tools">
+      <button class="btn" type="button" id="add">Adicionar</button>
+      <label class="small">ou arquivos: <input type="file" id="files" accept=".txt,text/plain" multiple></label>
+    </div>
+    <p class="msg" id="msg" role="status"></p>
+  </div>
+
+  <div class="tools"><div class="chips" id="f-turma"></div></div>
+  <div id="out"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js?v=20261031i"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const KEY = 'mundo-turma-v1';
+  const $ = s => document.querySelector(s);
+  const P = MDP.pacote;
+  const ORDEM = ['PC', 'MD', 'CD', 'NU', 'AL', 'GE', 'GM', 'PE'];
+  let alunos = [], turma = null;   // {a, t, d, p, c, e, f, j, i, h, m, am, valido, code}
+
+  const lerCodes = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
+  const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(alunos.map(x => x.code))); } catch (e) {} };
+  const dataTxt = d => new Date(d * 864e5).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+  const campos = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am];
+  const pct = x => x.c + x.e ? Math.round(100 * x.c / (x.c + x.e)) + '%' : '–';
+
+  async function adicionar(textos) {
+    const codes = textos.join('\n').match(/MUN1[jz]\.[A-Za-z0-9_-]+/g) || [];
+    let ok = 0, ruins = 0;
+    for (const code of codes) {
+      try {
+        const o = await P.desempacotar('MUN1', code);
+        o.valido = o.s === await P.assinatura(JSON.stringify(campos(o)));
+        o.code = code; o.h = o.h || {};
+        // mesmo nome na mesma turma: fica o código mais recente (ou o de mais pontos no mesmo dia)
+        const i = alunos.findIndex(x => x.t === o.t && x.a.toLowerCase() === String(o.a).toLowerCase());
+        if (i < 0) alunos.push(o); else if (o.d > alunos[i].d || (o.d === alunos[i].d && o.p >= alunos[i].p)) alunos[i] = o;
+        ok++;
+      } catch (e) { ruins++; }
+    }
+    salvar();
+    return { ok, ruins, achados: codes.length };
+  }
+  const daTurma = () => alunos.filter(x => x.t === turma).sort((a, b) => b.p - a.p || b.f - a.f || a.a.localeCompare(b.a, 'pt-BR'));
+
+  function csv() {
+    const linhas = [['Posição', 'Estudante', 'Turma', 'Pontos', 'Fases concluídas', 'Jogos feitos', 'Acertos', 'Erros', 'Itens', 'Medalhas', 'Corações', ...ORDEM.map(k => 'XP ' + EIXOS[k].nome), 'Código de', 'Confere']];
+    daTurma().forEach((x, i) => linhas.push([i + 1, x.a, x.t, x.p, x.f, x.j, x.c, x.e, x.i, x.m, x.am, ...ORDEM.map(k => x.h[k] || 0), dataTxt(x.d), x.valido ? 'sim' : 'não']));
+    const txt = '\ufeff' + linhas.map(l => l.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([txt], { type: 'text/csv' }));
+    a.download = `mundo-turma-${turma}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  function render() {
+    const turmas = [...new Set(alunos.map(x => x.t))].sort();
+    if (!turmas.includes(turma)) turma = turmas[0] || null;
+    $('#f-turma').innerHTML = turmas.map(t => `<button class="chip" type="button" data-t="${esc(t)}" aria-pressed="${t === turma}">${esc(t)} (${alunos.filter(x => x.t === t).length})</button>`).join('');
+    const out = $('#out');
+    if (!turma) { out.innerHTML = '<div class="empty">Nenhum código ainda. Combine um código de turma com os estudantes e peça que eles gerem o código de progresso no <strong>Modo turma</strong> do Mundo.</div>'; return; }
+    const lista = daTurma(), max = Math.max(1, ...lista.flatMap(x => ORDEM.map(k => x.h[k] || 0)));
+    const media = k => Math.round(lista.reduce((s, x) => s + (x[k] || 0), 0) / lista.length);
+    out.innerHTML = `
+      <h2>Ranking da turma ${esc(turma)}</h2>
+      <p class="small no-proj">Média da turma: ${media('p')} ⭐ · ${media('f')} fase(s) · ${media('j')} jogo(s) feitos.</p>
+      <div class="btn-row no-print" style="margin:6px 0 12px"><button class="btn no-proj" type="button" id="proj">📽️ Mostrar o ranking na tela</button><button class="btn ghost" type="button" id="sair-proj" style="display:none">Sair da tela cheia</button></div>
+      <div class="scroll"><table class="rank">
+        <thead><tr><th></th><th class="name">Estudante</th><th>⭐ Pontos</th><th>Fases</th><th class="no-proj">Jogos</th><th class="no-proj">Acertos</th><th class="no-proj">Medalhas</th><th class="no-proj">Habilidades</th><th class="no-proj">Código de</th><th class="no-print no-proj"></th></tr></thead>
+        <tbody>${lista.map((x, i) => `<tr>
+          <td class="pos">${['🥇', '🥈', '🥉'][i] || i + 1}</td>
+          <td class="name"><strong>${esc(x.a)}</strong>${x.valido ? '' : ' <span class="warn" title="O código foi alterado depois de gerado">⚠</span>'}</td>
+          <td class="pts">${x.p}</td><td>${x.f}</td><td class="no-proj">${x.j}</td><td class="no-proj" title="${x.c} certas, ${x.e} erradas">${pct(x)}</td><td class="no-proj">${x.m}</td>
+          <td class="no-proj"><span class="bars">${ORDEM.map(k => `<span class="${EIXOS[k].comp === 'CO' ? 'co' : 'ma'}" style="height:${Math.round(2 + 24 * (x.h[k] || 0) / max)}px" title="${esc(EIXOS[k].nome)}: ${x.h[k] || 0} XP"></span>`).join('')}</span></td>
+          <td class="no-proj small">${dataTxt(x.d)}</td>
+          <td class="no-print no-proj"><button class="rm" type="button" data-code="${esc(x.code)}" aria-label="Remover ${esc(x.a)}">✕</button></td></tr>`).join('')}</tbody>
+      </table></div>
+      <div class="legend no-proj" style="margin-top:8px"><span>Habilidades, na ordem:</span>${ORDEM.map(k => `<span>${EIXOS[k].comp === 'CO' ? '🟦' : '🟨'} ${esc(EIXOS[k].nome)}</span>`).join('')}</div>
+      ${lista.some(x => !x.valido) ? '<p class="small"><span class="warn">⚠</span> Código que não confere com a assinatura (foi editado depois de gerado).</p>' : ''}
+      <div class="btn-row no-print no-proj" style="margin-top:14px">
+        <button class="btn ghost" type="button" id="csv">Baixar planilha (CSV)</button>
+        <button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir</button>
+        <button class="btn ghost" type="button" id="clear">Limpar esta turma</button>
+      </div>`;
+    out.querySelectorAll('.rm').forEach(b => b.onclick = () => { alunos = alunos.filter(x => x.code !== b.dataset.code); salvar(); render(); });
+    $('#csv').onclick = csv;
+    $('#proj').onclick = () => { document.body.classList.add('projetor'); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {}); };
+    $('#sair-proj').onclick = () => { document.body.classList.remove('projetor'); if (document.fullscreenElement) document.exitFullscreen(); };
+    $('#clear').onclick = () => { if (confirm(`Remover todos os códigos da turma ${turma} deste navegador?`)) { alunos = alunos.filter(x => x.t !== turma); salvar(); render(); } };
+  }
+  document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) document.body.classList.remove('projetor'); });
+  $('#f-turma').onclick = e => { const b = e.target.closest('button'); if (b) { turma = b.dataset.t; render(); } };
+  $('#add').onclick = async () => {
+    const r = await adicionar([$('#codes').value]);
+    const msg = $('#msg');
+    if (!r.achados) { msg.textContent = 'Nenhum código encontrado. Os códigos do Mundo começam com MUN1.'; msg.className = 'msg bad'; return; }
+    msg.textContent = `${r.ok} código(s) adicionado(s)${r.ruins ? `, ${r.ruins} com erro (código incompleto?)` : ''}.`;
+    msg.className = 'msg ' + (r.ruins ? 'bad' : 'ok');
+    $('#codes').value = ''; render();
+  };
+  $('#files').onchange = async e => {
+    const textos = await Promise.all([...e.target.files].map(x => x.text()));
+    const r = await adicionar(textos);
+    $('#msg').textContent = `${r.ok} código(s) adicionado(s) a partir de ${e.target.files.length} arquivo(s).`; $('#msg').className = 'msg ok';
+    e.target.value = ''; render();
+  };
+
+  adicionar(lerCodes()).then(render);
+})();
+</script>
+</body>
+</html>
