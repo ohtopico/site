@@ -91,3 +91,16 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .av-cores button { min-width: 38px; height: 38px; border-radius: 10px; border: 2px solid rgba(0,0,0,.25); cursor: pointer; font: 600 13px Lexend, sans-serif; padding: 0 10px; background: #fff; color: var(--ink); }
 .av-cores button[aria-pressed="true"] { outline: 3px solid var(--ink); outline-offset: 1px; }
 .dica-livro { background: #eef6ff; border: 2px solid #9cc5f0; border-radius: 14px; padding: 10px 14px; }
+
+/* oficina da casa */
+.hb:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+.receitas { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; }
+.rec { display: flex; align-items: center; gap: 10px; border: 2px solid var(--borda); border-radius: 14px; padding: 8px 10px; background: #fff; }
+.rec.travada { opacity: .6; background: #f4f1f6; }
+.rec-ic { font-size: 26px; }
+.rec-txt { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.rec-txt small { font-size: 13px; color: #5a6a5c; }
+.rec-txt .falta { color: #c0392b; } .rec-txt .tem { color: #2e7d32; font-weight: 600; }
+.rec .hb, .inv .it .hb { padding: 6px 10px; font-size: 13px; }
+.av-cores button[data-cor] { width: 38px; }
+@media (max-width: 600px) { .hud-botoes .t { display: none; } .hud-botoes { gap: 6px; flex-wrap: nowrap; } .hud-botoes .hb { padding: 7px 9px; font-size: 17px; } }

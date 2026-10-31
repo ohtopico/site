@@ -147,6 +147,16 @@
       const x = Math.floor(cx + Math.cos(th) * d), y = Math.floor(cy + Math.sin(th) * d);
       if (at(x, y) && f.tile[pos(x, y)] === T.grama) f.tile[pos(x, y)] = T.caminho;
     }
+    // fase 1: a casa do jogador, perto da entrada e ao norte da estrada, com um caminho até ela
+    if (f.idx === 0) {
+      const w = 4, d = 4;
+      const cabe = (hx, hy) => { for (let j = hy - 1; j <= hy + d; j++) for (let k = hx - 1; k <= hx + w; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama) return false; return true; };
+      let hx = 3, hy = MEIO - 2 - 2 - d;
+      search: for (const yy of [hy, hy - 1, hy - 2, hy + 1]) for (const xx of [3, 4, 2, 5]) if (cabe(xx, yy)) { hx = xx; hy = yy; break search; }
+      for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
+      for (let j = hy + d; j < MEIO - 1; j++) for (const k of [hx + 1, hx + 2]) f.tile[pos(k, j)] = T.caminho;
+      f.minhaCasa = { gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
+    }
     // casas em volta do anel, metade por dentro e metade por fora, longe da estrada
     f.casas = [];
     const ocupa = (x, y, w, d, m = 1) => { for (let j = y - m; j < y + d + m; j++) for (let i = x - m; i < x + w + m; i++) { if (!at(i, j) || f.sol[pos(i, j)]) return true; } return false; };
@@ -250,13 +260,42 @@
   const faseDeX = x => fases.find(f => x >= f.x0 && x < f.x0 + f.L) || fases[fases.length - 1];
   function tileEm(x, y) { const f = faseDeX(x), lx = Math.floor(x - f.x0), ly = Math.floor(y); if (lx < 0 || ly < 0 || lx >= f.L || ly >= ALT) return { f, t: T.grama, sol: 1 }; return { f, t: f.tile[ly * f.L + lx], sol: f.sol[ly * f.L + lx], v: f.var[ly * f.L + lx] }; }
 
+  /* ---------- a casa do jogador: três cômodos e móveis feitos com os itens ---------- */
+  const CW = 13, CD = 9;                                     // tamanho por dentro, em blocos
+  const COMODOS = [{ nome: 'Sala', x0: 0, x1: 5, chao: '#e8c79a', parede: '#fde2b8' }, { nome: 'Quarto', x0: 5, x1: 9, chao: '#f7c6d9', parede: '#f9d3e3' }, { nome: 'Cozinha', x0: 9, x1: 13, chao: '#cfe8f5', parede: '#d6f0e0' }];
+  const SAIDA = { x: 2.5, y: CD - 0.5 };
+  /* custo: itens do inventário; requer: móvel que precisa ter sido construído antes (um objeto libera o outro) */
+  const MOVEIS = {
+    bancada: { nome: 'Bancada de criação', ic: '🛠️', w: 2, d: 1, inicial: true, fixo: true, acao: 'construir', des: (x, y) => { caixa(x + 0.05, y + 0.1, 0, 1.9, 0.8, 0.75, '#c08a52'); caixa(x + 0.2, y + 0.25, 0.75, 0.45, 0.35, 0.25, '#9aa3ad'); caixa(x + 1.2, y + 0.3, 0.75, 0.55, 0.25, 0.12, '#e0564a'); caixa(x + 1.3, y + 0.35, 0.87, 0.3, 0.15, 0.1, '#ffd58a'); } },
+    computador: { nome: 'Computador', ic: '💻', w: 2, d: 1, inicial: true, acao: 'usar o computador', des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 1.8, 0.8, 0.7, '#f3d9a4'); caixa(x + 0.55, y + 0.2, 0.7, 0.9, 0.15, 0.6, '#333333'); naFace('y', x + 0.55, y + 0.2, 0.9, 0.15, 0.07, 0, 0.76, 0.76, 0.48, '#7fd3f7'); caixa(x + 0.55, y + 0.5, 0.7, 0.9, 0.25, 0.04, '#e6e6e6'); } },
+    estante: { nome: 'Estante de livros', ic: '📚', w: 1, d: 2, inicial: true, acao: 'ver a biblioteca', des: (x, y) => { caixa(x + 0.05, y + 0.05, 0, 0.6, 1.9, 2, '#b07a45'); for (let z = 0; z < 3; z++) ['#e0564a', '#3f8fe0', '#4bb259', '#f6b73c', '#9a6bd6'].forEach((c, i) => naFace('x', x + 0.05, y + 0.05, 0.6, 1.9, 0.12 + i * 0.33 + (z % 2) * 0.08, 0, 0.22, 0.15 + z * 0.62, 0.45, c)); } },
+    bau: { nome: 'Baú', ic: '🧰', w: 1, d: 1, inicial: true, acao: 'abrir o baú', des: (x, y) => { caixa(x + 0.15, y + 0.2, 0, 0.7, 0.6, 0.45, '#a0703f'); caixa(x + 0.12, y + 0.17, 0.45, 0.76, 0.66, 0.14, '#7a5230'); naFace('y', x + 0.15, y + 0.2, 0.7, 0.6, 0.29, 0, 0.12, 0.3, 0.2, '#ffd58a'); } },
+    espelho: { nome: 'Espelho', ic: '🪞', w: 1, d: 1, inicial: true, acao: 'mudar o visual', des: (x, y) => { caixa(x + 0.2, y + 0.05, 0, 0.6, 0.12, 1.7, '#f7a8c4'); naFace('y', x + 0.2, y + 0.05, 0.6, 0.12, 0.08, 0, 0.44, 0.15, 1.4, '#d8f3ff'); naFace('y', x + 0.2, y + 0.05, 0.6, 0.12, 0.14, 0, 0.08, 0.9, 0.5, '#ffffff'); } },
+    cama: { nome: 'Cama', ic: '🛏️', w: 1, d: 2, inicial: true, acao: 'descansar', des: (x, y) => { caixa(x + 0.05, y + 0.02, 0, 0.9, 0.14, 0.95, '#a0703f'); caixa(x + 0.05, y + 0.1, 0, 0.9, 1.85, 0.35, '#c08a52'); caixa(x + 0.1, y + 0.15, 0.35, 0.8, 1.75, 0.15, '#ffffff'); caixa(x + 0.2, y + 0.22, 0.5, 0.6, 0.4, 0.12, '#fff7e8'); caixa(x + 0.08, y + 0.75, 0.42, 0.84, 1.2, 0.13, claro(S.casa.cor, 0.1)); } },
+    vaso: { nome: 'Vaso de flores', ic: '🌷', w: 1, d: 1, custo: { estrela: 1 }, acao: 'regar', des: (x, y) => { caixa(x + 0.35, y + 0.35, 0, 0.3, 0.3, 0.35, '#e07b5a'); caixa(x + 0.45, y + 0.45, 0.35, 0.1, 0.1, 0.3, '#4f9a4b', { blocos: false }); caixa(x + 0.33, y + 0.33, 0.65, 0.34, 0.34, 0.2, '#ff9fb6'); } },
+    tapete: { nome: 'Tapete', ic: '🟪', w: 2, d: 2, chao: true, custo: { estrela: 2 }, des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 1.8, 1.8, 0.04, '#c7b4f2', { blocos: false }); caixa(x + 0.4, y + 0.4, 0.04, 1.2, 1.2, 0.01, '#fff7e8', { blocos: false, contorno: false }); caixa(x + 0.7, y + 0.7, 0.05, 0.6, 0.6, 0.01, '#f7a8c4', { blocos: false, contorno: false }); } },
+    quadro: { nome: 'Quadro', ic: '🖼️', w: 1, d: 1, custo: { livro: 2 }, acao: 'ver as conquistas', des: (x, y) => { caixa(x + 0.15, y + 0.02, 1.0, 0.7, 0.08, 0.6, '#a0703f', { blocos: false }); naFace('y', x + 0.15, y + 0.02, 0.7, 0.08, 0.07, 0, 0.56, 1.06, 0.48, '#a8d8f7'); naFace('y', x + 0.15, y + 0.02, 0.7, 0.08, 0.07, 0, 0.56, 1.06, 0.16, '#8fdc78'); naFace('y', x + 0.15, y + 0.02, 0.7, 0.08, 0.45, 0, 0.12, 1.36, 0.12, '#ffd58a'); } },
+    planta: { nome: 'Planta grande', ic: '🪴', w: 1, d: 1, custo: { maca: 2 }, acao: 'regar', des: (x, y) => { caixa(x + 0.3, y + 0.3, 0, 0.4, 0.4, 0.4, '#f2e48a'); caixa(x + 0.15, y + 0.15, 0.4, 0.7, 0.7, 0.55, '#6fcf7f'); caixa(x + 0.3, y + 0.3, 0.95, 0.4, 0.4, 0.35, '#8fdc78'); } },
+    luminaria: { nome: 'Luminária', ic: '💡', w: 1, d: 1, custo: { estrela: 1, diamante: 1 }, acao: 'acender', des: (x, y, m) => { if (m && m.on) { const [sx, sy] = iso(x + 0.5, y + 0.5, 1.2); const g = ctx.createRadialGradient(sx, sy, 4, sx, sy, 110); g.addColorStop(0, 'rgba(255,230,140,.45)'); g.addColorStop(1, 'rgba(255,230,140,0)'); ctx.fillStyle = g; ctx.fillRect(sx - 110, sy - 110, 220, 220); } caixa(x + 0.35, y + 0.35, 0, 0.3, 0.3, 0.08, '#888888', { blocos: false }); caixa(x + 0.45, y + 0.45, 0.08, 0.1, 0.1, 1.2, '#888888', { blocos: false }); caixa(x + 0.25, y + 0.25, 1.25, 0.5, 0.5, 0.4, m && m.on ? '#fff3b0' : '#ffd58a'); } },
+    mesa: { nome: 'Mesa', ic: '🍽️', w: 2, d: 1, custo: { maca: 1, estrela: 1 }, des: (x, y) => { for (const [a, b] of [[0.15, 0.2], [1.75, 0.2], [0.15, 0.7], [1.75, 0.7]]) caixa(x + a, y + b, 0, 0.1, 0.1, 0.6, '#a0703f', { blocos: false }); caixa(x + 0.05, y + 0.1, 0.6, 1.9, 0.8, 0.12, '#f3d9a4'); caixa(x + 0.8, y + 0.4, 0.72, 0.3, 0.3, 0.12, '#ffffff'); } },
+    poltrona: { nome: 'Poltrona', ic: '🛋️', w: 1, d: 1, custo: { estrela: 2, livro: 1 }, requer: 'tapete', acao: 'ler um pouco', des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 0.8, 0.22, 0.95, '#d0609c'); caixa(x + 0.1, y + 0.3, 0, 0.8, 0.6, 0.42, '#e07bb0'); caixa(x + 0.05, y + 0.3, 0.42, 0.15, 0.6, 0.2, '#d0609c'); caixa(x + 0.8, y + 0.3, 0.42, 0.15, 0.6, 0.2, '#d0609c'); } },
+    geladeira: { nome: 'Geladeira', ic: '🧊', w: 1, d: 1, custo: { maca: 3, chave: 1 }, requer: 'mesa', acao: 'abrir a geladeira', des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 0.8, 0.8, 1.9, '#eef6fa'); naFace('y', x + 0.1, y + 0.1, 0.8, 0.8, 0, 0, 0.8, 1.3, 0.02, '#b8c4cc'); naFace('y', x + 0.1, y + 0.1, 0.8, 0.8, 0.62, 0, 0.06, 0.7, 0.4, '#9aa3ad'); naFace('y', x + 0.1, y + 0.1, 0.8, 0.8, 0.62, 0, 0.06, 1.4, 0.3, '#9aa3ad'); } },
+    aquario: { nome: 'Aquário', ic: '🐠', w: 1, d: 1, custo: { diamante: 2, estrela: 1 }, requer: 'vaso', acao: 'ver os peixes', des: (x, y) => { caixa(x + 0.1, y + 0.2, 0, 0.8, 0.6, 0.5, '#5a3b2a'); caixa(x + 0.12, y + 0.22, 0.5, 0.76, 0.56, 0.55, '#9fe3f5', { blocos: false }); const k = (Math.sin(agora / 700) + 1) / 2; naFace('y', x + 0.12, y + 0.22, 0.76, 0.56, 0.1 + k * 0.45, 0, 0.14, 0.75, 0.08, '#ff8a3d'); } },
+    robo: { nome: 'Robozinho', ic: '🤖', w: 1, d: 1, custo: { diamante: 2, chave: 1 }, requer: 'luminaria', acao: 'responder ao robô', des: (x, y) => { const z = Math.abs(Math.sin(agora / 400)) * 0.06; caixa(x + 0.3, y + 0.3, z, 0.4, 0.4, 0.45, '#a8e6b8'); caixa(x + 0.32, y + 0.32, z + 0.45, 0.36, 0.36, 0.3, '#c9efd9'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.07, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.22, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); caixa(x + 0.47, y + 0.47, z + 0.75, 0.06, 0.06, 0.2, '#888888', { blocos: false }); caixa(x + 0.44, y + 0.44, z + 0.95, 0.12, 0.12, 0.08, '#e0564a', { blocos: false }); } },
+    telescopio: { nome: 'Telescópio', ic: '🔭', w: 1, d: 1, custo: { diamante: 3, estrela: 2 }, requer: 'robo', acao: 'olhar o mapa', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 0.95, '#555555', { blocos: false }); caixa(x + 0.3, y + 0.35, 0.05, 0.4, 0.3, 0.05, '#555555', { blocos: false }); caixa(x + 0.38, y + 0.1, 0.95, 0.24, 0.8, 0.24, '#3f8fe0'); caixa(x + 0.35, y + 0.05, 0.92, 0.3, 0.12, 0.3, '#ffd58a'); } },
+    arcade: { nome: 'Fliperama', ic: '🕹️', w: 1, d: 1, custo: { chave: 2, diamante: 2 }, requer: 'robo', acao: 'jogar', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 0.8, 0.7, 1.75, '#9a6bd6'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.12, 0, 0.56, 1.0, 0.5, '#1b2531'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.25 + ((agora / 300 | 0) % 3) * 0.1, 0, 0.08, 1.2, 0.08, '#a8e6b8'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.2, 0, 0.1, 0.75, 0.1, '#e0564a'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.45, 0, 0.1, 0.75, 0.1, '#ffd58a'); } }
+  };
+  const casaNova = () => ({ cor: '#f7a8c4', guardados: {}, feitos: {}, visitou: false, dormiu: '',
+    moveis: [{ id: 'estante', x: 0, y: 1 }, { id: 'computador', x: 2, y: 0 }, { id: 'bau', x: 4, y: 0 }, { id: 'espelho', x: 6, y: 0 }, { id: 'cama', x: 8, y: 0 }, { id: 'bancada', x: 10, y: 0 }] });
+
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), x: fases[0].x0 + 3.5, y: MEIO });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), x: fases[0].x0 + 3.5, y: MEIO });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
+  S.casa = Object.assign(casaNova(), S.casa);
   // versão anterior (casas em fileiras): a posição salva não serve mais, e os itens antigos contam para a missão
   if (!S.cont || !Object.keys(S.cont).length) for (const k of Object.keys(S.itens || {})) { const fid = k.split('-')[0]; S.cont[fid] = (S.cont[fid] || 0) + 1; }
   for (const k of Object.keys(S.itens)) if (!k.includes('-s' + SEMANA + '-')) delete S.itens[k];   // só os desta semana
@@ -410,6 +449,27 @@
     if (feito) { ctx.font = '14px system-ui, sans-serif'; ctx.fillText('✅', sx + 16, sy - 16); }
     if (perto) rotulo(c.lugar.titulo, sx, sy - 34);
   }
+  /* a casa do jogador: maior, com telhado em degraus, floreiras e fumaça na chaminé */
+  function desenhaMinhaCasa(c, perto) {
+    const x = c.gx, y = c.y, w = c.w, d = c.d, base = S.casa.cor, telhado = escuro(base, 0.3);
+    sombra(x + w / 2, y + d / 2, 2.4);
+    caixa(x + 0.2, y + 0.2, 0, w - 0.4, d - 0.4, 2.2, base);
+    caixa(x, y, 2.2, w, d, 0.4, telhado); caixa(x + 0.5, y + 0.5, 2.6, w - 1, d - 1, 0.4, telhado); caixa(x + 1, y + 1, 3.0, w - 2, d - 2, 0.4, telhado);
+    caixa(x + w - 1.1, y + 0.6, 2.6, 0.5, 0.5, 1.3, '#e6e0d4');
+    for (let k = 0; k < 3; k++) { const t = ((agora / 1400 + k / 3) % 1); const [sx, sy] = iso(x + w - 0.85, y + 0.85, 3.9 + t * 1.4); ctx.fillStyle = `rgba(255,255,255,${0.7 * (1 - t)})`; ctx.beginPath(); ctx.arc(sx + t * 10, sy, 5 + t * 6, 0, Math.PI * 2); ctx.fill(); }
+    const bx = x + 0.2, by = y + 0.2, ww = w - 0.4, dd = d - 0.4;
+    for (const face of ['y', 'x']) for (const a of face === 'y' ? [0.3, ww - 1.1] : [0.5, dd - 1.3]) {
+      naFace(face, bx, by, ww, dd, a, 0, 0.8, 1.0, 0.7, '#ffffff'); naFace(face, bx, by, ww, dd, a + 0.07, 0, 0.66, 1.06, 0.58, '#cfefff');
+      naFace(face, bx, by, ww, dd, a - 0.05, 0, 0.9, 0.8, 0.2, '#8fdc78'); naFace(face, bx, by, ww, dd, a + 0.1, 0, 0.12, 0.92, 0.1, '#ff9fb6'); naFace(face, bx, by, ww, dd, a + 0.5, 0, 0.12, 0.92, 0.1, '#fff27a');
+    }
+    naFace('y', bx, by, ww, dd, ww / 2 - 0.4, 0, 0.8, 0, 1.4, '#ffffff'); naFace('y', bx, by, ww, dd, ww / 2 - 0.33, 0, 0.66, 0, 1.33, '#9a6a3a');
+    naFace('y', bx, by, ww, dd, ww / 2 + 0.15, 0, 0.08, 0.65, 0.08, '#ffd58a');
+    const [sx, sy] = iso(x + w / 2, y + d / 2, 4.3 + Math.sin(agora / 500) * 0.06);
+    ctx.fillStyle = '#ffffff'; ctx.strokeStyle = escuro(base, 0.35); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(sx - 18, sy - 18, 36, 34, 9); ctx.fill(); ctx.stroke();
+    ctx.font = '20px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText('🏠', sx, sy - 1);
+    if (perto) rotulo('Sua casa', sx, sy - 34, '#fff7e8');
+  }
   function sombra(x, y, r) { const [sx, sy] = iso(x, y); ctx.fillStyle = 'rgba(40,60,40,.16)'; ctx.beginPath(); ctx.ellipse(sx, sy + 2, r * TW / 2.2, r * TH / 2.2, 0, 0, Math.PI * 2); ctx.fill(); }
   function rotulo(t, sx, sy, cor = '#ffffff', tinta = '#1d2a1f') {
     ctx.font = '600 13px Lexend, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -509,8 +569,10 @@
   const P = { x: S.x, y: S.y, dir: 'y+', andando: false, passo: 0, pulo: 0, vpulo: 0 };
   const teclas = {};
   let correndo = false, dialogoAberto = false, janelaAberta = null, destino = null, agora = 0, faseAtual = null;
+  let dentro = false, colocando = null, mouse = null;   // dentro da casa; móvel sendo colocado; ponto do mouse no mapa
 
   function livre(x, y) {
+    if (dentro) return livreCasa(x, y);
     const r = 0.22;
     for (const [dx, dy] of [[-r, -r], [r, -r], [-r, r], [r, r]]) {
       const qx = x + dx, qy = y + dy;
@@ -541,20 +603,204 @@
       P.passo += dt * (corre ? 16 : 11);
     }
     if (P.pulo > 0 || P.vpulo) { P.vpulo -= 9 * dt; P.pulo = Math.max(0, P.pulo + P.vpulo * dt); if (P.pulo === 0) P.vpulo = 0; }
+    if (dentro) { if (P.andando && my > 0 && P.y > CD - 0.55 && P.x > 1.8 && P.x < 3.4) saiCasa(); return; }   // pisou no tapete da porta
     // itens: pega ao passar por cima (o diamante pede uma pergunta antes)
     const f = faseDeX(P.x);
     for (const it of f.itens) if (!S.itens[it.id] && Math.hypot(it.x - P.x, it.y - P.y) < 0.55) { pegaItem(it, f); break; }
     if (f !== faseAtual) { faseAtual = f; hud(); if (agora > 1000) aviso(`${f.icone} ${f.nome}`); }
   }
   function alvoPerto() {
+    if (dentro) return alvoCasa();
     const f = faseDeX(P.x);
     let melhor = null, dm = 1.5;
     const tenta = (x, y, ob) => { const d = Math.hypot(x - P.x, y - P.y); if (d < dm) { dm = d; melhor = ob; } };
     for (const c of f.casas) tenta(c.porta.x, c.porta.y, { tipo: 'casa', casa: c });
+    if (f.minhaCasa) tenta(f.minhaCasa.porta.x, f.minhaCasa.porta.y, { tipo: 'minhacasa' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
     tenta(f.placa.x, f.placa.y + 0.8, { tipo: 'placa', fase: f });
     if (f.portao) tenta(f.portao.x - 0.8, f.portao.y, { tipo: 'portao', fase: f });
     return melhor;
+  }
+
+  /* ---------- dentro da casa ---------- */
+  const ocupado = (tx, ty) => S.casa.moveis.find(m => { const M = MOVEIS[m.id]; return !M.chao && tx >= m.x && tx < m.x + M.w && ty >= m.y && ty < m.y + M.d; });
+  function livreCasa(x, y) {
+    const r = 0.22;
+    if (x - r < 0.05 || y - r < 0.05 || x + r > CW - 0.05 || y + r > CD - 0.02) return false;
+    for (const px of [5, 9]) if (x - r < px + 0.1 && x + r > px - 0.1 && (y - r < 3 || y + r > 6)) return false;   // paredes entre os cômodos, com passagem no meio
+    for (const [dx, dy] of [[-r, -r], [r, -r], [-r, r], [r, r]]) if (ocupado(Math.floor(x + dx), Math.floor(y + dy))) return false;
+    return true;
+  }
+  /* as passagens entre os cômodos e o tapete da porta ficam sempre livres */
+  const reservado = (tx, ty) => ([4, 5, 8, 9].includes(tx) && ty >= 3 && ty <= 5) || (tx === 2 && ty >= CD - 2);
+  function podeColocar(id, tx, ty) {
+    const M = MOVEIS[id];
+    if ([5, 9].some(px => tx < px && tx + M.w > px)) return false;   // não atravessa a parede
+    for (let j = ty; j < ty + M.d; j++) for (let i = tx; i < tx + M.w; i++) {
+      if (i < 0 || j < 0 || i >= CW || j >= CD || reservado(i, j)) return false;
+      if (M.chao ? S.casa.moveis.some(m => MOVEIS[m.id].chao && i >= m.x && i < m.x + MOVEIS[m.id].w && j >= m.y && j < m.y + MOVEIS[m.id].d) : ocupado(i, j)) return false;
+      if (!M.chao && Math.abs(i + 0.5 - P.x) < 0.72 && Math.abs(j + 0.5 - P.y) < 0.72) return false;   // não em cima de você
+    }
+    return true;
+  }
+  function alvoCasa() {
+    let melhor = null, dm = 1.1;
+    for (const m of S.casa.moveis) {
+      const M = MOVEIS[m.id]; if (M.chao) continue;
+      const qx = Math.max(m.x, Math.min(m.x + M.w, P.x)), qy = Math.max(m.y, Math.min(m.y + M.d, P.y)), d = Math.hypot(qx - P.x, qy - P.y);
+      if (d < dm) { dm = d; melhor = { tipo: 'movel', movel: m }; }
+    }
+    if (Math.hypot(SAIDA.x - P.x, SAIDA.y - P.y) < Math.min(1.3, dm + 0.3)) melhor = { tipo: 'saida' };
+    return melhor;
+  }
+  const posMundo = () => dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
+  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; }
+  function entraCasa() {
+    fechaJanela(); destino = null; dentro = true; mouse = null;
+    P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; hud();
+    if (!S.casa.visitou) {
+      S.casa.visitou = true; salvar();
+      dialogo('🏠', 'Sua casa', `<p>Esta casa é sua! Tem sala, quarto e cozinha, e você decora do seu jeito.</p><p>Na <strong>bancada 🛠️</strong> da cozinha, os itens que você coleta pela vila viram móveis. Alguns móveis liberam outros: o tapete libera a poltrona, a luminária libera o robozinho...</p><p class="muted">Experimente tudo: a cama dá pontos uma vez por dia, o espelho muda o seu visual, o baú mostra o inventário e o computador lista as atividades que faltam.</p>`, [{ txt: 'Vamos decorar!', classe: 'principal', fn: fechaDialogo }]);
+    } else aviso('🏠 Sua casa');
+  }
+  function saiCasa() {
+    const p = posMundo();
+    dentro = false; colocando = null; destino = null; mouse = null; P.x = p.x; P.y = p.y; P.dir = 'y+'; cam.ok = false;
+    for (const k in teclas) teclas[k] = false;
+    hud();
+  }
+  const faseMaisAlta = () => fases.filter(liberada).pop();
+  const faltando = soJogos => fases.filter(liberada).flatMap(f => f.lugares).filter(l => !S.feitos[l.id] && (!soJogos || l.rec));
+  function guardaMovel(m) {
+    const i = S.casa.moveis.indexOf(m); if (i < 0 || MOVEIS[m.id].fixo) return;
+    S.casa.moveis.splice(i, 1); S.casa.guardados[m.id] = (S.casa.guardados[m.id] || 0) + 1;
+    salvar(); hud(); aviso(`${MOVEIS[m.id].ic} Guardado na oficina`);
+  }
+  function usaMovel(m) {
+    const M = MOVEIS[m.id], fecha = { txt: 'Fechar', fn: fechaDialogo };
+    const guardar = M.fixo ? [] : [{ txt: 'Guardar este móvel', fn: () => { fechaDialogo(); guardaMovel(m); } }];
+    const janela = { bancada: 'casa', estante: 'biblioteca', bau: 'inventario', espelho: 'avatar', quadro: 'inventario', telescopio: 'mapa' }[m.id];
+    if (janela) return abreJanela(janela);
+    if (m.id === 'luminaria') { m.on = !m.on; salvar(); return aviso(m.on ? '💡 Luz acesa' : 'Luz apagada'); }
+    if (m.id === 'robo') return pergunta('Robozinho', '🤖', sorteiaPergunta(faseMaisAlta()));
+    if (m.id === 'cama') {
+      const hoje = new Date().toDateString();
+      if (S.casa.dormiu !== hoje) { S.casa.dormiu = hoje; pontos(10); salvar(); return dialogo('🛏️', 'Boa noite!', '<p>Você descansou e acordou cheio de energia: <strong>+10 ⭐</strong>.</p><p class="muted">A cama dá pontos uma vez por dia. Volte amanhã!</p>', [fecha]); }
+      return dialogo('🛏️', 'Cama', '<p>Você já descansou hoje. Volte amanhã para ganhar mais 10 ⭐.</p>', [fecha]);
+    }
+    if (m.id === 'computador') {
+      const lista = faltando(false).slice(0, 6);
+      return dialogo('💻', 'Computador', lista.length ? '<p>Atividades que ainda faltam nas fases abertas. Abra uma e a casa dela ganha cor:</p>' : '<p>Você já fez todas as atividades das fases abertas! 🎉 Cumpra as missões para abrir a próxima fase.</p>',
+        lista.map(l => ({ txt: `${l.icone} ${l.titulo}`, href: l.url, fn: () => abriu(l) })).concat([fecha]));
+    }
+    if (m.id === 'arcade') {
+      const js = faltando(true), l = js.length ? js[Math.floor(Math.random() * js.length)] : jogaveis.length ? lugarRec(jogaveis[Math.floor(Math.random() * jogaveis.length)]) : null;
+      if (!l) return dialogo('🕹️', 'Fliperama', '<p>Nenhum jogo por aqui ainda.</p>', [fecha]);
+      return dialogo('🕹️', 'Fliperama', `<p>O fliperama sorteou: <strong>${esc(l.titulo)}</strong>.</p><p class="muted">${esc(l.resumo)}</p>`, [{ txt: 'Jogar', href: l.url, classe: 'principal', fn: () => abriu(l) }, { txt: 'Sortear outro', fn: () => usaMovel(m) }, fecha, ...guardar]);
+    }
+    if (m.id === 'poltrona') {
+      const lidas = Object.keys(S.dicas), i = lidas.length ? lidas[Math.floor(Math.random() * lidas.length)] : Math.floor(Math.random() * DICAS.length);
+      return dialogo('🛋️', 'Hora da leitura', `<div class="dica-livro"><p>${DICAS[i]}</p></div><p class="muted">Na poltrona você relê as dicas dos livros que já pegou.</p>`, [fecha, ...guardar]);
+    }
+    if (m.id === 'geladeira') return dialogo('🧊', 'Geladeira', `<p>Você tem <strong>${S.inv.maca || 0} 🍎</strong> guardadas.</p><p class="muted">As maçãs vão ser a comida do seu pet, que é a próxima novidade do mundo.</p>`, [fecha, ...guardar]);
+    if (m.id === 'aquario') return dialogo('🐠', 'Aquário', '<p>Os peixinhos entram na toca um atrás do outro: o primeiro que entra é o primeiro que sai. Isso é uma <strong>fila</strong>, uma estrutura de dados!</p>', [fecha, ...guardar]);
+    dialogo(M.ic, M.nome, `<p>${m.id === 'vaso' || m.id === 'planta' ? 'Você regou a planta. Ela está linda! 🌱' : 'Ficou lindo aqui!'}</p>`, [fecha, ...guardar]);
+  }
+  /* oficina: construir móveis com os itens */
+  const podeConstruir = id => { const M = MOVEIS[id]; return !!M.custo && (!M.requer || !!S.casa.feitos[M.requer]) && Object.entries(M.custo).every(([k, n]) => (S.inv[k] || 0) >= n); };
+  function construir(id) {
+    if (!podeConstruir(id)) return false;
+    const M = MOVEIS[id];
+    for (const [k, n] of Object.entries(M.custo)) S.inv[k] -= n;
+    const primeira = !S.casa.feitos[id];
+    S.casa.feitos[id] = true; S.casa.guardados[id] = (S.casa.guardados[id] || 0) + 1;
+    const novos = primeira ? Object.values(MOVEIS).filter(o => o.requer === id).map(o => `${o.ic} ${o.nome}`) : [];
+    pontos(primeira ? 20 : 5, `${M.ic} ${M.nome} pronto!` + (novos.length ? ` Liberou: ${novos.join(', ')}.` : ''));
+    salvar(); return true;
+  }
+  function comecaColocar(id) {
+    if (!dentro) entraCasa();
+    colocando = id; mouse = null; fechaJanela();
+    aviso(`${MOVEIS[id].ic} Clique num lugar livre, ou ande e aperte E. ESC cancela.`);
+  }
+  function lugarColocar() {
+    const M = MOVEIS[colocando];
+    if (mouse) return [Math.floor(mouse.x - M.w / 2 + 0.5), Math.floor(mouse.y - M.d / 2 + 0.5)];
+    const [dx, dy] = { 'x+': [1, 0], 'x-': [-1, 0], 'y+': [0, 1], 'y-': [0, -1] }[P.dir];
+    let tx = Math.floor(P.x + dx * 1.1), ty = Math.floor(P.y + dy * 1.1);
+    if (dx < 0) tx -= M.w - 1; if (dy < 0) ty -= M.d - 1;
+    return [tx, ty];
+  }
+  function colocaAqui() {
+    const [tx, ty] = lugarColocar(), M = MOVEIS[colocando];
+    if (!podeColocar(colocando, tx, ty)) { aviso('Aqui não cabe. Tente outro lugar.'); return false; }
+    S.casa.moveis.push({ id: colocando, x: tx, y: ty });
+    if (!--S.casa.guardados[colocando]) delete S.casa.guardados[colocando];
+    colocando = null; mouse = null; aviso(`${M.ic} ${M.nome} na casa!`); salvar(); hud();
+    return true;
+  }
+  function missoesCasa() {
+    const feitos = Object.keys(S.casa.feitos).length, novos = S.casa.moveis.filter(m => !MOVEIS[m.id].inicial).length;
+    return [
+      { nome: 'Construir o primeiro móvel', n: Math.min(feitos, 1), meta: 1 },
+      { nome: 'Decorar com 3 móveis novos', n: novos, meta: 3 },
+      { nome: 'Construir 8 móveis diferentes', n: feitos, meta: 8 },
+      { nome: 'Construir o telescópio', n: S.casa.feitos.telescopio ? 1 : 0, meta: 1 }
+    ].map(m => Object.assign(m, { ok: m.n >= m.meta }));
+  }
+  function desenhaInterior() {
+    const vw = W / zoom, vh = HH / zoom;
+    const fundo = ctx.createLinearGradient(0, cam.y, 0, cam.y + vh); fundo.addColorStop(0, '#f6ecff'); fundo.addColorStop(1, '#ffe9f2');
+    ctx.fillStyle = fundo; ctx.fillRect(cam.x, cam.y, vw, vh);
+    // a casa vista como casa de bonecas: piso sobre uma base, duas paredes ao fundo
+    caixa(0, 0, -0.5, CW, CD, 0.5, '#d9b38c', { blocos: false });
+    for (let y = 0; y < CD; y++) for (let x = 0; x < CW; x++) {
+      const c = COMODOS.find(r => x < r.x1), cor = c.nome === 'Cozinha' && (x + y) % 2 ? '#ffffff' : c.chao;
+      const [sx, sy] = iso(x, y); ctx.drawImage(textura(cor, (x * 7 + y * 3) % 4), sx - TW / 2, sy);
+    }
+    for (const r of COMODOS) {
+      const x = r.x0 === 0 ? -0.25 : r.x0;
+      caixa(x, -0.25, 0, r.x1 - x, 0.25, 2.4, r.parede, { blocos: false, topo: '#fff7e8' });
+      naFace('y', x, -0.25, r.x1 - x, 0.25, 0, 0, r.x1 - x, 0, 0.3, escuro(r.parede, 0.12));
+    }
+    caixa(-0.25, 0, 0, 0.25, CD, 2.4, COMODOS[0].parede, { blocos: false, dir: escuro(COMODOS[0].parede, 0.05), topo: '#fff7e8' });
+    naFace('x', -0.25, 0, 0.25, CD, 0, 0, CD, 0, 0.3, escuro(COMODOS[0].parede, 0.15));
+    for (const a of [0.6, 6.9, 11.9]) { naFace('y', 0, -0.25, CW, 0.25, a, 0, 1, 1, 0.9, '#ffffff'); naFace('y', 0, -0.25, CW, 0.25, a + 0.08, 0, 0.84, 1.07, 0.76, '#bfe9ff'); naFace('y', 0, -0.25, CW, 0.25, a + 0.47, 0, 0.06, 1.07, 0.76, '#ffffff'); }
+    naFace('x', -0.25, 0, 0.25, CD, 4.5, 0, 1.2, 1, 0.9, '#ffffff'); naFace('x', -0.25, 0, 0.25, CD, 4.58, 0, 1.04, 1.07, 0.76, '#bfe9ff');
+    for (const r of COMODOS) { const [sx, sy] = iso((r.x0 + r.x1) / 2, -0.25, 2.75); rotulo(r.nome, sx, sy, '#fff7e8'); }
+    // tapete da porta
+    caixa(2.1, CD - 0.9, 0, 0.8, 0.8, 0.03, '#e0564a', { blocos: false });
+    { const [sx, sy] = iso(SAIDA.x, SAIDA.y, 0.1); ctx.font = '16px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText('🚪', sx, sy); }
+    // tapetes primeiro (ficam no chão), depois o resto pela profundidade
+    const lista = [];
+    for (const m of S.casa.moveis) { const M = MOVEIS[m.id]; if (M.chao) M.des(m.x, m.y, m); else lista.push({ k: m.x + m.y + (M.w + M.d) / 2, d: () => M.des(m.x, m.y, m) }); }
+    for (const px of [5, 9]) for (let j = 0; j < CD; j++) if (j < 3 || j >= 6) lista.push({ k: px + j + 0.6, d: () => caixa(px - 0.1, j, 0, 0.2, 1, 0.9, '#fff7e8', { blocos: false }) });
+    if (colocando) {
+      const [tx, ty] = lugarColocar(), ok = podeColocar(colocando, tx, ty), M = MOVEIS[colocando];
+      const pts = [iso(tx, ty), iso(tx + M.w, ty), iso(tx + M.w, ty + M.d), iso(tx, ty + M.d)];
+      ctx.fillStyle = ok ? 'rgba(75,178,89,.3)' : 'rgba(224,86,74,.3)'; ctx.strokeStyle = ok ? '#4bb259' : '#e0564a'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(...pts[0]); pts.slice(1).forEach(q => ctx.lineTo(...q)); ctx.closePath(); ctx.fill(); ctx.stroke();
+      lista.push({ k: tx + ty + (M.w + M.d) / 2 + 0.01, d: () => { ctx.globalAlpha = 0.6; M.des(tx, ty, {}); ctx.globalAlpha = 1; } });
+    }
+    lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
+    lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
+    if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(80,60,90,.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
+    const alvo = !dialogoAberto && !colocando && alvoCasa();
+    if (alvo) {
+      const t = alvo.tipo === 'saida' ? 'E · sair de casa' : `E · ${MOVEIS[alvo.movel.id].acao || 'ver'}`;
+      const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
+    }
+    miniCasa();
+  }
+  function miniCasa() {
+    miniFase = null; $('#mini-nome').textContent = 'Sua casa';
+    const s = Math.min(280 / CW, 180 / CD), ox = (300 - CW * s) / 2, oy = (200 - CD * s) / 2;
+    mctx.fillStyle = '#1b2531'; mctx.fillRect(0, 0, 300, 200);
+    for (const r of COMODOS) { mctx.fillStyle = r.chao; mctx.fillRect(ox + r.x0 * s, oy, (r.x1 - r.x0) * s, CD * s); }
+    mctx.fillStyle = '#fff7e8'; for (const px of [5, 9]) { mctx.fillRect(ox + px * s - 1.5, oy, 3, 3 * s); mctx.fillRect(ox + px * s - 1.5, oy + 6 * s, 3, 3 * s); }
+    for (const m of S.casa.moveis) { const M = MOVEIS[m.id]; mctx.fillStyle = M.chao ? 'rgba(199,180,242,.85)' : '#8a6a4a'; mctx.fillRect(ox + m.x * s + 1, oy + m.y * s + 1, M.w * s - 2, M.d * s - 2); }
+    mctx.fillStyle = '#e0564a'; mctx.fillRect(ox + 2 * s, oy + (CD - 0.35) * s, s, 0.35 * s);
+    mctx.fillStyle = '#3f8fe0'; mctx.beginPath(); mctx.arc(ox + P.x * s, oy + P.y * s, 5, 0, Math.PI * 2); mctx.fill();
   }
 
   /* ---------- quadro ---------- */
@@ -575,6 +821,7 @@
     cam.x += (px - vw / 2 - cam.x) * Math.min(1, dt * 8); cam.y += (py - vh / 2 - 30 - cam.y) * Math.min(1, dt * 8);
     if (!cam.ok) { cam.x = px - vw / 2; cam.y = py - vh / 2 - 30; cam.ok = true; }
     ctx.setTransform(dpr * zoom, 0, 0, dpr * zoom, -cam.x * dpr * zoom, -cam.y * dpr * zoom);
+    if (dentro) { desenhaInterior(); requestAnimationFrame(quadro); return; }
     const ceu = ctx.createLinearGradient(0, cam.y, 0, cam.y + vh); ceu.addColorStop(0, '#cdeffa'); ceu.addColorStop(1, '#e8f7e4');
     ctx.fillStyle = ceu; ctx.fillRect(cam.x, cam.y, vw, vh);
     // chão: só os losangos que aparecem na tela
@@ -595,6 +842,7 @@
     const lista = [], naTela = (x, y, m = 160) => { const [sx, sy] = iso(x, y); return sx > cam.x - m && sx < cam.x + vw + m && sy > cam.y - m && sy < cam.y + vh + m * 2; };
     const alvo = !dialogoAberto && alvoPerto();
     for (const f of visiveisFases()) {
+      if (f.minhaCasa) { const c = f.minhaCasa; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       for (const c of f.casas) if (naTela(c.gx + 1.5, c.y + 1.5, 220)) lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) });
       for (const a of f.arvores) if (naTela(a.x, a.y)) lista.push({ k: a.x + a.y + 1, d: () => desenhaArvore(a) });
       lista.push({ k: f.centro.x + f.centro.y + 0.5, d: () => desenhaMarco(f) });
@@ -607,7 +855,7 @@
     lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     minimapa(faseDeX(P.x));
@@ -628,6 +876,7 @@
   function mapaFase(c, f, s, ox, oy, comCasas) {
     for (let y = 0; y < ALT; y++) for (let x = 0; x < f.L; x++) { c.fillStyle = COR_MAPA[f.tile[y * f.L + x]]; c.fillRect(ox + x * s, oy + y * s, Math.ceil(s), Math.ceil(s)); }
     c.fillStyle = '#3f8f4b'; for (const a of f.arvores) c.fillRect(ox + (a.x - f.x0) * s, oy + a.y * s, Math.ceil(s), Math.ceil(s));
+    if (f.minhaCasa) { const m = f.minhaCasa; c.fillStyle = S.casa.cor; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (comCasas) for (const casa of f.casas) { c.fillStyle = S.feitos[casa.lugar.id] ? casa.cor : '#b9b9b4'; c.fillRect(ox + casa.x * s, oy + casa.y * s, casa.w * s, casa.d * s); }
   }
   function minimapa(f) {
@@ -639,6 +888,7 @@
       mapaFase(c, f, mS, mOx, mOy, false);
     }
     mctx.drawImage(miniCache, 0, 0);
+    if (f.minhaCasa) { const m = f.minhaCasa; mctx.fillStyle = S.casa.cor; mctx.fillRect(mOx + m.x * mS, mOy + m.y * mS, m.w * mS, m.d * mS); }
     for (const casa of f.casas) { mctx.fillStyle = S.feitos[casa.lugar.id] ? casa.cor : '#b9b9b4'; mctx.fillRect(mOx + casa.x * mS, mOy + casa.y * mS, casa.w * mS, casa.d * mS); }
     mctx.fillStyle = '#ffffff'; for (const it of f.itens) if (!S.itens[it.id]) { mctx.beginPath(); mctx.arc(mOx + (it.x - f.x0) * mS, mOy + it.y * mS, 2.5, 0, Math.PI * 2); mctx.fill(); }
     mctx.fillStyle = '#ffd58a'; for (const n of f.npcs) if (!S.falas[n.id]) { mctx.beginPath(); mctx.arc(mOx + (n.x - f.x0) * mS, mOy + n.y * mS, 2.5, 0, Math.PI * 2); mctx.fill(); }
@@ -653,9 +903,9 @@
     $('#h-erros').textContent = S.erros;
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     $('#h-aprend').textContent = Math.round(100 * feitos / Math.max(1, todosLugares.length)) + '%';
-    const f = faseDeX(P.x), ms = missoes(f);
-    $('#m-titulo').textContent = `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
-    $('#m-nome').textContent = `${f.icone} ${f.nome}`;
+    const f = faseDeX(P.x), ms = dentro ? missoesCasa() : missoes(f);
+    $('#m-titulo').textContent = dentro ? '🏠 Sua casa' : `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
+    $('#m-nome').textContent = dentro ? 'Sala · Quarto · Cozinha' : `${f.icone} ${f.nome}`;
     $('#m-lista').innerHTML = ms.map(m => `<li class="${m.ok ? 'ok' : ''}"><span class="q"></span><span>${esc(m.nome)}</span><span class="n">(${Math.min(m.n, m.meta)}/${m.meta})</span></li>`).join('');
     $('#m-barra').style.width = Math.round(ms.reduce((a, m) => a + Math.min(1, m.n / m.meta), 0) / ms.length * 100) + '%';
   }
@@ -688,10 +938,11 @@
     else if (l.rec) status = `<p class="muted">A casa está cinza: ela ganha cor quando você terminar uma rodada do jogo. A página abre em outra aba; quando acabar, volte para cá.</p>`;
     else status = `<p class="muted">A página abre em outra aba e a casa ganha cor.</p>`;
     dialogo(l.icone, l.titulo, `<p>${esc(l.resumo)}</p>${l.extra ? `<p class="muted">${esc(l.extra)}</p>` : ''}${status}`, [
-      { txt: `${verbo} agora`, href: l.url, classe: 'principal', fn: () => { S.abertos[l.id] = Date.now(); if (!l.rec && !S.feitos[l.id]) { S.feitos[l.id] = true; pontos(15, `${l.titulo}: a casa ganhou cor!`); confereFases(); } salvar(); fechaDialogo(); } },
+      { txt: `${verbo} agora`, href: l.url, classe: 'principal', fn: () => abriu(l) },
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
   }
+  function abriu(l) { S.abertos[l.id] = Date.now(); if (!l.rec && !S.feitos[l.id]) { S.feitos[l.id] = true; pontos(15, `${l.titulo}: a casa ganhou cor!`); confereFases(); } salvar(); fechaDialogo(); }
   /* pergunta da fase: primeiro as que a pessoa errou (revisão), depois as novas */
   function sorteiaPergunta(f) {
     const erradas = f.perguntas.filter(p => S.resp[p.id] === false), novas = f.perguntas.filter(p => !(p.id in S.resp));
@@ -753,21 +1004,22 @@
   }
   function interage() {
     if (dialogoAberto || janelaAberta) return;
+    if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase);
+    if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase);
   }
 
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
   document.querySelectorAll('[data-abrir]').forEach(b => b.addEventListener('click', () => abreJanela(b.dataset.abrir)));
   document.querySelectorAll('[data-fechar]').forEach(b => b.addEventListener('click', fechaJanela));
-  function teleporta(f) { P.x = f.x0 + 3.5; P.y = MEIO; destino = null; cam.ok = false; fechaJanela(); hud(); }
+  function teleporta(f) { dentro = false; colocando = null; P.x = f.x0 + 3.5; P.y = MEIO; destino = null; cam.ok = false; fechaJanela(); hud(); }
   function desenhaMapa() {
     const c = $('#mapa-cv'), k = c.getContext('2d'); k.fillStyle = '#1b2531'; k.fillRect(0, 0, c.width, c.height);
     const s = Math.min(c.width / LARG, (c.height - 24) / ALT), oy = 20 + (c.height - 24 - ALT * s) / 2, ox = (c.width - LARG * s) / 2;
@@ -785,11 +1037,11 @@
   }
   function inventario() {
     $('#inv-itens').innerHTML = Object.entries(ITENS).map(([k, [ic, nome]]) => `<div class="it ${S.inv[k] ? '' : 'falta'}"><span style="font-size:26px">${ic}</span><span>${nome}<br><b>${S.inv[k] || 0}</b></span></div>`).join('') +
-      `<p class="muted small" style="flex-basis:100%;margin:4px 0 0">Guarde os itens: em breve eles vão servir para decorar a sua casa, cuidar do seu pet e abrir jogos especiais.</p>`;
+      `<p class="muted small" style="flex-basis:100%;margin:4px 0 0">Na bancada da sua casa 🏠, os itens viram móveis. Em breve eles também vão servir para cuidar do seu pet e abrir jogos especiais.</p>`;
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     const conq = [
       ['🥇', 'Primeira casa colorida', feitos >= 1], ['🎨', '5 casas coloridas', feitos >= 5], ['🏅', '15 casas coloridas', feitos >= 15], ['🧠', '10 acertos', S.acertos >= 10], ['🧠', '30 acertos', S.acertos >= 30],
-      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10],
+      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10], ['🛋️', 'Primeiro móvel', Object.keys(S.casa.feitos).length >= 1], ['🏡', 'Casa decorada (8 móveis)', Object.keys(S.casa.feitos).length >= 8], ['🔭', 'Telescópio', !!S.casa.feitos.telescopio],
       ...fases.map(f => ['🏆', f.nome, !!S.concluidas[f.id]])
     ];
     $('#inv-conq').innerHTML = conq.map(([ic, n, ok]) => `<div class="it ${ok ? '' : 'falta'}"><span style="font-size:22px">${ic}</span><span>${esc(n)}</span></div>`).join('');
@@ -799,6 +1051,25 @@
       f.lugares.map(l => `<li class="${S.feitos[l.id] ? 'feito' : ''}"><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.icone)} ${esc(l.titulo)}</a></li>`).join('')}</ul>`).join('') +
       `<h3>📘 Dicas que você já leu</h3><ul>${Object.keys(S.dicas).map(i => `<li class="feito" style="grid-column:1/-1">${DICAS[i]}</li>`).join('') || '<li>Pegue os livros pelo chão para ler dicas de computação.</li>'}</ul>` +
       `<h3>📚 Mais do site</h3><ul><li><a href="../">Página inicial</a></li><li><a href="../jogos/">Todos os jogos</a></li><li><a href="${MD}catalogo.html?tipo=3d">Laboratório 3D</a></li><li><a href="../simuladores/">Simuladores</a></li><li><a href="${MD}meu-progresso.html">Meu progresso</a></li><li><a href="../curriculo/">Quem é Júlia Quoos</a></li></ul></div>`;
+  }
+  /* oficina da casa: construir, colocar, guardar e pintar */
+  function janelaCasa() {
+    $('#casa-inv').innerHTML = 'No seu inventário: ' + Object.entries(ITENS).map(([k, [ic]]) => `${ic} <b>${S.inv[k] || 0}</b>`).join(' · ');
+    $('#casa-receitas').innerHTML = Object.entries(MOVEIS).filter(([, M]) => M.custo).map(([id, M]) => {
+      const trava = M.requer && !S.casa.feitos[M.requer];
+      const custo = Object.entries(M.custo).map(([k, n]) => `<span class="${(S.inv[k] || 0) >= n ? 'tem' : 'falta'}">${ITENS[k][0]} ${n}</span>`).join(' ');
+      return `<div class="rec ${trava ? 'travada' : ''}"><span class="rec-ic">${trava ? '🔒' : M.ic}</span><span class="rec-txt"><strong>${esc(M.nome)}${S.casa.feitos[id] ? ' ✅' : ''}</strong><small>${trava ? `Construa antes: ${MOVEIS[M.requer].ic} ${esc(MOVEIS[M.requer].nome)}` : custo}</small></span><button type="button" class="hb verde" data-construir="${id}" ${podeConstruir(id) ? '' : 'disabled'}>Construir</button></div>`;
+    }).join('');
+    const guard = Object.entries(S.casa.guardados).filter(([, n]) => n > 0);
+    $('#casa-guardados').innerHTML = guard.length ? guard.map(([id, n]) => `<div class="it"><span style="font-size:24px">${MOVEIS[id].ic}</span><span>${esc(MOVEIS[id].nome)}<br><b>${n}</b></span><button type="button" class="hb azul" data-colocar="${id}">Colocar</button></div>`).join('')
+      : '<p class="muted small">Nada guardado. Construa um móvel na lista acima.</p>';
+    $('#casa-postos').innerHTML = S.casa.moveis.map((m, i) => MOVEIS[m.id].fixo ? '' : `<div class="it"><span style="font-size:22px">${MOVEIS[m.id].ic}</span><span>${esc(MOVEIS[m.id].nome)}</span><button type="button" class="hb cinza" data-guardar="${i}">Guardar</button></div>`).join('');
+    $('#casa-cores').innerHTML = PASTEIS.map(c => `<button type="button" data-cor="${c}" aria-pressed="${S.casa.cor === c}" aria-label="Cor ${c}" style="background:${c}"></button>`).join('');
+    const j = $('#j-casa');
+    j.querySelectorAll('[data-construir]').forEach(b => b.addEventListener('click', () => { construir(b.dataset.construir); janelaCasa(); }));
+    j.querySelectorAll('[data-colocar]').forEach(b => b.addEventListener('click', () => comecaColocar(b.dataset.colocar)));
+    j.querySelectorAll('[data-guardar]').forEach(b => b.addEventListener('click', () => { guardaMovel(S.casa.moveis[+b.dataset.guardar]); janelaCasa(); }));
+    j.querySelectorAll('[data-cor]').forEach(b => b.addEventListener('click', () => { S.casa.cor = b.dataset.cor; salvar(); janelaCasa(); }));
   }
   /* editor do avatar */
   const OPCOES_AV = [
@@ -824,7 +1095,7 @@
   }
 
   /* ---------- botões ---------- */
-  $('#b-salvar').addEventListener('click', () => { S.x = P.x; S.y = P.y; salvar(true); });
+  $('#b-salvar').addEventListener('click', () => { guardaPos(); salvar(true); });
   $('#b-reiniciar').addEventListener('click', () => {
     const f = faseDeX(P.x);
     if (!confirm(`Reiniciar a fase ${f.nome}? Conversas, perguntas e itens desta fase voltam ao começo (as casas coloridas e o inventário ficam).`)) return;
@@ -834,7 +1105,7 @@
     delete S.concluidas[f.id]; S.cont[f.id] = 0;
     teleporta(f); salvar(); aviso('🔄 Fase reiniciada');
   });
-  $('#b-zerar').addEventListener('click', () => { if (!confirm('Apagar todo o progresso do mundo? (O Meu progresso dos jogos não é apagado.)')) return; const av = S.av; S = novo(); S.av = av; S.versao = 2; P.x = S.x; P.y = S.y; cam.ok = false; salvar(); fechaJanela(); hud(); confereJogos(); });
+  $('#b-zerar').addEventListener('click', () => { if (!confirm('Apagar todo o progresso do mundo? (O Meu progresso dos jogos não é apagado.)')) return; const av = S.av; S = novo(); S.av = av; dentro = false; colocando = null; S.versao = 2; P.x = S.x; P.y = S.y; cam.ok = false; salvar(); fechaJanela(); hud(); confereJogos(); });
   const toqueEl = $('#toque'), bToque = $('#b-toque');
   function ligaToque(liga) { toqueEl.hidden = !liga; bToque.setAttribute('aria-pressed', String(liga)); document.body.classList.toggle('com-toque', liga); }
   bToque.addEventListener('click', () => ligaToque(toqueEl.hidden));
@@ -852,27 +1123,43 @@
     if (dialogoAberto || janelaAberta) return;
     const r = cv.getBoundingClientRect();
     const [wx, wy] = telaParaMapa(cam.x + (ev.clientX - r.left) / zoom, cam.y + (ev.clientY - r.top) / zoom);
+    if (dentro) {
+      if (colocando) { mouse = { x: wx, y: wy }; colocaAqui(); return; }
+      const a = alvoCasa();
+      if (a && a.tipo === 'movel') { const m = a.movel, M = MOVEIS[m.id]; if (wx > m.x - 0.3 && wx < m.x + M.w + 0.3 && wy > m.y - 0.3 && wy < m.y + M.d + 0.3) return interage(); }
+      if (a && a.tipo === 'saida' && Math.hypot(wx - SAIDA.x, wy - SAIDA.y) < 0.8) return interage();
+      destino = { x: wx, y: wy }; return;
+    }
     const a = alvoPerto();
+    if (a && a.tipo === 'minhacasa') { const c = fases[0].minhaCasa; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'casa' && wx > a.casa.gx - 0.5 && wx < a.casa.gx + a.casa.w + 0.5 && wy > a.casa.y - 0.5 && wy < a.casa.y + a.casa.d + 0.5) return interage();
     if (a && a.tipo === 'npc' && Math.hypot(wx - a.npc.x, wy - a.npc.y) < 0.9) return interage();
     destino = { x: wx, y: wy };
   });
+
+  cv.addEventListener('mousemove', ev => {
+    if (!colocando) return;
+    const r = cv.getBoundingClientRect(), [wx, wy] = telaParaMapa(cam.x + (ev.clientX - r.left) / zoom, cam.y + (ev.clientY - r.top) / zoom);
+    mouse = { x: wx, y: wy };
+  });
+  $('#b-casa').addEventListener('click', () => dentro ? abreJanela('casa') : entraCasa());
 
   /* ---------- teclado ---------- */
   const MAPA_TECLAS = { ArrowUp: 'cima', ArrowDown: 'baixo', ArrowLeft: 'esq', ArrowRight: 'dir', w: 'cima', s: 'baixo', a: 'esq', d: 'dir', Shift: 'correr' };
   document.addEventListener('keydown', ev => {
     const k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key;
     const campo = /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName);
+    if (ev.key === 'Escape' && colocando && !dialogoAberto && !janelaAberta) { colocando = null; mouse = null; aviso('Ok, o móvel continua guardado.'); ev.preventDefault(); return; }
     if (ev.key === 'Escape') { if (dialogoAberto) fechaDialogo(); else if (janelaAberta) fechaJanela(); else abreJanela('menu'); ev.preventDefault(); return; }
     if (dialogoAberto) {
       if (/^[1-9]$/.test(ev.key)) { const b = D.op.children[+ev.key - 1]; if (b && !b.disabled) { b.click(); ev.preventDefault(); } }
       return;
     }
     if (janelaAberta || campo) return;
-    if (MAPA_TECLAS[k]) { teclas[MAPA_TECLAS[k]] = true; ev.preventDefault(); }
+    if (MAPA_TECLAS[k]) { teclas[MAPA_TECLAS[k]] = true; if (k !== 'Shift') mouse = null; ev.preventDefault(); }
     else if (k === ' ') { if (P.pulo === 0) { P.vpulo = 3.4; P.pulo = 0.01; } ev.preventDefault(); }
     else if (k === 'e' || k === 'Enter') { interage(); ev.preventDefault(); }
-    else if (k === 'm') abreJanela('mapa'); else if (k === 'i') abreJanela('inventario'); else if (k === 'b') abreJanela('biblioteca'); else if (k === 'v') abreJanela('avatar');
+    else if (k === 'm') abreJanela('mapa'); else if (k === 'i') abreJanela('inventario'); else if (k === 'b') abreJanela('biblioteca'); else if (k === 'v') abreJanela('avatar'); else if (k === 'c') $('#b-casa').click();
     else if (k === 'r') $('#b-reiniciar').click();
   });
   document.addEventListener('keyup', ev => { const k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key; if (MAPA_TECLAS[k]) teclas[MAPA_TECLAS[k]] = false; });
@@ -882,13 +1169,13 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { confereJogos(); hud(); } });
   window.addEventListener('focus', () => { confereJogos(); hud(); });
   window.addEventListener('storage', ev => { if (ev.key === 'md-progresso-v1') { confereJogos(); hud(); } });
-  setInterval(() => { S.x = P.x; S.y = P.y; salvar(); }, 10000);
-  window.addEventListener('pagehide', () => { S.x = P.x; S.y = P.y; salvar(); });
+  setInterval(() => { guardaPos(); salvar(); }, 10000);
+  window.addEventListener('pagehide', () => { guardaPos(); salvar(); });
 
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   if (!liberada(faseDeX(P.x)) || !livre(P.x, P.y)) { P.x = fases[0].x0 + 3.5; P.y = MEIO; }
-  window.MUNDO_DEBUG = { P, fases, interage, S: () => S, iso };
+  window.MUNDO_DEBUG = { P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases();
   if (!S.pontos) setTimeout(() => aviso('🌍 Explore o mundo e descubra os desafios!'), 400);
   requestAnimationFrame(quadro);
