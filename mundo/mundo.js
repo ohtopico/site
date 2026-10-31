@@ -127,7 +127,7 @@
     roupa: { fase: 0, nome: 'Loja de Roupas', ic: '👕', cor: '#f7a8c4', toldo: '#e0564a', texto: 'Acessórios e cores novas para o seu avatar.' },
     comida: { fase: 1, nome: 'Mercadinho', ic: '🍎', cor: '#ffd58a', toldo: '#4bb259', texto: 'Comidinhas para o pet e os moradores, ferramentas para juntar madeira e pedra, e vara e iscas para pescar.' },
     pet: { fase: 2, nome: 'Pet Shop', ic: '🐾', cor: '#a8d8f7', toldo: '#3f8fe0', texto: 'Petiscos, banho e acessórios para o seu bichinho.' },
-    moveis: { fase: 3, nome: 'Loja de Móveis', ic: '🛋️', cor: '#c7b4f2', toldo: '#9a6bd6', texto: 'Móveis prontos para a sua casa, sem precisar da bancada.' }
+    moveis: { fase: 3, nome: 'Loja de Móveis', ic: '🛋️', cor: '#c7b4f2', toldo: '#9a6bd6', texto: 'Móveis prontos para a sua casa e 📜 plantas que ensinam a bancada a fazer móveis novos.' }
   };
   /* projetos coletivos: cada aluno doa a sua parte; quando a turma soma a meta, a professora gera o código de conclusão */
   const PROJETOS = [
@@ -499,6 +499,13 @@
     // móveis de madeira e pedra (os recursos vêm das árvores e das rochas, com as ferramentas do Mercadinho)
     bancoMadeira: { nome: 'Banco de madeira', ic: '🪑', w: 2, d: 1, custo: { madeira: 4 }, acao: 'descansar', des: (x, y) => { caixa(x + 0.1, y + 0.25, 0.35, 1.8, 0.5, 0.12, '#b07a45'); for (const dx of [0.15, 1.7]) caixa(x + dx, y + 0.3, 0, 0.15, 0.4, 0.35, '#8a5a2f'); } },
     lareira: { nome: 'Lareira de pedra', ic: '🔥', w: 2, d: 1, custo: { pedra: 5, madeira: 2 }, acao: 'acender a lareira', des: (x, y) => { caixa(x + 0.1, y + 0.05, 0, 1.8, 0.6, 1.3, '#9a9a96'); caixa(x + 0.55, y + 0.6, 0, 0.9, 0.06, 0.6, '#3a2a22', { blocos: false }); caixa(x + 0.7, y + 0.55, 0.05, 0.6, 0.06, 0.3, '#f08a24', { blocos: false }); caixa(x + 0.05, y, 1.3, 1.9, 0.7, 0.12, '#7d7d79'); } },
+    // móveis de planta: a planta (projeto) se compra na Loja de Móveis e ensina a bancada a fazer o móvel
+    escrivaninha: { nome: 'Escrivaninha', ic: '✍️', w: 2, d: 1, planta: 70, custo: { madeira: 5, livro: 1 }, acao: 'estudar um pouco', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0.7, 1.8, 0.7, 0.1, '#b07a45'); for (const dx of [0.15, 1.7]) caixa(x + dx, y + 0.2, 0, 0.15, 0.6, 0.7, '#8a5a30'); caixa(x + 0.4, y + 0.3, 0.8, 0.5, 0.35, 0.05, '#fff7e8', { blocos: false }); caixa(x + 1.2, y + 0.35, 0.8, 0.12, 0.12, 0.25, '#e0564a', { blocos: false }); } },
+    pingue: { nome: 'Mesa de pingue-pongue', ic: '🏓', w: 2, d: 2, planta: 120, custo: { madeira: 8 }, acao: 'jogar pingue-pongue', des: (x, y) => { for (const [a, b] of [[0.2, 0.2], [1.7, 0.2], [0.2, 1.7], [1.7, 1.7]]) caixa(x + a, y + b, 0, 0.1, 0.1, 0.6, '#555555', { blocos: false }); caixa(x + 0.1, y + 0.1, 0.6, 1.8, 1.8, 0.08, '#4bb259'); caixa(x + 0.1, y + 0.97, 0.68, 1.8, 0.06, 0.15, '#fff7e8', { blocos: false }); } },
+    fonte: { nome: 'Fonte de pedra', ic: '⛲', w: 1, d: 1, planta: 90, custo: { pedra: 6 }, acao: 'ouvir a água', des: (x, y) => { caixa(x + 0.08, y + 0.08, 0, 0.84, 0.84, 0.35, '#9a9a96'); caixa(x + 0.15, y + 0.15, 0.35, 0.7, 0.7, 0.02, '#8fd8ea', { blocos: false }); caixa(x + 0.42, y + 0.42, 0.35, 0.16, 0.16, 0.45 + Math.sin(agora / 300) * 0.05, '#bfe9ff', { blocos: false }); } },
+    fogao: { nome: 'Fogão a lenha', ic: '🍲', w: 1, d: 1, planta: 80, custo: { pedra: 4, madeira: 3 }, acao: 'cozinhar uma sopa', des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 0.8, 0.8, 0.75, '#c96a4a'); caixa(x + 0.1, y + 0.1, 0.75, 0.8, 0.8, 0.06, '#3a2a22'); caixa(x + 0.3, y + 0.3, 0.81, 0.4, 0.4, 0.25, '#7d8790'); caixa(x + 0.25, y + 0.88, 0.15, 0.5, 0.04, 0.3, '#f08a24', { blocos: false }); } },
+    quadroPeixe: { nome: 'Quadro de peixe', ic: '🐟', w: 1, d: 1, planta: 60, custo: { peixe: 3, madeira: 1 }, acao: 'contar a história da pesca', des: (x, y) => { caixa(x + 0.15, y + 0.02, 0.9, 0.7, 0.08, 0.6, '#a0703f', { blocos: false }); naFace('y', x + 0.15, y + 0.02, 0.7, 0.08, 0.08, 0, 0.54, 1.0, 0.44, '#bfe9ff'); naFace('y', x + 0.15, y + 0.02, 0.7, 0.08, 0.2, 0, 0.3, 1.15, 0.14, '#f6b73c'); } },
+    globo: { nome: 'Globo terrestre', ic: '🌍', w: 1, d: 1, planta: 100, custo: { madeira: 2, diamante: 1 }, acao: 'girar o globo', des: (x, y) => { caixa(x + 0.35, y + 0.35, 0, 0.3, 0.3, 0.08, '#a0703f'); caixa(x + 0.47, y + 0.47, 0.08, 0.06, 0.06, 0.55, '#a0703f', { blocos: false }); const [sx, sy] = iso(x + 0.5, y + 0.5, 0.85); ctx.font = '22px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(['🌍', '🌎', '🌏'][Math.floor(agora / 700) % 3], sx, sy); } },
     // móveis de evento: só se ganham completando as missões das datas comemorativas
     pinheiro: { nome: 'Árvore de Natal', ic: '🎄', w: 1, d: 1, evento: true, acao: 'acender as luzes', des: (x, y) => { caixa(x + 0.42, y + 0.42, 0, 0.16, 0.16, 0.3, '#a0703f', { blocos: false }); [[0.1, 0.3, 0.8], [0.2, 0.75, 0.6], [0.3, 1.15, 0.4]].forEach(([o, z, w]) => caixa(x + o, y + o, z, w, w, 0.45, '#3f9a5a')); caixa(x + 0.42, y + 0.42, 1.6, 0.16, 0.16, 0.16, '#ffd84a', { blocos: false }); luzinhas(x + 0.5, y + 0.5, 0.5, 1.3, 0.35); } },
     bolaEspelhada: { nome: 'Bola espelhada de Ano Novo', ic: '🪩', w: 1, d: 1, evento: true, acao: 'girar a bola', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 1.1, '#888888', { blocos: false }); caixa(x + 0.25, y + 0.25, 1.1, 0.5, 0.5, 0.5, '#d9e3ea'); luzinhas(x + 0.5, y + 0.5, 1.15, 1.5, 0.3, ['#ffffff', '#c7f0ff', '#ffe9a8']); } },
@@ -1256,7 +1263,8 @@
     dialogo(M.ic, M.nome, `<p>${m.id === 'vaso' || m.id === 'planta' ? 'Você regou a planta. Ela está linda! 🌱' : 'Ficou lindo aqui!'}</p>`, [fecha, ...guardar]);
   }
   /* oficina: construir móveis com os itens */
-  const podeConstruir = id => { const M = MOVEIS[id]; return !!M.custo && (!M.requer || !!S.casa.feitos[M.requer]) && Object.entries(M.custo).every(([k, n]) => (S.inv[k] || 0) >= n); };
+  const temPlanta = id => !MOVEIS[id].planta || !!S.loja.tem['proj:' + id];
+  const podeConstruir = id => { const M = MOVEIS[id]; return !!M.custo && temPlanta(id) && (!M.requer || !!S.casa.feitos[M.requer]) && Object.entries(M.custo).every(([k, n]) => (S.inv[k] || 0) >= n); };
   function construir(id) {
     if (!podeConstruir(id)) return false;
     const M = MOVEIS[id];
@@ -1468,7 +1476,7 @@
         ['cor', 'camisa:#2b2d6e', '👕', 60, 'Camiseta galáxia'], ['cor', 'camisa:#ff8fab', '👕', 60, 'Camiseta chiclete'], ['cor', 'calca:#7aa6d6', '👖', 40, 'Calça jeans clara']],
       comida: [['ferr', 'machado', '🪓', 80, 'Machado (corta madeira das árvores)'], ['ferr', 'picareta', '⛏️', 100, 'Picareta (tira pedra das rochas)'], ['ferr', 'vara', '🎣', 90, 'Vara de pesca (pesque no laguinho)'], ['inv', 'isca', '🪱', 30, '5 iscas', 5], ['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
       pet: [['inv', 'petisco', '🦴', 20, '2 petiscos', 2], ['inv', 'sabonete', '🧼', 20], ['inv', 'brinquedo', '🧸', 40], ['pet', 'lenco', '🧣', 50], ['pet', 'cachecol', '🧣', 50]],
-      moveis: [['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]]
+      moveis: Object.entries(MOVEIS).filter(([, M]) => M.planta).map(([id, M]) => ['proj', id, '📜', M.planta, `Planta: ${M.nome} (${M.ic})`]).concat([['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]])
     }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco: caro(preco), nome, qtd }));
     for (const ev of eventosAtivos) {
       const [[hat, hic, hnome], [comida]] = EXCLUSIVOS[ev.id], so = { ev };
@@ -1482,7 +1490,7 @@
       if (p.tipo === 'inv') { p.ic = p.ic || ITENS[p.id][0]; p.nome = p.nome || ITENS[p.id][1]; }
       if (p.tipo === 'av' || p.tipo === 'pet') p.nome = p.nome || NOMES_ENFEITE[p.id];
       p.chave = p.tipo + ':' + p.id;
-      p.unico = p.tipo === 'av' || p.tipo === 'pet' || p.tipo === 'cor' || p.tipo === 'ferr';
+      p.unico = p.tipo === 'av' || p.tipo === 'pet' || p.tipo === 'cor' || p.tipo === 'ferr' || p.tipo === 'proj';
     }
     return base;
   }
@@ -1582,7 +1590,7 @@
     S.loja.compras++;
     lojaEscolha = null; hud(); salvar();
   }
-  const dicaUso = p => p.id === 'vara' || p.id === 'isca' ? 'Chegue na beira de um laguinho e aperte E para pescar.' : p.tipo === 'ferr' ? 'Já está com você: chegue perto de uma árvore ou rocha e aperte E.' : p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
+  const dicaUso = p => p.tipo === 'proj' ? `Agora a bancada 🛠️ da sua casa sabe fazer: ${MOVEIS[p.id].ic} ${MOVEIS[p.id].nome}.` : p.id === 'vara' || p.id === 'isca' ? 'Chegue na beira de um laguinho e aperte E para pescar.' : p.tipo === 'ferr' ? 'Já está com você: chegue perto de uma árvore ou rocha e aperte E.' : p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
   /* ---------- modo turma: sem servidor, o aluno gera um código de progresso e envia para a professora,
      que cola os códigos no painel (material-didatico/turma-mundo.html) para ver o ranking e o progresso ---------- */
   function resumoTurma() {
@@ -2906,7 +2914,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'sala' ? `E · entrar: ${SALAS[alvo.sala.id].nome}` : alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'pesca' ? (S.loja.tem['ferr:vara'] ? `E · pescar (🪱 ${S.inv.isca || 0})` : 'Laguinho · precisa de 🎣 vara') : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
+      const t = alvo.tipo === 'sala' ? `E · entrar: ${SALAS[alvo.sala.id].nome}` : alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? `E · conversar${entregaPara(alvo.npc) ? ' · 📦 entrega' : papelNpc(alvo.npc) ? ' · ' + PAPEIS[papelNpc(alvo.npc)].rotulo : ''}` : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'pesca' ? (S.loja.tem['ferr:vara'] ? `E · pescar (🪱 ${S.inv.isca || 0})` : 'Laguinho · precisa de 🎣 vara') : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
       anuncia((alvo.tipo === 'casa' ? alvo.casa.lugar.titulo + '. ' : '') + t);
     } else anuncia('');
@@ -3136,8 +3144,66 @@
       { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, bancoNpc(n) ? bancoNpc(n).ic : '❓', sorteiaPergunta(f, bancoNpc(n) && bancoNpc(n).perguntas), certo => { if (certo) ganhaAmizade(n, 8); }) },
       { txt: '🎁 Dar um presente', fn: () => presente(n) },
       ...(!dentro && coracoes(n) >= CORACOES_CASA ? [{ txt: `🏠 Visitar a casa de ${n.nome}`, fn: () => visitaNpc(n) }] : []),
+      ...opcoesPapel(n),
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
+  }
+  /* ---------- funções dos moradores, além das perguntas: comprar recursos, pedir entregas e levar você a outra vila ---------- */
+  const PAPEIS = {
+    comprador: { rotulo: '🧺 compra peixe, madeira e pedra', botao: '🧺 Vender peixe, madeira ou pedra' },
+    carteiro: { rotulo: '📦 pede entregas', botao: '📦 Fazer uma entrega' },
+    guia: { rotulo: '🧭 leva você a outra vila', botao: '🧭 Me leve a outra vila' }
+  };
+  const papelNpc = n => n.prof ? null : ['comprador', 'carteiro', 'guia'][(n.fase.npcs.indexOf(n) - 1 + n.fase.idx) % 3];
+  const opcoesPapel = n => {
+    const out = [], ent = entregaPara(n);
+    if (ent) out.push({ txt: `📦 Entregar o pacote de ${ent.nome}`, classe: 'principal', fn: () => entrega(n) });
+    if (papelNpc(n)) out.push({ txt: PAPEIS[papelNpc(n)].botao, fn: () => ({ comprador: compraNpc, carteiro: carteiro, guia: guia })[papelNpc(n)](n) });
+    return out;
+  };
+  // comprador: o preço muda todo dia; vender tudo pede a conta da multiplicação
+  const VENDE = { peixe: 12, peixeColorido: 20, camarao: 15, madeira: 8, pedra: 10 };
+  const precoNpc = (n, k) => { const r = rng(diaHoje() * 13 + n.fase.idx * 7 + Object.keys(VENDE).indexOf(k)); return Math.max(2, Math.round(VENDE[k] * (0.7 + r() * 0.6))); };
+  function compraNpc(n) {
+    const tem = Object.keys(VENDE).filter(k => S.inv[k] > 0), volta = () => compraNpc(n);
+    const tabela = Object.keys(VENDE).map(k => `${ITENS[k][0]} ${precoNpc(n, k)} ⭐`).join(' · ');
+    dialogo('🧺', n.nome, `<p>Hoje eu pago: ${tabela}.</p>${tem.length ? '<p>O que você quer vender?</p>' : '<p class="muted">Você não tem peixe, madeira nem pedra agora. Pesque no laguinho e use o machado e a picareta (estão no 🍎 Mercadinho).</p>'}<p class="muted small">Os preços mudam todo dia: compare com os moradores de outras vilas!</p>`,
+      tem.flatMap(k => [
+        { txt: `Vender 1 ${ITENS[k][0]} por ${precoNpc(n, k)} ⭐`, fn: () => { S.inv[k]--; S.pontos += precoNpc(n, k); SOM.toca('moeda'); hud(); salvar(); volta(); } },
+        ...(S.inv[k] > 1 ? [{ txt: `Vender os ${S.inv[k]} ${ITENS[k][0]}`, fn: () => vendeTudo(n, k) }] : [])
+      ]).concat([{ txt: 'Fechar', fn: fechaDialogo }]));
+  }
+  function vendeTudo(n, k) {
+    const q = S.inv[k], pr = precoNpc(n, k), certo = q * pr;
+    const alts = [certo, certo + pr, certo - pr, q + pr].filter((v, i, a) => v > 0 && a.indexOf(v) === i).slice(0, 4).sort(() => Math.random() - 0.5);
+    dialogo('🧺', n.nome, `<p>Quanto eu te pago por <b>${q} ${ITENS[k][0]}</b> a <b>${pr} ⭐</b> cada?</p>`, alts.map(v => ({ txt: `${v} ⭐`, fn: () => {
+      if (v !== certo) return dialogo('🧺', n.nome, `<p>Hmm, confira a conta: ${q} × ${pr}.</p>`, [{ txt: 'Tentar de novo', classe: 'principal', fn: () => vendeTudo(n, k) }, { txt: 'Fechar', fn: fechaDialogo }]);
+      S.inv[k] = 0; S.pontos += certo; ganhaHabilidade(['NU'], 5); SOM.toca('moeda'); hud(); salvar();
+      dialogo('🧺', n.nome, `<p>✅ Isso: ${q} × ${pr} = <b>${certo} ⭐</b>. Negócio fechado!</p>`, [{ txt: 'Vender outra coisa', fn: () => compraNpc(n) }, { txt: 'Fechar', classe: 'principal', fn: fechaDialogo }]);
+    } })));
+  }
+  // carteiro: uma entrega por dia, para um morador de uma vila já aberta
+  const npcPorId = id => todosNpcs().find(m => m.id === id);
+  const entregaPara = n => { const E = S.entrega; return E && E.dia === hoje() && !E.feita && E.para === n.id ? npcPorId(E.de) : null; };
+  function carteiro(n) {
+    const E = S.entrega, fecha = { txt: 'Fechar', fn: fechaDialogo };
+    if (E && E.dia === hoje() && E.feita) return dialogo('📦', n.nome, '<p>Valeu pela entrega de hoje! Volte amanhã que eu terei outro pacote.</p>', [fecha]);
+    if (E && E.dia === hoje()) { const p = npcPorId(E.para); return dialogo('📦', n.nome, `<p>O pacote de hoje vai para <b>${esc(p.nome)}</b>, em ${p.fase.icone} ${esc(p.fase.nome)}. Fale com essa pessoa para entregar.</p>`, [fecha]); }
+    const r = rng(diaHoje() * 31 + n.fase.idx), lista = todosNpcs().filter(m => m !== n && !m.prof && liberada(m.fase));
+    const p = lista[Math.floor(r() * lista.length)];
+    if (!p) return dialogo('📦', n.nome, '<p>Ainda não tenho entregas para você. Abra mais vilas!</p>', [fecha]);
+    S.entrega = { dia: hoje(), de: n.id, para: p.id, feita: false }; salvar();
+    dialogo('📦', n.nome, `<p>Você pode levar este pacote 📦 para <b>${esc(p.nome)}</b>, em ${p.fase.icone} ${esc(p.fase.nome)}? Quem recebe paga <b>30 ⭐</b> pela entrega.</p><p class="muted small">Dica: o mapa 🗺️ mostra as vilas, e os moradores com 🧭 levam você até lá.</p>`, [{ txt: 'Pode deixar!', classe: 'principal', fn: fechaDialogo }]);
+  }
+  function entrega(n) {
+    const de = npcPorId(S.entrega.de);
+    S.entrega.feita = true; pontos(30, `📦 Entrega feita para ${n.nome}!`); ganhaAmizade(n, 10); ganhaAmizade(de, 5); salvar();
+    dialogo('📦', n.nome, `<p>Meu pacote de ${esc(de.nome)}! Valeu mesmo. Aqui estão os seus <b>30 ⭐</b>.</p>`, [{ txt: 'De nada!', classe: 'principal', fn: fechaDialogo }]);
+  }
+  // guia: leva até qualquer vila já aberta
+  function guia(n) {
+    const abertas = fases.filter(f => liberada(f) && f !== n.fase);
+    dialogo('🧭', n.nome, '<p>Conheço todos os atalhos! Para qual vila você quer ir?</p>', abertas.map(f => ({ txt: `${f.icone} ${f.nome}`, fn: () => { fechaDialogo(); teleporta(f); aviso(`🧭 ${n.nome} levou você até ${f.nome}.`); } })).concat([{ txt: 'Fico por aqui', fn: fechaDialogo }]));
   }
   function guarda(it, f) {
     if (it.estacao) estEst().itens++;
@@ -3378,9 +3444,9 @@
   function janelaCasa() {
     $('#casa-inv').innerHTML = 'No seu inventário: ' + Object.entries(ITENS).filter(([k]) => !ITENS_LOJA.has(k)).map(([k, [ic]]) => `${ic} <b>${S.inv[k] || 0}</b>`).join(' · ');
     $('#casa-receitas').innerHTML = Object.entries(MOVEIS).filter(([, M]) => M.custo).map(([id, M]) => {
-      const trava = M.requer && !S.casa.feitos[M.requer];
+      const semPlanta = !temPlanta(id), trava = semPlanta || (M.requer && !S.casa.feitos[M.requer]);
       const custo = Object.entries(M.custo).map(([k, n]) => `<span class="${(S.inv[k] || 0) >= n ? 'tem' : 'falta'}">${ITENS[k][0]} ${n}</span>`).join(' ');
-      return `<div class="rec ${trava ? 'travada' : ''}"><span class="rec-ic">${trava ? '🔒' : M.ic}</span><span class="rec-txt"><strong>${esc(M.nome)}${S.casa.feitos[id] ? ' ✅' : ''}</strong><small>${trava ? `Construa antes: ${MOVEIS[M.requer].ic} ${esc(MOVEIS[M.requer].nome)}` : custo}</small></span><button type="button" class="hb verde" data-construir="${id}" ${podeConstruir(id) ? '' : 'disabled'}>Construir</button></div>`;
+      return `<div class="rec ${trava ? 'travada' : ''}"><span class="rec-ic">${semPlanta ? '📜' : trava ? '🔒' : M.ic}</span><span class="rec-txt"><strong>${esc(M.nome)}${S.casa.feitos[id] ? ' ✅' : ''}</strong><small>${semPlanta ? `Precisa da planta, vendida na 🛋️ Loja de Móveis. Vai pedir: ${custo}` : trava ? `Construa antes: ${MOVEIS[M.requer].ic} ${esc(MOVEIS[M.requer].nome)}` : custo}</small></span><button type="button" class="hb verde" data-construir="${id}" ${podeConstruir(id) ? '' : 'disabled'}>Construir</button></div>`;
     }).join('');
     const guard = Object.entries(S.casa.guardados).filter(([, n]) => n > 0);
     $('#casa-guardados').innerHTML = guard.length ? guard.map(([id, n]) => `<div class="it"><span style="font-size:24px">${MOVEIS[id].ic}</span><span>${esc(MOVEIS[id].nome)}<br><b>${n}</b></span><button type="button" class="hb azul" data-colocar="${id}">Colocar</button></div>`).join('')
@@ -3615,7 +3681,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
