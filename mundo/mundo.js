@@ -47,7 +47,6 @@
     { id: 'pg-mentoria', titulo: 'Mentoria para professores', url: '../mentoria/', icone: '🤝', resumo: 'Acompanhamento individual para levar IA e Computação para a sua aula.' },
     { id: 'pg-quiz', titulo: 'Quiz de pensamento computacional', url: '../quiz-pensamento-computacional/', icone: '🧩', resumo: '12 perguntas sobre decomposição, padrões, abstração e algoritmos.' },
     { id: 'pg-blog', titulo: 'Blog', url: '../blog/', icone: '📰', resumo: 'Textos sobre IA na escola, BNCC de Computação e Matemática.' },
-    { id: 'pg-assistente', titulo: 'Assistente do site', url: '../assistente/', icone: '💬', resumo: 'Pergunte sobre o material e a IA responde com base nas páginas do site.' }
   ].map(p => Object.assign(p, { tipo: 'pagina', extra: 'Para professores' }));
 
   /* caminho: cor do caminho de cada fase (tons pastel); marco: o monumento da praça */
@@ -803,7 +802,7 @@
     S.jogosMissao = S.jogosMissao || {};
     $('#jogos-conteudo').innerHTML = `<p>Termine os dois jogos de cada missão para ganhar uma <b>roupa exclusiva</b> para o avatar, +30 ⭐ e uma figurinha. Os jogos abrem em outra aba, e o progresso volta para cá sozinho.</p>
       <div class="projetos">${missoesJogos().map(m => { const ok = S.jogosMissao[m.id], [, cor, nome] = m.premio; return `<div class="proj ${ok ? 'pronto' : ''}"><h3>${m.ic} ${esc(m.nome)} ${ok ? '✅' : ''}</h3>
-        <ul class="etapas">${m.jogos.map(lugarPorId).map(l => `<li class="${S.feitos[l.id] ? 'ok' : ''}">${S.feitos[l.id] ? '✅' : '⬜'} <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.icone)} ${esc(l.titulo)}</a></li>`).join('')}</ul>
+        <ul class="etapas">${m.jogos.map(lugarPorId).map(l => `<li class="${S.feitos[l.id] ? 'ok' : ''}">${S.feitos[l.id] ? '✅' : '⬜'} <a href="${esc(l.url)}" data-lugar="${esc(l.id)}">${esc(l.icone)} ${esc(l.titulo)}</a></li>`).join('')}</ul>
         ${(hs => hs.length ? `<p class="small">BNCC: ${chipsHabs(hs)}</p>` : '')(uniao(m.jogos.map(lugarPorId).map(habsLugar)))}
         <p class="small"><span class="amostra" style="background:${cor}"></span> Prêmio: ${esc(nome)}${ok ? ' <b>(já está no seu 👤 Avatar)</b>' : ''}</p></div>`; }).join('')}</div>`;
   }
@@ -1816,7 +1815,7 @@
       <div class="btn-row"><button type="button" class="hb azul" id="tu-copiar">📋 Copiar</button></div>
       <p class="muted small">O código leva os seus pontos, as fases e os jogos concluídos, os acertos, as habilidades da BNCC e as medalhas. Ele não atualiza sozinho: gere outro quando quiser mandar o progresso novo.</p></div>
       ${(c => { const hs = Object.keys(c).sort(); return `<details class="habs-turma"><summary>📐 Habilidades da BNCC que você já trabalhou (${hs.length})</summary>${hs.length ? `<ul class="etapas">${hs.map(h => `<li class="ok">${chipsHabs([h], c)} ${esc(HAB_[h].objeto)} <span class="muted small">(${c[h]}×)</span></li>`).join('')}</ul>` : '<p class="muted small">Ainda nenhuma: jogue as casas e responda às perguntas dos moradores.</p>'}</details>`; })(habsTrabalhadas())}
-      <p class="muted small">Professora ou professor: cole os códigos dos alunos no <a href="../material-didatico/turma-mundo.html" target="_blank" rel="noopener">painel da turma do Mundo</a> para ver o ranking e o progresso de cada um.</p>`;
+      <p class="muted small">Professora ou professor: cole os códigos dos alunos no <a href="../material-didatico/turma-mundo.html" data-dentro="1">painel da turma do Mundo</a> para ver o ranking e o progresso de cada um.</p>`;
     $('#tu-gerar').addEventListener('click', async () => {
       const nome = $('#tu-nome').value.trim().slice(0, 30), cod = limpaTurma($('#tu-cod').value);
       if (!nome || !cod) { aviso('Escreva o seu nome e o código da turma.'); return; }
@@ -3665,7 +3664,9 @@
     D.op.innerHTML = '';
     opcoes.forEach((o, i) => {
       const b = document.createElement(o.href ? 'a' : 'button');
-      if (o.href) { b.href = o.href; b.target = '_blank'; b.rel = 'noopener'; } else b.type = 'button';
+      if (o.href && /^(https?:)?\/\//.test(o.href)) { b.href = o.href; b.target = '_blank'; b.rel = 'noopener'; }
+      else if (o.href) { b.href = o.href; b.dataset.dentro = '1'; b.dataset.titulo = o.txt.replace(/^\S+\s/, ''); }
+      else b.type = 'button';
       b.className = o.classe || ''; b.innerHTML = (i < 9 ? `<kbd>${i + 1}</kbd> ` : '') + esc(o.txt);
       b.addEventListener('click', () => { if (o.fn) o.fn(); });
       D.op.appendChild(b);
@@ -3685,7 +3686,6 @@
     else status = `<p class="muted">A página abre aqui mesmo, por cima do Mundo, e a casa ganha cor.</p>`;
     dialogo(l.icone, l.titulo, `<p>${esc(l.resumo)}</p>${l.extra ? `<p class="muted">${esc(l.extra)}</p>` : ''}${status}`, [
       { txt: `${verbo} agora`, classe: 'principal', fn: () => abreJogo(l) },
-      { txt: '↗ Abrir em outra aba', href: l.url, fn: () => abriu(l) },
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
   }
@@ -3722,15 +3722,23 @@
   }
   /* jogo dentro do Mundo: a página abre numa janela por cima, sem o topo, o rodapé e o "← Jogos" do site (o aluno não sai sem querer) */
   const CSS_NO_MUNDO = '#topbar, #footer, .crumbs { display: none !important; } body { padding-top: 0 !important; }';
-  function abreJogo(l) {
-    abriu(l);
+  function abreJogo(l, soVer) {
+    if (soVer) fechaDialogo(); else abriu(l);
     $('#jm-ic').textContent = l.icone || '🎮'; $('#jm-t').textContent = l.titulo; $('#jm-aba').href = l.url;
     const fr = $('#jm-if');
     fr.onload = () => { try { const d = fr.contentDocument; if (d && d.head && !d.getElementById('no-mundo')) { const st = d.createElement('style'); st.id = 'no-mundo'; st.textContent = CSS_NO_MUNDO; d.head.appendChild(st); } } catch (e) { /* outra origem: abre como está */ } };
+    abreJanela('jogo');   // antes do src: abrir por cima de outra página do Mundo fecha a anterior (que limpa o quadro)
     fr.src = l.url;
-    abreJanela('jogo');
     setTimeout(() => { try { fr.focus(); } catch (e) {} }, 300);
   }
+  /* páginas do site abrem dentro do Mundo (mesma aba): links internos com data-dentro, ou data-lugar para uma casa */
+  function abrePagina(url, titulo, icone) { abreJogo({ url, titulo: titulo || 'Página do site', icone: icone || '📖' }, true); }
+  document.addEventListener('click', ev => {
+    const a = ev.target.closest('a[data-dentro], a[data-lugar]'); if (!a) return;
+    ev.preventDefault();
+    if (a.dataset.lugar) { const l = lugarPorId(a.dataset.lugar); if (l) return abreJogo(l); }
+    abrePagina(a.getAttribute('href'), a.dataset.titulo || a.textContent.trim());
+  });
   function abriu(l) { S.abertos[l.id] = Date.now(); if (!l.rec && !S.feitos[l.id]) { S.feitos[l.id] = true; pontos(15, `${l.titulo}: a casa ganhou cor!`); confereFases(); } salvar(); fechaDialogo(); }
   /* pergunta da fase: primeiro as que a pessoa errou (revisão), depois as novas */
   /* cada morador tem a sua base de perguntas (perguntas-npc.js), com o tema da vila e 50 ou mais perguntas */
@@ -4620,7 +4628,7 @@
       const sug = abertos.find(l => l.rec && !S.feitos[l.id] && eixosDe(l.rec.habs).includes(e));
       return `<div class="hab"><span class="hab-ic">${ICONE_EIXO[e] || '⭐'}</span><span class="hab-txt"><strong>${esc(info.nome)}</strong><small class="muted hab-sub">${info.comp === 'CO' ? 'Computação' : 'Matemática'} · nível ${n}</small>
         <span class="barra"><span style="width:${n >= 10 ? 100 : Math.round(100 * (x - base) / (prox - base))}%"></span></span>
-        <small>${n >= 10 ? 'Nível máximo! 🏆' : sug ? `Para subir: <a href="${esc(sug.url)}" target="_blank" rel="noopener">${esc(sug.icone)} ${esc(sug.titulo)}</a>` : 'Para subir: responda perguntas dos moradores e dos diamantes.'}</small></span></div>`;
+        <small>${n >= 10 ? 'Nível máximo! 🏆' : sug ? `Para subir: <a href="${esc(sug.url)}" data-lugar="${esc(sug.id)}">${esc(sug.icone)} ${esc(sug.titulo)}</a>` : 'Para subir: responda perguntas dos moradores e dos diamantes.'}</small></span></div>`;
     }).join('');
     const meds = Object.values(S.medalhas);
     $('#inv-medalhas').innerHTML = meds.length ? meds.map(m => `<div class="it"><span style="font-size:24px">${m.ic}</span><span>${esc(m.nome)}</span></div>`).join('') : '<p class="muted small">Ganhe medalhas nas missões das datas comemorativas e nos desafios de aniversário de personalidades da computação.</p>';
@@ -4637,7 +4645,7 @@
   }
   function biblioteca() {
     $('#bib-lista').innerHTML = '<div class="bib">' + fases.map(f => `<h3>${f.icone} ${f.idx + 1}. ${esc(f.nome)} <small class="muted">· ${esc(f.sub)}</small></h3><ul>${
-      f.lugares.map(l => `<li class="${S.feitos[l.id] ? 'feito' : ''}">${l.tipo === 'em' ? `${esc(l.icone)} ${esc(l.titulo)} <small class="muted">(desafio no Campus)</small>` : `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.icone)} ${esc(l.titulo)}</a>`}</li>`).join('')}</ul>`).join('') +
+      f.lugares.map(l => `<li class="${S.feitos[l.id] ? 'feito' : ''}">${l.tipo === 'em' ? `${esc(l.icone)} ${esc(l.titulo)} <small class="muted">(desafio no Campus)</small>` : `<a href="${esc(l.url)}" data-lugar="${esc(l.id)}">${esc(l.icone)} ${esc(l.titulo)}</a>`}</li>`).join('')}</ul>`).join('') +
       `<h3>📘 Dicas que você já leu</h3><ul>${Object.keys(S.dicas).map(i => `<li class="feito" style="grid-column:1/-1">${DICAS[i]}</li>`).join('') || '<li>Pegue os livros pelo chão para ler dicas de computação.</li>'}</ul>` +
       `<h3>📚 Mais do site</h3><ul><li><a href="../">Página inicial</a></li><li><a href="../jogos/">Todos os jogos</a></li><li><a href="${MD}catalogo.html?tipo=3d">Laboratório 3D</a></li><li><a href="../simuladores/">Simuladores</a></li><li><a href="${MD}meu-progresso.html">Meu progresso</a></li><li><a href="../curriculo/">Quem é Júlia Quoos</a></li></ul></div>`;
   }
