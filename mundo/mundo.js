@@ -496,6 +496,38 @@
     }
     if (novos) comparaNiveis(antes);
     if (novos) { S.pontos += 25 * novos; aviso(novos === 1 ? '🎉 Atividade concluída! A casa ganhou cor. +25 ⭐' : `🎉 ${novos} atividades concluídas! +${25 * novos} ⭐`); hud(); confereFases(); }
+    confereMissoesJogos();
+  }
+  /* ---------- missões dos jogos: terminar dois jogos do site que combinam libera uma roupa exclusiva e uma figurinha ---------- */
+  const MISSOES_JOGOS = [
+    { id: 'logica', ic: '🏭', nome: 'Engenharia lógica', jogos: ['fabrica-logica', 'robo'], premio: ['camisa', '#f28c28', 'Camiseta Fábrica Lógica'] },
+    { id: 'correio', ic: '📦', nome: 'Carteiro das redes', jogos: ['pacotes', 'rotas'], premio: ['camisa', '#e8c547', 'Camiseta do Correio de Pacotes'] },
+    { id: 'bits', ic: '🔢', nome: 'Mestre dos bits', jogos: ['vale-bits', 'paridade'], premio: ['calca', '#1d1d1d', 'Calça binária'] },
+    { id: 'sucos', ic: '🧃', nome: 'Empreendedorismo', jogos: ['empresa-sucos', 'mesada'], premio: ['camisa', '#7bc67e', 'Camiseta da Empresa de Sucos'] },
+    { id: 'juros', ic: '🪙', nome: 'Dinheiro que cresce', jogos: ['cofrinho', 'poupanca'], premio: ['calca', '#c9a227', 'Calça dourada'] },
+    { id: 'seguro', ic: '🔐', nome: 'Guardião digital', jogos: ['senha', 'golpe'], premio: ['camisa', '#1f6f50', 'Camiseta do guardião digital'] },
+    { id: 'codigo', ic: '🐍', nome: 'Programação', jogos: ['python', 'cidade-blocos'], premio: ['camisa', '#3b6fb6', 'Camiseta Python'] },
+    { id: 'dados', ic: '🌦️', nome: 'Ciência de dados', jogos: ['meteorologista', 'chatbot'], premio: ['camisa', '#9b59b6', 'Camiseta cientista de dados'] },
+    { id: 'detetive', ic: '🕵️', nome: 'Detetive da informação', jogos: ['cifra', 'boato'], premio: ['calca', '#6b4f3a', 'Calça de detetive'] }
+  ];
+  const lugarPorId = id => todosLugares.find(l => l.id === id);
+  const missoesJogos = () => MISSOES_JOGOS.filter(m => m.jogos.every(lugarPorId));
+  function confereMissoesJogos() {
+    S.jogosMissao = S.jogosMissao || {};
+    for (const m of missoesJogos()) if (!S.jogosMissao[m.id] && m.jogos.every(id => S.feitos[id])) {
+      const [k, cor, nome] = m.premio;
+      S.jogosMissao[m.id] = true; S.loja.tem[`cor:${k}:${cor}`] = true; S.medalhas['jogos-' + m.id] = { ic: m.ic, nome: m.nome };
+      pontos(30, `${m.ic} Missão ${m.nome} completa! Você ganhou: ${nome}.`);
+      setTimeout(() => ganhaFigurinha(null, 'pela missão dos jogos'), 1800);
+      salvar();
+    }
+  }
+  function janelaJogos() {
+    S.jogosMissao = S.jogosMissao || {};
+    $('#jogos-conteudo').innerHTML = `<p>Termine os dois jogos de cada missão para ganhar uma <b>roupa exclusiva</b> para o avatar, +30 ⭐ e uma figurinha. Os jogos abrem em outra aba, e o progresso volta para cá sozinho.</p>
+      <div class="projetos">${missoesJogos().map(m => { const ok = S.jogosMissao[m.id], [, cor, nome] = m.premio; return `<div class="proj ${ok ? 'pronto' : ''}"><h3>${m.ic} ${esc(m.nome)} ${ok ? '✅' : ''}</h3>
+        <ul class="etapas">${m.jogos.map(lugarPorId).map(l => `<li class="${S.feitos[l.id] ? 'ok' : ''}">${S.feitos[l.id] ? '✅' : '⬜'} <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.icone)} ${esc(l.titulo)}</a></li>`).join('')}</ul>
+        <p class="small"><span class="amostra" style="background:${cor}"></span> Prêmio: ${esc(nome)}${ok ? ' <b>(já está no seu 👤 Avatar)</b>' : ''}</p></div>`; }).join('')}</div>`;
   }
 
   /* ---------- projeção isométrica ---------- */
@@ -2503,7 +2535,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2724,7 +2756,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
