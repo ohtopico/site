@@ -2769,7 +2769,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2887,6 +2887,60 @@
     $('#av-opcoes').querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => { S.av[b.dataset.k] = b.dataset.v; salvar(); editorAvatar(); }));
     previaAvatar();
   }
+  /* ---------- cartão-postal: uma imagem da sua casa, do avatar e do pet com o link do site (paleta sem azul) ---------- */
+  const CARTAO = { fundo1: '#ffe3ec', fundo2: '#fff3c4', destaque: '#c2185b', verde: '#2e7d32', texto: '#3a2a1a' };
+  function desenhaCartao(cv2, comNome) {
+    const g = cv2.getContext('2d'), W2 = cv2.width, H2 = cv2.height;
+    const fundo = g.createLinearGradient(0, 0, W2, H2); fundo.addColorStop(0, CARTAO.fundo1); fundo.addColorStop(1, CARTAO.fundo2);
+    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = fundo; g.fillRect(0, 0, W2, H2);
+    for (let i = 0; i < 60; i++) { g.fillStyle = ['#f48fb1', '#ffd54f', '#aed581', '#ffab91'][i % 4]; g.globalAlpha = 0.45; g.beginPath(); g.arc((i * 211) % W2, (i * 97 + 31) % H2, 3 + (i % 4), 0, Math.PI * 2); g.fill(); }
+    g.globalAlpha = 1;
+    // a cena isométrica: um pedaço de grama, a casa, o avatar e o pet
+    const esc2 = 1.45, [cx, cy] = iso(3.2, 4);
+    g.setTransform(esc2, 0, 0, esc2, 330 - cx * esc2, 330 - cy * esc2);
+    ctx = g;
+    try {
+      for (let y = -1; y < 8; y++) for (let x = -1; x < 8; x++) { const [sx, sy] = iso(x, y); g.drawImage(textura(x === 2 && y >= 4 ? '#f7c6d9' : ESTACAO.grama, ((x + 9) * 7 + (y + 9) * 3) % 4), sx - TW / 2, sy); }
+      const lista = [{ k: 1 + 1 + 4, d: () => desenhaMinhaCasa({ id: 'minhaCasa', gx: 1, y: 1, w: 4, d: 4 }, false, false) },
+        { k: 2.6 + 6.2, d: () => desenhaPessoa(2.6, 6.2, S.av, { dir: 'y+' }) }];
+      if (S.pet) lista.push({ k: 3.8 + 6.3, d: () => desenhaPet(3.8, 6.3, S.pet, { dir: 'y+' }) });
+      for (const [x, y] of [[0, 6.5], [5.8, 1.2], [6.2, 5.4]]) lista.push({ k: x + y, d: () => { caixa(x + 0.4, y + 0.4, 0, 0.2, 0.2, 0.6, '#8a5a3a'); caixa(x + 0.05, y + 0.05, 0.6, 0.9, 0.9, 0.8, '#7cc47a'); } });
+      lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
+    } finally { ctx = ctxJogo; }
+    // o texto do cartão
+    g.setTransform(1, 0, 0, 1, 0, 0); g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+    const x0 = 660, nome = comNome && S.turma.nome ? S.turma.nome.split(' ')[0] : '';
+    g.fillStyle = 'rgba(255,255,255,.75)'; g.beginPath(); g.roundRect(x0 - 30, 60, 540, 510, 28); g.fill();
+    g.fillStyle = CARTAO.destaque; g.font = '800 54px Sniglet, Lexend, sans-serif'; g.fillText(nome ? `O mundo de ${nome}` : 'Meu mundo', x0, 140, 490);
+    g.fillStyle = CARTAO.texto; g.font = '500 30px Lexend, sans-serif';
+    const figs = PESSOAS.filter(p => (S.album.tem[p.id] || 0) > 0).length;
+    [[`⭐ ${S.pontos} pontos`], [`🏆 ${Object.keys(S.concluidas).length} de ${fases.length} vilas concluídas`], [`📒 ${figs} de ${PESSOAS.length} figurinhas`], [`🏅 ${Object.keys(S.medalhas).length} medalhas`], [S.pet ? `🐾 ${S.pet.nome}, meu pet` : '🏠 minha casa no Mundo']]
+      .forEach(([t], i) => g.fillText(t, x0, 210 + i * 52, 490));
+    g.fillStyle = CARTAO.verde; g.font = '600 26px Lexend, sans-serif'; g.fillText('Venha jogar e aprender computação:', x0, 490, 490);
+    g.fillStyle = CARTAO.destaque; g.font = '800 34px Sniglet, Lexend, sans-serif'; g.fillText('ohtopico.com.br/mundo', x0, 535, 490);
+  }
+  function janelaCartao() {
+    const el = $('#cartao-conteudo');
+    el.innerHTML = `<p>Um cartão-postal com a sua casa, o seu avatar e o seu pet para mostrar para a família e os amigos.</p>
+      <canvas id="cartao-cv" width="1200" height="630" style="width:100%;height:auto;border-radius:14px;border:2px solid var(--borda)"></canvas>
+      <label class="small"><input type="checkbox" id="cartao-nome"> Mostrar o meu primeiro nome${S.turma.nome ? '' : ' (escreva o nome no 👥 Modo turma)'}</label>
+      <div class="btn-row"><button type="button" class="hb verde" id="cartao-baixar">⬇️ Baixar a imagem</button><button type="button" class="hb amarelo" id="cartao-comp">📤 Compartilhar</button></div>
+      <p class="muted small">O cartão não mostra fotos nem dados pessoais. Peça a um adulto antes de postar em redes sociais.</p>`;
+    const cv2 = $('#cartao-cv'), nomeOk = () => $('#cartao-nome').checked;
+    const desenha = () => desenhaCartao(cv2, nomeOk());
+    desenha(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(desenha);
+    $('#cartao-nome').addEventListener('change', desenha);
+    $('#cartao-baixar').addEventListener('click', () => { const a = document.createElement('a'); a.href = cv2.toDataURL('image/png'); a.download = 'meu-mundo-ohtopico.png'; document.body.appendChild(a); a.click(); a.remove(); });
+    $('#cartao-comp').addEventListener('click', () => cv2.toBlob(async blob => {
+      const txt = 'Olha o meu mundo! Venha jogar e aprender computação: https://ohtopico.com.br/mundo/';
+      try {
+        const f = new File([blob], 'meu-mundo-ohtopico.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [f] })) return await navigator.share({ files: [f], text: txt, title: 'Meu mundo' });
+      } catch (e) { if (e && e.name === 'AbortError') return; }
+      window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+      aviso('Baixe a imagem e anexe na mensagem 📎');
+    }, 'image/png'));
+  }
   function previaAvatar() {
     const c = $('#av-preview'), pd = Math.min(window.devicePixelRatio || 1, 2);
     c.width = 220 * pd; c.height = 260 * pd;
@@ -2997,7 +3051,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
