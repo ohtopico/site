@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mundo do site: missões com jogos e simuladores | Júlia Quoos</title>
-<meta name="description" content="Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens, decore a sua casa, cuide do seu pet e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site.">
+<meta name="description" content="Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens, decore a sua casa, cuide do seu pet, faça amigos, suba as habilidades da BNCC e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site.">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="https://ohtopico.com.br/mundo/">
 <meta property="og:title" content="Mundo do site: missões com jogos e simuladores | Júlia Quoos">
@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="mundo.css?v=20261031c">
+<link rel="stylesheet" href="mundo.css?v=20261031d">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -104,8 +104,13 @@
   </div>
 </div>
 <div class="janela" id="j-inventario" hidden role="dialog" aria-labelledby="j-inv-t">
-  <div class="j-caixa"><div class="j-cab"><h2 id="j-inv-t">🎒 Inventário</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-inv-t">🎒 Inventário, habilidades e amigos</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="inv-itens" class="inv"></div>
+    <h3>📈 Habilidades da BNCC</h3>
+    <p class="muted small" style="margin:0 0 8px">Sobem quando você acerta perguntas e conclui jogos de cada eixo.</p>
+    <div id="inv-hab" class="habs"></div>
+    <h3>💞 Amigos</h3>
+    <div id="inv-amigos" class="inv"></div>
     <h3>Conquistas</h3>
     <div id="inv-conq" class="inv"></div>
   </div>
@@ -160,7 +165,7 @@
 <script src="../material-didatico/assets/listas.js"></script>
 <script src="../material-didatico/assets/progresso.js"></script>
 <script src="../simuladores/assets/sim-comum.js"></script>
-<script src="mundo.js?v=20261031c"></script>
+<script src="mundo.js?v=20261031d"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>

@@ -97,14 +97,20 @@
     '<strong>Backup</strong> é uma cópia de segurança. Se o computador estragar ou for atacado por vírus, os arquivos não se perdem.'
   ];
 
+  /* habilidades: os eixos da BNCC de Computação e as unidades temáticas de Matemática (EIXOS e HAB vêm de dados.js) */
+  const EIXOS_ = typeof EIXOS !== 'undefined' ? EIXOS : {};
+  const HAB_ = typeof HAB !== 'undefined' ? HAB : {};
+  const ICONE_EIXO = { PC: '🧩', MD: '💻', CD: '🌐', NU: '🔢', AL: '🔣', GE: '📐', GM: '📏', PE: '🎲' };
+  function eixosDe(habs) { return [...new Set((habs || []).map(h => HAB_[h] && HAB_[h].eixo).filter(Boolean))]; }
   /* perguntas de uma fase: múltipla escolha e verdadeiro ou falso das listas do mesmo ano */
   function perguntasDoAno(ano) {
     const out = [];
     for (const l of LST) {
       if (l.ano !== ano) continue;
+      const eixos = eixosDe(l.habs);
       l.ex.forEach((e, i) => {
-        if (e[0] === 'me') out.push({ id: l.id + '-' + i, enun: e[1], alts: e[2], certa: e[3], coment: e[4] || '' });
-        else if (e[0] === 'vf') e[2].forEach((af, j) => out.push({ id: l.id + '-' + i + '-' + j, enun: 'Verdadeiro ou falso? ' + af[0], alts: ['Verdadeiro', 'Falso'], certa: af[1] ? 0 : 1, coment: e[3] || '' }));
+        if (e[0] === 'me') out.push({ id: l.id + '-' + i, enun: e[1], alts: e[2], certa: e[3], coment: e[4] || '', eixos });
+        else if (e[0] === 'vf') e[2].forEach((af, j) => out.push({ id: l.id + '-' + i + '-' + j, enun: 'Verdadeiro ou falso? ' + af[0], alts: ['Verdadeiro', 'Falso'], certa: af[1] ? 0 : 1, coment: e[3] || '', eixos }));
       });
     }
     return out;
@@ -291,7 +297,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, x: fases[0].x0 + 3.5, y: MEIO });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, x: fases[0].x0 + 3.5, y: MEIO });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -329,11 +335,13 @@
   /* jogos que registraram progresso no Meu progresso contam como concluídos (é o mesmo progresso da página do jogo) */
   function confereJogos() {
     let novos = 0;
+    const antes = niveisAgora();
     for (const l of todosLugares) {
       if (S.feitos[l.id] || !l.rec || !window.MDP) continue;
       const r = MDP.resultado(l.id);
       if (r && r.n > 0) { S.feitos[l.id] = r.b || 1; novos++; }
     }
+    if (novos) comparaNiveis(antes);
     if (novos) { S.pontos += 25 * novos; aviso(novos === 1 ? '🎉 Atividade concluída! A casa ganhou cor. +25 ⭐' : `🎉 ${novos} atividades concluídas! +${25 * novos} ⭐`); hud(); confereFases(); }
   }
 
@@ -1014,7 +1022,7 @@
       lista.push({ k: f.centro.x + f.centro.y + 0.5, d: () => desenhaMarco(f) });
       lista.push({ k: f.placa.x + f.placa.y, d: () => desenhaPlaca(f) });
       if (f.portao) lista.push({ k: f.portao.x + f.portao.y + 1.5, d: () => desenhaPortao(f) });
-      for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? '👩‍🏫' : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome, sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
+      for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? '👩‍🏫' : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
       for (const it of f.itens) if (!S.itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => desenhaItem(it) });
     }
     lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
@@ -1079,6 +1087,62 @@
   let avisoT = null;
   function aviso(t) { const el = $('#aviso'); el.textContent = t; el.classList.add('mostra'); clearTimeout(avisoT); avisoT = setTimeout(() => el.classList.remove('mostra'), 3200); }
 
+  /* ---------- habilidades (sobem com as respostas e com os jogos concluídos) ---------- */
+  const custoNivel = n => 15 * n * (n + 1);                  // 30, 90, 180, 300... até o nível 10
+  const nivelHab = xp => { let n = 0; while (n < 10 && xp >= custoNivel(n + 1)) n++; return n; };
+  function xpHabilidades() {
+    const xp = Object.assign({}, S.hab);
+    for (const l of todosLugares) if (S.feitos[l.id] && l.rec) for (const e of eixosDe(l.rec.habs)) xp[e] = (xp[e] || 0) + 30;
+    return xp;
+  }
+  function niveisAgora() { const xp = xpHabilidades(); return Object.fromEntries(Object.keys(EIXOS_).map(e => [e, nivelHab(xp[e] || 0)])); }
+  function comparaNiveis(antes) {
+    const depois = niveisAgora(), subiu = Object.keys(depois).filter(e => depois[e] > antes[e]);
+    if (subiu.length) { S.pontos += 10 * subiu.length; setTimeout(() => aviso(`📈 ${subiu.map(e => `${ICONE_EIXO[e]} ${EIXOS_[e].nome}: nível ${depois[e]}`).join(' · ')}`), 1600); hud(); }
+  }
+  function ganhaHabilidade(eixos, v) {
+    if (!eixos || !eixos.length) return;
+    const antes = niveisAgora();
+    for (const e of eixos) S.hab[e] = (S.hab[e] || 0) + v;
+    comparaNiveis(antes);
+  }
+
+  /* ---------- amizade com os moradores: corações sobem conversando, acertando e dando presentes ---------- */
+  const GOSTOS = ['maca', 'livro', 'estrela', 'diamante', 'chave'];
+  const PRESENTES_NPC = [[2, 'maca'], [4, 'estrela'], [6, 'diamante'], [8, 'chave'], [10, 'peca']];
+  const hoje = () => new Date().toDateString();
+  const amizade = n => S.amizade[n.id] || 0;
+  const coracoes = n => Math.floor(amizade(n) / 10);
+  const favorito = n => GOSTOS[(n.fase.idx * 3 + +n.id.slice(-1)) % GOSTOS.length];
+  const todosNpcs = () => fases.flatMap(f => f.npcs);
+  const coracoesHtml = n => '<span class="coracoes" aria-label="' + coracoes(n) + ' de 10 corações">' + '❤️'.repeat(coracoes(n)) + '🤍'.repeat(10 - coracoes(n)) + '</span>';
+  function ganhaAmizade(n, v) {
+    const antes = coracoes(n);
+    S.amizade[n.id] = Math.min(100, amizade(n) + v);
+    const depois = coracoes(n);
+    if (depois <= antes) return;
+    let msg = `💗 ${n.nome}: ${depois} ${depois === 1 ? 'coração' : 'corações'}!`;
+    for (const [nv, item] of PRESENTES_NPC) if (depois >= nv && !S.recompensas[n.id + '-' + nv]) {
+      S.recompensas[n.id + '-' + nv] = true; S.inv[item] = (S.inv[item] || 0) + 1;
+      msg += ` Ganhou um presente: ${ITENS[item][0]} ${ITENS[item][1]}.`;
+    }
+    setTimeout(() => aviso(msg), 900); salvar();
+  }
+  function presente(n) {
+    const dia = S.diaNpc[n.id] || (S.diaNpc[n.id] = {});
+    if (dia.presente === hoje()) return dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>Você já me deu um presente hoje. Volte amanhã!</p>`, [{ txt: 'Tá bom', fn: fechaDialogo }]);
+    const tem = GOSTOS.filter(k => S.inv[k] > 0);
+    const dica = S.gostos[n.id] ? `<p class="muted">${esc(n.nome)} adora ${ITENS[favorito(n)][0]} ${ITENS[favorito(n)][1].toLowerCase()}.</p>` : '<p class="muted">Cada morador tem um presente preferido. Descubra qual é!</p>';
+    if (!tem.length) return dialogo('🎁', 'Presente', `<p>Você não tem itens para dar. Pegue maçãs, livros, estrelas, diamantes e chaves pela vila.</p>${dica}`, [{ txt: 'Ok', fn: fechaDialogo }]);
+    dialogo('🎁', `Presente para ${n.nome}`, `<p>O que você quer dar?</p>${dica}`, tem.map(k => ({ txt: `${ITENS[k][0]} ${ITENS[k][1]} (${S.inv[k]})`, fn: () => {
+      S.inv[k]--; dia.presente = hoje();
+      const ama = k === favorito(n);
+      if (ama) S.gostos[n.id] = true;
+      ganhaAmizade(n, ama ? 25 : 10); salvar();
+      dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>${ama ? 'Eu amei! É o meu preferido! 😍' : 'Que legal, valeu pelo presente! 😊'}</p>`, [{ txt: 'De nada!', classe: 'principal', fn: fechaDialogo }]);
+    } })).concat([{ txt: 'Agora não', fn: fechaDialogo }]));
+  }
+
   /* ---------- diálogos ---------- */
   const D = { el: $('#dialogo'), ic: $('#d-ic'), nome: $('#d-nome'), texto: $('#d-texto'), op: $('#d-opcoes') };
   let dialogoNpc = null;
@@ -1122,6 +1186,7 @@
       D.op.dataset.respondida = '1';
       const certo = i === p.certa, novaResp = !(p.id in S.resp) || S.resp[p.id] === false;
       S.resp[p.id] = certo;
+      ganhaHabilidade(p.eixos, certo ? 10 : 2);
       if (certo) { S.acertos++; pontos(novaResp ? 10 : 5, 'Acertou!'); } else { S.erros++; hud(); }
       [...D.op.children].forEach((b, j) => { b.disabled = true; if (j === p.certa) b.classList.add('certa'); else if (j === i) b.classList.add('errada'); });
       D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${p.coment || ''}</p>`;
@@ -1136,9 +1201,14 @@
     const f = n.fase, primeira = !S.falas[n.id];
     dialogoNpc = n;
     if (primeira) { S.falas[n.id] = true; pontos(5, `Você conheceu ${n.nome}!`); confereFases(); }
-    const ola = primeira ? (n.prof ? `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. ` : `Oi! Eu sou ${n.nome}. `) : 'Oi de novo! ';
-    dialogo('💬', n.nome, `<p>${esc(ola)}Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.</p>`, [
-      { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, '❓', sorteiaPergunta(f)) },
+    const dia = S.diaNpc[n.id] || (S.diaNpc[n.id] = {});
+    if (dia.fala !== hoje()) { dia.fala = hoje(); ganhaAmizade(n, 10); }
+    const c = coracoes(n);
+    const ola = primeira ? (n.prof ? `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. ` : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
+    const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
+    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.</p><p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade.${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}</p>`, [
+      { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, '❓', sorteiaPergunta(f), certo => { if (certo) ganhaAmizade(n, 8); }) },
+      { txt: '🎁 Dar um presente', fn: () => presente(n) },
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
   }
@@ -1204,11 +1274,22 @@
   }
   function inventario() {
     $('#inv-itens').innerHTML = Object.entries(ITENS).map(([k, [ic, nome]]) => `<div class="it ${S.inv[k] ? '' : 'falta'}"><span style="font-size:26px">${ic}</span><span>${nome}<br><b>${S.inv[k] || 0}</b></span></div>`).join('') +
-      `<p class="muted small" style="flex-basis:100%;margin:4px 0 0">Na bancada da sua casa 🏠, os itens viram móveis. Maçãs e estrelas também alimentam o seu pet 🐾. Em breve as peças vão abrir um jogo especial.</p>`;
+      `<p class="muted small" style="flex-basis:100%;margin:4px 0 0">Na bancada da sua casa 🏠, os itens viram móveis. Maçãs e estrelas também alimentam o seu pet 🐾. Os moradores que viram seus melhores amigos dão peças de quebra-cabeça.</p>`;
+    const xp = xpHabilidades(), abertos = fases.filter(liberada).flatMap(f => f.lugares);
+    $('#inv-hab').innerHTML = Object.entries(EIXOS_).map(([e, info]) => {
+      const x = xp[e] || 0, n = nivelHab(x), base = custoNivel(n), prox = custoNivel(n + 1);
+      const sug = abertos.find(l => l.rec && !S.feitos[l.id] && eixosDe(l.rec.habs).includes(e));
+      return `<div class="hab"><span class="hab-ic">${ICONE_EIXO[e] || '⭐'}</span><span class="hab-txt"><strong>${esc(info.nome)}</strong><small class="muted hab-sub">${info.comp === 'CO' ? 'Computação' : 'Matemática'} · nível ${n}</small>
+        <span class="barra"><span style="width:${n >= 10 ? 100 : Math.round(100 * (x - base) / (prox - base))}%"></span></span>
+        <small>${n >= 10 ? 'Nível máximo! 🏆' : sug ? `Para subir: <a href="${esc(sug.url)}" target="_blank" rel="noopener">${esc(sug.icone)} ${esc(sug.titulo)}</a>` : 'Para subir: responda perguntas dos moradores e dos diamantes.'}</small></span></div>`;
+    }).join('');
+    const conhecidos = todosNpcs().filter(n => S.falas[n.id] || amizade(n));
+    $('#inv-amigos').innerHTML = conhecidos.length ? conhecidos.map(n => `<div class="it"><span style="font-size:22px">${n.prof ? '👩‍🏫' : '🙂'}</span><span>${esc(n.nome)} <small class="muted">· ${esc(n.fase.nome)}</small><br>${coracoesHtml(n)}${S.gostos[n.id] ? ` <small>adora ${ITENS[favorito(n)][0]}</small>` : ''}</span></div>`).join('')
+      : '<p class="muted small">Converse com os moradores da vila para fazer amigos.</p>';
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     const conq = [
       ['🥇', 'Primeira casa colorida', feitos >= 1], ['🎨', '5 casas coloridas', feitos >= 5], ['🏅', '15 casas coloridas', feitos >= 15], ['🧠', '10 acertos', S.acertos >= 10], ['🧠', '30 acertos', S.acertos >= 30],
-      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10], ['🛋️', 'Primeiro móvel', Object.keys(S.casa.feitos).length >= 1], ['🏡', 'Casa decorada (8 móveis)', Object.keys(S.casa.feitos).length >= 8], ['🔭', 'Telescópio', !!S.casa.feitos.telescopio], ['🐾', 'Adotou um pet', !!S.pet], ['🏅', 'Pet nível 5', !!S.pet && S.pet.nivel >= 5],
+      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10], ['🛋️', 'Primeiro móvel', Object.keys(S.casa.feitos).length >= 1], ['🏡', 'Casa decorada (8 móveis)', Object.keys(S.casa.feitos).length >= 8], ['🔭', 'Telescópio', !!S.casa.feitos.telescopio], ['🐾', 'Adotou um pet', !!S.pet], ['💞', 'Melhor amigo (10 corações)', todosNpcs().some(n => coracoes(n) >= 10)], ['🤝', '5 amigos com 3 corações', todosNpcs().filter(n => coracoes(n) >= 3).length >= 5], ['📈', 'Uma habilidade no nível 5', Object.values(niveisAgora()).some(v => v >= 5)], ['🏅', 'Pet nível 5', !!S.pet && S.pet.nivel >= 5],
       ...fases.map(f => ['🏆', f.nome, !!S.concluidas[f.id]])
     ];
     $('#inv-conq').innerHTML = conq.map(([ic, n, ok]) => `<div class="it ${ok ? '' : 'falta'}"><span style="font-size:22px">${ic}</span><span>${esc(n)}</span></div>`).join('');
