@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="mundo.css?v=20261031d">
+<link rel="stylesheet" href="mundo.css?v=20261031e">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -106,6 +106,8 @@
 <div class="janela" id="j-inventario" hidden role="dialog" aria-labelledby="j-inv-t">
   <div class="j-caixa"><div class="j-cab"><h2 id="j-inv-t">🎒 Inventário, habilidades e amigos</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="inv-itens" class="inv"></div>
+    <h3>🧩 Quebra-cabeça</h3>
+    <div id="inv-quebra" class="quebra-box"></div>
     <h3>📈 Habilidades da BNCC</h3>
     <p class="muted small" style="margin:0 0 8px">Sobem quando você acerta perguntas e conclui jogos de cada eixo.</p>
     <div id="inv-hab" class="habs"></div>
@@ -148,6 +150,15 @@
     <div id="pet-conteudo"></div>
   </div>
 </div>
+<div class="janela" id="j-especial" hidden role="dialog" aria-labelledby="j-esp-t">
+  <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-esp-t">🧩 Jogo especial: quebra-cabeça deslizante</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <p class="muted">Clique numa peça vizinha ao espaço vazio para deslizá-la. Deixe as peças na ordem de 1 a 8 para montar a imagem.</p>
+    <canvas id="esp-cv" width="300" height="300" aria-label="Quebra-cabeça deslizante" role="img"></canvas>
+    <p id="esp-movs"></p>
+    <div id="esp-fim" hidden><p>Você usou um <strong>algoritmo</strong>: uma sequência de passos para chegar ao objetivo. Computadores resolvem esse quebra-cabeça testando movimentos com algoritmos de busca, como a busca em largura.</p></div>
+    <button type="button" class="hb azul" id="esp-de-novo">🔀 Embaralhar de novo</button>
+  </div>
+</div>
 <div class="janela" id="j-menu" hidden role="dialog" aria-labelledby="j-menu-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-menu-t">Mundo do site</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <p>Ande pela vila, converse com os personagens, responda às perguntas, colete os itens e abra as casas: cada casa é um jogo, um recurso 3D, um simulador ou um guia do site. Cumprindo as missões de uma fase, a próxima se abre.</p>
@@ -165,7 +176,7 @@
 <script src="../material-didatico/assets/listas.js"></script>
 <script src="../material-didatico/assets/progresso.js"></script>
 <script src="../simuladores/assets/sim-comum.js"></script>
-<script src="mundo.js?v=20261031d"></script>
+<script src="mundo.js?v=20261031e"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
