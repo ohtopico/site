@@ -89,7 +89,7 @@
   const PERGUNTAS_EM = DESAFIOS_EM.flatMap(d => d.qs.map((q, i) => ({ id: `${d.id}-${i}`, enun: (q.html || '') + q.enun, alts: q.alts, certa: 0, coment: q.coment, eixos: d.eixos })));
   const FASES = [
     { id: 'vila', nome: 'Vila do Começo', sub: 'Primeiros passos · Computação do 6º ano', ano: 6, caminho: '#f7c6d9', marco: 'fonte', icone: '🏡', filtro: r => anoDe(r) <= 6 && r.comp.includes('CO'),
-      placa: 'Bem-vindo! Cada casa desta vila é um jogo. Ela fica cinza até você jogar e vira colorida quando a atividade é concluída. Converse com as pessoas, pegue os livros e diamantes do chão e entre nas casas.' },
+      placa: 'Bem-vindo! Cada casa desta vila é um jogo. Ela fica cinza até você jogar e vira colorida quando a atividade é concluída. Converse com as pessoas, pegue os livros do chão, as maçãs das árvores e entre nas casas. Com uma picareta, as rochas dão pedra e, às vezes, diamantes.' },
     { id: 'praca', nome: 'Praça dos Números', sub: 'Matemática do 6º ano', ano: 6, caminho: '#fbe3a6', marco: 'abaco', icone: '🔢', filtro: r => anoDe(r) <= 6 && !r.comp.includes('CO'),
       placa: 'Aqui os jogos são de Matemática: frações, figuras, tabuada e muito mais.' },
     { id: 'padroes', nome: 'Bairro dos Padrões', sub: '7º ano', ano: 7, caminho: '#dccbf5', marco: 'xadrez', icone: '🧱', filtro: r => anoDe(r) === 7,
@@ -117,7 +117,7 @@
   const CABELOS = ['#3a2416', '#111111', '#8a5a2b', '#d6a93b', '#c2c2c2', '#e0564a', '#9a6bd6'];
   const ROUPAS = ['#3f8fe0', '#e0564a', '#4bb259', '#f6b73c', '#9a6bd6', '#2bb3b1', '#e07bb0', '#ffffff', '#333333'];
 
-  /* itens do chão: livro mostra uma dica, diamante pede uma pergunta, os outros vão para o inventário */
+  /* itens do chão: livro mostra uma dica, os outros vão para o inventário (a maçã fica numa árvore; o diamante vem das rochas e pede uma pergunta) */
   const ITENS = { livro: ['📘', 'Livro'], diamante: ['💎', 'Diamante'], estrela: ['⭐', 'Estrela'], maca: ['🍎', 'Maçã'], chave: ['🔑', 'Chave'], peca: ['🧩', 'Peça de quebra-cabeça'],
     // vendidos nas lojas (só aparecem no inventário depois de comprados)
     petisco: ['🦴', 'Petisco'], sabonete: ['🧼', 'Sabonete'], brinquedo: ['🧸', 'Brinquedo'], suco: ['🧃', 'Suco'], bolo: ['🍰', 'Bolo'], sanduiche: ['🥪', 'Sanduíche'],
@@ -139,7 +139,7 @@
   Object.assign(ITENS, { madeira: ['🪵', 'Madeira'], pedra: ['🪨', 'Pedra'] });   // recursos: só com o machado e a picareta da loja
   Object.assign(ITENS, { flor: ['🌸', 'Flor de primavera'], melancia: ['🍉', 'Melancia de verão'], folha: ['🍁', 'Folha de outono'], pinhao: ['🌰', 'Pinhão de inverno'] });
   const ITENS_LOJA = new Set(['madeira', 'pedra', 'isca', 'peixe', 'peixeColorido', 'camarao', 'flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
-  const SORTEIO_ITENS = ['livro', 'diamante', 'estrela', 'livro', 'maca', 'diamante', 'chave', 'peca'];
+  const SORTEIO_ITENS = ['livro', 'maca', 'estrela', 'livro', 'maca', 'chave', 'estrela', 'peca'];   // os diamantes saem das rochas, com a picareta
   const DICAS = [
     'O computador guarda tudo em <strong>binário</strong>: só 0 e 1. Com 8 bits (um byte) dá para escrever 256 números diferentes, de 0 a 255.',
     'Um <strong>algoritmo</strong> é uma sequência de passos bem definidos para resolver um problema. Uma receita de bolo é um algoritmo!',
@@ -449,6 +449,9 @@
       const t = f.tile[pos(x, y)];
       if (f.sol[pos(x, y)] || t === T.agua || f.itens.some(o => Math.hypot(o.x - f.x0 - x, o.y - y) < 4)) continue;
       const tipo = SORTEIO_ITENS[(f.itens.length + f.idx) % SORTEIO_ITENS.length];
+      // a maçã fica pendurada numa árvore verde (as duas primeiras cores de folha); sem árvore livre, fica no chão
+      const verdes = tipo === 'maca' ? f.arvores.filter(a => a.tipo < 2 && !f.itens.some(o => o.arvore === a)) : [];
+      if (verdes.length) { const a = verdes[Math.floor(ri() * verdes.length)]; f.itens.push({ id: `${f.id}-s${SEMANA}-${f.itens.length}`, x: a.x + 0.5, y: a.y + 0.5, tipo, arvore: a }); continue; }
       f.itens.push({ id: `${f.id}-s${SEMANA}-${f.itens.length}`, x: f.x0 + x + 0.5, y: y + 0.5, tipo });
     }
     // dois itens da estação em cada vila
@@ -1026,6 +1029,7 @@
   function desenhaCerca(c) { caixa(c.x + 0.1, c.y + 0.1, 0, 0.8, 0.8, 0.12, '#c08a52', { blocos: false }); for (const [a, b] of [[0.15, 0.15], [0.7, 0.7], [0.15, 0.7], [0.7, 0.15]]) caixa(c.x + a, c.y + b, 0, 0.15, 0.15, 0.9, '#c08a52', { blocos: false }); caixa(c.x + 0.1, c.y + 0.1, 0.55, 0.8, 0.8, 0.12, '#e6c08a', { blocos: false }); }
   function desenhaItem(it) {
     const [ic] = ITENS[it.tipo];
+    if (it.arvore) { const [sx, sy] = iso(it.x + 0.25, it.y + 0.25, 1.5 + Math.sin(agora / 500 + it.x) * 0.03); ctx.font = '26px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(ic, sx, sy); return; }
     sombra(it.x, it.y, 0.35);
     const [sx, sy] = iso(it.x, it.y, 0.55 + Math.sin(agora / 300 + it.x * 3) * 0.12);
     if (it.tipo === 'diamante') { ctx.fillStyle = 'rgba(160,230,255,.35)'; ctx.beginPath(); ctx.arc(sx, sy, 17, 0, Math.PI * 2); ctx.fill(); }
@@ -1133,7 +1137,7 @@
     const f = faseDeX(P.x);
     for (const p of f.portais) if (P.andando && Math.hypot(p.x - P.x, p.y - P.y) < 0.9 && liberada(fases[p.para])) { trocaFase(p.para, f.idx); return; }
     for (const it of f.evItens) { const E = estEv(it.ev); if (!E.itens[it.id] && Math.hypot(it.x - P.x, it.y - P.y) < 0.55) { E.itens[it.id] = true; pontos(5, `${it.ev.item[0]} ${it.ev.item[1]}! (${Object.keys(E.itens).length}/${metaItensEv()}) · ${it.ev.nome}`); salvar(); } }
-    for (const it of f.itens) if (!S.itens[it.id] && Math.hypot(it.x - P.x, it.y - P.y) < 0.55) { pegaItem(it, f); break; }
+    for (const it of f.itens) if (!S.itens[it.id] && Math.hypot(it.x - P.x, it.y - P.y) < (it.arvore ? 1.05 : 0.55)) { pegaItem(it, f); break; }   // a maçã da árvore se pega encostando no tronco
     if (f !== faseAtual) { faseAtual = f; hud(); if (agora > 1000) aviso(`${f.icone} ${f.nome}`); }
   }
   function alvoPerto() {
@@ -1494,7 +1498,7 @@
     const base = {
       roupa: [['av', 'oculos', '🕶️', 40], ['av', 'laco', '🎀', 40], ['av', 'chapeu', '🎩', 50], ['av', 'cachecol', '🧣', 60], ['av', 'coroa', '👑', 160],
         ['cor', 'camisa:#2b2d6e', '👕', 60, 'Camiseta galáxia'], ['cor', 'camisa:#ff8fab', '👕', 60, 'Camiseta chiclete'], ['cor', 'calca:#7aa6d6', '👖', 40, 'Calça jeans clara']],
-      comida: [['ferr', 'machado', '🪓', 80, 'Machado (corta madeira das árvores)'], ['ferr', 'picareta', '⛏️', 100, 'Picareta (tira pedra das rochas)'], ['ferr', 'vara', '🎣', 90, 'Vara de pesca (pesque no laguinho)'], ['inv', 'isca', '🪱', 30, '5 iscas', 5], ['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
+      comida: [['ferr', 'machado', '🪓', 80, 'Machado (corta madeira das árvores)'], ['ferr', 'picareta', '⛏️', 100, 'Picareta (tira pedra das rochas e, às vezes, diamantes)'], ['ferr', 'vara', '🎣', 90, 'Vara de pesca (pesque no laguinho)'], ['inv', 'isca', '🪱', 30, '5 iscas', 5], ['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
       pet: [['inv', 'petisco', '🦴', 20, '2 petiscos', 2], ['inv', 'sabonete', '🧼', 20], ['inv', 'brinquedo', '🧸', 40], ['pet', 'lenco', '🧣', 50], ['pet', 'cachecol', '🧣', 50]],
       moveis: Object.entries(MOVEIS).filter(([, M]) => M.planta).map(([id, M]) => ['proj', id, '📜', M.planta, `Planta: ${M.nome} (${M.ic})`]).concat([['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]])
     }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco: caro(preco), nome, qtd }));
@@ -3153,7 +3157,7 @@
       for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? (n.masc ? '👨‍🏫' : '👩‍🏫') : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
       for (const it of f.evItens) if (!estEv(it.ev).itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => { sombra(it.x, it.y, 0.35); const [sx, sy] = iso(it.x, it.y, 0.55 + Math.sin(agora / 300 + it.x * 3) * 0.12); ctx.fillStyle = 'rgba(255,240,170,.45)'; ctx.beginPath(); ctx.arc(sx, sy, 16, 0, Math.PI * 2); ctx.fill(); ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(it.ev.item[0], sx, sy); } });
       eventosAtivos.slice(0, 2).forEach((ev, i) => { const px = f.cx + (i ? -2.9 : 2.9), py = f.cy - 2.9; lista.push({ k: px + py, d: () => { const [ox, oy] = iso(px, py); ctx.save(); ctx.translate(ox, oy); ctx.scale(2, 2); ctx.translate(-ox, -oy); try { MOVEIS[ev.movel].des(px - 0.5, py - 0.5, { on: true }); } finally { ctx.restore(); } } }); });
-      for (const it of f.itens) if (!S.itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => desenhaItem(it) });
+      for (const it of f.itens) if (!S.itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y + (it.arvore ? 0.05 : 0), d: () => desenhaItem(it) });
     }
     lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
     if (S.pet && !S.pet.dorme) lista.push({ k: PET.x + PET.y, d: () => desenhaPet(PET.x, PET.y, S.pet, PET) });
@@ -3515,7 +3519,7 @@
       // o diamante só vem para o inventário se a resposta estiver certa; errando, ele fica no chão para tentar de novo
       P.x += (P.x < it.x ? -0.6 : 0.6); if (!livre(P.x, P.y)) P.x += (P.x < it.x ? 1.2 : -1.2);
       pergunta('Diamante', '💎', sorteiaPergunta(f), certo => { if (certo) { guarda(it, f); aviso('💎 Diamante guardado no inventário!'); } else aviso('O diamante continua lá. Tente de novo!'); });
-    } else { guarda(it, f); pontos(5, `${ic} ${nome} no inventário!`); }
+    } else { guarda(it, f); pontos(5, it.arvore ? `🍎 Você colheu uma maçã da árvore!` : `${ic} ${nome} no inventário!`); }
   }
   /* ---------- mistério de cibersegurança: o caso da conta invadida, no Bairro dos Padrões ----------
      Depois de abrir o caso (na placa da vila ou no Menu), aparecem lupas 🔎 em 5 casas. Cada pista só fica
@@ -3604,13 +3608,20 @@
     dialogo('🔒', 'Portão fechado', `<p>Para seguir para <strong>${esc(prox.nome)}</strong>, complete as missões de ${esc(f.nome)}:</p><p>${falta.join('<br>')}</p>`, [{ txt: 'Vou lá!', fn: fechaDialogo }]);
   }
   /* madeira e pedra: cada árvore ou rocha dá 1 por dia, e só com a ferramenta comprada no Mercadinho */
+  const CHANCE_DIAMANTE = [1, 4];
   function juntaRecurso(a) {
     const ferr = a.rec === 'madeira' ? 'machado' : 'picareta', [fic, fnome] = ferr === 'machado' ? ['🪓', 'machado'] : ['⛏️', 'picareta'];
-    if (!S.loja.tem['ferr:' + ferr]) return dialogo(fic, a.rec === 'madeira' ? 'Árvore' : 'Rocha', `<p>Para tirar ${ITENS[a.rec][0]} ${a.rec} daqui, você precisa de ${ferr === 'machado' ? 'um' : 'uma'} <b>${fnome}</b>. Compre no 🍎 Mercadinho, na Praça dos Números.</p><p class="muted small">Com madeira e pedra, a bancada da sua casa faz móveis novos.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
+    if (!S.loja.tem['ferr:' + ferr]) return dialogo(fic, a.rec === 'madeira' ? 'Árvore' : 'Rocha', `<p>Para tirar ${ITENS[a.rec][0]} ${a.rec} daqui, você precisa de ${ferr === 'machado' ? 'um' : 'uma'} <b>${fnome}</b>. Compre no 🍎 Mercadinho, na Praça dos Números.</p><p class="muted small">Com madeira e pedra, a bancada da sua casa faz móveis novos.${a.rec === 'pedra' ? ' E, minerando as rochas, às vezes aparece um 💎 diamante!' : ''}</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
     const R = S.recursos && S.recursos.dia === diaHoje() ? S.recursos : (S.recursos = { dia: diaHoje(), feitos: {} }), chave = `${atual.id}:${a.obj.x}:${a.obj.y}`;
     if (R.feitos[chave]) return aviso(a.rec === 'madeira' ? '🌳 Esta árvore já deu madeira hoje. Tente outra!' : '🪨 Esta rocha já deu pedra hoje. Tente outra!');
     R.feitos[chave] = true; S.inv[a.rec] = (S.inv[a.rec] || 0) + 1;
     SOM.toca('coleta'); aviso(`${ITENS[a.rec][0]} +1 ${ITENS[a.rec][1].toLowerCase()} (você tem ${S.inv[a.rec]})`); hud(); salvar();
+    // minerando, às vezes aparece um diamante (chance de 1 em 4); ele vem para o inventário com uma resposta certa
+    if (a.rec === 'pedra' && Math.random() < CHANCE_DIAMANTE[0] / CHANCE_DIAMANTE[1]) setTimeout(() => {
+      const f = atual, p = sorteiaPergunta(f);
+      dialogo('💎', 'Um diamante na rocha!', `<p>Junto com a pedra, apareceu um <b>💎 diamante</b>! A chance é de <b>${CHANCE_DIAMANTE[0]} em ${CHANCE_DIAMANTE[1]}</b> a cada pedra tirada.</p><p>Responda certo para levar o diamante.</p>`,
+        [{ txt: 'Responder', classe: 'principal', fn: () => pergunta('Diamante', '💎', p, certo => { if (certo) { S.inv.diamante = (S.inv.diamante || 0) + 1; salvar(); hud(); aviso(`💎 Diamante guardado no inventário! (você tem ${S.inv.diamante})`); } else aviso('O diamante escorregou de volta para a rocha. Na próxima pedra, quem sabe!'); }) }, { txt: 'Deixar para lá', fn: fechaDialogo }]);
+    }, 500);
   }
   // pesca: cada isca é uma tentativa; as chances de cada peixe aparecem como fração, para conversar sobre probabilidade
   const PESCA = [['peixe', 5], ['peixeColorido', 2], ['camarao', 2], ['bota', 1]];
