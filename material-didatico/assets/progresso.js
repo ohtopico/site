@@ -6,6 +6,7 @@
    Níveis de domínio por habilidade:
      0 Não iniciado · 1 Tentou · 2 Familiarizado (≥ 60%) · 3 Proficiente (≥ 80%)
      4 Dominado (voltou a fazer ≥ 80% pelo menos 2 dias depois de ficar proficiente)
+   O teste do ano (teste-do-ano.html) registra uma nota por habilidade em p.t e conta como mais uma atividade.
    ===================================================================== */
 (function () {
   const KEY = 'md-progresso-v1';
@@ -59,14 +60,34 @@
     avisoMedalhas(p);
   }
 
+  // melhor nota de cada dia, no máximo 12 dias
+  const porDia = h => {
+    const d = {};
+    h.forEach(([dia, v]) => { d[dia] = Math.max(d[dia] || 0, Math.min(100, +v || 0)); });
+    return Object.entries(d).map(([dia, v]) => [+dia, v]).sort((a, b) => a[0] - b[0]).slice(-12);
+  };
+
+  /* Teste do ano: notas = { habilidade: % }. Acertar tudo de uma habilidade conta como 100% nela. */
+  function registrarTeste(notas) {
+    const p = perfilAtual(true);
+    p.t = p.t || {};
+    Object.entries(notas).forEach(([c, v]) => {
+      if (!HAB[c]) return;
+      p.t[c] = porDia([...(p.t[c] || []), [hoje(), Math.round(v)]]);
+    });
+    salvarPerfil(p);
+    avisoMedalhas(p);
+  }
+
   /* ---------- domínio ---------- */
   function infoHab(codigo, p) {
     p = p || perfilAtual(false);
     if (!p) return { nivel: 0 };
     const recs = RECURSOS.filter(r => r.habs.includes(codigo) && p.r[r.id]);
-    if (!recs.length) return { nivel: 0 };
-    const hist = recs.flatMap(r => p.r[r.id].h).sort((a, b) => a[0] - b[0]);
-    const best = Math.max(...recs.map(r => p.r[r.id].b));
+    const teste = (p.t && p.t[codigo]) || [];
+    if (!recs.length && !teste.length) return { nivel: 0 };
+    const hist = [...recs.flatMap(r => p.r[r.id].h), ...teste].sort((a, b) => a[0] - b[0]);
+    const best = Math.max(...recs.map(r => p.r[r.id].b), ...teste.map(x => x[1]));
     const ult = hist.length ? hist[hist.length - 1][0] : null;
     const prof = hist.find(([, v]) => v >= 80);
     let nivel = best >= 80 ? 3 : best >= 60 ? 2 : 1;
@@ -111,7 +132,8 @@
     { id: 'prof10', icone: '🌟', nome: 'Constelação', desc: 'Chegou a Proficiente em 10 habilidades.' },
     { id: 'dias3', icone: '📅', nome: 'Constância', desc: 'Estudou em 3 dias diferentes.' },
     { id: 'duas', icone: '🔀', nome: 'Duas frentes', desc: 'Praticou Computação e Matemática.' },
-    { id: 'ano', icone: '🏆', nome: 'Ano completo', desc: 'Proficiente em todas as habilidades de Computação de um ano.' }
+    { id: 'ano', icone: '🏆', nome: 'Ano completo', desc: 'Proficiente em todas as habilidades de Computação de um ano.' },
+    { id: 'teste', icone: '🎯', nome: 'Desafio do ano', desc: 'Fez um teste do ano.' }
   ];
   function medalhas(p) {
     p = p || perfilAtual(false);
@@ -127,7 +149,7 @@
       inicio: ids.length > 0, lista1: tipo('lista').length > 0, jogo1: tipo('jogo').length > 0,
       cem: tipo('lista').some(id => p.r[id].b === 100), listas5: tipo('lista').length >= 5, jogos5: tipo('jogo').length >= 5,
       prof1: prof >= 1, dom1: Object.values(niv).some(n => n === 4), prof10: prof >= 10, dias3: dias >= 3,
-      duas: comps.has('CO') && comps.has('MA'), ano: anoOk
+      duas: comps.has('CO') && comps.has('MA'), ano: anoOk, teste: !!(p && p.t && Object.keys(p.t).length)
     };
     return MEDALHAS.map(m => Object.assign({ tem: !!tem[m.id] }, m));
   }
@@ -248,7 +270,7 @@
   async function exportar() {
     const p = perfilAtual(false);
     if (!p) return '';
-    return empacotar('MDP1', { a: p.apelido, y: p.ano, c: p.criado, r: p.r, v: p.vistas || [], g: p.jg });
+    return empacotar('MDP1', { a: p.apelido, y: p.ano, c: p.criado, r: p.r, v: p.vistas || [], g: p.jg, t: p.t });
   }
   async function importar(code) {
     const o = await desempacotar('MDP1', code);
@@ -265,6 +287,10 @@
       p.r[id] = { b: Math.max(cur.b, Math.min(100, +r.b || 0)), n: Math.max(cur.n, +r.n || 0),
         h: Object.entries(porDia).map(([d, v]) => [+d, v]).sort((a, b) => a[0] - b[0]).slice(-12) };
     });
+    if (o.t && typeof o.t === 'object') {
+      p.t = p.t || {};
+      Object.entries(o.t).forEach(([c, h]) => { if (HAB[c] && Array.isArray(h)) p.t[c] = porDia([...(p.t[c] || []), ...h]); });
+    }
     p.vistas = [...new Set([...(p.vistas || []), ...(o.v || [])])];
     // missões e pontos (missoes.js): fica o registro com mais pontos
     if (o.g && typeof o.g === 'object' && (+o.g.pts || 0) > ((p.jg && p.jg.pts) || 0)) p.jg = o.g;
@@ -311,7 +337,7 @@
   }
   function resultado(recId) { const p = perfilAtual(false); return p && p.r[recId] ? p.r[recId] : null; }
 
-  window.MDP = { NIVEIS, MEDALHAS, hoje, registrar, resultado, infoHab, nivelHab, revisoes, recursoPara, medalhas,
+  window.MDP = { NIVEIS, MEDALHAS, hoje, registrar, registrarTeste, resultado, infoHab, nivelHab, revisoes, recursoPara, medalhas,
     perfil: () => perfilAtual(false), perfis, _inflar: inflar, criar, trocar, atualizar, excluir, exportar, importar, relatorio, lerRelatorio,
     pacote: { empacotar, desempacotar, assinatura } };   // usado pelo Mundo (código do modo turma)
 })();
