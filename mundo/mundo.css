@@ -271,3 +271,9 @@ a.stat { color: inherit; text-decoration: none; }
 .jm-voltar { border: 0; background: var(--verde); color: #fff; border-radius: 12px; padding: 6px 12px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
 #jm-if { flex: 1; width: 100%; border: 0; background: #fff; }
 @media (max-width: 640px) { .jm-dica, .jm-longo { display: none; } .jogo-mundo { padding: 6px; } .jm-caixa { height: 96vh; } }
+.horta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 8px; }
+.canteiro { display: flex; flex-direction: column; gap: 6px; padding: 10px; border: 2px solid var(--borda); border-radius: 14px; background: #f3e8c8; }
+.canteiro.vazio { background: #e9dcb5; }
+.canteiro .barra { display: block; height: 10px; border-radius: 99px; background: #fff; overflow: hidden; }
+.canteiro .barra span { display: block; height: 100%; }
+#horta-graf { width: 100%; max-width: 560px; height: auto; border: 2px solid var(--borda); border-radius: 12px; }

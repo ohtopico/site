@@ -136,9 +136,9 @@
     { id: 'horta', nome: 'Horta da escola', ic: '🥕', cor: '#4bb259', meta: { maca: 3, estrela: 1 }, texto: 'Uma horta com sensores que regam sozinhos.' },
     { id: 'observatorio', nome: 'Observatório', ic: '🔭', cor: '#9a6bd6', meta: { diamante: 2, estrela: 2 }, texto: 'Uma cúpula para olhar o céu e medir as estrelas.' }
   ];
-  Object.assign(ITENS, { madeira: ['🪵', 'Madeira'], pedra: ['🪨', 'Pedra'] });   // recursos: só com o machado e a picareta da loja
+  Object.assign(ITENS, { madeira: ['🪵', 'Madeira'], pedra: ['🪨', 'Pedra'], tomate: ['🍅', 'Tomate da horta'], cenoura: ['🥕', 'Cenoura da horta'], alface: ['🥬', 'Alface da horta'] });   // recursos: só com o machado e a picareta da loja
   Object.assign(ITENS, { flor: ['🌸', 'Flor de primavera'], melancia: ['🍉', 'Melancia de verão'], folha: ['🍁', 'Folha de outono'], pinhao: ['🌰', 'Pinhão de inverno'] });
-  const ITENS_LOJA = new Set(['madeira', 'pedra', 'isca', 'peixe', 'peixeColorido', 'camarao', 'flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
+  const ITENS_LOJA = new Set(['tomate', 'cenoura', 'alface', 'madeira', 'pedra', 'isca', 'peixe', 'peixeColorido', 'camarao', 'flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
   const SORTEIO_ITENS = ['livro', 'maca', 'estrela', 'livro', 'maca', 'chave', 'estrela', 'peca'];   // os diamantes saem das rochas, com a picareta
   const DICAS = [
     'O computador guarda tudo em <strong>binário</strong>: só 0 e 1. Com 8 bits (um byte) dá para escrever 256 números diferentes, de 0 a 255.',
@@ -1485,7 +1485,7 @@
   /* ---------- lojas: as ⭐ compram coisas, mas só depois de acertar a conta ----------
      À vista tem 10% de desconto; parcelado tem 5% de juros por parcela. A primeira parcela é paga na hora
      e as outras, uma por dia. Nunca dá para gastar mais do que o saldo + o crédito que ainda sobra. */
-  const COMIDA = { melancia: [20, 25], pinhao: [25, 15], petisco: [25, 15], suco: [15, 10], sanduiche: [40, 5], bolo: [30, 25], panetone: [35, 30], uvas: [20, 30], picole: [15, 35], ovoChoc: [25, 35], pipoca: [20, 30], pirulito: [10, 40], cupcake: [25, 30], docinho: [20, 35], peixe: [35, 15], peixeColorido: [30, 25], camarao: [25, 20] };   // [fome, alegria] para o pet
+  const COMIDA = { tomate: [20, 15], cenoura: [25, 15], alface: [20, 10], melancia: [20, 25], pinhao: [25, 15], petisco: [25, 15], suco: [15, 10], sanduiche: [40, 5], bolo: [30, 25], panetone: [35, 30], uvas: [20, 30], picole: [15, 35], ovoChoc: [25, 35], pipoca: [20, 30], pirulito: [10, 40], cupcake: [25, 30], docinho: [20, 35], peixe: [35, 15], peixeColorido: [30, 25], camarao: [25, 20] };   // [fome, alegria] para o pet
   const EXCLUSIVOS = {
     natal: [['gorro', '🎅', 'Gorro de Papai Noel'], ['panetone']], anonovo: [['cartola', '🎩', 'Cartola de Ano Novo'], ['uvas']],
     carnaval: [['mascara', '🎭', 'Máscara de Carnaval'], ['picole']], pascoa: [['orelhas', '🐰', 'Orelhas de coelho'], ['ovoChoc']],
@@ -3673,10 +3673,64 @@
     if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pesca') return pesca(); if (a.tipo === 'sala') return entraSala(a.sala.id); if (a.tipo === 'portalTele') return portalTele(); if (a.tipo === 'sobj') return SALAS[sala].usa(a.obj); if (a.tipo === 'ssaida') return saiSala(); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
+  /* --- Horta da casa: cada semente cresce um tanto fixo de cm por dia regado (uma função afim). Para regar, o estudante calcula
+     a altura de depois da rega ou quantas regas faltam; o gráfico mostra o crescimento de cada canteiro. */
+  const SEMENTES = {
+    girassol: { ic: '🌻', nome: 'Girassol', cm: 6, meta: 60, cor: '#e0a400' },
+    tomate: { ic: '🍅', nome: 'Tomate', cm: 3, meta: 24, cor: '#e0564a', item: 'tomate', n: 3 },
+    cenoura: { ic: '🥕', nome: 'Cenoura', cm: 2, meta: 14, cor: '#e07b2a', item: 'cenoura', n: 3 },
+    alface: { ic: '🥬', nome: 'Alface', cm: 4, meta: 20, cor: '#4bb259', item: 'alface', n: 2 }
+  };
+  const EST_HORTA = () => S.horta || (S.horta = { c: [null, null, null] });
+  const alturaHorta = c => c.h[c.h.length - 1][1];
+  function janelaHorta() {
+    const H = EST_HORTA(), hoje = diaHoje();
+    $('#horta-c').innerHTML = `<div class="horta">${H.c.map((c, i) => {
+      if (!c) return `<div class="canteiro vazio"><b>Canteiro ${i + 1}</b><span class="muted small">Vazio. Escolha uma semente:</span><span class="btn-row">${Object.entries(SEMENTES).map(([k, s]) => `<button type="button" class="hb verde" data-plantar="${i}:${k}" title="${s.nome}: cresce ${s.cm} cm por dia regado, colhe com ${s.meta} cm">${s.ic}</button>`).join('')}</span></div>`;
+      const s = SEMENTES[c.s], h = alturaHorta(c), pronta = h >= s.meta, regou = c.ultima === hoje;
+      return `<div class="canteiro"><b>${s.ic} ${s.nome}</b><span class="small">${h} cm de ${s.meta} cm · cresce ${s.cm} cm por dia regado</span>
+        <span class="barra"><span style="width:${Math.min(100, Math.round(100 * h / s.meta))}%;background:${s.cor}"></span></span>
+        ${pronta ? `<button type="button" class="hb verde" data-colher="${i}">🧺 Colher</button>` : regou ? '<span class="muted small">💧 Já regado hoje. Volte amanhã!</span>' : `<button type="button" class="hb azul" data-regar="${i}">💧 Regar</button>`}</div>`;
+    }).join('')}</div>`;
+    const j = $('#j-horta');
+    j.querySelectorAll('[data-plantar]').forEach(b => b.addEventListener('click', () => { const [i, k] = b.dataset.plantar.split(':'); H.c[+i] = { s: k, h: [[hoje, 0]], ultima: null }; SOM.toca('coleta'); salvar(); janelaHorta(); }));
+    j.querySelectorAll('[data-regar]').forEach(b => b.addEventListener('click', () => regaHorta(+b.dataset.regar)));
+    j.querySelectorAll('[data-colher]').forEach(b => b.addEventListener('click', () => colheHorta(+b.dataset.colher)));
+    graficoHorta();
+  }
+  function regaHorta(i) {
+    const H = EST_HORTA(), c = H.c[i], s = SEMENTES[c.s], h = alturaHorta(c), falta = Math.ceil((s.meta - h) / s.cm);
+    const volta = () => { fechaDialogo(); abreJanela('horta'); };
+    const cresce = () => { c.h.push([diaHoje(), h + s.cm]); c.ultima = diaHoje(); ganhaHabilidade(['AL', 'NU'], 6); pontos(5, `💧 ${s.nome} regado: agora com ${h + s.cm} cm!`); SOM.toca('coleta'); salvar(); volta(); };
+    const tipo = c.h.length % 2 && falta > 1 ? 'falta' : 'altura';
+    fechaJanela();
+    if (tipo === 'altura') tentaCampo(`Regar: ${s.nome}`, s.ic, `<p>O ${s.nome.toLowerCase()} tem <b>${h} cm</b> e cresce <b>${s.cm} cm</b> a cada dia regado.</p><p class="cifra">altura depois da rega de hoje = ? cm</p><p class="muted small">Digite só o número de centímetros.</p>`, String(h + s.cm), cresce,
+      () => dialogo(s.ic, 'Quase!', `<p>Some o que ele já tem (${h} cm) com o quanto cresce num dia (${s.cm} cm).</p>`, [{ txt: 'Tentar de novo', classe: 'principal', fn: () => regaHorta(i) }, { txt: 'Fechar', fn: volta }]));
+    else tentaCampo(`Regar: ${s.nome}`, s.ic, `<p>O ${s.nome.toLowerCase()} tem <b>${h} cm</b>, cresce <b>${s.cm} cm</b> por dia regado e fica pronto para colher com <b>${s.meta} cm</b>.</p><p class="cifra">quantas regas faltam para colher (contando a de hoje)?</p><p class="muted small">Se a conta não der exata, arredonde para cima: a última rega passa um pouco da meta.</p>`, String(falta), cresce,
+      () => dialogo(s.ic, 'Quase!', `<p>Faltam ${s.meta} − ${h} = ${s.meta - h} cm. Divida por ${s.cm} e, se sobrar resto, conte mais uma rega.</p>`, [{ txt: 'Tentar de novo', classe: 'principal', fn: () => regaHorta(i) }, { txt: 'Fechar', fn: volta }]));
+  }
+  function colheHorta(i) {
+    const H = EST_HORTA(), c = H.c[i], s = SEMENTES[c.s];
+    H.c[i] = null; H.colheitas = (H.colheitas || 0) + 1;
+    if (s.item) S.inv[s.item] = (S.inv[s.item] || 0) + s.n;
+    pontos(s.item ? 20 : 40, s.item ? `🧺 Colheu ${s.n} ${s.ic}! O pet vai adorar.` : `🌻 Que girassol lindo! +40 ⭐`); SOM.toca('vitoria'); salvar(); janelaHorta();
+  }
+  function graficoHorta() {
+    const cv2 = $('#horta-graf'), g = cv2.getContext('2d'), W2 = cv2.width, H2 = cv2.height, m = { l: 40, r: 12, t: 12, b: 30 };
+    const cs = EST_HORTA().c.filter(Boolean), maxD = Math.max(5, ...cs.map(c => c.h.length - 1)), maxH = Math.max(20, ...cs.map(c => SEMENTES[c.s].meta));
+    g.clearRect(0, 0, W2, H2); g.fillStyle = '#fffdf6'; g.fillRect(0, 0, W2, H2);
+    const X = d => m.l + d / maxD * (W2 - m.l - m.r), Y = v => H2 - m.b - v / maxH * (H2 - m.t - m.b);
+    g.strokeStyle = '#d9c99a'; g.lineWidth = 1; g.font = '11px Lexend, sans-serif'; g.fillStyle = '#5a6a5c'; g.textAlign = 'right'; g.textBaseline = 'middle';
+    for (let v = 0; v <= maxH; v += maxH > 40 ? 10 : 5) { g.beginPath(); g.moveTo(m.l, Y(v)); g.lineTo(W2 - m.r, Y(v)); g.stroke(); g.fillText(v, m.l - 6, Y(v)); }
+    g.textAlign = 'center'; g.textBaseline = 'top'; for (let d = 0; d <= maxD; d++) g.fillText(d, X(d), H2 - m.b + 6);
+    g.fillText('regas', W2 / 2 + 60, H2 - 14); g.save(); g.translate(10, H2 / 2); g.rotate(-Math.PI / 2); g.fillText('altura (cm)', 0, -4); g.restore();
+    for (const c of cs) { const s = SEMENTES[c.s]; g.strokeStyle = s.cor; g.fillStyle = s.cor; g.lineWidth = 3; g.beginPath(); c.h.forEach(([, v], d) => d ? g.lineTo(X(d), Y(v)) : g.moveTo(X(d), Y(v))); g.stroke(); c.h.forEach(([, v], d) => { g.beginPath(); g.arc(X(d), Y(v), 3.5, 0, Math.PI * 2); g.fill(); }); g.setLineDash([4, 4]); g.lineWidth = 1; g.beginPath(); g.moveTo(m.l, Y(s.meta)); g.lineTo(W2 - m.r, Y(s.meta)); g.stroke(); g.setLineDash([]); }
+    if (!cs.length) { g.fillStyle = '#5a6a5c'; g.font = '13px Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('Plante uma semente para ver o gráfico do crescimento.', W2 / 2, H2 / 2); }
+  }
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4012,7 +4066,7 @@
   setTimeout(() => confereEstrelasSite(), 2500);   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
