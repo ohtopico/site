@@ -3622,6 +3622,7 @@
     if (limpa) limpaRascunho();
   }
   function limpaRascunho() {
+    const t = $('#rasc-txt'); if (t) t.value = '';
     const c = $('#rasc-cv'), g = c.getContext('2d');
     g.fillStyle = '#fffdf6'; g.fillRect(0, 0, c.width, c.height);
     g.strokeStyle = '#d7e3f0'; g.lineWidth = 1;
@@ -3641,6 +3642,10 @@
     $('#d-rasc').addEventListener('click', () => { const r = $('#rascunho'); r.hidden = !r.hidden; $('#d-rasc').setAttribute('aria-expanded', String(!r.hidden)); });
     $('#rasc-fechar').addEventListener('click', () => { $('#rascunho').hidden = true; $('#d-rasc').setAttribute('aria-expanded', 'false'); });
     $('#rasc-limpa').addEventListener('click', limpaRascunho);
+    // dois modos: desenhar no quadriculado ou digitar (o que foi feito num modo continua lá ao trocar)
+    const modo = m => { const dig = m === 'digita'; $('#rasc-cv').hidden = dig; $('#rasc-ferr').hidden = dig; $('#rasc-txt').hidden = !dig;
+      document.querySelectorAll('[data-rmodo]').forEach(o => o.setAttribute('aria-pressed', String(o.dataset.rmodo === m))); if (dig) $('#rasc-txt').focus(); };
+    document.querySelectorAll('[data-rmodo]').forEach(b => b.addEventListener('click', () => modo(b.dataset.rmodo)));
     document.querySelectorAll('[data-rasc]').forEach(b => b.addEventListener('click', () => { RASC.apaga = b.dataset.rasc === 'apaga'; if (!RASC.apaga) RASC.cor = b.dataset.rasc; document.querySelectorAll('[data-rasc]').forEach(o => o.setAttribute('aria-pressed', String(o === b))); }));
   })();
   function dialogo(ic, nome, html, opcoes) {
@@ -4827,7 +4832,7 @@
     if (ev.key === 'Escape' && colocando && !dialogoAberto && !janelaAberta) { colocando = null; mouse = null; aviso('Ok, o móvel continua guardado.'); ev.preventDefault(); return; }
     if (ev.key === 'Escape') { if (dialogoAberto) fechaDialogo(); else if (janelaAberta) fechaJanela(); else abreJanela('menu'); ev.preventDefault(); return; }
     if (dialogoAberto) {
-      if (campo) { if (ev.key === 'Enter') { const b = D.op.querySelector('.principal'); if (b) { b.click(); ev.preventDefault(); } } return; }
+      if (campo) { if (ev.key === 'Enter' && ev.target.id !== 'rasc-txt') { const b = D.op.querySelector('.principal'); if (b) { b.click(); ev.preventDefault(); } } return; }
       if (/^[1-9]$/.test(ev.key)) { const b = D.op.children[+ev.key - 1]; if (b && !b.disabled) { b.click(); ev.preventDefault(); } }
       return;
     }

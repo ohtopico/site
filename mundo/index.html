@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="icone-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mundo">
-<link rel="stylesheet" href="mundo.css?v=20261031zzl">
+<link rel="stylesheet" href="mundo.css?v=20261031zzm">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -99,8 +99,11 @@
 <!-- diálogo -->
 <div class="rascunho" id="rascunho" hidden role="region" aria-label="Rascunho para fazer contas">
   <div class="rasc-cab"><b>✏️ Rascunho</b><span class="muted small">faça as contas aqui (nada é corrigido)</span><button type="button" class="d-x" id="rasc-fechar" aria-label="Fechar o rascunho">✕</button></div>
+  <div class="rasc-modo" role="group" aria-label="Como usar o rascunho"><button type="button" class="hb cinza" data-rmodo="desenha" aria-pressed="true">✏️ Desenhar</button><button type="button" class="hb cinza" data-rmodo="digita" aria-pressed="false">⌨️ Digitar</button></div>
+  <textarea id="rasc-txt" class="rasc-txt" hidden rows="8" spellcheck="false" aria-label="Rascunho para digitar contas e anotações" placeholder="Digite suas contas e anotações aqui. Exemplo: 3 × 12 = 36"></textarea>
   <canvas id="rasc-cv" width="420" height="260" aria-label="Quadro quadriculado para desenhar e fazer contas"></canvas>
-  <div class="rasc-bot"><button type="button" class="hb cinza" data-rasc="#1d2a1f" aria-pressed="true">✏️ Lápis</button><button type="button" class="hb vermelho" data-rasc="#d63a3a" aria-pressed="false">🖍️ Vermelho</button><button type="button" class="hb cinza" data-rasc="apaga" aria-pressed="false">🧽 Borracha</button><button type="button" class="hb cinza" id="rasc-limpa">🗑️ Limpar</button></div>
+  <div class="rasc-bot" id="rasc-ferr"><button type="button" class="hb cinza" data-rasc="#1d2a1f" aria-pressed="true">✏️ Lápis</button><button type="button" class="hb vermelho" data-rasc="#d63a3a" aria-pressed="false">🖍️ Vermelho</button><button type="button" class="hb cinza" data-rasc="apaga" aria-pressed="false">🧽 Borracha</button></div>
+  <div class="rasc-bot"><button type="button" class="hb cinza" id="rasc-limpa">🗑️ Limpar</button></div>
 </div>
 <div class="dialogo" id="dialogo" hidden role="dialog" aria-labelledby="d-nome">
   <div class="d-caixa">
@@ -349,7 +352,7 @@
 <script src="../simuladores/assets/sim-comum.js"></script>
 <script src="perguntas-npc.js?v=20261031zn"></script>
 <script src="teleporte.js?v=20261031zn"></script>
-<script src="mundo.js?v=20261031zzl"></script>
+<script src="mundo.js?v=20261031zzm"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
