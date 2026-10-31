@@ -513,10 +513,62 @@
   }
   const concluida = f => missoes(f).every(m => m.ok);
   const liberada = f => f.idx === 0 || f.aberta || concluida(fases[f.idx - 1]);
-  function pontos(n, txt) { S.pontos += n; if (txt) aviso(`+${n} ⭐ ${txt}`); hud(); }
+  /* ---------- som: efeitos e música feitos na hora pelo Web Audio (sem arquivos, funcionam sem internet) ---------- */
+  const SOM = (() => {
+    const CH = 'mundo-som-v1';
+    let pref = { efeitos: true, musica: false };
+    try { pref = Object.assign(pref, JSON.parse(localStorage.getItem(CH)) || {}); } catch (e) {}
+    let ac = null, mestre = null, timer = null, passo = 0;
+    const guarda = () => { try { localStorage.setItem(CH, JSON.stringify(pref)); } catch (e) {} };
+    function ctxAudio() {
+      if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; ac = new A(); mestre = ac.createGain(); mestre.gain.value = 0.5; mestre.connect(ac.destination); }
+      if (ac.state === 'suspended') ac.resume();
+      return ac;
+    }
+    function nota(freq, ini, dur, tipo, vol) {
+      const a = ctxAudio(); if (!a) return;
+      const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + ini;
+      o.type = tipo || 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(mestre); o.start(t); o.stop(t + dur + 0.05);
+    }
+    const EFEITOS = {
+      acerto: () => { nota(660, 0, 0.12, 'triangle'); nota(990, 0.09, 0.2, 'triangle'); },
+      erro: () => { nota(220, 0, 0.18, 'sine', 0.15); nota(185, 0.12, 0.25, 'sine', 0.12); },
+      coleta: () => { nota(880, 0, 0.08, 'square', 0.06); nota(1320, 0.06, 0.12, 'square', 0.05); },
+      moeda: () => { nota(1046, 0, 0.07, 'triangle', 0.12); nota(1568, 0.05, 0.15, 'triangle', 0.1); },
+      portao: () => { [392, 523, 659].forEach((f, i) => nota(f, i * 0.07, 0.25, 'sine', 0.12)); },
+      vitoria: () => { [523, 659, 784, 1046].forEach((f, i) => nota(f, i * 0.12, i === 3 ? 0.6 : 0.2, 'triangle', 0.16)); },
+      figurinha: () => { [784, 988, 1175].forEach((f, i) => nota(f, i * 0.06, 0.18, 'triangle', 0.1)); }
+    };
+    // música: arpejo calmo na escala pentatônica; cada vila tem a sua nota base
+    const PENTA = [0, 2, 4, 7, 9, 12, 14, 16];
+    function compasso() {
+      if (document.hidden) return;
+      const base = 220 * Math.pow(2, ([0, 5, 7, 2, 9, 4, 11, 6, 3][(atual && atual.idx) || 0] || 0) / 12);
+      const r = rng(passo * 31 + 7)(), grau = PENTA[Math.floor(r * PENTA.length)];
+      nota(base * 2 * Math.pow(2, grau / 12), 0, 0.9, 'sine', 0.045);
+      if (passo % 8 === 0) { nota(base, 0, 3.2, 'triangle', 0.03); nota(base * 1.5, 0, 3.2, 'sine', 0.02); }
+      passo++;
+    }
+    function tocaMusica(liga) {
+      clearInterval(timer); timer = null;
+      if (liga && ctxAudio()) timer = setInterval(compasso, 480);
+    }
+    // o navegador só libera o som depois de um toque ou tecla
+    const destrava = () => { if (pref.efeitos || pref.musica) ctxAudio(); if (pref.musica && !timer) tocaMusica(true); };
+    window.addEventListener('pointerdown', destrava, { once: false, passive: true });
+    window.addEventListener('keydown', destrava, { passive: true });
+    return {
+      toca(nome) { if (pref.efeitos && EFEITOS[nome]) try { EFEITOS[nome](); } catch (e) {} },
+      pref: () => pref,
+      liga(k, v) { pref[k] = v; guarda(); if (k === 'musica') tocaMusica(v); if (v) ctxAudio(); }
+    };
+  })();
+  function pontos(n, txt) { S.pontos += n; if (txt) aviso(`+${n} ⭐ ${txt}`); if (n > 0) SOM.toca('moeda'); hud(); }
   function confereFases() {
     for (const f of fases) if (concluida(f) && !S.concluidas[f.id]) {
-      S.concluidas[f.id] = true; S.inv.peca = (S.inv.peca || 0) + 1; setTimeout(() => ganhaFigurinha(null, 'pela fase concluída'), 1800);
+      S.concluidas[f.id] = true; SOM.toca('vitoria'); S.inv.peca = (S.inv.peca || 0) + 1; setTimeout(() => ganhaFigurinha(null, 'pela fase concluída'), 1800);
       pontos(100, `Fase concluída: ${f.nome}! +🧩` + (f.idx < fases.length - 1 && !fases[f.idx + 1].aberta ? ` O caminho para ${fases[f.idx + 1].nome} está aberto.` : ''));
     }
     salvar();
@@ -2212,6 +2264,7 @@
   const temFig = id => (S.album.tem[id] || 0) > 0;
   const repetidas = () => Object.values(S.album.tem).reduce((a, n) => a + Math.max(0, n - 1), 0);
   function ganhaFigurinha(id, origem, sorteio) {
+    SOM.toca('figurinha');
     const faltam = PESSOAS.filter(p => !temFig(p.id));
     // nas missões vem uma figurinha que falta; no pacotinho, qualquer uma (pode vir repetida)
     const p = id ? PESSOAS.find(q => q.id === id) : sorteio || !faltam.length ? PESSOAS[Math.floor(Math.random() * PESSOAS.length)] : faltam[Math.floor(Math.random() * faltam.length)];
@@ -2747,7 +2800,7 @@
   }
   function guarda(it, f) {
     if (it.estacao) estEst().itens++;
-    S.itens[it.id] = true; S.cont[f.id] = (S.cont[f.id] || 0) + 1; S.inv[it.tipo] = (S.inv[it.tipo] || 0) + 1;
+    S.itens[it.id] = true; SOM.toca('coleta'); S.cont[f.id] = (S.cont[f.id] || 0) + 1; S.inv[it.tipo] = (S.inv[it.tipo] || 0) + 1;
     confereFases(); hud(); salvar();
   }
   function pegaItem(it, f) {
@@ -2866,6 +2919,7 @@
   document.querySelectorAll('[data-fechar]').forEach(b => b.addEventListener('click', fechaJanela));
   /* troca de vila: desmonta a anterior, limpa as texturas guardadas e monta a nova */
   function trocaFase(i, de) {
+    if (agora > 1000) SOM.toca('portao');
     const f = fases[i];
     if (atual !== f) { desmonta(atual); for (const k in texCache) delete texCache[k]; miniCache = null; miniFase = null; }
     atual = f; monta(f);
@@ -3137,6 +3191,11 @@
   window.addEventListener('storage', ev => { if (ev.key === 'md-progresso-v1') { confereJogos(); hud(); } });
   setInterval(() => { guardaPos(); atualizaPet(); cobra(); rende(); salvar(); }, 10000);
   window.addEventListener('pagehide', () => { guardaPos(); salvar(); });
+  $('#d-opcoes').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setTimeout(() => { if (b.classList.contains('errada')) SOM.toca('erro'); else if (b.classList.contains('certa')) SOM.toca('acerto'); }, 0); });
+  const rotSom = () => { const p = SOM.pref(); $('#b-efeitos').textContent = p.efeitos ? '🔊 Efeitos: ligados' : '🔇 Efeitos: desligados'; $('#b-musica').textContent = p.musica ? '🎵 Música: ligada' : '🎵 Música: desligada'; $('#b-efeitos').setAttribute('aria-pressed', p.efeitos); $('#b-musica').setAttribute('aria-pressed', p.musica); };
+  $('#b-efeitos').addEventListener('click', () => { SOM.liga('efeitos', !SOM.pref().efeitos); rotSom(); SOM.toca('acerto'); });
+  $('#b-musica').addEventListener('click', () => { SOM.liga('musica', !SOM.pref().musica); rotSom(); });
+  rotSom();
   /* sem internet: o service worker guarda o Mundo; o botão de instalar aparece quando o navegador oferece */
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
   let pedidoInstalar = null;
@@ -3150,7 +3209,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
