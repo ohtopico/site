@@ -99,7 +99,7 @@
     <p>No caminho há <strong>quatro desafios</strong>: a medida da borda, a área da face, um desenho simétrico e a conta do custo. As moedas que você cunhar ficam guardadas no seu álbum, neste navegador, e podem ser baixadas como imagem.</p>
     <dl class="glossario small">
       <dt>Cunhar</dt><dd>Fabricar a moeda. Uma prensa aperta o disco de metal entre dois cunhos, as peças de aço que têm o desenho em alto-relevo ao contrário.</dd>
-      <dt>Anverso e reverso</dt><dd>Os dois lados da moeda. Aqui, o anverso tem o seu desenho e o reverso, o valor.</dd>
+      <dt>Anverso e reverso</dt><dd>Os dois lados da moeda, que no dia a dia chamamos de cara e coroa. Aqui, o anverso tem o seu desenho e o reverso tem o valor, sozinho ou com outra figura.</dd>
       <dt>Gráfila</dt><dd>O círculo de pontinhos perto da beirada.</dd>
       <dt>Serrilha</dt><dd>Os risquinhos na borda. Surgiram quando as moedas eram de ouro e prata: com a borda marcada, ficava fácil perceber se alguém tinha raspado um pouco do metal.</dd>
     </dl>
@@ -184,17 +184,26 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
     'Árvore': ['.......#.......', '......###......', '.....#####.....', '....#######....', '.....#####.....', '....#######....', '...#########...', '..###########..', '....#######....', '...#########...', '..###########..', '......###......', '......###......', '.....#####.....', '...............'],
     'Estrela': ['.......#.......', '.......#.......', '......###......', '......###......', '.#############.', '..###########..', '...#########...', '....#######....', '....#######....', '...####.####...', '...###...###...', '..###.....###..', '..##.......##..', '...............', '...............'],
     'Coração': ['...............', '...............', '...##.....##...', '..####...####..', '.######.######.', '.#############.', '.#############.', '..###########..', '...#########...', '....#######....', '.....#####.....', '......###......', '.......#.......', '...............', '...............'],
-    'Robô': ['.......#.......', '.......#.......', '....#######....', '...#########...', '...##.###.##...', '...##.###.##...', '...#########...', '...###...###...', '...#########...', '.....#####.....', '..###########..', '..#.#######.#..', '..#.#######.#..', '....##...##....', '.....#...#.....']
+    'Robô': ['.......#.......', '.......#.......', '....#######....', '...#########...', '...##.###.##...', '...##.###.##...', '...#########...', '...###...###...', '...#########...', '.....#####.....', '..###########..', '..#.#######.#..', '..#.#######.#..', '....##...##....', '.....#...#.....'],
+    'Gato': ['...............', '...#.......#...', '...##.....##...', '...#########...', '..###########..', '..##..###..##..', '..###########..', '..#####.#####..', '...####.####...', '....#######....', '.....#####.....', '....#######....', '...#########...', '...#########...', '...............'],
+    'Casa': ['...............', '.......#.......', '......###......', '.....#####.....', '....#######....', '...#########...', '..###########..', '...#########...', '...#..###..#...', '...#..###..#...', '...#########...', '...###...###...', '...###...###...', '...###...###...', '...............'],
+    'Sol': ['.......#.......', '...#...#...#...', '....#.....#....', '.....#####.....', '....#######....', '...#########...', '...#########...', '###.#######.###', '...#########...', '...#########...', '....#######....', '.....#####.....', '....#.....#....', '...#...#...#...', '.......#.......'],
+    'Lua': ['...............', '......###......', '....###........', '...###.........', '..####.........', '..###..........', '.####..........', '.####..........', '.#####.........', '..####.........', '..#####........', '...######......', '....#######....', '......###......', '...............'],
+    'Flor': ['...............', '......###......', '..##.#####.##..', '.####.###.####.', '.#####...#####.', '..###.###.###..', '......###......', '..###.###.###..', '.#####...#####.', '.####.###.####.', '..##.#####.##..', '......###......', '.......#.......', '.......#.......', '...............'],
+    'Foguete': ['.......#.......', '......###......', '.....#####.....', '.....#####.....', '.....##.##.....', '.....##.##.....', '.....#####.....', '.....#####.....', '....#######....', '...#########...', '...##.###.##...', '...#..###..#...', '......#.#......', '.....#.#.#.....', '...............'],
+    'Rosto': ['...............', '...............', '.....#####.....', '...#########...', '..###########..', '.#############.', '.###..###..###.', '.###..###..###.', '.#############.', '.##.#######.##.', '..##.......##..', '...#########...', '.....#####.....', '...............', '...............'],
+    'Coroa': ['...............', '...............', '...............', '..#....#....#..', '..##..###..##..', '..###.###.###..', '..###########..', '..###########..', '..#.###.###.#..', '..###########..', '..###########..', '...............', '...............', '...............', '...............']
   };
   const deModelo = m => MODELOS[m].join('').split('').map((ch, i) => ch === '#' && DENTRO[i] ? 1 : 0);
 
-  const PADRAO = { metal: 'bronze', d: 24, esp: 1.8, valor: 0.5, nome: 'TURMA DA MATEMÁTICA', ano: new Date().getFullYear(), borda: 'serrilha', passo: 1, pix: deModelo('Árvore') };
+  const PADRAO = { metal: 'bronze', d: 24, esp: 1.8, valor: 0.5, nome: 'TURMA DA MATEMÁTICA', ano: new Date().getFullYear(), borda: 'serrilha', passo: 1, pix: deModelo('Árvore'), rev: 'valor', pixR: deModelo('Estrela') };
   const CHAVE = 'cunhe-moeda-v1', ALBUM = 'cunhe-moeda-album-v1';
   const ler = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v || d; } catch (e) { return d; } };
   const gravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sem armazenamento: segue sem salvar */ } };
   const captura = location.hash === '#captura';
   let st = Object.assign({}, PADRAO, captura ? {} : ler(CHAVE, {}).st);
   if (!Array.isArray(st.pix) || st.pix.length !== N * N) st.pix = PADRAO.pix.slice();
+  if (!Array.isArray(st.pixR) || st.pixR.length !== N * N) st.pixR = PADRAO.pixR.slice();
   let des = Object.assign({ borda: false, area: false, simetria: false, custo: false }, captura ? {} : ler(CHAVE, {}).des);
   let passo = 0, lado = 'anverso', espelho = true, ferramenta = 1;
   const salvar = () => { if (!captura) gravar(CHAVE, { st, des }); };
@@ -207,7 +216,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
     return { C, A, V, massa, custo, dentes: Math.floor(C / st.passo) };
   };
   const valorInfo = () => VALORES.find(v => v[0] === st.valor) || VALORES[4];
-  const simetrica = () => { let n = 0; for (let i = 0; i < N * N; i++) { const rr = Math.floor(i / N), c = i % N; if (st.pix[i] !== st.pix[rr * N + (N - 1 - c)]) return false; n += st.pix[i]; } return n >= 8; };
+  const simetrica = (pix = st.pix) => { let n = 0; for (let i = 0; i < N * N; i++) { const rr = Math.floor(i / N), c = i % N; if (pix[i] !== pix[rr * N + (N - 1 - c)]) return false; n += pix[i]; } return n >= 8; };
 
   /* ---------- desenho da moeda ---------- */
   let gid = 0;
@@ -228,15 +237,21 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
     const nd = Math.round(R * 0.55), rg = R * 0.87;
     for (let i = 0; i < nd; i++) { const a = i / nd * 2 * Math.PI; o += `<circle cx="${(rg * Math.cos(a)).toFixed(1)}" cy="${(rg * Math.sin(a)).toFixed(1)}" r="${(R * 0.016).toFixed(2)}" fill="${anel[2]}" fill-opacity=".75"/>`; }
     const texto = (t, attrs) => `<text ${attrs} fill="${cor[0]}" transform="translate(.8 .8)">${t}</text><text ${attrs} fill="${tx}">${t}</text>`;
-    if (face === 'anverso') {
-      const lado = R * 1.04, cel = lado / N, x0 = -lado / 2, y0 = -lado / 2 + R * 0.05;
-      for (let i = 0; i < N * N; i++) if (s.pix[i]) {
+    const relevo = (pix, lado, dy) => { const cel = lado / N, x0 = -lado / 2, y0 = -lado / 2 + dy;
+      for (let i = 0; i < N * N; i++) if (pix[i]) {
         const x = x0 + (i % N) * cel, y = y0 + Math.floor(i / N) * cel;
         o += `<rect x="${(x + cel * 0.12).toFixed(2)}" y="${(y + cel * 0.12).toFixed(2)}" width="${cel.toFixed(2)}" height="${cel.toFixed(2)}" fill="${tx}" fill-opacity=".55"/><rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cel.toFixed(2)}" height="${cel.toFixed(2)}" fill="${cor[0]}" fill-opacity=".85"/>`;
-      }
+      } };
+    if (face === 'anverso') {
+      relevo(s.pix, R * 1.04, R * 0.05);
       const nome = esc((s.nome || '').toUpperCase().slice(0, 24));
       o += `<text font-family="Lexend, sans-serif" font-weight="600" font-size="${(R * (nome.length > 16 ? 0.12 : 0.14)).toFixed(1)}" letter-spacing="1" text-anchor="middle" fill="${tx}"><textPath href="#${id}t" startOffset="50%">${nome}</textPath></text>`;
       o += texto(esc(s.ano), `y="${(R * 0.78).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="${(R * 0.12).toFixed(1)}"`);
+    } else if (s.rev === 'figura' && Array.isArray(s.pixR)) {   // reverso com figura: desenho no meio e o valor embaixo
+      const v = VALORES.find(x => x[0] === s.valor) || VALORES[4];
+      relevo(s.pixR, R * 0.84, -R * 0.1);
+      o += texto(`${v[1]} ${v[2]}`, `y="${(R * 0.66).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="700" letter-spacing="1" font-size="${(R * 0.15).toFixed(1)}"`);
+      o += texto(esc(s.ano), `y="${(-R * 0.66).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="${(R * 0.11).toFixed(1)}"`);
     } else {
       const v = VALORES.find(x => x[0] === s.valor) || VALORES[4];
       const fs = R * (v[1].length > 1 ? 0.62 : 0.78) * (M.anel ? 0.85 : 1);
@@ -254,7 +269,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
   }
   function vitrine(bate) {
     $('#face').innerHTML = svgMoeda(st, lado, { cls: 'face' + (bate ? ' batida' : ''), fantasma: $('#fantasma').checked });
-    $('#lado').textContent = lado === 'anverso' ? 'Anverso: o lado do desenho' : 'Reverso: o lado do valor';
+    $('#lado').textContent = lado === 'anverso' ? 'Anverso (cara): o lado do desenho' : 'Reverso (coroa): o lado do valor';
   }
   $('#virar').onclick = () => {
     const f = $('#face svg'); f.classList.add('virando');
@@ -335,61 +350,76 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
     ligaProx(0);
   }
 
-  function passoAnverso() {
-    const linhas = [];
-    for (let rr = 0; rr < N; rr++) linhas.push(Array.from({ length: N }, (_, c) => DENTRO[rr * N + c] ? st.pix[rr * N + c] : ' ').join(''));
-    const total = st.pix.reduce((a, b) => a + b, 0), casas = DENTRO.filter(Boolean).length;
-    return `<h3>Desenhe o anverso</h3>
-      <label class="campo">Texto da borda (nome do país, da escola ou da turma)<input type="text" id="nome" maxlength="24" value="${esc(st.nome)}"></label>
-      <p class="small muted">Clique ou arraste nos quadradinhos. Com o espelho ligado, cada quadradinho pintado aparece também do outro lado da linha vermelha.</p>
+  /* editor de quadradinhos, usado no anverso (st.pix) e na figura do reverso (st.pixR) */
+  const tabela = pix => { const l = []; for (let rr = 0; rr < N; rr++) l.push(Array.from({ length: N }, (_, c) => DENTRO[rr * N + c] ? pix[rr * N + c] : ' ').join('')); return l.join('\n'); };
+  function gradeHtml(ch) {
+    const pix = st[ch], total = pix.reduce((a, b) => a + b, 0), casas = DENTRO.filter(Boolean).length;
+    return `<p class="small muted">Clique ou arraste nos quadradinhos. Com o espelho ligado, cada quadradinho pintado aparece também do outro lado da linha vermelha.</p>
       <div class="ferr">
         <button class="chip" type="button" id="t-pintar" aria-pressed="${ferramenta === 1}">✏️ Pintar</button>
         <button class="chip" type="button" id="t-apagar" aria-pressed="${ferramenta === 0}">🧽 Apagar</button>
         <button class="chip" type="button" id="t-espelho" aria-pressed="${espelho}">🪞 Espelho</button>
         <button class="chip" type="button" id="t-limpar">Limpar</button>
       </div>
-      <div class="grade" id="grade">${st.pix.map((p, i) => `<span data-i="${i}" class="${!DENTRO[i] ? 'fora' : p ? 'on' : ''}${i % N === MEIO ? ' eixo' : ''}"></span>`).join('')}</div>
-      <div class="ferr"><span class="small muted" style="align-self:center">Modelos:</span>${Object.keys(MODELOS).map(m => `<button class="chip" type="button" data-mod="${m}">${m}</button>`).join('')}</div>
-      <div class="desafio${des.simetria ? ' feito' : ''}" id="d-simetria"><strong>${des.simetria ? '✓' : '★'} Desafio 3: simetria</strong>
-        <div>Deixe o desenho simétrico em relação à linha vermelha, com pelo menos 8 quadradinhos. ${des.simetria ? 'Feito! A coluna 1 é igual à 15, a 2 é igual à 14, e assim por diante: é uma reflexão.' : `<span id="sim-status">${simetrica() ? '' : 'Ainda não está simétrico.'}</span>`}</div></div>
-      <details><summary class="small">Seu desenho em números (${total} de ${casas} quadradinhos pintados)</summary>
+      <div class="grade" id="grade">${pix.map((p, i) => `<span data-i="${i}" class="${!DENTRO[i] ? 'fora' : p ? 'on' : ''}${i % N === MEIO ? ' eixo' : ''}"></span>`).join('')}</div>
+      <div class="ferr"><span class="small muted" style="align-self:center">Figuras prontas:</span>${Object.keys(MODELOS).map(m => `<button class="chip" type="button" data-mod="${m}">${m}</button>`).join('')}</div>
+      <details><summary class="small">Seu desenho em números (<span id="total">${total}</span> de ${casas} quadradinhos pintados)</summary>
         <p class="small">Para o computador, o desenho é uma tabela de 0 e 1: 1 é quadradinho em relevo, 0 é fundo. Cada linha da tabela é uma linha do desenho.</p>
-        <div class="codigo" id="codigo">${linhas.join('\n')}</div></details>
-      ${prox(1)}`;
+        <div class="codigo" id="codigo">${tabela(pix)}</div></details>`;
   }
-  function ligaAnverso() {
-    $('#nome').oninput = e => { st.nome = e.target.value; salvar(); vitrine(); };
+  function ligaGrade(ch, aqui, confere) {
     const pinta = i => {
       if (!DENTRO[i]) return;
       const alvos = [i]; if (espelho) alvos.push(Math.floor(i / N) * N + (N - 1 - i % N));
-      alvos.forEach(j => { st.pix[j] = ferramenta; const el = $('#grade').children[j]; el.classList.toggle('on', !!ferramenta); });
+      alvos.forEach(j => { st[ch][j] = ferramenta; const el = $('#grade').children[j]; el.classList.toggle('on', !!ferramenta); });
     };
     let arrastando = false;
     const g = $('#grade');
     g.onpointerdown = e => { const i = e.target.dataset.i; if (i === undefined) return; arrastando = true; g.setPointerCapture(e.pointerId); pinta(+i); vitrine(); };
     g.onpointermove = e => { if (!arrastando) return; const el = document.elementFromPoint(e.clientX, e.clientY); if (el && el.parentNode === g) { pinta(+el.dataset.i); vitrine(); } };
-    const solta = () => { if (!arrastando) return; arrastando = false; salvar(); confere(); };
+    const solta = () => { if (!arrastando) return; arrastando = false; salvar(); $('#codigo').textContent = tabela(st[ch]); $('#total').textContent = st[ch].reduce((a, b) => a + b, 0); if (confere) confere(); };
     g.onpointerup = solta; g.onpointercancel = solta;
-    const confere = () => { if (!des.simetria && simetrica()) { des.simetria = true; salvar(); ir(1); } else { const s = $('#sim-status'); if (s) s.textContent = simetrica() ? '' : 'Ainda não está simétrico.'; atualizaCodigo(); } };
-    const atualizaCodigo = () => { const c = $('#codigo'); if (!c) return; const l = []; for (let rr = 0; rr < N; rr++) l.push(Array.from({ length: N }, (_, cc) => DENTRO[rr * N + cc] ? st.pix[rr * N + cc] : ' ').join('')); c.textContent = l.join('\n'); };
-    $('#t-pintar').onclick = () => { ferramenta = 1; ir(1); };
-    $('#t-apagar').onclick = () => { ferramenta = 0; ir(1); };
-    $('#t-espelho').onclick = () => { espelho = !espelho; ir(1); };
-    $('#t-limpar').onclick = () => { st.pix = st.pix.map(() => 0); salvar(); ir(1); };
-    document.querySelectorAll('[data-mod]').forEach(b => b.onclick = () => { st.pix = deModelo(b.dataset.mod); salvar(); if (!des.simetria && simetrica()) des.simetria = true; salvar(); ir(1); });
+    $('#t-pintar').onclick = () => { ferramenta = 1; ir(aqui); };
+    $('#t-apagar').onclick = () => { ferramenta = 0; ir(aqui); };
+    $('#t-espelho').onclick = () => { espelho = !espelho; ir(aqui); };
+    $('#t-limpar').onclick = () => { st[ch] = st[ch].map(() => 0); salvar(); ir(aqui); };
+    document.querySelectorAll('[data-mod]').forEach(b => b.onclick = () => { st[ch] = deModelo(b.dataset.mod); salvar(); if (confere) confere(true); ir(aqui); });
+  }
+
+  function passoAnverso() {
+    return `<h3>Desenhe o anverso (a cara)</h3>
+      <label class="campo">Texto da borda (nome do país, da escola ou da turma)<input type="text" id="nome" maxlength="24" value="${esc(st.nome)}"></label>
+      ${gradeHtml('pix')}
+      <div class="desafio${des.simetria ? ' feito' : ''}" id="d-simetria"><strong>${des.simetria ? '✓' : '★'} Desafio 3: simetria</strong>
+        <div>Deixe o desenho simétrico em relação à linha vermelha, com pelo menos 8 quadradinhos. ${des.simetria ? 'Feito! A coluna 1 é igual à 15, a 2 é igual à 14, e assim por diante: é uma reflexão.' : `<span id="sim-status">${simetrica() ? '' : 'Ainda não está simétrico.'}</span>`}</div></div>
+      ${prox(1)}`;
+  }
+  function ligaAnverso() {
+    $('#nome').oninput = e => { st.nome = e.target.value; salvar(); vitrine(); };
+    ligaGrade('pix', 1, semIr => {
+      if (!des.simetria && simetrica()) { des.simetria = true; salvar(); if (!semIr) ir(1); }
+      else { const s2 = $('#sim-status'); if (s2) s2.textContent = simetrica() ? '' : 'Ainda não está simétrico.'; }
+    });
     ligaProx(1);
   }
 
   function passoReverso() {
-    return `<h3>Escreva o valor</h3>
+    const fig = st.rev === 'figura';
+    return `<h3>Monte o reverso (a coroa)</h3>
       <label class="campo">Valor de face<select id="valor">${VALORES.map(v => `<option value="${v[0]}" ${v[0] === st.valor ? 'selected' : ''}>${v[1]} ${v[2].toLowerCase()}</option>`).join('')}</select></label>
       <label class="campo">Ano de cunhagem<input type="number" id="ano" min="1" max="9999" value="${esc(st.ano)}"></label>
-      <p class="small">Repare nas moedas de verdade: o valor fica bem grande, para todo mundo reconhecer rápido, e o tamanho ou a cor mudam de uma moeda para a outra. Assim até quem enxerga pouco consegue diferenciar as moedas pelo tato e pelo tamanho.</p>
+      <div class="ferr"><span class="small muted" style="align-self:center">Neste lado:</span>
+        <button class="chip" type="button" data-rev="valor" aria-pressed="${!fig}">Só o valor, bem grande</button>
+        <button class="chip" type="button" data-rev="figura" aria-pressed="${fig}">Valor com uma figura</button></div>
+      ${fig ? `<p class="small">Nas moedas do Real, um lado traz o valor e o outro traz uma figura, como Tiradentes na moeda de 5 centavos. Na sua moeda, o lado do valor também pode ganhar uma figura: escolha uma pronta ou desenhe a sua.</p>${gradeHtml('pixR')}`
+        : '<p class="small">Repare nas moedas de verdade: o valor fica bem grande, para todo mundo reconhecer rápido, e o tamanho ou a cor mudam de uma moeda para a outra. Assim até quem enxerga pouco consegue diferenciar as moedas pelo tato e pelo tamanho.</p>'}
       ${prox(2)}`;
   }
   function ligaReverso() {
     $('#valor').onchange = e => { st.valor = +e.target.value; salvar(); vitrine(); };
     $('#ano').oninput = e => { st.ano = e.target.value.slice(0, 4); salvar(); vitrine(); };
+    document.querySelectorAll('[data-rev]').forEach(b => b.onclick = () => { st.rev = b.dataset.rev; salvar(); ir(2); });
+    if (st.rev === 'figura') ligaGrade('pixR', 2);
     ligaProx(2);
   }
 
