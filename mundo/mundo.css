@@ -292,3 +292,17 @@ a.stat { color: inherit; text-decoration: none; }
 .circ-chave:not(.trava), .circ-porta.slot { cursor: pointer; }
 .circ-chave:not(.trava):hover rect, .circ-porta.slot:hover rect, .circ-chave:focus-visible rect, .circ-porta.slot:focus-visible rect { stroke: #c0392b; }
 .circ-chave:focus, .circ-porta:focus { outline: none; }
+/* pixel art por coordenadas */
+.px-area { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-top: 10px; }
+#px-cv { width: 392px; max-width: 100%; height: auto; touch-action: none; cursor: crosshair; background: #f1e9d8; border-radius: 10px; }
+.px-lado { flex: 1 1 240px; min-width: 0; }
+.px-cores { display: flex; flex-wrap: wrap; gap: 6px; }
+.px-cor { border: 2px solid #5c4a36; border-radius: 8px; padding: 4px 8px 4px 26px; background: #fff linear-gradient(var(--c), var(--c)) no-repeat 6px 50% / 14px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
+.px-cor.sel { outline: 3px solid #e8a400; outline-offset: 1px; font-weight: 700; }
+.px-ins { list-style: none; padding: 0; margin: 6px 0; font-size: .85rem; max-height: 190px; overflow: auto; }
+.px-ins li { margin: 4px 0; }
+.px-amostra { display: inline-block; width: 12px; height: 12px; border: 1px solid #5c4a36; border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
+.px-digita { margin: 10px 0; }
+.museu-pixel { display: flex; flex-wrap: wrap; gap: 10px; }
+.museu-pixel figure { margin: 0; text-align: center; font-size: .8rem; }
+.museu-pixel img { image-rendering: pixelated; border: 3px solid #7a523a; border-radius: 4px; display: block; }
