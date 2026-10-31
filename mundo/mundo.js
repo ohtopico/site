@@ -189,6 +189,7 @@
   function habsPergunta(id) {
     if (id.startsWith('n:')) { const [, fid, k] = id.split(':'), b = bancosDe(fid)[+k]; return b ? b.habs || [] : []; }
     if (id.startsWith('golpe:')) return ['EF07CO07', 'EF08CO08'];
+    if (id.startsWith('circ:')) return ['EF06CO01', 'EF06CO02'];
     if (id.startsWith('em-')) return HABS_EM[id.replace(/-\d+$/, '')] || [];
     const p = PERG_POR_ID.get(id); return p ? p.habs || [] : [];
   }
@@ -3670,8 +3671,81 @@
     const ms = missoes(f), feitas = habsTrabalhadas();
     dialogo('🪧', f.nome, `<p>${esc(FASES[f.idx].placa)}</p>${f.loja ? `<p>${LOJAS[f.loja.id].ic} Nesta vila fica a <strong>${LOJAS[f.loja.id].nome}</strong>: troque suas ⭐ por coisas novas.</p>` : ''}<p class="muted">Missões desta fase:</p><ul class="etapas">${ms.map(m => `<li class="${m.ok ? 'ok' : ''}">${m.ok ? '✅' : '⬜'} ${esc(m.nome)}${m.habs.length ? detalheHabs(m.habs, feitas) : ''}</li>`).join('')}</ul>${ms.some(m => m.habs.length) ? '<p class="muted small">Os códigos são as habilidades da BNCC que cada missão trabalha. Abra a lista e toque em um código para ler a habilidade; os verdes você já trabalhou.</p>' : ''}<p class="muted">Os itens do chão mudam de lugar toda segunda-feira, para você voltar e revisar.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
   }
+  /* ---------- portões com portas lógicas: na primeira passagem por cada portão (e sempre nos atalhos), acenda a lâmpada do circuito ----------
+     Circuito = árvore: { e: 'A' } é uma chave; { op: 'E' | 'OU' | 'NÃO', f: [...] } é uma porta; op '?' é uma porta vazia que o aluno escolhe (E ou OU).
+     chaves: valor inicial (0/1) e se está travada (t). A lâmpada começa apagada. */
+  const g_ = (op, ...f) => ({ op, f }), e_ = e => ({ e });
+  const CIRCUITOS = [
+    { dica: 'A porta NÃO inverte: entra 1, sai 0.', ch: { A: [1] }, c: g_('NÃO', e_('A')) },
+    { dica: 'A porta E só acende quando as duas entradas são 1.', ch: { A: [0], B: [1] }, c: g_('E', e_('A'), e_('B')) },
+    { dica: 'A porta OU acende quando pelo menos uma entrada é 1. A chave B está travada.', ch: { A: [0], B: [0, 1] }, c: g_('OU', e_('A'), e_('B')) },
+    { dica: 'Combine E com NÃO: B precisa chegar invertido.', ch: { A: [0], B: [1] }, c: g_('E', e_('A'), g_('NÃO', e_('B'))) },
+    { dica: 'C está travada em 0. Então o E de cima precisa acender.', ch: { A: [1], B: [0], C: [0, 1] }, c: g_('OU', g_('E', e_('A'), e_('B')), e_('C')) },
+    { dica: 'As chaves estão travadas: agora você escolhe a porta. Clique no ❓ para trocar entre E e OU.', ch: { A: [1, 1], B: [0, 1] }, c: g_('?', e_('A'), e_('B')) },
+    { dica: 'Quem precisa ser 1? Quem precisa ser 0? Pense de trás para a frente, a partir da lâmpada.', ch: { A: [0], B: [0], C: [1] }, c: g_('E', g_('OU', e_('A'), e_('B')), g_('NÃO', e_('C'))) },
+    { dica: 'Depois da porta escolhida vem um NÃO. Que porta dá 0 com essas entradas?', ch: { A: [1, 1], B: [0, 1] }, c: g_('NÃO', g_('?', e_('A'), e_('B'))) },
+    { dica: 'Escolha a porta e mexa nas chaves livres. As duas metades do E precisam dar 1.', ch: { A: [0], B: [1, 1], C: [1] }, c: g_('E', g_('?', e_('A'), e_('B')), g_('NÃO', e_('C'))) },
+    { dica: 'Este circuito é o "OU exclusivo": acende quando A e B são diferentes.', ch: { A: [1], B: [1] }, c: g_('OU', g_('E', e_('A'), g_('NÃO', e_('B'))), g_('E', g_('NÃO', e_('A')), e_('B'))) }
+  ];
+  // qual circuito cada portão tem: o caminho principal fica mais difícil a cada vila; os atalhos têm os mais difíceis; a Sala da Matemática não tem
+  const chavePortao = (a, b) => Math.min(a, b) + '-' + Math.max(a, b);
+  const circuitoDo = (a, b) => {
+    if (a === IDX_MAT || b === IDX_MAT) return null;
+    const lo = Math.min(a, b), hi = Math.max(a, b);
+    if (hi - lo === 1) return Math.min(lo, 6);
+    return { '0-5': 7, '1-4': 8, '4-7': 9 }[chavePortao(a, b)] ?? null;
+  };
+  const valorCirc = (n, ch, slots) => {   // null = ainda tem porta ❓ sem escolher no caminho
+    if (n.e) return ch[n.e];
+    const op = n.op === '?' ? slots.get(n) : n.op, v = n.f.map(k => valorCirc(k, ch, slots));
+    if (!op || v.includes(null)) return null;
+    return op === 'NÃO' ? 1 - v[0] : op === 'E' ? v[0] & v[1] : v[0] | v[1];
+  };
+  function svgCirc(C, ch, slots) {
+    const altura = n => n.e ? 0 : 1 + Math.max(...n.f.map(altura)), H = altura(C.c), folhas = [];
+    const pos = new Map(), DX = 96, X0 = 14, DY = 46;
+    const lay = (n, d) => { if (n.e) { const y = 26 + folhas.length * DY; folhas.push(n); pos.set(n, [X0, y]); return y; } const ys = n.f.map(k => lay(k, d + 1)), y = ys.reduce((s, v) => s + v, 0) / ys.length; pos.set(n, [X0 + 58 + (H - d - 1) * DX + 20, y]); return y; };
+    lay(C.c, 0);
+    const W = X0 + 58 + H * DX + 80, Ht = 26 + folhas.length * DY - 10, cor = v => v ? '#e8a400' : v === 0 ? '#a39d92' : '#d6cfc2';
+    let fios = '', caixas = '';
+    const desenha = n => {
+      const [x, y] = pos.get(n), v = valorCirc(n, ch, slots);
+      if (n.e) { const [, trava] = C.ch[n.e]; caixas += `<g class="circ-chave${trava ? ' trava' : ''}" data-ch="${n.e}"${trava ? '' : ' tabindex="0" role="button"'}><rect x="${x}" y="${y - 15}" width="58" height="30" rx="8" fill="${ch[n.e] ? '#ffe9a8' : '#eee8dc'}" stroke="${cor(v)}" stroke-width="3"/><text x="${x + 29}" y="${y + 5}" text-anchor="middle">${n.e} = ${ch[n.e]}${trava ? ' 🔒' : ''}</text></g>`; return; }
+      for (const k of n.f) { const [kx, ky] = pos.get(k), sx = kx + (k.e ? 58 : 56), mx = (sx + x) / 2; fios += `<path d="M${sx} ${ky} H${mx} V${y + (n.f.length > 1 ? (k === n.f[0] ? -8 : 8) : 0)} H${x}" fill="none" stroke="${cor(valorCirc(k, ch, slots))}" stroke-width="4"/>`; desenha(k); }
+      const rot = n.op === '?' ? (slots.get(n) ? slots.get(n) + ' ✎' : '❓') : n.op;
+      caixas += `<g class="circ-porta${n.op === '?' ? ' slot' : ''}"${n.op === '?' ? ` tabindex="0" role="button" data-slot="${[...slots.keys()].indexOf(n)}"` : ''}><rect x="${x}" y="${y - 18}" width="56" height="36" rx="${n.op === 'NÃO' ? 18 : 6}" fill="#fffaf0" stroke="#5c4a36" stroke-width="2"${n.op === '?' ? ' stroke-dasharray="5 4"' : ''}/><text x="${x + 28}" y="${y + 5}" text-anchor="middle" font-weight="700">${rot}</text></g>`;
+    };
+    desenha(C.c);
+    const [rx, ry] = pos.get(C.c), luz = valorCirc(C.c, ch, slots), lx = rx + 56 + 40;
+    fios += `<path d="M${rx + 56} ${ry} H${lx - 14}" stroke="${cor(luz)}" stroke-width="4"/>`;
+    caixas += `<circle cx="${lx}" cy="${ry}" r="16" fill="${luz ? '#ffd23f' : '#d8d2c6'}" stroke="#5c4a36" stroke-width="2"/>${luz ? `<circle cx="${lx}" cy="${ry}" r="24" fill="none" stroke="#ffd23f" stroke-width="3" opacity=".6"/>` : ''}<text x="${lx}" y="${ry + 34}" text-anchor="middle" font-size="12">${luz ? 'acesa!' : 'apagada'}</text>`;
+    return `<svg class="circ-svg" viewBox="0 0 ${W} ${Math.max(Ht, ry + 44)}" role="img" aria-label="Circuito com portas lógicas">${fios}${caixas}</svg>`;
+  }
+  function circuitoPortao(f, p, aoAbrir) {
+    const k = circuitoDo(f.idx, p.para), C = CIRCUITOS[k], ch = {}, slots = new Map(), prox = fases[p.para];
+    for (const e in C.ch) ch[e] = C.ch[e][0];
+    const acha = n => { if (n.op === '?') slots.set(n, null); (n.f || []).forEach(acha); }; acha(C.c);
+    let aberto = false, foco = null;
+    const desenha = () => {
+      const luz = !aberto && [...slots.values()].every(Boolean) && valorCirc(C.c, ch, slots) === 1;
+      dialogo('⚡', 'Portão com circuito', `<p>Este portão para <b>${esc(prox.icone)} ${esc(prox.nome)}</b> só abre com a <b>lâmpada acesa</b>. Clique nas chaves${slots.size ? ' e no ❓' : ''} para montar o circuito.</p>${svgCirc(C, ch, slots)}<p class="muted small">💡 ${esc(C.dica)} · E: 1 só se as duas forem 1 · OU: 1 se alguma for 1 · NÃO: inverte.</p>`,
+        luz || aberto ? [{ txt: 'Passar pelo portão', classe: 'principal', fn: () => { fechaDialogo(); aoAbrir(); } }] : [{ txt: 'Fico aqui', fn: fechaDialogo }]);
+      if (luz) {
+        aberto = true; S.circ = S.circ || {}; const nova = !S.circ[chavePortao(f.idx, p.para)]; S.circ[chavePortao(f.idx, p.para)] = true;
+        contaResposta(); progressoMundo('circ:' + k, true); ganhaHabilidade(['PC'], 10); if (nova) { S.acertos++; pontos(20, '⚡ Circuito montado! Portão aberto.'); } SOM.toca('portao'); salvar();
+        D.texto.insertAdjacentHTML('beforeend', '<p><strong>✅ A lâmpada acendeu e o portão abriu!</strong> Ele fica aberto daqui para a frente.</p>');
+        return;
+      }
+      const clica = (sel, fn) => D.texto.querySelectorAll(sel).forEach(el => { el.addEventListener('click', () => fn(el)); el.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); fn(el); } }); });
+      clica('.circ-chave:not(.trava)', el => { ch[el.dataset.ch] ^= 1; SOM.toca('coleta'); foco = '[data-ch="' + el.dataset.ch + '"]'; desenha(); });
+      clica('.circ-porta.slot', el => { const n = [...slots.keys()][+el.dataset.slot]; slots.set(n, slots.get(n) === 'E' ? 'OU' : 'E'); foco = '[data-slot="' + el.dataset.slot + '"]'; desenha(); });
+      if (foco) { const el = D.texto.querySelector(foco); if (el) el.focus(); }
+    };
+    desenha();
+  }
   function portao(f, p) {
     const prox = fases[p.para];
+    if (liberada(prox) && circuitoDo(f.idx, p.para) != null && !(S.circ || {})[chavePortao(f.idx, p.para)]) return circuitoPortao(f, p, () => trocaFase(p.para, f.idx));
     if (liberada(prox)) { dialogo('🚪', 'Portão', `<p>Este portão, no lado ${LADOS[p.lado].nome}, leva para <strong>${esc(prox.icone)} ${esc(prox.nome)}</strong>.</p>`, [{ txt: 'Ir agora', classe: 'principal', fn: () => { fechaDialogo(); trocaFase(p.para, f.idx); } }, { txt: 'Fico aqui', fn: fechaDialogo }]); return; }
     const falta = missoes(f).filter(m => !m.ok).map(m => `${esc(m.nome)} (${m.n}/${m.meta})`);
     dialogo('🔒', 'Portão fechado', `<p>Para seguir para <strong>${esc(prox.nome)}</strong>, complete as missões de ${esc(f.nome)}:</p><p>${falta.join('<br>')}</p>`, [{ txt: 'Vou lá!', fn: fechaDialogo }]);
@@ -4245,7 +4319,7 @@
   setTimeout(() => confereEstrelasSite(), 2500);   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

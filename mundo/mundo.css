@@ -287,3 +287,8 @@ a.stat { color: inherit; text-decoration: none; }
 .golpe-sms { background: #f3efe6; }
 .golpe-email { background: #fffdf6; border-style: dashed; }
 .golpe-rede { background: #fdeef5; border-color: #efc3d8; }
+/* portões com portas lógicas */
+.circ-svg { display: block; width: 100%; max-width: 560px; height: auto; margin: 8px auto; background: #f6f1e4; border-radius: 12px; font-family: inherit; font-size: 14px; }
+.circ-chave:not(.trava), .circ-porta.slot { cursor: pointer; }
+.circ-chave:not(.trava):hover rect, .circ-porta.slot:hover rect, .circ-chave:focus-visible rect, .circ-porta.slot:focus-visible rect { stroke: #c0392b; }
+.circ-chave:focus, .circ-porta:focus { outline: none; }
