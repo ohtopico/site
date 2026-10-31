@@ -1,0 +1,13 @@
+/* Teste de proficiência em informática: o resto do visual vem do quiz.css do quiz de pensamento computacional. */
+.res-titulo { font: 800 15px var(--display) !important; letter-spacing: .08em; margin: 18px 0 10px !important; text-transform: uppercase; }
+.res-estudar { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 8px; }
+.res-area { background: var(--paper-2); border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; }
+.res-area p { font-size: 15px !important; margin: 0 0 8px !important; }
+.res-area ul { margin: 0 !important; padding-left: 18px !important; }
+.res-area li { font-size: 15px !important; margin: 0 0 4px !important; }
+
+@media print {
+    .letreiro, .lateral, .chamada, .trilha, .linha-fina, .artigo > :not(.quiz), .res-botoes, .res-compartilhar p, .pular { display: none !important; }
+    .quiz { border: 0; padding: 0; }
+    .res-pilar-barra span { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

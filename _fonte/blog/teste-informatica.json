@@ -1,0 +1,486 @@
+{
+ "areas": {
+  "computador": {
+   "nome": "Computador e dispositivos",
+   "eixo": "Mundo digital",
+   "resumo": "Peças do computador, entrada e saída, memória e armazenamento, unidades de medida.",
+   "links": [
+    [
+     "/material-didatico/jogos/partes-computador.html",
+     "Jogo Oficina do Computador"
+    ],
+    [
+     "/simuladores/placa-mae.html",
+     "Placa-mãe em 3D"
+    ],
+    [
+     "/material-didatico/fichas/maquinas-entrada-saida/",
+     "Ficha: máquinas de entrada e saída"
+    ]
+   ]
+  },
+  "arquivos": {
+   "nome": "Arquivos e sistema",
+   "eixo": "Mundo digital",
+   "resumo": "Pastas, caminhos, extensões, atalhos de teclado e arquivos compactados.",
+   "links": [
+    [
+     "/material-didatico/fichas/arrumando-pastas-computador/",
+     "Ficha: arrumando as pastas do computador"
+    ],
+    [
+     "/material-didatico/planos/arquivos-ordem-pastas-compactacao-metadados/",
+     "Plano de aula: arquivos, pastas e compactação"
+    ],
+    [
+     "/material-didatico/jogos/digitacao.html",
+     "Jogo Dedos Ligeiros (digitação)"
+    ]
+   ]
+  },
+  "internet": {
+   "nome": "Internet e pesquisa",
+   "eixo": "Mundo digital",
+   "resumo": "Navegador, buscador, checagem de fontes e como os dados viajam pela rede.",
+   "links": [
+    [
+     "/material-didatico/jogos/pacotes.html",
+     "Jogo Correio de Pacotes"
+    ],
+    [
+     "/material-didatico/jogos/boato.html",
+     "Jogo Boato em Rede"
+    ],
+    [
+     "/material-didatico/planos/checagem-fatos-fontes-vieses-desinformacao/",
+     "Plano de aula: checagem de fatos e fontes"
+    ]
+   ]
+  },
+  "seguranca": {
+   "nome": "Segurança e privacidade",
+   "eixo": "Cultura digital",
+   "resumo": "Senhas, golpes, verificação em duas etapas e o que o cadeado do navegador garante.",
+   "links": [
+    [
+     "/material-didatico/jogos/senha.html",
+     "Jogo Senha Forte"
+    ],
+    [
+     "/material-didatico/jogos/golpe.html",
+     "Jogo Golpe ou Seguro?"
+    ],
+    [
+     "/material-didatico/fichas/detetive-golpes-senhas-fortes/",
+     "Ficha: detetive de golpes e senhas fortes"
+    ]
+   ]
+  },
+  "aplicativos": {
+   "nome": "Textos, planilhas e apresentações",
+   "eixo": "Cultura digital",
+   "resumo": "Escolher o programa certo, fórmulas de planilha e slides que se leem bem.",
+   "links": [
+    [
+     "/tech-pra-prof/",
+     "Guia Tech pra Prof"
+    ],
+    [
+     "/material-didatico/jogos/tabelas.html",
+     "Jogo Gincana das Tabelas"
+    ],
+    [
+     "/material-didatico/planos/projeto-nossa-producao-digital/",
+     "Plano de aula: projeto de produção digital"
+    ]
+   ]
+  },
+  "logica": {
+   "nome": "Lógica e programação",
+   "eixo": "Pensamento computacional",
+   "resumo": "Algoritmos, sequência de comandos, repetição e variáveis.",
+   "links": [
+    [
+     "/material-didatico/jogos/robo.html",
+     "Jogo Robô Coletor"
+    ],
+    [
+     "/material-didatico/jogos/python.html",
+     "Jogo Horta em Python"
+    ],
+    [
+     "/quiz-pensamento-computacional/",
+     "Quiz de pensamento computacional"
+    ]
+   ]
+  }
+ },
+ "niveis": [
+  {
+   "id": "iniciante",
+   "min": 0,
+   "nome": "Iniciante",
+   "texto": "Você está começando a se familiarizar com o computador e a internet. Tudo bem: informática se aprende usando, e cada resposta acima traz uma explicação curta para guardar.",
+   "proximo": "Comece pelas duas áreas com menos acertos, nos materiais indicados abaixo. Em uma semana de prática, refaça o teste e compare."
+  },
+  {
+   "id": "basico",
+   "min": 9,
+   "nome": "Básico",
+   "texto": "Você já resolve as tarefas do dia a dia: abrir e salvar arquivos, navegar, pesquisar e usar os programas mais comuns. Ainda há partes que vale entender melhor, e o resultado por área mostra quais.",
+   "proximo": "Escolha a área com menos acertos e faça um dos materiais indicados abaixo. Eles são curtos e funcionam no navegador."
+  },
+  {
+   "id": "intermediario",
+   "min": 15,
+   "nome": "Intermediário",
+   "texto": "Você usa o computador com autonomia e entende o que acontece por trás de várias tarefas, de fórmulas de planilha ao caminho de uma mensagem na internet.",
+   "proximo": "Para chegar ao avançado, aprofunde as áreas com menos acertos. Os jogos e as fichas indicados abaixo mostram o porquê de cada resposta."
+  },
+  {
+   "id": "avancado",
+   "min": 20,
+   "nome": "Avançado",
+   "texto": "Você domina os fundamentos de informática nas seis áreas do teste e consegue explicar o porquê das respostas, não só o como.",
+   "proximo": "Que tal ensinar? Os planos de aula e os jogos do material didático estão alinhados à BNCC Computação e prontos para levar a uma turma."
+  }
+ ],
+ "perguntas": [
+  {
+   "id": "t01",
+   "area": "computador",
+   "dif": 1,
+   "enunciado": "Qual destas partes guarda os seus arquivos mesmo depois que o computador é desligado?",
+   "opcoes": [
+    "A memória RAM",
+    "O SSD ou o disco rígido",
+    "O processador",
+    "A placa de vídeo"
+   ],
+   "certa": 1,
+   "explica": "O SSD e o disco rígido são o armazenamento permanente. A RAM é uma memória de trabalho rápida, que se apaga quando o computador desliga."
+  },
+  {
+   "id": "t02",
+   "area": "computador",
+   "dif": 1,
+   "enunciado": "Qual destes é um dispositivo de entrada?",
+   "opcoes": [
+    "Monitor",
+    "Impressora",
+    "Caixa de som",
+    "Teclado"
+   ],
+   "certa": 3,
+   "explica": "Dispositivos de entrada levam informação para o computador, como teclado, mouse, microfone e câmera. Monitor, impressora e caixa de som são de saída."
+  },
+  {
+   "id": "t03",
+   "area": "computador",
+   "dif": 2,
+   "enunciado": "Um notebook fica lento sempre que muitos programas e abas estão abertos ao mesmo tempo. O que costuma explicar isso?",
+   "opcoes": [
+    "Pouca memória RAM para tudo o que está aberto",
+    "A tela ser pequena",
+    "O teclado ser sem fio",
+    "A bateria estar com pouca carga"
+   ],
+   "certa": 0,
+   "explica": "Cada programa e cada aba ocupam memória RAM. Quando ela acaba, o sistema passa a usar o armazenamento, que é bem mais lento. Fechar o que não está em uso ajuda."
+  },
+  {
+   "id": "t04",
+   "area": "computador",
+   "dif": 3,
+   "enunciado": "Um vídeo de 2 GB cabe em um pendrive que tem 1.500 MB livres?",
+   "opcoes": [
+    "Sim, e ainda sobra espaço",
+    "Sim, porque GB é uma unidade menor que MB",
+    "Não, porque 2 GB são cerca de 2.000 MB",
+    "Só se o vídeo for curto"
+   ],
+   "certa": 2,
+   "explica": "1 GB equivale a cerca de 1.000 MB (1.024, na conta exata do computador). Então 2 GB são cerca de 2.000 MB, mais do que os 1.500 MB livres."
+  },
+  {
+   "id": "t05",
+   "area": "arquivos",
+   "dif": 1,
+   "enunciado": "No arquivo \"boletim.pdf\", o que o \".pdf\" indica?",
+   "opcoes": [
+    "A pasta em que o arquivo está",
+    "O tipo do arquivo, que diz qual programa consegue abri-lo",
+    "O tamanho do arquivo",
+    "A data em que ele foi criado"
+   ],
+   "certa": 1,
+   "explica": "A parte depois do ponto é a extensão. Ela indica o formato do arquivo: .pdf para documentos, .jpg para fotos, .xlsx para planilhas, .mp4 para vídeos."
+  },
+  {
+   "id": "t06",
+   "area": "arquivos",
+   "dif": 1,
+   "enunciado": "Qual atalho de teclado copia o que está selecionado, no Windows e no Linux?",
+   "opcoes": [
+    "Ctrl + V",
+    "Ctrl + Z",
+    "Ctrl + C",
+    "Ctrl + P"
+   ],
+   "certa": 2,
+   "explica": "Ctrl + C copia, Ctrl + V cola, Ctrl + Z desfaz e Ctrl + P imprime. No Mac, a tecla Command faz o papel do Ctrl."
+  },
+  {
+   "id": "t07",
+   "area": "arquivos",
+   "dif": 2,
+   "enunciado": "O arquivo está em Documentos > Escola > 2026 > notas.xlsx. O que é \"2026\" nesse caminho?",
+   "opcoes": [
+    "Uma pasta dentro da pasta Escola",
+    "O nome do arquivo",
+    "A extensão do arquivo",
+    "O programa que abre o arquivo"
+   ],
+   "certa": 0,
+   "explica": "O caminho mostra as pastas de fora para dentro, até chegar ao arquivo. 2026 é uma pasta dentro de Escola, que está dentro de Documentos, e notas.xlsx é o arquivo."
+  },
+  {
+   "id": "t08",
+   "area": "arquivos",
+   "dif": 3,
+   "enunciado": "Para que serve compactar várias fotos em um arquivo .zip antes de enviar por e-mail?",
+   "opcoes": [
+    "Para melhorar a qualidade das fotos",
+    "Para proteger as fotos contra vírus",
+    "Para transformar as fotos em PDF",
+    "Para juntar tudo em um arquivo só e, em geral, diminuir o tamanho"
+   ],
+   "certa": 3,
+   "explica": "O .zip reúne vários arquivos em um e pode reduzir o tamanho total. Quem recebe extrai o .zip e recebe os arquivos originais, sem perda de qualidade."
+  },
+  {
+   "id": "t09",
+   "area": "internet",
+   "dif": 1,
+   "enunciado": "Qual destes programas é um navegador de internet?",
+   "opcoes": [
+    "Excel",
+    "Windows",
+    "Paint",
+    "Firefox"
+   ],
+   "certa": 3,
+   "explica": "Navegadores abrem páginas da web: Firefox, Chrome, Edge e Safari são exemplos. Windows é um sistema operacional, Excel é uma planilha e Paint é um editor de imagens."
+  },
+  {
+   "id": "t10",
+   "area": "internet",
+   "dif": 2,
+   "enunciado": "Você quer que o buscador encontre páginas com a frase exata formação de professores. O que fazer?",
+   "opcoes": [
+    "Escrever a frase toda em letras maiúsculas",
+    "Colocar a frase entre aspas: \"formação de professores\"",
+    "Escrever as palavras em ordem alfabética",
+    "Colocar um ponto de exclamação no fim"
+   ],
+   "certa": 1,
+   "explica": "Aspas pedem ao buscador as palavras juntas e naquela ordem. Sem aspas, ele mostra páginas que têm as palavras em qualquer lugar do texto."
+  },
+  {
+   "id": "t11",
+   "area": "internet",
+   "dif": 2,
+   "enunciado": "Chegou no grupo uma notícia surpreendente. Qual atitude ajuda mais a saber se ela é verdadeira?",
+   "opcoes": [
+    "Ver quantas vezes ela já foi compartilhada",
+    "Conferir se ela tem foto",
+    "Procurar a mesma informação em outras fontes confiáveis e conferir a data e o autor",
+    "Perguntar no próprio grupo se alguém acredita"
+   ],
+   "certa": 2,
+   "explica": "Muitos compartilhamentos e uma foto não provam nada. Checar a origem, a data e se veículos ou órgãos confiáveis dizem o mesmo é o caminho mais seguro."
+  },
+  {
+   "id": "t12",
+   "area": "internet",
+   "dif": 3,
+   "enunciado": "Quando você envia uma foto pela internet, como ela chega ao outro lado?",
+   "opcoes": [
+    "Dividida em pacotes, que podem seguir caminhos diferentes e são remontados no destino",
+    "Inteira, por um cabo direto até o celular da outra pessoa",
+    "Sempre por satélite",
+    "Ela fica guardada no seu roteador e a outra pessoa baixa de lá"
+   ],
+   "certa": 0,
+   "explica": "A internet divide os dados em pacotes. Cada pacote tem o endereço de destino e passa por vários roteadores; no fim, o aparelho de quem recebe junta os pacotes na ordem certa."
+  },
+  {
+   "id": "t13",
+   "area": "seguranca",
+   "dif": 1,
+   "enunciado": "Qual destas senhas é a mais forte?",
+   "opcoes": [
+    "123456",
+    "maria2010",
+    "Gato-azul-come-pipoca-7",
+    "senha"
+   ],
+   "certa": 2,
+   "explica": "Senhas longas, com várias palavras e símbolos, são muito mais difíceis de adivinhar. Nomes, datas e sequências são os primeiros palpites de quem tenta invadir uma conta."
+  },
+  {
+   "id": "t14",
+   "area": "seguranca",
+   "dif": 1,
+   "enunciado": "Chega a mensagem: \"Sua conta do banco foi bloqueada. Clique no link e digite sua senha para liberar.\" O que fazer?",
+   "opcoes": [
+    "Clicar e digitar a senha rapidamente",
+    "Responder pedindo mais informações",
+    "Encaminhar para os amigos avisarem",
+    "Não clicar e conferir pelo aplicativo oficial ou pelo telefone do banco"
+   ],
+   "certa": 3,
+   "explica": "É um golpe comum, chamado phishing: cria urgência para você entregar a senha. Bancos não pedem senha por mensagem. Na dúvida, entre pelo aplicativo ou ligue para o número do cartão."
+  },
+  {
+   "id": "t15",
+   "area": "seguranca",
+   "dif": 2,
+   "enunciado": "O que é a verificação em duas etapas?",
+   "opcoes": [
+    "Além da senha, confirmar o acesso com um código do celular ou de um aplicativo",
+    "Digitar a mesma senha duas vezes",
+    "Ter duas contas no mesmo site",
+    "Trocar a senha a cada dois dias"
+   ],
+   "certa": 0,
+   "explica": "Com a verificação em duas etapas, quem descobrir a sua senha ainda precisa do segundo código, que só chega ao seu aparelho. Vale ativar no e-mail, no WhatsApp e nas redes sociais."
+  },
+  {
+   "id": "t16",
+   "area": "seguranca",
+   "dif": 3,
+   "enunciado": "O endereço do site começa com https e aparece um cadeado no navegador. O que isso garante?",
+   "opcoes": [
+    "Que o site é confiável e não é golpe",
+    "Que o site foi aprovado pelo governo",
+    "Que a conexão entre você e o site é criptografada, mas o site ainda pode ser falso",
+    "Que o site não tem vírus"
+   ],
+   "certa": 2,
+   "explica": "O cadeado mostra que os dados viajam embaralhados, e ninguém no caminho consegue ler. Ele não diz quem é o dono do site: páginas de golpe também têm cadeado. Confira sempre o endereço."
+  },
+  {
+   "id": "t17",
+   "area": "aplicativos",
+   "dif": 1,
+   "enunciado": "Você vai escrever e imprimir uma carta de apresentação. Qual tipo de programa é o mais adequado?",
+   "opcoes": [
+    "Editor de texto, como Word, Google Docs ou LibreOffice Writer",
+    "Planilha, como Excel",
+    "Editor de imagens, como Paint",
+    "Navegador, como Chrome"
+   ],
+   "certa": 0,
+   "explica": "Editores de texto foram feitos para documentos: margens, parágrafos, títulos, correção ortográfica e impressão. Planilhas servem para tabelas e cálculos."
+  },
+  {
+   "id": "t18",
+   "area": "aplicativos",
+   "dif": 2,
+   "enunciado": "Em uma planilha, A2 vale 10, B2 vale 5 e a célula C2 tem a fórmula =A2+B2. O que aparece em C2?",
+   "opcoes": [
+    "A2+B2",
+    "105",
+    "15",
+    "2"
+   ],
+   "certa": 2,
+   "explica": "O sinal de igual avisa que é uma fórmula. A planilha busca os valores de A2 e B2 e soma: 10 + 5 = 15. Se A2 mudar, C2 se atualiza sozinha."
+  },
+  {
+   "id": "t19",
+   "area": "aplicativos",
+   "dif": 2,
+   "enunciado": "O que mais ajuda um slide a ser lido pela turma no fundo da sala?",
+   "opcoes": [
+    "Colocar todo o texto do trabalho no slide",
+    "Usar foto colorida de fundo e letras finas",
+    "Pôr uma animação diferente em cada palavra",
+    "Poucas palavras, letra grande e bom contraste entre texto e fundo"
+   ],
+   "certa": 3,
+   "explica": "Slides são apoio para quem fala. Frases curtas, letra grande e cores contrastantes se leem de longe e também ajudam pessoas com baixa visão."
+  },
+  {
+   "id": "t20",
+   "area": "aplicativos",
+   "dif": 3,
+   "enunciado": "As notas da turma estão nas células B2 até B31. Qual fórmula calcula a média de todas elas?",
+   "opcoes": [
+    "=MÉDIA(B2:B31)",
+    "=MÉDIA(B2;B31)",
+    "=SOMA(B2+B31)",
+    "=B2:B31/2"
+   ],
+   "certa": 0,
+   "explica": "Os dois-pontos indicam um intervalo: de B2 até B31. Com ponto e vírgula, =MÉDIA(B2;B31) faria a média de só duas células, a primeira e a última."
+  },
+  {
+   "id": "t21",
+   "area": "logica",
+   "dif": 1,
+   "enunciado": "O que é um algoritmo?",
+   "opcoes": [
+    "Um tipo de vírus de computador",
+    "Uma peça do processador",
+    "Uma sequência de passos, em ordem, para resolver um problema",
+    "Um aplicativo de matemática"
+   ],
+   "certa": 2,
+   "explica": "Uma receita de bolo e o caminho até a escola são algoritmos. Programar é escrever algoritmos em uma linguagem que o computador entende."
+  },
+  {
+   "id": "t22",
+   "area": "logica",
+   "dif": 2,
+   "enunciado": "Um robô está virado para a direita e recebe: andar 2 casas, virar à esquerda, andar 1 casa. Para onde ele fica virado no fim?",
+   "opcoes": [
+    "Para a direita",
+    "Para baixo",
+    "Para a esquerda",
+    "Para cima"
+   ],
+   "certa": 3,
+   "explica": "Andar não muda a direção; só o comando de virar muda. Quem está virado para a direita e vira à esquerda passa a olhar para cima."
+  },
+  {
+   "id": "t23",
+   "area": "logica",
+   "dif": 2,
+   "enunciado": "Em um programa de blocos, o personagem faz: repita 4 vezes [ande 10 passos, gire 90 graus]. Que figura ele desenha?",
+   "opcoes": [
+    "Um triângulo",
+    "Um quadrado",
+    "Uma linha reta",
+    "Um círculo"
+   ],
+   "certa": 1,
+   "explica": "Quatro lados iguais com quatro giros de 90 graus formam um quadrado e levam o personagem de volta ao ponto de partida. A repetição evita escrever os mesmos comandos quatro vezes."
+  },
+  {
+   "id": "t24",
+   "area": "logica",
+   "dif": 3,
+   "enunciado": "Um programa começa com x = 3 e depois faz: repita 3 vezes [x = x × 2]. Qual é o valor de x no fim?",
+   "opcoes": [
+    "9",
+    "12",
+    "18",
+    "24"
+   ],
+   "certa": 3,
+   "explica": "A cada volta, x dobra: 3 vira 6, 6 vira 12, 12 vira 24. A variável guarda o valor da volta anterior, e é isso que faz o resultado crescer."
+  }
+ ]
+}
