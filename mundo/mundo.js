@@ -188,6 +188,7 @@
   const bancosDe = fid => (window.PERGUNTAS_NPC || {})[fid] || [];
   function habsPergunta(id) {
     if (id.startsWith('n:')) { const [, fid, k] = id.split(':'), b = bancosDe(fid)[+k]; return b ? b.habs || [] : []; }
+    if (id.startsWith('golpe:')) return ['EF07CO07', 'EF08CO08'];
     if (id.startsWith('em-')) return HABS_EM[id.replace(/-\d+$/, '')] || [];
     const p = PERG_POR_ID.get(id); return p ? p.habs || [] : [];
   }
@@ -3459,7 +3460,7 @@
   /* ---------- funções dos moradores, além das perguntas: comprar recursos, pedir entregas e levar você a outra vila ---------- */
   const PAPEIS = {
     comprador: { rotulo: '🧺 compra peixe, madeira e pedra', botao: '🧺 Vender peixe, madeira ou pedra' },
-    carteiro: { rotulo: '📦 pede entregas', botao: '📦 Fazer uma entrega' },
+    carteiro: { rotulo: '📦 entregas · 🕵️ golpes', botao: '📦 Fazer uma entrega' },
     guia: { rotulo: '🧭 leva você a outra vila', botao: '🧭 Me leve a outra vila' }
   };
   const papelNpc = n => n.prof ? null : ['comprador', 'carteiro', 'guia'][(n.fase.npcs.indexOf(n) - 1 + n.fase.idx) % 3];
@@ -3467,6 +3468,7 @@
     const out = [], ent = entregaPara(n);
     if (ent) out.push({ txt: `📦 Entregar o pacote de ${ent.nome}`, classe: 'principal', fn: () => entrega(n) });
     if (papelNpc(n)) out.push({ txt: PAPEIS[papelNpc(n)].botao, fn: () => ({ comprador: compraNpc, carteiro: carteiro, guia: guia })[papelNpc(n)](n) });
+    if (papelNpc(n) === 'carteiro') out.push({ txt: '🕵️ Investigar mensagem suspeita', fn: () => detetive(n) });
     return out;
   };
   // comprador: o preço muda todo dia; vender tudo pede a conta da multiplicação
@@ -3509,6 +3511,61 @@
     const de = npcPorId(S.entrega.de);
     S.entrega.feita = true; pontos(30, `📦 Entrega feita para ${n.nome}!`); ganhaAmizade(n, 10); ganhaAmizade(de, 5); salvar();
     dialogo('📦', n.nome, `<p>Meu pacote de ${esc(de.nome)}! Valeu mesmo. Aqui estão os seus <b>30 ⭐</b>.</p>`, [{ txt: 'De nada!', classe: 'principal', fn: fechaDialogo }]);
+  }
+  /* ---------- detetive de golpes: o carteiro traz mensagens suspeitas e o aluno decide se é golpe (cidadania digital) ---------- */
+  const CANAL_GOLPE = { sms: ['📱', 'SMS'], zap: ['💬', 'Mensagem'], email: ['✉️', 'E-mail'], rede: ['📸', 'Rede social'] };
+  const GOLPES = [
+    { id: 'pacote', c: 'sms', de: '+55 11 9xxxx-0193', txt: 'ENTREGAS: seu pacote está retido. Pague a taxa de R$ 4,90 em ate 2h ou ele será devolvido: entrega-rapida-taxa.top/pagar', golpe: true, pista: 'Pressa ("em até 2h") e um link estranho para pagar taxa', falsas: ['A mensagem fala de um pacote', 'O valor é pequeno'], expl: 'Empresas de entrega não cobram taxa por SMS com link. Pressa + link desconhecido + pagamento = golpe clássico.' },
+    { id: 'premio', c: 'zap', de: 'Promoção Celular Grátis', txt: 'PARABÉNS!!! 🎉 Você foi sorteado(a) com um celular novo! Para receber, mande seu CPF, endereço e o código que vai chegar no seu celular.', golpe: true, pista: 'Pede o código que chega por SMS, além de CPF e endereço', falsas: ['Usa emojis', 'Fala de um celular'], expl: 'Ninguém ganha sorteio que não participou. E o código que chega por SMS serve para alguém entrar na sua conta: nunca passe.' },
+    { id: 'parente', c: 'zap', de: 'Número desconhecido', txt: 'Oi, sou eu, troquei de número! Tô sem acesso ao banco, consegue fazer um Pix de R$ 300 pra uma conta que eu te passo? Te devolvo amanhã.', golpe: true, pista: 'Número novo pedindo Pix com urgência', falsas: ['Diz "oi"', 'Promete devolver amanhã'], expl: 'É o golpe do "troquei de número". Antes de qualquer Pix, ligue para o número antigo da pessoa ou pergunte algo que só ela sabe.' },
+    { id: 'senha-escola', c: 'email', de: 'suporte@escola-login-verificacao.net', txt: 'Sua conta da escola será BLOQUEADA hoje. Confirme sua senha neste formulário para manter o acesso.', golpe: true, pista: 'Pede a senha num formulário e ameaça bloquear a conta', falsas: ['Fala da escola', 'Chegou por e-mail'], expl: 'Nenhum suporte de verdade pede sua senha. O endereço do remetente também é estranho, não é o da escola.' },
+    { id: 'jogo-moedas', c: 'rede', de: '@moedas_gratis_jogo', txt: 'Gere 10.000 moedas GRÁTIS no seu jogo favorito! Só entrar com seu usuário e senha do jogo no nosso site 🔥', golpe: true, pista: 'Pede usuário e senha do jogo em outro site', falsas: ['Fala de um jogo', 'Usa um emoji de fogo'], expl: '"Gerador de moedas" é golpe para roubar contas. Só faça login no app ou site oficial do jogo.' },
+    { id: 'vaga', c: 'zap', de: 'Recrutamento Online', txt: 'Ganhe R$ 500 por dia curtindo vídeos! Para começar, pague só R$ 50 de cadastro.', golpe: true, pista: 'Dinheiro fácil demais e pagamento adiantado', falsas: ['Fala de vídeos', 'Tem um valor de cadastro baixo'], expl: 'Trabalho que paga muito para quase nada e pede dinheiro antes é golpe. Quem perde é quem paga o "cadastro".' },
+    { id: 'qr', c: 'email', de: 'banco-seguranca@atualiza-cadastro.info', txt: 'Detectamos um acesso estranho. Aponte a câmera para o QR Code em anexo e digite seus dados do cartão para cancelar.', golpe: true, pista: 'Pede dados do cartão por e-mail, com remetente que não é do banco', falsas: ['Fala de segurança', 'Tem um QR Code'], expl: 'Bancos não pedem dados do cartão por e-mail. Na dúvida, abra o aplicativo do banco você mesmo ou ligue para o número do cartão.' },
+    { id: 'link-curto', c: 'sms', de: '28911', txt: 'Voce tem pontos que vao EXPIRAR hoje!! Troque agora: bit.ly/pontos-expiram', golpe: true, pista: 'Link encurtado e pressa ("expirar hoje")', falsas: ['Fala de pontos', 'Veio de um número curto'], expl: 'Link encurtado esconde o endereço de verdade. Para ver seus pontos, entre direto no app da loja, sem clicar.' },
+    { id: 'escola-reuniao', c: 'email', de: 'secretaria@escola (o e-mail que a escola sempre usa)', txt: 'Lembrete: a reunião de pais será quinta, às 19h, no auditório. Não é preciso responder.', golpe: false, expl: 'Remetente conhecido, nenhum link, nenhum pedido de dado ou dinheiro. É só um aviso.' },
+    { id: 'codigo-pedido', c: 'sms', de: 'App que você acabou de usar', txt: 'Seu código de verificação é 482913. Não compartilhe este código com ninguém.', golpe: false, expl: 'Se foi você que pediu o código agora, a mensagem é normal. E ela mesma avisa: o código é só seu.' },
+    { id: 'amiga-trabalho', c: 'zap', de: 'Bia (contato salvo)', txt: 'Oi! Amanhã a gente termina o cartaz de ciências na biblioteca? Levo as canetinhas 🖍️', golpe: false, expl: 'Contato conhecido, conversa combinando algo normal, sem pedido de dinheiro, senha ou link.' },
+    { id: 'professora', c: 'email', de: 'professora no ambiente da turma', txt: 'Turma, a atividade sobre algoritmos está no mural da sala virtual. Entrega até sexta.', golpe: false, expl: 'Veio pelo ambiente oficial da turma e só pede uma tarefa. Nada de dados, senhas ou pagamento.' },
+    { id: 'biblioteca', c: 'sms', de: 'Biblioteca Municipal', txt: 'O livro "O Pequeno Príncipe" vence amanhã. Renove no balcão ou devolva até sexta.', golpe: false, expl: 'Um lembrete sem link e sem cobrança por mensagem: dá para resolver indo pessoalmente.' },
+    { id: 'avo', c: 'zap', de: 'Vó (contato salvo de sempre)', txt: 'Bom dia, meu amor! Domingo tem bolo de cenoura aqui em casa, venha 🥕🎂', golpe: false, expl: 'Contato de sempre, convite de família, nenhum pedido. Pode confiar (e comer o bolo).' }
+  ];
+  const golpeDia = () => { const hj = diaHoje(), G = S.golpes || (S.golpes = { dia: hj, n: 0, ok: {} }); if (G.dia !== hj) { G.dia = hj; G.n = 0; } return G; };
+  const GOLPES_DIA = 3;
+  function detetive(n) {
+    const G = golpeDia(), fecha = { txt: 'Fechar', fn: fechaDialogo };
+    if (G.n >= GOLPES_DIA) return dialogo('🕵️', n.nome, `<p>Hoje você já investigou ${GOLPES_DIA} mensagens. Amanhã eu trago mais correspondência suspeita!</p>`, [fecha]);
+    const livres = GOLPES.filter(g => !bloqueada('golpe:' + g.id)), nunca = livres.filter(g => !G.ok[g.id]);
+    const lista = nunca.length ? nunca : livres;
+    if (!lista.length) return avisoBloqueio('🕵️', n.nome);
+    const g = lista[Math.floor(Math.random() * lista.length)], [ic, nome] = CANAL_GOLPE[g.c];
+    dialogo('🕵️', n.nome, `<p>Chegou esta mensagem para alguém da vila. Você, detetive, acha que é <b>golpe</b>?</p>
+      <div class="golpe-msg golpe-${g.c}"><div class="golpe-topo">${ic} ${nome} · <b>${esc(g.de)}</b></div><p>${esc(g.txt)}</p></div>`,
+      [{ txt: '🚩 É golpe', fn: () => respondeGolpe(n, g, true) }, { txt: '✅ Pode confiar', fn: () => respondeGolpe(n, g, false) }]);
+    delete D.op.dataset.respondida;
+  }
+  function respondeGolpe(n, g, disse) {
+    if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
+    const G = golpeDia(), certo = disse === g.golpe, id = 'golpe:' + g.id;
+    contaResposta(); if (!certo) bloqueia(id); progressoMundo(id, certo); G.n++;
+    ganhaHabilidade(['CD'], certo ? 10 : 2);
+    if (certo) { S.acertos++; contaEvento('acertos'); pontos(G.ok[g.id] ? 5 : 15, '🕵️ Boa investigação!'); G.ok[g.id] = true; ganhaAmizade(n, 5); } else hud();
+    const fim = `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${g.golpe ? 'Era golpe.' : 'Era uma mensagem normal.'} ${esc(g.expl)}</p>`;
+    salvar(); confereFases();
+    if (certo && g.golpe) {
+      const alts = [g.pista, ...g.falsas].sort(() => Math.random() - 0.5);
+      dialogo('🕵️', n.nome, `${fim}<p>Pergunta bônus: <b>qual foi a principal pista</b> do golpe?</p>`, alts.map(a => ({ txt: a, fn: () => {
+        if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
+        const ok = a === g.pista;
+        if (ok) pontos(5, '🔎 Pista certa!');
+        [...D.op.children].forEach(b => { b.disabled = true; if (b.textContent.endsWith(g.pista)) b.classList.add('certa'); });
+        D.texto.innerHTML += `<p>${ok ? '🔎 Exato, essa é a pista!' : `A pista principal era: <b>${esc(g.pista)}</b>. As outras coisas aparecem em mensagens normais também.`}</p>`;
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = 'Continuar'; b.addEventListener('click', fechaDialogo); D.op.appendChild(b); b.focus(); salvar();
+      } })));
+      delete D.op.dataset.respondida; return;
+    }
+    dialogo('🕵️', n.nome, `${fim}<p class="muted small">${G.n < GOLPES_DIA ? `Hoje ainda tenho ${GOLPES_DIA - G.n} mensagem(ns) para você investigar.` : 'Por hoje é só. Amanhã tem mais!'} Na vida real, na dúvida: não clique, não pague e pergunte a um adulto de confiança.</p>`,
+      [{ txt: 'Continuar', classe: 'principal', fn: fechaDialogo }]);
   }
   // guia: leva até qualquer vila já aberta
   function guia(n) {
@@ -4188,7 +4245,7 @@
   setTimeout(() => confereEstrelasSite(), 2500);   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
