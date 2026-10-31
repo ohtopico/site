@@ -105,6 +105,7 @@
     
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs"><li><a class="tag code co" href="bncc/ef09co03/" title="EF09CO03 — Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.">EF09CO03</a><span>Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.</span></li></ul>
+    <p class="aprenda-links no-print">📖 Antes de começar, aprenda: <a href="aprenda/ef09co03/">Autômatos: máquinas de estados</a></p>
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
@@ -262,6 +263,7 @@
     ${SURPRESA ? `<p class="muted no-print" style="max-width:760px">Dez questões sorteadas de todas as listas do ${r.anos[0]}º ano. Acertando 70% ou mais, você ganha ${window.MDM ? MDM.PONTOS.surpresa : 25} pontos (uma vez por dia). Amanhã sai uma lista nova. <a href="missoes.html">Voltar para as missões</a></p>` : ''}
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+    ${SURPRESA ? '' : aprendaLinks(L.habs)}
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>

@@ -105,6 +105,7 @@
     
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs"><li><a class="tag code co" href="bncc/ef06co02/" title="EF06CO02 — Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.">EF06CO02</a><span>Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</span></li><li><a class="tag code co" href="bncc/ef06co03/" title="EF06CO03 — Descrever com precisão a solução de um problema, construindo o programa que implementa essa solução.">EF06CO03</a><span>Descrever com precisão a solução de um problema, construindo o programa que implementa essa solução.</span></li></ul>
+    <p class="aprenda-links no-print">📖 Antes de começar, aprenda: <a href="aprenda/ef06co02/">Sequência, repetição e decisão</a> · <a href="aprenda/ef06co03/">Descrever a solução com precisão</a></p>
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
@@ -265,6 +266,7 @@ mostre x</pre></div><ul class="opts"><li><label data-i="0"><input type="radio" n
     ${SURPRESA ? `<p class="muted no-print" style="max-width:760px">Dez questões sorteadas de todas as listas do ${r.anos[0]}º ano. Acertando 70% ou mais, você ganha ${window.MDM ? MDM.PONTOS.surpresa : 25} pontos (uma vez por dia). Amanhã sai uma lista nova. <a href="missoes.html">Voltar para as missões</a></p>` : ''}
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+    ${SURPRESA ? '' : aprendaLinks(L.habs)}
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>

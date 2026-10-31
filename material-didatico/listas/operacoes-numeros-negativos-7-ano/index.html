@@ -105,6 +105,7 @@
     
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs"><li><a class="tag code ma" href="bncc/ef07ma03/" title="EF07MA03 — Comparar e ordenar números inteiros, associá-los a pontos da reta numérica e usá-los em adições e subtrações.">EF07MA03</a><span>Comparar e ordenar números inteiros, associá-los a pontos da reta numérica e usá-los em adições e subtrações.</span></li><li><a class="tag code ma" href="bncc/ef07ma04/" title="EF07MA04 — Resolver e elaborar problemas que envolvam operações com números inteiros.">EF07MA04</a><span>Resolver e elaborar problemas que envolvam operações com números inteiros.</span></li></ul>
+    
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
@@ -262,6 +263,7 @@
     ${SURPRESA ? `<p class="muted no-print" style="max-width:760px">Dez questões sorteadas de todas as listas do ${r.anos[0]}º ano. Acertando 70% ou mais, você ganha ${window.MDM ? MDM.PONTOS.surpresa : 25} pontos (uma vez por dia). Amanhã sai uma lista nova. <a href="missoes.html">Voltar para as missões</a></p>` : ''}
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+    ${SURPRESA ? '' : aprendaLinks(L.habs)}
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>

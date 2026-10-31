@@ -105,6 +105,7 @@
     
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs"><li><a class="tag code ma" href="bncc/ef08ma02/" title="EF08MA02 — Resolver e elaborar problemas usando a relação entre potenciação e radiciação, para representar uma raiz como potência de expoente fracionário.">EF08MA02</a><span>Resolver e elaborar problemas usando a relação entre potenciação e radiciação, para representar uma raiz como potência de expoente fracionário.</span></li><li><a class="tag code ma" href="bncc/ef08ma01/" title="EF08MA01 — Efetuar cálculos com potências de expoentes inteiros e aplicar esse conhecimento na representação de números em notação científica.">EF08MA01</a><span>Efetuar cálculos com potências de expoentes inteiros e aplicar esse conhecimento na representação de números em notação científica.</span></li></ul>
+    
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
@@ -262,6 +263,7 @@
     ${SURPRESA ? `<p class="muted no-print" style="max-width:760px">Dez questões sorteadas de todas as listas do ${r.anos[0]}º ano. Acertando 70% ou mais, você ganha ${window.MDM ? MDM.PONTOS.surpresa : 25} pontos (uma vez por dia). Amanhã sai uma lista nova. <a href="missoes.html">Voltar para as missões</a></p>` : ''}
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+    ${SURPRESA ? '' : aprendaLinks(L.habs)}
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>

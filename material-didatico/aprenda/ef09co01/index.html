@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprenda: Árvores e grafos na programação (EF09CO01)</title>
+<meta name="description" content="Explicação para estudantes (9º ano): Árvores e grafos organizam informações que se ligam umas às outras, e um programa pode percorrê-las para encontrar…">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/aprenda/ef09co01/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/aprenda/ef09co01/">
+<meta property="og:title" content="Aprenda: Árvores e grafos na programação (EF09CO01)">
+<meta property="og:description" content="Explicação para estudantes (9º ano): Árvores e grafos organizam informações que se ligam umas às outras, e um programa pode percorrê-las para encontrar…">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Aprenda: Árvores e grafos na programação">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Aprenda: Árvores e grafos na programação (EF09CO01)","description":"Explicação para estudantes (9º ano): Árvores e grafos organizam informações que se ligam umas às outras, e um programa pode percorrê-las para encontrar…","url":"https://ohtopico.com.br/material-didatico/aprenda/ef09co01/","inLanguage":"pt-BR","image":"https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg","learningResourceType":"Explicação","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"educationalLevel":"9º ano do Ensino Fundamental","audience":{"@type":"EducationalAudience","educationalRole":"student"},"about":{"@type":"DefinedTerm","name":"EF09CO01: Grafos e árvores","description":"Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação.","inDefinedTermSet":"BNCC"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO01","targetDescription":"Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação."}],"teaches":["Árvore","Nó","Folha"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Aprenda","item":"https://ohtopico.com.br/material-didatico/aprenda/"},{"@type":"ListItem","position":4,"name":"Árvores e grafos na programação","item":"https://ohtopico.com.br/material-didatico/aprenda/ef09co01/"}]}
+</script>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 36px; }
+  .passos { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 6px; font-size: 14px; font-weight: 600; }
+  .passos li { padding: 6px 14px; border-radius: 999px; background: var(--pill); }
+  .passos li.agora { background: var(--ink); color: var(--paper); }
+  .ideia { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px 22px; background: var(--accent-soft); font-size: 19px; margin: 18px 0; }
+  .ideia b { display: block; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+  .fig { margin: 22px 0; padding: 18px; border: 1.5px solid var(--ink); border-radius: var(--radius); background: var(--paper-2); }
+  .fig figcaption { font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+  .fluxo ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; counter-reset: p; }
+  .fluxo li { position: relative; flex: 1 1 140px; display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 18px; background: var(--paper); border: 1.5px solid var(--line); font-size: 15px; }
+  .fluxo li + li::before { content: '→'; position: absolute; left: -21px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--accent); }
+  .fluxo .ico { font-size: 28px; line-height: 1; }
+  .fluxo .volta { margin: 10px 0 0; font-weight: 600; color: var(--accent); font-size: 15px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .grupo { background: var(--paper); border: 1.5px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .grupo ul { margin: 8px 0 0; padding-left: 18px; font-size: 15px; }
+  .grupo li + li { margin-top: 4px; }
+  .codigo pre { margin: 0; padding: 14px 16px; border-radius: 14px; background: var(--paper); border: 1.5px solid var(--line); overflow-x: auto; font-size: 15px; line-height: 1.55; }
+  .codigo .com { color: var(--accent); }
+  .rolar { overflow-x: auto; }
+  .tabela table { border-collapse: collapse; width: 100%; background: var(--paper); font-size: 15px; }
+  .tabela th, .tabela td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .tabela thead th { background: var(--pill); }
+  .grafo svg { width: 100%; height: auto; display: block; margin: 0 auto; font-family: var(--body); }
+  .grafo .ares line { stroke: var(--ink-3); stroke-width: 2; }
+  .grafo marker path { fill: var(--ink-3); }
+  .grafo .nos rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .grafo text { fill: var(--ink); font-size: 13px; text-anchor: middle; }
+  .grafo text.rot { fill: var(--accent); font-size: 12px; font-weight: 600; paint-order: stroke; stroke: var(--paper-2); stroke-width: 5px; stroke-linejoin: round; }
+  .exemplo { border-left: 5px solid var(--accent); padding: 4px 0 4px 16px; margin: 18px 0; }
+  dl.pal { display: grid; gap: 8px; margin: 10px 0; }
+  dl.pal div { display: grid; grid-template-columns: minmax(120px, 210px) 1fr; gap: 10px; }
+  dl.pal dt { font-weight: 600; }
+  dl.pal dd { margin: 0; }
+  @media (max-width: 560px) { dl.pal div { grid-template-columns: 1fr; gap: 0; } .fluxo li + li::before { content: '↓'; left: 50%; top: -19px; transform: translateX(-50%); } .fluxo ol { flex-direction: column; gap: 22px; } .fluxo li { flex: 0 0 auto; flex-direction: row; align-items: center; gap: 12px; } }
+  .confira fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .confira legend { font-weight: 600; margin-bottom: 10px; font-size: 18px; }
+  .confira label { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; cursor: pointer; background: var(--paper); }
+  .confira label.certa { border-color: var(--ok); background: var(--ok-soft); }
+  .confira label.errada { border-color: var(--bad); background: var(--bad-soft); }
+  .confira .msg { min-height: 1.4em; font-weight: 600; margin: 10px 0 0; }
+  .nivel { font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
+  .vizinhas { display: flex; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc" data-hab="EF09CO01">
+  <div class="crumbs"><a href="aprenda/#ano-9">← Aprenda · 9º ano</a></div>
+  <span class="eyebrow">📖 Aprenda · Computação · 9º ano · EF09CO01</span>
+  <h1>Árvores e grafos na programação</h1>
+  <ol class="passos" aria-label="Seu caminho nesta habilidade"><li class="agora" aria-current="step">1. Aprenda</li><li>2. Confira</li><li>3. Pratique</li></ol>
+  <p class="nivel" id="nivel" hidden></p>
+  <p class="ideia"><b>A ideia principal</b>Árvores e grafos organizam informações que se ligam umas às outras, e um programa pode percorrê-las para encontrar caminhos e respostas.</p>
+  <p>Uma <b>árvore</b> é um grafo sem ciclos, com uma raiz no topo e ramos que se dividem: pastas do computador, árvore genealógica, tabela de um campeonato.</p>
+  <p>Um programa guarda o grafo como uma lista de vizinhos (“A liga com B e C”) e o <b>percorre</b>: visita um nó, depois seus vizinhos, depois os vizinhos dos vizinhos. É assim que o mapa acha a rota e o jogo de “adivinhe o animal” chega à resposta.</p>
+  <figure class="fig grafo"><div class="rolar"><svg viewBox="-7.5 7 415 206" style="max-width:623px;min-width:332px" role="img" aria-label="Uma árvore de decisão: cada pergunta divide as possibilidades até chegar à resposta."><g class="ares"><line x1="175.0" y1="50.0" x2="125.0" y2="90.0"/><text class="rot" x="150" y="70" dy="-4">sim</text><line x1="225.0" y1="50.0" x2="275.0" y2="90.0"/><text class="rot" x="250" y="70" dy="-4">não</text><line x1="87.5" y1="130.0" x2="62.5" y2="170.0"/><text class="rot" x="75" y="150" dy="-4">sim</text><line x1="112.5" y1="130.0" x2="137.5" y2="170.0"/><text class="rot" x="125" y="150" dy="-4">não</text><line x1="290.0" y1="130.0" x2="270.0" y2="170.0"/><text class="rot" x="280" y="150" dy="-4">sim</text><line x1="312.5" y1="130.0" x2="337.5" y2="170.0"/><text class="rot" x="325" y="150" dy="-4">não</text></g><g class="nos"><rect x="152" y="13" width="96" height="34" rx="12"/><text x="200" y="30" dy="5">Tem penas?</text><rect x="72" y="93" width="56" height="34" rx="12"/><text x="100" y="110" dy="5">Voa?</text><rect x="244.5" y="93" width="111" height="34" rx="12"/><text x="300" y="110" dy="5">Tem listras?</text><rect x="-1.5" y="173" width="103" height="34" rx="12"/><text x="50" y="190" dy="5">🦜 Papagaio</text><rect x="102" y="173" width="96" height="34" rx="12"/><text x="150" y="190" dy="5">🐧 Pinguim</text><rect x="219.5" y="173" width="81" height="34" rx="12"/><text x="260" y="190" dy="5">🦓 Zebra</text><rect x="298.5" y="173" width="103" height="34" rx="12"/><text x="350" y="190" dy="5">🐶 Cachorro</text></g></svg></div><figcaption>Uma árvore de decisão: cada pergunta divide as possibilidades até chegar à resposta.</figcaption></figure>
+  <p class="exemplo"><strong>No dia a dia:</strong> O organograma da escola (direção, coordenação, professores) é uma árvore.</p>
+
+  <h2>Palavras para lembrar</h2>
+  <dl class="pal">
+    <div><dt>Árvore</dt><dd>grafo com raiz e ramos, sem caminhos em círculo.</dd></div>
+    <div><dt>Nó</dt><dd>cada ponto de um grafo ou árvore.</dd></div>
+    <div><dt>Folha</dt><dd>nó da árvore que não tem filhos.</dd></div>
+  </dl>
+
+  <h2 id="confira">Confira se entendeu</h2>
+  <form class="confira panel" id="q" data-certa="1">
+    <fieldset>
+      <legend>Na árvore da figura, quantas perguntas são feitas para chegar ao Pinguim?</legend>
+      <label><input type="radio" name="r" value="0"> <span>1</span></label>
+      <label><input type="radio" name="r" value="1"> <span>2</span></label>
+      <label><input type="radio" name="r" value="2"> <span>3</span></label>
+      <label><input type="radio" name="r" value="3"> <span>4</span></label>
+    </fieldset>
+    <p class="msg" role="status" aria-live="polite"></p>
+    <p class="porque small muted" hidden>“Tem penas?” (sim) e “Voa?” (não): duas perguntas.</p>
+  </form>
+
+  <h2 id="pratique">Agora pratique</h2>
+  <p>Use o que você acabou de ler. Cada atividade conta no seu <a href="meu-progresso.html">progresso</a>: com 80% ou mais você fica proficiente em EF09CO01.</p>
+  <div class="btn-row"><a class="btn" id="praticar" href="listas/grafos-arvores-9-ano/">📝 Praticar agora: Grafos e árvores (9º ano)</a></div>
+  <div class="related" style="margin-top:18px">
+      <a class="card" href="jogos/rotas.html">
+        <span class="small muted">🎮 Jogo · 15 min</span>
+        <strong>Rota Mais Curta</strong>
+        <span class="small muted">Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.</span>
+      </a>
+      <a class="card" href="3d/arvore-viva.html">
+        <span class="small muted">🧊 Recurso 3D · 20 min</span>
+        <strong>Árvore Viva</strong>
+        <span class="small muted">Uma árvore 3D que cresce a cada número ou pasta inserida. A busca desce pelos galhos contando comparações; compare a árvore equilibrada com a torta e descubra o caminho de um arquivo.</span>
+      </a>
+  </div>
+
+  <h2>Outros assuntos do 9º ano</h2>
+  <div class="vizinhas"><a class="tag" href="aprenda/ef09co02/" title="EF09CO02">Projetos computacionais completos</a><a class="tag" href="aprenda/ef09co03/" title="EF09CO03">Autômatos: máquinas de estados</a><a class="tag" href="aprenda/ef09co04/" title="EF09CO04">Malwares e ataques cibernéticos</a><a class="tag" href="aprenda/ef09co05/" title="EF09CO05">Criptografia: mensagens em código</a><a class="tag" href="aprenda/ef09co06/" title="EF09CO06">Tecnologia para resolver problemas da cidade</a><a class="tag" href="aprenda/ef09co07/" title="EF09CO07">Impactos da tecnologia na sociedade</a><a class="tag" href="aprenda/ef09co08/" title="EF09CO08">Desigualdade digital no mundo</a><a class="tag" href="aprenda/ef09co09/" title="EF09CO09">Direitos autorais e uso de imagem</a><a class="tag" href="aprenda/ef09co10/" title="EF09CO10">Checar se uma informação é verdadeira</a></div>
+  <p class="small muted" style="margin-top:32px">Habilidade EF09CO01 da BNCC: Criar soluções que usem árvores e grafos para descrever informações e automatizá-las com uma linguagem de programação. Professor(a): planos, slides e fichas na <a href="bncc/ef09co01/">página da habilidade</a>.</p>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+mdTopbar('aprenda'); mdFooter();
+(function () {
+  var c = document.getElementById('doc').dataset.hab;
+  // nível atual e a atividade que mais ajuda agora (a de menor nota), se o estudante já tem progresso
+  if (window.MDP && MDP.perfil()) {
+    var i = MDP.infoHab(c), el = document.getElementById('nivel');
+    if (i.nivel) { el.textContent = 'Seu nível em ' + c + ': ' + MDP.NIVEIS[i.nivel].nome + (i.best !== undefined ? ' · melhor nota ' + i.best + '%' : ''); el.hidden = false; }
+    var r = MDP.recursoPara(c), b = document.getElementById('praticar');
+    if (r && b && i.nivel) { b.href = recUrl(r); b.textContent = TIPOS[r.tipo].icone + ' Praticar agora: ' + r.titulo; }
+  }
+  var f = document.getElementById('q'), certa = +f.dataset.certa;
+  f.addEventListener('change', function (e) {
+    var v = +e.target.value, ls = f.querySelectorAll('label');
+    ls.forEach(function (l, k) { l.classList.remove('certa', 'errada'); if (k === v) l.classList.add(v === certa ? 'certa' : 'errada'); });
+    f.querySelector('.msg').textContent = v === certa ? '✅ Isso mesmo!' : '❌ Ainda não. Releia a ideia principal e tente outra opção.';
+    f.querySelector('.porque').hidden = v !== certa;
+    if (v === certa) { ls[certa].classList.add('certa'); var p = document.querySelectorAll('.passos li'); p[0].classList.remove('agora'); p[0].removeAttribute('aria-current'); p[1].classList.add('agora'); p[1].setAttribute('aria-current', 'step'); }
+  });
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

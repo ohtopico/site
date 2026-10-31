@@ -220,13 +220,13 @@
       ${missoesResumo()}
       ${tarefasResumo()}
 
-      <div class="btn-row" style="margin-top:18px"><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Listas de exercícios</a><a class="btn ghost" href="teste-do-ano.html?ano=${ano}" title="Duas questões por habilidade: confirme várias de uma vez">🎯 Teste do ${ano}º ano</a></div>
+      <div class="btn-row" style="margin-top:18px"><a class="btn ghost" href="aprenda/">📖 Aprenda</a><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Listas de exercícios</a><a class="btn ghost" href="teste-do-ano.html?ano=${ano}" title="Duas questões por habilidade: confirme várias de uma vez">🎯 Teste do ${ano}º ano</a></div>
 
       <h2>Próximos passos</h2>
-      ${prox.length ? `<div class="next">${prox.map(x => { const r = MDP.recursoPara(x.c, p), h = HAB[x.c]; return `
-        <a class="card" href="${recUrl(r)}">
+      ${prox.length ? `<div class="next">${prox.map(x => { const r = MDP.recursoPara(x.c, p), h = HAB[x.c], ap = !inf[x.c].nivel && aprendaUrl(x.c); return `
+        <a class="card" href="${ap || recUrl(r)}">
           <span class="why">${x.why}</span>
-          <strong style="font-size:18px">${esc(r.titulo)}</strong>
+          <strong style="font-size:18px">${ap ? `📖 Aprenda: ${esc((typeof APRENDA_TITULOS !== 'undefined' && APRENDA_TITULOS[h.codigo]) || h.objeto)}` : esc(r.titulo)}</strong>
           <span class="small muted">${TIPOS[r.tipo].icone} ${TIPOS[r.tipo].nome} · <code>${h.codigo}</code> ${esc(h.objeto)}</span>
           <span>${nv(inf[x.c].nivel)}</span>
         </a>`; }).join('')}</div>` : '<p class="muted">Você está em dia com as habilidades do seu ano. Que tal explorar outro ano no seletor acima?</p>'}
@@ -241,11 +241,11 @@
       </div>
       <div class="legend">${MDP.NIVEIS.map((n, i) => nv(i)).join('')}<span>Familiarizado: 60% ou mais · Proficiente: 80% ou mais · Dominado: repetir 80% ou mais pelo menos 2 dias depois.</span></div>
       <div class="habgrid">${habsMapa.map(h => {
-        const i = inf[h.codigo], r = MDP.recursoPara(h.codigo, p);
+        const i = inf[h.codigo], r = MDP.recursoPara(h.codigo, p), ap = !i.nivel && aprendaUrl(h.codigo);
         const inner = `<span class="top"><code>${h.codigo}</code>${nv(i.nivel)}</span>
           <span class="obj">${esc(h.objeto)}</span>
-          <span class="go">${r ? `${i.best !== undefined ? `Melhor nota: ${i.best}% · ` : ''}${TIPOS[r.tipo].icone} ${i.nivel ? 'praticar' : 'começar'} →` : 'Material em preparação'}</span>`;
-        return r ? `<a class="hab l${i.nivel}" href="${recUrl(r)}" title="${esc(h.texto)}">${inner}</a>` : `<div class="hab l${i.nivel}" title="${esc(h.texto)}">${inner}</div>`;
+          <span class="go">${ap ? '📖 aprender e praticar →' : r ? `${i.best !== undefined ? `Melhor nota: ${i.best}% · ` : ''}${TIPOS[r.tipo].icone} ${i.nivel ? 'praticar' : 'começar'} →` : 'Material em preparação'}</span>`;
+        return ap || r ? `<a class="hab l${i.nivel}" href="${ap || recUrl(r)}" title="${esc(h.texto)}">${inner}</a>` : `<div class="hab l${i.nivel}" title="${esc(h.texto)}">${inner}</div>`;
       }).join('')}</div>
 
       <h2>Medalhas</h2>

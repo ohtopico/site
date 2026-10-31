@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciência de dados: perguntas respondidas com dados</title>
+<meta name="description" content="Explicação para estudantes (Ensino Médio): Ciência de dados é transformar dados brutos em respostas: coletar, limpar, analisar, mostrar e compartilhar…">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/aprenda/em13co12/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/aprenda/em13co12/">
+<meta property="og:title" content="Ciência de dados: perguntas respondidas com dados">
+<meta property="og:description" content="Explicação para estudantes (Ensino Médio): Ciência de dados é transformar dados brutos em respostas: coletar, limpar, analisar, mostrar e compartilhar…">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Aprenda: Ciência de dados: perguntas respondidas com dados">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Ciência de dados: perguntas respondidas com dados","description":"Explicação para estudantes (Ensino Médio): Ciência de dados é transformar dados brutos em respostas: coletar, limpar, analisar, mostrar e compartilhar…","url":"https://ohtopico.com.br/material-didatico/aprenda/em13co12/","inLanguage":"pt-BR","image":"https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg","learningResourceType":"Explicação","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"educationalLevel":"Ensino Médio","audience":{"@type":"EducationalAudience","educationalRole":"student"},"about":{"@type":"DefinedTerm","name":"EM13CO12: Ciência de dados","description":"Produzir, analisar, gerir e compartilhar informações a partir de dados, aplicando princípios de ciência de dados.","inDefinedTermSet":"BNCC"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EM13CO12","targetDescription":"Produzir, analisar, gerir e compartilhar informações a partir de dados, aplicando princípios de ciência de dados."}],"teaches":["Dado bruto","Limpeza de dados","Amostra"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Aprenda","item":"https://ohtopico.com.br/material-didatico/aprenda/"},{"@type":"ListItem","position":4,"name":"Ciência de dados: perguntas respondidas com dados","item":"https://ohtopico.com.br/material-didatico/aprenda/em13co12/"}]}
+</script>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 36px; }
+  .passos { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 6px; font-size: 14px; font-weight: 600; }
+  .passos li { padding: 6px 14px; border-radius: 999px; background: var(--pill); }
+  .passos li.agora { background: var(--ink); color: var(--paper); }
+  .ideia { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px 22px; background: var(--accent-soft); font-size: 19px; margin: 18px 0; }
+  .ideia b { display: block; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+  .fig { margin: 22px 0; padding: 18px; border: 1.5px solid var(--ink); border-radius: var(--radius); background: var(--paper-2); }
+  .fig figcaption { font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+  .fluxo ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; counter-reset: p; }
+  .fluxo li { position: relative; flex: 1 1 140px; display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 18px; background: var(--paper); border: 1.5px solid var(--line); font-size: 15px; }
+  .fluxo li + li::before { content: '→'; position: absolute; left: -21px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--accent); }
+  .fluxo .ico { font-size: 28px; line-height: 1; }
+  .fluxo .volta { margin: 10px 0 0; font-weight: 600; color: var(--accent); font-size: 15px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .grupo { background: var(--paper); border: 1.5px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .grupo ul { margin: 8px 0 0; padding-left: 18px; font-size: 15px; }
+  .grupo li + li { margin-top: 4px; }
+  .codigo pre { margin: 0; padding: 14px 16px; border-radius: 14px; background: var(--paper); border: 1.5px solid var(--line); overflow-x: auto; font-size: 15px; line-height: 1.55; }
+  .codigo .com { color: var(--accent); }
+  .rolar { overflow-x: auto; }
+  .tabela table { border-collapse: collapse; width: 100%; background: var(--paper); font-size: 15px; }
+  .tabela th, .tabela td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .tabela thead th { background: var(--pill); }
+  .grafo svg { width: 100%; height: auto; display: block; margin: 0 auto; font-family: var(--body); }
+  .grafo .ares line { stroke: var(--ink-3); stroke-width: 2; }
+  .grafo marker path { fill: var(--ink-3); }
+  .grafo .nos rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .grafo text { fill: var(--ink); font-size: 13px; text-anchor: middle; }
+  .grafo text.rot { fill: var(--accent); font-size: 12px; font-weight: 600; paint-order: stroke; stroke: var(--paper-2); stroke-width: 5px; stroke-linejoin: round; }
+  .exemplo { border-left: 5px solid var(--accent); padding: 4px 0 4px 16px; margin: 18px 0; }
+  dl.pal { display: grid; gap: 8px; margin: 10px 0; }
+  dl.pal div { display: grid; grid-template-columns: minmax(120px, 210px) 1fr; gap: 10px; }
+  dl.pal dt { font-weight: 600; }
+  dl.pal dd { margin: 0; }
+  @media (max-width: 560px) { dl.pal div { grid-template-columns: 1fr; gap: 0; } .fluxo li + li::before { content: '↓'; left: 50%; top: -19px; transform: translateX(-50%); } .fluxo ol { flex-direction: column; gap: 22px; } .fluxo li { flex: 0 0 auto; flex-direction: row; align-items: center; gap: 12px; } }
+  .confira fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .confira legend { font-weight: 600; margin-bottom: 10px; font-size: 18px; }
+  .confira label { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; cursor: pointer; background: var(--paper); }
+  .confira label.certa { border-color: var(--ok); background: var(--ok-soft); }
+  .confira label.errada { border-color: var(--bad); background: var(--bad-soft); }
+  .confira .msg { min-height: 1.4em; font-weight: 600; margin: 10px 0 0; }
+  .nivel { font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
+  .vizinhas { display: flex; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc" data-hab="EM13CO12">
+  <div class="crumbs"><a href="aprenda/#ano-10">← Aprenda · Ensino Médio</a></div>
+  <span class="eyebrow">📖 Aprenda · Computação · Ensino Médio · EM13CO12</span>
+  <h1>Ciência de dados: perguntas respondidas com dados</h1>
+  <ol class="passos" aria-label="Seu caminho nesta habilidade"><li class="agora" aria-current="step">1. Aprenda</li><li>2. Confira</li><li>3. Pratique</li></ol>
+  <p class="nivel" id="nivel" hidden></p>
+  <p class="ideia"><b>A ideia principal</b>Ciência de dados é transformar dados brutos em respostas: coletar, limpar, analisar, mostrar e compartilhar com responsabilidade.</p>
+  <p>Tudo começa com uma <b>pergunta</b> (“os estudantes dormem o suficiente?”). Depois vem a <b>coleta</b> (um formulário), a <b>limpeza</b> (tirar respostas repetidas ou absurdas), a <b>análise</b> (médias, comparações) e a <b>visualização</b> (gráficos).</p>
+  <p>Na hora de <b>compartilhar</b>, mostre de onde vieram os dados, quantas pessoas responderam e os limites da pesquisa. E proteja a privacidade: nada de nomes ligados a respostas.</p>
+  <figure class="fig fluxo"><ol><li><span class="ico" aria-hidden="true">❓</span><span>Pergunta</span></li><li><span class="ico" aria-hidden="true">📋</span><span>Coleta</span></li><li><span class="ico" aria-hidden="true">🧹</span><span>Limpeza</span></li><li><span class="ico" aria-hidden="true">📈</span><span>Análise e gráfico</span></li><li><span class="ico" aria-hidden="true">📣</span><span>Conclusão com limites</span></li></ol><figcaption>O caminho de um projeto de ciência de dados.</figcaption></figure>
+  <p class="exemplo"><strong>No dia a dia:</strong> A turma pesquisou o tempo de tela de 120 estudantes, descobriu que o 9º ano dorme 1 hora a menos e levou o resultado para a reunião de pais.</p>
+
+  <h2>Palavras para lembrar</h2>
+  <dl class="pal">
+    <div><dt>Dado bruto</dt><dd>dado como foi coletado, sem tratamento.</dd></div>
+    <div><dt>Limpeza de dados</dt><dd>corrigir ou remover dados com problemas.</dd></div>
+    <div><dt>Amostra</dt><dd>o grupo que respondeu a pesquisa.</dd></div>
+  </dl>
+
+  <h2 id="confira">Confira se entendeu</h2>
+  <form class="confira panel" id="q" data-certa="1">
+    <fieldset>
+      <legend>Na pesquisa, alguém respondeu que dorme 30 horas por dia. O que fazer?</legend>
+      <label><input type="radio" name="r" value="0"> <span>Usar na média</span></label>
+      <label><input type="radio" name="r" value="1"> <span>Remover na limpeza de dados, porque é impossível</span></label>
+      <label><input type="radio" name="r" value="2"> <span>Dobrar o valor</span></label>
+      <label><input type="radio" name="r" value="3"> <span>Publicar o nome da pessoa</span></label>
+    </fieldset>
+    <p class="msg" role="status" aria-live="polite"></p>
+    <p class="porque small muted" hidden>Valores impossíveis devem ser tratados na etapa de limpeza.</p>
+  </form>
+
+  <h2 id="pratique">Agora pratique</h2>
+  <p>Use o que você acabou de ler. Cada atividade conta no seu <a href="meu-progresso.html">progresso</a>: com 80% ou mais você fica proficiente em EM13CO12.</p>
+  <div class="btn-row"><a class="btn" id="praticar" href="3d/agrupamento.html">🧊 Praticar agora: Nuvem de Pontos e Agrupamento</a></div>
+  <div class="related" style="margin-top:18px">
+      <a class="card" href="/simuladores/regressao.html">
+        <span class="small muted">🧪 Simulador</span>
+        <strong>Regressão linear</strong>
+        <span class="small muted">Arraste pontos e veja a reta de mínimos quadrados se ajustar, com resíduos, erro quadrático médio, R², previsões e o efeito de um ponto fora da curva.</span>
+      </a>
+      <a class="card" href="/simuladores/estatistica.html">
+        <span class="small muted">🧪 Simulador</span>
+        <strong>Estatística descritiva</strong>
+        <span class="small muted">Cole uma lista de números e veja média, mediana, moda, desvio padrão, quartis, outliers, histograma e boxplot, com o código pandas equivalente.</span>
+      </a>
+  </div>
+
+  <h2>Outros assuntos do Ensino Médio</h2>
+  <div class="vizinhas"><a class="tag" href="aprenda/em13co01/" title="EM13CO01">Reutilizar soluções que já existem</a><a class="tag" href="aprenda/em13co02/" title="EM13CO02">Refinar a solução passo a passo</a><a class="tag" href="aprenda/em13co03/" title="EM13CO03">Quanto custa um algoritmo</a><a class="tag" href="aprenda/em13co04/" title="EM13CO04">Programas que lidam com programas</a><a class="tag" href="aprenda/em13co05/" title="EM13CO05">O que a computação não consegue fazer</a><a class="tag" href="aprenda/em13co06/" title="EM13CO06">Avaliar a qualidade de um software</a><a class="tag" href="aprenda/em13co07/" title="EM13CO07">Redes de computadores em grande escala</a><a class="tag" href="aprenda/em13co08/" title="EM13CO08">Novas tecnologias, novos riscos</a><a class="tag" href="aprenda/em13co09/" title="EM13CO09">Tecnologia e o mundo do trabalho</a><a class="tag" href="aprenda/em13co10/" title="EM13CO10">Inteligência artificial: o que é e o que não é</a><a class="tag" href="aprenda/em13co11/" title="EM13CO11">Modelos e simulações</a><a class="tag" href="aprenda/em13co13/" title="EM13CO13">Tabelas, bancos de dados e gráficos</a><a class="tag" href="aprenda/em13co14/" title="EM13CO14">Confiabilidade da informação digital</a><a class="tag" href="aprenda/em13co15/" title="EM13CO15">Interação entre pessoas e computadores</a><a class="tag" href="aprenda/em13co16/" title="EM13CO16">Robótica: sensores, programação e atuadores</a><a class="tag" href="aprenda/em13co17/" title="EM13CO17">Colaborar on-line com segurança</a><a class="tag" href="aprenda/em13co18/" title="EM13CO18">Planejar e gerenciar projetos</a><a class="tag" href="aprenda/em13co19/" title="EM13CO19">Apresentar e defender ideias com mídias digitais</a><a class="tag" href="aprenda/em13co20/" title="EM13CO20">Publicar on-line com responsabilidade</a><a class="tag" href="aprenda/em13co21/" title="EM13CO21">Explicar ideias complexas com mapas e infográficos</a><a class="tag" href="aprenda/em13co22/" title="EM13CO22">Produzir e publicar multimídia</a><a class="tag" href="aprenda/em13co23/" title="EM13CO23">Comunidades virtuais</a><a class="tag" href="aprenda/em13co24/" title="EM13CO24">Tecnologia, saúde e bem-estar</a><a class="tag" href="aprenda/em13co25/" title="EM13CO25">Conviver on-line com respeito e segurança</a><a class="tag" href="aprenda/em13co26/" title="EM13CO26">Seus direitos no mundo digital</a></div>
+  <p class="small muted" style="margin-top:32px">Habilidade EM13CO12 da BNCC: Produzir, analisar, gerir e compartilhar informações a partir de dados, aplicando princípios de ciência de dados. Professor(a): planos, slides e fichas na <a href="bncc/em13co12/">página da habilidade</a>.</p>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+mdTopbar('aprenda'); mdFooter();
+(function () {
+  var c = document.getElementById('doc').dataset.hab;
+  // nível atual e a atividade que mais ajuda agora (a de menor nota), se o estudante já tem progresso
+  if (window.MDP && MDP.perfil()) {
+    var i = MDP.infoHab(c), el = document.getElementById('nivel');
+    if (i.nivel) { el.textContent = 'Seu nível em ' + c + ': ' + MDP.NIVEIS[i.nivel].nome + (i.best !== undefined ? ' · melhor nota ' + i.best + '%' : ''); el.hidden = false; }
+    var r = MDP.recursoPara(c), b = document.getElementById('praticar');
+    if (r && b && i.nivel) { b.href = recUrl(r); b.textContent = TIPOS[r.tipo].icone + ' Praticar agora: ' + r.titulo; }
+  }
+  var f = document.getElementById('q'), certa = +f.dataset.certa;
+  f.addEventListener('change', function (e) {
+    var v = +e.target.value, ls = f.querySelectorAll('label');
+    ls.forEach(function (l, k) { l.classList.remove('certa', 'errada'); if (k === v) l.classList.add(v === certa ? 'certa' : 'errada'); });
+    f.querySelector('.msg').textContent = v === certa ? '✅ Isso mesmo!' : '❌ Ainda não. Releia a ideia principal e tente outra opção.';
+    f.querySelector('.porque').hidden = v !== certa;
+    if (v === certa) { ls[certa].classList.add('certa'); var p = document.querySelectorAll('.passos li'); p[0].classList.remove('agora'); p[0].removeAttribute('aria-current'); p[1].classList.add('agora'); p[1].setAttribute('aria-current', 'step'); }
+  });
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

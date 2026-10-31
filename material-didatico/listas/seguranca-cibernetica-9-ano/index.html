@@ -105,6 +105,7 @@
     
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs"><li><a class="tag code co" href="bncc/ef09co04/" title="EF09CO04 — Compreender o funcionamento de malwares e outros ataques cibernéticos.">EF09CO04</a><span>Compreender o funcionamento de malwares e outros ataques cibernéticos.</span></li><li><a class="tag code co" href="bncc/ef09co05/" title="EF09CO05 — Analisar técnicas de criptografia para armazenamento e transmissão de dados.">EF09CO05</a><span>Analisar técnicas de criptografia para armazenamento e transmissão de dados.</span></li></ul>
+    <p class="aprenda-links no-print">📖 Antes de começar, aprenda: <a href="aprenda/ef09co04/">Malwares e ataques cibernéticos</a> · <a href="aprenda/ef09co05/">Criptografia: mensagens em código</a></p>
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
@@ -262,6 +263,7 @@
     ${SURPRESA ? `<p class="muted no-print" style="max-width:760px">Dez questões sorteadas de todas as listas do ${r.anos[0]}º ano. Acertando 70% ou mais, você ganha ${window.MDM ? MDM.PONTOS.surpresa : 25} pontos (uma vez por dia). Amanhã sai uma lista nova. <a href="missoes.html">Voltar para as missões</a></p>` : ''}
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+    ${SURPRESA ? '' : aprendaLinks(L.habs)}
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
