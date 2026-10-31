@@ -2948,17 +2948,219 @@
     const compra = (preco, fn, nome) => { if (S.pontos < preco) return aviso(`Faltam ${preco - S.pontos} ⭐ para comprar ${nome}.`); S.pontos -= preco; fn(); SOM.toca('moeda'); hud(); salvar(); aviso(`🛒 Comprou ${nome}!`); lojaComponentes(); };
     if (!ER.kit) return dialogo('🛒', 'Loja de Componentes', `<p>Para começar na robótica, leve o <b>🧰 Kit Iniciante</b> por <b>${KIT_ROBO.preco} ⭐</b>: bateria de 5 V, fios, 2 resistores de 220 Ω, 2 LEDs vermelhos e uma chave liga/desliga.</p><p class="muted small">Você tem ${S.pontos} ⭐. Depois do kit, cada componente novo é vendido separado, para novos experimentos.</p>`,
       [{ txt: `🧰 Comprar o Kit Iniciante (${KIT_ROBO.preco} ⭐)`, classe: 'principal', fn: () => compra(KIT_ROBO.preco, () => { ER.kit = true; for (const [k, n] of Object.entries(KIT_ROBO.itens)) ER.tem[k] = (ER.tem[k] || 0) + n; }, 'o Kit Iniciante') }, fecha]);
-    const venda = Object.keys(COMP).filter(k => COMP[k].preco);
+    const venda = Object.keys(COMP).filter(k => COMP[k].preco), PL = EST_PLACA();
+    if (!PL.kit) return dialogo('🛒', 'Loja de Componentes', `<p>Novidade: o <b>💻 Kit Placa Programável</b> por <b>${KIT_PLACA} ⭐</b>. Vem com uma placa de pinos 2 a 13, protoboard, fios, três LEDs (vermelho, amarelo e verde), um buzzer e resistores. Você liga os fios, escreve o código e vê funcionar na bancada 💻 da oficina.</p><p class="muted small">Você tem ${S.pontos} ⭐.</p>`,
+      [{ txt: `💻 Comprar o Kit Placa (${KIT_PLACA} ⭐)`, classe: 'principal', fn: () => compra(KIT_PLACA, () => { PL.kit = true; }, 'o Kit Placa Programável') }, { txt: '🔌 Ver os componentes avulsos', fn: lojaAvulsa }, fecha]);
+    lojaAvulsa();
+    function lojaAvulsa() {
     dialogo('🛒', 'Loja de Componentes', `<p>Componentes para novos experimentos (você tem ${S.pontos} ⭐):</p><ul class="etapas">${venda.map(k => `<li>${COMP[k].ic} <b>${esc(COMP[k].nome)}</b> · ${COMP[k].preco} ⭐ <span class="muted small">(você tem ${ER.tem[k] || 0})</span></li>`).join('')}</ul>`,
       venda.map(k => ({ txt: `${COMP[k].ic} ${COMP[k].nome.split(' (')[0]} · ${COMP[k].preco} ⭐`, fn: () => compra(COMP[k].preco, () => { ER.tem[k] = (ER.tem[k] || 0) + 1; }, COMP[k].nome) })).concat([fecha]));
+
+    }
+  }
+  /* ---------- placa programável (tipo Arduino): protoboard, fios ligados com cliques e código com pinMode/digitalWrite/delay/tone.
+     O circuito vira redes (colunas da protoboard ligadas por fios); um LED acende quando o pino ligado ao lado comprido (+)
+     está em HIGH e o lado curto (−) chega ao GND passando pelo resistor. Sem resistor, o LED queima (como na bancada). ---------- */
+  const KIT_PLACA = 150;
+  const PINOS_PLACA = ['GND', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
+  const COMP_PLACA = { ledR: ['LED vermelho', '#ff3b3b'], ledY: ['LED amarelo', '#ffd23f'], ledG: ['LED verde', '#3bdc5a'], ledB: ['LED azul', '#4aa3ff'], buzzer: ['Buzzer (campainha)', '#333333'] };
+  const CODIGO_PLACA = 'int led = 13;\n\nvoid setup() {\n  pinMode(led, OUTPUT);\n}\n\nvoid loop() {\n  digitalWrite(led, HIGH);\n  delay(1000);\n  digitalWrite(led, LOW);\n  delay(1000);\n}\n';
+  const EST_PLACA = () => { const ER = EST_ROBO(); return ER.placa || (ER.placa = { kit: false, slots: [{ c: 'ledR', r: true }, { c: 'ledY', r: true }, { c: 'ledG', r: true }], fios: [], codigo: CODIGO_PLACA, feitos: {} }); };
+  const DESAFIOS_PLACA = [
+    { id: 'pisca', nome: 'Pisca-pisca no pino 13', dica: 'Ligue um fio do pino 13 até a coluna da perninha + do LED, e outro do fim do resistor até a linha azul (−); ligue o GND da placa na linha azul. O código de exemplo já pisca o pino 13.', ok: T => T.some(e => e.acesos.some(a => a.pino === '13')) && T.some(e => !e.acesos.some(a => a.pino === '13')) },
+    { id: 'outro', nome: 'Acenda um LED usando outro pino', dica: 'Troque o 13 por outro número no código (por exemplo, int led = 8;) e mude o fio para esse pino.', ok: T => T.some(e => e.acesos.some(a => a.pino !== '13')) },
+    { id: 'semaforo', nome: 'Semáforo: vermelho, amarelo e verde', dica: 'Ligue os três LEDs em três pinos diferentes. No loop, acenda um de cada vez, com delay entre eles.', ok: T => ['ledR', 'ledY', 'ledG'].every(c => T.some(e => e.acesos.length === 1 && e.acesos[0].c === c)) },
+    { id: 'buzzer', nome: 'Faça o buzzer tocar', dica: 'Troque um LED pelo buzzer. Ele não precisa de resistor. Use tone(pino, 440); e depois noTone(pino);', ok: T => T.some(e => e.toca) }
+  ];
+  /* geometria do desenho (SVG 760 × 430) */
+  const GP = { col0: 352, dcol: 21, ncol: 18, yTopo: 70, dy: 18, yTrilho: 210, placaX: 30, placaY: 230, pinoX0: 120, dPino: 17 };
+  const furosPlaca = () => {
+    const F = {};
+    PINOS_PLACA.forEach((p, i) => { F['p' + p] = { x: GP.pinoX0 + i * GP.dPino, y: GP.placaY + 14, rede: p === 'GND' ? 'GND' : 'D' + p, rot: p }; });
+    F.pGND2 = { x: GP.placaX + 70, y: GP.placaY + 176, rede: 'GND', rot: 'GND' }; F.p5V = { x: GP.placaX + 52, y: GP.placaY + 176, rede: '5V', rot: '5V' };
+    for (let c = 0; c < GP.ncol; c++) for (let l = 0; l < 5; l++) F[`c${c}.${l}`] = { x: GP.col0 + c * GP.dcol, y: GP.yTopo + l * GP.dy, rede: 'c' + c };
+    for (let c = 0; c < GP.ncol; c++) F['t' + c] = { x: GP.col0 + c * GP.dcol, y: GP.yTrilho, rede: 'trilho' };
+    return F;
+  };
+  // em cada posição k: perninha + na coluna 1+6k, − na 2+6k; o resistor vai da coluna 2+6k até a 4+6k
+  const colsSlot = k => ({ mais: 1 + 6 * k, menos: 2 + 6 * k, res: 4 + 6 * k });
+  function redesPlaca(PL) {
+    const F = furosPlaca(), pai = {};
+    const acha = a => { while (pai[a] && pai[a] !== a) a = pai[a]; return a; };
+    const une = (a, b) => { a = acha(a); b = acha(b); if (a !== b) pai[a] = b; };
+    for (const [a, b] of PL.fios) if (F[a] && F[b]) une(F[a].rede, F[b].rede);
+    return acha;
+  }
+  /* o código: só um pedacinho de C do Arduino, conferido linha a linha (nada de eval) */
+  function compilaPlaca(txt) {
+    const linhas = txt.replace(/\r/g, '').split('\n'), vars = {}, erros = [];
+    const sem = linhas.map(l => l.replace(/\/\/.*$/, ''));
+    const corpo = nome => { const ini = sem.findIndex(l => new RegExp(`void\\s+${nome}\\s*\\(\\s*\\)`).test(l)); if (ini < 0) return null;
+      let prof = 0, achou = false; const out = [];
+      for (let i = ini; i < sem.length; i++) { let l = sem[i];
+        if (i === ini) { const k = l.indexOf('{'); if (k < 0) { if (sem[i + 1] && sem[i + 1].trim().startsWith('{')) continue; } else { l = l.slice(k + 1); prof = 1; achou = true; } }
+        else if (!achou) { const k = l.indexOf('{'); if (k >= 0) { l = l.slice(k + 1); prof = 1; achou = true; } else continue; }
+        let fim = -1; for (let j = 0; j < l.length; j++) { if (l[j] === '{') prof++; if (l[j] === '}') { prof--; if (!prof) { fim = j; break; } } }
+        out.push([i + 1, fim >= 0 ? l.slice(0, fim) : l]); if (fim >= 0) return out; }
+      erros.push(`Falta fechar a chave } do ${nome}().`); return out; };
+    // variáveis globais: int led = 13;  const int verde = 9;
+    sem.forEach((l, i) => { const m = l.match(/^\s*(?:const\s+)?int\s+([A-Za-z_]\w*)\s*=\s*(-?\d+)\s*;/); if (m) vars[m[1]] = +m[2]; });
+    const val = (s, n) => { s = s.trim(); if (/^-?\d+$/.test(s)) return +s; if (s in vars) return vars[s]; if (s === 'LED_BUILTIN') return 13; erros.push(`Linha ${n}: não sei o que é "${s}". Crie a variável antes, por exemplo: int ${s} = 13;`); return NaN; };
+    const pino = (s, n) => { const v = val(s, n); if (!isNaN(v) && (v < 2 || v > 13)) erros.push(`Linha ${n}: use os pinos de 2 a 13.`); return String(v); };
+    const traduz = (bloco, nome) => {
+      const ops = [];
+      if (!bloco) { erros.push(`Falta a função void ${nome}() { ... }.`); return ops; }
+      for (const [n, l] of bloco) for (let st of l.split(';')) { st = st.trim(); if (!st || st === '}' || st === '{') continue;
+        let m;
+        if ((m = st.match(/^pinMode\s*\(\s*([\w]+)\s*,\s*(OUTPUT|INPUT|INPUT_PULLUP)\s*\)$/))) ops.push({ op: 'modo', p: pino(m[1], n), v: m[2] });
+        else if ((m = st.match(/^digitalWrite\s*\(\s*([\w]+)\s*,\s*(HIGH|LOW|1|0)\s*\)$/))) ops.push({ op: 'escreve', p: pino(m[1], n), v: m[2] === 'HIGH' || m[2] === '1' });
+        else if ((m = st.match(/^delay\s*\(\s*([\w]+)\s*\)$/))) { const v = val(m[1], n); if (v < 0 || v > 60000) erros.push(`Linha ${n}: o delay vai de 0 a 60000 milissegundos.`); ops.push({ op: 'espera', ms: v }); }
+        else if ((m = st.match(/^tone\s*\(\s*([\w]+)\s*,\s*([\w]+)\s*(?:,\s*([\w]+)\s*)?\)$/))) ops.push({ op: 'toca', p: pino(m[1], n), f: val(m[2], n), ms: m[3] ? val(m[3], n) : 0 });
+        else if ((m = st.match(/^noTone\s*\(\s*([\w]+)\s*\)$/))) ops.push({ op: 'cala', p: pino(m[1], n) });
+        else if (/^(?:const\s+)?int\s+[A-Za-z_]\w*\s*=\s*-?\d+$/.test(st)) { const [, a, b] = st.match(/int\s+([A-Za-z_]\w*)\s*=\s*(-?\d+)/); vars[a] = +b; }
+        else erros.push(`Linha ${n}: não entendi "${st.slice(0, 40)}". Esta placa conhece pinMode, digitalWrite, delay, tone e noTone (cada comando termina com ;).`);
+      }
+      return ops;
+    };
+    const setup = traduz(corpo('setup'), 'setup'), loop = traduz(corpo('loop'), 'loop');
+    return { setup, loop, erros: [...new Set(erros)].slice(0, 4) };
+  }
+  /* roda o programa num relógio de mentira e anota cada estado (até `ate` ms) */
+  function linhaDoTempo(P, ate) {
+    const modo = {}, alto = {}, som = {}, T = []; let t = 0, avisos = new Set();
+    const marca = () => T.push({ t, alto: Object.assign({}, alto), modo: Object.assign({}, modo), som: Object.assign({}, som) });
+    const roda = ops => { for (const o of ops) { if (t > ate) return;
+      if (o.op === 'modo') modo[o.p] = o.v;
+      if (o.op === 'escreve') { alto[o.p] = o.v; if (modo[o.p] !== 'OUTPUT') avisos.add(`O pino ${o.p} não foi configurado com pinMode(${o.p}, OUTPUT); no setup: o LED fica apagado.`); marca(); }
+      if (o.op === 'toca') { som[o.p] = o.f; marca(); if (o.ms) { t += o.ms; delete som[o.p]; marca(); } }
+      if (o.op === 'cala') { delete som[o.p]; marca(); }
+      if (o.op === 'espera') t += o.ms; } };
+    marca(); roda(P.setup);
+    const passo = P.loop.reduce((a, o) => a + (o.op === 'espera' ? o.ms : 0) + (o.op === 'toca' ? o.ms : 0), 0);
+    if (!passo && P.loop.some(o => o.op === 'escreve')) avisos.add('O loop não tem delay: ele repete rápido demais para dar para ver. Coloque um delay(500); entre os comandos.');
+    if (passo) while (t <= ate && T.length < 4000) roda(P.loop); else roda(P.loop);
+    return { T, avisos: [...avisos] };
+  }
+  /* o que o circuito faz com os pinos de um instante */
+  function estadoPlaca(PL, e) {
+    const acha = redesPlaca(PL), out = { acesos: [], queimados: [], toca: false, invertidos: 0 };
+    const temGnd = r => acha(r) === acha('GND');
+    const ligado = r => { for (const p of PINOS_PLACA.slice(1)) if (acha('D' + p) === acha(r)) return p; return acha('5V') === acha(r) ? '5V' : null; };
+    const liga = p => p === '5V' || (e && e.modo[p] === 'OUTPUT' && e.alto[p]);
+    PL.slots.forEach((s, k) => { if (!s.c) return; const C = colsSlot(k), mais = 'c' + C.mais, menos = 'c' + C.menos, res = 'c' + C.res;
+      const p = ligado(mais);
+      const terra = temGnd(menos) ? 'direto' : s.r && temGnd(res) ? 'resistor' : null;
+      if (s.c === 'buzzer') { if (p && terra && (liga(p) || (p !== '5V' && e && e.som[p]))) out.toca = true; return; }
+      if (!p) { if (ligado(menos) && (temGnd(mais) || (s.r && temGnd(res)))) out.invertidos++; return; }
+      if (!terra || !liga(p)) return;
+      if (terra === 'direto') out.queimados.push({ k, c: s.c, pino: p }); else out.acesos.push({ k, c: s.c, pino: p });
+    });
+    out.pino13 = !!(e && e.modo['13'] === 'OUTPUT' && e.alto['13']);
+    return out;
+  }
+  function svgPlaca(PL, st, sel) {
+    const F = furosPlaca(), acesoK = new Set(st.acesos.map(a => a.k)), queimK = new Set(st.queimados.map(a => a.k));
+    let s = `<svg class="placa-svg" viewBox="0 0 760 430" role="img" aria-label="Placa programável ligada à protoboard">`;
+    // protoboard
+    s += `<rect x="330" y="40" width="410" height="200" rx="10" fill="#f4f1ea" stroke="#cfc8b8"/>`;
+    s += `<line x1="340" y1="${GP.yTrilho + 12}" x2="730" y2="${GP.yTrilho + 12}" stroke="#2b6cb0" stroke-width="2"/><text x="736" y="${GP.yTrilho + 4}" font-size="14" fill="#2b6cb0">−</text>`;
+    for (let c = 0; c < GP.ncol; c++) s += `<text x="${GP.col0 + c * GP.dcol}" y="58" font-size="9" text-anchor="middle" fill="#9a9488">${c + 1}</text>`;
+    // placa (genérica, no estilo das placas de prototipagem)
+    s += `<rect x="${GP.placaX}" y="${GP.placaY}" width="290" height="190" rx="12" fill="#1f6f8b" stroke="#134a5c" stroke-width="3"/>`;
+    s += `<rect x="${GP.pinoX0 - 12}" y="${GP.placaY + 4}" width="${PINOS_PLACA.length * GP.dPino + 6}" height="20" rx="3" fill="#222"/>`;
+    s += `<rect x="${GP.placaX + 40}" y="${GP.placaY + 166}" width="50" height="20" rx="3" fill="#222"/>`;
+    s += `<rect x="${GP.placaX + 120}" y="${GP.placaY + 80}" width="120" height="34" rx="3" fill="#222"/><text x="${GP.placaX + 180}" y="${GP.placaY + 101}" font-size="11" fill="#ccc" text-anchor="middle">microcontrolador</text>`;
+    s += `<text x="${GP.placaX + 145}" y="${GP.placaY + 145}" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">PLACA OHTOPICO</text><text x="${GP.placaX + 145}" y="${GP.placaY + 160}" font-size="10" fill="#cfe" text-anchor="middle">pinos digitais 2 a 13</text>`;
+    s += `<rect x="${GP.placaX - 14}" y="${GP.placaY + 30}" width="40" height="40" rx="4" fill="#bfc4c9"/><rect x="${GP.placaX - 10}" y="${GP.placaY + 110}" width="34" height="44" rx="4" fill="#333"/>`;
+    s += `<rect x="${GP.pinoX0 + GP.dPino - 5}" y="${GP.placaY + 40}" width="12" height="8" rx="2" fill="${st.pino13 ? '#ffb02e' : '#7a5a2a'}"/><text x="${GP.pinoX0 + GP.dPino + 12}" y="${GP.placaY + 48}" font-size="9" fill="#fff">L</text>`;
+    // componentes nas três posições
+    PL.slots.forEach((sl, k) => { const C = colsSlot(k), xm = GP.col0 + C.mais * GP.dcol, xn = GP.col0 + C.menos * GP.dcol, xr = GP.col0 + C.res * GP.dcol, y = GP.yTopo + 2 * GP.dy;
+      if (sl.r) s += `<line x1="${xn}" y1="${y + 2 * GP.dy}" x2="${xr}" y2="${y + 2 * GP.dy}" stroke="#777" stroke-width="2"/><rect x="${(xn + xr) / 2 - 11}" y="${y + 2 * GP.dy - 5}" width="22" height="10" rx="4" fill="#e3c08a" stroke="#a67c3d"/><rect x="${(xn + xr) / 2 - 6}" y="${y + 2 * GP.dy - 5}" width="3" height="10" fill="#8b2b1a"/><rect x="${(xn + xr) / 2 + 1}" y="${y + 2 * GP.dy - 5}" width="3" height="10" fill="#8b2b1a"/>`;
+      if (!sl.c) return;
+      const [, cor] = COMP_PLACA[sl.c], cx = (xm + xn) / 2;
+      if (sl.c === 'buzzer') s += `<line x1="${xm}" y1="${y}" x2="${xm}" y2="${y - 24}" stroke="#777" stroke-width="2"/><line x1="${xn}" y1="${y}" x2="${xn}" y2="${y - 24}" stroke="#777" stroke-width="2"/><circle cx="${cx}" cy="${y - 36}" r="16" fill="#2a2a2a"/><circle cx="${cx}" cy="${y - 36}" r="4" fill="#555"/>${st.toca ? `<text x="${cx + 22}" y="${y - 44}" font-size="16">🔊</text>` : ''}`;
+      else { const aceso = acesoK.has(k), queim = queimK.has(k);
+        s += `<line x1="${xm}" y1="${y}" x2="${xm}" y2="${y - 26}" stroke="#777" stroke-width="2"/><line x1="${xn}" y1="${y}" x2="${xn}" y2="${y - 22}" stroke="#777" stroke-width="2"/>`;
+        if (aceso) s += `<circle cx="${cx}" cy="${y - 40}" r="22" fill="${cor}" opacity=".35"/>`;
+        s += `<path d="M${cx - 9} ${y - 22} v-18 a9 9 0 0 1 18 0 v18 z" fill="${queim ? '#555' : cor}" opacity="${aceso ? 1 : 0.55}" stroke="#00000055"/>${queim ? `<text x="${cx + 12}" y="${y - 40}" font-size="14">💥</text>` : ''}`;
+        s += `<text x="${xm}" y="${y + 5 * GP.dy - 4}" font-size="11" text-anchor="middle" fill="#c0392b" font-weight="700">+</text><text x="${xn}" y="${y + 5 * GP.dy - 4}" font-size="12" text-anchor="middle" fill="#2b6cb0" font-weight="700">−</text>`; }
+    });
+    // furos
+    for (const [id, f] of Object.entries(F)) { const pin = id.startsWith('p');
+      s += `<circle class="furo${sel === id ? ' sel' : ''}" data-furo="${id}" cx="${f.x}" cy="${f.y}" r="${pin ? 6 : 5}" fill="${pin ? '#444' : '#bdb6a6'}" stroke="${sel === id ? '#ffd23f' : 'none'}" stroke-width="3" tabindex="0" role="button" aria-label="${pin ? 'Pino ' + f.rot : id.startsWith('t') ? 'Linha do negativo, coluna ' + (+id.slice(1) + 1) : 'Protoboard, coluna ' + (+id.slice(1).split('.')[0] + 1)}"><title>${pin ? 'Pino ' + f.rot : id.startsWith('t') ? 'Linha − (GND)' : 'Coluna ' + (+id.slice(1).split('.')[0] + 1)}</title></circle>`;
+      if (pin) s += `<text x="${f.x}" y="${f.y + (id === 'pGND2' || id === 'p5V' ? -10 : 22)}" font-size="9" fill="#fff" text-anchor="middle">${f.rot}</text>`; }
+    // fios
+    const cores = ['#2e9d4a', '#e0564a', '#f6b73c', '#9a6bd6', '#2bb3b1', '#333333'];
+    PL.fios.forEach(([a, b], i) => { const A = F[a], B = F[b]; if (!A || !B) return; const meio = Math.max(A.y, B.y) + 30;
+      const cor = A.rede === 'GND' || B.rede === 'GND' || B.rede === 'trilho' && A.rede === 'trilho' ? '#222' : cores[i % 5];
+      s += `<path class="fio" data-fio="${i}" d="M${A.x} ${A.y} C ${A.x} ${meio}, ${B.x} ${meio}, ${B.x} ${B.y}" fill="none" stroke="${cor}" stroke-width="4" stroke-linecap="round" tabindex="0" role="button" aria-label="Fio ${i + 1}: clique para tirar"><title>Clique para tirar este fio</title></path>`; });
+    return s + '</svg>';
+  }
+  const PL_ = { sel: null, rodando: null, inicio: 0, linha: null, msg: '' };
+  function paraPlaca() { if (PL_.rodando) { clearInterval(PL_.rodando); PL_.rodando = null; } }
+  function janelaPlaca() {
+    const ER = EST_ROBO(), PL = EST_PLACA(), el = $('#placa-conteudo');
+    if (!PL.kit) { el.innerHTML = `<p>Esta é a bancada da <b>placa programável</b>: você liga os fios numa protoboard, escreve o código e vê os LEDs piscarem, como numa placa de robótica de verdade.</p><p>Para usar, leve o <b>💻 Kit Placa Programável</b> por <b>${KIT_PLACA} ⭐</b> na Loja de Componentes${ER.kit ? '' : ' (antes, compre o 🧰 Kit Iniciante)'}.</p>`; return; }
+    const e = PL_.linha ? estadoNoTempo(PL_.linha.T, Date.now() - PL_.inicio) : null, st = estadoPlaca(PL, e);
+    const msg = PL_.msg || (st.queimados.length ? '💥 Um LED queimou: o lado − dele foi direto para o GND, sem passar pelo resistor. Ligue o fio no fim do resistor.' : st.invertidos ? '🔄 Tem LED ao contrário: a perninha + (comprida) vai no pino, e a − vai para o GND pelo resistor.' : PL_.rodando ? (st.acesos.length || st.toca ? '⚡ Funcionando!' : 'Rodando o código…') : 'Ligue os fios e aperte ▶ Rodar.');
+    el.innerHTML = `<div class="placa-grade"><div><div class="placa-rola">${svgPlaca(PL, st, PL_.sel)}</div>
+        <p class="rob-msg" aria-live="polite">${msg}</p>
+        <p class="small muted">Para ligar um fio, clique num furo e depois em outro. Clique num fio para tirar. Os 5 furos de cada coluna da protoboard são ligados entre si. A linha azul (−) é o negativo: ligue nela o GND da placa.</p>
+        <div class="rob-slots">${PL.slots.map((sl, k) => `<label>Posição ${k + 1} (colunas ${colsSlot(k).mais + 1} a ${colsSlot(k).res + 1})<select class="campo" data-pslot="${k}"><option value="">— vazio —</option>${Object.entries(COMP_PLACA).map(([c, [n]]) => `<option value="${c}" ${sl.c === c ? 'selected' : ''}>${n}</option>`).join('')}</select><span><input type="checkbox" data-pres="${k}" ${sl.r ? 'checked' : ''}> com resistor 220 Ω</span></label>`).join('')}</div></div>
+      <div><label for="placa-cod"><b>Código</b> <span class="muted small">(o mesmo jeito de escrever das placas de robótica)</span></label>
+        <textarea id="placa-cod" class="placa-cod" spellcheck="false" rows="14">${esc(PL.codigo)}</textarea>
+        <div class="rob-controles"><button type="button" class="hb verde" id="placa-roda">▶ Rodar</button><button type="button" class="hb cinza" id="placa-para" ${PL_.rodando ? '' : 'disabled'}>■ Parar</button><button type="button" class="hb cinza" id="placa-ex">↺ Código de exemplo</button><button type="button" class="hb cinza" id="placa-limpa">✂️ Tirar todos os fios</button></div>
+        <details class="small"><summary>Comandos que a placa entende</summary><ul><li><code>pinMode(13, OUTPUT);</code> prepara o pino como saída (no setup)</li><li><code>digitalWrite(13, HIGH);</code> liga o pino (5 V) · <code>LOW</code> desliga</li><li><code>delay(1000);</code> espera 1000 milissegundos (1 segundo)</li><li><code>tone(8, 440);</code> toca a nota lá no buzzer · <code>noTone(8);</code> para</li><li><code>int led = 13;</code> guarda um número com um nome</li></ul></details>
+        <h3>🧪 Desafios da placa</h3><ul class="etapas">${DESAFIOS_PLACA.map(x => `<li class="${PL.feitos[x.id] ? 'ok' : ''}">${PL.feitos[x.id] ? '✅' : '⬜'} <b>${x.nome}</b> <span class="muted small">· ${x.dica}</span></li>`).join('')}</ul></div></div>`;
+    const salvaCod = () => { const c = $('#placa-cod'); if (c) PL.codigo = c.value.slice(0, 4000); };
+    el.querySelectorAll('[data-furo]').forEach(f => { const clica = () => { salvaCod(); const id = f.dataset.furo;
+      if (!PL_.sel) PL_.sel = id; else if (PL_.sel === id) PL_.sel = null;
+      else { const a = PL_.sel, b = id; PL_.sel = null; if (!PL.fios.some(([x, y]) => (x === a && y === b) || (x === b && y === a))) { if (PL.fios.length >= 24) aviso('Fios demais na bancada: tire algum antes.'); else { PL.fios.push([a, b]); SOM.toca('coleta'); } } salvar(); }
+      janelaPlaca(); }; f.addEventListener('click', clica); f.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); clica(); } }); });
+    el.querySelectorAll('[data-fio]').forEach(f => { const tira = () => { salvaCod(); PL.fios.splice(+f.dataset.fio, 1); salvar(); janelaPlaca(); }; f.addEventListener('click', tira); f.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === 'Delete') { ev.preventDefault(); tira(); } }); });
+    el.querySelectorAll('[data-pslot]').forEach(s2 => s2.addEventListener('change', () => { salvaCod(); PL.slots[+s2.dataset.pslot].c = s2.value || null; salvar(); janelaPlaca(); }));
+    el.querySelectorAll('[data-pres]').forEach(s2 => s2.addEventListener('change', () => { salvaCod(); PL.slots[+s2.dataset.pres].r = s2.checked; salvar(); janelaPlaca(); }));
+    $('#placa-cod').addEventListener('input', () => { salvaCod(); salvar(); });
+    $('#placa-roda').addEventListener('click', () => { salvaCod(); rodaPlaca(); });
+    $('#placa-para').addEventListener('click', () => { paraPlaca(); PL_.linha = null; PL_.msg = ''; janelaPlaca(); });
+    $('#placa-ex').addEventListener('click', () => { if (confirm('Trocar o seu código pelo exemplo do pisca-pisca?')) { PL.codigo = CODIGO_PLACA; salvar(); janelaPlaca(); } });
+    $('#placa-limpa').addEventListener('click', () => { if (confirm('Tirar todos os fios?')) { PL.fios = []; PL_.sel = null; salvar(); janelaPlaca(); } });
+  }
+  function estadoNoTempo(T, ms) { let e = T[0]; for (const x of T) { if (x.t <= ms) e = x; else break; } return e; }
+  function rodaPlaca() {
+    const PL = EST_PLACA(), P = compilaPlaca(PL.codigo);
+    paraPlaca();
+    if (P.erros.length) { PL_.linha = null; PL_.msg = '⚠️ ' + P.erros.map(esc).join(' '); return janelaPlaca(); }
+    const L = linhaDoTempo(P, 60000); PL_.linha = L; PL_.inicio = Date.now(); PL_.msg = L.avisos.length ? '⚠️ ' + L.avisos.map(esc).join(' ') : '';
+    // os desafios olham os primeiros 12 segundos do programa
+    const amostra = L.T.filter(x => x.t <= 12000).map(x => estadoPlaca(PL, x));
+    for (const x of DESAFIOS_PLACA) if (!PL.feitos[x.id] && !amostra.some(a => a.queimados.length) && x.ok(amostra)) {
+      PL.feitos[x.id] = true; pontos(40, `💻 Desafio da placa: ${x.nome}!`); ganhaHabilidade(['PC', 'MD'], 10); contaResposta(); progressoMundo('placa:' + x.id, true); SOM.toca('vitoria'); salvar();
+    }
+    const fim = L.T[L.T.length - 1].t;
+    let ultimo = -1;
+    PL_.rodando = setInterval(() => {
+      if (janelaAberta !== 'placa') return paraPlaca();
+      const ms = Date.now() - PL_.inicio;
+      if (ms > Math.max(fim, 1000) + 500) { paraPlaca(); PL_.msg = PL_.msg || 'A simulação terminou (ela mostra até 1 minuto). Aperte ▶ Rodar de novo.'; return janelaPlaca(); }
+      const e = estadoNoTempo(L.T, ms); if (e === ultimo) return; ultimo = e;
+      const sc = el => el && el.scrollTop, cod = $('#placa-cod'), foco = document.activeElement === cod, pos = foco ? [cod.selectionStart, cod.selectionEnd, cod.scrollTop] : null, rol = sc($('#j-placa .j-caixa'));
+      janelaPlaca();
+      const c2 = $('#placa-cod'); if (pos && c2) { c2.focus(); c2.setSelectionRange(pos[0], pos[1]); c2.scrollTop = pos[2]; }
+      const cx = $('#j-placa .j-caixa'); if (cx && rol) cx.scrollTop = rol;
+      if (estadoPlaca(PL, e).toca) SOM.toca('coleta');
+    }, 60);
+    janelaPlaca();
   }
   const ROBO_OBJ = [
+    { id: 'placa', x: 0.6, y: 0.6, w: 2, d: 1, ic: '💻', cor: '#1f6f8b', acao: 'programar a placa' },
     { id: 'bancada', x: 3, y: 0.6, w: 3, d: 1, ic: '🤖', cor: '#4bb259', acao: 'usar a bancada de circuitos' },
     { id: 'loja', x: 0.6, y: 2.6, w: 1, d: 2, ic: '🛒', cor: '#f6b73c', acao: 'comprar na Loja de Componentes' },
     { id: 'cartaz', x: 7.4, y: 2.6, w: 1, d: 1, ic: '📜', cor: '#c7b4f2', acao: 'ler o cartaz da lei de Ohm' }
   ];
   function usaRobo(o) {
     if (o.id === 'loja') return lojaComponentes();
+    if (o.id === 'placa') { fechaDialogo(); return abreJanela('placa'); }
     if (o.id === 'cartaz') return dialogo('📜', 'Lei de Ohm', '<p><b>Corrente = Tensão ÷ Resistência</b> (I = V ÷ R).</p><p>A bateria tem 5 V. Cada LED "gasta" uma parte da tensão (vermelho, verde e amarelo uns 2 V; azul uns 3 V). O que sobra empurra a corrente pelo resistor.</p><p>Exemplo: LED vermelho + resistor de 220 Ω → (5 − 2) ÷ 220 = 0,0136 A = <b>13,6 mA</b>. O LED aguenta até 30 mA.</p>', [{ txt: 'Entendi', classe: 'principal', fn: fechaDialogo }]);
     if (!EST_ROBO().kit) return dialogo('🤖', 'Bancada de circuitos', '<p>A bancada ainda está vazia. Compre o <b>🧰 Kit Iniciante</b> na Loja de Componentes (o balcão 🛒 aqui da oficina).</p>', [{ txt: '🛒 Ir à loja', classe: 'principal', fn: lojaComponentes }, { txt: 'Fechar', fn: fechaDialogo }]);
     fechaDialogo(); abreJanela('robotica');
@@ -2990,8 +3192,8 @@
       estilo: { base: '#d9e4e0', telhado: '#4bb259', porta: '#5a6b6b', ic: '🤖', nome: 'Oficina de Robótica' },
       local: () => localSala('robotica', fases[2]), estado: EST_ROBO, objs: () => ROBO_OBJ, livre: (x, y) => livreObjs(SALAS.robotica, x, y), usa: usaRobo, desenha: desenhaRoboSala,
       mini: (c, ox, oy, s) => { for (const o of ROBO_OBJ) { c.fillStyle = o.cor; c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, o.d * s); } },
-      missoes: () => [{ nome: '🧰 Kit Iniciante', n: EST_ROBO().kit ? 1 : 0, meta: 1, ok: EST_ROBO().kit }].concat(EXPERIMENTOS.map(x => ({ nome: '🧪 ' + x.nome, n: EST_ROBO().feitos[x.id] ? 1 : 0, meta: 1, ok: !!EST_ROBO().feitos[x.id] }))),
-      boasVindas: () => dialogo('🤖', 'Oficina de Robótica', `<p>Bem-vindo à oficina! Na <b>bancada</b> você monta circuitos com bateria, LEDs, resistores, motor, campainha e sensores, e vê a corrente passar.</p><p>${EST_ROBO().kit ? 'Você já tem o kit: vá até a bancada. Componentes novos estão no balcão 🛒.' : `Para começar, compre o <b>🧰 Kit Iniciante</b> (${KIT_ROBO.preco} ⭐) no balcão 🛒 da Loja de Componentes.`}</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }])
+      missoes: () => [{ nome: '🧰 Kit Iniciante', n: EST_ROBO().kit ? 1 : 0, meta: 1, ok: EST_ROBO().kit }].concat(EXPERIMENTOS.map(x => ({ nome: '🧪 ' + x.nome, n: EST_ROBO().feitos[x.id] ? 1 : 0, meta: 1, ok: !!EST_ROBO().feitos[x.id] })), { nome: '💻 Desafios da placa', n: Object.keys(EST_PLACA().feitos).length, meta: DESAFIOS_PLACA.length, ok: Object.keys(EST_PLACA().feitos).length >= DESAFIOS_PLACA.length }),
+      boasVindas: () => dialogo('🤖', 'Oficina de Robótica', `<p>Bem-vindo à oficina! Na <b>bancada</b> você monta circuitos com bateria, LEDs, resistores, motor, campainha e sensores, e vê a corrente passar.</p><p>${EST_ROBO().kit ? 'Você já tem o kit: vá até a bancada. Componentes novos estão no balcão 🛒. Na bancada 💻 você programa uma placa: liga os fios e escreve o código.' : `Para começar, compre o <b>🧰 Kit Iniciante</b> (${KIT_ROBO.preco} ⭐) no balcão 🛒 da Loja de Componentes.`}</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }])
     },
     emat: {
       nome: 'Escape da Matemática', ic: '🧮', get sub() { const F = faseEM(); return `Fase ${Math.min(EST_EM().fase, EMAT.length - 1) + 1} de ${EMAT.length}: ${F.ic} ${F.nome} · sem cronômetro`; }, W: 8, D: 6, saida: { x: 4, y: 5.5 }, alturaParede: 2.5,
@@ -4559,7 +4761,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca(); if (id === 'robotica') janelaRobo(); if (id === 'cursos') janelaCursos();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca(); if (id === 'robotica') janelaRobo(); if (id === 'placa') janelaPlaca(); if (id === 'cursos') janelaCursos();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4909,7 +5111,7 @@
     let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); vai(); } else if (++n > 90) clearInterval(t); }, 700);
   }
   linkDireto();
-  window.MUNDO_DEBUG = { eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
