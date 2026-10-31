@@ -522,6 +522,72 @@
       salvar();
     }
   }
+  /* ---------- feira da vila: fabricar com os itens do inventário e vender; o preço segue a oferta e a procura ----------
+     Cada dia sorteia a procura de cada produto (sempre a mesma para o mesmo dia). O preço de cada unidade é
+     base × (0,5 + procura ÷ 12) × procura ÷ (procura + vendidas hoje): procura alta deixa o preço maior, e quanto mais você vende do mesmo produto no dia, mais barato fica. */
+  const FEIRA = [
+    { id: 'sucoMaca', ic: '🧃', nome: 'Suco de maçã', base: 30, receita: { maca: 2 } },
+    { id: 'marcador', ic: '🔖', nome: 'Marcador de livro', base: 25, receita: { livro: 1 } },
+    { id: 'pulseira', ic: '📿', nome: 'Pulseira de estrelas', base: 40, receita: { estrela: 2 } },
+    { id: 'chaveiro', ic: '🗝️', nome: 'Chaveiro', base: 45, receita: { chave: 1, estrela: 1 } },
+    { id: 'broche', ic: '💠', nome: 'Broche de diamante', base: 60, receita: { diamante: 1 } },
+    { id: 'sazonal', ic: '🧺', nome: 'Cesta da estação', base: 50, receita: () => ({ [ESTACAO.item]: 3 }) }
+  ];
+  const NOTICIAS = [['☀️ Dia de calor: todo mundo quer suco!', 'sucoMaca'], ['📚 Semana da leitura na escola!', 'marcador'], ['🎉 Festa no fim de semana: enfeites em alta!', 'pulseira'], ['🏫 Volta às aulas: mochilas pedem chaveiros!', 'chaveiro'], ['💍 Feira de artesanato na praça!', 'broche'], ['🍂 Turistas visitando as vilas!', 'sazonal']];
+  const receitaDe = p => typeof p.receita === 'function' ? p.receita() : p.receita;
+  function diaFeira() {
+    const d = diaHoje(), F = S.feira || (S.feira = { dia: d, vendidas: {}, estoque: {}, ganho: 0, vendas: 0 });
+    if (F.dia !== d) { F.dia = d; F.vendidas = {}; }
+    const r = rng(d * 7919 + 17), procura = {};
+    for (const p of FEIRA) procura[p.id] = 2 + Math.floor(r() * 9);          // de 2 a 10
+    const nt = NOTICIAS[Math.floor(r() * NOTICIAS.length)]; procura[nt[1]] += 6;
+    return { F, procura, noticia: nt[0] };
+  }
+  const precoUnit = (p, procura, vendidas) => Math.max(1, Math.round(p.base * (0.5 + procura / 12) * procura / (procura + vendidas)));
+  function janelaFeira() {
+    const { F, procura, noticia } = diaFeira();
+    const nivel = v => v >= 10 ? '🔥 alta' : v >= 6 ? '🙂 média' : '🧊 baixa';
+    $('#feira-conteudo').innerHTML = `<p class="feira-noticia">${noticia}</p>
+      <p>Fabrique produtos com os itens do inventário e venda na feira. <b>Oferta e procura:</b> cada produto tem uma procura do dia, e procura alta paga mais; quanto mais unidades do mesmo produto você vende hoje, mais o preço cai. Amanhã a procura muda.</p>
+      <p class="small">Vendas: <b>${F.vendas}</b> · ganho total: <b>${F.ganho} ⭐</b></p>
+      <div class="projetos">${FEIRA.map(p => {
+        const rc = receitaDe(p), pode = Object.entries(rc).every(([k, n]) => (S.inv[k] || 0) >= n), est = F.estoque[p.id] || 0, v = F.vendidas[p.id] || 0, pr = precoUnit(p, procura[p.id], v);
+        return `<div class="proj"><h3>${p.ic} ${esc(p.nome)}</h3>
+          <p class="small">Receita: ${Object.entries(rc).map(([k, n]) => `<span class="${(S.inv[k] || 0) >= n ? 'tem' : 'falta'}">${n} ${ITENS[k][0]}</span>`).join(' + ')} · no estoque: <b>${est}</b></p>
+          <p class="small">Procura hoje: ${nivel(procura[p.id])} · vendidas hoje: ${v} · <b>preço agora: ${pr} ⭐</b></p>
+          <table class="em-tab"><tr><th>próxima unidade</th>${[0, 1, 2, 3, 4].map(k => `<th>${v + k + 1}ª</th>`).join('')}</tr><tr><td>preço</td>${[0, 1, 2, 3, 4].map(k => `<td>${precoUnit(p, procura[p.id], v + k)}</td>`).join('')}</tr></table>
+          <div class="btn-row"><button type="button" class="hb azul" data-fab="${p.id}" ${pode ? '' : 'disabled'}>🛠️ Fabricar 1</button><button type="button" class="hb verde" data-vende="${p.id}" ${est ? '' : 'disabled'}>💰 Vender 1</button></div></div>`;
+      }).join('')}</div>
+      <p class="muted small">Dica: venda o produto com procura alta primeiro e guarde no estoque o que está com preço baixo para vender outro dia.</p>`;
+    $('#feira-conteudo').querySelectorAll('[data-fab]').forEach(b => b.addEventListener('click', () => {
+      const p = FEIRA.find(q => q.id === b.dataset.fab), rc = receitaDe(p);
+      if (!Object.entries(rc).every(([k, n]) => (S.inv[k] || 0) >= n)) return;
+      for (const [k, n] of Object.entries(rc)) S.inv[k] -= n;
+      F.estoque[p.id] = (F.estoque[p.id] || 0) + 1; salvar(); aviso(`🛠️ ${p.ic} ${p.nome} fabricado!`); janelaFeira();
+    }));
+    $('#feira-conteudo').querySelectorAll('[data-vende]').forEach(b => b.addEventListener('click', () => vendeFeira(FEIRA.find(q => q.id === b.dataset.vende))));
+  }
+  function vendeFeira(p) {
+    const { F, procura } = diaFeira(), v = F.vendidas[p.id] || 0, pr = precoUnit(p, procura[p.id], v), prox = precoUnit(p, procura[p.id], v + 1);
+    if (!F.estoque[p.id]) return;
+    // para vender, a pessoa calcula: ou o preço da próxima unidade, ou quanto o preço caiu
+    const tipo = Math.floor(Math.random() * 2);
+    const q = tipo === 0 ? { enun: `Esta unidade de ${p.nome.toLowerCase()} sai por <b>${pr} ⭐</b> e a próxima vai sair por <b>${prox} ⭐</b>, porque a oferta aumenta. Se você vender as duas, quanto recebe ao todo?`, certa: pr + prox, erradas: [pr * 2, prox * 2, pr + prox + 5, pr - prox] }
+      : { enun: `Esta unidade sai por <b>${pr} ⭐</b>. Depois de vendê-la, a próxima vai custar <b>${prox} ⭐</b>. Quanto o preço vai cair?`, certa: pr - prox, erradas: [pr + prox, prox, pr - prox + 2, 1] };
+    const alts = [q.certa]; for (const e of q.erradas) if (alts.length < 4 && e >= 0 && !alts.includes(e)) alts.push(e);
+    alts.sort(() => Math.random() - 0.5);
+    fechaJanela();
+    dialogo('💰', `Vender ${p.ic} ${p.nome}`, `<p>${q.enun}</p>`, alts.map(a => ({ txt: `${a} ⭐`, fn: () => {
+      if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
+      const certo = a === q.certa;
+      [...D.op.children].forEach((b, j) => { b.disabled = true; if (alts[j] === q.certa) b.classList.add('certa'); else if (alts[j] === a) b.classList.add('errada'); });
+      if (certo) { F.estoque[p.id]--; F.vendidas[p.id] = v + 1; F.ganho += pr; F.vendas++; pontos(pr, `${p.ic} Vendido na feira!`); ganhaHabilidade(['NU', 'AL'], 8); salvar(); }
+      D.texto.innerHTML += `<p><strong>${certo ? `✅ Venda feita: +${pr} ⭐.` : '❌ A conta não bateu, e o cliente foi embora. Tente de novo.'}</strong></p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = 'Voltar à feira';
+      b.addEventListener('click', () => { fechaDialogo(); abreJanela('feira'); }); D.op.appendChild(b); b.focus();
+    } })));
+    delete D.op.dataset.respondida;
+  }
   function janelaJogos() {
     S.jogosMissao = S.jogosMissao || {};
     $('#jogos-conteudo').innerHTML = `<p>Termine os dois jogos de cada missão para ganhar uma <b>roupa exclusiva</b> para o avatar, +30 ⭐ e uma figurinha. Os jogos abrem em outra aba, e o progresso volta para cá sozinho.</p>
@@ -2651,7 +2717,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2879,7 +2945,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

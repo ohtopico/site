@@ -230,3 +230,5 @@ details.proj summary { cursor: pointer; }
   .toque .dpad { width: 126px; height: 126px; } .toque .acoes { bottom: 104px; gap: 8px; } .toque .acoes button { width: 56px; height: 56px; font-size: 22px; }
   .aviso { top: 60px; left: 50%; max-width: 46vw; font-size: 14px; }
 }
+.feira-noticia { background: #fff3c4; border: 2px solid #e8c547; border-radius: 12px; padding: 6px 10px; font-weight: 600; }
+.proj .tem { color: #2e7d32; font-weight: 600; } .proj .falta { color: #c0392b; }
