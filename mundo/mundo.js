@@ -3685,6 +3685,10 @@
   }
   function teleporta(f) { dentro = false; noEnigma = false; sala = null; colocando = null; fechaJanela(); trocaFase(f.idx); }
   /* mapa do mundo: as vilas em grade, ligadas pelos portões */
+  /* o que cada vila tem: as lojas (à esquerda no mapa) e os prédios especiais (à direita) */
+  const lojasDaVila = f => Object.values(LOJAS).filter(l => l.fase === f.idx).map(l => ({ ic: l.ic, nome: l.nome }));
+  const predios = f => f.idx === 0 ? [{ ic: '🏠', nome: 'Sua casa' }, { ic: '🏛️', nome: 'Museu' }, { ic: '🌀', nome: 'Portal de teletransporte' }, { ic: '🤝', nome: 'Praça dos projetos' }]
+    : f.idx === 1 ? [{ ic: '🏦', nome: 'Banco' }, { ic: '🔐', nome: 'Casa do Enigma' }] : f.id === 'matematica' ? [{ ic: '🧮', nome: 'Escape da Matemática' }, { ic: '🌀', nome: 'Labirinto' }] : [];
   function desenhaMapa() {
     const c = $('#mapa-cv'), k = c.getContext('2d'), x0 = Math.min(...GRADE.map(g => g[0])), cols = Math.max(...GRADE.map(g => g[0])) - x0 + 1;
     const gx = 24, gy = 22, cw = Math.min(200, (c.width - 20 - (cols - 1) * gx) / cols), ch = 120, ox = (c.width - cols * cw - (cols - 1) * gx) / 2 - x0 * (cw + gx), oy = 14;
@@ -3701,12 +3705,15 @@
       k.font = '600 13px Lexend, sans-serif'; k.fillStyle = '#ffffff'; k.fillText(`${f.idx + 1}. ${f.nome}`, cx, y + 14, cw - 12);
       const cor = f.lugares.filter(l => S.feitos[l.id]).length;
       k.font = '12px Lexend, sans-serif'; k.fillText(`${cor}/${f.lugares.length} casas${S.concluidas[f.id] ? ' · 🏆' : ''}`, cx, y + ch - 12);
+      k.font = '17px system-ui, sans-serif';
+      lojasDaVila(f).forEach((l, i) => { k.fillStyle = 'rgba(255,253,246,.9)'; k.beginPath(); k.arc(x + 17, y + 40 + i * 24, 11, 0, Math.PI * 2); k.fill(); k.fillStyle = '#000'; k.fillText(l.ic, x + 17, y + 41 + i * 24); });
+      predios(f).slice(0, 3).forEach((l, i) => { k.fillStyle = 'rgba(255,253,246,.9)'; k.beginPath(); k.arc(x + cw - 17, y + 40 + i * 24, 11, 0, Math.PI * 2); k.fill(); k.fillStyle = '#000'; k.fillText(l.ic, x + cw - 17, y + 41 + i * 24); });
       if (!ok) { k.fillStyle = 'rgba(20,25,35,.6)'; k.beginPath(); k.roundRect(x, y, cw, ch, 16); k.fill(); k.font = '28px system-ui, sans-serif'; k.fillText('🔒', cx, cy); }
       if (f === atual) { k.fillStyle = '#e85c4a'; k.beginPath(); k.arc(x + cw - 16, y + 16, 7, 0, Math.PI * 2); k.fill(); }
     }
     $('#mapa-fases').innerHTML = fases.map(f => {
       const ms = missoes(f), ok = liberada(f), cor = f.lugares.filter(l => S.feitos[l.id]).length;
-      return `<li class="${ok ? '' : 'travada'}"><span>${S.concluidas[f.id] ? '🏆' : ok ? f.icone : '🔒'}</span><span class="f-nome"><strong>Fase ${f.idx + 1}: ${esc(f.nome)}</strong><small>${esc(f.sub)} · ${cor} de ${f.lugares.length} casas coloridas · missões ${ms.filter(m => m.ok).length}/${ms.length}${(hs => hs.length ? ` · BNCC: ${hs.length} habilidade${hs.length > 1 ? 's' : ''}` : '')(uniao(ms.map(m => m.habs)))}</small></span>${ok ? `<button type="button" class="hb azul" data-ir="${f.idx}">Ir</button>` : ''}</li>`;
+      return `<li class="${ok ? '' : 'travada'}"><span>${S.concluidas[f.id] ? '🏆' : ok ? f.icone : '🔒'}</span><span class="f-nome"><strong>Fase ${f.idx + 1}: ${esc(f.nome)}</strong><small>${esc(f.sub)} · ${cor} de ${f.lugares.length} casas coloridas · missões ${ms.filter(m => m.ok).length}/${ms.length}${(hs => hs.length ? ` · BNCC: ${hs.length} habilidade${hs.length > 1 ? 's' : ''}` : '')(uniao(ms.map(m => m.habs)))}${(ls => ls.length ? `<br>${ls.map(l => `${l.ic} ${esc(l.nome)}`).join(' · ')}` : '')(lojasDaVila(f).concat(predios(f)))}</small></span>${ok ? `<button type="button" class="hb azul" data-ir="${f.idx}">Ir</button>` : ''}</li>`;
     }).join('');
     $('#mapa-fases').querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => teleporta(fases[+b.dataset.ir])));
   }
