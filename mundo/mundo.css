@@ -259,3 +259,5 @@ body.letra-grande .hud-topo .stat, body.letra-grande .hb { font-size: 17px; }
 .md-toast-i { font-size: 32px; line-height: 1; }
 .md-toast .small { font-size: 13px; color: #5a6a5c; }
 a.stat { color: inherit; text-decoration: none; }
+.museu-moedas { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.museu-moedas figure { margin: 0; text-align: center; font-size: 13px; max-width: 110px; }

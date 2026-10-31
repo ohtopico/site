@@ -321,6 +321,11 @@
       let px = -1, py = -1;
       busca: for (let dy = 0; dy < 8; dy++) for (const yy of [MEIO + 2 + dy, MEIO - 5 - dy]) for (let xx = 8; xx < 18; xx++) if (livre2(xx, yy)) { px = xx; py = yy; break busca; }
       if (px >= 0) { for (let j = py; j < py + 2; j++) for (let k = px; k < px + 2; k++) f.sol[pos(k, j)] = 1; f.portalTele = { gx: f.x0 + px, x: px, y: py, w: 2, d: 2, porta: { x: f.x0 + px + 1, y: py + 2.7 } }; }
+      // Museu: perto do portal, com 4 × 3 blocos
+      const livre3 = (hx, hy) => { for (let j = hy - 1; j <= hy + 4; j++) for (let k = hx - 1; k <= hx + 4; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama || f.sol[pos(k, j)]) return false; return true; };
+      let mx = -1, my = -1;
+      buscaM: for (let dy = 0; dy < 10; dy++) for (const yy of [MEIO - 6 - dy, MEIO + 2 + dy]) for (let xx = 6; xx < 22; xx++) if (livre3(xx, yy)) { mx = xx; my = yy; break buscaM; }
+      if (mx >= 0) { for (let j = my; j < my + 3; j++) for (let k = mx; k < mx + 4; k++) f.sol[pos(k, j)] = 1; f.salas = [{ id: 'museu', gx: f.x0 + mx, x: mx, y: my, w: 4, d: 3, porta: { x: f.x0 + mx + 2, y: my + 3.7 } }]; }
     }
     // banco na Praça dos Números, do lado de baixo da estrada
     if (f.idx === 1) {
@@ -478,6 +483,7 @@
   }
   const SAIDA = { x: 2.5, y: CD - 0.5 };
   /* custo: itens do inventário; requer: móvel que precisa ter sido construído antes (um objeto libera o outro) */
+  const emojiMovel = (x, y, z, ic) => { const [sx, sy] = iso(x + 0.5, y + 0.5, z + Math.sin(agora / 600 + x) * 0.04); ctx.font = '22px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(ic, sx, sy); };
   const MOVEIS = {
     bancada: { nome: 'Bancada de criação', ic: '🛠️', w: 2, d: 1, inicial: true, fixo: true, acao: 'construir', des: (x, y) => { caixa(x + 0.05, y + 0.1, 0, 1.9, 0.8, 0.75, '#c08a52'); caixa(x + 0.2, y + 0.25, 0.75, 0.45, 0.35, 0.25, '#9aa3ad'); caixa(x + 1.2, y + 0.3, 0.75, 0.55, 0.25, 0.12, '#e0564a'); caixa(x + 1.3, y + 0.35, 0.87, 0.3, 0.15, 0.1, '#ffd58a'); } },
     computador: { nome: 'Computador', ic: '💻', w: 2, d: 1, inicial: true, acao: 'usar o computador', des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 1.8, 0.8, 0.7, '#f3d9a4'); caixa(x + 0.55, y + 0.2, 0.7, 0.9, 0.15, 0.6, '#333333'); naFace('y', x + 0.55, y + 0.2, 0.9, 0.15, 0.07, 0, 0.76, 0.76, 0.48, '#7fd3f7'); caixa(x + 0.55, y + 0.5, 0.7, 0.9, 0.25, 0.04, '#e6e6e6'); } },
@@ -501,6 +507,14 @@
     sofa: { nome: 'Sofá', ic: '🛋️', w: 2, d: 1, loja: true, acao: 'sentar um pouco', des: (x, y) => { caixa(x + 0.08, y + 0.1, 0, 1.84, 0.25, 1.0, '#3f8fe0'); caixa(x + 0.08, y + 0.3, 0, 1.84, 0.6, 0.45, '#6aa9ec'); caixa(x + 0.02, y + 0.3, 0.2, 0.18, 0.6, 0.45, '#3f8fe0'); caixa(x + 1.8, y + 0.3, 0.2, 0.18, 0.6, 0.45, '#3f8fe0'); caixa(x + 0.35, y + 0.18, 0.45, 0.4, 0.15, 0.35, '#ffd58a'); } },
     tv: { nome: 'Televisão', ic: '📺', w: 2, d: 1, loja: true, acao: 'ver um vídeo', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 1.8, 0.7, 0.5, '#a0703f'); caixa(x + 0.3, y + 0.35, 0.5, 1.4, 0.12, 0.85, '#222222'); const k = Math.floor(agora / 600) % 3; naFace('y', x + 0.3, y + 0.35, 1.4, 0.12, 0.08, 0, 1.24, 0.58, 0.7, ['#7fd3f7', '#a8e6b8', '#f7a8c4'][k]); naFace('y', x + 0.3, y + 0.35, 1.4, 0.12, 0.3 + k * 0.2, 0, 0.3, 0.7, 0.25, '#ffffff'); } },
     piano: { nome: 'Piano', ic: '🎹', w: 2, d: 1, loja: true, acao: 'tocar uma música', des: (x, y) => { caixa(x + 0.1, y + 0.05, 0, 1.8, 0.45, 1.3, '#1d1d24'); caixa(x + 0.1, y + 0.5, 0.65, 1.8, 0.35, 0.1, '#1d1d24'); for (let i = 0; i < 9; i++) caixa(x + 0.14 + i * 0.19, y + 0.52, 0.75, 0.17, 0.3, 0.04, '#ffffff', { blocos: false }); for (const i of [0, 1, 3, 4, 5, 7]) caixa(x + 0.27 + i * 0.19, y + 0.52, 0.79, 0.09, 0.16, 0.04, '#111111', { blocos: false, contorno: false }); caixa(x + 0.15, y + 0.6, 0, 0.1, 0.1, 0.65, '#1d1d24'); caixa(x + 1.75, y + 0.6, 0, 0.1, 0.1, 0.65, '#1d1d24'); } },
+    // itens especiais: presentes pelas estrelas secretas achadas no material didático (a contagem não é gasta)
+    estatuaEstrela: { nome: 'Estátua de estrela', ic: '⭐', w: 1, d: 1, estrelas: 1, acao: 'admirar a estrela', des: (x, y) => { caixa(x + 0.25, y + 0.25, 0, 0.5, 0.5, 0.5, '#efe6d2'); emojiMovel(x, y, 1.0, '⭐'); } },
+    globoEstrelas: { nome: 'Globo de estrelas', ic: '🌌', w: 1, d: 1, estrelas: 3, acao: 'girar o globo', des: (x, y) => { caixa(x + 0.3, y + 0.3, 0, 0.4, 0.4, 0.35, '#7a523a'); emojiMovel(x, y, 0.85, '🌌'); } },
+    lanternaEstrela: { nome: 'Lanterna estelar', ic: '🏮', w: 1, d: 1, estrelas: 6, acao: 'acender a lanterna', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 0.9, '#555555', { blocos: false }); emojiMovel(x, y, 1.15, '🏮'); } },
+    mobilePlanetas: { nome: 'Móbile de planetas', ic: '🪐', w: 1, d: 1, estrelas: 10, acao: 'balançar o móbile', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 1.4, '#a0703f', { blocos: false }); emojiMovel(x, y, 1.6, '🪐'); } },
+    quadroCometa: { nome: 'Quadro do cometa', ic: '🌠', w: 1, d: 1, estrelas: 15, acao: 'ver o cometa', des: (x, y) => { caixa(x + 0.15, y + 0.02, 0.9, 0.7, 0.08, 0.7, '#2a2140', { blocos: false }); emojiMovel(x, y, 1.3, '🌠'); } },
+    telescopioOuro: { nome: 'Luneta dourada', ic: '🔭', w: 1, d: 1, estrelas: 20, acao: 'olhar as estrelas', des: (x, y) => { caixa(x + 0.3, y + 0.3, 0, 0.4, 0.4, 0.5, '#d6a432'); emojiMovel(x, y, 1.0, '🔭'); } },
+    coroaEstrelas: { nome: 'Coroa das estrelas', ic: '👑', w: 1, d: 1, estrelas: 30, acao: 'colocar a coroa', des: (x, y) => { caixa(x + 0.2, y + 0.2, 0, 0.6, 0.6, 0.6, '#c0392b'); emojiMovel(x, y, 1.1, '👑'); } },
     // móveis de madeira e pedra (os recursos vêm das árvores e das rochas, com as ferramentas do Mercadinho)
     bancoMadeira: { nome: 'Banco de madeira', ic: '🪑', w: 2, d: 1, custo: { madeira: 4 }, acao: 'descansar', des: (x, y) => { caixa(x + 0.1, y + 0.25, 0.35, 1.8, 0.5, 0.12, '#b07a45'); for (const dx of [0.15, 1.7]) caixa(x + dx, y + 0.3, 0, 0.15, 0.4, 0.35, '#8a5a2f'); } },
     lareira: { nome: 'Lareira de pedra', ic: '🔥', w: 2, d: 1, custo: { pedra: 5, madeira: 2 }, acao: 'acender a lareira', des: (x, y) => { caixa(x + 0.1, y + 0.05, 0, 1.8, 0.6, 1.3, '#9a9a96'); caixa(x + 0.55, y + 0.6, 0, 0.9, 0.06, 0.6, '#3a2a22', { blocos: false }); caixa(x + 0.7, y + 0.55, 0.05, 0.6, 0.06, 0.3, '#f08a24', { blocos: false }); caixa(x + 0.05, y, 1.3, 1.9, 0.7, 0.12, '#7d7d79'); } },
@@ -1266,7 +1280,7 @@
     }
     if (m.id === 'geladeira') return dialogo('🧊', 'Geladeira', `<p>Você tem <strong>${S.inv.maca || 0} 🍎</strong> guardadas.</p><p class="muted">As maçãs são a comida preferida do seu pet: abra o pet com o botão 🐾 ou a tecla P.</p>`, [fecha, ...guardar]);
     if (m.id === 'aquario') return dialogo('🐠', 'Aquário', '<p>Os peixinhos entram na toca um atrás do outro: o primeiro que entra é o primeiro que sai. Isso é uma <strong>fila</strong>, uma estrutura de dados!</p>', [fecha, ...guardar]);
-    dialogo(M.ic, M.nome, `<p>${m.id === 'vaso' || m.id === 'planta' ? 'Você regou a planta. Ela está linda! 🌱' : 'Ficou lindo aqui!'}</p>`, [fecha, ...guardar]);
+    dialogo(M.ic, M.nome, `<p>${M.estrelas ? `✨ Presente pela${M.estrelas > 1 ? 's' : ''} ${M.estrelas} estrela${M.estrelas > 1 ? 's' : ''} secreta${M.estrelas > 1 ? 's' : ''} que você achou no site.` : m.id === 'vaso' || m.id === 'planta' ? 'Você regou a planta. Ela está linda! 🌱' : 'Ficou lindo aqui!'}</p>`, [fecha, ...guardar]);
   }
   /* oficina: construir móveis com os itens */
   const temPlanta = id => !MOVEIS[id].planta || !!S.loja.tem['proj:' + id];
@@ -2492,7 +2506,7 @@
   }
   const naTelaSala = (x, y) => { const [sx, sy] = iso(x, y); return sx > cam.x - 80 && sx < cam.x + W / zoom + 80 && sy > cam.y - 120 && sy < cam.y + HH / zoom + 80; };
 
-  const localSala = id => { const f = faseMat(), c = (f.salas || []).find(c => c.id === id); return c ? { f, x: c.porta.x, y: c.porta.y + 0.4 } : { f, x: 0, y: 0 }; };   // fase ainda não montada: saiSala monta e pergunta de novo
+  const localSala = (id, f = faseMat()) => { const c = (f.salas || []).find(c => c.id === id); return c ? { f, x: c.porta.x, y: c.porta.y + 0.4 } : { f, x: 0, y: 0 }; };   // fase ainda não montada: saiSala monta e pergunta de novo
   /* --- Teletransporte: o resultado do teste de proficiência em informática (guardado neste navegador) escolhe o mundo especial do nível */
   const TP = window.TELEPORTE || { niveis: {}, areas: {}, perguntas: {} };
   const ORDEM_NIVEIS = ['iniciante', 'basico', 'intermediario', 'avancado'];
@@ -2564,8 +2578,97 @@
     boasVindas: () => { const N = TP.niveis[teleNivel], r = resultadoTeste(), fr = r && r.nivel === teleNivel ? (r.estudar || []).filter(k => TP.areas[k]) : [];
       dialogo('🌀', `Mundo ${N.nome}`, `<p>Bem-vindo ao mundo ${N.ic} <b>${N.nome}</b>! Cada estação é uma das 6 áreas do teste, com perguntas deste nível e materiais para estudar.</p>${fr.length ? `<p>As estações com ⭐ foram as áreas com menos acertos no seu teste: ${fr.map(k => TP.areas[k].ic + ' ' + TP.areas[k].nome).join(' e ')}.</p>` : ''}<p class="muted">Complete as 6 estações para ganhar +100 ⭐ e uma figurinha. Depois, refaça o teste!</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }]); }
   };
+  /* --- Museu (Vila do Começo): expõe o que o estudante fez pelo site. As moedas do jogo Cunhe sua Própria Moeda,
+     as estrelas secretas do material didático (que dão itens especiais para a casa, sem gastar a contagem), as medalhas
+     do Meu progresso, os troféus e as figurinhas do Mundo. Só lê o que já está neste navegador. */
+  const lerLocal = k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+  function estrelasSite() {
+    const s = lerLocal('ohtopico-estrelas-v1'), md = lerLocal('md-progresso-v1');
+    if (!s || !s.perfis) return [];
+    const id = md && md.atual && md.perfis && md.perfis[md.atual] ? md.atual : '_', reg = (s.perfis[id] || s.perfis._ || {}).a || {};
+    return Object.keys(reg);
+  }
+  const ESPECIAIS = () => Object.entries(MOVEIS).filter(([, M]) => M.estrelas).sort((a, b) => a[1].estrelas - b[1].estrelas);
+  function confereEstrelasSite(avisa) {
+    const n = estrelasSite().length, novos = [];
+    for (const [id, M] of ESPECIAIS()) if (n >= M.estrelas && !S.casa.feitos[id]) { S.casa.feitos[id] = true; S.casa.guardados[id] = (S.casa.guardados[id] || 0) + 1; novos.push(`${M.ic} ${M.nome}`); }
+    if (novos.length) { salvar(); if (avisa !== false) setTimeout(() => aviso(`🌟 Item especial pelas estrelas secretas: ${novos.join(', ')}. Está guardado na sua casa!`), 900); }
+    return novos;
+  }
+  const moedasCunhadas = () => { const a = lerLocal('cunhe-moeda-album-v1'); return Array.isArray(a) ? a.filter(m => m && Array.isArray(m.pix)).slice(0, 12) : []; };
+  const METAL_MOEDA = { cobre: ['#f6b98c', '#c8743f', '#7a3f1e'], bronze: ['#fde59a', '#d6a432', '#7f5f12'], inox: ['#ffffff', '#c3c8ce', '#6f767f'], bimetal: ['#ffffff', '#c3c8ce', '#6f767f'], aluminio: ['#f4f6f8', '#d5dade', '#8b9198'] };
+  function svgMoedaMuseu(m) {   // versão simples do desenho do jogo: metal, desenho em pixels e o texto da borda
+    const cor = METAL_MOEDA[m.metal] || METAL_MOEDA.bronze, anel = m.metal === 'bimetal' ? METAL_MOEDA.bronze : cor, N = Math.round(Math.sqrt(m.pix.length)) || 15, R = 46, cel = R * 1.04 / N, x0 = -R * 0.52;
+    let o = `<svg viewBox="-50 -50 100 100" width="96" height="96" role="img" aria-label="Moeda ${esc(m.nome || '')}"><circle r="${R}" fill="${anel[1]}" stroke="${anel[2]}" stroke-width="1.5"/>`;
+    if (m.metal === 'bimetal') o += `<circle r="${R * 0.66}" fill="${cor[1]}" stroke="${cor[2]}"/>`;
+    m.pix.forEach((v, i) => { if (v) o += `<rect x="${(x0 + (i % N) * cel).toFixed(2)}" y="${(x0 + Math.floor(i / N) * cel).toFixed(2)}" width="${cel.toFixed(2)}" height="${cel.toFixed(2)}" fill="${cor[2]}" fill-opacity=".8"/>`; });
+    return o + '</svg>';
+  }
+  const MUSEU_OBJ = [
+    { id: 'moedas', x: 0.8, y: 0.6, w: 2, d: 1, ic: '🪙', cor: '#d6a432', acao: 'ver as moedas cunhadas' },
+    { id: 'estrelas', x: 4, y: 0.6, w: 2, d: 1, ic: '🌟', cor: '#f5c400', acao: 'ver as estrelas secretas' },
+    { id: 'medalhas', x: 7.2, y: 0.6, w: 2, d: 1, ic: '🏅', cor: '#e0564a', acao: 'ver as medalhas' },
+    { id: 'trofeus', x: 0.8, y: 4, w: 1, d: 1, ic: '🏆', cor: '#9a6bd6', acao: 'ver os troféus do Mundo' },
+    { id: 'figurinhas', x: 8.2, y: 4, w: 1, d: 1, ic: '📒', cor: '#4bb259', acao: 'ver o álbum de figurinhas' }
+  ];
+  const vitoriasSalas = () => ((S.emat || {}).vitorias || 0) + ((S.labirinto || {}).vitorias || 0);
+  function usaMuseu(o) {
+    const fecha = { txt: 'Fechar', fn: fechaDialogo }, base = '../material-didatico/';
+    if (o.id === 'moedas') {
+      const ms = moedasCunhadas();
+      return dialogo('🪙', 'Moedas cunhadas', ms.length ? `<p>As moedas que você cunhou no jogo <b>Cunhe sua Própria Moeda</b> (as 12 mais novas):</p><div class="museu-moedas">${ms.map(m => `<figure>${svgMoedaMuseu(m)}<figcaption>${esc(m.nome || 'Sem nome')}<br><span class="muted small">${String(m.d).replace('.', ',')} mm${m.ano ? ' · ' + esc(m.ano) : ''}</span></figcaption></figure>`).join('')}</div>`
+        : '<p>A vitrine ainda está vazia. Cunhe uma moeda no jogo <b>Cunhe sua Própria Moeda</b>, neste mesmo navegador, e ela aparece aqui.</p>',
+        [{ txt: '🪙 Cunhar uma moeda', classe: 'principal', href: base + 'jogos/cunhe-moeda.html' }, fecha]);
+    }
+    if (o.id === 'estrelas') {
+      confereEstrelasSite(false);
+      const n = estrelasSite().length, prox = ESPECIAIS().find(([, M]) => n < M.estrelas);
+      return dialogo('🌟', 'Estrelas secretas', `<p>Você já achou <b>${n}</b> estrela${n === 1 ? '' : 's'} secreta${n === 1 ? '' : 's'} escondida${n === 1 ? '' : 's'} pelas páginas do material didático. A contagem nunca zera: os itens especiais são um presente, não uma troca.</p>
+        <ul class="etapas">${ESPECIAIS().map(([id, M]) => `<li class="${n >= M.estrelas ? 'ok' : ''}">${n >= M.estrelas ? M.ic : '🔒'} <b>${esc(M.nome)}</b> <span class="muted small">· ${M.estrelas} estrela${M.estrelas > 1 ? 's' : ''}</span></li>`).join('')}</ul>
+        <p class="muted small">${prox ? `Faltam ${prox[1].estrelas - n} para ${prox[1].ic} ${esc(prox[1].nome)}. ` : 'Você ganhou todos os itens especiais! '}Os itens ganhos ficam guardados na sua casa (botão Casa), para colocar onde quiser.</p>`,
+        [{ txt: '🔎 Procurar estrelas', classe: 'principal', href: base }, fecha]);
+    }
+    if (o.id === 'medalhas') {
+      if (!window.MDP || !MDP.perfil()) return dialogo('🏅', 'Medalhas', '<p>As medalhas do <b>Meu progresso</b> aparecem aqui. Crie o seu perfil (só um apelido, sem cadastro) para começar a ganhar.</p>', [{ txt: '📈 Criar perfil', classe: 'principal', href: base + 'meu-progresso.html' }, fecha]);
+      const md = MDP.medalhas(), tem = md.filter(m => m.tem);
+      return dialogo('🏅', 'Medalhas', `<p><b>${tem.length} de ${md.length}</b> medalhas do Meu progresso. As do Mundo também contam lá.</p><ul class="etapas">${md.map(m => `<li class="${m.tem ? 'ok' : ''}">${m.tem ? m.icone : '🔒'} <b>${esc(m.nome)}</b> <span class="muted small">· ${esc(m.desc)}</span></li>`).join('')}</ul>`, [{ txt: '📈 Meu progresso', classe: 'principal', href: base + 'meu-progresso.html' }, fecha]);
+    }
+    if (o.id === 'trofeus') {
+      const vilas = fases.filter(f => S.concluidas[f.id]), tele = Object.keys((S.tele || {}).premios || {}).filter(k => TP.niveis[k]);
+      return dialogo('🏆', 'Troféus do Mundo', `<ul class="etapas">
+        <li class="${vilas.length ? 'ok' : ''}">🏡 <b>${vilas.length} de ${fases.length}</b> vilas concluídas${vilas.length ? `: ${vilas.map(f => f.icone + ' ' + esc(f.nome)).join(', ')}` : ''}</li>
+        <li class="${(S.emat || {}).vitorias ? 'ok' : ''}">🧮 Escape da Matemática vencido <b>${(S.emat || {}).vitorias || 0}</b> vez(es)</li>
+        <li class="${(S.labirinto || {}).vitorias ? 'ok' : ''}">🌀 Labirinto vencido <b>${(S.labirinto || {}).vitorias || 0}</b> vez(es)</li>
+        <li class="${tele.length ? 'ok' : ''}">🌀 Mundos do teletransporte completos: <b>${tele.length ? tele.map(k => TP.niveis[k].ic + ' ' + TP.niveis[k].nome).join(', ') : 'nenhum ainda'}</b></li>
+        <li class="${S.misterio && S.misterio.resolvido ? 'ok' : ''}">🕵️ Mistério da vila ${S.misterio && S.misterio.resolvido ? 'resolvido' : 'ainda sem solução'}</li></ul>`, [fecha]);
+    }
+    if (o.id === 'figurinhas') {
+      const tem = PESSOAS.filter(p => temFig(p.id)).length;
+      return dialogo('📒', 'Álbum de figurinhas', `<p>Você tem <b>${tem} de ${PESSOAS.length}</b> figurinhas de pessoas importantes da Computação e da Matemática.</p>`, [{ txt: '📒 Abrir o álbum', classe: 'principal', fn: () => { fechaDialogo(); abreJanela('album'); } }, fecha]);
+    }
+  }
+  function desenhaMuseu() {
+    return MUSEU_OBJ.map(o => ({ k: o.x + o.y + o.w / 2 + o.d / 2, d: () => {
+      caixa(o.x + 0.1, o.y + 0.1, 0, o.w - 0.2, o.d - 0.2, 0.55, '#efe6d2'); caixa(o.x + 0.15, o.y + 0.15, 0.55, o.w - 0.3, o.d - 0.3, 0.06, o.cor, { blocos: false });
+      const [sx, sy] = iso(o.x + o.w / 2, o.y + o.d / 2, 1.15 + Math.sin(agora / 600 + o.x) * 0.05);
+      ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(o.ic, sx, sy);
+      if (o.id === 'moedas') moedasCunhadas().slice(0, 3).forEach((m, i) => { const c = METAL_MOEDA[m.metal] || METAL_MOEDA.bronze, [mx, my] = iso(o.x + 0.45 + i * 0.55, o.y + 0.5, 0.63); ctx.fillStyle = c[1]; ctx.strokeStyle = c[2]; ctx.beginPath(); ctx.ellipse(mx, my, 9, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); });
+    } }));
+  }
+  const EST_MUSEU = () => S.museu || (S.museu = {});
   const SALAS = {
     tele: SALA_TELE,
+    museu: {
+      nome: 'Museu', ic: '🏛️', sub: 'O que você fez pelo site', W: 10, D: 7, saida: { x: 5, y: 6.5 }, alturaParede: 2.6,
+      fundo: '#2b2620', base: '#8a6a4a', parede: '#f0dfc0', piso: ['#e8dcc4', '#f5ecd9'],
+      estilo: { base: '#f0dfc0', telhado: '#b0533c', porta: '#7a523a', ic: '🏛️', nome: 'Museu' },
+      local: () => localSala('museu', fases[0]), estado: EST_MUSEU, objs: () => MUSEU_OBJ, livre: (x, y) => livreObjs(SALAS.museu, x, y), usa: usaMuseu, desenha: desenhaMuseu,
+      mini: (c, ox, oy, s) => { for (const o of MUSEU_OBJ) { c.fillStyle = o.cor; c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, o.d * s); } },
+      missoes: () => { const md = window.MDP && MDP.perfil() ? MDP.medalhas() : [];
+        return [['🪙 Moedas cunhadas', moedasCunhadas().length, 12], ['🌟 Estrelas secretas', estrelasSite().length, ESPECIAIS().slice(-1)[0][1].estrelas], ['🏅 Medalhas', md.filter(m => m.tem).length, md.length || MDP.MEDALHAS.length], ['🏡 Vilas concluídas', Object.keys(S.concluidas).length, fases.length], ['📒 Figurinhas', PESSOAS.filter(p => temFig(p.id)).length, PESSOAS.length]]
+          .map(([nome, n, meta]) => ({ nome, n, meta, ok: n >= meta })); },
+      boasVindas: () => { confereEstrelasSite(); dialogo('🏛️', 'Museu', '<p>Bem-vindo ao seu museu! Aqui ficam expostas as coisas que você fez pelo site: as <b>moedas que você cunhou</b>, as <b>estrelas secretas</b> que achou no material didático, as <b>medalhas</b> do Meu progresso, os <b>troféus</b> do Mundo e o seu <b>álbum de figurinhas</b>.</p><p class="muted">Chegue perto de uma vitrine e aperte E. Tudo vem deste navegador: nada é enviado para a internet.</p>', [{ txt: 'Vamos ver!', classe: 'principal', fn: fechaDialogo }]); }
+    },
     emat: {
       nome: 'Escape da Matemática', ic: '🧮', get sub() { const F = faseEM(); return `Fase ${Math.min(EST_EM().fase, EMAT.length - 1) + 1} de ${EMAT.length}: ${F.ic} ${F.nome} · sem cronômetro`; }, W: 8, D: 6, saida: { x: 4, y: 5.5 }, alturaParede: 2.5,
       fundo: '#20302a', base: '#4f7a5f', get parede() { return faseEM().parede; }, get piso() { return faseEM().piso; },
@@ -3876,8 +3979,10 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
+  setTimeout(() => confereEstrelasSite(), 2500);   // estrelas achadas no material didático desde a última visita
+  $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
