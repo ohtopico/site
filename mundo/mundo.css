@@ -162,3 +162,9 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .turma-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 10px 0; }
 .turma-form label { display: grid; gap: 4px; font-weight: 600; font-size: 14px; }
 #tu-codigo { width: 100%; font: 12px ui-monospace, Consolas, monospace; word-break: break-all; resize: vertical; }
+
+/* projetos coletivos */
+.projetos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 12px 0; }
+.proj { border: 2px solid var(--borda); border-radius: 16px; background: #fff; padding: 10px 14px; }
+.proj.pronto { border-color: #4bb259; background: #f1fbf3; }
+.proj h3 { margin: 2px 0 4px; font-size: 16px; } .proj p { margin: 4px 0; }

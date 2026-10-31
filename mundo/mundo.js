@@ -74,6 +74,13 @@
     pet: { fase: 2, nome: 'Pet Shop', ic: '🐾', cor: '#a8d8f7', toldo: '#3f8fe0', texto: 'Petiscos, banho e acessórios para o seu bichinho.' },
     moveis: { fase: 3, nome: 'Loja de Móveis', ic: '🛋️', cor: '#c7b4f2', toldo: '#9a6bd6', texto: 'Móveis prontos para a sua casa, sem precisar da bancada.' }
   };
+  /* projetos coletivos: cada aluno doa a sua parte; quando a turma soma a meta, a professora gera o código de conclusão */
+  const PROJETOS = [
+    { id: 'biblioteca', nome: 'Biblioteca da turma', ic: '📚', cor: '#e07b5a', meta: { livro: 3, estrela: 1 }, texto: 'Um lugar para guardar as dicas e os livros que a turma juntou.' },
+    { id: 'laboratorio', nome: 'Laboratório de computação', ic: '🔬', cor: '#3f8fe0', meta: { diamante: 2, chave: 1 }, texto: 'Computadores e robôs para a turma experimentar.' },
+    { id: 'horta', nome: 'Horta da escola', ic: '🥕', cor: '#4bb259', meta: { maca: 3, estrela: 1 }, texto: 'Uma horta com sensores que regam sozinhos.' },
+    { id: 'observatorio', nome: 'Observatório', ic: '🔭', cor: '#9a6bd6', meta: { diamante: 2, estrela: 2 }, texto: 'Uma cúpula para olhar o céu e medir as estrelas.' }
+  ];
   const ITENS_LOJA = new Set(['petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
   const SORTEIO_ITENS = ['livro', 'diamante', 'estrela', 'livro', 'maca', 'diamante', 'chave', 'peca'];
   const DICAS = [
@@ -197,6 +204,15 @@
       for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
       for (let j = hy + d; j < MEIO - 1; j++) for (const k of [hx + 1, hx + 2]) f.tile[pos(k, j)] = T.caminho;
       f[f.idx === 0 ? 'minhaCasa' : 'enigma'] = { gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
+    }
+    // praça dos projetos coletivos, na Vila do Começo, do lado de baixo da estrada
+    if (f.idx === 0) {
+      const w = 6, d = 5;
+      const cabe = (hx, hy) => { for (let j = hy - 1; j <= hy + d; j++) for (let k = hx - 1; k <= hx + w; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama) return false; return true; };
+      let hx = 3, hy = MEIO + 3;
+      search: for (const yy of [MEIO + 3, MEIO + 4, MEIO + 2, MEIO + 5]) for (const xx of [3, 4, 2, 5, 6]) if (cabe(xx, yy)) { hx = xx; hy = yy; break search; }
+      for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
+      f.projetos = { gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
     }
     // uma loja em cada uma das 4 primeiras vilas, do outro lado da estrada
     const loja = Object.keys(LOJAS).find(k => LOJAS[k].fase === f.idx);
@@ -363,7 +379,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -570,6 +586,31 @@
     if (eventosAtivos.length) { ctx.font = '14px system-ui, sans-serif'; ctx.fillText(eventosAtivos[0].ic, sx + 18, sy - 16); }
     if (perto) rotulo(Lj.nome, sx, sy - 34, '#fff7e8');
   }
+  /* praça dos projetos: quatro lotes; cada um sobe conforme a sua doação e fica pronto com o código da turma */
+  function desenhaProjetos(c, perto) {
+    const x = c.gx, y = c.y, sem = { blocos: false };
+    sombra(x + c.w / 2, y + c.d / 2, 3);
+    caixa(x, y, 0, c.w, c.d, 0.08, '#e6e0d4', sem);
+    const lotes = [[0.25, 0.25], [3.25, 0.25], [0.25, 2.65], [3.25, 2.65]];
+    PROJETOS.forEach((P, i) => {
+      const [ox, oy] = lotes[i], px = x + ox, py = y + oy, pronto = S.projetos.prontos[P.id];
+      if (pronto) {
+        caixa(px + 0.15, py + 0.15, 0.08, 2.2, 1.8, 1.3, P.cor);
+        caixa(px, py, 1.38, 2.5, 2.1, 0.25, escuro(P.cor, 0.3)); caixa(px + 0.5, py + 0.4, 1.63, 1.5, 1.3, 0.25, escuro(P.cor, 0.3));
+        naFace('y', px + 0.15, py + 0.15, 2.2, 1.8, 0.85, 0, 0.5, 0.08, 0.8, '#9a6a3a');
+        for (const a of [0.2, 1.5]) naFace('y', px + 0.15, py + 0.15, 2.2, 1.8, a, 0, 0.5, 0.5, 0.45, '#cfefff');
+      } else {
+        const f = fracProjeto(P), h = 0.15 + 1.1 * f;
+        caixa(px + 0.15, py + 0.15, 0.08, 2.2, 1.8, h, claro(P.cor, 0.25), sem);
+        for (const [a, b] of [[0, 0], [2.4, 0], [0, 2], [2.4, 2]]) caixa(px + a, py + b, 0.08, 0.1, 0.1, 1.7, '#c08a52', sem);
+        caixa(px, py + 2, 1.5, 2.5, 0.1, 0.08, '#c08a52', sem); caixa(px + 2.4, py, 1.5, 0.1, 2.1, 0.08, '#c08a52', sem);
+      }
+      const [sx, sy] = iso(px + 1.25, py + 1.05, pronto ? 2.4 : 2.1);
+      ctx.font = '18px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000';
+      ctx.globalAlpha = pronto ? 1 : 0.75; ctx.fillText(pronto ? P.ic : '🏗️', sx, sy); ctx.globalAlpha = 1;
+    });
+    if (perto) { const [sx, sy] = iso(x + c.w / 2, y + c.d / 2, 3); rotulo('Projetos da turma', sx, sy - 10, '#fff7e8'); }
+  }
   function sombra(x, y, r) { const [sx, sy] = iso(x, y); ctx.fillStyle = 'rgba(40,60,40,.16)'; ctx.beginPath(); ctx.ellipse(sx, sy + 2, r * TW / 2.2, r * TH / 2.2, 0, 0, Math.PI * 2); ctx.fill(); }
   function rotulo(t, sx, sy, cor = '#ffffff', tinta = '#1d2a1f') {
     ctx.font = '600 13px Lexend, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -747,6 +788,7 @@
     if (f.minhaCasa) tenta(f.minhaCasa.porta.x, f.minhaCasa.porta.y, { tipo: 'minhacasa' });
     if (f.enigma) tenta(f.enigma.porta.x, f.enigma.porta.y, { tipo: 'enigma' });
     if (f.loja) tenta(f.loja.porta.x, f.loja.porta.y, { tipo: 'loja' });
+    if (f.projetos) tenta(f.projetos.porta.x, f.projetos.porta.y, { tipo: 'projetos' });
     if (S.pet && !S.pet.dorme) tenta(PET.x, PET.y + 0.3, { tipo: 'pet' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
     tenta(f.placa.x, f.placa.y + 0.8, { tipo: 'placa', fase: f });
@@ -1172,9 +1214,9 @@
     for (const k of Object.keys(x)) if (x[k] > 0) h[k] = Math.round(x[k]);
     return { a: S.turma.nome, t: S.turma.codigo, d: Math.floor(Date.now() / 864e5), p: S.pontos, c: S.acertos, e: S.erros,
       f: Object.keys(S.concluidas).length, j: Object.keys(S.feitos).length, i: Object.values(S.cont).reduce((a, b) => a + b, 0),
-      h, m: Object.keys(S.medalhas).length, am: Object.values(S.amizade).reduce((a, b) => a + Math.floor(b / 10), 0) };
+      h, m: Object.keys(S.medalhas).length, am: Object.values(S.amizade).reduce((a, b) => a + Math.floor(b / 10), 0), pj: S.projetos.doou };
   }
-  const camposTurma = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am];
+  const camposTurma = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]);
   async function codigoTurma() {
     const P = window.MDP && MDP.pacote; if (!P) throw new Error('sem pacote');
     const o = resumoTurma(); o.s = await P.assinatura(JSON.stringify(camposTurma(o)));
@@ -1202,6 +1244,45 @@
       const t = $('#tu-codigo'); t.select();
       try { await navigator.clipboard.writeText(t.value); aviso('📋 Código copiado! Agora é só colar para a professora.'); }
       catch (e) { document.execCommand && document.execCommand('copy'); aviso('📋 Código selecionado: copie e envie.'); }
+    });
+  }
+  /* projetos coletivos: a doação de cada aluno vai no código de progresso; o painel da professora soma a turma */
+  const doado = (P, k) => ((S.projetos.doou[P.id] || {})[k] || 0);
+  const fracProjeto = P => { const ks = Object.keys(P.meta); return ks.reduce((a, k) => a + Math.min(1, doado(P, k) / P.meta[k]), 0) / ks.length; };
+  function doa(P, k) {
+    if (!(S.inv[k] > 0) || doado(P, k) >= P.meta[k] * 2) return;
+    S.inv[k]--; const d = S.projetos.doou[P.id] || (S.projetos.doou[P.id] = {}); d[k] = (d[k] || 0) + 1;
+    if (doado(P, k) === P.meta[k] && fracProjeto(P) >= 1) pontos(15, `${P.ic} Você completou a sua parte do projeto ${P.nome}!`); else aviso(`${ITENS[k][0]} doado para ${P.nome}`);
+    salvar(); janelaProjetos();
+  }
+  async function conclusaoProjeto(code) {
+    const Pk = window.MDP && MDP.pacote;
+    const o = await Pk.desempacotar('MUNT1', code);
+    if (o.s !== await Pk.assinatura(JSON.stringify([o.t, o.pj, o.d]))) throw new Error('assinatura');
+    return o;
+  }
+  function janelaProjetos() {
+    const el = $('#projetos-conteudo'), T = S.turma;
+    el.innerHTML = `<p>A turma constrói junto. Cada pessoa doa a sua parte com os itens que achou na vila; quando a soma da turma chega na meta, a professora gera um <b>código de conclusão</b> e o prédio fica pronto aqui na praça.</p>
+      ${T.codigo ? `<p class="muted small">Sua turma: <b>${esc(T.codigo)}</b>. Depois de doar, gere de novo o código de progresso no 👥 Modo turma e envie para a professora.</p>` : '<p class="muted small">Antes, escreva o seu nome e o código da turma no ☰ Menu → 👥 Modo turma.</p>'}
+      <div class="projetos">${PROJETOS.map(P => { const pronto = S.projetos.prontos[P.id]; return `<div class="proj ${pronto ? 'pronto' : ''}">
+        <h3>${P.ic} ${esc(P.nome)} ${pronto ? '<small>· concluído! 🎉</small>' : ''}</h3><p class="muted small">${esc(P.texto)}</p>
+        ${pronto ? '' : `<div class="barra"><span style="width:${Math.round(100 * fracProjeto(P))}%"></span></div>
+        <p class="small">Sua parte: ${Object.entries(P.meta).map(([k, n]) => `${ITENS[k][0]} ${doado(P, k)}/${n}`).join(' · ')}</p>
+        <div class="btn-row">${Object.keys(P.meta).map(k => `<button type="button" class="hb azul" data-doa="${P.id}:${k}" ${S.inv[k] > 0 && doado(P, k) < P.meta[k] * 2 ? '' : 'disabled'}>Doar ${ITENS[k][0]} (tem ${S.inv[k] || 0})</button>`).join('')}</div>`}
+      </div>`; }).join('')}</div>
+      <div class="av-grupo"><h3>Código de conclusão da turma</h3><input id="pj-cod" class="campo" placeholder="MUNT1…" autocomplete="off" style="width:100%"><div class="btn-row"><button type="button" class="hb verde" id="pj-usar">🏗️ Usar código</button></div></div>
+      <p class="muted small">Pode doar até o dobro da sua parte, para ajudar quem ainda não conseguiu.</p>`;
+    el.querySelectorAll('[data-doa]').forEach(b => b.addEventListener('click', () => { const [id, k] = b.dataset.doa.split(':'); doa(PROJETOS.find(P => P.id === id), k); }));
+    $('#pj-usar').addEventListener('click', async () => {
+      try {
+        const o = await conclusaoProjeto($('#pj-cod').value), P = PROJETOS.find(q => q.id === o.pj);
+        if (!P) throw new Error('projeto');
+        if (T.codigo && o.t !== T.codigo) return aviso(`Este código é da turma ${o.t}, e a sua é ${T.codigo}.`);
+        if (S.projetos.prontos[P.id]) return aviso(`${P.ic} Este projeto já foi concluído.`);
+        S.projetos.prontos[P.id] = true; S.medalhas['projeto-' + P.id] = { ic: P.ic, nome: `${P.nome} (turma ${o.t})` };
+        pontos(40, `${P.ic} Projeto concluído pela turma ${o.t}: ${P.nome}!`); salvar(); janelaProjetos();
+      } catch (e) { aviso('Código de conclusão inválido. Confira se copiou inteiro.'); }
     });
   }
   /* ---------- Casa do Enigma: um escape room sem cronômetro (código binário, Cifra de César e uma chave do inventário) ---------- */
@@ -1663,6 +1744,7 @@
     const alvo = !dialogoAberto && alvoPerto();
     for (const f of visiveisFases()) {
       if (f.enigma) { const c = f.enigma; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4, true) }); }
+      if (f.projetos) { const c = f.projetos; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaProjetos(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       if (f.loja) { const c = f.loja; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaLoja(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       if (f.minhaCasa) { const c = f.minhaCasa; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       for (const c of f.casas) if (naTela(c.gx + 1.5, c.y + 1.5, 220)) lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) });
@@ -1684,7 +1766,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     minimapa(faseDeX(P.x));
@@ -1707,6 +1789,7 @@
     c.fillStyle = '#3f8f4b'; for (const a of f.arvores) c.fillRect(ox + (a.x - f.x0) * s, oy + a.y * s, Math.ceil(s), Math.ceil(s));
     if (f.minhaCasa) { const m = f.minhaCasa; c.fillStyle = S.casa.cor; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (f.enigma) { const m = f.enigma; c.fillStyle = '#9a6bd6'; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
+    if (f.projetos) { const m = f.projetos; c.fillStyle = '#c08a52'; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (f.loja) { const m = f.loja; c.fillStyle = LOJAS[m.id].toldo; c.fillRect(ox + m.x * s, oy + m.y * s, m.w * s, m.d * s); }
     if (comCasas) for (const casa of f.casas) { c.fillStyle = S.feitos[casa.lugar.id] ? casa.cor : '#b9b9b4'; c.fillRect(ox + casa.x * s, oy + casa.y * s, casa.w * s, casa.d * s); }
   }
@@ -1902,13 +1985,13 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2080,6 +2163,7 @@
     const a = alvoPerto();
     if (a && a.tipo === 'pet' && Math.hypot(wx - PET.x, wy - PET.y) < 0.8) return interage();
     if (a && a.tipo === 'enigma') { const c = fases[1].enigma; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
+    if (a && a.tipo === 'projetos') { const c = atual.projetos; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'loja') { const c = atual.loja; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'minhacasa') { const c = fases[0].minhaCasa; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'casa' && wx > a.casa.gx - 0.5 && wx < a.casa.gx + a.casa.w + 0.5 && wy > a.casa.y - 0.5 && wy < a.casa.y + a.casa.d + 0.5) return interage();
@@ -2127,7 +2211,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
