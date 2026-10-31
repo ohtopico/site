@@ -168,3 +168,6 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .proj { border: 2px solid var(--borda); border-radius: 16px; background: #fff; padding: 10px 14px; }
 .proj.pronto { border-color: #4bb259; background: #f1fbf3; }
 .proj h3 { margin: 2px 0 4px; font-size: 16px; } .proj p { margin: 4px 0; }
+
+/* profissões */
+.etapas { list-style: none; padding: 0; margin: 6px 0; } .etapas li { margin: 3px 0; } .etapas li.ok { color: #2e7d32; } .etapas li.agora { font-weight: 600; }
