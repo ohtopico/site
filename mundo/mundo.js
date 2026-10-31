@@ -19,6 +19,18 @@
   /* sorteio fixo: o mundo é sempre igual (os itens mudam a cada semana) */
   function rng(seed) { let s = seed >>> 0 || 1; return () => { s += 0x6D2B79F5; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   const SEMANA = Math.floor((Date.now() / 864e5 + 3) / 7);   // muda toda segunda-feira
+  const HOJE0 = (() => { const m = /[?&]data=(\d{4})-(\d{2})-(\d{2})/.exec(location.search); const d = m ? new Date(+m[1], m[2] - 1, +m[3]) : new Date(); d.setHours(0, 0, 0, 0); return d; })();
+  /* estações do hemisfério sul e o clima do dia (sorteado pela data: igual para todo mundo no mesmo dia) */
+  const ESTACOES = {
+    verao: { nome: 'Verão', ic: '☀️', grama: '#9bdc7c', folhas: ['#4fbf5f', '#6fcf7f', '#7fd36a'], flores: 1, item: 'melancia', climas: { sol: 5, chuva: 3, nublado: 1 }, texto: 'Dias longos e quentes, com chuvas rápidas no fim da tarde. As árvores ficam bem verdes.' },
+    outono: { nome: 'Outono', ic: '🍂', grama: '#b9d98a', folhas: ['#f0a040', '#e5c14a', '#d9663a'], flores: 0.5, item: 'folha', climas: { sol: 3, nublado: 3, vento: 3, chuva: 1 }, texto: 'As folhas ficam laranjas e caem com o vento. Há menos flores pela vila.' },
+    inverno: { nome: 'Inverno', ic: '❄️', grama: '#b7d8a8', folhas: ['#5f9f7a', '#7fae8f', '#c9d8d0'], flores: 0.25, item: 'pinhao', climas: { sol: 3, nublado: 2, neblina: 3, chuva: 1 }, texto: 'Manhãs frias com neblina. Época de pinhão e de agasalho!' },
+    primavera: { nome: 'Primavera', ic: '🌸', grama: '#a6e08f', folhas: ['#6fcf7f', '#8fdc78', '#f5a9c8'], flores: 1.4, item: 'flor', climas: { sol: 4, nublado: 2, chuva: 2, vento: 1 }, texto: 'As cerejeiras florescem e o chão se enche de flores.' }
+  };
+  const CLIMAS = { sol: ['☀️', 'Sol', 'O pet fica mais alegre.'], nublado: ['⛅', 'Nublado', 'Nuvens passando pela vila.'], chuva: ['🌧️', 'Chuva', 'O pet se suja mais rápido: banho nele!'], vento: ['🌬️', 'Vento', 'Folhas voando pela vila.'], neblina: ['🌫️', 'Neblina', 'Fica difícil enxergar longe.'] };
+  const EST_ID = ['verao', 'verao', 'outono', 'outono', 'outono', 'inverno', 'inverno', 'inverno', 'primavera', 'primavera', 'primavera', 'verao'][HOJE0.getMonth()];
+  const ESTACAO = Object.assign({ id: EST_ID, chave: `${EST_ID}-${HOJE0.getFullYear() - (EST_ID === 'verao' && HOJE0.getMonth() < 2 ? 1 : 0)}` }, ESTACOES[EST_ID]);
+  const CLIMA = (() => { const r = rng(Math.round(HOJE0 / 864e5) * 97 + 13)(), tot = Object.values(ESTACAO.climas).reduce((a, b) => a + b, 0); let acc = 0; for (const [k, w] of Object.entries(ESTACAO.climas)) { acc += w / tot; if (r < acc) return Object.assign({ id: k }, { ic: CLIMAS[k][0], nome: CLIMAS[k][1], efeito: CLIMAS[k][2] }); } return { id: 'sol', ic: '☀️', nome: 'Sol', efeito: CLIMAS.sol[2] }; })();
 
   /* ---------- conteúdo ---------- */
   const jogaveis = REC_.filter(r => (r.tipo === 'jogo' || r.tipo === '3d') && r.url);
@@ -119,7 +131,8 @@
     { id: 'horta', nome: 'Horta da escola', ic: '🥕', cor: '#4bb259', meta: { maca: 3, estrela: 1 }, texto: 'Uma horta com sensores que regam sozinhos.' },
     { id: 'observatorio', nome: 'Observatório', ic: '🔭', cor: '#9a6bd6', meta: { diamante: 2, estrela: 2 }, texto: 'Uma cúpula para olhar o céu e medir as estrelas.' }
   ];
-  const ITENS_LOJA = new Set(['petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
+  Object.assign(ITENS, { flor: ['🌸', 'Flor de primavera'], melancia: ['🍉', 'Melancia de verão'], folha: ['🍁', 'Folha de outono'], pinhao: ['🌰', 'Pinhão de inverno'] });
+  const ITENS_LOJA = new Set(['flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
   const SORTEIO_ITENS = ['livro', 'diamante', 'estrela', 'livro', 'maca', 'diamante', 'chave', 'peca'];
   const DICAS = [
     'O computador guarda tudo em <strong>binário</strong>: só 0 e 1. Com 8 bits (um byte) dá para escrever 256 números diferentes, de 0 a 255.',
@@ -343,7 +356,7 @@
     for (let k = 0; k < L * ALT * 0.05; k++) { const x = Math.floor(r() * L), y = Math.floor(r() * ALT); if (!pertoDeCoisa(x, y)) arvore(x, y); }
     // flores e enfeites (só desenho, não bloqueiam)
     f.flores = [];
-    for (let k = 0; k < L * ALT * 0.06; k++) { const x = r() * L, y = r() * ALT; const t = f.tile[pos(Math.floor(x), Math.floor(y))]; if (t === T.grama && !f.sol[pos(Math.floor(x), Math.floor(y))]) f.flores.push({ x: f.x0 + x, y, c: ['#ff9fb6', '#fff27a', '#ffffff', '#c7a6ff', '#ffb36b'][k % 5] }); }
+    for (let k = 0; k < L * ALT * 0.06 * ESTACAO.flores; k++) { const x = r() * L, y = r() * ALT; const t = f.tile[pos(Math.floor(x), Math.floor(y))]; if (t === T.grama && !f.sol[pos(Math.floor(x), Math.floor(y))]) f.flores.push({ x: f.x0 + x, y, c: ['#ff9fb6', '#fff27a', '#ffffff', '#c7a6ff', '#ffb36b'][k % 5] }); }
     // placa perto da praça
     f.placa = { x: f.x0 + MEIO + 3.5, y: MEIO + 1.8 };
     f.sol[pos(MEIO + 3, MEIO + 1)] = 1;
@@ -360,6 +373,12 @@
       if (f.sol[pos(x, y)] || t === T.agua || f.itens.some(o => Math.hypot(o.x - f.x0 - x, o.y - y) < 4)) continue;
       const tipo = SORTEIO_ITENS[(f.itens.length + f.idx) % SORTEIO_ITENS.length];
       f.itens.push({ id: `${f.id}-s${SEMANA}-${f.itens.length}`, x: f.x0 + x + 0.5, y: y + 0.5, tipo });
+    }
+    // dois itens da estação em cada vila
+    for (let k = 0, t2 = 0; k < 2 && t2++ < 300;) {
+      const x = Math.floor(ri() * L), y = Math.floor(ri() * ALT), t = f.tile[pos(x, y)];
+      if (f.sol[pos(x, y)] || t === T.agua || f.itens.some(o => Math.hypot(o.x - f.x0 - x, o.y - y) < 4)) continue;
+      f.itens.push({ id: `${f.id}-s${SEMANA}-${ESTACAO.id}${k}`, x: f.x0 + x + 0.5, y: y + 0.5, tipo: ESTACAO.item, estacao: true }); k++;
     }
     f.evItens = eventosProntos ? itensEvento(f) : [];
   }
@@ -426,7 +445,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, oficina: {}, banco: { poup: 0, dia: 0, mesada: 0, meta: null, extrato: [] }, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, oficina: {}, banco: { poup: 0, dia: 0, mesada: 0, meta: null, extrato: [] }, estacoes: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -519,7 +538,7 @@
     g.strokeStyle = 'rgba(0,0,0,.05)'; g.lineWidth = 1; g.beginPath(); g.moveTo(TW / 2, 0.5); g.lineTo(TW - 0.5, TH / 2); g.lineTo(TW / 2, TH - 0.5); g.lineTo(0.5, TH / 2); g.closePath(); g.stroke();
     return (texCache[k] = c);
   }
-  const COR_CHAO = { [T.grama]: '#a6e08f', [T.praca]: '#fdf1c7', [T.agua]: '#8fd8ea', [T.areia]: '#f8e7b5' };
+  const COR_CHAO = { [T.grama]: ESTACAO.grama, [T.praca]: '#fdf1c7', [T.agua]: '#8fd8ea', [T.areia]: '#f8e7b5' };
 
   /* caixa isométrica: (x, y) canto de trás, w × d de base, de z0 até z0 + h; faces com linhas de blocos */
   function caixa(x, y, z0, w, d, h, cor, op = {}) {
@@ -686,7 +705,7 @@
   function desenhaArvore(a) {
     sombra(a.x + 0.5, a.y + 0.5, 0.8);
     caixa(a.x + 0.38, a.y + 0.38, 0, 0.24, 0.24, 1, '#a0703f', { blocos: false });
-    const folha = ['#6fcf7f', '#8fdc78', '#f5a9c8'][a.tipo];   // uma em cada três é uma cerejeira rosa
+    const folha = ESTACAO.folhas[a.tipo];   // as cores mudam com a estação (na primavera, uma em cada três é uma cerejeira rosa)
     caixa(a.x + 0.05, a.y + 0.05, 1, 0.9, 0.9, 0.8, folha);
     if (a.alt > 1) caixa(a.x + 0.22, a.y + 0.22, 1.8, 0.56, 0.56, 0.5, claro(folha, 0.08));
     if (DECOR.has('luzes') && !leve) luzinhas(a.x + 0.5, a.y + 0.5, 1.1, 1.8, 0.5);
@@ -1002,7 +1021,7 @@
     p.t = agoraMs;
     for (const [k, , , cai] of NECESSIDADES) {
       if (k === 'energia' && p.dorme) p.energia = Math.min(100, p.energia + 30 * h);
-      else p[k] = Math.max(0, p[k] - cai * h * (p.dorme ? 0.5 : 1));
+      else p[k] = Math.max(0, p[k] - cai * h * (p.dorme ? 0.5 : 1) * (CLIMA.id === 'chuva' && k === 'limpeza' ? 1.5 : CLIMA.id === 'sol' && k === 'alegria' ? 0.8 : 1));
     }
     if (p.dorme && p.energia >= 100) { p.dorme = false; aviso(`☀️ ${p.nome} acordou cheio de energia!`); }
   }
@@ -1154,7 +1173,7 @@
   /* ---------- lojas: as ⭐ compram coisas, mas só depois de acertar a conta ----------
      À vista tem 10% de desconto; parcelado tem 5% de juros por parcela. A primeira parcela é paga na hora
      e as outras, uma por dia. Nunca dá para gastar mais do que o saldo + o crédito que ainda sobra. */
-  const COMIDA = { petisco: [25, 15], suco: [15, 10], sanduiche: [40, 5], bolo: [30, 25], panetone: [35, 30], uvas: [20, 30], picole: [15, 35], ovoChoc: [25, 35], pipoca: [20, 30], pirulito: [10, 40], cupcake: [25, 30], docinho: [20, 35] };   // [fome, alegria] para o pet
+  const COMIDA = { melancia: [20, 25], pinhao: [25, 15], petisco: [25, 15], suco: [15, 10], sanduiche: [40, 5], bolo: [30, 25], panetone: [35, 30], uvas: [20, 30], picole: [15, 35], ovoChoc: [25, 35], pipoca: [20, 30], pirulito: [10, 40], cupcake: [25, 30], docinho: [20, 35] };   // [fome, alegria] para o pet
   const EXCLUSIVOS = {
     natal: [['gorro', '🎅', 'Gorro de Papai Noel'], ['panetone']], anonovo: [['cartola', '🎩', 'Cartola de Ano Novo'], ['uvas']],
     carnaval: [['mascara', '🎭', 'Máscara de Carnaval'], ['picole']], pascoa: [['orelhas', '🐰', 'Orelhas de coelho'], ['ovoChoc']],
@@ -1820,7 +1839,7 @@
   function encaixaPeca() { if (!(S.inv.peca > 0) || S.quebra >= 4) return; S.inv.peca--; S.quebra++; salvar(); if (S.quebra === 4) pontos(20, '🧩 Quebra-cabeça completo! O jogo especial está liberado.'); inventario(); }
   /* ---------- datas comemorativas e aniversários da computação ----------
      Um evento começa 2 semanas antes da data e termina 1 semana depois. Para testar outra data: /mundo/?data=2026-12-20 */
-  const HOJE = (() => { const m = /[?&]data=(\d{4})-(\d{2})-(\d{2})/.exec(location.search); const d = m ? new Date(+m[1], m[2] - 1, +m[3]) : new Date(); d.setHours(0, 0, 0, 0); return d; })();
+  const HOJE = new Date(HOJE0);
   const DIA = 864e5, somaDias = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
   const ddmm = d => `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
   function pascoa(Y) {   // domingo de Páscoa (algoritmo de Meeus/Jones/Butcher)
@@ -1938,7 +1957,7 @@
   }
   function janelaEvento() {
     const el = $('#evento-conteudo');
-    el.innerHTML = eventosAtivos.map(ev => {
+    el.innerHTML = htmlEstacao() + eventosAtivos.map(ev => {
       const ms = missoesEvento(ev), E = estEv(ev), M = MOVEIS[ev.movel];
       return `<section class="ev"><h3>${ev.ic} ${esc(ev.nome)} <small class="muted">· de ${ddmm(ev.ini)} a ${ddmm(ev.fim)}</small></h3><p>${esc(ev.texto)}</p>
         <ul class="ev-m">${ms.map(m => `<li class="${m.ok ? 'ok' : ''}">${m.ok ? '✅' : '⬜'} ${esc(m.nome)} <small>(${Math.min(m.n, m.meta)}/${m.meta})</small></li>`).join('')}</ul>
@@ -1952,6 +1971,65 @@
     }).join('');
     el.querySelectorAll('[data-premio]').forEach(b => b.addEventListener('click', () => premioEvento(eventosAtivos.find(e => e.chave === b.dataset.premio))));
     el.querySelectorAll('[data-desafio]').forEach(b => b.addEventListener('click', () => { fechaJanela(); desafioAniversario(PESSOAS.find(p => p.id === b.dataset.desafio)); }));
+    ligaEstacao(el);
+  }
+  /* estação: missão de coletar os itens da época e ler o boletim do tempo */
+  const estEst = () => S.estacoes[ESTACAO.chave] || (S.estacoes[ESTACAO.chave] = { itens: 0, boletim: false, ganhou: false });
+  function missoesEstacao() {
+    const E = estEst();
+    return [{ nome: `Coletar 6 ${ITENS[ESTACAO.item][0]} ${ITENS[ESTACAO.item][1].toLowerCase()} pelas vilas`, n: E.itens, meta: 6 }, { nome: 'Ler o boletim do tempo', n: E.boletim ? 1 : 0, meta: 1 }].map(m => Object.assign(m, { ok: m.n >= m.meta }));
+  }
+  function boletim() {
+    const base = { verao: 28, outono: 21, inverno: 14, primavera: 23 }[ESTACAO.id], dias = ['seg', 'ter', 'qua', 'qui', 'sex'];
+    const t = dias.map(() => base + Math.floor(Math.random() * 9) - 4), tipo = Math.floor(Math.random() * 3);
+    const max = Math.max(...t), min = Math.min(...t), soma = t.reduce((a, b) => a + b, 0);
+    if (soma % 5) t[4] += 5 - (soma % 5);   // média inteira
+    const media = t.reduce((a, b) => a + b, 0) / 5, mx = Math.max(...t), mn = Math.min(...t);
+    const q = [{ enun: 'Qual foi a maior temperatura da semana?', certa: mx, erradas: [mn, Math.round(media), mx + 2] },
+      { enun: 'Qual é a amplitude térmica (maior menos menor temperatura)?', certa: mx - mn, erradas: [mx + mn, mx, mx - mn + 2] },
+      { enun: 'Qual é a temperatura média da semana?', certa: media, erradas: [mx, mn, media + 3] }][tipo];
+    const alts = [q.certa]; for (const e of q.erradas) if (alts.length < 4 && !alts.includes(e)) alts.push(e);
+    alts.sort(() => Math.random() - 0.5);
+    dialogo('📰', 'Boletim do tempo', `<p>Temperaturas máximas da semana (°C):</p><table class="em-tab"><tr>${dias.map(d => `<th>${d}</th>`).join('')}</tr><tr>${t.map(v => `<td>${v}</td>`).join('')}</tr></table><p>${q.enun}</p>`, alts.map(a => ({ txt: `${a} °C`, fn: () => {
+      if (D.op.dataset.respondida) return;
+      D.op.dataset.respondida = '1';
+      const certo = a === q.certa;
+      [...D.op.children].forEach((b, j) => { b.disabled = true; if (alts[j] === q.certa) b.classList.add('certa'); else if (alts[j] === a) b.classList.add('errada'); });
+      if (certo) { estEst().boletim = true; ganhaHabilidade(['PE'], 10); salvar(); }
+      D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso! Meteorologistas usam essas contas o tempo todo.' : '❌ Não foi dessa vez. Leia a tabela com calma.'}</strong></p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Voltar' : 'Outro boletim';
+      b.addEventListener('click', () => { if (certo) { fechaDialogo(); abreJanela('evento'); } else boletim(); }); D.op.appendChild(b); b.focus();
+    } })));
+    delete D.op.dataset.respondida;
+  }
+  function htmlEstacao() {
+    const ms = missoesEstacao(), E = estEst();
+    return `<section class="ev"><h3>${ESTACAO.ic} ${ESTACAO.nome} · hoje: ${CLIMA.ic} ${CLIMA.nome}</h3><p>${esc(ESTACAO.texto)} ${esc(CLIMA.efeito)}</p>
+      <ul class="ev-m">${ms.map(m => `<li class="${m.ok ? 'ok' : ''}">${m.ok ? '✅' : '⬜'} ${esc(m.nome)} <small>(${Math.min(m.n, m.meta)}/${m.meta})</small></li>`).join('')}</ul>
+      <div class="btn-row">${E.boletim ? '' : '<button type="button" class="hb azul" id="b-boletim">📰 Ler o boletim do tempo</button>'}
+      ${E.ganhou ? '<strong>✅ Medalha da estação recebida!</strong>' : `<button type="button" class="hb verde" id="b-premio-est" ${ms.every(m => m.ok) ? '' : 'disabled'}>🎁 Receber o prêmio</button>`}</div>
+      <p class="muted small">Prêmio: +40 ⭐ e a medalha da estação. O clima muda todo dia; a estação muda a cada 3 meses (as do hemisfério sul).</p></section>`;
+  }
+  function ligaEstacao(el) {
+    const b = el.querySelector('#b-boletim'); if (b) b.addEventListener('click', () => { fechaJanela(); boletim(); });
+    const p = el.querySelector('#b-premio-est'); if (p) p.addEventListener('click', () => { const E = estEst(); if (E.ganhou || !missoesEstacao().every(m => m.ok)) return; E.ganhou = true; S.medalhas['estacao-' + ESTACAO.chave] = { ic: ESTACAO.ic, nome: `${ESTACAO.nome} ${ESTACAO.chave.split('-')[1]}` }; pontos(40, `${ESTACAO.ic} Missão do ${ESTACAO.nome.toLowerCase()} completa!`); salvar(); janelaEvento(); });
+  }
+  /* clima por cima do mundo: chuva, nuvens, neblina, vento com folhas e um brilho de sol */
+  const semMovimento = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function climaTela(vw, vh) {
+    const id = CLIMA.id, mexe = !semMovimento;
+    if (id === 'chuva') {
+      ctx.fillStyle = 'rgba(60,80,110,.12)'; ctx.fillRect(cam.x, cam.y, vw, vh);
+      if (mexe) { ctx.strokeStyle = 'rgba(200,220,255,.55)'; ctx.lineWidth = 1.5; ctx.beginPath(); for (let i = 0, n = leve ? 30 : 90; i < n; i++) { const x = cam.x + ((i * 97 + agora * 0.25) % (vw + 60)) - 30, y = cam.y + ((i * 53 + agora * 0.9 * (1 + i % 3 / 3)) % (vh + 40)) - 20; ctx.moveTo(x, y); ctx.lineTo(x - 4, y + 14); } ctx.stroke(); }
+    } else if (id === 'nublado') {
+      for (let i = 0; i < 4; i++) { const x = cam.x + ((i * 420 + agora * 0.012 * (mexe ? 1 : 0)) % (vw + 600)) - 300, y = cam.y + (i * 173) % vh; const g = ctx.createRadialGradient(x, y, 20, x, y, 260); g.addColorStop(0, 'rgba(40,50,70,.16)'); g.addColorStop(1, 'rgba(40,50,70,0)'); ctx.fillStyle = g; ctx.fillRect(x - 260, y - 260, 520, 520); }
+    } else if (id === 'neblina') {
+      const g = ctx.createLinearGradient(0, cam.y, 0, cam.y + vh); g.addColorStop(0, 'rgba(255,255,255,.55)'); g.addColorStop(0.5, 'rgba(255,255,255,.22)'); g.addColorStop(1, 'rgba(255,255,255,.35)'); ctx.fillStyle = g; ctx.fillRect(cam.x, cam.y, vw, vh);
+    } else if (id === 'vento' && mexe) {
+      for (let i = 0, n = leve ? 10 : 28; i < n; i++) { const x = cam.x + ((i * 131 + agora * 0.12 * (1 + i % 4 / 4)) % (vw + 40)) - 20, y = cam.y + ((i * 71) % vh) + Math.sin(agora / 400 + i) * 14; ctx.fillStyle = ESTACAO.folhas[i % 3]; ctx.save(); ctx.translate(x, y); ctx.rotate(agora / 300 + i); ctx.fillRect(-4, -2, 8, 4); ctx.restore(); }
+    } else if (id === 'sol') {
+      const g = ctx.createRadialGradient(cam.x + vw * 0.85, cam.y, 10, cam.x + vw * 0.85, cam.y, vh * 0.9); g.addColorStop(0, 'rgba(255,236,160,.28)'); g.addColorStop(1, 'rgba(255,236,160,0)'); ctx.fillStyle = g; ctx.fillRect(cam.x, cam.y, vw, vh);
+    }
   }
   /* enfeites desenhados por cima do mundo, no espaço da tela */
   function enfeitesTela(vw, vh) {
@@ -2111,6 +2189,7 @@
     lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
     bandeirinhas(atual);
     if (DECOR.has('noite')) { ctx.fillStyle = 'rgba(60,30,90,.18)'; ctx.fillRect(cam.x, cam.y, vw, vh); }
+    if (!dentro && !noEnigma) climaTela(vw, vh);
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
@@ -2144,7 +2223,7 @@
   }
   function minimapa(f) {
     if (miniFase !== f || !miniCache) {
-      miniFase = f; $('#mini-nome').textContent = f.nome;
+      miniFase = f; $('#mini-nome').textContent = `${f.nome} · ${CLIMA.ic} ${ESTACAO.ic}`;
       mS = Math.min(300 / f.L, 200 / ALT); mOx = (300 - f.L * mS) / 2; mOy = (200 - ALT * mS) / 2;
       miniCache = document.createElement('canvas'); miniCache.width = 300; miniCache.height = 200;
       const c = miniCache.getContext('2d'); c.fillStyle = '#1b2531'; c.fillRect(0, 0, 300, 200);
@@ -2220,7 +2299,7 @@
   function presente(n) {
     const dia = S.diaNpc[n.id] || (S.diaNpc[n.id] = {});
     if (dia.presente === hoje()) return dialogo('🎁', n.nome, `<p>${coracoesHtml(n)}</p><p>Você já me deu um presente hoje. Volte amanhã!</p>`, [{ txt: 'Tá bom', fn: fechaDialogo }]);
-    const tem = GOSTOS.concat(Object.keys(COMIDA)).filter(k => S.inv[k] > 0);
+    const tem = GOSTOS.concat(Object.keys(COMIDA), ['flor', 'folha']).filter(k => S.inv[k] > 0);
     const dica = S.gostos[n.id] ? `<p class="muted">${esc(n.nome)} adora ${ITENS[favorito(n)][0]} ${ITENS[favorito(n)][1].toLowerCase()}.</p>` : '<p class="muted">Cada morador tem um presente preferido. Descubra qual é!</p>';
     if (!tem.length) return dialogo('🎁', 'Presente', `<p>Você não tem itens para dar. Pegue maçãs, livros, estrelas, diamantes e chaves pela vila.</p>${dica}`, [{ txt: 'Ok', fn: fechaDialogo }]);
     dialogo('🎁', `Presente para ${n.nome}`, `<p>O que você quer dar?</p>${dica}`, tem.map(k => ({ txt: `${ITENS[k][0]} ${ITENS[k][1]} (${S.inv[k]})`, fn: () => {
@@ -2325,6 +2404,7 @@
     ]);
   }
   function guarda(it, f) {
+    if (it.estacao) estEst().itens++;
     S.itens[it.id] = true; S.cont[f.id] = (S.cont[f.id] || 0) + 1; S.inv[it.tipo] = (S.inv[it.tipo] || 0) + 1;
     confereFases(); hud(); salvar();
   }
@@ -2583,9 +2663,10 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
+    if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
       setTimeout(() => aviso(aniversariantes.length ? `🎂 Hoje é aniversário de ${aniversariantes[0].nome}! Desafio do dia no botão de evento.` : `${eventosAtivos[0].ic} Evento: ${eventosAtivos[0].nome}! Veja as missões especiais.`), 2600); } }
   if (S.pet) { atualizaPet(); petPerto(); const pede = precisa(S.pet); if (pede.length) setTimeout(() => aviso(`🐾 ${S.pet.nome} precisa de você: ${pede.join(' ')}`), 1200); }
