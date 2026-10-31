@@ -1,0 +1,31 @@
+  /* ---------- Próprio do Prompts pra Prof (o resto vem do estilo do IA pra Prof) ---------- */
+  :root { --accent: #7a3cc7; --accent-soft: #f0e8fb; --warn-soft: #fbf1d9; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --accent: #c49bff; --accent-soft: #2b1f40; --warn-soft: #3a2c10; }
+  }
+  :root[data-theme="dark"] { --accent: #c49bff; --accent-soft: #2b1f40; --warn-soft: #3a2c10; }
+
+  .cover .stack { font-size: clamp(44px, 11vw, 96px); }
+  .prompt { scroll-margin-top: 80px; }
+  .prompt .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 14px !important; margin: 0 !important; }
+  .prompt .tags li { margin: 0; font-size: 12px; border: 1.5px solid var(--line); border-radius: 99px; padding: 1px 10px; color: var(--ink-2); }
+  .prompt .tags li.tipo { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+  .prompt.oculto { display: none; }
+  .filtro-aviso { display: none; font-size: 14px; color: var(--ink-2); background: var(--pill); border-radius: 14px; padding: 8px 14px; margin: 10px 0 0; }
+  .filtro-aviso.show { display: block; }
+  .field select {
+    font: inherit; font-size: 16px; color: var(--ink); background: var(--paper-2);
+    border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 12px; width: 100%;
+  }
+  .personalize { max-height: calc(100dvh - 32px); overflow-y: auto; }
+  .personalize h3 { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 14px; margin: 14px 0 6px; }
+  .aviso { border: 1.5px solid var(--bad); background: var(--bad-soft); border-radius: 22px; padding: 16px 20px; margin: 26px 0; }
+  .aviso h3 { margin-top: 0 !important; color: var(--bad); }
+  .aviso p:last-child { margin-bottom: 0; }
+  .busca-grupo { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 15px; margin: 26px 0 6px; }
+  .busca-status { font-size: 14px; color: var(--ink-2); margin: 0 0 8px; }
+  .see-also { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; margin: 30px 0 0; }
+  .see-also strong { font-family: var(--display); text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 4px; }
+  .see-also p { margin: 0; }
+  @media (max-width: 520px) { .brand { font-size: 14px; letter-spacing: .04em; } }
+  @media (max-width: 520px) { .progress-wrap { display: none; } }
