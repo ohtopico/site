@@ -446,8 +446,18 @@
   function tileEm(x, y) { const f = faseDeX(x), lx = Math.floor(x - f.x0), ly = Math.floor(y); if (lx < 0 || ly < 0 || lx >= f.L || ly >= ALT) return { f, t: T.grama, sol: 1 }; return { f, t: f.tile[ly * f.L + lx], sol: f.sol[ly * f.L + lx], v: f.var[ly * f.L + lx] }; }
 
   /* ---------- a casa do jogador: três cômodos e móveis feitos com os itens ---------- */
-  const CW = 13, CD = 9;                                     // tamanho por dentro, em blocos
-  const COMODOS = [{ nome: 'Sala', x0: 0, x1: 5, chao: '#e8c79a', parede: '#fde2b8' }, { nome: 'Quarto', x0: 5, x1: 9, chao: '#f7c6d9', parede: '#f9d3e3' }, { nome: 'Cozinha', x0: 9, x1: 13, chao: '#cfe8f5', parede: '#d6f0e0' }];
+  let CW = 13; const CD = 9;                                 // tamanho por dentro, em blocos (a largura cresce quando a casa é ampliada)
+  const COMODOS_BASE = [{ nome: 'Sala', x0: 0, x1: 5, chao: '#e8c79a', parede: '#fde2b8' }, { nome: 'Quarto', x0: 5, x1: 9, chao: '#f7c6d9', parede: '#f9d3e3' }, { nome: 'Cozinha', x0: 9, x1: 13, chao: '#cfe8f5', parede: '#d6f0e0' }];
+  /* ampliações da casa: cada uma abre um cômodo de 4 blocos; liberam com vilas concluídas e custam estrelas, madeira e pedra */
+  const AMPLIACOES = [
+    { nome: 'Ateliê', ic: '🎨', vilas: 2, custo: { pontos: 400, madeira: 6, pedra: 4 }, chao: '#d8efc6', parede: '#e6f5d6' },
+    { nome: 'Sala de jogos', ic: '🎲', vilas: 4, custo: { pontos: 800, madeira: 10, pedra: 8 }, chao: '#f6dcae', parede: '#fbe8cf' }
+  ];
+  let COMODOS = COMODOS_BASE, PAREDES = [5, 9];
+  function ajustaCasa(amp) {   // amp: quantas ampliações a casa que está aberta tem (as dos moradores não têm)
+    COMODOS = COMODOS_BASE.concat(AMPLIACOES.slice(0, amp).map((a, i) => ({ nome: a.nome, x0: 13 + 4 * i, x1: 17 + 4 * i, chao: a.chao, parede: a.parede })));
+    CW = COMODOS[COMODOS.length - 1].x1; PAREDES = COMODOS.slice(1).map(r => r.x0);
+  }
   const SAIDA = { x: 2.5, y: CD - 0.5 };
   /* custo: itens do inventário; requer: móvel que precisa ter sido construído antes (um objeto libera o outro) */
   const MOVEIS = {
@@ -1124,7 +1134,7 @@
   }
   const NPC_CASA = { x: 7.2, y: 4.4 };
   function visitaNpc(n) {
-    fechaDialogo(); fechaJanela(); visita = n; destino = null; dentro = true; mouse = null;
+    fechaDialogo(); fechaJanela(); visita = n; ajustaCasa(0); destino = null; dentro = true; mouse = null;
     P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; hud();
     const V = S.visitas || (S.visitas = {});
     if (!V[n.id]) { V[n.id] = { vez: 1 }; pontos(20, `🏠 Primeira visita à casa de ${n.nome}!`); salvar(); }
@@ -1134,15 +1144,15 @@
   function livreCasa(x, y) {
     const r = 0.22;
     if (x - r < 0.05 || y - r < 0.05 || x + r > CW - 0.05 || y + r > CD - 0.02) return false;
-    for (const px of [5, 9]) if (x - r < px + 0.1 && x + r > px - 0.1 && (y - r < 3 || y + r > 6)) return false;   // paredes entre os cômodos, com passagem no meio
+    for (const px of PAREDES) if (x - r < px + 0.1 && x + r > px - 0.1 && (y - r < 3 || y + r > 6)) return false;   // paredes entre os cômodos, com passagem no meio
     for (const [dx, dy] of [[-r, -r], [r, -r], [-r, r], [r, r]]) if (ocupado(Math.floor(x + dx), Math.floor(y + dy))) return false;
     return true;
   }
   /* as passagens entre os cômodos e o tapete da porta ficam sempre livres */
-  const reservado = (tx, ty) => ([4, 5, 8, 9].includes(tx) && ty >= 3 && ty <= 5) || (tx === 2 && ty >= CD - 2);
+  const reservado = (tx, ty) => (PAREDES.some(px => tx === px || tx === px - 1) && ty >= 3 && ty <= 5) || (tx === 2 && ty >= CD - 2);
   function podeColocar(id, tx, ty) {
     const M = MOVEIS[id];
-    if ([5, 9].some(px => tx < px && tx + M.w > px)) return false;   // não atravessa a parede
+    if (PAREDES.some(px => tx < px && tx + M.w > px)) return false;   // não atravessa a parede
     for (let j = ty; j < ty + M.d; j++) for (let i = tx; i < tx + M.w; i++) {
       if (i < 0 || j < 0 || i >= CW || j >= CD || reservado(i, j)) return false;
       if (M.chao ? S.casa.moveis.some(m => MOVEIS[m.id].chao && i >= m.x && i < m.x + MOVEIS[m.id].w && j >= m.y && j < m.y + MOVEIS[m.id].d) : ocupado(i, j)) return false;
@@ -1165,7 +1175,7 @@
   const posMundo = () => noEnigma ? { x: fases[1].enigma.porta.x, y: fases[1].enigma.porta.y + 0.4 } : dentro && visita ? { x: visita.x + 0.9, y: visita.y } : dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
   function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = noEnigma ? 1 : dentro && visita ? visita.fase.idx : dentro ? 0 : atual.idx; }
   function entraCasa() {
-    fechaJanela(); destino = null; dentro = true; mouse = null;
+    fechaJanela(); ajustaCasa(S.casa.amp || 0); destino = null; dentro = true; mouse = null;
     P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; petPerto(); hud();
     if (!S.casa.visitou) {
       S.casa.visitou = true; salvar();
@@ -2560,7 +2570,7 @@
     }
     caixa(-0.25, 0, 0, 0.25, CD, 2.4, COMODOS[0].parede, { blocos: false, dir: escuro(COMODOS[0].parede, 0.05), topo: '#fff7e8' });
     naFace('x', -0.25, 0, 0.25, CD, 0, 0, CD, 0, 0.3, escuro(COMODOS[0].parede, 0.15));
-    for (const a of [0.6, 6.9, 11.9]) { naFace('y', 0, -0.25, CW, 0.25, a, 0, 1, 1, 0.9, '#ffffff'); naFace('y', 0, -0.25, CW, 0.25, a + 0.08, 0, 0.84, 1.07, 0.76, '#bfe9ff'); naFace('y', 0, -0.25, CW, 0.25, a + 0.47, 0, 0.06, 1.07, 0.76, '#ffffff'); }
+    for (const a of [0.6, 6.9, 11.9, 15.4, 19.4].filter(a => a < CW)) { naFace('y', 0, -0.25, CW, 0.25, a, 0, 1, 1, 0.9, '#ffffff'); naFace('y', 0, -0.25, CW, 0.25, a + 0.08, 0, 0.84, 1.07, 0.76, '#bfe9ff'); naFace('y', 0, -0.25, CW, 0.25, a + 0.47, 0, 0.06, 1.07, 0.76, '#ffffff'); }
     naFace('x', -0.25, 0, 0.25, CD, 4.5, 0, 1.2, 1, 0.9, '#ffffff'); naFace('x', -0.25, 0, 0.25, CD, 4.58, 0, 1.04, 1.07, 0.76, '#bfe9ff');
     for (const r of COMODOS) { const [sx, sy] = iso((r.x0 + r.x1) / 2, -0.25, 2.75); rotulo(r.nome, sx, sy, '#fff7e8'); }
     // tapete da porta
@@ -2569,7 +2579,7 @@
     // tapetes primeiro (ficam no chão), depois o resto pela profundidade
     const lista = [];
     for (const m of moveisAqui()) { const M = MOVEIS[m.id]; if (M.chao) M.des(m.x, m.y, m); else lista.push({ k: m.x + m.y + (M.w + M.d) / 2, d: () => M.des(m.x, m.y, m) }); }
-    for (const px of [5, 9]) for (let j = 0; j < CD; j++) if (j < 3 || j >= 6) lista.push({ k: px + j + 0.6, d: () => caixa(px - 0.1, j, 0, 0.2, 1, 0.9, '#fff7e8', { blocos: false }) });
+    for (const px of PAREDES) for (let j = 0; j < CD; j++) if (j < 3 || j >= 6) lista.push({ k: px + j + 0.6, d: () => caixa(px - 0.1, j, 0, 0.2, 1, 0.9, '#fff7e8', { blocos: false }) });
     if (colocando) {
       const [tx, ty] = lugarColocar(), ok = podeColocar(colocando, tx, ty), M = MOVEIS[colocando];
       const pts = [iso(tx, ty), iso(tx + M.w, ty), iso(tx + M.w, ty + M.d), iso(tx, ty + M.d)];
@@ -2594,7 +2604,7 @@
     const s = Math.min(280 / CW, 180 / CD), ox = (300 - CW * s) / 2, oy = (200 - CD * s) / 2;
     mctx.fillStyle = '#1b2531'; mctx.fillRect(0, 0, 300, 200);
     for (const r of COMODOS) { mctx.fillStyle = r.chao; mctx.fillRect(ox + r.x0 * s, oy, (r.x1 - r.x0) * s, CD * s); }
-    mctx.fillStyle = '#fff7e8'; for (const px of [5, 9]) { mctx.fillRect(ox + px * s - 1.5, oy, 3, 3 * s); mctx.fillRect(ox + px * s - 1.5, oy + 6 * s, 3, 3 * s); }
+    mctx.fillStyle = '#fff7e8'; for (const px of PAREDES) { mctx.fillRect(ox + px * s - 1.5, oy, 3, 3 * s); mctx.fillRect(ox + px * s - 1.5, oy + 6 * s, 3, 3 * s); }
     for (const m of moveisAqui()) { const M = MOVEIS[m.id]; mctx.fillStyle = M.chao ? 'rgba(199,180,242,.85)' : '#8a6a4a'; mctx.fillRect(ox + m.x * s + 1, oy + m.y * s + 1, M.w * s - 2, M.d * s - 2); }
     mctx.fillStyle = '#e0564a'; mctx.fillRect(ox + 2 * s, oy + (CD - 0.35) * s, s, 0.35 * s);
     mctx.fillStyle = '#3f8fe0'; mctx.beginPath(); mctx.arc(ox + P.x * s, oy + P.y * s, 5, 0, Math.PI * 2); mctx.fill();
@@ -2725,7 +2735,7 @@
     $('#h-aprend').textContent = Math.round(100 * feitos / Math.max(1, todosLugares.length)) + '%';
     const f = faseDeX(P.x), ms = noEnigma ? missoesEnigma() : dentro && visita ? [{ nome: 'Abrir o baú do presente', n: ((S.visitas || {})[visita.id] || {}).bau ? 1 : 0, meta: 1 }, { nome: `Chegar a 10 corações com ${visita.nome}`, n: coracoes(visita), meta: 10 }].map(m => Object.assign(m, { ok: m.n >= m.meta })) : dentro ? missoesCasa() : missoes(f);
     $('#m-titulo').textContent = noEnigma ? '🔐 Casa do Enigma' : dentro && visita ? `🏠 Casa de ${visita.nome}` : dentro ? '🏠 Sua casa' : `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
-    $('#m-nome').textContent = noEnigma ? 'Escape room · sem cronômetro' : dentro && visita ? `${visita.fase.icone} ${visita.fase.nome}` : dentro ? 'Sala · Quarto · Cozinha' : `${f.icone} ${f.nome}`;
+    $('#m-nome').textContent = noEnigma ? 'Escape room · sem cronômetro' : dentro && visita ? `${visita.fase.icone} ${visita.fase.nome}` : dentro ? COMODOS.map(r => r.nome).join(' · ') : `${f.icone} ${f.nome}`;
     $('#m-lista').innerHTML = ms.map(m => `<li class="${m.ok ? 'ok' : ''}"${m.habs && m.habs.length ? ` title="BNCC: ${m.habs.join(', ')}"` : ''}><span class="q"></span><span>${esc(m.nome)}</span><span class="n">(${Math.min(m.n, m.meta)}/${m.meta})</span></li>`).join('');
     $('#m-barra').style.width = Math.round(ms.reduce((a, m) => a + Math.min(1, m.n / m.meta), 0) / ms.length * 100) + '%';
   }
@@ -3149,12 +3159,28 @@
     $('#casa-guardados').innerHTML = guard.length ? guard.map(([id, n]) => `<div class="it"><span style="font-size:24px">${MOVEIS[id].ic}</span><span>${esc(MOVEIS[id].nome)}<br><b>${n}</b></span><button type="button" class="hb azul" data-colocar="${id}">Colocar</button></div>`).join('')
       : '<p class="muted small">Nada guardado. Construa um móvel na lista acima.</p>';
     $('#casa-postos').innerHTML = S.casa.moveis.map((m, i) => MOVEIS[m.id].fixo ? '' : `<div class="it"><span style="font-size:22px">${MOVEIS[m.id].ic}</span><span>${esc(MOVEIS[m.id].nome)}</span><button type="button" class="hb cinza" data-guardar="${i}">Guardar</button></div>`).join('');
+    const amp = S.casa.amp || 0, prox = AMPLIACOES[amp], vilas = Object.keys(S.concluidas).length;
+    $('#casa-ampliar').innerHTML = (amp ? `<p class="small">Sua casa já tem: ${AMPLIACOES.slice(0, amp).map(a => `${a.ic} ${a.nome}`).join(', ')}.</p>` : '') + (!prox ? '<p class="small">✅ Sua casa está no tamanho máximo.</p>' : (() => {
+      const falta = Object.entries(prox.custo).filter(([k, n]) => (k === 'pontos' ? S.pontos : S.inv[k] || 0) < n), trava = vilas < prox.vilas;
+      const custo = Object.entries(prox.custo).map(([k, n]) => `<span class="${(k === 'pontos' ? S.pontos : S.inv[k] || 0) >= n ? 'tem' : 'falta'}">${k === 'pontos' ? '⭐' : ITENS[k][0]} ${n}</span>`).join(' ');
+      return `<div class="rec ${trava ? 'travada' : ''}"><span class="rec-ic">${trava ? '🔒' : prox.ic}</span><span class="rec-txt"><strong>Novo cômodo: ${prox.nome}</strong><small>${trava ? `Libera com ${prox.vilas} vilas concluídas (você tem ${vilas}).` : 'Mais 4 blocos de espaço para os seus móveis.'}</small><span class="custo">${custo}</span></span>
+        <button type="button" class="hb verde" id="casa-amp" ${trava || falta.length ? 'disabled' : ''}>Ampliar</button></div>`;
+    })());
+    const bAmp = $('#casa-amp'); if (bAmp) bAmp.addEventListener('click', ampliaCasa);
     $('#casa-cores').innerHTML = PASTEIS.map(c => `<button type="button" data-cor="${c}" aria-pressed="${S.casa.cor === c}" aria-label="Cor ${c}" style="background:${c}"></button>`).join('');
     const j = $('#j-casa');
     j.querySelectorAll('[data-construir]').forEach(b => b.addEventListener('click', () => { construir(b.dataset.construir); janelaCasa(); }));
     j.querySelectorAll('[data-colocar]').forEach(b => b.addEventListener('click', () => comecaColocar(b.dataset.colocar)));
     j.querySelectorAll('[data-guardar]').forEach(b => b.addEventListener('click', () => { guardaMovel(S.casa.moveis[+b.dataset.guardar]); janelaCasa(); }));
     j.querySelectorAll('[data-cor]').forEach(b => b.addEventListener('click', () => { S.casa.cor = b.dataset.cor; salvar(); janelaCasa(); }));
+  }
+  function ampliaCasa() {
+    const amp = S.casa.amp || 0, a = AMPLIACOES[amp]; if (!a || Object.keys(S.concluidas).length < a.vilas) return;
+    if (Object.entries(a.custo).some(([k, n]) => (k === 'pontos' ? S.pontos : S.inv[k] || 0) < n)) return;
+    for (const [k, n] of Object.entries(a.custo)) if (k === 'pontos') S.pontos -= n; else S.inv[k] -= n;
+    S.casa.amp = amp + 1; if (dentro && !visita) ajustaCasa(S.casa.amp);
+    SOM.toca('vitoria'); salvar(); hud(); janelaCasa();
+    aviso(`${a.ic} Casa ampliada! Agora ela tem ${a.nome.toLowerCase() === 'ateliê' ? 'um ateliê' : 'uma sala de jogos'}.`);
   }
   /* editor do avatar */
   const OPCOES_AV = [
@@ -3356,7 +3382,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
