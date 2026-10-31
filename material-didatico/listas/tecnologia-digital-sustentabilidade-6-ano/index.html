@@ -69,6 +69,17 @@
   body.gabarito .fb { display: block; }
   .toggle-ans { margin-top: 10px; }
   .score { font-family: var(--display); font-weight: 800; font-size: 20px; margin: 6px 0 0; }
+  .dica { margin: 12px 0 0; }
+  .dica-passos { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+  .dica-passos > li { border: 1.5px dashed var(--ink); border-radius: 14px; padding: 10px 14px; font-size: 14.5px; }
+  .dica-passos > li > strong:first-child { display: block; font-family: var(--display); font-size: 15.5px; margin-bottom: 2px; }
+  .dica-passos p { margin: 6px 0 0; }
+  .dica-passos ol { margin: 6px 0 0; padding-left: 20px; }
+  .dica-ex { background: var(--pill); border-radius: 12px; padding: 8px 12px; margin: 6px 0 0; }
+  .dica-ex ul { list-style: none; margin: 6px 0 0; padding: 0; }
+  .dica-ex li.certa { font-weight: 600; color: var(--accent); }
+  .dica-ex pre { margin: 6px 0 0; }
+  .opts label.riscada { opacity: .45; text-decoration: line-through; }
   .bar { border-top: 1.5px solid var(--ink); padding: 16px 0 0; margin-top: 22px; }
   .habs li > :first-child { justify-self: start; }
   @media (max-width: 560px) { .habs li { grid-template-columns: 1fr; gap: 4px; } .ident { grid-template-columns: 1fr; } }
@@ -100,9 +111,9 @@
     </div>
     <form id="form" onsubmit="return false"><section class="q" data-n="0"><div class="q-head"><span class="q-n">1.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Obsolescência programada é quando:</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q0" value="0"><span class="l">a)</span><span>Um aparelho é consertado</span></label></li><li><label data-i="1"><input type="radio" name="q0" value="1"><span class="l">b)</span><span>Um celular é doado</span></label></li><li><label data-i="2"><input type="radio" name="q0" value="2"><span class="l">c)</span><span>Um produto é feito para durar pouco e precisar ser trocado</span></label></li><li><label data-i="3"><input type="radio" name="q0" value="3"><span class="l">d)</span><span>Um produto é muito resistente</span></label></li></ul>
-        <p class="fb"><strong>Resposta: c)</strong> O fabricante planeja uma vida útil curta para estimular novas compras.</p></section><section class="q" data-n="1"><div class="q-head"><span class="q-n">2.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="0" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: c)</strong> O fabricante planeja uma vida útil curta para estimular novas compras.</p></section><section class="q" data-n="1"><div class="q-head"><span class="q-n">2.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Qual atitude é mais sustentável quando o celular fica lento?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q1" value="0"><span class="l">a)</span><span>Guardar na gaveta para sempre</span></label></li><li><label data-i="1"><input type="radio" name="q1" value="1"><span class="l">b)</span><span>Jogar fora e comprar outro</span></label></li><li><label data-i="2"><input type="radio" name="q1" value="2"><span class="l">c)</span><span>Apagar arquivos desnecessários, atualizar ou consertar</span></label></li><li><label data-i="3"><input type="radio" name="q1" value="3"><span class="l">d)</span><span>Jogar no lixo comum</span></label></li></ul>
-        <p class="fb"><strong>Resposta: c)</strong> Prolongar a vida útil do aparelho reduz o consumo de recursos e o lixo eletrônico.</p></section><section class="q" data-n="2"><div class="q-head"><span class="q-n">3.</span><span class="q-kind">Verdadeiro ou falso</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="1" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: c)</strong> Prolongar a vida útil do aparelho reduz o consumo de recursos e o lixo eletrônico.</p></section><section class="q" data-n="2"><div class="q-head"><span class="q-n">3.</span><span class="q-kind">Verdadeiro ou falso</span></div>
       <div class="q-stem">Sobre consumo de tecnologia:</div><ul class="vf"><li data-i="0"><span class="vf-btns">
           <label><input type="radio" name="q2-0" value="1" aria-label="Verdadeiro"><span>V</span></label>
           <label><input type="radio" name="q2-0" value="0" aria-label="Falso"><span>F</span></label></span>
@@ -116,14 +127,14 @@
           <label><input type="radio" name="q2-3" value="1" aria-label="Verdadeiro"><span>V</span></label>
           <label><input type="radio" name="q2-3" value="0" aria-label="Falso"><span>F</span></label></span>
           <span>Doar um aparelho que ainda funciona é uma forma de consumo consciente.</span></li></ul>
-        <p class="fb"><strong>Resposta: V, V, F, V.</strong> Eletrônicos devem ir para pontos de coleta específicos.</p></section><section class="q" data-n="3"><div class="q-head"><span class="q-n">4.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="2" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: V, V, F, V.</strong> Eletrônicos devem ir para pontos de coleta específicos.</p></section><section class="q" data-n="3"><div class="q-head"><span class="q-n">4.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Qual destes recursos é usado na fabricação de baterias de celular?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q3" value="0"><span class="l">a)</span><span>Algodão</span></label></li><li><label data-i="1"><input type="radio" name="q3" value="1"><span class="l">b)</span><span>Areia da praia</span></label></li><li><label data-i="2"><input type="radio" name="q3" value="2"><span class="l">c)</span><span>Lítio</span></label></li><li><label data-i="3"><input type="radio" name="q3" value="3"><span class="l">d)</span><span>Madeira</span></label></li></ul>
-        <p class="fb"><strong>Resposta: c)</strong> O lítio é extraído por mineração, com impactos ambientais.</p></section><section class="q" data-n="4"><div class="q-head"><span class="q-n">5.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="3" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: c)</strong> O lítio é extraído por mineração, com impactos ambientais.</p></section><section class="q" data-n="4"><div class="q-head"><span class="q-n">5.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Uma propaganda diz: “Seu celular de 1 ano já está ultrapassado!”. Essa mensagem estimula:</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q4" value="0"><span class="l">a)</span><span>O consumo consciente</span></label></li><li><label data-i="1"><input type="radio" name="q4" value="1"><span class="l">b)</span><span>A reciclagem</span></label></li><li><label data-i="2"><input type="radio" name="q4" value="2"><span class="l">c)</span><span>O conserto</span></label></li><li><label data-i="3"><input type="radio" name="q4" value="3"><span class="l">d)</span><span>A obsolescência percebida</span></label></li></ul>
-        <p class="fb"><strong>Resposta: d)</strong> A ideia de que o produto “ficou velho” pela moda é a obsolescência percebida.</p></section><section class="q" data-n="5"><div class="q-head"><span class="q-n">6.</span><span class="q-kind">Dissertativa</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="4" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: d)</strong> A ideia de que o produto “ficou velho” pela moda é a obsolescência percebida.</p></section><section class="q" data-n="5"><div class="q-head"><span class="q-n">6.</span><span class="q-kind">Dissertativa</span></div>
       <div class="q-stem">Faça uma pesquisa com sua família: quantos celulares vocês já tiveram e por que foram trocados? Com base nisso, escreva um pequeno texto propondo três atitudes para um consumo de tecnologia mais consciente.</div><textarea rows="6" aria-label="Resposta da questão 6" placeholder="Escreva sua resposta aqui"></textarea>
       <div class="lines" aria-hidden="true"><div></div><div></div><div></div><div></div><div></div><div></div></div>
-      <button class="btn ghost toggle-ans" type="button" data-n="5">Ver resposta esperada</button>
+      <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="5" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><button class="btn ghost toggle-ans" type="button" data-n="5">Ver resposta esperada</button>
       <p class="fb" id="fb5"><strong>Resposta esperada:</strong> Resposta pessoal. Deve relacionar os motivos de troca (quebra, lentidão, moda) com obsolescência e propor atitudes como consertar, usar por mais tempo, doar, reciclar e evitar compras por impulso.</p></section></form>
     <div class="bar no-print">
       <div class="btn-row"><button class="btn" type="button" id="check">Corrigir questões objetivas</button>
@@ -169,6 +180,7 @@
 <script>window.MD_BASE = '';</script>
 <script src="assets/dados.js"></script>
 <script src="assets/listas.js"></script>
+<script src="assets/dicas.js"></script>
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
 <script>
@@ -202,6 +214,7 @@
     doc.innerHTML = `<h1>Lista não encontrada</h1><p><a href="catalogo.html?tipo=lista">Ver todas as listas de exercícios</a></p>`;
     return;
   }
+  const ORIG = L.ex.map(e => window.MDD && MDD.origemDe(e)), NA_PAGINA = new Set(L.ex); // antes de embaralhar
   if (!window.MD_ID) document.title = `${r.titulo} · Lista de exercícios | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
   const compNome = L.comp === null ? 'Computação e Matemática' : COMPONENTES[L.comp || 'CO'].nome;
   L.ex = L.ex.map((e, n) => {
@@ -212,25 +225,28 @@
   });
   const KIND = { me: 'Múltipla escolha', vf: 'Verdadeiro ou falso', ab: 'Dissertativa' };
   const letra = i => String.fromCharCode(97 + i);
+  /* "Quero uma dica": cada clique mostra mais uma etapa (dicas.js) */
+  const PASSOS = L.ex.map((e, n) => window.MDD ? MDD.passos(e, ORIG[n], NA_PAGINA) : []);
+  const dicaHtml = n => PASSOS[n].length ? `<div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="${n}" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div>` : '';
 
   const qHtml = (e, n) => {
     const head = `<div class="q-head"><span class="q-n">${n + 1}.</span><span class="q-kind">${KIND[e[0]]}</span></div>
       <div class="q-stem">${e[1]}</div>`;
     if (e[0] === 'me') {
       return head + `<ul class="opts">${e[2].map((o, i) => `<li><label data-i="${i}"><input type="radio" name="q${n}" value="${i}"><span class="l">${letra(i)})</span><span>${o}</span></label></li>`).join('')}</ul>
-        <p class="fb"><strong>Resposta: ${letra(e[3])})</strong> ${e[4]}</p>`;
+        ${dicaHtml(n)}<p class="fb"><strong>Resposta: ${letra(e[3])})</strong> ${e[4]}</p>`;
     }
     if (e[0] === 'vf') {
       return head + `<ul class="vf">${e[2].map(([txt], i) => `<li data-i="${i}"><span class="vf-btns">
           <label><input type="radio" name="q${n}-${i}" value="1" aria-label="Verdadeiro"><span>V</span></label>
           <label><input type="radio" name="q${n}-${i}" value="0" aria-label="Falso"><span>F</span></label></span>
           <span>${txt}</span></li>`).join('')}</ul>
-        <p class="fb"><strong>Resposta: ${e[2].map(a => a[1] ? 'V' : 'F').join(', ')}.</strong> ${e[3]}</p>`;
+        ${dicaHtml(n)}<p class="fb"><strong>Resposta: ${e[2].map(a => a[1] ? 'V' : 'F').join(', ')}.</strong> ${e[3]}</p>`;
     }
     const linhas = e[3] || 6;
     return head + `<textarea rows="${Math.min(linhas, 8)}" aria-label="Resposta da questão ${n + 1}" placeholder="Escreva sua resposta aqui"></textarea>
       <div class="lines" aria-hidden="true">${'<div></div>'.repeat(linhas)}</div>
-      <button class="btn ghost toggle-ans" type="button" data-n="${n}">Ver resposta esperada</button>
+      ${dicaHtml(n)}<button class="btn ghost toggle-ans" type="button" data-n="${n}">Ver resposta esperada</button>
       <p class="fb" id="fb${n}"><strong>Resposta esperada:</strong> ${e[2]}</p>`;
   };
 
@@ -278,8 +294,22 @@
     b.textContent = on ? 'Esconder resposta esperada' : 'Ver resposta esperada';
   });
 
+  const comDica = new Set();
+  const mostrarDica = b => {
+    const n = +b.dataset.n, ol = b.nextElementSibling, k = ol.children.length, p = PASSOS[n][k];
+    if (!p) return;
+    comDica.add(n);
+    ol.insertAdjacentHTML('beforeend', `<li><strong>${k + 1}. ${p.titulo}</strong>${p.html}</li>`);
+    (p.risca || []).forEach(i => doc.querySelector(`.q[data-n="${n}"] .opts label[data-i="${i}"]`).classList.add('riscada'));
+    b.setAttribute('aria-expanded', 'true');
+    const resta = PASSOS[n].length - k - 1;
+    b.textContent = resta ? `💡 Mais uma dica (${k + 2} de ${PASSOS[n].length})` : '💡 Você já viu todas as dicas';
+    b.disabled = !resta;
+  };
+  doc.querySelectorAll('.btn-dica').forEach(b => b.onclick = () => mostrarDica(b));
+
   $('#check').onclick = () => {
-    let acertos = 0, total = 0, vazias = 0;
+    let acertos = 0, total = 0, vazias = 0, acertosDica = 0;
     L.ex.forEach((e, n) => {
       const sec = doc.querySelector(`.q[data-n="${n}"]`);
       if (e[0] === 'me') {
@@ -289,7 +319,7 @@
         if (!sel) { vazias++; return; }
         const i = +sel.value;
         sec.querySelector(`label[data-i="${i}"]`).classList.add(i === e[3] ? 'ok' : 'bad');
-        if (i === e[3]) acertos++;
+        if (i === e[3]) { acertos++; if (comDica.has(n)) acertosDica++; }
         sec.querySelector('.fb').classList.add('show');
       } else if (e[0] === 'vf') {
         total++;
@@ -304,19 +334,23 @@
           if (!ok) certas = false;
         });
         if (!todas && !sec.querySelector('.vf input:checked')) { vazias++; return; }
-        if (certas) acertos++;
+        if (certas) { acertos++; if (comDica.has(n)) acertosDica++; }
         sec.querySelector('.fb').classList.add('show');
       }
     });
     if (SURPRESA) { if (total - vazias > 0 && window.MDM) MDM.listaSurpresa(acertos / total * 100); }
     else if (total - vazias > 0) window.MDP && MDP.registrar(id, acertos / total * 100);
-    $('#score').textContent = `Você acertou ${acertos} de ${total} questões objetivas` + (vazias ? ` (${vazias} sem resposta).` : '.') + (acertos === total ? ' 🎉' : '');
+    $('#score').textContent = `Você acertou ${acertos} de ${total} questões objetivas` + (vazias ? ` (${vazias} sem resposta).` : '.') + (acertosDica ? ` ${acertosDica === 1 ? 'Uma delas' : `${acertosDica} delas`} com ajuda das dicas.` : '') + (acertos === total ? ' 🎉' : '');
   };
   $('#reset').onclick = () => {
     $('#form').reset();
     doc.querySelectorAll('.ok, .bad').forEach(el => el.classList.remove('ok', 'bad'));
     doc.querySelectorAll('.fb.show').forEach(el => el.classList.remove('show'));
     doc.querySelectorAll('.toggle-ans').forEach(b => b.textContent = 'Ver resposta esperada');
+    doc.querySelectorAll('.riscada').forEach(el => el.classList.remove('riscada'));
+    doc.querySelectorAll('.dica-passos').forEach(el => el.innerHTML = '');
+    doc.querySelectorAll('.btn-dica').forEach(b => { b.disabled = false; b.textContent = '💡 Quero uma dica'; b.setAttribute('aria-expanded', 'false'); });
+    comDica.clear();
     $('#score').textContent = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

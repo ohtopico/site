@@ -69,6 +69,17 @@
   body.gabarito .fb { display: block; }
   .toggle-ans { margin-top: 10px; }
   .score { font-family: var(--display); font-weight: 800; font-size: 20px; margin: 6px 0 0; }
+  .dica { margin: 12px 0 0; }
+  .dica-passos { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+  .dica-passos > li { border: 1.5px dashed var(--ink); border-radius: 14px; padding: 10px 14px; font-size: 14.5px; }
+  .dica-passos > li > strong:first-child { display: block; font-family: var(--display); font-size: 15.5px; margin-bottom: 2px; }
+  .dica-passos p { margin: 6px 0 0; }
+  .dica-passos ol { margin: 6px 0 0; padding-left: 20px; }
+  .dica-ex { background: var(--pill); border-radius: 12px; padding: 8px 12px; margin: 6px 0 0; }
+  .dica-ex ul { list-style: none; margin: 6px 0 0; padding: 0; }
+  .dica-ex li.certa { font-weight: 600; color: var(--accent); }
+  .dica-ex pre { margin: 6px 0 0; }
+  .opts label.riscada { opacity: .45; text-decoration: line-through; }
   .bar { border-top: 1.5px solid var(--ink); padding: 16px 0 0; margin-top: 22px; }
   .habs li > :first-child { justify-self: start; }
   @media (max-width: 560px) { .habs li { grid-template-columns: 1fr; gap: 4px; } .ident { grid-template-columns: 1fr; } }
@@ -100,25 +111,25 @@
     </div>
     <form id="form" onsubmit="return false"><section class="q" data-n="0"><div class="q-head"><span class="q-n">1.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Uma ficha guarda “quantidade de irmãos”, “altura em metros” e “tem animal de estimação?”. Os tipos de dados são, nessa ordem:</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q0" value="0"><span class="l">a)</span><span>decimal, inteiro, texto</span></label></li><li><label data-i="1"><input type="radio" name="q0" value="1"><span class="l">b)</span><span>inteiro, texto, lógico</span></label></li><li><label data-i="2"><input type="radio" name="q0" value="2"><span class="l">c)</span><span>inteiro, decimal, lógico</span></label></li><li><label data-i="3"><input type="radio" name="q0" value="3"><span class="l">d)</span><span>texto, decimal, lógico</span></label></li></ul>
-        <p class="fb"><strong>Resposta: c)</strong> Irmãos se contam (inteiro), altura tem casas decimais e a última pergunta só aceita sim ou não (lógico).</p></section><section class="q" data-n="1"><div class="q-head"><span class="q-n">2.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="0" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: c)</strong> Irmãos se contam (inteiro), altura tem casas decimais e a última pergunta só aceita sim ou não (lógico).</p></section><section class="q" data-n="1"><div class="q-head"><span class="q-n">2.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">No algoritmo “repita 3 vezes: bata palma; fim”, qual estrutura aparece?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q1" value="0"><span class="l">a)</span><span>Repetição</span></label></li><li><label data-i="1"><input type="radio" name="q1" value="1"><span class="l">b)</span><span>Recursão</span></label></li><li><label data-i="2"><input type="radio" name="q1" value="2"><span class="l">c)</span><span>Seleção</span></label></li><li><label data-i="3"><input type="radio" name="q1" value="3"><span class="l">d)</span><span>Sequência apenas</span></label></li></ul>
-        <p class="fb"><strong>Resposta: a)</strong> O bloco “repita” faz a mesma instrução várias vezes.</p></section><section class="q" data-n="2"><div class="q-head"><span class="q-n">3.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="1" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: a)</strong> O bloco “repita” faz a mesma instrução várias vezes.</p></section><section class="q" data-n="2"><div class="q-head"><span class="q-n">3.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">“Se estiver chovendo, leve o guarda-chuva; senão, leve o boné.” Que estrutura é essa?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q2" value="0"><span class="l">a)</span><span>Sequência</span></label></li><li><label data-i="1"><input type="radio" name="q2" value="1"><span class="l">b)</span><span>Seleção</span></label></li><li><label data-i="2"><input type="radio" name="q2" value="2"><span class="l">c)</span><span>Repetição</span></label></li><li><label data-i="3"><input type="radio" name="q2" value="3"><span class="l">d)</span><span>Variável</span></label></li></ul>
-        <p class="fb"><strong>Resposta: b)</strong> O algoritmo escolhe um caminho conforme uma condição verdadeira ou falsa.</p></section><section class="q" data-n="3"><div class="q-head"><span class="q-n">4.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="2" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: b)</strong> O algoritmo escolhe um caminho conforme uma condição verdadeira ou falsa.</p></section><section class="q" data-n="3"><div class="q-head"><span class="q-n">4.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Qual instrução é precisa o suficiente para um robô executar?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q3" value="0"><span class="l">a)</span><span>Ande 3 casas e vire 90 graus à direita</span></label></li><li><label data-i="1"><input type="radio" name="q3" value="1"><span class="l">b)</span><span>Ande um pouco</span></label></li><li><label data-i="2"><input type="radio" name="q3" value="2"><span class="l">c)</span><span>Vire para o lado certo</span></label></li><li><label data-i="3"><input type="radio" name="q3" value="3"><span class="l">d)</span><span>Vá até lá</span></label></li></ul>
-        <p class="fb"><strong>Resposta: a)</strong> Computadores não adivinham: a instrução precisa dizer quanto e para onde.</p></section><section class="q" data-n="4"><div class="q-head"><span class="q-n">5.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="3" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: a)</strong> Computadores não adivinham: a instrução precisa dizer quanto e para onde.</p></section><section class="q" data-n="4"><div class="q-head"><span class="q-n">5.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Organizar uma festa junina foi dividido em decoração, comidas, músicas e convites. Que estratégia foi usada?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q4" value="0"><span class="l">a)</span><span>Criptografia</span></label></li><li><label data-i="1"><input type="radio" name="q4" value="1"><span class="l">b)</span><span>Compactação</span></label></li><li><label data-i="2"><input type="radio" name="q4" value="2"><span class="l">c)</span><span>Ordenação</span></label></li><li><label data-i="3"><input type="radio" name="q4" value="3"><span class="l">d)</span><span>Decomposição</span></label></li></ul>
-        <p class="fb"><strong>Resposta: d)</strong> Decompor é quebrar um problema grande em partes menores e mais fáceis.</p></section><section class="q" data-n="5"><div class="q-head"><span class="q-n">6.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="4" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: d)</strong> Decompor é quebrar um problema grande em partes menores e mais fáceis.</p></section><section class="q" data-n="5"><div class="q-head"><span class="q-n">6.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Uma máquina transforma 2 em 6, 4 em 12 e 5 em 15. Que saída ela dá para a entrada 7?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q5" value="0"><span class="l">a)</span><span>17</span></label></li><li><label data-i="1"><input type="radio" name="q5" value="1"><span class="l">b)</span><span>21</span></label></li><li><label data-i="2"><input type="radio" name="q5" value="2"><span class="l">c)</span><span>14</span></label></li><li><label data-i="3"><input type="radio" name="q5" value="3"><span class="l">d)</span><span>49</span></label></li></ul>
-        <p class="fb"><strong>Resposta: b)</strong> A regra é multiplicar por 3: 7 × 3 = 21.</p></section><section class="q" data-n="6"><div class="q-head"><span class="q-n">7.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="5" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: b)</strong> A regra é multiplicar por 3: 7 × 3 = 21.</p></section><section class="q" data-n="6"><div class="q-head"><span class="q-n">7.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Uma receita de suco usa 2 laranjas por pessoa. Que expressão dá o número de laranjas para p pessoas?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q6" value="0"><span class="l">a)</span><span>2 × p</span></label></li><li><label data-i="1"><input type="radio" name="q6" value="1"><span class="l">b)</span><span>p + 2</span></label></li><li><label data-i="2"><input type="radio" name="q6" value="2"><span class="l">c)</span><span>2 + 2</span></label></li><li><label data-i="3"><input type="radio" name="q6" value="3"><span class="l">d)</span><span>p ÷ 2</span></label></li></ul>
-        <p class="fb"><strong>Resposta: a)</strong> O número de pessoas é o parâmetro: para qualquer p, são 2 × p laranjas.</p></section><section class="q" data-n="7"><div class="q-head"><span class="q-n">8.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="6" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: a)</strong> O número de pessoas é o parâmetro: para qualquer p, são 2 × p laranjas.</p></section><section class="q" data-n="7"><div class="q-head"><span class="q-n">8.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Na internet, uma mensagem é dividida em pacotes. O que cada pacote leva além do pedaço da mensagem?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q7" value="0"><span class="l">a)</span><span>O endereço de destino, o de origem e o número de ordem</span></label></li><li><label data-i="1"><input type="radio" name="q7" value="1"><span class="l">b)</span><span>Nada além do conteúdo</span></label></li><li><label data-i="2"><input type="radio" name="q7" value="2"><span class="l">c)</span><span>Somente a senha do usuário</span></label></li><li><label data-i="3"><input type="radio" name="q7" value="3"><span class="l">d)</span><span>Uma cópia da mensagem inteira</span></label></li></ul>
-        <p class="fb"><strong>Resposta: a)</strong> Com destino, origem e número, os pacotes chegam e são remontados na ordem certa, mesmo por caminhos diferentes.</p></section><section class="q" data-n="8"><div class="q-head"><span class="q-n">9.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="7" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: a)</strong> Com destino, origem e número, os pacotes chegam e são remontados na ordem certa, mesmo por caminhos diferentes.</p></section><section class="q" data-n="8"><div class="q-head"><span class="q-n">9.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">Por que é melhor nomear arquivos começando por ano-mês-dia (2026-10-27_resumo.docx)?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q8" value="0"><span class="l">a)</span><span>Porque o computador só aceita números</span></label></li><li><label data-i="1"><input type="radio" name="q8" value="1"><span class="l">b)</span><span>Para proteger o arquivo com senha</span></label></li><li><label data-i="2"><input type="radio" name="q8" value="2"><span class="l">c)</span><span>Para ocupar menos espaço</span></label></li><li><label data-i="3"><input type="radio" name="q8" value="3"><span class="l">d)</span><span>Para os arquivos ficarem em ordem cronológica</span></label></li></ul>
-        <p class="fb"><strong>Resposta: d)</strong> Com o ano primeiro, a ordem alfabética coincide com a ordem das datas.</p></section><section class="q" data-n="9"><div class="q-head"><span class="q-n">10.</span><span class="q-kind">Múltipla escolha</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="8" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: d)</strong> Com o ano primeiro, a ordem alfabética coincide com a ordem das datas.</p></section><section class="q" data-n="9"><div class="q-head"><span class="q-n">10.</span><span class="q-kind">Múltipla escolha</span></div>
       <div class="q-stem">O que é obsolescência programada?</div><ul class="opts"><li><label data-i="0"><input type="radio" name="q9" value="0"><span class="l">a)</span><span>Reciclar um aparelho antigo</span></label></li><li><label data-i="1"><input type="radio" name="q9" value="1"><span class="l">b)</span><span>Fazer um produto para durar menos ou ser difícil de consertar</span></label></li><li><label data-i="2"><input type="radio" name="q9" value="2"><span class="l">c)</span><span>Atualizar o sistema do celular</span></label></li><li><label data-i="3"><input type="radio" name="q9" value="3"><span class="l">d)</span><span>Doar um computador usado</span></label></li></ul>
-        <p class="fb"><strong>Resposta: b)</strong> É uma estratégia que força a troca do aparelho antes do necessário, aumentando o lixo eletrônico.</p></section><section class="q" data-n="10"><div class="q-head"><span class="q-n">11.</span><span class="q-kind">Verdadeiro ou falso</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="9" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: b)</strong> É uma estratégia que força a troca do aparelho antes do necessário, aumentando o lixo eletrônico.</p></section><section class="q" data-n="10"><div class="q-head"><span class="q-n">11.</span><span class="q-kind">Verdadeiro ou falso</span></div>
       <div class="q-stem">Classifique como verdadeiro (V) ou falso (F):</div><ul class="vf"><li data-i="0"><span class="vf-btns">
           <label><input type="radio" name="q10-0" value="1" aria-label="Verdadeiro"><span>V</span></label>
           <label><input type="radio" name="q10-0" value="0" aria-label="Falso"><span>F</span></label></span>
@@ -132,10 +143,10 @@
           <label><input type="radio" name="q10-3" value="1" aria-label="Verdadeiro"><span>V</span></label>
           <label><input type="radio" name="q10-3" value="0" aria-label="Falso"><span>F</span></label></span>
           <span>Celular velho pode ser jogado no lixo comum.</span></li></ul>
-        <p class="fb"><strong>Resposta: V, F, V, F.</strong> Prints só com permissão; eletrônicos vão para pontos de coleta, porque têm metais que contaminam o solo e a água.</p></section><section class="q" data-n="11"><div class="q-head"><span class="q-n">12.</span><span class="q-kind">Dissertativa</span></div>
+        <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="10" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><p class="fb"><strong>Resposta: V, F, V, F.</strong> Prints só com permissão; eletrônicos vão para pontos de coleta, porque têm metais que contaminam o solo e a água.</p></section><section class="q" data-n="11"><div class="q-head"><span class="q-n">12.</span><span class="q-kind">Dissertativa</span></div>
       <div class="q-stem">Escreva um algoritmo, em passos numerados, para decidir se um estudante passou de ano a partir da média de duas notas (média 6 ou mais). Use sequência e seleção.</div><textarea rows="5" aria-label="Resposta da questão 12" placeholder="Escreva sua resposta aqui"></textarea>
       <div class="lines" aria-hidden="true"><div></div><div></div><div></div><div></div><div></div></div>
-      <button class="btn ghost toggle-ans" type="button" data-n="11">Ver resposta esperada</button>
+      <div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="11" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div><button class="btn ghost toggle-ans" type="button" data-n="11">Ver resposta esperada</button>
       <p class="fb" id="fb11"><strong>Resposta esperada:</strong> Exemplo: 1. Ler nota 1 e nota 2. 2. Calcular média = (nota 1 + nota 2) ÷ 2. 3. Se média ≥ 6, escrever “Aprovado”; senão, escrever “Recuperação”. Avalie a precisão dos passos e o uso correto da condição.</p></section></form>
     <div class="bar no-print">
       <div class="btn-row"><button class="btn" type="button" id="check">Corrigir questões objetivas</button>
@@ -181,6 +192,7 @@
 <script>window.MD_BASE = '';</script>
 <script src="assets/dados.js"></script>
 <script src="assets/listas.js"></script>
+<script src="assets/dicas.js"></script>
 <script src="assets/progresso.js"></script>
 <script src="assets/comum.js"></script>
 <script>
@@ -214,6 +226,7 @@
     doc.innerHTML = `<h1>Lista não encontrada</h1><p><a href="catalogo.html?tipo=lista">Ver todas as listas de exercícios</a></p>`;
     return;
   }
+  const ORIG = L.ex.map(e => window.MDD && MDD.origemDe(e)), NA_PAGINA = new Set(L.ex); // antes de embaralhar
   if (!window.MD_ID) document.title = `${r.titulo} · Lista de exercícios | Júlia Quoos`; // nas páginas estáticas o título já vem pronto no HTML
   const compNome = L.comp === null ? 'Computação e Matemática' : COMPONENTES[L.comp || 'CO'].nome;
   L.ex = L.ex.map((e, n) => {
@@ -224,25 +237,28 @@
   });
   const KIND = { me: 'Múltipla escolha', vf: 'Verdadeiro ou falso', ab: 'Dissertativa' };
   const letra = i => String.fromCharCode(97 + i);
+  /* "Quero uma dica": cada clique mostra mais uma etapa (dicas.js) */
+  const PASSOS = L.ex.map((e, n) => window.MDD ? MDD.passos(e, ORIG[n], NA_PAGINA) : []);
+  const dicaHtml = n => PASSOS[n].length ? `<div class="dica no-print"><button class="btn ghost btn-dica" type="button" data-n="${n}" aria-expanded="false">💡 Quero uma dica</button><ol class="dica-passos" aria-live="polite"></ol></div>` : '';
 
   const qHtml = (e, n) => {
     const head = `<div class="q-head"><span class="q-n">${n + 1}.</span><span class="q-kind">${KIND[e[0]]}</span></div>
       <div class="q-stem">${e[1]}</div>`;
     if (e[0] === 'me') {
       return head + `<ul class="opts">${e[2].map((o, i) => `<li><label data-i="${i}"><input type="radio" name="q${n}" value="${i}"><span class="l">${letra(i)})</span><span>${o}</span></label></li>`).join('')}</ul>
-        <p class="fb"><strong>Resposta: ${letra(e[3])})</strong> ${e[4]}</p>`;
+        ${dicaHtml(n)}<p class="fb"><strong>Resposta: ${letra(e[3])})</strong> ${e[4]}</p>`;
     }
     if (e[0] === 'vf') {
       return head + `<ul class="vf">${e[2].map(([txt], i) => `<li data-i="${i}"><span class="vf-btns">
           <label><input type="radio" name="q${n}-${i}" value="1" aria-label="Verdadeiro"><span>V</span></label>
           <label><input type="radio" name="q${n}-${i}" value="0" aria-label="Falso"><span>F</span></label></span>
           <span>${txt}</span></li>`).join('')}</ul>
-        <p class="fb"><strong>Resposta: ${e[2].map(a => a[1] ? 'V' : 'F').join(', ')}.</strong> ${e[3]}</p>`;
+        ${dicaHtml(n)}<p class="fb"><strong>Resposta: ${e[2].map(a => a[1] ? 'V' : 'F').join(', ')}.</strong> ${e[3]}</p>`;
     }
     const linhas = e[3] || 6;
     return head + `<textarea rows="${Math.min(linhas, 8)}" aria-label="Resposta da questão ${n + 1}" placeholder="Escreva sua resposta aqui"></textarea>
       <div class="lines" aria-hidden="true">${'<div></div>'.repeat(linhas)}</div>
-      <button class="btn ghost toggle-ans" type="button" data-n="${n}">Ver resposta esperada</button>
+      ${dicaHtml(n)}<button class="btn ghost toggle-ans" type="button" data-n="${n}">Ver resposta esperada</button>
       <p class="fb" id="fb${n}"><strong>Resposta esperada:</strong> ${e[2]}</p>`;
   };
 
@@ -290,8 +306,22 @@
     b.textContent = on ? 'Esconder resposta esperada' : 'Ver resposta esperada';
   });
 
+  const comDica = new Set();
+  const mostrarDica = b => {
+    const n = +b.dataset.n, ol = b.nextElementSibling, k = ol.children.length, p = PASSOS[n][k];
+    if (!p) return;
+    comDica.add(n);
+    ol.insertAdjacentHTML('beforeend', `<li><strong>${k + 1}. ${p.titulo}</strong>${p.html}</li>`);
+    (p.risca || []).forEach(i => doc.querySelector(`.q[data-n="${n}"] .opts label[data-i="${i}"]`).classList.add('riscada'));
+    b.setAttribute('aria-expanded', 'true');
+    const resta = PASSOS[n].length - k - 1;
+    b.textContent = resta ? `💡 Mais uma dica (${k + 2} de ${PASSOS[n].length})` : '💡 Você já viu todas as dicas';
+    b.disabled = !resta;
+  };
+  doc.querySelectorAll('.btn-dica').forEach(b => b.onclick = () => mostrarDica(b));
+
   $('#check').onclick = () => {
-    let acertos = 0, total = 0, vazias = 0;
+    let acertos = 0, total = 0, vazias = 0, acertosDica = 0;
     L.ex.forEach((e, n) => {
       const sec = doc.querySelector(`.q[data-n="${n}"]`);
       if (e[0] === 'me') {
@@ -301,7 +331,7 @@
         if (!sel) { vazias++; return; }
         const i = +sel.value;
         sec.querySelector(`label[data-i="${i}"]`).classList.add(i === e[3] ? 'ok' : 'bad');
-        if (i === e[3]) acertos++;
+        if (i === e[3]) { acertos++; if (comDica.has(n)) acertosDica++; }
         sec.querySelector('.fb').classList.add('show');
       } else if (e[0] === 'vf') {
         total++;
@@ -316,19 +346,23 @@
           if (!ok) certas = false;
         });
         if (!todas && !sec.querySelector('.vf input:checked')) { vazias++; return; }
-        if (certas) acertos++;
+        if (certas) { acertos++; if (comDica.has(n)) acertosDica++; }
         sec.querySelector('.fb').classList.add('show');
       }
     });
     if (SURPRESA) { if (total - vazias > 0 && window.MDM) MDM.listaSurpresa(acertos / total * 100); }
     else if (total - vazias > 0) window.MDP && MDP.registrar(id, acertos / total * 100);
-    $('#score').textContent = `Você acertou ${acertos} de ${total} questões objetivas` + (vazias ? ` (${vazias} sem resposta).` : '.') + (acertos === total ? ' 🎉' : '');
+    $('#score').textContent = `Você acertou ${acertos} de ${total} questões objetivas` + (vazias ? ` (${vazias} sem resposta).` : '.') + (acertosDica ? ` ${acertosDica === 1 ? 'Uma delas' : `${acertosDica} delas`} com ajuda das dicas.` : '') + (acertos === total ? ' 🎉' : '');
   };
   $('#reset').onclick = () => {
     $('#form').reset();
     doc.querySelectorAll('.ok, .bad').forEach(el => el.classList.remove('ok', 'bad'));
     doc.querySelectorAll('.fb.show').forEach(el => el.classList.remove('show'));
     doc.querySelectorAll('.toggle-ans').forEach(b => b.textContent = 'Ver resposta esperada');
+    doc.querySelectorAll('.riscada').forEach(el => el.classList.remove('riscada'));
+    doc.querySelectorAll('.dica-passos').forEach(el => el.innerHTML = '');
+    doc.querySelectorAll('.btn-dica').forEach(b => { b.disabled = false; b.textContent = '💡 Quero uma dica'; b.setAttribute('aria-expanded', 'false'); });
+    comDica.clear();
     $('#score').textContent = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
