@@ -83,7 +83,7 @@
       el.onclick = e => { const x = e.target.closest('button'); if (!x) return; b[key] = key === 'ano' ? Number(x.dataset.v) : x.dataset.v; render(); };
     };
     grp($('#b-comp'), [['CO', 'Computação'], ['MA', 'Matemática']], 'comp');
-    grp($('#b-ano'), anosComp.map(a => [a, a + 'º ano']), 'ano');
+    grp($('#b-ano'), anosComp.sort((x, y) => x - y).map(a => [a, anoNome(a)]), 'ano');
     history.replaceState(null, '', `?comp=${b.comp}&ano=${b.ano}`);
 
     const habs = HABILIDADES.filter(h => h.comp === b.comp && h.ano === b.ano);

@@ -12,20 +12,22 @@
   window.esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   /* niveis: EF = Ensino Fundamental, EM = Ensino Médio, ES = Ensino Superior/técnico.
-     bncc: habilidades do Ensino Fundamental que o simulador apoia; uso: parte indicada para o Fundamental. */
+     bncc: habilidades da BNCC (Fundamental e Médio) que o simulador apoia; uso: parte indicada para o Fundamental. */
   window.SIMULADORES = [
     { id: 'proxima-palavra', sigla: 'GPT', titulo: 'Como a IA escolhe a próxima palavra', url: 'proxima-palavra.html', niveis: ['EF', 'EM', 'ES'], ia: true,
       resumo: 'Veja o texto virar tokens, as probabilidades das próximas palavras e o efeito da temperatura e da seed no sorteio, como num modelo de linguagem do tipo ChatGPT.',
-      bncc: ['EF09CO07', 'EF09CO10'],
+      bncc: ['EF09CO07', 'EF09CO10', 'EM13CO10'],
       uso: 'No 9º ano, use a parte de probabilidades e temperatura para discutir por que a IA responde diferente a cada vez e por que é preciso conferir o que ela escreve.' },
     { id: 'regressao', sigla: 'ŷ=a+bx', titulo: 'Regressão linear', url: 'regressao.html', niveis: ['EF', 'EM', 'ES'], ia: true,
       resumo: 'Arraste pontos e veja a reta de mínimos quadrados se ajustar, com resíduos, erro quadrático médio, R², previsões e o efeito de um ponto fora da curva.',
-      bncc: ['EF09MA06'],
+      bncc: ['EF09MA06', 'EM13CO11', 'EM13CO12'],
       uso: 'No 9º ano, use os exemplos prontos para relacionar duas grandezas, ler a reta como função e fazer previsões. R², erro quadrático e o código ficam para o Médio e o Superior.' },
     { id: 'matriz-confusao', sigla: 'VP FP', titulo: 'Matriz de confusão e métricas', url: 'matriz-confusao.html', niveis: ['EM', 'ES'], ia: true,
-      resumo: 'Arraste o limiar de decisão de um classificador e veja acurácia, precisão, revocação, F1, coeficiente Dice, IoU e as curvas ROC e precisão-revocação mudarem juntas.' },
+      resumo: 'Arraste o limiar de decisão de um classificador e veja acurácia, precisão, revocação, F1, coeficiente Dice, IoU e as curvas ROC e precisão-revocação mudarem juntas.',
+      bncc: ['EM13CO10', 'EM13CO06'] },
     { id: 'rede-neural', sigla: 'NN', titulo: 'Treino de rede neural', url: 'rede-neural.html', niveis: ['EM', 'ES'], ia: true,
-      resumo: 'Uma rede neural pequena treinando ao vivo. Ajuste taxa de aprendizado, lote, camadas, regularização e seed, e veja nas curvas de treino e validação quando o sobreajuste começa.' },
+      resumo: 'Uma rede neural pequena treinando ao vivo. Ajuste taxa de aprendizado, lote, camadas, regularização e seed, e veja nas curvas de treino e validação quando o sobreajuste começa.',
+      bncc: ['EM13CO10', 'EM13CO11'] },
     { id: 'significancia', sigla: 'p<0,05', titulo: 'Significância entre modelos', url: 'significancia.html', niveis: ['ES'], ia: true,
       resumo: 'Compare dois modelos treinados com 10 seeds usando teste t pareado, teste de Welch e teste de permutação, com intervalo de confiança e tamanho de efeito.' },
     { id: 'bases', sigla: '1010', titulo: 'Bases numéricas e complemento de dois', url: 'bases.html', niveis: ['EF', 'EM', 'ES'],
@@ -38,7 +40,7 @@
       uso: 'Use as portas NOT, AND e OR como verdadeiro/falso, negação, conjunção e disjunção. Somadores e multiplexador ficam para o Médio e o Superior.' },
     { id: 'estatistica', sigla: 'x̄', titulo: 'Estatística descritiva', url: 'estatistica.html', niveis: ['EF', 'EM', 'ES'],
       resumo: 'Cole uma lista de números e veja média, mediana, moda, desvio padrão, quartis, outliers, histograma e boxplot, com o código pandas equivalente.',
-      bncc: ['EF07MA35', 'EF08MA25', 'EF09MA22'],
+      bncc: ['EF07MA35', 'EF08MA25', 'EF09MA22', 'EM13CO12', 'EM13CO13'],
       uso: 'Do 7º ao 9º ano, use média, mediana, moda, amplitude e o histograma com dados coletados pela turma. Desvio padrão, quartis e pandas ficam para o Médio e o Superior.' },
     { id: 'mips', sigla: 'ASM', titulo: 'Mini-MIPS', url: 'mips.html', niveis: ['ES'],
       resumo: 'Escreva assembly MIPS, monte, execute passo a passo e veja registradores, memória e a codificação binária de cada instrução nos formatos R, I e J.' },
@@ -95,12 +97,14 @@
     const s = SIMULADORES.find(x => x.id === id), el = document.getElementById('sim-head');
     if (!s || !el) return;
     // título, cabeçalho e dados estruturados já vêm escritos no HTML (gerados por _fonte/material/gerar.js)
+    const em = (s.bncc || []).filter(c => c.startsWith('EM'));
     el.innerHTML = `
       <div class="crumbs"><a href="${BASE}index.html">← Todos os simuladores</a></div>
       <span class="eyebrow">Simulador</span>
       <h1>${esc(s.titulo)}</h1>
       <p class="muted" style="max-width:760px">${esc(s.resumo)}</p>
       ${simNiveis(s)}
-      ${s.uso ? `<p class="uso"><strong>No Ensino Fundamental:</strong> ${esc(s.uso)} <span class="muted">BNCC: ${s.bncc.join(', ')}.</span></p>` : ''}`;
+      ${s.uso ? `<p class="uso"><strong>No Ensino Fundamental:</strong> ${esc(s.uso)} <span class="muted">BNCC: ${s.bncc.filter(c => !c.startsWith('EM')).join(', ')}.</span></p>` : ''}
+      ${em.length ? `<p class="uso"><strong>No Ensino Médio:</strong> apoia ${em.length > 1 ? 'as habilidades' : 'a habilidade'} ${em.map(c => `<a href="/material-didatico/bncc/${c.toLowerCase()}/">${c}</a>`).join(', ')} da BNCC Computação.</p>` : ''}`;
   };
 })();

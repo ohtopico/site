@@ -36,9 +36,11 @@
   };
   window.tagComp = c => `<span class="tag ${c.toLowerCase()}">${COMPONENTES[c].curto}</span>`;
   window.anosTxt = anos => {
-    if (anos.length === 1) return `${anos[0]}º ano`;
-    const seq = anos.every((a, i) => i === 0 || a === anos[i - 1] + 1);
-    return seq ? `${anos[0]}º ao ${anos[anos.length - 1]}º ano` : anos.map(a => a + 'º').join(', ') + ' anos';
+    const ef = anos.filter(a => a < 10), em = anos.includes(10);
+    if (!ef.length) return em ? 'Ensino Médio' : '';
+    const seq = ef.every((a, i) => i === 0 || a === ef[i - 1] + 1);
+    const t = ef.length === 1 ? `${ef[0]}º ano` : seq ? `${ef[0]}º ao ${ef[ef.length - 1]}º ano` : ef.map(a => a + 'º').join(', ') + ' anos';
+    return em ? `${t} e Ensino Médio` : t;
   };
   window.recUrl = r => BASE + (EST[r.id] || r.url);
 
@@ -128,7 +130,7 @@
     if (!el) return;
     el.className = 'footer';
     el.innerHTML = `<div class="wrap">
-      <p>Material didático de Computação e Matemática para os anos finais do Ensino Fundamental, organizado por
+      <p>Material didático de Computação e Matemática para os anos finais do Ensino Fundamental e Computação para o Ensino Médio, organizado por
       <a href="${BASE}../curriculo/">Júlia Roberta Quoos Alves</a>. Habilidades com base na
       <a href="https://basenacionalcomum.mec.gov.br/" target="_blank" rel="noopener">BNCC</a> e no complemento de Computação (Resolução CNE/CEB nº 1/2022); os textos das habilidades aparecem resumidos.</p>
       <p>Uso livre em sala de aula, com citação da fonte. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p>
@@ -178,7 +180,7 @@
     const anos = [...new Set(todas.map(h => h.ano))].sort((a, b) => a - b);
     const iniciais = anos.filter(a => a <= 5);
     const grupos = (iniciais.length ? [{ v: 'ai', l: '1º ao 5º ano', anos: iniciais }] : [])
-      .concat(anos.filter(a => a > 5).map(a => ({ v: String(a), l: a + 'º ano', anos: [a] })));
+      .concat(anos.filter(a => a > 5).map(a => ({ v: String(a), l: anoNome(a), anos: [a] })));
     let atual = (grupos.find(g => g.v === '6') || grupos[0]).v;
     let mostrarTodas = false;
     const sl = c => window.SLIDES && window.SLIDES[c] ? window.slidesUrl(c) : '';
@@ -192,7 +194,7 @@
       const faltam = habs.length - lista.length;
       const topo = g.v === 'ai'
         ? `<div class="hab-pdf"><div><strong>Caderno de computação desplugada nas datas festivas</strong><span>Nove atividades sem computador, com ficha do professor, folhas para imprimir e gabarito.</span></div><a class="btn" href="${BASE}${CADERNO}" download type="application/pdf">Baixar o caderno (PDF)</a><a class="btn ghost" href="${BASE}datas-festivas/">Ver o caderno</a></div>`
-        : comp === 'CO' ? `<div class="hab-pdf"><div><strong>Apostila do professor: Computação na BNCC</strong><span>Uma ficha de 3 páginas para cada habilidade do 6º ao 9º ano: conceito, aplicação em sala, exemplos práticos, sites de apoio e rubrica.</span></div><a class="btn" href="${BASE}${APOSTILA}" download type="application/pdf">Baixar a apostila (PDF)</a><a class="btn ghost" href="${BASE}apostila-professor-bncc/">Ver as fichas</a></div>`
+        : comp === 'CO' && g.v !== '10' ? `<div class="hab-pdf"><div><strong>Apostila do professor: Computação na BNCC</strong><span>Uma ficha de 3 páginas para cada habilidade do 6º ao 9º ano: conceito, aplicação em sala, exemplos práticos, sites de apoio e rubrica.</span></div><a class="btn" href="${BASE}${APOSTILA}" download type="application/pdf">Baixar a apostila (PDF)</a><a class="btn ghost" href="${BASE}apostila-professor-bncc/">Ver as fichas</a></div>`
         : pdfs ? `<p class="muted hab-nota">Cada habilidade tem slides em PDF para uma aula expositiva de 30 minutos, com atividade e roteiro do professor. Clique na habilidade para ver o texto da BNCC e os jogos, fichas e planos que a trabalham.</p>`
         : `<p class="muted hab-nota">Clique na habilidade para ver o texto da BNCC e os jogos, recursos 3D, fichas e planos que a trabalham.</p>`;
       el.innerHTML = `
