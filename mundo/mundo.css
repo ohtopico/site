@@ -232,3 +232,9 @@ details.proj summary { cursor: pointer; }
 }
 .feira-noticia { background: #fff3c4; border: 2px solid #e8c547; border-radius: 12px; padding: 6px 10px; font-weight: 600; }
 .proj .tem { color: #2e7d32; font-weight: 600; } .proj .falta { color: #c0392b; }
+/* habilidades da BNCC de cada missão */
+.habs { display: inline-flex; flex-wrap: wrap; gap: 3px; vertical-align: middle; }
+.hab { font: 600 11px/1 Lexend, sans-serif; text-decoration: none; padding: 3px 6px; border-radius: 999px; background: #eef0f4; color: #4a5160; border: 1px solid #d5d9e2; cursor: help; }
+.hab.ok { background: #e3f4e6; color: #2e7d32; border-color: #b7dfbe; }
+.habs-turma { margin: 10px 0; } .habs-turma summary { cursor: pointer; font-weight: 600; }
+.habs-det { margin: 2px 0 6px 26px; font-size: 12px; } .habs-det summary { cursor: pointer; color: #5b6475; } .habs-det .habs { margin-top: 4px; }

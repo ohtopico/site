@@ -148,15 +148,16 @@
   const planejamento = [45, 50, 90, 100].flatMap(T => [[5, 20], [10, 25], [8, 30], [15, 15], [10, 20], [5, 30], [12, 18], [10, 30], [7, 23], [5, 15], [20, 10], [10, 10], [15, 20], [5, 25], [10, 15]].filter(([a, b]) => a + b < T).map(([a, b]) => Q(`Uma aula de <b>${T} minutos</b> tem ${a} min de abertura e ${b} min de atividade. Quanto tempo sobra para o fechamento?`, `${T - a - b} min`, [`${T - a} min`, `${T - b} min`, `${a + b} min`, `${T - a - b + 5} min`], `${T} − ${a} − ${b} = ${T - a - b}.`))).slice(0, 55);
   const avaliacao = [20, 25, 40, 50].flatMap(n => range(1, 15).map(k => Math.round(n * k / 15)).filter((a, i, l) => a > 0 && l.indexOf(a) === i).map(a => Q(`Numa turma de <b>${n} alunos</b>, ${a} atingiram o objetivo da aula. Que porcentagem é essa?`, `${fmt(a / n * 100)}%`, [`${fmt((n - a) / n * 100)}%`, `${a}%`, `${fmt(a / n * 10)}%`, `${fmt(a / n * 100 + 10)}%`], `${a} ÷ ${n} = ${fmt(a / n)}, ou seja, ${fmt(a / n * 100)}%.`)));
 
-  const B = (tema, ic, eixos, lista) => ({ tema, ic, eixos, lista });
+  /* habs: as habilidades da BNCC (Computação e Matemática) que o tema trabalha; a Escola dos Professores é para quem ensina e não tem */
+  const B = (tema, ic, eixos, lista, habs) => ({ tema, ic, eixos, lista, habs: habs || [] });
   window.PERGUNTAS_NPC = {
-    vila: [B('binário e bits', '🔢', ['MD'], binario), B('algoritmos e o computador', '🤖', ['PC', 'MD'], algoritmos)],
-    praca: [B('frações', '🍕', ['NU'], fracoes), B('potências, MDC e MMC', '🧮', ['NU'], potencias)],
-    padroes: [B('matrizes e tabelas', '🧱', ['PC'], matrizes), B('porcentagem', '💯', ['NU'], porcentagem), B('golpes e senhas', '🔐', ['CD', 'MD'], seguranca)],
-    redes: [B('recursão e sequências', '🌀', ['PC'], recursao), B('pacotes na rede', '📦', ['MD'], pacotes), B('computação paralela', '⚙️', ['MD', 'PC'], paralelismo)],
-    ia: [B('criptografia', '🕵️', ['MD'], cripto), B('grafos', '🕸️', ['PC'], grafos), B('IA e acurácia', '🤖', ['CD', 'PC'], ia), B('lógica booleana', '💡', ['PC'], logica)],
-    lab: [B('hexadecimal', '🔣', ['MD'], hex), B('neurônio artificial', '🧠', ['PC'], neuronio), B('regressão linear', '📈', ['AL'], regressao), B('pipeline do processador', '🏭', ['MD'], pipeline)],
-    medio: [B('endereços IP', '🌐', ['MD'], ip), B('consultas SQL', '🗃️', ['PC'], sql), B('estatística', '📊', ['CD'], estat), B('busca e eficiência', '🔍', ['PC'], busca), B('Python', '🐍', ['PC'], python)],
+    vila: [B('binário e bits', '🔢', ['MD'], binario, ['EF06CO01', 'EF06CO08']), B('algoritmos e o computador', '🤖', ['PC', 'MD'], algoritmos, ['EF06CO02', 'EF06CO03', 'EF06MA04'])],
+    praca: [B('frações', '🍕', ['NU'], fracoes, ['EF06MA07', 'EF06MA10']), B('potências, MDC e MMC', '🧮', ['NU'], potencias, ['EF06MA05', 'EF06MA06'])],
+    padroes: [B('matrizes e tabelas', '🧱', ['PC'], matrizes, ['EF07CO01']), B('porcentagem', '💯', ['NU'], porcentagem, ['EF06MA13', 'EF07MA02']), B('golpes e senhas', '🔐', ['CD', 'MD'], seguranca, ['EF07CO07', 'EF08CO10'])],
+    redes: [B('recursão e sequências', '🌀', ['PC'], recursao, ['EF08CO01', 'EF08MA10']), B('pacotes na rede', '📦', ['MD'], pacotes, ['EF06CO07', 'EF07CO06', 'EF08CO06']), B('computação paralela', '⚙️', ['MD', 'PC'], paralelismo, ['EF08CO05'])],
+    ia: [B('criptografia', '🕵️', ['MD'], cripto, ['EF09CO05']), B('grafos', '🕸️', ['PC'], grafos, ['EF07CO04', 'EF09CO01']), B('IA e acurácia', '🤖', ['CD', 'PC'], ia, ['EM13CO10', 'EF09CO10']), B('lógica booleana', '💡', ['PC'], logica, ['EF09CO03'])],
+    lab: [B('hexadecimal', '🔣', ['MD'], hex, ['EF06CO08']), B('neurônio artificial', '🧠', ['PC'], neuronio, ['EM13CO10']), B('regressão linear', '📈', ['AL'], regressao, ['EM13CO11', 'EM13CO12']), B('pipeline do processador', '🏭', ['MD'], pipeline, ['EF08CO05', 'EM13CO03'])],
+    medio: [B('endereços IP', '🌐', ['MD'], ip, ['EM13CO07']), B('consultas SQL', '🗃️', ['PC'], sql, ['EM13CO13']), B('estatística', '📊', ['CD'], estat, ['EM13CO12', 'EF08MA25']), B('busca e eficiência', '🔍', ['PC'], busca, ['EM13CO03', 'EF08CO03']), B('Python', '🐍', ['PC'], python, ['EM13CO01', 'EM13CO02'])],
     escola: [B('BNCC Computação', '📚', ['CD'], bncc), B('prompts', '💬', ['CD'], prompts), B('IA na educação: verdade ou mito', '🤔', ['CD'], mitos), B('planejamento de aula', '🗓️', ['GM'], planejamento), B('avaliação da turma', '📝', ['NU'], avaliacao)]
   };
 })();
