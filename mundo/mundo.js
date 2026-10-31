@@ -121,10 +121,11 @@
   const ITENS = { livro: ['📘', 'Livro'], diamante: ['💎', 'Diamante'], estrela: ['⭐', 'Estrela'], maca: ['🍎', 'Maçã'], chave: ['🔑', 'Chave'], peca: ['🧩', 'Peça de quebra-cabeça'],
     // vendidos nas lojas (só aparecem no inventário depois de comprados)
     petisco: ['🦴', 'Petisco'], sabonete: ['🧼', 'Sabonete'], brinquedo: ['🧸', 'Brinquedo'], suco: ['🧃', 'Suco'], bolo: ['🍰', 'Bolo'], sanduiche: ['🥪', 'Sanduíche'],
-    panetone: ['🍞', 'Panetone'], uvas: ['🍇', 'Uvas da sorte'], picole: ['🍦', 'Picolé'], ovoChoc: ['🍫', 'Ovo de chocolate'], pipoca: ['🍿', 'Pipoca'], pirulito: ['🍭', 'Pirulito'], cupcake: ['🧁', 'Cupcake'], docinho: ['🍬', 'Doce de abóbora'] };
+    panetone: ['🍞', 'Panetone'], uvas: ['🍇', 'Uvas da sorte'], picole: ['🍦', 'Picolé'], ovoChoc: ['🍫', 'Ovo de chocolate'], pipoca: ['🍿', 'Pipoca'], pirulito: ['🍭', 'Pirulito'], cupcake: ['🧁', 'Cupcake'], docinho: ['🍬', 'Doce de abóbora'],
+    isca: ['🪱', 'Isca'], peixe: ['🐟', 'Peixe'], peixeColorido: ['🐠', 'Peixe colorido'], camarao: ['🦐', 'Camarão'] };
   const LOJAS = {
     roupa: { fase: 0, nome: 'Loja de Roupas', ic: '👕', cor: '#f7a8c4', toldo: '#e0564a', texto: 'Acessórios e cores novas para o seu avatar.' },
-    comida: { fase: 1, nome: 'Mercadinho', ic: '🍎', cor: '#ffd58a', toldo: '#4bb259', texto: 'Comidinhas para o pet e os moradores, e ferramentas para juntar madeira e pedra.' },
+    comida: { fase: 1, nome: 'Mercadinho', ic: '🍎', cor: '#ffd58a', toldo: '#4bb259', texto: 'Comidinhas para o pet e os moradores, ferramentas para juntar madeira e pedra, e vara e iscas para pescar.' },
     pet: { fase: 2, nome: 'Pet Shop', ic: '🐾', cor: '#a8d8f7', toldo: '#3f8fe0', texto: 'Petiscos, banho e acessórios para o seu bichinho.' },
     moveis: { fase: 3, nome: 'Loja de Móveis', ic: '🛋️', cor: '#c7b4f2', toldo: '#9a6bd6', texto: 'Móveis prontos para a sua casa, sem precisar da bancada.' }
   };
@@ -137,7 +138,7 @@
   ];
   Object.assign(ITENS, { madeira: ['🪵', 'Madeira'], pedra: ['🪨', 'Pedra'] });   // recursos: só com o machado e a picareta da loja
   Object.assign(ITENS, { flor: ['🌸', 'Flor de primavera'], melancia: ['🍉', 'Melancia de verão'], folha: ['🍁', 'Folha de outono'], pinhao: ['🌰', 'Pinhão de inverno'] });
-  const ITENS_LOJA = new Set(['madeira', 'pedra', 'flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
+  const ITENS_LOJA = new Set(['madeira', 'pedra', 'isca', 'peixe', 'peixeColorido', 'camarao', 'flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
   const SORTEIO_ITENS = ['livro', 'diamante', 'estrela', 'livro', 'maca', 'diamante', 'chave', 'peca'];
   const DICAS = [
     'O computador guarda tudo em <strong>binário</strong>: só 0 e 1. Com 8 bits (um byte) dá para escrever 256 números diferentes, de 0 a 255.',
@@ -373,17 +374,29 @@
     for (let j = Math.floor(cy) - 1; j <= Math.floor(cy); j++) for (let k = Math.floor(cx) - 1; k <= Math.floor(cx); k++) f.sol[pos(k, j)] = 1;
     f.centro = { x: f.x0 + cx, y: cy };
     // lago num canto livre
+    f.agua = [];
     const cantos = [[0.22, 0.22], [0.78, 0.25], [0.25, 0.8], [0.78, 0.78]].sort(() => r() - 0.5);
-    for (const [ux, uy] of cantos) {
-      const lx = L * ux, ly = ALT * uy, ra = 2.4 + r() * 1.6, rb = 1.8 + r() * 1.2;
-      let livre = true;
-      for (let y = Math.floor(ly - rb - 2); y <= ly + rb + 2 && livre; y++) for (let x = Math.floor(lx - ra - 2); x <= lx + ra + 2; x++) if (!at(x, y) || f.tile[pos(x, y)] !== T.grama || f.sol[pos(x, y)]) { livre = false; break; }
-      if (!livre) continue;
+    const livreLago = (lx, ly, ra, rb, m) => { for (let y = Math.floor(ly - rb - m); y <= ly + rb + m; y++) for (let x = Math.floor(lx - ra - m); x <= lx + ra + m; x++) if (!at(x, y) || f.tile[pos(x, y)] !== T.grama || f.sol[pos(x, y)]) return false; return true; };
+    const cavaLago = (lx, ly, ra, rb) => {
       for (let y = Math.floor(ly - rb - 1); y <= ly + rb + 1; y++) for (let x = Math.floor(lx - ra - 1); x <= lx + ra + 1; x++) {
         const e = ((x + 0.5 - lx) / ra) ** 2 + ((y + 0.5 - ly) / rb) ** 2;
-        if (e < 1) { f.tile[pos(x, y)] = T.agua; f.sol[pos(x, y)] = 1; } else if (e < 1.7) f.tile[pos(x, y)] = T.areia;
+        if (e < 1) { f.tile[pos(x, y)] = T.agua; f.sol[pos(x, y)] = 1; f.agua.push({ x: f.x0 + x, y }); } else if (e < 1.7) f.tile[pos(x, y)] = T.areia;
       }
-      break;
+    };
+    for (const [ux, uy] of cantos) {
+      const lx = L * ux, ly = ALT * uy, ra = 2.4 + r() * 1.6, rb = 1.8 + r() * 1.2;
+      if (!livreLago(lx, ly, ra, rb, 2)) continue;
+      cavaLago(lx, ly, ra, rb); break;
+    }
+    // sem canto livre, um laguinho menor onde couber (com outro sorteio, para não mudar o resto da vila)
+    if (!f.agua.length) {
+      const r2 = rng(5000 + f.idx), lugares = [];
+      for (let y = 4; y < ALT - 4; y += 2) for (let x = 4; x < L - 4; x += 2) lugares.push([x + 0.5, y + 0.5, r2()]);
+      lugares.sort((p, q) => p[2] - q[2]);
+      for (const [rr, rbb] of [[2.2, 1.7], [1.7, 1.3]]) {
+        const ok = lugares.find(([lx, ly]) => livreLago(lx, ly, rr, rbb, 1));
+        if (ok) { cavaLago(ok[0], ok[1], rr, rbb); break; }
+      }
     }
     // árvores: cerca nas bordas (com a passagem da estrada) e um bosque espalhado
     f.arvores = [];
@@ -424,7 +437,7 @@
     f.evItens = eventosProntos ? itensEvento(f) : [];
   }
   /* desmonta a vila (o que ocupa memória: chão, árvores, flores, casas, itens); moradores, portões e as casas especiais ficam */
-  function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'rochas', 'flores', 'casas', 'itens', 'cercas', 'evItens']) delete f[k]; }
+  function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'rochas', 'agua', 'flores', 'casas', 'itens', 'cercas', 'evItens']) delete f[k]; }
   for (const f of fases) { monta(f); desmonta(f); }        // uma passada para guardar a posição das casas especiais e dos moradores
   const LARG = ALT;
   let atual = fases[0];
@@ -1090,6 +1103,7 @@
     // árvores e rochas só viram alvo bem de perto, para não roubar a vez das casas e dos moradores
     if (!melhor) for (const a of f.arvores) { const d = Math.hypot(a.x + 0.5 - P.x, a.y + 0.5 - P.y); if (d < Math.min(dm, 1.05)) { dm = d; melhor = { tipo: 'recurso', rec: 'madeira', obj: a }; } }
     if (!melhor || melhor.tipo === 'recurso') for (const o of f.rochas || []) { const d = Math.hypot(o.x + 0.5 - P.x, o.y + 0.5 - P.y); if (d < Math.min(dm, 1.05)) { dm = d; melhor = { tipo: 'recurso', rec: 'pedra', obj: o }; } }
+    if (!melhor) for (const o of f.agua || []) { const d = Math.hypot(o.x + 0.5 - P.x, o.y + 0.5 - P.y); if (d < Math.min(dm, 1.2)) { dm = d; melhor = { tipo: 'pesca' }; } }
     for (const p of f.portais) tenta(p.x + (p.lado === 'L' ? -1 : p.lado === 'O' ? 1 : 0), p.y + (p.lado === 'S' ? -1 : p.lado === 'N' ? 1 : 0), { tipo: 'portao', portal: p, fase: f });
     return melhor;
   }
@@ -1410,7 +1424,7 @@
   /* ---------- lojas: as ⭐ compram coisas, mas só depois de acertar a conta ----------
      À vista tem 10% de desconto; parcelado tem 5% de juros por parcela. A primeira parcela é paga na hora
      e as outras, uma por dia. Nunca dá para gastar mais do que o saldo + o crédito que ainda sobra. */
-  const COMIDA = { melancia: [20, 25], pinhao: [25, 15], petisco: [25, 15], suco: [15, 10], sanduiche: [40, 5], bolo: [30, 25], panetone: [35, 30], uvas: [20, 30], picole: [15, 35], ovoChoc: [25, 35], pipoca: [20, 30], pirulito: [10, 40], cupcake: [25, 30], docinho: [20, 35] };   // [fome, alegria] para o pet
+  const COMIDA = { melancia: [20, 25], pinhao: [25, 15], petisco: [25, 15], suco: [15, 10], sanduiche: [40, 5], bolo: [30, 25], panetone: [35, 30], uvas: [20, 30], picole: [15, 35], ovoChoc: [25, 35], pipoca: [20, 30], pirulito: [10, 40], cupcake: [25, 30], docinho: [20, 35], peixe: [35, 15], peixeColorido: [30, 25], camarao: [25, 20] };   // [fome, alegria] para o pet
   const EXCLUSIVOS = {
     natal: [['gorro', '🎅', 'Gorro de Papai Noel'], ['panetone']], anonovo: [['cartola', '🎩', 'Cartola de Ano Novo'], ['uvas']],
     carnaval: [['mascara', '🎭', 'Máscara de Carnaval'], ['picole']], pascoa: [['orelhas', '🐰', 'Orelhas de coelho'], ['ovoChoc']],
@@ -1423,7 +1437,7 @@
     const base = {
       roupa: [['av', 'oculos', '🕶️', 40], ['av', 'laco', '🎀', 40], ['av', 'chapeu', '🎩', 50], ['av', 'cachecol', '🧣', 60], ['av', 'coroa', '👑', 160],
         ['cor', 'camisa:#2b2d6e', '👕', 60, 'Camiseta galáxia'], ['cor', 'camisa:#ff8fab', '👕', 60, 'Camiseta chiclete'], ['cor', 'calca:#7aa6d6', '👖', 40, 'Calça jeans clara']],
-      comida: [['ferr', 'machado', '🪓', 80, 'Machado (corta madeira das árvores)'], ['ferr', 'picareta', '⛏️', 100, 'Picareta (tira pedra das rochas)'], ['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
+      comida: [['ferr', 'machado', '🪓', 80, 'Machado (corta madeira das árvores)'], ['ferr', 'picareta', '⛏️', 100, 'Picareta (tira pedra das rochas)'], ['ferr', 'vara', '🎣', 90, 'Vara de pesca (pesque no laguinho)'], ['inv', 'isca', '🪱', 30, '5 iscas', 5], ['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
       pet: [['inv', 'petisco', '🦴', 20, '2 petiscos', 2], ['inv', 'sabonete', '🧼', 20], ['inv', 'brinquedo', '🧸', 40], ['pet', 'lenco', '🧣', 50], ['pet', 'cachecol', '🧣', 50]],
       moveis: [['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]]
     }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco: caro(preco), nome, qtd }));
@@ -1539,7 +1553,7 @@
     S.loja.compras++;
     lojaEscolha = null; hud(); salvar();
   }
-  const dicaUso = p => p.tipo === 'ferr' ? 'Já está com você: chegue perto de uma árvore ou rocha e aperte E.' : p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
+  const dicaUso = p => p.id === 'vara' || p.id === 'isca' ? 'Chegue na beira de um laguinho e aperte E para pescar.' : p.tipo === 'ferr' ? 'Já está com você: chegue perto de uma árvore ou rocha e aperte E.' : p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
   /* ---------- modo turma: sem servidor, o aluno gera um código de progresso e envia para a professora,
      que cola os códigos no painel (material-didatico/turma-mundo.html) para ver o ranking e o progresso ---------- */
   function resumoTurma() {
@@ -2595,7 +2609,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'pesca' ? (S.loja.tem['ferr:vara'] ? `E · pescar (🪱 ${S.inv.isca || 0})` : 'Laguinho · precisa de 🎣 vara') : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
       anuncia((alvo.tipo === 'casa' ? alvo.casa.lugar.titulo + '. ' : '') + t);
     } else anuncia('');
@@ -2938,12 +2952,42 @@
     R.feitos[chave] = true; S.inv[a.rec] = (S.inv[a.rec] || 0) + 1;
     SOM.toca('coleta'); aviso(`${ITENS[a.rec][0]} +1 ${ITENS[a.rec][1].toLowerCase()} (você tem ${S.inv[a.rec]})`); hud(); salvar();
   }
+  // pesca: cada isca é uma tentativa; as chances de cada peixe aparecem como fração, para conversar sobre probabilidade
+  const PESCA = [['peixe', 5], ['peixeColorido', 2], ['camarao', 2], ['bota', 1]];
+  function pesca() {
+    if (!S.loja.tem['ferr:vara']) return dialogo('🎣', 'Laguinho', '<p>Para pescar aqui, você precisa de uma <b>vara de pesca</b> e de <b>iscas</b>. As duas estão no 🍎 Mercadinho, na Praça dos Números.</p>', [{ txt: 'Entendi', fn: fechaDialogo }]);
+    if (!S.inv.isca) return dialogo('🪱', 'Sem iscas', '<p>Suas iscas acabaram. Compre mais no 🍎 Mercadinho, na Praça dos Números.</p>', [{ txt: 'Entendi', fn: fechaDialogo }]);
+    S.inv.isca--; salvar(); hud();
+    let fisgou = false, tPuxa = null;
+    const total = PESCA.reduce((a, [, n]) => a + n, 0);
+    const chances = '<p class="muted small">Chances em cada isca: ' + PESCA.map(([k, n]) => `${k === 'bota' ? '🥾' : ITENS[k][0]} ${n} em ${total}`).join(' · ') + '</p>';
+    const resultado = ok => {
+      clearTimeout(tPuxa); if (fisgou) return; fisgou = true;
+      if (!ok) return dialogo('💨', 'Escapou!', `<p>O peixe soltou a isca. Você ainda tem 🪱 ${S.inv.isca || 0}.</p>${chances}`, [...(S.inv.isca ? [{ txt: 'Pescar de novo', classe: 'principal', fn: pesca }] : []), { txt: 'Parar', fn: fechaDialogo }]);
+      let sorte = Math.random() * total, k = PESCA[0][0];
+      for (const [id, n] of PESCA) { if ((sorte -= n) < 0) { k = id; break; } }
+      const P2 = S.pesca || (S.pesca = { total: 0, tipos: {} }); P2.total++; P2.tipos[k] = (P2.tipos[k] || 0) + 1;
+      let txt;
+      if (k === 'bota') { S.pontos += 5; txt = '<p>Você pescou uma 🥾 bota velha! Ela vai para a reciclagem e você ganha <b>5 ⭐</b> por limpar o laguinho.</p>'; }
+      else { S.inv[k] = (S.inv[k] || 0) + 1; txt = `<p>Você pescou ${ITENS[k][0]} <b>${ITENS[k][1].toLowerCase()}</b>! Ele vai para o inventário e pode ser comida para o seu pet 🐾.</p>`; }
+      SOM.toca('coleta'); hud(); salvar();
+      dialogo(k === 'bota' ? '🥾' : ITENS[k][0], 'Pescou!', `${txt}<p class="small">Peixes pescados até agora: <b>${P2.total}</b> · iscas: 🪱 ${S.inv.isca || 0}</p>${chances}`, [...(S.inv.isca ? [{ txt: 'Pescar de novo', classe: 'principal', fn: pesca }] : []), { txt: 'Parar', fn: fechaDialogo }]);
+    };
+    dialogo('🎣', 'Pescando...', '<p>Você jogou a linha no laguinho. Espere o peixe morder a isca!</p>', [{ txt: 'Puxar', fn: () => resultado(false) }, { txt: 'Parar', fn: () => { fisgou = true; clearTimeout(tPuxa); fechaDialogo(); } }]);
+    tPuxa = setTimeout(() => {
+      if (fisgou || !dialogoAberto || D.nome.textContent !== 'Pescando...') return;
+      // com "menos movimento" ligado, o peixe espera o tempo que for preciso
+      dialogo('🐟', 'Mordeu!', '<p><b>O peixe mordeu! Puxe agora!</b></p>', [{ txt: 'Puxar!', classe: 'principal', fn: () => resultado(true) }]);
+      anuncia('O peixe mordeu! Puxe agora!');
+      if (!ACESS.p().calmo) tPuxa = setTimeout(() => { if (dialogoAberto && D.nome.textContent === 'Mordeu!') resultado(false); }, 2000);
+    }, 1200 + Math.random() * 1800);
+  }
   function interage() {
     if (dialogoAberto || janelaAberta) return;
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pesca') return pesca(); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
