@@ -405,6 +405,168 @@
       "imagem_antes": true,
       "alt": "Cartão O interesse por IA na Wikipédia, com três destaques: 2,9 vezes, o verbete Inteligência artificial teve 274 mil visitas em 2023, quase o triplo de 2022; 9 milhões de visitas ao verbete ChatGPT desde o lançamento, em dezembro de 2022; 2,8 vezes, Modelos de linguagem em grande escala passou de 6,3 mil visitas em 2023 para 17,5 mil em 2025. Rodapé: painel interativo, jogo e plano de aula em ohtopico.com.br/interesse-por-ia. Wikipédia em português, só visitas de pessoas, dados abertos da Wikimedia até setembro de 2026. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.",
       "legenda": "Três destaques do painel de interesse por IA."
+    },
+    {
+      "slug": "o-que-e-ia-generativa-para-professores",
+      "titulo": "O que é IA generativa e por que ela erra: o básico para professores",
+      "titulo_seo": "O que é IA generativa: o básico de IA para professores",
+      "descricao": "Como a IA generativa escreve uma resposta, por que ela inventa informações com segurança e como explicar isso para a equipe e para os alunos.",
+      "palavras_chave": [
+        "IA para professores",
+        "IA generativa",
+        "alucinações da IA",
+        "letramento em IA"
+      ],
+      "data": "2026-11-17",
+      "arquivo_janela": "ia-generativa.txt",
+      "imagem": "ia-generativa.png",
+      "imagem_depois_de": "<h2>Por que a IA erra</h2>",
+      "alt": "Cartão A IA não sabe, ela prevê. Por isso ela escreve bem: aprendeu com muitos textos e escolhe a continuação mais provável. E pode errar com segurança: sem a informação, inventa citação, data ou livro com o mesmo tom confiante. Rodapé: a IA faz o rascunho, você faz a revisão.",
+      "legenda": "Por que a IA escreve bem e por que ela erra.",
+      "secao": "IA na prática",
+      "imagem_antes": true
+    },
+    {
+      "slug": "criar-exercicios-com-ia",
+      "titulo": "Como criar exercícios com IA sem levar erro para a sala",
+      "titulo_seo": "Como criar exercícios com IA: passo a passo para professores",
+      "descricao": "Passo a passo para criar listas de exercícios com IA, pedir o gabarito resolvido, conferir com um checklist e adaptar para a sua turma.",
+      "palavras_chave": [
+        "IA para professores",
+        "exercícios com IA",
+        "lista de exercícios",
+        "prompts para professores"
+      ],
+      "data": "2026-11-24",
+      "arquivo_janela": "lista-de-exercicios.txt",
+      "imagem": "exercicios-ia.png",
+      "imagem_depois_de": "<h2>Passo 3: confira com este checklist</h2>",
+      "alt": "Cartão Antes de imprimir, confira: conteúdo no ano certo, enunciado que se entende sozinho, gabarito com contas e unidades certas, contexto que faz sentido para os alunos e dificuldade que realmente aumenta. Rodapé: revise o gabarito antes de tudo.",
+      "legenda": "O checklist para conferir a lista antes de imprimir.",
+      "secao": "IA na prática",
+      "imagem_antes": true
+    },
+    {
+      "slug": "correcao-e-devolutiva-com-ia",
+      "titulo": "Correção e devolutiva com IA: onde ela ajuda e onde não entra",
+      "titulo_seo": "Correção com IA: rubricas e devolutivas sem terceirizar a avaliação",
+      "descricao": "Como usar IA para criar rubricas e escrever devolutivas a partir das suas anotações, sem dar a nota e sem expor os trabalhos dos alunos.",
+      "palavras_chave": [
+        "IA para professores",
+        "correção com IA",
+        "rubrica de avaliação",
+        "devolutiva"
+      ],
+      "data": "2026-12-01",
+      "arquivo_janela": "correcao.txt",
+      "imagem": "correcao-ia.png",
+      "imagem_depois_de": "<h2>Onde a IA ajuda</h2>",
+      "alt": "Cartão A IA organiza, você avalia. Ajuda: criar a rubrica, escrever a devolutiva a partir das suas anotações, achar os erros que se repetem na turma. Não entra: dar a nota, receber trabalho com nome do aluno, decidir sozinha o que está certo. Rodapé: a devolutiva vai com o seu nome.",
+      "legenda": "Onde a IA ajuda na correção e onde ela não entra.",
+      "secao": "IA na prática",
+      "imagem_antes": true
+    },
+    {
+      "slug": "adaptar-atividades-com-ia",
+      "titulo": "Como adaptar atividades com IA sem expor o aluno",
+      "titulo_seo": "Como adaptar atividades com IA para inclusão, sem expor o aluno",
+      "descricao": "Como pedir à IA atividades adaptadas para alunos com dificuldade de leitura, de atenção ou com deficiência, descrevendo a necessidade e não o diagnóstico.",
+      "palavras_chave": [
+        "IA para professores",
+        "adaptação de atividades",
+        "educação inclusiva",
+        "AEE",
+        "LGPD"
+      ],
+      "data": "2026-12-08",
+      "arquivo_janela": "adaptacao.txt",
+      "imagem": "adaptar-atividades-ia.png",
+      "imagem_depois_de": "<h2>Cinco tipos de adaptação que a IA faz bem</h2>",
+      "alt": "Cartão A barreira, não o aluno. Exemplo de pedido: lê com dificuldade textos longos e se perde em instruções com várias etapas. Cinco adaptações: dividir em etapas, simplificar o enunciado, versões em níveis, apoios visuais e outra forma de resposta. Rodapé: adaptar não é empobrecer.",
+      "legenda": "Cinco adaptações que a IA faz bem, sem dados do aluno.",
+      "secao": "IA na prática",
+      "imagem_antes": true
+    },
+    {
+      "slug": "combinados-de-uso-de-ia-com-a-turma",
+      "titulo": "Combinados de uso de IA com a turma: um modelo para a sala",
+      "titulo_seo": "Combinados de uso de IA com os alunos: modelo para a sala de aula",
+      "descricao": "Como combinar com a turma quando, como e para que a IA pode ser usada, com três perguntas para a conversa e um modelo de combinados para adaptar.",
+      "palavras_chave": [
+        "IA para professores",
+        "IA na sala de aula",
+        "combinados",
+        "uso de IA pelos alunos"
+      ],
+      "data": "2026-12-15",
+      "arquivo_janela": "combinados-da-turma.txt",
+      "imagem": "combinados-ia.png",
+      "imagem_depois_de": "<h2>Um modelo de combinados</h2>",
+      "alt": "Cartão Combinados de IA da turma: uso IA para entender e tirar dúvidas; uso IA para revisar o que eu escrevi, se eu avisar; não uso IA para fazer por mim o que é para eu aprender; conto como usei; confiro o que a IA diz; não coloco dados meus ou dos colegas no prompt. Espaço para a data da assinatura da turma.",
+      "legenda": "Os combinados num cartão para imprimir e assinar com a turma.",
+      "secao": "IA na prática",
+      "imagem_antes": true
+    },
+    {
+      "slug": "detectores-de-ia-funcionam",
+      "titulo": "Detectores de IA funcionam? O que fazer quando desconfiar",
+      "titulo_seo": "Detectores de IA funcionam? O que o professor pode fazer",
+      "descricao": "Por que os detectores de texto feito por IA não servem como prova, o risco de acusar um aluno e o que fazer no lugar.",
+      "palavras_chave": [
+        "IA para professores",
+        "detector de IA",
+        "avaliação",
+        "plágio com IA"
+      ],
+      "data": "2026-12-22",
+      "arquivo_janela": "detector.txt",
+      "imagem": "detectores-ia.png",
+      "imagem_depois_de": "<h2>O que fazer no lugar</h2>",
+      "alt": "Cartão Detector não é prova. Em vez de: o detector disse que você usou IA. Experimente: gostei deste argumento, me conta como você chegou nele? Três atitudes: conheça a escrita dos alunos, avalie o processo e não só o produto, combine quando a IA pode ser usada.",
+      "legenda": "Troque a acusação por uma conversa.",
+      "secao": "IA na prática",
+      "imagem_antes": true
+    },
+    {
+      "slug": "vieses-da-ia-atividade-sala-de-aula",
+      "titulo": "Vieses da IA: uma atividade para os alunos descobrirem",
+      "titulo_seo": "Vieses da IA: atividade de 50 minutos para a sala de aula",
+      "descricao": "Uma atividade de uma aula para os alunos descobrirem como a IA pode repetir estereótipos, com roteiro, dicas e ligação com a BNCC Computação.",
+      "palavras_chave": [
+        "IA para professores",
+        "vieses da IA",
+        "letramento em IA",
+        "BNCC Computação",
+        "cultura digital"
+      ],
+      "data": "2026-12-29",
+      "arquivo_janela": "detetives-de-vies.txt",
+      "imagem": "vieses-ia.png",
+      "imagem_depois_de": "<h2>Atividade: detetives de viés (50 minutos)</h2>",
+      "alt": "Cartão Detetives de viés, em quatro etapas: previsão, 10 minutos; experimento trocando a profissão, 15 minutos; análise de quem aparece mais, 15 minutos; conversa sobre por que a IA faz isso, 10 minutos. Rodapé: a IA repete o que viu com mais frequência.",
+      "legenda": "O roteiro da atividade em quatro etapas.",
+      "secao": "IA na prática",
+      "imagem_antes": true
+    },
+    {
+      "slug": "como-comecar-a-usar-ia-na-escola",
+      "titulo": "Como começar a usar IA na escola: um plano de quatro semanas",
+      "titulo_seo": "Como começar a usar IA na escola: plano de 4 semanas para professores",
+      "descricao": "Um plano de quatro semanas para professores começarem a usar IA: experimentar, levar uma tarefa para a sala, conversar com a turma e envolver a equipe.",
+      "palavras_chave": [
+        "IA para professores",
+        "IA na escola",
+        "formação de professores em IA",
+        "como começar"
+      ],
+      "data": "2027-01-05",
+      "arquivo_janela": "plano-4-semanas.txt",
+      "imagem": "comecar-ia-escola.png",
+      "imagem_depois_de": "<h2>Semana 1: entender e experimentar</h2>",
+      "alt": "Cartão IA na escola em 4 semanas: 1, entender e experimentar; 2, uma tarefa da sala; 3, conversar com a turma; 4, levar para a equipe. Rodapé: comece pequeno, sem dados de alunos.",
+      "legenda": "O plano de quatro semanas num cartão.",
+      "secao": "IA na prática",
+      "imagem_antes": true
     }
   ],
   "movidos": [
