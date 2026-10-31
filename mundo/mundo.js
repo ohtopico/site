@@ -1646,6 +1646,67 @@
       catch (e) { document.execCommand && document.execCommand('copy'); aviso('📋 Código selecionado: copie e envie.'); }
     });
   }
+  /* ---------- ranking entre amigos: cada um gera um código MUNA1 e cola o dos amigos; tudo fica só no aparelho, sem servidor ---------- */
+  const camposAmigo = o => [o.id, o.n, o.p, o.a, o.f, o.g, o.pe, o.d];
+  const resumoAmigo = () => {
+    if (!S.amigoId) S.amigoId = Math.random().toString(36).slice(2, 10);
+    return { id: S.amigoId, n: S.apelido || '', p: S.pontos, a: S.acertos, f: Object.keys(S.concluidas).length, g: Object.values(S.album.tem).filter(n => n > 0).length, pe: (S.pesca && S.pesca.total) || 0, d: Date.now() };
+  };
+  async function codigoAmigo() {
+    const P = window.MDP && MDP.pacote; if (!P) throw new Error('sem pacote');
+    const o = resumoAmigo(); o.s = await P.assinatura(JSON.stringify(camposAmigo(o)));
+    return P.empacotar('MUNA1', o);
+  }
+  async function leCodigosAmigos(txt) {
+    const P = MDP.pacote, achou = String(txt).replace(/\s+/g, ' ').match(/MUNA1[jz]\.[A-Za-z0-9_-]+/g) || [];
+    const A = S.amigos || (S.amigos = {}); let novos = 0, ruins = 0;
+    for (const c of achou) {
+      try {
+        const o = await P.desempacotar('MUNA1', c);
+        if (o.s !== await P.assinatura(JSON.stringify(camposAmigo(o))) || !o.id || o.id === S.amigoId) { ruins++; continue; }
+        if (!A[o.id] || A[o.id].d < o.d) { A[o.id] = { n: String(o.n || 'Amigo').slice(0, 20), p: +o.p || 0, a: +o.a || 0, f: +o.f || 0, g: +o.g || 0, pe: +o.pe || 0, d: o.d }; novos++; }
+      } catch (e) { ruins++; }
+    }
+    const ids = Object.keys(A).sort((x, y) => A[y].d - A[x].d); for (const k of ids.slice(40)) delete A[k];   // no máximo 40 amigos
+    salvar(); return { novos, ruins, total: achou.length };
+  }
+  let ordemAmigos = 'p';
+  function janelaAmigos() {
+    const el = $('#amigos-conteudo'), A = S.amigos || {}, eu = Object.assign(resumoAmigo(), { eu: true, n: S.apelido || 'Você' });
+    const lista = Object.values(A).concat([eu]).sort((x, y) => y[ordemAmigos] - x[ordemAmigos] || y.p - x.p);
+    const quando = d => { const h = (Date.now() - d) / 36e5; return h < 1 ? 'agora há pouco' : h < 24 ? `há ${Math.floor(h)} h` : `há ${Math.floor(h / 24)} dia(s)`; };
+    const col = (k, t) => `<th><button type="button" class="ord ${ordemAmigos === k ? 'ativa' : ''}" data-ord="${k}" aria-pressed="${ordemAmigos === k}">${t}</button></th>`;
+    el.innerHTML = `<p>Compare o seu progresso com o dos seus amigos. Cada um gera o seu código e manda para os outros; você cola os códigos que recebeu aqui. Nada vai para a internet: o ranking fica só neste aparelho.</p>
+      <label>Seu apelido no ranking <input id="am-apelido" class="campo" maxlength="20" value="${esc(S.apelido || '')}" autocomplete="off" placeholder="Ex.: Bia do 8A"></label>
+      <p class="muted small">Use um apelido, não o nome completo.</p>
+      <div class="btn-row"><button type="button" class="hb verde" id="am-gerar">📤 Gerar meu código</button></div>
+      <div id="am-saida" hidden><textarea id="am-codigo" class="campo" rows="2" readonly aria-label="Seu código de amigo"></textarea>
+        <div class="btn-row"><button type="button" class="hb azul" id="am-copiar">📋 Copiar</button></div>
+        <p class="muted small">O código leva o apelido, os pontos, os acertos, as vilas concluídas, as figurinhas e os peixes. Gere outro quando quiser mostrar o progresso novo.</p></div>
+      <h3>Códigos dos amigos</h3>
+      <textarea id="am-colar" class="campo" rows="2" placeholder="Cole aqui um ou vários códigos (começam com MUNA1)" aria-label="Colar códigos dos amigos"></textarea>
+      <div class="btn-row"><button type="button" class="hb verde" id="am-add">➕ Adicionar ao ranking</button></div>
+      <h3>🏆 Ranking</h3>
+      <div class="tabela-rolar"><table class="ranking-amigos"><thead><tr><th>#</th><th>Apelido</th>${col('p', '⭐ Pontos')}${col('a', '🧠 Acertos')}${col('f', '🏡 Vilas')}${col('g', '📒 Figurinhas')}${col('pe', '🎣 Peixes')}<th></th></tr></thead><tbody>
+      ${lista.map((o, i) => `<tr class="${o.eu ? 'eu' : ''}"><td>${i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1}</td><td>${esc(o.n)}${o.eu ? ' <span class="muted small">(você)</span>' : `<br><span class="muted small">${quando(o.d)}</span>`}</td><td>${o.p}</td><td>${o.a}</td><td>${o.f}</td><td>${o.g}</td><td>${o.pe}</td><td>${o.eu ? '' : `<button type="button" class="d-x" data-tirar="${esc(Object.keys(A).find(k => A[k] === o))}" aria-label="Tirar ${esc(o.n)} do ranking">✕</button>`}</td></tr>`).join('')}
+      </tbody></table></div>
+      ${lista.length < 2 ? '<p class="muted small">Ainda não tem amigos no ranking: troque códigos com a turma!</p>' : ''}`;
+    $('#am-apelido').addEventListener('change', e => { S.apelido = e.target.value.trim().slice(0, 20); salvar(); });
+    $('#am-gerar').addEventListener('click', async () => {
+      S.apelido = $('#am-apelido').value.trim().slice(0, 20);
+      if (!S.apelido) { aviso('Escreva um apelido para o ranking.'); return; }
+      salvar();
+      try { $('#am-codigo').value = await codigoAmigo(); $('#am-saida').hidden = false; $('#am-codigo').select(); } catch (e) { aviso('Não deu para gerar o código neste navegador.'); }
+    });
+    $('#am-copiar').addEventListener('click', async () => { $('#am-codigo').select(); try { await navigator.clipboard.writeText($('#am-codigo').value); aviso('📋 Código copiado! Mande para os seus amigos.'); } catch (e) { document.execCommand && document.execCommand('copy'); aviso('📋 Código selecionado: copie e envie.'); } });
+    $('#am-add').addEventListener('click', async () => {
+      const r = await leCodigosAmigos($('#am-colar').value);
+      if (!r.total) { aviso('Não achei nenhum código de amigo (começa com MUNA1).'); return; }
+      janelaAmigos(); aviso(r.ruins ? `${r.novos} código(s) adicionado(s); ${r.ruins} não conferiu(ram) e ficou de fora.` : `🏆 ${r.novos} código(s) no ranking!`);
+    });
+    el.querySelectorAll('[data-ord]').forEach(b => b.addEventListener('click', () => { ordemAmigos = b.dataset.ord; janelaAmigos(); }));
+    el.querySelectorAll('[data-tirar]').forEach(b => b.addEventListener('click', () => { delete A[b.dataset.tirar]; salvar(); janelaAmigos(); }));
+  }
   /* ---------- levar para outro aparelho: o jogo inteiro (e o Meu progresso dos jogos) vira um código MUNS1 ou um arquivo ---------- */
   async function codigoSalvamento() {
     const P = window.MDP && MDP.pacote; if (!P) throw new Error('sem pacote');
@@ -2993,7 +3054,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -3295,7 +3356,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

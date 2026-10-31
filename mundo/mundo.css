@@ -243,3 +243,13 @@ body.calmo *, body.calmo *::before, body.calmo *::after { transition: none !impo
 body.letra-grande .d-caixa, body.letra-grande .j-caixa, body.letra-grande .aviso, body.letra-grande .teclas { zoom: 1.22; } body.letra-grande .missoes li { font-size: 17px; }
 body.letra-grande .hud-topo .stat, body.letra-grande .hb { font-size: 17px; }
 @media (max-width: 900px), (max-height: 500px) { body.letra-grande .d-caixa, body.letra-grande .j-caixa, body.letra-grande .missoes { zoom: 1; } body.letra-grande .d-texto, body.letra-grande .j-caixa { font-size: 18px; } body.letra-grande .d-opcoes button { font-size: 17px; } }
+
+/* ranking entre amigos */
+.tabela-rolar { overflow-x: auto; }
+.ranking-amigos { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ranking-amigos th, .ranking-amigos td { padding: 5px 6px; border-bottom: 1px solid rgba(0,0,0,.08); text-align: center; }
+.ranking-amigos td:nth-child(2), .ranking-amigos th:nth-child(2) { text-align: left; }
+.ranking-amigos tr.eu { background: #fff3c4; font-weight: 600; }
+.ranking-amigos .ord { background: none; border: 0; font: inherit; font-weight: 600; cursor: pointer; padding: 2px 4px; border-radius: 6px; }
+.ranking-amigos .ord.ativa { background: #ffd58a; }
+.ranking-amigos .d-x { width: 26px; height: 26px; font-size: 12px; }
