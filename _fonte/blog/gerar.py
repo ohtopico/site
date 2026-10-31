@@ -540,7 +540,8 @@ def pagina_mentoria(cfg, dims):
     <section class="chamada" aria-labelledby="conversar">
         <h2 id="conversar">Vamos conversar</h2>
         <p>Conte um pouco sobre a sua disciplina ou função e eu respondo com uma proposta.</p>
-        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Mentoria%20de%20IA%20para%20professores">Falar com Júlia Roberta Quoos Alves</a>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Mentoria%20de%20IA%20para%20professores." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Mentoria%20de%20IA%20para%20professores">Enviar e-mail</a>
     </section>
 </article>'''
     robots = 'noindex, follow' if pendente else 'index, follow'
@@ -638,7 +639,8 @@ def pagina_formacao(cfg, dims):
     <section class="chamada" aria-labelledby="planejar">
         <h2 id="planejar">Planejar a formação da sua equipe</h2>
         <p>Conte o tamanho da equipe, as etapas de ensino e o que já foi feito com IA na escola ou na rede. A resposta vem com uma proposta de formato e de cronograma.</p>
-        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Forma%C3%A7%C3%A3o%20continuada%20de%20professores%20em%20IA">Falar com Júlia Roberta Quoos Alves</a>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Forma%C3%A7%C3%A3o%20continuada%20de%20professores%20em%20IA." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Forma%C3%A7%C3%A3o%20continuada%20de%20professores%20em%20IA">Enviar e-mail</a>
     </section>
 </article>'''
     head = cabeca('Formação de professores em IA para escolas | Júlia Quoos', descricao, url, f'{site}/blog/img/{FORMACAO_IMAGEM}', alt, 'website',
@@ -698,7 +700,8 @@ def pagina_computacao(cfg):
     <section class="chamada" aria-labelledby="levar-escola">
         <h2 id="levar-escola">Levar para a sua escola ou rede</h2>
         <p>Material gratuito, guia e formação da equipe estão reunidos na página <a href="/para-escolas/">para escolas e redes de ensino</a>. Conte as etapas de ensino e o que a escola já tem, e a resposta vem com uma proposta de formato.</p>
-        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Computa%C3%A7%C3%A3o%20na%20escola">Falar com Júlia Roberta Quoos Alves</a>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Computa%C3%A7%C3%A3o%20na%20escola." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Computa%C3%A7%C3%A3o%20na%20escola">Enviar e-mail</a>
     </section>
 </article>'''
     head = cabeca(titulo + ' | Júlia Quoos', descricao, url, imagem, alt, 'website',
@@ -826,7 +829,8 @@ def pagina_para_escolas(cfg):
     <section class="chamada" aria-labelledby="conversar">
         <h2 id="conversar">Conversar sobre a sua escola ou rede</h2>
         <p>Conte quantas escolas e professores são, as etapas de ensino e o que já foi feito com Computação e IA. A resposta vem com uma sugestão de por onde começar.</p>
-        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Computa%C3%A7%C3%A3o%20e%20IA%20para%20escolas%20e%20redes">Falar com Júlia Roberta Quoos Alves</a>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Computa%C3%A7%C3%A3o%20e%20IA%20para%20escolas%20e%20redes." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Computa%C3%A7%C3%A3o%20e%20IA%20para%20escolas%20e%20redes">Enviar e-mail</a>
     </section>
 </article>'''
     head = cabeca('Computação e IA para escolas e redes | Júlia Quoos', descricao, url, imagem, alt, 'website',
@@ -1194,7 +1198,8 @@ def pagina_quiz(cfg):
     <section class="chamada" aria-labelledby="levar-escola">
         <h2 id="levar-escola">Levar o pensamento computacional para a sua escola</h2>
         <p>Na <a href="/formacao-continuada/">formação continuada de professores</a>, cada área planeja atividades de pensamento computacional e de IA com o material real da escola. Para um acompanhamento individual, há a <a href="/mentoria/">mentoria</a>.</p>
-        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Pensamento%20computacional%20na%20escola">Falar com Júlia Roberta Quoos Alves</a>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Pensamento%20computacional%20na%20escola." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Pensamento%20computacional%20na%20escola">Enviar e-mail</a>
     </section>
 </article>'''
     extra = ('<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld
@@ -1347,7 +1352,8 @@ def pagina_teste(cfg):
     <section class="chamada" aria-labelledby="levar-escola">
         <h2 id="levar-escola">Levar Computação para a sua escola</h2>
         <p>O <a href="/material-didatico/">material didático</a> tem jogos, fichas e planos de aula da BNCC Computação do 6º ao 9º ano. Para a equipe, há a <a href="/formacao-continuada/">formação continuada de professores</a> e a <a href="/mentoria/">mentoria</a>.</p>
-        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Teste%20de%20inform%C3%A1tica%20na%20escola">Falar com Júlia Roberta Quoos Alves</a>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Teste%20de%20inform%C3%A1tica%20na%20escola." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Teste%20de%20inform%C3%A1tica%20na%20escola">Enviar e-mail</a>
     </section>
 </article>'''
     extra = ('<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld

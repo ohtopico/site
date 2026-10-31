@@ -24,6 +24,9 @@
 <link rel="stylesheet" href="../material-didatico/assets/md.css">
 <link rel="stylesheet" href="assets/sim.css">
 <style>
+  .sobre-sims { padding-top: 34px; padding-bottom: 40px; line-height: 1.65; }
+  .sobre-sims h2 { font-family: var(--display, inherit); margin: 0 0 12px; }
+  .sobre-sims p { margin: 0 0 12px; max-width: 72ch; }
   /* Cores das áreas: fundos suaves sobre a paleta do site (sem azul) */
   :root { --a-ia: #e3f1e8; --a-fund: #fff3c4; --a-arq: #fbe0da; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --a-ia: #173323; --a-fund: #3a3416; --a-arq: #3b211c; } }
@@ -80,6 +83,12 @@
   .sc .rc-foot .linha { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .vazio { padding: 40px 0; color: var(--ink-2); }
 </style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Simuladores de Computação e IA", "url": "https://ohtopico.com.br/simuladores/", "description": "Simuladores interativos e gratuitos de Computação, Inteligência Artificial e Estatística para os ensinos Fundamental, Médio e Superior.", "inLanguage": "pt-BR", "isAccessibleForFree": true, "audience": {"@type": "EducationalAudience", "educationalRole": "teacher"}, "author": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}, "publisher": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://ohtopico.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Simuladores", "item": "https://ohtopico.com.br/simuladores/"}]}
+</script>
 </head>
 <body>
 <header id="topbar"></header>
@@ -112,6 +121,14 @@
   </div>
 
   <div class="wrap" id="sims"></div>
+
+  <section class="wrap sobre-sims" aria-labelledby="sobre-sims">
+    <h2 id="sobre-sims">O que dá para aprender com os simuladores</h2>
+    <p>Os simuladores mostram por dentro o que costuma ficar só no quadro. Funcionam no navegador, sem login, e servem para aula expositiva, laboratório de informática ou estudo em casa.</p>
+    <p><b>Inteligência artificial:</b> veja <a href="proxima-palavra.html">como a IA escolhe a próxima palavra</a>, ajuste uma <a href="regressao.html">regressão linear</a>, <a href="rede-neural.html">treine uma rede neural</a> e leia uma <a href="matriz-confusao.html">matriz de confusão</a>. São bons para o Ensino Médio e para a formação de professores em IA.</p>
+    <p><b>Como o computador funciona:</b> converta <a href="bases.html">bases numéricas</a>, monte <a href="logica.html">portas lógicas</a>, desmonte a <a href="placa-mae.html">placa-mãe em 3D</a> e, no Ensino Superior, siga a instrução pelo <a href="cpu-por-dentro.html">caminho de dados do MIPS</a>, pelo <a href="pipeline-mips.html">pipeline</a> e pela <a href="cache.html">memória cache</a>.</p>
+    <p><b>Dados:</b> calcule média, mediana e desvio na <a href="estatistica.html">estatística descritiva</a> e compare modelos com o teste de <a href="significancia.html">significância</a>. Para o Ensino Fundamental, há também <a href="../material-didatico/jogos/">jogos com plano de aula</a> e o <a href="../material-didatico/catalogo.html?tipo=3d">Laboratório 3D</a>.</p>
+  </section>
 </main>
 <footer id="footer"></footer>
 
@@ -177,5 +194,6 @@
   render('');
 </script>
 <script src="/assistente/assistente.js?v=2" defer></script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
