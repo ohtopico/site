@@ -3129,6 +3129,15 @@
   window.addEventListener('storage', ev => { if (ev.key === 'md-progresso-v1') { confereJogos(); hud(); } });
   setInterval(() => { guardaPos(); atualizaPet(); cobra(); rende(); salvar(); }, 10000);
   window.addEventListener('pagehide', () => { guardaPos(); salvar(); });
+  /* sem internet: o service worker guarda o Mundo; o botão de instalar aparece quando o navegador oferece */
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  let pedidoInstalar = null;
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); pedidoInstalar = e; $('#b-instalar').hidden = false; });
+  window.addEventListener('appinstalled', () => { $('#b-instalar').hidden = true; aviso('📱 Mundo instalado! Abra pelo ícone na tela inicial.'); });
+  $('#b-instalar').addEventListener('click', async () => { if (!pedidoInstalar) return; pedidoInstalar.prompt(); await pedidoInstalar.userChoice.catch(() => {}); pedidoInstalar = null; $('#b-instalar').hidden = true; });
+  if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !navigator.standalone) { const b = $('#b-instalar'); b.hidden = false; b.addEventListener('click', () => aviso('No iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”.')); }
+  window.addEventListener('offline', () => aviso('📴 Sem internet: o Mundo continua funcionando, mas os jogos das casas precisam de conexão.'));
+  window.addEventListener('online', () => aviso('📶 Internet de volta!'));
 
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
