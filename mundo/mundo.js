@@ -105,7 +105,11 @@
     { id: 'medio', nome: 'Campus do Ensino Médio', sub: 'Redes, banco de dados e IA', ano: 10, caminho: '#d6e4f0', marco: 'servidor', icone: '🎓', lugares: LUGARES_EM, perguntasProprias: PERGUNTAS_EM,
       placa: 'Bem-vindo ao Ensino Médio! Cada prédio é um desafio aqui mesmo no mundo: redes, banco de dados e inteligência artificial.' },
     { id: 'escola', nome: 'Escola dos Professores', sub: 'Guias, formação e mentoria', ano: 9, caminho: '#f5d6e6', marco: 'sino', icone: '🍎', lugares: PROF,
-      placa: 'A escola é para quem ensina: guias de IA e tecnologia, prompts, planos de aula, formação e mentoria.' }
+      placa: 'A escola é para quem ensina: guias de IA e tecnologia, prompts, planos de aula, formação e mentoria.' },
+    // a sala do professor de Matemática: todos os jogos de Matemática do 6º ao 9º ano, aberta desde o começo (portão oeste da Vila do Começo)
+    { id: 'matematica', nome: 'Sala da Matemática', sub: 'Matemática do 6º ao 9º ano', ano: 6, caminho: '#fde7b0', marco: 'abaco', icone: '📐', aberta: true,
+      filtro: r => !r.comp.includes('CO'), todaMatematica: true,
+      placa: 'A sala do Professor Malba: todos os jogos de Matemática do 6º ao 9º ano num lugar só. Ela fica aberta desde o começo, pelo portão oeste da Vila do Começo.' }
   ];
   const NOMES = ['Professora Maria', 'Seu Antônio', 'Dona Lúcia', 'Teco', 'Bia', 'Professor Carlos', 'Nina', 'Dudu', 'Vovó Rosa', 'Léo', 'Dona Cida', 'Juca', 'Mel', 'Seu Pedro', 'Lara', 'Kauã', 'Professora Ana', 'Rafa', 'Dona Zefa', 'Gui'];
   const PASTEIS = ['#f7a8c4', '#a8d8f7', '#c7b4f2', '#ffd58a', '#a8e6b8', '#ffb38a', '#f2e48a', '#9fe3dc'];
@@ -215,12 +219,14 @@
   const fases = FASES.map((f, i) => {
     const lugares = f.lugares || jogaveis.filter(f.filtro).map(lugarRec);
     const n = Math.max(1, lugares.length);
-    const raio = Math.max(8, Math.ceil(5 + 0.42 * n));
-    const perguntas = f.perguntasProprias || perguntasDoAno(f.ano);
+    // a Sala da Matemática tem muitas casas, mas fica do tamanho da maior vila para não mudar o mapa das outras
+    const raio = Math.min(f.todaMatematica ? 15 : 99, Math.max(8, Math.ceil(5 + 0.42 * n)));
+    const perguntas = f.perguntasProprias || (f.todaMatematica ? [6, 7, 8, 9].flatMap(perguntasDoAno).filter(p => (p.habs || []).some(h => /MA\d/.test(h))) : perguntasDoAno(f.ano));
+    const mat = f.todaMatematica;
     return Object.assign({}, f, { idx: i, lugares, raio, perguntas,
-      metaPerg: Math.min(perguntas.length, [4, 5, 6, 6, 6, 4, 6, 3][i] || 4),
-      metaJogar: Math.min(n, f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2)),
-      nNpc: 2 + Math.floor(i / 2), nItens: 5 + i });
+      metaPerg: Math.min(perguntas.length, mat ? 5 : [4, 5, 6, 6, 6, 4, 6, 3][i] || 4),
+      metaJogar: Math.min(n, mat ? 4 : f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2)),
+      nNpc: mat ? 3 : 2 + Math.floor(i / 2), nItens: mat ? 6 : 5 + i });
   });
   const PERG_POR_ID = new Map(fases.flatMap(f => f.perguntas.map(p => [p.id, p])));
   /* as vilas são quadradas e ficam numa grade de 3 colunas (em zigue-zague): cada uma liga-se à anterior, à seguinte e aos
@@ -228,10 +234,11 @@
      desmontada (ela é refeita igualzinha quando a pessoa volta, porque o sorteio é fixo). */
   const ALT = Math.max(...fases.map(f => 2 * (f.raio + 9)));
   const MEIO = Math.floor(ALT / 2);                              // as duas estradas se cruzam no meio
-  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2]];
+  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2], [-1, 0]];   // a Sala da Matemática fica a oeste da Vila do Começo
   const LADOS = { L: { x: ALT - 0.5, y: MEIO, nome: 'leste' }, O: { x: 0.5, y: MEIO, nome: 'oeste' }, S: { x: MEIO, y: ALT - 0.5, nome: 'sul' }, N: { x: MEIO, y: 0.5, nome: 'norte' } };
   // além do zigue-zague, atalhos entre vilas vizinhas na grade (Começo ↔ Laboratório, Números ↔ Inteligência ↔ Professores)
-  const LIGACOES = fases.slice(1).map((f, i) => [i, i + 1]).concat([[0, 5], [1, 4], [4, 7]]).filter(([a, b]) => b < fases.length);
+  const IDX_MAT = fases.findIndex(f => f.todaMatematica);
+  const LIGACOES = fases.slice(1).map((f, i) => [i, i + 1]).filter(([, b]) => b !== IDX_MAT).concat([[0, 5], [1, 4], [4, 7], [0, IDX_MAT]]).filter(([a, b]) => a >= 0 && b >= 0 && b < fases.length);
   const ladoPara = (a, b) => { const [ax, ay] = GRADE[a], [bx, by] = GRADE[b]; return bx > ax ? 'L' : bx < ax ? 'O' : by > ay ? 'S' : 'N'; };
   for (const f of fases) {
     f.x0 = 0; f.L = ALT;
@@ -240,8 +247,9 @@
     const nomes = NOMES.slice();
     f.npcs = [];
     for (let k = 0; k < f.nNpc; k++) {
-      const nome = nomes.splice((f.idx * 3 + k * 5) % nomes.length, 1)[0];
-      f.npcs.push({ id: f.id + '-npc' + k, nome, th: (k + 0.3) / f.nNpc * Math.PI * 2 + 0.6, x: 0, y: 0, fase: f, prof: k === 0,
+      let nome = nomes.splice((f.idx * 3 + k * 5) % nomes.length, 1)[0];
+      if (f.todaMatematica && k === 0) nome = 'Professor Malba';   // homenagem a Malba Tahan, professor de Matemática
+      f.npcs.push({ id: f.id + '-npc' + k, nome, th: (k + 0.3) / f.nNpc * Math.PI * 2 + 0.6, x: 0, y: 0, fase: f, prof: k === 0, masc: f.todaMatematica && k === 0,
         av: { pele: PELES[(k + f.idx) % PELES.length], cabelo: CABELOS[(k * 2 + f.idx) % CABELOS.length], estilo: ['curto', 'longo', 'coque', 'bone'][(k + f.idx) % 4], camisa: ROUPAS[(k * 3 + f.idx) % ROUPAS.length], calca: ['#2f3b6b', '#5a3b2a', '#333333'][k % 3] } });
     }
   }
@@ -504,12 +512,12 @@
     ].map(m => Object.assign(m, { ok: m.n >= m.meta }));
   }
   const concluida = f => missoes(f).every(m => m.ok);
-  const liberada = f => f.idx === 0 || concluida(fases[f.idx - 1]);
+  const liberada = f => f.idx === 0 || f.aberta || concluida(fases[f.idx - 1]);
   function pontos(n, txt) { S.pontos += n; if (txt) aviso(`+${n} ⭐ ${txt}`); hud(); }
   function confereFases() {
     for (const f of fases) if (concluida(f) && !S.concluidas[f.id]) {
       S.concluidas[f.id] = true; S.inv.peca = (S.inv.peca || 0) + 1; setTimeout(() => ganhaFigurinha(null, 'pela fase concluída'), 1800);
-      pontos(100, `Fase concluída: ${f.nome}! +🧩` + (f.idx < fases.length - 1 ? ` O caminho para ${fases[f.idx + 1].nome} está aberto.` : ''));
+      pontos(100, `Fase concluída: ${f.nome}! +🧩` + (f.idx < fases.length - 1 && !fases[f.idx + 1].aberta ? ` O caminho para ${fases[f.idx + 1].nome} está aberto.` : ''));
     }
     salvar();
   }
@@ -2492,7 +2500,7 @@
       for (const p of f.portais) lista.push({ k: p.x + p.y + 1.5, d: () => desenhaPortao(p) });
       for (const c of f.cercas) lista.push({ k: c.x + c.y + 1, d: () => desenhaCerca(c) });
       const pf = profDe(f); if (pf) { const q = posProf(f); lista.push({ k: q.x + q.y, d: () => { desenhaPessoa(q.x, q.y, pf.av, { dir: 'y+' }); const [sx, sy] = iso(q.x, q.y, 1.75); if (!estProf(pf).feito) balao(sx, sy - 6, pf.ic); if (Math.hypot(q.x - P.x, q.y - P.y) < 4) rotulo(`${pf.nome} · ${pf.prof}`, sx, sy - 52); } }); }
-      for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? '👩‍🏫' : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
+      for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? (n.masc ? '👨‍🏫' : '👩‍🏫') : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
       for (const it of f.evItens) if (!estEv(it.ev).itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => { sombra(it.x, it.y, 0.35); const [sx, sy] = iso(it.x, it.y, 0.55 + Math.sin(agora / 300 + it.x * 3) * 0.12); ctx.fillStyle = 'rgba(255,240,170,.45)'; ctx.beginPath(); ctx.arc(sx, sy, 16, 0, Math.PI * 2); ctx.fill(); ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(it.ev.item[0], sx, sy); } });
       eventosAtivos.slice(0, 2).forEach((ev, i) => { const px = f.cx + (i ? -2.9 : 2.9), py = f.cy - 2.9; lista.push({ k: px + py, d: () => { const [ox, oy] = iso(px, py); ctx.save(); ctx.translate(ox, oy); ctx.scale(2, 2); ctx.translate(-ox, -oy); try { MOVEIS[ev.movel].des(px - 0.5, py - 0.5, { on: true }); } finally { ctx.restore(); } } }); });
       for (const it of f.itens) if (!S.itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => desenhaItem(it) });
@@ -2728,7 +2736,7 @@
     const dia = S.diaNpc[n.id] || (S.diaNpc[n.id] = {});
     if (dia.fala !== hoje()) { dia.fala = hoje(); ganhaAmizade(n, 10); contaEvento('conversas'); }
     const c = coracoes(n);
-    const ola = primeira ? (n.prof ? `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. ` : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
+    const ola = primeira ? (n.prof ? (n.masc ? `Olá! Eu sou o ${n.nome.replace(/^Professor /, '')}, professor aqui da ${f.nome}. ` : `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. `) : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
     const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
     dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}${coracoes(n) < CORACOES_CASA ? ` Com ${CORACOES_CASA} corações, você pode visitar a casa de ${esc(n.nome)}.` : ''}</p>${limiteHtml(n)}`, [
       { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, bancoNpc(n) ? bancoNpc(n).ic : '❓', sorteiaPergunta(f, bancoNpc(n) && bancoNpc(n).perguntas), certo => { if (certo) ganhaAmizade(n, 8); }) },
@@ -2871,7 +2879,8 @@
   function teleporta(f) { dentro = false; noEnigma = false; colocando = null; fechaJanela(); trocaFase(f.idx); }
   /* mapa do mundo: as vilas em grade, ligadas pelos portões */
   function desenhaMapa() {
-    const c = $('#mapa-cv'), k = c.getContext('2d'), cw = 200, ch = 120, gx = 30, gy = 22, ox = (c.width - 3 * cw - 2 * gx) / 2, oy = 14;
+    const c = $('#mapa-cv'), k = c.getContext('2d'), x0 = Math.min(...GRADE.map(g => g[0])), cols = Math.max(...GRADE.map(g => g[0])) - x0 + 1;
+    const gx = 24, gy = 22, cw = Math.min(200, (c.width - 20 - (cols - 1) * gx) / cols), ch = 120, ox = (c.width - cols * cw - (cols - 1) * gx) / 2 - x0 * (cw + gx), oy = 14;
     k.fillStyle = '#1b2531'; k.fillRect(0, 0, c.width, c.height);
     const centro = i => [ox + GRADE[i][0] * (cw + gx) + cw / 2, oy + GRADE[i][1] * (ch + gy) + ch / 2];
     k.strokeStyle = '#f3d6a0'; k.lineWidth = 8; k.lineCap = 'round';
@@ -2915,7 +2924,7 @@
     const meds = Object.values(S.medalhas);
     $('#inv-medalhas').innerHTML = meds.length ? meds.map(m => `<div class="it"><span style="font-size:24px">${m.ic}</span><span>${esc(m.nome)}</span></div>`).join('') : '<p class="muted small">Ganhe medalhas nas missões das datas comemorativas e nos desafios de aniversário de personalidades da computação.</p>';
     const conhecidos = todosNpcs().filter(n => S.falas[n.id] || amizade(n));
-    $('#inv-amigos').innerHTML = conhecidos.length ? conhecidos.map(n => `<div class="it"><span style="font-size:22px">${n.prof ? '👩‍🏫' : '🙂'}</span><span>${esc(n.nome)} <small class="muted">· ${esc(n.fase.nome)}</small><br>${coracoesHtml(n)}${S.gostos[n.id] ? ` <small>adora ${ITENS[favorito(n)][0]}</small>` : ''} <small>${aniversarioNpc(n) ? '🎂 hoje!' : '🎂 ' + dataNpc(n)}</small></span></div>`).join('')
+    $('#inv-amigos').innerHTML = conhecidos.length ? conhecidos.map(n => `<div class="it"><span style="font-size:22px">${n.prof ? (n.masc ? '👨‍🏫' : '👩‍🏫') : '🙂'}</span><span>${esc(n.nome)} <small class="muted">· ${esc(n.fase.nome)}</small><br>${coracoesHtml(n)}${S.gostos[n.id] ? ` <small>adora ${ITENS[favorito(n)][0]}</small>` : ''} <small>${aniversarioNpc(n) ? '🎂 hoje!' : '🎂 ' + dataNpc(n)}</small></span></div>`).join('')
       : '<p class="muted small">Converse com os moradores da vila para fazer amigos.</p>';
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     const conq = [
@@ -3141,7 +3150,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
