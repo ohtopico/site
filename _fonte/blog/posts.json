@@ -567,6 +567,86 @@
       "legenda": "O plano de quatro semanas num cartão.",
       "secao": "IA na prática",
       "imagem_antes": true
+    },
+    {
+      "slug": "mundo-jogo-bncc-computacao",
+      "titulo": "Mundo: um jogo gratuito de BNCC Computação do 6º ano ao Ensino Médio",
+      "titulo_seo": "Mundo: jogo gratuito de BNCC Computação do 6º ao Ensino Médio",
+      "descricao": "O Mundo é um jogo no navegador em que a turma aprende Computação e Matemática da BNCC: uma vila por ano, sem cadastro, no celular, com painel para a professora.",
+      "palavras_chave": [
+        "jogo BNCC computação",
+        "computação nas escolas",
+        "jogo educativo computação",
+        "pensamento computacional jogo"
+      ],
+      "data": "2026-11-12",
+      "arquivo_janela": "mundo.txt",
+      "imagem": "mundo-jogo.png",
+      "imagem_depois_de": "<h2>Uma vila por ano</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão O Mundo em 1 minuto: 1, uma vila por ano, do 6º ano ao Ensino Médio; 2, cada casa é um jogo; 3, modo turma com ranking no painel; 4, missões com perguntas da professora. Rodapé: grátis e sem cadastro, funciona no celular.",
+      "legenda": "O Mundo em um cartão.",
+      "secao": "Jogos"
+    },
+    {
+      "slug": "mundo-em-uma-aula-de-50-minutos",
+      "titulo": "Como usar o Mundo em uma aula de 50 minutos",
+      "titulo_seo": "Como usar o Mundo em uma aula de 50 minutos: roteiro para professores",
+      "descricao": "Roteiro minuto a minuto para levar o Mundo para a turma pela primeira vez: código da turma, objetivo de jogo, código de progresso e ranking no painel.",
+      "palavras_chave": [
+        "aula de computação",
+        "jogo em sala de aula",
+        "BNCC computação",
+        "modo turma"
+      ],
+      "data": "2026-11-26",
+      "arquivo_janela": "roteiro-aula.txt",
+      "imagem": "mundo-aula-50.png",
+      "imagem_depois_de": "<h2>Minuto 0 a 5: apresentar</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão O Mundo em 50 minutos: 0 a 5 minutos, apresentar e escrever o código da turma; 5 a 10, cada um abre o Modo turma; 10 a 35, jogar com um objetivo; 35 a 50, gerar o código, colar no painel e projetar o ranking. Rodapé: sem laboratório, celular ou computador.",
+      "legenda": "O roteiro da aula num cartão.",
+      "secao": "Jogos"
+    },
+    {
+      "slug": "bncc-computacao-por-vila-mundo",
+      "titulo": "BNCC Computação no Mundo: o que a turma pratica em cada vila",
+      "titulo_seo": "BNCC Computação por ano: o que a turma pratica em cada vila do Mundo",
+      "descricao": "As habilidades da BNCC Computação e de Matemática em cada vila do Mundo, do 6º ano ao Ensino Médio, com os jogos de cada uma e como registrar no painel.",
+      "palavras_chave": [
+        "BNCC computação por ano",
+        "habilidades BNCC computação",
+        "BNCC computação 7º ano",
+        "BNCC computação 8º ano"
+      ],
+      "data": "2026-12-10",
+      "arquivo_janela": "vilas.txt",
+      "imagem": "mundo-bncc-vilas.png",
+      "imagem_depois_de": "<h2>Vila do Começo (6º ano, Computação)</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão A BNCC em cada vila: 6º ano, Vila do Começo e Praça dos Números; 7º ano, Bairro dos Padrões; 8º ano, Cidade das Redes; 9º ano, Vale da Inteligência. Rodapé: Ensino Médio, Campus com redes, dados e IA.",
+      "legenda": "As vilas e os anos num cartão.",
+      "secao": "Computação e BNCC"
+    },
+    {
+      "slug": "planejamento-2027-computacao-com-o-mundo",
+      "titulo": "Planejamento 2027: Computação com o Mundo, bimestre a bimestre",
+      "titulo_seo": "Planejamento de Computação 2027: BNCC em 4 bimestres com o Mundo",
+      "descricao": "Uma proposta de planejamento anual de Computação para 2027: quatro bimestres, uma aula por semana, o Mundo como fio condutor e o material do site como apoio.",
+      "palavras_chave": [
+        "planejamento computação",
+        "planejamento anual informática",
+        "BNCC computação planejamento",
+        "computação nas escolas"
+      ],
+      "data": "2027-01-14",
+      "arquivo_janela": "planejamento-2027.txt",
+      "imagem": "mundo-planejamento-2027.png",
+      "imagem_depois_de": "<h2>1º bimestre (fevereiro a abril): pensamento computacional</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão Computação em 4 bimestres: 1º, pensamento computacional; 2º, mundo digital; 3º, cultura digital; 4º, inteligência artificial e projeto coletivo. Rodapé: uma aula por semana, com o Mundo como fio.",
+      "legenda": "O ano em quatro bimestres.",
+      "secao": "Computação e BNCC"
     }
   ],
   "movidos": [
