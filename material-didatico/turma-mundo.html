@@ -42,6 +42,8 @@
   .bars { display: inline-flex; gap: 3px; align-items: flex-end; height: 26px; }
   .bars span { display: block; width: 9px; border-radius: 3px 3px 0 0; background: var(--ink-2); min-height: 2px; }
   .bars span.co { background: #3f8fe0; } .bars span.ma { background: #f6b73c; }
+  .bar-pj { display: block; height: 10px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; } .bar-pj span { display: block; height: 100%; background: var(--ok, #2e7d32); }
+  .card textarea { font-size: 11px; }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--ink-2); }
   body.projetor .doc > :not(#out), body.projetor #topbar, body.projetor footer, body.projetor .no-proj { display: none !important; }
   body.projetor .doc { max-width: none; }
@@ -85,12 +87,20 @@
   const $ = s => document.querySelector(s);
   const P = MDP.pacote;
   const ORDEM = ['PC', 'MD', 'CD', 'NU', 'AL', 'GE', 'GM', 'PE'];
+  // mesma lista do mundo.js (PROJETOS): meta por estudante
+  const PROJETOS = [
+    { id: 'biblioteca', nome: 'Biblioteca da turma', ic: '📚', meta: { livro: 3, estrela: 1 } },
+    { id: 'laboratorio', nome: 'Laboratório de computação', ic: '🔬', meta: { diamante: 2, chave: 1 } },
+    { id: 'horta', nome: 'Horta da escola', ic: '🥕', meta: { maca: 3, estrela: 1 } },
+    { id: 'observatorio', nome: 'Observatório', ic: '🔭', meta: { diamante: 2, estrela: 2 } }
+  ];
+  const IC = { livro: '📘', estrela: '⭐', diamante: '💎', chave: '🔑', maca: '🍎' };
   let alunos = [], turma = null;   // {a, t, d, p, c, e, f, j, i, h, m, am, valido, code}
 
   const lerCodes = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
   const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(alunos.map(x => x.code))); } catch (e) {} };
   const dataTxt = d => new Date(d * 864e5).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-  const campos = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am];
+  const campos = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]);
   const pct = x => x.c + x.e ? Math.round(100 * x.c / (x.c + x.e)) + '%' : '–';
 
   async function adicionar(textos) {
@@ -146,6 +156,16 @@
       </table></div>
       <div class="legend no-proj" style="margin-top:8px"><span>Habilidades, na ordem:</span>${ORDEM.map(k => `<span>${EIXOS[k].comp === 'CO' ? '🟦' : '🟨'} ${esc(EIXOS[k].nome)}</span>`).join('')}</div>
       ${lista.some(x => !x.valido) ? '<p class="small"><span class="warn">⚠</span> Código que não confere com a assinatura (foi editado depois de gerado).</p>' : ''}
+      <h2 class="no-proj">Projetos coletivos</h2>
+      <p class="small no-proj" style="max-width:780px">Cada estudante doa a sua parte na praça dos projetos, na Vila do Começo. A meta da turma é a meta por estudante vezes ${lista.length} estudante(s) deste painel. Quando um projeto chegar a 100%, gere o código de conclusão e passe para a turma: cada estudante cola o código na praça e o prédio fica pronto.</p>
+      <div class="attn no-proj">${PROJETOS.map(P => {
+        const soma = k => lista.reduce((a, x) => a + (((x.pj || {})[P.id] || {})[k] || 0), 0);
+        const ks = Object.keys(P.meta), pct = Math.round(100 * ks.reduce((a, k) => a + Math.min(1, soma(k) / (P.meta[k] * lista.length)), 0) / ks.length);
+        return `<div class="card"><strong>${P.ic} ${esc(P.nome)}</strong>
+          <span class="small">${ks.map(k => `${IC[k]} ${soma(k)}/${P.meta[k] * lista.length}`).join(' · ')}</span>
+          <span class="bar-pj"><span style="width:${pct}%"></span></span><span class="small">${pct}%</span>
+          ${pct >= 100 ? `<button class="btn" type="button" data-pj="${P.id}">Gerar código de conclusão</button><textarea rows="2" readonly hidden data-saida="${P.id}"></textarea>` : ''}</div>`;
+      }).join('')}</div>
       <div class="btn-row no-print no-proj" style="margin-top:14px">
         <button class="btn ghost" type="button" id="csv">Baixar planilha (CSV)</button>
         <button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir</button>
@@ -153,6 +173,12 @@
       </div>`;
     out.querySelectorAll('.rm').forEach(b => b.onclick = () => { alunos = alunos.filter(x => x.code !== b.dataset.code); salvar(); render(); });
     $('#csv').onclick = csv;
+    out.querySelectorAll('[data-pj]').forEach(b => b.onclick = async () => {
+      const o = { t: turma, pj: b.dataset.pj, d: Math.floor(Date.now() / 864e5) };
+      o.s = await P.assinatura(JSON.stringify([o.t, o.pj, o.d]));
+      const t = out.querySelector(`[data-saida="${b.dataset.pj}"]`); t.value = await P.empacotar('MUNT1', o); t.hidden = false; t.select();
+      try { await navigator.clipboard.writeText(t.value); b.textContent = 'Código copiado ✓'; } catch (e) {}
+    });
     $('#proj').onclick = () => { document.body.classList.add('projetor'); if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {}); };
     $('#sair-proj').onclick = () => { document.body.classList.remove('projetor'); if (document.fullscreenElement) document.exitFullscreen(); };
     $('#clear').onclick = () => { if (confirm(`Remover todos os códigos da turma ${turma} deste navegador?`)) { alunos = alunos.filter(x => x.t !== turma); salvar(); render(); } };
