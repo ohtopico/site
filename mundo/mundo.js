@@ -486,7 +486,8 @@
   for (const k of Object.keys(S.itens)) if (!k.includes('-s' + SEMANA + '-')) delete S.itens[k];   // só os desta semana
   if (S.versao !== 3 && S.versao !== 4) { S.x = 3.5; S.y = MEIO; S.fase = 0; S.versao = 3; }   // versão 3: vilas em grade
   if (S.versao === 3) { if (S.fase === 6) S.fase = 7; S.versao = 4; }                               // versão 4: Campus do Ensino Médio antes da escola
-  function salvar(avisa) { try { localStorage.setItem(CHAVE, JSON.stringify(S)); if (avisa) aviso('💾 Progresso salvo!'); } catch (e) { if (avisa) aviso('Não deu para salvar neste navegador.'); } }
+  let restaurando = false;   // depois de restaurar um código, nada mais pode gravar por cima antes de recarregar
+  function salvar(avisa) { if (restaurando) return; try { localStorage.setItem(CHAVE, JSON.stringify(S)); if (avisa) aviso('💾 Progresso salvo!'); } catch (e) { if (avisa) aviso('Não deu para salvar neste navegador.'); } }
 
   /* ---------- missões ---------- */
   function missoes(f) {
@@ -1555,6 +1556,57 @@
       try { await navigator.clipboard.writeText(t.value); aviso('📋 Código copiado! Agora é só colar para a professora.'); }
       catch (e) { document.execCommand && document.execCommand('copy'); aviso('📋 Código selecionado: copie e envie.'); }
     });
+  }
+  /* ---------- levar para outro aparelho: o jogo inteiro (e o Meu progresso dos jogos) vira um código MUNS1 ou um arquivo ---------- */
+  async function codigoSalvamento() {
+    const P = window.MDP && MDP.pacote; if (!P) throw new Error('sem pacote');
+    guardaPos();
+    let m = ''; try { m = await MDP.exportar(); } catch (e) {}
+    return P.empacotar('MUNS1', { v: 1, d: Date.now(), s: S, m });
+  }
+  async function restauraSalvamento(txt) {
+    const code = (String(txt).match(/MUNS1[jz]\.[A-Za-z0-9_-]+/) || [])[0];
+    if (!code) throw new Error('sem código');
+    const o = await MDP.pacote.desempacotar('MUNS1', code);
+    if (!o || !o.s || typeof o.s.pontos !== 'number') throw new Error('formato');
+    const quando = new Date(o.d).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+    if (!confirm(`Trocar o progresso deste aparelho pelo do código (${o.s.pontos} ⭐, salvo em ${quando})? O progresso atual deste aparelho será substituído.`)) return false;
+    if (o.m) { try { await MDP.importar(o.m); } catch (e) {} }
+    restaurando = true;
+    localStorage.setItem(CHAVE, JSON.stringify(o.s));
+    location.reload();
+    return true;
+  }
+  function janelaLevar() {
+    $('#levar-conteudo').innerHTML = `<p>O progresso fica guardado só neste navegador. Para continuar em outro computador ou celular, gere o código aqui e abra o Mundo no outro aparelho.</p>
+      <h3>1. Neste aparelho</h3>
+      <div class="btn-row"><button type="button" class="hb verde" id="lv-gerar">📤 Gerar código de salvamento</button></div>
+      <div id="lv-saida" hidden><textarea id="lv-codigo" class="campo" rows="3" readonly aria-label="Código de salvamento"></textarea>
+        <div class="btn-row"><button type="button" class="hb azul" id="lv-copiar">📋 Copiar</button><button type="button" class="hb azul" id="lv-baixar">💾 Baixar arquivo</button></div>
+        <p class="muted small">Mande o código para você mesmo (e-mail, WhatsApp, pendrive) ou guarde o arquivo. Ele leva a casa, o pet, os pontos, o álbum, as missões e o Meu progresso dos jogos.</p></div>
+      <h3>2. No outro aparelho</h3>
+      <textarea id="lv-colar" class="campo" rows="3" placeholder="Cole aqui o código (começa com MUNS1)" aria-label="Colar código de salvamento"></textarea>
+      <div class="btn-row"><button type="button" class="hb verde" id="lv-restaurar">📥 Continuar deste código</button>
+        <label class="hb azul" style="cursor:pointer">📂 Abrir arquivo<input type="file" id="lv-arquivo" accept=".txt,text/plain" hidden></label></div>
+      <p class="muted small">Atenção: continuar de um código substitui o progresso que está neste aparelho.</p>`;
+    let atualCod = '';
+    $('#lv-gerar').addEventListener('click', async () => {
+      try { atualCod = await codigoSalvamento(); $('#lv-codigo').value = atualCod; $('#lv-saida').hidden = false; $('#lv-codigo').select(); }
+      catch (e) { aviso('Não deu para gerar o código neste navegador.'); }
+    });
+    $('#lv-copiar').addEventListener('click', async () => {
+      $('#lv-codigo').select();
+      try { await navigator.clipboard.writeText(atualCod); aviso('📋 Código copiado!'); } catch (e) { document.execCommand && document.execCommand('copy'); aviso('📋 Código selecionado: copie e guarde.'); }
+    });
+    $('#lv-baixar').addEventListener('click', () => {
+      const a = document.createElement('a'), nome = (S.turma.nome || 'mundo').normalize('NFD').replace(/[^\w-]+/g, '-').toLowerCase();
+      a.href = URL.createObjectURL(new Blob([atualCod], { type: 'text/plain' }));
+      a.download = `mundo-${nome}-${new Date().toISOString().slice(0, 10)}.txt`;
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+    const restaura = async txt => { try { await restauraSalvamento(txt); } catch (e) { aviso('Código de salvamento inválido. Confira se copiou inteiro.'); } };
+    $('#lv-restaurar').addEventListener('click', () => restaura($('#lv-colar').value));
+    $('#lv-arquivo').addEventListener('change', async e => { const f = e.target.files[0]; if (f) restaura(await f.text()); });
   }
   /* projetos coletivos: a doação de cada aluno vai no código de progresso; o painel da professora soma a turma */
   const doado = (P, k) => ((S.projetos.doou[P.id] || {})[k] || 0);
@@ -2799,7 +2851,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -3081,7 +3133,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

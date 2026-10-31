@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="mundo.css?v=20261031za">
+<link rel="stylesheet" href="mundo.css?v=20261031zb">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -173,6 +173,11 @@
     <div id="loja-conteudo"></div>
   </div>
 </div>
+<div class="janela" id="j-levar" hidden role="dialog" aria-labelledby="j-levar-t">
+  <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-levar-t">📲 Levar para outro aparelho</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <div id="levar-conteudo"></div>
+  </div>
+</div>
 <div class="janela" id="j-turma" hidden role="dialog" aria-labelledby="j-turma-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-turma-t">👥 Modo turma</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="turma-conteudo"></div>
@@ -226,10 +231,11 @@
 <div class="janela" id="j-menu" hidden role="dialog" aria-labelledby="j-menu-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-menu-t">Mundo do site</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <p>Ande pela vila, converse com os personagens, responda às perguntas, colete os itens e abra as casas: cada casa é um jogo, um recurso 3D, um simulador ou um guia do site. As vilas ficam numa grade e se ligam por portões: cumprindo as missões de uma vila, o portão para a próxima se abre.</p>
-    <p class="muted small">O progresso fica salvo neste navegador, junto com o <a href="../material-didatico/meu-progresso.html">Meu progresso</a> do material didático.</p>
+    <p class="muted small">O progresso fica salvo neste navegador (para trocar de aparelho, use 📲 Levar para outro aparelho), junto com o <a href="../material-didatico/meu-progresso.html">Meu progresso</a> do material didático.</p>
     <div class="btn-row">
       <button type="button" class="hb verde" data-fechar>Continuar</button>
       <button type="button" class="hb azul" id="b-salvar">💾 Salvar agora</button>
+      <button type="button" class="hb azul" data-abrir="levar">📲 Levar para outro aparelho</button>
       <button type="button" class="hb azul" data-abrir="turma">👥 Modo turma</button>
       <button type="button" class="hb azul" data-abrir="mprof">📝 Missões da professora</button>
       <button type="button" class="hb azul" data-abrir="oficina">🧩 Oficina de código</button>
@@ -256,10 +262,10 @@
 <script>window.MD_BASE = '../material-didatico/'; window.SIM_BASE = '../simuladores/';</script>
 <script src="../material-didatico/assets/dados.js"></script>
 <script src="../material-didatico/assets/listas.js"></script>
-<script src="../material-didatico/assets/progresso.js?v=20261031za"></script>
+<script src="../material-didatico/assets/progresso.js?v=20261031zb"></script>
 <script src="../simuladores/assets/sim-comum.js"></script>
-<script src="perguntas-npc.js?v=20261031za"></script>
-<script src="mundo.js?v=20261031za"></script>
+<script src="perguntas-npc.js?v=20261031zb"></script>
+<script src="mundo.js?v=20261031zb"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
