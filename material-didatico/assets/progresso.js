@@ -7,6 +7,7 @@
      0 Não iniciado · 1 Tentou · 2 Familiarizado (≥ 60%) · 3 Proficiente (≥ 80%)
      4 Dominado (voltou a fazer ≥ 80% pelo menos 2 dias depois de ficar proficiente)
    O teste do ano (teste-do-ano.html) registra uma nota por habilidade em p.t e conta como mais uma atividade.
+   As perguntas do Mundo do site registram em p.m (registrarMundo).
    ===================================================================== */
 (function () {
   const KEY = 'md-progresso-v1';
@@ -79,15 +80,32 @@
     avisoMedalhas(p);
   }
 
+  /* Mundo do site (mundo/): cada resposta conta para as habilidades da pergunta, no perfil que já existe (não cria perfil).
+     A nota do dia só vale a partir de 3 respostas da habilidade no dia: antes disso ela fica como "Tentou". */
+  function registrarMundo(habs, certo) {
+    const p = perfilAtual(false);
+    if (!p) return;
+    const d = hoje();
+    p.m = p.m || {};
+    (habs || []).filter(c => HAB[c]).forEach(c => {
+      const m = p.m[c] || { d, a: 0, n: 0, h: [] };
+      if (m.d !== d) { m.d = d; m.a = 0; m.n = 0; }
+      m.n++; if (certo) m.a++;
+      if (m.n >= 3) m.h = porDia([...m.h.filter(x => x[0] !== d), [d, Math.round(m.a / m.n * 100)]]);
+      p.m[c] = m;
+    });
+    salvarPerfil(p);
+  }
+
   /* ---------- domínio ---------- */
   function infoHab(codigo, p) {
     p = p || perfilAtual(false);
     if (!p) return { nivel: 0 };
     const recs = RECURSOS.filter(r => r.habs.includes(codigo) && p.r[r.id]);
-    const teste = (p.t && p.t[codigo]) || [];
-    if (!recs.length && !teste.length) return { nivel: 0 };
-    const hist = [...recs.flatMap(r => p.r[r.id].h), ...teste].sort((a, b) => a[0] - b[0]);
-    const best = Math.max(...recs.map(r => p.r[r.id].b), ...teste.map(x => x[1]));
+    const teste = (p.t && p.t[codigo]) || [], mundo = p.m && p.m[codigo];
+    if (!recs.length && !teste.length && !mundo) return { nivel: 0 };
+    const hist = [...recs.flatMap(r => p.r[r.id].h), ...teste, ...(mundo ? mundo.h : [])].sort((a, b) => a[0] - b[0]);
+    const best = Math.max(...recs.map(r => p.r[r.id].b), ...hist.map(x => x[1]));
     const ult = hist.length ? hist[hist.length - 1][0] : null;
     const prof = hist.find(([, v]) => v >= 80);
     let nivel = best >= 80 ? 3 : best >= 60 ? 2 : 1;
@@ -133,7 +151,10 @@
     { id: 'dias3', icone: '📅', nome: 'Constância', desc: 'Estudou em 3 dias diferentes.' },
     { id: 'duas', icone: '🔀', nome: 'Duas frentes', desc: 'Praticou Computação e Matemática.' },
     { id: 'ano', icone: '🏆', nome: 'Ano completo', desc: 'Proficiente em todas as habilidades de Computação de um ano.' },
-    { id: 'teste', icone: '🎯', nome: 'Desafio do ano', desc: 'Fez um teste do ano.' }
+    { id: 'teste', icone: '🎯', nome: 'Desafio do ano', desc: 'Fez um teste do ano.' },
+    { id: 'mundo1', icone: '🏡', nome: 'Primeira vila', desc: 'Concluiu uma vila no Mundo do site.' },
+    { id: 'mundo5', icone: '🗺️', nome: 'Viajante', desc: 'Concluiu 5 vilas no Mundo do site.' },
+    { id: 'mundosala', icone: '🧮', nome: 'Escapou!', desc: 'Venceu o Escape da Matemática ou o Labirinto no Mundo do site.' }
   ];
   function medalhas(p) {
     p = p || perfilAtual(false);
@@ -149,7 +170,9 @@
       inicio: ids.length > 0, lista1: tipo('lista').length > 0, jogo1: tipo('jogo').length > 0,
       cem: tipo('lista').some(id => p.r[id].b === 100), listas5: tipo('lista').length >= 5, jogos5: tipo('jogo').length >= 5,
       prof1: prof >= 1, dom1: Object.values(niv).some(n => n === 4), prof10: prof >= 10, dias3: dias >= 3,
-      duas: comps.has('CO') && comps.has('MA'), ano: anoOk, teste: !!(p && p.t && Object.keys(p.t).length)
+      duas: comps.has('CO') && comps.has('MA'), ano: anoOk, teste: !!(p && p.t && Object.keys(p.t).length),
+      // resumo que o Mundo do site grava no perfil (mw): vilas concluídas e salas vencidas
+      mundo1: !!(p && p.mw && p.mw.v >= 1), mundo5: !!(p && p.mw && p.mw.v >= 5), mundosala: !!(p && p.mw && p.mw.s >= 1)
     };
     return MEDALHAS.map(m => Object.assign({ tem: !!tem[m.id] }, m));
   }
@@ -356,7 +379,7 @@
 
   function resultado(recId) { const p = perfilAtual(false); return p && p.r[recId] ? p.r[recId] : null; }
 
-  window.MDP = { NIVEIS, MEDALHAS, hoje, registrar, registrarTeste, resultado, infoHab, nivelHab, revisoes, recursoPara, medalhas,
+  window.MDP = { NIVEIS, MEDALHAS, hoje, registrar, registrarTeste, registrarMundo, conferirMedalhas: () => { const p = perfilAtual(false); if (p) avisoMedalhas(p); }, resultado, infoHab, nivelHab, revisoes, recursoPara, medalhas,
     perfil: () => perfilAtual(false), perfis, _inflar: inflar, criar, trocar, atualizar, excluir, exportar, importar, relatorio, lerRelatorio,
     TIPOS_TAREFA, tarefaCodigo, lerTarefa, diaDoPrazo,
     pacote: { empacotar, desempacotar, assinatura } };   // usado pelo Mundo (código do modo turma)

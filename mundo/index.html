@@ -45,6 +45,7 @@
   <div class="stat"><b id="h-itens">0</b><span>💎 Coletados</span></div>
   <div class="stat"><b id="h-acertos">0</b><span>🧠 Acertos</span></div>
   <div class="stat"><b id="h-aprend">0%</b><span>📊 Aprendizagem</span></div>
+  <a class="stat" id="h-nivel-l" href="../material-didatico/meu-progresso.html" title="Crie seu perfil no Meu progresso: acertos, nível e medalhas do Mundo contam lá"><b id="h-nivel">—</b><span>📈 Nível</span></a>
 </div>
 <button type="button" class="hb cinza" id="b-mais" aria-expanded="false" aria-controls="hud-botoes" aria-label="Mostrar os botões">☰</button>
 <div class="hud hud-botoes" id="hud-botoes">
@@ -243,7 +244,7 @@
 <div class="janela" id="j-menu" hidden role="dialog" aria-labelledby="j-menu-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-menu-t">Mundo do site</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <p>Ande pela vila, converse com os personagens, responda às perguntas, colete os itens e abra as casas: cada casa é um jogo, um recurso 3D, um simulador ou um guia do site. As vilas ficam numa grade e se ligam por portões: cumprindo as missões de uma vila, o portão para a próxima se abre.</p>
-    <p class="muted small">Depois da primeira visita, o Mundo abre mesmo sem internet (só os jogos das casas, que ficam em outras páginas, precisam de conexão). O progresso fica salvo neste navegador (para trocar de aparelho, use 📲 Levar para outro aparelho), junto com o <a href="../material-didatico/meu-progresso.html">Meu progresso</a> do material didático.</p>
+    <p class="muted small">Depois da primeira visita, o Mundo abre mesmo sem internet (só os jogos das casas, que ficam em outras páginas, precisam de conexão). O progresso fica salvo neste navegador (para trocar de aparelho, use 📲 Levar para outro aparelho), junto com o <a href="../material-didatico/meu-progresso.html">Meu progresso</a> do material didático: com um perfil lá, os acertos, o nível e as medalhas do Mundo são os mesmos do Meu progresso.</p>
     <div class="btn-row">
       <button type="button" class="hb verde" data-fechar>Continuar</button>
       <button type="button" class="hb azul" id="b-salvar">💾 Salvar agora</button>
@@ -263,6 +264,7 @@
       <button type="button" class="hb azul" data-abrir="misterio">🕵️ Mistério da vila</button>
       <button type="button" class="hb azul" data-abrir="feira">🧺 Feira da vila</button>
       <button type="button" class="hb rosa" data-abrir="cartao">💌 Cartão-postal</button>
+      <a class="hb azul" href="../material-didatico/meu-progresso.html">📈 Meu progresso</a>
       <a class="hb azul" href="professores/">🧑‍🏫 Para professores</a>
       <a class="hb azul" href="../">Voltar ao site</a>
     </div>
@@ -281,11 +283,12 @@
 <script>window.MD_BASE = '../material-didatico/'; window.SIM_BASE = '../simuladores/';</script>
 <script src="../material-didatico/assets/dados.js"></script>
 <script src="../material-didatico/assets/listas.js"></script>
-<script src="../material-didatico/assets/progresso.js?v=20261031zn"></script>
+<script src="../material-didatico/assets/progresso.js?v=20261031zq"></script>
+<script src="../material-didatico/assets/missoes.js?v=20261031zq"></script>
 <script src="../simuladores/assets/sim-comum.js"></script>
 <script src="perguntas-npc.js?v=20261031zn"></script>
 <script src="teleporte.js?v=20261031zn"></script>
-<script src="mundo.js?v=20261031zp"></script>
+<script src="mundo.js?v=20261031zq"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
