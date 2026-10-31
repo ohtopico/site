@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="icone-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mundo">
-<link rel="stylesheet" href="mundo.css?v=20261031zu">
+<link rel="stylesheet" href="mundo.css?v=20261031zv">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -118,6 +118,15 @@
     <button type="button" class="jm-voltar" data-fechar>✕ Voltar<span class="jm-longo"> ao Mundo</span></button></div>
     <iframe id="jm-if" title="Jogo aberto dentro do Mundo"></iframe></div>
 </div>
+<div class="janela" id="j-horta" hidden role="dialog" aria-labelledby="j-horta-t">
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-horta-t">🌱 Horta da sua casa</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <p>Plante uma semente em cada canteiro e regue uma vez por dia. Cada planta cresce sempre o mesmo tanto a cada rega: dá para prever quando ela vai ficar pronta!</p>
+    <div id="horta-c"></div>
+    <h3>📈 Crescimento</h3>
+    <canvas id="horta-graf" width="560" height="220" aria-label="Gráfico da altura de cada planta a cada rega"></canvas>
+    <p class="muted small">A linha tracejada é a altura para colher. Cada planta cresce só nos dias em que você rega, e a linha é reta porque o crescimento é sempre igual (uma função afim). Tomates, cenouras e alfaces vão para o inventário e alimentam o pet.</p>
+  </div>
+</div>
 <div class="janela" id="j-inventario" hidden role="dialog" aria-labelledby="j-inv-t">
   <div class="j-caixa"><div class="j-cab"><h2 id="j-inv-t">🎒 Inventário, habilidades e amigos</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="inv-itens" class="inv"></div>
@@ -160,6 +169,7 @@
     <div id="casa-postos" class="inv"></div>
     <h3>Ampliar a casa</h3>
     <div id="casa-ampliar" class="receitas"></div>
+    <div class="btn-row"><button type="button" class="hb verde" data-abrir="horta">🌱 Ir para a horta</button></div>
     <h3>Cor da casa</h3>
     <div id="casa-cores" class="av-cores"></div>
   </div>
@@ -263,6 +273,7 @@
       <button type="button" class="hb azul" data-abrir="levar">📲 Levar para outro aparelho</button>
       <button type="button" class="hb azul" data-abrir="turma">👥 Modo turma</button>
       <button type="button" class="hb azul" data-abrir="amigos">🏆 Ranking entre amigos</button>
+      <button type="button" class="hb verde" data-abrir="horta">🌱 Horta</button>
       <button type="button" class="hb rosa" id="b-museu">🏛️ Museu</button>
       <button type="button" class="hb rosa" id="b-tele">🌀 Teletransporte (teste de proficiência)</button>
       <button type="button" class="hb azul" data-abrir="mprof">📝 Missões da professora</button>
@@ -296,7 +307,7 @@
 <script src="../simuladores/assets/sim-comum.js"></script>
 <script src="perguntas-npc.js?v=20261031zn"></script>
 <script src="teleporte.js?v=20261031zn"></script>
-<script src="mundo.js?v=20261031zu"></script>
+<script src="mundo.js?v=20261031zv"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
