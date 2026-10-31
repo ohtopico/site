@@ -405,8 +405,18 @@
       const hcx = casa.x + w / 2, hcy = casa.y + d / 2, ang = Math.atan2(hcy - cy, hcx - cx);
       const alvo = { x: cx + Math.cos(ang) * raioEm(ang), y: cy + Math.sin(ang) * raioEm(ang) };
       const vx = alvo.x - hcx, vy = alvo.y - hcy, vl = Math.hypot(vx, vy) || 1;
-      for (let t = 1.6; t < vl; t += 0.35) { const x = Math.floor(hcx + vx / vl * t), y = Math.floor(hcy + vy / vl * t); if (at(x, y) && f.tile[pos(x, y)] === T.grama && !f.sol[pos(x, y)]) f.tile[pos(x, y)] = T.caminho; }
-      const ladoPorta = Math.abs(vx) > Math.abs(vy) ? (vx > 0 ? 'x+' : 'x-') : (vy > 0 ? 'y+' : 'y-');
+      const pinta = (x, y) => { if (at(x, y) && f.tile[pos(x, y)] === T.grama && !f.sol[pos(x, y)]) f.tile[pos(x, y)] = T.caminho; };
+      // a câmera só vê as faces x+ e y+: a porta fica sempre numa delas, para nunca ficar escondida atrás da casa
+      const ladoPorta = vx <= 0 && vy <= 0 ? (Math.abs(vx) < Math.abs(vy) ? 'x+' : 'y+') : Math.abs(vx) > Math.abs(vy) ? (vx > 0 ? 'x+' : 'y+') : (vy > 0 ? 'y+' : 'x+');
+      const direto = (ladoPorta === 'x+' && vx > 0 && Math.abs(vx) >= Math.abs(vy)) || (ladoPorta === 'y+' && vy > 0 && Math.abs(vy) >= Math.abs(vx));
+      if (direto) for (let t = 1.6; t < vl; t += 0.35) pinta(Math.floor(hcx + vx / vl * t), Math.floor(hcy + vy / vl * t));
+      else {   // caminho em L: sai da porta, contorna a casa pelo lado e segue até o anel
+        let x = ladoPorta === 'x+' ? casa.x + w : Math.floor(hcx), y = ladoPorta === 'y+' ? casa.y + d : Math.floor(hcy);
+        const ax = Math.floor(alvo.x), ay = Math.floor(alvo.y);
+        pinta(x, y);
+        if (ladoPorta === 'x+') { while (y !== ay) { y += Math.sign(ay - y); pinta(x, y); } while (x !== ax) { x += Math.sign(ax - x); pinta(x, y); } }
+        else { while (x !== ax) { x += Math.sign(ax - x); pinta(x, y); } while (y !== ay) { y += Math.sign(ay - y); pinta(x, y); } }
+      }
       const porta = ladoPorta === 'x+' ? { x: casa.x + w + 0.7, y: hcy } : ladoPorta === 'x-' ? { x: casa.x - 0.7, y: hcy } : ladoPorta === 'y+' ? { x: hcx, y: casa.y + d + 0.7 } : { x: hcx, y: casa.y - 0.7 };
       Object.assign(casa, { lugar: l, porta, ladoPorta, cor: PASTEIS[(i * 3 + f.idx) % PASTEIS.length], altura: 2 + ((l.titulo.length + i) % 3) * 0.5 });
       casa.gx = f.x0 + casa.x; casa.porta.x += f.x0;
@@ -900,9 +910,10 @@
     const hh = tipo === 'sim' ? 1.4 : tipo === '3d' ? 1.2 : h;
     for (const face of ['y', 'x']) {
       const bx = x + (tipo === 'pagina' ? 0.1 : 0.2), by = y + 0.2, ww = w - (tipo === 'pagina' ? 0.2 : 0.4), dd = d - 0.4;
-      naFace(face, bx, by, ww, dd, 0.35, 0, 0.75, hh * 0.45, Math.min(0.6, hh * 0.35), mol); naFace(face, bx, by, ww, dd, 0.42, 0, 0.61, hh * 0.45 + 0.06, Math.min(0.48, hh * 0.3), vid);
-      const portaAqui = (face === 'y' && c.ladoPorta === 'y+') || (face === 'x' && c.ladoPorta === 'x+');
-      if (portaAqui) naFace(face, bx, by, ww, dd, (face === 'y' ? ww : dd) - 1.25, 0, 0.6, 0, 1.0, feito ? '#9a6a3a' : '#a5a5a0');
+      const portaAqui = (face === 'y' && c.ladoPorta === 'y+') || (face === 'x' && c.ladoPorta === 'x+'), comp = face === 'y' ? ww : dd;
+      if (!portaAqui || comp >= 3.2) { naFace(face, bx, by, ww, dd, 0.35, 0, 0.75, hh * 0.45, Math.min(0.6, hh * 0.35), mol); naFace(face, bx, by, ww, dd, 0.42, 0, 0.61, hh * 0.45 + 0.06, Math.min(0.48, hh * 0.3), vid); }
+      // porta no meio da face (onde o jogador entra), escura o bastante para aparecer também nas casas cinza
+      if (portaAqui) { const o = (comp - 0.7) / 2; naFace(face, bx, by, ww, dd, o - 0.06, 0, 0.82, 0, 1.12, feito ? '#f3e2c4' : '#d8d8d2'); naFace(face, bx, by, ww, dd, o, 0, 0.7, 0, 1.05, feito ? '#8a5a2e' : '#5f5f5a'); naFace(face, bx, by, ww, dd, o + 0.52, 0, 0.09, 0.5, 0.09, '#ffd84a'); }
       else naFace(face, bx, by, ww, dd, (face === 'y' ? ww : dd) - 1.25, 0, 0.75, hh * 0.45, Math.min(0.6, hh * 0.35), vid);
     }
     // placa flutuante com o ícone (e o ✅ quando concluída)
