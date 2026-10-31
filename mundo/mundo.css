@@ -238,3 +238,8 @@ details.proj summary { cursor: pointer; }
 .hab.ok { background: #e3f4e6; color: #2e7d32; border-color: #b7dfbe; }
 .habs-turma { margin: 10px 0; } .habs-turma summary { cursor: pointer; font-weight: 600; }
 .habs-det { margin: 2px 0 6px 26px; font-size: 12px; } .habs-det summary { cursor: pointer; color: #5b6475; } .habs-det .habs { margin-top: 4px; }
+/* acessibilidade: menos movimento e letra maior (Menu) */
+body.calmo *, body.calmo *::before, body.calmo *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+body.letra-grande .d-caixa, body.letra-grande .j-caixa, body.letra-grande .aviso, body.letra-grande .teclas { zoom: 1.22; } body.letra-grande .missoes li { font-size: 17px; }
+body.letra-grande .hud-topo .stat, body.letra-grande .hb { font-size: 17px; }
+@media (max-width: 900px), (max-height: 500px) { body.letra-grande .d-caixa, body.letra-grande .j-caixa, body.letra-grande .missoes { zoom: 1; } body.letra-grande .d-texto, body.letra-grande .j-caixa { font-size: 18px; } body.letra-grande .d-opcoes button { font-size: 17px; } }

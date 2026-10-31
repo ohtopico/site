@@ -2388,7 +2388,19 @@
     const p = el.querySelector('#b-premio-est'); if (p) p.addEventListener('click', () => { const E = estEst(); if (E.ganhou || !missoesEstacao().every(m => m.ok)) return; E.ganhou = true; S.medalhas['estacao-' + ESTACAO.chave] = { ic: ESTACAO.ic, nome: `${ESTACAO.nome} ${ESTACAO.chave.split('-')[1]}` }; pontos(40, `${ESTACAO.ic} Missão do ${ESTACAO.nome.toLowerCase()} completa!`); setTimeout(() => ganhaFigurinha(null, 'pela missão da estação'), 1800); salvar(); janelaEvento(); });
   }
   /* clima por cima do mundo: chuva, nuvens, neblina, vento com folhas e um brilho de sol */
-  const semMovimento = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* acessibilidade: menos movimento (segue a preferência do sistema até a pessoa escolher), letra maior e leitor de tela */
+  const ACESS = (() => { const CH = 'mundo-acess-v1', sis = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    let p = { calmo: sis, letra: false }; try { p = Object.assign(p, JSON.parse(localStorage.getItem(CH)) || {}); } catch (e) {}
+    const aplica = () => { document.body.classList.toggle('calmo', !!p.calmo); document.body.classList.toggle('letra-grande', !!p.letra); };
+    aplica();
+    return { p: () => p, liga(k, v) { p[k] = v; try { localStorage.setItem(CH, JSON.stringify(p)); } catch (e) {} aplica(); } };
+  })();
+  let semMovimento = ACESS.p().calmo;
+  let ultimoAnuncio = '';
+  function anuncia(txt) {   // fala para o leitor de tela o que está perto (só quando muda)
+    if (txt === ultimoAnuncio) return; ultimoAnuncio = txt;
+    const el = $('#leitor'); if (el) el.textContent = txt ? txt.replace(/E · /, 'Aperte E para ') : '';
+  }
   function climaTela(vw, vh) {
     const id = CLIMA.id, mexe = !semMovimento;
     if (id === 'chuva') {
@@ -2569,7 +2581,8 @@
     if (alvo) {
       const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
-    }
+      anuncia((alvo.tipo === 'casa' ? alvo.casa.lugar.titulo + '. ' : '') + t);
+    } else anuncia('');
     minimapa(faseDeX(P.x));
     requestAnimationFrame(quadro);
   }
@@ -3196,6 +3209,10 @@
   $('#b-efeitos').addEventListener('click', () => { SOM.liga('efeitos', !SOM.pref().efeitos); rotSom(); SOM.toca('acerto'); });
   $('#b-musica').addEventListener('click', () => { SOM.liga('musica', !SOM.pref().musica); rotSom(); });
   rotSom();
+  const rotAcess = () => { const p = ACESS.p(); $('#b-calmo').textContent = p.calmo ? '🐢 Menos movimento: ligado' : '🐢 Menos movimento: desligado'; $('#b-letra').textContent = p.letra ? '🔠 Letra maior: ligada' : '🔠 Letra maior: desligada'; $('#b-calmo').setAttribute('aria-pressed', !!p.calmo); $('#b-letra').setAttribute('aria-pressed', !!p.letra); };
+  $('#b-calmo').addEventListener('click', () => { ACESS.liga('calmo', !ACESS.p().calmo); semMovimento = ACESS.p().calmo; rotAcess(); });
+  $('#b-letra').addEventListener('click', () => { ACESS.liga('letra', !ACESS.p().letra); rotAcess(); });
+  rotAcess();
   /* sem internet: o service worker guarda o Mundo; o botão de instalar aparece quando o navegador oferece */
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
   let pedidoInstalar = null;
