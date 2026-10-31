@@ -196,17 +196,19 @@
       metaJogar: Math.min(n, f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2)),
       nNpc: 2 + Math.floor(i / 2), nItens: 5 + i });
   });
-  /* as vilas são quadradas e ficam numa grade de 3 colunas (em zigue-zague): cada uma liga-se à anterior e à seguinte
-     por um portão no lado em que a vizinha está. Só a vila atual fica montada na memória; ao trocar de vila, a anterior é
+  /* as vilas são quadradas e ficam numa grade de 3 colunas (em zigue-zague): cada uma liga-se à anterior, à seguinte e aos
+     atalhos de LIGACOES por um portão no lado em que a vizinha está. Só a vila atual fica montada na memória; ao trocar de vila, a anterior é
      desmontada (ela é refeita igualzinha quando a pessoa volta, porque o sorteio é fixo). */
   const ALT = Math.max(...fases.map(f => 2 * (f.raio + 9)));
   const MEIO = Math.floor(ALT / 2);                              // as duas estradas se cruzam no meio
   const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2]];
   const LADOS = { L: { x: ALT - 0.5, y: MEIO, nome: 'leste' }, O: { x: 0.5, y: MEIO, nome: 'oeste' }, S: { x: MEIO, y: ALT - 0.5, nome: 'sul' }, N: { x: MEIO, y: 0.5, nome: 'norte' } };
+  // além do zigue-zague, atalhos entre vilas vizinhas na grade (Começo ↔ Laboratório, Números ↔ Inteligência ↔ Professores)
+  const LIGACOES = fases.slice(1).map((f, i) => [i, i + 1]).concat([[0, 5], [1, 4], [4, 7]]).filter(([a, b]) => b < fases.length);
   const ladoPara = (a, b) => { const [ax, ay] = GRADE[a], [bx, by] = GRADE[b]; return bx > ax ? 'L' : bx < ax ? 'O' : by > ay ? 'S' : 'N'; };
   for (const f of fases) {
     f.x0 = 0; f.L = ALT;
-    f.portais = [f.idx - 1, f.idx + 1].filter(j => j >= 0 && j < fases.length).map(j => Object.assign({ para: j, lado: ladoPara(f.idx, j) }, LADOS[ladoPara(f.idx, j)]));
+    f.portais = LIGACOES.filter(l => l.includes(f.idx)).map(l => l[0] === f.idx ? l[1] : l[0]).map(j => Object.assign({ para: j, lado: ladoPara(f.idx, j) }, LADOS[ladoPara(f.idx, j)]));
     // moradores (quem são; a posição vem da montagem)
     const nomes = NOMES.slice();
     f.npcs = [];
@@ -2467,7 +2469,7 @@
     k.fillStyle = '#1b2531'; k.fillRect(0, 0, c.width, c.height);
     const centro = i => [ox + GRADE[i][0] * (cw + gx) + cw / 2, oy + GRADE[i][1] * (ch + gy) + ch / 2];
     k.strokeStyle = '#f3d6a0'; k.lineWidth = 8; k.lineCap = 'round';
-    for (let i = 1; i < fases.length; i++) { const [a, b] = centro(i - 1), [d, e] = centro(i); k.beginPath(); k.moveTo(a, b); k.lineTo(d, e); k.stroke(); }
+    for (const [i, j] of LIGACOES) { const [a, b] = centro(i), [d, e] = centro(j); k.beginPath(); k.moveTo(a, b); k.lineTo(d, e); k.stroke(); }
     for (const f of fases) {
       const [cx, cy] = centro(f.idx), x = cx - cw / 2, y = cy - ch / 2, ok = liberada(f);
       k.fillStyle = '#7fbf6a'; k.strokeStyle = f === atual ? '#ffffff' : '#3f8f4b'; k.lineWidth = f === atual ? 4 : 2;
