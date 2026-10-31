@@ -1,0 +1,162 @@
+/* Perguntas dos moradores do Mundo: cada vila tem a sua base, com o tema da vila, e cada morador tem
+   um assunto próprio com pelo menos 50 perguntas (geradas por regras fixas, então são sempre as mesmas
+   e o progresso de cada uma fica salvo). A alternativa certa muda de lugar de uma pergunta para outra. */
+(function () {
+  const hash = s => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+  function Q(enun, certa, erradas, coment) {
+    const alts = [String(certa)];
+    for (const e of erradas) { const t = String(e); if (alts.length < 4 && !alts.includes(t)) alts.push(t); }
+    const r = hash(enun) % alts.length, ord = alts.slice(r).concat(alts.slice(0, r));
+    return { enun, alts: ord, certa: ord.indexOf(String(certa)), coment: coment || '' };
+  }
+  // distratores numéricos: vizinhos plausíveis, sem repetir a certa e sem negativos
+  const perto = (c, ...extra) => extra.concat([c + 1, c - 1, c + 2, c * 2, c + 10]).filter(v => v !== c && v >= 0 && Number.isFinite(v));
+  const fmt = v => String(Math.round(v * 100) / 100).replace('.', ',');
+  const bin = n => n.toString(2);
+  const tab = linhas => `<table class="em-tab">${linhas.map((l, i) => `<tr>${l.map(c => i ? `<td>${c}</td>` : `<th>${c}</th>`).join('')}</tr>`).join('')}</table>`;
+  const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+  const VF = (enun, v, coment) => Q(enun, v ? 'Verdadeiro' : 'Falso', [v ? 'Falso' : 'Verdadeiro'], coment);
+
+  /* ---------- Vila do Começo (computação do 6º ano) ---------- */
+  const binario = [
+    ...range(1, 40).map(n => Q(`Quanto vale o número binário <b>${bin(n)}</b> em decimal?`, n, perto(n, parseInt(bin(n), 10) % 100, n + 4), `Cada posição vale o dobro da anterior: 1, 2, 4, 8, 16, 32...`)),
+    ...range(41, 63).map(n => Q(`Como se escreve <b>${n}</b> em binário?`, bin(n), [bin(n + 1), bin(n - 1), bin(n ^ 4)], `${n} = ${bin(n).split('').map((d, i, a) => d === '1' ? 2 ** (a.length - 1 - i) : 0).filter(Boolean).join(' + ')}.`))
+  ];
+  const DISPOSITIVOS = [['teclado', 'Entrada'], ['mouse', 'Entrada'], ['microfone', 'Entrada'], ['webcam', 'Entrada'], ['scanner', 'Entrada'], ['leitor de código de barras', 'Entrada'], ['joystick', 'Entrada'], ['sensor de temperatura', 'Entrada'],
+    ['monitor', 'Saída'], ['impressora', 'Saída'], ['caixa de som', 'Saída'], ['fone de ouvido', 'Saída'], ['projetor', 'Saída'], ['LED de aviso', 'Saída'],
+    ['pen drive', 'Armazenamento'], ['HD externo', 'Armazenamento'], ['SSD', 'Armazenamento'], ['cartão de memória', 'Armazenamento'], ['nuvem (armazenamento online)', 'Armazenamento'], ['DVD gravável', 'Armazenamento']];
+  const algoritmos = [
+    ...DISPOSITIVOS.map(([d, t]) => Q(`O(a) <b>${d}</b> é um dispositivo de...`, t, ['Entrada', 'Saída', 'Armazenamento', 'Processamento'].filter(x => x !== t), 'Entrada leva dados para o computador; saída mostra os resultados; armazenamento guarda os dados.')),
+    ...[[3, 1], [2, 1], [4, 2], [5, 2], [4, 1], [3, 2]].flatMap(([a, b]) => [2, 3, 4, 5, 6, 7].map(k => Q(`Um robô começa na casa 0. Ele repete <b>${k} vezes</b>: “ande ${a} casas para frente, volte ${b}”. Em que casa ele termina?`, k * (a - b), perto(k * (a - b), k * a, k * (a + b)), `Cada repetição avança ${a} − ${b} = ${a - b}; ${k} × ${a - b} = ${k * (a - b)}.`)))
+  ];
+
+  /* ---------- Praça dos Números (matemática do 6º ano) ---------- */
+  const fracoes = [2, 3, 4, 5, 10].flatMap(b => range(1, b - 1).slice(0, 3).flatMap(a => [b * 3, b * 5, b * 6, b * 8, b * 12].map(N => Q(`Quanto é <b>${a}/${b}</b> de ${N}?`, N / b * a, perto(N / b * a, N / b, N - N / b * a), `${N} ÷ ${b} = ${N / b}; ${N / b} × ${a} = ${N / b * a}.`))));
+  const mdc = (a, b) => b ? mdc(b, a % b) : a;
+  const potencias = [
+    ...range(2, 12).flatMap(a => [2, 3].map(e => Q(`Quanto é <b>${a}${e === 2 ? '²' : '³'}</b>?`, a ** e, perto(a ** e, a * e, a ** e - a), `${a}${e === 2 ? '²' : '³'} = ${Array(e).fill(a).join(' × ')}.`))),
+    ...[[12, 18], [8, 12], [20, 30], [15, 25], [24, 36], [14, 21], [16, 40], [9, 12], [10, 25], [18, 27], [6, 15], [28, 42], [30, 45], [32, 48], [21, 35]].map(([a, b]) => Q(`Qual é o MDC de ${a} e ${b}?`, mdc(a, b), perto(mdc(a, b), a * b / mdc(a, b) > 100 ? 1 : a * b / mdc(a, b)), 'O MDC é o maior número que divide os dois.')),
+    ...[[4, 6], [3, 5], [6, 8], [10, 15], [4, 10], [9, 12], [5, 6], [8, 12], [6, 9], [2, 7], [7, 3], [12, 16], [15, 20], [4, 14]].map(([a, b]) => Q(`Qual é o MMC de ${a} e ${b}?`, a * b / mdc(a, b), perto(a * b / mdc(a, b), a * b === a * b / mdc(a, b) ? a * b + a : a * b), 'O MMC é o menor múltiplo comum aos dois.'))
+  ];
+
+  /* ---------- Bairro dos Padrões (7º ano) ---------- */
+  const MATRIZES = range(0, 11).map(m => [0, 1, 2].map(i => [0, 1, 2].map(j => ((m * 7 + i * 5 + j * 3) % 9) + 1 + m)));
+  const matrizes = MATRIZES.flatMap((M, m) => [[0, 2], [1, 0], [2, 1], [1, 1], [2, 2]].map(([i, j]) => Q(`Na matriz abaixo, qual é o elemento da <b>linha ${i + 1}, coluna ${j + 1}</b>?${tab([['', 'c1', 'c2', 'c3'], ...M.map((l, k) => ['l' + (k + 1), ...l])])}`, M[i][j], [M[j][i], M[i][(j + 1) % 3], M[(i + 1) % 3][j], M[i][j] + 1], 'Primeiro a linha (deitada), depois a coluna (em pé).')));
+  const porcentagem = [10, 20, 25, 50, 75, 5].flatMap(p => [40, 60, 80, 120, 200, 360, 500, 1000, 240, 160].map(N => Q(`Quanto é <b>${p}% de ${N}</b>?`, N * p / 100, perto(N * p / 100, p, N / p * 10), `${p}% = ${p}/100; ${N} × ${p} ÷ 100 = ${fmt(N * p / 100)}.`))).filter((q, i) => i % 1 === 0).slice(0, 60);
+  const GOLPES = [
+    ['Um SMS diz que você ganhou um prêmio e pede para clicar num link e informar sua senha.', 'Golpe'], ['O banco liga pedindo o código que chegou por SMS para “cancelar uma compra”.', 'Golpe'],
+    ['Um amigo manda mensagem de um número novo pedindo um Pix urgente.', 'Golpe'], ['Um e-mail com erros de português pede para “atualizar seus dados” num link estranho.', 'Golpe'],
+    ['Uma loja desconhecida vende um celular novo por um quinto do preço.', 'Golpe'], ['Um perfil oferece seguidores grátis em troca da senha da sua conta.', 'Golpe'],
+    ['Um site pede para instalar um programa para “liberar” um vídeo.', 'Golpe'], ['Um anúncio diz que seu computador está infectado e manda ligar para um número.', 'Golpe'],
+    ['Alguém no jogo online pede sua senha para “dar itens raros”.', 'Golpe'], ['Um QR Code colado por cima de outro num cartaz leva a um pagamento.', 'Golpe'],
+    ['Você entra no site do banco digitando o endereço que já conhece.', 'Seguro'], ['O app pede para confirmar o login no seu próprio celular, que você mesmo iniciou.', 'Seguro'],
+    ['Você ativa a verificação em duas etapas no seu e-mail.', 'Seguro'], ['A escola envia um comunicado no portal oficial que você acessa sempre.', 'Seguro'],
+    ['Você atualiza o sistema do celular pela loja oficial.', 'Seguro'], ['Você liga para o número que está atrás do cartão para tirar uma dúvida.', 'Seguro']
+  ];
+  const ALFABETOS = [[2, 'só 0 e 1', range(1, 10)], [10, 'algarismos de 0 a 9', range(1, 6)], [26, 'letras minúsculas', range(1, 3)], [36, 'letras minúsculas e algarismos', range(1, 2)], [62, 'letras maiúsculas, minúsculas e algarismos', range(1, 2)]];
+  const seguranca = [
+    ...GOLPES.map(([t, r]) => Q(`${t} Isso parece...`, r, [r === 'Golpe' ? 'Seguro' : 'Golpe', 'Tanto faz'], r === 'Golpe' ? 'Desconfie de pressa, prêmios, links estranhos e pedidos de senha ou código.' : 'Usar os canais oficiais e a verificação em duas etapas é o caminho seguro.')),
+    ...ALFABETOS.flatMap(([a, nome, ks]) => ks.map(k => Q(`Quantas senhas diferentes existem com <b>${k} ${k === 1 ? 'caractere' : 'caracteres'}</b> usando ${nome} (${a} símbolos)?`, (a ** k).toLocaleString('pt-BR'), [(a * k).toLocaleString('pt-BR'), (a ** k * 2).toLocaleString('pt-BR'), (k ** a > 1e12 ? a ** k + a : k ** a).toLocaleString('pt-BR')], `São ${a} opções em cada posição: ${a}${k > 1 ? ' elevado a ' + k : ''} = ${(a ** k).toLocaleString('pt-BR')}. Mais símbolos e mais caracteres deixam a senha mais forte.`))),
+    ...[['123456', 'Fraca'], ['senha', 'Fraca'], ['qwerty', 'Fraca'], ['ana2010', 'Fraca'], ['futebol', 'Fraca'], ['11111111', 'Fraca'],
+      ['Gato!Azul-Pula7Muros', 'Forte'], ['m3u-c@chorro-come-p1zza', 'Forte'], ['Chuva#Verde#Lua#2049', 'Forte'], ['TrEm-voa_sobre_9ilhas', 'Forte'], ['abacaxi.pinguim.violao.42', 'Forte']]
+      .map(([s, r]) => Q(`A senha <b>${s}</b> é...`, r, [r === 'Forte' ? 'Fraca' : 'Forte', 'Média, porque tem letras'], r === 'Forte' ? 'Senhas longas, com várias palavras e símbolos, são difíceis de adivinhar.' : 'Senhas curtas, comuns ou com dados pessoais são descobertas rapidinho.'))
+  ];
+
+  /* ---------- Cidade das Redes (8º ano) ---------- */
+  const fat = n => n <= 1 ? 1 : n * fat(n - 1);
+  const fib = n => n <= 2 ? 1 : fib(n - 1) + fib(n - 2);
+  const recursao = [
+    ...range(1, 8).map(n => Q(`A função fat(n) = n × fat(n − 1), com fat(1) = 1. Quanto vale <b>fat(${n})</b>?`, fat(n), perto(fat(n), fat(n + 1), n * n), `fat(${n}) = ${range(1, n).reverse().join(' × ')}.`)),
+    ...range(3, 22).map(n => Q(`Na sequência de Fibonacci (1, 1, 2, 3, 5, 8, ...), cada termo é a soma dos dois anteriores. Qual é o <b>${n}º termo</b>?`, fib(n), perto(fib(n), fib(n - 1), fib(n + 1)), `Os termos ${n - 2}º e ${n - 1}º são ${fib(n - 2)} e ${fib(n - 1)}; somando dá ${fib(n)}.`)),
+    ...range(2, 26).map(n => Q(`soma(n) = n + soma(n − 1), com soma(1) = 1. Quanto vale <b>soma(${n})</b>?`, n * (n + 1) / 2, perto(n * (n + 1) / 2, n * n, n * (n - 1) / 2), `É 1 + 2 + ... + ${n} = ${n} × ${n + 1} ÷ 2.`))
+  ];
+  const pacotes = [[1, 'KB'], [2, 'KB'], [4, 'KB'], [5, 'KB'], [8, 'KB']].flatMap(([t]) => [10, 13, 20, 25, 33, 40, 50, 64, 75, 100, 128, 150].map(N => Q(`Um arquivo de <b>${N} KB</b> vai pela rede em pacotes de até <b>${t} KB</b>. Quantos pacotes, no mínimo?`, Math.ceil(N / t), perto(Math.ceil(N / t), Math.floor(N / t) || N, N * t), `${N} ÷ ${t} = ${fmt(N / t)}${N % t ? '; o pedaço que sobra também precisa de um pacote' : ''}.`))).filter((q, i, a) => a.findIndex(o => o.enun === q.enun) === i).slice(0, 60);
+  const paralelismo = [12, 24, 36, 48, 60, 72, 90, 120, 180, 240, 300, 360].flatMap(T => [2, 3, 4, 6, 12].filter(P => T % P === 0).map(P => Q(`Uma tarefa leva <b>${T} minutos</b> em um computador. Dividida igualmente entre <b>${P} computadores</b> trabalhando ao mesmo tempo, quanto tempo leva?`, `${T / P} min`, [`${T * P} min`, `${T - P} min`, `${T / P + P} min`, `${T / 2} min`], `Em paralelo, cada um faz 1/${P} do trabalho: ${T} ÷ ${P} = ${T / P}.`)));
+
+  /* ---------- Vale da Inteligência (9º ano) ---------- */
+  const cesar = (w, k) => w.replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 + k) % 26 + 65));
+  const cripto = ['GATO', 'BOLA', 'REDE', 'DADO', 'CHAVE', 'ROBO', 'NUVEM', 'PIXEL', 'CODIGO', 'SENHA'].flatMap(w => [1, 2, 3, 4, 5, 13].map(k => Q(`Na cifra de César com deslocamento <b>${k}</b>, como fica a palavra <b>${w}</b>?`, cesar(w, k), [cesar(w, (k + 1) % 26), cesar(w, 26 - k), cesar(w, k + 2)], `Cada letra anda ${k} ${k === 1 ? 'casa' : 'casas'} no alfabeto (depois do Z volta ao A).`)));
+  const grafos = [
+    ...range(2, 20).map(n => Q(`Um grafo <b>completo</b> com ${n} vértices (todos ligados a todos) tem quantas arestas?`, n * (n - 1) / 2, perto(n * (n - 1) / 2, n * (n - 1), n), `Cada um dos ${n} liga-se a ${n - 1}; dividimos por 2 para não contar a aresta duas vezes.`)),
+    ...range(3, 20).map(n => Q(`Um <b>ciclo</b> com ${n} vértices (uma roda fechada) tem quantas arestas?`, n, perto(n, n - 1, 2 * n), 'Num ciclo, o número de arestas é igual ao de vértices.')),
+    ...range(2, 20).map(n => Q(`Uma <b>árvore</b> (grafo ligado e sem ciclos) com ${n} vértices tem quantas arestas?`, n - 1, perto(n - 1, n, n + 1), 'Toda árvore tem uma aresta a menos que o número de vértices.'))
+  ];
+  const ia = [10, 20, 25, 50, 100].flatMap(b => range(1, 12).map(k => Math.round(b * (k * 7 % 12 + 1) / 13)).filter((a, i, l) => a > 0 && a <= b && l.indexOf(a) === i).map(a => Q(`Uma IA classificou <b>${b} fotos</b> e acertou <b>${a}</b>. Qual é a acurácia?`, `${fmt(a / b * 100)}%`, [`${fmt((b - a) / b * 100)}%`, `${a}%`, `${fmt(a / b * 10)}%`, `${b - a}%`], `Acurácia = acertos ÷ total = ${a} ÷ ${b}.`)));
+  const EXPR = [['A E B', (A, B) => A && B], ['A OU B', (A, B) => A || B], ['NÃO A', A => !A], ['A E (NÃO B)', (A, B) => A && !B], ['(NÃO A) OU B', (A, B) => !A || B], ['NÃO (A OU B)', (A, B) => !(A || B)], ['A OU EXCLUSIVO B', (A, B) => A !== B], ['NÃO (A E B)', (A, B) => !(A && B)],
+    ['(A E B) OU C', (A, B, C) => (A && B) || C], ['A E (B OU C)', (A, B, C) => A && (B || C)], ['(A OU B) E (NÃO C)', (A, B, C) => (A || B) && !C], ['NÃO A E C', (A, B, C) => !A && C]];
+  const vf = v => v ? 'V' : 'F';
+  const logica = EXPR.flatMap(([e, f], ei) => (ei < 8 ? [[1, 1, 0], [1, 0, 0], [0, 1, 0], [0, 0, 0]] : [[1, 1, 0], [1, 0, 1], [0, 1, 0], [0, 0, 1], [1, 0, 0]]).filter(([A, B, C]) => !(e === 'NÃO A' && B)).map(([A, B, C]) => VF(`Se A = <b>${vf(A)}</b>, B = <b>${vf(B)}</b>${e.includes('C') ? `, C = <b>${vf(C)}</b>` : ''}, a expressão <b>${e}</b> é verdadeira?`, !!f(!!A, !!B, !!C), 'E só é verdadeiro com os dois verdadeiros; OU basta um; NÃO inverte.')));
+
+  /* ---------- Laboratório dos Simuladores ---------- */
+  const hex = range(0, 59).map(i => 16 + i * 3 + (i % 5)).map(n => Q(`Quanto vale o hexadecimal <b>${n.toString(16).toUpperCase()}</b> em decimal?`, n, perto(n, parseInt(n.toString(16), 10) || n + 3, n + 16), `Em hexadecimal, cada casa vale 16 vezes a anterior: ${n.toString(16).toUpperCase().split('').map(d => parseInt(d, 16)).join(' × 16 + ')} = ${n}.`));
+  const neuronio = range(0, 59).map(i => { const x1 = i % 3, x2 = (i >> 1) % 3, w1 = (i % 5) - 2, w2 = ((i * 3) % 5) - 1, bias = (i % 4) - 2, s = x1 * w1 + x2 * w2 + bias;
+    return Q(`Um neurônio artificial recebe x₁ = ${x1} e x₂ = ${x2}, com pesos w₁ = ${w1} e w₂ = ${w2} e viés ${bias}. Ele dispara (saída 1) se a soma for maior que 0. Qual é a saída?`, s > 0 ? `1 (soma = ${s})` : `0 (soma = ${s})`, [s > 0 ? `0 (soma = ${s})` : `1 (soma = ${s})`, s > 0 ? `0 (soma = ${-s})` : `1 (soma = ${-s + 1})`], `Soma = ${x1}×${w1} + ${x2}×${w2} + ${bias} = ${s}.`); });
+  const regressao = [[2, 1], [3, 0], [-1, 10], [0.5, 2], [4, -3], [1.5, 0], [-2, 20], [5, 5], [10, -5], [0.2, 1]].flatMap(([a, b]) => [0, 2, 3, 5, 10, 4].map(x => Q(`A reta da regressão é <b>y = ${fmt(a)}x ${b < 0 ? '−' : '+'} ${Math.abs(b)}</b>. Qual é a previsão de y para x = ${x}?`, fmt(a * x + b), [fmt(a * x - b), fmt(a + x + b), fmt(a * (x + 1) + b)], `y = ${fmt(a)} × ${x} ${b < 0 ? '−' : '+'} ${Math.abs(b)} = ${fmt(a * x + b)}.`)));
+  const pipeline = [3, 4, 5, 6].flatMap(k => range(1, 15).map(n => Q(`Um processador com pipeline de <b>${k} estágios</b> (cada um leva 1 ciclo) executa <b>${n} ${n === 1 ? 'instrução' : 'instruções'}</b>. Quantos ciclos, no total?`, k + n - 1, perto(k + n - 1, k * n, k + n), `A primeira instrução leva ${k} ciclos; depois sai uma por ciclo: ${k} + ${n} − 1 = ${k + n - 1}.`)));
+
+  /* ---------- Campus do Ensino Médio ---------- */
+  const ip = [
+    ...range(16, 30).map(p => Q(`Uma rede <b>/${p}</b> (IPv4) tem quantos endereços no total?`, (2 ** (32 - p)).toLocaleString('pt-BR'), [(2 ** (32 - p) - 2).toLocaleString('pt-BR'), (2 ** (31 - p)).toLocaleString('pt-BR'), (32 - p).toLocaleString('pt-BR')], `Sobram ${32 - p} bits para os endereços: 2 elevado a ${32 - p}.`)),
+    ...range(20, 30).map(p => Q(`Quantos <b>hosts utilizáveis</b> cabem numa rede /${p}?`, (2 ** (32 - p) - 2).toLocaleString('pt-BR'), [(2 ** (32 - p)).toLocaleString('pt-BR'), (2 ** (32 - p) - 1).toLocaleString('pt-BR'), (2 ** (31 - p)).toLocaleString('pt-BR')], 'Tiramos 2 endereços: o da rede e o de broadcast.')),
+    ...[1, 3, 7, 10, 15, 31, 63, 64, 100, 127, 128, 150, 168, 172, 192, 200, 224, 240, 248, 252, 254, 255, 5, 42, 99].map(n => Q(`Qual é o octeto <b>${n.toString(2).padStart(8, '0')}</b> em decimal?`, n, perto(n, 255 - n, n ^ 1), 'Os 8 bits valem 128, 64, 32, 16, 8, 4, 2 e 1.'))
+  ];
+  const ALUNOS = [['Ana', 15, 'A', 8], ['Bruno', 16, 'B', 6], ['Carla', 15, 'A', 9], ['Davi', 17, 'B', 5], ['Eva', 16, 'A', 7], ['Fábio', 15, 'B', 10], ['Gil', 17, 'A', 4], ['Helena', 16, 'B', 8]];
+  const tabAl = tab([['nome', 'idade', 'turma', 'nota'], ...ALUNOS]);
+  const sql = [
+    ...range(4, 10).map(k => Q(`Tabela <b>alunos</b>:${tabAl}Qual é o resultado de <code>SELECT COUNT(*) FROM alunos WHERE nota &gt;= ${k};</code>?`, ALUNOS.filter(a => a[3] >= k).length, perto(ALUNOS.filter(a => a[3] >= k).length, ALUNOS.filter(a => a[3] > k).length, 8), 'COUNT conta as linhas que passam no filtro do WHERE.')),
+    ...range(4, 10).map(k => Q(`Tabela <b>alunos</b>:${tabAl}Qual é o resultado de <code>SELECT COUNT(*) FROM alunos WHERE nota &lt; ${k};</code>?`, ALUNOS.filter(a => a[3] < k).length, perto(ALUNOS.filter(a => a[3] < k).length, ALUNOS.filter(a => a[3] <= k).length, 8), 'O sinal &lt; não inclui o próprio valor.')),
+    ...[15, 16, 17].flatMap(i => ['A', 'B'].map(t => Q(`Tabela <b>alunos</b>:${tabAl}Quantas linhas retorna <code>SELECT * FROM alunos WHERE idade = ${i} AND turma = '${t}';</code>?`, ALUNOS.filter(a => a[1] === i && a[2] === t).length, perto(ALUNOS.filter(a => a[1] === i && a[2] === t).length, ALUNOS.filter(a => a[1] === i || a[2] === t).length), 'Com AND, as duas condições precisam valer na mesma linha.'))),
+    ...[15, 16, 17].flatMap(i => ['A', 'B'].map(t => Q(`Tabela <b>alunos</b>:${tabAl}Quantas linhas retorna <code>SELECT * FROM alunos WHERE idade = ${i} OR turma = '${t}';</code>?`, ALUNOS.filter(a => a[1] === i || a[2] === t).length, perto(ALUNOS.filter(a => a[1] === i || a[2] === t).length, ALUNOS.filter(a => a[1] === i && a[2] === t).length), 'Com OR, basta uma das condições.'))),
+    ...[15, 16, 17].flatMap(i => [['&gt;=', a => a >= i], ['&lt;=', a => a <= i]].map(([op, f]) => Q(`Tabela <b>alunos</b>:${tabAl}Qual é o resultado de <code>SELECT COUNT(*) FROM alunos WHERE idade ${op} ${i};</code>?`, ALUNOS.filter(a => f(a[1])).length, perto(ALUNOS.filter(a => f(a[1])).length, ALUNOS.filter(a => a[1] === i).length), 'O sinal com = inclui o próprio valor.'))),
+    ...range(5, 9).map(k => Q(`Tabela <b>alunos</b>:${tabAl}Qual é o resultado de <code>SELECT COUNT(*) FROM alunos WHERE turma = 'A' AND nota &gt;= ${k};</code>?`, ALUNOS.filter(a => a[2] === 'A' && a[3] >= k).length, perto(ALUNOS.filter(a => a[2] === 'A' && a[3] >= k).length, ALUNOS.filter(a => a[3] >= k).length), 'As duas condições precisam valer na mesma linha.')),
+    ...ALUNOS.map((a, i) => Q(`Tabela <b>alunos</b>:${tabAl}Com <code>SELECT nome FROM alunos ORDER BY nota DESC;</code>, quem aparece na <b>posição ${i + 1}</b>?`, [...ALUNOS].sort((x, y) => y[3] - x[3] || x[0].localeCompare(y[0]))[i][0], [...ALUNOS].sort((x, y) => x[3] - y[3])[i][0] === [...ALUNOS].sort((x, y) => y[3] - x[3] || x[0].localeCompare(y[0]))[i][0] ? [ALUNOS[(i + 1) % 8][0], ALUNOS[(i + 3) % 8][0]] : [[...ALUNOS].sort((x, y) => x[3] - y[3])[i][0], ALUNOS[(i + 1) % 8][0], ALUNOS[(i + 2) % 8][0]], 'DESC ordena do maior para o menor (aqui, empates vêm em ordem alfabética).')),
+    ...['A', 'B'].flatMap(t => [['SUM', l => l.reduce((s, a) => s + a, 0)], ['MAX', l => Math.max(...l)], ['MIN', l => Math.min(...l)], ['AVG', l => l.reduce((s, a) => s + a, 0) / l.length]].map(([fn, f]) => { const v = f(ALUNOS.filter(a => a[2] === t).map(a => a[3]));
+      return Q(`Tabela <b>alunos</b>:${tabAl}Qual é o resultado de <code>SELECT ${fn}(nota) FROM alunos WHERE turma = '${t}';</code>?`, fmt(v), perto(v, v + 3).map(fmt), `${fn} calcula ${{ SUM: 'a soma', MAX: 'o maior valor', MIN: 'o menor valor', AVG: 'a média' }[fn]} das notas da turma ${t}.`); }))
+  ];
+  const listas = range(0, 59).map(i => { const n = 5 + (i % 3) * 2, l = range(0, n - 1).map(j => (i * 7 + j * 11 + j * j) % 20 + 1); return l; });
+  const estat = listas.map((l, i) => { const ord = [...l].sort((a, b) => a - b), med = ord[(l.length - 1) / 2], media = l.reduce((a, b) => a + b, 0) / l.length;
+    return i % 2 ? Q(`Qual é a <b>mediana</b> de: ${l.join(', ')}?`, med, perto(med, Math.round(media), ord[0], ord[ord.length - 1]), `Em ordem: ${ord.join(', ')}. A mediana é o valor do meio.`)
+      : Q(`Qual é a <b>média</b> de: ${l.join(', ')}?`, fmt(media), [fmt(med), fmt(media + 1), fmt(l.reduce((a, b) => a + b, 0))], `Soma ${l.reduce((a, b) => a + b, 0)} ÷ ${l.length} = ${fmt(media)}.`); });
+  const busca = [
+    ...[7, 15, 31, 63, 100, 127, 200, 255, 500, 511, 1000, 1023, 2000, 4095, 10000, 65535, 1000000, 50, 300, 750, 3000, 20, 9, 40, 128].map(n => Q(`Numa lista <b>ordenada</b> com ${n.toLocaleString('pt-BR')} itens, a busca binária faz no máximo quantas comparações?`, Math.ceil(Math.log2(n + 1)), perto(Math.ceil(Math.log2(n + 1)), Math.ceil(n / 2) > 60 ? 60 : Math.ceil(n / 2)), 'A cada comparação, metade da lista é descartada.')),
+    ...[7, 15, 31, 63, 100, 127, 200, 255, 500, 1000, 2000, 10000, 50, 300, 750, 3000, 20, 9, 40, 128, 64, 12, 30, 90, 1500].map(n => Q(`Numa lista <b>sem ordem</b> com ${n.toLocaleString('pt-BR')} itens, a busca linear faz no pior caso quantas comparações?`, n.toLocaleString('pt-BR'), [Math.ceil(Math.log2(n + 1)).toLocaleString('pt-BR'), Math.ceil(n / 2).toLocaleString('pt-BR'), (n - 1).toLocaleString('pt-BR')], 'Sem ordem, pode ser preciso olhar item por item até o último.'))
+  ];
+  const python = [
+    ...[[3, 2, 1], [5, 3, 4], [2, 10, 0], [7, 2, 5], [4, 4, 4], [10, 0, 7], [6, 3, 2], [1, 9, 9], [8, 5, 1], [9, 2, 3], [12, 2, 6], [0, 5, 5], [11, 3, 1], [15, 2, 0], [2, 2, 2]].flatMap(([a, b, c]) => [
+      Q(`O que o Python mostra?<pre>x = ${a}\nx = x * ${b} + ${c}\nprint(x)</pre>`, a * b + c, perto(a * b + c, a * (b + c), a + b + c)),
+      Q(`O que o Python mostra?<pre>x = ${a}\ny = x + ${b}\nx = y * ${c}\nprint(x - y)</pre>`, (a + b) * c - (a + b), perto((a + b) * c - (a + b), (a + b) * c, a * c - b))]),
+    ...range(2, 11).map(n => Q(`O que o Python mostra?<pre>s = 0\nfor i in range(${n}):\n    s = s + i\nprint(s)</pre>`, n * (n - 1) / 2, perto(n * (n - 1) / 2, n * (n + 1) / 2, n), `range(${n}) vai de 0 a ${n - 1}.`)),
+    ...range(2, 11).map(n => Q(`O que o Python mostra?<pre>c = 0\nfor i in range(1, ${n * 2}):\n    if i % 2 == 0:\n        c = c + 1\nprint(c)</pre>`, n - 1, perto(n - 1, n, n * 2), `Conta os pares de 1 a ${n * 2 - 1}.`))
+  ];
+
+  /* ---------- Escola dos Professores ---------- */
+  const TEMAS_BNCC = [['Algoritmos e sequências de passos', 'PC'], ['Decomposição de problemas', 'PC'], ['Reconhecimento de padrões', 'PC'], ['Abstração', 'PC'], ['Repetições (laços)', 'PC'], ['Condicionais (se... então)', 'PC'], ['Variáveis e tipos de dados', 'PC'], ['Depuração de programas', 'PC'], ['Recursão', 'PC'], ['Listas, filas e pilhas', 'PC'], ['Grafos e caminhos', 'PC'], ['Busca e ordenação', 'PC'], ['Modelagem com autômatos', 'PC'], ['Linguagens de programação', 'PC'], ['Funções e parâmetros', 'PC'], ['Lógica booleana (E, OU, NÃO)', 'PC'],
+    ['Representação binária dos dados', 'MD'], ['Hardware e software', 'MD'], ['Funcionamento da internet', 'MD'], ['Protocolos de rede', 'MD'], ['Criptografia', 'MD'], ['Armazenamento de dados', 'MD'], ['Sistemas operacionais', 'MD'], ['Compressão de dados', 'MD'], ['Codificação de imagens e sons', 'MD'], ['Processamento e memória', 'MD'], ['Sensores e robótica', 'MD'], ['Endereços IP e roteamento', 'MD'], ['Paralelismo e computação distribuída', 'MD'], ['Bancos de dados', 'MD'], ['Computação em nuvem', 'MD'], ['Detecção e correção de erros', 'MD'],
+    ['Cidadania digital', 'CD'], ['Uso seguro da internet', 'CD'], ['Cyberbullying', 'CD'], ['Desinformação e checagem de fatos', 'CD'], ['Direitos autorais e licenças', 'CD'], ['Privacidade e LGPD', 'CD'], ['Impactos da tecnologia na sociedade', 'CD'], ['Vieses em algoritmos', 'CD'], ['Ética na inteligência artificial', 'CD'], ['Bem-estar e tempo de tela', 'CD'], ['Pegada digital', 'CD'], ['Profissões da computação', 'CD'], ['Lixo eletrônico', 'CD'], ['Bolhas de filtro nas redes sociais', 'CD'], ['Inclusão e acessibilidade digital', 'CD'], ['Golpes e engenharia social', 'CD'], ['Comunicação em ambientes digitais', 'CD'], ['Mulheres na computação', 'CD']];
+  const NOMES_EIXO = { PC: 'Pensamento computacional', MD: 'Mundo digital', CD: 'Cultura digital' };
+  const bncc = TEMAS_BNCC.map(([t, e]) => Q(`Na BNCC Computação, o tema <b>${t}</b> fica principalmente em qual eixo?`, NOMES_EIXO[e], Object.values(NOMES_EIXO).filter(n => n !== NOMES_EIXO[e]), 'Os três eixos são pensamento computacional, mundo digital e cultura digital.'));
+  const TAREFAS = ['criar 5 questões sobre frações para o 6º ano', 'resumir um texto sobre a internet para o 7º ano', 'planejar uma aula de 50 minutos sobre algoritmos', 'escrever uma rubrica para avaliar um cartaz', 'sugerir uma atividade desplugada sobre binário', 'adaptar uma lista de exercícios para um aluno com dislexia', 'criar um roteiro de debate sobre fake news', 'gerar exemplos de golpes digitais para análise', 'montar um quiz sobre segurança de senhas', 'propor um projeto de robótica com sucata', 'criar uma história para ensinar condicionais', 'organizar uma gincana sobre hardware', 'sugerir perguntas para avaliar um podcast da turma'];
+  const PARTES = [['papel', 'Você é um(a) professor(a) de computação experiente.'], ['tarefa', null], ['contexto', 'A turma tem 30 alunos e pouco acesso a computadores.'], ['formato', 'Responda em uma lista numerada.'], ['restrição', 'Use linguagem simples e no máximo 200 palavras.']];
+  const prompts = TAREFAS.flatMap((t, ti) => PARTES.filter(([n]) => n !== 'tarefa' || ti === 0).map(([falta]) => { const pi = PARTES.findIndex(([n]) => n === falta); const txt = PARTES.filter((_, j) => j !== pi).map(([nome, frase]) => nome === 'tarefa' ? `Sua tarefa: ${t}.` : frase).join(' ');
+    return Q(`Neste prompt, qual parte está <b>faltando</b>?<blockquote>${txt}</blockquote>`, falta === 'restrição' ? 'Restrição (limites)' : falta[0].toUpperCase() + falta.slice(1), PARTES.map(([n]) => n).filter(n => n !== falta).slice(ti % 2, ti % 2 + 3).map(n => n === 'restrição' ? 'Restrição (limites)' : n[0].toUpperCase() + n.slice(1)), 'Um bom prompt costuma ter papel, tarefa, contexto, formato e restrições.'); }));
+  const MITOS = [['A IA generativa pode inventar fatos e referências que não existem.', 1], ['Se a IA escreveu com segurança, a informação está certa.', 0], ['Dados pessoais dos alunos não devem ser colados em ferramentas de IA sem cuidado.', 1], ['A IA substitui o planejamento do professor.', 0], ['Pedir exemplos e contraexemplos à IA ajuda a preparar aulas.', 1], ['Detectores de texto feito por IA são 100% confiáveis.', 0], ['A mesma pergunta pode ter respostas diferentes em momentos diferentes.', 1], ['A IA entende o mundo como uma pessoa entende.', 0], ['Modelos de linguagem preveem a próxima palavra a partir de padrões dos dados.', 1], ['Uma IA treinada com dados enviesados pode reproduzir preconceitos.', 1],
+    ['A IA não comete erros de matemática.', 0], ['Dar contexto sobre a turma melhora a resposta da IA.', 1], ['Proibir a IA ensina os alunos a usá-la com responsabilidade.', 0], ['É possível pedir à IA para adaptar um texto para diferentes níveis de leitura.', 1], ['Tudo que a IA gera pode ser usado sem citar a ferramenta.', 0], ['A IA pode ajudar a criar rubricas, mas o professor revisa os critérios.', 1], ['Quanto maior o prompt, sempre melhor a resposta.', 0], ['Revisar e editar a resposta da IA faz parte do bom uso.', 1], ['A IA sabe tudo o que aconteceu ontem.', 0], ['Pedir que a IA explique o raciocínio passo a passo ajuda a achar erros.', 1],
+    ['O aluno aprende mais quando só copia a resposta da IA.', 0], ['A IA pode gerar imagens para ilustrar materiais de aula.', 1], ['Ferramentas de IA podem ter limite de idade nos termos de uso.', 1], ['IA e computação são a mesma coisa.', 0], ['Ensinar como a IA funciona faz parte da cultura digital.', 1], ['A IA tem opiniões e sentimentos próprios.', 0], ['Um bom uso da IA começa com um objetivo de aprendizagem claro.', 1], ['A IA só funciona em inglês.', 0], ['Trocar o papel no prompt (por exemplo, “aja como um aluno do 6º ano”) muda o estilo da resposta.', 1], ['Usar IA em sala dispensa discutir ética.', 0],
+    ['A IA pode sugerir perguntas para uma roda de conversa.', 1], ['Imagens geradas por IA podem ser usadas para enganar pessoas.', 1], ['A IA garante que um plano de aula está alinhado à BNCC.', 0], ['Comparar a resposta da IA com fontes confiáveis é uma boa prática.', 1], ['A IA aprende sozinha com cada conversa que você tem, na hora.', 0], ['Atividades desplugadas ajudam a ensinar IA sem computador.', 1], ['A IA pode ajudar a dar feedback, mas o professor decide a nota.', 1], ['Só professores de computação podem usar IA na escola.', 0], ['Um prompt com exemplo do formato desejado costuma dar resultado mais próximo do esperado.', 1], ['Não é preciso conversar com os alunos sobre uso de IA nas tarefas.', 0],
+    ['Chatbots podem errar o nome de autores e datas.', 1], ['A IA é neutra porque é uma máquina.', 0], ['Planejar momentos sem tela continua importante.', 1], ['A IA pode transformar um texto em perguntas de múltipla escolha.', 1], ['Toda resposta da IA tem fonte verificada.', 0], ['Explicar aos alunos como avaliar respostas da IA desenvolve pensamento crítico.', 1], ['A IA consegue avaliar sozinha o aprendizado real de um aluno.', 0], ['Pedir a mesma tarefa de formas diferentes ajuda a comparar respostas.', 1], ['A IA pode ajudar a planejar aulas inclusivas.', 1], ['Usar IA é sempre plágio.', 0]];
+  const mitos = MITOS.map(([t, v]) => VF(t, !!v, v ? 'Isso mesmo: é um bom cuidado no uso da IA na educação.' : 'Esse é um mito comum sobre a IA.'));
+  const planejamento = [45, 50, 90, 100].flatMap(T => [[5, 20], [10, 25], [8, 30], [15, 15], [10, 20], [5, 30], [12, 18], [10, 30], [7, 23], [5, 15], [20, 10], [10, 10], [15, 20], [5, 25], [10, 15]].filter(([a, b]) => a + b < T).map(([a, b]) => Q(`Uma aula de <b>${T} minutos</b> tem ${a} min de abertura e ${b} min de atividade. Quanto tempo sobra para o fechamento?`, `${T - a - b} min`, [`${T - a} min`, `${T - b} min`, `${a + b} min`, `${T - a - b + 5} min`], `${T} − ${a} − ${b} = ${T - a - b}.`))).slice(0, 55);
+  const avaliacao = [20, 25, 40, 50].flatMap(n => range(1, 15).map(k => Math.round(n * k / 15)).filter((a, i, l) => a > 0 && l.indexOf(a) === i).map(a => Q(`Numa turma de <b>${n} alunos</b>, ${a} atingiram o objetivo da aula. Que porcentagem é essa?`, `${fmt(a / n * 100)}%`, [`${fmt((n - a) / n * 100)}%`, `${a}%`, `${fmt(a / n * 10)}%`, `${fmt(a / n * 100 + 10)}%`], `${a} ÷ ${n} = ${fmt(a / n)}, ou seja, ${fmt(a / n * 100)}%.`)));
+
+  const B = (tema, ic, eixos, lista) => ({ tema, ic, eixos, lista });
+  window.PERGUNTAS_NPC = {
+    vila: [B('binário e bits', '🔢', ['MD'], binario), B('algoritmos e o computador', '🤖', ['PC', 'MD'], algoritmos)],
+    praca: [B('frações', '🍕', ['NU'], fracoes), B('potências, MDC e MMC', '🧮', ['NU'], potencias)],
+    padroes: [B('matrizes e tabelas', '🧱', ['PC'], matrizes), B('porcentagem', '💯', ['NU'], porcentagem), B('golpes e senhas', '🔐', ['CD', 'MD'], seguranca)],
+    redes: [B('recursão e sequências', '🌀', ['PC'], recursao), B('pacotes na rede', '📦', ['MD'], pacotes), B('computação paralela', '⚙️', ['MD', 'PC'], paralelismo)],
+    ia: [B('criptografia', '🕵️', ['MD'], cripto), B('grafos', '🕸️', ['PC'], grafos), B('IA e acurácia', '🤖', ['CD', 'PC'], ia), B('lógica booleana', '💡', ['PC'], logica)],
+    lab: [B('hexadecimal', '🔣', ['MD'], hex), B('neurônio artificial', '🧠', ['PC'], neuronio), B('regressão linear', '📈', ['AL'], regressao), B('pipeline do processador', '🏭', ['MD'], pipeline)],
+    medio: [B('endereços IP', '🌐', ['MD'], ip), B('consultas SQL', '🗃️', ['PC'], sql), B('estatística', '📊', ['CD'], estat), B('busca e eficiência', '🔍', ['PC'], busca), B('Python', '🐍', ['PC'], python)],
+    escola: [B('BNCC Computação', '📚', ['CD'], bncc), B('prompts', '💬', ['CD'], prompts), B('IA na educação: verdade ou mito', '🤔', ['CD'], mitos), B('planejamento de aula', '🗓️', ['GM'], planejamento), B('avaliação da turma', '📝', ['NU'], avaliacao)]
+  };
+})();

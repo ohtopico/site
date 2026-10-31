@@ -464,7 +464,7 @@
   /* ---------- missões ---------- */
   function missoes(f) {
     const jog = f.lugares.filter(l => S.feitos[l.id]).length;
-    const perg = Object.keys(S.resp).filter(id => f.perguntas.some(p => p.id === id)).length;
+    const perg = Object.keys(S.resp).filter(id => id.startsWith(`n:${f.id}:`) || f.perguntas.some(p => p.id === id)).length;
     const falas = f.npcs.filter(n => S.falas[n.id]).length;
     const verbo = f.id === 'escola' ? 'Visitar' : f.id === 'lab' ? 'Experimentar' : f.id === 'medio' ? 'Concluir' : 'Jogar';
     const coisa = f.id === 'escola' ? 'páginas' : f.id === 'lab' ? 'simuladores' : f.id === 'medio' ? 'desafios' : 'jogos';
@@ -2458,9 +2458,17 @@
   }
   function abriu(l) { S.abertos[l.id] = Date.now(); if (!l.rec && !S.feitos[l.id]) { S.feitos[l.id] = true; pontos(15, `${l.titulo}: a casa ganhou cor!`); confereFases(); } salvar(); fechaDialogo(); }
   /* pergunta da fase: primeiro as que a pessoa errou (revisão), depois as novas */
-  function sorteiaPergunta(f) {
-    const erradas = f.perguntas.filter(p => S.resp[p.id] === false), novas = f.perguntas.filter(p => !(p.id in S.resp));
-    const lista = erradas.length && (Math.random() < 0.6 || !novas.length) ? erradas : novas.length ? novas : f.perguntas;
+  /* cada morador tem a sua base de perguntas (perguntas-npc.js), com o tema da vila e 50 ou mais perguntas */
+  function bancoNpc(n) {
+    if (n.banco !== undefined) return n.banco;
+    const bs = (window.PERGUNTAS_NPC || {})[n.fase.id] || [], k = n.fase.npcs.indexOf(n), b = bs.length ? bs[k % bs.length] : null;
+    n.banco = b && Object.assign({}, b, { perguntas: b.lista.map((q, i) => Object.assign({ id: `n:${n.fase.id}:${k % bs.length}:${i}`, eixos: b.eixos }, q)) });
+    return n.banco;
+  }
+  function sorteiaPergunta(f, lista0) {
+    const todas = lista0 || f.perguntas;
+    const erradas = todas.filter(p => S.resp[p.id] === false), novas = todas.filter(p => !(p.id in S.resp));
+    const lista = erradas.length && (Math.random() < 0.6 || !novas.length) ? erradas : novas.length ? novas : todas;
     return lista[Math.floor(Math.random() * lista.length)];
   }
   function pergunta(titulo, ic, p, aoResponder) {
@@ -2490,8 +2498,8 @@
     const c = coracoes(n);
     const ola = primeira ? (n.prof ? `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. ` : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
     const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
-    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}</p>${limiteHtml(n)}`, [
-      { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, '❓', sorteiaPergunta(f), certo => { if (certo) ganhaAmizade(n, 8); }) },
+    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}</p>${limiteHtml(n)}`, [
+      { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, bancoNpc(n) ? bancoNpc(n).ic : '❓', sorteiaPergunta(f, bancoNpc(n) && bancoNpc(n).perguntas), certo => { if (certo) ganhaAmizade(n, 8); }) },
       { txt: '🎁 Dar um presente', fn: () => presente(n) },
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
@@ -2762,7 +2770,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
