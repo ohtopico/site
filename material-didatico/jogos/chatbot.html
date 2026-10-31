@@ -22,12 +22,12 @@
 <link rel="stylesheet" href="../assets/md.css">
 <style>
   .cb { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
-  @media (max-width: 900px) { .cb { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .cb { grid-template-columns: minmax(0, 1fr); } }
   .missao { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 16px; margin-bottom: 14px; }
   .missao h3 { margin: 0 0 4px; font-size: 19px; }
   .missao p { margin: 0; font-size: 15px; }
   .regras { display: flex; flex-direction: column; gap: 10px; }
-  .regra { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 10px 12px; display: grid; grid-template-columns: auto 1fr auto; gap: 6px 10px; align-items: center; }
+  .regra { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 10px 12px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px 10px; align-items: center; }
   .regra.hit { outline: 3px solid #2fa865; }
   .regra .n { font-family: var(--display); font-size: 18px; width: 28px; text-align: center; }
   .regra .linha { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14.5px; }

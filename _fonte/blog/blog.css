@@ -687,3 +687,5 @@ figure.infografico figcaption a { font-weight: 500; }
     .janela { border: none; box-shadow: none; height: auto; }
     .corpo { display: block; overflow: visible; }
 }
+.chamada .btn98.escuro { background: transparent; color: var(--ink); margin: 6px 0 0 6px; }
+.chamada .btn98.escuro:hover { background: var(--paper); }

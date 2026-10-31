@@ -21,6 +21,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/md.css">
 <style>
+  .sobre-jogos-prof { margin: 36px 0 20px; line-height: 1.65; }
+  .sobre-jogos-prof p { max-width: 72ch; }
   /* Jogos para professores: a mesma lista do portal dos estudantes, com BNCC, tempo, plano e ficha */
   .pf-head { padding: 40px 0 30px; border-bottom: 1.5px solid var(--ink); background:
     radial-gradient(var(--line) 1.2px, transparent 1.5px) 0 0 / 18px 18px; }
@@ -82,6 +84,12 @@
     .rot-m { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-bottom: 2px; }
   }
 </style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Jogos com plano de aula (BNCC 6º ao 9º ano)", "url": "https://ohtopico.com.br/material-didatico/jogos/", "description": "Jogos de Computação e Matemática com plano de aula, ficha para imprimir e habilidades da BNCC do 6º ao 9º ano.", "inLanguage": "pt-BR", "isAccessibleForFree": true, "audience": {"@type": "EducationalAudience", "educationalRole": "teacher"}, "author": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}, "publisher": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://ohtopico.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Material didático", "item": "https://ohtopico.com.br/material-didatico/"}, {"@type": "ListItem", "position": 3, "name": "Jogos", "item": "https://ohtopico.com.br/material-didatico/jogos/"}]}
+</script>
 </head>
 <body>
 <header id="topbar"></header>
@@ -116,6 +124,13 @@
     <p class="aviso-ordem" id="aviso-ordem" hidden></p>
     <div id="tabela" aria-live="polite"></div>
     <p class="rodape-lista" id="rodape"></p>
+
+    <section class="sobre-jogos-prof" aria-labelledby="sobre-jogos-prof">
+      <h2 id="sobre-jogos-prof">Como usar os jogos na aula</h2>
+      <p>Os jogos foram feitos para caber numa aula de 50 minutos: uma problematização de 10 minutos, o jogo em duplas e uma socialização no fim. Quase todos têm um <a href="../catalogo.html?tipo=plano">plano de aula</a> com etapas, avaliação e adaptações para inclusão, e uma <a href="../catalogo.html?tipo=ficha">ficha para imprimir</a> para quem não tem computador para todos.</p>
+      <p>Em Computação, eles cobrem os três eixos da BNCC: pensamento computacional (algoritmos, repetição, depuração, Python), mundo digital (pacotes na internet, arquivos, criptografia) e cultura digital (golpes, senhas, desinformação e convivência on-line). Veja todas as <a href="../bncc/">42 habilidades de Computação do 6º ao 9º ano</a> com os materiais de cada uma.</p>
+      <p>Em Matemática, há jogos de tabuada, frações, plano cartesiano, equações, ângulos, gráficos e educação financeira. Para a turma, envie o link <a href="../../jogos/">ohtopico.com.br/jogos</a>, que mostra os mesmos jogos sem códigos da BNCC e com estrelas.</p>
+    </section>
   </div>
 </main>
 

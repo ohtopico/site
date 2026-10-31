@@ -184,6 +184,7 @@ async function desenhar(browser, url, seletores, initScript) {
 let BASE_LOCAL = '';
 
 /* ---------- planos, fichas e listas ---------- */
+const GOAT = '<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>';
 const DESC_TIPO = { plano: 'Plano de aula', ficha: 'Ficha para imprimir', lista: 'Lista de exercícios com gabarito' };
 const NOME_TIPO = { plano: 'Plano de aula', ficha: 'Ficha para imprimir', lista: 'Lista de exercícios' };
 const MIGALHA_TIPO = { plano: ['Planos de aula', 'catalogo.html?tipo=plano'], ficha: ['Fichas', 'catalogo.html?tipo=ficha'], lista: ['Listas', 'catalogo.html?tipo=lista'] };
@@ -216,6 +217,7 @@ function paginaEstatica(fonte, r, html) {
     if (!re.test(t)) throw new Error(`${r.tipo}: não achei <${tag} id="${id}"> na página modelo`);
     t = t.replace(re, (m, a, b) => a + html[i] + b);
   });
+  if (!t.includes('gc.zgo.at')) t = t.replace(/<\/body>/, `${GOAT}\n</body>`);
   if (t.includes('noindex') || !t.includes('<base href')) throw new Error(`${r.id}: modelo mudou, confira gerar.js`);
   return t;
 }
@@ -446,6 +448,18 @@ function paraProfessor(r) {
   </details>
   `;
 }
+/* Jogos que os alunos procuram pelo assunto ("jogo de tabuada"), não pelo nome do jogo: o título começa pela busca.
+   Valor: a busca, ou [busca, nome curto do jogo]. */
+const BUSCA = {
+  tabuada: 'Jogo de tabuada online', fracoes: 'Jogo de frações online', tangram: ['Tangram online', 'jogo com 7 peças'],
+  cartesiano: 'Jogo do plano cartesiano', balanca: 'Jogo de equações do 1º grau', angulos: 'Jogo de ângulos',
+  bhaskara: ['Fórmula de Bhaskara online', 'passo a passo'], graficos: 'Jogo de interpretação de gráficos',
+  digitacao: ['Teste de digitação online', 'Dedos Ligeiros'], robo: 'Jogo de programação para iniciantes',
+  python: 'Jogo de Python para iniciantes', 'partes-computador': 'Jogo das partes do computador',
+  senha: 'Jogo sobre senhas seguras', cifra: ['Jogo de criptografia', 'Cifra de César'],
+  golpe: 'Jogo sobre golpes na internet', 'busca-binaria': 'Jogo de busca binária'
+};
+
 async function jogosE3d(browser) {
   let mudou = 0;
   const lista = D.RECURSOS.filter(r => (r.tipo === 'jogo' || r.tipo === '3d') && /^(jogos|3d)\/[\w-]+\.html$/.test(r.url));
@@ -467,7 +481,9 @@ async function jogosE3d(browser) {
     }
     // título pensado para a busca: nome do jogo, o que é, para quem
     const oque = r.tipo === 'jogo' ? 'jogo de' : /3D/.test(r.titulo) ? 'simulação de' : 'simulação 3D de';
-    const novoTitulo = titulo(`${r.titulo}: ${oque} ${compTxt(r)}, ${anosTxt(r.anos)}${ASSINATURA}`,
+    const [busca, nomeCurto] = BUSCA[r.id] ? [].concat(BUSCA[r.id], r.titulo) : [];
+    const novoTitulo = titulo(...(busca ? [`${busca}: ${nomeCurto}${ASSINATURA}`, `${busca}: ${nomeCurto}`] : []),
+      `${r.titulo}: ${oque} ${compTxt(r)}, ${anosTxt(r.anos)}${ASSINATURA}`,
       `${r.titulo}: ${oque} ${compTxt(r)}${ASSINATURA}`, `${r.titulo}: ${oque} ${compTxt(r)}`, r.titulo + ASSINATURA, r.titulo);
     t = t.replace(/<title>[^<]*<\/title>/, `<title>${esc(novoTitulo)}</title>`)
       .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(novoTitulo)}$2`);

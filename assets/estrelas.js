@@ -351,7 +351,7 @@
     const canto = h % 4; // 0 sup-dir, 1 inf-dir, 2 inf-esq, 3 sup-esq
     const x = (canto === 2 || canto === 3) ? r.left - 12 : r.right - 18;
     const y = (canto === 0 || canto === 3) ? r.top - 12 : r.bottom - 18;
-    const maxX = document.documentElement.clientWidth - 34;
+    const maxX = document.documentElement.clientWidth - 40; // folga para a estrela girada não vazar da tela
     e.btn.style.display = '';
     e.btn.style.left = Math.max(2, Math.min(maxX, x + scrollX)) + 'px';
     e.btn.style.top = Math.max(2, y + scrollY) + 'px';

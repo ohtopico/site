@@ -107,6 +107,9 @@
   .primeiros:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #111; }
   .rodape-al { margin-top: 40px; padding: 30px 0 70px; border-top: 1.5px solid var(--line); color: var(--ink-2); font-size: 14.5px; }
   .rodape-al a { color: var(--ink); }
+  .sobre-jogos { margin-bottom: 26px; }
+  .sobre-jogos h2 { font: 800 19px var(--display, inherit); color: var(--ink); margin: 0 0 10px; }
+  .sobre-jogos p { margin: 0 0 10px; line-height: 1.6; }
   @media (prefers-reduced-motion: reduce) { .jg, .jg .capa svg, .ano, .surpresa { transition: none; } .jg:hover .capa svg, .surpresa:hover { transform: none; } }
   @media (max-width: 760px) {
     .hero .wrap { grid-template-columns: 1fr; padding-top: 26px; gap: 18px; }
@@ -136,6 +139,12 @@
   .hero .prof-link { font-size: 15px; margin: -4px 0 14px; opacity: .85; }
   .hero .prof-link a { color: inherit; text-decoration: underline; }
 </style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Jogos de Matemática e Computação (6º ao 9º ano)", "url": "https://ohtopico.com.br/jogos/", "description": "Jogos online e gratuitos de Matemática e Computação para estudantes do 6º ao 9º ano, alinhados à BNCC.", "inLanguage": "pt-BR", "isAccessibleForFree": true, "audience": {"@type": "EducationalAudience", "educationalRole": "student"}, "author": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}, "publisher": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://ohtopico.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Jogos", "item": "https://ohtopico.com.br/jogos/"}]}
+</script>
 </head>
 <body>
 <header id="topbar" class="topbar">
@@ -184,6 +193,13 @@
     <div class="ordem" role="group" aria-labelledby="rot-ordem"><span class="rot" id="rot-ordem">Ordenar:</span><span id="ordens"></span></div>
     <div id="lista" aria-live="polite"></div>
     <footer class="rodape-al">
+      <section class="sobre-jogos" aria-labelledby="sobre-jogos">
+        <h2 id="sobre-jogos">Jogos online de Matemática e Computação</h2>
+        <p>Todos os jogos abrem no navegador do computador, do tablet ou do celular, sem instalar nada e sem cadastro. Eles seguem a BNCC do 6º ao 9º ano e cada um leva de 10 a 25 minutos.</p>
+        <p><b>Matemática:</b> treine a tabuada na <a href="../material-didatico/jogos/tabuada.html">Corrida da Tabuada</a>, compare frações na <a href="../material-didatico/jogos/fracoes.html">Corrida das Frações</a>, monte figuras no <a href="../material-didatico/jogos/tangram.html">Tangram online</a>, ache pontos no <a href="../material-didatico/jogos/cartesiano.html">plano cartesiano</a>, resolva equações na <a href="../material-didatico/jogos/balanca.html">Balança das Equações</a>, meça <a href="../material-didatico/jogos/angulos.html">ângulos</a> e use a <a href="../material-didatico/jogos/bhaskara.html">fórmula de Bhaskara passo a passo</a>.</p>
+        <p><b>Computação:</b> aprenda a programar com o <a href="../material-didatico/jogos/robo.html">Robô Coletor</a> e a <a href="../material-didatico/jogos/python.html">Horta em Python</a>, faça o <a href="../material-didatico/jogos/digitacao.html">teste de digitação</a>, descubra as <a href="../material-didatico/jogos/partes-computador.html">partes do computador</a>, crie uma <a href="../material-didatico/jogos/senha.html">senha forte</a>, decifre a <a href="../material-didatico/jogos/cifra.html">Cifra de César</a> e aprenda a reconhecer <a href="../material-didatico/jogos/golpe.html">golpes na internet</a>.</p>
+        <p>Quer ver a ciência por trás da tecnologia? Experimente os <a href="../simuladores/">simuladores de IA e Computação</a> ou explore o <a href="../mundo/">Mundo do site</a>, uma vila com missões que abrem estes jogos.</p>
+      </section>
       <p>Jogos gratuitos criados por <a href="../curriculo/">Júlia Roberta Quoos Alves</a>. Suas estrelas ficam salvas só neste aparelho, sem cadastro.</p>
       <p>É professor(a)? Veja os <a href="../material-didatico/jogos/">mesmos jogos com plano de aula e BNCC</a>.</p>
     </footer>
