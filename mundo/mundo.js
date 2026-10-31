@@ -474,7 +474,26 @@
   }
   /* desmonta a vila (o que ocupa memória: chão, árvores, flores, casas, itens); moradores, portões e as casas especiais ficam */
   function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'rochas', 'agua', 'salas', 'flores', 'casas', 'itens', 'cercas', 'evItens']) delete f[k]; }
-  for (const f of fases) { monta(f); desmonta(f); }        // uma passada para guardar a posição das casas especiais e dos moradores
+  /* busca: guarda onde fica cada casa e prédio (a montagem é sempre igual, então a posição vale para sempre) */
+  const ONDE = [];
+  function rumoNaVila(f, x, y) {
+    const dx = x - f.centro.x, dy = y - f.centro.y, a = Math.atan2(-dy, dx) * 180 / Math.PI, d = Math.hypot(dx, dy);
+    if (d < 4) return 'na praça do centro';
+    const r = ['a leste', 'a nordeste', 'ao norte', 'a noroeste', 'a oeste', 'a sudoeste', 'ao sul', 'a sudeste'][Math.round(((a + 360) % 360) / 45) % 8];
+    return `${r} da praça${d > 12 ? ', mais para a borda' : ''}`;
+  }
+  function guardaOnde(f) {
+    const add = (ic, nome, resumo, c, tipo) => { if (c && c.porta) ONDE.push({ ic, nome, resumo: resumo || '', f, porta: { x: c.porta.x, y: c.porta.y }, onde: rumoNaVila(f, c.gx + c.w / 2, c.y + c.d / 2), tipo }); };
+    for (const c of f.casas || []) add(c.lugar.icone || '🏠', c.lugar.titulo, [c.lugar.resumo, c.lugar.extra].filter(Boolean).join(' · '), c, 'casa');
+    if (f.minhaCasa) add('🏠', 'Sua casa', 'bancada, móveis, horta e pixel art', f.minhaCasa, 'especial');
+    if (f.enigma) add('🔐', 'Casa do Enigma', 'escape room de binário e cifras', f.enigma, 'especial');
+    if (f.projetos) add('🤝', 'Praça dos projetos', 'projetos coletivos da turma', f.projetos, 'especial');
+    if (f.banco) add('🏦', 'Banco', 'poupança, mesada e juros', f.banco, 'especial');
+    if (f.portalTele) add('🌀', 'Portal de teletransporte', 'mundos do teste de proficiência em informática', f.portalTele, 'especial');
+    if (f.loja) add(LOJAS[f.loja.id].ic, LOJAS[f.loja.id].nome, LOJAS[f.loja.id].texto, f.loja, 'especial');
+    for (const c of f.salas || []) { const nomes = { museu: ['🏛️', 'Museu', 'moedas, estrelas, medalhas, troféus e galeria de pixel art'], emat: ['🧮', 'Escape da Matemática', 'desafios de Matemática sem cronômetro'], labirinto: ['🌀', 'Labirinto', 'portões com perguntas de Matemática'] }[c.id]; if (nomes) add(nomes[0], nomes[1], nomes[2], c, 'especial'); }
+  }
+  for (const f of fases) { monta(f); guardaOnde(f); desmonta(f); }        // uma passada para guardar a posição das casas especiais e dos moradores
   const LARG = ALT;
   let atual = fases[0];
   const todosLugares = fases.flatMap(f => f.lugares);
@@ -4193,10 +4212,30 @@
     feitoMundo('pixel'); salvar();
     msg.textContent = '✅ Guardado! Ele está exposto na galeria de pixel art do Museu.';
   }
+  /* ---------- busca de conteúdos: diz em que vila e para que lado da praça fica, e leva até a porta ---------- */
+  const normaliza = t => String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  function janelaBusca() {
+    const el = $('#busca-conteudo');
+    el.innerHTML = `<label class="busca-campo"><span>O que você procura?</span><input id="bu-q" class="campo" type="search" autocomplete="off" placeholder="ex.: frações, binário, senha, banco, museu"></label><div id="bu-res" aria-live="polite"></div>`;
+    const q = $('#bu-q'); q.addEventListener('input', () => mostraBusca(q.value)); mostraBusca(''); setTimeout(() => q.focus(), 30);
+  }
+  function mostraBusca(texto) {
+    const res = $('#bu-res'), termos = normaliza(texto).split(/\s+/).filter(t => t.length > 1).map(t => { const r = t.replace(/(oes|aes|ais|eis|ao|s|a|o|e)$/, ''); return r.length >= 4 ? r : t; });   // raiz: "fração" acha "frações"
+    if (!termos.length) { res.innerHTML = `<p class="muted small">Digite um assunto, um jogo ou um lugar. São ${ONDE.length} casas e prédios em ${fases.length} vilas.</p>`; return; }
+    const achados = ONDE.map(o => { const tt = normaliza(o.nome), tr = normaliza(o.resumo); let p = 0; for (const t of termos) { if (tt.includes(t)) p += 3; else if (tr.includes(t)) p += 1; else return null; } return [p, o]; }).filter(Boolean).sort((a, b) => b[0] - a[0]).slice(0, 12).map(x => x[1]);
+    if (!achados.length) { res.innerHTML = '<p>Nada encontrado com essas palavras. Tente outra, mais curta (ex.: "fração" em vez de "frações equivalentes").</p>'; return; }
+    res.innerHTML = `<ul class="busca-lista">${achados.map((o, i) => { const aberta = liberada(o.f); return `<li><span class="busca-ic">${o.ic}</span><div><b>${esc(o.nome)}</b>${o.resumo ? `<br><span class="muted small">${esc(o.resumo.length > 110 ? o.resumo.slice(0, 108).trim() + '…' : o.resumo)}</span>` : ''}<br><span class="busca-onde">📍 ${o.f.icone} ${esc(o.f.nome)}, ${o.onde}${aberta ? '' : ' · 🔒 vila ainda fechada'}</span></div>${aberta ? `<button type="button" class="hb verde" data-ir="${i}">Ir até lá</button>` : ''}</li>`; }).join('')}</ul>`;
+    res.querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => irAte(achados[+b.dataset.ir])));
+  }
+  function irAte(o) {
+    if (atual !== o.f || dentro || noEnigma || sala) { if (sala) saiSala(); teleporta(o.f); } else fechaJanela();
+    P.x = o.porta.x; P.y = o.porta.y; destino = null; cam.ok = false; hud();
+    setTimeout(() => aviso(`📍 Você está na porta de ${o.nome} (${o.f.nome}, ${o.onde}). Aperte E para entrar.`), 900);   // depois do aviso com o nome da vila
+  }
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4533,7 +4572,7 @@
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
