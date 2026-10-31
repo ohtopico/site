@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balança dos átomos · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<style>
+  .contexto { font-size: 15px; color: var(--ink-2); margin: 0 0 12px; }
+  .equacao { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 10px; margin: 8px 0 18px; }
+  .termo { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .formula { font-family: var(--display); font-size: clamp(22px, 4vw, 30px); line-height: 1; }
+  .passo { display: flex; align-items: center; border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); overflow: hidden; }
+  .passo button { width: 38px; height: 38px; border: 0; background: transparent; font-size: 20px; font-weight: 700; cursor: pointer; }
+  .passo button:hover { background: var(--pill); }
+  .passo output { min-width: 30px; text-align: center; font-family: var(--display); font-size: 22px; }
+  .op { font-family: var(--display); font-size: 26px; padding-bottom: 40px; }
+  .tabela { width: 100%; max-width: 520px; margin: 0 auto; border-collapse: separate; border-spacing: 0 6px; }
+  .tabela th { font-size: 13px; color: var(--ink-2); font-weight: 600; text-align: center; }
+  .tabela td { text-align: center; padding: 6px 8px; background: var(--paper); border-top: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); }
+  .tabela td:first-child { border-left: 1.5px solid var(--line); border-radius: 12px 0 0 12px; font-family: var(--display); font-size: 20px; }
+  .tabela td:last-child { border-right: 1.5px solid var(--line); border-radius: 0 12px 12px 0; }
+  .tabela .bolas { font-size: 12px; letter-spacing: 1px; word-break: break-all; }
+  .tabela .n { font-family: var(--display); font-size: 20px; }
+  .tabela tr.ok td { background: var(--ok-soft); }
+  .tabela tr.no td { background: var(--bad-soft); }
+</style>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="e-voltar" href="./">← Ilha ENEM</a>
+    <h1>⚖️ Balança dos átomos</h1>
+    <p class="muted">Ajuste os coeficientes com + e − até cada elemento ter o mesmo número de átomos dos dois lados (Lavoisier: nada se perde). A tabela mostra a conta enquanto você mexe.</p>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Método das tentativas</summary>
+    <p>1. Comece pelo elemento que aparece <b>uma vez de cada lado</b> (normalmente o metal ou o carbono). 2. Depois o hidrogênio. 3. Deixe o <b>oxigênio por último</b>. 4. Use os menores números inteiros possíveis.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Estrelas ficam guardadas só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), palco = $('#palco'), mix = ENEM.embaralha;
+  ENEM.topo($('#topo'));
+  // [reagentes, produtos, coeficientes certos, contexto]
+  const EQS = [
+    [['H2', 'O2'], ['H2O'], [2, 1, 2], 'Formação da água: a reação do motor a hidrogênio, que só solta vapor.'],
+    [['CH4', 'O2'], ['CO2', 'H2O'], [1, 2, 1, 2], 'Combustão completa do metano (gás natural e biogás).'],
+    [['C3H8', 'O2'], ['CO2', 'H2O'], [1, 5, 3, 4], 'Combustão do propano, um dos gases do botijão (GLP).'],
+    [['C2H6O', 'O2'], ['CO2', 'H2O'], [1, 3, 2, 3], 'Combustão do etanol, o álcool combustível.'],
+    [['C6H12O6', 'O2'], ['CO2', 'H2O'], [1, 6, 6, 6], 'Respiração celular: a glicose vira energia nas mitocôndrias.'],
+    [['CO2', 'H2O'], ['C6H12O6', 'O2'], [6, 6, 1, 6], 'Fotossíntese: a planta monta glicose com luz, gás carbônico e água.'],
+    [['N2', 'H2'], ['NH3'], [1, 3, 2], 'Síntese de Haber-Bosch: a amônia que vira fertilizante.'],
+    [['Fe2O3', 'CO'], ['Fe', 'CO2'], [1, 3, 2, 3], 'Alto-forno da siderurgia: o minério de ferro vira ferro metálico.'],
+    [['Al', 'O2'], ['Al2O3'], [4, 3, 2], 'Oxidação do alumínio: a camada que protege a panela.'],
+    [['SO2', 'O2'], ['SO3'], [2, 1, 2], 'Primeiro passo da chuva ácida: o SO₂ das chaminés vira SO₃ no ar.'],
+    [['CaCO3', 'HCl'], ['CaCl2', 'H2O', 'CO2'], [1, 2, 1, 1, 1], 'Ácido reagindo com calcário ou mármore: sai gás carbônico.'],
+    [['Mg(OH)2', 'HCl'], ['MgCl2', 'H2O'], [1, 2, 1, 2], 'Leite de magnésia neutralizando o ácido do estômago.'],
+    [['H2SO4', 'NaOH'], ['Na2SO4', 'H2O'], [1, 2, 1, 2], 'Neutralização: ácido + base → sal + água.'],
+    [['NaN3'], ['Na', 'N2'], [2, 2, 3], 'A azida de sódio se decompõe e enche o airbag de N₂ em milissegundos.']
+  ];
+  const SUB = { 0: '₀', 1: '₁', 2: '₂', 3: '₃', 4: '₄', 5: '₅', 6: '₆', 7: '₇', 8: '₈', 9: '₉' };
+  const bonita = f => f.replace(/\d/g, d => SUB[d]);
+  // conta os átomos de uma fórmula, com parênteses: Mg(OH)2 → {Mg:1, O:2, H:2}
+  function atomos(f) {
+    const pilha = [{}];
+    const re = /([A-Z][a-z]?|\(|\))(\d*)/g; let m;
+    while ((m = re.exec(f))) {
+      const n = m[2] ? +m[2] : 1;
+      if (m[1] === '(') pilha.push({});
+      else if (m[1] === ')') { const g = pilha.pop(), t = pilha[pilha.length - 1]; for (const k in g) t[k] = (t[k] || 0) + g[k] * n; }
+      else { const t = pilha[pilha.length - 1]; t[m[1]] = (t[m[1]] || 0) + n; }
+    }
+    return pilha[0];
+  }
+  const mdc = (a, b) => b ? mdc(b, a % b) : a;
+  const CORES = { H: '⚪', O: '🔴', C: '⚫', N: '🔵', S: '🟡', Fe: '🟤', Al: '⚪', Ca: '🟢', Cl: '🟢', Mg: '🟣', Na: '🟣' };
+
+  const RODADA = 5;
+  let fila = [], i = 0, erros = 0, errosTotal = 0, coef = [], feita = false, dicas = 0;
+  function comecar() { fila = mix(EQS).slice(0, RODADA); i = 0; errosTotal = 0; mostrar(); }
+  function contagem() {
+    const [r, p] = fila[i], lado = (lista, off) => { const t = {}; lista.forEach((f, k) => { const a = atomos(f); for (const e in a) t[e] = (t[e] || 0) + a[e] * coef[off + k]; }); return t; };
+    return [lado(r, 0), lado(p, r.length)];
+  }
+  function mostrar() {
+    const [r, p, , ctx] = fila[i]; coef = Array(r.length + p.length).fill(1); feita = false; erros = 0; dicas = 0;
+    const termo = (f, k) => `<div class="termo"><span class="formula">${bonita(f)}</span><div class="passo"><button type="button" data-menos="${k}" aria-label="Diminuir coeficiente de ${f}">−</button><output id="c${k}">1</output><button type="button" data-mais="${k}" aria-label="Aumentar coeficiente de ${f}">+</button></div></div>`;
+    palco.innerHTML = `<div class="hud"><span>Equação <b>${i + 1}</b> de ${fila.length}</span><span>Tentativas erradas <b id="err">${errosTotal}</b></span></div>
+      <div class="barra"><i style="width:${i / fila.length * 100}%"></i></div>
+      <p class="contexto">${ctx}</p>
+      <div class="equacao">${r.map((f, k) => termo(f, k)).join('<span class="op">+</span>')}<span class="op">→</span>${p.map((f, k) => termo(f, r.length + k)).join('<span class="op">+</span>')}</div>
+      <table class="tabela"><thead><tr><th>Elemento</th><th>Reagentes</th><th></th><th>Produtos</th></tr></thead><tbody id="tab"></tbody></table>
+      <div class="btn-row" style="justify-content:center;margin-top:16px"><button class="btn" type="button" id="conferir">Conferir</button><button class="btn ghost" type="button" id="dica">💡 Dica</button></div>
+      <div id="corr"></div><div class="btn-row" id="seguir" style="margin-top:14px"></div>`;
+    palco.querySelectorAll('[data-mais]').forEach(b => b.onclick = () => muda(+b.dataset.mais, 1));
+    palco.querySelectorAll('[data-menos]').forEach(b => b.onclick = () => muda(+b.dataset.menos, -1));
+    $('#conferir').onclick = conferir; $('#dica').onclick = dica;
+    tabela();
+  }
+  function muda(k, d) { if (feita) return; coef[k] = Math.max(1, Math.min(12, coef[k] + d)); $('#c' + k).textContent = coef[k]; tabela(); $('#corr').innerHTML = ''; }
+  function tabela() {
+    const [L, R] = contagem(), els = [...new Set([...Object.keys(L), ...Object.keys(R)])];
+    $('#tab').innerHTML = els.map(e => `<tr class="${L[e] === R[e] ? 'ok' : ''}"><td>${e}</td>
+      <td><span class="n">${L[e] || 0}</span><div class="bolas" aria-hidden="true">${(CORES[e] || '⚪').repeat(Math.min(L[e] || 0, 24))}</div></td>
+      <td>${L[e] === R[e] ? '✔' : (L[e] || 0) < (R[e] || 0) ? '&lt;' : '&gt;'}</td>
+      <td><span class="n">${R[e] || 0}</span><div class="bolas" aria-hidden="true">${(CORES[e] || '⚪').repeat(Math.min(R[e] || 0, 24))}</div></td></tr>`).join('');
+  }
+  function dica() {
+    const [r, p, certos] = fila[i]; dicas++;
+    // primeiro termo cujo coeficiente ainda está errado
+    const k = coef.findIndex((c, j) => c !== certos[j]); if (k < 0) return conferir();
+    const f = (r.concat(p))[k];
+    $('#corr').innerHTML = `<div class="corr">💡 ${dicas === 1 ? 'Deixe o oxigênio por último. Comece pelo elemento que aparece em uma substância só de cada lado.' : `O coeficiente de <b>${bonita(f)}</b> é <b>${certos[k]}</b>.`}</div>`;
+  }
+  function conferir() {
+    if (feita) return;
+    const [L, R] = contagem(), ok = Object.keys({ ...L, ...R }).every(e => L[e] === R[e]);
+    const g = coef.reduce(mdc);
+    if (ok && g > 1) { $('#corr').innerHTML = `<div class="corr">Está balanceada, mas dá para <b>dividir tudo por ${g}</b>. O ENEM pede os menores números inteiros.</div>`; return; }
+    if (!ok) {
+      erros++; errosTotal++; $('#err').textContent = errosTotal;
+      const falta = Object.keys({ ...L, ...R }).filter(e => L[e] !== R[e]);
+      palco.querySelectorAll('#tab tr').forEach(tr => { if (falta.includes(tr.firstElementChild.textContent)) tr.classList.add('no'); });
+      $('#corr').innerHTML = `<div class="corr bad">Ainda não. Confira ${falta.map(e => '<b>' + e + '</b>').join(', ')} na tabela.</div>`;
+      return;
+    }
+    feita = true;
+    const [r, p] = fila[i], txt = (lista, off) => lista.map((f, k) => (coef[off + k] > 1 ? coef[off + k] + ' ' : '') + bonita(f)).join(' + ');
+    $('#corr').innerHTML = `<div class="corr ok"><b>Balanceada!</b> ${txt(r, 0)} → ${txt(p, r.length)}</div>`;
+    palco.querySelectorAll('.passo button, #conferir, #dica').forEach(b => b.disabled = true);
+    const ultima = i === fila.length - 1;
+    $('#seguir').innerHTML = `<button class="btn" type="button" id="prox">${ultima ? 'Ver resultado' : 'Próxima →'}</button>`;
+    $('#prox').onclick = () => { if (ultima) fim(); else { i++; mostrar(); } };
+    $('#prox').focus({ preventScroll: true });
+  }
+  function fim() {
+    ENEM.contarFeitas(fila.length);
+    const est = errosTotal === 0 ? 3 : errosTotal <= 2 ? 2 : 1, novo = ENEM.darEstrelas('balanc', est);
+    $('#tot-est').textContent = ENEM.totalEstrelas();
+    palco.innerHTML = `<div class="fim"><div class="grande">⚖️</div>${ENEM.estrelasHtml(est)}
+      <h2 style="margin-top:10px">${fila.length} equações balanceadas com ${errosTotal} ${errosTotal === 1 ? 'tentativa errada' : 'tentativas erradas'}.</h2>
+      <p class="muted">Três estrelas: tudo certo de primeira.</p>
+      ${novo ? '<p class="feedback ok">Novo recorde de estrelas!</p>' : ''}
+      <div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn" type="button" id="denovo">Jogar de novo</button><a class="btn ghost" href="ph.html">Régua do pH</a><a class="btn ghost" href="./">Voltar à ilha</a></div></div>`;
+    $('#denovo').onclick = comecar;
+  }
+  comecar();
+})();
+</script>
+</body>
+</html>

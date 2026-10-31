@@ -1,0 +1,93 @@
+# ENEM 2026::03 Física
+## Cinemática
++: Velocidade média || Para converter: de km/h para m/s "desce dividindo por 3,6"; de m/s para km/h "sobe multiplicando".
++: Movimento uniforme (MU) || "Sorvete": s = s0 + v·t. || [img:fis_graficos_mov]
++: MUV: função horária || "Sorvetão": s = s0 + v0·t + a·t²/2. "Vovô ateu": v = v0 + a·t. || [img:fis_graficos_mov]
++: Equação de Torricelli || Torricelli = "sem tempo, irmão": use quando não há t.
++: Gráfico v x t || No v x t: ÁREA = Andou (deslocamento); inclinação = aceleração. || [img:fis_graficos_mov]
++: Lançamento oblíquo || Horizontal "anda reto" (MU), vertical "sobe e desce" (MUV). Ângulos complementares (30° e 60°) têm o mesmo alcance. || [img:fis_obliquo]
++: Engrenagens e polias ligadas || Correia/encostadas: mesma velocidade linear. Mesmo eixo: mesma frequência.
+F: [img:fis_graficos_mov] Como saber o deslocamento e a aceleração no gráfico v × t? || **Deslocamento** = área sob a curva. **Aceleração** = inclinação da reta. No s × t, MU dá reta e MUV dá parábola.
+F: [img:fis_obliquo] Por que 30° e 60° têm o mesmo alcance? || Porque são **ângulos complementares** (somam 90°): o alcance depende de sen(2θ), e sen 60° = sen 120°. O máximo é em **45°**.
+C: Velocidade de 72 km/h equivale a {{c1::20}} m/s (divide por {{c2::3,6}}).
+C: Equação de Torricelli: v² = {{c1::v0² + 2·a·Δs}}.
+C: Em queda livre, desprezando o ar, todos os corpos caem com a mesma aceleração, {{c1::g ≈ 10 m/s²}}, independentemente da {{c2::massa}}.
+C: No movimento circular, v = {{c1::ω·R}} e a aceleração centrípeta vale {{c2::v²/R}}.
+D: Converta 108 km/h para m/s. || 30 || 108 ÷ 3,6 = 30.
+D: Um carro parte do repouso com a = 2 m/s². Qual sua velocidade (m/s) após 5 s? || 10 || v = v0 + a·t = 0 + 2·5.
+V: No lançamento oblíquo, a velocidade horizontal diminui até o ponto mais alto. || **Errado.** A componente horizontal é constante (MU). Quem diminui até zero, no ponto mais alto, é a componente VERTICAL.
+## Dinâmica e energia
++: 1ª Lei de Newton || Inércia = "preguiça" do corpo de mudar seu estado.
++: 2ª Lei de Newton || "FMA": F = m·a.
++: 3ª Lei de Newton || Ação e reação em corpos DIFERENTES: por isso nunca se anulam.
++: Energia cinética, potencial || Cinética = "Ec = mv²/2" (movimento). Potencial gravitacional = "mgh" ("mega-h", altura).
++: Conservação da energia mecânica || Na queda, troca altura por velocidade: v = √(2gh), sem depender da massa.
++: Impulso || Airbag não reduz a variação de velocidade, aumenta o TEMPO, e por isso reduz a FORÇA.
+C: 2ª lei de Newton: F resultante = {{c1::m·a}}. Peso: P = {{c2::m·g}}.
+C: Energia cinética: Ec = {{c1::m·v²/2}}. Energia potencial gravitacional: Ep = {{c2::m·g·h}}. Energia elástica: {{c3::k·x²/2}}.
+C: Potência = {{c1::energia}} / {{c2::tempo}}, medida em watts (W = J/s).
+C: Quantidade de movimento: Q = {{c1::m·v}}; impulso: I = {{c2::F·Δt}} = ΔQ.
+D: Um corpo de 2 kg está a 5 m de altura (g = 10). Qual sua energia potencial em joules? || 100 || Ep = m·g·h = 2·10·5.
+D: Um corpo cai de 20 m (g = 10, sem atrito). Velocidade (m/s) ao chegar ao chão? || 20 || v = √(2gh) = √400.
+D: Força resultante (N) sobre um corpo de 4 kg com aceleração de 3 m/s²? || 12 || F = m·a.
+V: As forças de ação e reação se anulam porque têm mesma intensidade e sentidos opostos. || **Errado.** Elas atuam em corpos DIFERENTES, então não se anulam.
+V: Na estação espacial, os astronautas flutuam porque lá não existe gravidade. || **Errado.** A gravidade lá é ~90% da da superfície. Eles flutuam porque estão em queda livre contínua junto com a estação.
+## Hidrostática
++: Pressão hidrostática || "A cada 10 metros de mergulho, +1 atm."
++: Princípio de Pascal || Prensa: área maior = força maior (F1/A1 = F2/A2).
++: Empuxo || Empuxo = peso do líquido deslocado ("o que sai de água te empurra").
+C: Empuxo: E = {{c1::d(líquido)}} · {{c2::V(submerso)}} · g.
+C: Um corpo flutua quando sua densidade é {{c1::menor}} que a do líquido.
+D: Na prensa hidráulica, A2 = 10·A1. Se F1 = 50 N, quanto vale F2 (N)? || 500 || F1/A1 = F2/A2.
+## Termologia
++: Conversão Celsius, Fahrenheit e Kelvin || Pontos fixos: água congela a 0 °C = 32 °F = 273 K, e ferve a 100 °C = 212 °F = 373 K.
++: Calor sensível x calor latente || "Que macete": Q = m·c·ΔT. Latente: Q = m·L ("mL" como mililitro). Na mudança de estado, a temperatura PARA.
++: Condução, convecção e irradiação || Condução = Contato. Convecção = Corrente no fluido. Irradiação = Raios (até no vácuo).
++: Brisa marítima x terrestre || De dia a brisa vem DO MAR (marítima); de noite vem DA TERRA (terrestre).
++: Transformações gasosas || "PV sobre T é constante" ("Piviti"). Temperatura sempre em KELVIN.
+C: Calor sensível: Q = {{c1::m·c·ΔT}}. Calor latente: Q = {{c2::m·L}}.
+C: A transmissão de calor que ocorre no vácuo é a {{c1::irradiação}}; a que ocorre por correntes em fluidos é a {{c2::convecção}}.
+C: Rendimento máximo de uma máquina térmica (Carnot): η = 1 − {{c1::T fria / T quente}}, com temperaturas em {{c2::kelvin}}.
+D: Converta 27 °C para kelvin. || 300 || K = C + 273.
+D: Quanto calor (cal) é preciso para aquecer 100 g de água de 20 °C a 70 °C? (c = 1 cal/g°C) || 5000 || Q = m·c·ΔT = 100·1·50.
+V: Durante a fervura, a temperatura da água continua subindo enquanto houver aquecimento. || **Errado.** Durante a mudança de estado a temperatura fica constante: o calor é usado para mudar o estado (calor latente).
+V: Um casaco de lã esquenta o corpo porque produz calor. || **Errado.** A lã é isolante: só dificulta a perda do calor do próprio corpo.
+## Ondulatória e óptica
++: Equação fundamental da onda || "Vê-lambda-f": v = λ·f. Mudou de meio, a frequência fica (é a "identidade" da onda). || [img:fis_onda]
++: Espectro eletromagnético em ordem || "Rádio Mostra Imagens Visíveis Usando Raios Gama" (rádio, micro-ondas, infra, visível, UV, raios X, gama). || [img:fis_espectro]
++: Qualidades do som || Altura = frequência (agudo/grave). Intensidade = volume. Timbre = "assinatura" do instrumento.
++: Efeito Doppler || Ambulância chegando = mais aguda; indo embora = mais grave. || [img:fis_doppler]
++: Reflexão total: condição || Só acontece saindo do meio "mais denso opticamente" para o "menos denso", com ângulo grande. || [img:fis_reflexao_total]
++: Miopia x hipermetropia || MIOPia = vê Mal de longe, "MÍOPE pede DIVERGENTE" (lente que espalha). HIPERmetropia = foco "passa do ponto", pede CONVERGENTE. || [img:fis_olho]
++: Lente convergente x divergente || Bordas FINAS convergem; bordas GROSSAS divergem (no ar).
+F: [img:fis_olho] Qual defeito tem o foco antes da retina e qual lente o corrige? || **Miopia**: o olho converge demais e o foco cai antes da retina. Corrige com **lente divergente**.
+F: [img:fis_espectro] Coloque em ordem crescente de energia: raios X, micro-ondas, luz visível, ultravioleta. || **Micro-ondas → luz visível → ultravioleta → raios X.** Energia cresce com a frequência (E = h·f).
+F: [img:fis_doppler] Por que a sirene parece mais aguda quando a ambulância se aproxima? || As frentes de onda se **acumulam à frente** da fonte: menor comprimento de onda, **maior frequência** percebida, som mais agudo.
+F: [img:fis_onda] Uma onda tem λ = 2 m e f = 170 Hz. Qual sua velocidade? || v = λ·f = 2 · 170 = **340 m/s** (a velocidade do som no ar).
+C: Equação fundamental da onda: v = {{c1::λ·f}}. Ao mudar de meio, a {{c2::frequência}} não muda.
+C: O som é onda {{c1::mecânica}} e não se propaga no {{c2::vácuo}}; a luz é onda {{c3::eletromagnética}}.
+C: A miopia é corrigida com lente {{c1::divergente}}; a hipermetropia e a presbiopia, com lente {{c2::convergente}}. || [img:fis_olho]
+C: Lei de Snell: {{c1::n1·sen θ1 = n2·sen θ2}}. Índice de refração: n = {{c2::c/v}}.
+D: Lente de vergência +2 di tem distância focal de quantos metros? || 0,5 || V = 1/f, então f = 1/2 m.
+V: O efeito Doppler muda a frequência emitida pela fonte. || **Errado.** A fonte emite sempre a mesma frequência; o que muda é a frequência PERCEBIDA pelo observador.
+V: A luz se propaga com a mesma velocidade no ar e no vidro. || **Errado.** No vidro ela é mais lenta (n maior). Essa mudança de velocidade é o que causa a refração.
+## Eletricidade e magnetismo
++: 1ª Lei de Ohm || "URI": U = R·i (como a URI de uma página).
++: Potência elétrica || "PUI": P = U·i. Combine com U = R·i para achar P = R·i² e P = U²/R.
++: Energia elétrica consumida || Conta de luz: kW x h. Lembre de dividir os watts por 1.000.
++: Associação de resistores em série || [img:fis_circuitos]
++: Associação de resistores em paralelo || Paralelo: "cada um tem sua própria estrada", a tensão é a mesma para todos. || [img:fis_circuitos]
++: Chuveiro elétrico: posição || Inverno = menor resistência = mais corrente = mais quente (P = U²/R: R menor, P maior).
++: Transformador || Só funciona com corrente ALTERNADA (precisa de fluxo VARIANDO). || [img:fis_transformador]
++: Indução eletromagnética || Faraday: "campo que MUDA gera corrente". Ímã parado não induz nada.
+F: [img:fis_circuitos] Se uma lâmpada queimar, o que acontece em cada circuito? || **Série:** todas apagam (o circuito abre). **Paralelo:** as outras continuam acesas, porque cada uma tem seu próprio caminho. É assim nas casas.
+F: [img:fis_transformador] O primário tem 100 espiras e 220 V; o secundário, 50 espiras. Qual a tensão de saída? || U1/U2 = N1/N2 → 220/U2 = 100/50 → **U2 = 110 V**. Menos espiras, menos tensão.
+C: 1ª lei de Ohm: U = {{c1::R·i}}. Potência: P = {{c2::U·i}}.
+C: Em série, a {{c1::corrente}} é a mesma em todos os resistores; em paralelo, a {{c2::tensão}} é a mesma.
+C: Energia consumida: E = {{c1::P·Δt}}. Um aparelho de 2.000 W ligado 3 h consome {{c2::6}} kWh.
+C: Transformadores só funcionam com corrente {{c1::alternada}}, porque dependem da {{c2::variação do fluxo magnético}} (lei de Faraday).
+D: Resistência equivalente (Ω) de dois resistores de 10 Ω em paralelo? || 5 || Iguais em paralelo: R/n = 10/2.
+D: Um chuveiro de 4.000 W fica ligado 30 min por dia. Quantos kWh consome em 30 dias? || 60 || 4 kW x 0,5 h x 30.
+D: Corrente (A) num resistor de 20 Ω ligado a 220 V? || 11 || i = U/R = 220/20.
+V: Na posição "inverno" o chuveiro usa uma resistência maior. || **Errado.** Usa resistência MENOR: com tensão fixa, P = U²/R aumenta.
+V: Pássaros pousados em fios de alta tensão não levam choque porque seus pés são isolantes. || **Errado.** Não há ddp entre as duas patas no mesmo fio, então quase não passa corrente pelo corpo.

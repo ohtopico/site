@@ -1,0 +1,100 @@
+# ENEM 2026::04 Matemática
+## Matemática básica e proporção
++: Regra de três: como saber || Teste das setas: se "mais → mais", direta (multiplica cruzado). Se "mais → menos", inversa (inverte uma fração antes).
++: Escala: fórmula || "Comprimento: k. Área: k². Volume: k³."
++: Conversões de unidades que mais caem || "1 litro cabe num cubo de 10 cm de lado" (1 dm³ = 1 L).
++: MMC e MDC: quando usar || MMC = "quando se encontram de novo" (tempo). MDC = "maior pedaço igual" (corte).
+C: 1 m³ = {{c1::1.000}} L; 1 dm³ = {{c2::1}} L; 1 cm³ = {{c3::1}} mL.
+C: Em um mapa de escala 1:200.000, 1 cm representa {{c1::2}} km.
+C: Se 4 operários fazem uma obra em 12 dias, 6 operários a fazem em {{c1::8}} dias (grandezas {{c2::inversamente}} proporcionais).
+D: Um mapa tem escala 1:50.000. Uma distância de 4 cm no mapa equivale a quantos km? || 2 || 4 x 50.000 = 200.000 cm = 2 km.
+D: Uma maquete na escala 1:100 tem área de 2 m². Qual a área real em m²? || 20000 || Área usa escala ao quadrado: 2 x 100² = 20.000 m².
+D: MMC de 6 e 8? || 24 || Dois remédios de 6 em 6 h e 8 em 8 h coincidem a cada 24 h.
+D: Média ponderada das notas 600 (peso 2) e 800 (peso 3)? || 720 || (600·2 + 800·3)/5 = 3600/5.
+V: Se a escala de um mapa dobra, a área representada também dobra. || **Errado.** A área é multiplicada por 4 (2²). Comprimento escala por k, área por k², volume por k³.
+## Porcentagem e matemática financeira
++: Aumento e desconto como fator || "Aumentou? 1 + taxa. Diminuiu? 1 − taxa. Vários seguidos? Multiplica os fatores."
++: Juros simples || Simples = Soma sempre o mesmo valor (reta). || [img:mat_juros]
++: Juros compostos || Composto = juros sobre juros: Cresce Como bola de neve (curva). || [img:mat_juros]
+F: [img:mat_juros] Por que a curva vermelha cresce cada vez mais rápido? || Nos **juros compostos** os juros de cada mês entram no capital do mês seguinte (juros sobre juros): crescimento **exponencial** (PG). Nos simples, o acréscimo é sempre igual (PA, reta).
+C: Aumento de 25% equivale a multiplicar por {{c1::1,25}}; desconto de 30% equivale a multiplicar por {{c2::0,7}}.
+C: Juros simples: M = {{c1::C·(1 + i·t)}}. Juros compostos: M = {{c2::C·(1 + i)^t}}.
+C: Dois aumentos sucessivos de 10% equivalem a um aumento de {{c1::21}}%, porque 1,1 x 1,1 = {{c2::1,21}}.
+D: Um produto de R$ 200 tem desconto de 15%. Qual o novo preço em reais? || 170 || 200 x 0,85.
+D: R$ 1.000 a juros compostos de 10% ao mês. Montante em reais após 2 meses? || 1210 || 1000 x 1,1².
+D: Um preço sobe de R$ 80 para R$ 100. Qual o aumento percentual? || 25 || (100 − 80)/80 = 0,25.
+V: Um desconto de 20% seguido de um aumento de 20% devolve o preço original. || **Errado.** 0,8 x 1,2 = 0,96: o preço final é 4% menor.
+## Funções
++: Função afim (1º grau) || "a = quanto anda por unidade, b = de onde parte." || [img:mat_afim]
++: Função quadrática: vértice || Vértice: "X é menos b sobre dois a". Boca para cima = sorriso = tem mínimo. || [img:mat_parabola]
++: Fórmula de Bhaskara || Δ diz quantas raízes: positivo 2, zero 1, negativo nenhuma. || [img:mat_parabola]
++: Função exponencial || [img:mat_exp_log]
++: Logaritmo: definição || "O log é o EXPOENTE": log₂ 8 = 3 porque 2³ = 8. || [img:mat_exp_log]
++: Propriedades dos logaritmos || "Log transforma vezes em mais, dividir em menos, e o expoente pula para a frente."
+F: [img:mat_afim] Um táxi cobra R$ 5 de bandeirada e R$ 2 por km. Escreva a função e diga o que a e b significam. || **f(x) = 2x + 5.** a = 2 é a taxa (preço por km, inclinação da reta). b = 5 é o valor inicial (bandeirada, onde a reta corta o eixo y).
+F: [img:mat_parabola] Em qual caso a parábola não toca o eixo x, e por quê? || Quando **Δ < 0**: a equação ax² + bx + c = 0 não tem raiz real, então o gráfico não cruza o eixo x.
+C: O vértice da parábola tem x = {{c1::−b/(2a)}} e y = {{c2::−Δ/(4a)}}.
+C: Se a > 0, a parábola tem concavidade para {{c1::cima}} e o vértice é ponto de {{c2::mínimo}}.
+C: Soma das raízes de ax² + bx + c = 0: {{c1::−b/a}}. Produto: {{c2::c/a}}.
+C: log(a·b) = {{c1::log a + log b}}; log(a^n) = {{c2::n·log a}}.
+D: Calcule log₂ 32. || 5 || 2^5 = 32.
+D: Qual o x do vértice de f(x) = x² − 6x + 5? || 3 || xv = −b/(2a) = 6/2.
+D: Quantas raízes reais tem uma equação de 2º grau com Δ = 0? || 1 || Raiz dupla: a parábola só toca o eixo x.
+D: Para f(x) = −x² + 4x, qual o valor máximo? || 4 || xv = 2; f(2) = −4 + 8 = 4.
+V: A função f(x) = 0,8^x é crescente. || **Errado.** Base entre 0 e 1 dá função exponencial DECRESCENTE (como depreciação).
+## Geometria plana
++: Área do triângulo, retângulo || Trapézio: "base maior mais base menor, vezes altura, sobre dois".
++: Teorema de Pitágoras || Decore as ternas 3-4-5 e 5-12-13: poupam conta na prova. || [img:mat_pitagoras]
++: Razões trigonométricas no triângulo || "SOH CAH TOA": Seno = Oposto/Hipotenusa, Cosseno = Adjacente/Hipotenusa, Tangente = Oposto/Adjacente. || [img:mat_trig]
++: Valores notáveis || Seno de 30, 45, 60: "1, 2, 3": √1/2, √2/2, √3/2. O cosseno é a mesma lista ao contrário.
++: Semelhança de triângulos || Lados x k → área x k².
+F: [img:mat_trig] Uma escada de 10 m faz 30° com o chão. A que altura ela toca a parede? || A altura é o cateto **oposto** a 30° e a escada é a hipotenusa: sen 30° = h/10 → h = 10 · 1/2 = **5 m**.
+F: [img:mat_pitagoras] Um triângulo retângulo tem catetos 6 e 8. Qual a hipotenusa? || **10** (terna 3-4-5 multiplicada por 2). Conferindo: 6² + 8² = 36 + 64 = 100.
+C: sen 30° = {{c1::1/2}}; cos 60° = {{c2::1/2}}; tg 45° = {{c3::1}}.
+C: Área do círculo: {{c1::π·r²}}. Comprimento da circunferência: {{c2::2·π·r}}.
+C: Soma dos ângulos internos de um polígono de n lados: {{c1::(n − 2)·180°}}. Num hexágono: {{c2::720°}}.
+D: Área de um trapézio com bases 10 e 6 e altura 4? || 32 || (10 + 6)·4/2.
+D: Área de um círculo de raio 5 (use π = 3)? || 75 || 3 x 5².
+D: Quanto mede cada ângulo interno de um hexágono regular (em graus)? || 120 || 720/6.
+V: Se dobrarmos os lados de um quadrado, sua área também dobra. || **Errado.** A área quadruplica (2² = 4).
+## Geometria espacial
++: Volume do prisma e do cilindro || Volume de "coluna reta" = base x altura. || [img:mat_solidos]
++: Volume da pirâmide e do cone || "Ponta tira dois terços": pirâmide e cone = 1/3 do prisma/cilindro. || [img:mat_solidos]
++: Volume e área da esfera || "Quatro terços pi erre cubo". || [img:mat_solidos]
++: Relação de Euler || "Vai A Fazer 2": V − A + F = 2.
+F: [img:mat_solidos] Um cilindro e um cone têm mesmo raio e mesma altura. Quantos cones enchem o cilindro? || **3 cones**, pois V(cone) = πr²h/3 = 1/3 do cilindro.
+C: Volume do cilindro: {{c1::π·r²·h}}. Volume do cone: {{c2::π·r²·h/3}}. Volume da esfera: {{c3::4/3·π·r³}}.
+C: Relação de Euler: V − A + F = {{c1::2}}.
+D: Volume (m³) de uma caixa de 2 m x 3 m x 4 m? || 24 || Comprimento x largura x altura.
+D: Quantos litros cabem nessa caixa de 24 m³? || 24000 || 1 m³ = 1.000 L.
+D: Um cubo tem 8 vértices e 6 faces. Quantas arestas? || 12 || V − A + F = 2 → 8 − A + 6 = 2.
+V: Dobrar o raio de um cilindro (mantendo a altura) dobra seu volume. || **Errado.** O volume quadruplica, pois depende de r².
+## Estatística e probabilidade
++: Média, mediana e moda || MEDIana = MEIO da fila ordenada. MOda = o que está na MODA (mais aparece).
++: Quando a mediana representa || [img:mat_media_mediana]
++: Desvio padrão: o que mede? || Desvio pequeno = "turma certinha", notas parecidas. Desvio grande = "turma bagunçada". || [img:mat_desvio]
++: Probabilidade complementar || "Pelo menos um" → calcule o NENHUM e faça 1 menos.
++: Permutação, arranjo e combinação || ARRanjo = ARRuma em ordem (pódio). COMBinação = COMBina em grupo (sem ordem). || [img:mat_contagem]
++: Como identificar se a ordem importa? || [img:mat_contagem]
+F: [img:mat_media_mediana] Por que a mediana representa melhor esses salários? || Há um **valor extremo** (30 mil) que puxa a média para 6,9 mil, acima de quase todos. A **mediana (3 mil)** fica no meio dos dados ordenados e não se deixa levar pelo outlier.
+F: [img:mat_desvio] Duas turmas têm a mesma média. Qual é mais regular? || A **verde**: desvio padrão menor, notas concentradas perto da média. A laranja tem notas mais espalhadas.
+F: [img:mat_contagem] De quantas formas podemos formar uma comissão de 2 pessoas entre 5? || Ordem não importa → **combinação**: C(5,2) = 5!/(2!·3!) = **10**.
+C: Mediana de 3, 7, 1, 9, 5: ordenando (1, 3, 5, 7, 9), a mediana é {{c1::5}}.
+C: Probabilidade de sair "cara" em 3 lançamentos seguidos de uma moeda: {{c1::1/8}}. Probabilidade de sair pelo menos uma "coroa": {{c2::7/8}}.
+C: P(A ou B) = P(A) + P(B) − {{c1::P(A e B)}}.
+C: Escolher presidente e vice entre 10 pessoas é {{c1::arranjo}} (10 x 9 = {{c2::90}}); escolher 2 representantes iguais é {{c3::combinação}} ({{c4::45}}).
+D: Quantos anagramas tem a palavra AMOR? || 24 || 4! = 24.
+D: Moda do conjunto 2, 3, 3, 5, 7, 3, 8? || 3 || Aparece 3 vezes.
+D: Média de 4, 6, 8 e 10? || 7 || 28/4.
+D: Um dado é lançado. Qual a probabilidade de sair número par? (fração) || 1/2 || 3 pares em 6 faces.
+D: Quantas combinações de 3 camisas e 4 calças são possíveis? || 12 || Princípio multiplicativo: 3 x 4.
+D: Quantos anagramas tem ARARA? || 10 || 5!/(3!·2!) = 120/12.
+V: Se a média de um grupo é 7, então metade das notas está acima de 7. || **Errado.** Isso vale para a MEDIANA. A média pode ser puxada por valores extremos.
+V: A probabilidade de "pelo menos um 6" em dois lançamentos de dado é 2/6. || **Errado.** É 1 − (5/6)² = 11/36. Use o complementar ("nenhum 6").
+## Sequências
++: Progressão aritmética (PA) || PA soma sempre o mesmo número (razão r). Soma dos termos: "(primeiro + último) x quantidade / 2", como o truque de Gauss.
++: Progressão geométrica (PG) || PG multiplica sempre pelo mesmo número (razão q). Juros compostos são uma PG.
+C: Termo geral da PA: an = {{c1::a1 + (n − 1)·r}}. Termo geral da PG: an = {{c2::a1·q^(n − 1)}}.
+D: Qual o 10º termo da PA 3, 7, 11, ...? || 39 || a10 = 3 + 9·4.
+D: Soma dos números de 1 a 100? || 5050 || (1 + 100)·100/2.
+D: Qual o 5º termo da PG 2, 6, 18, ...? || 162 || 2 · 3⁴.

@@ -1,0 +1,80 @@
+# ENEM 2026::02 Química
+## Química geral e atomística
++: Isótopos, isóbaros e isótonos || isótoPos = Prótons, isóbAros = mAssa, isótoNos = Nêutrons.
++: Cátion x ânion || CátIon = "gaTo positivo" (perdeu elétron, +). ÂNIon = "Ânimo Negativo" (ganhou elétron, −).
++: Propriedades periódicas: raio atômico || Raio cresce para o canto inferior esquerdo (Frâncio); eletronegatividade para o superior direito (Flúor). As setas são opostas. || [img:qui_tabela_tendencias]
++: Eletronegatividade: tendência || [img:qui_tabela_tendencias]
++: Forças intermoleculares em ordem || Ligação de hidrogênio só com "FON": H ligado a F, O ou N.
++: Separação de misturas: destilação simples || Destilação separa por PONTO DE EBULIÇÃO; decantação e centrifugação por DENSIDADE; filtração por TAMANHO.
++: Etapas do tratamento de água || "Coagula, Flocula, Decanta, Filtra, Desinfeta" (CFDFD): primeiro junta a sujeira, depois deixa cair, depois coa e mata os micróbios.
++: Fenômeno físico x químico || Pergunta-chave: "surgiu substância NOVA?" Se sim, é químico.
+F: [img:qui_tabela_tendencias] Qual elemento tem o maior raio e qual tem a maior eletronegatividade? || **Maior raio:** frâncio (Fr), no canto inferior esquerdo. **Maior eletronegatividade:** flúor (F), no canto superior direito (gases nobres não entram).
+C: Número de massa A = número de {{c1::prótons}} + número de {{c2::nêutrons}}. O número atômico Z é o número de {{c3::prótons}}.
+C: Ligação {{c1::iônica}}: metal + ametal, transfere elétrons. Ligação {{c2::covalente}}: ametal + ametal, compartilha elétrons. Ligação {{c3::metálica}}: "mar de elétrons".
+C: Moléculas {{c1::polares}} dissolvem-se em solventes polares, e apolares em apolares: "semelhante dissolve {{c2::semelhante}}".
+C: Para separar água e óleo usa-se o funil de {{c1::decantação (bromo)}}; para separar álcool e água, a destilação {{c2::fracionada}}.
+D: Elemento mais eletronegativo da tabela periódica? || flúor || Topo direito (gases nobres à parte).
+D: Nêutrons de um átomo com A = 23 e Z = 11? || 12 || n = A − Z = 23 − 11.
+V: Compostos iônicos conduzem corrente elétrica no estado sólido. || **Errado.** Só conduzem fundidos ou dissolvidos em água, quando os íons ficam livres para se mover.
+V: O gelo flutua porque é mais denso que a água líquida. || **Errado.** Flutua porque é MENOS denso: as ligações de hidrogênio formam uma rede com espaços vazios.
+## Estequiometria e soluções
++: Quanto vale 1 mol? || Mol é uma "dúzia gigante": 1 dúzia = 12, 1 mol = 6 x 10²³.
++: Roteiro de estequiometria || "Balanceia, Proporciona, Converte" e só no final confira pureza e rendimento.
++: Diluição: fórmula || Diluir é só pôr água: a quantidade de soluto não muda, então "C x V antes = C x V depois".
++: Propriedades coligativas: o que são? || COLIGATIVA = conta as partículas ("colig" = coleção): não importa QUEM, importa QUANTAS.
+C: A concentração comum é C = {{c1::massa do soluto}} / {{c2::volume da solução}}; a molaridade é M = {{c3::mols do soluto}} / volume (L).
+C: Na diluição vale C1·V1 = {{c1::C2·V2}}, pois a quantidade de {{c2::soluto}} permanece constante.
+C: Nas CNTP, 1 mol de qualquer gás ocupa {{c1::22,4}} L.
+D: Quantas partículas há em 1 mol? || 6,02 x 10^23 || Constante de Avogadro.
+D: Uma solução de 2 L contém 0,5 mol de soluto. Qual a molaridade (mol/L)? || 0,25 || M = n / V = 0,5 / 2.
+V: 1 mol de NaCl e 1 mol de glicose dissolvidos em 1 L de água baixam igualmente o ponto de congelamento. || **Errado.** NaCl se dissocia em 2 íons: tem o dobro de partículas, então o efeito coligativo é aproximadamente o dobro.
+## Físico-química
++: Reação exotérmica x endotérmica || EXOtérmica = calor EXIT (sai), ΔH negativo. ENDOtérmica = calor ENTRA, ΔH positivo. || [img:qui_entalpia]
++: Como age o catalisador? || Catalisador é um "atalho na montanha": diminui a subida (energia de ativação), mas não muda o ponto de partida nem o de chegada (ΔH). || [img:qui_entalpia]
++: Escala de pH || pH baixo = muito H+ = ácido. Cada 1 de pH = 10x. || [img:qui_ph]
++: Pilha (célula galvânica): ânodo e cátodo || "ÂNODO OXIDA, CÁTODO REDUZ" (vogais com vogais, consoantes com consoantes: Ânodo-Oxidação, Cátodo-Redução). || [img:qui_pilha]
++: Oxidação e redução: definição || "PERDEU é OXIDOU": quem perde elétrons oxida. "GANHOU REDUZ" (a carga reduz, fica mais negativa).
++: Meia-vida: definição || Cada meia-vida corta pela metade: 100 → 50 → 25 → 12,5. || [img:qui_meia_vida]
++: Radioatividade: partículas alfa || Alfa é "gordinha" (He, para no papel); beta passa o papel mas para no alumínio; gama atravessa quase tudo. || [img:qui_radiacao]
++: Le Chatelier: efeito da pressão || "Apertou, vai para onde tem menos gás."
++: Le Chatelier: efeito da temperatura || "Esquentou, favorece quem ABSORVE calor (endo)."
+F: [img:qui_entalpia] O que a linha tracejada mostra e o que ela NÃO muda? || A reação **com catalisador**: o pico (energia de ativação) fica mais baixo. Ela **não muda o ΔH**, porque reagentes e produtos continuam no mesmo nível de energia.
+F: [img:qui_pilha] Qual placa perde massa e para onde vão os elétrons? || A de **zinco** (ânodo, oxida e corrói). Os elétrons vão pelo fio **do zinco para o cobre** (cátodo), onde Cu²⁺ vira Cu e a placa engrossa.
+F: [img:qui_ph] Uma solução de pH 2 tem quantas vezes mais H+ que uma de pH 4? || **100 vezes** (10 x 10). Cada unidade de pH equivale a um fator 10.
+C: Na pilha, o {{c1::ânodo}} é o polo negativo onde ocorre {{c2::oxidação}}; o {{c3::cátodo}} é o polo positivo onde ocorre {{c4::redução}}. || [img:qui_pilha]
+C: Reação exotérmica tem ΔH {{c1::negativo}} e {{c2::libera}} calor; endotérmica tem ΔH {{c3::positivo}} e {{c4::absorve}} calor.
+C: Aumentar a temperatura favorece o sentido {{c1::endotérmico}}; aumentar a pressão desloca para o lado com {{c2::menos mols de gás}}.
+C: Sal de ácido fraco com base forte (como o bicarbonato de sódio) forma solução {{c1::básica}}; sal de ácido forte com base fraca (como o NH4Cl), solução {{c2::ácida}}.
+C: Partícula alfa: A diminui {{c1::4}} e Z diminui {{c2::2}}. Partícula beta: Z aumenta {{c3::1}} e A {{c4::não muda}}.
+D: Qual o pH de uma solução neutra a 25 °C? || 7 || pH + pOH = 14.
+D: Uma amostra de 80 g tem meia-vida de 5 anos. Quantos gramas restam após 15 anos? || 10 || 15 anos = 3 meias-vidas: 80 → 40 → 20 → 10.
+V: O catalisador desloca o equilíbrio no sentido dos produtos. || **Errado.** Catalisador acelera os dois sentidos igualmente: o equilíbrio chega mais rápido, mas não se desloca.
+V: Na pilha, a placa do cátodo sofre corrosão. || **Errado.** Quem corrói é o ÂNODO (oxidação). O cátodo recebe metal depositado e engrossa.
+## Química orgânica
++: Funções orgânicas: grupos característicos (1) || [img:qui_funcoes]
++: Funções orgânicas: grupos característicos (2) || ÉSTER tem "dois O" (–COO–), ÉTER tem "um O" (–O–): éster é o maior nome, tem mais oxigênio. || [img:qui_funcoes]
++: Prefixos de cadeia carbônica || "MET-ET-PROP-BUT" decore como "Meu Elefante Pula Bonito"; de 5 em diante é igual ao grego (pent, hex...).
++: Isomeria óptica: condição || Carbono quiral = "4 vizinhos diferentes", como uma mão: a imagem no espelho não se sobrepõe.
++: Saponificação || SAPOnificação = faz SAbãO: gordura + base.
++: Como o sabão limpa a gordura? || Sabão é um "cabo de guerra": cabeça na água, cauda na gordura. || [img:qui_micela]
++: Destilação fracionada do petróleo || Quanto mais leve a fração, mais alto ela sai na torre (gás no topo, asfalto embaixo). || [img:qui_petroleo]
++: Polímeros de adição x condensação || Condensação "condensa" água: libera molécula pequena. Adição só "soma" monômeros.
++: Combustão completa x incompleta || Falta de ar → CO (monóxido, mata) e fuligem. Ar sobrando → CO2 + H2O.
+F: [img:qui_micela] Explique a figura: o que cada parte da molécula de sabão faz? || A **cauda apolar** (cadeia longa) entra na gordura; a **cabeça polar** (iônica, azul) fica voltada para a água. Assim forma-se a **micela**, que é arrastada pela água levando a gordura.
+F: [img:qui_petroleo] Qual fração sai no topo da torre e por quê? || O **gás (GLP)**: tem o menor ponto de ebulição, então continua gasoso e sobe até o topo, que é a parte mais fria.
+R: R–OH (OH em carbono saturado) || Álcool
+R: R–CHO (carbonila na ponta) || Aldeído
+R: R–CO–R (carbonila no meio) || Cetona
+R: R–COOH || Ácido carboxílico
+R: R–COO–R || Éster
+R: R–O–R || Éter
+R: R–NH2 || Amina
+R: R–CONH2 || Amida
+C: Ácido carboxílico + álcool → {{c1::éster}} + água. Esse processo é a {{c2::esterificação}}.
+C: Óleo + álcool (com catalisador) → {{c1::biodiesel}} + {{c2::glicerina}}: é a {{c3::transesterificação}}.
+C: Polietileno, PVC e isopor são polímeros de {{c1::adição}}; PET e náilon são polímeros de {{c2::condensação}}.
+C: O nome "but-2-eno" indica cadeia com {{c1::4}} carbonos e uma ligação {{c2::dupla}} no carbono {{c3::2}}.
+D: Quantos carbonos tem uma cadeia com prefixo "pent"? || 5 || met 1, et 2, prop 3, but 4, pent 5, hex 6.
+D: Qual gás tóxico se forma na combustão incompleta? || monóxido de carbono || CO: liga-se à hemoglobina e impede o transporte de O2.
+V: O biodiesel é produzido por saponificação de óleos vegetais. || **Errado.** Biodiesel é feito por TRANSESTERIFICAÇÃO (óleo + álcool). Saponificação (óleo + base) produz sabão.
+V: Gorduras saturadas são geralmente líquidas à temperatura ambiente. || **Errado.** Saturadas (gordura animal, manteiga) são sólidas. Insaturadas (óleos vegetais) são líquidas.

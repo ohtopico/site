@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado relâmpago · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="e-voltar" href="./">← Ilha ENEM</a>
+    <h1 id="titulo">Simulado relâmpago</h1>
+    <p class="muted" id="sub">10 perguntas rápidas. Acerte 9 para ganhar três estrelas.</p>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Como funciona</summary>
+    <p>As perguntas saem dos cartões de revisão: conceitos, lacunas, "certo ou errado" e figuras. Depois de cada resposta aparece a explicação e, quando tem, um macete. O que você errar fica guardado em <b>Revisar meus erros</b> até você acertar.</p>
+    <p>Atalhos: teclas <b>1 a 4</b> (ou A a D) para responder, <b>C</b> e <b>E</b> no certo ou errado, <b>Enter</b> para seguir.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Estrelas e erros ficam guardados só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="banco.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), palco = $('#palco'), esc = ENEM.esc, mix = ENEM.embaralha;
+  ENEM.topo($('#topo'));
+  const B = window.ENEM_BANCO, AREA = {}, CARTAO = {};
+  B.forEach(a => { AREA[a.id] = a; a.cards.forEach(c => { c.area = a.id; CARTAO[c.id] = c; }); });
+  const N = 10;
+  const modo = new URLSearchParams(location.search).get('area') || 'misto';
+  const GRUPOS = { misto: B.map(a => a.id), dia1: ['red', 'ling', 'hum'], dia2: ['bio', 'qui', 'fis', 'mat'] };
+  const TITULOS = { misto: '🎲 Simulado relâmpago', dia1: '📅 Treino do 1º dia', dia2: '📅 Treino do 2º dia', erros: '🔁 Revisar meus erros' };
+  $('#titulo').textContent = TITULOS[modo] || ('❓ Simulado de ' + (AREA[modo] ? AREA[modo].nome : 'ENEM'));
+  document.title = $('#titulo').textContent.replace(/^\S+\s/, '') + ' · Ilha ENEM';
+  if (modo === 'erros') $('#sub').textContent = 'As perguntas que você errou voltam aqui. Acertou, sai da lista.';
+
+  /* ---------- montar as perguntas ---------- */
+  const semTags = s => s.replace(/<[^>]+>/g, '');
+  const numerico = s => /\d/.test(semTags(s));
+  function distratores(certa, candidatos, n) {
+    const vistos = new Set([semTags(certa).toLowerCase()]), saida = [];
+    for (const c of candidatos) {
+      const k = semTags(c).toLowerCase();
+      if (!vistos.has(k)) { vistos.add(k); saida.push(c); if (saida.length === n) break; }
+    }
+    return saida;
+  }
+  // primeiro os do mesmo tópico, depois o resto da área
+  const doTopicoPrimeiro = (c, lista) => mix(lista.filter(o => o !== c && o.top === c.top)).concat(mix(lista.filter(o => o !== c && o.top !== c.top)));
+
+  function pergunta(c) {
+    const area = AREA[c.area], todos = area.cards;
+    if (c.t === 'V') return { c, tipo: 'ce', enun: c.f, certa: c.ok, expl: c.x };
+    if (c.t === 'F') return { c, tipo: 'revela', enun: c.f, img: c.img, resp: c.v };
+    if (c.t === 'D') {
+      const outros = distratores(c.v, doTopicoPrimeiro(c, todos.filter(o => o.t === 'D')).map(o => o.v), 3);
+      if (outros.length < 3) outros.push(...distratores(c.v, mix(todos.filter(o => o.t === 'C')).flatMap(o => Object.values(o.l)).filter(r => numerico(r) === numerico(c.v)).filter(r => !outros.includes(r)), 3 - outros.length));
+      return { c, tipo: 'mc', enun: c.f, alts: mix([c.v, ...outros]), certa: c.v, expl: c.x };
+    }
+    if (c.t === 'C') {
+      const ns = Object.keys(c.l), n = ns[Math.floor(Math.random() * ns.length)], certa = c.l[n];
+      const enun = c.f.replace(/⟦(\d+)⟧/g, (m, k) => k === n ? '<span class="lacuna" aria-label="lacuna"></span>' : c.l[k]);
+      const pool = doTopicoPrimeiro(c, todos.filter(o => o.t === 'C')).flatMap(o => Object.values(o.l));
+      const outros = distratores(certa, pool.filter(r => numerico(r) === numerico(certa)).concat(pool), 3);
+      const completo = c.f.replace(/⟦(\d+)⟧/g, (m, k) => '<b>' + c.l[k] + '</b>');
+      return { c, tipo: 'mc', enun: 'Complete: ' + enun, alts: mix([certa, ...outros]), certa, expl: completo };
+    }
+    // pergunta simples: "o que é?" com quatro explicações, ou certo/errado com a explicação trocada
+    // mesmo tipo de cartão e, entre os do tópico, os de tamanho parecido, para a certa não se destacar
+    const mesmoTipo = todos.filter(o => o.t === c.t && o !== c), tam = semTags(c.v).length;
+    const perto = o => Math.abs(semTags(o.v).length - tam) / Math.max(tam, 20);
+    const parecidos = mix(mesmoTipo.filter(o => o.top === c.top && perto(o) < 1.2)).concat(mix(mesmoTipo.filter(o => o.top !== c.top || perto(o) >= 1.2)).sort((a, b) => perto(a) - perto(b)));
+    if (Math.random() < 0.3) {
+      const troca = Math.random() < 0.5 && parecidos[0];
+      return { c, tipo: 'ce', enun: '<b>' + c.f + '</b>: ' + (troca ? troca.v : c.v), certa: !troca,
+        expl: troca ? 'Essa explicação é de <b>' + troca.f + '</b>. O certo para <b>' + c.f + '</b>: ' + c.v : c.v, mac: c.m, img: c.img };
+    }
+    const outros = distratores(c.v, parecidos.map(o => o.v), 3);
+    return { c, tipo: 'mc', enun: 'Qual alternativa explica <b>' + c.f + '</b>?', alts: mix([c.v, ...outros]), certa: c.v, mac: c.m, img: c.img };
+  }
+
+  function sortear() {
+    if (modo === 'erros') return mix(ENEM.erros().map(id => CARTAO[id]).filter(Boolean)).slice(0, N);
+    const areas = GRUPOS[modo] || (AREA[modo] ? [modo] : GRUPOS.misto);
+    let pool = mix(areas.flatMap(a => AREA[a].cards));
+    // no máximo 2 de figura por rodada, e as áreas se revezam no misto
+    const escolha = [], porArea = {}; let fig = 0;
+    for (const c of pool) {
+      if (c.t === 'F' && fig >= 2) continue;
+      if (areas.length > 1 && (porArea[c.area] || 0) >= Math.ceil(N / areas.length)) continue;
+      escolha.push(c); porArea[c.area] = (porArea[c.area] || 0) + 1; if (c.t === 'F') fig++;
+      if (escolha.length === N) break;
+    }
+    return escolha;
+  }
+
+  /* ---------- rodada ---------- */
+  let fila = [], i = 0, acertos = 0, erradas = [], atual = null, respondida = false;
+
+  function comecar() {
+    fila = sortear().map(pergunta); i = 0; acertos = 0; erradas = [];
+    if (!fila.length) {
+      palco.innerHTML = `<div class="fim"><div class="grande">🎉</div><h2>Nenhum erro guardado</h2><p class="muted">Quando você errar uma pergunta em qualquer simulado, ela aparece aqui para revisar.</p><div class="btn-row" style="justify-content:center"><a class="btn" href="simulado.html?area=misto">Fazer um simulado</a><a class="btn ghost" href="./">Voltar à ilha</a></div></div>`;
+      return;
+    }
+    mostrar();
+  }
+
+  const LETRAS = 'ABCD';
+  function mostrar() {
+    atual = fila[i]; respondida = false;
+    const a = AREA[atual.c.area], p = atual;
+    let corpo = '';
+    if (p.tipo === 'mc') corpo = `<div class="alts">${p.alts.map((t, k) => `<button class="alt" type="button" data-k="${k}"><span class="letra">${LETRAS[k]}</span><span>${t}</span></button>`).join('')}</div>`;
+    else if (p.tipo === 'ce') corpo = `<div class="alts ce"><button class="alt" type="button" data-ce="1">✔ Certo</button><button class="alt" type="button" data-ce="0">✘ Errado</button></div>`;
+    else corpo = `<p class="muted small">Pense na resposta antes de abrir.</p><div class="btn-row"><button class="btn" type="button" id="revelar">Mostrar resposta</button></div>`;
+    palco.innerHTML = `<div class="hud"><span>Pergunta <b>${i + 1}</b> de ${fila.length}</span><span>Acertos <b>${acertos}</b></span></div>
+      <div class="barra"><i style="width:${i / fila.length * 100}%"></i></div>
+      <span class="q-area" style="background:var(--${a.id})">${a.ic} ${a.nome} · ${esc(p.c.top)}</span>
+      <div class="q-enun">${p.enun}</div>
+      ${p.tipo === 'revela' && p.img ? `<img class="q-fig" src="img/${p.img}.png" alt="Figura da pergunta">` : ''}
+      ${corpo}<div id="corr"></div><div class="btn-row" id="seguir" style="margin-top:14px"></div>`;
+    palco.querySelectorAll('[data-k]').forEach(b => b.onclick = () => responder(p.alts[+b.dataset.k] === p.certa, b));
+    palco.querySelectorAll('[data-ce]').forEach(b => b.onclick = () => responder((b.dataset.ce === '1') === p.certa, b));
+    const rv = $('#revelar'); if (rv) rv.onclick = revelar;
+    const primeiro = palco.querySelector('.alt, #revelar'); if (primeiro && i > 0) primeiro.focus({ preventScroll: true });
+  }
+
+  function revelar() {
+    const p = atual;
+    $('#corr').innerHTML = `<div class="corr">${p.resp}</div><p class="small muted" style="margin:10px 0 0">Você sabia?</p>`;
+    $('#seguir').innerHTML = `<button class="btn" type="button" data-sabia="1">✔ Acertei</button><button class="btn ghost" type="button" data-sabia="0">✘ Errei</button>`;
+    $('#revelar').remove();
+    $('#seguir').querySelectorAll('[data-sabia]').forEach(b => b.onclick = () => { $('#seguir').innerHTML = ''; registrar(b.dataset.sabia === '1'); proximo(); });
+    $('#seguir button').focus();
+  }
+
+  function registrar(ok) {
+    respondida = true;
+    if (ok) { acertos++; if (modo === 'erros') ENEM.tirarErro(atual.c.id); }
+    else { erradas.push(atual); ENEM.marcarErro(atual.c.id); }
+  }
+
+  function responder(ok, botao) {
+    if (respondida) return;
+    registrar(ok);
+    const p = atual;
+    palco.querySelectorAll('.alt').forEach(b => {
+      b.disabled = true;
+      const certa = b.dataset.k != null ? p.alts[+b.dataset.k] === p.certa : (b.dataset.ce === '1') === p.certa;
+      if (certa) b.classList.add('certa'); else if (b === botao) b.classList.add('errada');
+    });
+    let txt = ok ? '<b>Isso!</b> ' : '<b>Não foi dessa vez.</b> ';
+    if (p.tipo === 'ce') txt += (p.certa ? 'A afirmação está <b>certa</b>. ' : 'A afirmação está <b>errada</b>. ');
+    else if (!ok) txt += 'Resposta: ' + p.certa + '. ';
+    if (p.expl) txt += '<br>' + p.expl;
+    if (p.mac) txt += `<div class="mac">💡 ${p.mac}</div>`;
+    if (p.img) txt += `<img class="q-fig" style="margin-top:10px" src="img/${p.img}.png" alt="Figura de apoio" loading="lazy">`;
+    $('#corr').innerHTML = `<div class="corr ${ok ? 'ok' : 'bad'}">${txt}</div>`;
+    proximo(true);
+  }
+
+  function proximo(botao) {
+    const ultima = i === fila.length - 1;
+    if (botao) {
+      $('#seguir').innerHTML = `<button class="btn" type="button" id="prox">${ultima ? 'Ver resultado' : 'Próxima →'}</button>`;
+      $('#prox').onclick = () => { if (ultima) fim(); else { i++; mostrar(); } };
+      $('#prox').focus({ preventScroll: true });
+    } else if (ultima) fim(); else { i++; mostrar(); }
+  }
+
+  function fim() {
+    ENEM.contarFeitas(fila.length);
+    const pct = acertos / fila.length, est = pct >= .9 ? 3 : pct >= .7 ? 2 : pct >= .5 ? 1 : 0;
+    const novo = modo !== 'erros' && fila.length === N && ENEM.darEstrelas('sim-' + modo, est);
+    $('#tot-est').textContent = ENEM.totalEstrelas();
+    const frase = est === 3 ? 'Mandou muito bem!' : est === 2 ? 'Muito bom, falta pouco para as três estrelas.' : est === 1 ? 'Bom começo. Revise os erros e tente de novo.' : 'Hora de revisar: os erros já estão guardados.';
+    palco.innerHTML = `<div class="fim">
+        <div class="grande">${acertos}/${fila.length}</div>
+        ${modo !== 'erros' ? ENEM.estrelasHtml(est) : ''}
+        <h2 style="margin-top:10px">${frase}</h2>
+        ${novo ? '<p class="feedback ok">Novo recorde de estrelas neste simulado!</p>' : ''}
+        <div class="btn-row" style="justify-content:center;margin-top:12px">
+          <button class="btn" type="button" id="denovo">Jogar de novo</button>
+          ${erradas.length && modo !== 'erros' ? '<a class="btn ghost" href="simulado.html?area=erros">Revisar meus erros</a>' : ''}
+          <a class="btn ghost" href="./">Voltar à ilha</a>
+        </div>
+        ${erradas.length ? `<h3 style="margin-top:24px;text-align:left">O que você errou</h3><div class="lista-erros">${erradas.map(p => `<div class="corr bad">${p.enun}<br>→ ${p.tipo === 'ce' ? (p.certa ? 'Certo' : 'Errado') + (p.expl ? '. ' + p.expl : '') : p.tipo === 'revela' ? p.resp : p.certa}${p.mac ? `<div class="mac">💡 ${p.mac}</div>` : ''}</div>`).join('')}</div>` : ''}
+      </div>`;
+    $('#denovo').onclick = comecar;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input, textarea') || e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = e.key.toUpperCase();
+    if (!respondida && atual && atual.tipo === 'mc') {
+      const idx = '1234'.indexOf(k) >= 0 ? '1234'.indexOf(k) : 'ABCD'.indexOf(k);
+      const b = idx >= 0 && palco.querySelector(`[data-k="${idx}"]`); if (b) { b.click(); e.preventDefault(); }
+    } else if (!respondida && atual && atual.tipo === 'ce' && (k === 'C' || k === 'E')) {
+      palco.querySelector(`[data-ce="${k === 'C' ? 1 : 0}"]`).click(); e.preventDefault();
+    }
+  });
+
+  comecar();
+})();
+</script>
+</body>
+</html>
