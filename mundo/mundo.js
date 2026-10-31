@@ -1271,12 +1271,12 @@
     if (m.id === 'computador') {
       const lista = faltando(false).slice(0, 6);
       return dialogo('💻', 'Computador', lista.length ? '<p>Atividades que ainda faltam nas fases abertas. Abra uma e a casa dela ganha cor:</p>' : '<p>Você já fez todas as atividades das fases abertas! 🎉 Cumpra as missões para abrir a próxima fase.</p>',
-        lista.map(l => l.tipo === 'em' ? { txt: `${l.icone} ${l.titulo}`, fn: () => comecaEM(l) } : { txt: `${l.icone} ${l.titulo}`, href: l.url, fn: () => abriu(l) }).concat([fecha]));
+        lista.map(l => l.tipo === 'em' ? { txt: `${l.icone} ${l.titulo}`, fn: () => comecaEM(l) } : { txt: `${l.icone} ${l.titulo}`, fn: () => abreJogo(l) }).concat([fecha]));
     }
     if (m.id === 'arcade') {
       const js = faltando(true), l = js.length ? js[Math.floor(Math.random() * js.length)] : jogaveis.length ? lugarRec(jogaveis[Math.floor(Math.random() * jogaveis.length)]) : null;
       if (!l) return dialogo('🕹️', 'Fliperama', '<p>Nenhum jogo por aqui ainda.</p>', [fecha]);
-      return dialogo('🕹️', 'Fliperama', `<p>O fliperama sorteou: <strong>${esc(l.titulo)}</strong>.</p><p class="muted">${esc(l.resumo)}</p>`, [{ txt: 'Jogar', href: l.url, classe: 'principal', fn: () => abriu(l) }, { txt: 'Sortear outro', fn: () => usaMovel(m) }, fecha, ...guardar]);
+      return dialogo('🕹️', 'Fliperama', `<p>O fliperama sorteou: <strong>${esc(l.titulo)}</strong>.</p><p class="muted">${esc(l.resumo)}</p>`, [{ txt: 'Jogar', classe: 'principal', fn: () => abreJogo(l) }, { txt: 'Sortear outro', fn: () => usaMovel(m) }, fecha, ...guardar]);
     }
     if (m.id === 'poltrona') {
       const lidas = Object.keys(S.dicas), i = lidas.length ? lidas[Math.floor(Math.random() * lidas.length)] : Math.floor(Math.random() * DICAS.length);
@@ -3325,10 +3325,11 @@
     const verbo = l.tipo === 'pagina' ? 'Visitar' : l.tipo === 'sim' ? 'Experimentar' : 'Jogar';
     let status;
     if (feito) status = `<p class="muted">✅ Concluída${typeof feito === 'number' && l.rec && feito > 1 ? ` · melhor resultado: ${feito}%` : ''}. A casa já ganhou cor; pode jogar de novo quando quiser.</p>`;
-    else if (l.rec) status = `<p class="muted">A casa está cinza: ela ganha cor quando você terminar uma rodada do jogo. A página abre em outra aba; quando acabar, volte para cá.</p>`;
-    else status = `<p class="muted">A página abre em outra aba e a casa ganha cor.</p>`;
+    else if (l.rec) status = `<p class="muted">A casa está cinza: ela ganha cor quando você terminar uma rodada do jogo. O jogo abre aqui mesmo, por cima do Mundo; quando acabar, aperte Voltar ao Mundo.</p>`;
+    else status = `<p class="muted">A página abre aqui mesmo, por cima do Mundo, e a casa ganha cor.</p>`;
     dialogo(l.icone, l.titulo, `<p>${esc(l.resumo)}</p>${l.extra ? `<p class="muted">${esc(l.extra)}</p>` : ''}${status}`, [
-      { txt: `${verbo} agora`, href: l.url, classe: 'principal', fn: () => abriu(l) },
+      { txt: `${verbo} agora`, classe: 'principal', fn: () => abreJogo(l) },
+      { txt: '↗ Abrir em outra aba', href: l.url, fn: () => abriu(l) },
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
   }
@@ -3362,6 +3363,17 @@
       D.op.appendChild(b); b.focus(); salvar();
     } })));
     delete D.op.dataset.respondida;
+  }
+  /* jogo dentro do Mundo: a página abre numa janela por cima, sem o topo, o rodapé e o "← Jogos" do site (o aluno não sai sem querer) */
+  const CSS_NO_MUNDO = '#topbar, #footer, .crumbs { display: none !important; } body { padding-top: 0 !important; }';
+  function abreJogo(l) {
+    abriu(l);
+    $('#jm-ic').textContent = l.icone || '🎮'; $('#jm-t').textContent = l.titulo; $('#jm-aba').href = l.url;
+    const fr = $('#jm-if');
+    fr.onload = () => { try { const d = fr.contentDocument; if (d && d.head && !d.getElementById('no-mundo')) { const st = d.createElement('style'); st.id = 'no-mundo'; st.textContent = CSS_NO_MUNDO; d.head.appendChild(st); } } catch (e) { /* outra origem: abre como está */ } };
+    fr.src = l.url;
+    abreJanela('jogo');
+    setTimeout(() => { try { fr.focus(); } catch (e) {} }, 300);
   }
   function abriu(l) { S.abertos[l.id] = Date.now(); if (!l.rec && !S.feitos[l.id]) { S.feitos[l.id] = true; pontos(15, `${l.titulo}: a casa ganhou cor!`); confereFases(); } salvar(); fechaDialogo(); }
   /* pergunta da fase: primeiro as que a pessoa errou (revisão), depois as novas */
@@ -3667,7 +3679,7 @@
     if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
-  function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
+  function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
   document.querySelectorAll('[data-abrir]').forEach(b => b.addEventListener('click', () => abreJanela(b.dataset.abrir)));
   document.querySelectorAll('[data-fechar]').forEach(b => b.addEventListener('click', fechaJanela));
   /* troca de vila: desmonta a anterior, limpa as texturas guardadas e monta a nova */
@@ -4000,7 +4012,7 @@
   setTimeout(() => confereEstrelasSite(), 2500);   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

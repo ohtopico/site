@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="icone-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mundo">
-<link rel="stylesheet" href="mundo.css?v=20261031zr">
+<link rel="stylesheet" href="mundo.css?v=20261031zu">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -111,6 +111,12 @@
     <p class="muted small">À esquerda de cada vila, as lojas: 👕 Roupas · 🍎 Mercadinho · 🐾 Pet Shop · 🛋️ Móveis. À direita, os prédios especiais. A lista abaixo mostra tudo o que cada vila tem.</p>
     <ol id="mapa-fases" class="fases"></ol>
   </div>
+</div>
+<div class="janela jogo-mundo" id="j-jogo" hidden role="dialog" aria-labelledby="jm-t">
+  <div class="jm-caixa"><div class="jm-cab"><span class="jm-ic" id="jm-ic" aria-hidden="true"></span><strong id="jm-t">Jogo</strong><span class="jm-dica">A casa fica colorida quando você termina</span>
+    <a class="jm-b" id="jm-aba" target="_blank" rel="noopener" title="Abrir em outra aba">↗<span class="jm-longo"> Abrir em outra aba</span></a>
+    <button type="button" class="jm-voltar" data-fechar>✕ Voltar<span class="jm-longo"> ao Mundo</span></button></div>
+    <iframe id="jm-if" title="Jogo aberto dentro do Mundo"></iframe></div>
 </div>
 <div class="janela" id="j-inventario" hidden role="dialog" aria-labelledby="j-inv-t">
   <div class="j-caixa"><div class="j-cab"><h2 id="j-inv-t">🎒 Inventário, habilidades e amigos</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
@@ -290,7 +296,7 @@
 <script src="../simuladores/assets/sim-comum.js"></script>
 <script src="perguntas-npc.js?v=20261031zn"></script>
 <script src="teleporte.js?v=20261031zn"></script>
-<script src="mundo.js?v=20261031zt"></script>
+<script src="mundo.js?v=20261031zu"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
