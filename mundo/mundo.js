@@ -124,7 +124,7 @@
     panetone: ['🍞', 'Panetone'], uvas: ['🍇', 'Uvas da sorte'], picole: ['🍦', 'Picolé'], ovoChoc: ['🍫', 'Ovo de chocolate'], pipoca: ['🍿', 'Pipoca'], pirulito: ['🍭', 'Pirulito'], cupcake: ['🧁', 'Cupcake'], docinho: ['🍬', 'Doce de abóbora'] };
   const LOJAS = {
     roupa: { fase: 0, nome: 'Loja de Roupas', ic: '👕', cor: '#f7a8c4', toldo: '#e0564a', texto: 'Acessórios e cores novas para o seu avatar.' },
-    comida: { fase: 1, nome: 'Mercadinho', ic: '🍎', cor: '#ffd58a', toldo: '#4bb259', texto: 'Comidinhas para dar ao pet ou de presente aos moradores.' },
+    comida: { fase: 1, nome: 'Mercadinho', ic: '🍎', cor: '#ffd58a', toldo: '#4bb259', texto: 'Comidinhas para o pet e os moradores, e ferramentas para juntar madeira e pedra.' },
     pet: { fase: 2, nome: 'Pet Shop', ic: '🐾', cor: '#a8d8f7', toldo: '#3f8fe0', texto: 'Petiscos, banho e acessórios para o seu bichinho.' },
     moveis: { fase: 3, nome: 'Loja de Móveis', ic: '🛋️', cor: '#c7b4f2', toldo: '#9a6bd6', texto: 'Móveis prontos para a sua casa, sem precisar da bancada.' }
   };
@@ -135,8 +135,9 @@
     { id: 'horta', nome: 'Horta da escola', ic: '🥕', cor: '#4bb259', meta: { maca: 3, estrela: 1 }, texto: 'Uma horta com sensores que regam sozinhos.' },
     { id: 'observatorio', nome: 'Observatório', ic: '🔭', cor: '#9a6bd6', meta: { diamante: 2, estrela: 2 }, texto: 'Uma cúpula para olhar o céu e medir as estrelas.' }
   ];
+  Object.assign(ITENS, { madeira: ['🪵', 'Madeira'], pedra: ['🪨', 'Pedra'] });   // recursos: só com o machado e a picareta da loja
   Object.assign(ITENS, { flor: ['🌸', 'Flor de primavera'], melancia: ['🍉', 'Melancia de verão'], folha: ['🍁', 'Folha de outono'], pinhao: ['🌰', 'Pinhão de inverno'] });
-  const ITENS_LOJA = new Set(['flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
+  const ITENS_LOJA = new Set(['madeira', 'pedra', 'flor', 'melancia', 'folha', 'pinhao', 'petisco', 'sabonete', 'brinquedo', 'suco', 'bolo', 'sanduiche', 'panetone', 'uvas', 'picole', 'ovoChoc', 'pipoca', 'pirulito', 'cupcake', 'docinho']);
   const SORTEIO_ITENS = ['livro', 'diamante', 'estrela', 'livro', 'maca', 'diamante', 'chave', 'peca'];
   const DICAS = [
     'O computador guarda tudo em <strong>binário</strong>: só 0 e 1. Com 8 bits (um byte) dá para escrever 256 números diferentes, de 0 a 255.',
@@ -391,6 +392,9 @@
     for (let y = 0; y < ALT; y++) { arvore(0, y); arvore(L - 1, y); if (r() < 0.6) arvore(1, y); if (r() < 0.6) arvore(L - 2, y); }
     const pertoDeCoisa = (x, y) => { for (let j = y - 1; j <= y + 1; j++) for (let i = x - 1; i <= x + 1; i++) if (at(i, j) && (f.tile[pos(i, j)] !== T.grama || f.sol[pos(i, j)])) return true; return false; };
     for (let k = 0; k < L * ALT * 0.05; k++) { const x = Math.floor(r() * L), y = Math.floor(r() * ALT); if (!pertoDeCoisa(x, y)) arvore(x, y); }
+    // rochas: dão pedra com a picareta
+    f.rochas = [];
+    for (let k = 0; k < 7 + f.idx % 3; k++) { const x = 3 + Math.floor(r() * (L - 6)), y = 3 + Math.floor(r() * (ALT - 6)); if (!pertoDeCoisa(x, y)) { f.sol[pos(x, y)] = 1; f.rochas.push({ x: f.x0 + x, y, t: r() }); } }
     // flores e enfeites (só desenho, não bloqueiam)
     f.flores = [];
     for (let k = 0; k < L * ALT * 0.06 * ESTACAO.flores; k++) { const x = r() * L, y = r() * ALT; const t = f.tile[pos(Math.floor(x), Math.floor(y))]; if (t === T.grama && !f.sol[pos(Math.floor(x), Math.floor(y))]) f.flores.push({ x: f.x0 + x, y, c: ['#ff9fb6', '#fff27a', '#ffffff', '#c7a6ff', '#ffb36b'][k % 5] }); }
@@ -420,7 +424,7 @@
     f.evItens = eventosProntos ? itensEvento(f) : [];
   }
   /* desmonta a vila (o que ocupa memória: chão, árvores, flores, casas, itens); moradores, portões e as casas especiais ficam */
-  function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'flores', 'casas', 'itens', 'cercas', 'evItens']) delete f[k]; }
+  function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'rochas', 'flores', 'casas', 'itens', 'cercas', 'evItens']) delete f[k]; }
   for (const f of fases) { monta(f); desmonta(f); }        // uma passada para guardar a posição das casas especiais e dos moradores
   const LARG = ALT;
   let atual = fases[0];
@@ -456,6 +460,9 @@
     sofa: { nome: 'Sofá', ic: '🛋️', w: 2, d: 1, loja: true, acao: 'sentar um pouco', des: (x, y) => { caixa(x + 0.08, y + 0.1, 0, 1.84, 0.25, 1.0, '#3f8fe0'); caixa(x + 0.08, y + 0.3, 0, 1.84, 0.6, 0.45, '#6aa9ec'); caixa(x + 0.02, y + 0.3, 0.2, 0.18, 0.6, 0.45, '#3f8fe0'); caixa(x + 1.8, y + 0.3, 0.2, 0.18, 0.6, 0.45, '#3f8fe0'); caixa(x + 0.35, y + 0.18, 0.45, 0.4, 0.15, 0.35, '#ffd58a'); } },
     tv: { nome: 'Televisão', ic: '📺', w: 2, d: 1, loja: true, acao: 'ver um vídeo', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 1.8, 0.7, 0.5, '#a0703f'); caixa(x + 0.3, y + 0.35, 0.5, 1.4, 0.12, 0.85, '#222222'); const k = Math.floor(agora / 600) % 3; naFace('y', x + 0.3, y + 0.35, 1.4, 0.12, 0.08, 0, 1.24, 0.58, 0.7, ['#7fd3f7', '#a8e6b8', '#f7a8c4'][k]); naFace('y', x + 0.3, y + 0.35, 1.4, 0.12, 0.3 + k * 0.2, 0, 0.3, 0.7, 0.25, '#ffffff'); } },
     piano: { nome: 'Piano', ic: '🎹', w: 2, d: 1, loja: true, acao: 'tocar uma música', des: (x, y) => { caixa(x + 0.1, y + 0.05, 0, 1.8, 0.45, 1.3, '#1d1d24'); caixa(x + 0.1, y + 0.5, 0.65, 1.8, 0.35, 0.1, '#1d1d24'); for (let i = 0; i < 9; i++) caixa(x + 0.14 + i * 0.19, y + 0.52, 0.75, 0.17, 0.3, 0.04, '#ffffff', { blocos: false }); for (const i of [0, 1, 3, 4, 5, 7]) caixa(x + 0.27 + i * 0.19, y + 0.52, 0.79, 0.09, 0.16, 0.04, '#111111', { blocos: false, contorno: false }); caixa(x + 0.15, y + 0.6, 0, 0.1, 0.1, 0.65, '#1d1d24'); caixa(x + 1.75, y + 0.6, 0, 0.1, 0.1, 0.65, '#1d1d24'); } },
+    // móveis de madeira e pedra (os recursos vêm das árvores e das rochas, com as ferramentas do Mercadinho)
+    bancoMadeira: { nome: 'Banco de madeira', ic: '🪑', w: 2, d: 1, custo: { madeira: 4 }, acao: 'descansar', des: (x, y) => { caixa(x + 0.1, y + 0.25, 0.35, 1.8, 0.5, 0.12, '#b07a45'); for (const dx of [0.15, 1.7]) caixa(x + dx, y + 0.3, 0, 0.15, 0.4, 0.35, '#8a5a2f'); } },
+    lareira: { nome: 'Lareira de pedra', ic: '🔥', w: 2, d: 1, custo: { pedra: 5, madeira: 2 }, acao: 'acender a lareira', des: (x, y) => { caixa(x + 0.1, y + 0.05, 0, 1.8, 0.6, 1.3, '#9a9a96'); caixa(x + 0.55, y + 0.6, 0, 0.9, 0.06, 0.6, '#3a2a22', { blocos: false }); caixa(x + 0.7, y + 0.55, 0.05, 0.6, 0.06, 0.3, '#f08a24', { blocos: false }); caixa(x + 0.05, y, 1.3, 1.9, 0.7, 0.12, '#7d7d79'); } },
     // móveis de evento: só se ganham completando as missões das datas comemorativas
     pinheiro: { nome: 'Árvore de Natal', ic: '🎄', w: 1, d: 1, evento: true, acao: 'acender as luzes', des: (x, y) => { caixa(x + 0.42, y + 0.42, 0, 0.16, 0.16, 0.3, '#a0703f', { blocos: false }); [[0.1, 0.3, 0.8], [0.2, 0.75, 0.6], [0.3, 1.15, 0.4]].forEach(([o, z, w]) => caixa(x + o, y + o, z, w, w, 0.45, '#3f9a5a')); caixa(x + 0.42, y + 0.42, 1.6, 0.16, 0.16, 0.16, '#ffd84a', { blocos: false }); luzinhas(x + 0.5, y + 0.5, 0.5, 1.3, 0.35); } },
     bolaEspelhada: { nome: 'Bola espelhada de Ano Novo', ic: '🪩', w: 1, d: 1, evento: true, acao: 'girar a bola', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 1.1, '#888888', { blocos: false }); caixa(x + 0.25, y + 0.25, 1.1, 0.5, 0.5, 0.5, '#d9e3ea'); luzinhas(x + 0.5, y + 0.5, 1.15, 1.5, 0.3, ['#ffffff', '#c7f0ff', '#ffe9a8']); } },
@@ -892,6 +899,11 @@
     ctx.beginPath(); ctx.roundRect(sx - tw / 2, sy - 12, tw, 24, 12); ctx.fill(); ctx.stroke();
     ctx.fillStyle = tinta; ctx.fillText(t.length > 38 ? t.slice(0, 37) + '…' : t, sx, sy + 1, 250);
   }
+  function desenhaRocha(o) {
+    sombra(o.x + 0.5, o.y + 0.5, 0.55);
+    const cor = ['#9a9a96', '#a8a49a', '#8f949a'][Math.floor(o.t * 3)], h = 0.35 + o.t * 0.25;
+    caixa(o.x + 0.15, o.y + 0.2, 0, 0.7, 0.6, h, cor); caixa(o.x + 0.3, o.y + 0.3, h, 0.4, 0.35, 0.18, claro(cor, 0.1));
+  }
   function desenhaArvore(a) {
     sombra(a.x + 0.5, a.y + 0.5, 0.8);
     caixa(a.x + 0.38, a.y + 0.38, 0, 0.24, 0.24, 1, '#a0703f', { blocos: false });
@@ -1075,6 +1087,9 @@
     if (S.pet && !S.pet.dorme) tenta(PET.x, PET.y + 0.3, { tipo: 'pet' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
     tenta(f.placa.x, f.placa.y + 0.8, { tipo: 'placa', fase: f });
+    // árvores e rochas só viram alvo bem de perto, para não roubar a vez das casas e dos moradores
+    if (!melhor) for (const a of f.arvores) { const d = Math.hypot(a.x + 0.5 - P.x, a.y + 0.5 - P.y); if (d < Math.min(dm, 1.05)) { dm = d; melhor = { tipo: 'recurso', rec: 'madeira', obj: a }; } }
+    if (!melhor || melhor.tipo === 'recurso') for (const o of f.rochas || []) { const d = Math.hypot(o.x + 0.5 - P.x, o.y + 0.5 - P.y); if (d < Math.min(dm, 1.05)) { dm = d; melhor = { tipo: 'recurso', rec: 'pedra', obj: o }; } }
     for (const p of f.portais) tenta(p.x + (p.lado === 'L' ? -1 : p.lado === 'O' ? 1 : 0), p.y + (p.lado === 'S' ? -1 : p.lado === 'N' ? 1 : 0), { tipo: 'portao', portal: p, fase: f });
     return melhor;
   }
@@ -1408,7 +1423,7 @@
     const base = {
       roupa: [['av', 'oculos', '🕶️', 40], ['av', 'laco', '🎀', 40], ['av', 'chapeu', '🎩', 50], ['av', 'cachecol', '🧣', 60], ['av', 'coroa', '👑', 160],
         ['cor', 'camisa:#2b2d6e', '👕', 60, 'Camiseta galáxia'], ['cor', 'camisa:#ff8fab', '👕', 60, 'Camiseta chiclete'], ['cor', 'calca:#7aa6d6', '👖', 40, 'Calça jeans clara']],
-      comida: [['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
+      comida: [['ferr', 'machado', '🪓', 80, 'Machado (corta madeira das árvores)'], ['ferr', 'picareta', '⛏️', 100, 'Picareta (tira pedra das rochas)'], ['fig', 'pacotinho', '📒', 40, 'Pacotinho com 3 figurinhas'], ['inv', 'maca', '🍎', 20, '3 maçãs', 3], ['inv', 'suco', '🧃', 20], ['inv', 'sanduiche', '🥪', 30], ['inv', 'bolo', '🍰', 40]],
       pet: [['inv', 'petisco', '🦴', 20, '2 petiscos', 2], ['inv', 'sabonete', '🧼', 20], ['inv', 'brinquedo', '🧸', 40], ['pet', 'lenco', '🧣', 50], ['pet', 'cachecol', '🧣', 50]],
       moveis: [['movel', 'vaso', '', 40], ['movel', 'tapete', '', 60], ['movel', 'planta', '', 60], ['movel', 'mesa', '', 80], ['movel', 'luminaria', '', 80], ['movel', 'sofa', '', 100], ['movel', 'tv', '', 120], ['movel', 'piano', '', 160]]
     }[loja].map(([tipo, id, ic, preco, nome, qtd]) => ({ tipo, id, ic, preco: caro(preco), nome, qtd }));
@@ -1424,7 +1439,7 @@
       if (p.tipo === 'inv') { p.ic = p.ic || ITENS[p.id][0]; p.nome = p.nome || ITENS[p.id][1]; }
       if (p.tipo === 'av' || p.tipo === 'pet') p.nome = p.nome || NOMES_ENFEITE[p.id];
       p.chave = p.tipo + ':' + p.id;
-      p.unico = p.tipo === 'av' || p.tipo === 'pet' || p.tipo === 'cor';
+      p.unico = p.tipo === 'av' || p.tipo === 'pet' || p.tipo === 'cor' || p.tipo === 'ferr';
     }
     return base;
   }
@@ -1524,7 +1539,7 @@
     S.loja.compras++;
     lojaEscolha = null; hud(); salvar();
   }
-  const dicaUso = p => p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
+  const dicaUso = p => p.tipo === 'ferr' ? 'Já está com você: chegue perto de uma árvore ou rocha e aperte E.' : p.tipo === 'av' || p.tipo === 'cor' ? 'Já está no seu avatar; troque quando quiser no 👤 Avatar.' : p.tipo === 'pet' ? (S.pet ? 'Seu pet já está usando!' : 'Adote um pet para usar.') : p.tipo === 'movel' ? 'Está guardado: coloque na sua casa 🏠.' : p.id in COMIDA || p.id === 'maca' ? 'Dê ao seu pet ou de presente a um morador.' : 'Use na janela do pet 🐾.';
   /* ---------- modo turma: sem servidor, o aluno gera um código de progresso e envia para a professora,
      que cola os códigos no painel (material-didatico/turma-mundo.html) para ver o ranking e o progresso ---------- */
   function resumoTurma() {
@@ -2560,6 +2575,7 @@
       if (f.minhaCasa) { const c = f.minhaCasa; lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaMinhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) }); }
       for (const c of f.casas) if (naTela(c.gx + 1.5, c.y + 1.5, 220)) lista.push({ k: c.gx + c.y + c.w / 2 + c.d / 2 + 0.6, d: () => desenhaCasa(c, Math.hypot(c.porta.x - P.x, c.porta.y - P.y) < 4) });
       for (const a of f.arvores) if (naTela(a.x, a.y)) lista.push({ k: a.x + a.y + 1, d: () => desenhaArvore(a) });
+      for (const o of f.rochas || []) if (naTela(o.x, o.y)) lista.push({ k: o.x + o.y + 1, d: () => desenhaRocha(o) });
       lista.push({ k: f.centro.x + f.centro.y + 0.5, d: () => desenhaMarco(f) });
       lista.push({ k: f.placa.x + f.placa.y, d: () => desenhaPlaca(f) });
       for (const p of f.portais) lista.push({ k: p.x + p.y + 1.5, d: () => desenhaPortao(p) });
@@ -2579,7 +2595,7 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
       anuncia((alvo.tipo === 'casa' ? alvo.casa.lugar.titulo + '. ' : '') + t);
     } else anuncia('');
@@ -2913,12 +2929,21 @@
     const falta = missoes(f).filter(m => !m.ok).map(m => `${esc(m.nome)} (${m.n}/${m.meta})`);
     dialogo('🔒', 'Portão fechado', `<p>Para seguir para <strong>${esc(prox.nome)}</strong>, complete as missões de ${esc(f.nome)}:</p><p>${falta.join('<br>')}</p>`, [{ txt: 'Vou lá!', fn: fechaDialogo }]);
   }
+  /* madeira e pedra: cada árvore ou rocha dá 1 por dia, e só com a ferramenta comprada no Mercadinho */
+  function juntaRecurso(a) {
+    const ferr = a.rec === 'madeira' ? 'machado' : 'picareta', [fic, fnome] = ferr === 'machado' ? ['🪓', 'machado'] : ['⛏️', 'picareta'];
+    if (!S.loja.tem['ferr:' + ferr]) return dialogo(fic, a.rec === 'madeira' ? 'Árvore' : 'Rocha', `<p>Para tirar ${ITENS[a.rec][0]} ${a.rec} daqui, você precisa de ${ferr === 'machado' ? 'um' : 'uma'} <b>${fnome}</b>. Compre no 🍎 Mercadinho, na Praça dos Números.</p><p class="muted small">Com madeira e pedra, a bancada da sua casa faz móveis novos.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
+    const R = S.recursos && S.recursos.dia === diaHoje() ? S.recursos : (S.recursos = { dia: diaHoje(), feitos: {} }), chave = `${atual.id}:${a.obj.x}:${a.obj.y}`;
+    if (R.feitos[chave]) return aviso(a.rec === 'madeira' ? '🌳 Esta árvore já deu madeira hoje. Tente outra!' : '🪨 Esta rocha já deu pedra hoje. Tente outra!');
+    R.feitos[chave] = true; S.inv[a.rec] = (S.inv[a.rec] || 0) + 1;
+    SOM.toca('coleta'); aviso(`${ITENS[a.rec][0]} +1 ${ITENS[a.rec][1].toLowerCase()} (você tem ${S.inv[a.rec]})`); hud(); salvar();
+  }
   function interage() {
     if (dialogoAberto || janelaAberta) return;
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
