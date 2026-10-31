@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="icone-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mundo">
-<link rel="stylesheet" href="mundo.css?v=20261031zv">
+<link rel="stylesheet" href="mundo.css?v=20261031zx">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -108,6 +108,7 @@
 <div class="janela" id="j-mapa" hidden role="dialog" aria-labelledby="j-mapa-t">
   <div class="j-caixa"><div class="j-cab"><h2 id="j-mapa-t">🗺️ Mapa do mundo</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <canvas id="mapa-cv" width="700" height="440"></canvas>
+    <div class="btn-row"><button type="button" class="hb verde" data-abrir="trem">🚂 Ir de trem (programe o caminho)</button></div>
     <p class="muted small">À esquerda de cada vila, as lojas: 👕 Roupas · 🍎 Mercadinho · 🐾 Pet Shop · 🛋️ Móveis. À direita, os prédios especiais. A lista abaixo mostra tudo o que cada vila tem.</p>
     <ol id="mapa-fases" class="fases"></ol>
   </div>
@@ -213,6 +214,11 @@
     <div id="bilhetes-conteudo"></div>
   </div>
 </div>
+<div class="janela" id="j-trem" hidden role="dialog" aria-labelledby="j-trem-t">
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-trem-t">🚂 Trenzinho programável</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <div id="trem-conteudo"></div>
+  </div>
+</div>
 <div class="janela" id="j-turma" hidden role="dialog" aria-labelledby="j-turma-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-turma-t">👥 Modo turma</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="turma-conteudo"></div>
@@ -280,6 +286,7 @@
       <button type="button" class="hb azul" data-abrir="amigos">🏆 Ranking entre amigos</button>
       <button type="button" class="hb azul" data-abrir="bilhetes">✉️ Bilhetes secretos</button>
       <button type="button" class="hb verde" data-abrir="horta">🌱 Horta</button>
+      <button type="button" class="hb verde" data-abrir="trem">🚂 Trenzinho</button>
       <button type="button" class="hb rosa" id="b-museu">🏛️ Museu</button>
       <button type="button" class="hb rosa" id="b-tele">🌀 Teletransporte (teste de proficiência)</button>
       <button type="button" class="hb azul" data-abrir="mprof">📝 Missões da professora</button>
@@ -313,7 +320,7 @@
 <script src="../simuladores/assets/sim-comum.js"></script>
 <script src="perguntas-npc.js?v=20261031zn"></script>
 <script src="teleporte.js?v=20261031zn"></script>
-<script src="mundo.js?v=20261031zw"></script>
+<script src="mundo.js?v=20261031zx"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
