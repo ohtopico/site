@@ -925,7 +925,28 @@
   }
 
   /* ---------- dentro da casa ---------- */
-  const ocupado = (tx, ty) => S.casa.moveis.find(m => { const M = MOVEIS[m.id]; return !M.chao && tx >= m.x && tx < m.x + M.w && ty >= m.y && ty < m.y + M.d; });
+  /* visita: com 3 corações de amizade, o morador te convida para a casa dele (mesma planta da sua, outros móveis) */
+  let visita = null;
+  const moveisAqui = () => visita ? casaNpc(visita).moveis : S.casa.moveis;
+  const CORACOES_CASA = 3;
+  function casaNpc(n) {
+    if (n.casaNpc) return n.casaNpc;
+    const r = rng(9000 + todosNpcs().indexOf(n) * 131), um = l => l[Math.floor(r() * l.length)];
+    const pequenos = ['aquario', 'robo', 'telescopio', 'arcade', 'vaso', 'planta', 'luminaria', 'quadro', 'poltrona', 'geladeira'];
+    const solto = () => pequenos.splice(Math.floor(r() * pequenos.length), 1)[0];
+    n.casaNpc = { moveis: [{ id: 'tapete', x: 1, y: 4 }, { id: 'estante', x: 0, y: 1 }, { id: um(['computador', 'tv', 'piano', 'sofa']), x: 2, y: 0 }, { id: 'bau', x: 4, y: 0 },
+      { id: solto(), x: 6, y: 0 }, { id: 'cama', x: 8, y: 0 }, { id: um(['mesa', 'mesa', 'sofa']), x: 10, y: 0 }, { id: solto(), x: 12, y: 0 }, { id: solto(), x: 3, y: 4 }, { id: solto(), x: 6, y: 6 }, { id: solto(), x: 11, y: 7 }] };
+    return n.casaNpc;
+  }
+  const NPC_CASA = { x: 7.2, y: 4.4 };
+  function visitaNpc(n) {
+    fechaDialogo(); fechaJanela(); visita = n; destino = null; dentro = true; mouse = null;
+    P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; hud();
+    const V = S.visitas || (S.visitas = {});
+    if (!V[n.id]) { V[n.id] = { vez: 1 }; pontos(20, `🏠 Primeira visita à casa de ${n.nome}!`); salvar(); }
+    else aviso(`🏠 Casa de ${n.nome}`);
+  }
+  const ocupado = (tx, ty) => moveisAqui().find(m => { const M = MOVEIS[m.id]; return !M.chao && tx >= m.x && tx < m.x + M.w && ty >= m.y && ty < m.y + M.d; });
   function livreCasa(x, y) {
     const r = 0.22;
     if (x - r < 0.05 || y - r < 0.05 || x + r > CW - 0.05 || y + r > CD - 0.02) return false;
@@ -947,17 +968,18 @@
   }
   function alvoCasa() {
     let melhor = null, dm = 1.1;
-    for (const m of S.casa.moveis) {
+    for (const m of moveisAqui()) {
       const M = MOVEIS[m.id]; if (M.chao) continue;
       const qx = Math.max(m.x, Math.min(m.x + M.w, P.x)), qy = Math.max(m.y, Math.min(m.y + M.d, P.y)), d = Math.hypot(qx - P.x, qy - P.y);
       if (d < dm) { dm = d; melhor = { tipo: 'movel', movel: m }; }
     }
     if (Math.hypot(SAIDA.x - P.x, SAIDA.y - P.y) < Math.min(1.3, dm + 0.3)) melhor = { tipo: 'saida' };
-    if (S.pet) { const c = S.pet.dorme ? caminha() : PET, d = Math.hypot(c.x - P.x, c.y - P.y); if (d < Math.min(0.9, dm)) melhor = { tipo: 'pet' }; }
+    if (S.pet && !visita) { const c = S.pet.dorme ? caminha() : PET, d = Math.hypot(c.x - P.x, c.y - P.y); if (d < Math.min(0.9, dm)) melhor = { tipo: 'pet' }; }
+    if (visita && Math.hypot(NPC_CASA.x - P.x, NPC_CASA.y - P.y) < Math.min(1.2, dm + 0.2)) melhor = { tipo: 'npc', npc: visita };
     return melhor;
   }
-  const posMundo = () => noEnigma ? { x: fases[1].enigma.porta.x, y: fases[1].enigma.porta.y + 0.4 } : dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
-  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = noEnigma ? 1 : dentro ? 0 : atual.idx; }
+  const posMundo = () => noEnigma ? { x: fases[1].enigma.porta.x, y: fases[1].enigma.porta.y + 0.4 } : dentro && visita ? { x: visita.x + 0.9, y: visita.y } : dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
+  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = noEnigma ? 1 : dentro && visita ? visita.fase.idx : dentro ? 0 : atual.idx; }
   function entraCasa() {
     fechaJanela(); destino = null; dentro = true; mouse = null;
     P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; petPerto(); hud();
@@ -968,6 +990,7 @@
   }
   function saiCasa() {
     const p = posMundo();
+    if (visita) { visita = null; dentro = false; destino = null; mouse = null; P.x = p.x; P.y = p.y; P.dir = 'y+'; cam.ok = false; petPerto(); for (const k in teclas) teclas[k] = false; return hud(); }
     if (atual.idx !== 0) trocaFase(0);
     dentro = false; colocando = null; destino = null; mouse = null; P.x = p.x; P.y = p.y; P.dir = 'y+'; cam.ok = false; petPerto();
     for (const k in teclas) teclas[k] = false;
@@ -982,6 +1005,15 @@
   }
   function usaMovel(m) {
     const M = MOVEIS[m.id], fecha = { txt: 'Fechar', fn: fechaDialogo };
+    if (visita) {
+      const n = visita, V = S.visitas[n.id];
+      if (m.id === 'bau' && !V.bau) {
+        V.bau = true; const fav = favorito(n); S.inv[fav] = (S.inv[fav] || 0) + 2; salvar(); hud();
+        setTimeout(() => ganhaFigurinha(pessoaNpc(n).id, `no baú de ${n.nome}`), 1200);
+        return dialogo('🧰', `Baú de ${n.nome}`, `<p>“Pode abrir! Separei um presente para você.” Você ganhou 2 × ${ITENS[fav][0]} ${ITENS[fav][1]} e a figurinha de ${esc(pessoaNpc(n).nome)}, que faz aniversário no mesmo dia que ${esc(n.nome)}.</p>`, [{ txt: 'Obrigado!', classe: 'principal', fn: fechaDialogo }]);
+      }
+      return dialogo(M.ic, `${M.nome} de ${n.nome}`, `<p>${m.id === 'bau' ? 'O baú está vazio agora. Volte a conversar para fazer a amizade crescer!' : `“Esse é o meu ${M.nome.toLowerCase()}. Fique à vontade!”`}</p>`, [fecha]);
+    }
     const guardar = M.fixo ? [] : [{ txt: 'Guardar este móvel', fn: () => { fechaDialogo(); guardaMovel(m); } }];
     const janela = { bancada: 'casa', estante: 'biblioteca', bau: 'inventario', espelho: 'avatar', quadro: 'inventario', telescopio: 'mapa' }[m.id];
     if (janela) return abreJanela(janela);
@@ -2174,7 +2206,7 @@
     { const [sx, sy] = iso(SAIDA.x, SAIDA.y, 0.1); ctx.font = '16px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText('🚪', sx, sy); }
     // tapetes primeiro (ficam no chão), depois o resto pela profundidade
     const lista = [];
-    for (const m of S.casa.moveis) { const M = MOVEIS[m.id]; if (M.chao) M.des(m.x, m.y, m); else lista.push({ k: m.x + m.y + (M.w + M.d) / 2, d: () => M.des(m.x, m.y, m) }); }
+    for (const m of moveisAqui()) { const M = MOVEIS[m.id]; if (M.chao) M.des(m.x, m.y, m); else lista.push({ k: m.x + m.y + (M.w + M.d) / 2, d: () => M.des(m.x, m.y, m) }); }
     for (const px of [5, 9]) for (let j = 0; j < CD; j++) if (j < 3 || j >= 6) lista.push({ k: px + j + 0.6, d: () => caixa(px - 0.1, j, 0, 0.2, 1, 0.9, '#fff7e8', { blocos: false }) });
     if (colocando) {
       const [tx, ty] = lugarColocar(), ok = podeColocar(colocando, tx, ty), M = MOVEIS[colocando];
@@ -2184,23 +2216,24 @@
       lista.push({ k: tx + ty + (M.w + M.d) / 2 + 0.01, d: () => { ctx.globalAlpha = 0.6; M.des(tx, ty, {}); ctx.globalAlpha = 1; } });
     }
     lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
-    if (S.pet) { const c = S.pet.dorme ? caminha() : PET; lista.push({ k: c.x + c.y - (S.pet.dorme ? 0.6 : 0), d: () => desenhaPet(c.x, c.y, S.pet, { dir: PET.dir, andando: PET.andando, passo: PET.passo, dorme: S.pet.dorme }) }); }
+    if (visita) lista.push({ k: NPC_CASA.x + NPC_CASA.y, d: () => desenhaPessoa(NPC_CASA.x, NPC_CASA.y, visita.av, { dir: 'y+' }) });
+    if (S.pet && !visita) { const c = S.pet.dorme ? caminha() : PET; lista.push({ k: c.x + c.y - (S.pet.dorme ? 0.6 : 0), d: () => desenhaPet(c.x, c.y, S.pet, { dir: PET.dir, andando: PET.andando, passo: PET.passo, dorme: S.pet.dorme }) }); }
     lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(80,60,90,.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     const alvo = !dialogoAberto && !colocando && alvoCasa();
     if (alvo) {
-      const t = alvo.tipo === 'saida' ? 'E · sair de casa' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : `E · ${MOVEIS[alvo.movel.id].acao || 'ver'}`;
+      const t = alvo.tipo === 'saida' ? 'E · sair de casa' : alvo.tipo === 'npc' ? `E · conversar com ${alvo.npc.nome}` : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : `E · ${MOVEIS[alvo.movel.id].acao || 'ver'}`;
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     miniCasa();
   }
   function miniCasa() {
-    miniFase = null; $('#mini-nome').textContent = 'Sua casa';
+    miniFase = null; $('#mini-nome').textContent = visita ? `Casa de ${visita.nome}` : 'Sua casa';
     const s = Math.min(280 / CW, 180 / CD), ox = (300 - CW * s) / 2, oy = (200 - CD * s) / 2;
     mctx.fillStyle = '#1b2531'; mctx.fillRect(0, 0, 300, 200);
     for (const r of COMODOS) { mctx.fillStyle = r.chao; mctx.fillRect(ox + r.x0 * s, oy, (r.x1 - r.x0) * s, CD * s); }
     mctx.fillStyle = '#fff7e8'; for (const px of [5, 9]) { mctx.fillRect(ox + px * s - 1.5, oy, 3, 3 * s); mctx.fillRect(ox + px * s - 1.5, oy + 6 * s, 3, 3 * s); }
-    for (const m of S.casa.moveis) { const M = MOVEIS[m.id]; mctx.fillStyle = M.chao ? 'rgba(199,180,242,.85)' : '#8a6a4a'; mctx.fillRect(ox + m.x * s + 1, oy + m.y * s + 1, M.w * s - 2, M.d * s - 2); }
+    for (const m of moveisAqui()) { const M = MOVEIS[m.id]; mctx.fillStyle = M.chao ? 'rgba(199,180,242,.85)' : '#8a6a4a'; mctx.fillRect(ox + m.x * s + 1, oy + m.y * s + 1, M.w * s - 2, M.d * s - 2); }
     mctx.fillStyle = '#e0564a'; mctx.fillRect(ox + 2 * s, oy + (CD - 0.35) * s, s, 0.35 * s);
     mctx.fillStyle = '#3f8fe0'; mctx.beginPath(); mctx.arc(ox + P.x * s, oy + P.y * s, 5, 0, Math.PI * 2); mctx.fill();
   }
@@ -2327,9 +2360,9 @@
     $('#h-erros').textContent = S.erros;
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     $('#h-aprend').textContent = Math.round(100 * feitos / Math.max(1, todosLugares.length)) + '%';
-    const f = faseDeX(P.x), ms = noEnigma ? missoesEnigma() : dentro ? missoesCasa() : missoes(f);
-    $('#m-titulo').textContent = noEnigma ? '🔐 Casa do Enigma' : dentro ? '🏠 Sua casa' : `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
-    $('#m-nome').textContent = noEnigma ? 'Escape room · sem cronômetro' : dentro ? 'Sala · Quarto · Cozinha' : `${f.icone} ${f.nome}`;
+    const f = faseDeX(P.x), ms = noEnigma ? missoesEnigma() : dentro && visita ? [{ nome: 'Abrir o baú do presente', n: ((S.visitas || {})[visita.id] || {}).bau ? 1 : 0, meta: 1 }, { nome: `Chegar a 10 corações com ${visita.nome}`, n: coracoes(visita), meta: 10 }].map(m => Object.assign(m, { ok: m.n >= m.meta })) : dentro ? missoesCasa() : missoes(f);
+    $('#m-titulo').textContent = noEnigma ? '🔐 Casa do Enigma' : dentro && visita ? `🏠 Casa de ${visita.nome}` : dentro ? '🏠 Sua casa' : `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
+    $('#m-nome').textContent = noEnigma ? 'Escape room · sem cronômetro' : dentro && visita ? `${visita.fase.icone} ${visita.fase.nome}` : dentro ? 'Sala · Quarto · Cozinha' : `${f.icone} ${f.nome}`;
     $('#m-lista').innerHTML = ms.map(m => `<li class="${m.ok ? 'ok' : ''}"><span class="q"></span><span>${esc(m.nome)}</span><span class="n">(${Math.min(m.n, m.meta)}/${m.meta})</span></li>`).join('');
     $('#m-barra').style.width = Math.round(ms.reduce((a, m) => a + Math.min(1, m.n / m.meta), 0) / ms.length * 100) + '%';
   }
@@ -2499,9 +2532,10 @@
     const c = coracoes(n);
     const ola = primeira ? (n.prof ? `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. ` : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
     const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
-    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}</p>${limiteHtml(n)}`, [
+    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}${coracoes(n) < CORACOES_CASA ? ` Com ${CORACOES_CASA} corações, você pode visitar a casa de ${esc(n.nome)}.` : ''}</p>${limiteHtml(n)}`, [
       { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, bancoNpc(n) ? bancoNpc(n).ic : '❓', sorteiaPergunta(f, bancoNpc(n) && bancoNpc(n).perguntas), certo => { if (certo) ganhaAmizade(n, 8); }) },
       { txt: '🎁 Dar um presente', fn: () => presente(n) },
+      ...(!dentro && coracoes(n) >= CORACOES_CASA ? [{ txt: `🏠 Visitar a casa de ${n.nome}`, fn: () => visitaNpc(n) }] : []),
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
   }
@@ -2790,6 +2824,7 @@
       if (a && a.tipo === 'pet') { const c = S.pet.dorme ? caminha() : PET; if (Math.hypot(wx - c.x, wy - c.y) < 0.8) return interage(); }
       if (a && a.tipo === 'movel') { const m = a.movel, M = MOVEIS[m.id]; if (wx > m.x - 0.3 && wx < m.x + M.w + 0.3 && wy > m.y - 0.3 && wy < m.y + M.d + 0.3) return interage(); }
       if (a && a.tipo === 'saida' && Math.hypot(wx - SAIDA.x, wy - SAIDA.y) < 0.8) return interage();
+      if (a && a.tipo === 'npc' && Math.hypot(wx - NPC_CASA.x, wy - NPC_CASA.y) < 0.8) return interage();
       destino = { x: wx, y: wy }; return;
     }
     const a = alvoPerto();
@@ -2844,7 +2879,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
