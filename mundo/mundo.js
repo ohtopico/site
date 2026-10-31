@@ -1443,9 +1443,61 @@
     for (const k of Object.keys(x)) if (x[k] > 0) h[k] = Math.round(x[k]);
     return { a: S.turma.nome, t: S.turma.codigo, d: Math.floor(Date.now() / 864e5), p: S.pontos, c: S.acertos, e: S.erros,
       f: Object.keys(S.concluidas).length, j: Object.keys(S.feitos).length, i: Object.values(S.cont).reduce((a, b) => a + b, 0),
-      h, m: Object.keys(S.medalhas).length, am: Object.values(S.amizade).reduce((a, b) => a + Math.floor(b / 10), 0), pj: S.projetos.doou };
+      h, m: Object.keys(S.medalhas).length, am: Object.values(S.amizade).reduce((a, b) => a + Math.floor(b / 10), 0), pj: S.projetos.doou, mp: resumoMissoesProf() };
   }
-  const camposTurma = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]);
+  const camposTurma = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]).concat(o.mp === undefined ? [] : [o.mp]);
+  /* ---------- missões da professora: o painel da turma gera um código MUNQ1 assinado com as perguntas ---------- */
+  const missoesProf = () => S.missoesProf || (S.missoesProf = {});
+  function resumoMissoesProf() {
+    const r = {};
+    for (const [id, m] of Object.entries(missoesProf())) { const vs = Object.values(m.r); r[id] = [vs.filter(Boolean).length, vs.length, m.q.length, m.n.slice(0, 40)]; }
+    return r;
+  }
+  async function lerMissaoProf(code) {
+    const Pk = window.MDP && MDP.pacote;
+    const o = await Pk.desempacotar('MUNQ1', code);
+    if (o.s !== await Pk.assinatura(JSON.stringify([o.t, o.id, o.n, o.q, o.d]))) throw new Error('assinatura');
+    return o;
+  }
+  function janelaMissoesProf() {
+    const M = missoesProf(), T = S.turma;
+    $('#mprof-conteudo').innerHTML = `<p>A sua professora ou o seu professor pode criar missões com perguntas próprias. Cole aqui o código da missão (começa com <b>MUNQ1</b>).</p>
+      <textarea id="mp-cod" class="campo" rows="2" placeholder="MUNQ1z.…"></textarea>
+      <div class="btn-row"><button type="button" class="hb verde" id="mp-add">➕ Adicionar missão</button></div>
+      <div class="projetos">${Object.entries(M).map(([id, m]) => { const feitas = Object.keys(m.r).length, certas = Object.values(m.r).filter(Boolean).length;
+        return `<div class="proj ${feitas === m.q.length ? 'pronto' : ''}"><h3>📝 ${esc(m.n)}</h3><p class="small">Turma ${esc(m.t)} · ${m.q.length} pergunta(s) · respondidas ${feitas} · certas ${certas}</p>
+          <div class="btn-row">${feitas < m.q.length ? `<button type="button" class="hb azul" data-mp="${id}">▶️ ${feitas ? 'Continuar' : 'Começar'}</button>` : '<b>✅ Missão concluída!</b>'}</div></div>`; }).join('') || '<p class="muted small">Nenhuma missão ainda.</p>'}</div>
+      <p class="muted small">Cada acerto de primeira vale 10 ⭐, e terminar a missão vale +30 ⭐ e uma figurinha. O resultado vai junto no seu código de progresso do 👥 Modo turma${T.codigo ? '' : ' (preencha lá o seu nome e o código da turma)'}.</p>`;
+    $('#mp-add').addEventListener('click', async () => {
+      const code = ($('#mp-cod').value.match(/MUNQ1[jz]\.[A-Za-z0-9_-]+/) || [])[0];
+      if (!code) return aviso('Cole o código inteiro da missão (começa com MUNQ1).');
+      try {
+        const o = await lerMissaoProf(code);
+        if (T.codigo && o.t !== T.codigo) return aviso(`Esta missão é da turma ${o.t}, e a sua é ${T.codigo}.`);
+        if (M[o.id]) return aviso('📝 Você já tem esta missão.');
+        M[o.id] = { n: o.n, t: o.t, q: o.q, r: {} }; salvar(); aviso(`📝 Missão adicionada: ${o.n}`); janelaMissoesProf();
+      } catch (e) { aviso('Código de missão inválido. Confira se copiou inteiro.'); }
+    });
+    $('#mprof-conteudo').querySelectorAll('[data-mp]').forEach(b => b.addEventListener('click', () => { fechaJanela(); perguntaMissao(b.dataset.mp); }));
+  }
+  function perguntaMissao(id) {
+    const m = missoesProf()[id], i = m.q.findIndex((_, k) => !(k in m.r));
+    if (i < 0) return abreJanela('mprof');
+    const [enun, alts, certa, expl] = m.q[i];
+    dialogo('📝', `${m.n} · ${i + 1}/${m.q.length}`, `<p>${esc(enun)}</p>`, alts.map((a, j) => ({ txt: a, fn: () => {
+      if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
+      const certo = j === certa; m.r[i] = certo;
+      [...D.op.children].forEach((b, k) => { b.disabled = true; if (k === certa) b.classList.add('certa'); else if (k === j) b.classList.add('errada'); });
+      if (certo) pontos(10, 'Acertou!');
+      const fim = Object.keys(m.r).length === m.q.length;
+      if (fim) { const c = Object.values(m.r).filter(Boolean).length; S.medalhas['mprof-' + id] = { ic: '📝', nome: m.n }; setTimeout(() => { pontos(30, `📝 Missão concluída: ${c} de ${m.q.length} certas!`); ganhaFigurinha(null, 'pela missão da professora'); }, 900); }
+      salvar();
+      D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${esc(expl || '')}</p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = fim ? 'Terminar' : 'Próxima';
+      b.addEventListener('click', () => fim ? (fechaDialogo(), abreJanela('mprof')) : perguntaMissao(id)); D.op.appendChild(b); b.focus();
+    } })));
+    delete D.op.dataset.respondida;
+  }
   async function codigoTurma() {
     const P = window.MDP && MDP.pacote; if (!P) throw new Error('sem pacote');
     const o = resumoTurma(); o.s = await P.assinatura(JSON.stringify(camposTurma(o)));
@@ -2717,7 +2769,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2945,7 +2997,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

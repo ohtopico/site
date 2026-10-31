@@ -44,6 +44,11 @@
   .bars span.co { background: #3f8fe0; } .bars span.ma { background: #f6b73c; }
   .bar-pj { display: block; height: 10px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; } .bar-pj span { display: block; height: 100%; background: var(--ok, #2e7d32); }
   .card textarea { font-size: 11px; }
+  .field { font: inherit; border: 1.5px solid var(--ink); border-radius: 10px; padding: 6px 10px; background: var(--paper); color: var(--ink); margin-left: 6px; }
+  .mq { border: 1.5px dashed var(--line); border-radius: 14px; padding: 10px 12px; margin: 10px 0; display: grid; gap: 6px; }
+  .mq input[type=text] { width: 100%; box-sizing: border-box; font: inherit; border: 1.5px solid var(--line); border-radius: 8px; padding: 5px 8px; background: var(--paper); color: var(--ink); }
+  .mq .alt { display: flex; gap: 6px; align-items: center; } .mq .alt input[type=text] { flex: 1; }
+  .mq-cab { display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--ink-2); }
   body.projetor .doc > :not(#out), body.projetor #topbar, body.projetor footer, body.projetor .no-proj { display: none !important; }
   body.projetor .doc { max-width: none; }
@@ -71,6 +76,25 @@
 
   <div class="tools"><div class="chips" id="f-turma"></div></div>
   <div id="out"></div>
+
+  <section class="no-print" id="missoes-prof">
+    <h2>📝 Missões da professora</h2>
+    <p class="muted" style="max-width:780px">Escreva perguntas suas e gere um <strong>código de missão</strong>. Os estudantes colam o código no Mundo (☰ Menu → 📝 Missões da professora) e a missão aparece para eles. Quando eles mandam o código de progresso, o resultado de cada um aparece no ranking acima.</p>
+    <div class="panel">
+      <div class="tools">
+        <label>Título da missão <input id="mq-titulo" class="field" maxlength="60" placeholder="Revisão: algoritmos"></label>
+        <label>Código da turma <input id="mq-turma" class="field" maxlength="16" placeholder="8A-2026"></label>
+      </div>
+      <div id="mq-perguntas"></div>
+      <div class="tools">
+        <button class="btn ghost" type="button" id="mq-mais">+ Pergunta</button>
+        <button class="btn" type="button" id="mq-gerar">Gerar código da missão</button>
+      </div>
+      <p class="msg" id="mq-msg" role="status"></p>
+      <textarea id="mq-saida" rows="3" readonly hidden></textarea>
+    </div>
+    <div id="mq-lista"></div>
+  </section>
 </main>
 <footer id="footer"></footer>
 
@@ -100,7 +124,7 @@
   const lerCodes = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
   const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(alunos.map(x => x.code))); } catch (e) {} };
   const dataTxt = d => new Date(d * 864e5).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-  const campos = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]);
+  const campos = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]).concat(o.mp === undefined ? [] : [o.mp]);
   const pct = x => x.c + x.e ? Math.round(100 * x.c / (x.c + x.e)) + '%' : '–';
 
   async function adicionar(textos) {
@@ -166,6 +190,11 @@
           <span class="bar-pj"><span style="width:${pct}%"></span></span><span class="small">${pct}%</span>
           ${pct >= 100 ? `<button class="btn" type="button" data-pj="${P.id}">Gerar código de conclusão</button><textarea rows="2" readonly hidden data-saida="${P.id}"></textarea>` : ''}</div>`;
       }).join('')}</div>
+      ${(() => { const ids = [...new Set(lista.flatMap(x => Object.keys(x.mp || {})))]; if (!ids.length) return '';
+        const tit = id => (lista.find(x => x.mp && x.mp[id]) || {}).mp[id][3] || id;
+        return `<h2 class="no-proj">Missões da professora</h2><div class="scroll no-proj"><table><thead><tr><th class="name">Estudante</th>${ids.map(id => `<th>${esc(tit(id))}</th>`).join('')}</tr></thead>
+          <tbody>${lista.map(x => `<tr><td class="name">${esc(x.a)}</td>${ids.map(id => { const r = (x.mp || {})[id]; return `<td>${r ? `${r[0]}/${r[2]} certas${r[1] < r[2] ? ` <small>(${r[1]} respondidas)</small>` : ''}` : '–'}</td>`; }).join('')}</tr>`).join('')}</tbody></table></div>
+          <p class="small no-proj">Conta a primeira resposta de cada pergunta.</p>`; })()}
       <div class="btn-row no-print no-proj" style="margin-top:14px">
         <button class="btn ghost" type="button" id="csv">Baixar planilha (CSV)</button>
         <button class="btn ghost" type="button" onclick="window.print()">🖨️ Imprimir</button>
@@ -199,6 +228,46 @@
     $('#msg').textContent = `${r.ok} código(s) adicionado(s) a partir de ${e.target.files.length} arquivo(s).`; $('#msg').className = 'msg ok';
     e.target.value = ''; render();
   };
+
+  /* ---------- missões da professora: perguntas próprias viram um código MUNQ1 assinado ---------- */
+  const KEYM = 'mundo-missoes-prof-v1';
+  let rascunho = (() => { try { return JSON.parse(localStorage.getItem(KEYM + '-rascunho')) || null; } catch (e) { return null; } })() || { titulo: '', turma: '', qs: [{ e: '', a: ['', '', '', ''], c: 0, x: '' }] };
+  const geradas = () => { try { return JSON.parse(localStorage.getItem(KEYM)) || []; } catch (e) { return []; } };
+  const guardaRasc = () => { try { localStorage.setItem(KEYM + '-rascunho', JSON.stringify(rascunho)); } catch (e) {} };
+  function renderMq() {
+    $('#mq-titulo').value = rascunho.titulo; $('#mq-turma').value = rascunho.turma;
+    $('#mq-perguntas').innerHTML = rascunho.qs.map((q, i) => `<div class="mq" data-i="${i}"><div class="mq-cab">Pergunta ${i + 1}${rascunho.qs.length > 1 ? `<button class="rm" type="button" data-rmq="${i}" aria-label="Apagar a pergunta ${i + 1}">✕</button>` : ''}</div>
+      <input type="text" data-k="e" maxlength="300" placeholder="Enunciado" value="${esc(q.e)}">
+      ${q.a.map((a, j) => `<label class="alt"><input type="radio" name="c${i}" data-c="${j}" ${q.c === j ? 'checked' : ''} aria-label="Alternativa ${j + 1} é a certa"><input type="text" data-a="${j}" maxlength="120" placeholder="Alternativa ${j + 1}${j < 2 ? '' : ' (opcional)'}" value="${esc(a)}"></label>`).join('')}
+      <input type="text" data-k="x" maxlength="200" placeholder="Explicação depois da resposta (opcional)" value="${esc(q.x)}"></div>`).join('');
+    const g = geradas();
+    $('#mq-lista').innerHTML = g.length ? `<h3>Missões geradas neste navegador</h3><div class="attn">${g.map((m, i) => `<div class="card"><strong>${esc(m.n)}</strong><span class="small">Turma ${esc(m.t)} · ${m.q.length} pergunta(s) · ${dataTxt(m.d)}</span><textarea rows="2" readonly>${esc(m.code)}</textarea><button class="btn ghost" type="button" data-rmm="${i}">Apagar</button></div>`).join('')}</div>` : '';
+  }
+  $('#mq-titulo').oninput = e => { rascunho.titulo = e.target.value; guardaRasc(); };
+  $('#mq-turma').oninput = e => { rascunho.turma = e.target.value; guardaRasc(); };
+  $('#mq-perguntas').oninput = e => { const box = e.target.closest('.mq'); if (!box) return; const q = rascunho.qs[+box.dataset.i];
+    if (e.target.dataset.k) q[e.target.dataset.k] = e.target.value; else if (e.target.dataset.a !== undefined) q.a[+e.target.dataset.a] = e.target.value; guardaRasc(); };
+  $('#mq-perguntas').onchange = e => { if (e.target.dataset.c === undefined) return; rascunho.qs[+e.target.closest('.mq').dataset.i].c = +e.target.dataset.c; guardaRasc(); };
+  $('#mq-perguntas').onclick = e => { const b = e.target.closest('[data-rmq]'); if (b) { rascunho.qs.splice(+b.dataset.rmq, 1); guardaRasc(); renderMq(); } };
+  $('#mq-mais').onclick = () => { if (rascunho.qs.length >= 10) return; rascunho.qs.push({ e: '', a: ['', '', '', ''], c: 0, x: '' }); guardaRasc(); renderMq(); };
+  $('#mq-lista').onclick = e => { const b = e.target.closest('[data-rmm]'); if (!b) return; const g = geradas(); g.splice(+b.dataset.rmm, 1); try { localStorage.setItem(KEYM, JSON.stringify(g)); } catch (er) {} renderMq(); };
+  $('#mq-gerar').onclick = async () => {
+    const msg = $('#mq-msg'), t = String(rascunho.turma || '').toUpperCase().replace(/[^A-Z0-9º°-]/g, '').slice(0, 16), n = rascunho.titulo.trim();
+    const qs = rascunho.qs.map(q => ({ e: q.e.trim(), a: q.a.map(a => a.trim()), c: q.c, x: q.x.trim() })).filter(q => q.e);
+    const ruim = qs.findIndex(q => !q.a[q.c] || q.a.filter(Boolean).length < 2);
+    if (!n || !t || !qs.length) { msg.textContent = 'Preencha o título, o código da turma e pelo menos uma pergunta.'; msg.className = 'msg bad'; return; }
+    if (ruim >= 0) { msg.textContent = `A pergunta ${ruim + 1} precisa de pelo menos 2 alternativas, e a marcada como certa não pode estar vazia.`; msg.className = 'msg bad'; return; }
+    // guarda só as alternativas preenchidas, ajustando o índice da certa
+    const q = qs.map(x => { const alts = x.a.filter(Boolean); return [x.e, alts, alts.indexOf(x.a[x.c]), x.x]; });
+    const o = { t, id: Math.random().toString(36).slice(2, 8), n, q, d: Math.floor(Date.now() / 864e5) };
+    o.s = await P.assinatura(JSON.stringify([o.t, o.id, o.n, o.q, o.d]));
+    const code = await P.empacotar('MUNQ1', o), sai = $('#mq-saida');
+    sai.value = code; sai.hidden = false; sai.select();
+    const g = geradas(); g.unshift(Object.assign({ code }, o)); try { localStorage.setItem(KEYM, JSON.stringify(g.slice(0, 30))); } catch (e) {}
+    try { await navigator.clipboard.writeText(code); msg.textContent = 'Código da missão copiado! Envie para a turma.'; } catch (e) { msg.textContent = 'Código gerado: copie e envie para a turma.'; }
+    msg.className = 'msg ok'; renderMq(); $('#mq-saida').hidden = false;
+  };
+  renderMq();
 
   adicionar(lerCodes()).then(render);
 })();
