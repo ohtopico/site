@@ -95,6 +95,20 @@
   };
   const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase().replace(/^-|-$/g, '') || 'estudante';
 
+  // tarefas abertas pelo link da professora (tarefa.html)
+  function tarefasResumo() {
+    const l = mdStore.get('tarefas-recebidas', []).filter(t => t.r.some(id => REC[id]));
+    if (!l.length) return '';
+    return `<h2>Tarefas da professora</h2><div class="next">${l.slice(0, 6).map(t => {
+      const ids = t.r.filter(id => REC[id]), feitas = ids.filter(id => MDP.resultado(id)).length;
+      const lim = MDP.diaDoPrazo(t.p), fim = lim !== null && lim < MDP.hoje();
+      return `<a class="card" href="tarefa.html#${t.code}">
+        <span class="why">${feitas === ids.length ? '✓ Tudo feito' : fim ? 'Prazo encerrado' : t.p ? 'Prazo ' + new Date(t.p + 'T12:00').toLocaleDateString('pt-BR') : 'Tarefa'}</span>
+        <strong style="font-size:18px">${esc(t.t)}</strong>
+        <span class="small muted">${feitas} de ${ids.length} atividades feitas</span>
+      </a>`; }).join('')}</div>`;
+  }
+
   function boasVindas() {
     doc.innerHTML = `
       <span class="eyebrow">📈 Meu progresso</span>
@@ -204,6 +218,7 @@
       </div>
 
       ${missoesResumo()}
+      ${tarefasResumo()}
 
       <div class="btn-row" style="margin-top:18px"><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Listas de exercícios</a></div>
 

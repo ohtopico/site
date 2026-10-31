@@ -37,6 +37,13 @@
   .attn a { text-decoration: none; color: var(--ink); }
   .attn a:hover { background: var(--pill); }
   .empty { border: 1.5px dashed var(--ink); border-radius: 18px; padding: 22px; color: var(--ink-2); }
+  .tf { display: inline-block; min-width: 54px; border-radius: 99px; padding: 2px 8px; font-size: 12.5px; font-weight: 700; border: 1.5px solid var(--ink); }
+  .tf.ok { background: var(--ok); border-color: var(--ok); color: var(--paper); }
+  .tf.late { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+  .tf.no { border-style: dashed; color: var(--ink-2); font-weight: 600; }
+  thead th.at { white-space: normal; min-width: 96px; max-width: 160px; font-size: 12.5px; text-align: center; }
+  .tarefa-add { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+  .tarefa-add input { font: inherit; font-size: 14px; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 99px; padding: 6px 14px; min-height: 38px; flex: 1 1 260px; }
 </style>
 </head>
 <body>
@@ -45,7 +52,7 @@
   <div class="no-print" style="font-size:14px;margin-bottom:18px"><a href="professor.html" style="color:var(--ink-2)">← Área do professor</a></div>
   <span class="eyebrow">👩‍🏫 Área do professor</span>
   <h1>Painel da turma</h1>
-  <p class="muted" style="max-width:780px">Os estudantes não têm cadastro: cada um gera o seu relatório na página <a href="meu-progresso.html">Meu progresso</a> e envia para você (no chat da turma, por e-mail ou como arquivo). Cole os relatórios aqui para ver a turma inteira. Os dados ficam só neste navegador: nada é enviado para servidor nenhum.</p>
+  <p class="muted" style="max-width:780px">Os estudantes não têm cadastro: cada um gera o seu relatório na página <a href="meu-progresso.html">Meu progresso</a> (ou na página da <a href="tarefa.html">tarefa</a> que você enviou) e envia para você (no chat da turma, por e-mail ou como arquivo). Cole os relatórios aqui para ver a turma inteira. Os dados ficam só neste navegador: nada é enviado para servidor nenhum.</p>
 
   <div class="panel no-print" style="margin-top:18px">
     <label for="codes" style="font-weight:600">Relatórios dos estudantes (pode colar vários de uma vez)</label>
@@ -57,6 +64,9 @@
     <p class="msg" id="msg" role="status"></p>
   </div>
 
+  <div id="tarefas"></div>
+
+  <h2 id="habilidades">Habilidades da turma</h2>
   <div class="tools">
     <div class="chips" id="f-ano"></div>
     <div class="chips" id="f-comp"></div>
@@ -77,7 +87,17 @@
   const KEY = 'md-turma-v1';
   const $ = s => document.querySelector(s);
   const f = { ano: null, comp: 'CO', escolhido: false };
-  let alunos = []; // {a, y, d, l, r, valido, code}
+  let alunos = []; // {a, y, d, l, r, f, valido, code}
+  // tarefas criadas em tarefa.html (mesma chave de mdStore); ?tarefa= abre uma delas
+  const tarefas = mdStore.get('tarefas-prof', []);
+  let tarefaAtual = null;
+  async function incluirTarefa(txt) {
+    const code = (String(txt).match(/MDT1[jz]\.[A-Za-z0-9_-]+/) || [])[0];
+    if (!code) return null;
+    const t = await MDP.lerTarefa(code);
+    if (!tarefas.some(x => x.code === t.code)) { tarefas.unshift({ code: t.code, t: t.t, p: t.p, r: t.r, c: t.c }); mdStore.set('tarefas-prof', tarefas.slice(0, 40)); }
+    return t.code;
+  }
 
   const lerCodes = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
   const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(alunos.map(x => x.code))); } catch (e) {} };
@@ -126,7 +146,60 @@
     document.body.appendChild(a); a.click(); a.remove();
   }
 
+  function renderTarefas() {
+    const el = $('#tarefas');
+    if (!tarefaAtual || !tarefas.some(x => x.code === tarefaAtual)) tarefaAtual = tarefas.length ? tarefas[0].code : null;
+    const t = tarefas.find(x => x.code === tarefaAtual);
+    const add = `<div class="tarefa-add no-print"><input id="tf-link" placeholder="Cole aqui o link de uma tarefa para acompanhar" aria-label="Link da tarefa"><button class="btn ghost" type="button" id="tf-add">Acompanhar</button><a class="btn ghost" href="tarefa.html">+ Nova tarefa</a></div>`;
+    if (!t) {
+      el.innerHTML = `<h2>Tarefas</h2><p class="small muted" style="margin:0">Monte uma tarefa com jogos e listas em <a href="tarefa.html">Tarefas para a turma</a> e envie o link. Os relatórios que os estudantes colarem aqui mostram quem fez cada atividade.</p>${add}`;
+    } else {
+      const ativs = t.r.filter(id => REC[id]);
+      const lim = MDP.diaDoPrazo(t.p);
+      // situação de uma atividade para um estudante: feita no prazo, feita depois do prazo ou não feita
+      const sit = (x, id) => {
+        if (x.r[id] === undefined) return { feita: false };
+        const dia = x.f && x.f[id] !== undefined ? x.f[id] : null;
+        const atraso = lim === null ? false : dia !== null ? dia > lim : x.d > lim ? null : false;
+        return { feita: true, nota: x.r[id], atraso, dia };
+      };
+      const cel = s => !s.feita ? '<span class="tf no">—</span>'
+        : `<span class="tf ${s.atraso ? 'late' : 'ok'}" title="${s.atraso ? 'Feita depois do prazo' : s.atraso === null ? 'Feita (o relatório não informa a data)' : 'Feita no prazo'}${s.dia !== null ? ' · ' + dataTxt(s.dia) : ''}">${s.atraso ? '⏰' : '✓'} ${s.nota}%</span>`;
+      const linhas = alunos.map(x => ({ x, s: ativs.map(id => sit(x, id)) }));
+      const n = l => l.s.filter(s => s.feita).length;
+      const completos = linhas.filter(l => n(l) === ativs.length).length;
+      el.innerHTML = `<h2>Tarefas</h2>
+        <div class="chips no-print" id="tf-chips">${tarefas.map(x => `<button class="chip" type="button" data-code="${esc(x.code)}" aria-pressed="${x.code === t.code}">${esc(x.t)}</button>`).join('')}</div>
+        <p style="margin:12px 0 6px"><strong>${esc(t.t)}</strong>${t.p ? ` · prazo ${new Date(t.p + 'T12:00').toLocaleDateString('pt-BR')}` : ''} · ${ativs.length} atividade(s)${alunos.length ? ` · <strong>${completos} de ${alunos.length}</strong> estudante(s) fizeram tudo` : ''}</p>
+        ${alunos.length ? `<div class="scroll"><table>
+          <thead><tr><th class="name">Estudante</th>${ativs.map(id => `<th class="at">${REC[id].icone || TIPOS[REC[id].tipo].icone} ${esc(REC[id].titulo)}</th>`).join('')}<th>Situação</th></tr></thead>
+          <tbody>${linhas.map(l => `<tr><td class="name"><strong>${esc(l.x.a)}</strong><small>${l.x.y}º ano · relatório de ${dataTxt(l.x.d)}</small></td>
+            ${l.s.map(s => `<td>${cel(s)}</td>`).join('')}
+            <td>${n(l) === ativs.length ? (l.s.some(s => s.atraso) ? '<strong>Completa, com atraso</strong>' : '<strong>Completa</strong>') : `${n(l)} de ${ativs.length}`}</td></tr>`).join('')}</tbody>
+          <tfoot><tr><td class="name">Fizeram</td>${ativs.map((id, i) => `<td>${linhas.filter(l => l.s[i].feita).length} de ${alunos.length}</td>`).join('')}<td>${completos} completas</td></tr></tfoot>
+        </table></div>
+        <p class="small muted">✓ feita no prazo · ⏰ feita depois do prazo · — ainda não feita (ou o estudante ainda não enviou um relatório novo). O número é a melhor nota. Quem não enviou relatório não aparece na tabela.</p>`
+        : '<div class="empty">Cole acima os relatórios que os estudantes geraram na página da tarefa.</div>'}
+        <div class="btn-row no-print" style="margin-top:10px"><button class="btn ghost" type="button" id="tf-copy">Copiar link da tarefa</button><button class="btn ghost" type="button" id="tf-rm">Parar de acompanhar</button></div>
+        ${add}`;
+      $('#tf-chips').onclick = e => { const b = e.target.closest('button'); if (b) { tarefaAtual = b.dataset.code; renderTarefas(); } };
+      $('#tf-copy').onclick = async e => {
+        const link = new URL('tarefa.html#' + t.code, location.href).href;
+        try { await navigator.clipboard.writeText(link); e.target.textContent = 'Link copiado ✓'; } catch (x) { prompt('Copie o link:', link); }
+      };
+      $('#tf-rm').onclick = () => {
+        if (!confirm(`Parar de acompanhar “${t.t}” neste navegador? O link continua funcionando para a turma.`)) return;
+        tarefas.splice(tarefas.indexOf(t), 1); mdStore.set('tarefas-prof', tarefas); tarefaAtual = null; renderTarefas();
+      };
+    }
+    $('#tf-add').onclick = async () => {
+      try { const c = await incluirTarefa($('#tf-link').value); if (!c) throw new Error(); tarefaAtual = c; renderTarefas(); }
+      catch (e) { $('#tf-link').value = ''; $('#tf-link').placeholder = 'Link de tarefa não reconhecido. Copie o link inteiro.'; }
+    };
+  }
+
   function render() {
+    renderTarefas();
     if (!f.escolhido) {
       const anos = alunos.map(x => x.y);
       f.ano = anos.length ? anos.sort((a, b) => anos.filter(v => v === b).length - anos.filter(v => v === a).length)[0] : 6;
@@ -175,7 +248,9 @@
   $('#f-ano').onclick = e => { const b = e.target.closest('button'); if (b) { f.ano = +b.dataset.a; f.escolhido = true; render(); } };
   $('#f-comp').onclick = e => { const b = e.target.closest('button'); if (b) { f.comp = b.dataset.c; render(); } };
 
-  adicionar(lerCodes()).then(render);
+  const pedida = new URLSearchParams(location.search).get('tarefa');
+  (pedida ? incluirTarefa(pedida).then(c => { tarefaAtual = c; }).catch(() => {}) : Promise.resolve())
+    .then(() => adicionar(lerCodes())).then(render);
 })();
 </script>
 </body>

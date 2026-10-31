@@ -272,8 +272,13 @@
     return p;
   }
 
-  // relatórios antigos (sem nível) continuam conferindo
-  const camposAssinados = o => o.n === undefined ? [o.a, o.y, o.d, o.l, o.r] : [o.a, o.y, o.d, o.l, o.r, o.n];
+  // relatórios antigos (sem nível ou sem datas) continuam conferindo
+  const camposAssinados = o => {
+    const c = [o.a, o.y, o.d, o.l, o.r];
+    if (o.n !== undefined) c.push(o.n);
+    if (o.f !== undefined) c.push(o.f);
+    return c;
+  };
 
   // Relatório resumido para a professora (níveis por habilidade e notas)
   async function relatorio() {
@@ -281,11 +286,13 @@
     if (!p) return '';
     const l = {};
     HABILIDADES.forEach(h => { const n = nivelHab(h.codigo, p); if (n) l[h.codigo] = n; });
-    const r = {};
-    Object.entries(p.r).forEach(([id, x]) => { if (REC[id]) r[id] = x.b; });
+    const r = {}, f = {};
+    Object.entries(p.r).forEach(([id, x]) => { if (REC[id]) { r[id] = x.b; if (x.h.length) f[id] = x.h[0][0]; } });
     const corpo = { a: p.apelido, y: p.ano, d: hoje(), l, r };
     // nível das missões (missoes.js): a professora vê quem pode ser monitor da turma
     if (window.MDM) corpo.n = MDM.nivel(p).n;
+    // primeiro dia registrado de cada atividade: o painel confere o prazo das tarefas
+    corpo.f = f;
     corpo.s = await assinatura(JSON.stringify(camposAssinados(corpo)));
     return empacotar('MDR1', corpo);
   }
@@ -309,9 +316,22 @@
     if (s.atual === id) s.atual = Object.keys(s.perfis)[0] || null;
     save(s);
   }
+  /* ---------- tarefas da professora (tarefa.html) ----------
+     Tarefa = título, prazo (AAAA-MM-DD) e lista de atividades, tudo dentro do link. */
+  const TIPOS_TAREFA = ['jogo', 'lista', '3d'];
+  const tarefaCodigo = t => empacotar('MDT1', { t: String(t.t || '').slice(0, 80), p: t.p || '', r: t.r.filter(id => REC[id]), c: t.c || hoje() });
+  async function lerTarefa(code) {
+    const o = await desempacotar('MDT1', code);
+    if (!o || !Array.isArray(o.r)) throw new Error('formato');
+    return { t: String(o.t || 'Tarefa'), p: /^\d{4}-\d{2}-\d{2}$/.test(o.p) ? o.p : '', r: o.r.filter(id => REC[id]), c: +o.c || 0, code: String(code).trim() };
+  }
+  // último dia (contado como em hoje()) que ainda vale para o prazo: o fim do dia no fuso deste aparelho
+  const diaDoPrazo = p => { if (!p) return null; const [y, m, d] = p.split('-').map(Number); return Math.floor(new Date(y, m - 1, d, 23, 59).getTime() / DIA); };
+
   function resultado(recId) { const p = perfilAtual(false); return p && p.r[recId] ? p.r[recId] : null; }
 
   window.MDP = { NIVEIS, MEDALHAS, hoje, registrar, resultado, infoHab, nivelHab, revisoes, recursoPara, medalhas,
     perfil: () => perfilAtual(false), perfis, _inflar: inflar, criar, trocar, atualizar, excluir, exportar, importar, relatorio, lerRelatorio,
+    TIPOS_TAREFA, tarefaCodigo, lerTarefa, diaDoPrazo,
     pacote: { empacotar, desempacotar, assinatura } };   // usado pelo Mundo (código do modo turma)
 })();
