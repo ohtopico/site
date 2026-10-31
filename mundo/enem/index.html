@@ -6,35 +6,39 @@
 <title>Ilha ENEM</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="Área secreta do Mundo: jogos de revisão para o ENEM, liberados com um código.">
+<meta name="theme-color" content="#bfe9f5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../material-didatico/assets/md.css">
 <link rel="stylesheet" href="enem.css">
 <style>
-  .hero { border-bottom: 1.5px solid var(--ink); background: var(--enem);
-    background-image: radial-gradient(rgba(0,0,0,.10) 1.2px, transparent 1.5px); background-size: 18px 18px; }
-  .hero .wrap { padding-top: 30px; padding-bottom: 28px; }
-  .hero h1 { margin-bottom: 4px; }
-  .contagem { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-  .dia { border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 10px 16px; min-width: 210px; }
-  .dia b { font-family: var(--display); font-size: 30px; line-height: 1; }
-  .dia .small { display: block; }
-  .salas { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; margin: 22px 0 30px; }
-  .sala { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
-  .sala h2 { font-size: 26px; margin: 0; display: flex; align-items: center; gap: 10px; }
-  .jogo { display: flex; justify-content: space-between; align-items: center; gap: 10px; border: 1.5px solid var(--ink); border-radius: 16px;
-    background: var(--paper); padding: 10px 14px; color: var(--ink); text-decoration: none; font-weight: 600; }
-  .jogo:hover { background: var(--pill); }
-  .jogo small { display: block; font-weight: 400; color: var(--ink-2); font-size: 13.5px; }
-  .gerais { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 18px; }
-  .gerais .jogo { background: var(--paper-2); }
-  .sala.geral { background: var(--paper-2); }
+  .contagem { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+  .contagem .plaq { white-space: normal; }
+  .mapa { position: relative; margin: 6px 0 14px; border: 3px solid var(--ink); border-radius: 22px; overflow: hidden; box-shadow: 0 8px 0 rgba(0,0,0,.2); background: #8fd3ef; }
+  .mapa svg { display: block; width: 100%; height: auto; }
+  .mapa .casa { cursor: pointer; }
+  .mapa .casa:hover .corpo, .mapa .casa:focus .corpo { filter: brightness(1.08); }
+  .mapa .casa:focus { outline: none; }
+  .mapa .casa:focus .placa { stroke: #2a5fa8; stroke-width: 4; }
+  .mapa text { font-family: var(--body); fill: var(--ink); }
+  .mapa .nome { font-weight: 600; font-size: 15px; }
+  .mapa .emo { font-size: 26px; }
+  .mapa .estr { font-size: 13px; fill: #c98a12; letter-spacing: 1px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .mapa .onda { animation: onda 4s ease-in-out infinite; }
+    @keyframes onda { 50% { transform: translateX(10px); } }
+  }
+  .dicas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 26px; }
+  .dicas .plaq { white-space: normal; font-weight: 500; font-size: 14.5px; align-items: flex-start; }
 </style>
 </head>
 <body>
 <header class="e-top" id="topo"></header>
-<main id="conteudo"></main>
+<main class="wrap" id="conteudo"></main>
+<div class="janela" id="janela" hidden role="dialog" aria-modal="true" aria-labelledby="j-t">
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-t"></h2><button type="button" class="d-x" id="j-x" aria-label="Fechar">✕</button></div><div id="j-corpo"></div></div>
+</div>
 <footer class="footer"><div class="wrap">Área secreta do <a href="../">Mundo</a> de <a href="../../">ohtopico.com.br</a>. Estrelas e erros ficam guardados só neste aparelho.</div></footer>
 
 <script src="enem.js"></script>
@@ -42,37 +46,37 @@
 (function () {
   const $ = s => document.querySelector(s), main = $('#conteudo');
   const AREAS = [
-    { id: 'bio', nome: 'Biologia', ic: '🧬', dia: 2, jogos: [] },
-    { id: 'qui', nome: 'Química', ic: '⚗️', dia: 2, jogos: [
+    { id: 'red', nome: 'Redação', ic: '✍️', cor: '#ffb38a', teto: '#e0564a', dia: 1, txt: 'Competências, estrutura, repertório, conectivos e a proposta de intervenção.', jogos: [] },
+    { id: 'ling', nome: 'Linguagens', ic: '📚', cor: '#c7b4f2', teto: '#9a6bd6', dia: 1, txt: 'Funções da linguagem, gêneros, escolas literárias, variação e espanhol.', jogos: [] },
+    { id: 'hum', nome: 'Humanas', ic: '🌎', cor: '#9fe3dc', teto: '#2bb3b1', dia: 1, txt: 'História do Brasil e geral, geografia, filosofia e sociologia.', jogos: [] },
+    { id: 'bio', nome: 'Biologia', ic: '🧬', cor: '#a8e6b8', teto: '#4bb259', dia: 2, txt: 'Ecologia, citologia, genética, fisiologia, imunologia e evolução.', jogos: [] },
+    { id: 'qui', nome: 'Química', ic: '⚗️', cor: '#f7a8c4', teto: '#e07bb0', dia: 2, txt: 'Atomística, estequiometria, soluções, físico-química e orgânica.', jogos: [
       ['ph.html', 'ph', '🧪 Régua do pH', 'Ácido, básico ou neutro? Coloque os produtos do dia a dia na régua.'],
       ['balanceamento.html', 'balanc', '⚖️ Balança dos átomos', 'Ajuste os coeficientes até os átomos baterem dos dois lados.']] },
-    { id: 'fis', nome: 'Física', ic: '⚡', dia: 2, jogos: [
-      ['circuito.html', 'circuito', '💡 Circuito da casa', 'Ligue resistores em série e em paralelo e acerte a corrente e a conta de luz.']] },
-    { id: 'mat', nome: 'Matemática', ic: '📐', dia: 2, jogos: [] },
-    { id: 'red', nome: 'Redação', ic: '✍️', dia: 1, jogos: [] },
-    { id: 'ling', nome: 'Linguagens', ic: '📚', dia: 1, jogos: [] },
-    { id: 'hum', nome: 'Humanas', ic: '🌎', dia: 1, jogos: [] }
+    { id: 'fis', nome: 'Física', ic: '⚡', cor: '#ffd58a', teto: '#f6b73c', dia: 2, txt: 'Cinemática, dinâmica, energia, ondas, óptica e eletricidade.', jogos: [
+      ['circuito.html', 'circuito', '💡 Circuito da casa', 'Série, paralelo, brilho das lâmpadas e conta de luz.']] },
+    { id: 'mat', nome: 'Matemática', ic: '📐', cor: '#a8d8f7', teto: '#3f8fe0', dia: 2, txt: 'Proporção, porcentagem, funções, geometria, estatística e probabilidade.', jogos: [] }
   ];
-  const linkJogo = (href, id, titulo, sub) => `<a class="jogo" href="${href}"><span>${titulo}<small>${sub}</small></span>${ENEM.estrelasHtml(ENEM.estrelas(id))}</a>`;
+  const linkJogo = (href, id, titulo, sub) => `<a class="jogo" href="${href}"><span>${titulo}<small>${sub}</small></span>${id ? ENEM.estrelasHtml(ENEM.estrelas(id)) : '<span aria-hidden="true">→</span>'}</a>`;
+  const estrelasArea = a => ['sim-' + a.id, ...a.jogos.map(j => j[1])].reduce((s, id) => s + ENEM.estrelas(id), 0);
+  const maxArea = a => 3 * (1 + a.jogos.length);
 
-  function dias(data) {
-    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
-    return Math.round((new Date(data + 'T00:00:00') - hoje) / 864e5);
-  }
-  function txtDias(n) { return n > 1 ? `faltam <b>${n}</b> dias` : n === 1 ? 'é <b>amanhã</b>' : n === 0 ? 'é <b>hoje</b>!' : 'já foi ✔'; }
+  function dias(data) { const hoje = new Date(); hoje.setHours(0, 0, 0, 0); return Math.round((new Date(data + 'T00:00:00') - hoje) / 864e5); }
+  const txtDias = n => n > 1 ? `em <b>${n}</b> dias` : n === 1 ? '<b>amanhã</b>' : n === 0 ? '<b>hoje!</b>' : 'já foi ✔';
 
+  /* ---------- a porta: pede o código ---------- */
   function cofre() {
     document.title = 'Área secreta';
-    main.innerHTML = `<div class="wrap"><form class="cofre panel" id="f">
-      <div class="cadeado" aria-hidden="true">🔒</div>
+    $('#topo').innerHTML = '<div class="wrap"><span class="plaq marca">🔒 Área secreta</span><a class="hb azul" href="../" style="min-height:0;padding:7px 12px">🏡 Mundo</a></div>';
+    main.innerHTML = `<form class="cofre caixa" id="f">
+      <div class="cadeado" aria-hidden="true">🏝️🔒</div>
       <h1 style="font-size:34px">Área secreta</h1>
       <p class="muted">Esta parte do Mundo só abre com um código. Quem sabe, sabe.</p>
       <label class="sr-only" for="cod">Código secreto</label>
       <input id="cod" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" placeholder="CÓDIGO" required>
       <button class="btn" type="submit">Abrir</button>
       <p class="feedback" id="fb" role="status"></p>
-      <p class="small"><a href="../">Voltar para o Mundo</a></p>
-    </form></div>`;
+    </form>`;
     $('#cod').focus();
     $('#f').onsubmit = async e => {
       e.preventDefault();
@@ -81,32 +85,124 @@
     };
   }
 
+  /* ---------- o mapa da ilha ---------- */
+  function casa(a, x, y) {
+    const w = 104, h = 66, est = estrelasArea(a), max = maxArea(a);
+    return `<g class="casa" tabindex="0" role="button" data-area="${a.id}" aria-label="Casa de ${a.nome}: ${est} de ${max} estrelas">
+      <ellipse cx="${x}" cy="${y + h / 2 + 6}" rx="${w / 2 + 10}" ry="12" fill="rgba(0,0,0,.12)"/>
+      <rect class="corpo" x="${x - w / 2}" y="${y - h / 2}" width="${w}" height="${h}" rx="6" fill="${a.cor}" stroke="#1d2a1f" stroke-width="3"/>
+      <path d="M${x - w / 2 - 10} ${y - h / 2 + 4} L${x} ${y - h / 2 - 40} L${x + w / 2 + 10} ${y - h / 2 + 4} Z" fill="${a.teto}" stroke="#1d2a1f" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="${x - 12}" y="${y + h / 2 - 32}" width="24" height="32" rx="4" fill="#8a5a2b" stroke="#1d2a1f" stroke-width="2.5"/>
+      <rect x="${x - w / 2 + 10}" y="${y - h / 2 + 12}" width="20" height="18" rx="3" fill="#fffdf6" stroke="#1d2a1f" stroke-width="2"/>
+      <rect x="${x + w / 2 - 30}" y="${y - h / 2 + 12}" width="20" height="18" rx="3" fill="#fffdf6" stroke="#1d2a1f" stroke-width="2"/>
+      <text class="emo" x="${x}" y="${y - h / 2 - 8}" text-anchor="middle">${a.ic}</text>
+      <rect class="placa" x="${x - 62}" y="${y + h / 2 + 12}" width="124" height="44" rx="12" fill="#fffdf6" stroke="#d9c99a" stroke-width="2.5"/>
+      <text class="nome" x="${x}" y="${y + h / 2 + 31}" text-anchor="middle">${a.nome}</text>
+      <text class="estr" x="${x}" y="${y + h / 2 + 49}" text-anchor="middle">${'★'.repeat(Math.round(est / max * 3))}${'☆'.repeat(3 - Math.round(est / max * 3))}</text>
+    </g>`;
+  }
+  function especial(id, ic, nome, sub, x, y, cor) {
+    return `<g class="casa" tabindex="0" role="button" data-especial="${id}" aria-label="${nome}">
+      <circle class="corpo" cx="${x}" cy="${y}" r="40" fill="${cor}" stroke="#1d2a1f" stroke-width="3"/>
+      <text x="${x}" y="${y + 13}" text-anchor="middle" style="font-size:36px">${ic}</text>
+      <rect class="placa" x="${x - 74}" y="${y + 48}" width="148" height="${sub ? 44 : 30}" rx="12" fill="#fffdf6" stroke="#d9c99a" stroke-width="2.5"/>
+      <text class="nome" x="${x}" y="${y + 68}" text-anchor="middle">${nome}</text>
+      ${sub ? `<text x="${x}" y="${y + 85}" text-anchor="middle" style="font-size:12.5px;fill:#5a6a5c">${sub}</text>` : ''}
+    </g>`;
+  }
+  function mapa() {
+    const estreito = window.innerWidth < 640;
+    const W = estreito ? 420 : 900, H = estreito ? 1130 : 700;
+    // posições das casas (1º dia em cima, 2º dia embaixo) e dos pontos especiais
+    const pos = estreito
+      ? { red: [100, 190], ling: [320, 190], hum: [210, 330], bio: [100, 690], qui: [320, 690], fis: [100, 865], mat: [320, 865], sim: [210, 470], erros: [210, 1030] }
+      : { red: [170, 150], ling: [450, 120], hum: [730, 150], bio: [150, 420], qui: [380, 470], fis: [600, 470], mat: [770, 400], sim: [450, 300], erros: [800, 600] };
+    const ilha = estreito
+      ? `M60 70 C200 30 360 60 390 150 C415 260 380 420 400 560 C420 700 390 940 330 990 C260 1040 140 1030 80 980 C20 920 30 700 20 560 C10 420 30 260 30 160 C30 110 40 80 60 70 Z`
+      : `M90 120 C150 40 360 40 470 50 C640 40 820 50 860 140 C890 230 870 330 860 420 C850 520 760 580 620 590 C480 600 300 600 180 580 C80 560 40 470 50 360 C55 260 40 190 90 120 Z`;
+    const [sx, sy] = pos.sim;
+    const caminhos = Object.entries(pos).filter(([k]) => k !== 'sim' && k !== 'erros').map(([, [x, y]]) => `M${sx} ${sy} Q${(sx + x) / 2} ${(sy + y) / 2 + 30} ${x} ${y + 20}`).join(' ');
+    const ondas = Array.from({ length: estreito ? 14 : 12 }, (_, k) => {
+      const x = (k * 137) % W, y = 20 + ((k * 211) % (H - 40));
+      return `<path class="onda" d="M${x} ${y} q8 -6 16 0 t16 0" stroke="#d9f2fb" stroke-width="2.5" fill="none" stroke-linecap="round" style="animation-delay:${-k * .7}s"/>`;
+    }).join('');
+    const arvores = (estreito ? [[50, 420], [370, 420], [60, 560], [360, 560], [210, 780], [370, 990], [50, 1000]] : [[90, 270], [300, 230], [610, 240], [830, 270], [270, 560], [520, 580], [80, 500], [880, 520]])
+      .map(([x, y], k) => `<text x="${x}" y="${y}" text-anchor="middle" style="font-size:${k % 3 ? 30 : 36}px" aria-hidden="true">${k % 2 ? '🌴' : '🌳'}</text>`).join('');
+    const doca = estreito ? `<rect x="196" y="985" width="28" height="70" fill="#b98352" stroke="#1d2a1f" stroke-width="2.5"/>` : `<rect x="760" y="560" width="60" height="22" fill="#b98352" stroke="#1d2a1f" stroke-width="2.5"/>`;
+    const AR = Object.fromEntries(AREAS.map(a => [a.id, a]));
+    const dia1 = estreito ? `<text x="210" y="${105}" text-anchor="middle" style="font:800 17px var(--display)">1º dia · 8 de novembro</text><text x="210" y="${598}" text-anchor="middle" style="font:800 17px var(--display)">2º dia · 15 de novembro</text>` : '';
+    return `<svg viewBox="0 0 ${W} ${H}" role="group" aria-label="Mapa da Ilha ENEM">
+      ${ondas}
+      <path d="${ilha}" fill="#f3e2b0" stroke="#d9c99a" stroke-width="6" transform="translate(0 6)"/>
+      <path d="${ilha}" fill="#9bd77a" stroke="#1d2a1f" stroke-width="3" transform="scale(.97) translate(${W * .015} ${H * .012})"/>
+      <path d="${caminhos}" stroke="#f7c6d9" stroke-width="18" fill="none" stroke-linecap="round"/>
+      ${doca}${arvores}${dia1}
+      ${['red', 'ling', 'hum', 'bio', 'qui', 'fis', 'mat'].map(id => casa(AR[id], ...pos[id])).join('')}
+      ${especial('sim', '🎲', 'Simulado relâmpago', 'todas as áreas', sx, sy, '#fff6dd')}
+      ${especial('erros', '⛵', 'Barco dos erros', ENEM.erros().length + ' para revisar', ...pos.erros, '#eef6ff')}
+    </svg>`;
+  }
+
+  /* ---------- janela de cada casa ---------- */
+  const jan = $('#janela');
+  let voltarFoco = null;
+  function abrir(titulo, corpo) {
+    voltarFoco = document.activeElement;
+    $('#j-t').innerHTML = titulo; $('#j-corpo').innerHTML = corpo; jan.hidden = false; $('#j-x').focus();
+  }
+  function fechar() { jan.hidden = true; if (voltarFoco) voltarFoco.focus(); }
+  $('#j-x').onclick = fechar;
+  jan.addEventListener('click', e => { if (e.target === jan) fechar(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !jan.hidden) fechar(); });
+
+  function abrirArea(id) {
+    const a = AREAS.find(x => x.id === id);
+    abrir(`${a.ic} Casa de ${a.nome}`, `<p class="muted" style="margin-top:0">${a.txt} Cai no ${a.dia}º dia.</p>
+      ${linkJogo('simulado.html?area=' + a.id, 'sim-' + a.id, '❓ Simulado de ' + a.nome, 'Conceitos, lacunas, pegadinhas e figuras.')}
+      ${a.jogos.map(j => linkJogo(...j)).join('')}
+      ${a.jogos.length ? '' : '<p class="small muted" style="margin:12px 0 0">Mais jogos desta casa estão a caminho.</p>'}`);
+  }
+  function abrirEspecial(id) {
+    const d1 = dias('2026-11-08');
+    if (id === 'sim') abrir('🎲 Simulado relâmpago', `<p class="muted" style="margin-top:0">Dez perguntas rápidas tiradas dos cartões de revisão. Acerte nove para ganhar três estrelas.</p>
+      ${linkJogo('simulado.html?area=misto', 'sim-misto', '🎲 Todas as áreas', 'As sete áreas misturadas.')}
+      ${linkJogo('simulado.html?area=dia1', 'sim-dia1', '📅 Treino do 1º dia', 'Linguagens, Humanas e Redação.')}
+      ${linkJogo('simulado.html?area=dia2', 'sim-dia2', '📅 Treino do 2º dia', 'Natureza e Matemática.')}
+      ${d1 >= 0 ? '<p class="small muted" style="margin:12px 0 0">Até o dia 8, o treino do 1º dia é o mais útil.</p>' : ''}`);
+    else {
+      const n = ENEM.erros().length;
+      abrir('⛵ Barco dos erros', `<p class="muted" style="margin-top:0">Toda pergunta que você erra em qualquer simulado embarca aqui. Acertou na revisão, ela desembarca.</p>
+        <p><b>${n}</b> ${n === 1 ? 'pergunta esperando' : 'perguntas esperando'} revisão.</p>
+        <div class="btn-row"><a class="btn" href="simulado.html?area=erros">🔁 Revisar meus erros</a></div>`);
+    }
+  }
+
   function ilha() {
     document.title = 'Ilha ENEM';
     ENEM.topo($('#topo'));
-    const d1 = dias('2026-11-08'), d2 = dias('2026-11-15'), erros = ENEM.erros().length;
-    main.innerHTML = `<section class="hero"><div class="wrap">
+    const d1 = dias('2026-11-08'), d2 = dias('2026-11-15');
+    main.innerHTML = `<div class="e-head" style="padding-top:4px">
         <h1>🏝️ Ilha ENEM</h1>
-        <p class="muted" style="max-width:720px;margin:0">Revisão em jogo para as quatro áreas e a redação. Cada jogo vale até três estrelas, e o que você errar volta na revisão.</p>
         <div class="contagem">
-          <div class="dia"><span class="small muted">1º dia · 8 de novembro</span>${txtDias(d1)}<span class="small muted">Linguagens, Humanas e Redação</span></div>
-          <div class="dia"><span class="small muted">2º dia · 15 de novembro</span>${txtDias(d2)}<span class="small muted">Natureza e Matemática</span></div>
+          <span class="plaq">📅 1º dia (8/11): ${txtDias(d1)}</span>
+          <span class="plaq">📅 2º dia (15/11): ${txtDias(d2)}</span>
+          <span class="plaq">🧠 <b>${ENEM.feitas()}</b> respondidas</span>
         </div>
-      </div></section>
-      <div class="wrap">
-        <div class="gerais">
-          ${linkJogo('simulado.html?area=misto', 'sim-misto', '🎲 Simulado relâmpago', '10 perguntas de todas as áreas misturadas.')}
-          ${linkJogo('simulado.html?area=dia' + (d1 >= 0 ? '1' : '2'), 'sim-dia' + (d1 >= 0 ? '1' : '2'), d1 >= 0 ? '📅 Treino do 1º dia' : '📅 Treino do 2º dia', d1 >= 0 ? 'Só Linguagens, Humanas e Redação.' : 'Só Natureza e Matemática.')}
-          <a class="jogo" href="simulado.html?area=erros"><span>🔁 Revisar meus erros<small>${erros ? erros + (erros === 1 ? ' pergunta errada' : ' perguntas erradas') + ' guardadas.' : 'Nenhum erro guardado ainda.'}</small></span><span aria-hidden="true">→</span></a>
-        </div>
-        <div class="salas">${AREAS.map(a => `<section class="sala" style="background:var(--${a.id})">
-            <h2><span aria-hidden="true">${a.ic}</span>${a.nome}</h2>
-            ${linkJogo('simulado.html?area=' + a.id, 'sim-' + a.id, '❓ Simulado de ' + a.nome, 'Conceitos, lacunas, pegadinhas e figuras.')}
-            ${a.jogos.map(j => linkJogo(...j)).join('')}
-          </section>`).join('')}
-        </div>
-        <p class="small muted">Você já respondeu <b>${ENEM.feitas()}</b> perguntas aqui.</p>
+      </div>
+      <div class="mapa" id="mapa">${mapa()}</div>
+      <div class="dicas">
+        <span class="plaq">🏠 Toque numa casa para ver os jogos daquela área.</span>
+        <span class="plaq">⭐ Cada jogo vale até três estrelas. As da placa mostram quanto da casa você já fez.</span>
+        <span class="plaq">⛵ O que você errar vai para o Barco dos erros.</span>
       </div>`;
+    const liga = () => $('#mapa').querySelectorAll('.casa').forEach(g => {
+      const vai = () => g.dataset.area ? abrirArea(g.dataset.area) : abrirEspecial(g.dataset.especial);
+      g.addEventListener('click', vai);
+      g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); vai(); } });
+    });
+    liga();
+    let largo = window.innerWidth < 640;
+    window.addEventListener('resize', () => { const agora = window.innerWidth < 640; if (agora !== largo) { largo = agora; $('#mapa').innerHTML = mapa(); liga(); } });
   }
 
   if (ENEM.liberado()) ilha(); else cofre();
