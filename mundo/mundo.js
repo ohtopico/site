@@ -2555,8 +2555,7 @@
   function hud() {
     $('#h-pontos').textContent = S.pontos;
     $('#h-itens').textContent = Object.values(S.cont).reduce((a, b) => a + b, 0);
-    $('#h-acertos').textContent = `${S.acertos}/${S.acertos + S.erros}`;
-    $('#h-erros').textContent = S.erros;
+    $('#h-acertos').textContent = S.acertos;   // só os acertos: os erros não aparecem para o estudante
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     $('#h-aprend').textContent = Math.round(100 * feitos / Math.max(1, todosLugares.length)) + '%';
     const f = faseDeX(P.x), ms = noEnigma ? missoesEnigma() : dentro && visita ? [{ nome: 'Abrir o baú do presente', n: ((S.visitas || {})[visita.id] || {}).bau ? 1 : 0, meta: 1 }, { nome: `Chegar a 10 corações com ${visita.nome}`, n: coracoes(visita), meta: 10 }].map(m => Object.assign(m, { ok: m.n >= m.meta })) : dentro ? missoesCasa() : missoes(f);
