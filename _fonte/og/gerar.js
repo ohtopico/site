@@ -76,7 +76,7 @@ const IMAGENS = [
   /* Jogos com imagem própria, em material-didatico/jogos/img/og-<página>.jpg; os outros jogos usam a capa do material.
      O #captura pede à página para abrir sem a tela de boas-vindas. */
   ...[
-    ['sitio-binario', 'Sítio', 'Binário', 'Jogo de fazenda: plante, colha e monte peças que ensinam binário, repetição, pilha, fila e redes', ['Computação', 'Jogo', '6º ao 9º ano']]
+    ['fabrica-logica', 'Fábrica', 'Lógica', 'Uma fábrica de componentes com um andar por setor: algoritmos, dados, planilhas, redes e decisões', ['Computação', 'Simulação', '6º ao 9º ano']]
   ].map(([nome, t1, t2, sub, pills]) => ({ arq: `material-didatico/jogos/img/og-${nome}.jpg`, janela: `${nome}.html`,
     faixa: 'Jogo · gratuito', t1, t2, sub, pills, url: `ohtopico.com.br/material-didatico/jogos/${nome}`, capturas: [`/material-didatico/jogos/${nome}.html#captura`] })),
   { arq: 'mundo/og-mundo.jpg', janela: 'mundo.html', faixa: 'Jogo para explorar o site', t1: 'Mundo', t2: 'do site',
