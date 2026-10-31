@@ -170,7 +170,7 @@ def laterais(atual):
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
                 ('◇', 'Guia Tech pra Prof', '/tech-pra-prof/', ''),
                 ('▦', 'Computação na escola', '/computacao-na-escola/', 'computacao'),
-                ('▯', 'Lei do celular nas escolas', '/lei-do-celular-nas-escolas/', 'celular'),
+                ('▮', 'Lei do celular nas escolas', '/lei-do-celular-nas-escolas/', 'celular'),
                 ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia'),
                 ('⬢', 'Mundo para professores', '/mundo/professores/', 'mundo')]
     atual_attr = ' aria-current="page"'
@@ -250,21 +250,29 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 <div class="area">
 <div class="janela">
-    <div class="letreiro" aria-label="Destaques"><div class="letreiro-faixa">{letreiro}</div></div>
+    <header class="cabecalho">
+        <a class="marca-site" href="/">Júlia Quoos</a>
+        <nav class="cabecalho-links" aria-label="Principal">
+            <a href="/blog/"{' aria-current="page"' if atual == 'blog' else ''}>Blog</a>
+            <a href="/material-didatico/">Material didático</a>
+            <a href="/mentoria/"{' aria-current="page"' if atual == 'mentoria' else ''}>Mentoria</a>
+            <a href="/formacao-continuada/"{' aria-current="page"' if atual == 'formacao' else ''}>Formação</a>
+        </nav>
+    </header>
     <div class="corpo">
         <main class="pagina" id="conteudo" tabindex="-1">
 {conteudo}
         </main>
         {esquerda}
         {direita}
-        <footer class="rodape">
-            <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
-            <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
-        </footer>
     </div>
-    <div class="status">{status}</div>
 </div>
 </div>
+<footer class="rodape">
+    <nav class="letreiro" aria-label="Destaques">{letreiro}</nav>
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
+</footer>
 {contador}<script src="/blog/assets/blog.js?v={VERSAO_CSS}" defer></script>
 <script src="/assistente/assistente.js?v={VERSAO_ASSISTENTE}" defer></script>
 </body>
