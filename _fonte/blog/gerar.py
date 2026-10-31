@@ -169,7 +169,8 @@ def laterais(atual):
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
                 ('◇', 'Guia Tech pra Prof', '/tech-pra-prof/', ''),
                 ('▦', 'Computação na escola', '/computacao-na-escola/', 'computacao'),
-                ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia')]
+                ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia'),
+                ('⬢', 'Mundo para professores', '/mundo/professores/', 'mundo')]
     atual_attr = ' aria-current="page"'
 
     def lista(itens):
@@ -838,6 +839,89 @@ def pagina_para_escolas(cfg):
     return head + '\n' + moldura('para-escolas.html', 'ohtopico.com.br/para-escolas', '/', conteudo, 'Pronto', 'escolas')
 
 
+MUNDO_PROF_IMAGEM = 'mundo/og-mundo.jpg'
+
+
+def pagina_mundo_professores(cfg):
+    site = cfg['site']
+    url = f'{site}/mundo/professores/'
+    corpo = (AQUI / 'conteudo' / 'mundo-professores.html').read_text(encoding='utf-8').strip()
+    titulo = 'Mundo do site para professores: BNCC Computação e IA em jogo'
+    descricao = ('Jogo gratuito para as aulas de Computação da BNCC, do 6º ao 9º ano: vilas por ano, ranking da turma, '
+                 'missões criadas pela professora e simuladores de IA, sem cadastro.')
+    imagem = f'{site}/{MUNDO_PROF_IMAGEM}'
+    alt = 'Vila isométrica do Mundo do site, com casas coloridas, moradores e o avatar do estudante.'
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': imagem, 'width': 1200, 'height': 630},
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
+                'author': {'@id': AUTORA['@id']},
+                'about': [{'@type': 'Thing', 'name': 'BNCC Computação'}, {'@type': 'Thing', 'name': 'IA para professores'},
+                          {'@type': 'Thing', 'name': 'Computação nas escolas'}],
+                'relatedLink': [f'{site}/mundo/', f'{site}/material-didatico/turma-mundo.html',
+                                f'{site}/material-didatico/bncc/', f'{site}/ia-pra-prof/'],
+            },
+            {
+                '@type': ['VideoGame', 'LearningResource'],
+                '@id': f'{site}/mundo/#jogo',
+                'name': 'Mundo do site',
+                'url': f'{site}/mundo/',
+                'image': imagem,
+                'inLanguage': 'pt-BR',
+                'isAccessibleForFree': True,
+                'genre': 'Jogo educativo',
+                'gamePlatform': 'Navegador',
+                'applicationCategory': 'Game',
+                'learningResourceType': 'Jogo educativo',
+                'educationalLevel': 'Ensino Fundamental anos finais',
+                'teaches': ['BNCC Computação', 'Pensamento computacional', 'Inteligência artificial', 'Cibersegurança'],
+                'author': {'@id': AUTORA['@id']},
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Mundo do site', 'item': f'{site}/mundo/'},
+                    {'@type': 'ListItem', 'position': 3, 'name': 'Para professores', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/mundo/">Mundo do site</a></li><li aria-current="page">Para professores</li></ol></nav>
+    <p class="rotulo">Para professores</p>
+    <h1>Mundo do site: BNCC Computação e IA <span class="marca">em jogo</span></h1>
+    <p class="linha-fina">Um jogo gratuito para as aulas de Computação do 6º ao 9º ano, com vilas por ano, ranking da turma e missões que a professora cria, sem cadastro e sem servidor.</p>
+    <p><a class="btn98" href="/mundo/">Abrir o Mundo</a> <a class="btn98 escuro" href="/material-didatico/turma-mundo.html">Abrir o painel da turma</a></p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="conversar">
+        <h2 id="conversar">Levar o Mundo para a sua escola</h2>
+        <p>Se você quer usar o Mundo com várias turmas ou numa formação de professores, conte como é a sua escola e eu sugiro por onde começar.</p>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20o%20Mundo%20do%20site%20nas%20aulas." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="/formacao-continuada/">Formação continuada em IA</a>
+    </section>
+</article>'''
+    head = cabeca('Mundo do site para professores: BNCC Computação e IA | Júlia Quoos', descricao, url, imagem, alt, 'website',
+                  '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
+    return head + '\n' + moldura('mundo-professores.html', 'ohtopico.com.br/mundo/professores', '/mundo/', conteudo, 'Pronto', 'mundo')
+
+
 PROMPTS_IMAGEM = 'dia03-pacto.png'
 # A biblioteca usa o visual da série pra Prof: o estilo do IA pra Prof (lido da própria página) + prompts-pra-prof.css
 _IA_PRA_PROF = AQUI.parent.parent / 'ia-pra-prof' / 'index.html'
@@ -1412,7 +1496,7 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -1510,6 +1594,7 @@ def main():
     mudaram = set()
     for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims)),
                           ('para-escolas', pagina_para_escolas(cfg)),
+                          ('mundo/professores', pagina_mundo_professores(cfg)),
                           ('prompts-para-professores', pagina_prompts(cfg)),
                           ('computacao-na-escola', pagina_computacao(cfg)),
                           ('assistencia-por-voz', pagina_assistencia(cfg)), (QUIZ_DIR, pagina_quiz(cfg)),
