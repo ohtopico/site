@@ -7,7 +7,8 @@ Uso:
 - site/blog/index.html lista os posts publicados (data <= --ate; sem --ate, todos).
 - site/mentoria/index.html sai com noindex enquanto tiver trechos [pendentes].
 - site/formacao-continuada/index.html é a página de serviço da formação continuada em IA.
-- site/prompts-para-professores/index.html é a biblioteca de prompts (prompts.json + conteudo/biblioteca-prompts.html).
+- site/prompts-para-professores/index.html é a biblioteca de prompts no visual da série pra Prof (prompts.json +
+  conteudo/biblioteca-prompts.html + prompts-pra-prof.css/.js, sobre o estilo de ia-pra-prof/index.html).
 - site/quiz-pensamento-computacional/index.html é o quiz de pensamento computacional (quiz.json + conteudo/quiz-pensamento-computacional.html),
   com uma página por nível em resultado/<nível>/ (noindex) para o LinkedIn mostrar a imagem do nível.
 - site/computacao-na-escola/index.html é o guia de implantação de Computação na escola (conteudo/computacao-na-escola.html).
@@ -830,6 +831,21 @@ def pagina_para_escolas(cfg):
 
 
 PROMPTS_IMAGEM = 'dia03-pacto.png'
+# A biblioteca usa o visual da série pra Prof: o estilo do IA pra Prof (lido da própria página) + prompts-pra-prof.css
+_IA_PRA_PROF = AQUI.parent.parent / 'ia-pra-prof' / 'index.html'
+
+
+def capitulos(texto):
+    """Lista (id, título, html) dos capítulos marcados com <!--CAPITULO id|Título-->; <!--PROMPTS--> vira ('PROMPTS', '', '')."""
+    partes = re.split(r'<!--(CAPITULO [^>]*|PROMPTS)-->', texto)
+    caps = []
+    for marca, corpo in zip(partes[1::2], partes[2::2]):
+        if marca == 'PROMPTS':
+            caps.append(('PROMPTS', '', ''))
+            continue
+        cid, titulo = marca[len('CAPITULO '):].split('|')
+        caps.append((cid.strip(), titulo.strip(), corpo.strip()))
+    return caps
 
 
 def pagina_prompts(cfg):
@@ -838,31 +854,23 @@ def pagina_prompts(cfg):
     bib = json.loads((AQUI / 'prompts.json').read_text(encoding='utf-8'))
     etapas, tipos = bib['etapas'], bib['tipos']
     total = sum(len(g['prompts']) for g in bib['grupos'])
-    opcoes = lambda pares: ''.join(f'<option value="{v}">{esc(n)}</option>' for v, n in pares)
-    disciplinas = [(slug_secao(g['disciplina']), g['disciplina']) for g in bib['grupos']]
-    filtros = f'''<div class="filtros" id="filtros" role="search" aria-label="Filtrar prompts da disciplina" hidden>
-<div class="filtros-campos">
-<label for="f-etapa">Etapa<select id="f-etapa"><option value="">Todas</option>{opcoes(etapas.items())}</select></label>
-<label for="f-tipo">Para quê<select id="f-tipo"><option value="">Tudo</option>{opcoes(tipos.items())}</select></label>
-<label for="f-busca">Palavra-chave<input type="search" id="f-busca" placeholder="busca em todas as disciplinas" autocomplete="off"></label>
-</div>
-<div class="filtros-rodape"><p id="f-status" aria-live="polite">{total} prompts encontrados</p><button type="button" class="btn98" id="f-limpar">Limpar filtros</button></div>
-</div>'''
-    # A disciplina se escolhe primeiro; a padrão é a primeira do prompts.json ("Para todas as disciplinas")
-    sumario = ('<h2 class="seletor-titulo" id="escolha-disciplina">Escolha a disciplina</h2>\n'
-               + seletor('Disciplinas da biblioteca', disciplinas[0][0], None, disciplinas))
-    secoes, itens_ld = [], []
+    caps = capitulos((AQUI / 'conteudo' / 'biblioteca-prompts.html').read_text(encoding='utf-8'))
+    perguntas = next(c for c in caps if c[0] == 'perguntas')[2]
+    meio = [c[0] for c in caps].index('PROMPTS')
+    antes, depois = caps[:meio], caps[meio + 1:]
+
+    secoes, itens_ld, toc_disc = [], [], []
     for g in bib['grupos']:
         gid = slug_secao(g['disciplina'])
-        artigos = []
+        figuras = []
         for pr in g['prompts']:
-            etiquetas = (''.join(f'<li class="etapa">{esc(etapas[e])}</li>' for e in pr['etapas'])
+            etiquetas = (''.join(f'<li>{esc(etapas[e])}</li>' for e in pr['etapas'])
                          + f'<li class="tipo">{esc(tipos[pr["tipo"]])}</li>')
-            artigos.append(f'''<article class="prompt-item" id="{pr['id']}" data-etapas="{' '.join(pr['etapas'])}" data-tipo="{pr['tipo']}">
-<h3>{esc(pr['titulo'])}</h3>
-<ul class="etiquetas" aria-label="Etapa e uso">{etiquetas}</ul>
-<pre>{esc(pr['texto'])}</pre>
-</article>''')
+            figuras.append(f'      <figure class="prompt" id="{pr["id"]}" data-etapas="{" ".join(pr["etapas"])}" data-tipo="{pr["tipo"]}">\n'
+                           f'        <figcaption>{esc(pr["titulo"])}</figcaption>\n'
+                           f'        <p class="body">{esc(pr["texto"])}</p>\n'
+                           f'        <ul class="tags" aria-label="Etapa e uso">{etiquetas}</ul>\n'
+                           '      </figure>')
             itens_ld.append({
                 '@type': 'ListItem', 'position': len(itens_ld) + 1,
                 'item': {'@type': 'CreativeWork', '@id': f'{url}#{pr["id"]}', 'url': f'{url}#{pr["id"]}',
@@ -871,11 +879,57 @@ def pagina_prompts(cfg):
                          'educationalLevel': [etapas[e] for e in pr['etapas']],
                          'inLanguage': 'pt-BR', 'isAccessibleForFree': True},
             })
-        secoes.append(f'<section class="grupo-prompts" id="{gid}" aria-labelledby="{gid}-titulo">\n'
-                      f'<h2 id="{gid}-titulo">{esc(g["disciplina"])}</h2>\n' + '\n'.join(artigos) + '\n</section>')
-    bloco = (sumario + '\n' + filtros + '\n<p class="sem-resultado" id="f-vazio" hidden>Nenhum prompt com esses filtros. '
-             'Tente outra etapa ou limpe os filtros.</p>\n' + '\n'.join(secoes))
-    corpo = (AQUI / 'conteudo' / 'biblioteca-prompts.html').read_text(encoding='utf-8').strip().replace('<!--PROMPTS-->', bloco)
+        n = len(g['prompts'])
+        etapas_grupo = [nome for e, nome in etapas.items() if any(e in pr['etapas'] for pr in g['prompts'])]
+        secoes.append(f'    <section class="chapter" id="{gid}" data-title="{esc(g["disciplina"])}" data-part="Disciplinas">\n'
+                      '      <p class="part-label">Disciplinas</p>\n'
+                      f'      <h2>{esc(g["disciplina"])}</h2>\n'
+                      f'      <p class="kicker">{n} prompt{"s" if n > 1 else ""} · {esc(", ".join(etapas_grupo))}</p>\n'
+                      '      <p class="filtro-aviso" role="status"></p>\n'
+                      + '\n'.join(figuras) + '\n    </section>')
+        toc_disc.append((gid, g['disciplina']))
+
+    def capitulo(cid, titulo, corpo, parte):
+        return (f'    <section class="chapter" id="{cid}" data-title="{esc(titulo)}" data-part="{parte}">\n'
+                f'      <p class="part-label">{parte}</p>\n      <h2>{esc(titulo)}</h2>\n{corpo}\n    </section>')
+
+    def toc_grupo(nome, itens):
+        return (f'    <h2>{nome}</h2>\n    <ol>\n'
+                + '\n'.join(f'      <li><a href="#/{cid}" data-ch="{cid}"><span class="dot"></span>{esc(t)}</a></li>' for cid, t in itens)
+                + '\n    </ol>')
+
+    busca = '''      <p>Procure por palavra em todas as disciplinas. Os filtros de etapa e de uso ficam em <strong>Personalizar prompts</strong>, no topo, e valem aqui também.</p>
+      <div class="field"><label for="busca">Palavra-chave</label><input type="search" id="busca" placeholder="ex.: rubrica, frações, família" autocomplete="off"></div>
+      <p><button type="button" class="btn-ghost" id="busca-limpar">Limpar busca</button></p>
+      <p class="busca-status" id="busca-status" aria-live="polite"></p>
+      <div id="busca-resultado"></div>'''
+    mais = [('buscar', 'Buscar em todas', busca)] + depois
+    capa = f'''    <section class="chapter" id="inicio" data-title="Capa">
+      <div class="cover">
+        <div class="stack" aria-hidden="true">PROMPTS<br>PRA<br>PROF</div>
+        <h1 class="capa-titulo">Biblioteca de prompts para professores</h1>
+        <p class="sub" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:15px">{total} prompts de inteligência artificial prontos para copiar, organizados por disciplina e etapa de ensino: planejamento, atividades, avaliação, inclusão e comunicação com as famílias.</p>
+        <p class="author">Júlia Roberta Quoos Alves<br><small style="color:var(--ink-3)">Professora de computação e formadora de professores em IA · RS</small></p>
+        <div class="cover-cta">
+          <a class="btn-primary" href="#/{antes[0][0]}" id="start-btn">Começar →</a>
+          <a class="btn-ghost" href="#/buscar">Buscar um prompt</a>
+        </div>
+        <div class="parts">
+          <a class="part-card" href="#/como-usar"><strong>Como usar</strong><span>Copiar, trocar o que está entre colchetes e revisar. E o que nunca vai no prompt (LGPD).</span></a>
+          <a class="part-card" href="#/{toc_disc[0][0]}"><strong>Disciplinas</strong><span>{len(toc_disc)} capítulos, da Educação Infantil ao ensino médio, com inclusão e gestão.</span></a>
+          <a class="part-card" href="#/buscar"><strong>Buscar</strong><span>Uma palavra procura em todas as disciplinas, com filtro por etapa e por uso.</span></a>
+        </div>
+        <p style="font-size:14px;color:var(--ink-2);margin-top:26px">Dica: use <strong>Personalizar prompts</strong> no topo para escolher a etapa e preencher tema, ano e componente uma vez só. Todos os prompts se ajustam sozinhos.</p>
+        <p style="font-size:14px;color:var(--ink-2);margin-top:10px">Série pra Prof: <a href="../ia-pra-prof/" style="color:inherit">IA pra Prof</a> (inteligência artificial) · <a href="../tech-pra-prof/" style="color:inherit">Tech pra Prof</a> (ferramentas digitais) · <strong>Prompts pra Prof</strong></p>
+      </div>
+    </section>'''
+    capitulos_html = '\n\n'.join([capa] + [capitulo(c, t, b, 'Início') for c, t, b in antes] + secoes
+                                 + [capitulo(c, t, b, 'Mais') for c, t, b in mais])
+    toc = '\n'.join([toc_grupo('Início', [('inicio', 'Capa')] + [(c, t) for c, t, _ in antes]),
+                     toc_grupo('Disciplinas', toc_disc),
+                     toc_grupo('Mais', [(c, t) for c, t, _ in mais])])
+    opcoes = lambda pares: ''.join(f'<option value="{v}">{esc(n)}</option>' for v, n in pares)
+
     titulo = 'Biblioteca de prompts para professores'
     descricao = f'{total} prompts de IA prontos para professores, por disciplina e etapa de ensino, da Educação Infantil ao ensino médio, com orientações de LGPD.'
     ld = json_ld({
@@ -896,7 +950,8 @@ def pagina_prompts(cfg):
                 'publisher': {'@id': AUTORA['@id']},
                 'primaryImageOfPage': {'@type': 'ImageObject', 'url': f'{site}/blog/img/{PROMPTS_IMAGEM}', 'width': 1080, 'height': 1350},
                 'mainEntity': {'@id': url + '#prompts'},
-                'relatedLink': [f'{site}/formacao-continuada/', f'{site}/mentoria/', f'{site}/blog/prompts-para-professores-planejar-aulas/'],
+                'relatedLink': [f'{site}/ia-pra-prof/', f'{site}/formacao-continuada/', f'{site}/mentoria/',
+                                f'{site}/blog/prompts-para-professores-planejar-aulas/'],
             },
             {
                 '@type': 'ItemList',
@@ -909,7 +964,8 @@ def pagina_prompts(cfg):
                 '@type': 'FAQPage',
                 '@id': url + '#perguntas',
                 'mainEntity': [{'@type': 'Question', 'name': q,
-                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}}
+                               for q, r in perguntas_frequentes('<h2>Perguntas frequentes</h2>' + perguntas)],
             },
             {
                 '@type': 'BreadcrumbList',
@@ -920,24 +976,109 @@ def pagina_prompts(cfg):
             },
         ],
     })
-    conteudo = f'''<article class="texto">
-    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Biblioteca de prompts</li></ol></nav>
-    <p class="rotulo">Biblioteca de prompts</p>
-    <h1>Biblioteca de prompts para <span class="marca">professores</span></h1>
-    <p class="linha-fina">{total} prompts de inteligência artificial prontos para copiar, organizados por disciplina e etapa de ensino: planejamento, atividades, avaliação, inclusão e comunicação com as famílias.</p>
-    <div class="artigo">
-{corpo}
-    </div>
-    <section class="chamada" aria-labelledby="levar-escola">
-        <h2 id="levar-escola">Levar a biblioteca para a sua escola</h2>
-        <p>Na <a href="/formacao-continuada/">formação continuada de professores em IA</a>, cada área monta e testa os próprios prompts com as tarefas reais da semana. Para um acompanhamento individual, há a <a href="/mentoria/">mentoria</a>.</p>
-        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Biblioteca%20de%20prompts%20para%20professores">Falar com Júlia Roberta Quoos Alves</a>
-    </section>
-</article>'''
     alt = 'Exemplo de prompt com cada parte da fórmula P.A.C.T.O. marcada em uma cor: papel, alvo, comando, tom e formato, observações.'
-    head = cabeca(titulo + ' | Júlia Quoos', descricao, url, f'{site}/blog/img/{PROMPTS_IMAGEM}', alt, 'website', ld)
-    return head + '\n' + moldura('prompts.txt', 'ohtopico.com.br/prompts-para-professores', '/', conteudo,
-                                 f'Pronto · {total} prompts', 'prompts')
+    estilo = re.search(r'<style>\n(.*?)</style>', _IA_PRA_PROF.read_text(encoding='utf-8'), re.S).group(1)
+    estilo += '\n' + (AQUI / 'prompts-pra-prof.css').read_text(encoding='utf-8')
+    script = (AQUI / 'prompts-pra-prof.js').read_text(encoding='utf-8')
+    contador = ''
+    if CONTEXTO['contador']:
+        contador = (f'<script data-goatcounter="https://{CONTEXTO["contador"]}.goatcounter.com/count" '
+                    'async src="//gc.zgo.at/count.js"></script>\n')
+    icone = lambda d: f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">{d}</svg>'
+    return f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{esc(titulo)} | Júlia Quoos</title>
+<meta name="description" content="{esc(descricao)}">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="{url}">
+<meta property="og:title" content="{esc(titulo)} | Júlia Quoos">
+<meta property="og:description" content="{esc(descricao)}">
+<meta property="og:image" content="{site}/blog/img/{PROMPTS_IMAGEM}">
+<meta property="og:image:alt" content="{esc(alt)}">
+<meta name="twitter:card" content="summary_large_image">
+{ld}
+{SCRIPT_TOPO}
+{FONTES}
+<style>
+{estilo}</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="icon-btn" id="toc-btn" aria-controls="toc" aria-expanded="false">
+    {icone('<path d="M4 6h16M4 12h16M4 18h16"/>')}
+    <span class="lbl">Sumário</span>
+  </button>
+  <a class="icon-btn back-btn" href="../" aria-label="Voltar ao site ohtopico.com.br">
+    {icone('<path d="M15 18l-6-6 6-6"/>')}
+    <span class="lbl-site">ohtopico</span>
+  </a>
+  <a class="brand" href="#/inicio">Prompts pra Prof</a>
+  <div class="spacer"></div>
+  <div class="progress-wrap" title="Capítulos vistos">
+    <span class="pct-label" id="pct-label">0% visto</span>
+    <div class="progress" role="progressbar" aria-label="Capítulos vistos" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="pbar"></span></div>
+  </div>
+  <button class="icon-btn" id="perso-btn" aria-controls="personalize" aria-expanded="false">
+    {icone('<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>')}
+    <span class="lbl">Personalizar prompts</span>
+  </button>
+  <button class="icon-btn" id="theme-btn" aria-label="Alternar tema claro/escuro">
+    {icone('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>')}
+  </button>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Sumário">
+    <a class="toc-back" href="../">← Voltar ao ohtopico.com.br</a>
+{toc}
+  </nav>
+
+  <main id="main">
+
+{capitulos_html}
+
+    <nav class="pager" id="pager" aria-label="Navegação entre capítulos"></nav>
+    <p class="site-foot">Júlia Roberta Quoos Alves @2026 Prompts pra Prof · <a href="https://ohtopico.com.br/" style="color:inherit">ohtopico.com.br</a></p>
+  </main>
+</div>
+
+<aside class="personalize" id="personalize" aria-label="Personalizar prompts">
+  <button class="close" id="perso-close" aria-label="Fechar">×</button>
+  <h2>Personalizar prompts</h2>
+  <p>Escolha a etapa e o uso para ver só os prompts que servem para você. Os campos <span class="ph">[tema]</span>, <span class="ph">[ano]</span>, <span class="ph">[componente]</span> e <span class="ph">[idade]</span> são trocados em todos os prompts, aqui e no IA pra Prof. Nada sai do seu navegador.</p>
+  <h3>Filtrar</h3>
+  <div class="field"><label for="f-etapa">Etapa</label><select id="f-etapa" data-key="etapa"><option value="">Todas</option>{opcoes(etapas.items())}</select></div>
+  <div class="field"><label for="f-tipo">Para quê</label><select id="f-tipo" data-key="tipo"><option value="">Tudo</option>{opcoes(tipos.items())}</select></div>
+  <h3>Preencher</h3>
+  <div class="field"><label for="v-tema">Tema</label><input id="v-tema" data-key="tema" placeholder="ex.: frações"></div>
+  <div class="field"><label for="v-ano">Ano / turma</label><input id="v-ano" data-key="ano" placeholder="ex.: 6º ano do ensino fundamental"></div>
+  <div class="field"><label for="v-componente">Componente curricular</label><input id="v-componente" data-key="componente" placeholder="ex.: Matemática"></div>
+  <div class="field"><label for="v-idade">Idade dos alunos</label><input id="v-idade" data-key="idade" placeholder="ex.: 11 anos"></div>
+  <div class="row">
+    <button class="btn-ghost" id="perso-clear" style="min-height:40px;padding:8px 16px">Limpar</button>
+    <button class="btn-primary" id="perso-done" style="min-height:40px;padding:8px 16px">Pronto</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+{script}</script>
+{contador}<script src="/assistente/assistente.js?v={VERSAO_ASSISTENTE}" defer></script>
+</body>
+</html>
+'''
 
 
 QUIZ_DIR = 'quiz-pensamento-computacional'
