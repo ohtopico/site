@@ -339,3 +339,12 @@ a.stat { color: inherit; text-decoration: none; }
 .diploma { background: #fff6d6; border: 2px dashed #e8a400; border-radius: 10px; padding: 6px 10px; }
 .hb.mini { font-size: .75rem; padding: 3px 8px; margin-left: 4px; }
 .aviso-erro { color: #b3261e; font-weight: 700; }
+/* kits de apoiador: código de resgate nas lojas */
+.resgate { border: 2px dashed #b05bd6; border-radius: 14px; background: #fbf4ff; padding: 8px 12px; margin: 8px 0; }
+.resgate summary { cursor: pointer; font-weight: 700; color: #6a1b9a; }
+.resgate form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+.resgate label { width: 100%; font-size: 13px; }
+.resgate input { flex: 1 1 160px; min-width: 0; font: 600 16px ui-monospace, monospace; letter-spacing: 1px; text-transform: uppercase; padding: 8px 10px; border: 2px solid var(--borda); border-radius: 10px; }
+.resgate-msg { font-weight: 700; margin: 8px 0 0; } .resgate-msg.ok { color: #1f7a3a; } .resgate-msg.bad { color: #b3261e; }
+.prod.kit { border-color: #b05bd6; background: #fbf4ff; } .prod.kit .selo { background: #b05bd6; color: #fff; }
+.prod.kit .p-preco { font-size: 12px; }

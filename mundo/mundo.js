@@ -600,6 +600,7 @@
   S.av = Object.assign({}, AV_PADRAO, S.av);
   S.casa = Object.assign(casaNova(), S.casa);
   S.loja = Object.assign(lojaNova(), S.loja);
+  S.kits = S.kits || {};
   S.banco = Object.assign({ poup: 0, dia: 0, mesada: 0, meta: null, extrato: [] }, S.banco);
   // versão anterior (casas em fileiras): a posição salva não serve mais, e os itens antigos contam para a missão
   if (!S.cont || !Object.keys(S.cont).length) for (const k of Object.keys(S.itens || {})) { const fid = k.split('-')[0]; S.cont[fid] = (S.cont[fid] || 0) + 1; }
@@ -1098,6 +1099,10 @@
     else if (k === 'boina') { caixa(hx - q(0.12), hy - q(0.04), topo, s + q(0.16), s + q(0.08), q(0.16), '#e0564a', sem); bloco(0.45, 0.16, 0.1, 0.1, '#e0564a'); }
     else if (k === 'capacete') { aba('#f6c93c', 0.1); bloco(0.05, 0.08, 0.9, 0.3, '#f6c93c'); bloco(0.4, 0.38, 0.2, 0.08, '#f6c93c'); }
     else if (k === 'antena') { caixa(hx - q(0.04), hy + q(0.42), topo - q(0.02), s + q(0.08), q(0.16), q(0.08), '#9a6bd6', sem); caixa(hx + q(0.45), hy + q(0.45), topo, q(0.08), q(0.08), q(0.5), '#888888', sem); bloco(0.38, 0.5, 0.24, 0.2, Math.floor(agora / 500) % 2 ? '#7dff8a' : '#2bb3b1'); }
+    else if (k === 'capaceteRobo') { bloco(-0.04, 0, 1.08, 0.3, '#9aa3ad'); bloco(0.1, 0.3, 0.8, 0.1, '#7c8590'); caixa(hx - q(0.14), hy + q(0.35), hz + q(0.35), q(0.14), q(0.3), q(0.3), '#5b6270', sem); caixa(hx + s, hy + q(0.35), hz + q(0.35), q(0.14), q(0.3), q(0.3), '#5b6270', sem); caixa(hx + q(0.46), hy + q(0.46), topo + q(0.4), q(0.08), q(0.08), q(0.35), '#5b6270', sem); bloco(0.4, 0.75, 0.2, 0.18, Math.floor(agora / 400) % 2 ? '#ff5252' : '#7dff8a'); }
+    else if (k === 'astronauta') { bloco(-0.08, 0, 1.16, 0.32, '#f4f6fa'); caixa(hx - q(0.1), hy - q(0.1), hz + q(0.05), s + q(0.2), s + q(0.2), q(0.12), '#f4f6fa', sem); if (frente) naFace(fc, hx, hy, s, s, q(0.08), 0, q(0.84), hz + q(0.3), q(0.42), 'rgba(246,183,60,.55)'); bloco(0.7, 0.32, 0.1, 0.3, '#c7ccd6'); }
+    else if (k === 'chapeuMago') { aba('#6a1b9a', 0.22); bloco(0.12, 0.08, 0.76, 0.3, '#6a1b9a'); bloco(0.24, 0.38, 0.52, 0.3, '#6a1b9a'); bloco(0.36, 0.68, 0.28, 0.28, '#6a1b9a'); bloco(0.43, 0.96, 0.14, 0.14, '#ffd84a'); bloco(0.11, 0.1, 0.78, 0.08, '#ffd84a'); }
+    else if (k === 'viseira') { caixa(hx - q(0.04), hy - q(0.04), hz + q(0.36), s + q(0.08), s + q(0.08), q(0.22), '#222222', sem); if (frente) naFace(fc, hx, hy, s, s, q(0.04), 0, q(0.92), hz + q(0.39), q(0.16), Math.floor(agora / 300) % 3 ? '#39ff88' : '#ff4fa3'); }
     else if (k === 'gorroSaci') { bloco(0, 0, 1, 0.25, '#d32f2f'); bloco(0.15, 0.25, 0.7, 0.3, '#d32f2f'); bloco(0.3, 0.55, 0.4, 0.3, '#d32f2f'); bloco(0.42, 0.85, 0.16, 0.2, '#d32f2f'); }
   }
   /* personagem de blocos: pernas, corpo, braços e cabeça cúbica; o rosto aparece na face para onde olha */
@@ -1533,6 +1538,60 @@
     professor: [['capelo', '🎓', 'Capelo de formatura'], ['cupcake']], saci: [['gorroSaci', '🔴', 'Gorro do Saci'], ['docinho']]
   };
   const NOMES_ENFEITE = Object.assign({ fone: 'Fone de programadora', oculosRedondos: 'Óculos de cientista', boina: 'Boina de designer', capacete: 'Capacete de técnico', antena: 'Tiara com antena', oculos: 'Óculos escuros', laco: 'Laço', chapeu: 'Chapéu azul', coroa: 'Coroa', cachecol: 'Cachecol', lenco: 'Lenço' }, ...Object.values(EXCLUSIVOS).map(([[k, , n]]) => ({ [k]: n })));
+  /* ---------- kits de apoiador (Catarse): cada kit tem um código de resgate, digitado em qualquer loja.
+     O código não fica no site: guardamos só o SHA-256 de 'ohtopico-kit:' + código (só letras e números, em maiúsculas).
+     Trocar um código = gerar um novo hash aqui. ---------- */
+  const KITS_APOIO = {
+    robotica: { ic: '🤖', nome: 'Kit Robótica', curto: 'Robótica', h: 'bdcab0ed97a48208866bf3d5b6f8fddd54377247de6a419c1a7da52175e5a324',
+      itens: [['av', 'capaceteRobo', '🤖'], ['pet', 'capaceteRobo', '🤖', 'Capacete de robô para o pet'], ['cor', 'camisa:#18a07a', '👕', 'Camiseta circuito'], ['cor', 'calca:#5b6270', '👖', 'Calça metálica']] },
+    astronauta: { ic: '🚀', nome: 'Kit Astronauta', curto: 'Astronauta', h: 'fba3dd4647724a8860e62305a906decb46aebaf289a0321c4d451747bc24d3d8',
+      itens: [['av', 'astronauta', '👩‍🚀'], ['pet', 'astronauta', '👩‍🚀', 'Capacete espacial para o pet'], ['cor', 'camisa:#1b1f4b', '👕', 'Camiseta noite estrelada'], ['cor', 'calca:#c7ccd6', '👖', 'Calça prateada']] },
+    magia: { ic: '🔮', nome: 'Kit Feiticeira dos Dados', curto: 'Feiticeira', h: 'd23f00d27dc24c178391a19ffb1557407a43539ada1aff3afa961130b60508d0',
+      itens: [['av', 'chapeuMago', '🧙'], ['pet', 'chapeuMago', '🧙', 'Chapéu de mago para o pet'], ['cor', 'camisa:#6a1b9a', '👕', 'Túnica roxa'], ['cor', 'calca:#d4a017', '👖', 'Calça dourada']] },
+    neon: { ic: '🌈', nome: 'Kit Neon', curto: 'Neon', h: '4bb7a26e94c0b34b897e27ac2eab27c8df52e1c026146ec40de7d6915aaa9356',
+      itens: [['av', 'viseira', '🥽'], ['cor', 'camisa:#39ff88', '👕', 'Camiseta neon'], ['cor', 'cabelo:#ff4fa3', '💗', 'Cabelo rosa neon'], ['cor', 'cabelo:#2fe0d0', '💎', 'Cabelo turquesa'], ['cor', 'cabelo:#a46bff', '💜', 'Cabelo lilás']] }
+  };
+  Object.assign(NOMES_ENFEITE, { capaceteRobo: 'Capacete de robô', astronauta: 'Capacete de astronauta', chapeuMago: 'Chapéu de mago', viseira: 'Viseira neon' });
+  const LOJA_KIT = { av: 'roupa', cor: 'roupa', pet: 'pet' };
+  function produtosKit(loja) {
+    const out = [];
+    for (const [kid, K] of Object.entries(KITS_APOIO)) for (const [tipo, id, ic, nome] of K.itens) if (LOJA_KIT[tipo] === loja) out.push({ tipo, id, ic, preco: 0, nome: nome || NOMES_ENFEITE[id], kit: kid });
+    return out;
+  }
+  // garante que tudo dos kits resgatados está no guarda-roupa (também depois de zerar o progresso)
+  function aplicaKits() { for (const kid of Object.keys(S.kits || {})) if (KITS_APOIO[kid]) for (const [tipo, id] of KITS_APOIO[kid].itens) S.loja.tem[tipo + ':' + id] = true; }
+  aplicaKits();
+  const normCodigo = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  async function hashKit(c) {
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('ohtopico-kit:' + normCodigo(c)));
+    return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+  async function resgataKit(codigo) {
+    if (!normCodigo(codigo)) return { ok: false, msg: 'Digite o código do kit.' };
+    if (!(window.crypto && crypto.subtle)) return { ok: false, msg: 'Este navegador não consegue conferir o código. Tente em outro navegador.' };
+    const h = await hashKit(codigo), kid = Object.keys(KITS_APOIO).find(k => KITS_APOIO[k].h === h);
+    if (!kid) return { ok: false, msg: 'Código não encontrado. Confira as letras e os números do código que veio no Catarse.' };
+    const K = KITS_APOIO[kid];
+    if (S.kits[kid]) return { ok: true, kid, msg: `O ${K.ic} ${K.nome} já é seu!` };
+    S.kits[kid] = Date.now(); aplicaKits();
+    const av = K.itens.find(([t]) => t === 'av'); if (av) S.av.acessorio = av[1];
+    const cm = K.itens.find(([t, id]) => t === 'cor' && id.startsWith('camisa:')); if (cm) S.av.camisa = cm[1].split(':')[1];
+    salvar(); hud(); SOM.toca('vitoria');
+    return { ok: true, kid, novo: true, msg: `🎁 ${K.ic} ${K.nome} resgatado! Já está no seu avatar; troque as peças quando quiser no 👤 Avatar${K.itens.some(([t]) => t === 'pet') ? ' e na janela do pet 🐾' : ''}.` };
+  }
+  function formResgate(aviso) {
+    return `<details class="resgate" ${aviso ? 'open' : ''}><summary>🎁 Tenho um código de kit de apoiador</summary>
+      <form id="resgate-f"><label for="resgate-c">Código do kit</label><input id="resgate-c" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-1234-WXYZ" maxlength="24"><button type="button" class="hb verde" id="resgate-b">Resgatar</button></form>
+      ${aviso ? `<p class="resgate-msg ${aviso.ok ? 'ok' : 'bad'}" role="status">${aviso.msg}</p>` : ''}
+      <p class="muted small">Os kits com roupas, cores especiais e itens temáticos são para quem apoia o projeto no Catarse. Cada kit tem um código.</p></details>`;
+  }
+  function ligaResgate(el, refaz) {
+    const b = el.querySelector('#resgate-b'), c = el.querySelector('#resgate-c');
+    if (!b) return;
+    const vai = async () => { b.disabled = true; let r; try { r = await resgataKit(c.value); } catch (e) { r = { ok: false, msg: 'Não deu para conferir agora. Tente de novo.' }; } refaz(r); };
+    b.addEventListener('click', vai);
+    c.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); vai(); } });
+  }
   const caro = v => Math.round(v * 2.5 / 10) * 10;   // preços em dezenas, para o desconto de 10% dar conta exata
   function produtos(loja) {
     const base = {
@@ -1549,6 +1608,7 @@
       if (loja === 'comida') base.unshift(Object.assign({ tipo: 'inv', id: comida, ic: ITENS[comida][0], preco: caro(30) }, so));
       if (loja === 'moveis') base.unshift(Object.assign({ tipo: 'movel', id: ev.movel, preco: caro(200) }, so));
     }
+    base.push(...produtosKit(loja));
     for (const p of base) {
       if (p.tipo === 'movel') { p.ic = MOVEIS[p.id].ic; p.nome = p.nome || MOVEIS[p.id].nome; }
       if (p.tipo === 'inv') { p.ic = p.ic || ITENS[p.id][0]; p.nome = p.nome || ITENS[p.id][1]; }
@@ -1582,7 +1642,7 @@
   let lojaAtual = 'roupa', lojaEscolha = null;
   function abreLoja(id) { lojaAtual = id; lojaEscolha = null; abreJanela('loja'); }
   const temProduto = p => p.unico && !!S.loja.tem[p.chave];
-  function janelaLoja() {
+  function janelaLoja(avisoKit) {
     cobra();
     const Lj = LOJAS[lojaAtual], el = $('#loja-conteudo');
     $('#j-loja-t').textContent = `${Lj.ic} ${Lj.nome}`;
@@ -1598,12 +1658,17 @@
     } else {
       const lista = produtos(lojaAtual);
       const meta = S.banco.meta && S.banco.meta.loja === lojaAtual ? `<p class="small">🎯 Sua meta no banco: ${S.banco.meta.ic} ${esc(S.banco.meta.nome)}. Você tem ${S.pontos} ⭐ no saldo e ${Math.floor(S.banco.poup)} ⭐ na poupança.</p>` : '';
-      el.innerHTML = conta + meta + `<p class="muted small">${Lj.texto} À vista tem 10% de desconto; parcelado tem juros. Para levar, acerte a conta do pagamento.</p>
-        <div class="produtos">${lista.map((p, i) => `<button type="button" class="prod ${p.ev ? 'exclusivo' : ''}" data-prod="${i}" ${temProduto(p) ? 'disabled' : ''}>
-          ${p.ev ? `<span class="selo">${p.ev.ic} Só no ${esc(p.ev.nome)}</span>` : ''}<span class="p-ic">${p.ic}</span><span class="p-nome">${esc(p.nome)}</span>
-          <span class="p-preco">${temProduto(p) ? '✓ Já é seu' : `${p.preco} ⭐`}</span>${p.tipo === 'inv' || p.tipo === 'movel' ? `<small class="muted">você tem ${p.tipo === 'inv' ? S.inv[p.id] || 0 : S.casa.guardados[p.id] || 0}${p.tipo === 'movel' ? ' guardado(s)' : ''}</small>` : ''}</button>`).join('')}</div>
+      el.innerHTML = conta + meta + formResgate(avisoKit) + `<p class="muted small">${Lj.texto} À vista tem 10% de desconto; parcelado tem juros. Para levar, acerte a conta do pagamento.</p>
+        <div class="produtos">${lista.map((p, i) => `<button type="button" class="prod ${p.ev ? 'exclusivo' : ''} ${p.kit ? 'kit' : ''}" data-prod="${i}" ${temProduto(p) ? 'disabled' : ''}>
+          ${p.ev ? `<span class="selo">${p.ev.ic} Só no ${esc(p.ev.nome)}</span>` : ''}${p.kit ? `<span class="selo">${KITS_APOIO[p.kit].ic} Kit ${esc(KITS_APOIO[p.kit].curto)}</span>` : ''}<span class="p-ic">${p.ic}</span><span class="p-nome">${esc(p.nome)}</span>
+          <span class="p-preco">${temProduto(p) ? '✓ Já é seu' : p.kit ? '🔒 Com código' : `${p.preco} ⭐`}</span>${p.tipo === 'inv' || p.tipo === 'movel' ? `<small class="muted">você tem ${p.tipo === 'inv' ? S.inv[p.id] || 0 : S.casa.guardados[p.id] || 0}${p.tipo === 'movel' ? ' guardado(s)' : ''}</small>` : ''}</button>`).join('')}</div>
         <p class="muted small">Crédito: 250 ⭐ + 60 por fase concluída. As parcelas são cobradas uma por dia; com parcela atrasada, só dá para comprar à vista.</p>`;
-      el.querySelectorAll('[data-prod]').forEach(b => b.addEventListener('click', () => { lojaEscolha = lista[+b.dataset.prod]; janelaLoja(); }));
+      el.querySelectorAll('[data-prod]').forEach(b => b.addEventListener('click', () => {
+        const p = lista[+b.dataset.prod];
+        if (p.kit) { const d = el.querySelector('.resgate'); d.open = true; el.querySelector('#resgate-c').focus(); return; }
+        lojaEscolha = p; janelaLoja();
+      }));
+      ligaResgate(el, r => janelaLoja(r));
     }
     el.querySelectorAll('[data-adianta]').forEach(b => b.addEventListener('click', () => { const d = S.loja.dividas[+b.dataset.adianta]; if (d && S.pontos >= d.parcela) { S.pontos -= d.parcela; d.faltam--; S.loja.dividas = S.loja.dividas.filter(x => x.faltam > 0); aviso(`💳 Parcela paga: −${d.parcela} ⭐`); hud(); salvar(); janelaLoja(); } }));
   }
@@ -4672,7 +4737,7 @@
     delete S.concluidas[f.id]; S.cont[f.id] = 0;
     teleporta(f); salvar(); aviso('🔄 Fase reiniciada');
   });
-  $('#b-zerar').addEventListener('click', () => { if (!confirm('Apagar todo o progresso do mundo? (O Meu progresso dos jogos não é apagado.)')) return; const av = S.av; S = novo(); S.av = av; dentro = false; noEnigma = false; sala = null; colocando = null; trocaFase(0); S.versao = 2; P.x = S.x; P.y = S.y; cam.ok = false; salvar(); fechaJanela(); hud(); confereJogos(); });
+  $('#b-zerar').addEventListener('click', () => { if (!confirm('Apagar todo o progresso do mundo? (O Meu progresso dos jogos não é apagado.)')) return; const av = S.av, kits = S.kits; S = novo(); S.av = av; S.kits = kits || {}; aplicaKits(); dentro = false; noEnigma = false; sala = null; colocando = null; trocaFase(0); S.versao = 2; P.x = S.x; P.y = S.y; cam.ok = false; salvar(); fechaJanela(); hud(); confereJogos(); });
   /* no celular os botões ficam escondidos num painel que abre pelo ☰ */
   const bMais = $('#b-mais'), painelBotoes = $('#hud-botoes');
   function painel(abre) { painelBotoes.classList.toggle('aberto', abre); bMais.setAttribute('aria-expanded', abre); bMais.textContent = abre ? '✕' : '☰'; bMais.setAttribute('aria-label', abre ? 'Esconder os botões' : 'Mostrar os botões'); }
@@ -4792,7 +4857,7 @@
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
