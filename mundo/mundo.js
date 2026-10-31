@@ -4165,7 +4165,7 @@
       const de = $('#bi-de').value.trim().slice(0, 20), t = $('#bi-txt').value.trim().slice(0, 80);
       if (!de || !t) return aviso('Escreva o seu apelido e o bilhete.');
       S.apelido = S.apelido || de; salvar();
-      try { $('#bi-codigo').value = await MDP.pacote.empacotar('MUNB1', { de, c: cifraTexto(t, +$('#bi-k').value), h: resumoTexto(t) }); $('#bi-saida').hidden = false; $('#bi-codigo').select(); feitoMundo('bilhete'); } catch (e) { aviso('Não deu para gerar o código neste navegador.'); }
+      try { $('#bi-codigo').value = await MDP.pacote.empacotar('MUNB1', { de, c: cifraTexto(t, +$('#bi-k').value), h: resumoTexto(t) }); $('#bi-saida').hidden = false; $('#bi-codigo').select(); feitoMundo('bilhete'); S.bilhetes = S.bilhetes || { lidos: {}, dia: 0, n: 0 }; S.bilhetes.enviados = (S.bilhetes.enviados || 0) + 1; salvar(); } catch (e) { aviso('Não deu para gerar o código neste navegador.'); }
     });
     $('#bi-copiar').addEventListener('click', async () => { $('#bi-codigo').select(); try { await navigator.clipboard.writeText($('#bi-codigo').value); aviso('📋 Código copiado! Mande para o seu amigo.'); } catch (e) { document.execCommand('copy'); } });
     $('#bi-abrir').addEventListener('click', async () => {
@@ -4245,7 +4245,7 @@
         if (passo >= TREM.prog.length) {
           if (i !== TREM.destino) return fim(`🛑 O programa acabou em <b>${esc(fases[i].nome)}</b>, não no destino. Ajuste os comandos e tente de novo.`);
           const menor = menorCaminhoTrem(atual.idx, TREM.destino), curto = TREM.prog.length === menor, R = S.trem && S.trem.dia === diaHoje() ? S.trem : (S.trem = { dia: diaHoje(), viagens: 0 });
-          R.viagens++; ganhaHabilidade(['PC'], 8); feitoMundo('trem');
+          R.viagens++; ganhaHabilidade(['PC'], 8); feitoMundo('trem'); if (curto) { S.tremTotal = S.tremTotal || { curtos: 0 }; S.tremTotal.curtos++; }
           if (R.viagens <= 3) pontos(10 + (curto ? 5 : 0), curto ? 'Programa mais curto possível! 🚂' : 'Chegou de trem! 🚂'); else aviso('🚂 Chegou!');
           SOM.toca('portao'); salvar();
           fim(`✅ Chegou em <b>${esc(fases[i].nome)}</b> com ${TREM.prog.length} comando(s).${curto ? ' É o programa mais curto possível!' : ` Dava para chegar com ${menor}.`}`, true);
@@ -4368,10 +4368,94 @@
     P.x = o.porta.x; P.y = o.porta.y; destino = null; cam.ok = false; hud();
     setTimeout(() => aviso(`📍 Você está na porta de ${o.nome} (${o.f.nome}, ${o.onde}). Aperte E para entrar.`), 900);   // depois do aviso com o nome da vila
   }
+  /* ---------- Cursos do Mundo para apoiadores do Catarse: percursos que juntam várias atividades do Mundo.
+     Liberados com a senha do mês da área premium (a mesma do "Usar na minha aula", conferida aqui pelo chaveiro cifrado de /premium/).
+     O acesso fica lembrado neste navegador até o fim do mês da senha. */
+  const NIVEL_CURSOS = 1;   // qualquer plano do Catarse (1 = Apoiador entusiasta)
+  const PREMIUM_SESSAO = 'ohtopico:premium', PREMIUM_LEMBRA = 'ohtopico:premium-aula', PLANOS_CATARSE = 'https://www.catarse.com.br/ohtopico/plans';
+  const mesAtual = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
+  function acessoPremium() {
+    const ler = (st, k) => { try { return JSON.parse(st.getItem(k)); } catch (e) { return null; } };
+    const a = ler(sessionStorage, PREMIUM_SESSAO) || ler(localStorage, PREMIUM_LEMBRA);
+    return a && a.nivel && a.mes && a.mes >= mesAtual() ? { nivel: +a.nivel, mes: a.mes } : null;
+  }
+  async function conferePremium(senha) {
+    const b64 = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+    const portao = await (await fetch('/premium/', { cache: 'no-cache' })).text();
+    const m = portao.match(/const SAL = '([^']+)', ITER = (\d+), NIVEIS = (\[.*?\]), PLANOS = (\{.*?\});/);
+    if (!m) throw new Error('portao');
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveKey']);
+    const k = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(m[1]), iterations: +m[2], hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    for (const n of JSON.parse(m[3])) { try { return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(n.iv) }, k, b64(n.d)))); } catch (e) { /* outro chaveiro */ } }
+    return null;
+  }
+  const estacaoCompleta = area => ORDEM_NIVEIS.some(nv => { const n = perguntasTele(nv, area).length; return n > 0 && feitasTele(nv, area) >= n; });
+  const contar = o => Object.keys(o || {}).filter(k => o[k]).length;
+  const CURSOS = [
+    { id: 'detetive', ic: '🕵️', nome: 'Detetive Digital', tema: 'Cidadania digital e segurança', passos: [
+      ['Investigue 6 mensagens suspeitas diferentes com os carteiros', () => contar((S.golpes || {}).ok), 6, 'golpe'],
+      ['Decifre 2 bilhetes secretos de amigos', () => contar((S.bilhetes || {}).lidos), 2, 'bilhete'],
+      ['Complete a estação 🔐 Segurança e privacidade num mundo do teletransporte', () => estacaoCompleta('seguranca') ? 1 : 0, 1, 'Portal de teletransporte'],
+      ['Escape da Casa do Enigma', () => (S.enigma && S.enigma.vitorias) ? 1 : 0, 1, 'Casa do Enigma']] },
+    { id: 'engenharia', ic: '⚡', nome: 'Engenharia de Circuitos', tema: 'Lógica e eletrônica', passos: [
+      ['Abra 4 portões com circuito lógico', () => contar(S.circ), 4, 'portao'],
+      ['Faça 4 experimentos na Oficina de Robótica', () => contar(EST_ROBO().feitos), 4, 'Oficina de Robótica'],
+      ['Monte a luz noturna automática (sensor de luz)', () => EST_ROBO().feitos.noturna ? 1 : 0, 1, 'Oficina de Robótica'],
+      ['Acenda o LED azul (dica: leia o cartaz da lei de Ohm)', () => EST_ROBO().feitos.azul ? 1 : 0, 1, 'Oficina de Robótica']] },
+    { id: 'matematica', ic: '📐', nome: 'Matemática no Mundo', tema: 'Plano cartesiano, grandezas e cálculo', passos: [
+      ['Pinte 3 modelos de pixel art por coordenadas', () => contar(EST_PX().feitos), 3, 'Museu'],
+      ['Colha 2 plantas da horta da sua casa', () => (S.horta && S.horta.colheitas) || 0, 2, 'Sua casa'],
+      ['Vença o Escape da Matemática', () => (S.emat && S.emat.vitorias) || 0, 1, 'Escape da Matemática'],
+      ['Chegue ao centro do Labirinto', () => (S.labirinto && S.labirinto.vitorias) || 0, 1, 'Labirinto']] },
+    { id: 'programacao', ic: '🧩', nome: 'Pensamento Computacional', tema: 'Algoritmos, sequências e otimização', passos: [
+      ['Faça 3 viagens de trenzinho com o programa mais curto possível', () => (S.tremTotal && S.tremTotal.curtos) || 0, 3, 'trem'],
+      ['Abra o portão do "OU exclusivo" (atalho entre o Vale da Inteligência e a Escola dos Professores)', () => (S.circ || {})['4-7'] ? 1 : 0, 1, 'portao'],
+      ['Complete a estação 🧩 Lógica e programação num mundo do teletransporte', () => estacaoCompleta('logica') ? 1 : 0, 1, 'Portal de teletransporte'],
+      ['Mande ou decifre um bilhete com a Cifra de César', () => contar((S.bilhetes || {}).lidos) + ((S.bilhetes || {}).enviados || 0), 1, 'bilhete']] }
+  ];
+  const EST_CURSOS = () => S.cursos || (S.cursos = { feitos: {} });
+  function janelaCursos(aviso2) {
+    const el = $('#cursos-conteudo'), a = acessoPremium();
+    if (!a || a.nivel < NIVEL_CURSOS) {
+      el.innerHTML = `<p>Os <b>cursos do Mundo</b> são percursos que juntam várias atividades: ${CURSOS.map(c => `${c.ic} ${c.nome}`).join(', ')}. Cada um termina com um diploma, 150 ⭐ e uma figurinha.</p>
+        <p class="muted">São exclusivos para quem apoia o projeto no Catarse. A professora ou o professor que apoia digita a <b>senha do mês da área premium</b> uma vez neste aparelho, e ele fica liberado até o fim do mês.</p>
+        ${aviso2 ? `<p class="aviso-erro">${aviso2}</p>` : ''}
+        <form id="cu-form" class="btn-row"><label>Senha do mês <input id="cu-senha" class="campo" type="password" autocomplete="current-password" required></label><button type="submit" class="hb verde">Liberar</button></form>
+        <p class="small" id="cu-fb" role="status"></p>
+        <p class="small muted">Ainda não apoia? <a href="${PLANOS_CATARSE}" target="_blank" rel="noopener">Veja os planos no Catarse</a>.</p>`;
+      $('#cu-form').addEventListener('submit', async e => {
+        e.preventDefault(); const fb = $('#cu-fb'); fb.textContent = 'Conferindo…';
+        let ch; try { ch = await conferePremium($('#cu-senha').value); } catch (err) { fb.textContent = 'Não deu para conferir agora. Verifique a internet e tente de novo.'; return; }
+        if (!ch) { fb.textContent = 'Senha incorreta. Confira a mensagem mais recente do Catarse: a senha muda todo mês.'; return; }
+        try { sessionStorage.setItem(PREMIUM_SESSAO, JSON.stringify(ch)); } catch (err) {}
+        try { localStorage.setItem(PREMIUM_LEMBRA, JSON.stringify({ nivel: ch.nivel, mes: ch.mes })); } catch (err) {}
+        if (!(ch.mes >= mesAtual())) return janelaCursos('Esta senha é de um mês que já passou. Use a senha deste mês.');
+        janelaCursos();
+      });
+      return;
+    }
+    const C = EST_CURSOS();
+    for (const c of CURSOS) if (!C.feitos[c.id] && c.passos.every(([, f, meta]) => f() >= meta)) {
+      C.feitos[c.id] = new Date().toLocaleDateString('pt-BR'); pontos(150, `🎓 Curso concluído: ${c.nome}!`); ganhaHabilidade(['PC', 'CD'], 20); SOM.toca('vitoria'); salvar();
+      setTimeout(() => ganhaFigurinha(null, `pelo curso ${c.nome}`), 1500);
+    }
+    el.innerHTML = `<p class="muted small">✨ Liberado pelo apoio no Catarse até o fim de ${a.mes.split('-').reverse().join('/')}. Obrigada por apoiar!</p>
+      ${CURSOS.map(c => { const feito = C.feitos[c.id]; return `<section class="curso${feito ? ' ok' : ''}"><h3>${c.ic} ${c.nome} <span class="muted small">· ${c.tema}</span></h3>
+        ${feito ? `<p class="diploma">🎓 <b>Diploma</b>: ${esc(S.apelido || 'Estudante')} concluiu o curso <b>${c.nome}</b> em ${feito}.</p>` : ''}
+        <ol class="etapas">${c.passos.map(([txt, f, meta, onde], i) => { const n = Math.min(f(), meta); return `<li class="${n >= meta ? 'ok' : ''}">${n >= meta ? '✅' : '⬜'} ${txt} <b>(${n}/${meta})</b>${n < meta ? ` <button type="button" class="hb azul mini" data-cu="${c.id}:${i}">Como fazer</button>` : ''}</li>`; }).join('')}</ol></section>`; }).join('')}`;
+    el.querySelectorAll('[data-cu]').forEach(b => b.addEventListener('click', () => { const [cid, i] = b.dataset.cu.split(':'), passo = CURSOS.find(c => c.id === cid).passos[+i]; comoFazer(passo[3]); }));
+  }
+  function comoFazer(onde) {
+    const dicas = { golpe: 'Converse com os moradores que pedem entregas (📦): eles também trazem mensagens suspeitas para investigar, até 3 por dia.', bilhete: 'Abra 🔏 Bilhetes no Menu: escreva um bilhete cifrado para um amigo ou cole o código de um bilhete que recebeu.', trem: 'Abra 🚂 Trenzinho no Menu ou no mapa e monte o caminho com o menor número de comandos.', portao: 'Cada portão entre vilas abertas pede um circuito na primeira passagem. Os atalhos têm os circuitos mais difíceis.' };
+    if (dicas[onde]) return dialogo('🎓', 'Como fazer', `<p>${dicas[onde]}</p>`, [{ txt: 'Entendi', classe: 'principal', fn: fechaDialogo }]);
+    const o = ONDE.find(x => x.nome === onde);
+    if (!o) return;
+    dialogo('🎓', 'Como fazer', `<p>Isso fica em <b>${esc(o.nome)}</b>: ${o.f.icone} ${esc(o.f.nome)}, ${o.onde}.</p>${liberada(o.f) ? '' : '<p class="muted">Essa vila ainda está fechada: complete as missões das vilas anteriores.</p>'}`, (liberada(o.f) ? [{ txt: 'Ir até lá', classe: 'principal', fn: () => { fechaDialogo(); irAte(o); } }] : []).concat([{ txt: 'Fechar', fn: fechaDialogo }]));
+  }
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca(); if (id === 'robotica') janelaRobo();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca(); if (id === 'robotica') janelaRobo(); if (id === 'cursos') janelaCursos();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4708,7 +4792,7 @@
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
