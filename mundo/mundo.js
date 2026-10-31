@@ -1810,7 +1810,7 @@
       const nome = $('#tu-nome').value.trim().slice(0, 30), cod = limpaTurma($('#tu-cod').value);
       if (!nome || !cod) { aviso('Escreva o seu nome e o código da turma.'); return; }
       T.nome = nome; T.codigo = cod; $('#tu-cod').value = cod; salvar();
-      try { $('#tu-codigo').value = await codigoTurma(); $('#tu-saida').hidden = false; $('#tu-codigo').select(); }
+      try { $('#tu-codigo').value = await codigoTurma(); eventoGC('mundo-turma'); $('#tu-saida').hidden = false; $('#tu-codigo').select(); }
       catch (e) { aviso('Não deu para gerar o código neste navegador.'); }
     });
     $('#tu-copiar').addEventListener('click', async () => {
@@ -3761,7 +3761,15 @@
     a.title = nv ? `Nível ${nv.n} (${nv.nome}) no Meu progresso · ${nv.total} pontos. Acertos no Mundo valem ${MDM.PONTOS.mundo} pontos (até ${MDM.MUNDO_DIA} por dia).` : 'Crie seu perfil no Meu progresso: acertos, nível e medalhas do Mundo contam lá';
   }
   const bloqueios = () => S.bloq || (S.bloq = {});
-  function contaResposta() { S.nResp = (S.nResp || 0) + 1; const B = bloqueios(); for (const k in B) if (B[k] <= S.nResp) delete B[k]; }
+  /* eventos anônimos no GoatCounter (sem nome, apelido ou progresso): no máximo uma vez por sessão do navegador */
+  function eventoGC(nome) {
+    const k = 'mundo-ev:' + nome;
+    try { if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, '1'); } catch (e) { if (eventoGC[k]) return; eventoGC[k] = 1; }
+    let n = 0;
+    const envia = () => { const g = window.goatcounter; if (g && g.count) g.count({ path: nome, title: 'Mundo', event: true }); else if (++n < 20) setTimeout(envia, 1500); };
+    envia();
+  }
+  function contaResposta() { eventoGC('mundo-jogou'); S.nResp = (S.nResp || 0) + 1; const B = bloqueios(); for (const k in B) if (B[k] <= S.nResp) delete B[k]; }
   const bloqueia = ch => { bloqueios()[ch] = (S.nResp || 0) + 1; };
   const bloqueada = ch => (bloqueios()[ch] || 0) > (S.nResp || 0);
   const avisoBloqueio = (ic, titulo) => dialogo(ic, titulo, '<p>Esta pergunta fica para depois: antes de tentar de novo, responda <b>outra pergunta</b> (converse com um morador, jogue uma casa ou visite outra estação). Assim você volta com a cabeça fresca!</p>', [{ txt: 'Combinado', classe: 'principal', fn: fechaDialogo }]);
@@ -4877,7 +4885,7 @@
     let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); vai(); } else if (++n > 90) clearInterval(t); }, 700);
   }
   linkDireto();
-  window.MUNDO_DEBUG = { linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
