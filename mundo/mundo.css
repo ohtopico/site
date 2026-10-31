@@ -171,3 +171,20 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 
 /* profissões */
 .etapas { list-style: none; padding: 0; margin: 6px 0; } .etapas li { margin: 3px 0; } .etapas li.ok { color: #2e7d32; } .etapas li.agora { font-weight: 600; }
+
+/* oficina de código */
+.of-niveis { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.of-n { display: flex; flex-direction: column; align-items: center; min-width: 46px; border: 2px solid var(--borda); border-radius: 12px; background: #fff; padding: 4px 6px; font: 700 15px Lexend, sans-serif; cursor: pointer; }
+.of-n small { font-size: 9px; font-weight: 400; } .of-n[aria-pressed="true"] { border-color: #3f8fe0; background: #eaf3fd; } .of-n:disabled { opacity: .5; cursor: not-allowed; }
+.of-area { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+#of-cv { border: 2px solid var(--borda); border-radius: 12px; width: 280px; max-width: 100%; }
+.of-lado { flex: 1 1 260px; min-width: 0; }
+.of-paleta { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; align-items: center; }
+.of-b { border: 2px solid var(--borda); border-radius: 12px; background: #fff; padding: 6px 10px; font: 500 14px Lexend, sans-serif; cursor: pointer; }
+.of-b:hover:not(:disabled) { background: #fff6dd; } .of-b[aria-pressed="true"] { border-color: #3f8fe0; background: #eaf3fd; } .of-b:disabled { opacity: .5; }
+.of-rep { display: inline-flex; align-items: center; gap: 4px; } .of-rep select { font: 500 14px Lexend, sans-serif; border-radius: 8px; padding: 4px; }
+.of-prog { border: 2px dashed var(--borda); border-radius: 12px; padding: 8px; min-height: 80px; max-height: 220px; overflow-y: auto; background: #fffdf6; }
+.bl { display: block; width: fit-content; background: #3f8fe0; color: #fff; border-radius: 8px; padding: 3px 10px; margin: 3px 0; font-size: 13px; }
+.bl.rep, .bl.fim { background: #f6b73c; color: #3a2a00; } .bl.fim { font-size: 11px; padding: 1px 8px; opacity: .8; }
+.bl.cursor { background: none; color: #9a6bd6; border: 1px dashed #9a6bd6; font-size: 11px; }
+.of-msg { font-weight: 600; min-height: 1.4em; }
