@@ -300,11 +300,12 @@
     // Sala da Matemática: o Escape da Matemática (em cima da estrada) e o Labirinto (embaixo)
     if (f.id === 'matematica') {
       f.salas = [];
-      for (const [id, cima] of [['emat', true], ['labirinto', false]]) {
+      for (const [id, cima, dir] of [['emat', true], ['labirinto', false], ['olimpiada', true, true]]) {
         const w = 4, d = 4;
         const cabe = (hx, hy) => { for (let j = hy - 1; j <= hy + d; j++) for (let k = hx - 1; k <= hx + w; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama || f.sol[pos(k, j)]) return false; return true; };
         let hx = 3, hy = cima ? MEIO - 2 - 2 - d : MEIO + 3;
-        search: for (const yy of cima ? [hy, hy - 1, hy - 2, hy + 1] : [hy, hy + 1, hy - 1, hy + 2]) for (const xx of [3, 4, 2, 5, 6]) if (cabe(xx, yy)) { hx = xx; hy = yy; break search; }
+        if (dir) hx = L - w - 4;
+        search: for (const yy of cima ? [hy, hy - 1, hy - 2, hy + 1] : [hy, hy + 1, hy - 1, hy + 2]) for (const xx of dir ? [L - w - 4, L - w - 5, L - w - 3, L - w - 6, L - w - 7] : [3, 4, 2, 5, 6]) if (cabe(xx, yy)) { hx = xx; hy = yy; break search; }
         for (let j = hy; j < hy + d; j++) for (let k = hx; k < hx + w; k++) f.sol[pos(k, j)] = 1;
         if (cima) for (let j = hy + d; j < MEIO - 1; j++) for (const k of [hx + 1, hx + 2]) f.tile[pos(k, j)] = T.caminho;
         f.salas.push({ id, gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } });
@@ -2704,7 +2705,7 @@
     setTimeout(() => { ganhaFigurinha(null, `pelo mundo ${TP.niveis[nv].nome}`); D.texto.innerHTML += `<p>🌀 <b>Você completou o mundo ${TP.niveis[nv].nome}!</b> +100 ⭐. Refaça o teste de proficiência para ver se subiu de nível.</p>`; }, 200);
   }
   function arvoreTele(a) {
-    const x = a.x + a.w / 2, y = a.y + a.d / 2, tipo = temaTele().arvore, h = 1 + a.v * 0.6;
+    const x = a.x + a.w / 2, y = a.y + a.d / 2, tipo = a.tipo || temaTele().arvore, h = 1 + a.v * 0.6;
     sombra(x, y, 0.7);
     if (tipo === 'coqueiro') {
       for (let k = 0; k < 4; k++) caixa(x - 0.1 + Math.sin(k * 0.6) * 0.06 * k, y - 0.1, k * h * 0.45, 0.2, 0.2, h * 0.45, '#9a6b3f', { blocos: false });
@@ -2769,6 +2770,73 @@
     missoes: () => Object.keys(TP.areas).map(a => ({ nome: `${TP.areas[a].ic} ${TP.areas[a].nome}`, n: feitasTele(teleNivel, a), meta: perguntasTele(teleNivel, a).length, ok: feitasTele(teleNivel, a) >= perguntasTele(teleNivel, a).length })),
     boasVindas: () => { const N = TP.niveis[teleNivel], r = resultadoTeste(), fr = r && r.nivel === teleNivel ? (r.estudar || []).filter(k => TP.areas[k]) : [];
       dialogo('🌀', temaTele().nome, `<p>Bem-vindo à <b>${temaTele().nome}</b>, o mundo do nível ${N.ic} <b>${N.nome}</b>! Cada prédio é uma das 6 áreas do teste, com perguntas deste nível e materiais para estudar.</p>${fr.length ? `<p>As estações com ⭐ foram as áreas com menos acertos no seu teste: ${fr.map(k => TP.areas[k].ic + ' ' + TP.areas[k].nome).join(' e ')}.</p>` : ''}<p class="muted">Complete as 6 estações para ganhar +100 ⭐ e uma figurinha. Depois, refaça o teste!</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }]); }
+  };
+  /* --- Mundo da Olimpíada (Sala da Matemática): problemas originais no estilo das olimpíadas de matemática, em 3 níveis.
+     É um mundo aberto como o do teletransporte, com as mesmas posições de prédios, e cada prédio é um tipo de problema. */
+  const OL = window.OLIMPIADA || { niveis: {}, areas: {}, perguntas: {} };
+  const ORDEM_OL = ['n1', 'n2', 'n3'];
+  let olNivel = 'n1';
+  const TEMAS_OL = {
+    n1: { nome: 'Vale dos Desafios', chao: ['#bfe3a0', '#b2d992'], caminho: '#f6dfa4', fundo: '#5fb3a1', arvore: 'pinheiro', predio: ['#fde7b0', '#d98b3a'], deco: ['🌻', '🐝', '🍀'] },
+    n2: { nome: 'Planalto dos Problemas', chao: ['#e9d9a8', '#e0cd95'], caminho: '#cfa36b', fundo: '#c9733f', arvore: 'cacto', predio: ['#f2d3b0', '#b0533c'], deco: ['🪨', '🦂', '🌾'] },
+    n3: { nome: 'Torre das Olimpíadas', chao: ['#e8ecf7', '#dbe1f0'], caminho: '#c9c2ec', fundo: '#2a2350', arvore: 'cristal', predio: ['#e6ddff', '#5b3f8f'], deco: ['✨', '🏅', '💠'] }
+  };
+  const temaOl = () => TEMAS_OL[olNivel] || TEMAS_OL.n1;
+  const EST_OL = () => S.olimp || (S.olimp = { premios: {} });
+  const perguntasOl = (nv, area) => (OL.perguntas[nv] && OL.perguntas[nv][area] || []).map(([enun, alts, certa, coment], i) => ({ id: `ol:${nv}:${area}:${i}`, enun, alts, certa, coment, eixos: ['PC'] }));
+  const feitasOl = (nv, area) => perguntasOl(nv, area).filter(p => S.resp[p.id] === true).length;
+  const ESTACOES_OL = Object.keys(OL.areas).map((area, i) => ({ id: 'estacao', area, x: [2, 9, 16, 2, 16, 5][i], y: [1, 0.6, 1, 7.5, 7.5, 10][i], w: 2, d: 2, acao: `problemas de ${OL.areas[area].nome}` }));
+  const ENFEITES_OL = {};
+  function enfeitesOl(nv) {
+    if (ENFEITES_OL[nv]) return ENFEITES_OL[nv];
+    const E = enfeitesTele(ORDEM_NIVEIS[ORDEM_OL.indexOf(nv) + 1] || 'basico'), tipo = TEMAS_OL[nv].arvore;
+    return (ENFEITES_OL[nv] = { arv: E.arv.map(a => Object.assign({}, a, { tipo })), deco: E.deco.map(d => Object.assign({}, d)) });
+  }
+  const objsOl = () => { const E = enfeitesOl(olNivel); return ESTACOES_OL.concat(E.arv, E.deco); };
+  function portaoOl() {
+    const fecha = { txt: 'Agora não', fn: fechaDialogo }, T = EST_OL();
+    dialogo('🏅', 'Mundo da Olimpíada', `<p>Este portal leva a um mundo de <b>problemas de olimpíada de matemática</b>, como os da OBMEP: contagem, lógica, números, geometria, padrões e equações. Cada prédio tem 3 problemas, com 5 alternativas como na primeira fase.</p><p>Escolha o nível:</p><ul class="etapas">${ORDEM_OL.map(nv => { const N = OL.niveis[nv], f = Object.keys(OL.areas).reduce((a, ar) => a + feitasOl(nv, ar), 0), t = Object.keys(OL.areas).reduce((a, ar) => a + perguntasOl(nv, ar).length, 0); return `<li class="${T.premios[nv] ? 'ok' : ''}">${N.ic} <b>${N.nome}</b> · ${N.anos} · ${f} de ${t} problemas</li>`; }).join('')}</ul><p class="muted small">Os problemas foram criados para o site, no estilo das olimpíadas. Use o ✏️ rascunho para as contas: olimpíada é para pensar com calma.</p>`,
+      ORDEM_OL.map((nv, i) => ({ txt: `${OL.niveis[nv].ic} ${OL.niveis[nv].nome} (${OL.niveis[nv].anos})`, classe: i ? '' : 'principal', fn: () => { fechaDialogo(); olNivel = nv; SOM.toca('portao'); entraSala('olimpiada'); } })).concat([fecha]));
+  }
+  function usaOl(o) {
+    const nv = olNivel, A = OL.areas[o.area], ps = perguntasOl(nv, o.area), feitas = feitasOl(nv, o.area), fecha = { txt: 'Fechar', fn: fechaDialogo };
+    const prox = ps.find(p => S.resp[p.id] !== true && !bloqueada(p.id)), esperando = !prox && ps.some(p => S.resp[p.id] !== true);
+    dialogo(A.ic, A.nome, `<p>${OL.niveis[nv].ic} ${OL.niveis[nv].nome}: <b>${feitas} de ${ps.length}</b> problemas resolvidos.</p>${prox ? '' : esperando ? '<p>⏳ O problema que falta é o que você errou agora há pouco. Resolva um de outro prédio e volte aqui.</p>' : '<p>✅ Você resolveu todos os problemas deste prédio!</p>'}`,
+      (prox ? [{ txt: 'Resolver um problema', classe: 'principal', fn: () => pergunta(`${A.nome} · ${OL.niveis[nv].nome}`, A.ic, embaralhaTele(prox), certo => { if (certo) confereOl(); }) }] : []).concat([fecha]));
+  }
+  function confereOl() {
+    const nv = olNivel, T = EST_OL();
+    if (T.premios[nv] || !Object.keys(OL.areas).every(a => feitasOl(nv, a) >= perguntasOl(nv, a).length)) return;
+    T.premios[nv] = true; pontos(150); SOM.toca('vitoria'); salvar();
+    setTimeout(() => { ganhaFigurinha(null, `pelo ${OL.niveis[nv].nome} da Olimpíada`); D.texto.innerHTML += `<p>🏅 <b>Você resolveu todos os problemas do ${OL.niveis[nv].nome}!</b> +150 ⭐. ${nv !== 'n3' ? 'Que tal tentar o próximo nível?' : 'Parabéns, olímpico!'}</p>`; }, 200);
+  }
+  function predioOl(o) {
+    const ok = feitasOl(olNivel, o.area) >= perguntasOl(olNivel, o.area).length, [base, teto] = temaOl().predio, x = o.x + 0.1, y = o.y + 0.1, w = o.w - 0.2, d = o.d - 0.2;
+    sombra(o.x + 1, o.y + 1, 1.5);
+    caixa(x, y, 0, w, d, 1.5, base);
+    for (const [a, b] of [[0, 0], [w - 0.25, 0], [0, d - 0.25], [w - 0.25, d - 0.25]]) caixa(x + a, y + b, 0, 0.25, 0.25, 1.6, '#ffffff', { blocos: false });   // colunas de templo
+    caixa(x - 0.15, y - 0.15, 1.6, w + 0.3, d + 0.3, 0.22, teto, { blocos: false }); caixa(x + 0.2, y + 0.2, 1.82, w - 0.4, d - 0.4, 0.25, teto, { blocos: false });
+    caixa(o.x + 0.8, o.y + o.d - 0.12, 0, 0.4, 0.06, 0.8, '#7a523a', { blocos: false });
+    const [sx, sy] = iso(o.x + 1, o.y + 1, 2.6 + Math.sin(agora / 500 + o.x) * 0.08);
+    ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(ok ? '✅' : OL.areas[o.area].ic, sx, sy);
+    if (Math.hypot(o.x + 1 - P.x, o.y + 2.4 - P.y) < 3.2) rotulo(OL.areas[o.area].nome, sx, sy - 22, '#fff7e8');
+  }
+  function desenhaOl() {
+    const E = enfeitesOl(olNivel), T2 = temaOl();
+    return ESTACOES_OL.map(o => ({ k: o.x + o.y + o.w / 2 + o.d / 2, d: () => predioOl(o) }))
+      .concat(E.arv.map(a => ({ k: a.x + a.y + 0.6, d: () => arvoreTele(a) })))
+      .concat(E.deco.map(o => ({ k: o.x + o.y, d: () => { const [sx, sy] = iso(o.x + 0.15, o.y + 0.15, 0.2); ctx.font = '15px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(T2.deco[o.ic], sx, sy); } })))
+      .concat([{ k: 10 + TD_TELE - 1.6, d: () => { const z = SALA_OL.saida; desenhaPortalTele({ gx: z.x - 1, y: z.y - 1.8 }, Math.hypot(z.x - P.x, z.y - P.y) < 3, 'Portal de volta para a Sala da Matemática'); } }]);
+  }
+  const SALA_OL = {
+    aberto: true, get nome() { return temaOl().nome; }, ic: '🏅', get sub() { const N = OL.niveis[olNivel]; return `${N.ic} Olimpíada · ${N.nome} · ${N.anos}`; }, W: TW_TELE, D: TD_TELE, saida: { x: 10, y: TD_TELE - 0.5 }, alturaParede: 0,
+    get fundo() { return temaOl().fundo; }, get base() { return escuro(temaOl().chao[0], 0.25); }, parede: '#ffffff', get piso() { return temaOl().chao; },
+    pisoEm: (x, y) => caminhoTele.has(x + ',' + y) ? temaOl().caminho : temaOl().chao[(x * 7 + y * 3) % 5 ? 0 : 1],
+    estilo: { base: '#fde7b0', telhado: '#d98b3a', porta: '#7a523a', ic: '🏅', nome: 'Mundo da Olimpíada' },
+    local: () => localSala('olimpiada'), estado: EST_OL, objs: objsOl, livre: (x, y) => livreObjs(SALA_OL, x, y), usa: usaOl, desenha: desenhaOl,
+    mini: (c, ox, oy, s) => { c.fillStyle = temaOl().caminho; for (const k of caminhoTele) { const [x, y] = k.split(',').map(Number); c.fillRect(ox + x * s, oy + y * s, s, s); } for (const o of ESTACOES_OL) { c.fillStyle = feitasOl(olNivel, o.area) >= perguntasOl(olNivel, o.area).length ? '#4bb259' : '#d98b3a'; c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, o.d * s); } },
+    missoes: () => Object.keys(OL.areas).map(a => ({ nome: `${OL.areas[a].ic} ${OL.areas[a].nome}`, n: feitasOl(olNivel, a), meta: perguntasOl(olNivel, a).length, ok: feitasOl(olNivel, a) >= perguntasOl(olNivel, a).length })),
+    boasVindas: () => dialogo('🏅', temaOl().nome, `<p>Bem-vindo à <b>${temaOl().nome}</b>, o mundo do ${OL.niveis[olNivel].ic} <b>${OL.niveis[olNivel].nome}</b> (${OL.niveis[olNivel].anos})! Cada templo é um tipo de problema de olimpíada. Resolvendo todos, você ganha 150 ⭐ e uma figurinha.</p><p class="muted">Dica de olímpico: leia duas vezes, desenhe, teste com números pequenos e confira a resposta no final.</p>`, [{ txt: 'Vamos pensar!', classe: 'principal', fn: fechaDialogo }])
   };
   /* --- Museu (Vila do Começo): expõe o que o estudante fez pelo site. As moedas do jogo Cunhe sua Própria Moeda,
      as estrelas secretas do material didático (que dão itens especiais para a casa, sem gastar a contagem), as medalhas
@@ -3175,6 +3243,7 @@
   const EST_MUSEU = () => S.museu || (S.museu = {});
   const SALAS = {
     tele: SALA_TELE,
+    olimpiada: SALA_OL,
     museu: {
       nome: 'Museu', ic: '🏛️', sub: 'O que você fez pelo site', W: 10, D: 7, saida: { x: 5, y: 6.5 }, alturaParede: 2.6,
       fundo: '#2b2620', base: '#8a6a4a', parede: '#f0dfc0', piso: ['#e8dcc4', '#f5ecd9'],
@@ -4386,7 +4455,7 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pesca') return pesca(); if (a.tipo === 'sala') return entraSala(a.sala.id); if (a.tipo === 'portalTele') return portalTele(); if (a.tipo === 'sobj') return SALAS[sala].usa(a.obj); if (a.tipo === 'ssaida') return saiSala(); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'recurso') return juntaRecurso(a); if (a.tipo === 'pesca') return pesca(); if (a.tipo === 'sala') return a.sala.id === 'olimpiada' ? portaoOl() : entraSala(a.sala.id); if (a.tipo === 'portalTele') return portalTele(); if (a.tipo === 'sobj') return SALAS[sala].usa(a.obj); if (a.tipo === 'ssaida') return saiSala(); if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* --- Horta da casa: cada semente cresce um tanto fixo de cm por dia regado (uma função afim). Para regar, o estudante calcula
@@ -5111,7 +5180,7 @@
     let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); vai(); } else if (++n > 90) clearInterval(t); }, 700);
   }
   linkDireto();
-  window.MUNDO_DEBUG = { EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
