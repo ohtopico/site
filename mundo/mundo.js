@@ -148,6 +148,7 @@
         av: { pele: PELES[(k + f.idx) % PELES.length], cabelo: CABELOS[(k * 2 + f.idx) % CABELOS.length], estilo: ['curto', 'longo', 'coque', 'bone'][(k + f.idx) % 4], camisa: ROUPAS[(k * 3 + f.idx) % ROUPAS.length], calca: ['#2f3b6b', '#5a3b2a', '#333333'][k % 3] } });
     }
   }
+  let eventosProntos = false;   // os itens de evento só entram depois que a lista de eventos existe
   function monta(f) {
     if (f.tile) return;
     const L = f.L, r = rng(1000 + f.idx * 77);
@@ -276,9 +277,10 @@
       const tipo = SORTEIO_ITENS[(f.itens.length + f.idx) % SORTEIO_ITENS.length];
       f.itens.push({ id: `${f.id}-s${SEMANA}-${f.itens.length}`, x: f.x0 + x + 0.5, y: y + 0.5, tipo });
     }
+    f.evItens = eventosProntos ? itensEvento(f) : [];
   }
   /* desmonta a vila (o que ocupa memória: chão, árvores, flores, casas, itens); moradores, portões e as casas especiais ficam */
-  function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'flores', 'casas', 'itens', 'cercas']) delete f[k]; }
+  function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'flores', 'casas', 'itens', 'cercas', 'evItens']) delete f[k]; }
   for (const f of fases) { monta(f); desmonta(f); }        // uma passada para guardar a posição das casas especiais e dos moradores
   const LARG = ALT;
   let atual = fases[0];
@@ -309,15 +311,33 @@
     aquario: { nome: 'Aquário', ic: '🐠', w: 1, d: 1, custo: { diamante: 2, estrela: 1 }, requer: 'vaso', acao: 'ver os peixes', des: (x, y) => { caixa(x + 0.1, y + 0.2, 0, 0.8, 0.6, 0.5, '#5a3b2a'); caixa(x + 0.12, y + 0.22, 0.5, 0.76, 0.56, 0.55, '#9fe3f5', { blocos: false }); const k = (Math.sin(agora / 700) + 1) / 2; naFace('y', x + 0.12, y + 0.22, 0.76, 0.56, 0.1 + k * 0.45, 0, 0.14, 0.75, 0.08, '#ff8a3d'); } },
     robo: { nome: 'Robozinho', ic: '🤖', w: 1, d: 1, custo: { diamante: 2, chave: 1 }, requer: 'luminaria', acao: 'responder ao robô', des: (x, y) => { const z = Math.abs(Math.sin(agora / 400)) * 0.06; caixa(x + 0.3, y + 0.3, z, 0.4, 0.4, 0.45, '#a8e6b8'); caixa(x + 0.32, y + 0.32, z + 0.45, 0.36, 0.36, 0.3, '#c9efd9'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.07, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.22, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); caixa(x + 0.47, y + 0.47, z + 0.75, 0.06, 0.06, 0.2, '#888888', { blocos: false }); caixa(x + 0.44, y + 0.44, z + 0.95, 0.12, 0.12, 0.08, '#e0564a', { blocos: false }); } },
     telescopio: { nome: 'Telescópio', ic: '🔭', w: 1, d: 1, custo: { diamante: 3, estrela: 2 }, requer: 'robo', acao: 'olhar o mapa', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 0.95, '#555555', { blocos: false }); caixa(x + 0.3, y + 0.35, 0.05, 0.4, 0.3, 0.05, '#555555', { blocos: false }); caixa(x + 0.38, y + 0.1, 0.95, 0.24, 0.8, 0.24, '#3f8fe0'); caixa(x + 0.35, y + 0.05, 0.92, 0.3, 0.12, 0.3, '#ffd58a'); } },
-    arcade: { nome: 'Fliperama', ic: '🕹️', w: 1, d: 1, custo: { chave: 2, diamante: 2 }, requer: 'robo', acao: 'jogar', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 0.8, 0.7, 1.75, '#9a6bd6'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.12, 0, 0.56, 1.0, 0.5, '#1b2531'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.25 + ((agora / 300 | 0) % 3) * 0.1, 0, 0.08, 1.2, 0.08, '#a8e6b8'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.2, 0, 0.1, 0.75, 0.1, '#e0564a'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.45, 0, 0.1, 0.75, 0.1, '#ffd58a'); } }
+    arcade: { nome: 'Fliperama', ic: '🕹️', w: 1, d: 1, custo: { chave: 2, diamante: 2 }, requer: 'robo', acao: 'jogar', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 0.8, 0.7, 1.75, '#9a6bd6'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.12, 0, 0.56, 1.0, 0.5, '#1b2531'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.25 + ((agora / 300 | 0) % 3) * 0.1, 0, 0.08, 1.2, 0.08, '#a8e6b8'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.2, 0, 0.1, 0.75, 0.1, '#e0564a'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.45, 0, 0.1, 0.75, 0.1, '#ffd58a'); } },
+    // móveis de evento: só se ganham completando as missões das datas comemorativas
+    pinheiro: { nome: 'Árvore de Natal', ic: '🎄', w: 1, d: 1, evento: true, acao: 'acender as luzes', des: (x, y) => { caixa(x + 0.42, y + 0.42, 0, 0.16, 0.16, 0.3, '#a0703f', { blocos: false }); [[0.1, 0.3, 0.8], [0.2, 0.75, 0.6], [0.3, 1.15, 0.4]].forEach(([o, z, w]) => caixa(x + o, y + o, z, w, w, 0.45, '#3f9a5a')); caixa(x + 0.42, y + 0.42, 1.6, 0.16, 0.16, 0.16, '#ffd84a', { blocos: false }); luzinhas(x + 0.5, y + 0.5, 0.5, 1.3, 0.35); } },
+    bolaEspelhada: { nome: 'Bola espelhada de Ano Novo', ic: '🪩', w: 1, d: 1, evento: true, acao: 'girar a bola', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 1.1, '#888888', { blocos: false }); caixa(x + 0.25, y + 0.25, 1.1, 0.5, 0.5, 0.5, '#d9e3ea'); luzinhas(x + 0.5, y + 0.5, 1.15, 1.5, 0.3, ['#ffffff', '#c7f0ff', '#ffe9a8']); } },
+    tambor: { nome: 'Tambor de Carnaval', ic: '🥁', w: 1, d: 1, evento: true, acao: 'tocar o tambor', des: (x, y) => { caixa(x + 0.2, y + 0.2, 0, 0.6, 0.6, 0.55, '#e0564a'); caixa(x + 0.18, y + 0.18, 0.55, 0.64, 0.64, 0.06, '#fff7e8'); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0, 0, 0.6, 0.25, 0.08, '#ffd84a'); naFace('x', x + 0.2, y + 0.2, 0.6, 0.6, 0, 0, 0.6, 0.25, 0.08, '#ffd84a'); } },
+    ovao: { nome: 'Ovo de Páscoa gigante', ic: '🥚', w: 1, d: 1, evento: true, acao: 'admirar o ovo', des: (x, y) => { caixa(x + 0.25, y + 0.25, 0, 0.5, 0.5, 0.15, '#f7a8c4'); caixa(x + 0.15, y + 0.15, 0.15, 0.7, 0.7, 0.5, '#c7b4f2'); caixa(x + 0.22, y + 0.22, 0.65, 0.56, 0.56, 0.25, '#a8d8f7'); caixa(x + 0.32, y + 0.32, 0.9, 0.36, 0.36, 0.15, '#ffd58a'); } },
+    balaoJunino: { nome: 'Balão de festa junina', ic: '🏮', w: 1, d: 1, evento: true, acao: 'acender o balão', des: (x, y) => { caixa(x + 0.47, y + 0.47, 0, 0.06, 0.06, 1.1, '#a0703f', { blocos: false }); caixa(x + 0.25, y + 0.25, 1.1, 0.5, 0.5, 0.5, '#f6b73c'); caixa(x + 0.3, y + 0.3, 1.6, 0.4, 0.4, 0.15, '#e0564a'); } },
+    pipa: { nome: 'Pipa', ic: '🪁', w: 1, d: 1, evento: true, acao: 'brincar com a pipa', des: (x, y) => { caixa(x + 0.47, y + 0.47, 0, 0.06, 0.06, 1.2, '#a0703f', { blocos: false }); const [sx, sy] = iso(x + 0.5, y + 0.5, 1.6 + Math.sin(agora / 500) * 0.05); ctx.fillStyle = '#3f8fe0'; ctx.beginPath(); ctx.moveTo(sx, sy - 18); ctx.lineTo(sx + 12, sy); ctx.lineTo(sx, sy + 16); ctx.lineTo(sx - 12, sy); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#ffd84a'; ctx.beginPath(); ctx.moveTo(sx, sy - 18); ctx.lineTo(sx + 12, sy); ctx.lineTo(sx, sy); ctx.closePath(); ctx.fill(); } },
+    lousa: { nome: 'Lousa da professora', ic: '🧑‍🏫', w: 1, d: 1, evento: true, acao: 'ler a lousa', des: (x, y) => { caixa(x + 0.2, y + 0.4, 0, 0.08, 0.08, 1.2, '#a0703f', { blocos: false }); caixa(x + 0.72, y + 0.4, 0, 0.08, 0.08, 1.2, '#a0703f', { blocos: false }); caixa(x + 0.12, y + 0.35, 0.55, 0.76, 0.12, 0.65, '#2f5d46', { blocos: false }); naFace('y', x + 0.12, y + 0.35, 0.76, 0.12, 0.12, 0, 0.5, 0.95, 0.03, '#ffffff'); naFace('y', x + 0.12, y + 0.35, 0.76, 0.12, 0.12, 0, 0.35, 0.82, 0.03, '#ffffff'); } },
+    abobora: { nome: 'Abóbora iluminada', ic: '🎃', w: 1, d: 1, evento: true, acao: 'acender a abóbora', des: (x, y) => { caixa(x + 0.2, y + 0.2, 0, 0.6, 0.6, 0.45, '#f08a24'); caixa(x + 0.45, y + 0.45, 0.45, 0.1, 0.1, 0.12, '#4f9a4b', { blocos: false }); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0.1, 0, 0.1, 0.25, 0.08, '#ffe066'); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0.38, 0, 0.1, 0.25, 0.08, '#ffe066'); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0.15, 0, 0.3, 0.1, 0.06, '#ffe066'); } }
   };
+  /* pontinhos de luz piscando em volta de um objeto (árvore de Natal, enfeites) */
+  function luzinhas(cx, cy, z0, z1, raio, cores = ['#ff5a5a', '#ffd84a', '#5ad1ff', '#7dff8a']) {
+    for (let i = 0; i < 9; i++) {
+      if ((Math.floor(agora / 400) + i) % 3 === 0) continue;
+      const a = i * 2.4, z = z0 + (z1 - z0) * (i / 9), r = raio * (1 - i / 12);
+      const [sx, sy] = iso(cx + Math.cos(a) * r, cy + Math.sin(a) * r, z);
+      ctx.fillStyle = cores[i % cores.length]; ctx.beginPath(); ctx.arc(sx, sy, 2.6, 0, Math.PI * 2); ctx.fill();
+    }
+  }
   const casaNova = () => ({ cor: '#f7a8c4', guardados: {}, feitos: {}, visitou: false, dormiu: '',
     moveis: [{ id: 'estante', x: 0, y: 1 }, { id: 'computador', x: 2, y: 0 }, { id: 'bau', x: 4, y: 0 }, { id: 'espelho', x: 6, y: 0 }, { id: 'cama', x: 8, y: 0 }, { id: 'bancada', x: 10, y: 0 }] });
 
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -479,6 +499,8 @@
     ctx.beginPath(); ctx.roundRect(sx - 18, sy - 18, 36, 34, 9); ctx.fill(); ctx.stroke();
     ctx.globalAlpha = feito ? 1 : 0.6; ctx.font = '20px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(c.lugar.icone, sx, sy - 1); ctx.globalAlpha = 1;
     if (feito) { ctx.font = '14px system-ui, sans-serif'; ctx.fillText('✅', sx + 16, sy - 16); }
+    if (DECOR.has('abobora')) { const ax = x - 0.15, ay = y + d - 0.6; caixa(ax, ay, 0, 0.45, 0.45, 0.32, '#f08a24', { blocos: false }); naFace('y', ax, ay, 0.45, 0.45, 0.08, 0, 0.08, 0.16, 0.06, '#ffe066'); naFace('y', ax, ay, 0.45, 0.45, 0.28, 0, 0.08, 0.16, 0.06, '#ffe066'); }
+    if (DECOR.has('baloes') && !leve) for (let k = 0; k < 3; k++) { const [bx2, by2] = iso(x + 0.3 + k * 0.4, y + d, h + 1.2 + k * 0.25 + Math.sin(agora / 700 + k + x) * 0.1); ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx2, by2 + 9); ctx.lineTo(bx2, by2 + 30); ctx.stroke(); ctx.fillStyle = ['#e0564a', '#ffd84a', '#3f8fe0'][k]; ctx.beginPath(); ctx.ellipse(bx2, by2, 7, 9, 0, 0, Math.PI * 2); ctx.fill(); }
     if (perto) rotulo(c.lugar.titulo, sx, sy - 34);
   }
   /* a casa do jogador: maior, com telhado em degraus, floreiras e fumaça na chaminé */
@@ -516,6 +538,7 @@
     const folha = ['#6fcf7f', '#8fdc78', '#f5a9c8'][a.tipo];   // uma em cada três é uma cerejeira rosa
     caixa(a.x + 0.05, a.y + 0.05, 1, 0.9, 0.9, 0.8, folha);
     if (a.alt > 1) caixa(a.x + 0.22, a.y + 0.22, 1.8, 0.56, 0.56, 0.5, claro(folha, 0.08));
+    if (DECOR.has('luzes') && !leve) luzinhas(a.x + 0.5, a.y + 0.5, 1.1, 1.8, 0.5);
   }
   function desenhaMarco(f) {
     const x = f.centro.x - 1, y = f.centro.y - 1;
@@ -643,6 +666,7 @@
     // itens: pega ao passar por cima (o diamante pede uma pergunta antes)
     const f = faseDeX(P.x);
     for (const p of f.portais) if (P.andando && Math.hypot(p.x - P.x, p.y - P.y) < 0.9 && liberada(fases[p.para])) { trocaFase(p.para, f.idx); return; }
+    for (const it of f.evItens) { const E = estEv(it.ev); if (!E.itens[it.id] && Math.hypot(it.x - P.x, it.y - P.y) < 0.55) { E.itens[it.id] = true; pontos(5, `${it.ev.item[0]} ${it.ev.item[1]}! (${Object.keys(E.itens).length}/${metaItensEv()}) · ${it.ev.nome}`); salvar(); } }
     for (const it of f.itens) if (!S.itens[it.id] && Math.hypot(it.x - P.x, it.y - P.y) < 0.55) { pegaItem(it, f); break; }
     if (f !== faseAtual) { faseAtual = f; hud(); if (agora > 1000) aviso(`${f.icone} ${f.nome}`); }
   }
@@ -1129,6 +1153,168 @@
   }
   function janelaEspecial() { embaralha(); $('#esp-fim').hidden = true; desenhaEspecial(); }
   function encaixaPeca() { if (!(S.inv.peca > 0) || S.quebra >= 4) return; S.inv.peca--; S.quebra++; salvar(); if (S.quebra === 4) pontos(20, '🧩 Quebra-cabeça completo! O jogo especial está liberado.'); inventario(); }
+  /* ---------- datas comemorativas e aniversários da computação ----------
+     Um evento começa 2 semanas antes da data e termina 1 semana depois. Para testar outra data: /mundo/?data=2026-12-20 */
+  const HOJE = (() => { const m = /[?&]data=(\d{4})-(\d{2})-(\d{2})/.exec(location.search); const d = m ? new Date(+m[1], m[2] - 1, +m[3]) : new Date(); d.setHours(0, 0, 0, 0); return d; })();
+  const DIA = 864e5, somaDias = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const ddmm = d => `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
+  function pascoa(Y) {   // domingo de Páscoa (algoritmo de Meeus/Jones/Butcher)
+    const a = Y % 19, b = Math.floor(Y / 100), c = Y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+    const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+    return new Date(Y, Math.floor((h + l - 7 * m + 114) / 31) - 1, ((h + l - 7 * m + 114) % 31) + 1);
+  }
+  const EVENTOS = [
+    { id: 'anonovo', nome: 'Ano Novo', ic: '🎆', data: Y => new Date(Y, 0, 1), item: ['🎆', 'Estrelinha de Ano Novo'], decor: ['fogos', 'confete'], movel: 'bolaEspelhada', texto: 'Fogos no céu da vila! Junte as estrelinhas e comece o ano aprendendo.' },
+    { id: 'carnaval', nome: 'Carnaval', ic: '🎭', data: Y => somaDias(pascoa(Y), -47), item: ['🎭', 'Máscara'], decor: ['confete', 'bandeiras'], movel: 'tambor', texto: 'A vila virou bloco de Carnaval! Encontre as máscaras escondidas.' },
+    { id: 'pascoa', nome: 'Páscoa', ic: '🐣', data: pascoa, item: ['🥚', 'Ovo colorido'], decor: ['ovos'], movel: 'ovao', texto: 'Ovos coloridos apareceram pelas vilas. Quem acha mais?' },
+    { id: 'junina', nome: 'Festa Junina', ic: '🌽', data: Y => new Date(Y, 5, 24), item: ['🌽', 'Milho'], decor: ['bandeiras', 'baloes'], movel: 'balaoJunino', texto: 'Arraiá na vila! Bandeirinhas, balões e milho para colher.' },
+    { id: 'criancas', nome: 'Dia das Crianças', ic: '🪁', data: Y => new Date(Y, 9, 12), item: ['🎈', 'Balão'], decor: ['baloes', 'confete'], movel: 'pipa', texto: 'Festa das crianças: balões por todo lado!' },
+    { id: 'professor', nome: 'Dia do Professor', ic: '🍎', data: Y => new Date(Y, 9, 15), item: ['✏️', 'Lápis'], decor: ['bandeiras'], movel: 'lousa', texto: 'Homenagem a quem ensina! Recolha os lápis espalhados pela vila.' },
+    { id: 'saci', nome: 'Dia do Saci e Halloween', ic: '🎃', data: Y => new Date(Y, 9, 31), item: ['🎃', 'Abóbora'], decor: ['abobora', 'noite'], movel: 'abobora', texto: 'O Saci passou por aqui e espalhou abóboras pelas vilas. Ache todas!' },
+    { id: 'natal', nome: 'Natal', ic: '🎄', data: Y => new Date(Y, 11, 25), item: ['🎁', 'Presente'], decor: ['luzes', 'confete'], movel: 'pinheiro', texto: 'Luzes de Natal nas árvores e presentes escondidos pelas vilas.' }
+  ];
+  const eventosAtivos = (() => {
+    const out = [];
+    for (const ev of EVENTOS) for (const Y of [HOJE.getFullYear() - 1, HOJE.getFullYear(), HOJE.getFullYear() + 1]) {
+      const d = ev.data(Y), ini = somaDias(d, -14), fim = somaDias(d, 7);
+      if (HOJE >= ini && HOJE <= fim) out.push(Object.assign({}, ev, { chave: `${ev.id}-${Y}`, dataEv: d, ini, fim }));
+    }
+    return out;
+  })();
+  const DECOR = new Set(eventosAtivos.flatMap(e => e.decor));
+  eventosProntos = true;
+  const estEv = ev => S.eventos[ev.chave] || (S.eventos[ev.chave] = { itens: {}, acertos: 0, conversas: 0, ganhou: false });
+  const metaItensEv = () => Math.min(9, 3 * fases.filter(liberada).length);
+  function missoesEvento(ev) {
+    const E = estEv(ev);
+    return [
+      { nome: `Achar ${metaItensEv()} ${ev.item[0]} pelas vilas`, n: Object.keys(E.itens).length, meta: metaItensEv() },
+      { nome: 'Acertar 5 perguntas', n: E.acertos, meta: 5 },
+      { nome: 'Conversar com 3 moradores (um por dia cada)', n: E.conversas, meta: 3 }
+    ].map(m => Object.assign(m, { ok: m.n >= m.meta }));
+  }
+  function contaEvento(campo) { for (const ev of eventosAtivos) { estEv(ev)[campo]++; } }
+  function premioEvento(ev) {
+    const E = estEv(ev);
+    if (E.ganhou || !missoesEvento(ev).every(m => m.ok)) return;
+    E.ganhou = true; S.casa.guardados[ev.movel] = (S.casa.guardados[ev.movel] || 0) + 1; S.casa.feitos[ev.movel] = true;
+    S.medalhas[ev.chave] = { ic: ev.ic, nome: `${ev.nome} ${ev.dataEv.getFullYear()}` };
+    pontos(50, `${ev.ic} Missão de ${ev.nome} completa! Você ganhou ${MOVEIS[ev.movel].ic} ${MOVEIS[ev.movel].nome} para a sua casa.`);
+    salvar(); janelaEvento();
+  }
+  /* itens do evento: 3 por vila, sempre nos mesmos lugares durante o evento */
+  function itensEvento(f) {
+    const out = [];
+    eventosAtivos.forEach((ev, e) => {
+      const r = rng(7000 + f.idx * 37 + e * 991 + ev.dataEv.getFullYear());
+      let tent = 0;
+      while (out.filter(o => o.ev === ev).length < 3 && tent++ < 400) {
+        const x = Math.floor(r() * f.L), y = Math.floor(r() * ALT), p = y * f.L + x;
+        if (f.sol[p] || f.tile[p] === T.agua || out.concat(f.itens).some(o => Math.hypot(o.x - x, o.y - y) < 4)) continue;
+        out.push({ id: `${f.id}-${ev.chave}-${out.length}`, x: x + 0.5, y: y + 0.5, ev });
+      }
+    });
+    return out;
+  }
+  /* aniversários: um desafio de 3 perguntas no dia; acertando as três, a medalha é sua */
+  const PESSOAS = [
+    ['ada', 'Ada Lovelace', 1815, 12, 10, 'escreveu o primeiro algoritmo pensado para uma máquina', ['O que é um algoritmo?', ['Uma sequência de passos para resolver um problema', 'Uma peça do computador', 'Um tipo de tela'], 0]],
+    ['babbage', 'Charles Babbage', 1791, 12, 26, 'projetou a Máquina Analítica, a avó dos computadores', ['O que uma máquina programável faz?', ['Segue instruções diferentes conforme o programa', 'Faz sempre a mesma coisa', 'Só funciona com eletricidade solar'], 0]],
+    ['hopper', 'Grace Hopper', 1906, 12, 9, 'criou um dos primeiros compiladores e ajudou a criar a linguagem COBOL', ['O que um compilador faz?', ['Traduz o programa para a linguagem da máquina', 'Desenha a tela', 'Guarda fotos'], 0]],
+    ['turing', 'Alan Turing', 1912, 6, 23, 'criou a máquina de Turing e o teste de Turing, base da computação e da IA', ['O teste de Turing verifica se...', ['uma máquina conversa como uma pessoa', 'a internet está rápida', 'o computador está quente'], 0]],
+    ['bernerslee', 'Tim Berners-Lee', 1955, 6, 8, 'inventou a World Wide Web (WWW)', ['O que é um link (hiperlink)?', ['Uma ligação de uma página para outra', 'Um vírus', 'Um tipo de cabo'], 0]],
+    ['hamilton', 'Margaret Hamilton', 1936, 8, 17, 'liderou o software de voo da missão Apollo 11, que levou pessoas à Lua', ['Por que testar um programa antes de usar?', ['Para achar e corrigir erros (bugs)', 'Para deixar mais lento', 'Para gastar memória'], 0]],
+    ['kjohnson', 'Katherine Johnson', 1918, 8, 26, 'calculou as trajetórias de voos espaciais da NASA', ['Quanto é 25% de 80?', ['20', '25', '40'], 0]],
+    ['boole', 'George Boole', 1815, 11, 2, 'criou a álgebra booleana, com verdadeiro e falso', ['Se A é verdadeiro e B é falso, “A E B” é...', ['falso', 'verdadeiro', 'as duas coisas'], 0]],
+    ['shannon', 'Claude Shannon', 1916, 4, 30, 'criou a teoria da informação e mostrou o poder do bit', ['Quantos valores diferentes cabem em 3 bits?', ['8', '3', '6'], 0]],
+    ['ritchie', 'Dennis Ritchie', 1941, 9, 9, 'criou a linguagem C e ajudou a criar o sistema Unix', ['Uma linguagem de programação serve para...', ['escrever instruções para o computador', 'conversar só com pessoas', 'pintar quadros'], 0]],
+    ['lamarr', 'Hedy Lamarr', 1914, 11, 9, 'coinventou o salto de frequência, base de tecnologias como Wi-Fi e Bluetooth', ['O Wi-Fi transmite dados por...', ['ondas de rádio', 'canos de água', 'papel'], 0]],
+    ['perlman', 'Radia Perlman', 1951, 12, 18, 'criou o protocolo STP, que organiza os caminhos dos dados nas redes', ['Na internet, os dados viajam divididos em...', ['pacotes', 'caixas de papelão', 'letras soltas'], 0]],
+    ['landell', 'Roberto Landell de Moura', 1861, 1, 21, 'foi um padre gaúcho pioneiro na transmissão da voz por ondas de rádio', ['O rádio leva a voz de um lugar a outro usando...', ['ondas eletromagnéticas', 'fios de lã', 'pombos-correio'], 0]],
+    ['mccarthy', 'John McCarthy', 1927, 9, 4, 'criou o termo “inteligência artificial”', ['Uma IA aprende principalmente a partir de...', ['muitos exemplos (dados)', 'sorte', 'pilhas novas'], 0]],
+    ['dijkstra', 'Edsger Dijkstra', 1930, 5, 11, 'criou o famoso algoritmo do caminho mais curto', ['O GPS usa algoritmos para achar...', ['o caminho mais curto', 'a cor do carro', 'a música preferida'], 0]],
+    ['liskov', 'Barbara Liskov', 1939, 11, 7, 'foi pioneira em linguagens de programação e abstração de dados', ['Abstrair é...', ['ignorar os detalhes que não importam', 'decorar tudo', 'apagar o programa'], 0]],
+    ['knuth', 'Donald Knuth', 1938, 1, 10, 'escreveu a coleção “A Arte da Programação de Computadores”', ['Ordenar uma lista é...', ['colocar os itens em ordem', 'apagar a lista', 'misturar os itens'], 0]],
+    ['allen', 'Frances Allen', 1932, 8, 4, 'foi a primeira mulher a ganhar o Prêmio Turing, por deixar os programas mais rápidos', ['Um programa otimizado é...', ['mais rápido ou gasta menos recursos', 'mais colorido', 'mais longo'], 0]],
+    ['vaughan', 'Dorothy Vaughan', 1910, 9, 20, 'liderou matemáticas da NASA e ensinou a equipe a programar em FORTRAN', ['Quanto é 12 × 12?', ['144', '124', '132'], 0]],
+    ['gwest', 'Gladys West', 1930, 10, 27, 'criou os modelos matemáticos da forma da Terra usados no GPS', ['O GPS descobre onde você está usando...', ['sinais de satélites', 'o cheiro do lugar', 'a temperatura'], 0]],
+    ['vonneumann', 'John von Neumann', 1903, 12, 28, 'descreveu o computador que guarda o programa na memória, usado até hoje', ['Onde ficam os programas que estão rodando agora?', ['na memória RAM', 'no mouse', 'no teclado'], 0]],
+    ['easley', 'Annie Easley', 1933, 4, 23, 'foi programadora da NASA e trabalhou no foguete Centaur', ['Um bug é...', ['um erro no programa', 'um botão novo', 'um jogo'], 0]],
+    ['wozniak', 'Steve Wozniak', 1950, 8, 11, 'projetou os computadores Apple I e Apple II', ['Qual destas é uma peça de hardware?', ['Processador', 'Navegador', 'Aplicativo de mensagens'], 0]]
+  ].map(([id, nome, ano, mes, dia, feito, conceito]) => ({ id, nome, ano, mes, dia, feito, conceito }));
+  const aniversariantes = PESSOAS.filter(p => p.mes === HOJE.getMonth() + 1 && p.dia === HOJE.getDate());
+  const embaralhaAlts = (alts, certa) => { const ord = alts.map((a, i) => i).sort(() => Math.random() - 0.5); return { alts: ord.map(i => alts[i]), certa: ord.indexOf(certa) }; };
+  function desafioAniversario(p) {
+    const outros = PESSOAS.filter(o => o !== p).sort(() => Math.random() - 0.5).slice(0, 2);
+    const anos = [p.ano, p.ano + 10 + Math.floor(Math.random() * 20), p.ano - 10 - Math.floor(Math.random() * 20)].map(String);
+    const qs = [
+      Object.assign({ enun: `O que ${p.nome} fez?` }, embaralhaAlts([p.feito, outros[0].feito, outros[1].feito].map(t => t[0].toUpperCase() + t.slice(1)), 0)),
+      Object.assign({ enun: `Em que ano ${p.nome} nasceu?` }, embaralhaAlts(anos, 0)),
+      Object.assign({ enun: p.conceito[0] }, embaralhaAlts(p.conceito[1], p.conceito[2]))
+    ];
+    let acertos = 0;
+    const passo = i => {
+      if (i >= qs.length) {
+        const chave = `${p.id}-${HOJE.getFullYear()}`;
+        if (acertos === 3 && !S.medalhas[chave]) { S.medalhas[chave] = { ic: '🏅', nome: `${p.nome} (${ddmm(HOJE)}/${HOJE.getFullYear()})` }; pontos(40); salvar(); }
+        return dialogo(acertos === 3 ? '🏅' : '🎂', acertos === 3 ? 'Medalha conquistada!' : 'Quase!', acertos === 3 ? `<p>Você acertou as 3 e ganhou a <strong>medalha de ${esc(p.nome)}</strong> (+40 ⭐). Ela fica no seu inventário.</p>` : `<p>Você acertou ${acertos} de 3. Para ganhar a medalha, acerte as três. Pode tentar de novo hoje!</p>`,
+          [{ txt: acertos === 3 ? 'Oba!' : 'Tentar de novo', classe: 'principal', fn: () => acertos === 3 ? fechaDialogo() : desafioAniversario(p) }, { txt: 'Fechar', fn: fechaDialogo }]);
+      }
+      const q = qs[i];
+      dialogo('🎂', `Desafio de ${p.nome} · ${i + 1}/3`, `<p>${esc(q.enun)}</p>`, q.alts.map((a, j) => ({ txt: a, fn: () => {
+        if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
+        if (j === q.certa) acertos++;
+        [...D.op.children].forEach((b, k) => { b.disabled = true; if (k === q.certa) b.classList.add('certa'); else if (k === j) b.classList.add('errada'); });
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = 'Continuar'; b.addEventListener('click', () => passo(i + 1)); D.op.appendChild(b); b.focus();
+      } })));
+      delete D.op.dataset.respondida;
+    };
+    passo(0);
+  }
+  function janelaEvento() {
+    const el = $('#evento-conteudo');
+    el.innerHTML = eventosAtivos.map(ev => {
+      const ms = missoesEvento(ev), E = estEv(ev), M = MOVEIS[ev.movel];
+      return `<section class="ev"><h3>${ev.ic} ${esc(ev.nome)} <small class="muted">· de ${ddmm(ev.ini)} a ${ddmm(ev.fim)}</small></h3><p>${esc(ev.texto)}</p>
+        <ul class="ev-m">${ms.map(m => `<li class="${m.ok ? 'ok' : ''}">${m.ok ? '✅' : '⬜'} ${esc(m.nome)} <small>(${Math.min(m.n, m.meta)}/${m.meta})</small></li>`).join('')}</ul>
+        <p class="muted small">Prêmio: ${M.ic} ${esc(M.nome)} para a sua casa, +50 ⭐ e a medalha do evento.</p>
+        ${E.ganhou ? '<p><strong>✅ Prêmio recebido!</strong></p>' : `<button type="button" class="hb verde" data-premio="${ev.chave}" ${ms.every(m => m.ok) ? '' : 'disabled'}>🎁 Receber o prêmio</button>`}</section>`;
+    }).join('') + aniversariantes.map(p => {
+      const tem = S.medalhas[`${p.id}-${HOJE.getFullYear()}`];
+      return `<section class="ev"><h3>🎂 Hoje é aniversário de ${esc(p.nome)}</h3><p>${esc(p.nome)} nasceu em ${ddmm(new Date(p.ano, p.mes - 1, p.dia))}/${p.ano} e ${esc(p.feito)}.</p>
+        <p class="muted small">Desafio do dia: acerte 3 perguntas sobre essa pessoa e ganhe uma medalha que só sai hoje.</p>
+        ${tem ? '<p><strong>🏅 Medalha conquistada!</strong></p>' : `<button type="button" class="hb verde" data-desafio="${p.id}">🎂 Fazer o desafio</button>`}</section>`;
+    }).join('');
+    el.querySelectorAll('[data-premio]').forEach(b => b.addEventListener('click', () => premioEvento(eventosAtivos.find(e => e.chave === b.dataset.premio))));
+    el.querySelectorAll('[data-desafio]').forEach(b => b.addEventListener('click', () => { fechaJanela(); desafioAniversario(PESSOAS.find(p => p.id === b.dataset.desafio)); }));
+  }
+  /* enfeites desenhados por cima do mundo, no espaço da tela */
+  function enfeitesTela(vw, vh) {
+    if (leve) return;
+    if (DECOR.has('confete')) for (let i = 0; i < 40; i++) {
+      const x = cam.x + ((i * 137 + agora * 0.03 * (1 + i % 3)) % (vw + 40)) - 20, y = cam.y + ((i * 89 + agora * 0.05 * (1 + i % 2)) % (vh + 40)) - 20;
+      ctx.fillStyle = ['#ff5a8a', '#ffd84a', '#5ad1ff', '#7dff8a', '#c7a6ff'][i % 5]; ctx.fillRect(x, y, 5, 3);
+    }
+    if (DECOR.has('fogos')) for (let k = 0; k < 3; k++) {
+      const t = ((agora / 1600) + k / 3) % 1, cx = cam.x + vw * (0.2 + 0.3 * k), cy = cam.y + vh * (0.15 + 0.08 * (k % 2));
+      ctx.globalAlpha = 1 - t; ctx.fillStyle = ['#ffd84a', '#ff5a8a', '#5ad1ff'][k];
+      for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; ctx.beginPath(); ctx.arc(cx + Math.cos(a) * 60 * t, cy + Math.sin(a) * 60 * t, 3, 0, Math.PI * 2); ctx.fill(); }
+      ctx.globalAlpha = 1;
+    }
+  }
+  function bandeirinhas(f) {
+    if (!DECOR.has('bandeiras')) return;
+    const cores = ['#e0564a', '#ffd84a', '#3f8fe0', '#4bb259', '#e07bb0'];
+    for (const [ax, ay, bx, by] of [[0, MEIO - 0.5, f.L, MEIO - 0.5], [MEIO - 0.5, 0, MEIO - 0.5, ALT]]) {
+      const n = Math.floor(Math.hypot(bx - ax, by - ay) / 0.8);
+      for (let i = 0; i < n; i++) {
+        const t = i / n, x = ax + (bx - ax) * t, y = ay + (by - ay) * t, z = 2.6 - Math.abs(Math.sin(t * Math.PI * 8)) * 0.4;
+        const [sx, sy] = iso(x, y, z);
+        if (sx < cam.x - 20 || sx > cam.x + W / zoom + 20 || sy < cam.y - 20 || sy > cam.y + HH / zoom + 20) continue;
+        ctx.fillStyle = cores[i % cores.length]; ctx.beginPath(); ctx.moveTo(sx - 5, sy); ctx.lineTo(sx + 5, sy); ctx.lineTo(sx, sy + 9); ctx.closePath(); ctx.fill();
+      }
+    }
+  }
   function missoesCasa() {
     const feitos = Object.keys(S.casa.feitos).length, novos = S.casa.moveis.filter(m => !MOVEIS[m.id].inicial).length;
     return [
@@ -1218,7 +1404,7 @@
     ctx.setTransform(dpr * zoom, 0, 0, dpr * zoom, -cam.x * dpr * zoom, -cam.y * dpr * zoom);
     if (noEnigma) { desenhaEnigma(); requestAnimationFrame(quadro); return; }
     if (dentro) { desenhaInterior(); requestAnimationFrame(quadro); return; }
-    const ceu = ctx.createLinearGradient(0, cam.y, 0, cam.y + vh); ceu.addColorStop(0, '#cdeffa'); ceu.addColorStop(1, '#e8f7e4');
+    const ceu = ctx.createLinearGradient(0, cam.y, 0, cam.y + vh); ceu.addColorStop(0, DECOR.has('noite') ? '#b9a3e8' : '#cdeffa'); ceu.addColorStop(1, DECOR.has('noite') ? '#f3d9c4' : '#e8f7e4');
     ctx.fillStyle = ceu; ctx.fillRect(cam.x, cam.y, vw, vh);
     // chão: só os losangos que aparecem na tela
     const [ax, ay] = telaParaMapa(cam.x, cam.y), [bx, by] = telaParaMapa(cam.x + vw, cam.y), [cx2, cy2] = telaParaMapa(cam.x, cam.y + vh), [dx2, dy2] = telaParaMapa(cam.x + vw, cam.y + vh);
@@ -1233,7 +1419,7 @@
       ctx.drawImage(tex, sxp - TW / 2, syp);
     }
     // borda do mundo (um degrau de terra dos lados que aparecem)
-    if (!leve) for (const f of visiveisFases()) for (const fl of f.flores) { const [sx, sy] = iso(fl.x, fl.y); if (sx > cam.x - 10 && sx < cam.x + vw + 10 && sy > cam.y - 10 && sy < cam.y + vh + 10) { ctx.fillStyle = fl.c; ctx.fillRect(sx - 3, sy - 6, 6, 6); ctx.fillStyle = '#4f9a4b'; ctx.fillRect(sx - 1, sy, 2, 4); } }
+    if (!leve) for (const f of visiveisFases()) for (const fl of f.flores) { const [sx, sy] = iso(fl.x, fl.y); if (sx > cam.x - 10 && sx < cam.x + vw + 10 && sy > cam.y - 10 && sy < cam.y + vh + 10) { if (DECOR.has('ovos')) { ctx.fillStyle = fl.c === '#ffffff' ? '#a8d8f7' : fl.c; ctx.beginPath(); ctx.ellipse(sx, sy - 4, 4, 5.5, 0, 0, Math.PI * 2); ctx.fill(); } else { ctx.fillStyle = fl.c; ctx.fillRect(sx - 3, sy - 6, 6, 6); ctx.fillStyle = '#4f9a4b'; ctx.fillRect(sx - 1, sy, 2, 4); } } }
     // objetos ordenados pela profundidade (x + y)
     const lista = [], naTela = (x, y, m = 160) => { const [sx, sy] = iso(x, y); return sx > cam.x - m && sx < cam.x + vw + m && sy > cam.y - m && sy < cam.y + vh + m * 2; };
     const alvo = !dialogoAberto && alvoPerto();
@@ -1247,11 +1433,16 @@
       for (const p of f.portais) lista.push({ k: p.x + p.y + 1.5, d: () => desenhaPortao(p) });
       for (const c of f.cercas) lista.push({ k: c.x + c.y + 1, d: () => desenhaCerca(c) });
       for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? '👩‍🏫' : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
+      for (const it of f.evItens) if (!estEv(it.ev).itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => { sombra(it.x, it.y, 0.35); const [sx, sy] = iso(it.x, it.y, 0.55 + Math.sin(agora / 300 + it.x * 3) * 0.12); ctx.fillStyle = 'rgba(255,240,170,.45)'; ctx.beginPath(); ctx.arc(sx, sy, 16, 0, Math.PI * 2); ctx.fill(); ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(it.ev.item[0], sx, sy); } });
+      eventosAtivos.slice(0, 2).forEach((ev, i) => { const px = f.cx + (i ? -2.9 : 2.9), py = f.cy - 2.9; lista.push({ k: px + py, d: () => { const [ox, oy] = iso(px, py); ctx.save(); ctx.translate(ox, oy); ctx.scale(2, 2); ctx.translate(-ox, -oy); try { MOVEIS[ev.movel].des(px - 0.5, py - 0.5, { on: true }); } finally { ctx.restore(); } } }); });
       for (const it of f.itens) if (!S.itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => desenhaItem(it) });
     }
     lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
     if (S.pet && !S.pet.dorme) lista.push({ k: PET.x + PET.y, d: () => desenhaPet(PET.x, PET.y, S.pet, PET) });
     lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
+    bandeirinhas(atual);
+    if (DECOR.has('noite')) { ctx.fillStyle = 'rgba(60,30,90,.18)'; ctx.fillRect(cam.x, cam.y, vw, vh); }
+    enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
       const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
@@ -1413,6 +1604,7 @@
       const certo = i === p.certa, novaResp = !(p.id in S.resp) || S.resp[p.id] === false;
       S.resp[p.id] = certo;
       ganhaHabilidade(p.eixos, certo ? 10 : 2);
+      if (certo) contaEvento('acertos');
       if (certo) { S.acertos++; pontos(novaResp ? 10 : 5, 'Acertou!'); } else { S.erros++; hud(); }
       [...D.op.children].forEach((b, j) => { b.disabled = true; if (j === p.certa) b.classList.add('certa'); else if (j === i) b.classList.add('errada'); });
       D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${p.coment || ''}</p>`;
@@ -1428,7 +1620,7 @@
     dialogoNpc = n;
     if (primeira) { S.falas[n.id] = true; pontos(5, `Você conheceu ${n.nome}!`); confereFases(); }
     const dia = S.diaNpc[n.id] || (S.diaNpc[n.id] = {});
-    if (dia.fala !== hoje()) { dia.fala = hoje(); ganhaAmizade(n, 10); }
+    if (dia.fala !== hoje()) { dia.fala = hoje(); ganhaAmizade(n, 10); contaEvento('conversas'); }
     const c = coracoes(n);
     const ola = primeira ? (n.prof ? `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. ` : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
     const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
@@ -1476,7 +1668,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -1538,6 +1730,8 @@
         <span class="barra"><span style="width:${n >= 10 ? 100 : Math.round(100 * (x - base) / (prox - base))}%"></span></span>
         <small>${n >= 10 ? 'Nível máximo! 🏆' : sug ? `Para subir: <a href="${esc(sug.url)}" target="_blank" rel="noopener">${esc(sug.icone)} ${esc(sug.titulo)}</a>` : 'Para subir: responda perguntas dos moradores e dos diamantes.'}</small></span></div>`;
     }).join('');
+    const meds = Object.values(S.medalhas);
+    $('#inv-medalhas').innerHTML = meds.length ? meds.map(m => `<div class="it"><span style="font-size:24px">${m.ic}</span><span>${esc(m.nome)}</span></div>`).join('') : '<p class="muted small">Ganhe medalhas nas missões das datas comemorativas e nos desafios de aniversário de personalidades da computação.</p>';
     const conhecidos = todosNpcs().filter(n => S.falas[n.id] || amizade(n));
     $('#inv-amigos').innerHTML = conhecidos.length ? conhecidos.map(n => `<div class="it"><span style="font-size:22px">${n.prof ? '👩‍🏫' : '🙂'}</span><span>${esc(n.nome)} <small class="muted">· ${esc(n.fase.nome)}</small><br>${coracoesHtml(n)}${S.gostos[n.id] ? ` <small>adora ${ITENS[favorito(n)][0]}</small>` : ''}</span></div>`).join('')
       : '<p class="muted small">Converse com os moradores da vila para fazer amigos.</p>';
@@ -1688,8 +1882,11 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases();
+  { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
+    if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
+      setTimeout(() => aviso(aniversariantes.length ? `🎂 Hoje é aniversário de ${aniversariantes[0].nome}! Desafio do dia no botão de evento.` : `${eventosAtivos[0].ic} Evento: ${eventosAtivos[0].nome}! Veja as missões especiais.`), 2600); } }
   if (S.pet) { atualizaPet(); petPerto(); const pede = precisa(S.pet); if (pede.length) setTimeout(() => aviso(`🐾 ${S.pet.nome} precisa de você: ${pede.join(' ')}`), 1200); }
   if (!S.pontos) setTimeout(() => aviso('🌍 Explore o mundo e descubra os desafios!'), 400);
   requestAnimationFrame(quadro);

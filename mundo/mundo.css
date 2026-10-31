@@ -139,3 +139,8 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .cifra { font: 700 28px monospace; letter-spacing: 6px; text-align: center; color: #5b3f8f; background: #f1ebff; border-radius: 12px; padding: 8px; }
 .perigo { margin-top: 18px; } .perigo summary { cursor: pointer; color: #8a3b30; font-weight: 600; }
 #mapa-cv { width: min(700px, 100%); height: auto; display: block; margin: 0 auto; }
+
+/* eventos */
+.ev { border: 2px solid var(--borda); border-radius: 16px; background: #fff; padding: 10px 16px; margin: 0 0 12px; }
+.ev h3 { margin: 4px 0 6px; } .ev p { margin: 0 0 8px; }
+.ev-m { list-style: none; padding: 0; margin: 0 0 8px; } .ev-m li { margin: 3px 0; } .ev-m li.ok { color: #2e7d32; }
