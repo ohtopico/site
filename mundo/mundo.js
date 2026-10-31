@@ -355,6 +355,17 @@
       for (let j = hy + d; j < MEIO - 1; j++) for (const k of [hx + 1, hx + 2]) f.tile[pos(k, j)] = T.caminho;
       f.loja = { id: loja, gx: f.x0 + hx, x: hx, y: hy, w, d, porta: { x: f.x0 + hx + w / 2, y: hy + d + 0.7 } };
     }
+    // Oficina de Robótica no Bairro dos Padrões, com 4 × 3 blocos e folga em volta
+    if (f.idx === 2) {
+      const livreR = (hx, hy) => { for (let j = hy - 2; j <= hy + 5; j++) for (let k = hx - 2; k <= hx + 5; k++) if (!at(k, j) || f.tile[pos(k, j)] !== T.grama || f.sol[pos(k, j)]) return false; return true; };
+      let ox = -1, oy = -1;
+      buscaR: for (let dy = 0; dy < 10; dy++) for (const yy of [MEIO + 3 + dy, MEIO - 7 - dy]) for (let xx = 4; xx < 22; xx++) if (livreR(xx, yy)) { ox = xx; oy = yy; break buscaR; }
+      if (ox >= 0) { for (let j = oy; j < oy + 3; j++) for (let k = ox; k < ox + 4; k++) f.sol[pos(k, j)] = 1; f.salas = [{ id: 'robotica', gx: f.x0 + ox, x: ox, y: oy, w: 4, d: 3, porta: { x: f.x0 + ox + 2, y: oy + 3.7 } }];
+        // folga em volta e na frente da porta até as casas e o bosque estarem montados (como no portal)
+        f.reserva = f.reserva || [];
+        for (let j = oy - 2; j <= oy + 6; j++) for (let k = ox - 2; k <= ox + 5; k++) if (at(k, j) && !f.sol[pos(k, j)]) { f.sol[pos(k, j)] = 1; f.reserva.push(pos(k, j)); }
+      }
+    }
     // casas em volta do anel, metade por dentro e metade por fora, longe da estrada
     f.casas = [];
     const ocupa = (x, y, w, d, m = 1) => { for (let j = y - m; j < y + d + m; j++) for (let i = x - m; i < x + w + m; i++) { if (!at(i, j) || f.sol[pos(i, j)]) return true; } return false; };
@@ -491,7 +502,7 @@
     if (f.banco) add('🏦', 'Banco', 'poupança, mesada e juros', f.banco, 'especial');
     if (f.portalTele) add('🌀', 'Portal de teletransporte', 'mundos do teste de proficiência em informática', f.portalTele, 'especial');
     if (f.loja) add(LOJAS[f.loja.id].ic, LOJAS[f.loja.id].nome, LOJAS[f.loja.id].texto, f.loja, 'especial');
-    for (const c of f.salas || []) { const nomes = { museu: ['🏛️', 'Museu', 'moedas, estrelas, medalhas, troféus e galeria de pixel art'], emat: ['🧮', 'Escape da Matemática', 'desafios de Matemática sem cronômetro'], labirinto: ['🌀', 'Labirinto', 'portões com perguntas de Matemática'] }[c.id]; if (nomes) add(nomes[0], nomes[1], nomes[2], c, 'especial'); }
+    for (const c of f.salas || []) { const nomes = { museu: ['🏛️', 'Museu', 'moedas, estrelas, medalhas, troféus e galeria de pixel art'], emat: ['🧮', 'Escape da Matemática', 'desafios de Matemática sem cronômetro'], labirinto: ['🌀', 'Labirinto', 'portões com perguntas de Matemática'], robotica: ['🤖', 'Oficina de Robótica', 'robótica, circuitos, eletrônica, LED, motor, sensor, bateria, lei de Ohm'] }[c.id]; if (nomes) add(nomes[0], nomes[1], nomes[2], c, 'especial'); }
   }
   for (const f of fases) { monta(f); guardaOnde(f); desmonta(f); }        // uma passada para guardar a posição das casas especiais e dos moradores
   const LARG = ALT;
@@ -2761,6 +2772,122 @@
       if (o.id === 'moedas') moedasCunhadas().slice(0, 3).forEach((m, i) => { const c = METAL_MOEDA[m.metal] || METAL_MOEDA.bronze, [mx, my] = iso(o.x + 0.45 + i * 0.55, o.y + 0.5, 0.63); ctx.fillStyle = c[1]; ctx.strokeStyle = c[2]; ctx.beginPath(); ctx.ellipse(mx, my, 9, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); });
     } }));
   }
+  /* ---------- Oficina de Robótica (Bairro dos Padrões): simulador de circuitos simples em série.
+     Bateria de 5 V e 4 posições no circuito. Libera com o Kit Iniciante; os outros componentes são vendidos na Loja de Componentes, no balcão da oficina.
+     Conta: corrente = (5 V − quedas dos LEDs) ÷ resistência total (lei de Ohm). LED com mais de 30 mA queima. */
+  const COMP = {
+    fio: { nome: 'Fio', ic: '〰️', R: 0 },
+    resistor: { nome: 'Resistor 220 Ω', ic: '▭', R: 220, preco: 10 },
+    ledR: { nome: 'LED vermelho', ic: '🔴', led: '#ff3b3b', Vd: 2, R: 0 },
+    ledG: { nome: 'LED verde', ic: '🟢', led: '#3bdc5a', Vd: 2.1, R: 0, preco: 15 },
+    ledY: { nome: 'LED amarelo', ic: '🟡', led: '#ffd23f', Vd: 2.1, R: 0, preco: 15 },
+    ledB: { nome: 'LED azul', ic: '🔵', led: '#4aa3ff', Vd: 3, R: 0, preco: 20 },
+    chave: { nome: 'Chave liga/desliga', ic: '🎚️', R: 0 },
+    botao: { nome: 'Botão (aperte e segure)', ic: '🔘', R: 0, preco: 20 },
+    buzzer: { nome: 'Buzzer (campainha)', ic: '🔔', R: 100, preco: 30 },
+    motor: { nome: 'Motor com hélice', ic: '🌀', R: 30, preco: 40 },
+    ldr: { nome: 'Módulo sensor de luz', ic: '🌗', R: 0, preco: 45 },
+    pot: { nome: 'Potenciômetro (0 a 1000 Ω)', ic: '🎛️', R: 0, preco: 45 }
+  };
+  const KIT_ROBO = { preco: 120, itens: { resistor: 2, ledR: 2, chave: 1 } };
+  const EXPERIMENTOS = [
+    { id: 'acende', nome: 'Acenda um LED sem queimar', dica: 'LED + resistor + fios. Sem o resistor, a corrente passa de 30 mA e o LED queima.', ok: E => E.ledsAcesos >= 1 },
+    { id: 'chave', nome: 'Liga e desliga com a chave', dica: 'Coloque a chave no circuito do LED e desligue e ligue de novo.', ok: E => E.ledsAcesos >= 1 && E.tem.chave && R_.ligaDesliga },
+    { id: 'dois', nome: 'Dois LEDs acesos em série', dica: 'Dois LEDs e um resistor. Repare que a corrente fica menor: cada LED "gasta" uns 2 V.', ok: E => E.ledsAcesos >= 2 },
+    { id: 'campainha', nome: 'Campainha de botão', dica: 'Buzzer + botão + fios: só toca enquanto o botão estiver apertado.', ok: E => E.toca && E.tem.botao },
+    { id: 'ventilador', nome: 'Ventilador com chave', dica: 'Motor + chave + fios. O motor precisa de pelo menos 20 mA para girar.', ok: E => E.gira && E.tem.chave },
+    { id: 'noturna', nome: 'Luz noturna automática', dica: 'O sensor de luz só deixa a corrente passar no escuro. Diminua a luz do ambiente.', ok: E => E.ledsAcesos >= 1 && E.tem.ldr },
+    { id: 'dimmer', nome: 'Controle de brilho', dica: 'Potenciômetro + resistor + LED: gire o potenciômetro e veja a corrente mudar.', ok: E => E.ledsAcesos >= 1 && E.tem.pot && R_.mexeuPot },
+    { id: 'azul', nome: 'Acenda o LED azul', dica: 'O LED azul precisa de 3 V. Com outro LED em série (2 V + 3 V = 5 V), não sobra nada para o resistor!', ok: E => E.acesoCor.ledB }
+  ];
+  const R_ = { slots: [null, null, null, null], chave: true, botao: false, luz: 80, pot: 50, ligaDesliga: false, mexeuPot: false, ultimoSom: 0 };
+  const EST_ROBO = () => S.robo || (S.robo = { kit: false, tem: {}, feitos: {} });
+  const temComp = k => k === 'fio' ? (EST_ROBO().kit ? 9 : 0) : (EST_ROBO().tem[k] || 0);
+  function simulaRobo() {
+    const ps = R_.slots.map(k => k && COMP[k] ? Object.assign({ k }, COMP[k]) : null), tem = {};
+    ps.forEach(p => { if (p) tem[p.k] = (tem[p.k] || 0) + 1; });
+    const E = { tem, I: 0, Rt: 0, Vd: 0, ledsAcesos: 0, acesoCor: {}, brilho: 0, gira: false, toca: false, msg: '', queimou: false };
+    if (ps.some(p => !p)) { E.msg = '🔌 Circuito aberto: preencha as 4 posições (use fio onde não tiver componente).'; return E; }
+    const aberto = (tem.chave && !R_.chave) ? 'a chave está desligada' : (tem.botao && !R_.botao) ? 'o botão está solto' : (tem.ldr && R_.luz >= 50) ? 'o sensor de luz está no claro (ele só conduz no escuro)' : '';
+    E.Rt = ps.reduce((s, p) => s + (p.k === 'pot' ? R_.pot * 10 : p.R), 0); E.Vd = ps.reduce((s, p) => s + (p.Vd || 0), 0);
+    const leds = ps.filter(p => p.led);
+    if (aberto) { E.msg = `⏸️ Sem corrente: ${aberto}.`; return E; }
+    if (5 <= E.Vd) { E.msg = `🪫 Os LEDs em série precisam de ${String(E.Vd).replace('.', ',')} V, e a bateria só tem 5 V: não sobra tensão para empurrar corrente.`; return E; }
+    if (E.Rt < 1) { if (leds.length) { E.queimou = true; E.msg = '💥 O LED queimou! Sem resistor, a corrente fica enorme. Ainda bem que é simulação: coloque um resistor.'; } else E.msg = '⚠️ Curto-circuito: sem nada para limitar a corrente, a bateria esquenta e descarrega. Coloque um componente.'; return E; }
+    E.I = (5 - E.Vd) / E.Rt * 1000;
+    if (leds.length && E.I > 30) { E.queimou = true; E.msg = `💥 O LED queimou: ${Math.round(E.I)} mA, e o máximo dele é 30 mA. Aumente a resistência.`; return E; }
+    if (leds.length && E.I >= 1) { E.ledsAcesos = leds.length; leds.forEach(p => { E.acesoCor[p.k] = true; }); E.brilho = Math.min(1, E.I / 20); }
+    E.gira = !!tem.motor && E.I >= 20; E.toca = !!tem.buzzer && E.I >= 10;
+    E.msg = `✅ Circuito fechado: ${String(Math.round(E.I * 10) / 10).replace('.', ',')} mA.${leds.length && E.I < 1 ? ' Corrente fraca demais para o LED acender.' : ''}${tem.motor && !E.gira ? ' O motor precisa de 20 mA para girar.' : ''}`;
+    return E;
+  }
+  function svgRobo(E) {
+    const on = E.I > 0, fioCor = on ? '#e8a400' : '#8c8577', P4 = [[150, 40], [330, 40], [420, 130], [240, 220]];
+    const caixaComp = (k, [x, y], i) => {
+      const c = k && COMP[k]; let extra = '';
+      if (c && c.led && E.acesoCor[k]) extra = `<circle cx="${x}" cy="${y - 2}" r="${18 + 10 * E.brilho}" fill="${c.led}" opacity="${0.25 + 0.4 * E.brilho}"/>`;
+      if (c && c.led && E.queimou) extra = `<text x="${x + 16}" y="${y - 14}" font-size="16">💥</text>`;
+      const giro = k === 'motor' && E.gira ? ' class="rob-gira"' : '';
+      return `${extra}<g><rect x="${x - 36}" y="${y - 20}" width="72" height="40" rx="10" fill="${c ? '#fffdf6' : '#f1e9d8'}" stroke="${c ? '#5c4a36' : '#c9bfa8'}" stroke-width="2"${c ? '' : ' stroke-dasharray="5 4"'}/><text x="${x}" y="${y + 7}" text-anchor="middle" font-size="20"${giro} style="transform-origin:${x}px ${y}px">${c ? c.ic : '?'}</text><text x="${x}" y="${y + 34}" text-anchor="middle" font-size="11" fill="#5c4a36">${i + 1}. ${c ? esc(c.nome.split(' (')[0]) : 'vazio'}</text>${k === 'buzzer' && E.toca ? `<text x="${x + 30}" y="${y - 16}" font-size="16">🔊</text>` : ''}</g>`;
+    };
+    return `<svg class="rob-svg" viewBox="0 0 470 270" role="img" aria-label="Circuito em série com bateria de 5 volts e 4 posições">
+      <path d="M60 130 V40 H420 V220 H60 V130" fill="none" stroke="${fioCor}" stroke-width="6" stroke-linejoin="round"/>
+      <g><rect x="34" y="96" width="52" height="70" rx="8" fill="#3a3a3a"/><rect x="48" y="88" width="24" height="10" rx="3" fill="#888"/><text x="60" y="128" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">5 V</text><text x="60" y="150" text-anchor="middle" fill="#ffd23f" font-size="13">+ −</text></g>
+      ${R_.slots.map((k, i) => caixaComp(k, P4[i], i)).join('')}
+      ${on ? `<text x="240" y="262" text-anchor="middle" font-size="12" fill="#5c4a36">a corrente sai do + da bateria e volta pelo −</text>` : ''}
+    </svg>`;
+  }
+  function janelaRobo() {
+    const ER = EST_ROBO(), el = $('#rob-conteudo');
+    if (!ER.kit) { el.innerHTML = '<p>A bancada está vazia. Compre o <b>🧰 Kit Iniciante</b> no balcão da <b>Loja de Componentes</b>, aqui na oficina, para começar.</p>'; return; }
+    const E = simulaRobo();
+    const opcoes = i => { const usados = {}; R_.slots.forEach((k, j) => { if (k && j !== i) usados[k] = (usados[k] || 0) + 1; }); return Object.keys(COMP).filter(k => temComp(k) - (usados[k] || 0) > 0 || R_.slots[i] === k); };
+    el.innerHTML = `${svgRobo(E)}
+      <p class="rob-msg" aria-live="polite">${E.msg}</p>
+      <p class="small muted">Bateria 5 V · resistência total ${E.Rt} Ω · quedas nos LEDs ${String(E.Vd).replace('.', ',')} V · corrente = (5 − ${String(E.Vd).replace('.', ',')}) ÷ ${E.Rt || '?'} ${E.I ? `= ${String(Math.round(E.I * 10) / 10).replace('.', ',')} mA` : ''}</p>
+      <div class="rob-slots">${R_.slots.map((k, i) => `<label>Posição ${i + 1}<select class="campo" data-slot="${i}"><option value="">— vazio —</option>${opcoes(i).map(c => `<option value="${c}"${c === k ? ' selected' : ''}>${COMP[c].ic} ${esc(COMP[c].nome)}</option>`).join('')}</select></label>`).join('')}</div>
+      <div class="rob-controles">${E.tem.chave ? `<button type="button" class="hb ${R_.chave ? 'verde' : 'cinza'}" id="rob-chave">🎚️ Chave: ${R_.chave ? 'ligada' : 'desligada'}</button>` : ''}${E.tem.botao ? '<button type="button" class="hb amarelo" id="rob-botao">🔘 Aperte e segure</button>' : ''}${E.tem.ldr ? `<label>🌗 Luz do ambiente <input type="range" id="rob-luz" min="0" max="100" value="${R_.luz}"> ${R_.luz < 50 ? 'escuro' : 'claro'}</label>` : ''}${E.tem.pot ? `<label>🎛️ Potenciômetro <input type="range" id="rob-pot" min="0" max="100" value="${R_.pot}"> ${R_.pot * 10} Ω</label>` : ''}</div>
+      <h3>🧪 Experimentos</h3><ul class="etapas">${EXPERIMENTOS.map(x => `<li class="${ER.feitos[x.id] ? 'ok' : ''}">${ER.feitos[x.id] ? '✅' : '⬜'} <b>${x.nome}</b> <span class="muted small">· ${x.dica}</span></li>`).join('')}</ul>
+      <p class="muted small">Faltam componentes? Eles ficam à venda na Loja de Componentes, no balcão desta oficina.</p>`;
+    el.querySelectorAll('[data-slot]').forEach(s2 => s2.addEventListener('change', () => { R_.slots[+s2.dataset.slot] = s2.value || null; janelaRobo(); }));
+    const ch = $('#rob-chave'); if (ch) ch.addEventListener('click', () => { R_.chave = !R_.chave; if (R_.chave && R_.desligou) R_.ligaDesliga = true; if (!R_.chave) R_.desligou = true; janelaRobo(); });
+    const bt = $('#rob-botao'); if (bt) { const set = v => { if (R_.botao === v) return; R_.botao = v; janelaRobo(); const b2 = $('#rob-botao'); if (b2 && v) b2.focus(); }; bt.addEventListener('pointerdown', () => set(true)); bt.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); set(true); } }); }
+    if (R_.botao) { const solta = () => { R_.botao = false; document.removeEventListener('pointerup', solta); document.removeEventListener('keyup', solta); janelaRobo(); }; document.addEventListener('pointerup', solta); document.addEventListener('keyup', solta); }
+    const lz = $('#rob-luz'); if (lz) lz.addEventListener('change', () => { R_.luz = +lz.value; janelaRobo(); });
+    const pt = $('#rob-pot'); if (pt) pt.addEventListener('change', () => { R_.pot = +pt.value; R_.mexeuPot = true; janelaRobo(); });
+    if (E.toca && Date.now() - R_.ultimoSom > 600) { R_.ultimoSom = Date.now(); SOM.toca('coleta'); }
+    for (const x of EXPERIMENTOS) if (!ER.feitos[x.id] && x.ok(E)) {
+      ER.feitos[x.id] = true; pontos(40, `🤖 Experimento: ${x.nome}!`); ganhaHabilidade(['MD', 'PC'], 10); contaResposta(); progressoMundo('robo:' + x.id, true); SOM.toca('vitoria'); salvar();
+      setTimeout(janelaRobo, 50); break;
+    }
+  }
+  function lojaComponentes() {
+    const ER = EST_ROBO(), fecha = { txt: 'Fechar', fn: fechaDialogo };
+    const compra = (preco, fn, nome) => { if (S.pontos < preco) return aviso(`Faltam ${preco - S.pontos} ⭐ para comprar ${nome}.`); S.pontos -= preco; fn(); SOM.toca('moeda'); hud(); salvar(); aviso(`🛒 Comprou ${nome}!`); lojaComponentes(); };
+    if (!ER.kit) return dialogo('🛒', 'Loja de Componentes', `<p>Para começar na robótica, leve o <b>🧰 Kit Iniciante</b> por <b>${KIT_ROBO.preco} ⭐</b>: bateria de 5 V, fios, 2 resistores de 220 Ω, 2 LEDs vermelhos e uma chave liga/desliga.</p><p class="muted small">Você tem ${S.pontos} ⭐. Depois do kit, cada componente novo é vendido separado, para novos experimentos.</p>`,
+      [{ txt: `🧰 Comprar o Kit Iniciante (${KIT_ROBO.preco} ⭐)`, classe: 'principal', fn: () => compra(KIT_ROBO.preco, () => { ER.kit = true; for (const [k, n] of Object.entries(KIT_ROBO.itens)) ER.tem[k] = (ER.tem[k] || 0) + n; }, 'o Kit Iniciante') }, fecha]);
+    const venda = Object.keys(COMP).filter(k => COMP[k].preco);
+    dialogo('🛒', 'Loja de Componentes', `<p>Componentes para novos experimentos (você tem ${S.pontos} ⭐):</p><ul class="etapas">${venda.map(k => `<li>${COMP[k].ic} <b>${esc(COMP[k].nome)}</b> · ${COMP[k].preco} ⭐ <span class="muted small">(você tem ${ER.tem[k] || 0})</span></li>`).join('')}</ul>`,
+      venda.map(k => ({ txt: `${COMP[k].ic} ${COMP[k].nome.split(' (')[0]} · ${COMP[k].preco} ⭐`, fn: () => compra(COMP[k].preco, () => { ER.tem[k] = (ER.tem[k] || 0) + 1; }, COMP[k].nome) })).concat([fecha]));
+  }
+  const ROBO_OBJ = [
+    { id: 'bancada', x: 3, y: 0.6, w: 3, d: 1, ic: '🤖', cor: '#4bb259', acao: 'usar a bancada de circuitos' },
+    { id: 'loja', x: 0.6, y: 2.6, w: 1, d: 2, ic: '🛒', cor: '#f6b73c', acao: 'comprar na Loja de Componentes' },
+    { id: 'cartaz', x: 7.4, y: 2.6, w: 1, d: 1, ic: '📜', cor: '#c7b4f2', acao: 'ler o cartaz da lei de Ohm' }
+  ];
+  function usaRobo(o) {
+    if (o.id === 'loja') return lojaComponentes();
+    if (o.id === 'cartaz') return dialogo('📜', 'Lei de Ohm', '<p><b>Corrente = Tensão ÷ Resistência</b> (I = V ÷ R).</p><p>A bateria tem 5 V. Cada LED "gasta" uma parte da tensão (vermelho, verde e amarelo uns 2 V; azul uns 3 V). O que sobra empurra a corrente pelo resistor.</p><p>Exemplo: LED vermelho + resistor de 220 Ω → (5 − 2) ÷ 220 = 0,0136 A = <b>13,6 mA</b>. O LED aguenta até 30 mA.</p>', [{ txt: 'Entendi', classe: 'principal', fn: fechaDialogo }]);
+    if (!EST_ROBO().kit) return dialogo('🤖', 'Bancada de circuitos', '<p>A bancada ainda está vazia. Compre o <b>🧰 Kit Iniciante</b> na Loja de Componentes (o balcão 🛒 aqui da oficina).</p>', [{ txt: '🛒 Ir à loja', classe: 'principal', fn: lojaComponentes }, { txt: 'Fechar', fn: fechaDialogo }]);
+    fechaDialogo(); abreJanela('robotica');
+  }
+  function desenhaRoboSala() {
+    return ROBO_OBJ.map(o => ({ k: o.x + o.y + o.w / 2 + o.d / 2, d: () => {
+      caixa(o.x + 0.1, o.y + 0.1, 0, o.w - 0.2, o.d - 0.2, 0.75, '#d9cdb5'); caixa(o.x + 0.15, o.y + 0.15, 0.75, o.w - 0.3, o.d - 0.3, 0.06, o.cor, { blocos: false });
+      const [sx, sy] = iso(o.x + o.w / 2, o.y + o.d / 2, 1.3 + Math.sin(agora / 600 + o.x) * 0.05);
+      ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(o.ic, sx, sy);
+    } }));
+  }
   const EST_MUSEU = () => S.museu || (S.museu = {});
   const SALAS = {
     tele: SALA_TELE,
@@ -2774,6 +2901,15 @@
         return [['🪙 Moedas cunhadas', moedasCunhadas().length, 12], ['🌟 Estrelas secretas', estrelasSite().length, ESPECIAIS().slice(-1)[0][1].estrelas], ['🏅 Medalhas', md.filter(m => m.tem).length, md.length || MDP.MEDALHAS.length], ['🏡 Vilas concluídas', Object.keys(S.concluidas).length, fases.length], ['📒 Figurinhas', PESSOAS.filter(p => temFig(p.id)).length, PESSOAS.length], ['🎨 Pixel art por coordenadas', Object.keys(EST_PX().feitos).length, MODELOS_PX.length]]
           .map(([nome, n, meta]) => ({ nome, n, meta, ok: n >= meta })); },
       boasVindas: () => { confereEstrelasSite(); dialogo('🏛️', 'Museu', '<p>Bem-vindo ao seu museu! Aqui ficam expostas as coisas que você fez pelo site: as <b>moedas que você cunhou</b>, as <b>estrelas secretas</b> que achou no material didático, as <b>medalhas</b> do Meu progresso, os <b>troféus</b> do Mundo, o seu <b>álbum de figurinhas</b> e a <b>galeria de pixel art</b> que você pinta por coordenadas.</p><p class="muted">Chegue perto de uma vitrine e aperte E. Tudo vem deste navegador: nada é enviado para a internet.</p>', [{ txt: 'Vamos ver!', classe: 'principal', fn: fechaDialogo }]); }
+    },
+    robotica: {
+      nome: 'Oficina de Robótica', ic: '🤖', sub: 'Circuitos com bateria, LEDs, motor e sensores', W: 9, D: 6, saida: { x: 4.5, y: 5.5 }, alturaParede: 2.4,
+      fundo: '#1f2a2a', base: '#5a6b6b', parede: '#d9e4e0', piso: ['#cfd8d4', '#dfe7e3'],
+      estilo: { base: '#d9e4e0', telhado: '#4bb259', porta: '#5a6b6b', ic: '🤖', nome: 'Oficina de Robótica' },
+      local: () => localSala('robotica', fases[2]), estado: EST_ROBO, objs: () => ROBO_OBJ, livre: (x, y) => livreObjs(SALAS.robotica, x, y), usa: usaRobo, desenha: desenhaRoboSala,
+      mini: (c, ox, oy, s) => { for (const o of ROBO_OBJ) { c.fillStyle = o.cor; c.fillRect(ox + o.x * s, oy + o.y * s, o.w * s, o.d * s); } },
+      missoes: () => [{ nome: '🧰 Kit Iniciante', n: EST_ROBO().kit ? 1 : 0, meta: 1, ok: EST_ROBO().kit }].concat(EXPERIMENTOS.map(x => ({ nome: '🧪 ' + x.nome, n: EST_ROBO().feitos[x.id] ? 1 : 0, meta: 1, ok: !!EST_ROBO().feitos[x.id] }))),
+      boasVindas: () => dialogo('🤖', 'Oficina de Robótica', `<p>Bem-vindo à oficina! Na <b>bancada</b> você monta circuitos com bateria, LEDs, resistores, motor, campainha e sensores, e vê a corrente passar.</p><p>${EST_ROBO().kit ? 'Você já tem o kit: vá até a bancada. Componentes novos estão no balcão 🛒.' : `Para começar, compre o <b>🧰 Kit Iniciante</b> (${KIT_ROBO.preco} ⭐) no balcão 🛒 da Loja de Componentes.`}</p>`, [{ txt: 'Vamos lá!', classe: 'principal', fn: fechaDialogo }])
     },
     emat: {
       nome: 'Escape da Matemática', ic: '🧮', get sub() { const F = faseEM(); return `Fase ${Math.min(EST_EM().fase, EMAT.length - 1) + 1} de ${EMAT.length}: ${F.ic} ${F.nome} · sem cronômetro`; }, W: 8, D: 6, saida: { x: 4, y: 5.5 }, alturaParede: 2.5,
@@ -4235,7 +4371,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca(); if (id === 'robotica') janelaRobo();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -4259,7 +4395,7 @@
   /* o que cada vila tem: as lojas (à esquerda no mapa) e os prédios especiais (à direita) */
   const lojasDaVila = f => Object.values(LOJAS).filter(l => l.fase === f.idx).map(l => ({ ic: l.ic, nome: l.nome }));
   const predios = f => f.idx === 0 ? [{ ic: '🏠', nome: 'Sua casa' }, { ic: '🏛️', nome: 'Museu' }, { ic: '🌀', nome: 'Portal de teletransporte' }, { ic: '🤝', nome: 'Praça dos projetos' }]
-    : f.idx === 1 ? [{ ic: '🏦', nome: 'Banco' }, { ic: '🔐', nome: 'Casa do Enigma' }] : f.id === 'matematica' ? [{ ic: '🧮', nome: 'Escape da Matemática' }, { ic: '🌀', nome: 'Labirinto' }] : [];
+    : f.idx === 1 ? [{ ic: '🏦', nome: 'Banco' }, { ic: '🔐', nome: 'Casa do Enigma' }] : f.idx === 2 ? [{ ic: '🤖', nome: 'Oficina de Robótica' }] : f.id === 'matematica' ? [{ ic: '🧮', nome: 'Escape da Matemática' }, { ic: '🌀', nome: 'Labirinto' }] : [];
   function desenhaMapa() {
     const c = $('#mapa-cv'), k = c.getContext('2d'), x0 = Math.min(...GRADE.map(g => g[0])), cols = Math.max(...GRADE.map(g => g[0])) - x0 + 1;
     const gx = 24, gy = 22, cw = Math.min(200, (c.width - 20 - (cols - 1) * gx) / cols), ch = 120, ox = (c.width - cols * cw - (cols - 1) * gx) / 2 - x0 * (cw + gx), oy = 14;
@@ -4572,7 +4708,7 @@
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
