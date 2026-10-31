@@ -369,3 +369,9 @@ a.stat { color: inherit; text-decoration: none; }
 .ceu-lista { list-style: none; padding: 0; margin: 6px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 10px; font-size: .92em; }
 .ceu-lista li { color: #888; } .ceu-lista li.ok { color: inherit; font-weight: 600; }
 @media (max-width: 640px) { .ceu-grade { grid-template-columns: 1fr; } }
+
+/* evento de Natal: árvore e loja de enfeites */
+.natal { border-top: 2px dashed rgba(0,0,0,.15); margin-top: 10px; padding-top: 6px; }
+.natal h4 { margin: 8px 0 4px; }
+.natal-loja { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.natal-loja li { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
