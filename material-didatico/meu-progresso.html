@@ -111,7 +111,7 @@
         <p class="small" style="margin:16px 0 0">Já tem um código de progresso de outro aparelho? <a href="#importar" id="go-imp">Carregar código</a></p>
       </div>
       <div id="imp-wrap" hidden style="max-width:620px">${blocoImportar()}</div>
-      <div class="btn-row" style="margin-top:22px"><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Ver os jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Ver as listas</a></div>
+      <div class="btn-row" style="margin-top:22px"><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Ver os jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Ver as listas</a><a class="btn ghost" href="teste-do-ano.html">🎯 Já sabe? Faça o teste do ano</a></div>
       <p class="small muted">Se preferir, vá direto para as atividades: o progresso começa a ser salvo com o apelido “Estudante”, e você pode trocar depois.</p>`;
     $('#novo').onsubmit = e => { e.preventDefault(); MDP.criar($('#ap').value.trim() || 'Estudante', +$('#an').value); render(); };
     $('#go-imp').onclick = e => { e.preventDefault(); $('#imp-wrap').hidden = false; $('#imp-code').focus(); };
@@ -205,7 +205,7 @@
 
       ${missoesResumo()}
 
-      <div class="btn-row" style="margin-top:18px"><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Listas de exercícios</a></div>
+      <div class="btn-row" style="margin-top:18px"><a class="btn ghost" href="catalogo.html?tipo=jogo">🎮 Jogos</a><a class="btn ghost" href="catalogo.html?tipo=lista">📝 Listas de exercícios</a><a class="btn ghost" href="teste-do-ano.html?ano=${ano}" title="Duas questões por habilidade: confirme várias de uma vez">🎯 Teste do ${ano}º ano</a></div>
 
       <h2>Próximos passos</h2>
       ${prox.length ? `<div class="next">${prox.map(x => { const r = MDP.recursoPara(x.c, p), h = HAB[x.c]; return `

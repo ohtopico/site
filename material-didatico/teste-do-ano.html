@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Teste do ano · Material didático | Júlia Quoos</title>
+<meta name="description" content="Teste do ano de Computação (6º ao 9º ano): um desafio misto que confirma várias habilidades da BNCC de uma vez, para quem já sabe não precisar passar por tudo.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 48px); margin: 4px 0 6px; }
+  .doc h2 { font-size: 26px; margin: 34px 0 6px; }
+  .anos { margin: 18px 0 0; }
+  .habs { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+  .habs li { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 15px; border: 1.5px solid var(--ink); border-radius: 16px; padding: 8px 12px; }
+  .habs li .arrow { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: end; }
+  .habs li.up { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .info { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 0; }
+  .info div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 10px 14px; }
+  .info b { display: block; font-family: var(--display); font-size: 28px; line-height: 1.1; }
+  .info span { font-size: 13.5px; color: var(--ink-2); }
+  .q { border: 1.5px solid var(--ink); border-radius: 22px; padding: 18px 20px; margin: 16px 0; min-width: 0; background: var(--paper); }
+  .q-n { font-size: 13px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; }
+  .q-stem { margin: 6px 0 14px; font-size: 17px; }
+  .q pre { background: var(--pill); border: 1.5px solid var(--ink); border-radius: 14px; padding: 10px 14px; overflow-x: auto; font-size: 14.5px; margin: 10px 0 0; }
+  .opts { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .opts label { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line, #c9c9c9); border-radius: 14px; padding: 10px 12px; cursor: pointer; }
+  .opts label:has(input:checked) { border-color: var(--ink); background: var(--pill); }
+  .opts input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--accent); flex: none; }
+  .opts .l { font-weight: 700; flex: none; }
+  .xp { height: 12px; border-radius: 99px; border: 1.5px solid var(--ink); overflow: hidden; margin: 14px 0 0; background: var(--paper); }
+  .xp span { display: block; height: 100%; background: var(--accent); transition: width .2s; }
+  .nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+  .rev { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 16px; margin: 10px 0; }
+  .rev .why { font-size: 14.5px; margin: 6px 0 0; }
+  .rev .resp { font-size: 14.5px; margin: 6px 0 0; }
+  .rev .resp.bad { color: var(--bad); } .rev .resp.ok { color: var(--ok); }
+  .rev pre { background: var(--pill); border-radius: 12px; padding: 8px 12px; overflow-x: auto; font-size: 14px; }
+  .score { font-family: var(--display); font-weight: 800; font-size: 34px; margin: 4px 0; }
+  @media (max-width: 560px) {
+    .habs li { grid-template-columns: minmax(0, 1fr) auto; } .habs li code { grid-column: 1 / -1; }
+    .info { gap: 8px; } .info div { padding: 8px 10px; } .info b { font-size: 21px; } .info span { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc"></main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/teste-ano.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+(function () {
+  mdTopbar('progresso');
+  mdFooter();
+  const doc = document.getElementById('doc');
+  const $ = s => doc.querySelector(s);
+  const ANOS = [6, 7, 8, 9];
+  const LETRAS = 'abcd';
+  const nv = n => `<span class="nv nv${n}">${MDP.NIVEIS[n].nome}</span>`;
+  const doAno = ano => TESTE_ANO.map((q, i) => ({ i, hab: q[0] })).filter(q => HAB[q.hab] && HAB[q.hab].ano === ano);
+  const habsDoAno = ano => [...new Set(doAno(ano).map(q => q.hab))];
+  const embaralhar = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  // o teste em andamento fica salvo: recarregar a página ou fechar a aba não perde as respostas
+  const salvo = () => mdStore.get('teste-ano', null);
+  const guardar = t => mdStore.set('teste-ano', t);
+
+  const p0 = MDP.perfil();
+  const pedido = +new URLSearchParams(location.search).get('ano');
+  let ano = ANOS.includes(pedido) ? pedido : (salvo() && salvo().ano) || (p0 && p0.ano) || 6;
+
+  function inicio() {
+    const p = MDP.perfil(), habs = habsDoAno(ano), qs = doAno(ano);
+    const t = salvo();
+    const continuar = t && t.ano === ano && t.resp.some(r => r !== null);
+    const prof = habs.filter(c => MDP.nivelHab(c, p) >= 3).length;
+    doc.innerHTML = `
+      <span class="eyebrow">🎯 Teste do ano</span>
+      <h1>Já sabe? Mostre de uma vez</h1>
+      <p class="muted" style="max-width:720px;margin:0">Um desafio misto com duas questões de cada habilidade de Computação do ano. Acertou as duas de uma habilidade? Ela já fica como <strong>Proficiente</strong> no seu progresso, sem precisar fazer todas as listas e jogos. O que ainda não estiver firme vira sugestão de prática.</p>
+      <div class="chips anos" id="anos" role="group" aria-label="Ano">${ANOS.map(a => `<button class="chip" type="button" data-a="${a}" aria-pressed="${a === ano}">${a}º ano</button>`).join('')}</div>
+      <div class="info">
+        <div><b>${qs.length}</b><span>questões de múltipla escolha</span></div>
+        <div><b>${qs.length}–${Math.round(qs.length * 1.5)} min</b><span>tempo aproximado</span></div>
+        <div><b>${prof}/${habs.length}</b><span>habilidades do ${ano}º ano já proficientes${p ? ` para ${esc(p.apelido)}` : ''}</span></div>
+      </div>
+      <div class="btn-row" style="margin-top:20px">
+        ${continuar ? `<button class="btn" type="button" id="cont">Continuar de onde parei (${t.resp.filter(r => r !== null).length}/${t.ordem.length})</button><button class="btn ghost" type="button" id="go">Começar de novo</button>` : `<button class="btn" type="button" id="go">Começar o teste do ${ano}º ano</button>`}
+        <a class="btn ghost" href="meu-progresso.html">📈 Meu progresso</a>
+      </div>
+      <p class="small muted" style="margin-top:12px">${p ? `As notas vão para o perfil “${esc(p.apelido)}”. Para trocar de perfil, use a página Meu progresso.` : 'Sem cadastro: as notas ficam salvas neste navegador, com o apelido “Estudante” (dá para trocar depois em Meu progresso).'} O teste nunca diminui um nível que você já conquistou. Para chegar a <strong>Dominado</strong>, faça de novo pelo menos 2 dias depois.</p>
+      <h2>Habilidades do ${ano}º ano</h2>
+      <ul class="habs">${habs.map(c => `<li title="${esc(HAB[c].texto)}"><code>${c}</code><span>${esc(HAB[c].objeto)}</span>${nv(MDP.nivelHab(c, p))}</li>`).join('')}</ul>`;
+    $('#anos').onclick = e => { const b = e.target.closest('button'); if (b) { ano = +b.dataset.a; history.replaceState(null, '', '?ano=' + ano); inicio(); } };
+    $('#go').onclick = () => {
+      const ordem = embaralhar(qs).map(q => ({ i: q.i, alt: embaralhar([0, 1, 2, 3]) }));
+      guardar({ ano, ordem, resp: ordem.map(() => null), k: 0 });
+      questao();
+    };
+    if ($('#cont')) $('#cont').onclick = questao;
+  }
+
+  function questao() {
+    const t = salvo();
+    if (!t) return inicio();
+    const k = t.k, item = t.ordem[k], q = TESTE_ANO[item.i];
+    const feitas = t.resp.filter(r => r !== null).length;
+    doc.innerHTML = `
+      <span class="eyebrow">🎯 Teste do ${t.ano}º ano</span>
+      <div class="xp" role="progressbar" aria-label="Questões respondidas" aria-valuemin="0" aria-valuemax="${t.ordem.length}" aria-valuenow="${feitas}"><span style="width:${feitas / t.ordem.length * 100}%"></span></div>
+      <form class="q" id="f">
+        <span class="q-n">Questão ${k + 1} de ${t.ordem.length}</span>
+        <div class="q-stem">${q[1]}</div>
+        <ul class="opts">${item.alt.map((a, j) => `<li><label><input type="radio" name="o" value="${a}"${t.resp[k] === a ? ' checked' : ''}><span class="l">${LETRAS[j]})</span><span>${esc(q[2][a])}</span></label></li>`).join('')}</ul>
+      </form>
+      <div class="nav">
+        <button class="btn ghost" type="button" id="ant"${k ? '' : ' disabled'}>← Anterior</button>
+        <span class="btn-row">
+          <button class="btn ghost" type="button" id="sair">Sair e continuar depois</button>
+          <button class="btn" type="button" id="prox"${t.resp[k] === null ? ' disabled' : ''}>${k === t.ordem.length - 1 ? 'Ver resultado' : 'Próxima →'}</button>
+        </span>
+      </div>`;
+    $('#f').onchange = e => { t.resp[k] = +e.target.value; guardar(t); $('#prox').disabled = false; };
+    $('#ant').onclick = () => { t.k = k - 1; guardar(t); questao(); };
+    $('#sair').onclick = inicio;
+    $('#prox').onclick = () => {
+      const falta = t.resp.findIndex(r => r === null);
+      if (k < t.ordem.length - 1) { t.k = k + 1; guardar(t); return questao(); }
+      if (falta >= 0) { t.k = falta; guardar(t); return questao(); } // alguma ficou sem resposta
+      resultado(t);
+    };
+    window.scrollTo(0, 0);
+  }
+
+  function resultado(t) {
+    const p = MDP.perfil();
+    const habs = habsDoAno(t.ano);
+    const antes = Object.fromEntries(habs.map(c => [c, MDP.nivelHab(c, p)]));
+    const placar = Object.fromEntries(habs.map(c => [c, [0, 0]]));
+    t.ordem.forEach((item, k) => { const q = TESTE_ANO[item.i]; placar[q[0]][1]++; if (t.resp[k] === q[3]) placar[q[0]][0]++; });
+    MDP.registrarTeste(Object.fromEntries(habs.map(c => [c, placar[c][0] / placar[c][1] * 100])));
+    mdStore.set('teste-ano', null);
+    const q2 = MDP.perfil();
+    const depois = Object.fromEntries(habs.map(c => [c, MDP.nivelHab(c, q2)]));
+    const acertos = habs.reduce((s, c) => s + placar[c][0], 0);
+    const subiram = habs.filter(c => depois[c] > antes[c]).length;
+    const praticar = habs.filter(c => depois[c] < 3);
+    const erradas = t.ordem.map((item, k) => ({ q: TESTE_ANO[item.i], r: t.resp[k] })).filter(x => x.r !== x.q[3]);
+    doc.innerHTML = `
+      <span class="eyebrow">🎯 Teste do ${t.ano}º ano · resultado</span>
+      <p class="score">${acertos} de ${t.ordem.length} acertos</p>
+      <p class="muted" style="margin:0;max-width:720px">${subiram ? `${subiram} habilidade(s) subiram de nível no seu progresso.` : 'Nenhuma habilidade subiu de nível desta vez, mas suas notas foram registradas.'} ${praticar.length ? 'As habilidades abaixo de Proficiente têm uma atividade sugerida para praticar.' : 'Todas as habilidades do ano estão proficientes ou dominadas. 🏆'}</p>
+      <h2>Habilidades</h2>
+      <ul class="habs">${habs.map(c => {
+        const r = depois[c] < 3 && MDP.recursoPara(c, q2);
+        return `<li class="${depois[c] > antes[c] ? 'up' : ''}" title="${esc(HAB[c].texto)}"><code>${c}</code>
+          <span>${esc(HAB[c].objeto)} · ${placar[c][0]}/${placar[c][1]}${r ? `<br><a class="small" href="${recUrl(r)}">${TIPOS[r.tipo].icone} Praticar: ${esc(r.titulo)} →</a>` : ''}</span>
+          <span class="arrow">${depois[c] > antes[c] ? `${nv(antes[c])}<span aria-label="subiu para">→</span>` : ''}${nv(depois[c])}</span></li>`;
+      }).join('')}</ul>
+      <div class="btn-row" style="margin-top:20px">
+        <a class="btn" href="meu-progresso.html">📈 Ver meu progresso</a>
+        <button class="btn ghost" type="button" id="denovo">Fazer outro teste</button>
+      </div>
+      ${erradas.length ? `<h2>Revise as questões que você errou</h2>
+      ${erradas.map(x => `<div class="rev"><code>${x.q[0]}</code><div style="margin-top:6px">${x.q[1]}</div>
+        <p class="resp bad">Sua resposta: ${esc(x.q[2][x.r])}</p>
+        <p class="resp ok">Resposta certa: ${esc(x.q[2][x.q[3]])}</p>
+        <p class="why">${esc(x.q[4])}</p></div>`).join('')}` : ''}`;
+    $('#denovo').onclick = inicio;
+    window.scrollTo(0, 0);
+  }
+
+  const t = salvo();
+  if (t && t.ano === ano && t.resp.every(r => r !== null)) resultado(t);
+  else inicio();
+})();
+</script>
+</body>
+</html>
