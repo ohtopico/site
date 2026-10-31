@@ -170,6 +170,32 @@
   const HAB_ = typeof HAB !== 'undefined' ? HAB : {};
   const ICONE_EIXO = { PC: '🧩', MD: '💻', CD: '🌐', NU: '🔢', AL: '🔣', GE: '📐', GM: '📏', PE: '🎲' };
   function eixosDe(habs) { return [...new Set((habs || []).map(h => HAB_[h] && HAB_[h].eixo).filter(Boolean))]; }
+  /* habilidades da BNCC (códigos como EF07CO07) de cada missão: os jogos trazem as deles, as perguntas herdam as da lista ou do
+     tema do morador, e os simuladores, os desafios do Ensino Médio e o mistério usam as tabelas abaixo */
+  const HABS_SIM = { 'proxima-palavra': ['EM13CO10'], regressao: ['EM13CO11', 'EM13CO12'], 'matriz-confusao': ['EM13CO10', 'EM13CO12'], 'rede-neural': ['EM13CO10'],
+    significancia: ['EM13CO12'], bases: ['EF06CO08'], estatistica: ['EM13CO12', 'EF08MA25'], mips: ['EM13CO04'], cache: ['EM13CO03'], pipeline: ['EM13CO03'], 'cpu-por-dentro': ['EM13CO04'] };
+  const HABS_EM = { 'em-rotas': ['EM13CO07'], 'em-ip': ['EM13CO07'], 'em-sql': ['EM13CO13'], 'em-chaves': ['EM13CO13', 'EM13CO26'], 'em-knn': ['EM13CO10', 'EM13CO12'], 'em-etica': ['EM13CO10', 'EM13CO14'] };
+  const HABS_MISTERIO = ['EF07CO07', 'EF08CO10', 'EF09CO04'];
+  const habsValidas = hs => (hs || []).filter(h => HAB_[h]);
+  const uniao = listas => [...new Set(listas.flat())].filter(h => HAB_[h]).sort();
+  const habsLugar = l => l.rec ? l.rec.habs || [] : l.tipo === 'sim' ? HABS_SIM[l.id.slice(4)] || [] : l.tipo === 'em' ? HABS_EM[l.id] || [] : [];
+  const bancosDe = fid => (window.PERGUNTAS_NPC || {})[fid] || [];
+  function habsPergunta(id) {
+    if (id.startsWith('n:')) { const [, fid, k] = id.split(':'), b = bancosDe(fid)[+k]; return b ? b.habs || [] : []; }
+    if (id.startsWith('em-')) return HABS_EM[id.replace(/-\d+$/, '')] || [];
+    const p = PERG_POR_ID.get(id); return p ? p.habs || [] : [];
+  }
+  /* habilidade → quantas atividades concluídas e perguntas acertadas a trabalharam (vai no código de progresso) */
+  function habsTrabalhadas() {
+    const c = {}, soma = hs => { for (const h of new Set(habsValidas(hs))) c[h] = (c[h] || 0) + 1; };
+    for (const l of todosLugares) if (S.feitos[l.id]) soma(habsLugar(l));
+    for (const [id, v] of Object.entries(S.resp)) if (v === true) soma(habsPergunta(id));
+    if (S.misterio && S.misterio.resolvido) soma(HABS_MISTERIO);
+    for (const m of Object.values(S.missoesProf || {})) if (Object.values(m.r).some(Boolean)) soma(m.h);
+    return c;
+  }
+  const detalheHabs = (hs, feitas) => `<details class="habs-det"><summary>BNCC: ${hs.length} habilidade${hs.length > 1 ? 's' : ''}${feitas ? ` · ${hs.filter(h => feitas[h]).length} trabalhada${hs.filter(h => feitas[h]).length === 1 ? '' : 's'}` : ''}</summary>${chipsHabs(hs, feitas)}</details>`;
+  const chipsHabs = (hs, feitas) => hs.length ? `<span class="habs">${hs.map(h => `<abbr class="hab ${feitas && feitas[h] ? 'ok' : ''}" title="${esc(HAB_[h].objeto + ': ' + HAB_[h].texto)}">${h}</abbr>`).join('')}</span>` : '';
   /* perguntas de uma fase: múltipla escolha e verdadeiro ou falso das listas do mesmo ano */
   function perguntasDoAno(ano) {
     const out = [];
@@ -177,8 +203,8 @@
       if (l.ano !== ano) continue;
       const eixos = eixosDe(l.habs);
       l.ex.forEach((e, i) => {
-        if (e[0] === 'me') out.push({ id: l.id + '-' + i, enun: e[1], alts: e[2], certa: e[3], coment: e[4] || '', eixos });
-        else if (e[0] === 'vf') e[2].forEach((af, j) => out.push({ id: l.id + '-' + i + '-' + j, enun: 'Verdadeiro ou falso? ' + af[0], alts: ['Verdadeiro', 'Falso'], certa: af[1] ? 0 : 1, coment: e[3] || '', eixos }));
+        if (e[0] === 'me') out.push({ id: l.id + '-' + i, enun: e[1], alts: e[2], certa: e[3], coment: e[4] || '', eixos, habs: l.habs });
+        else if (e[0] === 'vf') e[2].forEach((af, j) => out.push({ id: l.id + '-' + i + '-' + j, enun: 'Verdadeiro ou falso? ' + af[0], alts: ['Verdadeiro', 'Falso'], certa: af[1] ? 0 : 1, coment: e[3] || '', eixos, habs: l.habs }));
       });
     }
     return out;
@@ -196,6 +222,7 @@
       metaJogar: Math.min(n, f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2)),
       nNpc: 2 + Math.floor(i / 2), nItens: 5 + i });
   });
+  const PERG_POR_ID = new Map(fases.flatMap(f => f.perguntas.map(p => [p.id, p])));
   /* as vilas são quadradas e ficam numa grade de 3 colunas (em zigue-zague): cada uma liga-se à anterior, à seguinte e aos
      atalhos de LIGACOES por um portão no lado em que a vizinha está. Só a vila atual fica montada na memória; ao trocar de vila, a anterior é
      desmontada (ela é refeita igualzinha quando a pessoa volta, porque o sorteio é fixo). */
@@ -469,10 +496,10 @@
     const verbo = f.id === 'escola' ? 'Visitar' : f.id === 'lab' ? 'Experimentar' : f.id === 'medio' ? 'Concluir' : 'Jogar';
     const coisa = f.id === 'escola' ? 'páginas' : f.id === 'lab' ? 'simuladores' : f.id === 'medio' ? 'desafios' : 'jogos';
     return [
-      { nome: `${verbo} ${f.metaJogar} ${coisa}`, n: jog, meta: f.metaJogar },
-      { nome: `Responder ${f.metaPerg} perguntas`, n: perg, meta: f.metaPerg },
-      { nome: `Coletar ${f.nItens} itens`, n: S.cont[f.id] || 0, meta: f.nItens },
-      { nome: `Conversar com ${f.nNpc} moradores`, n: falas, meta: f.nNpc }
+      { nome: `${verbo} ${f.metaJogar} ${coisa}`, n: jog, meta: f.metaJogar, habs: uniao(f.lugares.map(habsLugar)) },
+      { nome: `Responder ${f.metaPerg} perguntas`, n: perg, meta: f.metaPerg, habs: uniao(f.perguntas.map(p => p.habs || []).concat(bancosDe(f.id).map(b => b.habs || []))) },
+      { nome: `Coletar ${f.nItens} itens`, n: S.cont[f.id] || 0, meta: f.nItens, habs: [] },
+      { nome: `Conversar com ${f.nNpc} moradores`, n: falas, meta: f.nNpc, habs: [] }
     ].map(m => Object.assign(m, { ok: m.n >= m.meta }));
   }
   const concluida = f => missoes(f).every(m => m.ok);
@@ -593,6 +620,7 @@
     $('#jogos-conteudo').innerHTML = `<p>Termine os dois jogos de cada missão para ganhar uma <b>roupa exclusiva</b> para o avatar, +30 ⭐ e uma figurinha. Os jogos abrem em outra aba, e o progresso volta para cá sozinho.</p>
       <div class="projetos">${missoesJogos().map(m => { const ok = S.jogosMissao[m.id], [, cor, nome] = m.premio; return `<div class="proj ${ok ? 'pronto' : ''}"><h3>${m.ic} ${esc(m.nome)} ${ok ? '✅' : ''}</h3>
         <ul class="etapas">${m.jogos.map(lugarPorId).map(l => `<li class="${S.feitos[l.id] ? 'ok' : ''}">${S.feitos[l.id] ? '✅' : '⬜'} <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.icone)} ${esc(l.titulo)}</a></li>`).join('')}</ul>
+        ${(hs => hs.length ? `<p class="small">BNCC: ${chipsHabs(hs)}</p>` : '')(uniao(m.jogos.map(lugarPorId).map(habsLugar)))}
         <p class="small"><span class="amostra" style="background:${cor}"></span> Prêmio: ${esc(nome)}${ok ? ' <b>(já está no seu 👤 Avatar)</b>' : ''}</p></div>`; }).join('')}</div>`;
   }
 
@@ -1443,9 +1471,9 @@
     for (const k of Object.keys(x)) if (x[k] > 0) h[k] = Math.round(x[k]);
     return { a: S.turma.nome, t: S.turma.codigo, d: Math.floor(Date.now() / 864e5), p: S.pontos, c: S.acertos, e: S.erros,
       f: Object.keys(S.concluidas).length, j: Object.keys(S.feitos).length, i: Object.values(S.cont).reduce((a, b) => a + b, 0),
-      h, m: Object.keys(S.medalhas).length, am: Object.values(S.amizade).reduce((a, b) => a + Math.floor(b / 10), 0), pj: S.projetos.doou, mp: resumoMissoesProf() };
+      h, m: Object.keys(S.medalhas).length, am: Object.values(S.amizade).reduce((a, b) => a + Math.floor(b / 10), 0), pj: S.projetos.doou, mp: resumoMissoesProf(), hb: habsTrabalhadas() };
   }
-  const camposTurma = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]).concat(o.mp === undefined ? [] : [o.mp]);
+  const camposTurma = o => [o.a, o.t, o.d, o.p, o.c, o.e, o.f, o.j, o.i, o.h, o.m, o.am].concat(o.pj === undefined ? [] : [o.pj]).concat(o.mp === undefined ? [] : [o.mp]).concat(o.hb === undefined ? [] : [o.hb]);
   /* ---------- missões da professora: o painel da turma gera um código MUNQ1 assinado com as perguntas ---------- */
   const missoesProf = () => S.missoesProf || (S.missoesProf = {});
   function resumoMissoesProf() {
@@ -1456,7 +1484,7 @@
   async function lerMissaoProf(code) {
     const Pk = window.MDP && MDP.pacote;
     const o = await Pk.desempacotar('MUNQ1', code);
-    if (o.s !== await Pk.assinatura(JSON.stringify([o.t, o.id, o.n, o.q, o.d]))) throw new Error('assinatura');
+    if (o.s !== await Pk.assinatura(JSON.stringify([o.t, o.id, o.n, o.q, o.d].concat(o.h ? [o.h] : [])))) throw new Error('assinatura');
     return o;
   }
   function janelaMissoesProf() {
@@ -1465,7 +1493,7 @@
       <textarea id="mp-cod" class="campo" rows="2" placeholder="MUNQ1z.…"></textarea>
       <div class="btn-row"><button type="button" class="hb verde" id="mp-add">➕ Adicionar missão</button></div>
       <div class="projetos">${Object.entries(M).map(([id, m]) => { const feitas = Object.keys(m.r).length, certas = Object.values(m.r).filter(Boolean).length;
-        return `<div class="proj ${feitas === m.q.length ? 'pronto' : ''}"><h3>📝 ${esc(m.n)}</h3><p class="small">Turma ${esc(m.t)} · ${m.q.length} pergunta(s) · respondidas ${feitas} · certas ${certas}</p>
+        return `<div class="proj ${feitas === m.q.length ? 'pronto' : ''}"><h3>📝 ${esc(m.n)}</h3><p class="small">Turma ${esc(m.t)} · ${m.q.length} pergunta(s) · respondidas ${feitas} · certas ${certas}</p>${m.h && m.h.length ? `<p class="small">BNCC: ${chipsHabs(m.h)}</p>` : ''}
           <div class="btn-row">${feitas < m.q.length ? `<button type="button" class="hb azul" data-mp="${id}">▶️ ${feitas ? 'Continuar' : 'Começar'}</button>` : '<b>✅ Missão concluída!</b>'}</div></div>`; }).join('') || '<p class="muted small">Nenhuma missão ainda.</p>'}</div>
       <p class="muted small">Cada acerto de primeira vale 10 ⭐, e terminar a missão vale +30 ⭐ e uma figurinha. O resultado vai junto no seu código de progresso do 👥 Modo turma${T.codigo ? '' : ' (preencha lá o seu nome e o código da turma)'}.</p>`;
     $('#mp-add').addEventListener('click', async () => {
@@ -1475,7 +1503,7 @@
         const o = await lerMissaoProf(code);
         if (T.codigo && o.t !== T.codigo) return aviso(`Esta missão é da turma ${o.t}, e a sua é ${T.codigo}.`);
         if (M[o.id]) return aviso('📝 Você já tem esta missão.');
-        M[o.id] = { n: o.n, t: o.t, q: o.q, r: {} }; salvar(); aviso(`📝 Missão adicionada: ${o.n}`); janelaMissoesProf();
+        M[o.id] = { n: o.n, t: o.t, q: o.q, r: {}, h: habsValidas(o.h) }; salvar(); aviso(`📝 Missão adicionada: ${o.n}`); janelaMissoesProf();
       } catch (e) { aviso('Código de missão inválido. Confira se copiou inteiro.'); }
     });
     $('#mprof-conteudo').querySelectorAll('[data-mp]').forEach(b => b.addEventListener('click', () => { fechaJanela(); perguntaMissao(b.dataset.mp); }));
@@ -1513,6 +1541,7 @@
       <div id="tu-saida" hidden><textarea id="tu-codigo" class="campo" rows="3" readonly></textarea>
       <div class="btn-row"><button type="button" class="hb azul" id="tu-copiar">📋 Copiar</button></div>
       <p class="muted small">O código leva os seus pontos, as fases e os jogos concluídos, os acertos, as habilidades da BNCC e as medalhas. Ele não atualiza sozinho: gere outro quando quiser mandar o progresso novo.</p></div>
+      ${(c => { const hs = Object.keys(c).sort(); return `<details class="habs-turma"><summary>📐 Habilidades da BNCC que você já trabalhou (${hs.length})</summary>${hs.length ? `<ul class="etapas">${hs.map(h => `<li class="ok">${chipsHabs([h], c)} ${esc(HAB_[h].objeto)} <span class="muted small">(${c[h]}×)</span></li>`).join('')}</ul>` : '<p class="muted small">Ainda nenhuma: jogue as casas e responda às perguntas dos moradores.</p>'}</details>`; })(habsTrabalhadas())}
       <p class="muted small">Professora ou professor: cole os códigos dos alunos no <a href="../material-didatico/turma-mundo.html" target="_blank" rel="noopener">painel da turma do Mundo</a> para ver o ranking e o progresso de cada um.</p>`;
     $('#tu-gerar').addEventListener('click', async () => {
       const nome = $('#tu-nome').value.trim().slice(0, 30), cod = limpaTurma($('#tu-cod').value);
@@ -2481,7 +2510,7 @@
     const f = faseDeX(P.x), ms = noEnigma ? missoesEnigma() : dentro && visita ? [{ nome: 'Abrir o baú do presente', n: ((S.visitas || {})[visita.id] || {}).bau ? 1 : 0, meta: 1 }, { nome: `Chegar a 10 corações com ${visita.nome}`, n: coracoes(visita), meta: 10 }].map(m => Object.assign(m, { ok: m.n >= m.meta })) : dentro ? missoesCasa() : missoes(f);
     $('#m-titulo').textContent = noEnigma ? '🔐 Casa do Enigma' : dentro && visita ? `🏠 Casa de ${visita.nome}` : dentro ? '🏠 Sua casa' : `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
     $('#m-nome').textContent = noEnigma ? 'Escape room · sem cronômetro' : dentro && visita ? `${visita.fase.icone} ${visita.fase.nome}` : dentro ? 'Sala · Quarto · Cozinha' : `${f.icone} ${f.nome}`;
-    $('#m-lista').innerHTML = ms.map(m => `<li class="${m.ok ? 'ok' : ''}"><span class="q"></span><span>${esc(m.nome)}</span><span class="n">(${Math.min(m.n, m.meta)}/${m.meta})</span></li>`).join('');
+    $('#m-lista').innerHTML = ms.map(m => `<li class="${m.ok ? 'ok' : ''}"${m.habs && m.habs.length ? ` title="BNCC: ${m.habs.join(', ')}"` : ''}><span class="q"></span><span>${esc(m.nome)}</span><span class="n">(${Math.min(m.n, m.meta)}/${m.meta})</span></li>`).join('');
     $('#m-barra').style.width = Math.round(ms.reduce((a, m) => a + Math.min(1, m.n / m.meta), 0) / ms.length * 100) + '%';
   }
   let avisoT = null;
@@ -2737,6 +2766,7 @@
   function janelaMisterio() {
     const E = estMis(), n = Object.keys(E.pistas).length, f = fases.find(q => q.id === MISTERIO.fase);
     $('#misterio-conteudo').innerHTML = `<p>A conta de e-mail do <b>Seu Juca</b>, no ${f.icone} ${esc(f.nome)}, foi invadida, e ele não sabe como. Procure as casas com a lupa 🔎, explique cada pista e descubra o que aconteceu.</p>
+      <p class="small">BNCC: ${chipsHabs(HABS_MISTERIO, E.resolvido ? Object.fromEntries(HABS_MISTERIO.map(h => [h, 1])) : null)}</p>
       ${E.resolvido ? '<p><strong>✅ Caso resolvido! A medalha de detetive digital está no seu inventário.</strong></p>' : ''}
       <ul class="etapas">${MISTERIO.pistas.map((P, k) => `<li class="${E.pistas[k] ? 'ok' : ''}">${E.pistas[k] ? `✅ ${P.ic} <b>${esc(P.nome)}</b>: ${esc(P.achado)}` : `⬜ Pista ${k + 1}: ainda escondida`}</li>`).join('')}</ul>
       <div class="btn-row">${!E.aberto ? '<button type="button" class="hb verde" id="ms-abre">🕵️ Aceitar o caso</button>' : ''}
@@ -2749,8 +2779,8 @@
   }
   function lePlaca(f) {
     if (f.id === MISTERIO.fase && !estMis().resolvido) return abreJanela('misterio');
-    const ms = missoes(f);
-    dialogo('🪧', f.nome, `<p>${esc(f.placa)}</p>${f.loja ? `<p>${LOJAS[f.loja.id].ic} Nesta vila fica a <strong>${LOJAS[f.loja.id].nome}</strong>: troque suas ⭐ por coisas novas.</p>` : ''}<p class="muted">Missões desta fase: ${ms.map(m => `${m.ok ? '✅' : '⬜'} ${esc(m.nome)}`).join(' · ')}</p><p class="muted">Os itens do chão mudam de lugar toda segunda-feira, para você voltar e revisar.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
+    const ms = missoes(f), feitas = habsTrabalhadas();
+    dialogo('🪧', f.nome, `<p>${esc(FASES[f.idx].placa)}</p>${f.loja ? `<p>${LOJAS[f.loja.id].ic} Nesta vila fica a <strong>${LOJAS[f.loja.id].nome}</strong>: troque suas ⭐ por coisas novas.</p>` : ''}<p class="muted">Missões desta fase:</p><ul class="etapas">${ms.map(m => `<li class="${m.ok ? 'ok' : ''}">${m.ok ? '✅' : '⬜'} ${esc(m.nome)}${m.habs.length ? detalheHabs(m.habs, feitas) : ''}</li>`).join('')}</ul>${ms.some(m => m.habs.length) ? '<p class="muted small">Os códigos são as habilidades da BNCC que cada missão trabalha. Abra a lista e toque em um código para ler a habilidade; os verdes você já trabalhou.</p>' : ''}<p class="muted">Os itens do chão mudam de lugar toda segunda-feira, para você voltar e revisar.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
   }
   function portao(f, p) {
     const prox = fases[p.para];
@@ -2809,7 +2839,7 @@
     }
     $('#mapa-fases').innerHTML = fases.map(f => {
       const ms = missoes(f), ok = liberada(f), cor = f.lugares.filter(l => S.feitos[l.id]).length;
-      return `<li class="${ok ? '' : 'travada'}"><span>${S.concluidas[f.id] ? '🏆' : ok ? f.icone : '🔒'}</span><span class="f-nome"><strong>Fase ${f.idx + 1}: ${esc(f.nome)}</strong><small>${esc(f.sub)} · ${cor} de ${f.lugares.length} casas coloridas · missões ${ms.filter(m => m.ok).length}/${ms.length}</small></span>${ok ? `<button type="button" class="hb azul" data-ir="${f.idx}">Ir</button>` : ''}</li>`;
+      return `<li class="${ok ? '' : 'travada'}"><span>${S.concluidas[f.id] ? '🏆' : ok ? f.icone : '🔒'}</span><span class="f-nome"><strong>Fase ${f.idx + 1}: ${esc(f.nome)}</strong><small>${esc(f.sub)} · ${cor} de ${f.lugares.length} casas coloridas · missões ${ms.filter(m => m.ok).length}/${ms.length}${(hs => hs.length ? ` · BNCC: ${hs.length} habilidade${hs.length > 1 ? 's' : ''}` : '')(uniao(ms.map(m => m.habs)))}</small></span>${ok ? `<button type="button" class="hb azul" data-ir="${f.idx}">Ir</button>` : ''}</li>`;
     }).join('');
     $('#mapa-fases').querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => teleporta(fases[+b.dataset.ir])));
   }
@@ -3051,7 +3081,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
