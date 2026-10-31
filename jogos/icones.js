@@ -41,10 +41,9 @@
     python: `<rect x="6" y="10" width="52" height="38" rx="6" fill="#111" ${T}/><path d="M14 22l7 5-7 5" fill="none" stroke="${V}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M25 33h10" stroke="${A}" stroke-width="3" stroke-linecap="round"/><path d="M40 56c0-8 4-12 10-12" fill="none" stroke="#2f7a3f" stroke-width="2.5"/>
       <path d="M44 50c-6 0-8-5-8-5 5-1 8 2 8 5z" fill="${V}" ${T}/><circle cx="51" cy="42" r="5" fill="${R}" ${T}/>`,
-    'sitio-binario': `<circle cx="50" cy="14" r="7" fill="${A}" ${T}/><rect x="10" y="40" width="44" height="16" rx="3" fill="#8a5a2b" ${T}/>
-      <path d="M14 40v16M24 40v16M34 40v16M44 40v16" stroke="#111" stroke-width="1.5" opacity=".35"/>
-      <path d="M32 40V24" ${T}/><path d="M32 30c-8 0-12-5-12-11 7 0 12 4 12 11z" fill="${V}" ${T}/><path d="M32 26c8 0 12-5 12-11-7 0-12 4-12 11z" fill="${V}" ${T}/>
-      <circle cx="19" cy="34" r="4" fill="${R}" ${T}/><circle cx="46" cy="34" r="4" fill="${R}" ${T}/>`,
+    'fabrica-logica': `<rect x="10" y="18" width="44" height="40" rx="3" fill="${C}" ${T}/><rect x="10" y="18" width="12" height="40" fill="#6f6a60" ${T}/>
+      <rect x="13" y="38" width="6" height="10" fill="${A}" ${T}/><rect x="26" y="24" width="24" height="8" rx="1" fill="${V}" ${T}/><rect x="26" y="36" width="24" height="8" rx="1" fill="${A}" ${T}/><rect x="26" y="48" width="24" height="8" rx="1" fill="${R}" ${T}/>
+      <rect x="40" y="6" width="8" height="12" fill="#6f6a60" ${T}/><circle cx="44" cy="4" r="3" fill="${B}" ${T}/><rect x="6" y="56" width="52" height="4" rx="1" fill="#111"/>`,
     'cidade-blocos': `<path d="M32 30l20-10v22L32 52 12 42V20z" fill="${A}" ${T}/><path d="M12 20l20 10 20-10" fill="none" ${T}/><path d="M32 30v22" ${T}/>
       <path d="M12 20l20-10 20 10-20 10z" fill="${R}" ${T}/><ellipse cx="25" cy="18" rx="3.5" ry="1.8" fill="${B}" ${T}/><ellipse cx="39" cy="18" rx="3.5" ry="1.8" fill="${B}" ${T}/>
       <circle cx="50" cy="12" r="8" fill="${V}" ${T}/><text x="46.5" y="16.5" font-family="Sniglet,sans-serif" font-weight="800" font-size="12" fill="#fff">?</text>`,

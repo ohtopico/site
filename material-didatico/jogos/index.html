@@ -33,6 +33,12 @@
     padding: 7px 16px; font-size: 15px; font-weight: 500; cursor: pointer; min-height: 40px; font-family: var(--body); }
   .pill:hover { background: var(--pill); }
   .pill[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .ordem { margin-top: 12px; }
+  .ordem .rot { font-size: 15px; font-weight: 600; margin-right: 4px; }
+  .nivel { display: inline-block; margin-top: 4px; font-size: 12.5px; color: var(--ink-2); }
+  .nivel b { font-weight: 600; color: var(--ink); }
+  .visitas { display: block; font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+  .aviso-ordem { color: var(--ink-2); font-size: 14px; margin: 0 0 10px; }
 
   .turma { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; border: 1.5px dashed var(--ink-2); border-radius: 18px;
     padding: 12px 18px; margin: 26px 0 18px; font-size: 15px; }
@@ -93,6 +99,10 @@
         <button class="pill" type="button" data-comp="MA" aria-pressed="false">Matemática</button>
         <button class="pill" type="button" id="curto" aria-pressed="false">Até 15 min</button>
       </div>
+      <div class="filtros ordem" role="group" aria-labelledby="rot-ordem">
+        <span class="rot" id="rot-ordem">Ordenar:</span>
+        <span id="ordens"></span>
+      </div>
     </div>
   </section>
 
@@ -101,8 +111,9 @@
       <span>Link para a turma:</span>
       <code id="link-turma">ohtopico.com.br/jogos/</code>
       <button class="acao" type="button" id="copiar-turma">Copiar link</button>
-      <span class="muted small">O link segue os filtros de ano e área escolhidos aqui.</span>
+      <span class="muted small">O link segue o ano, a área e a ordem escolhidos aqui.</span>
     </div>
+    <p class="aviso-ordem" id="aviso-ordem" hidden></p>
     <div id="tabela" aria-live="polite"></div>
     <p class="rodape-lista" id="rodape"></p>
   </div>
@@ -116,13 +127,15 @@
 <script>
 (function () {
   mdTopbar('jogos'); mdFooter();
-  const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo').sort((a, b) => a.titulo.localeCompare(b.titulo, 'pt-BR'));
+  const JOGOS = RECURSOS.filter(r => r.tipo === 'jogo');
   const $ = s => document.querySelector(s);
   const params = new URLSearchParams(location.search);
   const SITE = 'https://ohtopico.com.br/';
   let ano = [1, 6, 7, 8, 9].includes(+params.get('ano')) ? +params.get('ano') : 0;
   let comp = ['CO', 'MA'].includes((params.get('area') || '').toUpperCase()) ? params.get('area').toUpperCase() : '';
   let curto = params.get('tempo') === '15';
+  let ordem = ORDENS_JOGOS[params.get('ordem')] ? params.get('ordem') : 'az';
+  let visitas = null, aviso = '';
   // maior número de minutos do campo tempo ("10–15 min" vira 15)
   const minutos = t => Math.max(...(String(t).match(/\d+/g) || [999]).map(Number));
 
@@ -130,6 +143,17 @@
   $('#anos').outerHTML = `<button class="pill" type="button" data-ano="0" aria-pressed="false">Todos os anos</button>` +
     `<button class="pill" type="button" data-ano="1" aria-pressed="false">1º ao 5º</button>` +
     [6, 7, 8, 9].map(a => `<button class="pill" type="button" data-ano="${a}" aria-pressed="false">${a}º</button>`).join('');
+  $('#ordens').outerHTML = Object.entries(ORDENS_JOGOS).map(([id, nome]) => `<button class="pill" type="button" data-ordem="${id}" aria-pressed="false">${nome}</button>`).join('');
+
+  function escolherOrdem(o) {
+    ordem = o; aviso = '';
+    if (o === 'populares' && !visitas) {
+      aviso = 'Carregando as visitas de cada jogo…';
+      mdVisitasJogos(JOGOS).then(v => { visitas = v; aviso = ''; desenhar(); },
+        () => { ordem = 'az'; aviso = 'Não deu para carregar as visitas agora. Mostrando de A a Z.'; desenhar(); });
+    }
+    desenhar();
+  }
 
   function copiar(txt, btn) {
     const ok = () => { const t = btn.textContent; btn.textContent = 'Copiado'; setTimeout(() => { btn.textContent = t; }, 1600); };
@@ -141,6 +165,7 @@
     const q = new URLSearchParams();
     if (ano) q.set('ano', ano);
     if (comp) q.set('area', comp.toLowerCase());
+    if (ordem !== 'az') q.set('ordem', ordem);
     return 'ohtopico.com.br/jogos/' + (q.toString() ? '?' + q : '');
   }
 
@@ -148,9 +173,12 @@
     document.querySelectorAll('[data-ano]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.ano === ano));
     document.querySelectorAll('[data-comp]').forEach(b => b.setAttribute('aria-pressed', b.dataset.comp === comp));
     $('#curto').setAttribute('aria-pressed', curto);
+    document.querySelectorAll('[data-ordem]').forEach(b => b.setAttribute('aria-pressed', b.dataset.ordem === ordem));
+    $('#aviso-ordem').hidden = !aviso && ordem !== 'populares';
+    $('#aviso-ordem').textContent = aviso || (visitas ? 'Mais jogados: visitas de cada jogo no contador do site, somadas desde o início da contagem.' : '');
     $('#link-turma').textContent = linkTurma();
-    const lista = JOGOS.filter(j => (!ano || (ano === 1 ? j.anos.some(x => x <= 5) : j.anos.includes(ano))) && (!comp || j.comp.includes(comp)) && (!curto || minutos(j.tempo) <= 15));
-    const cab = `<div class="linha th" role="row"><div>Jogo</div><div>Ano</div><div>Habilidades BNCC</div><div>Tempo</div><div>Para a aula</div></div>`;
+    const lista = mdOrdenarJogos(JOGOS, ordem === 'populares' && !visitas ? 'az' : ordem, visitas).filter(j => (!ano || (ano === 1 ? j.anos.some(x => x <= 5) : j.anos.includes(ano))) && (!comp || j.comp.includes(comp)) && (!curto || minutos(j.tempo) <= 15));
+    const cab = `<div class="linha th" role="row"><div>Jogo</div><div>Ano</div><div>Habilidades BNCC</div><div>Tempo e nível</div><div>Para a aula</div></div>`;
     const linha = j => {
       const plano = j.plano && REC[j.plano], ficha = j.ficha && REC[j.ficha];
       const max = 3, extra = j.habs.length - max;
@@ -159,7 +187,7 @@
           <div class="resumo">${esc(j.resumo)}</div></div>
         <div><span class="rot-m">Ano</span>${anosTxt(j.anos)}</div>
         <div><span class="rot-m">Habilidades BNCC</span><div class="codes">${j.habs.slice(0, max).map(tagHab).join('')}${extra > 0 ? `<span class="tag" title="${j.habs.slice(max).join(', ')}">+${extra}</span>` : ''}</div></div>
-        <div><span class="rot-m">Tempo</span>${esc(j.tempo)}</div>
+        <div><span class="rot-m">Tempo e nível</span>${esc(j.tempo)}<br><span class="nivel">Nível: <b>${DIFICULDADE_NOMES[dificuldadeDe(j)]}</b></span>${ordem === 'populares' && visitas ? `<span class="visitas">${(visitas[j.id] || 0).toLocaleString('pt-BR')} visitas</span>` : ''}</div>
         <div><span class="rot-m">Para a aula</span><div class="acoes">
           <a class="acao forte" href="${recUrl(j)}">Abrir jogo</a>
           ${plano ? `<a class="acao plano" href="${recUrl(plano)}">Plano de aula</a>` : ''}
@@ -180,6 +208,7 @@
     if (ano) q.set('ano', ano);
     if (comp) q.set('area', comp.toLowerCase());
     if (curto) q.set('tempo', '15');
+    if (ordem !== 'az') q.set('ordem', ordem);
     history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
   }
 
@@ -188,10 +217,12 @@
     if (a) { ano = +a.dataset.ano; desenhar(); }
     if (c) { comp = comp === c.dataset.comp ? '' : c.dataset.comp; desenhar(); }
     if (e.target.closest('#curto')) { curto = !curto; desenhar(); }
+    const o = e.target.closest('[data-ordem]');
+    if (o) escolherOrdem(o.dataset.ordem);
     if (cp) copiar(cp.dataset.copiar, cp);
     if (e.target.closest('#copiar-turma')) copiar('https://' + linkTurma(), e.target.closest('#copiar-turma'));
   });
-  desenhar();
+  escolherOrdem(ordem);
 })();
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->

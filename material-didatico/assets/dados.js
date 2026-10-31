@@ -30,6 +30,21 @@ const INTERACOES = {
 };
 const interacaoDe = r => (r.interacao === 'perguntas' ? 'perguntas' : 'outras');
 
+/* Dificuldade de cada jogo, usada para ordenar as listas de jogos (1 = fácil, 2 = médio, 3 = desafiador).
+   Critério: quantos conceitos o jogo junta, quanto cálculo ou programação pede e quantos passos tem cada fase.
+   Jogo novo sem nota entra como médio. */
+const DIFICULDADE_NOMES = { 1: 'Fácil', 2: 'Médio', 3: 'Desafiador' };
+const DIFICULDADE = {
+  'partes-computador': 1, digitacao: 1, tabuada: 1, fracoes: 1, cartesiano: 1, golpe: 1, senha: 1, wikipedia: 1,
+  pacotes: 1, 'busca-binaria': 1, 'linha-tempo': 1, bingo: 1, impostor: 1, 'vila-cidada': 1,
+  robo: 2, rotas: 2, cifra: 2, balanca: 2, tangram: 2, graficos: 2, poupanca: 2, 'empresa-sucos': 2, angulos: 2,
+  cofrinho: 2, tabelas: 2, receitas: 2, cambio: 2, 'vale-bits': 2, carreira: 2, numeria: 2, paridade: 2,
+  'filas-pilhas': 2, bolha: 2, boato: 2,
+  mesada: 3, bhaskara: 3, cartao: 3, python: 3, 'cidade-blocos': 3, 'fabrica-logica': 3, boletim: 3,
+  meteorologista: 3, arquiteto: 3, chatbot: 3, acessivel: 3
+};
+const dificuldadeDe = r => DIFICULDADE[r.id] || 2;
+
 /* Eixos (Computação) e unidades temáticas (Matemática) */
 const EIXOS = {
   PC: { comp: 'CO', nome: 'Pensamento computacional' },
@@ -365,10 +380,10 @@ const RECURSOS = [
     habs: ['EF06CO02', 'EF07CO01', 'EF07CO02', 'EF07CO06', 'EF07CO07', 'EF08CO06', 'EF08CO08', 'EF09CO05', 'EF09CO10'], tempo: '30–40 min',
     resumo: 'Cidade de blocos de montar com seis bairros: responda os totens de desafio, junte peças, reconstrua os marcos e libere a cidade. Algoritmos, dados, depuração, redes, segurança e IA.',
     url: 'jogos/cidade-blocos.html', plano: 'p-bugs', ficha: null },
-  { id: 'sitio-binario', tipo: 'jogo', interacao: 'outras', titulo: 'Sítio Binário', comp: ['CO'], anos: [6, 7, 8, 9],
-    habs: ['EF06CO01', 'EF06CO07', 'EF08CO02', 'EF08CO03', 'EF08CO06'], tempo: '30–40 min',
-    resumo: 'Jogo de fazenda: plante, regue, durma e colha num sítio sem sinal. Cada cultura ensina binário, repetição, pilha ou fila; monte um processador e um roteador na oficina para consertar a antena da vila.',
-    url: 'jogos/sitio-binario.html', plano: 'p-internet', ficha: 'f-co-listas' },
+  { id: 'fabrica-logica', tipo: 'jogo', interacao: 'outras', titulo: 'Fábrica Lógica', comp: ['CO'], anos: [6, 7, 8, 9],
+    habs: ['EF06CO02', 'EF07CO02', 'EF06CO01', 'EF07CO01', 'EF08CO02', 'EF06CO05', 'EF06CO08', 'EF08CO06', 'EF08CO08', 'EF09CO10', 'EF07CO10', 'EF09CO07'], tempo: '30–50 min',
+    resumo: 'Simulação de uma fábrica de componentes com um andar por setor: algoritmos na Fábrica, dados no RH, planilhas e arquivos na Administração, redes no Marketing e decisões na Diretoria. Produza, entregue pedidos, construa andares e personalize sua personagem.',
+    url: 'jogos/fabrica-logica.html', plano: 'p-bugs', ficha: 'f-co-listas' },
   { id: 'boletim', tipo: 'jogo', interacao: 'outras', titulo: 'Fórmulas do Boletim', comp: ['MA', 'CO'], anos: [7, 8, 9],
     habs: ['EF07MA35', 'EF07MA36', 'EF06MA33', 'EF07CO01', 'EF06CO02'], tempo: '20–30 min',
     resumo: 'Planilha eletrônica de verdade: complete o boletim de uma turma fictícia com SOMA, MÉDIA, SE, CONT.SE e MÁXIMO, copie as fórmulas para baixo e descubra quantos estudantes melhoraram.',
@@ -953,7 +968,11 @@ const ICONES = {
   'p-dados': '🔢', 'p-arquivos': '🗄️', 'p-conduta': '🤝', 'p-lixo': '♻️', 'p-registros': '🗃️', 'p-bugs': '🐞',
   'p-reuso': '🧩', 'p-midia': '🎙️', 'p-recursao': '🪆', 'p-paralelo': '⚙️', 'p-redes': '📱', 'p-fontes': '🔎', 'p-wikipedia': '📈', wikipedia: '⇅',
   'p-projeto8': '💻', 'p-arvores': '🌳', 'p-automatos': '🚦', 'p-cidade': '🏙️', 'p-sociedade': '⚖️', 'p-autoria': '©️',
+<<<<<<< HEAD
   bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-tanque': '🚰', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-espaco-palavras': '⋰', '3d-olhos-ia': '⌖', '3d-arvore-viva': '⋔', '3d-cidade-infectada': '☣', '3d-torre-recursao': '🗼', '3d-cozinha-paralela': '🍳', '3d-dados-verdade': '⚄', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'sitio-binario': '🌱', 'valor-moeda': '🪙', 'cunhe-moeda': '🔨', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+=======
+  bhaskara: '🧮', '3d-decimais': '🟩', '3d-fracoes': '🍫', '3d-mmc': '🏗️', '3d-potencias': '🧊', '3d-terreno': '🌱', '3d-elevador': '🛗', '3d-balanca': '⚖️', '3d-sucos': '🧃', '3d-produtos': '🟨', '3d-algeblocos': '🧩', '3d-tales': '☀️', '3d-ladrilhos': '⬡', '3d-figuras': '△', '3d-tanque': '🚰', '3d-rede-neural': '◉', '3d-montanha-erro': '⛰', '3d-cubo-rgb': '▣', '3d-agrupamento': '⁘', '3d-grafico-enganoso': '▤', '3d-viagem-pacote': '⇄', '3d-data-center': '▦', '3d-espaco-palavras': '⋰', '3d-olhos-ia': '⌖', '3d-arvore-viva': '⋔', '3d-cidade-infectada': '☣', '3d-torre-recursao': '🗼', '3d-cozinha-paralela': '🍳', '3d-dados-verdade': '⚄', 'f-ma-decimais': '📏', 'p-ma-decimais': '🔟', 'f-ma-mmc': '🐸', 'p-ma-mmc': '🔁', 'f-ma-potencias': '🔲', 'p-ma-potencias': '²', 'f-ma-area': '🧵', 'p-ma-area': '🥬', 'f-ma-inteiros': '🔴', 'p-ma-inteiros': '🌡️', 'f-ma-equacoes': '✉️', 'p-ma-equacoes': '⚖️', 'f-ma-racionais': '🧺', 'p-ma-racionais': '📍', 'f-ma-regra3': '🎂', 'p-ma-regra3': '🍳', 'f-ma-razao': '📐', 'p-ma-razao': '🏃', 'f-ma-proporcao': '🖼️', 'p-ma-proporcao': '🔍', 'f-ma-produtos': '✂️', 'p-ma-produtos': '🟨', 'f-ma-fatoracao': '🧱', 'p-ma-fatoracao': '🧩', 'f-ma-polinomios': '🁢', 'p-ma-polinomios': '🎲', 'f-ma-geometria': '🎨', 'p-ma-geometria': '🔶', 'f-ma-tales': '🌤️', 'p-ma-tales': '☀️', 'p-ma-graficos': '📊', graficos: '🕵️', mesada: '🐷', poupanca: '📈', 'empresa-sucos': '▥', angulos: '∠', cofrinho: '%', tabelas: '▦', receitas: '⅔', cartao: '▭', cambio: '¤', 'vale-bits': '⌂', 'vila-cidada': '▦', 'cidade-blocos': '◫', 'partes-computador': '▣', numeria: '⚔', python: '›_', digitacao: 'Aa', carreira: '⇢', bolha: '◎', boato: '⁂', chatbot: '?:', acessivel: '◈', impostor: '?', senha: '***', paridade: '⊕', 'busca-binaria': '½', 'filas-pilhas': '⇉', 'fabrica-logica': '🏭', 'p-ma-financeira': '💰', 'p-ma-obmep': '🏅'
+>>>>>>> origin/main
 };
 RECURSOS.forEach(r => { r.icone = r.icone || ICONES[r.id] || '📄'; });
 const REC = Object.fromEntries(RECURSOS.map(r => [r.id, r]));

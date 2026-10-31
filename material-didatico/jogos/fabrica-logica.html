@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fábrica Lógica: jogo de Computação | Júlia Quoos</title>
+<meta name="description" content="Jogo de simulação: administre uma fábrica de componentes com um andar por setor. Fábrica, RH, Administração, Marketing e Diretoria, cada um ensinando um conceito de Computação.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/fabrica-logica.html">
+<meta property="og:title" content="Fábrica Lógica: jogo de Computação | Júlia Quoos">
+<meta property="og:description" content="Suba de andar em andar numa fábrica de componentes: algoritmos na linha de montagem, dados no RH, planilhas e arquivos na Administração, redes no Marketing e decisões na Diretoria.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/fabrica-logica.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/jogos/img/og-fabrica-logica.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Fábrica Lógica: prédio em corte com um andar por setor, elevador e personagem">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  /* Fábrica Lógica: cores do site (verde, amarelo, vermelho, laranja, marrom e cremes). Sem azul. */
+  .fl-painel { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .fl-pill { background: #2a2620; color: #fff; border: 2px solid #ffd23f; border-radius: 12px; padding: 4px 10px; min-height: 44px; box-sizing: border-box; display: flex; align-items: center; }
+  .fl-pill .lb { display: block; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: #d8d2c2; font-weight: 600; line-height: 1.1; }
+  .fl-pill .vl { display: block; font-family: var(--display); font-size: 18px; line-height: 1.15; white-space: nowrap; }
+  .fl-tela { position: relative; border: 2px solid #111; border-radius: 18px; overflow: hidden; background: #f6d9a8; user-select: none; -webkit-user-select: none; box-shadow: 4px 4px 0 #111; }
+  .fl-tela canvas { display: block; width: 100%; height: auto; touch-action: none; cursor: pointer; outline: none; }
+  .fl-aviso { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); background: rgba(255, 253, 246, .96); color: #111; border: 2px solid #111; border-radius: 12px; padding: 6px 12px; font-size: 14px; max-width: 92%; text-align: center; pointer-events: none; opacity: 0; transition: opacity .25s; box-sizing: border-box; }
+  .fl-aviso.on { opacity: 1; }
+  .fl-dlg { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(30, 24, 12, .45); padding: 12px; box-sizing: border-box; }
+  .fl-dlg[hidden] { display: none; }
+  .fl-card { width: min(560px, 100%); max-height: 100%; overflow: auto; background: #fffdf6; color: #111; border: 2px solid #111; border-radius: 16px; padding: 14px 16px; box-sizing: border-box; box-shadow: 0 5px 0 rgba(0, 0, 0, .25); }
+  .fl-card h2 { font-size: 22px; margin: 0 0 6px; color: #111; }
+  .fl-card .quem { font-family: var(--display); font-size: 16px; color: #166c40; margin-bottom: 2px; }
+  .fl-card .setor { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #ffd23f; border: 1.5px solid #111; border-radius: 99px; padding: 2px 10px; margin-bottom: 6px; }
+  .fl-card p { margin: 6px 0; font-size: 15.5px; line-height: 1.45; }
+  .fl-card h3 { font-size: 16px; margin: 12px 0 4px; color: #111; }
+  .fl-card .muted { color: #5a5a55; }
+  .fl-card .small { font-size: 13.5px; }
+  .fl-acoes { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; margin-top: 12px; }
+  .fl-acoes .btn { min-height: 42px; padding: 8px 16px; font-size: 15px; }
+  .fl-card .btn[disabled] { opacity: .45; cursor: not-allowed; }
+  .fl-ops { display: grid; gap: 8px; margin-top: 8px; }
+  .fl-ops button, .fl-item { text-align: left; border: 2px solid #111; border-radius: 12px; background: #fff; color: #111; padding: 9px 12px; font: inherit; font-size: 15px; cursor: pointer; min-height: 46px; box-shadow: 2px 2px 0 #111; }
+  .fl-ops button:hover:not(:disabled), .fl-item:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 #111; }
+  .fl-ops button:disabled, .fl-item:disabled { opacity: .5; cursor: default; box-shadow: none; }
+  .fl-ops button.certa, .fl-item.certa { background: #e3f4e8; border-color: #157f3b; }
+  .fl-ops button.errada, .fl-item.errada { background: #fbe6ea; border-color: #c21f3a; }
+  .fl-item.usado { background: #f1efe6; opacity: .55; box-shadow: none; }
+  .fl-seq { min-height: 44px; border: 2px dashed #8a8578; border-radius: 12px; padding: 6px 8px; display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .fl-seq span { background: #fff3a6; border: 1.5px solid #111; border-radius: 99px; padding: 3px 10px; font-size: 14px; }
+  .fl-bins { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px; }
+  .fl-bin { border: 2px solid #111; border-radius: 12px; padding: 8px; background: #fff; min-height: 60px; }
+  .fl-bin strong { display: block; font-size: 14px; margin-bottom: 4px; }
+  .fl-bin button { width: 100%; min-height: 40px; border: 2px solid #111; border-radius: 10px; background: #fff3a6; font: 600 14px var(--body); cursor: pointer; }
+  .fl-bin button:disabled { opacity: .4; cursor: default; }
+  .fl-bin .itens { font-size: 13px; margin-top: 4px; }
+  .fl-linha { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 7px 0; border-bottom: 1px solid #e4dccb; font-size: 15px; }
+  .fl-linha .btn { min-height: 40px; padding: 6px 12px; font-size: 14px; }
+  .fl-swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+  .fl-swatches button { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #111; cursor: pointer; padding: 0; }
+  .fl-swatches button[aria-pressed="true"] { outline: 3px solid #157f3b; outline-offset: 2px; }
+  .fl-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .fl-chips button { min-height: 38px; padding: 4px 12px; border: 2px solid #111; border-radius: 99px; background: #fff; font: 600 14px var(--body); cursor: pointer; }
+  .fl-chips button[aria-pressed="true"] { background: #c6ebd4; }
+  .fl-card input[type="text"] { width: 100%; box-sizing: border-box; min-height: 44px; border: 2px solid #111; border-radius: 12px; padding: 6px 10px; font: 500 16px var(--body); background: #fff; color: #111; }
+  .fl-preview { display: block; margin: 6px auto; border: 2px solid #111; border-radius: 14px; background: #f6d9a8; }
+  .fl-barra { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+  .fl-barra .btn { min-height: 44px; }
+  .fl-controles { display: none; margin-top: 12px; justify-content: center; }
+  .fl-pad { display: grid; grid-template-columns: repeat(3, 58px); grid-template-rows: repeat(2, 58px); gap: 6px; }
+  .fl-pad button { border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); color: var(--ink); font-size: 22px; font-weight: 700; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .fl-pad button:active { background: var(--paper-2); }
+  .fl-pad .c { grid-column: 2; grid-row: 1; } .fl-pad .e { grid-column: 1; grid-row: 2; } .fl-pad .b { grid-column: 2; grid-row: 2; } .fl-pad .d { grid-column: 3; grid-row: 2; }
+  .fl-pad .a { grid-column: 3; grid-row: 1; font-size: 14px; } .fl-pad .l { grid-column: 1; grid-row: 1; font-size: 13px; }
+  body.fl-toque .fl-controles { display: flex; }
+  .fl-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+  .fl-box { border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; background: var(--paper-2); box-sizing: border-box; min-width: 0; }
+  .fl-box h2 { font-size: 18px; margin: 0 0 6px; }
+  .fl-box p { font-size: 14.5px; margin: 4px 0; }
+  .fl-box ul, .fl-box ol { margin: 0; padding-left: 18px; font-size: 14px; }
+  .fl-box li { margin: 4px 0; }
+  .fl-box summary { cursor: pointer; font-size: 16px; }
+  .fl-box .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .fl-box .btn { min-height: 40px; padding: 6px 12px; font-size: 14px; }
+  .fl-meta.ok { text-decoration: line-through; color: var(--ink-3); }
+  @media (max-width: 980px) { .fl-grade { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) {
+    .fl-grade { grid-template-columns: 1fr; }
+    .fl-pill { min-height: 38px; padding: 3px 8px; }
+    .fl-pill .lb { display: none; }
+    .fl-pill .vl { font-size: 15px; }
+    .fl-dlg { position: fixed; z-index: 60; padding: 16px; }
+    .fl-card { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); }
+  }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Fábrica Lógica","description":"Simulação de uma fábrica de componentes com um andar por setor: algoritmos na Fábrica, dados no RH, planilhas e arquivos na Administração, redes no Marketing e decisões na Diretoria. Produza, entregue pedidos, construa andares e personalize sua personagem.","url":"https://ohtopico.com.br/material-didatico/jogos/fabrica-logica.html","image":"https://ohtopico.com.br/material-didatico/jogos/img/og-fabrica-logica.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"6º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"30–50 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO02","targetDescription":"Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO02","targetDescription":"Analisar programas para detectar e remover erros, ampliando a confiança na sua correção."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO01","targetDescription":"Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO01","targetDescription":"Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO02","targetDescription":"Criar soluções que usem listas para descrever informações e automatizá-las com uma linguagem de programação."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO05","targetDescription":"Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO08","targetDescription":"Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO06","targetDescription":"Entender como é a estrutura e o funcionamento da internet."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO08","targetDescription":"Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO10","targetDescription":"Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO10","targetDescription":"Identificar os impactos ambientais do descarte de peças de computadores e eletrônicos e sua relação com a sustentabilidade."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO07","targetDescription":"Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Fábrica Lógica","item":"https://ohtopico.com.br/material-didatico/jogos/fabrica-logica.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="crumbs no-print"><a href="../jogos/">← Jogos</a></div>
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">6º ao 9º ano</span><span class="tag">⏱ 30–50 min</span></div>
+      <h1>Fábrica Lógica</h1>
+      <p class="muted" style="max-width:720px">Simulação de uma fábrica de componentes com um andar por setor: algoritmos na Fábrica, dados no RH, planilhas e arquivos na Administração, redes no Marketing e decisões na Diretoria. Produza, entregue pedidos, construa andares e personalize sua personagem.</p>
+      <div class="tags"><a class="tag code co" href="../bncc/ef06co02/" title="EF06CO02 — Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.">EF06CO02</a><a class="tag code co" href="../bncc/ef07co02/" title="EF07CO02 — Analisar programas para detectar e remover erros, ampliando a confiança na sua correção.">EF07CO02</a><a class="tag code co" href="../bncc/ef06co01/" title="EF06CO01 — Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado.">EF06CO01</a><a class="tag code co" href="../bncc/ef07co01/" title="EF07CO01 — Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação.">EF07CO01</a><a class="tag code co" href="../bncc/ef08co02/" title="EF08CO02 — Criar soluções que usem listas para descrever informações e automatizá-las com uma linguagem de programação.">EF08CO02</a><a class="tag code co" href="../bncc/ef06co05/" title="EF06CO05 — Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.">EF06CO05</a><a class="tag code co" href="../bncc/ef06co08/" title="EF06CO08 — Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados.">EF06CO08</a><a class="tag code co" href="../bncc/ef08co06/" title="EF08CO06 — Entender como é a estrutura e o funcionamento da internet.">EF08CO06</a><a class="tag code co" href="../bncc/ef08co08/" title="EF08CO08 — Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados.">EF08CO08</a><a class="tag code co" href="../bncc/ef09co10/" title="EF09CO10 — Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos.">EF09CO10</a><a class="tag code co" href="../bncc/ef07co10/" title="EF07CO10 — Identificar os impactos ambientais do descarte de peças de computadores e eletrônicos e sua relação com a sustentabilidade.">EF07CO10</a><a class="tag code co" href="../bncc/ef09co07/" title="EF09CO07 — Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.">EF09CO07</a></div>
+      <div class="game-acoes no-print"><a class="btn ghost" href="../planos/caca-aos-bugs-depuracao-programas/">📋 Plano de aula</a><a class="btn ghost" href="../fichas/a-playlist-listas-que-crescem/">🖨️ Ficha para imprimir</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p><strong>A fábrica:</strong> você acaba de assumir a <strong>Fábrica Lógica</strong>, que produz componentes de computador. Cada andar é um setor, e cada setor ensina um conceito de Computação: a <strong>Fábrica</strong> trabalha com algoritmos, o <strong>RH</strong> com dados, a <strong>Administração</strong> com planilhas e arquivos, o <strong>Marketing</strong> com redes e informação, e a <strong>Diretoria</strong> com decisões e seus impactos.</p>
+    <p><strong>Movimento:</strong> ande com as setas ou A e D. No elevador, use ↑ e ↓ (ou W e S) para trocar de andar. Espaço (ou E) usa a estação à sua frente. No celular, toque numa estação para ir até ela, ou use o direcional embaixo da tela.</p>
+    <p><strong>Trabalho:</strong> cada estação abre uma tarefa (ordenar passos, achar o erro, classificar, escolher). Uma tarefa certa produz peças e créditos. Entregue os <strong>pedidos do dia</strong> no mural da recepção, e use os créditos nas <strong>Obras</strong> para liberar andares, ampliar o prédio e melhorar as máquinas. No <strong>Vestiário</strong>, mude o visual da sua personagem.</p>
+    <p class="small muted">O expediente vai das 8h às 18h; cada tarefa gasta tempo. O jogo salva sozinho neste aparelho. Em computador lento, ligue o Modo leve, embaixo.</p>
+  </details>
+
+  <div class="game-stage">
+    <div class="fl-painel" aria-label="Situação da fábrica">
+      <div class="fl-pill"><span><span class="lb">Dia</span><span class="vl" id="h-dia">1</span></span></div>
+      <div class="fl-pill"><span><span class="lb">Hora</span><span class="vl" id="h-hora">08:00</span></span></div>
+      <div class="fl-pill"><span><span class="lb">Créditos</span><span class="vl" id="h-cred">0</span></span></div>
+      <div class="fl-pill"><span><span class="lb">Peças</span><span class="vl" id="h-pecas">0</span></span></div>
+      <div class="fl-pill"><span><span class="lb">Pedidos</span><span class="vl" id="h-ped">0/3</span></span></div>
+      <div class="fl-pill"><span><span class="lb">Andar</span><span class="vl" id="h-andar">Recepção</span></span></div>
+    </div>
+
+    <div class="fl-tela" id="tela-box">
+      <canvas id="tela" width="960" height="540" role="img" aria-label="Fábrica Lógica vista em corte: um prédio com elevador à esquerda e um andar por setor. As estações de cada andar estão listadas ao lado para leitura de tela."></canvas>
+      <div class="fl-aviso" id="aviso" role="status" aria-live="polite"></div>
+      <div class="fl-dlg" id="dlg" hidden><div class="fl-card" id="card" role="dialog" aria-modal="true"></div></div>
+    </div>
+
+    <div class="fl-barra" role="toolbar" aria-label="Ações">
+      <button type="button" class="btn" id="b-agir">Usar estação (Espaço)</button>
+      <button type="button" class="btn ghost" id="b-elev">Elevador</button>
+      <button type="button" class="btn ghost" id="b-mapa">Andares e estações</button>
+    </div>
+
+    <div class="fl-controles" aria-label="Controles de movimento">
+      <div class="fl-pad">
+        <button type="button" class="l" id="pad-elev" aria-label="Elevador">Elev.</button>
+        <button type="button" class="c" data-dir="c" aria-label="Subir um andar">&#9650;</button>
+        <button type="button" class="a" id="pad-agir" aria-label="Usar estação">Usar</button>
+        <button type="button" class="e" data-dir="e" aria-label="Andar para a esquerda">&#9664;</button>
+        <button type="button" class="b" data-dir="b" aria-label="Descer um andar">&#9660;</button>
+        <button type="button" class="d" data-dir="d" aria-label="Andar para a direita">&#9654;</button>
+      </div>
+    </div>
+
+    <div class="fl-grade">
+      <div class="fl-box">
+        <h2>Pedidos do dia</h2>
+        <ul id="pedidos"></ul>
+        <p class="small muted">Entregue no mural da recepção. Pedidos entregues valem créditos e metas.</p>
+      </div>
+      <div class="fl-box">
+        <h2>Metas</h2>
+        <ul id="metas"></ul>
+      </div>
+      <details class="fl-box" id="caderno-box">
+        <summary><strong>Caderno da fábrica</strong> <span class="muted small" id="n-caderno"></span></summary>
+        <ul id="caderno"></ul>
+      </details>
+      <div class="fl-box">
+        <h2>Andares</h2>
+        <ol id="andares"></ol>
+      </div>
+      <div class="fl-box">
+        <h2>Progresso</h2>
+        <p class="small muted" id="salvo">O jogo salva sozinho neste aparelho.</p>
+        <div class="btn-row">
+          <button class="btn ghost" type="button" id="b-salvar">Salvar agora</button>
+          <button class="btn ghost" type="button" id="b-recomecar">Recomeçar</button>
+        </div>
+        <p><button class="btn ghost" type="button" id="b-leve" aria-pressed="false">Modo leve: desligado</button></p>
+        <p class="small muted">O Modo leve tira luzes, sombras e o céu animado e reduz a taxa de quadros, para computadores mais fracos.</p>
+      </div>
+      <div class="fl-box">
+        <h2>Setores e conceitos</h2>
+        <ul>
+          <li><strong>Fábrica:</strong> algoritmos e depuração.</li>
+          <li><strong>RH:</strong> tipos de dados, registros e filas.</li>
+          <li><strong>Administração:</strong> entradas e saídas, variáveis, pilhas e arquivos.</li>
+          <li><strong>Marketing:</strong> internet, dados pessoais e qualidade da informação.</li>
+          <li><strong>Diretoria:</strong> decisões, sustentabilidade e impactos da tecnologia.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Fábrica Lógica</strong> é um jogo gratuito de Computação para o 6º ao 9º ano, pensado para cerca de 30–50 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Simulação de uma fábrica de componentes com um andar por setor: algoritmos na Fábrica, dados no RH, planilhas e arquivos na Administração, redes no Marketing e decisões na Diretoria. Produza, entregue pedidos, construa andares e personalize sua personagem.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../bncc/ef06co02/"><strong>EF06CO02</strong></a>: Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</li>
+      <li><a href="../bncc/ef07co02/"><strong>EF07CO02</strong></a>: Analisar programas para detectar e remover erros, ampliando a confiança na sua correção.</li>
+      <li><a href="../bncc/ef06co01/"><strong>EF06CO01</strong></a>: Classificar informações, agrupando-as em coleções (conjuntos) e associando cada coleção a um tipo de dado.</li>
+      <li><a href="../bncc/ef07co01/"><strong>EF07CO01</strong></a>: Criar soluções que usem registros e matrizes unidimensionais para descrever informações e automatizá-las com uma linguagem de programação.</li>
+      <li><a href="../bncc/ef08co02/"><strong>EF08CO02</strong></a>: Criar soluções que usem listas para descrever informações e automatizá-las com uma linguagem de programação.</li>
+      <li><a href="../bncc/ef06co05/"><strong>EF06CO05</strong></a>: Identificar as entradas e as saídas esperadas de um problema, com seus tipos de dados, e definir a solução.</li>
+      <li><a href="../bncc/ef06co08/"><strong>EF06CO08</strong></a>: Compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos, documentos e metadados.</li>
+      <li><a href="../bncc/ef08co06/"><strong>EF08CO06</strong></a>: Entender como é a estrutura e o funcionamento da internet.</li>
+      <li><a href="../bncc/ef08co08/"><strong>EF08CO08</strong></a>: Distinguir os tipos de dados pessoais solicitados em espaços digitais e os riscos associados.</li>
+      <li><a href="../bncc/ef09co10/"><strong>EF09CO10</strong></a>: Avaliar a veracidade, a credibilidade e a relevância da informação em seus diferentes formatos.</li>
+      <li><a href="../bncc/ef07co10/"><strong>EF07CO10</strong></a>: Identificar os impactos ambientais do descarte de peças de computadores e eletrônicos e sua relação com a sustentabilidade.</li>
+      <li><a href="../bncc/ef09co07/"><strong>EF09CO07</strong></a>: Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.</li>
+    </ul>
+    <p>Para a aula completa, use o plano <a href="../planos/caca-aos-bugs-depuracao-programas/">Caça aos bugs: depuração de programas</a>, com objetivos, etapas, avaliação e acessibilidade. A ficha <a href="../fichas/a-playlist-listas-que-crescem/">A playlist: listas que crescem</a> leva a atividade para o papel. Para fixar, há as listas <a href="../listas/tipos-dados-6-ano/">Tipos de dados (6º ano)</a>, <a href="../listas/linguagem-programacao-6-ano/">Linguagem de programação (6º ano)</a>, <a href="../listas/generalizacao-6-ano/">Generalização (6º ano)</a>, com gabarito. Os slides da aula expositiva de EF06CO02, EF07CO02, EF06CO01, EF07CO01, EF08CO02, EF06CO05, EF06CO08, EF08CO06, EF08CO08, EF09CO10, EF07CO10, EF09CO07 estão na página de cada habilidade.</p>
+  </details>
+  <!-- professor: fim -->
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../planos/caca-aos-bugs-depuracao-programas/">
+          <span class="small muted">📋 Plano de aula</span>
+          <strong>Caça aos bugs: depuração de programas</strong>
+          <span class="small muted">Ler, testar e corrigir programas com erros, usando casos de teste para ganhar confiança na solução.</span>
+        </a>
+        <a class="card" href="../fichas/a-playlist-listas-que-crescem/">
+          <span class="small muted">🖨️ Ficha para imprimir</span>
+          <strong>A playlist: listas que crescem</strong>
+          <span class="small muted">Executar comandos numa lista viva, completar o programa de uma playlist e achar a maior nota de uma lista.</span>
+        </a>
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/pacotes.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Correio de Pacotes</strong>
+          <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('fabrica-logica');
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const CHAVE = 'fabrica-logica-v1', CHAVE_LEVE = 'fabrica-logica-leve';
+  const W = 960, H = 540;                     // tela lógica
+  const ANDAR_H = 150;                        // altura de um andar
+  const ELEV_X = 70;                          // centro do elevador
+  const LARGURA = () => S.obras.ala ? 900 : 660;   // largura do prédio (a Ala Leste amplia o mapa)
+  const PX0 = 30;                             // borda esquerda do prédio
+  const ABRE = 8 * 60, FECHA = 18 * 60;
+  const COR = {
+    tinta: '#111', creme: '#fff3d6', papel: '#fffdf6', verde: '#2fa865', verdeE: '#166c40', verdeC: '#9fdab4',
+    amarelo: '#ffd23f', amareloC: '#fff36b', vermelho: '#e8423a', vermelhoE: '#b32a24', laranja: '#f08a24',
+    marrom: '#7a4a1f', madeira: '#b7773a', cinza: '#b9b3a6', cinzaE: '#6f6a60', chumbo: '#3a3630', branco: '#ffffff'
+  };
+  const PELES = ['#f3d3b6', '#e0ac7e', '#c68642', '#8d5524', '#5c3a1e'];
+  const CABELOS = ['#1d1612', '#5a3a1e', '#b5651d', '#e0b02a', '#9a9a94', '#c8323f'];
+  const UNIFORMES = [COR.verde, COR.amarelo, COR.vermelho, COR.laranja, '#6f6a60', '#7a4a1f'];
+  const ESTILOS = ['curto', 'coque', 'longo', 'raspado', 'crespo'];
+  const ACESSORIOS = ['nenhum', 'óculos', 'boné', 'gravata', 'fone'];
+
+  /* ---------- Andares, estações e tarefas (conteúdo original) ---------- */
+  const SETORES = [
+    { id: 'recepcao', nome: 'Recepção', parede: '#f3e4c4', chao: '#c9a46a', conceito: null, gerente: null,
+      estacoes: [
+        { id: 'mural', nome: 'Mural de pedidos', x: 250, tipo: 'mural', desenho: 'mural' },
+        { id: 'obras', nome: 'Obras', x: 400, tipo: 'obras', desenho: 'prancheta' },
+        { id: 'vestiario', nome: 'Vestiário', x: 540, tipo: 'vestiario', desenho: 'espelho' }
+      ] },
+    { id: 'fabrica', nome: 'Fábrica', parede: '#e9ddc8', chao: '#8f8a80', custo: 0, habs: ['EF06CO02', 'EF07CO02'],
+      gerente: { nome: 'Mestra Olívia', x: 600, uniforme: COR.laranja, cabelo: '#1d1612', pele: '#8d5524', estilo: 'coque', acessorio: 'óculos' },
+      estacoes: [
+        { id: 'montagem', nome: 'Linha de montagem', x: 260, tipo: 'ordem', desenho: 'esteira', conceito: 'algoritmo' },
+        { id: 'qualidade', nome: 'Controle de qualidade', x: 460, tipo: 'bug', desenho: 'lupa', conceito: 'depuracao', ala: true }
+      ] },
+    { id: 'rh', nome: 'RH', parede: '#dff0e3', chao: '#b7773a', custo: 60, habs: ['EF06CO01', 'EF07CO01', 'EF08CO02'],
+      gerente: { nome: 'Seu Tadeu', x: 600, uniforme: COR.verdeE, cabelo: '#9a9a94', pele: '#e0ac7e', estilo: 'raspado', acessorio: 'gravata' },
+      estacoes: [
+        { id: 'triagem', nome: 'Triagem de fichas', x: 260, tipo: 'classificar', desenho: 'arquivo', conceito: 'dados' },
+        { id: 'entrevistas', nome: 'Fila de entrevistas', x: 460, tipo: 'ordem', desenho: 'cadeiras', conceito: 'fila', ala: true }
+      ] },
+    { id: 'adm', nome: 'Administração', parede: '#fff0c2', chao: '#b7773a', custo: 120, habs: ['EF06CO05', 'EF06CO06', 'EF06CO08'],
+      gerente: { nome: 'Dona Célia', x: 600, uniforme: COR.vermelho, cabelo: '#5a3a1e', pele: '#f3d3b6', estilo: 'longo', acessorio: 'nenhum' },
+      estacoes: [
+        { id: 'planilha', nome: 'Planilha', x: 260, tipo: 'escolha', desenho: 'mesa', conceito: 'variaveis' },
+        { id: 'arquivo', nome: 'Pilha de documentos', x: 460, tipo: 'ordem', desenho: 'pilha', conceito: 'pilha', ala: true }
+      ] },
+    { id: 'marketing', nome: 'Marketing', parede: '#fbe3d8', chao: '#8f8a80', custo: 200, habs: ['EF08CO06', 'EF08CO08', 'EF09CO10'],
+      gerente: { nome: 'Kaique', x: 600, uniforme: COR.amarelo, cabelo: '#1d1612', pele: '#5c3a1e', estilo: 'crespo', acessorio: 'fone' },
+      estacoes: [
+        { id: 'campanha', nome: 'Mesa de campanhas', x: 260, tipo: 'escolha', desenho: 'quadro', conceito: 'dadosPessoais' },
+        { id: 'checagem', nome: 'Checagem de fatos', x: 460, tipo: 'classificar', desenho: 'mesa', conceito: 'veracidade', ala: true }
+      ] },
+    { id: 'diretoria', nome: 'Diretoria', parede: '#e8e6dd', chao: '#7a4a1f', custo: 300, habs: ['EF07CO10', 'EF09CO07'],
+      gerente: { nome: 'Diretora Ana', x: 600, uniforme: '#6f6a60', cabelo: '#c8323f', pele: '#c68642', estilo: 'curto', acessorio: 'óculos' },
+      estacoes: [
+        { id: 'decisoes', nome: 'Sala de decisões', x: 260, tipo: 'escolha', desenho: 'mesaGrande', conceito: 'impactos' },
+        { id: 'estrategia', nome: 'Mapa de estratégia', x: 460, tipo: 'bug', desenho: 'quadro', conceito: 'sustentabilidade', ala: true }
+      ] }
+  ];
+  const NOMES_PECA = { fabrica: 'placa', rh: 'ficha', adm: 'relatório', marketing: 'campanha', diretoria: 'plano' };
+
+  /* Tarefas. ordem: clicar os itens na ordem certa (gabarito = ordem da lista 'itens');
+     bug: achar o passo errado; classificar: cada item numa caixa; escolha: uma resposta certa. */
+  const TAREFAS = {
+    montagem: [
+      { tipo: 'ordem', titulo: 'Monte a placa de memória', texto: 'Um algoritmo é uma sequência de passos. Clique nos passos na ordem em que a máquina deve executá-los.', itens: ['Pegar a placa vazia', 'Encaixar os chips de memória', 'Soldar os contatos', 'Testar a placa', 'Embalar a placa'], explica: 'Trocar a ordem quebra o resultado: não dá para soldar antes de encaixar, nem embalar antes de testar.' },
+      { tipo: 'ordem', titulo: 'Monte o cooler', texto: 'Coloque as instruções na ordem certa para a esteira montar o cooler.', itens: ['Fixar o motor na base', 'Encaixar a hélice no motor', 'Ligar o fio de energia', 'Testar a rotação', 'Colar a etiqueta'], explica: 'Sequência é a forma mais simples de algoritmo: cada instrução depende da anterior.' },
+      { tipo: 'ordem', titulo: 'Programe a repetição', texto: 'A esteira monta 20 placas iguais. Ordene o programa, que usa um laço de repetição.', itens: ['Repita 20 vezes:', '  Pegar uma placa vazia', '  Encaixar os chips', '  Testar a placa', 'Fim da repetição', 'Desligar a esteira'], explica: 'O laço evita escrever os mesmos passos 20 vezes. O que fica dentro dele se repete; desligar a esteira fica fora.' },
+      { tipo: 'ordem', titulo: 'Decisão na esteira', texto: 'Algumas placas falham no teste. Ordene o programa com a instrução de seleção (se... senão).', itens: ['Pegar a placa', 'Testar a placa', 'Se passou no teste:', '  Embalar', 'Senão:', '  Mandar para o conserto'], explica: 'A seleção escolhe um caminho conforme a condição. Sem ela, placas com defeito seriam embaladas.' }
+    ],
+    qualidade: [
+      { tipo: 'bug', titulo: 'Programa da furadeira', texto: 'A furadeira está furando fora do lugar. Qual passo está errado?', itens: ['Ler a posição do furo na ficha', 'Mover a broca até a posição', 'Furar com a broca desligada', 'Levantar a broca', 'Passar para o próximo furo'], errado: 2, explica: 'Depurar é ler o programa procurando o passo que não faz o que deveria. A broca precisa estar ligada para furar.' },
+      { tipo: 'bug', titulo: 'Contagem de peças', texto: 'A caixa deveria ter 10 placas e sai com 11. Onde está o erro?', itens: ['contador = 0', 'Repita enquanto contador <= 10:', '  Colocar uma placa na caixa', '  contador = contador + 1', 'Fechar a caixa'], errado: 1, explica: 'Com "<= 10" o laço roda 11 vezes (de 0 a 10). O certo é "< 10". É o famoso erro de "uma a mais".' },
+      { tipo: 'bug', titulo: 'Teste de temperatura', texto: 'Placas quentes estão sendo aprovadas. Qual passo está errado?', itens: ['Medir a temperatura da placa', 'Se temperatura > 70:', '  Aprovar a placa', 'Senão:', '  Mandar para o conserto'], errado: 2, explica: 'A condição está certa, mas as ações ficaram trocadas: acima de 70 graus a placa deveria ir para o conserto.' },
+      { tipo: 'bug', titulo: 'Etiquetas', texto: 'As etiquetas saem em branco. Qual passo está errado?', itens: ['Ler o nome da peça na ficha', 'Imprimir a etiqueta', 'Escrever o nome na etiqueta', 'Colar a etiqueta na peça'], errado: 1, explica: 'A impressão acontece antes de escrever o nome. A ordem dos passos também é parte do algoritmo.' }
+    ],
+    triagem: [
+      { tipo: 'classificar', titulo: 'Fichas de candidatos', texto: 'Cada informação da ficha tem um tipo de dado. Coloque cada uma na coleção certa.', caixas: ['Número', 'Texto', 'Sim ou não', 'Data'], itens: [['Idade: 34', 0], ['Nome: Marina Souza', 1], ['Tem carteira de motorista: sim', 2], ['Nascimento: 12/03/1992', 3], ['Pretensão salarial: 2.800', 0], ['Cidade: Candelária', 1]], explica: 'Classificar as informações por tipo permite ao computador guardar e comparar cada uma do jeito certo: números se somam, textos se ordenam, datas se comparam.' },
+      { tipo: 'classificar', titulo: 'Registro de funcionário', texto: 'Um registro junta vários campos de tipos diferentes. Classifique os campos.', caixas: ['Número', 'Texto', 'Sim ou não'], itens: [['Matrícula: 1045', 0], ['Setor: Fábrica', 1], ['Trabalha à noite: não', 2], ['Horas por semana: 40', 0], ['Nome do gerente: Olívia', 1], ['Tem vale-transporte: sim', 2]], explica: 'Cada registro (uma linha da tabela de funcionários) tem os mesmos campos, cada um com o seu tipo.' },
+      { tipo: 'classificar', titulo: 'Coleções do RH', texto: 'O RH guarda listas diferentes. Em que coleção entra cada item?', caixas: ['Funcionários', 'Cargos', 'Setores'], itens: [['Marina Souza', 0], ['Operadora de esteira', 1], ['Marketing', 2], ['Analista de dados', 1], ['Kaique', 0], ['Administração', 2]], explica: 'Agrupar em coleções do mesmo tipo é o primeiro passo para organizar dados: cada lista guarda itens parecidos.' }
+    ],
+    entrevistas: [
+      { tipo: 'ordem', titulo: 'Fila de entrevistas', texto: 'Numa fila, o primeiro que chega é o primeiro atendido. Chegaram nesta ordem: Bia, Caio, Duda, Enzo. Clique em quem é atendido, do primeiro ao último.', itens: ['Bia', 'Caio', 'Duda', 'Enzo'], explica: 'Fila é FIFO: first in, first out. Impressoras, pedidos e mensagens costumam ser atendidos assim.' },
+      { tipo: 'ordem', titulo: 'Fila com chegada no meio', texto: 'Ana e Léo estavam na fila. Ana foi atendida, depois chegaram Rui e Sol. Em que ordem saem os que ainda esperam?', itens: ['Léo', 'Rui', 'Sol'], explica: 'Quem chega entra no fim da fila; quem sai é sempre o da frente. Léo estava antes de todos.' },
+      { tipo: 'ordem', titulo: 'Lista de chamada', texto: 'A lista de espera é uma lista: dá para inserir e remover. Depois de remover "Duda" e inserir "Fê" no fim, qual é a ordem? Lista original: Bia, Caio, Duda, Enzo.', itens: ['Bia', 'Caio', 'Enzo', 'Fê'], explica: 'Listas descrevem informações em sequência e aceitam inserir, remover e percorrer os itens.' }
+    ],
+    planilha: [
+      { tipo: 'escolha', titulo: 'Entradas e saídas', texto: 'A planilha calcula o salário do mês. Quais são as entradas do problema?', ops: ['Horas trabalhadas e valor da hora', 'O salário final', 'O nome da planilha', 'A cor da célula'], certa: 0, explica: 'Entradas são os dados que o problema recebe; a saída é o resultado (o salário). Definir os dois é o começo de qualquer solução.' },
+      { tipo: 'escolha', titulo: 'Fórmula geral', texto: 'Para calcular o custo de qualquer pedido, a fórmula deve servir para todos os casos. Qual usa variáveis?', ops: ['custo = quantidade × preço da peça', 'custo = 10 × 25', 'custo = 250', 'custo = 10 × 25 + 0'], certa: 0, explica: 'Com variáveis (parâmetros), um único algoritmo resolve todos os pedidos: basta trocar os valores.' },
+      { tipo: 'escolha', titulo: 'Tipo da saída', texto: 'A planilha responde "o estoque está abaixo do mínimo?". Qual é o tipo de dado da saída?', ops: ['Sim ou não (lógico)', 'Texto', 'Data', 'Imagem'], certa: 0, explica: 'Uma pergunta de sim ou não tem resposta lógica (verdadeiro ou falso), o tipo que decide seleções no programa.' },
+      { tipo: 'escolha', titulo: 'Casos particulares', texto: 'Em janeiro foram 120 peças a 8 créditos; em fevereiro, 90 peças a 8 créditos. O que muda de um caso para o outro?', ops: ['Só a quantidade; o preço e a conta são os mesmos', 'Tudo muda', 'Só o preço', 'A operação matemática'], certa: 0, explica: 'Comparar casos particulares mostra o que varia (a quantidade) e o que se repete (a fórmula). O que varia vira variável.' }
+    ],
+    arquivo: [
+      { tipo: 'ordem', titulo: 'Pilha de documentos', texto: 'Os relatórios foram empilhados nesta ordem: Janeiro, Fevereiro, Março. Na pilha, só dá para tirar o de cima. Clique na ordem em que saem.', itens: ['Março', 'Fevereiro', 'Janeiro'], explica: 'Pilha é LIFO: last in, first out. O último que entrou é o primeiro que sai, como pratos empilhados.' },
+      { tipo: 'ordem', titulo: 'Desfazer', texto: 'O botão "desfazer" funciona como uma pilha. Você digitou "A", depois "B", depois "C". Clique na ordem em que o desfazer remove as letras.', itens: ['C', 'B', 'A'], explica: 'Cada ação entra no topo da pilha; desfazer tira sempre a mais recente.' },
+      { tipo: 'ordem', titulo: 'Guardar o arquivo', texto: 'Ordene os passos para guardar um relatório de modo que ele seja encontrado depois.', itens: ['Dar um nome claro ao arquivo', 'Escolher a pasta do setor', 'Salvar no formato adequado', 'Anotar os metadados (autor e data)', 'Fazer uma cópia de segurança'], explica: 'Armazenar bem é organizar: nome, pasta, formato e metadados permitem recuperar o arquivo; a cópia protege contra perdas.' }
+    ],
+    campanha: [
+      { tipo: 'escolha', titulo: 'Formulário da promoção', texto: 'O Marketing quer um formulário para sortear uma placa. Que dados pedir?', ops: ['Nome e e-mail', 'CPF, endereço e senha do e-mail', 'Número do cartão', 'Foto do documento'], certa: 0, explica: 'Peça só o necessário. Dados sensíveis (documentos, senhas, cartão) aumentam o risco para quem participa e para a empresa.' },
+      { tipo: 'escolha', titulo: 'Como o post viaja', texto: 'Quando a campanha é publicada, como a imagem chega ao celular de cada pessoa?', ops: ['Dividida em pacotes que passam por roteadores até o destino', 'Inteira, por um fio direto até cada celular', 'Por satélite, sempre', 'Só por Wi-Fi'], certa: 0, explica: 'A internet quebra a informação em pacotes, que viajam por vários equipamentos e são remontados no destino.' },
+      { tipo: 'escolha', titulo: 'Termos de uso', texto: 'A rede social pede permissão para "usar seu conteúdo em anúncios". O que isso significa?', ops: ['Que as fotos da campanha podem aparecer em anúncios da plataforma', 'Nada, é só texto padrão', 'Que a plataforma paga pelas fotos', 'Que a conta fica verificada'], certa: 0, explica: 'Ler os termos de uso mostra o que a plataforma pode fazer com o que você publica. Aceitar sem ler é dar permissões sem saber.' },
+      { tipo: 'escolha', titulo: 'Mensagem suspeita', texto: 'Chegou um e-mail: "Sua conta de anúncios será bloqueada, clique aqui e confirme a senha". O que fazer?', ops: ['Não clicar; entrar no site pelo endereço oficial e verificar', 'Clicar logo, para não bloquear', 'Responder com a senha', 'Encaminhar para a equipe toda clicar'], certa: 0, explica: 'É phishing: a pressa e o link falso são o truque. Confirmar pelo canal oficial protege a conta.' }
+    ],
+    checagem: [
+      { tipo: 'classificar', titulo: 'O que publicar?', texto: 'Antes de publicar, a equipe checa cada afirmação. Classifique.', caixas: ['Confiável', 'Precisa checar', 'Falsa ou enganosa'], itens: [['Relatório oficial da fábrica com a produção do mês', 0], ['Post anônimo dizendo que o concorrente vai fechar', 2], ['Pesquisa citada sem dizer a fonte', 1], ['Dado do IBGE com link para a tabela', 0], ['Print de conversa sem data nem autor', 2], ['Notícia de jornal conhecido, mas de 2015', 1]], explica: 'Veracidade (é verdade?), credibilidade (quem diz e com que fonte?) e relevância (ainda vale hoje?) se avaliam separadamente.' },
+      { tipo: 'classificar', titulo: 'Fontes para o relatório', texto: 'O Marketing precisa de dados sobre uso de computadores. Classifique as fontes.', caixas: ['Confiável', 'Precisa checar', 'Falsa ou enganosa'], itens: [['Pesquisa TIC Domicílios, com metodologia publicada', 0], ['Vídeo que promete "a verdade que escondem de você"', 2], ['Blog de um especialista, sem links para os dados', 1], ['Gráfico sem eixo e sem fonte, viralizado', 2], ['Artigo científico revisado por pares', 0], ['Enquete feita pelo próprio Marketing com 12 pessoas', 1]], explica: 'Uma fonte confiável mostra de onde vieram os dados e como foram coletados. Promessas de segredo e gráficos sem eixo são sinais de alerta.' }
+    ],
+    decisoes: [
+      { tipo: 'escolha', titulo: 'Computadores antigos', texto: 'A fábrica trocou 40 computadores. O que fazer com os antigos?', ops: ['Doar os que funcionam e levar o resto a um ponto de descarte de eletrônicos', 'Jogar no lixo comum', 'Queimar para economizar espaço', 'Deixar no depósito para sempre'], certa: 0, explica: 'Eletrônicos têm metais pesados que contaminam solo e água. Reúso e descarte correto reduzem o impacto ambiental.' },
+      { tipo: 'escolha', titulo: 'Automatizar a esteira', texto: 'Um robô pode fazer o trabalho de 10 operadores. Qual decisão considera as pessoas e a empresa?', ops: ['Automatizar aos poucos e treinar os operadores para operar e manter os robôs', 'Demitir todos no mesmo dia', 'Desistir da tecnologia', 'Automatizar sem avisar ninguém'], certa: 0, explica: 'Tecnologia muda o trabalho. Avaliar as implicações sociais e preparar as pessoas faz parte da decisão.' },
+      { tipo: 'escolha', titulo: 'Dados dos clientes', texto: 'Um parceiro oferece dinheiro pela lista de clientes com telefone e endereço. O que a Diretoria responde?', ops: ['Não: os dados foram dados para entregar pedidos, não para venda', 'Sim, é lucro fácil', 'Sim, mas só os telefones', 'Sim, se ninguém descobrir'], certa: 0, explica: 'Dados pessoais só podem ser usados para a finalidade combinada. Vender a lista quebra a confiança e a lei de proteção de dados.' },
+      { tipo: 'escolha', titulo: 'Energia da fábrica', texto: 'A conta de energia dobrou com os servidores. Qual medida reduz consumo sem parar a produção?', ops: ['Desligar máquinas fora do expediente e usar equipamentos mais eficientes', 'Deixar tudo ligado por garantia', 'Comprar mais servidores', 'Ignorar a conta'], certa: 0, explica: 'Consumo de tecnologia é tema de sustentabilidade: eficiência e desligamento programado cortam gastos e emissões.' }
+    ],
+    estrategia: [
+      { tipo: 'bug', titulo: 'Plano de produção', texto: 'O plano do mês tem um passo que não faz sentido. Qual?', itens: ['Receber os pedidos dos clientes', 'Comprar as peças necessárias', 'Entregar as placas aos clientes', 'Montar as placas', 'Testar as placas'], errado: 2, explica: 'Entregar antes de montar quebra a dependência entre as etapas. Um plano é um algoritmo em escala maior.' },
+      { tipo: 'bug', titulo: 'Plano verde', texto: 'A Diretoria quer reduzir o impacto ambiental. Qual passo contraria o objetivo?', itens: ['Trocar lâmpadas por LED', 'Reciclar as sobras de metal', 'Trocar todos os computadores a cada ano', 'Consertar máquinas em vez de descartar', 'Medir o consumo de energia por setor'], errado: 2, explica: 'Trocar equipamentos funcionando todo ano gera lixo eletrônico e consumo desnecessário: é obsolescência forçada.' },
+      { tipo: 'bug', titulo: 'Plano de dados', texto: 'O plano de proteção de dados tem um passo errado. Qual?', itens: ['Guardar só os dados necessários', 'Usar senhas fortes e autenticação em duas etapas', 'Compartilhar a planilha de clientes num grupo aberto', 'Fazer cópias de segurança', 'Treinar a equipe contra golpes'], errado: 2, explica: 'Um grupo aberto expõe dados pessoais a qualquer um. Segurança da informação é também sobre onde a informação circula.' }
+    ]
+  };
+  const CADERNO = {
+    algoritmo: ['Algoritmo', 'Uma sequência de passos que resolve um problema. Com repetição (laços) e seleção (se... senão), o mesmo programa trata muitos casos.'],
+    depuracao: ['Depuração', 'Ler o programa procurando o passo que não faz o que deveria, testar e corrigir. Erros comuns: ordem trocada, condição invertida e "uma vez a mais".'],
+    dados: ['Tipos de dados', 'Número, texto, lógico (sim ou não) e data. Um registro junta campos de tipos diferentes; uma coleção junta itens do mesmo tipo.'],
+    fila: ['Fila', 'Primeiro a entrar, primeiro a sair (FIFO). Uma lista permite inserir, remover e percorrer os itens.'],
+    variaveis: ['Entradas, saídas e variáveis', 'Toda solução começa por dizer o que entra e o que sai. Variáveis deixam uma fórmula servir para todos os casos.'],
+    pilha: ['Pilha e arquivos', 'Último a entrar, primeiro a sair (LIFO), como o botão desfazer. Guardar bem um arquivo é dar nome, pasta, formato e metadados.'],
+    dadosPessoais: ['Dados pessoais e redes', 'A internet envia tudo em pacotes por roteadores. Pedir só o necessário, ler termos de uso e desconfiar de pressa protegem as pessoas.'],
+    veracidade: ['Qualidade da informação', 'Verdadeira? De fonte confiável? Ainda relevante? Fontes mostram método e dados; sinais de alerta: anonimato, segredo, gráfico sem eixo.'],
+    impactos: ['Decisões e impactos', 'Tecnologia muda trabalho, dados e ambiente. Decidir bem é considerar pessoas, lei e planeta, não só o lucro.'],
+    sustentabilidade: ['Sustentabilidade digital', 'Reúso, conserto e descarte correto de eletrônicos; medir e reduzir o consumo de energia; evitar a obsolescência forçada.']
+  };
+  const METAS = [
+    { texto: 'Conclua a primeira tarefa na Fábrica.', ok: s => s.feitas >= 1 },
+    { texto: 'Entregue 3 pedidos no mural.', ok: s => s.entregues >= 3 },
+    { texto: 'Libere o andar do RH nas Obras.', ok: s => s.obras.andares >= 2 },
+    { texto: 'Construa a Ala Leste e amplie o prédio.', ok: s => !!s.obras.ala },
+    { texto: 'Libere a Diretoria.', ok: s => s.obras.andares >= 5 },
+    { texto: 'Faça uma tarefa em cada um dos cinco setores.', ok: s => ['fabrica', 'rh', 'adm', 'marketing', 'diretoria'].every(k => (s.porSetor[k] || 0) >= 1) },
+    { texto: 'Complete o Caderno da fábrica (10 verbetes).', ok: s => s.caderno.length >= 10 }
+  ];
+  const OBRAS = [
+    { id: 'andar2', nome: 'Liberar o RH (2º andar)', custo: 60, pode: s => s.obras.andares === 1, faz: s => { s.obras.andares = 2; } },
+    { id: 'andar3', nome: 'Liberar a Administração (3º andar)', custo: 120, pode: s => s.obras.andares === 2, faz: s => { s.obras.andares = 3; } },
+    { id: 'andar4', nome: 'Liberar o Marketing (4º andar)', custo: 200, pode: s => s.obras.andares === 3, faz: s => { s.obras.andares = 4; } },
+    { id: 'andar5', nome: 'Liberar a Diretoria (5º andar)', custo: 300, pode: s => s.obras.andares === 4, faz: s => { s.obras.andares = 5; } },
+    { id: 'ala', nome: 'Ala Leste: amplia o prédio e abre a 2ª estação de cada setor', custo: 150, pode: s => !s.obras.ala && s.obras.andares >= 2, faz: s => { s.obras.ala = true; } },
+    { id: 'maquinas', nome: 'Máquinas novas: tarefas levam 45 min em vez de 60', custo: 120, pode: s => !s.obras.maquinas && s.obras.andares >= 2, faz: s => { s.obras.maquinas = true; } },
+    { id: 'elevador', nome: 'Elevador rápido: trocar de andar leva 2 min', custo: 80, pode: s => !s.obras.elevador && s.obras.andares >= 3, faz: s => { s.obras.elevador = true; } },
+    { id: 'jardim', nome: 'Jardim no terraço (decoração)', custo: 100, pode: s => !s.obras.jardim && s.obras.andares >= 3, faz: s => { s.obras.jardim = true; } },
+    { id: 'plantas', nome: 'Plantas e quadros em todos os andares (decoração)', custo: 60, pode: s => !s.obras.plantas, faz: s => { s.obras.plantas = true; } }
+  ];
+
+  /* ---------- Estado ---------- */
+  const novo = () => ({
+    v: 1, dia: 1, min: ABRE, cred: 30, pecas: {}, feitas: 0, entregues: 0, porSetor: {}, caderno: [], metas: 0,
+    obras: { andares: 1, ala: false, maquinas: false, elevador: false, jardim: false, plantas: false },
+    pedidos: [], usados: {}, andar: 0, x: 170, intro: false,
+    eu: { nome: 'Você', pele: 1, cabelo: 0, estilo: 'curto', uniforme: 0, acessorio: 'nenhum' }
+  });
+  const carregar = () => {
+    let s = null;
+    try { s = JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch (e) { s = null; }
+    if (!s || s.v !== 1) return novo();
+    const n = novo();
+    s.obras = Object.assign(n.obras, s.obras || {});
+    s.eu = Object.assign(n.eu, s.eu || {});
+    return Object.assign(n, s);
+  };
+  let S = carregar();
+  const ui = { held: new Set(), toque: null, alvoX: null, alvoEst: null, aberto: false, dialogo: null, leve: false, dpr: 1, camY: 0, camX: 0,
+    face: 1, fase: 0, elevY: 0, elevIndo: null, sujo: false, ultimoSalvo: 0, ultimoFrame: 0, rx: S.x, aviso: 0, fimPendente: false };
+  try { ui.leve = localStorage.getItem(CHAVE_LEVE) === '1'; } catch (e) { ui.leve = false; }
+  ui.elevY = S.andar;
+  const andarAberto = i => i === 0 || i <= S.obras.andares;
+  const estacoesDe = i => SETORES[i].estacoes.filter(e => !e.ala || S.obras.ala);
+  const estacaoPerto = () => { const es = estacoesDe(S.andar); let m = null, d = 60; es.forEach(e => { const dd = Math.abs(e.x - S.x); if (dd < d) { d = dd; m = e; } }); return m; };
+  const noElevador = () => Math.abs(S.x - ELEV_X) < 45;
+  const totalPecas = () => Object.values(S.pecas).reduce((a, b) => a + b, 0);
+  const duracaoTarefa = () => S.obras.maquinas ? 45 : 60;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const embaralha = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  /* ---------- Tempo, pedidos, salvamento ---------- */
+  function passa(min) { S.min += min; ui.sujo = true; if (S.min >= FECHA) fimDoDia(); }
+  function salvar() {
+    try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) { /* segue sem guardar */ }
+    ui.sujo = false; ui.ultimoSalvo = performance.now();
+    $('salvo').textContent = 'Salvo às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' neste aparelho.';
+  }
+  function aviso(txt) { const el = $('aviso'); el.textContent = txt; el.classList.add('on'); clearTimeout(ui.aviso); ui.aviso = setTimeout(() => el.classList.remove('on'), 2800); }
+  function novosPedidos() {
+    const abertos = SETORES.slice(1, S.obras.andares + 1).map(s => s.id);
+    S.pedidos = [0, 1, 2].map(i => { const setor = abertos[(i + S.dia) % abertos.length]; return { setor, qtd: 1 + Math.min(2, Math.floor((S.dia - 1) / 3)) + (i === 2 ? 1 : 0), valor: 0, ok: false }; });
+    S.pedidos.forEach(p => { p.valor = p.qtd * (12 + 4 * SETORES.findIndex(s => s.id === p.setor)); });
+  }
+  if (!S.pedidos.length) novosPedidos();
+  function fimDoDia() {
+    const entregues = S.pedidos.filter(p => p.ok).length;
+    const bonus = entregues === 3 ? 20 : 0;
+    S.cred += bonus;
+    S.dia++; S.min = ABRE; S.usados = {};
+    novosPedidos();
+    tudoMudou();
+    abrir(() => '<div class="quem">Dia ' + (S.dia - 1) + ' encerrado</div><h2>Fim do expediente</h2>' +
+      '<p>Pedidos entregues hoje: <strong>' + entregues + ' de 3</strong>.' + (bonus ? ' Bônus por entregar todos: +' + bonus + ' créditos.' : '') + '</p>' +
+      '<p>Amanhã há pedidos novos no mural. Peças que sobraram continuam no estoque.</p>' +
+      '<div class="fl-acoes"><button class="btn" type="button" data-acao="fechar">Bom dia!</button></div>');
+  }
+  function desbloqueia(id) { if (!id || S.caderno.includes(id)) return; S.caderno.push(id); aviso('Novo verbete no Caderno: ' + CADERNO[id][0] + '.'); }
+  function checaMetas() {
+    while (S.metas < METAS.length && METAS[S.metas].ok(S)) {
+      S.metas++; S.cred += 25;
+      aviso('Meta concluída! +25 créditos.');
+      if (window.MDP) MDP.registrar('fabrica-logica', Math.round(S.metas / METAS.length * 100));
+      if (S.metas === METAS.length) { if (ui.aberto) ui.fimPendente = true; else mostraFim(); }
+    }
+  }
+  function tudoMudou() { ui.sujo = true; checaMetas(); desenhaPainel(); salvar(); }
+
+  /* ---------- Diálogos ---------- */
+  const dlg = $('dlg'), card = $('card');
+  function abrir(gerar) { ui.dialogo = gerar; card.innerHTML = gerar(); dlg.hidden = false; ui.aberto = true; ui.held.clear(); const b = card.querySelector('button, input'); if (b) b.focus(); }
+  function refaz() { if (ui.aberto && ui.dialogo) card.innerHTML = ui.dialogo(); }
+  function fechar() { dlg.hidden = true; ui.aberto = false; ui.dialogo = null; cv.focus({ preventScroll: true }); if (ui.fimPendente) { ui.fimPendente = false; mostraFim(); } }
+  const botoes = (...b) => '<div class="fl-acoes">' + b.join('') + '</div>';
+  const btn = (acao, rotulo, arg, cls) => '<button class="btn' + (cls ? ' ' + cls : '') + '" type="button" data-acao="' + acao + '"' + (arg !== undefined ? ' data-arg="' + esc(arg) + '"' : '') + '>' + rotulo + '</button>';
+  function mostraFim() {
+    abrir(() => '<div class="quem">Fábrica Lógica</div><h2>Todas as metas concluídas!</h2><p>A fábrica está completa: cinco setores, ala nova e o caderno inteiro. Você pode continuar produzindo e entregando pedidos o quanto quiser.</p>' + botoes(btn('fechar', 'Continuar')));
+  }
+  function htmlIntro() {
+    return '<div class="quem">Boas-vindas!</div><h2>Fábrica Lógica</h2>' +
+      '<p>Você assumiu uma fábrica de componentes de computador. Só a <strong>Fábrica</strong> está funcionando; os outros setores (RH, Administração, Marketing e Diretoria) precisam ser liberados nas <strong>Obras</strong>, na recepção.</p>' +
+      '<p>Cada setor ensina um conceito de Computação. Faça as tarefas das estações, entregue os pedidos do dia no <strong>mural</strong> e cresça o prédio.</p>' +
+      '<p class="small muted">Setas ou A e D andam; no elevador, ↑ e ↓ trocam de andar; Espaço usa a estação. No celular, toque na estação.</p>' +
+      botoes(btn('vestiario', 'Criar minha personagem', undefined, 'ghost'), btn('comecar', 'Começar'));
+  }
+  function htmlMural() {
+    const linhas = S.pedidos.map((p, i) => {
+      const tem = (S.pecas[p.setor] || 0) >= p.qtd, setor = SETORES.find(s => s.id === p.setor);
+      return '<div class="fl-linha"><span>' + p.qtd + ' ' + NOMES_PECA[p.setor] + (p.qtd > 1 ? 's' : '') + ' do setor <strong>' + setor.nome + '</strong> <span class="muted">(' + p.valor + ' créditos)</span>' +
+        '<br><span class="small muted">Estoque: ' + (S.pecas[p.setor] || 0) + '</span></span>' +
+        (p.ok ? '<span class="small">Entregue ✓</span>' : '<button class="btn" type="button" data-acao="entregar" data-arg="' + i + '"' + (tem ? '' : ' disabled') + '>Entregar</button>') + '</div>';
+    }).join('');
+    return '<div class="quem">Recepção</div><h2>Mural de pedidos</h2><p class="small muted">Produza as peças nas estações de cada setor e entregue aqui. Pedidos valem créditos; entregar os três dá bônus.</p>' + linhas + botoes(btn('fechar', 'Fechar', undefined, 'ghost'));
+  }
+  function htmlObras() {
+    const linhas = OBRAS.filter(o => o.pode(S) || S.obras[o.id.replace(/^andar\d$/, '')] ).map(o => {
+      const feito = o.id.startsWith('andar') ? S.obras.andares >= Number(o.id.slice(5)) : !!S.obras[o.id];
+      if (feito) return '<div class="fl-linha"><span class="muted">' + o.nome + '</span><span class="small">Pronto ✓</span></div>';
+      return '<div class="fl-linha"><span>' + o.nome + ' <span class="muted">(' + o.custo + ' créditos)</span></span><button class="btn" type="button" data-acao="construir" data-arg="' + o.id + '"' + (S.cred >= o.custo ? '' : ' disabled') + '>Construir</button></div>';
+    }).join('');
+    return '<div class="quem">Recepção</div><h2>Obras</h2><p>Você tem <strong>' + S.cred + '</strong> créditos. Cada obra muda o prédio na hora.</p>' + linhas +
+      '<p class="small muted">Novas obras aparecem conforme o prédio cresce.</p>' + botoes(btn('fechar', 'Fechar', undefined, 'ghost'));
+  }
+  function htmlVestiario() {
+    const eu = S.eu;
+    const sw = (lista, chave) => '<div class="fl-swatches">' + lista.map((c, i) => '<button type="button" style="background:' + c + '" data-acao="eu" data-arg="' + chave + ':' + i + '" aria-label="Opção ' + (i + 1) + '" aria-pressed="' + (eu[chave] === i) + '"></button>').join('') + '</div>';
+    const chips = (lista, chave) => '<div class="fl-chips">' + lista.map(v => '<button type="button" data-acao="eu" data-arg="' + chave + ':' + v + '" aria-pressed="' + (eu[chave] === v) + '">' + v + '</button>').join('') + '</div>';
+    return '<div class="quem">Recepção</div><h2>Vestiário</h2>' +
+      '<canvas class="fl-preview" id="preview" width="160" height="200" aria-label="Prévia da personagem"></canvas>' +
+      '<h3>Nome</h3><input type="text" id="eu-nome" maxlength="16" value="' + esc(eu.nome) + '" aria-label="Nome da personagem">' +
+      '<h3>Tom de pele</h3>' + sw(PELES, 'pele') + '<h3>Cabelo</h3>' + chips(ESTILOS, 'estilo') + '<div style="height:6px"></div>' + sw(CABELOS, 'cabelo') +
+      '<h3>Uniforme</h3>' + sw(UNIFORMES, 'uniforme') + '<h3>Acessório</h3>' + chips(ACESSORIOS, 'acessorio') +
+      botoes(btn('fechar', 'Pronto'));
+  }
+  function htmlElevador() {
+    return '<div class="quem">Elevador</div><h2>Para qual andar?</h2><div class="fl-ops">' + SETORES.map((s, i) => '<button type="button" data-acao="ir" data-arg="' + i + '"' + (andarAberto(i) ? '' : ' disabled') + (i === S.andar ? ' aria-current="true"' : '') + '>' + (i === 0 ? 'Térreo' : i + 'º andar') + ': ' + s.nome + (andarAberto(i) ? '' : ' (liberar nas Obras)') + '</button>').reverse().join('') + '</div>' + botoes(btn('fechar', 'Fechar', undefined, 'ghost'));
+  }
+  function htmlMapa() {
+    return '<div class="quem">Fábrica Lógica</div><h2>Andares e estações</h2>' + SETORES.map((s, i) => '<h3>' + (i === 0 ? 'Térreo' : i + 'º andar') + ': ' + s.nome + (andarAberto(i) ? '' : ' (fechado)') + '</h3><ul>' +
+      s.estacoes.map(e => '<li>' + e.nome + (e.ala && !S.obras.ala ? ' (Ala Leste)' : '') + (e.conceito ? ' · ' + CADERNO[e.conceito][0] : '') + '</li>').join('') + '</ul>').reverse().join('') + botoes(btn('fechar', 'Fechar', undefined, 'ghost'));
+  }
+  function htmlGerente(i) {
+    const s = SETORES[i], g = s.gerente;
+    const falas = {
+      fabrica: 'Aqui a gente escreve as instruções que a esteira segue. Se a ordem estiver errada, a placa sai errada. Na estação de qualidade, a tarefa é achar o passo com defeito.',
+      rh: 'No RH tudo é dado: nome, idade, cargo. Cada informação tem um tipo, e a fila de entrevistas segue a ordem de chegada.',
+      adm: 'Antes de calcular, eu pergunto: o que entra e o que sai? E guardo cada relatório com nome e pasta certos, senão ninguém acha depois.',
+      marketing: 'Tudo o que publicamos viaja em pacotes pela internet e fica lá fora. Por isso pedimos poucos dados e checamos cada fato antes de postar.',
+      diretoria: 'Toda decisão aqui mexe com pessoas, dados e ambiente. Lucro é só uma parte da conta.'
+    };
+    return '<div class="quem">' + esc(g.nome) + '</div><span class="setor">' + s.nome + '</span><p>' + falas[s.id] + '</p>' + botoes(btn('fechar', 'Valeu!'));
+  }
+
+  /* ---------- Tarefas ---------- */
+  let T = null;    // tarefa em andamento
+  function abrirEstacao(e) {
+    if (e.tipo === 'mural') return abrir(htmlMural);
+    if (e.tipo === 'obras') return abrir(htmlObras);
+    if (e.tipo === 'vestiario') { abrir(htmlVestiario); desenhaPreview(); return; }
+    const pool = TAREFAS[e.id];
+    const usados = S.usados[e.id] || [];
+    let livres = pool.map((_, i) => i).filter(i => !usados.includes(i));
+    if (!livres.length) { S.usados[e.id] = []; livres = pool.map((_, i) => i); }
+    const idx = livres[Math.floor(Math.random() * livres.length)];
+    const t = pool[idx];
+    T = { est: e, idx, t, setor: SETORES[S.andar], seq: [], feitoCerto: null, atribuicoes: {}, ordem: t.tipo === 'ordem' ? embaralha(t.itens) : null, itensEmb: t.tipo === 'classificar' ? embaralha(t.itens) : null, selecionado: null };
+    abrir(htmlTarefa);
+  }
+  function htmlTarefa() {
+    const t = T.t, cab = '<div class="quem">' + esc(T.est.nome) + '</div><span class="setor">' + T.setor.nome + '</span><h2>' + esc(t.titulo) + '</h2><p>' + esc(t.texto) + '</p>';
+    if (T.feitoCerto !== null) {
+      return cab + '<p><strong>' + (T.feitoCerto ? 'Certo!' : 'Não foi dessa vez.') + '</strong> ' + esc(t.explica) + '</p>' +
+        (T.feitoCerto ? '<p class="small muted">+1 ' + NOMES_PECA[T.setor.id] + ' no estoque e créditos. A tarefa levou ' + duracaoTarefa() + ' min.</p>' : '<p class="small muted">A tarefa levou 30 min. Tente outra estação ou volte depois.</p>') +
+        botoes(btn('fechar', 'Fechar'));
+    }
+    if (t.tipo === 'ordem') {
+      return cab + '<div class="fl-seq" aria-label="Sua sequência">' + (T.seq.length ? T.seq.map(i => '<span>' + esc(t.itens[i]) + '</span>').join('') : '<span class="muted small" style="background:none;border:none">Clique nos itens na ordem certa</span>') + '</div>' +
+        '<div class="fl-ops">' + T.ordem.map(item => { const i = t.itens.indexOf(item); const usado = T.seq.includes(i); return '<button type="button" class="fl-item' + (usado ? ' usado' : '') + '" data-acao="seq" data-arg="' + i + '"' + (usado ? ' disabled' : '') + '>' + esc(item) + '</button>'; }).join('') + '</div>' +
+        botoes(btn('desfazer', 'Desfazer', undefined, 'ghost'), btn('conferir', 'Conferir', undefined, T.seq.length === t.itens.length ? '' : 'ghost'));
+    }
+    if (t.tipo === 'bug') {
+      return cab + '<div class="fl-ops">' + t.itens.map((item, i) => '<button type="button" data-acao="bug" data-arg="' + i + '">' + (i + 1) + '. ' + esc(item) + '</button>').join('') + '</div>' + botoes(btn('fechar', 'Desistir', undefined, 'ghost'));
+    }
+    if (t.tipo === 'classificar') {
+      const pend = T.itensEmb.filter(([txt]) => T.atribuicoes[txt] === undefined);
+      const atual = pend[0];
+      return cab + (atual ? '<p><strong>Item:</strong> ' + esc(atual[0]) + ' <span class="small muted">(' + pend.length + ' restante' + (pend.length > 1 ? 's' : '') + ')</span></p>' : '') +
+        '<div class="fl-bins">' + t.caixas.map((c, ci) => '<div class="fl-bin"><strong>' + esc(c) + '</strong><button type="button" data-acao="caixa" data-arg="' + ci + '"' + (atual ? '' : ' disabled') + '>Colocar aqui</button><div class="itens">' +
+          T.itensEmb.filter(([txt]) => T.atribuicoes[txt] === ci).map(([txt]) => esc(txt)).join('<br>') + '</div></div>').join('') + '</div>' +
+        botoes(btn('fechar', 'Desistir', undefined, 'ghost'), btn('conferir', 'Conferir', undefined, atual ? 'ghost' : ''));
+    }
+    const ops = T.opsEmb || (T.opsEmb = embaralha(t.ops.map((o, i) => [o, i])));
+    return cab + '<div class="fl-ops">' + ops.map(([o, i]) => '<button type="button" data-acao="opcao" data-arg="' + i + '">' + esc(o) + '</button>').join('') + '</div>' + botoes(btn('fechar', 'Desistir', undefined, 'ghost'));
+  }
+  function concluir(certo) {
+    T.feitoCerto = certo;
+    const e = T.est, setor = T.setor;
+    if (!S.usados[e.id]) S.usados[e.id] = [];
+    S.usados[e.id].push(T.idx);
+    if (certo) {
+      S.pecas[setor.id] = (S.pecas[setor.id] || 0) + 1;
+      S.cred += 8;
+      S.feitas++;
+      S.porSetor[setor.id] = (S.porSetor[setor.id] || 0) + 1;
+      desbloqueia(e.conceito);
+      passa(duracaoTarefa());
+    } else passa(30);
+    tudoMudou();
+    refaz();
+  }
+
+  /* ---------- Ações dos diálogos ---------- */
+  const acoes = {
+    fechar: () => fechar(),
+    comecar: () => { S.intro = true; tudoMudou(); fechar(); },
+    vestiario: () => { S.intro = true; abrir(htmlVestiario); desenhaPreview(); },
+    entregar: i => { const p = S.pedidos[Number(i)]; if (!p || p.ok || (S.pecas[p.setor] || 0) < p.qtd) return; S.pecas[p.setor] -= p.qtd; p.ok = true; S.cred += p.valor; S.entregues++; passa(5); aviso('Pedido entregue: +' + p.valor + ' créditos.'); tudoMudou(); refaz(); },
+    construir: id => { const o = OBRAS.find(x => x.id === id); if (!o || !o.pode(S) || S.cred < o.custo) return; S.cred -= o.custo; o.faz(S); passa(10); aviso(o.nome.split(':')[0] + ': pronto!'); novosPedidosSePreciso(); tudoMudou(); refaz(); },
+    eu: arg => { const [k, v] = arg.split(':'); S.eu[k] = (k === 'estilo' || k === 'acessorio') ? v : Number(v); const nome = $('eu-nome'); if (nome) S.eu.nome = nome.value.trim() || 'Você'; tudoMudou(); refaz(); desenhaPreview(); },
+    ir: i => { fechar(); irParaAndar(Number(i)); },
+    seq: i => { T.seq.push(Number(i)); refaz(); },
+    desfazer: () => { T.seq.pop(); refaz(); },
+    conferir: () => {
+      if (T.t.tipo === 'ordem') { if (T.seq.length !== T.t.itens.length) return aviso('Coloque todos os itens.'); concluir(T.seq.every((v, i) => v === i)); }
+      else if (T.t.tipo === 'classificar') { if (Object.keys(T.atribuicoes).length < T.t.itens.length) return aviso('Classifique todos os itens.'); concluir(T.t.itens.every(([txt, c]) => T.atribuicoes[txt] === c)); }
+    },
+    bug: i => concluir(Number(i) === T.t.errado),
+    opcao: i => concluir(Number(i) === T.t.certa),
+    caixa: ci => { const pend = T.itensEmb.filter(([txt]) => T.atribuicoes[txt] === undefined); if (!pend.length) return; T.atribuicoes[pend[0][0]] = Number(ci); refaz(); },
+    recomecar: () => { fechar(); S = novo(); novosPedidos(); ui.rx = S.x; ui.elevY = 0; ui.camY = 0; tudoMudou(); abrir(htmlIntro); }
+  };
+  function novosPedidosSePreciso() { /* pedidos de setores recém-abertos só entram no dia seguinte */ }
+  dlg.addEventListener('click', e => {
+    if (e.target === dlg) { if (T && T.feitoCerto === null && ['ordem', 'classificar'].includes(T.t.tipo)) return; return fechar(); }
+    const b = e.target.closest('[data-acao]');
+    if (b && acoes[b.dataset.acao]) acoes[b.dataset.acao](b.dataset.arg);
+  });
+  dlg.addEventListener('change', e => { if (e.target.id === 'eu-nome') { S.eu.nome = e.target.value.trim() || 'Você'; tudoMudou(); desenhaPreview(); } });
+
+  /* ---------- Movimento ---------- */
+  function irParaAndar(i) {
+    if (!andarAberto(i) || i === S.andar) return;
+    if (!noElevador()) { ui.alvoX = ELEV_X; ui.alvoEst = { elevador: i }; return; }
+    passa(S.obras.elevador ? 2 : 6 * Math.abs(i - S.andar));
+    S.andar = i; ui.alvoX = null; ui.alvoEst = null;
+    aviso((i === 0 ? 'Térreo' : i + 'º andar') + ': ' + SETORES[i].nome);
+    tudoMudou();
+  }
+  function agir() {
+    if (ui.aberto) return;
+    if (noElevador()) return abrir(htmlElevador);
+    const g = SETORES[S.andar].gerente;
+    if (g && Math.abs(g.x - S.x) < 50) return abrir(() => htmlGerente(S.andar));
+    const e = estacaoPerto();
+    if (e) return abrirEstacao(e);
+    aviso('Chegue perto de uma estação ou do elevador e use de novo.');
+  }
+  function tocar(px) {
+    if (ui.aberto) return;
+    const es = estacoesDe(S.andar);
+    const e = es.find(q => Math.abs(q.x - px) < 55);
+    const g = SETORES[S.andar].gerente;
+    if (Math.abs(px - ELEV_X) < 45) { ui.alvoX = ELEV_X; ui.alvoEst = { elevador: true }; return; }
+    if (e) { ui.alvoX = e.x + (S.x < e.x ? -40 : 40); ui.alvoEst = e; return; }
+    if (g && Math.abs(px - g.x) < 45) { ui.alvoX = g.x - 45; ui.alvoEst = { gerente: true }; return; }
+    ui.alvoX = clamp(px, 40, LARGURA() - 40); ui.alvoEst = null;
+  }
+  function atualiza(dt) {
+    if (ui.aberto) return;
+    const vel = 260;
+    let dx = 0;
+    const dir = ui.toque || [...ui.held][0]; ui.toque = null;
+    if (dir === 'e') dx = -1; else if (dir === 'd') dx = 1;
+    else if (dir === 'c' || dir === 'b') { if (noElevador()) irParaAndar(S.andar + (dir === 'c' ? 1 : -1)); else aviso('Vá até o elevador para trocar de andar.'); ui.held.delete(dir); }
+    if (dx) { ui.alvoX = null; ui.alvoEst = null; }
+    else if (ui.alvoX !== null) { const d = ui.alvoX - S.x; if (Math.abs(d) < 6) { S.x = ui.alvoX; ui.alvoX = null; const a = ui.alvoEst; ui.alvoEst = null; if (a) { if (a.elevador !== undefined) { if (a.elevador === true) abrir(htmlElevador); else irParaAndar(a.elevador); } else if (a.gerente) abrir(() => htmlGerente(S.andar)); else abrirEstacao(a); } return; } dx = Math.sign(d); }
+    if (dx) {
+      ui.face = dx;
+      S.x = clamp(S.x + dx * vel * dt, 40, LARGURA() - 40);
+      ui.fase += dt * 10;
+      ui.sujo = true;
+    }
+  }
+
+  /* ---------- Desenho ---------- */
+  const cv = $('tela'); cv.tabIndex = 0;
+  const ctx = cv.getContext('2d');
+  function dimensiona() { ui.dpr = ui.leve ? 1 : Math.min(2, window.devicePixelRatio || 1); cv.width = Math.round(W * ui.dpr); cv.height = Math.round(H * ui.dpr); }
+  const rr = (c, x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); };
+  const caixa = (c, x, y, w, h, cor, r = 4, borda = COR.tinta) => { rr(c, x, y, w, h, r); c.fillStyle = cor; c.fill(); if (borda) { c.strokeStyle = borda; c.lineWidth = 2; c.stroke(); } };
+  const circulo = (c, x, y, r, cor, borda = COR.tinta) => { c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fillStyle = cor; c.fill(); if (borda) { c.strokeStyle = borda; c.lineWidth = 2; c.stroke(); } };
+  function texto(c, t, x, y, tam, cor, alinh = 'center', peso = 700) { c.font = peso + ' ' + tam + 'px Lexend, sans-serif'; c.fillStyle = cor; c.textAlign = alinh; c.textBaseline = 'middle'; c.fillText(t, x, y); c.textAlign = 'start'; c.textBaseline = 'alphabetic'; }
+  const horaFrac = () => clamp((S.min - ABRE) / (FECHA - ABRE), 0, 1);
+  function ceu(c) {
+    const f = horaFrac();
+    if (ui.leve) { c.fillStyle = f < 0.75 ? '#f6d9a8' : '#e7b27a'; c.fillRect(0, 0, W, H); }
+    else {
+      const g = c.createLinearGradient(0, 0, 0, H);
+      if (f < 0.75) { g.addColorStop(0, '#fbe7bf'); g.addColorStop(1, '#f6c98f'); } else { g.addColorStop(0, '#e38a5c'); g.addColorStop(1, '#f6c98f'); }
+      c.fillStyle = g; c.fillRect(0, 0, W, H);
+      // sol
+      const sx = 120 + f * (W - 240), sy = 140 - Math.sin(f * Math.PI) * 90 + ui.camY * 0.2;
+      circulo(c, sx, sy, 34, '#fff36b', null); circulo(c, sx, sy, 26, '#ffd23f', null);
+    }
+    // morros ao fundo (parallax leve)
+    c.fillStyle = '#9fdab4';
+    c.beginPath(); c.moveTo(0, H); for (let x = 0; x <= W; x += 40) c.lineTo(x, H - 60 - 30 * Math.sin(x / 140 + 1) + ui.camY * 0.3); c.lineTo(W, H); c.closePath(); c.fill();
+    c.fillStyle = '#2fa865';
+    c.beginPath(); c.moveTo(0, H); for (let x = 0; x <= W; x += 40) c.lineTo(x, H - 30 - 22 * Math.sin(x / 90) + ui.camY * 0.3); c.lineTo(W, H); c.closePath(); c.fill();
+  }
+  // coordenadas: o térreo tem o chão em yChao(0); andares para cima diminuem y
+  const yChao = i => H - 40 - i * ANDAR_H + ui.camY;
+  function predio(c) {
+    const larg = LARGURA(), topo = yChao(S.obras.andares) - ANDAR_H + 10;
+    // sombra e corpo
+    if (!ui.leve) { c.fillStyle = 'rgba(60,40,10,.18)'; c.fillRect(PX0 + 14, topo + 14, larg, yChao(0) - topo + 30); }
+    caixa(c, PX0, topo, larg, yChao(0) - topo + 40, '#e4dccb', 8);
+    // telhado / terraço
+    caixa(c, PX0 - 10, topo - 8, larg + 20, 16, COR.chumbo, 4);
+    if (S.obras.jardim) { for (let x = PX0 + 40; x < PX0 + larg - 20; x += 70) { planta(c, x, topo - 8, 1.1); } caixa(c, PX0 + larg - 120, topo - 50, 70, 42, COR.creme, 6); texto(c, 'TERRAÇO', PX0 + larg - 85, topo - 29, 11, COR.tinta); }
+    else { caixa(c, PX0 + larg - 110, topo - 40, 24, 32, COR.cinzaE, 3); caixa(c, PX0 + larg - 70, topo - 54, 30, 46, COR.cinza, 3); }
+    // letreiro
+    caixa(c, PX0 + larg / 2 - 110, topo - 46, 220, 36, COR.amarelo, 8); texto(c, 'FÁBRICA LÓGICA', PX0 + larg / 2, topo - 28, 16, COR.tinta);
+    // poço do elevador
+    c.fillStyle = COR.chumbo; c.fillRect(PX0 + 10, topo + 10, 110, yChao(0) - topo + 20);
+    for (let i = 0; i <= S.obras.andares; i++) andar(c, i);
+    // cabine do elevador
+    const ey = yChao(ui.elevY);
+    caixa(c, ELEV_X - 40, ey - 118, 80, 118, '#8f8a80', 4);
+    c.fillStyle = '#d8d2c2'; c.fillRect(ELEV_X - 34, ey - 112, 68, 106);
+    c.strokeStyle = COR.tinta; c.lineWidth = 2; c.beginPath(); c.moveTo(ELEV_X, ey - 112); c.lineTo(ELEV_X, ey - 6); c.stroke();
+    caixa(c, ELEV_X - 16, ey - 140, 32, 14, COR.tinta, 3, null); texto(c, S.andar === 0 ? 'T' : String(S.andar), ELEV_X, ey - 133, 11, COR.amarelo);
+  }
+  function andar(c, i) {
+    const s = SETORES[i], y = yChao(i), x0 = PX0 + 120, larg = LARGURA() - 130;
+    // parede e chão
+    c.fillStyle = s.parede; c.fillRect(x0, y - ANDAR_H + 10, larg, ANDAR_H - 10);
+    c.fillStyle = s.chao; c.fillRect(x0, y - 14, larg, 14);
+    c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(x0, y - 14, larg, 3);
+    c.strokeStyle = COR.tinta; c.lineWidth = 2; c.strokeRect(x0, y - ANDAR_H + 10, larg, ANDAR_H - 10);
+    // janelas
+    const f = horaFrac();
+    for (let wx = x0 + larg - 70; wx > x0 + 120; wx -= 170) {
+      caixa(c, wx - 30, y - ANDAR_H + 30, 60, 50, f < 0.75 ? '#fbe7bf' : '#e38a5c', 4);
+      c.strokeStyle = COR.tinta; c.lineWidth = 1.5; c.beginPath(); c.moveTo(wx, y - ANDAR_H + 30); c.lineTo(wx, y - ANDAR_H + 80); c.moveTo(wx - 30, y - ANDAR_H + 55); c.lineTo(wx + 30, y - ANDAR_H + 55); c.stroke();
+    }
+    // luminárias
+    for (let lx = x0 + 100; lx < x0 + larg - 40; lx += 200) {
+      caixa(c, lx - 22, y - ANDAR_H + 12, 44, 8, COR.amareloC, 3);
+      if (!ui.leve && f > 0.6) { const g = c.createRadialGradient(lx, y - ANDAR_H + 20, 4, lx, y - ANDAR_H + 20, 110); g.addColorStop(0, 'rgba(255,243,107,.35)'); g.addColorStop(1, 'rgba(255,243,107,0)'); c.fillStyle = g; c.fillRect(lx - 110, y - ANDAR_H + 10, 220, ANDAR_H); }
+    }
+    // estações
+    s.estacoes.forEach(e => { if (e.ala && !S.obras.ala) return; estacao(c, e, y); });
+    if (S.obras.plantas) { planta(c, x0 + larg - 30, y - 14, 1); if (i > 0) caixa(c, x0 + larg / 2 - 20, y - ANDAR_H + 36, 40, 30, i % 2 ? COR.verdeC : COR.amareloC, 3); }
+    if (s.gerente) pessoa(c, s.gerente.x, y - 14, s.gerente, -1, 0, false);
+    // placa do setor (por cima dos móveis)
+    caixa(c, x0 + 12, y - ANDAR_H + 22, 24 + s.nome.length * 9, 24, i === 0 ? COR.amarelo : COR.creme, 6); texto(c, s.nome.toUpperCase(), x0 + 24 + s.nome.length * 4.5, y - ANDAR_H + 34, 11, COR.tinta);
+    // destaque da estação próxima
+    if (i === S.andar) {
+      const e = estacaoPerto();
+      if (e && !ui.aberto) { c.strokeStyle = COR.amarelo; c.lineWidth = 3; rr(c, e.x - 62, y - 118, 124, 108, 10); c.stroke(); rotulo(c, e.nome, e.x, y - 126); }
+      else if (noElevador()) rotulo(c, 'Elevador: ↑ ↓ ou Usar', ELEV_X, y - 150);
+      else if (s.gerente && Math.abs(s.gerente.x - S.x) < 50) rotulo(c, s.gerente.nome, s.gerente.x, y - 126);
+    }
+  }
+  function rotulo(c, t, x, y) { c.font = '600 12px Lexend, sans-serif'; const w = c.measureText(t).width + 14; caixa(c, x - w / 2, y - 10, w, 20, COR.papel, 6); texto(c, t, x, y, 12, COR.tinta, 'center', 600); }
+  function planta(c, x, y, k) { caixa(c, x - 10 * k, y - 16 * k, 20 * k, 16 * k, '#b7773a', 3); c.strokeStyle = COR.verdeE; c.lineWidth = 3; c.beginPath(); c.moveTo(x, y - 16 * k); c.lineTo(x, y - 40 * k); c.stroke(); circulo(c, x - 9 * k, y - 36 * k, 8 * k, COR.verde); circulo(c, x + 9 * k, y - 40 * k, 8 * k, COR.verde); circulo(c, x, y - 48 * k, 8 * k, COR.verdeE); }
+  function monitor(c, x, y) { caixa(c, x - 18, y - 30, 36, 26, COR.chumbo, 3); c.fillStyle = COR.verdeC; c.fillRect(x - 14, y - 26, 28, 18); caixa(c, x - 6, y - 4, 12, 4, COR.cinzaE, 1); }
+  function estacao(c, e, y) {
+    const x = e.x;
+    switch (e.desenho) {
+      case 'mural': caixa(c, x - 50, y - 110, 100, 70, COR.madeira, 4); c.fillStyle = COR.creme; c.fillRect(x - 44, y - 104, 88, 58); [[-30, -96, COR.amarelo], [0, -92, COR.vermelhoE], [26, -98, COR.verde]].forEach(([dx, dy, cor]) => caixa(c, x + dx - 10, y + dy, 20, 24, cor, 2)); texto(c, 'PEDIDOS', x, y - 52, 10, COR.tinta); break;
+      case 'prancheta': caixa(c, x - 40, y - 20, 80, 20, COR.madeira, 3); caixa(c, x - 36, y - 100, 72, 80, COR.papel, 3); c.strokeStyle = COR.vermelho; c.lineWidth = 2; c.strokeRect(x - 26, y - 88, 24, 30); c.strokeRect(x + 2, y - 88, 24, 20); c.strokeRect(x - 26, y - 54, 52, 22); caixa(c, x - 16, y - 112, 32, 12, COR.amarelo, 3); texto(c, 'OBRAS', x, y - 106, 9, COR.tinta); break;
+      case 'espelho': caixa(c, x - 26, y - 118, 52, 104, COR.madeira, 8); c.fillStyle = '#fbe7bf'; rr(c, x - 20, y - 112, 40, 92, 6); c.fill(); c.strokeStyle = COR.branco; c.lineWidth = 3; c.beginPath(); c.moveTo(x - 12, y - 100); c.lineTo(x - 4, y - 60); c.stroke(); caixa(c, x + 30, y - 60, 30, 46, COR.verdeE, 3); break;
+      case 'esteira': caixa(c, x - 70, y - 40, 140, 20, COR.cinzaE, 6); caixa(c, x - 60, y - 20, 10, 20, COR.chumbo, 2, null); caixa(c, x + 50, y - 20, 10, 20, COR.chumbo, 2, null); for (let k = -50; k <= 50; k += 50) caixa(c, x + k - 14, y - 58, 28, 18, k ? COR.verde : COR.vermelho, 3); caixa(c, x - 30, y - 110, 60, 50, COR.amarelo, 6); circulo(c, x, y - 85, 12, COR.chumbo); circulo(c, x, y - 85, 5, COR.vermelho, null); break;
+      case 'lupa': caixa(c, x - 40, y - 60, 80, 60, COR.cinza, 6); monitor(c, x - 14, y - 60); circulo(c, x + 22, y - 86, 16, COR.verdeC); c.strokeStyle = COR.tinta; c.lineWidth = 5; c.beginPath(); c.moveTo(x + 33, y - 75); c.lineTo(x + 46, y - 60); c.stroke(); caixa(c, x - 34, y - 100, 40, 30, COR.papel, 3); texto(c, 'OK?', x - 14, y - 85, 11, COR.vermelhoE); break;
+      case 'arquivo': caixa(c, x - 36, y - 110, 72, 110, COR.cinzaE, 4); for (let k = 0; k < 4; k++) { caixa(c, x - 30, y - 104 + k * 26, 60, 22, k % 2 ? COR.amarelo : COR.creme, 2); caixa(c, x - 8, y - 96 + k * 26, 16, 6, COR.tinta, 1, null); } break;
+      case 'cadeiras': for (let k = -1; k <= 1; k++) { caixa(c, x + k * 42 - 14, y - 44, 28, 44, COR.verdeE, 3); caixa(c, x + k * 42 - 14, y - 72, 28, 30, COR.verde, 3); } caixa(c, x - 30, y - 110, 60, 22, COR.papel, 4); texto(c, 'FILA', x, y - 99, 11, COR.tinta); break;
+      case 'mesa': caixa(c, x - 50, y - 40, 100, 10, COR.madeira, 2); caixa(c, x - 44, y - 30, 8, 30, COR.madeira, 1); caixa(c, x + 36, y - 30, 8, 30, COR.madeira, 1); monitor(c, x, y - 40); caixa(c, x - 44, y - 48, 24, 8, COR.papel, 2); caixa(c, x + 22, y - 46, 14, 6, COR.vermelho, 2); break;
+      case 'pilha': caixa(c, x - 50, y - 40, 100, 10, COR.madeira, 2); caixa(c, x - 44, y - 30, 8, 30, COR.madeira, 1); caixa(c, x + 36, y - 30, 8, 30, COR.madeira, 1); for (let k = 0; k < 6; k++) caixa(c, x - 26 + (k % 2) * 4, y - 48 - k * 9, 52, 9, k % 3 ? COR.papel : COR.amareloC, 1); caixa(c, x + 10, y - 60, 30, 20, COR.vermelho, 3); break;
+      case 'quadro': caixa(c, x - 60, y - 118, 120, 76, COR.madeira, 4); c.fillStyle = COR.papel; c.fillRect(x - 54, y - 112, 108, 64); c.strokeStyle = COR.vermelho; c.lineWidth = 3; c.beginPath(); c.moveTo(x - 44, y - 60); c.lineTo(x - 20, y - 90); c.lineTo(x + 4, y - 74); c.lineTo(x + 40, y - 100); c.stroke(); circulo(c, x + 40, y - 100, 5, COR.verde); caixa(c, x - 50, y - 40, 100, 10, COR.madeira, 2); break;
+      case 'mesaGrande': caixa(c, x - 90, y - 44, 180, 12, COR.marrom, 4); for (let k = -60; k <= 60; k += 60) caixa(c, x + k - 12, y - 70, 24, 26, COR.vermelhoE, 3); caixa(c, x - 84, y - 32, 10, 32, COR.marrom, 1); caixa(c, x + 74, y - 32, 10, 32, COR.marrom, 1); caixa(c, x - 20, y - 54, 40, 10, COR.papel, 2); break;
+    }
+  }
+  function pessoa(c, x, y, p, face, fase, eu) {
+    const pele = typeof p.pele === 'number' ? PELES[p.pele] : p.pele, cab = typeof p.cabelo === 'number' ? CABELOS[p.cabelo] : p.cabelo, uni = typeof p.uniforme === 'number' ? UNIFORMES[p.uniforme] : p.uniforme;
+    const anda = eu && (ui.held.size || ui.alvoX !== null);
+    const perna = anda ? Math.sin(fase) * 7 : 0;
+    if (!ui.leve) { c.fillStyle = 'rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(x, y, 20, 5, 0, 0, Math.PI * 2); c.fill(); }
+    // pernas
+    caixa(c, x - 12 + perna / 2, y - 28, 10, 28, COR.chumbo, 3); caixa(c, x + 2 - perna / 2, y - 28, 10, 28, COR.chumbo, 3);
+    // corpo
+    caixa(c, x - 17, y - 66, 34, 40, uni, 8);
+    if (p.acessorio === 'gravata') { c.fillStyle = COR.vermelho; c.beginPath(); c.moveTo(x - 3, y - 64); c.lineTo(x + 3, y - 64); c.lineTo(x + 2, y - 44); c.lineTo(x, y - 40); c.lineTo(x - 2, y - 44); c.closePath(); c.fill(); }
+    caixa(c, x - 6, y - 60, 12, 8, COR.papel, 2, null);   // crachá
+    // braços
+    caixa(c, x - 24, y - 62, 8, 30, uni, 4); caixa(c, x + 16, y - 62, 8, 30, uni, 4);
+    circulo(c, x - 20, y - 32, 5, pele); circulo(c, x + 20, y - 32, 5, pele);
+    // cabeça
+    circulo(c, x, y - 82, 17, pele);
+    // cabelo
+    c.fillStyle = cab;
+    if (p.estilo === 'curto') { c.beginPath(); c.arc(x, y - 86, 18, Math.PI, 0); c.fill(); }
+    else if (p.estilo === 'coque') { c.beginPath(); c.arc(x, y - 86, 18, Math.PI, 0); c.fill(); circulo(c, x, y - 104, 8, cab); }
+    else if (p.estilo === 'longo') { c.beginPath(); c.arc(x, y - 86, 18, Math.PI, 0); c.fill(); c.fillRect(x - 18, y - 86, 8, 30); c.fillRect(x + 10, y - 86, 8, 30); }
+    else if (p.estilo === 'raspado') { c.beginPath(); c.arc(x, y - 84, 17, Math.PI * 1.1, Math.PI * 1.9); c.fill(); }
+    else if (p.estilo === 'crespo') { circulo(c, x, y - 92, 20, cab, null); circulo(c, x - 14, y - 84, 9, cab, null); circulo(c, x + 14, y - 84, 9, cab, null); }
+    c.strokeStyle = COR.tinta; c.lineWidth = 2; c.beginPath(); c.arc(x, y - 82, 17, 0, Math.PI * 2); c.stroke();
+    // rosto
+    circulo(c, x - 6 + face * 3, y - 83, 2, COR.tinta, null); circulo(c, x + 6 + face * 3, y - 83, 2, COR.tinta, null);
+    c.strokeStyle = COR.tinta; c.lineWidth = 1.5; c.beginPath(); c.arc(x + face * 3, y - 78, 5, 0.15 * Math.PI, 0.85 * Math.PI); c.stroke();
+    if (p.acessorio === 'óculos') { c.strokeStyle = COR.tinta; c.lineWidth = 2; c.strokeRect(x - 12 + face * 3, y - 88, 11, 9); c.strokeRect(x + 1 + face * 3, y - 88, 11, 9); }
+    if (p.acessorio === 'boné') { caixa(c, x - 18, y - 100, 36, 12, COR.vermelho, 4); caixa(c, x + face * 10 - 8, y - 92, 24, 5, COR.vermelhoE, 2); }
+    if (p.acessorio === 'fone') { c.strokeStyle = COR.tinta; c.lineWidth = 4; c.beginPath(); c.arc(x, y - 86, 20, Math.PI * 1.05, Math.PI * 1.95); c.stroke(); circulo(c, x - 19, y - 82, 5, COR.amarelo); circulo(c, x + 19, y - 82, 5, COR.amarelo); }
+    if (p.nome) rotulo(c, p.nome, x, y - 116);
+  }
+  function desenha(t) {
+    ctx.setTransform(ui.dpr, 0, 0, ui.dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ceu(ctx);
+    ctx.save(); ctx.translate(-ui.camX, 0);
+    predio(ctx);
+    pessoa(ctx, ui.rx, yChao(S.andar) - 14, S.eu, ui.face, ui.fase, true);
+    ctx.restore();
+    if (!ui.leve && horaFrac() > 0.8) { ctx.fillStyle = 'rgba(60,30,10,' + ((horaFrac() - 0.8) * 1.2).toFixed(2) + ')'; ctx.fillRect(0, 0, W, H); }
+  }
+  function desenhaPreview() {
+    const p = $('preview'); if (!p) return;
+    const c = p.getContext('2d'); c.clearRect(0, 0, 160, 200); c.fillStyle = '#f6d9a8'; c.fillRect(0, 0, 160, 200); c.fillStyle = '#c9a46a'; c.fillRect(0, 180, 160, 20);
+    const salvo = ui.held.size; ui.held.clear();
+    pessoa(c, 80, 180, Object.assign({}, S.eu, { nome: '' }), 1, 0, false);
+  }
+
+  /* ---------- Painel ---------- */
+  function desenhaPainel() {
+    const h = Math.floor(S.min / 60), m = S.min % 60;
+    $('h-dia').textContent = S.dia; $('h-hora').textContent = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    $('h-cred').textContent = S.cred; $('h-pecas').textContent = totalPecas();
+    $('h-ped').textContent = S.pedidos.filter(p => p.ok).length + '/3'; $('h-andar').textContent = SETORES[S.andar].nome;
+    $('pedidos').innerHTML = S.pedidos.map(p => '<li' + (p.ok ? ' class="fl-meta ok"' : '') + '>' + p.qtd + ' ' + NOMES_PECA[p.setor] + (p.qtd > 1 ? 's' : '') + ' (' + SETORES.find(s => s.id === p.setor).nome + '), ' + p.valor + ' créditos' + (p.ok ? ' ✓' : '') + '</li>').join('');
+    $('metas').innerHTML = METAS.map((mt, i) => '<li class="fl-meta' + (i < S.metas ? ' ok' : '') + '">' + mt.texto + '</li>').join('');
+    $('caderno').innerHTML = S.caderno.map(id => '<li><strong>' + CADERNO[id][0] + ':</strong> ' + CADERNO[id][1] + '</li>').join('') || '<li class="muted">Conclua uma tarefa para ganhar o primeiro verbete.</li>';
+    $('n-caderno').textContent = S.caderno.length + ' de ' + Object.keys(CADERNO).length;
+    $('andares').innerHTML = SETORES.map((s, i) => '<li>' + s.nome + (andarAberto(i) ? ': ' + s.estacoes.filter(e => !e.ala || S.obras.ala).map(e => e.nome).join(', ') : ' (fechado)') + '</li>').join('');
+    $('b-leve').setAttribute('aria-pressed', String(ui.leve)); $('b-leve').textContent = 'Modo leve: ' + (ui.leve ? 'ligado' : 'desligado');
+  }
+
+  /* ---------- Entrada ---------- */
+  const TECLAS = { ArrowLeft: 'e', a: 'e', A: 'e', ArrowRight: 'd', d: 'd', D: 'd', ArrowUp: 'c', w: 'c', W: 'c', ArrowDown: 'b', s: 'b', S: 'b' };
+  cv.addEventListener('pointerdown', e => { e.preventDefault(); cv.focus({ preventScroll: true }); const r = cv.getBoundingClientRect(); tocar((e.clientX - r.left) / r.width * W + ui.camX); });
+  document.addEventListener('keydown', e => {
+    if (ui.aberto) { if (e.key === 'Escape' && !(T && T.feitoCerto === null)) fechar(); return; }
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+    const r = cv.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+    if (TECLAS[e.key]) { e.preventDefault(); ui.held.add(TECLAS[e.key]); if (!e.repeat) ui.toque = TECLAS[e.key]; }
+    else if (e.key === ' ' || e.key === 'e' || e.key === 'E') { if (tag === 'BUTTON') return; e.preventDefault(); agir(); }
+  });
+  document.addEventListener('keyup', e => { if (TECLAS[e.key]) ui.held.delete(TECLAS[e.key]); });
+  window.addEventListener('blur', () => ui.held.clear());
+  window.addEventListener('pagehide', () => { if (ui.sujo) salvar(); });
+  document.querySelectorAll('.fl-pad button[data-dir]').forEach(b => {
+    b.addEventListener('pointerdown', e => { e.preventDefault(); ui.held.add(b.dataset.dir); ui.toque = b.dataset.dir; });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => ui.held.delete(b.dataset.dir)));
+  });
+  $('b-agir').addEventListener('click', agir);
+  $('pad-agir').addEventListener('pointerdown', e => { e.preventDefault(); agir(); });
+  const elev = () => { if (ui.aberto) return; if (noElevador()) abrir(htmlElevador); else { ui.alvoX = ELEV_X; ui.alvoEst = { elevador: true }; } };
+  $('b-elev').addEventListener('click', elev);
+  $('pad-elev').addEventListener('pointerdown', e => { e.preventDefault(); elev(); });
+  $('b-mapa').addEventListener('click', () => { if (!ui.aberto) abrir(htmlMapa); });
+  $('b-salvar').addEventListener('click', () => { salvar(); aviso('Progresso salvo.'); });
+  $('b-recomecar').addEventListener('click', () => abrir(() => '<h2>Recomeçar?</h2><p>O progresso deste aparelho será apagado.</p>' + botoes(btn('fechar', 'Cancelar', undefined, 'ghost'), btn('recomecar', 'Recomeçar'))));
+  $('b-leve').addEventListener('click', () => { ui.leve = !ui.leve; try { localStorage.setItem(CHAVE_LEVE, ui.leve ? '1' : '0'); } catch (e) { /* segue */ } dimensiona(); desenhaPainel(); });
+
+  /* ---------- Laço ---------- */
+  let tAnt = performance.now();
+  function laco(t) {
+    requestAnimationFrame(laco);
+    if (ui.leve && t - ui.ultimoFrame < 33) return;
+    ui.ultimoFrame = t;
+    const dt = Math.min(0.05, (t - tAnt) / 1000); tAnt = t;
+    atualiza(dt);
+    const k = ui.leve ? 1 : 1 - Math.exp(-dt * 10);
+    ui.rx += (S.x - ui.rx) * k; if (Math.abs(S.x - ui.rx) < 0.5) ui.rx = S.x;
+    ui.elevY += (S.andar - ui.elevY) * (ui.leve ? 1 : 1 - Math.exp(-dt * 6)); if (Math.abs(S.andar - ui.elevY) < 0.01) ui.elevY = S.andar;
+    const alvoCamY = S.andar * ANDAR_H - Math.max(0, (H - 40 - ANDAR_H - 60) / 2) + 60;  // andar atual no centro
+    ui.camY += (clamp(alvoCamY, 0, S.obras.andares * ANDAR_H + 80) - ui.camY) * (ui.leve ? 1 : 1 - Math.exp(-dt * 6));
+    const alvoCamX = clamp(ui.rx - W / 2, 0, Math.max(0, LARGURA() + PX0 * 2 - W));
+    ui.camX += (alvoCamX - ui.camX) * (ui.leve ? 1 : 1 - Math.exp(-dt * 6));
+    desenha(t);
+    if (ui.sujo && t - ui.ultimoSalvo > 4000) salvar();
+  }
+
+  /* ---------- Início ---------- */
+  dimensiona();
+  if ((window.matchMedia && matchMedia('(pointer: coarse)').matches) || navigator.maxTouchPoints > 0) document.body.classList.add('fl-toque');
+  desenhaPainel();
+  if (!S.intro && location.hash !== '#captura') abrir(htmlIntro);
+  cv.focus({ preventScroll: true });
+  requestAnimationFrame(laco);
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
