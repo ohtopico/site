@@ -101,7 +101,10 @@ const IMAGENS = [
     url: 'ohtopico.com.br/teste-proficiencia-informatica', capturas: ['/teste-proficiencia-informatica/'] },
   { arq: 'computacao-na-escola/og-computacao-na-escola.jpg', janela: 'guia-computacao.html', faixa: 'Guia para a coordenação', t1: 'Computação', t2: 'na escola',
     sub: 'O que a BNCC pede, formatos possíveis e um roteiro em seis passos', pills: ['BNCC Computação', 'Sem laboratório', '6º ao 9º ano'],
-    url: 'ohtopico.com.br/computacao-na-escola', capturas: ['/material-didatico/bncc/'] }
+    url: 'ohtopico.com.br/computacao-na-escola', capturas: ['/material-didatico/bncc/'] },
+  { arq: 'lei-do-celular-nas-escolas/og-lei-do-celular-nas-escolas.jpg', janela: 'lei-celular.html', faixa: 'Guia para professores', t1: 'Lei do celular', t2: 'nas escolas',
+    sub: 'O que a Lei 15.100 permite e atividades de cultura digital da BNCC', pills: ['Lei 15.100/2025', 'Uso pedagógico', '6º ano ao Médio'],
+    url: 'ohtopico.com.br/lei-do-celular-nas-escolas', capturas: ['/material-didatico/bncc/'] }
 ];
 
 /* Pins do Pinterest (1000 × 1500, proporção 2:3). Mesmo visual, com a captura grande embaixo do título;
