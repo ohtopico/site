@@ -646,6 +646,7 @@
     if (feito) { ctx.font = '14px system-ui, sans-serif'; ctx.fillText('✅', sx + 16, sy - 16); }
     if (DECOR.has('abobora')) { const ax = x - 0.15, ay = y + d - 0.6; caixa(ax, ay, 0, 0.45, 0.45, 0.32, '#f08a24', { blocos: false }); naFace('y', ax, ay, 0.45, 0.45, 0.08, 0, 0.08, 0.16, 0.06, '#ffe066'); naFace('y', ax, ay, 0.45, 0.45, 0.28, 0, 0.08, 0.16, 0.06, '#ffe066'); }
     if (DECOR.has('baloes') && !leve) for (let k = 0; k < 3; k++) { const [bx2, by2] = iso(x + 0.3 + k * 0.4, y + d, h + 1.2 + k * 0.25 + Math.sin(agora / 700 + k + x) * 0.1); ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx2, by2 + 9); ctx.lineTo(bx2, by2 + 30); ctx.stroke(); ctx.fillStyle = ['#e0564a', '#ffd84a', '#3f8fe0'][k]; ctx.beginPath(); ctx.ellipse(bx2, by2, 7, 9, 0, 0, Math.PI * 2); ctx.fill(); }
+    if (pistaNaCasa(c) >= 0) { const z = Math.sin(agora / 300) * 3; ctx.fillStyle = '#ffe066'; ctx.strokeStyle = '#b8860b'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(sx + 26, sy - 18 + z, 13, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.font = '15px system-ui, sans-serif'; ctx.fillStyle = '#000'; ctx.fillText('🔎', sx + 26, sy - 18 + z); }
     if (perto) rotulo(c.lugar.titulo, sx, sy - 34);
   }
   /* a casa do jogador: maior, com telhado em degraus, floreiras e fumaça na chaminé */
@@ -2522,7 +2523,80 @@
       pergunta('Diamante', '💎', sorteiaPergunta(f), certo => { if (certo) { guarda(it, f); aviso('💎 Diamante guardado no inventário!'); } else aviso('O diamante continua lá. Tente de novo!'); });
     } else { guarda(it, f); pontos(5, `${ic} ${nome} no inventário!`); }
   }
+  /* ---------- mistério de cibersegurança: o caso da conta invadida, no Bairro dos Padrões ----------
+     Depois de abrir o caso (na placa da vila ou no Menu), aparecem lupas 🔎 em 5 casas. Cada pista só fica
+     com você quando você explica o que ela mostra; com as 5, você resolve o caso. */
+  const MISTERIO = {
+    fase: 'padroes', casas: [1, 4, 7, 10, 13],
+    pistas: [
+      { ic: '📧', nome: 'O e-mail urgente', achado: 'Na caixa de entrada do Seu Juca: “URGENTE! Sua conta será bloqueada em 1 hora. Clique aqui para confirmar sua senha: bit.ly/conta-ok”.',
+        enun: 'O que é mais suspeito nesse e-mail?', alts: ['A pressa e o pedido de senha por um link', 'O e-mail ter chegado de manhã', 'A palavra “conta” no texto'], certa: 0 },
+      { ic: '📝', nome: 'O papel no monitor', achado: 'Colado na borda do monitor: “senha: juca1950”.',
+        enun: 'Por que esse papel é um problema?', alts: ['A senha é curta, usa o ano de nascimento e está à vista de todos', 'Papel colado estraga o monitor', 'Não é problema, porque a senha tem números'], certa: 0 },
+      { ic: '🕒', nome: 'O registro de acessos', achado: 'Histórico da conta: “login às 03:12, de outra cidade, num aparelho desconhecido”.',
+        enun: 'O que esse registro indica?', alts: ['Alguém de fora entrou com a senha do Seu Juca', 'O Seu Juca é sonâmbulo', 'O relógio do computador está errado'], certa: 0 },
+      { ic: '📨', nome: 'As mensagens dos vizinhos', achado: 'Três vizinhos receberam o mesmo e-mail “URGENTE”, palavra por palavra.',
+        enun: 'O que isso mostra sobre o golpe?', alts: ['É um golpe em massa (phishing), mandado para muita gente', 'Os vizinhos combinaram uma brincadeira', 'É uma mensagem oficial, porque todos receberam'], certa: 0 },
+      { ic: '🔤', nome: 'O remetente', achado: 'O e-mail veio de “suporte@banco-segur0.com”, com um zero no lugar da letra O.',
+        enun: 'O que há de errado com esse endereço?', alts: ['O domínio imita o verdadeiro trocando uma letra', 'Endereços de suporte não podem ter hífen', 'Nada: “segur0” é só um apelido'], certa: 0 }
+    ],
+    final: [
+      { enun: 'Com as 5 pistas, o que aconteceu com a conta do Seu Juca?', alts: ['Ele caiu num phishing e a senha fraca facilitou a invasão', 'Um vírus veio de um pen drive', 'O neto dele mexeu na conta', 'O site do banco saiu do ar'], certa: 0 },
+      { enun: 'E agora, qual é o melhor conselho para o Seu Juca?', alts: ['Trocar a senha por uma longa, ativar a verificação em duas etapas e avisar os vizinhos', 'Apagar a conta e nunca mais usar a internet', 'Responder ao e-mail pedindo para pararem', 'Usar a mesma senha nova em todos os sites'], certa: 0 }
+    ]
+  };
+  const estMis = () => S.misterio || (S.misterio = { aberto: false, pistas: {}, resolvido: false });
+  function pistaNaCasa(c) {
+    const E = estMis(); if (!E.aberto || E.resolvido || atual.id !== MISTERIO.fase) return -1;
+    const k = MISTERIO.casas.findIndex(i => atual.casas[i % atual.casas.length] === c);
+    return k >= 0 && !E.pistas[k] ? k : -1;
+  }
+  function pistaMisterio(k, c) {
+    const P = MISTERIO.pistas[k], ordem = P.alts.map((_, i) => i).sort(() => Math.random() - 0.5);
+    dialogo(P.ic, `Pista ${k + 1}: ${P.nome}`, `<p>${esc(P.achado)}</p><p><b>${esc(P.enun)}</b></p>`, ordem.map(i => ({ txt: P.alts[i], fn: () => {
+      if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
+      const certo = i === P.certa;
+      [...D.op.children].forEach((b, j) => { b.disabled = true; if (ordem[j] === P.certa) b.classList.add('certa'); else if (ordem[j] === i) b.classList.add('errada'); });
+      if (certo) { estMis().pistas[k] = true; ganhaHabilidade(['CD', 'MD'], 10); pontos(10); salvar(); }
+      const n = Object.keys(estMis().pistas).length;
+      D.texto.innerHTML += `<p><strong>${certo ? `✅ Pista guardada no caderno de detetive (${n}/5).` : '❌ Ainda não. Leia a pista com calma e tente de novo.'}</strong></p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? (n === 5 ? '🕵️ Resolver o caso' : 'Continuar') : 'Tentar de novo';
+      b.addEventListener('click', () => certo ? (n === 5 ? (fechaDialogo(), abreJanela('misterio')) : (fechaDialogo(), aviso(`🔎 Faltam ${5 - n} pistas.`))) : pistaMisterio(k, c)); D.op.appendChild(b); b.focus();
+    } })).concat([{ txt: 'Depois', fn: fechaDialogo }]));
+    delete D.op.dataset.respondida;
+  }
+  function concluiMisterio(i) {
+    const q = MISTERIO.final[i]; if (!q) {
+      const E = estMis(); E.resolvido = true; S.medalhas.misterio = { ic: '🕵️', nome: 'Detetive digital: o caso da conta invadida' };
+      ganhaHabilidade(['CD', 'MD'], 30); pontos(80, '🕵️ Caso resolvido! Você é um(a) detetive digital.'); setTimeout(() => ganhaFigurinha(null, 'pelo mistério resolvido'), 1800); salvar();
+      return dialogo('🕵️', 'Caso resolvido!', '<p>O Seu Juca trocou a senha, ativou a verificação em duas etapas e avisou a vizinhança. Você ganhou +80 ⭐, a medalha de detetive digital e uma figurinha.</p>', [{ txt: 'Oba!', classe: 'principal', fn: fechaDialogo }]);
+    }
+    const ordem = q.alts.map((_, j) => j).sort(() => Math.random() - 0.5);
+    dialogo('🕵️', `Resolver o caso · ${i + 1}/2`, `<p><b>${esc(q.enun)}</b></p>`, ordem.map(j => ({ txt: q.alts[j], fn: () => {
+      if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
+      const certo = j === q.certa;
+      [...D.op.children].forEach((b, m) => { b.disabled = true; if (ordem[m] === q.certa) b.classList.add('certa'); else if (ordem[m] === j) b.classList.add('errada'); });
+      D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Releia as pistas no caderno e tente de novo.'}</strong></p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Continuar' : 'Tentar de novo';
+      b.addEventListener('click', () => concluiMisterio(certo ? i + 1 : i)); D.op.appendChild(b); b.focus();
+    } })));
+    delete D.op.dataset.respondida;
+  }
+  function janelaMisterio() {
+    const E = estMis(), n = Object.keys(E.pistas).length, f = fases.find(q => q.id === MISTERIO.fase);
+    $('#misterio-conteudo').innerHTML = `<p>A conta de e-mail do <b>Seu Juca</b>, no ${f.icone} ${esc(f.nome)}, foi invadida, e ele não sabe como. Procure as casas com a lupa 🔎, explique cada pista e descubra o que aconteceu.</p>
+      ${E.resolvido ? '<p><strong>✅ Caso resolvido! A medalha de detetive digital está no seu inventário.</strong></p>' : ''}
+      <ul class="etapas">${MISTERIO.pistas.map((P, k) => `<li class="${E.pistas[k] ? 'ok' : ''}">${E.pistas[k] ? `✅ ${P.ic} <b>${esc(P.nome)}</b>: ${esc(P.achado)}` : `⬜ Pista ${k + 1}: ainda escondida`}</li>`).join('')}</ul>
+      <div class="btn-row">${!E.aberto ? '<button type="button" class="hb verde" id="ms-abre">🕵️ Aceitar o caso</button>' : ''}
+      ${E.aberto && !E.resolvido && atual.id !== MISTERIO.fase && liberada(f) ? `<button type="button" class="hb azul" id="ms-ir">Ir para ${esc(f.nome)}</button>` : ''}
+      ${E.aberto && !E.resolvido && n === 5 ? '<button type="button" class="hb verde" id="ms-resolve">🧩 Resolver o caso</button>' : ''}</div>
+      ${!liberada(f) ? `<p class="muted small">O ${esc(f.nome)} ainda está fechado: complete as missões das vilas anteriores para chegar lá.</p>` : ''}`;
+    const a = $('#ms-abre'); if (a) a.addEventListener('click', () => { E.aberto = true; salvar(); aviso('🔎 Caso aceito! Procure as lupas nas casas.'); janelaMisterio(); });
+    const ir = $('#ms-ir'); if (ir) ir.addEventListener('click', () => teleporta(f));
+    const r = $('#ms-resolve'); if (r) r.addEventListener('click', () => { fechaJanela(); concluiMisterio(0); });
+  }
   function lePlaca(f) {
+    if (f.id === MISTERIO.fase && !estMis().resolvido) return abreJanela('misterio');
     const ms = missoes(f);
     dialogo('🪧', f.nome, `<p>${esc(f.placa)}</p>${f.loja ? `<p>${LOJAS[f.loja.id].ic} Nesta vila fica a <strong>${LOJAS[f.loja.id].nome}</strong>: troque suas ⭐ por coisas novas.</p>` : ''}<p class="muted">Missões desta fase: ${ms.map(m => `${m.ok ? '✅' : '⬜'} ${esc(m.nome)}`).join(' · ')}</p><p class="muted">Os itens do chão mudam de lugar toda segunda-feira, para você voltar e revisar.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
   }
@@ -2537,13 +2611,13 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
+    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'loja') abreLoja(atual.loja.id); else if (a.tipo === 'projetos') abreJanela('projetos'); else if (a.tipo === 'banco') abreJanela('banco'); else if (a.tipo === 'prof') falaProf(atual); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') (pistaNaCasa(a.casa) >= 0 ? pistaMisterio(pistaNaCasa(a.casa), a.casa) : abreCasa(a.casa)); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2770,7 +2844,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
