@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="mundo.css?v=20261030b">
+<link rel="stylesheet" href="mundo.css?v=20261031a">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -39,13 +39,13 @@
   <div class="stat"><b id="h-itens">0</b><span>💎 Coletados</span></div>
   <div class="stat"><b id="h-acertos">0/0</b><span>🧠 Acertos</span></div>
   <div class="stat"><b id="h-erros">0</b><span>❌ Erros</span></div>
-  <div class="stat"><b id="h-tempo">00:00</b><span>⏱ Tempo</span></div>
   <div class="stat"><b id="h-aprend">0%</b><span>📊 Aprendizagem</span></div>
 </div>
 <div class="hud hud-botoes">
   <button type="button" class="hb azul" data-abrir="mapa">🗺️ Mapa</button>
   <button type="button" class="hb amarelo" data-abrir="inventario">🎒 Inventário</button>
   <button type="button" class="hb azul" data-abrir="biblioteca">📖 Biblioteca</button>
+  <button type="button" class="hb rosa" data-abrir="avatar">🧑 Avatar</button>
   <button type="button" class="hb verde" id="b-salvar">💾 Salvar</button>
   <button type="button" class="hb vermelho" id="b-reiniciar">🔄 Reiniciar fase</button>
   <button type="button" class="hb cinza" id="b-toque" aria-pressed="false">📱 Toque</button>
@@ -67,8 +67,8 @@
 
 <!-- teclas -->
 <div class="hud teclas" id="teclas">
-  <span><kbd>↑↓←→</kbd> mover · <kbd>SHIFT</kbd> correr · <kbd>ESPAÇO</kbd> saltar</span>
-  <span><kbd>E</kbd> conversar / abrir · <kbd>M</kbd> mapa · <kbd>I</kbd> inventário · <kbd>ESC</kbd> menu</span>
+  <span><kbd>↑↓←→</kbd> mover · <kbd>SHIFT</kbd> correr · <kbd>ESPAÇO</kbd> saltar · clique no chão para andar</span>
+  <span><kbd>E</kbd> conversar / abrir · <kbd>M</kbd> mapa · <kbd>I</kbd> inventário · <kbd>V</kbd> avatar · <kbd>ESC</kbd> menu</span>
 </div>
 
 <!-- controles de toque -->
@@ -114,6 +114,14 @@
     <div id="bib-lista"></div>
   </div>
 </div>
+<div class="janela" id="j-avatar" hidden role="dialog" aria-labelledby="j-av-t">
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-av-t">🧑 Seu avatar</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <div class="avatar-ed">
+      <canvas id="av-preview" width="220" height="260" aria-label="Prévia do avatar" role="img"></canvas>
+      <div id="av-opcoes"></div>
+    </div>
+  </div>
+</div>
 <div class="janela" id="j-menu" hidden role="dialog" aria-labelledby="j-menu-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-menu-t">Mundo do site</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <p>Ande pela vila, converse com os personagens, responda às perguntas, colete os itens e abra as casas: cada casa é um jogo, um recurso 3D, um simulador ou um guia do site. Cumprindo as missões de uma fase, a próxima se abre.</p>
@@ -131,7 +139,7 @@
 <script src="../material-didatico/assets/listas.js"></script>
 <script src="../material-didatico/assets/progresso.js"></script>
 <script src="../simuladores/assets/sim-comum.js"></script>
-<script src="mundo.js?v=20261030b"></script>
+<script src="mundo.js?v=20261031a"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
