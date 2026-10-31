@@ -62,6 +62,13 @@
   .tema-btn[aria-pressed="true"] { box-shadow: inset 0 0 0 2px #111; outline: 3px solid #111; outline-offset: 2px; }
   .tema-btn.tudo { background: var(--paper); color: var(--ink); border-color: var(--ink); padding-left: 16px; }
 
+  .ordem { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 14px 2px 0; font-size: 15px; }
+  .ordem .rot { font-weight: 600; margin-right: 2px; }
+  .ordem button { border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); border-radius: 99px; padding: 6px 14px;
+    font-size: 14.5px; font-weight: 500; cursor: pointer; min-height: 40px; font-family: var(--body); }
+  .ordem button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .ordem .aviso { color: var(--ink-2); font-size: 14px; flex-basis: 100%; }
+  .grupo > .grade { margin-top: 18px; }
   .secao { padding: 22px 0 6px; }
   .secao > h3 { display: flex; align-items: center; gap: 12px; font-size: clamp(21px, 3.4vw, 26px); margin-bottom: 16px; }
   .secao > h3 .bola { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; flex: none; }
@@ -74,6 +81,8 @@
   .jg .capa { height: 140px; display: grid; place-items: center; border-bottom: 2px solid var(--ink); position: relative; }
   .jg .capa svg { width: 96px; height: 96px; transition: transform .2s; }
   .jg:hover .capa svg { transform: rotate(-8deg) scale(1.08); }
+  .jg .nivel { position: absolute; top: 10px; left: 10px; background: #111; color: #fff; border-radius: 99px; padding: 2px 10px; font-size: 12.5px; font-weight: 600; }
+  .jg .nivel.n1 { background: #2fa865; } .jg .nivel.n3 { background: #c2410c; }
   .jg .tempo { position: absolute; top: 10px; right: 10px; background: #fff; color: #111; border: 1.5px solid #111; border-radius: 99px; padding: 2px 10px; font-size: 12.5px; font-weight: 600; }
     .jg .corpo { padding: 14px 16px 16px; display: flex; flex-direction: column; flex: 1; }
   .jg h3 { font-size: 20px; line-height: 1.15; margin: 0 0 6px; }
@@ -117,6 +126,7 @@
     .jg .capa { height: 104px; }
     .jg .capa svg { width: 68px; height: 68px; }
     .jg .tempo { top: 6px; right: 6px; font-size: 11px; padding: 1px 7px; }
+    .jg .nivel { top: auto; bottom: 6px; left: 6px; font-size: 11px; padding: 1px 7px; }
     .jg .corpo { padding: 10px 11px 12px; }
     .jg h3 { font-size: 16.5px; }
     .jg .frase { font-size: 13px; margin-bottom: 8px; }
@@ -171,6 +181,7 @@
     </div>
     <div id="continuar"></div>
     <div class="temas" id="temas" role="group" aria-label="Escolher um tema"></div>
+    <div class="ordem" role="group" aria-labelledby="rot-ordem"><span class="rot" id="rot-ordem">Ordenar:</span><span id="ordens"></span></div>
     <div id="lista" aria-live="polite"></div>
     <footer class="rodape-al">
       <p>Jogos gratuitos criados por <a href="../curriculo/">Júlia Roberta Quoos Alves</a>. Suas estrelas ficam salvas só neste aparelho, sem cadastro.</p>
@@ -247,6 +258,19 @@
   if (![6, 7, 8, 9].includes(ano)) ano = params.get('ano') === null ? lembrar.get() : 0;
   let comp = ['CO', 'MA'].includes((params.get('area') || '').toUpperCase()) ? params.get('area').toUpperCase() : '';
   let tema = TEMAS.some(t => t.id === params.get('tema')) ? params.get('tema') : '';
+  // "Por tema" é a ordem de sempre (seções por tema); as outras mostram cada grupo numa grade só, já ordenada
+  const ORDENS = Object.assign({ tema: 'Por tema' }, ORDENS_JOGOS);
+  let ordem = ORDENS[params.get('ordem')] ? params.get('ordem') : 'tema';
+  let visitas = null, aviso = '';
+  function escolherOrdem(o) {
+    ordem = o; aviso = '';
+    if (o === 'populares' && !visitas) {
+      aviso = 'Carregando…';
+      mdVisitasJogos(JOGOS).then(v => { visitas = v; aviso = ''; desenhar(); },
+        () => { ordem = 'tema'; aviso = 'Não deu para ver os mais jogados agora. Tente de novo mais tarde.'; desenhar(); });
+    }
+    desenhar();
+  }
 
   const total = JOGOS.reduce((s, j) => s + estrelas(j.id), 0);
   $('#total-estrelas').innerHTML = `<span style="color:#e0a800">★</span> ${total} ${total === 1 ? 'estrela' : 'estrelas'}`;
@@ -266,7 +290,7 @@
   const cartao = j => {
     const e = estrelas(j.id);
     return `<a class="jg" href="${recUrl(j)}">
-      <span class="capa" style="background:var(--t-${temaDe[j.id]})"><span class="tempo">${esc(j.tempo.replace('–', ' a '))}</span>${iconeJogo(j.id, j.titulo)}</span>
+      <span class="capa" style="background:var(--t-${temaDe[j.id]})"><span class="nivel n${dificuldadeDe(j)}">${DIFICULDADE_NOMES[dificuldadeDe(j)]}</span><span class="tempo">${esc(j.tempo.replace('–', ' a '))}</span>${iconeJogo(j.id, j.titulo)}</span>
       <span class="corpo">
         <h3>${esc(j.titulo)}</h3>
         <span class="frase">${esc(FRASE[j.id] || j.resumo.split('.')[0] + '.')}</span>
@@ -287,10 +311,14 @@
     // dois grupos pelo jeito de jogar; dentro de cada um, os temas
     const grupos = Object.keys(INTERACOES).map(g => ({ g, secoes: mostrar.map(o => ({ t: o.t, js: o.js.filter(j => interacaoDe(j) === g) })).filter(o => o.js.length) }))
       .filter(x => x.secoes.length);
+    document.querySelectorAll('[data-ordem]').forEach(b => b.setAttribute('aria-pressed', b.dataset.ordem === ordem));
+    $('#aviso-ordem').hidden = !aviso && ordem !== 'populares';
+    $('#aviso-ordem').textContent = aviso || 'Os jogos mais abertos no site aparecem primeiro.';
+    const ord = ordem === 'tema' || (ordem === 'populares' && !visitas) ? '' : ordem;
     $('#lista').innerHTML = grupos.length ? grupos.map(x => `<section class="grupo" id="grupo-${x.g}">
         <h2>${INTERACOES[x.g].nome}<span class="n">${nJogos(x.secoes.reduce((s, o) => s + o.js.length, 0))}</span></h2>
         <p>${INTERACOES[x.g].desc}</p>
-        ${x.secoes.map(o => `<section class="secao">
+        ${ord ? `<div class="grade">${mdOrdenarJogos(x.secoes.flatMap(o => o.js), ord, visitas).map(cartao).join('')}</div>` : x.secoes.map(o => `<section class="secao">
         <h3><span class="bola" style="background:var(--t-${o.t.id})">${iconeJogo(o.t.icone)}</span>${o.t.nome}<span class="n">${nJogos(o.js.length)}</span></h3>
         <div class="grade">${o.js.map(cartao).join('')}</div></section>`).join('')}</section>`).join('')
       : '<p class="vazio">Nenhum jogo por aqui ainda. Toque em "Ver todos".</p>';
@@ -298,6 +326,7 @@
     if (ano) q.set('ano', ano);
     if (comp) q.set('area', comp.toLowerCase());
     if (tema) q.set('tema', tema);
+    if (ordem !== 'tema') q.set('ordem', ordem);
     history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
   }
 
@@ -305,6 +334,8 @@
     const a = e.target.closest('[data-ano]'), t = e.target.closest('[data-tema]');
     if (a) { ano = +a.dataset.ano; lembrar.set(ano); desenhar(); }
     if (t) { tema = t.dataset.tema; desenhar(); }
+    const o = e.target.closest('[data-ordem]');
+    if (o) escolherOrdem(o.dataset.ordem);
     if (e.target.closest('#surpresa')) {
       // prefere um jogo que ainda não tem três estrelas
       const base = filtrados().filter(j => !tema || temaDe[j.id] === tema), op = base.filter(j => estrelas(j.id) < 3);
@@ -312,7 +343,9 @@
       location.href = recUrl(pool[Math.floor(Math.random() * pool.length)]);
     }
   });
-  desenhar();
+  $('#ordens').outerHTML = Object.entries(ORDENS).map(([id, nome]) => `<button type="button" data-ordem="${id}" aria-pressed="false">${nome}</button>`).join('') +
+    '<span class="aviso" id="aviso-ordem" hidden></span>';
+  escolherOrdem(ordem);
 })();
 </script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
