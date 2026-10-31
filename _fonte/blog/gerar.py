@@ -11,6 +11,8 @@ Uso:
   conteudo/biblioteca-prompts.html + prompts-pra-prof.css/.js, sobre o estilo de ia-pra-prof/index.html).
 - site/quiz-pensamento-computacional/index.html é o quiz de pensamento computacional (quiz.json + conteudo/quiz-pensamento-computacional.html),
   com uma página por nível em resultado/<nível>/ (noindex) para o LinkedIn mostrar a imagem do nível.
+- site/teste-proficiencia-informatica/index.html é o teste de proficiência em informática (teste-informatica.json +
+  conteudo/teste-proficiencia-informatica.html); usa o quiz.css do quiz e o próprio assets/teste.js.
 - site/computacao-na-escola/index.html é o guia de implantação de Computação na escola (conteudo/computacao-na-escola.html).
 - site/assistencia-por-voz/index.html apresenta o projeto de assistência por voz (teste-mestrado), com os avisos de privacidade.
 - --sitemap atualiza o bloco do blog dentro de site/sitemap.xml (entre os marcadores).
@@ -117,6 +119,7 @@ MENU_INICIAR = [
         ('fa-solid fa-people-group', 'Formação continuada', '/formacao-continuada/'),
         ('fa-regular fa-clipboard', 'Biblioteca de prompts', '/prompts-para-professores/'),
         ('fa-solid fa-list-check', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/'),
+        ('fa-solid fa-laptop', 'Teste de informática', '/teste-proficiencia-informatica/'),
     ]),
     ('Diversão', [
         ('fa-regular fa-star', 'Atualizações', '/#abrir=win-diario'),
@@ -160,6 +163,7 @@ def laterais(atual):
                ('▣', 'Para escolas e redes', '/para-escolas/', 'escolas'),
                ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
                ('✱', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/', 'quiz'),
+               ('▤', 'Teste de informática', '/teste-proficiencia-informatica/', 'teste'),
                ('☺', 'Currículo', '/curriculo/', '')]
     projetos = [('▲', 'Material didático', '/material-didatico/', ''),
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
@@ -1232,6 +1236,127 @@ def paginas_resultado_quiz(cfg):
                                                                            conteudo, 'Pronto', 'quiz')
     return paginas
 
+TESTE_DIR = 'teste-proficiencia-informatica'
+# teste.js e teste.css ficam direto na pasta do teste (não são gerados); o resto do visual vem do quiz.css do quiz
+_TESTE_ASSETS = AQUI.parent.parent / TESTE_DIR / 'assets'
+VERSAO_TESTE = hashlib.md5(b''.join((_TESTE_ASSETS / n).read_bytes() for n in ('teste.js', 'teste.css') if (_TESTE_ASSETS / n).exists())).hexdigest()[:10]
+TESTE_TITULO = 'Teste de proficiência em informática'
+TESTE_IMAGEM = f'{TESTE_DIR}/og-teste-proficiencia-informatica.jpg'
+TESTE_IMAGEM_ALT = ('Capa do teste de proficiência em informática, gratuito: 24 perguntas sobre computador, arquivos, internet, '
+                    'segurança, planilhas e lógica, com nível e indicação de materiais para estudar.')
+DIFICULDADES = {1: 'Básica', 2: 'Média', 3: 'Difícil'}
+
+
+def teste_dados():
+    return json.loads((AQUI / 'teste-informatica.json').read_text(encoding='utf-8'))
+
+
+def pagina_teste(cfg):
+    site = cfg['site']
+    url = f'{site}/{TESTE_DIR}/'
+    t = teste_dados()
+    areas, perguntas = t['areas'], t['perguntas']
+    total = len(perguntas)
+    letras = 'ABCD'
+    blocos = []
+    for n, p in enumerate(perguntas, 1):
+        opcoes = ''.join(f'<li><label class="quiz-opcao"><input type="radio" name="{p["id"]}" value="{i}">'
+                         f'<span class="quiz-letra" aria-hidden="true">{letras[i]}</span><span>{esc(o)}</span></label></li>'
+                         for i, o in enumerate(p['opcoes']))
+        area = areas[p['area']]
+        blocos.append(f'''<fieldset class="quiz-q" id="{p['id']}" data-area="{p['area']}" data-certa="{p['certa']}">
+<legend><span class="quiz-num">Pergunta {n} de {total} · {esc(area['nome'])} · {DIFICULDADES[p['dif']]}</span> {esc(p['enunciado'])}</legend>
+<ul class="quiz-opcoes">{opcoes}</ul>
+<div class="quiz-explica" role="status"><p class="quiz-veredito"></p><p>{esc(p['explica'])}</p></div>
+</fieldset>''')
+    areas_json = esc(json.dumps(areas, ensure_ascii=False))
+    niv_json = esc(json.dumps(t['niveis'], ensure_ascii=False))
+    teste = f'''<section class="quiz" id="quiz" aria-labelledby="quiz-titulo" data-areas="{areas_json}" data-niveis="{niv_json}">
+<h2 id="quiz-titulo" class="sr-only">Teste</h2>
+<div class="quiz-capa" id="quiz-capa">
+<ul class="quiz-fatos"><li><strong>{total}</strong> perguntas</li><li><strong>{len(areas)}</strong> áreas</li><li><strong>4</strong> níveis</li><li><strong>10</strong> minutos</li></ul>
+<p>Perguntas de múltipla escolha, das mais simples às mais difíceis. Depois de cada resposta, você vê a explicação. No fim, recebe o seu nível, os acertos em cada área e materiais do site para estudar o que ficou para trás.</p>
+<p class="quiz-miudo">Sem cadastro e sem cookies: as respostas ficam só no seu navegador.</p>
+<button type="button" class="btn98 escuro quiz-grande" id="quiz-comecar">Começar o teste</button>
+</div>
+<form class="quiz-form" id="quiz-form" aria-label="Perguntas do teste">
+<div class="quiz-barra" aria-hidden="true"><span id="quiz-barra"></span></div>
+{chr(10).join(blocos)}
+<div class="quiz-nav">
+<button type="button" class="btn98" id="quiz-voltar">Anterior</button>
+<p class="quiz-placar" id="quiz-placar" aria-live="polite"></p>
+<button type="button" class="btn98 escuro" id="quiz-proxima" disabled>Próxima</button>
+</div>
+</form>
+<section class="quiz-resultado" id="quiz-resultado" aria-labelledby="res-nivel" tabindex="-1" hidden></section>
+</section>'''
+    corpo = (AQUI / 'conteudo' / f'{TESTE_DIR}.html').read_text(encoding='utf-8').strip().replace('<!--TESTE-->', teste)
+    descricao = ('Teste de proficiência em informática gratuito: 24 perguntas sobre computador, arquivos, internet, segurança, '
+                 'planilhas e lógica, com nível e o que estudar.')
+    imagem = f'{site}/{TESTE_IMAGEM}'
+    eixos = list(dict.fromkeys(a['eixo'] for a in areas.values()))
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'Quiz',
+                '@id': url + '#teste',
+                'url': url,
+                'name': TESTE_TITULO,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'isAccessibleForFree': True,
+                'educationalLevel': ['Ensino fundamental anos finais', 'Ensino médio', 'Formação de professores'],
+                'learningResourceType': 'Quiz',
+                'timeRequired': 'PT10M',
+                'about': [{'@type': 'Thing', 'name': 'Informática básica'}]
+                         + [{'@type': 'Thing', 'name': a['nome'], 'description': a['resumo']} for a in areas.values()],
+                'educationalAlignment': [{'@type': 'AlignmentObject', 'alignmentType': 'educationalSubject',
+                                          'targetName': f'BNCC Computação: eixo {e}'} for e in eixos],
+                'author': AUTORA,
+                'publisher': {'@id': AUTORA['@id']},
+                'image': imagem,
+                'hasPart': [{'@type': 'Question', 'eduQuestionType': 'Multiple choice', 'name': p['enunciado'],
+                             'acceptedAnswer': {'@type': 'Answer', 'text': p['opcoes'][p['certa']]},
+                             'suggestedAnswer': [{'@type': 'Answer', 'text': o} for i, o in enumerate(p['opcoes']) if i != p['certa']]}
+                            for p in perguntas],
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': pq,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for pq, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': TESTE_TITULO, 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">{TESTE_TITULO}</li></ol></nav>
+    <p class="rotulo">Teste gratuito · estudantes e professores</p>
+    <h1>Teste de proficiência em <span class="marca">informática</span></h1>
+    <p class="linha-fina">Qual é o seu nível em informática? Responda {total} perguntas sobre computador, arquivos, internet, segurança, planilhas e lógica e descubra o que estudar a seguir.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="levar-escola">
+        <h2 id="levar-escola">Levar Computação para a sua escola</h2>
+        <p>O <a href="/material-didatico/">material didático</a> tem jogos, fichas e planos de aula da BNCC Computação do 6º ao 9º ano. Para a equipe, há a <a href="/formacao-continuada/">formação continuada de professores</a> e a <a href="/mentoria/">mentoria</a>.</p>
+        <a class="btn98" href="mailto:contato@ohtopico.com.br?subject=Teste%20de%20inform%C3%A1tica%20na%20escola">Falar com Júlia Roberta Quoos Alves</a>
+    </section>
+</article>'''
+    extra = ('<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld
+             + f'\n<link rel="stylesheet" href="/{QUIZ_DIR}/assets/quiz.css?v={VERSAO_QUIZ}">'
+             + f'\n<link rel="stylesheet" href="/{TESTE_DIR}/assets/teste.css?v={VERSAO_TESTE}">')
+    head = cabeca(TESTE_TITULO + ' | Júlia Quoos', descricao, url, imagem, TESTE_IMAGEM_ALT, 'website', extra)
+    pagina = moldura('teste.exe', f'ohtopico.com.br/{TESTE_DIR}', '/', conteudo, f'Pronto · {total} perguntas', 'teste')
+    return head + '\n' + pagina.replace('</body>', f'<script src="/{TESTE_DIR}/assets/teste.js?v={VERSAO_TESTE}" defer></script>\n</body>')
+
 
 def pagina_movida(cfg, para):
     """Post que foi juntado a outra página: o endereço antigo continua funcionando e manda para o novo."""
@@ -1275,13 +1400,13 @@ def lastmod_atual(xml, url):
 
 def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram):
     """hoje: data da publicação (lastmod no futuro faz o Google desconfiar do sitemap).
-    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR) cujo HTML mudou nesta execução;
+    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR) cujo HTML mudou nesta execução;
     as outras mantêm o lastmod que já estava no sitemap."""
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -1382,6 +1507,7 @@ def main():
                           ('prompts-para-professores', pagina_prompts(cfg)),
                           ('computacao-na-escola', pagina_computacao(cfg)),
                           ('assistencia-por-voz', pagina_assistencia(cfg)), (QUIZ_DIR, pagina_quiz(cfg)),
+                          (TESTE_DIR, pagina_teste(cfg)),
                           *paginas_resultado_quiz(cfg).items()):
         caminho = a.site / pagina / 'index.html'
         caminho.parent.mkdir(parents=True, exist_ok=True)
