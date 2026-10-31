@@ -4,7 +4,7 @@
    Depende de dados.js e progresso.js. comum.js carrega este arquivo sozinho;
    páginas que usam window.MDM logo de cara incluem o <script> direto.
 
-   Pontos = atividades diferentes feitas + medalhas + estrelas secretas + missões.
+   Pontos = atividades diferentes feitas + medalhas + estrelas secretas + missões + acertos no Mundo do site.
    Seções travadas por nível: qualquer elemento com data-nivel="N" (ou o id de um
    desbloqueio, como data-nivel="sala") fica bloqueado
    até o estudante chegar ao nível N (MDM.travar() aplica; roda sozinho no carregamento).
@@ -15,7 +15,8 @@
   const hoje = MDP.hoje;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const PONTOS = { atividade: 5, medalha: 20, estrela: 10, bonus: 15, enigma: 50, dificil: 40, semana: 60, surpresa: 25 };
+  const PONTOS = { atividade: 5, medalha: 20, estrela: 10, bonus: 15, enigma: 50, dificil: 40, semana: 60, surpresa: 25, mundo: 2 };
+  const MUNDO_DIA = 15;   // acertos no Mundo do site que valem pontos por dia (até 30 pontos)
 
   /* 100 níveis. Cada faixa de 10 níveis tem o nome de uma unidade de informação,
      na linha da série Bit a Bit. A subida é gradual: o nível 2 pede PONTOS_INICIO pontos
@@ -112,7 +113,7 @@
     const jg = p.jg || {};
     return {
       desde: jg.desde || hoje(), pts: jg.pts || 0, dias: jg.dias || {}, vd: jg.vd || {},
-      tr: jg.tr || {}, nv: jg.v === 2 ? jg.nv || 0 : 0, v: 2, cor: jg.cor || '', ds: jg.ds || {}, sem: jg.sem || {}, ls: jg.ls || {}
+      tr: jg.tr || {}, nv: jg.v === 2 ? jg.nv || 0 : 0, v: 2, cor: jg.cor || '', ds: jg.ds || {}, sem: jg.sem || {}, ls: jg.ls || {}, mu: jg.mu || {}, mt: jg.mt || 0
     };
   }
   function salvar(jg) { MDP.atualizar({ jg }); }
@@ -148,17 +149,18 @@
   }
   function pontos(p) {
     p = p || MDP.perfil();
-    if (!p) return { atividades: 0, medalhas: 0, estrelas: 0, missoes: 0, total: 0, n: { atividades: 0, medalhas: 0, estrelas: 0 } };
+    if (!p) return { atividades: 0, medalhas: 0, estrelas: 0, missoes: 0, mundo: 0, total: 0, n: { atividades: 0, medalhas: 0, estrelas: 0, mundo: 0 } };
     const n = {
       atividades: Object.keys(p.r || {}).filter(id => REC[id]).length,
       medalhas: MDP.medalhas(p).filter(m => m.tem).length,
-      estrelas: estrelas(p)
+      estrelas: estrelas(p),
+      mundo: jgDe(p).mt / PONTOS.mundo
     };
     const o = {
       atividades: n.atividades * PONTOS.atividade, medalhas: n.medalhas * PONTOS.medalha,
-      estrelas: n.estrelas * PONTOS.estrela, missoes: jgDe(p).pts, n
+      estrelas: n.estrelas * PONTOS.estrela, missoes: jgDe(p).pts, mundo: jgDe(p).mt, n
     };
-    o.total = o.atividades + o.medalhas + o.estrelas + o.missoes;
+    o.total = o.atividades + o.medalhas + o.estrelas + o.missoes + o.mundo;
     return o;
   }
   function nivelPorPontos(total) {
@@ -225,6 +227,18 @@
     const jg = jgDe(p), d = hoje();
     const v = jg.vd[d] || [];
     if (!v.includes(id)) { v.push(id); jg.vd[d] = v; salvar(jg); }
+  }
+
+  /* Acerto no Mundo do site: até MUNDO_DIA acertos por dia valem pontos. Devolve o nível novo se o estudante subiu. */
+  function mundo(certo) {
+    const p = MDP.perfil();
+    if (!p || !certo) return 0;
+    const jg = jgDe(p), d = hoje();
+    if ((jg.mu[d] || 0) >= MUNDO_DIA) return 0;
+    jg.mu[d] = (jg.mu[d] || 0) + 1; jg.mt += PONTOS.mundo;
+    Object.keys(jg.mu).forEach(k => { if (+k < d - 7) delete jg.mu[k]; });
+    salvar(jg);
+    return verificar(true).subiu;
   }
 
   /* Desafios da Sala (nível 5): enigmas e modos difíceis valem pontos uma vez só */
@@ -366,7 +380,7 @@
   MDP.registrar = function () { const r = registrarOriginal.apply(this, arguments); verificar(); return r; };
 
   window.MDM = { NIVEIS, FAIXAS, PONTOS_INICIO, PONTOS_AUMENTO, pontosParaSubir, DESBLOQUEIOS, CORES, PONTOS, MISSOES, EXTRAS, pontos, nivel, nivelPorPontos, estado,
-    nivelDe, verificar, visitar, trocar, escolherCor, travar, atualizarBarra, desafio, feitos, listaSurpresa };
+    nivelDe, verificar, visitar, mundo, MUNDO_DIA, trocar, escolherCor, travar, atualizarBarra, desafio, feitos, listaSurpresa };
 
   function iniciar() {
     const rec = window.MD_REC || (/\/(lista|ficha|plano)\.html$/.test(location.pathname) && new URLSearchParams(location.search).get('id'));

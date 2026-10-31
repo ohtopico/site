@@ -550,7 +550,7 @@
   if (S.versao !== 3 && S.versao !== 4) { S.x = 3.5; S.y = MEIO; S.fase = 0; S.versao = 3; }   // versão 3: vilas em grade
   if (S.versao === 3) { if (S.fase === 6) S.fase = 7; S.versao = 4; }                               // versão 4: Campus do Ensino Médio antes da escola
   let restaurando = false;   // depois de restaurar um código, nada mais pode gravar por cima antes de recarregar
-  function salvar(avisa) { if (restaurando) return; try { localStorage.setItem(CHAVE, JSON.stringify(S)); if (avisa) aviso('💾 Progresso salvo!'); } catch (e) { if (avisa) aviso('Não deu para salvar neste navegador.'); } }
+  function salvar(avisa) { if (restaurando) return; sincProgresso(); try { localStorage.setItem(CHAVE, JSON.stringify(S)); if (avisa) aviso('💾 Progresso salvo!'); } catch (e) { if (avisa) aviso('Não deu para salvar neste navegador.'); } }
 
   /* ---------- missões ---------- */
   function missoes(f) {
@@ -3115,6 +3115,7 @@
     $('#h-acertos').textContent = S.acertos;   // só os acertos: os erros não aparecem para o estudante
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     $('#h-aprend').textContent = Math.round(100 * feitos / Math.max(1, todosLugares.length)) + '%';
+    nivelHud();
     const f = faseDeX(P.x), ms = sala ? SALAS[sala].missoes() : noEnigma ? missoesEnigma() : dentro && visita ? [{ nome: 'Abrir o baú do presente', n: ((S.visitas || {})[visita.id] || {}).bau ? 1 : 0, meta: 1 }, { nome: `Chegar a 10 corações com ${visita.nome}`, n: coracoes(visita), meta: 10 }].map(m => Object.assign(m, { ok: m.n >= m.meta })) : dentro ? missoesCasa() : missoes(f);
     $('#m-titulo').textContent = sala ? `${SALAS[sala].ic} ${SALAS[sala].nome}` : noEnigma ? '🔐 Casa do Enigma' : dentro && visita ? `🏠 Casa de ${visita.nome}` : dentro ? '🏠 Sua casa' : `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
     $('#m-nome').textContent = sala ? SALAS[sala].sub : noEnigma ? 'Escape room · sem cronômetro' : dentro && visita ? `${visita.fase.icone} ${visita.fase.nome}` : dentro ? COMODOS.map(r => r.nome).join(' · ') : `${f.icone} ${f.nome}`;
@@ -3236,7 +3237,7 @@
     dialogo(l.icone, `${l.titulo} · ${i + 1}/${d.qs.length}`, `${q.html || ''}<p>${q.enun}</p>`, ordem.map(k => ({ txt: q.alts[k], fn: () => {
       if (D.op.dataset.respondida) return;
       D.op.dataset.respondida = '1';
-      const certo = k === 0, id = `${d.id}-${i}`; contaResposta(); if (!certo) bloqueia(id);
+      const certo = k === 0, id = `${d.id}-${i}`; contaResposta(); if (!certo) bloqueia(id); progressoMundo(id, certo);
       [...D.op.children].forEach((b, j) => { b.disabled = true; if (ordem[j] === 0) b.classList.add('certa'); else if (ordem[j] === k) b.classList.add('errada'); });
       if (certo) { const nova = S.resp[id] !== true; S.resp[id] = true; ganhaHabilidade(d.eixos, 10); if (nova) { S.acertos++; pontos(5); } } else { S.erros++; if (S.resp[id] !== true) S.resp[id] = false; hud(); }
       D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${esc(q.coment)}</p>`;
@@ -3265,6 +3266,30 @@
     return n.banco;
   }
   /* errou? a mesma pergunta só volta depois de o estudante responder outra (nada de repetir em seguida) */
+  /* Meu progresso (material-didatico): com um perfil criado lá, cada resposta conta para as habilidades da BNCC da pergunta,
+     os acertos dão pontos de nível (MDM.mundo) e as vilas e salas vencidas viram medalhas. Sem perfil, nada é gravado lá. */
+  const perfilMD = () => window.MDP && MDP.perfil();
+  function progressoMundo(id, certo) {
+    if (!perfilMD()) return;
+    MDP.registrarMundo(habsPergunta(id), certo);
+    const subiu = window.MDM ? MDM.mundo(certo) : 0;
+    if (subiu) setTimeout(() => aviso(`📈 Você chegou ao nível ${subiu} do Meu progresso!`), 1800);
+    nivelHud();
+  }
+  let mwVisto = '';
+  function sincProgresso() {
+    const p = perfilMD(); if (!p) return;
+    const mw = { v: Object.keys(S.concluidas || {}).length, s: ((S.emat || {}).vitorias || 0) + ((S.labirinto || {}).vitorias || 0) }, j = JSON.stringify(mw);
+    if (j === mwVisto) return;
+    mwVisto = j;
+    if (JSON.stringify(p.mw || {}) !== j) { MDP.atualizar({ mw }); MDP.conferirMedalhas(); }
+  }
+  function nivelHud() {
+    const el = $('#h-nivel'), a = $('#h-nivel-l'); if (!el) return;
+    const p = perfilMD(), nv = p && window.MDM ? MDM.nivel(p) : null;
+    el.textContent = nv ? `N${nv.n}` : '—';
+    a.title = nv ? `Nível ${nv.n} (${nv.nome}) no Meu progresso · ${nv.total} pontos. Acertos no Mundo valem ${MDM.PONTOS.mundo} pontos (até ${MDM.MUNDO_DIA} por dia).` : 'Crie seu perfil no Meu progresso: acertos, nível e medalhas do Mundo contam lá';
+  }
   const bloqueios = () => S.bloq || (S.bloq = {});
   function contaResposta() { S.nResp = (S.nResp || 0) + 1; const B = bloqueios(); for (const k in B) if (B[k] <= S.nResp) delete B[k]; }
   const bloqueia = ch => { bloqueios()[ch] = (S.nResp || 0) + 1; };
@@ -3281,7 +3306,7 @@
       if (D.op.dataset.respondida) return;
       D.op.dataset.respondida = '1';
       const certo = i === p.certa, novaResp = !(p.id in S.resp) || S.resp[p.id] === false;
-      contaResposta(); if (!certo) bloqueia(p.id);
+      contaResposta(); if (!certo) bloqueia(p.id); progressoMundo(p.id, certo);
       S.resp[p.id] = certo;
       ganhaHabilidade(p.eixos, certo ? 10 : 2);
       if (certo) contaEvento('acertos');
@@ -3852,7 +3877,7 @@
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
