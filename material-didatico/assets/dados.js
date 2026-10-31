@@ -40,7 +40,7 @@ const DIFICULDADE = {
   robo: 2, rotas: 2, cifra: 2, balanca: 2, tangram: 2, graficos: 2, poupanca: 2, 'empresa-sucos': 2, angulos: 2,
   cofrinho: 2, tabelas: 2, receitas: 2, cambio: 2, 'vale-bits': 2, carreira: 2, numeria: 2, paridade: 2,
   'filas-pilhas': 2, bolha: 2, boato: 2,
-  mesada: 3, bhaskara: 3, cartao: 3, python: 3, 'cidade-blocos': 3, 'sitio-binario': 3, boletim: 3,
+  mesada: 3, bhaskara: 3, cartao: 3, python: 3, 'cidade-blocos': 3, 'fabrica-logica': 3, boletim: 3,
   meteorologista: 3, arquiteto: 3, chatbot: 3, acessivel: 3
 };
 const dificuldadeDe = r => DIFICULDADE[r.id] || 2;
