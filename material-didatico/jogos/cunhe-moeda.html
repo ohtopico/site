@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cunhe sua Própria Moeda: jogo de Matemática | Júlia Quoos</title>
+<meta name="description" content="Oficina de numismática: escolha o metal e o tamanho, desenhe o anverso com simetria, calcule borda, área e massa, veja o custo e cunhe sua moeda.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/cunhe-moeda.html">
+<meta property="og:title" content="Cunhe sua Própria Moeda: jogo de Matemática | Júlia Quoos">
+<meta property="og:description" content="Oficina de numismática para a sala de aula: escolha o metal e o tamanho, desenhe o anverso com simetria, calcule a borda, a área e a massa, compare o custo com o valor de face e cunhe sua moeda. BNCC EF07MA20, EF08MA19.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/cunhe-moeda.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/jogos/img/og-cunhe-moeda.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cunhe sua Própria Moeda: oficina com uma moeda dourada desenhada em quadradinhos e os cálculos de diâmetro, área e massa">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .oficina { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 18px; align-items: start; }
+  @media (max-width: 780px) { .oficina { grid-template-columns: 1fr; } }
+  .vitrine { position: sticky; top: 76px; text-align: center; }
+  @media (max-width: 780px) { .vitrine { position: static; } }
+  .palco { position: relative; max-width: 340px; margin: 0 auto; aspect-ratio: 1; overflow: hidden; border-radius: 22px;
+    background: radial-gradient(circle at 50% 45%, #fffaf0 0, #f2efe6 70%); border: 1.5px solid var(--ink); }
+  @media (prefers-color-scheme: dark) { .palco { background: radial-gradient(circle at 50% 45%, #2c2a24 0, #1b1a17 70%); } }
+  .palco svg.face { width: 100%; height: 100%; display: block; transition: transform .25s ease; }
+  .palco svg.face.virando { transform: scaleX(0); }
+  .palco svg.face.batida { animation: brilho .6s ease; }
+  @keyframes brilho { 0% { filter: brightness(1); } 30% { filter: brightness(1.7); transform: scale(.94); } 100% { filter: brightness(1); transform: scale(1); } }
+  .prensa { position: absolute; left: 22%; width: 56%; top: -70%; height: 60%; border-radius: 0 0 14px 14px; border: 2px solid #111;
+    background: repeating-linear-gradient(90deg, #8d939b 0 10px, #a9afb6 10px 20px); transition: top .28s cubic-bezier(.5, 0, 1, 1); }
+  .prensa::after { content: ''; position: absolute; left: 10%; right: 10%; bottom: -10px; height: 10px; background: #5d636b; border: 2px solid #111; border-top: 0; border-radius: 0 0 8px 8px; }
+  .prensa.desce { top: -8%; }
+  .lado { font-size: 13px; color: var(--ink-2); margin: 8px 0; }
+  .passos { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .passos button { border: 1.5px solid var(--ink); border-radius: 99px; background: var(--paper); color: var(--ink); padding: 6px 12px; font: inherit; font-size: 14px; cursor: pointer; }
+  .passos button[aria-current="step"] { background: var(--ink); color: var(--paper); }
+  .passos button .ok { color: var(--ok); }
+  .painel { border: 1.5px solid var(--ink); border-radius: 18px; padding: 14px 16px; background: var(--paper); }
+  .painel h3 { font-size: 20px; margin-top: 0; }
+  .metais { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 8px 0 12px; }
+  .metais button { border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); padding: 8px; font: inherit; font-size: 13px; cursor: pointer; text-align: left; }
+  .metais button[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink) inset; }
+  .metais i { display: inline-block; width: 18px; height: 18px; border-radius: 50%; vertical-align: -4px; margin-right: 6px; border: 1px solid #111; }
+  label.campo { display: block; margin: 10px 0; font-size: 15px; }
+  label.campo input[type=range] { width: 100%; }
+  label.campo input[type=text], label.campo input[type=number], label.campo select { border: 1.5px solid var(--ink); border-radius: 12px; padding: 7px 10px; font: inherit; background: var(--paper); color: var(--ink); width: 100%; box-sizing: border-box; }
+  .contas { width: 100%; border-collapse: collapse; font-size: 14px; margin: 8px 0; }
+  .contas td { border-bottom: 1px solid var(--line); padding: 5px 6px; }
+  .contas td:last-child { text-align: right; font-weight: 600; white-space: nowrap; }
+  .desafio { border: 1.5px dashed var(--ink); border-radius: 16px; padding: 10px 12px; margin: 12px 0; background: var(--paper-2); }
+  .desafio.feito { border-style: solid; border-color: var(--ok); background: var(--ok-soft); }
+  .desafio .resp { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+  .num { border: 1.5px solid var(--ink); border-radius: 99px; padding: 6px 12px; width: 120px; font-size: 16px; background: var(--paper); color: var(--ink); text-align: center; }
+  .grade { display: grid; grid-template-columns: repeat(15, 1fr); gap: 2px; max-width: 360px; margin: 8px auto; touch-action: none; user-select: none; }
+  .grade span { aspect-ratio: 1; border-radius: 3px; background: var(--paper-2); border: 1px solid var(--line); cursor: pointer; }
+  .grade span.on { background: #b8892a; border-color: #5c430f; }
+  .grade span.fora { visibility: hidden; }
+  .grade span.eixo { background-image: linear-gradient(90deg, transparent 42%, #ef5a4c 42% 58%, transparent 58%); }
+  .ferr { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .codigo { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.25; white-space: pre; overflow-x: auto; background: var(--paper-2); border-radius: 10px; padding: 8px; }
+  .checks { list-style: none; padding: 0; margin: 8px 0; }
+  .checks li { padding: 4px 0; }
+  .album { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .album figure { margin: 0; border: 1.5px solid var(--line); border-radius: 14px; padding: 6px; text-align: center; position: relative; background: var(--paper); }
+  .album figure svg { width: 100%; height: auto; cursor: pointer; }
+  .album figcaption { font-size: 12px; color: var(--ink-2); }
+  .album .x { position: absolute; top: 2px; right: 4px; border: 0; background: none; color: var(--ink-2); cursor: pointer; font-size: 16px; }
+  .glossario dt { font-weight: 600; }
+  .glossario dd { margin: 0 0 6px; }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Cunhe sua Própria Moeda","description":"Oficina da Casa da Moeda: escolha metal e tamanho, desenhe o anverso com simetria, calcule borda, área e massa, compare o custo com o valor de face e cunhe sua moeda.","url":"https://ohtopico.com.br/material-didatico/jogos/cunhe-moeda.html","image":"https://ohtopico.com.br/material-didatico/jogos/img/og-cunhe-moeda.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"7º ao 8º ano do Ensino Fundamental","about":["Matemática"],"isAccessibleForFree":true,"timeRequired":"20–30 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA20","targetDescription":"Reconhecer e representar, no plano cartesiano, o simétrico de figuras em relação aos eixos e à origem."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08MA19","targetDescription":"Resolver e elaborar problemas que envolvam medidas de área de figuras geométricas, utilizando expressões de cálculo de área (quadriláteros, triângulos e círculos), em situações como determinar medida de terrenos."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06MA24","targetDescription":"Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07MA17","targetDescription":"Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Cunhe sua Própria Moeda","item":"https://ohtopico.com.br/material-didatico/jogos/cunhe-moeda.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="crumbs no-print"><a href="../jogos/">← Jogos</a></div>
+      <div class="tags" style="margin-bottom:12px"><span class="tag ma">Matemática</span><span class="tag">7º ao 8º ano</span><span class="tag">⏱ 20–30 min</span></div>
+      <h1>Cunhe sua Própria Moeda</h1>
+      <p class="muted" style="max-width:720px">Oficina da Casa da Moeda: escolha metal e tamanho, desenhe o anverso com simetria, calcule borda, área e massa, compare o custo com o valor de face e cunhe sua moeda.</p>
+      <div class="tags"><a class="tag code ma" href="../bncc/ef07ma20/" title="EF07MA20 — Reconhecer e representar, no plano cartesiano, o simétrico de figuras em relação aos eixos e à origem.">EF07MA20</a><a class="tag code ma" href="../bncc/ef08ma19/" title="EF08MA19 — Resolver e elaborar problemas que envolvam medidas de área de figuras geométricas, utilizando expressões de cálculo de área (quadriláteros, triângulos e círculos), em situações como determinar medida de terrenos.">EF08MA19</a><a class="tag code ma" href="../bncc/ef06ma24/" title="EF06MA24 — Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento.">EF06MA24</a><a class="tag code ma" href="../bncc/ef07ma17/" title="EF07MA17 — Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas.">EF07MA17</a></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Você é a pessoa responsável pela Casa da Moeda da sua turma. Siga os cinco passos: escolha o metal e o tamanho do disco, desenhe o anverso em quadradinhos, escreva o valor no reverso, escolha a borda e leve tudo para a prensa.</p>
+    <p>No caminho há <strong>quatro desafios</strong>: a medida da borda, a área da face, um desenho simétrico e a conta do custo. As moedas que você cunhar ficam guardadas no seu álbum, neste navegador, e podem ser baixadas como imagem.</p>
+    <dl class="glossario small">
+      <dt>Cunhar</dt><dd>Fabricar a moeda. Uma prensa aperta o disco de metal entre dois cunhos, as peças de aço que têm o desenho em alto-relevo ao contrário.</dd>
+      <dt>Anverso e reverso</dt><dd>Os dois lados da moeda. Aqui, o anverso tem o seu desenho e o reverso, o valor.</dd>
+      <dt>Gráfila</dt><dd>O círculo de pontinhos perto da beirada.</dd>
+      <dt>Serrilha</dt><dd>Os risquinhos na borda. Surgiram quando as moedas eram de ouro e prata: com a borda marcada, ficava fácil perceber se alguém tinha raspado um pouco do metal.</dd>
+    </dl>
+  </details>
+  <div class="game-stage">
+    <div class="oficina">
+      <div class="vitrine">
+        <div class="palco"><div class="prensa" id="prensa" aria-hidden="true"></div><div id="face" role="img" aria-label="Prévia da sua moeda"></div></div>
+        <p class="lado" id="lado">Anverso</p>
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn ghost" type="button" id="virar">🔄 Virar a moeda</button>
+          <label class="small" style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="fantasma"> Comparar com R$ 1</label>
+        </div>
+      </div>
+      <div>
+        <nav class="passos" id="passos" aria-label="Passos da oficina"></nav>
+        <div class="painel" id="painel"></div>
+      </div>
+    </div>
+    <h2 style="font-size:22px;margin-top:22px">Seu álbum de moedas</h2>
+    <div class="album" id="album"></div>
+  </div>
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Cunhe sua Própria Moeda</strong> é um jogo gratuito de Matemática para o 7º ao 8º ano, pensado para cerca de 20–30 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Oficina da Casa da Moeda: escolha metal e tamanho, desenhe o anverso com simetria, calcule borda, área e massa, compare o custo com o valor de face e cunhe sua moeda.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../bncc/ef07ma20/"><strong>EF07MA20</strong></a>: Reconhecer e representar, no plano cartesiano, o simétrico de figuras em relação aos eixos e à origem.</li>
+      <li><a href="../bncc/ef08ma19/"><strong>EF08MA19</strong></a>: Resolver e elaborar problemas que envolvam medidas de área de figuras geométricas, utilizando expressões de cálculo de área (quadriláteros, triângulos e círculos), em situações como determinar medida de terrenos.</li>
+      <li><a href="../bncc/ef06ma24/"><strong>EF06MA24</strong></a>: Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento.</li>
+      <li><a href="../bncc/ef07ma17/"><strong>EF07MA17</strong></a>: Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas.</li>
+    </ul>
+    <p>Para fixar, há as listas <a href="../listas/area-perimetro-6-ano/">Área e perímetro (6º ano)</a>, <a href="../listas/regra-tres-7-ano/">Regra de três (7º ano)</a>, com gabarito.</p>
+  </details>
+  <!-- professor: fim -->
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/rotas.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Rota Mais Curta</strong>
+          <span class="small muted">Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
+(function () {
+  const $ = s => document.querySelector(s);
+  const PI = 3.14;
+  const n1 = (v, c = 1) => v.toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c });
+  const R$ = v => (v < 0 ? '− ' : '') + 'R$ ' + n1(Math.abs(v), 2);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const num = s => { s = String(s).replace(/R\$|\s/g, '').replace('−', '-'); if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.'); return s === '' ? NaN : Number(s); };
+
+  /* Metais: cores, densidade (g/cm³) e preço do metal por grama (valores de brincadeira, para a conta do custo) */
+  const METAIS = {
+    cobre: { nome: 'Aço com cobre', cor: ['#f6b98c', '#c8743f', '#7a3f1e'], dens: 7.8, preco: 0.03 },
+    bronze: { nome: 'Aço com bronze', cor: ['#fde59a', '#d6a432', '#7f5f12'], dens: 7.8, preco: 0.035 },
+    inox: { nome: 'Aço inoxidável', cor: ['#ffffff', '#c3c8ce', '#6f767f'], dens: 7.9, preco: 0.045 },
+    bimetal: { nome: 'Bimetálica', cor: ['#ffffff', '#c3c8ce', '#6f767f'], anel: ['#fde59a', '#d6a432', '#7f5f12'], dens: 8.0, preco: 0.06 },
+    aluminio: { nome: 'Alumínio', cor: ['#f4f6f8', '#d5dade', '#8b9198'], dens: 2.7, preco: 0.09 }
+  };
+  const CUNHAGEM = 0.04;
+  const VALORES = [[0.01, '1', 'CENTAVO'], [0.05, '5', 'CENTAVOS'], [0.1, '10', 'CENTAVOS'], [0.25, '25', 'CENTAVOS'], [0.5, '50', 'CENTAVOS'], [1, '1', 'REAL'], [2, '2', 'REAIS'], [5, '5', 'REAIS']];
+  const REAL = [[17, '1 centavo'], [22, '5 centavos'], [20, '10 centavos'], [25, '25 centavos'], [23, '50 centavos'], [27, '1 real']];
+
+  /* Grade 15 × 15 do anverso: só valem as casas dentro do círculo */
+  const N = 15, MEIO = 7;
+  const DENTRO = Array.from({ length: N * N }, (_, i) => { const r = Math.floor(i / N), c = i % N; return (r - MEIO) ** 2 + (c - MEIO) ** 2 <= 7.4 ** 2; });
+  const MODELOS = {
+    'Árvore': ['.......#.......', '......###......', '.....#####.....', '....#######....', '.....#####.....', '....#######....', '...#########...', '..###########..', '....#######....', '...#########...', '..###########..', '......###......', '......###......', '.....#####.....', '...............'],
+    'Estrela': ['.......#.......', '.......#.......', '......###......', '......###......', '.#############.', '..###########..', '...#########...', '....#######....', '....#######....', '...####.####...', '...###...###...', '..###.....###..', '..##.......##..', '...............', '...............'],
+    'Coração': ['...............', '...............', '...##.....##...', '..####...####..', '.######.######.', '.#############.', '.#############.', '..###########..', '...#########...', '....#######....', '.....#####.....', '......###......', '.......#.......', '...............', '...............'],
+    'Robô': ['.......#.......', '.......#.......', '....#######....', '...#########...', '...##.###.##...', '...##.###.##...', '...#########...', '...###...###...', '...#########...', '.....#####.....', '..###########..', '..#.#######.#..', '..#.#######.#..', '....##...##....', '.....#...#.....']
+  };
+  const deModelo = m => MODELOS[m].join('').split('').map((ch, i) => ch === '#' && DENTRO[i] ? 1 : 0);
+
+  const PADRAO = { metal: 'bronze', d: 24, esp: 1.8, valor: 0.5, nome: 'TURMA DA MATEMÁTICA', ano: new Date().getFullYear(), borda: 'serrilha', passo: 1, pix: deModelo('Árvore') };
+  const CHAVE = 'cunhe-moeda-v1', ALBUM = 'cunhe-moeda-album-v1';
+  const ler = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v || d; } catch (e) { return d; } };
+  const gravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sem armazenamento: segue sem salvar */ } };
+  const captura = location.hash === '#captura';
+  let st = Object.assign({}, PADRAO, captura ? {} : ler(CHAVE, {}).st);
+  if (!Array.isArray(st.pix) || st.pix.length !== N * N) st.pix = PADRAO.pix.slice();
+  let des = Object.assign({ borda: false, area: false, simetria: false, custo: false }, captura ? {} : ler(CHAVE, {}).des);
+  let passo = 0, lado = 'anverso', espelho = true, ferramenta = 1;
+  const salvar = () => { if (!captura) gravar(CHAVE, { st, des }); };
+
+  /* ---------- contas ---------- */
+  const r = () => st.d / 2;
+  const contas = () => {
+    const C = PI * st.d, A = PI * r() * r(), V = A * st.esp, M = METAIS[st.metal];
+    const massa = V / 1000 * M.dens, custo = massa * M.preco + CUNHAGEM;
+    return { C, A, V, massa, custo, dentes: Math.floor(C / st.passo) };
+  };
+  const valorInfo = () => VALORES.find(v => v[0] === st.valor) || VALORES[4];
+  const simetrica = () => { let n = 0; for (let i = 0; i < N * N; i++) { const rr = Math.floor(i / N), c = i % N; if (st.pix[i] !== st.pix[rr * N + (N - 1 - c)]) return false; n += st.pix[i]; } return n >= 8; };
+
+  /* ---------- desenho da moeda ---------- */
+  let gid = 0;
+  const grad = (id, m) => `<radialGradient id="${id}" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="${m[0]}"/><stop offset=".55" stop-color="${m[1]}"/><stop offset="1" stop-color="${m[2]}"/></radialGradient>`;
+  function svgMoeda(s, face, opts = {}) {
+    const K = opts.k || 8.75, R = s.d / 2 * K, id = 'c' + (++gid), M = METAIS[s.metal] || METAIS.bronze;
+    const cor = M.cor, anel = M.anel || cor, tx = cor[2];
+    const vb = opts.vb || 150;
+    let o = `<svg ${opts.cls ? `class="${opts.cls}"` : ''} xmlns="http://www.w3.org/2000/svg" viewBox="${-vb} ${-vb} ${2 * vb} ${2 * vb}"${opts.w ? ` width="${opts.w}" height="${opts.w}"` : ''}>
+      <defs>${grad(id + 'a', cor)}${M.anel ? grad(id + 'b', anel) : ''}<path id="${id}t" d="M ${-R * 0.74} 0 A ${R * 0.74} ${R * 0.74} 0 0 1 ${R * 0.74} 0"/></defs>
+      <circle r="${R + 1.5}" fill="#000" fill-opacity=".18" cx="3" cy="4"/>
+      <circle r="${R}" fill="url(#${M.anel ? id + 'b' : id + 'a'})" stroke="${anel[2]}" stroke-width="1.5"/>`;
+    // borda
+    if (s.borda === 'serrilha') { const L = 2 * Math.PI * (R - 2.5), n = Math.min(240, Math.max(20, Math.floor(PI * s.d / s.passo))); o += `<circle r="${R - 2.5}" fill="none" stroke="${anel[2]}" stroke-width="5" stroke-dasharray="${(L / n / 2).toFixed(2)} ${(L / n / 2).toFixed(2)}"/>`; }
+    else if (s.borda === 'letreiro') o += `<circle r="${R - 2.5}" fill="none" stroke="${anel[2]}" stroke-width="3" stroke-dasharray="7 3 2 3"/>`;
+    o += `<circle r="${R * 0.93}" fill="none" stroke="${anel[2]}" stroke-opacity=".6" stroke-width="${(R * 0.03).toFixed(1)}"/>`;
+    if (M.anel) o += `<circle r="${R * 0.66}" fill="url(#${id}a)" stroke="${cor[2]}" stroke-width="1.2"/>`;
+    const nd = Math.round(R * 0.55), rg = R * 0.87;
+    for (let i = 0; i < nd; i++) { const a = i / nd * 2 * Math.PI; o += `<circle cx="${(rg * Math.cos(a)).toFixed(1)}" cy="${(rg * Math.sin(a)).toFixed(1)}" r="${(R * 0.016).toFixed(2)}" fill="${anel[2]}" fill-opacity=".75"/>`; }
+    const texto = (t, attrs) => `<text ${attrs} fill="${cor[0]}" transform="translate(.8 .8)">${t}</text><text ${attrs} fill="${tx}">${t}</text>`;
+    if (face === 'anverso') {
+      const lado = R * 1.04, cel = lado / N, x0 = -lado / 2, y0 = -lado / 2 + R * 0.05;
+      for (let i = 0; i < N * N; i++) if (s.pix[i]) {
+        const x = x0 + (i % N) * cel, y = y0 + Math.floor(i / N) * cel;
+        o += `<rect x="${(x + cel * 0.12).toFixed(2)}" y="${(y + cel * 0.12).toFixed(2)}" width="${cel.toFixed(2)}" height="${cel.toFixed(2)}" fill="${tx}" fill-opacity=".55"/><rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${cel.toFixed(2)}" height="${cel.toFixed(2)}" fill="${cor[0]}" fill-opacity=".85"/>`;
+      }
+      const nome = esc((s.nome || '').toUpperCase().slice(0, 24));
+      o += `<text font-family="Lexend, sans-serif" font-weight="600" font-size="${(R * (nome.length > 16 ? 0.12 : 0.14)).toFixed(1)}" letter-spacing="1" text-anchor="middle" fill="${tx}"><textPath href="#${id}t" startOffset="50%">${nome}</textPath></text>`;
+      o += texto(esc(s.ano), `y="${(R * 0.78).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="${(R * 0.12).toFixed(1)}"`);
+    } else {
+      const v = VALORES.find(x => x[0] === s.valor) || VALORES[4];
+      const fs = R * (v[1].length > 1 ? 0.62 : 0.78) * (M.anel ? 0.85 : 1);
+      o += texto(v[1], `y="${(fs * 0.22).toFixed(1)}" text-anchor="middle" font-family="Sniglet, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}"`);
+      o += texto(v[2], `y="${(R * (M.anel ? 0.5 : 0.46)).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" letter-spacing="1" font-size="${(R * 0.13).toFixed(1)}"`);
+      // ramos
+      for (const sx of [-1, 1]) for (let i = 0; i < 5; i++) {
+        const a = (200 + i * 18) * Math.PI / 180, rr = R * 0.74, x = sx * rr * Math.cos(a) * -1, y = rr * Math.sin(a) * -1;
+        o += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${(R * 0.06).toFixed(1)}" ry="${(R * 0.025).toFixed(1)}" fill="${tx}" fill-opacity=".7" transform="rotate(${(sx * (i * 18 - 50)).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;
+      }
+      o += texto(esc(s.ano), `y="${(-R * 0.6).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="${(R * 0.12).toFixed(1)}"`);
+    }
+    if (opts.fantasma) o += `<circle r="${27 / 2 * K}" fill="none" stroke="#ef5a4c" stroke-width="2" stroke-dasharray="6 5"/><text y="${-27 / 2 * K - 4}" text-anchor="middle" font-size="11" fill="#ef5a4c">R$ 1 (27 mm)</text>`;
+    return o + '</svg>';
+  }
+  function vitrine(bate) {
+    $('#face').innerHTML = svgMoeda(st, lado, { cls: 'face' + (bate ? ' batida' : ''), fantasma: $('#fantasma').checked });
+    $('#lado').textContent = lado === 'anverso' ? 'Anverso: o lado do desenho' : 'Reverso: o lado do valor';
+  }
+  $('#virar').onclick = () => {
+    const f = $('#face svg'); f.classList.add('virando');
+    setTimeout(() => { lado = lado === 'anverso' ? 'reverso' : 'anverso'; vitrine(); }, 240);
+  };
+  $('#fantasma').onchange = () => vitrine();
+
+  /* ---------- passos ---------- */
+  const PASSOS = [
+    { nome: '1. Disco', des: ['borda', 'area'], html: passoDisco, liga: ligaDisco },
+    { nome: '2. Anverso', des: ['simetria'], html: passoAnverso, liga: ligaAnverso, lado: 'anverso' },
+    { nome: '3. Reverso', des: [], html: passoReverso, liga: ligaReverso, lado: 'reverso' },
+    { nome: '4. Borda', des: [], html: passoBorda, liga: ligaBorda },
+    { nome: '5. Cunhar', des: ['custo'], html: passoCunhar, liga: ligaCunhar }
+  ];
+  function menu() {
+    $('#passos').innerHTML = PASSOS.map((p, i) => `<button type="button" data-i="${i}" ${i === passo ? 'aria-current="step"' : ''}>${p.nome}${p.des.length && p.des.every(d => des[d]) ? ' <span class="ok">✓</span>' : ''}</button>`).join('');
+    $('#passos').querySelectorAll('button').forEach(b => b.onclick = () => ir(+b.dataset.i));
+  }
+  function ir(i) {
+    passo = i; const P = PASSOS[i];
+    if (P.lado && P.lado !== lado) lado = P.lado;
+    menu(); $('#painel').innerHTML = P.html(); P.liga(); vitrine();
+  }
+  const prox = i => `<div class="btn-row" style="justify-content:flex-end;margin-top:12px"><button class="btn" type="button" id="prox">${PASSOS[i + 1].nome.replace(/^\d\. /, 'Próximo: ')} →</button></div>`;
+  const ligaProx = i => { const b = $('#prox'); if (b) b.onclick = () => ir(i + 1); };
+  function desafio(id, titulo, pergunta, unidade, explica) {
+    const feito = des[id];
+    return `<div class="desafio${feito ? ' feito' : ''}" id="d-${id}"><strong>${feito ? '✓ ' : '★ '}${titulo}</strong><div>${pergunta}</div>
+      ${feito ? `<div class="small">${explica}</div>` : `<div class="resp"><input class="num" id="r-${id}" inputmode="decimal" autocomplete="off" aria-label="${titulo}"> <span>${unidade}</span><button class="btn ghost" type="button" data-d="${id}">Conferir</button></div><p class="small" id="f-${id}" role="status"></p>`}</div>`;
+  }
+  function ligaDesafio(id, certo, tol, explica, depois) {
+    const b = document.querySelector(`[data-d="${id}"]`); if (!b) return;
+    const go = () => {
+      const v = num($(`#r-${id}`).value);
+      if (isNaN(v)) { $(`#f-${id}`).textContent = 'Digite um número, com vírgula para os decimais.'; return; }
+      if (Math.abs(v - certo()) <= tol(v)) { des[id] = true; salvar(); depois(); }
+      else $(`#f-${id}`).textContent = `Ainda não. ${explica(false)}`;
+    };
+    b.onclick = go; $(`#r-${id}`).onkeydown = e => { if (e.key === 'Enter') go(); };
+  }
+
+  function passoDisco() {
+    const c = contas();
+    return `<h3>Escolha o metal e o tamanho</h3>
+      <div class="metais" id="metais">${Object.entries(METAIS).map(([k, m]) => `<button type="button" data-m="${k}" aria-pressed="${st.metal === k}"><i style="background:${m.anel ? `radial-gradient(circle, ${m.cor[1]} 0 45%, ${m.anel[1]} 46%)` : m.cor[1]}"></i>${m.nome}<br><span class="small muted">${n1(m.dens)} g/cm³</span></button>`).join('')}</div>
+      <label class="campo">Diâmetro: <b id="vd">${n1(st.d)} mm</b><input type="range" id="d" min="15" max="32" step="0.5" value="${st.d}"></label>
+      <label class="campo">Espessura: <b id="ve">${n1(st.esp)} mm</b><input type="range" id="esp" min="1.2" max="2.6" step="0.1" value="${st.esp}"></label>
+      <p class="small muted" id="aviso"></p>
+      <table class="contas">
+        <tr><td>Raio (metade do diâmetro)</td><td>${n1(r(), 2)} mm</td></tr>
+        <tr><td>Comprimento da borda: C = π × d</td><td>${des.borda ? n1(c.C, 2) + ' mm' : '?'}</td></tr>
+        <tr><td>Área da face: A = π × r²</td><td>${des.area ? n1(c.A, 1) + ' mm²' : '?'}</td></tr>
+        <tr><td>Volume do disco: área × espessura</td><td>${des.area ? n1(c.V, 0) + ' mm³' : '?'}</td></tr>
+        <tr><td>Massa: volume × densidade</td><td>${des.area ? n1(c.massa, 2) + ' g' : '?'}</td></tr>
+      </table>
+      ${desafio('borda', 'Desafio 1: a borda', `Quanto mede a volta inteira da sua moeda? Use π = 3,14 e o diâmetro de ${n1(st.d)} mm.`, 'mm',
+        `3,14 × ${n1(st.d)} = ${n1(c.C, 2)} mm. Mude o diâmetro e a conta se refaz sozinha.`)}
+      ${desafio('area', 'Desafio 2: a área da face', `Qual é a área de uma face? Use π = 3,14 e o raio de ${n1(r(), 2)} mm (A = π × r × r).`, 'mm²',
+        `3,14 × ${n1(r(), 2)} × ${n1(r(), 2)} = ${n1(c.A, 2)} mm². Com a área e a espessura, a tabela calcula o volume e a massa.`)}
+      ${prox(0)}`;
+  }
+  function ligaDisco() {
+    $('#metais').querySelectorAll('button').forEach(b => b.onclick = () => { st.metal = b.dataset.m; salvar(); ir(0); });
+    const aviso = () => {
+      const perto = REAL.find(([d]) => Math.abs(d - st.d) < 0.6);
+      $('#aviso').textContent = perto ? `Atenção: ${n1(st.d)} mm é quase o tamanho da moeda de ${perto[1]} (${perto[0]} mm). Uma máquina de venda poderia confundir as duas.` : '';
+    };
+    $('#d').oninput = e => { st.d = +e.target.value; $('#vd').textContent = n1(st.d) + ' mm'; aviso(); vitrine(); };
+    $('#d').onchange = () => { salvar(); ir(0); };
+    $('#esp').oninput = e => { st.esp = +e.target.value; $('#ve').textContent = n1(st.esp) + ' mm'; };
+    $('#esp').onchange = () => { salvar(); ir(0); };
+    aviso();
+    ligaDesafio('borda', () => contas().C, () => 0.1,
+      ok => `Multiplique 3,14 pelo diâmetro: 3,14 × ${n1(st.d)}.`, () => ir(0));
+    ligaDesafio('area', () => contas().A, () => 0.6,
+      ok => `Primeiro faça raio × raio (${n1(r(), 2)} × ${n1(r(), 2)}) e depois multiplique por 3,14.`, () => ir(0));
+    ligaProx(0);
+  }
+
+  function passoAnverso() {
+    const linhas = [];
+    for (let rr = 0; rr < N; rr++) linhas.push(Array.from({ length: N }, (_, c) => DENTRO[rr * N + c] ? st.pix[rr * N + c] : ' ').join(''));
+    const total = st.pix.reduce((a, b) => a + b, 0), casas = DENTRO.filter(Boolean).length;
+    return `<h3>Desenhe o anverso</h3>
+      <label class="campo">Texto da borda (nome do país, da escola ou da turma)<input type="text" id="nome" maxlength="24" value="${esc(st.nome)}"></label>
+      <p class="small muted">Clique ou arraste nos quadradinhos. Com o espelho ligado, cada quadradinho pintado aparece também do outro lado da linha vermelha.</p>
+      <div class="ferr">
+        <button class="chip" type="button" id="t-pintar" aria-pressed="${ferramenta === 1}">✏️ Pintar</button>
+        <button class="chip" type="button" id="t-apagar" aria-pressed="${ferramenta === 0}">🧽 Apagar</button>
+        <button class="chip" type="button" id="t-espelho" aria-pressed="${espelho}">🪞 Espelho</button>
+        <button class="chip" type="button" id="t-limpar">Limpar</button>
+      </div>
+      <div class="grade" id="grade">${st.pix.map((p, i) => `<span data-i="${i}" class="${!DENTRO[i] ? 'fora' : p ? 'on' : ''}${i % N === MEIO ? ' eixo' : ''}"></span>`).join('')}</div>
+      <div class="ferr"><span class="small muted" style="align-self:center">Modelos:</span>${Object.keys(MODELOS).map(m => `<button class="chip" type="button" data-mod="${m}">${m}</button>`).join('')}</div>
+      <div class="desafio${des.simetria ? ' feito' : ''}" id="d-simetria"><strong>${des.simetria ? '✓' : '★'} Desafio 3: simetria</strong>
+        <div>Deixe o desenho simétrico em relação à linha vermelha, com pelo menos 8 quadradinhos. ${des.simetria ? 'Feito! A coluna 1 é igual à 15, a 2 é igual à 14, e assim por diante: é uma reflexão.' : `<span id="sim-status">${simetrica() ? '' : 'Ainda não está simétrico.'}</span>`}</div></div>
+      <details><summary class="small">Seu desenho em números (${total} de ${casas} quadradinhos pintados)</summary>
+        <p class="small">Para o computador, o desenho é uma tabela de 0 e 1: 1 é quadradinho em relevo, 0 é fundo. Cada linha da tabela é uma linha do desenho.</p>
+        <div class="codigo" id="codigo">${linhas.join('\n')}</div></details>
+      ${prox(1)}`;
+  }
+  function ligaAnverso() {
+    $('#nome').oninput = e => { st.nome = e.target.value; salvar(); vitrine(); };
+    const pinta = i => {
+      if (!DENTRO[i]) return;
+      const alvos = [i]; if (espelho) alvos.push(Math.floor(i / N) * N + (N - 1 - i % N));
+      alvos.forEach(j => { st.pix[j] = ferramenta; const el = $('#grade').children[j]; el.classList.toggle('on', !!ferramenta); });
+    };
+    let arrastando = false;
+    const g = $('#grade');
+    g.onpointerdown = e => { const i = e.target.dataset.i; if (i === undefined) return; arrastando = true; g.setPointerCapture(e.pointerId); pinta(+i); vitrine(); };
+    g.onpointermove = e => { if (!arrastando) return; const el = document.elementFromPoint(e.clientX, e.clientY); if (el && el.parentNode === g) { pinta(+el.dataset.i); vitrine(); } };
+    const solta = () => { if (!arrastando) return; arrastando = false; salvar(); confere(); };
+    g.onpointerup = solta; g.onpointercancel = solta;
+    const confere = () => { if (!des.simetria && simetrica()) { des.simetria = true; salvar(); ir(1); } else { const s = $('#sim-status'); if (s) s.textContent = simetrica() ? '' : 'Ainda não está simétrico.'; atualizaCodigo(); } };
+    const atualizaCodigo = () => { const c = $('#codigo'); if (!c) return; const l = []; for (let rr = 0; rr < N; rr++) l.push(Array.from({ length: N }, (_, cc) => DENTRO[rr * N + cc] ? st.pix[rr * N + cc] : ' ').join('')); c.textContent = l.join('\n'); };
+    $('#t-pintar').onclick = () => { ferramenta = 1; ir(1); };
+    $('#t-apagar').onclick = () => { ferramenta = 0; ir(1); };
+    $('#t-espelho').onclick = () => { espelho = !espelho; ir(1); };
+    $('#t-limpar').onclick = () => { st.pix = st.pix.map(() => 0); salvar(); ir(1); };
+    document.querySelectorAll('[data-mod]').forEach(b => b.onclick = () => { st.pix = deModelo(b.dataset.mod); salvar(); if (!des.simetria && simetrica()) des.simetria = true; salvar(); ir(1); });
+    ligaProx(1);
+  }
+
+  function passoReverso() {
+    return `<h3>Escreva o valor</h3>
+      <label class="campo">Valor de face<select id="valor">${VALORES.map(v => `<option value="${v[0]}" ${v[0] === st.valor ? 'selected' : ''}>${v[1]} ${v[2].toLowerCase()}</option>`).join('')}</select></label>
+      <label class="campo">Ano de cunhagem<input type="number" id="ano" min="1" max="9999" value="${esc(st.ano)}"></label>
+      <p class="small">Repare nas moedas de verdade: o valor fica bem grande, para todo mundo reconhecer rápido, e o tamanho ou a cor mudam de uma moeda para a outra. Assim até quem enxerga pouco consegue diferenciar as moedas pelo tato e pelo tamanho.</p>
+      ${prox(2)}`;
+  }
+  function ligaReverso() {
+    $('#valor').onchange = e => { st.valor = +e.target.value; salvar(); vitrine(); };
+    $('#ano').oninput = e => { st.ano = e.target.value.slice(0, 4); salvar(); vitrine(); };
+    ligaProx(2);
+  }
+
+  function passoBorda() {
+    const c = contas();
+    return `<h3>Escolha a borda</h3>
+      <div class="metais" id="bordas">${[['lisa', 'Lisa', 'Sem marcas.'], ['serrilha', 'Serrilhada', 'Risquinhos em toda a volta.'], ['letreiro', 'Com letreiro', 'Letras e sinais gravados na lateral.']]
+        .map(([k, n, d]) => `<button type="button" data-b="${k}" aria-pressed="${st.borda === k}"><b>${n}</b><br><span class="small muted">${d}</span></button>`).join('')}</div>
+      ${st.borda === 'serrilha' ? `<label class="campo">Distância entre os dentes da serrilha: <b id="vp">${n1(st.passo)} mm</b><input type="range" id="passo" min="0.6" max="1.6" step="0.1" value="${st.passo}"></label>
+      <p>Com uma borda de ${des.borda ? n1(c.C, 2) + ' mm' : 'C mm (resolva o desafio 1 para ver)'} e um dente a cada ${n1(st.passo)} mm, cabem <b id="dentes">${des.borda ? c.dentes : '?'}</b> dentes inteiros: C ÷ ${n1(st.passo)}, sem contar o pedaço que sobra.</p>` : ''}
+      <p class="small">A serrilha surgiu quando as moedas eram de ouro e prata e valiam pelo metal: com a borda marcada, ficava fácil perceber se alguém tinha raspado um pouco das beiradas. Hoje ela também ajuda pessoas com deficiência visual a reconhecer as moedas pelo tato.</p>
+      ${prox(3)}`;
+  }
+  function ligaBorda() {
+    $('#bordas').querySelectorAll('button').forEach(b => b.onclick = () => { st.borda = b.dataset.b; salvar(); ir(3); });
+    const p = $('#passo');
+    if (p) {
+      p.oninput = e => { st.passo = +e.target.value; $('#vp').textContent = n1(st.passo) + ' mm'; if (des.borda) $('#dentes').textContent = contas().dentes; vitrine(); };
+      p.onchange = () => { salvar(); ir(3); };
+    }
+    ligaProx(3);
+  }
+
+  function passoCunhar() {
+    const c = contas(), v = valorInfo(), ganho = st.valor - c.custo, M = METAIS[st.metal];
+    const desenhoOk = st.pix.reduce((a, b) => a + b, 0) >= 8, perto = REAL.find(([d]) => Math.abs(d - st.d) < 0.6);
+    const feitos = Object.values(des).filter(Boolean).length;
+    return `<h3>Leve para a prensa</h3>
+      <ul class="checks">
+        <li>${desenhoOk ? '✅' : '⚠️'} Desenho do anverso ${desenhoOk ? 'pronto' : 'com poucos quadradinhos'}</li>
+        <li>${perto ? '⚠️' : '✅'} ${perto ? `Diâmetro parecido com o da moeda de ${perto[1]}` : 'Diâmetro diferente das moedas do Real'}</li>
+        <li>${ganho >= 0 ? '✅' : '⚠️'} ${ganho >= 0 ? 'Fabricar custa menos que o valor de face' : 'Fabricar custa mais que o valor de face'}</li>
+        <li>★ Desafios feitos: ${feitos} de 4</li>
+      </ul>
+      <table class="contas">
+        <tr><td>Massa da moeda</td><td>${n1(c.massa, 2)} g</td></tr>
+        <tr><td>Metal: ${n1(c.massa, 2)} g × R$ ${n1(M.preco, 3)} por grama</td><td>${R$(c.massa * M.preco)}</td></tr>
+        <tr><td>Cunhagem (prensa, energia, transporte)</td><td>${R$(CUNHAGEM)}</td></tr>
+        <tr><td><b>Custo para fabricar</b></td><td>${des.custo ? R$(c.custo) : `R$ ${n1(Math.floor(c.custo * 1000) / 1000, 3)}…`}</td></tr>
+        <tr><td><b>Valor de face</b></td><td>${R$(st.valor)}</td></tr>
+      </table>
+      ${desafio('custo', 'Desafio 4: ganho ou prejuízo', `Arredonde o custo para centavos. Quanto o banco central ganha em cada moeda? Valor de face menos custo; se der prejuízo, use o sinal de menos.`, 'R$',
+        `${R$(st.valor)} − ${R$(Math.round(c.custo * 100) / 100)} = ${R$(Math.round((st.valor - c.custo) * 100) / 100)}.`)}
+      ${des.custo ? `<p class="small">${ganho >= 0 ? `Cada moeda dá ${R$(ganho)} de ganho para quem emite o dinheiro.` : `Cada moeda dá ${R$(-ganho)} de prejuízo. Foi o que aconteceu com a moeda de 1 centavo do Real: fabricar ficou mais caro do que ela valia, e o Brasil parou de cunhá-la em 2004.`} Experimente outro metal ou outra espessura no passo 1.</p>` : ''}
+      <p class="small muted">Os preços dos metais aqui são de brincadeira. No Brasil, quem fabrica as moedas é a Casa da Moeda, no Rio de Janeiro, a pedido do Banco Central.</p>
+      <div class="btn-row" style="justify-content:center;margin-top:10px">
+        <button class="btn" type="button" id="cunhar">🔨 Cunhar a moeda</button>
+      </div>
+      <div id="certificado"></div>`;
+  }
+  function ligaCunhar() {
+    ligaDesafio('custo', () => Math.round((st.valor - contas().custo) * 100) / 100, () => 0.011,
+      () => `Custo arredondado: ${R$(Math.round(contas().custo * 100) / 100)}. Faça ${R$(st.valor)} − custo.`, () => ir(4));
+    $('#cunhar').onclick = cunhar;
+  }
+  function cunhar() {
+    const pr = $('#prensa'), b = $('#cunhar');
+    b.disabled = true;
+    lado = 'anverso'; vitrine();
+    pr.classList.add('desce');
+    setTimeout(() => { vitrine(true); pr.classList.remove('desce'); }, 300);
+    setTimeout(() => {
+      b.disabled = false;
+      const feitos = Object.values(des).filter(Boolean).length;
+      window.MDP && MDP.registrar('cunhe-moeda', feitos / 4 * 100);
+      const album = ler(ALBUM, []);
+      album.unshift(JSON.parse(JSON.stringify(st)));
+      gravar(ALBUM, album.slice(0, 12));
+      mostrarAlbum();
+      $('#certificado').innerHTML = `<div class="desafio feito" style="text-align:center"><strong>Moeda cunhada!</strong>
+        <div class="small">Nº ${album.length} do seu álbum · ${n1(st.d)} mm · ${METAIS[st.metal].nome.toLowerCase()} · ${valorInfo()[1]} ${valorInfo()[2].toLowerCase()} · ${feitos} de 4 desafios</div>
+        <div class="btn-row" style="justify-content:center;margin-top:8px"><button class="btn ghost" type="button" id="baixar">⬇️ Baixar imagem</button><a class="btn ghost" href="valor-moeda.html">Jogar Adivinhe o Valor da Moeda</a></div></div>`;
+      $('#baixar').onclick = baixar;
+    }, 900);
+  }
+  function baixar() {
+    const w = 1200, h = 640;
+    const a = svgMoeda(st, 'anverso', { w: 520 }), r2 = svgMoeda(st, 'reverso', { w: 520 });
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="#fffaf0"/>
+      <g transform="translate(50 40)">${a}</g><g transform="translate(630 40)">${r2}</g>
+      <text x="${w / 2}" y="${h - 20}" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#4a4a4a">Cunhada em ohtopico.com.br/material-didatico/jogos/cunhe-moeda</text></svg>`;
+    const img = new Image();
+    img.onload = () => {
+      const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0);
+      cv.toBlob(bl => { const u = URL.createObjectURL(bl), l = document.createElement('a'); l.href = u; l.download = 'minha-moeda.png'; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(u), 2000); });
+    };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+  function mostrarAlbum() {
+    const album = captura ? [] : ler(ALBUM, []);
+    $('#album').innerHTML = album.length ? album.map((m, i) => `<figure>${svgMoeda(m, 'anverso', { vb: 150 })}<figcaption>${(VALORES.find(v => v[0] === m.valor) || VALORES[4]).slice(1).join(' ').toLowerCase()} · ${esc(m.ano)}</figcaption><button class="x" type="button" data-x="${i}" aria-label="Tirar do álbum">×</button></figure>`).join('')
+      : '<p class="small muted" style="grid-column:1/-1">Quando você cunhar uma moeda, ela aparece aqui. Clique numa moeda do álbum para continuar editando.</p>';
+    $('#album').querySelectorAll('figure svg').forEach((s, i) => s.onclick = () => { st = Object.assign({}, PADRAO, JSON.parse(JSON.stringify(album[i]))); salvar(); ir(0); window.scrollTo({ top: $('.game-stage').offsetTop - 70, behavior: 'smooth' }); });
+    $('#album').querySelectorAll('[data-x]').forEach(b => b.onclick = () => { album.splice(+b.dataset.x, 1); gravar(ALBUM, album); mostrarAlbum(); });
+  }
+  ir(0); mostrarAlbum();
+})();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
