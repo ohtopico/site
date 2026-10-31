@@ -128,16 +128,33 @@
       metaJogar: Math.min(n, f.id === 'escola' ? 3 : 3 + Math.floor(i / 2)),
       nNpc: 2 + Math.floor(i / 2), nItens: 5 + i });
   });
-  const ALT = Math.max(...fases.map(f => 2 * (f.raio + 9)));   // todas as fases têm a mesma altura
-  const MEIO = Math.floor(ALT / 2);                              // a estrada que liga as fases passa no meio
-  let x0 = 0;
+  /* as vilas são quadradas e ficam numa grade de 3 colunas (em zigue-zague): cada uma liga-se à anterior e à seguinte
+     por um portão no lado em que a vizinha está. Só a vila atual fica montada na memória; ao trocar de vila, a anterior é
+     desmontada (ela é refeita igualzinha quando a pessoa volta, porque o sorteio é fixo). */
+  const ALT = Math.max(...fases.map(f => 2 * (f.raio + 9)));
+  const MEIO = Math.floor(ALT / 2);                              // as duas estradas se cruzam no meio
+  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2]];
+  const LADOS = { L: { x: ALT - 0.5, y: MEIO, nome: 'leste' }, O: { x: 0.5, y: MEIO, nome: 'oeste' }, S: { x: MEIO, y: ALT - 0.5, nome: 'sul' }, N: { x: MEIO, y: 0.5, nome: 'norte' } };
+  const ladoPara = (a, b) => { const [ax, ay] = GRADE[a], [bx, by] = GRADE[b]; return bx > ax ? 'L' : bx < ax ? 'O' : by > ay ? 'S' : 'N'; };
   for (const f of fases) {
-    const L = f.L = 2 * (f.raio + 9), r = rng(1000 + f.idx * 77);
-    f.x0 = x0; x0 += L;
+    f.x0 = 0; f.L = ALT;
+    f.portais = [f.idx - 1, f.idx + 1].filter(j => j >= 0 && j < fases.length).map(j => Object.assign({ para: j, lado: ladoPara(f.idx, j) }, LADOS[ladoPara(f.idx, j)]));
+    // moradores (quem são; a posição vem da montagem)
+    const nomes = NOMES.slice();
+    f.npcs = [];
+    for (let k = 0; k < f.nNpc; k++) {
+      const nome = nomes.splice((f.idx * 3 + k * 5) % nomes.length, 1)[0];
+      f.npcs.push({ id: f.id + '-npc' + k, nome, th: (k + 0.3) / f.nNpc * Math.PI * 2 + 0.6, x: 0, y: 0, fase: f, prof: k === 0,
+        av: { pele: PELES[(k + f.idx) % PELES.length], cabelo: CABELOS[(k * 2 + f.idx) % CABELOS.length], estilo: ['curto', 'longo', 'coque', 'bone'][(k + f.idx) % 4], camisa: ROUPAS[(k * 3 + f.idx) % ROUPAS.length], calca: ['#2f3b6b', '#5a3b2a', '#333333'][k % 3] } });
+    }
+  }
+  function monta(f) {
+    if (f.tile) return;
+    const L = f.L, r = rng(1000 + f.idx * 77);
     f.tile = new Uint8Array(L * ALT);       // tipo do chão
     f.sol = new Uint8Array(L * ALT);        // 1 = não dá para passar
     f.var = new Uint8Array(L * ALT).map(() => Math.floor(r() * 4));
-    const cx = L / 2, cy = MEIO + 0.5, fase0 = r() * 6;
+    const cx = MEIO + 0.5, cy = MEIO + 0.5, fase0 = r() * 6;
     const raioEm = th => f.raio + 1.2 * Math.sin(3 * th + fase0);
     const at = (x, y) => x >= 0 && y >= 0 && x < L && y < ALT;
     const pos = (x, y) => y * L + x;
@@ -148,6 +165,13 @@
       else if (Math.abs(d - raioEm(th)) < 1.0) f.tile[pos(x, y)] = T.caminho;
     }
     for (let x = 0; x < L; x++) for (const y of [MEIO - 1, MEIO]) if (f.tile[pos(x, y)] !== T.praca) f.tile[pos(x, y)] = T.caminho;
+    for (let y = 0; y < ALT; y++) for (const x of [MEIO - 1, MEIO]) if (f.tile[pos(x, y)] !== T.praca) f.tile[pos(x, y)] = T.caminho;
+    // onde a estrada chega na borda sem portão, uma cerca fecha a passagem
+    f.cercas = [];
+    for (const k of Object.keys(LADOS)) if (!f.portais.some(p => p.lado === k)) {
+      const cells = k === 'L' ? [[L - 1, MEIO - 1], [L - 1, MEIO]] : k === 'O' ? [[0, MEIO - 1], [0, MEIO]] : k === 'S' ? [[MEIO - 1, ALT - 1], [MEIO, ALT - 1]] : [[MEIO - 1, 0], [MEIO, 0]];
+      for (const [x, y] of cells) { f.sol[pos(x, y)] = 1; f.cercas.push({ x, y }); }
+    }
     const raios = [Math.PI / 2, -Math.PI / 2].concat(f.idx % 2 ? [Math.PI / 4] : [-3 * Math.PI / 4]);
     for (const th of raios) for (let d = 3; d < raioEm(th); d += 0.4) {
       const x = Math.floor(cx + Math.cos(th) * d), y = Math.floor(cy + Math.sin(th) * d);
@@ -179,7 +203,7 @@
           const dentro = j >= hy && j < hy + d && k >= hx && k < hx + w;
           if (dentro && f.tile[pos(k, j)] !== T.grama) return false;                          // não fica em cima do caminho
         }
-        return hy > 2 && hy + d < ALT - 2 && hx > 1 && hx + w < L - 1 && (hy > MEIO + 1 || hy + d < MEIO - 1);
+        return hy > 2 && hy + d < ALT - 2 && hx > 2 && hx + w < L - 2 && (hy > MEIO + 1 || hy + d < MEIO - 1) && (hx > MEIO + 1 || hx + w < MEIO - 1);
       };
       for (let extra = 0; extra < 10 && !casa; extra++) for (const dth of [0, 0.1, -0.1, 0.2, -0.2, 0.3, -0.3]) {
         const rr = raioEm(th + dth) + lado * (3.3 + extra * 0.7);
@@ -229,25 +253,17 @@
     f.arvores = [];
     const arvore = (x, y) => { if (!at(x, y) || f.sol[pos(x, y)] || f.tile[pos(x, y)] !== T.grama) return; f.sol[pos(x, y)] = 1; f.arvores.push({ x: f.x0 + x, y, tipo: Math.floor(r() * 3), alt: 1 + Math.floor(r() * 2) }); };
     for (let x = 0; x < L; x++) { arvore(x, 0); arvore(x, ALT - 1); if (r() < 0.6) arvore(x, 1); if (r() < 0.6) arvore(x, ALT - 2); }
-    for (let y = 0; y < ALT; y++) { if (Math.abs(y - MEIO + 0.5) < 2) continue; if (f.idx === 0) { arvore(0, y); arvore(1, y); } if (f.idx === fases.length - 1) { arvore(L - 1, y); arvore(L - 2, y); } }
+    for (let y = 0; y < ALT; y++) { arvore(0, y); arvore(L - 1, y); if (r() < 0.6) arvore(1, y); if (r() < 0.6) arvore(L - 2, y); }
     const pertoDeCoisa = (x, y) => { for (let j = y - 1; j <= y + 1; j++) for (let i = x - 1; i <= x + 1; i++) if (at(i, j) && (f.tile[pos(i, j)] !== T.grama || f.sol[pos(i, j)])) return true; return false; };
     for (let k = 0; k < L * ALT * 0.05; k++) { const x = Math.floor(r() * L), y = Math.floor(r() * ALT); if (!pertoDeCoisa(x, y)) arvore(x, y); }
     // flores e enfeites (só desenho, não bloqueiam)
     f.flores = [];
     for (let k = 0; k < L * ALT * 0.06; k++) { const x = r() * L, y = r() * ALT; const t = f.tile[pos(Math.floor(x), Math.floor(y))]; if (t === T.grama && !f.sol[pos(Math.floor(x), Math.floor(y))]) f.flores.push({ x: f.x0 + x, y, c: ['#ff9fb6', '#fff27a', '#ffffff', '#c7a6ff', '#ffb36b'][k % 5] }); }
-    // placa na entrada e portão no fim da estrada
-    f.placa = { x: f.x0 + 3.5, y: MEIO + 1.8 };
-    f.sol[pos(3, MEIO + 1)] = 1;
-    if (f.idx < fases.length - 1) f.portao = { x: f.x0 + L - 0.5, y: MEIO };
+    // placa perto da praça
+    f.placa = { x: f.x0 + MEIO + 3.5, y: MEIO + 1.8 };
+    f.sol[pos(MEIO + 3, MEIO + 1)] = 1;
     // moradores andando pelo anel
-    const nomes = NOMES.slice();
-    f.npcs = [];
-    for (let k = 0; k < f.nNpc; k++) {
-      const th = (k + 0.3) / f.nNpc * Math.PI * 2 + 0.6;
-      const nome = nomes.splice((f.idx * 3 + k * 5) % nomes.length, 1)[0];
-      f.npcs.push({ id: f.id + '-npc' + k, nome, th, x: f.x0 + cx + Math.cos(th) * raioEm(th), y: cy + Math.sin(th) * raioEm(th), fase: f, prof: k === 0,
-        av: { pele: PELES[(k + f.idx) % PELES.length], cabelo: CABELOS[(k * 2 + f.idx) % CABELOS.length], estilo: ['curto', 'longo', 'coque', 'bone'][(k + f.idx) % 4], camisa: ROUPAS[(k * 3 + f.idx) % ROUPAS.length], calca: ['#2f3b6b', '#5a3b2a', '#333333'][k % 3] } });
-    }
+    for (const n of f.npcs) { n.x = cx + Math.cos(n.th) * raioEm(n.th); n.y = cy + Math.sin(n.th) * raioEm(n.th); }
     f.raioEm = raioEm; f.cx = cx; f.cy = cy;
     // itens da semana: lugares novos a cada segunda-feira, para revisar
     const ri = rng(5000 + f.idx * 131 + SEMANA * 7919);
@@ -261,9 +277,13 @@
       f.itens.push({ id: `${f.id}-s${SEMANA}-${f.itens.length}`, x: f.x0 + x + 0.5, y: y + 0.5, tipo });
     }
   }
-  const LARG = x0;
+  /* desmonta a vila (o que ocupa memória: chão, árvores, flores, casas, itens); moradores, portões e as casas especiais ficam */
+  function desmonta(f) { for (const k of ['tile', 'sol', 'var', 'arvores', 'flores', 'casas', 'itens', 'cercas']) delete f[k]; }
+  for (const f of fases) { monta(f); desmonta(f); }        // uma passada para guardar a posição das casas especiais e dos moradores
+  const LARG = ALT;
+  let atual = fases[0];
   const todosLugares = fases.flatMap(f => f.lugares);
-  const faseDeX = x => fases.find(f => x >= f.x0 && x < f.x0 + f.L) || fases[fases.length - 1];
+  const faseDeX = () => atual;
   function tileEm(x, y) { const f = faseDeX(x), lx = Math.floor(x - f.x0), ly = Math.floor(y); if (lx < 0 || ly < 0 || lx >= f.L || ly >= ALT) return { f, t: T.grama, sol: 1 }; return { f, t: f.tile[ly * f.L + lx], sol: f.sol[ly * f.L + lx], v: f.var[ly * f.L + lx] }; }
 
   /* ---------- a casa do jogador: três cômodos e móveis feitos com os itens ---------- */
@@ -297,7 +317,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, x: fases[0].x0 + 3.5, y: MEIO });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -305,7 +325,7 @@
   // versão anterior (casas em fileiras): a posição salva não serve mais, e os itens antigos contam para a missão
   if (!S.cont || !Object.keys(S.cont).length) for (const k of Object.keys(S.itens || {})) { const fid = k.split('-')[0]; S.cont[fid] = (S.cont[fid] || 0) + 1; }
   for (const k of Object.keys(S.itens)) if (!k.includes('-s' + SEMANA + '-')) delete S.itens[k];   // só os desta semana
-  if (S.versao !== 2) { S.x = fases[0].x0 + 3.5; S.y = MEIO; S.versao = 2; }
+  if (S.versao !== 3) { S.x = 3.5; S.y = MEIO; S.fase = 0; S.versao = 3; }   // versão 3: vilas em grade
   function salvar(avisa) { try { localStorage.setItem(CHAVE, JSON.stringify(S)); if (avisa) aviso('💾 Progresso salvo!'); } catch (e) { if (avisa) aviso('Não deu para salvar neste navegador.'); } }
 
   /* ---------- missões ---------- */
@@ -351,8 +371,12 @@
   const cv = $('#jogo'), ctxJogo = cv.getContext('2d');
   let ctx = ctxJogo;
   let W = 0, HH = 0, zoom = 1, dpr = 1;
+  /* qualidade: começa boa e cai sozinha (menos pixels, sem flores) se o aparelho não der conta de ~30 quadros por segundo */
+  const grosso = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+  let leve = false;
+  const desempenho = { n: 0, t: 0 };
   function ajusta() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = leve ? 1 : Math.min(window.devicePixelRatio || 1, grosso ? 1.5 : 2);
     W = cv.clientWidth; HH = cv.clientHeight;
     cv.width = Math.round(W * dpr); cv.height = Math.round(HH * dpr);
     zoom = W < 700 ? 0.72 : Math.max(0.8, Math.min(1.2, W / 1300));
@@ -527,15 +551,18 @@
     const [sx, sy] = iso(x, y + 0.1, 1.2);
     ctx.font = '700 11px Lexend, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#5a3b1a'; ctx.fillText(`Fase ${f.idx + 1}`, sx - 2, sy + 2);
   }
-  function desenhaPortao(f) {
-    const aberto = liberada(fases[f.idx + 1]);
-    const { x, y } = f.portao;
-    caixa(x - 0.2, y - 1.6, 0, 0.4, 0.4, 2.2, '#f2e48a'); caixa(x - 0.2, y + 1.2, 0, 0.4, 0.4, 2.2, '#f2e48a');
-    caixa(x - 0.25, y - 1.65, 2.2, 0.5, 3.3, 0.35, aberto ? '#a8e6b8' : '#f7a8c4');
-    if (!aberto) for (let k = 0; k < 4; k++) caixa(x - 0.05, y - 1.1 + k * 0.6, 0, 0.1, 0.12, 1.8, '#e0564a', { blocos: false });
+  /* portão na borda: nos lados leste e oeste as colunas ficam ao longo de y; no norte e no sul, ao longo de x */
+  function desenhaPortao(p) {
+    const aberto = liberada(fases[p.para]), { x, y } = p, emY = p.lado === 'L' || p.lado === 'O';
+    const ax = emY ? 0 : 1, ay = emY ? 1 : 0;
+    caixa(x - 0.2 - ax * 1.4, y - 0.2 - ay * 1.4, 0, 0.4, 0.4, 2.2, '#f2e48a'); caixa(x - 0.2 + ax * 1.4, y - 0.2 + ay * 1.4, 0, 0.4, 0.4, 2.2, '#f2e48a');
+    caixa(x - 0.25 - ax * 1.45, y - 0.25 - ay * 1.45, 2.2, 0.5 + ax * 2.9, 0.5 + ay * 2.9, 0.35, aberto ? '#a8e6b8' : '#f7a8c4');
+    if (!aberto) for (let k = 0; k < 4; k++) caixa(x - 0.05 - ax * (0.9 - k * 0.6), y - 0.05 - ay * (0.9 - k * 0.6), 0, 0.1, 0.1, 1.8, '#e0564a', { blocos: false });
     const [sx, sy] = iso(x, y, 3.2);
     ctx.font = '22px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(aberto ? '🚪' : '🔒', sx, sy);
+    rotulo(`${fases[p.para].icone} ${fases[p.para].nome}`, sx, sy - 26, aberto ? '#fff7e8' : '#eeeeee');
   }
+  function desenhaCerca(c) { caixa(c.x + 0.1, c.y + 0.1, 0, 0.8, 0.8, 0.12, '#c08a52', { blocos: false }); for (const [a, b] of [[0.15, 0.15], [0.7, 0.7], [0.15, 0.7], [0.7, 0.15]]) caixa(c.x + a, c.y + b, 0, 0.15, 0.15, 0.9, '#c08a52', { blocos: false }); caixa(c.x + 0.1, c.y + 0.1, 0.55, 0.8, 0.8, 0.12, '#e6c08a', { blocos: false }); }
   function desenhaItem(it) {
     const [ic] = ITENS[it.tipo];
     sombra(it.x, it.y, 0.35);
@@ -588,7 +615,6 @@
       if (qx < 0.2 || qy < 0.2 || qx > LARG - 0.2 || qy > ALT - 0.2) return false;
       if (tileEm(qx, qy).sol) return false;
     }
-    for (const g of fases) if (g.portao && !liberada(fases[g.idx + 1]) && Math.abs(x - g.portao.x) < 0.45 && Math.abs(y - g.portao.y) < 2) return false;
     return true;
   }
   /* as setas andam na direção da tela: converte para as coordenadas do mapa */
@@ -616,6 +642,7 @@
     if (dentro) { if (P.andando && my > 0 && P.y > CD - 0.55 && P.x > 1.8 && P.x < 3.4) saiCasa(); return; }   // pisou no tapete da porta
     // itens: pega ao passar por cima (o diamante pede uma pergunta antes)
     const f = faseDeX(P.x);
+    for (const p of f.portais) if (P.andando && Math.hypot(p.x - P.x, p.y - P.y) < 0.9 && liberada(fases[p.para])) { trocaFase(p.para, f.idx); return; }
     for (const it of f.itens) if (!S.itens[it.id] && Math.hypot(it.x - P.x, it.y - P.y) < 0.55) { pegaItem(it, f); break; }
     if (f !== faseAtual) { faseAtual = f; hud(); if (agora > 1000) aviso(`${f.icone} ${f.nome}`); }
   }
@@ -631,7 +658,7 @@
     if (S.pet && !S.pet.dorme) tenta(PET.x, PET.y + 0.3, { tipo: 'pet' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
     tenta(f.placa.x, f.placa.y + 0.8, { tipo: 'placa', fase: f });
-    if (f.portao) tenta(f.portao.x - 0.8, f.portao.y, { tipo: 'portao', fase: f });
+    for (const p of f.portais) tenta(p.x + (p.lado === 'L' ? -1 : p.lado === 'O' ? 1 : 0), p.y + (p.lado === 'S' ? -1 : p.lado === 'N' ? 1 : 0), { tipo: 'portao', portal: p, fase: f });
     return melhor;
   }
 
@@ -668,7 +695,7 @@
     return melhor;
   }
   const posMundo = () => noEnigma ? { x: fases[1].enigma.porta.x, y: fases[1].enigma.porta.y + 0.4 } : dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
-  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; }
+  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = noEnigma ? 1 : dentro ? 0 : atual.idx; }
   function entraCasa() {
     fechaJanela(); destino = null; dentro = true; mouse = null;
     P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; petPerto(); hud();
@@ -679,6 +706,7 @@
   }
   function saiCasa() {
     const p = posMundo();
+    if (atual.idx !== 0) trocaFase(0);
     dentro = false; colocando = null; destino = null; mouse = null; P.x = p.x; P.y = p.y; P.dir = 'y+'; cam.ok = false; petPerto();
     for (const k in teclas) teclas[k] = false;
     hud();
@@ -952,6 +980,7 @@
   }
   function saiEnigma() {
     const c = fases[1].enigma;
+    if (atual.idx !== 1) trocaFase(1);
     noEnigma = false; destino = null; P.x = c.porta.x; P.y = c.porta.y + 0.4; P.dir = 'y+'; cam.ok = false; petPerto();
     for (const k in teclas) teclas[k] = false;
     hud();
@@ -1170,10 +1199,12 @@
   let t0 = performance.now();
   function quadro(now) {
     const dt = Math.min(0.05, (now - t0) / 1000); t0 = now; agora = now;
+    if (!document.hidden && !leve && ++desempenho.n > 1) { desempenho.t += dt; if (desempenho.n >= 120) { if (desempenho.t / desempenho.n > 0.034) { leve = true; ajusta(); } desempenho.n = desempenho.t = 0; } }
     if (!dialogoAberto && !janelaAberta) move(dt);
     movePet(dt);
     // moradores passeiam devagar pelo anel
-    for (const f of fases) for (const n of f.npcs) {
+    for (const n of atual.npcs) {
+      const f = atual;
       if (dialogoAberto && dialogoNpc === n) continue;
       n.th += dt * 0.025; const rr = f.raioEm(n.th);
       const nx = f.x0 + f.cx + Math.cos(n.th) * rr, ny = f.cy + Math.sin(n.th) * rr;
@@ -1202,7 +1233,7 @@
       ctx.drawImage(tex, sxp - TW / 2, syp);
     }
     // borda do mundo (um degrau de terra dos lados que aparecem)
-    for (const f of visiveisFases()) for (const fl of f.flores) { const [sx, sy] = iso(fl.x, fl.y); if (sx > cam.x - 10 && sx < cam.x + vw + 10 && sy > cam.y - 10 && sy < cam.y + vh + 10) { ctx.fillStyle = fl.c; ctx.fillRect(sx - 3, sy - 6, 6, 6); ctx.fillStyle = '#4f9a4b'; ctx.fillRect(sx - 1, sy, 2, 4); } }
+    if (!leve) for (const f of visiveisFases()) for (const fl of f.flores) { const [sx, sy] = iso(fl.x, fl.y); if (sx > cam.x - 10 && sx < cam.x + vw + 10 && sy > cam.y - 10 && sy < cam.y + vh + 10) { ctx.fillStyle = fl.c; ctx.fillRect(sx - 3, sy - 6, 6, 6); ctx.fillStyle = '#4f9a4b'; ctx.fillRect(sx - 1, sy, 2, 4); } }
     // objetos ordenados pela profundidade (x + y)
     const lista = [], naTela = (x, y, m = 160) => { const [sx, sy] = iso(x, y); return sx > cam.x - m && sx < cam.x + vw + m && sy > cam.y - m && sy < cam.y + vh + m * 2; };
     const alvo = !dialogoAberto && alvoPerto();
@@ -1213,7 +1244,8 @@
       for (const a of f.arvores) if (naTela(a.x, a.y)) lista.push({ k: a.x + a.y + 1, d: () => desenhaArvore(a) });
       lista.push({ k: f.centro.x + f.centro.y + 0.5, d: () => desenhaMarco(f) });
       lista.push({ k: f.placa.x + f.placa.y, d: () => desenhaPlaca(f) });
-      if (f.portao) lista.push({ k: f.portao.x + f.portao.y + 1.5, d: () => desenhaPortao(f) });
+      for (const p of f.portais) lista.push({ k: p.x + p.y + 1.5, d: () => desenhaPortao(p) });
+      for (const c of f.cercas) lista.push({ k: c.x + c.y + 1, d: () => desenhaCerca(c) });
       for (const n of f.npcs) if (naTela(n.x, n.y)) lista.push({ k: n.x + n.y, d: () => { desenhaPessoa(n.x, n.y, n.av, n); const [sx, sy] = iso(n.x, n.y, 1.75); if (!S.falas[n.id]) balao(sx, sy - 6, n.prof ? '👩‍🏫' : '💬'); if (Math.hypot(n.x - P.x, n.y - P.y) < 4) rotulo(n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), sx, sy - (S.falas[n.id] ? 0 : 48), '#fff7e8'); } });
       for (const it of f.itens) if (!S.itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => desenhaItem(it) });
     }
@@ -1228,7 +1260,7 @@
     minimapa(faseDeX(P.x));
     requestAnimationFrame(quadro);
   }
-  function visiveisFases() { const f = faseDeX(P.x); return [fases[f.idx - 1], f, fases[f.idx + 1]].filter(Boolean); }
+  function visiveisFases() { return [atual]; }
   function balao(sx, sy, ic) {
     ctx.fillStyle = '#fff'; ctx.strokeStyle = '#e07bb0'; ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.roundRect(sx - 18, sy - 34, 36, 30, 9); ctx.fill(); ctx.stroke();
@@ -1427,9 +1459,9 @@
     const ms = missoes(f);
     dialogo('🪧', f.nome, `<p>${esc(f.placa)}</p><p class="muted">Missões desta fase: ${ms.map(m => `${m.ok ? '✅' : '⬜'} ${esc(m.nome)}`).join(' · ')}</p><p class="muted">Os itens do chão mudam de lugar toda segunda-feira, para você voltar e revisar.</p>`, [{ txt: 'Entendi', fn: fechaDialogo }]);
   }
-  function portao(f) {
-    const prox = fases[f.idx + 1];
-    if (liberada(prox)) { dialogo('🚪', 'Portão', `<p>O caminho para <strong>${esc(prox.nome)}</strong> está aberto. Siga em frente!</p>`, [{ txt: 'Vamos', fn: fechaDialogo }]); return; }
+  function portao(f, p) {
+    const prox = fases[p.para];
+    if (liberada(prox)) { dialogo('🚪', 'Portão', `<p>Este portão, no lado ${LADOS[p.lado].nome}, leva para <strong>${esc(prox.icone)} ${esc(prox.nome)}</strong>.</p>`, [{ txt: 'Ir agora', classe: 'principal', fn: () => { fechaDialogo(); trocaFase(p.para, f.idx); } }, { txt: 'Fico aqui', fn: fechaDialogo }]); return; }
     const falta = missoes(f).filter(m => !m.ok).map(m => `${esc(m.nome)} (${m.n}/${m.meta})`);
     dialogo('🔒', 'Portão fechado', `<p>Para seguir para <strong>${esc(prox.nome)}</strong>, complete as missões de ${esc(f.nome)}:</p><p>${falta.join('<br>')}</p>`, [{ txt: 'Vou lá!', fn: fechaDialogo }]);
   }
@@ -1438,7 +1470,7 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase);
+    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'enigma') entraEnigma(); else if (a.tipo === 'eobj') usaEnigma(a.obj); else if (a.tipo === 'esaida') saiEnigma(); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase, a.portal);
   }
 
   /* ---------- janelas ---------- */
@@ -1450,16 +1482,38 @@
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
   document.querySelectorAll('[data-abrir]').forEach(b => b.addEventListener('click', () => abreJanela(b.dataset.abrir)));
   document.querySelectorAll('[data-fechar]').forEach(b => b.addEventListener('click', fechaJanela));
-  function teleporta(f) { dentro = false; noEnigma = false; colocando = null; P.x = f.x0 + 3.5; P.y = MEIO; petPerto(); destino = null; cam.ok = false; fechaJanela(); hud(); }
+  /* troca de vila: desmonta a anterior, limpa as texturas guardadas e monta a nova */
+  function trocaFase(i, de) {
+    const f = fases[i];
+    if (atual !== f) { desmonta(atual); for (const k in texCache) delete texCache[k]; miniCache = null; miniFase = null; }
+    atual = f; monta(f);
+    const p = de == null ? null : f.portais.find(q => q.para === de);
+    if (p) { P.x = p.x + (p.lado === 'L' ? -1.6 : p.lado === 'O' ? 1.6 : 0); P.y = p.y + (p.lado === 'S' ? -1.6 : p.lado === 'N' ? 1.6 : 0); }
+    else if (i === 0) { P.x = 3.5; P.y = MEIO; }
+    else { const q = f.portais.find(q2 => q2.para === i - 1) || f.portais[0]; return trocaFase(i, q.para); }
+    S.fase = i; destino = null; cam.ok = false; faseAtual = null; petPerto(); hud();
+    if (agora > 1000) aviso(`${f.icone} ${f.nome}`);
+  }
+  function teleporta(f) { dentro = false; noEnigma = false; colocando = null; fechaJanela(); trocaFase(f.idx); }
+  /* mapa do mundo: as vilas em grade, ligadas pelos portões */
   function desenhaMapa() {
-    const c = $('#mapa-cv'), k = c.getContext('2d'); k.fillStyle = '#1b2531'; k.fillRect(0, 0, c.width, c.height);
-    const s = Math.min(c.width / LARG, (c.height - 24) / ALT), oy = 20 + (c.height - 24 - ALT * s) / 2, ox = (c.width - LARG * s) / 2;
+    const c = $('#mapa-cv'), k = c.getContext('2d'), cw = 200, ch = 120, gx = 30, gy = 22, ox = (c.width - 3 * cw - 2 * gx) / 2, oy = 14;
+    k.fillStyle = '#1b2531'; k.fillRect(0, 0, c.width, c.height);
+    const centro = i => [ox + GRADE[i][0] * (cw + gx) + cw / 2, oy + GRADE[i][1] * (ch + gy) + ch / 2];
+    k.strokeStyle = '#f3d6a0'; k.lineWidth = 8; k.lineCap = 'round';
+    for (let i = 1; i < fases.length; i++) { const [a, b] = centro(i - 1), [d, e] = centro(i); k.beginPath(); k.moveTo(a, b); k.lineTo(d, e); k.stroke(); }
     for (const f of fases) {
-      mapaFase(k, f, s, ox + f.x0 * s, oy, true);
-      if (!liberada(f)) { k.fillStyle = 'rgba(20,25,35,.55)'; k.fillRect(ox + f.x0 * s, oy, f.L * s, ALT * s); }
-      k.fillStyle = '#fff'; k.font = '600 12px Lexend, sans-serif'; k.textAlign = 'center'; k.fillText(`${liberada(f) ? '' : '🔒 '}${f.idx + 1}`, ox + (f.x0 + f.L / 2) * s, oy - 6);
+      const [cx, cy] = centro(f.idx), x = cx - cw / 2, y = cy - ch / 2, ok = liberada(f);
+      k.fillStyle = '#7fbf6a'; k.strokeStyle = f === atual ? '#ffffff' : '#3f8f4b'; k.lineWidth = f === atual ? 4 : 2;
+      k.beginPath(); k.roundRect(x, y, cw, ch, 16); k.fill(); k.stroke();
+      k.fillStyle = f.caminho; k.beginPath(); k.arc(cx, cy + 6, 34, 0, Math.PI * 2); k.fill();
+      k.font = '30px system-ui, sans-serif'; k.textAlign = 'center'; k.textBaseline = 'middle'; k.fillStyle = '#000'; k.fillText(f.icone, cx, cy + 6);
+      k.font = '600 13px Lexend, sans-serif'; k.fillStyle = '#ffffff'; k.fillText(`${f.idx + 1}. ${f.nome}`, cx, y + 14, cw - 12);
+      const cor = f.lugares.filter(l => S.feitos[l.id]).length;
+      k.font = '12px Lexend, sans-serif'; k.fillText(`${cor}/${f.lugares.length} casas${S.concluidas[f.id] ? ' · 🏆' : ''}`, cx, y + ch - 12);
+      if (!ok) { k.fillStyle = 'rgba(20,25,35,.6)'; k.beginPath(); k.roundRect(x, y, cw, ch, 16); k.fill(); k.font = '28px system-ui, sans-serif'; k.fillText('🔒', cx, cy); }
+      if (f === atual) { k.fillStyle = '#e85c4a'; k.beginPath(); k.arc(x + cw - 16, y + 16, 7, 0, Math.PI * 2); k.fill(); }
     }
-    k.fillStyle = '#e85c4a'; k.beginPath(); k.arc(ox + P.x * s, oy + P.y * s, 5, 0, Math.PI * 2); k.fill();
     $('#mapa-fases').innerHTML = fases.map(f => {
       const ms = missoes(f), ok = liberada(f), cor = f.lugares.filter(l => S.feitos[l.id]).length;
       return `<li class="${ok ? '' : 'travada'}"><span>${S.concluidas[f.id] ? '🏆' : ok ? f.icone : '🔒'}</span><span class="f-nome"><strong>Fase ${f.idx + 1}: ${esc(f.nome)}</strong><small>${esc(f.sub)} · ${cor} de ${f.lugares.length} casas coloridas · missões ${ms.filter(m => m.ok).length}/${ms.length}</small></span>${ok ? `<button type="button" class="hb azul" data-ir="${f.idx}">Ir</button>` : ''}</li>`;
@@ -1554,7 +1608,7 @@
     delete S.concluidas[f.id]; S.cont[f.id] = 0;
     teleporta(f); salvar(); aviso('🔄 Fase reiniciada');
   });
-  $('#b-zerar').addEventListener('click', () => { if (!confirm('Apagar todo o progresso do mundo? (O Meu progresso dos jogos não é apagado.)')) return; const av = S.av; S = novo(); S.av = av; dentro = false; noEnigma = false; colocando = null; S.versao = 2; P.x = S.x; P.y = S.y; cam.ok = false; salvar(); fechaJanela(); hud(); confereJogos(); });
+  $('#b-zerar').addEventListener('click', () => { if (!confirm('Apagar todo o progresso do mundo? (O Meu progresso dos jogos não é apagado.)')) return; const av = S.av; S = novo(); S.av = av; dentro = false; noEnigma = false; colocando = null; trocaFase(0); S.versao = 2; P.x = S.x; P.y = S.y; cam.ok = false; salvar(); fechaJanela(); hud(); confereJogos(); });
   const toqueEl = $('#toque'), bToque = $('#b-toque');
   function ligaToque(liga) { toqueEl.hidden = !liga; bToque.setAttribute('aria-pressed', String(liga)); document.body.classList.toggle('com-toque', liga); }
   bToque.addEventListener('click', () => ligaToque(toqueEl.hidden));
@@ -1620,7 +1674,6 @@
     else if (k === ' ') { if (P.pulo === 0) { P.vpulo = 3.4; P.pulo = 0.01; } ev.preventDefault(); }
     else if (k === 'e' || k === 'Enter') { interage(); ev.preventDefault(); }
     else if (k === 'm') abreJanela('mapa'); else if (k === 'i') abreJanela('inventario'); else if (k === 'b') abreJanela('biblioteca'); else if (k === 'v') abreJanela('avatar'); else if (k === 'c') $('#b-casa').click(); else if (k === 'p') abreJanela('pet');
-    else if (k === 'r') $('#b-reiniciar').click();
   });
   document.addEventListener('keyup', ev => { const k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key; if (MAPA_TECLAS[k]) teclas[MAPA_TECLAS[k]] = false; });
   window.addEventListener('blur', () => { for (const k in teclas) teclas[k] = false; });
@@ -1634,8 +1687,8 @@
 
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
-  if (!liberada(faseDeX(P.x)) || !livre(P.x, P.y)) { P.x = fases[0].x0 + 3.5; P.y = MEIO; }
-  window.MUNDO_DEBUG = { entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
+  window.MUNDO_DEBUG = { trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases();
   if (S.pet) { atualizaPet(); petPerto(); const pede = precisa(S.pet); if (pede.length) setTimeout(() => aviso(`🐾 ${S.pet.nome} precisa de você: ${pede.join(' ')}`), 1200); }
   if (!S.pontos) setTimeout(() => aviso('🌍 Explore o mundo e descubra os desafios!'), 400);
