@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circuito da casa · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<style>
+  .circ { display: block; width: 100%; max-width: 460px; margin: 4px auto 10px; background: var(--paper); border: 1.5px solid var(--line); border-radius: 18px; }
+  .circ .fio { stroke: var(--ink); stroke-width: 3; fill: none; stroke-linecap: round; }
+  .circ text { fill: var(--ink); font-family: var(--body); font-size: 13px; font-weight: 600; }
+  .circ .vidro { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; }
+  .circ .brilho { fill: var(--estrela); }
+  .circ .x { stroke: var(--bad); stroke-width: 3; }
+  .formula { font-family: ui-monospace, Consolas, monospace; background: var(--pill); padding: 1px 6px; border-radius: 6px; white-space: nowrap; }
+  .cola { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin: 0 0 18px; }
+  .cola div { border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; background: var(--fis); font-size: 14.5px; }
+  .cola b { font-family: var(--display); }
+</style>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="e-voltar" href="./">← Ilha ENEM</a>
+    <h1>💡 Circuito da casa</h1>
+    <p class="muted">Seis desafios de eletricidade do jeito que o ENEM cobra: série, paralelo, brilho das lâmpadas, potência e conta de luz. As lâmpadas acendem de acordo com a potência de verdade.</p>
+  </div>
+  <details class="howto">
+    <summary>Cola rápida</summary>
+    <div class="cola">
+      <div><b>U = R · i</b><br>tensão = resistência × corrente</div>
+      <div><b>Série</b>: R<sub>eq</sub> = R₁ + R₂<br>mesma corrente em tudo</div>
+      <div><b>Paralelo</b>: R<sub>eq</sub> = R₁·R₂ / (R₁ + R₂)<br>mesma tensão em tudo</div>
+      <div><b>P = U · i = U²/R = R · i²</b><br>potência em watts</div>
+      <div><b>E = P · Δt</b><br>kWh = (W ÷ 1000) × horas</div>
+    </div>
+  </details>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+</main>
+<footer class="footer"><div class="wrap">Estrelas ficam guardadas só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), palco = $('#palco'), mix = ENEM.embaralha;
+  ENEM.topo($('#topo'));
+  const sorteia = a => a[Math.floor(Math.random() * a.length)];
+  const num = n => (Math.round(n * 100) / 100).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  const reais = n => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const unicos = (certa, erradas) => { const v = new Set([certa]); return erradas.filter(e => !v.has(e) && v.add(e)).slice(0, 3); };
+
+  /* ---------- desenho do circuito: as lâmpadas brilham conforme a potência ---------- */
+  function potencias(c) {
+    const [R1, R2] = [c.R1, c.R2];
+    if (c.tipo === 'serie') { if (c.queimada) return [0, 0]; const i = c.V / (R1 + R2); return [i * i * R1, i * i * R2]; }
+    return [c.queimada === 1 ? 0 : c.V * c.V / R1, c.queimada === 2 ? 0 : c.V * c.V / R2];
+  }
+  function lampada(x, y, n, R, brilho, queimada, rotulo) {
+    const [lx, ly, ancora] = rotulo || [x, y + 36, 'middle'];
+    const b = Math.max(0, Math.min(1, brilho));
+    return `<g>${b > 0 ? `<circle class="brilho" cx="${x}" cy="${y}" r="${18 + 16 * b}" opacity="${0.25 + 0.55 * b}"/>` : ''}
+      <circle class="vidro" cx="${x}" cy="${y}" r="16"/>
+      <path class="fio" d="M${x - 8} ${y + 4} q4 -12 8 0 q4 12 8 0" style="stroke-width:2"/>
+      ${queimada ? `<path class="x" d="M${x - 11} ${y - 11} L${x + 11} ${y + 11} M${x + 11} ${y - 11} L${x - 11} ${y + 11}"/>` : ''}
+      <text x="${lx}" y="${ly}" text-anchor="${ancora}">L${n} · ${R} Ω</text></g>`;
+  }
+  function desenho(c) {
+    // brilho relativo à lâmpada mais forte do circuito ligado normalmente
+    const P = potencias(c), ref = Math.max(...potencias({ ...c, queimada: 0 }), 1e-9);
+    const brilho = P.map(p => p / ref);
+    const bat = `<path class="fio" d="M40 40 V84 M40 116 V170"/><path class="fio" d="M24 90 H56" style="stroke-width:4"/><path class="fio" d="M31 100 H49" style="stroke-width:7"/><path class="fio" d="M24 110 H56" style="stroke-width:4"/>
+      <text x="64" y="104">${c.V} V</text>`;
+    if (c.tipo === 'serie') {
+      return `<svg class="circ" viewBox="0 0 360 210" role="img" aria-label="Duas lâmpadas em série ligadas a uma bateria de ${c.V} volts">
+        ${bat}<path class="fio" d="M40 40 H114 M146 40 H214 M246 40 H320 V170 H40"/>
+        ${lampada(130, 40, 1, c.R1, brilho[0], c.queimada === 1)}${lampada(230, 40, 2, c.R2, brilho[1], c.queimada === 2)}
+        <text x="180" y="196" text-anchor="middle" style="font-weight:400">em série: um caminho só</text></svg>`;
+    }
+    return `<svg class="circ" viewBox="0 0 360 210" role="img" aria-label="Duas lâmpadas em paralelo ligadas a uma bateria de ${c.V} volts">
+      ${bat}<path class="fio" d="M40 40 H290 M190 40 V79 M190 111 V170 M290 40 V79 M290 111 V170 M40 170 H290"/>
+      ${lampada(190, 95, 1, c.R1, brilho[0], c.queimada === 1, [168, 100, 'end'])}
+      ${lampada(290, 95, 2, c.R2, brilho[1], c.queimada === 2, [268, 100, 'end'])}
+      <text x="180" y="196" text-anchor="middle" style="font-weight:400">em paralelo: cada lâmpada no seu caminho</text></svg>`;
+  }
+
+  /* ---------- desafios ---------- */
+  const PARES_PARALELO = [[3, 6], [4, 12], [6, 12], [6, 6], [12, 4], [6, 3], [10, 10], [12, 12], [20, 5]];
+  const DESAFIOS = {
+    serie() {
+      const [R1, R2] = sorteia([[2, 4], [4, 8], [3, 3], [2, 10], [4, 2], [6, 6], [1, 5]]), V = sorteia([6, 12, 24]);
+      const c = { tipo: 'serie', R1, R2, V }, i = V / (R1 + R2);
+      return { c, enun: `As duas lâmpadas estão <b>em série</b> com uma bateria de ${V} V. Qual a corrente no circuito?`,
+        certa: num(i) + ' A', erradas: [num(V / R1 + V / R2) + ' A', num(V * (R1 + R2)) + ' A', num(V / (R1 * R2 / (R1 + R2))) + ' A', num(i * 2) + ' A'],
+        expl: `Em série, some as resistências: <span class="formula">R = ${R1} + ${R2} = ${R1 + R2} Ω</span>. Depois <span class="formula">i = U / R = ${V} / ${R1 + R2} = ${num(i)} A</span>. A mesma corrente passa pelas duas lâmpadas.` };
+    },
+    paralelo() {
+      const [R1, R2] = sorteia(PARES_PARALELO), V = sorteia([6, 12]);
+      const c = { tipo: 'paralelo', R1, R2, V }, Req = R1 * R2 / (R1 + R2);
+      return { c, enun: `As lâmpadas estão <b>em paralelo</b>. Qual a resistência equivalente do circuito?`,
+        certa: num(Req) + ' Ω', erradas: [num(R1 + R2) + ' Ω', num((R1 + R2) / 2) + ' Ω', num(Math.abs(R1 - R2) || R1 * 2) + ' Ω', num(R1 * R2) + ' Ω'],
+        expl: `Em paralelo, use "produto pela soma": <span class="formula">R = ${R1}·${R2} / (${R1}+${R2}) = ${num(Req)} Ω</span>. Repare que o resultado é <b>menor</b> que a menor resistência: mais caminhos, mais fácil a corrente passar.` };
+    },
+    brilho() {
+      const tipo = sorteia(['serie', 'paralelo']), [R1, R2] = sorteia([[4, 12], [12, 4], [6, 3], [3, 6], [10, 20], [20, 10]]), V = 12;
+      const c = { tipo, R1, R2, V }, maior = R1 > R2 ? 1 : 2, menor = 3 - maior, quem = tipo === 'serie' ? maior : menor;
+      return { c, ocultarBrilho: true, enun: `As lâmpadas estão <b>${tipo === 'serie' ? 'em série' : 'em paralelo'}</b>. Qual delas brilha mais?`,
+        certa: 'Lâmpada L' + quem, erradas: ['Lâmpada L' + (3 - quem), 'As duas brilham igual'],
+        expl: tipo === 'serie'
+          ? `Em série a corrente é a mesma, então vale <span class="formula">P = R · i²</span>: quem tem <b>mais</b> resistência dissipa mais potência e brilha mais (L${maior}, ${Math.max(R1, R2)} Ω).`
+          : `Em paralelo a tensão é a mesma, então vale <span class="formula">P = U² / R</span>: quem tem <b>menos</b> resistência puxa mais corrente e brilha mais (L${menor}, ${Math.min(R1, R2)} Ω). É assim nas tomadas de casa.` };
+    },
+    potencia() {
+      const V = sorteia([12, 24]), R1 = sorteia([4, 6, 8, 12]), R2 = sorteia([6, 12, 24].filter(r => r !== R1));
+      const c = { tipo: 'paralelo', R1, R2, V };
+      return { c, enun: `Em paralelo, cada lâmpada recebe os ${V} V da bateria. Qual a potência da lâmpada L1?`,
+        certa: num(V * V / R1) + ' W', erradas: [num(V / R1) + ' W', num(V * R1) + ' W', num(V * V * R1) + ' W', num(V * V / (R1 + R2)) + ' W'],
+        expl: `<span class="formula">P = U² / R = ${V}² / ${R1} = ${V * V} / ${R1} = ${num(V * V / R1)} W</span>. Se quiser conferir pela corrente: <span class="formula">i = ${V}/${R1} = ${num(V / R1)} A</span> e <span class="formula">P = U·i = ${num(V * V / R1)} W</span>.` };
+    },
+    conta() {
+      const ap = sorteia([
+        { nome: 'um chuveiro elétrico de 5 500 W', P: 5500, t: 15, unid: 'min' },
+        { nome: 'um chuveiro elétrico de 4 400 W', P: 4400, t: 30, unid: 'min' },
+        { nome: 'um ar-condicionado de 1 500 W', P: 1500, t: 8, unid: 'h' },
+        { nome: 'um ferro de passar de 1 000 W', P: 1000, t: 30, unid: 'min' },
+        { nome: 'uma TV de 100 W', P: 100, t: 5, unid: 'h' }]);
+      const tarifa = sorteia([0.8, 0.75, 0.9]), horas = ap.unid === 'min' ? ap.t / 60 : ap.t;
+      const kwh = ap.P / 1000 * horas * 30, custo = kwh * tarifa;
+      return { c: null, enun: `Uma família usa ${ap.nome} por <b>${ap.t} ${ap.unid === 'min' ? 'minutos' : 'horas'} por dia</b>, durante 30 dias. Com o kWh a ${reais(tarifa)}, quanto esse aparelho custa no mês?`,
+        certa: reais(custo), erradas: [reais(custo / 30), reais(ap.P * horas * 30 * tarifa), reais(ap.unid === 'min' ? ap.P / 1000 * ap.t * 30 * tarifa : custo * 2), reais(custo / tarifa)],
+        expl: `Passe para kW e horas: <span class="formula">${ap.P} W = ${num(ap.P / 1000)} kW</span>${ap.unid === 'min' ? ` e <span class="formula">${ap.t} min = ${num(horas)} h</span>` : ''}. Energia no mês: <span class="formula">${num(ap.P / 1000)} × ${num(horas)} × 30 = ${num(kwh)} kWh</span>. Custo: <span class="formula">${num(kwh)} × ${reais(tarifa)} = ${reais(custo)}</span>.` };
+    },
+    queimou() {
+      const tipo = sorteia(['serie', 'paralelo']), [R1, R2] = sorteia([[6, 6], [4, 4], [6, 12], [12, 6]]), V = 12;
+      const c = { tipo, R1, R2, V };
+      return { c, depois: { ...c, queimada: 1 }, enun: `As lâmpadas estão <b>${tipo === 'serie' ? 'em série' : 'em paralelo'}</b>. Se a lâmpada L1 queimar, o que acontece com a L2?`,
+        certa: tipo === 'serie' ? 'Apaga também' : 'Continua acesa, com o mesmo brilho', erradas: [tipo === 'serie' ? 'Continua acesa, com o mesmo brilho' : 'Apaga também', 'Brilha mais forte', 'Fica mais fraca'],
+        expl: tipo === 'serie'
+          ? 'Em série só existe um caminho: se ele se abre em L1, a corrente para em todo o circuito. Era assim nos pisca-piscas antigos de Natal.'
+          : 'Em paralelo cada lâmpada tem o seu caminho e continua recebendo a mesma tensão. Por isso a casa é ligada em paralelo: queimar uma lâmpada não apaga as outras.' };
+    }
+  };
+
+  /* ---------- rodada ---------- */
+  let fila = [], i = 0, acertos = 0, respondida = false;
+  function comecar() { fila = mix(Object.keys(DESAFIOS)).map(k => DESAFIOS[k]()); i = 0; acertos = 0; mostrar(); }
+  function mostrar() {
+    const d = fila[i]; respondida = false;
+    d.alts = mix([d.certa, ...unicos(d.certa, d.erradas)]);
+    palco.innerHTML = `<div class="hud"><span>Desafio <b>${i + 1}</b> de ${fila.length}</span><span>Acertos <b>${acertos}</b></span></div>
+      <div class="barra"><i style="width:${i / fila.length * 100}%"></i></div>
+      <div id="fig">${d.c ? (d.ocultarBrilho ? desenho(d.c).replace(/<circle class="brilho"[^>]*\/>/g, '') : desenho(d.c)) : '<div style="font-size:64px;text-align:center" aria-hidden="true">🧾⚡</div>'}</div>
+      <div class="q-enun">${d.enun}</div>
+      <div class="alts">${d.alts.map((t, k) => `<button class="alt" type="button" data-k="${k}"><span class="letra">${'ABCD'[k]}</span><span>${t}</span></button>`).join('')}</div>
+      <div id="corr"></div><div class="btn-row" id="seguir" style="margin-top:14px"></div>`;
+    palco.querySelectorAll('[data-k]').forEach(b => b.onclick = () => responder(b));
+  }
+  function responder(botao) {
+    if (respondida) return; respondida = true;
+    const d = fila[i], ok = d.alts[+botao.dataset.k] === d.certa;
+    if (ok) acertos++;
+    palco.querySelectorAll('.alt').forEach(b => { b.disabled = true; if (d.alts[+b.dataset.k] === d.certa) b.classList.add('certa'); else if (b === botao) b.classList.add('errada'); });
+    if (d.depois) $('#fig').innerHTML = desenho(d.depois);
+    else if (d.ocultarBrilho) $('#fig').innerHTML = desenho(d.c);
+    $('#corr').innerHTML = `<div class="corr ${ok ? 'ok' : 'bad'}"><b>${ok ? 'Isso!' : 'Resposta: ' + d.certa + '.'}</b><br>${d.expl}</div>`;
+    const ultima = i === fila.length - 1;
+    $('#seguir').innerHTML = `<button class="btn" type="button" id="prox">${ultima ? 'Ver resultado' : 'Próximo →'}</button>`;
+    $('#prox').onclick = () => { if (ultima) fim(); else { i++; mostrar(); } };
+    $('#prox').focus({ preventScroll: true });
+  }
+  function fim() {
+    ENEM.contarFeitas(fila.length);
+    const est = acertos === 6 ? 3 : acertos === 5 ? 2 : acertos >= 4 ? 1 : 0, novo = ENEM.darEstrelas('circuito', est);
+    $('#tot-est').textContent = ENEM.totalEstrelas();
+    palco.innerHTML = `<div class="fim"><div class="grande">${acertos}/6</div>${ENEM.estrelasHtml(est)}
+      <h2 style="margin-top:10px">${est === 3 ? 'Eletricista do ENEM!' : est ? 'Boa! Cada rodada sorteia valores novos.' : 'Leia a cola rápida ali em cima e tente de novo.'}</h2>
+      ${novo ? '<p class="feedback ok">Novo recorde de estrelas!</p>' : ''}
+      <div class="btn-row" style="justify-content:center;margin-top:12px"><button class="btn" type="button" id="denovo">Jogar de novo</button><a class="btn ghost" href="simulado.html?area=fis">Simulado de Física</a><a class="btn ghost" href="./">Voltar à ilha</a></div></div>`;
+    $('#denovo').onclick = comecar;
+  }
+  document.addEventListener('keydown', e => {
+    if (respondida || e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = e.key.toUpperCase(), idx = '1234'.indexOf(k) >= 0 ? '1234'.indexOf(k) : 'ABCD'.indexOf(k);
+    const b = idx >= 0 && palco.querySelector(`[data-k="${idx}"]`); if (b) { b.click(); e.preventDefault(); }
+  });
+  comecar();
+})();
+</script>
+</body>
+</html>

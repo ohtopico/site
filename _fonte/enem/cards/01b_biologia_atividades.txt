@@ -1,0 +1,100 @@
+# ENEM 2026::01 Biologia
+## Ecologia
++: Cadeia alimentar: o que acontece || Regra dos 10%: de cada 100 que entram, só 10 sobem um degrau. || [img:bio_piramide_energia]
++: Diferença entre pirâmide de energia || Energia "não volta atrás": a pirâmide de energia NUNCA fica de cabeça para baixo.
++: O que é magnificação || Quem come mais no topo, acumula mais veneno: "o tubarão paga a conta". || [img:bio_magnificacao]
++: Mutualismo x protocooperação || MUtualismo = MUito ligado (não vive sem). PROTOcooperação = só uma "PROpostinha" de parceria, opcional.
++: Comensalismo x inquilinismo || COMensalismo = COMe as sobras. INQUILINismo = mora de favor (inquilino).
++: Sucessão ecológica primária x secundária || Primária = Primeira vez (rocha nua). Secundária = Segunda chance (já tinha vida). || [img:bio_sucessao]
++: Ciclo do nitrogênio: etapas || Ordem: Fixa → Nitrifica → Assimila → Desnitrifica ("Fui Na Academia Domingo"). || [img:bio_ciclo_nitrogenio]
++: O que é eutrofização? || "Excesso de comida mata de fome de ar": nutriente demais → falta O2. || [img:bio_eutrofizacao]
++: Biomas brasileiros: características do Cerrado || Cerrado = árvore "torta e de casca grossa, com raiz de poço profundo".
+C: Na fixação biológica do nitrogênio, bactérias do gênero {{c1::Rhizobium}} vivem em nódulos nas raízes de {{c2::leguminosas}} (feijão, soja). || [img:bio_ciclo_nitrogenio]
+C: Na eutrofização, a decomposição das algas mortas por bactérias {{c1::aeróbias}} reduz o {{c2::oxigênio dissolvido}} e aumenta a {{c3::DBO}}. || [img:bio_eutrofizacao]
+C: Na cadeia alimentar, a energia é {{c1::unidirecional}} (não volta), enquanto a matéria é {{c2::cíclica}} (decompositores devolvem ao ambiente).
+C: Comunidade final e estável de uma sucessão ecológica: {{c1::clímax}}. Primeiros colonizadores de rocha nua: {{c2::liquens}}.
+C: Gases do efeito estufa: {{c1::CO2}}, {{c2::metano (CH4)}} e vapor d'água. A destruição da camada de ozônio é causada pelos {{c3::CFCs}}.
+R: Predatismo || Relação +/-: um animal mata e come o outro (onça e capivara).
+R: Parasitismo || Relação +/-: um vive à custa do outro sem matá-lo rápido (carrapato e cão).
+R: Herbivoria || Animal se alimentando de planta (+/-).
+V: A pirâmide de biomassa nunca pode ser invertida. || **Errado.** Pode inverter no mar: o fitoplâncton tem pouca biomassa em um dado momento, mas se reproduz muito rápido. Quem NUNCA inverte é a de energia.
+V: Os decompositores ocupam o último nível trófico da cadeia. || **Errado.** Decompositores atuam em TODOS os níveis, reciclando a matéria de qualquer ser morto.
+## Citologia e bioquímica
++: Função das mitocôndrias || Mitocôndria = "usina de energia" (ATP). DNA só da mãe: herança materna.
++: Osmose: célula em meio hipertônico || "A água vai para onde tem mais sal" (sai do lado diluído para o concentrado). || [img:bio_osmose]
++: Fotossíntese: equação geral || A fotossíntese é a respiração "de trás para frente": CO2 + H2O entram, glicose + O2 saem.
++: Fotossíntese: fase clara x fase escura || CLARA = Luz e tiLacoide. ESCURA (química) = Estroma e ciclo de Calvin.
++: Mitose x meiose || MEIOse divide pela MEtade (2n → n). MITOse faz cópias IdênTicas. || [img:bio_mitose_meiose]
++: Vitaminas: deficiências || "A-olho, C-gengiva, D-osso, K-coágulo (K de Koagulação, do alemão), B12-sangue".
++: Transporte passivo x ativo || Ativo = gasta ATP (ATivo, ATP). Passivo = de graça, a favor do gradiente.
+F: [img:bio_celula_rotulos] Identifique as estruturas 1 a 5. || 1: **núcleo** (com nucléolo). 2: **mitocôndria** (respiração, ATP). 3: **complexo golgiense** (empacota e secreta). 4: **lisossomo** (digestão intracelular). 5: **ribossomos** (síntese de proteínas).
+F: [img:bio_osmose] Por que a hemácia da direita pode estourar? || Ela está em meio **hipotônico** (menos concentrado): a água entra por osmose e, como a célula animal não tem parede celular, ela pode romper (hemólise).
+C: Organela da respiração celular: {{c1::mitocôndria}}. Organela da fotossíntese: {{c2::cloroplasto}}. Organela da síntese de proteínas: {{c3::ribossomo}}.
+C: Respiração aeróbia: glicose + {{c1::O2}} → {{c2::CO2}} + H2O + energia (ATP).
+C: Fermentação alcoólica produz {{c1::etanol}} e {{c2::CO2}}; fermentação lática produz {{c3::ácido lático}}. Ambas rendem apenas {{c4::2}} ATP.
+C: A parede celular vegetal é feita de {{c1::celulose}}; a dos fungos, de {{c2::quitina}}.
+D: Qual é o saldo de ATP da fermentação por molécula de glicose? || 2 || Só a glicólise, sem mitocôndria.
+D: Qual organela faz a digestão intracelular? || lisossomo || Enzimas hidrolíticas; também faz autofagia.
+V: Bactérias não têm ribossomos porque são procariontes. || **Errado.** Bactérias TÊM ribossomos (menores, 70S). O que falta nelas é núcleo e organelas membranosas.
+V: Enzimas são consumidas durante a reação que catalisam. || **Errado.** Enzimas não são consumidas: podem ser reutilizadas. Mas desnaturam com calor ou pH inadequado.
+## Genética
++: 1ª Lei de Mendel || Aa x Aa → 3:1 no fenótipo, 1:2:1 no genótipo. || [img:bio_punnett_mono]
++: 2ª Lei de Mendel || Di-hibridismo: 9:3:3:1 (soma 16 = 4 x 4 gametas). || [img:bio_punnett_di]
++: Sistema ABO: quem doa || O = "Oferece para todos". AB = "Aceita de Bastante gente". || [img:bio_abo]
++: Fator Rh e eritroblastose || "Mãe NEGATIVA, filho POSITIVO, problema no SEGUNDO".
++: Herança ligada ao X || Pai daltônico passa o X afetado para TODAS as filhas; nunca para os filhos homens (que recebem o Y).
++: Replicação, transcrição e tradução || TranScrição = Script (DNA vira texto de RNA). TraDUção = traDUz para a língua das proteínas. || [img:bio_dogma]
++: DNA x RNA || RNA troca T por U ("no RNA, o T vira U") e é de fita simples.
+C: No DNA, adenina pareia com {{c1::timina}} e citosina com {{c2::guanina}}. No RNA, a timina é substituída por {{c3::uracila}}.
+C: O processo DNA → RNAm chama-se {{c1::transcrição}} e ocorre no {{c2::núcleo}}; RNAm → proteína chama-se {{c3::tradução}} e ocorre no {{c4::ribossomo}}.
+C: Cruzamento Aa x Aa gera proporção fenotípica {{c1::3:1}} e genotípica {{c2::1:2:1}}. || [img:bio_punnett_mono]
+C: A chance de um casal Aa x Aa ter um filho aa é {{c1::1/4}}; e de ser menino E aa é {{c2::1/8}}.
+D: Proporção fenotípica do cruzamento AaBb x AaBb (genes independentes)? || 9:3:3:1 || Use o quadro de Punnett 4x4 ou multiplique (3:1) x (3:1).
+D: Qual o tipo sanguíneo doador universal (ABO)? || O || Não tem aglutinogênios A nem B nas hemácias.
+F: [img:bio_punnett_di] Qual a probabilidade de um descendente ser aabb? || 1/16 (só o quadrado vermelho). Multiplicando: 1/4 (aa) x 1/4 (bb) = 1/16.
+V: Uma pessoa com sangue AB tem anticorpos anti-A e anti-B no plasma. || **Errado.** AB não tem nenhum dos dois anticorpos; por isso é receptor universal.
+V: Daltonismo é mais comum em mulheres porque elas têm dois cromossomos X. || **Errado.** É mais comum em HOMENS: com um X só, basta um alelo recessivo para manifestar.
+## Evolução
++: Lamarck x Darwin || Lamarck = "Lei do uso e desuso" (L com L). Darwin = "a natureza Decide quem fica" (seleção).
++: Como surgem bactérias resistentes || O antibiótico é o "juiz", não o "criador": ele só seleciona quem já era resistente.
++: Órgãos homólogos x análogos || HOMÓlogo = mesma ORIGEM (homo = igual). ANÁlogo = mesma função, "ANAlogia" de uso.
+C: Segundo Darwin, o mecanismo da evolução é a {{c1::seleção natural}}; a teoria sintética acrescenta {{c2::mutação}} e {{c3::recombinação gênica}} como fontes de variabilidade.
+C: Asa de morcego e braço humano são órgãos {{c1::homólogos}} (divergência evolutiva); asa de inseto e asa de ave são {{c2::análogos}} (convergência evolutiva).
+V: Girafas desenvolveram pescoço longo de tanto esticá-lo, e passaram isso aos filhos. || **Errado.** Essa é a ideia de Lamarck. Para Darwin, girafas que já nasciam com pescoço maior sobreviviam mais e deixavam mais filhos.
+## Fisiologia humana
++: Pequena e grande circulação || Pequena = Pulmão (as duas com P). Ventrículo esquerdo = o mais musculoso, bombeia para o corpo todo. || [img:bio_circulacao]
++: Artéria x veia || Artéria = A sai (Away do coração). Veia = Volta ao coração.
++: Insulina x glucagon || Insulina INSere glicose nas células (glicemia cai). GLUCAgon GERA GLUcose no sangue (glicemia sobe). || [img:bio_glicemia]
++: Hormônios do ciclo menstrual || "FSH Faz o folículo, LH Libera o óvulo, Progesterona Protege a gravidez". || [img:bio_ciclo_menstrual]
++: Sistema nervoso simpático x parassimpático || SIMpático = "SIM, vamos lutar!" (acelera). PARAssimpático = "PARA e descansa".
++: Digestão: onde começa || Boca = Amido; Estômago = Proteína; Intestino = Gordura ("A-P-G" na ordem do caminho).
+F: [img:bio_circulacao] Descreva a pequena circulação seguindo os números. || **VD** → artéria pulmonar (sangue venoso) → **pulmões** (hematose) → veias pulmonares (sangue arterial) → **AE**. Depois AE → VE e começa a grande circulação.
+C: O sangue sai do ventrículo {{c1::esquerdo}} pela artéria {{c2::aorta}} e volta ao átrio {{c3::direito}} pelas veias {{c4::cavas}}. || [img:bio_circulacao]
+C: O hormônio {{c1::ADH}} aumenta a reabsorção de água nos rins; o álcool {{c2::inibe}} esse hormônio, aumentando a urina.
+C: A pílula anticoncepcional inibe a liberação de {{c1::FSH}} e {{c2::LH}}, impedindo a {{c3::ovulação}}. || [img:bio_ciclo_menstrual]
+C: A troca gasosa nos alvéolos chama-se {{c1::hematose}} e ocorre por {{c2::difusão}}.
+D: Que hormônio é detectado no teste de gravidez? || hCG || Gonadotrofina coriônica humana, produzida pelo embrião/placenta.
+D: Qual hormônio pancreático aumenta a glicemia? || glucagon || Quebra o glicogênio do fígado em glicose.
+V: A artéria pulmonar transporta sangue rico em oxigênio. || **Errado.** Transporta sangue VENOSO (pobre em O2) do ventrículo direito para os pulmões. Artéria = sai do coração, não importa o tipo de sangue.
+V: A bile é uma enzima que digere gorduras. || **Errado.** A bile NÃO é enzima: ela emulsifica a gordura (quebra em gotículas) para a lipase agir.
+## Imunologia e saúde
++: Vacina x soro || VaCina = Cria memória (prevenção). SOro = SOcorro imediato (tratamento). || [img:bio_vacina_soro]
++: Dengue, zika, chikungunya || Aedes = "Água parada Em Dias de Sol" → acabar com criadouros.
++: Doença de Chagas || CHAgas = barbeiro CHAto que pica e defeca; o Trypanosoma entra pela ferida.
++: Esquistossomose || "Barriga d'água" pega na água: caramujo + pele na lagoa contaminada.
+F: [img:bio_vacina_soro] Qual curva representa o soro e por que ela cai? || A **vermelha**. O soro traz anticorpos prontos (imunização passiva): age na hora, mas os anticorpos são degradados e não há memória.
+R: Vírus → doenças || Gripe, covid-19, dengue, zika, chikungunya, febre amarela, sarampo, HIV/aids, HPV, hepatites, raiva.
+R: Protozoários → doenças || Malária, doença de Chagas, leishmaniose, toxoplasmose, amebíase, giardíase.
+R: Vermes (helmintos) → doenças || Esquistossomose, teníase/cisticercose, ascaridíase (lombriga), ancilostomose (amarelão), filariose (elefantíase).
+C: A malária é causada pelo protozoário {{c1::Plasmodium}} e transmitida pela fêmea do mosquito {{c2::Anopheles}}.
+C: A leptospirose é causada por {{c1::bactéria}} e transmitida pela {{c2::urina de ratos}}, comum em {{c3::enchentes}}.
+C: A cisticercose humana ocorre ao ingerir {{c1::ovos}} de Taenia solium; a teníase, ao comer {{c2::carne de porco malcozida}} com cisticercos.
+D: Que mosquito transmite dengue, zika e chikungunya? || Aedes aegypti || Prevenção: eliminar água parada.
+V: Tomar antibiótico ajuda a curar a gripe mais rápido. || **Errado.** Gripe é causada por vírus; antibióticos agem só em bactérias. O uso desnecessário seleciona bactérias resistentes.
+## Botânica e diversidade
++: Briófitas, pteridófitas || "Musgo sem Vaso, Samambaia com Vaso, Pinheiro com Semente, Angiosperma com Fruto" (V-S-F na ordem).
++: Xilema x floema || XIlema = XIxi da planta: sobe água (seiva bruta). FLOema = FLuxo de açúcar (seiva elaborada) que desce.
++: Hormônios vegetais: auxina || Etileno = "Esconde a banana madura no saco com a verde e ela amadurece".
+C: Seiva bruta sobe pelo {{c1::xilema}}; seiva elaborada é distribuída pelo {{c2::floema}}.
+C: Grupo de plantas com flores e frutos: {{c1::angiospermas}}. Com sementes nuas: {{c2::gimnospermas}}. Primeiras com vasos condutores: {{c3::pteridófitas}}.
+D: Que hormônio vegetal acelera o amadurecimento dos frutos? || etileno || Um gás; frutas maduras liberam e aceleram as vizinhas.

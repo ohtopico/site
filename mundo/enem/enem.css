@@ -1,0 +1,76 @@
+/* Ilha ENEM: área secreta do Mundo, liberada pelo código ENEM. Usa o md.css do material didático. */
+:root {
+  --bio: #d9f2d0; --qui: #f6dcf2; --fis: #fff1b8; --mat: #d6e6ff; --red: #ffe0c7; --ling: #e6dcff; --hum: #d3f0ee;
+  --estrela: #e0a800; --enem: #fff7c2;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bio: #22361d; --qui: #3a2236; --fis: #3a3415; --mat: #1c2a40; --red: #3d2a1a; --ling: #2b2340; --hum: #18312f;
+    --estrela: #ffd04d; --enem: #2f2c14;
+  }
+}
+:root[data-theme="dark"] {
+  --bio: #22361d; --qui: #3a2236; --fis: #3a3415; --mat: #1c2a40; --red: #3d2a1a; --ling: #2b2340; --hum: #18312f;
+  --estrela: #ffd04d; --enem: #2f2c14;
+}
+
+.e-top { border-bottom: 1.5px solid var(--ink); background: var(--paper); }
+.e-top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; }
+.e-top a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.e-top .marca { font-family: var(--display); font-weight: 800; font-size: 22px; }
+.e-top .tot { font-size: 15px; white-space: nowrap; }
+.e-top .tot b { color: var(--estrela); }
+
+.estrelas { letter-spacing: 2px; font-size: 20px; line-height: 1; }
+.estrelas .on { color: var(--estrela); }
+.estrelas .off { color: var(--line); }
+
+/* cabeçalho de cada jogo */
+.e-head { padding: 26px 0 4px; }
+.e-head h1 { font-size: clamp(30px, 5vw, 46px); margin-bottom: 6px; }
+.e-head p { max-width: 720px; margin: 0; }
+.e-voltar { display: inline-block; font-size: 15px; margin-bottom: 10px; color: var(--ink); }
+
+/* pergunta do simulado */
+.q-area { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; padding: 3px 12px; border-radius: 99px; border: 1.5px solid var(--ink); }
+.q-enun { font-size: clamp(19px, 2.6vw, 23px); line-height: 1.45; margin: 14px 0 16px; font-weight: 500; }
+.q-enun .lacuna { display: inline-block; min-width: 90px; border-bottom: 3px solid var(--ink); margin: 0 4px; }
+.q-fig { display: block; max-width: min(100%, 520px); background: #fff; border: 1.5px solid var(--line); border-radius: 16px; margin: 6px 0 14px; }
+.alts { display: grid; gap: 10px; }
+.alt {
+  display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; text-align: left; width: 100%;
+  border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; background: var(--paper); cursor: pointer;
+  font-size: 16px; line-height: 1.45;
+}
+.alt:hover:not(:disabled) { background: var(--pill); }
+.alt .letra { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.alt:disabled { cursor: default; }
+.alt.certa { background: var(--ok-soft); border-color: var(--ok); }
+.alt.certa .letra { background: var(--ok); color: var(--paper); border-color: var(--ok); }
+.alt.errada { background: var(--bad-soft); border-color: var(--bad); }
+.alt.errada .letra { background: var(--bad); color: var(--paper); border-color: var(--bad); }
+.alts.ce { grid-template-columns: 1fr 1fr; }
+.alts.ce .alt { grid-template-columns: 1fr; text-align: center; font-weight: 700; font-size: 18px; }
+.corr { margin-top: 14px; border-left: 4px solid var(--ink); background: var(--paper); padding: 12px 16px; border-radius: 0 16px 16px 0; font-size: 16px; }
+.corr.ok { border-color: var(--ok); }
+.corr.bad { border-color: var(--bad); }
+.corr .mac { margin-top: 8px; padding: 8px 12px; border-radius: 12px; background: var(--enem); }
+.barra { height: 10px; border-radius: 99px; background: var(--pill-2); overflow: hidden; margin: 4px 0 16px; }
+.barra i { display: block; height: 100%; background: var(--ink); transition: width .3s; }
+.fim { text-align: center; padding: 10px 0; }
+.fim .grande { font-family: var(--display); font-size: clamp(44px, 9vw, 72px); line-height: 1; margin: 6px 0; }
+.fim .estrelas { font-size: 40px; }
+.lista-erros { text-align: left; margin-top: 18px; display: grid; gap: 10px; }
+.lista-erros .corr { margin: 0; }
+
+/* caixa da senha */
+.cofre { max-width: 520px; margin: 40px auto; text-align: center; }
+.cofre .cadeado { font-size: 64px; line-height: 1; }
+.cofre input { width: 100%; text-align: center; font-size: 26px; letter-spacing: .25em; text-transform: uppercase; border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px; background: var(--paper); margin: 14px 0 12px; font-family: var(--display); }
+
+@media (max-width: 560px) {
+  .alt { font-size: 15px; padding: 10px 12px; grid-template-columns: 28px 1fr; }
+  .alt .letra { width: 26px; height: 26px; }
+  .e-top .marca { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) { .barra i { transition: none; } }

@@ -1,0 +1,72 @@
+# ENEM 2026::04 Matemática
+## Matemática básica e proporção
+Regra de três: como saber se é direta ou inversa? || Direta: as grandezas aumentam juntas (mais produtos, mais preço). Inversa: uma aumenta e a outra diminui (mais operários, menos dias). Na inversa, inverta uma das razões.
+Grandeza diretamente proporcional a A e inversamente a B: como montar? || x = k·A/B. Ex.: tempo de obra é proporcional à área e inversamente proporcional ao número de pessoas.
+Escala: fórmula e cuidado com unidades || Escala = medida no desenho / medida real (mesma unidade). 1:50.000 → 1 cm = 500 m. Para área, a escala vai ao quadrado; para volume, ao cubo.
+Se um mapa tem escala 1:100, como se relacionam as áreas? || Razão das áreas = (1/100)² = 1/10.000.
+Conversões de unidades que mais caem || 1 m³ = 1.000 L; 1 dm³ = 1 L; 1 cm³ = 1 mL; 1 km² = 100 hectares; 1 ha = 10.000 m².
+Média aritmética ponderada || Soma de (valor x peso) / soma dos pesos. É como o Sisu calcula a nota com pesos por área.
+Razão x proporção || Razão é a divisão a/b. Proporção é a igualdade entre duas razões: a/b = c/d → a·d = b·c (produto dos meios = produto dos extremos).
+Divisão proporcional || Para dividir N em partes proporcionais a a, b, c: cada parte = N·(seu valor)/(a+b+c).
+MMC e MDC: quando usar cada um? || MMC: eventos que se repetem e voltam a coincidir (ônibus, remédios, luzes piscando). MDC: dividir em pedaços iguais do maior tamanho possível.
+Notação científica || Número entre 1 e 10 vezes potência de 10. Ex.: 0,00052 = 5,2 x 10^-4. Na multiplicação somam-se os expoentes.
+Critérios de divisibilidade por 3, 4, 9 || 3 e 9: soma dos algarismos divisível por 3 ou 9. 4: os dois últimos algarismos formam número divisível por 4.
+## Porcentagem e matemática financeira
+Aumento e desconto como fator multiplicativo || Aumento de i% → multiplique por (1 + i). Desconto de i% → por (1 - i). Aumento de 20% = x1,2; desconto de 15% = x0,85.
+Aumento de 10% seguido de desconto de 10%: volta ao preço original? || Não. 1,1 x 0,9 = 0,99: fica 1% mais barato.
+Variação percentual || (valor novo - valor antigo) / valor antigo x 100.
+Diferença entre "pontos percentuais" e "por cento" || Taxa que vai de 10% para 12% subiu 2 pontos percentuais, mas aumentou 20% em termos relativos.
+Juros simples || J = C·i·t; Montante M = C·(1 + i·t). Crescimento linear (progressão aritmética).
+Juros compostos || M = C·(1 + i)^t. Crescimento exponencial (progressão geométrica). Taxa e tempo na mesma unidade.
+Por que no ENEM aparecem logaritmos com juros compostos? || Para achar o tempo: (1 + i)^t = M/C → t = log(M/C) / log(1 + i). Costumam dar os valores de log.
+## Funções
+Função afim (1º grau): forma e interpretação || f(x) = a·x + b. a = taxa de variação (inclinação); b = valor inicial (onde corta o eixo y). Ex.: corrida de táxi = bandeirada + preço por km.
+Como achar a função afim dados dois pontos? || a = (y2 - y1)/(x2 - x1); depois substitua um ponto para achar b.
+Função quadrática: vértice || f(x) = ax² + bx + c. xv = -b/(2a); yv = -Δ/(4a). a > 0: concavidade para cima (ponto mínimo); a < 0: para baixo (máximo).
+Problemas de máximo e mínimo (lucro, área, altura) || Monte a função quadrática e calcule o vértice. O yv dá o valor máximo/mínimo; o xv diz quando ocorre.
+Fórmula de Bhaskara || Δ = b² - 4ac; x = (-b ± √Δ)/(2a). Δ > 0: duas raízes; Δ = 0: uma; Δ < 0: nenhuma real.
+Soma e produto das raízes || Soma = -b/a; produto = c/a.
+Função exponencial: crescimento e decrescimento || f(x) = a·b^x. b > 1 cresce (bactérias, juros); 0 < b < 1 decresce (decaimento, depreciação).
+Logaritmo: definição || log_b a = x ⇔ b^x = a. log 1 = 0; log_b b = 1.
+Propriedades dos logaritmos || log(a·b) = log a + log b; log(a/b) = log a - log b; log a^n = n·log a; mudança de base: log_b a = log a / log b.
+Interpretação de gráficos: dicas para o ENEM || Leia título, eixos e unidades. Cuidado com eixo que não começa no zero. Inclinação maior = variação mais rápida.
+## Geometria plana
+Área do triângulo, retângulo, trapézio e losango || Triângulo: b·h/2. Retângulo: b·h. Trapézio: (B + b)·h/2. Losango: D·d/2.
+Área e comprimento do círculo || Área: π·r². Comprimento: 2·π·r. No ENEM geralmente π ≈ 3 ou 3,14.
+Área do triângulo equilátero e altura || Altura: L√3/2. Área: L²√3/4. Hexágono regular = 6 triângulos equiláteros: 6·L²√3/4.
+Teorema de Pitágoras e ternas comuns || a² = b² + c². Ternas: 3-4-5, 5-12-13, 8-15-17 e múltiplos (6-8-10).
+Soma dos ângulos internos de um polígono || S = (n - 2)·180°. Triângulo 180°, quadrilátero 360°. Ângulo interno do regular = S/n.
+Quais polígonos regulares pavimentam o plano sozinhos? || Triângulo equilátero (60°), quadrado (90°) e hexágono (120°): os ângulos fecham 360° em volta de um ponto.
+Semelhança de triângulos || Ângulos iguais → lados proporcionais. Razão k entre lados → razão k² entre áreas. Usada em sombras e alturas de prédios.
+Teorema de Tales || Retas paralelas cortadas por transversais determinam segmentos proporcionais.
+Razões trigonométricas no triângulo retângulo || sen = cateto oposto/hipotenusa; cos = adjacente/hipotenusa; tg = oposto/adjacente ("SOH CAH TOA").
+Valores notáveis: 30°, 45°, 60° || sen: 1/2, √2/2, √3/2. cos: √3/2, √2/2, 1/2. tg: √3/3, 1, √3.
+Lei dos senos e lei dos cossenos || Senos: a/sen A = b/sen B = c/sen C. Cossenos: a² = b² + c² - 2bc·cos A.
+## Geometria espacial
+Volume do prisma e do cilindro || V = área da base x altura. Cilindro: π·r²·h.
+Volume da pirâmide e do cone || V = (área da base x altura)/3. Cone: π·r²·h/3. Um cone tem 1/3 do volume do cilindro de mesma base e altura.
+Volume e área da esfera || V = 4/3·π·r³. Área = 4·π·r².
+Relação de Euler || V - A + F = 2 (vértices - arestas + faces) em poliedros convexos.
+Planificação: o que o ENEM costuma pedir? || Reconhecer qual molde forma o sólido (cubo, cilindro, cone, prisma). Cilindro planificado = 2 círculos + retângulo de lado 2πr.
+Se dobrarmos o raio de uma esfera, o que acontece com o volume? || Fica 8 vezes maior (2³). A área fica 4 vezes maior (2²).
+Vistas e projeções ortogonais || Vista superior, frontal e lateral: imagine o sólido "achatado" sobre cada plano. Tema frequente no ENEM.
+## Estatística e probabilidade
+Média, mediana e moda || Média: soma/quantidade. Mediana: valor central dos dados ordenados (com n par, média dos dois centrais). Moda: valor mais frequente.
+Quando a mediana representa melhor os dados que a média? || Quando há valores extremos (outliers), como salários com alguns muito altos: a média é puxada, a mediana não.
+Desvio padrão: o que mede? || A dispersão dos dados em torno da média. Menor desvio padrão = dados mais homogêneos, mais regulares.
+Variância e desvio padrão: como calcular || Variância = média dos quadrados dos desvios (xi - média)². Desvio padrão = √variância.
+Probabilidade: definição || P = casos favoráveis / casos possíveis. Valor entre 0 e 1.
+Probabilidade de eventos independentes simultâneos || Multiplica: P(A e B) = P(A)·P(B).
+Probabilidade da união || P(A ou B) = P(A) + P(B) - P(A e B).
+Probabilidade complementar: quando usar? || Quando "pelo menos um" aparece: P(pelo menos um) = 1 - P(nenhum).
+Probabilidade condicional || P(A|B) = P(A e B)/P(B). O espaço amostral se reduz ao que já se sabe que aconteceu.
+Princípio fundamental da contagem || Etapas independentes: multiplique as possibilidades. Ex.: 3 camisas x 4 calças = 12 combinações.
+Permutação, arranjo e combinação || Permutação: n! (todos, ordem importa). Arranjo: n!/(n-p)! (alguns, ordem importa: pódio, senhas). Combinação: n!/(p!(n-p)!) (ordem não importa: comissões, grupos).
+Permutação com repetição (anagramas) || n!/(a!·b!...), dividindo pelos fatoriais das letras repetidas. Ex.: ARARA = 5!/(3!·2!) = 10.
+Como identificar se a ordem importa? || Troque dois elementos de lugar: se vira outra coisa (senha, pódio), a ordem importa (arranjo). Se é a mesma (grupo, salada), não importa (combinação).
+## Sequências
+Progressão aritmética (PA) || Termo geral: an = a1 + (n - 1)·r. Soma: Sn = (a1 + an)·n/2.
+Progressão geométrica (PG) || Termo geral: an = a1·q^(n-1). Soma finita: Sn = a1·(q^n - 1)/(q - 1). Soma infinita (|q| < 1): a1/(1 - q).
+## Estratégia de prova
+Ordem recomendada na prova de matemática do ENEM || Faça primeiro as questões rápidas (porcentagem, leitura de gráfico, proporção), marque as longas e volte depois. Pela TRI, acertar as fáceis é o que mais pesa.
+Como funciona a TRI no ENEM? || Questões fáceis, médias e difíceis valem diferente, e a coerência conta: errar fáceis e acertar difíceis sugere chute e reduz a nota. Nunca deixe em branco.

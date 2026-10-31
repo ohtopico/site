@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Régua do pH · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<style>
+  .regua { position: relative; margin: 6px 0 4px; padding-top: 30px; }
+  .faixa { height: 34px; border-radius: 12px; border: 1.5px solid var(--ink);
+    background: linear-gradient(90deg, #d7191c 0%, #f05a28 10%, #f9a12e 22%, #f6e43a 36%, #9fd65b 47%, #3fb24a 50%, #2fa77a 58%, #2b8cbe 70%, #3a5fcd 82%, #5a3fb8 92%, #4b1e8c 100%); }
+  .nums { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-2); margin-top: 4px; padding: 0 2px; }
+  .lados { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-top: 2px; }
+  .marca { position: absolute; top: 0; transform: translateX(-50%); font-size: 22px; line-height: 1; transition: left .4s; }
+  .marca::after { content: ''; position: absolute; left: 50%; top: 26px; width: 2px; height: 38px; background: var(--ink); transform: translateX(-50%); }
+  .marca.velha { opacity: .55; font-size: 18px; }
+  .item { display: flex; align-items: center; gap: 14px; margin: 16px 0 8px; }
+  .item .emo { font-size: 54px; line-height: 1; }
+  .item h2 { margin: 0; font-size: clamp(24px, 4vw, 32px); }
+  .alts.tres { grid-template-columns: repeat(3, 1fr); }
+  .alts.tres .alt { grid-template-columns: 1fr; text-align: center; font-weight: 600; }
+  @media (max-width: 560px) { .alts.tres { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .marca { transition: none; } }
+</style>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="e-voltar" href="./">← Ilha ENEM</a>
+    <h1>🧪 Régua do pH</h1>
+    <p class="muted">Ácido, neutro ou básico? Cada produto que você classifica fica marcado na régua. No fim vêm três perguntas de conta e de neutralização, do jeito que caem na prova.</p>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Lembrete</summary>
+    <p><b>pH &lt; 7</b>: ácido (mais H⁺). <b>pH = 7</b>: neutro (a 25 °C). <b>pH &gt; 7</b>: básico ou alcalino (mais OH⁻). <b>pH = −log[H⁺]</b>: cada unidade a menos de pH é <b>10 vezes</b> mais ácido. Ácido + base → sal + água (neutralização).</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Estrelas ficam guardadas só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), palco = $('#palco'), mix = ENEM.embaralha, sorteia = a => a[Math.floor(Math.random() * a.length)];
+  ENEM.topo($('#topo'));
+  const PRODUTOS = [
+    ['🍋', 'Suco de limão', 2.2, 'Tem ácido cítrico. É ácido o bastante para "cozinhar" o peixe do ceviche.'],
+    ['🫙', 'Vinagre', 2.9, 'Solução de ácido acético (ácido carboxílico, função orgânica que o ENEM adora).'],
+    ['🥤', 'Refrigerante de cola', 2.5, 'Ácido fosfórico e gás carbônico (que forma ácido carbônico). Por isso desgasta o esmalte dos dentes.'],
+    ['🫃', 'Suco gástrico', 1.5, 'O estômago produz HCl. A azia é esse ácido subindo para o esôfago.'],
+    ['☕', 'Café', 5, 'Levemente ácido.'],
+    ['🌧️', 'Chuva ácida', 4.3, 'SO₂ e NOₓ da queima de combustíveis viram H₂SO₄ e HNO₃ no ar. Corrói mármore (CaCO₃) e acidifica lagos.'],
+    ['🌦️', 'Chuva "normal"', 5.6, 'Toda chuva é levemente ácida: o CO₂ do ar forma ácido carbônico. Só abaixo de 5,6 se chama chuva ácida.'],
+    ['🥛', 'Leite', 6.6, 'Quase neutro, levemente ácido.'],
+    ['💧', 'Água pura', 7, 'Neutra a 25 °C: [H⁺] = [OH⁻] = 10⁻⁷ mol/L.'],
+    ['🩸', 'Sangue', 7.4, 'Levemente básico e tamponado (sistema bicarbonato). Abaixo de 7,35 é acidose.'],
+    ['🌊', 'Água do mar', 8.1, 'Levemente básica. O CO₂ extra dissolvido está baixando esse pH (acidificação dos oceanos, que prejudica corais e conchas).'],
+    ['🧁', 'Bicarbonato de sódio em água', 8.4, 'NaHCO₃ é um sal de caráter básico: neutraliza o ácido do estômago (antiácido).'],
+    ['🧴', 'Leite de magnésia', 10.5, 'Mg(OH)₂, uma base fraca usada como antiácido e laxante.'],
+    ['🧽', 'Amoníaco (limpador)', 11.5, 'NH₃ em água forma OH⁻. Por isso tira gordura.'],
+    ['🧼', 'Água sanitária', 12.5, 'Hipoclorito de sódio (NaClO) em meio básico. Nunca misture com produtos ácidos: libera gás cloro.'],
+    ['⚗️', 'Soda cáustica', 13.8, 'NaOH, base forte. Desentope pia porque transforma gordura em sabão (saponificação).'],
+    ['🌱', 'Cal hidratada em água', 12.4, 'Ca(OH)₂, base usada (junto com o calcário) para corrigir solo ácido: neutralização que o ENEM cobra em agricultura.']
+  ];
+  const lado = ph => ph < 6.95 ? 0 : ph > 7.05 ? 2 : 1;
+  const NOMES = ['Ácido (pH < 7)', 'Neutro (pH = 7)', 'Básico (pH > 7)'];
+  const num = n => n.toLocaleString('pt-BR');
+
+  const CONTAS = [
+    () => { const x = sorteia([2, 3, 4, 5, 9, 11]); return { enun: `Uma solução tem [H⁺] = 10<sup>−${x}</sup> mol/L. Qual o pH?`,
+      certa: String(x), erradas: [String(14 - x), String(-x), String(x * 10)].filter(v => v !== String(x)),
+      expl: `pH = −log[H⁺] = −log 10<sup>−${x}</sup> = <b>${x}</b>. ${x < 7 ? 'Ácido.' : 'Básico.'} Truque: o pH é o expoente sem o sinal.` }; },
+    () => { const a = sorteia([6, 5, 7]), d = sorteia([1, 2, 3]), b = a - d, f = 10 ** d; return { enun: `O pH de um lago caiu de ${a} para ${b} por causa da chuva ácida. A concentração de H⁺ ficou quantas vezes maior?`,
+      certa: num(f) + ' vezes', erradas: [d + ' vezes', num(d * 2) + ' vezes', num(f / 10 || 0.5) + ' vezes', num(f * 10) + ' vezes'],
+      expl: `A escala é logarítmica: cada unidade de pH a menos multiplica [H⁺] por 10. Caiu ${d} ${d > 1 ? 'unidades' : 'unidade'} → 10<sup>${d}</sup> = <b>${num(f)} vezes</b> mais ácido.` }; },
+    () => { const s = sorteia([
+        ['Para aliviar a azia (excesso de ácido no estômago), o mais indicado é tomar:', 'Leite de magnésia, uma base fraca', ['Suco de limão', 'Vinagre diluído', 'Soda cáustica, uma base forte'], 'Neutraliza o HCl sem agredir: Mg(OH)₂ + 2 HCl → MgCl₂ + 2 H₂O. Base forte queimaria o tecido.'],
+        ['Um agricultor tem solo ácido (pH 4,5). Para corrigir, ele deve aplicar:', 'Calcário (CaCO₃)', ['Enxofre', 'Vinagre', 'Ureia ácida'], 'É a calagem: o carbonato consome o H⁺ do solo e o pH sobe.'],
+        ['Uma picada de formiga injeta ácido fórmico. Para aliviar a dor, vale passar:', 'Pasta de bicarbonato de sódio', ['Suco de limão', 'Vinagre', 'Refrigerante de cola'], 'O bicarbonato (básico) neutraliza o ácido fórmico.'],
+        ['Por que estátuas de mármore se desgastam em cidades poluídas?', 'A chuva ácida reage com o CaCO₃ do mármore', ['A água pura dissolve o mármore', 'O mármore é uma base forte', 'O sol oxida o cálcio'], 'CaCO₃ + H₂SO₄ → CaSO₄ + H₂O + CO₂. O ácido "come" o carbonato.'],
+        ['O repolho roxo muda de cor em ácidos e bases. Ele funciona como:', 'Indicador ácido-base', ['Catalisador', 'Solução-tampão', 'Agente oxidante'], 'As antocianinas mudam de cor com o pH: vermelho no ácido, verde ou amarelo no básico.']]);
+      return { enun: s[0], certa: s[1], erradas: s[2], expl: s[3] }; }
+  ];
+
+  let fila = [], i = 0, acertos = 0, respondida = false, marcados = [];
+  function comecar() {
+    const prods = mix(PRODUTOS).slice(0, 7).map(p => ({ prod: p }));
+    const contas = mix(CONTAS).map(f => ({ conta: f() }));
+    fila = prods.concat(contas); i = 0; acertos = 0; marcados = []; mostrar();
+  }
+  function regua(atual) {
+    const pos = ph => `${ph / 14 * 100}%`;
+    return `<div class="regua" aria-hidden="true">${marcados.map(p => `<span class="marca velha" style="left:${pos(p[2])}" title="${p[1]}">${p[0]}</span>`).join('')}
+      ${atual ? `<span class="marca" style="left:${pos(atual[2])}">${atual[0]}</span>` : ''}
+      <div class="faixa"></div><div class="nums">${Array.from({ length: 15 }, (_, k) => `<span>${k}</span>`).join('')}</div>
+      <div class="lados"><span>⟵ mais ácido</span><span>neutro</span><span>mais básico ⟶</span></div></div>`;
+  }
+  function mostrar() {
+    const q = fila[i]; respondida = false;
+    let corpo;
+    if (q.prod) {
+      const p = q.prod;
+      corpo = `${regua(null)}<div class="item"><span class="emo" aria-hidden="true">${p[0]}</span><h2>${p[1]}</h2></div>
+        <div class="alts tres">${NOMES.map((n, k) => `<button class="alt" type="button" data-k="${k}">${n}</button>`).join('')}</div>`;
+    } else {
+      const c = q.conta; c.alts = c.alts || mix([c.certa, ...[...new Set(c.erradas)].filter(e => e !== c.certa).slice(0, 3)]);
+      corpo = `${regua(null)}<div class="q-enun">${c.enun}</div><div class="alts">${c.alts.map((t, k) => `<button class="alt" type="button" data-k="${k}"><span class="letra">${'ABCD'[k]}</span><span>${t}</span></button>`).join('')}</div>`;
+    }
+    palco.innerHTML = `<div class="hud"><span>${q.prod ? 'Produto' : 'Pergunta'} <b>${i + 1}</b> de ${fila.length}</span><span>Acertos <b>${acertos}</b></span></div>
+      <div class="barra"><i style="width:${i / fila.length * 100}%"></i></div><div id="q">${corpo}</div>
+      <div id="corr"></div><div class="btn-row" id="seguir" style="margin-top:14px"></div>`;
+    palco.querySelectorAll('[data-k]').forEach(b => b.onclick = () => responder(+b.dataset.k, b));
+  }
+  function responder(k, botao) {
+    if (respondida) return; respondida = true;
+    const q = fila[i]; let ok, txt;
+    if (q.prod) {
+      const p = q.prod, certo = lado(p[2]); ok = k === certo;
+      palco.querySelectorAll('.alt').forEach(b => { b.disabled = true; if (+b.dataset.k === certo) b.classList.add('certa'); else if (b === botao) b.classList.add('errada'); });
+      palco.querySelector('.regua').outerHTML = regua(p); marcados.push(p);
+      txt = `<b>${ok ? 'Isso!' : 'Não.'}</b> ${p[1]}: pH ≈ ${num(p[2])}, ${['ácido', 'neutro', 'básico'][certo]}. ${p[3]}`;
+    } else {
+      const c = q.conta; ok = c.alts[k] === c.certa;
+      palco.querySelectorAll('.alt').forEach(b => { b.disabled = true; if (c.alts[+b.dataset.k] === c.certa) b.classList.add('certa'); else if (b === botao) b.classList.add('errada'); });
+      txt = `<b>${ok ? 'Isso!' : 'Resposta: ' + c.certa + '.'}</b><br>${c.expl}`;
+    }
+    if (ok) acertos++;
+    $('#corr').innerHTML = `<div class="corr ${ok ? 'ok' : 'bad'}">${txt}</div>`;
+    const ultima = i === fila.length - 1;
+    $('#seguir').innerHTML = `<button class="btn" type="button" id="prox">${ultima ? 'Ver resultado' : 'Próximo →'}</button>`;
+    $('#prox').onclick = () => { if (ultima) fim(); else { i++; mostrar(); } };
+    $('#prox').focus({ preventScroll: true });
+  }
+  function fim() {
+    ENEM.contarFeitas(fila.length);
+    const n = fila.length, est = acertos >= n - 1 ? 3 : acertos >= n - 3 ? 2 : acertos >= n / 2 ? 1 : 0, novo = ENEM.darEstrelas('ph', est);
+    $('#tot-est').textContent = ENEM.totalEstrelas();
+    palco.innerHTML = `<div class="fim"><div class="grande">${acertos}/${n}</div>${ENEM.estrelasHtml(est)}
+      <h2 style="margin-top:10px">Sua régua ficou assim</h2>${regua(null)}
+      ${novo ? '<p class="feedback ok">Novo recorde de estrelas!</p>' : ''}
+      <div class="btn-row" style="justify-content:center;margin-top:16px"><button class="btn" type="button" id="denovo">Jogar de novo</button><a class="btn ghost" href="balanceamento.html">Balança dos átomos</a><a class="btn ghost" href="./">Voltar à ilha</a></div></div>`;
+    $('#denovo').onclick = comecar;
+  }
+  document.addEventListener('keydown', e => {
+    if (respondida || e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = e.key.toUpperCase(), idx = '1234'.indexOf(k) >= 0 ? '1234'.indexOf(k) : 'ABCD'.indexOf(k);
+    const b = idx >= 0 && palco.querySelector(`[data-k="${idx}"]`); if (b) { b.click(); e.preventDefault(); }
+  });
+  comecar();
+})();
+</script>
+</body>
+</html>

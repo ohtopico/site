@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Área secreta do Mundo: jogos de revisão para o ENEM, liberados com um código.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<style>
+  .hero { border-bottom: 1.5px solid var(--ink); background: var(--enem);
+    background-image: radial-gradient(rgba(0,0,0,.10) 1.2px, transparent 1.5px); background-size: 18px 18px; }
+  .hero .wrap { padding-top: 30px; padding-bottom: 28px; }
+  .hero h1 { margin-bottom: 4px; }
+  .contagem { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .dia { border: 1.5px solid var(--ink); border-radius: 20px; background: var(--paper); padding: 10px 16px; min-width: 210px; }
+  .dia b { font-family: var(--display); font-size: 30px; line-height: 1; }
+  .dia .small { display: block; }
+  .salas { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; margin: 22px 0 30px; }
+  .sala { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .sala h2 { font-size: 26px; margin: 0; display: flex; align-items: center; gap: 10px; }
+  .jogo { display: flex; justify-content: space-between; align-items: center; gap: 10px; border: 1.5px solid var(--ink); border-radius: 16px;
+    background: var(--paper); padding: 10px 14px; color: var(--ink); text-decoration: none; font-weight: 600; }
+  .jogo:hover { background: var(--pill); }
+  .jogo small { display: block; font-weight: 400; color: var(--ink-2); font-size: 13.5px; }
+  .gerais { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 18px; }
+  .gerais .jogo { background: var(--paper-2); }
+  .sala.geral { background: var(--paper-2); }
+</style>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main id="conteudo"></main>
+<footer class="footer"><div class="wrap">Área secreta do <a href="../">Mundo</a> de <a href="../../">ohtopico.com.br</a>. Estrelas e erros ficam guardados só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), main = $('#conteudo');
+  const AREAS = [
+    { id: 'bio', nome: 'Biologia', ic: '🧬', dia: 2, jogos: [] },
+    { id: 'qui', nome: 'Química', ic: '⚗️', dia: 2, jogos: [
+      ['ph.html', 'ph', '🧪 Régua do pH', 'Ácido, básico ou neutro? Coloque os produtos do dia a dia na régua.'],
+      ['balanceamento.html', 'balanc', '⚖️ Balança dos átomos', 'Ajuste os coeficientes até os átomos baterem dos dois lados.']] },
+    { id: 'fis', nome: 'Física', ic: '⚡', dia: 2, jogos: [
+      ['circuito.html', 'circuito', '💡 Circuito da casa', 'Ligue resistores em série e em paralelo e acerte a corrente e a conta de luz.']] },
+    { id: 'mat', nome: 'Matemática', ic: '📐', dia: 2, jogos: [] },
+    { id: 'red', nome: 'Redação', ic: '✍️', dia: 1, jogos: [] },
+    { id: 'ling', nome: 'Linguagens', ic: '📚', dia: 1, jogos: [] },
+    { id: 'hum', nome: 'Humanas', ic: '🌎', dia: 1, jogos: [] }
+  ];
+  const linkJogo = (href, id, titulo, sub) => `<a class="jogo" href="${href}"><span>${titulo}<small>${sub}</small></span>${ENEM.estrelasHtml(ENEM.estrelas(id))}</a>`;
+
+  function dias(data) {
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    return Math.round((new Date(data + 'T00:00:00') - hoje) / 864e5);
+  }
+  function txtDias(n) { return n > 1 ? `faltam <b>${n}</b> dias` : n === 1 ? 'é <b>amanhã</b>' : n === 0 ? 'é <b>hoje</b>!' : 'já foi ✔'; }
+
+  function cofre() {
+    document.title = 'Área secreta';
+    main.innerHTML = `<div class="wrap"><form class="cofre panel" id="f">
+      <div class="cadeado" aria-hidden="true">🔒</div>
+      <h1 style="font-size:34px">Área secreta</h1>
+      <p class="muted">Esta parte do Mundo só abre com um código. Quem sabe, sabe.</p>
+      <label class="sr-only" for="cod">Código secreto</label>
+      <input id="cod" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" placeholder="CÓDIGO" required>
+      <button class="btn" type="submit">Abrir</button>
+      <p class="feedback" id="fb" role="status"></p>
+      <p class="small"><a href="../">Voltar para o Mundo</a></p>
+    </form></div>`;
+    $('#cod').focus();
+    $('#f').onsubmit = async e => {
+      e.preventDefault();
+      if (await ENEM.tentar($('#cod').value)) { $('#fb').className = 'feedback ok'; $('#fb').textContent = 'Código aceito! Abrindo…'; setTimeout(ilha, 500); }
+      else { $('#fb').className = 'feedback bad'; $('#fb').textContent = 'Código errado. Tente de novo.'; $('#cod').select(); }
+    };
+  }
+
+  function ilha() {
+    document.title = 'Ilha ENEM';
+    ENEM.topo($('#topo'));
+    const d1 = dias('2026-11-08'), d2 = dias('2026-11-15'), erros = ENEM.erros().length;
+    main.innerHTML = `<section class="hero"><div class="wrap">
+        <h1>🏝️ Ilha ENEM</h1>
+        <p class="muted" style="max-width:720px;margin:0">Revisão em jogo para as quatro áreas e a redação. Cada jogo vale até três estrelas, e o que você errar volta na revisão.</p>
+        <div class="contagem">
+          <div class="dia"><span class="small muted">1º dia · 8 de novembro</span>${txtDias(d1)}<span class="small muted">Linguagens, Humanas e Redação</span></div>
+          <div class="dia"><span class="small muted">2º dia · 15 de novembro</span>${txtDias(d2)}<span class="small muted">Natureza e Matemática</span></div>
+        </div>
+      </div></section>
+      <div class="wrap">
+        <div class="gerais">
+          ${linkJogo('simulado.html?area=misto', 'sim-misto', '🎲 Simulado relâmpago', '10 perguntas de todas as áreas misturadas.')}
+          ${linkJogo('simulado.html?area=dia' + (d1 >= 0 ? '1' : '2'), 'sim-dia' + (d1 >= 0 ? '1' : '2'), d1 >= 0 ? '📅 Treino do 1º dia' : '📅 Treino do 2º dia', d1 >= 0 ? 'Só Linguagens, Humanas e Redação.' : 'Só Natureza e Matemática.')}
+          <a class="jogo" href="simulado.html?area=erros"><span>🔁 Revisar meus erros<small>${erros ? erros + (erros === 1 ? ' pergunta errada' : ' perguntas erradas') + ' guardadas.' : 'Nenhum erro guardado ainda.'}</small></span><span aria-hidden="true">→</span></a>
+        </div>
+        <div class="salas">${AREAS.map(a => `<section class="sala" style="background:var(--${a.id})">
+            <h2><span aria-hidden="true">${a.ic}</span>${a.nome}</h2>
+            ${linkJogo('simulado.html?area=' + a.id, 'sim-' + a.id, '❓ Simulado de ' + a.nome, 'Conceitos, lacunas, pegadinhas e figuras.')}
+            ${a.jogos.map(j => linkJogo(...j)).join('')}
+          </section>`).join('')}
+        </div>
+        <p class="small muted">Você já respondeu <b>${ENEM.feitas()}</b> perguntas aqui.</p>
+      </div>`;
+  }
+
+  if (ENEM.liberado()) ilha(); else cofre();
+})();
+</script>
+</body>
+</html>

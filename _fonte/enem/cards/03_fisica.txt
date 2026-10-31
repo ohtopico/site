@@ -1,0 +1,83 @@
+# ENEM 2026::03 Física
+## Cinemática
+Velocidade média || v = Δs / Δt. Para converter: km/h ÷ 3,6 = m/s; m/s x 3,6 = km/h.
+Movimento uniforme (MU): função horária || s = s0 + v·t. Velocidade constante, aceleração zero. Gráfico s x t é uma reta.
+MUV: função horária da posição e da velocidade || s = s0 + v0·t + a·t²/2 e v = v0 + a·t.
+Equação de Torricelli || v² = v0² + 2·a·Δs. Use quando o problema não fala de tempo.
+Gráfico v x t: o que a área e a inclinação representam? || Área sob a curva = deslocamento. Inclinação (coeficiente angular) = aceleração.
+Queda livre || MUV com a = g ≈ 10 m/s². Sem resistência do ar, todos os corpos caem juntos, independentemente da massa. h = g·t²/2.
+Lançamento oblíquo: o que acontece em cada eixo? || Horizontal: MU (velocidade constante). Vertical: MUV (g para baixo). Alcance máximo com ângulo de 45°.
+Movimento circular uniforme: relações || v = ω·R; ω = 2π/T = 2πf; aceleração centrípeta a = v²/R (aponta para o centro).
+Engrenagens e polias ligadas por correia || Mesma velocidade linear nas bordas: R1·f1 = R2·f2. A polia menor gira mais rápido. Em mesmo eixo, mesma frequência.
+## Dinâmica e energia
+1ª Lei de Newton (inércia) || Corpo sem força resultante mantém repouso ou MRU. Ex.: passageiro é "jogado" para frente quando o ônibus freia; função do cinto de segurança.
+2ª Lei de Newton || F resultante = m·a. A aceleração tem a mesma direção e sentido da força resultante.
+3ª Lei de Newton (ação e reação) || Forças de mesma intensidade, mesma direção, sentidos opostos, aplicadas em CORPOS DIFERENTES (por isso não se anulam).
+Peso x massa || Massa (kg) é a quantidade de matéria, igual em qualquer lugar. Peso é força: P = m·g (newtons), varia com a gravidade.
+Força de atrito || Fat = μ·N. Atrito estático máximo é maior que o cinético (é mais difícil começar a empurrar). ABS evita travar a roda para manter atrito estático.
+Força elástica (Lei de Hooke) || F = k·x (k: constante da mola; x: deformação).
+Trabalho de uma força || τ = F·d·cos θ. Força perpendicular ao deslocamento não realiza trabalho. Trabalho da resultante = variação da energia cinética.
+Energia cinética, potencial gravitacional e elástica || Ec = m·v²/2. Epg = m·g·h. Epe = k·x²/2.
+Conservação da energia mecânica || Sem atrito: Ec + Ep = constante. Ex.: na montanha-russa, v no ponto mais baixo = √(2gh).
+Potência e rendimento || P = energia / tempo (W = J/s). Rendimento η = potência útil / potência total. 1 kWh = 3,6 x 10^6 J.
+Quantidade de movimento e conservação || Q = m·v. Em sistema isolado (colisões, explosões, recuo da arma) Q total se conserva.
+Impulso || I = F·Δt = ΔQ. Airbag e capacete aumentam o tempo de colisão, diminuindo a força.
+Lei da gravitação universal || F = G·M·m/d². Dobrar a distância → força cai para 1/4.
+Por que astronautas "flutuam" na estação espacial? || Não é falta de gravidade: estão em queda livre contínua ao redor da Terra, junto com a estação.
+## Hidrostática
+Densidade e pressão || d = m/V. Pressão p = F/A: mesma força em área menor → maior pressão (faca afiada, salto agulha).
+Pressão hidrostática (Lei de Stevin) || p = p0 + d·g·h. A cada 10 m de água, a pressão aumenta cerca de 1 atm.
+Princípio de Pascal e prensa hidráulica || A pressão aplicada é transmitida igualmente: F1/A1 = F2/A2. Usado em freios e elevadores hidráulicos.
+Empuxo (Princípio de Arquimedes) || E = d(líquido)·V(submerso)·g. Corpo flutua se for menos denso que o líquido.
+Por que um navio de aço flutua? || Seu formato oco desloca grande volume de água: a densidade média (aço + ar) é menor que a da água.
+## Termologia
+Conversão Celsius, Fahrenheit e Kelvin || C/5 = (F - 32)/9 = (K - 273)/5. K = C + 273.
+Calor sensível x calor latente || Sensível: muda temperatura, Q = m·c·ΔT. Latente: muda de estado sem mudar temperatura, Q = m·L.
+Calor específico: o que significa ter valor alto? || Precisa de muito calor para variar a temperatura. A água (c = 1 cal/g°C) esquenta e esfria devagar: regula o clima litorâneo.
+Condução, convecção e irradiação || Condução: contato, partícula a partícula (metais). Convecção: correntes no fluido (ar-condicionado no alto, freezer em cima). Irradiação: ondas eletromagnéticas, inclusive no vácuo (Sol).
+Como funciona a garrafa térmica? || Vácuo entre paredes impede condução e convecção; paredes espelhadas refletem a irradiação.
+Por que a panela de pressão cozinha mais rápido? || Pressão maior eleva o ponto de ebulição da água (acima de 100 °C).
+Brisa marítima x terrestre || Dia: terra esquenta mais rápido, ar sobe sobre ela → brisa do mar para a terra. Noite: inverte (terra esfria mais rápido).
+Dilatação térmica || ΔL = L0·α·ΔT. Juntas de dilatação em pontes e trilhos. Água anômala: entre 0 e 4 °C contrai ao aquecer.
+Transformações gasosas || p·V/T = constante (T em kelvin). Isotérmica: pV constante. Isobárica: V/T constante. Isovolumétrica: p/T constante.
+1ª Lei da Termodinâmica || Q = τ + ΔU. O calor recebido vira trabalho e/ou aumento da energia interna.
+2ª Lei e máquinas térmicas || Nenhuma máquina converte todo calor em trabalho. Rendimento de Carnot: η = 1 - Tfria/Tquente (em K).
+Como funciona a geladeira? || Máquina térmica invertida: o compressor faz trabalho para retirar calor de dentro (evaporador) e liberar fora (serpentina atrás).
+## Ondulatória e óptica
+Equação fundamental da onda || v = λ·f. A frequência não muda quando a onda troca de meio; muda velocidade e comprimento de onda.
+Ondas mecânicas x eletromagnéticas || Mecânicas precisam de meio (som, ondas na água). Eletromagnéticas propagam-se no vácuo, a 3 x 10^8 m/s (luz, rádio, raios X).
+Espectro eletromagnético em ordem crescente de frequência || Rádio, micro-ondas, infravermelho, luz visível, ultravioleta, raios X, raios gama. Mais frequência = mais energia (E = h·f).
+Qualidades do som: altura, intensidade, timbre || Altura: frequência (agudo x grave). Intensidade: amplitude, volume (decibéis). Timbre: forma da onda, distingue instrumentos.
+Efeito Doppler || Fonte se aproximando: som percebido mais agudo (frequência maior). Afastando: mais grave. Usado em radar e ultrassom.
+Ressonância || Sistema recebe energia na sua frequência natural e vibra com amplitude máxima. Ex.: taça quebrando com a voz, sintonizar rádio.
+Difração e interferência || Difração: onda contorna obstáculos (ouvimos som atrás do muro). Interferência: superposição construtiva ou destrutiva (fone com cancelamento de ruído).
+Polarização || Só ocorre com ondas transversais (luz). Óculos polarizados filtram o brilho refletido.
+Refração da luz: o que acontece? || Mudança de meio altera a velocidade e pode desviar o raio. Lei de Snell: n1·sen θ1 = n2·sen θ2. n = c/v.
+Reflexão total: condição e aplicação || Luz indo do meio mais refringente para o menos refringente com ângulo maior que o limite. Aplicação: fibra óptica, brilho do diamante.
+Espelhos planos || Imagem virtual, direita, do mesmo tamanho, simétrica (inverte esquerda-direita). Girar o espelho em α gira o raio refletido em 2α.
+Lente convergente x divergente || Convergente (bordas finas no ar): lupa, corrige hipermetropia. Divergente (bordas grossas): corrige miopia.
+Miopia x hipermetropia x presbiopia || Miopia: imagem antes da retina, vê mal de longe → lente divergente. Hipermetropia: depois da retina, vê mal de perto → convergente. Presbiopia ("vista cansada"): perda de acomodação → convergente.
+Equação dos pontos conjugados e aumento || 1/f = 1/p + 1/p'. A = -p'/p = i/o. Vergência V = 1/f (em dioptrias, f em metros: "graus").
+Por que o céu é azul? || A luz azul (menor comprimento de onda) é mais espalhada pelas moléculas do ar.
+Cor dos objetos || Um objeto reflete a cor que vemos e absorve as outras. Branco reflete todas; preto absorve todas (esquenta mais ao sol).
+## Eletricidade e magnetismo
+Corrente elétrica || i = Q/Δt (ampère = C/s). Sentido convencional: do polo + para o -.
+1ª Lei de Ohm || U = R·i.
+2ª Lei de Ohm || R = ρ·L/A. Fio mais longo → mais resistência; fio mais grosso → menos resistência.
+Potência elétrica || P = U·i = R·i² = U²/R.
+Energia elétrica consumida e conta de luz || E = P·Δt. Em kWh: potência em kW x horas de uso. Ex.: chuveiro de 5.000 W por 0,5 h/dia em 30 dias = 75 kWh.
+Associação de resistores em série || Mesma corrente; R eq = R1 + R2 + ... Se um queima, todos apagam (pisca-pisca antigo).
+Associação de resistores em paralelo || Mesma tensão; 1/Req = 1/R1 + 1/R2 + ... Req menor que o menor resistor. Ligação das tomadas de casa.
+Chuveiro elétrico: posição "inverno" x "verão" || Inverno: resistência MENOR → mais corrente → mais potência (P = U²/R) → água mais quente.
+Função do fusível e do disjuntor || Interromper o circuito quando a corrente passa do limite, evitando superaquecimento e incêndio.
+Por que pássaros pousam em fios de alta tensão sem levar choque? || As duas patas estão no mesmo fio, praticamente no mesmo potencial: não há ddp significativa sobre o corpo.
+Função do fio terra || Oferecer caminho de baixa resistência para a corrente de fuga, protegendo quem toca no aparelho.
+Lei de Coulomb || F = k·|Q1|·|Q2| / d². Cargas iguais se repelem, opostas se atraem.
+Para-raios e gaiola de Faraday || Cargas se concentram nas pontas (poder das pontas → para-raios). No interior de condutor fechado o campo é nulo (por isso o carro protege de raios).
+Ímãs: propriedades básicas || Polos iguais se repelem e opostos se atraem. Não existe monopolo: cortar um ímã gera dois ímãs. Bússola aponta para o polo sul magnético (perto do norte geográfico).
+Corrente elétrica e campo magnético (Oersted) || Corrente elétrica gera campo magnético ao redor do fio. Base dos eletroímãs e motores.
+Indução eletromagnética (Faraday) || Variação do fluxo magnético induz corrente. Base dos geradores (usinas), transformadores, carregador por indução e cartão por aproximação.
+Transformador || U1/U2 = N1/N2. Só funciona com corrente ALTERNADA. Usado para elevar a tensão na transmissão (menos perda) e baixar no consumo.
+Usinas: transformações de energia || Hidrelétrica: potencial gravitacional → cinética → elétrica. Termelétrica: química → térmica → cinética → elétrica. Eólica: cinética do vento → elétrica. Todas (menos solar fotovoltaica) usam gerador com indução.
+Vantagens e desvantagens da hidrelétrica || Renovável, baixa emissão na operação. Mas alaga grandes áreas, desloca populações, afeta peixes e emite metano da vegetação submersa.
+Efeito fotoelétrico || Luz de frequência suficiente arranca elétrons de um metal; depende da frequência, não da intensidade. Base das células solares e explicação de Einstein para o fóton.

@@ -218,6 +218,13 @@
     <div id="amigos-conteudo"></div>
   </div>
 </div>
+<div class="janela" id="j-codigo" hidden role="dialog" aria-labelledby="j-codigo-t">
+  <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-codigo-t">🔑 Código secreto</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <form id="codigo-form"><p>Alguém te contou um código? Digite aqui para abrir uma parte escondida do Mundo.</p>
+      <div class="btn-row"><input id="codigo-txt" class="campo" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Código secreto" placeholder="CÓDIGO"><button type="submit" class="hb azul">Abrir</button></div>
+      <p class="small" id="codigo-fb" role="status"></p></form>
+  </div>
+</div>
 <div class="janela" id="j-bilhetes" hidden role="dialog" aria-labelledby="j-bilhetes-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-bilhetes-t">✉️ Bilhetes secretos</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="bilhetes-conteudo"></div>
@@ -325,6 +332,7 @@
       <button type="button" class="hb azul" data-abrir="turma">👥 Modo turma</button>
       <button type="button" class="hb azul" data-abrir="amigos">🏆 Ranking entre amigos</button>
       <button type="button" class="hb azul" data-abrir="bilhetes">✉️ Bilhetes secretos</button>
+      <button type="button" class="hb azul" data-abrir="codigo">🔑 Código secreto</button>
       <button type="button" class="hb verde" data-abrir="horta">🌱 Horta</button>
       <button type="button" class="hb verde" data-abrir="trem">🚂 Trenzinho</button>
       <button type="button" class="hb rosa" data-abrir="pixel">🎨 Pixel art</button>
@@ -364,6 +372,8 @@
 <script src="teleporte.js?v=20261031zn"></script>
 <script src="olimpiada.js?v=20261031a"></script>
 <script src="mundo.js?v=20261031zzt"></script>
+<script src="enem/enem.js?v=20261031a"></script>
+<script src="codigo.js?v=20261031a"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
