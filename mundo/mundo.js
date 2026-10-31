@@ -1253,7 +1253,7 @@
     if (m.id === 'computador') {
       const lista = faltando(false).slice(0, 6);
       return dialogo('💻', 'Computador', lista.length ? '<p>Atividades que ainda faltam nas fases abertas. Abra uma e a casa dela ganha cor:</p>' : '<p>Você já fez todas as atividades das fases abertas! 🎉 Cumpra as missões para abrir a próxima fase.</p>',
-        lista.map(l => l.tipo === 'em' ? { txt: `${l.icone} ${l.titulo}`, fn: () => desafioEM(l, 0) } : { txt: `${l.icone} ${l.titulo}`, href: l.url, fn: () => abriu(l) }).concat([fecha]));
+        lista.map(l => l.tipo === 'em' ? { txt: `${l.icone} ${l.titulo}`, fn: () => comecaEM(l) } : { txt: `${l.icone} ${l.titulo}`, href: l.url, fn: () => abriu(l) }).concat([fecha]));
     }
     if (m.id === 'arcade') {
       const js = faltando(true), l = js.length ? js[Math.floor(Math.random() * js.length)] : jogaveis.length ? lugarRec(jogaveis[Math.floor(Math.random() * jogaveis.length)]) : null;
@@ -1924,15 +1924,16 @@
     dialogo(p.ic, `${p.nome} · ${p.prof}`, `${intro}<p><strong>Missão em ${p.passos.length} etapas</strong></p>${lista}${prog && ps.tipo !== 'pergunta' ? `<p class="muted small">Agora: ${esc(ps.txt)} · ${prog}</p>` : ''}`, ops);
   }
   function perguntaProf(p, f) {
+    const chB = `prof:${p.id}:${estProf(p).passo}`; if (bloqueada(chB)) return avisoBloqueio(p.ic, `${p.nome} · ${p.prof}`);
     const ps = p.passos[estProf(p).passo], ordem = ps.alts.map((a, i) => i).sort(() => Math.random() - 0.5);
     dialogo(p.ic, `${p.nome} · ${p.prof}`, `<p>${esc(ps.enun)}</p>`, ordem.map(i => ({ txt: ps.alts[i], fn: () => {
       if (D.op.dataset.respondida) return;
       D.op.dataset.respondida = '1';
-      const certo = i === 0;
+      const certo = i === 0; contaResposta(); if (!certo) bloqueia(chB);
       [...D.op.children].forEach((b, j) => { b.disabled = true; if (ordem[j] === 0) b.classList.add('certa'); else if (ordem[j] === i) b.classList.add('errada'); });
       D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${esc(ps.coment)}</p>`;
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Continuar' : 'Tentar de novo';
-      b.addEventListener('click', () => certo ? avancaProf(p, f) : perguntaProf(p, f)); D.op.appendChild(b); b.focus();
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Continuar' : 'Entendi';
+      b.addEventListener('click', () => certo ? avancaProf(p, f) : fechaDialogo()); D.op.appendChild(b); b.focus();
     } })));
     delete D.op.dataset.respondida;
   }
@@ -2458,8 +2459,8 @@
   function usaTele(o) {
     const nv = teleNivel, A = TP.areas[o.area], ps = perguntasTele(nv, o.area), feitas = feitasTele(nv, o.area), r = resultadoTeste(), fecha = { txt: 'Fechar', fn: fechaDialogo };
     const fraca = r && r.nivel === nv && (r.estudar || []).includes(o.area);
-    const prox = ps.find(p => S.resp[p.id] !== true);
-    dialogo(A.ic, A.nome, `<p>${fraca ? '⭐ <b>Comece por aqui:</b> foi uma das áreas com menos acertos no seu teste. ' : ''}Nível ${TP.niveis[nv].ic} ${TP.niveis[nv].nome}: <b>${feitas} de ${ps.length}</b> perguntas certas.</p>${prox ? '' : '<p>✅ Você completou esta estação!</p>'}<p class="muted small">Os materiais abrem em outra aba.</p>`,
+    const prox = ps.find(p => S.resp[p.id] !== true && !bloqueada(p.id)), esperando = !prox && ps.some(p => S.resp[p.id] !== true);
+    dialogo(A.ic, A.nome, `<p>${fraca ? '⭐ <b>Comece por aqui:</b> foi uma das áreas com menos acertos no seu teste. ' : ''}Nível ${TP.niveis[nv].ic} ${TP.niveis[nv].nome}: <b>${feitas} de ${ps.length}</b> perguntas certas.</p>${prox ? '' : esperando ? '<p>⏳ A pergunta que falta foi a que você errou agora há pouco. Responda uma pergunta de outra estação e volte para tentar de novo.</p>' : '<p>✅ Você completou esta estação!</p>'}<p class="muted small">Os materiais abrem em outra aba.</p>`,
       (prox ? [{ txt: 'Responder uma pergunta', classe: 'principal', fn: () => pergunta(A.nome, A.ic, embaralhaTele(prox), certo => { if (certo) confereTele(); }) }] : [])
         .concat(A.links.map(([href, nome]) => ({ txt: `📖 ${nome}`, href: '..' + href })), [fecha]));
   }
@@ -3157,20 +3158,30 @@
       { txt: 'Agora não', fn: fechaDialogo }
     ]);
   }
+  function comecaEM(l) {   // começa (ou continua) pela primeira pergunta pendente que não acabou de ser errada
+    const d = l.desafio, ok = desafioEM.ok || (desafioEM.ok = new Set());
+    if (d.qs.every((_, j) => ok.has(`${d.id}-${j}`))) d.qs.forEach((_, j) => ok.delete(`${d.id}-${j}`));
+    const j = d.qs.findIndex((_, j) => !ok.has(`${d.id}-${j}`) && !bloqueada(`${d.id}-${j}`));
+    if (j < 0) return avisoBloqueio(l.icone, l.titulo);
+    desafioEM(l, j);
+  }
   function desafioEM(l, i) {
     const d = l.desafio, q = d.qs[i], ordem = q.alts.map((a, k) => k).sort(() => Math.random() - 0.5);
     dialogo(l.icone, `${l.titulo} · ${i + 1}/${d.qs.length}`, `${q.html || ''}<p>${q.enun}</p>`, ordem.map(k => ({ txt: q.alts[k], fn: () => {
       if (D.op.dataset.respondida) return;
       D.op.dataset.respondida = '1';
-      const certo = k === 0, id = `${d.id}-${i}`;
+      const certo = k === 0, id = `${d.id}-${i}`; contaResposta(); if (!certo) bloqueia(id);
       [...D.op.children].forEach((b, j) => { b.disabled = true; if (ordem[j] === 0) b.classList.add('certa'); else if (ordem[j] === k) b.classList.add('errada'); });
       if (certo) { const nova = S.resp[id] !== true; S.resp[id] = true; ganhaHabilidade(d.eixos, 10); if (nova) { S.acertos++; pontos(5); } } else { S.erros++; if (S.resp[id] !== true) S.resp[id] = false; hud(); }
       D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Não foi dessa vez.'}</strong> ${esc(q.coment)}</p>`;
-      const ultimo = i === d.qs.length - 1;
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = !certo ? 'Tentar de novo' : ultimo ? 'Terminar' : 'Próxima';
+      if (certo) (desafioEM.ok = desafioEM.ok || new Set()).add(id);
+      // a próxima pendente nesta rodada, sem repetir a que acabou de errar
+      const pend = d.qs.map((_, j) => (i + 1 + j) % d.qs.length).filter(j => !(desafioEM.ok || new Set()).has(`${d.id}-${j}`));
+      const prox = pend.find(j => !bloqueada(`${d.id}-${j}`)), ultimo = !pend.length;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = ultimo ? 'Terminar' : prox !== undefined ? 'Próxima' : 'Entendi';
       b.addEventListener('click', () => {
-        if (!certo) return desafioEM(l, i);
-        if (!ultimo) return desafioEM(l, i + 1);
+        if (!ultimo && prox !== undefined) return desafioEM(l, prox);
+        if (!ultimo) { fechaDialogo(); return aviso('⏳ Falta a pergunta que você errou: responda outra pergunta e volte ao desafio.'); }
         if (!S.feitos[l.id]) { S.feitos[l.id] = true; pontos(20, `${l.icone} ${l.titulo}: o prédio ganhou cor!`); }
         confereFases(); salvar(); fechaDialogo();
       });
@@ -3187,8 +3198,14 @@
     n.banco = b && Object.assign({}, b, { perguntas: b.lista.map((q, i) => Object.assign({ id: `n:${n.fase.id}:${k % bs.length}:${i}`, eixos: b.eixos }, q)) });
     return n.banco;
   }
+  /* errou? a mesma pergunta só volta depois de o estudante responder outra (nada de repetir em seguida) */
+  const bloqueios = () => S.bloq || (S.bloq = {});
+  function contaResposta() { S.nResp = (S.nResp || 0) + 1; const B = bloqueios(); for (const k in B) if (B[k] <= S.nResp) delete B[k]; }
+  const bloqueia = ch => { bloqueios()[ch] = (S.nResp || 0) + 1; };
+  const bloqueada = ch => (bloqueios()[ch] || 0) > (S.nResp || 0);
+  const avisoBloqueio = (ic, titulo) => dialogo(ic, titulo, '<p>Esta pergunta fica para depois: antes de tentar de novo, responda <b>outra pergunta</b> (converse com um morador, jogue uma casa ou visite outra estação). Assim você volta com a cabeça fresca!</p>', [{ txt: 'Combinado', classe: 'principal', fn: fechaDialogo }]);
   function sorteiaPergunta(f, lista0) {
-    const todas = lista0 || f.perguntas;
+    const todas0 = lista0 || f.perguntas, livres = todas0.filter(p => !bloqueada(p.id)), todas = livres.length ? livres : todas0;
     const erradas = todas.filter(p => S.resp[p.id] === false), novas = todas.filter(p => !(p.id in S.resp));
     const lista = erradas.length && (Math.random() < 0.6 || !novas.length) ? erradas : novas.length ? novas : todas;
     return lista[Math.floor(Math.random() * lista.length)];
@@ -3198,6 +3215,7 @@
       if (D.op.dataset.respondida) return;
       D.op.dataset.respondida = '1';
       const certo = i === p.certa, novaResp = !(p.id in S.resp) || S.resp[p.id] === false;
+      contaResposta(); if (!certo) bloqueia(p.id);
       S.resp[p.id] = certo;
       ganhaHabilidade(p.eixos, certo ? 10 : 2);
       if (certo) contaEvento('acertos');
@@ -3254,10 +3272,12 @@
       ]).concat([{ txt: 'Fechar', fn: fechaDialogo }]));
   }
   function vendeTudo(n, k) {
+    if (bloqueada(`venda:${k}`)) return dialogo('🧺', n.nome, '<p>Vamos deixar essa conta para depois: responda outra pergunta e volte. Enquanto isso, dá para vender um por vez.</p>', [{ txt: 'Vender um por vez', classe: 'principal', fn: () => compraNpc(n) }, { txt: 'Fechar', fn: fechaDialogo }]);
     const q = S.inv[k], pr = precoNpc(n, k), certo = q * pr;
     const alts = [certo, certo + pr, certo - pr, q + pr].filter((v, i, a) => v > 0 && a.indexOf(v) === i).slice(0, 4).sort(() => Math.random() - 0.5);
     dialogo('🧺', n.nome, `<p>Quanto eu te pago por <b>${q} ${ITENS[k][0]}</b> a <b>${pr} ⭐</b> cada?</p>`, alts.map(v => ({ txt: `${v} ⭐`, fn: () => {
-      if (v !== certo) return dialogo('🧺', n.nome, `<p>Hmm, confira a conta: ${q} × ${pr}.</p>`, [{ txt: 'Tentar de novo', classe: 'principal', fn: () => vendeTudo(n, k) }, { txt: 'Fechar', fn: fechaDialogo }]);
+      contaResposta();
+      if (v !== certo) { bloqueia(`venda:${k}`); return dialogo('🧺', n.nome, `<p>Hmm, a conta ${q} × ${pr} não deu isso. Pense com calma e tente depois de responder outra pergunta; por enquanto, dá para vender um por vez.</p>`, [{ txt: 'Vender um por vez', classe: 'principal', fn: () => compraNpc(n) }, { txt: 'Fechar', fn: fechaDialogo }]); }
       S.inv[k] = 0; S.pontos += certo; ganhaHabilidade(['NU'], 5); SOM.toca('moeda'); hud(); salvar();
       dialogo('🧺', n.nome, `<p>✅ Isso: ${q} × ${pr} = <b>${certo} ⭐</b>. Negócio fechado!</p>`, [{ txt: 'Vender outra coisa', fn: () => compraNpc(n) }, { txt: 'Fechar', classe: 'principal', fn: fechaDialogo }]);
     } })));
@@ -3332,16 +3352,17 @@
     return k >= 0 && !E.pistas[k] ? k : -1;
   }
   function pistaMisterio(k, c) {
+    if (bloqueada(`pista:${k}`)) return avisoBloqueio(MISTERIO.pistas[k].ic, `Pista ${k + 1}: ${MISTERIO.pistas[k].nome}`);
     const P = MISTERIO.pistas[k], ordem = P.alts.map((_, i) => i).sort(() => Math.random() - 0.5);
     dialogo(P.ic, `Pista ${k + 1}: ${P.nome}`, `<p>${esc(P.achado)}</p><p><b>${esc(P.enun)}</b></p>`, ordem.map(i => ({ txt: P.alts[i], fn: () => {
       if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
-      const certo = i === P.certa;
+      const certo = i === P.certa; contaResposta(); if (!certo) bloqueia(`pista:${k}`);
       [...D.op.children].forEach((b, j) => { b.disabled = true; if (ordem[j] === P.certa) b.classList.add('certa'); else if (ordem[j] === i) b.classList.add('errada'); });
       if (certo) { estMis().pistas[k] = true; ganhaHabilidade(['CD', 'MD'], 10); pontos(10); salvar(); }
       const n = Object.keys(estMis().pistas).length;
-      D.texto.innerHTML += `<p><strong>${certo ? `✅ Pista guardada no caderno de detetive (${n}/5).` : '❌ Ainda não. Leia a pista com calma e tente de novo.'}</strong></p>`;
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? (n === 5 ? '🕵️ Resolver o caso' : 'Continuar') : 'Tentar de novo';
-      b.addEventListener('click', () => certo ? (n === 5 ? (fechaDialogo(), abreJanela('misterio')) : (fechaDialogo(), aviso(`🔎 Faltam ${5 - n} pistas.`))) : pistaMisterio(k, c)); D.op.appendChild(b); b.focus();
+      D.texto.innerHTML += `<p><strong>${certo ? `✅ Pista guardada no caderno de detetive (${n}/5).` : '❌ Ainda não. Leia a pista com calma: você pode tentar de novo depois de responder outra pergunta.'}</strong></p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? (n === 5 ? '🕵️ Resolver o caso' : 'Continuar') : 'Entendi';
+      b.addEventListener('click', () => certo ? (n === 5 ? (fechaDialogo(), abreJanela('misterio')) : (fechaDialogo(), aviso(`🔎 Faltam ${5 - n} pistas.`))) : fechaDialogo()); D.op.appendChild(b); b.focus();
     } })).concat([{ txt: 'Depois', fn: fechaDialogo }]));
     delete D.op.dataset.respondida;
   }
@@ -3351,14 +3372,15 @@
       ganhaHabilidade(['CD', 'MD'], 30); pontos(80, '🕵️ Caso resolvido! Você é um(a) detetive digital.'); setTimeout(() => ganhaFigurinha(null, 'pelo mistério resolvido'), 1800); salvar();
       return dialogo('🕵️', 'Caso resolvido!', '<p>O Seu Juca trocou a senha, ativou a verificação em duas etapas e avisou a vizinhança. Você ganhou +80 ⭐, a medalha de detetive digital e uma figurinha.</p>', [{ txt: 'Oba!', classe: 'principal', fn: fechaDialogo }]);
     }
+    if (bloqueada(`caso:${i}`)) return avisoBloqueio('🕵️', 'Resolver o caso');
     const ordem = q.alts.map((_, j) => j).sort(() => Math.random() - 0.5);
     dialogo('🕵️', `Resolver o caso · ${i + 1}/2`, `<p><b>${esc(q.enun)}</b></p>`, ordem.map(j => ({ txt: q.alts[j], fn: () => {
       if (D.op.dataset.respondida) return; D.op.dataset.respondida = '1';
-      const certo = j === q.certa;
+      const certo = j === q.certa; contaResposta(); if (!certo) bloqueia(`caso:${i}`);
       [...D.op.children].forEach((b, m) => { b.disabled = true; if (ordem[m] === q.certa) b.classList.add('certa'); else if (ordem[m] === j) b.classList.add('errada'); });
-      D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Releia as pistas no caderno e tente de novo.'}</strong></p>`;
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Continuar' : 'Tentar de novo';
-      b.addEventListener('click', () => concluiMisterio(certo ? i + 1 : i)); D.op.appendChild(b); b.focus();
+      D.texto.innerHTML += `<p><strong>${certo ? '✅ Isso mesmo!' : '❌ Releia as pistas no caderno. Você pode tentar de novo depois de responder outra pergunta.'}</strong></p>`;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = certo ? 'Continuar' : 'Entendi';
+      b.addEventListener('click', () => certo ? concluiMisterio(i + 1) : fechaDialogo()); D.op.appendChild(b); b.focus();
     } })));
     delete D.op.dataset.respondida;
   }
@@ -3764,7 +3786,7 @@
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
-  window.MUNDO_DEBUG = { portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
