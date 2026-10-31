@@ -101,6 +101,10 @@ function gravarMapa() {
 const ESTATICAS = {
 ${linhas}
 };
+/* Título de cada explicação Aprenda (aprenda/<código>/), para os links "Antes de começar, aprenda". */
+const APRENDA_TITULOS = {
+${habsAprenda.map(h => `  ${JSON.stringify(h.codigo)}: ${JSON.stringify(APRENDA[h.codigo].t)}`).join(',\n')}
+};
 /* estaticas: fim */`;
   let txt = ler(f);
   txt = txt.includes('/* estaticas: início')
@@ -299,7 +303,8 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: 
     <div>${em ? '<span>Etapa</span>Ensino Médio (1ª a 3ª série)' : `<span>Ano</span>${h.ano}º ano do Ensino Fundamental`}</div>
     <div><span>Materiais</span>${mats.length + sims.length + (slides ? 1 : 0)} gratuitos</div>
   </div>
-  <p>Nesta página estão os materiais gratuitos para trabalhar a habilidade <strong>${c}</strong> em sala de aula: ${listaTxt(resumoMats)}. Tudo funciona no navegador, sem cadastro, e pode ser impresso ou projetado.</p>
+  <p>Nesta página estão os materiais gratuitos para trabalhar a habilidade <strong>${c}</strong> em sala de aula: ${listaTxt(resumoMats)}. Tudo funciona no navegador, sem cadastro, e pode ser impresso ou projetado.</p>${EST['aprenda:' + c] ? `
+  <p class="panel">📖 <strong>Para o estudante:</strong> a página <a href="${EST['aprenda:' + c]}">Aprenda: ${esc(APRENDA[c].t)}</a> explica a ideia com ilustração e exemplo, tem uma pergunta para conferir e leva direto à prática. Bom para começar a aula, para quem faltou ou para estudar em casa.</p>` : ''}
 ${slides || pagApostila ? `
   <h2>Aula expositiva</h2>
   <div class="btn-row">${slides ? `
@@ -338,6 +343,281 @@ ${vizinhas.length ? `
 
 /* ---------- página central da BNCC Computação ---------- */
 const HUB_CO = 'bncc/';
+
+/* ---------- Aprenda: explicação curta e ilustrada para o estudante ---------- */
+// textos em _fonte/material/aprenda.js; a página fica em aprenda/<código>/ e vem antes da prática
+const APRENDA = require('./aprenda.js');
+const habsAprenda = D.HABILIDADES.filter(h => APRENDA[h.codigo]);
+for (const h of habsAprenda) EST['aprenda:' + h.codigo] = `aprenda/${h.codigo.toLowerCase()}/`;
+const HUB_APRENDA = 'aprenda/';
+// o que o estudante pratica depois de ler: listas primeiro (sem a revisão do ano), depois jogos e recursos 3D
+function praticaDe(c) {
+  const ordem = { lista: 0, jogo: 1, '3d': 2 };
+  return D.RECURSOS.filter(r => (r.habs || []).includes(c) && r.url && r.tipo in ordem && !/-revisao$/.test(r.id))
+    .sort((a, b) => ordem[a.tipo] - ordem[b.tipo]);
+}
+// ilustrações em HTML e SVG, com as cores do site (claro e escuro)
+function figura(f) {
+  const leg = f.leg ? `<figcaption>${esc(f.leg)}</figcaption>` : '';
+  if (f.tipo === 'fluxo') return `<figure class="fig fluxo"><ol>${f.passos.map(([e, t]) => `<li><span class="ico" aria-hidden="true">${e}</span><span>${esc(t)}</span></li>`).join('')}</ol>${f.volta ? `<p class="volta">↩ ${esc(f.volta)}</p>` : ''}${leg}</figure>`;
+  if (f.tipo === 'grupos') return `<figure class="fig grupos"><div class="cols">${f.grupos.map(([n, e, itens]) => `<div class="grupo"><strong><span aria-hidden="true">${e}</span> ${esc(n)}</strong><ul>${itens.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')}</div>${leg}</figure>`;
+  if (f.tipo === 'compara') return `<figure class="fig compara"><div class="cols">${f.lados.map(([n, itens]) => `<div class="grupo"><strong>${esc(n)}</strong><ul>${itens.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')}</div>${leg}</figure>`;
+  if (f.tipo === 'codigo') return `<figure class="fig codigo"><pre><code>${f.linhas.map(l => { const i = l.indexOf('#'); return i < 0 ? esc(l) : `${esc(l.slice(0, i))}<span class="com">${esc(l.slice(i))}</span>`; }).join('\n')}</code></pre>${leg}</figure>`;
+  if (f.tipo === 'tabela') return `<figure class="fig tabela"><div class="rolar"><table><thead><tr>${f.cab.map(c => `<th scope="col">${esc(c)}</th>`).join('')}</tr></thead><tbody>${f.linhas.map(l => `<tr>${l.map((c, i) => i ? `<td>${esc(c)}</td>` : `<th scope="row">${esc(c)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>${leg}</figure>`;
+  if (f.tipo === 'grafo') {
+    const nos = f.nos.map(([t, x, y]) => ({ t, x, y, w: Math.max(56, Math.round(t.length * 7.4) + 22), h: 34 }));
+    const x0 = Math.min(...nos.map(n => n.x - n.w / 2)) - 6, x1 = Math.max(...nos.map(n => n.x + n.w / 2)) + 6;
+    const y0 = Math.min(...nos.map(n => n.y - n.h / 2)) - 6, y1 = Math.max(...nos.map(n => n.y + n.h / 2)) + 6;
+    // a linha para na borda do retângulo, para a ponta da seta aparecer
+    const borda = (n, dx, dy) => { const t = Math.min(dx ? (n.w / 2 + 3) / Math.abs(dx) : 1e9, dy ? (n.h / 2 + 3) / Math.abs(dy) : 1e9); return [n.x + dx * t, n.y + dy * t]; };
+    const linhas = f.arestas.map(([a, b, rot]) => {
+      const A = nos[a], B = nos[b], dx = B.x - A.x, dy = B.y - A.y;
+      const [ax, ay] = borda(A, dx, dy), [bx, by] = borda(B, -dx, -dy);
+      const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
+      return `<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${bx.toFixed(1)}" y2="${by.toFixed(1)}"${f.dir ? ' marker-end="url(#seta)"' : ''}/>${rot ? `<text class="rot" x="${mx}" y="${my}" dy="-4">${esc(rot)}</text>` : ''}`;
+    }).join('');
+    const caixas = nos.map(n => `<rect x="${n.x - n.w / 2}" y="${n.y - n.h / 2}" width="${n.w}" height="${n.h}" rx="12"/><text x="${n.x}" y="${n.y}" dy="5">${esc(n.t)}</text>`).join('');
+    return `<figure class="fig grafo"><div class="rolar"><svg viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" style="max-width:${Math.round((x1 - x0) * 1.5)}px;min-width:${Math.round((x1 - x0) * 0.8)}px" role="img" aria-label="${esc(f.leg || 'Diagrama')}">${f.dir ? '<defs><marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>' : ''}<g class="ares">${linhas}</g><g class="nos">${caixas}</g></svg></div>${leg}</figure>`;
+  }
+  throw new Error('figura desconhecida: ' + f.tipo);
+}
+const CSS_APRENDA = `
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 36px; }
+  .passos { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 6px; font-size: 14px; font-weight: 600; }
+  .passos li { padding: 6px 14px; border-radius: 999px; background: var(--pill); }
+  .passos li.agora { background: var(--ink); color: var(--paper); }
+  .ideia { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px 22px; background: var(--accent-soft); font-size: 19px; margin: 18px 0; }
+  .ideia b { display: block; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+  .fig { margin: 22px 0; padding: 18px; border: 1.5px solid var(--ink); border-radius: var(--radius); background: var(--paper-2); }
+  .fig figcaption { font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+  .fluxo ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; counter-reset: p; }
+  .fluxo li { position: relative; flex: 1 1 140px; display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 18px; background: var(--paper); border: 1.5px solid var(--line); font-size: 15px; }
+  .fluxo li + li::before { content: '→'; position: absolute; left: -21px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--accent); }
+  .fluxo .ico { font-size: 28px; line-height: 1; }
+  .fluxo .volta { margin: 10px 0 0; font-weight: 600; color: var(--accent); font-size: 15px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .grupo { background: var(--paper); border: 1.5px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .grupo ul { margin: 8px 0 0; padding-left: 18px; font-size: 15px; }
+  .grupo li + li { margin-top: 4px; }
+  .codigo pre { margin: 0; padding: 14px 16px; border-radius: 14px; background: var(--paper); border: 1.5px solid var(--line); overflow-x: auto; font-size: 15px; line-height: 1.55; }
+  .codigo .com { color: var(--accent); }
+  .rolar { overflow-x: auto; }
+  .tabela table { border-collapse: collapse; width: 100%; background: var(--paper); font-size: 15px; }
+  .tabela th, .tabela td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .tabela thead th { background: var(--pill); }
+  .grafo svg { width: 100%; height: auto; display: block; margin: 0 auto; font-family: var(--body); }
+  .grafo .ares line { stroke: var(--ink-3); stroke-width: 2; }
+  .grafo marker path { fill: var(--ink-3); }
+  .grafo .nos rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .grafo text { fill: var(--ink); font-size: 13px; text-anchor: middle; }
+  .grafo text.rot { fill: var(--accent); font-size: 12px; font-weight: 600; paint-order: stroke; stroke: var(--paper-2); stroke-width: 5px; stroke-linejoin: round; }
+  .exemplo { border-left: 5px solid var(--accent); padding: 4px 0 4px 16px; margin: 18px 0; }
+  dl.pal { display: grid; gap: 8px; margin: 10px 0; }
+  dl.pal div { display: grid; grid-template-columns: minmax(120px, 210px) 1fr; gap: 10px; }
+  dl.pal dt { font-weight: 600; }
+  dl.pal dd { margin: 0; }
+  @media (max-width: 560px) { dl.pal div { grid-template-columns: 1fr; gap: 0; } .fluxo li + li::before { content: '↓'; left: 50%; top: -19px; transform: translateX(-50%); } .fluxo ol { flex-direction: column; gap: 22px; } .fluxo li { flex: 0 0 auto; flex-direction: row; align-items: center; gap: 12px; } }
+  .confira fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .confira legend { font-weight: 600; margin-bottom: 10px; font-size: 18px; }
+  .confira label { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; cursor: pointer; background: var(--paper); }
+  .confira label.certa { border-color: var(--ok); background: var(--ok-soft); }
+  .confira label.errada { border-color: var(--bad); background: var(--bad-soft); }
+  .confira .msg { min-height: 1.4em; font-weight: 600; margin: 10px 0 0; }
+  .nivel { font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
+  .vizinhas { display: flex; flex-wrap: wrap; gap: 8px; }`;
+function paginaAprenda(h) {
+  const c = h.codigo, A = APRENDA[c];
+  const url = `${SITE}/material-didatico/${EST['aprenda:' + c]}`;
+  const anoH = anoNome(h.ano);
+  const title = titulo(`Aprenda: ${A.t} (${c})${ASSINATURA}`, `Aprenda: ${A.t} (${c})`, `${A.t}${ASSINATURA}`, A.t);
+  const desc = cortar(`Explicação para estudantes (${anoH}): ${A.ideia}`, 155);
+  const img = `${SITE}/material-didatico/${OG.hab}`;
+  const pr = praticaDe(c), sims = simuladoresDe(c);
+  const primeiro = pr[0];
+  const card = r => `
+      <a class="card" href="${EST[r.id] || r.url}">
+        <span class="small muted">${D.TIPOS[r.tipo].icone} ${D.TIPOS[r.tipo].nome}${r.tempo ? ' · ' + esc(r.tempo) : ''}</span>
+        <strong>${esc(r.titulo)}</strong>
+        <span class="small muted">${esc(r.resumo || '')}</span>
+      </a>`;
+  const [qEnun, qOps, qCerta, qPorque] = A.q;
+  const vizinhas = habsAprenda.filter(o => o.ano === h.ano && o.codigo !== c);
+  const ldPagina = {
+    '@type': 'LearningResource', name: title, description: desc, url, inLanguage: 'pt-BR', image: img,
+    learningResourceType: 'Explicação', isAccessibleForFree: true, author: AUTORA,
+    educationalLevel: h.ano === 10 ? 'Ensino Médio' : `${h.ano}º ano do Ensino Fundamental`,
+    audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
+    about: { '@type': 'DefinedTerm', name: `${c}: ${h.objeto}`, description: h.texto, inDefinedTermSet: 'BNCC' },
+    educationalAlignment: alinhamentos([c]),
+    teaches: A.pal.map(([t]) => t)
+  };
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+${MARCA}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+${cabecaSEO({ title, desc, url, img, imgAlt: `Aprenda: ${A.t}`, ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['Aprenda', `${SITE}/material-didatico/${HUB_APRENDA}`], [A.t, url]])] })}
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>${CSS_APRENDA}
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc" data-hab="${c}">
+  <div class="crumbs"><a href="${HUB_APRENDA}#ano-${h.ano}">← Aprenda · ${anoH}</a></div>
+  <span class="eyebrow">📖 Aprenda · Computação · ${anoH} · ${c}</span>
+  <h1>${esc(A.t)}</h1>
+  <ol class="passos" aria-label="Seu caminho nesta habilidade"><li class="agora" aria-current="step">1. Aprenda</li><li>2. Confira</li><li>3. ${primeiro ? 'Pratique' : 'Faça'}</li></ol>
+  <p class="nivel" id="nivel" hidden></p>
+  <p class="ideia"><b>A ideia principal</b>${esc(A.ideia)}</p>
+${A.texto.map(p => `  <p>${p}</p>`).join('\n')}
+  ${figura(A.fig)}
+  <p class="exemplo"><strong>No dia a dia:</strong> ${esc(A.ex)}</p>
+
+  <h2>Palavras para lembrar</h2>
+  <dl class="pal">${A.pal.map(([t, d]) => `
+    <div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join('')}
+  </dl>
+
+  <h2 id="confira">Confira se entendeu</h2>
+  <form class="confira panel" id="q" data-certa="${qCerta}">
+    <fieldset>
+      <legend>${esc(qEnun)}</legend>${qOps.map((o, i) => `
+      <label><input type="radio" name="r" value="${i}"> <span>${esc(o)}</span></label>`).join('')}
+    </fieldset>
+    <p class="msg" role="status" aria-live="polite"></p>
+    <p class="porque small muted" hidden>${esc(qPorque)}</p>
+  </form>
+
+  <h2 id="pratique">${primeiro ? 'Agora pratique' : 'Agora faça'}</h2>
+${primeiro ? `  <p>Use o que você acabou de ler. Cada atividade conta no seu <a href="meu-progresso.html">progresso</a>: com 80% ou mais você fica proficiente em ${c}.</p>
+  <div class="btn-row"><a class="btn" id="praticar" href="${EST[primeiro.id] || primeiro.url}">${D.TIPOS[primeiro.tipo].icone} Praticar agora: ${esc(primeiro.titulo)}</a></div>
+  <div class="related" style="margin-top:18px">${pr.slice(1, 5).map(card).join('')}${sims.slice(0, Math.max(0, 4 - pr.slice(1, 5).length)).map(s => `
+      <a class="card" href="/simuladores/${s.url}">
+        <span class="small muted">🧪 Simulador</span>
+        <strong>${esc(s.titulo)}</strong>
+        <span class="small muted">${esc(s.resumo)}</span>
+      </a>`).join('')}
+  </div>` : `  <p class="panel"><strong>Desafio:</strong> ${esc(A.faca || 'Explique esta ideia com suas palavras para um colega e dê um exemplo novo.')}</p>${sims.length ? `
+  <div class="related" style="margin-top:18px">${sims.slice(0, 4).map(s => `
+      <a class="card" href="/simuladores/${s.url}">
+        <span class="small muted">🧪 Simulador</span>
+        <strong>${esc(s.titulo)}</strong>
+        <span class="small muted">${esc(s.resumo)}</span>
+      </a>`).join('')}
+  </div>` : ''}`}
+${vizinhas.length ? `
+  <h2>Outros assuntos do ${anoH}</h2>
+  <div class="vizinhas">${vizinhas.map(o => `<a class="tag" href="${EST['aprenda:' + o.codigo]}" title="${esc(o.codigo)}">${esc(APRENDA[o.codigo].t)}</a>`).join('')}</div>` : ''}
+  <p class="small muted" style="margin-top:32px">Habilidade ${c} da BNCC: ${esc(h.texto)} ${EST['hab:' + c] ? `Professor(a): planos, slides e fichas na <a href="${EST['hab:' + c]}">página da habilidade</a>.` : ''}</p>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+mdTopbar('aprenda'); mdFooter();
+(function () {
+  var c = document.getElementById('doc').dataset.hab;
+  // nível atual e a atividade que mais ajuda agora (a de menor nota), se o estudante já tem progresso
+  if (window.MDP && MDP.perfil()) {
+    var i = MDP.infoHab(c), el = document.getElementById('nivel');
+    if (i.nivel) { el.textContent = 'Seu nível em ' + c + ': ' + MDP.NIVEIS[i.nivel].nome + (i.best !== undefined ? ' · melhor nota ' + i.best + '%' : ''); el.hidden = false; }
+    var r = MDP.recursoPara(c), b = document.getElementById('praticar');
+    if (r && b && i.nivel) { b.href = recUrl(r); b.textContent = TIPOS[r.tipo].icone + ' Praticar agora: ' + r.titulo; }
+  }
+  var f = document.getElementById('q'), certa = +f.dataset.certa;
+  f.addEventListener('change', function (e) {
+    var v = +e.target.value, ls = f.querySelectorAll('label');
+    ls.forEach(function (l, k) { l.classList.remove('certa', 'errada'); if (k === v) l.classList.add(v === certa ? 'certa' : 'errada'); });
+    f.querySelector('.msg').textContent = v === certa ? '✅ Isso mesmo!' : '❌ Ainda não. Releia a ideia principal e tente outra opção.';
+    f.querySelector('.porque').hidden = v !== certa;
+    if (v === certa) { ls[certa].classList.add('certa'); var p = document.querySelectorAll('.passos li'); p[0].classList.remove('agora'); p[0].removeAttribute('aria-current'); p[1].classList.add('agora'); p[1].setAttribute('aria-current', 'step'); }
+  });
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
+`;
+}
+function paginaHubAprenda() {
+  const url = `${SITE}/material-didatico/${HUB_APRENDA}`;
+  const anos = [...new Set(habsAprenda.map(h => h.ano))].sort((a, b) => a - b);
+  const title = titulo(`Aprenda Computação: ${habsAprenda.length} explicações para estudantes${ASSINATURA}`, `Aprenda Computação: explicações para estudantes${ASSINATURA}`, 'Aprenda Computação: explicações para estudantes');
+  const desc = cortar(`Explicações curtas e ilustradas de Computação para estudantes do 6º ano ao Ensino Médio: leia a ideia, confira se entendeu e pratique com jogos e listas.`, 155);
+  const img = `${SITE}/material-didatico/${OG.hab}`;
+  const ldPagina = {
+    '@type': 'CollectionPage', name: title, description: desc, url, inLanguage: 'pt-BR', image: img, author: AUTORA,
+    audience: { '@type': 'EducationalAudience', educationalRole: 'student' },
+    mainEntity: { '@type': 'ItemList', numberOfItems: habsAprenda.length, itemListElement: habsAprenda.map((h, i) => ({ '@type': 'ListItem', position: i + 1, name: APRENDA[h.codigo].t, url: `${SITE}/material-didatico/${EST['aprenda:' + h.codigo]}` })) }
+  };
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+${MARCA}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+${cabecaSEO({ title, desc, url, img, imgAlt: 'Aprenda Computação', ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['Aprenda', url]])] })}
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 36px; }
+  .saltos { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+  <div class="crumbs"><a href="./">← Material didático</a></div>
+  <span class="eyebrow">📖 Aprenda · para estudantes</span>
+  <h1>Aprenda Computação</h1>
+  <p class="lead">Explicações curtas, com desenho e exemplo do dia a dia, para cada assunto de Computação do 6º ano ao Ensino Médio. Leia a ideia, confira se entendeu e depois pratique com listas e jogos que contam no seu <a href="meu-progresso.html">progresso</a>.</p>
+  <nav class="saltos" aria-label="Ir para o ano">${anos.map(a => `<a class="btn ghost" href="${HUB_APRENDA}#ano-${a}">${anoNome(a)}</a>`).join('')}</nav>
+${anos.map(a => `
+  <h2 id="ano-${a}">${anoNome(a)}</h2>
+  <div class="related">${habsAprenda.filter(h => h.ano === a).map(h => `
+      <a class="card" href="${EST['aprenda:' + h.codigo]}">
+        <span class="small muted">${h.codigo} · ${D.EIXOS[h.eixo].nome}</span>
+        <strong>${esc(APRENDA[h.codigo].t)}</strong>
+        <span class="small muted">${esc(APRENDA[h.codigo].ideia)}</span>
+      </a>`).join('')}
+  </div>`).join('\n')}
+  <p class="small muted">Professor(a): os planos de aula, slides e fichas de cada habilidade estão na página da <a href="${HUB_CO}">BNCC Computação</a>.</p>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>mdTopbar('aprenda'); mdFooter();</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
+`;
+}
+
 function paginaHubComputacao() {
   const url = `${SITE}/material-didatico/${HUB_CO}`;
   const cos = habs.filter(h => h.comp === 'CO');
@@ -424,6 +704,7 @@ ${anos.map(a => `
   </div>`).join('\n')}
 
   <h2>Para levar a BNCC Computação à sua escola</h2>
+  <p>Para os estudantes, cada habilidade tem também uma explicação curta e ilustrada na seção <a href="${HUB_APRENDA}">Aprenda</a>, que leva direto à prática.</p>
   <p>A <a href="/formacao-continuada/">formação de professores em IA e Computação</a> ajuda escolas e redes a planejar o ano com essas habilidades, mesmo sem professor da área ou laboratório. Para explorar também as habilidades de Matemática, use o <a href="bncc.html">explorador da BNCC</a>.</p>
 </main>
 <footer id="footer"></footer>
@@ -574,7 +855,7 @@ const hash = t => crypto.createHash('md5').update(t).digest('hex').slice(0, 8);
 /* ---------- apagar páginas que não existem mais ---------- */
 function limpar() {
   const validos = new Set(Object.values(EST).map(s => path.join(MD, s)));
-  for (const pasta of [...Object.values(PASTAS), 'bncc']) {
+  for (const pasta of [...Object.values(PASTAS), 'bncc', 'aprenda']) {
     const dir = path.join(MD, pasta);
     if (!fs.existsSync(dir)) continue;
     for (const d of fs.readdirSync(dir)) {
@@ -611,6 +892,16 @@ async function main() {
       if (escrever(path.join(MD, EST['hab:' + h.codigo], 'index.html'), t)) novas++;
       sitemap.push([`${SITE}/material-didatico/${EST['hab:' + h.codigo]}`, hash(t)]);
     }
+    for (const h of habsAprenda) {
+      const t = paginaAprenda(h);
+      if (escrever(path.join(MD, EST['aprenda:' + h.codigo], 'index.html'), t)) novas++;
+      sitemap.push([`${SITE}/material-didatico/${EST['aprenda:' + h.codigo]}`, hash(t)]);
+    }
+    {
+      const t = paginaHubAprenda();
+      if (escrever(path.join(MD, HUB_APRENDA, 'index.html'), t)) novas++;
+      sitemap.push([`${SITE}/material-didatico/${HUB_APRENDA}`, hash(t)]);
+    }
     {
       const t = paginaHubComputacao();
       if (escrever(path.join(MD, HUB_CO, 'index.html'), t)) novas++;
@@ -633,7 +924,7 @@ async function main() {
       const u = `${SITE}/material-didatico/${r.url}`;
       if (!foraDoBloco.includes(`<loc>${u}</loc>`) && fs.existsSync(path.join(MD, r.url))) sitemap.push([u, hash(ler(path.join(MD, r.url)))]);
     }
-    console.log(`${estaticos.length} planos, fichas e listas e ${habs.length} habilidades (${novas} mudaram); ${jogos} jogos e recursos 3D atualizados.`);
+    console.log(`${estaticos.length} planos, fichas e listas, ${habs.length} habilidades e ${habsAprenda.length} páginas Aprenda (${novas} mudaram); ${jogos} jogos e recursos 3D atualizados.`);
   } finally {
     await browser.close();
     srv.close();

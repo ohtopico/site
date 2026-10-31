@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprenda: Grafos: pontos e ligações (EF07CO04) | Júlia Quoos</title>
+<meta name="description" content="Explicação para estudantes (7º ano): Um grafo é um desenho de pontos (vértices) ligados por linhas (arestas). Serve para representar mapas, amizades…">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/aprenda/ef07co04/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/aprenda/ef07co04/">
+<meta property="og:title" content="Aprenda: Grafos: pontos e ligações (EF07CO04) | Júlia Quoos">
+<meta property="og:description" content="Explicação para estudantes (7º ano): Um grafo é um desenho de pontos (vértices) ligados por linhas (arestas). Serve para representar mapas, amizades…">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Aprenda: Grafos: pontos e ligações">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Aprenda: Grafos: pontos e ligações (EF07CO04) | Júlia Quoos","description":"Explicação para estudantes (7º ano): Um grafo é um desenho de pontos (vértices) ligados por linhas (arestas). Serve para representar mapas, amizades…","url":"https://ohtopico.com.br/material-didatico/aprenda/ef07co04/","inLanguage":"pt-BR","image":"https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg","learningResourceType":"Explicação","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"educationalLevel":"7º ano do Ensino Fundamental","audience":{"@type":"EducationalAudience","educationalRole":"student"},"about":{"@type":"DefinedTerm","name":"EF07CO04: Propriedades de grafos","description":"Explorar propriedades básicas de grafos.","inDefinedTermSet":"BNCC"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF07CO04","targetDescription":"Explorar propriedades básicas de grafos."}],"teaches":["Vértice","Aresta","Grau"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Aprenda","item":"https://ohtopico.com.br/material-didatico/aprenda/"},{"@type":"ListItem","position":4,"name":"Grafos: pontos e ligações","item":"https://ohtopico.com.br/material-didatico/aprenda/ef07co04/"}]}
+</script>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 36px; }
+  .passos { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 6px; font-size: 14px; font-weight: 600; }
+  .passos li { padding: 6px 14px; border-radius: 999px; background: var(--pill); }
+  .passos li.agora { background: var(--ink); color: var(--paper); }
+  .ideia { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px 22px; background: var(--accent-soft); font-size: 19px; margin: 18px 0; }
+  .ideia b { display: block; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+  .fig { margin: 22px 0; padding: 18px; border: 1.5px solid var(--ink); border-radius: var(--radius); background: var(--paper-2); }
+  .fig figcaption { font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+  .fluxo ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; counter-reset: p; }
+  .fluxo li { position: relative; flex: 1 1 140px; display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 18px; background: var(--paper); border: 1.5px solid var(--line); font-size: 15px; }
+  .fluxo li + li::before { content: '→'; position: absolute; left: -21px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--accent); }
+  .fluxo .ico { font-size: 28px; line-height: 1; }
+  .fluxo .volta { margin: 10px 0 0; font-weight: 600; color: var(--accent); font-size: 15px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .grupo { background: var(--paper); border: 1.5px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .grupo ul { margin: 8px 0 0; padding-left: 18px; font-size: 15px; }
+  .grupo li + li { margin-top: 4px; }
+  .codigo pre { margin: 0; padding: 14px 16px; border-radius: 14px; background: var(--paper); border: 1.5px solid var(--line); overflow-x: auto; font-size: 15px; line-height: 1.55; }
+  .codigo .com { color: var(--accent); }
+  .rolar { overflow-x: auto; }
+  .tabela table { border-collapse: collapse; width: 100%; background: var(--paper); font-size: 15px; }
+  .tabela th, .tabela td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .tabela thead th { background: var(--pill); }
+  .grafo svg { width: 100%; height: auto; display: block; margin: 0 auto; font-family: var(--body); }
+  .grafo .ares line { stroke: var(--ink-3); stroke-width: 2; }
+  .grafo marker path { fill: var(--ink-3); }
+  .grafo .nos rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .grafo text { fill: var(--ink); font-size: 13px; text-anchor: middle; }
+  .grafo text.rot { fill: var(--accent); font-size: 12px; font-weight: 600; paint-order: stroke; stroke: var(--paper-2); stroke-width: 5px; stroke-linejoin: round; }
+  .exemplo { border-left: 5px solid var(--accent); padding: 4px 0 4px 16px; margin: 18px 0; }
+  dl.pal { display: grid; gap: 8px; margin: 10px 0; }
+  dl.pal div { display: grid; grid-template-columns: minmax(120px, 210px) 1fr; gap: 10px; }
+  dl.pal dt { font-weight: 600; }
+  dl.pal dd { margin: 0; }
+  @media (max-width: 560px) { dl.pal div { grid-template-columns: 1fr; gap: 0; } .fluxo li + li::before { content: '↓'; left: 50%; top: -19px; transform: translateX(-50%); } .fluxo ol { flex-direction: column; gap: 22px; } .fluxo li { flex: 0 0 auto; flex-direction: row; align-items: center; gap: 12px; } }
+  .confira fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .confira legend { font-weight: 600; margin-bottom: 10px; font-size: 18px; }
+  .confira label { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; cursor: pointer; background: var(--paper); }
+  .confira label.certa { border-color: var(--ok); background: var(--ok-soft); }
+  .confira label.errada { border-color: var(--bad); background: var(--bad-soft); }
+  .confira .msg { min-height: 1.4em; font-weight: 600; margin: 10px 0 0; }
+  .nivel { font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
+  .vizinhas { display: flex; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc" data-hab="EF07CO04">
+  <div class="crumbs"><a href="aprenda/#ano-7">← Aprenda · 7º ano</a></div>
+  <span class="eyebrow">📖 Aprenda · Computação · 7º ano · EF07CO04</span>
+  <h1>Grafos: pontos e ligações</h1>
+  <ol class="passos" aria-label="Seu caminho nesta habilidade"><li class="agora" aria-current="step">1. Aprenda</li><li>2. Confira</li><li>3. Pratique</li></ol>
+  <p class="nivel" id="nivel" hidden></p>
+  <p class="ideia"><b>A ideia principal</b>Um grafo é um desenho de pontos (vértices) ligados por linhas (arestas). Serve para representar mapas, amizades, redes e muito mais.</p>
+  <p>Nas linhas de ônibus, as paradas são <b>vértices</b> e os trechos entre elas são <b>arestas</b>. Numa rede social, as pessoas são vértices e as amizades, arestas.</p>
+  <p>Com grafos dá para responder perguntas: qual o caminho mais curto? Quem tem mais conexões (o <b>grau</b> do vértice)? Dá para chegar de A até B? Os aplicativos de mapa usam grafos o tempo todo.</p>
+  <figure class="fig grafo"><div class="rolar"><svg viewBox="16 17 347 166" style="max-width:521px;min-width:278px" role="img" aria-label="Um grafo de lugares do bairro com o tempo de cada trecho. Qual o caminho mais rápido de Casa até Mercado?"><g class="ares"><line x1="81.0" y1="85.7" x2="144.0" y2="56.6"/><text class="rot" x="115" y="70" dy="-4">5 min</text><line x1="81.0" y1="114.3" x2="147.5" y2="145.0"/><text class="rot" x="115" y="130" dy="-4">3 min</text><line x1="216.0" y1="55.4" x2="280.0" y2="82.9"/><text class="rot" x="250" y="70" dy="-4">4 min</text><line x1="212.5" y1="146.1" x2="280.0" y2="117.1"/><text class="rot" x="250" y="130" dy="-4">8 min</text><line x1="180.0" y1="60.0" x2="180.0" y2="140.0"/><text class="rot" x="180" y="100" dy="-4">2 min</text></g><g class="nos"><rect x="22" y="83" width="56" height="34" rx="12"/><text x="50" y="100" dy="5">Casa</text><rect x="147" y="23" width="66" height="34" rx="12"/><text x="180" y="40" dy="5">Escola</text><rect x="150.5" y="143" width="59" height="34" rx="12"/><text x="180" y="160" dy="5">Praça</text><rect x="283" y="83" width="74" height="34" rx="12"/><text x="320" y="100" dy="5">Mercado</text></g></svg></div><figcaption>Um grafo de lugares do bairro com o tempo de cada trecho. Qual o caminho mais rápido de Casa até Mercado?</figcaption></figure>
+  <p class="exemplo"><strong>No dia a dia:</strong> De Casa ao Mercado: pela Escola leva 5 + 4 = 9 min; pela Praça leva 3 + 8 = 11 min.</p>
+
+  <h2>Palavras para lembrar</h2>
+  <dl class="pal">
+    <div><dt>Vértice</dt><dd>um ponto do grafo.</dd></div>
+    <div><dt>Aresta</dt><dd>a ligação entre dois vértices.</dd></div>
+    <div><dt>Grau</dt><dd>quantas arestas saem de um vértice.</dd></div>
+  </dl>
+
+  <h2 id="confira">Confira se entendeu</h2>
+  <form class="confira panel" id="q" data-certa="2">
+    <fieldset>
+      <legend>No grafo da figura, qual é o grau da Escola?</legend>
+      <label><input type="radio" name="r" value="0"> <span>1</span></label>
+      <label><input type="radio" name="r" value="1"> <span>2</span></label>
+      <label><input type="radio" name="r" value="2"> <span>3</span></label>
+      <label><input type="radio" name="r" value="3"> <span>4</span></label>
+    </fieldset>
+    <p class="msg" role="status" aria-live="polite"></p>
+    <p class="porque small muted" hidden>A Escola se liga a Casa, Mercado e Praça: 3 arestas.</p>
+  </form>
+
+  <h2 id="pratique">Agora pratique</h2>
+  <p>Use o que você acabou de ler. Cada atividade conta no seu <a href="meu-progresso.html">progresso</a>: com 80% ou mais você fica proficiente em EF07CO04.</p>
+  <div class="btn-row"><a class="btn" id="praticar" href="listas/propriedades-grafos-7-ano/">📝 Praticar agora: Propriedades de grafos (7º ano)</a></div>
+  <div class="related" style="margin-top:18px">
+      <a class="card" href="jogos/rotas.html">
+        <span class="small muted">🎮 Jogo · 15 min</span>
+        <strong>Rota Mais Curta</strong>
+        <span class="small muted">Os bairros são vértices, as ruas são arestas. Encontre o caminho de menor custo e compare com a solução ótima.</span>
+      </a>
+      <a class="card" href="jogos/boato.html">
+        <span class="small muted">🎮 Jogo · 15–20 min</span>
+        <strong>Boato em Rede</strong>
+        <span class="small muted">Um boato corre de amigo em amigo numa rede (grafo). Escolha quem checa a informação antes de repassar e veja quantas pessoas deixam de ser enganadas.</span>
+      </a>
+  </div>
+
+  <h2>Outros assuntos do 7º ano</h2>
+  <div class="vizinhas"><a class="tag" href="aprenda/ef07co01/" title="EF07CO01">Registros e listas de dados</a><a class="tag" href="aprenda/ef07co02/" title="EF07CO02">Encontrar e corrigir erros (bugs)</a><a class="tag" href="aprenda/ef07co03/" title="EF07CO03">Projetos: escolher a melhor ferramenta</a><a class="tag" href="aprenda/ef07co05/" title="EF07CO05">Reaproveitar partes do programa</a><a class="tag" href="aprenda/ef07co06/" title="EF07CO06">Protocolos: as regras da conversa entre computadores</a><a class="tag" href="aprenda/ef07co07/" title="EF07CO07">Proteger-se de golpes e ataques</a><a class="tag" href="aprenda/ef07co08/" title="EF07CO08">Empatia com opiniões diferentes</a><a class="tag" href="aprenda/ef07co09/" title="EF07CO09">O que é cyberbullying e como agir</a><a class="tag" href="aprenda/ef07co10/" title="EF07CO10">Lixo eletrônico e o meio ambiente</a><a class="tag" href="aprenda/ef07co11/" title="EF07CO11">Criar e publicar conteúdo digital</a></div>
+  <p class="small muted" style="margin-top:32px">Habilidade EF07CO04 da BNCC: Explorar propriedades básicas de grafos. Professor(a): planos, slides e fichas na <a href="bncc/ef07co04/">página da habilidade</a>.</p>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+mdTopbar('aprenda'); mdFooter();
+(function () {
+  var c = document.getElementById('doc').dataset.hab;
+  // nível atual e a atividade que mais ajuda agora (a de menor nota), se o estudante já tem progresso
+  if (window.MDP && MDP.perfil()) {
+    var i = MDP.infoHab(c), el = document.getElementById('nivel');
+    if (i.nivel) { el.textContent = 'Seu nível em ' + c + ': ' + MDP.NIVEIS[i.nivel].nome + (i.best !== undefined ? ' · melhor nota ' + i.best + '%' : ''); el.hidden = false; }
+    var r = MDP.recursoPara(c), b = document.getElementById('praticar');
+    if (r && b && i.nivel) { b.href = recUrl(r); b.textContent = TIPOS[r.tipo].icone + ' Praticar agora: ' + r.titulo; }
+  }
+  var f = document.getElementById('q'), certa = +f.dataset.certa;
+  f.addEventListener('change', function (e) {
+    var v = +e.target.value, ls = f.querySelectorAll('label');
+    ls.forEach(function (l, k) { l.classList.remove('certa', 'errada'); if (k === v) l.classList.add(v === certa ? 'certa' : 'errada'); });
+    f.querySelector('.msg').textContent = v === certa ? '✅ Isso mesmo!' : '❌ Ainda não. Releia a ideia principal e tente outra opção.';
+    f.querySelector('.porque').hidden = v !== certa;
+    if (v === certa) { ls[certa].classList.add('certa'); var p = document.querySelectorAll('.passos li'); p[0].classList.remove('agora'); p[0].removeAttribute('aria-current'); p[1].classList.add('agora'); p[1].setAttribute('aria-current', 'step'); }
+  });
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

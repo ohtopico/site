@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+<!-- página gerada por _fonte/material/gerar.js: não edite à mão -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paralelismo: várias tarefas ao mesmo tempo | Júlia Quoos</title>
+<meta name="description" content="Explicação para estudantes (8º ano): Dividir o trabalho entre vários processadores ou computadores faz tudo terminar mais rápido, mas exige organização.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/aprenda/ef08co05/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/aprenda/ef08co05/">
+<meta property="og:title" content="Paralelismo: várias tarefas ao mesmo tempo | Júlia Quoos">
+<meta property="og:description" content="Explicação para estudantes (8º ano): Dividir o trabalho entre vários processadores ou computadores faz tudo terminar mais rápido, mas exige organização.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Aprenda: Paralelismo: várias tarefas ao mesmo tempo">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Paralelismo: várias tarefas ao mesmo tempo | Júlia Quoos","description":"Explicação para estudantes (8º ano): Dividir o trabalho entre vários processadores ou computadores faz tudo terminar mais rápido, mas exige organização.","url":"https://ohtopico.com.br/material-didatico/aprenda/ef08co05/","inLanguage":"pt-BR","image":"https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg","learningResourceType":"Explicação","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"educationalLevel":"8º ano do Ensino Fundamental","audience":{"@type":"EducationalAudience","educationalRole":"student"},"about":{"@type":"DefinedTerm","name":"EF08CO05: Sistemas distribuídos","description":"Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.","inDefinedTermSet":"BNCC"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF08CO05","targetDescription":"Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos."}],"teaches":["Paralelismo","Concorrência","Distribuído"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Aprenda","item":"https://ohtopico.com.br/material-didatico/aprenda/"},{"@type":"ListItem","position":4,"name":"Paralelismo: várias tarefas ao mesmo tempo","item":"https://ohtopico.com.br/material-didatico/aprenda/ef08co05/"}]}
+</script>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 860px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 36px; }
+  .passos { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 6px; font-size: 14px; font-weight: 600; }
+  .passos li { padding: 6px 14px; border-radius: 999px; background: var(--pill); }
+  .passos li.agora { background: var(--ink); color: var(--paper); }
+  .ideia { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px 22px; background: var(--accent-soft); font-size: 19px; margin: 18px 0; }
+  .ideia b { display: block; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+  .fig { margin: 22px 0; padding: 18px; border: 1.5px solid var(--ink); border-radius: var(--radius); background: var(--paper-2); }
+  .fig figcaption { font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+  .fluxo ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; counter-reset: p; }
+  .fluxo li { position: relative; flex: 1 1 140px; display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 18px; background: var(--paper); border: 1.5px solid var(--line); font-size: 15px; }
+  .fluxo li + li::before { content: '→'; position: absolute; left: -21px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--accent); }
+  .fluxo .ico { font-size: 28px; line-height: 1; }
+  .fluxo .volta { margin: 10px 0 0; font-weight: 600; color: var(--accent); font-size: 15px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .grupo { background: var(--paper); border: 1.5px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .grupo ul { margin: 8px 0 0; padding-left: 18px; font-size: 15px; }
+  .grupo li + li { margin-top: 4px; }
+  .codigo pre { margin: 0; padding: 14px 16px; border-radius: 14px; background: var(--paper); border: 1.5px solid var(--line); overflow-x: auto; font-size: 15px; line-height: 1.55; }
+  .codigo .com { color: var(--accent); }
+  .rolar { overflow-x: auto; }
+  .tabela table { border-collapse: collapse; width: 100%; background: var(--paper); font-size: 15px; }
+  .tabela th, .tabela td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .tabela thead th { background: var(--pill); }
+  .grafo svg { width: 100%; height: auto; display: block; margin: 0 auto; font-family: var(--body); }
+  .grafo .ares line { stroke: var(--ink-3); stroke-width: 2; }
+  .grafo marker path { fill: var(--ink-3); }
+  .grafo .nos rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .grafo text { fill: var(--ink); font-size: 13px; text-anchor: middle; }
+  .grafo text.rot { fill: var(--accent); font-size: 12px; font-weight: 600; paint-order: stroke; stroke: var(--paper-2); stroke-width: 5px; stroke-linejoin: round; }
+  .exemplo { border-left: 5px solid var(--accent); padding: 4px 0 4px 16px; margin: 18px 0; }
+  dl.pal { display: grid; gap: 8px; margin: 10px 0; }
+  dl.pal div { display: grid; grid-template-columns: minmax(120px, 210px) 1fr; gap: 10px; }
+  dl.pal dt { font-weight: 600; }
+  dl.pal dd { margin: 0; }
+  @media (max-width: 560px) { dl.pal div { grid-template-columns: 1fr; gap: 0; } .fluxo li + li::before { content: '↓'; left: 50%; top: -19px; transform: translateX(-50%); } .fluxo ol { flex-direction: column; gap: 22px; } .fluxo li { flex: 0 0 auto; flex-direction: row; align-items: center; gap: 12px; } }
+  .confira fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .confira legend { font-weight: 600; margin-bottom: 10px; font-size: 18px; }
+  .confira label { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; cursor: pointer; background: var(--paper); }
+  .confira label.certa { border-color: var(--ok); background: var(--ok-soft); }
+  .confira label.errada { border-color: var(--bad); background: var(--bad-soft); }
+  .confira .msg { min-height: 1.4em; font-weight: 600; margin: 10px 0 0; }
+  .nivel { font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
+  .vizinhas { display: flex; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc" data-hab="EF08CO05">
+  <div class="crumbs"><a href="aprenda/#ano-8">← Aprenda · 8º ano</a></div>
+  <span class="eyebrow">📖 Aprenda · Computação · 8º ano · EF08CO05</span>
+  <h1>Paralelismo: várias tarefas ao mesmo tempo</h1>
+  <ol class="passos" aria-label="Seu caminho nesta habilidade"><li class="agora" aria-current="step">1. Aprenda</li><li>2. Confira</li><li>3. Pratique</li></ol>
+  <p class="nivel" id="nivel" hidden></p>
+  <p class="ideia"><b>A ideia principal</b>Dividir o trabalho entre vários processadores ou computadores faz tudo terminar mais rápido, mas exige organização.</p>
+  <p>Na cozinha, uma pessoa sozinha faz arroz, depois feijão, depois salada. Com três pessoas, cada uma faz um prato ao mesmo tempo: isso é <b>paralelismo</b>.</p>
+  <p>Às vezes duas tarefas disputam a mesma coisa (só tem um fogão livre): isso é <b>concorrência</b> e precisa de regras de vez. Serviços como streaming guardam e processam dados em muitos computadores espalhados pelo mundo: são <b>sistemas distribuídos</b>.</p>
+  <figure class="fig tabela"><div class="rolar"><table><thead><tr><th scope="col">Minuto</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th></tr></thead><tbody><tr><th scope="row">Sozinho</th><td>🍚 arroz</td><td>🫘 feijão</td><td>🥗 salada</td></tr><tr><th scope="row">Em paralelo</th><td>🍚 🫘 🥗 tudo junto</td><td>✅ pronto</td><td>—</td></tr></tbody></table></div><figcaption>Três tarefas em sequência levam 3 minutos; em paralelo, 1.</figcaption></figure>
+  <p class="exemplo"><strong>No dia a dia:</strong> Um trabalho em grupo em que cada pessoa pesquisa um tema ao mesmo tempo e depois juntam tudo.</p>
+
+  <h2>Palavras para lembrar</h2>
+  <dl class="pal">
+    <div><dt>Paralelismo</dt><dd>várias tarefas sendo feitas ao mesmo tempo.</dd></div>
+    <div><dt>Concorrência</dt><dd>tarefas disputando o mesmo recurso.</dd></div>
+    <div><dt>Distribuído</dt><dd>espalhado por vários computadores.</dd></div>
+  </dl>
+
+  <h2 id="confira">Confira se entendeu</h2>
+  <form class="confira panel" id="q" data-certa="0">
+    <fieldset>
+      <legend>Duas pessoas querem usar a mesma impressora ao mesmo tempo. Isso é um exemplo de…</legend>
+      <label><input type="radio" name="r" value="0"> <span>Concorrência</span></label>
+      <label><input type="radio" name="r" value="1"> <span>Recursão</span></label>
+      <label><input type="radio" name="r" value="2"> <span>Compactação</span></label>
+      <label><input type="radio" name="r" value="3"> <span>Criptografia</span></label>
+    </fieldset>
+    <p class="msg" role="status" aria-live="polite"></p>
+    <p class="porque small muted" hidden>Duas tarefas disputando o mesmo recurso: concorrência.</p>
+  </form>
+
+  <h2 id="pratique">Agora pratique</h2>
+  <p>Use o que você acabou de ler. Cada atividade conta no seu <a href="meu-progresso.html">progresso</a>: com 80% ou mais você fica proficiente em EF08CO05.</p>
+  <div class="btn-row"><a class="btn" id="praticar" href="listas/sistemas-distribuidos-8-ano/">📝 Praticar agora: Sistemas distribuídos (8º ano)</a></div>
+  <div class="related" style="margin-top:18px">
+      <a class="card" href="3d/cozinha-paralela.html">
+        <span class="small muted">🧊 Recurso 3D · 20 min</span>
+        <strong>Cozinha Paralela</strong>
+        <span class="small muted">Um restaurante em 3D com 1, 2 ou 4 cozinheiros-robôs. Distribua os pedidos, veja quanto o paralelismo ganha, ache o gargalo e provoque um impasse quando dois robôs querem a mesma panela.</span>
+      </a>
+  </div>
+
+  <h2>Outros assuntos do 8º ano</h2>
+  <div class="vizinhas"><a class="tag" href="aprenda/ef08co01/" title="EF08CO01">Recursão: resolver usando o próprio problema</a><a class="tag" href="aprenda/ef08co02/" title="EF08CO02">Listas: guardar muitos itens juntos</a><a class="tag" href="aprenda/ef08co03/" title="EF08CO03">Ordenar e buscar em listas</a><a class="tag" href="aprenda/ef08co04/" title="EF08CO04">Projetos com programação em equipe</a><a class="tag" href="aprenda/ef08co06/" title="EF08CO06">Como a internet funciona</a><a class="tag" href="aprenda/ef08co07/" title="EF08CO07">Como as redes sociais funcionam</a><a class="tag" href="aprenda/ef08co08/" title="EF08CO08">Seus dados pessoais valem muito</a><a class="tag" href="aprenda/ef08co09/" title="EF08CO09">Ler os termos de uso</a><a class="tag" href="aprenda/ef08co10/" title="EF08CO10">Segurança e privacidade on-line</a><a class="tag" href="aprenda/ef08co11/" title="EF08CO11">Avaliar fontes de informação</a></div>
+  <p class="small muted" style="margin-top:32px">Habilidade EF08CO05 da BNCC: Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos. Professor(a): planos, slides e fichas na <a href="bncc/ef08co05/">página da habilidade</a>.</p>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>
+mdTopbar('aprenda'); mdFooter();
+(function () {
+  var c = document.getElementById('doc').dataset.hab;
+  // nível atual e a atividade que mais ajuda agora (a de menor nota), se o estudante já tem progresso
+  if (window.MDP && MDP.perfil()) {
+    var i = MDP.infoHab(c), el = document.getElementById('nivel');
+    if (i.nivel) { el.textContent = 'Seu nível em ' + c + ': ' + MDP.NIVEIS[i.nivel].nome + (i.best !== undefined ? ' · melhor nota ' + i.best + '%' : ''); el.hidden = false; }
+    var r = MDP.recursoPara(c), b = document.getElementById('praticar');
+    if (r && b && i.nivel) { b.href = recUrl(r); b.textContent = TIPOS[r.tipo].icone + ' Praticar agora: ' + r.titulo; }
+  }
+  var f = document.getElementById('q'), certa = +f.dataset.certa;
+  f.addEventListener('change', function (e) {
+    var v = +e.target.value, ls = f.querySelectorAll('label');
+    ls.forEach(function (l, k) { l.classList.remove('certa', 'errada'); if (k === v) l.classList.add(v === certa ? 'certa' : 'errada'); });
+    f.querySelector('.msg').textContent = v === certa ? '✅ Isso mesmo!' : '❌ Ainda não. Releia a ideia principal e tente outra opção.';
+    f.querySelector('.porque').hidden = v !== certa;
+    if (v === certa) { ls[certa].classList.add('certa'); var p = document.querySelectorAll('.passos li'); p[0].classList.remove('agora'); p[0].removeAttribute('aria-current'); p[1].classList.add('agora'); p[1].setAttribute('aria-current', 'step'); }
+  });
+})();
+</script>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

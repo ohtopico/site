@@ -27,6 +27,7 @@
 
   // Endereços das páginas estáticas (planos, fichas, listas e habilidades), gerados por _fonte/material/gerar.js em dados.js
   const EST = typeof ESTATICAS !== 'undefined' ? ESTATICAS : {};
+  const APRENDA_T = typeof APRENDA_TITULOS !== 'undefined' ? APRENDA_TITULOS : {};
 
   window.tagHab = function (codigo) {
     const h = HAB[codigo];
@@ -43,6 +44,14 @@
     return em ? `${t} e Ensino Médio` : t;
   };
   window.recUrl = r => BASE + (EST[r.id] || r.url);
+  // explicação para o estudante (aprenda/<código>/), quando existe
+  window.aprendaUrl = c => EST['aprenda:' + c] ? BASE + EST['aprenda:' + c] : '';
+  // "Antes de começar, aprenda": links para as explicações das habilidades de uma atividade (até 4)
+  window.aprendaLinks = codigos => {
+    const cs = codigos.filter(c => EST['aprenda:' + c] && HAB[c]);
+    if (!cs.length || cs.length > 4) return '';
+    return `<p class="aprenda-links no-print">📖 Antes de começar, aprenda: ${cs.map(c => `<a href="${aprendaUrl(c)}">${esc(APRENDA_T[c] || HAB[c].objeto)}</a>`).join(' · ')}</p>`;
+  };
 
   /* Ordenação das listas de jogos (/jogos/ e material-didatico/jogos/).
      Popularidade = visitas de cada página de jogo no GoatCounter, o contador de visitas do site (total desde o início da contagem). */
@@ -102,6 +111,7 @@
         ${link('matematica', 'matematica/', 'Matemática')}
         ${link('catalogo', 'catalogo.html', 'Catálogo')}
         ${link('jogos', 'jogos/', 'Jogos')}
+        ${link('aprenda', 'aprenda/', 'Aprenda')}
         ${link('bncc', 'bncc.html', 'BNCC')}
         ${link('professor', 'professor.html', 'Professor')}
       </nav>
@@ -263,7 +273,7 @@
       <div class="tags" style="margin-bottom:12px">${r.comp.map(tagComp).join('')}<span class="tag">${anosTxt(r.anos)}</span><span class="tag">⏱ ${r.tempo}</span></div>
       <h1>${esc(r.titulo)}</h1>
       <p class="muted" style="max-width:720px">${esc(r.resumo)}</p>
-      <div class="tags">${r.habs.map(tagHab).join('')}</div>${atalhos ? `
+      <div class="tags">${r.habs.map(tagHab).join('')}</div>${aprendaLinks(r.habs)}${atalhos ? `
       <div class="game-acoes no-print">${atalhos}</div>` : ''}`;
     const rel = document.getElementById('related');
     if (rel) {

@@ -105,6 +105,7 @@
     
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs"><li><a class="tag code ma" href="bncc/ef06ma05/" title="EF06MA05 — Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.">EF06MA05</a><span>Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.</span></li><li><a class="tag code ma" href="bncc/ef06ma06/" title="EF06MA06 — Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor.">EF06MA06</a><span>Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor.</span></li></ul>
+    
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
@@ -262,6 +263,7 @@
     ${SURPRESA ? `<p class="muted no-print" style="max-width:760px">Dez questões sorteadas de todas as listas do ${r.anos[0]}º ano. Acertando 70% ou mais, você ganha ${window.MDM ? MDM.PONTOS.surpresa : 25} pontos (uma vez por dia). Amanhã sai uma lista nova. <a href="missoes.html">Voltar para as missões</a></p>` : ''}
     <div class="ident"><span>Nome:</span><span>Turma:</span><span>Data:</span></div>
     <ul class="habs">${L.habs.map(c => `<li>${tagHab(c)}<span>${esc(HAB[c].texto)}</span></li>`).join('')}</ul>
+    ${SURPRESA ? '' : aprendaLinks(L.habs)}
     <div class="btn-row no-print" style="margin-top:18px">
       <button class="btn ghost" type="button" id="print">🖨️ Imprimir para os alunos</button>
       <button class="btn ghost" type="button" id="key" aria-pressed="false">🔑 Mostrar gabarito</button>
