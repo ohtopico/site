@@ -104,7 +104,8 @@ const IMAGENS = [
     url: 'ohtopico.com.br/computacao-na-escola', capturas: ['/material-didatico/bncc/'] }
 ];
 
-/* Pins do Pinterest (1000 × 1500, proporção 2:3). Mesmo visual, com a captura grande embaixo do título.
+/* Pins do Pinterest (1000 × 1500, proporção 2:3). Mesmo visual, com a captura grande embaixo do título;
+   o rodapé leva o nome completo, como nas postagens.
    Professores procuram "atividade para imprimir" e "BNCC" no Pinterest, então cada pin aponta para uma
    página específica (ficha, habilidade, jogo). Sem foto pessoal: só capturas do conteúdo. */
 const PINS = [
@@ -132,6 +133,9 @@ const PINS = [
   { arq: 'mentoria-professores', janela: 'mentoria', faixa: 'Individual e on-line', t1: 'Mentoria para', t2: 'professores',
     sub: 'IA na prática, a partir das tarefas reais da sua semana', pills: ['Professores', 'Coordenação', 'Gestão'],
     url: 'ohtopico.com.br/mentoria', captura: '/mentoria/' },
+  { arq: 'mundo', janela: 'mundo.html', faixa: 'Jogo gratuito · no navegador', t1: 'Mundo', t2: 'do site',
+    sub: 'Uma vila para explorar: missões com perguntas da BNCC, casa, pet e jogos em cada porta', pills: ['Missões', 'BNCC', 'Pet e casa'],
+    url: 'ohtopico.com.br/mundo', captura: '/mundo/' },
   ...[
     ['programando-colega-robo', 'Colega', 'robô', 'Um aluno programa, o outro executa: algoritmos sem computador', ['Algoritmos', 'EF06CO02', '6º e 7º ano']],
     ['disco-cifra-cesar', 'Cifra de', 'César', 'Disco para recortar e montar, com mensagens para cifrar e decifrar', ['Criptografia', 'EF09CO05', '8º e 9º ano']],
@@ -222,7 +226,7 @@ function modeloPin(o, foto) {
   .shot { height: 100%; border: 3px solid #111; border-radius: 18px; overflow: hidden; background: #fff; transform: rotate(1.2deg); box-shadow: 9px 9px 0 #111; }
   .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
   .rod { position: absolute; left: 48px; right: 52px; bottom: 34px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .rod b { font-family: Sniglet; font-weight: 800; font-size: 26px; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+  .rod b { font-family: Sniglet; font-weight: 800; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
   .rod span { border: 2px solid #111; border-radius: 99px; padding: 6px 18px; font-size: 20px; background: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style></head><body>
 <div class="win">
@@ -235,7 +239,7 @@ function modeloPin(o, foto) {
   </div>
   <div class="vis"><div class="shot"><img src="${foto}" alt=""></div></div>
 </div>
-<div class="rod"><b>Júlia Quoos</b><span>${esc(o.url)}</span></div>
+<div class="rod"><b>Júlia Roberta Quoos Alves</b><span>${esc(o.url)}</span></div>
 </body></html>`;
 }
 
