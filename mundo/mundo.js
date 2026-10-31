@@ -291,7 +291,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), x: fases[0].x0 + 3.5, y: MEIO });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, x: fases[0].x0 + 3.5, y: MEIO });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -616,6 +616,7 @@
     const tenta = (x, y, ob) => { const d = Math.hypot(x - P.x, y - P.y); if (d < dm) { dm = d; melhor = ob; } };
     for (const c of f.casas) tenta(c.porta.x, c.porta.y, { tipo: 'casa', casa: c });
     if (f.minhaCasa) tenta(f.minhaCasa.porta.x, f.minhaCasa.porta.y, { tipo: 'minhacasa' });
+    if (S.pet && !S.pet.dorme) tenta(PET.x, PET.y + 0.3, { tipo: 'pet' });
     for (const n of f.npcs) tenta(n.x, n.y, { tipo: 'npc', npc: n });
     tenta(f.placa.x, f.placa.y + 0.8, { tipo: 'placa', fase: f });
     if (f.portao) tenta(f.portao.x - 0.8, f.portao.y, { tipo: 'portao', fase: f });
@@ -651,13 +652,14 @@
       if (d < dm) { dm = d; melhor = { tipo: 'movel', movel: m }; }
     }
     if (Math.hypot(SAIDA.x - P.x, SAIDA.y - P.y) < Math.min(1.3, dm + 0.3)) melhor = { tipo: 'saida' };
+    if (S.pet) { const c = S.pet.dorme ? caminha() : PET, d = Math.hypot(c.x - P.x, c.y - P.y); if (d < Math.min(0.9, dm)) melhor = { tipo: 'pet' }; }
     return melhor;
   }
   const posMundo = () => dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
   function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; }
   function entraCasa() {
     fechaJanela(); destino = null; dentro = true; mouse = null;
-    P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; hud();
+    P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; petPerto(); hud();
     if (!S.casa.visitou) {
       S.casa.visitou = true; salvar();
       dialogo('🏠', 'Sua casa', `<p>Esta casa é sua! Tem sala, quarto e cozinha, e você decora do seu jeito.</p><p>Na <strong>bancada 🛠️</strong> da cozinha, os itens que você coleta pela vila viram móveis. Alguns móveis liberam outros: o tapete libera a poltrona, a luminária libera o robozinho...</p><p class="muted">Experimente tudo: a cama dá pontos uma vez por dia, o espelho muda o seu visual, o baú mostra o inventário e o computador lista as atividades que faltam.</p>`, [{ txt: 'Vamos decorar!', classe: 'principal', fn: fechaDialogo }]);
@@ -665,7 +667,7 @@
   }
   function saiCasa() {
     const p = posMundo();
-    dentro = false; colocando = null; destino = null; mouse = null; P.x = p.x; P.y = p.y; P.dir = 'y+'; cam.ok = false;
+    dentro = false; colocando = null; destino = null; mouse = null; P.x = p.x; P.y = p.y; P.dir = 'y+'; cam.ok = false; petPerto();
     for (const k in teclas) teclas[k] = false;
     hud();
   }
@@ -702,7 +704,7 @@
       const lidas = Object.keys(S.dicas), i = lidas.length ? lidas[Math.floor(Math.random() * lidas.length)] : Math.floor(Math.random() * DICAS.length);
       return dialogo('🛋️', 'Hora da leitura', `<div class="dica-livro"><p>${DICAS[i]}</p></div><p class="muted">Na poltrona você relê as dicas dos livros que já pegou.</p>`, [fecha, ...guardar]);
     }
-    if (m.id === 'geladeira') return dialogo('🧊', 'Geladeira', `<p>Você tem <strong>${S.inv.maca || 0} 🍎</strong> guardadas.</p><p class="muted">As maçãs vão ser a comida do seu pet, que é a próxima novidade do mundo.</p>`, [fecha, ...guardar]);
+    if (m.id === 'geladeira') return dialogo('🧊', 'Geladeira', `<p>Você tem <strong>${S.inv.maca || 0} 🍎</strong> guardadas.</p><p class="muted">As maçãs são a comida preferida do seu pet: abra o pet com o botão 🐾 ou a tecla P.</p>`, [fecha, ...guardar]);
     if (m.id === 'aquario') return dialogo('🐠', 'Aquário', '<p>Os peixinhos entram na toca um atrás do outro: o primeiro que entra é o primeiro que sai. Isso é uma <strong>fila</strong>, uma estrutura de dados!</p>', [fecha, ...guardar]);
     dialogo(M.ic, M.nome, `<p>${m.id === 'vaso' || m.id === 'planta' ? 'Você regou a planta. Ela está linda! 🌱' : 'Ficou lindo aqui!'}</p>`, [fecha, ...guardar]);
   }
@@ -739,13 +741,175 @@
     colocando = null; mouse = null; aviso(`${M.ic} ${M.nome} na casa!`); salvar(); hud();
     return true;
   }
+  /* ---------- pet: precisa de cuidado várias vezes ao dia (as necessidades caem com o tempo, mesmo com o site fechado) ---------- */
+  const ESPECIES = { gato: ['🐱', 'Gato'], cachorro: ['🐶', 'Cachorro'], coelho: ['🐰', 'Coelho'], dragao: ['🐲', 'Dragãozinho'] };
+  const CORES_PET = ['#f6b26b', '#8a8a8a', '#ffffff', '#3a2416', '#f7a8c4', '#a8e6b8', '#a8d8f7', '#c7b4f2'];
+  const ACESSORIOS = [['nada', 'Nada', 1], ['laco', 'Laço', 2], ['chapeu', 'Chapéu', 3], ['oculos', 'Óculos', 4], ['coroa', 'Coroa', 6]];
+  const NECESSIDADES = [['fome', '🍎', 'Barriga cheia', 12], ['alegria', '🎾', 'Alegria', 8], ['energia', '⚡', 'Energia', 6], ['limpeza', '🫧', 'Limpeza', 5]];   // último: quanto cai por hora
+  const PET = { x: 0, y: 0, dir: 'y+', andando: false, passo: 0, preso: 0 };
+  const HORA = 36e5;
+  function atualizaPet() {
+    const p = S.pet; if (!p) return;
+    const agoraMs = Date.now(), h = Math.max(0, Math.min(72, (agoraMs - (p.t || agoraMs)) / HORA));
+    p.t = agoraMs;
+    for (const [k, , , cai] of NECESSIDADES) {
+      if (k === 'energia' && p.dorme) p.energia = Math.min(100, p.energia + 30 * h);
+      else p[k] = Math.max(0, p[k] - cai * h * (p.dorme ? 0.5 : 1));
+    }
+    if (p.dorme && p.energia >= 100) { p.dorme = false; aviso(`☀️ ${p.nome} acordou cheio de energia!`); }
+  }
+  const precisa = p => NECESSIDADES.filter(([k]) => p[k] < 30).map(n => n[1]);
+  function cuidou(xp, txt) {
+    const p = S.pet; p.xp += xp; p.cuidados = (p.cuidados || 0) + 1;
+    let subiu = false;
+    while (p.xp >= 20 * p.nivel) { p.xp -= 20 * p.nivel; p.nivel++; subiu = true; }
+    if (subiu) {
+      const novo = ACESSORIOS.find(a => a[2] === p.nivel);
+      pontos(15, `🎉 ${p.nome} chegou ao nível ${p.nivel}!` + (novo ? ` Liberou: ${novo[1]}.` : ''));
+    } else if (txt) aviso(txt);
+    salvar(); hud();
+  }
+  function petPerto() { PET.x = P.x - 0.7; PET.y = P.y - 0.4; if (!livre(PET.x, PET.y)) { PET.x = P.x; PET.y = P.y; } }
+  function movePet(dt) {
+    const p = S.pet; if (!p || p.dorme) return;
+    const dx = P.x - PET.x, dy = P.y - PET.y, d = Math.hypot(dx, dy);
+    PET.andando = d > 1.1;
+    if (d > 7) return petPerto();
+    if (!PET.andando) return;
+    const v = Math.min(d - 1, (d > 3 ? 6.5 : 4) * dt), mx = dx / d * v, my = dy / d * v;
+    const antes = PET.x + PET.y;
+    if (livre(PET.x + mx, PET.y)) PET.x += mx;
+    if (livre(PET.x, PET.y + my)) PET.y += my;
+    PET.preso = PET.x + PET.y === antes ? PET.preso + dt : 0;
+    if (PET.preso > 1.2) { PET.preso = 0; petPerto(); }
+    PET.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'x+' : 'x-') : (dy > 0 ? 'y+' : 'y-');
+    PET.passo += dt * 14;
+  }
+  /* onde o pet dorme: um cantinho livre do quarto */
+  function caminha() { for (const [x, y] of [[6, 2], [7, 2], [6, 3], [7, 4], [6, 6], [7, 7], [1, 7]]) if (!ocupado(x, y) && !reservado(x, y)) return { x: x + 0.5, y: y + 0.5 }; return { x: 6.5, y: 7.5 }; }
+  /* pet de blocos: corpo, cabeça, patas e rabo; orelhas e acessórios mudam com a espécie */
+  function desenhaPet(x, y, p, op = {}) {
+    // desenhado 1,4× maior que a escala do mundo, a partir do ponto onde pisa
+    const [ox, oy] = iso(x, y);
+    ctx.save(); ctx.translate(ox, oy); ctx.scale(1.4, 1.4); ctx.translate(-ox, -oy);
+    try { corpoPet(x, y, p, op); } finally { ctx.restore(); }
+    const pede = precisa(p);
+    if (pede.length && !op.semBalao && !op.dorme) { const [sx, sy] = iso(x, y, 1.3); balao(sx, sy, pede[0]); }
+  }
+  function corpoPet(x, y, p, op) {
+    const c = p.cor, esc2 = escuro(c, 0.2), cl = claro(c, 0.15), sem = { blocos: false };
+    sombra(x, y, 0.34);
+    if (op.dorme) {
+      caixa(x - 0.4, y - 0.4, 0, 0.8, 0.8, 0.1, '#f7a8c4', sem); caixa(x - 0.3, y - 0.3, 0.1, 0.6, 0.6, 0.03, '#fff7e8', sem);
+      caixa(x - 0.22, y - 0.16, 0.13, 0.44, 0.32, 0.2, c, sem); caixa(x - 0.14, y + 0.02, 0.2, 0.28, 0.24, 0.18, cl, sem);
+      const [sx, sy] = iso(x, y, 0.6 + (agora / 900 % 1) * 0.4); ctx.font = '600 14px Lexend, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#6a5a8a'; ctx.fillText('z z', sx + 8, sy);
+      return;
+    }
+    const dir = op.dir || 'y+', f = { 'x+': [1, 0], 'x-': [-1, 0], 'y+': [0, 1], 'y-': [0, -1] }[dir], ax = f[0] !== 0;
+    const hop = op.andando ? Math.abs(Math.sin(op.passo || 0)) * 0.1 : Math.abs(Math.sin(agora / 600)) * 0.02;
+    const [bw, bd] = ax ? [0.46, 0.28] : [0.28, 0.46];
+    const corpo = () => {
+      for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) caixa(x + a * (bw / 2 - 0.06) - 0.04, y + b * (bd / 2 - 0.06) - 0.04, hop, 0.08, 0.08, 0.15, esc2, sem);
+      caixa(x - bw / 2, y - bd / 2, 0.15 + hop, bw, bd, 0.24, c, sem);
+      if (p.especie === 'dragao') { const asa = ax ? [[x - 0.12, y - bd / 2 - 0.12, 0.24, 0.12], [x - 0.12, y + bd / 2, 0.24, 0.12]] : [[x - bw / 2 - 0.12, y - 0.12, 0.12, 0.24], [x + bw / 2, y - 0.12, 0.12, 0.24]]; for (const [a, b, w, d] of asa) caixa(a, b, 0.32 + hop + Math.sin(agora / 150) * 0.03, w, d, 0.04, cl, sem); }
+    };
+    const rabo = () => {
+      const tx = x - f[0] * 0.27, ty = y - f[1] * 0.27;
+      if (p.especie === 'gato') caixa(tx - 0.03, ty - 0.03, 0.3 + hop, 0.06, 0.06, 0.32, c, sem);
+      else if (p.especie === 'cachorro') caixa(tx - 0.04, ty - 0.04, 0.34 + hop, 0.08, 0.08, 0.14, c, sem);
+      else if (p.especie === 'coelho') caixa(tx - 0.07, ty - 0.07, 0.25 + hop, 0.14, 0.14, 0.14, '#ffffff', sem);
+      else caixa(tx - 0.05 - f[0] * 0.12, ty - 0.05 - f[1] * 0.12, 0.18 + hop, 0.1 + Math.abs(f[0]) * 0.15, 0.1 + Math.abs(f[1]) * 0.15, 0.08, c, sem);
+    };
+    const cabeca = () => {
+      const hx = x + f[0] * 0.24 - 0.16, hy = y + f[1] * 0.24 - 0.16, hz = 0.32 + hop, s = 0.32;
+      caixa(hx, hy, hz, s, s, s, c, sem);
+      if (dir === 'y+' || dir === 'x+') {
+        const fc = dir === 'y+' ? 'y' : 'x';
+        naFace(fc, hx, hy, s, s, 0.06, 0, 0.06, hz + 0.15, 0.08, '#1d2a1f'); naFace(fc, hx, hy, s, s, 0.2, 0, 0.06, hz + 0.15, 0.08, '#1d2a1f');
+        naFace(fc, hx, hy, s, s, 0.12, 0, 0.08, hz + 0.06, 0.05, p.especie === 'dragao' ? '#2e7d32' : '#e07bb0');
+        if (p.acessorio === 'oculos') naFace(fc, hx, hy, s, s, 0.02, 0, 0.28, hz + 0.13, 0.1, 'rgba(20,20,40,.85)');
+      }
+      // orelhas
+      const o = ax ? [[hx + 0.1, hy + 0.02], [hx + 0.1, hy + s - 0.09]] : [[hx + 0.02, hy + 0.1], [hx + s - 0.09, hy + 0.1]];
+      if (p.especie === 'gato') o.forEach(([a, b]) => caixa(a, b, hz + s, 0.07, 0.07, 0.1, c, sem));
+      else if (p.especie === 'coelho') o.forEach(([a, b]) => caixa(a, b, hz + s, 0.07, 0.07, 0.34, cl, sem));
+      else if (p.especie === 'cachorro') (ax ? [[hx + 0.1, hy - 0.05], [hx + 0.1, hy + s - 0.01]] : [[hx - 0.05, hy + 0.1], [hx + s - 0.01, hy + 0.1]]).forEach(([a, b]) => caixa(a, b, hz + 0.08, 0.06 + (ax ? 0.06 : 0), 0.06 + (ax ? 0 : 0.06), 0.22, esc2, sem));
+      else o.forEach(([a, b]) => caixa(a, b, hz + s, 0.06, 0.06, 0.12, '#ffd58a', sem));
+      if (p.acessorio === 'laco') caixa(hx + 0.08, hy + 0.08, hz + s, 0.16, 0.16, 0.07, '#e0564a', sem);
+      if (p.acessorio === 'chapeu') { caixa(hx - 0.03, hy - 0.03, hz + s, s + 0.06, s + 0.06, 0.03, '#3f8fe0', sem); caixa(hx + 0.06, hy + 0.06, hz + s + 0.03, 0.2, 0.2, 0.14, '#3f8fe0', sem); }
+      if (p.acessorio === 'coroa') caixa(hx + 0.05, hy + 0.05, hz + s, 0.22, 0.22, 0.1, '#ffd58a', sem);
+    };
+    if (f[0] + f[1] < 0) { cabeca(); corpo(); rabo(); } else { rabo(); corpo(); cabeca(); }
+  }
+  function janelaPet() {
+    const el = $('#pet-conteudo'), p = S.pet;
+    if (!p) {
+      el.innerHTML = `<p>Escolha um bichinho para morar com você. Ele segue você pela vila, mas precisa de cuidado várias vezes ao dia: comida, brincadeira, banho e soneca.</p>
+        <div class="av-grupo"><h3>Espécie</h3><div class="av-cores">${Object.entries(ESPECIES).map(([k, [ic, n]], i) => `<button type="button" data-esp="${k}" aria-pressed="${i === 0}">${ic} ${n}</button>`).join('')}</div></div>
+        <div class="av-grupo"><h3>Cor</h3><div class="av-cores">${CORES_PET.map((c, i) => `<button type="button" data-cor-pet="${c}" aria-pressed="${i === 0}" aria-label="Cor ${c}" style="background:${c}"></button>`).join('')}</div></div>
+        <div class="av-grupo"><h3>Nome</h3><input id="pet-nome" class="campo" maxlength="16" value="Pixel" aria-label="Nome do pet"></div>
+        <button type="button" class="hb verde" id="pet-adotar">🐾 Adotar</button>`;
+      const esc2 = { especie: 'gato', cor: CORES_PET[0] };
+      el.querySelectorAll('[data-esp]').forEach(b => b.addEventListener('click', () => { esc2.especie = b.dataset.esp; el.querySelectorAll('[data-esp]').forEach(o => o.setAttribute('aria-pressed', String(o === b))); }));
+      el.querySelectorAll('[data-cor-pet]').forEach(b => b.addEventListener('click', () => { esc2.cor = b.dataset.corPet; el.querySelectorAll('[data-cor-pet]').forEach(o => o.setAttribute('aria-pressed', String(o === b))); }));
+      $('#pet-adotar').addEventListener('click', () => {
+        const nome = ($('#pet-nome').value || '').trim().slice(0, 16) || 'Pixel';
+        S.pet = { nome, especie: esc2.especie, cor: esc2.cor, acessorio: 'nada', fome: 80, alegria: 80, energia: 80, limpeza: 80, xp: 0, nivel: 1, t: Date.now(), dorme: false, cd: {}, cuidados: 0 };
+        petPerto(); pontos(20, `🐾 ${nome} agora mora com você!`); salvar(); janelaPet();
+      });
+      return;
+    }
+    atualizaPet();
+    const ic = ESPECIES[p.especie][0], agoraMs = Date.now();
+    const espera = (k, min) => { const falta = (p.cd[k] || 0) + min * 6e4 - agoraMs; return falta > 0 ? Math.ceil(falta / 6e4) : 0; };
+    const acoes = [
+      ['maca', '🍎 Dar uma maçã', (S.inv.maca || 0) ? `você tem ${S.inv.maca}` : 'pegue maçãs pela vila', !(S.inv.maca || 0) || p.dorme],
+      ['racao', '🥣 Ração', espera('racao', 60) ? `de novo em ${espera('racao', 60)} min` : 'uma vez por hora', !!espera('racao', 60) || p.dorme],
+      ['bola', '🎾 Brincar de bola', espera('bola', 20) ? `de novo em ${espera('bola', 20)} min` : 'gasta energia', !!espera('bola', 20) || p.dorme || p.energia < 10],
+      ['quiz', '❓ Quiz com o pet', 'acerte e ele fica feliz', p.dorme],
+      ['banho', '🛁 Banho', espera('banho', 30) ? `de novo em ${espera('banho', 30)} min` : 'deixa limpinho', !!espera('banho', 30) || p.dorme],
+      ['estrela', '⭐ Petisco especial', (S.inv.estrela || 0) ? `você tem ${S.inv.estrela}` : 'precisa de uma estrela', !(S.inv.estrela || 0) || p.dorme],
+      ['dormir', p.dorme ? '☀️ Acordar' : '😴 Soneca na sua casa', p.dorme ? 'ele está recuperando energia' : 'recupera a energia', false]
+    ];
+    const lib = ACESSORIOS.filter(a => p.nivel >= a[2]);
+    el.innerHTML = `<div class="pet-topo"><canvas id="pet-preview" width="160" height="150" aria-label="${esc(p.nome)}" role="img"></canvas>
+      <div><h3 style="margin-top:0">${ic} ${esc(p.nome)} <small class="muted">· nível ${p.nivel}${p.dorme ? ' · dormindo 💤' : ''}</small></h3>
+      <div class="barra pet-xp" title="Experiência"><span style="width:${Math.round(100 * p.xp / (20 * p.nivel))}%"></span></div>
+      ${NECESSIDADES.map(([k, ic2, nome]) => `<div class="nec"><span>${ic2} ${nome}</span><div class="barra ${p[k] < 30 ? 'baixa' : ''}"><span style="width:${Math.round(p[k])}%"></span></div></div>`).join('')}</div></div>
+      <div class="pet-acoes">${acoes.map(([k, t, sub, off]) => `<button type="button" class="pet-b" data-acao="${k}" ${off ? 'disabled' : ''}><strong>${t}</strong><small>${sub}</small></button>`).join('')}</div>
+      <div class="av-grupo"><h3>Acessório</h3><div class="av-cores">${ACESSORIOS.map(([k, n, nv]) => p.nivel >= nv ? `<button type="button" data-acess="${k}" aria-pressed="${p.acessorio === k}">${n}</button>` : `<button type="button" disabled title="Nível ${nv}">🔒 ${n} (nível ${nv})</button>`).join('')}</div></div>
+      <div class="av-grupo"><h3>Cor</h3><div class="av-cores">${CORES_PET.map(c => `<button type="button" data-cor-pet="${c}" aria-pressed="${p.cor === c}" aria-label="Cor ${c}" style="background:${c}"></button>`).join('')}</div></div>
+      <p class="muted small">As necessidades caem com o tempo, mesmo com o site fechado. Volte algumas vezes por dia para cuidar de ${esc(p.nome)}. ${lib.length < ACESSORIOS.length ? 'Cuidando, ele sobe de nível e libera acessórios.' : ''}</p>`;
+    const g = $('#pet-preview').getContext('2d');
+    g.setTransform(2, 0, 0, 2, 80, 112);
+    ctx = g; try { desenhaPet(0, 0, p, { dir: 'y+', dorme: p.dorme, semBalao: true }); } finally { ctx = ctxJogo; }
+    el.querySelectorAll('[data-acao]').forEach(b => b.addEventListener('click', () => acaoPet(b.dataset.acao)));
+    el.querySelectorAll('[data-acess]').forEach(b => b.addEventListener('click', () => { p.acessorio = b.dataset.acess; salvar(); janelaPet(); }));
+    el.querySelectorAll('[data-cor-pet]').forEach(b => b.addEventListener('click', () => { p.cor = b.dataset.corPet; salvar(); janelaPet(); }));
+  }
+  function acaoPet(k) {
+    const p = S.pet; atualizaPet();
+    const mais = (n, v) => { p[n] = Math.min(100, p[n] + v); };
+    if (k === 'maca' && S.inv.maca > 0) { S.inv.maca--; mais('fome', 40); mais('alegria', 5); cuidou(4, `🍎 ${p.nome} adorou a maçã!`); }
+    else if (k === 'racao') { p.cd.racao = Date.now(); mais('fome', 20); cuidou(2, `🥣 ${p.nome} comeu a ração.`); }
+    else if (k === 'bola') { p.cd.bola = Date.now(); mais('alegria', 25); p.energia = Math.max(0, p.energia - 10); p.fome = Math.max(0, p.fome - 5); cuidou(3, `🎾 ${p.nome} correu atrás da bola!`); }
+    else if (k === 'banho') { p.cd.banho = Date.now(); p.limpeza = 100; mais('alegria', 5); cuidou(2, `🛁 ${p.nome} está cheiroso!`); }
+    else if (k === 'estrela' && S.inv.estrela > 0) { S.inv.estrela--; for (const [n] of NECESSIDADES) mais(n, 15); cuidou(8, `⭐ ${p.nome} ganhou um petisco especial!`); }
+    else if (k === 'dormir') { p.dorme = !p.dorme; if (!p.dorme) petPerto(); salvar(); aviso(p.dorme ? `😴 ${p.nome} foi dormir no quarto da sua casa.` : `☀️ ${p.nome} acordou!`); }
+    else if (k === 'quiz') {
+      fechaJanela();
+      return pergunta(`Quiz com ${p.nome}`, ESPECIES[p.especie][0], sorteiaPergunta(faseMaisAlta()), certo => { mais('alegria', certo ? 30 : 10); cuidou(certo ? 5 : 1); });
+    }
+    janelaPet();
+  }
   function missoesCasa() {
     const feitos = Object.keys(S.casa.feitos).length, novos = S.casa.moveis.filter(m => !MOVEIS[m.id].inicial).length;
     return [
       { nome: 'Construir o primeiro móvel', n: Math.min(feitos, 1), meta: 1 },
       { nome: 'Decorar com 3 móveis novos', n: novos, meta: 3 },
       { nome: 'Construir 8 móveis diferentes', n: feitos, meta: 8 },
-      { nome: 'Construir o telescópio', n: S.casa.feitos.telescopio ? 1 : 0, meta: 1 }
+      { nome: 'Construir o telescópio', n: S.casa.feitos.telescopio ? 1 : 0, meta: 1 },
+      { nome: 'Adotar um pet', n: S.pet ? 1 : 0, meta: 1 }
     ].map(m => Object.assign(m, { ok: m.n >= m.meta }));
   }
   function desenhaInterior() {
@@ -783,11 +947,12 @@
       lista.push({ k: tx + ty + (M.w + M.d) / 2 + 0.01, d: () => { ctx.globalAlpha = 0.6; M.des(tx, ty, {}); ctx.globalAlpha = 1; } });
     }
     lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
+    if (S.pet) { const c = S.pet.dorme ? caminha() : PET; lista.push({ k: c.x + c.y - (S.pet.dorme ? 0.6 : 0), d: () => desenhaPet(c.x, c.y, S.pet, { dir: PET.dir, andando: PET.andando, passo: PET.passo, dorme: S.pet.dorme }) }); }
     lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(80,60,90,.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     const alvo = !dialogoAberto && !colocando && alvoCasa();
     if (alvo) {
-      const t = alvo.tipo === 'saida' ? 'E · sair de casa' : `E · ${MOVEIS[alvo.movel.id].acao || 'ver'}`;
+      const t = alvo.tipo === 'saida' ? 'E · sair de casa' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : `E · ${MOVEIS[alvo.movel.id].acao || 'ver'}`;
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     miniCasa();
@@ -808,6 +973,7 @@
   function quadro(now) {
     const dt = Math.min(0.05, (now - t0) / 1000); t0 = now; agora = now;
     if (!dialogoAberto && !janelaAberta) move(dt);
+    movePet(dt);
     // moradores passeiam devagar pelo anel
     for (const f of fases) for (const n of f.npcs) {
       if (dialogoAberto && dialogoNpc === n) continue;
@@ -852,10 +1018,11 @@
       for (const it of f.itens) if (!S.itens[it.id] && naTela(it.x, it.y)) lista.push({ k: it.x + it.y, d: () => desenhaItem(it) });
     }
     lista.push({ k: P.x + P.y, d: () => desenhaPessoa(P.x, P.y, S.av, P) });
+    if (S.pet && !S.pet.dorme) lista.push({ k: PET.x + PET.y, d: () => desenhaPet(PET.x, PET.y, S.pet, PET) });
     lista.sort((a, b) => a.k - b.k).forEach(o => o.d());
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
+      const t = alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : 'E · jogar') : alvo.tipo === 'npc' ? 'E · conversar' : alvo.tipo === 'placa' ? 'E · ler a placa' : 'E · portão';
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     minimapa(faseDeX(P.x));
@@ -1007,19 +1174,19 @@
     if (colocando) { colocaAqui(); return; }
     const a = alvoPerto(); if (!a) return;
     destino = null;
-    if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase);
+    if (a.tipo === 'pet') abreJanela('pet'); else if (a.tipo === 'minhacasa') entraCasa(); else if (a.tipo === 'movel') usaMovel(a.movel); else if (a.tipo === 'saida') saiCasa(); else if (a.tipo === 'casa') abreCasa(a.casa); else if (a.tipo === 'npc') falaNpc(a.npc); else if (a.tipo === 'placa') lePlaca(a.fase); else portao(a.fase);
   }
 
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
   document.querySelectorAll('[data-abrir]').forEach(b => b.addEventListener('click', () => abreJanela(b.dataset.abrir)));
   document.querySelectorAll('[data-fechar]').forEach(b => b.addEventListener('click', fechaJanela));
-  function teleporta(f) { dentro = false; colocando = null; P.x = f.x0 + 3.5; P.y = MEIO; destino = null; cam.ok = false; fechaJanela(); hud(); }
+  function teleporta(f) { dentro = false; colocando = null; P.x = f.x0 + 3.5; P.y = MEIO; petPerto(); destino = null; cam.ok = false; fechaJanela(); hud(); }
   function desenhaMapa() {
     const c = $('#mapa-cv'), k = c.getContext('2d'); k.fillStyle = '#1b2531'; k.fillRect(0, 0, c.width, c.height);
     const s = Math.min(c.width / LARG, (c.height - 24) / ALT), oy = 20 + (c.height - 24 - ALT * s) / 2, ox = (c.width - LARG * s) / 2;
@@ -1037,11 +1204,11 @@
   }
   function inventario() {
     $('#inv-itens').innerHTML = Object.entries(ITENS).map(([k, [ic, nome]]) => `<div class="it ${S.inv[k] ? '' : 'falta'}"><span style="font-size:26px">${ic}</span><span>${nome}<br><b>${S.inv[k] || 0}</b></span></div>`).join('') +
-      `<p class="muted small" style="flex-basis:100%;margin:4px 0 0">Na bancada da sua casa 🏠, os itens viram móveis. Em breve eles também vão servir para cuidar do seu pet e abrir jogos especiais.</p>`;
+      `<p class="muted small" style="flex-basis:100%;margin:4px 0 0">Na bancada da sua casa 🏠, os itens viram móveis. Maçãs e estrelas também alimentam o seu pet 🐾. Em breve as peças vão abrir um jogo especial.</p>`;
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     const conq = [
       ['🥇', 'Primeira casa colorida', feitos >= 1], ['🎨', '5 casas coloridas', feitos >= 5], ['🏅', '15 casas coloridas', feitos >= 15], ['🧠', '10 acertos', S.acertos >= 10], ['🧠', '30 acertos', S.acertos >= 30],
-      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10], ['🛋️', 'Primeiro móvel', Object.keys(S.casa.feitos).length >= 1], ['🏡', 'Casa decorada (8 móveis)', Object.keys(S.casa.feitos).length >= 8], ['🔭', 'Telescópio', !!S.casa.feitos.telescopio],
+      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10], ['🛋️', 'Primeiro móvel', Object.keys(S.casa.feitos).length >= 1], ['🏡', 'Casa decorada (8 móveis)', Object.keys(S.casa.feitos).length >= 8], ['🔭', 'Telescópio', !!S.casa.feitos.telescopio], ['🐾', 'Adotou um pet', !!S.pet], ['🏅', 'Pet nível 5', !!S.pet && S.pet.nivel >= 5],
       ...fases.map(f => ['🏆', f.nome, !!S.concluidas[f.id]])
     ];
     $('#inv-conq').innerHTML = conq.map(([ic, n, ok]) => `<div class="it ${ok ? '' : 'falta'}"><span style="font-size:22px">${ic}</span><span>${esc(n)}</span></div>`).join('');
@@ -1126,11 +1293,13 @@
     if (dentro) {
       if (colocando) { mouse = { x: wx, y: wy }; colocaAqui(); return; }
       const a = alvoCasa();
+      if (a && a.tipo === 'pet') { const c = S.pet.dorme ? caminha() : PET; if (Math.hypot(wx - c.x, wy - c.y) < 0.8) return interage(); }
       if (a && a.tipo === 'movel') { const m = a.movel, M = MOVEIS[m.id]; if (wx > m.x - 0.3 && wx < m.x + M.w + 0.3 && wy > m.y - 0.3 && wy < m.y + M.d + 0.3) return interage(); }
       if (a && a.tipo === 'saida' && Math.hypot(wx - SAIDA.x, wy - SAIDA.y) < 0.8) return interage();
       destino = { x: wx, y: wy }; return;
     }
     const a = alvoPerto();
+    if (a && a.tipo === 'pet' && Math.hypot(wx - PET.x, wy - PET.y) < 0.8) return interage();
     if (a && a.tipo === 'minhacasa') { const c = fases[0].minhaCasa; if (wx > c.gx - 0.5 && wx < c.gx + c.w + 0.5 && wy > c.y - 0.5 && wy < c.y + c.d + 0.5) return interage(); }
     if (a && a.tipo === 'casa' && wx > a.casa.gx - 0.5 && wx < a.casa.gx + a.casa.w + 0.5 && wy > a.casa.y - 0.5 && wy < a.casa.y + a.casa.d + 0.5) return interage();
     if (a && a.tipo === 'npc' && Math.hypot(wx - a.npc.x, wy - a.npc.y) < 0.9) return interage();
@@ -1159,7 +1328,7 @@
     if (MAPA_TECLAS[k]) { teclas[MAPA_TECLAS[k]] = true; if (k !== 'Shift') mouse = null; ev.preventDefault(); }
     else if (k === ' ') { if (P.pulo === 0) { P.vpulo = 3.4; P.pulo = 0.01; } ev.preventDefault(); }
     else if (k === 'e' || k === 'Enter') { interage(); ev.preventDefault(); }
-    else if (k === 'm') abreJanela('mapa'); else if (k === 'i') abreJanela('inventario'); else if (k === 'b') abreJanela('biblioteca'); else if (k === 'v') abreJanela('avatar'); else if (k === 'c') $('#b-casa').click();
+    else if (k === 'm') abreJanela('mapa'); else if (k === 'i') abreJanela('inventario'); else if (k === 'b') abreJanela('biblioteca'); else if (k === 'v') abreJanela('avatar'); else if (k === 'c') $('#b-casa').click(); else if (k === 'p') abreJanela('pet');
     else if (k === 'r') $('#b-reiniciar').click();
   });
   document.addEventListener('keyup', ev => { const k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key; if (MAPA_TECLAS[k]) teclas[MAPA_TECLAS[k]] = false; });
@@ -1169,14 +1338,15 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { confereJogos(); hud(); } });
   window.addEventListener('focus', () => { confereJogos(); hud(); });
   window.addEventListener('storage', ev => { if (ev.key === 'md-progresso-v1') { confereJogos(); hud(); } });
-  setInterval(() => { guardaPos(); salvar(); }, 10000);
+  setInterval(() => { guardaPos(); atualizaPet(); salvar(); }, 10000);
   window.addEventListener('pagehide', () => { guardaPos(); salvar(); });
 
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   if (!liberada(faseDeX(P.x)) || !livre(P.x, P.y)) { P.x = fases[0].x0 + 3.5; P.y = MEIO; }
-  window.MUNDO_DEBUG = { P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases();
+  if (S.pet) { atualizaPet(); petPerto(); const pede = precisa(S.pet); if (pede.length) setTimeout(() => aviso(`🐾 ${S.pet.nome} precisa de você: ${pede.join(' ')}`), 1200); }
   if (!S.pontos) setTimeout(() => aviso('🌍 Explore o mundo e descubra os desafios!'), 400);
   requestAnimationFrame(quadro);
 })();

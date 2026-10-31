@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mundo do site: missões com jogos e simuladores | Júlia Quoos</title>
-<meta name="description" content="Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens, decore a sua casa e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site.">
+<meta name="description" content="Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens, decore a sua casa, cuide do seu pet e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site.">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="https://ohtopico.com.br/mundo/">
 <meta property="og:title" content="Mundo do site: missões com jogos e simuladores | Júlia Quoos">
@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="mundo.css?v=20261031b">
+<link rel="stylesheet" href="mundo.css?v=20261031c">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -46,6 +46,7 @@
   <button type="button" class="hb amarelo" data-abrir="inventario" title="Inventário" aria-label="Inventário">🎒 <span class="t">Inventário</span></button>
   <button type="button" class="hb azul" data-abrir="biblioteca" title="Biblioteca" aria-label="Biblioteca">📖 <span class="t">Biblioteca</span></button>
   <button type="button" class="hb rosa" id="b-casa" title="Casa" aria-label="Casa">🏠 <span class="t">Casa</span></button>
+  <button type="button" class="hb amarelo" data-abrir="pet" title="Pet" aria-label="Pet">🐾 <span class="t">Pet</span></button>
   <button type="button" class="hb rosa" data-abrir="avatar" title="Avatar" aria-label="Avatar">🧑 <span class="t">Avatar</span></button>
   <button type="button" class="hb verde" id="b-salvar" title="Salvar" aria-label="Salvar">💾 <span class="t">Salvar</span></button>
   <button type="button" class="hb vermelho" id="b-reiniciar" title="Reiniciar fase" aria-label="Reiniciar fase">🔄 <span class="t">Reiniciar fase</span></button>
@@ -69,7 +70,7 @@
 <!-- teclas -->
 <div class="hud teclas" id="teclas">
   <span><kbd>↑↓←→</kbd> mover · <kbd>SHIFT</kbd> correr · <kbd>ESPAÇO</kbd> saltar · clique no chão para andar</span>
-  <span><kbd>E</kbd> conversar / abrir · <kbd>M</kbd> mapa · <kbd>I</kbd> inventário · <kbd>C</kbd> casa · <kbd>V</kbd> avatar · <kbd>ESC</kbd> menu</span>
+  <span><kbd>E</kbd> conversar / abrir · <kbd>M</kbd> mapa · <kbd>I</kbd> inventário · <kbd>C</kbd> casa · <kbd>P</kbd> pet · <kbd>V</kbd> avatar · <kbd>ESC</kbd> menu</span>
 </div>
 
 <!-- controles de toque -->
@@ -137,6 +138,11 @@
     <div id="casa-cores" class="av-cores"></div>
   </div>
 </div>
+<div class="janela" id="j-pet" hidden role="dialog" aria-labelledby="j-pet-t">
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-pet-t">🐾 Seu pet</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <div id="pet-conteudo"></div>
+  </div>
+</div>
 <div class="janela" id="j-menu" hidden role="dialog" aria-labelledby="j-menu-t">
   <div class="j-caixa pequena"><div class="j-cab"><h2 id="j-menu-t">Mundo do site</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <p>Ande pela vila, converse com os personagens, responda às perguntas, colete os itens e abra as casas: cada casa é um jogo, um recurso 3D, um simulador ou um guia do site. Cumprindo as missões de uma fase, a próxima se abre.</p>
@@ -154,7 +160,7 @@
 <script src="../material-didatico/assets/listas.js"></script>
 <script src="../material-didatico/assets/progresso.js"></script>
 <script src="../simuladores/assets/sim-comum.js"></script>
-<script src="mundo.js?v=20261031b"></script>
+<script src="mundo.js?v=20261031c"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
