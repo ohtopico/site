@@ -346,7 +346,7 @@
     poltrona: { nome: 'Poltrona', ic: '🛋️', w: 1, d: 1, custo: { estrela: 2, livro: 1 }, requer: 'tapete', acao: 'ler um pouco', des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 0.8, 0.22, 0.95, '#d0609c'); caixa(x + 0.1, y + 0.3, 0, 0.8, 0.6, 0.42, '#e07bb0'); caixa(x + 0.05, y + 0.3, 0.42, 0.15, 0.6, 0.2, '#d0609c'); caixa(x + 0.8, y + 0.3, 0.42, 0.15, 0.6, 0.2, '#d0609c'); } },
     geladeira: { nome: 'Geladeira', ic: '🧊', w: 1, d: 1, custo: { maca: 3, chave: 1 }, requer: 'mesa', acao: 'abrir a geladeira', des: (x, y) => { caixa(x + 0.1, y + 0.1, 0, 0.8, 0.8, 1.9, '#eef6fa'); naFace('y', x + 0.1, y + 0.1, 0.8, 0.8, 0, 0, 0.8, 1.3, 0.02, '#b8c4cc'); naFace('y', x + 0.1, y + 0.1, 0.8, 0.8, 0.62, 0, 0.06, 0.7, 0.4, '#9aa3ad'); naFace('y', x + 0.1, y + 0.1, 0.8, 0.8, 0.62, 0, 0.06, 1.4, 0.3, '#9aa3ad'); } },
     aquario: { nome: 'Aquário', ic: '🐠', w: 1, d: 1, custo: { diamante: 2, estrela: 1 }, requer: 'vaso', acao: 'ver os peixes', des: (x, y) => { caixa(x + 0.1, y + 0.2, 0, 0.8, 0.6, 0.5, '#5a3b2a'); caixa(x + 0.12, y + 0.22, 0.5, 0.76, 0.56, 0.55, '#9fe3f5', { blocos: false }); const k = (Math.sin(agora / 700) + 1) / 2; naFace('y', x + 0.12, y + 0.22, 0.76, 0.56, 0.1 + k * 0.45, 0, 0.14, 0.75, 0.08, '#ff8a3d'); } },
-    robo: { nome: 'Robozinho', ic: '🤖', w: 1, d: 1, custo: { diamante: 2, chave: 1 }, requer: 'luminaria', acao: 'responder ao robô', des: (x, y) => { const z = Math.abs(Math.sin(agora / 400)) * 0.06; caixa(x + 0.3, y + 0.3, z, 0.4, 0.4, 0.45, '#a8e6b8'); caixa(x + 0.32, y + 0.32, z + 0.45, 0.36, 0.36, 0.3, '#c9efd9'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.07, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.22, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); caixa(x + 0.47, y + 0.47, z + 0.75, 0.06, 0.06, 0.2, '#888888', { blocos: false }); caixa(x + 0.44, y + 0.44, z + 0.95, 0.12, 0.12, 0.08, '#e0564a', { blocos: false }); } },
+    robo: { nome: 'Robozinho', ic: '🤖', w: 1, d: 1, custo: { diamante: 2, chave: 1 }, requer: 'luminaria', acao: 'programar o robô', des: (x, y) => { const z = Math.abs(Math.sin(agora / 400)) * 0.06; caixa(x + 0.3, y + 0.3, z, 0.4, 0.4, 0.45, '#a8e6b8'); caixa(x + 0.32, y + 0.32, z + 0.45, 0.36, 0.36, 0.3, '#c9efd9'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.07, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); naFace('y', x + 0.32, y + 0.32, 0.36, 0.36, 0.22, 0, 0.07, z + 0.6, 0.07, '#2b6cb0'); caixa(x + 0.47, y + 0.47, z + 0.75, 0.06, 0.06, 0.2, '#888888', { blocos: false }); caixa(x + 0.44, y + 0.44, z + 0.95, 0.12, 0.12, 0.08, '#e0564a', { blocos: false }); } },
     telescopio: { nome: 'Telescópio', ic: '🔭', w: 1, d: 1, custo: { diamante: 3, estrela: 2 }, requer: 'robo', acao: 'olhar o mapa', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 0.95, '#555555', { blocos: false }); caixa(x + 0.3, y + 0.35, 0.05, 0.4, 0.3, 0.05, '#555555', { blocos: false }); caixa(x + 0.38, y + 0.1, 0.95, 0.24, 0.8, 0.24, '#3f8fe0'); caixa(x + 0.35, y + 0.05, 0.92, 0.3, 0.12, 0.3, '#ffd58a'); } },
     arcade: { nome: 'Fliperama', ic: '🕹️', w: 1, d: 1, custo: { chave: 2, diamante: 2 }, requer: 'robo', acao: 'jogar', des: (x, y) => { caixa(x + 0.1, y + 0.15, 0, 0.8, 0.7, 1.75, '#9a6bd6'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.12, 0, 0.56, 1.0, 0.5, '#1b2531'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.25 + ((agora / 300 | 0) % 3) * 0.1, 0, 0.08, 1.2, 0.08, '#a8e6b8'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.2, 0, 0.1, 0.75, 0.1, '#e0564a'); naFace('y', x + 0.1, y + 0.15, 0.8, 0.7, 0.45, 0, 0.1, 0.75, 0.1, '#ffd58a'); } },
     // móveis que só existem na Loja de Móveis
@@ -379,7 +379,7 @@
   /* ---------- estado salvo ---------- */
   const CHAVE = 'mundo-site-v1';
   const AV_PADRAO = { pele: PELES[1], cabelo: CABELOS[0], estilo: 'curto', camisa: '#3f8fe0', calca: '#2f3b6b', sapato: '#5a3b2a', acessorio: 'nada' };
-  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
+  const novo = () => ({ pontos: 0, acertos: 0, erros: 0, itens: {}, cont: {}, inv: {}, falas: {}, resp: {}, feitos: {}, abertos: {}, concluidas: {}, dicas: {}, av: Object.assign({}, AV_PADRAO), casa: casaNova(), pet: null, hab: {}, amizade: {}, diaNpc: {}, recompensas: {}, gostos: {}, enigma: {}, quebra: 0, especial: 0, eventos: {}, medalhas: {}, loja: lojaNova(), turma: { nome: '', codigo: '' }, projetos: { doou: {}, prontos: {} }, prof: {}, oficina: {}, x: 3.5, y: MEIO, fase: 0, versao: 3 });
   let S = novo();
   try { const v = JSON.parse(localStorage.getItem(CHAVE)); if (v && typeof v.pontos === 'number') S = Object.assign(novo(), v); } catch (e) {}
   S.av = Object.assign({}, AV_PADRAO, S.av);
@@ -864,7 +864,7 @@
     const janela = { bancada: 'casa', estante: 'biblioteca', bau: 'inventario', espelho: 'avatar', quadro: 'inventario', telescopio: 'mapa' }[m.id];
     if (janela) return abreJanela(janela);
     if (m.id === 'luminaria') { m.on = !m.on; salvar(); return aviso(m.on ? '💡 Luz acesa' : 'Luz apagada'); }
-    if (m.id === 'robo') return pergunta('Robozinho', '🤖', sorteiaPergunta(faseMaisAlta()));
+    if (m.id === 'robo') return abreJanela('oficina');
     if (m.id === 'cama') {
       const hoje = new Date().toDateString();
       if (S.casa.dormiu !== hoje) { S.casa.dormiu = hoje; pontos(10); salvar(); return dialogo('🛏️', 'Boa noite!', '<p>Você descansou e acordou cheio de energia: <strong>+10 ⭐</strong>.</p><p class="muted">A cama dá pontos uma vez por dia. Volte amanhã!</p>', [fecha]); }
@@ -1362,6 +1362,7 @@
   function falaProf(f) {
     const p = profDe(f), E = estProf(p), fecha = { txt: 'Até mais!', fn: fechaDialogo };
     const lista = `<ol class="etapas">${p.passos.map((ps, i) => `<li class="${E.feito || i < E.passo ? 'ok' : i === E.passo ? 'agora' : ''}">${E.feito || i < E.passo ? '✅' : i === E.passo ? '👉' : '⬜'} ${esc(ps.txt)}</li>`).join('')}</ol>`;
+    if (E.feito && p.id === 'programadora') return dialogo(p.ic, `${p.nome} · ${p.prof}`, `<p>Missão cumprida! Quer treinar mais? Na oficina de código você programa o robô ou o seu pet com blocos.</p>${lista}`, [{ txt: '🧩 Abrir a oficina de código', classe: 'principal', fn: () => { fechaDialogo(); abreJanela('oficina'); } }, fecha]);
     if (E.feito) return dialogo(p.ic, `${p.nome} · ${p.prof}`, `<p>Você já sabe um pouco do meu trabalho! Continue estudando: o mundo precisa de mais gente na computação.</p>${lista}<p class="muted small">Seu prêmio, ${esc(NOMES_ENFEITE[p.premio])}, está no 🧑 Avatar.</p>`, [fecha]);
     const ps = p.passos[E.passo], [ok, prog] = condicaoProf(p, f);
     const intro = E.passo === 0 ? `<p>Oi! Eu sou ${esc(p.nome)}, ${p.prof.toLowerCase()}. ${esc(p.ola)}</p>` : '<p>Que bom te ver! Vamos para a próxima etapa?</p>';
@@ -1369,6 +1370,7 @@
     if (ps.tipo === 'pergunta') ops.push({ txt: 'Responder', classe: 'principal', fn: () => perguntaProf(p, f) });
     else if (ps.tipo === 'item') ops.push({ txt: ok ? `Entregar ${ITENS[ps.item][0]}${ps.item2 ? ' e ' + ITENS[ps.item2][0] : ''}` : 'Ainda não tenho', classe: ok ? 'principal' : '', fn: () => { if (!condicaoProf(p, f)[0]) return fechaDialogo(); S.inv[ps.item] -= ps.n; if (ps.item2) S.inv[ps.item2] -= ps.n2; avancaProf(p, f); } });
     else ops.push({ txt: ok ? 'Já fiz!' : 'Vou fazer', classe: ok ? 'principal' : '', fn: () => ok ? avancaProf(p, f) : fechaDialogo() });
+    if (p.id === 'programadora') ops.push({ txt: '🧩 Abrir a oficina de código', fn: () => { fechaDialogo(); abreJanela('oficina'); } });
     ops.push(fecha);
     dialogo(p.ic, `${p.nome} · ${p.prof}`, `${intro}<p><strong>Missão em ${p.passos.length} etapas</strong></p>${lista}${prog && ps.tipo !== 'pergunta' ? `<p class="muted small">Agora: ${esc(ps.txt)} · ${prog}</p>` : ''}`, ops);
   }
@@ -1384,6 +1386,109 @@
       b.addEventListener('click', () => certo ? avancaProf(p, f) : perguntaProf(p, f)); D.op.appendChild(b); b.focus();
     } })));
     delete D.op.dataset.respondida;
+  }
+  /* ---------- oficina de código: programação em blocos (sequência, repetição) para o robô ou o pet ----------
+     mapa: '.' chão, '#' parede, 'a' maçã para pegar, 'G' chegada, '>' 'v' '<' '^' início e direção */
+  const NIVEIS_OF = [
+    { par: 4, dica: 'Use ⬆️ Frente para andar até a bandeira.', mapa: ['.......', '.......', '.......', '>...G..', '.......', '.......', '.......'] },
+    { par: 7, dica: 'Os blocos de virar giram o personagem sem sair do lugar.', mapa: ['.......', '.>...#.', '.....#.', '.......', '....G..', '.......', '.......'] },
+    { par: 6, dica: 'Pare em cima da maçã e use 🍎 Pegar. A bandeira só conta com todas as maçãs.', mapa: ['.......', '.......', '.>.a..G', '.......', '.......', '.......', '.......'] },
+    { par: 2, dica: 'Seis vezes Frente? Use 🔁 Repetir: escolha 6, coloque um Frente dentro e feche.', mapa: ['.......', '.......', '.......', '>.....G', '.......', '.......', '.......'] },
+    { par: 5, dica: 'Uma escada: frente, sobe, frente, vira... O que se repete?', mapa: ['.......', '.......', '....G..', '.......', '.......', '.......', '>......'] },
+    { par: 8, dica: 'Três lados iguais: andar 3, pegar e virar.', mapa: ['.......', '.>..a..', '.G.....', '.......', '.a..a..', '.......', '.......'] },
+    { par: 8, dica: 'Uma maçã a cada passo: repita andar e pegar.', mapa: ['.......', '.......', '.......', '>aaaaaG', '.......', '.......', '.......'] },
+    { par: 17, dica: 'Labirinto! Planeje o caminho antes e use Repetir nos trechos retos.', mapa: ['#######', '#>..#G#', '###.#.#', '#...#.#', '#.###.#', '#.....#', '#######'] },
+    { par: 7, dica: 'A escada agora tem maçãs em cada degrau.', mapa: ['.......', '.......', '....aG.', '...a...', '..a....', '.a.....', '>......'] },
+    { par: 7, dica: 'Desafio: um Repetir dentro de outro Repetir (laços aninhados).', mapa: ['>.a.a.a', '.......', '......a', '.......', '......a', '.......', '.....Ga'] }
+  ];
+  NIVEIS_OF[6].par = 4;
+  const BLOCOS_OF = { f: ['⬆️', 'Frente'], e: ['↩️', 'Virar à esquerda'], d: ['↪️', 'Virar à direita'], p: ['🍎', 'Pegar'] };
+  const OF = { nivel: 0, prog: [], pilha: [], rodando: false, quem: 'robo', estado: null };
+  const contaBlocos = l => l.reduce((a, b) => a + 1 + (b.op === 'r' ? contaBlocos(b.corpo) : 0), 0);
+  const lista_OF = () => OF.pilha.length ? OF.pilha[OF.pilha.length - 1].corpo : OF.prog;
+  function inicioOF(n) {
+    const M = NIVEIS_OF[n].mapa, st = { macas: new Set(), x: 0, y: 0, dir: 0, pegou: 0, total: 0 };
+    M.forEach((linha, y) => [...linha].forEach((c, x) => { const d = '>v<^'.indexOf(c); if (d >= 0) Object.assign(st, { x, y, dir: d }); if (c === 'a') { st.macas.add(x + ',' + y); st.total++; } if (c === 'G') st.g = [x, y]; }));
+    return st;
+  }
+  function passosOF(l, out = []) { for (const b of l) { if (out.length > 300) break; if (b.op === 'r') for (let i = 0; i < b.n; i++) passosOF(b.corpo, out); else out.push(b.op); } return out; }
+  function desenhaOF() {
+    const c = $('#of-cv'); if (!c) return;
+    const g = c.getContext('2d'), M = NIVEIS_OF[OF.nivel].mapa, T = 40, st = OF.estado;
+    g.clearRect(0, 0, c.width, c.height);
+    M.forEach((linha, y) => [...linha].forEach((ch, x) => {
+      g.fillStyle = ch === '#' ? '#7a8f6a' : (x + y) % 2 ? '#bfe3a8' : '#cdeab8'; g.fillRect(x * T, y * T, T, T);
+      g.font = '24px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      if (ch === '#') g.fillText('🌳', x * T + T / 2, y * T + T / 2 + 1);
+      if (ch === 'G') g.fillText('🏁', x * T + T / 2, y * T + T / 2 + 1);
+      if (ch === 'a' && st.macas.has(x + ',' + y)) g.fillText('🍎', x * T + T / 2, y * T + T / 2 + 1);
+    }));
+    const cx = st.x * T + T / 2, cy = st.y * T + T / 2, [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][st.dir];
+    g.fillStyle = '#e0564a'; g.beginPath(); g.moveTo(cx + dx * 19, cy + dy * 19); g.lineTo(cx + dx * 11 - dy * 7, cy + dy * 11 + dx * 7); g.lineTo(cx + dx * 11 + dy * 7, cy + dy * 11 - dx * 7); g.closePath(); g.fill();
+    g.font = '26px system-ui, sans-serif'; g.fillText(OF.quem === 'pet' && S.pet ? ESPECIES[S.pet.especie][0] : '🤖', cx, cy + 1);
+    if (st.bateu) { g.font = '18px system-ui, sans-serif'; g.fillText('💥', cx + dx * 20, cy + dy * 20); }
+  }
+  const progHtml = (l, nivel = 0) => l.map(b => b.op === 'r'
+    ? `<div class="bl rep ${OF.pilha.includes(b) ? 'aberto' : ''}" style="margin-left:${nivel * 16}px">🔁 Repetir ${b.n}×</div>${progHtml(b.corpo, nivel + 1)}${OF.pilha.includes(b) ? `<div class="bl cursor" style="margin-left:${(nivel + 1) * 16}px">▸ blocos entram aqui</div>` : ''}<div class="bl fim" style="margin-left:${nivel * 16}px">fim do repetir</div>`
+    : `<div class="bl" style="margin-left:${nivel * 16}px">${BLOCOS_OF[b.op][0]} ${BLOCOS_OF[b.op][1]}</div>`).join('');
+  function janelaOficina() {
+    const el = $('#oficina-conteudo'), N = NIVEIS_OF[OF.nivel], E = S.oficina, est = n => E[n] || 0;
+    if (!OF.estado || OF.estado.n !== OF.nivel) { OF.estado = inicioOF(OF.nivel); OF.estado.n = OF.nivel; }
+    el.innerHTML = `<div class="of-niveis">${NIVEIS_OF.map((_, i) => `<button type="button" class="of-n" data-of-n="${i}" aria-pressed="${i === OF.nivel}" ${i > 0 && !est(i - 1) ? 'disabled' : ''}>${i + 1}<small>${'⭐'.repeat(est(i)) || (i > 0 && !est(i - 1) ? '🔒' : '·')}</small></button>`).join('')}</div>
+      <div class="of-area"><div><canvas id="of-cv" width="280" height="280" aria-label="Mapa do nível ${OF.nivel + 1}"></canvas>
+        ${S.pet ? `<div class="btn-row"><button type="button" class="of-b" data-quem="robo" aria-pressed="${OF.quem === 'robo'}">🤖 Robô</button><button type="button" class="of-b" data-quem="pet" aria-pressed="${OF.quem === 'pet'}">${ESPECIES[S.pet.especie][0]} ${esc(S.pet.nome)}</button></div>` : ''}</div>
+      <div class="of-lado"><p class="small"><b>Nível ${OF.nivel + 1}.</b> ${esc(N.dica)} <span class="muted">⭐⭐⭐ com até ${N.par} blocos.</span></p>
+        <div class="of-paleta">${Object.entries(BLOCOS_OF).map(([k, [ic, n]]) => `<button type="button" class="of-b" data-bl="${k}" ${OF.rodando ? 'disabled' : ''}>${ic} ${n}</button>`).join('')}
+          <span class="of-rep"><button type="button" class="of-b" data-bl="r" ${OF.rodando ? 'disabled' : ''}>🔁 Repetir</button><select id="of-vezes" aria-label="Quantas vezes">${[2, 3, 4, 5, 6].map(n => `<option>${n}</option>`).join('')}</select>×</span>
+          ${OF.pilha.length ? `<button type="button" class="of-b" data-bl="fecha">✔ Fechar o repetir</button>` : ''}</div>
+        <div class="of-prog" aria-live="polite">${OF.prog.length ? progHtml(OF.prog) : '<p class="muted small">Toque nos blocos para montar o programa.</p>'}</div>
+        <p class="small">Blocos: <b>${contaBlocos(OF.prog)}</b></p>
+        <div class="btn-row"><button type="button" class="hb verde" id="of-rodar" ${OF.rodando || !OF.prog.length ? 'disabled' : ''}>▶ Executar</button><button type="button" class="hb azul" id="of-desfaz" ${OF.rodando ? 'disabled' : ''}>⌫ Desfazer</button><button type="button" class="hb azul" id="of-limpa" ${OF.rodando ? 'disabled' : ''}>🗑 Limpar</button></div>
+        <p class="of-msg" id="of-msg" role="status"></p></div></div>`;
+    desenhaOF();
+    el.querySelectorAll('[data-of-n]').forEach(b => b.addEventListener('click', () => { OF.nivel = +b.dataset.ofN; OF.prog = []; OF.pilha = []; OF.estado = null; janelaOficina(); }));
+    el.querySelectorAll('[data-quem]').forEach(b => b.addEventListener('click', () => { OF.quem = b.dataset.quem; janelaOficina(); }));
+    el.querySelectorAll('[data-bl]').forEach(b => b.addEventListener('click', () => {
+      const k = b.dataset.bl;
+      if (k === 'fecha') OF.pilha.pop();
+      else if (k === 'r') { const bl = { op: 'r', n: +$('#of-vezes').value, corpo: [] }; lista_OF().push(bl); OF.pilha.push(bl); }
+      else if (contaBlocos(OF.prog) < 40) lista_OF().push({ op: k });
+      OF.estado = null; janelaOficina();
+    }));
+    $('#of-desfaz').addEventListener('click', () => { const l = lista_OF(); if (l.length) l.pop(); else if (OF.pilha.length) { const bl = OF.pilha.pop(); const pai = lista_OF(); pai.splice(pai.indexOf(bl), 1); } OF.estado = null; janelaOficina(); });
+    $('#of-limpa').addEventListener('click', () => { OF.prog = []; OF.pilha = []; OF.estado = null; janelaOficina(); });
+    $('#of-rodar').addEventListener('click', rodaOF);
+  }
+  function rodaOF() {
+    OF.pilha = []; OF.estado = inicioOF(OF.nivel); OF.estado.n = OF.nivel; OF.rodando = true; janelaOficina();
+    const passos = passosOF(OF.prog), st = OF.estado, M = NIVEIS_OF[OF.nivel].mapa;
+    let i = 0;
+    const msg = t => { const m = $('#of-msg'); if (m) m.innerHTML = t; };
+    const fim = t => { OF.rodando = false; janelaOficina(); msg(t); };
+    const passo = () => {
+      if (janelaAberta !== 'oficina') { OF.rodando = false; return; }
+      if (i >= passos.length) {
+        const venceu = st.g && st.x === st.g[0] && st.y === st.g[1] && st.pegou === st.total;
+        if (!venceu) return fim(st.g && st.x === st.g[0] && st.y === st.g[1] ? `🍎 Faltou pegar ${st.total - st.pegou} maçã(s).` : '🤔 O programa acabou antes da bandeira. Ajuste e tente de novo!');
+        const n = contaBlocos(OF.prog), par = NIVEIS_OF[OF.nivel].par, est = n <= par ? 3 : n <= par + 3 ? 2 : 1, antes = S.oficina[OF.nivel] || 0;
+        if (!antes) { pontos(10, `🧩 Nível ${OF.nivel + 1} da oficina concluído!`); ganhaHabilidade(['PC'], 8); }
+        else if (est > antes) pontos(5, `🧩 Mais estrelas no nível ${OF.nivel + 1}!`);
+        S.oficina[OF.nivel] = Math.max(antes, est);
+        if (NIVEIS_OF.every((_, k) => S.oficina[k]) && !S.medalhas.oficina) { S.medalhas.oficina = { ic: '🧩', nome: 'Programadora/programador da oficina' }; pontos(40, '🧩 Você terminou todos os níveis da oficina!'); }
+        salvar();
+        return fim(`🎉 Conseguiu com ${n} bloco(s): ${'⭐'.repeat(est)}${est < 3 ? ` · Dá para fazer com ${par}?` : ''}`);
+      }
+      const op = passos[i++];
+      if (op === 'e') st.dir = (st.dir + 3) % 4; else if (op === 'd') st.dir = (st.dir + 1) % 4;
+      else if (op === 'p') { const k = st.x + ',' + st.y; if (st.macas.has(k)) { st.macas.delete(k); st.pegou++; } }
+      else {
+        const [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][st.dir], nx = st.x + dx, ny = st.y + dy;
+        if (nx < 0 || ny < 0 || nx >= 7 || ny >= 7 || M[ny][nx] === '#') { st.bateu = true; desenhaOF(); return fim('💥 Bateu! Confira as viradas e os passos.'); }
+        st.x = nx; st.y = ny;
+      }
+      desenhaOF(); setTimeout(passo, 280);
+    };
+    setTimeout(passo, 250);
   }
   /* ---------- Casa do Enigma: um escape room sem cronômetro (código binário, Cifra de César e uma chave do inventário) ---------- */
   const EW = 7, ED = 6, ESAIDA = { x: 3.5, y: ED - 0.5 };
@@ -2092,7 +2197,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -2312,7 +2417,7 @@
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
-  window.MUNDO_DEBUG = { PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
