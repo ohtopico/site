@@ -579,7 +579,7 @@
     quadroPeixe: { nome: 'Quadro de peixe', ic: '🐟', w: 1, d: 1, planta: 60, custo: { peixe: 3, madeira: 1 }, acao: 'contar a história da pesca', des: (x, y) => { caixa(x + 0.15, y + 0.02, 0.9, 0.7, 0.08, 0.6, '#a0703f', { blocos: false }); naFace('y', x + 0.15, y + 0.02, 0.7, 0.08, 0.08, 0, 0.54, 1.0, 0.44, '#bfe9ff'); naFace('y', x + 0.15, y + 0.02, 0.7, 0.08, 0.2, 0, 0.3, 1.15, 0.14, '#f6b73c'); } },
     globo: { nome: 'Globo terrestre', ic: '🌍', w: 1, d: 1, planta: 100, custo: { madeira: 2, diamante: 1 }, acao: 'girar o globo', des: (x, y) => { caixa(x + 0.35, y + 0.35, 0, 0.3, 0.3, 0.08, '#a0703f'); caixa(x + 0.47, y + 0.47, 0.08, 0.06, 0.06, 0.55, '#a0703f', { blocos: false }); const [sx, sy] = iso(x + 0.5, y + 0.5, 0.85); ctx.font = '22px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(['🌍', '🌎', '🌏'][Math.floor(agora / 700) % 3], sx, sy); } },
     // móveis de evento: só se ganham completando as missões das datas comemorativas
-    pinheiro: { nome: 'Árvore de Natal', ic: '🎄', w: 1, d: 1, evento: true, acao: 'acender as luzes', des: (x, y) => { caixa(x + 0.42, y + 0.42, 0, 0.16, 0.16, 0.3, '#a0703f', { blocos: false }); [[0.1, 0.3, 0.8], [0.2, 0.75, 0.6], [0.3, 1.15, 0.4]].forEach(([o, z, w]) => caixa(x + o, y + o, z, w, w, 0.45, '#3f9a5a')); caixa(x + 0.42, y + 0.42, 1.6, 0.16, 0.16, 0.16, '#ffd84a', { blocos: false }); luzinhas(x + 0.5, y + 0.5, 0.5, 1.3, 0.35); } },
+    pinheiro: { nome: 'Árvore de Natal', ic: '🎄', w: 1, d: 1, evento: true, acao: 'decorar a árvore', des: (x, y) => { caixa(x + 0.42, y + 0.42, 0, 0.16, 0.16, 0.3, '#a0703f', { blocos: false }); [[0.1, 0.3, 0.8], [0.2, 0.75, 0.6], [0.3, 1.15, 0.4]].forEach(([o, z, w]) => caixa(x + o, y + o, z, w, w, 0.45, '#3f9a5a')); if (visita) { caixa(x + 0.42, y + 0.42, 1.6, 0.16, 0.16, 0.16, '#ffd84a', { blocos: false }); luzinhas(x + 0.5, y + 0.5, 0.5, 1.3, 0.35); } else { desenhaEnfeites(x, y); if (usaEnf('presentes')) desenhaPresentes(x, y); } } },
     bolaEspelhada: { nome: 'Bola espelhada de Ano Novo', ic: '🪩', w: 1, d: 1, evento: true, acao: 'girar a bola', des: (x, y) => { caixa(x + 0.45, y + 0.45, 0, 0.1, 0.1, 1.1, '#888888', { blocos: false }); caixa(x + 0.25, y + 0.25, 1.1, 0.5, 0.5, 0.5, '#d9e3ea'); luzinhas(x + 0.5, y + 0.5, 1.15, 1.5, 0.3, ['#ffffff', '#c7f0ff', '#ffe9a8']); } },
     tambor: { nome: 'Tambor de Carnaval', ic: '🥁', w: 1, d: 1, evento: true, acao: 'tocar o tambor', des: (x, y) => { caixa(x + 0.2, y + 0.2, 0, 0.6, 0.6, 0.55, '#e0564a'); caixa(x + 0.18, y + 0.18, 0.55, 0.64, 0.64, 0.06, '#fff7e8'); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0, 0, 0.6, 0.25, 0.08, '#ffd84a'); naFace('x', x + 0.2, y + 0.2, 0.6, 0.6, 0, 0, 0.6, 0.25, 0.08, '#ffd84a'); } },
     ovao: { nome: 'Ovo de Páscoa gigante', ic: '🥚', w: 1, d: 1, evento: true, acao: 'admirar o ovo', des: (x, y) => { caixa(x + 0.25, y + 0.25, 0, 0.5, 0.5, 0.15, '#f7a8c4'); caixa(x + 0.15, y + 0.15, 0.15, 0.7, 0.7, 0.5, '#c7b4f2'); caixa(x + 0.22, y + 0.22, 0.65, 0.56, 0.56, 0.25, '#a8d8f7'); caixa(x + 0.32, y + 0.32, 0.9, 0.36, 0.36, 0.15, '#ffd58a'); } },
@@ -1325,6 +1325,7 @@
     const janela = { bancada: 'casa', estante: 'biblioteca', bau: 'inventario', espelho: 'avatar', quadro: 'inventario' }[m.id];
     if (m.id === 'telescopio' || m.id === 'telescopioOuro') return usaTelescopio();
     if (janela) return abreJanela(janela);
+    if (m.id === 'pinheiro') return decoraArvore();
     if (m.id === 'luminaria') { m.on = !m.on; salvar(); return aviso(m.on ? '💡 Luz acesa' : 'Luz apagada'); }
     if (m.id === 'robo') return abreJanela('oficina');
     if (m.id === 'cama') {
@@ -3429,7 +3430,7 @@
     { id: 'criancas', nome: 'Dia das Crianças', ic: '🪁', data: Y => new Date(Y, 9, 12), item: ['🎈', 'Balão'], decor: ['baloes', 'confete'], movel: 'pipa', texto: 'Festa das crianças: balões por todo lado!' },
     { id: 'professor', nome: 'Dia do Professor', ic: '🍎', data: Y => new Date(Y, 9, 15), item: ['✏️', 'Lápis'], decor: ['bandeiras'], movel: 'lousa', texto: 'Homenagem a quem ensina! Recolha os lápis espalhados pela vila.' },
     { id: 'saci', nome: 'Dia do Saci e Halloween', ic: '🎃', data: Y => new Date(Y, 9, 31), item: ['🎃', 'Abóbora'], decor: ['abobora', 'noite'], movel: 'abobora', texto: 'O Saci passou por aqui e espalhou abóboras pelas vilas. Ache todas!' },
-    { id: 'natal', nome: 'Natal', ic: '🎄', data: Y => new Date(Y, 11, 25), item: ['🎁', 'Presente'], decor: ['luzes', 'confete'], movel: 'pinheiro', texto: 'Luzes de Natal nas árvores e presentes escondidos pelas vilas.' }
+    { id: 'natal', nome: 'Natal', ic: '🎄', data: Y => new Date(Y, 11, 25), item: ['🎁', 'Presente'], decor: ['luzes', 'confete'], movel: 'pinheiro', premioEnf: 'estrela', texto: 'Luzes de Natal nas árvores e presentes escondidos pelas vilas.' }
   ];
   const eventosAtivos = (() => {
     const out = [];
@@ -3452,11 +3453,67 @@
     ].map(m => Object.assign(m, { ok: m.n >= m.meta }));
   }
   function contaEvento(campo) { for (const ev of eventosAtivos) { estEv(ev)[campo]++; } }
+  /* ---------- Natal: a árvore é presente do evento e os enfeites são comprados com ⭐ (a estrela do topo vem das missões) ---------- */
+  const ENFEITES_NATAL = {
+    bolasVermelhas: { nome: 'Bolas vermelhas', ic: '🔴', preco: 30 },
+    bolasDouradas: { nome: 'Bolas douradas', ic: '🟡', preco: 30 },
+    luzes: { nome: 'Pisca-pisca', ic: '💡', preco: 40 },
+    festao: { nome: 'Festão prateado', ic: '🎗️', preco: 40 },
+    lacos: { nome: 'Laços de fita', ic: '🎀', preco: 30 },
+    bengalas: { nome: 'Bengalinhas doces', ic: '🍭', preco: 30 },
+    presentes: { nome: 'Presentes embaixo da árvore', ic: '🎁', preco: 50 },
+    estrela: { nome: 'Estrela dourada do topo', ic: '⭐', missao: true }
+  };
+  const EST_NATAL = () => S.natal || (S.natal = { enf: {}, usa: {} });
+  const usaEnf = k => { const N = EST_NATAL(); return !!N.enf[k] && N.usa[k] !== false; };
+  /* um ponto na superfície de um andar da árvore, do lado que fica de frente para a câmera */
+  function desenhaEnfeites(x, y) {
+    const cx = x + 0.5, cy = y + 0.5, pt = (ang, z, r) => iso(cx + Math.cos(ang) * r, cy + Math.sin(ang) * r, z);
+    const andares = [[0.3, 0.42], [0.75, 0.32], [1.15, 0.22]];   // [altura da base, raio]
+    const bola = (ang, a, cor, tam = 3.2) => { const [z, r] = andares[a]; const [sx, sy] = pt(ang, z + 0.12, r + 0.02); ctx.fillStyle = cor; ctx.beginPath(); ctx.arc(sx, sy, tam, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.beginPath(); ctx.arc(sx - tam * 0.3, sy - tam * 0.3, tam * 0.3, 0, Math.PI * 2); ctx.fill(); };
+    if (usaEnf('festao')) { ctx.strokeStyle = '#eef2f5'; ctx.lineWidth = 2; andares.forEach(([z, r]) => { ctx.beginPath(); for (let i = 0; i <= 12; i++) { const ang = -0.6 + i * 0.25, [sx, sy] = pt(ang, z + 0.08 + i * 0.022, r + 0.03); i ? ctx.lineTo(sx, sy) : ctx.moveTo(sx, sy); } ctx.stroke(); }); }
+    if (usaEnf('bolasVermelhas')) [[0.1, 0], [1.2, 0], [0.6, 1], [1.5, 2]].forEach(([g, a]) => bola(g, a, '#d8342c'));
+    if (usaEnf('bolasDouradas')) [[0.7, 0], [1.7, 0], [0.0, 1], [1.3, 1], [0.6, 2]].forEach(([g, a]) => bola(g, a, '#e8b923', 2.8));
+    if (usaEnf('lacos')) [[0.4, 0], [1.0, 1], [0.2, 2]].forEach(([g, a]) => { const [z, r] = andares[a], [sx, sy] = pt(g, z + 0.3, r - 0.05); ctx.fillStyle = '#e0457b'; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx - 5, sy - 3); ctx.lineTo(sx - 5, sy + 3); ctx.closePath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + 5, sy - 3); ctx.lineTo(sx + 5, sy + 3); ctx.closePath(); ctx.fill(); });
+    if (usaEnf('bengalas')) [[1.45, 0], [0.35, 1]].forEach(([g, a]) => { const [z, r] = andares[a], [sx, sy] = pt(g, z + 0.2, r); ctx.lineWidth = 2.2; ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.moveTo(sx, sy + 6); ctx.lineTo(sx, sy - 2); ctx.arc(sx + 2.5, sy - 2, 2.5, Math.PI, 0); ctx.stroke(); ctx.strokeStyle = '#d8342c'; ctx.setLineDash([2, 2]); ctx.stroke(); ctx.setLineDash([]); });
+    if (usaEnf('luzes')) luzinhas(cx, cy, 0.5, 1.3, 0.35);
+    if (usaEnf('estrela')) { const [sx, sy] = iso(cx, cy, 1.75); ctx.fillStyle = '#ffd23f'; ctx.strokeStyle = '#a77a00'; ctx.lineWidth = 1; ctx.beginPath(); for (let i = 0; i < 10; i++) { const r = i % 2 ? 3.6 : 8.5, a = -Math.PI / 2 + i * Math.PI / 5; ctx.lineTo(sx + Math.cos(a) * r, sy + Math.sin(a) * r); } ctx.closePath(); ctx.fill(); ctx.stroke(); }
+  }
+  function desenhaPresentes(x, y) {
+    [[0.08, 0.62, '#d8342c', 0.22], [0.62, 0.1, '#4bb259', 0.2], [0.66, 0.66, '#e8b923', 0.18]].forEach(([dx, dy, cor, t]) => { caixa(x + dx, y + dy, 0, t + 0.06, t + 0.06, t, cor, { blocos: false }); caixa(x + dx + (t + 0.06) / 2 - 0.02, y + dy, t, 0.04, t + 0.06, 0.02, '#ffd23f', { blocos: false }); });
+  }
+  const natalAtivo = () => eventosAtivos.find(e => e.id === 'natal');
+  function htmlNatal(ev) {
+    const N = EST_NATAL(), E = estEv(ev), tem = !!S.casa.feitos.pinheiro;
+    return `<div class="natal"><h4>🎄 Árvore de Natal</h4>${!E.arvore ? `<p>Todo mundo ganha uma árvore de Natal para a casa neste evento. Depois é só decorar com os enfeites da loja.</p><button type="button" class="hb verde" id="natal-arvore">🎄 Ganhar a árvore</button>`
+      : `<p class="small">${tem ? 'A árvore está com você: coloque-a na casa pelo inventário de móveis (🏠 Casa) e escolha os enfeites aqui ou clicando nela.' : ''}</p>`}
+      <h4>🛍️ Loja de enfeites</h4><ul class="natal-loja">${Object.entries(ENFEITES_NATAL).map(([k, x]) => `<li><span>${x.ic} ${esc(x.nome)}</span>${N.enf[k] ? `<label class="small"><input type="checkbox" data-nusa="${k}" ${usaEnf(k) ? 'checked' : ''}> na árvore</label>`
+        : x.missao ? '<span class="small muted">prêmio das missões do evento</span>' : `<button type="button" class="hb amarelo mini" data-ncompra="${k}">${x.preco} ⭐</button>`}</li>`).join('')}</ul></div>`;
+  }
+  function ligaNatal(el, ev) {
+    const N = EST_NATAL(), b = el.querySelector('#natal-arvore');
+    if (b) b.addEventListener('click', () => { const E = estEv(ev); if (E.arvore) return; E.arvore = true; S.casa.guardados.pinheiro = (S.casa.guardados.pinheiro || 0) + 1; S.casa.feitos.pinheiro = true; aviso('🎄 Você ganhou uma Árvore de Natal! Ela está guardada na sua casa.'); SOM.toca('vitoria'); salvar(); janelaEvento(); });
+    el.querySelectorAll('[data-ncompra]').forEach(bt => bt.addEventListener('click', () => { const k = bt.dataset.ncompra, x = ENFEITES_NATAL[k]; if (N.enf[k]) return; if (S.pontos < x.preco) return aviso(`Faltam ${x.preco - S.pontos} ⭐ para comprar ${x.nome.toLowerCase()}.`); S.pontos -= x.preco; N.enf[k] = true; N.usa[k] = true; SOM.toca('moeda'); hud(); aviso(`${x.ic} ${x.nome}: já está na sua árvore!`); salvar(); janelaEvento(); }));
+    el.querySelectorAll('[data-nusa]').forEach(c => c.addEventListener('change', () => { N.usa[c.dataset.nusa] = c.checked; salvar(); }));
+  }
+  function decoraArvore() {
+    const N = EST_NATAL(), meus = Object.keys(ENFEITES_NATAL).filter(k => N.enf[k]);
+    if (!meus.length) return dialogo('🎄', 'Árvore de Natal', `<p>A árvore ainda está sem enfeites.${natalAtivo() ? ' Compre enfeites na loja do evento de Natal (botão Evento).' : ' A loja de enfeites abre no evento de Natal, em dezembro.'}</p>`, [...(natalAtivo() ? [{ txt: '🛍️ Ir à loja de enfeites', classe: 'principal', fn: () => { fechaDialogo(); abreJanela('evento'); } }] : []), { txt: 'Fechar', fn: fechaDialogo }]);
+    dialogo('🎄', 'Decorar a árvore', '<p>Clique num enfeite para colocar ou tirar da árvore.</p>', meus.map(k => ({ txt: `${usaEnf(k) ? '✅' : '⬜'} ${ENFEITES_NATAL[k].ic} ${ENFEITES_NATAL[k].nome}`, fn: () => { N.usa[k] = !usaEnf(k); salvar(); decoraArvore(); } }))
+      .concat(natalAtivo() ? [{ txt: '🛍️ Comprar mais enfeites', fn: () => { fechaDialogo(); abreJanela('evento'); } }] : [], [{ txt: 'Pronto', classe: 'principal', fn: fechaDialogo }]));
+  }
   function premioEvento(ev) {
     const E = estEv(ev);
     if (E.ganhou || !missoesEvento(ev).every(m => m.ok)) return;
-    E.ganhou = true; S.casa.guardados[ev.movel] = (S.casa.guardados[ev.movel] || 0) + 1; S.casa.feitos[ev.movel] = true;
+    E.ganhou = true;
     S.medalhas[ev.chave] = { ic: ev.ic, nome: `${ev.nome} ${ev.dataEv.getFullYear()}` };
+    if (ev.premioEnf) {   // Natal: a árvore já foi presente; as missões dão a estrela do topo
+      const N = EST_NATAL(); N.enf[ev.premioEnf] = true; N.usa[ev.premioEnf] = true;
+      if (!E.arvore) { E.arvore = true; S.casa.guardados[ev.movel] = (S.casa.guardados[ev.movel] || 0) + 1; S.casa.feitos[ev.movel] = true; }
+      pontos(50, `${ev.ic} Missão de ${ev.nome} completa! Você ganhou a ${ENFEITES_NATAL[ev.premioEnf].ic} ${ENFEITES_NATAL[ev.premioEnf].nome} para a sua árvore.`); setTimeout(() => ganhaFigurinha(null, 'pela missão de ' + ev.nome), 1800);
+      return salvar(), janelaEvento();
+    }
+    S.casa.guardados[ev.movel] = (S.casa.guardados[ev.movel] || 0) + 1; S.casa.feitos[ev.movel] = true;
     pontos(50, `${ev.ic} Missão de ${ev.nome} completa! Você ganhou ${MOVEIS[ev.movel].ic} ${MOVEIS[ev.movel].nome} para a sua casa.`); setTimeout(() => ganhaFigurinha(null, 'pela missão de ' + ev.nome), 1800);
     salvar(); janelaEvento();
   }
@@ -3580,8 +3637,8 @@
       const ms = missoesEvento(ev), E = estEv(ev), M = MOVEIS[ev.movel];
       return `<section class="ev"><h3>${ev.ic} ${esc(ev.nome)} <small class="muted">· de ${ddmm(ev.ini)} a ${ddmm(ev.fim)}</small></h3><p>${esc(ev.texto)}</p>
         <ul class="ev-m">${ms.map(m => `<li class="${m.ok ? 'ok' : ''}">${m.ok ? '✅' : '⬜'} ${esc(m.nome)} <small>(${Math.min(m.n, m.meta)}/${m.meta})</small></li>`).join('')}</ul>
-        <p class="muted small">Prêmio: ${M.ic} ${esc(M.nome)} para a sua casa, +50 ⭐ e a medalha do evento.</p>
-        ${E.ganhou ? '<p><strong>✅ Prêmio recebido!</strong></p>' : `<button type="button" class="hb verde" data-premio="${ev.chave}" ${ms.every(m => m.ok) ? '' : 'disabled'}>🎁 Receber o prêmio</button>`}</section>`;
+        <p class="muted small">Prêmio: ${ev.premioEnf ? `${ENFEITES_NATAL[ev.premioEnf].ic} ${esc(ENFEITES_NATAL[ev.premioEnf].nome)} para a sua árvore` : `${M.ic} ${esc(M.nome)} para a sua casa`}, +50 ⭐ e a medalha do evento.</p>
+        ${E.ganhou ? '<p><strong>✅ Prêmio recebido!</strong></p>' : `<button type="button" class="hb verde" data-premio="${ev.chave}" ${ms.every(m => m.ok) ? '' : 'disabled'}>🎁 Receber o prêmio</button>`}${ev.id === 'natal' ? htmlNatal(ev) : ''}</section>`;
     }).join('') + aniversariantes.map(p => {
       const tem = S.medalhas[`${p.id}-${HOJE.getFullYear()}`];
       return `<section class="ev"><h3>🎂 Hoje é aniversário de ${esc(p.nome)}</h3><p>${esc(p.nome)} nasceu em ${ddmm(new Date(p.ano, p.mes - 1, p.dia))}/${p.ano} e ${esc(p.feito)}.</p>
@@ -3590,6 +3647,7 @@
     }).join('');
     el.querySelectorAll('[data-premio]').forEach(b => b.addEventListener('click', () => premioEvento(eventosAtivos.find(e => e.chave === b.dataset.premio))));
     el.querySelectorAll('[data-desafio]').forEach(b => b.addEventListener('click', () => { fechaJanela(); desafioAniversario(PESSOAS.find(p => p.id === b.dataset.desafio)); }));
+    const nat = natalAtivo(); if (nat) ligaNatal(el, nat);
     ligaEstacao(el);
   }
   /* estação: missão de coletar os itens da época e ler o boletim do tempo */
@@ -5250,7 +5308,7 @@
     let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); vai(); } else if (++n > 90) clearInterval(t); }, 700);
   }
   linkDireto();
-  window.MUNDO_DEBUG = { CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
