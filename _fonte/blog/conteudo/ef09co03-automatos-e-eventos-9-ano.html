@@ -1,0 +1,65 @@
+<p>A habilidade <strong>EF09CO03</strong> da BNCC Computação pede que a turma do 9º ano saiba "usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação". No papel parece abstrato, mas na sala de aula ela vira uma conversa sobre autômatos. Neste post explico o que a habilidade significa, como apresentar o assunto para os estudantes, uma aula de 50 minutos com atividade para imprimir e onde encontrar mais material pronto.</p>
+
+<h2>O que diz a habilidade EF09CO03</h2>
+
+<blockquote><p>EF09CO03: Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.</p></blockquote>
+
+<ul>
+<li><strong>Eixo:</strong> pensamento computacional</li>
+<li><strong>Objeto de conhecimento:</strong> Autômatos e eventos</li>
+<li><strong>Ano:</strong> 9º ano do Ensino Fundamental (no material do site, segundo bimestre)</li>
+</ul>
+
+<p>Em poucas palavras: muitos sistemas podem ser descritos como estados e eventos: em cada estado, um evento faz o sistema mudar para outro estado.</p>
+
+<h2>Como explicar para a turma</h2>
+
+<p>Uma forma de apresentar o assunto, falando direto com os estudantes:</p>
+
+<blockquote><p>Um semáforo está sempre em um <b>estado</b>: verde, amarelo ou vermelho. Um <b>evento</b> (passou o tempo) faz ele mudar para o próximo estado. Esse modelo se chama <b>autômato</b> ou máquina de estados.</p><p>Desenhar os estados e as setas ajuda a programar jogos (parado, correndo, pulando), robôs e máquinas de venda, sem esquecer nenhuma situação.</p></blockquote>
+
+<p>Um exemplo do dia a dia que funciona bem. Personagem de jogo: no estado “parado”, apertar a seta muda para “andando”; apertar pular muda para “no ar”.</p>
+
+<p>Vale deixar no quadro o vocabulário da aula:</p>
+<ul>
+<li><strong>Estado:</strong> a situação atual do sistema.</li>
+<li><strong>Evento:</strong> o que acontece e provoca a mudança.</li>
+<li><strong>Transição:</strong> a seta de um estado para outro.</li>
+</ul>
+
+<h2>Atividade para imprimir: Máquina de estados</h2>
+
+<p>Uma catraca e um personagem de jogo descritos como autômatos, com estados e transições, e a turma acompanha uma sequência de eventos. A folha é em preto e branco, em tamanho A4, e tem um quadro "Entenda" que resume a ideia para o estudante. Clique em "Baixar imagem" para imprimir.</p>
+<!-- folha -->
+
+<p><strong>Dica:</strong> Muitos jogos que a turma conhece funcionam assim; peça outros exemplos.</p>
+
+<details>
+<summary>Gabarito da folha Máquina de estados</summary>
+<p>Catraca: moeda → LIVRE; empurrar → TRAVADA; empurrar → TRAVADA; moeda → LIVRE; moeda → LIVRE; empurrar → TRAVADA. Passaram 2 pessoas; a segunda moeda seguida não foi aproveitada (a catraca já estava livre). Personagem: PARADO + seta → ANDANDO; ANDANDO + seta solta → PARADO; PARADO + espaço → PULANDO; ANDANDO + espaço → PULANDO; PULANDO + tocar o chão → PARADO (ou ANDANDO, se a seta continuar pressionada).</p>
+</details>
+
+<h2>Uma aula de 50 minutos</h2>
+
+<ol>
+<li><strong>Abertura (10 minutos).</strong> Comece com uma pergunta para a turma: "Num autômato de porta automática, “aberta” e “fechada” são…" Deixe algumas respostas aparecerem antes de explicar. A resposta esperada é "Estados": são as situações em que a porta pode estar: estados. “Pessoa chegou” seria um evento.</li>
+<li><strong>Explicação (10 minutos).</strong> Use o texto de "Como explicar para a turma" e o vocabulário no quadro. Se a escola tiver projetor, os slides da habilidade ajudam.</li>
+<li><strong>Folha Máquina de estados (20 minutos).</strong> Em duplas, a turma resolve as atividades. Circule pela sala e anote as dúvidas que se repetem.</li>
+<li><strong>Fechamento (10 minutos).</strong> Corrija em conjunto as partes que geraram mais dúvida e peça que cada dupla escreva, em uma frase, o que aprendeu. A frase serve de registro para o diário de classe.</li>
+</ol>
+
+<p>Sem laboratório, a aula funciona inteira com a folha. Com computadores, troque o fechamento por um dos jogos da lista abaixo.</p>
+
+<h2>Mais material para a EF09CO03</h2>
+
+<ul>
+<li><a href="/material-didatico/slides/bncc-ef09co03-slides.pdf">Slides · Máquinas de estados</a></li>
+<li><a href="/material-didatico/plano.html?id=p-automatos">Plano de aula · Máquinas de estados: do semáforo ao jogo</a></li>
+<li><a href="/material-didatico/lista.html?id=l9-automatos">Lista · Autômatos e eventos (9º ano)</a></li>
+<li><a href="/material-didatico/bncc/ef09co03/">Página da EF09CO03</a>, com tudo o que existe para a habilidade</li>
+<li><a href="/material-didatico/aprenda/ef09co03/">Aprenda: Autômatos: máquinas de estados</a>, explicação ilustrada para o estudante ler sozinho</li>
+</ul>
+
+<p>As outras folhas do eixo estão no post de <a href="/blog/pensamento-computacional-atividades-para-imprimir/">atividades de pensamento computacional para imprimir</a>. A habilidade anterior, EF09CO02, tem o post <a href="/blog/ef09co02-projetos-com-programacao-9-ano/">Projeto de programação com impacto social no 9º ano</a>. A próxima, EF09CO04, é <a href="/blog/ef09co04-seguranca-cibernetica-9-ano/">Malware e ataques cibernéticos: como ensinar no 9º ano</a>. Para planejar o ano inteiro de Computação, veja o guia de <a href="/computacao-na-escola/">computação na escola</a>.</p>
+
+<p class="assinatura">Júlia Roberta Quoos Alves é professora de computação e formadora de professores em IA no Rio Grande do Sul.</p>
