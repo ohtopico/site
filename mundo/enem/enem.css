@@ -109,3 +109,7 @@ details.howto summary { cursor: pointer; font-weight: 600; }
   .game-stage, .caixa { padding: 14px 14px 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .barra i { transition: none; } }
+
+/* jogo aberto dentro do Mundo */
+.no-mundo .e-top, .no-mundo .e-voltar, .no-mundo .footer, .no-mundo a[href="./"] { display: none !important; }
+.no-mundo .e-head { padding-top: 6px; }

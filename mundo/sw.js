@@ -1,7 +1,7 @@
 /* Mundo do site sem internet: guarda o jogo e o que ele usa na primeira visita.
    Com internet, busca sempre a versão nova (e atualiza a cópia); sem internet, usa a cópia guardada. */
-const CACHE = 'mundo-v4';
-const ARQUIVOS = ['./', 'index.html', 'mundo.css', 'mundo.js', 'perguntas-npc.js', 'teleporte.js', 'olimpiada.js', 'codigo.js', 'enem/enem.js', 'manifest.webmanifest', 'icone-192.png', 'icone-512.png',
+const CACHE = 'mundo-v5';
+const ARQUIVOS = ['./', 'index.html', 'mundo.css', 'mundo.js', 'perguntas-npc.js', 'teleporte.js', 'olimpiada.js', 'codigo.js', 'enem/enem.js', 'enem/ilha.js', 'enem/ilha-perguntas.js', 'manifest.webmanifest', 'icone-192.png', 'icone-512.png',
   '../material-didatico/assets/dados.js', '../material-didatico/assets/listas.js', '../material-didatico/assets/progresso.js', '../material-didatico/assets/missoes.js',
   '../simuladores/assets/sim-comum.js'];
 

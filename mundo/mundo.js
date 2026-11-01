@@ -109,7 +109,7 @@
     { id: 'matematica', nome: 'Sala da Matemática', sub: 'Matemática do 6º ao 9º ano', ano: 6, caminho: '#fde7b0', marco: 'abaco', icone: '📐', aberta: true,
       filtro: r => !r.comp.includes('CO'), todaMatematica: true,
       placa: 'A sala do Professor Malba: todos os jogos de Matemática do 6º ao 9º ano num lugar só. Ela fica aberta desde o começo, pelo portão oeste da Vila do Começo.' }
-  ];
+  ].concat(window.ILHA_ENEM ? [window.ILHA_ENEM] : []);   // Ilha ENEM (mundo/enem/ilha.js): só existe depois do código secreto ENEM
   const NOMES = ['Professora Maria', 'Seu Antônio', 'Dona Lúcia', 'Teco', 'Bia', 'Professor Carlos', 'Nina', 'Dudu', 'Vovó Rosa', 'Léo', 'Dona Cida', 'Juca', 'Mel', 'Seu Pedro', 'Lara', 'Kauã', 'Professora Ana', 'Rafa', 'Dona Zefa', 'Gui'];
   const PASTEIS = ['#f7a8c4', '#a8d8f7', '#c7b4f2', '#ffd58a', '#a8e6b8', '#ffb38a', '#f2e48a', '#9fe3dc'];
   const PELES = ['#f6d7bd', '#f3c9a6', '#d9a579', '#a9714b', '#6f4a2d'];
@@ -228,9 +228,9 @@
     const perguntas = f.perguntasProprias || (f.todaMatematica ? [6, 7, 8, 9].flatMap(perguntasDoAno).filter(p => (p.habs || []).some(h => /MA\d/.test(h))) : perguntasDoAno(f.ano));
     const mat = f.todaMatematica;
     return Object.assign({}, f, { idx: i, lugares, raio, perguntas,
-      metaPerg: Math.min(perguntas.length, mat ? 5 : [4, 5, 6, 6, 6, 4, 6, 3][i] || 4),
-      metaJogar: Math.min(n, mat ? 4 : f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2)),
-      nNpc: mat ? 3 : 2 + Math.floor(i / 2), nItens: mat ? 6 : 5 + i });
+      metaPerg: Math.min(perguntas.length, f.metaPerg || (mat ? 5 : [4, 5, 6, 6, 6, 4, 6, 3][i] || 4)),
+      metaJogar: Math.min(n, f.metaJogar || (mat ? 4 : f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2))),
+      nNpc: f.nNpc || (mat ? 3 : 2 + Math.floor(i / 2)), nItens: f.nItens || (mat ? 6 : 5 + i) });
   });
   const PERG_POR_ID = new Map(fases.flatMap(f => f.perguntas.map(p => [p.id, p])));
   /* as vilas são quadradas e ficam numa grade de 3 colunas (em zigue-zague): cada uma liga-se à anterior, à seguinte e aos
@@ -238,11 +238,11 @@
      desmontada (ela é refeita igualzinha quando a pessoa volta, porque o sorteio é fixo). */
   const ALT = Math.max(...fases.map(f => 2 * (f.raio + 9)));
   const MEIO = Math.floor(ALT / 2);                              // as duas estradas se cruzam no meio
-  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2], [-1, 0]];   // a Sala da Matemática fica a oeste da Vila do Começo
+  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2], [-1, 0], [-1, 1]];   // a Sala da Matemática fica a oeste da Vila do Começo; a Ilha ENEM, ao sul dela
   const LADOS = { L: { x: ALT - 0.5, y: MEIO, nome: 'leste' }, O: { x: 0.5, y: MEIO, nome: 'oeste' }, S: { x: MEIO, y: ALT - 0.5, nome: 'sul' }, N: { x: MEIO, y: 0.5, nome: 'norte' } };
   // além do zigue-zague, atalhos entre vilas vizinhas na grade (Começo ↔ Laboratório, Números ↔ Inteligência ↔ Professores)
-  const IDX_MAT = fases.findIndex(f => f.todaMatematica);
-  const LIGACOES = fases.slice(1).map((f, i) => [i, i + 1]).filter(([, b]) => b !== IDX_MAT).concat([[0, 5], [1, 4], [4, 7], [0, IDX_MAT]]).filter(([a, b]) => a >= 0 && b >= 0 && b < fases.length);
+  const IDX_MAT = fases.findIndex(f => f.todaMatematica), IDX_ILHA = fases.findIndex(f => f.ilha);
+  const LIGACOES = fases.slice(1).map((f, i) => [i, i + 1]).filter(([, b]) => b !== IDX_MAT && b !== IDX_ILHA).concat([[0, 5], [1, 4], [4, 7], [0, IDX_MAT], [IDX_MAT, IDX_ILHA]]).filter(([a, b]) => a >= 0 && b >= 0 && b < fases.length);
   const ladoPara = (a, b) => { const [ax, ay] = GRADE[a], [bx, by] = GRADE[b]; return bx > ax ? 'L' : bx < ax ? 'O' : by > ay ? 'S' : 'N'; };
   for (const f of fases) {
     f.x0 = 0; f.L = ALT;
@@ -366,6 +366,19 @@
         for (let j = oy - 2; j <= oy + 6; j++) for (let k = ox - 2; k <= ox + 5; k++) if (at(k, j) && !f.sol[pos(k, j)]) { f.sol[pos(k, j)] = 1; f.reserva.push(pos(k, j)); }
       }
     }
+    // Ilha ENEM: tudo o que fica fora da ilha vira mar (com uma faixa de areia), menos o píer que leva ao portão
+    if (f.ilha) {
+      f.mar = [];
+      const ri = th => f.raio + 5 + 0.8 * Math.sin(5 * th + fase0) + 0.6 * Math.cos(2 * th);
+      // o píer vai do portão até a ilha, só do lado do portão
+      const pier = new Set(f.portais.flatMap(p => { const out = []; for (let k = 0; k < MEIO; k++) for (const m of [MEIO - 1, MEIO]) { const kk = p.lado === 'N' || p.lado === 'O' ? k : ALT - 1 - k; out.push(p.lado === 'N' || p.lado === 'S' ? pos(m, kk) : pos(kk, m)); } return out; }));
+      for (let y = 0; y < ALT; y++) for (let x = 0; x < L; x++) {
+        const dx = x + 0.5 - cx, dy = y + 0.5 - cy, d = Math.hypot(dx, dy), th = Math.atan2(dy, dx), p = pos(x, y);
+        if (pier.has(p)) continue;
+        if (d > ri(th)) { f.tile[p] = T.agua; f.sol[p] = 1; f.mar.push({ x: f.x0 + x, y }); }
+        else if (d > ri(th) - 1.6 && f.tile[p] === T.grama) f.tile[p] = T.areia;
+      }
+    }
     // casas em volta do anel, metade por dentro e metade por fora, longe da estrada
     f.casas = [];
     const ocupa = (x, y, w, d, m = 1) => { for (let j = y - m; j < y + d + m; j++) for (let i = x - m; i < x + w + m; i++) { if (!at(i, j) || f.sol[pos(i, j)]) return true; } return false; };
@@ -450,6 +463,7 @@
         if (ok) { cavaLago(ok[0], ok[1], rr, rbb); break; }
       }
     }
+    if (f.mar) f.agua.push(...f.mar);   // dá para pescar em volta da ilha
     // árvores: cerca nas bordas (com a passagem da estrada) e um bosque espalhado
     f.arvores = [];
     const arvore = (x, y) => { if (!at(x, y) || f.sol[pos(x, y)] || f.tile[pos(x, y)] !== T.grama) return; f.sol[pos(x, y)] = 1; f.arvores.push({ x: f.x0 + x, y, tipo: Math.floor(r() * 3), alt: 1 + Math.floor(r() * 2) }); };
@@ -1052,6 +1066,12 @@
     } else if (f.marco === 'servidor') {
       caixa(x + 0.1, y + 0.1, 0, 1.8, 1.8, 0.3, '#e6e0d4');
       for (const [a, b] of [[0.3, 0.3], [1.1, 0.3], [0.3, 1.1], [1.1, 1.1]]) { caixa(x + a, y + b, 0.3, 0.6, 0.6, 2.2, '#3a4250'); for (let k = 0; k < 4; k++) naFace('y', x + a, y + b, 0.6, 0.6, 0.1, 0, 0.4, 0.55 + k * 0.45, 0.08, (Math.floor(agora / 300) + k + a * 10) % 3 ? '#7dff8a' : '#2b6cb0'); }
+    } else if (f.marco === 'farol') {   // farol listrado da Ilha ENEM, com a luz girando
+      caixa(x + 0.2, y + 0.2, 0, 1.6, 1.6, 0.4, '#e6e0d4');
+      for (let k = 0; k < 4; k++) caixa(x + 0.5, y + 0.5, 0.4 + k * 0.7, 1, 1, 0.7, k % 2 ? '#fffdf6' : '#e85c4a');
+      caixa(x + 0.4, y + 0.4, 3.2, 1.2, 1.2, 0.5, '#ffd58a'); caixa(x + 0.45, y + 0.45, 3.7, 1.1, 1.1, 0.25, '#e85c4a');
+      const [lx, ly] = iso(f.centro.x, f.centro.y, 3.45), a = agora / 600;
+      ctx.fillStyle = 'rgba(255,235,150,.35)'; ctx.beginPath(); ctx.moveTo(lx, ly); ctx.arc(lx, ly, 60, a, a + 0.5); ctx.closePath(); ctx.fill();
     } else if (f.marco === 'cupula') {
       caixa(x, y, 0, 2, 2, 0.6, '#e6e0d4'); caixa(x + 0.3, y + 0.3, 0.6, 1.4, 1.4, 0.5, '#bdeffa'); caixa(x + 0.55, y + 0.55, 1.1, 0.9, 0.9, 0.45, '#bdeffa'); caixa(x + 0.8, y + 0.8, 1.55, 0.4, 0.4, 0.35, '#bdeffa');
     } else {
@@ -5295,6 +5315,7 @@
   setTimeout(() => confereEstrelasSite(), 2500);
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
+  if (new URLSearchParams(location.search).has('ilha') && IDX_ILHA >= 0 && atual !== fases[IDX_ILHA]) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); teleporta(fases[IDX_ILHA]); } else if (++n > 60) clearInterval(t); }, 500); }   // acabou de digitar o código ENEM
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
   /* links diretos (usados na área premium): ?abrir=cursos[&curso=id], ?abrir=kits, ?kit=CÓDIGO (resgata e mostra na Loja de Roupas) */
   function linkDireto() {

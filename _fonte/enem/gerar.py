@@ -106,6 +106,64 @@ def main():
           'window.ENEM_BANCO = ' + json.dumps(banco, ensure_ascii=False, separators=(',', ':')) + ';\n')
     (SAIDA / 'banco.js').write_text(js, encoding='utf-8')
     print(f'{sum(len(a["cards"]) for a in banco)} cartões, {len(usadas)} figuras → mundo/enem/banco.js')
+    perguntas_ilha(banco)
+
+
+def texto(s):
+    """HTML simples → texto (os botões de resposta do Mundo mostram texto puro)."""
+    return html.unescape(re.sub(r'<br>', ' ', re.sub(r'<(?!br)[^>]+>', '', s))).strip()
+
+
+def perguntas_ilha(banco, por_area=60):
+    """Perguntas de múltipla escolha para os moradores da Ilha ENEM dentro do Mundo (mundo/enem/ilha-perguntas.js).
+    Sorteio com semente fixa: as perguntas são sempre as mesmas e o progresso de cada uma fica salvo no Mundo."""
+    import random
+    saida = {}
+    for a in banco:
+        rnd = random.Random('ilha-' + a['id'])
+        cards, lista = a['cards'], []
+        def alts(certa, candidatos):
+            vistos, out = {certa.lower()}, [certa]
+            for c in candidatos:
+                if c and c.lower() not in vistos and len(out) < 4:
+                    vistos.add(c.lower()); out.append(c)
+            rnd.shuffle(out)
+            return out, out.index(certa)
+        def mesmo_topico(c, tipos):
+            outros = [o for o in cards if o is not c and o['t'] in tipos]
+            rnd.shuffle(outros)
+            return sorted(outros, key=lambda o: o['top'] != c['top'])
+        for c in cards:
+            if c['t'] == 'V':
+                q = {'enun': 'Certo ou errado? ' + c['f'], 'alts': ['Certo', 'Errado'], 'certa': 0 if c['ok'] else 1, 'coment': c['x']}
+            elif c['t'] == 'D':
+                al, k = alts(texto(c['v']), [texto(o['v']) for o in mesmo_topico(c, ('D',))])
+                if len(al) < 3: continue
+                q = {'enun': c['f'], 'alts': al, 'certa': k, 'coment': c.get('x', '')}
+            elif c['t'] == 'C':
+                n = sorted(c['l'])[0]
+                certa = texto(c['l'][n])
+                enun = re.sub(r'⟦(\d+)⟧', lambda m: '_____' if m.group(1) == n else c['l'][m.group(1)], c['f'])
+                cand = [texto(r) for o in mesmo_topico(c, ('C',)) for r in o['l'].values()]
+                num = bool(re.search(r'\d', certa))
+                cand = [r for r in cand if bool(re.search(r'\d', r)) == num] + cand
+                al, k = alts(certa, cand)
+                q = {'enun': 'Complete: ' + enun, 'alts': al, 'certa': k, 'coment': re.sub(r'⟦(\d+)⟧', lambda m: '<b>' + c['l'][m.group(1)] + '</b>', c['f'])}
+            elif c['t'] in ('P', 'R'):
+                tam = len(texto(c['v']))
+                cand = sorted(mesmo_topico(c, (c['t'],)), key=lambda o: (o['top'] != c['top'], abs(len(texto(o['v'])) - tam) > tam))
+                al, k = alts(texto(c['v']), [texto(o['v']) for o in cand])
+                if len(al) < 3: continue
+                q = {'enun': f'Qual alternativa explica <b>{c["f"].rstrip("?")}</b>?', 'alts': al, 'certa': k, 'coment': ('💡 ' + c['m']) if c.get('m') else ''}
+            else:
+                continue
+            lista.append(q)
+        rnd.shuffle(lista)
+        saida[a['id']] = {'tema': a['nome'], 'ic': a['ic'], 'lista': lista[:por_area]}
+    js = ('/* gerado por _fonte/enem/gerar.py: perguntas dos moradores da Ilha ENEM no Mundo. Não edite à mão. */\n'
+          'window.ENEM_ILHA_PERGUNTAS = ' + json.dumps(saida, ensure_ascii=False, separators=(',', ':')) + ';\n')
+    (SAIDA / 'ilha-perguntas.js').write_text(js, encoding='utf-8')
+    print(f'{sum(len(v["lista"]) for v in saida.values())} perguntas → mundo/enem/ilha-perguntas.js')
 
 
 if __name__ == '__main__':
