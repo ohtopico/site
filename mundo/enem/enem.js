@@ -6,6 +6,9 @@
     if (salvo === 'dark' || salvo === 'light') document.documentElement.dataset.theme = salvo;
   } catch (e) {}
 
+  // dentro do Mundo (a casa abre o jogo numa janela por cima): sem o topo, o rodapé e os botões de voltar à ilha
+  try { if (window.self !== window.top) document.documentElement.classList.add('no-mundo'); } catch (e) { document.documentElement.classList.add('no-mundo'); }
+
   const CHAVE = 'ohtopico:enem';
   // SHA-256 do código, para o código não aparecer no fonte da página.
   const HASH = '7c8a9a49e351d082f49206dfd7d5612c2e4bffb234690d07f5e0c8fb701f0841';
@@ -54,7 +57,7 @@
       if (!el) return;
       el.innerHTML = '<div class="wrap"><a class="plaq marca" href="./">🏝️ Ilha ENEM</a><span class="direita">' +
         '<span class="plaq" title="Estrelas ganhas na ilha">⭐ <b id="tot-est">' + ENEM.totalEstrelas() + '</b></span>' +
-        '<a class="hb azul" href="../" style="min-height:0;padding:7px 12px">🏡 Mundo</a></span></div>';
+        '<a class="hb azul" href="../?ilha" style="min-height:0;padding:7px 12px">🏝️ Ir para a ilha no Mundo</a></span></div>';
     }
   };
 })();
