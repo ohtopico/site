@@ -1,0 +1,64 @@
+<p>A habilidade <strong>EF08CO01</strong> da BNCC Computação pede que a turma do 8º ano saiba "construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação". No papel parece abstrato, mas na sala de aula ela vira uma conversa sobre recursão. Neste post explico o que a habilidade significa, como apresentar o assunto para os estudantes, uma aula de 50 minutos com atividade para imprimir e onde encontrar mais material pronto.</p>
+
+<h2>O que diz a habilidade EF08CO01</h2>
+
+<blockquote><p>EF08CO01: Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação.</p></blockquote>
+
+<ul>
+<li><strong>Eixo:</strong> pensamento computacional</li>
+<li><strong>Objeto de conhecimento:</strong> Listas e recursão</li>
+<li><strong>Ano:</strong> 8º ano do Ensino Fundamental (no material do site, primeiro bimestre)</li>
+</ul>
+
+<p>Em poucas palavras: recursão é resolver um problema usando uma versão menor dele mesmo, até chegar num caso tão pequeno que a resposta é óbvia.</p>
+
+<h2>Como explicar para a turma</h2>
+
+<p>Uma forma de apresentar o assunto, falando direto com os estudantes:</p>
+
+<blockquote><p>Para contar quantas pessoas há numa fila sem sair do lugar, você pergunta para quem está na sua frente: “quantas pessoas há na sua frente?”. Cada um faz a mesma pergunta para o da frente, até o primeiro responder “nenhuma”. Aí cada um soma 1 e passa a resposta de volta.</p><p>Toda recursão tem duas partes: o <b>caso base</b> (a resposta direta, que para a repetição) e o <b>passo recursivo</b> (chamar a mesma solução para um problema menor). Sem caso base, o programa nunca para.</p></blockquote>
+
+<p>Um exemplo do dia a dia que funciona bem. Bonecas russas: para abrir todas, você abre uma e repete com a de dentro, até achar a menor, que não abre.</p>
+
+<p>Vale deixar no quadro o vocabulário da aula:</p>
+<ul>
+<li><strong>Recursão:</strong> uma função que chama a si mesma.</li>
+<li><strong>Caso base:</strong> a situação simples em que a recursão para.</li>
+</ul>
+
+<h2>Atividade para imprimir: Bonecas recursivas</h2>
+
+<p>A ideia de recursão com bonecas que guardam bonecas menores, o fatorial calculado passo a passo, uma contagem regressiva e a importância do caso base. A folha é em preto e branco, em tamanho A4, e tem um quadro "Entenda" que resume a ideia para o estudante. Clique em "Baixar imagem" para imprimir.</p>
+<!-- folha -->
+
+<p><strong>Dica:</strong> Pergunte o que acontece sem o caso base; a resposta da turma explica a recursão melhor do que a definição.</p>
+
+<details>
+<summary>Gabarito da folha Bonecas recursivas</summary>
+<p>Fatorial: fatorial(3) = 3 × fatorial(2); fatorial(2) = 2 × fatorial(1); valores: fatorial(1) = 1, fatorial(2) = 2, fatorial(3) = 6, fatorial(4) = 24. Contagem: 3, 2, 1, Já!; caso base n = 0; sem ele a função continuaria chamando com −1, −2... e nunca pararia. Soma: 6, 10, 15, 55.</p>
+</details>
+
+<h2>Uma aula de 50 minutos</h2>
+
+<ol>
+<li><strong>Abertura (10 minutos).</strong> Comece com uma pergunta para a turma: "O que acontece com uma recursão sem caso base?" Deixe algumas respostas aparecerem antes de explicar. A resposta esperada é "Ela nunca para (ou dá erro)": sem caso base, a função continua se chamando para sempre, até o programa travar.</li>
+<li><strong>Explicação (10 minutos).</strong> Use o texto de "Como explicar para a turma" e o vocabulário no quadro. Se a escola tiver projetor, os slides da habilidade ajudam.</li>
+<li><strong>Folha Bonecas recursivas (20 minutos).</strong> Em duplas, a turma resolve as atividades. Circule pela sala e anote as dúvidas que se repetem.</li>
+<li><strong>Fechamento (10 minutos).</strong> Corrija em conjunto as partes que geraram mais dúvida e peça que cada dupla escreva, em uma frase, o que aprendeu. A frase serve de registro para o diário de classe.</li>
+</ol>
+
+<p>Sem laboratório, a aula funciona inteira com a folha. Com computadores, troque o fechamento por um dos jogos da lista abaixo.</p>
+
+<h2>Mais material para a EF08CO01</h2>
+
+<ul>
+<li><a href="/material-didatico/slides/bncc-ef08co01-slides.pdf">Slides · Um problema dentro de outro</a></li>
+<li><a href="/material-didatico/plano.html?id=p-recursao">Plano de aula · Listas, recursão e algoritmos de ordenação</a></li>
+<li><a href="/material-didatico/lista.html?id=l8-listas">Lista · Listas e recursão (8º ano)</a></li>
+<li><a href="/material-didatico/bncc/ef08co01/">Página da EF08CO01</a>, com tudo o que existe para a habilidade</li>
+<li><a href="/material-didatico/aprenda/ef08co01/">Aprenda: Recursão: resolver usando o próprio problema</a>, explicação ilustrada para o estudante ler sozinho</li>
+</ul>
+
+<p>As outras folhas do eixo estão no post de <a href="/blog/pensamento-computacional-atividades-para-imprimir/">atividades de pensamento computacional para imprimir</a>. A próxima, EF08CO02, é <a href="/blog/ef08co02-listas-e-recursao-8-ano/">Listas em programação: atividade para o 8º ano</a>. Para planejar o ano inteiro de Computação, veja o guia de <a href="/computacao-na-escola/">computação na escola</a>.</p>
+
+<p class="assinatura">Júlia Roberta Quoos Alves é professora de computação e formadora de professores em IA no Rio Grande do Sul.</p>
