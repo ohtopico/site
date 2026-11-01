@@ -52,8 +52,9 @@
     /* barra do topo, igual em todas as páginas da ilha */
     topo(el) {
       if (!el) return;
-      el.innerHTML = '<div class="wrap"><a class="marca" href="./">🏝️ Ilha ENEM</a>' +
-        '<span class="tot" title="Estrelas ganhas na ilha"><b>★</b> <span id="tot-est">' + ENEM.totalEstrelas() + '</span> · <a href="../">Mundo</a></span></div>';
+      el.innerHTML = '<div class="wrap"><a class="plaq marca" href="./">🏝️ Ilha ENEM</a><span class="direita">' +
+        '<span class="plaq" title="Estrelas ganhas na ilha">⭐ <b id="tot-est">' + ENEM.totalEstrelas() + '</b></span>' +
+        '<a class="hb azul" href="../" style="min-height:0;padding:7px 12px">🏡 Mundo</a></span></div>';
     }
   };
 })();
