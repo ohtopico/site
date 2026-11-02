@@ -1,11 +1,11 @@
-"""Gera dados-da-regiao/novo-cabrais/index.html: página estática (indexável) sobre
+"""Gera infograficos/dados-da-regiao/novo-cabrais/index.html: página estática (indexável) sobre
 Novo Cabrais, com os números escritos no HTML para o Google ler sem JavaScript.
 Chamado por gerar.py, que passa o mapa já projetado."""
 import json, os, re
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-SAIDA = os.path.join(AQUI, '..', '..', 'dados-da-regiao', 'novo-cabrais', 'index.html')
-URL = 'https://ohtopico.com.br/dados-da-regiao/novo-cabrais/'
+SAIDA = os.path.join(AQUI, '..', '..', 'infograficos', 'dados-da-regiao', 'novo-cabrais', 'index.html')
+URL = 'https://ohtopico.com.br/infograficos/dados-da-regiao/novo-cabrais/'
 PAINEL = '../?regiao=novo-cabrais&amp;municipio=Novo+Cabrais'
 MUN = 'Novo Cabrais'
 VIZINHOS = ['Cachoeira do Sul', 'Candelária', 'Cerro Branco', 'Paraíso do Sul']
@@ -120,12 +120,12 @@ def gerar(mapa, ESC, DEM):
          'description': 'Escolas, matrículas e estrutura das escolas (Censo Escolar INEP 2010, 2022 e 2025) e indicadores do Censo IBGE 2010 e 2022 de Novo Cabrais, Rio Grande do Sul.',
          'url': URL, 'inLanguage': 'pt-BR', 'spatialCoverage': {'@id': URL + '#municipio'}, 'temporalCoverage': '2010/2025',
          'creator': {'@type': 'Person', '@id': 'https://ohtopico.com.br/#julia', 'name': 'Júlia Roberta Quoos Alves', 'url': 'https://ohtopico.com.br/curriculo/'},
-         'isPartOf': 'https://ohtopico.com.br/dados-da-regiao/',
+         'isPartOf': 'https://ohtopico.com.br/infograficos/dados-da-regiao/',
          'isBasedOn': ['https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar', 'https://sidra.ibge.gov.br/'],
          'license': 'https://creativecommons.org/licenses/by/4.0/'},
         {'@type': 'BreadcrumbList', '@id': URL + '#trilha', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': 'https://ohtopico.com.br/'},
-            {'@type': 'ListItem', 'position': 2, 'name': 'Dados da região', 'item': 'https://ohtopico.com.br/dados-da-regiao/'},
+            {'@type': 'ListItem', 'position': 2, 'name': 'Dados da região', 'item': 'https://ohtopico.com.br/infograficos/dados-da-regiao/'},
             {'@type': 'ListItem', 'position': 3, 'name': 'Novo Cabrais', 'item': URL}]},
         {'@type': 'FAQPage', 'mainEntity': [
             {'@type': 'Question', 'name': p, 'acceptedAnswer': {'@type': 'Answer', 'text': r}} for p, r in faq]},
@@ -153,19 +153,19 @@ PAGINA = '''<!DOCTYPE html>
 <meta name="description" content="Escolas e educação em Novo Cabrais (RS) de 2010 a 2025: internet e bibliotecas nas escolas, saneamento, renda e alfabetização, com dados do INEP e do IBGE.">
 <meta property="og:title" content="Novo Cabrais (RS): escolas, educação e dados do município">
 <meta property="og:description" content="O que melhorou em Novo Cabrais de 2010 a 2025, com dados do Censo Escolar e do Censo IBGE.">
-<meta property="og:url" content="https://ohtopico.com.br/dados-da-regiao/novo-cabrais/">
-<meta property="og:image" content="https://ohtopico.com.br/dados-da-regiao/novo-cabrais/novo-cabrais-em-12-anos.jpg">
+<meta property="og:url" content="https://ohtopico.com.br/infograficos/dados-da-regiao/novo-cabrais/">
+<meta property="og:image" content="https://ohtopico.com.br/infograficos/dados-da-regiao/novo-cabrais/novo-cabrais-em-12-anos.jpg">
 <meta property="og:image:alt" content="Infográfico Novo Cabrais em 12 anos, com os avanços de 2010 a 2022">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="pt_BR">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <meta name="geo.region" content="BR-RS">
 <meta name="geo.placename" content="Novo Cabrais">
-<link rel="canonical" href="https://ohtopico.com.br/dados-da-regiao/novo-cabrais/">
+<link rel="canonical" href="https://ohtopico.com.br/infograficos/dados-da-regiao/novo-cabrais/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../../../material-didatico/assets/md.css">
 <link rel="stylesheet" href="../assets/painel.css?v=202610280100">
 <style>
   .trilha {{ font-size: 14px; color: var(--ink-2); margin-bottom: 10px; }}
@@ -203,13 +203,13 @@ PAGINA = '''<!DOCTYPE html>
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="../../">ohtopico</a>
+  <a class="brand" href="../../../">ohtopico</a>
   <a class="brand-sub" href="../">/ dados da região</a>
   <span class="spacer"></span>
   <nav class="topnav" aria-label="Seções">
-    <a href="../../blog/">Blog</a>
-    <a href="../../material-didatico/">Material didático</a>
-    <a href="../../formacao-continuada/">Formação continuada</a>
+    <a href="../../../blog/">Blog</a>
+    <a href="../../../material-didatico/">Material didático</a>
+    <a href="../../../formacao-continuada/">Formação continuada</a>
   </nav>
   <button class="icon-btn" id="theme-btn" type="button" aria-label="Alternar tema claro/escuro">Tema</button>
 </header>
@@ -217,11 +217,11 @@ PAGINA = '''<!DOCTYPE html>
 <main>
   <section class="hero">
     <div class="wrap"><div class="hero-inner">
-      <nav class="trilha" aria-label="Você está em"><a href="../../">Início</a> / <a href="../">Dados da região</a> / Novo Cabrais</nav>
+      <nav class="trilha" aria-label="Você está em"><a href="../../../">Início</a> / <a href="../../">Infográficos</a> / <a href="../">Dados da região</a> / Novo Cabrais</nav>
       <span class="terminal">$ novo-cabrais.txt</span>
       <h1>Novo Cabrais (RS): <mark>escolas e educação</mark></h1>
       <p class="lead">O que melhorou nas escolas e na vida de quem mora em Novo Cabrais de 2010 a 2025, com dados do Censo Escolar (INEP) e do Censo Demográfico (IBGE).</p>
-      <p class="small muted">Dados reunidos e analisados por <a href="../../curriculo/">Júlia Roberta Quoos Alves</a>, professora de computação e formadora de professores.</p>
+      <p class="small muted">Dados reunidos e analisados por <a href="../../../curriculo/">Júlia Roberta Quoos Alves</a>, professora de computação e formadora de professores.</p>
     </div></div>
   </section>
 
@@ -310,8 +310,8 @@ PAGINA = '''<!DOCTYPE html>
     <div class="wrap">
       <div class="chamada">
         <h2 style="margin-top:0">Quem organizou estes dados</h2>
-        <p>Júlia Roberta Quoos Alves é professora de computação, formadora de professores e mestranda na UFSM. Trabalhou na Prefeitura de Novo Cabrais e editou em Novo Cabrais o guia <a href="../../ia-pra-prof/">IA pra Prof</a>, sobre inteligência artificial na sala de aula.</p>
-        <p>Escolas de Novo Cabrais e da região podem conhecer a <a href="../../formacao-continuada/">formação continuada para professores em IA</a> e o <a href="../../material-didatico/">material didático gratuito</a> de computação e matemática.</p>
+        <p>Júlia Roberta Quoos Alves é professora de computação, formadora de professores e mestranda na UFSM. Trabalhou na Prefeitura de Novo Cabrais e editou em Novo Cabrais o guia <a href="../../../ia-pra-prof/">IA pra Prof</a>, sobre inteligência artificial na sala de aula.</p>
+        <p>Escolas de Novo Cabrais e da região podem conhecer a <a href="../../../formacao-continuada/">formação continuada para professores em IA</a> e o <a href="../../../material-didatico/">material didático gratuito</a> de computação e matemática.</p>
       </div>
     </div>
   </section>
@@ -330,7 +330,7 @@ PAGINA = '''<!DOCTYPE html>
 </main>
 
 <footer class="footer"><div class="wrap">
-  <p>Página de Novo Cabrais no <a href="../">painel de dados da educação na região</a>, organizado por <a href="../../curriculo/">Júlia Roberta Quoos Alves</a>.</p>
+  <p>Página de Novo Cabrais no <a href="../">painel de dados da educação na região</a>, organizado por <a href="../../../curriculo/">Júlia Roberta Quoos Alves</a>.</p>
 </div></footer>
 
 <script>
