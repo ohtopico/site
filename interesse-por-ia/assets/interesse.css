@@ -1,4 +1,4 @@
-/* Painel de interesse por IA: completa ../dados-da-regiao/assets/painel.css */
+/* Painel de interesse por IA: completa ../infograficos/dados-da-regiao/assets/painel.css */
 :root { --s1: #157f3b; --s2: #b3123a; --s3: #9a7400; --s4: #111111; --s5: #5fb27c; --am: #fff36b; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --s1: #6fd39b; --s2: #ff7d93; --s3: #f2c94c; --s4: #f3f3f1; --s5: #2c9a5a; --am: #5b5512; }

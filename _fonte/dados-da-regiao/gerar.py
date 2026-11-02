@@ -1,4 +1,4 @@
-"""Gera dados-da-regiao/assets/dados.js a partir dos dados do Censo Escolar (INEP),
+"""Gera infograficos/dados-da-regiao/assets/dados.js a partir dos dados do Censo Escolar (INEP),
 dos números do Censo IBGE e do mapa dos municípios.
 
 Uso: python3 _fonte/dados-da-regiao/gerar.py
@@ -6,7 +6,7 @@ Uso: python3 _fonte/dados-da-regiao/gerar.py
 import json, math, os
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-SAIDA = os.path.join(AQUI, '..', '..', 'dados-da-regiao', 'assets', 'dados.js')
+SAIDA = os.path.join(AQUI, '..', '..', 'infograficos', 'dados-da-regiao', 'assets', 'dados.js')
 
 ESC = json.load(open(os.path.join(AQUI, 'dados-censo-escolar.json')))
 DEM = json.load(open(os.path.join(AQUI, 'censo-demografico.json')))
