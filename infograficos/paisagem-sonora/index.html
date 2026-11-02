@@ -22,7 +22,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../material-didatico/assets/md.css">
-<link rel="stylesheet" href="../../infograficos/assets/infograficos.css?v=202611022300">
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="../../infograficos/assets/infograficos.css?v=202611030100">
 <script>
   try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
@@ -105,12 +106,44 @@
 
   <section class="block">
     <div class="wrap">
+      <span class="eyebrow">Relógio da semana</span>
+      <h2>Cada som tem seu dia e sua hora</h2>
+      <div class="janela">
+        <div class="janela-barra"><i></i><i></i><i></i><span>semana.html</span></div>
+        <div class="janela-corpo">
+          <p>Escolha um som. Cada quadrado é uma hora de um dia da semana, e quanto mais forte a cor, mais gravações daquela hora têm o som (comparado com o pico do próprio som).</p>
+          <div class="seletor" id="sons" role="group" aria-label="Escolha o som"></div>
+          <div class="rolagem"><svg id="relogio" class="grafico" role="img" aria-label="Relógio da semana: 7 dias por 24 horas"></svg></div>
+          <p class="nota">Vozes têm pico na sexta às 22h (51% das gravações). A serra elétrica quase some no domingo de manhã e chega a 8,6% na segunda às 8h. Passe o mouse num quadrado para ver o número.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">O ano inteiro</span>
+      <h2>As estações também soam</h2>
+      <div class="janela">
+        <div class="janela-barra"><i></i><i></i><i></i><span>calendario.html</span></div>
+        <div class="janela-corpo">
+          <p>O mesmo som escolhido acima, mês a mês: a fração das gravações de cada mês em que ele aparece, somando os quatro anos.</p>
+          <svg id="calendario" class="grafico" role="img" aria-label="Calendário do ano: um som por mês"></svg>
+          <p class="nota">Música sobe de junho a agosto, no verão de Nova York. Cachorros aparecem mais no inverno. Meses com poucas gravações oscilam mais, então vale olhar o número de gravações no detalhe de cada barra.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
       <span class="eyebrow">Retratos de esquinas</span>
       <h2>Cada microfone tem uma assinatura</h2>
       <div class="janela">
         <div class="janela-barra"><i></i><i></i><i></i><span>retratos.html</span></div>
         <div class="janela-corpo">
-          <p>Cada flor é um microfone com pelo menos 100 gravações. As 8 pétalas são os 8 grupos de som, e o comprimento mostra em que fração das gravações daquele ponto o som aparece. O miolo fica maior quanto mais silencioso é o lugar. Os destacados são os mais extremos.</p>
+          <div id="mapa-sensores" class="mapa-sensores" role="region" aria-label="Mapa dos microfones em Nova York"></div>
+          <p>Cada flor é um microfone com pelo menos 100 gravações. As 8 pétalas são os 8 grupos de som, e o comprimento mostra em que fração das gravações daquele ponto o som aparece. O miolo fica maior quanto mais silencioso é o lugar. Os destacados são os mais extremos. No mapa, as flores ficam no quarteirão de cada microfone; clique numa delas para ver os números.</p>
           <div class="legenda" id="legenda2"></div>
           <div class="retratos" id="retratos"></div>
           <p class="nota">O sensor 1 tem cachorro em 47% das gravações. O sensor 5, no Brooklyn, tem música em 39%. O 30 é quase só motor (74%), o 46 é quase só voz (71%), e o 14, também no Brooklyn, é o mais quieto (48% sem nenhum dos sons).</p>
@@ -151,7 +184,8 @@
   <p>Infográfico organizado por <a href="../../curriculo/">Júlia Roberta Quoos Alves</a>. Veja os <a href="../">outros infográficos interativos</a>.</p>
   <p>Júlia Roberta Quoos Alves · <a href="https://ohtopico.com.br">ohtopico.com.br</a></p>
 </div></footer>
-<script src="partitura.js?v=202611022300"></script>
+<script src="../assets/vendor/leaflet/leaflet.js"></script>
+<script src="partitura.js?v=202611030100"></script>
 <script src="/assistente/assistente.js?v=2" defer></script>
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
