@@ -1,4 +1,4 @@
-# Atualiza o painel "Interesse por IA na Wikipédia" (/interesse-por-ia/) e o jogo
+# Atualiza o painel "Interesse por IA na Wikipédia" (/infograficos/interesse-por-ia/) e o jogo
 # "Qual verbete tem mais visitas?" com as visualizações do último mês completo.
 # Roda todo dia 3 de manhã e também quando o gerador muda (em qualquer branch).
 name: Atualizar interesse por IA (Wikipédia)
