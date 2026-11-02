@@ -11,7 +11,7 @@ import nbformat as nbf
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 SAIDA = os.path.join(AQUI, '..', '..', 'notebooks', 'wikipedia')
-PAGINA = os.path.join(AQUI, '..', '..', 'interesse-por-ia', 'notebooks', 'index.html')
+PAGINA = os.path.join(AQUI, '..', '..', 'infograficos', 'interesse-por-ia', 'notebooks', 'index.html')
 REPO = 'https://github.com/ohtopico/site/blob/main/notebooks/wikipedia/'
 COLAB = 'https://colab.research.google.com/github/ohtopico/site/blob/main/notebooks/wikipedia/'
 
@@ -35,7 +35,7 @@ def cabecalho(titulo, resumo, publico, habs, tempo):
 
     **Público:** {publico} · **Tempo:** {tempo} · **BNCC:** {habs}
 
-    Notebook de [Júlia Roberta Quoos Alves](https://ohtopico.com.br/curriculo/) · [ohtopico.com.br](https://ohtopico.com.br/interesse-por-ia/notebooks/) · Licença CC BY-NC-SA 4.0
+    Notebook de [Júlia Roberta Quoos Alves](https://ohtopico.com.br/curriculo/) · [ohtopico.com.br](https://ohtopico.com.br/infograficos/interesse-por-ia/notebooks/) · Licença CC BY-NC-SA 4.0
 
     **Como usar:** clique em cada célula de código e aperte o botão de play (ou Shift + Enter), de cima para baixo. Os campos ao lado das células (listas e caixas de texto) podem ser trocados à vontade: depois de mudar, rode a célula de novo.
     """)
@@ -248,7 +248,7 @@ nb('01-do-zero-ao-grafico.ipynb', 'Do zero ao gráfico: visitas da Wikipédia co
     - A Wikipédia em português é lida no Brasil, em Portugal e em outros países. Isso muda as conclusões?
     - Escolha o maior pico e procure em duas fontes confiáveis o que aconteceu naquele mês.
 
-    Continue com o notebook [Detecção de picos](https://colab.research.google.com/github/ohtopico/site/blob/main/notebooks/wikipedia/03-deteccao-de-picos.ipynb) ou veja o [painel de interesse por IA](https://ohtopico.com.br/interesse-por-ia/).
+    Continue com o notebook [Detecção de picos](https://colab.research.google.com/github/ohtopico/site/blob/main/notebooks/wikipedia/03-deteccao-de-picos.ipynb) ou veja o [painel de interesse por IA](https://ohtopico.com.br/infograficos/interesse-por-ia/).
     '''),
 ])
 

@@ -1440,7 +1440,7 @@ const PLANOS = {
       'Relacionar picos e mudanças nos dados com acontecimentos, checando as explicações em fontes confiáveis.',
       'Reconhecer limites de um conjunto de dados (o que ele mede e o que não mede).'
     ],
-    materiais: ['Computadores ou celulares com internet (1 por dupla)', 'Planilha eletrônica (Google Planilhas, Excel ou LibreOffice Calc)', 'Painel https://ohtopico.com.br/interesse-por-ia/ ou a ferramenta pública https://pageviews.wmcloud.org/', 'Projetor (opcional)'],
+    materiais: ['Computadores ou celulares com internet (1 por dupla)', 'Planilha eletrônica (Google Planilhas, Excel ou LibreOffice Calc)', 'Painel https://ohtopico.com.br/infograficos/interesse-por-ia/ ou a ferramenta pública https://pageviews.wmcloud.org/', 'Projetor (opcional)'],
     etapas: [
       ['10 min', 'Pergunta inicial', 'Projete o painel de interesse por IA e mostre a linha do verbete ChatGPT. Pergunte: o que aconteceu em dezembro de 2022? Por que tanta gente foi ler sobre isso? Explique que cada visita a um verbete é registrada e que esses números são públicos.'],
       ['15 min', 'Nossa pergunta', 'Cada dupla escolhe dois ou três verbetes ligados a um tema da turma (um planeta, um time, um jogo, uma doença, uma festa) e escreve uma pergunta: quando as pessoas mais procuram por isso? Esse interesse cresceu? Registre as hipóteses antes de olhar os dados.'],

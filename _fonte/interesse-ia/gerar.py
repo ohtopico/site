@@ -1,6 +1,6 @@
-"""Gera interesse-por-ia/assets/dados.js com as visualizações mensais de verbetes da
+"""Gera infograficos/interesse-por-ia/assets/dados.js com as visualizações mensais de verbetes da
 Wikipédia em português (API de pageviews da Wikimedia) e atualiza o resumo estático
-de interesse-por-ia/index.html.
+de infograficos/interesse-por-ia/index.html.
 
 Os mesmos dados alimentam o jogo material-didatico/jogos/wikipedia.html.
 
@@ -13,8 +13,8 @@ import datetime as dt, json, os, re, sys, time, urllib.parse, urllib.request
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.join(AQUI, '..', '..')
-SAIDA = os.path.join(RAIZ, 'interesse-por-ia', 'assets', 'dados.js')
-PAGINA = os.path.join(RAIZ, 'interesse-por-ia', 'index.html')
+SAIDA = os.path.join(RAIZ, 'infograficos', 'interesse-por-ia', 'assets', 'dados.js')
+PAGINA = os.path.join(RAIZ, 'infograficos', 'interesse-por-ia', 'index.html')
 UA = 'ohtopico-site/1.0 (https://ohtopico.com.br; contato@ohtopico.com.br)'
 INICIO = '2016-01'
 
