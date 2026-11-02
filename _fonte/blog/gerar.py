@@ -127,6 +127,7 @@ MENU_INICIAR = [
         ('fa-regular fa-newspaper', 'Blog', '/blog/'),
         ('fa-solid fa-chalkboard-user', 'Mentoria', '/mentoria/'),
         ('fa-solid fa-people-group', 'Formação continuada', '/formacao-continuada/'),
+        ('fa-solid fa-laptop-code', 'Formação em tecnologias educacionais', '/formacao-tecnologias-educacionais/'),
         ('fa-regular fa-clipboard', 'Biblioteca de prompts', '/prompts-para-professores/'),
         ('fa-solid fa-list-check', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/'),
         ('fa-solid fa-laptop', 'Teste de informática', '/teste-proficiencia-informatica/'),
@@ -170,6 +171,7 @@ def laterais(atual):
     temas = ''.join(f'<li><a href="/blog/#{slug_secao(s)}">{esc(s)}</a></li>' for s in secoes)
     navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Mentoria', '/mentoria/', 'mentoria'),
                ('◆', 'Formação continuada', '/formacao-continuada/', 'formacao'),
+               ('◈', 'Formação em tecnologias educacionais', '/formacao-tecnologias-educacionais/', 'tecnologias'),
                ('▣', 'Para escolas e redes', '/para-escolas/', 'escolas'),
                ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
                ('✱', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/', 'quiz'),
@@ -219,6 +221,7 @@ def laterais(atual):
                 <p>Mentoria individual de IA para professores, coordenadores e gestores.</p>
                 <a class="btn98 escuro" href="/mentoria/">Saiba mais</a>
                 <p class="miudo"><a href="/formacao-continuada/">Formação continuada para escolas e redes</a></p>
+                <p class="miudo"><a href="/formacao-tecnologias-educacionais/">Formação em tecnologias educacionais</a></p>
             </section>
             <section class="caixa caixa-contador">
                 <h2 class="caixa-titulo">★ Visitas</h2>
@@ -246,6 +249,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
         letreiro = (f'<a href="/blog/{ultimo["slug"]}/">✦ Post novo: {esc(ultimo["titulo"])}</a>'
                     '<a href="/mentoria/">✦ Mentoria para professores e escolas</a>'
                     '<a href="/formacao-continuada/">✦ Formação continuada em IA para escolas e redes</a>'
+                    '<a href="/formacao-tecnologias-educacionais/">✦ Formação de professores em tecnologias educacionais</a>'
                     '<a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a>'
                     '<a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a>'
                     '<a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a>'
@@ -568,6 +572,75 @@ def pagina_mentoria(cfg, dims):
     head = cabeca('Mentoria para professores: IA na prática | Júlia Quoos', descricao, url,
                   f'{site}/blog/img/dia07-mentoria.png', 'Os três formatos da mentoria', 'website', ld, robots)
     return head + '\n' + moldura('mentoria.exe', 'ohtopico.com.br/mentoria', '/', conteudo, 'Pronto', 'mentoria'), pendente
+
+
+TECNOLOGIAS_IMAGEM = 'formacao-tecnologias-educacionais/og-formacao-tecnologias-educacionais.jpg'
+
+
+def pagina_tecnologias(cfg):
+    site = cfg['site']
+    url = f'{site}/formacao-tecnologias-educacionais/'
+    corpo = (AQUI / 'conteudo' / 'formacao-tecnologias-educacionais.html').read_text(encoding='utf-8').strip()
+    titulo = 'Formação de professores em tecnologias educacionais'
+    descricao = ('Treinamento de professores em tecnologias educacionais com Júlia Quoos: turma virtual, formulários, IA, '
+                 'Computação da BNCC e acessibilidade, individual ou para a equipe.')
+    imagem = f'{site}/{TECNOLOGIAS_IMAGEM}'
+    alt = ('Card com o título Formação em tecnologias educacionais, a frase Treinamento prático para professores e equipes, '
+           'e uma captura do guia Tech pra Prof.')
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'Service',
+                '@id': url + '#servico',
+                'name': titulo,
+                'alternateName': 'Treinamento de professores em tecnologias educacionais',
+                'serviceType': 'Formação de professores em tecnologias educacionais',
+                'description': descricao,
+                'url': url,
+                'image': imagem,
+                'provider': AUTORA,
+                'areaServed': [{'@type': 'State', 'name': 'Rio Grande do Sul'}, {'@type': 'Country', 'name': 'Brasil'}],
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
+                'availableChannel': {'@type': 'ServiceChannel', 'serviceUrl': url, 'availableLanguage': 'pt-BR'},
+                'isRelatedTo': [{'@type': 'Service', '@id': f'{site}/mentoria/#servico', 'name': 'Mentoria para professores em IA'},
+                                {'@type': 'Service', '@id': f'{site}/formacao-continuada/#servico',
+                                 'name': 'Formação continuada de professores em IA'}],
+                'inLanguage': 'pt-BR',
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Formação em tecnologias educacionais', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Formação em tecnologias educacionais</li></ol></nav>
+    <p class="rotulo">Formação</p>
+    <h1>Formação de professores em tecnologias <span class="marca">educacionais</span></h1>
+    <p class="linha-fina">Treinamento prático para professores, coordenadores e equipes usarem a tecnologia no planejamento, na aula e na avaliação: turma virtual, formulários, criação de material, IA, Computação da BNCC e acessibilidade. Sem lista de ferramentas da moda: o que resolve as tarefas reais da sua escola, com prática e acompanhamento.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="conversar">
+        <h2 id="conversar">Vamos conversar</h2>
+        <p>Conte a sua disciplina ou função, ou o tamanho da equipe e os temas que interessam, e eu respondo com uma proposta.</p>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Forma%C3%A7%C3%A3o%20de%20professores%20em%20tecnologias%20educacionais." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Forma%C3%A7%C3%A3o%20de%20professores%20em%20tecnologias%20educacionais">Enviar e-mail</a>
+    </section>
+</article>'''
+    head = cabeca('Formação de professores em tecnologias educacionais', descricao, url, imagem, alt, 'website',
+                  '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
+    return head + '\n' + moldura('tecnologias.exe', 'ohtopico.com.br/formacao-tecnologias-educacionais', '/', conteudo, 'Pronto', 'tecnologias')
 
 
 FORMACAO_IMAGEM = 'dia30-guia.png'
@@ -1583,13 +1656,13 @@ def lastmod_atual(xml, url):
 
 def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram):
     """hoje: data da publicação (lastmod no futuro faz o Google desconfiar do sitemap).
-    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR) cujo HTML mudou nesta execução;
+    mudaram: páginas fixas ('mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR) cujo HTML mudou nesta execução;
     as outras mantêm o lastmod que já estava no sitemap."""
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -1686,6 +1759,7 @@ def main():
     mentoria, pendente = pagina_mentoria(cfg, dims)
     mudaram = set()
     for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims)),
+                          ('formacao-tecnologias-educacionais', pagina_tecnologias(cfg)),
                           ('para-escolas', pagina_para_escolas(cfg)),
                           ('mundo/professores', pagina_mundo_professores(cfg)),
                           ('prompts-para-professores', pagina_prompts(cfg)),
