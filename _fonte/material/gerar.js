@@ -289,6 +289,15 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: 
   .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
   .vizinhas { display: flex; flex-wrap: wrap; gap: 8px; }
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
 </head>
 <body>
 <header id="topbar"></header>
@@ -470,6 +479,15 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: `Aprenda: ${A.t}`, ldObjs: [ldPagin
 <link rel="stylesheet" href="assets/md.css">
 <style>${CSS_APRENDA}
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
 </head>
 <body>
 <header id="topbar"></header>
@@ -585,6 +603,15 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'Aprenda Computação', ldObjs: [ld
   .doc h2 { font-size: 26px; margin-top: 36px; }
   .saltos { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
 </head>
 <body>
 <header id="topbar"></header>
@@ -672,6 +699,15 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e m
   .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
   .saltos { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
 </head>
 <body>
 <header id="topbar"></header>
