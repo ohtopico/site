@@ -99,29 +99,6 @@ D.sensores.forEach(s => {
   box.appendChild(d);
 });
 
-// Mapa dos microfones
-(function mapa() { try {
-  const alvo = document.getElementById('mapa-sensores');
-  const Lf = window.L;
-  if (!alvo || !Lf) { if (alvo) alvo.hidden = true; return; }
-  const escuro = () => document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
-  const m = Lf.map(alvo, {scrollWheelZoom: false, attributionControl: true});
-  const url = t => `https://{s}.basemaps.cartocdn.com/${t}/{z}/{x}/{y}{r}.png`;
-  const atrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
-  let camada = Lf.tileLayer(url(escuro() ? 'dark_all' : 'light_all'), {attribution: atrib, subdomains: 'abcd', maxZoom: 19}).addTo(m);
-  new MutationObserver(() => camada.setUrl(url(escuro() ? 'dark_all' : 'light_all'))).observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
-  const pontos = [];
-  D.sensores.forEach(s => {
-    const pos = D.pos[s.id]; if (!pos) return; pontos.push(pos);
-    const svg = flor(s, 46);
-    const dom = ORD.slice().sort((a, b) => s[b] - s[a]).slice(0, 2).map(g => `${GRUPOS[g]} ${pct(s[g])}`).join('<br>');
-    Lf.marker(pos, {icon: Lf.divIcon({html: svg.outerHTML, className: 'flor-mapa', iconSize: [46, 46], iconAnchor: [23, 23]}), title: `sensor ${s.id}`})
-      .bindPopup(`<b>sensor ${s.id}</b> · ${s.bairro}<br>${s.n.toLocaleString('pt-BR')} gravações<br>${dom}<br>sem nenhum som: ${pct(s.silencio)}`).addTo(m);
-  });
-  m.fitBounds(pontos, {padding: [30, 30]});
-  } catch (e) { console.warn('mapa', e); const a = document.getElementById('mapa-sensores'); if (a) a.hidden = true; }
-})();
-
 // Relógio da semana e calendário do ano
 const DIAS = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'], MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const NOMES2 = Object.assign({}, GRUPOS, {silencio: 'silêncio (nenhum som)'});
