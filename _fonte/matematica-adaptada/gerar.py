@@ -31,6 +31,7 @@ sys.path.insert(0, str(AQUI))
 from fichas import FICHAS as BASE  # noqa: E402
 import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9, hab1, hab2, hab3, hab4, hab5, hab6, hab7, hab8, hab9  # noqa: E401,E402
 from bncc import habilidades, UNIDADES  # noqa: E402
+import temas  # noqa: E402
 
 FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + ano3.FICHAS + ano4.FICHAS + ano5.FICHAS + ano6.FICHAS + ano7.FICHAS + ano8.FICHAS + ano9.FICHAS + hab1.FICHAS + hab2.FICHAS + hab3.FICHAS + hab4.FICHAS + hab5.FICHAS + hab6.FICHAS + hab7.FICHAS + hab8.FICHAS + hab9.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
 
@@ -95,7 +96,7 @@ def folha_professor(f):
 
 
 def versao_css():
-    return hashlib.md5((AQUI / 'fichas.css').read_bytes() + (AQUI / 'fichas.js').read_bytes()).hexdigest()[:10]
+    return hashlib.md5((AQUI / 'fichas.css').read_bytes() + (AQUI / 'fichas.js').read_bytes() + temas.js().encode()).hexdigest()[:10]
 
 
 def relacionadas(f):
@@ -405,7 +406,9 @@ def main():
     FICHAS_INFO.extend(fichas)
     (SAIDA / 'assets').mkdir(parents=True, exist_ok=True)
     shutil.copy(AQUI / 'fichas.css', SAIDA / 'assets' / 'fichas.css')
-    shutil.copy(AQUI / 'fichas.js', SAIDA / 'assets' / 'fichas.js')
+    v_temas = hashlib.md5(temas.js().encode()).hexdigest()[:10]
+    (SAIDA / 'assets' / 'fichas.js').write_text((AQUI / 'fichas.js').read_text(encoding='utf-8').replace('__TEMAS_V__', v_temas), encoding='utf-8')
+    (SAIDA / 'assets' / 'temas.js').write_text(temas.js(), encoding='utf-8')
     for i, f in enumerate(fichas):
         destino = SAIDA / 'fichas' / f['slug']
         destino.mkdir(parents=True, exist_ok=True)

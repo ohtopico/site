@@ -93,7 +93,7 @@ def nome(tipo, n=1):
 def figura(tipo, x=0, y=0, tam=40, riscada=False):
     s = tam / 40
     risco = (f'<path d="M4 4 L36 36 M36 4 L4 36" stroke="{TRACO}" stroke-width="3" stroke-linecap="round"/>' if riscada else '')
-    return f'<g transform="translate({x:g} {y:g}) scale({s:g})">{FIGURAS[tipo]()}{risco}</g>'
+    return f'<g transform="translate({x:g} {y:g}) scale({s:g})"><g data-fig="{tipo}">{FIGURAS[tipo]()}</g>{risco}</g>'
 
 
 def grupo(tipo, n, por_linha=5, tam=40, gap=8, riscadas=0, rotulo=None):
