@@ -175,8 +175,12 @@ def termometro(graus, maximo=40, rotulo=None):
     y0 = h - 24
     nivel = y0 - (graus / maximo) * (y0 - 14)
     inner = (f'<rect x="22" y="8" width="18" height="{h - 26}" rx="9" fill="#fff" {E}/>'
-             f'<rect x="27" y="{nivel:.1f}" width="8" height="{y0 - nivel + 6:.1f}" fill="{CLARO["rosa"]}" stroke="none"/>'
-             f'<circle cx="31" cy="{h - 14}" r="13" fill="{CLARO["rosa"]}" {E}/>')
+             f'<rect x="27" y="{nivel:.1f}" width="8" height="{y0 - nivel + 6:.1f}" fill="#ef8a8a" stroke="none"/>'
+             f'<circle cx="31" cy="{h - 14}" r="13" fill="#ef8a8a" {E}/>')
+    for g in range(0, maximo + 1, 2):
+        if g % 10:
+            y = y0 - (g / maximo) * (y0 - 14)
+            inner += f'<path d="M40 {y:.1f} h{5 if g % 10 == 5 else 3}" stroke="{TRACO}" stroke-width="1"/>'
     for g in range(0, maximo + 1, 10):
         y = y0 - (g / maximo) * (y0 - 14)
         inner += f'<path d="M40 {y:.1f} h8" stroke="{TRACO}" stroke-width="1.5"/><text x="52" y="{y + 4:.1f}" font-family="Lexend, sans-serif" font-size="11">{g}°</text>'
