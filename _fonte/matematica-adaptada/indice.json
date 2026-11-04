@@ -1243,6 +1243,267 @@
    ]
   },
   {
+   "slug": "multiplos-divisores-e-porcentagem",
+   "titulo": "Múltiplos, divisores e porcentagem no dia a dia",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver problemas com múltiplos e divisores comuns, sem algoritmo, e com porcentagens de acréscimo e desconto.",
+   "habilidades": [
+    "EF07MA01",
+    "EF07MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "numeros-inteiros-reta-e-temperatura",
+   "titulo": "Números inteiros: reta, temperatura e saldo",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Comparar e ordenar inteiros, localizar na reta numérica e resolver problemas com as quatro operações em contextos de temperatura, saldo e história.",
+   "habilidades": [
+    "EF07MA03",
+    "EF07MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "algoritmos-e-fluxogramas-de-problemas",
+   "titulo": "Algoritmos e fluxogramas para resolver problemas",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver um problema de jeitos diferentes, reconhecer problemas com a mesma estrutura e representar os passos num fluxograma.",
+   "habilidades": [
+    "EF07MA05",
+    "EF07MA06",
+    "EF07MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "fracoes-e-razoes",
+   "titulo": "Frações e razões",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Comparar e ordenar frações nos sentidos de parte, divisão, razão e operador, e usar a razão em receitas, misturas e escalas.",
+   "habilidades": [
+    "EF07MA08",
+    "EF07MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "numeros-racionais-reta-e-operacoes",
+   "titulo": "Números racionais: reta e operações",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Localizar racionais positivos e negativos na reta, multiplicar e dividir decimais e frações e resolver problemas com dinheiro e medidas.",
+   "habilidades": [
+    "EF07MA10",
+    "EF07MA11",
+    "EF07MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "variavel-e-sequencias",
+   "titulo": "Variável, incógnita e sequências",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Usar letras para representar quantidades que variam, diferenciar variável de incógnita, classificar sequências e escrever expressões equivalentes.",
+   "habilidades": [
+    "EF07MA13",
+    "EF07MA14",
+    "EF07MA15",
+    "EF07MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "proporcionalidade-direta-e-inversa",
+   "titulo": "Proporcionalidade direta e inversa",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer grandezas diretamente e inversamente proporcionais, completar tabelas e escrever sentenças com letras.",
+   "habilidades": [
+    "EF07MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "equacoes-do-primeiro-grau",
+   "titulo": "Equações do 1º grau com a balança",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver equações do tipo ax + b = c usando as propriedades da igualdade, com a balança como apoio, e escrever equações para problemas.",
+   "habilidades": [
+    "EF07MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "transformacoes-no-plano-cartesiano",
+   "titulo": "Transformações no plano cartesiano",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Multiplicar as coordenadas dos vértices de um polígono por um número inteiro e desenhar figuras simétricas em relação aos eixos e à origem.",
+   "habilidades": [
+    "EF07MA19",
+    "EF07MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "simetrias-translacao-rotacao-reflexao",
+   "titulo": "Simetrias: translação, rotação e reflexão",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer e construir figuras por translação, rotação e reflexão em malhas e relacionar com bandeiras, arquitetura, azulejos e obras de arte.",
+   "habilidades": [
+    "EF07MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "circunferencia-compasso-e-pi",
+   "titulo": "Circunferência, compasso e o número π",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Construir circunferências com compasso, reconhecer centro, raio e diâmetro, descobrir o π medindo objetos e resolver problemas de distância.",
+   "habilidades": [
+    "EF07MA22",
+    "EF07MA33"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "retas-paralelas-e-transversal",
+   "titulo": "Retas paralelas cortadas por uma transversal",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Verificar as relações entre os ângulos formados por duas paralelas e uma transversal e usar essas relações para descobrir medidas.",
+   "habilidades": [
+    "EF07MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "triangulos-construcao-e-rigidez",
+   "titulo": "Triângulos: construção, existência e rigidez",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Verificar quando três medidas formam um triângulo, construir com régua e compasso, perceber a rigidez do triângulo e descrever o algoritmo de construção.",
+   "habilidades": [
+    "EF07MA24",
+    "EF07MA25",
+    "EF07MA26"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "poligonos-regulares-e-mosaicos",
+   "titulo": "Polígonos regulares, ângulos e mosaicos",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Calcular ângulos internos e externos de polígonos regulares dividindo em triângulos, entender quais formam mosaicos e descrever algoritmos de construção.",
+   "habilidades": [
+    "EF07MA27",
+    "EF07MA28"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "volume-e-areas",
+   "titulo": "Volume de blocos e áreas de figuras planas",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Calcular o volume de blocos retangulares, chegar às expressões de área de triângulos e quadriláteros, decompor figuras e perceber que toda medida é aproximada.",
+   "habilidades": [
+    "EF07MA29",
+    "EF07MA30",
+    "EF07MA31",
+    "EF07MA32"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "probabilidade-media-e-graficos-de-setores",
+   "titulo": "Probabilidade, média, pesquisa e gráfico de setores",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Fazer experimentos de probabilidade, calcular média e amplitude, planejar pesquisas com censo ou amostra e ler gráficos de setores.",
+   "habilidades": [
+    "EF07MA34",
+    "EF07MA35",
+    "EF07MA36",
+    "EF07MA37"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
    "slug": "kit-de-apoio-visual",
    "titulo": "Kit de apoio visual",
    "anos": "1º ao 5º ano",
@@ -2708,259 +2969,333 @@
    "ano": 7,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas com números naturais, envolvendo as noções de divisor e de múltiplo, podendo incluir máximo divisor comum ou mínimo múltiplo comum, por meio de estratégias diversas, sem a aplicação de algoritmos.",
-   "fichas": []
+   "fichas": [
+    "multiplos-divisores-e-porcentagem"
+   ]
   },
   {
    "codigo": "EF07MA02",
    "ano": 7,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam porcentagens, como os que lidam com acréscimos e decréscimos simples, utilizando estratégias pessoais, cálculo mental e calculadora, no contexto de educação financeira, entre outros.",
-   "fichas": []
+   "fichas": [
+    "multiplos-divisores-e-porcentagem"
+   ]
   },
   {
    "codigo": "EF07MA03",
    "ano": 7,
    "unidade": "Números",
    "texto": "Comparar e ordenar números inteiros em diferentes contextos, incluindo o histórico, associá-los a pontos da reta numérica e utilizá-los em situações que envolvam adição e subtração.",
-   "fichas": []
+   "fichas": [
+    "numeros-inteiros-reta-e-temperatura"
+   ]
   },
   {
    "codigo": "EF07MA04",
    "ano": 7,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam operações com números inteiros.",
-   "fichas": []
+   "fichas": [
+    "numeros-inteiros-reta-e-temperatura"
+   ]
   },
   {
    "codigo": "EF07MA05",
    "ano": 7,
    "unidade": "Números",
    "texto": "Resolver um mesmo problema utilizando diferentes algoritmos.",
-   "fichas": []
+   "fichas": [
+    "algoritmos-e-fluxogramas-de-problemas"
+   ]
   },
   {
    "codigo": "EF07MA06",
    "ano": 7,
    "unidade": "Números",
    "texto": "Reconhecer que as resoluções de um grupo de problemas que têm a mesma estrutura podem ser obtidas utilizando os mesmos procedimentos.",
-   "fichas": []
+   "fichas": [
+    "algoritmos-e-fluxogramas-de-problemas"
+   ]
   },
   {
    "codigo": "EF07MA07",
    "ano": 7,
    "unidade": "Números",
    "texto": "Representar por meio de um fluxograma os passos utilizados para resolver um grupo de problemas.",
-   "fichas": []
+   "fichas": [
+    "algoritmos-e-fluxogramas-de-problemas"
+   ]
   },
   {
    "codigo": "EF07MA08",
    "ano": 7,
    "unidade": "Números",
    "texto": "Comparar e ordenar frações associadas às ideias de partes de inteiros, resultado da divisão, razão e operador.",
-   "fichas": []
+   "fichas": [
+    "fracoes-e-razoes"
+   ]
   },
   {
    "codigo": "EF07MA09",
    "ano": 7,
    "unidade": "Números",
    "texto": "Utilizar, na resolução de problemas, a associação entre razão e fração, como a fração 2/3 para expressar a razão de duas partes de uma grandeza para três partes da mesma ou três partes de outra grandeza.",
-   "fichas": []
+   "fichas": [
+    "fracoes-e-razoes"
+   ]
   },
   {
    "codigo": "EF07MA10",
    "ano": 7,
    "unidade": "Números",
    "texto": "Comparar e ordenar números racionais em diferentes contextos e associá-los a pontos da reta numérica.",
-   "fichas": []
+   "fichas": [
+    "numeros-racionais-reta-e-operacoes"
+   ]
   },
   {
    "codigo": "EF07MA11",
    "ano": 7,
    "unidade": "Números",
    "texto": "Compreender e utilizar a multiplicação e a divisão de números racionais, a relação entre elas e suas propriedades operatórias.",
-   "fichas": []
+   "fichas": [
+    "numeros-racionais-reta-e-operacoes"
+   ]
   },
   {
    "codigo": "EF07MA12",
    "ano": 7,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam as operações com números racionais.",
-   "fichas": []
+   "fichas": [
+    "numeros-racionais-reta-e-operacoes"
+   ]
   },
   {
    "codigo": "EF07MA13",
    "ano": 7,
    "unidade": "Álgebra",
    "texto": "Compreender a ideia de variável, representada por letra ou símbolo, diferenciando-a da ideia de incógnita.",
-   "fichas": []
+   "fichas": [
+    "variavel-e-sequencias"
+   ]
   },
   {
    "codigo": "EF07MA14",
    "ano": 7,
    "unidade": "Álgebra",
    "texto": "Classificar sequências em recursivas e não recursivas, reconhecendo que o conceito de recursão está presente não apenas na matemática, mas também nas artes e na literatura.",
-   "fichas": []
+   "fichas": [
+    "variavel-e-sequencias"
+   ]
   },
   {
    "codigo": "EF07MA15",
    "ano": 7,
    "unidade": "Álgebra",
    "texto": "Utilizar a simbologia algébrica para expressar regularidades encontradas em sequências numéricas.",
-   "fichas": []
+   "fichas": [
+    "variavel-e-sequencias"
+   ]
   },
   {
    "codigo": "EF07MA16",
    "ano": 7,
    "unidade": "Álgebra",
    "texto": "Reconhecer se duas expressões algébricas obtidas para descrever a regularidade de uma mesma sequência numérica são ou não equivalentes.",
-   "fichas": []
+   "fichas": [
+    "variavel-e-sequencias"
+   ]
   },
   {
    "codigo": "EF07MA17",
    "ano": 7,
    "unidade": "Álgebra",
    "texto": "Resolver e elaborar problemas que envolvam variação de proporcionalidade direta e de proporcionalidade inversa entre duas grandezas, utilizando sentença algébrica para expressar a relação entre elas.",
-   "fichas": []
+   "fichas": [
+    "proporcionalidade-direta-e-inversa"
+   ]
   },
   {
    "codigo": "EF07MA18",
    "ano": 7,
    "unidade": "Álgebra",
    "texto": "Resolver e elaborar problemas que possam ser representados por equações polinomiais de 1º grau, redutíveis à forma ax + b = c, fazendo uso das propriedades da igualdade.",
-   "fichas": []
+   "fichas": [
+    "equacoes-do-primeiro-grau"
+   ]
   },
   {
    "codigo": "EF07MA19",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Realizar transformações de polígonos representados no plano cartesiano, decorrentes da multiplicação das coordenadas de seus vértices por um número inteiro.",
-   "fichas": []
+   "fichas": [
+    "transformacoes-no-plano-cartesiano"
+   ]
   },
   {
    "codigo": "EF07MA20",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Reconhecer e representar, no plano cartesiano, o simétrico de figuras em relação aos eixos e à origem.",
-   "fichas": []
+   "fichas": [
+    "transformacoes-no-plano-cartesiano"
+   ]
   },
   {
    "codigo": "EF07MA21",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Reconhecer e construir figuras obtidas por simetrias de translação, rotação e reflexão, usando instrumentos de desenho ou softwares de geometria dinâmica e vincular esse estudo a representações planas de obras de arte, elementos arquitetônicos, entre outros.",
-   "fichas": []
+   "fichas": [
+    "simetrias-translacao-rotacao-reflexao"
+   ]
   },
   {
    "codigo": "EF07MA22",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Construir circunferências, utilizando compasso, reconhecê-las como lugar geométrico e utilizá-las para fazer composições artísticas e resolver problemas que envolvam objetos equidistantes.",
-   "fichas": []
+   "fichas": [
+    "circunferencia-compasso-e-pi"
+   ]
   },
   {
    "codigo": "EF07MA23",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Verificar relações entre os ângulos formados por retas paralelas cortadas por uma transversal, com e sem uso de softwares de geometria dinâmica.",
-   "fichas": []
+   "fichas": [
+    "retas-paralelas-e-transversal"
+   ]
   },
   {
    "codigo": "EF07MA24",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Construir triângulos, usando régua e compasso, reconhecer a condição de existência do triângulo quanto à medida dos lados e verificar que a soma das medidas dos ângulos internos de um triângulo é 180°.",
-   "fichas": []
+   "fichas": [
+    "triangulos-construcao-e-rigidez"
+   ]
   },
   {
    "codigo": "EF07MA25",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Reconhecer a rigidez geométrica dos triângulos e suas aplicações, como na construção de estruturas arquitetônicas (telhados, estruturas metálicas e outras) ou nas artes plásticas.",
-   "fichas": []
+   "fichas": [
+    "triangulos-construcao-e-rigidez"
+   ]
   },
   {
    "codigo": "EF07MA26",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um triângulo qualquer, conhecidas as medidas dos três lados.",
-   "fichas": []
+   "fichas": [
+    "triangulos-construcao-e-rigidez"
+   ]
   },
   {
    "codigo": "EF07MA27",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Calcular medidas de ângulos internos de polígonos regulares, sem o uso de fórmulas, e estabelecer relações entre ângulos internos e externos de polígonos, preferencialmente vinculadas à construção de mosaicos e de ladrilhamentos.",
-   "fichas": []
+   "fichas": [
+    "poligonos-regulares-e-mosaicos"
+   ]
   },
   {
    "codigo": "EF07MA28",
    "ano": 7,
    "unidade": "Geometria",
    "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um polígono regular (como quadrado e triângulo equilátero), conhecida a medida de seu lado.",
-   "fichas": []
+   "fichas": [
+    "poligonos-regulares-e-mosaicos"
+   ]
   },
   {
    "codigo": "EF07MA29",
    "ano": 7,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas que envolvam medidas de grandezas inseridos em contextos oriundos de situações cotidianas ou de outras áreas do conhecimento, reconhecendo que toda medida empírica é aproximada.",
-   "fichas": []
+   "fichas": [
+    "volume-e-areas"
+   ]
   },
   {
    "codigo": "EF07MA30",
    "ano": 7,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas de cálculo de medida do volume de blocos retangulares, envolvendo as unidades usuais (metro cúbico, decímetro cúbico e centímetro cúbico).",
-   "fichas": []
+   "fichas": [
+    "volume-e-areas"
+   ]
   },
   {
    "codigo": "EF07MA31",
    "ano": 7,
    "unidade": "Grandezas e medidas",
    "texto": "Estabelecer expressões de cálculo de área de triângulos e de quadriláteros.",
-   "fichas": []
+   "fichas": [
+    "volume-e-areas"
+   ]
   },
   {
    "codigo": "EF07MA32",
    "ano": 7,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas de cálculo de medida de área de figuras planas que podem ser decompostas por quadrados, retângulos e/ou triângulos, utilizando a equivalência entre áreas.",
-   "fichas": []
+   "fichas": [
+    "volume-e-areas"
+   ]
   },
   {
    "codigo": "EF07MA33",
    "ano": 7,
    "unidade": "Grandezas e medidas",
    "texto": "Estabelecer o número π como a razão entre a medida de uma circunferência e seu diâmetro, para compreender e resolver problemas, inclusive os de natureza histórica.",
-   "fichas": []
+   "fichas": [
+    "circunferencia-compasso-e-pi"
+   ]
   },
   {
    "codigo": "EF07MA34",
    "ano": 7,
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e realizar experimentos aleatórios ou simulações que envolvem cálculo de probabilidades ou estimativas por meio de frequência de ocorrências.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-media-e-graficos-de-setores"
+   ]
   },
   {
    "codigo": "EF07MA35",
    "ano": 7,
    "unidade": "Probabilidade e estatística",
    "texto": "Compreender, em contextos significativos, o significado de média estatística como indicador da tendência de uma pesquisa, calcular seu valor e relacioná-lo, intuitivamente, com a amplitude do conjunto de dados.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-media-e-graficos-de-setores"
+   ]
   },
   {
    "codigo": "EF07MA36",
    "ano": 7,
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e realizar pesquisa envolvendo tema da realidade social, identificando a necessidade de ser censitária ou de usar amostra, e interpretar os dados para comunicá-los por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-media-e-graficos-de-setores"
+   ]
   },
   {
    "codigo": "EF07MA37",
    "ano": 7,
    "unidade": "Probabilidade e estatística",
    "texto": "Interpretar e analisar dados apresentados em gráfico de setores divulgados pela mídia e compreender quando é possível ou conveniente sua utilização.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-media-e-graficos-de-setores"
+   ]
   },
   {
    "codigo": "EF08MA01",

@@ -207,3 +207,6 @@ h1 { font: 800 clamp(30px, 6vw, 42px)/1.1 var(--display); margin: 0 0 12px; }
 .linha-medir { align-items: center; display: flex; font-size: 13pt; gap: 4mm; margin: 0 0 4mm; }
 .pares { display: grid; gap: 3mm; justify-items: start; }
 .conta-menor .conta { font-size: 13pt; }
+
+.pilha-contas { display: flex; flex-direction: column; align-items: center; }
+.pilha-contas .conta { margin: 2mm 0; }
