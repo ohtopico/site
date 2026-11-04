@@ -38,7 +38,8 @@ const servidor = http.createServer((req, res) => {
       const rod = f.querySelector('.folha-rodape');
       const antes = rod.previousElementSibling;
       const fim = antes ? antes.getBoundingClientRect().bottom : 0;
-      return { versao: f.dataset.versao, sobra: Math.round(rod.getBoundingClientRect().top - fim), larg: f.scrollWidth - f.clientWidth };
+      const fora = rod.getBoundingClientRect().bottom - f.getBoundingClientRect().bottom;
+      return { versao: f.dataset.versao, sobra: Math.round(Math.min(rod.getBoundingClientRect().top - fim, -fora)), larg: f.scrollWidth - f.clientWidth };
     }));
     for (const c of cheias) {
       const aviso = c.sobra < 4 || c.larg > 0 ? '  <-- TRANSBORDA' : '';

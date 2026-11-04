@@ -793,6 +793,212 @@
    ]
   },
   {
+   "slug": "numeros-ate-centenas-de-milhar-e-decimais",
+   "titulo": "Números até centenas de milhar e números decimais",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Ler, escrever, decompor e ordenar números de seis algarismos e localizar números decimais na reta numérica.",
+   "habilidades": [
+    "EF05MA01",
+    "EF05MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "fracoes-equivalentes-e-maiores-que-o-inteiro",
+   "titulo": "Frações equivalentes e maiores que o inteiro",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Comparar frações com tiras e pizzas, encontrar frações equivalentes e escrever frações maiores que a unidade e como resultado de divisão.",
+   "habilidades": [
+    "EF05MA03",
+    "EF05MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "porcentagem-e-comparacao-de-decimais-e-fracoes",
+   "titulo": "Porcentagem, decimais e frações",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Relacionar 10%, 25%, 50%, 75% e 100% com frações e comparar e ordenar números decimais e frações.",
+   "habilidades": [
+    "EF05MA05",
+    "EF05MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "adicao-e-subtracao-com-decimais",
+   "titulo": "Adição e subtração com números decimais",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Somar e subtrair números decimais com dinheiro, medidas e contas armadas com vírgula embaixo de vírgula.",
+   "habilidades": [
+    "EF05MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "multiplicacao-e-divisao-com-decimais",
+   "titulo": "Multiplicação e divisão com números decimais",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Multiplicar e dividir com números naturais e decimais, por 10 e por 100, em problemas de compra e de medida.",
+   "habilidades": [
+    "EF05MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "contagem-e-probabilidade",
+   "titulo": "Contagem e probabilidade",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Listar todos os agrupamentos e resultados possíveis, dizer se são igualmente prováveis e calcular a chance de um resultado.",
+   "habilidades": [
+    "EF05MA09",
+    "EF05MA22",
+    "EF05MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "igualdades-e-numero-desconhecido",
+   "titulo": "Igualdades e o número desconhecido",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Manter a igualdade fazendo a mesma operação dos dois lados e descobrir o número que falta em problemas.",
+   "habilidades": [
+    "EF05MA10",
+    "EF05MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "proporcionalidade-e-partilha",
+   "titulo": "Proporcionalidade e partilha",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Dobrar e reduzir receitas, completar tabelas de proporção e repartir uma quantidade em partes desiguais.",
+   "habilidades": [
+    "EF05MA12",
+    "EF05MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "plano-cartesiano-coordenadas",
+   "titulo": "Plano cartesiano: coordenadas",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Localizar e marcar pontos com duas coordenadas, descrever movimentos e desenhar figuras no plano cartesiano.",
+   "habilidades": [
+    "EF05MA14",
+    "EF05MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "poligonos-ampliacao-e-reducao",
+   "titulo": "Polígonos, ampliação e redução",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Nomear e comparar polígonos pelos lados, vértices e ângulos e ampliar e reduzir figuras em malhas.",
+   "habilidades": [
+    "EF05MA17",
+    "EF05MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "medidas-transformar-unidades",
+   "titulo": "Medidas: transformar unidades",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Escolher a unidade, transformar metros, quilos, litros e horas e resolver problemas com comprimento, área, massa, tempo, temperatura e capacidade.",
+   "habilidades": [
+    "EF05MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "perimetro-area-e-volume",
+   "titulo": "Perímetro, área e volume",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Investigar figuras com o mesmo perímetro e áreas diferentes e medir volumes contando cubinhos empilhados.",
+   "habilidades": [
+    "EF05MA20",
+    "EF05MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "graficos-de-linha-e-pesquisa",
+   "titulo": "Gráficos de linha e pesquisa",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Ler gráficos de linha, escrever textos sobre os dados e fazer uma pesquisa com dados numéricos, no papel ou numa planilha.",
+   "habilidades": [
+    "EF05MA24",
+    "EF05MA25"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
    "slug": "kit-de-apoio-visual",
    "titulo": "Kit de apoio visual",
    "anos": "1º ao 5º ano",
@@ -1727,105 +1933,135 @@
    "ano": 5,
    "unidade": "Números",
    "texto": "Ler, escrever e ordenar números naturais até a ordem das centenas de milhar.",
-   "fichas": []
+   "fichas": [
+    "numeros-ate-centenas-de-milhar-e-decimais"
+   ]
   },
   {
    "codigo": "EF05MA02",
    "ano": 5,
    "unidade": "Números",
    "texto": "Ler, escrever e ordenar números racionais na forma decimal, com a reta numérica.",
-   "fichas": []
+   "fichas": [
+    "numeros-ate-centenas-de-milhar-e-decimais"
+   ]
   },
   {
    "codigo": "EF05MA03",
    "ano": 5,
    "unidade": "Números",
    "texto": "Identificar e representar frações menores e maiores que a unidade, como parte de um todo e como resultado de divisão.",
-   "fichas": []
+   "fichas": [
+    "fracoes-equivalentes-e-maiores-que-o-inteiro"
+   ]
   },
   {
    "codigo": "EF05MA04",
    "ano": 5,
    "unidade": "Números",
    "texto": "Identificar frações equivalentes.",
-   "fichas": []
+   "fichas": [
+    "fracoes-equivalentes-e-maiores-que-o-inteiro"
+   ]
   },
   {
    "codigo": "EF05MA05",
    "ano": 5,
    "unidade": "Números",
    "texto": "Comparar e ordenar números racionais positivos nas formas decimal e fracionária, com a reta numérica.",
-   "fichas": []
+   "fichas": [
+    "porcentagem-e-comparacao-de-decimais-e-fracoes"
+   ]
   },
   {
    "codigo": "EF05MA06",
    "ano": 5,
    "unidade": "Números",
    "texto": "Associar 10%, 25%, 50%, 75% e 100% à décima parte, quarta parte, metade, três quartos e um inteiro.",
-   "fichas": []
+   "fichas": [
+    "porcentagem-e-comparacao-de-decimais-e-fracoes"
+   ]
   },
   {
    "codigo": "EF05MA07",
    "ano": 5,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de adição e subtração com números naturais e decimais.",
-   "fichas": []
+   "fichas": [
+    "adicao-e-subtracao-com-decimais"
+   ]
   },
   {
    "codigo": "EF05MA08",
    "ano": 5,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de multiplicação e divisão com números naturais e decimais.",
-   "fichas": []
+   "fichas": [
+    "multiplicacao-e-divisao-com-decimais"
+   ]
   },
   {
    "codigo": "EF05MA09",
    "ano": 5,
    "unidade": "Números",
    "texto": "Resolver problemas simples de contagem, listando todos os agrupamentos possíveis.",
-   "fichas": []
+   "fichas": [
+    "contagem-e-probabilidade"
+   ]
   },
   {
    "codigo": "EF05MA10",
    "ano": 5,
    "unidade": "Álgebra",
    "texto": "Concluir, por investigação, que a igualdade se mantém ao fazer a mesma operação nos dois membros.",
-   "fichas": []
+   "fichas": [
+    "igualdades-e-numero-desconhecido"
+   ]
   },
   {
    "codigo": "EF05MA11",
    "ano": 5,
    "unidade": "Álgebra",
    "texto": "Resolver problemas com uma igualdade em que um dos termos é desconhecido.",
-   "fichas": []
+   "fichas": [
+    "igualdades-e-numero-desconhecido"
+   ]
   },
   {
    "codigo": "EF05MA12",
    "ano": 5,
    "unidade": "Álgebra",
    "texto": "Resolver problemas de proporcionalidade direta entre duas grandezas (por exemplo, dobrar uma receita).",
-   "fichas": []
+   "fichas": [
+    "proporcionalidade-e-partilha"
+   ]
   },
   {
    "codigo": "EF05MA13",
    "ano": 5,
    "unidade": "Álgebra",
    "texto": "Resolver problemas de partilha de uma quantidade em duas partes desiguais (uma o dobro da outra, por exemplo).",
-   "fichas": []
+   "fichas": [
+    "proporcionalidade-e-partilha"
+   ]
   },
   {
    "codigo": "EF05MA14",
    "ano": 5,
    "unidade": "Geometria",
    "texto": "Usar diferentes representações para localizar objetos no plano, como mapas e malhas quadriculadas.",
-   "fichas": []
+   "fichas": [
+    "plano-cartesiano-coordenadas"
+   ]
   },
   {
    "codigo": "EF05MA15",
    "ano": 5,
    "unidade": "Geometria",
    "texto": "Interpretar, descrever e representar a localização e a movimentação de objetos no plano cartesiano (1º quadrante).",
-   "fichas": []
+   "fichas": [
+    "plano-cartesiano-coordenadas"
+   ]
   },
   {
    "codigo": "EF05MA16",
@@ -1841,63 +2077,81 @@
    "ano": 5,
    "unidade": "Geometria",
    "texto": "Reconhecer, nomear e comparar polígonos pelos lados, vértices e ângulos, e desenhá-los.",
-   "fichas": []
+   "fichas": [
+    "poligonos-ampliacao-e-reducao"
+   ]
   },
   {
    "codigo": "EF05MA18",
    "ano": 5,
    "unidade": "Geometria",
    "texto": "Reconhecer que, na ampliação e na redução de figuras em malhas, os ângulos se mantêm e os lados ficam proporcionais.",
-   "fichas": []
+   "fichas": [
+    "poligonos-ampliacao-e-reducao"
+   ]
   },
   {
    "codigo": "EF05MA19",
    "ano": 5,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver problemas com medidas de comprimento, área, massa, tempo, temperatura e capacidade, transformando unidades.",
-   "fichas": []
+   "fichas": [
+    "medidas-transformar-unidades"
+   ]
   },
   {
    "codigo": "EF05MA20",
    "ano": 5,
    "unidade": "Grandezas e medidas",
    "texto": "Concluir, por investigação, que figuras de mesmo perímetro podem ter áreas diferentes, e vice-versa.",
-   "fichas": []
+   "fichas": [
+    "perimetro-area-e-volume"
+   ]
   },
   {
    "codigo": "EF05MA21",
    "ano": 5,
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer volume como grandeza e medir volumes empilhando cubos.",
-   "fichas": []
+   "fichas": [
+    "perimetro-area-e-volume"
+   ]
   },
   {
    "codigo": "EF05MA22",
    "ano": 5,
    "unidade": "Probabilidade e estatística",
    "texto": "Apresentar todos os resultados possíveis de um experimento aleatório e dizer se são igualmente prováveis.",
-   "fichas": []
+   "fichas": [
+    "contagem-e-probabilidade"
+   ]
   },
   {
    "codigo": "EF05MA23",
    "ano": 5,
    "unidade": "Probabilidade e estatística",
    "texto": "Determinar a probabilidade de um resultado em eventos aleatórios igualmente prováveis.",
-   "fichas": []
+   "fichas": [
+    "contagem-e-probabilidade"
+   ]
   },
   {
    "codigo": "EF05MA24",
    "ano": 5,
    "unidade": "Probabilidade e estatística",
    "texto": "Interpretar dados de tabelas e gráficos de colunas, pictóricos e de linhas, produzindo textos.",
-   "fichas": []
+   "fichas": [
+    "graficos-de-linha-e-pesquisa"
+   ]
   },
   {
    "codigo": "EF05MA25",
    "ano": 5,
    "unidade": "Probabilidade e estatística",
    "texto": "Realizar pesquisa com variáveis categóricas e numéricas e organizar os dados em tabelas e gráficos, com e sem tecnologia.",
-   "fichas": []
+   "fichas": [
+    "graficos-de-linha-e-pesquisa"
+   ]
   },
   {
    "codigo": "EF06MA01",

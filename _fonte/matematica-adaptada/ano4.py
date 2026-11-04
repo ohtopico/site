@@ -10,7 +10,7 @@ F = 'font-family="Lexend, sans-serif"'
 
 # ---------- desenhos próprios do 4º ano ----------
 
-def reta_fracao(partes, marcas=None, larg=520, rotulo=None):
+def reta_fracao(partes, marcas=None, larg=520, rotulo=None, ini='0', fim='1'):
     """Reta de 0 a 1 dividida em partes iguais; marcas: {índice: texto} escrito acima do traço."""
     m, y = 24, 44
     dx = (larg - 2 * m) / partes
@@ -19,8 +19,8 @@ def reta_fracao(partes, marcas=None, larg=520, rotulo=None):
         x = m + i * dx
         alto = 10 if i in (0, partes) else 7
         inner += f'<path d="M{x:.1f} {y - alto} V{y + alto}" stroke="{TRACO}" stroke-width="2"/>'
-    inner += f'<text x="{m}" y="{y + 28}" text-anchor="middle" {F} font-size="15" font-weight="600">0</text>'
-    inner += f'<text x="{m + partes * dx}" y="{y + 28}" text-anchor="middle" {F} font-size="15" font-weight="600">1</text>'
+    inner += f'<text x="{m}" y="{y + 28}" text-anchor="middle" {F} font-size="15" font-weight="600">{ini}</text>'
+    inner += f'<text x="{m + partes * dx}" y="{y + 28}" text-anchor="middle" {F} font-size="15" font-weight="600">{fim}</text>'
     for i, t in (marcas or {}).items():
         x = m + i * dx
         inner += f'<circle cx="{x:.1f}" cy="{y}" r="5" fill="{TRACO}"/><text x="{x:.1f}" y="{y - 16}" text-anchor="middle" {F} font-size="14" font-weight="600">{t}</text>'

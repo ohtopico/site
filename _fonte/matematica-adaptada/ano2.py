@@ -143,7 +143,7 @@ def sequencias_crescentes():
 
 def trajetos():
     a = bloco(1, 'Siga o caminho tracejado. Aonde ele leva? Circule.', item(mapa_bairro([(0, 5), (1, 5), (2, 5), (3, 5), (3, 4), (3, 3), (3, 2)], 'mapa com caminho da casa até a praça')) +
-              opcoes(['Escola', 'Praça', 'Mercado']), 'Passe o dedo pelo caminho, começando na Casa.') + bloco(2, 'Desenhe o caminho da Casa até o Mercado.', item(mapa_bairro()))
+              opcoes(['Escola', 'Praça', 'Mercado'])) + bloco(2, 'Desenhe o caminho da Casa até o Mercado.', item(mapa_bairro()))
     b = bloco(1, 'Descreva o caminho da Casa até a Escola.', item(mapa_bairro([(0, 5), (0, 4), (0, 3), (0, 2), (0, 1), (0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0)])) +
               '<div class="frases">' + ''.join(f'<p>{t} <span class="linha-resp"></span></p>' for t in ('Saio de casa e ando para', 'Ando quantos quadradinhos para cima?', 'Depois viro para a', 'E ando quantos quadradinhos?')) + '</div>',
               'Use: para cima, para baixo, para a direita, para a esquerda.')
