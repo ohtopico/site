@@ -334,7 +334,7 @@ def gerar_hub(fichas, mapa):
   </section>
   <div class="hero-faixa"></div>
   <div class="wrap repositorio">
-    <p class="como-usar">Primeira vez aqui? Leia <a href="/matematica-adaptada/">como usar o material adaptado</a>: como escolher entre as versões A, B e C e o que costuma ajudar estudantes com síndrome de Down, autismo e TDAH.</p>
+    <p class="como-usar">Primeira vez aqui? Leia <a href="/matematica-adaptada/">como usar o material adaptado</a>: como escolher entre as versões A, B e C e o que costuma ajudar alunos com diferentes necessidades.</p>
     {braille_links.hub()}
     <section class="ano-secao" id="mapa-bncc"><h2>Mapa da BNCC: Matemática</h2>
       <p class="intro-mapa">Abra o ano e escolha a habilidade: cada linha leva à ficha dela, com as versões A, B e C, as orientações e o PDF. As fichas de revisão, que juntam habilidades de um mesmo tema, aparecem marcadas. Do 1º ao 5º ano, o texto é um resumo da habilidade; do 6º ao 9º, é o texto da BNCC.</p>
