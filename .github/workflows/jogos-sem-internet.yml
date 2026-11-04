@@ -1,0 +1,49 @@
+# Monta o pacote "Jogos sem internet" (_fonte/offline/gerar.js) e publica o .zip como arquivo do
+# release "jogos-sem-internet". A página ohtopico.com.br/jogos-sem-internet/ aponta para ele.
+# O .zip não entra no repositório: assim cada atualização dos jogos não deixa o histórico pesado.
+# Roda quando algum jogo, recurso 3D, simulador ou o Mundo muda no main, e à mão (Run workflow).
+name: Pacote jogos sem internet
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'jogos/**'
+      - 'material-didatico/jogos/**'
+      - 'material-didatico/3d/**'
+      - 'material-didatico/assets/**'
+      - 'simuladores/**'
+      - 'mundo/**'
+      - 'assets/**'
+      - '_fonte/offline/**'
+      - '.github/workflows/jogos-sem-internet.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jogos-sem-internet
+  cancel-in-progress: true
+
+jobs:
+  pacote:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Montar o pacote
+        run: node _fonte/offline/gerar.js _site-offline
+
+      - name: Publicar o .zip no release
+        run: |
+          if ! gh release view jogos-sem-internet >/dev/null 2>&1; then
+            gh release create jogos-sem-internet --latest=false \
+              --title "Jogos sem internet" \
+              --notes "Pacote com os jogos, recursos 3D, simuladores e o Mundo para usar sem internet. Instruções em https://ohtopico.com.br/jogos-sem-internet/"
+          fi
+          gh release upload jogos-sem-internet _site-offline/ohtopico-jogos-sem-internet.zip --clobber
+          cat _site-offline/info.json
