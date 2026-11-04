@@ -1,0 +1,43 @@
+/* Cartazes de Libras para a parede: um termo por A4 retrato, fundo branco, cor só na faixa da área.
+   Tamanhos em cqw (100cqw = largura do cartaz), para a prévia na tela e a folha impressa ficarem iguais. */
+.aviso { border-left: 5px solid var(--accent); }
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 8px; }
+.escolhidas { background: var(--mark-soft); border-radius: 14px; font-size: 15px !important; padding: 10px 14px; }
+.contagem { color: var(--ink-2); font-size: 14px !important; }
+.parede { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); margin: 16px auto 0; max-width: 1100px; padding: 0 18px; }
+
+.cartaz {
+    aspect-ratio: 210 / 297; background: #fff; border: 1.5px solid var(--ink); color: #111; container-type: inline-size;
+    display: flex; flex-direction: column; overflow: hidden; scroll-margin-top: 20px;
+}
+.cartaz > * { margin-left: 7cqw; margin-right: 7cqw; }
+.cartaz[hidden] { display: none; }
+.c-area {
+    border-bottom: 2.5cqw solid #111; font: 500 3.4cqw/1 var(--body); letter-spacing: .12em; margin: 0 0 4cqw !important;
+    padding: 5cqw 7cqw 3cqw; text-transform: uppercase; margin-left: 0 !important; margin-right: 0 !important;
+}
+.c-mat { border-bottom-color: #e6c800; }
+.c-comp { border-bottom-color: #6fa3e6; }
+.c-termo { font: 800 11cqw/1.02 var(--display); margin-top: 0; margin-bottom: 2.5cqw; }
+.c-termo.longo { font-size: 7.6cqw; }
+.c-desenho { display: flex; justify-content: center; margin-bottom: 2.5cqw; }
+.c-desenho svg { height: auto; width: 44cqw; }
+.c-explicacao { font: 500 4.3cqw/1.32 var(--body); margin-top: 0; margin-bottom: 2.4cqw; }
+.c-exemplo { color: #333; font: 400 3.3cqw/1.38 var(--body); margin-top: 0; margin-bottom: 0; }
+.c-libras { align-items: center; border-top: 1.5px dashed #999; display: flex; gap: 5cqw; margin-top: auto; padding-top: 3.5cqw; }
+.c-libras .qr, .c-anotar { flex: 0 0 auto; height: 31cqw; width: 31cqw; }
+.c-anotar { border: 1.5px dashed #111; border-radius: 3cqw; }
+.c-libras p { font: 400 3.2cqw/1.38 var(--body); margin: 0; }
+.c-libras b { display: block; font: 800 4.6cqw/1.15 var(--display); margin-bottom: 1.2cqw; }
+.c-rodape { color: #555; font: 400 2.1cqw/1.35 var(--body); margin-bottom: 4cqw !important; margin-top: 3cqw; }
+
+@page { size: A4; margin: 0; }
+@media print {
+    body { background: #fff; }
+    body > *:not(main), main > .texto, .pular { display: none !important; }
+    main { padding: 0; }
+    .parede { display: block; margin: 0; max-width: none; padding: 0; }
+    .cartaz { border: 0; break-after: page; height: 297mm; width: 210mm; }
+    .cartaz:last-child { break-after: auto; }
+    a { color: #111; text-decoration: none; }
+}

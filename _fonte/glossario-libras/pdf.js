@@ -1,4 +1,5 @@
-/* Gera material-adaptado/glossario/glossario-libras.pdf com todos os cartões (A4, fundo branco).
+/* Gera material-adaptado/glossario/glossario-libras.pdf com todos os cartões (A4, fundo branco)
+   e material-adaptado/glossario/parede/cartazes-libras-parede.pdf (um cartaz A4 por termo).
      node _fonte/glossario-libras/pdf.js             PDF
      node _fonte/glossario-libras/pdf.js --previa    também salva PNGs da página em _fonte/glossario-libras/previa/
    Rode na raiz do site, depois de python _fonte/glossario-libras/gerar.py. Precisa do playwright. */
@@ -29,6 +30,9 @@ const servidor = http.createServer((req, res) => {
   await pagina.goto(`http://localhost:${porta}/material-adaptado/glossario/`, { waitUntil: 'networkidle' });
   await pagina.evaluate(() => document.fonts.ready);
   await pagina.pdf({ path: path.join(SAIDA, 'glossario-libras.pdf'), preferCSSPageSize: true, printBackground: true });
+  await pagina.goto(`http://localhost:${porta}/material-adaptado/glossario/parede/`, { waitUntil: 'networkidle' });
+  await pagina.evaluate(() => document.fonts.ready);
+  await pagina.pdf({ path: path.join(SAIDA, 'parede', 'cartazes-libras-parede.pdf'), preferCSSPageSize: true, printBackground: true });
   if (previa) {
     const dir = path.join(__dirname, 'previa');
     fs.mkdirSync(dir, { recursive: true });
@@ -38,7 +42,13 @@ const servidor = http.createServer((req, res) => {
     await pagina.goto(`http://localhost:${porta}/material-adaptado/glossario/?termos=fracao,metade,igual`, { waitUntil: 'networkidle' });
     await pagina.screenshot({ path: path.join(dir, 'filtro.png'), fullPage: true });
   }
+  if (previa) {
+    const dir = path.join(__dirname, 'previa');
+    await pagina.setViewportSize({ width: 1100, height: 1200 });
+    await pagina.goto(`http://localhost:${porta}/material-adaptado/glossario/parede/`, { waitUntil: 'networkidle' });
+    await pagina.screenshot({ path: path.join(dir, 'parede.png'), fullPage: false });
+  }
   await navegador.close();
   servidor.close();
-  console.log('PDF do glossário gerado');
+  console.log('PDFs do glossário e dos cartazes gerados');
 })();

@@ -2,7 +2,9 @@
 
 Uso (na raiz do site):
     python _fonte/glossario-libras/gerar.py      página, CSS/JS e bloco do sitemap
-    node _fonte/glossario-libras/pdf.js          depois, o PDF com todos os cartões (precisa do Playwright)
+    node _fonte/glossario-libras/pdf.js          depois, os PDFs dos cartões e dos cartazes da parede (precisa do Playwright)
+
+Também gera os cartazes A4 para a parede (/material-adaptado/glossario/parede/, ver parede.py).
 
 - Termos, explicações e links dos sinais ficam em termos.py; os desenhos, em desenhos.py.
 - Os QR codes abrem a página do sinal no Spread the Sign (Libras). Termo sem vídeo em Libras não ganha QR:
@@ -179,7 +181,7 @@ def pagina():
             <label class="busca">Procurar <input type="search" id="busca" autocomplete="off" placeholder="ex.: fração"></label>
         </div>
         <p class="escolhidas" id="escolhidas" hidden></p>
-        <div class="acoes"><button type="button" class="btn98 escuro" id="imprimir">Imprimir os cartões que estão na tela</button><a class="btn98" href="glossario-libras.pdf" download>Baixar PDF com todos os cartões</a></div>
+        <div class="acoes"><button type="button" class="btn98 escuro" id="imprimir">Imprimir os cartões que estão na tela</button><a class="btn98" href="glossario-libras.pdf" download>Baixar PDF com todos os cartões</a><a class="btn98" id="parede" href="parede/">Cartazes A4 para a parede</a></div>
     </div>
     <div class="glossario" id="cartoes">
         {"".join(grupos)}
@@ -220,6 +222,8 @@ def main():
     shutil.copy(AQUI / 'glossario.js', SAIDA / 'glossario.js')
     (SAIDA / 'index.html').write_text(pagina(), encoding='utf-8')
     atualizar_sitemap()
+    import parede
+    parede.gerar()
     com = sum(1 for x in TERMOS if x['sinais'])
     print(f'glossário: {len(TERMOS)} termos, {com} com sinal em Libras, {len(TERMOS) - com} sem')
 

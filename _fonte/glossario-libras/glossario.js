@@ -31,6 +31,7 @@
     if (escolhidos.length) {
         aviso.hidden = false;
         aviso.innerHTML = 'Mostrando só as ' + escolhidos.length + ' palavras da ficha. <a href="' + location.pathname + '">Ver o glossário completo</a>';
+        document.getElementById('parede').href = 'parede/?termos=' + escolhidos.join(',');
     }
 
     botoes.forEach(b => b.addEventListener('click', () => {
