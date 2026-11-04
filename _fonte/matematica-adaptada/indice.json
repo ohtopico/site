@@ -3592,6 +3592,262 @@
    "revisao": true
   },
   {
+   "slug": "mmc-e-mdc-em-problemas",
+   "titulo": "Múltiplos e divisores em problemas",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver e elaborar problemas com múltiplos e divisores, incluindo o mínimo múltiplo comum e o máximo divisor comum, com estratégias próprias e sem algoritmo.",
+   "habilidades": [
+    "EF07MA01"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "porcentagem-acrescimo-e-desconto",
+   "titulo": "Porcentagem: acréscimo e desconto",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver e elaborar problemas com porcentagens, como acréscimos e descontos simples, com cálculo mental e calculadora, no contexto de educação financeira.",
+   "habilidades": [
+    "EF07MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "inteiros-na-reta-e-no-dia-a-dia",
+   "titulo": "Números inteiros na reta e no dia a dia",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Comparar e ordenar números inteiros em diferentes contextos, inclusive o histórico, associá-los a pontos da reta e usá-los em adições e subtrações.",
+   "habilidades": [
+    "EF07MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "operacoes-com-numeros-inteiros",
+   "titulo": "Operações com números inteiros",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver e elaborar problemas que envolvam as quatro operações com números inteiros.",
+   "habilidades": [
+    "EF07MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "um-problema-varios-algoritmos",
+   "titulo": "Um problema, vários algoritmos",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver um mesmo problema usando diferentes algoritmos e comparar os caminhos.",
+   "habilidades": [
+    "EF07MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-com-a-mesma-estrutura",
+   "titulo": "Problemas com a mesma estrutura",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer que problemas com a mesma estrutura podem ser resolvidos pelos mesmos procedimentos.",
+   "habilidades": [
+    "EF07MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fluxograma-de-um-grupo-de-problemas",
+   "titulo": "Fluxograma de um grupo de problemas",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Representar em fluxograma os passos usados para resolver um grupo de problemas.",
+   "habilidades": [
+    "EF07MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fracoes-parte-divisao-razao-e-operador",
+   "titulo": "Frações: parte, divisão, razão e operador",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Comparar e ordenar frações associadas às ideias de parte de inteiros, resultado de divisão, razão e operador.",
+   "habilidades": [
+    "EF07MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "razao-como-fracao",
+   "titulo": "Razão escrita como fração",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Usar a associação entre razão e fração em problemas, como 2/3 para expressar a razão entre duas partes e três partes de uma grandeza.",
+   "habilidades": [
+    "EF07MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "racionais-na-reta",
+   "titulo": "Números racionais na reta",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Comparar e ordenar números racionais (frações e decimais, positivos e negativos) em contextos e associá-los a pontos da reta.",
+   "habilidades": [
+    "EF07MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "multiplicar-e-dividir-racionais",
+   "titulo": "Multiplicar e dividir racionais",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Compreender e usar a multiplicação e a divisão de números racionais, a relação entre elas e suas propriedades.",
+   "habilidades": [
+    "EF07MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-com-racionais",
+   "titulo": "Problemas com números racionais",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver e elaborar problemas que envolvam as operações com números racionais.",
+   "habilidades": [
+    "EF07MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "variavel-e-incognita",
+   "titulo": "Variável e incógnita",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Compreender a ideia de variável, representada por letra ou símbolo, e diferenciá-la da ideia de incógnita.",
+   "habilidades": [
+    "EF07MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "sequencias-recursivas",
+   "titulo": "Sequências recursivas",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Classificar sequências em recursivas e não recursivas e reconhecer a recursão na matemática, nas artes e na literatura.",
+   "habilidades": [
+    "EF07MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "sequencias-em-linguagem-algebrica",
+   "titulo": "Sequências em linguagem algébrica",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Usar a simbologia algébrica para expressar regularidades encontradas em sequências numéricas.",
+   "habilidades": [
+    "EF07MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "expressoes-equivalentes-de-sequencias",
+   "titulo": "Expressões equivalentes de uma sequência",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer se duas expressões algébricas obtidas para a mesma sequência são ou não equivalentes.",
+   "habilidades": [
+    "EF07MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "proporcionalidade-direta-e-inversa",
    "titulo": "Proporcionalidade direta e inversa",
    "anos": "7º ano",
@@ -3624,6 +3880,38 @@
    "revisao": false
   },
   {
+   "slug": "multiplicar-coordenadas-de-poligonos",
+   "titulo": "Multiplicar coordenadas de polígonos",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Realizar transformações de polígonos no plano cartesiano multiplicando as coordenadas dos vértices por um número inteiro.",
+   "habilidades": [
+    "EF07MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "simetrico-no-plano-cartesiano",
+   "titulo": "Simétrico no plano cartesiano",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer e representar no plano cartesiano o simétrico de figuras em relação aos eixos e à origem.",
+   "habilidades": [
+    "EF07MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "simetrias-translacao-rotacao-reflexao",
    "titulo": "Simetrias: translação, rotação e reflexão",
    "anos": "7º ano",
@@ -3640,6 +3928,22 @@
    "revisao": false
   },
   {
+   "slug": "circunferencia-e-compasso",
+   "titulo": "Circunferência e compasso",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Construir circunferências com compasso, reconhecê-las como lugar geométrico e usá-las em composições e problemas com objetos à mesma distância.",
+   "habilidades": [
+    "EF07MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "retas-paralelas-e-transversal",
    "titulo": "Retas paralelas cortadas por uma transversal",
    "anos": "7º ano",
@@ -3647,6 +3951,230 @@
    "resumo": "Verificar as relações entre os ângulos formados por duas paralelas e uma transversal e usar essas relações para descobrir medidas.",
    "habilidades": [
     "EF07MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "condicao-de-existencia-do-triangulo",
+   "titulo": "Quando existe um triângulo",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Construir triângulos com régua e compasso, reconhecer a condição de existência pelos lados e verificar que a soma dos ângulos internos é 180°.",
+   "habilidades": [
+    "EF07MA24"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "rigidez-do-triangulo",
+   "titulo": "A rigidez do triângulo",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer a rigidez geométrica dos triângulos e suas aplicações em estruturas, como telhados e estruturas metálicas, e nas artes.",
+   "habilidades": [
+    "EF07MA25"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fluxograma-para-construir-triangulo",
+   "titulo": "Fluxograma para construir um triângulo",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Descrever por escrito e por fluxograma um algoritmo para construir um triângulo qualquer, conhecidas as medidas dos três lados.",
+   "habilidades": [
+    "EF07MA26"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "angulos-de-poligonos-regulares-e-mosaicos",
+   "titulo": "Ângulos de polígonos regulares e mosaicos",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Calcular os ângulos internos de polígonos regulares sem fórmulas e relacionar ângulos internos e externos, com mosaicos e ladrilhamentos.",
+   "habilidades": [
+    "EF07MA27"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fluxograma-para-construir-poligono-regular",
+   "titulo": "Fluxograma para construir um polígono regular",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Descrever por escrito e por fluxograma um algoritmo para construir um polígono regular, como quadrado e triângulo equilátero, conhecida a medida do lado.",
+   "habilidades": [
+    "EF07MA28"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "medidas-sao-aproximadas",
+   "titulo": "Toda medida é aproximada",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver e elaborar problemas com medidas de grandezas do cotidiano e de outras áreas, reconhecendo que toda medida empírica é aproximada.",
+   "habilidades": [
+    "EF07MA29"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "volume-de-blocos-retangulares",
+   "titulo": "Volume de blocos retangulares",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver e elaborar problemas de volume de blocos retangulares com metro cúbico, decímetro cúbico e centímetro cúbico.",
+   "habilidades": [
+    "EF07MA30"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "area-de-triangulos-e-quadrilateros",
+   "titulo": "Área de triângulos e quadriláteros",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Estabelecer as expressões de cálculo de área de triângulos e de quadriláteros.",
+   "habilidades": [
+    "EF07MA31"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "areas-por-decomposicao",
+   "titulo": "Áreas por decomposição",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver e elaborar problemas de área de figuras planas que podem ser decompostas em quadrados, retângulos e triângulos, usando a equivalência entre áreas.",
+   "habilidades": [
+    "EF07MA32"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "o-numero-pi",
+   "titulo": "O número π",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Estabelecer o número π como a razão entre o comprimento da circunferência e o seu diâmetro, e resolver problemas, inclusive históricos.",
+   "habilidades": [
+    "EF07MA33"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "experimentos-e-frequencia",
+   "titulo": "Experimentos e frequência",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Planejar e realizar experimentos aleatórios ou simulações que envolvam probabilidades ou estimativas pela frequência.",
+   "habilidades": [
+    "EF07MA34"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "media-e-amplitude",
+   "titulo": "Média e amplitude",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Compreender o significado de média como indicador da tendência de uma pesquisa, calcular seu valor e relacioná-lo com a amplitude do conjunto de dados.",
+   "habilidades": [
+    "EF07MA35"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "pesquisa-censo-ou-amostra",
+   "titulo": "Pesquisa: censo ou amostra",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Planejar e realizar pesquisa sobre um tema da realidade social, decidindo entre censo e amostra, e comunicar os dados em relatório, tabelas e gráficos com planilhas.",
+   "habilidades": [
+    "EF07MA36"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "graficos-de-setores-na-midia",
+   "titulo": "Gráficos de setores na mídia",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Interpretar e analisar dados em gráficos de setores divulgados pela mídia e compreender quando é possível ou conveniente usá-los.",
+   "habilidades": [
+    "EF07MA37"
    ],
    "versoes": [
     "A",
@@ -5888,6 +6416,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas com números naturais, envolvendo as noções de divisor e de múltiplo, podendo incluir máximo divisor comum ou mínimo múltiplo comum, por meio de estratégias diversas, sem a aplicação de algoritmos.",
    "fichas": [
+    "mmc-e-mdc-em-problemas",
     "multiplos-divisores-e-porcentagem"
    ]
   },
@@ -5897,6 +6426,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam porcentagens, como os que lidam com acréscimos e decréscimos simples, utilizando estratégias pessoais, cálculo mental e calculadora, no contexto de educação financeira, entre outros.",
    "fichas": [
+    "porcentagem-acrescimo-e-desconto",
     "multiplos-divisores-e-porcentagem"
    ]
   },
@@ -5906,6 +6436,7 @@
    "unidade": "Números",
    "texto": "Comparar e ordenar números inteiros em diferentes contextos, incluindo o histórico, associá-los a pontos da reta numérica e utilizá-los em situações que envolvam adição e subtração.",
    "fichas": [
+    "inteiros-na-reta-e-no-dia-a-dia",
     "numeros-inteiros-reta-e-temperatura"
    ]
   },
@@ -5915,6 +6446,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam operações com números inteiros.",
    "fichas": [
+    "operacoes-com-numeros-inteiros",
     "numeros-inteiros-reta-e-temperatura"
    ]
   },
@@ -5924,6 +6456,7 @@
    "unidade": "Números",
    "texto": "Resolver um mesmo problema utilizando diferentes algoritmos.",
    "fichas": [
+    "um-problema-varios-algoritmos",
     "algoritmos-e-fluxogramas-de-problemas"
    ]
   },
@@ -5933,6 +6466,7 @@
    "unidade": "Números",
    "texto": "Reconhecer que as resoluções de um grupo de problemas que têm a mesma estrutura podem ser obtidas utilizando os mesmos procedimentos.",
    "fichas": [
+    "problemas-com-a-mesma-estrutura",
     "algoritmos-e-fluxogramas-de-problemas"
    ]
   },
@@ -5942,6 +6476,7 @@
    "unidade": "Números",
    "texto": "Representar por meio de um fluxograma os passos utilizados para resolver um grupo de problemas.",
    "fichas": [
+    "fluxograma-de-um-grupo-de-problemas",
     "algoritmos-e-fluxogramas-de-problemas"
    ]
   },
@@ -5951,6 +6486,7 @@
    "unidade": "Números",
    "texto": "Comparar e ordenar frações associadas às ideias de partes de inteiros, resultado da divisão, razão e operador.",
    "fichas": [
+    "fracoes-parte-divisao-razao-e-operador",
     "fracoes-e-razoes"
    ]
   },
@@ -5960,6 +6496,7 @@
    "unidade": "Números",
    "texto": "Utilizar, na resolução de problemas, a associação entre razão e fração, como a fração 2/3 para expressar a razão de duas partes de uma grandeza para três partes da mesma ou três partes de outra grandeza.",
    "fichas": [
+    "razao-como-fracao",
     "fracoes-e-razoes"
    ]
   },
@@ -5969,6 +6506,7 @@
    "unidade": "Números",
    "texto": "Comparar e ordenar números racionais em diferentes contextos e associá-los a pontos da reta numérica.",
    "fichas": [
+    "racionais-na-reta",
     "numeros-racionais-reta-e-operacoes"
    ]
   },
@@ -5978,6 +6516,7 @@
    "unidade": "Números",
    "texto": "Compreender e utilizar a multiplicação e a divisão de números racionais, a relação entre elas e suas propriedades operatórias.",
    "fichas": [
+    "multiplicar-e-dividir-racionais",
     "numeros-racionais-reta-e-operacoes"
    ]
   },
@@ -5987,6 +6526,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam as operações com números racionais.",
    "fichas": [
+    "problemas-com-racionais",
     "numeros-racionais-reta-e-operacoes"
    ]
   },
@@ -5996,6 +6536,7 @@
    "unidade": "Álgebra",
    "texto": "Compreender a ideia de variável, representada por letra ou símbolo, diferenciando-a da ideia de incógnita.",
    "fichas": [
+    "variavel-e-incognita",
     "variavel-e-sequencias"
    ]
   },
@@ -6005,6 +6546,7 @@
    "unidade": "Álgebra",
    "texto": "Classificar sequências em recursivas e não recursivas, reconhecendo que o conceito de recursão está presente não apenas na matemática, mas também nas artes e na literatura.",
    "fichas": [
+    "sequencias-recursivas",
     "variavel-e-sequencias"
    ]
   },
@@ -6014,6 +6556,7 @@
    "unidade": "Álgebra",
    "texto": "Utilizar a simbologia algébrica para expressar regularidades encontradas em sequências numéricas.",
    "fichas": [
+    "sequencias-em-linguagem-algebrica",
     "variavel-e-sequencias"
    ]
   },
@@ -6023,6 +6566,7 @@
    "unidade": "Álgebra",
    "texto": "Reconhecer se duas expressões algébricas obtidas para descrever a regularidade de uma mesma sequência numérica são ou não equivalentes.",
    "fichas": [
+    "expressoes-equivalentes-de-sequencias",
     "variavel-e-sequencias"
    ]
   },
@@ -6050,6 +6594,7 @@
    "unidade": "Geometria",
    "texto": "Realizar transformações de polígonos representados no plano cartesiano, decorrentes da multiplicação das coordenadas de seus vértices por um número inteiro.",
    "fichas": [
+    "multiplicar-coordenadas-de-poligonos",
     "transformacoes-no-plano-cartesiano"
    ]
   },
@@ -6059,6 +6604,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer e representar, no plano cartesiano, o simétrico de figuras em relação aos eixos e à origem.",
    "fichas": [
+    "simetrico-no-plano-cartesiano",
     "transformacoes-no-plano-cartesiano"
    ]
   },
@@ -6077,6 +6623,7 @@
    "unidade": "Geometria",
    "texto": "Construir circunferências, utilizando compasso, reconhecê-las como lugar geométrico e utilizá-las para fazer composições artísticas e resolver problemas que envolvam objetos equidistantes.",
    "fichas": [
+    "circunferencia-e-compasso",
     "circunferencia-compasso-e-pi"
    ]
   },
@@ -6095,6 +6642,7 @@
    "unidade": "Geometria",
    "texto": "Construir triângulos, usando régua e compasso, reconhecer a condição de existência do triângulo quanto à medida dos lados e verificar que a soma das medidas dos ângulos internos de um triângulo é 180°.",
    "fichas": [
+    "condicao-de-existencia-do-triangulo",
     "triangulos-construcao-e-rigidez"
    ]
   },
@@ -6104,6 +6652,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer a rigidez geométrica dos triângulos e suas aplicações, como na construção de estruturas arquitetônicas (telhados, estruturas metálicas e outras) ou nas artes plásticas.",
    "fichas": [
+    "rigidez-do-triangulo",
     "triangulos-construcao-e-rigidez"
    ]
   },
@@ -6113,6 +6662,7 @@
    "unidade": "Geometria",
    "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um triângulo qualquer, conhecidas as medidas dos três lados.",
    "fichas": [
+    "fluxograma-para-construir-triangulo",
     "triangulos-construcao-e-rigidez"
    ]
   },
@@ -6122,6 +6672,7 @@
    "unidade": "Geometria",
    "texto": "Calcular medidas de ângulos internos de polígonos regulares, sem o uso de fórmulas, e estabelecer relações entre ângulos internos e externos de polígonos, preferencialmente vinculadas à construção de mosaicos e de ladrilhamentos.",
    "fichas": [
+    "angulos-de-poligonos-regulares-e-mosaicos",
     "poligonos-regulares-e-mosaicos"
    ]
   },
@@ -6131,6 +6682,7 @@
    "unidade": "Geometria",
    "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um polígono regular (como quadrado e triângulo equilátero), conhecida a medida de seu lado.",
    "fichas": [
+    "fluxograma-para-construir-poligono-regular",
     "poligonos-regulares-e-mosaicos"
    ]
   },
@@ -6140,6 +6692,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas que envolvam medidas de grandezas inseridos em contextos oriundos de situações cotidianas ou de outras áreas do conhecimento, reconhecendo que toda medida empírica é aproximada.",
    "fichas": [
+    "medidas-sao-aproximadas",
     "volume-e-areas"
    ]
   },
@@ -6149,6 +6702,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas de cálculo de medida do volume de blocos retangulares, envolvendo as unidades usuais (metro cúbico, decímetro cúbico e centímetro cúbico).",
    "fichas": [
+    "volume-de-blocos-retangulares",
     "volume-e-areas"
    ]
   },
@@ -6158,6 +6712,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Estabelecer expressões de cálculo de área de triângulos e de quadriláteros.",
    "fichas": [
+    "area-de-triangulos-e-quadrilateros",
     "volume-e-areas"
    ]
   },
@@ -6167,6 +6722,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas de cálculo de medida de área de figuras planas que podem ser decompostas por quadrados, retângulos e/ou triângulos, utilizando a equivalência entre áreas.",
    "fichas": [
+    "areas-por-decomposicao",
     "volume-e-areas"
    ]
   },
@@ -6176,6 +6732,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Estabelecer o número π como a razão entre a medida de uma circunferência e seu diâmetro, para compreender e resolver problemas, inclusive os de natureza histórica.",
    "fichas": [
+    "o-numero-pi",
     "circunferencia-compasso-e-pi"
    ]
   },
@@ -6185,6 +6742,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e realizar experimentos aleatórios ou simulações que envolvem cálculo de probabilidades ou estimativas por meio de frequência de ocorrências.",
    "fichas": [
+    "experimentos-e-frequencia",
     "probabilidade-media-e-graficos-de-setores"
    ]
   },
@@ -6194,6 +6752,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Compreender, em contextos significativos, o significado de média estatística como indicador da tendência de uma pesquisa, calcular seu valor e relacioná-lo, intuitivamente, com a amplitude do conjunto de dados.",
    "fichas": [
+    "media-e-amplitude",
     "probabilidade-media-e-graficos-de-setores"
    ]
   },
@@ -6203,6 +6762,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e realizar pesquisa envolvendo tema da realidade social, identificando a necessidade de ser censitária ou de usar amostra, e interpretar os dados para comunicá-los por meio de relatório escrito, tabelas e gráficos, com o apoio de planilhas eletrônicas.",
    "fichas": [
+    "pesquisa-censo-ou-amostra",
     "probabilidade-media-e-graficos-de-setores"
    ]
   },
@@ -6212,6 +6772,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Interpretar e analisar dados apresentados em gráfico de setores divulgados pela mídia e compreender quando é possível ou conveniente sua utilização.",
    "fichas": [
+    "graficos-de-setores-na-midia",
     "probabilidade-media-e-graficos-de-setores"
    ]
   },

@@ -23,10 +23,10 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
 from fichas import FICHAS as BASE  # noqa: E402
-import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9, hab1, hab2, hab3, hab4, hab5, hab6  # noqa: E401,E402
+import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9, hab1, hab2, hab3, hab4, hab5, hab6, hab7  # noqa: E401,E402
 from bncc import habilidades, UNIDADES  # noqa: E402
 
-FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + ano3.FICHAS + ano4.FICHAS + ano5.FICHAS + ano6.FICHAS + ano7.FICHAS + ano8.FICHAS + ano9.FICHAS + hab1.FICHAS + hab2.FICHAS + hab3.FICHAS + hab4.FICHAS + hab5.FICHAS + hab6.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
+FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + ano3.FICHAS + ano4.FICHAS + ano5.FICHAS + ano6.FICHAS + ano7.FICHAS + ano8.FICHAS + ano9.FICHAS + hab1.FICHAS + hab2.FICHAS + hab3.FICHAS + hab4.FICHAS + hab5.FICHAS + hab6.FICHAS + hab7.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
 
 RAIZ = AQUI.parent.parent
 SAIDA = RAIZ / 'matematica-adaptada'
