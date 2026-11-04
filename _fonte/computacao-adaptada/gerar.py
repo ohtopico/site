@@ -95,7 +95,7 @@ def pagina(f, i, fichas):
     titulo = f'{f["titulo"]}: computação adaptada | Júlia Quoos'
     if len(titulo) > 70:
         titulo = f'{f["titulo"]} | Júlia Quoos'
-    descricao = (f'{f["resumo"]} Ficha de computação adaptada para alunos com diferentes neurodivergências, '
+    descricao = (f'{f["resumo"]} Ficha de computação adaptada para alunos com diferentes necessidades, '
                  f'em três níveis de apoio, para imprimir. {f["ano"]}º ano, {f["codigo"]}.')
     pdf = f'{f["slug"]}.pdf'
     v = versao_css()

@@ -109,7 +109,7 @@ def pagina(f, i, total):
     if len(titulo) > 70:
         titulo = f'{f["titulo"]} | Júlia Quoos'
     tem_versoes = 'A' in f['versoes']
-    descricao = (f'{f["resumo"]} Ficha adaptada para alunos com diferentes neurodivergências, em três níveis de apoio, para imprimir. {f["anos"]}.'
+    descricao = (f'{f["resumo"]} Ficha adaptada para alunos com diferentes necessidades, em três níveis de apoio, para imprimir. {f["anos"]}.'
                  if tem_versoes else f'{f["resumo"]} Para imprimir e usar com estudantes com síndrome de Down, autismo e TDAH.')
     pdf = f'{f["slug"]}.pdf'
     folhas = ''.join(folha(f, k, v) for k, v in f['versoes'].items()) + folha_professor(f)
@@ -285,7 +285,7 @@ def gerar_hub(fichas, mapa):
                       f'<div class="mapa-rolagem"><table class="mapa-bncc"><thead><tr><th>Código</th><th>Habilidade</th><th>Ficha</th></tr></thead>'
                       f'<tbody>{"".join(linhas_)}</tbody></table></div></details>')
 
-    descricao = ('Fichas de matemática adaptadas para alunos com diferentes neurodivergências, do 1º ao 9º ano, '
+    descricao = ('Fichas de matemática adaptadas para alunos com diferentes necessidades, do 1º ao 9º ano, '
                  'uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.')
     main = f'''  <section class="hero">
     <div class="wrap">
@@ -293,7 +293,7 @@ def gerar_hub(fichas, mapa):
         <div>
           <span class="eyebrow">Material adaptado gratuito · BNCC</span>
           <h1>A mesma aula, <span class="marca">o apoio certo</span></h1>
-          <p class="lead">Fichas de matemática para imprimir, adaptadas para alunos com diferentes neurodivergências. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
+          <p class="lead">Fichas de matemática para imprimir, adaptadas para alunos com diferentes necessidades. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
         </div>
         <div class="stats">
           <a class="stat" href="#ano-1"><b>{len(proprias)}</b><span>fichas por habilidade</span></a>
