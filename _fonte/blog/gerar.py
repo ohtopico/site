@@ -1044,7 +1044,7 @@ def pagina_matematica_adaptada(cfg):
     indice, cartoes, mapa_html = cartoes_matematica_adaptada()
     corpo = (AQUI / 'conteudo' / 'matematica-adaptada.html').read_text(encoding='utf-8').strip()
     titulo = 'Matemática adaptada: como usar o material para síndrome de Down, autismo e TDAH'
-    descricao = ('Como usar as fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH: '
+    descricao = ('Como usar as fichas de matemática adaptadas para alunos com diferentes neurodivergências: '
                  'versões A, B e C, princípios do DUA e o que costuma ajudar em cada caso. As fichas ficam no Material adaptado.')
     imagem = f'{site}/matematica-adaptada/og-matematica-adaptada.jpg'
     alt = 'Card com o título Matemática adaptada e a captura de uma ficha para imprimir com três níveis de apoio.'
@@ -1085,7 +1085,7 @@ def pagina_matematica_adaptada(cfg):
     <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Matemática adaptada</li></ol></nav>
     <p class="rotulo">Como usar o material adaptado</p>
     <h1>Matemática <span class="marca">adaptada</span></h1>
-    <p class="linha-fina">Orientações para usar as fichas de matemática adaptadas para estudantes com síndrome de Down, autismo em diferentes níveis de suporte e TDAH. As fichas, com três versões da mesma atividade, ficam no <a href="/material-adaptado/">Material adaptado</a>.</p>
+    <p class="linha-fina">Orientações para usar as fichas de matemática adaptadas para alunos com diferentes neurodivergências. As fichas, com três versões da mesma atividade, ficam no <a href="/material-adaptado/">Material adaptado</a>.</p>
     <p class="linha-fina">Por <a href="/blog/quem-e-julia-quoos/" rel="author">Júlia Roberta Quoos Alves</a></p>
     <p class="ir-repositorio"><a class="btn98" href="/material-adaptado/">Ver as {len(indice)} fichas no Material adaptado</a></p>
     <div class="artigo">

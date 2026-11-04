@@ -31,20 +31,30 @@ def inserir(texto):
 ''')
     stat = f'          <a class="stat stat-computacao" href="#computacao"><b>{n}</b><span>fichas de computação (6º ao 9º)</span></a>\n'
 
-    def cartao(f):
-        return (f'<li><a class="ficha-card" href="/computacao-adaptada/fichas/{f["slug"]}/">'
-                f'<span class="cod">{esc(f["codigo"])} · {esc(f["eixo"])}</span><strong>{esc(f["titulo"])}</strong>'
-                f'<span class="resumo">{esc(f["resumo"])}</span><span class="meta">Versões A, B e C · orientações · PDF</span></a></li>')
-    anos = ''.join(f'<h3 id="computacao-{a}">{a}º ano</h3><ul class="fichas-grade">{"".join(cartao(f) for f in fichas if f["ano"] == a)}</ul>'
-                   for a in sorted({f['ano'] for f in fichas}))
-    secao = (f'<section class="ano-secao computacao-anos" id="computacao"><h2>Computação</h2>'
+    textos = {}
+    hab = Path(__file__).resolve().parents[1] / 'planejamento' / 'habilidades.json'
+    if hab.exists():
+        textos = {h['codigo']: h['texto'] for h in json.loads(hab.read_text(encoding='utf-8')).get('CO', [])}
+    blocos = []
+    for a in sorted({f['ano'] for f in fichas}):
+        doano = sorted((f for f in fichas if f['ano'] == a), key=lambda f: f['codigo'])
+        linhas = []
+        for eixo in dict.fromkeys(f['eixo'] for f in doano):
+            linhas.append(f'<tr class="unidade"><th colspan="3">{esc(eixo)}</th></tr>')
+            for f in (g for g in doano if g['eixo'] == eixo):
+                linhas.append(f'<tr><td><b>{esc(f["codigo"])}</b></td><td>{esc(textos.get(f["codigo"], f["resumo"]))}</td>'
+                              f'<td><a href="/computacao-adaptada/fichas/{f["slug"]}/">{esc(f["titulo"])}</a></td></tr>')
+        blocos.append(f'<details class="mapa-ano" id="computacao-{a}"><summary>{a}º ano · {len(doano)} habilidades com ficha</summary>'
+                      f'<div class="mapa-rolagem"><table class="mapa-bncc"><thead><tr><th>Código</th><th>Habilidade</th><th>Ficha</th></tr></thead>'
+                      f'<tbody>{"".join(linhas)}</tbody></table></div></details>')
+    secao = (f'<section class="ano-secao" id="computacao"><h2>Mapa da BNCC: Computação</h2>'
              f'<p class="intro-mapa">Uma ficha por habilidade de Computação da BNCC, do 6º ao 9º ano, adaptada das folhas para imprimir de BNCC Computação. '
-             f'Cada ficha tem as versões A, B e C da mesma atividade e a folha do professor. Veja também as <a href="/material-didatico/bncc/">habilidades de Computação</a> no material didático.</p>'
-             f'{anos}</section>\n    ')
+             f'Abra o ano e escolha a habilidade: cada ficha tem as versões A, B e C da mesma atividade e a folha do professor. Veja também as <a href="/material-didatico/bncc/">habilidades de Computação</a> no material didático.</p>'
+             f'{"".join(blocos)}</section>\n    ')
     trocas = [
         ('      </div>\n      <section class="bloco-anos"', porta + '      </div>\n      <section class="bloco-anos"'),
         ('        </div>\n      </div>\n      <div class="areas">', stat + '        </div>\n      </div>\n      <div class="areas">'),
-        ('<section class="ano-secao" id="mapa-bncc">', secao + '<section class="ano-secao" id="mapa-bncc">'),
+        ('    </section>\n  </div>\n  <script>', '    </section>\n    ' + secao.rstrip() + '\n  </div>\n  <script>'),
         ('</main>', ESTILO + '\n</main>'),
         ('para a turma toda aprender junto.</p>', 'para a turma toda aprender junto. Também há fichas adaptadas de computação, do 6º ao 9º ano.</p>'),
     ]
