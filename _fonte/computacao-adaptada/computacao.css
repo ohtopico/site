@@ -1,0 +1,63 @@
+/* Peças extras das fichas de computação adaptada (a base é /matematica-adaptada/assets/fichas.css).
+   Folha sempre branca: cor só nos detalhes. */
+.txt { font-size: 13pt; line-height: 1.4; margin: 0 0 2.5mm; }
+.folha[data-versao="A"] .txt { font-size: 15pt; }
+.folha[data-versao="C"] .txt { font-size: 12pt; }
+.quadro-texto { border: 1.5px solid #111; border-radius: 3mm; font-size: 13pt; line-height: 1.45; margin: 0 0 3mm; padding: 2.5mm 4mm; }
+.quadro-texto.cinza { background: #f4f4f2; }
+.folha[data-versao="C"] .quadro-texto { font-size: 11.5pt; }
+.codigo { background: #fff; border: 1.5px solid #111; border-left: 3mm solid #111; border-radius: 2mm; font: 500 12.5pt/1.5 'Courier New', monospace; margin: 0 0 3mm; padding: 2mm 4mm; white-space: pre; }
+.folha[data-versao="A"] .codigo { font-size: 15pt; }
+.cartoes-co { display: grid; gap: 3mm; grid-template-columns: repeat(var(--colunas), 1fr); margin: 0 0 2mm; }
+.cartoes-co span { align-items: center; border: 1.8px solid #111; border-radius: 3mm; display: flex; font: 600 13pt var(--body); justify-content: center; min-height: 14mm; padding: 2mm; text-align: center; }
+.folha[data-versao="A"] .cartoes-co span { font-size: 16pt; min-height: 18mm; }
+.tabela-folha td.centro { text-align: center; }
+.marcar-tab td { font-size: 12pt; }
+.folha[data-versao="A"] .marcar-tab td { font-size: 14pt; }
+.marcar-tab .marcar { height: 8mm; width: 8mm; vertical-align: middle; }
+.marcar.feito { background: #fff36b; position: relative; }
+.marcar.feito::after { content: '✓'; font: 700 14pt/8mm var(--body); left: 0; position: absolute; text-align: center; top: -.5mm; width: 100%; }
+.marcar-tab tr.ex td { border-style: dashed; }
+.ordenar { display: grid; gap: 2.5mm 6mm; grid-template-columns: repeat(var(--colunas), 1fr); }
+.ordem { align-items: center; display: flex; font-size: 13pt; gap: 3mm; }
+.ordem .resposta { flex: 0 0 auto; font-size: 14pt; height: 10mm; min-width: 10mm; }
+.folha[data-versao="A"] .ordem { font-size: 15pt; }
+.escolhas { display: grid; gap: 3mm 6mm; grid-template-columns: repeat(var(--colunas), 1fr); }
+.escolha { border-bottom: 1px dashed #9a9a96; padding: 0 0 2.5mm; }
+.escolha p { font-size: 13pt; margin: 0 0 2mm; }
+.folha[data-versao="A"] .escolha p { font-size: 15pt; }
+.escolha .opcoes { flex-wrap: wrap; gap: 3mm; }
+.escolha .opcao { font-size: 13pt; min-height: 11mm; }
+.folha[data-versao="A"] .escolha .opcao { font-size: 15pt; min-height: 13mm; }
+.resp-co { align-items: flex-end; display: flex; font-size: 13pt; gap: 2mm; margin: 2.5mm 0 0; }
+.caixas-co { display: grid; gap: 3mm; grid-template-columns: repeat(var(--colunas), 1fr); }
+.caixa-co { border: 1.8px solid #111; border-radius: 3mm; padding: 2mm 3mm; }
+.caixa-co b { font: 600 11.5pt var(--body); }
+.vetor { display: flex; gap: 0; margin: 0 0 3mm; }
+.vetor .cel { align-items: center; border: 2px solid #111; display: inline-flex; flex-direction: column; height: 15mm; justify-content: center; margin-right: -2px; min-width: 15mm; padding: 0 2mm; }
+.vetor .cel b { font: 600 15pt var(--body); }
+.vetor .cel i { color: #4a4a4a; font: 400 8.5pt var(--body); }
+.vetor .cel.vazia { background: #fff9c2; }
+.grafo, .labirinto { display: block; height: auto; max-width: 100%; }
+.cmds { display: flex; flex-wrap: wrap; gap: 2mm; margin: 0 0 2mm; }
+.cmd { align-items: center; border: 2px solid #111; border-radius: 2mm; display: inline-flex; font: 600 18pt var(--body); height: 12mm; justify-content: center; width: 12mm; }
+.cmd.vazio { border-style: dashed; }
+.legenda-cmd { display: flex; flex-wrap: wrap; font-size: 11pt; gap: 2mm 6mm; margin: 0 0 3mm; }
+.legenda-cmd .cmd { font-size: 13pt; height: 8mm; width: 8mm; }
+.lado-a-lado { align-items: flex-start; display: grid; gap: 5mm; grid-template-columns: var(--cols, 1fr 1fr); }
+.ex-co { align-items: stretch; margin: 0 0 3mm; padding: 4mm 3mm 3mm; }
+.ligar-par { grid-template-columns: 70mm 6mm 1fr 6mm 70mm; }
+.ligar-lado b { font-weight: 500; font-size: 12.5pt; }
+.folha[data-versao="A"] .ligar-lado b { font-size: 14.5pt; }
+.ligar-lado.exemplo-ligado b { text-decoration: underline 2px; }
+.dado { font: 600 17pt var(--body); }
+.escolha .opcoes, .bloco-corpo > .opcoes { flex-wrap: wrap; justify-content: flex-start; }
+.escolha .opcao, .bloco-corpo > .opcoes .opcao { flex: 0 1 auto; }
+.bloco-corpo .opcao.texto { max-width: 100%; text-align: center; white-space: normal; }
+.escolha .opcao, .bloco-corpo > .opcoes .opcao { margin: 0; }
+.grafo { max-height: 52mm; width: auto; }
+.folha[data-versao="A"] .grafo { max-height: 44mm; }
+.folha .seq-num { flex-wrap: wrap; }
+.folha[data-versao="C"] .seq-num .cel { font-size: 13pt; height: 11mm; min-width: 13mm; }
+.tabela-folha + .tabela-folha { margin-top: 2mm; }
+.marcar-tab th { white-space: nowrap; }
