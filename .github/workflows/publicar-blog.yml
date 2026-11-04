@@ -33,40 +33,58 @@ jobs:
       - name: Instalar Pillow
         run: pip install pillow==11.0.0
 
-      - name: Gerar o blog só com os posts liberados até hoje
-        run: |
-          python _fonte/blog/gerar.py --site . \
-            --imagens _fonte/blog/imagens \
-            --slides _fonte/blog/slides \
-            --ate "$(date +%F)" --sitemap
-
       # Páginas estáticas de planos, fichas, listas e habilidades da BNCC, e o título e o texto dos jogos,
       # dos recursos 3D e dos simuladores escritos no HTML. Usa o Chrome que já vem no runner.
       - name: Instalar o playwright-core (para desenhar as páginas do material didático)
         run: npm install --no-save --prefix "$RUNNER_TEMP/pw" playwright-core@1.48.2
 
-      - name: Gerar as páginas estáticas do material didático
+      # Gera tudo e publica. Se o main mudou enquanto isso (outro merge) ou o GitHub recusar o push
+      # por um erro passageiro, volta para o main mais novo, gera de novo e tenta outra vez,
+      # em vez de tentar juntar arquivos gerados (o que dava conflito no assistente/indice.json).
+      - name: Gerar e publicar se algo mudou
         env:
           NODE_PATH: ${{ runner.temp }}/pw/node_modules
-        run: node _fonte/material/gerar.js
-
-      - name: Atualizar o índice do assistente (chatbot) com as páginas publicadas
-        run: python _fonte/assistente/indexar.py --site .
-
-      - name: Atualizar o índice de aulas do README com os materiais do site
-        run: node _fonte/readme/gerar.js
-
-      - name: Publicar se algo mudou
         run: |
-          # O checkout começa limpo, então tudo o que mudou aqui saiu do gerador
-          # (blog, mentoria, formação continuada, biblioteca de prompts, material didático, sitemap e o que vier depois)
-          git add -A
-          if git diff --cached --quiet; then
-            echo "Nada novo para publicar hoje."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Blog: publica posts agendados até $(date +%d/%m/%Y)"
-          git pull --rebase origin main
-          git push origin HEAD:main
+
+          gerar() {
+            # Blog só com os posts liberados até hoje
+            python _fonte/blog/gerar.py --site . \
+              --imagens _fonte/blog/imagens \
+              --slides _fonte/blog/slides \
+              --ate "$(date +%F)" --sitemap
+            # Páginas estáticas do material didático
+            node _fonte/material/gerar.js
+            # Índice do assistente (chatbot) com as páginas publicadas
+            python _fonte/assistente/indexar.py --site .
+            # Índice de aulas do README com os materiais do site
+            node _fonte/readme/gerar.js
+          }
+
+          for tentativa in 1 2 3 4 5; do
+            echo "::group::Tentativa $tentativa"
+            if [ "$tentativa" -gt 1 ]; then
+              git fetch origin main
+              git reset --hard origin/main
+              git clean -fdq
+            fi
+            gerar
+            # O checkout começa limpo, então tudo o que mudou aqui saiu do gerador
+            git add -A
+            if git diff --cached --quiet; then
+              echo "Nada novo para publicar hoje."
+              echo "::endgroup::"
+              exit 0
+            fi
+            git commit -q -m "Blog: publica posts agendados até $(date +%d/%m/%Y)"
+            if git push origin HEAD:main; then
+              echo "::endgroup::"
+              exit 0
+            fi
+            echo "::endgroup::"
+            echo "O push não entrou (main mudou ou erro do GitHub). Esperando para tentar de novo."
+            sleep $((tentativa * 15))
+          done
+          echo "::error::Não consegui publicar depois de 5 tentativas."
+          exit 1
