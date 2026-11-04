@@ -838,10 +838,12 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
       o.connect(gn).connect(AC.destination); o.start(t0); o.stop(t0 + (d || .14) + .02);
     } catch (e) { /* sem som neste navegador */ }
   }
-  const somAcerto = () => { bip(660, .12); bip(880, .12, 'triangle', .07, .1); bip(1175, .18, 'triangle', .06, .2); };
-  const somErro = () => { bip(220, .22, 'square', .035); bip(165, .3, 'square', .03, .15); };
-  const somPeca = () => { bip(990, .08, 'sine', .06); bip(1320, .1, 'sine', .05, .07); };
-  const somMarco = () => [523, 659, 784, 1047].forEach((f, i) => bip(f, .2, 'triangle', .07, i * .12));
+  // legenda de cada som para estudantes surdos (painel de Acessibilidade, /assets/acessibilidade.js)
+  const leg = t => { if (window.MDA) MDA.legenda(t); };
+  const somAcerto = () => { leg('Som de acerto'); bip(660, .12); bip(880, .12, 'triangle', .07, .1); bip(1175, .18, 'triangle', .06, .2); };
+  const somErro = () => { leg('Som de tente de novo'); bip(220, .22, 'square', .035); bip(165, .3, 'square', .03, .15); };
+  const somPeca = () => { leg('Som de peça encaixada'); bip(990, .08, 'sine', .06); bip(1320, .1, 'sine', .05, .07); };
+  const somMarco = () => { leg('Música de conquista'); [523, 659, 784, 1047].forEach((f, i) => bip(f, .2, 'triangle', .07, i * .12)); };
   function marcaSom() { const b = $('b-som'); b.setAttribute('aria-pressed', S.som ? 'true' : 'false'); b.setAttribute('aria-label', S.som ? 'Som ligado' : 'Som desligado'); }
 
   /* ---------- Diálogos ---------- */
