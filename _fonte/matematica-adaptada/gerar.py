@@ -23,6 +23,10 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI.parent / 'braille'))
 import links as braille_links  # noqa: E402
+import importlib.util  # noqa: E402
+_spec = importlib.util.spec_from_file_location('glossario_links', AQUI.parent / 'glossario-libras' / 'links.py')
+glossario = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(glossario)  # palavras da ficha no glossário em Libras
 sys.path.insert(0, str(AQUI))
 from fichas import FICHAS as BASE  # noqa: E402
 import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9, hab1, hab2, hab3, hab4, hab5, hab6, hab7, hab8, hab9  # noqa: E401,E402
@@ -210,6 +214,7 @@ def pagina(f, i, total):
         <p class="nota">Esses ajustes são pontos de partida. Cada estudante é único: observe o que funciona, converse com a família e com a equipe do AEE e siga o plano individual (PEI), quando houver.</p>
         {f'<details class="gabarito"><summary>Gabarito</summary><ul>{gab}</ul></details>' if gab else ''}
         {braille_links.secao(f["slug"])}
+        {glossario.secao(f, 'mat')}
         <h2 id="folhas">Folhas para imprimir</h2>
         <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a versão de que precisa ou baixe o PDF com todas, incluindo a folha de orientações.</p>
     </div>
@@ -327,6 +332,7 @@ def gerar_hub(fichas, mapa):
         <a class="atalho destaque" href="/matematica-adaptada/"><strong>Como usar o material</strong><span>Versões A, B e C, apoios e perguntas frequentes</span></a>
         <a class="atalho" href="#mapa-bncc"><strong>Mapa da BNCC</strong><span>As {total_h} habilidades e a ficha de cada uma</span></a>
         <a class="atalho" href="#braille"><strong>Braille e moldes táteis</strong><span>Arquivos .brf e figuras em relevo para estudantes cegos</span></a>
+        <a class="atalho" href="/material-adaptado/glossario/"><strong>Glossário em Libras</strong><span>Palavras de Matemática e Computação com QR code do sinal</span></a>
         <a class="atalho" href="/matematica-adaptada/fichas/kit-de-apoio-visual/"><strong>Kit de apoio visual</strong><span>Quadros e cartões para a mesa</span></a>
         <a class="atalho" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20sugerir%20um%20material%20adaptado." target="_blank" rel="noopener"><strong>Sugerir um material</strong><span>Conte o conteúdo e o apoio de que o estudante precisa</span></a>
       </nav>
@@ -336,6 +342,7 @@ def gerar_hub(fichas, mapa):
   <div class="wrap repositorio">
     <p class="como-usar">Primeira vez aqui? Leia <a href="/matematica-adaptada/">como usar o material adaptado</a>: como escolher entre as versões A, B e C e o que costuma ajudar alunos com diferentes necessidades.</p>
     {braille_links.hub()}
+    {glossario.hub()}
     <section class="ano-secao" id="mapa-bncc"><h2>Mapa da BNCC: Matemática</h2>
       <p class="intro-mapa">Abra o ano e escolha a habilidade: cada linha leva à ficha dela, com as versões A, B e C, as orientações e o PDF. As fichas de revisão, que juntam habilidades de um mesmo tema, aparecem marcadas. Do 1º ao 5º ano, o texto é um resumo da habilidade; do 6º ao 9º, é o texto da BNCC.</p>
       {''.join(blocos)}
