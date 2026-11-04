@@ -1,0 +1,57 @@
+<p>No <a href="/blog/imagem-digital-e-uma-tabela-de-numeros/">Bit a Bit #06</a> vimos que uma imagem é uma tabela de pixels. As letras que aparecem na tela funcionam do mesmo jeito: cada uma é uma pequena grade de quadradinhos pintados ou vazios. Este bônus da série traz um passo a passo para a turma criar a própria fonte, do papel quadriculado a um arquivo que pode ser instalado no computador.</p>
+
+<h2>Toda letra é uma grade</h2>
+<p>Nas primeiras telas e impressoras matriciais, cada letra era desenhada numa grade de 5 colunas por 7 linhas. Cada linha tem 5 pixels e, portanto, vira 5 bits. A letra A, por exemplo, fica assim:</p>
+<div class="tabela"><table><thead><tr><th scope="col">Linha</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th><th scope="col">7</th></tr></thead><tbody><tr><th scope="row">Bits</th><td>01110</td><td>10001</td><td>10001</td><td>11111</td><td>10001</td><td>10001</td><td>10001</td></tr></tbody></table></div>
+<p>As fontes de hoje são desenhadas com curvas e não com quadradinhos, mas, na hora de mostrar o texto, a tela continua transformando cada letra em pixels.</p>
+
+<!-- imagem -->
+
+<h2>Passo a passo</h2>
+<ol>
+<li><strong>Grade.</strong> Prepare uma grade de 5 colunas por 7 linhas para cada letra.</li>
+<li><strong>Desenhe.</strong> Pinte os pixels da letra. Mantenha a mesma altura em todas as letras.</li>
+<li><strong>Codifique.</strong> Escreva cada linha em zeros e uns: 1 para pintado, 0 para vazio.</li>
+<li><strong>Monte.</strong> No FontStruct, uma ferramenta gratuita e on-line, monte cada letra com quadradinhos, copiando a grade do papel.</li>
+<li><strong>Baixe.</strong> Baixe o arquivo .ttf e instale no computador. A fonte aparece no editor de texto como qualquer outra.</li>
+</ol>
+
+<h2>Dicas de quem desenha fontes</h2>
+<ul>
+<li>Use a mesma largura de traço em todas as letras.</li>
+<li>O espaço entre as letras também faz parte do desenho.</li>
+<li>Teste a fonte escrevendo uma palavra inteira, não letras soltas.</li>
+</ul>
+
+<h2>Na sala de aula</h2>
+<p>A atividade trabalha a habilidade EF04CO05 da BNCC Computação, sobre codificar informações em binário e em pixels, e a EF04CO01, sobre representar objetos em matrizes. O resultado é um produto coletivo: a fonte da turma pode ser usada em cartazes, convites e murais da escola.</p>
+<p>No próximo post: <a href="/blog/algoritmo-e-receita-de-bolo/">algoritmo é receita de bolo?</a></p>
+
+<h2>Plano de aula: o alfabeto da turma</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>4º ao 7º ano</td></tr>
+<tr><th scope="row">Duração</th><td>2 aulas de 50 minutos (desenho e montagem)</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF04CO01: representar objetos por matrizes, com cada item numa posição definida por coordenadas. EF04CO05: codificar informações para representação em computador (binária, ASCII, pixel/RGB)</td></tr>
+<tr><th scope="row">Materiais</th><td>Papel quadriculado com grades de 5 por 7, lápis, um computador com internet para a montagem no FontStruct (pode ser só o da professora ou do professor)</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>A primeira aula é desplugada; a montagem pode ser feita pela professora ou pelo professor, com projetor</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> codificar letras em pixels e bits e produzir uma fonte digital coletiva.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Quem desenha as letras do computador?”</li>
+<li><strong>A letra A (10 min).</strong> Mostre a grade do A e leia os bits de cada linha com a turma.</li>
+<li><strong>Regras da turma (5 min).</strong> Combinem a altura das letras, a largura do traço e se haverá letras minúsculas.</li>
+<li><strong>Desenho (25 min).</strong> Cada aluno desenha 1 ou 2 letras na grade e escreve os bits ao lado. Confiram juntos se todas as 26 letras foram feitas.</li>
+<li><strong>Frase de teste (5 min).</strong> A turma junta as letras no papel e escreve uma frase para ver se o conjunto ficou harmonioso.</li>
+<li><strong>Segunda aula: montagem.</strong> Com o projetor, montem as letras no FontStruct a partir dos bits, baixem o arquivo e escrevam o nome da turma com a fonte nova.</li>
+</ol>
+<p><strong>Avaliação:</strong> a letra desenhada e os bits correspondentes mostram se o aluno codifica a grade corretamente.</p>
+<p><strong>Adaptações:</strong> grades em relevo ou com peças de encaixe para alunos cegos ou com baixa visão. Alunos que terminarem antes podem desenhar números e sinais de pontuação.</p>
+
+<!-- slides -->
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades EF04CO01 e EF04CO05: <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>FontStruct, ferramenta gratuita de criação de fontes: <a href="https://fontstruct.com/" rel="noopener">fontstruct.com</a>.</li>
+</ul>

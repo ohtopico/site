@@ -1,0 +1,53 @@
+<p>No <a href="/blog/do-bit-ao-terabyte-unidades-de-medida-da-informacao/">Bit a Bit #04</a> vimos que uma letra ocupa cerca de um byte. Mas se o computador só guarda números, como ele guarda uma letra? E por que, às vezes, um arquivo mostra “Ã§” no lugar de “ç”?</p>
+
+<h2>Uma tabela combinada</h2>
+<p>A solução é uma tabela em que cada símbolo recebe um número. Para que um texto escrito num computador seja lido em outro, todos precisam usar a mesma tabela. A primeira tabela amplamente adotada foi o <strong>ASCII</strong>, de 1963, com 128 símbolos: letras sem acento, algarismos, pontuação e alguns comandos.</p>
+<div class="tabela"><table><thead><tr><th scope="col">Símbolo</th><th scope="col">A</th><th scope="col">B</th><th scope="col">a</th><th scope="col">0</th></tr></thead><tbody><tr><th scope="row">Número</th><td>65</td><td>66</td><td>97</td><td>48</td></tr></tbody></table></div>
+<p>O “A” é 65, que em binário é 01000001. Repare que o algarismo 0 não vale zero na tabela: ele é o símbolo número 48.</p>
+
+<!-- imagem -->
+
+<h2>Unicode: todas as escritas</h2>
+<p>O ASCII foi pensado para o inglês e não tinha “ç”, “ã” nem acentos. Durante anos, cada país usou uma tabela diferente, e os textos se embaralhavam ao passar de um sistema para outro. O <strong>Unicode</strong> resolveu isso com uma única tabela para todas as escritas do mundo, que hoje passa de 150 mil caracteres, incluindo os emojis.</p>
+<p>No formato mais usado na internet, o <strong>UTF-8</strong>, cada caractere ocupa de 1 a 4 bytes. As letras do ASCII continuam com 1 byte, o que manteve os arquivos antigos compatíveis:</p>
+<ul>
+<li>A: número 65, ocupa 1 byte.</li>
+<li>ç: número 231, ocupa 2 bytes (C3 A7, em hexadecimal).</li>
+<li>Emoji de rosto sorridente: número 128512 (U+1F600), ocupa 4 bytes.</li>
+</ul>
+
+<h2>O mistério do “Ã§”</h2>
+<p>Quando um arquivo é salvo em UTF-8, o “ç” vira os dois bytes C3 e A7. Se outro programa abre esse arquivo usando uma tabela antiga, de um byte por letra, ele lê cada byte separadamente: C3 vira “Ã” e A7 vira “§”. O texto não está estragado; ele só foi lido com a tabela errada. Na maioria dos programas, basta escolher UTF-8 na hora de abrir ou importar o arquivo.</p>
+
+<h2>Na sala de aula</h2>
+<p>A habilidade EF04CO05 da BNCC Computação cita o ASCII diretamente, ao pedir que os alunos codifiquem informações para representação em computador. A atividade da pulseira binária junta o código das letras com o binário do <a href="/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/">Bit a Bit #02</a>.</p>
+<p>No próximo post: <a href="/blog/imagem-digital-e-uma-tabela-de-numeros/">e uma foto, também é número?</a></p>
+
+<h2>Plano de aula: pulseira binária</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>4º ao 6º ano</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF04CO04: entender que, para guardar, manipular e transmitir dados, é preciso codificá-los. EF04CO05: codificar informações para representação em computador (binária, ASCII, pixel/RGB)</td></tr>
+<tr><th scope="row">Materiais</th><td>Tabela ASCII das letras maiúsculas (65 a 90), cartões binários de 128 a 1, miçangas de duas cores (verde = 1, amarela = 0) e fio</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim, a aula é toda desplugada</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> entender que cada letra corresponde a um número e representá-la em 8 bits.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Como o computador guarda a letra ç? E um emoji?”</li>
+<li><strong>A tabela (10 min).</strong> Apresente o ASCII e localize juntos o A (65) e o B (66). A turma percebe que as letras seguem em ordem.</li>
+<li><strong>Em binário (10 min).</strong> Com os cartões de 128 a 1, convertam o 65 em 01000001. Cada aluno converte a primeira letra do próprio nome.</li>
+<li><strong>Pulseira (20 min).</strong> Cada aluno monta a pulseira com as iniciais ou o primeiro nome, com uma miçanga de outra cor separando as letras. Depois, troca com um colega, que decifra o nome. Letras acentuadas podem ser escritas sem acento, o que abre a conversa sobre o Unicode.</li>
+<li><strong>Fechamento (5 min).</strong> Mostre o “Ã§” e explique a tabela errada. Pergunta para a próxima aula: “E uma foto, também é número?”</li>
+</ol>
+<p><strong>Avaliação:</strong> a pulseira e a decifração do nome do colega mostram se o aluno converte nos dois sentidos.</p>
+<p><strong>Adaptações:</strong> miçangas de formatos diferentes (redonda = 1, quadrada = 0) tornam a pulseira legível pelo tato. Para turmas menores, use só as iniciais.</p>
+
+<!-- slides -->
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades EF04CO04 e EF04CO05: <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Tabela Unicode e codificação UTF-8: <a href="https://home.unicode.org/" rel="noopener">Unicode Consortium</a>.</li>
+<li>Atividade de codificação de texto: inspirada no CS Unplugged, projeto da Universidade de Canterbury (Nova Zelândia), material aberto.</li>
+</ul>

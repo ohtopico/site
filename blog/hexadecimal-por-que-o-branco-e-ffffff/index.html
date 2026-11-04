@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hexadecimal: por que o branco é #FFFFFF? | Júlia Quoos</title>
+<meta name="description" content="O que é o sistema hexadecimal, por que cada símbolo vale 4 bits e como ler códigos de cor #RRGGBB. Plano de aula e slides. Bit a Bit #03.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/">
+<meta property="og:title" content="Hexadecimal: por que o branco é #FFFFFF? | Júlia Quoos">
+<meta property="og:description" content="O que é o sistema hexadecimal, por que cada símbolo vale 4 bits e como ler códigos de cor #RRGGBB. Plano de aula e slides. Bit a Bit #03.">
+<meta property="og:image" content="https://ohtopico.com.br/blog/img/03-hexadecimal.png">
+<meta property="og:image:alt" content="Selo Bit a Bit número 3. Título: “Hexadecimal: 16 símbolos”. Subtítulo: depois do 9 vêm letras; cada símbolo vale exatamente 4 bits. Uma grade com os 16 símbolos, cada um com seu valor decimal e seus 4 bits: 0 a 9 iguais ao decimal, e as letras em destaque amarelo: A = 10 (1010), B = 11 (1011), C = 12 (1100), D = 13 (1101), E = 14 (1110), F = 15 (1111). Embaixo, um quadrado verde com o código de cor #157F3B: vermelho 15 = 21, verde 7F = 127, azul 3B = 59. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:published_time" content="2026-10-28">
+<meta property="article:author" content="https://ohtopico.com.br/">
+<meta property="article:section" content="Bit a Bit">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/#post",
+      "headline": "Hexadecimal: por que o branco no computador é #FFFFFF",
+      "description": "O que é o sistema hexadecimal, por que cada símbolo vale 4 bits e como ler códigos de cor #RRGGBB. Plano de aula e slides. Bit a Bit #03.",
+      "url": "https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/",
+      "mainEntityOfPage": "https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://ohtopico.com.br/blog/img/03-hexadecimal.png",
+        "width": 1080,
+        "height": 1350
+      },
+      "datePublished": "2026-10-28",
+      "dateModified": "2026-10-28",
+      "inLanguage": "pt-BR",
+      "keywords": [
+        "sistema hexadecimal",
+        "código de cor",
+        "RGB",
+        "EF04CO05",
+        "Bit a Bit"
+      ],
+      "articleSection": "Bit a Bit",
+      "author": {
+        "@type": "Person",
+        "@id": "https://ohtopico.com.br/#julia",
+        "name": "Júlia Roberta Quoos Alves",
+        "alternateName": [
+          "Júlia Quoos",
+          "Júlia Roberta Quoos",
+          "Quoos"
+        ],
+        "url": "https://ohtopico.com.br/"
+      },
+      "publisher": {
+        "@id": "https://ohtopico.com.br/#julia"
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://ohtopico.com.br/blog/#blog",
+        "name": "Blog de Júlia Roberta Quoos Alves"
+      },
+      "timeRequired": "PT5M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://ohtopico.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://ohtopico.com.br/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Hexadecimal: por que o branco no computador é #FFFFFF",
+          "item": "https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+if (window.self !== window.top) document.documentElement.classList.add('emoldurado');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/blog/assets/blog.css?v=b39a7f205a">
+<link rel="alternate" type="application/rss+xml" title="Blog de Júlia Roberta Quoos Alves" href="/blog/feed.xml">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body data-contador="ohtopico">
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="area">
+<div class="janela">
+    <header class="cabecalho">
+        <a class="marca-site" href="/">Júlia Quoos</a>
+        <nav class="cabecalho-links" aria-label="Principal">
+            <a href="/blog/" aria-current="page">Blog</a>
+            <a href="/material-didatico/">Material didático</a>
+            <a href="/formacao-e-mentoria/">Formação e mentoria</a>
+        </nav>
+    </header>
+    <div class="corpo">
+        <main class="pagina" id="conteudo" tabindex="-1">
+<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/blog/">Blog</a></li><li aria-current="page">Bit a Bit</li></ol></nav>
+    <p class="rotulo">Bit a Bit</p>
+    <h1>Hexadecimal: por que o branco no computador é #FFFFFF</h1>
+    <p class="linha-fina">O que é o sistema hexadecimal, por que cada símbolo vale 4 bits e como ler códigos de cor #RRGGBB. Plano de aula e slides. Bit a Bit #03.</p>
+    <div class="meta">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="36" height="36">
+        <span>Por <a href="/blog/quem-e-julia-quoos/" rel="author">Júlia Roberta Quoos Alves</a></span>
+        <span><time datetime="2026-10-28">28 de outubro de 2026</time></span>
+        <span>5 min de leitura</span>
+    </div>
+    <div class="artigo">
+<p>No <a href="/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/">Bit a Bit #02</a> vimos que o computador guarda tudo como 0 e 1. O problema é que números binários ficam compridos muito rápido: o 255 já precisa de oito casas, 11111111. Para escrever menos e errar menos, programadores usam outro sistema, o hexadecimal. É por isso que a cor branca, no computador, se chama #FFFFFF.</p>
+
+<h2>Depois do 9, letras</h2>
+<p>O hexadecimal tem 16 símbolos. Os dez primeiros são os mesmos do decimal, de 0 a 9. Como não existe um algarismo único para 10, 11 ou 15, o sistema empresta as primeiras letras do alfabeto:</p>
+<div class="tabela"><table><thead><tr><th scope="col">Símbolo</th><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">E</th><th scope="col">F</th></tr></thead><tbody><tr><th scope="row">Vale</th><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr></tbody></table></div>
+<p>A regra posicional continua igual: no decimal cada casa vale 10 vezes a da direita, no binário vale 2 vezes, e no hexadecimal vale 16 vezes. Depois do F, a casa enche, volta para 0 e sobe um: o 10 hexadecimal vale dezesseis.</p>
+
+<!-- imagem -->
+
+<figure class="infografico">
+<img src="/blog/img/03-hexadecimal.png" width="1080" height="1350" alt="Selo Bit a Bit número 3. Título: “Hexadecimal: 16 símbolos”. Subtítulo: depois do 9 vêm letras; cada símbolo vale exatamente 4 bits. Uma grade com os 16 símbolos, cada um com seu valor decimal e seus 4 bits: 0 a 9 iguais ao decimal, e as letras em destaque amarelo: A = 10 (1010), B = 11 (1011), C = 12 (1100), D = 13 (1101), E = 14 (1110), F = 15 (1111). Embaixo, um quadrado verde com o código de cor #157F3B: vermelho 15 = 21, verde 7F = 127, azul 3B = 59. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br." loading="lazy" decoding="async">
+<figcaption>Os 16 símbolos do hexadecimal, cada um com seus 4 bits. <a href="/blog/img/03-hexadecimal.png" download>Baixar imagem</a></figcaption>
+</figure>
+
+<h2>Um símbolo, quatro bits</h2>
+<p>A grande vantagem do hexadecimal é que 16 é igual a 2 × 2 × 2 × 2. Com quatro lâmpadas de valor 8, 4, 2 e 1 dá para escrever de 0 a 15, ou seja, exatamente um símbolo hexadecimal. Assim, cada símbolo corresponde a um grupo de 4 bits:</p>
+<ul>
+<li>A = 1010 (8 + 2)</li>
+<li>B = 1011 (8 + 2 + 1)</li>
+<li>F = 1111 (8 + 4 + 2 + 1)</li>
+<li>3 = 0011 (2 + 1)</li>
+</ul>
+<p>Um byte tem 8 bits, então cabe em dois símbolos. O byte 1111 1111 vira FF, que vale 255 no decimal. A conversão entre hexadecimal e binário se faz de cabeça, de quatro em quatro bits, e é por isso que o hexadecimal aparece tanto em programação, em endereços de memória e em códigos de cor.</p>
+
+<h2>Cores em hexadecimal</h2>
+<p>Na tela, cada cor é uma mistura de luz vermelha, verde e azul. O código #RRGGBB usa dois símbolos para cada uma dessas luzes, de 00 (apagada) a FF (no máximo):</p>
+<ul>
+<li>#FF0000: vermelho no máximo, verde e azul apagados. Resultado: vermelho.</li>
+<li>#FFFF00: vermelho e verde no máximo. Resultado: amarelo.</li>
+<li>#FFFFFF: as três luzes no máximo. Resultado: branco.</li>
+<li>#157F3B: vermelho 15 (21), verde 7F (127) e azul 3B (59). Resultado: o verde da imagem deste post.</li>
+</ul>
+<p>A mistura de vermelho com verde resultando em amarelo costuma surpreender a turma, porque contraria o que se aprende com tintas. Com luz, a mistura soma; com tinta, ela subtrai.</p>
+
+<h2>Na sala de aula</h2>
+<p>O tema está na BNCC Computação: a habilidade EF04CO05 pede codificar informações para representação em computador, citando o binário e os atributos de pixel, como o RGB. Os cartões binários do Bit a Bit #02 servem de novo aqui, só com quatro cartões. Logo abaixo está o plano de aula e os slides.</p>
+<p>No próximo post: <a href="/blog/do-bit-ao-terabyte-unidades-de-medida-da-informacao/">quanto cabe em um pen drive de 16 GB?</a></p>
+
+<h2>Plano de aula: cores secretas</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>5º ao 7º ano</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF04CO04: entender que, para guardar, manipular e transmitir dados, é preciso codificá-los. EF04CO05: codificar informações para representação em computador (binária, ASCII, pixel/RGB)</td></tr>
+<tr><th scope="row">Materiais</th><td>4 cartões binários por grupo (8, 4, 2 e 1), tabela de 0 a F, lápis de cor, fichas com códigos de cor</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim; um computador com projetor ajuda a mostrar as cores no fechamento</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> converter símbolos hexadecimais em binário e interpretar códigos de cor #RRGGBB.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Por que o branco, no computador, se chama #FFFFFF?” Registre as hipóteses no quadro.</li>
+<li><strong>Depois do 9, letras (10 min).</strong> Conte de 0 a 15 com os quatro cartões. A partir do 10, apresente as letras de A a F. A turma monta a tabela de 0 a F com o binário de cada símbolo.</li>
+<li><strong>Conversões (10 min).</strong> Os grupos convertem F, A e 3 para binário com os cartões e depois fazem o caminho inverso: 1011 é qual símbolo?</li>
+<li><strong>Cores secretas (20 min).</strong> Cada grupo recebe três códigos, como #FF0000, #FFFF00 e #00FF00. Para cada um, descobrem quanto de vermelho, verde e azul a cor tem, preveem a cor e a pintam no papel. Ao final, comparem com as cores reais no projetor.</li>
+<li><strong>Fechamento (5 min).</strong> Pergunta para a próxima aula: “Quanto cabe em um pen drive?”</li>
+</ol>
+<p><strong>Avaliação:</strong> a tabela de 0 a F e a previsão das cores mostram se o aluno relaciona cada símbolo aos seus 4 bits e ao valor de cada luz.</p>
+<p><strong>Adaptações:</strong> para alunos com daltonismo, os grupos podem nomear as cores e registrar as quantidades de cada luz, sem depender só da pintura. Para baixa visão, cartões com bolinhas em relevo.</p>
+
+<section class="slides-baixar" aria-labelledby="slides-titulo">
+<h2 id="slides-titulo">Slides para a aula</h2>
+<p>8 slides em PDF (formato 16:9), nas cores do site, seguindo o roteiro do plano acima. É só projetar.</p>
+<a class="btn98 baixar" href="/blog/slides/bit-a-bit-03-slides.pdf" download type="application/pdf"><i class="fa-solid fa-download" aria-hidden="true"></i> Baixar slides (PDF, 738 KB)</a>
+</section>
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades de Computação do 4º ano (EF04CO04 e EF04CO05): <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Códigos de cor em hexadecimal: especificação CSS Color Module Level 4, do W3C.</li>
+</ul>
+    </div>
+    <div class="compartilhar">
+        <p>Compartilhar:</p>
+        <a class="btn98" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fhexadecimal-por-que-o-branco-e-ffffff%2F" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fhexadecimal-por-que-o-branco-e-ffffff%2F" target="_blank" rel="noopener">Facebook<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://wa.me/?text=Hexadecimal%3A%20por%20que%20o%20branco%20no%20computador%20%C3%A9%20%23FFFFFF%20https%3A%2F%2Fohtopico.com.br%2Fblog%2Fhexadecimal-por-que-o-branco-e-ffffff%2F" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a>
+    </div>
+    <aside class="autora" aria-labelledby="sobre-autora">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="72" height="72" loading="lazy">
+        <div>
+            <h2 id="sobre-autora">Júlia Roberta Quoos Alves</h2>
+            <p>Professora de computação no RS, mestranda em Ciência da Computação na UFSM e formadora de professores em inteligência artificial.</p>
+            <p class="links"><a href="/mentoria/">Mentoria para professores</a> <a href="/ia-pra-prof/">Guia IA pra Prof</a> <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a></p>
+        </div>
+    </aside>
+    <nav class="vizinhos" aria-label="Outros posts"><a class="ant" href="/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/" rel="prev"><span>◄ Anterior</span>Números binários: por que o computador só sabe 0 e 1</a><a class="prox" href="/blog/missoes-niveis-e-laboratorio-3d/" rel="next"><span>Próximo ►</span>Missões, níveis e Laboratório 3D: os jogos do material didático</a></nav>
+</article>
+        </main>
+        <aside class="lateral lateral-esq" aria-label="Menu do blog">
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Navegue</h2>
+                <ul class="lista-menu"><li><a href="/"><span aria-hidden="true">◄</span> Área de trabalho</a></li><li><a href="/blog/" aria-current="page"><span aria-hidden="true">⌂</span> Início do blog</a></li><li><a href="/formacao-e-mentoria/"><span aria-hidden="true">✦</span> Formação e mentoria</a></li><li><a href="/para-escolas/"><span aria-hidden="true">▣</span> Para escolas e redes</a></li><li><a href="/prompts-para-professores/"><span aria-hidden="true">❖</span> Biblioteca de prompts</a></li><li><a href="/quiz-pensamento-computacional/"><span aria-hidden="true">✱</span> Quiz de pensamento computacional</a></li><li><a href="/teste-proficiencia-informatica/"><span aria-hidden="true">▤</span> Teste de informática</a></li><li><a href="/curriculo/"><span aria-hidden="true">☺</span> Currículo</a></li></ul>
+                <button type="button" class="btn98 tema-btn" id="tema-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> Tema claro/escuro</button>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Temas</h2>
+                <ul class="lista-menu"><li><a href="/blog/#sobre-mim">Sobre mim</a></li><li><a href="/blog/#ia-na-pratica">IA na prática</a></li><li><a href="/blog/#formacao-de-professores-em-ia">Formação de professores em IA</a></li><li><a href="/blog/#etica-e-lgpd">Ética e LGPD</a></li><li><a href="/blog/#computacao-e-bncc">Computação e BNCC</a></li><li><a href="/blog/#para-estudantes">Para estudantes</a></li><li><a href="/blog/#bit-a-bit">Bit a Bit</a></li><li><a href="/blog/#jogos">Jogos</a></li><li><a href="/blog/#matematica-em-sala">Matemática em sala</a></li></ul>
+            </section>
+            <section class="caixa caixa-verde">
+                <h2 class="caixa-titulo">★ Posts recentes</h2>
+                <ul class="lista-recentes"><li><a href="/blog/como-envolver-alunos-na-matematica/">Como envolver os alunos na aula de matemática</a></li><li><a href="/blog/o-que-acontece-quando-voce-clica/">O que acontece quando você clica: processador, memória e armazenamento</a></li><li><a href="/blog/portas-logicas-e-ou-nao/">E, OU, NÃO: a lógica dentro do chip</a></li><li><a href="/blog/minha-primeira-obmep/">Minha primeira OBMEP: o que preciso saber</a></li><li><a href="/blog/algoritmo-e-receita-de-bolo/">Algoritmo é receita de bolo?</a></li></ul>
+            </section>
+        </aside>
+        <aside class="lateral lateral-dir" aria-label="Projetos e sobre a autora">
+            <nav class="caixa caixa-verde caixa-projetos" aria-label="Projetos">
+                <h2 class="caixa-titulo">★ Projetos</h2>
+                <ul class="lista-menu"><li><a href="/material-didatico/"><span aria-hidden="true">▲</span> Material didático</a></li><li><a href="/material-adaptado/"><span aria-hidden="true">◆</span> Material adaptado</a></li><li><a href="/ia-pra-prof/"><span aria-hidden="true">✎</span> Guia IA pra Prof</a></li><li><a href="/tech-pra-prof/"><span aria-hidden="true">◇</span> Guia Tech pra Prof</a></li><li><a href="/computacao-na-escola/"><span aria-hidden="true">▦</span> Computação na escola</a></li><li><a href="/lei-do-celular-nas-escolas/"><span aria-hidden="true">▮</span> Lei do celular nas escolas</a></li><li><a href="/matematica-adaptada/"><span aria-hidden="true">✚</span> Matemática adaptada</a></li><li><a href="/assistencia-por-voz/"><span aria-hidden="true">◉</span> Assistência por voz</a></li><li><a href="/mundo/professores/"><span aria-hidden="true">⬢</span> Mundo para professores</a></li></ul>
+            </nav>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Quem escreve</h2>
+                <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
+                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA. Do código ao quadro.</p>
+                <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
+            </section>
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Formação e mentoria</h2>
+                <p>Mentoria individual para professores, a partir de R$ 200 a sessão, e formação para escolas e redes.</p>
+                <a class="btn98 escuro" href="/formacao-e-mentoria/">Ver as opções</a>
+            </section>
+            <section class="caixa caixa-contador">
+                <h2 class="caixa-titulo">★ Visitas</h2>
+                <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
+                <p class="miudo">Contador sem cookies e sem dados pessoais.</p>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Selos</h2>
+                <ul class="selos">
+                    <li class="selo selo-amarelo">feito à mão</li>
+                    <li class="selo selo-verde">sem cookies</li>
+                    <li class="selo selo-vermelho">♥ professores</li>
+                    <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</div>
+</div>
+<footer class="rodape">
+    <nav class="letreiro" aria-label="Destaques"><a href="/blog/como-envolver-alunos-na-matematica/">✦ Post novo: Como envolver os alunos na aula de matemática</a><a href="/formacao-e-mentoria/">✦ Formação e mentoria para professores, escolas e redes</a><a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a><a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a><a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a></nav>
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/blog/assets/blog.js?v=b39a7f205a" defer></script>
+<script src="/assistente/assistente.js?v=edf45ba561" defer></script>
+</body>
+</html>

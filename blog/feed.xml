@@ -13,11 +13,39 @@
     <description>Seis técnicas simples para que toda a turma participe da aula de matemática, e não só os alunos que sempre levantam a mão.</description>
   </item>
   <item>
+    <title>O que acontece quando você clica: processador, memória e armazenamento</title>
+    <link>https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/</link>
+    <guid>https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/</guid>
+    <pubDate>Wed, 04 Nov 2026 09:00:00 -0300</pubDate>
+    <description>Processador, memória RAM, armazenamento e entrada e saída comparados a uma cozinha, e por que é preciso salvar. Bit a Bit #09.</description>
+  </item>
+  <item>
+    <title>E, OU, NÃO: a lógica dentro do chip</title>
+    <link>https://ohtopico.com.br/blog/portas-logicas-e-ou-nao/</link>
+    <guid>https://ohtopico.com.br/blog/portas-logicas-e-ou-nao/</guid>
+    <pubDate>Tue, 03 Nov 2026 09:00:00 -0300</pubDate>
+    <description>Como as portas lógicas E, OU e NÃO funcionam, o que é tabela-verdade e como o chip soma em binário. Atividade portas humanas. Bit a Bit #08.</description>
+  </item>
+  <item>
     <title>Minha primeira OBMEP: o que preciso saber</title>
     <link>https://ohtopico.com.br/blog/minha-primeira-obmep/</link>
     <guid>https://ohtopico.com.br/blog/minha-primeira-obmep/</guid>
     <pubDate>Mon, 02 Nov 2026 09:00:00 -0300</pubDate>
     <description>Guia para estudantes que vão fazer a OBMEP pela primeira vez: níveis, fases, o que estudar e estratégias para o dia da prova.</description>
+  </item>
+  <item>
+    <title>Algoritmo é receita de bolo?</title>
+    <link>https://ohtopico.com.br/blog/algoritmo-e-receita-de-bolo/</link>
+    <guid>https://ohtopico.com.br/blog/algoritmo-e-receita-de-bolo/</guid>
+    <pubDate>Mon, 02 Nov 2026 09:00:00 -0300</pubDate>
+    <description>O que é um algoritmo, as três peças (sequência, repetição e decisão) e a atividade desplugada do robô humano. Bit a Bit #07.</description>
+  </item>
+  <item>
+    <title>Crie a sua fonte em pixels com a turma</title>
+    <link>https://ohtopico.com.br/blog/crie-sua-fonte-em-pixels/</link>
+    <guid>https://ohtopico.com.br/blog/crie-sua-fonte-em-pixels/</guid>
+    <pubDate>Sun, 01 Nov 2026 09:00:00 -0300</pubDate>
+    <description>Passo a passo para criar uma fonte em pixels com a turma, do papel quadriculado ao arquivo .ttf no FontStruct. Bônus da série Bit a Bit.</description>
   </item>
   <item>
     <title>Como manter os alunos motivados em matemática o ano inteiro</title>
@@ -27,11 +55,25 @@
     <description>Cinco estratégias para manter a motivação dos alunos em matemática do início ao fim do ano, e o que desmotiva sem a gente perceber.</description>
   </item>
   <item>
-    <title>Números binários: por que o computador só sabe 0 e 1</title>
-    <link>https://ohtopico.com.br/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/</link>
-    <guid>https://ohtopico.com.br/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/</guid>
+    <title>Uma imagem é uma tabela de números: pixels e cores</title>
+    <link>https://ohtopico.com.br/blog/imagem-digital-e-uma-tabela-de-numeros/</link>
+    <guid>https://ohtopico.com.br/blog/imagem-digital-e-uma-tabela-de-numeros/</guid>
+    <pubDate>Sat, 31 Oct 2026 09:00:00 -0300</pubDate>
+    <description>Como uma imagem digital vira uma tabela de números, o que são pixels e RGB, e a atividade de pixel art codificada. Bit a Bit #06.</description>
+  </item>
+  <item>
+    <title>Cada letra é um número: ASCII, Unicode e o mistério do “Ã§”</title>
+    <link>https://ohtopico.com.br/blog/cada-letra-e-um-numero-ascii-unicode/</link>
+    <guid>https://ohtopico.com.br/blog/cada-letra-e-um-numero-ascii-unicode/</guid>
+    <pubDate>Fri, 30 Oct 2026 09:00:00 -0300</pubDate>
+    <description>Como o computador guarda letras com ASCII e Unicode, por que aparece “Ã§” no lugar de “ç” e a atividade da pulseira binária. Bit a Bit #05.</description>
+  </item>
+  <item>
+    <title>Do bit ao terabyte: quanto cabe em um pen drive?</title>
+    <link>https://ohtopico.com.br/blog/do-bit-ao-terabyte-unidades-de-medida-da-informacao/</link>
+    <guid>https://ohtopico.com.br/blog/do-bit-ao-terabyte-unidades-de-medida-da-informacao/</guid>
     <pubDate>Thu, 29 Oct 2026 09:00:00 -0300</pubDate>
-    <description>O que é o sistema binário, por que o computador usa só 0 e 1 e como converter binário em decimal com uma conta simples. Bit a Bit #02.</description>
+    <description>Bit, byte, KB, MB, GB e TB explicados em degraus, por que o HD de 1 TB mostra 931 GB e uma atividade de estimativa. Bit a Bit #04.</description>
   </item>
   <item>
     <title>Missões, níveis e Laboratório 3D: os jogos do material didático</title>
@@ -41,10 +83,24 @@
     <description>Como funcionam as missões do dia, os pontos e os 100 níveis do material didático, e os recursos 3D de Matemática para girar no navegador.</description>
   </item>
   <item>
+    <title>Hexadecimal: por que o branco no computador é #FFFFFF</title>
+    <link>https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/</link>
+    <guid>https://ohtopico.com.br/blog/hexadecimal-por-que-o-branco-e-ffffff/</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:00 -0300</pubDate>
+    <description>O que é o sistema hexadecimal, por que cada símbolo vale 4 bits e como ler códigos de cor #RRGGBB. Plano de aula e slides. Bit a Bit #03.</description>
+  </item>
+  <item>
+    <title>Números binários: por que o computador só sabe 0 e 1</title>
+    <link>https://ohtopico.com.br/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/</link>
+    <guid>https://ohtopico.com.br/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/</guid>
+    <pubDate>Tue, 27 Oct 2026 09:00:00 -0300</pubDate>
+    <description>O que é o sistema binário, por que o computador usa só 0 e 1 e como converter binário em decimal com uma conta simples. Bit a Bit #02.</description>
+  </item>
+  <item>
     <title>Sistema decimal: por que contamos de 10 em 10?</title>
     <link>https://ohtopico.com.br/blog/sistema-decimal-por-que-contamos-de-10-em-10/</link>
     <guid>https://ohtopico.com.br/blog/sistema-decimal-por-que-contamos-de-10-em-10/</guid>
-    <pubDate>Tue, 27 Oct 2026 09:00:00 -0300</pubDate>
+    <pubDate>Mon, 26 Oct 2026 09:00:00 -0300</pubDate>
     <description>O que é o sistema decimal, por que ele tem só 10 símbolos e como o valor posicional prepara o aluno para entender o binário. Bit a Bit #01.</description>
   </item>
   <item>
