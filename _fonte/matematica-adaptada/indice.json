@@ -392,6 +392,202 @@
    ]
   },
   {
+   "slug": "numeros-ate-9999-milhar",
+   "titulo": "Números até 9999: o milhar",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Contar, compor e decompor números de quatro algarismos, ler, escrever, comparar e localizar na reta numérica.",
+   "habilidades": [
+    "EF03MA01",
+    "EF03MA02",
+    "EF03MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "calculo-mental-e-problemas-de-adicao-e-subtracao",
+   "titulo": "Cálculo mental e problemas de adição e subtração",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Fatos básicos, estratégias de cálculo mental, contas armadas e problemas de juntar, acrescentar, retirar, comparar e completar.",
+   "habilidades": [
+    "EF03MA03",
+    "EF03MA05",
+    "EF03MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "divisao-repartir-em-partes-iguais",
+   "titulo": "Divisão: repartir em partes iguais",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Repartir em partes iguais, com e sem resto, e relacionar a divisão com metade, terça, quarta, quinta e décima parte.",
+   "habilidades": [
+    "EF03MA08",
+    "EF03MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "regularidades-e-igualdades",
+   "titulo": "Regularidades em sequências e igualdades",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Descobrir a regra de sequências com adições e subtrações e escrever contas diferentes com o mesmo resultado.",
+   "habilidades": [
+    "EF03MA10",
+    "EF03MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "movimentacao-na-malha-e-mudancas-de-direcao",
+   "titulo": "Movimentação na malha e mudanças de direção",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Seguir e escrever caminhos na malha quadriculada com setas e com ordens de andar e virar, como um robô.",
+   "habilidades": [
+    "EF03MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "solidos-geometricos-e-planificacoes",
+   "titulo": "Sólidos geométricos e planificações",
+   "anos": "3º ao 5º ano",
+   "ano": 3,
+   "resumo": "Reconhecer prismas, pirâmides, cilindros e cones, contar faces, vértices e arestas e associar cada sólido à sua planificação.",
+   "habilidades": [
+    "EF03MA14",
+    "EF04MA17",
+    "EF05MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "poligonos-e-figuras-congruentes",
+   "titulo": "Polígonos e figuras congruentes",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Contar lados e vértices, nomear triângulo, quadrado, retângulo, trapézio e paralelogramo e reconhecer figuras congruentes.",
+   "habilidades": [
+    "EF03MA15",
+    "EF03MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "medidas-e-areas-com-quadradinhos",
+   "titulo": "Medidas e áreas com quadradinhos",
+   "anos": "3º e 4º ano",
+   "ano": 3,
+   "resumo": "Medir com unidades diferentes, comparar superfícies por sobreposição e medir a área de figuras contando quadradinhos.",
+   "habilidades": [
+    "EF03MA17",
+    "EF03MA21",
+    "EF04MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "horas-minutos-e-segundos",
+   "titulo": "Horas, minutos e segundos",
+   "anos": "3º e 4º ano",
+   "ano": 3,
+   "resumo": "Ler horas em relógios de ponteiro e digitais, relacionar hora, minuto e segundo e calcular quanto tempo dura uma atividade.",
+   "habilidades": [
+    "EF03MA23",
+    "EF04MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "compra-venda-e-troca-com-dinheiro",
+   "titulo": "Compra, venda e troca com dinheiro",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Contar dinheiro, decidir se dá para comprar, calcular o total e o troco e trocar cédulas de valores diferentes.",
+   "habilidades": [
+    "EF03MA24"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "chances-o-que-e-mais-provavel",
+   "titulo": "Chances: o que é mais provável?",
+   "anos": "3º e 4º ano",
+   "ano": 3,
+   "resumo": "Listar os resultados possíveis de jogos de moeda, dado, pote e roleta, estimar o mais provável e conferir com experiências.",
+   "habilidades": [
+    "EF03MA25",
+    "EF04MA26"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "tabelas-graficos-e-pesquisa-da-turma",
+   "titulo": "Tabelas, gráficos e pesquisa da turma",
+   "anos": "3º e 4º ano",
+   "ano": 3,
+   "resumo": "Ler gráficos de colunas e tabelas de dupla entrada, construir um gráfico e fazer uma pesquisa com a turma.",
+   "habilidades": [
+    "EF03MA26",
+    "EF03MA27",
+    "EF03MA28",
+    "EF04MA27"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
    "slug": "kit-de-apoio-visual",
    "titulo": "Kit de apoio visual",
    "anos": "1º ao 5º ano",
@@ -822,42 +1018,54 @@
    "ano": 3,
    "unidade": "Números",
    "texto": "Ler, escrever e comparar números naturais até a ordem de unidade de milhar.",
-   "fichas": []
+   "fichas": [
+    "numeros-ate-9999-milhar"
+   ]
   },
   {
    "codigo": "EF03MA02",
    "ano": 3,
    "unidade": "Números",
    "texto": "Identificar características do sistema de numeração decimal, compondo e decompondo números de até quatro ordens.",
-   "fichas": []
+   "fichas": [
+    "numeros-ate-9999-milhar"
+   ]
   },
   {
    "codigo": "EF03MA03",
    "ano": 3,
    "unidade": "Números",
    "texto": "Construir e usar fatos básicos da adição e da multiplicação para o cálculo mental ou escrito.",
-   "fichas": []
+   "fichas": [
+    "calculo-mental-e-problemas-de-adicao-e-subtracao"
+   ]
   },
   {
    "codigo": "EF03MA04",
    "ano": 3,
    "unidade": "Números",
    "texto": "Relacionar números naturais e pontos da reta numérica para ordenar números.",
-   "fichas": []
+   "fichas": [
+    "numeros-ate-9999-milhar"
+   ]
   },
   {
    "codigo": "EF03MA05",
    "ano": 3,
    "unidade": "Números",
    "texto": "Usar diferentes procedimentos de cálculo mental e escrito para a adição e a subtração.",
-   "fichas": []
+   "fichas": [
+    "calculo-mental-e-problemas-de-adicao-e-subtracao"
+   ]
   },
   {
    "codigo": "EF03MA06",
    "ano": 3,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de adição e subtração com os significados de juntar, acrescentar, separar, retirar, comparar e completar.",
-   "fichas": []
+   "fichas": [
+    "calculo-mental-e-problemas-de-adicao-e-subtracao"
+   ]
   },
   {
    "codigo": "EF03MA07",
@@ -873,35 +1081,45 @@
    "ano": 3,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de divisão por números de até 10, com resto zero e diferente de zero.",
-   "fichas": []
+   "fichas": [
+    "divisao-repartir-em-partes-iguais"
+   ]
   },
   {
    "codigo": "EF03MA09",
    "ano": 3,
    "unidade": "Números",
    "texto": "Associar o quociente de uma divisão exata às ideias de metade, terça, quarta, quinta e décima partes.",
-   "fichas": []
+   "fichas": [
+    "divisao-repartir-em-partes-iguais"
+   ]
   },
   {
    "codigo": "EF03MA10",
    "ano": 3,
    "unidade": "Álgebra",
    "texto": "Identificar regularidades em sequências de números naturais obtidas por adições ou subtrações sucessivas.",
-   "fichas": []
+   "fichas": [
+    "regularidades-e-igualdades"
+   ]
   },
   {
    "codigo": "EF03MA11",
    "ano": 3,
    "unidade": "Álgebra",
    "texto": "Compreender a ideia de igualdade para escrever diferentes sentenças com o mesmo resultado.",
-   "fichas": []
+   "fichas": [
+    "regularidades-e-igualdades"
+   ]
   },
   {
    "codigo": "EF03MA12",
    "ano": 3,
    "unidade": "Geometria",
    "texto": "Descrever e representar a localização e a movimentação de pessoas e objetos, com mudanças de direção.",
-   "fichas": []
+   "fichas": [
+    "movimentacao-na-malha-e-mudancas-de-direcao"
+   ]
   },
   {
    "codigo": "EF03MA13",
@@ -917,28 +1135,36 @@
    "ano": 3,
    "unidade": "Geometria",
    "texto": "Descrever características de prismas, pirâmides, cilindros e cones e relacioná-los com suas planificações.",
-   "fichas": []
+   "fichas": [
+    "solidos-geometricos-e-planificacoes"
+   ]
   },
   {
    "codigo": "EF03MA15",
    "ano": 3,
    "unidade": "Geometria",
    "texto": "Classificar e comparar figuras planas (triângulo, quadrado, retângulo, trapézio, paralelogramo) pelos lados e vértices.",
-   "fichas": []
+   "fichas": [
+    "poligonos-e-figuras-congruentes"
+   ]
   },
   {
    "codigo": "EF03MA16",
    "ano": 3,
    "unidade": "Geometria",
    "texto": "Reconhecer figuras congruentes, usando sobreposição e desenhos em malhas.",
-   "fichas": []
+   "fichas": [
+    "poligonos-e-figuras-congruentes"
+   ]
   },
   {
    "codigo": "EF03MA17",
    "ano": 3,
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer que o resultado de uma medida depende da unidade de medida usada.",
-   "fichas": []
+   "fichas": [
+    "medidas-e-areas-com-quadradinhos"
+   ]
   },
   {
    "codigo": "EF03MA18",
@@ -972,7 +1198,9 @@
    "ano": 3,
    "unidade": "Grandezas e medidas",
    "texto": "Comparar áreas de faces de objetos e de figuras planas, visualmente ou por sobreposição.",
-   "fichas": []
+   "fichas": [
+    "medidas-e-areas-com-quadradinhos"
+   ]
   },
   {
    "codigo": "EF03MA22",
@@ -988,42 +1216,54 @@
    "ano": 3,
    "unidade": "Grandezas e medidas",
    "texto": "Ler horas em relógios digitais e analógicos e reconhecer a relação entre hora e minutos e entre minuto e segundos.",
-   "fichas": []
+   "fichas": [
+    "horas-minutos-e-segundos"
+   ]
   },
   {
    "codigo": "EF03MA24",
    "ano": 3,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas de compra, venda e troca com o sistema monetário.",
-   "fichas": []
+   "fichas": [
+    "compra-venda-e-troca-com-dinheiro"
+   ]
   },
   {
    "codigo": "EF03MA25",
    "ano": 3,
    "unidade": "Probabilidade e estatística",
    "texto": "Identificar os resultados possíveis de um evento aleatório e estimar os mais prováveis.",
-   "fichas": []
+   "fichas": [
+    "chances-o-que-e-mais-provavel"
+   ]
   },
   {
    "codigo": "EF03MA26",
    "ano": 3,
    "unidade": "Probabilidade e estatística",
    "texto": "Resolver problemas com dados de tabelas de dupla entrada e de gráficos de barras ou colunas.",
-   "fichas": []
+   "fichas": [
+    "tabelas-graficos-e-pesquisa-da-turma"
+   ]
   },
   {
    "codigo": "EF03MA27",
    "ano": 3,
    "unidade": "Probabilidade e estatística",
    "texto": "Ler, interpretar e comparar dados de tabelas e gráficos, produzindo um texto sobre eles.",
-   "fichas": []
+   "fichas": [
+    "tabelas-graficos-e-pesquisa-da-turma"
+   ]
   },
   {
    "codigo": "EF03MA28",
    "ano": 3,
    "unidade": "Probabilidade e estatística",
    "texto": "Realizar pesquisa com variáveis categóricas (até 50 elementos) e organizar os dados em tabelas e gráficos.",
-   "fichas": []
+   "fichas": [
+    "tabelas-graficos-e-pesquisa-da-turma"
+   ]
   },
   {
    "codigo": "EF04MA01",
@@ -1142,7 +1382,9 @@
    "ano": 4,
    "unidade": "Geometria",
    "texto": "Associar prismas e pirâmides às suas planificações e comparar seus atributos.",
-   "fichas": []
+   "fichas": [
+    "solidos-geometricos-e-planificacoes"
+   ]
   },
   {
    "codigo": "EF04MA18",
@@ -1170,14 +1412,18 @@
    "ano": 4,
    "unidade": "Grandezas e medidas",
    "texto": "Medir, comparar e estimar a área de figuras em malha quadriculada, contando os quadradinhos.",
-   "fichas": []
+   "fichas": [
+    "medidas-e-areas-com-quadradinhos"
+   ]
   },
   {
    "codigo": "EF04MA22",
    "ano": 4,
    "unidade": "Grandezas e medidas",
    "texto": "Ler e registrar medidas de tempo em horas, minutos e segundos e resolver problemas de duração.",
-   "fichas": []
+   "fichas": [
+    "horas-minutos-e-segundos"
+   ]
   },
   {
    "codigo": "EF04MA23",
@@ -1205,14 +1451,18 @@
    "ano": 4,
    "unidade": "Probabilidade e estatística",
    "texto": "Identificar, entre eventos do dia a dia, aqueles que têm maior chance de acontecer.",
-   "fichas": []
+   "fichas": [
+    "chances-o-que-e-mais-provavel"
+   ]
   },
   {
    "codigo": "EF04MA27",
    "ano": 4,
    "unidade": "Probabilidade e estatística",
    "texto": "Analisar dados de tabelas simples ou de dupla entrada e de gráficos de colunas ou pictóricos.",
-   "fichas": []
+   "fichas": [
+    "tabelas-graficos-e-pesquisa-da-turma"
+   ]
   },
   {
    "codigo": "EF04MA28",
@@ -1331,7 +1581,9 @@
    "ano": 5,
    "unidade": "Geometria",
    "texto": "Associar figuras espaciais às suas planificações e comparar seus atributos.",
-   "fichas": []
+   "fichas": [
+    "solidos-geometricos-e-planificacoes"
+   ]
   },
   {
    "codigo": "EF05MA17",
