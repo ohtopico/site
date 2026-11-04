@@ -1,7 +1,7 @@
 /* Mapa interativo da BNCC (/material-adaptado/). Fonte: _fonte/mapa-interativo/mapa-bncc.css */
 .mi-secao { padding: 36px 0 0; scroll-margin-top: 80px; }
 .mi-secao > h2 { margin: 0 0 6px; font-size: clamp(24px, 3vw, 30px); }
-.mi-secao > p { color: var(--ink-2); margin: 0 0 14px; max-width: 680px; }
+.mi-secao > p { color: var(--ink-2); margin: 0 0 14px; max-width: none; }
 #mapa-interativo { --u0: #1f6f43; --u1: #8a4b00; --u2: #1d5fa8; --u3: #a8325a; --u4: #6b4fa8; --u5: #0f7480; --u6: #6f6100; --u7: #b0451c; }
 :root[data-theme="dark"] #mapa-interativo { --u0: #6fd39b; --u1: #f0a860; --u2: #7fb2ec; --u3: #f08cab; --u4: #b9a2ee; --u5: #6fd0da; --u6: #d9c75c; --u7: #f59a72; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #mapa-interativo { --u0: #6fd39b; --u1: #f0a860; --u2: #7fb2ec; --u3: #f08cab; --u4: #b9a2ee; --u5: #6fd0da; --u6: #d9c75c; --u7: #f59a72; } }

@@ -324,7 +324,7 @@ def gerar_hub(fichas, mapa):
         <div class="anos">{''.join(cartao_ano(a) for a in range(1, 10))}</div>
       </section>
       <nav class="atalhos" aria-label="Outros caminhos">
-        <a class="atalho destaque" href="/matematica-adaptada/"><strong>Como usar o material</strong><span>Versões A, B e C, Down, autismo, TDAH e perguntas frequentes</span></a>
+        <a class="atalho destaque" href="/matematica-adaptada/"><strong>Como usar o material</strong><span>Versões A, B e C, apoios e perguntas frequentes</span></a>
         <a class="atalho" href="#mapa-bncc"><strong>Mapa da BNCC</strong><span>As {total_h} habilidades e a ficha de cada uma</span></a>
         <a class="atalho" href="#braille"><strong>Braille e moldes táteis</strong><span>Arquivos .brf e figuras em relevo para estudantes cegos</span></a>
         <a class="atalho" href="/matematica-adaptada/fichas/kit-de-apoio-visual/"><strong>Kit de apoio visual</strong><span>Quadros e cartões para a mesa</span></a>
