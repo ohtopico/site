@@ -517,9 +517,11 @@ def quem_conduz():
     </section>'''
 
 
-# Onde o trabalho já aconteceu: publicações de terceiros sobre as formações (entra nas páginas de formação)
+# Onde o trabalho já aconteceu: (título, resultado da avaliação ou '', fonte, link). Entra nas páginas de formação.
 PROVAS = [
     ('Formação de professores da rede municipal de Lagoão (RS)',
+     'Na avaliação da oficina de matemática, os 6 professores que responderam consideraram os materiais adequados '
+     'e o impacto na prática pedagógica excelente (3) ou bom (3).',
      'Publicação da Secretaria Municipal de Educação, Cultura e Desporto de Lagoão',
      'https://www.facebook.com/smecd.lagoao.9/posts/pfbid02bAHEq765qwf9dj8LqUtbNi1F6bYb7iNqCGyvjhDnz5cfor9rWH8ThRK2r1HHoRXVl'),
 ]
@@ -528,8 +530,8 @@ PROVAS = [
 def secao_provas():
     if not PROVAS:
         return ''
-    itens = '\n'.join(f'''            <li><strong>{esc(t)}</strong><br><a href="{esc(u)}" target="_blank" rel="noopener">{esc(f)}</a></li>'''
-                      for t, f, u in PROVAS)
+    itens = '\n'.join(f'''            <li><strong>{esc(t)}</strong>{f'<br>{esc(d)}' if d else ''}<br><a href="{esc(u)}" target="_blank" rel="noopener">{esc(f)}</a></li>'''
+                      for t, d, f, u in PROVAS)
     return f'''<section class="provas" aria-labelledby="onde-aconteceu">
         <h2 id="onde-aconteceu">Onde o trabalho já aconteceu</h2>
         <ul>
