@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material adaptado: síndrome de Down, autismo e TDAH | Júlia Quoos</title>
+<meta name="description" content="{{DESCRICAO}}">
+<meta property="og:title" content="Material adaptado · Matemática do 1º ao 9º ano (BNCC)">
+<meta property="og:description" content="{{DESCRICAO}}">
+<meta property="og:url" content="https://ohtopico.com.br/material-adaptado/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-adaptado/">
+<meta property="og:image" content="https://ohtopico.com.br/matematica-adaptada/og-matematica-adaptada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Card com o título Matemática adaptada e a captura de uma ficha para imprimir com três níveis de apoio.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/material-didatico/assets/md.css">
+<style>
+  .hero { padding: 56px 0 0; }
+  .hero-top { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px 48px; align-items: end; }
+  .hero h1 { margin: 6px 0 14px; }
+  .hero h1 .marca { white-space: nowrap; }
+  .hero h1 .marca { background: linear-gradient(transparent 58%, var(--marca) 58%, var(--marca) 92%, transparent 92%); padding: 0 .08em; }
+  .hero p.lead { font-size: 19px; color: var(--ink-2); max-width: 580px; margin: 0; }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat { border: 1.5px solid var(--ink); border-radius: 22px; padding: 12px 16px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; align-items: baseline; gap: 10px; transition: background .15s; }
+  .stat:hover { background: var(--pill); }
+  .stat b { font-family: var(--display); font-size: 34px; line-height: 1; }
+  .stat span { font-size: 14px; color: var(--ink-2); }
+  .hero .areas { margin-top: 40px; }
+  .area-door .go { align-self: flex-start; margin-top: 4px; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 9px 18px; font-size: 15px; }
+  .atalhos { margin-top: 18px; padding: 18px 0 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .atalho { border: 1.5px solid var(--ink); border-radius: 22px; padding: 14px 18px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; flex-direction: column; gap: 2px; transition: transform .15s, box-shadow .15s; }
+  .atalho:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .atalho strong { font-family: var(--display); font-size: 19px; }
+  .atalho span { font-size: 14px; color: var(--ink-2); }
+  .atalho.destaque { background: var(--marca); color: #111111; }
+  .atalho.destaque span { color: #3a3a38; }
+  .hero-faixa { border-top: 1.5px solid var(--ink); }
+  :root { --marca: #fff36b; }
+  :root[data-theme="dark"] { --marca: #5c5200; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --marca: #5c5200; } }
+  :root[data-theme="dark"] .atalho.destaque, :root[data-theme="dark"] .atalho.destaque span { color: #f3f3f1; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .atalho.destaque, :root:not([data-theme="light"]) .atalho.destaque span { color: #f3f3f1; } }
+  @media (max-width: 900px) { .hero-top { grid-template-columns: 1fr; } .atalhos { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .hero { padding-top: 36px; } .atalho { padding: 12px 14px; } .atalho strong { font-size: 17px; } .stat b { font-size: 28px; } }
+  .anos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 14px 0 0; }
+  .ano { border: 1.5px solid var(--ink); border-radius: 22px; padding: 12px 16px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; flex-direction: column; gap: 2px; transition: transform .15s, box-shadow .15s; }
+  .ano:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .ano strong { font-family: var(--display); font-size: 22px; }
+  .ano span { font-size: 14px; color: var(--ink-2); }
+  .bloco-anos { padding: 40px 0 0; }
+  .bloco-anos h2 { margin: 0; font-size: clamp(24px, 3vw, 30px); }
+  .bloco-anos p { color: var(--ink-2); margin: 6px 0 0; max-width: 640px; }
+</style>
+<!-- Meta Pixel Code -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '2280257989421593'); fbq('track', 'PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=2280257989421593&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+
+<main>
+{{MAIN}}
+</main>
+
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '/material-didatico/';</script>
+<script src="/material-didatico/assets/dados.js"></script>
+<script src="/material-didatico/assets/progresso.js"></script>
+<script src="/material-didatico/assets/comum.js"></script>
+<script>
+  mdTopbar('');
+  mdFooter();
+  (function () {
+    const sub = document.querySelector('.brand-sub');
+    if (sub) { sub.href = '/material-adaptado/'; sub.textContent = '/ material adaptado'; }
+    const rod = document.getElementById('footer');
+    if (rod) rod.innerHTML = '<div class="wrap"><p>Material adaptado de Matemática para o Ensino Fundamental, do 1º ao 9º ano, organizado por <a href="/curriculo/">Júlia Roberta Quoos Alves</a>, com base nas habilidades da BNCC.</p>'
+      + '<p>Uso livre em sala de aula, com citação da fonte. Veja também o <a href="/material-didatico/">material didático</a>. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p></div>';
+  })();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/assistente/assistente.js?v=2" defer></script>
+</body>
+</html>
