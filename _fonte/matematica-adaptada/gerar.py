@@ -112,7 +112,7 @@ def pagina(f, i, total):
         titulo = f'{f["titulo"]} | Júlia Quoos'
     tem_versoes = 'A' in f['versoes']
     descricao = (f'{f["resumo"]} Ficha adaptada para alunos com diferentes necessidades, em três níveis de apoio, para imprimir. {f["anos"]}.'
-                 if tem_versoes else f'{f["resumo"]} Para imprimir e usar com estudantes com síndrome de Down, autismo e TDAH.')
+                 if tem_versoes else f'{f["resumo"]} Para imprimir e usar com alunos com diferentes necessidades.')
     pdf = f'{f["slug"]}.pdf'
     folhas = ''.join(folha(f, k, v) for k, v in f['versoes'].items()) + folha_professor(f)
     botoes = ''.join(f'<button type="button" class="btn98" data-imprimir="{esc(k)}">Imprimir {esc(k if k not in NIVEIS else "versão " + k)}</button>'

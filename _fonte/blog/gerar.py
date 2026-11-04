@@ -1043,7 +1043,7 @@ def pagina_matematica_adaptada(cfg):
     url = f'{site}/matematica-adaptada/'
     indice, cartoes, mapa_html = cartoes_matematica_adaptada()
     corpo = (AQUI / 'conteudo' / 'matematica-adaptada.html').read_text(encoding='utf-8').strip()
-    titulo = 'Matemática adaptada: como usar o material para síndrome de Down, autismo e TDAH'
+    titulo = 'Matemática adaptada: como usar o material com alunos com diferentes necessidades'
     descricao = ('Como usar as fichas de matemática adaptadas para alunos com diferentes necessidades: '
                  'versões A, B e C, princípios do DUA e o que costuma ajudar em cada caso. As fichas ficam no Material adaptado.')
     imagem = f'{site}/matematica-adaptada/og-matematica-adaptada.jpg'
