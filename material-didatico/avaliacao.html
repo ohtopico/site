@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de avaliação de Computação · Material didático | Júlia Quoos</title>
+<meta name="description" content="Monte uma avaliação de Computação da BNCC (6º ao 9º ano) para imprimir: escolha o ano e as habilidades e receba a prova com gabarito e versões A, B e C para alunos com diferentes necessidades.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/avaliacao.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:title" content="Gerador de avaliação de Computação (BNCC)">
+<meta property="og:description" content="Escolha o ano e as habilidades e imprima a prova com gabarito e versões A, B e C para alunos com diferentes necessidades.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/avaliacao.html">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-listas.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 980px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 46px); margin: 4px 0 6px; }
+  .doc > h2 { font-size: 26px; margin: 34px 0 8px; }
+  .passo { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; margin: 14px 0; background: var(--paper); }
+  .passo > b { display: block; font-family: var(--display); font-size: 20px; margin: 0 0 8px; }
+  .habs-sel { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; }
+  .habs-sel label { display: grid; grid-template-columns: 22px 92px minmax(0, 1fr); gap: 10px; align-items: start; border: 1.5px solid var(--line); border-radius: 14px; padding: 8px 12px; cursor: pointer; font-size: 15px; }
+  .habs-sel label:has(input:checked) { border-color: var(--ink); background: var(--pill); }
+  .habs-sel input, .opcoes input[type=checkbox] { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--accent); }
+  .habs-sel small { display: block; color: var(--ink-2); font-size: 13px; line-height: 1.45; }
+  .opcoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 18px; }
+  .opcoes label { display: flex; flex-direction: column; gap: 4px; font-size: 14.5px; }
+  .opcoes label.linha { flex-direction: row; align-items: flex-start; gap: 8px; }
+  .opcoes input[type=text], .opcoes input[type=number], .opcoes input[type=date], .opcoes select { font: 15px var(--body); padding: 8px 10px; border: 1.5px solid var(--ink); border-radius: 12px; background: var(--paper); color: var(--ink); min-width: 0; width: 100%; }
+  .resumo { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 16px 0 0; }
+  .previa-barra { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 10px 0 14px; }
+  .previa { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .bloco-versao { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .bloco-versao > .btn-row { width: 100%; max-width: 210mm; justify-content: space-between; align-items: center; }
+
+  /* ---------- folha (sempre branca, também no tema escuro) ---------- */
+  .prova { background: #fff; color: #111; width: 100%; max-width: 210mm; padding: 14mm 14mm 10mm; box-shadow: 0 0 0 1px #cfcfcb, 0 6px 18px rgba(0,0,0,.08); font: 11.5pt/1.5 var(--body); }
+  .prova code { font-family: ui-monospace, Consolas, monospace; font-size: .92em; }
+  .prova a { color: #111; }
+  .cab { border: 1.5px solid #111; border-radius: 3mm; padding: 2mm 3.5mm; display: grid; gap: 1.5mm; }
+  .cab-linha { display: grid; grid-template-columns: minmax(0, 1fr) 46mm; gap: 4mm; }
+  .cab-campo { display: flex; gap: 2mm; align-items: flex-end; font-size: 10pt; }
+  .cab-campo span { flex: none; color: #4a4a4a; }
+  .cab-campo b { flex: 1; border-bottom: 1px solid #111; min-height: 6mm; font-weight: 500; padding: 0 1mm; }
+  .prova-titulo { font: 800 17pt/1.2 var(--display); margin: 5mm 0 2mm; color: #111; }
+  .instr { margin: 0 0 4mm; padding-left: 5mm; font-size: 10pt; color: #333; }
+  .q { break-inside: avoid; page-break-inside: avoid; padding: 3mm 0 3.5mm; border-top: 1px solid #d9d9d6; }
+  .q:first-child { border-top: 0; }
+  .q-topo { display: flex; gap: 3mm; align-items: center; margin-bottom: 1.5mm; }
+  .q-num { font: 800 12pt var(--display); border: 1.5px solid #111; border-radius: 99px; min-width: 7.5mm; height: 7.5mm; display: inline-flex; align-items: center; justify-content: center; }
+  .q-valor, .q-hab { font-size: 8.5pt; color: #4a4a4a; }
+  .q-hab { margin-left: auto; font-family: ui-monospace, Consolas, monospace; }
+  .q-enun pre { font-family: ui-monospace, Consolas, monospace; font-size: 10pt; border: 1.2px solid #111; border-radius: 2mm; padding: 2mm 3mm; margin: 2mm 0 0; white-space: pre-wrap; background: #fff; }
+  .q-alts { list-style: none; padding: 0; margin: 2mm 0 0; display: grid; gap: 1.2mm; }
+  .q-alts li { display: flex; gap: 2.5mm; align-items: flex-start; }
+  .q-alts .caixa { flex: none; width: 4mm; height: 4mm; border: 1.3px solid #111; border-radius: 1mm; margin-top: 1mm; }
+  .q-alts .letra { flex: none; font-weight: 600; }
+  .q-vf { list-style: none; padding: 0; margin: 2mm 0 0; display: grid; gap: 1.5mm; }
+  .q-vf li { display: flex; gap: 3mm; align-items: flex-start; }
+  .vf-par { flex: none; font-weight: 600; }
+  .vf-op { flex: none; border: 1.5px solid #111; border-radius: 99px; width: 9mm; height: 9mm; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+  .q-dica { font-size: 9.5pt; color: #333; margin: 1.5mm 0 0; font-style: italic; }
+  .q-linhas { margin-top: 2mm; }
+  .q-linhas span { display: block; height: 8mm; border-bottom: 1px solid #8a8a86; }
+  .q-quadro { border: 1.5px solid #111; border-radius: 3mm; height: 45mm; margin-top: 2mm; }
+  .prova-rodape { font-size: 8pt; color: #6f6f6f; margin: 5mm 0 0; border-top: 1px solid #d9d9d6; padding-top: 2mm; }
+
+  /* versão A: letra maior, mais espaço, caixas maiores */
+  .versao-A { font-size: 14.5pt; line-height: 1.6; }
+  .versao-A .instr { font-size: 12pt; }
+  .versao-A .q { padding: 5mm 0 6mm; }
+  .versao-A .q-alts { gap: 3mm; margin-top: 3.5mm; }
+  .versao-A .q-alts li { border: 1.3px solid #111; border-radius: 3mm; padding: 2.5mm 3.5mm; }
+  .versao-A .q-alts .caixa { width: 6.5mm; height: 6.5mm; margin-top: .5mm; }
+  .versao-A .q-enun pre { font-size: 13pt; }
+  .versao-A .q-vf { gap: 3mm; }
+  .versao-B { font-size: 12.5pt; }
+  .versao-B .q-alts { gap: 2mm; }
+
+  /* gabarito */
+  .gabarito-folha h3 { font: 800 13pt var(--display); margin: 6mm 0 2mm; }
+  .g-nota { font-size: 9.5pt; color: #333; margin: 0 0 3mm; }
+  .g-tab { border-collapse: collapse; width: 100%; font-size: 10pt; }
+  .g-tab th, .g-tab td { border: 1px solid #111; padding: 1.2mm 2mm; text-align: left; vertical-align: top; }
+  .g-tab th { background: #f4f4f2; font-weight: 600; }
+  .g-tab td.resp { font-weight: 700; text-transform: uppercase; }
+  .g-coment { font-size: 9.5pt; padding-left: 0; list-style: none; display: grid; gap: 1.5mm; }
+  .g-coment pre { display: inline; white-space: normal; font-family: ui-monospace, Consolas, monospace; }
+  .g-habs .url { display: block; font-size: 8pt; color: #4a4a4a; word-break: break-all; }
+  .g-tab td, .g-tab th { overflow-wrap: anywhere; }
+
+  @media (max-width: 760px) {
+    .prova { padding: 16px 14px; font-size: 14px; }
+    .versao-A { font-size: 17px; } .versao-B { font-size: 15px; }
+    .cab-linha { grid-template-columns: minmax(0, 1fr) 30%; }
+    .habs-sel label { grid-template-columns: 22px minmax(0, 1fr); } .habs-sel label code { grid-column: 2; }
+  }
+
+  @page { size: A4; margin: 12mm 12mm 12mm; }
+  @media print {
+    body { background: #fff !important; }
+    #topbar, #footer, .nao-imprimir, .bloco-versao > .btn-row, .previa-barra { display: none !important; }
+    .doc { padding: 0; max-width: none; }
+    .previa { display: block; }
+    .bloco-versao { display: block; }
+    .prova { box-shadow: none; max-width: none; padding: 0; break-after: page; page-break-after: always; }
+    .bloco-versao:last-child .prova { break-after: auto; page-break-after: auto; }
+    body[data-imprimir] .bloco-versao { display: none; }
+    body[data-imprimir="A"] .bloco-versao[data-v="A"], body[data-imprimir="B"] .bloco-versao[data-v="B"],
+    body[data-imprimir="C"] .bloco-versao[data-v="C"], body[data-imprimir="G"] .bloco-versao[data-v="G"] { display: block; }
+    body[data-imprimir] .bloco-versao .prova { break-after: auto; page-break-after: auto; }
+  }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc">
+  <div class="nao-imprimir">
+    <span class="eyebrow">Para o professor</span>
+    <h1>Gerador de avaliação de Computação</h1>
+    <p class="muted" style="max-width:740px;margin:0">Escolha o ano e as habilidades da BNCC Computação e receba uma prova pronta para imprimir, com gabarito e três versões para alunos com diferentes necessidades. As questões têm a mesma numeração nas três versões: a turma faz a mesma avaliação e a correção por habilidade fica igual para todos.</p>
+
+    <div class="passo">
+      <b>1. Ano e habilidades</b>
+      <div class="chips" id="anos" role="group" aria-label="Ano"></div>
+      <div class="btn-row" style="margin-top:10px"><button class="btn ghost" type="button" id="todas">Marcar todas</button><button class="btn ghost" type="button" id="nenhuma">Desmarcar todas</button></div>
+      <ul class="habs-sel" id="habs"></ul>
+    </div>
+
+    <div class="passo">
+      <b>2. Questões</b>
+      <div class="opcoes">
+        <label>Questões de múltipla escolha por habilidade
+          <select id="n"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
+        <label>Questões de verdadeiro ou falso
+          <select id="vf"><option value="0">nenhuma</option><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option></select></label>
+        <label>Questões abertas (dissertativas)
+          <select id="ab"><option value="0">nenhuma</option><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option></select></label>
+        <label>Valor total da prova (opcional)
+          <input type="number" id="p" min="0" max="100" step="0.5" placeholder="ex.: 10"></label>
+        <label class="linha"><input type="checkbox" id="m"> Misturar a ordem das questões (sem agrupar por habilidade)</label>
+        <label class="linha"><input type="checkbox" id="cod"> Mostrar o código da habilidade em cada questão</label>
+      </div>
+    </div>
+
+    <div class="passo">
+      <b>3. Versões</b>
+      <div class="opcoes">
+        <label class="linha"><input type="checkbox" id="vA" checked> <span><strong>Versão A</strong>: mais apoio. Duas alternativas, letra maior, espaço para marcar e resposta aberta curta ou em desenho.</span></label>
+        <label class="linha"><input type="checkbox" id="vB" checked> <span><strong>Versão B</strong>: apoio intermediário. Três alternativas e dica nas questões abertas.</span></label>
+        <label class="linha"><input type="checkbox" id="vC" checked> <span><strong>Versão C</strong>: versão completa, com quatro alternativas.</span></label>
+        <label class="linha"><input type="checkbox" id="mv" checked> <span>Escrever “Modelo A/B/C” no rodapé da folha (letra pequena, para o professor separar as cópias)</span></label>
+      </div>
+    </div>
+
+    <div class="passo">
+      <b>4. Cabeçalho</b>
+      <div class="opcoes">
+        <label>Título<input type="text" id="titulo" placeholder="Avaliação de Computação"></label>
+        <label>Escola<input type="text" id="escola"></label>
+        <label>Professor(a)<input type="text" id="prof"></label>
+        <label>Turma<input type="text" id="turma"></label>
+        <label>Data<input type="text" id="data" placeholder="__/__/____"></label>
+      </div>
+      <p class="small muted" style="margin:10px 0 0">Escola e professor(a) ficam salvos neste navegador para a próxima prova.</p>
+    </div>
+
+    <div class="resumo">
+      <span id="info" class="muted"></span>
+      <span class="btn-row"><button class="btn ghost" type="button" id="sortear">Sortear outras questões</button><button class="btn" type="button" id="imprimir">Imprimir tudo</button></span>
+    </div>
+    <p class="small muted" style="margin:8px 0 0">O código da prova fica no endereço desta página: guarde o link para gerar exatamente a mesma prova depois. Para retomar o conteúdo, cada habilidade tem uma <a href="../material-adaptado/#computacao">ficha adaptada</a> (A, B e C), indicada no gabarito.</p>
+    <h2>Prévia</h2>
+  </div>
+  <div class="previa" id="previa"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/teste-ano.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/avaliacao.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const $ = s => document.querySelector(s);
+  const A = window.AVAL;
+
+  // estado: lido do endereço (#a=6&h=...&s=...) para a mesma prova poder ser gerada de novo
+  const hp = new URLSearchParams(location.hash.slice(1));
+  const num = (k, d, min, max) => { const v = parseFloat(hp.get(k)); return isFinite(v) ? Math.min(max, Math.max(min, v)) : d; };
+  const cfg = {
+    a: A.ANOS.includes(+hp.get('a')) ? +hp.get('a') : 6,
+    n: num('n', 1, 1, 4), vf: num('vf', 1, 0, 3), ab: num('ab', 1, 0, 3), p: num('p', 0, 0, 100),
+    m: hp.get('m') === '1', cod: hp.get('cod') === '1', mv: hp.get('mv') !== '0',
+    v: (hp.get('v') || 'ABC').split('').filter(x => 'ABC'.includes(x)),
+    s: num('s', 0, 0, 1e9) || A.novaSemente(),
+    titulo: hp.get('t') || '', turma: '', data: '',
+    escola: mdStore.get('aval-escola', ''), prof: mdStore.get('aval-prof', ''),
+  };
+  cfg.h = (hp.get('h') || '').split(',').filter(c => A.habsDoAno(cfg.a).includes(c));
+  if (!hp.get('h')) cfg.h = A.habsDoAno(cfg.a);
+
+  function salvarEndereco() {
+    const q = new URLSearchParams({ a: cfg.a, h: cfg.h.join(','), n: cfg.n, vf: cfg.vf, ab: cfg.ab, v: cfg.v.join(''), s: cfg.s });
+    if (cfg.p) q.set('p', cfg.p); if (cfg.m) q.set('m', 1); if (cfg.cod) q.set('cod', 1); if (!cfg.mv) q.set('mv', 0); if (cfg.titulo) q.set('t', cfg.titulo);
+    history.replaceState(null, '', '#' + q.toString());
+  }
+
+  function desenharAnos() {
+    $('#anos').innerHTML = A.ANOS.map(a => `<button class="chip" type="button" data-a="${a}" aria-pressed="${a === cfg.a}">${a}º ano</button>`).join('');
+  }
+  function desenharHabs() {
+    $('#habs').innerHTML = A.habsDoAno(cfg.a).map(c => `<li><label><input type="checkbox" value="${c}"${cfg.h.includes(c) ? ' checked' : ''}><code>${c}</code><span>${esc(HAB[c].objeto)}<small>${esc(HAB[c].texto)}</small></span></label></li>`).join('');
+  }
+
+  function gerar() {
+    salvarEndereco();
+    const previa = $('#previa');
+    if (!cfg.h.length) { previa.innerHTML = '<p class="muted">Marque pelo menos uma habilidade para gerar a prova.</p>'; $('#info').textContent = ''; return; }
+    if (!cfg.v.length) { previa.innerHTML = '<p class="muted">Marque pelo menos uma versão.</p>'; $('#info').textContent = ''; return; }
+    const prova = A.montar(cfg);
+    const bloco = (id, rot, html) => `<div class="bloco-versao" data-v="${id}"><div class="btn-row"><strong>${rot}</strong><button class="btn ghost" type="button" data-imp="${id}">Imprimir só esta</button></div>${html}</div>`;
+    previa.innerHTML = cfg.v.map(v => bloco(v, `Versão ${v} (${A.NOME_VERSAO[v]})`, A.provaHTML(prova, v, cfg))).join('') + bloco('G', 'Gabarito (para o professor)', A.gabaritoHTML(prova, cfg));
+    const me = prova.filter(q => q.tipo === 'me').length;
+    $('#info').textContent = `${prova.length} questões (${me} de múltipla escolha${cfg.vf ? `, ${prova.filter(q => q.tipo === 'vf').length} de V ou F` : ''}${cfg.ab ? `, ${prova.filter(q => q.tipo === 'ab').length} aberta(s)` : ''}) · código ${cfg.s}`;
+  }
+
+  function lerOpcoes() {
+    cfg.n = +$('#n').value; cfg.vf = +$('#vf').value; cfg.ab = +$('#ab').value;
+    cfg.p = Math.max(0, parseFloat(String($('#p').value).replace(',', '.')) || 0);
+    cfg.m = $('#m').checked; cfg.cod = $('#cod').checked; cfg.mv = $('#mv').checked;
+    cfg.v = ['A', 'B', 'C'].filter(v => $('#v' + v).checked);
+    ['titulo', 'escola', 'prof', 'turma', 'data'].forEach(k => cfg[k] = $('#' + k).value.trim());
+    mdStore.set('aval-escola', cfg.escola); mdStore.set('aval-prof', cfg.prof);
+  }
+
+  // valores iniciais nos campos
+  $('#n').value = cfg.n; $('#vf').value = cfg.vf; $('#ab').value = cfg.ab; if (cfg.p) $('#p').value = cfg.p;
+  $('#m').checked = cfg.m; $('#cod').checked = cfg.cod; $('#mv').checked = cfg.mv;
+  ['A', 'B', 'C'].forEach(v => $('#v' + v).checked = cfg.v.includes(v));
+  ['titulo', 'escola', 'prof'].forEach(k => $('#' + k).value = cfg[k]);
+
+  $('#anos').onclick = e => {
+    const b = e.target.closest('button'); if (!b) return;
+    cfg.a = +b.dataset.a; cfg.h = A.habsDoAno(cfg.a); cfg.s = A.novaSemente();
+    desenharAnos(); desenharHabs(); gerar();
+  };
+  $('#habs').onchange = () => { cfg.h = [...document.querySelectorAll('#habs input:checked')].map(i => i.value); gerar(); };
+  $('#todas').onclick = () => { cfg.h = A.habsDoAno(cfg.a); desenharHabs(); gerar(); };
+  $('#nenhuma').onclick = () => { cfg.h = []; desenharHabs(); gerar(); };
+  document.querySelectorAll('.passo .opcoes').forEach(el => { el.addEventListener('change', () => { lerOpcoes(); gerar(); }); });
+  ['titulo', 'escola', 'prof', 'turma', 'data'].forEach(k => $('#' + k).addEventListener('input', () => { lerOpcoes(); gerar(); }));
+  $('#sortear').onclick = () => { cfg.s = A.novaSemente(); gerar(); };
+  const imprimir = qual => {
+    if (qual) document.body.dataset.imprimir = qual; else delete document.body.dataset.imprimir;
+    window.print();
+  };
+  window.addEventListener('afterprint', () => delete document.body.dataset.imprimir);
+  $('#imprimir').onclick = () => imprimir('');
+  $('#previa').onclick = e => { const b = e.target.closest('[data-imp]'); if (b) imprimir(b.dataset.imp); };
+
+  desenharAnos(); desenharHabs(); gerar();
+})();
+</script>
+</body>
+</html>
