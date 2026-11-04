@@ -23,10 +23,10 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
 from fichas import FICHAS as BASE  # noqa: E402
-import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9, hab1, hab2, hab3, hab4  # noqa: E401,E402
+import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9, hab1, hab2, hab3, hab4, hab5  # noqa: E401,E402
 from bncc import habilidades, UNIDADES  # noqa: E402
 
-FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + ano3.FICHAS + ano4.FICHAS + ano5.FICHAS + ano6.FICHAS + ano7.FICHAS + ano8.FICHAS + ano9.FICHAS + hab1.FICHAS + hab2.FICHAS + hab3.FICHAS + hab4.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
+FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + ano3.FICHAS + ano4.FICHAS + ano5.FICHAS + ano6.FICHAS + ano7.FICHAS + ano8.FICHAS + ano9.FICHAS + hab1.FICHAS + hab2.FICHAS + hab3.FICHAS + hab4.FICHAS + hab5.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
 
 RAIZ = AQUI.parent.parent
 SAIDA = RAIZ / 'matematica-adaptada'
@@ -109,7 +109,7 @@ def pagina(f, i, total):
     if len(titulo) > 70:
         titulo = f'{f["titulo"]} | Júlia Quoos'
     tem_versoes = 'A' in f['versoes']
-    descricao = (f'{f["resumo"]} Ficha adaptada para estudantes com síndrome de Down, autismo e TDAH, em três níveis de apoio, para imprimir. {f["anos"]}.'
+    descricao = (f'{f["resumo"]} Ficha adaptada para alunos com diferentes neurodivergências, em três níveis de apoio, para imprimir. {f["anos"]}.'
                  if tem_versoes else f'{f["resumo"]} Para imprimir e usar com estudantes com síndrome de Down, autismo e TDAH.')
     pdf = f'{f["slug"]}.pdf'
     folhas = ''.join(folha(f, k, v) for k, v in f['versoes'].items()) + folha_professor(f)
@@ -267,25 +267,6 @@ def gerar_hub(fichas, mapa):
         return (f'<a class="ano" href="#ano-{a}"><strong>{a}º ano</strong>'
                 f'<span>{n} {"ficha" if n == 1 else "fichas"} · {feitas} de {len(hs)} habilidades</span></a>')
 
-    def cartao(f):
-        habs = ', '.join(c for c, _ in f['habilidades'])
-        return (f'<li><a class="ficha-card" href="/matematica-adaptada/fichas/{f["slug"]}/">'
-                f'<span class="cod">{esc_(habs)}</span><strong>{esc_(f["titulo"])}</strong>'
-                f'<span class="resumo">{esc_(f["resumo"])}</span><span class="meta">{"Versões A, B e C · orientações" if "A" in f["versoes"] else str(len(f["versoes"])) + " folhas"} · PDF</span></a></li>')
-
-    secoes = []
-    for a in range(1, 10):
-        un = [f for f in proprias if f['ano'] == a]
-        rv = [f for f in revisoes if f['ano'] == a]
-        corpo = f'<ul class="fichas-grade">{"".join(cartao(f) for f in un)}</ul>' if un else '<p class="vazio">As fichas por habilidade deste ano estão em preparação. Enquanto isso, use as fichas de revisão.</p>'
-        if rv:
-            corpo += (f'<details class="revisoes"{"" if un else " open"}><summary>Fichas de revisão do {a}º ano ({len(rv)}), juntando habilidades de um mesmo tema</summary>'
-                      f'<ul class="fichas-grade">{"".join(cartao(f) for f in rv)}</ul></details>')
-        secoes.append(f'<section class="ano-secao" id="ano-{a}"><h2>{a}º ano</h2>{corpo}</section>')
-    kit = next((f for f in fichas if f['slug'] == 'kit-de-apoio-visual'), None)
-    if kit:
-        secoes.append(f'<section class="ano-secao" id="apoio"><h2>Para todos os anos</h2><ul class="fichas-grade">{cartao(kit).replace(esc_(", ".join(c for c, _ in kit["habilidades"])), "apoio visual")}</ul></section>')
-
     blocos = []
     for a in range(1, 10):
         hs = [h for h in mapa if h['ano'] == a]
@@ -300,11 +281,11 @@ def gerar_hub(fichas, mapa):
                 ordem = sorted(h['fichas'], key=lambda sl: eh_rev.get(sl, False))
                 links = ', '.join(f'<a href="/matematica-adaptada/fichas/{sl}/">{esc_(titulos[sl])}</a>' + (' (revisão)' if eh_rev.get(sl) else '') for sl in ordem) or 'em preparação'
                 linhas_.append(f'<tr><td><b>{h["codigo"]}</b></td><td>{esc_(h["texto"])}</td><td>{links}</td></tr>')
-        blocos.append(f'<details class="mapa-ano"><summary>{a}º ano · {feitas} de {len(hs)} habilidades com ficha</summary>'
+        blocos.append(f'<details class="mapa-ano" id="ano-{a}"><summary>{a}º ano · {feitas} de {len(hs)} habilidades com ficha</summary>'
                       f'<div class="mapa-rolagem"><table class="mapa-bncc"><thead><tr><th>Código</th><th>Habilidade</th><th>Ficha</th></tr></thead>'
                       f'<tbody>{"".join(linhas_)}</tbody></table></div></details>')
 
-    descricao = ('Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, do 1º ao 9º ano, '
+    descricao = ('Fichas de matemática adaptadas para alunos com diferentes neurodivergências, do 1º ao 9º ano, '
                  'uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.')
     main = f'''  <section class="hero">
     <div class="wrap">
@@ -312,7 +293,7 @@ def gerar_hub(fichas, mapa):
         <div>
           <span class="eyebrow">Material adaptado gratuito · BNCC</span>
           <h1>A mesma aula, <span class="marca">o apoio certo</span></h1>
-          <p class="lead">Fichas de matemática para imprimir, adaptadas para estudantes com síndrome de Down, autismo em diferentes níveis de suporte e TDAH. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
+          <p class="lead">Fichas de matemática para imprimir, adaptadas para alunos com diferentes neurodivergências. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
         </div>
         <div class="stats">
           <a class="stat" href="#ano-1"><b>{len(proprias)}</b><span>fichas por habilidade</span></a>
@@ -347,7 +328,7 @@ def gerar_hub(fichas, mapa):
       </div>
       <section class="bloco-anos" aria-labelledby="por-ano">
         <h2 id="por-ano">Escolha o ano</h2>
-        <p>Cada habilidade de Matemática da BNCC ganha uma ficha própria, com versões A, B e C, orientações para o professor e PDF. As fichas entram ano a ano; enquanto um ano é completado, as fichas de revisão daquele ano já cobrem todas as habilidades.</p>
+        <p>Cada habilidade de Matemática da BNCC tem uma ficha própria, com versões A, B e C, orientações para o professor e PDF. Escolha o ano para abrir o mapa das habilidades.</p>
         <div class="anos">{''.join(cartao_ano(a) for a in range(1, 10))}</div>
       </section>
       <nav class="atalhos" aria-label="Outros caminhos">
@@ -361,12 +342,21 @@ def gerar_hub(fichas, mapa):
   <div class="hero-faixa"></div>
   <div class="wrap repositorio">
     <p class="como-usar">Primeira vez aqui? Leia <a href="/matematica-adaptada/">como usar o material adaptado</a>: como escolher entre as versões A, B e C e o que costuma ajudar estudantes com síndrome de Down, autismo e TDAH.</p>
-    {''.join(secoes)}
-    <section class="ano-secao" id="mapa-bncc"><h2>Mapa da BNCC</h2>
-      <p class="intro-mapa">As {total_h} habilidades de Matemática da BNCC do 1º ao 9º ano, por unidade temática, com a ficha de cada uma. Do 1º ao 5º ano, o texto é um resumo da habilidade; do 6º ao 9º, é o texto da BNCC.</p>
+    <section class="ano-secao" id="mapa-bncc"><h2>Mapa da BNCC: Matemática</h2>
+      <p class="intro-mapa">Abra o ano e escolha a habilidade: cada linha leva à ficha dela, com as versões A, B e C, as orientações e o PDF. As fichas de revisão, que juntam habilidades de um mesmo tema, aparecem marcadas. Do 1º ao 5º ano, o texto é um resumo da habilidade; do 6º ao 9º, é o texto da BNCC.</p>
       {''.join(blocos)}
     </section>
-  </div>'''
+  </div>
+  <script>
+    (function () {{
+      function abrir() {{
+        var alvo = location.hash && document.getElementById(location.hash.slice(1));
+        if (alvo && alvo.tagName === 'DETAILS') {{ alvo.open = true; alvo.scrollIntoView(); }}
+      }}
+      window.addEventListener('hashchange', abrir);
+      abrir();
+    }})();
+  </script>'''
     ld = json.dumps({
         '@context': 'https://schema.org', '@type': 'CollectionPage', '@id': f'{SITE}/material-adaptado/#pagina',
         'url': f'{SITE}/material-adaptado/', 'name': 'Material adaptado: matemática do 1º ao 9º ano', 'description': descricao, 'inLanguage': 'pt-BR',

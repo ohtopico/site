@@ -2266,6 +2266,102 @@
    "revisao": true
   },
   {
+   "slug": "ler-escrever-e-ordenar-numeros-ate-999999",
+   "titulo": "Ler, escrever e ordenar números até 999 999",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Ler, escrever, comparar e ordenar números naturais até a centena de milhar, com o quadro de ordens.",
+   "habilidades": [
+    "EF05MA01"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "decimais-na-reta-numerica",
+   "titulo": "Decimais na reta numérica",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Ler, escrever e ordenar números decimais, localizando décimos e centésimos na reta numérica.",
+   "habilidades": [
+    "EF05MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fracoes-menores-e-maiores-que-o-inteiro",
+   "titulo": "Frações menores e maiores que o inteiro",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Representar frações menores e maiores que a unidade, como parte de um todo e como resultado de uma divisão.",
+   "habilidades": [
+    "EF05MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "encontrar-fracoes-equivalentes",
+   "titulo": "Encontrar frações equivalentes",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Reconhecer frações que representam a mesma quantidade, com barras, dobraduras e multiplicação.",
+   "habilidades": [
+    "EF05MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "comparar-fracoes-e-decimais",
+   "titulo": "Comparar frações e decimais",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Comparar e ordenar números racionais positivos escritos como fração ou decimal, usando a reta numérica.",
+   "habilidades": [
+    "EF05MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "porcentagens-10-25-50-75-100",
+   "titulo": "Porcentagens: 10%, 25%, 50%, 75% e 100%",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Associar 10%, 25%, 50%, 75% e 100% à décima parte, à quarta parte, à metade, a três quartos e ao inteiro.",
+   "habilidades": [
+    "EF05MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "adicao-e-subtracao-com-decimais",
    "titulo": "Adição e subtração com números decimais",
    "anos": "5º ano",
@@ -2298,6 +2394,166 @@
    "revisao": false
   },
   {
+   "slug": "listar-todos-os-agrupamentos",
+   "titulo": "Listar todos os agrupamentos",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Resolver problemas de contagem listando todas as possibilidades com tabelas, listas e árvores.",
+   "habilidades": [
+    "EF05MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "mesma-operacao-nos-dois-lados",
+   "titulo": "Mesma operação nos dois lados",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Concluir, investigando, que uma igualdade continua verdadeira quando fazemos a mesma operação nos dois lados.",
+   "habilidades": [
+    "EF05MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "igualdade-com-termo-desconhecido",
+   "titulo": "Igualdade com termo desconhecido",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Resolver problemas escritos como uma igualdade em que um dos números é desconhecido.",
+   "habilidades": [
+    "EF05MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "proporcionalidade-direta",
+   "titulo": "Proporcionalidade: dobro, triplo e metade",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Resolver problemas em que duas grandezas aumentam ou diminuem juntas na mesma proporção, como numa receita.",
+   "habilidades": [
+    "EF05MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "partilha-em-partes-desiguais",
+   "titulo": "Partilha em partes desiguais",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Resolver problemas de dividir uma quantidade em duas partes desiguais, como uma o dobro da outra.",
+   "habilidades": [
+    "EF05MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "localizar-em-mapas-e-malhas",
+   "titulo": "Localizar em mapas e malhas",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Usar mapas, plantas e malhas quadriculadas para localizar objetos e descrever caminhos.",
+   "habilidades": [
+    "EF05MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "movimentos-no-plano-cartesiano",
+   "titulo": "Movimentos no plano cartesiano",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Localizar pontos e descrever movimentos de objetos no primeiro quadrante do plano cartesiano.",
+   "habilidades": [
+    "EF05MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "solidos-e-suas-planificacoes",
+   "titulo": "Sólidos e suas planificações",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Associar prismas, pirâmides, cilindros e cones às suas planificações e comparar seus atributos.",
+   "habilidades": [
+    "EF05MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "reconhecer-e-desenhar-poligonos",
+   "titulo": "Reconhecer e desenhar polígonos",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Reconhecer, nomear e comparar polígonos pelo número de lados, vértices e ângulos, e desenhá-los com régua e malha.",
+   "habilidades": [
+    "EF05MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "ampliar-e-reduzir-figuras-na-malha",
+   "titulo": "Ampliar e reduzir figuras na malha",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Reconhecer que, ao ampliar ou reduzir figuras na malha, os ângulos se mantêm e os lados ficam proporcionais.",
+   "habilidades": [
+    "EF05MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "medidas-transformar-unidades",
    "titulo": "Medidas: transformar unidades",
    "anos": "5º ano",
@@ -2305,6 +2561,102 @@
    "resumo": "Escolher a unidade, transformar metros, quilos, litros e horas e resolver problemas com comprimento, área, massa, tempo, temperatura e capacidade.",
    "habilidades": [
     "EF05MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "mesmo-perimetro-areas-diferentes",
+   "titulo": "Mesmo perímetro, áreas diferentes",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Investigar que figuras com o mesmo perímetro podem ter áreas diferentes e figuras com a mesma área podem ter perímetros diferentes.",
+   "habilidades": [
+    "EF05MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "volume-com-cubinhos",
+   "titulo": "Volume com cubinhos",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Reconhecer volume como o espaço ocupado e medir volumes empilhando cubinhos.",
+   "habilidades": [
+    "EF05MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "todos-os-resultados-possiveis",
+   "titulo": "Todos os resultados possíveis",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Listar todos os resultados possíveis de um experimento aleatório e dizer se eles têm a mesma chance.",
+   "habilidades": [
+    "EF05MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "calcular-probabilidade",
+   "titulo": "Calcular a probabilidade",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Determinar a probabilidade de um resultado, quando todos os resultados têm a mesma chance, e escrevê-la como fração.",
+   "habilidades": [
+    "EF05MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "interpretar-graficos-e-produzir-textos",
+   "titulo": "Interpretar gráficos e produzir textos",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Ler tabelas e gráficos de colunas, pictóricos e de linhas, e escrever textos com as conclusões.",
+   "habilidades": [
+    "EF05MA24"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "pesquisa-com-planilha-e-graficos",
+   "titulo": "Pesquisa com planilha e gráficos",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Fazer uma pesquisa com variáveis de categoria e de número, organizar em tabelas e gráficos, com e sem planilha eletrônica.",
+   "habilidades": [
+    "EF05MA25"
    ],
    "versoes": [
     "A",
@@ -4456,6 +4808,7 @@
    "unidade": "Números",
    "texto": "Ler, escrever e ordenar números naturais até a ordem das centenas de milhar.",
    "fichas": [
+    "ler-escrever-e-ordenar-numeros-ate-999999",
     "numeros-ate-centenas-de-milhar-e-decimais"
    ]
   },
@@ -4465,6 +4818,7 @@
    "unidade": "Números",
    "texto": "Ler, escrever e ordenar números racionais na forma decimal, com a reta numérica.",
    "fichas": [
+    "decimais-na-reta-numerica",
     "numeros-ate-centenas-de-milhar-e-decimais"
    ]
   },
@@ -4474,6 +4828,7 @@
    "unidade": "Números",
    "texto": "Identificar e representar frações menores e maiores que a unidade, como parte de um todo e como resultado de divisão.",
    "fichas": [
+    "fracoes-menores-e-maiores-que-o-inteiro",
     "fracoes-equivalentes-e-maiores-que-o-inteiro"
    ]
   },
@@ -4483,6 +4838,7 @@
    "unidade": "Números",
    "texto": "Identificar frações equivalentes.",
    "fichas": [
+    "encontrar-fracoes-equivalentes",
     "fracoes-equivalentes-e-maiores-que-o-inteiro"
    ]
   },
@@ -4492,6 +4848,7 @@
    "unidade": "Números",
    "texto": "Comparar e ordenar números racionais positivos nas formas decimal e fracionária, com a reta numérica.",
    "fichas": [
+    "comparar-fracoes-e-decimais",
     "porcentagem-e-comparacao-de-decimais-e-fracoes"
    ]
   },
@@ -4501,6 +4858,7 @@
    "unidade": "Números",
    "texto": "Associar 10%, 25%, 50%, 75% e 100% à décima parte, quarta parte, metade, três quartos e um inteiro.",
    "fichas": [
+    "porcentagens-10-25-50-75-100",
     "porcentagem-e-comparacao-de-decimais-e-fracoes"
    ]
   },
@@ -4528,6 +4886,7 @@
    "unidade": "Números",
    "texto": "Resolver problemas simples de contagem, listando todos os agrupamentos possíveis.",
    "fichas": [
+    "listar-todos-os-agrupamentos",
     "contagem-e-probabilidade"
    ]
   },
@@ -4537,6 +4896,7 @@
    "unidade": "Álgebra",
    "texto": "Concluir, por investigação, que a igualdade se mantém ao fazer a mesma operação nos dois membros.",
    "fichas": [
+    "mesma-operacao-nos-dois-lados",
     "igualdades-e-numero-desconhecido"
    ]
   },
@@ -4546,6 +4906,7 @@
    "unidade": "Álgebra",
    "texto": "Resolver problemas com uma igualdade em que um dos termos é desconhecido.",
    "fichas": [
+    "igualdade-com-termo-desconhecido",
     "igualdades-e-numero-desconhecido"
    ]
   },
@@ -4555,6 +4916,7 @@
    "unidade": "Álgebra",
    "texto": "Resolver problemas de proporcionalidade direta entre duas grandezas (por exemplo, dobrar uma receita).",
    "fichas": [
+    "proporcionalidade-direta",
     "proporcionalidade-e-partilha"
    ]
   },
@@ -4564,6 +4926,7 @@
    "unidade": "Álgebra",
    "texto": "Resolver problemas de partilha de uma quantidade em duas partes desiguais (uma o dobro da outra, por exemplo).",
    "fichas": [
+    "partilha-em-partes-desiguais",
     "proporcionalidade-e-partilha"
    ]
   },
@@ -4573,6 +4936,7 @@
    "unidade": "Geometria",
    "texto": "Usar diferentes representações para localizar objetos no plano, como mapas e malhas quadriculadas.",
    "fichas": [
+    "localizar-em-mapas-e-malhas",
     "plano-cartesiano-coordenadas"
    ]
   },
@@ -4582,6 +4946,7 @@
    "unidade": "Geometria",
    "texto": "Interpretar, descrever e representar a localização e a movimentação de objetos no plano cartesiano (1º quadrante).",
    "fichas": [
+    "movimentos-no-plano-cartesiano",
     "plano-cartesiano-coordenadas"
    ]
   },
@@ -4591,7 +4956,8 @@
    "unidade": "Geometria",
    "texto": "Associar figuras espaciais às suas planificações e comparar seus atributos.",
    "fichas": [
-    "solidos-geometricos-e-planificacoes"
+    "solidos-geometricos-e-planificacoes",
+    "solidos-e-suas-planificacoes"
    ]
   },
   {
@@ -4600,6 +4966,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer, nomear e comparar polígonos pelos lados, vértices e ângulos, e desenhá-los.",
    "fichas": [
+    "reconhecer-e-desenhar-poligonos",
     "poligonos-ampliacao-e-reducao"
    ]
   },
@@ -4609,6 +4976,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer que, na ampliação e na redução de figuras em malhas, os ângulos se mantêm e os lados ficam proporcionais.",
    "fichas": [
+    "ampliar-e-reduzir-figuras-na-malha",
     "poligonos-ampliacao-e-reducao"
    ]
   },
@@ -4627,6 +4995,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Concluir, por investigação, que figuras de mesmo perímetro podem ter áreas diferentes, e vice-versa.",
    "fichas": [
+    "mesmo-perimetro-areas-diferentes",
     "perimetro-area-e-volume"
    ]
   },
@@ -4636,6 +5005,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer volume como grandeza e medir volumes empilhando cubos.",
    "fichas": [
+    "volume-com-cubinhos",
     "perimetro-area-e-volume"
    ]
   },
@@ -4645,6 +5015,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Apresentar todos os resultados possíveis de um experimento aleatório e dizer se são igualmente prováveis.",
    "fichas": [
+    "todos-os-resultados-possiveis",
     "contagem-e-probabilidade"
    ]
   },
@@ -4654,6 +5025,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Determinar a probabilidade de um resultado em eventos aleatórios igualmente prováveis.",
    "fichas": [
+    "calcular-probabilidade",
     "contagem-e-probabilidade"
    ]
   },
@@ -4663,6 +5035,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Interpretar dados de tabelas e gráficos de colunas, pictóricos e de linhas, produzindo textos.",
    "fichas": [
+    "interpretar-graficos-e-produzir-textos",
     "graficos-de-linha-e-pesquisa"
    ]
   },
@@ -4672,6 +5045,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Realizar pesquisa com variáveis categóricas e numéricas e organizar os dados em tabelas e gráficos, com e sem tecnologia.",
    "fichas": [
+    "pesquisa-com-planilha-e-graficos",
     "graficos-de-linha-e-pesquisa"
    ]
   },
