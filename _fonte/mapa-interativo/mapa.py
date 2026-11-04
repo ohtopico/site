@@ -6,7 +6,7 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 DESTINO = AQUI.parents[1] / 'material-adaptado'
-V = '1'
+V = '2'
 
 SECAO = ('<section class="mi-secao" id="mapa-interativo-secao" aria-labelledby="mi-h2"><h2 id="mi-h2">Mapa interativo da BNCC</h2>'
          '<p>As habilidades de Matemática e de Computação como uma rede de palavras: cada ano se liga às unidades temáticas e aos eixos, '
