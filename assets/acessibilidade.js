@@ -22,7 +22,7 @@
   const salva = () => { try { localStorage.setItem(CH, JSON.stringify(P)); } catch (e) {} };
   const html = document.documentElement;
   // Glossário de Matemática e Computação com sinais em Libras (fica no painel quando existir)
-  const GLOSSARIO = window.MDA_GLOSSARIO || '';
+  const GLOSSARIO = window.MDA_GLOSSARIO || '/material-adaptado/glossario/';
 
   /* ---------- Estilos ---------- */
   const css = `

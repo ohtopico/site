@@ -189,6 +189,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
   /* Grade 15 × 15 do anverso: só valem as casas dentro do círculo */
   const N = 15, MEIO = 7;
   const DENTRO = Array.from({ length: N * N }, (_, i) => { const r = Math.floor(i / N), c = i % N; return (r - MEIO) ** 2 + (c - MEIO) ** 2 <= 7.4 ** 2; });
+  const PRIMEIRA = DENTRO.indexOf(true);
   const MODELOS = {
     'Árvore': ['.......#.......', '......###......', '.....#####.....', '....#######....', '.....#####.....', '....#######....', '...#########...', '..###########..', '....#######....', '...#########...', '..###########..', '......###......', '......###......', '.....#####.....', '...............'],
     'Estrela': ['.......#.......', '.......#.......', '......###......', '......###......', '.#############.', '..###########..', '...#########...', '....#######....', '....#######....', '...####.####...', '...###...###...', '..###.....###..', '..##.......##..', '...............', '...............'],
@@ -370,7 +371,8 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
         <button class="chip" type="button" id="t-espelho" aria-pressed="${espelho}">🪞 Espelho</button>
         <button class="chip" type="button" id="t-limpar">Limpar</button>
       </div>
-      <div class="grade" id="grade">${pix.map((p, i) => `<span data-i="${i}" class="${!DENTRO[i] ? 'fora' : p ? 'on' : ''}${i % N === MEIO ? ' eixo' : ''}"></span>`).join('')}</div>
+      <p class="small muted">Pelo teclado: Tab até o desenho, setas para andar entre os quadradinhos e Enter ou Espaço para pintar ou apagar.</p>
+      <div class="grade" id="grade" role="group" aria-label="Desenho de ${N} por ${N} quadradinhos">${pix.map((p, i) => DENTRO[i] ? `<span data-i="${i}" role="button" tabindex="${i === PRIMEIRA ? 0 : -1}" aria-pressed="${!!p}" aria-label="Linha ${Math.floor(i / N) + 1}, coluna ${i % N + 1}" class="${p ? 'on' : ''}${i % N === MEIO ? ' eixo' : ''}"></span>` : `<span data-i="${i}" class="fora" aria-hidden="true"></span>`).join('')}</div>
       <div class="ferr"><span class="small muted" style="align-self:center">Figuras prontas:</span>${Object.keys(MODELOS).map(m => `<button class="chip" type="button" data-mod="${m}">${m}</button>`).join('')}</div>
       <details><summary class="small">Seu desenho em números (<span id="total">${total}</span> de ${casas} quadradinhos pintados)</summary>
         <p class="small">Para o computador, o desenho é uma tabela de 0 e 1: 1 é quadradinho em relevo, 0 é fundo. Cada linha da tabela é uma linha do desenho.</p>
@@ -380,7 +382,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
     const pinta = i => {
       if (!DENTRO[i]) return;
       const alvos = [i]; if (espelho) alvos.push(Math.floor(i / N) * N + (N - 1 - i % N));
-      alvos.forEach(j => { st[ch][j] = ferramenta; const el = $('#grade').children[j]; el.classList.toggle('on', !!ferramenta); });
+      alvos.forEach(j => { st[ch][j] = ferramenta; const el = $('#grade').children[j]; el.classList.toggle('on', !!ferramenta); el.setAttribute('aria-pressed', String(!!ferramenta)); });
     };
     let arrastando = false;
     const g = $('#grade');
@@ -388,6 +390,17 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
     g.onpointermove = e => { if (!arrastando) return; const el = document.elementFromPoint(e.clientX, e.clientY); if (el && el.parentNode === g) { pinta(+el.dataset.i); vitrine(); } };
     const solta = () => { if (!arrastando) return; arrastando = false; salvar(); $('#codigo').textContent = tabela(st[ch]); $('#total').textContent = st[ch].reduce((a, b) => a + b, 0); if (confere) confere(); };
     g.onpointerup = solta; g.onpointercancel = solta;
+    // teclado: setas andam entre os quadradinhos, Enter ou Espaço pintam (ou apagam, com a borracha)
+    g.onkeydown = e => {
+      const el = e.target, i = +el.dataset.i; if (el.parentNode !== g || isNaN(i)) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); arrastando = true; pinta(i); vitrine(); solta(); const gg = $('#grade'), n = gg && gg.children[i]; if (n) { [...gg.children].forEach(x => { if (x.tabIndex === 0) x.tabIndex = -1; }); n.tabIndex = 0; n.focus(); } return; }
+      const d = { ArrowLeft: [0, -1], ArrowRight: [0, 1], ArrowUp: [-1, 0], ArrowDown: [1, 0] }[e.key]; if (!d) return;
+      e.preventDefault();
+      let r = Math.floor(i / N), c = i % N;
+      for (let k = 0; k < N; k++) { r += d[0]; c += d[1]; if (r < 0 || c < 0 || r >= N || c >= N) return; if (DENTRO[r * N + c]) break; }
+      const nv = g.children[r * N + c]; if (!nv || !DENTRO[r * N + c]) return;
+      el.tabIndex = -1; nv.tabIndex = 0; nv.focus();
+    };
     $('#t-pintar').onclick = () => { ferramenta = 1; ir(aqui); };
     $('#t-apagar').onclick = () => { ferramenta = 0; ir(aqui); };
     $('#t-espelho').onclick = () => { espelho = !espelho; ir(aqui); };
