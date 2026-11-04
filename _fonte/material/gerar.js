@@ -88,7 +88,7 @@ for (const r of estaticos) {
   EST[r.id] = s;
 }
 const materiaisDe = c => D.RECURSOS.filter(r => (r.habs || []).includes(c) && r.url);
-const SIMS = (() => { const ctx = { window: {} }; vm.createContext(ctx); vm.runInContext(ler(path.join(RAIZ, 'simuladores', 'assets', 'sim-comum.js')), ctx); return ctx.window.SIMULADORES; })();
+const SIMS = (() => { const ctx = { window: {}, location: { pathname: '/' }, document: { createElement: () => ({}), head: { appendChild() {} } } }; vm.createContext(ctx); vm.runInContext(ler(path.join(RAIZ, 'simuladores', 'assets', 'sim-comum.js')), ctx); return ctx.window.SIMULADORES; })();
 const simuladoresDe = c => SIMS.filter(s => (s.bncc || []).includes(c));
 const habs = D.HABILIDADES.filter(h => h.ano >= 6 && (materiaisDe(h.codigo).length || D.SLIDES[h.codigo] || simuladoresDe(h.codigo).length));
 for (const h of habs) EST['hab:' + h.codigo] = `bncc/${h.codigo.toLowerCase()}/`;
@@ -839,7 +839,7 @@ async function jogosE3d(browser) {
 
 /* ---------- simuladores: cabeçalho, título e dados estruturados no HTML ---------- */
 async function simuladores(browser) {
-  const ctx = { window: {} };
+  const ctx = { window: {}, location: { pathname: '/' }, document: { createElement: () => ({}), head: { appendChild() {} } } };
   vm.createContext(ctx);
   vm.runInContext(ler(path.join(RAIZ, 'simuladores', 'assets', 'sim-comum.js')), ctx);
   const NIV = { EF: 'Ensino Fundamental', EM: 'Ensino Médio', ES: 'Ensino Superior' };
