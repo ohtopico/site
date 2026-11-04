@@ -219,7 +219,7 @@ def html_comp(comp, dados):
     # ------------------------------------------------------------ capa
     habs_n = len(dados)
     p.append(f"""<section class="capa">
-<div class="kicker">ohtopico · material didático</div>
+<div class="kicker">Júlia Quoos · material didático</div>
 <h1>Planejamento anual<br>de <span class="marca">{e(c['nome'])}</span> por meses</h1>
 <p class="sub">6º ao 9º ano do Ensino Fundamental · {habs_n} habilidades da BNCC distribuídas semana a semana, com 1 aula por semana por turma, de março a meados de dezembro de {ANO}.</p>
 <div class="cards">
