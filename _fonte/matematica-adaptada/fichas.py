@@ -24,7 +24,7 @@ def grade(itens, colunas):
 
 def opcoes(valores, certa=None):
     return '<div class="opcoes">' + ''.join(
-        f'<span class="opcao{" marcada" if v == certa else ""}">{v}</span>' for v in valores) + '</div>'
+        f'<span class="opcao{" texto" if isinstance(v, str) and len(v) > 3 and not v.startswith("<") else ""}{" marcada" if v == certa else ""}">{v}</span>' for v in valores) + '</div>'
 
 
 def resposta(valor=None, largura=''):

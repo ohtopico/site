@@ -22,7 +22,11 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
-from fichas import FICHAS  # noqa: E402
+from fichas import FICHAS as BASE  # noqa: E402
+import ano1  # noqa: E402
+from bncc import habilidades, UNIDADES  # noqa: E402
+
+FICHAS = BASE[:-1] + ano1.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
 
 RAIZ = AQUI.parent.parent
 SAIDA = RAIZ / 'matematica-adaptada'
@@ -239,6 +243,9 @@ FICHAS_INFO = []
 
 def main():
     fichas = [fn() for fn in FICHAS]
+    for f in fichas:
+        f['ano'] = 0 if f['slug'] == 'kit-de-apoio-visual' else min(int(c[2:4]) for c, _ in f['habilidades'])
+    fichas.sort(key=lambda f: (f['ano'] or 99))
     FICHAS_INFO.extend(fichas)
     (SAIDA / 'assets').mkdir(parents=True, exist_ok=True)
     shutil.copy(AQUI / 'fichas.css', SAIDA / 'assets' / 'fichas.css')
@@ -250,9 +257,19 @@ def main():
         arq = destino / 'index.html'
         if not arq.exists() or arq.read_text(encoding='utf-8') != texto:
             arq.write_text(texto, encoding='utf-8')
-    indice = [{'slug': f['slug'], 'titulo': f['titulo'], 'anos': f['anos'], 'resumo': f['resumo'],
-               'habilidades': [c for c, _ in f['habilidades']], 'versoes': list(f['versoes'])} for f in fichas]
+    lista = [{'slug': f['slug'], 'titulo': f['titulo'], 'anos': f['anos'], 'ano': f['ano'], 'resumo': f['resumo'],
+              'habilidades': [c for c, _ in f['habilidades']], 'versoes': list(f['versoes'])} for f in fichas]
+    cobertura = {}
+    for f in fichas:
+        if f['slug'] == 'kit-de-apoio-visual':
+            continue
+        for c, _ in f['habilidades']:
+            cobertura.setdefault(c, []).append(f['slug'])
+    mapa = [dict(h, fichas=cobertura.get(h['codigo'], [])) for h in habilidades()]
+    indice = {'fichas': lista, 'mapa': mapa, 'unidades': UNIDADES}
     (AQUI / 'indice.json').write_text(json.dumps(indice, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    feitas = sum(1 for h in mapa if h['fichas'])
+    print(f'Habilidades com ficha: {feitas} de {len(mapa)}')
     atualizar_sitemap([f['slug'] for f in fichas])
     print(f'{len(fichas)} fichas geradas em {SAIDA / "fichas"}')
 

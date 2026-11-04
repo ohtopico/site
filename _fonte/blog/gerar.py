@@ -874,29 +874,69 @@ MATEMATICA_ADAPTADA_CSS = """<style>
 .artigo .fichas-adaptadas { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); list-style: none; margin: 0 0 20px; padding: 0; }
 .artigo .fichas-adaptadas li { border: 1.5px solid var(--ink); border-radius: 18px; display: flex; flex-direction: column; font-size: 15px; margin: 0; padding: 14px 16px; }
 .artigo .fichas-adaptadas li::marker { content: none; }
-.fichas-adaptadas h3 { font: 800 18px/1.25 var(--display) !important; margin: 0 0 6px !important; }
-.fichas-adaptadas h3 a { color: var(--ink); text-decoration: none; }
-.fichas-adaptadas h3 a:hover { text-decoration: underline; }
+.fichas-adaptadas h4 { font: 800 18px/1.25 var(--display); margin: 0 0 6px; }
+.fichas-adaptadas h4 a { color: var(--ink); text-decoration: none; }
+.fichas-adaptadas h4 a:hover { text-decoration: underline; }
+.mapa-ano { border: 1.5px solid var(--ink); border-radius: 14px; margin: 0 0 10px; padding: 8px 14px; }
+.mapa-ano summary { cursor: pointer; font: 800 18px var(--display); }
+.mapa-rolagem { overflow-x: auto; }
+.mapa-bncc { border-collapse: collapse; font-size: 14px; margin: 10px 0 4px; width: 100%; }
+.mapa-bncc th, .mapa-bncc td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+.mapa-bncc tr.unidade th { background: var(--mark-soft); font-weight: 600; }
+.mapa-bncc td:first-child { white-space: nowrap; }
+.mapa-bncc .em-breve { color: var(--ink-2); font-style: italic; }
 .artigo .fichas-adaptadas p { font-size: 15px; line-height: 1.5; margin: 0 0 8px; }
 .artigo .fichas-adaptadas .meta { color: var(--ink-2); font-size: 13px; margin-top: auto; }
 </style>"""
 
 
 def cartoes_matematica_adaptada():
-    indice = json.loads((AQUI.parent / 'matematica-adaptada' / 'indice.json').read_text(encoding='utf-8'))
-    itens = []
-    for f in indice:
-        versoes = 'versões A, B e C' if 'A' in f['versoes'] else f'{len(f["versoes"])} folhas'
-        itens.append(f'<li><h3><a href="/matematica-adaptada/fichas/{f["slug"]}/">{esc(f["titulo"])}</a></h3>'
-                     f'<p>{esc(f["resumo"])}</p>'
-                     f'<p class="meta">{esc(f["anos"])} · {", ".join(f["habilidades"])} · {versoes} + orientações · PDF</p></li>')
-    return indice, '<ul class="fichas-adaptadas">' + ''.join(itens) + '</ul>'
+    """Cartões das fichas (agrupados por ano) e o mapa da BNCC, a partir de _fonte/matematica-adaptada/indice.json."""
+    dados = json.loads((AQUI.parent / 'matematica-adaptada' / 'indice.json').read_text(encoding='utf-8'))
+    fichas, mapa = dados['fichas'], dados['mapa']
+    titulos = {f['slug']: f['titulo'] for f in fichas}
+    grupos = {}
+    for f in fichas:
+        grupos.setdefault(f['ano'], []).append(f)
+    partes = []
+    for ano in sorted(grupos, key=lambda a: a or 99):
+        itens = []
+        for f in grupos[ano]:
+            versoes = 'versões A, B e C' if 'A' in f['versoes'] else f'{len(f["versoes"])} folhas'
+            itens.append(f'<li><h4><a href="/matematica-adaptada/fichas/{f["slug"]}/">{esc(f["titulo"])}</a></h4>'
+                         f'<p>{esc(f["resumo"])}</p>'
+                         f'<p class="meta">{esc(f["anos"])} · {", ".join(f["habilidades"])} · {versoes} + orientações · PDF</p></li>')
+        nome = f'{ano}º ano' if ano else 'Para todos os anos'
+        partes.append(f'<h3 id="fichas-{ano or "apoio"}">{nome}</h3><ul class="fichas-adaptadas">' + ''.join(itens) + '</ul>')
+    cartoes = ''.join(partes)
+
+    blocos = []
+    for ano in range(1, 10):
+        hs = [h for h in mapa if h['ano'] == ano]
+        feitas = sum(1 for h in hs if h['fichas'])
+        linhas = []
+        for un in dados['unidades']:
+            doano = [h for h in hs if h['unidade'] == un]
+            if not doano:
+                continue
+            linhas.append(f'<tr class="unidade"><th colspan="3">{esc(un)}</th></tr>')
+            for h in doano:
+                fichas_h = ', '.join(f'<a href="/matematica-adaptada/fichas/{sl}/">{esc(titulos[sl])}</a>' for sl in h['fichas']) or '<span class="em-breve">em preparação</span>'
+                linhas.append(f'<tr><td><b>{h["codigo"]}</b></td><td>{esc(h["texto"])}</td><td>{fichas_h}</td></tr>')
+        blocos.append(f'<details class="mapa-ano"{" open" if ano == 1 else ""}><summary>{ano}º ano · {feitas} de {len(hs)} habilidades com ficha</summary>'
+                      f'<div class="mapa-rolagem"><table class="mapa-bncc"><thead><tr><th>Código</th><th>Habilidade</th><th>Ficha</th></tr></thead>'
+                      f'<tbody>{"".join(linhas)}</tbody></table></div></details>')
+    total = sum(1 for h in mapa if h['fichas'])
+    mapa_html = (f'<p>O mapa abaixo lista as {len(mapa)} habilidades de Matemática da BNCC do 1º ao 9º ano, organizadas por unidade temática, '
+                 f'e mostra a ficha adaptada de cada uma. Hoje, {total} habilidades já têm ficha; as demais estão em preparação e entram aos poucos, ano a ano. '
+                 'Do 1º ao 5º ano, o texto é um resumo da habilidade; do 6º ao 9º, é o texto da BNCC.</p>' + ''.join(blocos))
+    return fichas, cartoes, mapa_html
 
 
 def pagina_matematica_adaptada(cfg):
     site = cfg['site']
     url = f'{site}/matematica-adaptada/'
-    indice, cartoes = cartoes_matematica_adaptada()
+    indice, cartoes, mapa_html = cartoes_matematica_adaptada()
     corpo = (AQUI / 'conteudo' / 'matematica-adaptada.html').read_text(encoding='utf-8').strip()
     titulo = 'Matemática adaptada: síndrome de Down, autismo e TDAH'
     descricao = ('Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, em três níveis de apoio, '
@@ -937,7 +977,7 @@ def pagina_matematica_adaptada(cfg):
             },
         ],
     })
-    corpo = corpo.replace('<!--FICHAS-->', cartoes)
+    corpo = corpo.replace('<!--FICHAS-->', cartoes).replace('<!--MAPA-->', mapa_html)
     conteudo = f'''<article class="texto">
     <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Matemática adaptada</li></ol></nav>
     <p class="rotulo">Repositório de materiais adaptados</p>
