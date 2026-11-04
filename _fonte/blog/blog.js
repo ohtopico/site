@@ -3,6 +3,15 @@
     const raiz = document.documentElement;
     const emoldurado = raiz.classList.contains('emoldurado');
 
+    // Links antigos do índice (/blog/?categoria=x ou /blog/#x) vão para a página da categoria
+    if (location.pathname === '/blog/' || location.pathname === '/blog/index.html') {
+        const cat = new URLSearchParams(location.search).get('categoria') || decodeURIComponent(location.hash.slice(1));
+        if (/^[a-z0-9-]+$/.test(cat) && document.querySelector(`.categorias a[href="/blog/categoria/${cat}/"]`)) {
+            location.replace(`/blog/categoria/${cat}/`);
+            return;
+        }
+    }
+
     // Voltar: usa o histórico quando houver; senão segue o link
     const voltar = document.querySelector('[data-voltar]');
     if (voltar && history.length > 1) {
