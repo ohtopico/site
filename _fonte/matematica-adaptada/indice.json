@@ -1713,6 +1713,183 @@
    ]
   },
   {
+   "slug": "numeros-irracionais-e-reais",
+   "titulo": "Números irracionais e reais",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Perceber que existem medidas que não são números racionais, como a diagonal do quadrado, localizar irracionais na reta e calcular com raízes e potências de expoente fracionário.",
+   "habilidades": [
+    "EF09MA01",
+    "EF09MA02",
+    "EF09MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "numeros-reais-notacao-cientifica-e-unidades",
+   "titulo": "Notação científica e unidades muito grandes ou pequenas",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver problemas com números reais em notação científica e usar unidades de medidas muito grandes ou muito pequenas, como ano-luz, nanômetro e gigabyte.",
+   "habilidades": [
+    "EF09MA04",
+    "EF09MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "porcentagens-sucessivas-e-educacao-financeira",
+   "titulo": "Porcentagens sucessivas e educação financeira",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Aplicar porcentagens em sequência, calcular taxas de aumento e desconto e entender juros sobre juros com calculadora e planilha.",
+   "habilidades": [
+    "EF09MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "funcoes-maquina-tabela-e-grafico",
+   "titulo": "Funções: máquina, tabela e gráfico",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Entender a função como uma relação em que cada valor de entrada tem um único valor de saída e representar por tabela, lei e gráfico.",
+   "habilidades": [
+    "EF09MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "razoes-escalas-e-partes-proporcionais",
+   "titulo": "Razões, escalas e divisão em partes proporcionais",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver problemas com razões entre grandezas diferentes, como velocidade e densidade, com escalas de mapas e maquetes e com divisão em partes proporcionais.",
+   "habilidades": [
+    "EF09MA07",
+    "EF09MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "fatoracao-produtos-notaveis-e-segundo-grau",
+   "titulo": "Fatoração, produtos notáveis e equações do 2º grau",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Entender os produtos notáveis com áreas, fatorar expressões e usar a fatoração para resolver equações do 2º grau.",
+   "habilidades": [
+    "EF09MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "angulos-na-circunferencia-e-paralelas",
+   "titulo": "Ângulos na circunferência e retas paralelas",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Relacionar arcos, ângulos centrais e ângulos inscritos e demonstrar relações entre ângulos formados por paralelas cortadas por uma transversal.",
+   "habilidades": [
+    "EF09MA10",
+    "EF09MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "semelhanca-e-teorema-de-pitagoras",
+   "titulo": "Semelhança de triângulos e teorema de Pitágoras",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer triângulos semelhantes, demonstrar e aplicar o teorema de Pitágoras e usar a proporcionalidade de retas paralelas cortadas por secantes.",
+   "habilidades": [
+    "EF09MA12",
+    "EF09MA13",
+    "EF09MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "poligono-regular-ponto-medio-e-distancia",
+   "titulo": "Polígono regular, ponto médio e distância no plano",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Descrever algoritmos de construção de polígonos regulares e calcular, no plano cartesiano e sem fórmulas, o ponto médio, a distância entre pontos, perímetros e áreas.",
+   "habilidades": [
+    "EF09MA15",
+    "EF09MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "vistas-ortogonais-e-volumes",
+   "titulo": "Vistas ortogonais e volumes de prismas e cilindros",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer e desenhar as vistas de frente, de lado e de cima de objetos, desenhar em perspectiva e calcular volumes de prismas e cilindros.",
+   "habilidades": [
+    "EF09MA17",
+    "EF09MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "probabilidade-graficos-e-pesquisa-amostral",
+   "titulo": "Probabilidade, gráficos enganosos e pesquisa amostral",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Calcular probabilidades de eventos dependentes e independentes, identificar gráficos que enganam, escolher o gráfico adequado e planejar uma pesquisa amostral com relatório.",
+   "habilidades": [
+    "EF09MA20",
+    "EF09MA21",
+    "EF09MA22",
+    "EF09MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
    "slug": "kit-de-apoio-visual",
    "titulo": "Kit de apoio visual",
    "anos": "1º ao 5º ano",
@@ -3754,161 +3931,207 @@
    "ano": 9,
    "unidade": "Números",
    "texto": "Reconhecer que, uma vez fixada uma unidade de comprimento, existem segmentos de reta cujo comprimento não é expresso por número racional (como as medidas de diagonais de um polígono e alturas de um triângulo, quando se toma a medida de cada lado como unidade).",
-   "fichas": []
+   "fichas": [
+    "numeros-irracionais-e-reais"
+   ]
   },
   {
    "codigo": "EF09MA02",
    "ano": 9,
    "unidade": "Números",
    "texto": "Reconhecer um número irracional como um número real cuja representação decimal é infinita e não periódica, e estimar a localização de alguns deles na reta numérica.",
-   "fichas": []
+   "fichas": [
+    "numeros-irracionais-e-reais"
+   ]
   },
   {
    "codigo": "EF09MA03",
    "ano": 9,
    "unidade": "Números",
    "texto": "Efetuar cálculos com números reais, inclusive potências com expoentes fracionários.",
-   "fichas": []
+   "fichas": [
+    "numeros-irracionais-e-reais"
+   ]
   },
   {
    "codigo": "EF09MA04",
    "ano": 9,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas com números reais, inclusive em notação científica, envolvendo diferentes operações.",
-   "fichas": []
+   "fichas": [
+    "numeros-reais-notacao-cientifica-e-unidades"
+   ]
   },
   {
    "codigo": "EF09MA05",
    "ano": 9,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam porcentagens, com a ideia de aplicação de percentuais sucessivos e a determinação das taxas percentuais, preferencialmente com o uso de tecnologias digitais, no contexto da educação financeira.",
-   "fichas": []
+   "fichas": [
+    "porcentagens-sucessivas-e-educacao-financeira"
+   ]
   },
   {
    "codigo": "EF09MA06",
    "ano": 9,
    "unidade": "Álgebra",
    "texto": "Compreender as funções como relações de dependência unívoca entre duas variáveis e suas representações numérica, algébrica e gráfica e utilizar esse conceito para analisar situações que envolvam relações funcionais entre duas variáveis.",
-   "fichas": []
+   "fichas": [
+    "funcoes-maquina-tabela-e-grafico"
+   ]
   },
   {
    "codigo": "EF09MA07",
    "ano": 9,
    "unidade": "Álgebra",
    "texto": "Resolver problemas que envolvam a razão entre duas grandezas de espécies diferentes, como velocidade e densidade demográfica.",
-   "fichas": []
+   "fichas": [
+    "razoes-escalas-e-partes-proporcionais"
+   ]
   },
   {
    "codigo": "EF09MA08",
    "ano": 9,
    "unidade": "Álgebra",
    "texto": "Resolver e elaborar problemas que envolvam relações de proporcionalidade direta e inversa entre duas ou mais grandezas, inclusive escalas, divisão em partes proporcionais e taxa de variação, em contextos socioculturais, ambientais e de outras áreas.",
-   "fichas": []
+   "fichas": [
+    "razoes-escalas-e-partes-proporcionais"
+   ]
   },
   {
    "codigo": "EF09MA09",
    "ano": 9,
    "unidade": "Álgebra",
    "texto": "Compreender os processos de fatoração de expressões algébricas, com base em suas relações com os produtos notáveis, para resolver e elaborar problemas que possam ser representados por equações polinomiais do 2º grau.",
-   "fichas": []
+   "fichas": [
+    "fatoracao-produtos-notaveis-e-segundo-grau"
+   ]
   },
   {
    "codigo": "EF09MA10",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.",
-   "fichas": []
+   "fichas": [
+    "angulos-na-circunferencia-e-paralelas"
+   ]
   },
   {
    "codigo": "EF09MA11",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Resolver problemas por meio do estabelecimento de relações entre arcos, ângulos centrais e ângulos inscritos na circunferência, fazendo uso, inclusive, de softwares de geometria dinâmica.",
-   "fichas": []
+   "fichas": [
+    "angulos-na-circunferencia-e-paralelas"
+   ]
   },
   {
    "codigo": "EF09MA12",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.",
-   "fichas": []
+   "fichas": [
+    "semelhanca-e-teorema-de-pitagoras"
+   ]
   },
   {
    "codigo": "EF09MA13",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Demonstrar relações métricas do triângulo retângulo, entre elas o teorema de Pitágoras, utilizando, inclusive, a semelhança de triângulos.",
-   "fichas": []
+   "fichas": [
+    "semelhanca-e-teorema-de-pitagoras"
+   ]
   },
   {
    "codigo": "EF09MA14",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.",
-   "fichas": []
+   "fichas": [
+    "semelhanca-e-teorema-de-pitagoras"
+   ]
   },
   {
    "codigo": "EF09MA15",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um polígono regular cuja medida do lado é conhecida, utilizando régua e compasso, como também softwares.",
-   "fichas": []
+   "fichas": [
+    "poligono-regular-ponto-medio-e-distancia"
+   ]
   },
   {
    "codigo": "EF09MA16",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Determinar o ponto médio de um segmento de reta e a distância entre dois pontos quaisquer, dadas as coordenadas desses pontos no plano cartesiano, sem o uso de fórmulas, e utilizar esse conhecimento para calcular, por exemplo, medidas de perímetros e áreas de figuras planas construídas no plano.",
-   "fichas": []
+   "fichas": [
+    "poligono-regular-ponto-medio-e-distancia"
+   ]
   },
   {
    "codigo": "EF09MA17",
    "ano": 9,
    "unidade": "Geometria",
    "texto": "Reconhecer vistas ortogonais de figuras espaciais e aplicar esse conhecimento para desenhar objetos em perspectiva.",
-   "fichas": []
+   "fichas": [
+    "vistas-ortogonais-e-volumes"
+   ]
   },
   {
    "codigo": "EF09MA18",
    "ano": 9,
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer e empregar unidades usadas para expressar medidas muito grandes ou muito pequenas, tais como distância entre planetas e sistemas solares, tamanho de vírus ou de células, capacidade de armazenamento de computadores, entre outros.",
-   "fichas": []
+   "fichas": [
+    "numeros-reais-notacao-cientifica-e-unidades"
+   ]
   },
   {
    "codigo": "EF09MA19",
    "ano": 9,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas que envolvam medidas de volumes de prismas e de cilindros retos, inclusive com uso de expressões de cálculo, em situações cotidianas.",
-   "fichas": []
+   "fichas": [
+    "vistas-ortogonais-e-volumes"
+   ]
   },
   {
    "codigo": "EF09MA20",
    "ano": 9,
    "unidade": "Probabilidade e estatística",
    "texto": "Reconhecer, em experimentos aleatórios, eventos independentes e dependentes e calcular a probabilidade de sua ocorrência, nos dois casos.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa-amostral"
+   ]
   },
   {
    "codigo": "EF09MA21",
    "ano": 9,
    "unidade": "Probabilidade e estatística",
    "texto": "Analisar e identificar, em gráficos divulgados pela mídia, os elementos que podem induzir, às vezes propositadamente, erros de leitura, como escalas inapropriadas, legendas não explicitadas corretamente, omissão de informações importantes (fontes e datas), entre outros.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa-amostral"
+   ]
   },
   {
    "codigo": "EF09MA22",
    "ano": 9,
    "unidade": "Probabilidade e estatística",
    "texto": "Escolher e construir o gráfico mais adequado (colunas, setores, linhas), com ou sem uso de planilhas eletrônicas, para apresentar um determinado conjunto de dados, destacando aspectos como as medidas de tendência central.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa-amostral"
+   ]
   },
   {
    "codigo": "EF09MA23",
    "ano": 9,
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e executar pesquisa amostral envolvendo tema da realidade social e comunicar os resultados por meio de relatório contendo avaliação de medidas de tendência central e da amplitude, tabelas e gráficos adequados, construídos com o apoio de planilhas eletrônicas.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa-amostral"
+   ]
   }
  ],
  "unidades": [
