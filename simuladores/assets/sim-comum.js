@@ -108,3 +108,5 @@
       ${em.length ? `<p class="uso"><strong>No Ensino Médio:</strong> apoia ${em.length > 1 ? 'as habilidades' : 'a habilidade'} ${em.map(c => `<a href="/material-didatico/bncc/${c.toLowerCase()}/">${c}</a>`).join(', ')} da BNCC Computação.</p>` : ''}`;
   };
 })();
+// Acessibilidade (leitura em voz alta, contraste, letra maior, legendas dos sons, teclado): /assets/acessibilidade.js
+(function () { if (window.MDA || /^\/mundo\//.test(location.pathname)) return; const s = document.createElement('script'); s.src = '/assets/acessibilidade.js?v=202611041'; document.head.appendChild(s); })();

@@ -143,6 +143,11 @@
         </div>
       </div>
       <aside class="vb-lado">
+        <div class="vb-box" id="guia"><h2>Ir até</h2>
+          <p class="small muted" style="margin:0 0 8px">Para quem joga pelo teclado ou com leitor de tela: escolha um lugar e a personagem anda sozinha até lá.</p>
+          <p class="small" id="guia-msg" role="status" style="margin:0 0 8px"></p>
+          <div class="btn-row" id="guia-lista" style="gap:6px"></div>
+        </div>
         <div class="vb-box"><h2>Objetivo</h2><p id="objetivo"></p></div>
         <div class="vb-box"><h2 id="missao-tit">Missão da região</h2><ul class="vb-missao" id="missao"></ul></div>
         <div class="vb-box"><h2>Fragmentos do Código</h2><div class="vb-frag" id="frags"></div></div>
@@ -577,8 +582,37 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     if (nFrag() < 4) return `Encontre os fragmentos que faltam (${nFrag()} de 4) e leve-os ao Robô Guardião da Torre.`;
     return 'Você tem os 4 fragmentos. Fale com o Robô Guardião da Torre para o desafio final.';
   }
+  /* ---------- Guia por texto (teclado e leitor de tela) ---------- */
+  let ALVOS = [], rota = [];
+  function guia() {
+    ALVOS = [];
+    NPCS.forEach(n => { if (aberto(regiaoDe(n.x, n.y))) ALVOS.push({ t: (n.guardiao ? 'Guardião: ' : 'Falar com ') + n.nome + (n.guardiao || S.falou.includes(n.id) ? '' : ' (novo)'), x: n.x, y: n.y, npc: true }); });
+    ITENS.forEach(i => { if (!tem(i.id) && aberto(regiaoDe(i.x, i.y))) ALVOS.push({ t: 'Pegar: ' + i.nome, x: i.x, y: i.y }); });
+    const el = $('guia-lista'); if (!el) return;
+    el.innerHTML = ALVOS.map((a, i) => `<button class="btn ghost" type="button" data-alvo="${i}">${esc(a.t)}</button>`).join('');
+  }
+  // caminho mais curto pelos quadradinhos (sem atravessar árvores, casas, água e pessoas)
+  function rotaAte(a) {
+    const livre = (x, y) => !BLOQ.has(tile(x, y)) && !NPC_AT[x + ',' + y];
+    const k = (x, y) => x + ',' + y, ant = new Map([[k(S.x, S.y), null]]), fila = [[S.x, S.y]];
+    const PASSOS = [['d', 1, 0], ['e', -1, 0], ['b', 0, 1], ['c', 0, -1]];
+    const chegou = (x, y) => a.npc ? Math.abs(x - a.x) + Math.abs(y - a.y) === 1 : x === a.x && y === a.y;
+    while (fila.length) {
+      const [x, y] = fila.shift();
+      if (chegou(x, y)) {
+        const r = []; let c = k(x, y);
+        while (ant.get(c)) { const [d, pc] = ant.get(c); r.unshift(d); c = pc; }
+        if (a.npc) r.push(PASSOS.find(([, dx, dy]) => x + dx === a.x && y + dy === a.y)[0]);
+        return r;
+      }
+      for (const [d, dx, dy] of PASSOS) { const nx = x + dx, ny = y + dy; if (!ant.has(k(nx, ny)) && livre(nx, ny)) { ant.set(k(nx, ny), [d, k(x, y)]); fila.push([nx, ny]); } }
+    }
+    return null;
+  }
+
   function painel() {
     checaConq();
+    guia();
     $('objetivo').textContent = objetivo();
     $('frags').innerHTML = [1, 2, 3, 4].map(n => `<span class="${tem('frag' + n) ? 'on' : ''}" aria-label="Fragmento ${n}: ${tem('frag' + n) ? 'encontrado' : 'não encontrado'}">${n}</span>`).join('');
     $('legenda').innerHTML = ORDEM.map(r => `<span class="${aberto(r) ? '' : 'bloq'}">${aberto(r) ? 'Aberto' : 'Fechado'}: ${REGIOES[r].nome}</span>`).join('');
@@ -724,7 +758,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
     S.x = nx; S.y = ny; S.passos++;
     const r = regiaoDe(nx, ny);
     if (!S.visto.includes(r)) S.visto.push(r);
-    if (r !== regAtual) { regAtual = r; mostraRegiao(r); painel(); }
+    if (r !== regAtual) { regAtual = r; mostraRegiao(r); painel(); $('guia-msg').textContent = `Você entrou em ${REGIOES[r].nome}.`; }
     const it = ITEM_AT[nx + ',' + ny];
     if (it && !tem(it.id)) { segura = null; setTimeout(() => pegar(it), 160); }
     if (S.passos === 30 || S.visto.length === 5) checaConq();
@@ -769,7 +803,16 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('vale-bits');
   ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => cv.addEventListener(ev, () => { segura = null; }));
   cv.tabIndex = 0;
 
+  $('guia-lista').addEventListener('click', e => {
+    const bt = e.target.closest('[data-alvo]'); if (!bt || aberta()) return;
+    const a = ALVOS[+bt.dataset.alvo]; if (!a) return;
+    const r = rotaAte(a);
+    if (!r) { $('guia-msg').textContent = `Não achei um caminho até: ${a.t}.`; return; }
+    rota = r; $('guia-msg').textContent = `Indo até: ${a.t}.`;
+  });
   function loop(t) {
+    if (segura || aberta()) rota = [];
+    if (!anim && rota.length && !aberta()) tentar(rota.shift());
     if (!anim && segura && !aberta()) tentar(segura);
     render(t);
     requestAnimationFrame(loop);

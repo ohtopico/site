@@ -188,6 +188,11 @@
     </div>
 
     <div class="cb-grade">
+      <div class="cb-box" id="guia"><h2>Ir até</h2>
+        <p class="small muted" style="margin:0 0 8px">Para quem joga pelo teclado ou com leitor de tela: escolha um lugar e a personagem anda sozinha até lá.</p>
+        <p class="small" id="guia-msg" role="status" style="margin:0 0 8px"></p>
+        <div class="btn-row cb-mini-btns" id="guia-lista"></div>
+      </div>
       <div class="cb-box"><h2 id="missao-tit">Missão</h2><ul class="cb-missao" id="missao"></ul></div>
       <details class="cb-box" id="conquistas"><summary><strong>Conquistas</strong> <span class="muted small" id="nconq"></span></summary><ul class="cb-conqs" id="lista-conq"></ul></details>
       <details class="cb-box" id="caderno"><summary><strong>Caderno de dicas</strong> <span class="muted small" id="ndicas"></span></summary><ol class="cb-dicas" id="dicas"></ol></details>
@@ -806,10 +811,41 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
     return [[`Conversar com ${B.npc.nome}`, S.falou.includes(B.npc.id)], [`Responder os 5 totens (${feitos(b)}/5)`, completo(b)],
       [`Encontrar as peças escondidas (${nok}/${nb.length})`, nok === nb.length], [`Reconstruir: ${B.marco.nome}`, completo(b)]];
   }
+  /* ---------- Guia por texto (teclado e leitor de tela) ---------- */
+  let ALVOS = [], alvoGuia = null;
+  // chegou ao fim do caminho escolhido no guia: abre a conversa ou o totem mesmo se parou na diagonal
+  function chegouGuia() {
+    const a = alvoGuia; alvoGuia = null;
+    if (!a || aberta()) return;
+    if (Math.hypot(a.x + .5 - S.x, a.y + .5 - S.y) > 2.2) return;
+    if (a.npc) falarNpc(a.npc);
+    else if (a.totem && !S.ok.includes(a.totem.id)) { if (S.vidas <= 0) semVidas(a.totem.b); else abrirTotem(a.totem); }
+  }
+  function guia() {
+    ALVOS = [];
+    for (let b = 0; b < S.abertos && b < BAIRROS.length; b++) {
+      const B = BAIRROS[b];
+      NPCS.filter(n => n.b === b).forEach(n => ALVOS.push({ t: `Falar com ${n.nome}${S.falou.includes(n.id) ? '' : ' (novo)'}`, x: n.tx, y: n.ty, id: n.id, npc: n }));
+      TOTENS.filter(q => q.b === b).forEach((q, k) => { if (!S.ok.includes(q.id)) ALVOS.push({ t: `Totem ${k + 1} de ${B.nome}`, x: q.x, y: q.y, id: q.id, totem: q }); });
+    }
+    BONUS.forEach(o => { if (aberto(o.b) && !S.bonus.includes(o.id) && Math.hypot(o.x + .5 - S.x, o.y + .5 - S.y) < 7) ALVOS.push({ t: 'Peça escondida aqui perto', x: o.x, y: o.y }); });
+    $('guia-lista').innerHTML = ALVOS.map((a, i) => `<button class="btn ghost" type="button" data-alvo="${i}">${esc(a.t)}</button>`).join('') || '<span class="small muted">Nada pendente por enquanto.</span>';
+  }
+  $('guia-lista').addEventListener('click', e => {
+    const bt = e.target.closest('[data-alvo]'); if (!bt || aberta()) return;
+    const a = ALVOS[+bt.dataset.alvo]; if (!a) return;
+    const c = bfs({ x: a.x, y: a.y });
+    if (a.id) dispensa.delete(a.id);
+    if (c && c.length) { caminho = c; alvoGuia = a; $('guia-msg').textContent = `Indo até: ${a.t}.`; }
+    else if (c) { caminho = null; alvoGuia = a; chegouGuia(); }
+    else $('guia-msg').textContent = `Não achei um caminho até: ${a.t}.`;
+  });
+
   function painel() {
     checaConq(); hud();
     const a = atual();
     $('missao-tit').textContent = 'Missão: ' + BAIRROS[a].nome;
+    guia();
     $('missao').innerHTML = missoes(a).map(([t, ok]) => `<li class="${ok ? 'ok' : ''}">${esc(t)}</li>`).join('');
     $('nconq').textContent = `(${S.conq.length} de ${CONQUISTAS.length})`;
     $('lista-conq').innerHTML = CONQUISTAS.map((c, i) => { const on = S.conq.includes(c[0]); return `<li class="${on ? 'on' : ''}"><span class="med" aria-hidden="true">${i + 1}</span><span><strong>${esc(c[1])}</strong><span class="d">${esc(c[2])}</span><span class="sr-only">${on ? ' (conquistada)' : ' (ainda não)'}</span></span></li>`; }).join('');
@@ -838,10 +874,12 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
       o.connect(gn).connect(AC.destination); o.start(t0); o.stop(t0 + (d || .14) + .02);
     } catch (e) { /* sem som neste navegador */ }
   }
-  const somAcerto = () => { bip(660, .12); bip(880, .12, 'triangle', .07, .1); bip(1175, .18, 'triangle', .06, .2); };
-  const somErro = () => { bip(220, .22, 'square', .035); bip(165, .3, 'square', .03, .15); };
-  const somPeca = () => { bip(990, .08, 'sine', .06); bip(1320, .1, 'sine', .05, .07); };
-  const somMarco = () => [523, 659, 784, 1047].forEach((f, i) => bip(f, .2, 'triangle', .07, i * .12));
+  // legenda de cada som para estudantes surdos (painel de Acessibilidade, /assets/acessibilidade.js)
+  const leg = t => { if (window.MDA) MDA.legenda(t); };
+  const somAcerto = () => { leg('Som de acerto'); bip(660, .12); bip(880, .12, 'triangle', .07, .1); bip(1175, .18, 'triangle', .06, .2); };
+  const somErro = () => { leg('Som de tente de novo'); bip(220, .22, 'square', .035); bip(165, .3, 'square', .03, .15); };
+  const somPeca = () => { leg('Som de peça encaixada'); bip(990, .08, 'sine', .06); bip(1320, .1, 'sine', .05, .07); };
+  const somMarco = () => { leg('Música de conquista'); [523, 659, 784, 1047].forEach((f, i) => bip(f, .2, 'triangle', .07, i * .12)); };
   function marcaSom() { const b = $('b-som'); b.setAttribute('aria-pressed', S.som ? 'true' : 'false'); b.setAttribute('aria-label', S.som ? 'Som ligado' : 'Som desligado'); }
 
   /* ---------- Diálogos ---------- */
@@ -988,8 +1026,10 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
       const alvo = caminho[0], dx = alvo.x - S.x, dy = alvo.y - S.y, d = Math.hypot(dx, dy);
       if (d < .06) caminho.shift(); else { const k = Math.min(d, v); andando = mover(dx / d * k, dy / d * k); if (!andando) caminho = null; }
     }
+    if (alvoGuia && (sx || sy)) alvoGuia = null;
+    else if (alvoGuia && (!caminho || !caminho.length)) { chegouGuia(); if (aberta()) return; }
     const tx = Math.floor(S.x), ty = Math.floor(S.y), bt = TIPO[ty] ? TIPO[ty][tx] : -1;
-    if (bt >= 0 && bt !== bairroAqui) { bairroAqui = bt; hud(); }
+    if (bt >= 0 && bt !== bairroAqui) { bairroAqui = bt; hud(); const gm = $('guia-msg'); if (gm) gm.textContent = `Você entrou em ${BAIRROS[bt].nome}.`; }
     // peças escondidas
     BONUS.forEach(o => {
       if (!aberto(o.b) || S.bonus.includes(o.id)) return;
