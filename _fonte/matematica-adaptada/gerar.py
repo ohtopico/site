@@ -23,10 +23,10 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
 from fichas import FICHAS as BASE  # noqa: E402
-import ano1  # noqa: E402
+import ano1, ano2  # noqa: E401,E402
 from bncc import habilidades, UNIDADES  # noqa: E402
 
-FICHAS = BASE[:-1] + ano1.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
+FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
 
 RAIZ = AQUI.parent.parent
 SAIDA = RAIZ / 'matematica-adaptada'
