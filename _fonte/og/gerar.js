@@ -113,7 +113,7 @@ const IMAGENS = [
     sub: 'O que a Lei 15.100 permite e atividades de cultura digital da BNCC', pills: ['Lei 15.100/2025', 'Uso pedagógico', '6º ano ao Médio'],
     url: 'ohtopico.com.br/lei-do-celular-nas-escolas', capturas: ['/material-didatico/bncc/'] },
   { arq: 'matematica-adaptada/og-matematica-adaptada.jpg', janela: 'matematica-adaptada.html', faixa: 'Fichas para imprimir', t1: 'Matemática', t2: 'adaptada',
-    sub: 'Síndrome de Down, autismo e TDAH, em três níveis de apoio', pills: ['Versões A, B e C', 'BNCC', 'Gratuito'],
+    sub: 'Para alunos com diferentes necessidades, em três níveis de apoio', pills: ['Versões A, B e C', 'BNCC', 'Gratuito'],
     url: 'ohtopico.com.br/matematica-adaptada', capturas: ['/matematica-adaptada/fichas/contar-e-mostrar-quantidades/#folhas'] },
   { arq: 'material-didatico/assets/og-curriculos-estaduais.jpg', janela: 'curriculos-estaduais.html', faixa: 'BNCC Computação · 27 estados', t1: 'Currículos de', t2: 'Computação',
     sub: 'Quais redes estaduais já publicaram o próprio documento, com a fonte oficial', pills: ['Mapa do Brasil', 'Fontes oficiais', 'Atualizado em 2026'],
