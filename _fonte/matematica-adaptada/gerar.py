@@ -140,10 +140,10 @@ def pagina(f, i, total):
              'accessibilityFeature': ['largePrint', 'highContrastDisplay', 'alternativeText', 'structuralNavigation'],
              'encoding': {'@type': 'MediaObject', 'contentUrl': url + pdf, 'encodingFormat': 'application/pdf'},
              'image': OG, 'author': {'@id': AUTORA['@id']},
-             'isPartOf': {'@type': 'CollectionPage', '@id': f'{SITE}/matematica-adaptada/#pagina'}},
+             'isPartOf': {'@type': 'CollectionPage', '@id': f'{SITE}/material-adaptado/#pagina'}},
             {'@type': 'BreadcrumbList', 'itemListElement': [
                 {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{SITE}/'},
-                {'@type': 'ListItem', 'position': 2, 'name': 'Matemática adaptada', 'item': f'{SITE}/matematica-adaptada/'},
+                {'@type': 'ListItem', 'position': 2, 'name': 'Material adaptado', 'item': f'{SITE}/material-adaptado/'},
                 {'@type': 'ListItem', 'position': 3, 'name': f['titulo'], 'item': url}]},
         ]}, ensure_ascii=False, indent=1)
     alt = 'Card com o título Matemática adaptada e a captura de uma ficha para imprimir com três níveis de apoio.'
@@ -181,11 +181,11 @@ def pagina(f, i, total):
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 <header class="topo">
     <a class="marca-site" href="/">Júlia Quoos</a>
-    <nav aria-label="Principal"><a href="/matematica-adaptada/">Matemática adaptada</a><a href="/blog/">Blog</a><a href="/material-didatico/">Material didático</a></nav>
+    <nav aria-label="Principal"><a href="/material-adaptado/">Material adaptado</a><a href="/matematica-adaptada/">Como usar</a><a href="/blog/">Blog</a><a href="/material-didatico/">Material didático</a></nav>
 </header>
 <main id="conteudo" tabindex="-1">
     <div class="texto">
-        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/matematica-adaptada/">Matemática adaptada</a></li><li aria-current="page">{esc(f['titulo'])}</li></ol></nav>
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/material-adaptado/">Material adaptado</a></li><li aria-current="page">{esc(f['titulo'])}</li></ol></nav>
         <p class="rotulo">Ficha adaptada · {esc(f['anos'])}</p>
         <h1>{esc(f['titulo'])}</h1>
         <p class="linha-fina">{esc(f['resumo'])}</p>
@@ -215,12 +215,12 @@ def pagina(f, i, total):
     </div>
     <div class="texto">
         {nav}
-        <p class="voltar"><a href="/matematica-adaptada/">Ver todos os materiais adaptados</a></p>
+        <p class="voltar"><a href="/material-adaptado/">Ver todos os materiais adaptados</a> · <a href="/matematica-adaptada/">Como usar o material</a></p>
     </div>
 </main>
 <footer class="rodape">
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
-    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/matematica-adaptada/">Matemática adaptada</a> · <a href="/blog/">Blog</a> · <a href="/">Área de trabalho</a></p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/blog/">Blog</a> · <a href="/">Área de trabalho</a></p>
 </footer>
 <script src="/matematica-adaptada/assets/fichas.js?v={versao_css()}" defer></script>
 </body>
@@ -250,21 +250,62 @@ def atualizar_sitemap(slugs):
 
 
 def gerar_hub(fichas, mapa):
-    """Página /material-adaptado/, no estilo do material didático, com os números atualizados."""
+    """Página /material-adaptado/, no estilo do material didático: o repositório com todas as fichas e o mapa da BNCC."""
     def esc_(t):
-        return str(t).replace('&', '&amp;').replace('<', '&lt;')
+        return html.escape(str(t), quote=True)
     proprias = [f for f in fichas if not f['revisao'] and f['slug'] != 'kit-de-apoio-visual']
     revisoes = [f for f in fichas if f['revisao']]
     hab_proprias = {c for f in proprias for c, _ in f['habilidades']}
     total_h = len(mapa)
+    titulos = {f['slug']: f['titulo'] for f in fichas}
+    eh_rev = {f['slug']: f['revisao'] for f in fichas}
+
     def cartao_ano(a):
         hs = [h for h in mapa if h['ano'] == a]
         feitas = sum(1 for h in hs if h['codigo'] in hab_proprias)
         n = sum(1 for f in proprias if f['ano'] == a)
-        return (f'<a class="ano" href="/matematica-adaptada/#fichas-{a}"><strong>{a}º ano</strong>'
+        return (f'<a class="ano" href="#ano-{a}"><strong>{a}º ano</strong>'
                 f'<span>{n} {"ficha" if n == 1 else "fichas"} · {feitas} de {len(hs)} habilidades</span></a>')
-    descricao = (f'Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, do 1º ao 9º ano, '
-                 f'uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.')
+
+    def cartao(f):
+        habs = ', '.join(c for c, _ in f['habilidades'])
+        return (f'<li><a class="ficha-card" href="/matematica-adaptada/fichas/{f["slug"]}/">'
+                f'<span class="cod">{esc_(habs)}</span><strong>{esc_(f["titulo"])}</strong>'
+                f'<span class="resumo">{esc_(f["resumo"])}</span><span class="meta">{"Versões A, B e C · orientações" if "A" in f["versoes"] else str(len(f["versoes"])) + " folhas"} · PDF</span></a></li>')
+
+    secoes = []
+    for a in range(1, 10):
+        un = [f for f in proprias if f['ano'] == a]
+        rv = [f for f in revisoes if f['ano'] == a]
+        corpo = f'<ul class="fichas-grade">{"".join(cartao(f) for f in un)}</ul>' if un else '<p class="vazio">As fichas por habilidade deste ano estão em preparação. Enquanto isso, use as fichas de revisão.</p>'
+        if rv:
+            corpo += (f'<details class="revisoes"{"" if un else " open"}><summary>Fichas de revisão do {a}º ano ({len(rv)}), juntando habilidades de um mesmo tema</summary>'
+                      f'<ul class="fichas-grade">{"".join(cartao(f) for f in rv)}</ul></details>')
+        secoes.append(f'<section class="ano-secao" id="ano-{a}"><h2>{a}º ano</h2>{corpo}</section>')
+    kit = next((f for f in fichas if f['slug'] == 'kit-de-apoio-visual'), None)
+    if kit:
+        secoes.append(f'<section class="ano-secao" id="apoio"><h2>Para todos os anos</h2><ul class="fichas-grade">{cartao(kit).replace(esc_(", ".join(c for c, _ in kit["habilidades"])), "apoio visual")}</ul></section>')
+
+    blocos = []
+    for a in range(1, 10):
+        hs = [h for h in mapa if h['ano'] == a]
+        feitas = sum(1 for h in hs if h['fichas'])
+        linhas_ = []
+        for un in UNIDADES:
+            doano = [h for h in hs if h['unidade'] == un]
+            if not doano:
+                continue
+            linhas_.append(f'<tr class="unidade"><th colspan="3">{esc_(un)}</th></tr>')
+            for h in doano:
+                ordem = sorted(h['fichas'], key=lambda sl: eh_rev.get(sl, False))
+                links = ', '.join(f'<a href="/matematica-adaptada/fichas/{sl}/">{esc_(titulos[sl])}</a>' + (' (revisão)' if eh_rev.get(sl) else '') for sl in ordem) or 'em preparação'
+                linhas_.append(f'<tr><td><b>{h["codigo"]}</b></td><td>{esc_(h["texto"])}</td><td>{links}</td></tr>')
+        blocos.append(f'<details class="mapa-ano"><summary>{a}º ano · {feitas} de {len(hs)} habilidades com ficha</summary>'
+                      f'<div class="mapa-rolagem"><table class="mapa-bncc"><thead><tr><th>Código</th><th>Habilidade</th><th>Ficha</th></tr></thead>'
+                      f'<tbody>{"".join(linhas_)}</tbody></table></div></details>')
+
+    descricao = ('Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, do 1º ao 9º ano, '
+                 'uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.')
     main = f'''  <section class="hero">
     <div class="wrap">
       <div class="hero-top">
@@ -274,14 +315,14 @@ def gerar_hub(fichas, mapa):
           <p class="lead">Fichas de matemática para imprimir, adaptadas para estudantes com síndrome de Down, autismo em diferentes níveis de suporte e TDAH. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
         </div>
         <div class="stats">
-          <a class="stat" href="/matematica-adaptada/#fichas"><b>{len(proprias)}</b><span>fichas por habilidade</span></a>
-          <a class="stat" href="/matematica-adaptada/#mapa-bncc"><b>{len(hab_proprias)}</b><span>de {total_h} habilidades com ficha própria</span></a>
-          <a class="stat" href="/matematica-adaptada/#fichas"><b>{len(revisoes)}</b><span>fichas de revisão</span></a>
+          <a class="stat" href="#ano-1"><b>{len(proprias)}</b><span>fichas por habilidade</span></a>
+          <a class="stat" href="#mapa-bncc"><b>{len(hab_proprias)}</b><span>de {total_h} habilidades com ficha própria</span></a>
+          <a class="stat" href="#ano-1"><b>{len(revisoes)}</b><span>fichas de revisão</span></a>
           <a class="stat" href="/matematica-adaptada/#como-organizado"><b>3</b><span>versões de cada ficha</span></a>
         </div>
       </div>
       <div class="areas">
-        <a class="area-door co" href="/matematica-adaptada/#fichas-1">
+        <a class="area-door co" href="#ano-1">
           <span class="mark">1º ao 5º ano</span>
           <h3>Anos iniciais</h3>
           <p>Contagem, sistema de numeração, adição e subtração, formas, medidas, dinheiro, horas e pesquisa com a turma.</p>
@@ -292,7 +333,7 @@ def gerar_hub(fichas, mapa):
           </ul>
           <span class="go">Ver as fichas do 1º ao 5º →</span>
         </a>
-        <a class="area-door ma" href="/matematica-adaptada/#fichas-6">
+        <a class="area-door ma" href="#ano-6">
           <span class="mark">6º ao 9º ano</span>
           <h3>Anos finais</h3>
           <p>Números racionais e inteiros, álgebra, proporcionalidade, geometria, medidas, estatística e probabilidade.</p>
@@ -310,15 +351,31 @@ def gerar_hub(fichas, mapa):
         <div class="anos">{''.join(cartao_ano(a) for a in range(1, 10))}</div>
       </section>
       <nav class="atalhos" aria-label="Outros caminhos">
-        <a class="atalho" href="/matematica-adaptada/#mapa-bncc"><strong>Mapa da BNCC</strong><span>As {total_h} habilidades e a ficha de cada uma</span></a>
-        <a class="atalho" href="/matematica-adaptada/#como-organizado"><strong>Como escolher a versão</strong><span>A, B ou C, pelo apoio de cada dia</span></a>
+        <a class="atalho destaque" href="/matematica-adaptada/"><strong>Como usar o material</strong><span>Versões A, B e C, Down, autismo, TDAH e perguntas frequentes</span></a>
+        <a class="atalho" href="#mapa-bncc"><strong>Mapa da BNCC</strong><span>As {total_h} habilidades e a ficha de cada uma</span></a>
         <a class="atalho" href="/matematica-adaptada/fichas/kit-de-apoio-visual/"><strong>Kit de apoio visual</strong><span>Quadros e cartões para a mesa</span></a>
-        <a class="atalho destaque" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20sugerir%20um%20material%20adaptado." target="_blank" rel="noopener"><strong>Sugerir um material</strong><span>Conte o conteúdo e o apoio de que o estudante precisa</span></a>
+        <a class="atalho" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20sugerir%20um%20material%20adaptado." target="_blank" rel="noopener"><strong>Sugerir um material</strong><span>Conte o conteúdo e o apoio de que o estudante precisa</span></a>
       </nav>
     </div>
   </section>
-  <div class="hero-faixa"></div>'''
-    texto = (AQUI / 'hub.html').read_text(encoding='utf-8').replace('{{DESCRICAO}}', esc_(descricao)).replace('{{MAIN}}', main)
+  <div class="hero-faixa"></div>
+  <div class="wrap repositorio">
+    <p class="como-usar">Primeira vez aqui? Leia <a href="/matematica-adaptada/">como usar o material adaptado</a>: como escolher entre as versões A, B e C e o que costuma ajudar estudantes com síndrome de Down, autismo e TDAH.</p>
+    {''.join(secoes)}
+    <section class="ano-secao" id="mapa-bncc"><h2>Mapa da BNCC</h2>
+      <p class="intro-mapa">As {total_h} habilidades de Matemática da BNCC do 1º ao 9º ano, por unidade temática, com a ficha de cada uma. Do 1º ao 5º ano, o texto é um resumo da habilidade; do 6º ao 9º, é o texto da BNCC.</p>
+      {''.join(blocos)}
+    </section>
+  </div>'''
+    ld = json.dumps({
+        '@context': 'https://schema.org', '@type': 'CollectionPage', '@id': f'{SITE}/material-adaptado/#pagina',
+        'url': f'{SITE}/material-adaptado/', 'name': 'Material adaptado: matemática do 1º ao 9º ano', 'description': descricao, 'inLanguage': 'pt-BR',
+        'author': {'@type': 'Person', 'name': 'Júlia Roberta Quoos Alves', 'url': f'{SITE}/curriculo/'},
+        'mainEntity': {'@type': 'ItemList', 'numberOfItems': len(fichas), 'itemListElement': [
+            {'@type': 'ListItem', 'position': i + 1, 'name': f['titulo'], 'url': f'{SITE}/matematica-adaptada/fichas/{f["slug"]}/'} for i, f in enumerate(fichas)]},
+    }, ensure_ascii=False)
+    texto = (AQUI / 'hub.html').read_text(encoding='utf-8').replace('{{DESCRICAO}}', esc_(descricao)).replace('{{MAIN}}', main).replace(
+        '{{LD}}', f'<script type="application/ld+json">{ld}</script>')
     destino = RAIZ / 'material-adaptado'
     destino.mkdir(exist_ok=True)
     (destino / 'index.html').write_text(texto, encoding='utf-8')
