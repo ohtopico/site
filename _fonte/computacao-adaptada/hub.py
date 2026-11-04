@@ -8,7 +8,7 @@ from pathlib import Path
 INDICE = Path(__file__).resolve().parent / 'indice.json'
 esc = lambda t: html.escape(str(t), quote=True)  # noqa: E731
 
-ESTILO = ('<style>.areas .area-door.computacao{grid-column:1/-1;background:var(--paper)}'
+ESTILO = ('<style>.areas .area-door.computacao{background:var(--paper)}'
           '.area-door.computacao .mark{color:var(--ink)}.computacao-anos h3{font-size:22px;margin:22px 0 10px}.stats .stat-computacao{grid-column:1/-1}</style>')
 
 
