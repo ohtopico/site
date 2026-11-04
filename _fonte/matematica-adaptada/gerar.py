@@ -376,6 +376,9 @@ def gerar_hub(fichas, mapa):
     }, ensure_ascii=False)
     texto = (AQUI / 'hub.html').read_text(encoding='utf-8').replace('{{DESCRICAO}}', esc_(descricao)).replace('{{MAIN}}', main).replace(
         '{{LD}}', f'<script type="application/ld+json">{ld}</script>')
+    sys.path.insert(0, str(AQUI.parent / 'computacao-adaptada'))
+    import hub as computacao  # seção Computação (fichas de _fonte/computacao-adaptada/indice.json)
+    texto = computacao.inserir(texto)
     destino = RAIZ / 'material-adaptado'
     destino.mkdir(exist_ok=True)
     (destino / 'index.html').write_text(texto, encoding='utf-8')
