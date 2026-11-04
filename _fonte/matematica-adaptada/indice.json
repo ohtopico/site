@@ -999,6 +999,250 @@
    ]
   },
   {
+   "slug": "numeros-sistemas-de-numeracao-e-arredondamento",
+   "titulo": "Números, sistemas de numeração e arredondamento",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Comparar naturais e decimais, entender o valor posicional, comparar o sistema decimal com o romano e arredondar para estimar.",
+   "habilidades": [
+    "EF06MA01",
+    "EF06MA02",
+    "EF06MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "calculo-algoritmos-e-fluxogramas",
+   "titulo": "Cálculo, algoritmos e fluxogramas",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Resolver problemas com números naturais, estimar, conferir na calculadora e representar passos e relações em fluxogramas.",
+   "habilidades": [
+    "EF06MA03",
+    "EF06MA04",
+    "EF06MA34"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "multiplos-divisores-e-numeros-primos",
+   "titulo": "Múltiplos, divisores e números primos",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Encontrar divisores com retângulos de tampinhas, reconhecer primos e compostos, usar critérios de divisibilidade e resolver problemas.",
+   "habilidades": [
+    "EF06MA05",
+    "EF06MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "fracoes-e-decimais-comparar-e-converter",
+   "titulo": "Frações e decimais: comparar e converter",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Comparar e ordenar frações, encontrar equivalentes, passar de fração para decimal e de decimal para fração e localizar na reta.",
+   "habilidades": [
+    "EF06MA07",
+    "EF06MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "fracao-de-quantidade-e-operacoes-com-fracoes",
+   "titulo": "Fração de uma quantidade e operações com frações",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Calcular a fração de uma quantidade e somar e subtrair frações, com mesmo denominador e com denominadores diferentes.",
+   "habilidades": [
+    "EF06MA09",
+    "EF06MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "operacoes-com-decimais-e-potencias",
+   "titulo": "Operações com decimais e potências",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Somar, subtrair, multiplicar e dividir números decimais, calcular potências e usar estimativas para conferir.",
+   "habilidades": [
+    "EF06MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "porcentagem-descontos-e-acrescimos",
+   "titulo": "Porcentagem: descontos e acréscimos",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Calcular porcentagens com a malha de 100, com 10% como ponto de partida e em problemas de educação financeira.",
+   "habilidades": [
+    "EF06MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "igualdades-e-partilha-em-partes-desiguais",
+   "titulo": "Igualdades e partilha em partes desiguais",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Usar as propriedades da igualdade para descobrir valores desconhecidos e repartir quantidades em partes desiguais e por razões.",
+   "habilidades": [
+    "EF06MA14",
+    "EF06MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "plano-cartesiano-e-poligonos",
+   "titulo": "Plano cartesiano e polígonos",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Associar pares ordenados aos vértices de polígonos e classificar polígonos em regulares e não regulares.",
+   "habilidades": [
+    "EF06MA16",
+    "EF06MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "prismas-e-piramides-faces-vertices-e-arestas",
+   "titulo": "Prismas e pirâmides: faces, vértices e arestas",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Contar faces, vértices e arestas de prismas e pirâmides e relacionar esses números com o polígono da base.",
+   "habilidades": [
+    "EF06MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "triangulos-e-quadrilateros",
+   "titulo": "Triângulos e quadriláteros",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Classificar triângulos pelos lados e pelos ângulos, classificar quadriláteros e perceber que um tipo pode estar dentro de outro.",
+   "habilidades": [
+    "EF06MA19",
+    "EF06MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "retas-paralelas-e-perpendiculares-ampliacao-e-algoritmos",
+   "titulo": "Retas paralelas e perpendiculares, ampliação e algoritmos",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Reconhecer e traçar retas paralelas e perpendiculares, ampliar figuras em malhas e seguir e escrever algoritmos de construção.",
+   "habilidades": [
+    "EF06MA21",
+    "EF06MA22",
+    "EF06MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "angulos-abertura-e-transferidor",
+   "titulo": "Ângulos: abertura e transferidor",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Comparar aberturas, classificar ângulos e medir e desenhar ângulos com o transferidor, em contextos como o relógio e o ângulo de visão.",
+   "habilidades": [
+    "EF06MA25",
+    "EF06MA26",
+    "EF06MA27"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "plantas-baixas-areas-e-grandezas",
+   "titulo": "Plantas baixas, áreas e grandezas",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Ler e desenhar plantas baixas, calcular áreas e perímetros sem fórmula e perceber o que acontece com a área quando o lado do quadrado aumenta.",
+   "habilidades": [
+    "EF06MA24",
+    "EF06MA28",
+    "EF06MA29"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "probabilidade-graficos-e-pesquisa",
+   "titulo": "Probabilidade, gráficos e pesquisa",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Calcular probabilidades em fração, decimal e porcentagem, comparar com experimentos, ler os elementos de um gráfico e planejar uma pesquisa com planilha.",
+   "habilidades": [
+    "EF06MA30",
+    "EF06MA31",
+    "EF06MA32",
+    "EF06MA33"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
    "slug": "kit-de-apoio-visual",
    "titulo": "Kit de apoio visual",
    "anos": "1º ao 5º ano",
@@ -2158,238 +2402,306 @@
    "ano": 6,
    "unidade": "Números",
    "texto": "Comparar, ordenar, ler e escrever números naturais e números racionais cuja representação decimal é finita, fazendo uso da reta numérica.",
-   "fichas": []
+   "fichas": [
+    "numeros-sistemas-de-numeracao-e-arredondamento"
+   ]
   },
   {
    "codigo": "EF06MA02",
    "ano": 6,
    "unidade": "Números",
    "texto": "Reconhecer o sistema de numeração decimal, como o que prevaleceu no mundo ocidental, e destacar semelhanças e diferenças com outros sistemas, de modo a sistematizar suas principais características (base, valor posicional e função do zero), utilizando, inclusive, a composição e decomposição de números naturais e números racionais em sua representação decimal.",
-   "fichas": []
+   "fichas": [
+    "numeros-sistemas-de-numeracao-e-arredondamento"
+   ]
   },
   {
    "codigo": "EF06MA03",
    "ano": 6,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam cálculos (mentais ou escritos, exatos ou aproximados) com números naturais, por meio de estratégias variadas, com compreensão dos processos neles envolvidos com e sem uso de calculadora.",
-   "fichas": []
+   "fichas": [
+    "calculo-algoritmos-e-fluxogramas"
+   ]
   },
   {
    "codigo": "EF06MA04",
    "ano": 6,
    "unidade": "Números",
    "texto": "Construir algoritmo em linguagem natural e representá-lo por fluxograma que indique a resolução de um problema simples (por exemplo, se um número natural qualquer é par).",
-   "fichas": []
+   "fichas": [
+    "calculo-algoritmos-e-fluxogramas"
+   ]
   },
   {
    "codigo": "EF06MA05",
    "ano": 6,
    "unidade": "Números",
    "texto": "Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.",
-   "fichas": []
+   "fichas": [
+    "multiplos-divisores-e-numeros-primos"
+   ]
   },
   {
    "codigo": "EF06MA06",
    "ano": 6,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam as ideias de múltiplo e de divisor.",
-   "fichas": []
+   "fichas": [
+    "multiplos-divisores-e-numeros-primos"
+   ]
   },
   {
    "codigo": "EF06MA07",
    "ano": 6,
    "unidade": "Números",
    "texto": "Compreender, comparar e ordenar frações associadas às ideias de partes de inteiros e resultado de divisão, identificando frações equivalentes.",
-   "fichas": []
+   "fichas": [
+    "fracoes-e-decimais-comparar-e-converter"
+   ]
   },
   {
    "codigo": "EF06MA08",
    "ano": 6,
    "unidade": "Números",
    "texto": "Reconhecer que os números racionais positivos podem ser expressos nas formas fracionária e decimal, estabelecer relações entre essas representações, passando de uma representação para outra, e relacioná- los a pontos na reta numérica.",
-   "fichas": []
+   "fichas": [
+    "fracoes-e-decimais-comparar-e-converter"
+   ]
   },
   {
    "codigo": "EF06MA09",
    "ano": 6,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam o cálculo da fração de uma quantidade e cujo resultado seja um número natural, com e sem uso de calculadora.",
-   "fichas": []
+   "fichas": [
+    "fracao-de-quantidade-e-operacoes-com-fracoes"
+   ]
   },
   {
    "codigo": "EF06MA10",
    "ano": 6,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam adição ou subtração com números racionais positivos na representação fracionária.",
-   "fichas": []
+   "fichas": [
+    "fracao-de-quantidade-e-operacoes-com-fracoes"
+   ]
   },
   {
    "codigo": "EF06MA11",
    "ano": 6,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas com números racionais positivos na representação decimal, envolvendo as quatro operações fundamentais e a potenciação, por meio de estratégias diversas, utilizando estimativas e arredondamentos para verificar a razoabilidade de respostas, com e sem uso de calculadora.",
-   "fichas": []
+   "fichas": [
+    "operacoes-com-decimais-e-potencias"
+   ]
   },
   {
    "codigo": "EF06MA12",
    "ano": 6,
    "unidade": "Números",
    "texto": "Fazer estimativas de quantidades e aproximar números para múltiplos da potência de 10 mais próxima.",
-   "fichas": []
+   "fichas": [
+    "numeros-sistemas-de-numeracao-e-arredondamento"
+   ]
   },
   {
    "codigo": "EF06MA13",
    "ano": 6,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas que envolvam porcentagens, com base na ideia de proporcionalidade, sem fazer uso da “regra de três”, utilizando estratégias pessoais, cálculo mental e calculadora, em contextos de educação financeira, entre outros.",
-   "fichas": []
+   "fichas": [
+    "porcentagem-descontos-e-acrescimos"
+   ]
   },
   {
    "codigo": "EF06MA14",
    "ano": 6,
    "unidade": "Álgebra",
    "texto": "Reconhecer que a relação de igualdade matemática não se altera ao adicionar, subtrair, multiplicar ou dividir os seus dois membros por um mesmo número e utilizar essa noção para determinar valores desconhecidos na resolução de problemas.",
-   "fichas": []
+   "fichas": [
+    "igualdades-e-partilha-em-partes-desiguais"
+   ]
   },
   {
    "codigo": "EF06MA15",
    "ano": 6,
    "unidade": "Álgebra",
    "texto": "Resolver e elaborar problemas que envolvam a partilha de uma quantidade em duas partes desiguais, envolvendo relações aditivas e multiplicativas, bem como a razão entre as partes e entre uma das partes e o todo.",
-   "fichas": []
+   "fichas": [
+    "igualdades-e-partilha-em-partes-desiguais"
+   ]
   },
   {
    "codigo": "EF06MA16",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Associar pares ordenados de números a pontos do plano cartesiano do 1º quadrante, em situações como a localização dos vértices de um polígono.",
-   "fichas": []
+   "fichas": [
+    "plano-cartesiano-e-poligonos"
+   ]
   },
   {
    "codigo": "EF06MA17",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Quantificar e estabelecer relações entre o número de vértices, faces e arestas de prismas e pirâmides, em função do seu polígono da base, para resolver problemas e desenvolver a percepção espacial.",
-   "fichas": []
+   "fichas": [
+    "prismas-e-piramides-faces-vertices-e-arestas"
+   ]
   },
   {
    "codigo": "EF06MA18",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Reconhecer, nomear e comparar polígonos, considerando lados, vértices e ângulos, e classificá-los em regulares e não regulares, tanto em suas representações no plano como em faces de poliedros.",
-   "fichas": []
+   "fichas": [
+    "plano-cartesiano-e-poligonos"
+   ]
   },
   {
    "codigo": "EF06MA19",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Identificar características dos triângulos e classificá-los em relação às medidas dos lados e dos ângulos.",
-   "fichas": []
+   "fichas": [
+    "triangulos-e-quadrilateros"
+   ]
   },
   {
    "codigo": "EF06MA20",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Identificar características dos quadriláteros, classificá-los em relação a lados e a ângulos e reconhecer a inclusão e a intersecção de classes entre eles.",
-   "fichas": []
+   "fichas": [
+    "triangulos-e-quadrilateros"
+   ]
   },
   {
    "codigo": "EF06MA21",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Construir figuras planas semelhantes em situações de ampliação e de redução, com o uso de malhas quadriculadas, plano cartesiano ou tecnologias digitais.",
-   "fichas": []
+   "fichas": [
+    "retas-paralelas-e-perpendiculares-ampliacao-e-algoritmos"
+   ]
   },
   {
    "codigo": "EF06MA22",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Utilizar instrumentos, como réguas e esquadros, ou softwares para representações de retas paralelas e perpendiculares e construção de quadriláteros, entre outros.",
-   "fichas": []
+   "fichas": [
+    "retas-paralelas-e-perpendiculares-ampliacao-e-algoritmos"
+   ]
   },
   {
    "codigo": "EF06MA23",
    "ano": 6,
    "unidade": "Geometria",
    "texto": "Construir algoritmo para resolver situações passo a passo (como na construção de dobraduras ou na indicação de deslocamento de um objeto no plano segundo pontos de referência e distâncias fornecidas etc.).",
-   "fichas": []
+   "fichas": [
+    "retas-paralelas-e-perpendiculares-ampliacao-e-algoritmos"
+   ]
   },
   {
    "codigo": "EF06MA24",
    "ano": 6,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas que envolvam as grandezas comprimento, massa, tempo, temperatura, área (triângulos e retângulos), capacidade e volume (sólidos formados por blocos retangulares), sem uso de fórmulas, inseridos, sempre que possível, em contextos oriundos de situações reais e/ou relacionadas às outras áreas do conhecimento.",
-   "fichas": []
+   "fichas": [
+    "plantas-baixas-areas-e-grandezas"
+   ]
   },
   {
    "codigo": "EF06MA25",
    "ano": 6,
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer a abertura do ângulo como grandeza associada às figuras geométricas.",
-   "fichas": []
+   "fichas": [
+    "angulos-abertura-e-transferidor"
+   ]
   },
   {
    "codigo": "EF06MA26",
    "ano": 6,
    "unidade": "Grandezas e medidas",
    "texto": "Resolver problemas que envolvam a noção de ângulo em diferentes contextos e em situações reais, como ângulo de visão.",
-   "fichas": []
+   "fichas": [
+    "angulos-abertura-e-transferidor"
+   ]
   },
   {
    "codigo": "EF06MA27",
    "ano": 6,
    "unidade": "Grandezas e medidas",
    "texto": "Determinar medidas da abertura de ângulos, por meio de transferidor e/ou tecnologias digitais.",
-   "fichas": []
+   "fichas": [
+    "angulos-abertura-e-transferidor"
+   ]
   },
   {
    "codigo": "EF06MA28",
    "ano": 6,
    "unidade": "Grandezas e medidas",
    "texto": "Interpretar, descrever e desenhar plantas baixas simples de residências e vistas aéreas.",
-   "fichas": []
+   "fichas": [
+    "plantas-baixas-areas-e-grandezas"
+   ]
   },
   {
    "codigo": "EF06MA29",
    "ano": 6,
    "unidade": "Grandezas e medidas",
    "texto": "Analisar e descrever mudanças que ocorrem no perímetro e na área de um quadrado ao se ampliarem ou reduzirem, igualmente, as medidas de seus lados, para compreender que o perímetro é proporcional à medida do lado, o que não ocorre com a área.",
-   "fichas": []
+   "fichas": [
+    "plantas-baixas-areas-e-grandezas"
+   ]
   },
   {
    "codigo": "EF06MA30",
    "ano": 6,
    "unidade": "Probabilidade e estatística",
    "texto": "Calcular a probabilidade de um evento aleatório, expressando-a por número racional (forma fracionária, decimal e percentual) e comparar esse número com a probabilidade obtida por meio de experimentos sucessivos.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa"
+   ]
   },
   {
    "codigo": "EF06MA31",
    "ano": 6,
    "unidade": "Probabilidade e estatística",
    "texto": "Identificar as variáveis e suas frequências e os elementos constitutivos (título, eixos, legendas, fontes e datas) em diferentes tipos de gráfico.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa"
+   ]
   },
   {
    "codigo": "EF06MA32",
    "ano": 6,
    "unidade": "Probabilidade e estatística",
    "texto": "Interpretar e resolver situações que envolvam dados de pesquisas sobre contextos ambientais, sustentabilidade, trânsito, consumo responsável, entre outros, apresentadas pela mídia em tabelas e em diferentes tipos de gráficos e redigir textos escritos com o objetivo de sintetizar conclusões.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa"
+   ]
   },
   {
    "codigo": "EF06MA33",
    "ano": 6,
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e coletar dados de pesquisa referente a práticas sociais escolhidas pelos alunos e fazer uso de planilhas eletrônicas para registro, representação e interpretação das informações, em tabelas, vários tipos de gráficos e texto.",
-   "fichas": []
+   "fichas": [
+    "probabilidade-graficos-e-pesquisa"
+   ]
   },
   {
    "codigo": "EF06MA34",
    "ano": 6,
    "unidade": "Probabilidade e estatística",
    "texto": "Interpretar e desenvolver fluxogramas simples, identificando as relações entre os objetos representados (por exemplo, posição de cidades considerando as estradas que as unem, hierarquia dos funcionários de uma empresa etc.).",
-   "fichas": []
+   "fichas": [
+    "calculo-algoritmos-e-fluxogramas"
+   ]
   },
   {
    "codigo": "EF07MA01",
