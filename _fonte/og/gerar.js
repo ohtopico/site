@@ -39,6 +39,9 @@ const IMAGENS = [
   { arq: 'para-escolas/og-para-escolas.jpg', janela: 'para-escolas.html', faixa: 'Para secretarias e coordenações', t1: 'Escolas', t2: 'e redes',
     sub: 'Material gratuito da BNCC Computação, guia de implantação e formação', pills: ['Gratuito', 'BNCC Computação', 'Formação em IA'],
     url: 'ohtopico.com.br/para-escolas', capturas: ['/material-didatico/bncc/'] },
+  { arq: 'hora-do-codigo/og-hora-do-codigo.jpg', janela: 'hora-do-codigo.html', faixa: 'De 7 a 13 de dezembro de 2026', t1: 'Hora do', t2: 'Código',
+    sub: 'Roteiros de 1 hora do 6º ao 9º ano, com jogos gratuitos e folha para imprimir', pills: ['BNCC Computação', '6º ao 9º ano', 'Gratuito'],
+    url: 'ohtopico.com.br/hora-do-codigo', capturas: ['/material-didatico/jogos/robo.html'] },
   ...[
     ['index', 'Simuladores', 'no navegador', 'IA, estatística e arquitetura de computadores, sem instalar nada', ['IA', 'Estatística', 'Arquitetura'], '/simuladores/'],
     ['bases', 'Bases', 'numéricas', 'Binário, octal, hexadecimal e complemento de dois, passo a passo', ['Binário', 'Hexadecimal', 'Complemento de dois'], '/simuladores/bases.html'],
