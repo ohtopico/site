@@ -249,6 +249,81 @@ def atualizar_sitemap(slugs):
     caminho.write_text(xml, encoding='utf-8')
 
 
+def gerar_hub(fichas, mapa):
+    """Página /material-adaptado/, no estilo do material didático, com os números atualizados."""
+    def esc_(t):
+        return str(t).replace('&', '&amp;').replace('<', '&lt;')
+    proprias = [f for f in fichas if not f['revisao'] and f['slug'] != 'kit-de-apoio-visual']
+    revisoes = [f for f in fichas if f['revisao']]
+    hab_proprias = {c for f in proprias for c, _ in f['habilidades']}
+    total_h = len(mapa)
+    def cartao_ano(a):
+        hs = [h for h in mapa if h['ano'] == a]
+        feitas = sum(1 for h in hs if h['codigo'] in hab_proprias)
+        n = sum(1 for f in proprias if f['ano'] == a)
+        return (f'<a class="ano" href="/matematica-adaptada/#fichas-{a}"><strong>{a}º ano</strong>'
+                f'<span>{n} {"ficha" if n == 1 else "fichas"} · {feitas} de {len(hs)} habilidades</span></a>')
+    descricao = (f'Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, do 1º ao 9º ano, '
+                 f'uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.')
+    main = f'''  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <div>
+          <span class="eyebrow">Material adaptado gratuito · BNCC</span>
+          <h1>A mesma aula, <span class="marca">o apoio certo</span></h1>
+          <p class="lead">Fichas de matemática para imprimir, adaptadas para estudantes com síndrome de Down, autismo em diferentes níveis de suporte e TDAH. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
+        </div>
+        <div class="stats">
+          <a class="stat" href="/matematica-adaptada/#fichas"><b>{len(proprias)}</b><span>fichas por habilidade</span></a>
+          <a class="stat" href="/matematica-adaptada/#mapa-bncc"><b>{len(hab_proprias)}</b><span>de {total_h} habilidades com ficha própria</span></a>
+          <a class="stat" href="/matematica-adaptada/#fichas"><b>{len(revisoes)}</b><span>fichas de revisão</span></a>
+          <a class="stat" href="/matematica-adaptada/#como-organizado"><b>3</b><span>versões de cada ficha</span></a>
+        </div>
+      </div>
+      <div class="areas">
+        <a class="area-door co" href="/matematica-adaptada/#fichas-1">
+          <span class="mark">1º ao 5º ano</span>
+          <h3>Anos iniciais</h3>
+          <p>Contagem, sistema de numeração, adição e subtração, formas, medidas, dinheiro, horas e pesquisa com a turma.</p>
+          <ul>
+            <li>Figuras grandes e material concreto</li>
+            <li>Exemplo resolvido no primeiro item</li>
+            <li>Respostas de circular, ligar ou cobrir</li>
+          </ul>
+          <span class="go">Ver as fichas do 1º ao 5º →</span>
+        </a>
+        <a class="area-door ma" href="/matematica-adaptada/#fichas-6">
+          <span class="mark">6º ao 9º ano</span>
+          <h3>Anos finais</h3>
+          <p>Números racionais e inteiros, álgebra, proporcionalidade, geometria, medidas, estatística e probabilidade.</p>
+          <ul>
+            <li>Passo a passo montado na versão A</li>
+            <li>Calculadora e planilha na versão C</li>
+            <li>Texto da habilidade da BNCC em cada ficha</li>
+          </ul>
+          <span class="go">Ver as fichas do 6º ao 9º →</span>
+        </a>
+      </div>
+      <section class="bloco-anos" aria-labelledby="por-ano">
+        <h2 id="por-ano">Escolha o ano</h2>
+        <p>Cada habilidade de Matemática da BNCC ganha uma ficha própria, com versões A, B e C, orientações para o professor e PDF. As fichas entram ano a ano; enquanto um ano é completado, as fichas de revisão daquele ano já cobrem todas as habilidades.</p>
+        <div class="anos">{''.join(cartao_ano(a) for a in range(1, 10))}</div>
+      </section>
+      <nav class="atalhos" aria-label="Outros caminhos">
+        <a class="atalho" href="/matematica-adaptada/#mapa-bncc"><strong>Mapa da BNCC</strong><span>As {total_h} habilidades e a ficha de cada uma</span></a>
+        <a class="atalho" href="/matematica-adaptada/#como-organizado"><strong>Como escolher a versão</strong><span>A, B ou C, pelo apoio de cada dia</span></a>
+        <a class="atalho" href="/matematica-adaptada/fichas/kit-de-apoio-visual/"><strong>Kit de apoio visual</strong><span>Quadros e cartões para a mesa</span></a>
+        <a class="atalho destaque" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20sugerir%20um%20material%20adaptado." target="_blank" rel="noopener"><strong>Sugerir um material</strong><span>Conte o conteúdo e o apoio de que o estudante precisa</span></a>
+      </nav>
+    </div>
+  </section>
+  <div class="hero-faixa"></div>'''
+    texto = (AQUI / 'hub.html').read_text(encoding='utf-8').replace('{{DESCRICAO}}', esc_(descricao)).replace('{{MAIN}}', main)
+    destino = RAIZ / 'material-adaptado'
+    destino.mkdir(exist_ok=True)
+    (destino / 'index.html').write_text(texto, encoding='utf-8')
+
+
 BNCC_PAGINAS = {p.name for p in (RAIZ / 'material-didatico' / 'bncc').iterdir() if p.is_dir()} if (RAIZ / 'material-didatico' / 'bncc').exists() else set()
 FICHAS_INFO = []
 
@@ -298,6 +373,7 @@ def main():
     feitas = sum(1 for h in mapa if h['fichas'])
     print(f'Habilidades com ficha: {feitas} de {len(mapa)}')
     atualizar_sitemap([f['slug'] for f in fichas])
+    gerar_hub(fichas, mapa)
     print(f'{len(fichas)} fichas geradas em {SAIDA / "fichas"}')
 
 

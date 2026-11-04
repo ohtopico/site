@@ -126,6 +126,7 @@ MENU_INICIAR = [
         ('fa-solid fa-book-open', 'IA pra Prof', '/ia-pra-prof/'),
         ('fa-solid fa-toolbox', 'Tech pra Prof', '/tech-pra-prof/'),
         ('fa-solid fa-shapes', 'Material didático', '/material-didatico/'),
+        ('fa-solid fa-hands-holding-child', 'Material adaptado', '/material-adaptado/'),
         ('fa-solid fa-puzzle-piece', 'Matemática adaptada', '/matematica-adaptada/'),
         ('fa-regular fa-newspaper', 'Blog', '/blog/'),
         ('fa-solid fa-chalkboard-user', 'Formação e mentoria', '/formacao-e-mentoria/'),
@@ -177,6 +178,7 @@ def laterais(atual):
                ('▤', 'Teste de informática', '/teste-proficiencia-informatica/', 'teste'),
                ('☺', 'Currículo', '/curriculo/', '')]
     projetos = [('▲', 'Material didático', '/material-didatico/', ''),
+                ('◆', 'Material adaptado', '/material-adaptado/', ''),
                 ('✎', 'Guia IA pra Prof', '/ia-pra-prof/', ''),
                 ('◇', 'Guia Tech pra Prof', '/tech-pra-prof/', ''),
                 ('▦', 'Computação na escola', '/computacao-na-escola/', 'computacao'),
@@ -1898,7 +1900,7 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)

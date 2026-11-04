@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material adaptado: síndrome de Down, autismo e TDAH | Júlia Quoos</title>
+<meta name="description" content="Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, do 1º ao 9º ano, uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.">
+<meta property="og:title" content="Material adaptado · Matemática do 1º ao 9º ano (BNCC)">
+<meta property="og:description" content="Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, do 1º ao 9º ano, uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.">
+<meta property="og:url" content="https://ohtopico.com.br/material-adaptado/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-adaptado/">
+<meta property="og:image" content="https://ohtopico.com.br/matematica-adaptada/og-matematica-adaptada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Card com o título Matemática adaptada e a captura de uma ficha para imprimir com três níveis de apoio.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/material-didatico/assets/md.css">
+<style>
+  .hero { padding: 56px 0 0; }
+  .hero-top { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px 48px; align-items: end; }
+  .hero h1 { margin: 6px 0 14px; }
+  .hero h1 .marca { white-space: nowrap; }
+  .hero h1 .marca { background: linear-gradient(transparent 58%, var(--marca) 58%, var(--marca) 92%, transparent 92%); padding: 0 .08em; }
+  .hero p.lead { font-size: 19px; color: var(--ink-2); max-width: 580px; margin: 0; }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat { border: 1.5px solid var(--ink); border-radius: 22px; padding: 12px 16px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; align-items: baseline; gap: 10px; transition: background .15s; }
+  .stat:hover { background: var(--pill); }
+  .stat b { font-family: var(--display); font-size: 34px; line-height: 1; }
+  .stat span { font-size: 14px; color: var(--ink-2); }
+  .hero .areas { margin-top: 40px; }
+  .area-door .go { align-self: flex-start; margin-top: 4px; background: var(--ink); color: var(--paper); border-radius: 99px; padding: 9px 18px; font-size: 15px; }
+  .atalhos { margin-top: 18px; padding: 18px 0 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .atalho { border: 1.5px solid var(--ink); border-radius: 22px; padding: 14px 18px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; flex-direction: column; gap: 2px; transition: transform .15s, box-shadow .15s; }
+  .atalho:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .atalho strong { font-family: var(--display); font-size: 19px; }
+  .atalho span { font-size: 14px; color: var(--ink-2); }
+  .atalho.destaque { background: var(--marca); color: #111111; }
+  .atalho.destaque span { color: #3a3a38; }
+  .hero-faixa { border-top: 1.5px solid var(--ink); }
+  :root { --marca: #fff36b; }
+  :root[data-theme="dark"] { --marca: #5c5200; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --marca: #5c5200; } }
+  :root[data-theme="dark"] .atalho.destaque, :root[data-theme="dark"] .atalho.destaque span { color: #f3f3f1; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .atalho.destaque, :root:not([data-theme="light"]) .atalho.destaque span { color: #f3f3f1; } }
+  @media (max-width: 900px) { .hero-top { grid-template-columns: 1fr; } .atalhos { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .hero { padding-top: 36px; } .atalho { padding: 12px 14px; } .atalho strong { font-size: 17px; } .stat b { font-size: 28px; } }
+  .anos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 14px 0 0; }
+  .ano { border: 1.5px solid var(--ink); border-radius: 22px; padding: 12px 16px; text-decoration: none; color: var(--ink); background: var(--paper); display: flex; flex-direction: column; gap: 2px; transition: transform .15s, box-shadow .15s; }
+  .ano:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .ano strong { font-family: var(--display); font-size: 22px; }
+  .ano span { font-size: 14px; color: var(--ink-2); }
+  .bloco-anos { padding: 40px 0 0; }
+  .bloco-anos h2 { margin: 0; font-size: clamp(24px, 3vw, 30px); }
+  .bloco-anos p { color: var(--ink-2); margin: 6px 0 0; max-width: 640px; }
+</style>
+<!-- Meta Pixel Code -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '2280257989421593'); fbq('track', 'PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=2280257989421593&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <div>
+          <span class="eyebrow">Material adaptado gratuito · BNCC</span>
+          <h1>A mesma aula, <span class="marca">o apoio certo</span></h1>
+          <p class="lead">Fichas de matemática para imprimir, adaptadas para estudantes com síndrome de Down, autismo em diferentes níveis de suporte e TDAH. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
+        </div>
+        <div class="stats">
+          <a class="stat" href="/matematica-adaptada/#fichas"><b>48</b><span>fichas por habilidade</span></a>
+          <a class="stat" href="/matematica-adaptada/#mapa-bncc"><b>48</b><span>de 247 habilidades com ficha própria</span></a>
+          <a class="stat" href="/matematica-adaptada/#fichas"><b>88</b><span>fichas de revisão</span></a>
+          <a class="stat" href="/matematica-adaptada/#como-organizado"><b>3</b><span>versões de cada ficha</span></a>
+        </div>
+      </div>
+      <div class="areas">
+        <a class="area-door co" href="/matematica-adaptada/#fichas-1">
+          <span class="mark">1º ao 5º ano</span>
+          <h3>Anos iniciais</h3>
+          <p>Contagem, sistema de numeração, adição e subtração, formas, medidas, dinheiro, horas e pesquisa com a turma.</p>
+          <ul>
+            <li>Figuras grandes e material concreto</li>
+            <li>Exemplo resolvido no primeiro item</li>
+            <li>Respostas de circular, ligar ou cobrir</li>
+          </ul>
+          <span class="go">Ver as fichas do 1º ao 5º →</span>
+        </a>
+        <a class="area-door ma" href="/matematica-adaptada/#fichas-6">
+          <span class="mark">6º ao 9º ano</span>
+          <h3>Anos finais</h3>
+          <p>Números racionais e inteiros, álgebra, proporcionalidade, geometria, medidas, estatística e probabilidade.</p>
+          <ul>
+            <li>Passo a passo montado na versão A</li>
+            <li>Calculadora e planilha na versão C</li>
+            <li>Texto da habilidade da BNCC em cada ficha</li>
+          </ul>
+          <span class="go">Ver as fichas do 6º ao 9º →</span>
+        </a>
+      </div>
+      <section class="bloco-anos" aria-labelledby="por-ano">
+        <h2 id="por-ano">Escolha o ano</h2>
+        <p>Cada habilidade de Matemática da BNCC ganha uma ficha própria, com versões A, B e C, orientações para o professor e PDF. As fichas entram ano a ano; enquanto um ano é completado, as fichas de revisão daquele ano já cobrem todas as habilidades.</p>
+        <div class="anos"><a class="ano" href="/matematica-adaptada/#fichas-1"><strong>1º ano</strong><span>22 fichas · 22 de 22 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-2"><strong>2º ano</strong><span>1 ficha · 1 de 23 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-3"><strong>3º ano</strong><span>2 fichas · 2 de 28 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-4"><strong>4º ano</strong><span>6 fichas · 6 de 28 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-5"><strong>5º ano</strong><span>3 fichas · 3 de 25 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-6"><strong>6º ano</strong><span>3 fichas · 3 de 34 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-7"><strong>7º ano</strong><span>4 fichas · 4 de 37 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-8"><strong>8º ano</strong><span>4 fichas · 4 de 27 habilidades</span></a><a class="ano" href="/matematica-adaptada/#fichas-9"><strong>9º ano</strong><span>3 fichas · 3 de 23 habilidades</span></a></div>
+      </section>
+      <nav class="atalhos" aria-label="Outros caminhos">
+        <a class="atalho" href="/matematica-adaptada/#mapa-bncc"><strong>Mapa da BNCC</strong><span>As 247 habilidades e a ficha de cada uma</span></a>
+        <a class="atalho" href="/matematica-adaptada/#como-organizado"><strong>Como escolher a versão</strong><span>A, B ou C, pelo apoio de cada dia</span></a>
+        <a class="atalho" href="/matematica-adaptada/fichas/kit-de-apoio-visual/"><strong>Kit de apoio visual</strong><span>Quadros e cartões para a mesa</span></a>
+        <a class="atalho destaque" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20sugerir%20um%20material%20adaptado." target="_blank" rel="noopener"><strong>Sugerir um material</strong><span>Conte o conteúdo e o apoio de que o estudante precisa</span></a>
+      </nav>
+    </div>
+  </section>
+  <div class="hero-faixa"></div>
+</main>
+
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '/material-didatico/';</script>
+<script src="/material-didatico/assets/dados.js"></script>
+<script src="/material-didatico/assets/progresso.js"></script>
+<script src="/material-didatico/assets/comum.js"></script>
+<script>
+  mdTopbar('');
+  mdFooter();
+  (function () {
+    const sub = document.querySelector('.brand-sub');
+    if (sub) { sub.href = '/material-adaptado/'; sub.textContent = '/ material adaptado'; }
+    const rod = document.getElementById('footer');
+    if (rod) rod.innerHTML = '<div class="wrap"><p>Material adaptado de Matemática para o Ensino Fundamental, do 1º ao 9º ano, organizado por <a href="/curriculo/">Júlia Roberta Quoos Alves</a>, com base nas habilidades da BNCC.</p>'
+      + '<p>Uso livre em sala de aula, com citação da fonte. Veja também o <a href="/material-didatico/">material didático</a>. Sugestões: <a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a></p></div>';
+  })();
+</script>
+<!-- Contador de visitas: GoatCounter, sem cookies -->
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/assistente/assistente.js?v=2" defer></script>
+</body>
+</html>
