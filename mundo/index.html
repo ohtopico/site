@@ -114,7 +114,7 @@
   <div class="rasc-bot" id="rasc-ferr"><button type="button" class="hb cinza" data-rasc="#1d2a1f" aria-pressed="true">✏️ Lápis</button><button type="button" class="hb vermelho" data-rasc="#d63a3a" aria-pressed="false">🖍️ Vermelho</button><button type="button" class="hb cinza" data-rasc="apaga" aria-pressed="false">🧽 Borracha</button></div>
   <div class="rasc-bot"><button type="button" class="hb cinza" id="rasc-limpa">🗑️ Limpar</button></div>
 </div>
-<div class="dialogo" id="dialogo" hidden role="dialog" aria-labelledby="d-nome">
+<div class="dialogo" id="dialogo" hidden role="dialog" aria-labelledby="d-nome" aria-live="polite">
   <div class="d-caixa">
     <div class="d-cab"><span class="d-ic" id="d-ic">💬</span><strong id="d-nome"></strong><button type="button" class="d-rasc" id="d-rasc" hidden aria-expanded="false" aria-controls="rascunho">✏️ Rascunho</button><button type="button" class="d-x" id="d-fechar" aria-label="Fechar">✕</button></div>
     <div class="d-texto" id="d-texto"></div>
@@ -342,6 +342,9 @@
       <button type="button" class="hb azul" id="b-musica">🎵 Música: desligada</button>
       <button type="button" class="hb azul" id="b-calmo">🐢 Menos movimento</button>
       <button type="button" class="hb azul" id="b-letra">🔠 Letra maior</button>
+      <button type="button" class="hb azul" id="b-voz">🗣️ Ler em voz alta</button>
+      <button type="button" class="hb azul" id="b-legendas">💬 Legendas dos sons</button>
+      <a class="hb azul" id="b-libras" href="../material-adaptado/glossario/" target="_blank" rel="noopener">🤟 Glossário em Libras</a>
       <button type="button" class="hb azul" id="b-instalar" hidden>📱 Instalar como app</button>
       <button type="button" class="hb azul" data-abrir="levar">📲 Levar para outro aparelho</button>
       <button type="button" class="hb azul" data-abrir="turma">👥 Modo turma</button>
@@ -383,12 +386,14 @@
 <script src="../material-didatico/assets/progresso.js?v=20261031zq"></script>
 <script src="../material-didatico/assets/missoes.js?v=20261031zza"></script>
 <script src="../simuladores/assets/sim-comum.js"></script>
+<script>window.MDA_MUNDO = true;</script>
+<script src="../assets/acessibilidade.js?v=202611042"></script>
 <script src="perguntas-npc.js?v=20261031zn"></script>
 <script src="teleporte.js?v=20261031zn"></script>
 <script src="olimpiada.js?v=20261031a"></script>
 <script src="enem/enem.js?v=20261101a"></script>
 <script>if (window.ENEM && ENEM.liberado()) document.write('<script src="enem/ilha-perguntas.js?v=20261101a"><\/script><script src="enem/ilha.js?v=20261101a"><\/script>');</script>
-<script src="mundo.js?v=20261101a"></script>
+<script src="mundo.js?v=20261104a"></script>
 <script src="codigo.js?v=20261101a"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

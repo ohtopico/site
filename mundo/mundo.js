@@ -669,6 +669,7 @@
       g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
       o.connect(g); g.connect(mestre); o.start(t); o.stop(t + dur + 0.05);
     }
+    const LEGENDAS = { acerto: 'Som de acerto', erro: 'Som de tente de novo', coleta: 'Som de item coletado', moeda: 'Som de moedas', portao: 'Som de portão abrindo', vitoria: 'Música de conquista', figurinha: 'Som de figurinha nova' };
     const EFEITOS = {
       acerto: () => { nota(660, 0, 0.12, 'triangle'); nota(990, 0.09, 0.2, 'triangle'); },
       erro: () => { nota(220, 0, 0.18, 'sine', 0.15); nota(185, 0.12, 0.25, 'sine', 0.12); },
@@ -697,7 +698,11 @@
     window.addEventListener('pointerdown', destrava, { once: false, passive: true });
     window.addEventListener('keydown', destrava, { passive: true });
     return {
-      toca(nome) { if (pref.efeitos && EFEITOS[nome]) try { EFEITOS[nome](); } catch (e) {} },
+      toca(nome) {
+        if (pref.efeitos && EFEITOS[nome]) try { EFEITOS[nome](); } catch (e) {}
+        // legenda do som para estudantes surdos (Legendas dos sons, /assets/acessibilidade.js)
+        if (window.MDA && LEGENDAS[nome]) MDA.legenda(LEGENDAS[nome]);
+      },
       pref: () => pref,
       liga(k, v) { pref[k] = v; guarda(); if (k === 'musica') tocaMusica(v); if (v) ctxAudio(); }
     };
@@ -5298,6 +5303,13 @@
   const rotAcess = () => { const p = ACESS.p(); $('#b-calmo').textContent = p.calmo ? '🐢 Menos movimento: ligado' : '🐢 Menos movimento: desligado'; $('#b-letra').textContent = p.letra ? '🔠 Letra maior: ligada' : '🔠 Letra maior: desligada'; $('#b-calmo').setAttribute('aria-pressed', !!p.calmo); $('#b-letra').setAttribute('aria-pressed', !!p.letra); };
   $('#b-calmo').addEventListener('click', () => { ACESS.liga('calmo', !ACESS.p().calmo); semMovimento = ACESS.p().calmo; rotAcess(); });
   $('#b-letra').addEventListener('click', () => { ACESS.liga('letra', !ACESS.p().letra); rotAcess(); });
+  // voz e legendas: as mesmas preferências do painel de Acessibilidade dos outros jogos do site
+  const rotMda = () => { if (!window.MDA) { ['#b-voz', '#b-legendas'].forEach(s => { const b = $(s); if (b) b.hidden = true; }); return; }
+    $('#b-voz').textContent = MDA.ligada('voz') ? '🗣️ Ler em voz alta: ligado' : '🗣️ Ler em voz alta: desligado'; $('#b-voz').setAttribute('aria-pressed', MDA.ligada('voz'));
+    $('#b-legendas').textContent = MDA.ligada('legendas') ? '💬 Legendas dos sons: ligadas' : '💬 Legendas dos sons: desligadas'; $('#b-legendas').setAttribute('aria-pressed', MDA.ligada('legendas')); };
+  $('#b-voz').addEventListener('click', () => { if (!window.MDA) return; MDA.liga('voz', !MDA.ligada('voz')); rotMda(); MDA.fala(MDA.ligada('voz') ? 'Leitura em voz alta ligada. Eu leio o que está perto de você e as perguntas.' : '', { forca: true }); });
+  $('#b-legendas').addEventListener('click', () => { if (!window.MDA) return; MDA.liga('legendas', !MDA.ligada('legendas')); rotMda(); if (MDA.ligada('legendas')) MDA.legenda('Exemplo de legenda: som de acerto'); });
+  rotMda();
   rotAcess();
   /* sem internet: o service worker guarda o Mundo; o botão de instalar aparece quando o navegador oferece */
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
