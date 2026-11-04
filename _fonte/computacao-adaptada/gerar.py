@@ -25,6 +25,10 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI.parent / 'braille'))
 import links as braille_links  # noqa: E402
+import importlib.util  # noqa: E402
+_spec = importlib.util.spec_from_file_location('glossario_links', AQUI.parent / 'glossario-libras' / 'links.py')
+glossario = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(glossario)  # palavras da ficha no glossário em Libras
 sys.path.insert(0, str(AQUI))
 import co6, co7, co8, co9  # noqa: E401,E402
 
@@ -200,6 +204,7 @@ def pagina(f, i, fichas):
         <p class="nota">Esses ajustes são pontos de partida. Cada estudante é único: observe o que funciona, converse com a família e com a equipe do AEE e siga o plano individual (PEI), quando houver.</p>
         <details class="gabarito"><summary>Gabarito</summary><ul>{gab}</ul></details>
         {braille_links.secao(f["slug"])}
+        {glossario.secao(f, 'comp')}
         <h2 id="folhas">Folhas para imprimir</h2>
         <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a versão de que precisa ou baixe o PDF com todas, incluindo a folha de orientações.</p>
     </div>
