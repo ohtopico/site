@@ -517,6 +517,27 @@ def quem_conduz():
     </section>'''
 
 
+# Onde o trabalho já aconteceu: publicações de terceiros sobre as formações (entra nas páginas de formação)
+PROVAS = [
+    ('Formação de professores da rede municipal de Lagoão (RS)',
+     'Publicação da Secretaria Municipal de Educação, Cultura e Desporto de Lagoão',
+     'https://www.facebook.com/smecd.lagoao.9/posts/pfbid02bAHEq765qwf9dj8LqUtbNi1F6bYb7iNqCGyvjhDnz5cfor9rWH8ThRK2r1HHoRXVl'),
+]
+
+
+def secao_provas():
+    if not PROVAS:
+        return ''
+    itens = '\n'.join(f'''            <li><strong>{esc(t)}</strong><br><a href="{esc(u)}" target="_blank" rel="noopener">{esc(f)}</a></li>'''
+                      for t, f, u in PROVAS)
+    return f'''<section class="provas" aria-labelledby="onde-aconteceu">
+        <h2 id="onde-aconteceu">Onde o trabalho já aconteceu</h2>
+        <ul>
+{itens}
+        </ul>
+    </section>'''
+
+
 OFERTAS = [
     ('Mentoria individual', '/mentoria/', 'Para professores, coordenadores e gestores',
      'Encontros on-line de 1 hora para usar IA com segurança e ética no seu planejamento, com o seu material real.',
@@ -585,6 +606,7 @@ def pagina_ofertas(cfg):
     </ul>
     <p>Antes de contratar, dá para conhecer o trabalho pelo <a href="/material-didatico/">material didático gratuito</a>, pelo guia <a href="/ia-pra-prof/">IA pra Prof</a> e pelo <a href="/mundo/">Mundo</a>.</p>
     </div>
+    {secao_provas()}
     {quem_conduz()}
     <section class="chamada" aria-labelledby="conversar">
         <h2 id="conversar">Vamos conversar</h2>
@@ -827,6 +849,7 @@ def pagina_formacao(cfg, dims):
     <div class="artigo">
 {corpo}
     </div>
+    {secao_provas()}
     <section class="chamada" aria-labelledby="planejar">
         <h2 id="planejar">Planejar a formação da sua equipe</h2>
         <p>Conte o tamanho da equipe, as etapas de ensino e o que já foi feito com IA na escola ou na rede. A resposta vem com uma proposta de formato e de cronograma.</p>
