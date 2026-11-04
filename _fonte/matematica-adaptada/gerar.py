@@ -1,0 +1,261 @@
+"""Gera as fichas de matemática adaptada em site/matematica-adaptada/fichas/<slug>/.
+
+Uso (na raiz do site):
+    python _fonte/matematica-adaptada/gerar.py          gera as páginas, o indice.json e o bloco do sitemap
+    node _fonte/matematica-adaptada/pdf.js              depois, gera um PDF por ficha (precisa do Playwright)
+
+- Cada ficha vira uma página com as orientações para o professor e as folhas A4 (versões A, B e C e a folha do
+  professor), prontas para imprimir. A folha é sempre branca: a cor fica só nos detalhes.
+- _fonte/matematica-adaptada/indice.json lista as fichas; o _fonte/blog/gerar.py usa esse arquivo para montar os
+  cartões da página /matematica-adaptada/.
+- O sitemap.xml ganha um bloco próprio entre os marcadores "matematica-adaptada".
+- Rodar duas vezes com os mesmos arquivos gera o mesmo resultado.
+"""
+import hashlib
+import html
+import json
+import re
+import shutil
+import sys
+from datetime import date
+from pathlib import Path
+
+AQUI = Path(__file__).resolve().parent
+sys.path.insert(0, str(AQUI))
+from fichas import FICHAS  # noqa: E402
+
+RAIZ = AQUI.parent.parent
+SAIDA = RAIZ / 'matematica-adaptada'
+SITE = 'https://ohtopico.com.br'
+OG = f'{SITE}/matematica-adaptada/og-matematica-adaptada.jpg'
+esc = html.escape
+
+NIVEIS = {'A': ('Versão A', 'mais apoio', 3), 'B': ('Versão B', 'apoio moderado', 2), 'C': ('Versão C', 'apoio leve', 1)}
+PERFIS = [('down', 'Síndrome de Down'), ('tea', 'Autismo (TEA)'), ('tdah', 'TDAH')]
+AUTORA = {'@type': 'Person', '@id': f'{SITE}/#julia', 'name': 'Júlia Roberta Quoos Alves', 'url': f'{SITE}/'}
+
+GTAG = '''<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>'''
+
+
+def rotulo_versao(chave):
+    if chave in NIVEIS:
+        nome, apoio, pontos = NIVEIS[chave]
+        bolas = ''.join(f'<i class="{"cheia" if i < pontos else ""}"></i>' for i in range(3))
+        return f'<span class="nivel"><b>{nome}</b> · {apoio} <span class="bolas" aria-hidden="true">{bolas}</span></span>'
+    return f'<span class="nivel"><b>{chave}</b></span>'
+
+
+def folha(f, chave, corpo):
+    cabeca_aluno = '' if f['slug'] == 'kit-de-apoio-visual' else (
+        '<div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>')
+    return f'''<article class="folha" data-versao="{esc(chave)}" aria-label="{esc(f['titulo'])}, {esc(chave)}">
+    <header class="folha-topo">{rotulo_versao(chave)}<span class="hab">{" · ".join(h for h, _ in f['habilidades'])}</span></header>
+    {cabeca_aluno}
+    <h2 class="folha-titulo">{esc(f['titulo'])}</h2>
+    {corpo}
+    <footer class="folha-rodape">ohtopico.com.br/matematica-adaptada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>'''
+
+
+def folha_professor(f):
+    habs = ''.join(f'<li><b>{c}</b>: {esc(t)}</li>' for c, t in f['habilidades'])
+    passos = ''.join(f'<li>{esc(p)}</li>' for p in f['passos'])
+    perfis = ''.join(f'<li><b>{n}.</b> {esc(f["perfis"][k])}</li>' for k, n in PERFIS)
+    gab = ''.join(f'<li><b>Versão {k}.</b> {v}</li>' for k, v in f['gabarito'].items())
+    gab = f'<h3>Gabarito</h3><ul>{gab}</ul>' if gab else ''
+    return f'''<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações para o professor">
+    <header class="folha-topo"><span class="nivel"><b>Orientações para o professor</b></span><span class="hab">{esc(f['anos'])} · {esc(f['tempo'])}</span></header>
+    <h2 class="folha-titulo">{esc(f['titulo'])}</h2>
+    <h3>Habilidades da BNCC</h3><ul>{habs}</ul>
+    <h3>Material concreto</h3><p>{esc(f['material'])}</p>
+    <h3>Como aplicar</h3><ol>{passos}</ol>
+    <h3>Ajustes por perfil</h3><ul>{perfis}</ul>
+    {gab}
+    <p class="lembrete">A versão é escolhida pelo apoio de que o estudante precisa naquele dia, e não pelo diagnóstico. Converse com a equipe do AEE e siga o plano individual (PEI) do estudante, quando houver.</p>
+    <footer class="folha-rodape">ohtopico.com.br/matematica-adaptada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>'''
+
+
+def versao_css():
+    return hashlib.md5((AQUI / 'fichas.css').read_bytes() + (AQUI / 'fichas.js').read_bytes()).hexdigest()[:10]
+
+
+def pagina(f, i, total):
+    url = f'{SITE}/matematica-adaptada/fichas/{f["slug"]}/'
+    titulo = f'{f["titulo"]}: matemática adaptada | Júlia Quoos'
+    if len(titulo) > 70:
+        titulo = f'{f["titulo"]} | Júlia Quoos'
+    tem_versoes = 'A' in f['versoes']
+    descricao = (f'{f["resumo"]} Ficha adaptada para estudantes com síndrome de Down, autismo e TDAH, em três níveis de apoio, para imprimir. {f["anos"]}.'
+                 if tem_versoes else f'{f["resumo"]} Para imprimir e usar com estudantes com síndrome de Down, autismo e TDAH.')
+    pdf = f'{f["slug"]}.pdf'
+    folhas = ''.join(folha(f, k, v) for k, v in f['versoes'].items()) + folha_professor(f)
+    botoes = ''.join(f'<button type="button" class="btn98" data-imprimir="{esc(k)}">Imprimir {esc(k if k not in NIVEIS else "versão " + k)}</button>'
+                     for k in f['versoes']) + '<button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações</button>'
+    habs = ''.join(f'<li><a href="/material-didatico/bncc/{c.lower()}/">{c}</a>: {esc(t)}</li>' if c.lower() in BNCC_PAGINAS
+                   else f'<li><b>{c}</b>: {esc(t)}</li>' for c, t in f['habilidades'])
+    passos = ''.join(f'<li>{esc(p)}</li>' for p in f['passos'])
+    perfis = ''.join(f'<li><b>{n}.</b> {esc(f["perfis"][k])}</li>' for k, n in PERFIS)
+    gab = ''.join(f'<li><b>Versão {k}.</b> {v}</li>' for k, v in f['gabarito'].items())
+    versoes_txt = ('<p>A ficha tem <b>três versões da mesma atividade</b>. Assim a turma toda trabalha o mesmo conteúdo, e cada estudante recebe o apoio de que precisa:</p>'
+                   '<ul><li><b>Versão A, mais apoio</b>: poucos itens, figuras grandes, um exemplo resolvido e resposta de circular ou cobrir.</li>'
+                   '<li><b>Versão B, apoio moderado</b>: mais itens, exemplo resolvido e resposta escrita, com apoio visual.</li>'
+                   '<li><b>Versão C, apoio leve</b>: números maiores, menos figuras e um problema no final.</li></ul>') if tem_versoes else ''
+    ant = FICHAS_INFO[i - 1] if i > 0 else None
+    prox = FICHAS_INFO[i + 1] if i + 1 < total else None
+    nav = '<nav class="vizinhas" aria-label="Outras fichas">' + (
+        f'<a href="/matematica-adaptada/fichas/{ant["slug"]}/">← {esc(ant["titulo"])}</a>' if ant else '<span></span>') + (
+        f'<a href="/matematica-adaptada/fichas/{prox["slug"]}/">{esc(prox["titulo"])} →</a>' if prox else '') + '</nav>'
+    ld = json.dumps({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {'@type': 'LearningResource', '@id': url + '#ficha', 'url': url, 'name': f['titulo'], 'description': descricao,
+             'inLanguage': 'pt-BR', 'learningResourceType': 'Ficha de atividade para imprimir', 'isAccessibleForFree': True,
+             'educationalLevel': f['anos'], 'timeRequired': f['tempo'],
+             'teaches': [f'{c}: {t}' for c, t in f['habilidades']],
+             'audience': [{'@type': 'EducationalAudience', 'educationalRole': 'teacher'}],
+             'accessibilityFeature': ['largePrint', 'highContrastDisplay', 'alternativeText', 'structuralNavigation'],
+             'encoding': {'@type': 'MediaObject', 'contentUrl': url + pdf, 'encodingFormat': 'application/pdf'},
+             'image': OG, 'author': {'@id': AUTORA['@id']},
+             'isPartOf': {'@type': 'CollectionPage', '@id': f'{SITE}/matematica-adaptada/#pagina'}},
+            {'@type': 'BreadcrumbList', 'itemListElement': [
+                {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{SITE}/'},
+                {'@type': 'ListItem', 'position': 2, 'name': 'Matemática adaptada', 'item': f'{SITE}/matematica-adaptada/'},
+                {'@type': 'ListItem', 'position': 3, 'name': f['titulo'], 'item': url}]},
+        ]}, ensure_ascii=False, indent=1)
+    alt = 'Card com o título Matemática adaptada e a captura de uma ficha para imprimir com três níveis de apoio.'
+    return f'''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{esc(titulo)}</title>
+<meta name="description" content="{esc(descricao)}">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="{url}">
+<meta property="og:title" content="{esc(titulo)}">
+<meta property="og:description" content="{esc(descricao)}">
+<meta property="og:image" content="{OG}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{esc(alt)}">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{ld}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v={versao_css()}">
+{GTAG}
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/matematica-adaptada/">Matemática adaptada</a><a href="/blog/">Blog</a><a href="/material-didatico/">Material didático</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/matematica-adaptada/">Matemática adaptada</a></li><li aria-current="page">{esc(f['titulo'])}</li></ol></nav>
+        <p class="rotulo">Ficha adaptada · {esc(f['anos'])}</p>
+        <h1>{esc(f['titulo'])}</h1>
+        <p class="linha-fina">{esc(f['resumo'])}</p>
+        <div class="acoes">
+            <a class="btn98 escuro" href="{pdf}" download>Baixar PDF</a>
+            {botoes}
+        </div>
+        <dl class="ficha-dados">
+            <dt>Tempo</dt><dd>{esc(f['tempo'])}</dd>
+            <dt>Material concreto</dt><dd>{esc(f['material'])}</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul>{habs}</ul>
+        {('<h2>Três versões, a mesma atividade</h2>' + versoes_txt) if versoes_txt else ''}
+        <h2>Como aplicar</h2>
+        <ol>{passos}</ol>
+        <h2>Ajustes por perfil</h2>
+        <ul>{perfis}</ul>
+        <p class="nota">Esses ajustes são pontos de partida. Cada estudante é único: observe o que funciona, converse com a família e com a equipe do AEE e siga o plano individual (PEI), quando houver.</p>
+        {f'<details class="gabarito"><summary>Gabarito</summary><ul>{gab}</ul></details>' if gab else ''}
+        <h2 id="folhas">Folhas para imprimir</h2>
+        <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a versão de que precisa ou baixe o PDF com todas, incluindo a folha de orientações.</p>
+    </div>
+    <div class="folhas">
+{folhas}
+    </div>
+    <div class="texto">
+        {nav}
+        <p class="voltar"><a href="/matematica-adaptada/">Ver todos os materiais adaptados</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/matematica-adaptada/">Matemática adaptada</a> · <a href="/blog/">Blog</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/matematica-adaptada/assets/fichas.js?v={versao_css()}" defer></script>
+</body>
+</html>
+'''
+
+
+def atualizar_sitemap(slugs):
+    caminho = RAIZ / 'sitemap.xml'
+    xml = caminho.read_text(encoding='utf-8')
+    hoje = date.today().isoformat()
+    linhas = []
+    for s in slugs:
+        url = f'{SITE}/matematica-adaptada/fichas/{s}/'
+        html_ = (SAIDA / 'fichas' / s / 'index.html').read_bytes()
+        h = hashlib.md5(html_).hexdigest()[:8]
+        m = re.search(rf'<loc>{re.escape(url)}</loc><lastmod>([\d-]+)</lastmod><!-- h:([0-9a-f]+) -->', xml)
+        lastmod = m.group(1) if m and m.group(2) == h else hoje
+        linhas.append(f'  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod></url><!-- h:{h} -->')
+    bloco = ('  <!-- matematica-adaptada: início (gerado por _fonte/matematica-adaptada/gerar.py) -->\n' + '\n'.join(linhas)
+             + '\n  <!-- matematica-adaptada: fim -->')
+    if '<!-- matematica-adaptada: início' in xml:
+        xml = re.sub(r'  <!-- matematica-adaptada: início.*?<!-- matematica-adaptada: fim -->', bloco, xml, flags=re.S)
+    else:
+        xml = xml.replace('</urlset>', bloco + '\n</urlset>')
+    caminho.write_text(xml, encoding='utf-8')
+
+
+BNCC_PAGINAS = {p.name for p in (RAIZ / 'material-didatico' / 'bncc').iterdir() if p.is_dir()} if (RAIZ / 'material-didatico' / 'bncc').exists() else set()
+FICHAS_INFO = []
+
+
+def main():
+    fichas = [fn() for fn in FICHAS]
+    FICHAS_INFO.extend(fichas)
+    (SAIDA / 'assets').mkdir(parents=True, exist_ok=True)
+    shutil.copy(AQUI / 'fichas.css', SAIDA / 'assets' / 'fichas.css')
+    shutil.copy(AQUI / 'fichas.js', SAIDA / 'assets' / 'fichas.js')
+    for i, f in enumerate(fichas):
+        destino = SAIDA / 'fichas' / f['slug']
+        destino.mkdir(parents=True, exist_ok=True)
+        texto = pagina(f, i, len(fichas))
+        arq = destino / 'index.html'
+        if not arq.exists() or arq.read_text(encoding='utf-8') != texto:
+            arq.write_text(texto, encoding='utf-8')
+    indice = [{'slug': f['slug'], 'titulo': f['titulo'], 'anos': f['anos'], 'resumo': f['resumo'],
+               'habilidades': [c for c, _ in f['habilidades']], 'versoes': list(f['versoes'])} for f in fichas]
+    (AQUI / 'indice.json').write_text(json.dumps(indice, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    atualizar_sitemap([f['slug'] for f in fichas])
+    print(f'{len(fichas)} fichas geradas em {SAIDA / "fichas"}')
+
+
+if __name__ == '__main__':
+    main()
