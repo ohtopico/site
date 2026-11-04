@@ -341,15 +341,17 @@
     document.body.insertBefore(a, document.body.firstChild);
   }
 
+  // No Mundo (/mundo/) o jogo tem o próprio menu e o próprio teclado: aqui fica só a voz, as legendas e o contraste
+  const MUNDO = !!window.MDA_MUNDO;
   function inicia() {
-    montaPular();
-    montaPainel();
-    revisaTeclado();
+    if (!MUNDO) { montaPular(); montaPainel(); revisaTeclado(); }
     revisaNomes();
     new MutationObserver(ms => {
       let mudouArvore = false;
       for (const m of ms) {
         if (m.type === 'childList') mudouArvore = true;
+        // janela que acabou de abrir: lê o conteúdo dela
+        if (m.type === 'attributes') { const t = m.target; if (P.voz && t.nodeType === 1 && !t.hidden && t.matches('[role="dialog"], dialog')) anotaAviso(t); continue; }
         const alvo = m.target.nodeType === 1 ? m.target : m.target.parentElement;
         if (P.voz && alvo) {
           const reg = alvo.closest(VIVO);
@@ -361,8 +363,8 @@
           });
         }
       }
-      if (mudouArvore) revisa();
-    }).observe(document.body, { childList: true, subtree: true, characterData: true });
+      if (mudouArvore && !MUNDO) revisa();
+    }).observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['hidden', 'open'] });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inicia); else inicia();
 
@@ -371,6 +373,8 @@
     fala: (t, o) => fala(t, o),
     para: paraFala,
     ligada: k => !!P[k],
+    liga(k, v) { if (!(k in PADRAO)) return; P[k] = !!v; salva(); aplica(); if (k === 'voz' && !v) paraFala(); },
+    glossario: GLOSSARIO,
     descreve(el, texto) { if (!el) return; el.setAttribute('role', 'img'); el.setAttribute('aria-label', texto); },
     revisa
   };
