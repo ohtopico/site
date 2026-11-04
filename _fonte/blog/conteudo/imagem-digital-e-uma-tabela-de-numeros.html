@@ -1,0 +1,45 @@
+<p>No <a href="/blog/cada-letra-e-um-numero-ascii-unicode/">Bit a Bit #05</a> vimos que cada letra é um número. Com imagens acontece a mesma coisa: uma foto digital é uma grande tabela de números, e o computador só precisa saber ler essa tabela para desenhá-la na tela.</p>
+
+<h2>Cada quadradinho é um pixel</h2>
+<p>Uma imagem digital é dividida em quadradinhos, os <strong>pixels</strong>. Numa imagem de duas cores, cada pixel pode ser guardado como 1 bit: 1 é pintado e 0 é vazio. O coração deste post tem 8 por 8 pixels e cabe em oito linhas de zeros e uns, de 01100110 até 00000000. Quem recebe só os números consegue redesenhar a figura exatamente igual.</p>
+
+<!-- imagem -->
+
+<h2>Na foto colorida, três números por pixel</h2>
+<p>Numa foto colorida, cada pixel guarda três números, de 0 a 255: quanto tem de vermelho, de verde e de azul. É o mesmo sistema RGB do <a href="/blog/hexadecimal-por-que-o-branco-e-ffffff/">Bit a Bit #03</a>. O verde do quadrado da imagem é (21, 127, 59), ou #157F3B em hexadecimal.</p>
+<p>Uma foto de 12 megapixels tem 12 milhões de pixels e, portanto, 36 milhões de números. Para que o arquivo não fique enorme, formatos como o <strong>JPEG</strong> fazem compressão: guardam menos números de forma que o olho quase não perceba a diferença.</p>
+
+<h2>Som e vídeo também</h2>
+<p>O som de um CD é medido 44.100 vezes por segundo, e cada medida vira um número. Um vídeo comum é uma sequência de cerca de 30 imagens por segundo. No fim, texto, imagem, som e vídeo chegam ao computador da mesma forma: como números em binário.</p>
+
+<h2>Na sala de aula</h2>
+<p>A habilidade EF04CO05 da BNCC Computação cita os atributos de pixel, como o RGB, entre as formas de codificar informação. A grade de pixels também se relaciona com a EF04CO01, que trata de matrizes, em que cada item está numa posição definida por coordenadas.</p>
+<p>No próximo post: <a href="/blog/crie-sua-fonte-em-pixels/">o bônus da série, com o passo a passo para criar uma fonte em pixels com a turma.</a></p>
+
+<h2>Plano de aula: pixel art codificada</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>4º ao 6º ano</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF04CO01: representar objetos por matrizes, com cada item numa posição definida por coordenadas. EF04CO05: codificar informações para representação em computador (binária, ASCII, pixel/RGB)</td></tr>
+<tr><th scope="row">Materiais</th><td>Papel quadriculado com grades de 8 por 8, lápis de cor, folha de registro</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim, a aula é toda desplugada</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> representar uma imagem como uma tabela de zeros e uns e reconstruí-la a partir dos números.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Uma foto é só uma tabela de números?”</li>
+<li><strong>O coração (10 min).</strong> Projete ou desenhe a grade do coração e leia as linhas com a turma: 01100110, 11111111 e assim por diante.</li>
+<li><strong>Pixel art codificada (25 min).</strong> Cada aluno desenha uma figura na grade de 8 por 8, escreve cada linha em zeros e uns e entrega só os números a um colega, que redesenha a figura sem ver o original. Depois, comparam os dois desenhos.</li>
+<li><strong>Cor (5 min).</strong> Mostre que, na foto colorida, cada pixel guarda três números, e retome o #157F3B.</li>
+<li><strong>Fechamento (5 min).</strong> Conversem sobre os desenhos que não ficaram iguais: onde o código ou a leitura falhou? Pergunta para a próxima aula: “Quem desenha as letras do computador?”</li>
+</ol>
+<p><strong>Avaliação:</strong> a comparação entre o desenho original e o reconstruído mostra se o aluno codifica e decodifica corretamente.</p>
+<p><strong>Adaptações:</strong> grades maiores (casas de 2 cm) para baixa visão; grade com casas em relevo ou peças de encaixe para alunos cegos. Para os anos iniciais, comece com grades de 5 por 5.</p>
+
+<!-- slides -->
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades EF04CO01 e EF04CO05: <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Atividade de imagem por números: adaptada do CS Unplugged, projeto da Universidade de Canterbury (Nova Zelândia), material aberto.</li>
+</ul>

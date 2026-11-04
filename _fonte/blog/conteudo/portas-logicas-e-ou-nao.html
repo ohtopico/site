@@ -1,0 +1,56 @@
+<p>No <a href="/blog/algoritmo-e-receita-de-bolo/">Bit a Bit #07</a> vimos que o computador segue algoritmos. Mas, por dentro, ele só tem interruptores minúsculos que deixam ou não deixam passar corrente. Como algo tão simples consegue fazer contas? A resposta está nas portas lógicas.</p>
+
+<h2>Três portas lógicas</h2>
+<p>Uma porta lógica recebe um ou mais sinais (1 = tem corrente, 0 = não tem) e devolve um resultado. Com apenas três tipos de porta é possível montar um processador inteiro:</p>
+<ul>
+<li><strong>Porta E:</strong> acende só se as duas entradas estiverem ligadas.</li>
+<li><strong>Porta OU:</strong> acende se pelo menos uma entrada estiver ligada.</li>
+<li><strong>Porta NÃO:</strong> inverte a entrada. Ligado vira desligado, e desligado vira ligado.</li>
+</ul>
+
+<!-- imagem -->
+
+<h2>A tabela-verdade</h2>
+<p>Para descrever uma porta, listamos todas as combinações de entrada e o que sai. Com duas entradas, são quatro combinações: 00, 01, 10 e 11.</p>
+<div class="tabela"><table><thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">A E B</th><th scope="col">A OU B</th></tr></thead><tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</tbody></table></div>
+
+<h2>Do interruptor à soma</h2>
+<p>Em binário, 1 + 1 dá 10: escreve 0 e “vai um”. O “vai um” só aparece quando as duas entradas são 1, exatamente o que a porta E faz. O dígito do resultado é 1 quando só uma das entradas é 1, e isso se monta combinando portas E, OU e NÃO. Juntando esses pequenos circuitos, o chip soma números de qualquer tamanho. Um processador atual tem bilhões de transistores organizados dessa forma.</p>
+<p>A ideia tem duas origens. Em 1854, o matemático George Boole descreveu uma álgebra com apenas verdadeiro e falso. Em 1937, Claude Shannon mostrou que essa álgebra podia ser construída com circuitos elétricos.</p>
+
+<h2>Na sala de aula</h2>
+<p>A BNCC Computação trata o tema como lógica: a EF03CO01 pede associar “verdadeiro” e “falso” a sentenças do dia a dia, com negação, e a EF05CO03 pede realizar operações de negação, conjunção e disjunção, que são as portas NÃO, E e OU.</p>
+<p>No próximo post: <a href="/blog/o-que-acontece-quando-voce-clica/">o que acontece dentro do computador quando você clica?</a></p>
+
+<h2>Plano de aula: portas humanas</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>5º e 6º ano (funciona também do 3º ao 9º)</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF03CO01: associar “verdadeiro” e “falso” a sentenças lógicas do dia a dia, usando negação. EF05CO03: realizar operações de negação, conjunção e disjunção sobre sentenças lógicas</td></tr>
+<tr><th scope="row">Materiais</th><td>Placas com 0 de um lado e 1 do outro (três por grupo), cartões com o nome das portas E, OU e NÃO, folha para a tabela-verdade</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim, a aula é toda desplugada</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> simular as portas E, OU e NÃO e construir suas tabelas-verdade.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Como um interruptor vira uma conta de somar?”</li>
+<li><strong>Sentenças (10 min).</strong> Use frases do dia a dia: “Vai ter recreio se não chover E o sinal tocar.” “Eu levo guarda-chuva se estiver chovendo OU se o céu estiver nublado.” A turma decide quando cada frase é verdadeira.</li>
+<li><strong>Portas humanas (20 min).</strong> Dois alunos são as entradas, com placas 0 e 1, e um terceiro é a porta, que levanta 1 ou 0 conforme a regra. A turma testa as quatro combinações e preenche a tabela-verdade de cada porta.</li>
+<li><strong>Desafio (10 min).</strong> Liguem duas portas em sequência, por exemplo uma E seguida de uma NÃO. O que sai em cada combinação?</li>
+<li><strong>Fechamento (5 min).</strong> Mostre que o “vai um” da soma binária é uma porta E. Pergunta para a próxima aula: “O que acontece quando você clica?”</li>
+</ol>
+<p><strong>Avaliação:</strong> as tabelas-verdade preenchidas e a resposta do desafio mostram se o aluno aplica as regras de cada porta.</p>
+<p><strong>Adaptações:</strong> placas com textura diferente para 0 e 1 para alunos com deficiência visual. Para os anos iniciais, trabalhe só com as frases e a porta NÃO.</p>
+
+<!-- slides -->
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades EF03CO01 e EF05CO03: <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Boole, <em lang="en">An Investigation of the Laws of Thought</em> (1854); Shannon, <em lang="en">A Symbolic Analysis of Relay and Switching Circuits</em> (1937).</li>
+</ul>

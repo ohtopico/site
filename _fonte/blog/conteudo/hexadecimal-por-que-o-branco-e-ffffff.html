@@ -1,0 +1,60 @@
+<p>No <a href="/blog/numeros-binarios-por-que-o-computador-so-sabe-0-e-1/">Bit a Bit #02</a> vimos que o computador guarda tudo como 0 e 1. O problema é que números binários ficam compridos muito rápido: o 255 já precisa de oito casas, 11111111. Para escrever menos e errar menos, programadores usam outro sistema, o hexadecimal. É por isso que a cor branca, no computador, se chama #FFFFFF.</p>
+
+<h2>Depois do 9, letras</h2>
+<p>O hexadecimal tem 16 símbolos. Os dez primeiros são os mesmos do decimal, de 0 a 9. Como não existe um algarismo único para 10, 11 ou 15, o sistema empresta as primeiras letras do alfabeto:</p>
+<div class="tabela"><table><thead><tr><th scope="col">Símbolo</th><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">E</th><th scope="col">F</th></tr></thead><tbody><tr><th scope="row">Vale</th><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr></tbody></table></div>
+<p>A regra posicional continua igual: no decimal cada casa vale 10 vezes a da direita, no binário vale 2 vezes, e no hexadecimal vale 16 vezes. Depois do F, a casa enche, volta para 0 e sobe um: o 10 hexadecimal vale dezesseis.</p>
+
+<!-- imagem -->
+
+<h2>Um símbolo, quatro bits</h2>
+<p>A grande vantagem do hexadecimal é que 16 é igual a 2 × 2 × 2 × 2. Com quatro lâmpadas de valor 8, 4, 2 e 1 dá para escrever de 0 a 15, ou seja, exatamente um símbolo hexadecimal. Assim, cada símbolo corresponde a um grupo de 4 bits:</p>
+<ul>
+<li>A = 1010 (8 + 2)</li>
+<li>B = 1011 (8 + 2 + 1)</li>
+<li>F = 1111 (8 + 4 + 2 + 1)</li>
+<li>3 = 0011 (2 + 1)</li>
+</ul>
+<p>Um byte tem 8 bits, então cabe em dois símbolos. O byte 1111 1111 vira FF, que vale 255 no decimal. A conversão entre hexadecimal e binário se faz de cabeça, de quatro em quatro bits, e é por isso que o hexadecimal aparece tanto em programação, em endereços de memória e em códigos de cor.</p>
+
+<h2>Cores em hexadecimal</h2>
+<p>Na tela, cada cor é uma mistura de luz vermelha, verde e azul. O código #RRGGBB usa dois símbolos para cada uma dessas luzes, de 00 (apagada) a FF (no máximo):</p>
+<ul>
+<li>#FF0000: vermelho no máximo, verde e azul apagados. Resultado: vermelho.</li>
+<li>#FFFF00: vermelho e verde no máximo. Resultado: amarelo.</li>
+<li>#FFFFFF: as três luzes no máximo. Resultado: branco.</li>
+<li>#157F3B: vermelho 15 (21), verde 7F (127) e azul 3B (59). Resultado: o verde da imagem deste post.</li>
+</ul>
+<p>A mistura de vermelho com verde resultando em amarelo costuma surpreender a turma, porque contraria o que se aprende com tintas. Com luz, a mistura soma; com tinta, ela subtrai.</p>
+
+<h2>Na sala de aula</h2>
+<p>O tema está na BNCC Computação: a habilidade EF04CO05 pede codificar informações para representação em computador, citando o binário e os atributos de pixel, como o RGB. Os cartões binários do Bit a Bit #02 servem de novo aqui, só com quatro cartões. Logo abaixo está o plano de aula e os slides.</p>
+<p>No próximo post: <a href="/blog/do-bit-ao-terabyte-unidades-de-medida-da-informacao/">quanto cabe em um pen drive de 16 GB?</a></p>
+
+<h2>Plano de aula: cores secretas</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>5º ao 7º ano</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF04CO04: entender que, para guardar, manipular e transmitir dados, é preciso codificá-los. EF04CO05: codificar informações para representação em computador (binária, ASCII, pixel/RGB)</td></tr>
+<tr><th scope="row">Materiais</th><td>4 cartões binários por grupo (8, 4, 2 e 1), tabela de 0 a F, lápis de cor, fichas com códigos de cor</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim; um computador com projetor ajuda a mostrar as cores no fechamento</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> converter símbolos hexadecimais em binário e interpretar códigos de cor #RRGGBB.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Por que o branco, no computador, se chama #FFFFFF?” Registre as hipóteses no quadro.</li>
+<li><strong>Depois do 9, letras (10 min).</strong> Conte de 0 a 15 com os quatro cartões. A partir do 10, apresente as letras de A a F. A turma monta a tabela de 0 a F com o binário de cada símbolo.</li>
+<li><strong>Conversões (10 min).</strong> Os grupos convertem F, A e 3 para binário com os cartões e depois fazem o caminho inverso: 1011 é qual símbolo?</li>
+<li><strong>Cores secretas (20 min).</strong> Cada grupo recebe três códigos, como #FF0000, #FFFF00 e #00FF00. Para cada um, descobrem quanto de vermelho, verde e azul a cor tem, preveem a cor e a pintam no papel. Ao final, comparem com as cores reais no projetor.</li>
+<li><strong>Fechamento (5 min).</strong> Pergunta para a próxima aula: “Quanto cabe em um pen drive?”</li>
+</ol>
+<p><strong>Avaliação:</strong> a tabela de 0 a F e a previsão das cores mostram se o aluno relaciona cada símbolo aos seus 4 bits e ao valor de cada luz.</p>
+<p><strong>Adaptações:</strong> para alunos com daltonismo, os grupos podem nomear as cores e registrar as quantidades de cada luz, sem depender só da pintura. Para baixa visão, cartões com bolinhas em relevo.</p>
+
+<!-- slides -->
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades de Computação do 4º ano (EF04CO04 e EF04CO05): <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Códigos de cor em hexadecimal: especificação CSS Color Module Level 4, do W3C.</li>
+</ul>

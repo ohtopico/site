@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processador, RAM e HD: o que faz cada um | Júlia Quoos</title>
+<meta name="description" content="Processador, memória RAM, armazenamento e entrada e saída comparados a uma cozinha, e por que é preciso salvar. Bit a Bit #09.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/">
+<meta property="og:title" content="Processador, RAM e HD: o que faz cada um | Júlia Quoos">
+<meta property="og:description" content="Processador, memória RAM, armazenamento e entrada e saída comparados a uma cozinha, e por que é preciso salvar. Bit a Bit #09.">
+<meta property="og:image" content="https://ohtopico.com.br/blog/img/09-arquitetura.png">
+<meta property="og:image:alt" content="Selo Bit a Bit número 9. Título: “O que acontece quando você clica”. Subtítulo: o computador funciona como uma cozinha. Quatro quadros: Processador (CPU), o chef, faz as contas e segue as instruções; Memória RAM, a bancada, o que está sendo usado agora, apaga ao desligar; Armazenamento, a despensa, guarda tudo mesmo desligado (SSD, HD); Entrada e saída, o pedido e o prato: teclado, mouse, tela, som. No rodapé: “Clique: a CPU busca o programa na despensa, traz para a bancada (RAM) e mostra o resultado na tela.” Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:published_time" content="2026-11-04">
+<meta property="article:author" content="https://ohtopico.com.br/">
+<meta property="article:section" content="Bit a Bit">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/#post",
+      "headline": "O que acontece quando você clica: processador, memória e armazenamento",
+      "description": "Processador, memória RAM, armazenamento e entrada e saída comparados a uma cozinha, e por que é preciso salvar. Bit a Bit #09.",
+      "url": "https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/",
+      "mainEntityOfPage": "https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://ohtopico.com.br/blog/img/09-arquitetura.png",
+        "width": 1080,
+        "height": 1350
+      },
+      "datePublished": "2026-11-04",
+      "dateModified": "2026-11-04",
+      "inLanguage": "pt-BR",
+      "keywords": [
+        "processador",
+        "memória RAM",
+        "hardware",
+        "EF02CO04",
+        "Bit a Bit"
+      ],
+      "articleSection": "Bit a Bit",
+      "author": {
+        "@type": "Person",
+        "@id": "https://ohtopico.com.br/#julia",
+        "name": "Júlia Roberta Quoos Alves",
+        "alternateName": [
+          "Júlia Quoos",
+          "Júlia Roberta Quoos",
+          "Quoos"
+        ],
+        "url": "https://ohtopico.com.br/"
+      },
+      "publisher": {
+        "@id": "https://ohtopico.com.br/#julia"
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://ohtopico.com.br/blog/#blog",
+        "name": "Blog de Júlia Roberta Quoos Alves"
+      },
+      "timeRequired": "PT4M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://ohtopico.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://ohtopico.com.br/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "O que acontece quando você clica: processador, memória e armazenamento",
+          "item": "https://ohtopico.com.br/blog/o-que-acontece-quando-voce-clica/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+if (window.self !== window.top) document.documentElement.classList.add('emoldurado');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/blog/assets/blog.css?v=b39a7f205a">
+<link rel="alternate" type="application/rss+xml" title="Blog de Júlia Roberta Quoos Alves" href="/blog/feed.xml">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body data-contador="ohtopico">
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="area">
+<div class="janela">
+    <header class="cabecalho">
+        <a class="marca-site" href="/">Júlia Quoos</a>
+        <nav class="cabecalho-links" aria-label="Principal">
+            <a href="/blog/" aria-current="page">Blog</a>
+            <a href="/material-didatico/">Material didático</a>
+            <a href="/formacao-e-mentoria/">Formação e mentoria</a>
+        </nav>
+    </header>
+    <div class="corpo">
+        <main class="pagina" id="conteudo" tabindex="-1">
+<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/blog/">Blog</a></li><li aria-current="page">Bit a Bit</li></ol></nav>
+    <p class="rotulo">Bit a Bit</p>
+    <h1>O que acontece quando você clica: processador, memória e armazenamento</h1>
+    <p class="linha-fina">Processador, memória RAM, armazenamento e entrada e saída comparados a uma cozinha, e por que é preciso salvar. Bit a Bit #09.</p>
+    <div class="meta">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="36" height="36">
+        <span>Por <a href="/blog/quem-e-julia-quoos/" rel="author">Júlia Roberta Quoos Alves</a></span>
+        <span><time datetime="2026-11-04">4 de novembro de 2026</time></span>
+        <span>4 min de leitura</span>
+    </div>
+    <div class="artigo">
+<p>No <a href="/blog/portas-logicas-e-ou-nao/">Bit a Bit #08</a> vimos que bilhões de portas lógicas formam o processador. Mas o processador não trabalha sozinho. Quando você clica para abrir um programa, várias partes do computador entram em ação, e entender esse caminho explica uma pergunta antiga da sala de informática: por que é preciso salvar o trabalho?</p>
+
+<h2>O computador é uma cozinha</h2>
+<p>Uma comparação ajuda a lembrar quem faz o quê:</p>
+<ul>
+<li><strong>Processador (CPU), o cozinheiro:</strong> faz as contas e segue as instruções.</li>
+<li><strong>Memória RAM, a bancada:</strong> guarda o que está sendo usado agora. Apaga quando o computador desliga.</li>
+<li><strong>Armazenamento (SSD ou HD), a despensa:</strong> guarda tudo, mesmo com o computador desligado.</li>
+<li><strong>Entrada e saída, o pedido e o prato:</strong> teclado, mouse, tela e som.</li>
+</ul>
+
+<!-- imagem -->
+
+<figure class="infografico">
+<img src="/blog/img/09-arquitetura.png" width="1080" height="1350" alt="Selo Bit a Bit número 9. Título: “O que acontece quando você clica”. Subtítulo: o computador funciona como uma cozinha. Quatro quadros: Processador (CPU), o chef, faz as contas e segue as instruções; Memória RAM, a bancada, o que está sendo usado agora, apaga ao desligar; Armazenamento, a despensa, guarda tudo mesmo desligado (SSD, HD); Entrada e saída, o pedido e o prato: teclado, mouse, tela, som. No rodapé: “Clique: a CPU busca o programa na despensa, traz para a bancada (RAM) e mostra o resultado na tela.” Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br." loading="lazy" decoding="async">
+<figcaption>O computador como uma cozinha: cozinheiro, bancada, despensa e pedido. <a href="/blog/img/09-arquitetura.png" download>Baixar imagem</a></figcaption>
+</figure>
+
+<h2>O caminho de um clique</h2>
+<ol>
+<li>O mouse avisa: clicaram aqui.</li>
+<li>O processador descobre qual programa abrir.</li>
+<li>Ele busca o programa no armazenamento, a despensa.</li>
+<li>Coloca o programa na RAM, a bancada, para trabalhar rápido.</li>
+<li>Mostra o resultado na tela.</li>
+</ol>
+<p>Essa organização, com processador, memória e programas guardados como dados, foi descrita em 1945 por John von Neumann e é usada até hoje em praticamente todos os computadores.</p>
+
+<h2>Por que a RAM apaga?</h2>
+<p>A RAM é muito rápida, mas guarda os dados com energia elétrica: desligou, apagou. O SSD e o HD são mais lentos, mas guardam os dados mesmo sem energia. Quando você salva um arquivo, ele sai da bancada e vai para a despensa. O que fica só na bancada se perde se a energia cair.</p>
+
+<h2>Na sala de aula</h2>
+<p>A BNCC Computação trabalha o tema desde os anos iniciais: a EF02CO04 pede diferenciar hardware e software, e a EF03CO06 pede reconhecer que o computador se comunica com o mundo por dispositivos de entrada e saída. A atividade do computador humano coloca cada parte nas mãos de um aluno.</p>
+<p>Este post fecha a primeira parte da série Bit a Bit. Na próxima: como organizar os dados para achar rápido?</p>
+
+<h2>Plano de aula: computador humano</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>3º ao 6º ano</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF02CO04: diferenciar componentes físicos (hardware) e programas (software). EF03CO06: reconhecer que o computador se comunica com o mundo exterior por dispositivos de entrada e saída</td></tr>
+<tr><th scope="row">Materiais</th><td>Crachás com os papéis (CPU, RAM, armazenamento, entrada, saída), quadro, um caderno, fichas com “ordens”</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim, a aula é toda desplugada</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> identificar a função de cada parte do computador e entender por que é preciso salvar o trabalho.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Processador, memória, disco: quem faz o quê?”</li>
+<li><strong>A cozinha (10 min).</strong> Apresente a comparação e peça que a turma explique, com as próprias palavras, o papel de cada parte.</li>
+<li><strong>Computador humano (25 min).</strong> Distribua os papéis: entrada (recebe a ordem), CPU (faz as contas), RAM (escreve no quadro o que está sendo usado), armazenamento (guarda no caderno) e saída (anuncia o resultado). A turma dá uma ordem, como somar três números, e cada papel só faz a sua parte e passa adiante. Repitam com outras ordens, trocando os papéis.</li>
+<li><strong>A queda de energia (5 min).</strong> Apaguem o quadro sem aviso. O que se perdeu? O que ficou guardado no caderno?</li>
+<li><strong>Fechamento (5 min).</strong> Relacionem o quadro apagado com o trabalho não salvo. Pergunta para a próxima aula: “Como organizar os dados para achar rápido?”</li>
+</ol>
+<p><strong>Avaliação:</strong> a participação nos papéis e a explicação da queda de energia mostram se o aluno diferencia memória e armazenamento.</p>
+<p><strong>Adaptações:</strong> crachás com símbolos além do texto, para alunos ainda não alfabetizados. Alunos com mobilidade reduzida podem ficar com os papéis de CPU ou armazenamento, que não exigem deslocamento.</p>
+
+<section class="slides-baixar" aria-labelledby="slides-titulo">
+<h2 id="slides-titulo">Slides para a aula</h2>
+<p>7 slides em PDF (formato 16:9), nas cores do site, seguindo o roteiro do plano acima. É só projetar.</p>
+<a class="btn98 baixar" href="/blog/slides/bit-a-bit-09-slides.pdf" download type="application/pdf"><i class="fa-solid fa-download" aria-hidden="true"></i> Baixar slides (PDF, 669 KB)</a>
+</section>
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades EF02CO04 e EF03CO06: <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Von Neumann, <em lang="en">First Draft of a Report on the EDVAC</em> (1945).</li>
+</ul>
+    </div>
+    <div class="compartilhar">
+        <p>Compartilhar:</p>
+        <a class="btn98" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fo-que-acontece-quando-voce-clica%2F" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fo-que-acontece-quando-voce-clica%2F" target="_blank" rel="noopener">Facebook<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://wa.me/?text=O%20que%20acontece%20quando%20voc%C3%AA%20clica%3A%20processador%2C%20mem%C3%B3ria%20e%20armazenamento%20https%3A%2F%2Fohtopico.com.br%2Fblog%2Fo-que-acontece-quando-voce-clica%2F" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a>
+    </div>
+    <aside class="autora" aria-labelledby="sobre-autora">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="72" height="72" loading="lazy">
+        <div>
+            <h2 id="sobre-autora">Júlia Roberta Quoos Alves</h2>
+            <p>Professora de computação no RS, mestranda em Ciência da Computação na UFSM e formadora de professores em inteligência artificial.</p>
+            <p class="links"><a href="/mentoria/">Mentoria para professores</a> <a href="/ia-pra-prof/">Guia IA pra Prof</a> <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a></p>
+        </div>
+    </aside>
+    <nav class="vizinhos" aria-label="Outros posts"><a class="ant" href="/blog/portas-logicas-e-ou-nao/" rel="prev"><span>◄ Anterior</span>E, OU, NÃO: a lógica dentro do chip</a><a class="prox" href="/blog/como-envolver-alunos-na-matematica/" rel="next"><span>Próximo ►</span>Como envolver os alunos na aula de matemática</a></nav>
+</article>
+        </main>
+        <aside class="lateral lateral-esq" aria-label="Menu do blog">
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Navegue</h2>
+                <ul class="lista-menu"><li><a href="/"><span aria-hidden="true">◄</span> Área de trabalho</a></li><li><a href="/blog/" aria-current="page"><span aria-hidden="true">⌂</span> Início do blog</a></li><li><a href="/formacao-e-mentoria/"><span aria-hidden="true">✦</span> Formação e mentoria</a></li><li><a href="/para-escolas/"><span aria-hidden="true">▣</span> Para escolas e redes</a></li><li><a href="/prompts-para-professores/"><span aria-hidden="true">❖</span> Biblioteca de prompts</a></li><li><a href="/quiz-pensamento-computacional/"><span aria-hidden="true">✱</span> Quiz de pensamento computacional</a></li><li><a href="/teste-proficiencia-informatica/"><span aria-hidden="true">▤</span> Teste de informática</a></li><li><a href="/curriculo/"><span aria-hidden="true">☺</span> Currículo</a></li></ul>
+                <button type="button" class="btn98 tema-btn" id="tema-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> Tema claro/escuro</button>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Temas</h2>
+                <ul class="lista-menu"><li><a href="/blog/#sobre-mim">Sobre mim</a></li><li><a href="/blog/#ia-na-pratica">IA na prática</a></li><li><a href="/blog/#formacao-de-professores-em-ia">Formação de professores em IA</a></li><li><a href="/blog/#etica-e-lgpd">Ética e LGPD</a></li><li><a href="/blog/#computacao-e-bncc">Computação e BNCC</a></li><li><a href="/blog/#para-estudantes">Para estudantes</a></li><li><a href="/blog/#bit-a-bit">Bit a Bit</a></li><li><a href="/blog/#jogos">Jogos</a></li><li><a href="/blog/#matematica-em-sala">Matemática em sala</a></li></ul>
+            </section>
+            <section class="caixa caixa-verde">
+                <h2 class="caixa-titulo">★ Posts recentes</h2>
+                <ul class="lista-recentes"><li><a href="/blog/como-envolver-alunos-na-matematica/">Como envolver os alunos na aula de matemática</a></li><li><a href="/blog/o-que-acontece-quando-voce-clica/">O que acontece quando você clica: processador, memória e armazenamento</a></li><li><a href="/blog/portas-logicas-e-ou-nao/">E, OU, NÃO: a lógica dentro do chip</a></li><li><a href="/blog/minha-primeira-obmep/">Minha primeira OBMEP: o que preciso saber</a></li><li><a href="/blog/algoritmo-e-receita-de-bolo/">Algoritmo é receita de bolo?</a></li></ul>
+            </section>
+        </aside>
+        <aside class="lateral lateral-dir" aria-label="Projetos e sobre a autora">
+            <nav class="caixa caixa-verde caixa-projetos" aria-label="Projetos">
+                <h2 class="caixa-titulo">★ Projetos</h2>
+                <ul class="lista-menu"><li><a href="/material-didatico/"><span aria-hidden="true">▲</span> Material didático</a></li><li><a href="/material-adaptado/"><span aria-hidden="true">◆</span> Material adaptado</a></li><li><a href="/ia-pra-prof/"><span aria-hidden="true">✎</span> Guia IA pra Prof</a></li><li><a href="/tech-pra-prof/"><span aria-hidden="true">◇</span> Guia Tech pra Prof</a></li><li><a href="/computacao-na-escola/"><span aria-hidden="true">▦</span> Computação na escola</a></li><li><a href="/lei-do-celular-nas-escolas/"><span aria-hidden="true">▮</span> Lei do celular nas escolas</a></li><li><a href="/matematica-adaptada/"><span aria-hidden="true">✚</span> Matemática adaptada</a></li><li><a href="/assistencia-por-voz/"><span aria-hidden="true">◉</span> Assistência por voz</a></li><li><a href="/mundo/professores/"><span aria-hidden="true">⬢</span> Mundo para professores</a></li></ul>
+            </nav>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Quem escreve</h2>
+                <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
+                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA. Do código ao quadro.</p>
+                <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
+            </section>
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Formação e mentoria</h2>
+                <p>Mentoria individual para professores, a partir de R$ 200 a sessão, e formação para escolas e redes.</p>
+                <a class="btn98 escuro" href="/formacao-e-mentoria/">Ver as opções</a>
+            </section>
+            <section class="caixa caixa-contador">
+                <h2 class="caixa-titulo">★ Visitas</h2>
+                <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
+                <p class="miudo">Contador sem cookies e sem dados pessoais.</p>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Selos</h2>
+                <ul class="selos">
+                    <li class="selo selo-amarelo">feito à mão</li>
+                    <li class="selo selo-verde">sem cookies</li>
+                    <li class="selo selo-vermelho">♥ professores</li>
+                    <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</div>
+</div>
+<footer class="rodape">
+    <nav class="letreiro" aria-label="Destaques"><a href="/blog/como-envolver-alunos-na-matematica/">✦ Post novo: Como envolver os alunos na aula de matemática</a><a href="/formacao-e-mentoria/">✦ Formação e mentoria para professores, escolas e redes</a><a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a><a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a><a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a></nav>
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/blog/assets/blog.js?v=b39a7f205a" defer></script>
+<script src="/assistente/assistente.js?v=edf45ba561" defer></script>
+</body>
+</html>

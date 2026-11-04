@@ -1,0 +1,52 @@
+<p>No <a href="/blog/hexadecimal-por-que-o-branco-e-ffffff/">Bit a Bit #03</a> vimos que um byte, com seus 8 bits, cabe em dois símbolos hexadecimais. Agora a pergunta é de tamanho: quanto cabe em um pen drive de 16 GB? E por que um HD de 1 TB aparece no computador com só 931 GB?</p>
+
+<h2>8 bits formam 1 byte</h2>
+<p>O bit é a menor unidade de informação: um 0 ou um 1. Sozinho, ele guarda pouco. Por isso o computador trabalha com grupos de 8 bits, chamados de <strong>byte</strong>. Um byte guarda um número de 0 a 255, e esse é o espaço de uma letra simples, como o “A”, que no computador é 01000001.</p>
+
+<!-- imagem -->
+
+<h2>A escada de mil em mil</h2>
+<p>A partir do byte, as unidades sobem em degraus, e cada degrau é cerca de mil vezes o anterior. Os prefixos são os mesmos do metro e do grama: quilo, mega, giga e tera.</p>
+<div class="tabela"><table><thead><tr><th scope="col">Unidade</th><th scope="col">Equivale a</th><th scope="col">Exemplo</th></tr></thead><tbody>
+<tr><th scope="row">1 byte</th><td>8 bits</td><td>uma letra</td></tr>
+<tr><th scope="row">1 KB</th><td>cerca de mil bytes</td><td>meia página de texto</td></tr>
+<tr><th scope="row">1 MB</th><td>cerca de mil KB</td><td>uma foto pequena</td></tr>
+<tr><th scope="row">1 GB</th><td>cerca de mil MB</td><td>um filme em qualidade média</td></tr>
+<tr><th scope="row">1 TB</th><td>cerca de mil GB</td><td>centenas de milhares de fotos</td></tr>
+</tbody></table></div>
+<p>Com esses valores fica fácil estimar: uma foto de celular ocupa cerca de 3 MB, uma música cerca de 4 MB e uma hora de vídeo em boa qualidade cerca de 1 GB. Um pen drive de 16 GB comporta, portanto, alguns milhares de fotos.</p>
+
+<h2>Por que o HD de 1 TB mostra 931 GB?</h2>
+<p>Ninguém roubou espaço do disco. São duas réguas diferentes. O fabricante conta de 1.000 em 1.000: para ele, 1 TB são 1.000.000.000.000 bytes. O Windows conta de 1.024 em 1.024, porque 1.024 é uma potência de 2 (2 elevado a 10), a base natural do computador. Dividindo os mesmos bytes por 1.024 três vezes, o resultado é cerca de 931. Para evitar a confusão, existem até nomes próprios para as unidades de 1.024, como KiB, MiB e GiB, mas eles são pouco usados no dia a dia.</p>
+
+<h2>Na sala de aula</h2>
+<p>O tema se liga à habilidade EF04CO04 da BNCC Computação, sobre a necessidade de codificar os dados para guardá-los, e à EF06CO08, que pede compreender formas de armazenar, compactar e recuperar arquivos. A atividade também trabalha cálculo, com somas, estimativas e comparação de grandezas.</p>
+<p>No próximo post: <a href="/blog/cada-letra-e-um-numero-ascii-unicode/">se tudo é número, como o computador guarda uma letra?</a></p>
+
+<h2>Plano de aula: quanto cabe?</h2>
+<div class="tabela ficha"><table><tbody>
+<tr><th scope="row">Ano</th><td>5º e 6º ano (funciona também no 7º)</td></tr>
+<tr><th scope="row">Duração</th><td>50 minutos</td></tr>
+<tr><th scope="row">Habilidades</th><td>EF04CO04: entender que, para guardar, manipular e transmitir dados, é preciso codificá-los. EF06CO08: compreender e utilizar formas de armazenar, manipular, compactar e recuperar arquivos</td></tr>
+<tr><th scope="row">Materiais</th><td>Um “pen drive de papel” de 16 GB por grupo (cartão com 16 casas de 1 GB), tabela de tamanhos, lápis e calculadora opcional</td></tr>
+<tr><th scope="row">Sem laboratório</th><td>Sim, a aula é toda desplugada</td></tr>
+</tbody></table></div>
+<p><strong>Objetivo:</strong> relacionar bit, byte, KB, MB, GB e TB e estimar quanto espaço ocupam arquivos comuns.</p>
+<h3>Desenvolvimento</h3>
+<ol>
+<li><strong>Pergunta de abertura (5 min).</strong> “Por que o HD de 1 TB mostra só 931 GB?” Deixe a pergunta no quadro para retomar no fim.</li>
+<li><strong>8 bits = 1 byte (10 min).</strong> Com os cartões binários, monte o “A” (01000001) e mostre que uma letra ocupa um byte.</li>
+<li><strong>A escada (10 min).</strong> Desenhe a escada de mil em mil e compare com quilômetro e quilograma. A turma completa os exemplos de cada degrau.</li>
+<li><strong>Quanto cabe? (20 min).</strong> Cada grupo recebe o pen drive de papel e a tabela (foto ~3 MB, música ~4 MB, texto de 10 páginas ~30 KB, 1 hora de vídeo ~1 GB). Os grupos planejam o que guardar, somam o espaço e apresentam a escolha. Aproveita melhor quem chegar mais perto de 16 GB sem ultrapassar.</li>
+<li><strong>Fechamento (5 min).</strong> Retome o HD de 931 GB e explique as duas réguas. Pergunta para a próxima aula: “Como o computador guarda uma letra?”</li>
+</ol>
+<p><strong>Avaliação:</strong> o planejamento do grupo mostra se o aluno converte entre unidades e faz estimativas coerentes.</p>
+<p><strong>Adaptações:</strong> para os anos iniciais, use números redondos (foto de 1 MB, música de 5 MB). Para alunos com deficiência visual, o pen drive pode ser uma caixa com 16 compartimentos e fichas em relevo.</p>
+
+<!-- slides -->
+
+<h2>Fontes</h2>
+<ul class="fontes">
+<li>Habilidades EF04CO04 e EF06CO08: <a href="https://profez.com.br/bncc/computacao" rel="noopener">profez.com.br/bncc/computacao</a>, que reproduz o complemento de Computação à BNCC (Parecer CNE/CEB nº 2/2022).</li>
+<li>Prefixos binários (KiB, MiB, GiB): norma IEC 80000-13.</li>
+</ul>
