@@ -1,0 +1,550 @@
+{
+ "fichas": [
+  {
+   "slug": "cada-dado-no-seu-pote",
+   "titulo": "Cada dado no seu pote",
+   "ano": 6,
+   "codigo": "EF06CO01",
+   "eixo": "Pensamento computacional",
+   "resumo": "Classificar informações em coleções e dizer o tipo de cada dado: texto, número ou lógico.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "robo-no-labirinto",
+   "titulo": "Robô no labirinto",
+   "ano": 6,
+   "codigo": "EF06CO02",
+   "eixo": "Pensamento computacional",
+   "resumo": "Escrever algoritmos com sequência, repetição e decisão para levar um robô até o alvo.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "ditado-de-desenho",
+   "titulo": "Ditado de desenho",
+   "ano": 6,
+   "codigo": "EF06CO03",
+   "eixo": "Pensamento computacional",
+   "resumo": "Descrever uma solução com instruções precisas, que qualquer pessoa consiga seguir do mesmo jeito.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "divida-para-resolver",
+   "titulo": "Divida para resolver",
+   "ano": 6,
+   "codigo": "EF06CO04",
+   "eixo": "Pensamento computacional",
+   "resumo": "Usar a decomposição: quebrar um problema grande em partes menores e mais fáceis de resolver.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "o-que-importa",
+   "titulo": "O que importa?",
+   "ano": 6,
+   "codigo": "EF06CO05",
+   "eixo": "Pensamento computacional",
+   "resumo": "Usar a abstração: separar as informações importantes (entradas) das que não ajudam, para cada problema.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "caca-aos-padroes",
+   "titulo": "Caça aos padrões",
+   "ano": 6,
+   "codigo": "EF06CO06",
+   "eixo": "Pensamento computacional",
+   "resumo": "Comparar casos parecidos, achar o que se repete e escrever uma regra que vale para todos (com uma variável).",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "pacotes-embaralhados",
+   "titulo": "Pacotes embaralhados",
+   "ano": 6,
+   "codigo": "EF06CO07",
+   "eixo": "Mundo digital",
+   "resumo": "Entender como a internet manda uma mensagem em pacotes numerados, que podem seguir caminhos diferentes.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "arquivos-em-ordem",
+   "titulo": "Arquivos em ordem",
+   "ano": 6,
+   "codigo": "EF06CO08",
+   "eixo": "Mundo digital",
+   "resumo": "Organizar arquivos em pastas, dar bons nomes, ler a extensão e os metadados e entender compactação e backup.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "semaforo-da-conversa",
+   "titulo": "Semáforo da conversa",
+   "ano": 6,
+   "codigo": "EF06CO09",
+   "eixo": "Cultura digital",
+   "resumo": "Pensar antes de enviar: reconhecer mensagens respeitosas, as que pedem cuidado e as que ofendem ou expõem alguém.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "quanto-custa-um-celular",
+   "titulo": "Quanto custa um celular?",
+   "ano": 6,
+   "codigo": "EF06CO10",
+   "eixo": "Cultura digital",
+   "resumo": "Perceber o custo ambiental de um celular e diferenciar obsolescência programada e percebida.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "a-ficha-da-turma",
+   "titulo": "A ficha da turma",
+   "ano": 7,
+   "codigo": "EF07CO01",
+   "eixo": "Pensamento computacional",
+   "resumo": "Organizar dados em registros (campos com nome e tipo) e em vetores (listas com posições numeradas).",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "caca-aos-bugs",
+   "titulo": "Caça aos bugs",
+   "ano": 7,
+   "codigo": "EF07CO02",
+   "eixo": "Pensamento computacional",
+   "resumo": "Encontrar e corrigir erros em programas usando o teste de mesa, acompanhando o valor das variáveis passo a passo.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "do-problema-ao-projeto",
+   "titulo": "Do problema ao projeto",
+   "ano": 7,
+   "codigo": "EF07CO03",
+   "eixo": "Pensamento computacional",
+   "resumo": "Planejar um programa para resolver um problema: escolher entradas, saídas, dados e recursos (repetição, decisão, vetor, registro, função).",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "pontes-e-caminhos",
+   "titulo": "Pontes e caminhos",
+   "ano": 7,
+   "codigo": "EF07CO04",
+   "eixo": "Pensamento computacional",
+   "resumo": "Representar problemas com grafos (pontos ligados por linhas) e usar o grafo para achar caminhos e o caminho mais curto.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "escreva-uma-vez-use-sempre",
+   "titulo": "Escreva uma vez, use sempre",
+   "ano": 7,
+   "codigo": "EF07CO05",
+   "eixo": "Pensamento computacional",
+   "resumo": "Criar funções com parâmetros para não repetir código: escrever uma vez e chamar com valores diferentes.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "as-regras-da-conversa",
+   "titulo": "As regras da conversa",
+   "ano": 7,
+   "codigo": "EF07CO06",
+   "eixo": "Mundo digital",
+   "resumo": "Entender protocolos: as regras combinadas que permitem que pessoas e computadores troquem mensagens sem confusão.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "detetive-de-golpes",
+   "titulo": "Detetive de golpes",
+   "ano": 7,
+   "codigo": "EF07CO07",
+   "eixo": "Mundo digital",
+   "resumo": "Reconhecer golpes digitais e criar senhas fortes para proteger dados e contas.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "discordar-sem-ferir",
+   "titulo": "Discordar sem ferir",
+   "ano": 7,
+   "codigo": "EF07CO08",
+   "eixo": "Cultura digital",
+   "resumo": "Dar opinião na internet com respeito: separar argumento de ataque à pessoa e reescrever comentários agressivos.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "cyberbullying-nao-e-brincadeira",
+   "titulo": "Não é brincadeira",
+   "ano": 7,
+   "codigo": "EF07CO09",
+   "eixo": "Cultura digital",
+   "resumo": "Reconhecer o cyberbullying, entender o papel de quem vê e saber a quem pedir ajuda.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "para-onde-vai-o-lixo-eletronico",
+   "titulo": "Para onde vai o lixo eletrônico?",
+   "ano": 7,
+   "codigo": "EF07CO10",
+   "eixo": "Cultura digital",
+   "resumo": "Saber o que há dentro dos aparelhos eletrônicos e como descartar o lixo eletrônico sem prejudicar o ambiente.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "do-roteiro-a-publicacao",
+   "titulo": "Do roteiro à publicação",
+   "ano": 7,
+   "codigo": "EF07CO11",
+   "eixo": "Cultura digital",
+   "resumo": "Planejar e produzir um conteúdo digital (podcast ou vídeo) em etapas, com roteiro, autorização e créditos.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "bonecas-recursivas",
+   "titulo": "Bonecas recursivas",
+   "ano": 8,
+   "codigo": "EF08CO01",
+   "eixo": "Pensamento computacional",
+   "resumo": "Entender a recursão: uma função que chama a si mesma com um problema menor, até chegar ao caso que para.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "listas-que-crescem",
+   "titulo": "Listas que crescem",
+   "ano": 8,
+   "codigo": "EF08CO02",
+   "eixo": "Pensamento computacional",
+   "resumo": "Usar listas que mudam de tamanho: adicionar, remover e percorrer itens para achar maior, menor e média.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "buscar-e-ordenar",
+   "titulo": "Buscar e ordenar",
+   "ano": 8,
+   "codigo": "EF08CO03",
+   "eixo": "Pensamento computacional",
+   "resumo": "Ordenar uma lista por seleção e procurar um item com busca binária, comparando com a busca um por um.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "programa-para-outra-aula",
+   "titulo": "Programa para outra aula",
+   "ano": 8,
+   "codigo": "EF08CO04",
+   "eixo": "Pensamento computacional",
+   "resumo": "Criar um programa que ajude em outra matéria, definindo requisitos e testando com casos de teste.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "muitas-maos",
+   "titulo": "Muitas mãos",
+   "ano": 8,
+   "codigo": "EF08CO05",
+   "eixo": "Mundo digital",
+   "resumo": "Entender a computação paralela e distribuída: dividir tarefas entre vários processadores ou computadores, e os cuidados ao fazer isso.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "a-viagem-de-um-clique",
+   "titulo": "A viagem de um clique",
+   "ano": 8,
+   "codigo": "EF08CO06",
+   "eixo": "Mundo digital",
+   "resumo": "Entender o caminho de um pedido na internet: DNS, roteadores, servidor e pacotes.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "por-dentro-do-feed",
+   "titulo": "Por dentro do feed",
+   "ano": 8,
+   "codigo": "EF08CO07",
+   "eixo": "Cultura digital",
+   "resumo": "Entender como algoritmos escolhem o que aparece no feed e como isso pode criar bolhas de informação.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "seus-dados-valem-muito",
+   "titulo": "Seus dados valem muito",
+   "ano": 8,
+   "codigo": "EF08CO08",
+   "eixo": "Cultura digital",
+   "resumo": "Reconhecer dados pessoais e sensíveis, pedir só o necessário e entender os riscos de expor dados.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "li-e-concordo",
+   "titulo": "Li e concordo?",
+   "ano": 8,
+   "codigo": "EF08CO09",
+   "eixo": "Cultura digital",
+   "resumo": "Ler termos de uso e políticas de privacidade, entender o que se aceita e reconhecer cláusulas abusivas.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "privacidade-no-controle",
+   "titulo": "Privacidade no controle",
+   "ano": 8,
+   "codigo": "EF08CO10",
+   "eixo": "Cultura digital",
+   "resumo": "Controlar a própria privacidade: conferir permissões de apps e o que fotos e perfis públicos revelam.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "fonte-confiavel",
+   "titulo": "Fonte confiável?",
+   "ano": 8,
+   "codigo": "EF08CO11",
+   "eixo": "Cultura digital",
+   "resumo": "Avaliar fontes de informação: autor, data, precisão, abrangência e viés.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "arvores-e-grafos",
+   "titulo": "Árvores e grafos",
+   "ano": 9,
+   "codigo": "EF09CO01",
+   "eixo": "Pensamento computacional",
+   "resumo": "Usar árvores e grafos para organizar informações e decisões: pastas, perguntas de sim ou não e caminhos.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "projeto-com-impacto",
+   "titulo": "Projeto com impacto",
+   "ano": 9,
+   "codigo": "EF09CO02",
+   "eixo": "Pensamento computacional",
+   "resumo": "Planejar um projeto de tecnologia para um problema real da escola ou do bairro: público, solução, dados e cronograma.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "maquina-de-estados",
+   "titulo": "Máquina de estados",
+   "ano": 9,
+   "codigo": "EF09CO03",
+   "eixo": "Pensamento computacional",
+   "resumo": "Modelar sistemas com autômatos: estados, eventos e transições, como numa catraca, semáforo ou personagem de jogo.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "como-agem-os-ataques",
+   "titulo": "Como agem os ataques",
+   "ano": 9,
+   "codigo": "EF09CO04",
+   "eixo": "Mundo digital",
+   "resumo": "Conhecer os tipos de malware (vírus, worm, cavalo de Troia, ransomware, spyware), como agem e como se proteger.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "mensagens-secretas",
+   "titulo": "Mensagens secretas",
+   "ano": 9,
+   "codigo": "EF09CO05",
+   "eixo": "Mundo digital",
+   "resumo": "Entender a criptografia com a cifra de César: cifrar, decifrar com a chave e por que chaves maiores são mais seguras.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "radar-do-bairro",
+   "titulo": "Radar do bairro",
+   "ano": 9,
+   "codigo": "EF09CO06",
+   "eixo": "Cultura digital",
+   "resumo": "Usar dados da comunidade para entender problemas do bairro e propor soluções digitais.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "tribunal-da-tecnologia",
+   "titulo": "Tribunal da tecnologia",
+   "ano": 9,
+   "codigo": "EF09CO07",
+   "eixo": "Cultura digital",
+   "resumo": "Avaliar impactos da tecnologia na sociedade: benefícios, riscos e quem ganha ou perde com cada uma.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "acesso-digital-desigual",
+   "titulo": "Acesso digital desigual",
+   "ano": 9,
+   "codigo": "EF09CO08",
+   "eixo": "Cultura digital",
+   "resumo": "Discutir a desigualdade de acesso à tecnologia e os problemas éticos na cadeia de produção dos aparelhos.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "creditos-certos",
+   "titulo": "Créditos certos",
+   "ano": 9,
+   "codigo": "EF09CO09",
+   "eixo": "Cultura digital",
+   "resumo": "Respeitar direitos autorais e de imagem: dar crédito, conhecer licenças Creative Commons e pedir permissão.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "verdade-ou-boato",
+   "titulo": "Verdade ou boato?",
+   "ano": 9,
+   "codigo": "EF09CO10",
+   "eixo": "Cultura digital",
+   "resumo": "Checar informações antes de compartilhar: sinais de boato, passos da checagem e cuidados com fotos, áudios e deepfakes.",
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  }
+ ]
+}
