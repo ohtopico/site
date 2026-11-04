@@ -23,10 +23,10 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
 from fichas import FICHAS as BASE  # noqa: E402
-import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9  # noqa: E401,E402
+import ano1, ano2, ano3, ano4, ano5, ano6, ano7, ano8, ano9, hab1  # noqa: E401,E402
 from bncc import habilidades, UNIDADES  # noqa: E402
 
-FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + ano3.FICHAS + ano4.FICHAS + ano5.FICHAS + ano6.FICHAS + ano7.FICHAS + ano8.FICHAS + ano9.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
+FICHAS = BASE[:-1] + ano1.FICHAS + ano2.FICHAS + ano3.FICHAS + ano4.FICHAS + ano5.FICHAS + ano6.FICHAS + ano7.FICHAS + ano8.FICHAS + ano9.FICHAS + hab1.FICHAS + BASE[-1:]  # o kit de apoio visual fica por último
 
 RAIZ = AQUI.parent.parent
 SAIDA = RAIZ / 'matematica-adaptada'
@@ -90,6 +90,17 @@ def folha_professor(f):
 
 def versao_css():
     return hashlib.md5((AQUI / 'fichas.css').read_bytes() + (AQUI / 'fichas.js').read_bytes()).hexdigest()[:10]
+
+
+def relacionadas(f):
+    """Liga a ficha de revisão às fichas de cada habilidade, e cada ficha à revisão do tema."""
+    rel = f.get('relacionadas') or []
+    if not rel:
+        return ''
+    links = ''.join(f'<li><a href="/matematica-adaptada/fichas/{sl}/">{esc(t)}</a></li>' for sl, t in rel)
+    if f.get('revisao'):
+        return f'<p>Esta é uma ficha de revisão, que junta várias habilidades. Para trabalhar uma habilidade de cada vez, use as fichas:</p><ul>{links}</ul>'
+    return f'<p>Para revisar esta habilidade junto com outras do mesmo tema, use a ficha de revisão:</p><ul>{links}</ul>'
 
 
 def pagina(f, i, total):
@@ -188,6 +199,7 @@ def pagina(f, i, total):
         </dl>
         <h2>Habilidades da BNCC</h2>
         <ul>{habs}</ul>
+        {relacionadas(f)}
         {('<h2>Três versões, a mesma atividade</h2>' + versoes_txt) if versoes_txt else ''}
         <h2>Como aplicar</h2>
         <ol>{passos}</ol>
@@ -245,7 +257,22 @@ def main():
     fichas = [fn() for fn in FICHAS]
     for f in fichas:
         f['ano'] = 0 if f['slug'] == 'kit-de-apoio-visual' else min(int(c[2:4]) for c, _ in f['habilidades'])
-    fichas.sort(key=lambda f: (f['ano'] or 99))
+        # com uma ficha por habilidade, as fichas de várias habilidades viram fichas de revisão do tema
+        f['revisao'] = f['slug'] != 'kit-de-apoio-visual' and len(f['habilidades']) > 1
+    fichas.sort(key=lambda f: (f['ano'] or 99, f['revisao'], min(c for c, _ in f['habilidades'])))
+    unica = {}
+    for f in fichas:
+        if not f['revisao'] and f['slug'] != 'kit-de-apoio-visual':
+            for c, _ in f['habilidades']:
+                unica.setdefault(c, f)
+    for f in fichas:
+        if f['revisao']:
+            f['relacionadas'] = [(unica[c]['slug'], unica[c]['titulo']) for c, _ in f['habilidades'] if c in unica]
+    for f in fichas:
+        if f['revisao']:
+            for sl, _ in f['relacionadas']:
+                alvo = next(g for g in fichas if g['slug'] == sl)
+                alvo.setdefault('relacionadas', []).append((f['slug'], f['titulo']))
     FICHAS_INFO.extend(fichas)
     (SAIDA / 'assets').mkdir(parents=True, exist_ok=True)
     shutil.copy(AQUI / 'fichas.css', SAIDA / 'assets' / 'fichas.css')
@@ -258,7 +285,7 @@ def main():
         if not arq.exists() or arq.read_text(encoding='utf-8') != texto:
             arq.write_text(texto, encoding='utf-8')
     lista = [{'slug': f['slug'], 'titulo': f['titulo'], 'anos': f['anos'], 'ano': f['ano'], 'resumo': f['resumo'],
-              'habilidades': [c for c, _ in f['habilidades']], 'versoes': list(f['versoes'])} for f in fichas]
+              'habilidades': [c for c, _ in f['habilidades']], 'versoes': list(f['versoes']), 'revisao': f['revisao']} for f in fichas]
     cobertura = {}
     for f in fichas:
         if f['slug'] == 'kit-de-apoio-visual':

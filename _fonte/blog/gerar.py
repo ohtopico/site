@@ -971,6 +971,8 @@ MATEMATICA_ADAPTADA_CSS = """<style>
 .fichas-adaptadas h4 a:hover { text-decoration: underline; }
 .mapa-ano { border: 1.5px solid var(--ink); border-radius: 14px; margin: 0 0 10px; padding: 8px 14px; }
 .mapa-ano summary { cursor: pointer; font: 800 18px var(--display); }
+.revisao-ano { border: 1.5px dashed var(--ink); border-radius: 14px; margin: 0 0 20px; padding: 8px 14px; }
+.revisao-ano summary { cursor: pointer; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
 .mapa-rolagem { overflow-x: auto; }
 .mapa-bncc { border-collapse: collapse; font-size: 14px; margin: 10px 0 4px; width: 100%; }
 .mapa-bncc th, .mapa-bncc td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
@@ -987,19 +989,27 @@ def cartoes_matematica_adaptada():
     dados = json.loads((AQUI.parent / 'matematica-adaptada' / 'indice.json').read_text(encoding='utf-8'))
     fichas, mapa = dados['fichas'], dados['mapa']
     titulos = {f['slug']: f['titulo'] for f in fichas}
+    revisoes = {f['slug']: f.get('revisao', False) for f in fichas}
     grupos = {}
     for f in fichas:
         grupos.setdefault(f['ano'], []).append(f)
     partes = []
     for ano in sorted(grupos, key=lambda a: a or 99):
-        itens = []
-        for f in grupos[ano]:
+        def cartao(f):
             versoes = 'versões A, B e C' if 'A' in f['versoes'] else f'{len(f["versoes"])} folhas'
-            itens.append(f'<li><h4><a href="/matematica-adaptada/fichas/{f["slug"]}/">{esc(f["titulo"])}</a></h4>'
-                         f'<p>{esc(f["resumo"])}</p>'
-                         f'<p class="meta">{esc(f["anos"])} · {", ".join(f["habilidades"])} · {versoes} + orientações · PDF</p></li>')
+            return (f'<li><h4><a href="/matematica-adaptada/fichas/{f["slug"]}/">{esc(f["titulo"])}</a></h4>'
+                    f'<p>{esc(f["resumo"])}</p>'
+                    f'<p class="meta">{esc(f["anos"])} · {", ".join(f["habilidades"])} · {versoes} + orientações · PDF</p></li>')
         nome = f'{ano}º ano' if ano else 'Para todos os anos'
-        partes.append(f'<h3 id="fichas-{ano or "apoio"}">{nome}</h3><ul class="fichas-adaptadas">' + ''.join(itens) + '</ul>')
+        unicas = [f for f in grupos[ano] if not f.get('revisao')]
+        revisao = [f for f in grupos[ano] if f.get('revisao')]
+        html = f'<h3 id="fichas-{ano or "apoio"}">{nome}</h3>'
+        if unicas:
+            html += '<ul class="fichas-adaptadas">' + ''.join(cartao(f) for f in unicas) + '</ul>'
+        if revisao:
+            html += (f'<details class="revisao-ano"><summary>Fichas de revisão do {nome} ({len(revisao)}), cada uma juntando habilidades de um mesmo tema</summary>'
+                     '<ul class="fichas-adaptadas">' + ''.join(cartao(f) for f in revisao) + '</ul></details>')
+        partes.append(html)
     cartoes = ''.join(partes)
 
     blocos = []
@@ -1013,7 +1023,8 @@ def cartoes_matematica_adaptada():
                 continue
             linhas.append(f'<tr class="unidade"><th colspan="3">{esc(un)}</th></tr>')
             for h in doano:
-                fichas_h = ', '.join(f'<a href="/matematica-adaptada/fichas/{sl}/">{esc(titulos[sl])}</a>' for sl in h['fichas']) or '<span class="em-breve">em preparação</span>'
+                ordem = sorted(h['fichas'], key=lambda sl: revisoes.get(sl, False))
+                fichas_h = ', '.join((f'<a href="/matematica-adaptada/fichas/{sl}/">{esc(titulos[sl])}</a>' + (' (revisão)' if revisoes.get(sl) else '')) for sl in ordem) or '<span class="em-breve">em preparação</span>'
                 linhas.append(f'<tr><td><b>{h["codigo"]}</b></td><td>{esc(h["texto"])}</td><td>{fichas_h}</td></tr>')
         blocos.append(f'<details class="mapa-ano"{" open" if ano == 1 else ""}><summary>{ano}º ano · {feitas} de {len(hs)} habilidades com ficha</summary>'
                       f'<div class="mapa-rolagem"><table class="mapa-bncc"><thead><tr><th>Código</th><th>Habilidade</th><th>Ficha</th></tr></thead>'

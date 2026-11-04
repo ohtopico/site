@@ -1,6 +1,358 @@
 {
  "fichas": [
   {
+   "slug": "numeros-que-contam-e-numeros-que-ordenam",
+   "titulo": "Números que contam e números que ordenam",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Usar números para dizer quantos tem e para dizer a posição numa fila, em situações do dia a dia.",
+   "habilidades": [
+    "EF01MA01"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "contar-com-pares-e-grupos",
+   "titulo": "Contar com pares e grupos",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Contar de forma exata ou aproximada, ligando um a um (pareamento) e formando grupos de 2 e de 5.",
+   "habilidades": [
+    "EF01MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "comparar-quantidades-onde-tem-mais",
+   "titulo": "Comparar quantidades: onde tem mais?",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Estimar e comparar duas coleções de até cerca de 20 objetos e dizer quantos tem a mais ou a menos.",
+   "habilidades": [
+    "EF01MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "contar-ate-100-e-escrever-os-numeros",
+   "titulo": "Contar até 100 e escrever os números",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Contar coleções de até 100 objetos em grupos de dez e registrar o resultado com algarismos e por extenso.",
+   "habilidades": [
+    "EF01MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "comparar-numeros-na-reta-numerica",
+   "titulo": "Comparar números na reta numérica",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Comparar números naturais de até dois algarismos, com e sem a reta numérica, e usar os sinais maior que e menor que.",
+   "habilidades": [
+    "EF01MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fatos-basicos-da-adicao",
+   "titulo": "Fatos básicos da adição",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Construir os fatos básicos da adição (dobros, jeitos de fazer 10) e usá-los para calcular.",
+   "habilidades": [
+    "EF01MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "compor-e-decompor-dezenas-e-unidades",
+   "titulo": "Compor e decompor dezenas e unidades",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Montar e desmontar números de dois algarismos em dezenas e unidades, com material dourado e palitos.",
+   "habilidades": [
+    "EF01MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "tirar-e-ver-quantos-sobram-subtracao",
+   "titulo": "Tirar e ver quantos sobram: subtração",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Subtração com o significado de retirar: riscar figuras, pular para trás na reta e resolver problemas.",
+   "habilidades": [
+    "EF01MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "separar-e-organizar-por-atributos",
+   "titulo": "Separar e organizar: cor, forma e tamanho",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Classificar objetos por um atributo, achar o diferente, ordenar por tamanho e descobrir a regra de um grupo.",
+   "habilidades": [
+    "EF01MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "o-que-falta-na-sequencia",
+   "titulo": "O que falta na sequência?",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Descobrir a regra de sequências de figuras e de números e completar os elementos que faltam.",
+   "habilidades": [
+    "EF01MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "direita-esquerda-frente-e-atras",
+   "titulo": "Direita, esquerda, frente e atrás",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Descrever onde estão pessoas e objetos usando direita, esquerda, frente e atrás.",
+   "habilidades": [
+    "EF01MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "entre-acima-e-abaixo",
+   "titulo": "Entre, acima e abaixo: onde está?",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Descrever a localização de objetos usando pontos de referência e as palavras entre, acima, abaixo, em cima e embaixo.",
+   "habilidades": [
+    "EF01MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "solidos-e-objetos-do-dia-a-dia",
+   "titulo": "Sólidos e objetos do dia a dia",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Relacionar o cubo, a esfera, o cilindro, o cone e o bloco retangular a objetos do mundo físico.",
+   "habilidades": [
+    "EF01MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "circulo-quadrado-retangulo-e-triangulo",
+   "titulo": "Círculo, quadrado, retângulo e triângulo",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Reconhecer e nomear o círculo, o quadrado, o retângulo e o triângulo em desenhos e em objetos.",
+   "habilidades": [
+    "EF01MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "comparar-medidas-alto-pesado-cabe-mais",
+   "titulo": "Mais alto, mais pesado, cabe mais",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Comparar comprimentos, massas e capacidades: quem é mais alto, o que pesa mais, onde cabe mais, e medir com clipes e palmos.",
+   "habilidades": [
+    "EF01MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "o-que-acontece-primeiro-no-dia",
+   "titulo": "O que acontece primeiro no dia?",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Contar a sequência de acontecimentos de um dia, usando primeiro, depois, antes e por fim, e os horários quando possível.",
+   "habilidades": [
+    "EF01MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "periodos-do-dia-semana-e-meses",
+   "titulo": "Períodos do dia, semana e meses",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Reconhecer manhã, tarde e noite, os dias da semana e os meses do ano, usando o calendário.",
+   "habilidades": [
+    "EF01MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "escrever-a-data-e-o-dia-da-semana",
+   "titulo": "Escrever a data e o dia da semana",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Escrever uma data com dia, mês e ano e encontrar o dia da semana no calendário.",
+   "habilidades": [
+    "EF01MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "moedas-e-cedulas-do-real",
+   "titulo": "Moedas e cédulas do real",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Reconhecer moedas e cédulas do real, dizer quanto valem e juntar valores pequenos em situações de compra.",
+   "habilidades": [
+    "EF01MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "vai-acontecer-certo-talvez-ou-impossivel",
+   "titulo": "Vai acontecer? Certo, talvez ou impossível",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Classificar acontecimentos do dia a dia e sorteios simples como certos, possíveis (talvez) ou impossíveis.",
+   "habilidades": [
+    "EF01MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "ler-tabelas-e-graficos-de-colunas",
+   "titulo": "Ler tabelas e gráficos de colunas",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Ler dados em tabelas simples e em gráficos de colunas: qual tem mais, qual tem menos e quantos tem.",
+   "habilidades": [
+    "EF01MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fazer-uma-pesquisa-com-a-turma",
+   "titulo": "Fazer uma pesquisa com a turma",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Fazer uma pesquisa com até duas perguntas, anotar as respostas e mostrar o resultado do seu jeito.",
+   "habilidades": [
+    "EF01MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "contar-e-mostrar-quantidades",
    "titulo": "Contar e mostrar quantos tem",
    "anos": "1º ano",
@@ -15,7 +367,25 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "numeros-ate-100-contar-e-comparar",
+   "titulo": "Números até 100: contar e comparar",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Contar coleções de até 100 com grupos de dez, completar o quadro de 100 e comparar números de dois algarismos.",
+   "habilidades": [
+    "EF01MA04",
+    "EF01MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": true
   },
   {
    "slug": "juntar-quantidades-adicao",
@@ -31,22 +401,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "tirar-e-ver-quantos-sobram-subtracao",
-   "titulo": "Tirar e ver quantos sobram: subtração",
-   "anos": "1º ano",
-   "ano": 1,
-   "resumo": "Subtração com o significado de retirar: riscar figuras, pular para trás na reta e resolver problemas.",
-   "habilidades": [
-    "EF01MA08"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "dezenas-e-unidades-material-dourado",
@@ -62,7 +418,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "sequencias-e-padroes",
@@ -79,7 +436,43 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "onde-esta-localizacao-no-espaco",
+   "titulo": "Onde está? Localização no espaço",
+   "anos": "1º ano",
+   "ano": 1,
+   "resumo": "Em cima, embaixo, entre, à esquerda e à direita: descrever onde estão objetos e pessoas com pontos de referência.",
+   "habilidades": [
+    "EF01MA11",
+    "EF01MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "formas-espaciais-no-dia-a-dia",
+   "titulo": "Formas espaciais: esfera, cubo, cilindro e cone",
+   "anos": "1º e 2º ano",
+   "ano": 1,
+   "resumo": "Relacionar objetos do dia a dia a esferas, cubos, cilindros, cones e blocos retangulares, e descobrir quais rolam.",
+   "habilidades": [
+    "EF01MA13",
+    "EF02MA14",
+    "EF03MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": true
   },
   {
    "slug": "formas-no-dia-a-dia",
@@ -95,23 +488,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "na-feira-moedas-e-cedulas",
-   "titulo": "Na feira: moedas e cédulas",
-   "anos": "1º e 2º ano",
-   "ano": 1,
-   "resumo": "Sistema monetário em situações da feira: reconhecer valores, somar dinheiro, decidir se dá para comprar e calcular o troco.",
-   "habilidades": [
-    "EF01MA19",
-    "EF02MA20"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "rotina-e-horas-do-dia",
@@ -129,86 +507,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "numeros-ate-100-contar-e-comparar",
-   "titulo": "Números até 100: contar e comparar",
-   "anos": "1º ano",
-   "ano": 1,
-   "resumo": "Contar coleções de até 100 com grupos de dez, completar o quadro de 100 e comparar números de dois algarismos.",
-   "habilidades": [
-    "EF01MA04",
-    "EF01MA05"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "separar-e-organizar-por-atributos",
-   "titulo": "Separar e organizar: cor, forma e tamanho",
-   "anos": "1º ano",
-   "ano": 1,
-   "resumo": "Classificar objetos por um atributo, achar o diferente, ordenar por tamanho e descobrir a regra de um grupo.",
-   "habilidades": [
-    "EF01MA09"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "onde-esta-localizacao-no-espaco",
-   "titulo": "Onde está? Localização no espaço",
-   "anos": "1º ano",
-   "ano": 1,
-   "resumo": "Em cima, embaixo, entre, à esquerda e à direita: descrever onde estão objetos e pessoas com pontos de referência.",
-   "habilidades": [
-    "EF01MA11",
-    "EF01MA12"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "formas-espaciais-no-dia-a-dia",
-   "titulo": "Formas espaciais: esfera, cubo, cilindro e cone",
-   "anos": "1º e 2º ano",
-   "ano": 1,
-   "resumo": "Relacionar objetos do dia a dia a esferas, cubos, cilindros, cones e blocos retangulares, e descobrir quais rolam.",
-   "habilidades": [
-    "EF01MA13",
-    "EF02MA14",
-    "EF03MA13"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "comparar-medidas-alto-pesado-cabe-mais",
-   "titulo": "Mais alto, mais pesado, cabe mais",
-   "anos": "1º ano",
-   "ano": 1,
-   "resumo": "Comparar comprimentos, massas e capacidades: quem é mais alto, o que pesa mais, onde cabe mais, e medir com clipes e palmos.",
-   "habilidades": [
-    "EF01MA15"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "calendario-dias-semanas-e-meses",
@@ -225,7 +525,25 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "na-feira-moedas-e-cedulas",
+   "titulo": "Na feira: moedas e cédulas",
+   "anos": "1º e 2º ano",
+   "ano": 1,
+   "resumo": "Sistema monetário em situações da feira: reconhecer valores, somar dinheiro, decidir se dá para comprar e calcular o troco.",
+   "habilidades": [
+    "EF01MA19",
+    "EF02MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": true
   },
   {
    "slug": "certo-talvez-ou-impossivel",
@@ -241,7 +559,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "pesquisa-da-turma-tabelas-e-graficos",
@@ -259,23 +578,24 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
-   "slug": "grupos-iguais-multiplicacao",
-   "titulo": "Grupos iguais: começando a multiplicar",
-   "anos": "2º e 3º ano",
+   "slug": "dobro-metade-triplo-e-terca-parte",
+   "titulo": "Dobro, metade, triplo e terça parte",
+   "anos": "2º ano",
    "ano": 2,
-   "resumo": "Multiplicação como soma de grupos iguais e como disposição em linhas e colunas, com pratos, bolinhas e problemas.",
+   "resumo": "Dobrar e repartir em partes iguais com figuras, tabelas e problemas do dia a dia.",
    "habilidades": [
-    "EF02MA07",
-    "EF03MA07"
+    "EF02MA08"
    ],
    "versoes": [
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": false
   },
   {
    "slug": "centenas-material-dourado-ate-999",
@@ -292,7 +612,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "adicao-e-subtracao-ate-999",
@@ -309,22 +630,25 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
-   "slug": "dobro-metade-triplo-e-terca-parte",
-   "titulo": "Dobro, metade, triplo e terça parte",
-   "anos": "2º ano",
+   "slug": "grupos-iguais-multiplicacao",
+   "titulo": "Grupos iguais: começando a multiplicar",
+   "anos": "2º e 3º ano",
    "ano": 2,
-   "resumo": "Dobrar e repartir em partes iguais com figuras, tabelas e problemas do dia a dia.",
+   "resumo": "Multiplicação como soma de grupos iguais e como disposição em linhas e colunas, com pratos, bolinhas e problemas.",
    "habilidades": [
-    "EF02MA08"
+    "EF02MA07",
+    "EF03MA07"
    ],
    "versoes": [
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "sequencias-crescentes-e-decrescentes",
@@ -340,7 +664,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "trajetos-mapas-e-plantas",
@@ -356,7 +681,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "medir-comprimentos-metro-e-centimetro",
@@ -373,7 +699,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "massa-e-capacidade-quilo-e-litro",
@@ -389,7 +716,40 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "movimentacao-na-malha-e-mudancas-de-direcao",
+   "titulo": "Movimentação na malha e mudanças de direção",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Seguir e escrever caminhos na malha quadriculada com setas e com ordens de andar e virar, como um robô.",
+   "habilidades": [
+    "EF03MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "compra-venda-e-troca-com-dinheiro",
+   "titulo": "Compra, venda e troca com dinheiro",
+   "anos": "3º ano",
+   "ano": 3,
+   "resumo": "Contar dinheiro, decidir se dá para comprar, calcular o total e o troco e trocar cédulas de valores diferentes.",
+   "habilidades": [
+    "EF03MA24"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
   },
   {
    "slug": "numeros-ate-9999-milhar",
@@ -406,7 +766,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "calculo-mental-e-problemas-de-adicao-e-subtracao",
@@ -423,7 +784,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "divisao-repartir-em-partes-iguais",
@@ -439,7 +801,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "regularidades-e-igualdades",
@@ -455,22 +818,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "movimentacao-na-malha-e-mudancas-de-direcao",
-   "titulo": "Movimentação na malha e mudanças de direção",
-   "anos": "3º ano",
-   "ano": 3,
-   "resumo": "Seguir e escrever caminhos na malha quadriculada com setas e com ordens de andar e virar, como um robô.",
-   "habilidades": [
-    "EF03MA12"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "solidos-geometricos-e-planificacoes",
@@ -487,7 +836,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "poligonos-e-figuras-congruentes",
@@ -503,7 +853,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "medidas-e-areas-com-quadradinhos",
@@ -520,7 +871,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "horas-minutos-e-segundos",
@@ -536,22 +888,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "compra-venda-e-troca-com-dinheiro",
-   "titulo": "Compra, venda e troca com dinheiro",
-   "anos": "3º ano",
-   "ano": 3,
-   "resumo": "Contar dinheiro, decidir se dá para comprar, calcular o total e o troco e trocar cédulas de valores diferentes.",
-   "habilidades": [
-    "EF03MA24"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "chances-o-que-e-mais-provavel",
@@ -567,7 +905,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "tabelas-graficos-e-pesquisa-da-turma",
@@ -585,7 +924,104 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "combinacoes-quantas-possibilidades",
+   "titulo": "Combinações: quantas possibilidades?",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Contar todas as combinações possíveis com quadros, desenhos e listas organizadas.",
+   "habilidades": [
+    "EF04MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fracoes-metade-terco-quarto-quinto-decimo",
+   "titulo": "Frações: metade, terço, quarto, quinto e décimo",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Reconhecer as frações unitárias como partes iguais de um inteiro, comparar e localizar na reta numérica.",
+   "habilidades": [
+    "EF04MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "decimos-e-centesimos-com-dinheiro",
+   "titulo": "Décimos e centésimos com dinheiro",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Usar moedas e cédulas para entender décimos e centésimos, escrever e comparar números com vírgula.",
+   "habilidades": [
+    "EF04MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "localizacao-em-malhas-plantas-e-mapas",
+   "titulo": "Localização em malhas, plantas e mapas",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Localizar e descrever posições com letras e números, descrever deslocamentos e ler a planta de uma escola.",
+   "habilidades": [
+    "EF04MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "perimetro-massa-e-capacidade",
+   "titulo": "Perímetro, massa e capacidade",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Medir e calcular o contorno de figuras, estimar massas e capacidades e converter unidades em problemas do dia a dia.",
+   "habilidades": [
+    "EF04MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "formas-de-pagamento-troco-e-desconto",
+   "titulo": "Formas de pagamento, troco e desconto",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Calcular troco, comparar pagamento à vista e parcelado e calcular descontos em situações de compra.",
+   "habilidades": [
+    "EF04MA25"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
   },
   {
    "slug": "numeros-ate-99999-dezena-de-milhar",
@@ -601,7 +1037,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "adicao-e-subtracao-com-estimativa",
@@ -618,7 +1055,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "multiplicacao-estrategias-e-propriedades",
@@ -634,7 +1072,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "divisao-com-resto-e-divisor-de-dois-algarismos",
@@ -650,52 +1089,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "combinacoes-quantas-possibilidades",
-   "titulo": "Combinações: quantas possibilidades?",
-   "anos": "4º ano",
-   "ano": 4,
-   "resumo": "Contar todas as combinações possíveis com quadros, desenhos e listas organizadas.",
-   "habilidades": [
-    "EF04MA08"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "fracoes-metade-terco-quarto-quinto-decimo",
-   "titulo": "Frações: metade, terço, quarto, quinto e décimo",
-   "anos": "4º ano",
-   "ano": 4,
-   "resumo": "Reconhecer as frações unitárias como partes iguais de um inteiro, comparar e localizar na reta numérica.",
-   "habilidades": [
-    "EF04MA09"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "decimos-e-centesimos-com-dinheiro",
-   "titulo": "Décimos e centésimos com dinheiro",
-   "anos": "4º ano",
-   "ano": 4,
-   "resumo": "Usar moedas e cédulas para entender décimos e centésimos, escrever e comparar números com vírgula.",
-   "habilidades": [
-    "EF04MA10"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "multiplos-e-igualdades",
@@ -712,22 +1107,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "localizacao-em-malhas-plantas-e-mapas",
-   "titulo": "Localização em malhas, plantas e mapas",
-   "anos": "4º ano",
-   "ano": 4,
-   "resumo": "Localizar e descrever posições com letras e números, descrever deslocamentos e ler a planta de uma escola.",
-   "habilidades": [
-    "EF04MA16"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "angulos-retos-e-simetria",
@@ -743,22 +1124,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "perimetro-massa-e-capacidade",
-   "titulo": "Perímetro, massa e capacidade",
-   "anos": "4º ano",
-   "ano": 4,
-   "resumo": "Medir e calcular o contorno de figuras, estimar massas e capacidades e converter unidades em problemas do dia a dia.",
-   "habilidades": [
-    "EF04MA20"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "temperatura-graus-celsius-e-graficos",
@@ -775,22 +1142,56 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
-   "slug": "formas-de-pagamento-troco-e-desconto",
-   "titulo": "Formas de pagamento, troco e desconto",
-   "anos": "4º ano",
-   "ano": 4,
-   "resumo": "Calcular troco, comparar pagamento à vista e parcelado e calcular descontos em situações de compra.",
+   "slug": "adicao-e-subtracao-com-decimais",
+   "titulo": "Adição e subtração com números decimais",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Somar e subtrair números decimais com dinheiro, medidas e contas armadas com vírgula embaixo de vírgula.",
    "habilidades": [
-    "EF04MA25"
+    "EF05MA07"
    ],
    "versoes": [
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "multiplicacao-e-divisao-com-decimais",
+   "titulo": "Multiplicação e divisão com números decimais",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Multiplicar e dividir com números naturais e decimais, por 10 e por 100, em problemas de compra e de medida.",
+   "habilidades": [
+    "EF05MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "medidas-transformar-unidades",
+   "titulo": "Medidas: transformar unidades",
+   "anos": "5º ano",
+   "ano": 5,
+   "resumo": "Escolher a unidade, transformar metros, quilos, litros e horas e resolver problemas com comprimento, área, massa, tempo, temperatura e capacidade.",
+   "habilidades": [
+    "EF05MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
   },
   {
    "slug": "numeros-ate-centenas-de-milhar-e-decimais",
@@ -806,7 +1207,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "fracoes-equivalentes-e-maiores-que-o-inteiro",
@@ -822,7 +1224,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "porcentagem-e-comparacao-de-decimais-e-fracoes",
@@ -838,37 +1241,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "adicao-e-subtracao-com-decimais",
-   "titulo": "Adição e subtração com números decimais",
-   "anos": "5º ano",
-   "ano": 5,
-   "resumo": "Somar e subtrair números decimais com dinheiro, medidas e contas armadas com vírgula embaixo de vírgula.",
-   "habilidades": [
-    "EF05MA07"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "multiplicacao-e-divisao-com-decimais",
-   "titulo": "Multiplicação e divisão com números decimais",
-   "anos": "5º ano",
-   "ano": 5,
-   "resumo": "Multiplicar e dividir com números naturais e decimais, por 10 e por 100, em problemas de compra e de medida.",
-   "habilidades": [
-    "EF05MA08"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "contagem-e-probabilidade",
@@ -885,7 +1259,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "igualdades-e-numero-desconhecido",
@@ -901,7 +1276,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "proporcionalidade-e-partilha",
@@ -917,7 +1293,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "plano-cartesiano-coordenadas",
@@ -933,7 +1310,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "poligonos-ampliacao-e-reducao",
@@ -949,22 +1327,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "medidas-transformar-unidades",
-   "titulo": "Medidas: transformar unidades",
-   "anos": "5º ano",
-   "ano": 5,
-   "resumo": "Escolher a unidade, transformar metros, quilos, litros e horas e resolver problemas com comprimento, área, massa, tempo, temperatura e capacidade.",
-   "habilidades": [
-    "EF05MA19"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "perimetro-area-e-volume",
@@ -980,7 +1344,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "graficos-de-linha-e-pesquisa",
@@ -996,7 +1361,56 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "operacoes-com-decimais-e-potencias",
+   "titulo": "Operações com decimais e potências",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Somar, subtrair, multiplicar e dividir números decimais, calcular potências e usar estimativas para conferir.",
+   "habilidades": [
+    "EF06MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "porcentagem-descontos-e-acrescimos",
+   "titulo": "Porcentagem: descontos e acréscimos",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Calcular porcentagens com a malha de 100, com 10% como ponto de partida e em problemas de educação financeira.",
+   "habilidades": [
+    "EF06MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "prismas-e-piramides-faces-vertices-e-arestas",
+   "titulo": "Prismas e pirâmides: faces, vértices e arestas",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Contar faces, vértices e arestas de prismas e pirâmides e relacionar esses números com o polígono da base.",
+   "habilidades": [
+    "EF06MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
   },
   {
    "slug": "numeros-sistemas-de-numeracao-e-arredondamento",
@@ -1013,7 +1427,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "calculo-algoritmos-e-fluxogramas",
@@ -1030,7 +1445,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "multiplos-divisores-e-numeros-primos",
@@ -1046,7 +1462,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "fracoes-e-decimais-comparar-e-converter",
@@ -1062,7 +1479,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "fracao-de-quantidade-e-operacoes-com-fracoes",
@@ -1078,37 +1496,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "operacoes-com-decimais-e-potencias",
-   "titulo": "Operações com decimais e potências",
-   "anos": "6º ano",
-   "ano": 6,
-   "resumo": "Somar, subtrair, multiplicar e dividir números decimais, calcular potências e usar estimativas para conferir.",
-   "habilidades": [
-    "EF06MA11"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "porcentagem-descontos-e-acrescimos",
-   "titulo": "Porcentagem: descontos e acréscimos",
-   "anos": "6º ano",
-   "ano": 6,
-   "resumo": "Calcular porcentagens com a malha de 100, com 10% como ponto de partida e em problemas de educação financeira.",
-   "habilidades": [
-    "EF06MA13"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "igualdades-e-partilha-em-partes-desiguais",
@@ -1124,7 +1513,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "plano-cartesiano-e-poligonos",
@@ -1140,22 +1530,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "prismas-e-piramides-faces-vertices-e-arestas",
-   "titulo": "Prismas e pirâmides: faces, vértices e arestas",
-   "anos": "6º ano",
-   "ano": 6,
-   "resumo": "Contar faces, vértices e arestas de prismas e pirâmides e relacionar esses números com o polígono da base.",
-   "habilidades": [
-    "EF06MA17"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "triangulos-e-quadrilateros",
@@ -1171,7 +1547,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "retas-paralelas-e-perpendiculares-ampliacao-e-algoritmos",
@@ -1188,24 +1565,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "angulos-abertura-e-transferidor",
-   "titulo": "Ângulos: abertura e transferidor",
-   "anos": "6º ano",
-   "ano": 6,
-   "resumo": "Comparar aberturas, classificar ângulos e medir e desenhar ângulos com o transferidor, em contextos como o relógio e o ângulo de visão.",
-   "habilidades": [
-    "EF06MA25",
-    "EF06MA26",
-    "EF06MA27"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "plantas-baixas-areas-e-grandezas",
@@ -1222,7 +1583,26 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "angulos-abertura-e-transferidor",
+   "titulo": "Ângulos: abertura e transferidor",
+   "anos": "6º ano",
+   "ano": 6,
+   "resumo": "Comparar aberturas, classificar ângulos e medir e desenhar ângulos com o transferidor, em contextos como o relógio e o ângulo de visão.",
+   "habilidades": [
+    "EF06MA25",
+    "EF06MA26",
+    "EF06MA27"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": true
   },
   {
    "slug": "probabilidade-graficos-e-pesquisa",
@@ -1240,7 +1620,72 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "proporcionalidade-direta-e-inversa",
+   "titulo": "Proporcionalidade direta e inversa",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer grandezas diretamente e inversamente proporcionais, completar tabelas e escrever sentenças com letras.",
+   "habilidades": [
+    "EF07MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "equacoes-do-primeiro-grau",
+   "titulo": "Equações do 1º grau com a balança",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Resolver equações do tipo ax + b = c usando as propriedades da igualdade, com a balança como apoio, e escrever equações para problemas.",
+   "habilidades": [
+    "EF07MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "simetrias-translacao-rotacao-reflexao",
+   "titulo": "Simetrias: translação, rotação e reflexão",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Reconhecer e construir figuras por translação, rotação e reflexão em malhas e relacionar com bandeiras, arquitetura, azulejos e obras de arte.",
+   "habilidades": [
+    "EF07MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "retas-paralelas-e-transversal",
+   "titulo": "Retas paralelas cortadas por uma transversal",
+   "anos": "7º ano",
+   "ano": 7,
+   "resumo": "Verificar as relações entre os ângulos formados por duas paralelas e uma transversal e usar essas relações para descobrir medidas.",
+   "habilidades": [
+    "EF07MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
   },
   {
    "slug": "multiplos-divisores-e-porcentagem",
@@ -1256,7 +1701,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "numeros-inteiros-reta-e-temperatura",
@@ -1272,7 +1718,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "algoritmos-e-fluxogramas-de-problemas",
@@ -1289,7 +1736,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "fracoes-e-razoes",
@@ -1305,7 +1753,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "numeros-racionais-reta-e-operacoes",
@@ -1322,7 +1771,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "variavel-e-sequencias",
@@ -1340,37 +1790,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "proporcionalidade-direta-e-inversa",
-   "titulo": "Proporcionalidade direta e inversa",
-   "anos": "7º ano",
-   "ano": 7,
-   "resumo": "Reconhecer grandezas diretamente e inversamente proporcionais, completar tabelas e escrever sentenças com letras.",
-   "habilidades": [
-    "EF07MA17"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "equacoes-do-primeiro-grau",
-   "titulo": "Equações do 1º grau com a balança",
-   "anos": "7º ano",
-   "ano": 7,
-   "resumo": "Resolver equações do tipo ax + b = c usando as propriedades da igualdade, com a balança como apoio, e escrever equações para problemas.",
-   "habilidades": [
-    "EF07MA18"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "transformacoes-no-plano-cartesiano",
@@ -1386,22 +1807,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "simetrias-translacao-rotacao-reflexao",
-   "titulo": "Simetrias: translação, rotação e reflexão",
-   "anos": "7º ano",
-   "ano": 7,
-   "resumo": "Reconhecer e construir figuras por translação, rotação e reflexão em malhas e relacionar com bandeiras, arquitetura, azulejos e obras de arte.",
-   "habilidades": [
-    "EF07MA21"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "circunferencia-compasso-e-pi",
@@ -1417,22 +1824,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "retas-paralelas-e-transversal",
-   "titulo": "Retas paralelas cortadas por uma transversal",
-   "anos": "7º ano",
-   "ano": 7,
-   "resumo": "Verificar as relações entre os ângulos formados por duas paralelas e uma transversal e usar essas relações para descobrir medidas.",
-   "habilidades": [
-    "EF07MA23"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "triangulos-construcao-e-rigidez",
@@ -1449,7 +1842,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "poligonos-regulares-e-mosaicos",
@@ -1465,7 +1859,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "volume-e-areas",
@@ -1483,7 +1878,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "probabilidade-media-e-graficos-de-setores",
@@ -1501,7 +1897,72 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "expressoes-algebricas-e-valor-numerico",
+   "titulo": "Expressões algébricas e valor numérico",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Calcular o valor numérico de expressões algébricas trocando letras por números, usar fórmulas do dia a dia e comparar expressões equivalentes.",
+   "habilidades": [
+    "EF08MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "equacoes-do-segundo-grau-ax2-b",
+   "titulo": "Equações do 2º grau do tipo ax² = b",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver equações do tipo ax² = b com a ideia de área do quadrado e raiz quadrada, com e sem calculadora.",
+   "habilidades": [
+    "EF08MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "congruencia-de-triangulos-e-quadrilateros",
+   "titulo": "Congruência de triângulos e quadriláteros",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Reconhecer triângulos congruentes pelos casos LLL, LAL e ALA e usar essa ideia para demonstrar propriedades de paralelogramos, retângulos e losangos.",
+   "habilidades": [
+    "EF08MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "composicao-de-transformacoes",
+   "titulo": "Composição de transformações",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Construir figuras com uma transformação seguida de outra (translação, reflexão e rotação) e reconhecer composições em azulejos e padrões.",
+   "habilidades": [
+    "EF08MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
   },
   {
    "slug": "potencias-raizes-e-notacao-cientifica",
@@ -1517,7 +1978,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "contagem-e-probabilidade",
@@ -1533,7 +1995,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "porcentagem-e-dizimas-periodicas",
@@ -1549,22 +2012,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "expressoes-algebricas-e-valor-numerico",
-   "titulo": "Expressões algébricas e valor numérico",
-   "anos": "8º ano",
-   "ano": 8,
-   "resumo": "Calcular o valor numérico de expressões algébricas trocando letras por números, usar fórmulas do dia a dia e comparar expressões equivalentes.",
-   "habilidades": [
-    "EF08MA06"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "equacoes-com-duas-incognitas-e-sistemas",
@@ -1580,22 +2029,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "equacoes-do-segundo-grau-ax2-b",
-   "titulo": "Equações do 2º grau do tipo ax² = b",
-   "anos": "8º ano",
-   "ano": 8,
-   "resumo": "Resolver equações do tipo ax² = b com a ideia de área do quadrado e raiz quadrada, com e sem calculadora.",
-   "habilidades": [
-    "EF08MA09"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "sequencias-e-fluxogramas",
@@ -1611,7 +2046,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "grandezas-proporcionais-e-nao-proporcionais",
@@ -1627,22 +2063,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "congruencia-de-triangulos-e-quadrilateros",
-   "titulo": "Congruência de triângulos e quadriláteros",
-   "anos": "8º ano",
-   "ano": 8,
-   "resumo": "Reconhecer triângulos congruentes pelos casos LLL, LAL e ALA e usar essa ideia para demonstrar propriedades de paralelogramos, retângulos e losangos.",
-   "habilidades": [
-    "EF08MA14"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "mediatriz-bissetriz-e-hexagono-regular",
@@ -1659,22 +2081,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "composicao-de-transformacoes",
-   "titulo": "Composição de transformações",
-   "anos": "8º ano",
-   "ano": 8,
-   "resumo": "Construir figuras com uma transformação seguida de outra (translação, reflexão e rotação) e reconhecer composições em azulejos e padrões.",
-   "habilidades": [
-    "EF08MA18"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "areas-circulo-e-capacidade",
@@ -1691,7 +2099,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "pesquisa-amostral-graficos-e-medidas",
@@ -1710,7 +2119,56 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
+  },
+  {
+   "slug": "porcentagens-sucessivas-e-educacao-financeira",
+   "titulo": "Porcentagens sucessivas e educação financeira",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Aplicar porcentagens em sequência, calcular taxas de aumento e desconto e entender juros sobre juros com calculadora e planilha.",
+   "habilidades": [
+    "EF09MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "funcoes-maquina-tabela-e-grafico",
+   "titulo": "Funções: máquina, tabela e gráfico",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Entender a função como uma relação em que cada valor de entrada tem um único valor de saída e representar por tabela, lei e gráfico.",
+   "habilidades": [
+    "EF09MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fatoracao-produtos-notaveis-e-segundo-grau",
+   "titulo": "Fatoração, produtos notáveis e equações do 2º grau",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Entender os produtos notáveis com áreas, fatorar expressões e usar a fatoração para resolver equações do 2º grau.",
+   "habilidades": [
+    "EF09MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
   },
   {
    "slug": "numeros-irracionais-e-reais",
@@ -1727,7 +2185,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "numeros-reais-notacao-cientifica-e-unidades",
@@ -1743,37 +2202,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "porcentagens-sucessivas-e-educacao-financeira",
-   "titulo": "Porcentagens sucessivas e educação financeira",
-   "anos": "9º ano",
-   "ano": 9,
-   "resumo": "Aplicar porcentagens em sequência, calcular taxas de aumento e desconto e entender juros sobre juros com calculadora e planilha.",
-   "habilidades": [
-    "EF09MA05"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
-  },
-  {
-   "slug": "funcoes-maquina-tabela-e-grafico",
-   "titulo": "Funções: máquina, tabela e gráfico",
-   "anos": "9º ano",
-   "ano": 9,
-   "resumo": "Entender a função como uma relação em que cada valor de entrada tem um único valor de saída e representar por tabela, lei e gráfico.",
-   "habilidades": [
-    "EF09MA06"
-   ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "razoes-escalas-e-partes-proporcionais",
@@ -1789,22 +2219,8 @@
     "A",
     "B",
     "C"
-   ]
-  },
-  {
-   "slug": "fatoracao-produtos-notaveis-e-segundo-grau",
-   "titulo": "Fatoração, produtos notáveis e equações do 2º grau",
-   "anos": "9º ano",
-   "ano": 9,
-   "resumo": "Entender os produtos notáveis com áreas, fatorar expressões e usar a fatoração para resolver equações do 2º grau.",
-   "habilidades": [
-    "EF09MA09"
    ],
-   "versoes": [
-    "A",
-    "B",
-    "C"
-   ]
+   "revisao": true
   },
   {
    "slug": "angulos-na-circunferencia-e-paralelas",
@@ -1820,7 +2236,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "semelhanca-e-teorema-de-pitagoras",
@@ -1837,7 +2254,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "poligono-regular-ponto-medio-e-distancia",
@@ -1853,7 +2271,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "vistas-ortogonais-e-volumes",
@@ -1869,7 +2288,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "probabilidade-graficos-e-pesquisa-amostral",
@@ -1887,7 +2307,8 @@
     "A",
     "B",
     "C"
-   ]
+   ],
+   "revisao": true
   },
   {
    "slug": "kit-de-apoio-visual",
@@ -1902,7 +2323,8 @@
    "versoes": [
     "Folha 1",
     "Folha 2"
-   ]
+   ],
+   "revisao": false
   }
  ],
  "mapa": [
@@ -1912,6 +2334,7 @@
    "unidade": "Números",
    "texto": "Usar números naturais para indicar quantidade ou ordem em situações do dia a dia.",
    "fichas": [
+    "numeros-que-contam-e-numeros-que-ordenam",
     "contar-e-mostrar-quantidades"
    ]
   },
@@ -1921,6 +2344,7 @@
    "unidade": "Números",
    "texto": "Contar de forma exata ou aproximada, usando pareamento e agrupamentos.",
    "fichas": [
+    "contar-com-pares-e-grupos",
     "contar-e-mostrar-quantidades"
    ]
   },
@@ -1930,6 +2354,7 @@
    "unidade": "Números",
    "texto": "Estimar e comparar quantidades de dois conjuntos (até cerca de 20 elementos).",
    "fichas": [
+    "comparar-quantidades-onde-tem-mais",
     "contar-e-mostrar-quantidades"
    ]
   },
@@ -1939,6 +2364,7 @@
    "unidade": "Números",
    "texto": "Contar coleções de até 100 objetos e registrar o resultado com palavras e números.",
    "fichas": [
+    "contar-ate-100-e-escrever-os-numeros",
     "numeros-ate-100-contar-e-comparar"
    ]
   },
@@ -1948,6 +2374,7 @@
    "unidade": "Números",
    "texto": "Comparar números naturais de até duas ordens, com e sem a reta numérica.",
    "fichas": [
+    "comparar-numeros-na-reta-numerica",
     "numeros-ate-100-contar-e-comparar"
    ]
   },
@@ -1957,6 +2384,7 @@
    "unidade": "Números",
    "texto": "Construir fatos básicos da adição e usá-los no cálculo.",
    "fichas": [
+    "fatos-basicos-da-adicao",
     "juntar-quantidades-adicao"
    ]
   },
@@ -1966,6 +2394,7 @@
    "unidade": "Números",
    "texto": "Compor e decompor números de até duas ordens, com material manipulável.",
    "fichas": [
+    "compor-e-decompor-dezenas-e-unidades",
     "dezenas-e-unidades-material-dourado"
    ]
   },
@@ -1975,8 +2404,8 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de adição e subtração (juntar, acrescentar, separar, retirar) com imagens ou material.",
    "fichas": [
-    "juntar-quantidades-adicao",
-    "tirar-e-ver-quantos-sobram-subtracao"
+    "tirar-e-ver-quantos-sobram-subtracao",
+    "juntar-quantidades-adicao"
    ]
   },
   {
@@ -1994,6 +2423,7 @@
    "unidade": "Álgebra",
    "texto": "Descobrir os elementos que faltam em sequências de números, objetos ou figuras.",
    "fichas": [
+    "o-que-falta-na-sequencia",
     "sequencias-e-padroes"
    ]
   },
@@ -2003,6 +2433,7 @@
    "unidade": "Geometria",
    "texto": "Descrever a localização de pessoas e objetos no espaço (direita, esquerda, em frente, atrás).",
    "fichas": [
+    "direita-esquerda-frente-e-atras",
     "onde-esta-localizacao-no-espaco"
    ]
   },
@@ -2012,6 +2443,7 @@
    "unidade": "Geometria",
    "texto": "Descrever a localização usando pontos de referência e termos como entre, acima, abaixo.",
    "fichas": [
+    "entre-acima-e-abaixo",
     "onde-esta-localizacao-no-espaco"
    ]
   },
@@ -2021,6 +2453,7 @@
    "unidade": "Geometria",
    "texto": "Relacionar figuras espaciais (cone, cilindro, esfera, bloco retangular) a objetos do mundo físico.",
    "fichas": [
+    "solidos-e-objetos-do-dia-a-dia",
     "formas-espaciais-no-dia-a-dia"
    ]
   },
@@ -2030,6 +2463,7 @@
    "unidade": "Geometria",
    "texto": "Identificar e nomear figuras planas (círculo, quadrado, retângulo, triângulo).",
    "fichas": [
+    "circulo-quadrado-retangulo-e-triangulo",
     "formas-no-dia-a-dia"
    ]
   },
@@ -2048,6 +2482,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Relatar a sequência de acontecimentos de um dia, usando os horários quando possível.",
    "fichas": [
+    "o-que-acontece-primeiro-no-dia",
     "rotina-e-horas-do-dia"
    ]
   },
@@ -2057,6 +2492,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer períodos do dia, dias da semana e meses do ano, com o calendário.",
    "fichas": [
+    "periodos-do-dia-semana-e-meses",
     "rotina-e-horas-do-dia",
     "calendario-dias-semanas-e-meses"
    ]
@@ -2067,6 +2503,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Escrever uma data (dia, mês e ano) e indicar o dia da semana.",
    "fichas": [
+    "escrever-a-data-e-o-dia-da-semana",
     "calendario-dias-semanas-e-meses"
    ]
   },
@@ -2076,6 +2513,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer moedas e cédulas do sistema monetário brasileiro em situações simples.",
    "fichas": [
+    "moedas-e-cedulas-do-real",
     "na-feira-moedas-e-cedulas"
    ]
   },
@@ -2085,6 +2523,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Classificar eventos como \"acontecerá com certeza\", \"talvez aconteça\" e \"é impossível acontecer\".",
    "fichas": [
+    "vai-acontecer-certo-talvez-ou-impossivel",
     "certo-talvez-ou-impossivel"
    ]
   },
@@ -2094,6 +2533,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Ler dados expressos em tabelas e em gráficos de colunas simples.",
    "fichas": [
+    "ler-tabelas-e-graficos-de-colunas",
     "pesquisa-da-turma-tabelas-e-graficos"
    ]
   },
@@ -2103,6 +2543,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Realizar pesquisa com até duas variáveis categóricas e organizar os dados em representações pessoais.",
    "fichas": [
+    "fazer-uma-pesquisa-com-a-turma",
     "pesquisa-da-turma-tabelas-e-graficos"
    ]
   },
