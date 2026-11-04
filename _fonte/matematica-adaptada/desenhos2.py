@@ -202,17 +202,17 @@ def calendario(ano, mes, destaques=(), vazios=(), cel='11mm'):
 
 # ---------- gráficos ----------
 
-def grafico_barras(categorias, valores=None, maximo=6, icones=None, rotulo=None, celula=30, vazio=False):
+def grafico_barras(categorias, valores=None, maximo=6, icones=None, rotulo=None, celula=30, vazio=False, gap=20):
     """Gráfico de colunas em malha. Com vazio=True, só a malha para o estudante pintar."""
     n = len(categorias)
     m, base = 30, maximo * celula + 10
-    w = n * (celula + 20) + m
+    w = n * (celula + gap) + m
     inner = ''
     for j in range(maximo + 1):
         y = base - j * celula
         inner += f'<path d="M{m} {y} H{w}" stroke="#c9c9c4" stroke-width="1"/><text x="{m - 8}" y="{y + 4}" text-anchor="end" font-family="Lexend, sans-serif" font-size="12">{j}</text>'
     for i, cat in enumerate(categorias):
-        x = m + 10 + i * (celula + 20)
+        x = m + gap / 2 + i * (celula + gap)
         v = 0 if vazio or valores is None else valores[i]
         for k in range(maximo):
             fill = CLARO['amarelo'] if k < v else '#fff'
@@ -399,3 +399,42 @@ def objeto_medida(tipo, tam=70):
         'tijolo': (f'<path d="M8 36 L48 36 L48 62 L8 62z" fill="{CLARO["rosa"]}" {E}/><path d="M8 36 L22 24 L62 24 L48 36z" fill="#fff" {E}/><path d="M48 36 L62 24 L62 50 L48 62z" fill="{CLARO["rosa"]}" {E}/>', 'tijolo'),
     }[tipo]
     return svg(tam, tam * 80 / 72, f'<g transform="scale({tam / 72:g})">{d[0]}</g>', 'objeto', d[1])
+
+
+def planificacao(tipo, cel=34, rotulo=None):
+    """Planificações simples: cubo (cruz), bloco, piramide (base quadrada), prisma triangular, cilindro, cone."""
+    est = f'fill="#fff" stroke="{TRACO}" stroke-width="2"'
+    q = lambda x, y, w=cel, h=cel, f='#fff': f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{f}" stroke="{TRACO}" stroke-width="2"/>'
+    if tipo == 'cubo':
+        inner = ''.join(q(cel * c, cel * l, f=CLARO['amarelo'] if (c, l) == (1, 1) else '#fff') for c, l in ((1, 0), (0, 1), (1, 1), (2, 1), (3, 1), (1, 2)))
+        w, h = 4 * cel, 3 * cel
+    elif tipo == 'bloco':
+        a, b, c_ = cel * 1.6, cel, cel * .7
+        inner = (q(c_, 0, a, c_) + q(0, c_, c_, b) + q(c_, c_, a, b, CLARO['amarelo']) + q(c_ + a, c_, c_, b) + q(2 * c_ + a, c_, a, b) + q(c_, c_ + b, a, c_))
+        w, h = 2 * c_ + 2 * a, 2 * c_ + b
+    elif tipo == 'piramide':
+        b = cel * 1.4
+        x0, y0 = b * .9, b * .9
+        inner = (q(x0, y0, b, b, CLARO['amarelo']) +
+                 f'<polygon points="{x0},{y0} {x0 + b},{y0} {x0 + b / 2},{y0 - b * .85}" {est}/>'
+                 f'<polygon points="{x0},{y0 + b} {x0 + b},{y0 + b} {x0 + b / 2},{y0 + b + b * .85}" {est}/>'
+                 f'<polygon points="{x0},{y0} {x0},{y0 + b} {x0 - b * .85},{y0 + b / 2}" {est}/>'
+                 f'<polygon points="{x0 + b},{y0} {x0 + b},{y0 + b} {x0 + b + b * .85},{y0 + b / 2}" {est}/>')
+        w, h = x0 * 2 + b, y0 * 2 + b
+    elif tipo == 'prisma':
+        a = cel * 1.2
+        inner = (q(0, a * .87, a, a * 1.4) + q(a, a * .87, a, a * 1.4, CLARO['amarelo']) + q(2 * a, a * .87, a, a * 1.4) +
+                 f'<polygon points="{a},{a * .87} {2 * a},{a * .87} {1.5 * a},0" {est}/>'
+                 f'<polygon points="{a},{a * .87 + a * 1.4} {2 * a},{a * .87 + a * 1.4} {1.5 * a},{a * 1.74 + a * 1.4}" {est}/>')
+        w, h = 3 * a, a * 1.74 + a * 1.4
+    elif tipo == 'cilindro':
+        r = cel * .55
+        inner = (q(0, 2 * r, cel * 3.4, cel * 1.6, CLARO['amarelo']) + f'<circle cx="{cel * 1.7}" cy="{r}" r="{r}" {est}/>'
+                 f'<circle cx="{cel * 1.7}" cy="{2 * r + cel * 1.6 + r}" r="{r}" {est}/>')
+        w, h = cel * 3.4, 4 * r + cel * 1.6
+    elif tipo == 'cone':
+        R = cel * 2.4
+        inner = (f'<path d="M{R} 0 L{R + R * math.sin(1.2):.1f} {R * math.cos(1.2):.1f} A{R} {R} 0 0 1 {R - R * math.sin(1.2):.1f} {R * math.cos(1.2):.1f}z" fill="{CLARO["amarelo"]}" stroke="{TRACO}" stroke-width="2"/>'
+                 f'<circle cx="{R}" cy="{R + cel * .7}" r="{cel * .7}" {est}/>')
+        w, h = 2 * R, R + cel * 1.4
+    return svg(w + 4, h + 4, f'<g transform="translate(2 2)">{inner}</g>', 'planificacao', rotulo or f'planificação do {tipo}')
