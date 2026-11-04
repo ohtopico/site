@@ -334,8 +334,8 @@ def balanca_eq(esq, dir_, rotulo=None):
              f'<path d="M30 30 v18 M250 30 v18" stroke="{TRACO}" stroke-width="2"/>'
              f'<path d="M-10 48 H70 l-8 12 H-2z" transform="translate(10 0)" fill="#fff" {E}/>'
              f'<path d="M210 48 H290 l-8 12 H218z" transform="translate(-10 0)" fill="#fff" {E}/>'
-             f'<text x="40" y="40" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="17">{esq}</text>'
-             f'<text x="240" y="40" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="17">{dir_}</text>')
+             f'<text x="40" y="84" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="18">{esq}</text>'
+             f'<text x="240" y="84" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="18">{dir_}</text>')
     return svg(280, 120, inner, 'balanca', rotulo or f'balança em equilíbrio: {esq} de um lado e {dir_} do outro')
 
 

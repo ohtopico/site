@@ -115,7 +115,7 @@ h1 { font: 800 clamp(30px, 6vw, 42px)/1.1 var(--display); margin: 0 0 12px; }
 .linhas { display: grid; gap: 7mm; padding-top: 4mm; width: 100%; }
 .linhas span { border-bottom: 1.5px solid #111; display: block; }
 .seq-num { display: flex; gap: 2.5mm; margin: 0 0 3mm; }
-.seq-num .cel { align-items: center; border: 2px solid #111; border-radius: 2mm; display: inline-flex; font: 600 17pt var(--body); height: 13mm; justify-content: center; width: 17mm; }
+.seq-num .cel { align-items: center; border: 2px solid #111; border-radius: 2mm; display: inline-flex; font: 600 17pt var(--body); height: 13mm; justify-content: center; min-width: 17mm; padding: 0 2mm; box-sizing: border-box; }
 .seq-num .cel.vazia { border-style: dashed; }
 .regra { align-items: flex-end; display: flex; font-size: 12pt; gap: 2mm; margin: -1mm 0 3mm; }
 .digital { border: 2px solid #111; border-radius: 2mm; font: 600 15pt var(--body); letter-spacing: .05em; margin: 0; padding: 1mm 3mm; }
@@ -206,3 +206,4 @@ h1 { font: 800 clamp(30px, 6vw, 42px)/1.1 var(--display); margin: 0 0 12px; }
 .caixa-vazia { border: 2px dashed #111; border-radius: 3mm; display: inline-block; height: 26mm; width: 60mm; }
 .linha-medir { align-items: center; display: flex; font-size: 13pt; gap: 4mm; margin: 0 0 4mm; }
 .pares { display: grid; gap: 3mm; justify-items: start; }
+.conta-menor .conta { font-size: 13pt; }
