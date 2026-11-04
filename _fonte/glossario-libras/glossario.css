@@ -1,0 +1,56 @@
+/* Glossário em Libras: cartões com termo, explicação, desenho e QR code do sinal.
+   Usa as cores e fontes de /matematica-adaptada/assets/fichas.css. Na impressão, folha branca, 2 cartões por linha. */
+.aviso { border-left: 5px solid var(--accent); }
+.filtros { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 8px; }
+.busca { align-items: center; display: inline-flex; font-size: 15px; gap: 8px; margin-left: auto; }
+.busca input { border: 1.5px solid var(--ink); border-radius: 99px; font: 400 15px var(--body); min-height: 38px; padding: 6px 14px; width: 180px; }
+.escolhidas { background: var(--mark-soft); border-radius: 14px; font-size: 15px !important; padding: 10px 14px; }
+.glossario { margin: 10px auto 0; max-width: 1100px; padding: 0 18px; }
+.grupo-titulo { font: 800 24px/1.2 var(--display); margin: 30px 0 12px; }
+.cartoes { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.cartao { background: #fff; border: 1.5px solid var(--ink); border-radius: 16px; display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; scroll-margin-top: 20px; }
+.cartao:target { box-shadow: 0 0 0 4px var(--mark); }
+.cartao header { align-items: baseline; display: flex; flex-wrap: wrap; gap: 6px 10px; justify-content: space-between; }
+.cartao h3 { font: 800 24px/1.1 var(--display); margin: 0; }
+.selos { display: flex; gap: 4px; }
+.selo { border: 1.2px solid var(--ink); border-radius: 99px; font-size: 11px; padding: 0 8px; }
+.selo-mat { background: var(--mark-soft); }
+.selo-comp { background: #e3f0ff; }
+.desenho-termo { display: flex; justify-content: center; }
+.desenho-termo svg { height: auto; max-width: 100%; width: 150px; }
+.explicacao { font-size: 17px; line-height: 1.5; margin: 0; }
+.exemplo { color: var(--ink-2); font-size: 15px; line-height: 1.5; margin: 0; }
+.libras { align-items: center; border-top: 1.5px dashed var(--line); display: flex; gap: 12px; margin-top: auto; padding-top: 10px; }
+.libras p { font-size: 13.5px; line-height: 1.45; margin: 0; }
+.qr-link { flex: 0 0 auto; line-height: 0; }
+.qr { height: 96px; width: 96px; }
+.sem-sinal p { color: var(--ink-2); }
+.cartao[hidden], .grupo[hidden] { display: none; }
+
+@media (max-width: 560px) {
+    .busca { margin-left: 0; width: 100%; }
+    .busca input { flex: 1; width: auto; }
+    .cartoes { grid-template-columns: 1fr; }
+}
+
+@page { size: A4; margin: 10mm; }
+@media print {
+    body { background: #fff; }
+    body > *:not(main), main > .texto, .pular { display: none !important; }
+    .glossario { max-width: none; padding: 0; }
+    .grupo-titulo { font-size: 15pt; margin: 0 0 3mm; }
+    .grupo + .grupo { margin-top: 5mm; }
+    .grupo-titulo { break-after: avoid; }
+    .cartoes { display: grid; gap: 4mm; grid-template-columns: 1fr 1fr; }
+    .cartao { border-radius: 4mm; break-inside: avoid; gap: 1.5mm; height: 86mm; overflow: hidden; padding: 3.5mm 5mm; }
+    .cartao h3 { font-size: 18pt; }
+    .selo { font-size: 7.5pt; }
+    .desenho-termo svg { width: 30mm; }
+    .explicacao { font-size: 11.5pt; line-height: 1.35; }
+    .exemplo { font-size: 9.5pt; line-height: 1.35; }
+    .libras { gap: 3mm; padding-top: 2mm; }
+    .libras p { font-size: 8.5pt; line-height: 1.35; }
+    .qr { height: 24mm; width: 24mm; }
+    .cartao:target { box-shadow: none; }
+    a { color: #111; text-decoration: none; }
+}
