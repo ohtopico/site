@@ -1336,6 +1336,99 @@ def pagina_para_escolas(cfg):
     return head + '\n' + moldura('para-escolas.html', 'ohtopico.com.br/para-escolas', '/', conteudo, 'Pronto', 'escolas')
 
 
+HORA_CODIGO_IMAGEM = 'hora-do-codigo/og-hora-do-codigo.jpg'
+
+
+def pagina_hora_codigo(cfg):
+    site = cfg['site']
+    url = f'{site}/hora-do-codigo/'
+    corpo = (AQUI / 'conteudo' / 'hora-do-codigo.html').read_text(encoding='utf-8').strip()
+    titulo = 'Hora do Código 2026: roteiros do 6º ao 9º ano'
+    descricao = ('Roteiros de 1 hora para a Hora do Código 2026, de 7 a 13 de dezembro: um por ano do 6º ao 9º, '
+                 'com jogos gratuitos no navegador, folha para imprimir e habilidades da BNCC Computação.')
+    imagem = f'{site}/{HORA_CODIGO_IMAGEM}'
+    alt = ('Card com o título Hora do Código 2026: roteiros de 1 hora do 6º ao 9º ano com jogos gratuitos '
+           'e folha para imprimir, com o jogo Robô Coletor ao lado.')
+    roteiros = [('6º ano', 'Programar o robô'), ('7º ano', 'Caça aos bugs em Python'),
+                ('8º ano', 'Filas, pilhas e recursão'), ('9º ano', 'Programar um chatbot')]
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': imagem, 'width': 1200, 'height': 630},
+                'author': {'@id': AUTORA['@id']},
+            },
+            {
+                '@type': 'Event',
+                '@id': url + '#semana',
+                'name': 'Hora do Código 2026 na escola',
+                'startDate': '2026-12-07',
+                'endDate': '2026-12-13',
+                'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+                'eventStatus': 'https://schema.org/EventScheduled',
+                'isAccessibleForFree': True,
+                'description': descricao,
+                'image': imagem,
+                'location': {'@type': 'Place', 'name': 'Escolas participantes',
+                             'address': {'@type': 'PostalAddress', 'addressCountry': 'BR'}},
+                'organizer': {'@id': AUTORA['@id']},
+                'url': url,
+            },
+            {
+                '@type': 'ItemList',
+                '@id': url + '#roteiros',
+                'name': 'Roteiros da Hora do Código 2026',
+                'itemListElement': [{'@type': 'ListItem', 'position': i + 1,
+                                     'item': {'@type': 'LearningResource', 'name': f'Hora do Código, {ano}: {nome}',
+                                              'learningResourceType': 'Roteiro de aula', 'timeRequired': 'PT1H',
+                                              'educationalLevel': f'Ensino Fundamental, {ano}',
+                                              'isAccessibleForFree': True, 'inLanguage': 'pt-BR',
+                                              'license': 'https://creativecommons.org/licenses/by-nc-sa/4.0/'}}
+                                    for i, (ano, nome) in enumerate(roteiros)],
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Hora do Código 2026', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Hora do Código 2026</li></ol></nav>
+    <p class="rotulo">De 7 a 13 de dezembro de 2026</p>
+    <h1>Hora do Código 2026: <span class="marca">roteiros do 6º ao 9º ano</span></h1>
+    <p class="linha-fina">Uma hora de programação para cada ano dos anos finais, com jogos gratuitos do site, uma folha para imprimir e a habilidade da BNCC Computação de cada etapa.</p>
+    <p><a class="btn98" href="/hora-do-codigo/folha.html">Abrir a folha para imprimir</a> <a class="btn98 escuro" href="/hora-do-codigo/hora-do-codigo-2026-folha.pdf" download>Baixar a folha em PDF</a></p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="conversar">
+        <h2 id="conversar">Hora do Código na escola toda</h2>
+        <p>Para organizar a semana com várias turmas ou preparar os professores antes de dezembro, conte quantas turmas e professores são e o que a escola já tem de computadores.</p>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Hora%20do%20C%C3%B3digo%20na%20escola." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Hora%20do%20C%C3%B3digo%20na%20escola">Enviar e-mail</a>
+        <p>Para receber os materiais novos, siga o <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" target="_blank" rel="noopener">canal no WhatsApp</a>.</p>
+    </section>
+</article>'''
+    head = cabeca('Hora do Código 2026: roteiros do 6º ao 9º ano | Júlia Quoos', descricao, url, imagem, alt, 'website',
+                  '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
+    return head + '\n' + moldura('hora-do-codigo.html', 'ohtopico.com.br/hora-do-codigo', '/', conteudo, 'Pronto', 'hora-do-codigo')
+
+
 MUNDO_PROF_IMAGEM = 'mundo/og-mundo.jpg'
 
 
@@ -2005,7 +2098,7 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
         ultimo = max(p['data'] for p in publicados if p['secao'] == sec)
         linhas.append(f'  <url><loc>{cfg["site"]}/blog/categoria/{slug_secao(sec)}/</loc><lastmod>{min(ultimo, hoje)}</lastmod></url>')
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'hora-do-codigo', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -2113,6 +2206,7 @@ def main():
                           ('formacao-continuada', pagina_formacao(cfg, dims)),
                           ('formacao-tecnologias-educacionais', pagina_tecnologias(cfg)),
                           ('para-escolas', pagina_para_escolas(cfg)),
+                          ('hora-do-codigo', pagina_hora_codigo(cfg)),
                           ('mundo/professores', pagina_mundo_professores(cfg)),
                           ('prompts-para-professores', pagina_prompts(cfg)),
                           ('computacao-na-escola', pagina_computacao(cfg)),
