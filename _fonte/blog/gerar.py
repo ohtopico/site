@@ -4,7 +4,8 @@ Uso:
     python gerar.py --site CAMINHO_DO_SITE --imagens PASTA [PASTA ...] [--slides PASTA] [--ate AAAA-MM-DD] [--sitemap]
 
 - Cada post de posts.json vira site/blog/<slug>/index.html, com o texto de conteudo/<slug>.html.
-- site/blog/index.html lista os posts publicados (data <= --ate; sem --ate, todos).
+- site/blog/index.html mostra os 5 posts publicados mais novos (data <= --ate; sem --ate, todos);
+  os anteriores ficam em site/blog/pagina/N/ e cada categoria em site/blog/categoria/<slug>/ (5 por página).
 - site/mentoria/index.html sai com noindex enquanto tiver trechos [pendentes].
 - site/formacao-continuada/index.html é a página de serviço da formação continuada em IA.
 - site/prompts-para-professores/index.html é a biblioteca de prompts no visual da série pra Prof (prompts.json +
@@ -170,7 +171,7 @@ def laterais(atual):
         if p['secao'] not in secoes:
             secoes.append(p['secao'])
     recentes = ''.join(f'<li><a href="/blog/{p["slug"]}/">{esc(p["titulo"])}</a></li>' for p in reversed(posts[-5:]))
-    temas = ''.join(f'<li><a href="/blog/#{slug_secao(s)}">{esc(s)}</a></li>' for s in secoes)
+    temas = ''.join(f'<li><a href="/blog/categoria/{slug_secao(s)}/">{esc(s)}</a></li>' for s in secoes)
     navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Formação e mentoria', '/formacao-e-mentoria/', 'ofertas'),
                ('▣', 'Para escolas e redes', '/para-escolas/', 'escolas'),
                ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
@@ -436,70 +437,147 @@ def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
     return head + '\n' + moldura(post['arquivo_janela'], f'ohtopico.com.br/blog/{post["slug"]}', '/blog/', conteudo, status, 'blog')
 
 
-def pagina_indice(cfg, publicados):
-    site = cfg['site']
-    url = f'{site}/blog/'
-    descricao = 'Blog de Júlia Quoos sobre formação de professores em IA, prompts para planejar aulas, ética e LGPD na escola e Computação na BNCC.'
-    ld = json_ld({
-        '@context': 'https://schema.org',
-        '@type': 'Blog',
-        '@id': url + '#blog',
-        'name': 'Blog de Júlia Roberta Quoos Alves',
-        'description': descricao,
-        'url': url,
-        'inLanguage': 'pt-BR',
-        'author': AUTORA,
-        'publisher': {'@id': AUTORA['@id']},
-        'blogPost': [{
-            '@type': 'BlogPosting',
-            '@id': f'{site}/blog/{p["slug"]}/#post',
-            'headline': p['titulo'],
-            'url': f'{site}/blog/{p["slug"]}/',
-            'datePublished': p['data'],
-            'author': {'@id': AUTORA['@id']},
-        } for p in publicados],
-    })
-    def cartao(p):
-        miniatura = Path(p['imagem']).stem + '-mini.webp'
-        return f'''            <li class="cartao">
-                <a href="/blog/{p["slug"]}/">
-                    <img src="/blog/img/{miniatura}" alt="Infográfico do post: {esc(p["legenda"])}" width="{MINI_LARGURA}" height="{round(MINI_LARGURA * 1.25)}" loading="lazy" decoding="async">
-                    <h3>{esc(p["titulo"])}</h3>
-                </a>
-            </li>'''
+POR_PAGINA = 5
+
+
+def secoes_do_blog(publicados):
+    """Categorias na ordem do post mais recente de cada uma."""
     secoes = []
     for p in reversed(publicados):
         if p['secao'] not in secoes:
             secoes.append(p['secao'])
-    blocos = []
-    for sec in secoes:
-        lista = '\n'.join(cartao(p) for p in reversed(publicados) if p['secao'] == sec)
-        blocos.append(f'''    <section class="tema" id="{slug_secao(sec)}" aria-labelledby="t-{slug_secao(sec)}">
-        <h2 class="tema-titulo" id="t-{slug_secao(sec)}">{esc(sec)}</h2>
-        <ul class="grade-posts">
-{lista}
-        </ul>
-    </section>''')
-    conteudo = f'''<div class="texto capa">
-    <p class="rotulo">Blog</p>
-    <h1>Formação de professores em <span class="marca">IA</span>, na prática</h1>
-    <p class="linha-fina">Textos curtos de Júlia Roberta Quoos Alves para professores, coordenadores e redes de ensino: como começar a usar inteligência artificial com segurança, prompts prontos e Computação na BNCC.</p>
-{seletor('Categorias do blog', 'todos', 'Todos os posts', [(slug_secao(s), s) for s in secoes])}
-    <div id="todos">
-{chr(10).join(blocos)}
-    </div>
+    return secoes
+
+
+def url_lista(base, n):
+    return base if n == 1 else f'{base}pagina/{n}/'
+
+
+def paginas_indice(cfg, publicados):
+    """Índice do blog em páginas de POR_PAGINA posts (mais novo primeiro):
+    /blog/, /blog/pagina/2/, ... e uma lista por categoria em /blog/categoria/<slug>/ (também paginada).
+    Devolve {caminho relativo a blog/: html}. Como o gerador roda a cada publicação agendada,
+    as páginas acompanham sozinhas os posts que entram."""
+    site = cfg['site']
+    secoes = secoes_do_blog(publicados)
+    novos = list(reversed(publicados))
+    saida = {}
+
+    def cartao(p):
+        miniatura = Path(p['imagem']).stem + '-mini.webp'
+        return f'''            <li class="previa">
+                <a class="previa-img" href="/blog/{p["slug"]}/" tabindex="-1" aria-hidden="true">
+                    <img src="/blog/img/{miniatura}" alt="Infográfico do post: {esc(p["legenda"])}" width="{MINI_LARGURA}" height="{round(MINI_LARGURA * 1.25)}" loading="lazy" decoding="async">
+                </a>
+                <div class="previa-texto">
+                    <p class="previa-meta"><a href="/blog/categoria/{slug_secao(p["secao"])}/">{esc(p["secao"])}</a> · <time datetime="{p["data"]}">{data_extenso(p["data"])}</time></p>
+                    <h2><a href="/blog/{p["slug"]}/">{esc(p["titulo"])}</a></h2>
+                    <p class="previa-resumo">{esc(p["descricao"])}</p>
+                    <a class="previa-ler" href="/blog/{p["slug"]}/">Ler o post<span class="sr-only"> {esc(p["titulo"])}</span> ›</a>
+                </div>
+            </li>'''
+
+    def categorias(atual):
+        itens = [('/blog/', 'Todos os posts', atual is None)] + \
+                [(f'/blog/categoria/{slug_secao(s)}/', s, atual == s) for s in secoes]
+        lis = ''.join(f'<li><a class="botao-secao" href="{u}"{" aria-current=\"page\"" if marcado else ""}>{esc(n)}</a></li>'
+                      for u, n, marcado in itens)
+        return f'<nav class="seletor categorias" aria-label="Categorias do blog"><ul>{lis}</ul></nav>'
+
+    def paginacao(base, n, total):
+        if total <= 1:
+            return ''
+        partes = []
+        if n > 1:
+            partes.append(f'<a class="btn98 pag-ant" href="{url_lista(base, n - 1)}" rel="prev">‹ Posts mais novos</a>')
+        nums = ''.join(f'<li><a href="{url_lista(base, i)}"{" aria-current=\"page\"" if i == n else ""} aria-label="Página {i}">{i}</a></li>'
+                       for i in range(1, total + 1))
+        partes.append(f'<ol class="pag-numeros">{nums}</ol>')
+        if n < total:
+            partes.append(f'<a class="btn98 pag-prox" href="{url_lista(base, n + 1)}" rel="next">Posts anteriores ›</a>')
+        return f'<nav class="paginacao" aria-label="Páginas do blog">{"".join(partes)}</nav>'
+
+    def montar(lista, base, caminho_base, secao):
+        total = max(1, math.ceil(len(lista) / POR_PAGINA))
+        for n in range(1, total + 1):
+            fatia = lista[(n - 1) * POR_PAGINA:n * POR_PAGINA]
+            url = site + url_lista(base, n)
+            sufixo = f' (página {n} de {total})' if n > 1 else ''
+            if secao:
+                titulo_h1 = esc(secao)
+                linha = f'Posts da categoria {esc(secao)}, do mais novo para o mais antigo.'
+                titulo = f'{secao}: posts do blog da Júlia Quoos{sufixo}'
+                descricao = f'Posts sobre {secao} no blog de Júlia Roberta Quoos Alves, professora de computação no Rio Grande do Sul.'
+                rotulo = f'Blog · Categoria'
+            else:
+                titulo_h1 = 'Formação de professores em <span class="marca">IA</span>, na prática'
+                linha = ('Textos curtos de Júlia Roberta Quoos Alves para professores, coordenadores e redes de ensino: '
+                         'como começar a usar inteligência artificial com segurança, prompts prontos e Computação na BNCC.')
+                titulo = f'Blog da Júlia Quoos: formação de professores em IA{sufixo}'
+                descricao = 'Blog de Júlia Quoos sobre formação de professores em IA, prompts para planejar aulas, ética e LGPD na escola e Computação na BNCC.'
+                rotulo = 'Blog'
+            if n > 1:
+                linha = f'Página {n} de {total}. ' + linha
+            ld = json_ld({
+                '@context': 'https://schema.org',
+                '@type': 'CollectionPage' if (secao or n > 1) else 'Blog',
+                '@id': url + ('#blog' if not secao and n == 1 else '#pagina'),
+                'name': titulo,
+                'description': descricao,
+                'url': url,
+                'inLanguage': 'pt-BR',
+                'author': AUTORA,
+                'publisher': {'@id': AUTORA['@id']},
+                **({'isPartOf': {'@type': 'Blog', '@id': f'{site}/blog/#blog'}} if (secao or n > 1) else {}),
+                'blogPost' if not secao and n == 1 else 'hasPart': [{
+                    '@type': 'BlogPosting',
+                    '@id': f'{site}/blog/{p["slug"]}/#post',
+                    'headline': p['titulo'],
+                    'url': f'{site}/blog/{p["slug"]}/',
+                    'datePublished': p['data'],
+                    'author': {'@id': AUTORA['@id']},
+                } for p in fatia],
+            })
+            previas = '\n'.join(cartao(p) for p in fatia)
+            vazio = '' if fatia else '        <p>Ainda não há posts publicados.</p>\n'
+            chamada = '' if n > 1 or secao else '''
     <section class="chamada" aria-labelledby="chamada-mentoria">
         <h2 id="chamada-mentoria">Quer levar isso para a sua escola?</h2>
         <p>Faço mentoria individual, oficinas para equipes e <a href="/formacao-continuada/">formação continuada para escolas e redes de ensino</a>.</p>
         <a class="btn98" href="/mentoria/">Conhecer a mentoria</a>
-    </section>
+    </section>'''
+            titulo_lista = 'Últimos posts' if n == 1 and not secao else ('Posts' if n == 1 else f'Página {n}')
+            conteudo = f'''<div class="texto capa">
+    <p class="rotulo">{rotulo}</p>
+    <h1>{titulo_h1}</h1>
+    <p class="linha-fina">{linha}</p>
+    <p class="seletor-titulo">Ver por categoria:</p>
+{categorias(secao)}
+    <section class="lista-posts" aria-labelledby="lista-titulo">
+        <h2 class="tema-titulo" id="lista-titulo">{titulo_lista}</h2>
+{vazio}        <ul class="previas">
+{previas}
+        </ul>
+{paginacao(base, n, total)}
+    </section>{chamada}
 </div>'''
-    img = f'{site}/blog/img/{publicados[0]["imagem"]}' if publicados else f'{site}/img/perfil.jpg'
-    head = cabeca('Blog da Júlia Quoos: formação de professores em IA', descricao, url, img,
-                  'Infográfico do blog de Júlia Roberta Quoos Alves', 'website', ld)
-    n = len(publicados)
-    return head + '\n' + moldura('blog.txt', 'ohtopico.com.br/blog', '/', conteudo,
-                                 f'Pronto · {n} post{"s" if n != 1 else ""}', 'blog')
+            img = f'{site}/blog/img/{fatia[0]["imagem"]}' if fatia else f'{site}/img/perfil.jpg'
+            extra = ld
+            if n > 1:
+                extra = f'<link rel="prev" href="{site}{url_lista(base, n - 1)}">\n' + extra
+            if n < total:
+                extra = f'<link rel="next" href="{site}{url_lista(base, n + 1)}">\n' + extra
+            head = cabeca(titulo, descricao, url, img, 'Infográfico do blog de Júlia Roberta Quoos Alves', 'website', extra)
+            k = len(lista)
+            endereco = 'ohtopico.com.br' + url_lista(base, n).rstrip('/')
+            pagina = head + '\n' + moldura('blog.txt', endereco, '/blog/' if (secao or n > 1) else '/', conteudo,
+                                           f'Pronto · {k} post{"s" if k != 1 else ""}', 'blog')
+            saida[url_lista(caminho_base, n)] = pagina
+
+    montar(novos, '/blog/', '', None)
+    for s in secoes:
+        montar([p for p in novos if p['secao'] == s], f'/blog/categoria/{slug_secao(s)}/', f'categoria/{slug_secao(s)}/', s)
+    return saida
 
 
 RETRATO = '/img/julia-quoos.jpg'
@@ -1923,6 +2001,9 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
     caminho = site_dir / 'sitemap.xml'
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
+    for sec in secoes_do_blog(publicados):
+        ultimo = max(p['data'] for p in publicados if p['secao'] == sec)
+        linhas.append(f'  <url><loc>{cfg["site"]}/blog/categoria/{slug_secao(sec)}/</loc><lastmod>{min(ultimo, hoje)}</lastmod></url>')
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
     fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
@@ -2015,7 +2096,15 @@ def main():
         destino.mkdir(exist_ok=True)
         (destino / 'index.html').write_text(pagina_movida(cfg, m['para']), encoding='utf-8')
 
-    (blog / 'index.html').write_text(pagina_indice(cfg, publicados), encoding='utf-8')
+    # Índice paginado: refaz /blog/pagina/ e /blog/categoria/ do zero (some página que deixou de existir)
+    for slug in ('pagina', 'categoria'):
+        if any(p['slug'] == slug for p in posts):
+            raise SystemExit(f'O slug "{slug}" é reservado para o índice do blog')
+        shutil.rmtree(blog / slug, ignore_errors=True)
+    for caminho, texto in paginas_indice(cfg, publicados).items():
+        destino = blog / caminho / 'index.html'
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        destino.write_text(texto, encoding='utf-8')
     (blog / 'feed.xml').write_text(feed(cfg, publicados), encoding='utf-8')
 
     mentoria, pendente = pagina_mentoria(cfg, dims)
