@@ -1,0 +1,3018 @@
+{
+ "a-ficha-da-turma": {
+  "slug": "a-ficha-da-turma",
+  "area": "computacao",
+  "titulo": "A ficha da turma",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "a-igualdade-continua-verdadeira": {
+  "slug": "a-igualdade-continua-verdadeira",
+  "area": "matematica",
+  "titulo": "A igualdade continua verdadeira",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "a-medida-depende-da-unidade": {
+  "slug": "a-medida-depende-da-unidade",
+  "area": "matematica",
+  "titulo": "A medida depende da unidade",
+  "ano": "3º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "a-viagem-de-um-clique": {
+  "slug": "a-viagem-de-um-clique",
+  "area": "computacao",
+  "titulo": "A viagem de um clique",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "abertura-do-angulo": {
+  "slug": "abertura-do-angulo",
+  "area": "matematica",
+  "titulo": "Abertura do ângulo",
+  "ano": "6º ano",
+  "figuras": 7,
+  "paginas_braille": 5
+ },
+ "acesso-digital-desigual": {
+  "slug": "acesso-digital-desigual",
+  "area": "computacao",
+  "titulo": "Acesso digital desigual",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "adicao-e-subtracao-ate-999": {
+  "slug": "adicao-e-subtracao-ate-999",
+  "area": "matematica",
+  "titulo": "Adição e subtração até 999",
+  "ano": "2º ano",
+  "figuras": 8,
+  "paginas_braille": 7
+ },
+ "adicao-e-subtracao-com-decimais": {
+  "slug": "adicao-e-subtracao-com-decimais",
+  "area": "matematica",
+  "titulo": "Adição e subtração com números decimais",
+  "ano": "5º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "adicao-e-subtracao-com-estimativa": {
+  "slug": "adicao-e-subtracao-com-estimativa",
+  "area": "matematica",
+  "titulo": "Adição e subtração com estimativa",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "algoritmo-e-fluxograma": {
+  "slug": "algoritmo-e-fluxograma",
+  "area": "matematica",
+  "titulo": "Algoritmo e fluxograma",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "algoritmo-passo-a-passo": {
+  "slug": "algoritmo-passo-a-passo",
+  "area": "matematica",
+  "titulo": "Algoritmo passo a passo",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "algoritmos-e-fluxogramas-de-problemas": {
+  "slug": "algoritmos-e-fluxogramas-de-problemas",
+  "area": "matematica",
+  "titulo": "Algoritmos e fluxogramas para resolver problemas",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "ampliar-e-reduzir-figuras-na-malha": {
+  "slug": "ampliar-e-reduzir-figuras-na-malha",
+  "area": "matematica",
+  "titulo": "Ampliar e reduzir figuras na malha",
+  "ano": "5º ano",
+  "figuras": 7,
+  "paginas_braille": 4
+ },
+ "analisar-tabelas-e-graficos": {
+  "slug": "analisar-tabelas-e-graficos",
+  "area": "matematica",
+  "titulo": "Analisar tabelas e gráficos",
+  "ano": "4º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "angulos-abertura-e-transferidor": {
+  "slug": "angulos-abertura-e-transferidor",
+  "area": "matematica",
+  "titulo": "Ângulos: abertura e transferidor",
+  "ano": "6º ano",
+  "figuras": 9,
+  "paginas_braille": 7
+ },
+ "angulos-de-poligonos-regulares-e-mosaicos": {
+  "slug": "angulos-de-poligonos-regulares-e-mosaicos",
+  "area": "matematica",
+  "titulo": "Ângulos de polígonos regulares e mosaicos",
+  "ano": "7º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "angulos-em-situacoes-reais": {
+  "slug": "angulos-em-situacoes-reais",
+  "area": "matematica",
+  "titulo": "Ângulos em situações reais",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "angulos-na-circunferencia-e-paralelas": {
+  "slug": "angulos-na-circunferencia-e-paralelas",
+  "area": "matematica",
+  "titulo": "Ângulos na circunferência e retas paralelas",
+  "ano": "9º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "angulos-retos-e-nao-retos": {
+  "slug": "angulos-retos-e-nao-retos",
+  "area": "matematica",
+  "titulo": "Ângulos retos e não retos",
+  "ano": "4º ano",
+  "figuras": 13,
+  "paginas_braille": 5
+ },
+ "angulos-retos-e-simetria": {
+  "slug": "angulos-retos-e-simetria",
+  "area": "matematica",
+  "titulo": "Ângulos retos e simetria",
+  "ano": "4º ano",
+  "figuras": 12,
+  "paginas_braille": 7
+ },
+ "arcos-e-angulos-na-circunferencia": {
+  "slug": "arcos-e-angulos-na-circunferencia",
+  "area": "matematica",
+  "titulo": "Arcos e ângulos na circunferência",
+  "ano": "9º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "area-de-triangulos-e-quadrilateros": {
+  "slug": "area-de-triangulos-e-quadrilateros",
+  "area": "matematica",
+  "titulo": "Área de triângulos e quadriláteros",
+  "ano": "7º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "area-na-malha-quadriculada": {
+  "slug": "area-na-malha-quadriculada",
+  "area": "matematica",
+  "titulo": "Área na malha quadriculada",
+  "ano": "4º ano",
+  "figuras": 10,
+  "paginas_braille": 4
+ },
+ "areas-circulo-e-capacidade": {
+  "slug": "areas-circulo-e-capacidade",
+  "area": "matematica",
+  "titulo": "Áreas, círculo e capacidade",
+  "ano": "8º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "areas-de-terrenos": {
+  "slug": "areas-de-terrenos",
+  "area": "matematica",
+  "titulo": "Áreas de terrenos",
+  "ano": "8º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "areas-por-decomposicao": {
+  "slug": "areas-por-decomposicao",
+  "area": "matematica",
+  "titulo": "Áreas por decomposição",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "arquivos-em-ordem": {
+  "slug": "arquivos-em-ordem",
+  "area": "computacao",
+  "titulo": "Arquivos em ordem",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "arvores-e-grafos": {
+  "slug": "arvores-e-grafos",
+  "area": "computacao",
+  "titulo": "Árvores e grafos",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "as-regras-da-conversa": {
+  "slug": "as-regras-da-conversa",
+  "area": "computacao",
+  "titulo": "As regras da conversa",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "bonecas-recursivas": {
+  "slug": "bonecas-recursivas",
+  "area": "computacao",
+  "titulo": "Bonecas recursivas",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "buscar-e-ordenar": {
+  "slug": "buscar-e-ordenar",
+  "area": "computacao",
+  "titulo": "Buscar e ordenar",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "caca-aos-bugs": {
+  "slug": "caca-aos-bugs",
+  "area": "computacao",
+  "titulo": "Caça aos bugs",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "caca-aos-padroes": {
+  "slug": "caca-aos-padroes",
+  "area": "computacao",
+  "titulo": "Caça aos padrões",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "cada-dado-no-seu-pote": {
+  "slug": "cada-dado-no-seu-pote",
+  "area": "computacao",
+  "titulo": "Cada dado no seu pote",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "calcular-probabilidade": {
+  "slug": "calcular-probabilidade",
+  "area": "matematica",
+  "titulo": "Calcular a probabilidade",
+  "ano": "5º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "calculo-algoritmos-e-fluxogramas": {
+  "slug": "calculo-algoritmos-e-fluxogramas",
+  "area": "matematica",
+  "titulo": "Cálculo, algoritmos e fluxogramas",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "calculo-mental-e-problemas-de-adicao-e-subtracao": {
+  "slug": "calculo-mental-e-problemas-de-adicao-e-subtracao",
+  "area": "matematica",
+  "titulo": "Cálculo mental e problemas de adição e subtração",
+  "ano": "3º ano",
+  "figuras": 7,
+  "paginas_braille": 7
+ },
+ "calculos-com-estrategias-variadas": {
+  "slug": "calculos-com-estrategias-variadas",
+  "area": "matematica",
+  "titulo": "Cálculos com estratégias variadas",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "calculos-com-numeros-reais": {
+  "slug": "calculos-com-numeros-reais",
+  "area": "matematica",
+  "titulo": "Cálculos com números reais",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "calendario-dias-semanas-e-meses": {
+  "slug": "calendario-dias-semanas-e-meses",
+  "area": "matematica",
+  "titulo": "Calendário: dias, semanas e meses",
+  "ano": "1º e 2º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "centenas-material-dourado-ate-999": {
+  "slug": "centenas-material-dourado-ate-999",
+  "area": "matematica",
+  "titulo": "Centenas com material dourado: números até 999",
+  "ano": "2º ano",
+  "figuras": 8,
+  "paginas_braille": 7
+ },
+ "certo-talvez-ou-impossivel": {
+  "slug": "certo-talvez-ou-impossivel",
+  "area": "matematica",
+  "titulo": "Certo, talvez ou impossível",
+  "ano": "1º e 2º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "chances-o-que-e-mais-provavel": {
+  "slug": "chances-o-que-e-mais-provavel",
+  "area": "matematica",
+  "titulo": "Chances: o que é mais provável?",
+  "ano": "3º e 4º ano",
+  "figuras": 5,
+  "paginas_braille": 7
+ },
+ "circulo-quadrado-retangulo-e-triangulo": {
+  "slug": "circulo-quadrado-retangulo-e-triangulo",
+  "area": "matematica",
+  "titulo": "Círculo, quadrado, retângulo e triângulo",
+  "ano": "1º ano",
+  "figuras": 13,
+  "paginas_braille": 6
+ },
+ "circunferencia-compasso-e-pi": {
+  "slug": "circunferencia-compasso-e-pi",
+  "area": "matematica",
+  "titulo": "Circunferência, compasso e o número π",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "circunferencia-e-compasso": {
+  "slug": "circunferencia-e-compasso",
+  "area": "matematica",
+  "titulo": "Circunferência e compasso",
+  "ano": "7º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "classes-de-frequencia": {
+  "slug": "classes-de-frequencia",
+  "area": "matematica",
+  "titulo": "Classes de frequência",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "classificar-quadrilateros": {
+  "slug": "classificar-quadrilateros",
+  "area": "matematica",
+  "titulo": "Classificar quadriláteros",
+  "ano": "6º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "classificar-triangulos": {
+  "slug": "classificar-triangulos",
+  "area": "matematica",
+  "titulo": "Classificar triângulos",
+  "ano": "6º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "combinacoes-quantas-possibilidades": {
+  "slug": "combinacoes-quantas-possibilidades",
+  "area": "matematica",
+  "titulo": "Combinações: quantas possibilidades?",
+  "ano": "4º ano",
+  "figuras": 5,
+  "paginas_braille": 7
+ },
+ "como-agem-os-ataques": {
+  "slug": "como-agem-os-ataques",
+  "area": "computacao",
+  "titulo": "Como agem os ataques",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "comparar-areas": {
+  "slug": "comparar-areas",
+  "area": "matematica",
+  "titulo": "Comparar áreas",
+  "ano": "3º ano",
+  "figuras": 9,
+  "paginas_braille": 5
+ },
+ "comparar-e-ordenar-fracoes": {
+  "slug": "comparar-e-ordenar-fracoes",
+  "area": "matematica",
+  "titulo": "Comparar e ordenar frações",
+  "ano": "6º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "comparar-e-ordenar-numeros-ate-999": {
+  "slug": "comparar-e-ordenar-numeros-ate-999",
+  "area": "matematica",
+  "titulo": "Comparar e ordenar números até 999",
+  "ano": "2º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "comparar-figuras-planas-pelos-lados": {
+  "slug": "comparar-figuras-planas-pelos-lados",
+  "area": "matematica",
+  "titulo": "Comparar figuras planas pelos lados",
+  "ano": "2º ano",
+  "figuras": 12,
+  "paginas_braille": 5
+ },
+ "comparar-fracoes-e-decimais": {
+  "slug": "comparar-fracoes-e-decimais",
+  "area": "matematica",
+  "titulo": "Comparar frações e decimais",
+  "ano": "5º ano",
+  "figuras": 5,
+  "paginas_braille": 4
+ },
+ "comparar-medidas-alto-pesado-cabe-mais": {
+  "slug": "comparar-medidas-alto-pesado-cabe-mais",
+  "area": "matematica",
+  "titulo": "Mais alto, mais pesado, cabe mais",
+  "ano": "1º ano",
+  "figuras": 11,
+  "paginas_braille": 7
+ },
+ "comparar-naturais-e-decimais-na-reta": {
+  "slug": "comparar-naturais-e-decimais-na-reta",
+  "area": "matematica",
+  "titulo": "Comparar naturais e decimais na reta",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "comparar-numeros-na-reta-numerica": {
+  "slug": "comparar-numeros-na-reta-numerica",
+  "area": "matematica",
+  "titulo": "Comparar números na reta numérica",
+  "ano": "1º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "comparar-quantidades-e-achar-a-diferenca": {
+  "slug": "comparar-quantidades-e-achar-a-diferenca",
+  "area": "matematica",
+  "titulo": "Comparar quantidades e achar a diferença",
+  "ano": "2º ano",
+  "figuras": 7,
+  "paginas_braille": 6
+ },
+ "comparar-quantidades-onde-tem-mais": {
+  "slug": "comparar-quantidades-onde-tem-mais",
+  "area": "matematica",
+  "titulo": "Comparar quantidades: onde tem mais?",
+  "ano": "1º ano",
+  "figuras": 12,
+  "paginas_braille": 5
+ },
+ "comparar-solidos-geometricos": {
+  "slug": "comparar-solidos-geometricos",
+  "area": "matematica",
+  "titulo": "Comparar sólidos geométricos",
+  "ano": "2º ano",
+  "figuras": 11,
+  "paginas_braille": 5
+ },
+ "compor-e-decompor-dezenas-e-unidades": {
+  "slug": "compor-e-decompor-dezenas-e-unidades",
+  "area": "matematica",
+  "titulo": "Compor e decompor dezenas e unidades",
+  "ano": "1º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "compor-e-decompor-numeros-ate-999": {
+  "slug": "compor-e-decompor-numeros-ate-999",
+  "area": "matematica",
+  "titulo": "Compor e decompor números até 999",
+  "ano": "2º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "compor-e-decompor-numeros-de-quatro-ordens": {
+  "slug": "compor-e-decompor-numeros-de-quatro-ordens",
+  "area": "matematica",
+  "titulo": "Compor e decompor números de quatro ordens",
+  "ano": "3º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "composicao-de-transformacoes": {
+  "slug": "composicao-de-transformacoes",
+  "area": "matematica",
+  "titulo": "Composição de transformações",
+  "ano": "8º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "compra-venda-e-troca-com-dinheiro": {
+  "slug": "compra-venda-e-troca-com-dinheiro",
+  "area": "matematica",
+  "titulo": "Compra, venda e troca com dinheiro",
+  "ano": "3º ano",
+  "figuras": 9,
+  "paginas_braille": 7
+ },
+ "condicao-de-existencia-do-triangulo": {
+  "slug": "condicao-de-existencia-do-triangulo",
+  "area": "matematica",
+  "titulo": "Quando existe um triângulo",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "condicoes-de-semelhanca-de-triangulos": {
+  "slug": "condicoes-de-semelhanca-de-triangulos",
+  "area": "matematica",
+  "titulo": "Quando dois triângulos são semelhantes",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "congruencia-de-triangulos-e-quadrilateros": {
+  "slug": "congruencia-de-triangulos-e-quadrilateros",
+  "area": "matematica",
+  "titulo": "Congruência de triângulos e quadriláteros",
+  "ano": "8º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "construcoes-mediatriz-bissetriz-e-angulos": {
+  "slug": "construcoes-mediatriz-bissetriz-e-angulos",
+  "area": "matematica",
+  "titulo": "Construções: mediatriz, bissetriz e ângulos",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "construir-o-grafico-adequado": {
+  "slug": "construir-o-grafico-adequado",
+  "area": "matematica",
+  "titulo": "Construir o gráfico adequado",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "contagem-e-probabilidade": {
+  "slug": "contagem-e-probabilidade",
+  "area": "matematica",
+  "titulo": "Contagem e probabilidade com o princípio multiplicativo",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "contar-ate-100-e-escrever-os-numeros": {
+  "slug": "contar-ate-100-e-escrever-os-numeros",
+  "area": "matematica",
+  "titulo": "Contar até 100 e escrever os números",
+  "ano": "1º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "contar-com-pares-e-grupos": {
+  "slug": "contar-com-pares-e-grupos",
+  "area": "matematica",
+  "titulo": "Contar com pares e grupos",
+  "ano": "1º ano",
+  "figuras": 11,
+  "paginas_braille": 5
+ },
+ "contar-e-mostrar-quantidades": {
+  "slug": "contar-e-mostrar-quantidades",
+  "area": "matematica",
+  "titulo": "Contar e mostrar quantos tem",
+  "ano": "1º ano",
+  "figuras": 28,
+  "paginas_braille": 7
+ },
+ "contar-faces-vertices-e-arestas": {
+  "slug": "contar-faces-vertices-e-arestas",
+  "area": "matematica",
+  "titulo": "Prismas e pirâmides: faces, vértices e arestas",
+  "ano": "4º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "creditos-certos": {
+  "slug": "creditos-certos",
+  "area": "computacao",
+  "titulo": "Créditos certos",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "cyberbullying-nao-e-brincadeira": {
+  "slug": "cyberbullying-nao-e-brincadeira",
+  "area": "computacao",
+  "titulo": "Não é brincadeira",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "dados-da-midia-e-conclusoes": {
+  "slug": "dados-da-midia-e-conclusoes",
+  "area": "matematica",
+  "titulo": "Dados da mídia e conclusões",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "decimais-na-reta-numerica": {
+  "slug": "decimais-na-reta-numerica",
+  "area": "matematica",
+  "titulo": "Decimais na reta numérica",
+  "ano": "5º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "decimos-e-centesimos-com-dinheiro": {
+  "slug": "decimos-e-centesimos-com-dinheiro",
+  "area": "matematica",
+  "titulo": "Décimos e centésimos com dinheiro",
+  "ano": "4º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "decompor-com-potencias-de-dez": {
+  "slug": "decompor-com-potencias-de-dez",
+  "area": "matematica",
+  "titulo": "Decompor com potências de dez",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "demonstrar-angulos-de-paralelas": {
+  "slug": "demonstrar-angulos-de-paralelas",
+  "area": "matematica",
+  "titulo": "Ângulos de paralelas cortadas por transversal",
+  "ano": "9º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "descobrir-o-numero-que-falta": {
+  "slug": "descobrir-o-numero-que-falta",
+  "area": "matematica",
+  "titulo": "Descobrir o número que falta",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "descrever-o-padrao-de-uma-sequencia": {
+  "slug": "descrever-o-padrao-de-uma-sequencia",
+  "area": "matematica",
+  "titulo": "Descrever o padrão de uma sequência",
+  "ano": "2º ano",
+  "figuras": 11,
+  "paginas_braille": 4
+ },
+ "detetive-de-golpes": {
+  "slug": "detetive-de-golpes",
+  "area": "computacao",
+  "titulo": "Detetive de golpes",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "dezenas-e-unidades-material-dourado": {
+  "slug": "dezenas-e-unidades-material-dourado",
+  "area": "matematica",
+  "titulo": "Dezenas e unidades com material dourado",
+  "ano": "1º e 2º ano",
+  "figuras": 8,
+  "paginas_braille": 6
+ },
+ "direita-esquerda-frente-e-atras": {
+  "slug": "direita-esquerda-frente-e-atras",
+  "area": "matematica",
+  "titulo": "Direita, esquerda, frente e atrás",
+  "ano": "1º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "discordar-sem-ferir": {
+  "slug": "discordar-sem-ferir",
+  "area": "computacao",
+  "titulo": "Discordar sem ferir",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "ditado-de-desenho": {
+  "slug": "ditado-de-desenho",
+  "area": "computacao",
+  "titulo": "Ditado de desenho",
+  "ano": "6º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "divida-para-resolver": {
+  "slug": "divida-para-resolver",
+  "area": "computacao",
+  "titulo": "Divida para resolver",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "divisao-com-divisor-de-ate-dois-algarismos": {
+  "slug": "divisao-com-divisor-de-ate-dois-algarismos",
+  "area": "matematica",
+  "titulo": "Divisão com divisor de até dois algarismos",
+  "ano": "4º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "divisao-com-resto-e-divisor-de-dois-algarismos": {
+  "slug": "divisao-com-resto-e-divisor-de-dois-algarismos",
+  "area": "matematica",
+  "titulo": "Divisão com resto e divisor de dois algarismos",
+  "ano": "4º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "divisao-com-resto-e-sem-resto": {
+  "slug": "divisao-com-resto-e-sem-resto",
+  "area": "matematica",
+  "titulo": "Divisão com resto e sem resto",
+  "ano": "3º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "divisao-repartir-em-partes-iguais": {
+  "slug": "divisao-repartir-em-partes-iguais",
+  "area": "matematica",
+  "titulo": "Divisão: repartir em partes iguais",
+  "ano": "3º ano",
+  "figuras": 5,
+  "paginas_braille": 7
+ },
+ "do-problema-ao-projeto": {
+  "slug": "do-problema-ao-projeto",
+  "area": "computacao",
+  "titulo": "Do problema ao projeto",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "do-roteiro-a-publicacao": {
+  "slug": "do-roteiro-a-publicacao",
+  "area": "computacao",
+  "titulo": "Do roteiro à publicação",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "dobro-metade-triplo-e-terca-parte": {
+  "slug": "dobro-metade-triplo-e-terca-parte",
+  "area": "matematica",
+  "titulo": "Dobro, metade, triplo e terça parte",
+  "ano": "2º ano",
+  "figuras": 5,
+  "paginas_braille": 7
+ },
+ "duracao-de-atividades-no-relogio-digital": {
+  "slug": "duracao-de-atividades-no-relogio-digital",
+  "area": "matematica",
+  "titulo": "Duração de atividades no relógio digital",
+  "ano": "2º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "duracao-em-horas-minutos-e-segundos": {
+  "slug": "duracao-em-horas-minutos-e-segundos",
+  "area": "matematica",
+  "titulo": "Duração em horas, minutos e segundos",
+  "ano": "4º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "elementos-de-um-grafico": {
+  "slug": "elementos-de-um-grafico",
+  "area": "matematica",
+  "titulo": "Elementos de um gráfico",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "encontrar-fracoes-equivalentes": {
+  "slug": "encontrar-fracoes-equivalentes",
+  "area": "matematica",
+  "titulo": "Encontrar frações equivalentes",
+  "ano": "5º ano",
+  "figuras": 6,
+  "paginas_braille": 5
+ },
+ "entre-acima-e-abaixo": {
+  "slug": "entre-acima-e-abaixo",
+  "area": "matematica",
+  "titulo": "Entre, acima e abaixo: onde está?",
+  "ano": "1º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "equacao-com-duas-incognitas-e-reta": {
+  "slug": "equacao-com-duas-incognitas-e-reta",
+  "area": "matematica",
+  "titulo": "Equação com duas incógnitas e a reta",
+  "ano": "8º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "equacoes-com-duas-incognitas-e-sistemas": {
+  "slug": "equacoes-com-duas-incognitas-e-sistemas",
+  "area": "matematica",
+  "titulo": "Equações com duas incógnitas e sistemas",
+  "ano": "8º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "equacoes-do-primeiro-grau": {
+  "slug": "equacoes-do-primeiro-grau",
+  "area": "matematica",
+  "titulo": "Equações do 1º grau com a balança",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "equacoes-do-segundo-grau-ax2-b": {
+  "slug": "equacoes-do-segundo-grau-ax2-b",
+  "area": "matematica",
+  "titulo": "Equações do 2º grau do tipo ax² = b",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "escolher-a-unidade-e-o-instrumento-de-medida": {
+  "slug": "escolher-a-unidade-e-o-instrumento-de-medida",
+  "area": "matematica",
+  "titulo": "Escolher a unidade e o instrumento de medida",
+  "ano": "3º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "escolher-o-grafico-adequado": {
+  "slug": "escolher-o-grafico-adequado",
+  "area": "matematica",
+  "titulo": "Escolher o gráfico adequado",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "escreva-uma-vez-use-sempre": {
+  "slug": "escreva-uma-vez-use-sempre",
+  "area": "computacao",
+  "titulo": "Escreva uma vez, use sempre",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "escrever-a-data-e-o-dia-da-semana": {
+  "slug": "escrever-a-data-e-o-dia-da-semana",
+  "area": "matematica",
+  "titulo": "Escrever a data e o dia da semana",
+  "ano": "1º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "espaco-amostral-e-probabilidade": {
+  "slug": "espaco-amostral-e-probabilidade",
+  "area": "matematica",
+  "titulo": "Espaço amostral e probabilidade",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "estimar-e-arredondar": {
+  "slug": "estimar-e-arredondar",
+  "area": "matematica",
+  "titulo": "Estimar e arredondar",
+  "ano": "6º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "estimar-e-contar-ate-1000": {
+  "slug": "estimar-e-contar-ate-1000",
+  "area": "matematica",
+  "titulo": "Estimar e contar até 1000 agrupando",
+  "ano": "2º ano",
+  "figuras": 7,
+  "paginas_braille": 5
+ },
+ "estimar-e-medir-capacidade-e-massa": {
+  "slug": "estimar-e-medir-capacidade-e-massa",
+  "area": "matematica",
+  "titulo": "Estimar e medir capacidade e massa",
+  "ano": "3º ano",
+  "figuras": 6,
+  "paginas_braille": 4
+ },
+ "estimar-e-medir-comprimentos": {
+  "slug": "estimar-e-medir-comprimentos",
+  "area": "matematica",
+  "titulo": "Estimar e medir comprimentos",
+  "ano": "3º ano",
+  "figuras": 6,
+  "paginas_braille": 6
+ },
+ "eventos-com-mais-chance-de-acontecer": {
+  "slug": "eventos-com-mais-chance-de-acontecer",
+  "area": "matematica",
+  "titulo": "Eventos com mais chance de acontecer",
+  "ano": "4º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "eventos-dependentes-e-independentes": {
+  "slug": "eventos-dependentes-e-independentes",
+  "area": "matematica",
+  "titulo": "Eventos dependentes e independentes",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "experimentos-e-frequencia": {
+  "slug": "experimentos-e-frequencia",
+  "area": "matematica",
+  "titulo": "Experimentos e frequência",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "expressoes-algebricas-e-valor-numerico": {
+  "slug": "expressoes-algebricas-e-valor-numerico",
+  "area": "matematica",
+  "titulo": "Expressões algébricas e valor numérico",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 7
+ },
+ "expressoes-equivalentes-de-sequencias": {
+  "slug": "expressoes-equivalentes-de-sequencias",
+  "area": "matematica",
+  "titulo": "Expressões equivalentes de uma sequência",
+  "ano": "7º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "fatoracao-produtos-notaveis-e-segundo-grau": {
+  "slug": "fatoracao-produtos-notaveis-e-segundo-grau",
+  "area": "matematica",
+  "titulo": "Fatoração, produtos notáveis e equações do 2º grau",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "fatos-basicos-da-adicao": {
+  "slug": "fatos-basicos-da-adicao",
+  "area": "matematica",
+  "titulo": "Fatos básicos da adição",
+  "ano": "1º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "fatos-basicos-de-adicao-e-multiplicacao": {
+  "slug": "fatos-basicos-de-adicao-e-multiplicacao",
+  "area": "matematica",
+  "titulo": "Fatos básicos de adição e de multiplicação",
+  "ano": "3º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "fatos-de-adicao-e-subtracao": {
+  "slug": "fatos-de-adicao-e-subtracao",
+  "area": "matematica",
+  "titulo": "Fatos de adição e de subtração",
+  "ano": "2º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "fazer-uma-pesquisa-com-a-turma": {
+  "slug": "fazer-uma-pesquisa-com-a-turma",
+  "area": "matematica",
+  "titulo": "Fazer uma pesquisa com a turma",
+  "ano": "1º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "fazer-uma-pesquisa-e-organizar-os-dados": {
+  "slug": "fazer-uma-pesquisa-e-organizar-os-dados",
+  "area": "matematica",
+  "titulo": "Fazer uma pesquisa e organizar os dados",
+  "ano": "3º ano",
+  "figuras": 2,
+  "paginas_braille": 7
+ },
+ "figuras-congruentes": {
+  "slug": "figuras-congruentes",
+  "area": "matematica",
+  "titulo": "Figuras congruentes",
+  "ano": "3º ano",
+  "figuras": 10,
+  "paginas_braille": 5
+ },
+ "figuras-semelhantes-ampliar-e-reduzir": {
+  "slug": "figuras-semelhantes-ampliar-e-reduzir",
+  "area": "matematica",
+  "titulo": "Figuras semelhantes: ampliar e reduzir",
+  "ano": "6º ano",
+  "figuras": 8,
+  "paginas_braille": 4
+ },
+ "fluxograma-de-poligono-regular-com-compasso": {
+  "slug": "fluxograma-de-poligono-regular-com-compasso",
+  "area": "matematica",
+  "titulo": "Fluxograma de polígono regular com régua e compasso",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "fluxograma-de-um-grupo-de-problemas": {
+  "slug": "fluxograma-de-um-grupo-de-problemas",
+  "area": "matematica",
+  "titulo": "Fluxograma de um grupo de problemas",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "fluxograma-do-hexagono-regular": {
+  "slug": "fluxograma-do-hexagono-regular",
+  "area": "matematica",
+  "titulo": "Fluxograma do hexágono regular",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "fluxograma-para-construir-poligono-regular": {
+  "slug": "fluxograma-para-construir-poligono-regular",
+  "area": "matematica",
+  "titulo": "Fluxograma para construir um polígono regular",
+  "ano": "7º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "fluxograma-para-construir-triangulo": {
+  "slug": "fluxograma-para-construir-triangulo",
+  "area": "matematica",
+  "titulo": "Fluxograma para construir um triângulo",
+  "ano": "7º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "fluxogramas-e-relacoes": {
+  "slug": "fluxogramas-e-relacoes",
+  "area": "matematica",
+  "titulo": "Fluxogramas e relações",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "fonte-confiavel": {
+  "slug": "fonte-confiavel",
+  "area": "computacao",
+  "titulo": "Fonte confiável?",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "formas-de-pagamento-troco-e-desconto": {
+  "slug": "formas-de-pagamento-troco-e-desconto",
+  "area": "matematica",
+  "titulo": "Formas de pagamento, troco e desconto",
+  "ano": "4º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "formas-espaciais-no-dia-a-dia": {
+  "slug": "formas-espaciais-no-dia-a-dia",
+  "area": "matematica",
+  "titulo": "Formas espaciais: esfera, cubo, cilindro e cone",
+  "ano": "1º e 2º ano",
+  "figuras": 24,
+  "paginas_braille": 7
+ },
+ "formas-no-dia-a-dia": {
+  "slug": "formas-no-dia-a-dia",
+  "area": "matematica",
+  "titulo": "Formas no dia a dia",
+  "ano": "1º e 2º ano",
+  "figuras": 22,
+  "paginas_braille": 8
+ },
+ "fracao-de-quantidade-e-operacoes-com-fracoes": {
+  "slug": "fracao-de-quantidade-e-operacoes-com-fracoes",
+  "area": "matematica",
+  "titulo": "Fração de uma quantidade e operações com frações",
+  "ano": "6º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "fracao-de-uma-quantidade": {
+  "slug": "fracao-de-uma-quantidade",
+  "area": "matematica",
+  "titulo": "Fração de uma quantidade",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "fracao-e-decimal-sao-o-mesmo-numero": {
+  "slug": "fracao-e-decimal-sao-o-mesmo-numero",
+  "area": "matematica",
+  "titulo": "Fração e decimal: o mesmo número",
+  "ano": "6º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "fracao-geratriz-de-dizimas": {
+  "slug": "fracao-geratriz-de-dizimas",
+  "area": "matematica",
+  "titulo": "Fração geratriz de dízimas",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "fracoes-e-decimais-comparar-e-converter": {
+  "slug": "fracoes-e-decimais-comparar-e-converter",
+  "area": "matematica",
+  "titulo": "Frações e decimais: comparar e converter",
+  "ano": "6º ano",
+  "figuras": 6,
+  "paginas_braille": 7
+ },
+ "fracoes-e-razoes": {
+  "slug": "fracoes-e-razoes",
+  "area": "matematica",
+  "titulo": "Frações e razões",
+  "ano": "7º ano",
+  "figuras": 5,
+  "paginas_braille": 7
+ },
+ "fracoes-equivalentes-e-maiores-que-o-inteiro": {
+  "slug": "fracoes-equivalentes-e-maiores-que-o-inteiro",
+  "area": "matematica",
+  "titulo": "Frações equivalentes e maiores que o inteiro",
+  "ano": "5º ano",
+  "figuras": 6,
+  "paginas_braille": 7
+ },
+ "fracoes-menores-e-maiores-que-o-inteiro": {
+  "slug": "fracoes-menores-e-maiores-que-o-inteiro",
+  "area": "matematica",
+  "titulo": "Frações menores e maiores que o inteiro",
+  "ano": "5º ano",
+  "figuras": 9,
+  "paginas_braille": 7
+ },
+ "fracoes-metade-terco-quarto-quinto-decimo": {
+  "slug": "fracoes-metade-terco-quarto-quinto-decimo",
+  "area": "matematica",
+  "titulo": "Frações: metade, terço, quarto, quinto e décimo",
+  "ano": "4º ano",
+  "figuras": 14,
+  "paginas_braille": 7
+ },
+ "fracoes-parte-divisao-razao-e-operador": {
+  "slug": "fracoes-parte-divisao-razao-e-operador",
+  "area": "matematica",
+  "titulo": "Frações: parte, divisão, razão e operador",
+  "ano": "7º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "funcoes-maquina-tabela-e-grafico": {
+  "slug": "funcoes-maquina-tabela-e-grafico",
+  "area": "matematica",
+  "titulo": "Funções: máquina, tabela e gráfico",
+  "ano": "9º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "graficos-de-linha-e-pesquisa": {
+  "slug": "graficos-de-linha-e-pesquisa",
+  "area": "matematica",
+  "titulo": "Gráficos de linha e pesquisa",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "graficos-de-setores-na-midia": {
+  "slug": "graficos-de-setores-na-midia",
+  "area": "matematica",
+  "titulo": "Gráficos de setores na mídia",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "graficos-que-enganam": {
+  "slug": "graficos-que-enganam",
+  "area": "matematica",
+  "titulo": "Gráficos que enganam",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "grandezas-proporcionais-e-nao-proporcionais": {
+  "slug": "grandezas-proporcionais-e-nao-proporcionais",
+  "area": "matematica",
+  "titulo": "Grandezas proporcionais e não proporcionais",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "grandezas-proporcionais-ou-nao": {
+  "slug": "grandezas-proporcionais-ou-nao",
+  "area": "matematica",
+  "titulo": "Grandezas proporcionais ou não",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "grupos-iguais-multiplicacao": {
+  "slug": "grupos-iguais-multiplicacao",
+  "area": "matematica",
+  "titulo": "Grupos iguais: começando a multiplicar",
+  "ano": "2º e 3º ano",
+  "figuras": 9,
+  "paginas_braille": 7
+ },
+ "horas-minutos-e-segundos": {
+  "slug": "horas-minutos-e-segundos",
+  "area": "matematica",
+  "titulo": "Horas, minutos e segundos",
+  "ano": "3º e 4º ano",
+  "figuras": 11,
+  "paginas_braille": 7
+ },
+ "igualdade-com-termo-desconhecido": {
+  "slug": "igualdade-com-termo-desconhecido",
+  "area": "matematica",
+  "titulo": "Igualdade com termo desconhecido",
+  "ano": "5º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "igualdade-e-valor-desconhecido": {
+  "slug": "igualdade-e-valor-desconhecido",
+  "area": "matematica",
+  "titulo": "Igualdade e valor desconhecido",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "igualdades-com-o-mesmo-resultado": {
+  "slug": "igualdades-com-o-mesmo-resultado",
+  "area": "matematica",
+  "titulo": "Igualdades com o mesmo resultado",
+  "ano": "3º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "igualdades-e-numero-desconhecido": {
+  "slug": "igualdades-e-numero-desconhecido",
+  "area": "matematica",
+  "titulo": "Igualdades e o número desconhecido",
+  "ano": "5º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "igualdades-e-partilha-em-partes-desiguais": {
+  "slug": "igualdades-e-partilha-em-partes-desiguais",
+  "area": "matematica",
+  "titulo": "Igualdades e partilha em partes desiguais",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "inteiros-na-reta-e-no-dia-a-dia": {
+  "slug": "inteiros-na-reta-e-no-dia-a-dia",
+  "area": "matematica",
+  "titulo": "Números inteiros na reta e no dia a dia",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "interpretar-graficos-e-produzir-textos": {
+  "slug": "interpretar-graficos-e-produzir-textos",
+  "area": "matematica",
+  "titulo": "Interpretar gráficos e produzir textos",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "irracionais-na-reta": {
+  "slug": "irracionais-na-reta",
+  "area": "matematica",
+  "titulo": "Números irracionais na reta",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "jeitos-de-calcular-adicao-e-subtracao": {
+  "slug": "jeitos-de-calcular-adicao-e-subtracao",
+  "area": "matematica",
+  "titulo": "Jeitos de calcular adição e subtração",
+  "ano": "3º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "juntar-quantidades-adicao": {
+  "slug": "juntar-quantidades-adicao",
+  "area": "matematica",
+  "titulo": "Juntar quantidades: adição com figuras",
+  "ano": "1º ano",
+  "figuras": 16,
+  "paginas_braille": 8
+ },
+ "kit-de-apoio-visual": {
+  "slug": "kit-de-apoio-visual",
+  "area": "matematica",
+  "titulo": "Kit de apoio visual",
+  "ano": "1º ao 5º ano",
+  "figuras": 13,
+  "paginas_braille": 6
+ },
+ "ler-dados-e-escrever-sobre-eles": {
+  "slug": "ler-dados-e-escrever-sobre-eles",
+  "area": "matematica",
+  "titulo": "Ler dados e escrever sobre eles",
+  "ano": "3º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "ler-escrever-e-comparar-numeros-ate-9999": {
+  "slug": "ler-escrever-e-comparar-numeros-ate-9999",
+  "area": "matematica",
+  "titulo": "Ler, escrever e comparar números até 9999",
+  "ano": "3º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "ler-escrever-e-ordenar-numeros-ate-99999": {
+  "slug": "ler-escrever-e-ordenar-numeros-ate-99999",
+  "area": "matematica",
+  "titulo": "Ler, escrever e ordenar números até 99 999",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "ler-escrever-e-ordenar-numeros-ate-999999": {
+  "slug": "ler-escrever-e-ordenar-numeros-ate-999999",
+  "area": "matematica",
+  "titulo": "Ler, escrever e ordenar números até 999 999",
+  "ano": "5º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "ler-horas-minutos-e-segundos": {
+  "slug": "ler-horas-minutos-e-segundos",
+  "area": "matematica",
+  "titulo": "Horas, minutos e segundos",
+  "ano": "3º ano",
+  "figuras": 7,
+  "paginas_braille": 7
+ },
+ "ler-tabelas-e-graficos-de-colunas": {
+  "slug": "ler-tabelas-e-graficos-de-colunas",
+  "area": "matematica",
+  "titulo": "Ler tabelas e gráficos de colunas",
+  "ano": "1º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "li-e-concordo": {
+  "slug": "li-e-concordo",
+  "area": "computacao",
+  "titulo": "Li e concordo?",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "listar-todos-os-agrupamentos": {
+  "slug": "listar-todos-os-agrupamentos",
+  "area": "matematica",
+  "titulo": "Listar todos os agrupamentos",
+  "ano": "5º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "listas-que-crescem": {
+  "slug": "listas-que-crescem",
+  "area": "computacao",
+  "titulo": "Listas que crescem",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "litro-e-decimetro-cubico": {
+  "slug": "litro-e-decimetro-cubico",
+  "area": "matematica",
+  "titulo": "Litro, decímetro cúbico e metro cúbico",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "localizacao-em-malhas-plantas-e-mapas": {
+  "slug": "localizacao-em-malhas-plantas-e-mapas",
+  "area": "matematica",
+  "titulo": "Localização em malhas, plantas e mapas",
+  "ano": "4º ano",
+  "figuras": 6,
+  "paginas_braille": 5
+ },
+ "localizar-e-se-deslocar-num-mapa": {
+  "slug": "localizar-e-se-deslocar-num-mapa",
+  "area": "matematica",
+  "titulo": "Localizar e se deslocar num mapa",
+  "ano": "2º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "localizar-em-mapas-e-malhas": {
+  "slug": "localizar-em-mapas-e-malhas",
+  "area": "matematica",
+  "titulo": "Localizar em mapas e malhas",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "maquina-de-estados": {
+  "slug": "maquina-de-estados",
+  "area": "computacao",
+  "titulo": "Máquina de estados",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "massa-e-capacidade-kg-g-litro-e-ml": {
+  "slug": "massa-e-capacidade-kg-g-litro-e-ml",
+  "area": "matematica",
+  "titulo": "Massa e capacidade: kg, g, litro e mL",
+  "ano": "2º ano",
+  "figuras": 7,
+  "paginas_braille": 4
+ },
+ "massa-e-capacidade-quilo-e-litro": {
+  "slug": "massa-e-capacidade-quilo-e-litro",
+  "area": "matematica",
+  "titulo": "Massa e capacidade: quilo e litro",
+  "ano": "2º e 3º ano",
+  "figuras": 14,
+  "paginas_braille": 7
+ },
+ "media-e-amplitude": {
+  "slug": "media-e-amplitude",
+  "area": "matematica",
+  "titulo": "Média e amplitude",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "media-moda-e-mediana": {
+  "slug": "media-moda-e-mediana",
+  "area": "matematica",
+  "titulo": "Média, moda e mediana",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "mediatriz-bissetriz-e-hexagono-regular": {
+  "slug": "mediatriz-bissetriz-e-hexagono-regular",
+  "area": "matematica",
+  "titulo": "Mediatriz, bissetriz e hexágono regular",
+  "ano": "8º ano",
+  "figuras": 5,
+  "paginas_braille": 4
+ },
+ "mediatriz-e-bissetriz-em-problemas": {
+  "slug": "mediatriz-e-bissetriz-em-problemas",
+  "area": "matematica",
+  "titulo": "Mediatriz e bissetriz em problemas",
+  "ano": "8º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "medidas-e-areas-com-quadradinhos": {
+  "slug": "medidas-e-areas-com-quadradinhos",
+  "area": "matematica",
+  "titulo": "Medidas e áreas com quadradinhos",
+  "ano": "3º e 4º ano",
+  "figuras": 12,
+  "paginas_braille": 7
+ },
+ "medidas-sao-aproximadas": {
+  "slug": "medidas-sao-aproximadas",
+  "area": "matematica",
+  "titulo": "Toda medida é aproximada",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "medidas-transformar-unidades": {
+  "slug": "medidas-transformar-unidades",
+  "area": "matematica",
+  "titulo": "Medidas: transformar unidades",
+  "ano": "5º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "medir-angulos-com-transferidor": {
+  "slug": "medir-angulos-com-transferidor",
+  "area": "matematica",
+  "titulo": "Medir ângulos com o transferidor",
+  "ano": "6º ano",
+  "figuras": 8,
+  "paginas_braille": 6
+ },
+ "medir-comprimentos-metro-centimetro-e-milimetro": {
+  "slug": "medir-comprimentos-metro-centimetro-e-milimetro",
+  "area": "matematica",
+  "titulo": "Medir comprimentos: metro, centímetro e milímetro",
+  "ano": "2º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "medir-comprimentos-metro-e-centimetro": {
+  "slug": "medir-comprimentos-metro-e-centimetro",
+  "area": "matematica",
+  "titulo": "Medir comprimentos: metro e centímetro",
+  "ano": "2º e 3º ano",
+  "figuras": 7,
+  "paginas_braille": 6
+ },
+ "medir-intervalos-de-tempo": {
+  "slug": "medir-intervalos-de-tempo",
+  "area": "matematica",
+  "titulo": "Medir intervalos de tempo",
+  "ano": "3º ano",
+  "figuras": 5,
+  "paginas_braille": 7
+ },
+ "mensagens-secretas": {
+  "slug": "mensagens-secretas",
+  "area": "computacao",
+  "titulo": "Mensagens secretas",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "mesma-operacao-nos-dois-lados": {
+  "slug": "mesma-operacao-nos-dois-lados",
+  "area": "matematica",
+  "titulo": "Mesma operação nos dois lados",
+  "ano": "5º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "mesmo-perimetro-areas-diferentes": {
+  "slug": "mesmo-perimetro-areas-diferentes",
+  "area": "matematica",
+  "titulo": "Mesmo perímetro, áreas diferentes",
+  "ano": "5º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "metade-terca-quarta-quinta-e-decima-parte": {
+  "slug": "metade-terca-quarta-quinta-e-decima-parte",
+  "area": "matematica",
+  "titulo": "Metade, terça, quarta, quinta e décima parte",
+  "ano": "3º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "mmc-e-mdc-em-problemas": {
+  "slug": "mmc-e-mdc-em-problemas",
+  "area": "matematica",
+  "titulo": "Múltiplos e divisores em problemas",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "moedas-e-cedulas-do-real": {
+  "slug": "moedas-e-cedulas-do-real",
+  "area": "matematica",
+  "titulo": "Moedas e cédulas do real",
+  "ano": "1º ano",
+  "figuras": 11,
+  "paginas_braille": 6
+ },
+ "movimentacao-na-malha-e-mudancas-de-direcao": {
+  "slug": "movimentacao-na-malha-e-mudancas-de-direcao",
+  "area": "matematica",
+  "titulo": "Movimentação na malha e mudanças de direção",
+  "ano": "3º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "movimentos-no-plano-cartesiano": {
+  "slug": "movimentos-no-plano-cartesiano",
+  "area": "matematica",
+  "titulo": "Movimentos no plano cartesiano",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "muitas-maos": {
+  "slug": "muitas-maos",
+  "area": "computacao",
+  "titulo": "Muitas mãos",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "muito-provavel-pouco-provavel-ou-impossivel": {
+  "slug": "muito-provavel-pouco-provavel-ou-impossivel",
+  "area": "matematica",
+  "titulo": "Muito provável, pouco provável ou impossível",
+  "ano": "2º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "multiplicacao-e-divisao-com-decimais": {
+  "slug": "multiplicacao-e-divisao-com-decimais",
+  "area": "matematica",
+  "titulo": "Multiplicação e divisão com números decimais",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "multiplicacao-estrategias-e-propriedades": {
+  "slug": "multiplicacao-estrategias-e-propriedades",
+  "area": "matematica",
+  "titulo": "Multiplicação: estratégias e propriedades",
+  "ano": "4º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "multiplicacao-por-2-3-4-5-e-10": {
+  "slug": "multiplicacao-por-2-3-4-5-e-10",
+  "area": "matematica",
+  "titulo": "Multiplicação por 2, 3, 4, 5 e 10",
+  "ano": "3º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "multiplicar-coordenadas-de-poligonos": {
+  "slug": "multiplicar-coordenadas-de-poligonos",
+  "area": "matematica",
+  "titulo": "Multiplicar coordenadas de polígonos",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "multiplicar-e-dividir-racionais": {
+  "slug": "multiplicar-e-dividir-racionais",
+  "area": "matematica",
+  "titulo": "Multiplicar e dividir racionais",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "multiplicar-por-2-3-4-e-5": {
+  "slug": "multiplicar-por-2-3-4-e-5",
+  "area": "matematica",
+  "titulo": "Multiplicar por 2, 3, 4 e 5",
+  "ano": "2º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "multiplos-divisores-e-numeros-primos": {
+  "slug": "multiplos-divisores-e-numeros-primos",
+  "area": "matematica",
+  "titulo": "Múltiplos, divisores e números primos",
+  "ano": "6º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "multiplos-divisores-e-porcentagem": {
+  "slug": "multiplos-divisores-e-porcentagem",
+  "area": "matematica",
+  "titulo": "Múltiplos, divisores e porcentagem no dia a dia",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "multiplos-e-igualdades": {
+  "slug": "multiplos-e-igualdades",
+  "area": "matematica",
+  "titulo": "Múltiplos e igualdades",
+  "ano": "4º ano",
+  "figuras": 2,
+  "paginas_braille": 7
+ },
+ "na-feira-moedas-e-cedulas": {
+  "slug": "na-feira-moedas-e-cedulas",
+  "area": "matematica",
+  "titulo": "Na feira: moedas e cédulas",
+  "ano": "1º e 2º ano",
+  "figuras": 13,
+  "paginas_braille": 7
+ },
+ "numeros-ate-100-contar-e-comparar": {
+  "slug": "numeros-ate-100-contar-e-comparar",
+  "area": "matematica",
+  "titulo": "Números até 100: contar e comparar",
+  "ano": "1º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "numeros-ate-9999-milhar": {
+  "slug": "numeros-ate-9999-milhar",
+  "area": "matematica",
+  "titulo": "Números até 9999: o milhar",
+  "ano": "3º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "numeros-ate-99999-dezena-de-milhar": {
+  "slug": "numeros-ate-99999-dezena-de-milhar",
+  "area": "matematica",
+  "titulo": "Números até 99 999: a dezena de milhar",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "numeros-ate-centenas-de-milhar-e-decimais": {
+  "slug": "numeros-ate-centenas-de-milhar-e-decimais",
+  "area": "matematica",
+  "titulo": "Números até centenas de milhar e números decimais",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 7
+ },
+ "numeros-inteiros-reta-e-temperatura": {
+  "slug": "numeros-inteiros-reta-e-temperatura",
+  "area": "matematica",
+  "titulo": "Números inteiros: reta, temperatura e saldo",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 7
+ },
+ "numeros-irracionais-e-reais": {
+  "slug": "numeros-irracionais-e-reais",
+  "area": "matematica",
+  "titulo": "Números irracionais e reais",
+  "ano": "9º ano",
+  "figuras": 2,
+  "paginas_braille": 7
+ },
+ "numeros-na-reta-numerica": {
+  "slug": "numeros-na-reta-numerica",
+  "area": "matematica",
+  "titulo": "Números na reta numérica",
+  "ano": "3º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "numeros-que-contam-e-numeros-que-ordenam": {
+  "slug": "numeros-que-contam-e-numeros-que-ordenam",
+  "area": "matematica",
+  "titulo": "Números que contam e números que ordenam",
+  "ano": "1º ano",
+  "figuras": 8,
+  "paginas_braille": 6
+ },
+ "numeros-que-deixam-o-mesmo-resto": {
+  "slug": "numeros-que-deixam-o-mesmo-resto",
+  "area": "matematica",
+  "titulo": "Números que deixam o mesmo resto",
+  "ano": "4º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "numeros-racionais-reta-e-operacoes": {
+  "slug": "numeros-racionais-reta-e-operacoes",
+  "area": "matematica",
+  "titulo": "Números racionais: reta e operações",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "numeros-reais-notacao-cientifica-e-unidades": {
+  "slug": "numeros-reais-notacao-cientifica-e-unidades",
+  "area": "matematica",
+  "titulo": "Notação científica e unidades muito grandes ou pequenas",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "numeros-sistemas-de-numeracao-e-arredondamento": {
+  "slug": "numeros-sistemas-de-numeracao-e-arredondamento",
+  "area": "matematica",
+  "titulo": "Números, sistemas de numeração e arredondamento",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 7
+ },
+ "o-numero-pi": {
+  "slug": "o-numero-pi",
+  "area": "matematica",
+  "titulo": "O número π",
+  "ano": "7º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "o-que-acontece-primeiro-no-dia": {
+  "slug": "o-que-acontece-primeiro-no-dia",
+  "area": "matematica",
+  "titulo": "O que acontece primeiro no dia?",
+  "ano": "1º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "o-que-falta-em-sequencias-repetitivas-e-recursivas": {
+  "slug": "o-que-falta-em-sequencias-repetitivas-e-recursivas",
+  "area": "matematica",
+  "titulo": "O que falta em sequências repetitivas e recursivas",
+  "ano": "2º ano",
+  "figuras": 7,
+  "paginas_braille": 5
+ },
+ "o-que-falta-na-sequencia": {
+  "slug": "o-que-falta-na-sequencia",
+  "area": "matematica",
+  "titulo": "O que falta na sequência?",
+  "ano": "1º ano",
+  "figuras": 8,
+  "paginas_braille": 4
+ },
+ "o-que-importa": {
+  "slug": "o-que-importa",
+  "area": "computacao",
+  "titulo": "O que importa?",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "onde-esta-localizacao-no-espaco": {
+  "slug": "onde-esta-localizacao-no-espaco",
+  "area": "matematica",
+  "titulo": "Onde está? Localização no espaço",
+  "ano": "1º ano",
+  "figuras": 6,
+  "paginas_braille": 5
+ },
+ "operacoes-com-decimais-e-potencias": {
+  "slug": "operacoes-com-decimais-e-potencias",
+  "area": "matematica",
+  "titulo": "Operações com decimais e potências",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "operacoes-com-numeros-inteiros": {
+  "slug": "operacoes-com-numeros-inteiros",
+  "area": "matematica",
+  "titulo": "Operações com números inteiros",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "operacoes-inversas": {
+  "slug": "operacoes-inversas",
+  "area": "matematica",
+  "titulo": "Operações inversas",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "pacotes-embaralhados": {
+  "slug": "pacotes-embaralhados",
+  "area": "computacao",
+  "titulo": "Pacotes embaralhados",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "para-onde-vai-o-lixo-eletronico": {
+  "slug": "para-onde-vai-o-lixo-eletronico",
+  "area": "computacao",
+  "titulo": "Para onde vai o lixo eletrônico?",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "pares-ordenados-e-vertices": {
+  "slug": "pares-ordenados-e-vertices",
+  "area": "matematica",
+  "titulo": "Pares ordenados e vértices",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "partilha-desigual-e-razao": {
+  "slug": "partilha-desigual-e-razao",
+  "area": "matematica",
+  "titulo": "Partilha desigual e razão",
+  "ano": "6º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "partilha-em-partes-desiguais": {
+  "slug": "partilha-em-partes-desiguais",
+  "area": "matematica",
+  "titulo": "Partilha em partes desiguais",
+  "ano": "5º ano",
+  "figuras": 4,
+  "paginas_braille": 6
+ },
+ "perimetro-area-e-volume": {
+  "slug": "perimetro-area-e-volume",
+  "area": "matematica",
+  "titulo": "Perímetro, área e volume",
+  "ano": "5º ano",
+  "figuras": 11,
+  "paginas_braille": 7
+ },
+ "perimetro-e-area-do-quadrado": {
+  "slug": "perimetro-e-area-do-quadrado",
+  "area": "matematica",
+  "titulo": "Perímetro e área do quadrado",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "perimetro-massa-e-capacidade": {
+  "slug": "perimetro-massa-e-capacidade",
+  "area": "matematica",
+  "titulo": "Perímetro, massa e capacidade",
+  "ano": "4º ano",
+  "figuras": 9,
+  "paginas_braille": 7
+ },
+ "periodos-do-dia-semana-e-meses": {
+  "slug": "periodos-do-dia-semana-e-meses",
+  "area": "matematica",
+  "titulo": "Períodos do dia, semana e meses",
+  "ano": "1º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "pesquisa-amostral-e-relatorio": {
+  "slug": "pesquisa-amostral-e-relatorio",
+  "area": "matematica",
+  "titulo": "Pesquisa amostral e relatório",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "pesquisa-amostral-graficos-e-medidas": {
+  "slug": "pesquisa-amostral-graficos-e-medidas",
+  "area": "matematica",
+  "titulo": "Pesquisa amostral, gráficos e medidas",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 7
+ },
+ "pesquisa-censo-ou-amostra": {
+  "slug": "pesquisa-censo-ou-amostra",
+  "area": "matematica",
+  "titulo": "Pesquisa: censo ou amostra",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "pesquisa-com-categorias-e-numeros": {
+  "slug": "pesquisa-com-categorias-e-numeros",
+  "area": "matematica",
+  "titulo": "Pesquisa com dados de categorias e de números",
+  "ano": "4º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "pesquisa-com-planilha-e-graficos": {
+  "slug": "pesquisa-com-planilha-e-graficos",
+  "area": "matematica",
+  "titulo": "Pesquisa com planilha e gráficos",
+  "ano": "5º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "pesquisa-com-planilha-eletronica": {
+  "slug": "pesquisa-com-planilha-eletronica",
+  "area": "matematica",
+  "titulo": "Pesquisa com planilha eletrônica",
+  "ano": "6º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "pesquisa-com-tres-perguntas": {
+  "slug": "pesquisa-com-tres-perguntas",
+  "area": "matematica",
+  "titulo": "Pesquisa com três perguntas",
+  "ano": "2º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "pesquisa-da-turma-tabelas-e-graficos": {
+  "slug": "pesquisa-da-turma-tabelas-e-graficos",
+  "area": "matematica",
+  "titulo": "Pesquisa da turma: tabelas e gráficos",
+  "ano": "1º e 2º ano",
+  "figuras": 9,
+  "paginas_braille": 7
+ },
+ "pesquisa-social-e-relatorio": {
+  "slug": "pesquisa-social-e-relatorio",
+  "area": "matematica",
+  "titulo": "Pesquisa sobre a realidade social",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "plano-cartesiano-coordenadas": {
+  "slug": "plano-cartesiano-coordenadas",
+  "area": "matematica",
+  "titulo": "Plano cartesiano: coordenadas",
+  "ano": "5º ano",
+  "figuras": 4,
+  "paginas_braille": 4
+ },
+ "plano-cartesiano-e-poligonos": {
+  "slug": "plano-cartesiano-e-poligonos",
+  "area": "matematica",
+  "titulo": "Plano cartesiano e polígonos",
+  "ano": "6º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "plantas-baixas-areas-e-grandezas": {
+  "slug": "plantas-baixas-areas-e-grandezas",
+  "area": "matematica",
+  "titulo": "Plantas baixas, áreas e grandezas",
+  "ano": "6º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "plantas-baixas-e-vistas-aereas": {
+  "slug": "plantas-baixas-e-vistas-aereas",
+  "area": "matematica",
+  "titulo": "Plantas baixas e vistas aéreas",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "plantas-e-roteiros-de-lugares-conhecidos": {
+  "slug": "plantas-e-roteiros-de-lugares-conhecidos",
+  "area": "matematica",
+  "titulo": "Plantas e roteiros de lugares conhecidos",
+  "ano": "2º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "poligono-regular-ponto-medio-e-distancia": {
+  "slug": "poligono-regular-ponto-medio-e-distancia",
+  "area": "matematica",
+  "titulo": "Polígono regular, ponto médio e distância no plano",
+  "ano": "9º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "poligonos-ampliacao-e-reducao": {
+  "slug": "poligonos-ampliacao-e-reducao",
+  "area": "matematica",
+  "titulo": "Polígonos, ampliação e redução",
+  "ano": "5º ano",
+  "figuras": 17,
+  "paginas_braille": 7
+ },
+ "poligonos-e-figuras-congruentes": {
+  "slug": "poligonos-e-figuras-congruentes",
+  "area": "matematica",
+  "titulo": "Polígonos e figuras congruentes",
+  "ano": "3º ano",
+  "figuras": 20,
+  "paginas_braille": 7
+ },
+ "poligonos-regulares-e-mosaicos": {
+  "slug": "poligonos-regulares-e-mosaicos",
+  "area": "matematica",
+  "titulo": "Polígonos regulares, ângulos e mosaicos",
+  "ano": "7º ano",
+  "figuras": 8,
+  "paginas_braille": 7
+ },
+ "poligonos-regulares-e-nao-regulares": {
+  "slug": "poligonos-regulares-e-nao-regulares",
+  "area": "matematica",
+  "titulo": "Polígonos regulares e não regulares",
+  "ano": "6º ano",
+  "figuras": 7,
+  "paginas_braille": 7
+ },
+ "pontes-e-caminhos": {
+  "slug": "pontes-e-caminhos",
+  "area": "computacao",
+  "titulo": "Pontes e caminhos",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "ponto-medio-e-distancia-no-plano": {
+  "slug": "ponto-medio-e-distancia-no-plano",
+  "area": "matematica",
+  "titulo": "Ponto médio e distância no plano",
+  "ano": "9º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "por-dentro-do-feed": {
+  "slug": "por-dentro-do-feed",
+  "area": "computacao",
+  "titulo": "Por dentro do feed",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "porcentagem-acrescimo-e-desconto": {
+  "slug": "porcentagem-acrescimo-e-desconto",
+  "area": "matematica",
+  "titulo": "Porcentagem: acréscimo e desconto",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "porcentagem-com-calculadora-e-planilha": {
+  "slug": "porcentagem-com-calculadora-e-planilha",
+  "area": "matematica",
+  "titulo": "Porcentagem com calculadora e planilha",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "porcentagem-descontos-e-acrescimos": {
+  "slug": "porcentagem-descontos-e-acrescimos",
+  "area": "matematica",
+  "titulo": "Porcentagem: descontos e acréscimos",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "porcentagem-e-comparacao-de-decimais-e-fracoes": {
+  "slug": "porcentagem-e-comparacao-de-decimais-e-fracoes",
+  "area": "matematica",
+  "titulo": "Porcentagem, decimais e frações",
+  "ano": "5º ano",
+  "figuras": 6,
+  "paginas_braille": 7
+ },
+ "porcentagem-e-dizimas-periodicas": {
+  "slug": "porcentagem-e-dizimas-periodicas",
+  "area": "matematica",
+  "titulo": "Porcentagem e dízimas periódicas",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "porcentagens-10-25-50-75-100": {
+  "slug": "porcentagens-10-25-50-75-100",
+  "area": "matematica",
+  "titulo": "Porcentagens: 10%, 25%, 50%, 75% e 100%",
+  "ano": "5º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "porcentagens-sucessivas-e-educacao-financeira": {
+  "slug": "porcentagens-sucessivas-e-educacao-financeira",
+  "area": "matematica",
+  "titulo": "Porcentagens sucessivas e educação financeira",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "potencias-e-notacao-cientifica": {
+  "slug": "potencias-e-notacao-cientifica",
+  "area": "matematica",
+  "titulo": "Potências e notação científica",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "potencias-raizes-e-notacao-cientifica": {
+  "slug": "potencias-raizes-e-notacao-cientifica",
+  "area": "matematica",
+  "titulo": "Potências, raízes e notação científica",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 7
+ },
+ "primos-compostos-e-divisibilidade": {
+  "slug": "primos-compostos-e-divisibilidade",
+  "area": "matematica",
+  "titulo": "Primos, compostos e divisibilidade",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "principio-multiplicativo": {
+  "slug": "principio-multiplicativo",
+  "area": "matematica",
+  "titulo": "Princípio multiplicativo",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "prismas-e-piramides-faces-vertices-e-arestas": {
+  "slug": "prismas-e-piramides-faces-vertices-e-arestas",
+  "area": "matematica",
+  "titulo": "Prismas e pirâmides: faces, vértices e arestas",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "prismas-piramides-e-planificacoes": {
+  "slug": "prismas-piramides-e-planificacoes",
+  "area": "matematica",
+  "titulo": "Prismas, pirâmides e planificações",
+  "ano": "3º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "privacidade-no-controle": {
+  "slug": "privacidade-no-controle",
+  "area": "computacao",
+  "titulo": "Privacidade no controle",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "probabilidade-e-experimentos": {
+  "slug": "probabilidade-e-experimentos",
+  "area": "matematica",
+  "titulo": "Probabilidade e experimentos",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "probabilidade-graficos-e-pesquisa": {
+  "slug": "probabilidade-graficos-e-pesquisa",
+  "area": "matematica",
+  "titulo": "Probabilidade, gráficos e pesquisa",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "probabilidade-graficos-e-pesquisa-amostral": {
+  "slug": "probabilidade-graficos-e-pesquisa-amostral",
+  "area": "matematica",
+  "titulo": "Probabilidade, gráficos enganosos e pesquisa amostral",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 7
+ },
+ "probabilidade-media-e-graficos-de-setores": {
+  "slug": "probabilidade-media-e-graficos-de-setores",
+  "area": "matematica",
+  "titulo": "Probabilidade, média, pesquisa e gráfico de setores",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 7
+ },
+ "problemas-com-a-mesma-estrutura": {
+  "slug": "problemas-com-a-mesma-estrutura",
+  "area": "matematica",
+  "titulo": "Problemas com a mesma estrutura",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "problemas-com-grandezas-e-medidas": {
+  "slug": "problemas-com-grandezas-e-medidas",
+  "area": "matematica",
+  "titulo": "Problemas com grandezas e medidas",
+  "ano": "6º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "problemas-com-multiplos-e-divisores": {
+  "slug": "problemas-com-multiplos-e-divisores",
+  "area": "matematica",
+  "titulo": "Problemas com múltiplos e divisores",
+  "ano": "6º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "problemas-com-numeros-reais": {
+  "slug": "problemas-com-numeros-reais",
+  "area": "matematica",
+  "titulo": "Problemas com números reais",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "problemas-com-pitagoras-e-tales": {
+  "slug": "problemas-com-pitagoras-e-tales",
+  "area": "matematica",
+  "titulo": "Problemas com Pitágoras e Tales",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "problemas-com-racionais": {
+  "slug": "problemas-com-racionais",
+  "area": "matematica",
+  "titulo": "Problemas com números racionais",
+  "ano": "7º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "problemas-com-tabelas-e-graficos": {
+  "slug": "problemas-com-tabelas-e-graficos",
+  "area": "matematica",
+  "titulo": "Problemas com tabelas e gráficos",
+  "ano": "3º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "problemas-de-adicao-e-subtracao-ate-999": {
+  "slug": "problemas-de-adicao-e-subtracao-ate-999",
+  "area": "matematica",
+  "titulo": "Problemas de adição e subtração até 999",
+  "ano": "2º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "problemas-de-adicao-e-subtracao-com-estimativa": {
+  "slug": "problemas-de-adicao-e-subtracao-com-estimativa",
+  "area": "matematica",
+  "titulo": "Problemas de adição e subtração com estimativa",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "problemas-de-juntar-tirar-comparar-e-completar": {
+  "slug": "problemas-de-juntar-tirar-comparar-e-completar",
+  "area": "matematica",
+  "titulo": "Problemas de juntar, tirar, comparar e completar",
+  "ano": "3º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "problemas-de-multiplicacao": {
+  "slug": "problemas-de-multiplicacao",
+  "area": "matematica",
+  "titulo": "Problemas de multiplicação",
+  "ano": "4º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "problemas-direta-e-inversamente-proporcionais": {
+  "slug": "problemas-direta-e-inversamente-proporcionais",
+  "area": "matematica",
+  "titulo": "Problemas com grandezas proporcionais",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "programa-para-outra-aula": {
+  "slug": "programa-para-outra-aula",
+  "area": "computacao",
+  "titulo": "Programa para outra aula",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "projeto-com-impacto": {
+  "slug": "projeto-com-impacto",
+  "area": "computacao",
+  "titulo": "Projeto com impacto",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "proporcionalidade-direta": {
+  "slug": "proporcionalidade-direta",
+  "area": "matematica",
+  "titulo": "Proporcionalidade: dobro, triplo e metade",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "proporcionalidade-direta-e-inversa": {
+  "slug": "proporcionalidade-direta-e-inversa",
+  "area": "matematica",
+  "titulo": "Proporcionalidade direta e inversa",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 7
+ },
+ "proporcionalidade-e-partilha": {
+  "slug": "proporcionalidade-e-partilha",
+  "area": "matematica",
+  "titulo": "Proporcionalidade e partilha",
+  "ano": "5º ano",
+  "figuras": 2,
+  "paginas_braille": 7
+ },
+ "proporcionalidade-escalas-e-partes": {
+  "slug": "proporcionalidade-escalas-e-partes",
+  "area": "matematica",
+  "titulo": "Escalas e divisão em partes proporcionais",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "propriedades-das-operacoes-para-calcular": {
+  "slug": "propriedades-das-operacoes-para-calcular",
+  "area": "matematica",
+  "titulo": "Propriedades das operações para calcular",
+  "ano": "4º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "quanto-custa-um-celular": {
+  "slug": "quanto-custa-um-celular",
+  "area": "computacao",
+  "titulo": "Quanto custa um celular?",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "quanto-tempo-entre-duas-datas": {
+  "slug": "quanto-tempo-entre-duas-datas",
+  "area": "matematica",
+  "titulo": "Quanto tempo entre duas datas?",
+  "ano": "2º ano",
+  "figuras": 0,
+  "paginas_braille": 8
+ },
+ "racionais-na-reta": {
+  "slug": "racionais-na-reta",
+  "area": "matematica",
+  "titulo": "Números racionais na reta",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "radar-do-bairro": {
+  "slug": "radar-do-bairro",
+  "area": "computacao",
+  "titulo": "Radar do bairro",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "raiz-como-potencia": {
+  "slug": "raiz-como-potencia",
+  "area": "matematica",
+  "titulo": "Raiz como potência",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "razao-como-fracao": {
+  "slug": "razao-como-fracao",
+  "area": "matematica",
+  "titulo": "Razão escrita como fração",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "razoes-entre-grandezas-diferentes": {
+  "slug": "razoes-entre-grandezas-diferentes",
+  "area": "matematica",
+  "titulo": "Razões entre grandezas diferentes",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "razoes-escalas-e-partes-proporcionais": {
+  "slug": "razoes-escalas-e-partes-proporcionais",
+  "area": "matematica",
+  "titulo": "Razões, escalas e divisão em partes proporcionais",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 6
+ },
+ "reconhecer-e-desenhar-poligonos": {
+  "slug": "reconhecer-e-desenhar-poligonos",
+  "area": "matematica",
+  "titulo": "Reconhecer e desenhar polígonos",
+  "ano": "5º ano",
+  "figuras": 6,
+  "paginas_braille": 7
+ },
+ "regularidades-e-igualdades": {
+  "slug": "regularidades-e-igualdades",
+  "area": "matematica",
+  "titulo": "Regularidades em sequências e igualdades",
+  "ano": "3º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "regularidades-em-sequencias-numericas": {
+  "slug": "regularidades-em-sequencias-numericas",
+  "area": "matematica",
+  "titulo": "Regularidades em sequências numéricas",
+  "ano": "3º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "relacoes-entre-as-operacoes": {
+  "slug": "relacoes-entre-as-operacoes",
+  "area": "matematica",
+  "titulo": "Relações entre as operações",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "relacoes-metricas-e-pitagoras": {
+  "slug": "relacoes-metricas-e-pitagoras",
+  "area": "matematica",
+  "titulo": "Relações métricas e teorema de Pitágoras",
+  "ano": "9º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "resultados-possiveis-e-mais-provaveis": {
+  "slug": "resultados-possiveis-e-mais-provaveis",
+  "area": "matematica",
+  "titulo": "Resultados possíveis e mais prováveis",
+  "ano": "3º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "retas-paralelas-e-perpendiculares": {
+  "slug": "retas-paralelas-e-perpendiculares",
+  "area": "matematica",
+  "titulo": "Retas paralelas e perpendiculares",
+  "ano": "6º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "retas-paralelas-e-perpendiculares-ampliacao-e-algoritmos": {
+  "slug": "retas-paralelas-e-perpendiculares-ampliacao-e-algoritmos",
+  "area": "matematica",
+  "titulo": "Retas paralelas e perpendiculares, ampliação e algoritmos",
+  "ano": "6º ano",
+  "figuras": 9,
+  "paginas_braille": 7
+ },
+ "retas-paralelas-e-transversal": {
+  "slug": "retas-paralelas-e-transversal",
+  "area": "matematica",
+  "titulo": "Retas paralelas cortadas por uma transversal",
+  "ano": "7º ano",
+  "figuras": 6,
+  "paginas_braille": 7
+ },
+ "rigidez-do-triangulo": {
+  "slug": "rigidez-do-triangulo",
+  "area": "matematica",
+  "titulo": "A rigidez do triângulo",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "robo-no-labirinto": {
+  "slug": "robo-no-labirinto",
+  "area": "computacao",
+  "titulo": "Robô no labirinto",
+  "ano": "6º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "rotina-e-horas-do-dia": {
+  "slug": "rotina-e-horas-do-dia",
+  "area": "matematica",
+  "titulo": "Rotina e horas do dia",
+  "ano": "1º ao 3º ano",
+  "figuras": 13,
+  "paginas_braille": 9
+ },
+ "segmentos-que-nao-sao-racionais": {
+  "slug": "segmentos-que-nao-sao-racionais",
+  "area": "matematica",
+  "titulo": "Segmentos que não são racionais",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "semaforo-da-conversa": {
+  "slug": "semaforo-da-conversa",
+  "area": "computacao",
+  "titulo": "Semáforo da conversa",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "semelhanca-e-teorema-de-pitagoras": {
+  "slug": "semelhanca-e-teorema-de-pitagoras",
+  "area": "matematica",
+  "titulo": "Semelhança de triângulos e teorema de Pitágoras",
+  "ano": "9º ano",
+  "figuras": 4,
+  "paginas_braille": 7
+ },
+ "separar-e-organizar-por-atributos": {
+  "slug": "separar-e-organizar-por-atributos",
+  "area": "matematica",
+  "titulo": "Separar e organizar: cor, forma e tamanho",
+  "ano": "1º ano",
+  "figuras": 13,
+  "paginas_braille": 7
+ },
+ "sequencia-nao-recursiva-e-fluxograma": {
+  "slug": "sequencia-nao-recursiva-e-fluxograma",
+  "area": "matematica",
+  "titulo": "Sequência não recursiva e fluxograma",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "sequencia-recursiva-e-fluxograma": {
+  "slug": "sequencia-recursiva-e-fluxograma",
+  "area": "matematica",
+  "titulo": "Sequência recursiva e fluxograma",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "sequencias-crescentes-e-decrescentes": {
+  "slug": "sequencias-crescentes-e-decrescentes",
+  "area": "matematica",
+  "titulo": "Sequências crescentes e decrescentes",
+  "ano": "2º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "sequencias-crescentes-e-decrescentes-com-regra": {
+  "slug": "sequencias-crescentes-e-decrescentes-com-regra",
+  "area": "matematica",
+  "titulo": "Sequências crescentes e decrescentes",
+  "ano": "2º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "sequencias-de-multiplos": {
+  "slug": "sequencias-de-multiplos",
+  "area": "matematica",
+  "titulo": "Sequências de múltiplos",
+  "ano": "4º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "sequencias-e-fluxogramas": {
+  "slug": "sequencias-e-fluxogramas",
+  "area": "matematica",
+  "titulo": "Sequências e fluxogramas",
+  "ano": "8º ano",
+  "figuras": 6,
+  "paginas_braille": 6
+ },
+ "sequencias-e-padroes": {
+  "slug": "sequencias-e-padroes",
+  "area": "matematica",
+  "titulo": "Sequências e padrões",
+  "ano": "1º e 2º ano",
+  "figuras": 12,
+  "paginas_braille": 7
+ },
+ "sequencias-em-linguagem-algebrica": {
+  "slug": "sequencias-em-linguagem-algebrica",
+  "area": "matematica",
+  "titulo": "Sequências em linguagem algébrica",
+  "ano": "7º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "sequencias-recursivas": {
+  "slug": "sequencias-recursivas",
+  "area": "matematica",
+  "titulo": "Sequências recursivas",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "seus-dados-valem-muito": {
+  "slug": "seus-dados-valem-muito",
+  "area": "computacao",
+  "titulo": "Seus dados valem muito",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 7
+ },
+ "simetria-de-reflexao": {
+  "slug": "simetria-de-reflexao",
+  "area": "matematica",
+  "titulo": "Simetria de reflexão",
+  "ano": "4º ano",
+  "figuras": 5,
+  "paginas_braille": 4
+ },
+ "simetrias-translacao-rotacao-reflexao": {
+  "slug": "simetrias-translacao-rotacao-reflexao",
+  "area": "matematica",
+  "titulo": "Simetrias: translação, rotação e reflexão",
+  "ano": "7º ano",
+  "figuras": 8,
+  "paginas_braille": 5
+ },
+ "simetrico-no-plano-cartesiano": {
+  "slug": "simetrico-no-plano-cartesiano",
+  "area": "matematica",
+  "titulo": "Simétrico no plano cartesiano",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "sistema-de-numeracao-decimal": {
+  "slug": "sistema-de-numeracao-decimal",
+  "area": "matematica",
+  "titulo": "Sistema de numeração decimal",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "sistemas-de-equacoes-no-dia-a-dia": {
+  "slug": "sistemas-de-equacoes-no-dia-a-dia",
+  "area": "matematica",
+  "titulo": "Sistemas de equações no dia a dia",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
+ "solidos-e-objetos-do-dia-a-dia": {
+  "slug": "solidos-e-objetos-do-dia-a-dia",
+  "area": "matematica",
+  "titulo": "Sólidos e objetos do dia a dia",
+  "ano": "1º ano",
+  "figuras": 14,
+  "paginas_braille": 5
+ },
+ "solidos-e-suas-planificacoes": {
+  "slug": "solidos-e-suas-planificacoes",
+  "area": "matematica",
+  "titulo": "Sólidos e suas planificações",
+  "ano": "5º ano",
+  "figuras": 10,
+  "paginas_braille": 6
+ },
+ "solidos-geometricos-e-objetos-do-dia-a-dia": {
+  "slug": "solidos-geometricos-e-objetos-do-dia-a-dia",
+  "area": "matematica",
+  "titulo": "Sólidos geométricos e objetos do dia a dia",
+  "ano": "3º ano",
+  "figuras": 6,
+  "paginas_braille": 6
+ },
+ "solidos-geometricos-e-planificacoes": {
+  "slug": "solidos-geometricos-e-planificacoes",
+  "area": "matematica",
+  "titulo": "Sólidos geométricos e planificações",
+  "ano": "3º ao 5º ano",
+  "figuras": 19,
+  "paginas_braille": 7
+ },
+ "somar-e-subtrair-fracoes": {
+  "slug": "somar-e-subtrair-fracoes",
+  "area": "matematica",
+  "titulo": "Somar e subtrair frações",
+  "ano": "6º ano",
+  "figuras": 4,
+  "paginas_braille": 5
+ },
+ "tabelas-de-dupla-entrada-e-graficos": {
+  "slug": "tabelas-de-dupla-entrada-e-graficos",
+  "area": "matematica",
+  "titulo": "Tabelas de dupla entrada e gráficos",
+  "ano": "2º ano",
+  "figuras": 2,
+  "paginas_braille": 6
+ },
+ "tabelas-graficos-e-pesquisa-da-turma": {
+  "slug": "tabelas-graficos-e-pesquisa-da-turma",
+  "area": "matematica",
+  "titulo": "Tabelas, gráficos e pesquisa da turma",
+  "ano": "3º e 4º ano",
+  "figuras": 6,
+  "paginas_braille": 7
+ },
+ "temperatura-em-graus-celsius": {
+  "slug": "temperatura-em-graus-celsius",
+  "area": "matematica",
+  "titulo": "Temperatura em graus Celsius",
+  "ano": "4º ano",
+  "figuras": 7,
+  "paginas_braille": 6
+ },
+ "temperatura-graus-celsius-e-graficos": {
+  "slug": "temperatura-graus-celsius-e-graficos",
+  "area": "matematica",
+  "titulo": "Temperatura: graus Celsius e gráficos",
+  "ano": "4º ano",
+  "figuras": 5,
+  "paginas_braille": 7
+ },
+ "temperaturas-maximas-e-minimas": {
+  "slug": "temperaturas-maximas-e-minimas",
+  "area": "matematica",
+  "titulo": "Temperaturas máximas e mínimas",
+  "ano": "4º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "tipos-de-amostra": {
+  "slug": "tipos-de-amostra",
+  "area": "matematica",
+  "titulo": "Tipos de amostra",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "tirar-e-ver-quantos-sobram-subtracao": {
+  "slug": "tirar-e-ver-quantos-sobram-subtracao",
+  "area": "matematica",
+  "titulo": "Tirar e ver quantos sobram: subtração",
+  "ano": "1º ano",
+  "figuras": 11,
+  "paginas_braille": 7
+ },
+ "todos-os-resultados-possiveis": {
+  "slug": "todos-os-resultados-possiveis",
+  "area": "matematica",
+  "titulo": "Todos os resultados possíveis",
+  "ano": "5º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "trajetos-mapas-e-plantas": {
+  "slug": "trajetos-mapas-e-plantas",
+  "area": "matematica",
+  "titulo": "Trajetos, mapas e plantas",
+  "ano": "2º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
+ "transformacoes-no-plano-cartesiano": {
+  "slug": "transformacoes-no-plano-cartesiano",
+  "area": "matematica",
+  "titulo": "Transformações no plano cartesiano",
+  "ano": "7º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "triangulos-construcao-e-rigidez": {
+  "slug": "triangulos-construcao-e-rigidez",
+  "area": "matematica",
+  "titulo": "Triângulos: construção, existência e rigidez",
+  "ano": "7º ano",
+  "figuras": 5,
+  "paginas_braille": 6
+ },
+ "triangulos-e-quadrilateros": {
+  "slug": "triangulos-e-quadrilateros",
+  "area": "matematica",
+  "titulo": "Triângulos e quadriláteros",
+  "ano": "6º ano",
+  "figuras": 8,
+  "paginas_braille": 7
+ },
+ "triangulos-e-quadrilateros-lados-e-vertices": {
+  "slug": "triangulos-e-quadrilateros-lados-e-vertices",
+  "area": "matematica",
+  "titulo": "Triângulos e quadriláteros: lados e vértices",
+  "ano": "3º ano",
+  "figuras": 9,
+  "paginas_braille": 5
+ },
+ "tribunal-da-tecnologia": {
+  "slug": "tribunal-da-tecnologia",
+  "area": "computacao",
+  "titulo": "Tribunal da tecnologia",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 6
+ },
+ "trocas-entre-moedas-e-cedulas": {
+  "slug": "trocas-entre-moedas-e-cedulas",
+  "area": "matematica",
+  "titulo": "Trocas entre moedas e cédulas",
+  "ano": "2º ano",
+  "figuras": 7,
+  "paginas_braille": 6
+ },
+ "um-problema-varios-algoritmos": {
+  "slug": "um-problema-varios-algoritmos",
+  "area": "matematica",
+  "titulo": "Um problema, vários algoritmos",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
+ "unidades-muito-grandes-e-muito-pequenas": {
+  "slug": "unidades-muito-grandes-e-muito-pequenas",
+  "area": "matematica",
+  "titulo": "Unidades muito grandes e muito pequenas",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "vai-acontecer-certo-talvez-ou-impossivel": {
+  "slug": "vai-acontecer-certo-talvez-ou-impossivel",
+  "area": "matematica",
+  "titulo": "Vai acontecer? Certo, talvez ou impossível",
+  "ano": "1º ano",
+  "figuras": 5,
+  "paginas_braille": 5
+ },
+ "variavel-e-incognita": {
+  "slug": "variavel-e-incognita",
+  "area": "matematica",
+  "titulo": "Variável e incógnita",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "variavel-e-sequencias": {
+  "slug": "variavel-e-sequencias",
+  "area": "matematica",
+  "titulo": "Variável, incógnita e sequências",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 7
+ },
+ "verdade-ou-boato": {
+  "slug": "verdade-ou-boato",
+  "area": "computacao",
+  "titulo": "Verdade ou boato?",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
+ "vistas-ortogonais-e-perspectiva": {
+  "slug": "vistas-ortogonais-e-perspectiva",
+  "area": "matematica",
+  "titulo": "Vistas ortogonais e perspectiva",
+  "ano": "9º ano",
+  "figuras": 9,
+  "paginas_braille": 4
+ },
+ "vistas-ortogonais-e-volumes": {
+  "slug": "vistas-ortogonais-e-volumes",
+  "area": "matematica",
+  "titulo": "Vistas ortogonais e volumes de prismas e cilindros",
+  "ano": "9º ano",
+  "figuras": 3,
+  "paginas_braille": 6
+ },
+ "volume-com-cubinhos": {
+  "slug": "volume-com-cubinhos",
+  "area": "matematica",
+  "titulo": "Volume com cubinhos",
+  "ano": "5º ano",
+  "figuras": 7,
+  "paginas_braille": 6
+ },
+ "volume-de-blocos-retangulares": {
+  "slug": "volume-de-blocos-retangulares",
+  "area": "matematica",
+  "titulo": "Volume de blocos retangulares",
+  "ano": "7º ano",
+  "figuras": 3,
+  "paginas_braille": 5
+ },
+ "volume-de-prismas-e-cilindros": {
+  "slug": "volume-de-prismas-e-cilindros",
+  "area": "matematica",
+  "titulo": "Volume de prismas e cilindros",
+  "ano": "9º ano",
+  "figuras": 2,
+  "paginas_braille": 5
+ },
+ "volume-de-recipientes": {
+  "slug": "volume-de-recipientes",
+  "area": "matematica",
+  "titulo": "Volume de recipientes",
+  "ano": "8º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
+ "volume-e-areas": {
+  "slug": "volume-e-areas",
+  "area": "matematica",
+  "titulo": "Volume de blocos e áreas de figuras planas",
+  "ano": "7º ano",
+  "figuras": 7,
+  "paginas_braille": 7
+ }
+}

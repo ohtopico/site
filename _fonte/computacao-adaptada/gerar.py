@@ -23,6 +23,8 @@ from datetime import date
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
+sys.path.insert(0, str(AQUI.parent / 'braille'))
+import links as braille_links  # noqa: E402
 sys.path.insert(0, str(AQUI))
 import co6, co7, co8, co9  # noqa: E401,E402
 
@@ -175,7 +177,7 @@ def pagina(f, i, fichas):
         <h1>{esc(f['titulo'])}</h1>
         <p class="linha-fina">{esc(f['resumo'])}</p>
         <div class="acoes">
-            <a class="btn98 escuro" href="{pdf}" download>Baixar PDF</a>
+            <a class="btn98 escuro" href="{pdf}" download>Baixar PDF</a>{braille_links.botoes(f["slug"])}
             {botoes}
         </div>
         <dl class="ficha-dados">
@@ -197,6 +199,7 @@ def pagina(f, i, fichas):
         <ul>{perfis}</ul>
         <p class="nota">Esses ajustes são pontos de partida. Cada estudante é único: observe o que funciona, converse com a família e com a equipe do AEE e siga o plano individual (PEI), quando houver.</p>
         <details class="gabarito"><summary>Gabarito</summary><ul>{gab}</ul></details>
+        {braille_links.secao(f["slug"])}
         <h2 id="folhas">Folhas para imprimir</h2>
         <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a versão de que precisa ou baixe o PDF com todas, incluindo a folha de orientações.</p>
     </div>
