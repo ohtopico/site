@@ -231,7 +231,7 @@ def forma_l():
              f'<text x="{6 + 8 * c}" y="{2 + 1.7 * c}" {F} font-size="12" font-weight="600">3 m</text>'
              f'<text x="{6 + 3 * c}" y="{2 + 5.3 * c}" {F} font-size="12" font-weight="600">4 m</text>'
              f'<text x="{2 + 1.5 * c}" y="{20 + 7 * c}" text-anchor="middle" {F} font-size="12" font-weight="600">3 m</text>')
-    return svg(8 * c + 40, 7 * c + 26, f'<g transform="translate(0 16)">{inner}</g>', 'figura', 'figura em forma de L: parte de cima 8 m por 3 m e parte de baixo 3 m por 4 m')
+    return svg(8 * c + 40, 7 * c + 40, f'<g transform="translate(0 16)">{inner}</g>', 'figura', 'figura em forma de L: parte de cima 8 m por 3 m e parte de baixo 3 m por 4 m')
 
 
 def dois_l(espelho=False, cel=22):
