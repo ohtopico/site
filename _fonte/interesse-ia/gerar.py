@@ -1,8 +1,9 @@
-"""Gera infograficos/interesse-por-ia/assets/dados.js com as visualizações mensais de verbetes da
-Wikipédia em português (API de pageviews da Wikimedia) e atualiza o resumo estático
-de infograficos/interesse-por-ia/index.html.
+"""Gera material-didatico/jogos/dados-wikipedia.js com as visualizações mensais de verbetes da
+Wikipédia em português (API de pageviews da Wikimedia), usado pelo jogo
+material-didatico/jogos/wikipedia.html ("Qual verbete tem mais visitas?").
 
-Os mesmos dados alimentam o jogo material-didatico/jogos/wikipedia.html.
+O painel de interesse por IA mudou para juliaroberta.com/infograficos/interesse-por-ia/
+(repositório ohtopico/site-dados), que tem a própria cópia deste gerador.
 
 Uso: python3 _fonte/interesse-ia/gerar.py            (baixa os dados da Wikimedia)
      python3 _fonte/interesse-ia/gerar.py --sem-baixar     (só refaz o resumo da página com o dados.js atual)
@@ -13,8 +14,8 @@ import datetime as dt, json, os, re, sys, time, urllib.parse, urllib.request
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.join(AQUI, '..', '..')
-SAIDA = os.path.join(RAIZ, 'infograficos', 'interesse-por-ia', 'assets', 'dados.js')
-PAGINA = os.path.join(RAIZ, 'infograficos', 'interesse-por-ia', 'index.html')
+SAIDA = os.path.join(RAIZ, 'material-didatico', 'jogos', 'dados-wikipedia.js')
+PAGINA = ''  # a página do painel mudou para juliaroberta.com: aqui só os dados do jogo
 UA = 'ohtopico-site/1.0 (https://ohtopico.com.br; contato@ohtopico.com.br)'
 INICIO = '2016-01'
 
@@ -206,7 +207,7 @@ def main():
          json.dumps(d, ensure_ascii=False, separators=(',', ':')) + ';\n'
     open(SAIDA, 'w').write(js)
     print(SAIDA, len(js) // 1024, 'KB')
-    if not os.path.exists(PAGINA):
+    if not PAGINA or not os.path.exists(PAGINA):
         return
     html = open(PAGINA).read()
     lista, ultimo = resumo(d)
