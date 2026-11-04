@@ -15,6 +15,8 @@ Uso:
   conteudo/teste-proficiencia-informatica.html); usa o quiz.css do quiz e o próprio assets/teste.js.
 - site/computacao-na-escola/index.html é o guia de implantação de Computação na escola (conteudo/computacao-na-escola.html).
 - site/lei-do-celular-nas-escolas/index.html é o guia da Lei 15.100/2025 para professores (conteudo/lei-do-celular-nas-escolas.html).
+- site/matematica-adaptada/index.html é o repositório de matemática adaptada (conteudo/matematica-adaptada.html + os cartões de
+  _fonte/matematica-adaptada/indice.json; as fichas em si são geradas por _fonte/matematica-adaptada/gerar.py).
 - site/assistencia-por-voz/index.html apresenta o projeto de assistência por voz (teste-mestrado), com os avisos de privacidade.
 - --sitemap atualiza o bloco do blog dentro de site/sitemap.xml (entre os marcadores).
 - Posts com data depois de --ate não saem no site: a pasta, a imagem e os slides deles são apagados
@@ -124,6 +126,7 @@ MENU_INICIAR = [
         ('fa-solid fa-book-open', 'IA pra Prof', '/ia-pra-prof/'),
         ('fa-solid fa-toolbox', 'Tech pra Prof', '/tech-pra-prof/'),
         ('fa-solid fa-shapes', 'Material didático', '/material-didatico/'),
+        ('fa-solid fa-puzzle-piece', 'Matemática adaptada', '/matematica-adaptada/'),
         ('fa-regular fa-newspaper', 'Blog', '/blog/'),
         ('fa-solid fa-chalkboard-user', 'Mentoria', '/mentoria/'),
         ('fa-solid fa-people-group', 'Formação continuada', '/formacao-continuada/'),
@@ -182,6 +185,7 @@ def laterais(atual):
                 ('◇', 'Guia Tech pra Prof', '/tech-pra-prof/', ''),
                 ('▦', 'Computação na escola', '/computacao-na-escola/', 'computacao'),
                 ('▮', 'Lei do celular nas escolas', '/lei-do-celular-nas-escolas/', 'celular'),
+                ('✚', 'Matemática adaptada', '/matematica-adaptada/', 'adaptada'),
                 ('◉', 'Assistência por voz', '/assistencia-por-voz/', 'assistencia'),
                 ('⬢', 'Mundo para professores', '/mundo/professores/', 'mundo')]
     atual_attr = ' aria-current="page"'
@@ -864,6 +868,95 @@ def pagina_lei_celular(cfg):
     head = cabeca('Lei do celular nas escolas: guia | Júlia Quoos', descricao, url, imagem, alt, 'website',
                   '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
     return head + '\n' + moldura('lei-celular.html', 'ohtopico.com.br/lei-do-celular-nas-escolas', '/', conteudo, 'Pronto', 'celular')
+
+
+MATEMATICA_ADAPTADA_CSS = """<style>
+.artigo .fichas-adaptadas { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); list-style: none; margin: 0 0 20px; padding: 0; }
+.artigo .fichas-adaptadas li { border: 1.5px solid var(--ink); border-radius: 18px; display: flex; flex-direction: column; font-size: 15px; margin: 0; padding: 14px 16px; }
+.artigo .fichas-adaptadas li::marker { content: none; }
+.fichas-adaptadas h3 { font: 800 18px/1.25 var(--display) !important; margin: 0 0 6px !important; }
+.fichas-adaptadas h3 a { color: var(--ink); text-decoration: none; }
+.fichas-adaptadas h3 a:hover { text-decoration: underline; }
+.artigo .fichas-adaptadas p { font-size: 15px; line-height: 1.5; margin: 0 0 8px; }
+.artigo .fichas-adaptadas .meta { color: var(--ink-2); font-size: 13px; margin-top: auto; }
+</style>"""
+
+
+def cartoes_matematica_adaptada():
+    indice = json.loads((AQUI.parent / 'matematica-adaptada' / 'indice.json').read_text(encoding='utf-8'))
+    itens = []
+    for f in indice:
+        versoes = 'versões A, B e C' if 'A' in f['versoes'] else f'{len(f["versoes"])} folhas'
+        itens.append(f'<li><h3><a href="/matematica-adaptada/fichas/{f["slug"]}/">{esc(f["titulo"])}</a></h3>'
+                     f'<p>{esc(f["resumo"])}</p>'
+                     f'<p class="meta">{esc(f["anos"])} · {", ".join(f["habilidades"])} · {versoes} + orientações · PDF</p></li>')
+    return indice, '<ul class="fichas-adaptadas">' + ''.join(itens) + '</ul>'
+
+
+def pagina_matematica_adaptada(cfg):
+    site = cfg['site']
+    url = f'{site}/matematica-adaptada/'
+    indice, cartoes = cartoes_matematica_adaptada()
+    corpo = (AQUI / 'conteudo' / 'matematica-adaptada.html').read_text(encoding='utf-8').strip()
+    titulo = 'Matemática adaptada: síndrome de Down, autismo e TDAH'
+    descricao = ('Fichas de matemática adaptadas para estudantes com síndrome de Down, autismo e TDAH, em três níveis de apoio, '
+                 'para imprimir. Contagem, adição, subtração, dinheiro, horas e mais, com a BNCC.')
+    imagem = f'{site}/matematica-adaptada/og-matematica-adaptada.jpg'
+    alt = 'Card com o título Matemática adaptada e a captura de uma ficha para imprimir com três níveis de apoio.'
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'CollectionPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': imagem, 'width': 1200, 'height': 630},
+                'about': [{'@type': 'Thing', 'name': n} for n in ('Educação inclusiva', 'Matemática adaptada', 'Síndrome de Down', 'Transtorno do espectro autista', 'TDAH')],
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
+                'author': {'@id': AUTORA['@id']},
+                'isPartOf': {'@type': 'WebSite', '@id': f'{site}/#site'},
+                'mainEntity': {'@type': 'ItemList', 'itemListElement': [
+                    {'@type': 'ListItem', 'position': i + 1, 'name': f['titulo'], 'url': f'{site}/matematica-adaptada/fichas/{f["slug"]}/'}
+                    for i, f in enumerate(indice)]},
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Matemática adaptada', 'item': url},
+                ],
+            },
+        ],
+    })
+    corpo = corpo.replace('<!--FICHAS-->', cartoes)
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Matemática adaptada</li></ol></nav>
+    <p class="rotulo">Repositório de materiais adaptados</p>
+    <h1>Matemática <span class="marca">adaptada</span></h1>
+    <p class="linha-fina">Fichas de matemática para imprimir, adaptadas para estudantes com síndrome de Down, autismo em diferentes níveis de suporte e TDAH. Cada ficha tem três versões da mesma atividade, para a turma toda aprender junto.</p>
+    <p class="linha-fina">Por <a href="/blog/quem-e-julia-quoos/" rel="author">Júlia Roberta Quoos Alves</a> · {len(indice)} materiais</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="sugerir">
+        <h2 id="sugerir">Sugira um material</h2>
+        <p>Precisa de uma ficha adaptada para um conteúdo ou para um estudante específico? Conte o conteúdo, o ano e o tipo de apoio de que o estudante precisa.</p>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20sugerir%20um%20material%20de%20matem%C3%A1tica%20adaptada." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Matem%C3%A1tica%20adaptada">Enviar e-mail</a>
+    </section>
+</article>'''
+    head = cabeca('Matemática adaptada para imprimir | Júlia Quoos', descricao, url, imagem, alt, 'website',
+                  '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld + '\n' + MATEMATICA_ADAPTADA_CSS)
+    return head + '\n' + moldura('matematica-adaptada.html', 'ohtopico.com.br/matematica-adaptada', '/', conteudo, 'Pronto', 'adaptada')
 
 
 def pagina_assistencia(cfg):
@@ -1662,7 +1755,7 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -1765,6 +1858,7 @@ def main():
                           ('prompts-para-professores', pagina_prompts(cfg)),
                           ('computacao-na-escola', pagina_computacao(cfg)),
                           ('lei-do-celular-nas-escolas', pagina_lei_celular(cfg)),
+                          ('matematica-adaptada', pagina_matematica_adaptada(cfg)),
                           ('assistencia-por-voz', pagina_assistencia(cfg)), (QUIZ_DIR, pagina_quiz(cfg)),
                           (TESTE_DIR, pagina_teste(cfg)),
                           *paginas_resultado_quiz(cfg).items()):
