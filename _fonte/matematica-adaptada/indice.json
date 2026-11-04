@@ -4397,6 +4397,86 @@
    "revisao": true
   },
   {
+   "slug": "potencias-e-notacao-cientifica",
+   "titulo": "Potências e notação científica",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Efetuar cálculos com potências de expoentes inteiros e usar esse conhecimento para escrever números em notação científica.",
+   "habilidades": [
+    "EF08MA01"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "raiz-como-potencia",
+   "titulo": "Raiz como potência",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver e elaborar problemas usando a relação entre potenciação e radiciação, representando uma raiz como potência de expoente fracionário.",
+   "habilidades": [
+    "EF08MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "principio-multiplicativo",
+   "titulo": "Princípio multiplicativo",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver e elaborar problemas de contagem que usem o princípio multiplicativo.",
+   "habilidades": [
+    "EF08MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "porcentagem-com-calculadora-e-planilha",
+   "titulo": "Porcentagem com calculadora e planilha",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver e elaborar problemas com cálculo de porcentagens, incluindo o uso de tecnologias digitais.",
+   "habilidades": [
+    "EF08MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fracao-geratriz-de-dizimas",
+   "titulo": "Fração geratriz de dízimas",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Reconhecer e usar procedimentos para obter a fração geratriz de uma dízima periódica.",
+   "habilidades": [
+    "EF08MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "expressoes-algebricas-e-valor-numerico",
    "titulo": "Expressões algébricas e valor numérico",
    "anos": "8º ano",
@@ -4404,6 +4484,38 @@
    "resumo": "Calcular o valor numérico de expressões algébricas trocando letras por números, usar fórmulas do dia a dia e comparar expressões equivalentes.",
    "habilidades": [
     "EF08MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "equacao-com-duas-incognitas-e-reta",
+   "titulo": "Equação com duas incógnitas e a reta",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Associar uma equação linear de 1º grau com duas incógnitas a uma reta no plano cartesiano.",
+   "habilidades": [
+    "EF08MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "sistemas-de-equacoes-no-dia-a-dia",
+   "titulo": "Sistemas de equações no dia a dia",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver e elaborar problemas do contexto próximo que possam ser representados por sistemas de equações de 1º grau com duas incógnitas, inclusive pelo plano cartesiano.",
+   "habilidades": [
+    "EF08MA08"
    ],
    "versoes": [
     "A",
@@ -4429,6 +4541,70 @@
    "revisao": false
   },
   {
+   "slug": "sequencia-nao-recursiva-e-fluxograma",
+   "titulo": "Sequência não recursiva e fluxograma",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Identificar a regularidade de uma sequência numérica ou de figuras não recursiva e construir um fluxograma que indique os termos seguintes.",
+   "habilidades": [
+    "EF08MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "sequencia-recursiva-e-fluxograma",
+   "titulo": "Sequência recursiva e fluxograma",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Identificar a regularidade de uma sequência numérica recursiva e construir um fluxograma que indique os números seguintes.",
+   "habilidades": [
+    "EF08MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "grandezas-proporcionais-ou-nao",
+   "titulo": "Grandezas proporcionais ou não",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Identificar se duas grandezas são direta ou inversamente proporcionais ou não proporcionais, expressar a relação por sentença algébrica e representá-la no plano cartesiano.",
+   "habilidades": [
+    "EF08MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-direta-e-inversamente-proporcionais",
+   "titulo": "Problemas com grandezas proporcionais",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver e elaborar problemas com grandezas direta ou inversamente proporcionais, com estratégias variadas.",
+   "habilidades": [
+    "EF08MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "congruencia-de-triangulos-e-quadrilateros",
    "titulo": "Congruência de triângulos e quadriláteros",
    "anos": "8º ano",
@@ -4445,6 +4621,54 @@
    "revisao": false
   },
   {
+   "slug": "construcoes-mediatriz-bissetriz-e-angulos",
+   "titulo": "Construções: mediatriz, bissetriz e ângulos",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Construir, com instrumentos de desenho ou software de geometria dinâmica, mediatriz, bissetriz, ângulos de 90°, 60°, 45° e 30° e polígonos regulares.",
+   "habilidades": [
+    "EF08MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fluxograma-do-hexagono-regular",
+   "titulo": "Fluxograma do hexágono regular",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Descrever por escrito e por fluxograma um algoritmo para construir um hexágono regular de qualquer área, a partir do ângulo central, com esquadros e compasso.",
+   "habilidades": [
+    "EF08MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "mediatriz-e-bissetriz-em-problemas",
+   "titulo": "Mediatriz e bissetriz em problemas",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Aplicar os conceitos de mediatriz e bissetriz como lugares geométricos na resolução de problemas.",
+   "habilidades": [
+    "EF08MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "composicao-de-transformacoes",
    "titulo": "Composição de transformações",
    "anos": "8º ano",
@@ -4452,6 +4676,150 @@
    "resumo": "Construir figuras com uma transformação seguida de outra (translação, reflexão e rotação) e reconhecer composições em azulejos e padrões.",
    "habilidades": [
     "EF08MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "areas-de-terrenos",
+   "titulo": "Áreas de terrenos",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver e elaborar problemas de área de quadriláteros, triângulos e círculos em situações como medir terrenos.",
+   "habilidades": [
+    "EF08MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "litro-e-decimetro-cubico",
+   "titulo": "Litro, decímetro cúbico e metro cúbico",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Reconhecer a relação entre litro e decímetro cúbico e entre litro e metro cúbico para resolver problemas de capacidade.",
+   "habilidades": [
+    "EF08MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "volume-de-recipientes",
+   "titulo": "Volume de recipientes",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Resolver e elaborar problemas de cálculo do volume de recipientes em forma de bloco retangular.",
+   "habilidades": [
+    "EF08MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "espaco-amostral-e-probabilidade",
+   "titulo": "Espaço amostral e probabilidade",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Calcular a probabilidade de eventos construindo o espaço amostral com o princípio multiplicativo e reconhecer que a soma das probabilidades de todos os resultados é 1.",
+   "habilidades": [
+    "EF08MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "escolher-o-grafico-adequado",
+   "titulo": "Escolher o gráfico adequado",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Avaliar a adequação de diferentes tipos de gráficos para representar os dados de uma pesquisa.",
+   "habilidades": [
+    "EF08MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "classes-de-frequencia",
+   "titulo": "Classes de frequência",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Classificar as frequências de uma variável contínua em classes que resumam os dados de modo adequado para a tomada de decisões.",
+   "habilidades": [
+    "EF08MA24"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "media-moda-e-mediana",
+   "titulo": "Média, moda e mediana",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Obter média, moda e mediana de uma pesquisa, compreendendo seus significados, e relacioná-las com a dispersão dos dados indicada pela amplitude.",
+   "habilidades": [
+    "EF08MA25"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "tipos-de-amostra",
+   "titulo": "Tipos de amostra",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Selecionar razões econômicas, físicas ou éticas que justificam pesquisas amostrais e reconhecer amostras casual simples, sistemática e estratificada.",
+   "habilidades": [
+    "EF08MA26"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "pesquisa-amostral-e-relatorio",
+   "titulo": "Pesquisa amostral e relatório",
+   "anos": "8º ano",
+   "ano": 8,
+   "resumo": "Planejar e executar pesquisa amostral com técnica de amostragem adequada e escrever relatório com gráficos, medidas de tendência central, amplitude e conclusões.",
+   "habilidades": [
+    "EF08MA27"
    ],
    "versoes": [
     "A",
@@ -6782,6 +7150,7 @@
    "unidade": "Números",
    "texto": "Efetuar cálculos com potências de expoentes inteiros e aplicar esse conhecimento na representação de números em notação científica.",
    "fichas": [
+    "potencias-e-notacao-cientifica",
     "potencias-raizes-e-notacao-cientifica"
    ]
   },
@@ -6791,6 +7160,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas usando a relação entre potenciação e radiciação, para representar uma raiz como potência de expoente fracionário.",
    "fichas": [
+    "raiz-como-potencia",
     "potencias-raizes-e-notacao-cientifica"
    ]
   },
@@ -6800,6 +7170,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de contagem cuja resolução envolva a aplicação do princípio multiplicativo.",
    "fichas": [
+    "principio-multiplicativo",
     "contagem-e-probabilidade"
    ]
   },
@@ -6809,6 +7180,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas, envolvendo cálculo de porcentagens, incluindo o uso de tecnologias digitais.",
    "fichas": [
+    "porcentagem-com-calculadora-e-planilha",
     "porcentagem-e-dizimas-periodicas"
    ]
   },
@@ -6818,6 +7190,7 @@
    "unidade": "Números",
    "texto": "Reconhecer e utilizar procedimentos para a obtenção de uma fração geratriz para uma dízima periódica.",
    "fichas": [
+    "fracao-geratriz-de-dizimas",
     "porcentagem-e-dizimas-periodicas"
    ]
   },
@@ -6836,6 +7209,7 @@
    "unidade": "Álgebra",
    "texto": "Associar uma equação linear de 1º grau com duas incógnitas a uma reta no plano cartesiano.",
    "fichas": [
+    "equacao-com-duas-incognitas-e-reta",
     "equacoes-com-duas-incognitas-e-sistemas"
    ]
   },
@@ -6845,6 +7219,7 @@
    "unidade": "Álgebra",
    "texto": "Resolver e elaborar problemas relacionados ao seu contexto próximo, que possam ser representados por sistemas de equações de 1º grau com duas incógnitas e interpretá-los, utilizando, inclusive, o plano cartesiano como recurso.",
    "fichas": [
+    "sistemas-de-equacoes-no-dia-a-dia",
     "equacoes-com-duas-incognitas-e-sistemas"
    ]
   },
@@ -6863,6 +7238,7 @@
    "unidade": "Álgebra",
    "texto": "Identificar a regularidade de uma sequência numérica ou figural não recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números ou as figuras seguintes.",
    "fichas": [
+    "sequencia-nao-recursiva-e-fluxograma",
     "sequencias-e-fluxogramas"
    ]
   },
@@ -6872,6 +7248,7 @@
    "unidade": "Álgebra",
    "texto": "Identificar a regularidade de uma sequência numérica recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números seguintes.",
    "fichas": [
+    "sequencia-recursiva-e-fluxograma",
     "sequencias-e-fluxogramas"
    ]
   },
@@ -6881,6 +7258,7 @@
    "unidade": "Álgebra",
    "texto": "Identificar a natureza da variação de duas grandezas, diretamente, inversamente proporcionais ou não proporcionais, expressando a relação existente por meio de sentença algébrica e representá-la no plano cartesiano.",
    "fichas": [
+    "grandezas-proporcionais-ou-nao",
     "grandezas-proporcionais-e-nao-proporcionais"
    ]
   },
@@ -6890,6 +7268,7 @@
    "unidade": "Álgebra",
    "texto": "Resolver e elaborar problemas que envolvam grandezas diretamente ou inversamente proporcionais, por meio de estratégias variadas.",
    "fichas": [
+    "problemas-direta-e-inversamente-proporcionais",
     "grandezas-proporcionais-e-nao-proporcionais"
    ]
   },
@@ -6908,6 +7287,7 @@
    "unidade": "Geometria",
    "texto": "Construir, utilizando instrumentos de desenho ou softwares de geometria dinâmica, mediatriz, bissetriz, ângulos de 90°, 60°, 45° e 30° e polígonos regulares.",
    "fichas": [
+    "construcoes-mediatriz-bissetriz-e-angulos",
     "mediatriz-bissetriz-e-hexagono-regular"
    ]
   },
@@ -6917,6 +7297,7 @@
    "unidade": "Geometria",
    "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um hexágono regular de qualquer área, a partir da medida do ângulo central e da utilização de esquadros e compasso.",
    "fichas": [
+    "fluxograma-do-hexagono-regular",
     "mediatriz-bissetriz-e-hexagono-regular"
    ]
   },
@@ -6926,6 +7307,7 @@
    "unidade": "Geometria",
    "texto": "Aplicar os conceitos de mediatriz e bissetriz como lugares geométricos na resolução de problemas.",
    "fichas": [
+    "mediatriz-e-bissetriz-em-problemas",
     "mediatriz-bissetriz-e-hexagono-regular"
    ]
   },
@@ -6944,6 +7326,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas que envolvam medidas de área de figuras geométricas, utilizando expressões de cálculo de área (quadriláteros, triângulos e círculos), em situações como determinar medida de terrenos.",
    "fichas": [
+    "areas-de-terrenos",
     "areas-circulo-e-capacidade"
    ]
   },
@@ -6953,6 +7336,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer a relação entre um litro e um decímetro cúbico e a relação entre litro e metro cúbico, para resolver problemas de cálculo de capacidade de recipientes.",
    "fichas": [
+    "litro-e-decimetro-cubico",
     "areas-circulo-e-capacidade"
    ]
   },
@@ -6962,6 +7346,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas que envolvam o cálculo do volume de recipiente cujo formato é o de um bloco retangular.",
    "fichas": [
+    "volume-de-recipientes",
     "areas-circulo-e-capacidade"
    ]
   },
@@ -6971,6 +7356,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Calcular a probabilidade de eventos, com base na construção do espaço amostral, utilizando o princípio multiplicativo, e reconhecer que a soma das probabilidades de todos os elementos do espaço amostral é igual a 1.",
    "fichas": [
+    "espaco-amostral-e-probabilidade",
     "contagem-e-probabilidade"
    ]
   },
@@ -6980,6 +7366,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Avaliar a adequação de diferentes tipos de gráficos para representar um conjunto de dados de uma pesquisa.",
    "fichas": [
+    "escolher-o-grafico-adequado",
     "pesquisa-amostral-graficos-e-medidas"
    ]
   },
@@ -6989,6 +7376,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Classificar as frequências de uma variável contínua de uma pesquisa em classes, de modo que resumam os dados de maneira adequada para a tomada de decisões.",
    "fichas": [
+    "classes-de-frequencia",
     "pesquisa-amostral-graficos-e-medidas"
    ]
   },
@@ -6998,6 +7386,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Obter os valores de medidas de tendência central de uma pesquisa estatística (média, moda e mediana) com a compreensão de seus significados e relacioná-los com a dispersão de dados, indicada pela amplitude.",
    "fichas": [
+    "media-moda-e-mediana",
     "pesquisa-amostral-graficos-e-medidas"
    ]
   },
@@ -7007,6 +7396,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Selecionar razões, de diferentes naturezas (física, ética ou econômica), que justificam a realização de pesquisas amostrais e não censitárias, e reconhecer que a seleção da amostra pode ser feita de diferentes maneiras (amostra casual simples, sistemática e estratificada).",
    "fichas": [
+    "tipos-de-amostra",
     "pesquisa-amostral-graficos-e-medidas"
    ]
   },
@@ -7016,6 +7406,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e executar pesquisa amostral, selecionando uma técnica de amostragem adequada, e escrever relatório que contenha os gráficos apropriados para representar os conjuntos de dados, destacando aspectos como as medidas de tendência central, a amplitude e as conclusões.",
    "fichas": [
+    "pesquisa-amostral-e-relatorio",
     "pesquisa-amostral-graficos-e-medidas"
    ]
   },

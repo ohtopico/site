@@ -13,7 +13,7 @@ def ligar(pares):
 
 
 def frases(perguntas):
-    return '<div class="frases">' + ''.join(f'<p>{t} <span class="linha-resp"></span></p>' for t in perguntas) + '</div>'
+    return '<div class="frases">' + ''.join(f'<p><span>{t}</span> <span class="linha-resp"></span></p>' for t in perguntas) + '</div>'
 
 
 def milhar(m, c, d, u):
