@@ -582,6 +582,118 @@
    "revisao": true
   },
   {
+   "slug": "comparar-e-ordenar-numeros-ate-999",
+   "titulo": "Comparar e ordenar números até 999",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Comparar e ordenar números de até três algarismos pelo valor de cada algarismo, entendendo a função do zero.",
+   "habilidades": [
+    "EF02MA01"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "estimar-e-contar-ate-1000",
+   "titulo": "Estimar e contar até 1000 agrupando",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Contar e estimar coleções de até 1000 objetos formando grupos de 10 e de 100.",
+   "habilidades": [
+    "EF02MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "comparar-quantidades-e-achar-a-diferenca",
+   "titulo": "Comparar quantidades e achar a diferença",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Comparar duas coleções, dizer se uma tem mais, menos ou a mesma quantidade e calcular quantos a mais.",
+   "habilidades": [
+    "EF02MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "compor-e-decompor-numeros-ate-999",
+   "titulo": "Compor e decompor números até 999",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Montar e desmontar números de três algarismos em centenas, dezenas e unidades, usando adições.",
+   "habilidades": [
+    "EF02MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fatos-de-adicao-e-subtracao",
+   "titulo": "Fatos de adição e de subtração",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Construir os fatos básicos da adição e da subtração e usá-los no cálculo mental e escrito.",
+   "habilidades": [
+    "EF02MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-de-adicao-e-subtracao-ate-999",
+   "titulo": "Problemas de adição e subtração até 999",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Resolver e criar problemas de juntar, acrescentar, separar e retirar com números de até três algarismos.",
+   "habilidades": [
+    "EF02MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "multiplicar-por-2-3-4-e-5",
+   "titulo": "Multiplicar por 2, 3, 4 e 5",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Resolver e criar problemas de multiplicação por 2, 3, 4 e 5 com a ideia de somar parcelas iguais.",
+   "habilidades": [
+    "EF02MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "dobro-metade-triplo-e-terca-parte",
    "titulo": "Dobro, metade, triplo e terça parte",
    "anos": "2º ano",
@@ -589,6 +701,246 @@
    "resumo": "Dobrar e repartir em partes iguais com figuras, tabelas e problemas do dia a dia.",
    "habilidades": [
     "EF02MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "sequencias-crescentes-e-decrescentes-com-regra",
+   "titulo": "Sequências crescentes e decrescentes",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Construir sequências de números que aumentam ou diminuem sempre do mesmo jeito e dizer a regra.",
+   "habilidades": [
+    "EF02MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "descrever-o-padrao-de-uma-sequencia",
+   "titulo": "Descrever o padrão de uma sequência",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Descrever com palavras, letras ou desenhos o que se repete numa sequência e como ela cresce.",
+   "habilidades": [
+    "EF02MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "o-que-falta-em-sequencias-repetitivas-e-recursivas",
+   "titulo": "O que falta em sequências repetitivas e recursivas",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Encontrar os elementos que faltam em sequências que se repetem e em sequências que crescem por uma regra.",
+   "habilidades": [
+    "EF02MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "localizar-e-se-deslocar-num-mapa",
+   "titulo": "Localizar e se deslocar num mapa",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Dizer onde ficam lugares num mapa simples e descrever caminhos com direções e pontos de referência.",
+   "habilidades": [
+    "EF02MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "plantas-e-roteiros-de-lugares-conhecidos",
+   "titulo": "Plantas e roteiros de lugares conhecidos",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Desenhar plantas simples de lugares conhecidos, vistos de cima, e escrever roteiros com pontos de referência.",
+   "habilidades": [
+    "EF02MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "comparar-solidos-geometricos",
+   "titulo": "Comparar sólidos geométricos",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Reconhecer, nomear e comparar cubo, bloco retangular, pirâmide, cone, cilindro e esfera.",
+   "habilidades": [
+    "EF02MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "comparar-figuras-planas-pelos-lados",
+   "titulo": "Comparar figuras planas pelos lados",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Reconhecer, nomear e comparar figuras planas pelo número de lados e pelos cantos.",
+   "habilidades": [
+    "EF02MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "medir-comprimentos-metro-centimetro-e-milimetro",
+   "titulo": "Medir comprimentos: metro, centímetro e milímetro",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Estimar, medir e comparar comprimentos com palmos e passos e com metro, centímetro e milímetro.",
+   "habilidades": [
+    "EF02MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "massa-e-capacidade-kg-g-litro-e-ml",
+   "titulo": "Massa e capacidade: kg, g, litro e mL",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Estimar, medir e comparar massas e capacidades com quilograma, grama, litro e mililitro.",
+   "habilidades": [
+    "EF02MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "quanto-tempo-entre-duas-datas",
+   "titulo": "Quanto tempo entre duas datas?",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Contar os dias e as semanas entre duas datas, usando o calendário.",
+   "habilidades": [
+    "EF02MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "duracao-de-atividades-no-relogio-digital",
+   "titulo": "Duração de atividades no relógio digital",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Ler horários no relógio digital, registrar o início e o fim de uma atividade e calcular quanto tempo durou.",
+   "habilidades": [
+    "EF02MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "trocas-entre-moedas-e-cedulas",
+   "titulo": "Trocas entre moedas e cédulas",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Descobrir quantas moedas ou cédulas de um valor equivalem a outra e usar isso em compras e trocos.",
+   "habilidades": [
+    "EF02MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "muito-provavel-pouco-provavel-ou-impossivel",
+   "titulo": "Muito provável, pouco provável ou impossível",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Classificar acontecimentos do dia a dia e sorteios como muito prováveis, pouco prováveis, improváveis ou impossíveis.",
+   "habilidades": [
+    "EF02MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "tabelas-de-dupla-entrada-e-graficos",
+   "titulo": "Tabelas de dupla entrada e gráficos",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Ler e comparar informações em tabelas de dupla entrada e em gráficos de colunas.",
+   "habilidades": [
+    "EF02MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "pesquisa-com-tres-perguntas",
+   "titulo": "Pesquisa com três perguntas",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Fazer uma pesquisa com até três perguntas, organizar os dados em listas, tabelas e gráficos e contar o que descobriu.",
+   "habilidades": [
+    "EF02MA23"
    ],
    "versoes": [
     "A",
@@ -2554,6 +2906,7 @@
    "texto": "Comparar e ordenar números naturais até a ordem de centenas, pelo valor posicional e pela função do zero.",
    "fichas": [
     "dezenas-e-unidades-material-dourado",
+    "comparar-e-ordenar-numeros-ate-999",
     "centenas-material-dourado-ate-999"
    ]
   },
@@ -2563,6 +2916,7 @@
    "unidade": "Números",
    "texto": "Estimar e contar quantidades de até 1000 objetos, por agrupamentos.",
    "fichas": [
+    "estimar-e-contar-ate-1000",
     "centenas-material-dourado-ate-999"
    ]
   },
@@ -2572,6 +2926,7 @@
    "unidade": "Números",
    "texto": "Comparar quantidades de objetos de dois conjuntos (mais, menos, mesma quantidade) e indicar a diferença.",
    "fichas": [
+    "comparar-quantidades-e-achar-a-diferenca",
     "adicao-e-subtracao-ate-999"
    ]
   },
@@ -2581,6 +2936,7 @@
    "unidade": "Números",
    "texto": "Compor e decompor números de até três ordens, com adições.",
    "fichas": [
+    "compor-e-decompor-numeros-ate-999",
     "centenas-material-dourado-ate-999"
    ]
   },
@@ -2590,6 +2946,7 @@
    "unidade": "Números",
    "texto": "Construir fatos básicos da adição e da subtração para o cálculo mental ou escrito.",
    "fichas": [
+    "fatos-de-adicao-e-subtracao",
     "adicao-e-subtracao-ate-999"
    ]
   },
@@ -2599,6 +2956,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de adição e subtração com números de até três ordens.",
    "fichas": [
+    "problemas-de-adicao-e-subtracao-ate-999",
     "adicao-e-subtracao-ate-999"
    ]
   },
@@ -2608,6 +2966,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de multiplicação por 2, 3, 4 e 5 com a ideia de parcelas iguais.",
    "fichas": [
+    "multiplicar-por-2-3-4-e-5",
     "grupos-iguais-multiplicacao"
    ]
   },
@@ -2626,6 +2985,7 @@
    "unidade": "Álgebra",
    "texto": "Construir sequências de números naturais em ordem crescente ou decrescente, com uma regularidade.",
    "fichas": [
+    "sequencias-crescentes-e-decrescentes-com-regra",
     "sequencias-crescentes-e-decrescentes"
    ]
   },
@@ -2636,6 +2996,7 @@
    "texto": "Descrever o padrão de sequências repetitivas e recursivas, com palavras, símbolos ou desenhos.",
    "fichas": [
     "sequencias-e-padroes",
+    "descrever-o-padrao-de-uma-sequencia",
     "sequencias-crescentes-e-decrescentes"
    ]
   },
@@ -2645,7 +3006,8 @@
    "unidade": "Álgebra",
    "texto": "Descrever os elementos que faltam em sequências repetitivas e recursivas.",
    "fichas": [
-    "sequencias-e-padroes"
+    "sequencias-e-padroes",
+    "o-que-falta-em-sequencias-repetitivas-e-recursivas"
    ]
   },
   {
@@ -2654,6 +3016,7 @@
    "unidade": "Geometria",
    "texto": "Identificar e registrar a localização e os deslocamentos de pessoas e objetos em trajetos e mapas simples.",
    "fichas": [
+    "localizar-e-se-deslocar-num-mapa",
     "trajetos-mapas-e-plantas"
    ]
   },
@@ -2663,6 +3026,7 @@
    "unidade": "Geometria",
    "texto": "Esboçar roteiros e plantas simples de ambientes familiares, com pontos de referência.",
    "fichas": [
+    "plantas-e-roteiros-de-lugares-conhecidos",
     "trajetos-mapas-e-plantas"
    ]
   },
@@ -2672,7 +3036,8 @@
    "unidade": "Geometria",
    "texto": "Reconhecer, nomear e comparar figuras espaciais (cubo, bloco retangular, pirâmide, cone, cilindro, esfera).",
    "fichas": [
-    "formas-espaciais-no-dia-a-dia"
+    "formas-espaciais-no-dia-a-dia",
+    "comparar-solidos-geometricos"
    ]
   },
   {
@@ -2681,7 +3046,8 @@
    "unidade": "Geometria",
    "texto": "Reconhecer, comparar e nomear figuras planas por características comuns.",
    "fichas": [
-    "formas-no-dia-a-dia"
+    "formas-no-dia-a-dia",
+    "comparar-figuras-planas-pelos-lados"
    ]
   },
   {
@@ -2690,6 +3056,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Estimar, medir e comparar comprimentos com unidades não padronizadas e padronizadas (metro, centímetro, milímetro).",
    "fichas": [
+    "medir-comprimentos-metro-centimetro-e-milimetro",
     "medir-comprimentos-metro-e-centimetro"
    ]
   },
@@ -2699,6 +3066,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Estimar, medir e comparar capacidade e massa (litro, mililitro, quilograma, grama).",
    "fichas": [
+    "massa-e-capacidade-kg-g-litro-e-ml",
     "massa-e-capacidade-quilo-e-litro"
    ]
   },
@@ -2708,7 +3076,8 @@
    "unidade": "Grandezas e medidas",
    "texto": "Indicar a duração de intervalos de tempo entre datas, usando o calendário.",
    "fichas": [
-    "calendario-dias-semanas-e-meses"
+    "calendario-dias-semanas-e-meses",
+    "quanto-tempo-entre-duas-datas"
    ]
   },
   {
@@ -2717,7 +3086,8 @@
    "unidade": "Grandezas e medidas",
    "texto": "Medir a duração de um intervalo de tempo com relógio digital e registrar o início e o fim.",
    "fichas": [
-    "rotina-e-horas-do-dia"
+    "rotina-e-horas-do-dia",
+    "duracao-de-atividades-no-relogio-digital"
    ]
   },
   {
@@ -2726,7 +3096,8 @@
    "unidade": "Grandezas e medidas",
    "texto": "Estabelecer a equivalência de valores entre moedas e cédulas em situações do dia a dia.",
    "fichas": [
-    "na-feira-moedas-e-cedulas"
+    "na-feira-moedas-e-cedulas",
+    "trocas-entre-moedas-e-cedulas"
    ]
   },
   {
@@ -2735,7 +3106,8 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Classificar resultados de eventos do dia a dia como muito prováveis, pouco prováveis, improváveis e impossíveis.",
    "fichas": [
-    "certo-talvez-ou-impossivel"
+    "certo-talvez-ou-impossivel",
+    "muito-provavel-pouco-provavel-ou-impossivel"
    ]
   },
   {
@@ -2744,7 +3116,8 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Comparar informações de pesquisas em tabelas de dupla entrada e em gráficos de colunas ou barras.",
    "fichas": [
-    "pesquisa-da-turma-tabelas-e-graficos"
+    "pesquisa-da-turma-tabelas-e-graficos",
+    "tabelas-de-dupla-entrada-e-graficos"
    ]
   },
   {
@@ -2753,7 +3126,8 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Realizar pesquisa com até três variáveis categóricas e organizar os dados em listas, tabelas e gráficos.",
    "fichas": [
-    "pesquisa-da-turma-tabelas-e-graficos"
+    "pesquisa-da-turma-tabelas-e-graficos",
+    "pesquisa-com-tres-perguntas"
    ]
   },
   {

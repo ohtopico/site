@@ -391,7 +391,7 @@ def objeto_medida(tipo, tam=70):
     d = {
         'garrafa': (f'<path d="M30 4 h12 v12 q12 6 12 20 v40 h-36 v-40 q0 -14 12 -20z" fill="#fff" {E}/><rect x="18" y="40" width="36" height="18" fill="{CLARO["verde"]}" stroke="{TRACO}" stroke-width="1.4"/><text x="36" y="53" text-anchor="middle" font-family="Lexend, sans-serif" font-size="10" font-weight="600">1 L</text>', 'garrafa de 1 litro'),
         'pacote': (f'<path d="M12 18 h48 l-4 58 h-40z" fill="{CLARO["bege"]}" {E}/><text x="36" y="52" text-anchor="middle" font-family="Lexend, sans-serif" font-size="11" font-weight="600">1 kg</text>', 'pacote de 1 quilograma'),
-        'copinho': (f'<path d="M20 30 h32 l-4 40 h-24z" fill="#fff" {E}/><text x="36" y="56" text-anchor="middle" font-family="Lexend, sans-serif" font-size="9">200 mL</text>', 'copinho de 200 mililitros'),
+        'copinho': (f'<path d="M20 30 h32 l-4 40 h-24z" fill="#fff" {E}/><text x="36" y="48" text-anchor="middle" font-family="Lexend, sans-serif" font-size="7.5" font-weight="600">200 mL</text>', 'copinho de 200 mililitros'),
         'balde': (f'<path d="M10 22 h52 l-6 52 h-40z" fill="{CLARO["amarelo"]}" {E}/><path d="M10 22 q26 -24 52 0" fill="none" {E}/><text x="36" y="54" text-anchor="middle" font-family="Lexend, sans-serif" font-size="11" font-weight="600">10 L</text>', 'balde de 10 litros'),
         'pena': (f'<path d="M14 66 Q22 20 60 8 Q48 46 14 66z" fill="#fff" {E}/><path d="M14 66 L50 20" stroke="{TRACO}" stroke-width="1.4"/>', 'pena'),
         'melancia': (f'<ellipse cx="36" cy="44" rx="30" ry="24" fill="{CLARO["verde"]}" {E}/><path d="M14 30 q22 16 0 30 M36 20 q10 24 0 48 M58 30 q-22 16 0 30" fill="none" stroke="{TRACO}" stroke-width="1.4"/>', 'melancia'),
