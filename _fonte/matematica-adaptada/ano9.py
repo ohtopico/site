@@ -36,7 +36,7 @@ def tri_ret(a, b, c, esc=26, rot=('', '', '')):
              f'<text x="{20 + w / 2}" y="{h + 30}" text-anchor="middle" {t}>{rot[0]}</text>'
              f'<text x="12" y="{10 + h / 2}" text-anchor="end" {t}>{rot[1]}</text>'
              f'<text x="{24 + w / 2 + 10}" y="{10 + h / 2 - 4}" {t}>{rot[2]}</text>')
-    return svg(w + 70, h + 38, inner, 'figura', 'triângulo retângulo com as medidas dos lados')
+    return svg(w + 100, h + 38, f'<g transform="translate(30 0)">{inner}</g>', 'figura', 'triângulo retângulo com as medidas dos lados')
 
 
 def semelhantes():

@@ -4987,6 +4987,70 @@
    "revisao": true
   },
   {
+   "slug": "segmentos-que-nao-sao-racionais",
+   "titulo": "Segmentos que não são racionais",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer que, fixada uma unidade de comprimento, existem segmentos cuja medida não é um número racional, como a diagonal do quadrado e a altura do triângulo equilátero.",
+   "habilidades": [
+    "EF09MA01"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "irracionais-na-reta",
+   "titulo": "Números irracionais na reta",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer um número irracional como um número real de representação decimal infinita e não periódica e estimar sua localização na reta.",
+   "habilidades": [
+    "EF09MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "calculos-com-numeros-reais",
+   "titulo": "Cálculos com números reais",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Efetuar cálculos com números reais, inclusive potências com expoentes fracionários.",
+   "habilidades": [
+    "EF09MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-com-numeros-reais",
+   "titulo": "Problemas com números reais",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver e elaborar problemas com números reais, inclusive em notação científica, envolvendo diferentes operações.",
+   "habilidades": [
+    "EF09MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "porcentagens-sucessivas-e-educacao-financeira",
    "titulo": "Porcentagens sucessivas e educação financeira",
    "anos": "9º ano",
@@ -5019,6 +5083,38 @@
    "revisao": false
   },
   {
+   "slug": "razoes-entre-grandezas-diferentes",
+   "titulo": "Razões entre grandezas diferentes",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver problemas com razões entre grandezas de espécies diferentes, como velocidade e densidade demográfica.",
+   "habilidades": [
+    "EF09MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "proporcionalidade-escalas-e-partes",
+   "titulo": "Escalas e divisão em partes proporcionais",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver e elaborar problemas de proporcionalidade direta e inversa, inclusive escalas, divisão em partes proporcionais e taxa de variação, em contextos sociais e ambientais.",
+   "habilidades": [
+    "EF09MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "fatoracao-produtos-notaveis-e-segundo-grau",
    "titulo": "Fatoração, produtos notáveis e equações do 2º grau",
    "anos": "9º ano",
@@ -5026,6 +5122,230 @@
    "resumo": "Entender os produtos notáveis com áreas, fatorar expressões e usar a fatoração para resolver equações do 2º grau.",
    "habilidades": [
     "EF09MA09"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "demonstrar-angulos-de-paralelas",
+   "titulo": "Ângulos de paralelas cortadas por transversal",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.",
+   "habilidades": [
+    "EF09MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "arcos-e-angulos-na-circunferencia",
+   "titulo": "Arcos e ângulos na circunferência",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver problemas com relações entre arcos, ângulos centrais e ângulos inscritos na circunferência, inclusive com software de geometria dinâmica.",
+   "habilidades": [
+    "EF09MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "condicoes-de-semelhanca-de-triangulos",
+   "titulo": "Quando dois triângulos são semelhantes",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.",
+   "habilidades": [
+    "EF09MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "relacoes-metricas-e-pitagoras",
+   "titulo": "Relações métricas e teorema de Pitágoras",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Demonstrar relações métricas do triângulo retângulo, entre elas o teorema de Pitágoras, inclusive por semelhança de triângulos.",
+   "habilidades": [
+    "EF09MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-com-pitagoras-e-tales",
+   "titulo": "Problemas com Pitágoras e Tales",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver e elaborar problemas de aplicação do teorema de Pitágoras e das relações de proporcionalidade entre retas paralelas cortadas por transversais.",
+   "habilidades": [
+    "EF09MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "fluxograma-de-poligono-regular-com-compasso",
+   "titulo": "Fluxograma de polígono regular com régua e compasso",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Descrever por escrito e por fluxograma um algoritmo para construir um polígono regular de lado conhecido, com régua e compasso e com software.",
+   "habilidades": [
+    "EF09MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "ponto-medio-e-distancia-no-plano",
+   "titulo": "Ponto médio e distância no plano",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Determinar o ponto médio de um segmento e a distância entre dois pontos no plano cartesiano, sem fórmulas, e usar isso para calcular perímetros e áreas.",
+   "habilidades": [
+    "EF09MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "vistas-ortogonais-e-perspectiva",
+   "titulo": "Vistas ortogonais e perspectiva",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer vistas ortogonais de figuras espaciais e usar esse conhecimento para desenhar objetos em perspectiva.",
+   "habilidades": [
+    "EF09MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "unidades-muito-grandes-e-muito-pequenas",
+   "titulo": "Unidades muito grandes e muito pequenas",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer e usar unidades para medidas muito grandes ou muito pequenas, como distâncias no espaço, tamanho de vírus e células e capacidade de armazenamento de computadores.",
+   "habilidades": [
+    "EF09MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "volume-de-prismas-e-cilindros",
+   "titulo": "Volume de prismas e cilindros",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Resolver e elaborar problemas com volumes de prismas e cilindros retos, inclusive com expressões de cálculo, em situações do cotidiano.",
+   "habilidades": [
+    "EF09MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "eventos-dependentes-e-independentes",
+   "titulo": "Eventos dependentes e independentes",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Reconhecer em experimentos aleatórios eventos independentes e dependentes e calcular a probabilidade nos dois casos.",
+   "habilidades": [
+    "EF09MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "graficos-que-enganam",
+   "titulo": "Gráficos que enganam",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Analisar em gráficos da mídia os elementos que podem induzir a erros de leitura, como escalas inadequadas, legendas incorretas e falta de fonte e data.",
+   "habilidades": [
+    "EF09MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "construir-o-grafico-adequado",
+   "titulo": "Construir o gráfico adequado",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Escolher e construir o gráfico mais adequado (colunas, setores, linhas), com ou sem planilha, para um conjunto de dados, destacando as medidas de tendência central.",
+   "habilidades": [
+    "EF09MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "pesquisa-social-e-relatorio",
+   "titulo": "Pesquisa sobre a realidade social",
+   "anos": "9º ano",
+   "ano": 9,
+   "resumo": "Planejar e executar pesquisa amostral sobre tema da realidade social e comunicar os resultados em relatório com medidas de tendência central, amplitude, tabelas e gráficos feitos em planilha.",
+   "habilidades": [
+    "EF09MA23"
    ],
    "versoes": [
     "A",
@@ -7416,6 +7736,7 @@
    "unidade": "Números",
    "texto": "Reconhecer que, uma vez fixada uma unidade de comprimento, existem segmentos de reta cujo comprimento não é expresso por número racional (como as medidas de diagonais de um polígono e alturas de um triângulo, quando se toma a medida de cada lado como unidade).",
    "fichas": [
+    "segmentos-que-nao-sao-racionais",
     "numeros-irracionais-e-reais"
    ]
   },
@@ -7425,6 +7746,7 @@
    "unidade": "Números",
    "texto": "Reconhecer um número irracional como um número real cuja representação decimal é infinita e não periódica, e estimar a localização de alguns deles na reta numérica.",
    "fichas": [
+    "irracionais-na-reta",
     "numeros-irracionais-e-reais"
    ]
   },
@@ -7434,6 +7756,7 @@
    "unidade": "Números",
    "texto": "Efetuar cálculos com números reais, inclusive potências com expoentes fracionários.",
    "fichas": [
+    "calculos-com-numeros-reais",
     "numeros-irracionais-e-reais"
    ]
   },
@@ -7443,6 +7766,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas com números reais, inclusive em notação científica, envolvendo diferentes operações.",
    "fichas": [
+    "problemas-com-numeros-reais",
     "numeros-reais-notacao-cientifica-e-unidades"
    ]
   },
@@ -7470,6 +7794,7 @@
    "unidade": "Álgebra",
    "texto": "Resolver problemas que envolvam a razão entre duas grandezas de espécies diferentes, como velocidade e densidade demográfica.",
    "fichas": [
+    "razoes-entre-grandezas-diferentes",
     "razoes-escalas-e-partes-proporcionais"
    ]
   },
@@ -7479,6 +7804,7 @@
    "unidade": "Álgebra",
    "texto": "Resolver e elaborar problemas que envolvam relações de proporcionalidade direta e inversa entre duas ou mais grandezas, inclusive escalas, divisão em partes proporcionais e taxa de variação, em contextos socioculturais, ambientais e de outras áreas.",
    "fichas": [
+    "proporcionalidade-escalas-e-partes",
     "razoes-escalas-e-partes-proporcionais"
    ]
   },
@@ -7497,6 +7823,7 @@
    "unidade": "Geometria",
    "texto": "Demonstrar relações simples entre os ângulos formados por retas paralelas cortadas por uma transversal.",
    "fichas": [
+    "demonstrar-angulos-de-paralelas",
     "angulos-na-circunferencia-e-paralelas"
    ]
   },
@@ -7506,6 +7833,7 @@
    "unidade": "Geometria",
    "texto": "Resolver problemas por meio do estabelecimento de relações entre arcos, ângulos centrais e ângulos inscritos na circunferência, fazendo uso, inclusive, de softwares de geometria dinâmica.",
    "fichas": [
+    "arcos-e-angulos-na-circunferencia",
     "angulos-na-circunferencia-e-paralelas"
    ]
   },
@@ -7515,6 +7843,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer as condições necessárias e suficientes para que dois triângulos sejam semelhantes.",
    "fichas": [
+    "condicoes-de-semelhanca-de-triangulos",
     "semelhanca-e-teorema-de-pitagoras"
    ]
   },
@@ -7524,6 +7853,7 @@
    "unidade": "Geometria",
    "texto": "Demonstrar relações métricas do triângulo retângulo, entre elas o teorema de Pitágoras, utilizando, inclusive, a semelhança de triângulos.",
    "fichas": [
+    "relacoes-metricas-e-pitagoras",
     "semelhanca-e-teorema-de-pitagoras"
    ]
   },
@@ -7533,6 +7863,7 @@
    "unidade": "Geometria",
    "texto": "Resolver e elaborar problemas de aplicação do teorema de Pitágoras ou das relações de proporcionalidade envolvendo retas paralelas cortadas por secantes.",
    "fichas": [
+    "problemas-com-pitagoras-e-tales",
     "semelhanca-e-teorema-de-pitagoras"
    ]
   },
@@ -7542,6 +7873,7 @@
    "unidade": "Geometria",
    "texto": "Descrever, por escrito e por meio de um fluxograma, um algoritmo para a construção de um polígono regular cuja medida do lado é conhecida, utilizando régua e compasso, como também softwares.",
    "fichas": [
+    "fluxograma-de-poligono-regular-com-compasso",
     "poligono-regular-ponto-medio-e-distancia"
    ]
   },
@@ -7551,6 +7883,7 @@
    "unidade": "Geometria",
    "texto": "Determinar o ponto médio de um segmento de reta e a distância entre dois pontos quaisquer, dadas as coordenadas desses pontos no plano cartesiano, sem o uso de fórmulas, e utilizar esse conhecimento para calcular, por exemplo, medidas de perímetros e áreas de figuras planas construídas no plano.",
    "fichas": [
+    "ponto-medio-e-distancia-no-plano",
     "poligono-regular-ponto-medio-e-distancia"
    ]
   },
@@ -7560,6 +7893,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer vistas ortogonais de figuras espaciais e aplicar esse conhecimento para desenhar objetos em perspectiva.",
    "fichas": [
+    "vistas-ortogonais-e-perspectiva",
     "vistas-ortogonais-e-volumes"
    ]
   },
@@ -7569,6 +7903,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer e empregar unidades usadas para expressar medidas muito grandes ou muito pequenas, tais como distância entre planetas e sistemas solares, tamanho de vírus ou de células, capacidade de armazenamento de computadores, entre outros.",
    "fichas": [
+    "unidades-muito-grandes-e-muito-pequenas",
     "numeros-reais-notacao-cientifica-e-unidades"
    ]
   },
@@ -7578,6 +7913,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Resolver e elaborar problemas que envolvam medidas de volumes de prismas e de cilindros retos, inclusive com uso de expressões de cálculo, em situações cotidianas.",
    "fichas": [
+    "volume-de-prismas-e-cilindros",
     "vistas-ortogonais-e-volumes"
    ]
   },
@@ -7587,6 +7923,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Reconhecer, em experimentos aleatórios, eventos independentes e dependentes e calcular a probabilidade de sua ocorrência, nos dois casos.",
    "fichas": [
+    "eventos-dependentes-e-independentes",
     "probabilidade-graficos-e-pesquisa-amostral"
    ]
   },
@@ -7596,6 +7933,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Analisar e identificar, em gráficos divulgados pela mídia, os elementos que podem induzir, às vezes propositadamente, erros de leitura, como escalas inapropriadas, legendas não explicitadas corretamente, omissão de informações importantes (fontes e datas), entre outros.",
    "fichas": [
+    "graficos-que-enganam",
     "probabilidade-graficos-e-pesquisa-amostral"
    ]
   },
@@ -7605,6 +7943,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Escolher e construir o gráfico mais adequado (colunas, setores, linhas), com ou sem uso de planilhas eletrônicas, para apresentar um determinado conjunto de dados, destacando aspectos como as medidas de tendência central.",
    "fichas": [
+    "construir-o-grafico-adequado",
     "probabilidade-graficos-e-pesquisa-amostral"
    ]
   },
@@ -7614,6 +7953,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Planejar e executar pesquisa amostral envolvendo tema da realidade social e comunicar os resultados por meio de relatório contendo avaliação de medidas de tendência central e da amplitude, tabelas e gráficos adequados, construídos com o apoio de planilhas eletrônicas.",
    "fichas": [
+    "pesquisa-social-e-relatorio",
     "probabilidade-graficos-e-pesquisa-amostral"
    ]
   }
