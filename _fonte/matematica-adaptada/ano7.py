@@ -60,7 +60,7 @@ def plano4(r=4, cel=24, figuras=(), pontos=None, rotulo='plano cartesiano com os
     return svg(lado + 2 * mg + 8, lado + 2 * mg, inner, 'plano', rotulo)
 
 
-def plano1(colunas, linhas_, cel=30, figuras=(), pontos=None, rotulo='plano cartesiano'):
+def plano1(colunas, linhas_, cel=30, figuras=(), pontos=None, rotulo='plano cartesiano', passo_y=1):
     """Primeiro quadrante com figuras (listas de vértices) e pontos {(x, y): rótulo}."""
     mg = 26
     w, h = colunas * cel, linhas_ * cel
@@ -70,7 +70,7 @@ def plano1(colunas, linhas_, cel=30, figuras=(), pontos=None, rotulo='plano cart
     for i in range(colunas + 1):
         inner += f'<path d="M{X(i)} {mg} V{mg + h}" stroke="#c8c8c3" stroke-width="1"/><text x="{X(i)}" y="{mg + h + 17}" text-anchor="middle" {F} font-size="11">{i}</text>'
     for j in range(linhas_ + 1):
-        inner += f'<path d="M{mg} {Y(j)} H{mg + w}" stroke="#c8c8c3" stroke-width="1"/><text x="{mg - 7}" y="{Y(j) + 4}" text-anchor="end" {F} font-size="11">{j}</text>'
+        inner += f'<path d="M{mg} {Y(j)} H{mg + w}" stroke="#c8c8c3" stroke-width="1"/><text x="{mg - 7}" y="{Y(j) + 4}" text-anchor="end" {F} font-size="11">{j * passo_y}</text>'
     inner += f'<path d="M{mg} {mg + h} H{mg + w + 8} M{mg} {mg + h} V{mg - 8}" stroke="{TRACO}" stroke-width="2.2"/>'
     for fig in figuras:
         pts = ' '.join(f'{X(x)},{Y(y)}' for x, y in fig)
