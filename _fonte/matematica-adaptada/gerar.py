@@ -358,6 +358,9 @@ def gerar_hub(fichas, mapa):
     sys.path.insert(0, str(AQUI.parent / 'computacao-adaptada'))
     import hub as computacao  # seção Computação (fichas de _fonte/computacao-adaptada/indice.json)
     texto = computacao.inserir(texto)
+    sys.path.insert(0, str(AQUI.parent / 'mapa-interativo'))
+    import mapa as mapa_interativo  # mapa interativo (rede de palavras) a partir das tabelas acima
+    texto = mapa_interativo.inserir(texto)
     destino = RAIZ / 'material-adaptado'
     destino.mkdir(exist_ok=True)
     (destino / 'index.html').write_text(texto, encoding='utf-8')
