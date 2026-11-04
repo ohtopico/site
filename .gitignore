@@ -10,3 +10,6 @@ __pycache__/
 
 # Pins do Pinterest gerados por _fonte/og/gerar.js --pinterest (sobem direto no Pinterest)
 _fonte/og/pinterest/
+
+# Prévias PNG geradas por node _fonte/matematica-adaptada/pdf.js --previa
+_fonte/matematica-adaptada/previa/

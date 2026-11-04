@@ -173,3 +173,33 @@ h1 { font: 800 clamp(30px, 6vw, 42px)/1.1 var(--display); margin: 0 0 12px; }
     .folha:last-child { break-after: auto; page-break-after: auto; }
     .folha.nao-imprimir { display: none !important; }
 }
+
+/* peças das fichas por ano */
+.quadro-cem { display: grid; grid-template-columns: repeat(var(--colunas), 1fr); width: 100%; }
+.quadro-cem span { align-items: center; border: 1.2px solid #111; display: flex; font: 500 12pt var(--body); height: 9.5mm; justify-content: center; margin: -0.6px; }
+.quadro-cem span.vazia { background: #fff9c2; }
+.quadro-cem span.destaque { font-weight: 700; }
+.caixa-grupo { border: 2px solid #111; border-radius: 3mm; display: flex; flex-direction: column; min-height: 34mm; padding: 2mm 3mm; }
+.caixa-grupo b { font: 800 13pt var(--display); }
+.ligar-grupos { display: grid; gap: 14mm; }
+.caixas-cor { display: flex; gap: 6mm; justify-content: space-around; }
+.cor { border: 2px solid #111; border-radius: 3mm; font-weight: 600; padding: 6mm 8mm; }
+.cor.rosa { background: #fbdcd8; } .cor.verde { background: #d8f0de; } .cor.amarelo { background: #fff3a8; }
+.sep { border-left: 2px dashed #111; height: 14mm; margin: 0 4mm; }
+.frases { display: grid; gap: 2.5mm; margin-top: 2mm; }
+.frases p { align-items: flex-end; display: flex; font-size: 13pt; gap: 2mm; margin: 0; }
+.frases-op div { align-items: center; border-bottom: 1px dashed #9a9a96; display: flex; gap: 4mm; justify-content: space-between; padding: 1.5mm 0; }
+.frases-op .opcao { font-size: 12pt; min-height: 10mm; }
+.opcoes-dias { flex-wrap: wrap; gap: 3mm; }
+.opcoes-dias .opcao { font-size: 13pt; min-height: 12mm; }
+.calendario { border-collapse: collapse; margin: 0 0 2mm; }
+.calendario caption { font: 800 14pt var(--display); margin-bottom: 1.5mm; text-align: left; }
+.calendario th, .calendario td { border: 1.5px solid #111; font-size: 12pt; height: calc(var(--cel) * .8); text-align: center; width: var(--cel); }
+.calendario th { background: #f4f4f2; font-size: 10pt; font-weight: 600; }
+.calendario td.destaque { background: #fff3a8; font-weight: 700; }
+.meses { display: grid; gap: 4mm 8mm; grid-template-columns: 1fr 1fr 1fr; }
+.meses span { align-items: flex-end; display: flex; gap: 2mm; }
+.opcao.texto { font-size: 13pt; min-height: 11mm; padding: 1mm 3mm; white-space: nowrap; }
+.opcao.texto.marcada { border-radius: 99px; }
+.du:has(.linha-resp), .regra { align-items: flex-end; display: flex; gap: 2mm; width: 100%; }
+.folha[data-versao="A"] .opcao.texto { font-size: 16pt; min-height: 13mm; }
