@@ -128,9 +128,7 @@ MENU_INICIAR = [
         ('fa-solid fa-shapes', 'Material didático', '/material-didatico/'),
         ('fa-solid fa-puzzle-piece', 'Matemática adaptada', '/matematica-adaptada/'),
         ('fa-regular fa-newspaper', 'Blog', '/blog/'),
-        ('fa-solid fa-chalkboard-user', 'Mentoria', '/mentoria/'),
-        ('fa-solid fa-people-group', 'Formação continuada', '/formacao-continuada/'),
-        ('fa-solid fa-laptop-code', 'Formação em tecnologias educacionais', '/formacao-tecnologias-educacionais/'),
+        ('fa-solid fa-chalkboard-user', 'Formação e mentoria', '/formacao-e-mentoria/'),
         ('fa-regular fa-clipboard', 'Biblioteca de prompts', '/prompts-para-professores/'),
         ('fa-solid fa-list-check', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/'),
         ('fa-solid fa-laptop', 'Teste de informática', '/teste-proficiencia-informatica/'),
@@ -172,9 +170,7 @@ def laterais(atual):
             secoes.append(p['secao'])
     recentes = ''.join(f'<li><a href="/blog/{p["slug"]}/">{esc(p["titulo"])}</a></li>' for p in reversed(posts[-5:]))
     temas = ''.join(f'<li><a href="/blog/#{slug_secao(s)}">{esc(s)}</a></li>' for s in secoes)
-    navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Mentoria', '/mentoria/', 'mentoria'),
-               ('◆', 'Formação continuada', '/formacao-continuada/', 'formacao'),
-               ('◈', 'Formação em tecnologias educacionais', '/formacao-tecnologias-educacionais/', 'tecnologias'),
+    navegue = [('◄', 'Área de trabalho', '/', ''), ('⌂', 'Início do blog', '/blog/', 'blog'), ('✦', 'Formação e mentoria', '/formacao-e-mentoria/', 'ofertas'),
                ('▣', 'Para escolas e redes', '/para-escolas/', 'escolas'),
                ('❖', 'Biblioteca de prompts', '/prompts-para-professores/', 'prompts'),
                ('✱', 'Quiz de pensamento computacional', '/quiz-pensamento-computacional/', 'quiz'),
@@ -217,15 +213,13 @@ def laterais(atual):
             <section class="caixa">
                 <h2 class="caixa-titulo">★ Quem escreve</h2>
                 <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
-                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA.</p>
+                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA. Do código ao quadro.</p>
                 <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
             </section>
             <section class="caixa caixa-amarela">
-                <h2 class="caixa-titulo">★ Mentoria</h2>
-                <p>Mentoria individual de IA para professores, coordenadores e gestores.</p>
-                <a class="btn98 escuro" href="/mentoria/">Saiba mais</a>
-                <p class="miudo"><a href="/formacao-continuada/">Formação continuada para escolas e redes</a></p>
-                <p class="miudo"><a href="/formacao-tecnologias-educacionais/">Formação em tecnologias educacionais</a></p>
+                <h2 class="caixa-titulo">★ Formação e mentoria</h2>
+                <p>Mentoria individual para professores, a partir de R$ 200 a sessão, e formação para escolas e redes.</p>
+                <a class="btn98 escuro" href="/formacao-e-mentoria/">Ver as opções</a>
             </section>
             <section class="caixa caixa-contador">
                 <h2 class="caixa-titulo">★ Visitas</h2>
@@ -251,9 +245,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
     letreiro = ''
     if ultimo:
         letreiro = (f'<a href="/blog/{ultimo["slug"]}/">✦ Post novo: {esc(ultimo["titulo"])}</a>'
-                    '<a href="/mentoria/">✦ Mentoria para professores e escolas</a>'
-                    '<a href="/formacao-continuada/">✦ Formação continuada em IA para escolas e redes</a>'
-                    '<a href="/formacao-tecnologias-educacionais/">✦ Formação de professores em tecnologias educacionais</a>'
+                    '<a href="/formacao-e-mentoria/">✦ Formação e mentoria para professores, escolas e redes</a>'
                     '<a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a>'
                     '<a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a>'
                     '<a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a>'
@@ -272,8 +264,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
         <nav class="cabecalho-links" aria-label="Principal">
             <a href="/blog/"{' aria-current="page"' if atual == 'blog' else ''}>Blog</a>
             <a href="/material-didatico/">Material didático</a>
-            <a href="/mentoria/"{' aria-current="page"' if atual == 'mentoria' else ''}>Mentoria</a>
-            <a href="/formacao-continuada/"{' aria-current="page"' if atual == 'formacao' else ''}>Formação</a>
+            <a href="/formacao-e-mentoria/"{' aria-current="page"' if atual in ('ofertas', 'mentoria', 'formacao', 'tecnologias') else ''}>Formação e mentoria</a>
         </nav>
     </header>
     <div class="corpo">
@@ -509,6 +500,102 @@ def pagina_indice(cfg, publicados):
                                  f'Pronto · {n} post{"s" if n != 1 else ""}', 'blog')
 
 
+RETRATO = '/img/julia-quoos.jpg'
+
+
+def quem_conduz():
+    return f'''<section class="quem-conduz" aria-labelledby="quem-conduz">
+        <img src="{RETRATO}" alt="Foto de Júlia Roberta Quoos Alves, de camisa listrada, sentada em um banco" width="800" height="1000" loading="lazy">
+        <div>
+            <h2 id="quem-conduz">Quem conduz</h2>
+            <p><strong>Júlia Roberta Quoos Alves</strong>, professora de informática na educação básica, licenciada em Informática, bacharel em Ciência da Computação e mestranda em Ciência da Computação na UFSM. Trabalhou com engenharia de dados e pesquisa IA desde 2020.</p>
+            <p>Do código ao quadro: o que eu levo para a formação é o que já testei com as minhas turmas.</p>
+            <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
+        </div>
+    </section>'''
+
+
+OFERTAS = [
+    ('Mentoria individual', '/mentoria/', 'Para professores, coordenadores e gestores',
+     'Encontros on-line de 1 hora para usar IA com segurança e ética no seu planejamento, com o seu material real.',
+     'A partir de R$ 200 a sessão'),
+    ('Formação continuada em IA', '/formacao-continuada/', 'Para escolas, secretarias e redes de ensino',
+     'Diagnóstico, oficinas com o material da escola, regras de uso e retorno depois de 30 dias.',
+     'R$ 200 por hora de formação'),
+    ('Formação em tecnologias educacionais', '/formacao-tecnologias-educacionais/', 'Para professores e equipes',
+     'Turma virtual, formulários, criação de material, Computação da BNCC e acessibilidade, na prática.',
+     'Proposta conforme o formato'),
+    ('Computação e IA para escolas e redes', '/para-escolas/', 'Para direções e coordenações',
+     'Material gratuito da BNCC Computação, guia de implantação e formação da equipe, em um só lugar.',
+     'Material gratuito e formação sob proposta'),
+]
+
+
+def pagina_ofertas(cfg):
+    site = cfg['site']
+    url = f'{site}/formacao-e-mentoria/'
+    titulo = 'Formação e mentoria para professores'
+    descricao = ('Mentoria para professores a partir de R$ 200 a sessão e formação de professores em IA e tecnologias '
+                 'educacionais para escolas e redes, com Júlia Quoos.')
+    imagem = f'{site}/blog/img/dia07-mentoria.png'
+    cartoes = '\n'.join(f'''        <li class="oferta"><a href="{h}">
+            <p class="oferta-publico">{esc(pub)}</p>
+            <h3>{esc(n)}</h3>
+            <p>{esc(t)}</p>
+            <p class="oferta-preco">{esc(pr)}</p>
+        </a></li>''' for n, h, pub, t, pr in OFERTAS)
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'CollectionPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'author': {'@id': AUTORA['@id']},
+                'hasPart': [{'@type': 'Service', 'name': n, 'url': f'{site}{h}'} for n, h, *_ in OFERTAS],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Formação e mentoria', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Formação e mentoria</li></ol></nav>
+    <p class="rotulo">Formação e mentoria</p>
+    <h1>Formação e mentoria para <span class="marca">professores</span></h1>
+    <p class="linha-fina">Computação e IA na escola, do plano de aula à formação do professor. Escolha pelo tamanho do grupo: sozinho, com a equipe da escola ou com a rede inteira.</p>
+    <div class="artigo">
+    <ul class="ofertas">
+{cartoes}
+    </ul>
+    <h2>Como escolher</h2>
+    <ul>
+    <li><strong>Você quer começar ou destravar sozinho:</strong> <a href="/mentoria/">mentoria individual</a>.</li>
+    <li><strong>A escola quer formar a equipe toda:</strong> <a href="/formacao-tecnologias-educacionais/">formação em tecnologias educacionais</a> ou <a href="/formacao-continuada/">formação continuada em IA</a>.</li>
+    <li><strong>A secretaria ou a coordenação precisa implantar a Computação da BNCC:</strong> comece por <a href="/para-escolas/">escolas e redes</a>.</li>
+    </ul>
+    <p>Antes de contratar, dá para conhecer o trabalho pelo <a href="/material-didatico/">material didático gratuito</a>, pelo guia <a href="/ia-pra-prof/">IA pra Prof</a> e pelo <a href="/mundo/">Mundo</a>.</p>
+    </div>
+    {quem_conduz()}
+    <section class="chamada" aria-labelledby="conversar">
+        <h2 id="conversar">Vamos conversar</h2>
+        <p>Conte se é para você, para a escola ou para a rede, e eu respondo com o formato que faz mais sentido.</p>
+        <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Forma%C3%A7%C3%A3o%20e%20mentoria." target="_blank" rel="noopener">Conversar no WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Forma%C3%A7%C3%A3o%20e%20mentoria">Enviar e-mail</a>
+    </section>
+</article>'''
+    head = cabeca('Formação e mentoria para professores | Júlia Quoos', descricao, url, imagem,
+                  'Os três formatos: professor, escola e rede', 'website', ld)
+    return head + '\n' + moldura('formacao-e-mentoria.html', 'ohtopico.com.br/formacao-e-mentoria', '/', conteudo, 'Pronto', 'ofertas')
+
+
 def pagina_mentoria(cfg, dims):
     site = cfg['site']
     url = f'{site}/mentoria/'
@@ -540,6 +627,10 @@ def pagina_mentoria(cfg, dims):
                 'availableChannel': {'@type': 'ServiceChannel', 'serviceUrl': url, 'availableLanguage': 'pt-BR'},
                 'isRelatedTo': {'@type': 'Service', '@id': f'{site}/formacao-continuada/#servico',
                                 'name': 'Formação continuada de professores em IA'},
+                'offers': {'@type': 'Offer', 'priceCurrency': 'BRL',
+                           'priceSpecification': {'@type': 'UnitPriceSpecification', 'minPrice': 200, 'priceCurrency': 'BRL',
+                                                  'unitText': 'sessão de 1 hora'},
+                           'description': 'A partir de R$ 200 a sessão on-line de 1 hora; pacotes com mais encontros sob proposta.'},
                 'inLanguage': 'pt-BR',
             },
             {
@@ -552,22 +643,23 @@ def pagina_mentoria(cfg, dims):
                 '@type': 'BreadcrumbList',
                 'itemListElement': [
                     {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
-                    {'@type': 'ListItem', 'position': 2, 'name': 'Mentoria', 'item': url},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Formação e mentoria', 'item': f'{site}/formacao-e-mentoria/'},
+                    {'@type': 'ListItem', 'position': 3, 'name': 'Mentoria', 'item': url},
                 ],
             },
         ],
     })
     conteudo = f'''<article class="texto">
-    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Mentoria</li></ol></nav>
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/formacao-e-mentoria/">Formação e mentoria</a></li><li aria-current="page">Mentoria</li></ol></nav>
     <p class="rotulo">Mentoria</p>
     <h1>Mentoria para professores em <span class="marca">IA</span></h1>
-    <p class="linha-fina">Mentoria individual e on-line para professores, coordenadores e gestores: encontros para você usar inteligência artificial com segurança, ética e propósito pedagógico. Sem promessas mágicas e sem lista de ferramentas da moda: fundamentos, prática com o seu material real e acompanhamento.</p>
+    <p class="linha-fina">Mentoria individual e on-line para professores, coordenadores e gestores: encontros para você usar inteligência artificial com segurança, ética e propósito pedagógico. Sem promessas mágicas e sem lista de ferramentas da moda: fundamentos, prática com o seu material real e acompanhamento. A partir de R$ 200 a sessão de 1 hora.</p>
     <div class="artigo">
 {corpo}
     </div>
     <section class="chamada" aria-labelledby="conversar">
         <h2 id="conversar">Vamos conversar</h2>
-        <p>Conte um pouco sobre a sua disciplina ou função e eu respondo com uma proposta.</p>
+        <p>Conte um pouco sobre a sua disciplina ou função e eu respondo com uma proposta. A sessão custa a partir de R$ 200.</p>
         <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Mentoria%20de%20IA%20para%20professores." target="_blank" rel="noopener">Conversar no WhatsApp</a>
         <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Mentoria%20de%20IA%20para%20professores">Enviar e-mail</a>
     </section>
@@ -1410,7 +1502,7 @@ def pagina_prompts(cfg):
   </button>
   <a class="icon-btn back-btn" href="../" aria-label="Voltar ao site ohtopico.com.br">
     {icone('<path d="M15 18l-6-6 6-6"/>')}
-    <span class="lbl-site">ohtopico</span>
+    <span class="lbl-site">Júlia Quoos</span>
   </a>
   <a class="brand" href="#/inicio">Prompts pra Prof</a>
   <div class="spacer"></div>
@@ -1795,7 +1887,7 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
     xml = caminho.read_text(encoding='utf-8')
     linhas = [f'  <url><loc>{cfg["site"]}/blog/</loc><lastmod>{min(max(p["data"] for p in publicados), hoje)}</lastmod></url>']
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -1891,7 +1983,8 @@ def main():
 
     mentoria, pendente = pagina_mentoria(cfg, dims)
     mudaram = set()
-    for pagina, texto in (('mentoria', mentoria), ('formacao-continuada', pagina_formacao(cfg, dims)),
+    for pagina, texto in (('mentoria', mentoria), ('formacao-e-mentoria', pagina_ofertas(cfg)),
+                          ('formacao-continuada', pagina_formacao(cfg, dims)),
                           ('formacao-tecnologias-educacionais', pagina_tecnologias(cfg)),
                           ('para-escolas', pagina_para_escolas(cfg)),
                           ('mundo/professores', pagina_mundo_professores(cfg)),

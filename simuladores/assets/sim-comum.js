@@ -63,7 +63,7 @@
     const el = document.getElementById('topbar'); if (!el) return;
     el.className = 'topbar';
     el.innerHTML = `
-      <a class="brand" href="${BASE}../">ohtopico</a>
+      <a class="brand" href="${BASE}../">Júlia Quoos</a>
       <a class="brand-sub" href="${BASE}index.html">/ simuladores</a>
       <span class="spacer"></span>
       <nav class="topnav" aria-label="Seções">

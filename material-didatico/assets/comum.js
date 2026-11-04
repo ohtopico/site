@@ -102,7 +102,7 @@
     const link = (id, href, txt) => `<a href="${BASE}${href}"${atual === id ? ' aria-current="page"' : ''}>${txt}</a>`;
     el.className = 'topbar';
     el.innerHTML = `
-      <a class="brand" href="${BASE}../">ohtopico</a>
+      <a class="brand" href="${BASE}../">Júlia Quoos</a>
       <a class="brand-sub" href="${BASE}index.html">/ material didático</a>
       <span class="spacer"></span>
       <nav class="topnav" aria-label="Seções">

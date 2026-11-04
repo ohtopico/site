@@ -585,3 +585,24 @@ figure.infografico figcaption a { font-weight: 500; }
 }
 .chamada .btn98.escuro { background: transparent; color: var(--ink); margin: 6px 0 0 6px; }
 .chamada .btn98.escuro:hover { background: var(--paper); }
+
+/* Formação e mentoria: cartões das ofertas e bloco "Quem conduz" com a foto */
+.artigo .ofertas, .ofertas { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); list-style: none; margin: 0 0 8px; padding: 0; }
+.ofertas .oferta { background: var(--paper); border: 1.5px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); margin: 0; transition: transform .12s, box-shadow .12s; }
+.ofertas .oferta:hover, .ofertas .oferta:focus-within { box-shadow: 6px 6px 0 var(--ink); transform: translate(-2px, -2px); }
+.ofertas .oferta a { color: var(--ink); display: flex; flex-direction: column; height: 100%; padding: 16px 18px; text-decoration: none; }
+.ofertas .oferta h3 { font: 800 19px/1.2 var(--display); margin: 2px 0 8px; }
+.ofertas .oferta p { font-size: 15px; margin: 0 0 10px; }
+.ofertas .oferta-publico { color: var(--ink-2); font-size: 13px !important; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.ofertas .oferta-preco { background: var(--mark-soft); border-radius: 99px; font-weight: 600; margin: auto 0 0 !important; padding: 4px 12px; align-self: flex-start; }
+.quem-conduz { align-items: center; border: 1.5px solid var(--ink); border-radius: 22px; display: grid; gap: 22px; grid-template-columns: 180px 1fr; margin: 30px 0 0; padding: 18px 22px; }
+.quem-conduz img { aspect-ratio: 4 / 5; border: 1.5px solid var(--ink); border-radius: 16px; display: block; height: auto; object-fit: cover; width: 100%; }
+.quem-conduz h2 { font: 800 16px var(--display); letter-spacing: .1em; margin: 0 0 6px; text-transform: uppercase; }
+.quem-conduz p { margin: 0 0 12px; }
+@media (max-width: 560px) { .quem-conduz { grid-template-columns: 1fr; } .quem-conduz img { max-width: 220px; } }
+figure.retrato { clear: right; float: right; margin: 4px 0 14px 22px; width: 220px; }
+figure.retrato img { aspect-ratio: 4 / 5; border: 1.5px solid var(--ink); border-radius: 16px; display: block; height: auto; width: 100%; }
+figure.retrato figcaption { color: var(--ink-2); font-size: 13px; margin-top: 6px; }
+@media (max-width: 560px) { figure.retrato { float: none; margin: 0 0 16px; max-width: 240px; } }
+
+.artigo figure.retrato ~ h2 { clear: both; }
