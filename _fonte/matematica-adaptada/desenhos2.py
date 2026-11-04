@@ -2,7 +2,7 @@
 import calendar
 import math
 
-from desenhos import CLARO, TRACO, figura, svg
+from desenhos import CLARO, TRACO, figura, nome, svg
 
 E = f'stroke="{TRACO}" stroke-width="2" stroke-linejoin="round"'
 
@@ -74,12 +74,12 @@ def mesa_cena(posicoes, larg=300, alt=190):
     for tipo, onde in posicoes:
         x, y = lugares[onde]
         inner += figura(tipo, x, y, 42)
-    return svg(larg, alt, inner, 'cena', 'mesa com objetos: ' + ', '.join(f'{t} {o}' for t, o in posicoes))
+    return svg(larg, alt, inner, 'cena', 'mesa com objetos: ' + ', '.join(f'{nome(t)} {o}' for t, o in posicoes))
 
 
 def fila(tipos, tam=50):
     inner = ''.join(figura(t, i * (tam + 14), 0, tam) for i, t in enumerate(tipos))
-    return svg(len(tipos) * (tam + 14) - 14, tam, inner, 'fila', 'fila: ' + ', '.join(tipos))
+    return svg(len(tipos) * (tam + 14) - 14, tam, inner, 'fila', 'fila: ' + ', '.join(nome(t) for t in tipos))
 
 
 def malha(colunas, linhas, celula=34, pintadas=(), marcas=None, caminho=None, eixos=False, rotulo='malha quadriculada'):
@@ -265,7 +265,14 @@ def roleta(setores, tam=140, rotulo=None):
         x1, y1, x2, y2 = c + r * math.cos(a1), c + r * math.sin(a1), c + r * math.cos(a2), c + r * math.sin(a2)
         inner += f'<path d="M{c} {c} L{x1:.1f} {y1:.1f} A{r} {r} 0 0 1 {x2:.1f} {y2:.1f}z" fill="{CLARO[cor]}" {E}/>'
     inner += f'<path d="M{c} {c} L{c + r * .7:.1f} {c - r * .4:.1f}" stroke="{TRACO}" stroke-width="3.5" stroke-linecap="round"/><circle cx="{c}" cy="{c}" r="5" fill="{TRACO}"/>'
-    return svg(tam, tam, inner, 'roleta', rotulo or 'roleta com partes coloridas')
+    if not rotulo:
+        fem = {'amarelo': 'amarela', 'vermelho': 'vermelha'}
+        cont = {}
+        for cor in setores:
+            cont[cor] = cont.get(cor, 0) + 1
+        partes = [f'{k} {fem.get(c, c)}{"s" if k > 1 and c not in ("rosa", "laranja", "bege") else ""}' for c, k in cont.items()]
+        rotulo = f'roleta com {n} partes iguais: ' + (', '.join(partes[:-1]) + ' e ' + partes[-1] if len(partes) > 1 else partes[0])
+    return svg(tam, tam, inner, 'roleta', rotulo)
 
 
 def barra_fracao(partes, pintadas, larg=300, alt=40, rotulo=None):

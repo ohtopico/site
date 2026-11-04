@@ -24,7 +24,7 @@ def reta_fracao(partes, marcas=None, larg=520, rotulo=None, ini='0', fim='1'):
     for i, t in (marcas or {}).items():
         x = m + i * dx
         inner += f'<circle cx="{x:.1f}" cy="{y}" r="5" fill="{TRACO}"/><text x="{x:.1f}" y="{y - 16}" text-anchor="middle" {F} font-size="14" font-weight="600">{t}</text>'
-    return svg(larg, 80, inner, 'reta', rotulo or f'reta de 0 a 1 dividida em {partes} partes iguais')
+    return svg(larg, 80, inner, 'reta', rotulo or f'reta de {ini} a {fim} dividida em {partes} partes iguais')
 
 
 LETRAS = 'ABCDEFGH'
