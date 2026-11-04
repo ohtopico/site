@@ -1696,6 +1696,118 @@
    "revisao": true
   },
   {
+   "slug": "ler-escrever-e-ordenar-numeros-ate-99999",
+   "titulo": "Ler, escrever e ordenar números até 99 999",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Ler, escrever, comparar e ordenar números naturais até a dezena de milhar, usando o quadro de ordens.",
+   "habilidades": [
+    "EF04MA01"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "decompor-com-potencias-de-dez",
+   "titulo": "Decompor com potências de dez",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Mostrar que todo número pode ser escrito com adições e multiplicações por 10, 100, 1000 e 10 000.",
+   "habilidades": [
+    "EF04MA02"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-de-adicao-e-subtracao-com-estimativa",
+   "titulo": "Problemas de adição e subtração com estimativa",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Resolver e criar problemas de adição e subtração com números naturais, usando estimativa e cálculo mental.",
+   "habilidades": [
+    "EF04MA03"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "relacoes-entre-as-operacoes",
+   "titulo": "Relações entre as operações",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Usar as relações entre adição e subtração e entre multiplicação e divisão para calcular e conferir resultados.",
+   "habilidades": [
+    "EF04MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "propriedades-das-operacoes-para-calcular",
+   "titulo": "Propriedades das operações para calcular",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Usar a troca de ordem, o agrupamento e a decomposição para calcular de cabeça e no papel.",
+   "habilidades": [
+    "EF04MA05"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "problemas-de-multiplicacao",
+   "titulo": "Problemas de multiplicação",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Resolver e criar problemas de multiplicação com parcelas iguais, disposição retangular e proporcionalidade.",
+   "habilidades": [
+    "EF04MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "divisao-com-divisor-de-ate-dois-algarismos",
+   "titulo": "Divisão com divisor de até dois algarismos",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Resolver e criar problemas de divisão com divisor de até dois algarismos, por repartição e por medida.",
+   "habilidades": [
+    "EF04MA07"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "combinacoes-quantas-possibilidades",
    "titulo": "Combinações: quantas possibilidades?",
    "anos": "4º ano",
@@ -1744,6 +1856,86 @@
    "revisao": false
   },
   {
+   "slug": "sequencias-de-multiplos",
+   "titulo": "Sequências de múltiplos",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Identificar regularidades em sequências de múltiplos de um número natural.",
+   "habilidades": [
+    "EF04MA11"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "numeros-que-deixam-o-mesmo-resto",
+   "titulo": "Números que deixam o mesmo resto",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Investigar grupos de números que deixam o mesmo resto quando divididos pelo mesmo número.",
+   "habilidades": [
+    "EF04MA12"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "operacoes-inversas",
+   "titulo": "Operações inversas",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Reconhecer, por investigação, que a subtração desfaz a adição e a divisão desfaz a multiplicação.",
+   "habilidades": [
+    "EF04MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "a-igualdade-continua-verdadeira",
+   "titulo": "A igualdade continua verdadeira",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Reconhecer que uma igualdade continua verdadeira quando somamos ou subtraímos o mesmo número dos dois lados.",
+   "habilidades": [
+    "EF04MA14"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "descobrir-o-numero-que-falta",
+   "titulo": "Descobrir o número que falta",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Determinar o número desconhecido que torna verdadeira uma igualdade com adição ou subtração.",
+   "habilidades": [
+    "EF04MA15"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "localizacao-em-malhas-plantas-e-mapas",
    "titulo": "Localização em malhas, plantas e mapas",
    "anos": "4º ano",
@@ -1751,6 +1943,54 @@
    "resumo": "Localizar e descrever posições com letras e números, descrever deslocamentos e ler a planta de uma escola.",
    "habilidades": [
     "EF04MA16"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "contar-faces-vertices-e-arestas",
+   "titulo": "Prismas e pirâmides: faces, vértices e arestas",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Associar prismas e pirâmides às suas planificações e comparar faces, vértices e arestas.",
+   "habilidades": [
+    "EF04MA17"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "angulos-retos-e-nao-retos",
+   "titulo": "Ângulos retos e não retos",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Reconhecer ângulos retos e não retos em figuras, com dobraduras, esquadros ou programas de computador.",
+   "habilidades": [
+    "EF04MA18"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "simetria-de-reflexao",
+   "titulo": "Simetria de reflexão",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Reconhecer simetria de reflexão em figuras planas e usá-la para construir figuras congruentes.",
+   "habilidades": [
+    "EF04MA19"
    ],
    "versoes": [
     "A",
@@ -1776,6 +2016,70 @@
    "revisao": false
   },
   {
+   "slug": "area-na-malha-quadriculada",
+   "titulo": "Área na malha quadriculada",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Medir, comparar e estimar a área de figuras planas desenhadas em malha quadriculada, contando os quadradinhos.",
+   "habilidades": [
+    "EF04MA21"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "duracao-em-horas-minutos-e-segundos",
+   "titulo": "Duração em horas, minutos e segundos",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Ler e registrar medidas de tempo em horas, minutos e segundos e resolver problemas de duração.",
+   "habilidades": [
+    "EF04MA22"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "temperatura-em-graus-celsius",
+   "titulo": "Temperatura em graus Celsius",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Reconhecer a temperatura como grandeza e o grau Celsius como unidade, lendo termômetros.",
+   "habilidades": [
+    "EF04MA23"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "temperaturas-maximas-e-minimas",
+   "titulo": "Temperaturas máximas e mínimas",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Registrar as temperaturas máxima e mínima do dia e organizar os dados em tabelas e gráficos de colunas.",
+   "habilidades": [
+    "EF04MA24"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
    "slug": "formas-de-pagamento-troco-e-desconto",
    "titulo": "Formas de pagamento, troco e desconto",
    "anos": "4º ano",
@@ -1783,6 +2087,54 @@
    "resumo": "Calcular troco, comparar pagamento à vista e parcelado e calcular descontos em situações de compra.",
    "habilidades": [
     "EF04MA25"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "eventos-com-mais-chance-de-acontecer",
+   "titulo": "Eventos com mais chance de acontecer",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Identificar, entre eventos do dia a dia e de jogos, os que têm maior chance de acontecer.",
+   "habilidades": [
+    "EF04MA26"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "analisar-tabelas-e-graficos",
+   "titulo": "Analisar tabelas e gráficos",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Analisar dados de tabelas simples ou de dupla entrada e de gráficos de colunas ou pictóricos.",
+   "habilidades": [
+    "EF04MA27"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ],
+   "revisao": false
+  },
+  {
+   "slug": "pesquisa-com-categorias-e-numeros",
+   "titulo": "Pesquisa com dados de categorias e de números",
+   "anos": "4º ano",
+   "ano": 4,
+   "resumo": "Fazer pesquisas com variáveis categóricas e numéricas e organizar os dados em tabelas e gráficos de colunas.",
+   "habilidades": [
+    "EF04MA28"
    ],
    "versoes": [
     "A",
@@ -3830,6 +4182,7 @@
    "unidade": "Números",
    "texto": "Ler, escrever e ordenar números naturais até a ordem de dezenas de milhar.",
    "fichas": [
+    "ler-escrever-e-ordenar-numeros-ate-99999",
     "numeros-ate-99999-dezena-de-milhar"
    ]
   },
@@ -3839,6 +4192,7 @@
    "unidade": "Números",
    "texto": "Mostrar, por composição e decomposição, que todo número natural pode ser escrito com adições e multiplicações por potências de dez.",
    "fichas": [
+    "decompor-com-potencias-de-dez",
     "numeros-ate-99999-dezena-de-milhar"
    ]
   },
@@ -3848,6 +4202,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de adição e subtração com números naturais, usando estimativa e cálculo mental.",
    "fichas": [
+    "problemas-de-adicao-e-subtracao-com-estimativa",
     "adicao-e-subtracao-com-estimativa"
    ]
   },
@@ -3857,6 +4212,7 @@
    "unidade": "Números",
    "texto": "Usar as relações entre adição e subtração e entre multiplicação e divisão para ampliar as estratégias de cálculo.",
    "fichas": [
+    "relacoes-entre-as-operacoes",
     "adicao-e-subtracao-com-estimativa"
    ]
   },
@@ -3866,6 +4222,7 @@
    "unidade": "Números",
    "texto": "Usar as propriedades das operações para desenvolver estratégias de cálculo.",
    "fichas": [
+    "propriedades-das-operacoes-para-calcular",
     "multiplicacao-estrategias-e-propriedades"
    ]
   },
@@ -3875,6 +4232,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de multiplicação com diferentes significados (parcelas iguais, disposição retangular, proporcionalidade).",
    "fichas": [
+    "problemas-de-multiplicacao",
     "multiplicacao-estrategias-e-propriedades"
    ]
   },
@@ -3884,6 +4242,7 @@
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de divisão com divisor de até dois algarismos.",
    "fichas": [
+    "divisao-com-divisor-de-ate-dois-algarismos",
     "divisao-com-resto-e-divisor-de-dois-algarismos"
    ]
   },
@@ -3920,6 +4279,7 @@
    "unidade": "Álgebra",
    "texto": "Identificar regularidades em sequências de múltiplos de um número natural.",
    "fichas": [
+    "sequencias-de-multiplos",
     "multiplos-e-igualdades"
    ]
   },
@@ -3929,6 +4289,7 @@
    "unidade": "Álgebra",
    "texto": "Reconhecer, por investigação, grupos de números que deixam o mesmo resto em uma divisão.",
    "fichas": [
+    "numeros-que-deixam-o-mesmo-resto",
     "divisao-com-resto-e-divisor-de-dois-algarismos"
    ]
   },
@@ -3938,6 +4299,7 @@
    "unidade": "Álgebra",
    "texto": "Reconhecer, por investigação, as relações inversas entre as operações.",
    "fichas": [
+    "operacoes-inversas",
     "adicao-e-subtracao-com-estimativa"
    ]
   },
@@ -3947,6 +4309,7 @@
    "unidade": "Álgebra",
    "texto": "Reconhecer que a igualdade se mantém ao adicionar ou subtrair o mesmo número dos dois termos.",
    "fichas": [
+    "a-igualdade-continua-verdadeira",
     "multiplos-e-igualdades"
    ]
   },
@@ -3956,6 +4319,7 @@
    "unidade": "Álgebra",
    "texto": "Determinar o número desconhecido que torna verdadeira uma igualdade com adição ou subtração.",
    "fichas": [
+    "descobrir-o-numero-que-falta",
     "multiplos-e-igualdades"
    ]
   },
@@ -3974,7 +4338,8 @@
    "unidade": "Geometria",
    "texto": "Associar prismas e pirâmides às suas planificações e comparar seus atributos.",
    "fichas": [
-    "solidos-geometricos-e-planificacoes"
+    "solidos-geometricos-e-planificacoes",
+    "contar-faces-vertices-e-arestas"
    ]
   },
   {
@@ -3983,6 +4348,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer ângulos retos e não retos em figuras, com dobraduras, esquadros ou programas de computador.",
    "fichas": [
+    "angulos-retos-e-nao-retos",
     "angulos-retos-e-simetria"
    ]
   },
@@ -3992,6 +4358,7 @@
    "unidade": "Geometria",
    "texto": "Reconhecer simetria de reflexão em figuras planas e usá-la para construir figuras congruentes.",
    "fichas": [
+    "simetria-de-reflexao",
     "angulos-retos-e-simetria"
    ]
   },
@@ -4010,7 +4377,8 @@
    "unidade": "Grandezas e medidas",
    "texto": "Medir, comparar e estimar a área de figuras em malha quadriculada, contando os quadradinhos.",
    "fichas": [
-    "medidas-e-areas-com-quadradinhos"
+    "medidas-e-areas-com-quadradinhos",
+    "area-na-malha-quadriculada"
    ]
   },
   {
@@ -4019,7 +4387,8 @@
    "unidade": "Grandezas e medidas",
    "texto": "Ler e registrar medidas de tempo em horas, minutos e segundos e resolver problemas de duração.",
    "fichas": [
-    "horas-minutos-e-segundos"
+    "horas-minutos-e-segundos",
+    "duracao-em-horas-minutos-e-segundos"
    ]
   },
   {
@@ -4028,6 +4397,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Reconhecer a temperatura como grandeza e o grau Celsius como unidade de medida.",
    "fichas": [
+    "temperatura-em-graus-celsius",
     "temperatura-graus-celsius-e-graficos"
    ]
   },
@@ -4037,6 +4407,7 @@
    "unidade": "Grandezas e medidas",
    "texto": "Registrar temperaturas máximas e mínimas do dia e organizar os dados em gráficos de colunas.",
    "fichas": [
+    "temperaturas-maximas-e-minimas",
     "temperatura-graus-celsius-e-graficos"
    ]
   },
@@ -4055,7 +4426,8 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Identificar, entre eventos do dia a dia, aqueles que têm maior chance de acontecer.",
    "fichas": [
-    "chances-o-que-e-mais-provavel"
+    "chances-o-que-e-mais-provavel",
+    "eventos-com-mais-chance-de-acontecer"
    ]
   },
   {
@@ -4064,7 +4436,8 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Analisar dados de tabelas simples ou de dupla entrada e de gráficos de colunas ou pictóricos.",
    "fichas": [
-    "tabelas-graficos-e-pesquisa-da-turma"
+    "tabelas-graficos-e-pesquisa-da-turma",
+    "analisar-tabelas-e-graficos"
    ]
   },
   {
@@ -4073,6 +4446,7 @@
    "unidade": "Probabilidade e estatística",
    "texto": "Realizar pesquisa com variáveis categóricas e numéricas e organizar os dados em tabelas e gráficos de colunas.",
    "fichas": [
+    "pesquisa-com-categorias-e-numeros",
     "temperatura-graus-celsius-e-graficos"
    ]
   },
