@@ -278,6 +278,120 @@
    ]
   },
   {
+   "slug": "centenas-material-dourado-ate-999",
+   "titulo": "Centenas com material dourado: números até 999",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Contar placas, barras e cubinhos, decompor números de três algarismos, comparar e estimar quantidades grandes.",
+   "habilidades": [
+    "EF02MA01",
+    "EF02MA02",
+    "EF02MA04"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "adicao-e-subtracao-ate-999",
+   "titulo": "Adição e subtração até 999",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Juntar, comparar, completar e retirar com números de até três algarismos, com material dourado e cálculo mental.",
+   "habilidades": [
+    "EF02MA03",
+    "EF02MA05",
+    "EF02MA06"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "dobro-metade-triplo-e-terca-parte",
+   "titulo": "Dobro, metade, triplo e terça parte",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Dobrar e repartir em partes iguais com figuras, tabelas e problemas do dia a dia.",
+   "habilidades": [
+    "EF02MA08"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "sequencias-crescentes-e-decrescentes",
+   "titulo": "Sequências crescentes e decrescentes",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Contar para a frente e para trás a partir de qualquer número, de 1 em 1, 2 em 2, 5 em 5 e 10 em 10, e descobrir a regra.",
+   "habilidades": [
+    "EF02MA09",
+    "EF02MA10"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "trajetos-mapas-e-plantas",
+   "titulo": "Trajetos, mapas e plantas",
+   "anos": "2º ano",
+   "ano": 2,
+   "resumo": "Seguir e descrever caminhos em um mapa simples e desenhar a planta da sala de aula, com pontos de referência.",
+   "habilidades": [
+    "EF02MA12",
+    "EF02MA13"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "medir-comprimentos-metro-e-centimetro",
+   "titulo": "Medir comprimentos: metro e centímetro",
+   "anos": "2º e 3º ano",
+   "ano": 2,
+   "resumo": "Medir com clipes, palmos e régua, escolher o instrumento certo e relacionar metro, centímetro e milímetro.",
+   "habilidades": [
+    "EF02MA16",
+    "EF03MA18",
+    "EF03MA19"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
+   "slug": "massa-e-capacidade-quilo-e-litro",
+   "titulo": "Massa e capacidade: quilo e litro",
+   "anos": "2º e 3º ano",
+   "ano": 2,
+   "resumo": "Comparar o que é mais pesado e onde cabe mais, usar quilo, grama, litro e mililitro e resolver problemas de cozinha e mercado.",
+   "habilidades": [
+    "EF02MA17",
+    "EF03MA20"
+   ],
+   "versoes": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  {
    "slug": "kit-de-apoio-visual",
    "titulo": "Kit de apoio visual",
    "anos": "1º ao 5º ano",
@@ -500,7 +614,8 @@
    "unidade": "Números",
    "texto": "Comparar e ordenar números naturais até a ordem de centenas, pelo valor posicional e pela função do zero.",
    "fichas": [
-    "dezenas-e-unidades-material-dourado"
+    "dezenas-e-unidades-material-dourado",
+    "centenas-material-dourado-ate-999"
    ]
   },
   {
@@ -508,35 +623,45 @@
    "ano": 2,
    "unidade": "Números",
    "texto": "Estimar e contar quantidades de até 1000 objetos, por agrupamentos.",
-   "fichas": []
+   "fichas": [
+    "centenas-material-dourado-ate-999"
+   ]
   },
   {
    "codigo": "EF02MA03",
    "ano": 2,
    "unidade": "Números",
    "texto": "Comparar quantidades de objetos de dois conjuntos (mais, menos, mesma quantidade) e indicar a diferença.",
-   "fichas": []
+   "fichas": [
+    "adicao-e-subtracao-ate-999"
+   ]
   },
   {
    "codigo": "EF02MA04",
    "ano": 2,
    "unidade": "Números",
    "texto": "Compor e decompor números de até três ordens, com adições.",
-   "fichas": []
+   "fichas": [
+    "centenas-material-dourado-ate-999"
+   ]
   },
   {
    "codigo": "EF02MA05",
    "ano": 2,
    "unidade": "Números",
    "texto": "Construir fatos básicos da adição e da subtração para o cálculo mental ou escrito.",
-   "fichas": []
+   "fichas": [
+    "adicao-e-subtracao-ate-999"
+   ]
   },
   {
    "codigo": "EF02MA06",
    "ano": 2,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de adição e subtração com números de até três ordens.",
-   "fichas": []
+   "fichas": [
+    "adicao-e-subtracao-ate-999"
+   ]
   },
   {
    "codigo": "EF02MA07",
@@ -552,14 +677,18 @@
    "ano": 2,
    "unidade": "Números",
    "texto": "Resolver e elaborar problemas de dobro, metade, triplo e terça parte.",
-   "fichas": []
+   "fichas": [
+    "dobro-metade-triplo-e-terca-parte"
+   ]
   },
   {
    "codigo": "EF02MA09",
    "ano": 2,
    "unidade": "Álgebra",
    "texto": "Construir sequências de números naturais em ordem crescente ou decrescente, com uma regularidade.",
-   "fichas": []
+   "fichas": [
+    "sequencias-crescentes-e-decrescentes"
+   ]
   },
   {
    "codigo": "EF02MA10",
@@ -567,7 +696,8 @@
    "unidade": "Álgebra",
    "texto": "Descrever o padrão de sequências repetitivas e recursivas, com palavras, símbolos ou desenhos.",
    "fichas": [
-    "sequencias-e-padroes"
+    "sequencias-e-padroes",
+    "sequencias-crescentes-e-decrescentes"
    ]
   },
   {
@@ -584,14 +714,18 @@
    "ano": 2,
    "unidade": "Geometria",
    "texto": "Identificar e registrar a localização e os deslocamentos de pessoas e objetos em trajetos e mapas simples.",
-   "fichas": []
+   "fichas": [
+    "trajetos-mapas-e-plantas"
+   ]
   },
   {
    "codigo": "EF02MA13",
    "ano": 2,
    "unidade": "Geometria",
    "texto": "Esboçar roteiros e plantas simples de ambientes familiares, com pontos de referência.",
-   "fichas": []
+   "fichas": [
+    "trajetos-mapas-e-plantas"
+   ]
   },
   {
    "codigo": "EF02MA14",
@@ -616,14 +750,18 @@
    "ano": 2,
    "unidade": "Grandezas e medidas",
    "texto": "Estimar, medir e comparar comprimentos com unidades não padronizadas e padronizadas (metro, centímetro, milímetro).",
-   "fichas": []
+   "fichas": [
+    "medir-comprimentos-metro-e-centimetro"
+   ]
   },
   {
    "codigo": "EF02MA17",
    "ano": 2,
    "unidade": "Grandezas e medidas",
    "texto": "Estimar, medir e comparar capacidade e massa (litro, mililitro, quilograma, grama).",
-   "fichas": []
+   "fichas": [
+    "massa-e-capacidade-quilo-e-litro"
+   ]
   },
   {
    "codigo": "EF02MA18",
@@ -807,21 +945,27 @@
    "ano": 3,
    "unidade": "Grandezas e medidas",
    "texto": "Escolher a unidade e o instrumento de medida mais apropriados para cada medição.",
-   "fichas": []
+   "fichas": [
+    "medir-comprimentos-metro-e-centimetro"
+   ]
   },
   {
    "codigo": "EF03MA19",
    "ano": 3,
    "unidade": "Grandezas e medidas",
    "texto": "Estimar, medir e comparar comprimentos com unidades padronizadas (metro, centímetro, milímetro).",
-   "fichas": []
+   "fichas": [
+    "medir-comprimentos-metro-e-centimetro"
+   ]
   },
   {
    "codigo": "EF03MA20",
    "ano": 3,
    "unidade": "Grandezas e medidas",
    "texto": "Estimar e medir capacidade e massa (litro, mililitro, quilograma, grama) em contextos do dia a dia.",
-   "fichas": []
+   "fichas": [
+    "massa-e-capacidade-quilo-e-litro"
+   ]
   },
   {
    "codigo": "EF03MA21",

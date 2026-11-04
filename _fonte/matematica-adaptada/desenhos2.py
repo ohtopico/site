@@ -344,3 +344,58 @@ def caixa_x(n, tam=34):
     inner = ''.join(f'<rect x="{i * (tam + 6)}" y="1" width="{tam}" height="{tam}" rx="4" fill="{CLARO["verde"]}" {E}/>'
                     f'<text x="{i * (tam + 6) + tam / 2}" y="{tam / 2 + 7}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="17">x</text>' for i in range(n))
     return svg(n * (tam + 6) - 6, tam + 2, inner, 'caixas', f'{n} caixas com valor desconhecido x')
+
+
+def dourado3(centenas, dezenas, unidades, tam=6, rotulo=None):
+    """Material dourado com placas (100), barras (10) e cubinhos (1)."""
+    inner, x = '', 0
+    for _ in range(centenas):
+        inner += f'<rect x="{x + 1}" y="1" width="{10 * tam}" height="{10 * tam}" fill="{CLARO["amarelo"]}" stroke="{TRACO}" stroke-width="1.6"/>'
+        for k in range(1, 10):
+            inner += f'<path d="M{x + 1 + k * tam} 1 v{10 * tam} M{x + 1} {1 + k * tam} h{10 * tam}" stroke="{TRACO}" stroke-width=".6"/>'
+        x += 10 * tam + 8
+    for _ in range(dezenas):
+        inner += f'<rect x="{x + 1}" y="1" width="{tam}" height="{10 * tam}" fill="{CLARO["amarelo"]}" stroke="{TRACO}" stroke-width="1.4"/>'
+        for k in range(1, 10):
+            inner += f'<path d="M{x + 1} {1 + k * tam} h{tam}" stroke="{TRACO}" stroke-width=".6"/>'
+        x += tam + 5
+    x += 4
+    for u in range(unidades):
+        cx, cy = x + (u % 3) * (tam + 4), 10 * tam - (u // 3 + 1) * (tam + 4) + 5
+        inner += f'<rect x="{cx + 1}" y="{cy}" width="{tam}" height="{tam}" fill="{CLARO["amarelo"]}" stroke="{TRACO}" stroke-width="1.2"/>'
+    if unidades:
+        x += 3 * (tam + 4)
+    return svg(max(x, 10), 10 * tam + 2, inner, 'dourado', rotulo or f'{centenas} placas, {dezenas} barras e {unidades} cubinhos')
+
+
+def mapa_bairro(caminho=None, rotulo='mapa de um bairro com ruas e lugares'):
+    """Mapa simples em malha 8 × 6: casa, escola, praça, mercado; caminho opcional (lista de (col, lin))."""
+    cel = 54
+    inner = ''
+    for c in range(8):
+        for l in range(6):
+            inner += f'<rect x="{c * cel}" y="{l * cel}" width="{cel}" height="{cel}" fill="#fff" stroke="#c9c9c4" stroke-width="1"/>'
+    lugares = {(0, 5): ('Casa', CLARO['rosa']), (7, 0): ('Escola', CLARO['amarelo']), (3, 2): ('Praça', CLARO['verde']), (6, 4): ('Mercado', CLARO['laranja'])}
+    for (c, l), (n, cor) in lugares.items():
+        inner += (f'<rect x="{c * cel + 3}" y="{l * cel + 3}" width="{cel - 6}" height="{cel - 6}" rx="5" fill="{cor}" {E}/>'
+                  f'<text x="{c * cel + cel / 2}" y="{l * cel + cel / 2 + 4}" text-anchor="middle" font-family="Lexend, sans-serif" font-size="10" font-weight="600">{n}</text>')
+    if caminho:
+        pts = ' '.join(f'{c * cel + cel / 2},{l * cel + cel / 2}' for c, l in caminho)
+        inner += f'<polyline points="{pts}" fill="none" stroke="{TRACO}" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round" stroke-linejoin="round"/>'
+    inner += f'<rect x="0" y="0" width="{8 * cel}" height="{6 * cel}" fill="none" stroke="{TRACO}" stroke-width="2"/>'
+    return svg(8 * cel + 1, 6 * cel + 1, inner, 'mapa', rotulo)
+
+
+def objeto_medida(tipo, tam=70):
+    """Objetos para massa e capacidade: garrafa (litro), pacote (quilo), colher, seringa."""
+    d = {
+        'garrafa': (f'<path d="M30 4 h12 v12 q12 6 12 20 v40 h-36 v-40 q0 -14 12 -20z" fill="#fff" {E}/><rect x="18" y="40" width="36" height="18" fill="{CLARO["verde"]}" stroke="{TRACO}" stroke-width="1.4"/><text x="36" y="53" text-anchor="middle" font-family="Lexend, sans-serif" font-size="10" font-weight="600">1 L</text>', 'garrafa de 1 litro'),
+        'pacote': (f'<path d="M12 18 h48 l-4 58 h-40z" fill="{CLARO["bege"]}" {E}/><text x="36" y="52" text-anchor="middle" font-family="Lexend, sans-serif" font-size="11" font-weight="600">1 kg</text>', 'pacote de 1 quilograma'),
+        'copinho': (f'<path d="M20 30 h32 l-4 40 h-24z" fill="#fff" {E}/><text x="36" y="56" text-anchor="middle" font-family="Lexend, sans-serif" font-size="9">200 mL</text>', 'copinho de 200 mililitros'),
+        'balde': (f'<path d="M10 22 h52 l-6 52 h-40z" fill="{CLARO["amarelo"]}" {E}/><path d="M10 22 q26 -24 52 0" fill="none" {E}/><text x="36" y="54" text-anchor="middle" font-family="Lexend, sans-serif" font-size="11" font-weight="600">10 L</text>', 'balde de 10 litros'),
+        'pena': (f'<path d="M14 66 Q22 20 60 8 Q48 46 14 66z" fill="#fff" {E}/><path d="M14 66 L50 20" stroke="{TRACO}" stroke-width="1.4"/>', 'pena'),
+        'melancia': (f'<ellipse cx="36" cy="44" rx="30" ry="24" fill="{CLARO["verde"]}" {E}/><path d="M14 30 q22 16 0 30 M36 20 q10 24 0 48 M58 30 q-22 16 0 30" fill="none" stroke="{TRACO}" stroke-width="1.4"/>', 'melancia'),
+        'clipe': (f'<path d="M30 60 V20 q0 -10 10 -10 q10 0 10 10 V54 q0 6 -6 6 q-6 0 -6 -6 V24" fill="none" stroke="{TRACO}" stroke-width="3" stroke-linecap="round"/>', 'clipe'),
+        'tijolo': (f'<path d="M8 36 L48 36 L48 62 L8 62z" fill="{CLARO["rosa"]}" {E}/><path d="M8 36 L22 24 L62 24 L48 36z" fill="#fff" {E}/><path d="M48 36 L62 24 L62 50 L48 62z" fill="{CLARO["rosa"]}" {E}/>', 'tijolo'),
+    }[tipo]
+    return svg(tam, tam * 80 / 72, f'<g transform="scale({tam / 72:g})">{d[0]}</g>', 'objeto', d[1])
