@@ -23,7 +23,9 @@ import moldes
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
-PASTAS = [RAIZ / 'matematica-adaptada' / 'fichas', RAIZ / 'computacao-adaptada' / 'fichas']
+PASTAS = [RAIZ / 'matematica-adaptada' / 'fichas', RAIZ / 'computacao-adaptada' / 'fichas', RAIZ / 'computacao-desplugada']
+# pasta de cada área, para o moldes.js e os pacotes .zip
+AREAS = {'matematica': 'matematica-adaptada/fichas', 'computacao': 'computacao-adaptada/fichas', 'desplugada': 'computacao-desplugada'}
 LACUNA = '( )'
 BLOCOS = {'div', 'p', 'section', 'table', 'pre', 'ul', 'ol', 'h2', 'h3', 'svg', 'header', 'footer', 'li'}
 LETRAS_ITEM = 'abcdefghijklmnopqrstuvwxyz'
@@ -222,7 +224,13 @@ def doc_linhas(t, recuo, desl):
     return quebrar(texto_braille(t), recuo, desl)
 
 
+def area_de(pasta):
+    return 'desplugada' if 'desplugada' in str(pasta) else 'matematica' if 'matematica' in str(pasta) else 'computacao'
+
+
 def gerar_ficha(pasta, slug):
+    if not (pasta / slug / 'index.html').exists():
+        return None
     html = (pasta / slug / 'index.html').read_text(encoding='utf-8')
     s = BeautifulSoup(html, 'html.parser')
     arts = [a for a in s.select('article.folha') if a.get('data-versao') != 'Professor']
@@ -237,13 +245,14 @@ def gerar_ficha(pasta, slug):
     ficha = Ficha(slug)
     doc = Documento()
     doc.titulo(titulo)
-    doc.paragrafo('Ficha adaptada em braille. ' + ano + '. ohtopico.com.br, Júlia Roberta Quoos Alves.', recuo=0)
+    tipo = 'Atividade de computação desplugada em braille. ' if area_de(pasta) == 'desplugada' else 'Ficha adaptada em braille. '
+    doc.paragrafo(tipo + ano + '. ohtopico.com.br, Júlia Roberta Quoos Alves.', recuo=0)
     doc.branco()
     doc.paragrafo(NOTA)
     for art in arts:
         versao_doc(doc, ficha, art, ano)
     (pasta / slug / f'{slug}.brf').write_text(doc.brf(), encoding='ascii', newline='')
-    area = 'matematica' if 'matematica' in str(pasta) else 'computacao'
+    area = area_de(pasta)
     if ficha.figuras:
         moldes.escrever(AQUI / 'moldes' / f'{slug}.html', titulo, ano, ficha.figuras, area)
     return {'slug': slug, 'area': area, 'titulo': titulo, 'ano': ano, 'figuras': len(ficha.figuras),
@@ -251,22 +260,24 @@ def gerar_ficha(pasta, slug):
 
 
 def pacotes(indice):
-    """Um zip com todos os .brf de cada ano, em material-adaptado/braille/."""
+    """Um zip com todos os .brf de cada ano, em material-adaptado/braille/, e um zip só da computação desplugada."""
     import zipfile
     destino = RAIZ / 'material-adaptado' / 'braille'
     destino.mkdir(parents=True, exist_ok=True)
     grupos = {}
     for slug, i in indice.items():
         m = re.match(r'(\d+)', i['ano'])
-        if m:
+        if i['area'] == 'desplugada':
+            grupos.setdefault('desplugada', []).append(slug)
+        elif m:
             grupos.setdefault(f"{i['area']}-{m.group(1)}-ano-braille.zip", []).append(slug)
     for nome, slugs in grupos.items():
-        with zipfile.ZipFile(destino / nome, 'w', zipfile.ZIP_DEFLATED) as z:
+        arq = RAIZ / 'computacao-desplugada' / 'computacao-desplugada-braille.zip' if nome == 'desplugada' else destino / nome
+        with zipfile.ZipFile(arq, 'w', zipfile.ZIP_DEFLATED) as z:
             for slug in sorted(slugs):
-                area = 'computacao-adaptada' if indice[slug]['area'] == 'computacao' else 'matematica-adaptada'
                 info = zipfile.ZipInfo(f'{slug}.brf', date_time=(2026, 11, 4, 0, 0, 0))
                 info.compress_type = zipfile.ZIP_DEFLATED
-                z.writestr(info, (RAIZ / area / 'fichas' / slug / f'{slug}.brf').read_bytes())
+                z.writestr(info, (RAIZ / AREAS[indice[slug]['area']] / slug / f'{slug}.brf').read_bytes())
 
 
 def main():

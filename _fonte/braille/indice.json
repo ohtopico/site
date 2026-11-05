@@ -247,6 +247,14 @@
   "figuras": 0,
   "paginas_braille": 6
  },
+ "cabos-mais-baratos-arvore": {
+  "slug": "cabos-mais-baratos-arvore",
+  "area": "desplugada",
+  "titulo": "Internet nas escolas com menos cabo",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
  "caca-aos-bugs": {
   "slug": "caca-aos-bugs",
   "area": "computacao",
@@ -319,6 +327,22 @@
   "figuras": 0,
   "paginas_braille": 7
  },
+ "caminho-mais-curto-na-rede": {
+  "slug": "caminho-mais-curto-na-rede",
+  "area": "desplugada",
+  "titulo": "O caminho mais rápido na internet",
+  "ano": "8º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
+ "cartoes-de-pontos-binario": {
+  "slug": "cartoes-de-pontos-binario",
+  "area": "desplugada",
+  "titulo": "Cartões de pontos: números em binário",
+  "ano": "6º ano",
+  "figuras": 6,
+  "paginas_braille": 5
+ },
  "centenas-material-dourado-ate-999": {
   "slug": "centenas-material-dourado-ate-999",
   "area": "matematica",
@@ -342,6 +366,14 @@
   "ano": "3º e 4º ano",
   "figuras": 5,
   "paginas_braille": 7
+ },
+ "cifra-com-palavra-chave": {
+  "slug": "cifra-com-palavra-chave",
+  "area": "desplugada",
+  "titulo": "Cifra com palavra-chave",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 4
  },
  "circulo-quadrado-retangulo-e-triangulo": {
   "slug": "circulo-quadrado-retangulo-e-triangulo",
@@ -727,6 +759,14 @@
   "figuras": 1,
   "paginas_braille": 6
  },
+ "ditado-de-figuras": {
+  "slug": "ditado-de-figuras",
+  "area": "desplugada",
+  "titulo": "Ditado de figuras: instruções precisas",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 3
+ },
  "divida-para-resolver": {
   "slug": "divida-para-resolver",
   "area": "computacao",
@@ -1023,6 +1063,14 @@
   "figuras": 2,
   "paginas_braille": 7
  },
+ "fechadura-maquina-de-estados": {
+  "slug": "fechadura-maquina-de-estados",
+  "area": "desplugada",
+  "titulo": "A fechadura que lê botões",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 4
+ },
  "figuras-congruentes": {
   "slug": "figuras-congruentes",
   "area": "matematica",
@@ -1303,6 +1351,14 @@
   "figuras": 3,
   "paginas_braille": 6
  },
+ "imagem-feita-de-numeros": {
+  "slug": "imagem-feita-de-numeros",
+  "area": "desplugada",
+  "titulo": "Imagem feita de números",
+  "ano": "6º ano",
+  "figuras": 2,
+  "paginas_braille": 4
+ },
  "inteiros-na-reta-e-no-dia-a-dia": {
   "slug": "inteiros-na-reta-e-no-dia-a-dia",
   "area": "matematica",
@@ -1453,6 +1509,14 @@
   "titulo": "Localizar em mapas e malhas",
   "ano": "5º ano",
   "figuras": 3,
+  "paginas_braille": 4
+ },
+ "mapa-para-colorir-grafos": {
+  "slug": "mapa-para-colorir-grafos",
+  "area": "desplugada",
+  "titulo": "Mapa para colorir com poucas cores",
+  "ano": "7º ano",
+  "figuras": 2,
   "paginas_braille": 4
  },
  "maquina-de-estados": {
@@ -2511,6 +2575,14 @@
   "figuras": 6,
   "paginas_braille": 7
  },
+ "rede-de-ordenacao": {
+  "slug": "rede-de-ordenacao",
+  "area": "desplugada",
+  "titulo": "Rede de ordenação no pátio",
+  "ano": "8º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
  "regularidades-e-igualdades": {
   "slug": "regularidades-e-igualdades",
   "area": "matematica",
@@ -2622,6 +2694,14 @@
   "ano": "9º ano",
   "figuras": 4,
   "paginas_braille": 7
+ },
+ "senhas-e-combinacoes": {
+  "slug": "senhas-e-combinacoes",
+  "area": "desplugada",
+  "titulo": "Quantas senhas existem?",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 4
  },
  "separar-e-organizar-por-atributos": {
   "slug": "separar-e-organizar-por-atributos",
@@ -2855,6 +2935,14 @@
   "figuras": 3,
   "paginas_braille": 4
  },
+ "torre-de-hanoi-recursao": {
+  "slug": "torre-de-hanoi-recursao",
+  "area": "desplugada",
+  "titulo": "Torre de Hanói: recursão com discos de papel",
+  "ano": "8º ano",
+  "figuras": 7,
+  "paginas_braille": 5
+ },
  "trajetos-mapas-e-plantas": {
   "slug": "trajetos-mapas-e-plantas",
   "area": "matematica",
@@ -2910,6 +2998,14 @@
   "ano": "2º ano",
   "figuras": 7,
   "paginas_braille": 6
+ },
+ "truque-da-paridade": {
+  "slug": "truque-da-paridade",
+  "area": "desplugada",
+  "titulo": "O truque da paridade",
+  "ano": "7º ano",
+  "figuras": 2,
+  "paginas_braille": 4
  },
  "um-problema-varios-algoritmos": {
   "slug": "um-problema-varios-algoritmos",

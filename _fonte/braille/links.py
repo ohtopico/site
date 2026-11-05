@@ -41,8 +41,9 @@ def hub():
     if not _INDICE:
         return ''
     import re
-    total = len(_INDICE)
-    figuras = sum(i['figuras'] for i in _INDICE.values())
+    adaptadas = [i for i in _INDICE.values() if i['area'] in ('matematica', 'computacao')]
+    total = len(adaptadas)
+    figuras = sum(i['figuras'] for i in adaptadas)
     grupos = []
     for area, nome in (('matematica', 'Matemática'), ('computacao', 'Computação')):
         anos = sorted({int(m.group(1)) for i in _INDICE.values() if i['area'] == area for m in [re.match(r'(\d+)', i['ano'])] if m})
@@ -55,5 +56,6 @@ def hub():
     return f'''<section class="ano-secao secao-braille" id="braille"><h2>Para estudantes cegos: braille e moldes táteis</h2>
       <p class="intro-mapa">Todas as {total} fichas de Matemática e Computação têm versão em braille (.brf), pronta para a impressora braille da escola ou da sala de recursos: braille grau 1, sinais do Código Matemático Unificado, 40 celas por linha e 25 linhas por página. As fichas com figuras também têm moldes táteis em PDF ({figuras} figuras no total), com fundo branco, traço grosso e texturas no lugar das cores, e instruções para montar em relevo com cola relevo, barbante, EVA ou lixa. Os arquivos de cada ficha ficam na página dela; aqui estão os pacotes com todos os .brf de cada ano.</p>
       {''.join(grupos)}
+      <p class="intro-mapa">As atividades de <a href="/computacao-desplugada/#braille">computação desplugada</a> também têm versão em braille e moldes táteis.</p>
       <p class="intro-mapa">O material foi gerado a partir das fichas em tinta. Antes de chegar ao estudante, peça para a sala de recursos ou o professor do AEE revisar o braille e testar os moldes.</p>
     </section>'''

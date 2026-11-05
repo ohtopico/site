@@ -212,11 +212,11 @@ ul.legenda, ul.etiquetas {{ list-style: none; padding: 0; margin: 0; display: fl
 <section class="capa">
   <p class="rot">Moldes táteis · {e(ano)}</p>
   <h1>{e(titulo)}</h1>
-  <p>Este arquivo tem {len(figuras)} {"molde tátil" if len(figuras) == 1 else "moldes táteis"}, um para cada figura da ficha, com o mesmo número usado na versão em braille (.brf). As figuras estão ampliadas, com traço grosso e sem cores, para virar relevo.</p>
+  <p>Este arquivo tem {len(figuras)} {"molde tátil" if len(figuras) == 1 else "moldes táteis"}, um para cada figura {'da atividade' if area == 'desplugada' else 'da ficha'}, com o mesmo número usado na versão em braille (.brf). As figuras estão ampliadas, com traço grosso e sem cores, para virar relevo.</p>
   <h2>Como montar</h2>
   <ol>{passos}</ol>
-  <p class="aviso"><b>Antes de usar com a turma:</b> este material foi gerado a partir das fichas em tinta e ainda precisa ser validado com a sala de recursos ou com o professor do AEE. Teste o molde com o estudante e ajuste o que for preciso.</p>
-  <p class="rodape">ohtopico.com.br/material-adaptado · Júlia Roberta Quoos Alves · uso livre em sala de aula</p>
+  <p class="aviso"><b>Antes de usar com a turma:</b> este material foi gerado a partir das {'folhas' if area == 'desplugada' else 'fichas'} em tinta e ainda precisa ser validado com a sala de recursos ou com o professor do AEE. Teste o molde com o estudante e ajuste o que for preciso.</p>
+  <p class="rodape">{'ohtopico.com.br/computacao-desplugada' if area == 'desplugada' else 'ohtopico.com.br/material-adaptado'} · Júlia Roberta Quoos Alves · uso livre em sala de aula</p>
 </section>
 {cartoes}
 </body></html>
