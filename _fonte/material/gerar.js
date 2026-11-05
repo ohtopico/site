@@ -312,7 +312,9 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: 
     <div>${em ? '<span>Etapa</span>Ensino Médio (1ª a 3ª série)' : `<span>Ano</span>${h.ano}º ano do Ensino Fundamental`}</div>
     <div><span>Materiais</span>${mats.length + sims.length + (slides ? 1 : 0)} gratuitos</div>
   </div>
-  <p>Nesta página estão os materiais gratuitos para trabalhar a habilidade <strong>${c}</strong> em sala de aula: ${listaTxt(resumoMats)}. Tudo funciona no navegador, sem cadastro, e pode ser impresso ou projetado.</p>${EST['aprenda:' + c] ? `
+  <p>Nesta página estão os materiais gratuitos para trabalhar a habilidade <strong>${c}</strong> em sala de aula: ${listaTxt(resumoMats)}. Tudo funciona no navegador, sem cadastro, e pode ser impresso ou projetado.</p>${h.comp === 'CO' ? (PILAR_DE[c] ? `
+  <p class="panel"><strong>Pensamento computacional:</strong> esta habilidade trabalha principalmente o pilar <a href="${linkPensamento(PILAR_DE[c].id)}">${PILAR_DE[c].nome.toLowerCase()}</a>. A página <a href="${linkPensamento()}">pensamento computacional</a> explica os quatro pilares com exemplos e atividades sem computador e reúne todas as habilidades do eixo.</p>` : `
+  <p>Esta habilidade é do eixo ${eixo.toLowerCase()}, mas também usa o pensamento computacional. Veja os quatro pilares e as atividades para imprimir na página <a href="${linkPensamento()}">pensamento computacional</a>.</p>`) : ''}${EST['aprenda:' + c] ? `
   <p class="panel">📖 <strong>Para o estudante:</strong> a página <a href="${EST['aprenda:' + c]}">Aprenda: ${esc(APRENDA[c].t)}</a> explica a ideia com ilustração e exemplo, tem uma pergunta para conferir e leva direto à prática. Bom para começar a aula, para quem faltou ou para estudar em casa.</p>` : ''}
 ${slides || pagApostila ? `
   <h2>Aula expositiva</h2>
@@ -728,7 +730,7 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e m
   <p>A BNCC Computação é o complemento da Base Nacional Comum Curricular que tornou a Computação parte da formação de todos os estudantes da Educação Básica. Foi aprovada pelo Conselho Nacional de Educação no Parecer CNE/CEB nº 2/2022 e homologada na Resolução CNE/CEB nº 1/2022. Ela não exige uma disciplina nova nem laboratório de informática: as habilidades podem ser trabalhadas dentro de outros componentes, em projetos ou em aulas próprias, com ou sem computador. O guia <a href="/computacao-na-escola/">como implantar Computação na escola</a> compara esses formatos e traz um roteiro em seis passos para a coordenação. Para saber se o seu estado já publicou um currículo próprio de Computação, veja o <a href="bncc/curriculos-estaduais/">mapa dos currículos estaduais</a>.</p>
   <p>Do 6º ao 9º ano, as habilidades seguem o código <strong>EF0XCO00</strong> (por exemplo, EF06CO01 é a primeira habilidade de Computação do 6º ano) e se dividem em três eixos:</p>
   <ul>
-    <li><strong>Pensamento computacional</strong> (${nEixo('PC')} habilidades): decompor problemas, reconhecer padrões, abstrair e escrever algoritmos, com e sem programação.</li>
+    <li><strong><a href="${PENSAMENTO}">Pensamento computacional</a></strong> (${nEixo('PC')} habilidades): decompor problemas, reconhecer padrões, abstrair e escrever algoritmos, com e sem programação.</li>
     <li><strong>Mundo digital</strong> (${nEixo('MD')} habilidades): como computadores, redes, internet e dados funcionam por dentro.</li>
     <li><strong>Cultura digital</strong> (${nEixo('CD')} habilidades): uso crítico, ético e seguro da tecnologia, direitos autorais, privacidade e convivência on-line.</li>
   </ul>
@@ -751,6 +753,220 @@ ${anos.map(a => `
 <script src="assets/comum.js"></script>
 <script>mdTopbar('bncc'); mdFooter();</script>
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
+`;
+}
+
+/* ---------- página central de pensamento computacional ---------- */
+// fica na raiz do site (/pensamento-computacional/), com a mesma base do material didático
+const PENSAMENTO = '/pensamento-computacional/';
+// páginas de computação desplugada: o primeiro endereço que existir entra nos links
+const DESPLUGADA = ['computacao-desplugada', 'material-didatico/desplugada', 'material-didatico/computacao-desplugada']
+  .find(p => fs.existsSync(path.join(RAIZ, p, 'index.html')));
+const URL_DESPLUGADA = DESPLUGADA ? `/${DESPLUGADA}/` : '';
+/* Os quatro pilares e, para cada habilidade do eixo Pensamento computacional, o pilar que ela mais trabalha
+   (toda habilidade usa vários; aqui vale o principal, para o professor saber por onde começar). */
+const PILARES = [
+  {
+    id: 'decomposicao', nome: 'Decomposição',
+    def: 'Quebrar um problema grande em partes menores, que dá para resolver uma de cada vez.',
+    dia: 'Organizar uma festa da turma: lista de convidados, comida, música e limpeza viram tarefas separadas, cada uma com um responsável.',
+    aula: 'Peça a cada grupo que escreva no papel todas as etapas para preparar um sanduíche e depois agrupe as etapas em blocos (separar ingredientes, montar, servir). Em seguida, compare os blocos entre os grupos.',
+    habs: ['EF06CO04', 'EF07CO03', 'EF07CO05', 'EF08CO04', 'EF09CO02', 'EM13CO01', 'EM13CO16', 'EM13CO18']
+  },
+  {
+    id: 'padroes', nome: 'Reconhecimento de padrões',
+    def: 'Perceber o que se repete entre problemas ou dentro de um mesmo problema, para aproveitar uma solução que já funciona.',
+    dia: 'Quem aprende a calcular o troco de uma compra passa a usar o mesmo raciocínio em qualquer compra, com qualquer valor.',
+    aula: 'Mostre sequências de figuras ou números no quadro e peça que a turma descubra a regra e desenhe o próximo elemento. Depois, cada dupla cria a própria sequência para a outra dupla resolver.',
+    habs: ['EF06CO06', 'EF08CO01', 'EM13CO10']
+  },
+  {
+    id: 'abstracao', nome: 'Abstração',
+    def: 'Ficar só com o que importa para resolver o problema e deixar de lado os detalhes que não fazem diferença.',
+    dia: 'O mapa do ônibus mostra as paradas e a ordem delas, mas não mostra as casas, as árvores nem a distância exata entre as ruas.',
+    aula: 'Entregue a descrição longa de um trajeto da escola até um ponto do bairro e peça que a turma desenhe um mapa simples, só com o necessário para chegar. Compare os mapas e discuta o que cada grupo decidiu tirar.',
+    habs: ['EF06CO01', 'EF06CO05', 'EF07CO01', 'EF07CO04', 'EF08CO02', 'EF09CO01', 'EF09CO03', 'EM13CO02', 'EM13CO11']
+  },
+  {
+    id: 'algoritmos', nome: 'Algoritmos',
+    def: 'Escrever uma sequência de passos clara e sem ambiguidade, que qualquer pessoa (ou computador) consegue seguir e chegar ao mesmo resultado.',
+    dia: 'Uma receita de bolo, as instruções de montagem de um móvel e o passo a passo para sacar dinheiro no caixa eletrônico.',
+    aula: 'Um estudante faz o papel de robô e só obedece a comandos exatos (andar um passo, virar à direita, pegar). A turma escreve o programa no quadro para o robô chegar a um objeto e corrige os erros que aparecerem.',
+    habs: ['EF06CO02', 'EF06CO03', 'EF07CO02', 'EF08CO03', 'EM13CO03', 'EM13CO04', 'EM13CO05', 'EM13CO06']
+  }
+];
+const PILAR_DE = {};
+for (const p of PILARES) for (const c of p.habs) PILAR_DE[c] = p;
+// link para a página central, a partir de material-didatico/ (a base das páginas geradas)
+const linkPensamento = (ancora = '') => `${PENSAMENTO}${ancora ? '#' + ancora : ''}`;
+
+function paginaPensamento() {
+  const url = `${SITE}${PENSAMENTO}`;
+  const cos = habs.filter(h => h.comp === 'CO');
+  const pcs = cos.filter(h => h.eixo === 'PC');
+  const outras = cos.filter(h => h.eixo !== 'PC');
+  const anos = [...new Set(pcs.map(h => h.ano))].sort((a, b) => a - b);
+  const temPagina = c => !!EST['hab:' + c];
+  const codigosPC = new Set(pcs.map(h => h.codigo));
+  const fichas = D.RECURSOS.filter(r => r.tipo === 'ficha' && r.url && (r.habs || []).some(c => codigosPC.has(c)));
+  const jogos = D.RECURSOS.filter(r => (r.tipo === 'jogo' || r.tipo === '3d') && r.url && (r.habs || []).some(c => codigosPC.has(c)));
+  const title = titulo(`Pensamento computacional: pilares e atividades${ASSINATURA}`, 'Pensamento computacional: pilares e atividades');
+  const desc = cortar(`O que é pensamento computacional, os quatro pilares (decomposição, padrões, abstração e algoritmos) e as ${pcs.length} habilidades da BNCC Computação, com atividades para imprimir.`, 155);
+  const img = `${SITE}/pensamento-computacional/og-pensamento-computacional.jpg`;
+  const tagHab = h => `<a class="tag code co" href="${EST['hab:' + h.codigo]}" title="${esc(h.objeto)}">${h.codigo}</a>`;
+  const card = h => {
+    const n = materiaisDe(h.codigo).length + (D.SLIDES[h.codigo] ? 1 : 0);
+    const p = PILAR_DE[h.codigo];
+    return `
+      <a class="card hab" href="${EST['hab:' + h.codigo]}">
+        <span class="small muted">${h.codigo}${p ? ' · ' + p.nome : ''} · ${n} ${n === 1 ? 'material' : 'materiais'}</span>
+        <strong>${esc(h.objeto)}</strong>
+        <span class="small muted">${esc(h.texto)}</span>
+      </a>`;
+  };
+  const cardRec = r => `
+      <a class="card" href="${EST[r.id] || r.url}">
+        <span class="small muted">${D.TIPOS[r.tipo].nome} · ${anosTxt(r.anos)}${r.tempo ? ' · ' + esc(r.tempo) : ''}</span>
+        <strong>${esc(r.titulo)}</strong>
+        <span class="small muted">${esc(r.resumo || '')}</span>
+      </a>`;
+  const perguntas = [
+    ['O que é pensamento computacional?', 'É uma forma de resolver problemas usando ideias da Computação: quebrar o problema em partes, perceber padrões, ficar só com o que importa e escrever passos claros para chegar à solução. Serve para programar, mas também para organizar um trabalho em grupo, resolver um problema de Matemática ou planejar uma pesquisa.'],
+    ['Quais são os pilares do pensamento computacional?', 'Os quatro pilares mais usados na escola são decomposição, reconhecimento de padrões, abstração e algoritmos. Eles aparecem juntos na maior parte das atividades.'],
+    ['Precisa de computador para ensinar pensamento computacional?', 'Não. Muitas atividades são desplugadas, feitas com papel, cartões, o quadro e o próprio corpo. A BNCC Computação não exige laboratório: o computador entra quando a turma vai automatizar a solução com uma linguagem de programação.'],
+    ['Onde o pensamento computacional aparece na BNCC?', `Na BNCC Computação, aprovada em 2022, ele é um dos três eixos, ao lado de mundo digital e cultura digital. Do 6º ao 9º ano, as habilidades do eixo têm códigos como EF06CO02 (algoritmos com sequência, repetição e seleção). Esta página reúne as ${pcs.length} habilidades do eixo que já têm material no site.`]
+  ];
+  const ldPagina = {
+    '@type': 'CollectionPage', name: title, description: desc, url, inLanguage: 'pt-BR', image: img, author: AUTORA,
+    about: { '@type': 'DefinedTerm', name: 'Pensamento computacional', description: perguntas[0][1] },
+    mainEntity: {
+      '@type': 'ItemList', numberOfItems: pcs.length,
+      itemListElement: pcs.map((h, i) => ({ '@type': 'ListItem', position: i + 1, name: `${h.codigo}: ${h.objeto}`, url: `${SITE}/material-didatico/${EST['hab:' + h.codigo]}` }))
+    }
+  };
+  const ldFaq = { '@type': 'FAQPage', mainEntity: perguntas.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<base href="/material-didatico/">
+${MARCA}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+${cabecaSEO({ title, desc, url, img, imgAlt: 'Pensamento computacional: os quatro pilares e as habilidades da BNCC', ldObjs: [ldPagina, ldFaq, migalhas([['Início', `${SITE}/`], ['BNCC Computação', `${SITE}/material-didatico/${HUB_CO}`], ['Pensamento computacional', url]])] })}
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }
+  .crumbs { font-size: 14px; margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .doc h1 { font-size: clamp(30px, 5vw, 46px); margin: 6px 0 10px; }
+  .doc h2 { font-size: 26px; margin-top: 40px; }
+  .doc h3 { font-size: 22px; margin: 0 0 8px; }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 22px 0; }
+  .meta div { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px 14px; }
+  .meta span { display: block; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .saltos { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+  .pilares { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 14px; margin: 14px 0; }
+  .pilar { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px 20px; background: var(--paper-2); scroll-margin-top: 80px; }
+  .pilar p { margin: 0 0 10px; }
+  .pilar b { display: block; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 2px; }
+  .pilar .num { font-family: var(--display); font-weight: 800; color: var(--accent); margin-right: 6px; }
+  .vizinhas { display: flex; flex-wrap: wrap; gap: 8px; }
+  .faq dt { font-weight: 600; margin-top: 14px; }
+  .faq dd { margin: 4px 0 0; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc" id="doc">
+  <div class="crumbs"><a href="${HUB_CO}">← BNCC Computação</a></div>
+  <span class="eyebrow">BNCC Computação · eixo Pensamento computacional</span>
+  <h1>Pensamento computacional: o que é e como trabalhar na escola</h1>
+  <p class="lead">Os quatro pilares explicados com exemplos do dia a dia, uma atividade sem computador para cada um e todas as habilidades do eixo na BNCC Computação, cada uma com plano de aula, fichas para imprimir, jogos e listas de exercícios gratuitos.</p>
+  <div class="meta">
+    <div><span>Pilares</span>4, da decomposição aos algoritmos</div>
+    <div><span>Habilidades do eixo</span>${pcs.length} com material, do 6º ano ao Ensino Médio</div>
+    <div><span>Fichas para imprimir</span>${fichas.length} atividades desplugadas</div>
+    <div><span>Licença</span>CC BY-NC-SA 4.0</div>
+  </div>
+  <nav class="saltos" aria-label="Ir para a seção">
+    <a class="btn ghost" href="${linkPensamento('pilares')}">Os quatro pilares</a>
+    <a class="btn ghost" href="${linkPensamento('desplugado')}">Sem computador</a>
+    <a class="btn ghost" href="${linkPensamento('habilidades')}">Habilidades por ano</a>
+  </nav>
+
+  <h2>O que é pensamento computacional</h2>
+  <p>${perguntas[0][1]}</p>
+  <p>A expressão ficou conhecida em 2006, num artigo da pesquisadora Jeannette Wing, que defendia o pensamento computacional como uma habilidade básica para todo mundo, como ler, escrever e fazer contas. No Brasil, ele entrou no currículo com a BNCC Computação (Parecer CNE/CEB nº 2/2022), em que é um dos três eixos, ao lado de <strong>mundo digital</strong> e <strong>cultura digital</strong>. O guia <a href="/computacao-na-escola/">como implantar Computação na escola</a> mostra como encaixar esses eixos na rotina, com ou sem laboratório.</p>
+
+  <h2 id="pilares">Os quatro pilares</h2>
+  <p>Na prática, os pilares aparecem misturados: para escrever um algoritmo, a turma decompõe o problema, procura padrões e escolhe o que representar. Separar os quatro ajuda o professor a planejar e a dar nome ao que os estudantes estão fazendo.</p>
+  <div class="pilares">${PILARES.map((p, i) => {
+    const hs = p.habs.filter(temPagina).map(c => habs.find(h => h.codigo === c));
+    return `
+    <section class="pilar" id="${p.id}">
+      <h3><span class="num">${i + 1}</span>${p.nome}</h3>
+      <p>${esc(p.def)}</p>
+      <p><b>No dia a dia</b>${esc(p.dia)}</p>
+      <p><b>Em sala, sem computador</b>${esc(p.aula)}</p>${hs.length ? `
+      <p><b>Habilidades da BNCC</b></p>
+      <div class="vizinhas">${hs.map(tagHab).join('')}</div>` : ''}
+    </section>`;
+  }).join('')}
+  </div>
+
+  <h2 id="desplugado">Pensamento computacional sem computador</h2>
+  <p>Dá para trabalhar todo o eixo com papel, cartões e o quadro. As fichas abaixo são desplugadas, prontas para imprimir em preto e branco, com gabarito e orientações para o professor.${URL_DESPLUGADA ? ` A página <a href="${URL_DESPLUGADA}">computação desplugada</a> reúne mais atividades para imprimir, incluindo versões em braille.` : ''} Para estudantes com diferentes necessidades, há também a <a href="/computacao-adaptada/">Computação adaptada</a>, com cada ficha em três níveis de apoio.</p>
+  <div class="related">${fichas.map(cardRec).join('')}
+  </div>
+${jogos.length ? `
+  <h2>Para praticar na tela</h2>
+  <p>Quando houver computador, tablet ou celular, estes jogos e recursos 3D funcionam no navegador, sem cadastro.</p>
+  <div class="related">${jogos.map(cardRec).join('')}
+  </div>` : ''}
+
+  <h2 id="habilidades">Habilidades do eixo, ano a ano</h2>
+  <p>Cada habilidade leva a uma página com tudo o que está pronto para a aula. O pilar indicado é o que a habilidade mais trabalha.</p>
+${anos.map(a => `
+  <h3 id="ano-${a}">${anoNome(a)}</h3>
+  <div class="related">${pcs.filter(h => h.ano === a).map(card).join('')}
+  </div>`).join('\n')}
+
+  <h2>Nos outros eixos</h2>
+  <p>As habilidades de mundo digital e cultura digital também usam o pensamento computacional: entender como um pacote atravessa a internet é decompor um processo, e avaliar uma notícia falsa é seguir um algoritmo de checagem.</p>
+  <div class="vizinhas">${outras.map(tagHab).join('')}</div>
+
+  <h2>Perguntas frequentes</h2>
+  <dl class="faq">${perguntas.map(([q, a]) => `
+    <dt>${esc(q)}</dt>
+    <dd>${esc(a)}</dd>`).join('')}
+  </dl>
+
+  <h2>Para continuar</h2>
+  <p>O <a href="/quiz-pensamento-computacional/">quiz de pensamento computacional do professor</a> mostra em poucos minutos quais pilares você já usa no planejamento. Para os estudantes, a seção <a href="${HUB_APRENDA}">Aprenda</a> explica cada habilidade com ilustração e exemplo. A lista completa, com mundo digital e cultura digital, está na página da <a href="${HUB_CO}">BNCC Computação</a>, e a <a href="/formacao-continuada/">formação de professores em IA e Computação</a> ajuda a escola a planejar o ano.</p>
+</main>
+<footer id="footer"></footer>
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/listas.js"></script>
+<script src="assets/progresso.js"></script>
+<script src="assets/comum.js"></script>
+<script>mdTopbar('bncc'); mdFooter();</script>
+${GOAT}
 </body>
 </html>
 `;
@@ -874,7 +1090,7 @@ async function simuladores(browser) {
 function atualizarSitemap(urlsComHash) {
   const f = path.join(RAIZ, 'sitemap.xml');
   const xml = ler(f);
-  const antigos = Object.fromEntries([...xml.matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>(?:<!-- h:(\w+) -->)?/g)].map(m => [m[1], { d: m[2], h: m[3] }]));
+  const antigos = Object.fromEntries([...xml.matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod><\/url>(?:<!-- h:(\w+) -->)?/g)].map(m => [m[1], { d: m[2], h: m[3] }]));
   const linhas = urlsComHash.map(([u, h]) => {
     const a = antigos[u];
     const d = a && a.h === h ? a.d : HOJE;
@@ -942,6 +1158,11 @@ async function main() {
       const t = paginaHubComputacao();
       if (escrever(path.join(MD, HUB_CO, 'index.html'), t)) novas++;
       sitemap.push([`${SITE}/material-didatico/${HUB_CO}`, hash(t)]);
+    }
+    {
+      const t = paginaPensamento();
+      if (escrever(path.join(RAIZ, PENSAMENTO, 'index.html'), t)) novas++;
+      sitemap.push([`${SITE}${PENSAMENTO}`, hash(t)]);
     }
     // números da página inicial do material escritos no HTML: a página não precisa carregar listas.js só para contar
     {
