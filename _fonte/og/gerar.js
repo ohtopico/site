@@ -118,6 +118,9 @@ const IMAGENS = [
   { arq: 'matematica-adaptada/og-matematica-adaptada.jpg', janela: 'matematica-adaptada.html', faixa: 'Fichas para imprimir', t1: 'Matemática', t2: 'adaptada',
     sub: 'Para alunos com diferentes necessidades, em três níveis de apoio', pills: ['Versões A, B e C', 'BNCC', 'Gratuito'],
     url: 'ohtopico.com.br/matematica-adaptada', capturas: ['/matematica-adaptada/fichas/contar-e-mostrar-quantidades/#folhas'] },
+  { arq: 'pensamento-computacional/og-pensamento-computacional.jpg', janela: 'pensamento-computacional.html', faixa: 'BNCC Computação · com e sem computador', t1: 'Pensamento', t2: 'computacional',
+    sub: 'Os quatro pilares, atividades para imprimir e as habilidades da BNCC', pills: ['Decomposição', 'Abstração', 'Algoritmos'],
+    url: 'ohtopico.com.br/pensamento-computacional', capturas: ['/pensamento-computacional/'] },
   { arq: 'material-didatico/assets/og-curriculos-estaduais.jpg', janela: 'curriculos-estaduais.html', faixa: 'BNCC Computação · 27 estados', t1: 'Currículos de', t2: 'Computação',
     sub: 'Quais redes estaduais já publicaram o próprio documento, com a fonte oficial', pills: ['Mapa do Brasil', 'Fontes oficiais', 'Atualizado em 2026'],
     url: 'ohtopico.com.br/material-didatico/bncc', capturas: ['/material-didatico/bncc/curriculos-estaduais/'] }
