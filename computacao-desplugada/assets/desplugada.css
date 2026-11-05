@@ -1,0 +1,43 @@
+/* Computação desplugada: peças extras das folhas (a base é /matematica-adaptada/assets/fichas.css e
+   /computacao-adaptada/assets/computacao.css) e a lista de atividades da página central.
+   Folha sempre branca: cor só nos detalhes. */
+.fig-dp { display: block; height: auto; margin: 0 auto 2mm; max-width: 100%; }
+.folha .fig-dp text { font-family: Lexend, sans-serif; }
+.codigos-linhas { columns: 2; font: 600 13pt var(--body); margin: 0; padding-left: 8mm; }
+.codigos-linhas li { margin: 0 0 1.5mm; }
+.passos-ditado { font-size: 12.5pt; margin: 0; padding-left: 6mm; }
+.passos-ditado li { margin: 0 0 1.2mm; }
+.receita { font-size: 12.5pt; margin: 0; padding-left: 6mm; }
+.receita li { margin: 0 0 2.5mm; }
+.receita .resposta { height: 9mm; min-width: 12mm; }
+.regua-alfabeto { border-collapse: collapse; table-layout: fixed; width: 100%; }
+.regua-alfabeto th, .regua-alfabeto td { border: 1.2px solid #111; font-size: 10pt; height: 7mm; padding: 0; text-align: center; }
+.regua-alfabeto th { background: #f4f4f2; font-weight: 600; }
+.folha .tabela-folha th, .folha .tabela-folha td { font-size: 12pt; height: 9.5mm; }
+.folha .quadro-texto { font-size: 11.5pt; margin-bottom: 4mm; }
+.folha .bloco { margin-bottom: 4mm; }
+.recortar-grade { display: grid; gap: 6mm; grid-template-columns: repeat(3, 1fr); margin-top: 4mm; }
+.recortar-grade .cartao-grande { border: 1.5px dashed #6b6b6b; margin: 0; padding: 2mm; width: 100%; }
+.discos-recortar { display: grid; gap: 5mm; margin: 4mm 0 8mm; }
+.discos-recortar .disco { margin: 0 auto; width: 124mm; }
+.base-hanoi { width: 180mm; }
+
+/* página central */
+.texto.largo { max-width: 1000px; }
+.ano-dp h3 { font: 800 22px var(--display); margin: 28px 0 10px; }
+.lista-dp { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); list-style: none; margin: 0; padding: 0; }
+.cartao-dp { border: 1.5px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; position: relative; }
+.cartao-dp a { color: var(--ink); text-decoration: none; }
+.cartao-dp a::after { content: ''; inset: 0; position: absolute; }
+.cartao-dp:hover { border-color: var(--ink); }
+.cartao-dp strong { font: 800 19px/1.2 var(--display); }
+.cartao-dp .meta, .lista-existentes .meta { color: var(--ink-2); font-size: 13px; }
+.cartao-dp .resumo { font-size: 15px; line-height: 1.5; }
+.selo-br { align-self: flex-start; background: var(--mark-soft); border: 1px solid var(--ink); border-radius: 99px; font-size: 12px; padding: 0 10px; }
+.texto .lista-existentes li { margin-bottom: 4px; }
+.compacta .tabela-folha th, .compacta .tabela-folha td { font-size: 11pt; height: 7.6mm; padding: .5mm 2.5mm; }
+.compacta .escolhas { gap: 2mm; }
+.compacta .escolha { padding-bottom: 1.5mm; }
+.compacta .escolha p { font-size: 11.5pt; margin-bottom: 1mm; }
+.compacta .escolha .opcao { font-size: 11pt; min-height: 9mm; }
+.folha .rede-dp { margin-bottom: 1mm; }

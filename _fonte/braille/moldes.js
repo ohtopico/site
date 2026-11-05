@@ -1,6 +1,7 @@
 /* Imprime os moldes táteis em PDF, na pasta de cada ficha (<slug>-moldes-tateis.pdf).
      node _fonte/braille/moldes.js            todos
      node _fonte/braille/moldes.js reta       só os que têm "reta" no nome
+     node _fonte/braille/moldes.js desplugada só os de uma área (matematica, computacao ou desplugada)
      node _fonte/braille/moldes.js --previa   também salva PNGs das páginas em _fonte/braille/previa/
    Rode na raiz do site, depois de python _fonte/braille/gerar.py. Precisa do playwright. */
 const fs = require('fs');
@@ -9,6 +10,7 @@ const { chromium } = require('playwright');
 
 const RAIZ = path.resolve(__dirname, '..', '..');
 const MOLDES = path.join(__dirname, 'moldes');
+const PASTAS = { matematica: 'matematica-adaptada/fichas', computacao: 'computacao-adaptada/fichas', desplugada: 'computacao-desplugada' };
 const indice = JSON.parse(fs.readFileSync(path.join(__dirname, 'indice.json'), 'utf8'));
 const args = process.argv.slice(2);
 const previa = args.includes('--previa');
@@ -19,8 +21,8 @@ const filtro = args.find(a => !a.startsWith('--'));
   const pagina = await navegador.newPage({ viewport: { width: 800, height: 1130 } });
   let n = 0;
   for (const [slug, info] of Object.entries(indice)) {
-    if (!info.figuras || (filtro && !slug.includes(filtro))) continue;
-    const pasta = path.join(RAIZ, info.area === 'computacao' ? 'computacao-adaptada' : 'matematica-adaptada', 'fichas', slug);
+    if (!info.figuras || (filtro && !slug.includes(filtro) && info.area !== filtro)) continue;
+    const pasta = path.join(RAIZ, PASTAS[info.area], slug);
     await pagina.goto('file://' + path.join(MOLDES, `${slug}.html`), { waitUntil: 'networkidle' });
     await pagina.evaluate(() => document.fonts.ready);
     if (previa) {

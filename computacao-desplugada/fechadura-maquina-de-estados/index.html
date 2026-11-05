@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A fechadura que lê botões: computação desplugada | Júlia Quoos</title>
+<meta name="description" content="Seguindo as setas de uma máquina de estados, a turma descobre como um aparelho decide o que fazer lembrando só o necessário. Atividade desplugada para imprimir, com gabarito e versão em braille. 9º ano, EF09CO03.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/">
+<meta property="og:title" content="A fechadura que lê botões: computação desplugada | Júlia Quoos">
+<meta property="og:description" content="Seguindo as setas de uma máquina de estados, a turma descobre como um aparelho decide o que fazer lembrando só o necessário. Atividade desplugada para imprimir, com gabarito e versão em braille. 9º ano, EF09CO03.">
+<meta property="og:image" content="https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Card com o título Computação desplugada e a captura de uma atividade para imprimir.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/#atividade",
+   "url": "https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/",
+   "name": "A fechadura que lê botões",
+   "description": "Seguindo as setas de uma máquina de estados, a turma descobre como um aparelho decide o que fazer lembrando só o necessário. Atividade desplugada para imprimir, com gabarito e versão em braille. 9º ano, EF09CO03.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Atividade desplugada para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "9º ano do Ensino Fundamental",
+   "timeRequired": "50 minutos",
+   "teaches": [
+    "EF09CO03: Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.",
+    "Pensamento computacional: Abstração"
+   ],
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF09CO03",
+     "targetDescription": "Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação."
+    }
+   ],
+   "audience": [
+    {
+     "@type": "EducationalAudience",
+     "educationalRole": "teacher"
+    }
+   ],
+   "accessibilityFeature": [
+    "braille",
+    "tactileGraphic",
+    "highContrastDisplay",
+    "structuralNavigation"
+   ],
+   "encoding": {
+    "@type": "MediaObject",
+    "contentUrl": "https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/fechadura-maquina-de-estados.pdf",
+    "encodingFormat": "application/pdf"
+   },
+   "image": "https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg",
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://ohtopico.com.br/computacao-desplugada/#pagina"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação desplugada",
+     "item": "https://ohtopico.com.br/computacao-desplugada/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "A fechadura que lê botões",
+     "item": "https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=6eed64fb76">
+<link rel="stylesheet" href="/computacao-adaptada/assets/computacao.css?v=6eed64fb76">
+<link rel="stylesheet" href="/computacao-desplugada/assets/desplugada.css?v=6eed64fb76">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-desplugada/">Computação desplugada</a><a href="/pensamento-computacional/">Pensamento computacional</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-desplugada/">Computação desplugada</a></li><li aria-current="page">A fechadura que lê botões</li></ol></nav>
+        <p class="rotulo">Computação desplugada · EF09CO03 · 9º ano</p>
+        <h1>A fechadura que lê botões</h1>
+        <p class="linha-fina">Seguindo as setas de uma máquina de estados, a turma descobre como um aparelho decide o que fazer lembrando só o necessário.</p>
+        <div class="acoes">
+            <a class="btn98 escuro" href="fechadura-maquina-de-estados.pdf" download>Baixar PDF</a><a class="btn98" href="fechadura-maquina-de-estados.brf" download>Baixar braille (.brf)</a><a class="btn98" href="fechadura-maquina-de-estados-moldes-tateis.pdf" download>Moldes táteis (PDF)</a>
+            <button type="button" class="btn98" data-imprimir="Estudante">Imprimir folha do estudante</button><button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações</button>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Ano</dt><dd>9º ano</dd>
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Pilar</dt><dd><a href="/pensamento-computacional/">Abstração</a></dd>
+            <dt>Material</dt><dd>Folha do estudante. Para a versão no chão: três bambolês ou círculos de giz e setas de papel com as letras A e B.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/bncc/ef09co03/">EF09CO03</a>: Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.</li></ul>
+        <h2>Como aplicar, sem computador</h2>
+        <ol><li>Desenhe os três estados no chão, com as setas. Um estudante é a fechadura e fica em pé no estado Fechada.</li><li>A turma &quot;aperta botões&quot; dizendo A ou B. O estudante anda pela seta da letra dita. Quando chega em Aberta, a turma comemora.</li><li>Pergunte: o que a fechadura precisa lembrar? Só o último passo importante. Isso é abstração.</li><li>Mostre outras máquinas de estados do dia a dia: semáforo, catraca, máquina de lanche, personagem de jogo.</li></ol>
+        <h2>Para conversar no fim</h2>
+        <ul><li>Que estados tem uma catraca de ônibus? E quais botões (entradas) mudam o estado?</li><li>Como seria a máquina de uma fechadura que abre com A, A, B?</li></ul>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 2: A A B: Quase → Quase → Aberta, abre; A B B: Quase → Aberta → Fechada, não abre; B B A: Fechada → Fechada → Quase, não abre; A B A B: Quase → Aberta → Quase → Aberta, abre.</li><li>Bloco 3: abre quando os dois últimos botões são A e depois B. A fechadura só precisa saber em que estado está, não a lista inteira de botões.</li></ul></details>
+        <h2 id="braille">Para estudantes cegos: braille e moldes táteis</h2>
+        <p>Esta atividade tem <a href="fechadura-maquina-de-estados.brf" download>versão em braille</a> (4 páginas braille, todas as folhas do estudante) e <a href="fechadura-maquina-de-estados-moldes-tateis.pdf" download>1 molde tátil para imprimir</a> (PDF, fundo branco).</p>
+        <ol><li>Envie o arquivo .brf para a impressora braille da escola ou da sala de recursos. Ele já vem com 40 celas por linha e 25 linhas por página, em braille grau 1 e com os sinais do Código Matemático Unificado.</li><li>Monte os moldes táteis seguindo a primeira página do PDF: cola relevo ou barbante nas linhas, botões nos pontos e EVA ou lixa nas texturas. Cada molde tem o número da figura que aparece no texto em braille.</li><li>Onde a folha em tinta pede para circular, pintar ou ligar, a versão em braille pede para escrever a resposta, e as contas podem ser feitas no soroban.</li></ol>
+        <p class="nota">Este material foi gerado a partir das folhas em tinta e precisa ser revisado pela sala de recursos ou pelo professor do AEE antes de chegar ao estudante.</p>
+        <h2 id="folhas">Folhas para imprimir</h2>
+        <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a folha de que precisa ou baixe o PDF com todas, incluindo as orientações.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="A fechadura que lê botões, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF09CO03 · Computação · 9º ano</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">A fechadura que lê botões</h2>
+    <div class="quadro-texto cinza"><b>A fechadura</b> tem dois botões, A e B. Ela lembra só o que importa e muda de estado a cada botão apertado. Siga as setas a partir de <b>Fechada</b>.</div><section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Veja a máquina de estados da fechadura.</span></h3><div class="bloco-corpo"><svg class="fig-dp" viewBox="0 0 172 86" style="width:120mm" role="img" aria-label="máquina de estados com três estados: Fechada, Quase e Aberta. Começa em Fechada. De Fechada: A vai para Quase, B fica em Fechada. De Quase: A fica em Quase, B vai para Aberta. De Aberta: A vai para Quase, B vai para Fechada. Aberta tem círculo duplo: é o estado em que a porta abre"><defs><marker id="seta-dp" viewBox="0 0 6 6" refX="5.4" refY="3" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#111"/></marker></defs><path d="M39 41 L73 41" fill="none" stroke="#111" stroke-width="1" marker-end="url(#seta-dp)"/><rect x="52.0" y="36.8" width="8" height="6.4" rx="1.4" fill="#fff" stroke="#111" stroke-width=".5"/><text x="56.0" y="41.9" font-size="4.6" text-anchor="middle" font-family="Lexend" font-weight="600">A</text><path d="M99 41 L133 41" fill="none" stroke="#111" stroke-width="1" marker-end="url(#seta-dp)"/><rect x="112.0" y="36.8" width="8" height="6.4" rx="1.4" fill="#fff" stroke="#111" stroke-width=".5"/><text x="116.0" y="41.9" font-size="4.6" text-anchor="middle" font-family="Lexend" font-weight="600">B</text><path d="M135 51 Q116.0 66 97 51" fill="none" stroke="#111" stroke-width="1" marker-end="url(#seta-dp)"/><rect x="112.0" y="54.8" width="8" height="6.4" rx="1.4" fill="#fff" stroke="#111" stroke-width=".5"/><text x="116.0" y="59.9" font-size="4.6" text-anchor="middle" font-family="Lexend" font-weight="600">A</text><path d="M142 56 Q86 96 30 56" fill="none" stroke="#111" stroke-width="1" marker-end="url(#seta-dp)"/><rect x="82" y="67.3" width="8" height="6.4" rx="1.4" fill="#fff" stroke="#111" stroke-width=".5"/><text x="86" y="72.4" font-size="4.6" text-anchor="middle" font-family="Lexend" font-weight="600">B</text><path d="M20 32 C8 8 44 8 32 32" fill="none" stroke="#111" stroke-width="1" marker-end="url(#seta-dp)"/><rect x="22" y="12.8" width="8" height="6.4" rx="1.4" fill="#fff" stroke="#111" stroke-width=".5"/><text x="26" y="17.9" font-size="4.6" text-anchor="middle" font-family="Lexend" font-weight="600">B</text><path d="M80 32 C68 8 104 8 92 32" fill="none" stroke="#111" stroke-width="1" marker-end="url(#seta-dp)"/><rect x="82" y="12.8" width="8" height="6.4" rx="1.4" fill="#fff" stroke="#111" stroke-width=".5"/><text x="86" y="17.9" font-size="4.6" text-anchor="middle" font-family="Lexend" font-weight="600">A</text><path d="M2 44 L13 44" stroke="#111" stroke-width="1" marker-end="url(#seta-dp)"/><circle cx="26" cy="44" r="13" fill="#fff9c2" stroke="#111" stroke-width="1"/><text x="26" y="45.7" font-size="4.8" text-anchor="middle" font-family="Lexend" font-weight="600">Fechada</text><circle cx="86" cy="44" r="13" fill="#fff9c2" stroke="#111" stroke-width="1"/><text x="86" y="45.7" font-size="4.8" text-anchor="middle" font-family="Lexend" font-weight="600">Quase</text><circle cx="146" cy="44" r="13" fill="#fff9c2" stroke="#111" stroke-width="1"/><circle cx="146" cy="44" r="10.8" fill="none" stroke="#111" stroke-width=".8"/><text x="146" y="45.7" font-size="4.8" text-anchor="middle" font-family="Lexend" font-weight="600">Aberta</text></svg></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>Siga cada sequência de botões e diga se a porta abre no fim.</span></h3><p class="dica">Na primeira linha, o primeiro B deixa a fechadura em Fechada.</p><div class="bloco-corpo"><table class="tabela-folha"><thead><tr><th>Botões</th><th>Estados depois de cada botão</th><th>Abre?</th></tr></thead><tbody><tr><td>B A B</td><td>Fechada → Quase → Aberta</td><td>sim</td></tr><tr><td>A A B</td><td></td><td></td></tr><tr><td>A B B</td><td></td><td></td></tr><tr><td>B B A</td><td></td><td></td></tr><tr><td>A B A B</td><td></td><td></td></tr></tbody></table></div></section><section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>Descreva com suas palavras.</span></h3><div class="bloco-corpo"><div class="frases"><p><span>Que sequência abre a porta?</span> <span class="linha-resp"></span></p><p><span>Por que a fechadura não precisa lembrar de todos os botões apertados?</span> <span class="linha-resp"></span></p></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações para o professor">
+    <header class="folha-topo"><span class="nivel"><b>Orientações para o professor</b></span><span class="hab">9º ano · 50 minutos</span></header>
+    <h2 class="folha-titulo">A fechadura que lê botões</h2>
+    <h3>Habilidades da BNCC</h3><p><b>EF09CO03</b>: Usar autômatos para descrever comportamentos de forma abstrata, automatizando-os com uma linguagem de programação.</p>
+    <h3>Pilar do pensamento computacional</h3><p>Abstração</p>
+    <h3>Material</h3><p>Folha do estudante. Para a versão no chão: três bambolês ou círculos de giz e setas de papel com as letras A e B.</p>
+    <h3>Como aplicar, sem computador</h3><ol><li>Desenhe os três estados no chão, com as setas. Um estudante é a fechadura e fica em pé no estado Fechada.</li><li>A turma &quot;aperta botões&quot; dizendo A ou B. O estudante anda pela seta da letra dita. Quando chega em Aberta, a turma comemora.</li><li>Pergunte: o que a fechadura precisa lembrar? Só o último passo importante. Isso é abstração.</li><li>Mostre outras máquinas de estados do dia a dia: semáforo, catraca, máquina de lanche, personagem de jogo.</li></ol>
+    <h3>Para conversar no fim</h3><ul><li>Que estados tem uma catraca de ônibus? E quais botões (entradas) mudam o estado?</li><li>Como seria a máquina de uma fechadura que abre com A, A, B?</li></ul>
+    <h3>Gabarito</h3><ul><li>Bloco 2: A A B: Quase → Quase → Aberta, abre; A B B: Quase → Aberta → Fechada, não abre; B B A: Fechada → Fechada → Quase, não abre; A B A B: Quase → Aberta → Quase → Aberta, abre.</li><li>Bloco 3: abre quando os dois últimos botões são A e depois B. A fechadura só precisa saber em que estado está, não a lista inteira de botões.</li></ul>
+    <p class="lembrete">Para estudantes cegos, use a versão em braille (.brf) e os moldes táteis da página da atividade, revisados antes pela sala de recursos ou pelo professor do AEE.</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras atividades"><a href="/computacao-desplugada/cifra-com-palavra-chave/">← Cifra com palavra-chave</a></nav>
+        <p class="voltar"><a href="/computacao-desplugada/">Ver todas as atividades de computação desplugada</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/pensamento-computacional/">Pensamento computacional</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/matematica-adaptada/assets/fichas.js?v=6eed64fb76" defer></script>
+</body>
+</html>

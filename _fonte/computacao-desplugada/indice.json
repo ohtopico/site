@@ -1,0 +1,130 @@
+{
+ "atividades": [
+  {
+   "slug": "cartoes-de-pontos-binario",
+   "titulo": "Cartões de pontos: números em binário",
+   "ano": 6,
+   "codigos": [
+    "EF06CO08",
+    "EF06CO01"
+   ],
+   "pilar": "padroes",
+   "resumo": "Com cinco cartões de pontos, a turma descobre como o computador guarda números usando só 0 e 1."
+  },
+  {
+   "slug": "imagem-feita-de-numeros",
+   "titulo": "Imagem feita de números",
+   "ano": 6,
+   "codigos": [
+    "EF06CO08",
+    "EF06CO05"
+   ],
+   "pilar": "abstracao",
+   "resumo": "A turma pinta e codifica imagens de quadradinhos e descobre como o computador guarda e compacta uma imagem."
+  },
+  {
+   "slug": "ditado-de-figuras",
+   "titulo": "Ditado de figuras: instruções precisas",
+   "ano": 6,
+   "codigos": [
+    "EF06CO03",
+    "EF06CO02"
+   ],
+   "pilar": "algoritmos",
+   "resumo": "Em duplas, um estudante descreve uma figura e o outro desenha sem ver. A turma descobre por que um algoritmo precisa ser preciso."
+  },
+  {
+   "slug": "truque-da-paridade",
+   "titulo": "O truque da paridade",
+   "ano": 7,
+   "codigos": [
+    "EF07CO06"
+   ],
+   "pilar": "padroes",
+   "resumo": "Com quadradinhos pretos e brancos, a turma descobre como o computador percebe e corrige um erro na transmissão de dados."
+  },
+  {
+   "slug": "mapa-para-colorir-grafos",
+   "titulo": "Mapa para colorir com poucas cores",
+   "ano": 7,
+   "codigos": [
+    "EF07CO04"
+   ],
+   "pilar": "abstracao",
+   "resumo": "A turma transforma um mapa em grafo e descobre quantas cores bastam para que vizinhos nunca fiquem iguais."
+  },
+  {
+   "slug": "senhas-e-combinacoes",
+   "titulo": "Quantas senhas existem?",
+   "ano": 7,
+   "codigos": [
+    "EF07CO07"
+   ],
+   "pilar": "padroes",
+   "resumo": "Contando as combinações de um cadeado, a turma descobre por que uma senha comprida protege mais do que uma senha curta."
+  },
+  {
+   "slug": "rede-de-ordenacao",
+   "titulo": "Rede de ordenação no pátio",
+   "ano": 8,
+   "codigos": [
+    "EF08CO03",
+    "EF08CO05"
+   ],
+   "pilar": "algoritmos",
+   "resumo": "A turma ordena números caminhando por uma rede desenhada no chão e descobre como o computador compara várias coisas ao mesmo tempo."
+  },
+  {
+   "slug": "torre-de-hanoi-recursao",
+   "titulo": "Torre de Hanói: recursão com discos de papel",
+   "ano": 8,
+   "codigos": [
+    "EF08CO01"
+   ],
+   "pilar": "decomposicao",
+   "resumo": "Jogando a Torre de Hanói com discos de papel ou moedas, a turma descobre uma receita que usa a si mesma: a recursão."
+  },
+  {
+   "slug": "caminho-mais-curto-na-rede",
+   "titulo": "O caminho mais rápido na internet",
+   "ano": 8,
+   "codigos": [
+    "EF08CO06",
+    "EF07CO04"
+   ],
+   "pilar": "algoritmos",
+   "resumo": "Como roteadores, os estudantes procuram o caminho mais rápido para uma mensagem e descobrem o que acontece quando uma ligação quebra."
+  },
+  {
+   "slug": "cabos-mais-baratos-arvore",
+   "titulo": "Internet nas escolas com menos cabo",
+   "ano": 9,
+   "codigos": [
+    "EF09CO01",
+    "EF07CO04"
+   ],
+   "pilar": "abstracao",
+   "resumo": "A turma liga escolas em rede gastando o mínimo de cabo e descobre a árvore: um grafo que conecta tudo sem formar círculos."
+  },
+  {
+   "slug": "cifra-com-palavra-chave",
+   "titulo": "Cifra com palavra-chave",
+   "ano": 9,
+   "codigos": [
+    "EF09CO05"
+   ],
+   "pilar": "algoritmos",
+   "resumo": "Com uma régua de letras e números, a turma cifra e decifra mensagens com uma palavra-chave e compara com a Cifra de César."
+  },
+  {
+   "slug": "fechadura-maquina-de-estados",
+   "titulo": "A fechadura que lê botões",
+   "ano": 9,
+   "codigos": [
+    "EF09CO03"
+   ],
+   "pilar": "abstracao",
+   "resumo": "Seguindo as setas de uma máquina de estados, a turma descobre como um aparelho decide o que fazer lembrando só o necessário."
+  }
+ ]
+}
