@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Biblioteca da BNCC de Arte · Vila da Arte</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../enem/enem.css">
+<link rel="stylesheet" href="arte.css">
+<style>
+  .hab { background: var(--paper); border: 2px solid var(--borda); border-radius: 18px; padding: 14px 18px; margin: 12px 0; box-shadow: var(--sombra); }
+  .hab h3 { margin: 6px 0 4px; font-size: 19px; }
+  .hab .of { color: var(--ink-2); font-size: 14px; margin: 4px 0 10px; }
+  .hab .rot { font-weight: 700; font-size: 13px; text-transform: none; color: var(--ink-2); display: block; margin-top: 8px; }
+  .hab p { margin: 2px 0; }
+  .grupo h2 { margin: 26px 0 4px; }
+  @media print { .hab { box-shadow: none; border: 1px solid #999; background: #fff; padding: 8px 12px; margin: 6px 0; break-inside: avoid; } .grupo h2 { margin-top: 12px; } }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top"><div class="wrap"><span class="plaq marca">🎨 Vila da Arte</span><span class="direita"><a class="hb azul" href="../?arte" style="min-height:0;padding:7px 12px">Ir para a vila no Mundo</a></span></div></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="../?arte">← Voltar à vila</a>
+    <h1>📚 Biblioteca da BNCC de Arte</h1>
+    <p class="muted">As 35 habilidades de Arte do 6º ao 9º ano (EF69AR01 a EF69AR35), em cinco linguagens. Cada uma tem o texto da habilidade, uma explicação em palavras simples e uma atividade para fazer em sala ou em casa.</p>
+  </div>
+  <div class="chips" id="filtros" role="group" aria-label="Filtrar por linguagem"></div>
+  <div class="acoes"><button type="button" class="hb" id="imprimir">Imprimir esta lista</button></div>
+  <div id="lista"></div>
+  <details class="howto">
+    <summary>Para a professora e o professor</summary>
+    <p>Os textos das habilidades estão resumidos para caber na tela; para citar, use o documento oficial em basenacionalcomum.mec.gov.br. A impressão sai com fundo branco e só a linguagem escolhida no filtro. Para ver como as habilidades se distribuem, há o mapa interativo <a href="https://juliaroberta.com/infograficos/bncc-arte/" target="_blank" rel="noopener">BNCC Arte em dados</a>.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Vila da Arte, uma parte secreta do Mundo do ohtopico.com.br.</div></footer>
+
+<script src="arte.js"></script>
+<script>ARTE.exigir();</script>
+<script>
+(function () {
+  const LING = { AV: 'Artes visuais', DA: 'Dança', MU: 'Música', TE: 'Teatro', AI: 'Artes integradas' };
+  // código | linguagem | objeto de conhecimento | texto (resumido) | em palavras simples | experimente
+  const H = [
+    ['EF69AR01', 'AV', 'Contextos e práticas', 'Pesquisar, apreciar e analisar formas distintas das artes visuais tradicionais e contemporâneas, em obras de artistas brasileiros e estrangeiros de diferentes épocas e matrizes estéticas e culturais.', 'Conhecer obras de muitos artistas, de vários lugares e tempos, e conversar sobre elas.', 'Escolha uma obra de um artista brasileiro e uma de um artista de outro país sobre o mesmo tema (por exemplo, retrato) e liste três diferenças.'],
+    ['EF69AR02', 'AV', 'Contextos e práticas', 'Pesquisar e analisar diferentes estilos visuais, contextualizando-os no tempo e no espaço.', 'Reconhecer estilos (barroco, modernismo, grafite...) e saber quando e onde surgiram.', 'Monte uma linha do tempo com cinco imagens de estilos diferentes e escreva uma característica de cada um.'],
+    ['EF69AR03', 'AV', 'Contextos e práticas', 'Analisar situações nas quais as linguagens das artes visuais se integram às linguagens audiovisuais, gráficas, cenográficas, coreográficas e musicais.', 'Perceber as artes visuais dentro de filmes, cartazes, cenários, clipes e shows.', 'Pause um videoclipe em três momentos e descreva o que as cores, a luz e o cenário comunicam.'],
+    ['EF69AR04', 'AV', 'Elementos da linguagem', 'Analisar os elementos constitutivos das artes visuais (ponto, linha, forma, direção, cor, tom, escala, dimensão, espaço, movimento) na apreciação de diferentes produções artísticas.', 'Olhar uma obra prestando atenção em linhas, cores, formas, tamanhos e espaço.', 'No Ateliê das cores da vila, ache as complementares. Depois, numa obra, aponte onde o artista usou contraste de cor.'],
+    ['EF69AR05', 'AV', 'Materialidades', 'Experimentar e analisar diferentes formas de expressão artística, como desenho, pintura, colagem, quadrinhos, gravura, escultura, fotografia, vídeo e arte digital.', 'Experimentar várias técnicas e materiais, do lápis ao celular.', 'Faça a mesma imagem (uma árvore, por exemplo) em duas técnicas: colagem e desenho. O que muda?'],
+    ['EF69AR06', 'AV', 'Processos de criação', 'Desenvolver processos de criação em artes visuais com base em temas ou interesses artísticos, de modo individual, coletivo e colaborativo, usando materiais e instrumentos convencionais, alternativos e digitais.', 'Criar trabalhos sozinho ou em grupo, a partir de um tema, com materiais comuns, reaproveitados ou digitais.', 'Em grupo, crie um mural sobre o bairro usando sucata, papel e fotos do celular.'],
+    ['EF69AR07', 'AV', 'Processos de criação', 'Dialogar com princípios conceituais, proposições temáticas, repertórios imagéticos e processos de criação nas suas produções visuais.', 'Usar ideias, temas e imagens que você conhece como ponto de partida para criar.', 'Escolha uma obra que você admira e crie uma releitura: mantenha uma ideia e mude o resto.'],
+    ['EF69AR08', 'AV', 'Sistemas da linguagem', 'Diferenciar as categorias de artista, artesão, produtor cultural, curador, designer, entre outras, estabelecendo relações entre os profissionais do sistema das artes visuais.', 'Saber o que fazem o artista, o artesão, o curador, o designer e o produtor cultural.', 'Organize uma exposição da turma: cada grupo assume uma função (artistas, curadoria, divulgação, montagem).'],
+    ['EF69AR09', 'DA', 'Contextos e práticas', 'Pesquisar e analisar diferentes formas de expressão, representação e encenação da dança, reconhecendo e apreciando composições de dança de artistas e grupos brasileiros e estrangeiros de diferentes épocas.', 'Assistir e conhecer danças de muitos grupos e épocas, do Brasil e de fora.', 'Compare um trecho de balé clássico com um de dança contemporânea brasileira: como se movem os corpos em cada um?'],
+    ['EF69AR10', 'DA', 'Elementos da linguagem', 'Explorar elementos constitutivos do movimento cotidiano e do movimento dançado, abordando criticamente o desenvolvimento das formas da dança em sua história tradicional e contemporânea.', 'Perceber que gestos do dia a dia podem virar dança.', 'Escolha três gestos do cotidiano (pentear, varrer, acenar) e transforme em uma sequência dançada.'],
+    ['EF69AR11', 'DA', 'Elementos da linguagem', 'Experimentar e analisar os fatores de movimento (tempo, peso, fluência e espaço) como elementos que, combinados, geram as ações corporais e o movimento dançado.', 'Mudar a velocidade, a força, a continuidade e o caminho do movimento.', 'Na Caixa de improviso, tire uma carta de dança e faça o mesmo movimento rápido e lento, firme e leve.'],
+    ['EF69AR12', 'DA', 'Processos de criação', 'Investigar e experimentar procedimentos de improvisação e criação do movimento como fonte para a construção de vocabulários e repertórios próprios.', 'Improvisar movimentos para criar o seu jeito de dançar.', 'Ao som de uma música, cada pessoa cria um movimento; a turma junta todos numa frase coreográfica.'],
+    ['EF69AR13', 'DA', 'Processos de criação', 'Investigar brincadeiras, jogos, danças coletivas e outras práticas de dança de diferentes matrizes estéticas e culturais como referência para a criação e a composição de danças autorais.', 'Usar danças e brincadeiras populares como inspiração para criar.', 'Aprenda o passo básico da ciranda e crie, em grupo, uma variação nova para ele.'],
+    ['EF69AR14', 'DA', 'Processos de criação', 'Analisar e experimentar diferentes elementos (figurino, iluminação, cenário, trilha sonora) e espaços (convencionais e não convencionais) para composição cênica e apresentação coreográfica.', 'Pensar na roupa, na luz, no cenário, na música e no lugar da apresentação.', 'Apresente a mesma dança no pátio e na sala. O que muda para quem dança e para quem assiste?'],
+    ['EF69AR15', 'DA', 'Processos de criação', 'Discutir as experiências pessoais e coletivas em dança vivenciadas na escola e em outros contextos, problematizando estereótipos e preconceitos.', 'Conversar sobre dança com respeito e questionar preconceitos.', 'Roda de conversa: "existe dança de menino e dança de menina?" Cada pessoa traz um exemplo que mostre o contrário.'],
+    ['EF69AR16', 'MU', 'Contextos e práticas', 'Analisar criticamente, por meio da apreciação musical, usos e funções da música em seus contextos de produção e circulação, relacionando as práticas musicais às diferentes dimensões da vida social, cultural, política, histórica, econômica, estética e ética.', 'Entender para que serve a música em cada situação (festa, protesto, propaganda, ritual) e o que ela diz sobre a sociedade.', 'Liste cinco músicas que você ouviu na semana e onde estava. Qual era a função de cada uma?'],
+    ['EF69AR17', 'MU', 'Contextos e práticas', 'Explorar e analisar, criticamente, diferentes meios e equipamentos culturais de circulação da música e do conhecimento musical.', 'Conhecer por onde a música chega até nós: rádio, streaming, shows, escolas de música.', 'Pesquise um espaço de música da sua cidade (coreto, escola, rádio comunitária) e conte para a turma o que acontece lá.'],
+    ['EF69AR18', 'MU', 'Contextos e práticas', 'Reconhecer e apreciar o papel de músicos e grupos de música brasileiros e estrangeiros que contribuíram para o desenvolvimento de formas e gêneros musicais.', 'Conhecer quem ajudou a criar e mudar os estilos musicais.', 'Escolha um gênero (samba, baião, rap) e descubra duas pessoas importantes para a história dele.'],
+    ['EF69AR19', 'MU', 'Contextos e práticas', 'Identificar e analisar diferentes estilos musicais, contextualizando-os no tempo e no espaço, de modo a aprimorar a capacidade de apreciação da estética musical.', 'Reconhecer estilos musicais e saber de onde e de quando eles vêm.', 'Ouça três trechos e tente dizer o estilo, o lugar e a época de cada um. Depois confira.'],
+    ['EF69AR20', 'MU', 'Elementos da linguagem', 'Explorar e analisar elementos constitutivos da música (altura, intensidade, timbre, melodia, ritmo), por meio de recursos tecnológicos (games e plataformas digitais), jogos, canções e práticas diversas de composição, criação, execução e apreciação musicais.', 'Brincar com o grave e o agudo, o forte e o fraco, o timbre, a melodia e o ritmo, inclusive em jogos digitais.', 'No Estúdio de ritmo da vila, monte uma batida e depois mude só o andamento. O que acontece com a sensação da música?'],
+    ['EF69AR21', 'MU', 'Materialidades', 'Explorar e analisar fontes e materiais sonoros em práticas de composição, criação, execução e apreciação musical, reconhecendo timbres e características de instrumentos musicais diversos.', 'Descobrir sons em instrumentos, objetos e no próprio corpo.', 'Construa um instrumento com sucata (garrafa com grãos, tampas, elástico) e descubra se ele é de percussão, corda ou sopro.'],
+    ['EF69AR22', 'MU', 'Notação e registro musical', 'Explorar e identificar diferentes formas de registro musical (notação musical tradicional, partituras criativas e procedimentos da música contemporânea), bem como procedimentos e técnicas de registro em áudio e audiovisual.', 'Escrever e gravar música: na partitura tradicional, com símbolos inventados ou no celular.', 'Desenhe uma partitura criativa para a batida que você montou no estúdio e peça para um colega tocar só lendo o desenho.'],
+    ['EF69AR23', 'MU', 'Processos de criação', 'Explorar e criar improvisações, composições, arranjos, jingles, trilhas sonoras, entre outros, utilizando vozes, sons corporais e instrumentos acústicos ou eletrônicos, convencionais ou não, de modo individual, coletivo e colaborativo.', 'Criar músicas, jingles e trilhas com voz, corpo e instrumentos.', 'Em grupo, crie um jingle de 15 segundos para uma campanha da escola (economizar água, por exemplo).'],
+    ['EF69AR24', 'TE', 'Contextos e práticas', 'Reconhecer e apreciar artistas e grupos de teatro brasileiros e estrangeiros de diferentes épocas, investigando os modos de criação, produção, divulgação, circulação e organização da atuação profissional em teatro.', 'Conhecer grupos de teatro e como eles criam, divulgam e apresentam suas peças.', 'Pesquise um grupo de teatro da sua região: como ele começou, onde se apresenta e como divulga as peças.'],
+    ['EF69AR25', 'TE', 'Contextos e práticas', 'Identificar e analisar diferentes estilos cênicos, contextualizando-os no tempo e no espaço, de modo a aprimorar a capacidade de apreciação da estética teatral.', 'Reconhecer estilos de teatro (grego, de bonecos, de rua, musical) e sua história.', 'Compare uma máscara do teatro grego, um boneco de mamulengo e uma cena de teatro de rua. O que cada um pede da plateia?'],
+    ['EF69AR26', 'TE', 'Elementos da linguagem', 'Explorar diferentes elementos envolvidos na composição dos acontecimentos cênicos (figurinos, adereços, cenário, iluminação e sonoplastia) e reconhecer seus vocabulários.', 'Conhecer figurino, adereço, cenário, luz e sonoplastia e usar esses nomes.', 'Com lanternas de celular, mostre a mesma cena com luz de baixo, de cima e de lado. Como muda o clima?'],
+    ['EF69AR27', 'TE', 'Processos de criação', 'Pesquisar e criar formas de dramaturgias e espaços cênicos para o acontecimento teatral, em diálogo com o teatro contemporâneo.', 'Escrever cenas e escolher (ou inventar) o lugar onde elas acontecem.', 'Escreva uma cena curta que só funcione numa escada da escola. Ensaie e apresente lá.'],
+    ['EF69AR28', 'TE', 'Processos de criação', 'Investigar e experimentar diferentes funções teatrais e discutir os limites e desafios do trabalho artístico coletivo e colaborativo.', 'Experimentar ser ator, diretor, iluminador, figurinista e entender o trabalho em equipe.', 'Na montagem de uma cena, cada pessoa escolhe uma função. No final, conversem: o que foi mais difícil em trabalhar juntos?'],
+    ['EF69AR29', 'TE', 'Processos de criação', 'Experimentar a gestualidade e as construções corporais e vocais de maneira imaginativa na improvisação teatral e no jogo cênico.', 'Usar corpo e voz para criar personagens no improviso.', 'Na Caixa de improviso, sorteie um personagem e diga "bom dia" do jeito dele, só mudando voz e postura.'],
+    ['EF69AR30', 'TE', 'Processos de criação', 'Compor improvisações e acontecimentos cênicos com base em textos dramáticos ou outros estímulos (música, imagens, objetos), caracterizando personagens, figurinos e adereços, cenário, iluminação e sonoplastia e considerando a relação com o espectador.', 'Montar cenas a partir de um texto, uma música, uma imagem ou um objeto, pensando em quem vai assistir.', 'Escolha um objeto da sala e crie uma cena de um minuto em que ele seja muito importante.'],
+    ['EF69AR31', 'AI', 'Contextos e práticas', 'Relacionar as práticas artísticas às diferentes dimensões da vida social, cultural, política, histórica, econômica, estética e ética.', 'Perceber que a arte conversa com a política, a história, a economia e a vida das pessoas.', 'Escolha uma obra (música, mural, peça) que fale de um problema social e explique qual é a mensagem.'],
+    ['EF69AR32', 'AI', 'Processos de criação', 'Analisar e explorar, em projetos temáticos, as relações processuais entre diversas linguagens artísticas.', 'Juntar várias linguagens num projeto: música, imagem, dança e teatro.', 'Projeto da turma: escolham um tema e criem uma apresentação com uma música, um cenário pintado e uma pequena cena.'],
+    ['EF69AR33', 'AI', 'Matrizes estéticas e culturais', 'Analisar aspectos históricos, sociais e políticos da produção artística, problematizando as narrativas eurocêntricas e as diversas categorizações da arte (arte, artesanato, folclore, design).', 'Questionar por que algumas produções são chamadas de "arte" e outras de "artesanato" ou "folclore".', 'Compare uma peça de cerâmica marajoara com uma escultura de museu europeu. Por que uma costuma ficar em museus de arqueologia e a outra em museus de arte?'],
+    ['EF69AR34', 'AI', 'Patrimônio cultural', 'Analisar e valorizar o patrimônio cultural, material e imaterial, de culturas diversas, em especial a brasileira, incluindo suas matrizes indígenas, africanas e europeias, de diferentes épocas.', 'Conhecer e cuidar do patrimônio: prédios e objetos, e também festas, saberes e danças.', 'Entreviste uma pessoa mais velha da família sobre uma festa ou um saber tradicional da região e apresente para a turma.'],
+    ['EF69AR35', 'AI', 'Arte e tecnologia', 'Identificar e manipular diferentes tecnologias e recursos digitais para acessar, apreciar, produzir, registrar e compartilhar práticas e repertórios artísticos, de modo reflexivo, ético e responsável.', 'Usar a tecnologia para ver, criar, gravar e compartilhar arte, com ética e dando os créditos.', 'Grave um vídeo curto de uma criação da turma, com autorização de todos, e escreva os créditos de quem fez cada parte.']
+  ];
+  const esc = ARTE.esc;
+  let filtro = '';
+  const F = document.getElementById('filtros'), L = document.getElementById('lista');
+  F.innerHTML = [['', 'Todas'], ...Object.entries(LING)].map(([k, v]) => `<button type="button" class="chip" data-l="${k}" aria-pressed="${k === filtro}">${v}</button>`).join('');
+  F.addEventListener('click', e => { const b = e.target.closest('[data-l]'); if (!b) return; filtro = b.dataset.l; F.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b)); mostra(); });
+  function mostra() {
+    L.innerHTML = Object.entries(LING).filter(([k]) => !filtro || k === filtro).map(([k, nome]) =>
+      `<section class="grupo"><h2>${nome}</h2>${H.filter(h => h[1] === k).map(h => `<article class="hab">
+        <span class="lingua l-${k}">${nome}</span> <b>${h[0]}</b>
+        <h3>${esc(h[4])}</h3>
+        <p class="of">${esc(h[2])}: ${esc(h[3])}</p>
+        <span class="rot">Experimente</span><p>${esc(h[5])}</p></article>`).join('')}</section>`).join('');
+  }
+  mostra();
+  document.getElementById('imprimir').addEventListener('click', () => window.print());
+})();
+</script>
+</body>
+</html>

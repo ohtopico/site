@@ -109,7 +109,8 @@
     { id: 'matematica', nome: 'Sala da Matemática', sub: 'Matemática do 6º ao 9º ano', ano: 6, caminho: '#fde7b0', marco: 'abaco', icone: '📐', aberta: true,
       filtro: r => !r.comp.includes('CO'), todaMatematica: true,
       placa: 'A sala do Professor Malba: todos os jogos de Matemática do 6º ao 9º ano num lugar só. Ela fica aberta desde o começo, pelo portão oeste da Vila do Começo.' }
-  ].concat(window.ILHA_ENEM ? [window.ILHA_ENEM] : []);   // Ilha ENEM (mundo/enem/ilha.js): só existe depois do código secreto ENEM
+  ].concat(window.ILHA_ENEM ? [window.ILHA_ENEM] : [])     // Ilha ENEM (mundo/enem/ilha.js): só existe depois do código secreto ENEM
+   .concat(window.VILA_ARTE ? [window.VILA_ARTE] : []);    // Vila da Arte (mundo/arte/vila.js): só existe depois do código secreto ARTE
   const NOMES = ['Professora Maria', 'Seu Antônio', 'Dona Lúcia', 'Teco', 'Bia', 'Professor Carlos', 'Nina', 'Dudu', 'Vovó Rosa', 'Léo', 'Dona Cida', 'Juca', 'Mel', 'Seu Pedro', 'Lara', 'Kauã', 'Professora Ana', 'Rafa', 'Dona Zefa', 'Gui'];
   const PASTEIS = ['#f7a8c4', '#a8d8f7', '#c7b4f2', '#ffd58a', '#a8e6b8', '#ffb38a', '#f2e48a', '#9fe3dc'];
   const PELES = ['#f6d7bd', '#f3c9a6', '#d9a579', '#a9714b', '#6f4a2d'];
@@ -239,11 +240,14 @@
      desmontada (ela é refeita igualzinha quando a pessoa volta, porque o sorteio é fixo). */
   const ALT = Math.max(...fases.map(f => 2 * (f.raio + 9)));
   const MEIO = Math.floor(ALT / 2);                              // as duas estradas se cruzam no meio
-  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2], [-1, 0], [-1, 1]];   // a Sala da Matemática fica a oeste da Vila do Começo; a Ilha ENEM, ao sul dela
+  // a Sala da Matemática fica a oeste da Vila do Começo; as áreas secretas têm lugar fixo: a Ilha ENEM ao sul da Sala da Matemática,
+  // a Vila da Arte a leste da Escola dos Professores (o lugar não depende de qual código a pessoa digitou primeiro)
+  const LUGAR_SECRETO = { enem: [-1, 1], arte: [2, 2] };
+  const GRADE = [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1], [0, 2], [1, 2], [-1, 0]].concat(fases.slice(9).map(f => LUGAR_SECRETO[f.id] || [3, f.idx - 9]));
   const LADOS = { L: { x: ALT - 0.5, y: MEIO, nome: 'leste' }, O: { x: 0.5, y: MEIO, nome: 'oeste' }, S: { x: MEIO, y: ALT - 0.5, nome: 'sul' }, N: { x: MEIO, y: 0.5, nome: 'norte' } };
   // além do zigue-zague, atalhos entre vilas vizinhas na grade (Começo ↔ Laboratório, Números ↔ Inteligência ↔ Professores)
-  const IDX_MAT = fases.findIndex(f => f.todaMatematica), IDX_ILHA = fases.findIndex(f => f.ilha);
-  const LIGACOES = fases.slice(1).map((f, i) => [i, i + 1]).filter(([, b]) => b !== IDX_MAT && b !== IDX_ILHA).concat([[0, 5], [1, 4], [4, 7], [0, IDX_MAT], [IDX_MAT, IDX_ILHA]]).filter(([a, b]) => a >= 0 && b >= 0 && b < fases.length);
+  const IDX_MAT = fases.findIndex(f => f.todaMatematica), IDX_ILHA = fases.findIndex(f => f.ilha), IDX_ARTE = fases.findIndex(f => f.id === 'arte'), IDX_ESCOLA = fases.findIndex(f => f.id === 'escola');
+  const LIGACOES = fases.slice(1).map((f, i) => [i, i + 1]).filter(([, b]) => b !== IDX_MAT && b !== IDX_ILHA && b !== IDX_ARTE).concat([[0, 5], [1, 4], [4, 7], [0, IDX_MAT], [IDX_MAT, IDX_ILHA], [IDX_ESCOLA, IDX_ARTE]]).filter(([a, b]) => a >= 0 && b >= 0 && b < fases.length);
   const ladoPara = (a, b) => { const [ax, ay] = GRADE[a], [bx, by] = GRADE[b]; return bx > ax ? 'L' : bx < ax ? 'O' : by > ay ? 'S' : 'N'; };
   for (const f of fases) {
     f.x0 = 0; f.L = ALT;
@@ -254,6 +258,7 @@
     for (let k = 0; k < f.nNpc; k++) {
       let nome = nomes.splice((f.idx * 3 + k * 5) % nomes.length, 1)[0];
       if (f.todaMatematica && k === 0) nome = 'Professor Malba';   // homenagem a Malba Tahan, professor de Matemática
+      if (f.nomesNpc && f.nomesNpc[k]) nome = f.nomesNpc[k];       // vilas com moradores próprios (Vila da Arte)
       f.npcs.push({ id: f.id + '-npc' + k, nome, th: (k + 0.3) / f.nNpc * Math.PI * 2 + 0.6, x: 0, y: 0, fase: f, prof: k === 0, masc: f.todaMatematica && k === 0,
         av: { pele: PELES[(k + f.idx) % PELES.length], cabelo: CABELOS[(k * 2 + f.idx) % CABELOS.length], estilo: ['curto', 'longo', 'coque', 'bone'][(k + f.idx) % 4], camisa: ROUPAS[(k * 3 + f.idx) % ROUPAS.length], calca: ['#2f3b6b', '#5a3b2a', '#333333'][k % 3] } });
     }
@@ -1095,6 +1100,13 @@
       caixa(x + 0.4, y + 0.4, 3.2, 1.2, 1.2, 0.5, '#ffd58a'); caixa(x + 0.45, y + 0.45, 3.7, 1.1, 1.1, 0.25, '#e85c4a');
       const [lx, ly] = iso(f.centro.x, f.centro.y, 3.45), a = agora / 600;
       ctx.fillStyle = 'rgba(255,235,150,.35)'; ctx.beginPath(); ctx.moveTo(lx, ly); ctx.arc(lx, ly, 60, a, a + 0.5); ctx.closePath(); ctx.fill();
+    } else if (f.marco === 'cavalete') {   // cavalete de pintura da Vila da Arte, com a tela colorida virada para a frente
+      caixa(x + 0.2, y + 0.2, 0, 1.6, 1.6, 0.3, '#e6e0d4');
+      for (const a of [0.45, 1.4]) caixa(x + a, y + 1.2, 0.3, 0.15, 0.15, 2.6, '#a0703f');
+      caixa(x + 0.95, y + 0.45, 0.3, 0.15, 0.15, 2.3, '#a0703f');
+      caixa(x + 0.3, y + 1.35, 1.2, 1.4, 0.12, 1.5, '#fffdf6');
+      [['#e63b2e', 0.1, 0.9], ['#f6d21f', 0.55, 0.9], ['#2f6fd6', 0.1, 0.35], ['#3fae49', 0.55, 0.35], ['#7b4bb5', 1.0, 0.35], ['#f28c28', 1.0, 0.9]]
+        .forEach(([c, a, b]) => naFace('y', x + 0.3, y + 1.35, 1.4, 0.12, a + 0.05, 0, 0.3, 1.2 + b + 0.05, 0.4, c));
     } else if (f.marco === 'cupula') {
       caixa(x, y, 0, 2, 2, 0.6, '#e6e0d4'); caixa(x + 0.3, y + 0.3, 0.6, 1.4, 1.4, 0.5, '#bdeffa'); caixa(x + 0.55, y + 0.55, 1.1, 0.9, 0.9, 0.45, '#bdeffa'); caixa(x + 0.8, y + 0.8, 1.55, 0.4, 0.4, 0.35, '#bdeffa');
     } else {
@@ -1340,7 +1352,7 @@
   }
   const portaSala = () => { const l = SALAS[sala].local(); return { x: l.x, y: l.y }; };
   const posMundo = () => sala ? portaSala() : noEnigma ? { x: fases[1].enigma.porta.x, y: fases[1].enigma.porta.y + 0.4 } : dentro && visita ? { x: visita.x + 0.9, y: visita.y } : dentro ? { x: fases[0].minhaCasa.porta.x, y: fases[0].minhaCasa.porta.y + 0.4 } : { x: P.x, y: P.y };
-  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = sala ? SALAS[sala].local().f.idx : noEnigma ? 1 : dentro && visita ? visita.fase.idx : dentro ? 0 : atual.idx; }
+  function guardaPos() { const p = posMundo(); S.x = p.x; S.y = p.y; S.fase = sala ? SALAS[sala].local().f.idx : noEnigma ? 1 : dentro && visita ? visita.fase.idx : dentro ? 0 : atual.idx; S.faseId = fases[S.fase] && fases[S.fase].id; }
   function entraCasa() {
     fechaJanela(); ajustaCasa(S.casa.amp || 0); destino = null; dentro = true; mouse = null;
     P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; petPerto(); hud();
@@ -4381,7 +4393,9 @@
     const c = coracoes(n);
     const ola = primeira ? (n.prof ? (n.masc ? `Olá! Eu sou o ${n.nome.replace(/^Professor /, '')}, professor aqui da ${f.nome}. ` : `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. `) : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
     const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
-    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}${coracoes(n) < CORACOES_CASA ? ` Com ${CORACOES_CASA} corações, você pode visitar a casa de ${esc(n.nome)}${CASAS_NPC[n.id] ? ', que tem uma atividade e uma lembrança que só existem lá' : ''}.` : CASAS_NPC[n.id] && !estCasa(n).feita ? ' Na minha casa tem uma atividade que só existe lá, e quem termina ganha uma lembrança.' : ''}</p>${limiteHtml(n)}`, [
+    // moradores que têm o que contar (Vila da Arte): uma fala por dia, do assunto do morador
+    const falas = f.falasNpc && f.falasNpc[f.npcs.indexOf(n) % f.falasNpc.length], conta = falas ? `<p>${esc(falas[diaHoje() % falas.length])}</p>` : '';
+    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p>${conta}<p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}${coracoes(n) < CORACOES_CASA ? ` Com ${CORACOES_CASA} corações, você pode visitar a casa de ${esc(n.nome)}${CASAS_NPC[n.id] ? ', que tem uma atividade e uma lembrança que só existem lá' : ''}.` : CASAS_NPC[n.id] && !estCasa(n).feita ? ' Na minha casa tem uma atividade que só existe lá, e quem termina ganha uma lembrança.' : ''}</p>${limiteHtml(n)}`, [
       { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, bancoNpc(n) ? bancoNpc(n).ic : '❓', sorteiaPergunta(f, bancoNpc(n) && bancoNpc(n).perguntas), certo => { if (certo) ganhaAmizade(n, 8); }) },
       { txt: '🎁 Dar um presente', fn: () => presente(n) },
       ...(!dentro && coracoes(n) >= CORACOES_CASA ? [{ txt: `🏠 Visitar a casa de ${n.nome}`, fn: () => visitaNpc(n) }] : []),
@@ -5132,7 +5146,7 @@
     if (p) { P.x = p.x + (p.lado === 'L' ? -1.6 : p.lado === 'O' ? 1.6 : 0); P.y = p.y + (p.lado === 'S' ? -1.6 : p.lado === 'N' ? 1.6 : 0); }
     else if (i === 0) { P.x = 3.5; P.y = MEIO; }
     else { const q = f.portais.find(q2 => q2.para === i - 1) || f.portais[0]; return trocaFase(i, q.para); }
-    S.fase = i; destino = null; cam.ok = false; faseAtual = null; petPerto(); hud();
+    S.fase = i; S.faseId = fases[i].id; destino = null; cam.ok = false; faseAtual = null; petPerto(); hud();
     if (agora > 1000) aviso(`${f.icone} ${f.nome}`);
   }
   function teleporta(f) { dentro = false; noEnigma = false; sala = null; colocando = null; fechaJanela(); trocaFase(f.idx); }
@@ -5458,11 +5472,14 @@
 
   cv.tabIndex = 0;
   $('#missoes').addEventListener('click', () => $('#missoes').classList.toggle('aberta'));
+  // as áreas secretas mudam de número conforme os códigos digitados: a vila salva pelo nome vale mais que o número
+  { const pelaId = S.faseId ? fases.findIndex(f => f.id === S.faseId) : -1; if (pelaId >= 0) S.fase = pelaId; else if (S.faseId && S.fase >= 9) { S.fase = 0; S.x = 3.5; S.y = MEIO; } }
   { const i = fases[S.fase] && liberada(fases[S.fase]) ? S.fase : 0; atual = fases[i]; monta(atual); P.x = S.x; P.y = S.y; if (!livre(P.x, P.y)) trocaFase(i); }
   setTimeout(() => confereEstrelasSite(), 2500);
   setTimeout(lembraMissaoMundo, 6000);   // a missão do dia do Meu progresso que se faz no Mundo   // estrelas achadas no material didático desde a última visita
   $('#b-tutorial').addEventListener('click', abreTutorial);
   $('#b-museu').addEventListener('click', () => { fechaJanela(); if (dentro) saiCasa(); if (noEnigma) saiEnigma(); if (sala) saiSala(); if (atual.idx !== 0) trocaFase(0); entraSala('museu'); });
+  if (new URLSearchParams(location.search).has('arte') && IDX_ARTE >= 0 && atual !== fases[IDX_ARTE]) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); teleporta(fases[IDX_ARTE]); } else if (++n > 60) clearInterval(t); }, 500); }   // acabou de digitar o código ARTE
   if (new URLSearchParams(location.search).has('ilha') && IDX_ILHA >= 0 && atual !== fases[IDX_ILHA]) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); teleporta(fases[IDX_ILHA]); } else if (++n > 60) clearInterval(t); }, 500); }   // acabou de digitar o código ENEM
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
   /* links diretos (usados na área premium): ?abrir=cursos[&curso=id], ?abrir=kits, ?kit=CÓDIGO (resgata e mostra na Loja de Roupas) */

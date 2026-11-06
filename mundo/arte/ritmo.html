@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Estúdio de ritmo · Vila da Arte</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../enem/enem.css">
+<link rel="stylesheet" href="arte.css">
+<style>
+  .grade { display: grid; grid-template-columns: 96px repeat(8, minmax(0, 1fr)); gap: 6px; align-items: center; margin: 12px 0; max-width: 640px; }
+  .grade .nome { font-weight: 700; font-size: 14px; }
+  .passo { aspect-ratio: 1; min-height: 34px; border-radius: 10px; border: 2px solid #1d2a1f; background: #fff; cursor: pointer; padding: 0; }
+  .passo.t1 { background: var(--av); } .passo.t2 { background: var(--mu); } .passo.t3 { background: var(--da); } .passo.t4 { background: var(--ai); }
+  .passo.on { box-shadow: inset 0 0 0 5px rgba(0,0,0,.25); }
+  .passo.agora { outline: 4px solid #2a5fa8; outline-offset: 1px; }
+  .grade .num { text-align: center; font-size: 12px; color: var(--ink-2); }
+  .ctl { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .ctl label { font-weight: 600; }
+  #partitura { font: 600 17px/1.8 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .08em; overflow-x: auto; white-space: pre-wrap; background: #fff; border: 2px dashed var(--borda); border-radius: 14px; padding: 10px 14px; }
+  .tocar { min-height: 0; padding: 6px 12px; font-size: 15px; margin: 4px 6px 4px 0; }
+  @media (max-width: 560px) { .grade { grid-template-columns: 70px repeat(8, minmax(0, 1fr)); gap: 4px; } .grade .nome { font-size: 12px; } }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top"><div class="wrap"><span class="plaq marca">🎨 Vila da Arte</span><span class="direita"><a class="hb azul" href="../?arte" style="min-height:0;padding:7px 12px">Ir para a vila no Mundo</a></span></div></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="../?arte">← Voltar à vila</a>
+    <h1>🥁 Estúdio de ritmo</h1>
+    <p class="muted">Monte uma batida de 8 tempos com quatro timbres e mude o andamento. A grade é uma partitura criativa: dá para ler a música olhando para ela (BNCC EF69AR20, EF69AR22 e EF69AR23).</p>
+  </div>
+  <section class="caixa">
+    <div class="ctl">
+      <button type="button" class="hb" id="play">Tocar</button>
+      <label for="bpm">Andamento: <b id="bpm-v">100</b> batidas por minuto</label>
+      <input type="range" id="bpm" min="60" max="180" step="5" value="100">
+    </div>
+    <div class="grade" id="grade" role="group" aria-label="Grade de ritmo: 4 instrumentos por 8 tempos"></div>
+    <div class="ctl">
+      <span class="muted">Exemplos:</span>
+      <button type="button" class="chip" data-ex="simples">Batida simples</button>
+      <button type="button" class="chip" data-ex="baiao">Célula do baião</button>
+      <button type="button" class="chip" data-ex="marcha">Marcha</button>
+      <button type="button" class="chip" data-ex="limpar">Limpar</button>
+    </div>
+    <h3>A sua partitura criativa</h3>
+    <div id="partitura" aria-live="polite"></div>
+    <p class="muted small">Cada símbolo é um instrumento e cada ponto é um silêncio. Copie no caderno e peça para um colega tocar com palmas e batidas na mesa, só lendo.</p>
+  </section>
+  <h2>Desafio de ouvido</h2>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Lembrete</summary>
+    <p><b>Altura</b>: grave ou agudo. <b>Intensidade</b>: forte ou fraco. <b>Timbre</b>: a "cor" do som, o que faz uma caixa soar diferente de um bumbo. <b>Duração</b>: curto ou longo. <b>Andamento</b>: a velocidade da música, medida em batidas por minuto. <b>Ritmo</b>: a organização dos sons e silêncios no tempo.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Vila da Arte, uma parte secreta do Mundo do ohtopico.com.br. Os sons são criados na hora pelo navegador.</div></footer>
+
+<script src="arte.js"></script>
+<script>ARTE.exigir();</script>
+<script>
+(function () {
+  let ac = null;
+  const audio = () => { if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (A) ac = new A(); } if (ac && ac.state === 'suspended') ac.resume(); return ac; };
+  function ruido(t, dur, freq, tipo, vol) {
+    const a = audio(); if (!a) return;
+    const b = a.createBuffer(1, Math.max(1, a.sampleRate * dur), a.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const s = a.createBufferSource(); s.buffer = b;
+    const f = a.createBiquadFilter(); f.type = tipo; f.frequency.value = freq;
+    const g = a.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    s.connect(f); f.connect(g); g.connect(a.destination); s.start(t); s.stop(t + dur);
+  }
+  function tom(t, f0, f1, dur, vol, tipo) {
+    const a = audio(); if (!a) return;
+    const o = a.createOscillator(), g = a.createGain(); o.type = tipo || 'sine';
+    o.frequency.setValueAtTime(f0, t); if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur);
+  }
+  const INST = [
+    { nome: 'Bumbo', sim: '●', toca: t => tom(t, 140, 45, 0.35, 0.9) },
+    { nome: 'Caixa', sim: '▲', toca: t => { ruido(t, 0.18, 1800, 'highpass', 0.5); tom(t, 220, 180, 0.1, 0.3, 'triangle'); } },
+    { nome: 'Chocalho', sim: '~', toca: t => ruido(t, 0.06, 7000, 'highpass', 0.35) },
+    { nome: 'Palmas', sim: '✱', toca: t => { for (const k of [0, 0.012, 0.024]) ruido(t + k, 0.09, 1200, 'bandpass', 0.6); } }
+  ];
+  const N = 8, G = INST.map(() => Array(N).fill(false));
+  const EX = {
+    simples: ['10001000', '00100010', '11111111', '00000000'],
+    baiao: ['10011000', '00000000', '11111111', '00100010'],
+    marcha: ['10001000', '00100010', '00000000', '10101010'],
+    limpar: ['00000000', '00000000', '00000000', '00000000']
+  };
+  const grade = document.getElementById('grade');
+  function monta() {
+    grade.innerHTML = '<span></span>' + Array.from({ length: N }, (_, j) => `<span class="num">${j + 1}</span>`).join('') +
+      INST.map((ins, i) => `<span class="nome">${ins.sim} ${ins.nome}</span>` + G[i].map((v, j) => `<button type="button" class="passo t${i + 1} ${v ? 'on' : ''}" data-i="${i}" data-j="${j}" aria-pressed="${v}" aria-label="${ins.nome}, tempo ${j + 1}" style="${v ? '' : 'background:#fff'}"></button>`).join('')).join('');
+    document.getElementById('partitura').textContent = INST.map((ins, i) => ins.nome.padEnd(9, ' ') + G[i].map(v => v ? ins.sim : '·').join(' ')).join('\n');
+  }
+  grade.addEventListener('click', e => { const b = e.target.closest('.passo'); if (!b) return; const i = +b.dataset.i, j = +b.dataset.j; G[i][j] = !G[i][j]; if (G[i][j]) INST[i].toca(audio() ? ac.currentTime : 0); monta(); });
+  document.querySelectorAll('[data-ex]').forEach(b => b.addEventListener('click', () => { EX[b.dataset.ex].forEach((l, i) => { for (let j = 0; j < N; j++) G[i][j] = l[j] === '1'; }); monta(); }));
+  EX.simples.forEach((l, i) => { for (let j = 0; j < N; j++) G[i][j] = l[j] === '1'; });
+  monta();
+
+  const bpm = document.getElementById('bpm');
+  bpm.addEventListener('input', () => { document.getElementById('bpm-v').textContent = bpm.value; });
+  // cada casa da grade vale meio tempo (colcheia): 8 casas = 4 batidas
+  let rodando = null, passo = 0;
+  document.getElementById('play').addEventListener('click', e => {
+    if (rodando) { clearTimeout(rodando); rodando = null; e.target.textContent = 'Tocar'; grade.querySelectorAll('.agora').forEach(x => x.classList.remove('agora')); return; }
+    if (!audio()) { e.target.textContent = 'Este navegador não toca sons'; return; }
+    e.target.textContent = 'Parar'; passo = 0;
+    const tick = () => {
+      const t = ac.currentTime + 0.02;
+      INST.forEach((ins, i) => { if (G[i][passo]) ins.toca(t); });
+      grade.querySelectorAll('.passo').forEach(b => b.classList.toggle('agora', +b.dataset.j === passo));
+      passo = (passo + 1) % N;
+      rodando = setTimeout(tick, 60000 / +bpm.value / 2);
+    };
+    tick();
+  });
+
+  /* desafio de ouvido: perguntas com sons para tocar */
+  const SONS = {};
+  document.getElementById('palco').addEventListener('click', e => { const b = e.target.closest('[data-som]'); if (b && SONS[b.dataset.som]) SONS[b.dataset.som](); });
+  const btn = (id, txt) => `<button type="button" class="hb azul tocar" data-som="${id}">${txt}</button>`;
+  let uid = 0;
+  const GER = [
+    () => { const id = ++uid, agudo = Math.random() < 0.5 ? 1 : 2, f = k => k === agudo ? 660 : 220;
+      SONS['a' + id + '1'] = () => tom(audio().currentTime, f(1), f(1), 0.7, 0.4, 'triangle'); SONS['a' + id + '2'] = () => tom(audio().currentTime, f(2), f(2), 0.7, 0.4, 'triangle');
+      return { enun: `<p>Qual destes sons é mais <b>agudo</b>?</p>${btn('a' + id + '1', 'Tocar som 1')}${btn('a' + id + '2', 'Tocar som 2')}`, alts: ['Som 1', 'Som 2'], certa: agudo - 1, coment: 'Grave ou agudo é a altura do som. O agudo vibra mais vezes por segundo.' }; },
+    () => { const id = ++uid, forte = Math.random() < 0.5 ? 1 : 2, v = k => k === forte ? 0.7 : 0.08;
+      SONS['i' + id + '1'] = () => tom(audio().currentTime, 330, 330, 0.7, v(1), 'triangle'); SONS['i' + id + '2'] = () => tom(audio().currentTime, 330, 330, 0.7, v(2), 'triangle');
+      return { enun: `<p>Os dois sons têm a mesma altura. Qual é mais <b>forte</b>?</p>${btn('i' + id + '1', 'Tocar som 1')}${btn('i' + id + '2', 'Tocar som 2')}`, alts: ['Som 1', 'Som 2'], certa: forte - 1, coment: 'Forte ou fraco é a intensidade do som.' }; },
+    () => { const id = ++uid, rapido = Math.random() < 0.5 ? 1 : 2, seq = intv => () => { const t = audio().currentTime; for (let k = 0; k < 6; k++) INST[0].toca(t + k * intv); };
+      SONS['b' + id + '1'] = seq(rapido === 1 ? 0.25 : 0.6); SONS['b' + id + '2'] = seq(rapido === 2 ? 0.25 : 0.6);
+      return { enun: `<p>Qual sequência tem o <b>andamento</b> mais rápido?</p>${btn('b' + id + '1', 'Tocar sequência 1')}${btn('b' + id + '2', 'Tocar sequência 2')}`, alts: ['Sequência 1', 'Sequência 2'], certa: rapido - 1, coment: 'Andamento é a velocidade da música, medida em batidas por minuto.' }; },
+    () => { const id = ++uid, q = Math.floor(Math.random() * INST.length), opcoes = ARTE.embaralha(INST.map(x => x.nome));
+      SONS['t' + id] = () => INST[q].toca(audio().currentTime);
+      return { enun: `<p>Ouça o som. Qual instrumento do estúdio é este?</p>${btn('t' + id, 'Tocar som')}`, alts: opcoes, certa: opcoes.indexOf(INST[q].nome), coment: `${['É o bumbo', 'É a caixa', 'É o chocalho', 'São as palmas'][q]}. Cada fonte sonora tem o seu timbre.` }; },
+    () => ({ enun: 'Na partitura criativa do estúdio, o que quer dizer o ponto (·)?', alts: ['Silêncio naquele tempo', 'Som muito forte', 'Fim da música', 'Trocar de instrumento'], certa: 0, coment: 'Silêncio também faz parte do ritmo. Na notação tradicional, ele se chama pausa.' }),
+    () => ({ enun: 'Ao passar o andamento de 80 para 160 batidas por minuto, a música fica...', alts: ['Duas vezes mais rápida', 'Duas vezes mais aguda', 'Duas vezes mais forte', 'Com outro timbre'], certa: 0, coment: 'O andamento muda a velocidade, não a altura nem a intensidade.' })
+  ];
+  ARTE.quiz(document.getElementById('palco'), () => ARTE.embaralha([0, 1, 2, 3, 3, 0, 4, 5]).map(k => GER[k]()), 'Desafio de ouvido');
+})();
+</script>
+</body>
+</html>

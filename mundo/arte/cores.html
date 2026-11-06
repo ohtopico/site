@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Ateliê das cores · Vila da Arte</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../enem/enem.css">
+<link rel="stylesheet" href="arte.css">
+<style>
+  .duas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 760px) { .duas { grid-template-columns: 1fr; } }
+  .circulo { width: 100%; max-width: 320px; display: block; margin: 0 auto; }
+  .circulo path { stroke: #1d2a1f; stroke-width: 2; cursor: pointer; }
+  .circulo path:focus { outline: none; stroke-width: 5; }
+  .tintas { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+  .tinta { width: 54px; height: 54px; border-radius: 50%; border: 3px solid #1d2a1f; cursor: pointer; box-shadow: var(--sombra); }
+  .tinta span { position: absolute; left: -9999px; }
+  .mistura { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 22px; font-weight: 700; margin: 12px 0; }
+  .pote { width: 70px; height: 70px; border-radius: 18px; border: 3px dashed #1d2a1f; background: #fff; display: grid; place-items: center; font-size: 13px; color: var(--ink-2); }
+  .pote.cheio { border-style: solid; }
+  .resultado { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #1d2a1f; background: #fff; }
+  .sw { display: inline-block; width: 22px; height: 22px; border-radius: 6px; border: 2px solid #1d2a1f; vertical-align: -5px; margin-right: 8px; }
+  #info { min-height: 3em; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top"><div class="wrap"><span class="plaq marca">🎨 Vila da Arte</span><span class="direita"><a class="hb azul" href="../?arte" style="min-height:0;padding:7px 12px">Ir para a vila no Mundo</a></span></div></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="../?arte">← Voltar à vila</a>
+    <h1>🎨 Ateliê das cores</h1>
+    <p class="muted">Cor é um dos elementos da linguagem visual (BNCC EF69AR04). Misture tintas, explore o círculo cromático e depois encare o desafio.</p>
+  </div>
+  <div class="duas">
+    <section class="caixa">
+      <h2>Misturador de tintas</h2>
+      <p>Toque em duas tintas para misturar. Toque no pote para esvaziar.</p>
+      <div class="tintas" id="tintas"></div>
+      <div class="mistura" aria-live="polite"><button type="button" class="pote" id="p0">vazio</button> + <button type="button" class="pote" id="p1">vazio</button> = <span class="resultado" id="res"></span></div>
+      <p id="res-txt" role="status"></p>
+    </section>
+    <section class="caixa">
+      <h2>Círculo cromático</h2>
+      <p>Toque numa cor para ver a complementar dela e se é quente ou fria.</p>
+      <svg class="circulo" id="circulo" viewBox="-110 -110 220 220" role="group" aria-label="Círculo cromático com seis cores"></svg>
+      <p id="info" role="status"></p>
+    </section>
+  </div>
+  <h2>Desafio das cores</h2>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Lembrete</summary>
+    <p><b>Primárias</b> (nas tintas): vermelho, amarelo e azul. <b>Secundárias</b>: laranja (vermelho + amarelo), verde (amarelo + azul) e roxo (vermelho + azul). <b>Complementares</b> ficam em lados opostos do círculo e criam contraste forte. <b>Quentes</b>: vermelho, laranja e amarelo. <b>Frias</b>: verde, azul e roxo. Branco clareia e preto escurece uma cor: isso muda o <b>tom</b>.</p>
+    <p class="muted small">Nas telas e na luz, as primárias são outras (vermelho, verde e azul, o RGB). Aqui usamos as das tintas, que são as do ensino de arte.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Vila da Arte, uma parte secreta do Mundo do ohtopico.com.br.</div></footer>
+
+<script src="arte.js"></script>
+<script>ARTE.exigir();</script>
+<script>
+(function () {
+  const C = { vermelho: '#e63b2e', laranja: '#f28c28', amarelo: '#f6d21f', verde: '#3fae49', azul: '#2f6fd6', roxo: '#7b4bb5', branco: '#ffffff', preto: '#222222' };
+  const RODA = ['vermelho', 'laranja', 'amarelo', 'verde', 'azul', 'roxo'];
+  const COMP = { vermelho: 'verde', verde: 'vermelho', amarelo: 'roxo', roxo: 'amarelo', azul: 'laranja', laranja: 'azul' };
+  const QUENTE = { vermelho: 1, laranja: 1, amarelo: 1 };
+  const SOMA = { 'amarelo+vermelho': 'laranja', 'amarelo+azul': 'verde', 'azul+vermelho': 'roxo', 'branco+preto': 'cinza' };
+  const sw = n => `<span class="sw" style="background:${C[n] || '#999'}"></span>${n}`;
+  const mix = (a, b, t) => '#' + [1, 3, 5].map(i => Math.round(parseInt(a.substr(i, 2), 16) * (1 - t) + parseInt(b.substr(i, 2), 16) * t).toString(16).padStart(2, '0')).join('');
+
+  /* misturador */
+  const potes = [null, null];
+  const T = document.getElementById('tintas');
+  T.innerHTML = ['vermelho', 'amarelo', 'azul', 'branco', 'preto'].map(n => `<button type="button" class="tinta" data-c="${n}" style="background:${C[n]}" aria-label="Tinta ${n}" title="${n}"></button>`).join('');
+  T.addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; const i = potes[0] === null ? 0 : potes[1] === null ? 1 : 1; potes[i] = b.dataset.c; desenhaMistura(); });
+  [0, 1].forEach(i => document.getElementById('p' + i).addEventListener('click', () => { potes[i] = null; desenhaMistura(); }));
+  function desenhaMistura() {
+    potes.forEach((p, i) => { const el = document.getElementById('p' + i); el.style.background = p ? C[p] : '#fff'; el.classList.toggle('cheio', !!p); el.textContent = p ? '' : 'vazio'; el.setAttribute('aria-label', p ? `Pote com ${p}, toque para esvaziar` : 'Pote vazio'); });
+    const r = document.getElementById('res'), t = document.getElementById('res-txt');
+    if (!potes[0] || !potes[1]) { r.style.background = '#fff'; t.textContent = potes[0] ? 'Agora escolha a segunda tinta.' : ''; return; }
+    const [a, b] = potes.slice().sort(), k = a + '+' + b;
+    let cor, txt;
+    if (a === b) { cor = C[a]; txt = `Mesma tinta dos dois lados: continua ${a}.`; }
+    else if (SOMA[k] === 'cinza') { cor = '#8c8c8c'; txt = 'Branco + preto = cinza. Uma cor neutra.'; }
+    else if (SOMA[k]) { cor = C[SOMA[k]]; txt = `${a} + ${b} = ${SOMA[k]}, uma cor secundária.`; }
+    else if (a === 'branco' || b === 'branco') { const o = a === 'branco' ? b : a; cor = mix(C[o], '#ffffff', 0.5); txt = `${o} com branco fica mais claro: o tom mudou, a cor continua ${o}.`; }
+    else { const o = a === 'preto' ? b : a; cor = mix(C[o], '#000000', 0.45); txt = `${o} com preto fica mais escuro: o tom mudou, a cor continua ${o}.`; }
+    r.style.background = cor; t.textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
+  }
+
+  /* círculo cromático */
+  const S = document.getElementById('circulo');
+  const pt = (ang, r) => [Math.cos(ang) * r, Math.sin(ang) * r].map(v => v.toFixed(2)).join(' ');
+  S.innerHTML = RODA.map((n, i) => { const a0 = (i - 0.5) / 6 * 2 * Math.PI - Math.PI / 2, a1 = (i + 0.5) / 6 * 2 * Math.PI - Math.PI / 2;
+    return `<path d="M ${pt(a0, 36)} L ${pt(a0, 100)} A 100 100 0 0 1 ${pt(a1, 100)} L ${pt(a1, 36)} A 36 36 0 0 0 ${pt(a0, 36)} Z" fill="${C[n]}" data-c="${n}" tabindex="0" role="button" aria-label="${n}"></path>`; }).join('');
+  const info = n => { document.getElementById('info').innerHTML = `${sw(n)} é uma cor <b>${['vermelho', 'amarelo', 'azul'].includes(n) ? 'primária' : 'secundária'}</b> e <b>${QUENTE[n] ? 'quente' : 'fria'}</b>. A complementar dela é ${sw(COMP[n])}, do lado oposto do círculo.`;
+    S.querySelectorAll('path').forEach(p => p.style.opacity = p.dataset.c === n || p.dataset.c === COMP[n] ? 1 : 0.35); };
+  S.addEventListener('click', e => { const p = e.target.closest('[data-c]'); if (p) info(p.dataset.c); });
+  S.addEventListener('keydown', e => { const p = e.target.closest('[data-c]'); if (p && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); info(p.dataset.c); } });
+
+  /* desafio: 8 perguntas sorteadas */
+  const E = ARTE.embaralha, pega = (l, n) => E(l).slice(0, n);
+  function alts(certa, outras, html) { const lista = E([certa, ...outras]); return { alts: lista.map(html || (x => x)), certa: lista.indexOf(certa) }; }
+  const GER = [
+    () => { const n = pega(RODA, 1)[0], c = COMP[n]; return Object.assign({ enun: `Qual é a cor complementar de ${sw(n)}?`, coment: `A complementar de ${n} é ${c}: elas ficam em lados opostos do círculo.` }, alts(c, pega(RODA.filter(x => x !== c && x !== n), 3), sw)); },
+    () => { const [k, r] = pega(Object.entries(SOMA).filter(([, v]) => v !== 'cinza'), 1)[0], [a, b] = k.split('+'); return Object.assign({ enun: `Misturando tinta ${sw(a)} com tinta ${sw(b)}, que cor aparece?`, coment: `${a} + ${b} = ${r}.` }, alts(r, pega(RODA.filter(x => x !== r && x !== a && x !== b), 3), sw)); },
+    () => { const n = pega(RODA, 1)[0], q = QUENTE[n] ? 'Quente' : 'Fria'; return Object.assign({ enun: `A cor ${sw(n)} é quente ou fria?`, coment: 'Quentes: vermelho, laranja e amarelo. Frias: verde, azul e roxo.' }, alts(q, [q === 'Quente' ? 'Fria' : 'Quente'])); },
+    () => { const r = pega(['laranja', 'verde', 'roxo'], 1)[0], par = Object.keys(SOMA).find(k => SOMA[k] === r).split('+'); return Object.assign({ enun: `Quais tintas misturamos para fazer ${sw(r)}?`, coment: `${par[0]} + ${par[1]} = ${r}.` },
+      alts(par.join(' e '), Object.keys(SOMA).filter(k => SOMA[k] !== r && SOMA[k] !== 'cinza').map(k => k.replace('+', ' e ')).concat(['branco e preto']))); },
+    () => Object.assign({ enun: 'Para deixar uma tinta mais clara, sem mudar a cor, misturamos...', coment: 'Branco clareia e preto escurece: assim mudamos o tom da cor.' }, alts('Branco', ['Preto', 'A complementar', 'Mais tinta da mesma cor'])),
+    () => Object.assign({ enun: 'Qual destas é uma cor secundária?', coment: 'As secundárias nascem da mistura de duas primárias: laranja, verde e roxo.' }, (() => { const c = pega(['laranja', 'verde', 'roxo'], 1)[0]; return alts(c, ['vermelho', 'amarelo', 'azul'], sw); })()),
+    () => Object.assign({ enun: 'Um pintor quer que uma laranja salte aos olhos no quadro. Que cor de fundo dá mais contraste?', coment: 'A complementar do laranja é o azul: lado a lado, as duas parecem mais fortes.' }, alts('azul', ['amarelo', 'vermelho', 'laranja'], sw)),
+    () => Object.assign({ enun: 'Uma pintura feita só com azuis, verdes e roxos tende a passar uma sensação mais...', coment: 'Cores frias costumam lembrar água, noite e calma; as quentes, sol, fogo e agitação.' }, alts('Calma e fresca', ['Quente e agitada', 'Barulhenta', 'Doce']))
+  ];
+  ARTE.quiz(document.getElementById('palco'), () => E(GER).slice(0, 4).concat(E(GER.slice(0, 4))).slice(0, 8).map(g => g()), 'Desafio das cores');
+})();
+</script>
+</body>
+</html>
