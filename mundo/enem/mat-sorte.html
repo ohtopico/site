@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de sorte · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<style>
+  .hist { width: 100%; height: auto; background: #fff; border: 2px solid var(--borda); border-radius: 16px; display: block; margin: 12px 0 6px; }
+  .legenda { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13.5px; color: var(--ink-2); margin-bottom: 8px; }
+  .legenda i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 5px; border: 1.5px solid var(--ink); }
+  .sim-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .sim-btns .btn { min-height: 40px; padding: 8px 14px; font-size: 15px; }
+  .cont { font-family: var(--display); font-size: 20px; }
+  .emo { font-size: 44px; line-height: 1; letter-spacing: 6px; margin: 8px 0 0; }
+  .habs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+  .habs span { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 99px; border: 2px solid rgba(0,0,0,.15); background: var(--mat); }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="./">← Voltar à ilha</a>
+    <h1>🪙 Simulador de sorte</h1>
+    <p class="muted">Cinco experimentos. Primeiro você aposta no que vai acontecer; depois joga dados e moedas 10, 100 ou 10 000 vezes e vê as barras (o que saiu) chegarem cada vez mais perto das marcas (o que a teoria prevê).</p>
+    <div class="habs"><span title="Calcular medidas de tendência central ou de dispersão de dados.">H27</span><span title="Resolver situação-problema com conhecimentos de estatística e probabilidade.">H28</span><span title="Avaliar propostas de intervenção com conhecimentos de estatística e probabilidade.">H30</span></div>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Cola rápida</summary>
+    <p><b>Probabilidade</b> = casos favoráveis ÷ casos possíveis. <b>Frequência relativa</b> = vezes que aconteceu ÷ total de tentativas. Com muitas tentativas, a frequência relativa se aproxima da probabilidade (lei dos grandes números). Com poucas, tudo pode acontecer.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Estrelas ficam guardadas só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="jogos-mat.js"></script>
+<script src="mat-motor.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), { f, mix, pick } = MAT, palco = $('#palco'), d6 = () => 1 + Math.floor(Math.random() * 6), moeda = () => Math.random() < 0.5;
+  ENEM.topo($('#topo'));
+
+  /* cada experimento: categorias, probabilidades teóricas, um sorteio e a aposta */
+  const EXP = [
+    { id: 'soma', emo: '🎲🎲', titulo: 'Soma de dois dados', pergunta: 'Ao lançar dois dados e somar as faces, qual soma sai <b>mais vezes</b>?',
+      cats: ['2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], teo: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1].map(x => x / 36), sorteia: () => d6() + d6() - 2,
+      opcoes: ['2', '6', '7', '12', 'Todas saem igual'], certa: '7',
+      expl: 'Há 6 jeitos de somar 7 — (1,6) (2,5) (3,4) (4,3) (5,2) (6,1) — em 36 possíveis: 6/36 ≈ 16,7%. A soma 2 só sai com (1,1): 1/36 ≈ 2,8%.' },
+    { id: 'moedas', emo: '🪙🪙🪙', titulo: 'Três moedas', pergunta: 'Ao lançar três moedas, o que é mais provável?',
+      cats: ['0 caras', '1 cara', '2 caras', '3 caras'], teo: [1, 3, 3, 1].map(x => x / 8), sorteia: () => [moeda(), moeda(), moeda()].filter(Boolean).length,
+      opcoes: ['Sair 3 caras', 'Sair exatamente 2 caras', 'As duas coisas são igualmente prováveis', 'Sair 0 caras'], certa: 'Sair exatamente 2 caras',
+      expl: 'São 2³ = 8 resultados. Exatamente 2 caras: KKC, KCK, CKK = 3/8 = 37,5%. Três caras só KKK = 1/8 = 12,5%.' },
+    { id: 'seis', emo: '🎲', titulo: 'Esperando o 6', pergunta: 'Você lança um dado 4 vezes. Qual a chance de sair <b>pelo menos um 6</b>?',
+      cats: ['nenhum 6', 'pelo menos um 6'], teo: [(5 / 6) ** 4, 1 - (5 / 6) ** 4], sorteia: () => [d6(), d6(), d6(), d6()].includes(6) ? 1 : 0,
+      opcoes: ['4/6 ≈ 66,7%', 'Cerca de 51,8%', '1/6 ≈ 16,7%', 'Exatamente 50%'], certa: 'Cerca de 51,8%',
+      expl: 'Complementar: P(nenhum 6) = (5/6)⁴ ≈ 48,2%. P(pelo menos um) = 1 − 0,482 ≈ <b>51,8%</b>. Somar 1/6 quatro vezes (66,7%) está errado, porque os casos se sobrepõem.' },
+    { id: 'urna', emo: '🔵🔵🔵🔴🔴', titulo: 'Urna com reposição', pergunta: 'Uma urna tem 3 bolas azuis e 2 vermelhas. Você tira uma, anota a cor, devolve e tira de novo. O que é mais provável?',
+      cats: ['2 azuis', '1 de cada', '2 vermelhas'], teo: [9 / 25, 12 / 25, 4 / 25], sorteia: () => { const a = (Math.random() < 0.6) + (Math.random() < 0.6); return 2 - a; },
+      opcoes: ['Duas azuis', 'Uma de cada cor', 'Duas vermelhas', 'Todas igualmente prováveis'], certa: 'Uma de cada cor',
+      expl: 'P(azul) = 3/5. Duas azuis: (3/5)² = 9/25 = 36%. Uma de cada: 2 · (3/5)(2/5) = 12/25 = <b>48%</b> (azul-vermelha ou vermelha-azul). Duas vermelhas: 4/25 = 16%.' },
+    { id: 'media', emo: '🎲', titulo: 'Média de um dado', pergunta: 'Se você lançar um dado muitas e muitas vezes, a <b>média</b> dos resultados vai ficar perto de quanto?',
+      cats: ['1', '2', '3', '4', '5', '6'], teo: Array(6).fill(1 / 6), sorteia: () => d6() - 1, media: true,
+      opcoes: ['3', '3,5', '6', '4'], certa: '3,5',
+      expl: 'Cada face tem chance 1/6. Média esperada = (1 + 2 + 3 + 4 + 5 + 6) ÷ 6 = 21 ÷ 6 = <b>3,5</b>, um valor que nem existe no dado.' }
+  ];
+
+  let fila, i, acertos, cont;
+  function comecar() { fila = mix(EXP.slice(0, 4)).concat([EXP[4]]); i = 0; acertos = 0; revelado = -1; mostrar(); }
+  function hist(e) {
+    const W = 460, H = 230, x0 = 40, y0 = 190, top = 14, n = e.cats.length, bw = (W - x0 - 10) / n, tot = cont.reduce((a, b) => a + b, 0);
+    const max = Math.max(0.2, ...e.teo, ...cont.map(c => tot ? c / tot : 0)) * 1.12, Y = p => y0 - p / max * (y0 - top);
+    let s = `<rect width="${W}" height="${H}" fill="#fff"/>`;
+    for (let p = 0; p <= max; p += 0.1) s += MAT.linha(x0, Y(p), W - 10, Y(p), { cor: '#f0ebdc', w: 1 }) + MAT.t(x0 - 5, Y(p) + 4, Math.round(p * 100) + '%', { size: 10.5, anchor: 'end' });
+    e.cats.forEach((c, k) => {
+      const x = x0 + k * bw, fr = tot ? cont[k] / tot : 0;
+      s += MAT.rect(x + bw * 0.15, Y(fr), bw * 0.7, y0 - Y(fr), MAT.C.azul, { w: 1.5, rx: 3 });
+      s += MAT.linha(x + bw * 0.08, Y(e.teo[k]), x + bw * 0.92, Y(e.teo[k]), { cor: MAT.C.vermelho, w: 3.5 });
+      s += MAT.t(x + bw / 2, y0 + 16, c, { size: n > 6 ? 11 : 12 });
+      if (tot && n <= 6) s += MAT.t(x + bw / 2, Math.min(Y(fr), Y(e.teo[k])) - 6, f(fr * 100, 1) + '%', { size: 11, peso: 700 });
+    });
+    s += MAT.linha(x0, y0, W - 10, y0) + MAT.linha(x0, top, x0, y0);
+    let media = '';
+    if (e.media && tot) { const m = cont.reduce((a, c, k) => a + c * (k + 1), 0) / tot; media = `<p style="margin:4px 0 0">Média dos ${tot.toLocaleString('pt-BR')} lançamentos: <span class="cont">${f(m, 3)}</span></p>`; }
+    return `<svg class="hist" viewBox="0 0 ${W} ${H}" role="img" aria-label="Frequência relativa de cada resultado" style="font-family:Lexend,system-ui,sans-serif">${s}</svg>
+      <div class="legenda"><span><i style="background:${MAT.C.azul}"></i>o que saiu (frequência relativa)</span><span><i style="background:${MAT.C.vermelho}"></i>o que a teoria prevê</span><span>Total: <b>${tot.toLocaleString('pt-BR')}</b> tentativas</span></div>${media}`;
+  }
+  function mostrar() {
+    const e = fila[i]; cont = e.cats.map(() => 0);
+    palco.innerHTML = `<div class="hud"><span>Experimento <b>${i + 1}</b> de ${fila.length}</span><span>Apostas certas <b>${acertos}</b></span></div>
+      <div class="barra"><i style="width:${i / fila.length * 100}%"></i></div>
+      <span class="q-area" style="background:var(--mat)">${e.titulo}</span><div class="emo" aria-hidden="true">${e.emo}</div>
+      <div class="q-enun">${e.pergunta}</div>
+      <div class="alts">${e.opcoes.map((t, k) => `<button class="alt" type="button" data-k="${k}"><span class="letra">${'ABCDE'[k]}</span><span>${t}</span></button>`).join('')}</div>
+      <div id="sim"></div><div id="corr"></div><div class="btn-row" id="seguir" style="margin-top:14px"></div>`;
+    palco.querySelectorAll('[data-k]').forEach(b => b.onclick = () => apostar(+b.dataset.k, b));
+  }
+  function apostar(k, botao) {
+    const e = fila[i], ok = e.opcoes[k] === e.certa; if (ok) acertos++;
+    palco.querySelectorAll('.alt').forEach(b => { b.disabled = true; if (e.opcoes[+b.dataset.k] === e.certa) b.classList.add('certa'); else if (b === botao) b.classList.add('errada'); });
+    $('#sim').innerHTML = `<p style="margin:14px 0 0"><b>${ok ? 'Boa aposta!' : 'Hmm, vamos testar?'}</b> Jogue e veja o que acontece:</p>
+      <div class="sim-btns">${[10, 100, 1000, 10000].map(n => `<button class="btn ghost" type="button" data-n="${n}">+${n.toLocaleString('pt-BR')} vezes</button>`).join('')}<button class="btn" type="button" data-n="0" style="background:var(--amarelo);color:#3a2a00">Zerar</button></div><div id="graf">${hist(e)}</div>`;
+    palco.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { const n = +b.dataset.n; if (!n) cont = e.cats.map(() => 0); else for (let r = 0; r < n; r++) cont[e.sorteia()]++; $('#graf').innerHTML = hist(e); revelar(); });
+    $('#corr').innerHTML = '';
+    $('#seguir').innerHTML = '';
+    apostaOk = ok;
+  }
+  let apostaOk = false, revelado = -1;
+  function revelar() {
+    if (revelado === i) return; const tot = cont.reduce((a, b) => a + b, 0); if (tot < 100) return; revelado = i;
+    const e = fila[i], ultima = i === fila.length - 1;
+    $('#corr').innerHTML = `<div class="corr ${apostaOk ? 'ok' : 'bad'}"><b>${apostaOk ? 'Você acertou: ' : 'Resposta: '}${e.certa}.</b><br>${e.expl}<div class="mac">💡 Clique mais vezes: com 10 jogadas as barras pulam muito; com 10 000 elas quase encostam nas marcas vermelhas.</div></div>`;
+    $('#seguir').innerHTML = `<button class="btn" type="button" id="prox">${ultima ? 'Ver resultado' : 'Próximo experimento →'}</button>`;
+    $('#prox').onclick = () => { if (ultima) fim(); else { i++; mostrar(); window.scrollTo({ top: palco.offsetTop - 70, behavior: 'smooth' }); } };
+  }
+  function fim() {
+    const n = fila.length, est = acertos >= n ? 3 : acertos >= n - 1 ? 2 : acertos >= n - 2 ? 1 : 0, novo = ENEM.darEstrelas('mat-sorte', est);
+    ENEM.contarFeitas(n); $('#tot-est').textContent = ENEM.totalEstrelas();
+    palco.innerHTML = `<div class="fim"><div class="grande">${acertos}/${n}</div>${ENEM.estrelasHtml(est)}<p>apostas certas</p>
+      ${novo ? '<p class="feedback ok">Novo recorde de estrelas!</p>' : ''}
+      <div class="btn-row" style="justify-content:center;margin-top:16px"><button class="btn" type="button" id="denovo">Jogar de novo</button><a class="btn ghost" href="mat-quiz.html?j=prob">🎲 Contagem e probabilidade</a><a class="btn ghost" href="./">Voltar à ilha</a></div>
+      <div class="lista-erros"><div class="corr"><b>Habilidades que você treinou</b><br><b>H27</b> · ${MAT.HABS.H27}<br><b>H28</b> · ${MAT.HABS.H28}<br><b>H30</b> · ${MAT.HABS.H30}</div></div></div>`;
+    $('#denovo').onclick = () => { revelado = -1; comecar(); };
+  }
+  comecar();
+})();
+</script>
+</body>
+</html>

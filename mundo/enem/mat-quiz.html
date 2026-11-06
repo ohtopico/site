@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemática · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<style>
+  .q-fig { max-width: min(100%, 480px); }
+  .habs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+  .habs span { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 99px; border: 2px solid rgba(0,0,0,.15); background: var(--mat); cursor: help; }
+  .cola { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; margin: 6px 0 4px; }
+  .cola div { border: 1.5px solid var(--ink); border-radius: 14px; padding: 8px 12px; background: #eef7fd; font-size: 14.5px; }
+  .cola b { font-family: var(--display); }
+  .corr sup, .q-enun sup, .alt sup { line-height: 0; }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="./">← Voltar à ilha</a>
+    <h1 id="titulo">📐 Matemática</h1>
+    <p class="muted" id="resumo"></p>
+    <div class="habs" id="habs"></div>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto" id="cola-box">
+    <summary>Cola rápida</summary>
+    <div class="cola" id="cola"></div>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">As questões são sorteadas a cada partida. Estrelas ficam guardadas só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="jogos-mat.js"></script>
+<script src="mat-motor.js"></script>
+<script src="mat-bancos.js"></script>
+<script src="mat-bancos-2.js"></script>
+<script>
+(function () {
+  const COLAS = {
+    numeros: [['Fração → decimal', 'divida o de cima pelo de baixo: 3/8 = 0,375'], ['Decimal → %', 'multiplique por 100: 0,375 = 37,5%'], ['Notação científica', 'a × 10ⁿ com 1 ≤ a &lt; 10'], ['MMC', 'quando coincidem de novo (ônibus, remédios, luzes)'], ['MDC', 'maior pedaço igual possível (cortar, dividir em grupos)']],
+    porcent: [['Desconto d%', 'preço × (1 − d/100)'], ['Aumento a%', 'preço × (1 + a/100)'], ['Sucessivos', 'multiplique os fatores: 1,1 × 0,9 = 0,99'], ['Juros simples', 'M = C(1 + i·t)'], ['Juros compostos', 'M = C(1 + i)ᵗ']],
+    obra: [['Retângulo', 'A = b·h'], ['Triângulo', 'A = b·h/2'], ['Círculo', 'A = πr² · C = 2πr'], ['Pitágoras', 'a² = b² + c²'], ['Semelhança', 'lados correspondentes na mesma razão']],
+    solidos: [['Euler', 'V − A + F = 2'], ['Prisma de n lados', 'V = 2n · A = 3n · F = n + 2'], ['Pirâmide de n lados', 'V = n + 1 · A = 2n · F = n + 1'], ['Volume', 'prisma/cilindro: área da base × altura · cone/pirâmide: ÷ 3'], ['Litros', '1 m³ = 1 000 L · 1 dm³ = 1 L']],
+    medidas: [['Escala 1 : E', 'real = mapa × E'], ['cm → km', 'corte 5 zeros'], ['km/h ↔ m/s', '÷ 3,6 · × 3,6'], ['Área na escala', 'multiplica por E²'], ['Tempo', '1 h 30 min = 1,5 h']],
+    proporcao: [['Direta', 'uma dobra, a outra dobra: a/b constante'], ['Inversa', 'uma dobra, a outra cai à metade: a·b constante'], ['Composta', 'trabalho = pessoas × horas × dias'], ['Divisão proporcional', 'some as partes e ache o valor de 1 parte']],
+    algebra: [['Função afim', 'f(x) = ax + b · b = fixo, a = taxa'], ['Quando compensa', 'iguale as duas expressões'], ['Vértice', 'xᵥ = −b/2a (máximo ou mínimo)'], ['Exponencial', 'N = N₀ · 2^(t/T)']],
+    graficos: [['Maior aumento', 'maior diferença entre vizinhos'], ['Amplitude', 'máximo − mínimo'], ['Setores', 'somam 100% · ângulo = % × 3,6°'], ['Crescimento %', '(novo − antigo) ÷ antigo']],
+    estat: [['Média', 'soma ÷ quantidade'], ['Mediana', 'ordene e pegue o do meio'], ['Moda', 'o que mais se repete'], ['Ponderada', 'Σ nota·peso ÷ Σ pesos'], ['Desvio padrão', 'pequeno = regular, homogêneo']],
+    prob: [['Probabilidade', 'favoráveis ÷ possíveis'], ['Multiplicativo', 'etapas “e” → multiplica'], ['Combinação', 'ordem não importa: C(n,k) = n!/(k!(n−k)!)'], ['Pelo menos um', '1 − P(nenhum)'], ['Dois dados', '36 resultados · soma 7 é a mais provável']]
+  };
+  const $ = s => document.querySelector(s), esc = ENEM.esc;
+  ENEM.topo($('#topo'));
+  const j = new URLSearchParams(location.search).get('j') || 'numeros';
+  const meta = (window.ENEM_JOGOS || []).find(x => x.id === 'mat-' + j), cfg = MAT.JOGOS[j];
+  if (!meta || !cfg) { $('#palco').innerHTML = '<p>Jogo não encontrado. <a href="./">Voltar à ilha</a></p>'; return; }
+  document.title = meta.titulo + ' · Ilha ENEM';
+  $('#titulo').textContent = meta.icone + ' ' + meta.titulo;
+  $('#resumo').textContent = meta.resumo + ' Oito questões no estilo do ENEM, com figura, resolução e macete.';
+  $('#habs').innerHTML = meta.habs.map(h => `<span title="${esc(MAT.HABS[h])}">${h}</span>`).join('');
+  const cola = COLAS[j] || [];
+  if (cola.length) $('#cola').innerHTML = cola.map(([a, b]) => `<div><b>${a}</b><br>${b}</div>`).join(''); else $('#cola-box').hidden = true;
+  MAT.rodar($('#palco'), meta, cfg);
+})();
+</script>
+</body>
+</html>

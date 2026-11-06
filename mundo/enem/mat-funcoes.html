@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratório de gráficos · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<style>
+  .lab { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 760px) { .lab { grid-template-columns: 1fr; } }
+  .plano { width: 100%; height: auto; background: #fff; border: 2px solid var(--borda); border-radius: 16px; display: block; }
+  .sit { font-size: 17px; line-height: 1.5; margin: 0 0 12px; }
+  .eq { font: 700 clamp(22px, 3.4vw, 28px) var(--display); background: #eef6ff; border: 2px solid #9cc5f0; border-radius: 14px; padding: 8px 14px; margin: 0 0 12px; text-align: center; }
+  .ctl { display: grid; grid-template-columns: 34px 1fr 64px; gap: 10px; align-items: center; margin: 8px 0; font-weight: 700; }
+  .ctl output { font-family: var(--display); font-size: 19px; text-align: right; }
+  .ctl input { width: 100%; accent-color: var(--azul); height: 30px; }
+  .ctl .nome { font-family: var(--display); font-size: 22px; text-align: center; border-radius: 10px; color: #fff; }
+  .passos { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 12px; }
+  .passos span { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; font-weight: 700; font-size: 13px; background: #fff; }
+  .passos .ok { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .passos .at { background: var(--amarelo); }
+  .habs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+  .habs span { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 99px; border: 2px solid rgba(0,0,0,.15); background: var(--mat); }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="./">← Voltar à ilha</a>
+    <h1>📈 Laboratório de gráficos</h1>
+    <p class="muted">Seis situações do dia a dia. Mexa nos controles <b>a</b>, <b>b</b> e <b>c</b> até o seu gráfico (azul) encaixar na situação. Nas três primeiras você vê o gráfico tracejado; nas três últimas, só o texto: aí é com você montar a função.</p>
+    <div class="habs"><span title="Identificar representações algébricas que expressem a relação entre grandezas.">H19</span><span title="Interpretar gráfico cartesiano que represente relações entre grandezas.">H20</span><span title="Resolver situação-problema cuja modelagem envolva conhecimentos algébricos.">H21</span></div>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Cola rápida</summary>
+    <p><b>Função afim</b> y = a·x + b: <b>b</b> é o valor inicial (onde a reta corta o eixo y) e <b>a</b> é a taxa, quanto y muda quando x aumenta 1. Se a &gt; 0 a reta sobe; se a &lt; 0, desce.</p>
+    <p><b>Função quadrática</b> y = a·x² + b·x + c: <b>a</b> &lt; 0 dá parábola de boca para baixo (tem máximo); <b>c</b> é onde corta o eixo y; as raízes são onde ela toca o eixo x; o vértice fica em x = −b/2a.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Estrelas ficam guardadas só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="jogos-mat.js"></script>
+<script src="mat-motor.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), { int, pick, mix, f, R } = MAT, palco = $('#palco');
+  ENEM.topo($('#topo'));
+
+  /* cada situação: tipo (afim ou quad), valores certos, janela do gráfico e o texto */
+  const AFINS = [
+    () => { const b = pick([4, 5, 6]), a = pick([2, 2.5, 3]); return { a, b, xm: 10, ymin: 0, ymax: 40, lx: 'km', ly: 'R$', txt: `🚕 Um táxi cobra <b>${R(b)} de bandeirada</b> e <b>${R(a)} por km</b>. Monte o preço y de uma corrida de x km.`, sent: `b = ${f(b)} é a bandeirada (o preço com 0 km) e a = ${f(a)} é quanto o preço sobe a cada km.` }; },
+    () => { const b = pick([40, 50, 60]), a = -pick([4, 5, 6]); return { a, b, xm: 10, ymin: 0, ymax: 70, lx: 'horas', ly: 'litros', txt: `⛽ Um gerador começa com <b>${b} litros</b> de diesel e gasta <b>${-a} litros por hora</b>. Monte o volume y depois de x horas.`, sent: `b = ${b} é o tanque cheio no início e a = ${f(a)} é negativo porque o volume <b>diminui</b> com o tempo. Ele zera quando ${b} − ${-a}x = 0, ou seja, em x = ${f(b / -a)} h.` }; },
+    () => { const b = pick([20, 25, 30]), a = pick([3, 3.5, 4]); return { a, b, xm: 10, ymin: 0, ymax: 80, lx: 'm³', ly: 'R$', txt: `🚰 A conta de água tem uma <b>taxa fixa de ${R(b)}</b> mais <b>${R(a)} por m³</b> consumido. Monte o valor y da conta para x m³.`, sent: `Taxa fixa = b = ${b}. Preço por m³ = a = ${f(a)}.` }; },
+    () => { const b = 100, a = -pick([8, 10, 12.5]); return { a, b, xm: 10, ymin: 0, ymax: 110, lx: 'horas', ly: '% bateria', txt: `🔋 Um celular sai da tomada com <b>100%</b> de bateria e perde <b>${f(-a)} pontos percentuais por hora</b> de uso. Monte a carga y depois de x horas.`, sent: `Começa em 100 (b) e cai ${f(-a)} por hora (a = ${f(a)}). Descarrega totalmente em ${f(100 / -a)} h.` }; },
+    () => { const b = pick([-4, -2, 0, 2]), a = pick([2, 3, 4]); return { a, b, xm: 10, ymin: -10, ymax: 40, lx: 'minutos', ly: '°C', txt: `🧊 Um pote sai do freezer a <b>${b} °C</b> e esquenta <b>${a} °C por minuto</b> na bancada (no começo, o aumento é quase constante). Monte a temperatura y depois de x minutos.`, sent: `b = ${b} °C é a temperatura inicial e a = ${a} °C/min é a taxa de aquecimento.` }; }
+  ];
+  const QUADS = [
+    () => { const b = pick([20, 30]); return { a: -5, b, c: 0, xm: b / 5 + 1, ymin: 0, ymax: Math.ceil(b * b / 20 / 10) * 10 + 10, lx: 'segundos', ly: 'altura (m)', txt: `⚽ Um goleiro chuta a bola para cima. A altura é h = −5t² + ${b}t (em metros, t em segundos). Ajuste a, b e c.`, sent: `a = −5 (a gravidade puxa: boca para baixo), b = ${b} (velocidade inicial) e c = 0 (a bola sai do chão). Altura máxima em t = −b/2a = ${f(b / 10)} s.` }; },
+    () => { const L = pick([16, 20, 24]); return { a: -1, b: L / 2, c: 0, xm: L / 2, ymin: 0, ymax: (L / 4) ** 2 + 10, lx: 'x (m)', ly: 'área (m²)', txt: `🐔 Com <b>${L} m de tela</b>, uma pessoa cerca um galinheiro retangular. Se um lado mede x, o outro mede ${L / 2} − x e a área é y = x·(${L / 2} − x). Escreva na forma ax² + bx + c.`, sent: `x·(${L / 2} − x) = −x² + ${L / 2}x: a = −1, b = ${L / 2}, c = 0. A maior área é com o quadrado de lado ${L / 4} m (vértice).` }; },
+    () => { const r1 = pick([1, 2]), r2 = pick([6, 8]); return { a: -1, b: r1 + r2, c: -r1 * r2, xm: 10, ymin: -20, ymax: 20, lx: 'unidades', ly: 'lucro (mil R$)', txt: `🏭 O lucro de uma fábrica é zero ao produzir <b>${r1} mil</b> ou <b>${r2} mil</b> unidades, e é máximo entre esses valores. Use a = −1 e encontre b e c (dica: y = −(x − ${r1})(x − ${r2})).`, sent: `−(x − ${r1})(x − ${r2}) = −x² + ${r1 + r2}x − ${r1 * r2}. As raízes ${r1} e ${r2} são onde o lucro é zero; o máximo fica no meio, em x = ${f((r1 + r2) / 2)}.` }; }
+  ];
+  const fmtEq = (q, v) => {
+    const termo = (coef, x, primeiro) => { if (!coef) return ''; const s = coef < 0 ? (primeiro ? '−' : ' − ') : (primeiro ? '' : ' + '); const n = Math.abs(coef); return s + (n === 1 && x ? '' : f(n)) + x; };
+    let s = q.quad ? termo(v.a, 'x²', true) + termo(v.b, 'x', !v.a) + termo(v.c, '', !v.a && !v.b) : termo(v.a, 'x', true) + termo(v.b, '', !v.a);
+    return 'y = ' + (s || '0');
+  };
+
+  let fila, i, tent, total, v;
+  function comecar() {
+    const af = mix(AFINS).slice(0, 4).map(g => g()), qd = mix(QUADS).slice(0, 2).map(g => Object.assign(g(), { quad: true }));
+    // 1º-3º: com gráfico (2 afins + 1 quadrática); 4º-6º: só texto
+    fila = [af[0], af[1], qd[0], af[2], af[3], qd[1]].map((q, k) => Object.assign(q, { ver: k < 3 }));
+    i = 0; total = 0; mostrar();
+  }
+  const fx = (p, x) => (p.quad ? p.a * x * x + p.b * x + p.c : p.a * x + p.b);
+  function desenhar(q, mostrarAlvo) {
+    const W = 460, H = 320, x0 = 46, y0b = 280, top = 14, X = x => x0 + x / q.xm * (W - x0 - 14), Y = y => y0b - (y - q.ymin) / (q.ymax - q.ymin) * (y0b - top);
+    const stx = MAT.passo(q.xm / 5), sty = MAT.passo((q.ymax - q.ymin) / 5);
+    let s = `<rect width="${W}" height="${H}" fill="#fff"/>`;
+    for (let x = 0; x <= q.xm + 1e-9; x += stx) s += MAT.linha(X(x), top, X(x), y0b, { cor: '#f0ebdc', w: 1 }) + MAT.t(X(x), Y(Math.max(q.ymin, 0)) + 16, f(x), { size: 11 });
+    for (let y = Math.ceil(q.ymin / sty) * sty; y <= q.ymax + 1e-9; y += sty) s += MAT.linha(x0, Y(y), W - 14, Y(y), { cor: '#f0ebdc', w: 1 }) + MAT.t(x0 - 6, Y(y) + 4, f(y), { size: 11, anchor: 'end' });
+    s += MAT.linha(x0, Y(Math.max(q.ymin, 0)), W - 10, Y(Math.max(q.ymin, 0))) + MAT.linha(x0, top, x0, y0b);
+    s += MAT.t(W - 16, Y(Math.max(q.ymin, 0)) - 6, q.lx, { size: 12, anchor: 'end', peso: 700 }) + MAT.t(x0 + 6, top + 12, q.ly, { size: 12, anchor: 'start', peso: 700 });
+    const curva = (p, cor, dash, w) => { const pts = []; for (let k = 0; k <= 120; k++) { const x = q.xm * k / 120, y = fx(p, x); pts.push(X(x) + ',' + Y(Math.max(q.ymin - (q.ymax - q.ymin), Math.min(q.ymax * 2, y)))); } return `<polyline fill="none" stroke="${cor}" stroke-width="${w}" ${dash ? 'stroke-dasharray="9 7"' : ''} stroke-linejoin="round" points="${pts.join(' ')}"/>`; };
+    s += `<defs><clipPath id="cp"><rect x="${x0}" y="${top}" width="${W - x0 - 14}" height="${y0b - top}"/></clipPath></defs><g clip-path="url(#cp)">`;
+    if (mostrarAlvo) s += curva(q, '#7c8a7e', true, 4);
+    s += curva(v, MAT.C.azul, false, 3.5) + '</g>';
+    return `<svg class="plano" viewBox="0 0 ${W} ${H}" role="img" aria-label="Plano cartesiano" style="font-family:Lexend,system-ui,sans-serif">${s}</svg>`;
+  }
+  function mostrar() {
+    const q = fila[i]; tent = 0;
+    v = q.quad ? { quad: true, a: -1, b: 0, c: 0 } : { a: 1, b: 0 };
+    const ctl = (k, cor, min, max, st) => `<label class="ctl"><span class="nome" style="background:${cor}">${k}</span><input type="range" id="r-${k}" min="${min}" max="${max}" step="${st}" value="${v[k]}" aria-label="coeficiente ${k}"><output id="o-${k}">${f(v[k])}</output></label>`;
+    const rangeB = q.quad ? [-40, 40, 1] : [Math.min(-10, q.ymin), Math.max(10, q.ymax), 1], rangeA = q.quad ? [-6, 6, 1] : [-15, 10, 0.5];
+    palco.innerHTML = `<div class="passos">${fila.map((_, k) => `<span class="${k < i ? 'ok' : k === i ? 'at' : ''}">${k + 1}</span>`).join('')}</div>
+      <div class="lab"><div id="graf"></div><div>
+        <p class="sit">${q.txt}</p>
+        <p class="small muted" style="margin:-6px 0 10px">${q.ver ? '👀 Encaixe a sua curva azul na tracejada.' : '🧠 Sem gráfico desta vez: monte a função a partir do texto.'}</p>
+        <div class="eq" id="eq"></div>
+        ${ctl('a', MAT.C.vermelho, ...rangeA)}${ctl('b', MAT.C.azul, ...rangeB)}${q.quad ? ctl('c', MAT.C.verde, -50, 50, 1) : ''}
+        <div class="btn-row" style="margin-top:12px"><button class="btn" type="button" id="conf">Conferir</button></div>
+        <div id="corr"></div></div></div>`;
+    ['a', 'b', 'c'].forEach(k => { const r = $('#r-' + k); if (r) r.oninput = () => { v[k] = +r.value; $('#o-' + k).textContent = f(v[k]); atualizar(); }; });
+    $('#conf').onclick = conferir; atualizar();
+  }
+  function atualizar(alvo) { const q = fila[i]; $('#graf').innerHTML = desenhar(q, q.ver || alvo); $('#eq').textContent = fmtEq(q, v); }
+  function conferir() {
+    const q = fila[i]; tent++; total++;
+    const ks = q.quad ? ['a', 'b', 'c'] : ['a', 'b'], erradas = ks.filter(k => Math.abs(v[k] - q[k]) > 1e-9);
+    if (!erradas.length) {
+      document.querySelectorAll('.ctl input').forEach(r => r.disabled = true); atualizar(true);
+      $('#corr').innerHTML = `<div class="corr ok"><b>Encaixou${tent === 1 ? ' de primeira' : ''}! ${fmtEq(q, q)}</b><br>${q.sent}</div><div class="btn-row" style="margin-top:12px"><button class="btn" type="button" id="prox">${i === fila.length - 1 ? 'Ver resultado' : 'Próxima situação →'}</button></div>`;
+      $('#conf').hidden = true; $('#prox').onclick = () => { if (i === fila.length - 1) fim(); else { i++; mostrar(); } }; $('#prox').focus({ preventScroll: true });
+      return;
+    }
+    const dicas = { a: q.quad ? 'Confira o <b>a</b>: ele decide a abertura e se a boca é para cima ou para baixo.' : 'Confira o <b>a</b>: é a taxa, quanto y muda a cada 1 de x (negativo se diminui).',
+      b: q.quad ? 'Confira o <b>b</b>: ele desloca o vértice para os lados.' : 'Confira o <b>b</b>: é o valor quando x = 0 (onde a reta corta o eixo vertical).', c: 'Confira o <b>c</b>: é o valor de y quando x = 0.' };
+    $('#corr').innerHTML = `<div class="corr bad">Ainda não. ${dicas[erradas[0]]}${tent >= 3 ? `<div class="mac">💡 Resposta: ${fmtEq(q, q)}</div>` : ''}</div>`;
+  }
+  function fim() {
+    const extra = total - fila.length, est = extra <= 2 ? 3 : extra <= 6 ? 2 : 1, novo = ENEM.darEstrelas('mat-funcoes', est);
+    ENEM.contarFeitas(fila.length); $('#tot-est').textContent = ENEM.totalEstrelas();
+    palco.innerHTML = `<div class="fim"><div class="grande">6/6</div>${ENEM.estrelasHtml(est)}<p>Você conferiu ${total} vezes para ${fila.length} situações.${extra <= 2 ? ' Quase tudo de primeira!' : ''}</p>
+      ${novo ? '<p class="feedback ok">Novo recorde de estrelas!</p>' : ''}
+      <div class="btn-row" style="justify-content:center;margin-top:16px"><button class="btn" type="button" id="denovo">Jogar de novo</button><a class="btn ghost" href="mat-quiz.html?j=algebra">🧮 Equações do dia a dia</a><a class="btn ghost" href="./">Voltar à ilha</a></div>
+      <div class="lista-erros"><div class="corr"><b>Habilidades que você treinou</b><br><b>H19</b> · ${MAT.HABS.H19}<br><b>H20</b> · ${MAT.HABS.H20}<br><b>H21</b> · ${MAT.HABS.H21}</div></div></div>`;
+    $('#denovo').onclick = comecar;
+  }
+  comecar();
+})();
+</script>
+</body>
+</html>
