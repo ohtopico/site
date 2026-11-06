@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planeta em jogo · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<link rel="stylesheet" href="hum.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<!-- Gerado por _fonte/enem/hum/gerar.py a partir de _fonte/enem/hum/jogos/10-planeta.js. Edite a fonte, não esta página. -->
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="./">← Voltar à ilha</a>
+    <h1>🌱 Planeta em jogo</h1>
+    <p class="muted">Reconheça os biomas brasileiros pelas pistas, ordene as grandes conferências ambientais e analise impactos e soluções, do desmatamento à arenização no Pampa gaúcho.</p>
+    <div class="h-habs"><span class="h-tag" title="Analisar de maneira crítica as interações da sociedade com o meio físico, levando em consideração aspectos históricos e/ou geográficos">H27</span><span class="h-tag" title="Reconhecer a função dos recursos naturais na produção do espaço geográfico, relacionando-os com as mudanças provocadas pelas ações humanas">H29</span><span class="h-tag" title="Avaliar as relações entre preservação e degradação da vida no planeta nas diferentes escalas">H30</span></div>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Cola rápida</summary>
+    <p><b>Biomas:</b> Amazônia (floresta equatorial, maior biodiversidade), Cerrado (savana, “berço das águas”, árvores tortas, fronteira da soja), Caatinga (só existe no Brasil, semiárido, plantas que perdem as folhas), Mata Atlântica (litoral, o mais devastado, onde vive a maior parte da população), Pantanal (maior planície alagável do mundo), Pampa (campos do RS, pecuária, arenização).</p><p><b>Não confunda:</b> efeito estufa (natural; intensificado por CO₂ e metano → aquecimento global) x buraco na camada de ozônio (causado por CFC; Protocolo de Montreal, 1987). Desertificação (clima seco + uso do solo, no semiárido) x arenização (areais em solo arenoso, no sudoeste do RS).</p><p><b>Conferências:</b> Estocolmo (1972), Relatório Brundtland (1987, “desenvolvimento sustentável”), Rio-92 (Agenda 21), Kyoto (1997, metas para países ricos), Rio+20 (2012), Acordo de Paris (2015, limitar o aquecimento a 1,5–2 °C), COP30 em Belém (2025).</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Estrelas ficam guardadas só neste aparelho. Matriz de Referência do ENEM, Ciências Humanas: H27, H29, H30.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="hum-motor.js"></script>
+<script>
+const { sorteia: S, mix } = HUM;
+const BIOMAS = ['Amazônia', 'Cerrado', 'Caatinga', 'Mata Atlântica', 'Pantanal', 'Pampa'];
+const PISTAS = [
+  ['🌳', 'Floresta densa, quente e úmida, com a maior bacia hidrográfica do mundo e “rios voadores” que levam chuva para o Centro-Sul.', 0],
+  ['🦜', 'Ocupada por grandes projetos (rodovias, hidrelétricas, mineração) e pelo avanço da pecuária no “arco do desmatamento”.', 0],
+  ['🌾', 'Savana com árvores de troncos tortuosos e casca grossa, raízes profundas e nascentes de grandes rios: o “berço das águas”.', 1],
+  ['🚜', 'Virou a principal fronteira da soja a partir dos anos 1970, com mais da metade da vegetação original já convertida.', 1],
+  ['🌵', 'Bioma exclusivamente brasileiro, com clima semiárido, cactos e árvores que perdem as folhas na seca.', 2],
+  ['🐐', 'Sofre com desertificação, agravada pelo desmatamento para lenha e pelo pastoreio intenso.', 2],
+  ['🏙️', 'Estende-se pelo litoral, onde vive cerca de 70% da população; restam pouco mais de 10% da floresta original.', 3],
+  ['🌊', 'Primeiro bioma explorado pelos portugueses, com o pau-brasil, a cana-de-açúcar e depois o café.', 3],
+  ['🐊', 'Maior planície alagável do mundo, com cheias e secas que marcam o ritmo da vida; sofreu grandes incêndios em 2020 e 2024.', 4],
+  ['🐄', 'Campos de gramíneas no sul do Rio Grande do Sul, com pecuária tradicional desde o período colonial.', 5],
+  ['🏜️', 'Tem areais no sudoeste gaúcho (Alegrete, São Francisco de Assis), resultado de solos arenosos frágeis e uso intenso.', 5]
+];
+const CONF = [['Conferência de Estocolmo', 1972, '🇸🇪'], ['Relatório Brundtland (“Nosso futuro comum”)', 1987, '📗'], ['Protocolo de Montreal (CFC e ozônio)', 1987.5, '🧴'], ['Rio-92 (Agenda 21)', 1992, '🇧🇷'],
+  ['Protocolo de Kyoto', 1997, '🇯🇵'], ['Rio+20', 2012, '🌎'], ['Acordo de Paris', 2015, '🇫🇷'], ['COP30 em Belém', 2025, '🌳']];
+const QS = [
+  { hab: 'H30', enun: 'Efeito estufa e buraco na camada de ozônio são problemas diferentes. O aumento do efeito estufa está ligado',
+    certa: 'à emissão de CO₂ e metano pela queima de combustíveis fósseis, desmatamento e pecuária',
+    erradas: ['ao uso de CFC em aerossóis e geladeiras', 'à radiação ultravioleta que atravessa a camada de ozônio', 'à chuva ácida causada pelo enxofre', 'à inversão térmica nas grandes cidades'],
+    expl: 'Efeito estufa: gases retêm calor (sem ele, a Terra seria gelada; o problema é o <b>excesso</b>). Ozônio: o CFC destrói a camada que filtra o UV; o Protocolo de Montreal resolveu boa parte do problema.' },
+  { hab: 'H27', texto: 'No sudoeste do Rio Grande do Sul, manchas de areia crescem em meio aos campos do Pampa, em municípios como Alegrete e Manoel Viana. O clima da região é úmido, com chuvas regulares.',
+    enun: 'O fenômeno descrito é chamado de arenização, e não de desertificação, porque',
+    certa: 'ocorre em clima úmido, sobre solos arenosos frágeis expostos pelo uso intenso, e não em clima árido ou semiárido',
+    erradas: ['é causado exclusivamente pelo aquecimento global', 'ocorre só em áreas de floresta tropical', 'resulta da chuva ácida das indústrias gaúchas', 'acontece apenas em regiões de deserto'],
+    expl: '<b>Desertificação</b> = degradação em clima seco (semiárido nordestino). <b>Arenização</b> = remobilização de areia em clima úmido, agravada por pisoteio do gado, monocultura e perda da vegetação.' },
+  { hab: 'H30', enun: 'O conceito de desenvolvimento sustentável, definido no Relatório Brundtland (1987), é',
+    certa: 'atender às necessidades do presente sem comprometer a capacidade das gerações futuras de atenderem às suas',
+    erradas: ['interromper todo crescimento econômico para salvar a natureza', 'explorar ao máximo os recursos enquanto existirem', 'transferir as indústrias poluentes para os países pobres', 'proteger apenas as florestas tropicais'],
+    expl: 'É o equilíbrio entre economia, sociedade e ambiente. A frase do relatório é cobrada quase literalmente.' },
+  { hab: 'H29', texto: 'A Mata Atlântica, que cobria todo o litoral brasileiro, foi reduzida a pouco mais de 10% da área original.',
+    enun: 'Historicamente, a devastação desse bioma está ligada',
+    certa: 'aos ciclos do pau-brasil, da cana e do café e à concentração das cidades e indústrias no litoral',
+    erradas: ['à expansão recente da soja no Centro-Oeste', 'à mineração de ouro na Amazônia', 'à construção de Brasília no Planalto Central', 'ao clima semiárido da região'],
+    expl: 'Foi o primeiro bioma explorado: cinco séculos de ocupação. Hoje, nele vivem cerca de 70% dos brasileiros e estão as maiores cidades.' },
+  { hab: 'H27', texto: 'O Código Florestal obriga a manter a vegetação nas margens de rios e nascentes (Áreas de Preservação Permanente) e uma parte de cada propriedade rural com mata nativa (Reserva Legal: 80% na Amazônia, 20% na maior parte do país).',
+    enun: 'A preservação da mata ciliar nas APPs é importante porque',
+    certa: 'protege as margens da erosão e evita o assoreamento dos rios',
+    erradas: ['aumenta a área disponível para a agricultura', 'acelera o escoamento da chuva para os rios', 'impede totalmente as cheias naturais', 'serve apenas para fins estéticos'],
+    expl: 'A mata ciliar funciona como os cílios dos olhos: protege o rio, segura o solo, filtra sedimentos e agrotóxicos e serve de corredor para a fauna.' },
+  { hab: 'H30', texto: 'No Brasil, as unidades de conservação se dividem em dois grupos: de Proteção Integral (como parques nacionais e reservas biológicas) e de Uso Sustentável (como reservas extrativistas).',
+    enun: 'A diferença entre esses grupos é que nas de Uso Sustentável',
+    certa: 'populações tradicionais podem viver e usar os recursos de forma controlada',
+    erradas: ['é proibida qualquer presença humana', 'é permitido o desmatamento total para a agricultura', 'só podem entrar pesquisadores estrangeiros', 'não há nenhuma regra ambiental'],
+    expl: 'Proteção integral: só uso indireto (pesquisa, turismo). Uso sustentável: compatibiliza conservação e uso, como as reservas extrativistas criadas após a luta de Chico Mendes.' },
+  { hab: 'H29', texto: 'Na Amazônia, a evapotranspiração da floresta forma correntes de umidade, os “rios voadores”, que levam chuva para o Centro-Oeste, o Sudeste e o Sul.',
+    enun: 'Segundo essa informação, o desmatamento da Amazônia pode afetar',
+    certa: 'as chuvas que abastecem a agricultura e as cidades de outras regiões do país',
+    erradas: ['somente o clima da própria Amazônia', 'apenas a fauna local, sem efeito no clima', 'o nível dos oceanos no curto prazo', 'a camada de ozônio sobre o Brasil'],
+    expl: 'Exemplo de impacto em <b>diferentes escalas</b>: local (floresta), regional (chuva no Sudeste e no Sul) e global (carbono e clima).' }
+];
+const bioma = p => { const ops = mix([BIOMAS[p[2]], ...mix(BIOMAS.filter((b, k) => k !== p[2])).slice(0, 2)]);
+  return { tipo: 'bins', hab: 'H29', emo: p[0], item: p[1], pergunta: 'Qual bioma?', opcoes: ops, certa: ops.indexOf(BIOMAS[p[2]]), expl: `É o bioma <b>${BIOMAS[p[2]]}</b>.` }; };
+HUM.jogo({ id: 'hum-planeta', proximo: ['hum-mapas.html', 'Laboratório de mapas'],
+  fila: () => { const p = mix(PISTAS), q = mix(QS).slice(0, 5).map(x => Object.assign({ tipo: 'mc' }, x));
+    const ord = { tipo: 'ordem', hab: 'H30', enun: 'Ponha os marcos da agenda ambiental internacional em ordem.', itens: mix(CONF).slice(0, 5).map(c => [c[0], c[1], c[2]]),
+      expl: 'Repare no papel do Brasil: Rio-92, Rio+20 e COP30 em Belém. Kyoto obrigava só os países ricos; Paris exige metas de todos (as NDCs).' };
+    return [bioma(p[0]), q[0], bioma(p[1]), q[1], ord, q[2], bioma(p[2]), q[3], bioma(p[3]), q[4]]; } });
+</script>
+</body>
+</html>

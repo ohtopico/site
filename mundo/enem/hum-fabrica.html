@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fábrica do tempo · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<link rel="stylesheet" href="hum.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<!-- Gerado por _fonte/enem/hum/gerar.py a partir de _fonte/enem/hum/jogos/08-fabrica.js. Edite a fonte, não esta página. -->
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="./">← Voltar à ilha</a>
+    <h1>🏭 Fábrica do tempo</h1>
+    <p class="muted">Da máquina a vapor ao aplicativo de entrega. Separe as características do taylorismo, do fordismo e do toyotismo, ponha cada invenção na sua Revolução Industrial e pese argumentos a favor e contra as novas tecnologias no trabalho.</p>
+    <div class="h-habs"><span class="h-tag" title="Identificar registros sobre o papel das técnicas e tecnologias na organização do trabalho e/ou da vida social">H16</span><span class="h-tag" title="Analisar fatores que explicam o impacto das novas tecnologias no processo de territorialização da produção">H17</span><span class="h-tag" title="Selecionar argumentos favoráveis ou contrários às modificações impostas pelas novas tecnologias à vida social e ao mundo do trabalho">H20</span></div>
+  </div>
+  <div class="game-stage" id="palco" aria-live="polite"></div>
+  <details class="howto">
+    <summary>Cola rápida</summary>
+    <p><b>Taylorismo:</b> gerência científica, cronômetro, tempos e movimentos, separação entre quem planeja e quem executa, prêmio por produtividade.</p><p><b>Fordismo:</b> esteira (linha de montagem), produção em massa padronizada, grandes estoques, trabalhador especializado numa só tarefa, salários maiores para criar consumo de massa.</p><p><b>Toyotismo (acumulação flexível):</b> just in time, estoque mínimo, kanban, trabalhador multifuncional, qualidade total, terceirização, produção sob demanda.</p><p><b>Revoluções Industriais:</b> 1ª (séc. XVIII, Inglaterra: vapor, carvão, tecido), 2ª (fim do séc. XIX: eletricidade, petróleo, aço, química), 3ª (pós-1970: informática, robótica, telecomunicações), 4ª (hoje: internet das coisas, inteligência artificial, big data).</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Estrelas ficam guardadas só neste aparelho. Matriz de Referência do ENEM, Ciências Humanas: H16, H17, H20.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="hum-motor.js"></script>
+<script>
+const { sorteia: S, mix } = HUM;
+const MODELOS = ['⏱️ Taylorismo', '🚗 Fordismo', '📦 Toyotismo'];
+const CARAC = [
+  ['Um gerente cronometra cada movimento do operário para eliminar “tempo perdido”', 0], ['Quem planeja o trabalho é a gerência; o operário só executa', 0], ['Prêmio em dinheiro para quem bate a meta de produtividade', 0],
+  ['A peça passa numa esteira e cada operário aperta sempre o mesmo parafuso', 1], ['Produção em massa de um carro padronizado: “qualquer cor, desde que seja preto”', 1], ['Grandes estoques, para nunca faltar produto', 1], ['Salário de 5 dólares por dia para o operário também virar consumidor', 1],
+  ['Produzir só o que foi vendido, no momento certo (just in time)', 2], ['Cartões kanban avisam quando repor cada peça', 2], ['Um mesmo trabalhador opera várias máquinas e cuida da qualidade', 2], ['Terceirizar partes da produção para fornecedores menores', 2], ['Equipes discutem melhorias contínuas (kaizen)', 2]
+];
+const EXPL_M = ['<b>Taylorismo</b> (Frederick Taylor, início do séc. XX): administração científica do tempo.', '<b>Fordismo</b> (Henry Ford, 1913): esteira e produção em massa para consumo em massa.', '<b>Toyotismo</b> (Japão, pós-1950; espalhou-se a partir dos anos 1970): produção flexível e enxuta.'];
+const REV = ['1ª Revolução Industrial', '2ª Revolução Industrial', '3ª Revolução Industrial', '4ª Revolução Industrial'];
+const INV = [['🚂', 'Locomotiva e máquina a vapor', 0], ['🧵', 'Tear mecânico movido a carvão', 0], ['💡', 'Lâmpada e rede elétrica', 1], ['🛢️', 'Motor a combustão e refino de petróleo', 1], ['☎️', 'Telefone', 1],
+  ['💻', 'Computador pessoal', 2], ['🤖', 'Robô industrial programável', 2], ['📡', 'Satélites e internet', 2], ['🧠', 'Inteligência artificial que aprende com dados', 3], ['🏠', 'Internet das coisas (geladeira e máquinas conectadas)', 3]];
+const EXPL_R = ['1ª (c. 1760, Inglaterra): <b>vapor e carvão</b>, indústria têxtil, ferrovias.', '2ª (c. 1870): <b>eletricidade, petróleo, aço e química</b>; EUA e Alemanha entram na disputa.', '3ª (c. 1970, técnico-científico-informacional): <b>informática, robótica, telecomunicações</b>.', '4ª (séc. XXI, Indústria 4.0): <b>IA, internet das coisas, big data</b>, fábricas conectadas.'];
+const QS = [
+  { hab: 'H16', texto: 'Na Inglaterra de 1811–1812, trabalhadores têxteis invadiam fábricas à noite e quebravam os teares mecânicos. Eram chamados de luditas.',
+    enun: 'O movimento ludita expressava',
+    certa: 'a reação dos artesãos à perda de empregos e à desvalorização do trabalho com a mecanização',
+    erradas: ['o desejo de acelerar a industrialização', 'a defesa dos interesses dos donos das fábricas', 'uma revolta camponesa contra a Igreja', 'a luta pelo voto feminino'],
+    expl: 'A máquina substituía o artesão e baixava salários. O ludismo é a primeira forma de resistência operária; depois vieram o cartismo e os sindicatos (trade unions).' },
+  { hab: 'H20', texto: 'Motoristas e entregadores de aplicativos trabalham sem carteira assinada, recebem por tarefa, arcam com combustível e manutenção e são avaliados por algoritmos.',
+    enun: 'Um argumento CRÍTICO a esse modelo, chamado de “uberização”, é que ele',
+    certa: 'transfere os riscos e custos para o trabalhador e enfraquece direitos trabalhistas',
+    erradas: ['garante férias, 13º salário e aposentadoria a todos', 'elimina qualquer forma de controle sobre o trabalho', 'reduz a jornada de trabalho por lei', 'aumenta o poder dos sindicatos nas negociações'],
+    expl: 'Defensores falam em <b>flexibilidade</b> e renda extra. Críticos apontam <b>precarização</b>: sem direitos, jornadas longas e controle por algoritmo. O ENEM pede para reconhecer os dois lados.' },
+  { hab: 'H20', texto: 'Caixas eletrônicos, pedágios automáticos e autoatendimento em supermercados reduziram postos de trabalho de bancários, cobradores e operadores de caixa.',
+    enun: 'O fenômeno descrito é chamado de',
+    certa: 'desemprego estrutural, causado pela substituição do trabalho humano pela tecnologia',
+    erradas: ['desemprego sazonal, ligado às estações do ano', 'desemprego friccional, de quem está trocando de emprego', 'pleno emprego tecnológico', 'êxodo rural'],
+    expl: '<b>Estrutural</b> = os postos não voltam quando a economia melhora, porque a tecnologia os eliminou. Exige requalificação dos trabalhadores.' },
+  { hab: 'H17', texto: 'A partir dos anos 1990, muitas indústrias saíram da Grande São Paulo para o interior paulista, para Minas Gerais, para o Sul e para o Nordeste.',
+    enun: 'Essa desconcentração industrial foi estimulada principalmente por',
+    certa: 'incentivos fiscais (guerra fiscal), mão de obra mais barata e menos sindicalizada e melhoria dos transportes e da comunicação',
+    erradas: ['falta de consumidores na Região Sudeste', 'proibição federal de indústrias nas capitais', 'esgotamento total da energia elétrica em São Paulo', 'fim da industrialização no Brasil'],
+    expl: 'Estados oferecem isenção de impostos para atrair fábricas (<b>guerra fiscal</b>). As redes de informação permitem que a sede continue em São Paulo e a produção vá para longe.' },
+  { hab: 'H17', texto: 'Um tênis de marca americana é desenhado nos EUA, tem o solado feito na China, é costurado no Vietnã e vendido no Brasil.',
+    enun: 'Esse tipo de produção, típica da globalização, é possível graças',
+    certa: 'às redes de transporte e informação, que permitem fragmentar a produção pelo mundo em busca de menores custos',
+    erradas: ['ao fim do comércio internacional', 'ao isolamento econômico dos países asiáticos', 'à proibição de multinacionais em países pobres', 'à volta da produção artesanal'],
+    expl: 'É a <b>fábrica global</b> (ou cadeia global de valor). Concepção e marca ficam nos países ricos; a montagem vai para onde o trabalho é mais barato. Nova divisão internacional do trabalho.' },
+  { hab: 'H16', texto: 'No filme “Tempos Modernos” (1936), Charles Chaplin interpreta um operário que aperta parafusos numa esteira tão rápida que acaba engolido pela máquina.',
+    enun: 'A cena critica',
+    certa: 'a desumanização e a alienação do trabalhador na linha de montagem fordista',
+    erradas: ['o trabalho artesanal das corporações de ofício', 'o toyotismo e a produção flexível', 'a falta de máquinas nas fábricas', 'a jornada reduzida dos operários'],
+    expl: 'Tarefa repetitiva, ritmo ditado pela máquina, o trabalhador que não vê o produto final: é a <b>alienação</b> de que falava Marx, no cenário fordista.' },
+  { hab: 'H17', texto: 'Em Campinas (SP), São José dos Campos (SP) e no Vale do Silício (EUA), empresas de tecnologia se instalam perto de universidades e centros de pesquisa.',
+    enun: 'Esses lugares são chamados de tecnopolos porque',
+    certa: 'concentram mão de obra qualificada, pesquisa e inovação, mais importantes que matéria-prima para essas indústrias',
+    erradas: ['ficam perto de grandes jazidas de minério', 'dependem de mão de obra barata e pouco qualificada', 'são áreas rurais sem infraestrutura', 'produzem apenas bens de consumo não duráveis'],
+    expl: 'Na 3ª e 4ª Revoluções, o fator de localização decisivo é o <b>conhecimento</b>. Antes, as indústrias iam para perto do carvão, do minério ou dos portos.' }
+];
+const carac = c => ({ tipo: 'bins', hab: 'H16', emo: '🏭', item: c[0], pergunta: 'De que modelo de produção é essa característica?', opcoes: MODELOS, certa: c[1], expl: EXPL_M[c[1]] });
+const inv = c => ({ tipo: 'bins', hab: 'H16', emo: c[0], item: c[1], pergunta: 'Marca qual Revolução Industrial?', opcoes: REV, certa: c[2], expl: EXPL_R[c[2]] });
+HUM.jogo({ id: 'hum-fabrica', proximo: ['hum-campo-cidade.html', 'Campo e cidade'],
+  fila: () => { const c = mix(CARAC), r = mix(INV), q = mix(QS).slice(0, 5).map(x => Object.assign({ tipo: 'mc' }, x));
+    return [inv(r[0]), carac(c[0]), q[0], carac(c[1]), inv(r[1]), q[1], carac(c[2]), q[2], inv(r[2]), q[3], carac(c[3]), q[4]]; } });
+</script>
+</body>
+</html>
