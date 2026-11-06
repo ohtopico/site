@@ -387,3 +387,6 @@ a.stat { color: inherit; text-decoration: none; }
 .tut-pontos { display: flex; gap: 6px; justify-content: center; margin: 14px 0 6px; }
 .tut-pontos span { width: 9px; height: 9px; border-radius: 50%; background: #d6d0c0; } .tut-pontos span.on { background: var(--ink); }
 .tut-nav { justify-content: space-between; }
+.resgate.colecao { border-color: #d4a017; background: #fffbea; } .resgate.colecao summary { color: #8a6a00; }
+.resgate.colecao input { text-transform: none; letter-spacing: 0; }
+.prod.kit.colecao { border-color: #d4a017; background: #fffbea; } .prod.kit.colecao .selo { background: #8a6a00; color: #fff; }

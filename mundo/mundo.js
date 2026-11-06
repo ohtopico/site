@@ -1146,6 +1146,15 @@
     }
     else if (k === 'chapeuMago') { aba('#6a1b9a', 0.22); bloco(0.12, 0.08, 0.76, 0.3, '#6a1b9a'); bloco(0.24, 0.38, 0.52, 0.3, '#6a1b9a'); bloco(0.36, 0.68, 0.28, 0.28, '#6a1b9a'); bloco(0.43, 0.96, 0.14, 0.14, '#ffd84a'); bloco(0.11, 0.1, 0.78, 0.08, '#ffd84a'); }
     else if (k === 'viseira') { caixa(hx - q(0.04), hy - q(0.04), hz + q(0.36), s + q(0.08), s + q(0.08), q(0.22), '#222222', sem); if (frente) naFace(fc, hx, hy, s, s, q(0.04), 0, q(0.92), hz + q(0.39), q(0.16), Math.floor(agora / 300) % 3 ? '#39ff88' : '#ff4fa3'); }
+    else if (k === 'boneApoio') { bloco(0, 0, 1, 0.26, '#ffd84a'); bloco(0.42, 0.26, 0.16, 0.06, '#2d2a26'); if (dir === 'y+' || dir === 'y-') caixa(hx, dir === 'y+' ? hy + s : hy - q(0.4), topo, s, q(0.4), q(0.06), '#ffd84a', sem); else caixa(dir === 'x+' ? hx + s : hx - q(0.4), hy, topo, q(0.4), s, q(0.06), '#ffd84a', sem); }
+    else if (k === 'oculosPixel') { if (frente) { naFace(fc, hx, hy, s, s, q(0.02), 0, q(0.96), hz + q(0.58), q(0.08), '#111111'); for (const o of [0.08, 0.56]) { naFace(fc, hx, hy, s, s, q(o), 0, q(0.36), hz + q(0.38), q(0.2), '#111111'); naFace(fc, hx, hy, s, s, q(o + 0.04), 0, q(0.1), hz + q(0.48), q(0.08), '#ffffff'); } } }
+    else if (k === 'aureolaBits') {   // anel de 0 e 1 girando sobre a cabeça
+      const [cx2, cy2] = iso(hx + s / 2, hy + s / 2, topo + q(0.7)), r = Math.abs(iso(hx + s, hy, 0)[0] - iso(hx, hy + s, 0)[0]) * 0.75, a0 = agora / 900;
+      ctx.font = `700 ${Math.max(8, Math.round(r * 0.55))}px ui-monospace, monospace`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (let i = 0; i < 8; i++) { const a = a0 + i * Math.PI / 4; ctx.fillStyle = Math.sin(a) > 0 ? '#39d353' : 'rgba(57,211,83,.55)'; ctx.fillText((i + Math.floor(agora / 1200)) % 3 ? '1' : '0', cx2 + Math.cos(a) * r, cy2 + Math.sin(a) * r * 0.45); }
+    }
+    else if (k === 'lanternaMaker') { aba('#f57c00', 0.08); bloco(0.04, 0.08, 0.92, 0.32, '#f57c00'); bloco(0.42, 0.4, 0.16, 0.1, '#f57c00'); if (frente) { naFace(fc, hx, hy, s, s, q(0.36), 0, q(0.28), topo + q(0.14), q(0.18), '#fff6c2'); const [lx, ly] = iso(hx + s / 2 + (fc === 'x' ? s / 2 : 0), hy + s / 2 + (fc === 'y' ? s / 2 : 0), topo + q(0.23)); const g = ctx.createRadialGradient(lx, ly, 1, lx, ly, 16); g.addColorStop(0, 'rgba(255,246,170,.85)'); g.addColorStop(1, 'rgba(255,246,170,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(lx, ly, 16, 0, Math.PI * 2); ctx.fill(); } }
+    else if (k === 'coroaCodigo') { bloco(0.1, 0, 0.8, 0.26, '#e6b422'); for (const [o1, o2] of [[0.1, 0.1], [0.74, 0.1], [0.1, 0.74], [0.74, 0.74]]) caixa(hx + q(o1), hy + q(o2), topo + q(0.26), q(0.16), q(0.16), q(0.2), '#e6b422', sem); if (frente) naFace(fc, hx + q(0.1), hy + q(0.1), q(0.8), q(0.8), q(0.3), 0, q(0.2), topo + q(0.06), q(0.14), ['#5ad1ff', '#ff4fa3', '#39d353'][Math.floor(agora / 700) % 3]); const [cx2, cy2] = iso(hx + s / 2, hy + s / 2, topo + q(0.8)); ctx.fillStyle = '#b8860b'; ctx.font = `700 ${Math.max(8, Math.round(Math.abs(iso(hx + s, hy, 0)[0] - iso(hx, hy + s, 0)[0]) * 0.4))}px ui-monospace, monospace`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('</>', cx2, cy2 + Math.sin(agora / 400) * 2); }
     else if (k === 'gorroSaci') { bloco(0, 0, 1, 0.25, '#d32f2f'); bloco(0.15, 0.25, 0.7, 0.3, '#d32f2f'); bloco(0.3, 0.55, 0.4, 0.3, '#d32f2f'); bloco(0.42, 0.85, 0.16, 0.2, '#d32f2f'); }
   }
   /* personagem de blocos: pernas, corpo, braços e cabeça cúbica; o rosto aparece na face para onde olha */
@@ -1603,6 +1612,63 @@
     for (const [kid, K] of Object.entries(KITS_APOIO)) for (const [tipo, id, ic, nome] of K.itens) if (LOJA_KIT[tipo] === loja) out.push({ tipo, id, ic, preco: 0, nome: nome || NOMES_ENFEITE[id], kit: kid });
     return out;
   }
+  /* ---------- coleção do apoiador (Catarse): itens só de aparência, um conjunto por plano.
+     Liberados com a senha da área premium (a mesma dos cursos); cada plano libera o seu conjunto e os dos planos abaixo.
+     Nada aqui dá ⭐, vantagem nas perguntas ou atalho no jogo. ---------- */
+  const COLECAO_APOIO = [
+    { nivel: 1, plano: 'Apoiador entusiasta', ic: '💛', nome: 'Coleção Entusiasta',
+      itens: [['av', 'boneApoio', '🧢'], ['pet', 'boneApoio', '🧢', 'Boné do apoiador para o pet'], ['cor', 'camisa:#ffd84a', '👕', 'Camiseta amarela do apoiador'], ['cor', 'calca:#3a3633', '👖', 'Calça grafite']] },
+    { nivel: 2, plano: 'Educador na prática', ic: '👾', nome: 'Coleção 8 bits',
+      itens: [['av', 'oculosPixel', '👓'], ['pet', 'oculosPixel', '👓', 'Óculos pixelados para o pet'], ['cor', 'camisa:#ff7043', '👕', 'Camiseta laranja 8 bits'], ['cor', 'cabelo:#5ad1ff', '💙', 'Cabelo azul pixel']] },
+    { nivel: 3, plano: 'Educador criativo', ic: '💾', nome: 'Coleção Terminal',
+      itens: [['av', 'aureolaBits', '💫'], ['pet', 'aureolaBits', '💫', 'Auréola de bits para o pet'], ['cor', 'camisa:#14202e', '👕', 'Moletom terminal'], ['cor', 'cabelo:#39d353', '💚', 'Cabelo verde terminal']] },
+    { nivel: 4, plano: 'Educador maker', ic: '🔧', nome: 'Coleção Maker',
+      itens: [['av', 'lanternaMaker', '⛑️'], ['pet', 'lanternaMaker', '⛑️', 'Capacete com lanterna para o pet'], ['cor', 'camisa:#f57c00', '👕', 'Macacão maker'], ['cor', 'calca:#1e4f8a', '👖', 'Calça de oficina']] },
+    { nivel: 5, plano: 'Comunidade & mentoria', ic: '👑', nome: 'Coleção Mentoria',
+      itens: [['av', 'coroaCodigo', '👑'], ['pet', 'coroaCodigo', '👑', 'Coroa de código para o pet'], ['cor', 'camisa:#b8860b', '👕', 'Camiseta dourada'], ['cor', 'calca:#4a1838', '👖', 'Calça vinho'], ['cor', 'cabelo:#e8e8ee', '🤍', 'Cabelo prateado']] }
+  ];
+  Object.assign(NOMES_ENFEITE, { boneApoio: 'Boné do apoiador', oculosPixel: 'Óculos pixelados', aureolaBits: 'Auréola de bits', lanternaMaker: 'Capacete com lanterna', coroaCodigo: 'Coroa de código' });
+  function produtosColecao(loja) {
+    const out = [];
+    for (const C of COLECAO_APOIO) for (const [tipo, id, ic, nome] of C.itens) if (LOJA_KIT[tipo] === loja) out.push({ tipo, id, ic, preco: 0, nome: nome || NOMES_ENFEITE[id], plano: C.nivel });
+    return out;
+  }
+  // põe no guarda-roupa os conjuntos do plano liberado neste aparelho (e os dos planos abaixo); devolve os conjuntos novos
+  function aplicaColecao() {
+    const a = acessoPremium(), novos = [];
+    if (!a) return novos;
+    for (const C of COLECAO_APOIO) if (a.nivel >= C.nivel) {
+      let novo = false;
+      for (const [tipo, id] of C.itens) if (!S.loja.tem[tipo + ':' + id]) { S.loja.tem[tipo + ':' + id] = true; novo = true; }
+      if (novo) novos.push(C);
+    }
+    if (novos.length) salvar();
+    return novos;
+  }
+  function formColecao(aviso) {
+    const a = acessoPremium();
+    return `<details class="resgate colecao" ${aviso ? 'open' : ''}><summary>💛 Coleção do apoiador do Catarse</summary>
+      ${aviso ? `<p class="resgate-msg ${aviso.ok ? 'ok' : 'bad'}" role="status">${aviso.msg}</p>` : ''}
+      ${a ? `<p class="small">Liberada neste aparelho: ${COLECAO_APOIO.filter(C => a.nivel >= C.nivel).map(C => `${C.ic} ${C.nome}`).join(', ')}.</p>`
+        : `<form id="colecao-f"><label for="colecao-s">Senha da área premium</label><input id="colecao-s" type="password" autocomplete="current-password"><button type="button" class="hb verde" id="colecao-b">Liberar</button></form>`}
+      <p class="muted small">Roupas, cores e enfeites só de aparência, sem vantagem no jogo. Cada plano libera a sua coleção e as dos planos abaixo: ${COLECAO_APOIO.map(C => `${C.ic} ${C.nome} (${esc(C.plano)})`).join(' · ')}.</p></details>`;
+  }
+  function ligaColecao(el, refaz) {
+    const b = el.querySelector('#colecao-b'), c = el.querySelector('#colecao-s');
+    if (!b) return;
+    const vai = async () => {
+      b.disabled = true; let r;
+      try { r = await liberaPremium(c.value); } catch (e) { r = { ok: false, msg: 'Não deu para conferir agora. Verifique a internet e tente de novo.' }; }
+      if (r.ok) {
+        const novos = aplicaColecao(); salvar(); SOM.toca('vitoria');
+        const tem = COLECAO_APOIO.filter(C => r.nivel >= C.nivel);
+        r.msg = `Obrigada por apoiar! ${tem.map(C => `${C.ic} ${C.nome}`).join(', ')} ${tem.length > 1 ? 'já estão' : 'já está'} no 👤 Avatar e na janela do pet 🐾.${novos.length ? '' : ' (Já estava liberada.)'}`;
+      }
+      refaz(r);
+    };
+    b.addEventListener('click', vai);
+    c.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); vai(); } });
+  }
   // garante que tudo dos kits resgatados está no guarda-roupa (também depois de zerar o progresso)
   function aplicaKits() { for (const kid of Object.keys(S.kits || {})) if (KITS_APOIO[kid]) for (const [tipo, id] of KITS_APOIO[kid].itens) S.loja.tem[tipo + ':' + id] = true; }
   aplicaKits();
@@ -1653,7 +1719,7 @@
       if (loja === 'comida') base.unshift(Object.assign({ tipo: 'inv', id: comida, ic: ITENS[comida][0], preco: caro(30) }, so));
       if (loja === 'moveis') base.unshift(Object.assign({ tipo: 'movel', id: ev.movel, preco: caro(200) }, so));
     }
-    base.push(...produtosKit(loja));
+    base.push(...produtosKit(loja), ...produtosColecao(loja));
     for (const p of base) {
       if (p.tipo === 'movel') { p.ic = MOVEIS[p.id].ic; p.nome = p.nome || MOVEIS[p.id].nome; }
       if (p.tipo === 'inv') { p.ic = p.ic || ITENS[p.id][0]; p.nome = p.nome || ITENS[p.id][1]; }
@@ -1687,8 +1753,8 @@
   let lojaAtual = 'roupa', lojaEscolha = null;
   function abreLoja(id) { lojaAtual = id; lojaEscolha = null; abreJanela('loja'); }
   const temProduto = p => p.unico && !!S.loja.tem[p.chave];
-  function janelaLoja(avisoKit) {
-    cobra();
+  function janelaLoja(avisoKit, avisoColecao) {
+    cobra(); aplicaColecao();
     const Lj = LOJAS[lojaAtual], el = $('#loja-conteudo');
     $('#j-loja-t').textContent = `${Lj.ic} ${Lj.nome}`;
     const conta = `<div class="conta"><span>Saldo <b>${S.pontos} ⭐</b></span><span>Devendo <b>${divida()} ⭐</b></span><span>Crédito livre <b>${credito()} ⭐</b> <small class="muted">de ${limiteCredito()}</small></span></div>
@@ -1703,17 +1769,19 @@
     } else {
       const lista = produtos(lojaAtual);
       const meta = S.banco.meta && S.banco.meta.loja === lojaAtual ? `<p class="small">🎯 Sua meta no banco: ${S.banco.meta.ic} ${esc(S.banco.meta.nome)}. Você tem ${S.pontos} ⭐ no saldo e ${Math.floor(S.banco.poup)} ⭐ na poupança.</p>` : '';
-      el.innerHTML = conta + meta + formResgate(avisoKit) + `<p class="muted small">${Lj.texto} À vista tem 10% de desconto; parcelado tem juros. Para levar, acerte a conta do pagamento.</p>
-        <div class="produtos">${lista.map((p, i) => `<button type="button" class="prod ${p.ev ? 'exclusivo' : ''} ${p.kit ? 'kit' : ''}" data-prod="${i}" ${temProduto(p) ? 'disabled' : ''}>
-          ${p.ev ? `<span class="selo">${p.ev.ic} Só no ${esc(p.ev.nome)}</span>` : ''}${p.kit ? `<span class="selo">${KITS_APOIO[p.kit].ic} Kit ${esc(KITS_APOIO[p.kit].curto)}</span>` : ''}<span class="p-ic">${p.ic}</span><span class="p-nome">${esc(p.nome)}</span>
-          <span class="p-preco">${temProduto(p) ? '✓ Já é seu' : p.kit ? '🔒 Com código' : `${p.preco} ⭐`}</span>${p.tipo === 'inv' || p.tipo === 'movel' ? `<small class="muted">você tem ${p.tipo === 'inv' ? S.inv[p.id] || 0 : S.casa.guardados[p.id] || 0}${p.tipo === 'movel' ? ' guardado(s)' : ''}</small>` : ''}</button>`).join('')}</div>
+      el.innerHTML = conta + meta + formResgate(avisoKit) + (lojaAtual === 'roupa' || lojaAtual === 'pet' ? formColecao(avisoColecao) : '') + `<p class="muted small">${Lj.texto} À vista tem 10% de desconto; parcelado tem juros. Para levar, acerte a conta do pagamento.</p>
+        <div class="produtos">${lista.map((p, i) => `<button type="button" class="prod ${p.ev ? 'exclusivo' : ''} ${p.kit ? 'kit' : ''} ${p.plano ? 'kit colecao' : ''}" data-prod="${i}" ${temProduto(p) ? 'disabled' : ''}>
+          ${p.ev ? `<span class="selo">${p.ev.ic} Só no ${esc(p.ev.nome)}</span>` : ''}${p.kit ? `<span class="selo">${KITS_APOIO[p.kit].ic} Kit ${esc(KITS_APOIO[p.kit].curto)}</span>` : ''}${p.plano ? `<span class="selo">${COLECAO_APOIO[p.plano - 1].ic} ${esc(COLECAO_APOIO[p.plano - 1].nome)}</span>` : ''}<span class="p-ic">${p.ic}</span><span class="p-nome">${esc(p.nome)}</span>
+          <span class="p-preco">${temProduto(p) ? '✓ Já é seu' : p.kit ? '🔒 Com código' : p.plano ? `🔒 Plano ${esc(COLECAO_APOIO[p.plano - 1].plano)}` : `${p.preco} ⭐`}</span>${p.tipo === 'inv' || p.tipo === 'movel' ? `<small class="muted">você tem ${p.tipo === 'inv' ? S.inv[p.id] || 0 : S.casa.guardados[p.id] || 0}${p.tipo === 'movel' ? ' guardado(s)' : ''}</small>` : ''}</button>`).join('')}</div>
         <p class="muted small">Crédito: 250 ⭐ + 60 por fase concluída. As parcelas são cobradas uma por dia; com parcela atrasada, só dá para comprar à vista.</p>`;
       el.querySelectorAll('[data-prod]').forEach(b => b.addEventListener('click', () => {
         const p = lista[+b.dataset.prod];
         if (p.kit) { const d = el.querySelector('.resgate'); d.open = true; el.querySelector('#resgate-c').focus(); return; }
+        if (p.plano) { const d = el.querySelector('.colecao'); d.open = true; const c = el.querySelector('#colecao-s'); if (c) c.focus(); return; }
         lojaEscolha = p; janelaLoja();
       }));
       ligaResgate(el, r => janelaLoja(r));
+      ligaColecao(el, r => janelaLoja(null, r));
     }
     el.querySelectorAll('[data-adianta]').forEach(b => b.addEventListener('click', () => { const d = S.loja.dividas[+b.dataset.adianta]; if (d && S.pontos >= d.parcela) { S.pontos -= d.parcela; d.faltam--; S.loja.dividas = S.loja.dividas.filter(x => x.faltam > 0); aviso(`💳 Parcela paga: −${d.parcela} ⭐`); hud(); salvar(); janelaLoja(); } }));
   }
@@ -4918,6 +4986,17 @@
     for (const n of JSON.parse(m[3])) { try { return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(n.iv) }, k, b64(n.d)))); } catch (e) { /* outro chaveiro */ } }
     return null;
   }
+  // confere a senha e lembra o plano neste aparelho; usada pelos cursos e pela coleção do apoiador
+  async function liberaPremium(senha) {
+    if (!String(senha || '').trim()) return { ok: false, msg: 'Digite a senha da área premium.' };
+    if (!(window.crypto && crypto.subtle)) return { ok: false, msg: 'Este navegador não consegue conferir a senha. Tente em outro navegador.' };
+    const ch = await conferePremium(senha);
+    if (!ch) return { ok: false, msg: SENHA_FIXA ? 'Senha incorreta. Confira a senha do seu plano na mensagem do Catarse.' : 'Senha incorreta. Confira a mensagem mais recente do Catarse: a senha muda todo mês.' };
+    try { sessionStorage.setItem(PREMIUM_SESSAO, JSON.stringify(ch)); } catch (err) {}
+    try { localStorage.setItem(PREMIUM_LEMBRA, JSON.stringify({ nivel: ch.nivel, mes: ch.mes })); } catch (err) {}
+    if (!SENHA_FIXA && !(ch.mes >= mesAtual())) return { ok: false, msg: 'Esta senha é de um mês que já passou. Use a senha deste mês.' };
+    return { ok: true, nivel: +ch.nivel };
+  }
   const estacaoCompleta = area => ORDEM_NIVEIS.some(nv => { const n = perguntasTele(nv, area).length; return n > 0 && feitasTele(nv, area) >= n; });
   const contar = o => Object.keys(o || {}).filter(k => o[k]).length;
   const CURSOS = [
@@ -4954,12 +5033,9 @@
         <p class="small muted">Ainda não apoia? <a href="${PLANOS_CATARSE}" target="_blank" rel="noopener">Veja os planos no Catarse</a>.</p>`;
       $('#cu-form').addEventListener('submit', async e => {
         e.preventDefault(); const fb = $('#cu-fb'); fb.textContent = 'Conferindo…';
-        let ch; try { ch = await conferePremium($('#cu-senha').value); } catch (err) { fb.textContent = 'Não deu para conferir agora. Verifique a internet e tente de novo.'; return; }
-        if (!ch) { fb.textContent = 'Senha incorreta. Confira a mensagem mais recente do Catarse: a senha muda todo mês.'; return; }
-        try { sessionStorage.setItem(PREMIUM_SESSAO, JSON.stringify(ch)); } catch (err) {}
-        try { localStorage.setItem(PREMIUM_LEMBRA, JSON.stringify({ nivel: ch.nivel, mes: ch.mes })); } catch (err) {}
-        if (!SENHA_FIXA && !(ch.mes >= mesAtual())) return janelaCursos('Esta senha é de um mês que já passou. Use a senha deste mês.');
-        janelaCursos();
+        let r; try { r = await liberaPremium($('#cu-senha').value); } catch (err) { fb.textContent = 'Não deu para conferir agora. Verifique a internet e tente de novo.'; return; }
+        if (!r.ok) { fb.textContent = r.msg; return; }
+        aplicaColecao(); janelaCursos();
       });
       return;
     }
@@ -5116,6 +5192,7 @@
     ['camisa', 'Camiseta', ROUPAS], ['calca', 'Calça', ['#2f3b6b', '#5a3b2a', '#333333', '#4bb259', '#e07bb0', '#f6b73c']]
   ];
   function editorAvatar() {
+    aplicaColecao();
     const comprados = Object.keys(S.loja.tem);
     const ops = OPCOES_AV.map(([k, n, o]) => [k, n, o.concat(comprados.filter(c => c.startsWith(`cor:${k}:`)).map(c => c.split(':')[2]))]);
     const acess = comprados.filter(c => c.startsWith('av:')).map(c => c.slice(3));
@@ -5395,7 +5472,7 @@
   }
   linkDireto();
   if (!S.tutorial && !/[?&](abrir|kit|curso)=/.test(location.search)) abreTutorial();
-  window.MUNDO_DEBUG = { abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { COLECAO_APOIO, aplicaColecao, produtosColecao, liberaPremium, abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

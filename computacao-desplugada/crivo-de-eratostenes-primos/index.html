@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>O crivo de Eratóstenes: um algoritmo para achar primos</title>
+<meta name="description" content="Seguindo uma receita de riscar múltiplos, a turma acha todos os primos até 100 e escreve o algoritmo que decide se um número é primo.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-desplugada/crivo-de-eratostenes-primos/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-desplugada/crivo-de-eratostenes-primos/">
+<meta property="og:title" content="O crivo de Eratóstenes: um algoritmo para achar primos">
+<meta property="og:description" content="Seguindo uma receita de riscar múltiplos, a turma acha todos os primos até 100 e escreve o algoritmo que decide se um número é primo.">
+<meta property="og:image" content="https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Card com o título Computação desplugada e a captura de uma atividade para imprimir.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-desplugada/crivo-de-eratostenes-primos/#atividade",
+   "url": "https://ohtopico.com.br/computacao-desplugada/crivo-de-eratostenes-primos/",
+   "name": "O crivo de Eratóstenes: um algoritmo para achar primos",
+   "description": "Seguindo uma receita de riscar múltiplos, a turma acha todos os primos até 100 e escreve o algoritmo que decide se um número é primo.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Atividade desplugada para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "6º ano do Ensino Fundamental",
+   "timeRequired": "50 minutos",
+   "teaches": [
+    "EF06CO02: Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.",
+    "EF06CO06: Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros).",
+    "EF06MA05: Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.",
+    "EF06MA04: Construir algoritmo em linguagem natural e representá-lo por fluxograma que indique a resolução de um problema simples (por exemplo, se um número natural qualquer é par).",
+    "Pensamento computacional: Algoritmos"
+   ],
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF06CO02",
+     "targetDescription": "Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF06CO06",
+     "targetDescription": "Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros)."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Matemática",
+     "targetName": "EF06MA05",
+     "targetDescription": "Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Matemática",
+     "targetName": "EF06MA04",
+     "targetDescription": "Construir algoritmo em linguagem natural e representá-lo por fluxograma que indique a resolução de um problema simples (por exemplo, se um número natural qualquer é par)."
+    }
+   ],
+   "audience": [
+    {
+     "@type": "EducationalAudience",
+     "educationalRole": "teacher"
+    }
+   ],
+   "accessibilityFeature": [
+    "braille",
+    "tactileGraphic",
+    "highContrastDisplay",
+    "structuralNavigation"
+   ],
+   "encoding": {
+    "@type": "MediaObject",
+    "contentUrl": "https://ohtopico.com.br/computacao-desplugada/crivo-de-eratostenes-primos/crivo-de-eratostenes-primos.pdf",
+    "encodingFormat": "application/pdf"
+   },
+   "image": "https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg",
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://ohtopico.com.br/computacao-desplugada/#pagina"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação desplugada",
+     "item": "https://ohtopico.com.br/computacao-desplugada/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "O crivo de Eratóstenes: um algoritmo para achar primos",
+     "item": "https://ohtopico.com.br/computacao-desplugada/crivo-de-eratostenes-primos/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=3760ad871b">
+<link rel="stylesheet" href="/computacao-adaptada/assets/computacao.css?v=3760ad871b">
+<link rel="stylesheet" href="/computacao-desplugada/assets/desplugada.css?v=3760ad871b">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-desplugada/">Computação desplugada</a><a href="/pensamento-computacional/">Pensamento computacional</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-desplugada/">Computação desplugada</a></li><li aria-current="page">O crivo de Eratóstenes: um algoritmo para achar primos</li></ol></nav>
+        <p class="rotulo">Computação desplugada · Computação e Matemática · EF06CO02 · EF06CO06 · EF06MA05 · EF06MA04 · 6º ano</p>
+        <h1>O crivo de Eratóstenes: um algoritmo para achar primos</h1>
+        <p class="linha-fina">Seguindo uma receita de riscar múltiplos, a turma acha todos os primos até 100 e escreve o algoritmo que decide se um número é primo.</p>
+        <div class="acoes">
+            <a class="btn98 escuro" href="crivo-de-eratostenes-primos.pdf" download>Baixar PDF</a><a class="btn98" href="crivo-de-eratostenes-primos.brf" download>Baixar braille (.brf)</a><a class="btn98" href="crivo-de-eratostenes-primos-moldes-tateis.pdf" download>Moldes táteis (PDF)</a>
+            <button type="button" class="btn98" data-imprimir="Estudante">Imprimir folhas do estudante</button><button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações</button>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Ano</dt><dd>6º ano</dd>
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Pilar</dt><dd><a href="/pensamento-computacional/">Algoritmos</a></dd>
+            <dt>Material</dt><dd>Folha do estudante e lápis de quatro cores. Para a dinâmica, cartões com os números de 2 a 30.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/bncc/ef06co02/">EF06CO02</a>: Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</li><li><a href="/material-didatico/bncc/ef06co06/">EF06CO06</a>: Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros).</li><li><a href="/matematica-adaptada/fichas/primos-compostos-e-divisibilidade/">EF06MA05</a>: Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.</li><li><a href="/matematica-adaptada/fichas/algoritmo-e-fluxograma/">EF06MA04</a>: Construir algoritmo em linguagem natural e representá-lo por fluxograma que indique a resolução de um problema simples (por exemplo, se um número natural qualquer é par).</li></ul>
+        <h2>Como aplicar, sem computador</h2>
+        <ol><li>Entregue um cartão com número (de 2 a 30) para cada estudante, todos em pé. Diga: &quot;quem for múltiplo de 2, menos o próprio 2, senta&quot;.</li><li>Repita com o 3 e com o 5. Quem ficou em pé tem um número primo. Pergunte por que não precisamos testar o 7 com números até 30.</li><li>Conte que a receita tem mais de 2 mil anos e é um algoritmo: passos precisos que repetem até acabar. Façam o bloco 1 na folha.</li><li>No bloco 3, a turma transforma o que fez em um algoritmo que decide um número de cada vez. É o mesmo tipo de receita que vira programa.</li></ol>
+        <h2>Para conversar no fim</h2>
+        <ul><li>Qual dos dois algoritmos é melhor para achar todos os primos até 100? E para saber se um único número é primo?</li><li>Para testar números até 400, até que primo seria preciso dividir? (Pense em 19 × 19 = 361 e 23 × 23 = 529.)</li></ul>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: ficam circulados 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89 e 97.</li><li>Bloco 2: 25 primos. Depois do 7 nada novo é riscado: todo composto até 100 tem divisor até 7, porque 11 × 11 = 121 já passa de 100.</li><li>Bloco 3: não é primo; resto 0; primo.</li><li>Bloco 4: 91 = 7 × 13, composto; 97: nenhuma divisão exata, primo; 51 = 3 × 17, composto.</li></ul></details>
+        <h2 id="braille">Para estudantes cegos: braille e moldes táteis</h2>
+        <p>Esta atividade tem <a href="crivo-de-eratostenes-primos.brf" download>versão em braille</a> (5 páginas braille, todas as folhas do estudante) e <a href="crivo-de-eratostenes-primos-moldes-tateis.pdf" download>1 molde tátil para imprimir</a> (PDF, fundo branco).</p>
+        <ol><li>Envie o arquivo .brf para a impressora braille da escola ou da sala de recursos. Ele já vem com 40 celas por linha e 25 linhas por página, em braille grau 1 e com os sinais do Código Matemático Unificado.</li><li>Monte os moldes táteis seguindo a primeira página do PDF: cola relevo ou barbante nas linhas, botões nos pontos e EVA ou lixa nas texturas. Cada molde tem o número da figura que aparece no texto em braille.</li><li>Onde a folha em tinta pede para circular, pintar ou ligar, a versão em braille pede para escrever a resposta, e as contas podem ser feitas no soroban.</li></ol>
+        <p class="nota">Este material foi gerado a partir das folhas em tinta e precisa ser revisado pela sala de recursos ou pelo professor do AEE antes de chegar ao estudante.</p>
+        <h2 id="folhas">Folhas para imprimir</h2>
+        <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a folha de que precisa ou baixe o PDF com todas, incluindo as orientações.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="O crivo de Eratóstenes: um algoritmo para achar primos, estudante, folha 1">
+    <header class="folha-topo"><span class="nivel"><b>Estudante, folha 1</b></span><span class="hab">EF06CO02 · EF06CO06 · EF06MA05 · EF06MA04 · Computação e Matemática · 6º ano</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">O crivo de Eratóstenes: um algoritmo para achar primos</h2>
+    <div class="quadro-texto cinza"><b>A receita do crivo:</b> 1. Risque o 1, que não é primo. 2. Circule o menor número que ainda não foi riscado nem circulado. 3. Risque todos os múltiplos dele que vêm depois. 4. Volte ao passo 2 até não sobrar número livre.</div><section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Siga a receita no quadro. Use uma cor para riscar cada múltiplo: do 2, do 3, do 5 e do 7.</span></h3><p class="dica">O 2 é o primeiro circulado. Depois risque 4, 6, 8, 10...</p><div class="bloco-corpo"><svg class="fig-dp" viewBox="0 0 92 92" style="width:84mm" role="img" aria-label="quadro com os números de 1 a 100, em 10 linhas de 10 números: a linha 1 vai de 1 a 10, a linha 2 de 11 a 20, e assim até a linha 10, de 91 a 100"><rect x="1" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">1</text><rect x="10" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">2</text><rect x="19" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">3</text><rect x="28" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">4</text><rect x="37" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">5</text><rect x="46" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">6</text><rect x="55" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">7</text><rect x="64" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">8</text><rect x="73" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">9</text><rect x="82" y="1" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="6.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">10</text><rect x="1" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">11</text><rect x="10" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">12</text><rect x="19" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">13</text><rect x="28" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">14</text><rect x="37" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">15</text><rect x="46" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">16</text><rect x="55" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">17</text><rect x="64" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">18</text><rect x="73" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">19</text><rect x="82" y="10" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="15.940000000000001" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">20</text><rect x="1" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">21</text><rect x="10" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">22</text><rect x="19" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">23</text><rect x="28" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">24</text><rect x="37" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">25</text><rect x="46" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">26</text><rect x="55" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">27</text><rect x="64" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">28</text><rect x="73" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">29</text><rect x="82" y="19" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="24.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">30</text><rect x="1" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">31</text><rect x="10" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">32</text><rect x="19" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">33</text><rect x="28" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">34</text><rect x="37" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">35</text><rect x="46" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">36</text><rect x="55" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">37</text><rect x="64" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">38</text><rect x="73" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">39</text><rect x="82" y="28" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="33.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">40</text><rect x="1" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">41</text><rect x="10" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">42</text><rect x="19" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">43</text><rect x="28" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">44</text><rect x="37" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">45</text><rect x="46" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">46</text><rect x="55" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">47</text><rect x="64" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">48</text><rect x="73" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">49</text><rect x="82" y="37" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="42.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">50</text><rect x="1" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">51</text><rect x="10" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">52</text><rect x="19" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">53</text><rect x="28" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">54</text><rect x="37" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">55</text><rect x="46" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">56</text><rect x="55" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">57</text><rect x="64" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">58</text><rect x="73" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">59</text><rect x="82" y="46" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="51.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">60</text><rect x="1" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">61</text><rect x="10" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">62</text><rect x="19" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">63</text><rect x="28" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">64</text><rect x="37" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">65</text><rect x="46" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">66</text><rect x="55" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">67</text><rect x="64" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">68</text><rect x="73" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">69</text><rect x="82" y="55" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="60.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">70</text><rect x="1" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">71</text><rect x="10" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">72</text><rect x="19" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">73</text><rect x="28" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">74</text><rect x="37" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">75</text><rect x="46" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">76</text><rect x="55" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">77</text><rect x="64" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">78</text><rect x="73" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">79</text><rect x="82" y="64" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="69.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">80</text><rect x="1" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">81</text><rect x="10" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">82</text><rect x="19" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">83</text><rect x="28" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">84</text><rect x="37" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">85</text><rect x="46" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">86</text><rect x="55" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">87</text><rect x="64" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">88</text><rect x="73" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">89</text><rect x="82" y="73" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="78.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">90</text><rect x="1" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="5.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">91</text><rect x="10" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="14.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">92</text><rect x="19" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="23.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">93</text><rect x="28" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="32.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">94</text><rect x="37" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="41.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">95</text><rect x="46" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="50.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">96</text><rect x="55" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="59.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">97</text><rect x="64" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="68.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">98</text><rect x="73" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="77.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">99</text><rect x="82" y="82" width="9" height="9" fill="#fff" stroke="#111" stroke-width=".45"/><text x="86.5" y="87.94" font-size="3.6" text-anchor="middle" font-family="Lexend" font-weight="500">100</text></svg></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>Pense no que aconteceu.</span></h3><div class="bloco-corpo"><div class="frases"><p><span>Quantos números ficaram circulados (primos)?</span> <span class="linha-resp"></span></p><p><span>Depois do 7, a receita riscou algum número novo? Por quê?</span> <span class="linha-resp"></span></p></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha" data-versao="Estudante" aria-label="O crivo de Eratóstenes: um algoritmo para achar primos, estudante, folha 2">
+    <header class="folha-topo"><span class="nivel"><b>Estudante, folha 2</b></span><span class="hab">EF06CO02 · EF06CO06 · EF06MA05 · EF06MA04 · Computação e Matemática · 6º ano</span></header>
+    
+    <h2 class="folha-titulo">O crivo de Eratóstenes: um algoritmo para achar primos</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>Complete a receita que decide se um número n até 100 é primo.</span></h3><div class="bloco-corpo"><ol class="receita"><li>Se n for 1, ele <span class="resposta"></span> é primo.</li><li>Divida n por 2, 3, 5 e 7. Se alguma divisão der resto <span class="resposta"></span> e n não for o próprio divisor, n é composto.</li><li>Se nenhuma divisão der esse resto, n é <span class="resposta" style="width:26mm"></span>.</li></ol></div></section><section class="bloco"><h3 class="instrucao"><span class="num">4</span><span>Use a sua receita: cada número é primo ou composto?</span></h3><div class="bloco-corpo"><table class="tabela-folha"><thead><tr><th>Número</th><th>Divisão que deu exata</th><th>Primo ou composto?</th></tr></thead><tbody><tr><td>91</td><td></td><td></td></tr><tr><td>97</td><td></td><td></td></tr><tr><td>51</td><td></td><td></td></tr></tbody></table></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações para o professor">
+    <header class="folha-topo"><span class="nivel"><b>Orientações para o professor</b></span><span class="hab">6º ano · 50 minutos</span></header>
+    <h2 class="folha-titulo">O crivo de Eratóstenes: um algoritmo para achar primos</h2>
+    <h3>Habilidades da BNCC</h3><p class="hab-prof"><b>EF06CO02</b>: Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</p><p class="hab-prof"><b>EF06CO06</b>: Comparar casos particulares de um mesmo problema e criar um algoritmo que resolva todos, usando variáveis (parâmetros).</p><p class="hab-prof"><b>EF06MA05</b>: Classificar números naturais em primos e compostos, estabelecer relações entre números, expressas pelos termos “é múltiplo de”, “é divisor de”, “é fator de”, e estabelecer, por meio de investigações, critérios de divisibilidade por 2, 3, 4, 5, 6, 8, 9, 10, 100 e 1000.</p><p class="hab-prof"><b>EF06MA04</b>: Construir algoritmo em linguagem natural e representá-lo por fluxograma que indique a resolução de um problema simples (por exemplo, se um número natural qualquer é par).</p>
+    <h3>Pilar do pensamento computacional</h3><p>Algoritmos</p>
+    <h3>Material</h3><p>Folha do estudante e lápis de quatro cores. Para a dinâmica, cartões com os números de 2 a 30.</p>
+    <h3>Como aplicar, sem computador</h3><ol><li>Entregue um cartão com número (de 2 a 30) para cada estudante, todos em pé. Diga: &quot;quem for múltiplo de 2, menos o próprio 2, senta&quot;.</li><li>Repita com o 3 e com o 5. Quem ficou em pé tem um número primo. Pergunte por que não precisamos testar o 7 com números até 30.</li><li>Conte que a receita tem mais de 2 mil anos e é um algoritmo: passos precisos que repetem até acabar. Façam o bloco 1 na folha.</li><li>No bloco 3, a turma transforma o que fez em um algoritmo que decide um número de cada vez. É o mesmo tipo de receita que vira programa.</li></ol>
+    <h3>Para conversar no fim</h3><ul><li>Qual dos dois algoritmos é melhor para achar todos os primos até 100? E para saber se um único número é primo?</li><li>Para testar números até 400, até que primo seria preciso dividir? (Pense em 19 × 19 = 361 e 23 × 23 = 529.)</li></ul>
+    <h3>Gabarito</h3><ul><li>Bloco 1: ficam circulados 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89 e 97.</li><li>Bloco 2: 25 primos. Depois do 7 nada novo é riscado: todo composto até 100 tem divisor até 7, porque 11 × 11 = 121 já passa de 100.</li><li>Bloco 3: não é primo; resto 0; primo.</li><li>Bloco 4: 91 = 7 × 13, composto; 97: nenhuma divisão exata, primo; 51 = 3 × 17, composto.</li></ul>
+    <p class="lembrete">Para estudantes cegos, use a versão em braille (.brf) e os moldes táteis da página da atividade, revisados antes pela sala de recursos ou pelo professor do AEE.</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras atividades"><a href="/computacao-desplugada/fechadura-maquina-de-estados/">← A fechadura que lê botões</a><a href="/computacao-desplugada/pesquisa-da-turma-tipos-de-dados/">Pesquisa da turma: tipos de dados e tabela →</a></nav>
+        <p class="voltar"><a href="/computacao-desplugada/">Ver todas as atividades de computação desplugada</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/pensamento-computacional/">Pensamento computacional</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/matematica-adaptada/assets/fichas.js?v=3760ad871b" defer></script>
+</body>
+</html>
