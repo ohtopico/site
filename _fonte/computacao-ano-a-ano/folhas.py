@@ -104,7 +104,7 @@ def malha(cols, rows, inicio, alvos=(), paredes=(), pers='robo', alvo='estrela',
     return f'<div class="aa-malha" style="--cols:{cols};--cel:{cel}mm">{casas}</div>'
 
 
-SETA = {'d': '→', 'e': '←', 'c': '↑', 'b': '↓', 'f': '⇧', 'gd': '↻', 'ge': '↺'}
+SETA = {'d': '→', 'e': '←', 'c': '↑', 'b': '↓', 'f': '⇧', 'gd': '↻', 'ge': '↺', 'ate-d': '⇥', 'ate-e': '⇤', 'ate-c': '⤒', 'ate-b': '⤓'}
 
 
 def _seta(s, tam):

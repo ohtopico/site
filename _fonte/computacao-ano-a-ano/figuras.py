@@ -165,6 +165,11 @@ F = {
     'portao': r(10, 30, 80, 60, MR, 2) + ''.join(ln(22 + i * 14, 30, 22 + i * 14, 90) for i in range(5)),
     'fogo': pth('M50 10 Q66 30 62 44 Q72 36 74 28 Q90 52 80 72 Q70 92 50 92 Q30 92 20 72 Q12 52 28 34 Q30 46 38 48 Q32 28 50 10Z', LA),
     'agua-gota': pth('M50 10 Q78 48 78 62 Q78 88 50 88 Q22 88 22 62 Q22 48 50 10Z', AZ),
+    'entrada': r(46, 22, 44, 56, CZ, 6) + r(52, 30, 32, 26, '#dff0ff', 2) + pth('M8 50 L40 50', 'none') + pth('M28 38 L42 50 L28 62', 'none'),
+    'saida': r(10, 22, 44, 56, CZ, 6) + r(16, 30, 32, 26, '#dff0ff', 2) + pth('M58 50 L90 50', 'none') + pth('M78 38 L92 50 L78 62', 'none'),
+    'navegador': r(8, 14, 84, 72, BR, 6) + r(8, 14, 84, 16, CZ, 6) + c(18, 22, 3, VM) + c(28, 22, 3, AM) + c(38, 22, 3, VD) + r(18, 38, 64, 10, BR, 5) + c(50, 68, 12, AZ),
+    'grafico': ln(14, 86, 88, 86) + ln(14, 86, 14, 12) + r(22, 56, 14, 30, AZ, 2) + r(42, 34, 14, 52, VD, 2) + r(62, 46, 14, 40, AM, 2),
+    'tabela': r(12, 16, 76, 68, BR, 4) + r(12, 16, 76, 16, AM, 4) + ln(12, 50, 88, 50) + ln(12, 67, 88, 67) + ln(50, 16, 50, 84),
     'forno': r(10, 14, 80, 76, CZ, 6) + r(20, 38, 60, 42, '#333', 4) + ''.join(c(26 + i * 16, 26, 4, BR) for i in range(4)),
 }
 
@@ -205,7 +210,8 @@ NOMES = {
     'tomada': 'tomada', 'carregador': 'carregador', 'lixo-eletronico': 'lixo eletrônico', 'pasta-arquivo': 'pasta', 'documento': 'documento',
     'nota-musical': 'música', 'video': 'vídeo', 'pincel': 'pincel', 'bandeira': 'bandeira', 'tesouro': 'baú do tesouro', 'certo': 'certo',
     'errado': 'errado', 'interrogacao': 'ponto de interrogação', 'alto-falante': 'som', 'mao-levantada': 'mão levantada', 'portao': 'portão',
-    'fogo': 'fogo', 'agua-gota': 'gota de água', 'forno': 'fogão',
+    'fogo': 'fogo', 'agua-gota': 'gota de água', 'forno': 'fogão', 'entrada': 'entrada', 'saida': 'saída', 'navegador': 'navegador',
+    'grafico': 'gráfico', 'tabela': 'tabela',
     'circulo': 'círculo', 'quadrado': 'quadrado', 'triangulo': 'triângulo', 'estrela-f': 'estrela', 'coracao-f': 'coração', 'losango': 'losango',
 }
 

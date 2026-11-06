@@ -713,9 +713,10 @@
       const q = h('div', 'pq-linha');
       q.insertAdjacentHTML('beforeend', `<div style="width:70px;height:70px">${f.depois === 'menos' ? '<svg class="fg" viewBox="0 0 100 100" role="img" aria-label="qual tem menos"><rect x="40" y="60" width="20" height="30" fill="#ffd84d" stroke="#111" stroke-width="5"/></svg>' : '<svg class="fg" viewBox="0 0 100 100" role="img" aria-label="qual tem mais"><rect x="40" y="10" width="20" height="80" fill="#ffd84d" stroke="#111" stroke-width="5"/></svg>'}</div>`);
       palco.append(q);
-      opcoes({ opcoes: f.categorias, certa: certo.map((n, i) => n === alvo ? i : -1).filter(i => i >= 0) }, palco, api);
+      sub = opcoes({ opcoes: f.categorias, certa: certo.map((n, i) => n === alvo ? i : -1).filter(i => i >= 0) }, palco, api);
     }
-    return { dica: () => { const i = cont.findIndex((n, k) => n < certo[k]); return i >= 0 ? cols[i] : null; } };
+    let sub = null;
+    return { dica: () => { if (sub) return sub.dica(); const i = cont.findIndex((n, k) => n < certo[k]); return i >= 0 ? cols[i] : null; } };
   };
 
   /* Criar: escolher uma peça de cada grupo (grupos: [[figuras]...]) e montar o cartão. Não tem resposta errada. */
