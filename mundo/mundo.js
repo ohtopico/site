@@ -187,6 +187,7 @@
   const bancosDe = fid => (window.PERGUNTAS_NPC || {})[fid] || [];
   function habsPergunta(id) {
     if (id.startsWith('n:')) { const [, fid, k] = id.split(':'), b = bancosDe(fid)[+k]; return b ? b.habs || [] : []; }
+    if (id.startsWith('cnpc:')) { const C = CASAS_NPC[id.split(':')[1]]; return C ? [C.hab] : []; }
     if (id.startsWith('golpe:')) return ['EF07CO07', 'EF08CO08'];
     if (id.startsWith('circ:')) return ['EF06CO01', 'EF06CO02'];
     if (id.startsWith('pixel:')) return ['EF06MA16'];
@@ -602,6 +603,23 @@
     lousa: { nome: 'Lousa da professora', ic: '🧑‍🏫', w: 1, d: 1, evento: true, acao: 'ler a lousa', des: (x, y) => { caixa(x + 0.2, y + 0.4, 0, 0.08, 0.08, 1.2, '#a0703f', { blocos: false }); caixa(x + 0.72, y + 0.4, 0, 0.08, 0.08, 1.2, '#a0703f', { blocos: false }); caixa(x + 0.12, y + 0.35, 0.55, 0.76, 0.12, 0.65, '#2f5d46', { blocos: false }); naFace('y', x + 0.12, y + 0.35, 0.76, 0.12, 0.12, 0, 0.5, 0.95, 0.03, '#ffffff'); naFace('y', x + 0.12, y + 0.35, 0.76, 0.12, 0.12, 0, 0.35, 0.82, 0.03, '#ffffff'); } },
     abobora: { nome: 'Abóbora iluminada', ic: '🎃', w: 1, d: 1, evento: true, acao: 'acender a abóbora', des: (x, y) => { caixa(x + 0.2, y + 0.2, 0, 0.6, 0.6, 0.45, '#f08a24'); caixa(x + 0.45, y + 0.45, 0.45, 0.1, 0.1, 0.12, '#4f9a4b', { blocos: false }); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0.1, 0, 0.1, 0.25, 0.08, '#ffe066'); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0.38, 0, 0.1, 0.25, 0.08, '#ffe066'); naFace('y', x + 0.2, y + 0.2, 0.6, 0.6, 0.15, 0, 0.3, 0.1, 0.06, '#ffe066'); } }
   };
+  /* casas dos moradores: cada uma tem uma estação com uma atividade (3 etapas, uma habilidade de Computação) e uma lembrança
+     que só se ganha ali (mundo/casas-npc.js). A estação fica na casa do morador; a lembrança vai para a casa do jogador. */
+  const CASAS_NPC = window.CASAS_NPC || {};
+  const embaralhaFixo = (alts, seed) => { const r = rng(seed), a = alts.map((t, i) => [t, i]); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  for (const [nid, C] of Object.entries(CASAS_NPC)) {
+    const [en, ei, ec] = C.est, [ln, li, lc] = C.lem;
+    MOVEIS['est-' + nid] = { nome: en, ic: ei, w: 1, d: 1, estacao: nid, acao: 'fazer a atividade da casa', des: (x, y) => {
+      caixa(x + 0.1, y + 0.15, 0, 0.8, 0.7, 0.7, '#b07a45'); caixa(x + 0.15, y + 0.2, 0.7, 0.7, 0.6, 0.06, ec);
+      emojiMovel(x, y, 1.15, ei);
+      if (visita && !((S.casasNpc || {})[nid] || {}).feita) { const [sx, sy] = iso(x + 0.5, y + 0.5, 1.9); balao(sx, sy, '!'); }
+    } };
+    MOVEIS['lem-' + nid] = { nome: ln, ic: li, w: 1, d: 1, lembranca: nid, acao: 'lembrar da visita', des: (x, y) => { caixa(x + 0.25, y + 0.25, 0, 0.5, 0.5, 0.45, lc); caixa(x + 0.22, y + 0.22, 0.45, 0.56, 0.56, 0.06, '#fff7e8'); emojiMovel(x, y, 0.95, li); } };
+    C.perguntas = C.p.map(([enun, ...resto], k) => {
+      const coment = resto.pop(), ord = embaralhaFixo(resto, 4400 + k * 37 + nid.length * 911 + nid.charCodeAt(0) * 13 + +nid.slice(-1) * 7);
+      return { id: `cnpc:${nid}:${k}`, enun, alts: ord.map(o => o[0]), certa: ord.findIndex(o => o[1] === 0), coment, habs: [C.hab], eixos: eixosDe([C.hab]) };
+    });
+  }
   /* pontinhos de luz piscando em volta de um objeto (árvore de Natal, enfeites) */
   function luzinhas(cx, cy, z0, z1, raio, cores = ['#ff5a5a', '#ffd84a', '#5ad1ff', '#7dff8a']) {
     for (let i = 0; i < 9; i++) {
@@ -1276,6 +1294,7 @@
     const solto = () => pequenos.splice(Math.floor(r() * pequenos.length), 1)[0];
     n.casaNpc = { moveis: [{ id: 'tapete', x: 1, y: 4 }, { id: 'estante', x: 0, y: 1 }, { id: um(['computador', 'tv', 'piano', 'sofa']), x: 2, y: 0 }, { id: 'bau', x: 4, y: 0 },
       { id: solto(), x: 6, y: 0 }, { id: 'cama', x: 8, y: 0 }, { id: um(['mesa', 'mesa', 'sofa']), x: 10, y: 0 }, { id: solto(), x: 12, y: 0 }, { id: solto(), x: 3, y: 4 }, { id: solto(), x: 6, y: 6 }, { id: solto(), x: 11, y: 7 }] };
+    if (CASAS_NPC[n.id]) n.casaNpc.moveis.push({ id: 'est-' + n.id, x: 10, y: 3 });   // a estação da atividade que só existe nesta casa
     return n.casaNpc;
   }
   const NPC_CASA = { x: 7.2, y: 4.4 };
@@ -1283,8 +1302,9 @@
     fechaDialogo(); fechaJanela(); visita = n; ajustaCasa(0); destino = null; dentro = true; mouse = null;
     P.x = SAIDA.x; P.y = CD - 1.4; P.dir = 'y-'; cam.ok = false; hud();
     const V = S.visitas || (S.visitas = {});
-    if (!V[n.id]) { V[n.id] = { vez: 1 }; pontos(20, `🏠 Primeira visita à casa de ${n.nome}!`); salvar(); }
-    else aviso(`🏠 Casa de ${n.nome}`);
+    const C = CASAS_NPC[n.id], dica = C && !estCasa(n).feita ? ` · procure ${C.est[1]} ${C.est[0]} na cozinha` : '';
+    if (!V[n.id]) { V[n.id] = { vez: 1 }; pontos(20, `🏠 Primeira visita à casa de ${n.nome}!`); salvar(); if (dica) setTimeout(() => aviso(`Esta casa tem uma atividade que só existe aqui${dica}`), 3300); }
+    else aviso(`🏠 Casa de ${n.nome}${dica}`);
   }
   const ocupado = (tx, ty) => moveisAqui().find(m => { const M = MOVEIS[m.id]; return !M.chao && tx >= m.x && tx < m.x + M.w && ty >= m.y && ty < m.y + M.d; });
   function livreCasa(x, y) {
@@ -1344,10 +1364,42 @@
     S.casa.moveis.splice(i, 1); S.casa.guardados[m.id] = (S.casa.guardados[m.id] || 0) + 1;
     salvar(); hud(); aviso(`${MOVEIS[m.id].ic} Guardado na oficina`);
   }
+  /* atividade da casa do morador: 3 etapas em sequência; errou, a etapa fica para depois (como todas as perguntas do Mundo) */
+  const estCasa = n => { const A = S.casasNpc || (S.casasNpc = {}); return A[n.id] || (A[n.id] = { passo: 0 }); };
+  function atividadeCasa(n, comecou) {
+    const C = CASAS_NPC[n.id]; if (!C) return;
+    const E = estCasa(n), [en, ei] = C.est, [ln, li] = C.lem, fecha = { txt: 'Fechar', fn: fechaDialogo };
+    if (E.feita) {
+      const revisou = E.rev === hoje(), p = C.perguntas[Math.floor(Math.random() * C.perguntas.length)];
+      return dialogo(ei, en, `<p>Você já concluiu a atividade desta casa e ganhou a lembrança <strong>${esc(ln)}</strong>.</p><p>${esc(C.fato)}</p>${chipsHabs([C.hab], { [C.hab]: true })}<p class="muted">${revisou ? 'Você já revisou hoje. Volte amanhã para outra revisão.' : 'Quer revisar? Uma etapa por dia, para não esquecer.'}</p>`,
+        (revisou || bloqueada(p.id) ? [] : [{ txt: 'Revisar uma etapa', classe: 'principal', fn: () => { E.rev = hoje(); salvar(); pergunta(`${en} · revisão`, ei, p); } }]).concat([fecha]));
+    }
+    const k = Math.min(E.passo, C.perguntas.length - 1), p = C.perguntas[k];
+    if (!comecou && !E.passo) return dialogo(ei, en, `<p>“${esc(C.intro)}”</p><p>A atividade tem <strong>${C.perguntas.length} etapas</strong> e só existe na casa de ${esc(n.nome)}. No fim, você ganha uma lembrança para a sua casa: <strong>${esc(ln)}</strong>, que não aparece em nenhuma loja.</p>${chipsHabs([C.hab])}`,
+      [{ txt: 'Começar', classe: 'principal', fn: () => atividadeCasa(n, true) }, fecha]);
+    if (bloqueada(p.id)) return avisoBloqueio(ei, en);
+    pergunta(`${en} · etapa ${k + 1} de ${C.perguntas.length}`, ei, p, certo => {
+      if (!certo) { D.texto.innerHTML += '<p class="muted">Esta etapa fica para depois. O que você já fez continua guardado.</p>'; return; }
+      E.passo = k + 1;
+      if (E.passo < C.perguntas.length) {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'principal'; b.textContent = `Etapa ${E.passo + 1}`;
+        b.addEventListener('click', () => atividadeCasa(n, true)); D.op.appendChild(b);
+        return;
+      }
+      E.feita = true; E.quando = hoje();
+      S.casa.guardados['lem-' + n.id] = (S.casa.guardados['lem-' + n.id] || 0) + 1; S.casa.feitos['lem-' + n.id] = true;
+      ganhaHabilidade(p.eixos, 10); pontos(30); SOM.toca('vitoria');
+      D.texto.innerHTML += `<p><strong>Atividade concluída! +30 ⭐</strong> ${esc(n.nome)} te deu ${li} <strong>${esc(ln)}</strong>. Ela está guardada na sua casa, pronta para você colocar onde quiser.</p>`;
+      setTimeout(() => aviso(`${li} Lembrança nova: ${ln}`), 600);
+    });
+  }
+  const lembrancas = () => todosNpcs().filter(n => CASAS_NPC[n.id]);
+  const lembrancasFeitas = () => lembrancas().filter(n => ((S.casasNpc || {})[n.id] || {}).feita).length;
   function usaMovel(m) {
     const M = MOVEIS[m.id], fecha = { txt: 'Fechar', fn: fechaDialogo };
     if (visita) {
       const n = visita, V = S.visitas[n.id];
+      if (M.estacao) return atividadeCasa(n);
       if (m.id === 'bau' && !V.bau) {
         V.bau = true; const fav = favorito(n); S.inv[fav] = (S.inv[fav] || 0) + 2; salvar(); hud();
         setTimeout(() => ganhaFigurinha(pessoaNpc(n).id, `no baú de ${n.nome}`), 1200);
@@ -1362,6 +1414,10 @@
     if (m.id === 'pinheiro') return decoraArvore();
     if (m.id === 'luminaria') { m.on = !m.on; salvar(); return aviso(m.on ? '💡 Luz acesa' : 'Luz apagada'); }
     if (m.id === 'robo') return abreJanela('oficina');
+    if (M.lembranca) {
+      const dono = todosNpcs().find(n => n.id === M.lembranca), C = CASAS_NPC[M.lembranca];
+      return dialogo(M.ic, M.nome, `<p>Lembrança da casa de <strong>${esc(dono ? dono.nome : 'um morador')}</strong>${dono ? ` (${esc(dono.fase.nome)})` : ''}. Ela só se ganha lá.</p><p>${esc(C ? C.fato : '')}</p>${C ? chipsHabs([C.hab], { [C.hab]: true }) : ''}`, [fecha, ...guardar]);
+    }
     if (m.id === 'cama') {
       const hoje = new Date().toDateString();
       if (S.casa.dormiu !== hoje) { S.casa.dormiu = hoje; pontos(10); salvar(); return dialogo('🛏️', 'Boa noite!', '<p>Você descansou e acordou cheio de energia: <strong>+10 ⭐</strong>.</p><p class="muted">A cama dá pontos uma vez por dia. Volte amanhã!</p>', [fecha]); }
@@ -4035,7 +4091,7 @@
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     $('#h-aprend').textContent = Math.round(100 * feitos / Math.max(1, todosLugares.length)) + '%';
     nivelHud();
-    const f = faseDeX(P.x), ms = sala ? SALAS[sala].missoes() : noEnigma ? missoesEnigma() : dentro && visita ? [{ nome: 'Abrir o baú do presente', n: ((S.visitas || {})[visita.id] || {}).bau ? 1 : 0, meta: 1 }, { nome: `Chegar a 10 corações com ${visita.nome}`, n: coracoes(visita), meta: 10 }].map(m => Object.assign(m, { ok: m.n >= m.meta })) : dentro ? missoesCasa() : missoes(f);
+    const f = faseDeX(P.x), ms = sala ? SALAS[sala].missoes() : noEnigma ? missoesEnigma() : dentro && visita ? [{ nome: 'Abrir o baú do presente', n: ((S.visitas || {})[visita.id] || {}).bau ? 1 : 0, meta: 1 }].concat(CASAS_NPC[visita.id] ? [{ nome: `Atividade da casa: ${CASAS_NPC[visita.id].est[0]}`, n: estCasa(visita).feita ? 3 : estCasa(visita).passo, meta: 3 }] : [], [{ nome: `Chegar a 10 corações com ${visita.nome}`, n: coracoes(visita), meta: 10 }]).map(m => Object.assign(m, { ok: m.n >= m.meta })) : dentro ? missoesCasa() : missoes(f);
     $('#m-titulo').textContent = sala ? `${SALAS[sala].ic} ${SALAS[sala].nome}` : noEnigma ? '🔐 Casa do Enigma' : dentro && visita ? `🏠 Casa de ${visita.nome}` : dentro ? '🏠 Sua casa' : `Fase ${f.idx + 1} — ${f.sub.split(' · ')[0]}`;
     $('#m-nome').textContent = sala ? SALAS[sala].sub : noEnigma ? 'Escape room · sem cronômetro' : dentro && visita ? `${visita.fase.icone} ${visita.fase.nome}` : dentro ? COMODOS.map(r => r.nome).join(' · ') : `${f.icone} ${f.nome}`;
     $('#m-lista').innerHTML = ms.map(m => `<li class="${m.ok ? 'ok' : ''}"${m.habs && m.habs.length ? ` title="BNCC: ${m.habs.join(', ')}"` : ''}><span class="q"></span><span>${esc(m.nome)}</span><span class="n">(${Math.min(m.n, m.meta)}/${m.meta})</span></li>`).join('');
@@ -4325,7 +4381,7 @@
     const c = coracoes(n);
     const ola = primeira ? (n.prof ? (n.masc ? `Olá! Eu sou o ${n.nome.replace(/^Professor /, '')}, professor aqui da ${f.nome}. ` : `Olá! Eu sou a ${n.nome.replace(/^Professora? /, '')}, professora aqui de ${f.nome}. `) : `Oi! Eu sou ${n.nome}. `) : c >= 6 ? 'Que alegria te ver de novo! ' : c >= 3 ? 'Oi! Que bom que você passou aqui. ' : 'Oi de novo! ';
     const prox = PRESENTES_NPC.find(([nv]) => !S.recompensas[n.id + '-' + nv]);
-    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}${coracoes(n) < CORACOES_CASA ? ` Com ${CORACOES_CASA} corações, você pode visitar a casa de ${esc(n.nome)}.` : ''}</p>${limiteHtml(n)}`, [
+    dialogo('💬', n.nome, `<p>${coracoesHtml(n)}</p><p>${esc(ola)}${bancoNpc(n) ? `Posso te fazer uma pergunta sobre <b>${esc(bancoNpc(n).tema)}</b> ${bancoNpc(n).ic}? Vale 10 pontos.` : `Posso te fazer uma pergunta de ${f.ano}º ano? Vale 10 pontos.`}</p>${aniversarioNpc(n) ? `<p>🎂 <strong>Hoje é o meu aniversário</strong>, no mesmo dia de ${esc(pessoaNpc(n).nome)}! Um presente hoje vale um bônus de amizade.</p>` : ''}<p class="muted">Conversar uma vez por dia, acertar as perguntas e dar presentes aumenta a amizade, até 1 coração por semana.${aniversarioNpc(n) ? '' : ` Faço aniversário em ${dataNpc(n)}, no mesmo dia de ${esc(pessoaNpc(n).nome)}: presente no aniversário dá bônus.`}${prox ? ` Com ${prox[0]} corações, ${esc(n.nome)} te dá ${ITENS[prox[1]][0]}.` : ''}${coracoes(n) < CORACOES_CASA ? ` Com ${CORACOES_CASA} corações, você pode visitar a casa de ${esc(n.nome)}${CASAS_NPC[n.id] ? ', que tem uma atividade e uma lembrança que só existem lá' : ''}.` : CASAS_NPC[n.id] && !estCasa(n).feita ? ' Na minha casa tem uma atividade que só existe lá, e quem termina ganha uma lembrança.' : ''}</p>${limiteHtml(n)}`, [
       { txt: 'Pode perguntar!', classe: 'principal', fn: () => pergunta(n.nome, bancoNpc(n) ? bancoNpc(n).ic : '❓', sorteiaPergunta(f, bancoNpc(n) && bancoNpc(n).perguntas), certo => { if (certo) ganhaAmizade(n, 8); }) },
       { txt: '🎁 Dar um presente', fn: () => presente(n) },
       ...(!dentro && coracoes(n) >= CORACOES_CASA ? [{ txt: `🏠 Visitar a casa de ${n.nome}`, fn: () => visitaNpc(n) }] : []),
@@ -5136,10 +5192,12 @@
     const conhecidos = todosNpcs().filter(n => S.falas[n.id] || amizade(n));
     $('#inv-amigos').innerHTML = conhecidos.length ? conhecidos.map(n => `<div class="it"><span style="font-size:22px">${n.prof ? (n.masc ? '👨‍🏫' : '👩‍🏫') : '🙂'}</span><span>${esc(n.nome)} <small class="muted">· ${esc(n.fase.nome)}</small><br>${coracoesHtml(n)}${S.gostos[n.id] ? ` <small>adora ${ITENS[favorito(n)][0]}</small>` : ''} <small>${aniversarioNpc(n) ? '🎂 hoje!' : '🎂 ' + dataNpc(n)}</small></span></div>`).join('')
       : '<p class="muted small">Converse com os moradores da vila para fazer amigos.</p>';
+    $('#inv-lembrancas').innerHTML = `<p class="muted small" style="flex-basis:100%;margin:0 0 4px">${lembrancasFeitas()} de ${lembrancas().length}. Cada casa de morador tem uma atividade e uma lembrança que só existem nela. Com ${CORACOES_CASA} corações, o morador te convida para entrar.</p>` +
+      lembrancas().map(n => { const C = CASAS_NPC[n.id], ok = ((S.casasNpc || {})[n.id] || {}).feita; return `<div class="it ${ok ? '' : 'falta'}"><span style="font-size:22px">${ok ? C.lem[1] : '❔'}</span><span>${ok ? esc(C.lem[0]) : 'Lembrança escondida'}<br><small class="muted">Casa de ${esc(n.nome)} · ${esc(n.fase.nome)}</small></span></div>`; }).join('');
     const feitos = todosLugares.filter(l => S.feitos[l.id]).length;
     const conq = [
       ['🥇', 'Primeira casa colorida', feitos >= 1], ['🎨', '5 casas coloridas', feitos >= 5], ['🏅', '15 casas coloridas', feitos >= 15], ['🧠', '10 acertos', S.acertos >= 10], ['🧠', '30 acertos', S.acertos >= 30],
-      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10], ['🛋️', 'Primeiro móvel', Object.keys(S.casa.feitos).length >= 1], ['🏡', 'Casa decorada (8 móveis)', Object.keys(S.casa.feitos).length >= 8], ['🔭', 'Telescópio', !!S.casa.feitos.telescopio], ['🐾', 'Adotou um pet', !!S.pet], ['🔐', 'Escapou da Casa do Enigma', !!(S.enigma.vitorias)], ['🧩', 'Jogo especial vencido', !!S.especial], ['💞', 'Melhor amigo (10 corações)', todosNpcs().some(n => coracoes(n) >= 10)], ['🤝', '5 amigos com 3 corações', todosNpcs().filter(n => coracoes(n) >= 3).length >= 5], ['📈', 'Uma habilidade no nível 5', Object.values(niveisAgora()).some(v => v >= 5)], ['🏅', 'Pet nível 5', !!S.pet && S.pet.nivel >= 5],
+      ['📘', '10 dicas lidas', Object.keys(S.dicas).length >= 10], ['💎', '10 diamantes', (S.inv.diamante || 0) >= 10], ['🗣️', '10 conversas', Object.keys(S.falas).length >= 10], ['🛋️', 'Primeiro móvel', Object.keys(S.casa.feitos).length >= 1], ['🎁', 'Primeira lembrança de casa', lembrancasFeitas() >= 1], ['🏘️', '10 lembranças de casas', lembrancasFeitas() >= 10], ['🏡', 'Casa decorada (8 móveis)', Object.keys(S.casa.feitos).length >= 8], ['🔭', 'Telescópio', !!S.casa.feitos.telescopio], ['🐾', 'Adotou um pet', !!S.pet], ['🔐', 'Escapou da Casa do Enigma', !!(S.enigma.vitorias)], ['🧩', 'Jogo especial vencido', !!S.especial], ['💞', 'Melhor amigo (10 corações)', todosNpcs().some(n => coracoes(n) >= 10)], ['🤝', '5 amigos com 3 corações', todosNpcs().filter(n => coracoes(n) >= 3).length >= 5], ['📈', 'Uma habilidade no nível 5', Object.values(niveisAgora()).some(v => v >= 5)], ['🏅', 'Pet nível 5', !!S.pet && S.pet.nivel >= 5],
       ...fases.map(f => ['🏆', f.nome, !!S.concluidas[f.id]])
     ];
     $('#inv-conq').innerHTML = conq.map(([ic, n, ok]) => `<div class="it ${ok ? '' : 'falta'}"><span style="font-size:22px">${ic}</span><span>${esc(n)}</span></div>`).join('');
@@ -5472,7 +5530,7 @@
   }
   linkDireto();
   if (!S.tutorial && !/[?&](abrir|kit|curso)=/.test(location.search)) abreTutorial();
-  window.MUNDO_DEBUG = { COLECAO_APOIO, aplicaColecao, produtosColecao, liberaPremium, abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { COLECAO_APOIO, aplicaColecao, produtosColecao, liberaPremium, abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, CASAS_NPC, atividadeCasa, lembrancasFeitas, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
