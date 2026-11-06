@@ -1,0 +1,77 @@
+const G = pares => ({ pares });
+const svg = `<svg viewBox="0 0 620 250" role="img" aria-label="Falsos amigos: a palavra parece, mas significa outra coisa">
+  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 22px Sniglet,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 14px Lexend,sans-serif;fill:#3b3b3b}.x{font:700 15px Lexend,sans-serif}</style>
+  <rect x="0" y="0" width="620" height="250" rx="16" fill="#fff6dd"/>
+  <rect class="c" x="20" y="20" width="270" height="96" rx="14" fill="#ffd9c7"/><text class="t" x="40" y="56">🇪🇸 “exquisito”</text><text class="s" x="40" y="84">parece “esquisito”…</text><text class="x" x="40" y="104" fill="#2d8a3b">mas é DELICIOSO 😋</text>
+  <rect class="c" x="330" y="20" width="270" height="96" rx="14" fill="#c7e0ff"/><text class="t" x="350" y="56">🇪🇸 “embarazada”</text><text class="s" x="350" y="84">parece “embaraçada”…</text><text class="x" x="350" y="104" fill="#2d8a3b">mas é GRÁVIDA 🤰</text>
+  <rect class="c" x="20" y="134" width="270" height="96" rx="14" fill="#d8f5dc"/><text class="t" x="40" y="170">🇪🇸 “oficina”</text><text class="s" x="40" y="198">parece “oficina”…</text><text class="x" x="40" y="218" fill="#2d8a3b">mas é ESCRITÓRIO 💼</text>
+  <rect class="c" x="330" y="134" width="270" height="96" rx="14" fill="#f3e0ff"/><text class="t" x="350" y="170">🇪🇸 “polvo”</text><text class="s" x="350" y="198">parece “polvo” 🐙…</text><text class="x" x="350" y="218" fill="#2d8a3b">mas é POEIRA 🌫️ (pulpo = polvo)</text>
+</svg>`;
+module.exports = {
+  id: 'ling-falsos-amigos', arquivo: 'ling-falsos-amigos.html', icone: '🇪🇸', titulo: 'Trampa de los falsos amigos',
+  resumo: 'Ligue cada falso amigo do espanhol ao seu sentido real, cace a palavra-armadilha na frase e leia textos em espanhol como na prova.',
+  desc: 'No espanhol, muita palavra parece português e significa outra coisa: são os <i>falsos amigos</i> (heterossemânticos). Ligue os pares, ache a armadilha e responda às questões de leitura do jeito do ENEM.',
+  habs: ['H5', 'H6', 'H7'],
+  figura: svg,
+  intro: 'Na prova de espanhol, o enunciado e as alternativas vêm em português, e o texto em espanhol. Quem conhece os falsos amigos não cai nas alternativas-armadilha.',
+  cola: `${svg}
+    <table><tr><th>Espanhol</th><th>Significa</th><th>Espanhol</th><th>Significa</th></tr>
+    <tr><td>exquisito</td><td>delicioso</td><td>embarazada</td><td>grávida</td></tr>
+    <tr><td>oficina</td><td>escritório</td><td>taller</td><td>oficina (mecânica)</td></tr>
+    <tr><td>polvo</td><td>poeira, pó</td><td>rato</td><td>momento, instante</td></tr>
+    <tr><td>borrar</td><td>apagar</td><td>brincar</td><td>pular</td></tr>
+    <tr><td>cena</td><td>jantar</td><td>apellido</td><td>sobrenome</td></tr>
+    <tr><td>acordarse</td><td>lembrar-se</td><td>aceite</td><td>azeite, óleo</td></tr>
+    <tr><td>ancho</td><td>largo</td><td>largo</td><td>comprido</td></tr>
+    <tr><td>salsa</td><td>molho</td><td>zurdo</td><td>canhoto</td></tr>
+    <tr><td>vaso</td><td>copo</td><td>taza</td><td>xícara</td></tr>
+    <tr><td>pronto</td><td>logo, em breve</td><td>todavía</td><td>ainda</td></tr>
+    <tr><td>luego</td><td>depois</td><td>flaco</td><td>magro</td></tr>
+    <tr><td>cachorro</td><td>filhote</td><td>propina</td><td>gorjeta</td></tr>
+    <tr><td>escritorio</td><td>escrivaninha</td><td>rubio</td><td>loiro</td></tr>
+    <tr><td>prender</td><td>acender</td><td>pastel</td><td>bolo</td></tr>
+    <tr><td>sitio</td><td>lugar</td><td>novio</td><td>namorado, noivo</td></tr></table>
+    <p><b>Macete de leitura:</b> leia primeiro o enunciado em português, depois procure no texto as palavras-chave (título, números, nomes). Não traduza palavra por palavra.</p>`,
+  etapas: [
+    { tipo: 'parear', rotulo: 'Trampa', n: 3, pede: 'Ligue a palavra em espanhol ao que ela significa em português.', itens: [
+      G([['exquisito', 'delicioso'], ['embarazada', 'grávida'], ['oficina', 'escritório'], ['polvo', 'poeira'], ['rato', 'momento']]),
+      G([['taller', 'oficina mecânica'], ['borrar', 'apagar'], ['brincar', 'pular'], ['cena', 'jantar'], ['apellido', 'sobrenome']]),
+      G([['acordarse', 'lembrar-se'], ['aceite', 'azeite'], ['ancho', 'largo'], ['largo', 'comprido'], ['zurdo', 'canhoto']]),
+      G([['salsa', 'molho'], ['vaso', 'copo'], ['taza', 'xícara'], ['pronto', 'logo, em breve'], ['todavía', 'ainda']]),
+      G([['luego', 'depois'], ['flaco', 'magro'], ['cachorro', 'filhote'], ['propina', 'gorjeta'], ['rubio', 'loiro']]),
+      G([['escritorio', 'escrivaninha'], ['prender', 'acender'], ['pastel', 'bolo'], ['sitio', 'lugar'], ['novio', 'namorado']])
+    ] },
+    { tipo: 'achar', rotulo: 'Trampa', n: 3, itens: [
+      { pede: 'Toque no falso amigo que significa “grávida”.', texto: 'Mi hermana está [[embarazada]] y muy feliz con la noticia.', e: '“Embarazada” = grávida. Embaraçada, em espanhol, seria <i>avergonzada</i>.' },
+      { pede: 'Toque na palavra que significa “delicioso”.', texto: 'La paella de mi abuela es [[exquisita]], todos repiten el plato.', e: '“Exquisito” = delicioso, refinado. Nada de esquisito!' },
+      { pede: 'Toque na palavra que significa “escritório”.', texto: 'Mañana llego tarde a la [[oficina]] porque llevo el coche al taller.', e: '“Oficina” = escritório. A oficina mecânica é o <i>taller</i>.' },
+      { pede: 'Toque na palavra que significa “apagar”.', texto: 'El profesor pidió que [[borráramos]] la pizarra antes de salir.', e: '“Borrar” = apagar. Borrar no sentido de manchar seria <i>manchar</i>.' },
+      { pede: 'Toque na palavra que significa “jantar”.', texto: 'Esta noche vamos a preparar una [[cena]] especial para los abuelos.', e: '“Cena” = jantar. Cena de filme é <i>escena</i>.' },
+      { pede: 'Toque na palavra que significa “ainda”.', texto: 'Son las once y Pablo [[todavía]] no ha llegado a casa.', e: '“Todavía” = ainda. Todavia (mas) em espanhol é <i>sin embargo</i>.' },
+      { pede: 'Toque na palavra que significa “sobrenome”.', texto: 'Escriba su nombre y su [[apellido]] en el formulario, por favor.', e: '“Apellido” = sobrenome. Apelido é <i>apodo</i>.' },
+      { pede: 'Toque na palavra que significa “pular”.', texto: 'Los niños empezaron a [[brincar]] de alegría cuando vieron la nieve.', e: '“Brincar” = pular, saltar. Brincar (divertir-se) é <i>jugar</i>.' }
+    ] },
+    { tipo: 'enem', rotulo: 'Leitura', n: 3, itens: [
+      { base: '<p><b>¡Atención, vecinos!</b></p><p>El próximo sábado habrá una jornada de limpieza en el parque. Traigan guantes y bolsas. Al final, compartiremos una <b>cena</b> con platos típicos. ¡Los esperamos!</p>', fonte: 'Cartel de una asociación de barrio.',
+        enun: 'O cartaz convida os moradores para',
+        alts: ['um mutirão de limpeza no parque, seguido de um jantar coletivo.', 'uma peça de teatro com cenas típicas do bairro.', 'uma feira para vender luvas e sacolas.', 'uma reunião para reclamar da sujeira do parque.', 'um concurso de pratos típicos com prêmios.'],
+        e: '“Jornada de limpieza” = mutirão de limpeza; “cena” = jantar (falso amigo, não é cena de teatro).' },
+      { base: '<p>“Estudiar una lengua extranjera no es solo aprender palabras: es abrir una ventana a otras formas de ver el mundo, a otras músicas, comidas y maneras de vivir.”</p>',
+        enun: 'Segundo o texto, aprender uma língua estrangeira',
+        alts: ['amplia o acesso a outras culturas e visões de mundo.', 'serve apenas para memorizar vocabulário.', 'é útil principalmente para conseguir emprego.', 'substitui a necessidade de viajar.', 'deve começar pela gramática e pela tradução.'],
+        e: '“Abrir una ventana a otras formas de ver el mundo”: é a ideia da H6, a língua como acesso a outras culturas.' },
+      { base: '<p><b>Receta: tortilla de patatas</b></p><p>Pele y corte las patatas en rodajas finas. Fríalas en <b>aceite</b> de oliva a fuego lento. Bata los huevos, mezcle todo y cuaje la tortilla por los dos lados.</p>',
+        enun: 'O texto pertence ao gênero receita, e isso se comprova',
+        alts: ['pelo uso de verbos no imperativo que orientam os passos do preparo.', 'pela presença de opiniões pessoais sobre a culinária espanhola.', 'pela narração de uma história ocorrida na Espanha.', 'pelos argumentos para convencer o leitor a comer batatas.', 'pela descrição de um restaurante famoso.'],
+        e: 'Pele, corte, fríalas, bata, mezcle: imperativos instrucionais. “Aceite” = azeite (outro falso amigo!).' },
+      { base: '<p>— Mamá, ¿me compras un <b>cachorro</b>?<br>— Pronto, hijo. Cuando tengamos una casa con jardín.</p>',
+        enun: 'Na tirinha, o menino pede à mãe',
+        alts: ['um filhote de animal, e a mãe promete atendê-lo mais tarde.', 'um cachorro adulto, e a mãe aceita na hora.', 'uma casa com jardim, e a mãe diz que está pronta.', 'um brinquedo, e a mãe recusa.', 'para brincar no jardim, e a mãe deixa.'],
+        e: '“Cachorro” = filhote (de qualquer animal); “pronto” = logo, em breve. Cão em espanhol é <i>perro</i>.' },
+      { base: '<p><b>Biblioteca Municipal</b>: a partir de enero, el horario será de lunes a sábado, de 9 a 20 h. Los domingos permanecerá cerrada. El préstamo de libros todavía requiere el carné de socio.</p>',
+        enun: 'De acordo com o aviso, a partir de janeiro',
+        alts: ['a biblioteca não abrirá aos domingos e o empréstimo continua exigindo a carteirinha.', 'a biblioteca funcionará todos os dias da semana.', 'não será mais necessário ter carteirinha para pegar livros.', 'a biblioteca abrirá apenas aos sábados.', 'o empréstimo de livros será suspenso.'],
+        e: '“Cerrada” = fechada; “todavía requiere” = ainda exige. “Todavía” é falso amigo de “todavia”.' }
+    ] }
+  ]
+};
