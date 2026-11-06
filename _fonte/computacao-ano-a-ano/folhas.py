@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
-sys.path.insert(0, str(AQUI.parent / 'matematica-adaptada'))
+sys.path.append(str(AQUI.parent / 'matematica-adaptada'))
 from fichas import bloco, caixa_desenho, linhas, tabela  # noqa: E402,F401
 from figuras import fig, NOMES  # noqa: E402
 
@@ -104,12 +104,22 @@ def malha(cols, rows, inicio, alvos=(), paredes=(), pers='robo', alvo='estrela',
     return f'<div class="aa-malha" style="--cols:{cols};--cel:{cel}mm">{casas}</div>'
 
 
-SETA = {'d': '→', 'e': '←', 'c': '↑', 'b': '↓'}
+SETA = {'d': '→', 'e': '←', 'c': '↑', 'b': '↓', 'f': '⇧', 'gd': '↻', 'ge': '↺'}
+
+
+def _seta(s, tam):
+    """'d' é uma seta; ('d', 3) ou 'd3' é a seta com três bolinhas embaixo (repetir 3 vezes), como no jogo."""
+    if isinstance(s, str) and len(s) == 2 and s[0] in 'decb' and s[1].isdigit():
+        s = (s[0], int(s[1]))
+    if isinstance(s, tuple):
+        d, n = s
+        return f'<span class="aa-seta rep" style="--t:{tam}mm">{SETA.get(d, d)}<i>{"<b></b>" * n}</i></span>'
+    return f'<span class="aa-seta" style="--t:{tam}mm">{SETA.get(s, s)}</span>'
 
 
 def setas(seq, vazias=0, tam=12):
     """Fila de setas (programa). vazias = quadradinhos em branco no fim para completar."""
-    out = ''.join(f'<span class="aa-seta" style="--t:{tam}mm">{SETA.get(s, s)}</span>' for s in seq)
+    out = ''.join(_seta(s, tam) for s in seq)
     out += '<span class="aa-seta vazia"></span>' * vazias
     return f'<div class="aa-setas">{out}</div>'
 
