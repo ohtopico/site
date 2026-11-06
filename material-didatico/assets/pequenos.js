@@ -838,5 +838,82 @@
     return { dica: () => { const i = v.findIndex((x, k) => x !== f.alvo[k]); return i >= 0 ? bs[i] : null; } };
   };
 
+  /* Grafo: vertices {id: [x%, y%, figura]} e arestas [['a','b'], ...] (ligações nos dois sentidos).
+     caminho: de origem até destino tocando vértices vizinhos (max: número máximo de arestas, para pedir o caminho mais curto).
+     ligar: arestas começam escondidas; o estudante liga os pares pedidos em alvo (lista de arestas), tocando um vértice e depois o outro. */
+  MEC.grafo = function (f, palco, api) {
+    const ids = Object.keys(f.vertices);
+    const area = h('div', 'pq-grafo');
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('preserveAspectRatio', 'none');
+    area.append(svg);
+    const viz = {}; ids.forEach(i => viz[i] = new Set());
+    const chave = (a, b) => [a, b].sort().join('|');
+    const linhas = {};
+    function linha(a, b, cls) {
+      const [x1, y1] = f.vertices[a], [x2, y2] = f.vertices[b];
+      const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', x1); l.setAttribute('y1', y1); l.setAttribute('x2', x2); l.setAttribute('y2', y2); l.setAttribute('class', cls || '');
+      svg.append(l); linhas[chave(a, b)] = l; return l;
+    }
+    (f.arestas || []).forEach(([a, b]) => { viz[a].add(b); viz[b].add(a); linha(a, b); });
+    const bts = {};
+    ids.forEach(id => {
+      const [x, y, fg] = f.vertices[id];
+      const b = h('button', 'pq-vert', fg ? svgFig(fg) : `<b>${id}</b>`); b.type = 'button';
+      b.style.left = x + '%'; b.style.top = y + '%';
+      b.setAttribute('aria-label', (fg ? nomeFig(fg) : 'ponto ' + id) + (f.rotulos !== false && fg ? ' (' + id + ')' : ''));
+      if (f.rotulos !== false && fg) b.insertAdjacentHTML('beforeend', `<i>${id}</i>`);
+      area.append(b); bts[id] = b;
+    });
+    palco.append(area);
+    if (f.ligar) {
+      const alvo = new Set(f.ligar.map(([a, b]) => chave(a, b)));
+      const feitas = new Set(); let sel = null;
+      ids.forEach(id => bts[id].onclick = () => {
+        if (sel == null) { sel = id; bts[id].classList.add('sel'); SOM.toque(); return; }
+        const a = sel; sel = null; bts[a].classList.remove('sel');
+        if (a === id) return;
+        const k = chave(a, id);
+        if (!alvo.has(k) || feitas.has(k)) return api.errou(bts[id]);
+        feitas.add(k); linha(a, id, 'feita'); SOM.certo();
+        if (feitas.size === alvo.size) setTimeout(api.acertou, 400);
+      });
+      return { dica: () => { const k = [...alvo].find(x => !feitas.has(x)); if (!k) return null; const [a, b] = k.split('|'); return sel == null ? bts[a] : sel === a ? bts[b] : bts[sel]; } };
+    }
+    // caminho
+    let rota = [f.origem];
+    bts[f.origem].classList.add('rota');
+    bts[f.destino].classList.add('destino');
+    function menor(de) {
+      const prev = { [de]: null }, q = [de];
+      while (q.length) { const u = q.shift(); if (u === f.destino) break; viz[u].forEach(v => { if (!(v in prev)) { prev[v] = u; q.push(v); } }); }
+      const c = []; let u = f.destino; while (u != null) { c.unshift(u); u = prev[u]; } return c;
+    }
+    function reiniciar() { rota.forEach(id => bts[id].classList.remove('rota')); Object.values(linhas).forEach(l => l.classList.remove('rota')); rota = [f.origem]; bts[f.origem].classList.add('rota'); }
+    ids.forEach(id => bts[id].onclick = () => {
+      const u = rota[rota.length - 1];
+      if (id === u) return;
+      if (!viz[u].has(id)) return api.errou(bts[id]);
+      rota.push(id); bts[id].classList.add('rota'); linhas[chave(u, id)].classList.add('rota'); SOM.toque();
+      if (id === f.destino) {
+        if (f.max && rota.length - 1 > f.max) { api.errou(area); setTimeout(reiniciar, 600); return; }
+        SOM.certo(); setTimeout(api.acertou, 400);
+      } else if (f.max && rota.length - 1 >= f.max) { api.errou(area); setTimeout(reiniciar, 600); }
+    });
+    return { dica: () => { const c = menor(f.origem); const i = c.findIndex((x, k) => rota[k] !== x); if (i < 0) return null; if (i < rota.length) { reiniciar(); return bts[c[1]]; } return bts[c[i]]; } };
+  };
+
+  /* Regras (seleção condicional): mostra a regra SE (condição) ENTÃO (caixa 1) SENÃO (caixa 2) e os itens chegam um por um, como no separar.
+     se: lista de figuras ou {txt}; caixas: [então, senão]; itens: [{f, caixa}]. */
+  MEC.regras = function (f, palco, api) {
+    const r = h('div', 'pq-regra');
+    const parte = (rot, specs) => { const d = h('div', 'linha'); d.append(h('b', '', rot)); d.append(quadro([].concat(specs))); return d; };
+    r.append(parte(f.rotulos ? f.rotulos[0] : 'SE', f.se), parte(f.rotulos ? f.rotulos[1] : 'ENTÃO', f.caixas[0]));
+    if (f.caixas[1] != null) r.append(parte(f.rotulos ? f.rotulos[2] : 'SENÃO', f.caixas[1]));
+    palco.append(r);
+    return MEC.classificar(f, palco, api);
+  };
+
   window.PQ = { jogo, MEC, svgFig, nomeFig, falar, SOM, ic, seta, embaralhar, h, carta, quadro, opcoes, esperar };
 })();

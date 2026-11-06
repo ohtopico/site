@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="../assets/md.css">
-<link rel="stylesheet" href="../assets/pequenos.css?v=7da20528">
+<link rel="stylesheet" href="../assets/pequenos.css?v=9c18aecd">
 <!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"É Verdade?","description":"Jogo sem leitura para o 3º ano: olhar uma cena e decidir se a frase em figuras é verdadeira ou falsa, inclusive frases com negação (a figura riscada quer dizer \"não tem\").","url":"https://ohtopico.com.br/material-didatico/jogos/e-verdade.html","image":"https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"3º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"10–15 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF03CO01","targetDescription":"Associar os valores “verdadeiro” e “falso” a sentenças lógicas que dizem respeito a situações do dia a dia, fazendo uso de termos que indicam negação."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
@@ -89,8 +89,8 @@
 <script src="../assets/listas.js"></script>
 <script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
-<script src="../assets/figuras.js?v=7da20528"></script>
-<script src="../assets/pequenos.js?v=7da20528"></script>
+<script src="../assets/figuras.js?v=9c18aecd"></script>
+<script src="../assets/pequenos.js?v=9c18aecd"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('e-verdade');
 PQ.jogo({"id": "e-verdade", "leitura": false, "fases": [{"tipo": "vf", "fala": "Olhe a cena. A menina diz: tem gato. É verdade?", "cena": ["gato", "gato", "bola"], "afirmacao": ["gato"], "resposta": true}, {"tipo": "vf", "fala": "A menina diz: tem gato. É verdade?", "cena": ["cachorro", "bola", "flor"], "afirmacao": ["gato"], "resposta": false}, {"tipo": "vf", "fala": "A figura riscada quer dizer não tem. A menina diz: não tem peixe. É verdade?", "cena": ["maca", "banana", "pao"], "afirmacao": ["!peixe"], "resposta": true}, {"tipo": "vf", "fala": "A menina diz: não tem peixe. É verdade?", "cena": ["peixe", "agua-gota", "peixe"], "afirmacao": ["!peixe"], "resposta": false}, {"tipo": "vf", "fala": "No céu tem sol e nuvem. A menina diz: não está chovendo. É verdade?", "cena": ["sol", "nuvem"], "afirmacao": ["!chuva"], "resposta": true}, {"tipo": "vf", "fala": "Está chovendo. A menina diz: não precisa de guarda-chuva. É verdade?", "cena": ["chuva", "nuvem", "crianca"], "afirmacao": ["!guarda-chuva"], "resposta": false}, {"tipo": "escolha", "fala": "Qual cena combina com a frase: não tem gato?", "cena": ["!gato"], "opcoes": [{"fila": ["gato", "bola"]}, {"fila": ["cachorro", "bola"]}, {"fila": ["gato", "peixe"]}], "certa": 1}, {"tipo": "escolha", "fala": "É noite. Qual frase é verdadeira?", "cena": ["lua", "estrela"], "opcoes": [{"fila": ["!sol"]}, {"fila": ["!lua"]}, {"fila": ["sol"]}], "certa": 0}, {"tipo": "vf", "fala": "A menina diz duas coisas: tem maçã e não tem banana. As duas são verdade?", "cena": ["maca", "maca", "pao"], "afirmacao": ["maca", "!banana"], "resposta": true}]});

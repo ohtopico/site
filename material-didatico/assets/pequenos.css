@@ -149,3 +149,27 @@
 .pq-ficha th, .pq-ficha td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
 .pq-ficha th { background: #fff1b8; }
 .pq-carta.txt .pq-ficha { border: 0; padding: 0; }
+
+/* grafo */
+.pq-grafo { position: relative; width: min(100%, 520px); aspect-ratio: 4 / 3; border: 2px solid var(--ink); border-radius: 18px; background: #f3faf5; }
+.pq-grafo svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pq-grafo line { stroke: #888; stroke-width: 1.4; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-width: 5px; }
+.pq-grafo line.rota, .pq-grafo line.feita { stroke: var(--accent, #2f8f5b); stroke-width: 9px; }
+.pq-vert { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border: 3px solid var(--ink); border-radius: 50%; background: #fff; padding: 8px; cursor: pointer; }
+.pq-vert svg { width: 100%; height: 100%; display: block; }
+.pq-vert b { font: 700 22px var(--body); }
+.pq-vert i { position: absolute; right: -10px; bottom: -8px; background: var(--ink); color: #fff; font: 700 13px/20px var(--body); font-style: normal; border-radius: 99px; min-width: 20px; padding: 0 4px; }
+.pq-vert.rota { background: #c6ebd4; }
+.pq-vert.destino { outline: 4px dashed #ffd84d; outline-offset: 3px; }
+.pq-vert.sel { outline: 4px solid var(--accent, #2f8f5b); outline-offset: 3px; }
+@media (max-width: 560px) { .pq-vert { width: 48px; height: 48px; margin: -24px 0 0 -24px; padding: 5px; } }
+/* regra se/então/senão */
+.pq-regra { display: flex; flex-direction: column; gap: 6px; border: 2px solid var(--ink); border-radius: 18px; padding: 10px 14px; background: #fff; }
+.pq-regra .linha { display: flex; align-items: center; gap: 10px; }
+.pq-regra .linha > b { font: 700 18px var(--body); min-width: 70px; }
+.pq-regra .pq-quadro { padding: 6px; border-radius: 14px; }
+.pq-regra .pq-quadro svg.fg { width: 44px; height: 44px; }
+.pq-txt { display: inline-grid; place-items: center; min-width: 1.6em; font: 700 22px/1.2 var(--body); color: #111; text-align: center; }
+.pq-atual .pq-txt { width: 100%; height: 100%; font-size: 30px; border: 2px solid var(--ink); border-radius: 18px; background: #fff; padding: 6px; }
+.pq-caixa .dentro .pq-txt { font-size: 13px; min-width: 0; }
+.pq-vaga .pq-txt { width: 100%; height: 100%; }
