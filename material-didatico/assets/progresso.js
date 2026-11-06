@@ -12,7 +12,8 @@
 (function () {
   const KEY = 'md-progresso-v1';
   const DIA = 864e5;
-  const hoje = () => Math.floor(Date.now() / DIA);
+  // número do dia no calendário deste aparelho (no Brasil, o dia vira à meia-noite local, não às 21h como no UTC)
+  const hoje = () => Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / DIA);
   const SALT = 'ohtopico-progresso';
 
   const NIVEIS = [
@@ -374,8 +375,8 @@
     if (!o || !Array.isArray(o.r)) throw new Error('formato');
     return { t: String(o.t || 'Tarefa'), p: /^\d{4}-\d{2}-\d{2}$/.test(o.p) ? o.p : '', r: o.r.filter(id => REC[id]), c: +o.c || 0, code: String(code).trim() };
   }
-  // último dia (contado como em hoje()) que ainda vale para o prazo: o fim do dia no fuso deste aparelho
-  const diaDoPrazo = p => { if (!p) return null; const [y, m, d] = p.split('-').map(Number); return Math.floor(new Date(y, m - 1, d, 23, 59).getTime() / DIA); };
+  // último dia (contado como em hoje()) que ainda vale para o prazo: o próprio dia do prazo, até a meia-noite no fuso deste aparelho
+  const diaDoPrazo = p => { if (!p) return null; const [y, m, d] = p.split('-').map(Number); return Math.round(Date.UTC(y, m - 1, d) / DIA); };
 
   function resultado(recId) { const p = perfilAtual(false); return p && p.r[recId] ? p.r[recId] : null; }
 
