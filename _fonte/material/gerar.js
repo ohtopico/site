@@ -272,6 +272,9 @@ function paginaHab(h) {
 <base href="/material-didatico/">
 ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 ${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], h.comp === 'CO' ? ['BNCC Computação', `${SITE}/material-didatico/${HUB_CO}`] : ['Explorar a BNCC', `${SITE}/material-didatico/bncc.html`], [c, url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
@@ -471,6 +474,9 @@ function paginaAprenda(h) {
 <base href="/material-didatico/">
 ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 ${cabecaSEO({ title, desc, url, img, imgAlt: `Aprenda: ${A.t}`, ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['Aprenda', `${SITE}/material-didatico/${HUB_APRENDA}`], [A.t, url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
@@ -587,6 +593,9 @@ function paginaHubAprenda() {
 <base href="/material-didatico/">
 ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 ${cabecaSEO({ title, desc, url, img, imgAlt: 'Aprenda Computação', ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['Aprenda', url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
@@ -678,6 +687,9 @@ function paginaHubComputacao() {
 <base href="/material-didatico/">
 ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e materiais', ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['BNCC Computação', url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
@@ -846,6 +858,9 @@ function paginaPensamento() {
 <base href="/material-didatico/">
 ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 ${cabecaSEO({ title, desc, url, img, imgAlt: 'Pensamento computacional: os quatro pilares e as habilidades da BNCC', ldObjs: [ldPagina, ldFaq, migalhas([['Início', `${SITE}/`], ['BNCC Computação', `${SITE}/material-didatico/${HUB_CO}`], ['Pensamento computacional', url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
