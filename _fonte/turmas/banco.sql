@@ -40,6 +40,10 @@ create table if not exists public.alunos (
   unique (turma_id, apelido)
 );
 
+-- aula ao vivo (adicionado depois: "add column if not exists" deixa rodar de novo em banco que já existe)
+alter table public.alunos add column if not exists online_em timestamptz;
+alter table public.alunos add column if not exists fazendo text not null default '';
+
 create table if not exists public.sessoes_aluno (
   token uuid primary key default gen_random_uuid(),
   aluno_id uuid not null references public.alunos(id) on delete cascade,
@@ -76,7 +80,7 @@ create policy "apaga aluno" on public.alunos for delete
 revoke all on public.professores, public.turmas, public.alunos, public.sessoes_aluno from anon, authenticated;
 grant select on public.professores to authenticated;
 grant select, delete on public.turmas to authenticated;
-grant select (id, turma_id, apelido, pontos, acertos, atualizado, criado), delete on public.alunos to authenticated;
+grant select (id, turma_id, apelido, pontos, acertos, atualizado, criado, online_em, fazendo), delete on public.alunos to authenticated;
 
 -- ---------- funções da professora ----------
 create or replace function public.prof_entrar(p_nome text default '') returns public.professores
@@ -168,15 +172,33 @@ begin
   return true;
 end $$;
 
+-- sinal de vida leve (a cada 20 s com a aba aberta): onde o aluno está e os pontos, sem mandar o salvamento inteiro.
+-- p_ativo = false quando a aba vai para segundo plano: o painel da aula mostra o aluno como fora do jogo.
+create or replace function public.aluno_ping(p_token uuid, p_fazendo text, p_pontos int, p_acertos int, p_ativo boolean default true) returns boolean
+language plpgsql security definer set search_path = public as $$
+declare aid uuid;
+begin
+  select aluno_id into aid from sessoes_aluno where token = p_token and expira > now();
+  if aid is null then return false; end if;
+  update alunos set
+    online_em = case when p_ativo then now() else null end,
+    fazendo = left(coalesce(p_fazendo, ''), 120),
+    pontos = greatest(pontos, coalesce(p_pontos, 0)),
+    acertos = greatest(acertos, coalesce(p_acertos, 0))
+    where id = aid;
+  return true;
+end $$;
+
 create or replace function public.aluno_sair(p_token uuid) returns void
 language sql security definer set search_path = public as $$
+  update alunos set online_em = null, fazendo = '' where id = (select aluno_id from sessoes_aluno where token = p_token);
   delete from sessoes_aluno where token = p_token;
 $$;
 
 revoke all on function public.eu_aprovada(), public._codigo(int), public.prof_entrar(text), public.prof_criar_turma(text),
   public.prof_aluno_senha(uuid, text), public.aluno_entrar(text, text, text), public.aluno_salvar(uuid, text, int, int),
-  public.aluno_sair(uuid) from public, anon, authenticated;
+  public.aluno_sair(uuid), public.aluno_ping(uuid, text, int, int, boolean) from public, anon, authenticated;
 grant execute on function public.eu_aprovada(), public.prof_entrar(text), public.prof_criar_turma(text),
   public.prof_aluno_senha(uuid, text) to authenticated;
 grant execute on function public.aluno_entrar(text, text, text), public.aluno_salvar(uuid, text, int, int),
-  public.aluno_sair(uuid) to anon, authenticated;
+  public.aluno_sair(uuid), public.aluno_ping(uuid, text, int, int, boolean) to anon, authenticated;

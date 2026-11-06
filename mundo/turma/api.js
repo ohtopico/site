@@ -60,6 +60,7 @@
     async sair() { try { await pede('/auth/v1/logout', { token: await tokenProf() }); } catch (e) {} grava(localStorage, CH_PROF, null); },
     eu: nome => rpcProf('prof_entrar', { p_nome: nome || '' }),
     turmas: () => selProf('turmas?select=id,nome,codigo,criado&order=criado.asc'),
+    aoVivo: turma => selProf('alunos?select=id,apelido,pontos,acertos,atualizado,online_em,fazendo&turma_id=eq.' + encodeURIComponent(turma) + '&order=apelido.asc'),
     alunos: turma => selProf('alunos?select=id,apelido,pontos,acertos,atualizado&turma_id=eq.' + encodeURIComponent(turma) + '&order=apelido.asc'),
     criarTurma: nome => rpcProf('prof_criar_turma', { p_nome: nome }),
     senhaAluno: (turma, apelido) => rpcProf('prof_aluno_senha', { p_turma: turma, p_apelido: apelido }),
@@ -79,6 +80,12 @@
       const s = aluno.sessao(); if (!s) return false;
       const ok = await pede('/rest/v1/rpc/aluno_salvar', { corpo: { p_token: s.token, p_progresso: progresso, p_pontos: pontos, p_acertos: acertos } });
       if (ok === false) grava(localStorage, CH_ALUNO, null);   // sessão venceu: precisa entrar de novo
+      return ok;
+    },
+    async ping(fazendo, pontos, acertos, ativo) {
+      const s = aluno.sessao(); if (!s) return false;
+      const ok = await pede('/rest/v1/rpc/aluno_ping', { corpo: { p_token: s.token, p_fazendo: fazendo, p_pontos: pontos, p_acertos: acertos, p_ativo: ativo !== false } });
+      if (ok === false) grava(localStorage, CH_ALUNO, null);
       return ok;
     },
     async sair() { const s = aluno.sessao(); grava(localStorage, CH_ALUNO, null); if (s) { try { await pede('/rest/v1/rpc/aluno_sair', { corpo: { p_token: s.token } }); } catch (e) {} } }

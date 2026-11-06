@@ -21,6 +21,25 @@ th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #ddd; }
 .turma { border: 1.5px solid var(--ink, #222); border-radius: 16px; padding: 14px; margin: 12px 0; }
 .small { font-size: 14px; }
 .muted { color: #555; }
+/* Aula ao vivo */
+.caixa.larga { max-width: 1100px; }
+.av-resumo { font-size: 20px; font-weight: 600; margin: 6px 0 10px; }
+.av-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin: 14px 0; }
+.av-card { border: 1.5px solid var(--ink, #222); border-radius: 14px; padding: 10px 12px; background: var(--paper, #fff); }
+.av-card.jogando { border-left: 8px solid #146c3e; }
+.av-card.parado { border-left: 8px solid #c9a400; background: #fffbe6; }
+.av-card.fora { border-left: 8px solid #bbb; color: #555; }
+.av-card h3 { margin: 0 0 4px; font-size: 18px; }
+.av-st { font-size: 13px; font-weight: 700; text-transform: none; }
+.av-card.jogando .av-st { color: #146c3e; }
+.av-card.parado .av-st { color: #8a6d00; }
+.av-onde { font-size: 14px; margin: 4px 0; min-height: 1.2em; }
+.av-num { display: flex; gap: 12px; font-size: 14px; flex-wrap: wrap; }
+.av-num b { font-size: 16px; }
+.av-mais { color: #146c3e; font-weight: 700; }
+#tela-aovivo:fullscreen { max-width: none; margin: 0; border-radius: 0; overflow: auto; }
+#tela-aovivo:fullscreen .av-card h3 { font-size: 22px; }
+#tela-aovivo:fullscreen .av-onde, #tela-aovivo:fullscreen .av-num { font-size: 17px; }
 [hidden] { display: none !important; }
 .cartoes { display: none; }
 @media print {

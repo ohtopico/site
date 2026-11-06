@@ -21,7 +21,7 @@
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="../../material-didatico/assets/md.css">
-<link rel="stylesheet" href="estilo.css?v=20261106a">
+<link rel="stylesheet" href="estilo.css?v=20261106b">
 </head>
 <body>
 <main class="wrap">
@@ -73,7 +73,7 @@
       <h1>Minhas turmas</h1>
       <button class="bt claro peq" type="button" data-sair>Sair</button>
     </div>
-    <p class="muted">Crie a turma, cadastre os alunos pelo apelido e entregue a cada um o código da turma e a senha. Eles entram em <b>ohtopico.com.br/mundo/entrar</b>.</p>
+    <p class="muted">Crie a turma, cadastre os alunos pelo apelido e entregue a cada um o código da turma e a senha. Eles entram em <b>ohtopico.com.br/mundo/entrar</b>. Durante a aula, use "Acompanhar a aula ao vivo" para ver quem está jogando e o que cada um está fazendo.</p>
     <form id="f-turma" class="linha">
       <label class="sr-only" for="t-nome">Nome da turma</label>
       <input class="campo" id="t-nome" maxlength="60" placeholder="Nome da turma, ex.: 6º ano A" required>
@@ -84,9 +84,23 @@
     <h2>Privacidade</h2>
     <p class="small muted">Guardamos só o apelido de cada aluno, a senha (embaralhada, ninguém consegue ler) e o progresso no Mundo. Não cadastre nome completo, e-mail ou foto. Ao apagar um aluno ou uma turma, os dados somem do banco na hora.</p>
   </section>
+  <section class="caixa larga" id="tela-aovivo" hidden>
+    <div class="linha" style="justify-content: space-between">
+      <h1>Aula ao vivo: <span id="av-nome"></span></h1>
+      <button class="bt claro peq" type="button" id="av-voltar">Voltar às turmas</button>
+    </div>
+    <p class="av-resumo" id="av-resumo" role="status" aria-live="polite"></p>
+    <div class="linha small">
+      <span class="muted" id="av-hora"></span>
+      <button class="bt claro peq" type="button" id="av-zerar">Começar a contar a aula agora</button>
+      <button class="bt claro peq" type="button" id="av-tela">Tela cheia</button>
+    </div>
+    <div id="av-lista"></div>
+    <p class="small muted">A página se atualiza sozinha a cada 15 segundos. "Jogando agora" é quem está com o Mundo aberto na tela. "Parado" é quem está com o Mundo aberto mas não ganhou pontos nos últimos 5 minutos. "Nesta aula" conta os pontos e acertos desde que você abriu esta tela ou clicou em "Começar a contar a aula agora".</p>
+  </section>
 </main>
 <div class="cartoes" id="cartoes" aria-hidden="true"></div>
-<script src="api.js?v=20261106a"></script>
-<script src="turma.js?v=20261106a"></script>
+<script src="api.js?v=20261106b"></script>
+<script src="turma.js?v=20261106b"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 (function () {
   const T = window.MUNDO_TURMA, $ = s => document.querySelector(s);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const telas = ['sem-config', 'tela-entrar', 'tela-nova-senha', 'tela-espera', 'tela-painel'];
+  const telas = ['sem-config', 'tela-entrar', 'tela-nova-senha', 'tela-espera', 'tela-painel', 'tela-aovivo'];
   const mostra = id => telas.forEach(t => { $('#' + t).hidden = t !== id; });
   const senhasNovas = {};   // senhas geradas agora (só aparecem uma vez): { alunoApelido@turma: senha }
   const traduz = e => {
@@ -63,6 +63,7 @@
                 <button class="bt perigo peq" type="button" data-apagar="${esc(a.id)}" data-nome="${esc(a.apelido)}">Apagar</button></td></tr>`;
           }).join('')}</tbody></table>` : '<p class="muted small">Nenhum aluno cadastrado.</p>'}
         <div class="linha">
+          <button class="bt peq" type="button" data-aovivo>Acompanhar a aula ao vivo</button>
           <button class="bt claro peq" type="button" data-imprimir>Imprimir os logins com senha nova</button>
           <button class="bt perigo peq" type="button" data-apagar-turma>Apagar a turma</button>
         </div>
@@ -93,6 +94,7 @@
         if (prompt(`Para apagar a turma ${t.nome} com todos os alunos e o progresso, digite APAGAR`) !== 'APAGAR') return;
         await ocupado(ev.target, async () => { try { await T.prof.apagarTurma(t.id); } catch (e) { $('#p-msg').textContent = traduz(e); } await desenhaTurmas(); });
       });
+      el.querySelector('[data-aovivo]').addEventListener('click', () => aoVivo.abre(t));
       el.querySelector('[data-imprimir]').addEventListener('click', () => {
         const comSenha = alunos[i].filter(a => senhasNovas[a.apelido.toLowerCase() + '@' + t.id]);
         if (!comSenha.length) { alert('As senhas só aparecem logo depois de criadas. Cadastre os alunos ou clique em "Nova senha" e depois imprima.'); return; }
@@ -102,6 +104,70 @@
       });
     });
   }
+
+  /* ---------- Aula ao vivo: lê os alunos da turma a cada 15 s ---------- */
+  const aoVivo = (() => {
+    const ONLINE_MS = 60000, PARADO_MS = 5 * 60000, CADA_MS = 15000;
+    let turma = null, timer = null, base = {}, ultimaMudanca = {}, ultimoValor = {};
+    const chBase = id => 'mundo-turma-aula-' + id;
+    const leBase = id => { try { return JSON.parse(sessionStorage.getItem(chBase(id))) || null; } catch (e) { return null; } };
+    const gravaBase = (id, b) => { try { sessionStorage.setItem(chBase(id), JSON.stringify(b)); } catch (e) {} };
+    const ha = ms => { const s = Math.round(ms / 1000); if (s < 60) return 'há ' + s + ' s'; const m = Math.round(s / 60); return m < 60 ? 'há ' + m + ' min' : 'há ' + Math.round(m / 60) + ' h'; };
+
+    async function atualiza() {
+      if (!turma) return;
+      let lista;
+      try { lista = await T.prof.aoVivo(turma.id); }
+      catch (e) {
+        if (e.status === 401 || e.status === 403) { para(); await T.prof.sair(); mostra('tela-entrar'); return; }
+        $('#av-hora').textContent = e.status === 400 ? 'O painel ao vivo ainda está sendo ativado. Tente de novo mais tarde.' : 'Sem conexão agora, tento de novo em 15 segundos.'; return;
+      }
+      const agora = Date.now();
+      if (!base.alunos) { base = { inicio: agora, alunos: {} }; }
+      lista.forEach(a => {
+        if (!base.alunos[a.id]) base.alunos[a.id] = { p: a.pontos, c: a.acertos };
+        const v = a.pontos + '/' + a.acertos;
+        if (ultimoValor[a.id] !== v) { ultimoValor[a.id] = v; ultimaMudanca[a.id] = agora; }
+      });
+      gravaBase(turma.id, base);
+      const com = lista.map(a => {
+        const on = a.online_em && agora - new Date(a.online_em).getTime() < ONLINE_MS;
+        const parado = on && agora - ultimaMudanca[a.id] > PARADO_MS;
+        return Object.assign({}, a, { st: !on ? 'fora' : parado ? 'parado' : 'jogando', maisP: a.pontos - base.alunos[a.id].p, maisC: a.acertos - base.alunos[a.id].c });
+      });
+      const ordem = { jogando: 0, parado: 1, fora: 2 };
+      com.sort((x, y) => ordem[x.st] - ordem[y.st] || x.apelido.localeCompare(y.apelido, 'pt-BR'));
+      const n = st => com.filter(a => a.st === st).length;
+      const totC = com.reduce((s, a) => s + Math.max(0, a.maisC), 0);
+      $('#av-resumo').textContent = `${n('jogando') + n('parado')} de ${com.length} alunos com o Mundo aberto` + (n('parado') ? ` (${n('parado')} parado${n('parado') > 1 ? 's' : ''})` : '') + `. ${totC} acerto${totC === 1 ? '' : 's'} da turma nesta aula.`;
+      $('#av-hora').textContent = 'Atualizado às ' + new Date(agora).toLocaleTimeString('pt-BR') + '. Contando a aula desde ' + new Date(base.inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '.';
+      const rotulo = { jogando: 'Jogando agora', parado: 'Parado há mais de 5 min', fora: 'Fora do jogo' };
+      $('#av-lista').innerHTML = com.length ? `<div class="av-cards">${com.map(a => `
+        <div class="av-card ${a.st}">
+          <h3>${esc(a.apelido)}</h3>
+          <div class="av-st">${rotulo[a.st]}</div>
+          <div class="av-onde">${a.st === 'fora' ? (a.atualizado ? 'Jogou pela última vez ' + esc(ha(agora - new Date(a.atualizado).getTime())) : 'Ainda não jogou') : esc(a.fazendo || 'Explorando o Mundo')}</div>
+          <div class="av-num"><span>Nesta aula: <b class="av-mais">+${Math.max(0, a.maisP)}</b> pontos, <b class="av-mais">+${Math.max(0, a.maisC)}</b> acertos</span><span class="muted">Total: ${a.pontos} pontos, ${a.acertos} acertos</span></div>
+        </div>`).join('')}</div>` : '<p class="muted">Nenhum aluno cadastrado nesta turma.</p>';
+    }
+    function para() { clearInterval(timer); timer = null; }
+    function liga() { para(); timer = setInterval(() => { if (!document.hidden) atualiza(); }, CADA_MS); }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && turma) atualiza(); });
+    $('#av-voltar').addEventListener('click', async () => { para(); turma = null; if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); mostra('tela-painel'); await desenhaTurmas(); });
+    $('#av-zerar').addEventListener('click', () => { if (!turma) return; base = {}; atualiza(); });
+    $('#av-tela').addEventListener('click', () => {
+      const el = $('#tela-aovivo');
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      else if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    });
+    return {
+      abre(t) {
+        turma = t; base = leBase(t.id) || {}; ultimaMudanca = {}; ultimoValor = {};
+        $('#av-nome').textContent = t.nome; $('#av-lista').innerHTML = '<p class="muted">Carregando...</p>'; $('#av-resumo').textContent = ''; $('#av-hora').textContent = '';
+        mostra('tela-aovivo'); window.scrollTo(0, 0); atualiza(); liga();
+      }
+    };
+  })();
 
   $('#f-entrar').addEventListener('submit', ev => {
     ev.preventDefault();
