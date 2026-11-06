@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="robots" content="noindex, nofollow">
+<title>Mundo da turma | Júlia Quoos</title>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="estilo.css?v=20261106a">
+</head>
+<body>
+<main class="wrap">
+
+  <section class="caixa estreita" id="sem-config" hidden>
+    <h1>Mundo da turma</h1>
+    <p>Esta área ainda está sendo preparada. Volte em breve.</p>
+    <p class="small"><a href="/mundo/">Ir para o Mundo</a></p>
+  </section>
+
+  <section class="caixa estreita" id="tela-entrar" hidden>
+    <h1>Mundo da turma</h1>
+    <p class="muted">Área para professoras e professores que apoiam o projeto no Catarse. Aqui você cria as turmas e o login de cada aluno, e o progresso no Mundo fica salvo em qualquer computador.</p>
+    <form id="f-entrar">
+      <label for="e-email">E-mail</label>
+      <input class="campo" id="e-email" type="email" autocomplete="email" required>
+      <label for="e-senha">Senha</label>
+      <input class="campo" id="e-senha" type="password" autocomplete="current-password" minlength="8" required>
+      <div class="linha">
+        <button class="bt" type="submit" id="b-entrar">Entrar</button>
+        <button class="bt claro" type="button" id="b-cadastrar">Criar minha conta</button>
+      </div>
+      <p class="erro" id="e-msg" role="status"></p>
+      <p class="small"><a href="#" id="b-esqueci">Esqueci a senha</a></p>
+    </form>
+    <p class="small muted">Use o mesmo e-mail do seu apoio no Catarse. Depois de criar a conta, ela é liberada quando o apoio for conferido.</p>
+    <p class="small muted">Ainda não apoia? <a href="https://www.catarse.com.br/ohtopico/plans" rel="noopener">Veja os planos no Catarse</a>.</p>
+  </section>
+
+  <section class="caixa estreita" id="tela-nova-senha" hidden>
+    <h1>Nova senha</h1>
+    <form id="f-nova">
+      <label for="n-senha">Digite a nova senha (8 letras ou mais)</label>
+      <input class="campo" id="n-senha" type="password" autocomplete="new-password" minlength="8" required>
+      <button class="bt" type="submit">Salvar a senha</button>
+      <p class="erro" id="n-msg" role="status"></p>
+    </form>
+  </section>
+
+  <section class="caixa estreita" id="tela-espera" hidden>
+    <h1>Conta criada</h1>
+    <p>Sua conta (<b id="esp-email"></b>) está aguardando a conferência do apoio no Catarse. Assim que for liberada, é só voltar a esta página.</p>
+    <p class="small muted">Se demorar, mande uma mensagem pelo Catarse.</p>
+    <button class="bt claro" type="button" data-sair>Sair</button>
+  </section>
+
+  <section class="caixa" id="tela-painel" hidden>
+    <div class="linha" style="justify-content: space-between">
+      <h1>Minhas turmas</h1>
+      <button class="bt claro peq" type="button" data-sair>Sair</button>
+    </div>
+    <p class="muted">Crie a turma, cadastre os alunos pelo apelido e entregue a cada um o código da turma e a senha. Eles entram em <b>ohtopico.com.br/mundo/entrar</b>.</p>
+    <form id="f-turma" class="linha">
+      <label class="sr-only" for="t-nome">Nome da turma</label>
+      <input class="campo" id="t-nome" maxlength="60" placeholder="Nome da turma, ex.: 6º ano A" required>
+      <button class="bt" type="submit">Criar turma</button>
+    </form>
+    <p class="erro" id="p-msg" role="status"></p>
+    <div id="lista-turmas"></div>
+    <h2>Privacidade</h2>
+    <p class="small muted">Guardamos só o apelido de cada aluno, a senha (embaralhada, ninguém consegue ler) e o progresso no Mundo. Não cadastre nome completo, e-mail ou foto. Ao apagar um aluno ou uma turma, os dados somem do banco na hora.</p>
+  </section>
+</main>
+<div class="cartoes" id="cartoes" aria-hidden="true"></div>
+<script src="api.js?v=20261106a"></script>
+<script src="turma.js?v=20261106a"></script>
+</body>
+</html>

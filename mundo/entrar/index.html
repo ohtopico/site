@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="robots" content="noindex, nofollow">
+<title>Entrar no Mundo da turma | Júlia Quoos</title>
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../turma/estilo.css?v=20261106a">
+</head>
+<body>
+<main class="wrap">
+  <section class="caixa estreita" id="sem-config" hidden>
+    <h1>Mundo da turma</h1>
+    <p>Esta área ainda está sendo preparada. Enquanto isso, o Mundo funciona normalmente.</p>
+    <p><a class="bt" href="/mundo/">Ir para o Mundo</a></p>
+  </section>
+  <form class="caixa estreita" id="f" hidden>
+    <h1>Entrar no Mundo da turma</h1>
+    <p class="muted">Use os dados que a professora ou o professor te entregou.</p>
+    <label for="codigo">Código da turma</label>
+    <input class="campo codigo" id="codigo" maxlength="6" autocomplete="off" autocapitalize="characters" required>
+    <label for="apelido">Apelido</label>
+    <input class="campo" id="apelido" maxlength="30" autocomplete="username" required>
+    <label for="senha">Senha</label>
+    <input class="campo" id="senha" type="password" maxlength="20" autocomplete="current-password" required>
+    <button class="bt" type="submit" id="b">Entrar e jogar</button>
+    <p class="erro" id="msg" role="status"></p>
+    <p class="small muted">O jogo deste computador passa a ser o seu. Quando terminar, clique em "Sair da turma" no Mundo, para o próximo colega começar do zero.</p>
+    <p class="small"><a href="/mundo/">Jogar sem turma</a> · <a href="/mundo/turma/">Sou professor(a)</a></p>
+  </form>
+</main>
+<script src="../../material-didatico/assets/progresso.js?v=20261031zq"></script>
+<script src="../turma/api.js?v=20261106a"></script>
+<script>
+(function () {
+  const T = window.MUNDO_TURMA, $ = s => document.querySelector(s);
+  if (!T.configurado()) { $('#sem-config').hidden = false; return; }
+  $('#f').hidden = false;
+  const q = new URLSearchParams(location.search);
+  if (q.get('turma')) $('#codigo').value = q.get('turma').toUpperCase().slice(0, 6);
+  ($('#codigo').value ? $('#apelido') : $('#codigo')).focus();
+  // o jogo deste aparelho passa a ser o do aluno: limpa o anterior e, se houver, coloca o que estava salvo na turma
+  async function trocaParaAluno(progresso) {
+    ['mundo-site-v1', 'md-progresso-v1'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+    if (!progresso) return;
+    const o = await MDP.pacote.desempacotar('MUNS1', progresso);
+    if (o && o.m) { try { await MDP.importar(o.m); } catch (e) {} }
+    if (o && o.s && typeof o.s.pontos === 'number') localStorage.setItem('mundo-site-v1', JSON.stringify(o.s));
+  }
+  $('#f').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    $('#b').disabled = true; $('#msg').textContent = '';
+    try {
+      const d = await T.aluno.entrar($('#codigo').value.trim(), $('#apelido').value.trim(), $('#senha').value.trim());
+      if (d && d.erro) {
+        $('#msg').textContent = { turma: 'Não achei essa turma. Confira o código.', senha: 'Apelido ou senha não conferem.', bloqueado: 'Muitas tentativas erradas. Espere 10 minutos ou peça uma senha nova.' }[d.erro] || 'Não deu certo.';
+        return;
+      }
+      try { await trocaParaAluno(d.progresso); } catch (e) { $('#msg').textContent = 'Não consegui abrir o progresso salvo. Avise a professora.'; await T.aluno.sair(); return; }
+      location.href = '/mundo/';
+    } catch (e) {
+      $('#msg').textContent = /Failed to fetch|NetworkError/i.test(e.message) ? 'Sem conexão. Confira a internet.' : 'Não deu certo (' + e.message + ').';
+    } finally { $('#b').disabled = false; }
+  });
+})();
+</script>
+</body>
+</html>

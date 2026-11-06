@@ -1,0 +1,32 @@
+body { background: var(--paper-2, #f6f3ea); }
+.caixa { max-width: 760px; margin: 32px auto; border: 1.5px solid var(--ink, #222); border-radius: 22px; padding: 26px 22px; background: var(--paper, #fff); box-shadow: 6px 6px 0 var(--ink, #222); }
+.caixa.estreita { max-width: 460px; }
+.caixa h1 { font-size: 30px; margin: 0 0 8px; }
+.caixa h2 { font-size: 22px; margin: 22px 0 8px; }
+.campo { width: 100%; box-sizing: border-box; border: 1.5px solid var(--ink, #222); border-radius: 12px; padding: 11px 12px; font-size: 17px; margin: 6px 0 12px; background: var(--paper, #fff); color: var(--ink, #222); }
+label { font-weight: 600; display: block; }
+.linha { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.linha .campo { flex: 1 1 200px; margin: 0; }
+.bt { border: 1.5px solid var(--ink, #222); border-radius: 999px; padding: 10px 18px; font-size: 16px; font-weight: 600; background: #146c3e; color: #fff; cursor: pointer; }
+.bt.claro { background: var(--paper, #fff); color: var(--ink, #222); }
+.bt.perigo { background: #fff; color: #b42318; border-color: #b42318; }
+.bt.peq { padding: 6px 12px; font-size: 14px; }
+.bt:disabled { opacity: .55; cursor: wait; }
+.aviso { border-radius: 12px; padding: 10px 12px; background: #fff6cc; border: 1px solid #c9a400; margin: 10px 0; }
+.erro { color: #b42318; min-height: 1.2em; }
+.ok { color: #146c3e; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 15px; }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #ddd; }
+.codigo { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 20px; letter-spacing: 2px; font-weight: 700; }
+.turma { border: 1.5px solid var(--ink, #222); border-radius: 16px; padding: 14px; margin: 12px 0; }
+.small { font-size: 14px; }
+.muted { color: #555; }
+[hidden] { display: none !important; }
+.cartoes { display: none; }
+@media print {
+  body { background: #fff; }
+  body > *:not(.cartoes) { display: none !important; }
+  .cartoes { display: grid !important; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .cartao { border: 1px dashed #000; border-radius: 4mm; padding: 5mm; break-inside: avoid; font-size: 12pt; color: #000; }
+  .cartao b { font-size: 14pt; }
+}
