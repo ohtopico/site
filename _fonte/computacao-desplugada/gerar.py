@@ -7,7 +7,8 @@ Uso (na raiz do site):
     node _fonte/braille/moldes.js desplugada         PDFs dos moldes táteis só destas atividades
     python _fonte/computacao-desplugada/gerar.py     de novo, para pôr os links do braille nas páginas
 
-- O conteúdo das atividades fica em atividades.py; os desenhos em pecas.py.
+- O conteúdo das atividades fica em atividades.py; os desenhos em pecas.py. As atividades que juntam Computação e
+  Matemática (area="matematica", habilidades EFxxCO e EFxxMA) ficam em integradas.py e aparecem numa seção própria do hub.
 - As folhas usam o estilo das fichas adaptadas (/matematica-adaptada/assets/fichas.css) e as peças de
   /computacao-adaptada/assets/computacao.css, mais desplugada.css. Folha sempre branca, cor só nos detalhes.
 - A página central também lista as fichas desplugadas que já existem em /material-didatico/fichas/.
@@ -26,6 +27,7 @@ sys.path.insert(0, str(AQUI.parent / 'braille'))
 import links as braille_links  # noqa: E402
 sys.path.insert(0, str(AQUI))
 from atividades import ATIVIDADES, PILARES  # noqa: E402
+from integradas import INTEGRADAS  # noqa: E402
 
 RAIZ = AQUI.parent.parent
 MAT = AQUI.parent / 'matematica-adaptada'
@@ -36,7 +38,24 @@ HUB = '/computacao-desplugada/'
 PC = '/pensamento-computacional/'
 OG = f'{SITE}/computacao-desplugada/og-computacao-desplugada.jpg'
 esc = html.escape
-HABS = {h['codigo']: h for h in json.loads((AQUI.parent / 'planejamento' / 'habilidades.json').read_text(encoding='utf-8'))['CO']}
+_HJ = json.loads((AQUI.parent / 'planejamento' / 'habilidades.json').read_text(encoding='utf-8'))
+HABS = {h['codigo']: h for h in _HJ['CO'] + _HJ['MA']}
+# Habilidades de Matemática levam para a ficha adaptada daquela habilidade (uma por habilidade, a que não é de revisão)
+_FICHAS_MA = json.loads((MAT / 'indice.json').read_text(encoding='utf-8'))['fichas']
+LINK_MA = {}
+for _f in _FICHAS_MA:
+    if not _f.get('revisao') and len(_f['habilidades']) == 1:
+        LINK_MA.setdefault(_f['habilidades'][0], f"/matematica-adaptada/fichas/{_f['slug']}/")
+
+
+def link_hab(c):
+    if 'MA' in c:
+        return LINK_MA.get(c, f'/material-adaptado/#ano-{int(c[2:4])}')
+    return f'/material-didatico/bncc/{c.lower()}/'
+
+
+def area_nome(a):
+    return 'Computação e Matemática' if a.get('area') == 'matematica' else 'Computação'
 AUTORA = {'@type': 'Person', '@id': f'{SITE}/#julia', 'name': 'Júlia Roberta Quoos Alves', 'url': f'{SITE}/'}
 RODAPE = 'ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula'
 
@@ -77,15 +96,20 @@ def versao_css():
 
 
 def topo_folha(rotulo, a):
-    return f'<header class="folha-topo"><span class="nivel"><b>{rotulo}</b></span><span class="hab">{" · ".join(a["codigos"])} · Computação · {a["ano"]}º ano</span></header>'
+    return f'<header class="folha-topo"><span class="nivel"><b>{rotulo}</b></span><span class="hab">{" · ".join(a["codigos"])} · {area_nome(a)} · {a["ano"]}º ano</span></header>'
 
 
 def folhas(a):
-    est = f'''<article class="folha" data-versao="Estudante" aria-label="{esc(a['titulo'])}, folha do estudante">
-    {topo_folha('Folha do estudante', a)}
-    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    partes = a['estudante'] if isinstance(a['estudante'], list) else [a['estudante']]
+    est = ''
+    for i, corpo in enumerate(partes):
+        rotulo = f'Estudante, folha {i + 1}' if len(partes) > 1 else 'Folha do estudante'
+        aluno = '<div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>' if i == 0 else ''
+        est += f'''<article class="folha" data-versao="Estudante" aria-label="{esc(a['titulo'])}, {rotulo.lower()}">
+    {topo_folha(rotulo, a)}
+    {aluno}
     <h2 class="folha-titulo">{esc(a['titulo'])}</h2>
-    {a['estudante']}
+    {corpo}
     <footer class="folha-rodape">{RODAPE}</footer>
 </article>'''
     rec = ''
@@ -99,7 +123,8 @@ def folhas(a):
     passos = ''.join(f'<li>{esc(x)}</li>' for x in a['passos'])
     conversa = ''.join(f'<li>{esc(x)}</li>' for x in a['conversa'])
     gab = ''.join(f'<li>{esc(x)}</li>' for x in a['gabarito'])
-    habs = ''.join(f'<p><b>{c}</b>: {esc(HABS[c]["texto"])}</p>' for c in a['codigos'])
+    classe = ' class="hab-prof"' if a.get('area') == 'matematica' else ''
+    habs = ''.join(f'<p{classe}><b>{c}</b>: {esc(HABS[c]["texto"])}</p>' for c in a['codigos'])
     prof = f'''<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações para o professor">
     <header class="folha-topo"><span class="nivel"><b>Orientações para o professor</b></span><span class="hab">{a['ano']}º ano · {esc(a['tempo'])}</span></header>
     <h2 class="folha-titulo">{esc(a['titulo'])}</h2>
@@ -175,14 +200,15 @@ def pagina(a, i, lista, v):
                                   f'{a["resumo"]} Com gabarito e versão em braille.{fim}', f'{a["resumo"]}{fim}')
                       if len(d) <= 155), a['resumo'])
     pdf = f'{a["slug"]}.pdf'
-    botoes = '<button type="button" class="btn98" data-imprimir="Estudante">Imprimir folha do estudante</button>'
+    botoes = '<button type="button" class="btn98" data-imprimir="Estudante">' + (
+        'Imprimir folhas do estudante' if isinstance(a['estudante'], list) else 'Imprimir folha do estudante') + '</button>'
     if a['recortar']:
         botoes += '<button type="button" class="btn98" data-imprimir="Recortar">Imprimir folha para recortar</button>'
     botoes += '<button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações</button>'
     passos = ''.join(f'<li>{esc(x)}</li>' for x in a['passos'])
     conversa = ''.join(f'<li>{esc(x)}</li>' for x in a['conversa'])
     gab = ''.join(f'<li>{esc(x)}</li>' for x in a['gabarito'])
-    habs = ''.join(f'<li><a href="/material-didatico/bncc/{c.lower()}/">{c}</a>: {esc(HABS[c]["texto"])}</li>' for c in a['codigos'])
+    habs = ''.join(f'<li><a href="{link_hab(c)}">{c}</a>: {esc(HABS[c]["texto"])}</li>' for c in a['codigos'])
     ant = lista[i - 1] if i > 0 else None
     prox = lista[i + 1] if i + 1 < len(lista) else None
     nav = '<nav class="vizinhas" aria-label="Outras atividades">' + (
@@ -195,7 +221,7 @@ def pagina(a, i, lista, v):
              'inLanguage': 'pt-BR', 'learningResourceType': 'Atividade desplugada para imprimir', 'isAccessibleForFree': True,
              'educationalLevel': f'{a["ano"]}º ano do Ensino Fundamental', 'timeRequired': a['tempo'],
              'teaches': [f'{c}: {HABS[c]["texto"]}' for c in a['codigos']] + [f'Pensamento computacional: {PILARES[a["pilar"]]}'],
-             'educationalAlignment': [{'@type': 'AlignmentObject', 'alignmentType': 'teaches', 'educationalFramework': 'BNCC Computação',
+             'educationalAlignment': [{'@type': 'AlignmentObject', 'alignmentType': 'teaches', 'educationalFramework': 'BNCC Matemática' if 'MA' in c else 'BNCC Computação',
                                        'targetName': c, 'targetDescription': HABS[c]['texto']} for c in a['codigos']],
              'audience': [{'@type': 'EducationalAudience', 'educationalRole': 'teacher'}],
              'accessibilityFeature': ['braille', 'tactileGraphic', 'highContrastDisplay', 'structuralNavigation'],
@@ -211,7 +237,7 @@ def pagina(a, i, lista, v):
     return cabeca(titulo, descricao, url, ld, v) + f'''<main id="conteudo" tabindex="-1">
     <div class="texto">
         <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="{HUB}">Computação desplugada</a></li><li aria-current="page">{esc(a['titulo'])}</li></ol></nav>
-        <p class="rotulo">Computação desplugada · {" · ".join(a['codigos'])} · {a['ano']}º ano</p>
+        <p class="rotulo">Computação desplugada{' · Computação e Matemática' if a.get('area') == 'matematica' else ''} · {" · ".join(a['codigos'])} · {a['ano']}º ano</p>
         <h1>{esc(a['titulo'])}</h1>
         <p class="linha-fina">{esc(a['resumo'])}</p>
         <div class="acoes">
@@ -253,17 +279,25 @@ def hub(lista, v):
     url = f'{SITE}{HUB}'
     titulo = 'Computação desplugada para imprimir | Júlia Quoos'
     descricao = ('Atividades desplugadas de computação para imprimir, do 6º ao 9º ano (BNCC): binário, grafos, criptografia '
-                 'e mais, com gabarito e braille.')
-    cartoes = ''
-    for ano in (6, 7, 8, 9):
-        itens = ''
-        for a in [x for x in lista if x['ano'] == ano]:
-            br = braille_links.info(a['slug'])
-            selo = '<span class="selo-br">braille</span>' if br else ''
-            itens += (f'<li class="cartao-dp"><a href="{a["slug"]}/"><strong>{esc(a["titulo"])}</strong></a>'
-                      f'<span class="meta">{" · ".join(a["codigos"])} · {PILARES[a["pilar"]]}</span>'
-                      f'<span class="resumo">{esc(a["resumo"])}</span>{selo}</li>')
-        cartoes += f'<section class="ano-dp" id="ano-{ano}"><h3>{ano}º ano</h3><ul class="lista-dp">{itens}</ul></section>'
+                 'e computação com matemática, com gabarito e braille.')
+    def secoes(atividades, prefixo):
+        out = ''
+        for ano in (6, 7, 8, 9):
+            itens = ''
+            for a in [x for x in atividades if x['ano'] == ano]:
+                br = braille_links.info(a['slug'])
+                selo = '<span class="selo-br">braille</span>' if br else ''
+                itens += (f'<li class="cartao-dp"><a href="{a["slug"]}/"><strong>{esc(a["titulo"])}</strong></a>'
+                          f'<span class="meta">{" · ".join(a["codigos"])} · {PILARES[a["pilar"]]}</span>'
+                          f'<span class="resumo">{esc(a["resumo"])}</span>{selo}</li>')
+            if itens:
+                out += f'<section class="ano-dp" id="{prefixo}{ano}"><h3>{ano}º ano</h3><ul class="lista-dp">{itens}</ul></section>'
+        return out
+
+    so_comp = [a for a in lista if a.get('area') != 'matematica']
+    integ = [a for a in lista if a.get('area') == 'matematica']
+    cartoes = secoes(so_comp, 'ano-')
+    cartoes_mat = secoes(integ, 'matematica-')
     existentes = ''.join(f'<li><a href="/material-didatico/fichas/{s}/">{esc(t)}</a> <span class="meta">{a} · {c}</span></li>'
                          for s, t, a, c in FICHAS_EXISTENTES)
     zipar = 'computacao-desplugada-braille.zip'
@@ -274,7 +308,7 @@ def hub(lista, v):
         '@graph': [
             {'@type': 'CollectionPage', '@id': url + '#pagina', 'url': url, 'name': 'Computação desplugada', 'description': descricao,
              'inLanguage': 'pt-BR', 'isAccessibleForFree': True, 'author': AUTORA, 'image': OG,
-             'about': ['Computação desplugada', 'Pensamento computacional', 'BNCC Computação'],
+             'about': ['Computação desplugada', 'Pensamento computacional', 'BNCC Computação', 'BNCC Matemática'],
              'hasPart': [{'@type': 'LearningResource', 'name': a['titulo'], 'url': f'{url}{a["slug"]}/'} for a in lista]},
             {'@type': 'BreadcrumbList', 'itemListElement': [
                 {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{SITE}/'},
@@ -283,7 +317,7 @@ def hub(lista, v):
     pilares = ''.join(f'<li><b>{n}</b>: ' + esc({
         'decomposicao': 'quebrar um problema grande em partes menores (Torre de Hanói).',
         'padroes': 'perceber o que se repete e virar regra (cartões de pontos, paridade, senhas).',
-        'abstracao': 'ficar só com o que importa para o problema (pixels, mapas em grafos, máquina de estados).',
+        'abstracao': 'ficar só com o que importa para o problema (pixels, mapas em grafos, tipos de dados, máquina de estados).',
         'algoritmos': 'escrever passos precisos que qualquer pessoa ou máquina consegue seguir (ditado de figuras, rede de ordenação, rotas, cifras).',
     }[k]) + '</li>' for k, n in PILARES.items())
     return cabeca(titulo, descricao, url, ld, v) + f'''<main id="conteudo" tabindex="-1">
@@ -292,16 +326,24 @@ def hub(lista, v):
         <p class="rotulo">6º ao 9º ano · BNCC Computação</p>
         <h1>Computação desplugada</h1>
         <p class="linha-fina">Atividades para ensinar computação sem computador, prontas para imprimir em A4 com fundo branco. Cada uma tem folha do estudante, orientações para o professor, gabarito e versão em braille.</p>
-        <div class="acoes">{f'<a class="btn98 escuro" href="{zipar}" download>Baixar todas em braille (.zip)</a>' if tem_zip else ''}<a class="btn98" href="{PC}">Pensamento computacional</a><a class="btn98" href="/material-didatico/bncc/">Habilidades da BNCC</a></div>
+        <div class="acoes">{f'<a class="btn98 escuro" href="{zipar}" download>Baixar todas em braille (.zip)</a>' if tem_zip else ''}<a class="btn98" href="#computacao-e-matematica">Computação e Matemática</a><a class="btn98" href="{PC}">Pensamento computacional</a><a class="btn98" href="/material-didatico/bncc/">Habilidades da BNCC</a></div>
         <h2>O que é computação desplugada</h2>
         <p>Computação desplugada é ensinar as ideias da computação com papel, cartões, giz e o corpo, sem precisar de computador ou de internet. Funciona em qualquer escola, inclusive sem laboratório, e ajuda a turma a entender o que acontece por dentro das máquinas antes de programar.</p>
         <p>As atividades trabalham os quatro pilares do <a href="{PC}">pensamento computacional</a>:</p>
         <ul>{pilares}</ul>
         <h2 id="atividades">Atividades para imprimir</h2>
-        <p>São {len(lista)} atividades, três por ano. Todas trazem a dinâmica com a turma (no pátio, no chão ou na mesa), a folha do estudante e as habilidades da BNCC.</p>
+        <p>São {len(so_comp)} atividades, três por ano. Todas trazem a dinâmica com a turma (no pátio, no chão ou na mesa), a folha do estudante e as habilidades da BNCC.</p>
     </div>
     <div class="texto largo">
         {cartoes}
+    </div>
+    <div class="texto">
+        <h2 id="computacao-e-matematica">Computação e Matemática juntas</h2>
+        <p>Estas {len(integ)} atividades, duas por ano, trabalham ao mesmo tempo uma habilidade da BNCC Computação e uma da BNCC Matemática: primos com um algoritmo, MDC com duas receitas, média com teste de mesa, sequências com recursão, distâncias no plano cartesiano e polígonos com comandos. Servem para a aula de Computação, para a de Matemática ou para um projeto das duas.</p>
+        <p>Cada habilidade de Matemática leva para a ficha adaptada da mesma habilidade no <a href="/material-adaptado/">material adaptado</a>, para quem precisa de mais apoio com a conta.</p>
+    </div>
+    <div class="texto largo">
+        {cartoes_mat}
     </div>
     <div class="texto">
         <h2 id="braille">Para estudantes cegos: braille e moldes táteis</h2>
@@ -344,7 +386,7 @@ def escrever(arq, texto):
 
 
 def main():
-    lista = [fn() for fn in ATIVIDADES]
+    lista = [fn() for fn in ATIVIDADES + INTEGRADAS]
     assert len({a['slug'] for a in lista}) == len(lista)
     for a in lista:
         for c in a['codigos']:
@@ -361,7 +403,7 @@ def main():
         escrever(destino / 'index.html', pagina(a, i, lista, v))
         urls.append((f'{SITE}{HUB}{a["slug"]}/', destino / 'index.html'))
     indice = [{'slug': a['slug'], 'titulo': a['titulo'], 'ano': a['ano'], 'codigos': a['codigos'], 'pilar': a['pilar'],
-               'resumo': a['resumo']} for a in lista]
+               'resumo': a['resumo'], 'area': a.get('area', 'computacao')} for a in lista]
     (AQUI / 'indice.json').write_text(json.dumps({'atividades': indice}, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     atualizar_sitemap(urls)
     print(f'{len(lista)} atividades em {SAIDA}')

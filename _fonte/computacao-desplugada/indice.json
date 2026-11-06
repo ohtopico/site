@@ -9,7 +9,8 @@
     "EF06CO01"
    ],
    "pilar": "padroes",
-   "resumo": "Com cinco cartões de pontos, a turma descobre como o computador guarda números usando só 0 e 1."
+   "resumo": "Com cinco cartões de pontos, a turma descobre como o computador guarda números usando só 0 e 1.",
+   "area": "computacao"
   },
   {
    "slug": "imagem-feita-de-numeros",
@@ -20,7 +21,8 @@
     "EF06CO05"
    ],
    "pilar": "abstracao",
-   "resumo": "A turma pinta e codifica imagens de quadradinhos e descobre como o computador guarda e compacta uma imagem."
+   "resumo": "A turma pinta e codifica imagens de quadradinhos e descobre como o computador guarda e compacta uma imagem.",
+   "area": "computacao"
   },
   {
    "slug": "ditado-de-figuras",
@@ -31,7 +33,8 @@
     "EF06CO02"
    ],
    "pilar": "algoritmos",
-   "resumo": "Em duplas, um estudante descreve uma figura e o outro desenha sem ver. A turma descobre por que um algoritmo precisa ser preciso."
+   "resumo": "Em duplas, um estudante descreve uma figura e o outro desenha sem ver. A turma descobre por que um algoritmo precisa ser preciso.",
+   "area": "computacao"
   },
   {
    "slug": "truque-da-paridade",
@@ -41,7 +44,8 @@
     "EF07CO06"
    ],
    "pilar": "padroes",
-   "resumo": "Com quadradinhos pretos e brancos, a turma descobre como o computador percebe e corrige um erro na transmissão de dados."
+   "resumo": "Com quadradinhos pretos e brancos, a turma descobre como o computador percebe e corrige um erro na transmissão de dados.",
+   "area": "computacao"
   },
   {
    "slug": "mapa-para-colorir-grafos",
@@ -51,7 +55,8 @@
     "EF07CO04"
    ],
    "pilar": "abstracao",
-   "resumo": "A turma transforma um mapa em grafo e descobre quantas cores bastam para que vizinhos nunca fiquem iguais."
+   "resumo": "A turma transforma um mapa em grafo e descobre quantas cores bastam para que vizinhos nunca fiquem iguais.",
+   "area": "computacao"
   },
   {
    "slug": "senhas-e-combinacoes",
@@ -61,7 +66,8 @@
     "EF07CO07"
    ],
    "pilar": "padroes",
-   "resumo": "Contando as combinações de um cadeado, a turma descobre por que uma senha comprida protege mais do que uma senha curta."
+   "resumo": "Contando as combinações de um cadeado, a turma descobre por que uma senha comprida protege mais do que uma senha curta.",
+   "area": "computacao"
   },
   {
    "slug": "rede-de-ordenacao",
@@ -72,7 +78,8 @@
     "EF08CO05"
    ],
    "pilar": "algoritmos",
-   "resumo": "A turma ordena números caminhando por uma rede desenhada no chão e descobre como o computador compara várias coisas ao mesmo tempo."
+   "resumo": "A turma ordena números caminhando por uma rede desenhada no chão e descobre como o computador compara várias coisas ao mesmo tempo.",
+   "area": "computacao"
   },
   {
    "slug": "torre-de-hanoi-recursao",
@@ -82,7 +89,8 @@
     "EF08CO01"
    ],
    "pilar": "decomposicao",
-   "resumo": "Jogando a Torre de Hanói com discos de papel ou moedas, a turma descobre uma receita que usa a si mesma: a recursão."
+   "resumo": "Jogando a Torre de Hanói com discos de papel ou moedas, a turma descobre uma receita que usa a si mesma: a recursão.",
+   "area": "computacao"
   },
   {
    "slug": "caminho-mais-curto-na-rede",
@@ -93,7 +101,8 @@
     "EF07CO04"
    ],
    "pilar": "algoritmos",
-   "resumo": "Como roteadores, os estudantes procuram o caminho mais rápido para uma mensagem e descobrem o que acontece quando uma ligação quebra."
+   "resumo": "Como roteadores, os estudantes procuram o caminho mais rápido para uma mensagem e descobrem o que acontece quando uma ligação quebra.",
+   "area": "computacao"
   },
   {
    "slug": "cabos-mais-baratos-arvore",
@@ -104,7 +113,8 @@
     "EF07CO04"
    ],
    "pilar": "abstracao",
-   "resumo": "A turma liga escolas em rede gastando o mínimo de cabo e descobre a árvore: um grafo que conecta tudo sem formar círculos."
+   "resumo": "A turma liga escolas em rede gastando o mínimo de cabo e descobre a árvore: um grafo que conecta tudo sem formar círculos.",
+   "area": "computacao"
   },
   {
    "slug": "cifra-com-palavra-chave",
@@ -114,7 +124,8 @@
     "EF09CO05"
    ],
    "pilar": "algoritmos",
-   "resumo": "Com uma régua de letras e números, a turma cifra e decifra mensagens com uma palavra-chave e compara com a Cifra de César."
+   "resumo": "Com uma régua de letras e números, a turma cifra e decifra mensagens com uma palavra-chave e compara com a Cifra de César.",
+   "area": "computacao"
   },
   {
    "slug": "fechadura-maquina-de-estados",
@@ -124,7 +135,115 @@
     "EF09CO03"
    ],
    "pilar": "abstracao",
-   "resumo": "Seguindo as setas de uma máquina de estados, a turma descobre como um aparelho decide o que fazer lembrando só o necessário."
+   "resumo": "Seguindo as setas de uma máquina de estados, a turma descobre como um aparelho decide o que fazer lembrando só o necessário.",
+   "area": "computacao"
+  },
+  {
+   "slug": "crivo-de-eratostenes-primos",
+   "titulo": "O crivo de Eratóstenes: um algoritmo para achar primos",
+   "ano": 6,
+   "codigos": [
+    "EF06CO02",
+    "EF06CO06",
+    "EF06MA05",
+    "EF06MA04"
+   ],
+   "pilar": "algoritmos",
+   "resumo": "Seguindo uma receita de riscar múltiplos, a turma acha todos os primos até 100 e escreve o algoritmo que decide se um número é primo.",
+   "area": "matematica"
+  },
+  {
+   "slug": "pesquisa-da-turma-tipos-de-dados",
+   "titulo": "Pesquisa da turma: tipos de dados e tabela",
+   "ano": 6,
+   "codigos": [
+    "EF06CO01",
+    "EF06MA31",
+    "EF06MA33"
+   ],
+   "pilar": "abstracao",
+   "resumo": "A turma faz uma pesquisa sem computador, descobre que tipo de dado cada resposta gera e organiza tudo em tabela e gráfico.",
+   "area": "matematica"
+  },
+  {
+   "slug": "duas-receitas-para-o-mdc",
+   "titulo": "Duas receitas para o MDC",
+   "ano": 7,
+   "codigos": [
+    "EF07CO02",
+    "EF07CO05",
+    "EF07MA05",
+    "EF07MA01"
+   ],
+   "pilar": "algoritmos",
+   "resumo": "A turma resolve o mesmo problema com dois algoritmos diferentes, compara o trabalho de cada um e caça o erro numa receita.",
+   "area": "matematica"
+  },
+  {
+   "slug": "teste-de-mesa-media-da-turma",
+   "titulo": "Teste de mesa: a média das notas",
+   "ano": 7,
+   "codigos": [
+    "EF07CO01",
+    "EF07CO02",
+    "EF07MA13",
+    "EF07MA35"
+   ],
+   "pilar": "abstracao",
+   "resumo": "Executando um programa no papel, a turma calcula uma média, entende o que é uma variável e acha o erro de um programa.",
+   "area": "matematica"
+  },
+  {
+   "slug": "sequencia-de-palitos-recursao",
+   "titulo": "Sequência de palitos: duas receitas",
+   "ano": 8,
+   "codigos": [
+    "EF08CO01",
+    "EF08MA10",
+    "EF08MA11"
+   ],
+   "pilar": "padroes",
+   "resumo": "Montando quadrados com palitos, a turma descreve a mesma sequência de dois jeitos: pela figura anterior (recursão) e por uma fórmula direta.",
+   "area": "matematica"
+  },
+  {
+   "slug": "apuracao-distribuida-media-mediana",
+   "titulo": "Apuração em paralelo: média, moda e mediana",
+   "ano": 8,
+   "codigos": [
+    "EF08CO05",
+    "EF08CO02",
+    "EF08MA25"
+   ],
+   "pilar": "decomposicao",
+   "resumo": "Três grupos apuram partes de uma pesquisa ao mesmo tempo e descobrem que só algumas contas podem ser juntadas depois, como num sistema distribuído.",
+   "area": "matematica"
+  },
+  {
+   "slug": "mais-perto-distancias-no-mapa",
+   "titulo": "Mais perto de quem? Distâncias no mapa",
+   "ano": 9,
+   "codigos": [
+    "EF09CO06",
+    "EF09MA16",
+    "EF09MA14"
+   ],
+   "pilar": "abstracao",
+   "resumo": "Num mapa feito de plano cartesiano, a turma compara distância em linha reta e pelas ruas e segue o algoritmo que escolhe o posto de saúde mais perto.",
+   "area": "matematica"
+  },
+  {
+   "slug": "poligonos-com-passos-de-tartaruga",
+   "titulo": "Polígonos com passos de tartaruga",
+   "ano": 9,
+   "codigos": [
+    "EF09CO02",
+    "EF09MA15",
+    "EF09MA06"
+   ],
+   "pilar": "algoritmos",
+   "resumo": "Com régua, transferidor e só dois comandos, a turma escreve e executa programas que desenham polígonos regulares e descobre a regra do giro.",
+   "area": "matematica"
   }
  ]
 }

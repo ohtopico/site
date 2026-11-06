@@ -159,6 +159,14 @@
   "figuras": 12,
   "paginas_braille": 7
  },
+ "apuracao-distribuida-media-mediana": {
+  "slug": "apuracao-distribuida-media-mediana",
+  "area": "desplugada",
+  "titulo": "Apuração em paralelo: média, moda e mediana",
+  "ano": "8º ano",
+  "figuras": 0,
+  "paginas_braille": 4
+ },
  "arcos-e-angulos-na-circunferencia": {
   "slug": "arcos-e-angulos-na-circunferencia",
   "area": "matematica",
@@ -655,6 +663,14 @@
   "figuras": 0,
   "paginas_braille": 6
  },
+ "crivo-de-eratostenes-primos": {
+  "slug": "crivo-de-eratostenes-primos",
+  "area": "desplugada",
+  "titulo": "O crivo de Eratóstenes: um algoritmo para achar primos",
+  "ano": "6º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
  "cyberbullying-nao-e-brincadeira": {
   "slug": "cyberbullying-nao-e-brincadeira",
   "area": "computacao",
@@ -830,6 +846,14 @@
   "ano": "2º ano",
   "figuras": 5,
   "paginas_braille": 7
+ },
+ "duas-receitas-para-o-mdc": {
+  "slug": "duas-receitas-para-o-mdc",
+  "area": "desplugada",
+  "titulo": "Duas receitas para o MDC",
+  "ano": "7º ano",
+  "figuras": 0,
+  "paginas_braille": 5
  },
  "duracao-de-atividades-no-relogio-digital": {
   "slug": "duracao-de-atividades-no-relogio-digital",
@@ -1511,6 +1535,14 @@
   "figuras": 3,
   "paginas_braille": 4
  },
+ "mais-perto-distancias-no-mapa": {
+  "slug": "mais-perto-distancias-no-mapa",
+  "area": "desplugada",
+  "titulo": "Mais perto de quem? Distâncias no mapa",
+  "ano": "9º ano",
+  "figuras": 1,
+  "paginas_braille": 5
+ },
  "mapa-para-colorir-grafos": {
   "slug": "mapa-para-colorir-grafos",
   "area": "desplugada",
@@ -2095,6 +2127,14 @@
   "figuras": 9,
   "paginas_braille": 7
  },
+ "pesquisa-da-turma-tipos-de-dados": {
+  "slug": "pesquisa-da-turma-tipos-de-dados",
+  "area": "desplugada",
+  "titulo": "Pesquisa da turma: tipos de dados e tabela",
+  "ano": "6º ano",
+  "figuras": 0,
+  "paginas_braille": 5
+ },
  "pesquisa-social-e-relatorio": {
   "slug": "pesquisa-social-e-relatorio",
   "area": "matematica",
@@ -2158,6 +2198,14 @@
   "ano": "5º ano",
   "figuras": 17,
   "paginas_braille": 7
+ },
+ "poligonos-com-passos-de-tartaruga": {
+  "slug": "poligonos-com-passos-de-tartaruga",
+  "area": "desplugada",
+  "titulo": "Polígonos com passos de tartaruga",
+  "ano": "9º ano",
+  "figuras": 0,
+  "paginas_braille": 4
  },
  "poligonos-e-figuras-congruentes": {
   "slug": "poligonos-e-figuras-congruentes",
@@ -2711,6 +2759,14 @@
   "figuras": 13,
   "paginas_braille": 7
  },
+ "sequencia-de-palitos-recursao": {
+  "slug": "sequencia-de-palitos-recursao",
+  "area": "desplugada",
+  "titulo": "Sequência de palitos: duas receitas",
+  "ano": "8º ano",
+  "figuras": 3,
+  "paginas_braille": 4
+ },
  "sequencia-nao-recursiva-e-fluxograma": {
   "slug": "sequencia-nao-recursiva-e-fluxograma",
   "area": "matematica",
@@ -2909,6 +2965,14 @@
   "titulo": "Temperaturas máximas e mínimas",
   "ano": "4º ano",
   "figuras": 1,
+  "paginas_braille": 5
+ },
+ "teste-de-mesa-media-da-turma": {
+  "slug": "teste-de-mesa-media-da-turma",
+  "area": "desplugada",
+  "titulo": "Teste de mesa: a média das notas",
+  "ano": "7º ano",
+  "figuras": 0,
   "paginas_braille": 5
  },
  "tipos-de-amostra": {

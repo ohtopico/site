@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Sequência de palitos: duas receitas | Júlia Quoos</title>
+<meta name="description" content="Montando quadrados com palitos, a turma descreve a mesma sequência de dois jeitos: pela figura anterior (recursão) e por uma fórmula direta.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-desplugada/sequencia-de-palitos-recursao/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-desplugada/sequencia-de-palitos-recursao/">
+<meta property="og:title" content="Sequência de palitos: duas receitas | Júlia Quoos">
+<meta property="og:description" content="Montando quadrados com palitos, a turma descreve a mesma sequência de dois jeitos: pela figura anterior (recursão) e por uma fórmula direta.">
+<meta property="og:image" content="https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Card com o título Computação desplugada e a captura de uma atividade para imprimir.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-desplugada/sequencia-de-palitos-recursao/#atividade",
+   "url": "https://ohtopico.com.br/computacao-desplugada/sequencia-de-palitos-recursao/",
+   "name": "Sequência de palitos: duas receitas",
+   "description": "Montando quadrados com palitos, a turma descreve a mesma sequência de dois jeitos: pela figura anterior (recursão) e por uma fórmula direta.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Atividade desplugada para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "8º ano do Ensino Fundamental",
+   "timeRequired": "50 minutos",
+   "teaches": [
+    "EF08CO01: Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação.",
+    "EF08MA10: Identificar a regularidade de uma sequência numérica ou figural não recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números ou as figuras seguintes.",
+    "EF08MA11: Identificar a regularidade de uma sequência numérica recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números seguintes.",
+    "Pensamento computacional: Reconhecimento de padrões"
+   ],
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF08CO01",
+     "targetDescription": "Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Matemática",
+     "targetName": "EF08MA10",
+     "targetDescription": "Identificar a regularidade de uma sequência numérica ou figural não recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números ou as figuras seguintes."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Matemática",
+     "targetName": "EF08MA11",
+     "targetDescription": "Identificar a regularidade de uma sequência numérica recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números seguintes."
+    }
+   ],
+   "audience": [
+    {
+     "@type": "EducationalAudience",
+     "educationalRole": "teacher"
+    }
+   ],
+   "accessibilityFeature": [
+    "braille",
+    "tactileGraphic",
+    "highContrastDisplay",
+    "structuralNavigation"
+   ],
+   "encoding": {
+    "@type": "MediaObject",
+    "contentUrl": "https://ohtopico.com.br/computacao-desplugada/sequencia-de-palitos-recursao/sequencia-de-palitos-recursao.pdf",
+    "encodingFormat": "application/pdf"
+   },
+   "image": "https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg",
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://ohtopico.com.br/computacao-desplugada/#pagina"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação desplugada",
+     "item": "https://ohtopico.com.br/computacao-desplugada/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Sequência de palitos: duas receitas",
+     "item": "https://ohtopico.com.br/computacao-desplugada/sequencia-de-palitos-recursao/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=3760ad871b">
+<link rel="stylesheet" href="/computacao-adaptada/assets/computacao.css?v=3760ad871b">
+<link rel="stylesheet" href="/computacao-desplugada/assets/desplugada.css?v=3760ad871b">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-desplugada/">Computação desplugada</a><a href="/pensamento-computacional/">Pensamento computacional</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-desplugada/">Computação desplugada</a></li><li aria-current="page">Sequência de palitos: duas receitas</li></ol></nav>
+        <p class="rotulo">Computação desplugada · Computação e Matemática · EF08CO01 · EF08MA10 · EF08MA11 · 8º ano</p>
+        <h1>Sequência de palitos: duas receitas</h1>
+        <p class="linha-fina">Montando quadrados com palitos, a turma descreve a mesma sequência de dois jeitos: pela figura anterior (recursão) e por uma fórmula direta.</p>
+        <div class="acoes">
+            <a class="btn98 escuro" href="sequencia-de-palitos-recursao.pdf" download>Baixar PDF</a><a class="btn98" href="sequencia-de-palitos-recursao.brf" download>Baixar braille (.brf)</a><a class="btn98" href="sequencia-de-palitos-recursao-moldes-tateis.pdf" download>Moldes táteis (PDF)</a>
+            <button type="button" class="btn98" data-imprimir="Estudante">Imprimir folha do estudante</button><button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações</button>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Ano</dt><dd>8º ano</dd>
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Pilar</dt><dd><a href="/pensamento-computacional/">Reconhecimento de padrões</a></dd>
+            <dt>Material</dt><dd>Palitos de sorvete ou de fósforo usados (cerca de 30 por grupo) e a folha do estudante.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/bncc/ef08co01/">EF08CO01</a>: Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação.</li><li><a href="/matematica-adaptada/fichas/sequencia-nao-recursiva-e-fluxograma/">EF08MA10</a>: Identificar a regularidade de uma sequência numérica ou figural não recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números ou as figuras seguintes.</li><li><a href="/matematica-adaptada/fichas/sequencia-recursiva-e-fluxograma/">EF08MA11</a>: Identificar a regularidade de uma sequência numérica recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números seguintes.</li></ul>
+        <h2>Como aplicar, sem computador</h2>
+        <ol><li>Monte no quadro (ou com palitos na mesa) as figuras 1, 2 e 3. Os grupos montam a figura 4 e contam os palitos.</li><li>Pergunte: como eu faço a próxima figura? A turma chega na receita &quot;a anterior mais 3&quot;. Isso é uma receita recursiva: precisa da figura anterior.</li><li>Desafie: quantos palitos tem a figura 50? Com a receita recursiva, são 49 somas. Peça que procurem um atalho que use só o número da figura.</li><li>Escreva as duas receitas no quadro, lado a lado. Mostre que os programas também podem resolver de um jeito ou de outro.</li></ol>
+        <h2>Para conversar no fim</h2>
+        <ul><li>As duas receitas dão o mesmo resultado. Em que situação cada uma é mais útil?</li><li>Onde mais aparece uma regra recursiva? (Juntar a anterior: poupança que rende, bactérias que dobram, pastas dentro de pastas.)</li></ul>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: 4, 7, 10, 13, 16, 19; figura 10 = 31 palitos.</li><li>Bloco 2: 4 palitos; some 3. Para a figura 50 são 49 somas.</li><li>Bloco 3: 3 × n + 1; figura 50 = 151; figura 3 = 3 × 3 + 1 = 10, igual à contagem.</li><li>Bloco 4: 21 e 28. É recursiva: cada número é o anterior mais a posição dele (+2, +3, +4...). A soma cresce a cada passo, então não é só multiplicar e somar sempre o mesmo número (a fórmula direta existe, n × (n + 1) ÷ 2, mas é mais difícil de descobrir).</li></ul></details>
+        <h2 id="braille">Para estudantes cegos: braille e moldes táteis</h2>
+        <p>Esta atividade tem <a href="sequencia-de-palitos-recursao.brf" download>versão em braille</a> (4 páginas braille, todas as folhas do estudante) e <a href="sequencia-de-palitos-recursao-moldes-tateis.pdf" download>3 moldes táteis para imprimir</a> (PDF, fundo branco).</p>
+        <ol><li>Envie o arquivo .brf para a impressora braille da escola ou da sala de recursos. Ele já vem com 40 celas por linha e 25 linhas por página, em braille grau 1 e com os sinais do Código Matemático Unificado.</li><li>Monte os moldes táteis seguindo a primeira página do PDF: cola relevo ou barbante nas linhas, botões nos pontos e EVA ou lixa nas texturas. Cada molde tem o número da figura que aparece no texto em braille.</li><li>Onde a folha em tinta pede para circular, pintar ou ligar, a versão em braille pede para escrever a resposta, e as contas podem ser feitas no soroban.</li></ol>
+        <p class="nota">Este material foi gerado a partir das folhas em tinta e precisa ser revisado pela sala de recursos ou pelo professor do AEE antes de chegar ao estudante.</p>
+        <h2 id="folhas">Folhas para imprimir</h2>
+        <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a folha de que precisa ou baixe o PDF com todas, incluindo as orientações.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Sequência de palitos: duas receitas, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF08CO01 · EF08MA10 · EF08MA11 · Computação e Matemática · 8º ano</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Sequência de palitos: duas receitas</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Conte os palitos de cada figura e continue a tabela.</span></h3><div class="bloco-corpo"><div class="grade" style="--colunas:3"><div class="item"><div class="desenho"><svg class="fig-dp" viewBox="0 0 18 18" style="width:19mm" role="img" aria-label="figura 1: 1 quadrado feito de palitos, lado a lado, dividindo os palitos do meio"><line x1="3" y1="3" x2="3" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="15" y1="3" x2="15" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="3" x2="14" y2="3" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="15" x2="14" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/></svg></div><p class="txt centro">Figura 1</p></div><div class="item"><div class="desenho"><svg class="fig-dp" viewBox="0 0 30 18" style="width:28mm" role="img" aria-label="figura 2: 2 quadrados feitos de palitos, lado a lado, dividindo os palitos do meio"><line x1="3" y1="3" x2="3" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="15" y1="3" x2="15" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="27" y1="3" x2="27" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="3" x2="14" y2="3" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="15" x2="14" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="3" x2="26" y2="3" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="15" x2="26" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/></svg></div><p class="txt centro">Figura 2</p></div><div class="item"><div class="desenho"><svg class="fig-dp" viewBox="0 0 42 18" style="width:37mm" role="img" aria-label="figura 3: 3 quadrados feitos de palitos, lado a lado, dividindo os palitos do meio"><line x1="3" y1="3" x2="3" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="15" y1="3" x2="15" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="27" y1="3" x2="27" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="39" y1="3" x2="39" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="3" x2="14" y2="3" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="15" x2="14" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="3" x2="26" y2="3" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="15" x2="26" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="28" y1="3" x2="38" y2="3" stroke="#111" stroke-width="1.6" stroke-linecap="round"/><line x1="28" y1="15" x2="38" y2="15" stroke="#111" stroke-width="1.6" stroke-linecap="round"/></svg></div><p class="txt centro">Figura 3</p></div></div><div class="compacta"><table class="tabela-folha"><thead><tr><th>Figura</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>10</th></tr></thead><tbody><tr><td>Palitos</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>Receita 1, recursiva: cada figura usa a anterior.</span></h3><div class="bloco-corpo"><ol class="receita"><li>A figura 1 tem <span class="resposta"></span> palitos.</li><li>Para fazer a próxima figura, pegue a anterior e some <span class="resposta"></span> palitos.</li></ol><div class="frases"><p><span>Para saber a figura 50 com esta receita, quantas contas eu faço?</span> <span class="linha-resp"></span></p></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>Receita 2, direta: vai do número da figura (n) até os palitos, sem passar pelas outras.</span></h3><div class="bloco-corpo"><div class="frases"><p><span>Palitos da figura n =</span> <span class="linha-resp"></span></p><p><span>Figura 50 =</span> <span class="linha-resp"></span></p><p><span>Teste a sua fórmula na figura 3:</span> <span class="linha-resp"></span></p></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">4</span><span>Outra sequência: 1, 3, 6, 10, 15... (pontos arrumados em triângulo).</span></h3><div class="bloco-corpo"><div class="frases"><p><span>Os dois próximos números:</span> <span class="linha-resp"></span></p><p><span>Ela é recursiva? Qual é a regra?</span> <span class="linha-resp"></span></p><p><span>Por que esta é mais difícil de escrever numa receita direta?</span> <span class="linha-resp"></span></p></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações para o professor">
+    <header class="folha-topo"><span class="nivel"><b>Orientações para o professor</b></span><span class="hab">8º ano · 50 minutos</span></header>
+    <h2 class="folha-titulo">Sequência de palitos: duas receitas</h2>
+    <h3>Habilidades da BNCC</h3><p class="hab-prof"><b>EF08CO01</b>: Construir soluções de problemas usando a técnica de recursão e automatizá-las com uma linguagem de programação.</p><p class="hab-prof"><b>EF08MA10</b>: Identificar a regularidade de uma sequência numérica ou figural não recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números ou as figuras seguintes.</p><p class="hab-prof"><b>EF08MA11</b>: Identificar a regularidade de uma sequência numérica recursiva e construir um algoritmo por meio de um fluxograma que permita indicar os números seguintes.</p>
+    <h3>Pilar do pensamento computacional</h3><p>Reconhecimento de padrões</p>
+    <h3>Material</h3><p>Palitos de sorvete ou de fósforo usados (cerca de 30 por grupo) e a folha do estudante.</p>
+    <h3>Como aplicar, sem computador</h3><ol><li>Monte no quadro (ou com palitos na mesa) as figuras 1, 2 e 3. Os grupos montam a figura 4 e contam os palitos.</li><li>Pergunte: como eu faço a próxima figura? A turma chega na receita &quot;a anterior mais 3&quot;. Isso é uma receita recursiva: precisa da figura anterior.</li><li>Desafie: quantos palitos tem a figura 50? Com a receita recursiva, são 49 somas. Peça que procurem um atalho que use só o número da figura.</li><li>Escreva as duas receitas no quadro, lado a lado. Mostre que os programas também podem resolver de um jeito ou de outro.</li></ol>
+    <h3>Para conversar no fim</h3><ul><li>As duas receitas dão o mesmo resultado. Em que situação cada uma é mais útil?</li><li>Onde mais aparece uma regra recursiva? (Juntar a anterior: poupança que rende, bactérias que dobram, pastas dentro de pastas.)</li></ul>
+    <h3>Gabarito</h3><ul><li>Bloco 1: 4, 7, 10, 13, 16, 19; figura 10 = 31 palitos.</li><li>Bloco 2: 4 palitos; some 3. Para a figura 50 são 49 somas.</li><li>Bloco 3: 3 × n + 1; figura 50 = 151; figura 3 = 3 × 3 + 1 = 10, igual à contagem.</li><li>Bloco 4: 21 e 28. É recursiva: cada número é o anterior mais a posição dele (+2, +3, +4...). A soma cresce a cada passo, então não é só multiplicar e somar sempre o mesmo número (a fórmula direta existe, n × (n + 1) ÷ 2, mas é mais difícil de descobrir).</li></ul>
+    <p class="lembrete">Para estudantes cegos, use a versão em braille (.brf) e os moldes táteis da página da atividade, revisados antes pela sala de recursos ou pelo professor do AEE.</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras atividades"><a href="/computacao-desplugada/teste-de-mesa-media-da-turma/">← Teste de mesa: a média das notas</a><a href="/computacao-desplugada/apuracao-distribuida-media-mediana/">Apuração em paralelo: média, moda e mediana →</a></nav>
+        <p class="voltar"><a href="/computacao-desplugada/">Ver todas as atividades de computação desplugada</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/pensamento-computacional/">Pensamento computacional</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/matematica-adaptada/assets/fichas.js?v=3760ad871b" defer></script>
+</body>
+</html>
