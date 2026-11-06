@@ -59,7 +59,12 @@
     async novaSenha(senha) { return pede('/auth/v1/user', { metodo: 'PUT', corpo: { password: senha }, token: await tokenProf() }); },
     async sair() { try { await pede('/auth/v1/logout', { token: await tokenProf() }); } catch (e) {} grava(localStorage, CH_PROF, null); },
     eu: nome => rpcProf('prof_entrar', { p_nome: nome || '' }),
-    turmas: () => selProf('turmas?select=id,nome,codigo,criado&order=criado.asc'),
+    // com a coluna "mapas" (banco.sql novo); se o banco ainda não tem a coluna, lista sem ela
+    async turmas() {
+      try { return await selProf('turmas?select=id,nome,codigo,criado,mapas&order=criado.asc'); }
+      catch (e) { if (e.status === 400) return selProf('turmas?select=id,nome,codigo,criado&order=criado.asc'); throw e; }
+    },
+    mapasTurma: (turma, mapas) => rpcProf('prof_turma_mapas', { p_turma: turma, p_mapas: mapas }),
     aoVivo: turma => selProf('alunos?select=id,apelido,pontos,acertos,atualizado,online_em,fazendo&turma_id=eq.' + encodeURIComponent(turma) + '&order=apelido.asc'),
     alunos: turma => selProf('alunos?select=id,apelido,pontos,acertos,atualizado&turma_id=eq.' + encodeURIComponent(turma) + '&order=apelido.asc'),
     criarTurma: nome => rpcProf('prof_criar_turma', { p_nome: nome }),
@@ -73,7 +78,7 @@
     sessao: () => ler(sessionStorage, CH_ALUNO) || ler(localStorage, CH_ALUNO),
     async entrar(codigo, apelido, senha) {
       const d = await pede('/rest/v1/rpc/aluno_entrar', { corpo: { p_codigo: codigo, p_apelido: apelido, p_senha: senha } });
-      if (d && d.token) grava(localStorage, CH_ALUNO, { token: d.token, apelido: d.apelido, turma: d.turma });
+      if (d && d.token) grava(localStorage, CH_ALUNO, { token: d.token, apelido: d.apelido, turma: d.turma, mapas: Array.isArray(d.mapas) ? d.mapas : [] });
       return d;
     },
     async salvar(progresso, pontos, acertos) {
@@ -87,6 +92,14 @@
       const ok = await pede('/rest/v1/rpc/aluno_ping', { corpo: { p_token: s.token, p_fazendo: fazendo, p_pontos: pontos, p_acertos: acertos, p_ativo: ativo !== false } });
       if (ok === false) grava(localStorage, CH_ALUNO, null);
       return ok;
+    },
+    /* mapas que a professora liberou agora: guarda na sessão (o Mundo lê de lá ao carregar) e devolve a lista */
+    async mapas() {
+      const s = aluno.sessao(); if (!s) return null;
+      const m = await pede('/rest/v1/rpc/aluno_mapas', { corpo: { p_token: s.token } });
+      if (!Array.isArray(m)) return null;
+      const atual = aluno.sessao(); if (atual && atual.token === s.token) grava(localStorage, CH_ALUNO, Object.assign(atual, { mapas: m }));
+      return m;
     },
     async sair() { const s = aluno.sessao(); grava(localStorage, CH_ALUNO, null); if (s) { try { await pede('/rest/v1/rpc/aluno_sair', { corpo: { p_token: s.token } }); } catch (e) {} } }
   };

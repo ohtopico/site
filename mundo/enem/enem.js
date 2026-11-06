@@ -30,9 +30,11 @@
 
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+  // a professora do Mundo da turma pode liberar esta área para a turma: vale enquanto o aluno está logado na turma
+  const pelaTurma = () => { try { const t = JSON.parse(localStorage.getItem('mundo-turma-aluno-v1')); return !!(t && Array.isArray(t.mapas) && t.mapas.includes('enem')); } catch (e) { return false; } };
   window.ENEM = {
     esc,
-    liberado: () => !!ler().lib,
+    liberado: () => !!ler().lib || pelaTurma(),
     async tentar(codigo) {
       if (!window.crypto || !crypto.subtle) return normaliza(codigo) === ['E', 'N', 'E', 'M'].join('') && this.liberar();
       if (await hash(normaliza(codigo)) !== HASH) return false;
@@ -40,7 +42,7 @@
     },
     liberar() { ler().lib = true; gravar(); return true; },
     /* página de jogo: sem o código, volta para a porta da ilha */
-    exigir() { if (!ler().lib) location.replace('./'); },
+    exigir() { if (!ler().lib && !pelaTurma()) location.replace('./'); },
     estrelas: id => ler().est[id] || 0,
     totalEstrelas: () => Object.values(ler().est).reduce((a, b) => a + b, 0),
     darEstrelas(id, n) { const m = ler(); if (n > (m.est[id] || 0)) { m.est[id] = n; gravar(); return true; } return false; },

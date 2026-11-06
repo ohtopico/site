@@ -220,6 +220,10 @@
     return out;
   }
 
+  /* Mundo da turma: mapas que a professora apoiadora liberou para a turma (lidos da sessão do aluno, gravada por turma/api.js).
+     Valem só enquanto o aluno está logado na turma; sem login, as vilas abrem na ordem das missões. */
+  const lerMapasTurma = () => { try { const t = JSON.parse(localStorage.getItem('mundo-turma-aluno-v1')); return t && Array.isArray(t.mapas) ? t.mapas.map(String) : []; } catch (e) { return []; } };
+  let MAPAS_TURMA = lerMapasTurma();
   /* ---------- montagem do mapa (em blocos: 1 bloco = 1 unidade) ---------- */
   const T = { grama: 0, caminho: 1, praca: 2, agua: 3, areia: 4 };
   const fases = FASES.map((f, i) => {
@@ -229,7 +233,7 @@
     const raio = Math.min(f.todaMatematica ? 15 : 99, Math.max(8, Math.ceil(5 + 0.42 * n)));
     const perguntas = f.perguntasProprias || (f.todaMatematica ? [6, 7, 8, 9].flatMap(perguntasDoAno).filter(p => (p.habs || []).some(h => /MA\d/.test(h))) : perguntasDoAno(f.ano));
     const mat = f.todaMatematica;
-    return Object.assign({}, f, { idx: i, lugares, raio, perguntas,
+    return Object.assign({}, f, { idx: i, lugares, raio, perguntas, daTurma: MAPAS_TURMA.includes(f.id),
       metaPerg: Math.min(perguntas.length, f.metaPerg || (mat ? 5 : [4, 5, 6, 6, 6, 4, 6, 3][i] || 4)),
       metaJogar: Math.min(n, f.metaJogar || (mat ? 4 : f.id === 'escola' ? 3 : f.id === 'medio' ? 4 : 3 + Math.floor(i / 2))),
       nNpc: f.nNpc || (mat ? 3 : 2 + Math.floor(i / 2)), nItens: f.nItens || (mat ? 6 : 5 + i) });
@@ -672,7 +676,25 @@
     ].map(m => Object.assign(m, { ok: m.n >= m.meta }));
   }
   const concluida = f => missoes(f).every(m => m.ok);
-  const liberada = f => f.idx === 0 || f.aberta || concluida(fases[f.idx - 1]);
+  const liberada = f => f.idx === 0 || f.aberta || f.daTurma || concluida(fases[f.idx - 1]);
+  /* a professora mudou os mapas da turma durante a aula: as vilas comuns abrem (ou fecham) na hora; as áreas secretas
+     (Ilha ENEM, Vila da Arte) só entram no mapa quando o Mundo é carregado de novo. Devolve o que mudou. */
+  function mapasDaTurma(ids) {
+    MAPAS_TURMA = (ids || []).map(String);
+    const abriu = [], fechou = [];
+    for (const f of fases) {
+      const quer = MAPAS_TURMA.includes(f.id);
+      if (quer === !!f.daTurma) continue;
+      const antes = liberada(f); f.daTurma = quer; const depois = liberada(f);
+      if (!antes && depois) abriu.push(f); else if (antes && !depois) fechou.push(f);
+    }
+    const faltam = MAPAS_TURMA.filter(id => ['enem', 'arte'].includes(id) && !fases.some(f => f.id === id));
+    if (abriu.length) aviso(`🗺️ A professora liberou: ${abriu.map(f => f.icone + ' ' + f.nome).join(', ')}. Abra o Mapa para ir até lá.`);
+    if (fechou.includes(atual) && !dentro && !sala) teleporta(fases[0]);
+    if (janelaAberta === 'mapa') desenhaMapa();
+    hud();
+    return { abriu: abriu.map(f => f.nome), fechou: fechou.map(f => f.nome), recarregar: faltam.length > 0 };
+  }
   /* ---------- som: efeitos e música feitos na hora pelo Web Audio (sem arquivos, funcionam sem internet) ---------- */
   const SOM = (() => {
     const CH = 'mundo-som-v1';
@@ -5812,7 +5834,7 @@
   }
   linkDireto();
   if (!S.tutorial && !/[?&](abrir|kit|curso)=/.test(location.search)) abreTutorial();
-  window.MUNDO_DEBUG = { travaSalvar: () => { restaurando = true; }, COLECAO_APOIO, aplicaColecao, produtosColecao, liberaPremium, abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, CASAS_NPC, atividadeCasa, lembrancasFeitas, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  window.MUNDO_DEBUG = { travaSalvar: () => { restaurando = true; }, mapasDaTurma, mapasTurmaAtuais: () => MAPAS_TURMA.slice(), COLECAO_APOIO, aplicaColecao, produtosColecao, liberaPremium, abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, CASAS_NPC, atividadeCasa, lembrancasFeitas, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
   hud(); confereJogos(); confereFases(); cobra(); rende();
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }

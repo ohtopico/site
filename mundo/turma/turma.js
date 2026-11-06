@@ -18,6 +18,34 @@
     if (/Failed to fetch|NetworkError/i.test(m)) return 'Sem conexão com o servidor. Confira a internet.';
     return 'Não deu certo (' + m + ').';
   };
+  /* mapas do Mundo que a professora pode liberar para a turma (mesmos ids de FASES em mundo/mundo.js). A Vila do Começo e a
+     Sala da Matemática já ficam abertas para todos. As áreas secretas aparecem para a turma sem precisar do código. */
+  const MAPAS = [
+    ['praca', 'Praça dos Números', 'Matemática do 6º ano'],
+    ['padroes', 'Bairro dos Padrões', '7º ano'],
+    ['redes', 'Cidade das Redes', '8º ano'],
+    ['ia', 'Vale da Inteligência', '9º ano'],
+    ['lab', 'Laboratório dos Simuladores', 'IA, estatística e arquitetura'],
+    ['medio', 'Campus do Ensino Médio', 'Redes, banco de dados e IA'],
+    ['escola', 'Escola dos Professores', 'Guias, formação e mentoria'],
+    ['enem', 'Ilha ENEM', 'Área secreta: revisão para o ENEM'],
+    ['arte', 'Vila da Arte', 'Área secreta: Arte da BNCC, 6º ao 9º ano']
+  ];
+  function blocoMapas(t, i) {
+    if (!Array.isArray(t.mapas)) return '';   // banco ainda sem a coluna "mapas"
+    const lib = t.mapas.filter(id => MAPAS.some(m => m[0] === id));
+    return `<details class="mapas" data-mapas>
+      <summary><b>Mapas liberados para a turma</b> <span class="muted small">${lib.length ? lib.length + ' de ' + MAPAS.length + ' liberados' : 'nenhum: as vilas abrem na ordem das missões'}</span></summary>
+      <p class="small muted">Marque os mapas que os alunos desta turma podem visitar desde já, sem cumprir as missões das vilas anteriores. A Vila do Começo e a Sala da Matemática já ficam abertas para todos. Vale só quando o aluno entra pela turma; quem já está jogando vê a mudança em até um minuto.</p>
+      <div class="mapas-lista">${MAPAS.map(([id, nome, sub]) => `<label class="mapa-op"><input type="checkbox" value="${id}" ${lib.includes(id) ? 'checked' : ''}> <span><b>${esc(nome)}</b><br><span class="small muted">${esc(sub)}</span></span></label>`).join('')}</div>
+      <div class="linha">
+        <button class="bt peq" type="button" data-salvar-mapas>Salvar os mapas</button>
+        <button class="bt claro peq" type="button" data-todos-mapas>Marcar todos</button>
+        <button class="bt claro peq" type="button" data-nenhum-mapa>Desmarcar todos</button>
+        <span class="small" id="mp-msg-${i}" role="status"></span>
+      </div>
+    </details>`;
+  }
   const ocupado = async (botao, fn) => { if (botao) botao.disabled = true; try { return await fn(); } finally { if (botao) botao.disabled = false; } };
 
   async function inicio() {
@@ -52,6 +80,7 @@
           <input class="campo" id="ap-${i}" placeholder="Apelidos, separados por vírgula (ex.: Bia, Leo, Davi)" required>
           <button class="bt peq" type="submit">Cadastrar</button>
         </form>
+        ${blocoMapas(t, i)}
         ${alunos[i].length ? `<table><thead><tr><th>Apelido</th><th>Senha</th><th>Pontos</th><th>Acertos</th><th>Última vez</th><th></th></tr></thead><tbody>
           ${alunos[i].map(a => {
             const s = senhasNovas[a.apelido.toLowerCase() + '@' + t.id];
@@ -95,6 +124,20 @@
         await ocupado(ev.target, async () => { try { await T.prof.apagarTurma(t.id); } catch (e) { $('#p-msg').textContent = traduz(e); } await desenhaTurmas(); });
       });
       el.querySelector('[data-aovivo]').addEventListener('click', () => aoVivo.abre(t));
+      const mp = el.querySelector('[data-mapas]');
+      if (mp) {
+        const caixas = () => [...mp.querySelectorAll('input[type=checkbox]')], msg = mp.querySelector('[role=status]');
+        mp.querySelector('[data-todos-mapas]').addEventListener('click', () => caixas().forEach(c => { c.checked = true; }));
+        mp.querySelector('[data-nenhum-mapa]').addEventListener('click', () => caixas().forEach(c => { c.checked = false; }));
+        mp.querySelector('[data-salvar-mapas]').addEventListener('click', ev => ocupado(ev.target, async () => {
+          try {
+            t.mapas = await T.prof.mapasTurma(t.id, caixas().filter(c => c.checked).map(c => c.value)) || [];
+            msg.className = 'small ok'; msg.textContent = 'Salvo.';
+            const n = t.mapas.filter(id => MAPAS.some(m => m[0] === id)).length;
+            mp.querySelector('summary .muted').textContent = n ? n + ' de ' + MAPAS.length + ' liberados' : 'nenhum: as vilas abrem na ordem das missões';
+          } catch (e) { msg.className = 'small erro'; msg.textContent = traduz(e); }
+        }));
+      }
       el.querySelector('[data-imprimir]').addEventListener('click', () => {
         const comSenha = alunos[i].filter(a => senhasNovas[a.apelido.toLowerCase() + '@' + t.id]);
         if (!comSenha.length) { alert('As senhas só aparecem logo depois de criadas. Cadastre os alunos ou clique em "Nova senha" e depois imprima.'); return; }

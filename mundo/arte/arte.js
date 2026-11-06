@@ -17,8 +17,10 @@
     const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
     return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
   }
+  // a professora do Mundo da turma pode liberar esta área para a turma: vale enquanto o aluno está logado na turma
+  const pelaTurma = () => { try { const t = JSON.parse(localStorage.getItem('mundo-turma-aluno-v1')); return !!(t && Array.isArray(t.mapas) && t.mapas.includes('arte')); } catch (e) { return false; } };
   window.ARTE = {
-    liberado: () => !!ler().lib,
+    liberado: () => !!ler().lib || pelaTurma(),
     async tentar(codigo) {
       const ok = window.crypto && crypto.subtle ? await hash(normaliza(codigo)) === HASH : normaliza(codigo) === ['A', 'R', 'T', 'E'].join('');
       if (ok) this.liberar();
@@ -26,7 +28,7 @@
     },
     liberar() { const m = ler(); m.lib = true; try { localStorage.setItem(CHAVE, JSON.stringify(m)); } catch (e) {} return true; },
     /* página da vila: sem o código, volta para o Mundo */
-    exigir() { if (!ler().lib) location.replace('../'); },
+    exigir() { if (!ler().lib && !pelaTurma()) location.replace('../'); },
     /* rodada de perguntas na página: qs = [{ enun (html), alts, certa, coment }]; ao final, de 1 a 3 estrelas */
     quiz(palco, gerar, titulo) {
       let qs = gerar(), i = 0, acertos = 0;

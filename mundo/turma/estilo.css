@@ -21,6 +21,12 @@ th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #ddd; }
 .turma { border: 1.5px solid var(--ink, #222); border-radius: 16px; padding: 14px; margin: 12px 0; }
 .small { font-size: 14px; }
 .muted { color: #555; }
+/* Mapas liberados */
+.mapas { margin: 12px 0; border: 1px dashed #999; border-radius: 12px; padding: 8px 12px; }
+.mapas summary { cursor: pointer; padding: 4px 0; }
+.mapas-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 12px; margin: 10px 0; }
+.mapa-op { display: flex; gap: 8px; align-items: flex-start; font-weight: 400; cursor: pointer; }
+.mapa-op input { margin-top: 4px; width: 18px; height: 18px; flex: none; }
 /* Aula ao vivo */
 .caixa.larga { max-width: 1100px; }
 .av-resumo { font-size: 20px; font-weight: 600; margin: 6px 0 10px; }
