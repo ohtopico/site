@@ -143,7 +143,7 @@
       "name": "Gerador de avaliação de Computação (BNCC)",
       "description": "Monte uma avaliação de Computação da BNCC (6º ao 9º ano) para imprimir: escolha o ano e as habilidades e receba a prova com gabarito e versões A, B e C.",
       "inLanguage": "pt-BR",
-      "isAccessibleForFree": true,
+      "isAccessibleForFree": false,
       "author": {
         "@id": "https://ohtopico.com.br/#julia"
       },
@@ -196,7 +196,10 @@
   <div class="nao-imprimir">
     <span class="eyebrow">Para o professor</span>
     <h1>Gerador de avaliação de Computação</h1>
-    <p class="muted" style="max-width:740px;margin:0">Escolha o ano e as habilidades da BNCC Computação e receba uma prova pronta para imprimir, com gabarito e três versões para alunos com diferentes necessidades. As questões têm a mesma numeração nas três versões: a turma faz a mesma avaliação e a correção por habilidade fica igual para todos.</p>
+    <p class="muted" style="max-width:740px;margin:0">Escolha o ano e as habilidades da BNCC Computação e receba uma prova pronta para imprimir, com gabarito e três versões para alunos com diferentes necessidades. As questões têm a mesma numeração nas três versões: a turma faz a mesma avaliação e a correção por habilidade fica igual para todos. Recurso da área premium, para apoiadores do Catarse a partir do plano Educador criativo.</p>
+
+    <section id="portao-aval" class="portao-premium" aria-live="polite"></section>
+    <div id="ferramenta">
 
     <div class="passo">
       <b>1. Ano e habilidades</b>
@@ -249,6 +252,7 @@
     </div>
     <p class="small muted" style="margin:8px 0 0">O código da prova fica no endereço desta página: guarde o link para gerar exatamente a mesma prova depois. Para retomar o conteúdo, cada habilidade tem uma <a href="../material-adaptado/#computacao">ficha adaptada</a> (A, B e C), indicada no gabarito. Para o início do ano, use a <a href="avaliacao-diagnostica.html">avaliação diagnóstica</a>, com rubrica.</p>
     <h2>Prévia</h2>
+    </div>
   </div>
   <div class="previa" id="previa"></div>
 </main>
@@ -260,10 +264,11 @@
 <script src="assets/teste-ano.js"></script>
 <script src="assets/comum.js"></script>
 <script src="assets/avaliacao.js"></script>
+<script src="assets/portao-premium.js"></script>
 <script>
-(function () {
-  mdTopbar('professor');
-  mdFooter();
+mdTopbar('professor');
+mdFooter();
+mdPortaoPremium({ nivel: 3, caixa: '#portao-aval', recurso: 'O gerador de avaliação' }).then(function () {
   const $ = s => document.querySelector(s);
   const A = window.AVAL;
 
@@ -342,7 +347,7 @@
   $('#previa').onclick = e => { const b = e.target.closest('[data-imp]'); if (b) imprimir(b.dataset.imp); };
 
   desenharAnos(); desenharHabs(); gerar();
-})();
+});
 </script>
 </body>
 </html>
