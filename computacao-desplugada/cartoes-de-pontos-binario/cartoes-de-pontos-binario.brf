@@ -27,9 +27,8 @@ N)MERO1 MONTADO PELO PROFESSOR'
    CART[ES DE PONTOS1 DA ESQUERDA PARA A
    DIREITA1 COM #AF1 #H1 #D1 #B1 #A
    PONTOS'
-   .CADA CART>O TEM QUANTOS PONTOS A
-   MAIS QUE O DA DIREITA5 .QUAL A REGRA5
-   <' ,>
+   .COMPARE CADA CART>O COM O DA
+   DIREITA' .QUAL = A REGRA5 <' ,>
    .SE EXISTISSE UM CART>O $ ESQUERDA DO
    #AF1 QUANTOS PONTOS ELE TERIA5 <' ,>
 
@@ -38,8 +37,8 @@ N)MERO1 MONTADO PELO PROFESSOR'
    PARA O CART>O VIRADO PARA BAIXO'
    .DICA3 .A PRIMEIRA LINHA = O EXEMPLO3
    #E 7 #D 6 #A' .S+ OS CART[ES #D E #A
-                                      #C
    FICAM PARA CIMA'
+                                      #C
    .TABELA COM #E LINHAS3 COLUNAS
    .N)MERO2 #AF2 #H2 #D2 #B2 #A2
    .BIN(RIO'
@@ -63,8 +62,8 @@ N)MERO1 MONTADO PELO PROFESSOR'
    C+DIGO BIN(RIO MOSTRA5
    .DICA3 .SOME OS PONTOS DOS CART[ES
    QUE EST>O COM #A'
-                                      #D
    #JAJAJ 7 <' ,>
+                                      #D
    #AJJJA 7 <' ,>
    #AAAJJ 7 <' ,>
 

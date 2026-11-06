@@ -935,7 +935,7 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'Pensamento computacional: os quatr
   </div>
 
   <h2 id="desplugado">Pensamento computacional sem computador</h2>
-  <p>Dá para trabalhar todo o eixo com papel, cartões e o quadro. As fichas abaixo são desplugadas, prontas para imprimir em preto e branco, com gabarito e orientações para o professor.${URL_DESPLUGADA ? ` A página <a href="${URL_DESPLUGADA}">computação desplugada</a> reúne mais atividades para imprimir, incluindo versões em braille.` : ''} Para estudantes com diferentes necessidades, há também a <a href="/computacao-adaptada/">Computação adaptada</a>, com cada ficha em três níveis de apoio.</p>
+  <p>Dá para trabalhar todo o eixo com papel, cartões e o quadro. As fichas abaixo são desplugadas, prontas para imprimir em preto e branco, com gabarito e orientações para o professor.${URL_DESPLUGADA ? ` A página <a href="${URL_DESPLUGADA}">computação desplugada</a> reúne mais atividades para imprimir, incluindo versões em braille, e uma seção de <a href="${URL_DESPLUGADA}#computacao-e-matematica">atividades que juntam Computação e Matemática</a> (primos, MDC, média, sequências, distâncias e polígonos).` : ''} Para estudantes com diferentes necessidades, há também a <a href="/computacao-adaptada/">Computação adaptada</a>, com cada ficha em três níveis de apoio.</p>
   <div class="related">${fichas.map(cardRec).join('')}
   </div>
 ${jogos.length ? `

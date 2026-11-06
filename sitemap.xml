@@ -536,7 +536,7 @@
   <url><loc>https://ohtopico.com.br/material-didatico/aprenda/em13co26/</loc><lastmod>2026-11-06</lastmod></url><!-- h:5e8be50b -->
   <url><loc>https://ohtopico.com.br/material-didatico/aprenda/</loc><lastmod>2026-11-06</lastmod></url><!-- h:30350656 -->
   <url><loc>https://ohtopico.com.br/material-didatico/bncc/</loc><lastmod>2026-11-06</lastmod></url><!-- h:12970f6f -->
-  <url><loc>https://ohtopico.com.br/pensamento-computacional/</loc><lastmod>2026-11-06</lastmod></url><!-- h:b5282e5e -->
+  <url><loc>https://ohtopico.com.br/pensamento-computacional/</loc><lastmod>2026-11-06</lastmod></url><!-- h:129b83f4 -->
   <url><loc>https://ohtopico.com.br/material-didatico/jogos/valor-moeda.html</loc><lastmod>2026-11-06</lastmod></url><!-- h:9ebbfb4f -->
   <url><loc>https://ohtopico.com.br/material-didatico/jogos/cunhe-moeda.html</loc><lastmod>2026-11-06</lastmod></url><!-- h:eb70536d -->
   <url><loc>https://ohtopico.com.br/material-didatico/jogos/linha-tempo.html</loc><lastmod>2026-11-06</lastmod></url><!-- h:565a5118 -->
@@ -942,18 +942,26 @@
   <url><loc>https://ohtopico.com.br/material-adaptado/glossario/</loc><lastmod>2026-11-06</lastmod></url><!-- h:487fb7e4 -->
   <!-- glossario-libras: fim -->
   <!-- computacao-desplugada: início (gerado por _fonte/computacao-desplugada/gerar.py) -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/</loc><lastmod>2026-11-06</lastmod></url><!-- h:adf55949 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/cartoes-de-pontos-binario/</loc><lastmod>2026-11-06</lastmod></url><!-- h:cb8a10f6 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/imagem-feita-de-numeros/</loc><lastmod>2026-11-06</lastmod></url><!-- h:bf03ece1 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/ditado-de-figuras/</loc><lastmod>2026-11-06</lastmod></url><!-- h:5af07aa7 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/truque-da-paridade/</loc><lastmod>2026-11-06</lastmod></url><!-- h:de9bb2e7 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/mapa-para-colorir-grafos/</loc><lastmod>2026-11-06</lastmod></url><!-- h:0b247bf5 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/senhas-e-combinacoes/</loc><lastmod>2026-11-06</lastmod></url><!-- h:cec8c2ec -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/rede-de-ordenacao/</loc><lastmod>2026-11-06</lastmod></url><!-- h:e3636a98 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/torre-de-hanoi-recursao/</loc><lastmod>2026-11-06</lastmod></url><!-- h:b810d7ea -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/caminho-mais-curto-na-rede/</loc><lastmod>2026-11-06</lastmod></url><!-- h:6760c8a4 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/cabos-mais-baratos-arvore/</loc><lastmod>2026-11-06</lastmod></url><!-- h:80a79b36 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/cifra-com-palavra-chave/</loc><lastmod>2026-11-06</lastmod></url><!-- h:865d5e26 -->
-  <url><loc>https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/</loc><lastmod>2026-11-06</lastmod></url><!-- h:514b00ac -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/</loc><lastmod>2026-11-06</lastmod></url><!-- h:95862c6b -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/cartoes-de-pontos-binario/</loc><lastmod>2026-11-06</lastmod></url><!-- h:fa54cdc8 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/imagem-feita-de-numeros/</loc><lastmod>2026-11-06</lastmod></url><!-- h:d520d42b -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/ditado-de-figuras/</loc><lastmod>2026-11-06</lastmod></url><!-- h:14abef0d -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/truque-da-paridade/</loc><lastmod>2026-11-06</lastmod></url><!-- h:5643002e -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/mapa-para-colorir-grafos/</loc><lastmod>2026-11-06</lastmod></url><!-- h:27efd35f -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/senhas-e-combinacoes/</loc><lastmod>2026-11-06</lastmod></url><!-- h:e6c5f13c -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/rede-de-ordenacao/</loc><lastmod>2026-11-06</lastmod></url><!-- h:ad0b1b71 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/torre-de-hanoi-recursao/</loc><lastmod>2026-11-06</lastmod></url><!-- h:fb95247d -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/caminho-mais-curto-na-rede/</loc><lastmod>2026-11-06</lastmod></url><!-- h:bbb96008 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/cabos-mais-baratos-arvore/</loc><lastmod>2026-11-06</lastmod></url><!-- h:88ba872e -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/cifra-com-palavra-chave/</loc><lastmod>2026-11-06</lastmod></url><!-- h:355eb092 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/fechadura-maquina-de-estados/</loc><lastmod>2026-11-06</lastmod></url><!-- h:d918a111 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/crivo-de-eratostenes-primos/</loc><lastmod>2026-11-06</lastmod></url><!-- h:1edab29f -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/pesquisa-da-turma-tipos-de-dados/</loc><lastmod>2026-11-06</lastmod></url><!-- h:1386ba18 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/duas-receitas-para-o-mdc/</loc><lastmod>2026-11-06</lastmod></url><!-- h:69fbe6c5 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/teste-de-mesa-media-da-turma/</loc><lastmod>2026-11-06</lastmod></url><!-- h:52e2332e -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/sequencia-de-palitos-recursao/</loc><lastmod>2026-11-06</lastmod></url><!-- h:2efbad35 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/apuracao-distribuida-media-mediana/</loc><lastmod>2026-11-06</lastmod></url><!-- h:a6b604ff -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/mais-perto-distancias-no-mapa/</loc><lastmod>2026-11-06</lastmod></url><!-- h:6f5f0433 -->
+  <url><loc>https://ohtopico.com.br/computacao-desplugada/poligonos-com-passos-de-tartaruga/</loc><lastmod>2026-11-06</lastmod></url><!-- h:dd549fb7 -->
   <!-- computacao-desplugada: fim -->
 </urlset>

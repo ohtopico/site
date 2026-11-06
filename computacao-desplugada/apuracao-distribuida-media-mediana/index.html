@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Apuração em paralelo: média, moda e mediana | Júlia Quoos</title>
+<meta name="description" content="Três grupos apuram partes de uma pesquisa ao mesmo tempo e descobrem que só algumas contas podem ser juntadas depois, como num sistema distribuído.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-desplugada/apuracao-distribuida-media-mediana/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-desplugada/apuracao-distribuida-media-mediana/">
+<meta property="og:title" content="Apuração em paralelo: média, moda e mediana | Júlia Quoos">
+<meta property="og:description" content="Três grupos apuram partes de uma pesquisa ao mesmo tempo e descobrem que só algumas contas podem ser juntadas depois, como num sistema distribuído.">
+<meta property="og:image" content="https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Card com o título Computação desplugada e a captura de uma atividade para imprimir.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-desplugada/apuracao-distribuida-media-mediana/#atividade",
+   "url": "https://ohtopico.com.br/computacao-desplugada/apuracao-distribuida-media-mediana/",
+   "name": "Apuração em paralelo: média, moda e mediana",
+   "description": "Três grupos apuram partes de uma pesquisa ao mesmo tempo e descobrem que só algumas contas podem ser juntadas depois, como num sistema distribuído.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Atividade desplugada para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "8º ano do Ensino Fundamental",
+   "timeRequired": "50 minutos",
+   "teaches": [
+    "EF08CO05: Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.",
+    "EF08CO02: Criar soluções que usem listas para descrever informações e automatizá- las com uma linguagem de programação.",
+    "EF08MA25: Obter os valores de medidas de tendência central de uma pesquisa estatística (média, moda e mediana) com a compreensão de seus significados e relacioná-los com a dispersão de dados, indicada pela amplitude.",
+    "Pensamento computacional: Decomposição"
+   ],
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF08CO05",
+     "targetDescription": "Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF08CO02",
+     "targetDescription": "Criar soluções que usem listas para descrever informações e automatizá- las com uma linguagem de programação."
+    },
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Matemática",
+     "targetName": "EF08MA25",
+     "targetDescription": "Obter os valores de medidas de tendência central de uma pesquisa estatística (média, moda e mediana) com a compreensão de seus significados e relacioná-los com a dispersão de dados, indicada pela amplitude."
+    }
+   ],
+   "audience": [
+    {
+     "@type": "EducationalAudience",
+     "educationalRole": "teacher"
+    }
+   ],
+   "accessibilityFeature": [
+    "braille",
+    "tactileGraphic",
+    "highContrastDisplay",
+    "structuralNavigation"
+   ],
+   "encoding": {
+    "@type": "MediaObject",
+    "contentUrl": "https://ohtopico.com.br/computacao-desplugada/apuracao-distribuida-media-mediana/apuracao-distribuida-media-mediana.pdf",
+    "encodingFormat": "application/pdf"
+   },
+   "image": "https://ohtopico.com.br/computacao-desplugada/og-computacao-desplugada.jpg",
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": "https://ohtopico.com.br/computacao-desplugada/#pagina"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação desplugada",
+     "item": "https://ohtopico.com.br/computacao-desplugada/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Apuração em paralelo: média, moda e mediana",
+     "item": "https://ohtopico.com.br/computacao-desplugada/apuracao-distribuida-media-mediana/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=3760ad871b">
+<link rel="stylesheet" href="/computacao-adaptada/assets/computacao.css?v=3760ad871b">
+<link rel="stylesheet" href="/computacao-desplugada/assets/desplugada.css?v=3760ad871b">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-desplugada/">Computação desplugada</a><a href="/pensamento-computacional/">Pensamento computacional</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-desplugada/">Computação desplugada</a></li><li aria-current="page">Apuração em paralelo: média, moda e mediana</li></ol></nav>
+        <p class="rotulo">Computação desplugada · Computação e Matemática · EF08CO05 · EF08CO02 · EF08MA25 · 8º ano</p>
+        <h1>Apuração em paralelo: média, moda e mediana</h1>
+        <p class="linha-fina">Três grupos apuram partes de uma pesquisa ao mesmo tempo e descobrem que só algumas contas podem ser juntadas depois, como num sistema distribuído.</p>
+        <div class="acoes">
+            <a class="btn98 escuro" href="apuracao-distribuida-media-mediana.pdf" download>Baixar PDF</a><a class="btn98" href="apuracao-distribuida-media-mediana.brf" download>Baixar braille (.brf)</a>
+            <button type="button" class="btn98" data-imprimir="Estudante">Imprimir folhas do estudante</button><button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações</button>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Ano</dt><dd>8º ano</dd>
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Pilar</dt><dd><a href="/pensamento-computacional/">Decomposição</a></dd>
+            <dt>Material</dt><dd>Folha do estudante. Para a dinâmica, três envelopes (urnas) com as respostas escritas em papeizinhos, uma por papel.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/bncc/ef08co05/">EF08CO05</a>: Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.</li><li><a href="/material-didatico/bncc/ef08co02/">EF08CO02</a>: Criar soluções que usem listas para descrever informações e automatizá- las com uma linguagem de programação.</li><li><a href="/matematica-adaptada/fichas/media-moda-e-mediana/">EF08MA25</a>: Obter os valores de medidas de tendência central de uma pesquisa estatística (média, moda e mediana) com a compreensão de seus significados e relacioná-los com a dispersão de dados, indicada pela amplitude.</li></ul>
+        <h2>Como aplicar, sem computador</h2>
+        <ol><li>Divida a turma em três grupos e entregue uma urna para cada um. Cada grupo é um computador: apura só a sua parte, ao mesmo tempo que os outros.</li><li>Um estudante é a central: não vê os papeizinhos, só o bilhete que cada grupo manda.</li><li>Primeiro, os grupos mandam só a média. A central tira a média das médias. Depois, conte tudo junto no quadro e compare: não bate.</li><li>Discuta o que cada grupo deveria mandar para a central acertar (soma e quantidade). Apurações de eleição funcionam assim.</li></ol>
+        <h2>Para conversar no fim</h2>
+        <ul><li>Por que a média das médias erra com grupos de tamanhos diferentes?</li><li>Dividir o trabalho deixou a apuração mais rápida. O que se perde quando cada grupo manda só um número?</li></ul>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: Grupo 1: 5 respostas, soma 100, média 20, mediana 15; Grupo 2: 4 respostas, soma 50, média 12,5, mediana 10; Grupo 3: 6 respostas, soma 180, média 30, mediana 30.</li><li>Bloco 2: jeito A dá 20,83 (cerca de); jeito B dá 330 ÷ 15 = 22. O B está certo: a média das médias dá o mesmo peso a um grupo de 4 e a um de 6.</li><li>Bloco 3: mediana das medianas = 15; mediana de verdade = 20 (a 8ª de 5, 10, 10, 10, 10, 15, 15, 20, 20, 25, 30, 30, 30, 40 e 60). Os grupos precisam mandar todas as respostas, ou quantas vezes apareceu cada tempo.</li><li>Bloco 4: moda da turma = 10 minutos (aparece 4 vezes). As modas dos grupos (15, 10 e 30) não bastam: cada grupo precisa mandar a contagem de cada tempo.</li></ul></details>
+        <h2 id="braille">Para estudantes cegos: braille e moldes táteis</h2>
+        <p>Esta atividade tem <a href="apuracao-distribuida-media-mediana.brf" download>versão em braille</a> (4 páginas braille, todas as folhas do estudante).</p>
+        <ol><li>Envie o arquivo .brf para a impressora braille da escola ou da sala de recursos. Ele já vem com 40 celas por linha e 25 linhas por página, em braille grau 1 e com os sinais do Código Matemático Unificado.</li><li>Onde a folha em tinta pede para circular, pintar ou ligar, a versão em braille pede para escrever a resposta, e as contas podem ser feitas no soroban.</li></ol>
+        <p class="nota">Este material foi gerado a partir das folhas em tinta e precisa ser revisado pela sala de recursos ou pelo professor do AEE antes de chegar ao estudante.</p>
+        <h2 id="folhas">Folhas para imprimir</h2>
+        <p>As folhas são A4, com fundo branco para economizar tinta. Imprima só a folha de que precisa ou baixe o PDF com todas, incluindo as orientações.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Apuração em paralelo: média, moda e mediana, estudante, folha 1">
+    <header class="folha-topo"><span class="nivel"><b>Estudante, folha 1</b></span><span class="hab">EF08CO05 · EF08CO02 · EF08MA25 · Computação e Matemática · 8º ano</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Apuração em paralelo: média, moda e mediana</h2>
+    <div class="quadro-texto cinza"><b>A pesquisa:</b> quantos minutos cada estudante leva de casa até a escola. As respostas ficaram em três urnas, e cada grupo apura só a sua, ao mesmo tempo. Depois, a central junta tudo.</div><section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Cada grupo apura a sua urna. Complete a tabela.</span></h3><p class="dica">Mediana: coloque em ordem e pegue o do meio. Se forem dois no meio, faça a média dos dois.</p><div class="bloco-corpo"><div class="compacta"><table class="tabela-folha"><thead><tr><th>Urna</th><th>Respostas (minutos)</th><th>Quantidade</th><th>Soma</th><th>Média</th><th>Mediana</th></tr></thead><tbody><tr><td>Grupo 1</td><td>10, 15, 15, 20, 40</td><td></td><td></td><td></td><td></td></tr><tr><td>Grupo 2</td><td>5, 10, 10, 25</td><td></td><td></td><td></td><td></td></tr><tr><td>Grupo 3</td><td>10, 20, 30, 30, 30, 60</td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>A central só recebe o que os grupos mandam. Calcule a média de toda a turma de dois jeitos.</span></h3><div class="bloco-corpo"><div class="frases"><p><span>Jeito A, média das três médias:</span> <span class="linha-resp"></span></p><p><span>Jeito B, soma de todas as somas ÷ total de estudantes:</span> <span class="linha-resp"></span></p><p><span>Qual está certo? Por quê?</span> <span class="linha-resp"></span></p></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha" data-versao="Estudante" aria-label="Apuração em paralelo: média, moda e mediana, estudante, folha 2">
+    <header class="folha-topo"><span class="nivel"><b>Estudante, folha 2</b></span><span class="hab">EF08CO05 · EF08CO02 · EF08MA25 · Computação e Matemática · 8º ano</span></header>
+    
+    <h2 class="folha-titulo">Apuração em paralelo: média, moda e mediana</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>Agora a mediana da turma.</span></h3><div class="bloco-corpo"><div class="frases"><p><span>Mediana das três medianas:</span> <span class="linha-resp"></span></p><p><span>Mediana de verdade (todas as 15 respostas em ordem):</span> <span class="linha-resp"></span></p><p><span>Para calcular a mediana certa, o que os grupos precisam mandar para a central?</span> <span class="linha-resp"></span></p></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">4</span><span>Qual é a moda da turma (o tempo que mais aparece)? A moda de cada grupo ajuda a achar?</span></h3><div class="bloco-corpo"><div class="frases"><p><span>Moda da turma:</span> <span class="linha-resp"></span></p><p><span>Explique:</span> <span class="linha-resp"></span></p></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações para o professor">
+    <header class="folha-topo"><span class="nivel"><b>Orientações para o professor</b></span><span class="hab">8º ano · 50 minutos</span></header>
+    <h2 class="folha-titulo">Apuração em paralelo: média, moda e mediana</h2>
+    <h3>Habilidades da BNCC</h3><p class="hab-prof"><b>EF08CO05</b>: Compreender os conceitos de paralelismo, concorrência e armazenamento/processamento distribuídos.</p><p class="hab-prof"><b>EF08CO02</b>: Criar soluções que usem listas para descrever informações e automatizá- las com uma linguagem de programação.</p><p class="hab-prof"><b>EF08MA25</b>: Obter os valores de medidas de tendência central de uma pesquisa estatística (média, moda e mediana) com a compreensão de seus significados e relacioná-los com a dispersão de dados, indicada pela amplitude.</p>
+    <h3>Pilar do pensamento computacional</h3><p>Decomposição</p>
+    <h3>Material</h3><p>Folha do estudante. Para a dinâmica, três envelopes (urnas) com as respostas escritas em papeizinhos, uma por papel.</p>
+    <h3>Como aplicar, sem computador</h3><ol><li>Divida a turma em três grupos e entregue uma urna para cada um. Cada grupo é um computador: apura só a sua parte, ao mesmo tempo que os outros.</li><li>Um estudante é a central: não vê os papeizinhos, só o bilhete que cada grupo manda.</li><li>Primeiro, os grupos mandam só a média. A central tira a média das médias. Depois, conte tudo junto no quadro e compare: não bate.</li><li>Discuta o que cada grupo deveria mandar para a central acertar (soma e quantidade). Apurações de eleição funcionam assim.</li></ol>
+    <h3>Para conversar no fim</h3><ul><li>Por que a média das médias erra com grupos de tamanhos diferentes?</li><li>Dividir o trabalho deixou a apuração mais rápida. O que se perde quando cada grupo manda só um número?</li></ul>
+    <h3>Gabarito</h3><ul><li>Bloco 1: Grupo 1: 5 respostas, soma 100, média 20, mediana 15; Grupo 2: 4 respostas, soma 50, média 12,5, mediana 10; Grupo 3: 6 respostas, soma 180, média 30, mediana 30.</li><li>Bloco 2: jeito A dá 20,83 (cerca de); jeito B dá 330 ÷ 15 = 22. O B está certo: a média das médias dá o mesmo peso a um grupo de 4 e a um de 6.</li><li>Bloco 3: mediana das medianas = 15; mediana de verdade = 20 (a 8ª de 5, 10, 10, 10, 10, 15, 15, 20, 20, 25, 30, 30, 30, 40 e 60). Os grupos precisam mandar todas as respostas, ou quantas vezes apareceu cada tempo.</li><li>Bloco 4: moda da turma = 10 minutos (aparece 4 vezes). As modas dos grupos (15, 10 e 30) não bastam: cada grupo precisa mandar a contagem de cada tempo.</li></ul>
+    <p class="lembrete">Para estudantes cegos, use a versão em braille (.brf) e os moldes táteis da página da atividade, revisados antes pela sala de recursos ou pelo professor do AEE.</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-desplugada · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras atividades"><a href="/computacao-desplugada/sequencia-de-palitos-recursao/">← Sequência de palitos: duas receitas</a><a href="/computacao-desplugada/mais-perto-distancias-no-mapa/">Mais perto de quem? Distâncias no mapa →</a></nav>
+        <p class="voltar"><a href="/computacao-desplugada/">Ver todas as atividades de computação desplugada</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/pensamento-computacional/">Pensamento computacional</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/matematica-adaptada/assets/fichas.js?v=3760ad871b" defer></script>
+</body>
+</html>
