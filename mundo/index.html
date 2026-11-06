@@ -68,6 +68,7 @@
   <button type="button" class="hb rosa" data-abrir="avatar" title="Avatar" aria-label="Avatar">🧑 <span class="t">Avatar</span></button>
   <button type="button" class="hb amarelo" id="b-evento" data-abrir="evento" hidden title="Evento" aria-label="Evento"><span class="ic">🎉</span> <span class="t">Evento</span></button>
   <button type="button" class="hb cinza" data-abrir="menu" title="Menu" aria-label="Menu">☰ <span class="t">Menu</span></button>
+  <button type="button" class="hb verde" id="b-fp" aria-pressed="false" title="Ver pelos olhos do avatar (F)" aria-label="Primeira pessoa">👁️ <span class="t">1ª pessoa</span></button>
   <button type="button" class="hb cinza" id="b-toque" aria-pressed="false" title="Toque" aria-label="Toque">📱 <span class="t">Toque</span></button>
 </div>
 
@@ -88,8 +89,9 @@
 
 <!-- teclas -->
 <div class="hud teclas" id="teclas">
-  <span><kbd>↑↓←→</kbd> mover · <kbd>SHIFT</kbd> correr · <kbd>ESPAÇO</kbd> saltar · clique no chão para andar</span>
-  <span><kbd>E</kbd> conversar / abrir · <kbd>M</kbd> mapa · <kbd>I</kbd> inventário · <kbd>C</kbd> casa · <kbd>P</kbd> pet · <kbd>V</kbd> avatar · <kbd>ESC</kbd> menu</span>
+  <span class="so-cima"><kbd>↑↓←→</kbd> mover · <kbd>SHIFT</kbd> correr · <kbd>ESPAÇO</kbd> saltar · clique no chão para andar</span>
+  <span class="so-fp"><kbd>↑↓</kbd> andar · <kbd>←→</kbd> virar · arraste o mouse para olhar · <kbd>SHIFT</kbd> correr · <kbd>ESPAÇO</kbd> saltar</span>
+  <span><kbd>E</kbd> conversar / abrir · <kbd>M</kbd> mapa · <kbd>I</kbd> inventário · <kbd>C</kbd> casa · <kbd>P</kbd> pet · <kbd>V</kbd> avatar · <kbd>F</kbd> 1ª pessoa · <kbd>ESC</kbd> menu</span>
 </div>
 
 <!-- controles de toque -->
@@ -399,7 +401,7 @@
 <script src="arte/arte.js?v=20261106a"></script>
 <script>if (window.ARTE && ARTE.liberado()) document.write('<script src="arte/vila.js?v=20261106a"><\/script>');</script>
 <script src="casas-npc.js?v=20261106a"></script>
-<script src="mundo.js?v=20261106arte"></script>
+<script src="mundo.js?v=20261106fp"></script>
 <script src="turma/api.js?v=20261106b"></script>
 <script src="turma/nuvem.js?v=20261106b"></script>
 <script src="codigo.js?v=20261106a"></script>

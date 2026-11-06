@@ -1242,20 +1242,27 @@
     let sx = 0, sy = 0;
     if (teclas.esq) sx -= 1; if (teclas.dir) sx += 1; if (teclas.cima) sy -= 1; if (teclas.baixo) sy += 1;
     let mx = 0, my = 0;
-    if (sx || sy) { [mx, my] = telaParaMapa(sx * TW / 2, sy * TH / 2); destino = null; }
+    const fp = fpAtivo();
+    if (fp) {   // primeira pessoa: cima e baixo andam para a frente e para trás; os lados viram o olhar
+      if (sx) { FP.ang += sx * 2.4 * dt; destino = null; }
+      if (sy) { mx = -Math.cos(FP.ang) * sy; my = -Math.sin(FP.ang) * sy; destino = null; }
+      else if (destino) { mx = destino.x - P.x; my = destino.y - P.y; if (Math.hypot(mx, my) < 0.12) { destino = null; mx = my = 0; } else { let da = Math.atan2(my, mx) - FP.ang; da = Math.atan2(Math.sin(da), Math.cos(da)); FP.ang += da * Math.min(1, dt * 6); } }
+    }
+    else if (sx || sy) { [mx, my] = telaParaMapa(sx * TW / 2, sy * TH / 2); destino = null; }
     else if (destino) { mx = destino.x - P.x; my = destino.y - P.y; if (Math.hypot(mx, my) < 0.12) { destino = null; mx = my = 0; } }
     const L = Math.hypot(mx, my);
     P.andando = L > 0;
     if (P.andando) {
       mx /= L; my /= L;
       const corre = correndo || teclas.correr, v = (corre ? 6.2 : 3.6) * dt;
-      P.dir = Math.abs(mx) > Math.abs(my) ? (mx > 0 ? 'x+' : 'x-') : (my > 0 ? 'y+' : 'y-');
+      P.dir = fp ? dirDoAng(FP.ang) : Math.abs(mx) > Math.abs(my) ? (mx > 0 ? 'x+' : 'x-') : (my > 0 ? 'y+' : 'y-');
       const antes = [P.x, P.y];
       if (livre(P.x + mx * v, P.y)) P.x += mx * v;
       if (livre(P.x, P.y + my * v)) P.y += my * v;
       if (destino && P.x === antes[0] && P.y === antes[1]) destino = null;   // esbarrou: para
       P.passo += dt * (corre ? 16 : 11);
     }
+    if (fp && !P.andando) P.dir = dirDoAng(FP.ang);
     if (P.pulo > 0 || P.vpulo) { P.vpulo -= 9 * dt; P.pulo = Math.max(0, P.pulo + P.vpulo * dt); if (P.pulo === 0) P.vpulo = 0; }
     if (noEnigma) { if (P.andando && my > 0 && P.y > ED - 0.55 && P.x > 2.8 && P.x < 4.2) saiEnigma(); return; }
     if (sala) { const Z = SALAS[sala]; if (P.andando && my > 0 && P.y > Z.D - 0.55 && Math.abs(P.x - Z.saida.x) < 0.7) saiSala(); return; }
@@ -3959,11 +3966,12 @@
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(80,60,90,.6)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     const alvo = !dialogoAberto && !colocando && alvoCasa();
     if (alvo) {
-      const t = alvo.tipo === 'saida' ? 'E · sair de casa' : alvo.tipo === 'npc' ? `E · conversar com ${alvo.npc.nome}` : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : `E · ${MOVEIS[alvo.movel.id].acao || 'ver'}`;
+      const t = textoAlvoCasa(alvo);
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
     }
     miniCasa();
   }
+  function textoAlvoCasa(alvo) { return alvo.tipo === 'saida' ? 'E · sair de casa' : alvo.tipo === 'npc' ? `E · conversar com ${alvo.npc.nome}` : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : `E · ${MOVEIS[alvo.movel.id].acao || 'ver'}`; }
   function miniCasa() {
     miniFase = null; $('#mini-nome').textContent = visita ? `Casa de ${visita.nome}` : 'Sua casa';
     const s = Math.min(280 / CW, 180 / CD), ox = (300 - CW * s) / 2, oy = (200 - CD * s) / 2;
@@ -3974,6 +3982,245 @@
     mctx.fillStyle = '#e0564a'; mctx.fillRect(ox + 2 * s, oy + (CD - 0.35) * s, s, 0.35 * s);
     mctx.fillStyle = '#3f8fe0'; mctx.beginPath(); mctx.arc(ox + P.x * s, oy + P.y * s, 5, 0, Math.PI * 2); mctx.fill();
   }
+
+  /* ---------- primeira pessoa: a mesma vila vista pelos olhos do avatar ----------
+     as paredes das casas e o chão são desenhados por "raios" (um por coluna da tela, numa imagem pequena que é ampliada);
+     árvores, pessoas, itens e móveis reaproveitam o desenho isométrico do jogo, virados de frente para quem olha */
+  const FP = { on: false, ang: Math.PI / 2, cena: '', cv: null, g: null, img: null, buf: null, z: null, tmp: null, cache: new Map(), mapa: null, arrasto: null, arrastou: false };
+  try { FP.on = localStorage.getItem('mundo-fp-v1') === '1'; } catch (e) {}
+  const fpAtivo = () => FP.on && !sala && !noEnigma && !colocando;
+  const ANG_DIR = { 'x+': 0, 'y+': Math.PI / 2, 'x-': Math.PI, 'y-': -Math.PI / 2 };
+  const dirDoAng = a => { const c = Math.cos(a), s = Math.sin(a); return Math.abs(c) > Math.abs(s) ? (c > 0 ? 'x+' : 'x-') : (s > 0 ? 'y+' : 'y-'); };
+  const FP_PLANO = 0.66, FP_OLHO = 1.45;
+  const rgbDe = hex => { const n = parseInt(hex.slice(1, 7), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const empac = (r, g, b) => ((255 << 24) | (b << 16) | (g << 8) | r) >>> 0;
+  const tom = (c, k) => [Math.min(255, c[0] * k), Math.min(255, c[1] * k), Math.min(255, c[2] * k)];
+  const nevoa = (c, n, t) => empac(c[0] + (n[0] - c[0]) * t, c[1] + (n[1] - c[1]) * t, c[2] + (n[2] - c[2]) * t);
+  function rotFP() { const b = $('#b-fp'); if (!b) return; b.setAttribute('aria-pressed', String(FP.on)); b.querySelector('.t').textContent = FP.on ? 'Visão de cima' : '1ª pessoa'; b.title = FP.on ? 'Voltar para a visão de cima (F)' : 'Ver pelos olhos do avatar (F)'; }
+  function ligaFP(liga) {
+    FP.on = liga; try { localStorage.setItem('mundo-fp-v1', liga ? '1' : '0'); } catch (e) {}
+    if (liga && ANG_DIR[P.dir] !== undefined) FP.ang = ANG_DIR[P.dir];
+    destino = null; cam.ok = false; FP.cena = ''; rotFP();
+    document.body.classList.toggle('primeira-pessoa', liga);
+    if (liga) aviso(sala || noEnigma ? '👁️ Primeira pessoa ligada. Nesta sala a visão continua de cima; lá fora e nas casas você vê pelos olhos do avatar.' : grosso ? '👁️ Primeira pessoa: ▲ ▼ andam, ◀ ▶ viram. Arraste o dedo na tela para olhar em volta.' : '👁️ Primeira pessoa: ↑ ↓ andam, ← → viram. Arraste o mouse na tela para olhar em volta. F volta para a visão de cima.');
+    else aviso('🗺️ Visão de cima');
+  }
+  /* o que ocupa cada bloco da vila: só os prédios viram parede; o resto é desenhado como figura */
+  function mapaFP(f) {
+    if (FP.mapa && FP.mapa.sol === f.sol && FP.mapa.f === f) return FP.mapa;
+    const L = f.L, A = ALT, cel = new Uint16Array(L * A), obs = [];
+    const poe = (c, cor, alt, nome, tipo) => {
+      if (!c) return;
+      const pf = c.ladoPorta || 'y+', pc = pf[0] === 'x' ? c.porta.y : c.porta.x, x0 = Math.round(c.gx - f.x0);
+      obs.push({ c, cor: rgbDe(cor), alt, nome, tipo, pf, pc });
+      for (let j = c.y; j < c.y + c.d; j++) for (let i = x0; i < x0 + c.w; i++) if (i >= 0 && j >= 0 && i < L && j < A) cel[j * L + i] = obs.length;
+    };
+    for (const c of f.casas || []) poe(c, S.feitos[c.lugar.id] ? c.cor : '#d4d4cf', Math.max(2.2, c.altura + (c.lugar.tipo === '3d' ? 1.2 : 0.4)), `${c.lugar.icone || '🏠'} ${c.lugar.titulo}`, 'casa');
+    if (f.minhaCasa) poe(f.minhaCasa, S.casa.cor || '#f7c6d9', 2.6, '🏠 Sua casa', 'minhacasa');
+    if (f.enigma) poe(f.enigma, '#7a68a6', 2.8, '🔐 Casa do Enigma', 'enigma');
+    for (const c of f.salas || []) poe(c, c.id === 'museu' ? '#efe4cf' : c.id === 'robotica' ? '#bfe0f0' : '#f3d8a8', 2.8, SALAS[c.id] ? SALAS[c.id].nome : 'Sala', 'sala');
+    if (f.banco) poe(f.banco, '#e9dfc4', 2.8, '🏦 Banco', 'banco');
+    if (f.projetos) poe(f.projetos, '#ffe08a', 2.2, '🤝 Praça dos projetos', 'projetos');
+    if (f.loja) poe(f.loja, '#f6b88a', 2.4, `${LOJAS[f.loja.id].ic} ${LOJAS[f.loja.id].nome}`, 'loja');
+    if (f.portalTele) poe(f.portalTele, '#8d6be0', 2.4, '🌀 Portal de teletransporte', 'portalTele');
+    // cores do chão: três tons por bloco, para lembrar a textura de pixels da visão de cima
+    const chao = [new Uint32Array(L * A), new Uint32Array(L * A), new Uint32Array(L * A)], agua = new Uint8Array(L * A), base = [];
+    for (let i = 0; i < L * A; i++) {
+      const t = f.tile[i], cor = rgbDe(t === T.caminho ? f.caminho : COR_CHAO[t] || COR_CHAO[T.grama]), v = 1 + ((f.var[i] || 0) - 1.5) * 0.025;
+      base[i] = tom(cor, v); chao[0][i] = empac(...base[i]); chao[1][i] = empac(...tom(cor, v * 1.06)); chao[2][i] = empac(...tom(cor, v * 0.94)); agua[i] = t === T.agua ? 1 : 0;
+    }
+    return (FP.mapa = { f, sol: f.sol, L, A, cel, obs, chao, agua });
+  }
+  /* paredes da casa por dentro: segmentos retos (contorno e as paredes entre os cômodos, com a passagem no meio) */
+  function paredesCasaFP() {
+    const segs = [], com = x => COMODOS.find(r => x < r.x1) || COMODOS[COMODOS.length - 1];
+    segs.push({ v: 0, x: 0, a: 0, b: CD, cor: () => COMODOS[0].parede, fundo: true }, { v: 0, x: CW, a: 0, b: CD, cor: () => COMODOS[COMODOS.length - 1].parede });
+    segs.push({ v: 1, y: 0, a: 0, b: CW, cor: x => com(x).parede, janela: true }, { v: 1, y: CD, a: 0, b: CW, cor: x => com(x).parede, porta: true });
+    for (const px of PAREDES) {
+      const esq = com(px - 0.5).parede, dir = com(px + 0.5).parede;
+      for (const [a, b] of [[0, 3], [6, CD]]) { segs.push({ v: 0, x: px - 0.1, a, b, cor: () => esq }, { v: 0, x: px + 0.1, a, b, cor: () => dir }); }
+      segs.push({ v: 1, y: 3, a: px - 0.1, b: px + 0.1, cor: () => '#fff7e8' }, { v: 1, y: 6, a: px - 0.1, b: px + 0.1, cor: () => '#fff7e8' });
+    }
+    return segs;
+  }
+  const JANELAS_CASA = [0.6, 6.9, 11.9, 15.4, 19.4];
+  /* figura: desenha com as funções da visão de cima num canvas pequeno; (ax, ay) do mapa fica no ponto (w/2, base) */
+  function figuraFP(chave, ax, ay, w, h, base, desenha) {
+    if (chave && FP.cache.has(chave)) return FP.cache.get(chave);
+    let c;
+    const R = leve ? 1 : 2;   // desenhada em dobro, para não borrar quando chega perto
+    if (chave) { c = document.createElement('canvas'); c.width = w * R; c.height = h * R; }
+    else { c = FP.tmp || (FP.tmp = document.createElement('canvas')); if (c.width !== w * R || c.height !== h * R) { c.width = w * R; c.height = h * R; } }
+    const g = c.getContext('2d'), [ix, iy] = iso(ax, ay);
+    g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, w * R, h * R);
+    g.setTransform(R, 0, 0, R, (w / 2 - ix) * R, (base - iy) * R);
+    ctx = g; try { desenha(); } catch (e) {} finally { ctx = ctxJogo; }
+    const fig = { c, w, h, base, R };
+    if (chave) { FP.cache.set(chave, fig); if (FP.cache.size > 160) FP.cache.delete(FP.cache.keys().next().value); }
+    return fig;
+  }
+  function desenhaFP(now) {
+    if (!W || !HH) return;
+    const larg = Math.max(160, Math.min(leve ? 260 : 420, Math.round(W / (grosso ? 2.6 : 2.2)))), alt = Math.max(90, Math.round(larg * HH / W));
+    if (!FP.cv || FP.cv.width !== larg || FP.cv.height !== alt) {
+      FP.cv = document.createElement('canvas'); FP.cv.width = larg; FP.cv.height = alt; FP.g = FP.cv.getContext('2d');
+      FP.img = FP.g.createImageData(larg, alt); FP.buf = new Uint32Array(FP.img.data.buffer); FP.z = new Float32Array(larg);
+    }
+    const buf = FP.buf, zb = FP.z, a = FP.ang, dx = Math.cos(a), dy = Math.sin(a), pl = W < HH ? 0.9 : FP_PLANO, plx = -dy * pl, ply = dx * pl;   // celular em pé: um pouco mais de campo de visão
+    const foco = (larg / 2) / pl, olho = FP_OLHO + P.pulo, hor = Math.round(alt * 0.5), noite = DECOR.has('noite');
+    const casa = dentro, M = casa ? null : mapaFP(atual), MAXD = casa ? 30 : 24;
+    const ceuA = rgbDe(noite ? '#b9a3e8' : '#9fd8f2'), ceuB = rgbDe(noite ? '#f3d9c4' : '#e8f7e4'), nev = casa ? rgbDe('#f6ecff') : ceuB;
+    // céu (ou teto) e chão
+    for (let y = 0; y < hor; y++) {
+      const t = y / hor, c = casa ? empac(...tom(rgbDe('#fff7e8'), 0.86 + t * 0.1)) : empac(ceuA[0] + (ceuB[0] - ceuA[0]) * t, ceuA[1] + (ceuB[1] - ceuA[1]) * t, ceuA[2] + (ceuB[2] - ceuA[2]) * t);
+      buf.fill(c, y * larg, (y + 1) * larg);
+    }
+    const onda = semMovimento ? 0 : now / 700, comodo = x => COMODOS.find(r => x < r.x1) || COMODOS[COMODOS.length - 1];
+    const chaoCasa = COMODOS.map(r => [rgbDe(r.chao), tom(rgbDe(r.chao), 1.05), tom(rgbDe(r.chao), 0.95)]), branco = rgbDe('#ffffff'), tapete = rgbDe('#e0564a');
+    for (let y = hor; y < alt; y++) {
+      const dist = olho * foco / (y + 0.5 - hor), t = Math.min(1, dist / MAXD), tn = t * t;
+      let fx = P.x + dist * (dx - plx), fy = P.y + dist * (dy - ply);
+      const sx = dist * 2 * plx / larg, sy = dist * 2 * ply / larg, o = y * larg;
+      for (let c = 0; c < larg; c++, fx += sx, fy += sy) {
+        let cor;
+        const h = ((Math.floor(fx * 4) * 7 + Math.floor(fy * 4) * 13) & 7), v = h < 2 ? 1 : h > 5 ? 2 : 0;
+        if (casa) {
+          if (fx < 0 || fy < 0 || fx > CW || fy > CD) { buf[o + c] = empac(...nev); continue; }
+          const r = COMODOS.indexOf(comodo(fx));
+          let cc = chaoCasa[r][v];
+          if (COMODOS[r].nome === 'Cozinha' && (Math.floor(fx) + Math.floor(fy)) % 2) cc = branco;
+          if (fx > 2.1 && fx < 2.9 && fy > CD - 0.9 && fy < CD - 0.1) cc = tapete;
+          cor = nevoa(cc, nev, tn * 0.6);
+        } else {
+          const lx = Math.floor(fx), ly = Math.floor(fy);
+          if (lx < 0 || ly < 0 || lx >= M.L || ly >= M.A) { buf[o + c] = nevoa(rgbDe(COR_CHAO[T.grama]), nev, Math.max(0.5, tn)); continue; }
+          const i = ly * M.L + lx;
+          let p = M.chao[v][i];
+          if (M.agua[i] && Math.sin(fx * 3 + fy * 2 + onda) > 0.82) p = M.chao[1][i] | 0xff303030;
+          cor = tn > 0.02 ? nevoa([p & 255, (p >> 8) & 255, (p >> 16) & 255], nev, tn) : p;
+        }
+        buf[o + c] = cor;
+      }
+    }
+    // paredes: um raio por coluna
+    const segs = casa ? paredesCasaFP() : null, alvoAgora = !dialogoAberto && (casa ? alvoCasa() : alvoPerto());
+    const alvoPredio = alvoAgora && ({ casa: alvoAgora.casa, minhacasa: atual.minhaCasa, enigma: atual.enigma, sala: alvoAgora.sala, banco: atual.banco, projetos: atual.projetos, loja: atual.loja, portalTele: atual.portalTele })[alvoAgora.tipo];
+    for (let c = 0; c < larg; c++) {
+      const cx = 2 * (c + 0.5) / larg - 1, rx = dx + plx * cx, ry = dy + ply * cx;
+      let d = Infinity, ob = null, lado = 0, u = 0, face = '', corSeg = null, seg = null;
+      if (casa) {
+        for (const s of segs) {
+          if (s.v === 0) { if (Math.abs(rx) < 1e-9) continue; const t = (s.x - P.x) / rx; if (t <= 0.01 || t >= d) continue; const yy = P.y + ry * t; if (yy < s.a || yy > s.b) continue; d = t; seg = s; u = yy; lado = 0; }
+          else { if (Math.abs(ry) < 1e-9) continue; const t = (s.y - P.y) / ry; if (t <= 0.01 || t >= d) continue; const xx = P.x + rx * t; if (xx < s.a || xx > s.b) continue; d = t; seg = s; u = xx; lado = 1; }
+        }
+        if (seg) corSeg = rgbDe(seg.cor(u));
+      } else {
+        let mx = Math.floor(P.x), my = Math.floor(P.y);
+        const ddx = Math.abs(1 / rx), ddy = Math.abs(1 / ry), stx = rx < 0 ? -1 : 1, sty = ry < 0 ? -1 : 1;
+        let sdx = (rx < 0 ? P.x - mx : mx + 1 - P.x) * ddx, sdy = (ry < 0 ? P.y - my : my + 1 - P.y) * ddy;
+        for (let k = 0; k < 80; k++) {
+          if (sdx < sdy) { sdx += ddx; mx += stx; lado = 0; } else { sdy += ddy; my += sty; lado = 1; }
+          if (mx < 0 || my < 0 || mx >= M.L || my >= M.A) break;
+          const n = M.cel[my * M.L + mx];
+          if (n) {
+            d = lado === 0 ? sdx - ddx : sdy - ddy; ob = M.obs[n - 1];
+            if (d > MAXD) { d = Infinity; ob = null; break; }
+            if (lado === 0) { u = P.y + ry * d; face = stx > 0 ? 'x-' : 'x+'; } else { u = P.x + rx * d; face = sty > 0 ? 'y-' : 'y+'; }
+            corSeg = ob.cor; break;
+          }
+        }
+      }
+      zb[c] = d;
+      if (!corSeg || d === Infinity) continue;
+      const altW = casa ? 2.4 : ob.alt, y0 = Math.max(0, Math.floor(hor + (olho - altW) * foco / d)), y1 = Math.min(alt, Math.ceil(hor + olho * foco / d));
+      const t = Math.min(1, d / MAXD), tn = t * t * (casa ? 0.5 : 1), luz = lado ? 0.86 : 1;
+      const fr = u - Math.floor(u), costura = fr < 0.035 || fr > 0.965;
+      const porta = casa ? seg.porta && u > 1.9 && u < 3.1 : face === ob.pf && Math.abs(u - ob.pc) < 0.45;
+      const janela = casa ? seg.janela && JANELAS_CASA.some(j => u > j + 0.08 && u < j + 0.92) : ob.tipo !== 'portalTele' && !porta && fr > 0.28 && fr < 0.72;
+      const destaque = !casa && ob.c === alvoPredio;
+      const corBase = tom(corSeg, luz), corEsc = tom(corSeg, luz * 0.72), corTelhado = tom(corSeg, luz * 0.6);
+      const portaCor = destaque ? rgbDe('#d99a4e') : rgbDe('#8a5a3a'), vidro = rgbDe('#bfe9ff');
+      for (let y = y0; y < y1; y++) {
+        const z = olho - (y + 0.5 - hor) * d / foco;
+        let k;
+        if (z > altW - 0.22) k = corTelhado;
+        else if (porta && z < (casa ? 1.9 : 1.35)) k = Math.abs((casa ? u - 2.5 : u - ob.pc)) > (casa ? 0.52 : 0.38) || z > (casa ? 1.82 : 1.28) ? corEsc : (Math.abs((casa ? u - 2.8 : u - ob.pc - 0.25)) < 0.05 && Math.abs(z - 0.75) < 0.06 ? rgbDe('#ffd84a') : tom(portaCor, luz));
+        else if (janela && (casa ? z > 0.9 && z < 1.95 : z > 1.45 && z < 1.95 && altW > 2.1)) k = (casa ? (z < 0.98 || z > 1.87) : (z < 1.5 || z > 1.9 || fr < 0.32 || fr > 0.68)) ? branco : tom(vidro, luz);
+        else if (costura || z - Math.floor(z) < 0.03) k = tom(corSeg, luz * 0.92);
+        else k = corBase;
+        buf[y * larg + c] = tn > 0.02 ? nevoa(k, nev, tn) : empac(k[0], k[1], k[2]);
+      }
+    }
+    FP.g.putImageData(FP.img, 0, 0);
+    // a imagem pequena, ampliada com pixels nítidos
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(FP.cv, 0, 0, cv.width, cv.height); ctx.imageSmoothingEnabled = true;
+    const esc = cv.width / larg;
+    // figuras: tudo o que não é parede, de longe para perto, recortadas atrás das paredes
+    const figs = [], det = 1 / (plx * dy - dx * ply);
+    const add = (x, y, fn, op = {}) => {
+      const rx = x - P.x, ry = y - P.y, prof = det * (-ply * rx + plx * ry);
+      if (prof < 0.3 || prof > (op.longe || 18)) return;
+      const lado = det * (dy * rx - dx * ry), col = (larg / 2) * (1 + lado / prof);
+      if (col < -larg * 0.6 || col > larg * 1.6) return;
+      figs.push({ prof: prof - (op.vies || 0), col, fn, op, x, y });
+    };
+    if (casa) {
+      for (const m of moveisAqui()) { const Mv = MOVEIS[m.id]; if (Mv.chao) continue; add(m.x + Mv.w / 2, m.y + Mv.d / 2, () => figuraFP(null, m.x + Mv.w / 2, m.y + Mv.d / 2, 220, 260, 200, () => Mv.des(m.x, m.y, m)), { rotulo: Mv.nome }); }
+      if (visita) add(NPC_CASA.x, NPC_CASA.y, () => figuraFP(null, NPC_CASA.x, NPC_CASA.y, 120, 140, 118, () => desenhaPessoa(NPC_CASA.x, NPC_CASA.y, visita.av, { dir: 'y+' })), { rotulo: visita.nome, perto: true });
+      if (S.pet && !visita) { const c = S.pet.dorme ? caminha() : PET; add(c.x, c.y, () => figuraFP(null, c.x, c.y, 120, 120, 100, () => desenhaPet(c.x, c.y, S.pet, { dir: 'y+', andando: PET.andando, passo: PET.passo, dorme: S.pet.dorme })), { rotulo: S.pet.nome, perto: true }); }
+    } else {
+      const f = atual, est = ESTACAO.id + (DECOR.has('luzes') ? 'l' : '');
+      for (const t of f.arvores) add(t.x + 0.5, t.y + 0.5, () => figuraFP('a' + t.tipo + t.alt + est, t.x + 0.5, t.y + 0.5, 128, 150, 128, () => desenhaArvore({ x: t.x, y: t.y, tipo: t.tipo, alt: t.alt })), { longe: 20 });
+      for (const o of f.rochas || []) add(o.x + 0.5, o.y + 0.5, () => figuraFP('r' + o.t.toFixed(2), o.x + 0.5, o.y + 0.5, 100, 90, 70, () => desenhaRocha(o)));
+      for (const c of f.cercas) add(c.x + 0.5, c.y + 0.5, () => figuraFP('c', c.x + 0.5, c.y + 0.5, 90, 90, 64, () => desenhaCerca(c)));
+      add(f.centro.x, f.centro.y, () => figuraFP('m' + f.id, f.centro.x, f.centro.y, 220, 280, 230, () => desenhaMarco(f)), { longe: 24 });
+      add(f.placa.x, f.placa.y, () => figuraFP('p' + f.id, f.placa.x, f.placa.y, 120, 140, 110, () => desenhaPlaca(f)), { rotulo: 'Placa da vila' });
+      for (const p of f.portais) add(p.x, p.y, () => figuraFP(null, p.x, p.y, 260, 230, 170, () => desenhaPortao(p)), { longe: 22 });
+      const pf = profDe(f); if (pf) { const q = posProf(f); add(q.x, q.y, () => figuraFP(null, q.x, q.y, 120, 140, 118, () => desenhaPessoa(q.x, q.y, pf.av, { dir: 'y+' })), { rotulo: `${pf.nome} · ${pf.prof}`, balao: !estProf(pf).feito && pf.ic, perto: true }); }
+      for (const n of f.npcs) add(n.x, n.y, () => figuraFP(null, n.x, n.y, 120, 140, 118, () => desenhaPessoa(n.x, n.y, n.av, { dir: 'y+', andando: n.andando, passo: n.passo })), { rotulo: n.nome + (coracoes(n) ? ` ❤️${coracoes(n)}` : ''), balao: !S.falas[n.id] && (n.prof ? (n.masc ? '👨‍🏫' : '👩‍🏫') : '💬'), perto: true });
+      for (const it of f.evItens) if (!estEv(it.ev).itens[it.id]) add(it.x, it.y, () => figuraFP(null, it.x, it.y, 80, 100, 80, () => { sombra(it.x, it.y, 0.35); const [sx, sy] = iso(it.x, it.y, 0.55 + Math.sin(agora / 300 + it.x * 3) * 0.12); ctx.fillStyle = 'rgba(255,240,170,.45)'; ctx.beginPath(); ctx.arc(sx, sy, 16, 0, Math.PI * 2); ctx.fill(); ctx.font = '24px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000'; ctx.fillText(it.ev.item[0], sx, sy); }));
+      for (const it of f.itens) if (!S.itens[it.id]) add(it.x, it.y, () => figuraFP(null, it.x, it.y, 80, 110, it.arvore ? 100 : 80, () => desenhaItem(it)), { vies: it.arvore ? 0.05 : 0 });
+      if (S.pet && !S.pet.dorme) add(PET.x, PET.y, () => figuraFP(null, PET.x, PET.y, 120, 120, 100, () => desenhaPet(PET.x, PET.y, S.pet, PET)), { rotulo: S.pet.nome, perto: true });
+      // nomes dos prédios sobre a porta
+      for (const o of M.obs) add(o.c.porta.x, o.c.porta.y, null, { predio: o, longe: 12 });
+    }
+    figs.sort((p, q) => q.prof - p.prof);
+    const rotulos = [];
+    for (const s of figs) {
+      const pc = Math.min(larg - 1, Math.max(0, Math.round(s.col))), visivel = zb[pc] > s.prof;
+      if (s.op.predio) { const o = s.op.predio; if (visivel || zb[pc] > s.prof - 1) rotulos.push({ t: o.nome, x: s.col, y: hor + (olho - o.alt - 0.35) * foco / s.prof, cor: o.c === alvoPredio ? '#ffd84a' : '#fff7e8' }); continue; }
+      const fig = s.fn(), kb = (foco / s.prof) / BH, kx = kb * 0.62;
+      const larF = fig.w * kx, esq = s.col - larF / 2, chaoY = hor + olho * foco / s.prof;
+      const topo = (chaoY - fig.base * kb) * esc, altF = fig.h * kb * esc;
+      let c0 = -1;
+      const c1 = Math.min(larg, Math.ceil(esq + larF));
+      for (let c = Math.max(0, Math.floor(esq)); c <= c1; c++) {
+        const ok = c < c1 && zb[c] > s.prof;
+        if (ok && c0 < 0) c0 = c;
+        else if (!ok && c0 >= 0) {
+          const sx0 = (c0 - esq) / kx, sx1 = (c - esq) / kx;
+          if (sx1 > sx0) ctx.drawImage(fig.c, Math.max(0, sx0) * fig.R, 0, (Math.min(fig.w, sx1) - Math.max(0, sx0)) * fig.R, fig.h * fig.R, Math.max(c0, esq) * esc, topo, (Math.min(c, esq + larF) - Math.max(c0, esq)) * esc, altF);
+          c0 = -1;
+        }
+      }
+      if (visivel && (s.op.balao || (s.op.rotulo && s.op.perto && Math.hypot(s.x - P.x, s.y - P.y) < 4))) rotulos.push({ t: Math.hypot(s.x - P.x, s.y - P.y) < 4 && s.op.rotulo ? s.op.rotulo : s.op.balao, x: s.col, y: hor + (olho - 2.05) * foco / s.prof, cor: '#fff7e8' });
+    }
+    // textos por cima da imagem, em pixels da tela
+    const kt = W / larg;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (noite) { ctx.fillStyle = 'rgba(60,30,90,.18)'; ctx.fillRect(0, 0, W, HH); }
+    for (const r of rotulos) rotulo(r.t, r.x * kt, Math.max(14, r.y * kt), r.cor);
+    // mira no centro
+    ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W / 2 - 7, HH / 2); ctx.lineTo(W / 2 + 7, HH / 2); ctx.moveTo(W / 2, HH / 2 - 7); ctx.lineTo(W / 2, HH / 2 + 7); ctx.stroke();
+    if (alvoAgora && !colocando) { const t = casa ? textoAlvoCasa(alvoAgora) : textoAlvo(alvoAgora); rotulo(t, W / 2, HH * 0.62, '#1d2a1f', '#ffffff'); if (!casa) anuncia((alvoAgora.tipo === 'casa' ? alvoAgora.casa.lugar.titulo + '. ' : '') + t); }
+    else if (!casa) anuncia('');
+    if (casa) miniCasa(); else minimapa(faseDeX(P.x));
+    // no minimapa, uma setinha mostra para onde você está olhando
+    if (!casa) setaMini(mOx + (P.x - atual.x0) * mS, mOy + P.y * mS);
+    else { const s = Math.min(280 / CW, 180 / CD), ox = (300 - CW * s) / 2, oy = (200 - CD * s) / 2; setaMini(ox + P.x * s, oy + P.y * s); }
+  }
+  function setaMini(x, y) { mctx.save(); mctx.strokeStyle = '#ffffff'; mctx.lineWidth = 2.5; mctx.beginPath(); mctx.moveTo(x, y); mctx.lineTo(x + Math.cos(FP.ang) * 14, y + Math.sin(FP.ang) * 14); mctx.stroke(); mctx.restore(); }
 
   /* ---------- quadro ---------- */
   let t0 = performance.now();
@@ -3995,6 +4242,11 @@
     const vw = W / zoom, vh = HH / zoom;
     cam.x += (px - vw / 2 - cam.x) * Math.min(1, dt * 8); cam.y += (py - vh / 2 - 30 - cam.y) * Math.min(1, dt * 8);
     if (!cam.ok) { cam.x = px - vw / 2; cam.y = py - vh / 2 - 30; cam.ok = true; }
+    if (FP.on) {   // primeira pessoa: ao trocar de lugar, olha para onde o avatar está virado; nas salas a visão fica de cima
+      const cena = sala ? 'sala' : noEnigma ? 'enigma' : dentro ? 'casa:' + (visita ? visita.id : '') : 'vila:' + atual.id;
+      if (cena !== FP.cena) { if (FP.cena && (sala || noEnigma)) aviso('Nesta sala a visão fica de cima. Lá fora, a primeira pessoa volta sozinha.'); if (dirDoAng(FP.ang) !== P.dir && ANG_DIR[P.dir] !== undefined) FP.ang = ANG_DIR[P.dir]; FP.cena = cena; cam.ok = false; }
+      if (fpAtivo()) { desenhaFP(now); requestAnimationFrame(quadro); return; }
+    }
     ctx.setTransform(dpr * zoom, 0, 0, dpr * zoom, -cam.x * dpr * zoom, -cam.y * dpr * zoom);
     if (noEnigma) { desenhaEnigma(); requestAnimationFrame(quadro); return; }
     if (sala) { desenhaSala(); requestAnimationFrame(quadro); return; }
@@ -4048,13 +4300,14 @@
     enfeitesTela(vw, vh);
     if (destino) { const [sx, sy] = iso(destino.x, destino.y); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, 12, 6, 0, 0, Math.PI * 2); ctx.stroke(); }
     if (alvo) {
-      const t = alvo.tipo === 'portalTele' ? 'E · usar o portal de teletransporte' : alvo.tipo === 'sala' ? `E · entrar: ${SALAS[alvo.sala.id].nome}` : alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? `E · conversar${entregaPara(alvo.npc) ? ' · 📦 entrega' : papelNpc(alvo.npc) ? ' · ' + PAPEIS[papelNpc(alvo.npc)].rotulo : ''}` : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'pesca' ? (S.loja.tem['ferr:vara'] ? `E · pescar (🪱 ${S.inv.isca || 0})` : 'Laguinho · precisa de 🎣 vara') : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão';
+      const t = textoAlvo(alvo);
       const [sx, sy] = iso(P.x, P.y, 1.9 + P.pulo); rotulo(t, sx, sy - 10, '#1d2a1f', '#ffffff');
       anuncia((alvo.tipo === 'casa' ? alvo.casa.lugar.titulo + '. ' : '') + t);
     } else anuncia('');
     minimapa(faseDeX(P.x));
     requestAnimationFrame(quadro);
   }
+  function textoAlvo(alvo) { return alvo.tipo === 'portalTele' ? 'E · usar o portal de teletransporte' : alvo.tipo === 'sala' ? `E · entrar: ${SALAS[alvo.sala.id].nome}` : alvo.tipo === 'minhacasa' ? 'E · entrar em casa' : alvo.tipo === 'loja' ? `E · fazer compras (${LOJAS[atual.loja.id].nome})` : alvo.tipo === 'projetos' ? 'E · projetos da turma' : alvo.tipo === 'banco' ? 'E · entrar no banco' : alvo.tipo === 'prof' ? `E · conversar com ${profDe(atual).nome}` : alvo.tipo === 'enigma' ? 'E · entrar na Casa do Enigma' : alvo.tipo === 'pet' ? `E · cuidar de ${S.pet.nome}` : alvo.tipo === 'casa' ? (alvo.casa.lugar.tipo === 'pagina' ? 'E · visitar' : alvo.casa.lugar.tipo === 'sim' ? 'E · experimentar' : alvo.casa.lugar.tipo === 'em' ? 'E · começar o desafio' : 'E · jogar') : alvo.tipo === 'npc' ? `E · conversar${entregaPara(alvo.npc) ? ' · 📦 entrega' : papelNpc(alvo.npc) ? ' · ' + PAPEIS[papelNpc(alvo.npc)].rotulo : ''}` : alvo.tipo === 'placa' ? 'E · ler a placa' : alvo.tipo === 'pesca' ? (S.loja.tem['ferr:vara'] ? `E · pescar (🪱 ${S.inv.isca || 0})` : 'Laguinho · precisa de 🎣 vara') : alvo.tipo === 'recurso' ? (alvo.rec === 'madeira' ? (S.loja.tem['ferr:machado'] ? 'E · cortar madeira' : 'Árvore · precisa de 🪓 machado') : (S.loja.tem['ferr:picareta'] ? 'E · tirar pedra' : 'Rocha · precisa de ⛏️ picareta')) : 'E · portão'; }
   function visiveisFases() { return [atual]; }
   function balao(sx, sy, ic) {
     ctx.fillStyle = '#fff'; ctx.strokeStyle = '#e07bb0'; ctx.lineWidth = 2.5;
@@ -5368,10 +5621,13 @@
     b.addEventListener('pointerup', solta); b.addEventListener('pointercancel', solta); b.addEventListener('lostpointercapture', solta);
   });
   $('#t-e').addEventListener('click', interage);
+  $('#b-fp').addEventListener('click', () => ligaFP(!FP.on));
+  rotFP(); document.body.classList.toggle('primeira-pessoa', FP.on);
   $('#t-correr').addEventListener('click', () => { correndo = !correndo; $('#t-correr').setAttribute('aria-pressed', String(correndo)); });
   // clique no chão: anda até lá; clique numa casa ou pessoa perto: interage
   cv.addEventListener('click', ev => {
     if (dialogoAberto || janelaAberta) return;
+    if (fpAtivo()) { if (!FP.arrastou && (dentro ? alvoCasa() : alvoPerto())) interage(); return; }   // primeira pessoa: tocar na tela usa o que está perto
     const r = cv.getBoundingClientRect();
     const [wx, wy] = telaParaMapa(cam.x + (ev.clientX - r.left) / zoom, cam.y + (ev.clientY - r.top) / zoom);
     if (sala) {
@@ -5407,6 +5663,15 @@
     destino = { x: wx, y: wy };
   });
 
+  // primeira pessoa: arrastar o mouse ou o dedo na tela vira o olhar
+  cv.addEventListener('pointerdown', ev => { FP.arrastou = false; if (fpAtivo()) FP.arrasto = { x: ev.clientX, id: ev.pointerId, tot: 0 }; });
+  cv.addEventListener('pointermove', ev => {
+    const a = FP.arrasto; if (!a || a.id !== ev.pointerId || !fpAtivo()) return;
+    const d = ev.clientX - a.x; a.x = ev.clientX; a.tot += Math.abs(d);
+    FP.ang += d * (ev.pointerType === 'touch' ? 0.009 : 0.006);
+    if (a.tot > 8) FP.arrastou = true;
+  });
+  for (const t of ['pointerup', 'pointercancel', 'pointerleave']) cv.addEventListener(t, () => { FP.arrasto = null; });
   cv.addEventListener('mousemove', ev => {
     if (!colocando) return;
     const r = cv.getBoundingClientRect(), [wx, wy] = telaParaMapa(cam.x + (ev.clientX - r.left) / zoom, cam.y + (ev.clientY - r.top) / zoom);
@@ -5433,7 +5698,7 @@
     if (MAPA_TECLAS[k]) { teclas[MAPA_TECLAS[k]] = true; if (k !== 'Shift') mouse = null; ev.preventDefault(); }
     else if (k === ' ') { if (P.pulo === 0) { P.vpulo = 3.4; P.pulo = 0.01; } ev.preventDefault(); }
     else if (k === 'e' || k === 'Enter') { interage(); ev.preventDefault(); }
-    else if (k === 'm') abreJanela('mapa'); else if (k === 'i') abreJanela('inventario'); else if (k === 'b') abreJanela('biblioteca'); else if (k === 'v') abreJanela('avatar'); else if (k === 'c') $('#b-casa').click(); else if (k === 'p') abreJanela('pet');
+    else if (k === 'm') abreJanela('mapa'); else if (k === 'i') abreJanela('inventario'); else if (k === 'b') abreJanela('biblioteca'); else if (k === 'v') abreJanela('avatar'); else if (k === 'c') $('#b-casa').click(); else if (k === 'p') abreJanela('pet'); else if (k === 'f') { ligaFP(!FP.on); ev.preventDefault(); }
   });
   document.addEventListener('keyup', ev => { const k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key; if (MAPA_TECLAS[k]) teclas[MAPA_TECLAS[k]] = false; });
   window.addEventListener('blur', () => { for (const k in teclas) teclas[k] = false; });
@@ -5505,8 +5770,8 @@
       <ul class="tut-lista"><li>Para continuar em outro computador ou no celular, abra o <b>Menu</b> e use <b>Levar para outro aparelho</b>: o Mundo gera um código que você cola no outro aparelho.</li>
       <li>Na escola, a professora ou o professor pode passar um <b>código de turma</b> (Menu, Modo turma).</li>
       <li>Não limpe os dados do navegador, ou o progresso some deste aparelho.</li></ul>` },
-    { t: 'Como se mexer', h: () => `<ul class="tut-lista"><li><b>No computador:</b> setas ou W, A, S, D para andar, Shift para correr, espaço para pular e <b>E</b> para conversar ou entrar numa casa. M abre o mapa e Esc, o menu.</li>
-      <li><b>No celular ou tablet:</b> toque no chão para andar e toque nas pessoas e nas casas para conversar e entrar. O botão Toque mostra um controle na tela.</li>
+    { t: 'Como se mexer', h: () => `<ul class="tut-lista"><li><b>No computador:</b> setas ou W, A, S, D para andar, Shift para correr, espaço para pular e <b>E</b> para conversar ou entrar numa casa. M abre o mapa e Esc, o menu. F liga a <b>primeira pessoa</b>: você vê pelos olhos do avatar, as setas para cima e para baixo andam e as dos lados viram.</li>
+      <li><b>No celular ou tablet:</b> toque no chão para andar e toque nas pessoas e nas casas para conversar e entrar. O botão Toque mostra um controle na tela, e o botão 1ª pessoa troca a visão (arraste o dedo para olhar em volta).</li>
       <li>O <b>Buscar</b>, no alto da tela, leva você até qualquer jogo.</li></ul>
       <p>Pronto. Boa exploração!</p>` }
   ];
