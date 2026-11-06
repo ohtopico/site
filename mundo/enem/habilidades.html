@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habilidades do ENEM · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#bfe9f5">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="./">← Voltar à ilha</a>
+    <h1>🗺️ As 120 habilidades do ENEM</h1>
+    <p>A Matriz de Referência do ENEM tem 30 habilidades em cada uma das quatro áreas. Aqui você vê quais jogos da ilha treinam cada uma. Toque num jogo para ir direto a ele.</p>
+  </div>
+  <div class="abas" role="group" aria-label="Área" id="abas"></div>
+  <div class="medidor" id="medidor"></div>
+  <section class="caixa" id="lista" aria-live="polite"></section>
+</main>
+<footer class="footer"><div class="wrap">Área secreta do <a href="../">Mundo</a>. Resumo das habilidades a partir da Matriz de Referência do ENEM (Inep).</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="matriz.js"></script>
+<script src="catalogo.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), esc = ENEM.esc, C = ENEM_CATALOGO, M = window.MATRIZ;
+  ENEM.topo($('#topo'));
+  const ORDEM = ['cn', 'mt', 'ch', 'lc'], IC = { cn: '🔬', mt: '📐', ch: '🌎', lc: '📚' };
+  let atual = ORDEM.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'cn';
+
+  function desenha() {
+    $('#abas').innerHTML = ORDEM.map(m => `<button type="button" class="hb" data-m="${m}" aria-pressed="${m === atual}">${IC[m]} ${M.nomes[m]}</button>`).join('');
+    $('#abas').querySelectorAll('button').forEach(b => b.onclick = () => { atual = b.dataset.m; history.replaceState(null, '', '#' + atual); desenha(); });
+    const cob = C.cobertura(atual);
+    const jogos = C.jogos().filter(j => M.daArea[j.area] === atual);
+    const cobertas = Object.values(cob).filter(l => l.length).length;
+    $('#medidor').innerHTML = `<span class="plaq">🎯 <b>${cobertas}</b> de 30 habilidades com jogo</span><span class="plaq">🎮 <b>${jogos.length}</b> ${jogos.length === 1 ? 'jogo' : 'jogos'} de ${M.nomes[atual]}</span>`;
+    $('#lista').innerHTML = `<div class="barra" aria-hidden="true"><i style="width:${cobertas / 30 * 100}%"></i></div><div class="cob">` +
+      Object.keys(cob).map(h => {
+        const js = cob[h];
+        return `<div class="cob-l${js.length ? ' on' : ''}" id="${atual}-${h}"><span class="h">${h}</span><div><div class="t">${esc(M[atual][h])}</div><div class="js">${js.length
+          ? js.map(j => `<a href="${esc(j.url)}">${j.icone} ${esc(j.titulo)} <span aria-label="${ENEM.estrelas(j.id)} estrelas">${'★'.repeat(ENEM.estrelas(j.id))}</span></a>`).join('')
+          : '<span class="falta">ainda sem jogo</span>'}</div></div></div>`;
+      }).join('') + '</div>';
+  }
+  desenha();
+  C.carregar().then(desenha);
+})();
+</script>
+</body>
+</html>

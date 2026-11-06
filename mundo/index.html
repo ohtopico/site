@@ -390,7 +390,7 @@
 <script src="teleporte.js?v=20261031zn"></script>
 <script src="olimpiada.js?v=20261031a"></script>
 <script src="enem/enem.js?v=20261101a"></script>
-<script>if (window.ENEM && ENEM.liberado()) document.write('<script src="enem/ilha-perguntas.js?v=20261101a"><\/script><script src="enem/ilha.js?v=20261101a"><\/script>');</script>
+<script>if (window.ENEM && ENEM.liberado()) document.write('<script src="enem/ilha-perguntas.js?v=20261106a"><\/script><script src="enem/catalogo.js?v=20261106a"><\/script>' + ['natureza', 'mat', 'hum', 'ling'].map(a => '<script src="enem/jogos-' + a + '.js"><\/script>').join('') + '<script src="enem/ilha.js?v=20261106a"><\/script>');</script>
 <script src="mundo.js?v=20261104a"></script>
 <script src="codigo.js?v=20261101a"></script>
 <!-- Contador de visitas: GoatCounter, sem cookies -->
