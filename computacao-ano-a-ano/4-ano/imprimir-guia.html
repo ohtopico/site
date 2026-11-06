@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Guia do professor: Computação no 4º ano</title>
+<meta name="description" content="Um ano letivo completo de Computação para o 4º ano, alinhado à BNCC: 32 aulas com texto para o professor, texto para ler com a turma, folha para imprimir e gabarito, mais oito jogos.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-ano-a-ano/4-ano/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-ano-a-ano/4-ano/">
+<meta property="og:title" content="Guia do professor: Computação no 4º ano">
+<meta property="og:description" content="Um ano letivo completo de Computação para o 4º ano, alinhado à BNCC: 32 aulas com texto para o professor, texto para ler com a turma, folha para imprimir e gabarito, mais oito jogos.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Card de BNCC Computação do material didático de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=621e39ab7c">
+<link rel="stylesheet" href="/computacao-ano-a-ano/assets/ano-a-ano.css?v=621e39ab7c">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-ano-a-ano/">Computação ano a ano</a><a href="/material-didatico/jogos/">Jogos</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo"><div class="folhas"><article class="folha" data-versao="Professor"><header class="folha-topo"><span class="nivel"><b>Guia do professor</b></span><span class="hab">BNCC Computação</span></header>
+    <h2 class="folha-titulo" style="font-size:12mm;margin-top:40mm">Computação no 4º ano</h2><p class="txt" style="font-size:5mm">Guia do professor. 32 aulas em 4 bimestres.</p>
+    <ol style="font-size:3.8mm;columns:2"><li>Linhas e colunas</li><li>Jogo: Mapa do Tesouro</li><li>Mexendo na matriz</li><li>A imagem é uma matriz</li><li>Fichas e registros</li><li>Criando registros</li><li>Procurar e atualizar registros</li><li>Revisão e avaliação do 1º bimestre</li><li>Lembrando as repetições</li><li>Repetir um grupo de passos</li><li>Laço dentro de laço</li><li>Simular laços</li><li>Jogo: Laço Dentro de Laço</li><li>Desenhar com laços</li><li>Consertando laços</li><li>Revisão e avaliação do 2º bimestre</li><li>Tudo vira número</li><li>O código das letras</li><li>Zeros e uns</li><li>Contando em binário</li><li>Pixels e cores de luz</li><li>Jogo: Zeros, Uns e Cores</li><li>Mensagem em binário</li><li>Revisão e avaliação do 3º bimestre</li><li>Ferramentas para criar</li><li>Do roteiro ao conteúdo</li><li>Coletar dados com ética</li><li>Guardar, enviar e usar dados</li><li>Fonte confiável?</li><li>Checando uma notícia</li><li>Projeto: jornal digital da turma</li><li>Avaliação final e festa dos jogos</li></ol>
+    <p class="txt">Júlia Roberta Quoos Alves · ohtopico.com.br/computacao-ano-a-ano/4-ano/ · uso livre em sala de aula (CC BY-NC-SA 4.0)</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer></article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 1 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Linhas e colunas</h2>
+    <h3>Objetivo</h3><p>Reconhecer uma matriz (organização em linhas e colunas) e localizar elementos por coordenadas.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO01</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, fazendo manipulações simples sobre estas matrizes.</p>
+    <h3>Material</h3><p>Fita crepe para marcar uma grade no chão ou a disposição das carteiras, cartões com letras e números e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>A sala é uma matriz (15 min): nomeie as filas de carteiras com letras e as posições com números. Cada criança diz a sua coordenada (C2, por exemplo).</li><li>Troca-troca (10 min): chame &quot;B3 troca com D1&quot;. As crianças trocam de lugar.</li><li>Folha (15 min).</li><li>Fechamento (10 min): onde mais existem matrizes? Calendário, tabuleiro de xadrez, planilha, a tela do celular.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Uma matriz organiza as coisas em linhas e colunas. Cada lugar tem um endereço, a coordenada: a letra da coluna e o número da linha. O calendário, o tabuleiro e a planilha são matrizes. A tela do computador também: ela é feita de milhões de quadradinhos, cada um no seu lugar.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: gato B1, bola D3, flor A4, sol C2.</li><li>Bloco 2: estrela na coluna C, linha 4; coração na coluna A, linha 2.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para estudantes cegos, use uma grade em relevo (EVA colado) com letras e números em braille ou em alto-relevo. Para quem confunde linha e coluna, pinte a linha de uma cor e a coluna de outra.</p>
+    <h3>Jogo</h3><p>Mapa do Tesouro: ohtopico.com.br/material-didatico/jogos/mapa-do-tesouro.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 2 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Jogo: Mapa do Tesouro</h2>
+    <h3>Objetivo</h3><p>Localizar, marcar e identificar elementos de uma matriz pelas coordenadas.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO01</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, fazendo manipulações simples sobre estas matrizes.</p>
+    <h3>Material</h3><p>Dispositivos com o jogo Mapa do Tesouro, folha do estudante e lápis.</p>
+    <h3>Passo a passo</h3><ol><li>Batalha naval de papel (15 min): em duplas, cada um esconde três barcos na matriz da folha. Os dois tentam acertar dizendo coordenadas.</li><li>Jogo (25 min): Mapa do Tesouro.</li><li>Conversa (10 min): qual estratégia ajudou a achar os barcos mais rápido?</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Na batalha naval, você não vê os barcos do colega. Mas, dizendo a coordenada, descobre se acertou. No jogo do tesouro, você usa as coordenadas para marcar, achar e mover objetos.</p>
+    <h3>Gabarito</h3><ul><li>Não há resposta única. Observe se a criança marca as casas certas para cada coordenada dita.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Em duplas mistas, uma criança lê a coordenada e a outra marca. A batalha pode ser feita com tampinhas numa grade em relevo.</p>
+    <h3>Jogo</h3><p>Mapa do Tesouro: ohtopico.com.br/material-didatico/jogos/mapa-do-tesouro.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 3 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Mexendo na matriz</h2>
+    <h3>Objetivo</h3><p>Fazer manipulações simples numa matriz: mover, trocar e preencher elementos.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO01</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, fazendo manipulações simples sobre estas matrizes.</p>
+    <h3>Material</h3><p>Grade no chão ou no quadro, objetos pequenos e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Instruções de movimento (15 min): o gato está em A1. Ande 2 colunas para a direita. Onde ele está? (C1). Faça várias rodadas.</li><li>Trocar (10 min): troque o conteúdo de B2 com D4. O que mudou?</li><li>Folha (15 min).</li><li>Fechamento (10 min): nos jogos, quando o personagem anda, o computador muda a coordenada dele na matriz.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Num jogo, o personagem anda pela tela. Para o computador, isso é mudar a coordenada dele: andar para a direita é ir para a próxima coluna; descer é ir para a próxima linha.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: C1, depois C3, depois B3.</li><li>Bloco 2: a maçã em B2 e o peixe em D3.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Use um objeto de verdade sobre a grade do chão para quem precisa de apoio concreto. Leia as ordens em voz alta uma de cada vez.</p>
+    <h3>Jogo</h3><p>Mapa do Tesouro: ohtopico.com.br/material-didatico/jogos/mapa-do-tesouro.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 4 · 50 minutos</span></header>
+    <h2 class="folha-titulo">A imagem é uma matriz</h2>
+    <h3>Objetivo</h3><p>Perceber que uma imagem digital é uma matriz de pixels e criar uma imagem a partir de coordenadas.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO01</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, fazendo manipulações simples sobre estas matrizes.</p><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Papel quadriculado, lápis de cor, uma imagem ampliada até aparecerem os quadradinhos e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>De perto (10 min): mostre uma imagem ampliada no computador até aparecerem os quadradinhos (pixels).</li><li>Pintar por coordenadas (25 min): a turma pinta a folha seguindo a lista.</li><li>Criar (10 min): cada criança cria um desenho e escreve a lista de coordenadas para um colega.</li><li>Fechamento (5 min): cada pixel tem uma posição e uma cor.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Quando aproximamos muito uma foto no computador, vemos que ela é feita de quadradinhos coloridos, os pixels. Cada pixel tem uma posição na matriz (a coordenada) e uma cor. Guardar uma imagem é guardar a cor de cada pixel.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1 e 2: aparece um coração.</li><li>Bloco 3: resposta livre; confira se as coordenadas correspondem ao desenho.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para estudantes com baixa visão, use quadrados de 2 cm e canetas grossas. Estudantes cegos podem colar bolinhas de papel nas casas indicadas.</p>
+    <h3>Jogo</h3><p>Mapa do Tesouro: ohtopico.com.br/material-didatico/jogos/mapa-do-tesouro.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 5 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Fichas e registros</h2>
+    <h3>Objetivo</h3><p>Reconhecer registros: fichas em que cada informação tem um nome (campo) e um valor.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO02</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de registros que estabelecem uma organização na qual cada componente é identificado por um nome, fazendo manipulações simples sobre estes registros.</p>
+    <h3>Material</h3><p>Exemplos de fichas (de biblioteca, de cadastro, figurinha com dados de jogador) e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Fichas da vida real (15 min): mostre as fichas. O que elas têm em comum? Cada informação tem um nome: nome, idade, altura.</li><li>Campo e valor (10 min): no quadro, monte a ficha de um personagem conhecido. &quot;nome&quot; é o campo; &quot;Mônica&quot; é o valor.</li><li>Folha (15 min).</li><li>Fechamento (10 min): o computador guarda o cadastro de cada aluno da escola como um registro.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Uma ficha guarda informações sobre uma coisa ou uma pessoa. Cada informação tem um nome, que chamamos de campo, e um valor. No campo &quot;idade&quot; da ficha da Ana, o valor é 9. O conjunto de campos de uma ficha é um registro. O computador usa registros o tempo todo.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: a) tartaruga; b) idade.</li><li>Bloco 2: respostas pessoais. Confira se cada valor está no campo certo.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Fichas com figuras ao lado de cada campo ajudam quem ainda lê com dificuldade. Estudantes surdos podem ter um campo &quot;sinal&quot; com o sinal do nome em Libras.</p>
+    <h3>Jogo</h3><p>Fichas dos Bichos: ohtopico.com.br/material-didatico/jogos/fichas-dos-bichos.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 6 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Criando registros</h2>
+    <h3>Objetivo</h3><p>Definir campos e criar registros para um conjunto de objetos.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO02</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de registros que estabelecem uma organização na qual cada componente é identificado por um nome, fazendo manipulações simples sobre estes registros.</p>
+    <h3>Material</h3><p>Cartões em branco, figuras de animais ou personagens e dispositivos com o jogo Fichas dos Bichos.</p>
+    <h3>Passo a passo</h3><ol><li>Escolher os campos (10 min): a turma vai fazer fichas dos bichos. Que campos todas as fichas devem ter?</li><li>Produção (15 min): cada dupla preenche duas fichas com os mesmos campos.</li><li>Jogo (15 min): Fichas dos Bichos.</li><li>Conversa (10 min): por que é importante que todas as fichas tenham os mesmos campos?</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Quando todas as fichas têm os mesmos campos, fica fácil comparar e procurar. Se a ficha do gato tem &quot;patas&quot; e a do peixe não tem, como sabemos quem tem mais patas?</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: resposta livre. Campos possíveis: nome, patas, onde mora, o que come, tamanho.</li><li>Bloco 2: por exemplo &quot;Qual bicho tem mais patas?&quot;.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Ofereça uma lista de campos para escolher, para quem tem dificuldade em criar do zero.</p>
+    <h3>Jogo</h3><p>Fichas dos Bichos: ohtopico.com.br/material-didatico/jogos/fichas-dos-bichos.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 7 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Procurar e atualizar registros</h2>
+    <h3>Objetivo</h3><p>Buscar informações em um conjunto de registros e atualizar valores.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO02</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de registros que estabelecem uma organização na qual cada componente é identificado por um nome, fazendo manipulações simples sobre estes registros.</p>
+    <h3>Material</h3><p>Fichas da biblioteca da sala (livros com título, autor, emprestado para) e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Biblioteca da turma (20 min): cada livro tem uma ficha. A turma faz empréstimos e atualiza o campo &quot;emprestado para&quot;.</li><li>Buscas (10 min): quais livros estão emprestados? Quem pegou o livro de dinossauros?</li><li>Folha (15 min).</li><li>Fechamento (5 min): o sistema da biblioteca faz a mesma coisa no computador.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Quando alguém pega um livro, o valor do campo &quot;emprestado para&quot; muda. Isso é atualizar o registro. Com os registros organizados, dá para responder perguntas rapidinho: quem está com tal livro? Quais livros estão na estante?</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: a) Ana; b) O Robô Azul e A Lua e Eu.</li><li>Bloco 2: O Robô Azul: Bia; Bichos do Mar: Ana; A Lua e Eu: — (ninguém).</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Use fichas grandes recortadas para manipular, trocando o cartão do valor. Leia a tabela junto com quem precisa.</p>
+    <h3>Jogo</h3><p>Fichas dos Bichos: ohtopico.com.br/material-didatico/jogos/fichas-dos-bichos.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 8 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Revisão e avaliação do 1º bimestre</h2>
+    <h3>Objetivo</h3><p>Verificar se a criança localiza e manipula elementos numa matriz e lê e atualiza registros.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO01</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, fazendo manipulações simples sobre estas matrizes.</p><p><b>EF04CO02</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de registros que estabelecem uma organização na qual cada componente é identificado por um nome, fazendo manipulações simples sobre estes registros.</p>
+    <h3>Material</h3><p>A folha de avaliação.</p>
+    <h3>Passo a passo</h3><ol><li>Revisão (15 min): troca-troca na grade da sala.</li><li>Avaliação (25 min).</li><li>Correção coletiva (10 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Hoje vamos mostrar o que aprendemos sobre matrizes e registros.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: peixe C1, estrela A3.</li><li>Bloco 2: C3.</li><li>Bloco 3: verde; patas.</li><li>Bloco 4: por exemplo campo &quot;fala&quot;, valor &quot;oi&quot;.</li><li>Critério: domina com 4 blocos certos; em desenvolvimento com 2 ou 3; precisa de retomada com 0 ou 1.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Aplique com a grade em relevo e leitura em voz alta para quem precisa.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 9 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Lembrando as repetições</h2>
+    <h3>Objetivo</h3><p>Retomar repetição definida (n vezes) e indefinida (até uma condição) e usar as duas num mesmo algoritmo.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>Malha no chão, cartões de setas, cartões &quot;3x&quot; e &quot;até a parede&quot;, e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Robô humano (15 min): monte programas que misturam &quot;3 vezes&quot; e &quot;até a parede&quot;.</li><li>Comparar (10 min): em que situação cada uma é melhor?</li><li>Folha (20 min).</li><li>Fechamento (5 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Já conhecemos dois jeitos de repetir: &quot;repita 3 vezes&quot;, quando sabemos quantas vezes, e &quot;repita até&quot;, quando paramos numa condição. Agora vamos usar os dois no mesmo programa.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: definida, indefinida, definida, indefinida.</li><li>Bloco 2: anda 2 (terceira coluna), desce até a borda (última linha) e vai para a direita até a borda: última linha, última casa.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Retome com o corpo antes do papel para quem precisa. Para estudantes com deficiência física, use um carrinho ou um boneco na malha.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 10 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Repetir um grupo de passos</h2>
+    <h3>Objetivo</h3><p>Usar a repetição de um grupo de instruções (laço) para encurtar algoritmos.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>Cartões de setas e cartões grandes de &quot;repita __ vezes&quot; com um espaço dentro, malha no chão e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>A escada (15 min): o robô sobe uma escada: direita, cima, direita, cima... Qual grupo se repete? Coloque o grupo dentro do cartão &quot;repita 4 vezes&quot;.</li><li>Danças (10 min): uma sequência de passos que se repete inteira (palma, pé, giro) vezes 3.</li><li>Folha (20 min).</li><li>Fechamento (5 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Às vezes não é um passo só que se repete, mas um grupo de passos. Direita e cima, direita e cima, direita e cima. Colocamos o grupo dentro de um laço: &quot;repita 3 vezes: direita, cima&quot;. O laço deixa o programa curto e fácil de mudar.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: repita 3 vezes [→ ↑].</li><li>Bloco 2: repita 4 vezes [→ ↑].</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Use um barbante para &quot;abraçar&quot; os cartões que se repetem na mesa. Isso torna o laço concreto.</p>
+    <h3>Jogo</h3><p>Laço Dentro de Laço: ohtopico.com.br/material-didatico/jogos/laco-dentro-de-laco.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 11 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Laço dentro de laço</h2>
+    <h3>Objetivo</h3><p>Reconhecer e criar repetições aninhadas (um laço dentro de outro).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>Música com refrão, cartões de laço e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Dança aninhada (15 min): &quot;repita 2 vezes [bata 3 palmas, gire]&quot;. Quantas palmas no total? E giros?</li><li>No papel (10 min): desenhe no quadro o laço de dentro e o de fora com cores diferentes.</li><li>Folha (20 min).</li><li>Fechamento (5 min): um relógio tem laços aninhados: 60 segundos dentro de cada minuto, 60 minutos dentro de cada hora.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Um laço pode ficar dentro de outro. &quot;Repita 2 vezes: [bata 3 palmas e gire]&quot;. O laço de dentro faz as 3 palmas. O laço de fora repete tudo 2 vezes. No total, são 6 palmas e 2 giros. O relógio é assim: os segundos giram dentro de cada minuto.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: 6 palmas e 3 pulos.</li><li>Bloco 2: repita 2 vezes [ repita 3 vezes [→] , ↓ ].</li><li>Bloco 3: resposta livre; confira se há um laço dentro do outro.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Use duas cores de barbante, uma para cada laço. Para estudantes surdos, as palmas podem virar sinais.</p>
+    <h3>Jogo</h3><p>Laço Dentro de Laço: ohtopico.com.br/material-didatico/jogos/laco-dentro-de-laco.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 12 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Simular laços</h2>
+    <h3>Objetivo</h3><p>Simular algoritmos com laços (simples e aninhados) e prever o resultado.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>A folha do estudante e uma tampinha por criança.</p>
+    <h3>Passo a passo</h3><ol><li>Aposta (10 min): projete um programa com laço e peça a previsão antes de executar.</li><li>Folha em duplas (30 min): um simula, o outro confere, depois trocam.</li><li>Correção (10 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Simular um laço é contar com cuidado: quantas vezes o grupo de dentro acontece? Use a tampinha e conte nos dedos as voltas do laço.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: anda 2 e desce 1, duas vezes: terceira linha, quinta casa.</li><li>Bloco 2: anda 2 e sobe 1, duas vezes: segunda linha, quinta casa.</li><li>Bloco 3: 6 setas (4 para a direita e 2 para cima).</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para quem se perde, risque cada volta do laço numa tabelinha ao lado (1ª volta, 2ª volta).</p>
+    <h3>Jogo</h3><p>Laço Dentro de Laço: ohtopico.com.br/material-didatico/jogos/laco-dentro-de-laco.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 13 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Jogo: Laço Dentro de Laço</h2>
+    <h3>Objetivo</h3><p>Resolver desafios de programação com laços e limite de blocos.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>Dispositivos com o jogo Laço Dentro de Laço e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Demonstração (10 min): mostre como abrir um grupo, colocar blocos dentro e fechar.</li><li>Jogo (25 min).</li><li>Registro (10 min).</li><li>Conversa (5 min): qual fase pediu laço dentro de laço?</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">No jogo, cada grupo de repetição conta como um bloco. Para caber no limite, encontre o pedaço do caminho que se repete.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: depende da criança (7 fases).</li><li>Bloco 2: resposta pessoal. A última fase pode ser: repita 4 vezes [ frente 4 vezes, girar para a direita ].</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Em duplas, uma criança planeja no papel e a outra monta no jogo.</p>
+    <h3>Jogo</h3><p>Laço Dentro de Laço: ohtopico.com.br/material-didatico/jogos/laco-dentro-de-laco.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 14 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Desenhar com laços</h2>
+    <h3>Objetivo</h3><p>Criar, em grupo, algoritmos com laços aninhados para desenhar figuras.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>Papel quadriculado grande, canetas, e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Desafio (10 min): como desenhar um quadrado com &quot;ande 3 quadradinhos&quot; e &quot;vire à direita&quot;? Repita 4 vezes!</li><li>Grupos (25 min): cada grupo cria um algoritmo para uma figura (escada, ziguezague, quadrados lado a lado) com laços.</li><li>Troca (15 min): outro grupo executa no quadriculado.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Um quadrado é &quot;ande 3, vire à direita&quot;, repetido 4 vezes. E se quisermos 3 quadrados? Colocamos esse laço dentro de outro. Assim desenham os programas de desenho.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: um quadrado de lado 3.</li><li>Bloco 2: resposta do grupo; confira se o laço aninhado gera a figura combinada.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Estudantes cegos podem executar o algoritmo com o corpo num tapete quadriculado ou com um carrinho numa grade em relevo.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 15 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Consertando laços</h2>
+    <h3>Objetivo</h3><p>Encontrar e corrigir erros em algoritmos com laços.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>A folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Erro no quadro (15 min): mostre um laço que devia fazer um quadrado mas faz uma linha. O que falta?</li><li>Folha (25 min).</li><li>Correção (10 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Um erro dentro de um laço se repete todas as vezes. Por isso, é importante testar uma volta antes de repetir. Se uma volta dá certo, as outras também dão.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: falta virar: repita 4 vezes [ande 3, vire à direita].</li><li>Bloco 2: a seta para baixo devia ser para cima: repita 3 vezes [→ ↑].</li><li>Bloco 3: beber esvazia o copo, então ele nunca enche: a condição nunca acontece.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para quem precisa, ofereça três alternativas de correção para escolher em vez de escrever.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 16 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Revisão e avaliação do 2º bimestre</h2>
+    <h3>Objetivo</h3><p>Verificar se a criança cria, simula e corrige algoritmos com repetições simples e aninhadas.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p>
+    <h3>Material</h3><p>A folha de avaliação.</p>
+    <h3>Passo a passo</h3><ol><li>Revisão (15 min): dança aninhada.</li><li>Avaliação (25 min).</li><li>Correção coletiva (10 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Hoje vamos mostrar o que aprendemos sobre laços.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: repita 3 vezes [↑ →].</li><li>Bloco 2: 6 palmas e 3 pulos.</li><li>Bloco 3: anda 2 colunas e desce 4 linhas: última linha, terceira casa.</li><li>Bloco 4: repita até a garrafa encher [coloque água].</li><li>Critério: domina com 4 certos; em desenvolvimento com 2 ou 3; retomada com 0 ou 1.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Aplique com cartões e malha no chão para quem precisa.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 17 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Tudo vira número</h2>
+    <h3>Objetivo</h3><p>Entender que, para guardar, manipular e transmitir dados, o computador os codifica em números (formato digital).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO04</b>: Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).</p>
+    <h3>Material</h3><p>Um cartão com um código combinado (por exemplo, 1 = sim, 2 = não, 3 = talvez) e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Código da turma (15 min): combine números para respostas. Faça perguntas e a turma responde só com números.</li><li>Por quê? (10 min): o computador só entende números. Para guardar uma foto, um texto ou uma música, ele combina um código.</li><li>Folha (20 min).</li><li>Fechamento (5 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">O computador não guarda a foto como um papel, nem a música como um disco. Ele transforma tudo em números, usando um código combinado. Para mandar uma mensagem, os números viajam pelo cabo ou pelo ar e, do outro lado, são decodificados de novo.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: 1 1 2 3 1.</li><li>Bloco 2: nuvem, nuvem, sol, chuva, sol.</li><li>Bloco 3: porque ele só guarda e envia números; o código transforma a informação em números e de volta.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para estudantes com deficiência visual, use o código com sons (1 palma = sol, 2 palmas = chuva).</p>
+    <h3>Jogo</h3><p>Tudo Vira Número: ohtopico.com.br/material-didatico/jogos/tudo-vira-numero.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 18 · 50 minutos</span></header>
+    <h2 class="folha-titulo">O código das letras</h2>
+    <h3>Objetivo</h3><p>Codificar e decodificar palavras com uma tabela de letras e números, como o computador faz (ideia do código ASCII).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO04</b>: Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).</p><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Tabela A = 1 até Z = 26 e dispositivos com o jogo Tudo Vira Número.</p>
+    <h3>Passo a passo</h3><ol><li>Mensagem secreta (15 min): escreva no quadro uma mensagem em números para a turma decodificar.</li><li>Jogo (20 min): Tudo Vira Número.</li><li>Folha (15 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Quando você digita a letra A, o computador guarda um número. Cada letra tem o seu número numa tabela que todos os computadores conhecem. Por isso uma mensagem escrita num celular aparece igualzinha no outro.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: BOLA e CASA.</li><li>Bloco 2: depende do nome (ANA = 1 14 1).</li><li>Bloco 3: resposta livre; o colega deve conseguir decodificar.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Estudantes cegos podem usar a tabela em braille. Para quem tem dificuldade, use palavras de três letras.</p>
+    <h3>Jogo</h3><p>Tudo Vira Número: ohtopico.com.br/material-didatico/jogos/tudo-vira-numero.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 19 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Zeros e uns</h2>
+    <h3>Objetivo</h3><p>Representar números com as cartas de bolinhas (8, 4, 2, 1) e escrever em binário (só com 0 e 1).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Cartas de bolinhas grandes (1, 2, 4, 8) para o quadro, um jogo de cartas por dupla e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Cartas no quadro (15 min): quatro crianças seguram as cartas. Carta virada para a turma vale 1, de costas vale 0. Forme 5: cartas 4 e 1. Em binário: 0101.</li><li>Duplas (15 min): uma diz um número até 15, a outra forma com as cartas.</li><li>Folha (15 min).</li><li>Fechamento (5 min): o computador guarda tudo com luzinhas acesas (1) e apagadas (0).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">O computador guarda tudo usando só dois sinais: ligado e desligado, 1 e 0. Com as cartas de 8, 4, 2 e 1 bolinhas dá para formar qualquer número de 0 a 15. Carta para cima vale 1 e conta as bolinhas; carta para baixo vale 0. Isso é o sistema binário.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: 0 1 1 0 (cartas de 4 e de 2).</li><li>Bloco 2: 8 + 2 + 1 = 11.</li><li>Bloco 3: 3 = 0011; 9 = 1001; 15 = 1111.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Faça cartas com bolinhas em relevo (cola quente) para estudantes cegos. Para quem tem dificuldade, comece só com as cartas de 1, 2 e 4.</p>
+    <h3>Jogo</h3><p>Zeros, Uns e Cores: ohtopico.com.br/material-didatico/jogos/zeros-uns-e-cores.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 20 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Contando em binário</h2>
+    <h3>Objetivo</h3><p>Contar de 0 a 15 em binário e perceber o padrão.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Cartas de bolinhas e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Contagem coletiva (15 min): 0000, 0001, 0010, 0011... Qual carta vira a cada número? A de 1 vira sempre!</li><li>Folha (25 min).</li><li>Fechamento (10 min): com mais cartas (16, 32, 64...), o computador forma números enormes.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Contar em binário tem um padrão: a carta de 1 vira toda vez; a de 2 vira a cada dois números; a de 4, a cada quatro. Com mais cartas, formamos números maiores.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: 2 = 0010; 3 = 0011; 4 = 0100; 5 = 0101; 7 = 0111; 8 = 1000; 12 = 1100.</li><li>Bloco 2: 15 com quatro cartas; 31 com cinco.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Deixe a tabela parcialmente preenchida para quem precisa e use as cartas concretas.</p>
+    <h3>Jogo</h3><p>Zeros, Uns e Cores: ohtopico.com.br/material-didatico/jogos/zeros-uns-e-cores.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 21 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Pixels e cores de luz</h2>
+    <h3>Objetivo</h3><p>Entender que cada pixel da tela tem três luzes (vermelha, verde e azul) e que as cores são codificadas pela força de cada luz (RGB).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Três lanternas cobertas com papel celofane vermelho, verde e azul (se possível), uma lupa para olhar a tela e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Lupa na tela (10 min): olhe a tela com a lupa: aparecem pontinhos vermelhos, verdes e azuis.</li><li>Misturar luzes (15 min): no escuro, sobreponha as lanternas na parede. Vermelho + verde = amarelo. As três = branco.</li><li>Folha (20 min).</li><li>Fechamento (5 min): o computador guarda a cor de cada pixel como três números.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Cada pixel da tela tem três luzinhas: vermelha, verde e azul. Misturando as luzes, aparecem todas as cores. Luz é diferente de tinta: luz vermelha com luz verde dá amarelo, e as três juntas dão branco. O computador guarda cada cor como três números: R, G e B.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: amarelo 1 1 0; branco 1 1 1; preto 0 0 0; ciano 0 1 1.</li><li>Bloco 2: magenta (rosa-arroxeado).</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Se não houver lanternas, use o jogo Zeros, Uns e Cores no projetor. Estudantes com daltonismo podem participar pelos números (0 e 1) da tabela.</p>
+    <h3>Jogo</h3><p>Zeros, Uns e Cores: ohtopico.com.br/material-didatico/jogos/zeros-uns-e-cores.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 22 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Jogo: Zeros, Uns e Cores</h2>
+    <h3>Objetivo</h3><p>Praticar binário e RGB no jogo.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Dispositivos com o jogo Zeros, Uns e Cores e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Jogo (25 min).</li><li>Folha (15 min).</li><li>Conversa (10 min): por que vermelho e verde dão amarelo na luz e não na tinta?</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">No jogo você vira as cartas para formar números e acende luzes para formar cores. Tudo isso é o computador codificando a informação.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: depende da criança (9 fases).</li><li>Bloco 2: 9 anos = 1001; 10 anos = 1010.</li><li>Bloco 3: resposta livre; confira no jogo.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Duplas: uma criança lê o número ou a cor, a outra manipula. O jogo funciona com leitor de tela.</p>
+    <h3>Jogo</h3><p>Zeros, Uns e Cores: ohtopico.com.br/material-didatico/jogos/zeros-uns-e-cores.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 23 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Mensagem em binário</h2>
+    <h3>Objetivo</h3><p>Codificar e transmitir uma mensagem curta usando números em binário (luzes, palmas ou desenhos).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO04</b>: Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).</p><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Lanterna ou cartões preto e branco e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Planejar (10 min): cada letra vira um número (A=1...) e cada número vira binário.</li><li>Transmitir (25 min): grupos mandam uma palavra curta piscando a lanterna (acesa = 1, apagada = 0) ou levantando cartões.</li><li>Folha (15 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Agora você vai ser um computador mandando mensagens. Cada letra vira número, cada número vira zeros e uns. Do outro lado, o grupo decodifica. Foi assim que surgiram as primeiras comunicações digitais.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: O = 1111, I = 1001.</li><li>Bloco 2: 3, 1, 19, 1 = CASA.</li><li>Bloco 3: depende dos grupos.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Estudantes surdos podem transmitir com luz; estudantes cegos, com sons (palma = 1, silêncio = 0).</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 24 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Revisão e avaliação do 3º bimestre</h2>
+    <h3>Objetivo</h3><p>Verificar se a criança entende a codificação digital e representa informações em binário, com códigos de letras e RGB.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO04</b>: Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).</p><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>A folha de avaliação.</p>
+    <h3>Passo a passo</h3><ol><li>Revisão (15 min): cartas de bolinhas no quadro.</li><li>Avaliação (25 min).</li><li>Correção coletiva (10 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Hoje vamos mostrar o que aprendemos sobre como o computador codifica as informações.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: porque ele só guarda e envia números (0 e 1).</li><li>Bloco 2: 6, 9 e 15.</li><li>Bloco 3: 1010.</li><li>Bloco 4: LUA.</li><li>Bloco 5: amarelo.</li><li>Critério: domina com 4 ou 5 certos; em desenvolvimento com 3; retomada com 2 ou menos.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Ofereça as cartas concretas e a tabela de letras durante a avaliação para quem precisa.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 25 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Ferramentas para criar</h2>
+    <h3>Objetivo</h3><p>Conhecer ferramentas computacionais para criar textos, apresentações, vídeos e áudios e escolher a adequada.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO06</b>: Usar diferentes ferramentas computacionais para criação de conteúdo (textos, apresentações, vídeos etc.).</p>
+    <h3>Material</h3><p>Computadores ou tablets com editor de texto, apresentação e gravador; dispositivos com o jogo Estúdio de Conteúdo.</p>
+    <h3>Passo a passo</h3><ol><li>Tour (15 min): mostre cada ferramenta e um exemplo do que ela cria.</li><li>Jogo (20 min): Estúdio de Conteúdo.</li><li>Folha (15 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Cada ferramenta é boa para um tipo de conteúdo: o editor de texto para escrever, a apresentação para mostrar ideias em telas, o editor de vídeo para juntar imagens e sons, o gravador para áudio.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: editor de texto; apresentação (slides); gravador de áudio; câmera e editor de vídeo.</li><li>Bloco 2: resposta pessoal.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Apresente recursos de acessibilidade das ferramentas: ditado por voz, leitor de tela, legendas automáticas.</p>
+    <h3>Jogo</h3><p>Estúdio de Conteúdo: ohtopico.com.br/material-didatico/jogos/estudio-de-conteudo.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 26 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Do roteiro ao conteúdo</h2>
+    <h3>Objetivo</h3><p>Planejar e produzir um conteúdo digital em etapas (roteiro, produção, revisão, publicação).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO06</b>: Usar diferentes ferramentas computacionais para criação de conteúdo (textos, apresentações, vídeos etc.).</p>
+    <h3>Material</h3><p>Dispositivos com as ferramentas disponíveis e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Roteiro (15 min): cada grupo escolhe um tema e o formato e preenche o roteiro.</li><li>Produção (25 min).</li><li>Revisão (10 min): outro grupo assiste e sugere melhorias.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Todo conteúdo bom começa com um plano: o roteiro. Depois vem a produção, a revisão e, só então, a publicação.</p>
+    <h3>Gabarito</h3><ul><li>Respostas do grupo. Observe se o formato combina com o tema e se as etapas foram seguidas.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Distribua papéis conforme as potências (roteirista, apresentador, editor, revisor).</p>
+    <h3>Jogo</h3><p>Estúdio de Conteúdo: ohtopico.com.br/material-didatico/jogos/estudio-de-conteudo.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 27 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Coletar dados com ética</h2>
+    <h3>Objetivo</h3><p>Planejar uma pesquisa pedindo só os dados necessários, com permissão e explicando o uso.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO07</b>: Demonstrar postura ética nas atividades de coleta, transferência, guarda e uso de dados.</p>
+    <h3>Material</h3><p>Dispositivos com o jogo Dados com Cuidado e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Planejar uma pesquisa (15 min): sobre o esporte preferido. Que perguntas são necessárias? Precisa do nome? Do endereço?</li><li>Jogo (20 min): Dados com Cuidado.</li><li>Folha (15 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Quando coletamos dados de pessoas, temos responsabilidade. Pedimos só o que é necessário, explicamos para que vamos usar e pedimos permissão. Dados de pessoas não são brinquedo.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: necessárias: esporte preferido e se pratica. Endereço e telefone não.</li><li>Bloco 2: por exemplo &quot;As respostas vão virar um gráfico da turma. Não vamos mostrar nomes.&quot;</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Use exemplos concretos da escola. Para estudantes com TEA, deixe regras claras e escritas: só o necessário, pedir, explicar, guardar.</p>
+    <h3>Jogo</h3><p>Dados com Cuidado: ohtopico.com.br/material-didatico/jogos/dados-com-cuidado.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 28 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Guardar, enviar e usar dados</h2>
+    <h3>Objetivo</h3><p>Reconhecer atitudes éticas ao guardar, transferir e usar dados de outras pessoas.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO07</b>: Demonstrar postura ética nas atividades de coleta, transferência, guarda e uso de dados.</p>
+    <h3>Material</h3><p>Cartões com situações e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Situações (20 min): em grupos, a turma decide o que fazer em cada situação (achar a lista de telefones, receber a foto de um colega, emprestar o login).</li><li>Folha (20 min).</li><li>Combinado da turma (10 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Os dados das pessoas precisam ser guardados com senha, enviados só para quem precisa e usados só para o que foi combinado. Se encontrar dados de alguém, entregue a um adulto.</p>
+    <h3>Gabarito</h3><ul><li>Certo; errado (precisa de permissão); errado (uso diferente do combinado); certo.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Faça as situações como teatro curto para quem compreende melhor com ação.</p>
+    <h3>Jogo</h3><p>Dados com Cuidado: ohtopico.com.br/material-didatico/jogos/dados-com-cuidado.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 29 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Fonte confiável?</h2>
+    <h3>Objetivo</h3><p>Reconhecer a importância de verificar a confiabilidade das fontes de informação na internet.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO08</b>: Reconhecer a importância de verificar a confiabilidade das fontes de informações obtidas na Internet.</p>
+    <h3>Material</h3><p>Dois sites sobre o mesmo assunto (um de instituição e um sem autor), dispositivos com o jogo Fonte Confiável? e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Comparar (15 min): projete os dois sites. Quem escreveu? Quando? Tem fontes?</li><li>Jogo (20 min): Fonte Confiável?</li><li>Folha (15 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Na internet, qualquer pessoa pode publicar. Por isso, antes de acreditar, perguntamos: quem escreveu? Quando? Outros sites sérios dizem o mesmo? O título quer me assustar ou me fazer clicar?</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: Quem escreveu? Quando? Tem fontes? Outros sites sérios confirmam?</li><li>Bloco 2: b, porque tem autoria identificada e responsável.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Leia os sites junto com quem precisa e destaque autor e data com marcador.</p>
+    <h3>Jogo</h3><p>Fonte Confiável?: ohtopico.com.br/material-didatico/jogos/fonte-confiavel.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 30 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Checando uma notícia</h2>
+    <h3>Objetivo</h3><p>Verificar uma notícia em mais de uma fonte antes de compartilhar.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO08</b>: Reconhecer a importância de verificar a confiabilidade das fontes de informações obtidas na Internet.</p>
+    <h3>Material</h3><p>Duas ou três &quot;notícias&quot; preparadas pela professora (uma verdadeira e uma falsa sobre a escola ou a cidade) e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Detetives (25 min): em grupos, a turma checa cada notícia com a lista de perguntas.</li><li>Folha (15 min).</li><li>Fechamento (10 min): na dúvida, não compartilhe.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Uma notícia falsa pode parecer verdadeira. Antes de compartilhar, faça como um detetive: procure em outras fontes, veja a data, desconfie de títulos muito exagerados.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: depende da notícia.</li><li>Bloco 2: não compartilha e pergunta a um adulto.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Ofereça a notícia em áudio para quem tem dificuldade de leitura.</p>
+    <h3>Jogo</h3><p>Fonte Confiável?: ohtopico.com.br/material-didatico/jogos/fonte-confiavel.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 31 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Projeto: jornal digital da turma</h2>
+    <h3>Objetivo</h3><p>Produzir um jornal digital com textos, imagens e dados da turma, usando fontes confiáveis e cuidando dos dados das pessoas.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO06</b>: Usar diferentes ferramentas computacionais para criação de conteúdo (textos, apresentações, vídeos etc.).</p><p><b>EF04CO07</b>: Demonstrar postura ética nas atividades de coleta, transferência, guarda e uso de dados.</p><p><b>EF04CO08</b>: Reconhecer a importância de verificar a confiabilidade das fontes de informações obtidas na Internet.</p>
+    <h3>Material</h3><p>Dispositivos com editor de texto ou apresentação e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Pautas (10 min): cada grupo escolhe uma seção (notícia da escola, pesquisa da turma, curiosidade checada, entrevista).</li><li>Produção (30 min).</li><li>Revisão final (10 min): fontes, dados pessoais e permissões.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">O jornal da turma vai mostrar o que aprendemos: escolher a ferramenta, checar as fontes e cuidar dos dados das pessoas.</p>
+    <h3>Gabarito</h3><ul><li>Respostas do grupo. Para publicar: fonte confiável (sim), dado pessoal sem permissão (não), texto revisado (sim).</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Cada estudante participa no formato em que se expressa melhor (texto, desenho, áudio, vídeo em Libras).</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article><article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 32 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Avaliação final e festa dos jogos</h2>
+    <h3>Objetivo</h3><p>Verificar as aprendizagens do ano e celebrar o percurso da turma.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO01</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, fazendo manipulações simples sobre estas matrizes.</p><p><b>EF04CO02</b>: Reconhecer objetos do mundo real e/ou digital que podem ser representados através de registros que estabelecem uma organização na qual cada componente é identificado por um nome, fazendo manipulações simples sobre estes registros.</p><p><b>EF04CO03</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.</p><p><b>EF04CO04</b>: Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).</p><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p><p><b>EF04CO07</b>: Demonstrar postura ética nas atividades de coleta, transferência, guarda e uso de dados.</p><p><b>EF04CO08</b>: Reconhecer a importância de verificar a confiabilidade das fontes de informações obtidas na Internet.</p>
+    <h3>Material</h3><p>A folha de avaliação e os jogos do ano.</p>
+    <h3>Passo a passo</h3><ol><li>Avaliação (25 min).</li><li>Festa dos jogos (20 min).</li><li>Roda final (5 min).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Chegamos ao fim do 4º ano. Vamos mostrar o que aprendemos e depois jogar.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: B3.</li><li>Bloco 2: 9.</li><li>Bloco 3: repita 3 vezes [→ ↓].</li><li>Bloco 4: 5; 1100.</li><li>Bloco 5: ciano (azul-claro).</li><li>Bloco 6: pedir só o necessário ou pedir permissão; ver quem escreveu ou conferir em outras fontes.</li><li>Critério: domina com 5 ou 6 certos; em desenvolvimento com 3 ou 4; retomada com 2 ou menos.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Aplique em pequenos grupos, com leitura e materiais concretos para quem precisa.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article></div></main></body></html>

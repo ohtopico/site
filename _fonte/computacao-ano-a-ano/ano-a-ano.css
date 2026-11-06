@@ -76,3 +76,18 @@
 @media print { .nao-imprimir { display: none !important; } }
 .aa-lado { display: grid; grid-template-columns: 1fr 1fr; gap: 0 6mm; align-items: start; }
 .aa-lado .aa-legenda { gap: 2mm; }
+.aa-coord { display: grid; grid-template-columns: 6mm repeat(var(--cols), var(--cel)); width: max-content; margin: 2mm 0; }
+.aa-coord > b { display: grid; place-items: center; font: 700 4mm var(--body); height: 6mm; }
+.aa-coord > b:nth-child(n+2) { height: 6mm; }
+.aa-coord > span { width: var(--cel); height: var(--cel); border: 0.3mm solid #555; display: block; padding: 12%; box-sizing: border-box; }
+.aa-coord > span:first-child { border: 0; height: 6mm; }
+.aa-coord > span svg { width: 100%; height: 100%; }
+.aa-coord > span.pint[data-cor="vermelho"] { background: #fbd3cd; } .aa-coord > span.pint[data-cor="azul"] { background: #d9ecfb; }
+.aa-coord > span.pint[data-cor="amarelo"] { background: #fff1b8; } .aa-coord > span.pint[data-cor="verde"] { background: #dcf1dc; }
+.aa-bins { display: flex; gap: 3mm; margin: 2mm 0; flex-wrap: wrap; }
+.aa-bin { width: var(--t); border: 0.5mm solid #111; border-radius: 2.5mm; padding: 1.5mm; display: flex; flex-direction: column; align-items: center; gap: 1mm; }
+.aa-bin span { display: flex; flex-wrap: wrap; gap: 0.8mm; justify-content: center; min-height: 7mm; align-content: center; }
+.aa-bin span i { width: 2mm; height: 2mm; border-radius: 50%; background: #111; display: block; }
+.aa-bin.baixo span i { background: #fff; border: 0.3mm solid #999; }
+.aa-bin em { font: 600 3mm var(--body); font-style: normal; color: #555; }
+.aa-bin u { text-decoration: none; width: 8mm; height: 8mm; border: 0.4mm dashed #777; border-radius: 1.5mm; display: grid; place-items: center; font: 700 5mm var(--body); }

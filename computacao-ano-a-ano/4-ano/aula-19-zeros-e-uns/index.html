@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Zeros e uns: Computação 4º ano | Júlia Quoos</title>
+<meta name="description" content="Aula 19 de Computação do 4º ano: Representar números com as cartas de bolinhas (8, 4, 2, 1) e escrever em binário (só com 0 e 1). Com folha e gabarito.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-19-zeros-e-uns/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-19-zeros-e-uns/">
+<meta property="og:title" content="Zeros e uns: Computação 4º ano | Júlia Quoos">
+<meta property="og:description" content="Aula 19 de Computação do 4º ano: Representar números com as cartas de bolinhas (8, 4, 2, 1) e escrever em binário (só com 0 e 1). Com folha e gabarito.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Card de BNCC Computação do material didático de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-19-zeros-e-uns/#aula",
+   "url": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-19-zeros-e-uns/",
+   "name": "Zeros e uns (Computação, 4º ano, aula 19)",
+   "description": "Aula 19 de Computação do 4º ano: Representar números com as cartas de bolinhas (8, 4, 2, 1) e escrever em binário (só com 0 e 1). Com folha e gabarito.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Plano de aula com atividade para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "4º ano do Ensino Fundamental",
+   "timeRequired": "PT50M",
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF04CO05",
+     "targetDescription": "Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.)."
+    }
+   ],
+   "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "teacher"
+   },
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+   "isPartOf": {
+    "@id": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/#curso"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação ano a ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "4º ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Zeros e uns",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-19-zeros-e-uns/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=621e39ab7c">
+<link rel="stylesheet" href="/computacao-ano-a-ano/assets/ano-a-ano.css?v=621e39ab7c">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-ano-a-ano/">Computação ano a ano</a><a href="/material-didatico/jogos/">Jogos</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-ano-a-ano/">Computação ano a ano</a></li><li><a href="/computacao-ano-a-ano/4-ano/">4º ano</a></li><li aria-current="page">Aula 19</li></ol></nav>
+        <p class="rotulo">Computação · 4º ano · Aula 19 de 32 · 3º bimestre</p>
+        <h1>Zeros e uns</h1>
+        <p class="linha-fina">Representar números com as cartas de bolinhas (8, 4, 2, 1) e escrever em binário (só com 0 e 1).</p>
+        <div class="acoes">
+            <button type="button" class="btn98 escuro" data-imprimir="Estudante">Imprimir folha do estudante</button>
+            <button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações e gabarito</button>
+            <a class="btn98" href="/computacao-ano-a-ano/4-ano/computacao-4-ano-caderno-do-estudante.pdf" download>Caderno do ano (PDF)</a>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Bimestre</dt><dd>3º: Codificação da informação</dd>
+            <dt>Material</dt><dd>Cartas de bolinhas grandes (1, 2, 4, 8) para o quadro, um jogo de cartas por dupla e a folha do estudante.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/catalogo.html?hab=EF04CO05">EF04CO05</a>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</li></ul>
+        <h2>Passo a passo</h2>
+        <ol><li>Cartas no quadro (15 min): quatro crianças seguram as cartas. Carta virada para a turma vale 1, de costas vale 0. Forme 5: cartas 4 e 1. Em binário: 0101.</li><li>Duplas (15 min): uma diz um número até 15, a outra forma com as cartas.</li><li>Folha (15 min).</li><li>Fechamento (5 min): o computador guarda tudo com luzinhas acesas (1) e apagadas (0).</li></ol>
+        <h2>Texto para ler com a turma</h2>
+        <p class="texto-turma-pag">O computador guarda tudo usando só dois sinais: ligado e desligado, 1 e 0. Com as cartas de 8, 4, 2 e 1 bolinhas dá para formar qualquer número de 0 a 15. Carta para cima vale 1 e conta as bolinhas; carta para baixo vale 0. Isso é o sistema binário.</p>
+        <h2>Jogo da aula</h2><p><a href="/material-didatico/jogos/zeros-uns-e-cores.html"><b>Zeros, Uns e Cores</b></a>: Jogo para o 4º ano: representar números em binário com cartas de bolinhas e formar cores misturando luzes vermelha, verde e azul (RGB), como os pixels da tela.</p>
+        <h2>Alunos com diferentes necessidades</h2>
+        <p>Faça cartas com bolinhas em relevo (cola quente) para estudantes cegos. Para quem tem dificuldade, comece só com as cartas de 1, 2 e 4.</p>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: 0 1 1 0 (cartas de 4 e de 2).</li><li>Bloco 2: 8 + 2 + 1 = 11.</li><li>Bloco 3: 3 = 0011; 9 = 1001; 15 = 1111.</li></ul></details>
+        <h2 id="folhas">Folha para imprimir</h2>
+        <p>A folha é A4 com fundo branco, para economizar tinta. A segunda folha traz as orientações e o gabarito para o professor.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Zeros e uns, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF04CO05 · Computação · 4º ano · Aula 19</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Zeros e uns</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Escreva 1 nas cartas que ficam para cima para formar 6.</span></h3><div class="bloco-corpo"><div class="aa-bins"><div class="aa-bin" style="--t:16mm"><span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><em>8</em><u></u></div><div class="aa-bin" style="--t:16mm"><span><i></i><i></i><i></i><i></i></span><em>4</em><u></u></div><div class="aa-bin" style="--t:16mm"><span><i></i><i></i></span><em>2</em><u></u></div><div class="aa-bin" style="--t:16mm"><span><i></i></span><em>1</em><u></u></div></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>Que número é este?</span></h3><div class="bloco-corpo"><div class="aa-bins"><div class="aa-bin" style="--t:16mm"><span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><em>8</em><u>1</u></div><div class="aa-bin baixo" style="--t:16mm"><span><i></i><i></i><i></i><i></i></span><em>4</em><u>0</u></div><div class="aa-bin" style="--t:16mm"><span><i></i><i></i></span><em>2</em><u>1</u></div><div class="aa-bin" style="--t:16mm"><span><i></i></span><em>1</em><u>1</u></div></div><div class="linhas"><span></span></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>Escreva em binário (4 dígitos): 3 = ______ &nbsp; 9 = ______ &nbsp; 15 = ______</span></h3><div class="bloco-corpo"></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 19 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Zeros e uns</h2>
+    <h3>Objetivo</h3><p>Representar números com as cartas de bolinhas (8, 4, 2, 1) e escrever em binário (só com 0 e 1).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Cartas de bolinhas grandes (1, 2, 4, 8) para o quadro, um jogo de cartas por dupla e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Cartas no quadro (15 min): quatro crianças seguram as cartas. Carta virada para a turma vale 1, de costas vale 0. Forme 5: cartas 4 e 1. Em binário: 0101.</li><li>Duplas (15 min): uma diz um número até 15, a outra forma com as cartas.</li><li>Folha (15 min).</li><li>Fechamento (5 min): o computador guarda tudo com luzinhas acesas (1) e apagadas (0).</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">O computador guarda tudo usando só dois sinais: ligado e desligado, 1 e 0. Com as cartas de 8, 4, 2 e 1 bolinhas dá para formar qualquer número de 0 a 15. Carta para cima vale 1 e conta as bolinhas; carta para baixo vale 0. Isso é o sistema binário.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: 0 1 1 0 (cartas de 4 e de 2).</li><li>Bloco 2: 8 + 2 + 1 = 11.</li><li>Bloco 3: 3 = 0011; 9 = 1001; 15 = 1111.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Faça cartas com bolinhas em relevo (cola quente) para estudantes cegos. Para quem tem dificuldade, comece só com as cartas de 1, 2 e 4.</p>
+    <h3>Jogo</h3><p>Zeros, Uns e Cores: ohtopico.com.br/material-didatico/jogos/zeros-uns-e-cores.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras aulas"><a href="/computacao-ano-a-ano/4-ano/aula-18-o-codigo-das-letras/">← Aula 18: O código das letras</a><a href="/computacao-ano-a-ano/4-ano/aula-20-contando-em-binario/">Aula 20: Contando em binário →</a></nav>
+        <p class="voltar"><a href="/computacao-ano-a-ano/4-ano/">Ver todas as aulas do 4º ano</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-ano-a-ano/">Computação ano a ano</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/computacao-ano-a-ano/assets/ano-a-ano.js" defer></script>
+</body>
+</html>

@@ -112,3 +112,40 @@
 }
 @media (prefers-reduced-motion: reduce) { .pq * { animation: none !important; transition: none !important; } }
 .game-stage > .pq { border: 0; box-shadow: none; padding: 0; }
+
+/* coordenadas */
+.pq-coord { display: grid; grid-template-columns: 32px repeat(var(--cols), minmax(0, var(--pq-cel))); gap: 0; width: max-content; max-width: 100%; }
+.pq-coord .rot { display: grid; place-items: center; font: 700 18px var(--body); color: var(--ink-2); min-height: 32px; }
+.pq-coord .cel { aspect-ratio: 1; border: 1px solid #999; background: #fff; padding: 8%; display: block; min-width: 0; }
+.pq-coord button.cel { cursor: pointer; }
+.pq-coord button.cel:hover { background: #fff1b8; }
+.pq-coord .cel svg { width: 100%; height: 100%; display: block; }
+.pq-coord-pede { display: flex; align-items: center; gap: 10px; font: 700 34px var(--body); }
+.pq-coord-pede svg { width: 52px; height: 52px; }
+.pq-coord-pede i { width: 44px; height: 44px; border: 2px solid var(--ink); border-radius: 10px; display: block; }
+/* binário */
+.pq-bin-alvo { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pq-bin-alvo b { font: 700 44px var(--body); }
+.pq-bin-alvo span { display: flex; flex-wrap: wrap; gap: 4px; max-width: 260px; justify-content: center; }
+.pq-bin-alvo i, .pq-bin .pts i { width: 12px; height: 12px; border-radius: 50%; background: var(--ink); display: block; }
+.pq-bin { width: 92px; height: 120px; border: 3px solid var(--ink); border-radius: 16px; background: #555; cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; justify-content: space-between; padding: 10px 6px; color: #fff; }
+.pq-bin .pts { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; visibility: hidden; }
+.pq-bin b { font: 700 28px var(--body); color: #fff; }
+.pq-bin.on b { color: var(--ink); }
+.pq-bin.on { background: #fff8dc; color: var(--ink); }
+.pq-bin.on .pts { visibility: visible; }
+.pq-bin-soma { font: 700 22px var(--body); letter-spacing: 2px; }
+/* rgb */
+.pq-rgb { width: 130px; height: 130px; border: 3px solid var(--ink); border-radius: 18px; background: #000; }
+.pq-rgb.alvo { border-style: dashed; }
+.pq-rgb-igual { font: 800 34px var(--display); }
+.pq-luz { position: relative; }
+.pq-luz .nv { position: absolute; right: -6px; top: -8px; background: var(--ink); color: var(--paper); border-radius: 99px; min-width: 24px; height: 24px; font: 700 14px/24px var(--body); }
+@media (max-width: 560px) { .pq-bin { width: 70px; height: 100px; } .pq-rgb { width: 100px; height: 100px; } }
+/* ficha (registro) */
+.pq-ficha { background: #fff; border: 2px solid var(--ink); border-radius: 14px; padding: 10px 12px; color: #111; }
+.pq-ficha table { border-collapse: collapse; font: 600 16px/1.3 var(--body); margin: 0 auto; }
+.pq-ficha th, .pq-ficha td { border: 1px solid #bbb; padding: 4px 10px; text-align: left; }
+.pq-ficha th { background: #fff1b8; }
+.pq-carta.txt .pq-ficha { border: 0; padding: 0; }

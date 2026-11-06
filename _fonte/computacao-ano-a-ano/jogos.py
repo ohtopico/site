@@ -14,6 +14,7 @@ from pathlib import Path
 from jogos1 import JOGOS1
 from jogos2 import JOGOS2
 from jogos3 import JOGOS3
+from jogos4 import JOGOS4
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
@@ -21,7 +22,7 @@ MD = RAIZ / 'material-didatico'
 SITE = 'https://ohtopico.com.br'
 esc = html.escape
 
-JOGOS = JOGOS1 + JOGOS2 + JOGOS3
+JOGOS = JOGOS1 + JOGOS2 + JOGOS3 + JOGOS4
 
 
 GTAG = '''<!-- Google tag (gtag.js) -->
@@ -39,7 +40,11 @@ def pagina(j, antigo):
     url = f'{SITE}/material-didatico/jogos/{j["id"]}.html'
     titulo = f'{j["titulo"]}: jogo de Computação, {j["ano"]}º ano | Júlia Quoos'
     desc = j['resumo']
-    cfg = {'id': j['id'], 'leitura': j.get('leitura', False), 'fases': j['fases']}
+    fases = j['fases']
+    if j.get('leitura'):
+        # nos jogos com leitura a instrução também aparece escrita
+        fases = [dict(f, pergunta=f.get('pergunta', f.get('fala', ''))) for f in fases]
+    cfg = {'id': j['id'], 'leitura': j.get('leitura', False), 'fases': fases}
     for k in ('personagem', 'alvo', 'parede'):
         if k in j:
             cfg[k] = j[k]

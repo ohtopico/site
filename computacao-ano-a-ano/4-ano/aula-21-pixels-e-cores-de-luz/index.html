@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Pixels e cores de luz: Computação 4º ano | Júlia Quoos</title>
+<meta name="description" content="Entender que cada pixel da tela tem três luzes (vermelha, verde e azul) e que as cores são codificadas pela força de cada luz (RGB).">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-21-pixels-e-cores-de-luz/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-21-pixels-e-cores-de-luz/">
+<meta property="og:title" content="Pixels e cores de luz: Computação 4º ano | Júlia Quoos">
+<meta property="og:description" content="Entender que cada pixel da tela tem três luzes (vermelha, verde e azul) e que as cores são codificadas pela força de cada luz (RGB).">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Card de BNCC Computação do material didático de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-21-pixels-e-cores-de-luz/#aula",
+   "url": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-21-pixels-e-cores-de-luz/",
+   "name": "Pixels e cores de luz (Computação, 4º ano, aula 21)",
+   "description": "Entender que cada pixel da tela tem três luzes (vermelha, verde e azul) e que as cores são codificadas pela força de cada luz (RGB).",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Plano de aula com atividade para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "4º ano do Ensino Fundamental",
+   "timeRequired": "PT50M",
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF04CO05",
+     "targetDescription": "Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.)."
+    }
+   ],
+   "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "teacher"
+   },
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+   "isPartOf": {
+    "@id": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/#curso"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação ano a ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "4º ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Pixels e cores de luz",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/4-ano/aula-21-pixels-e-cores-de-luz/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=621e39ab7c">
+<link rel="stylesheet" href="/computacao-ano-a-ano/assets/ano-a-ano.css?v=621e39ab7c">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-ano-a-ano/">Computação ano a ano</a><a href="/material-didatico/jogos/">Jogos</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-ano-a-ano/">Computação ano a ano</a></li><li><a href="/computacao-ano-a-ano/4-ano/">4º ano</a></li><li aria-current="page">Aula 21</li></ol></nav>
+        <p class="rotulo">Computação · 4º ano · Aula 21 de 32 · 3º bimestre</p>
+        <h1>Pixels e cores de luz</h1>
+        <p class="linha-fina">Entender que cada pixel da tela tem três luzes (vermelha, verde e azul) e que as cores são codificadas pela força de cada luz (RGB).</p>
+        <div class="acoes">
+            <button type="button" class="btn98 escuro" data-imprimir="Estudante">Imprimir folha do estudante</button>
+            <button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações e gabarito</button>
+            <a class="btn98" href="/computacao-ano-a-ano/4-ano/computacao-4-ano-caderno-do-estudante.pdf" download>Caderno do ano (PDF)</a>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Bimestre</dt><dd>3º: Codificação da informação</dd>
+            <dt>Material</dt><dd>Três lanternas cobertas com papel celofane vermelho, verde e azul (se possível), uma lupa para olhar a tela e a folha do estudante.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/catalogo.html?hab=EF04CO05">EF04CO05</a>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</li></ul>
+        <h2>Passo a passo</h2>
+        <ol><li>Lupa na tela (10 min): olhe a tela com a lupa: aparecem pontinhos vermelhos, verdes e azuis.</li><li>Misturar luzes (15 min): no escuro, sobreponha as lanternas na parede. Vermelho + verde = amarelo. As três = branco.</li><li>Folha (20 min).</li><li>Fechamento (5 min): o computador guarda a cor de cada pixel como três números.</li></ol>
+        <h2>Texto para ler com a turma</h2>
+        <p class="texto-turma-pag">Cada pixel da tela tem três luzinhas: vermelha, verde e azul. Misturando as luzes, aparecem todas as cores. Luz é diferente de tinta: luz vermelha com luz verde dá amarelo, e as três juntas dão branco. O computador guarda cada cor como três números: R, G e B.</p>
+        <h2>Jogo da aula</h2><p><a href="/material-didatico/jogos/zeros-uns-e-cores.html"><b>Zeros, Uns e Cores</b></a>: Jogo para o 4º ano: representar números em binário com cartas de bolinhas e formar cores misturando luzes vermelha, verde e azul (RGB), como os pixels da tela.</p>
+        <h2>Alunos com diferentes necessidades</h2>
+        <p>Se não houver lanternas, use o jogo Zeros, Uns e Cores no projetor. Estudantes com daltonismo podem participar pelos números (0 e 1) da tabela.</p>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: amarelo 1 1 0; branco 1 1 1; preto 0 0 0; ciano 0 1 1.</li><li>Bloco 2: magenta (rosa-arroxeado).</li></ul></details>
+        <h2 id="folhas">Folha para imprimir</h2>
+        <p>A folha é A4 com fundo branco, para economizar tinta. A segunda folha traz as orientações e o gabarito para o professor.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Pixels e cores de luz, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF04CO05 · Computação · 4º ano · Aula 21</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Pixels e cores de luz</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Complete com as luzes acesas (1) e apagadas (0).</span></h3><div class="bloco-corpo"><table class="tabela-folha"><thead><tr><th>Cor</th><th>R (vermelho)</th><th>G (verde)</th><th>B (azul)</th></tr></thead><tbody><tr><td>vermelho</td><td>1</td><td>0</td><td>0</td></tr><tr><td>amarelo</td><td></td><td></td><td></td></tr><tr><td>branco</td><td></td><td></td><td></td></tr><tr><td>preto</td><td></td><td></td><td></td></tr><tr><td>ciano (azul-claro)</td><td></td><td></td><td></td></tr></tbody></table></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>Que cor aparece com R = 1, G = 0, B = 1?</span></h3><div class="bloco-corpo"><div class="linhas"><span></span></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">4º ano · Aula 21 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Pixels e cores de luz</h2>
+    <h3>Objetivo</h3><p>Entender que cada pixel da tela tem três luzes (vermelha, verde e azul) e que as cores são codificadas pela força de cada luz (RGB).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF04CO05</b>: Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).</p>
+    <h3>Material</h3><p>Três lanternas cobertas com papel celofane vermelho, verde e azul (se possível), uma lupa para olhar a tela e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Lupa na tela (10 min): olhe a tela com a lupa: aparecem pontinhos vermelhos, verdes e azuis.</li><li>Misturar luzes (15 min): no escuro, sobreponha as lanternas na parede. Vermelho + verde = amarelo. As três = branco.</li><li>Folha (20 min).</li><li>Fechamento (5 min): o computador guarda a cor de cada pixel como três números.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Cada pixel da tela tem três luzinhas: vermelha, verde e azul. Misturando as luzes, aparecem todas as cores. Luz é diferente de tinta: luz vermelha com luz verde dá amarelo, e as três juntas dão branco. O computador guarda cada cor como três números: R, G e B.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: amarelo 1 1 0; branco 1 1 1; preto 0 0 0; ciano 0 1 1.</li><li>Bloco 2: magenta (rosa-arroxeado).</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Se não houver lanternas, use o jogo Zeros, Uns e Cores no projetor. Estudantes com daltonismo podem participar pelos números (0 e 1) da tabela.</p>
+    <h3>Jogo</h3><p>Zeros, Uns e Cores: ohtopico.com.br/material-didatico/jogos/zeros-uns-e-cores.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras aulas"><a href="/computacao-ano-a-ano/4-ano/aula-20-contando-em-binario/">← Aula 20: Contando em binário</a><a href="/computacao-ano-a-ano/4-ano/aula-22-jogo-zeros-uns-e-cores/">Aula 22: Jogo: Zeros, Uns e Cores →</a></nav>
+        <p class="voltar"><a href="/computacao-ano-a-ano/4-ano/">Ver todas as aulas do 4º ano</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-ano-a-ano/">Computação ano a ano</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/computacao-ano-a-ano/assets/ano-a-ano.js" defer></script>
+</body>
+</html>
