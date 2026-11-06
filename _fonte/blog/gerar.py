@@ -629,7 +629,7 @@ OFERTAS = [
      'A partir de R$ 200 a sessão'),
     ('Formação continuada em IA', '/formacao-continuada/', 'Para escolas, secretarias e redes de ensino',
      'Diagnóstico, oficinas com o material da escola, regras de uso e retorno depois de 30 dias.',
-     'R$ 200 por hora de formação'),
+     'Redes municipais: R$ 2.000 por 8 horas'),
     ('Formação em tecnologias educacionais', '/formacao-tecnologias-educacionais/', 'Para professores e equipes',
      'Turma virtual, formulários, criação de material, Computação da BNCC e acessibilidade, na prática.',
      'Proposta conforme o formato'),
