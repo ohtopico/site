@@ -1,0 +1,18 @@
+/* Vila da Arte: usa as caixas e botões da Ilha ENEM (../enem/enem.css, que segue o visual do Mundo) e acrescenta o que é só daqui. */
+:root { --av: #f7a8c4; --mu: #ffd58a; --da: #c7b4f2; --te: #ffb38a; --ai: #9fe3dc; }
+body { background: #fde6f0 linear-gradient(#fde6f0 0, #fff3e0 380px, #e9f6ea 100%) fixed; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+.chip { font: 600 14px var(--body); border: 2px solid rgba(0,0,0,.18); border-radius: 99px; padding: 6px 14px; background: var(--paper); color: var(--ink); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.lingua { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 99px; border: 1.5px solid rgba(0,0,0,.15); color: #1d2a1f; }
+.l-AV { background: var(--av); } .l-MU { background: var(--mu); } .l-DA { background: var(--da); } .l-TE { background: var(--te); } .l-AI { background: var(--ai); }
+.ok-msg { color: var(--ok); font-weight: 600; } .bad-msg { color: var(--bad); font-weight: 600; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+
+/* impressão: sempre fundo branco, só o conteúdo, cores apenas nos detalhes */
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  .e-top, .e-voltar, .footer, .chips, .acoes, .no-print, details.howto { display: none !important; }
+  .game-stage, .caixa { box-shadow: none !important; border: 1.5px solid #999 !important; background: #fff !important; break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+}

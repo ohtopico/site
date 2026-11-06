@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Caixa de improviso · Vila da Arte</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="../enem/enem.css">
+<link rel="stylesheet" href="arte.css">
+<style>
+  .cartas { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin: 14px 0; }
+  .carta { background: #fff; border: 3px solid #1d2a1f; border-radius: 18px; padding: 12px 14px; min-height: 110px; box-shadow: var(--sombra); }
+  .carta .tipo { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); border-bottom: 4px solid var(--cor, #ccc); padding-bottom: 4px; margin-bottom: 8px; }
+  .carta b { font-size: 19px; line-height: 1.3; display: block; }
+  .carta small { display: block; color: var(--ink-2); margin-top: 6px; font-size: 13.5px; }
+  .relogio { font-family: var(--display); font-size: 40px; line-height: 1; min-width: 3ch; }
+  .roteiro li { margin: 4px 0; }
+  @media print { .carta { box-shadow: none; } }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top"><div class="wrap"><span class="plaq marca">🎨 Vila da Arte</span><span class="direita"><a class="hb azul" href="../?arte" style="min-height:0;padding:7px 12px">Ir para a vila no Mundo</a></span></div></header>
+<main class="wrap">
+  <div class="e-head">
+    <a class="hb azul e-voltar" href="../?arte">← Voltar à vila</a>
+    <h1>🎭 Caixa de improviso</h1>
+    <p class="muted">Sorteie cartas e crie uma cena de teatro ou uma frase de dança com a turma. Teatro: EF69AR26, EF69AR29 e EF69AR30. Dança: EF69AR10, EF69AR11 e EF69AR12.</p>
+  </div>
+  <div class="chips" role="group" aria-label="Escolha a linguagem">
+    <button type="button" class="chip" data-modo="teatro" aria-pressed="true">Teatro</button>
+    <button type="button" class="chip" data-modo="danca" aria-pressed="false">Dança</button>
+  </div>
+  <section class="caixa">
+    <div class="acoes">
+      <button type="button" class="hb" id="sortear">Sortear cartas</button>
+      <button type="button" class="hb amarelo" id="cronometro">Combinar em 1 minuto</button>
+      <span class="relogio" id="relogio" aria-live="polite"></span>
+      <button type="button" class="hb azul" id="imprimir">Imprimir as cartas</button>
+    </div>
+    <div class="cartas" id="cartas" aria-live="polite"></div>
+    <h3>Como jogar</h3>
+    <ol class="roteiro" id="roteiro"></ol>
+  </section>
+  <details class="howto">
+    <summary>Para a professora e o professor</summary>
+    <p>Divida a turma em grupos de 3 a 5. Cada grupo sorteia as suas cartas, tem um minuto para combinar e até dois minutos para apresentar. Depois de cada apresentação, a plateia diz o que percebeu antes de o grupo contar as cartas: assim todos treinam a apreciação. A impressão sai em fundo branco; dá para recortar as cartas e usar sem tela.</p>
+  </details>
+</main>
+<footer class="footer"><div class="wrap">Vila da Arte, uma parte secreta do Mundo do ohtopico.com.br.</div></footer>
+
+<script src="arte.js"></script>
+<script>ARTE.exigir();</script>
+<script>
+(function () {
+  const MODOS = {
+    teatro: {
+      cartas: [
+        ['Personagem', '#f7a8c4', ['Uma inventora muito distraída', 'Um guarda de museu que nunca dorme', 'Uma avó campeã de skate', 'Um robô que quer aprender a rir', 'Uma repórter de rádio', 'Um pescador contador de histórias', 'Uma cientista que fala com plantas', 'Um rei que perdeu a coroa', 'Uma motorista de ônibus apressada', 'Um mágico tímido'], 'Mude a voz, a postura e o jeito de andar.'],
+        ['Lugar', '#ffd58a', ['Uma feira livre', 'O telhado da escola', 'Uma estação de trem', 'Dentro de um elevador parado', 'Uma ilha deserta', 'A cozinha de um restaurante', 'Uma biblioteca à noite', 'Um barco no meio do rio', 'Uma fila de banco', 'O camarim de um teatro'], 'Mostre o lugar sem cenário: só com o corpo e os objetos imaginários.'],
+        ['Objeto', '#a8d8f7', ['Um guarda-chuva', 'Uma carta antiga', 'Uma chave enorme', 'Um chapéu', 'Uma mala', 'Um pandeiro', 'Uma lanterna', 'Um mapa rasgado', 'Um vaso de planta', 'Um bolo de aniversário'], 'O objeto precisa ser importante para a história (adereço).'],
+        ['Problema', '#ffb38a', ['Alguém perdeu algo muito importante', 'Começou a chover dentro da sala', 'Ninguém entende a língua de um personagem', 'O tempo está acabando', 'Um segredo foi descoberto', 'A luz apagou de repente', 'Dois personagens querem a mesma coisa', 'Alguém precisa pedir desculpas'], 'Toda cena precisa de um conflito para resolver.'],
+        ['Clima da cena', '#c7b4f2', ['Suspense', 'Comédia', 'Mistério', 'Alegria de festa', 'Tristeza que vira esperança', 'Aventura'], 'Use sonoplastia com a boca e o corpo para criar o clima.']
+      ],
+      roteiro: ['Sorteie as cartas.', 'Combinem em 1 minuto: quem faz cada personagem, como começa, qual é o problema e como termina.', 'Apresentem em até 2 minutos. O objeto pode ser imaginário ou um objeto da sala.', 'A plateia diz quem eram os personagens, o lugar e o clima. Depois o grupo revela as cartas.', 'Conversem: o que no corpo e na voz mostrou cada coisa?']
+    },
+    danca: {
+      cartas: [
+        ['Gesto do dia a dia', '#f7a8c4', ['Escovar os dentes', 'Abrir uma janela', 'Varrer o chão', 'Acenar para alguém', 'Amarrar o tênis', 'Pegar um ônibus', 'Mexer o feijão na panela', 'Colocar a mochila nas costas', 'Atender o celular', 'Pentear o cabelo'], 'Ponto de partida: transforme o gesto em movimento dançado.'],
+        ['Tempo', '#ffd58a', ['Súbito: rápido e repentino', 'Sustentado: lento e prolongado', 'Começa lento e acelera', 'Começa rápido e desacelera'], 'Fator de movimento tempo (EF69AR11).'],
+        ['Peso', '#a8d8f7', ['Firme, como quem empurra uma parede', 'Leve, como quem segura uma bolha de sabão', 'Alterna firme e leve'], 'Fator de movimento peso.'],
+        ['Fluência', '#ffb38a', ['Livre: o movimento não para', 'Controlada: dá para parar a qualquer momento', 'Com pausas, como uma estátua no meio'], 'Fator de movimento fluência.'],
+        ['Espaço e nível', '#c7b4f2', ['Nível baixo, perto do chão', 'Nível médio', 'Nível alto, na ponta dos pés ou pulando', 'Caminho em linha reta', 'Caminho em zigue-zague', 'Caminho em círculo', 'Passa pelos três níveis'], 'Fator de movimento espaço: direto ou flexível, níveis e trajetórias.']
+      ],
+      roteiro: ['Sorteie as cartas.', 'Cada pessoa faz o gesto do dia a dia do jeito normal, três vezes.', 'Agora aplique as cartas de tempo, peso, fluência e espaço ao mesmo gesto.', 'Em 1 minuto, o grupo junta os movimentos numa frase de dança com começo, meio e fim.', 'Apresentem com uma música escolhida pela turma. A plateia tenta adivinhar o gesto de origem e os fatores usados.']
+    }
+  };
+  let modo = 'teatro';
+  const esc = ARTE.esc, pega = l => l[Math.floor(Math.random() * l.length)];
+  function sorteia() {
+    const M = MODOS[modo];
+    document.getElementById('cartas').innerHTML = M.cartas.map(([tipo, cor, lista, dica]) => `<div class="carta" style="--cor:${cor}"><span class="tipo">${tipo}</span><b>${esc(pega(lista))}</b><small>${esc(dica)}</small></div>`).join('');
+    document.getElementById('roteiro').innerHTML = M.roteiro.map(p => `<li>${esc(p)}</li>`).join('');
+  }
+  document.querySelectorAll('[data-modo]').forEach(b => b.addEventListener('click', () => {
+    modo = b.dataset.modo; document.querySelectorAll('[data-modo]').forEach(c => c.setAttribute('aria-pressed', c === b)); sorteia();
+  }));
+  document.getElementById('sortear').addEventListener('click', sorteia);
+  document.getElementById('imprimir').addEventListener('click', () => window.print());
+  let cron = null;
+  document.getElementById('cronometro').addEventListener('click', () => {
+    clearInterval(cron); let s = 60; const r = document.getElementById('relogio'); r.textContent = '60';
+    cron = setInterval(() => { s--; r.textContent = s > 0 ? s : 'Já!'; if (s <= 0) clearInterval(cron); }, 1000);
+  });
+  sorteia();
+})();
+</script>
+</body>
+</html>
