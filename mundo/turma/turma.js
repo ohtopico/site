@@ -120,7 +120,7 @@
       try { lista = await T.prof.aoVivo(turma.id); }
       catch (e) {
         if (e.status === 401 || e.status === 403) { para(); await T.prof.sair(); mostra('tela-entrar'); return; }
-        $('#av-hora').textContent = 'Sem conexão agora, tento de novo em 15 segundos.'; return;
+        $('#av-hora').textContent = e.status === 400 ? 'O painel ao vivo ainda está sendo ativado. Tente de novo mais tarde.' : 'Sem conexão agora, tento de novo em 15 segundos.'; return;
       }
       const agora = Date.now();
       if (!base.alunos) { base = { inicio: agora, alunos: {} }; }
