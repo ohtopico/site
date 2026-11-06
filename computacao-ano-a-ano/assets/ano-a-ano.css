@@ -1,0 +1,75 @@
+/* Ano a ano: peças das folhas (figuras, ligar, numerar, malha, setas) e páginas do ano e das aulas.
+   Folha sempre branca; cor só nas figuras. Títulos em Sniglet, texto em Lexend (vem de fichas.css). */
+.aa-fila { display: flex; flex-wrap: wrap; gap: 4mm; align-items: center; margin: 2mm 0 3mm; }
+.aa-fig { width: var(--t, 20mm); height: var(--t, 20mm); display: inline-grid; place-items: center; flex: none; }
+.aa-fig svg, .aa-op svg, .aa-num svg { width: 100%; height: 100%; display: block; }
+.aa-fig.vazio { border: 0.6mm dashed #777; border-radius: 3mm; }
+.aa-txt { font: 700 7mm var(--body); }
+.aa-circular { display: flex; flex-wrap: wrap; gap: 5mm; margin: 2mm 0; }
+.aa-circular.mini { gap: 3mm; margin: 0; }
+.aa-op { width: var(--t, 22mm); height: var(--t, 22mm); padding: 2mm; border: 0.4mm solid #bbb; border-radius: 4mm; display: inline-block; box-sizing: content-box; }
+.aa-num { width: var(--t, 22mm); display: inline-flex; flex-direction: column; align-items: center; gap: 2mm; }
+.aa-num svg { height: var(--t, 22mm); }
+.aa-num i { width: 11mm; height: 11mm; border: 0.6mm solid #111; border-radius: 2mm; display: block; }
+.aa-ligar { display: flex; flex-direction: column; gap: 3mm; max-width: 120mm; margin: 2mm 0; }
+.aa-ligar-par { display: grid; grid-template-columns: auto 4mm 1fr 4mm auto; align-items: center; gap: 2mm; }
+.aa-ligar-par .ponto { width: 3mm; height: 3mm; border-radius: 50%; background: #111; display: block; }
+.aa-caixas { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 4mm; margin: 2mm 0; }
+.aa-caixa { border: 0.6mm solid #111; border-top-width: 1.6mm; border-radius: 0 0 5mm 5mm; display: flex; justify-content: center; padding-top: 2mm; }
+.aa-pintar { display: grid; grid-template-columns: repeat(var(--cols), var(--cel)); gap: 0; border: 0.6mm solid #111; width: max-content; margin: 2mm auto; }
+.aa-pintar span { width: var(--cel); height: var(--cel); border: 0.3mm solid #555; display: block; padding: 20%; box-sizing: border-box; text-align: center; }
+.aa-pintar span.vazia { border-color: transparent; }
+.aa-pintar svg { width: 100%; height: 100%; }
+.aa-pintar b { font: 600 4mm var(--body); }
+.aa-legenda { display: flex; flex-wrap: wrap; gap: 3mm 6mm; margin: 1mm 0 3mm; align-items: center; }
+.aa-legenda span { display: inline-flex; align-items: center; gap: 1.5mm; border: 0.4mm solid #999; border-radius: 99px; padding: 1mm 3mm 1mm 1mm; }
+.aa-legenda svg { width: 9mm; height: 9mm; }
+.aa-legenda span .aa-fila { margin: 0; }
+.aa-legenda em { font-style: normal; font-size: 3.4mm; }
+.aa-cor { width: 8mm; height: 8mm; border-radius: 50%; border: 0.5mm solid #111; display: inline-block; vertical-align: middle; }
+.aa-fila .aa-cor { width: 11mm; height: 11mm; }
+.aa-cor[data-cor="vermelho"] { background: #ef6a5c; } .aa-cor[data-cor="azul"] { background: #7cbcf0; } .aa-cor[data-cor="amarelo"] { background: #ffd84d; }
+.aa-cor[data-cor="verde"] { background: #7cc97e; } .aa-cor[data-cor="laranja"] { background: #ffaa55; } .aa-cor[data-cor="roxo"] { background: #b996e6; }
+.aa-cor[data-cor="rosa"] { background: #f7a8c8; } .aa-cor[data-cor="marrom"] { background: #b7854f; } .aa-cor[data-cor="preto"] { background: #333; }
+.aa-cor[data-cor="branco"] { background: #fff; }
+.aa-malha { display: grid; grid-template-columns: repeat(var(--cols), var(--cel)); width: max-content; border: 0.6mm solid #111; margin: 2mm 0; }
+.aa-malha span { width: var(--cel); height: var(--cel); border: 0.3mm dashed #999; display: block; padding: 10%; box-sizing: border-box; }
+.aa-malha span svg { width: 100%; height: 100%; }
+.aa-setas { display: flex; flex-wrap: wrap; gap: 2mm; margin: 2mm 0; }
+.aa-seta { width: var(--t, 12mm); height: var(--t, 12mm); border: 0.5mm solid #111; border-radius: 2.5mm; display: grid; place-items: center; font: 700 7mm var(--body); }
+.aa-seta.vazia { width: 12mm; height: 12mm; border-style: dashed; }
+.aa-ces { display: flex; flex-direction: column; gap: 3mm; }
+.aa-ce { display: flex; justify-content: space-between; align-items: center; gap: 4mm; border-bottom: 0.3mm dashed #bbb; padding-bottom: 2mm; }
+.aa-ce .aa-fila { margin: 0; }
+.aa-tamanhos { display: flex; align-items: flex-end; gap: 8mm; }
+.aa-tamanhos .aa-fila { margin: 0; }
+.aa-quadrinhos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.aa-ops-fila { display: flex; flex-wrap: wrap; gap: 8mm; }
+.aa-ops-fila .aa-fila { border: 0.4mm solid #bbb; border-radius: 4mm; padding: 2mm; margin: 0; }
+.folha .bloco { break-inside: avoid; }
+.folha-prof h3 { font: 800 4.6mm var(--display); margin: 3mm 0 1mm; }
+.folha-prof p, .folha-prof li { font-size: 3.5mm; line-height: 1.45; }
+.folha-prof .texto-turma { border-left: 1mm solid #7cc97e; padding-left: 3mm; }
+
+/* páginas */
+.texto-turma-pag { background: #f3faf5; border-left: 5px solid var(--accent); border-radius: 0 14px 14px 0; padding: 14px 18px; font-size: 18px !important; }
+.lista-aulas { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+.lista-aulas li { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 14px; display: grid; grid-template-columns: 3.2em 1fr; gap: 2px 10px; }
+.lista-aulas .n { font: 800 22px var(--display); color: var(--accent); grid-row: span 2; }
+.lista-aulas a { font-weight: 600; }
+.lista-aulas .meta { color: var(--ink-2); font-size: 14px; }
+.bimestre h3 { font: 800 21px var(--display); margin: 30px 0 4px; }
+.bimestre > p { color: var(--ink-2); margin: 0 0 6px; }
+.jogos-ano { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; list-style: none; padding: 0; }
+.jogos-ano li { border: 1.5px solid var(--ink); border-radius: 16px; padding: 12px 14px; }
+.jogos-ano a { font-weight: 700; }
+.jogos-ano span { display: block; font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+.anos-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; list-style: none; padding: 0; }
+.anos-grade a { display: block; border: 2px solid var(--ink); border-radius: 18px; padding: 16px; text-decoration: none; color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.anos-grade b { font: 800 30px var(--display); display: block; }
+.anos-grade span { font-size: 14px; color: var(--ink-2); }
+.anos-grade .breve { opacity: .5; box-shadow: none; }
+.texto.largo { max-width: 980px; }
+@media print { .nao-imprimir { display: none !important; } }
+.aa-lado { display: grid; grid-template-columns: 1fr 1fr; gap: 0 6mm; align-items: start; }
+.aa-lado .aa-legenda { gap: 2mm; }

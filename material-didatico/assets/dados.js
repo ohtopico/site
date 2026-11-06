@@ -230,25 +230,51 @@ const HAB = Object.fromEntries(HABILIDADES.map(h => [h.codigo, h]));
 const ANO_EM = 10;
 const anoNome = a => a === ANO_EM ? 'Ensino Médio' : a + 'º ano';
 
-/* Anos iniciais: só as habilidades de Computação usadas pelo caderno de datas festivas.
+/* Anos iniciais (1º ao 5º ano): todas as habilidades de Computação, usadas pelo caderno de datas festivas,
+   pelos jogos dos pequenos e pela seção /computacao-ano-a-ano/.
    Ficam fora de HABILIDADES para não aparecer em Explorar a BNCC, que cobre o 6º ao 9º ano. */
 [
   ['EF01CO01', 1, 'PC', 'Organização de objetos', 'Organizar objetos físicos ou digitais considerando diferentes características para esta organização, explicitando semelhanças (padrões) e diferenças.'],
   ['EF01CO02', 1, 'PC', 'Algoritmos: definição', 'Identificar e seguir sequências de passos aplicados no dia a dia para resolver problemas.'],
   ['EF01CO03', 1, 'PC', 'Algoritmos: definição', 'Reorganizar e criar sequências de passos em meios físicos ou digitais, relacionando essas sequências à palavra “algoritmos”.'],
+  ['EF01CO04', 1, 'MD', 'Codificação da informação', 'Reconhecer o que é a informação, que ela pode ser armazenada, transmitida como mensagem por diversos meios e descrita em várias linguagens.'],
+  ['EF01CO05', 1, 'MD', 'Codificação da informação', 'Representar informação usando diferentes codificações.'],
+  ['EF01CO06', 1, 'CD', 'Uso de artefatos computacionais', 'Reconhecer e explorar artefatos computacionais voltados a atender necessidades pessoais ou coletivas.'],
+  ['EF01CO07', 1, 'CD', 'Segurança e responsabilidade no uso de tecnologia', 'Conhecer as possibilidades de uso seguro das tecnologias computacionais para proteção dos dados pessoais e para garantir a própria segurança.'],
   ['EF02CO01', 2, 'PC', 'Modelagem de objetos', 'Criar e comparar modelos (representações) de objetos, identificando padrões e atributos essenciais.'],
-  ['EF02CO02', 2, 'PC', 'Algoritmos com repetição simples', 'Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, construídos como sequências de passos e com repetições simples (iterações definidas), em contextos do cotidiano.'],
+  ['EF02CO02', 2, 'PC', 'Algoritmos com repetição simples', 'Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, construídos como sequências com repetições simples (iterações definidas) com base em instruções preestabelecidas ou criadas, analisando como a precisão da instrução impacta na execução do algoritmo.'],
   ['EF02CO03', 2, 'MD', 'Instrução de máquina', 'Identificar que máquinas diferentes executam conjuntos próprios de instruções e que podem ser usadas para definir algoritmos.'],
   ['EF02CO04', 2, 'MD', 'Hardware e software', 'Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware.'],
+  ['EF02CO05', 2, 'CD', 'Uso de artefatos computacionais', 'Reconhecer as características e usos das tecnologias computacionais no cotidiano dentro e fora da escola.'],
+  ['EF02CO06', 2, 'CD', 'Segurança e responsabilidade no uso de tecnologia', 'Reconhecer os cuidados com a segurança no uso de dispositivos computacionais.'],
   ['EF03CO01', 3, 'PC', 'Lógica computacional', 'Associar os valores “verdadeiro” e “falso” a sentenças lógicas que dizem respeito a situações do dia a dia, fazendo uso de termos que indicam negação.'],
+  ['EF03CO02', 3, 'PC', 'Algoritmos com repetição condicional', 'Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples com condição (iterações indefinidas), para resolver problemas de forma independente e em colaboração.'],
+  ['EF03CO03', 3, 'PC', 'Decomposição', 'Aplicar a estratégia de decomposição para resolver problemas complexos, dividindo esse problema em partes menores, resolvendo-as e combinando suas soluções.'],
+  ['EF03CO04', 3, 'MD', 'Codificação da informação', 'Relacionar o conceito de informação com o de dado.'],
+  ['EF03CO05', 3, 'MD', 'Codificação da informação', 'Compreender que dados são estruturados em formatos específicos dependendo da informação armazenada.'],
   ['EF03CO06', 3, 'MD', 'Interface física', 'Reconhecer que, para um computador realizar tarefas, ele se comunica com o mundo exterior com o uso de interfaces físicas (dispositivos de entrada e saída).'],
-  ['EF04CO01', 4, 'PC', 'Matrizes e registros', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, e fazer manipulações simples sobre estas matrizes.'],
+  ['EF03CO07', 3, 'CD', 'Uso de tecnologias computacionais', 'Utilizar diferentes navegadores e ferramentas de busca para pesquisar e acessar informações.'],
+  ['EF03CO08', 3, 'CD', 'Uso de tecnologias computacionais', 'Usar ferramentas computacionais em situações didáticas para se expressar em diferentes formatos digitais.'],
+  ['EF03CO09', 3, 'CD', 'Segurança e responsabilidade no uso de tecnologia', 'Reconhecer o potencial impacto do compartilhamento de informações pessoais ou de seus pares em meio digital.'],
+  ['EF04CO01', 4, 'PC', 'Matrizes e registros', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de matrizes que estabelecem uma organização na qual cada componente está em uma posição definida por coordenadas, fazendo manipulações simples sobre estas matrizes.'],
+  ['EF04CO02', 4, 'PC', 'Matrizes e registros', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de registros que estabelecem uma organização na qual cada componente é identificado por um nome, fazendo manipulações simples sobre estes registros.'],
+  ['EF04CO03', 4, 'PC', 'Algoritmos com repetições simples e aninhadas', 'Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas (iterações definidas e indefinidas), para resolver problemas de forma independente e em colaboração.'],
   ['EF04CO04', 4, 'MD', 'Codificação da informação', 'Entender que para guardar, manipular e transmitir dados deve-se codificá-los de alguma forma que seja compreendida pela máquina (formato digital).'],
   ['EF04CO05', 4, 'MD', 'Codificação da informação', 'Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).'],
-  ['EF05CO01', 5, 'PC', 'Listas', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de listas que estabelecem uma organização na qual há um número variável de itens dispostos em sequência, e fazer manipulações simples sobre estas listas.'],
-  ['EF05CO02', 5, 'PC', 'Grafos', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de grafos que estabelecem uma organização com uma quantidade variável de vértices conectados por arestas, e fazer manipulações simples sobre estes grafos.'],
+  ['EF04CO06', 4, 'CD', 'Uso de tecnologias computacionais', 'Usar diferentes ferramentas computacionais para criação de conteúdo (textos, apresentações, vídeos etc.).'],
+  ['EF04CO07', 4, 'CD', 'Segurança e responsabilidade no uso de tecnologia', 'Demonstrar postura ética nas atividades de coleta, transferência, guarda e uso de dados.'],
+  ['EF04CO08', 4, 'CD', 'Segurança e responsabilidade no uso de tecnologia', 'Reconhecer a importância de verificar a confiabilidade das fontes de informações obtidas na Internet.'],
+  ['EF05CO01', 5, 'PC', 'Listas e grafos', 'Reconhecer objetos do mundo real e/ou digital que podem ser representados através de listas que estabelecem uma organização na qual há um número variável de itens dispostos em sequência, fazendo manipulações simples sobre estas listas.'],
+  ['EF05CO02', 5, 'PC', 'Listas e grafos', 'Reconhecer objetos do mundo real e digital que podem ser representados através de grafos que estabelecem uma organização com uma quantidade variável de vértices conectados por arestas, fazendo manipulações simples sobre estes grafos.'],
   ['EF05CO03', 5, 'PC', 'Lógica computacional', 'Realizar operações de negação, conjunção e disjunção sobre sentenças lógicas e valores “verdadeiro” e “falso”.'],
   ['EF05CO04', 5, 'PC', 'Algoritmos com seleção condicional', 'Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências, repetições e seleções condicionais para resolver problemas de forma independente e em colaboração.'],
+  ['EF05CO05', 5, 'MD', 'Arquitetura de computadores', 'Identificar os componentes principais de um computador (dispositivos de entrada/saída, processadores e armazenamento).'],
+  ['EF05CO06', 5, 'MD', 'Armazenamento de dados', 'Reconhecer que os dados podem ser armazenados em um dispositivo local ou remoto.'],
+  ['EF05CO07', 5, 'MD', 'Sistema operacional', 'Reconhecer a necessidade de um sistema operacional para a execução de programas e gerenciamento do hardware.'],
+  ['EF05CO08', 5, 'CD', 'Segurança e responsabilidade no uso de tecnologia', 'Acessar as informações na Internet de forma crítica para distinguir os conteúdos confiáveis de não confiáveis.'],
+  ['EF05CO09', 5, 'CD', 'Segurança e responsabilidade no uso de tecnologia', 'Usar informações considerando aplicações e limites dos direitos autorais em diferentes mídias digitais.'],
+  ['EF05CO10', 5, 'CD', 'Uso de tecnologias computacionais', 'Expressar-se crítica e criativamente na compreensão das mudanças tecnológicas no mundo do trabalho e sobre a evolução da sociedade.'],
+  ['EF05CO11', 5, 'CD', 'Uso de tecnologias computacionais', 'Identificar a adequação de diferentes tecnologias computacionais na resolução de problemas.'],
 ].forEach(([codigo, ano, eixo, objeto, texto]) => { HAB[codigo] = { codigo, ano, eixo, objeto, texto, comp: EIXOS[eixo].comp }; });
 
 /* ---------------------------------------------------------------------
@@ -1028,7 +1054,16 @@ const RECURSOS = [
   { id: 'p-em-cidadania', tipo: 'plano', titulo: 'Comunidades virtuais, saúde digital e direito digital', comp: ['CO'], anos: [10],
     habs: ['EM13CO23', 'EM13CO24', 'EM13CO25', 'EM13CO26'], tempo: '2 aulas',
     resumo: 'Estudo de casos sobre comunidades on-line, uso das redes e bem-estar, discurso de ódio e o que dizem a LGPD, o Marco Civil e a lei de direitos autorais.',
-    url: 'plano.html?id=p-em-cidadania' }
+    url: 'plano.html?id=p-em-cidadania' },
+  // ---------- jogos ano a ano: início (gerado por _fonte/computacao-ano-a-ano/jogos.py) ----------
+  {"id": "caixas-arrumadas", "tipo": "jogo", "interacao": "outras", "titulo": "Caixas Arrumadas", "comp": ["CO"], "anos": [1], "habs": ["EF01CO01"], "tempo": "10–15 min", "resumo": "Jogo sem leitura para o 1º ano: separar objetos pela cor, pela forma e pelo uso, completar padrões e achar o diferente.", "url": "jogos/caixas-arrumadas.html", "plano": null, "ficha": null},
+  {"id": "passo-a-passo", "tipo": "jogo", "interacao": "outras", "titulo": "Passo a Passo", "comp": ["CO"], "anos": [1], "habs": ["EF01CO02"], "tempo": "10–15 min", "resumo": "Jogo sem leitura para o 1º ano: pôr em ordem os passos do dia a dia, achar o passo que falta e seguir setas como um robô.", "url": "jogos/passo-a-passo.html", "plano": null, "ficha": null},
+  {"id": "robo-ajudante", "tipo": "jogo", "interacao": "outras", "titulo": "Robô Ajudante", "comp": ["CO"], "anos": [1], "habs": ["EF01CO03"], "tempo": "15 min", "resumo": "Jogo sem leitura para o 1º ano: organizar os passos de uma tarefa e criar o primeiro algoritmo com setas para o robô buscar as maçãs.", "url": "jogos/robo-ajudante.html", "plano": null, "ficha": null},
+  {"id": "carteiro-mensagens", "tipo": "jogo", "interacao": "outras", "titulo": "Carteiro das Mensagens", "comp": ["CO"], "anos": [1], "habs": ["EF01CO04"], "tempo": "10–15 min", "resumo": "Jogo sem leitura para o 1º ano: guardar uma mensagem de figuras e mandar igual, ligar a mesma informação escrita de jeitos diferentes e descobrir onde ela fica guardada.", "url": "jogos/carteiro-mensagens.html", "plano": null, "ficha": null},
+  {"id": "codigo-cores", "tipo": "jogo", "interacao": "outras", "titulo": "Código das Cores", "comp": ["CO"], "anos": [1], "habs": ["EF01CO05"], "tempo": "15 min", "resumo": "Jogo sem leitura para o 1º ano: pintar desenhos seguindo um código de formas e cores e traduzir mensagens escritas em cores.", "url": "jogos/codigo-cores.html", "plano": null, "ficha": null},
+  {"id": "maquinas-ajudam", "tipo": "jogo", "interacao": "outras", "titulo": "Máquinas que Ajudam", "comp": ["CO"], "anos": [1], "habs": ["EF01CO06"], "tempo": "10 min", "resumo": "Jogo sem leitura para o 1º ano: ligar cada necessidade à máquina que ajuda e descobrir quais objetos têm um computador dentro.", "url": "jogos/maquinas-ajudam.html", "plano": null, "ficha": null},
+  {"id": "seguro-na-rede", "tipo": "jogo", "interacao": "outras", "titulo": "Seguro na Rede", "comp": ["CO"], "anos": [1], "habs": ["EF01CO07"], "tempo": "10 min", "resumo": "Jogo sem leitura para o 1º ano: decidir o que é seguro ao usar celular e tablet, proteger a senha e pedir ajuda a um adulto.", "url": "jogos/seguro-na-rede.html", "plano": null, "ficha": null},
+  // ---------- jogos ano a ano: fim ----------
 ];
 /* Ícone de capa de cada material no catálogo */
 const ICONES = {
