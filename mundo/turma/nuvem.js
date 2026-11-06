@@ -1,6 +1,7 @@
 /* Mundo da turma: quando o aluno entrou pela turma (/mundo/entrar/), o progresso vai para o banco
    a cada pouco tempo e quando a aba fecha. Sem turma, nada muda: o Mundo salva só no navegador.
-   Também manda um sinal leve a cada 20 s para o painel "Aula ao vivo" da professora. */
+   Também manda um sinal leve a cada 20 s para o painel "Aula ao vivo" da professora e confere a cada minuto
+   os mapas que ela liberou para a turma. */
 (function () {
   const T = window.MUNDO_TURMA, D = window.MUNDO_DEBUG;
   if (!T || !D || !T.configurado() || !T.aluno.sessao()) return;
@@ -67,6 +68,26 @@
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) { enviar(false); ping(false); } else ping(true);
   });
+
+  /* mapas da turma: a professora pode liberar vilas e áreas secretas pelo painel dela. O Mundo confere a cada minuto;
+     vila comum abre na hora, área secreta pede para recarregar (o progresso é salvo antes). */
+  const iguais = (a, b) => a.length === b.length && a.every(x => b.includes(x));
+  async function confereMapas() {
+    if (document.hidden || !D.mapasDaTurma) return;
+    let m;
+    try { m = await T.aluno.mapas(); } catch (e) { return; }   // banco sem a função nova ainda, ou sem conexão
+    if (!Array.isArray(m) || iguais(m, D.mapasTurmaAtuais())) return;
+    const r = D.mapasDaTurma(m);
+    if (r.recarregar && !document.getElementById('bt-recarregar')) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.id = 'bt-recarregar'; b.textContent = 'Nova área liberada: abrir';
+      b.style.cssText = 'border:1.5px solid #222;border-radius:999px;background:#f6b73c;padding:4px 12px;font:inherit;cursor:pointer';
+      b.addEventListener('click', async () => { b.disabled = true; estado('salvando'); await enviar(true); location.reload(); });
+      barra.insertBefore(b, document.getElementById('bt-sair'));
+    }
+  }
+  setTimeout(confereMapas, 6000);
+  setInterval(confereMapas, 60000);
 
   document.getElementById('bt-sair').addEventListener('click', async ev => {
     ev.target.disabled = true; estado('salvando antes de sair');

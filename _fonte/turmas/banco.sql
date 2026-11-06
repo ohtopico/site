@@ -24,6 +24,9 @@ create table if not exists public.turmas (
   codigo text not null unique,
   criado timestamptz not null default now()
 );
+-- mapas que a professora liberou para a turma (ids das vilas do Mundo, ex.: redes, ia, arte, enem).
+-- Vazio: as vilas abrem na ordem, como no Mundo sem login.
+alter table public.turmas add column if not exists mapas text[] not null default '{}';
 
 create table if not exists public.alunos (
   id uuid primary key default gen_random_uuid(),
@@ -133,6 +136,19 @@ begin
   return s;
 end $$;
 
+-- a professora escolhe quais mapas do Mundo ficam abertos para a turma (só ids simples, no máximo 30)
+create or replace function public.prof_turma_mapas(p_turma uuid, p_mapas text[]) returns text[]
+language plpgsql security definer set search_path = public as $$
+declare m text[];
+begin
+  if not eu_aprovada() then raise exception 'professora nao aprovada'; end if;
+  select coalesce(array_agg(distinct x order by x), '{}') into m from unnest(coalesce(p_mapas, '{}')) as x where x ~ '^[a-z]{2,20}$';
+  if coalesce(array_length(m, 1), 0) > 30 then raise exception 'mapas'; end if;
+  update turmas set mapas = m where id = p_turma and professor_id = auth.uid();
+  if not found then raise exception 'turma'; end if;
+  return m;
+end $$;
+
 -- ---------- funções do aluno (sem conta de e-mail: código da turma + apelido + senha) ----------
 create or replace function public.aluno_entrar(p_codigo text, p_apelido text, p_senha text) returns json
 language plpgsql security definer set search_path = public, extensions as $$
@@ -156,7 +172,7 @@ begin
   update alunos set falhas = 0, bloqueado_ate = null where id = al.id;
   delete from sessoes_aluno where expira < now();
   insert into sessoes_aluno (aluno_id) values (al.id) returning token into tk;
-  return json_build_object('token', tk, 'apelido', al.apelido, 'turma', tu.nome, 'progresso', al.progresso);
+  return json_build_object('token', tk, 'apelido', al.apelido, 'turma', tu.nome, 'progresso', al.progresso, 'mapas', tu.mapas);
 end $$;
 
 create or replace function public.aluno_salvar(p_token uuid, p_progresso text, p_pontos int, p_acertos int) returns boolean
@@ -189,6 +205,13 @@ begin
   return true;
 end $$;
 
+-- mapas liberados pela professora (o Mundo do aluno confere de tempos em tempos; null = sessão vencida)
+create or replace function public.aluno_mapas(p_token uuid) returns text[]
+language sql stable security definer set search_path = public as $$
+  select t.mapas from sessoes_aluno s join alunos a on a.id = s.aluno_id join turmas t on t.id = a.turma_id
+  where s.token = p_token and s.expira > now();
+$$;
+
 create or replace function public.aluno_sair(p_token uuid) returns void
 language sql security definer set search_path = public as $$
   update alunos set online_em = null, fazendo = '' where id = (select aluno_id from sessoes_aluno where token = p_token);
@@ -197,8 +220,9 @@ $$;
 
 revoke all on function public.eu_aprovada(), public._codigo(int), public.prof_entrar(text), public.prof_criar_turma(text),
   public.prof_aluno_senha(uuid, text), public.aluno_entrar(text, text, text), public.aluno_salvar(uuid, text, int, int),
-  public.aluno_sair(uuid), public.aluno_ping(uuid, text, int, int, boolean) from public, anon, authenticated;
+  public.aluno_sair(uuid), public.aluno_ping(uuid, text, int, int, boolean),
+  public.prof_turma_mapas(uuid, text[]), public.aluno_mapas(uuid) from public, anon, authenticated;
 grant execute on function public.eu_aprovada(), public.prof_entrar(text), public.prof_criar_turma(text),
-  public.prof_aluno_senha(uuid, text) to authenticated;
+  public.prof_aluno_senha(uuid, text), public.prof_turma_mapas(uuid, text[]) to authenticated;
 grant execute on function public.aluno_entrar(text, text, text), public.aluno_salvar(uuid, text, int, int),
-  public.aluno_sair(uuid), public.aluno_ping(uuid, text, int, int, boolean) to anon, authenticated;
+  public.aluno_sair(uuid), public.aluno_ping(uuid, text, int, int, boolean), public.aluno_mapas(uuid) to anon, authenticated;
