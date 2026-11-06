@@ -56,6 +56,34 @@ GTAG = '''<!-- Google tag (gtag.js) -->
 </script>'''
 
 
+
+# Limites usados pelo Google nos resultados: o título é cortado perto de 60 caracteres e a descrição perto de 155.
+LIMITE_TITULO = 60
+LIMITE_DESCRICAO = 155
+
+
+def titulo_seo(base, tema, extra=''):
+    """Monta o <title> mais completo que cabe em LIMITE_TITULO: tema e assinatura entram só se couberem."""
+    if extra:
+        base = f'{base} ({extra})'
+    for t in (f'{base}: {tema} | Júlia Quoos', f'{base} | Júlia Quoos', base):
+        if len(t) <= LIMITE_TITULO:
+            return t
+    return base
+
+
+def descricao_seo(resumo, complementos, fim=''):
+    """Resumo + o maior complemento que couber em LIMITE_DESCRICAO; se nem o resumo couber, corta no fim de uma palavra."""
+    fim = f' {fim}.' if fim else ''
+    for c in complementos + ['']:
+        d = f'{resumo} {c}'.strip() + fim
+        if len(d) <= LIMITE_DESCRICAO:
+            return d
+    if len(resumo) <= LIMITE_DESCRICAO:
+        return resumo
+    corte = resumo[:LIMITE_DESCRICAO - 1].rsplit(' ', 1)[0].rstrip(',;:')
+    return corte + '…'
+
 def rotulo_versao(chave):
     if chave in NIVEIS:
         nome, apoio, pontos = NIVEIS[chave]
@@ -112,12 +140,12 @@ def relacionadas(f):
 
 def pagina(f, i, total):
     url = f'{SITE}/matematica-adaptada/fichas/{f["slug"]}/'
-    titulo = f'{f["titulo"]}: matemática adaptada | Júlia Quoos'
-    if len(titulo) > 70:
-        titulo = f'{f["titulo"]} | Júlia Quoos'
+    titulo = titulo_seo(f['titulo'], 'matemática adaptada', ('revisão' if f['revisao'] else f['anos']) if f['titulo'] in TITULOS_REPETIDOS else '')
     tem_versoes = 'A' in f['versoes']
-    descricao = (f'{f["resumo"]} Ficha adaptada para alunos com diferentes necessidades, em três níveis de apoio, para imprimir. {f["anos"]}.'
-                 if tem_versoes else f'{f["resumo"]} Para imprimir e usar com alunos com diferentes necessidades.')
+    descricao = descricao_seo(RESUMO_CURTO.get(f['slug'], f['resumo']),
+                              ['Ficha adaptada em três níveis de apoio, para imprimir.', 'Três níveis de apoio.'] if tem_versoes
+                              else ['Para imprimir e usar com alunos com diferentes necessidades.', 'Para imprimir.'],
+                              f['anos'] if tem_versoes else '')
     pdf = f'{f["slug"]}.pdf'
     folhas = ''.join(folha(f, k, v) for k, v in f['versoes'].items()) + folha_professor(f)
     botoes = ''.join(f'<button type="button" class="btn98" data-imprimir="{esc(k)}">Imprimir {esc(k if k not in NIVEIS else "versão " + k)}</button>'
@@ -178,9 +206,7 @@ def pagina(f, i, total):
 <script type="application/ld+json">
 {ld}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v={versao_css()}">
 {GTAG}
 </head>
@@ -294,8 +320,8 @@ def gerar_hub(fichas, mapa):
                       f'<div class="mapa-rolagem"><table class="mapa-bncc"><thead><tr><th>Código</th><th>Habilidade</th><th>Ficha</th></tr></thead>'
                       f'<tbody>{"".join(linhas_)}</tbody></table></div></details>')
 
-    descricao = ('Fichas de matemática adaptadas para alunos com diferentes necessidades, do 1º ao 9º ano, '
-                 'uma por habilidade da BNCC, em três níveis de apoio, para imprimir. Gratuito.')
+    descricao = ('Fichas de matemática adaptadas do 1º ao 9º ano, uma por habilidade da BNCC, em três níveis de apoio, '
+                 'para imprimir. Gratuito.')
     main = f'''  <section class="hero">
     <div class="wrap">
       <div class="hero-top">
@@ -381,6 +407,27 @@ def gerar_hub(fichas, mapa):
 
 BNCC_PAGINAS = {p.name for p in (RAIZ / 'material-didatico' / 'bncc').iterdir() if p.is_dir()} if (RAIZ / 'material-didatico' / 'bncc').exists() else set()
 FICHAS_INFO = []
+TITULOS_REPETIDOS = set()
+RESUMO_CURTO = {  # resumo mais curto só para a meta description, quando o resumo da ficha passa do limite
+    'mmc-e-mdc-em-problemas': 'Problemas com múltiplos e divisores, incluindo MMC e MDC, resolvidos com estratégias próprias e sem algoritmo.',
+    'pesquisa-censo-ou-amostra': 'Planejar uma pesquisa sobre a realidade da turma, escolher entre censo e amostra e comunicar os dados em tabelas e gráficos.',
+    'volume-e-areas': 'Volume de blocos retangulares, áreas de triângulos e quadriláteros, decomposição de figuras e medidas aproximadas.',
+    'sistemas-de-equacoes-no-dia-a-dia': 'Problemas do dia a dia com sistemas de equações de 1º grau com duas incógnitas, inclusive no plano cartesiano.',
+    'grandezas-proporcionais-ou-nao': 'Grandezas direta ou inversamente proporcionais ou não proporcionais, com sentença algébrica e plano cartesiano.',
+    'fluxograma-do-hexagono-regular': 'Algoritmo e fluxograma para construir um hexágono regular a partir do ângulo central, com esquadros e compasso.',
+    'espaco-amostral-e-probabilidade': 'Probabilidade com espaço amostral e princípio multiplicativo, percebendo que a soma de todas as probabilidades é 1.',
+    'pesquisa-amostral-e-relatorio': 'Pesquisa amostral com técnica de amostragem e relatório com gráficos, média, moda, mediana e amplitude.',
+    'potencias-raizes-e-notacao-cientifica': 'Potências com expoentes inteiros, notação científica e a relação entre raiz e potência de expoente fracionário.',
+    'segmentos-que-nao-sao-racionais': 'Segmentos cuja medida não é um número racional, como a diagonal do quadrado e a altura do triângulo equilátero.',
+    'proporcionalidade-escalas-e-partes': 'Proporcionalidade direta e inversa com escalas, divisão em partes proporcionais e taxa de variação.',
+    'unidades-muito-grandes-e-muito-pequenas': 'Unidades para medidas muito grandes ou muito pequenas: distâncias no espaço, vírus, células e memória de computador.',
+    'construir-o-grafico-adequado': 'Escolher e construir o gráfico mais adequado (colunas, setores, linhas) para um conjunto de dados, com ou sem planilha.',
+    'pesquisa-social-e-relatorio': 'Pesquisa amostral sobre a realidade social, com relatório, medidas de tendência central, tabelas e gráficos em planilha.',
+    'numeros-irracionais-e-reais': 'Números irracionais na reta numérica, como a diagonal do quadrado, e cálculos com raízes e potências fracionárias.',
+    'razoes-escalas-e-partes-proporcionais': 'Razões entre grandezas como velocidade e densidade, escalas de mapas e maquetes e divisão em partes proporcionais.',
+    'poligono-regular-ponto-medio-e-distancia': 'Construção de polígonos regulares e, no plano cartesiano, ponto médio, distância entre pontos, perímetro e área.',
+    'probabilidade-graficos-e-pesquisa-amostral': 'Eventos dependentes e independentes, gráficos que enganam, escolha do gráfico e pesquisa amostral com relatório.',
+}
 
 
 def main():
@@ -404,6 +451,8 @@ def main():
                 alvo = next(g for g in fichas if g['slug'] == sl)
                 alvo.setdefault('relacionadas', []).append((f['slug'], f['titulo']))
     FICHAS_INFO.extend(fichas)
+    vistos = [f['titulo'] for f in fichas]
+    TITULOS_REPETIDOS.update(t for t in vistos if vistos.count(t) > 1)
     (SAIDA / 'assets').mkdir(parents=True, exist_ok=True)
     shutil.copy(AQUI / 'fichas.css', SAIDA / 'assets' / 'fichas.css')
     v_temas = hashlib.md5(temas.js().encode()).hexdigest()[:10]

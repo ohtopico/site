@@ -123,6 +123,7 @@ function ajustarHtml(rel, html, tem) {
   html = html.replace(/<link rel="preconnect" href="https:\/\/fonts\.(googleapis|gstatic)\.com"[^>]*>\s*/g, '');
   html = html.replace(/<link href="https:\/\/fonts\.googleapis\.com\/css2[^"]*" rel="stylesheet">/g, `<link rel="stylesheet" href="${volta}fontes/fontes.css">`);
   html = html.replace(/<link rel="stylesheet" href="https:\/\/fonts\.googleapis\.com\/css2[^"]*">/g, `<link rel="stylesheet" href="${volta}fontes/fontes.css">`);
+  html = html.replace(/<link rel="stylesheet" href="\/assets\/fontes\/fontes\.css">/g, `<link rel="stylesheet" href="${volta}fontes/fontes.css">`);
   // links a partir da raiz do site: relativos se a página veio no pacote, senão para o ohtopico.com.br
   html = html.replace(/(href|src)="\/(?!\/)([^"]*)"/g, (tudo, at, alvo) => {
     if (/^assistente\//.test(alvo)) return tudo;

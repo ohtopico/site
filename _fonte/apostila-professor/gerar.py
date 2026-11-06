@@ -167,9 +167,7 @@ def pagina():
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Apostila do professor, BNCC Computação do 6º ao 9º ano: 42 habilidades, do conceito à avaliação. PDF gratuito com 153 páginas, de Júlia Roberta Quoos Alves.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="../assets/md.css">
 <style>
   .hero {{ padding: 48px 0 44px; border-bottom: 1.5px solid var(--ink); }}

@@ -26,8 +26,8 @@ with open(os.path.join(AQUI, 'datas.json'), encoding='utf-8') as f:
 e = html.escape
 TOTAL = sum(len(s['datas']) for s in DADOS['semestres'])
 TITULO = 'Calendário 2027 do professor de computação'
-DESCRICAO = (f'As {TOTAL} datas de 2027 que rendem aula de computação no 6º ao 9º ano, do Dia da Internet Segura '
-             'à Hora do Código, cada uma com um plano, jogo ou ficha gratuitos do site. Página e PDF para imprimir.')
+DESCRICAO = (f'As {TOTAL} datas de 2027 que rendem aula de computação do 6º ao 9º ano, cada uma com plano, jogo ou ficha '
+             'gratuitos. Página e PDF para imprimir.')
 
 
 def tipo(titulo):
@@ -88,7 +88,7 @@ def pagina():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{TITULO} (datas e atividades) | Júlia Quoos</title>
+<title>Calendário 2027 do professor de computação | Júlia Quoos</title>
 <meta name="description" content="{e(DESCRICAO)}">
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <link rel="canonical" href="{URL}">
@@ -99,9 +99,7 @@ def pagina():
 <meta property="og:locale" content="pt_BR">
 <meta property="og:image" content="{SITE}material-didatico/assets/og-material-didatico.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="../assets/md.css">
 <style>
   .hero {{ padding: 48px 0 44px; border-bottom: 1.5px solid var(--ink); }}
@@ -211,7 +209,7 @@ def impressao():
 </section>''')
     return f'''<!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="UTF-8"><title>{TITULO}</title>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://ohtopico.com.br/assets/fontes/fontes.css">
 <style>
 @page {{ size: A4; margin: 11mm 11mm 13mm; }}
 * {{ box-sizing: border-box; }}

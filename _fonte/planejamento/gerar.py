@@ -214,7 +214,7 @@ def html_comp(comp, dados):
     p.append(f"""<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
 <title>Planejamento anual de {c['nome']} por meses · {ANO}</title>
 <meta name="author" content="Júlia Roberta Quoos Alves">
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://ohtopico.com.br/assets/fontes/fontes.css">
 <style>{CSS}</style></head><body>""")
     # ------------------------------------------------------------ capa
     habs_n = len(dados)

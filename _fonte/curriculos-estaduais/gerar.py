@@ -124,7 +124,7 @@ docs = sorted([u for u in UF if u[4] == 'doc'], key=lambda u: u[1])
 nomes_docs = ', '.join(u[1] for u in docs[:-1]) + ' e ' + docs[-1][1]
 
 TITLE = 'Currículos de Computação por estado: mapa 2026 | Júlia Quoos'
-DESC = f'Quais redes estaduais publicaram currículo próprio de Computação (BNCC Computação): mapa dos 27 estados com documento, norma do conselho e link para a fonte oficial.'
+DESC = f'Quais estados publicaram currículo próprio de Computação (BNCC): mapa dos 27 estados com documento, norma do conselho e fonte oficial.'
 URL = 'https://ohtopico.com.br/material-didatico/bncc/curriculos-estaduais/'
 IMG = 'https://ohtopico.com.br/material-didatico/assets/og-curriculos-estaduais.jpg'
 
@@ -183,9 +183,7 @@ out = f'''<!DOCTYPE html>
 {j(ld_faq)}
 </script>
 <meta name="author" content="Júlia Roberta Quoos Alves">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="assets/md.css">
 <style>
   .doc {{ max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }}

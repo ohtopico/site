@@ -59,6 +59,32 @@ GTAG = '''<!-- Google tag (gtag.js) -->
 </script>'''
 
 
+
+# Limites usados pelo Google nos resultados: o título é cortado perto de 60 caracteres e a descrição perto de 155.
+LIMITE_TITULO = 60
+LIMITE_DESCRICAO = 155
+
+
+def titulo_seo(base, tema):
+    """Monta o <title> mais completo que cabe em LIMITE_TITULO: tema e assinatura entram só se couberem."""
+    for t in (f'{base}: {tema} | Júlia Quoos', f'{base} | Júlia Quoos', base):
+        if len(t) <= LIMITE_TITULO:
+            return t
+    return base
+
+
+def descricao_seo(resumo, complementos, fim=''):
+    """Resumo + o maior complemento que couber em LIMITE_DESCRICAO; se nem o resumo couber, corta no fim de uma palavra."""
+    fim = f' {fim}.' if fim else ''
+    for c in complementos + ['']:
+        d = f'{resumo} {c}'.strip() + fim
+        if len(d) <= LIMITE_DESCRICAO:
+            return d
+    if len(resumo) <= LIMITE_DESCRICAO:
+        return resumo
+    corte = resumo[:LIMITE_DESCRICAO - 1].rsplit(' ', 1)[0].rstrip(',;:')
+    return corte + '…'
+
 def rotulo_versao(chave):
     nome, apoio, pontos = NIVEIS[chave]
     bolas = ''.join(f'<i class="{"cheia" if i < pontos else ""}"></i>' for i in range(3))
@@ -98,11 +124,10 @@ def versao_css():
 
 def pagina(f, i, fichas):
     url = f'{SITE}/computacao-adaptada/fichas/{f["slug"]}/'
-    titulo = f'{f["titulo"]}: computação adaptada | Júlia Quoos'
-    if len(titulo) > 70:
-        titulo = f'{f["titulo"]} | Júlia Quoos'
-    descricao = (f'{f["resumo"]} Ficha de computação adaptada para alunos com diferentes necessidades, '
-                 f'em três níveis de apoio, para imprimir. {f["ano"]}º ano, {f["codigo"]}.')
+    titulo = titulo_seo(f['titulo'], 'computação adaptada')
+    descricao = descricao_seo(f['resumo'], ['Ficha de computação adaptada em três níveis de apoio, para imprimir.',
+                                            'Três níveis de apoio, para imprimir.', 'Três níveis de apoio.'],
+                              f'{f["ano"]}º ano, {f["codigo"]}')
     pdf = f'{f["slug"]}.pdf'
     v = versao_css()
     folhas = ''.join(folha(f, k, c) for k, c in f['versoes'].items()) + folha_professor(f)
@@ -161,9 +186,7 @@ def pagina(f, i, fichas):
 <script type="application/ld+json">
 {ld}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v={v}">
 <link rel="stylesheet" href="/computacao-adaptada/assets/computacao.css?v={v}">
 {GTAG}

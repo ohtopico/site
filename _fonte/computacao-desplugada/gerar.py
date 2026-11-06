@@ -140,9 +140,7 @@ def cabeca(titulo, descricao, url, ld, v, extra_css=''):
 <script type="application/ld+json">
 {ld}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v={v}">
 <link rel="stylesheet" href="/computacao-adaptada/assets/computacao.css?v={v}">
 <link rel="stylesheet" href="/computacao-desplugada/assets/desplugada.css?v={v}">{extra_css}
@@ -166,10 +164,13 @@ RODAPE_PAG = '''<footer class="rodape">
 
 def pagina(a, i, lista, v):
     url = f'{SITE}{HUB}{a["slug"]}/'
-    titulo = f'{a["titulo"]}: computação desplugada | Júlia Quoos'
-    if len(titulo) > 70:
-        titulo = f'{a["titulo"]} | Júlia Quoos'
-    descricao = f'{a["resumo"]} Atividade desplugada para imprimir, com gabarito e versão em braille. {a["ano"]}º ano, {", ".join(a["codigos"])}.'
+    # o Google corta o título perto de 60 caracteres e a descrição perto de 155
+    titulo = next((t for t in (f'{a["titulo"]}: computação desplugada | Júlia Quoos', f'{a["titulo"]} | Júlia Quoos')
+                   if len(t) <= 60), a['titulo'])
+    fim = f' {a["ano"]}º ano, {", ".join(a["codigos"])}.'
+    descricao = next((d for d in (f'{a["resumo"]} Para imprimir, com gabarito e versão em braille.{fim}',
+                                  f'{a["resumo"]} Com gabarito e versão em braille.{fim}', f'{a["resumo"]}{fim}')
+                      if len(d) <= 155), a['resumo'])
     pdf = f'{a["slug"]}.pdf'
     botoes = '<button type="button" class="btn98" data-imprimir="Estudante">Imprimir folha do estudante</button>'
     if a['recortar']:
@@ -247,9 +248,9 @@ def pagina(a, i, lista, v):
 
 def hub(lista, v):
     url = f'{SITE}{HUB}'
-    titulo = 'Computação desplugada: atividades para imprimir | Júlia Quoos'
-    descricao = ('Atividades de computação desplugada para imprimir, do 6º ao 9º ano, alinhadas à BNCC: binário, pixels, grafos, '
-                 'criptografia, recursão e mais. Com gabarito, versão em braille e moldes táteis. Gratuito.')
+    titulo = 'Computação desplugada para imprimir | Júlia Quoos'
+    descricao = ('Atividades desplugadas de computação para imprimir, do 6º ao 9º ano (BNCC): binário, grafos, criptografia '
+                 'e mais, com gabarito e braille.')
     cartoes = ''
     for ano in (6, 7, 8, 9):
         itens = ''

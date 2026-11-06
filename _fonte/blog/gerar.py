@@ -48,9 +48,9 @@ AUTORA = {
     'alternateName': ['Júlia Quoos', 'Júlia Roberta Quoos', 'Quoos'],
     'url': 'https://ohtopico.com.br/',
 }
-FONTES = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
-          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-          '<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">')
+FONTES = ('\n'
+          '\n'
+          '<link rel="stylesheet" href="/assets/fontes/fontes.css">')
 # Tema salvo do site e aviso de que a página está dentro da janela "Busca"
 SCRIPT_TOPO = ("<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}\n"
                "if (window.self !== window.top) document.documentElement.classList.add('emoldurado');</script>")
@@ -388,7 +388,8 @@ def pagina_post(cfg, post, ant, prox, dims, tamanhos=None):
              f'<meta property="article:author" content="https://ohtopico.com.br/">\n'
              f'<meta property="article:section" content="{esc(post["secao"])}">\n'
              f'<meta property="og:image:width" content="1080">\n<meta property="og:image:height" content="1350">\n' + ld)
-    titulo_pagina = post['titulo_seo'] if 'Quoos' in post['titulo_seo'] else post['titulo_seo'] + ' | Júlia Quoos'
+    # a assinatura só entra se o título continuar com até 60 caracteres (o Google corta o resto)
+    titulo_pagina = post['titulo_seo'] if 'Quoos' in post['titulo_seo'] or len(post['titulo_seo']) > 46 else post['titulo_seo'] + ' | Júlia Quoos'
     head = cabeca(titulo_pagina, post['descricao'], url, img_url, post['alt'], 'article', extra)
 
     from urllib.parse import quote
@@ -502,7 +503,7 @@ def paginas_indice(cfg, publicados):
         for n in range(1, total + 1):
             fatia = lista[(n - 1) * POR_PAGINA:n * POR_PAGINA]
             url = site + url_lista(base, n)
-            sufixo = f' (página {n} de {total})' if n > 1 else ''
+            sufixo = f', página {n}' if n > 1 else ''
             if secao:
                 titulo_h1 = esc(secao)
                 linha = f'Posts da categoria {esc(secao)}, do mais novo para o mais antigo.'
@@ -513,11 +514,12 @@ def paginas_indice(cfg, publicados):
                 titulo_h1 = 'Formação de professores em <span class="marca">IA</span>, na prática'
                 linha = ('Textos curtos de Júlia Roberta Quoos Alves para professores, coordenadores e redes de ensino: '
                          'como começar a usar inteligência artificial com segurança, prompts prontos e Computação na BNCC.')
-                titulo = f'Blog da Júlia Quoos: formação de professores em IA{sufixo}'
+                titulo = f'Blog da Júlia Quoos{sufixo}: posts sobre IA e Computação' if n > 1 else 'Blog da Júlia Quoos: formação de professores em IA'
                 descricao = 'Blog de Júlia Quoos sobre formação de professores em IA, prompts para planejar aulas, ética e LGPD na escola e Computação na BNCC.'
                 rotulo = 'Blog'
             if n > 1:
                 linha = f'Página {n} de {total}. ' + linha
+                descricao = f'Página {n} de {total}. ' + descricao
             ld = json_ld({
                 '@context': 'https://schema.org',
                 '@type': 'CollectionPage' if (secao or n > 1) else 'Blog',
@@ -783,7 +785,7 @@ def pagina_tecnologias(cfg):
     corpo = (AQUI / 'conteudo' / 'formacao-tecnologias-educacionais.html').read_text(encoding='utf-8').strip()
     titulo = 'Formação de professores em tecnologias educacionais'
     descricao = ('Treinamento de professores em tecnologias educacionais com Júlia Quoos: turma virtual, formulários, IA, '
-                 'Computação da BNCC e acessibilidade, individual ou para a equipe.')
+                 'BNCC Computação e acessibilidade.')
     imagem = f'{site}/{TECNOLOGIAS_IMAGEM}'
     alt = ('Card com o título Formação em tecnologias educacionais, a frase Treinamento prático para professores e equipes, '
            'e uma captura do guia Tech pra Prof.')
@@ -947,8 +949,8 @@ def pagina_computacao(cfg):
     url = f'{site}/computacao-na-escola/'
     corpo = (AQUI / 'conteudo' / 'computacao-na-escola.html').read_text(encoding='utf-8').strip()
     titulo = 'Como implantar Computação na escola'
-    descricao = ('Computação na escola: o que a BNCC pede, três formatos possíveis, como fazer sem laboratório e sem professor '
-                 'da área, e um roteiro em seis passos para a coordenação.')
+    descricao = ('Computação na escola: o que a BNCC pede, três formatos possíveis, como fazer sem laboratório e um roteiro '
+                 'em seis passos para a coordenação.')
     imagem = f'{site}/computacao-na-escola/og-computacao-na-escola.jpg'
     alt = ('Card com o título Computação na escola, a frase O que a BNCC pede, formatos possíveis e um roteiro em seis passos, '
            'e uma captura da página BNCC Computação.')
@@ -1148,7 +1150,7 @@ def pagina_matematica_adaptada(cfg):
     corpo = (AQUI / 'conteudo' / 'matematica-adaptada.html').read_text(encoding='utf-8').strip()
     titulo = 'Matemática adaptada: como usar o material com alunos com diferentes necessidades'
     descricao = ('Como usar as fichas de matemática adaptadas para alunos com diferentes necessidades: '
-                 'versões A, B e C, princípios do DUA e o que costuma ajudar em cada caso. As fichas ficam no Material adaptado.')
+                 'versões A, B e C, princípios do DUA e o que ajuda em cada caso.')
     imagem = f'{site}/matematica-adaptada/og-matematica-adaptada.jpg'
     alt = 'Card com o título Matemática adaptada e a captura de uma ficha para imprimir com três níveis de apoio.'
     ld = json_ld({
@@ -1344,8 +1346,8 @@ def pagina_hora_codigo(cfg):
     url = f'{site}/hora-do-codigo/'
     corpo = (AQUI / 'conteudo' / 'hora-do-codigo.html').read_text(encoding='utf-8').strip()
     titulo = 'Hora do Código 2026: roteiros do 6º ao 9º ano'
-    descricao = ('Roteiros de 1 hora para a Hora do Código 2026, de 7 a 13 de dezembro: um por ano do 6º ao 9º, '
-                 'com jogos gratuitos no navegador, folha para imprimir e habilidades da BNCC Computação.')
+    descricao = ('Roteiros de 1 hora para a Hora do Código 2026 (7 a 13 de dezembro), um por ano do 6º ao 9º, '
+                 'com jogos gratuitos e folha para imprimir.')
     imagem = f'{site}/{HORA_CODIGO_IMAGEM}'
     alt = ('Card com o título Hora do Código 2026: roteiros de 1 hora do 6º ao 9º ano com jogos gratuitos '
            'e folha para imprimir, com o jogo Robô Coletor ao lado.')
@@ -1437,8 +1439,8 @@ def pagina_mundo_professores(cfg):
     url = f'{site}/mundo/professores/'
     corpo = (AQUI / 'conteudo' / 'mundo-professores.html').read_text(encoding='utf-8').strip()
     titulo = 'Mundo do site para professores: BNCC Computação e IA em jogo'
-    descricao = ('Jogo gratuito para as aulas de Computação da BNCC, do 6º ao 9º ano: vilas por ano, ranking da turma, '
-                 'missões criadas pela professora e simuladores de IA, sem cadastro.')
+    descricao = ('Jogo gratuito para as aulas de Computação da BNCC, do 6º ao 9º ano: vilas por ano, ranking da turma '
+                 'e missões criadas pela professora, sem cadastro.')
     imagem = f'{site}/{MUNDO_PROF_IMAGEM}'
     alt = 'Vila isométrica do Mundo do site, com casas coloridas, moradores e o avatar do estudante.'
     ld = json_ld({
@@ -1507,7 +1509,7 @@ def pagina_mundo_professores(cfg):
         <a class="btn98 escuro" href="/formacao-continuada/">Formação continuada em IA</a>
     </section>
 </article>'''
-    head = cabeca('Mundo do site para professores: BNCC Computação e IA | Júlia Quoos', descricao, url, imagem, alt, 'website',
+    head = cabeca('Mundo para professores: BNCC Computação | Júlia Quoos', descricao, url, imagem, alt, 'website',
                   '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
     return head + '\n' + moldura('mundo-professores.html', 'ohtopico.com.br/mundo/professores', '/mundo/', conteudo, 'Pronto', 'mundo')
 

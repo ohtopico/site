@@ -103,8 +103,8 @@ def pagina():
     total = len(TERMOS)
     com = sum(1 for x in TERMOS if x['sinais'])
     titulo = 'Glossário em Libras: Matemática e Computação | Júlia Quoos'
-    descricao = (f'{total} palavras de Matemática e Computação em português simples, com desenho de apoio e QR code para o sinal em Libras. '
-                 'Cartões para imprimir, para estudantes surdos e alunos com diferentes necessidades.')
+    descricao = (f'{total} palavras de Matemática e Computação em português simples, com desenho e QR code para o sinal '
+                 'em Libras. Cartões para imprimir.')
     grupos = []
     for g, nome, area in GRUPOS:
         cartoes = ''.join(cartao(x) for x in TERMOS if x['grupo'] == g)
@@ -145,9 +145,7 @@ def pagina():
 <script type="application/ld+json">
 {ld}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v={v}">
 <link rel="stylesheet" href="glossario.css?v={v}">
 {GTAG}

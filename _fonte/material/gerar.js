@@ -274,9 +274,7 @@ ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ${cabecaSEO({ title, desc, url, img, imgAlt: `Habilidade ${c} da BNCC`, ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], h.comp === 'CO' ? ['BNCC Computação', `${SITE}/material-didatico/${HUB_CO}`] : ['Explorar a BNCC', `${SITE}/material-didatico/bncc.html`], [c, url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="assets/md.css">
 <style>
   .doc { max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }
@@ -475,9 +473,7 @@ ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ${cabecaSEO({ title, desc, url, img, imgAlt: `Aprenda: ${A.t}`, ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['Aprenda', `${SITE}/material-didatico/${HUB_APRENDA}`], [A.t, url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="assets/md.css">
 <style>${CSS_APRENDA}
 </style>
@@ -593,9 +589,7 @@ ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ${cabecaSEO({ title, desc, url, img, imgAlt: 'Aprenda Computação', ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['Aprenda', url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="assets/md.css">
 <style>
   .doc { max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }
@@ -686,9 +680,7 @@ ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e materiais', ldObjs: [ldPagina, migalhas([['Início', `${SITE}/`], ['Material didático', `${SITE}/material-didatico/`], ['BNCC Computação', url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="assets/md.css">
 <style>
   .doc { max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }
@@ -743,7 +735,7 @@ ${anos.map(a => `
 
   <h2>Para levar a BNCC Computação à sua escola</h2>
   <p>Para os estudantes, cada habilidade tem também uma explicação curta e ilustrada na seção <a href="${HUB_APRENDA}">Aprenda</a>, que leva direto à prática.</p>
-  <p>A <a href="/formacao-continuada/">formação de professores em IA e Computação</a> ajuda escolas e redes a planejar o ano com essas habilidades, mesmo sem professor da área ou laboratório. Para explorar também as habilidades de Matemática, use o <a href="bncc.html">explorador da BNCC</a>.</p>
+  <p>A <a href="/formacao-continuada/">formação de professores em IA e Computação</a> ajuda escolas e redes a planejar o ano com essas habilidades, mesmo sem professor da área ou laboratório. Para explorar também as habilidades de Matemática, use o <a href="bncc.html">explorador da BNCC</a>. Para ver como as habilidades de Computação se ligam de um ano para o outro, abra o <a href="https://juliaroberta.com/infograficos/bncc-computacao/">mapa interativo da BNCC Computação</a>.</p>
 </main>
 <footer id="footer"></footer>
 <script>window.MD_BASE = '';</script>
@@ -856,9 +848,7 @@ ${MARCA}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ${cabecaSEO({ title, desc, url, img, imgAlt: 'Pensamento computacional: os quatro pilares e as habilidades da BNCC', ldObjs: [ldPagina, ldFaq, migalhas([['Início', `${SITE}/`], ['BNCC Computação', `${SITE}/material-didatico/${HUB_CO}`], ['Pensamento computacional', url]])] })}
 <meta name="author" content="Júlia Roberta Quoos Alves">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="assets/md.css">
 <style>
   .doc { max-width: 960px; margin: 0 auto; padding: 32px 16px 40px; }

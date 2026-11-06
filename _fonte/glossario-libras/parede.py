@@ -65,9 +65,7 @@ def pagina():
 <meta name="author" content="Júlia Roberta Quoos Alves">
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="{URL_PAREDE}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v={v}">
 <link rel="stylesheet" href="parede.css?v={v}">
 {GTAG}
