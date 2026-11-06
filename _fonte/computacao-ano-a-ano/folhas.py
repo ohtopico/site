@@ -175,3 +175,11 @@ def cartas_binario(bits=None, n=4, tam=16):
         cls = ' baixo' if b == '0' else ''
         out += f'<div class="aa-bin{cls}" style="--t:{tam}mm"><span>{pontos}</span><em>{v}</em><u>{b if b else ""}</u></div>'
     return f'<div class="aa-bins">{out}</div>'
+
+
+def grafo_folha(vertices, arestas, larg=110, alt=64):
+    """Grafo no papel: vertices {nome: (x%, y%, figura ou None)}, arestas [(a, b)]. Mostra a figura ou o nome dentro do círculo."""
+    linhas_ = ''.join(f'<line x1="{vertices[a][0]}" y1="{vertices[a][1]}" x2="{vertices[b][0]}" y2="{vertices[b][1]}" stroke="#555" stroke-width="0.6" vector-effect="non-scaling-stroke"/>'
+                      for a, b in arestas)
+    nos = ''.join(f'<span style="left:{x}%;top:{y}%">{figura(f) if f else ""}<b>{n}</b></span>' for n, (x, y, f) in vertices.items())
+    return (f'<div class="aa-grafo" style="width:{larg}mm;height:{alt}mm"><svg viewBox="0 0 100 100" preserveAspectRatio="none">{linhas_}</svg>{nos}</div>')

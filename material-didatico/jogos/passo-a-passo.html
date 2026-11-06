@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="../assets/md.css">
-<link rel="stylesheet" href="../assets/pequenos.css?v=7da20528">
+<link rel="stylesheet" href="../assets/pequenos.css?v=9c18aecd">
 <!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LearningResource","name":"Passo a Passo","description":"Jogo sem leitura para o 1º ano: pôr em ordem os passos do dia a dia, achar o passo que falta e seguir setas como um robô.","url":"https://ohtopico.com.br/material-didatico/jogos/passo-a-passo.html","image":"https://ohtopico.com.br/material-didatico/assets/og-material-didatico.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"1º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"10–15 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF01CO02","targetDescription":"Identificar e seguir sequências de passos aplicados no dia a dia para resolver problemas."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
@@ -89,8 +89,8 @@
 <script src="../assets/listas.js"></script>
 <script src="../assets/progresso.js"></script>
 <script src="../assets/comum.js"></script>
-<script src="../assets/figuras.js?v=7da20528"></script>
-<script src="../assets/pequenos.js?v=7da20528"></script>
+<script src="../assets/figuras.js?v=9c18aecd"></script>
+<script src="../assets/pequenos.js?v=9c18aecd"></script>
 <script>
 mdTopbar('jogos'); mdFooter(); mdJogoHead('passo-a-passo');
 PQ.jogo({"id": "passo-a-passo", "leitura": false, "fases": [{"tipo": "sequencia", "fala": "A planta cresce. Toque nas figuras na ordem certa.", "itens": ["semente", "broto", "flor"]}, {"tipo": "sequencia", "fala": "Vamos fazer um ovo frito. O que vem primeiro?", "itens": ["ovo", "frigideira", "ovo-frito"]}, {"tipo": "faltando", "fala": "Acordar, depois o quê, depois a mochila e a escola?", "seq": ["despertador", null, "mochila", "escola"], "opcoes": ["escova", "lua", "bolo"], "certa": 0}, {"tipo": "faltando", "fala": "Lavar as mãos: torneira, sabonete e depois?", "seq": ["torneira", "sabonete", null], "opcoes": ["toalha", "bola", "pao"], "certa": 0}, {"tipo": "caminho", "modo": "prever", "fala": "Siga as setas. Toque na casa onde o gato vai parar.", "cols": 4, "rows": 3, "inicio": [0, 1], "alvos": [], "programa": [{"d": "d"}, {"d": "d"}]}, {"tipo": "caminho", "modo": "prever", "fala": "Siga as setas de novo. Onde o gato para?", "cols": 4, "rows": 4, "inicio": [0, 0], "alvos": [], "programa": [{"d": "d"}, {"d": "d"}, {"d": "b"}, {"d": "b"}]}, {"tipo": "caminho", "modo": "passo", "fala": "Leve o gato até o peixe. Cada seta é um passo.", "cols": 4, "rows": 4, "inicio": [0, 3], "alvos": [[3, 0]], "paredes": [[1, 2], [2, 2]]}, {"tipo": "sequencia", "fala": "Um dia inteiro. Ponha em ordem, do começo ao fim.", "itens": ["despertador", "pao", "escola", "lua"]}], "personagem": "gato", "alvo": "peixe", "parede": "vaso"});

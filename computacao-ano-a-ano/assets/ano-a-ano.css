@@ -91,3 +91,10 @@
 .aa-bin.baixo span i { background: #fff; border: 0.3mm solid #999; }
 .aa-bin em { font: 600 3mm var(--body); font-style: normal; color: #555; }
 .aa-bin u { text-decoration: none; width: 8mm; height: 8mm; border: 0.4mm dashed #777; border-radius: 1.5mm; display: grid; place-items: center; font: 700 5mm var(--body); }
+.aa-grafo { position: relative; margin: 3mm 0 4mm 6mm; }
+.aa-grafo svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.aa-grafo line { stroke-width: 0.5mm; }
+.aa-grafo span { position: absolute; width: 12mm; height: 12mm; margin: -6mm 0 0 -6mm; border: 0.5mm solid #111; border-radius: 50%; background: #fff; display: grid; place-items: center; padding: 1.5mm; box-sizing: border-box; }
+.aa-grafo span svg { position: static; width: 100%; height: 100%; }
+.aa-grafo span b { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); font: 600 3mm var(--body); white-space: nowrap; }
+.aa-grafo span:not(:has(svg)) b { position: static; transform: none; font-size: 4mm; }
