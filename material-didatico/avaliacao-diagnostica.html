@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Avaliação diagnóstica de Computação (BNCC) | Júlia Quoos</title>
+<meta name="description" content="Avaliações diagnósticas de Computação para o início do ano, do 6º ao 9º ano, com rubrica, mapa da turma e versões A, B e C para imprimir.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/avaliacao-diagnostica.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:title" content="Avaliação diagnóstica de Computação (BNCC), 6º ao 9º ano">
+<meta property="og:description" content="Uma diagnóstica por ano para o início do ano letivo, com rubrica, mapa da turma e versões A, B e C para alunos com diferentes necessidades.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/avaliacao-diagnostica.html">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-listas.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="assets/md.css">
+<style>
+  .doc { max-width: 980px; margin: 0 auto; padding: 32px 16px 40px; }
+  .doc h1 { font-size: clamp(32px, 5vw, 46px); margin: 4px 0 6px; }
+  .doc > h2, .nao-imprimir > h2 { font-size: 26px; margin: 34px 0 8px; }
+  .passo { border: 1.5px solid var(--ink); border-radius: 22px; padding: 16px 18px; margin: 14px 0; background: var(--paper); }
+  .passo > b { display: block; font-family: var(--display); font-size: 20px; margin: 0 0 8px; }
+  .opcoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 18px; }
+  .opcoes label { display: flex; flex-direction: column; gap: 4px; font-size: 14.5px; }
+  .opcoes label.linha { flex-direction: row; align-items: flex-start; gap: 8px; }
+  .opcoes input[type=checkbox] { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--accent); flex: none; }
+  .opcoes input[type=text], .opcoes input[type=number] { font: 15px var(--body); padding: 8px 10px; border: 1.5px solid var(--ink); border-radius: 12px; background: var(--paper); color: var(--ink); min-width: 0; width: 100%; }
+  .resumo { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 16px 0 0; }
+  .previa { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .bloco-versao { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .bloco-versao > .btn-row { width: 100%; max-width: 210mm; justify-content: space-between; align-items: center; }
+  .anos-conferem { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr)); gap: 12px; padding: 0; list-style: none; margin: 12px 0 0; }
+  .anos-conferem li { border: 1.5px solid var(--line); border-radius: 18px; padding: 12px 14px; font-size: 15px; }
+  .anos-conferem b { display: block; font-family: var(--display); font-size: 19px; }
+  /* ---------- folha (sempre branca, também no tema escuro) ---------- */
+  .prova { background: #fff; color: #111; width: 100%; max-width: 210mm; padding: 14mm 14mm 10mm; box-shadow: 0 0 0 1px #cfcfcb, 0 6px 18px rgba(0,0,0,.08); font: 11.5pt/1.5 var(--body); }
+  .prova code { font-family: ui-monospace, Consolas, monospace; font-size: .92em; }
+  .prova a { color: #111; }
+  .cab { border: 1.5px solid #111; border-radius: 3mm; padding: 2mm 3.5mm; display: grid; gap: 1.5mm; }
+  .cab-linha { display: grid; grid-template-columns: minmax(0, 1fr) 46mm; gap: 4mm; }
+  .cab-campo { display: flex; gap: 2mm; align-items: flex-end; font-size: 10pt; }
+  .cab-campo span { flex: none; color: #4a4a4a; }
+  .cab-campo b { flex: 1; border-bottom: 1px solid #111; min-height: 6mm; font-weight: 500; padding: 0 1mm; }
+  .prova-titulo { font: 800 17pt/1.2 var(--display); margin: 5mm 0 2mm; color: #111; }
+  .instr { margin: 0 0 4mm; padding-left: 5mm; font-size: 10pt; color: #333; }
+  .q { break-inside: avoid; page-break-inside: avoid; padding: 3mm 0 3.5mm; border-top: 1px solid #d9d9d6; }
+  .q:first-child { border-top: 0; }
+  .q-topo { display: flex; gap: 3mm; align-items: center; margin-bottom: 1.5mm; }
+  .q-num { font: 800 12pt var(--display); border: 1.5px solid #111; border-radius: 99px; min-width: 7.5mm; height: 7.5mm; display: inline-flex; align-items: center; justify-content: center; }
+  .q-valor, .q-hab { font-size: 8.5pt; color: #4a4a4a; }
+  .q-hab { margin-left: auto; font-family: ui-monospace, Consolas, monospace; }
+  .q-enun pre { font-family: ui-monospace, Consolas, monospace; font-size: 10pt; border: 1.2px solid #111; border-radius: 2mm; padding: 2mm 3mm; margin: 2mm 0 0; white-space: pre-wrap; background: #fff; }
+  .q-alts { list-style: none; padding: 0; margin: 2mm 0 0; display: grid; gap: 1.2mm; }
+  .q-alts li { display: flex; gap: 2.5mm; align-items: flex-start; }
+  .q-alts .caixa { flex: none; width: 4mm; height: 4mm; border: 1.3px solid #111; border-radius: 1mm; margin-top: 1mm; }
+  .q-alts .letra { flex: none; font-weight: 600; }
+  .q-vf { list-style: none; padding: 0; margin: 2mm 0 0; display: grid; gap: 1.5mm; }
+  .q-vf li { display: flex; gap: 3mm; align-items: flex-start; }
+  .vf-par { flex: none; font-weight: 600; }
+  .vf-op { flex: none; border: 1.5px solid #111; border-radius: 99px; width: 9mm; height: 9mm; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+  .q-dica { font-size: 9.5pt; color: #333; margin: 1.5mm 0 0; font-style: italic; }
+  .q-linhas { margin-top: 2mm; }
+  .q-linhas span { display: block; height: 8mm; border-bottom: 1px solid #8a8a86; }
+  .q-quadro { border: 1.5px solid #111; border-radius: 3mm; height: 45mm; margin-top: 2mm; }
+  .prova-rodape { font-size: 8pt; color: #6f6f6f; margin: 5mm 0 0; border-top: 1px solid #d9d9d6; padding-top: 2mm; }
+
+  /* versão A: letra maior, mais espaço, caixas maiores */
+  .versao-A { font-size: 14.5pt; line-height: 1.6; }
+  .versao-A .instr { font-size: 12pt; }
+  .versao-A .q { padding: 5mm 0 6mm; }
+  .versao-A .q-alts { gap: 3mm; margin-top: 3.5mm; }
+  .versao-A .q-alts li { border: 1.3px solid #111; border-radius: 3mm; padding: 2.5mm 3.5mm; }
+  .versao-A .q-alts .caixa { width: 6.5mm; height: 6.5mm; margin-top: .5mm; }
+  .versao-A .q-enun pre { font-size: 13pt; }
+  .versao-A .q-vf { gap: 3mm; }
+  .versao-B { font-size: 12.5pt; }
+  .versao-B .q-alts { gap: 2mm; }
+
+  /* gabarito */
+  .gabarito-folha h3 { font: 800 13pt var(--display); margin: 6mm 0 2mm; }
+  .g-nota { font-size: 9.5pt; color: #333; margin: 0 0 3mm; }
+  .g-tab { border-collapse: collapse; width: 100%; font-size: 10pt; }
+  .g-tab th, .g-tab td { border: 1px solid #111; padding: 1.2mm 2mm; text-align: left; vertical-align: top; }
+  .g-tab th { background: #f4f4f2; font-weight: 600; }
+  .g-tab td.resp { font-weight: 700; text-transform: uppercase; }
+  .g-coment { font-size: 9.5pt; padding-left: 0; list-style: none; display: grid; gap: 1.5mm; }
+  .g-coment pre { display: inline; white-space: normal; font-family: ui-monospace, Consolas, monospace; }
+  .g-habs .url { display: block; font-size: 8pt; color: #4a4a4a; word-break: break-all; }
+  .g-tab td, .g-tab th { overflow-wrap: anywhere; }
+
+  @media (max-width: 760px) {
+    .prova { padding: 16px 14px; font-size: 14px; }
+    .versao-A { font-size: 17px; } .versao-B { font-size: 15px; }
+    .cab-linha { grid-template-columns: minmax(0, 1fr) 30%; }
+    .habs-sel label { grid-template-columns: 22px minmax(0, 1fr); } .habs-sel label code { grid-column: 2; }
+  }
+
+  @page { size: A4; margin: 12mm 12mm 12mm; }
+  @media print {
+    body { background: #fff !important; }
+    #topbar, #footer, .nao-imprimir, .bloco-versao > .btn-row, .previa-barra { display: none !important; }
+    .doc { padding: 0; max-width: none; }
+    .previa { display: block; }
+    .bloco-versao { display: block; }
+    .prova { box-shadow: none; max-width: none; padding: 0; break-after: page; page-break-after: always; }
+    .bloco-versao:last-child .prova { break-after: auto; page-break-after: auto; }
+    body[data-imprimir] .bloco-versao { display: none; }
+    body[data-imprimir="A"] .bloco-versao[data-v="A"], body[data-imprimir="B"] .bloco-versao[data-v="B"],
+    body[data-imprimir="C"] .bloco-versao[data-v="C"], body[data-imprimir="G"] .bloco-versao[data-v="G"],
+    body[data-imprimir="M"] .bloco-versao[data-v="M"] { display: block; }
+    body[data-imprimir] .bloco-versao .prova { break-after: auto; page-break-after: auto; }
+  }
+  /* partes da diagnóstica */
+  .parte { font: 800 12.5pt/1.2 var(--display); margin: 5mm 0 1mm; padding: 1.5mm 0; border-bottom: 1.5px solid #111; }
+  .prova .q-enun { overflow-wrap: break-word; } .prova .q-itens li { overflow-wrap: anywhere; }
+  .q-itens { list-style: none; padding: 0; margin: 2mm 0; display: grid; gap: 1.5mm; }
+  .q-dois { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 2mm; }
+  .q-dois > div { border: 1.5px solid #111; border-radius: 3mm; min-height: 32mm; padding: 2mm 3mm; }
+  .q-pontos { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 6mm 10mm; border: 1.5px solid #111; border-radius: 3mm; padding: 8mm 4mm; margin-top: 2mm; min-height: 50mm; align-content: space-between; }
+  .q-pontos span { display: inline-flex; align-items: center; gap: 2mm; font-weight: 600; }
+  .q-pontos span::before { content: ""; width: 4mm; height: 4mm; border-radius: 50%; background: #111; }
+  .auto-tab { border-collapse: collapse; width: 100%; font-size: .9em; margin-top: 2mm; }
+  .auto-tab th, .auto-tab td { border: 1px solid #111; padding: 1.5mm 2mm; text-align: center; }
+  .auto-tab td:first-child { text-align: left; }
+  .auto-tab th { font-weight: 600; background: #fff; }
+  .auto-tab .caixa { display: inline-block; width: 4.5mm; height: 4.5mm; border: 1.3px solid #111; border-radius: 1mm; vertical-align: middle; }
+  .rub { break-inside: avoid; page-break-inside: avoid; margin: 0 0 3mm; }
+  .rub-tit { font-size: 10pt; margin: 3mm 0 1.5mm; }
+  .rub-tab td { width: 33.3%; font-size: 9.5pt; }
+  .encam { margin: 3mm 0; }
+  .gabarito-folha .g-tab code { white-space: nowrap; }
+  .gabarito-folha h3, .rub-tit, .parte { break-after: avoid; page-break-after: avoid; }
+  .mapa { border-collapse: collapse; width: 100%; table-layout: fixed; font-size: 8.5pt; }
+  .mapa th, .mapa td { border: 1px solid #111; height: 6.2mm; padding: 0 1mm; text-align: center; }
+  .mapa th { font-weight: 600; height: auto; padding: 1mm .5mm; }
+  .mapa th small { display: block; font-weight: 400; font-size: 7pt; color: #4a4a4a; }
+  .mapa .m-n { width: 7mm; } .mapa .m-nome { width: 46mm; } .mapa .m-e { width: 9mm; background: #fff; }
+  .mapa .m-ab { background: #ececea; }
+  .mapa tr.m-total td { font-weight: 600; text-align: left; }
+  @media print { .mapa .m-ab { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+  @media (max-width: 760px) { .mapa { font-size: 7pt; } .mapa .m-nome { width: 22mm; } }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LearningResource",
+      "@id": "https://ohtopico.com.br/material-didatico/avaliacao-diagnostica.html#pagina",
+      "url": "https://ohtopico.com.br/material-didatico/avaliacao-diagnostica.html",
+      "name": "Avaliação diagnóstica de Computação (BNCC), 6º ao 9º ano",
+      "description": "Avaliações diagnósticas de Computação para o início do ano, do 6º ao 9º ano, com rubrica, mapa da turma e versões A, B e C para imprimir.",
+      "inLanguage": "pt-BR",
+      "isAccessibleForFree": true,
+      "learningResourceType": "Avaliação diagnóstica",
+      "educationalLevel": "Ensino fundamental, anos finais",
+      "keywords": "avaliação diagnóstica, sondagem, BNCC Computação, rubrica, início do ano letivo, 6º ano, 7º ano, 8º ano, 9º ano",
+      "author": {
+        "@id": "https://ohtopico.com.br/#julia"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "url": "https://ohtopico.com.br/"
+      },
+      "breadcrumb": {
+        "@id": "https://ohtopico.com.br/material-didatico/avaliacao-diagnostica.html#trilha"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://ohtopico.com.br/material-didatico/avaliacao-diagnostica.html#trilha",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://ohtopico.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Material didático",
+          "item": "https://ohtopico.com.br/material-didatico/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Avaliação diagnóstica",
+          "item": "https://ohtopico.com.br/material-didatico/avaliacao-diagnostica.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="doc">
+  <div class="nao-imprimir">
+    <span class="eyebrow">Para o professor · início do ano letivo</span>
+    <h1>Avaliação diagnóstica de Computação</h1>
+    <p class="muted" style="max-width:740px;margin:0">Uma diagnóstica por ano, do 6º ao 9º, para a primeira semana de aula. Cada uma confere os pré-requisitos do ano anterior em Computação da BNCC e mostra qual habilidade do ano cada item prepara. Vem com rubrica para as tarefas abertas, gabarito, mapa da turma e três versões para alunos com diferentes necessidades. Não vale nota: serve para planejar por onde começar.</p>
+
+    <ul class="anos-conferem">
+      <li><b>6º ano</b>Confere os anos iniciais: sequência e repetição, decisões com se e senão, lógica com E, tabelas, listas, caminhos, hardware e software, entrada e saída, código binário e convivência digital.</li>
+      <li><b>7º ano</b>Confere o 6º ano: tipos de dados, repetição e seleção, entradas e saídas, generalização, decomposição, pacotes de dados, organização de arquivos, conduta digital e sustentabilidade.</li>
+      <li><b>8º ano</b>Confere o 7º ano: listas e registros, depuração de programas, grafos, reúso com funções, protocolos, senhas seguras, cyberbullying e publicação com autorização.</li>
+      <li><b>9º ano</b>Confere o 8º ano: listas, busca e ordenação, recursão, paralelismo, DNS, permissões de aplicativos, termos de uso, dados pessoais e confiabilidade das fontes.</li>
+    </ul>
+
+    <div class="passo">
+      <b>1. Ano</b>
+      <div class="chips" id="anos" role="group" aria-label="Ano"></div>
+    </div>
+
+    <div class="passo">
+      <b>2. Versões e folhas</b>
+      <div class="opcoes">
+        <label class="linha"><input type="checkbox" id="vA" checked> <span><strong>Versão A</strong>: mais apoio. Duas alternativas, letra maior e tarefas com a estrutura pronta para completar.</span></label>
+        <label class="linha"><input type="checkbox" id="vB" checked> <span><strong>Versão B</strong>: apoio intermediário. Três alternativas e dica nas tarefas abertas.</span></label>
+        <label class="linha"><input type="checkbox" id="vC" checked> <span><strong>Versão C</strong>: versão completa, com quatro alternativas.</span></label>
+        <label class="linha"><input type="checkbox" id="mv" checked> <span>Escrever “Modelo A/B/C” no rodapé (letra pequena, para separar as cópias)</span></label>
+        <label class="linha"><input type="checkbox" id="cod"> <span>Mostrar o código da habilidade em cada questão</span></label>
+        <label>Linhas no mapa da turma<input type="number" id="alunos" min="10" max="40" value="30"></label>
+      </div>
+    </div>
+
+    <div class="passo">
+      <b>3. Cabeçalho</b>
+      <div class="opcoes">
+        <label>Título<input type="text" id="titulo" placeholder="Avaliação diagnóstica de Computação"></label>
+        <label>Escola<input type="text" id="escola"></label>
+        <label>Professor(a)<input type="text" id="prof"></label>
+        <label>Turma<input type="text" id="turma"></label>
+        <label>Data<input type="text" id="data" placeholder="__/__/____"></label>
+      </div>
+      <p class="small muted" style="margin:10px 0 0">Escola e professor(a) ficam salvos neste navegador e são os mesmos do <a href="avaliacao.html">gerador de avaliação</a>.</p>
+    </div>
+
+    <div class="resumo">
+      <span id="info" class="muted"></span>
+      <span class="btn-row"><button class="btn" type="button" id="imprimir">Imprimir tudo</button></span>
+    </div>
+
+    <h2>Como aplicar</h2>
+    <p style="max-width:760px">Reserve uma aula de 50 minutos. Explique para a turma que a atividade não vale nota e que a ideia é saber o que cada um já traz. Entregue a versão que combina com cada estudante: a numeração das questões é a mesma nas três, então a correção e o mapa da turma valem para todos. Na versão A, aceite também resposta oral registrada por você.</p>
+    <p style="max-width:760px">Para corrigir, use o gabarito e a rubrica de três níveis (ainda não, em desenvolvimento, consolidado). Anote os pontos no mapa da turma e some por eixo. Os itens em que muitos estudantes fizeram zero são os pré-requisitos para retomar com a turma toda nas primeiras semanas; para cada habilidade, o gabarito indica a <a href="../material-adaptado/#computacao">ficha adaptada</a> e a página Aprenda.</p>
+    <p class="small muted" style="max-width:760px">Para avaliar durante o ano, use o <a href="avaliacao.html">gerador de avaliação</a> ou o <a href="teste-do-ano.html">teste do ano</a>.</p>
+    <h2>Prévia</h2>
+  </div>
+  <div class="previa" id="previa"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '';</script>
+<script src="assets/dados.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/diagnostica-itens.js"></script>
+<script src="assets/diagnostica.js"></script>
+<script>
+(function () {
+  mdTopbar('professor');
+  mdFooter();
+  const $ = s => document.querySelector(s);
+  const D = window.DIAG;
+
+  const hp = new URLSearchParams(location.hash.slice(1));
+  const cfg = {
+    a: D.ANOS.includes(+hp.get('a')) ? +hp.get('a') : 6,
+    v: (hp.get('v') || 'ABC').split('').filter(x => 'ABC'.includes(x)),
+    cod: hp.get('cod') === '1', mv: hp.get('mv') !== '0',
+    alunos: Math.min(40, Math.max(10, +hp.get('n') || 30)),
+    titulo: hp.get('t') || '', turma: '', data: '',
+    escola: mdStore.get('aval-escola', ''), prof: mdStore.get('aval-prof', ''),
+  };
+
+  function salvarEndereco() {
+    const q = new URLSearchParams({ a: cfg.a, v: cfg.v.join('') });
+    if (cfg.cod) q.set('cod', 1); if (!cfg.mv) q.set('mv', 0); if (cfg.alunos !== 30) q.set('n', cfg.alunos); if (cfg.titulo) q.set('t', cfg.titulo);
+    history.replaceState(null, '', '#' + q.toString());
+  }
+  function desenharAnos() {
+    $('#anos').innerHTML = D.ANOS.map(a => `<button class="chip" type="button" data-a="${a}" aria-pressed="${a === cfg.a}">${a}º ano</button>`).join('');
+  }
+  function gerar() {
+    salvarEndereco();
+    const previa = $('#previa');
+    const bloco = (id, rot, html) => `<div class="bloco-versao" data-v="${id}"><div class="btn-row"><strong>${rot}</strong><button class="btn ghost" type="button" data-imp="${id}">Imprimir só esta</button></div>${html}</div>`;
+    previa.innerHTML = cfg.v.map(v => bloco(v, `Versão ${v} (${D.NOME_VERSAO[v]})`, D.provaHTML(cfg.a, v, cfg))).join('')
+      + (cfg.v.length ? bloco('G', 'Gabarito e rubrica (para o professor)', D.gabaritoHTML(cfg.a, cfg)) : '')
+      + bloco('M', 'Mapa da turma (para o professor)', D.mapaHTML(cfg.a, cfg));
+    const qs = D.itens(cfg.a), me = qs.filter(q => q.tipo === 'me').length;
+    $('#info').textContent = `${cfg.a}º ano: ${qs.length} itens (${me} de marcar e ${qs.length - me} tarefas abertas com rubrica)`;
+  }
+  function lerOpcoes() {
+    cfg.v = ['A', 'B', 'C'].filter(v => $('#v' + v).checked);
+    cfg.cod = $('#cod').checked; cfg.mv = $('#mv').checked;
+    cfg.alunos = Math.min(40, Math.max(10, +$('#alunos').value || 30));
+    ['titulo', 'escola', 'prof', 'turma', 'data'].forEach(k => cfg[k] = $('#' + k).value.trim());
+    mdStore.set('aval-escola', cfg.escola); mdStore.set('aval-prof', cfg.prof);
+  }
+
+  ['A', 'B', 'C'].forEach(v => $('#v' + v).checked = cfg.v.includes(v));
+  $('#cod').checked = cfg.cod; $('#mv').checked = cfg.mv; $('#alunos').value = cfg.alunos;
+  ['titulo', 'escola', 'prof'].forEach(k => $('#' + k).value = cfg[k]);
+
+  $('#anos').onclick = e => { const b = e.target.closest('button'); if (!b) return; cfg.a = +b.dataset.a; desenharAnos(); gerar(); };
+  document.querySelectorAll('.passo .opcoes').forEach(el => el.addEventListener('change', () => { lerOpcoes(); gerar(); }));
+  ['titulo', 'escola', 'prof', 'turma', 'data'].forEach(k => $('#' + k).addEventListener('input', () => { lerOpcoes(); gerar(); }));
+  const imprimir = qual => { if (qual) document.body.dataset.imprimir = qual; else delete document.body.dataset.imprimir; window.print(); };
+  window.addEventListener('afterprint', () => delete document.body.dataset.imprimir);
+  $('#imprimir').onclick = () => imprimir('');
+  $('#previa').onclick = e => { const b = e.target.closest('[data-imp]'); if (b) imprimir(b.dataset.imp); };
+
+  desenharAnos(); gerar();
+})();
+</script>
+</body>
+</html>
