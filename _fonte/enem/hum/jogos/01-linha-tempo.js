@@ -1,0 +1,75 @@
+/* META {
+  "id": "hum-linha-tempo", "icone": "⏳", "titulo": "Linha do tempo",
+  "intro": "Toque nos acontecimentos na ordem em que aconteceram e monte a linha do tempo. No meio do caminho aparecem fontes históricas para interpretar, do jeito que o ENEM cobra: o documento, quem escreveu e o que ele revela.",
+  "resumo": "Ordene fatos da História do Brasil e do mundo e interprete fontes, monumentos e patrimônios.",
+  "habs": ["H1", "H2", "H3"],
+  "cola": [
+    ["Colônia (1500–1822):", "pau-brasil, capitanias (1534), governo-geral (1549), açúcar no Nordeste, ouro em Minas (séc. XVIII), Inconfidência (1789), família real (1808)."],
+    ["Império (1822–1889):", "Primeiro Reinado, Regências (1831–40), Segundo Reinado, café, Lei Eusébio de Queirós (1850), Ventre Livre (1871), Sexagenários (1885), Lei Áurea (1888)."],
+    ["República:", "Velha (1889–1930), Era Vargas (1930–45, Estado Novo em 1937), democracia de 1946, ditadura militar (1964–85, AI-5 em 1968), Nova República (Constituição de 1988)."],
+    ["Fonte histórica:", "pergunte sempre quem produziu, quando, para quem e com qual interesse. Monumento e patrimônio também são escolhas de memória: alguém decide o que lembrar e o que esquecer."]
+  ]
+} */
+const S = HUM.sorteia;
+const CONJUNTOS = [
+  ['Brasil Colônia', [['Chegada da esquadra de Cabral', 1500, '⛵'], ['Criação das capitanias hereditárias', 1534, '🗺️'], ['Governo-geral com Tomé de Sousa', 1549, '🏛️'], ['Domínio holandês em Pernambuco (Nassau)', 1637, '🌷'], ['Descoberta de ouro em Minas Gerais', 1693, '🪙'], ['Inconfidência Mineira', 1789, '⚖️'], ['Chegada da família real ao Rio', 1808, '👑'], ['Independência do Brasil', 1822, '🇧🇷']]],
+  ['Brasil Império', [['Independência do Brasil', 1822, '🇧🇷'], ['Abdicação de D. Pedro I e início das Regências', 1831, '🪑'], ['Golpe da Maioridade (D. Pedro II)', 1840, '👦'], ['Lei Eusébio de Queirós (fim do tráfico)', 1850, '🚢'], ['Início da Guerra do Paraguai', 1864, '⚔️'], ['Lei do Ventre Livre', 1871, '👶'], ['Lei Áurea', 1888, '📜'], ['Proclamação da República', 1889, '🎩']]],
+  ['Brasil República', [['Revolta da Vacina', 1904, '💉'], ['Semana de Arte Moderna', 1922, '🎨'], ['Revolução de 1930 (Vargas no poder)', 1930, '🐎'], ['Golpe do Estado Novo', 1937, '🔒'], ['Criação da CLT', 1943, '👷'], ['Golpe civil-militar', 1964, '🪖'], ['AI-5', 1968, '⛔'], ['Campanha das Diretas Já', 1984, '🗳️'], ['Constituição Cidadã', 1988, '📘'], ['Plano Real', 1994, '💵']]],
+  ['Mundo contemporâneo', [['Revolução Gloriosa na Inglaterra', 1688, '👑'], ['Independência dos EUA', 1776, '🦅'], ['Revolução Francesa', 1789, '🇫🇷'], ['Início da Primeira Guerra Mundial', 1914, '💣'], ['Revolução Russa', 1917, '☭'], ['Crise de 1929', 1929, '📉'], ['Início da Segunda Guerra Mundial', 1939, '✈️'], ['Queda do Muro de Berlim', 1989, '🧱']]],
+  ['Antiguidade ao início da Idade Moderna', [['Reformas de Clístenes em Atenas (democracia)', -508, '🏺'], ['Augusto, primeiro imperador romano', -27, '🏛️'], ['Queda do Império Romano do Ocidente', 476, '🗡️'], ['Carta Magna na Inglaterra', 1215, '📜'], ['Peste Negra na Europa', 1347, '🐀'], ['Queda de Constantinopla', 1453, '🕌'], ['Reforma Protestante de Lutero', 1517, '✝️']]],
+  ['Era Vargas e República de 1946', [['Revolução Constitucionalista de São Paulo', 1932, '🪖'], ['Constituição de 1934 (voto feminino na Constituição)', 1934, '📘'], ['Intentona Comunista', 1935, '🚩'], ['Estado Novo', 1937, '🔒'], ['Fim do Estado Novo', 1945, '🚪'], ['Criação da Petrobras ("O petróleo é nosso")', 1953, '🛢️'], ['Suicídio de Vargas', 1954, '🕯️'], ['Inauguração de Brasília', 1960, '🏙️']]]
+];
+const ordem = ([nome, itens]) => { const n = 5;
+  return { tipo: 'ordem', hab: 'H3', enun: `<b>${nome}.</b> Toque nos acontecimentos do mais antigo para o mais recente.`,
+    itens: HUM.mix(itens).slice(0, n), expl: 'Dica: amarre cada fato a um "período-âncora" (Colônia, Império, República Velha, Era Vargas, Ditadura, Nova República) antes de decorar o ano.' }; };
+
+const FONTES = [
+  { hab: 'H1', texto: '“Art. 1º É declarada extincta desde a data desta lei a escravidão no Brazil. Art. 2º Revogam-se as disposições em contrario.”<cite>Lei nº 3.353, de 13 de maio de 1888 (Lei Áurea).</cite>',
+    enun: 'A brevidade do texto da lei revela que a abolição no Brasil',
+    certa: 'não previu indenização, terra ou educação para os libertos, o que favoreceu a marginalização da população negra',
+    erradas: ['garantiu terras aos ex-escravizados como forma de reparação', 'foi acompanhada de um amplo plano de integração no mercado de trabalho', 'indenizou os fazendeiros pela perda dos escravizados', 'só valeu para as províncias do Norte do país'],
+    expl: 'O que a lei <b>não diz</b> também é fonte: sem nenhuma política de inclusão, os libertos foram empurrados para a informalidade e as periferias, enquanto o Estado incentivava a imigração europeia.' },
+  { hab: 'H1', texto: '“Esta terra, Senhor, (...) em tal maneira é graciosa que, querendo-a aproveitar, dar-se-á nela tudo (...). Porém o melhor fruto que dela se pode tirar parece-me que será salvar esta gente.”<cite>Pero Vaz de Caminha, carta ao rei D. Manuel, 1500.</cite>',
+    enun: 'O trecho da carta expressa, sobre a nova terra e seus habitantes, uma visão',
+    certa: 'mercantil e religiosa, que via a terra como fonte de riqueza e os indígenas como alvo da conversão cristã',
+    erradas: ['de respeito à autonomia política dos povos indígenas', 'contrária à exploração econômica do território', 'científica, baseada no estudo das culturas nativas', 'indiferente aos interesses da Coroa portuguesa'],
+    expl: 'Caminha escreve ao rei: fala de "aproveitar" a terra (interesse econômico) e de "salvar esta gente" (catequese). É o olhar <b>eurocêntrico</b> do colonizador, não a voz dos indígenas.' },
+  { hab: 'H2', texto: 'Em 2017, o Cais do Valongo, no Rio de Janeiro, foi declarado Patrimônio Mundial pela UNESCO. Por ele desembarcaram cerca de 1 milhão de africanos escravizados. Por décadas, o local ficou soterrado sob aterros e reformas urbanas.',
+    enun: 'O reconhecimento do Cais do Valongo como patrimônio contribui para',
+    certa: 'dar visibilidade à memória da escravidão e da diáspora africana, antes apagada da paisagem urbana',
+    erradas: ['celebrar a modernização do porto no período imperial', 'valorizar apenas a arquitetura colonial portuguesa', 'encerrar o debate sobre as consequências da escravidão', 'promover o turismo de luxo na zona portuária'],
+    expl: 'Patrimônio é uma <b>escolha de memória</b>. Aterrar o cais foi uma forma de esquecer; tombá-lo é uma forma de lembrar um passado doloroso (lugar de memória).' },
+  { hab: 'H2', texto: 'Em 2021, a estátua do bandeirante Borba Gato, em São Paulo, foi incendiada durante um protesto. Para uns, os bandeirantes são heróis da expansão territorial; para outros, foram caçadores de indígenas e de africanos fugidos.',
+    enun: 'O episódio mostra que os monumentos públicos',
+    certa: 'são construções de memória e podem ser contestados quando os grupos sociais reinterpretam o passado',
+    erradas: ['são registros neutros e objetivos dos fatos históricos', 'só têm valor estético, sem significado político', 'representam igualmente todos os grupos da sociedade', 'perdem o valor histórico quando são antigos'],
+    expl: 'Quem ergue um monumento escolhe quem homenagear. A disputa em torno dele é a disputa pela <b>memória</b>: qual versão do passado a cidade vai exibir.' },
+  { hab: 'H2', texto: 'A Comissão Nacional da Verdade (2012–2014) investigou mortes, desaparecimentos e torturas praticados por agentes do Estado entre 1946 e 1988, sobretudo durante a ditadura militar, e publicou um relatório com 434 mortos e desaparecidos.',
+    enun: 'A criação da comissão está ligada principalmente ao',
+    certa: 'direito à memória e à verdade sobre as violações de direitos humanos cometidas pelo Estado',
+    erradas: ['julgamento e prisão de todos os militares do período', 'fim da Lei da Anistia, revogada pela comissão', 'esquecimento do passado para pacificar o país', 'reconhecimento da ditadura como período de progresso'],
+    expl: 'A CNV não tinha poder de punir (a Lei da Anistia de 1979 continua valendo). O objetivo era <b>esclarecer e registrar</b>: produzir memória oficial sobre o que aconteceu.' },
+  { hab: 'H1', texto: 'O IPHAN registrou como patrimônio imaterial do Brasil o Ofício das Baianas de Acarajé (2005), o Frevo (2007), a Roda de Capoeira (2008) e o modo artesanal de fazer queijo de Minas (2008).',
+    enun: 'Esses bens têm em comum o fato de serem',
+    certa: 'saberes, práticas e expressões transmitidos entre gerações, e não objetos ou edifícios',
+    erradas: ['construções coloniais tombadas por seu valor arquitetônico', 'objetos guardados em museus nacionais', 'paisagens naturais protegidas por lei ambiental', 'tradições trazidas exclusivamente pelos portugueses'],
+    expl: '<b>Material</b> = coisa (igreja, centro histórico, sítio arqueológico). <b>Imaterial</b> = saber fazer, celebração, forma de expressão, lugar de prática. O registro protege quem mantém a tradição viva.' },
+  { hab: 'H3', texto: 'As festas juninas chegaram com os portugueses como celebrações católicas de Santo Antônio, São João e São Pedro. No Nordeste, ganharam quadrilha, forró, comidas de milho e o casamento caipira.',
+    enun: 'A forma atual das festas juninas no Brasil resulta de',
+    certa: 'uma tradição europeia reinterpretada no contexto rural brasileiro, com elementos locais',
+    erradas: ['uma criação recente da indústria do turismo', 'uma festa de origem exclusivamente indígena', 'uma imposição do Estado Novo para unificar o país', 'um costume trazido pelos imigrantes japoneses'],
+    expl: 'Manifestações culturais do presente têm <b>processo histórico</b>: chegam, se misturam e se transformam. A colheita do milho em junho explica as comidas típicas.' },
+  { hab: 'H3', texto: 'A capoeira foi criminalizada pelo Código Penal de 1890, logo após a abolição. Na década de 1930, Mestre Bimba abriu a primeira academia, e o governo Vargas passou a tratá-la como esporte nacional. Hoje é Patrimônio Cultural da Humanidade.',
+    enun: 'A trajetória da capoeira mostra que',
+    certa: 'práticas de origem afro-brasileira passaram da repressão ao reconhecimento conforme mudaram os projetos políticos de nação',
+    erradas: ['a capoeira sempre foi aceita pelas elites brasileiras', 'a cultura afro-brasileira deixou de existir após 1890', 'o reconhecimento veio antes da abolição da escravidão', 'a capoeira é uma luta de origem europeia'],
+    expl: 'A República recém-criada perseguia a cultura negra; o nacionalismo de Vargas passou a usar a mestiçagem como símbolo da nação. A mesma prática, lida de jeitos diferentes em cada época.' },
+  { hab: 'H1', texto: 'Na Serra da Capivara (PI), há milhares de pinturas rupestres que mostram caça, danças e rituais. Algumas têm mais de 9 mil anos.',
+    enun: 'Para o historiador, essas pinturas são importantes porque',
+    certa: 'são fontes não escritas que permitem conhecer o modo de vida de povos que não deixaram documentos escritos',
+    erradas: ['provam que os portugueses chegaram antes de 1500', 'não podem ser usadas como fonte, por não terem escrita', 'mostram que os indígenas viviam em grandes cidades', 'foram feitas por missionários jesuítas'],
+    expl: 'Fonte histórica não é só documento escrito: pinturas, objetos, ossos, sambaquis, relatos orais e construções também contam a história.' }
+];
+HUM.jogo({ id: 'hum-linha-tempo', proximo: ['hum-raizes.html', 'Raízes do Brasil'],
+  fila: () => { const f = HUM.mix(FONTES).slice(0, 5).map(q => Object.assign({ tipo: 'mc' }, q)); const o = HUM.mix(CONJUNTOS).slice(0, 4).map(ordem);
+    return [o[0], f[0], f[1], o[1], f[2], o[2], f[3], o[3], f[4]]; } });

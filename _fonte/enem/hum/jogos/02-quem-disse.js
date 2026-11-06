@@ -1,0 +1,67 @@
+/* META {
+  "id": "hum-quem-disse", "icone": "💬", "titulo": "Quem disse isso?",
+  "intro": "Filosofia e Sociologia no ENEM quase sempre começam com um trecho. Leia a frase, descubra o pensador e depois compare pontos de vista: Hobbes contra Rousseau, Marx contra Weber, ética de Kant contra a de Maquiavel.",
+  "resumo": "Associe trechos aos filósofos e sociólogos e compare pontos de vista sobre ética e política.",
+  "habs": ["H4", "H14", "H23"],
+  "cola": [
+    ["Contratualistas:", "Hobbes (natureza = guerra de todos contra todos → Estado forte, Leviatã), Locke (direitos naturais: vida, liberdade, propriedade; direito de resistência), Rousseau (bom selvagem, vontade geral, propriedade gera desigualdade)."],
+    ["Sociólogos clássicos:", "Durkheim (fato social, solidariedade, anomia), Weber (ação social, tipos de dominação, desencantamento do mundo), Marx (luta de classes, mais-valia, alienação)."],
+    ["Ética:", "Aristóteles (virtude = meio-termo, felicidade), Kant (dever, imperativo categórico), Maquiavel (política separada da moral, virtù e fortuna), utilitarismo (maior felicidade para o maior número)."]
+  ]
+} */
+const A = [
+  ['Thomas Hobbes', '“Durante o tempo em que os homens vivem sem um poder comum capaz de os manter a todos em respeito, eles se encontram naquela condição a que se chama guerra; e uma guerra que é de todos os homens contra todos os homens.”', 'Para Hobbes, o estado de natureza é de medo e violência. Por isso as pessoas abrem mão da liberdade e entregam o poder a um soberano forte, o <b>Leviatã</b>.'],
+  ['John Locke', '“Sendo todos iguais e independentes, ninguém deve prejudicar a outrem em sua vida, saúde, liberdade ou posses.”', 'Locke é o pai do <b>liberalismo</b>: direitos naturais à vida, à liberdade e à propriedade. Se o governo os viola, o povo tem <b>direito de resistência</b>.'],
+  ['Jean-Jacques Rousseau', '“O primeiro que, tendo cercado um terreno, lembrou-se de dizer “isto é meu” e encontrou pessoas bastante simples para acreditar nele foi o verdadeiro fundador da sociedade civil.”', 'Para Rousseau, a <b>propriedade privada</b> é a origem da desigualdade. O homem nasce bom; a sociedade o corrompe. O contrato legítimo segue a <b>vontade geral</b>.'],
+  ['Nicolau Maquiavel', '“Deve um príncipe não se importar com a fama de cruel, desde que mantenha seus súditos unidos e leais. (...) É muito mais seguro ser temido do que amado.”', 'Maquiavel separa a <b>política da moral</b> cristã: o governante deve ter <b>virtù</b> (habilidade) para lidar com a <b>fortuna</b> (acaso) e manter o Estado.'],
+  ['Montesquieu', '“Para que não se possa abusar do poder, é preciso que, pela disposição das coisas, o poder freie o poder.”', 'Base da <b>tripartição dos poderes</b> (Legislativo, Executivo e Judiciário), usada nas constituições modernas, inclusive a brasileira.'],
+  ['Karl Marx', '“A história de todas as sociedades até hoje existentes é a história das lutas de classes.”', 'Para Marx, a economia (infraestrutura) move a história. O capitalista lucra com a <b>mais-valia</b>, o trabalho não pago do operário, que vive <b>alienado</b>.'],
+  ['Émile Durkheim', '“É fato social toda maneira de agir, fixa ou não, suscetível de exercer sobre o indivíduo uma coerção exterior.”', 'O <b>fato social</b> é exterior, coercitivo e geral. Quando as regras perdem força numa sociedade, há <b>anomia</b>. Sociedades simples têm solidariedade mecânica; complexas, orgânica.'],
+  ['Max Weber', '“O destino de nosso tempo é caracterizado pela racionalização e intelectualização e, sobretudo, pelo desencantamento do mundo.”', 'Weber estuda a <b>ação social</b> e seus sentidos. Descreveu três tipos de dominação: tradicional, carismática e legal-racional (a burocracia).'],
+  ['Immanuel Kant', '“Age apenas segundo uma máxima tal que possas ao mesmo tempo querer que ela se torne lei universal.”', 'É o <b>imperativo categórico</b>: a ação moral vem do dever e da razão, não das consequências. As pessoas são fins em si, nunca apenas meios.'],
+  ['Aristóteles', '“O homem é por natureza um animal político.”', 'Para Aristóteles, só na <b>pólis</b> o ser humano se realiza. A virtude é o <b>meio-termo</b> entre dois extremos (coragem entre covardia e temeridade) e leva à felicidade.'],
+  ['Platão', 'Prisioneiros acorrentados no fundo de uma caverna veem apenas sombras projetadas na parede e acreditam que elas são a realidade.', 'É a <b>alegoria da caverna</b>: o mundo sensível é cópia; a verdade está no mundo das ideias, alcançado pela razão. Quem se liberta deve voltar para libertar os outros.'],
+  ['René Descartes', '“Penso, logo existo.”', 'Descartes duvida de tudo (<b>dúvida metódica</b>) até chegar a algo indubitável: o próprio pensamento. É o marco do <b>racionalismo</b> moderno.'],
+  ['David Hume', 'Não vemos a causa ligando dois fatos: só vemos que um costuma vir depois do outro, e o hábito nos faz esperar que se repita.', '<b>Empirismo</b>: todo conhecimento vem da experiência. A ideia de causa e efeito nasce do <b>hábito</b>, não da razão pura.'],
+  ['Simone de Beauvoir', '“Ninguém nasce mulher: torna-se mulher.”', 'O “ser mulher” é uma construção social e histórica, não um destino biológico. Frase do livro <i>O segundo sexo</i> (1949), base do feminismo. Caiu no ENEM 2015.'],
+  ['Jean-Paul Sartre', '“O homem está condenado a ser livre.”', '<b>Existencialismo</b>: a existência precede a essência. Não há natureza humana pronta; cada um se define pelas escolhas e responde por elas.'],
+  ['Hannah Arendt', 'O funcionário nazista Eichmann não era um monstro, mas um burocrata comum que cumpria ordens sem pensar no que fazia.', 'É a <b>banalidade do mal</b>: o mal extremo pode vir de pessoas comuns que deixam de pensar e julgar por conta própria.'],
+  ['Michel Foucault', 'Uma torre central permite vigiar todos os presos sem que eles saibam se estão sendo observados; com o tempo, eles próprios se vigiam.', 'O <b>panóptico</b> é o símbolo da <b>sociedade disciplinar</b>: escola, fábrica, quartel e prisão moldam corpos “dóceis” pela vigilância.'],
+  ['Zygmunt Bauman', 'Na sociedade atual, as relações, os empregos e as identidades não mantêm a forma por muito tempo: escorrem como líquidos.', '<b>Modernidade líquida</b>: vínculos frágeis, consumo, insegurança e individualismo.'],
+  ['Theodor Adorno e Max Horkheimer', 'Filmes, rádio e revistas formam um sistema que produz cultura em série, como mercadoria, e transforma o público em consumidor passivo.', 'É a <b>indústria cultural</b> (Escola de Frankfurt): a cultura de massa padroniza gostos e reforça o conformismo.'],
+  ['Pierre Bourdieu', 'A escola trata como “dom” natural aquilo que os filhos das classes altas aprenderam em casa: o gosto pela leitura, a música, o modo de falar.', '<b>Capital cultural</b> e <b>violência simbólica</b>: a escola reproduz as desigualdades quando premia como mérito o que é herança social.']
+];
+const CONTRASTES = [
+  { hab: 'H4', enun: 'Hobbes e Rousseau partem do “estado de natureza”. A diferença entre eles é que',
+    certa: 'para Hobbes ele é violento e exige um poder forte; para Rousseau o ser humano é bom e é a sociedade que o corrompe',
+    erradas: ['ambos defendem a monarquia absoluta como única saída', 'para Hobbes o homem é bom e para Rousseau é mau', 'nenhum dos dois aceita a ideia de contrato social', 'Rousseau defende a propriedade privada como direito natural'],
+    expl: 'Os dois são contratualistas, mas chegam a conclusões opostas: Hobbes justifica o <b>absolutismo</b>; Rousseau, a <b>soberania popular</b>.' },
+  { hab: 'H14', enun: 'Ao explicar o capitalismo, Marx e Weber diferem porque',
+    certa: 'Marx destaca as relações de produção e a luta de classes; Weber destaca também valores culturais, como a ética protestante',
+    erradas: ['Weber nega que o capitalismo tenha existido', 'Marx explica o capitalismo pela religião calvinista', 'ambos consideram a economia irrelevante para a sociedade', 'Weber defende a revolução proletária'],
+    expl: 'Marx: a base material (economia) determina a sociedade. Weber: ideias e valores também movem a história (<i>A ética protestante e o espírito do capitalismo</i>).' },
+  { hab: 'H23', enun: 'Um político mente para ganhar uma eleição e diz que “os fins justificam os meios”. Do ponto de vista da ética kantiana, essa atitude é',
+    certa: 'condenável, porque a mentira não pode virar lei universal e usa os eleitores apenas como meio',
+    erradas: ['correta, se o resultado trouxer felicidade à maioria', 'aceitável, pois a política é separada da moral', 'indiferente, pois a ética só vale na vida privada', 'virtuosa, por ser o meio-termo entre dois extremos'],
+    expl: 'Kant julga pela <b>intenção e pelo dever</b>, não pelo resultado. A frase “os fins justificam os meios” é atribuída (de forma simplificada) a Maquiavel.' },
+  { hab: 'H23', enun: 'Segundo o utilitarismo de Bentham e Stuart Mill, uma política pública é ética quando',
+    certa: 'produz a maior felicidade para o maior número de pessoas',
+    erradas: ['segue o dever independentemente das consequências', 'obedece à vontade de Deus revelada nas escrituras', 'garante a glória e o poder do governante', 'preserva a tradição acima de qualquer mudança'],
+    expl: 'Utilitarismo = ética das <b>consequências</b>. Kant = ética do <b>dever</b>. Aristóteles = ética das <b>virtudes</b>. Saber distinguir as três resolve muita questão.' },
+  { hab: 'H14', enun: 'Durkheim e Marx olham de modos diferentes para a divisão do trabalho. Para Durkheim, ela',
+    certa: 'cria interdependência entre as pessoas e gera solidariedade orgânica',
+    erradas: ['é sempre a origem da exploração e da alienação', 'deve ser abolida por uma revolução', 'existe apenas nas sociedades indígenas', 'não tem relação com a coesão social'],
+    expl: 'Durkheim vê a divisão do trabalho como <b>cola social</b> (cada um depende do outro). Para Marx, ela separa quem pensa de quem executa e <b>aliena</b> o trabalhador.' },
+  { hab: 'H4', enun: 'Para os sofistas, “o homem é a medida de todas as coisas” (Protágoras). Sócrates e Platão criticavam essa ideia porque',
+    certa: 'buscavam uma verdade universal, que não dependesse da opinião de cada um',
+    erradas: ['defendiam que tudo é relativo', 'cobravam caro para ensinar retórica', 'acreditavam que a verdade vem dos sentidos', 'rejeitavam o uso da razão'],
+    expl: 'Sofistas: relativismo e arte de convencer (retórica). Sócrates: “só sei que nada sei” e diálogo (maiêutica) para chegar ao conceito verdadeiro.' }
+];
+const trecho = () => { const [autor, frase, expl] = HUM.sorteia(A);
+  const outros = HUM.mix(A.filter(x => x[0] !== autor)).slice(0, 4).map(x => x[0]);
+  return { tipo: 'mc', hab: HUM.sorteia(['H14', 'H4', 'H23']), texto: frase, enun: 'O trecho expressa uma ideia central do pensamento de', certa: autor, erradas: outros, expl }; };
+HUM.jogo({ id: 'hum-quem-disse', proximo: ['hum-tres-poderes.html', 'Três Poderes e cidadania'],
+  fila: () => { const usados = new Set(); const t = [];
+    while (t.length < 6) { const q = trecho(); if (!usados.has(q.certa)) { usados.add(q.certa); t.push(q); } }
+    const c = HUM.mix(CONTRASTES).slice(0, 4).map(q => Object.assign({ tipo: 'mc' }, q));
+    return [t[0], t[1], c[0], t[2], t[3], c[1], t[4], c[2], t[5], c[3]]; } });
