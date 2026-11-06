@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sala · Ilha ENEM</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#bfe9f5">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../../material-didatico/assets/md.css">
+<link rel="stylesheet" href="enem.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header class="e-top" id="topo"></header>
+<main class="wrap" id="conteudo"></main>
+<footer class="footer"><div class="wrap">Área secreta do <a href="../">Mundo</a>. Estrelas ficam guardadas só neste aparelho.</div></footer>
+
+<script src="enem.js"></script>
+<script>ENEM.exigir();</script>
+<script src="matriz.js"></script>
+<script src="catalogo.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), esc = ENEM.esc, C = ENEM_CATALOGO, M = window.MATRIZ;
+  ENEM.topo($('#topo'));
+  const area = new URLSearchParams(location.search).get('a');
+  const A = C.AREAS[area];
+  if (!A) { location.replace('./'); return; }
+  const m = M.daArea[area];
+  document.title = 'Sala de ' + A.nome + ' · Ilha ENEM';
+
+  const chip = h => `<span class="hab" title="${esc(h + ': ' + (M[m][h] || ''))}">${h}</span>`;
+  const linha = (href, id, ic, titulo, sub, habs) => `<a class="jogo" href="${href}"><span>${ic} ${esc(titulo)}<small>${esc(sub)}</small>${habs && habs.length ? `<span class="habs">${habs.map(chip).join('')}</span>` : ''}</span>${ENEM.estrelasHtml(ENEM.estrelas(id))}</a>`;
+
+  function desenha(jogos) {
+    const est = ['sim-' + area, ...jogos.map(j => j.id)].reduce((s, id) => s + ENEM.estrelas(id), 0), max = 3 * (1 + jogos.length);
+    const treina = [...new Set(jogos.flatMap(j => j.habs))].sort((a, b) => a.slice(1) - b.slice(1));
+    $('#conteudo').innerHTML = `
+      <div class="e-head">
+        <a class="hb azul e-voltar" href="./">← Voltar à ilha</a>
+        <div class="sala-cab"><span class="emo" aria-hidden="true">${A.ic}</span><div><h1 style="margin:0">Sala de ${A.nome}</h1>
+          <p>Cai no ${A.dia}º dia. ${jogos.length + 1} ${jogos.length ? 'jogos' : 'jogo'} nesta sala.</p></div></div>
+        <div class="medidor"><span class="plaq">⭐ <b>${est}</b> de ${max} estrelas</span><span class="plaq">🎯 <b>${treina.length}</b> habilidades de ${M.nomes[m]}</span></div>
+      </div>
+      <section class="caixa">
+        <h2 style="margin:0 0 4px">Jogos</h2>
+        ${linha('simulado.html?area=' + area, 'sim-' + area, '❓', 'Simulado de ' + A.nome, 'Dez perguntas dos cartões de revisão, com explicação e macete.')}
+        ${jogos.map(j => linha(j.url, j.id, j.icone, j.titulo, j.resumo, j.habs)).join('')}
+        ${jogos.length ? '' : '<p class="small muted" style="margin:12px 0 0">Os jogos desta sala estão sendo construídos. Por enquanto, treine com o simulado.</p>'}
+      </section>
+      ${treina.length ? `<section class="caixa">
+        <h2 style="margin:0 0 4px">O que esta sala treina</h2>
+        <p class="small muted" style="margin:0">Habilidades da Matriz de Referência do ENEM (${M.nomes[m]}) que os jogos acima cobrem.</p>
+        <div class="cob">${treina.map(h => `<div class="cob-l on"><span class="h">${h}</span><span class="t">${esc(M[m][h] || '')}</span></div>`).join('')}</div>
+      </section>` : ''}
+      <p><a class="hb amarelo" href="habilidades.html#${m}">🗺️ Ver as 120 habilidades do ENEM</a></p>`;
+  }
+  desenha(C.daArea(area));
+  C.carregar().then(() => desenha(C.daArea(area)));
+})();
+</script>
+</body>
+</html>

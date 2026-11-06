@@ -113,3 +113,24 @@ details.howto summary { cursor: pointer; font-weight: 600; }
 /* jogo aberto dentro do Mundo */
 .no-mundo .e-top, .no-mundo .e-voltar, .no-mundo .footer, .no-mundo a[href="./"] { display: none !important; }
 .no-mundo .e-head { padding-top: 6px; }
+
+/* habilidades da Matriz ENEM (salas e mapa das habilidades) */
+.habs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.hab { display: inline-block; font: 700 12px/1 var(--body); padding: 4px 8px; border-radius: 99px; background: var(--pill); border: 1.5px solid var(--line); color: var(--ink); text-decoration: none; cursor: help; }
+.hab.on { background: var(--ok-soft); border-color: #8fd39b; }
+.jogo .habs { margin-top: 4px; }
+.jogo > span:first-child { flex: 1; min-width: 0; }
+.sala-cab { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.sala-cab .emo { font-size: 56px; line-height: 1; }
+.cob { display: grid; gap: 6px; margin-top: 10px; }
+.cob-l { display: grid; grid-template-columns: 46px 1fr; gap: 10px; align-items: start; padding: 8px 12px; border: 2px solid var(--borda); border-radius: 14px; background: #fff; }
+.cob-l.on { border-color: #8fd39b; background: #f2fbf3; }
+.cob-l .h { font: 800 16px var(--display); }
+.cob-l .t { font-size: 15px; line-height: 1.4; }
+.cob-l .js { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.cob-l .js a { font-size: 13.5px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: var(--ok-soft); border: 1.5px solid #8fd39b; color: var(--ink); text-decoration: none; }
+.cob-l .js .falta { font-size: 13px; color: var(--ink-3); }
+.medidor { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+.abas { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 4px; }
+.abas button[aria-pressed="true"] { background: var(--verde); }
+.abas button { background: var(--azul); }
