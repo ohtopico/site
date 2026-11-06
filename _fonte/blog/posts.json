@@ -1952,6 +1952,27 @@
       "alt": "Atividade para imprimir de BNCC Computação, 9º ano, habilidade EF09CO10, Verdade ou boato?. Folha A4 em preto e branco com o quadro Entenda e as atividades.",
       "legenda": "Folha Verdade ou boato? (EF09CO10), pronta para imprimir.",
       "secao": "Computação e BNCC"
+    },
+    {
+      "slug": "comparativo-ias-para-professores",
+      "titulo": "12 IAs comparadas para professores: preço, português e idade dos alunos",
+      "titulo_seo": "Comparativo de IAs para professores: 12 ferramentas",
+      "descricao": "ChatGPT, Gemini, Claude, Copilot, NotebookLM, Canva, MagicSchool e mais: para que serve cada IA, plano grátis, preço em reais e idade mínima dos alunos.",
+      "palavras_chave": [
+        "IA para professores",
+        "comparativo de IAs",
+        "ChatGPT na escola",
+        "ferramentas de IA para educação",
+        "IA na educação"
+      ],
+      "secao": "IA na prática",
+      "data": "2026-11-06",
+      "arquivo_janela": "comparativo-ias.txt",
+      "imagem": "comparativo-ias.png",
+      "imagem_depois_de": "<h2>A tabela resumida</h2>",
+      "imagem_antes": true,
+      "alt": "Cartão 12 IAs para professores, para que cada uma serve melhor, todas com plano grátis: ChatGPT, uso geral e exercícios; Gemini, Docs, Drive e Gmail; Claude, textos longos, 18 anos ou mais; Copilot, Word e PowerPoint; Meta AI, dentro do WhatsApp; Perplexity, pesquisa com fontes; DeepSeek, raciocínio e matemática; Le Chat, alternativa europeia; NotebookLM, estudar seus materiais; Canva, slides e cartazes; MagicSchool, ferramentas de professor; Gamma, apresentações rápidas. Rodapé: para os alunos, só o que a escola liberou.",
+      "legenda": "As 12 ferramentas e o uso em que cada uma se sai melhor."
     }
   ],
   "movidos": [
