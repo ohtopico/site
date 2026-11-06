@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Criando algoritmos com repetição | Computação 2º ano</title>
+<meta name="description" content="Aula 15 de Computação do 2º ano (EF02CO02): Criar um algoritmo próprio com repetições e testá-lo com um colega. Com folha para imprimir e gabarito.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-15-criando-algoritmos-com-repeticao/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-15-criando-algoritmos-com-repeticao/">
+<meta property="og:title" content="Criando algoritmos com repetição | Computação 2º ano">
+<meta property="og:description" content="Aula 15 de Computação do 2º ano (EF02CO02): Criar um algoritmo próprio com repetições e testá-lo com um colega. Com folha para imprimir e gabarito.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Card de BNCC Computação do material didático de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-15-criando-algoritmos-com-repeticao/#aula",
+   "url": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-15-criando-algoritmos-com-repeticao/",
+   "name": "Criando algoritmos com repetição (Computação, 2º ano, aula 15)",
+   "description": "Aula 15 de Computação do 2º ano (EF02CO02): Criar um algoritmo próprio com repetições e testá-lo com um colega. Com folha para imprimir e gabarito.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Plano de aula com atividade para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "2º ano do Ensino Fundamental",
+   "timeRequired": "PT50M",
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF02CO02",
+     "targetDescription": "Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, construídos como sequências com repetições simples (iterações definidas) com base em instruções preestabelecidas ou criadas, analisando como a precisão da instrução impacta na execução do algoritmo."
+    }
+   ],
+   "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "teacher"
+   },
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+   "isPartOf": {
+    "@id": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/#curso"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação ano a ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "2º ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Criando algoritmos com repetição",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-15-criando-algoritmos-com-repeticao/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=39a2e530b3">
+<link rel="stylesheet" href="/computacao-ano-a-ano/assets/ano-a-ano.css?v=39a2e530b3">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-ano-a-ano/">Computação ano a ano</a><a href="/material-didatico/jogos/">Jogos</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-ano-a-ano/">Computação ano a ano</a></li><li><a href="/computacao-ano-a-ano/2-ano/">2º ano</a></li><li aria-current="page">Aula 15</li></ol></nav>
+        <p class="rotulo">Computação · 2º ano · Aula 15 de 32 · 2º bimestre</p>
+        <h1>Criando algoritmos com repetição</h1>
+        <p class="linha-fina">Criar um algoritmo próprio com repetições e testá-lo com um colega.</p>
+        <div class="acoes">
+            <button type="button" class="btn98 escuro" data-imprimir="Estudante">Imprimir folha do estudante</button>
+            <button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações e gabarito</button>
+            <a class="btn98" href="/computacao-ano-a-ano/2-ano/computacao-2-ano-caderno-do-estudante.pdf" download>Caderno do ano (PDF)</a>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Bimestre</dt><dd>2º: Repetir para programar</dd>
+            <dt>Material</dt><dd>Papel quadriculado, lápis de cor e a folha do estudante.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/catalogo.html?hab=EF02CO02">EF02CO02</a>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, construídos como sequências com repetições simples (iterações definidas) com base em instruções preestabelecidas ou criadas, analisando como a precisão da instrução impacta na execução do algoritmo.</li></ul>
+        <h2>Passo a passo</h2>
+        <ol><li>Desenho programado (10 min): no quadriculado do quadro, siga o programa &quot;pinte 3 para a direita, 2 para baixo&quot; e mostre o desenho que aparece.</li><li>Criar (20 min): cada criança cria um caminho na malha da folha e escreve o programa com bolinhas.</li><li>Testar (15 min): troca de folhas. O colega segue o programa. Chegou no mesmo lugar?</li><li>Fechamento (5 min): quando não chegou, onde estava o erro? Na instrução ou em quem seguiu?</li></ol>
+        <h2>Texto para ler com a turma</h2>
+        <p class="texto-turma-pag">Agora você é o programador. Desenhe um tesouro na malha e escreva o caminho com setas e bolinhas. Depois, um colega vai seguir o seu programa. Se ele chegar ao tesouro, o seu algoritmo funcionou.</p>
+        
+        <h2>Alunos com diferentes necessidades</h2>
+        <p>Para estudantes com deficiência visual, use a malha em relevo do bloco 1 com cola quente e um objeto como tesouro.</p>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: resposta livre. Confira se as setas e as bolinhas levam o robô até a casa do tesouro.</li><li>Blocos 2 e 3: depende do teste. Valorize a correção do programa, porque consertar erros (depurar) faz parte de programar.</li></ul></details>
+        <h2 id="folhas">Folha para imprimir</h2>
+        <p>A folha é A4 com fundo branco, para economizar tinta. A segunda folha traz as orientações e o gabarito para o professor.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Criando algoritmos com repetição, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF02CO02 · Computação · 2º ano · Aula 15</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Criando algoritmos com repetição</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Desenhe um tesouro em uma casa. Escreva o programa para o robô chegar até ele.</span></h3><div class="bloco-corpo"><div class="aa-malha" style="--cols:5;--cel:15mm"><span><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="robô"><rect x="26" y="30" width="48" height="40" rx="10" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="40" cy="48" r="6" fill="#d9ecfb" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="60" cy="48" r="6" fill="#d9ecfb" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="42" y1="62" x2="58" y2="62" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="50" y1="30" x2="50" y2="16" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="13" r="5" fill="#fbd3cd" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="42" width="10" height="18" rx="4" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="74" y="42" width="10" height="18" rx="4" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="34" y="70" width="10" height="16" rx="3" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="56" y="70" width="10" height="16" rx="3" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="aa-setas"><span class="aa-seta vazia"></span><span class="aa-seta vazia"></span><span class="aa-seta vazia"></span><span class="aa-seta vazia"></span></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>O colega seguiu o seu programa e chegou no tesouro? Circule.</span></h3><div class="bloco-corpo"><div class="aa-circular"><span class="aa-op" style="--t:14mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="certo"><circle cx="50" cy="50" r="40" fill="#dcf1dc" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M28 52 L44 68 L74 34" fill="none" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-op" style="--t:14mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="errado"><circle cx="50" cy="50" r="40" fill="#fbd3cd" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="32" y1="32" x2="68" y2="68" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="68" y1="32" x2="32" y2="68" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>Se não chegou, desenhe aqui o programa consertado.</span></h3><div class="bloco-corpo"><div class="aa-setas"><span class="aa-seta vazia"></span><span class="aa-seta vazia"></span><span class="aa-seta vazia"></span><span class="aa-seta vazia"></span></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">2º ano · Aula 15 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Criando algoritmos com repetição</h2>
+    <h3>Objetivo</h3><p>Criar um algoritmo próprio com repetições e testá-lo com um colega.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF02CO02</b>: Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, construídos como sequências com repetições simples (iterações definidas) com base em instruções preestabelecidas ou criadas, analisando como a precisão da instrução impacta na execução do algoritmo.</p>
+    <h3>Material</h3><p>Papel quadriculado, lápis de cor e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Desenho programado (10 min): no quadriculado do quadro, siga o programa &quot;pinte 3 para a direita, 2 para baixo&quot; e mostre o desenho que aparece.</li><li>Criar (20 min): cada criança cria um caminho na malha da folha e escreve o programa com bolinhas.</li><li>Testar (15 min): troca de folhas. O colega segue o programa. Chegou no mesmo lugar?</li><li>Fechamento (5 min): quando não chegou, onde estava o erro? Na instrução ou em quem seguiu?</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Agora você é o programador. Desenhe um tesouro na malha e escreva o caminho com setas e bolinhas. Depois, um colega vai seguir o seu programa. Se ele chegar ao tesouro, o seu algoritmo funcionou.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: resposta livre. Confira se as setas e as bolinhas levam o robô até a casa do tesouro.</li><li>Blocos 2 e 3: depende do teste. Valorize a correção do programa, porque consertar erros (depurar) faz parte de programar.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para estudantes com deficiência visual, use a malha em relevo do bloco 1 com cola quente e um objeto como tesouro.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras aulas"><a href="/computacao-ano-a-ano/2-ano/aula-14-jogo-repete-repete/">← Aula 14: Jogo: Repete, Repete</a><a href="/computacao-ano-a-ano/2-ano/aula-16-revisao-e-avaliacao-do-2-bimestre/">Aula 16: Revisão e avaliação do 2º bimestre →</a></nav>
+        <p class="voltar"><a href="/computacao-ano-a-ano/2-ano/">Ver todas as aulas do 2º ano</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-ano-a-ano/">Computação ano a ano</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/computacao-ano-a-ano/assets/ano-a-ano.js" defer></script>
+</body>
+</html>

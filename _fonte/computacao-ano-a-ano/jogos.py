@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 
 from jogos1 import JOGOS1
+from jogos2 import JOGOS2
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
@@ -19,7 +20,7 @@ MD = RAIZ / 'material-didatico'
 SITE = 'https://ohtopico.com.br'
 esc = html.escape
 
-JOGOS = JOGOS1
+JOGOS = JOGOS1 + JOGOS2
 
 
 GTAG = '''<!-- Google tag (gtag.js) -->

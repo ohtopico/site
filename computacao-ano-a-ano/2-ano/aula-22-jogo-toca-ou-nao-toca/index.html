@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Jogo: Toca ou Não Toca?: Computação 2º ano | Júlia Quoos</title>
+<meta name="description" content="Aula 22 de Computação do 2º ano (EF02CO04): Separar hardware e software no jogo e explicar por que um precisa do outro. Com folha para imprimir e gabarito.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-22-jogo-toca-ou-nao-toca/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-22-jogo-toca-ou-nao-toca/">
+<meta property="og:title" content="Jogo: Toca ou Não Toca?: Computação 2º ano | Júlia Quoos">
+<meta property="og:description" content="Aula 22 de Computação do 2º ano (EF02CO04): Separar hardware e software no jogo e explicar por que um precisa do outro. Com folha para imprimir e gabarito.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Card de BNCC Computação do material didático de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-22-jogo-toca-ou-nao-toca/#aula",
+   "url": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-22-jogo-toca-ou-nao-toca/",
+   "name": "Jogo: Toca ou Não Toca? (Computação, 2º ano, aula 22)",
+   "description": "Aula 22 de Computação do 2º ano (EF02CO04): Separar hardware e software no jogo e explicar por que um precisa do outro. Com folha para imprimir e gabarito.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Plano de aula com atividade para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "2º ano do Ensino Fundamental",
+   "timeRequired": "PT50M",
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF02CO04",
+     "targetDescription": "Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware."
+    }
+   ],
+   "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "teacher"
+   },
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+   "isPartOf": {
+    "@id": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/#curso"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação ano a ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "2º ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Jogo: Toca ou Não Toca?",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/2-ano/aula-22-jogo-toca-ou-nao-toca/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=39a2e530b3">
+<link rel="stylesheet" href="/computacao-ano-a-ano/assets/ano-a-ano.css?v=39a2e530b3">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-ano-a-ano/">Computação ano a ano</a><a href="/material-didatico/jogos/">Jogos</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-ano-a-ano/">Computação ano a ano</a></li><li><a href="/computacao-ano-a-ano/2-ano/">2º ano</a></li><li aria-current="page">Aula 22</li></ol></nav>
+        <p class="rotulo">Computação · 2º ano · Aula 22 de 32 · 3º bimestre</p>
+        <h1>Jogo: Toca ou Não Toca?</h1>
+        <p class="linha-fina">Separar hardware e software no jogo e explicar por que um precisa do outro.</p>
+        <div class="acoes">
+            <button type="button" class="btn98 escuro" data-imprimir="Estudante">Imprimir folha do estudante</button>
+            <button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações e gabarito</button>
+            <a class="btn98" href="/computacao-ano-a-ano/2-ano/computacao-2-ano-caderno-do-estudante.pdf" download>Caderno do ano (PDF)</a>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Bimestre</dt><dd>3º: Máquinas, hardware e software</dd>
+            <dt>Material</dt><dd>Dispositivos com o jogo Toca ou Não Toca? e a folha do estudante.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/catalogo.html?hab=EF02CO04">EF02CO04</a>: Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware.</li></ul>
+        <h2>Passo a passo</h2>
+        <ol><li>Retomada (5 min): mostre a caixa da mão (hardware) e a caixa do aplicativo (software).</li><li>Jogo (25 min): em duplas.</li><li>Folha (15 min).</li><li>Conversa (5 min): o fone toca a música sozinho? O que ele precisa?</li></ol>
+        <h2>Texto para ler com a turma</h2>
+        <p class="texto-turma-pag">No jogo, toque nas caixas: a da mão é para o que dá para pegar, a dos quadradinhos é para os programas e arquivos. Pense: dá para tocar?</p>
+        <h2>Jogo da aula</h2><p><a href="/material-didatico/jogos/toca-ou-nao-toca.html"><b>Toca ou Não Toca?</b></a>: Jogo sem leitura para o 2º ano: separar o que é hardware (dá para tocar) do que é software (programas e arquivos) e ligar cada aparelho ao programa que ele usa.</p>
+        <h2>Alunos com diferentes necessidades</h2>
+        <p>Para quem precisa de apoio, faça a separação com objetos de verdade e cartões antes do jogo.</p>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: depende de cada criança (6 fases).</li><li>Bloco 2: caixa de som com a música, câmera com a foto, TV com o vídeo.</li><li>Bloco 3: errado. Sem software, o hardware não faz nada.</li></ul></details>
+        <h2 id="folhas">Folha para imprimir</h2>
+        <p>A folha é A4 com fundo branco, para economizar tinta. A segunda folha traz as orientações e o gabarito para o professor.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Jogo: Toca ou Não Toca?, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF02CO04 · Computação · 2º ano · Aula 22</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Jogo: Toca ou Não Toca?</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Pinte uma estrela para cada fase que você terminou.</span></h3><div class="bloco-corpo"><div class="aa-fila"><span class="aa-fig " style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="estrela branco"><path d="M50 10 L61 38 L91 39 L67 58 L76 88 L50 70 L24 88 L33 58 L9 39 L39 38 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-fig " style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="estrela branco"><path d="M50 10 L61 38 L91 39 L67 58 L76 88 L50 70 L24 88 L33 58 L9 39 L39 38 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-fig " style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="estrela branco"><path d="M50 10 L61 38 L91 39 L67 58 L76 88 L50 70 L24 88 L33 58 L9 39 L39 38 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-fig " style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="estrela branco"><path d="M50 10 L61 38 L91 39 L67 58 L76 88 L50 70 L24 88 L33 58 L9 39 L39 38 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-fig " style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="estrela branco"><path d="M50 10 L61 38 L91 39 L67 58 L76 88 L50 70 L24 88 L33 58 L9 39 L39 38 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-fig " style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="estrela branco"><path d="M50 10 L61 38 L91 39 L67 58 L76 88 L50 70 L24 88 L33 58 L9 39 L39 38 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>Ligue cada peça ao programa que ela usa.</span></h3><div class="bloco-corpo"><div class="aa-ligar"><div class="aa-ligar-par"><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="caixa de som"><rect x="26" y="10" width="48" height="80" rx="8" fill="#d9d9d9" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="34" r="10" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="64" r="16" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="64" r="5" fill="#111" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="ponto"></span><span></span><span class="ponto"></span><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="vídeo"><rect x="10" y="22" width="80" height="56" rx="8" fill="#d0d0d0" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M42 36 L64 50 L42 64 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div><div class="aa-ligar-par"><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="câmera"><rect x="10" y="30" width="80" height="52" rx="8" fill="#d9d9d9" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="22" y="20" width="22" height="12" rx="3" fill="#d9d9d9" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="56" r="18" fill="#d9ecfb" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="56" r="8" fill="#111" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="78" cy="40" r="3" fill="#fff1b8" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="ponto"></span><span></span><span class="ponto"></span><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="música"><circle cx="32" cy="74" r="12" fill="#111" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="72" cy="64" r="12" fill="#111" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M44 74 L44 22 L84 12 L84 64" fill="none" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="44" y1="32" x2="84" y2="22" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div><div class="aa-ligar-par"><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="televisão"><rect x="8" y="20" width="84" height="56" rx="6" fill="#d0d0d0" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="15" y="27" width="70" height="42" rx="2" fill="#f2f8ff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="36" y1="6" x2="50" y2="20" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="64" y1="6" x2="50" y2="20" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="30" y1="76" x2="26" y2="88" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="70" y1="76" x2="74" y2="88" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="ponto"></span><span></span><span class="ponto"></span><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="foto"><rect x="10" y="20" width="80" height="60" rx="6" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M18 72 L40 44 L56 62 L66 52 L82 72 Z" fill="#dcf1dc" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="68" cy="36" r="7" fill="#fff1b8" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>O computador sem nenhum programa mostra um jogo? Circule.</span></h3><div class="bloco-corpo"><div class="aa-ces"><div class="aa-ce"><div class="aa-fila"><span class="aa-fig" style="--t:14mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="computador"><rect x="14" y="14" width="72" height="50" rx="6" fill="#d9ecfb" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="20" y="20" width="60" height="38" rx="2" fill="#f2f8ff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="40" y="64" width="20" height="12" rx="0" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="26" y="76" width="48" height="10" rx="4" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-fig" style="--t:14mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="sem aplicativos"><rect x="14" y="14" width="32" height="32" rx="8" fill="#fbd3cd" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="54" y="14" width="32" height="32" rx="8" fill="#d9ecfb" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="14" y="54" width="32" height="32" rx="8" fill="#dcf1dc" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="54" y="54" width="32" height="32" rx="8" fill="#fff1b8" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="12" y1="12" x2="88" y2="88" stroke="#c21f3a" stroke-width="8" stroke-linecap="round"/></svg></span><span class="aa-fig" style="--t:14mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="jogo na tela"><rect x="10" y="14" width="80" height="58" rx="6" fill="#d0d0d0" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="20" width="68" height="46" rx="2" fill="#f2f8ff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M30 56 L42 36 L52 50 L60 42 L72 56 Z" fill="#dcf1dc" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="66" cy="30" r="5" fill="#fff1b8" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div><div class="aa-circular mini"><span class="aa-op" style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="certo"><circle cx="50" cy="50" r="40" fill="#dcf1dc" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M28 52 L44 68 L74 34" fill="none" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="aa-op" style="--t:13mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="errado"><circle cx="50" cy="50" r="40" fill="#fbd3cd" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="32" y1="32" x2="68" y2="68" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="68" y1="32" x2="32" y2="68" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div></div></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">2º ano · Aula 22 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Jogo: Toca ou Não Toca?</h2>
+    <h3>Objetivo</h3><p>Separar hardware e software no jogo e explicar por que um precisa do outro.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF02CO04</b>: Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware.</p>
+    <h3>Material</h3><p>Dispositivos com o jogo Toca ou Não Toca? e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Retomada (5 min): mostre a caixa da mão (hardware) e a caixa do aplicativo (software).</li><li>Jogo (25 min): em duplas.</li><li>Folha (15 min).</li><li>Conversa (5 min): o fone toca a música sozinho? O que ele precisa?</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">No jogo, toque nas caixas: a da mão é para o que dá para pegar, a dos quadradinhos é para os programas e arquivos. Pense: dá para tocar?</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: depende de cada criança (6 fases).</li><li>Bloco 2: caixa de som com a música, câmera com a foto, TV com o vídeo.</li><li>Bloco 3: errado. Sem software, o hardware não faz nada.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para quem precisa de apoio, faça a separação com objetos de verdade e cartões antes do jogo.</p>
+    <h3>Jogo</h3><p>Toca ou Não Toca?: ohtopico.com.br/material-didatico/jogos/toca-ou-nao-toca.html</p>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras aulas"><a href="/computacao-ano-a-ano/2-ano/aula-21-software-os-programas/">← Aula 21: Software: os programas</a><a href="/computacao-ano-a-ano/2-ano/aula-23-computador-de-sucata/">Aula 23: Computador de sucata →</a></nav>
+        <p class="voltar"><a href="/computacao-ano-a-ano/2-ano/">Ver todas as aulas do 2º ano</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-ano-a-ano/">Computação ano a ano</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/computacao-ano-a-ano/assets/ano-a-ano.js" defer></script>
+</body>
+</html>
