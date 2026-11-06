@@ -1,5 +1,6 @@
 /* Mundo da turma: quando o aluno entrou pela turma (/mundo/entrar/), o progresso vai para o banco
-   a cada pouco tempo e quando a aba fecha. Sem turma, nada muda: o Mundo salva só no navegador. */
+   a cada pouco tempo e quando a aba fecha. Sem turma, nada muda: o Mundo salva só no navegador.
+   Também manda um sinal leve a cada 20 s para o painel "Aula ao vivo" da professora. */
 (function () {
   const T = window.MUNDO_TURMA, D = window.MUNDO_DEBUG;
   if (!T || !D || !T.configurado() || !T.aluno.sessao()) return;
@@ -35,7 +36,37 @@
   }
   setTimeout(() => enviar(true), 4000);
   setInterval(() => enviar(false), 90000);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) enviar(false); });
+
+  /* Aula ao vivo: a cada 20 s, com a aba aberta, avisa o painel da professora onde o aluno está e quantos pontos tem.
+     É um aviso pequeno (uma linha de texto), o salvamento completo continua a cada 90 s. */
+  const semEmoji = t => String(t || '').replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F\u200D]/gu, '').replace(/\s+/g, ' ').trim();
+  function fazendo() {
+    try {
+      const f = D.atual && D.atual(), sl = D.sala && D.sala(), vi = D.visita && D.visita();
+      let lugar = f ? f.nome : '';
+      if (sl && D.SALAS && D.SALAS[sl]) lugar = D.SALAS[sl].nome || lugar;
+      else if (vi) lugar = 'Casa de ' + (vi.nome || 'um vizinho');
+      else if (D.dentro && D.dentro()) lugar = 'Na própria casa';
+      let ativ = '';
+      const j = document.querySelector('.janela:not([hidden])');
+      if (j) {
+        if (j.id === 'j-jogo') ativ = 'jogando ' + semEmoji((document.getElementById('jm-t') || {}).textContent);
+        else { const h = j.querySelector('h2, strong'); ativ = semEmoji(h && h.textContent); }
+      }
+      return (semEmoji(lugar) + (ativ ? ' · ' + ativ : '')).slice(0, 120);
+    } catch (e) { return ''; }
+  }
+  let pingando = false;
+  async function ping(ativo) {
+    if (pingando) return; pingando = true;
+    try { const st = D.S(); const ok = await T.aluno.ping(ativo ? fazendo() : '', st.pontos | 0, st.acertos | 0, ativo); if (ok === false) estado('a sessão venceu, entre de novo'); }
+    catch (e) {} finally { pingando = false; }
+  }
+  setTimeout(() => ping(true), 2500);
+  setInterval(() => { if (!document.hidden) ping(true); }, 20000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { enviar(false); ping(false); } else ping(true);
+  });
 
   document.getElementById('bt-sair').addEventListener('click', async ev => {
     ev.target.disabled = true; estado('salvando antes de sair');
