@@ -735,5 +735,108 @@
     return { dica: () => { const i = esc.indexOf(null); return i >= 0 ? linhas[i].firstChild : ok; } };
   };
 
+  /* Coordenadas (matriz): grade com letras nas colunas e números nas linhas. itens: {'B2': 'maca'} já postos na grade.
+     pedir: ['B2', 'C3'] → tocar nas casas pedidas, na ordem; cada uma recebe marca (figura) ou cor (pintar a casa).
+     onde: figura + opcoes de coordenadas ('A1') + certa → dizer onde está.  qual: 'B3' + opcoes de figuras + certa → dizer o que está ali. */
+  MEC.coordenada = function (f, palco, api) {
+    const cols = f.cols || 5, rows = f.rows || 5, L = 'ABCDEFGHIJ';
+    const g = h('div', 'pq-coord'); g.style.setProperty('--cols', cols);
+    g.append(h('span', 'rot', ''));
+    for (let x = 0; x < cols; x++) g.append(h('span', 'rot', L[x]));
+    const cels = {};
+    for (let y = 0; y < rows; y++) {
+      g.append(h('span', 'rot', String(y + 1)));
+      for (let x = 0; x < cols; x++) {
+        const k = L[x] + (y + 1), it = f.itens && f.itens[k];
+        const c = h(f.pedir ? 'button' : 'span', 'cel', it ? svgFig(it) : '');
+        if (f.pedir) c.type = 'button';
+        c.setAttribute('aria-label', 'casa ' + k + (it ? ': ' + nomeFig(it) : ''));
+        if (f.pintadas && f.pintadas[k]) c.style.background = FG.CORES[f.pintadas[k]] || f.pintadas[k];
+        cels[k] = c; g.append(c);
+      }
+    }
+    if (f.onde) { palco.append(quadro([f.onde]), g); return opcoes({ opcoes: f.opcoes.map(t => ({ txt: t })), certa: f.certa, fixa: f.fixa }, palco, api); }
+    if (f.qual) { palco.append(h('div', 'pq-coord-pede', `<span>${f.qual}</span>`), g); return opcoes({ opcoes: f.opcoes, certa: f.certa }, palco, api); }
+    let k = 0;
+    const pede = h('div', 'pq-coord-pede');
+    palco.append(pede, g);
+    const marca = i => [].concat(f.marca || 'estrela')[Math.min(i, [].concat(f.marca || 'estrela').length - 1)];
+    const corDe = i => f.cor && [].concat(f.cor)[Math.min(i, [].concat(f.cor).length - 1)];
+    function mostrar() {
+      const c = corDe(k);
+      pede.innerHTML = `<span>${f.pedir[k]}</span>` + (c ? `<i style="background:${FG.CORES[c] || c}"></i>` : svgFig(marca(k)));
+      api.anunciar('Casa ' + f.pedir[k]);
+    }
+    Object.entries(cels).forEach(([kk, c]) => {
+      c.onclick = () => {
+        if (k >= f.pedir.length) return;
+        if (kk !== f.pedir[k]) return api.errou(c);
+        SOM.certo();
+        const cc = corDe(k);
+        if (cc) c.style.background = FG.CORES[cc] || cc; else c.innerHTML = svgFig(marca(k));
+        k++;
+        if (k >= f.pedir.length) setTimeout(api.acertou, 300); else mostrar();
+      };
+    });
+    mostrar();
+    return { dica: () => cels[f.pedir[k]] };
+  };
+
+  /* Binário: cartas de bolinhas (8, 4, 2, 1). Tocar vira a carta: para cima vale 1 (conta as bolinhas), para baixo vale 0.
+     alvo: número a formar. bits: quantidade de cartas (padrão 4). */
+  MEC.binario = function (f, palco, api) {
+    const n = f.bits || 4, vals = [...Array(n)].map((_, i) => 2 ** (n - 1 - i)), est = vals.map(() => 0);
+    const alvo = h('div', 'pq-bin-alvo', `<b>${f.alvo}</b>` + (f.pontos === false ? '' : `<span>${'<i></i>'.repeat(f.alvo)}</span>`));
+    alvo.setAttribute('aria-label', 'Forme o número ' + f.alvo);
+    const linha = h('div', 'pq-linha');
+    const cards = vals.map((v, i) => {
+      const b = h('button', 'pq-bin'); b.type = 'button';
+      const draw = () => {
+        b.innerHTML = `<span class="pts">${'<i></i>'.repeat(v)}</span><b>${est[i]}</b>`;
+        b.classList.toggle('on', !!est[i]);
+        b.setAttribute('aria-label', `carta de ${v}: ${est[i] ? 'para cima, vale 1' : 'para baixo, vale 0'}`);
+      };
+      draw();
+      b.onclick = () => { est[i] ^= 1; SOM.toque(); draw(); conferir(); };
+      linha.append(b); return b;
+    });
+    const soma = h('div', 'pq-bin-soma');
+    function conferir() {
+      const s = vals.reduce((a, v, i) => a + v * est[i], 0);
+      soma.textContent = est.join('') + ' = ' + s;
+      if (s === f.alvo) { SOM.certo(); setTimeout(api.acertou, 400); }
+    }
+    palco.append(alvo, linha, soma); conferir();
+    return { dica: () => { let r = f.alvo; const quer = vals.map(v => (r >= v ? (r -= v, 1) : 0)); const i = quer.findIndex((q, j) => q !== est[j]); return i >= 0 ? cards[i] : null; } };
+  };
+
+  /* Cores de luz (RGB): três luzes (vermelha, verde, azul), cada uma de 0 até niveis (padrão 1: apagada ou acesa).
+     alvo: [r, g, b] nos mesmos níveis. A tela mostra a mistura e o quadrado ao lado mostra a cor a formar. */
+  MEC.rgb = function (f, palco, api) {
+    const N = f.niveis || 1, v = [0, 0, 0], nomes = ['vermelha', 'verde', 'azul'], base = ['#e53935', '#43a047', '#1e88e5'];
+    const cor = a => `rgb(${a.map(x => Math.round(x / N * 255)).join(',')})`;
+    const telas = h('div', 'pq-linha');
+    const alvo = h('div', 'pq-rgb alvo'); alvo.style.background = cor(f.alvo); alvo.setAttribute('role', 'img'); alvo.setAttribute('aria-label', 'cor para formar: ' + (f.nome || f.alvo.join(', ')));
+    const mix = h('div', 'pq-rgb'); mix.setAttribute('role', 'img');
+    telas.append(alvo, h('span', 'pq-rgb-igual', '='), mix);
+    const bts = h('div', 'pq-linha');
+    const bs = [0, 1, 2].map(i => {
+      const b = h('button', 'pq-bt grande pq-luz'); b.type = 'button';
+      const draw = () => {
+        b.innerHTML = `<svg viewBox="0 0 100 100" class="fg"><circle cx="50" cy="42" r="30" fill="${base[i]}" fill-opacity="${0.15 + 0.85 * v[i] / N}" stroke="#111" stroke-width="5"/><rect x="38" y="72" width="24" height="18" rx="4" fill="#ccc" stroke="#111" stroke-width="5"/></svg>` + (N > 1 ? `<span class="nv">${v[i]}</span>` : '');
+        b.setAttribute('aria-label', `luz ${nomes[i]}: ${v[i] ? (N > 1 ? 'nível ' + v[i] : 'acesa') : 'apagada'}`);
+      };
+      draw();
+      b.onclick = () => { v[i] = (v[i] + 1) % (N + 1); SOM.toque(); draw(); conferir(); };
+      bts.append(b); return b;
+    });
+    function conferir() {
+      mix.style.background = cor(v); mix.setAttribute('aria-label', 'mistura: ' + v.join(', '));
+      if (v.every((x, i) => x === f.alvo[i])) { SOM.certo(); setTimeout(api.acertou, 400); }
+    }
+    palco.append(telas, bts); conferir();
+    return { dica: () => { const i = v.findIndex((x, k) => x !== f.alvo[k]); return i >= 0 ? bs[i] : null; } };
+  };
+
   window.PQ = { jogo, MEC, svgFig, nomeFig, falar, SOM, ic, seta, embaralhar, h, carta, quadro, opcoes, esperar };
 })();

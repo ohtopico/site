@@ -148,3 +148,30 @@ def escrever(n=2):
 def lado(*blocos):
     """Blocos lado a lado (duas colunas) para a folha caber numa página."""
     return '<div class="aa-lado">' + ''.join(f'<div>{b}</div>' for b in blocos) + '</div>'
+
+
+def grade_coord(cols, rows, itens=None, cel=12, pintadas=None):
+    """Matriz com letras nas colunas e números nas linhas (coordenadas como B3)."""
+    itens = itens or {}
+    pintadas = pintadas or {}
+    L = 'ABCDEFGHIJ'
+    out = '<span></span>' + ''.join(f'<b>{L[x]}</b>' for x in range(cols))
+    for y in range(rows):
+        out += f'<b>{y + 1}</b>'
+        for x in range(cols):
+            k = f'{L[x]}{y + 1}'
+            estilo = f' class="pint" data-cor="{pintadas[k]}"' if k in pintadas else ''
+            out += f'<span{estilo}>{figura(itens[k]) if k in itens else ""}</span>'
+    return f'<div class="aa-coord" style="--cols:{cols};--cel:{cel}mm">{out}</div>'
+
+
+def cartas_binario(bits=None, n=4, tam=16):
+    """Cartas de bolinhas (8, 4, 2, 1). bits: '0101' mostra as cartas viradas; None deixa quadradinhos para escrever 0 ou 1."""
+    vals = [2 ** (n - 1 - i) for i in range(n)]
+    out = ''
+    for i, v in enumerate(vals):
+        b = bits[i] if bits else None
+        pontos = ''.join('<i></i>' for _ in range(v))
+        cls = ' baixo' if b == '0' else ''
+        out += f'<div class="aa-bin{cls}" style="--t:{tam}mm"><span>{pontos}</span><em>{v}</em><u>{b if b else ""}</u></div>'
+    return f'<div class="aa-bins">{out}</div>'
