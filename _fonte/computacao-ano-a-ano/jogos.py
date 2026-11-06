@@ -16,6 +16,7 @@ from jogos2 import JOGOS2
 from jogos3 import JOGOS3
 from jogos4 import JOGOS4
 from jogos5 import JOGOS5
+from jogos6 import JOGOS6
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent.parent
@@ -23,7 +24,7 @@ MD = RAIZ / 'material-didatico'
 SITE = 'https://ohtopico.com.br'
 esc = html.escape
 
-JOGOS = JOGOS1 + JOGOS2 + JOGOS3 + JOGOS4 + JOGOS5
+JOGOS = JOGOS1 + JOGOS2 + JOGOS3 + JOGOS4 + JOGOS5 + JOGOS6
 
 
 GTAG = '''<!-- Google tag (gtag.js) -->
