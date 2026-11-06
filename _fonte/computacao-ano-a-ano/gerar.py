@@ -28,7 +28,7 @@ HUB = '/computacao-ano-a-ano/'
 OG = f'{SITE}/material-didatico/assets/og-bncc.jpg'
 esc = html.escape
 ANOS = [importlib.import_module(f'ano{n}') for n in range(1, 7) if (AQUI / f'ano{n}.py').exists()]
-JOGO = {j['id']: j for j in JOGOS}
+JOGO = {j['id']: j for j in JOGOS + [x for m in ANOS for x in getattr(m, 'JOGOS_EXISTENTES', [])]}
 AUTORA = {'@type': 'Person', '@id': f'{SITE}/#julia', 'name': 'Júlia Roberta Quoos Alves', 'url': f'{SITE}/'}
 RODAPE = 'ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula'
 

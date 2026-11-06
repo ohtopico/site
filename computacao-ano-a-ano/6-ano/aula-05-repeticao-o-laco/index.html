@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Repetição: o laço: Computação 6º ano | Júlia Quoos</title>
+<meta name="description" content="Aula 5 de Computação do 6º ano (EF06CO02): Usar a repetição (laço) para escrever algoritmos mais curtos. Com folha para imprimir e gabarito.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-ano-a-ano/6-ano/aula-05-repeticao-o-laco/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-ano-a-ano/6-ano/aula-05-repeticao-o-laco/">
+<meta property="og:title" content="Repetição: o laço: Computação 6º ano | Júlia Quoos">
+<meta property="og:description" content="Aula 5 de Computação do 6º ano (EF06CO02): Usar a repetição (laço) para escrever algoritmos mais curtos. Com folha para imprimir e gabarito.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Card de BNCC Computação do material didático de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-ano-a-ano/6-ano/aula-05-repeticao-o-laco/#aula",
+   "url": "https://ohtopico.com.br/computacao-ano-a-ano/6-ano/aula-05-repeticao-o-laco/",
+   "name": "Repetição: o laço (Computação, 6º ano, aula 5)",
+   "description": "Aula 5 de Computação do 6º ano (EF06CO02): Usar a repetição (laço) para escrever algoritmos mais curtos. Com folha para imprimir e gabarito.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Plano de aula com atividade para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "6º ano do Ensino Fundamental",
+   "timeRequired": "PT50M",
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF06CO02",
+     "targetDescription": "Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação."
+    }
+   ],
+   "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "teacher"
+   },
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+   "isPartOf": {
+    "@id": "https://ohtopico.com.br/computacao-ano-a-ano/6-ano/#curso"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação ano a ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "6º ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/6-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Repetição: o laço",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/6-ano/aula-05-repeticao-o-laco/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=4612de3c69">
+<link rel="stylesheet" href="/computacao-ano-a-ano/assets/ano-a-ano.css?v=4612de3c69">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-ano-a-ano/">Computação ano a ano</a><a href="/material-didatico/jogos/">Jogos</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-ano-a-ano/">Computação ano a ano</a></li><li><a href="/computacao-ano-a-ano/6-ano/">6º ano</a></li><li aria-current="page">Aula 5</li></ol></nav>
+        <p class="rotulo">Computação · 6º ano · Aula 5 de 32 · 1º bimestre</p>
+        <h1>Repetição: o laço</h1>
+        <p class="linha-fina">Usar a repetição (laço) para escrever algoritmos mais curtos.</p>
+        <div class="acoes">
+            <button type="button" class="btn98 escuro" data-imprimir="Estudante">Imprimir folha do estudante</button>
+            <button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações e gabarito</button>
+            <a class="btn98" href="/computacao-ano-a-ano/6-ano/computacao-6-ano-caderno-do-estudante.pdf" download>Caderno do ano (PDF)</a>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Bimestre</dt><dd>1º: Dados e algoritmos</dd>
+            <dt>Material</dt><dd>Quadro e a folha do estudante.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/catalogo.html?hab=EF06CO02">EF06CO02</a>: Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</li></ul>
+        <h2>Passo a passo</h2>
+        <ol><li>Desafio (10 min): escreva no quadro &quot;frente&quot; dez vezes. Pergunte: tem jeito mais curto?</li><li>Laço (15 min): mostre &quot;repita 10 vezes [frente]&quot; e exemplos com dois comandos dentro do laço.</li><li>Folha (20 min).</li><li>Fechamento (5 min): onde o computador repete coisas? (Músicas em loop, contagem, animações.)</li></ol>
+        <h2>Texto para ler com a turma</h2>
+        <p class="texto-turma-pag">Quando um pedaço do algoritmo se repete, usamos um laço: &quot;repita N vezes&quot; e, dentro dele, os comandos que se repetem. O programa fica mais curto, mais fácil de ler e de mudar.</p>
+        
+        <h2>Alunos com diferentes necessidades</h2>
+        <p>Faça os desenhos andando no pátio ou com uma tartaruga de papel sobre a mesa.</p>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: repita 2 vezes [repita 4 vezes [frente], gire].</li><li>Bloco 2: um quadrado.</li><li>Bloco 3: repita 3 vezes [ande 5 passos, gire 120 graus].</li></ul></details>
+        <h2 id="folhas">Folha para imprimir</h2>
+        <p>A folha é A4 com fundo branco, para economizar tinta. A segunda folha traz as orientações e o gabarito para o professor.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Repetição: o laço, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF06CO02 · Computação · 6º ano · Aula 5</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Repetição: o laço</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Reescreva usando "repita".</span></h3><div class="bloco-corpo"><p style="font-family:monospace;font-size:12px;line-height:1.5;margin:2mm 0">frente, frente, frente, frente, gire, frente, frente, frente, frente, gire</p></div></section><div class="linhas"><span></span></div><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>O que este programa desenha?</span></h3><div class="bloco-corpo"><p style="font-family:monospace;font-size:12px;line-height:1.5;margin:2mm 0">repita 4 vezes [<br>&nbsp;&nbsp;ande 5 passos<br>&nbsp;&nbsp;gire 90 graus<br>]</p></div></section><div class="linhas"><span></span></div><section class="bloco"><h3 class="instrucao"><span class="num">3</span><span>Escreva um programa com "repita" para desenhar um triângulo.</span></h3><div class="bloco-corpo"><div class="linhas"><span></span><span></span></div></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">6º ano · Aula 5 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Repetição: o laço</h2>
+    <h3>Objetivo</h3><p>Usar a repetição (laço) para escrever algoritmos mais curtos.</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF06CO02</b>: Elaborar algoritmos com instruções sequenciais, de repetição e de seleção usando uma linguagem de programação.</p>
+    <h3>Material</h3><p>Quadro e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>Desafio (10 min): escreva no quadro &quot;frente&quot; dez vezes. Pergunte: tem jeito mais curto?</li><li>Laço (15 min): mostre &quot;repita 10 vezes [frente]&quot; e exemplos com dois comandos dentro do laço.</li><li>Folha (20 min).</li><li>Fechamento (5 min): onde o computador repete coisas? (Músicas em loop, contagem, animações.)</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Quando um pedaço do algoritmo se repete, usamos um laço: &quot;repita N vezes&quot; e, dentro dele, os comandos que se repetem. O programa fica mais curto, mais fácil de ler e de mudar.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: repita 2 vezes [repita 4 vezes [frente], gire].</li><li>Bloco 2: um quadrado.</li><li>Bloco 3: repita 3 vezes [ande 5 passos, gire 120 graus].</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Faça os desenhos andando no pátio ou com uma tartaruga de papel sobre a mesa.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras aulas"><a href="/computacao-ano-a-ano/6-ano/aula-04-algoritmos-em-sequencia/">← Aula 4: Algoritmos em sequência</a><a href="/computacao-ano-a-ano/6-ano/aula-06-selecao-se-e-senao/">Aula 6: Seleção: SE e SENÃO →</a></nav>
+        <p class="voltar"><a href="/computacao-ano-a-ano/6-ano/">Ver todas as aulas do 6º ano</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-ano-a-ano/">Computação ano a ano</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/computacao-ano-a-ano/assets/ano-a-ano.js" defer></script>
+</body>
+</html>
