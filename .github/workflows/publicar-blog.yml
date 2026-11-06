@@ -60,6 +60,9 @@ jobs:
             python _fonte/assistente/indexar.py --site .
             # Índice de aulas do README com os materiais do site
             node _fonte/readme/gerar.js
+            # Miniatura própria (prévia do link no WhatsApp, Instagram etc.) para cada página;
+            # roda depois dos outros geradores, que escrevem a capa genérica
+            node _fonte/og/paginas.js
           }
 
           for tentativa in 1 2 3 4 5; do
