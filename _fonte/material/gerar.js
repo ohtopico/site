@@ -739,7 +739,8 @@ ${cabecaSEO({ title, desc, url, img, imgAlt: 'BNCC Computação: habilidades e m
     <li><strong>Cultura digital</strong> (${nEixo('CD')} habilidades): uso crítico, ético e seguro da tecnologia, direitos autorais, privacidade e convivência on-line.</li>
   </ul>
 ${temEM ? `  <p>No <strong>Ensino Médio</strong>, as ${nEM} habilidades seguem o código <strong>EM13CO00</strong> e valem para as três séries. Elas se organizam em competências específicas (limites da computação, segurança, aplicação, produção ética, projetos, comunicação e ação responsável), e não por eixos; aqui cada uma aparece também com o eixo mais próximo, para facilitar o planejamento junto com o Fundamental.</p>
-` : ''}  <p>Abaixo estão as ${cos.length} habilidades. Cada link leva a uma página com tudo o que está pronto para a aula: plano, slides em PDF, jogos que funcionam no navegador e no celular, fichas desplugadas para imprimir e listas com gabarito.</p>
+` : ''}  <p>Para os anos iniciais e o 6º ano, a seção <a href="/computacao-ano-a-ano/">Computação ano a ano</a> traz o ano letivo completo de cada série, com aulas, folhas para imprimir, gabaritos e jogos que não pedem leitura.</p>
+  <p>Abaixo estão as ${cos.length} habilidades. Cada link leva a uma página com tudo o que está pronto para a aula: plano, slides em PDF, jogos que funcionam no navegador e no celular, fichas desplugadas para imprimir e listas com gabarito.</p>
 ${anos.map(a => `
   <h2 id="ano-${a}">${anoNome(a)}</h2>
   <div class="related">${cos.filter(h => h.ano === a).map(linha).join('')}
