@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Um problema grande em partes | Computação 3º ano</title>
+<meta name="description" content="Aula 5 de Computação do 3º ano (EF03CO03): Dividir um problema grande em partes menores (decomposição). Com folha para imprimir e gabarito.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/computacao-ano-a-ano/3-ano/aula-05-um-problema-grande-em-partes/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/computacao-ano-a-ano/3-ano/aula-05-um-problema-grande-em-partes/">
+<meta property="og:title" content="Um problema grande em partes | Computação 3º ano">
+<meta property="og:description" content="Aula 5 de Computação do 3º ano (EF03CO03): Dividir um problema grande em partes menores (decomposição). Com folha para imprimir e gabarito.">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/assets/og-bncc.jpg">
+<meta property="og:image:alt" content="Card de BNCC Computação do material didático de Júlia Roberta Quoos Alves.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "LearningResource",
+   "@id": "https://ohtopico.com.br/computacao-ano-a-ano/3-ano/aula-05-um-problema-grande-em-partes/#aula",
+   "url": "https://ohtopico.com.br/computacao-ano-a-ano/3-ano/aula-05-um-problema-grande-em-partes/",
+   "name": "Um problema grande em partes (Computação, 3º ano, aula 5)",
+   "description": "Aula 5 de Computação do 3º ano (EF03CO03): Dividir um problema grande em partes menores (decomposição). Com folha para imprimir e gabarito.",
+   "inLanguage": "pt-BR",
+   "learningResourceType": "Plano de aula com atividade para imprimir",
+   "isAccessibleForFree": true,
+   "educationalLevel": "3º ano do Ensino Fundamental",
+   "timeRequired": "PT50M",
+   "educationalAlignment": [
+    {
+     "@type": "AlignmentObject",
+     "alignmentType": "teaches",
+     "educationalFramework": "BNCC Computação",
+     "targetName": "EF03CO03",
+     "targetDescription": "Aplicar a estratégia de decomposição para resolver problemas complexos, dividindo esse problema em partes menores, resolvendo-as e combinando suas soluções."
+    }
+   ],
+   "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "teacher"
+   },
+   "author": {
+    "@type": "Person",
+    "@id": "https://ohtopico.com.br/#julia",
+    "name": "Júlia Roberta Quoos Alves",
+    "url": "https://ohtopico.com.br/"
+   },
+   "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+   "isPartOf": {
+    "@id": "https://ohtopico.com.br/computacao-ano-a-ano/3-ano/#curso"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Início",
+     "item": "https://ohtopico.com.br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Computação ano a ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "3º ano",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/3-ano/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Um problema grande em partes",
+     "item": "https://ohtopico.com.br/computacao-ano-a-ano/3-ano/aula-05-um-problema-grande-em-partes/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/matematica-adaptada/assets/fichas.css?v=39a2e530b3">
+<link rel="stylesheet" href="/computacao-ano-a-ano/assets/ano-a-ano.css?v=39a2e530b3">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+    <a class="marca-site" href="/">Júlia Quoos</a>
+    <nav aria-label="Principal"><a href="/computacao-ano-a-ano/">Computação ano a ano</a><a href="/material-didatico/jogos/">Jogos</a><a href="/material-didatico/bncc/">BNCC Computação</a><a href="/blog/">Blog</a></nav>
+</header>
+<main id="conteudo" tabindex="-1">
+    <div class="texto">
+        <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-ano-a-ano/">Computação ano a ano</a></li><li><a href="/computacao-ano-a-ano/3-ano/">3º ano</a></li><li aria-current="page">Aula 5</li></ol></nav>
+        <p class="rotulo">Computação · 3º ano · Aula 5 de 32 · 1º bimestre</p>
+        <h1>Um problema grande em partes</h1>
+        <p class="linha-fina">Dividir um problema grande em partes menores (decomposição).</p>
+        <div class="acoes">
+            <button type="button" class="btn98 escuro" data-imprimir="Estudante">Imprimir folha do estudante</button>
+            <button type="button" class="btn98" data-imprimir="Professor">Imprimir orientações e gabarito</button>
+            <a class="btn98" href="/computacao-ano-a-ano/3-ano/computacao-3-ano-caderno-do-estudante.pdf" download>Caderno do ano (PDF)</a>
+        </div>
+        <dl class="ficha-dados">
+            <dt>Tempo</dt><dd>50 minutos</dd>
+            <dt>Bimestre</dt><dd>1º: Verdadeiro, falso e partes</dd>
+            <dt>Material</dt><dd>Uma imagem de uma festa ou de um passeio, papel pardo e a folha do estudante.</dd>
+        </dl>
+        <h2>Habilidades da BNCC</h2>
+        <ul><li><a href="/material-didatico/catalogo.html?hab=EF03CO03">EF03CO03</a>: Aplicar a estratégia de decomposição para resolver problemas complexos, dividindo esse problema em partes menores, resolvendo-as e combinando suas soluções.</li></ul>
+        <h2>Passo a passo</h2>
+        <ol><li>O problema grande (10 min): a turma vai organizar uma festa. Parece difícil? O que precisamos? Anote tudo no quadro.</li><li>Separar em partes (15 min): agrupe o que foi anotado em partes: comida, enfeite, música, convite. Cada parte é um problema menor.</li><li>Folha (15 min).</li><li>Fechamento (10 min): os programadores fazem isso o tempo todo. Um jogo é feito em partes: personagem, cenário, pontos, sons.</li></ol>
+        <h2>Texto para ler com a turma</h2>
+        <p class="texto-turma-pag">Quando um problema é grande demais, a gente divide em partes menores. Organizar uma festa inteira parece difícil. Mas fazer o convite, depois os enfeites, depois a comida, um de cada vez, fica possível. Isso se chama decomposição.</p>
+        
+        <h2>Alunos com diferentes necessidades</h2>
+        <p>Para estudantes com TDAH ou dificuldades de organização, use um quadro visual com as partes de uma tarefa da rotina (arrumar a mochila) e vá riscando cada parte pronta.</p>
+        <details class="gabarito"><summary>Gabarito</summary><ul><li>Bloco 1: copo com comida (bolo), bandeira com enfeite (estrela), caixa de som com música, envelope com convite (mensagem).</li><li>Bloco 2: respostas livres, por exemplo personagem, cenário, pontos, música, fases.</li></ul></details>
+        <h2 id="folhas">Folha para imprimir</h2>
+        <p>A folha é A4 com fundo branco, para economizar tinta. A segunda folha traz as orientações e o gabarito para o professor.</p>
+    </div>
+    <div class="folhas">
+<article class="folha" data-versao="Estudante" aria-label="Um problema grande em partes, folha do estudante">
+    <header class="folha-topo"><span class="nivel"><b>Folha do estudante</b></span><span class="hab">EF03CO03 · Computação · 3º ano · Aula 5</span></header>
+    <div class="aluno"><span>Nome: <i class="traco longo"></i></span><span>Data: <i class="traco"></i></span></div>
+    <h2 class="folha-titulo">Um problema grande em partes</h2>
+    <section class="bloco"><h3 class="instrucao"><span class="num">1</span><span>Ligue cada coisa à parte da festa.</span></h3><div class="bloco-corpo"><div class="aa-ligar"><div class="aa-ligar-par"><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="copo de água"><path d="M28 22 L72 22 L66 84 L34 84 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M31 44 L69 44 L66 84 L34 84 Z" fill="#d9ecfb" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="ponto"></span><span></span><span class="ponto"></span><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="música"><circle cx="32" cy="74" r="12" fill="#111" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="72" cy="64" r="12" fill="#111" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M44 74 L44 22 L84 12 L84 64" fill="none" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="44" y1="32" x2="84" y2="22" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div><div class="aa-ligar-par"><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="bandeira"><line x1="22" y1="10" x2="22" y2="92" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M22 14 L80 22 L64 36 L80 50 L22 50 Z" fill="#fbd3cd" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="ponto"></span><span></span><span class="ponto"></span><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="mensagem"><path d="M14 18 L86 18 Q90 18 90 22 L90 62 Q90 66 86 66 L40 66 L22 82 L24 66 L14 66 Q10 66 10 62 L10 22 Q10 18 14 18Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="24" y1="34" x2="76" y2="34" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><line x1="24" y1="48" x2="60" y2="48" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div><div class="aa-ligar-par"><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="caixa de som"><rect x="26" y="10" width="48" height="80" rx="8" fill="#d9d9d9" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="34" r="10" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="64" r="16" fill="#eeeeec" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="50" cy="64" r="5" fill="#111" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="ponto"></span><span></span><span class="ponto"></span><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="bolo"><rect x="18" y="50" width="64" height="34" rx="6" fill="#fce3ee" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M18 62 Q26 70 34 62 Q42 70 50 62 Q58 70 66 62 Q74 70 82 62" fill="none" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="46" y="30" width="8" height="20" rx="2" fill="#d9ecfb" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M50 18 Q56 24 50 30 Q44 24 50 18Z" fill="#fff1b8" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div><div class="aa-ligar-par"><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="carta"><rect x="10" y="24" width="80" height="52" rx="4" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M10 28 L50 56 L90 28" fill="none" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="ponto"></span><span></span><span class="ponto"></span><span class="aa-fig" style="--t:20mm"><svg class="fg" viewBox="0 0 100 100" role="img" aria-label="estrela"><path d="M50 10 L61 38 L91 39 L67 58 L76 88 L50 70 L24 88 L33 58 L9 39 L39 38 Z" fill="#fff1b8" stroke="#111" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg></span></div></div></div></section><section class="bloco"><h3 class="instrucao"><span class="num">2</span><span>Um jogo de videogame tem partes. Escreva ou desenhe três partes de um jogo.</span></h3><div class="bloco-corpo"><table class="tabela-folha"><thead><tr><th>Parte 1</th><th>Parte 2</th><th>Parte 3</th></tr></thead><tbody><tr><td><div style="height:24mm"></div></td><td></td><td></td></tr></tbody></table></div></section>
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+<article class="folha folha-prof" data-versao="Professor" aria-label="Orientações e gabarito">
+    <header class="folha-topo"><span class="nivel"><b>Orientações e gabarito</b></span><span class="hab">3º ano · Aula 5 · 50 minutos</span></header>
+    <h2 class="folha-titulo">Um problema grande em partes</h2>
+    <h3>Objetivo</h3><p>Dividir um problema grande em partes menores (decomposição).</p>
+    <h3>Habilidades da BNCC</h3><p><b>EF03CO03</b>: Aplicar a estratégia de decomposição para resolver problemas complexos, dividindo esse problema em partes menores, resolvendo-as e combinando suas soluções.</p>
+    <h3>Material</h3><p>Uma imagem de uma festa ou de um passeio, papel pardo e a folha do estudante.</p>
+    <h3>Passo a passo</h3><ol><li>O problema grande (10 min): a turma vai organizar uma festa. Parece difícil? O que precisamos? Anote tudo no quadro.</li><li>Separar em partes (15 min): agrupe o que foi anotado em partes: comida, enfeite, música, convite. Cada parte é um problema menor.</li><li>Folha (15 min).</li><li>Fechamento (10 min): os programadores fazem isso o tempo todo. Um jogo é feito em partes: personagem, cenário, pontos, sons.</li></ol>
+    <h3>Texto para ler com a turma</h3><p class="texto-turma">Quando um problema é grande demais, a gente divide em partes menores. Organizar uma festa inteira parece difícil. Mas fazer o convite, depois os enfeites, depois a comida, um de cada vez, fica possível. Isso se chama decomposição.</p>
+    <h3>Gabarito</h3><ul><li>Bloco 1: copo com comida (bolo), bandeira com enfeite (estrela), caixa de som com música, envelope com convite (mensagem).</li><li>Bloco 2: respostas livres, por exemplo personagem, cenário, pontos, música, fases.</li></ul>
+    <h3>Alunos com diferentes necessidades</h3><p>Para estudantes com TDAH ou dificuldades de organização, use um quadro visual com as partes de uma tarefa da rotina (arrumar a mochila) e vá riscando cada parte pronta.</p>
+    
+    <footer class="folha-rodape">ohtopico.com.br/computacao-ano-a-ano · Júlia Roberta Quoos Alves · uso livre em sala de aula</footer>
+</article>
+    </div>
+    <div class="texto">
+        <nav class="vizinhas" aria-label="Outras aulas"><a href="/computacao-ano-a-ano/3-ano/aula-04-jogo-e-verdade/">← Aula 4: Jogo: É Verdade?</a><a href="/computacao-ano-a-ano/3-ano/aula-06-resolver-cada-parte-e-juntar/">Aula 6: Resolver cada parte e juntar →</a></nav>
+        <p class="voltar"><a href="/computacao-ano-a-ano/3-ano/">Ver todas as aulas do 3º ano</a></p>
+    </div>
+</main>
+<footer class="rodape">
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-ano-a-ano/">Computação ano a ano</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
+</footer>
+<script src="/computacao-ano-a-ano/assets/ano-a-ano.js" defer></script>
+</body>
+</html>
