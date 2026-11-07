@@ -20,6 +20,12 @@ import sys
 from datetime import date
 from pathlib import Path
 
+def faixa_rodape():
+    """Faixa comum das páginas de material (material gratuito, apoiar, formação, canal); ver _fonte/faixa/."""
+    import runpy
+    return runpy.run_path(str(Path(__file__).resolve().parent.parent / 'faixa' / 'faixa.py'))['FAIXA']
+
+
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI.parent / 'braille'))
 import links as braille_links  # noqa: E402
@@ -256,6 +262,7 @@ def pagina(f, i, total):
         <p class="voltar"><a href="/material-adaptado/">Ver todos os materiais adaptados</a> · <a href="/matematica-adaptada/">Como usar o material</a></p>
     </div>
 </main>
+{faixa_rodape()}
 <footer class="rodape">
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
     <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/blog/">Blog</a> · <a href="/">Área de trabalho</a></p>
@@ -395,7 +402,7 @@ def gerar_hub(fichas, mapa):
         'mainEntity': {'@type': 'ItemList', 'numberOfItems': len(fichas), 'itemListElement': [
             {'@type': 'ListItem', 'position': i + 1, 'name': f['titulo'], 'url': f'{SITE}/matematica-adaptada/fichas/{f["slug"]}/'} for i, f in enumerate(fichas)]},
     }, ensure_ascii=False)
-    texto = (AQUI / 'hub.html').read_text(encoding='utf-8').replace('{{DESCRICAO}}', esc_(descricao)).replace('{{MAIN}}', main).replace(
+    texto = (AQUI / 'hub.html').read_text(encoding='utf-8').replace('{{DESCRICAO}}', esc_(descricao)).replace('{{MAIN}}', main).replace('<footer id="footer"></footer>', faixa_rodape() + '\n<footer id="footer"></footer>').replace(
         '{{LD}}', f'<script type="application/ld+json">{ld}</script>')
     sys.path.insert(0, str(AQUI.parent / 'computacao-adaptada'))
     import hub as computacao  # seção Computação (fichas de _fonte/computacao-adaptada/indice.json)

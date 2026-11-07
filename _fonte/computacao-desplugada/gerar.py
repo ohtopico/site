@@ -22,6 +22,12 @@ import sys
 from datetime import date
 from pathlib import Path
 
+def faixa_rodape():
+    """Faixa comum das páginas de material (material gratuito, apoiar, formação, canal); ver _fonte/faixa/."""
+    import runpy
+    return runpy.run_path(str(Path(__file__).resolve().parent.parent / 'faixa' / 'faixa.py'))['FAIXA']
+
+
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI.parent / 'braille'))
 import links as braille_links  # noqa: E402
@@ -183,7 +189,8 @@ def cabeca(titulo, descricao, url, ld, v, extra_css=''):
 '''
 
 
-RODAPE_PAG = '''<footer class="rodape">
+RODAPE_PAG = f'''{faixa_rodape()}
+<footer class="rodape">
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
     <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/pensamento-computacional/">Pensamento computacional</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
 </footer>

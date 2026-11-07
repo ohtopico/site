@@ -82,17 +82,28 @@
         "@id": "https://ohtopico.com.br/mentoria/#servico",
         "name": "Mentoria para professores em IA"
       },
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "BRL",
-        "priceSpecification": {
-          "@type": "UnitPriceSpecification",
-          "price": 200,
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Pacote para redes municipais: 8 horas de formação",
+          "price": 2000,
           "priceCurrency": "BRL",
-          "unitText": "hora de formação"
+          "url": "https://ohtopico.com.br/formacao-para-redes/",
+          "description": "Diagnóstico, 8 horas de formação, combinado de uso de IA e retorno em 30 dias. Deslocamento, alimentação e hospedagem, quando aplicáveis, são cobrados à parte."
         },
-        "description": "Deslocamento, alimentação e hospedagem, quando aplicáveis, são cobrados à parte."
-      },
+        {
+          "@type": "Offer",
+          "name": "Escolas e outras cargas horárias",
+          "priceCurrency": "BRL",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": 300,
+            "priceCurrency": "BRL",
+            "unitText": "hora de formação"
+          },
+          "description": "Deslocamento, alimentação e hospedagem, quando aplicáveis, são cobrados à parte."
+        }
+      ],
       "inLanguage": "pt-BR"
     },
     {
@@ -136,7 +147,7 @@
           "name": "Quanto custa?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Para redes municipais, o pacote de 8 horas de formação custa R$ 2.000. Para escolas e outras cargas horárias, a hora de formação custa R$ 200. Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem. O valor total depende do formato e da carga horária e vem detalhado na proposta escrita."
+            "text": "Para redes municipais, o pacote de 8 horas de formação custa R$ 2.000, com desconto em relação à hora avulsa (R$ 300 por hora, ou R$ 2.400 pelas 8 horas). Para escolas e outras cargas horárias, a hora de formação custa R$ 300. Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem. O valor total depende do formato e da carga horária e vem detalhado na proposta escrita."
           }
         }
       ]
@@ -167,7 +178,7 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 
 <link rel="stylesheet" href="/assets/fontes/fontes.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/blog/assets/blog.css?v=2ed87b5945">
+<link rel="stylesheet" href="/blog/assets/blog.css?v=b70cda5c99">
 <link rel="alternate" type="application/rss+xml" title="Blog de Júlia Roberta Quoos Alves" href="/blog/feed.xml">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
@@ -254,7 +265,7 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 <li>Encontro de retorno cerca de 30 dias depois, com um resumo do que mudou na prática da equipe.</li>
 </ul>
 <h3>Investimento</h3>
-<p><strong>Redes municipais: R$ 2.000 por 8 horas de formação.</strong> Para escolas e outras cargas horárias, R$ 200 por hora de formação. Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem. A proposta escrita detalha as horas e cada custo, para facilitar o processo de contratação.</p>
+<p><strong>Redes municipais: R$ 2.000 por 8 horas de formação</strong>, valor com desconto para redes: a hora avulsa de formação custa R$ 300, e as 8 horas sairiam por R$ 2.400. Para escolas e outras cargas horárias, R$ 300 por hora de formação. Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem. A proposta escrita detalha as horas e cada custo, para facilitar o processo de contratação. O programa das 8 horas, o que a rede recebe e o pedido de proposta estão na página <a href="/formacao-para-redes/">formação para redes municipais</a>.</p>
 <h3>Como contratar</h3>
 <ol>
 <li>Uma conversa inicial por e-mail, com o tamanho da equipe, as etapas de ensino e o que já foi feito com IA.</li>
@@ -291,7 +302,7 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 <p>A carga horária é combinada com a escola ou a rede. O ciclo completo inclui um encontro de retorno cerca de 30 dias depois da oficina.</p>
 
 <h3>Quanto custa?</h3>
-<p>Para redes municipais, o pacote de 8 horas de formação custa R$ 2.000. Para escolas e outras cargas horárias, a hora de formação custa R$ 200. Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem. O valor total depende do formato e da carga horária e vem detalhado na proposta escrita.</p>
+<p>Para redes municipais, o pacote de 8 horas de formação custa R$ 2.000, com desconto em relação à hora avulsa (R$ 300 por hora, ou R$ 2.400 pelas 8 horas). Para escolas e outras cargas horárias, a hora de formação custa R$ 300. Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem. O valor total depende do formato e da carga horária e vem detalhado na proposta escrita.</p>
     </div>
     <section class="provas" aria-labelledby="onde-aconteceu">
         <h2 id="onde-aconteceu">Onde o trabalho já aconteceu</h2>
@@ -341,13 +352,13 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
             <section class="caixa caixa-contador">
                 <h2 class="caixa-titulo">★ Visitas</h2>
                 <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
-                <p class="miudo">Contador sem cookies e sem dados pessoais.</p>
+                <p class="miudo">Contador do GoatCounter, sem identificar quem visita. <a href="/privacidade/">Privacidade</a></p>
             </section>
             <section class="caixa">
                 <h2 class="caixa-titulo">★ Selos</h2>
                 <ul class="selos">
                     <li class="selo selo-amarelo">feito à mão</li>
-                    <li class="selo selo-verde">sem cookies</li>
+                    <li class="selo selo-verde"><a href="/privacidade/">privacidade</a></li>
                     <li class="selo selo-vermelho">♥ professores</li>
                     <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
                 </ul>
@@ -359,10 +370,10 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 <footer class="rodape">
     <nav class="letreiro" aria-label="Destaques"><a href="/blog/comparativo-ias-para-professores/">✦ Post novo: 12 IAs comparadas para professores: preço, português e idade dos alunos</a><a href="/formacao-e-mentoria/">✦ Formação e mentoria para professores, escolas e redes</a><a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a><a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a><a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a></nav>
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
-    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/apoie/">Apoie o projeto</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a> · <a href="/privacidade/">Privacidade</a></p>
 </footer>
 <script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<script src="/blog/assets/blog.js?v=2ed87b5945" defer></script>
+<script src="/blog/assets/blog.js?v=b70cda5c99" defer></script>
 <script src="/assistente/assistente.js?v=edf45ba561" defer></script>
 </body>
 </html>

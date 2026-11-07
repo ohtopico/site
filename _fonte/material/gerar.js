@@ -1110,6 +1110,35 @@ function atualizarSitemap(urlsComHash) {
 }
 const hash = t => crypto.createHash('md5').update(t).digest('hex').slice(0, 8);
 
+/* ---------- faixa de rodapé: material gratuito, apoiar, formação e mentoria, canal (ver _fonte/faixa/) ---------- */
+const FAIXA = `<link rel="stylesheet" href="/assets/faixa.css?v=${hash(ler(path.join(RAIZ, 'assets', 'faixa.css')))}">\n${ler(path.join(RAIZ, '_fonte', 'faixa', 'faixa.html')).trim()}`;
+// pastas cujas páginas ganham a faixa antes do rodapé (ou antes de </body>, quando não há rodapé)
+const PASTAS_FAIXA = ['material-didatico', 'simuladores', 'computacao-ano-a-ano', 'matematica-adaptada', 'computacao-adaptada',
+  'computacao-desplugada', 'material-adaptado', 'pensamento-computacional'];
+// modelos (noindex) e páginas marcadas com <!-- sem faixa --> ficam sem ela
+const SEM_FAIXA = /<!-- sem faixa -->|<meta name="robots" content="noindex/;
+function comFaixa(t) {
+  if (!t.includes('</body>') || SEM_FAIXA.test(t)) return t;
+  return blocoMarcado(t, 'faixa', `\n${FAIXA}\n`, (x, b) => {
+    const m = x.match(/<footer(?![^>]*folha-rodape)[^>]*>/);
+    return m ? x.slice(0, m.index) + b + '\n' + x.slice(m.index) : x.replace(/<\/body>/, `${b}\n</body>`);
+  });
+}
+const semFaixa = t => t.replace(/<!-- faixa: início[\s\S]*?<!-- faixa: fim -->\n?/, '');
+function faixaEmTodas() {
+  let n = 0;
+  const andar = dir => {
+    for (const nome of fs.readdirSync(dir)) {
+      if (nome.startsWith('.') || nome === 'assets' || nome === 'img' || nome === 'node_modules') continue;
+      const f = path.join(dir, nome);
+      if (fs.statSync(f).isDirectory()) andar(f);
+      else if (nome.endsWith('.html') && escrever(f, comFaixa(ler(f)))) n++;
+    }
+  };
+  for (const p of PASTAS_FAIXA) { const d = path.join(RAIZ, p); if (fs.existsSync(d)) andar(d); }
+  return n;
+}
+
 /* ---------- apagar páginas que não existem mais ---------- */
 function limpar() {
   const validos = new Set(Object.values(EST).map(s => path.join(MD, s)));
@@ -1142,32 +1171,32 @@ async function main() {
         `window.MD_ID = window.MD_REC = ${JSON.stringify(r.id)};`);
       if (html.some(h => h === null || /não encontrad/.test(h.slice(0, 200)))) throw new Error(`${r.id}: a página não desenhou o conteúdo`);
       const t = paginaEstatica(fonte, r, html);
-      if (escrever(path.join(MD, EST[r.id], 'index.html'), t)) novas++;
+      if (escrever(path.join(MD, EST[r.id], 'index.html'), comFaixa(t))) novas++;
       sitemap.push([`${SITE}/material-didatico/${EST[r.id]}`, hash(t)]);
     }
     for (const h of habs) {
       const t = paginaHab(h);
-      if (escrever(path.join(MD, EST['hab:' + h.codigo], 'index.html'), t)) novas++;
+      if (escrever(path.join(MD, EST['hab:' + h.codigo], 'index.html'), comFaixa(t))) novas++;
       sitemap.push([`${SITE}/material-didatico/${EST['hab:' + h.codigo]}`, hash(t)]);
     }
     for (const h of habsAprenda) {
       const t = paginaAprenda(h);
-      if (escrever(path.join(MD, EST['aprenda:' + h.codigo], 'index.html'), t)) novas++;
+      if (escrever(path.join(MD, EST['aprenda:' + h.codigo], 'index.html'), comFaixa(t))) novas++;
       sitemap.push([`${SITE}/material-didatico/${EST['aprenda:' + h.codigo]}`, hash(t)]);
     }
     {
       const t = paginaHubAprenda();
-      if (escrever(path.join(MD, HUB_APRENDA, 'index.html'), t)) novas++;
+      if (escrever(path.join(MD, HUB_APRENDA, 'index.html'), comFaixa(t))) novas++;
       sitemap.push([`${SITE}/material-didatico/${HUB_APRENDA}`, hash(t)]);
     }
     {
       const t = paginaHubComputacao();
-      if (escrever(path.join(MD, HUB_CO, 'index.html'), t)) novas++;
+      if (escrever(path.join(MD, HUB_CO, 'index.html'), comFaixa(t))) novas++;
       sitemap.push([`${SITE}/material-didatico/${HUB_CO}`, hash(t)]);
     }
     {
       const t = paginaPensamento();
-      if (escrever(path.join(RAIZ, PENSAMENTO, 'index.html'), t)) novas++;
+      if (escrever(path.join(RAIZ, PENSAMENTO, 'index.html'), comFaixa(t))) novas++;
       sitemap.push([`${SITE}${PENSAMENTO}`, hash(t)]);
     }
     // números da página inicial do material escritos no HTML: a página não precisa carregar listas.js só para contar
@@ -1181,11 +1210,13 @@ async function main() {
     const jogos = await jogosE3d(browser);
     const sims = await simuladores(browser);
     console.log(`${sims} simuladores atualizados.`);
+    console.log(`${faixaEmTodas()} páginas ganharam ou atualizaram a faixa de rodapé.`);
     // jogos e recursos 3D que ainda não estão no sitemap (os outros têm a data escrita à mão fora do bloco gerado)
     const foraDoBloco = ler(path.join(RAIZ, 'sitemap.xml')).replace(/<!-- material: início[\s\S]*?<!-- material: fim -->/, '');
     for (const r of D.RECURSOS.filter(r => (r.tipo === 'jogo' || r.tipo === '3d') && /^(jogos|3d)\/[\w-]+\.html$/.test(r.url))) {
       const u = `${SITE}/material-didatico/${r.url}`;
-      if (!foraDoBloco.includes(`<loc>${u}</loc>`) && fs.existsSync(path.join(MD, r.url))) sitemap.push([u, hash(ler(path.join(MD, r.url)))]);
+      // o hash ignora a faixa de rodapé: pôr ou mudar a faixa não é mudança de conteúdo e não altera o lastmod
+      if (!foraDoBloco.includes(`<loc>${u}</loc>`) && fs.existsSync(path.join(MD, r.url))) sitemap.push([u, hash(semFaixa(ler(path.join(MD, r.url))))]);
     }
     console.log(`${estaticos.length} planos, fichas e listas, ${habs.length} habilidades e ${habsAprenda.length} páginas Aprenda (${novas} mudaram); ${jogos} jogos e recursos 3D atualizados.`);
   } finally {
@@ -1195,4 +1226,5 @@ async function main() {
   limpar();
   atualizarSitemap(sitemap);
 }
-main().catch(e => { console.error(e); process.exit(1); });
+if (process.argv.includes('--faixa')) console.log(`${faixaEmTodas()} páginas ganharam ou atualizaram a faixa de rodapé.`);
+else main().catch(e => { console.error(e); process.exit(1); });
