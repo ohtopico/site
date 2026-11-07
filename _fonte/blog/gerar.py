@@ -230,13 +230,13 @@ def laterais(atual):
             <section class="caixa caixa-contador">
                 <h2 class="caixa-titulo">★ Visitas</h2>
                 <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
-                <p class="miudo">Contador sem cookies e sem dados pessoais.</p>
+                <p class="miudo">Contador do GoatCounter, sem identificar quem visita. <a href="/privacidade/">Privacidade</a></p>
             </section>
             <section class="caixa">
                 <h2 class="caixa-titulo">★ Selos</h2>
                 <ul class="selos">
                     <li class="selo selo-amarelo">feito à mão</li>
-                    <li class="selo selo-verde">sem cookies</li>
+                    <li class="selo selo-verde"><a href="/privacidade/">privacidade</a></li>
                     <li class="selo selo-vermelho">♥ professores</li>
                     <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
                 </ul>
@@ -285,7 +285,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 <footer class="rodape">
     <nav class="letreiro" aria-label="Destaques">{letreiro}</nav>
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
-    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a></p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/apoie/">Apoie o projeto</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a> · <a href="/privacidade/">Privacidade</a></p>
 </footer>
 {contador}<script src="/blog/assets/blog.js?v={VERSAO_CSS}" defer></script>
 <script src="/assistente/assistente.js?v={VERSAO_ASSISTENTE}" defer></script>
@@ -629,7 +629,7 @@ OFERTAS = [
      'A partir de R$ 200 a sessão'),
     ('Formação continuada em IA', '/formacao-continuada/', 'Para escolas, secretarias e redes de ensino',
      'Diagnóstico, oficinas com o material da escola, regras de uso e retorno depois de 30 dias.',
-     'Redes municipais: R$ 2.000 por 8 horas'),
+     'Redes: R$ 2.000 por 8 horas · Escolas: R$ 300 por hora'),
     ('Formação em tecnologias educacionais', '/formacao-tecnologias-educacionais/', 'Para professores e equipes',
      'Turma virtual, formulários, criação de material, Computação da BNCC e acessibilidade, na prática.',
      'Proposta conforme o formato'),
@@ -768,7 +768,7 @@ def pagina_mentoria(cfg, dims):
     </div>
     <section class="chamada" aria-labelledby="conversar">
         <h2 id="conversar">Vamos conversar</h2>
-        <p>Conte um pouco sobre a sua disciplina ou função e eu respondo com uma proposta. A sessão custa a partir de R$ 200.</p>
+        <p>Conte um pouco sobre a sua disciplina ou função e eu respondo com uma proposta. A sessão custa a partir de R$ 200. Os horários são combinados pelo WhatsApp: mande o dia e o turno que preferir e eu confirmo.</p>
         <a class="btn98" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Mentoria%20de%20IA%20para%20professores." target="_blank" rel="noopener">Conversar no WhatsApp</a>
         <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Mentoria%20de%20IA%20para%20professores">Enviar e-mail</a>
     </section>
@@ -905,10 +905,16 @@ def pagina_formacao(cfg, dims):
                 'availableChannel': {'@type': 'ServiceChannel', 'serviceUrl': url,
                                      'availableLanguage': 'pt-BR'},
                 'isRelatedTo': {'@type': 'Service', '@id': f'{site}/mentoria/#servico', 'name': 'Mentoria para professores em IA'},
-                'offers': {'@type': 'Offer', 'priceCurrency': 'BRL',
-                           'priceSpecification': {'@type': 'UnitPriceSpecification', 'price': 200, 'priceCurrency': 'BRL',
-                                                  'unitText': 'hora de formação'},
-                           'description': 'Deslocamento, alimentação e hospedagem, quando aplicáveis, são cobrados à parte.'},
+                'offers': [
+                    {'@type': 'Offer', 'name': 'Pacote para redes municipais: 8 horas de formação', 'price': 2000, 'priceCurrency': 'BRL',
+                     'url': f'{site}/formacao-para-redes/',
+                     'description': 'Diagnóstico, 8 horas de formação, combinado de uso de IA e retorno em 30 dias. '
+                                    'Deslocamento, alimentação e hospedagem, quando aplicáveis, são cobrados à parte.'},
+                    {'@type': 'Offer', 'name': 'Escolas e outras cargas horárias', 'priceCurrency': 'BRL',
+                     'priceSpecification': {'@type': 'UnitPriceSpecification', 'price': 300, 'priceCurrency': 'BRL',
+                                            'unitText': 'hora de formação'},
+                     'description': 'Deslocamento, alimentação e hospedagem, quando aplicáveis, são cobrados à parte.'},
+                ],
                 'inLanguage': 'pt-BR',
             },
             {
@@ -1339,6 +1345,192 @@ def pagina_para_escolas(cfg):
     head = cabeca('Computação e IA para escolas e redes | Júlia Quoos', descricao, url, imagem, alt, 'website',
                   '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' + ld)
     return head + '\n' + moldura('para-escolas.html', 'ohtopico.com.br/para-escolas', '/', conteudo, 'Pronto', 'escolas')
+
+
+APOIE_IMAGEM = 'apoie/og-apoie.jpg'
+REDES_IMAGEM = 'formacao-para-redes/og-formacao-para-redes.jpg'
+CATARSE_PLANOS = 'https://www.catarse.com.br/ohtopico/plans?utm_source=site&amp;utm_medium=apoie'
+OG_1200 = '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+
+
+def pagina_apoie(cfg):
+    site = cfg['site']
+    url = f'{site}/apoie/'
+    corpo = (AQUI / 'conteudo' / 'apoie.html').read_text(encoding='utf-8').strip()
+    titulo = 'Apoie o projeto: os planos do clube no Catarse'
+    descricao = ('Os cinco planos do clube no Catarse, de R$ 5 a R$ 300 por mês, o que cada um libera e como a senha '
+                 'da área premium chega. O site continua gratuito para todas as escolas.')
+    imagem = f'{site}/{APOIE_IMAGEM}'
+    alt = 'Card com o título Apoie o projeto e os cinco planos do clube no Catarse, de R$ 5 a R$ 300 por mês.'
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': imagem, 'width': 1200, 'height': 630},
+                'author': {'@id': AUTORA['@id']},
+                'relatedLink': ['https://www.catarse.com.br/ohtopico/plans', f'{site}/premium/'],
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Apoie o projeto', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Apoie o projeto</li></ol></nav>
+    <p class="rotulo">Apoie o projeto</p>
+    <h1>Apoie o material gratuito de <span class="marca">Computação e IA</span></h1>
+    <p class="linha-fina">Planos mensais de R$ 5 a R$ 300 no Catarse. Quem apoia mantém o site gratuito para todas as escolas e entra na área premium, com recursos que crescem a cada plano.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="apoiar">
+        <h2 id="apoiar">Escolher um plano</h2>
+        <p>O apoio é mensal e pode ser cancelado quando quiser. A senha da área premium chega na mensagem do Catarse.</p>
+        <a class="btn98" href="{CATARSE_PLANOS}" target="_blank" rel="noopener">Ver os planos no Catarse</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Apoio%20ao%20projeto">Tirar uma dúvida por e-mail</a>
+    </section>
+</article>'''
+    head = cabeca('Apoie o projeto: planos do clube no Catarse | Júlia Quoos', descricao, url, imagem, alt, 'website', OG_1200 + ld)
+    return head + '\n' + moldura('apoie.html', 'ohtopico.com.br/apoie', '/', conteudo, 'Pronto', 'apoie')
+
+
+def pagina_formacao_redes(cfg):
+    site = cfg['site']
+    url = f'{site}/formacao-para-redes/'
+    corpo = (AQUI / 'conteudo' / 'formacao-para-redes.html').read_text(encoding='utf-8').strip()
+    titulo = 'Formação de professores em IA para redes municipais'
+    descricao = ('8 horas de formação de professores em IA para redes municipais por R$ 2.000: programa dos encontros, '
+                 'o que a rede recebe, como contratar e pedido de proposta.')
+    imagem = f'{site}/{REDES_IMAGEM}'
+    alt = ('Card com o título Formação em IA para a rede: 8 horas por R$ 2.000, com diagnóstico, quatro encontros, '
+           'combinado de uso e retorno em 30 dias.')
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'primaryImageOfPage': {'@type': 'ImageObject', 'url': imagem, 'width': 1200, 'height': 630},
+                'about': {'@id': url + '#servico'},
+                'author': {'@id': AUTORA['@id']},
+            },
+            {
+                '@type': 'Service',
+                '@id': url + '#servico',
+                'name': titulo,
+                'serviceType': 'Formação de professores em inteligência artificial para redes municipais de ensino',
+                'description': descricao,
+                'url': url,
+                'provider': AUTORA,
+                'areaServed': {'@type': 'State', 'name': 'Rio Grande do Sul'},
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'administrator'},
+                'isRelatedTo': {'@type': 'Service', '@id': f'{site}/formacao-continuada/#servico',
+                                'name': 'Formação continuada de professores em IA'},
+                'offers': {'@type': 'Offer', 'name': 'Pacote para redes municipais: 8 horas de formação', 'price': 2000,
+                           'priceCurrency': 'BRL', 'url': url,
+                           'description': 'Diagnóstico, 8 horas de formação, combinado de uso de IA e retorno em 30 dias. '
+                                          'Deslocamento, alimentação e hospedagem, quando aplicáveis, são cobrados à parte.'},
+                'inLanguage': 'pt-BR',
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Formação continuada', 'item': f'{site}/formacao-continuada/'},
+                    {'@type': 'ListItem', 'position': 3, 'name': 'Redes municipais', 'item': url},
+                ],
+            },
+        ],
+    })
+    zap = ('https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20a%20proposta%20de%20'
+           'forma%C3%A7%C3%A3o%20em%20IA%20para%20a%20rede%20municipal%20%288%20horas%29.')
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/formacao-continuada/">Formação continuada</a></li><li aria-current="page">Redes municipais</li></ol></nav>
+    <p class="rotulo">Formação para redes municipais</p>
+    <h1>Formação de professores em IA para <span class="marca">redes municipais</span></h1>
+    <p class="linha-fina">8 horas de formação por R$ 2.000, com diagnóstico da equipe, prática com o material real das escolas, um combinado de uso de IA para a rede e retorno em 30 dias. Presencial, on-line ou misto.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+    {secao_provas()}
+    <section class="chamada" aria-labelledby="pedir">
+        <h2 id="pedir">Pedir a proposta para a sua rede</h2>
+        <p>Mande o município, o número de professores, o período e o formato desejados. A proposta escrita, com cronograma e valor total, vai por e-mail.</p>
+        <a class="btn98" href="{zap}" target="_blank" rel="noopener">Pedir pelo WhatsApp</a>
+        <a class="btn98 escuro" href="mailto:contato@ohtopico.com.br?subject=Proposta%20de%20forma%C3%A7%C3%A3o%20em%20IA%20para%20a%20rede">Pedir por e-mail</a>
+    </section>
+</article>'''
+    head = cabeca('Formação em IA para redes municipais | Júlia Quoos', descricao, url, imagem, alt, 'website', OG_1200 + ld)
+    return head + '\n' + moldura('formacao-para-redes.html', 'ohtopico.com.br/formacao-para-redes', '/', conteudo, 'Pronto', 'formacao')
+
+
+def pagina_privacidade(cfg):
+    site = cfg['site']
+    url = f'{site}/privacidade/'
+    corpo = (AQUI / 'conteudo' / 'privacidade.html').read_text(encoding='utf-8').strip()
+    titulo = 'Privacidade: o que o site mede e o que fica no seu aparelho'
+    descricao = ('O que o site mede (Google Analytics, GoatCounter, pixel da Meta), o que fica só no seu navegador, '
+                 'o Mundo da turma e como pedir a exclusão de dados.')
+    imagem = f'{site}/img/og-site.jpg'
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebPage',
+                '@id': url + '#pagina',
+                'url': url,
+                'name': titulo,
+                'description': descricao,
+                'inLanguage': 'pt-BR',
+                'author': {'@id': AUTORA['@id']},
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Privacidade', 'item': url},
+                ],
+            },
+        ],
+    })
+    conteudo = f'''<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li aria-current="page">Privacidade</li></ol></nav>
+    <p class="rotulo">Privacidade</p>
+    <h1>Privacidade: o que o site <span class="marca">mede</span></h1>
+    <p class="linha-fina">Sem juridiquês: o que é contado, o que fica só no seu aparelho e para quem escrever.</p>
+    <div class="artigo">
+{corpo}
+    </div>
+</article>'''
+    head = cabeca('Privacidade e medição de visitas | Júlia Quoos', descricao, url, imagem,
+                  'Capa do site de Júlia Quoos: IA, Computação e Matemática', 'website', ld)
+    return head + '\n' + moldura('privacidade.html', 'ohtopico.com.br/privacidade', '/', conteudo, 'Pronto', 'privacidade')
 
 
 HORA_CODIGO_IMAGEM = 'hora-do-codigo/og-hora-do-codigo.jpg'
@@ -1819,7 +2011,7 @@ def pagina_quiz(cfg):
 <div class="quiz-capa" id="quiz-capa">
 <ul class="quiz-fatos"><li><strong>{total}</strong> perguntas</li><li><strong>4</strong> pilares</li><li><strong>5</strong> minutos</li></ul>
 <p>Situações reais de sala de aula e pequenos desafios. Depois de cada resposta, você vê a explicação. No fim, recebe o seu nível, o seu ponto forte e uma imagem para compartilhar no LinkedIn.</p>
-<p class="quiz-miudo">Sem cadastro e sem cookies: as respostas ficam só no seu navegador.</p>
+<p class="quiz-miudo">Sem cadastro: as respostas ficam só no seu navegador.</p>
 <button type="button" class="btn98 escuro quiz-grande" id="quiz-comecar">Começar o quiz</button>
 </div>
 <form class="quiz-form" id="quiz-form" aria-label="Perguntas do quiz">
@@ -1972,7 +2164,7 @@ def pagina_teste(cfg):
 <div class="quiz-capa" id="quiz-capa">
 <ul class="quiz-fatos"><li><strong>{total}</strong> perguntas</li><li><strong>{len(areas)}</strong> áreas</li><li><strong>4</strong> níveis</li><li><strong>10</strong> minutos</li></ul>
 <p>Perguntas de múltipla escolha, das mais simples às mais difíceis. Depois de cada resposta, você vê a explicação. No fim, recebe o seu nível, os acertos em cada área e materiais do site para estudar o que ficou para trás.</p>
-<p class="quiz-miudo">Sem cadastro e sem cookies: as respostas ficam só no seu navegador.</p>
+<p class="quiz-miudo">Sem cadastro: as respostas ficam só no seu navegador.</p>
 <button type="button" class="btn98 escuro quiz-grande" id="quiz-comecar">Começar o teste</button>
 </div>
 <form class="quiz-form" id="quiz-form" aria-label="Perguntas do teste">
@@ -2109,7 +2301,7 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
         ultimo = max(p['data'] for p in publicados if p['secao'] == sec)
         linhas.append(f'  <url><loc>{cfg["site"]}/blog/categoria/{slug_secao(sec)}/</loc><lastmod>{min(ultimo, hoje)}</lastmod></url>')
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'hora-do-codigo', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'formacao-para-redes', 'apoie', 'privacidade', 'hora-do-codigo', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -2217,6 +2409,8 @@ def main():
                           ('formacao-continuada', pagina_formacao(cfg, dims)),
                           ('formacao-tecnologias-educacionais', pagina_tecnologias(cfg)),
                           ('para-escolas', pagina_para_escolas(cfg)),
+                          ('formacao-para-redes', pagina_formacao_redes(cfg)), ('apoie', pagina_apoie(cfg)),
+                          ('privacidade', pagina_privacidade(cfg)),
                           ('hora-do-codigo', pagina_hora_codigo(cfg)),
                           ('mundo/professores', pagina_mundo_professores(cfg)),
                           ('prompts-para-professores', pagina_prompts(cfg)),

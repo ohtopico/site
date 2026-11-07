@@ -17,6 +17,12 @@ import shutil
 from datetime import date
 from pathlib import Path
 
+def faixa_rodape():
+    """Faixa comum das páginas de material (material gratuito, apoiar, formação, canal); ver _fonte/faixa/."""
+    import runpy
+    return runpy.run_path(str(Path(__file__).resolve().parent.parent / 'faixa' / 'faixa.py'))['FAIXA']
+
+
 from jogos import JOGOS
 
 AQUI = Path(__file__).resolve().parent
@@ -104,7 +110,8 @@ def cabeca(titulo, descricao, url, ld, v, robots='index, follow'):
 '''
 
 
-RODAPE_PAG = '''<footer class="rodape">
+RODAPE_PAG = f'''{faixa_rodape()}
+<footer class="rodape">
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
     <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="/computacao-ano-a-ano/">Computação ano a ano</a> · <a href="/computacao-desplugada/">Computação desplugada</a> · <a href="/material-adaptado/">Material adaptado</a> · <a href="/">Área de trabalho</a></p>
 </footer>

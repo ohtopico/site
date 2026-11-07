@@ -113,7 +113,7 @@ th { font-weight: 600; border-bottom: 2px solid #1b1b1b; }
       <div class="preco">
         <span class="faixa">Redes municipais</span>
         <div class="valor">R$ 2.000 <small>por 8 horas de formação</small></div>
-        <p style="margin:2mm 0 0">Para escolas e outras cargas horárias: R$&nbsp;200 por hora.</p>
+        <p style="margin:2mm 0 0">Valor com desconto para redes: a hora avulsa de formação custa R$&nbsp;300 (8 horas sairiam por R$&nbsp;2.400). Para escolas e outras cargas horárias: R$&nbsp;300 por hora.</p>
       </div>
       <p style="margin-top:3mm">Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem. A proposta escrita detalha as horas e cada custo, para facilitar o processo de contratação.</p>
     </div>
@@ -146,7 +146,7 @@ th { font-weight: 600; border-bottom: 2px solid #1b1b1b; }
     </div>
     <div>
       <h2>Contato</h2>
-      <p><b>E-mail</b> contato@ohtopico.com.br<br><b>WhatsApp</b> (51) 99922-2234<br><b>Site</b> ohtopico.com.br/formacao-continuada<br><b>LinkedIn</b> linkedin.com/in/ohtopico</p>
+      <p><b>E-mail</b> contato@ohtopico.com.br<br><b>WhatsApp</b> (51) 99922-2234<br><b>Site</b> ohtopico.com.br/formacao-para-redes<br><b>LinkedIn</b> linkedin.com/in/ohtopico</p>
     </div>
   </div>
 

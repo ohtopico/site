@@ -1,0 +1,16 @@
+/* Faixa de rodapé das páginas de material, jogos, BNCC, ano a ano e material adaptado.
+   HTML em _fonte/faixa/faixa.html; _fonte/material/gerar.js a põe em todas as páginas (node _fonte/material/gerar.js --faixa).
+   Usa as cores da própria página quando existem (--paper, --ink...), por isso acompanha o tema claro ou escuro. */
+.faixa-jq { background: var(--paper-2, #f4f4f2); border-top: 1.5px solid var(--ink, #111); color: var(--ink, #111); font: 15px/1.5 Lexend, system-ui, -apple-system, 'Segoe UI', sans-serif; margin: 40px 0 0; padding: 18px 16px; }
+.faixa-jq-in { align-items: center; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; margin: 0 auto; max-width: 1180px; }
+.faixa-jq-txt { color: var(--ink-2, #4a4a4a); flex: 1 1 320px; margin: 0; max-width: 62ch; }
+.faixa-jq-txt strong { color: var(--ink, #111); font-weight: 700; }
+.faixa-jq-links { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.faixa-jq-links li { margin: 0; padding: 0; }
+.faixa-jq-links li::before, .faixa-jq-links li::marker { content: none; }
+.faixa-jq-links a { background: var(--paper, #fff); border: 1.5px solid var(--ink, #111); border-radius: 99px; color: var(--ink, #111); display: inline-block; font-size: 14px; font-weight: 600; line-height: 1.2; padding: 8px 14px; text-decoration: none; white-space: nowrap; }
+.faixa-jq-links a:hover, .faixa-jq-links a:focus-visible { background: var(--ink, #111); color: var(--paper, #fff); }
+.faixa-jq-links a.faixa-jq-apoie { background: #fff36b; border-color: #111; color: #111; }
+.faixa-jq-links a.faixa-jq-apoie:hover, .faixa-jq-links a.faixa-jq-apoie:focus-visible { background: #111; color: #fff36b; }
+@media (max-width: 560px) { .faixa-jq { padding: 16px; } .faixa-jq-links a { font-size: 13.5px; padding: 7px 12px; } }
+@media print { .faixa-jq { display: none !important; } }

@@ -1,0 +1,82 @@
+<p>Muitos professores já usam inteligência artificial, mas cada um aprendeu sozinho e com regras próprias. Com o Parecer CNE/CP nº 15/2026, que traz as diretrizes nacionais de IA na educação, e a Computação da BNCC no currículo, as redes precisam organizar esse uso. Este pacote faz isso em 8 horas de formação, com diagnóstico antes, prática com o material real das escolas e retorno depois.</p>
+<p>É a mesma formação conduzida em 2026 para a rede municipal de Lagoão (RS), agora em um formato fechado, com preço e programa definidos, para entrar no planejamento e no orçamento de 2027.</p>
+
+<h2>O programa das 8 horas</h2>
+<p>Os encontros podem ser presenciais, on-line ou mistos, e a divisão é combinada com a rede: quatro encontros de 2 horas é o formato mais comum, mas dois turnos de 4 horas também funcionam.</p>
+<div class="tabela"><table>
+<thead><tr><th scope="col">Etapa</th><th scope="col">O que acontece</th></tr></thead>
+<tbody>
+<tr><td><strong>Antes</strong>: diagnóstico</td><td>Questionário de 10 minutos para a equipe: o que já usa de IA, o que preocupa, que tarefas tomam mais tempo. As respostas definem os exemplos dos encontros.</td></tr>
+<tr><td><strong>Encontro 1</strong> (2 h): fundamentos</td><td>Como a IA generativa funciona e por que erra; o que a LGPD diz sobre dados de estudantes; o que o Parecer CNE/CP nº 15/2026 pede das escolas; primeiros combinados.</td></tr>
+<tr><td><strong>Encontro 2</strong> (2 h): planejar e adaptar</td><td>Planejar aulas e adaptar atividades com IA a partir do material real da escola, incluindo versões para estudantes com diferentes necessidades.</td></tr>
+<tr><td><strong>Encontro 3</strong> (2 h): avaliar e comunicar</td><td>Criar e corrigir avaliações com critérios, escrever devolutivas e comunicados, e usar o material gratuito de Computação da BNCC do 1º ao 9º ano nas aulas.</td></tr>
+<tr><td><strong>Encontro 4</strong> (2 h): o combinado da rede</td><td>A equipe fecha o combinado de uso de IA das escolas da rede (o que pode, o que não pode, o que vai no prompt) e um plano para continuar depois da formação.</td></tr>
+<tr><td><strong>Depois</strong>: retorno em 30 dias</td><td>Encontro on-line de 1 hora, incluído no pacote: o que foi usado, o que travou e os ajustes no combinado.</td></tr>
+</tbody></table></div>
+
+<h2>O que a rede recebe</h2>
+<ul>
+<li>As 8 horas de formação, o diagnóstico e o encontro de retorno.</li>
+<li>O combinado de uso de IA da rede, em PDF, pronto para ser adotado pelas escolas.</li>
+<li>Declaração de participação com carga horária para cada professor e um relatório curto para a secretaria.</li>
+<li>Material de apoio gratuito, que continua disponível depois: o guia <a href="/ia-pra-prof/">IA pra Prof</a>, a <a href="/prompts-para-professores/">biblioteca de prompts</a> e a <a href="/material-didatico/">Computação do 1º ao 9º ano</a>, com material adaptado e versão em braille.</li>
+</ul>
+
+<h2>Investimento</h2>
+<p><strong>R$ 2.000 pelas 8 horas</strong>, para redes municipais. É um valor com desconto: a hora avulsa de formação custa R$ 300, e as 8 horas sairiam por R$ 2.400. Nos encontros presenciais, somam-se deslocamento, alimentação e, quando necessário, hospedagem, detalhados na proposta escrita. Para escolas e outras cargas horárias, veja a <a href="/formacao-continuada/">formação continuada em IA</a>.</p>
+<p><a href="/formacao-continuada/kit-formacao-secretarias.pdf" download>Baixe a proposta resumida em PDF</a> (2 páginas), com formatos, conteúdos, investimento e contato, para anexar ao processo de contratação.</p>
+
+<h2>Como contratar</h2>
+<ol>
+<li>Peça a proposta pelo formulário abaixo, pelo WhatsApp ou por e-mail, com o município, o número de professores, o período e o formato desejados.</li>
+<li>A proposta escrita, com cronograma, programa e valor total, vai por e-mail em poucos dias e pode ser anexada ao processo de contratação.</li>
+<li>Pelo valor, a contratação costuma caber na dispensa de licitação prevista na Lei 14.133/2021; a secretaria indica os documentos de que precisa, e eles seguem junto com a proposta.</li>
+<li>Com a contratação confirmada, a equipe responde ao diagnóstico e os encontros acontecem nas datas combinadas.</li>
+<li>Cerca de 30 dias depois do último encontro, o retorno on-line fecha o ciclo.</li>
+</ol>
+
+<h2>Pedir a proposta</h2>
+<form class="pedido" id="pedido-rede">
+<div class="pedido-campos">
+<label>Município ou rede<input name="rede" type="text" required placeholder="ex.: Rede municipal de Lagoão"></label>
+<label>Número de professores<input name="professores" type="number" min="1" inputmode="numeric" placeholder="ex.: 40"></label>
+<label>Período desejado<input name="periodo" type="text" placeholder="ex.: fevereiro de 2027"></label>
+<label>Formato<select name="formato"><option>Presencial</option><option>On-line</option><option>Misto (presencial e on-line)</option></select></label>
+<label>Seu nome e função<input name="quem" type="text" placeholder="ex.: Maria, coordenadora pedagógica"></label>
+</div>
+<p class="pedido-botoes"><button type="submit" class="btn98">Pedir a proposta pelo WhatsApp</button> <button type="button" class="btn98 escuro" data-email>Pedir por e-mail</button></p>
+<p class="miudo">Nada fica guardado no site: o pedido abre no seu WhatsApp ou no seu e-mail, com o texto pronto para revisar antes de enviar.</p>
+</form>
+<script>
+(function () {
+  var f = document.getElementById('pedido-rede');
+  if (!f) return;
+  function texto() {
+    var d = new FormData(f), v = function (k) { return (d.get(k) || '').toString().trim() || '-'; };
+    return 'Olá, Júlia! Quero a proposta de formação em IA para redes municipais (8 horas).' +
+      '\nMunicípio ou rede: ' + v('rede') + '\nProfessores: ' + v('professores') + '\nPeríodo: ' + v('periodo') +
+      '\nFormato: ' + v('formato') + '\nQuem pede: ' + v('quem');
+  }
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!f.reportValidity()) return;
+    window.open('https://wa.me/5551999222234?text=' + encodeURIComponent(texto()), '_blank', 'noopener');
+  });
+  f.querySelector('[data-email]').addEventListener('click', function () {
+    if (!f.reportValidity()) return;
+    location.href = 'mailto:contato@ohtopico.com.br?subject=' + encodeURIComponent('Proposta de formação em IA para a rede') + '&body=' + encodeURIComponent(texto());
+  });
+})();
+</script>
+
+<h2>Perguntas frequentes</h2>
+<h3>A formação vale para professores de todas as áreas?</h3>
+<p>Sim. Os exemplos vêm do material que cada professor já usa, então a formação serve para anos iniciais, anos finais e ensino médio, de qualquer disciplina. Quem leciona Computação ou informática ganha ainda o material pronto da BNCC Computação.</p>
+<h3>E se a rede tiver mais de 40 professores?</h3>
+<p>Até cerca de 40 professores por turma, a formação acontece em um grupo só. Acima disso, a proposta prevê turmas separadas para as oficinas práticas, com valor proporcional.</p>
+<h3>Precisa de laboratório de informática?</h3>
+<p>Não. Nos encontros presenciais, basta um projetor e os celulares ou notebooks dos professores; o que não der para fazer na hora vira tarefa com acompanhamento. On-line, cada professor participa do próprio aparelho.</p>
+<h3>Os professores recebem certificado?</h3>
+<p>Cada participante recebe uma declaração de participação com a carga horária, e a secretaria recebe a lista de presença e um relatório curto.</p>
+<h3>Dá para contratar só uma parte?</h3>
+<p>Dá. Para uma escola ou para cargas menores, a hora de formação custa R$ 300, e o formato é combinado caso a caso na <a href="/formacao-continuada/">formação continuada em IA</a>.</p>
