@@ -17,6 +17,8 @@ Bloco no texto do PR (cada campo em uma linha; Texto e Curto são opcionais):
 - Link é relativo à raiz do site (sem a barra inicial) e precisa existir; Texto aceita HTML simples com links relativos.
   Sem Texto, a janela mostra só o título com o link.
 - A janela mostra as 10 novidades mais recentes; a linha "Novo no site", as 5 mais recentes. O resto fica no JSON.
+- Linhas dentro de blocos de código (``` ```) no texto do PR são ignoradas: é onde cabe um exemplo do bloco.
+  Uma novidade com o mesmo título e link de outra que já está no JSON também é ignorada.
 - Rodar duas vezes com o mesmo JSON gera o mesmo HTML.
 """
 import argparse
@@ -73,16 +75,27 @@ def das_prs(novidades):
         print(f'aviso: não consegui listar os PRs ({e}); sigo só com o novidades.json', file=sys.stderr)
         return 0
     conhecidos = {n.get('pr') for n in novidades if n.get('pr')}
+    existentes = {(n['titulo'], n['link']) for n in novidades}
     novas = 0
     for pr in sorted(json.loads(saida), key=lambda p: p['mergedAt'] or ''):
         if pr['number'] in conhecidos or not pr.get('body'):
             continue
         campos = {}
+        em_codigo = False
         for linha in pr['body'].splitlines():
+            # um exemplo do bloco dentro de ``` ``` (como no texto do PR #334) não é uma novidade
+            if linha.strip().startswith('```'):
+                em_codigo = not em_codigo
+                continue
+            if em_codigo:
+                continue
             m = re.match(r'^\s*(Novidade|Link|Texto|Curto):\s*(.+?)\s*$', linha)
             if m:
                 campos[m.group(1).lower()] = m.group(2)
         if 'novidade' not in campos or 'link' not in campos:
+            continue
+        if (campos['novidade'], campos['link'].lstrip('/')) in existentes:
+            print(f'aviso: o PR #{pr["number"]} repete uma novidade que já está no JSON; ignorado', file=sys.stderr)
             continue
         quando = datetime.fromisoformat(pr['mergedAt'].replace('Z', '+00:00')).astimezone(ZoneInfo('America/Sao_Paulo'))
         nova = {'data': quando.strftime('%Y-%m-%d'), 'titulo': campos['novidade'], 'link': campos['link'].lstrip('/'), 'pr': pr['number']}
@@ -91,6 +104,7 @@ def das_prs(novidades):
         if campos.get('texto'):
             nova['texto'] = campos['texto']
         novidades.append(nova)
+        existentes.add((nova['titulo'], nova['link']))
         novas += 1
         print(f'novidade do PR #{pr["number"]}: {nova["titulo"]}')
     return novas
