@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: read   # para ler, nos PRs mesclados, as novidades da página inicial
 
 concurrency:
   group: publicar-blog
@@ -44,11 +45,15 @@ jobs:
       - name: Gerar e publicar se algo mudou
         env:
           NODE_PATH: ${{ runner.temp }}/pw/node_modules
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           gerar() {
+            # Janela Atualizações e linha "Novo no site" da página inicial, com as novidades que os PRs mesclados
+            # descrevem no texto (bloco Novidade:/Link:/Texto:/Curto:, ver _fonte/home/gerar.py)
+            python _fonte/home/gerar.py --prs
             # Blog só com os posts liberados até hoje
             python _fonte/blog/gerar.py --site . \
               --imagens _fonte/blog/imagens \

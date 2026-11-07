@@ -1199,13 +1199,19 @@ async function main() {
       if (escrever(path.join(RAIZ, PENSAMENTO, 'index.html'), comFaixa(t))) novas++;
       sitemap.push([`${SITE}${PENSAMENTO}`, hash(t)]);
     }
-    // números da página inicial do material escritos no HTML: a página não precisa carregar listas.js só para contar
+    // números da página inicial do material e da página /links/ (bio do Instagram) escritos no HTML:
+    // nenhuma das duas precisa carregar listas.js só para contar, e os números não ficam para trás quando entra material
     {
-      const f = path.join(MD, 'index.html');
       const n = t => D.RECURSOS.filter(r => r.tipo === t).length;
-      const stats = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']]
-        .map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
+      const tipos = [['jogo', 'jogos'], ['3d', 'recursos 3D'], ['plano', 'planos de aula'], ['lista', 'listas de exercícios']];
+      const f = path.join(MD, 'index.html');
+      const stats = tipos.map(([t, l]) => `<a class="stat" href="catalogo.html?tipo=${t}"><b>${n(t)}</b><span>${l}</span></a>`).join('');
       if (escrever(f, blocoMarcado(ler(f), 'stats', stats, x => x))) novas++;
+      // em /links/ o bloco toma o lugar dos <li> escritos à mão dentro de <ul class="numeros"> na primeira vez
+      const fl = path.join(RAIZ, 'links', 'index.html');
+      const numeros = tipos.map(([t, l]) => `\n      <li><b>${n(t)}</b>${l}</li>`).join('') + '\n    ';
+      const dentroDaLista = (txt, bloco) => txt.replace(/(<ul class="numeros"[^>]*>)[\s\S]*?(<\/ul>)/, (_, a, b) => `${a}${bloco}${b}`);
+      if (fs.existsSync(fl) && escrever(fl, blocoMarcado(ler(fl), 'numeros', numeros, dentroDaLista))) novas++;
     }
     const jogos = await jogosE3d(browser);
     const sims = await simuladores(browser);
