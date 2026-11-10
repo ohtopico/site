@@ -607,6 +607,11 @@ PROVAS = [
      'e o impacto na prática pedagógica excelente (3) ou bom (3).',
      'Publicação da Secretaria Municipal de Educação, Cultura e Desporto de Lagoão',
      'https://www.facebook.com/smecd.lagoao.9/posts/pfbid02bAHEq765qwf9dj8LqUtbNi1F6bYb7iNqCGyvjhDnz5cfor9rWH8ThRK2r1HHoRXVl'),
+    ('Material adaptado de Matemática e Computação divulgado pela Prefeitura de Novo Cabrais (RS)',
+     'A notícia apresenta as fichas adaptadas do 1º ao 9º ano, as versões em braille e o glossário em Libras, '
+     'todos gratuitos para as escolas.',
+     'Notícia da Prefeitura Municipal de Novo Cabrais, 10/11/2026',
+     'https://www.novocabrais.rs.gov.br/noticia/3435/professora-cabraisense-desenvolve-material-didatico-de-computacao-e-matematica-para-escolas/'),
 ]
 
 
