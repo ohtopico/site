@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Como montar um robô do zero: do robô-escova ao Arduino</title>
+<meta name="description" content="Guia para estudantes montarem o primeiro robô com materiais simples e entenderem as quatro partes de todo robô: energia, atuadores, sensores e controlador.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/blog/como-montar-um-robo-do-zero/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/blog/como-montar-um-robo-do-zero/">
+<meta property="og:title" content="Como montar um robô do zero: do robô-escova ao Arduino">
+<meta property="og:description" content="Guia para estudantes montarem o primeiro robô com materiais simples e entenderem as quatro partes de todo robô: energia, atuadores, sensores e controlador.">
+<meta property="og:image" content="https://ohtopico.com.br/blog/img/robo.png">
+<meta property="og:image:alt" content="Cartão com as quatro partes de todo robô: energia, atuadores, sensores e controlador. O robô-escova tem só energia e atuador: cabeça de escova, motor de vibração e pilha de 3 volts.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:published_time" content="2026-11-10">
+<meta property="article:author" content="https://ohtopico.com.br/">
+<meta property="article:section" content="Para estudantes">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://ohtopico.com.br/blog/como-montar-um-robo-do-zero/#post",
+      "headline": "Como montar um robô do zero",
+      "description": "Guia para estudantes montarem o primeiro robô com materiais simples e entenderem as quatro partes de todo robô: energia, atuadores, sensores e controlador.",
+      "url": "https://ohtopico.com.br/blog/como-montar-um-robo-do-zero/",
+      "mainEntityOfPage": "https://ohtopico.com.br/blog/como-montar-um-robo-do-zero/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://ohtopico.com.br/blog/img/robo.png",
+        "width": 1080,
+        "height": 1350
+      },
+      "datePublished": "2026-11-10",
+      "dateModified": "2026-11-10",
+      "inLanguage": "pt-BR",
+      "keywords": [
+        "robótica educacional",
+        "robô caseiro",
+        "robótica para iniciantes"
+      ],
+      "articleSection": "Para estudantes",
+      "author": {
+        "@type": "Person",
+        "@id": "https://ohtopico.com.br/#julia",
+        "name": "Júlia Roberta Quoos Alves",
+        "alternateName": [
+          "Júlia Quoos",
+          "Júlia Roberta Quoos",
+          "Quoos"
+        ],
+        "url": "https://ohtopico.com.br/"
+      },
+      "publisher": {
+        "@id": "https://ohtopico.com.br/#julia"
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://ohtopico.com.br/blog/#blog",
+        "name": "Blog de Júlia Roberta Quoos Alves"
+      },
+      "timeRequired": "PT3M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://ohtopico.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://ohtopico.com.br/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Como montar um robô do zero",
+          "item": "https://ohtopico.com.br/blog/como-montar-um-robo-do-zero/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+if (window.self !== window.top) document.documentElement.classList.add('emoldurado');</script>
+
+
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/blog/assets/blog.css?v=b70cda5c99">
+<link rel="alternate" type="application/rss+xml" title="Blog de Júlia Roberta Quoos Alves" href="/blog/feed.xml">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body data-contador="ohtopico">
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="area">
+<div class="janela">
+    <header class="cabecalho">
+        <a class="marca-site" href="/">Júlia Quoos</a>
+        <nav class="cabecalho-links" aria-label="Principal">
+            <a href="/blog/" aria-current="page">Blog</a>
+            <a href="/material-didatico/">Material didático</a>
+            <a href="/formacao-e-mentoria/">Formação e mentoria</a>
+        </nav>
+    </header>
+    <div class="corpo">
+        <main class="pagina" id="conteudo" tabindex="-1">
+<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/blog/">Blog</a></li><li aria-current="page">Para estudantes</li></ol></nav>
+    <p class="rotulo">Para estudantes</p>
+    <h1>Como montar um robô do zero</h1>
+    <p class="linha-fina">Guia para estudantes montarem o primeiro robô com materiais simples e entenderem as quatro partes de todo robô: energia, atuadores, sensores e controlador.</p>
+    <div class="meta">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="36" height="36">
+        <span>Por <a href="/blog/quem-e-julia-quoos/" rel="author">Júlia Roberta Quoos Alves</a></span>
+        <span><time datetime="2026-11-10">10 de novembro de 2026</time></span>
+        <span>3 min de leitura</span>
+    </div>
+    <div class="artigo">
+<p>Montar um robô não precisa começar com peças caras nem com um kit pronto. O primeiro robô que muita gente constrói é feito com uma escova velha, um motorzinho e uma pilha. Ele não pensa, mas se mexe sozinho, e mostra a ideia central de qualquer robô: energia vira movimento.</p>
+
+<h2>O que todo robô tem</h2>
+<p>Do robô aspirador ao braço de uma fábrica, quase todos têm quatro partes:</p>
+<ul>
+<li><strong>Energia:</strong> pilha, bateria ou tomada.</li>
+<li><strong>Atuadores:</strong> o que faz o robô se mexer, como motores.</li>
+<li><strong>Sensores:</strong> o que faz o robô perceber o ambiente, como luz, distância ou toque.</li>
+<li><strong>Controlador:</strong> o “cérebro”, uma pequena placa programável que decide o que fazer com o que os sensores informam.</li>
+</ul>
+<p>O primeiro robô deste texto tem só as duas primeiras partes. Os sensores e o controlador vêm no próximo passo.</p>
+
+<figure class="infografico">
+<img src="/blog/img/robo.png" width="1080" height="1350" alt="Cartão com as quatro partes de todo robô: energia, atuadores, sensores e controlador. O robô-escova tem só energia e atuador: cabeça de escova, motor de vibração e pilha de 3 volts." loading="lazy" decoding="async">
+<figcaption>As quatro partes de todo robô. <a href="/blog/img/robo.png" download>Baixar imagem</a></figcaption>
+</figure>
+
+<h2>Projeto 1: o robô-escova</h2>
+<p><strong>Materiais:</strong> a cabeça de uma escova de dentes velha (ou de uma escovinha de limpeza), um motor de vibração pequeno (de celular velho ou de loja de eletrônica), uma pilha botão de 3 V e fita dupla face.</p>
+<p><strong>Montagem:</strong></p>
+<ol>
+<li>Peça a um adulto para cortar o cabo da escova, deixando só a cabeça com as cerdas.</li>
+<li>Cole o motor em cima da cabeça da escova com a fita dupla face.</li>
+<li>Cole a pilha ao lado do motor.</li>
+<li>Encoste um fio do motor em cada lado da pilha. O motor vibra e as cerdas fazem o robô andar.</li>
+</ol>
+<p><strong>Experimente:</strong> cerdas inclinadas para um lado mudam a direção? Se colar uma moeda na frente, ele anda mais devagar? Anote o que acontece. Isso é engenharia: mudar uma coisa de cada vez e observar o resultado.</p>
+
+<h2>Projeto 2: um robô que decide</h2>
+<p>Para o robô reagir ao ambiente, ele precisa de um controlador. As placas mais usadas em escolas são o Arduino e o micro:bit. Com uma delas, dois motores e um sensor de distância, você monta um carrinho que para ou desvia quando chega perto da parede.</p>
+<p>A lógica é a mesma que você usa no Scratch: “se a distância for menor que 10 cm, então vire”. Muitas placas podem até ser programadas com blocos parecidos com os do Scratch.</p>
+<p>Antes de comprar qualquer peça, vale testar em um simulador gratuito, como o Tinkercad Circuits, com uma conta criada pela escola ou por um adulto. Dá para montar o circuito e programar na tela, sem queimar nada.</p>
+
+<h2>Regras de segurança</h2>
+<ul>
+<li>Use só pilhas e baterias pequenas. Nunca ligue um projeto na tomada.</li>
+<li>Pilhas botão são perigosas se engolidas: guarde longe de crianças pequenas e de animais.</li>
+<li>Se um fio ou a pilha esquentar, desligue na hora.</li>
+<li>Para cortar, furar ou soldar, sempre com um adulto por perto.</li>
+</ul>
+
+<p>Pergunte na sua escola se existe um clube ou uma oficina de robótica. Construir em grupo é mais divertido, e um colega sempre enxerga o erro que você não viu.</p>
+
+<p class="assinatura">Júlia Roberta Quoos Alves é professora de computação e especialista em robótica educacional no Rio Grande do Sul.</p>
+    </div>
+    <div class="compartilhar">
+        <p>Compartilhar:</p>
+        <a class="btn98" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fcomo-montar-um-robo-do-zero%2F" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fcomo-montar-um-robo-do-zero%2F" target="_blank" rel="noopener">Facebook<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://wa.me/?text=Como%20montar%20um%20rob%C3%B4%20do%20zero%20https%3A%2F%2Fohtopico.com.br%2Fblog%2Fcomo-montar-um-robo-do-zero%2F" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a>
+    </div>
+    <aside class="autora" aria-labelledby="sobre-autora">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="72" height="72" loading="lazy">
+        <div>
+            <h2 id="sobre-autora">Júlia Roberta Quoos Alves</h2>
+            <p>Professora de computação no RS, mestranda em Ciência da Computação na UFSM e formadora de professores em inteligência artificial.</p>
+            <p class="links"><a href="/mentoria/">Mentoria para professores</a> <a href="/ia-pra-prof/">Guia IA pra Prof</a> <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a></p>
+        </div>
+    </aside>
+    <nav class="vizinhos" aria-label="Outros posts"><a class="ant" href="/blog/ef06co01-tipos-de-dados-6-ano/" rel="prev"><span>◄ Anterior</span>Tipos de dados no 6º ano: como ensinar a classificar informações (EF06CO01)</a></nav>
+</article>
+        </main>
+        <aside class="lateral lateral-esq" aria-label="Menu do blog">
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Navegue</h2>
+                <ul class="lista-menu"><li><a href="/"><span aria-hidden="true">◄</span> Área de trabalho</a></li><li><a href="/blog/" aria-current="page"><span aria-hidden="true">⌂</span> Início do blog</a></li><li><a href="/formacao-e-mentoria/"><span aria-hidden="true">✦</span> Formação e mentoria</a></li><li><a href="/para-escolas/"><span aria-hidden="true">▣</span> Para escolas e redes</a></li><li><a href="/prompts-para-professores/"><span aria-hidden="true">❖</span> Biblioteca de prompts</a></li><li><a href="/quiz-pensamento-computacional/"><span aria-hidden="true">✱</span> Quiz de pensamento computacional</a></li><li><a href="/teste-proficiencia-informatica/"><span aria-hidden="true">▤</span> Teste de informática</a></li><li><a href="/curriculo/"><span aria-hidden="true">☺</span> Currículo</a></li></ul>
+                <button type="button" class="btn98 tema-btn" id="tema-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> Tema claro/escuro</button>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Temas</h2>
+                <ul class="lista-menu"><li><a href="/blog/categoria/sobre-mim/">Sobre mim</a></li><li><a href="/blog/categoria/ia-na-pratica/">IA na prática</a></li><li><a href="/blog/categoria/formacao-de-professores-em-ia/">Formação de professores em IA</a></li><li><a href="/blog/categoria/etica-e-lgpd/">Ética e LGPD</a></li><li><a href="/blog/categoria/computacao-e-bncc/">Computação e BNCC</a></li><li><a href="/blog/categoria/para-estudantes/">Para estudantes</a></li><li><a href="/blog/categoria/bit-a-bit/">Bit a Bit</a></li><li><a href="/blog/categoria/jogos/">Jogos</a></li><li><a href="/blog/categoria/matematica-em-sala/">Matemática em sala</a></li></ul>
+            </section>
+            <section class="caixa caixa-verde">
+                <h2 class="caixa-titulo">★ Posts recentes</h2>
+                <ul class="lista-recentes"><li><a href="/blog/como-montar-um-robo-do-zero/">Como montar um robô do zero</a></li><li><a href="/blog/ef06co01-tipos-de-dados-6-ano/">Tipos de dados no 6º ano: como ensinar a classificar informações (EF06CO01)</a></li><li><a href="/blog/sites-para-ensinar-matematica/">Sites gratuitos que ajudam a ensinar matemática</a></li><li><a href="/blog/comparativo-ias-para-professores/">12 IAs comparadas para professores: preço, português e idade dos alunos</a></li><li><a href="/blog/meu-primeiro-jogo-no-scratch/">Meu primeiro jogo no Scratch: passo a passo</a></li></ul>
+            </section>
+        </aside>
+        <aside class="lateral lateral-dir" aria-label="Projetos e sobre a autora">
+            <nav class="caixa caixa-verde caixa-projetos" aria-label="Projetos">
+                <h2 class="caixa-titulo">★ Projetos</h2>
+                <ul class="lista-menu"><li><a href="/material-didatico/"><span aria-hidden="true">▲</span> Material didático</a></li><li><a href="/material-adaptado/"><span aria-hidden="true">◆</span> Material adaptado</a></li><li><a href="/ia-pra-prof/"><span aria-hidden="true">✎</span> Guia IA pra Prof</a></li><li><a href="/tech-pra-prof/"><span aria-hidden="true">◇</span> Guia Tech pra Prof</a></li><li><a href="/computacao-na-escola/"><span aria-hidden="true">▦</span> Computação na escola</a></li><li><a href="/lei-do-celular-nas-escolas/"><span aria-hidden="true">▮</span> Lei do celular nas escolas</a></li><li><a href="/matematica-adaptada/"><span aria-hidden="true">✚</span> Matemática adaptada</a></li><li><a href="/assistencia-por-voz/"><span aria-hidden="true">◉</span> Assistência por voz</a></li><li><a href="/mundo/professores/"><span aria-hidden="true">⬢</span> Mundo para professores</a></li></ul>
+            </nav>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Quem escreve</h2>
+                <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
+                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA. Do código ao quadro.</p>
+                <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
+            </section>
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Formação e mentoria</h2>
+                <p>Mentoria individual para professores, a partir de R$ 200 a sessão, e formação para escolas e redes.</p>
+                <a class="btn98 escuro" href="/formacao-e-mentoria/">Ver as opções</a>
+            </section>
+            <section class="caixa caixa-contador">
+                <h2 class="caixa-titulo">★ Visitas</h2>
+                <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
+                <p class="miudo">Contador do GoatCounter, sem identificar quem visita. <a href="/privacidade/">Privacidade</a></p>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Selos</h2>
+                <ul class="selos">
+                    <li class="selo selo-amarelo">feito à mão</li>
+                    <li class="selo selo-verde"><a href="/privacidade/">privacidade</a></li>
+                    <li class="selo selo-vermelho">♥ professores</li>
+                    <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</div>
+</div>
+<footer class="rodape">
+    <nav class="letreiro" aria-label="Destaques"><a href="/blog/como-montar-um-robo-do-zero/">✦ Post novo: Como montar um robô do zero</a><a href="/formacao-e-mentoria/">✦ Formação e mentoria para professores, escolas e redes</a><a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a><a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a><a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a></nav>
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/apoie/">Apoie o projeto</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a> · <a href="/privacidade/">Privacidade</a></p>
+</footer>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/blog/assets/blog.js?v=b70cda5c99" defer></script>
+<script src="/assistente/assistente.js?v=edf45ba561" defer></script>
+</body>
+</html>
