@@ -378,7 +378,7 @@ def gerar_hub(fichas, mapa):
   <div class="hero-faixa"></div>
   <div class="wrap repositorio">
     <p class="como-usar">Primeira vez aqui? Leia <a href="/matematica-adaptada/">como usar o material adaptado</a>: como escolher entre as versões A, B e C e o que costuma ajudar alunos com diferentes necessidades.</p>
-    <p class="como-usar">Este material foi tema de uma <a href="https://www.novocabrais.rs.gov.br/noticia/3435/professora-cabraisense-desenvolve-material-didatico-de-computacao-e-matematica-para-escolas/" target="_blank" rel="noopener">notícia da Prefeitura de Novo Cabrais (RS)</a>, em 10/11/2026.</p>
+    <p class="como-usar">Este material foi tema de uma <a href="https://www.novocabrais.rs.gov.br/noticia/3435/professora-cabraisense-desenvolve-material-didatico-de-computacao-e-matematica-para-escolas/" target="_blank" rel="noopener">notícia da Prefeitura de Novo Cabrais (RS)</a>, em 10/11/2026, também publicada pelo <a href="https://portalcabrais.com.br/professora-cabraisense-desenvolve-material-didatico-inedito-de-computacao-e-matematica/" target="_blank" rel="noopener">Portal Cabrais</a>.</p>
     {braille_links.hub()}
     {glossario.hub()}
     <section class="ano-secao" id="mapa-bncc"><h2>Mapa da BNCC: Matemática</h2>

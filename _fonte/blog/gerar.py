@@ -611,7 +611,8 @@ PROVAS = [
      'A notícia apresenta as fichas adaptadas do 1º ao 9º ano, as versões em braille e o glossário em Libras, '
      'todos gratuitos para as escolas.',
      'Notícia da Prefeitura Municipal de Novo Cabrais, 10/11/2026',
-     'https://www.novocabrais.rs.gov.br/noticia/3435/professora-cabraisense-desenvolve-material-didatico-de-computacao-e-matematica-para-escolas/'),
+     'https://www.novocabrais.rs.gov.br/noticia/3435/professora-cabraisense-desenvolve-material-didatico-de-computacao-e-matematica-para-escolas/',
+     [('Portal Cabrais, 11/11/2026', 'https://portalcabrais.com.br/professora-cabraisense-desenvolve-material-didatico-inedito-de-computacao-e-matematica/')]),
     ('Pesquisa sobre a educação em Novo Cabrais (RS) no jornal O Correio',
      'A matéria apresenta minha análise dos dados do Censo Escolar e do IBGE de 2010 a 2022: escolas, matrículas, professores e o que melhorou no município.',
      'Matéria do jornal O Correio, de Cachoeira do Sul, 11/11/2026',
@@ -622,8 +623,13 @@ PROVAS = [
 def secao_provas():
     if not PROVAS:
         return ''
-    itens = '\n'.join(f'''            <li><strong>{esc(t)}</strong>{f'<br>{esc(d)}' if d else ''}<br><a href="{esc(u)}" target="_blank" rel="noopener">{esc(f)}</a></li>'''
-                      for t, d, f, u in PROVAS)
+    # Cada prova: (título, descrição, fonte, link) e, opcional, uma lista de (fonte, link) de outros
+    # veículos que publicaram a mesma notícia
+    def item(t, d, f, u, extras=()):
+        links = ' · '.join(f'<a href="{esc(eu)}" target="_blank" rel="noopener">{esc(ef)}</a>'
+                           for ef, eu in [(f, u), *extras])
+        return f'''            <li><strong>{esc(t)}</strong>{f'<br>{esc(d)}' if d else ''}<br>{links}</li>'''
+    itens = '\n'.join(item(*p) for p in PROVAS)
     return f'''<section class="provas" aria-labelledby="onde-aconteceu">
         <h2 id="onde-aconteceu">Onde o trabalho já aconteceu</h2>
         <ul>
