@@ -612,6 +612,10 @@ PROVAS = [
      'todos gratuitos para as escolas.',
      'Notícia da Prefeitura Municipal de Novo Cabrais, 10/11/2026',
      'https://www.novocabrais.rs.gov.br/noticia/3435/professora-cabraisense-desenvolve-material-didatico-de-computacao-e-matematica-para-escolas/'),
+    ('Pesquisa sobre a educação em Novo Cabrais (RS) no jornal O Correio',
+     'A matéria apresenta minha análise dos dados do Censo Escolar e do IBGE de 2010 a 2022: escolas, matrículas, professores e o que melhorou no município.',
+     'Matéria do jornal O Correio, de Cachoeira do Sul, 11/11/2026',
+     'https://ocorreio.com.br/pesquisa-analisa-desempenho-de-novo-cabrais-nos-ultimos-anos/'),
 ]
 
 
