@@ -705,6 +705,7 @@ def pagina_ofertas(cfg):
     <p class="rotulo">Formação e mentoria</p>
     <h1>Formação e mentoria para <span class="marca">professores</span></h1>
     <p class="linha-fina">Computação e IA na escola, do plano de aula à formação do professor. Escolha pelo tamanho do grupo: sozinho, com a equipe da escola ou com a rede inteira.</p>
+    <p class="topo-contato"><a class="btn98 escuro" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Forma%C3%A7%C3%A3o%20e%20mentoria." target="_blank" rel="noopener">Conversar no WhatsApp<span class="sr-only"> (abre em nova aba)</span></a> <a class="btn98" href="#conversar">Outras formas de contato</a></p>
     <div class="artigo">
     <ul class="ofertas">
 {cartoes}
@@ -789,7 +790,7 @@ def pagina_mentoria(cfg, dims):
     <p class="rotulo">Mentoria</p>
     <h1>Mentoria para professores em <span class="marca">IA</span></h1>
     <p class="linha-fina">Mentoria individual e on-line para professores, coordenadores e gestores: encontros para você usar inteligência artificial com segurança, ética e propósito pedagógico. Sem promessas mágicas e sem lista de ferramentas da moda: fundamentos, prática com o seu material real e acompanhamento. A partir de R$ 200 a sessão de 1 hora.</p>
-    <p><a class="btn98" href="#conversar">Marcar uma conversa</a></p>
+    <p class="topo-contato"><a class="btn98 escuro" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Mentoria%20de%20IA%20para%20professores." target="_blank" rel="noopener">Conversar no WhatsApp<span class="sr-only"> (abre em nova aba)</span></a> <a class="btn98" href="#conversar">Outras formas de contato</a></p>
     <div class="artigo">
 {corpo}
     </div>
@@ -1359,6 +1360,7 @@ def pagina_para_escolas(cfg):
     <p class="rotulo">Para escolas e redes</p>
     <h1>Computação e IA para escolas e <span class="marca">redes de ensino</span></h1>
     <p class="linha-fina">Para direções, coordenações e secretarias de educação que precisam colocar a Computação da BNCC em prática: material gratuito para as aulas, um guia de implantação e formação para os professores.</p>
+    <p class="topo-contato"><a class="btn98 escuro" href="https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%3A%20Computa%C3%A7%C3%A3o%20e%20IA%20para%20escolas%20e%20redes." target="_blank" rel="noopener">Conversar no WhatsApp<span class="sr-only"> (abre em nova aba)</span></a></p>
     <div class="artigo">
 {corpo}
     </div>
@@ -1503,6 +1505,7 @@ def pagina_formacao_redes(cfg):
     <p class="rotulo">Formação para redes municipais</p>
     <h1>Formação de professores em IA para <span class="marca">redes municipais</span></h1>
     <p class="linha-fina">8 horas de formação por R$ 2.000, com diagnóstico da equipe, prática com o material real das escolas, um combinado de uso de IA para a rede e retorno em 30 dias. Presencial, on-line ou misto.</p>
+    <p class="topo-contato"><a class="btn98 escuro" href="{zap}" target="_blank" rel="noopener">Pedir a proposta pelo WhatsApp<span class="sr-only"> (abre em nova aba)</span></a></p>
     <div class="artigo">
 {corpo}
     </div>

@@ -728,6 +728,16 @@
         .taskbar-tab { justify-content: center; padding: 4px 12px; }
     }
 
+    /* celular estreito: a aba da janela aberta não fica cortada pela bandeja */
+    @media (max-width: 480px) {
+        #taskbar { gap: 8px; padding: 0 10px; }
+        .bandeja { gap: 5px; padding-left: 8px; }
+        .bandeja .taskbar-clock, .programa-github { display: none; }
+    }
+
+    .pular { background: var(--ink); border-radius: 10px; color: var(--paper); left: 12px; padding: 8px 12px; position: absolute; top: -80px; z-index: 1000; }
+    .pular:focus { top: 12px; }
+
     @media (prefers-reduced-motion: reduce) {
         .pet-sprite { animation: none; }
         .icon-item .tile, .vis-bar { transition: none; }
@@ -744,6 +754,7 @@
 </script>
 </head>
 <body>
+<a class="pular" href="#win-leiame">Pular para o conteúdo</a>
 
 <header class="topbar">
     <a class="brand" href="./">Júlia Quoos</a>
