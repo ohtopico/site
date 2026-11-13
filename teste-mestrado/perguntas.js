@@ -93,14 +93,15 @@ async function tradutor(de, para, baixar = false) {
   const T = globalThis.Translator;
   if (!T) return null;
   const chave = `${de}>${para}`;
-  if (!tradutores[chave]) {
+  if (!tradutores[chave] || baixar) {
     const tentativa = (async () => {
       const disponivel = await comPrazo(T.availability({ sourceLanguage: de, targetLanguage: para }), 3000);
       if (disponivel !== "available" && !(baixar && disponivel === "downloadable")) return null;
       return T.create({ sourceLanguage: de, targetLanguage: para });
     })().catch(() => null);
     tradutores[chave] = comPrazo(tentativa, baixar ? 120000 : 5000);
-    tradutores[chave].then(t => { if (!t) delete tradutores[chave]; }); // tenta de novo na próxima vez
+    // Sem tradutor: não espera de novo a cada pergunta; só um toque na configuração tenta outra vez
+    if (baixar) tradutores[chave].then(t => { if (!t) delete tradutores[chave]; });
   }
   return tradutores[chave];
 }
