@@ -3,7 +3,7 @@ import { interpretar } from "./comandos.js";
 import { Detector, DetectorExtra, ClassificadorCena } from "./modelos.js";
 import { abrirNuvem, fotografar, lerChave, salvarChave } from "./nuvem.js";
 import { abrirCamera } from "./camera.js";
-import { abrirLocal, contexto, lembrar, ligarLocal, localLigada, responderNoCelular } from "./perguntas.js";
+import { abrirLocal, contexto, lembrar, ligarLocal, localLigada, prepararTradutores, responderNoCelular } from "./perguntas.js";
 import { Memoria } from "./memoria.js";
 import { apagarLugar, descreverLugar, lembrarLugar, listarLugares, ondeEstou } from "./lugares.js";
 import { Cadastro, Reconhecedor as ReconhecedorRostos, apagarPessoa, cadastrarPorFotos, listarPessoas } from "./pessoas.js";
@@ -722,6 +722,7 @@ async function ligarIaLocal(ligar, falando = false) {
     if (falando) anunciador.falar("IA do celular desligada.", true);
     return null;
   }
+  prepararTradutores().catch(() => {}); // precisa vir logo depois do toque, antes de qualquer espera
   if (falando) anunciador.falar("Ligando a IA do celular. Da primeira vez ela baixa uns 200 megas; use o wi-fi.", true);
   let falado = 0;
   try {

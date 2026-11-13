@@ -83,17 +83,30 @@ export function abrirLocal(progresso = () => {}) {
 // --- Tradutor do navegador (Translator API, Chrome 138+ no computador) ---------------------
 
 const tradutores = {};
-async function tradutor(de, para) {
+const comPrazo = (promessa, ms) => Promise.race([promessa, new Promise(ok => setTimeout(() => ok(null), ms))]);
+
+/**
+ * Tradutor pronto, ou null. Só cria se o pacote de idioma já estiver no navegador (baixar exige um toque):
+ * `baixar` = true só quando chamado direto de um toque (a caixa da configuração).
+ */
+async function tradutor(de, para, baixar = false) {
   const T = globalThis.Translator;
   if (!T) return null;
   const chave = `${de}>${para}`;
-  tradutores[chave] ??= (async () => {
-    const disponivel = await T.availability({ sourceLanguage: de, targetLanguage: para });
-    if (disponivel === "unavailable") return null;
-    return T.create({ sourceLanguage: de, targetLanguage: para });
-  })().catch(() => null);
+  if (!tradutores[chave]) {
+    const tentativa = (async () => {
+      const disponivel = await comPrazo(T.availability({ sourceLanguage: de, targetLanguage: para }), 3000);
+      if (disponivel !== "available" && !(baixar && disponivel === "downloadable")) return null;
+      return T.create({ sourceLanguage: de, targetLanguage: para });
+    })().catch(() => null);
+    tradutores[chave] = comPrazo(tentativa, baixar ? 120000 : 5000);
+    tradutores[chave].then(t => { if (!t) delete tradutores[chave]; }); // tenta de novo na próxima vez
+  }
   return tradutores[chave];
 }
+
+/** Chamar direto de um toque: baixa os pacotes de português e inglês do tradutor do navegador, se faltarem. */
+export const prepararTradutores = () => Promise.all([tradutor("pt", "en", true), tradutor("en", "pt", true)]);
 
 /**
  * Responde com a IA do celular. Devolve { resposta, idioma } (idioma "pt-BR", ou "en-US" quando não há tradutor
@@ -101,10 +114,10 @@ async function tradutor(de, para) {
  */
 export async function responderNoCelular(local, foto, pergunta) {
   const [ptEn, enPt] = await Promise.all([tradutor("pt", "en"), tradutor("en", "pt")]);
-  const emIngles = ptEn ? await ptEn.translate(pergunta).catch(() => pergunta) : pergunta;
+  const emIngles = ptEn ? (await comPrazo(ptEn.translate(pergunta).catch(() => null), 5000)) || pergunta : pergunta;
   const resposta = await local.responder(foto, emIngles);
   if (enPt) {
-    const pt = await enPt.translate(resposta).catch(() => null);
+    const pt = await comPrazo(enPt.translate(resposta).catch(() => null), 5000);
     if (pt) return { resposta: pt, idioma: "pt-BR" };
   }
   return { resposta, idioma: "en-US" };
