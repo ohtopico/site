@@ -5771,47 +5771,65 @@
   if (new URLSearchParams(location.search).has('teleporte')) { let n = 0; const t = setInterval(() => { if (!dialogoAberto && !janelaAberta) { clearInterval(t); portalTele(); } else if (++n > 60) clearInterval(t); }, 1000); }   // veio do resultado do teste: abre o portal assim que a tela estiver livre
   /* links diretos (usados na área premium): ?abrir=cursos[&curso=id], ?abrir=kits, ?kit=CÓDIGO (resgata e mostra na Loja de Roupas) */
   /* ---------- mini tutorial: aparece antes do primeiro jogo (e fica no Menu, em Como jogar) ---------- */
-  const TUT = { passo: 0 };
+  const TUT = { passo: 0, modo: 'rapido' };
+  const TOQUE = () => !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+  const CONTROLES = () => TOQUE()
+    ? `<li><b>Toque no chão</b> para andar e <b>toque nas pessoas e nas casas</b> para conversar e entrar.</li>
+      <li>O botão <b>Toque</b> (no ☰) mostra um controle na tela, e o <b>1ª pessoa</b> troca a visão: arraste o dedo para olhar em volta.</li>`
+    : `<li><b>Setas</b> ou W, A, S, D para andar, Shift para correr, espaço para pular e <b>E</b> para conversar ou entrar numa casa.</li>
+      <li>M abre o mapa e Esc, o menu. F liga a <b>primeira pessoa</b>: as setas para cima e para baixo andam e as dos lados viram.</li>`;
+  const P_CONTA = () => { const p = perfilMD(), tem = TUT.criou || (p && p.apelido && p.apelido !== 'Estudante');
+    return `${tem ? `<p class="tut-ok">Conta pronta: <b>${esc(p.apelido)}</b>, ${p.ano}º ano. Se quiser, mude abaixo.</p>` : ''}
+      <form id="tut-conta" class="tut-conta"><label>Apelido <input id="tut-apelido" class="campo" maxlength="20" autocomplete="off" placeholder="Ex.: Bia do 8A" value="${esc(tem ? p.apelido : S.apelido || '')}" required></label>
+        <label>Ano <select id="tut-ano" class="campo">${[6, 7, 8, 9].map(a => `<option value="${a}" ${p && p.ano === a ? 'selected' : ''}>${a}º ano</option>`).join('')}</select></label>
+        <button type="submit" class="hb verde">${tem ? 'Salvar' : 'Criar minha conta'}</button></form>
+      <p class="muted small">Use um apelido, não o nome completo. Ele aparece no ranking entre amigos, nos bilhetes e no selo dos cursos.</p>`; };
+  // primeira visita: 2 telas (quem é você + conta e controles); o Menu, em Como jogar, abre a versão completa
+  const PASSOS_RAPIDO = [
+    { t: 'Boas-vindas ao Mundo', escolha: true, h: () => `<p>O Mundo é uma vila de jogos de Computação e Matemática para o 6º ao 9º ano e o Ensino Médio. Você anda pelas vilas, conversa com os moradores e cada casa é um jogo.</p>
+      <div class="tut-quem"><button type="button" class="hb verde" id="tut-estudante">Sou estudante: quero jogar</button>
+        <a class="hb azul" id="tut-prof" href="professores/">Sou professor(a): ver como usar nas aulas</a></div>` },
+    { t: 'Sua conta e os controles', h: () => `<p>A conta não pede e-mail nem senha: é só um apelido e o seu ano, guardados neste navegador. Se preferir, jogue sem criar.</p>
+      ${P_CONTA()}<ul class="tut-lista">${CONTROLES()}</ul>
+      <p class="muted small">Objetivos, missões e como levar o progresso para outro aparelho estão no Menu, em Como jogar.</p>` }
+  ];
   const PASSOS_TUT = [
     { t: 'Boas-vindas ao Mundo', h: () => `<p>O Mundo é uma vila de jogos de Computação e Matemática para o 6º ao 9º ano e o Ensino Médio. Você anda pelas vilas, conversa com os moradores, responde perguntas e entra nas casas: cada casa é um jogo ou uma atividade do site.</p>
-      <p>Este tutorial tem 5 passos rápidos: os objetivos, a sua conta, como guardar o progresso e os controles.</p>` },
+      <p>É professor ou professora? O <a href="professores/">guia para professores</a> mostra como usar o Mundo nas aulas, com código de turma.</p>` },
     { t: 'Seus objetivos', h: () => `<ol class="tut-lista">
       <li><b>Abrir as casas.</b> Cada casa é um jogo. Ela fica cinza até você jogar e ganha cor quando a atividade é concluída.</li>
       <li><b>Conversar e responder.</b> Os moradores fazem perguntas. Cada acerto dá estrelas e faz as suas habilidades crescerem. Se errar, a mesma pergunta só volta depois de outra.</li>
       <li><b>Cumprir as missões da vila.</b> O quadro no canto da tela mostra as missões. Completando todas, o portão para a próxima vila se abre.</li>
       <li><b>Usar as estrelas.</b> Com elas você decora a sua casa, compra nas lojas, cuida do pet e muda o avatar.</li>
       <li><b>Subir de nível.</b> Os acertos contam no Meu progresso, com nível e medalhas.</li></ol>` },
-    { t: 'Crie sua conta', h: () => { const p = perfilMD(), tem = TUT.criou || (p && p.apelido && p.apelido !== 'Estudante');
-      return `<p>A conta do Mundo não pede e-mail nem senha: é só um apelido e o seu ano. Ela fica guardada neste navegador e é a mesma do Meu progresso.</p>
-      ${tem ? `<p class="tut-ok">Conta pronta: <b>${esc(p.apelido)}</b>, ${p.ano}º ano. Se quiser, mude abaixo.</p>` : ''}
-      <form id="tut-conta" class="tut-conta"><label>Apelido <input id="tut-apelido" class="campo" maxlength="20" autocomplete="off" placeholder="Ex.: Bia do 8A" value="${esc(tem ? p.apelido : S.apelido || '')}" required></label>
-        <label>Ano <select id="tut-ano" class="campo">${[6, 7, 8, 9].map(a => `<option value="${a}" ${p && p.ano === a ? 'selected' : ''}>${a}º ano</option>`).join('')}</select></label>
-        <button type="submit" class="hb verde">${tem ? 'Salvar' : 'Criar minha conta'}</button></form>
-      <p class="muted small">Use um apelido, não o nome completo. Ele aparece no ranking entre amigos, nos bilhetes e no selo dos cursos.</p>`; } },
+    { t: 'Crie sua conta', h: () => `<p>A conta do Mundo não pede e-mail nem senha: é só um apelido e o seu ano. Ela fica guardada neste navegador e é a mesma do Meu progresso.</p>${P_CONTA()}` },
     { t: 'Seu progresso', h: () => `<p>O progresso fica salvo sozinho neste navegador. Por isso:</p>
       <ul class="tut-lista"><li>Para continuar em outro computador ou no celular, abra o <b>Menu</b> e use <b>Levar para outro aparelho</b>: o Mundo gera um código que você cola no outro aparelho.</li>
       <li>Na escola, a professora ou o professor pode passar um <b>código de turma</b> (Menu, Modo turma).</li>
       <li>Não limpe os dados do navegador, ou o progresso some deste aparelho.</li></ul>` },
-    { t: 'Como se mexer', h: () => `<ul class="tut-lista"><li><b>No computador:</b> setas ou W, A, S, D para andar, Shift para correr, espaço para pular e <b>E</b> para conversar ou entrar numa casa. M abre o mapa e Esc, o menu. F liga a <b>primeira pessoa</b>: você vê pelos olhos do avatar, as setas para cima e para baixo andam e as dos lados viram.</li>
-      <li><b>No celular ou tablet:</b> toque no chão para andar e toque nas pessoas e nas casas para conversar e entrar. O botão Toque mostra um controle na tela, e o botão 1ª pessoa troca a visão (arraste o dedo para olhar em volta).</li>
-      <li>O <b>Buscar</b>, no alto da tela, leva você até qualquer jogo.</li></ul>
+    { t: 'Como se mexer', h: () => `<ul class="tut-lista">${CONTROLES()}
+      <li>O <b>Buscar</b> leva você até qualquer jogo.</li></ul>
       <p>Pronto. Boa exploração!</p>` }
   ];
   function janelaTutorial() {
-    const i = TUT.passo, P = PASSOS_TUT[i], el = $('#tut-conteudo');
-    el.innerHTML = `<p class="tut-passo">Passo ${i + 1} de ${PASSOS_TUT.length}</p><h3 class="tut-t">${P.t}</h3>${P.h()}
-      <div class="tut-pontos" aria-hidden="true">${PASSOS_TUT.map((_, j) => `<span class="${j === i ? 'on' : ''}"></span>`).join('')}</div>
+    const L = TUT.modo === 'rapido' ? PASSOS_RAPIDO : PASSOS_TUT;
+    const i = TUT.passo, P = L[i], el = $('#tut-conteudo'), ultimo = i === L.length - 1;
+    el.innerHTML = `<p class="tut-passo">Passo ${i + 1} de ${L.length}</p><h3 class="tut-t">${P.t}</h3>${P.h()}
+      <div class="tut-pontos" aria-hidden="true">${L.map((_, j) => `<span class="${j === i ? 'on' : ''}"></span>`).join('')}</div>
       <div class="btn-row tut-nav">${i ? '<button type="button" class="hb cinza" id="tut-volta">Voltar</button>' : ''}
-        ${i < PASSOS_TUT.length - 1 ? '<button type="button" class="hb verde" id="tut-prox">Próximo</button>' : '<button type="button" class="hb verde" id="tut-fim">Começar a jogar</button>'}
-        ${i < PASSOS_TUT.length - 1 ? '<button type="button" class="hb cinza" id="tut-pula">Pular o tutorial</button>' : ''}</div>`;
-    const vai = d => { TUT.passo = Math.max(0, Math.min(PASSOS_TUT.length - 1, TUT.passo + d)); janelaTutorial(); };
+        ${P.escolha ? '' : ultimo ? '<button type="button" class="hb verde" id="tut-fim">Começar a jogar</button>' : '<button type="button" class="hb verde" id="tut-prox">Próximo</button>'}
+        ${ultimo ? '' : '<button type="button" class="hb cinza" id="tut-pula">Pular o tutorial</button>'}</div>`;
+    const vai = d => { TUT.passo = Math.max(0, Math.min(L.length - 1, TUT.passo + d)); janelaTutorial(); };
+    const contaDoCampo = () => { const ap = $('#tut-apelido'); if (ap && ap.value.trim() && !TUT.criou) criaConta(ap.value, +$('#tut-ano').value); };
     const f = $('#tut-conta');
-    if (f) f.addEventListener('submit', e => { e.preventDefault(); criaConta($('#tut-apelido').value, +$('#tut-ano').value); vai(1); });
+    if (f) f.addEventListener('submit', e => { e.preventDefault(); criaConta($('#tut-apelido').value, +$('#tut-ano').value); if (ultimo) janelaTutorial(); else vai(1); });
     const b = (id, fn) => { const x = $('#' + id); if (x) x.addEventListener('click', fn); };
     b('tut-volta', () => vai(-1));
-    b('tut-prox', () => { const ap = $('#tut-apelido'); if (ap && ap.value.trim() && !TUT.criou) criaConta(ap.value, +$('#tut-ano').value); vai(1); });
-    b('tut-pula', fimTutorial); b('tut-fim', fimTutorial);
-    const foco = el.querySelector('#tut-apelido') || el.querySelector('#tut-prox, #tut-fim'); if (foco) foco.focus();
+    b('tut-prox', () => { contaDoCampo(); vai(1); });
+    b('tut-estudante', () => vai(1));
+    b('tut-prof', () => { S.tutorial = true; salvar(); });   // o professor vai ao guia; ao voltar, cai direto no jogo
+    b('tut-pula', fimTutorial); b('tut-fim', () => { contaDoCampo(); fimTutorial(); });
+    const foco = el.querySelector('#tut-estudante') || el.querySelector('#tut-apelido') || el.querySelector('#tut-prox, #tut-fim'); if (foco) foco.focus();
   }
   function criaConta(apelido, ano) {
     apelido = String(apelido || '').trim().slice(0, 20); if (!apelido) return aviso('Escreva um apelido.');
@@ -5820,7 +5838,7 @@
     salvar(); nivelHud(); aviso(`Conta criada: ${apelido}`);
   }
   function fimTutorial() { S.tutorial = true; salvar(); fechaJanela(); nivelHud(); }
-  function abreTutorial() { TUT.passo = 0; abreJanela('tutorial'); }
+  function abreTutorial(e) { TUT.passo = 0; TUT.modo = e && e.type === 'click' ? 'completo' : 'rapido'; abreJanela('tutorial'); }
   function linkDireto() {
     const q = new URLSearchParams(location.search), abrir = q.get('abrir'), kit = q.get('kit'), curso = q.get('curso');
     if (!abrir && !kit) return;

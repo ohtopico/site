@@ -6,11 +6,11 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Jogos de Matemática e Computação (6º ao 9º) | Júlia Quoos</title>
-<meta name="description" content="Jogos online e gratuitos de Matemática e Computação para estudantes do 6º ao 9º ano. Escolha o seu ano, jogue e ganhe estrelas.">
+<title>Jogos de Matemática e Computação (1º ano ao EM) | Júlia Quoos</title>
+<meta name="description" content="Jogos online e gratuitos de Matemática e Computação para estudantes do 1º ano ao Ensino Médio. Escolha o seu ano, jogue e ganhe estrelas.">
 <link rel="canonical" href="https://ohtopico.com.br/jogos/">
-<meta property="og:title" content="Jogos de Matemática e Computação · 6º ao 9º ano">
-<meta property="og:description" content="Jogos online e gratuitos de Matemática e Computação para estudantes do 6º ao 9º ano. Escolha o seu ano, jogue e ganhe estrelas.">
+<meta property="og:title" content="Jogos de Matemática e Computação · 1º ano ao Ensino Médio">
+<meta property="og:description" content="Jogos online e gratuitos de Matemática e Computação para estudantes do 1º ano ao Ensino Médio. Escolha o seu ano, jogue e ganhe estrelas.">
 <meta property="og:url" content="https://ohtopico.com.br/jogos/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -41,6 +41,7 @@
   .ano:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #111; }
   .ano[data-ano="6"] { background: var(--t-formas); } .ano[data-ano="7"] { background: var(--t-numeros); }
   .ano[data-ano="8"] { background: var(--t-dinheiro); } .ano[data-ano="9"] { background: var(--t-detetive); }
+  .ano[data-ano="15"], .ano[data-ano="10"] { background: var(--t-digital); }
   .ano[aria-pressed="true"] { background: #111; color: #fff; transform: translate(2px, 2px); box-shadow: 2px 2px 0 #111; }
   .todos { border: 0; background: none; color: #111; text-decoration: underline; font-size: 16px; cursor: pointer; padding: 8px; font-family: var(--body); }
   .todos[aria-pressed="true"] { font-weight: 700; text-decoration: none; }
@@ -143,7 +144,7 @@
   .hero .prof-link a { color: inherit; text-decoration: underline; }
 </style>
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Jogos de Matemática e Computação (6º ao 9º ano)", "url": "https://ohtopico.com.br/jogos/", "description": "Jogos online e gratuitos de Matemática e Computação para estudantes do 6º ao 9º ano, alinhados à BNCC.", "inLanguage": "pt-BR", "isAccessibleForFree": true, "audience": {"@type": "EducationalAudience", "educationalRole": "student"}, "author": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}, "publisher": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}}
+{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Jogos de Matemática e Computação (1º ano ao Ensino Médio)", "url": "https://ohtopico.com.br/jogos/", "description": "Jogos online e gratuitos de Matemática e Computação para estudantes do 6º ao 9º ano, alinhados à BNCC.", "inLanguage": "pt-BR", "isAccessibleForFree": true, "audience": {"@type": "EducationalAudience", "educationalRole": "student"}, "author": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}, "publisher": {"@type": "Person", "@id": "https://ohtopico.com.br/#julia", "name": "Júlia Roberta Quoos Alves", "url": "https://ohtopico.com.br/"}}
 </script>
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://ohtopico.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Jogos", "item": "https://ohtopico.com.br/jogos/"}]}
@@ -177,10 +178,12 @@
         <p class="prof-link">É professor ou professora? Veja os <a href="../material-didatico/jogos/">jogos com plano de aula e habilidades da BNCC</a>.</p>
         <div class="pergunta" id="rot-ano">Em que ano você está?</div>
         <div class="anos" role="group" aria-labelledby="rot-ano">
+          <button class="ano" type="button" data-ano="15" aria-pressed="false" aria-label="1º ao 5º ano">1º<small>ao 5º</small></button>
           <button class="ano" type="button" data-ano="6" aria-pressed="false">6º<small>ano</small></button>
           <button class="ano" type="button" data-ano="7" aria-pressed="false">7º<small>ano</small></button>
           <button class="ano" type="button" data-ano="8" aria-pressed="false">8º<small>ano</small></button>
           <button class="ano" type="button" data-ano="9" aria-pressed="false">9º<small>ano</small></button>
+          <button class="ano" type="button" data-ano="10" aria-pressed="false" aria-label="Ensino Médio">EM<small>médio</small></button>
           <button class="todos" type="button" data-ano="0" aria-pressed="false">Ver todos</button>
         </div>
       </div>
@@ -209,7 +212,7 @@
     <footer class="rodape-al">
       <section class="sobre-jogos" aria-labelledby="sobre-jogos">
         <h2 id="sobre-jogos">Jogos online de Matemática e Computação</h2>
-        <p>Todos os jogos abrem no navegador do computador, do tablet ou do celular, sem instalar nada e sem cadastro. Eles seguem a BNCC do 6º ao 9º ano e cada um leva de 10 a 25 minutos.</p>
+        <p>Todos os jogos abrem no navegador do computador, do tablet ou do celular, sem instalar nada e sem cadastro. Eles seguem a BNCC do 1º ano ao Ensino Médio e cada um leva de 10 a 25 minutos.</p>
         <p><b>Matemática:</b> treine a tabuada na <a href="../material-didatico/jogos/tabuada.html">Corrida da Tabuada</a>, compare frações na <a href="../material-didatico/jogos/fracoes.html">Corrida das Frações</a>, monte figuras no <a href="../material-didatico/jogos/tangram.html">Tangram online</a>, ache pontos no <a href="../material-didatico/jogos/cartesiano.html">plano cartesiano</a>, resolva equações na <a href="../material-didatico/jogos/balanca.html">Balança das Equações</a>, meça <a href="../material-didatico/jogos/angulos.html">ângulos</a> e use a <a href="../material-didatico/jogos/bhaskara.html">fórmula de Bhaskara passo a passo</a>.</p>
         <p><b>Computação:</b> aprenda a programar com o <a href="../material-didatico/jogos/robo.html">Robô Coletor</a> e a <a href="../material-didatico/jogos/python.html">Horta em Python</a>, faça o <a href="../material-didatico/jogos/digitacao.html">teste de digitação</a>, descubra as <a href="../material-didatico/jogos/partes-computador.html">partes do computador</a>, crie uma <a href="../material-didatico/jogos/senha.html">senha forte</a>, decifre a <a href="../material-didatico/jogos/cifra.html">Cifra de César</a> e aprenda a reconhecer <a href="../material-didatico/jogos/golpe.html">golpes na internet</a>.</p>
         <p>Quer ver a ciência por trás da tecnologia? Experimente os <a href="../simuladores/">simuladores de IA e Computação</a> ou explore o <a href="../mundo/">Mundo do site</a>, uma vila com missões que abrem estes jogos.</p>
@@ -287,7 +290,7 @@
     set: v => { try { localStorage.setItem('jogos-ano', v); } catch (e) {} } };
 
   let ano = parseInt(params.get('ano'), 10);
-  if (![6, 7, 8, 9].includes(ano)) ano = params.get('ano') === null ? lembrar.get() : 0;
+  if (![15, 6, 7, 8, 9, 10].includes(ano)) ano = params.get('ano') === null ? lembrar.get() : 0;
   let comp = ['CO', 'MA'].includes((params.get('area') || '').toUpperCase()) ? params.get('area').toUpperCase() : '';
   let tema = TEMAS.some(t => t.id === params.get('tema')) ? params.get('tema') : '';
   // "Por tema" é a ordem de sempre (seções por tema); as outras mostram cada grupo numa grade só, já ordenada
@@ -318,7 +321,7 @@
       <a class="btn" href="${recUrl(ult.j)}">Continuar</a></div>`;
   }
 
-  const filtrados = () => JOGOS.filter(j => (!ano || j.anos.includes(ano)) && (!comp || j.comp.includes(comp)));
+  const filtrados = () => JOGOS.filter(j => (!ano || (ano === 15 ? j.anos.some(a => a <= 5) : j.anos.includes(ano))) && (!comp || j.comp.includes(comp)));
   const cartao = j => {
     const e = estrelas(j.id);
     return `<a class="jg" href="${recUrl(j)}">

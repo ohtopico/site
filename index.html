@@ -67,7 +67,7 @@
     <script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
 
     <link rel="stylesheet" href="/assets/fontes/fontes.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
 
 <style>
     /* =========================================================
@@ -728,6 +728,17 @@
         .taskbar-tab { justify-content: center; padding: 4px 12px; }
     }
 
+    /* celular: o Leia-me vira uma página comum, com a rolagem da própria página (sem rolagem dentro da janela),
+       e os atalhos ficam logo abaixo dele */
+    @media (max-width: 768px) {
+        html, body { height: auto; min-height: 100%; }
+        body { overflow-y: auto; }
+        #desktop { display: flex; flex-direction: column; height: auto; margin-top: var(--topo); min-height: calc(100dvh - var(--topo) - var(--base)); padding-bottom: calc(var(--base) + 24px); top: 0; }
+        .desktop-icons { padding: 18px 10px 0; position: static; }
+        #win-leiame { left: auto !important; margin: 12px 10px 0; max-height: none; order: -1; position: relative; right: auto; top: auto !important; }
+        #win-leiame .janela-conteudo { overflow: visible; }
+    }
+
     /* celular estreito: a aba da janela aberta não fica cortada pela bandeja */
     @media (max-width: 480px) {
         #taskbar { gap: 8px; padding: 0 10px; }
@@ -854,7 +865,7 @@
                 </a>
             </div>
 
-            <!-- novo-no-site: início (gerado por _fonte/home/gerar.py) --><p class="novidades"><b>Novo no site:</b> <a href="apoie/">Apoie o projeto</a> · <a href="computacao-ano-a-ano/">Computação ano a ano (1º ao 6º)</a> · <a href="mundo/">Novidades do Mundo</a> · <a href="computacao-desplugada/">Computação desplugada</a> · <a href="blog/comparativo-ias-para-professores/">Comparativo de IAs</a></p><!-- novo-no-site: fim -->
+            <!-- novo-no-site: início (gerado por _fonte/home/gerar.py) --><p class="novidades"><b>Novo no site:</b> <a href="apoie/">Apoie o projeto</a> · <a href="computacao-ano-a-ano/">Computação ano a ano (1º ao 6º)</a> · <a href="mundo/professores/">Novidades do Mundo</a> · <a href="computacao-desplugada/">Computação desplugada</a> · <a href="blog/comparativo-ias-para-professores/">Comparativo de IAs</a></p><!-- novo-no-site: fim -->
 
             <p>Licenciada em Informática e bacharel em Ciência da Computação (UNISC), com experiência em engenharia de dados e pesquisa em IA desde 2020. No mestrado da UFSM, pesquiso IA para auxiliar pessoas com deficiência visual. Autora do guia <a href="ia-pra-prof/">IA pra Prof</a>. Quem quiser apoiar o material encontra o <a href="apoie/">clube no Catarse</a>. Meu trabalho com dados, com projetos e painéis, está em <a href="https://juliaroberta.com/">juliaroberta.com</a>.</p>
 

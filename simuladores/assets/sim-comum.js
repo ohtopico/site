@@ -109,4 +109,4 @@
   };
 })();
 // Acessibilidade (leitura em voz alta, contraste, letra maior, legendas dos sons, teclado): /assets/acessibilidade.js
-(function () { if (window.MDA || /^\/mundo\//.test(location.pathname)) return; const s = document.createElement('script'); s.src = '/assets/acessibilidade.js?v=202611041'; document.head.appendChild(s); })();
+(function () { if (window.MDA || /^\/mundo\//.test(location.pathname)) return; const s = document.createElement('script'); s.src = '/assets/acessibilidade.js?v=20261113'; document.head.appendChild(s); })();

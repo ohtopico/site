@@ -105,7 +105,7 @@ def cabeca(titulo, descricao, url, imagem, imagem_alt, tipo_og, extra='', robots
 {extra}
 {SCRIPT_TOPO}
 {FONTES}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
 <link rel="stylesheet" href="/blog/assets/blog.css?v={VERSAO_CSS}">
 <link rel="alternate" type="application/rss+xml" title="Blog de Júlia Roberta Quoos Alves" href="/blog/feed.xml">
 <!-- Google tag (gtag.js) -->
@@ -270,6 +270,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
         <nav class="cabecalho-links" aria-label="Principal">
             <a href="/blog/"{' aria-current="page"' if atual == 'blog' else ''}>Blog</a>
             <a href="/material-didatico/">Material didático</a>
+            <a href="/mundo/">Mundo</a>
             <a href="/formacao-e-mentoria/"{' aria-current="page"' if atual in ('ofertas', 'mentoria', 'formacao', 'tecnologias') else ''}>Formação e mentoria</a>
         </nav>
     </header>

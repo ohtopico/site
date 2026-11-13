@@ -297,4 +297,4 @@
 // Estrelas secretas do site (dicas escondidas e contador de estrelas)
 (function () { const s = document.createElement('script'); s.src = '/assets/estrelas.js?v=202610302300'; s.defer = true; document.head.appendChild(s); })();
 // Acessibilidade (leitura em voz alta, contraste, letra maior, legendas dos sons, teclado): /assets/acessibilidade.js
-(function () { if (window.MDA || /^\/mundo\//.test(location.pathname)) return; const s = document.createElement('script'); s.src = '/assets/acessibilidade.js?v=202611041'; document.head.appendChild(s); })();
+(function () { if (window.MDA || /^\/mundo\//.test(location.pathname)) return; const s = document.createElement('script'); s.src = '/assets/acessibilidade.js?v=20261113'; document.head.appendChild(s); })();

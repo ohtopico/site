@@ -48,6 +48,7 @@
   .mda-bt { position: fixed; left: 12px; bottom: 60px; z-index: 56; width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--ink, #111);
     background: var(--paper, #fff); color: var(--ink, #111); display: grid; place-items: center; cursor: pointer; box-shadow: 3px 3px 0 var(--ink, #111); padding: 0; }
   .mda-bt svg { width: 28px; height: 28px; }
+  .mda-bt { transition: transform .25s, opacity .25s; } .mda-bt.recolhido { transform: translateY(calc(100% + 80px)); opacity: 0; pointer-events: none; }
   .mda-bt[aria-expanded="true"] { background: var(--accent, #166c40); color: var(--paper, #fff); }
   .mda-painel { position: fixed; left: 12px; bottom: 116px; z-index: 57; width: min(330px, calc(100vw - 24px)); max-height: calc(100vh - 140px); overflow: auto;
     background: var(--paper, #fff); color: var(--ink, #111); border: 1.5px solid var(--ink, #111); border-radius: 20px; padding: 14px 16px;
@@ -294,6 +295,14 @@
       </div>`;
     document.body.appendChild(painel);
     document.body.appendChild(bt);
+    // como as estrelas e o assistente: some ao rolar para baixo (para não cobrir o texto) e volta ao rolar para cima
+    let ultimoY = scrollY;
+    addEventListener('scroll', () => {
+      const y = scrollY, fim = y + innerHeight >= document.documentElement.scrollHeight - 40;
+      if (Math.abs(y - ultimoY) < 8) return;
+      bt.classList.toggle('recolhido', painel.hidden && y > ultimoY && y > 160 && !fim);
+      ultimoY = y;
+    }, { passive: true });
     if (!temVoz) painel.querySelectorAll('[data-op="voz"], [data-op="devagar"], [data-acao="ler"], [data-acao="parar"]').forEach(b => { b.disabled = true; b.title = 'Este navegador não tem leitura em voz alta'; });
     bt.addEventListener('click', () => abre(painel.hidden));
     painel.addEventListener('click', e => {
