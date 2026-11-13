@@ -3,6 +3,7 @@ import { interpretar } from "./comandos.js";
 import { Detector, DetectorExtra, ClassificadorCena } from "./modelos.js";
 import { abrirNuvem, fotografar, lerChave, salvarChave } from "./nuvem.js";
 import { abrirCamera } from "./camera.js";
+import { abrirLocal, contexto, lembrar, ligarLocal, localLigada, responderNoCelular } from "./perguntas.js";
 import { Memoria } from "./memoria.js";
 import { apagarLugar, descreverLugar, lembrarLugar, listarLugares, ondeEstou } from "./lugares.js";
 import { Cadastro, Reconhecedor as ReconhecedorRostos, apagarPessoa, cadastrarPorFotos, listarPessoas } from "./pessoas.js";
@@ -26,6 +27,7 @@ const TUTORIAL = [
     "ache a chave, tem um extintor, o que tem na minha frente, ou o caminho está livre.",
   "Dentro de um prédio, posso gravar um percurso e depois guiar você por ele: diga gravar percurso e um nome. " +
     "Para ler um livro, placa ou rótulo, diga leia este texto e segure o celular acima dele. " +
+    "Também dá para perguntar qualquer coisa sobre o que a câmera vê, como: a porta está aberta, ou de que cor é esta camisa. " +
     "Na rua, diga que prédio é esse, onde fica a reitoria, ou me leva até e o nome do lugar, que eu guio você a pé pelo GPS.",
   "Eu lembro do que passou pela câmera no último minuto: pergunte o que eu passei, ou onde estava a porta. " +
     "Também guardo lugares, dizendo lembrar este lugar como cozinha, e depois respondo onde estou. " +
@@ -36,7 +38,7 @@ const TUTORIAL = [
 ];
 const EXPLICACAO = TUTORIAL.join(" ");
 // Subir a cada atualização publicada (número do PR): aparece no canto da tela
-const VERSAO = "v48 · 29/10";
+const VERSAO = "v49 · 13/11";
 $("versao").textContent = VERSAO;
 $("versao").setAttribute("aria-label", `Versão ${VERSAO.replace(/^v/, "").replace(" · ", ", de ")}`);
 
@@ -53,6 +55,8 @@ let detector, extra = null, cena, profundidade = null, nuvem = null, tarefa = nu
 let leitura = null; // { cancelada } enquanto lê um texto em voz alta
 let pausado = false, ouvindo = false, processando = false, aguardandoIntro = false, aguardandoGrupo = false;
 let aguardandoNomePercurso = null; // nome provisório do percurso gravado sem nome
+let aguardandoPergunta = false; // depois de "tenho uma pergunta", a próxima frase é a pergunta
+let perguntando = null; // { cancelada } enquanto espera a resposta de uma pergunta sobre a imagem
 let ultimasExtra = [];
 let ultimasDeteccoes = [], ultimaCena = null, espaco = null, ultimoQuadro = 0, quadros = 0;
 const sensores = new Sensores();
@@ -155,6 +159,11 @@ campoChave.value = lerChave();
 campoChave.addEventListener("change", () => salvarChave(campoChave.value.trim()));
 window.claude?.use?.("sample").then(s => { if (s) $("campo-chave").hidden = true; }).catch(() => {});
 
+// IA de perguntas no celular (opcional): baixa ~200 MB uma vez; sem ela, as perguntas vão para a nuvem
+$("vqa-local").checked = localLigada();
+$("vqa-local").addEventListener("change", e => ligarIaLocal(e.target.checked));
+if (localLigada()) $("vqa-estado").textContent = "Ligada; carrega na primeira pergunta.";
+
 // Memória em texto: percursos, lugares e pessoas num arquivo .txt (JSON), para backup ou outro celular
 const CHAVES_MEMORIA = ["assistencia.percursos", "assistencia.lugares", "assistencia.pessoas"];
 $("exportar").addEventListener("click", () => {
@@ -249,6 +258,8 @@ async function comecar() {
     return;
   }
   navigator.wakeLock?.request("screen").catch(() => {}); // tela acesa durante o trajeto
+  // Sem nuvem e com a IA do celular ligada: já carrega o modelo, para a primeira pergunta não demorar
+  if (!nuvem && localLigada()) abrirLocal().catch(() => {});
   $("inicio").hidden = true;
   $("tela-tutorial").hidden = true;
   $("uso").hidden = false;
@@ -332,6 +343,8 @@ function ouvir() {
   document.body.classList.add("ouvindo");
   if (leitura) leitura.cancelada = true;
   leitura = null;
+  if (perguntando) perguntando.cancelada = true;
+  perguntando = null;
   anunciador.calar();
   anunciador.bipe(660, 0.12);
   mostrar("Ouvindo…");
@@ -362,6 +375,9 @@ function executar(frase) {
   const grupo = aguardandoGrupo ? grupoDaFrase(normalizar(frase)) : null;
   aguardandoGrupo = false;
   let pedido = grupo ? { tipo: "menu", grupo: grupo.nome } : interpretar(frase);
+  // Depois de "tenho uma pergunta", a frase seguinte é a pergunta (a não ser que seja parar)
+  if (aguardandoPergunta && !["parar", "nao", "menu"].includes(pedido.tipo)) pedido = { tipo: "perguntar", nome: frase.trim() };
+  aguardandoPergunta = false;
   // Logo depois de salvar um percurso sem nome, a próxima frase é o nome dele (a não ser que seja "não")
   const provisorio = aguardandoNomePercurso;
   aguardandoNomePercurso = null;
@@ -432,6 +448,7 @@ function executar(frase) {
       return;
     }
     case "contar": {
+      if (!pedido.rotulo && (nuvem || localLigada())) { perguntarSobreImagem(frase.trim()); return; }
       if (!pedido.rotulo) {
         anunciador.falar(`Não sei contar ${pedido.alvo || "isso"} pela câmera. Diga descreva o ambiente.`, true);
         return;
@@ -589,7 +606,18 @@ function executar(frase) {
       anunciador.falar(g ? falaDoGrupo(g) : falaDoMenu(), true);
       return;
     }
+    case "perguntar":
+      perguntarSobreImagem(pedido.nome);
+      return;
+    case "iaLocal":
+      ligarIaLocal(pedido.ligar, true);
+      return;
     default:
+      // Frase que não é comando, com cara de pergunta ("a porta está aberta?"): vira pergunta sobre a imagem
+      if (pedido.tipo === "desconhecido" && (nuvem || localLigada()) && parecePergunta(frase)) {
+        perguntarSobreImagem(frase.trim());
+        return;
+      }
       anunciador.falar("Não entendi. Diga menu para conhecer os comandos.", true);
   }
 }
@@ -674,6 +702,93 @@ async function lerTexto() {
     if (!minha.cancelada) await falarEsperando("Fim. Para a próxima página, toque e diga ler de novo.");
   }
   if (leitura === minha) leitura = null;
+}
+
+// --- Perguntas sobre a imagem (VQA) --------------------------------------------------------
+
+const PALAVRA_DE_PERGUNTA = /^(o que|que|qual|quais|quanto|quantos|quantas|quem|como|onde|cade|de que|e |tem|ha|isso|isto|esse|essa|este|esta|a |o |as |os |da para|posso|sera)\b/;
+/** Frase de duas palavras ou mais que começa como pergunta, ou que o reconhecimento marcou com "?". */
+function parecePergunta(frase) {
+  const f = normalizar(frase);
+  return f.split(" ").length >= 2 && (frase.includes("?") || PALAVRA_DE_PERGUNTA.test(f));
+}
+
+/** Liga (baixa) ou desliga a IA de perguntas do celular. `falando`: avisa por voz o andamento. */
+async function ligarIaLocal(ligar, falando = false) {
+  ligarLocal(ligar);
+  $("vqa-local").checked = ligar;
+  if (!ligar) {
+    $("vqa-estado").textContent = "Desligada.";
+    if (falando) anunciador.falar("IA do celular desligada.", true);
+    return null;
+  }
+  if (falando) anunciador.falar("Ligando a IA do celular. Da primeira vez ela baixa uns 200 megas; use o wi-fi.", true);
+  let falado = 0;
+  try {
+    const local = await abrirLocal(pct => {
+      $("vqa-estado").textContent = `Baixando: ${pct}%`;
+      if (falando && pct >= falado + 25 && pct < 100) { falado = pct - (pct % 25); anunciador.falar(`${falado} por cento.`); }
+    });
+    $("vqa-estado").textContent = `Pronta (${local.dispositivo === "webgpu" ? "placa de vídeo" : "processador"}).`;
+    if (falando) anunciador.falar("IA do celular pronta. Ela é mais simples que a da nuvem; use para perguntas curtas.", true);
+    return local;
+  } catch (erro) {
+    $("vqa-estado").textContent = `Não consegui baixar: ${erro.message}`;
+    if (falando) anunciador.falar("Não consegui baixar a IA do celular. Verifique a internet.", true);
+    return null;
+  }
+}
+
+async function perguntarSobreImagem(pergunta) {
+  if (!pergunta) {
+    aguardandoPergunta = true;
+    anunciador.falar("Pode perguntar. Toque na tela e fale a pergunta.", true);
+    return;
+  }
+  if (!nuvem && !localLigada()) {
+    anunciador.falar("Para responder perguntas sobre a imagem eu preciso da IA na nuvem, ou da IA do celular. " +
+      "Para baixar a do celular, diga ligar IA do celular.", true);
+    return;
+  }
+  if (pausado) definirPausa(false, "calado");
+  tarefa?.cancelar?.();
+  tarefa = null;
+  if (perguntando) perguntando.cancelada = true;
+  const minha = perguntando = { cancelada: false };
+  anunciador.calar();
+  anunciador.bipe(1200, 0.08);
+  const foto = await fotografar(video);
+  const espera = setTimeout(() => { if (!minha.cancelada) anunciador.falar("Pensando…"); }, 2500);
+  let resposta = null, idioma = "pt-BR";
+  try {
+    if (nuvem) {
+      try {
+        resposta = (await nuvem.responder(foto, pergunta, contexto())).resposta;
+      } catch (erro) {
+        if (!localLigada()) throw erro; // sem internet: tenta a IA do celular, se estiver ligada
+      }
+    }
+    if (!resposta) {
+      const local = await abrirLocal(pct => mostrar(`Baixando a IA do celular: ${pct}%`));
+      ({ resposta, idioma } = await responderNoCelular(local, foto, pergunta));
+    }
+  } catch {
+    clearTimeout(espera);
+    if (!minha.cancelada) anunciador.falar("Não consegui responder agora. Verifique a internet e pergunte de novo.", true);
+    if (perguntando === minha) perguntando = null;
+    return;
+  }
+  clearTimeout(espera);
+  if (minha.cancelada) return;
+  perguntando = null;
+  resposta = (resposta || "").trim() || "Não sei responder pela imagem.";
+  lembrar(pergunta, resposta);
+  mostrar(resposta);
+  if (idioma === "pt-BR") anunciador.falar(resposta, true);
+  else {
+    anunciador.falar("Resposta em inglês:", true);
+    anunciador.falar(resposta, true, idioma);
+  }
 }
 
 // --- Rua (GPS + OpenStreetMap) -----------------------------------------------------

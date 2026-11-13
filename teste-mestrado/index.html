@@ -64,6 +64,12 @@
         <label for="chave">Chave da API</label>
         <input id="chave" type="password" autocomplete="off" placeholder="sk-ant-…">
       </div>
+      <h2>Perguntas sobre a imagem sem internet</h2>
+      <p>A pessoa pode perguntar qualquer coisa sobre o que a câmera vê (“a porta está aberta?”). Com a chave acima,
+         quem responde é o Claude. Ligando esta opção, o celular baixa uma IA pequena (SmolVLM, cerca de 200 MB, uma vez só)
+         que responde sem internet e sem mandar a foto para fora, mas erra mais e foi treinada em inglês.</p>
+      <label class="consentimento"><input id="vqa-local" type="checkbox"> Usar a IA no celular para perguntas</label>
+      <p id="vqa-estado" role="status"></p>
       <p>Percursos, lugares e pessoas cadastradas ficam só neste celular. Dá para salvar uma cópia em texto
          ou levar para outro celular.</p>
       <button id="exportar" type="button" class="pilula">Exportar memória (.txt)</button>

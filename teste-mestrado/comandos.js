@@ -10,6 +10,8 @@
 //   { tipo: "pausar", minutos }                        modo silêncio (minutos = null: até dizer continuar)
 //   { tipo: "sim" | "nao" | "descrever" | "livre" | "lembrar" | "listar" | "terminar" | "parar" | "pausar"
 //          | "retomar" | "explicar" | "desconhecido" }
+//   { tipo: "perguntar", nome }                        pergunta livre sobre a imagem (VQA); nome = a pergunta ("" = vai perguntar)
+//   { tipo: "iaLocal", ligar }                         liga ou desliga a IA de perguntas no próprio celular
 //   { tipo: "menu", grupo }                            menu falado; grupo = nome do grupo citado ou null
 
 import { acharObjeto } from "./vocabulario.js";
@@ -22,6 +24,9 @@ const NOME_DA_ROTA = "( chamad[oa]| com (o )?nome( de)?| de nome| ate( o| a)?| p
 
 // Pedidos com um nome no fim: o grupo "nome" é o resto da frase
 const COM_NOME = [
+  // Pergunta livre sobre a imagem: "pergunta se a porta está aberta", "pergunte para a IA de que cor é a camisa".
+  // Perguntas sem esse começo, que não são nenhum comando, também viram pergunta (ver app.js, "desconhecido").
+  ["perguntar", /^((eu )?(tenho|quero fazer|posso fazer|vou fazer|faz(er)?|fazer) (uma |outra )?pergunta|pergunta(r)?|pergunte|responde(r)?|responda)( uma coisa| algo)?( para| pra| a)?( (a )?(ia|camera|inteligencia artificial|voce))?( se| que|:)?(?<nome>.*)/],
   // Gravação: vários jeitos de dizer, para não depender das palavras exatas
   ["terminar", new RegExp(`^((pode )?(termina|para|encerra|finaliza|salva|acaba|conclui|desliga|fecha)(r)?( de)?|fim d[ae]|chega de) ` +
     `(a |o |essa |esse |de )?(grava(cao|r|ndo)|${ROTA})`)],
@@ -49,6 +54,7 @@ const COM_NOME = [
 const LUGAR = /\b(rua|avenida|av|praca|predio|bloco|reitoria|biblioteca|banco|loja|lanchonete|cafe|rodoviaria|estacao|shopping|mercado|supermercado|farmacia|hospital|posto|universidade|ufsm|faculdade|escola|parada|ponto de onibus|casa|centro|bairro|parque|igreja|prefeitura|restaurante|padaria|aeroporto|endereco)\b|\d/;
 
 const PADROES = [
+  ["iaLocal", /(((liga|ativa|usa|desliga|desativa)(r)?|nao usar) (a )?(ia|inteligencia artificial) (do|no) celular|ia (do|no) celular (ligada|desligada))/],
   ["sensibilidade", /((mais|menos) sensivel|(aument|diminu|baix|sub)[aei]r? (a )?sensibilidade|sensibilidade (maior|menor|mais|menos|alta|baixa|\d))/],
   // antes de "sim": "pode ficar em silêncio" é silêncio, não um sim
   ["pausar", /(modo (de )?(silencio(so)?|silenciar|espera|descanso|soneca)\b|^(silencio(so)?|pausa(r)?|descansa(r)?|shh+|psiu)\b|silencia(r)?\b|fi(ca|que|car)( em)? (quiet[ao]|calad[ao]|em silencio|mud[ao])|faz(er)? silencio|cala a boca|cal[ae]-?se|(para|pare|parar) de falar|nao fal[ae] (nada|mais))/],
@@ -77,7 +83,7 @@ const PADROES = [
   // "o que tem aqui", "o que que tem aqui", "que que tem", "tem o que aqui", "quais coisas tem aqui"
   ["descrever", /((^|\bo )que( que| e que)? (tem|ha|existe|voce ve|esta|ta)\b|\btem o que\b|quais (sao )?(os |as )?(objetos|coisas)|\bque (objetos|coisas)\b|descreve|descreva)/],
   ["verificar", /^(sera que )?(aqui |o lugar |a sala |esse lugar |este lugar )?(tem|ha|existe)( algum| alguma| um| uma)? /],
-  ["procurar", /(ach[ae]|encontr[ae]|procur[ae]|cade|onde (estava|estavam|esta|estao|fica|ficam|tem|ta)|me (leva|guia) (ate|para|pra)|busc[ae]|localiz[ae])/],
+  ["procurar", /(ach[ae]|encontr[ae]|procur[ae]|\bcade\b|onde (estava|estavam|esta|estao|fica|ficam|tem|ta)|me (leva|guia) (ate|para|pra)|busc[ae]|localiz[ae])/],
 ];
 
 // Palavras que sobram depois do verbo e não fazem parte do nome do objeto
@@ -127,6 +133,7 @@ export function interpretar(frase) {
       const n = f.match(/sensibilidade (\d)/);
       return { tipo, valor: n ? +n[1] : null, sentido: /menos sensivel|diminu|baix|menor|menos/.test(f) ? -1 : 1 };
     }
+    if (tipo === "iaLocal") return { tipo, ligar: !/(desliga|desativa|nao usar|desligada)/.test(f) };
     if (tipo === "menu") return { tipo, grupo: grupoDaFrase(f.slice(m[0].length))?.nome ?? null };
     if (tipo === "velocidade") return { tipo, sentido: /devagar|lento|menos rapido/.test(f) && !/menos devagar/.test(f) ? -1 : 1 };
     if (tipo !== "procurar" && tipo !== "verificar") return { tipo };
@@ -143,8 +150,10 @@ export function interpretar(frase) {
     if (/onde fica/.test(m[0]) && !rotulo && LUGAR.test(resto)) return { tipo: "ondeFica", destino: alvo };
     return { tipo, rotulo, alvo };
   }
-  // Só o nome de um objeto conhecido ("xícara") vale como procurar
+  // Só o nome de um objeto conhecido ("xícara", "minha xícara") vale como procurar; uma frase mais longa com
+  // cara de pergunta ("a porta está aberta?") fica para a pergunta sobre a imagem
   const rotulo = acharObjeto(f);
-  if (rotulo) return { tipo: "procurar", rotulo, alvo: original.trim() };
+  const pergunta = f.trim().split(/\s+/).length > 3 && /\b(esta|estao|e|sao|eh|tem|ha|parece|qual|quais|como|cor|ligad[oa]|desligad[oa]|abert[oa]|fechad[oa])\b/.test(f);
+  if (rotulo && !pergunta) return { tipo: "procurar", rotulo, alvo: original.trim() };
   return { tipo: "desconhecido", frase };
 }

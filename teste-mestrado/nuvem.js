@@ -36,9 +36,21 @@ Responda só com JSON: {"texto": "o texto transcrito, ou vazio se não der para 
  "aviso": null ou uma frase curta dizendo como melhorar a foto, se o texto estiver cortado, desfocado, escuro ou de cabeça para baixo
  (ex.: "o texto está cortado à direita, mova o celular um pouco para a direita")}`;
 
+// Pergunta livre sobre a foto (VQA), no estilo do VizWiz: fotos de pessoas cegas costumam sair tortas,
+// desfocadas ou sem o objeto; nesse caso a resposta diz isso e como mexer o celular, em vez de chutar.
+const instrucaoPergunta = (pergunta, anteriores = []) => `Você responde perguntas de uma pessoa cega sobre o que a câmera do celular dela mostra agora.
+${anteriores.length ? `Perguntas anteriores, sobre a mesma cena (use se a nova pergunta depender delas):
+${anteriores.map(a => `- "${a.pergunta}" -> "${a.resposta}"`).join("\n")}
+` : ""}Pergunta: "${pergunta}"
+Responda em português, de forma direta, como se falasse com ela: no máximo 2 frases curtas, começando pela resposta
+(sim, não, a cor, o nome, o número). Use esquerda, frente e direita e distância aproximada em metros quando ajudar.
+Se a foto não mostrar o que foi perguntado (desfocada, escura, objeto cortado ou fora da imagem), diga isso e como
+mover o celular. Não invente o que não dá para ver. Não descreva a aparência de pessoas além do que foi perguntado.
+Responda só com JSON: {"resposta": "a frase para ser falada", "da_para_responder": true|false}`;
+
 /**
  * Devolve { origem, perguntar(foto, alvo), descreverLugar(foto), descreverAmbiente(foto), lerTexto(foto) } ou null.
- * lerTexto -> {texto, aviso}.
+ * lerTexto -> {texto, aviso}. responder(foto, pergunta, anteriores) -> {resposta, da_para_responder}.
  * perguntar -> {encontrado, lado, distancia, no_caminho, resposta}; descreverLugar -> texto.
  */
 export async function abrirNuvem() {
@@ -51,6 +63,7 @@ export async function abrirNuvem() {
       descreverLugar: async foto => (await json(INSTRUCAO_LUGAR, foto)).resposta,
       descreverAmbiente: async foto => (await json(INSTRUCAO_AMBIENTE, foto)).resposta,
       lerTexto: foto => sample.json(INSTRUCAO_LER, { images: [foto], cache: false }),
+      responder: (foto, pergunta, anteriores) => json(instrucaoPergunta(pergunta, anteriores), foto),
     };
   }
   if (lerChave()) {
@@ -60,6 +73,7 @@ export async function abrirNuvem() {
       descreverLugar: async foto => (await perguntarApi(foto, INSTRUCAO_LUGAR)).resposta,
       descreverAmbiente: async foto => (await perguntarApi(foto, INSTRUCAO_AMBIENTE, 500)).resposta,
       lerTexto: foto => perguntarApi(foto, INSTRUCAO_LER, 4000),
+      responder: (foto, pergunta, anteriores) => perguntarApi(foto, instrucaoPergunta(pergunta, anteriores), 300),
     };
   }
   return null;

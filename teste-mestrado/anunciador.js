@@ -68,10 +68,15 @@ export class Anunciador {
   }
 
   /** Fala sem cortar o que está sendo dito: entra na fila. (`urgente` ficou só por compatibilidade.) */
-  falar(texto, urgente = false) {
+  falar(texto, urgente = false, idioma = "pt-BR") {
     const u = new SpeechSynthesisUtterance(texto);
-    u.lang = "pt-BR";
-    if (this.voz) u.voice = this.voz;
+    u.lang = idioma;
+    if (idioma === "pt-BR") { if (this.voz) u.voice = this.voz; }
+    else {
+      // Outra língua (resposta em inglês da IA do celular): uma voz daquela língua, se houver
+      const voz = speechSynthesis.getVoices().find(v => v.lang.replace("_", "-").startsWith(idioma.slice(0, 2)));
+      if (voz) u.voice = voz;
+    }
     u.rate = this.velocidade;
     u.onend = u.onerror = () => {
       if (speechSynthesis.speaking || speechSynthesis.pending) return;

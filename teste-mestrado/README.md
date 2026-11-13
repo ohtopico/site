@@ -15,6 +15,9 @@ toca em qualquer lugar e fala.
 | "seguir percurso banheiro" / "voltar pelo percurso banheiro" | guia pela ordem dos objetos (a cada um visto, diz o próximo), na ida ou na volta |
 | "passos mais sensível" / "passos menos sensível" | ajusta o contador de passos (1 a 5) |
 | "descreva o ambiente", "como é este lugar", "o que você está vendo" | descrição completa pela IA na nuvem (sem ela, objetos e espaço livre) |
+| "a porta está aberta?", "de que cor é esta camisa?", "pergunta se o fogão está desligado" | pergunta livre sobre a imagem (VQA): qualquer frase que não é comando e parece pergunta; responde a IA na nuvem (Claude, em português) ou a IA do celular (SmolVLM) |
+| "tenho uma pergunta" | espera a pergunta na próxima fala; perguntas seguidas em até 2 minutos usam as anteriores como contexto ("e a da esquerda?") |
+| "ligar IA do celular" / "desligar IA do celular" | baixa (uma vez, ~200 MB) ou desliga a IA de perguntas que roda no celular |
 | "onde estou", "em que sala estou" | lugar guardado; se não houver, a IA diz que lugar parece |
 | "quantas pessoas tem aqui", "está claro ou escuro", "é seguro andar", "que horas são" | perguntas rápidas sobre o ambiente |
 | "o que eu passei?", "onde estava a porta?" | memória curta: o que saiu da câmera no último minuto, com a direção pela bússola |
@@ -51,6 +54,12 @@ no OpenStreetMap; quem quiser pode acrescentar os que faltam em openstreetmap.or
 - **Voz**: reconhecimento e fala do próprio navegador (Web Speech API, pt-BR).
 - **IA na nuvem**: dentro do Claude usa a conta de quem abre; fora dele, uma chave da API da Anthropic colada em
   "Configurar IA na nuvem" (guardada só no navegador). Só esses pedidos enviam foto.
+- **Perguntas sobre a imagem (VQA)**: com a IA na nuvem, o Claude responde em português, no estilo do VizWiz
+  (se a foto não mostra o que foi perguntado, diz isso e como mexer o celular). Sem ela, ou sem internet, o
+  SmolVLM-256M-Instruct roda no celular pelo transformers.js 3.7.5 (`vendor/transformers`, WebGPU quando há, senão
+  WebAssembly), com o modelo baixado do Hugging Face na primeira vez e guardado no navegador. Ele foi treinado em
+  inglês: a pergunta e a resposta passam pelo tradutor do navegador quando existe (Chrome no computador);
+  sem tradutor, a resposta é falada em inglês. Código em `perguntas.js`.
 - **Percursos**: passos pelo acelerômetro e direção pela bússola; ficam salvos no navegador do celular.
 - **Pessoas**: face-api (detector TinyFace + reconhecimento com vetor de 128 números), em `vendor/face-api` e
   `modelos/rostos`. Só carrega se houver alguém cadastrado. O vetor e o nome ficam no navegador do celular;
