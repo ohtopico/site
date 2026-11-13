@@ -85,7 +85,7 @@
   .jg .capa svg { width: 96px; height: 96px; transition: transform .2s; }
   .jg:hover .capa svg { transform: rotate(-8deg) scale(1.08); }
   .jg .nivel { position: absolute; top: 10px; left: 10px; background: #111; color: #fff; border-radius: 99px; padding: 2px 10px; font-size: 12.5px; font-weight: 600; }
-  .jg .nivel.n1 { background: #2fa865; } .jg .nivel.n3 { background: #c2410c; }
+  .jg .nivel.n1 { background: #1f7a47; } .jg .nivel.n3 { background: #c2410c; }
   .jg .tempo { position: absolute; top: 10px; right: 10px; background: #fff; color: #111; border: 1.5px solid #111; border-radius: 99px; padding: 2px 10px; font-size: 12.5px; font-weight: 600; }
     .jg .corpo { padding: 14px 16px 16px; display: flex; flex-direction: column; flex: 1; }
   .jg h3 { font-size: 20px; line-height: 1.15; margin: 0 0 6px; }
@@ -159,6 +159,8 @@
 </script>
 </head>
 <body>
+<style>.pular{background:#111;border-radius:10px;color:#fff;left:12px;padding:8px 12px;position:absolute;top:-80px;z-index:1000}.pular:focus{top:12px}</style>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
 <header id="topbar" class="topbar">
   <a class="brand" href="../">Júlia Quoos</a>
   <a class="brand-sub" href="./">/ jogos</a>
@@ -166,7 +168,7 @@
   <a class="icon-btn prog-btn" href="../material-didatico/meu-progresso.html" aria-label="Meu progresso" title="Meu progresso"><span id="total-estrelas">Minhas estrelas</span></a>
 </header>
 
-<main>
+<main id="conteudo">
   <section class="hero">
     <div class="wrap">
       <div>

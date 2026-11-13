@@ -671,3 +671,8 @@ figure.retrato figcaption { color: var(--ink-2); font-size: 13px; margin-top: 6p
 .pedido input, .pedido select { background: var(--paper); border: 1.5px solid var(--ink); border-radius: 10px; color: var(--ink); font: 16px/1.3 var(--body); min-width: 0; padding: 9px 12px; }
 .pedido-botoes { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 8px; }
 .pedido .miudo { margin: 0; }
+
+/* usabilidade (13/11/2026): contato no topo das páginas de oferta e alvos de toque maiores */
+.topo-contato { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+.trilha li { padding: 4px 0; }
+.rodape a { display: inline-block; padding: 4px 0; }
