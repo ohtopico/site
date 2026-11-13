@@ -194,7 +194,9 @@ let BASE_LOCAL = '';
 
 /* ---------- planos, fichas e listas ---------- */
 const GOAT = '<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>';
-const DESC_TIPO = { plano: 'Plano de aula', ficha: 'Ficha para imprimir', lista: 'Lista de exercícios com gabarito' };
+// a descrição começa pelo título do material: duas listas com o mesmo resumo (os simulados da OBMEP, por exemplo)
+// não ficam com a mesma descrição no Google
+const DESC_TIPO = { plano: 'plano de aula gratuito', ficha: 'ficha gratuita para imprimir', lista: 'lista de exercícios gratuita com gabarito' };
 const NOME_TIPO = { plano: 'Plano de aula', ficha: 'Ficha para imprimir', lista: 'Lista de exercícios' };
 const MIGALHA_TIPO = { plano: ['Planos de aula', 'catalogo.html?tipo=plano'], ficha: ['Fichas', 'catalogo.html?tipo=ficha'], lista: ['Listas', 'catalogo.html?tipo=lista'] };
 const ALVO = { plano: [['#doc', 'main']], ficha: [['#fichas', 'main'], ['#gab', 'div']], lista: [['#doc', 'main']] };
@@ -208,7 +210,7 @@ function paginaEstatica(fonte, r, html) {
     `${r.titulo} · ${nome}${ASSINATURA}`,
     `${r.titulo} · ${nome}`,
     r.titulo + ASSINATURA, r.titulo);
-  const desc = cortar(`${DESC_TIPO[r.tipo]} gratuito, ${compTxt(r)}, ${anosTxt(r.anos)}${codigos.length ? ` (BNCC ${codigos.slice(0, 3).join(', ')})` : ''}. ${r.resumo}`, 155);
+  const desc = cortar(`${r.titulo}: ${DESC_TIPO[r.tipo]}, ${compTxt(r)}, ${anosTxt(r.anos)}${codigos.length ? ` (BNCC ${codigos.slice(0, 3).join(', ')})` : ''}. ${r.resumo}`, 155);
   const img = `${SITE}/material-didatico/${OG[r.tipo]}`;
   const seo = cabecaSEO({
     title, desc, url, img, imgAlt: `${nome}: ${r.titulo}`,

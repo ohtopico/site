@@ -1424,7 +1424,8 @@
     if (id !== 'inicio') { visited.add(id); store.set('visited', [...visited]); store.set('last', id); }
     updateProgress();
     if (id === 'minha-caixa') renderCaixa();
-    document.title = (id === 'inicio' ? '' : titleOf(id) + ' · ') + 'Tech pra Prof';
+    window.tituloBase = window.tituloBase || document.title;
+    document.title = id === 'inicio' ? window.tituloBase : titleOf(id) + ' · Tech pra Prof | Júlia Quoos';
     closeToc();
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   }

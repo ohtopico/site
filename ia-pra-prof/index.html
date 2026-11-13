@@ -1226,7 +1226,8 @@ Texto: [cole aqui].</p></figure>
       (next ? `<a class="next" href="#/${next}"><small>Próximo →</small>${titleOf(next)}</a>` : '');
     if (id !== 'inicio') { visited.add(id); store.set('visited', [...visited]); store.set('last', id); }
     updateProgress();
-    document.title = (id === 'inicio' ? '' : titleOf(id) + ' · ') + 'IA pra Prof';
+    window.tituloBase = window.tituloBase || document.title;
+    document.title = id === 'inicio' ? window.tituloBase : titleOf(id) + ' · IA pra Prof | Júlia Quoos';
     closeToc();
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   }

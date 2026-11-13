@@ -35,6 +35,8 @@ footer a { color: var(--ink); border: 1.5px solid var(--ink); border-radius: 99p
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-Z7QDTBLC4K');
+  // endereço quebrado e de onde a pessoa veio, para achar no GA4 (Eventos > pagina_404) e criar o redirecionamento
+  gtag('event', 'pagina_404', { endereco: location.pathname + location.search, origem: document.referrer || '(direto)' });
 </script>
 </head>
 <body>
