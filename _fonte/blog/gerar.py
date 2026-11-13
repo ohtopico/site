@@ -602,6 +602,15 @@ def quem_conduz():
 
 # Onde o trabalho já aconteceu: (título, resultado da avaliação ou '', fonte, link). Entra nas páginas de formação.
 PROVAS = [
+    ('Oficina "Fazendo as contas" para professores de matemática de Cerro Branco (RS)',
+     'Formação na EMEF David Unfer, em 11/11/2026, com o programa A União Faz a Vida: trilhas da BNCC do 1º ao 9º ano, '
+     'dinâmicas com problemas reais e o Escape da Matemática resolvido em grupo no telão.',
+     'Publicação da Prefeitura de Cerro Branco, 12/11/2026',
+     'https://www.facebook.com/photo?fbid=1563243955829801&set=a.452002483620626',
+     [],
+     ('/img/oficina-fazendo-as-contas-cerro-branco.jpg',
+      'Professoras de matemática de Cerro Branco reunidas diante da tela com o título da oficina Fazendo as contas',
+      1000, 750)),
     ('Formação de professores da rede municipal de Lagoão (RS)',
      'Na avaliação da oficina de matemática, os 6 professores que responderam consideraram os materiais adequados '
      'e o impacto na prática pedagógica excelente (3) ou bom (3).',
@@ -624,11 +633,13 @@ def secao_provas():
     if not PROVAS:
         return ''
     # Cada prova: (título, descrição, fonte, link) e, opcional, uma lista de (fonte, link) de outros
-    # veículos que publicaram a mesma notícia
-    def item(t, d, f, u, extras=()):
+    # veículos que publicaram a mesma notícia e uma foto (src, alt, largura, altura)
+    def item(t, d, f, u, extras=(), foto=None):
         links = ' · '.join(f'<a href="{esc(eu)}" target="_blank" rel="noopener">{esc(ef)}</a>'
                            for ef, eu in [(f, u), *extras])
-        return f'''            <li><strong>{esc(t)}</strong>{f'<br>{esc(d)}' if d else ''}<br>{links}</li>'''
+        img = (f'<img class="prova-foto" src="{esc(foto[0])}" alt="{esc(foto[1])}" width="{foto[2]}" '
+               f'height="{foto[3]}" loading="lazy">' if foto else '')
+        return f'''            <li><strong>{esc(t)}</strong>{f'<br>{esc(d)}' if d else ''}<br>{links}{img}</li>'''
     itens = '\n'.join(item(*p) for p in PROVAS)
     return f'''<section class="provas" aria-labelledby="onde-aconteceu">
         <h2 id="onde-aconteceu">Onde o trabalho já aconteceu</h2>

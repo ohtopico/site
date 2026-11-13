@@ -611,6 +611,7 @@ figure.retrato figcaption { color: var(--ink-2); font-size: 13px; margin-top: 6p
 .provas ul { list-style: none; margin: 0; padding: 0; }
 .provas li { margin: 0 0 10px; }
 .provas li:last-child { margin-bottom: 0; }
+.provas .prova-foto { display: block; width: 100%; max-width: 520px; height: auto; margin: 10px 0 4px; border: 1.5px solid var(--ink); border-radius: 16px; }
 
 /* ---------- Índice paginado: prévias dos posts ---------- */
 .lista-posts { margin-top: 26px; }
