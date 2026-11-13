@@ -789,9 +789,11 @@ def pagina_mentoria(cfg, dims):
     <p class="rotulo">Mentoria</p>
     <h1>Mentoria para professores em <span class="marca">IA</span></h1>
     <p class="linha-fina">Mentoria individual e on-line para professores, coordenadores e gestores: encontros para você usar inteligência artificial com segurança, ética e propósito pedagógico. Sem promessas mágicas e sem lista de ferramentas da moda: fundamentos, prática com o seu material real e acompanhamento. A partir de R$ 200 a sessão de 1 hora.</p>
+    <p><a class="btn98" href="#conversar">Marcar uma conversa</a></p>
     <div class="artigo">
 {corpo}
     </div>
+    {secao_provas()}
     <section class="chamada" aria-labelledby="conversar">
         <h2 id="conversar">Vamos conversar</h2>
         <p>Conte um pouco sobre a sua disciplina ou função e eu respondo com uma proposta. A sessão custa a partir de R$ 200. Os horários são combinados pelo WhatsApp: mande o dia e o turno que preferir e eu confirmo.</p>
