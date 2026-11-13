@@ -200,12 +200,14 @@ if (window.self !== window.top) document.documentElement.classList.add('emoldura
 <li>os percursos gravados (a ordem dos objetos vistos, curvas e passos);</li>
 <li>os lugares lembrados (nome, objetos e direções, em texto);</li>
 <li>as pessoas cadastradas (nome e o código numérico do rosto);</li>
-<li>a chave da API da Anthropic, se alguém colar uma.</li>
+<li>a chave da API da Anthropic, se alguém colar uma;</li>
+<li>se a IA de perguntas do celular está ligada.</li>
 </ul>
 <p>Para apagar, diga “apagar pessoa Maria”, “esquecer o lugar cozinha” ou apague os dados do site nas configurações do navegador. A opção “Exportar memória” cria um arquivo de texto com tudo isso, inclusive os códigos dos rostos: guarde-o com cuidado.</p>
 
 <h3>Câmera</h3>
-<p>As imagens são analisadas no próprio celular e não são gravadas. Uma foto só sai do celular quando a pessoa pede algo à IA na nuvem (procurar um objeto que o celular não conhece, ler um texto ou descrever um lugar) e só se houver uma chave configurada. Nesse caso a foto vai direto do celular para a API da Anthropic, nos Estados Unidos, sem passar por mim, e segue a <a href="https://www.anthropic.com/legal/privacy">política de privacidade da Anthropic</a>. Evite apontar a câmera para documentos ou pessoas nesses pedidos.</p>
+<p>As imagens são analisadas no próprio celular e não são gravadas. Uma foto só sai do celular quando a pessoa pede algo à IA na nuvem (procurar um objeto que o celular não conhece, ler um texto, descrever um lugar ou responder uma pergunta sobre a imagem) e só se houver uma chave configurada. Nesse caso a foto vai direto do celular para a API da Anthropic, nos Estados Unidos, sem passar por mim, e segue a <a href="https://www.anthropic.com/legal/privacy">política de privacidade da Anthropic</a>. Evite apontar a câmera para documentos ou pessoas nesses pedidos.</p>
+<p>Quem preferir pode ligar, na configuração, a IA de perguntas no próprio celular (SmolVLM). Ela é baixada uma vez do Hugging Face, que recebe o endereço IP do aparelho como em qualquer download, e depois responde sem internet: a foto não sai do celular.</p>
 
 <h3>Microfone</h3>
 <p>O site não grava áudio: recebe do navegador só o texto do que foi falado. Quem transforma a voz em texto é o navegador, e alguns fazem isso nos servidores da empresa: no Chrome, o áudio pode ir para o Google; no iPhone, para a Apple.</p>
