@@ -190,3 +190,8 @@ th { font-weight: 600; background: #f3f3f1; }
 .at .caixa.amarela p { font-size: 10.6pt; }
 .at .caixa.amarela h4 { font-size: 12pt; }
 .gab { font-size: 10pt; }
+
+/* links: o PDF leva para o site */
+a { color: inherit; text-decoration: underline; text-decoration-thickness: .6px; text-underline-offset: 1.6px; }
+a.interno { text-decoration: none; }
+.mais { font-size: 9.4pt; margin: 2.4mm 0 0; }
