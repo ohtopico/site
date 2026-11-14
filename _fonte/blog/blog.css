@@ -397,6 +397,12 @@ h1 .marca { background: var(--mark); border-radius: 8px; box-decoration-break: c
 .tabela.pode-nunca th:first-child { background: var(--ok-soft); }
 .tabela.pode-nunca th:last-child { background: var(--bad-soft); }
 
+/* Imagens soltas no texto (sem classe própria) nunca passam da largura da coluna. */
+.artigo img { height: auto; max-width: 100%; }
+.artigo figure { margin: 28px 0; }
+.artigo figure > img { border-radius: 16px; display: block; width: 100%; }
+.artigo figure figcaption { color: var(--ink-2); font-size: 14px; margin-top: 10px; }
+
 figure.infografico {
     margin: 28px auto;
     max-width: 480px;
