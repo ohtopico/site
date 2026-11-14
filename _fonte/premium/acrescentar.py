@@ -27,7 +27,7 @@ from cryptography.hazmat.primitives import hashes
 AQUI = Path(__file__).resolve().parent
 MES = '2026-11'
 MAGICO = b'OHTP3'
-NIVEIS = {'pdf': 2, 'apostila': 2, 'imprimir': 2, 'planejamento': 3, 'slides': 3, 'editar': 3, 'editaveis': 3, 'jogos': 4, 'html': 4}
+NIVEIS = {'guias': 3, 'pdf': 2, 'apostila': 2, 'imprimir': 2, 'planejamento': 3, 'slides': 3, 'editar': 3, 'editaveis': 3, 'jogos': 4, 'html': 4}
 b64 = lambda b: base64.b64encode(b).decode()
 d64 = base64.b64decode
 
