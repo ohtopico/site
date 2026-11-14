@@ -40,6 +40,8 @@ def nome_mes(m):
 
 
 def montar(mes, k, fontes):
+    if 'fonte' not in k:  # kit escrito por inteiro em dados.py (fases, roteiro, perguntas etc.), sem ler o guia do jogo
+        return dict(k, mes=k.get('mes_real', mes), nome_mes=nome_mes(k.get('mes_real', mes)))
     sys.path.insert(0, str(fontes / 'kits'))
     from extrair import jogo
     j = jogo(fontes / k['fonte'])
@@ -88,7 +90,8 @@ th { background: #fff36b; }
 .cartaz { height: 236mm; display: flex; flex-direction: column; }
 .cartaz h1 { font-size: 44pt; margin: 10px 0 2px; }
 .cartaz .ideia { flex: 1; display: flex; gap: 14px; align-items: center; border: 2.5px solid #111; border-radius: 22px; padding: 10px 18px; margin-top: 10px; font-size: 15pt; line-height: 1.3; }
-.cartaz .ideia .n { font-family: 'Sniglet'; font-size: 36pt; min-width: 44px; }
+.cartaz .ideia { background: #fff; }
+.cartaz .ideia .n { font-family: 'Sniglet'; font-size: 30pt; min-width: 64px; height: 64px; border: 2.5px solid #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 '''
 
 
@@ -121,7 +124,8 @@ def pdf_ficha(d):
 
 
 def pdf_cartaz(d):
-    ideias = ''.join(f'<div class="ideia" style="background:{CORES[i % 5]};{"color:#111" if i % 5 != 3 else "color:#fff"}"><span class="n">{i + 1}</span><span>{ideia_html(x)}</span></div>'
+    # fundo branco para economizar tinta: a cor fica só na borda e no número
+    ideias = ''.join(f'<div class="ideia" style="border-left:14px solid {CORES[i % 5]}"><span class="n" style="background:{CORES[i % 5]};{"color:#fff" if i % 5 == 3 else ""}">{i + 1}</span><span>{ideia_html(x)}</span></div>'
                      for i, x in enumerate(d['ideias'][:5]))
     corpo = f'<div class="cartaz"><h1>{e(d["titulo"])}</h1><p class="sub" style="font-size:13pt">{"O que aprendemos" if len(d["ideias"]) else ""}</p>{ideias}</div>'
     return doc_html('Cartaz', corpo, d)
@@ -570,18 +574,45 @@ def hub_trecho(meses):
             'Cada kit aparece aqui no dia 1 do seu mês, e cada parte abre para o seu plano e os de cima.</p>\n' + '\n'.join(blocos) + '\n  <!-- /KITS -->')
 
 
+def tamanho(n):
+    return f'{max(1, round(n / 1024))} KB' if n < 1024 * 1024 else f'{n / 1024 / 1024:.1f} MB'.replace('.', ',')
+
+
+def hub_publicado(meses, fontes, libera=None, extra=''):
+    """Bloco de um kit pronto para colar no hub publicado (aberto por acrescentar.py): botões já com plano, mês das chaves
+    (sempre 2026-11, as chaves das senhas fixas), tamanho e, se houver, a data de liberação."""
+    t = hub_trecho(meses)
+    t = re.sub(r'^.*?(    <details class="kit">)', r'\1', t, flags=re.S)
+    t = re.sub(r'\s*<!-- /MES -->.*$', '', t, flags=re.S)
+    t = re.sub(r'\s*<!-- /MES -->\n\s*<!-- MES [^>]+-->\n', '\n', t)
+    t = re.sub(r'data-mes="\d{4}-\d{2}"', 'data-mes="2026-11"' + (f' data-libera="{libera}"' if libera else ''), t)
+    def bot(m):
+        rel = m.group(1); pasta = rel.split('/')[1]; nivel = {'pdf': 2, 'editaveis': 3, 'html': 4}[pasta]
+        return f'data-nivel="{nivel}" data-mes="2026-11"' + (f' data-libera="{libera}"' if libera else '') + f' data-arquivo="{rel}"'
+    t = re.sub(r'data-arquivo="([^"]+)"', bot, t)
+    t = re.sub(r'\{\{TAMANHO:([^}]+)\}\}', lambda m: tamanho((fontes / 'arquivos' / m.group(1)).stat().st_size), t)
+    if extra:
+        t = t.replace('</summary>', f' ({extra})</summary>', 1)
+    return t
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--fontes', default='_privado/premium'); ap.add_argument('--tipos', required=True); ap.add_argument('--meses', default='')
+    ap.add_argument('--sem-hub', action='store_true', help='não mexe no hub.html nem no niveis.json (o hub publicado é editado por acrescentar.py)')
+    ap.add_argument('--trecho', nargs='+', metavar=('CHAVE', 'LIBERA'), help='só imprime o bloco do kit para o hub publicado (data de liberação opcional, AAAA-MM-DD)')
     ap.add_argument('--amostra', nargs=2, metavar=('MES', 'PASTA'), help='só gera a ficha e o cartaz do mês, com rodapé de amostra grátis, na pasta indicada')
     a = ap.parse_args(); fontes = Path(a.fontes)
     sys.path.insert(0, str(fontes / 'kits'))
     from dados import KITS
     todos = [montar(m, k, fontes) for m, k in sorted(KITS.items())]
+    if a.trecho:
+        d = next(x for x, c in zip(todos, sorted(KITS)) if c == a.trecho[0])
+        print(hub_publicado([d], fontes, a.trecho[1] if len(a.trecho) > 1 else None, KITS[a.trecho[0]].get('rotulo', ''))); return
     if a.amostra:
         d = next(x for x in todos if x['mes'] == a.amostra[0]); pasta = Path(a.amostra[1]); pasta.mkdir(parents=True, exist_ok=True)
         imprimir([(pdf_ficha(d), pasta / f"{d['slug']}-ficha-do-aluno.pdf"), (pdf_cartaz(d), pasta / f"{d['slug']}-cartaz.pdf")], a.tipos, RODAPE_AMOSTRA)
         print('ok amostra', d['mes']); return
-    escolhidos = [d for d in todos if not a.meses or d['mes'] in a.meses.split(',')]
+    escolhidos = [d for d, chave in zip(todos, sorted(KITS)) if not a.meses or chave in a.meses.split(',')]
     pares = []
     for d in escolhidos:
         base = fontes / 'arquivos' / d['mes']; s = d['slug']
@@ -598,6 +629,8 @@ def main():
         (base / 'html' / f'{s}-painel-da-aula.html').write_text(painel(d), encoding='utf-8')
         print('ok kit', d['mes'], s)
     imprimir(pares, a.tipos)
+    if a.sem_hub:
+        return
     niveis = fontes / 'arquivos' / 'niveis.json'; nv = json.loads(niveis.read_text())
     nv.update(editaveis=3, html=4); niveis.write_text(json.dumps(nv))
     hub = fontes / 'hub.html'; t = hub.read_text(encoding='utf-8'); trecho = hub_trecho(todos)
