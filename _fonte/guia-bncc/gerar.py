@@ -8,6 +8,7 @@ Fundo branco em todas as páginas (o guia é para imprimir); cor só nos detalhe
 Títulos em Fredoka, texto em Lexend. As contas dos gabaritos são feitas aqui, não digitadas.
 """
 from pathlib import Path
+import re
 
 import qrcode
 
@@ -15,6 +16,19 @@ AQUI = Path(__file__).resolve().parent
 SITE = 'ohtopico.com.br'
 ZAP = 'https://wa.me/5551999222234'
 TITULO_CURTO = 'Guia do professor: Computação na BNCC'
+
+UTM = '?utm_source=guia-bncc&utm_medium=pdf'
+
+
+def linkar(html):
+    """Deixa clicável todo endereço do site escrito no texto (o PDF leva o leitor para o site)."""
+    def troca(m):
+        caminho = m.group(1) or '/'
+        return f'<a href="https://{SITE}{caminho}{UTM}">{m.group(0)}</a>'
+    html = re.sub(r'(?<![/"=@\w.-])ohtopico\.com\.br(/[\w\-./]*[\w\-/])?', troca, html)
+    html = html.replace('contato@ohtopico.com.br', '<a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a>')
+    return html.replace('WhatsApp (51) 99922-2234', f'<a href="{ZAP}">WhatsApp (51) 99922-2234</a>')
+
 
 EIXO = {'pc': 'Pensamento computacional', 'md': 'Mundo digital', 'cd': 'Cultura digital'}
 
@@ -95,7 +109,7 @@ class Livro:
         n = len(self.paginas) + 1
         rod = (f'<div class="rodape"><span><b>{TITULO_CURTO}</b> · Júlia Roberta Quoos Alves</span>'
                f'<span>{SITE} · {n}</span></div>') if rodape else ''
-        self.paginas.append(f'<section class="pg {classe}">{html}{rod}</section>')
+        self.paginas.append(f'<section class="pg {classe}" id="p{n}">{html}{rod}</section>')
         return n
 
 
@@ -126,7 +140,7 @@ def capa():
 
 
 def como_usar(sumario):
-    li = lambda itens: ''.join(f'<li class="{"sub" if sub else ""}"><span>{t}</span><span>{p}</span></li>' for t, p, sub in itens)
+    li = lambda itens: ''.join(f'<li class="{"sub" if sub else ""}"><span><a class="interno" href="#p{str(p).split()[0]}">{t}</a></span><span>{p}</span></li>' for t, p, sub in itens)
     corte = next(i for i, x in enumerate(sumario) if x[0].startswith('1. '))
     fim = next(i for i, x in enumerate(sumario) if x[0].startswith('Ficha'))
     linhas = (f'<div class="cols2" style="gap:7mm"><div><ul class="sumario">{li(sumario[:corte] + sumario[fim:])}</ul></div>'
@@ -224,7 +238,8 @@ def eixo_pagina(k, n, titulo, intro, conceitos, exemplos, cuidado):
 <div class="cols2" style="gap:3mm">{cs}</div>
 <h2>Na sala de aula, etapa por etapa</h2>
 {ex}
-<div class="janela" style="margin-top:4mm"><div class="barra"><i></i><i></i><i></i><span>cuidado.txt</span></div><div class="corpo">{cuidado}</div></div>'''
+<div class="janela" style="margin-top:4mm"><div class="barra"><i></i><i></i><i></i><span>cuidado.txt</span></div><div class="corpo">{cuidado}</div></div>
+<p class="mais"><b>No site:</b> {LINKS_EIXO[k]}</p>'''
 
 
 EIXOS_PAGINAS = [
@@ -268,6 +283,13 @@ EIXOS_PAGINAS = [
       ('Ensino Médio', 'Ética da IA, impactos no trabalho, desinformação em escala e participação cidadã.')],
      'Cultura digital não é palestra sobre perigos da internet. A turma aprende mais quando analisa casos parecidos com os dela, decide o que faria e produz algo: um combinado da turma, um guia para os mais novos, uma checagem publicada no mural.'),
 ]
+
+
+LINKS_EIXO = {
+    'pc': 'pensamento computacional explicado em ohtopico.com.br/pensamento-computacional/ e atividades sem computador em ohtopico.com.br/computacao-desplugada/.',
+    'md': 'as 42 habilidades do 6º ao 9º ano em ohtopico.com.br/material-didatico/bncc/ e simuladores em ohtopico.com.br/simuladores/.',
+    'cd': 'posts de ética e dados em ohtopico.com.br/blog/categoria/etica-e-lgpd/ e o guia da lei do celular em ohtopico.com.br/lei-do-celular-nas-escolas/.',
+}
 
 
 PROGRESSAO = [
@@ -455,6 +477,7 @@ def pag_professor(i, a):
 <div class="duas-versoes">
 <div class="versao"><h3>Sem tela <span class="ic">funciona em qualquer escola</span></h3><ol>{passos}</ol></div>
 <div class="versao tela"><h3>Com tela</h3><p>{a["tela_txt"]}</p><span class="link">{a["tela_link"]}</span>
+<p class="mais"><b>Mais material no site:</b> {a["mais"]}</p>
 <h3>Para avaliar</h3><ul class="avaliar">{aval}</ul></div>
 </div>
 {fecha}{dica}{gab}
@@ -766,7 +789,7 @@ def atividades():
     frase = 'a ' + next(iter(a_seg)) + ' ' + next(iter(turma_seg)) + ' de ' + next(iter(gosta_seg))
     pintados = sum(l.count('1') for l in CORACAO)
     return [
-        dict(etapa='Educação Infantil', eixo='pc', titulo='O caminho até a horta', fechar='Onde mais seguimos uma sequência de passos para chegar a um lugar? (O caminho da sala até o refeitório, a fila do parque.)',
+        dict(etapa='Educação Infantil', eixo='pc', titulo='O caminho até a horta', mais='atividades desplugadas em ohtopico.com.br/computacao-desplugada/', fechar='Onde mais seguimos uma sequência de passos para chegar a um lugar? (O caminho da sala até o refeitório, a fila do parque.)',
              hab='Campos de experiência "Corpo, gestos e movimentos" e "Espaços, tempos, quantidades, relações e transformações": seguir e criar sequências de deslocamento, antecipar onde se vai chegar.',
              tempo='30 a 40 minutos', materiais='Fita crepe, cartões de seta, um objeto para ser a horta', objetivo='Seguir e criar uma sequência de comandos para chegar a um lugar.',
              sem=['Marque no chão uma malha de 5 por 5 quadrados com fita crepe. Coloque a "horta" em um quadrado e duas ou três "pedras" em outros.',
@@ -781,7 +804,7 @@ def atividades():
              dica='Para crianças com deficiência visual, troque a malha por uma trilha de tapetes com texturas diferentes e os cartões por setas em relevo, feitas com barbante colado.',
              gab='Um caminho possível: cima, cima, cima, direita, direita, direita. Há outros; vale qualquer caminho que não passe pelas pedras.',
              folha=folha_ei()),
-        dict(etapa='1º ano', eixo='pc', titulo='Separar e dizer a regra', fechar='Onde as coisas são separadas por uma regra? (O mercado, a estante da sala, as pastas do computador.)', cod='EF01CO01',
+        dict(etapa='1º ano', eixo='pc', titulo='Separar e dizer a regra', mais='o ano letivo do 1º ano em ohtopico.com.br/computacao-ano-a-ano/1-ano/', fechar='Onde as coisas são separadas por uma regra? (O mercado, a estante da sala, as pastas do computador.)', cod='EF01CO01',
              hab='Organizar objetos físicos ou digitais considerando diferentes características para esta organização, explicitando semelhanças (padrões) e diferenças.',
              tempo='50 minutos', materiais='Uma caixa com objetos da sala (tampinhas, lápis, blocos), tesoura, cola', objetivo='Classificar objetos por um atributo e explicar a regra usada.',
              sem=['Espalhe os objetos em uma mesa. Separe em dois montes sem dizer a regra e pergunte: "Que regra eu usei?".',
@@ -795,7 +818,7 @@ def atividades():
              dica='Ofereça figuras grandes e recortadas previamente para quem ainda tem dificuldade com a tesoura. A regra pode ser dita em voz alta e registrada pela professora.',
              gab='Várias regras valem: cor (vermelhos e azuis), tamanho (grandes e pequenos) ou forma. No padrão, a próxima figura é o quadrado vermelho.',
              folha=folha_classificar()),
-        dict(etapa='2º ano', eixo='md', titulo='Peça ou programa?', fechar='O que acontece com um tablet sem nenhum programa? E com um jogo sem nenhum aparelho para rodar?', cod='EF02CO04',
+        dict(etapa='2º ano', eixo='md', titulo='Peça ou programa?', mais='o ano letivo do 2º ano em ohtopico.com.br/computacao-ano-a-ano/2-ano/', fechar='O que acontece com um tablet sem nenhum programa? E com um jogo sem nenhum aparelho para rodar?', cod='EF02CO04',
              hab='Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware.',
              tempo='50 minutos', materiais='Um computador velho ou fotos de peças, cartões com nomes de programas', objetivo='Diferenciar hardware e software com exemplos do dia a dia.',
              sem=['Pergunte: "Dá para pegar um jogo com a mão?". Deixe a turma discutir.',
@@ -809,7 +832,7 @@ def atividades():
              dica='Se a escola tiver um computador quebrado, abra o gabinete com a turma (sem energia). Ver as peças por dentro costuma ser o momento mais lembrado do ano.',
              gab='Peças (hardware): teclado, mouse, impressora, tela, fone de ouvido, câmera. Programas (software): jogo do tablet, aplicativo de mensagens, programa de desenho, navegador de internet.',
              folha=folha_hardware()),
-        dict(etapa='3º ano', eixo='pc', titulo='Repetir até a parede', fechar='Que tarefas da casa a gente repete até alguma coisa acontecer? (Mexer até engrossar, regar até a terra ficar úmida.)', cod='EF03CO02',
+        dict(etapa='3º ano', eixo='pc', titulo='Repetir até a parede', mais='o ano letivo do 3º ano em ohtopico.com.br/computacao-ano-a-ano/3-ano/', fechar='Que tarefas da casa a gente repete até alguma coisa acontecer? (Mexer até engrossar, regar até a terra ficar úmida.)', cod='EF03CO02',
              hab='Criar e simular algoritmos representados em linguagem oral, escrita ou pictográfica, que incluam sequências e repetições simples e aninhadas, além de repetições condicionais.',
              tempo='50 minutos', materiais='Espaço livre na sala ou no pátio, folha impressa', objetivo='Perceber quando usar "repita até" no lugar de "repita um número de vezes".',
              sem=['Coloque três estudantes a distâncias diferentes de uma parede. Dê a ordem "ande 4 passos" para os três. O que acontece?',
@@ -822,7 +845,7 @@ def atividades():
              avaliar=['Simula corretamente onde o robô para.', 'Explica por que "repita até" funciona nos três corredores.', 'Dá um exemplo de repetição com condição do dia a dia.'],
              gab='O robô para sempre na última casa, junto da parede. Casas andadas: A, 6; B, 4; C, 2. Com "ande 4 casas", o robô do corredor C bate na parede antes de terminar (só há 2 casas livres). "Repita até bater na parede" funciona nos três, porque não depende de onde o robô começa.',
              folha=folha_repetir()),
-        dict(etapa='4º ano', eixo='md', titulo='Imagem feita de números', fechar='Por que uma foto com mais pixels ocupa mais espaço no celular?', cod='EF04CO05',
+        dict(etapa='4º ano', eixo='md', titulo='Imagem feita de números', mais='o ano letivo do 4º ano em ohtopico.com.br/computacao-ano-a-ano/4-ano/', fechar='Por que uma foto com mais pixels ocupa mais espaço no celular?', cod='EF04CO05',
              hab='Codificar diferentes informações para representação em computador (binária, ASCII, atributos de pixel, como RGB etc.).',
              tempo='50 minutos', materiais='Folha impressa, lápis preto ou de cor', objetivo='Entender que uma imagem digital é guardada como números.',
              sem=['Amplie uma foto no projetor ou no celular até aparecerem os quadradinhos. Conte que cada um é um pixel.',
@@ -836,7 +859,7 @@ def atividades():
              dica='Para estudantes com baixa visão, use uma malha maior, com quadrados de 2 cm, e peças de EVA para "pintar".',
              gab=f'A figura é um coração. Quadradinhos pintados: {pintados}. Para ir além: em uma tela colorida, cada pixel guarda três números, a quantidade de vermelho, de verde e de azul.',
              folha=folha_pixels()),
-        dict(etapa='5º ano', eixo='cd', titulo='Confiável ou não?', fechar='Quem você conhece que poderia ajudar a checar uma notícia antes de compartilhar? Que site você usaria?', cod='EF05CO08',
+        dict(etapa='5º ano', eixo='cd', titulo='Confiável ou não?', mais='o ano letivo do 5º ano em ohtopico.com.br/computacao-ano-a-ano/5-ano/', fechar='Quem você conhece que poderia ajudar a checar uma notícia antes de compartilhar? Que site você usaria?', cod='EF05CO08',
              hab='Acessar as informações na internet de forma crítica para distinguir os conteúdos confiáveis de não confiáveis.',
              tempo='50 minutos', materiais='Folha impressa; se possível, um computador com projetor', objetivo='Usar critérios para avaliar se uma informação é confiável antes de compartilhar.',
              sem=['Pergunte se alguém já recebeu uma notícia que depois descobriu ser falsa. Ouça dois ou três relatos.',
@@ -849,7 +872,7 @@ def atividades():
              avaliar=['Aplica pelo menos três critérios da lista.', 'Justifica a conclusão com base nos critérios.', 'Propõe o que fazer antes de compartilhar.'],
              gab='A: não confiável (sem autor, sem data, pede pressa). B: confiável, mas vale conferir no site oficial da prefeitura. C: não confiável (fonte desconhecida, promessa exagerada, pede clique). D: confiável (jornal identificado, data e fonte citada). Aceite respostas diferentes quando bem justificadas.',
              folha=folha_fontes()),
-        dict(etapa='6º ano', eixo='md', titulo='Mensagem em pacotes', fechar='Por que um vídeo às vezes trava e depois continua do mesmo ponto?', cod='EF06CO07',
+        dict(etapa='6º ano', eixo='md', titulo='Mensagem em pacotes', mais='plano, slides e fichas da habilidade em ohtopico.com.br/material-didatico/bncc/ef06co07/', fechar='Por que um vídeo às vezes trava e depois continua do mesmo ponto?', cod='EF06CO07',
              hab='Entender como a informação é quebrada em pedaços, transmitida em pacotes por vários equipamentos e reconstruída no destino.',
              tempo='50 minutos', materiais='Folha impressa, tesoura, envelopes ou tiras de papel', objetivo='Explicar por que a mensagem viaja em pacotes numerados e como a falta de um é percebida.',
              sem=['Organize a sala como uma rede: cada fileira é um caminho e cada estudante é um equipamento que só passa o papel para o vizinho.',
@@ -862,7 +885,7 @@ def atividades():
              avaliar=['Remonta a mensagem pela numeração.', 'Identifica o pacote perdido e pede o reenvio.', 'Explica para que serve o número e o total.'],
              gab=f'Mensagem: "{" ".join(PACOTES)}". Falta o pacote 3 ("NA SALA"); o pedido é algo como "Ana, reenvie o pacote 3 de 6". O número permite pôr em ordem, e o total mostra se falta algum.',
              folha=folha_pacotes()),
-        dict(etapa='7º ano', eixo='pc', titulo='Caça aos bugs', fechar='Um aplicativo que você usa já deu erro? Como você acha que os programadores descobriram e corrigiram?', cod='EF07CO02',
+        dict(etapa='7º ano', eixo='pc', titulo='Caça aos bugs', mais='plano, slides e fichas da habilidade em ohtopico.com.br/material-didatico/bncc/ef07co02/', fechar='Um aplicativo que você usa já deu erro? Como você acha que os programadores descobriram e corrigiram?', cod='EF07CO02',
              hab='Analisar programas para detectar e remover erros, ampliando a confiança na sua correção.',
              tempo='50 minutos', materiais='Folha impressa', objetivo='Usar o teste de mesa para encontrar e corrigir erros em um algoritmo.',
              sem=['Conte a origem da palavra bug na computação e diga que hoje a aula é de caçar bugs.',
@@ -875,7 +898,7 @@ def atividades():
              avaliar=['Faz o teste de mesa sem pular linhas.', 'Localiza o erro da linha 3 e propõe a correção.', 'Percebe o erro de condição da linha 5 e explica com um caso de teste.'],
              gab=f'Teste de mesa com o erro: {mesa}. No fim, media = {br(media_err)} e o algoritmo escreve "em recuperação". A média correta é {br(media_ok)}. Linha 3: o certo é soma ← soma + nota. Linha 5: com média 7 a estudante deveria ser aprovada, então o certo é media ≥ 7.',
              folha=folha_bugs()),
-        dict(etapa='7º ano', eixo='md', titulo='Quantas senhas existem?', fechar='Que conta sua seria mais grave perder? Ela tem uma senha longa e só dela?', cod='EF07CO07',
+        dict(etapa='7º ano', eixo='md', titulo='Quantas senhas existem?', mais='plano, slides e fichas da habilidade em ohtopico.com.br/material-didatico/bncc/ef07co07/', fechar='Que conta sua seria mais grave perder? Ela tem uma senha longa e só dela?', cod='EF07CO07',
              hab='Identificar problemas de segurança cibernética e experimentar formas de proteção.',
              tempo='50 minutos', materiais='Folha impressa, calculadora', objetivo='Mostrar com números por que senhas longas protegem mais.',
              sem=['Mostre um cadeado de mala de 3 algarismos e pergunte: "Quanto tempo leva para abrir testando todas as senhas?".',
@@ -888,7 +911,7 @@ def atividades():
              avaliar=['Calcula as combinações multiplicando as opções.', 'Compara os resultados e conclui que comprimento pesa muito.', 'Cria uma frase-senha sem dados pessoais.'],
              gab=f'{senhas_gab}. Com bilhões de tentativas por segundo, as senhas curtas caem em menos de um segundo; por isso o comprimento importa tanto. A frase-senha longa é a mais segura; "Bia2012" usa nome e ano, fáceis de adivinhar.',
              folha=folha_senhas()),
-        dict(etapa='8º ano', eixo='cd', titulo='Li e concordo?', fechar='Depois desta aula, o que você vai conferir antes de instalar um aplicativo novo?', cod='EF08CO09',
+        dict(etapa='8º ano', eixo='cd', titulo='Li e concordo?', mais='plano, slides e fichas da habilidade em ohtopico.com.br/material-didatico/bncc/ef08co09/', fechar='Depois desta aula, o que você vai conferir antes de instalar um aplicativo novo?', cod='EF08CO09',
              hab='Analisar criticamente as políticas e os termos de uso das redes sociais e demais plataformas.',
              tempo='50 minutos', materiais='Folha impressa', objetivo='Ler termos de uso procurando dados coletados, compartilhamento e direitos de quem usa.',
              sem=['Pergunte quem já leu os termos de uso de algum aplicativo antes de clicar em "Li e concordo". Normalmente quase ninguém.',
@@ -901,7 +924,7 @@ def atividades():
              avaliar=['Encontra nos termos as informações pedidas.', 'Explica cada cláusula em palavras simples.', 'Propõe uma cláusula mais justa e justifica.'],
              gab='Idade mínima: 13 anos (cláusula 1). Dados: nome, e-mail, data de nascimento, fotos, localização e contatos (2); localização e contatos parecem desnecessários. Recebem os dados: empresas parceiras, para anúncios (4). Fotos podem ir para propagandas, sem pagamento (3). Ao sair, fotos compartilhadas por outros podem continuar visíveis (5). Os termos podem mudar a qualquer momento (6).',
              folha=folha_termos()),
-        dict(etapa='9º ano', eixo='md', titulo='Segredos em código', fechar='Onde a criptografia protege você todos os dias sem você perceber? (Mensagens, compras on-line, o cadeado do navegador.)', cod='EF09CO05',
+        dict(etapa='9º ano', eixo='md', titulo='Segredos em código', mais='plano, slides e fichas da habilidade em ohtopico.com.br/material-didatico/bncc/ef09co05/', fechar='Onde a criptografia protege você todos os dias sem você perceber? (Mensagens, compras on-line, o cadeado do navegador.)', cod='EF09CO05',
              hab='Analisar técnicas de criptografia para armazenamento e transmissão de dados.',
              tempo='50 minutos', materiais='Folha impressa, tesoura, clipe ou alfinete com tampinha', objetivo='Cifrar e decifrar com a cifra de César e entender por que ela é fraca.',
              sem=['Pergunte como uma mensagem pode viajar pela internet sem que outros leiam. Ouça as ideias.',
@@ -914,7 +937,7 @@ def atividades():
              avaliar=['Cifra e decifra com a chave dada.', 'Descobre a chave desconhecida com uma estratégia.', 'Explica por que a cifra de César é fraca hoje.'],
              gab=f'Mensagem 1: "{MSG1}". Mensagem 2: chave {K2}, "{MSG2}". Existem 25 chaves úteis (a 26ª volta ao início); dá para testar todas rapidamente, à mão ou com um computador.',
              folha=folha_cifra()),
-        dict(etapa='Ensino Médio', eixo='cd', titulo='Como a máquina escolhe a próxima palavra', fechar='Quando vale a pena usar uma IA na escola, e quando é melhor não usar? Como conferir o que ela respondeu?',
+        dict(etapa='Ensino Médio', eixo='cd', titulo='Como a máquina escolhe a próxima palavra', mais='simuladores de IA em ohtopico.com.br/simuladores/ e o guia IA pra Prof em ohtopico.com.br/ia-pra-prof/', fechar='Quando vale a pena usar uma IA na escola, e quando é melhor não usar? Como conferir o que ela respondeu?',
              hab='Pensamento computacional e Cultura digital no Ensino Médio: compreender, de forma simplificada, como sistemas de inteligência artificial que geram texto funcionam, e analisar criticamente seus limites e vieses.',
              tempo='50 minutos', materiais='Folha impressa', objetivo='Simular um modelo que prevê a próxima palavra e discutir de onde vêm os erros e os vieses da IA.',
              sem=['Pergunte como a turma acha que um assistente de IA escreve as respostas. Registre as hipóteses no quadro.',
@@ -1034,7 +1057,7 @@ def montar():
 <meta name="description" content="Guia gratuito para professores: os três eixos da Computação na BNCC, progressão por etapa, planejamento, avaliação e 12 atividades com e sem tela.">
 <style>{css}</style></head>
 <body>
-{"".join(livro.paginas)}
+{linkar("".join(livro.paginas))}
 </body></html>'''
 
 
