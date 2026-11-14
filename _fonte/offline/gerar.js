@@ -9,7 +9,7 @@
    O que muda em relação ao site, só dentro do pacote:
    - Sem Google Analytics e sem GoatCounter (offline não há para onde enviar,
      e nada da turma sai do computador).
-   - Fontes Sniglet e Lexend locais (fontes/fontes.css), no lugar do Google Fonts.
+   - Fontes Fredoka e Lexend locais (fontes/fontes.css), no lugar do Google Fonts.
    - O navegador não aceita módulos JavaScript abertos direto do disco (file://).
      Por isso o three.js vira um script comum (vendor/three-offline.js) e o
      lab3d.js ganha uma versão que entrega as mesmas funções por window.LAB3D.
@@ -248,7 +248,7 @@ function comeceAqui(grupos) {
   .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
   header { background: #fff7c2; border-bottom: 2px solid var(--ink); padding: 34px 0 28px;
     background-image: radial-gradient(rgba(0,0,0,.12) 1.2px, transparent 1.5px); background-size: 18px 18px; }
-  h1, h2 { font-family: Sniglet, Lexend, Arial, sans-serif; font-weight: 800; line-height: 1.1; }
+  h1, h2 { font-family: Fredoka, Lexend, Arial, sans-serif; font-weight: 800; line-height: 1.1; }
   h1 { font-size: clamp(36px, 7vw, 60px); margin: 0 0 8px; }
   header p { font-size: 18px; margin: 0 0 18px; max-width: 760px; }
   .atalhos { display: flex; flex-wrap: wrap; gap: 12px; }

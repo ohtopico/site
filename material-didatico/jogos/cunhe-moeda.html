@@ -280,7 +280,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cunhe-moeda');
     } else {
       const v = VALORES.find(x => x[0] === s.valor) || VALORES[4];
       const fs = R * (v[1].length > 1 ? 0.62 : 0.78) * (M.anel ? 0.85 : 1);
-      o += texto(v[1], `y="${(fs * 0.22).toFixed(1)}" text-anchor="middle" font-family="Sniglet, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}"`);
+      o += texto(v[1], `y="${(fs * 0.22).toFixed(1)}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}"`);
       o += texto(v[2], `y="${(R * (M.anel ? 0.5 : 0.46)).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" letter-spacing="1" font-size="${(R * 0.13).toFixed(1)}"`);
       // ramos
       for (const sx of [-1, 1]) for (let i = 0; i < 5; i++) {

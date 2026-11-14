@@ -5,7 +5,7 @@
 set -e
 SLIDES=${SLIDES:-../projeto/posts/bncc-computacao/gerador}              # aulas6..9.py, lib.py, svg.py
 APOSTILA=${APOSTILA:-../projeto/posts/apostilas/professor-bncc/gerador}  # saida/miolo.html (rode gerar.sh dela antes)
-FONTES=${FONTES:-../projeto/posts/apostilas/robotica/gerador/fonts}       # Lexend, Sniglet, JetBrains Mono
+FONTES=${FONTES:-../projeto/posts/apostilas/robotica/gerador/fonts}       # Lexend, Fredoka, JetBrains Mono
 P=_privado/premium
 python3 _fonte/premium/editaveis/slides_pptx.py --gerador "$SLIDES" --fontes "$FONTES" --saida $P/arquivos/slides
 python3 _fonte/premium/editaveis/apostila_docx.py "$APOSTILA/saida/miolo.html" $P/arquivos/apostila

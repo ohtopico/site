@@ -1,5 +1,5 @@
 /* Ano a ano: peças das folhas (figuras, ligar, numerar, malha, setas) e páginas do ano e das aulas.
-   Folha sempre branca; cor só nas figuras. Títulos em Sniglet, texto em Lexend (vem de fichas.css). */
+   Folha sempre branca; cor só nas figuras. Títulos em Fredoka, texto em Lexend (vem de fichas.css). */
 .aa-fila { display: flex; flex-wrap: wrap; gap: 4mm; align-items: center; margin: 2mm 0 3mm; }
 .aa-fig { width: var(--t, 20mm); height: var(--t, 20mm); display: inline-grid; place-items: center; flex: none; }
 .aa-fig svg, .aa-op svg, .aa-num svg { width: 100%; height: 100%; display: block; }

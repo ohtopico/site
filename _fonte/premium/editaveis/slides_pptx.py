@@ -7,7 +7,7 @@ Abre no PowerPoint, no Google Apresentações e no Canva (Importar arquivo).
 Uso:
     python3 _fonte/premium/editaveis/slides_pptx.py --gerador CAMINHO/bncc-computacao/gerador \
         --fontes CAMINHO/fontes --saida _privado/premium/arquivos/slides
---fontes é a pasta com Lexend-400.ttf, Lexend-600.ttf, Sniglet-800.ttf e JetBrainsMono-Regular.ttf,
+--fontes é a pasta com Lexend-400.ttf, Lexend-600.ttf, Fredoka-600.ttf e JetBrainsMono-Regular.ttf,
 usadas só para desenhar os diagramas (precisa do Node com Playwright).
 Autora: Júlia Roberta Quoos Alves.
 """
@@ -32,10 +32,10 @@ AUTORA = 'Júlia Roberta Quoos Alves'
 TINTA, TINTA2, PAPEL, PAPEL2 = '111111', '444444', 'FFFFFF', 'F4F4F2'
 MARCA, OK, MAL, VERDE = 'FFF36B', 'E3F4E8', 'FBE6EA', '157F3B'
 CORES = {'': OK, 'y': MARCA, 'r': MAL, 'w': PAPEL}
-TIT, CORPO, MONO = 'Sniglet', 'Lexend', 'JetBrains Mono'
+TIT, CORPO, MONO = 'Fredoka', 'Lexend', 'JetBrains Mono'
 PX = 12700 * 2 / 3  # o molde em HTML tem 1440 x 810 px; 1 px = 2/3 pt
 CX, CY, CW, CH = 128, 150, 1172, 530  # área útil dentro da janela
-LARG_TIT = 0.84  # largura média de uma letra maiúscula da Sniglet, em relação ao tamanho da fonte
+LARG_TIT = 0.84  # largura média de uma letra maiúscula da Fredoka, em relação ao tamanho da fonte
 
 
 def e(px):
@@ -383,7 +383,7 @@ def desenhar_svgs(aulas, fontes, pasta):
                 itens.append({'svg': d['svg'], 'png': nome}); mapa[id(d)] = nome
     face = ''.join(f"@font-face{{font-family:'{fam}';font-weight:{w};src:url('file://{os.path.join(fontes, arq)}')}}"
                    for fam, w, arq in (('Lexend', 400, 'Lexend-400.ttf'), ('Lexend', 600, 'Lexend-600.ttf'),
-                                       ('Sniglet', 800, 'Sniglet-800.ttf'), ('JetBrains Mono', 400, 'JetBrainsMono-Regular.ttf')))
+                                       ('Fredoka', 600, 'Fredoka-600.ttf'), ('JetBrains Mono', 400, 'JetBrainsMono-Regular.ttf')))
     json.dump({'css': face, 'itens': itens}, open(os.path.join(pasta, 'svgs.json'), 'w'))
     js = r"""
 const { chromium } = require('playwright'); const fs = require('fs');

@@ -4,7 +4,7 @@ const C = (t, c, e) => ({ t, c, e });
 const B = ['✅ Confiável', '⚠️ Suspeita'];
 const svg = `<svg viewBox="0 0 620 220" role="img" aria-label="Checklist do checador: fonte, data, autor, outras fontes, tom alarmista, imagem">
   <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:700 14px Lexend,sans-serif;fill:#1d2a1f}.s{font:500 12px Lexend,sans-serif;fill:#3b3b3b}</style>
-  <rect width="620" height="220" rx="16" fill="#fffdf6"/><text x="310" y="30" text-anchor="middle" style="font:800 19px Sniglet,Lexend,sans-serif">🕵️ Checklist do checador</text>
+  <rect width="620" height="220" rx="16" fill="#fffdf6"/><text x="310" y="30" text-anchor="middle" style="font:800 19px Fredoka,Lexend,sans-serif">🕵️ Checklist do checador</text>
   ${[['🔗', 'Fonte', 'site conhecido? endereço estranho?'], ['📅', 'Data', 'notícia velha recirculando?'], ['✍️', 'Autor', 'quem assina? é especialista?'], ['🔍', 'Outras fontes', 'algum jornal confirma?'], ['📢', 'Tom', 'URGENTE, CAPS, “compartilhe”'], ['🖼️', 'Imagem', 'foto fora de contexto ou montagem?']]
     .map(([e, t, s], k) => { const x = 20 + (k % 3) * 200, y = 48 + Math.floor(k / 3) * 84; return `<rect class="c" x="${x}" y="${y}" width="186" height="72" rx="12" fill="${k % 2 ? '#dcecff' : '#fff6dd'}"/><text class="t" x="${x + 12}" y="${y + 28}">${e} ${t}</text><text class="s" x="${x + 12}" y="${y + 52}">${s}</text>`; }).join('')}
 </svg>`;

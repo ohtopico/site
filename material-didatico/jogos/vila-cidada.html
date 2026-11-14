@@ -620,7 +620,7 @@ function placa(texto, cor) {
   g.font = '600 26px Lexend, sans-serif'; const w = Math.min(250, g.measureText(texto).width + 60);
   g.fillStyle = 'rgba(17,17,17,.85)'; const x0 = (256 - w) / 2; g.beginPath(); g.roundRect(x0, 14, w, 44, 22); g.fill();
   g.fillStyle = cor; g.beginPath(); g.arc(x0 + 24, 36, 11, 0, 7); g.fill();
-  g.fillStyle = '#111'; g.font = '800 17px Sniglet, sans-serif'; g.textAlign = 'center'; g.fillText(cor === '#2fa865' ? '✓' : '!', x0 + 24, 42);
+  g.fillStyle = '#111'; g.font = '800 17px Fredoka, sans-serif'; g.textAlign = 'center'; g.fillText(cor === '#2fa865' ? '✓' : '!', x0 + 24, 42);
   g.fillStyle = '#fff'; g.font = '600 24px Lexend, sans-serif'; g.textAlign = 'left'; g.fillText(texto, x0 + 44, 45);
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false })); s.scale.set(3.4, 0.96, 1); s.renderOrder = 10; return s;

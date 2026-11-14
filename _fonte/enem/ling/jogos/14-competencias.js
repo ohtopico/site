@@ -2,7 +2,7 @@ const K = ['C1 · Norma-padrão', 'C2 · Tema e repertório', 'C3 · Argumentaç
 const C = (t, c, e) => ({ emo: '📝', t, c, e });
 const O = (cartas, e, pede) => ({ cartas, e, pede });
 const svg = `<svg viewBox="0 0 640 220" role="img" aria-label="Estrutura da redação do ENEM em quatro parágrafos">
-  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 15px Sniglet,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 12px Lexend,sans-serif;fill:#3b3b3b}</style>
+  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 15px Fredoka,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 12px Lexend,sans-serif;fill:#3b3b3b}</style>
   <rect width="640" height="220" rx="16" fill="#fffdf6"/>
   ${[['1º · Introdução', 'repertório + contexto + TESE', '+ anuncia os 2 argumentos', '#ffd9c7'], ['2º · Desenvolvimento 1', 'tópico frasal (argumento 1)', '+ repertório + análise', '#fff0b3'], ['3º · Desenvolvimento 2', 'tópico frasal (argumento 2)', '+ repertório + análise', '#d8f5dc'], ['4º · Conclusão', 'retoma a tese', '+ proposta de intervenção (5 elementos)', '#dcecff']]
     .map(([n, a, b, c], k) => `<rect class="c" x="20" y="${14 + k * 50}" width="600" height="42" rx="10" fill="${c}"/><text class="t" x="34" y="${40 + k * 50}">${n}</text><text class="s" x="250" y="${32 + k * 50}">${a}</text><text class="s" x="250" y="${48 + k * 50}">${b}</text>`).join('')}

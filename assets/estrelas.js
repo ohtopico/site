@@ -278,7 +278,7 @@
   .estrelas-fundo { position: fixed; inset: 0; z-index: 70; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; padding: 16px; }
   .estrelas-card { position: relative; width: min(440px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: #fffdf2; color: #111;
     border: 1.5px solid #111; border-radius: 14px; box-shadow: 4px 4px 0 #111; padding: 22px 22px 18px; font: 400 15px/1.5 Lexend, system-ui, sans-serif; }
-  .estrelas-card h2 { margin: 0 0 4px; font: 800 21px/1.2 Sniglet, Lexend, system-ui, sans-serif; }
+  .estrelas-card h2 { margin: 0 0 4px; font: 800 21px/1.2 Fredoka, Lexend, system-ui, sans-serif; }
   .estrelas-card .sub { margin: 0 0 12px; color: #4a4a4a; font-size: 13px; }
   .estrelas-card .grande { width: 64px; height: 64px; margin: 0 auto 8px; }
   .estrelas-card .dica { margin: 0 0 14px; padding: 12px 14px; border-radius: 10px; border-left: 5px solid var(--c); background: #fff; }

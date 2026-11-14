@@ -145,7 +145,7 @@ CSS = """
 @page { size: A4 landscape; margin: 13mm 12mm 14mm; }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: 'Lexend', sans-serif; font-weight: 300; color: #111; font-size: 8.6pt; line-height: 1.38; }
-h1, h2, .disp { font-family: 'Sniglet', sans-serif; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+h1, h2, .disp { font-family: 'Fredoka', sans-serif; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
 a { color: inherit; }
 .capa { height: 181mm; display: flex; flex-direction: column; page-break-after: always; }
 .kicker { font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 8.5pt; }
@@ -154,7 +154,7 @@ a { color: inherit; }
 .sub { font-size: 11pt; font-weight: 400; max-width: 235mm; margin: 0; }
 .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; margin-top: 9mm; }
 .card { border: 1.5px solid #111; border-radius: 14px; padding: 4mm; font-size: 8.3pt; }
-.card h3 { font-family: 'Sniglet', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 9pt; margin: 0 0 2mm; letter-spacing: .04em; }
+.card h3 { font-family: 'Fredoka', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 9pt; margin: 0 0 2mm; letter-spacing: .04em; }
 .card ul { margin: 0; padding-left: 4mm; }
 .card li { margin-bottom: 1mm; }
 .assina { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; }

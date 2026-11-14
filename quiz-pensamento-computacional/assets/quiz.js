@@ -195,7 +195,7 @@
 
     // Imagem quadrada (1080 x 1080) nas cores do site, boa para o feed do LinkedIn
     async function desenharImagem(nota, nivel, fortes, max) {
-        try { await Promise.all([document.fonts.load('800 40px Sniglet'), document.fonts.load('400 20px Lexend'), document.fonts.load('600 20px Lexend')]); } catch (e) {}
+        try { await Promise.all([document.fonts.load('800 40px Fredoka'), document.fonts.load('400 20px Lexend'), document.fonts.load('600 20px Lexend')]); } catch (e) {}
         const L = 1080;
         const c = document.createElement('canvas');
         c.width = L; c.height = L;
@@ -220,21 +220,21 @@
         for (let y = 11; y < L; y += 22) for (let x = 11; x < L; x += 22) { g.beginPath(); g.arc(x, y, 1.6, 0, 7); g.fill(); }
         caixa(60, 60, L - 120, L - 120, 44, '#ffffff');
         // faixa de título
-        g.fillStyle = verde; g.font = '800 30px Sniglet, sans-serif'; g.textBaseline = 'alphabetic';
+        g.fillStyle = verde; g.font = '800 30px Fredoka, sans-serif'; g.textBaseline = 'alphabetic';
         g.fillText('QUIZ PARA PROFESSORES', 120, 150);
-        g.fillStyle = tinta; g.font = '800 58px Sniglet, sans-serif';
+        g.fillStyle = tinta; g.font = '800 58px Fredoka, sans-serif';
         g.fillText('Pensamento', 120, 222);
         g.fillText('computacional', 120, 286);
         // nota
         g.beginPath(); g.arc(L - 250, 230, 120, 0, Math.PI * 2);
         g.fillStyle = amarelo; g.fill(); g.lineWidth = 4; g.strokeStyle = tinta; g.stroke();
         g.fillStyle = tinta; g.textAlign = 'center';
-        g.font = '800 92px Sniglet, sans-serif'; g.fillText(String(nota), L - 250, 250);
+        g.font = '800 92px Fredoka, sans-serif'; g.fillText(String(nota), L - 250, 250);
         g.font = '400 28px Lexend, sans-serif'; g.fillText(`de ${total} acertos`, L - 250, 296);
         g.textAlign = 'left';
         // nível
         g.fillStyle = '#4a4a4a'; g.font = '400 30px Lexend, sans-serif'; g.fillText('Meu nível', 120, 410);
-        g.fillStyle = tinta; g.font = '800 54px Sniglet, sans-serif';
+        g.fillStyle = tinta; g.font = '800 54px Fredoka, sans-serif';
         let y = 474;
         quebrar(nivel.nome, L - 240).forEach(l => { g.fillText(l, 120, y); y += 64; });
         // ponto forte

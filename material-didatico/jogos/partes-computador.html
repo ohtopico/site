@@ -525,7 +525,7 @@ function rosto(humor = 'oi', texto = '') {
     if (humor === 'erro') { x.moveTo(206, 196); x.quadraticCurveTo(256, 176, 306, 196); }
     else { x.moveTo(196, 176); x.quadraticCurveTo(256, humor === 'feliz' ? 250 : 222, 316, 176); }
     x.stroke();
-    if (texto) { x.font = '800 40px Sniglet, sans-serif'; x.textAlign = 'center'; x.fillText(texto, 256, 290); }
+    if (texto) { x.font = '800 40px Fredoka, sans-serif'; x.textAlign = 'center'; x.fillText(texto, 256, 290); }
   }
   tex.needsUpdate = true; cena && cena.pedeQuadro();
 }

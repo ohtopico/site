@@ -4,7 +4,7 @@ const O = (cartas, e, pede) => ({ cartas, e, pede });
 const fases = [['Quinhentismo', '1500', '#f3e2b0'], ['Barroco', '1601', '#e0b0ff'], ['Arcadismo', '1768', '#a8e6b8'], ['Romantismo', '1836', '#ffb3c6'], ['Realismo', '1881', '#c7c7c7'],
   ['Parnasianismo', '1882', '#ffe08a'], ['Simbolismo', '1893', '#e8e8ff'], ['Pré-Modernismo', '1902', '#ffd0a8'], ['Modernismo', '1922', '#8fd3ef']];
 const svg = `<svg viewBox="0 0 640 210" role="img" aria-label="Linha do tempo das escolas literárias no Brasil">
-  <style>.t{font:700 12px Lexend,sans-serif;fill:#1d2a1f}.a{font:800 13px Sniglet,Lexend,sans-serif;fill:#1d2a1f}</style>
+  <style>.t{font:700 12px Lexend,sans-serif;fill:#1d2a1f}.a{font:800 13px Fredoka,Lexend,sans-serif;fill:#1d2a1f}</style>
   <rect width="640" height="210" rx="16" fill="#fffdf6"/><path d="M20 105 H620" stroke="#1d2a1f" stroke-width="4"/>
   ${fases.map(([n, a, c], k) => { const x = 40 + k * 70, y = k % 2 ? 140 : 40; return `<circle cx="${x}" cy="105" r="9" fill="${c}" stroke="#1d2a1f" stroke-width="2.5"/>
     <rect x="${x - 34}" y="${y}" width="68" height="34" rx="8" fill="${c}" stroke="#1d2a1f" stroke-width="2"/><text class="a" x="${x}" y="${y + 14}" text-anchor="middle">${a}</text>

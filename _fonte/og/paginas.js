@@ -126,7 +126,7 @@ let FONTES = '';
 function fontes() {
   if (FONTES) return FONTES;
   const b64 = f => fs.readFileSync(path.join(RAIZ, 'assets/fontes', f)).toString('base64');
-  FONTES = [['Sniglet', 800, 'sniglet-latin-800-normal.woff2'], ['Lexend', 400, 'lexend-latin-400-normal.woff2'], ['Lexend', 500, 'lexend-latin-500-normal.woff2']]
+  FONTES = [['Fredoka', 600, 'fredoka-latin-600-normal.woff2'], ['Lexend', 400, 'lexend-latin-400-normal.woff2'], ['Lexend', 500, 'lexend-latin-500-normal.woff2']]
     .map(([fam, w, f]) => `@font-face { font-family: ${fam}; font-weight: ${w}; src: url(data:font/woff2;base64,${b64(f)}) format('woff2'); }`).join('\n');
   return FONTES;
 }
@@ -140,19 +140,19 @@ ${fontes()}
   body { width: 1200px; height: 630px; background: #f4f4f2 radial-gradient(#d9d9d6 1.2px, transparent 1.2px) 0 0 / 22px 22px; font-family: Lexend, sans-serif; color: #111; position: relative; overflow: hidden; }
   .win { position: absolute; left: 50px; top: 34px; width: 1090px; height: 520px; background: #fff; border: 3px solid #111; border-radius: 26px; box-shadow: 16px 16px 0 #111; overflow: hidden; }
   .bar { height: 52px; border-bottom: 3px solid #111; display: flex; align-items: center; padding: 0 26px; background: #f4f4f2; }
-  .bar b { font-family: Sniglet; font-weight: 800; font-size: 18px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 900px; }
+  .bar b { font-family: Fredoka; font-weight: 800; font-size: 18px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 900px; }
   .dots { margin-left: auto; display: flex; gap: 9px; } .dots i { width: 22px; height: 22px; border: 2.5px solid #111; border-radius: 50%; }
   .txt { padding: 26px 60px 30px; height: 462px; overflow: hidden; display: flex; flex-direction: column; justify-content: safe center; align-items: flex-start; }
-  .faixa { display: inline-flex; align-items: center; gap: 10px; border: 2.5px solid #111; border-radius: 99px; padding: 6px 16px; font-family: Sniglet; font-weight: 800; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; }
+  .faixa { display: inline-flex; align-items: center; gap: 10px; border: 2.5px solid #111; border-radius: 99px; padding: 6px 16px; font-family: Fredoka; font-weight: 800; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; }
   .faixa i { width: 6px; height: 18px; background: #1f8a4c; border-radius: 2px; }
-  h1 { font-family: Sniglet; font-weight: 800; font-size: 76px; line-height: 1.04; text-transform: uppercase; margin: 22px 0 16px; letter-spacing: .01em; overflow-wrap: anywhere; }
+  h1 { font-family: Fredoka; font-weight: 800; font-size: 76px; line-height: 1.04; text-transform: uppercase; margin: 22px 0 16px; letter-spacing: .01em; overflow-wrap: anywhere; }
   h1 span { background: #fff06a; padding: 2px 12px 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
   p.sub { font-size: 23px; color: #4a4a4a; line-height: 1.34; max-width: 940px; }
   .pills { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
   .pills span { border: 2px solid #111; border-radius: 99px; padding: 7px 16px; font-size: 17px; font-weight: 500; }
   .p-verde { background: #dff3e6; } .p-amarelo { background: #fff06a; }
   .rod { position: absolute; left: 54px; right: 58px; bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-  .rod b { font-family: Sniglet; font-weight: 800; font-size: 22px; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+  .rod b { font-family: Fredoka; font-weight: 800; font-size: 22px; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
   .rod span { border: 2px solid #111; border-radius: 99px; padding: 5px 18px; font-size: 19px; background: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style></head><body>
 <div class="win">

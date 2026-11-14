@@ -213,8 +213,8 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('valor-moeda');
     const nd = Math.max(24, Math.round(r * 0.9)), rr = r * (bi ? 0.6 : 0.82);
     for (let i = 0; i < nd; i++) { const a = i / nd * 2 * Math.PI; s += `<circle cx="${(rr * Math.cos(a)).toFixed(1)}" cy="${(rr * Math.sin(a)).toFixed(1)}" r="${Math.max(0.6, r * 0.018).toFixed(2)}" fill="${M[2]}" fill-opacity=".7"/>`; }
     const fs = r * (txt.length > 1 ? 0.62 : 0.8) * (bi ? 0.85 : 1);
-    s += `<text y="${sub ? fs * 0.18 : fs * 0.35}" text-anchor="middle" font-family="Sniglet, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${M[0]}" transform="translate(1 1)">${txt}</text>
-      <text y="${sub ? fs * 0.18 : fs * 0.35}" text-anchor="middle" font-family="Sniglet, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${M[2]}">${txt}</text>`;
+    s += `<text y="${sub ? fs * 0.18 : fs * 0.35}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${M[0]}" transform="translate(1 1)">${txt}</text>
+      <text y="${sub ? fs * 0.18 : fs * 0.35}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${M[2]}">${txt}</text>`;
     if (sub && r > 22) s += `<text y="${(fs * 0.18 + r * 0.3).toFixed(1)}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="600" font-size="${(r * (bi ? 0.13 : 0.15)).toFixed(1)}" fill="${M[2]}" letter-spacing="1">${sub}</text>`;
     return s + '</svg>';
   }

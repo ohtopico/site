@@ -5,7 +5,7 @@ Os cartões usam a mesma regra do jogo: a máquina vê a cor medida e a luz da f
 
 Uso (na raiz do repositório; precisa do Node com Playwright):
     python3 _fonte/premium/editaveis/desplugado_pdf.py --fontes CAMINHO/fontes --saida _privado/premium/arquivos/pdf
---fontes é a pasta com Lexend-400.ttf, Lexend-600.ttf e Sniglet-800.ttf.
+--fontes é a pasta com Lexend-400.ttf, Lexend-600.ttf e Fredoka-600.ttf.
 Autora: Júlia Roberta Quoos Alves.
 """
 import argparse
@@ -92,9 +92,9 @@ CSS = """
 @page { size: A4; margin: 14mm; }
 @font-face { font-family: 'Lexend'; font-weight: 400; src: url('file://FONTES/Lexend-400.ttf'); }
 @font-face { font-family: 'Lexend'; font-weight: 600; src: url('file://FONTES/Lexend-600.ttf'); }
-@font-face { font-family: 'Sniglet'; font-weight: 800; src: url('file://FONTES/Sniglet-800.ttf'); }
+@font-face { font-family: 'Fredoka'; font-weight: 800; src: url('file://FONTES/Fredoka-600.ttf'); }
 body { font-family: 'Lexend', sans-serif; color: #111; font-size: 10.5pt; line-height: 1.45; margin: 0; }
-h1, h2 { font-family: 'Sniglet', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; margin: 0 0 3mm; }
+h1, h2 { font-family: 'Fredoka', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; margin: 0 0 3mm; }
 h1 { font-size: 26pt; line-height: 1.05; } h2 { font-size: 15pt; margin-top: 5mm; }
 .pag { page-break-after: always; } .pag:last-child { page-break-after: auto; }
 .kicker { font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: 8.5pt; }
@@ -107,7 +107,7 @@ td, th { border: 1px solid #111; padding: 2mm; text-align: center; } th { backgr
 .cartoes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
 .cartao { border: 1px dashed #777; padding: 2.5mm; text-align: center; font-size: 9pt; break-inside: avoid; }
 .cartao .topo { display: flex; justify-content: space-between; font-size: 8.5pt; }
-.cartao .topo b { font-family: 'Sniglet', sans-serif; font-size: 12pt; }
+.cartao .topo b { font-family: 'Fredoka', sans-serif; font-size: 12pt; }
 .cartao svg { width: 30mm; height: 30mm; display: block; margin: 1mm auto; }
 .cartao .rotulo { border-top: 1px solid #ccc; margin-top: 1mm; padding-top: 1mm; }
 .cartao.extra .topo span { background: #fbe6ea; padding: 0 4px; border-radius: 4px; }

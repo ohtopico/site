@@ -8,7 +8,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #bfe9f5; fon
 .hud { position: fixed; z-index: 5; }
 .hud-topo { left: 10px; top: 10px; display: flex; flex-wrap: wrap; gap: 8px; max-width: 60vw; }
 .stat { background: rgba(255,253,246,.92); border: 2px solid var(--borda); border-radius: 14px; padding: 6px 12px; min-width: 86px; text-align: center; box-shadow: var(--sombra); }
-.stat b { display: block; font-family: Sniglet, Lexend, sans-serif; font-size: 20px; line-height: 1.1; }
+.stat b { display: block; font-family: Fredoka, Lexend, sans-serif; font-size: 20px; line-height: 1.1; }
 .stat span { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: #5a6a5c; }
 .hud-botoes { right: 10px; top: 10px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; max-width: 50vw; }
 .hb { font: 600 15px Lexend, sans-serif; color: #fff; border: 2px solid rgba(0,0,0,.18); border-radius: 14px; padding: 9px 14px; cursor: pointer; box-shadow: var(--sombra); text-decoration: none; display: inline-block; white-space: nowrap; }
@@ -16,7 +16,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #bfe9f5; fon
 .hb.azul { background: #2a72c0; } .hb.amarelo { background: var(--amarelo); color: #3a2a00; } .hb.verde { background: #2e7d3a; }
 .hb.vermelho { background: #c8412f; } .hb.rosa { background: #b8457e; } .hb.cinza { background: #6b6b6b; } .hb[aria-pressed="true"] { outline: 3px solid #fff; }
 .missoes { left: 10px; top: 86px; width: 300px; background: rgba(255,253,246,.94); border: 2px solid var(--borda); border-radius: 18px; padding: 12px 14px; box-shadow: var(--sombra); }
-.missoes h2 { margin: 0; font: 800 15px Sniglet, Lexend, sans-serif; color: #2a5fa8; letter-spacing: .03em; text-transform: uppercase; }
+.missoes h2 { margin: 0; font: 800 15px Fredoka, Lexend, sans-serif; color: #2a5fa8; letter-spacing: .03em; text-transform: uppercase; }
 .m-nome { margin: 2px 0 8px; font-size: 14px; color: #5a6a5c; }
 .missoes ul { list-style: none; margin: 0; padding: 0; font-size: 15px; }
 .missoes li { display: flex; gap: 8px; align-items: baseline; margin: 4px 0; }
@@ -39,7 +39,7 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .toque .dpad button:nth-child(1) { grid-column: 2; grid-row: 1; } .toque .dpad button:nth-child(2) { grid-column: 1; grid-row: 2; }
 .toque .dpad button:nth-child(3) { grid-column: 3; grid-row: 2; } .toque .dpad button:nth-child(4) { grid-column: 2; grid-row: 3; }
 .toque .acoes { position: absolute; right: 14px; bottom: 190px; display: grid; gap: 12px; pointer-events: auto; }
-.toque .acoes button { width: 68px; height: 68px; border-radius: 50%; font: 800 26px Sniglet, Lexend, sans-serif; background: var(--amarelo); border: 3px solid #d99a1d; color: #3a2a00; touch-action: none; }
+.toque .acoes button { width: 68px; height: 68px; border-radius: 50%; font: 800 26px Fredoka, Lexend, sans-serif; background: var(--amarelo); border: 3px solid #d99a1d; color: #3a2a00; touch-action: none; }
 .toque .acoes button[aria-pressed="true"] { background: var(--verde); border-color: #2d8a3b; color: #fff; }
 .dialogo { position: fixed; z-index: 8; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding: 14px; background: rgba(0,0,0,.18); }
 .d-caixa { width: min(760px, 100%); background: var(--papel); border: 3px solid var(--ink); border-radius: 22px; padding: 14px 18px 16px; box-shadow: 0 8px 0 rgba(0,0,0,.2); max-height: 70vh; overflow: auto; }
@@ -57,7 +57,7 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .janela { position: fixed; z-index: 9; inset: 0; display: flex; align-items: center; justify-content: center; padding: 14px; background: rgba(0,0,0,.35); }
 .j-caixa { width: min(920px, 100%); max-height: 90vh; overflow: auto; background: var(--papel); border: 3px solid var(--ink); border-radius: 22px; padding: 16px 20px 20px; box-shadow: 0 8px 0 rgba(0,0,0,.2); }
 .j-caixa.pequena { width: min(560px, 100%); }
-.j-cab { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; } .j-cab h2 { margin: 0; font: 800 22px Sniglet, Lexend, sans-serif; flex: 1; }
+.j-cab { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; } .j-cab h2 { margin: 0; font: 800 22px Fredoka, Lexend, sans-serif; flex: 1; }
 .j-caixa h3 { font-size: 16px; margin: 16px 0 6px; } .muted { color: #5a6a5c; } .small { font-size: 14px; }
 #mapa-cv { width: 100%; height: auto; background: #1b2531; border-radius: 12px; }
 .fases { padding-left: 0; list-style: none; margin: 12px 0 0; display: grid; gap: 8px; }
@@ -66,7 +66,7 @@ kbd { background: #1d2a1f; color: #fff; border-radius: 8px; padding: 1px 7px; fo
 .fases .hb { padding: 6px 12px; font-size: 14px; }
 .inv { display: flex; flex-wrap: wrap; gap: 8px; }
 .inv .it { border: 2px solid var(--borda); border-radius: 14px; padding: 8px 12px; background: #fff; display: flex; gap: 8px; align-items: center; }
-.inv .it b { font-family: Sniglet, Lexend, sans-serif; font-size: 20px; }
+.inv .it b { font-family: Fredoka, Lexend, sans-serif; font-size: 20px; }
 .inv .it.falta { opacity: .45; }
 .bib h3 { display: flex; align-items: center; gap: 8px; }
 .bib ul { list-style: none; padding: 0; margin: 0 0 6px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 14px; font-size: 14.5px; }
@@ -269,7 +269,7 @@ a.stat { color: inherit; text-decoration: none; }
 .jm-caixa { width: min(1100px, 100%); height: min(92vh, 760px); background: var(--papel); border: 3px solid var(--borda); border-radius: 20px; box-shadow: 0 6px 0 rgba(0,0,0,.18); display: flex; flex-direction: column; overflow: hidden; }
 .jm-cab { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 2px solid var(--borda); background: #fff3c4; }
 .jm-ic { font-size: 22px; }
-.jm-cab strong { flex: 1; min-width: 0; font-family: Sniglet, Lexend, sans-serif; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jm-cab strong { flex: 1; min-width: 0; font-family: Fredoka, Lexend, sans-serif; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .jm-dica { font-size: 12px; color: #5a6a5c; }
 .jm-b { border: 2px solid var(--azul); background: #fff; color: var(--ink); border-radius: 12px; padding: 4px 10px; font-size: 13px; text-decoration: none; white-space: nowrap; }
 .jm-voltar { border: 0; background: var(--verde); color: #fff; border-radius: 12px; padding: 6px 12px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }

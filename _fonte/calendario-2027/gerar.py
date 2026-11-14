@@ -220,7 +220,7 @@ html, body {{ background: #fff; }}
 body {{ margin: 0; font-family: 'Lexend', sans-serif; font-weight: 300; color: #111; font-size: 7.7pt; line-height: 1.28; }}
 .pag {{ page-break-after: always; }}
 .pag:last-child {{ page-break-after: auto; }}
-h1, h2 {{ font-family: 'Sniglet', sans-serif; font-weight: 800; margin: 0; }}
+h1, h2 {{ font-family: 'Fredoka', sans-serif; font-weight: 800; margin: 0; }}
 h1 {{ font-size: 21pt; line-height: 1.05; margin: 1mm 0 1.5mm; }}
 h2 {{ font-size: 13pt; margin: 3mm 0 2mm; display: inline-block; border-bottom: 2.2pt solid #166c40; }}
 .kicker {{ font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: 7pt; margin: 0; color: #166c40; }}
