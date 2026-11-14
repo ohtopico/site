@@ -5078,6 +5078,158 @@
     for (const c of cs) { const s = SEMENTES[c.s]; g.strokeStyle = s.cor; g.fillStyle = s.cor; g.lineWidth = 3; g.beginPath(); c.h.forEach(([, v], d) => d ? g.lineTo(X(d), Y(v)) : g.moveTo(X(d), Y(v))); g.stroke(); c.h.forEach(([, v], d) => { g.beginPath(); g.arc(X(d), Y(v), 3.5, 0, Math.PI * 2); g.fill(); }); g.setLineDash([4, 4]); g.lineWidth = 1; g.beginPath(); g.moveTo(m.l, Y(s.meta)); g.lineTo(W2 - m.r, Y(s.meta)); g.stroke(); g.setLineDash([]); }
     if (!cs.length) { g.fillStyle = '#5a6a5c'; g.font = '13px Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('Plante uma semente para ver o gráfico do crescimento.', W2 / 2, H2 / 2); }
   }
+  /* --- Produção da vila (parte incremental do Mundo): construções que produzem sozinhas, inclusive com o jogo fechado.
+     A produção vai para um armazém com limite de horas (quem volta na semana seguinte encontra o armazém cheio, mas a
+     produção não cresce sem fim). Cada nível novo custa estrelas (o preço multiplica por 1,7 a cada nível: crescimento
+     exponencial) e só sai depois de acertar uma pergunta do eixo da construção. Os acertos e as atividades concluídas
+     geram ideias, gastas na árvore de pesquisas, que melhora a produção para sempre. Nada aqui mostra erros. */
+  const CONSTR = {
+    padaria: { nome: 'Padaria comunitária', ic: '🥖', rec: 'pontos', base: 6, custo0: 30, eixos: ['PC'], tema: 'algoritmos: uma receita é um algoritmo', libera: 0 },
+    serraria: { nome: 'Serraria', ic: '🪚', rec: 'madeira', base: 0.5, custo0: 80, eixos: ['NU', 'GM'], tema: 'números e medidas', libera: 2 },
+    pedreira: { nome: 'Pedreira', ic: '⛏️', rec: 'pedra', base: 0.4, custo0: 120, eixos: ['GE', 'NU'], tema: 'geometria e números', libera: 4 },
+    servidor: { nome: 'Servidor da escola', ic: '🖥️', rec: 'pontos', base: 15, custo0: 250, eixos: ['MD'], tema: 'mundo digital: redes, hardware e software', libera: 6 },
+    usina: { nome: 'Usina solar', ic: '🔆', rec: 'bonus', base: 0.1, custo0: 400, eixos: ['CD'], tema: 'cultura digital e sustentabilidade', libera: 9 }
+  };
+  const NIVEL_MAX_PROD = 10;
+  const PESQ = [
+    { id: 'algoritmo', eixo: 'PC', nome: 'Algoritmo da massa', txt: 'Padaria produz 50% a mais.', custo: 3 },
+    { id: 'lacos', eixo: 'PC', nome: 'Laços de repetição', txt: 'Todas as construções produzem 25% a mais.', custo: 8, req: 'algoritmo' },
+    { id: 'otimizacao', eixo: 'PC', nome: 'Otimização', txt: 'As obras ficam 20% mais baratas.', custo: 15, req: 'lacos' },
+    { id: 'sensores', eixo: 'MD', nome: 'Sensores no armazém', txt: 'O armazém guarda 4 horas a mais de produção.', custo: 4 },
+    { id: 'rede', eixo: 'MD', nome: 'Rede da vila', txt: 'Servidor da escola produz 50% a mais.', custo: 8, req: 'sensores' },
+    { id: 'nuvem', eixo: 'MD', nome: 'Armazém na nuvem', txt: 'O armazém guarda mais 8 horas de produção.', custo: 15, req: 'rede' },
+    { id: 'mutirao', eixo: 'CD', nome: 'Mutirão', txt: 'Serraria e pedreira produzem 50% a mais.', custo: 4 },
+    { id: 'energia', eixo: 'CD', nome: 'Energia limpa', txt: 'O bônus da usina solar dobra.', custo: 8, req: 'mutirao' },
+    { id: 'cooperativa', eixo: 'CD', nome: 'Cooperativa', txt: 'Todas as construções produzem mais 25%.', custo: 15, req: 'energia' }
+  ];
+  const EIXOS_PESQ = { PC: 'Pensamento computacional', MD: 'Mundo digital', CD: 'Cultura digital' };
+  const EST_PROD = () => { const P = S.prod || (S.prod = { t: Date.now(), nv: {}, arm: {}, pesq: {}, gastas: 0, total: {} }); P.nv = P.nv || {}; P.arm = P.arm || {}; P.pesq = P.pesq || {}; P.total = P.total || {}; P.gastas = P.gastas || 0; return P; };
+  const temPesq = id => !!EST_PROD().pesq[id];
+  const nivelProd = b => EST_PROD().nv[b] || 0;
+  const niveisTotais = () => Object.values(EST_PROD().nv).reduce((a, n) => a + n, 0);
+  const bonusUsina = () => nivelProd('usina') * CONSTR.usina.base * (temPesq('energia') ? 2 : 1);
+  function taxaProd(b) {   // quanto a construção produz por hora agora
+    const C = CONSTR[b], n = nivelProd(b); if (!n || C.rec === 'bonus') return 0;
+    let m = 1 + bonusUsina() + (temPesq('lacos') ? 0.25 : 0) + (temPesq('cooperativa') ? 0.25 : 0);
+    if (b === 'padaria' && temPesq('algoritmo')) m += 0.5;
+    if (b === 'servidor' && temPesq('rede')) m += 0.5;
+    if ((b === 'serraria' || b === 'pedreira') && temPesq('mutirao')) m += 0.5;
+    return C.base * n * m;
+  }
+  const horasArmazem = () => 8 + (temPesq('sensores') ? 4 : 0) + (temPesq('nuvem') ? 8 : 0);
+  const capProd = b => taxaProd(b) * horasArmazem();
+  function custoProd(b) {   // o preço do próximo nível: estrelas multiplicam por 1,7; madeira e pedra entram nos níveis mais altos
+    const n = nivelProd(b), f = temPesq('otimizacao') ? 0.8 : 1;
+    const c = { pontos: Math.round(CONSTR[b].custo0 * Math.pow(1.7, n) * f) };
+    if (n >= 2) c.madeira = Math.ceil(2 * (n - 1) * f);
+    if (n >= 3) c.pedra = Math.ceil(2 * (n - 2) * f);
+    return c;
+  }
+  const temRec = (k, q) => (k === 'pontos' ? S.pontos : S.inv[k] || 0) >= q;
+  const icRec = k => k === 'pontos' ? '⭐' : (ITENS[k] || ['?'])[0];
+  const nomeRec = k => k === 'pontos' ? 'estrelas' : (ITENS[k] || ['', k])[1].toLowerCase();
+  const fmtN = v => v >= 10 || Number.isInteger(v) ? String(Math.floor(v)) : v.toFixed(1).replace('.', ',');
+  function ideiasGanhas() { return S.acertos + 3 * todosLugares.filter(l => S.feitos[l.id]).length; }
+  const ideiasLivres = () => Math.max(0, ideiasGanhas() - EST_PROD().gastas);
+  /* o armazém enche com o tempo que passou desde a última conta (o relógio do computador nunca faz voltar a produção) */
+  function rendeProd() {
+    const P = EST_PROD(), agora = Date.now(), h = Math.max(0, (agora - (P.t || agora)) / 36e5);
+    for (const b of Object.keys(CONSTR)) { const t = taxaProd(b); if (t) P.arm[b] = Math.min(capProd(b), (P.arm[b] || 0) + t * h); }
+    P.t = agora;
+  }
+  function armazemResumo() { rendeProd(); const r = {}; for (const b of Object.keys(CONSTR)) { const v = Math.floor(EST_PROD().arm[b] || 0); if (v) r[CONSTR[b].rec] = (r[CONSTR[b].rec] || 0) + v; } return r; }
+  function recolheProd() {
+    const P = EST_PROD(), r = armazemResumo();
+    if (!Object.keys(r).length) return aviso('O armazém ainda está vazio. A produção chega com o tempo.');
+    for (const b of Object.keys(CONSTR)) P.arm[b] = (P.arm[b] || 0) % 1;
+    for (const [k, v] of Object.entries(r)) { if (k === 'pontos') S.pontos += v; else S.inv[k] = (S.inv[k] || 0) + v; P.total[k] = (P.total[k] || 0) + v; }
+    P.recolhidas = (P.recolhidas || 0) + 1;
+    aviso('📦 Recolhido: ' + Object.entries(r).map(([k, v]) => `${v} ${icRec(k)}`).join(' · '));
+    SOM.toca('moeda'); hud(); salvar(); janelaProducao(); avisoProd();
+  }
+  function poolProd(eixos) {
+    const ps = fases.filter(liberada).flatMap(f => f.perguntas), e = ps.filter(p => (p.eixos || []).some(x => eixos.includes(x)));
+    return e.length ? e : ps;
+  }
+  function obraProd(b) {
+    const C = CONSTR[b], c = custoProd(b), n = nivelProd(b);
+    if (n >= NIVEL_MAX_PROD || niveisTotais() < C.libera || !Object.entries(c).every(([k, q]) => temRec(k, q))) return;
+    const lista = poolProd(C.eixos), p = sorteiaPergunta(null, lista);
+    if (!p) return;
+    fechaJanela();
+    pergunta(`${n ? 'Melhorar' : 'Construir'}: ${C.nome}`, C.ic, p, certo => {
+      if (certo) {
+        rendeProd();
+        const c2 = custoProd(b);
+        if (Object.entries(c2).every(([k, q]) => temRec(k, q))) {
+          for (const [k, q] of Object.entries(c2)) if (k === 'pontos') S.pontos -= q; else S.inv[k] -= q;
+          EST_PROD().nv[b] = n + 1; if (!EST_PROD().arm[b]) EST_PROD().arm[b] = 0;
+          D.texto.innerHTML += `<p><strong>${C.ic} ${C.nome} ${n ? `subiu para o nível ${n + 1}` : 'construída'}!</strong> ${C.rec === 'bonus' ? `Agora todas as construções produzem ${Math.round(bonusUsina() * 100)}% a mais.` : `Agora produz ${fmtN(taxaProd(b))} ${icRec(C.rec)} por hora.`}</p>`;
+          SOM.toca('vitoria'); hud();
+        }
+      } else D.texto.innerHTML += '<p>A obra espera por você: responda outra pergunta pelo Mundo e volte para tentar de novo.</p>';
+      setTimeout(() => { const bt = D.op.querySelector('button:last-child'); if (bt) bt.addEventListener('click', () => abreJanela('producao')); }, 0);
+    });
+  }
+  function pesquisaProd(id) {
+    const q = PESQ.find(x => x.id === id), P = EST_PROD();
+    if (!q || P.pesq[id] || (q.req && !P.pesq[q.req]) || ideiasLivres() < q.custo) return;
+    rendeProd(); P.pesq[id] = true; P.gastas += q.custo;
+    aviso(`💡 Pesquisa concluída: ${q.nome}. ${q.txt}`); SOM.toca('vitoria'); salvar(); janelaProducao();
+  }
+  function janelaProducao() {
+    rendeProd();
+    const P = EST_PROD(), r = armazemResumo(), tot = niveisTotais(), horas = horasArmazem();
+    const porHora = {}; for (const b of Object.keys(CONSTR)) { const t = taxaProd(b); if (t) porHora[CONSTR[b].rec] = (porHora[CONSTR[b].rec] || 0) + t; }
+    const custoHtml = c => Object.entries(c).map(([k, q]) => `<span class="${temRec(k, q) ? '' : 'falta'}">${q} ${icRec(k)}</span>`).join(' + ');
+    const cards = Object.entries(CONSTR).map(([b, C]) => {
+      const n = nivelProd(b), bloq = tot < C.libera, c = custoProd(b), pode = Object.entries(c).every(([k, q]) => temRec(k, q));
+      if (bloq) return `<div class="obra bloq"><b>${C.ic} ${C.nome}</b><span class="muted small">Libera quando as construções somarem ${C.libera} níveis (agora: ${tot}).</span></div>`;
+      const arm = P.arm[b] || 0, cap = capProd(b);
+      const info = C.rec === 'bonus' ? (n ? `Bônus de ${Math.round(bonusUsina() * 100)}% em toda a produção` : `Cada nível dá ${Math.round(C.base * 100 * (temPesq('energia') ? 2 : 1))}% a mais em toda a produção`)
+        : n ? `${fmtN(taxaProd(b))} ${icRec(C.rec)} por hora · armazém ${fmtN(arm)} de ${fmtN(cap)}` : `Produz ${icRec(C.rec)} ${nomeRec(C.rec)}`;
+      return `<div class="obra"><b>${C.ic} ${C.nome}</b><span class="small">${n ? `Nível ${n}` : 'Ainda não construída'} · ${info}</span>
+        ${n && C.rec !== 'bonus' ? `<span class="barra" aria-hidden="true"><span style="width:${Math.min(100, Math.round(100 * arm / Math.max(cap, 0.001)))}%"></span></span>` : ''}
+        ${n >= NIVEL_MAX_PROD ? '<span class="muted small">Nível máximo.</span>' : `<span class="small">Próximo nível: ${custoHtml(c)}</span><span class="muted small">Pergunta de ${C.tema}</span>
+        <button type="button" class="hb ${pode ? 'verde' : 'cinza'}" data-obra="${b}"${pode ? '' : ' disabled'}>${n ? 'Melhorar' : 'Construir'}</button>`}</div>`;
+    }).join('');
+    const livres = ideiasLivres();
+    const arvore = Object.entries(EIXOS_PESQ).map(([e, nomeE]) => `<div class="pesq-col"><h4>${ICONE_EIXO[e] || ''} ${nomeE}</h4>${PESQ.filter(q => q.eixo === e).map(q => {
+      const feita = P.pesq[q.id], aberta = !q.req || P.pesq[q.req], pode = !feita && aberta && livres >= q.custo;
+      return `<div class="pesq ${feita ? 'ok' : aberta ? '' : 'bloq'}"><b>${q.nome}</b><span class="small">${q.txt}</span>${feita ? '<span class="small"><strong>Pesquisada</strong></span>' : aberta ? `<button type="button" class="hb ${pode ? 'azul' : 'cinza'}" data-pesq="${q.id}"${pode ? '' : ' disabled'}>Pesquisar por ${q.custo} 💡</button>` : `<span class="muted small">Depois de ${PESQ.find(x => x.id === q.req).nome}</span>`}</div>`;
+    }).join('')}</div>`).join('');
+    const ph = Object.entries(porHora);
+    $('#producao-c').innerHTML = `<div class="conta"><span>Saldo <b>${S.pontos} ⭐</b></span><span><b>${S.inv.madeira || 0}</b> 🪵</span><span><b>${S.inv.pedra || 0}</b> 🪨</span><span>Ideias <b>${livres} 💡</b></span>
+        <span>Produção ${ph.length ? ph.map(([k, v]) => `<b>${fmtN(v)} ${icRec(k)}</b>`).join(' + ') + ' por hora' : '<b>parada</b>'}</span></div>
+      <div class="btn-row"><button type="button" class="hb verde" id="pr-recolher"${Object.keys(r).length ? '' : ' disabled'}>📦 Recolher ${Object.keys(r).length ? Object.entries(r).map(([k, v]) => `${v} ${icRec(k)}`).join(' + ') : '(armazém vazio)'}</button></div>
+      <p class="muted small">O armazém guarda até <b>${horas} horas</b> de produção, mesmo com o Mundo fechado. Depois disso ele fica cheio e para de encher até você recolher.</p>
+      <div class="horta obras">${cards}</div>
+      <h3>💡 Árvore de pesquisas</h3>
+      <p class="small">Cada acerto vale 1 ideia e cada atividade concluída vale 3. Você já ganhou <b>${ideiasGanhas()}</b> ideias e gastou <b>${P.gastas}</b>.</p>
+      <div class="pesq-grade">${arvore}</div>
+      <h3>📈 A conta da produção</h3>
+      ${ph.length ? `<table class="em-tab"><tr><th>tempo</th>${ph.map(([k]) => `<th>${icRec(k)} ${nomeRec(k)}</th>`).join('')}</tr>${[1, 4, horas].map(h => `<tr><td>${h} h</td>${ph.map(([, v]) => `<td>${fmtN(v * h)}</td>`).join('')}</tr>`).join('')}</table>` : '<p class="muted small">Construa a padaria para ver quanto a vila produz por hora.</p>'}
+      <p class="muted small">A produção cresce sempre o mesmo tanto a cada nível (crescimento linear), mas o preço do nível seguinte é multiplicado por 1,7 (crescimento exponencial). Por isso cada obra nova pede mais tempo de produção para se pagar.</p>`;
+    const j = $('#j-producao');
+    $('#pr-recolher').addEventListener('click', recolheProd);
+    j.querySelectorAll('[data-obra]').forEach(b => b.addEventListener('click', () => obraProd(b.dataset.obra)));
+    j.querySelectorAll('[data-pesq]').forEach(b => b.addEventListener('click', () => pesquisaProd(b.dataset.pesq)));
+  }
+  /* o botão Produção ganha um ponto quando o armazém passa da metade */
+  function avisoProd() {
+    const bt = $('#b-producao'); if (!bt) return;
+    rendeProd();
+    const meio = Object.keys(CONSTR).some(b => taxaProd(b) && (EST_PROD().arm[b] || 0) >= capProd(b) / 2);
+    bt.classList.toggle('tem-aviso', meio);
+    bt.setAttribute('aria-label', meio ? 'Produção da vila: armazém com produção para recolher' : 'Produção da vila');
+  }
+  /* quem volta depois de um tempo fora fica sabendo o que a vila produziu */
+  function boasVindasProd() {
+    if (!S.prod || !niveisTotais()) return;
+    const fora = (Date.now() - (S.prod.t || Date.now())) / 36e5;
+    const r = armazemResumo(); salvar();
+    if (fora >= 0.5 && Object.keys(r).length) setTimeout(() => aviso(`🏭 Enquanto você esteve fora, a vila produziu ${Object.entries(r).map(([k, v]) => `${v} ${icRec(k)}`).join(' + ')}. Abra Produção para recolher.`), 2500);
+  }
   /* --- Bilhetes secretos: o estudante cifra um bilhete com a Cifra de César e manda o código (MUNB1) para um amigo.
      A chave não vai no código: o amigo combina a chave com quem mandou ou testa as 25 possíveis (força bruta).
      O código leva só um resumo do texto, para o Mundo saber quando o bilhete foi decifrado. */
@@ -5405,7 +5557,7 @@
   /* ---------- janelas ---------- */
   function abreJanela(id) {
     fechaJanela(); janelaAberta = id; const el = $('#j-' + id); el.hidden = false;
-    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca(); if (id === 'robotica') janelaRobo(); if (id === 'placa') janelaPlaca(); if (id === 'ceu') janelaCeu(); if (id === 'tutorial') janelaTutorial(); if (id === 'cursos') janelaCursos();
+    if (id === 'mapa') desenhaMapa(); if (id === 'inventario') inventario(); if (id === 'biblioteca') biblioteca(); if (id === 'avatar') editorAvatar(); if (id === 'casa') janelaCasa(); if (id === 'pet') janelaPet(); if (id === 'especial') janelaEspecial(); if (id === 'evento') janelaEvento(); if (id === 'loja') janelaLoja(); if (id === 'turma') janelaTurma(); if (id === 'projetos') janelaProjetos(); if (id === 'oficina') janelaOficina(); if (id === 'banco') janelaBanco(); if (id === 'album') janelaAlbum(); if (id === 'jogos') janelaJogos(); if (id === 'misterio') janelaMisterio(); if (id === 'feira') janelaFeira(); if (id === 'mprof') janelaMissoesProf(); if (id === 'cartao') janelaCartao(); if (id === 'levar') janelaLevar(); if (id === 'amigos') janelaAmigos(); if (id === 'horta') janelaHorta(); if (id === 'bilhetes') janelaBilhetes(); if (id === 'trem') janelaTrem(); if (id === 'pixel') janelaPixel(); if (id === 'busca') janelaBusca(); if (id === 'robotica') janelaRobo(); if (id === 'placa') janelaPlaca(); if (id === 'ceu') janelaCeu(); if (id === 'tutorial') janelaTutorial(); if (id === 'cursos') janelaCursos(); if (id === 'producao') janelaProducao();
     const b = el.querySelector('button, a'); if (b) b.focus();
   }
   function fechaJanela() { if (!janelaAberta) return; if (janelaAberta === 'jogo') { $('#jm-if').src = 'about:blank'; setTimeout(() => { confereJogos(); hud(); }, 50); } $('#j-' + janelaAberta).hidden = true; janelaAberta = null; for (const k in teclas) teclas[k] = false; cv.focus(); }
@@ -5852,8 +6004,8 @@
   }
   linkDireto();
   if (!S.tutorial && !/[?&](abrir|kit|curso)=/.test(location.search)) abreTutorial();
-  window.MUNDO_DEBUG = { travaSalvar: () => { restaurando = true; }, mapasDaTurma, mapasTurmaAtuais: () => MAPAS_TURMA.slice(), COLECAO_APOIO, aplicaColecao, produtosColecao, liberaPremium, abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, CASAS_NPC, atividadeCasa, lembrancasFeitas, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
-  hud(); confereJogos(); confereFases(); cobra(); rende();
+  window.MUNDO_DEBUG = { travaSalvar: () => { restaurando = true; }, mapasDaTurma, mapasTurmaAtuais: () => MAPAS_TURMA.slice(), COLECAO_APOIO, aplicaColecao, produtosColecao, liberaPremium, producao: () => S.prod, rendeProd, janelaProducao, adiantaProducao: h => { rendeProd(); EST_PROD().t -= h * 36e5; rendeProd(); avisoProd(); }, abreTutorial, TUT, PASSOS_TUT, abreJanela, fechaJanela, ENFEITES_NATAL, EST_NATAL, decoraArvore, natalAtivo, eventosAtivos, CONSTELACOES, CEU, EST_CEU, novaConstelacao, janelaCeu, respondeCeu, usaTelescopio, OL, portaoOl, usaOl, perguntasOl, feitasOl, olNivel: () => olNivel, EST_PLACA, compilaPlaca, linhaDoTempo, estadoPlaca, janelaPlaca, rodaPlaca, DESAFIOS_PLACA, eventoGC, linkDireto, KITS_APOIO, resgataKit, hashKit, produtosKit, janelaLoja, CURSOS, janelaCursos, acessoPremium, EST_CURSOS, R_, COMP, EST_ROBO, simulaRobo, janelaRobo, lojaComponentes, usaRobo, ONDE, mostraBusca, irAte, pergunta, tentaCampo, PX, MODELOS_PX, janelaPixel, conferePixel, instrucoesPx, feitoMundo, lembraMissaoMundo, CIRCUITOS, circuitoDo, circuitoPortao, valorCirc, portao, GOLPES, detetive, respondeGolpe, TREM, janelaTrem, partirTrem, menorCaminhoTrem, cifraTexto, resumoTexto, janelaBilhetes, janelaHorta, regaHorta, colheHorta, SEMENTES, abreJogo, abreCasa, confereEstrelasSite, estrelasSite, moedasCunhadas, usaMuseu, progressoMundo, sincProgresso, bloqueada, comecaEM, sorteiaPergunta, portalTele, entraTele, resultadoTeste, papelNpc, compraNpc, carteiro, guia, entregaPara, precoNpc, temPlanta, SALAS, entraSala, saiSala, sala: () => sala, EMAT, LAB, ampliaCasa, AMPLIACOES, PAREDES: () => PAREDES, CW: () => CW, codigoAmigo, leCodigosAmigos, SOM, teleporta, desenhaMapa, monta, codigoSalvamento, restauraSalvamento, habsTrabalhadas, lePlaca, missoes, fases, desenhaCartao, lerMissaoProf, perguntaMissao, codigoTurma, FEIRA, diaFeira, precoUnit, vendeFeira, visitaNpc, casaNpc, visita: () => visita, CASAS_NPC, atividadeCasa, lembrancasFeitas, pistaNaCasa, pistaMisterio, concluiMisterio, MISTERIO, bancoNpc, falaNpc, confereMissoesJogos, MISSOES_JOGOS, ganhaFigurinha, PAGINAS_ALBUM, ESTACAO, CLIMA, boletim, missoesEstacao, rende, perguntaMesada, contaMesada, desafioEM, LUGARES_EM, OF, NIVEIS_OF, passosOF, inicioOF, PROFISSOES, falaProf, PROJETOS, doa, codigoTurma, resumoTurma, abreLoja, cobra, produtos, planos, perguntaLoja, eventosAtivos, aniversariantes, desafioAniversario, premioEvento, HOJE, trocaFase, atual: () => atual, leve: () => leve, entraEnigma, usaEnigma, EOBJ, CODIGO, PALAVRA, moveEspecial, ESP, PET, acaoPet, atualizaPet, P, fases, interage, S: () => S, iso, _mouse: (x, y) => { mouse = { x, y }; }, entraCasa, saiCasa, construir, comecaColocar, colocaAqui, usaMovel, MOVEIS, dentro: () => dentro, alvoPerto };
+  hud(); confereJogos(); confereFases(); cobra(); rende(); boasVindasProd(); avisoProd(); setInterval(avisoProd, 30000);
   { const b = $('#b-evento'); const tem = eventosAtivos.length || aniversariantes.length;
     if (!tem) { b.hidden = false; b.querySelector('.ic').textContent = ESTACAO.ic; b.querySelector('.t').textContent = ESTACAO.nome; }
     if (tem) { b.hidden = false; b.querySelector('.ic').textContent = aniversariantes.length ? '🎂' : eventosAtivos[0].ic; b.querySelector('.t').textContent = aniversariantes.length && !eventosAtivos.length ? 'Aniversário' : eventosAtivos[0].nome.split(' ')[0] === 'Dia' ? 'Evento' : eventosAtivos[0].nome;
