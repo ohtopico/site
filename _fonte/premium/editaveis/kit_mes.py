@@ -39,9 +39,19 @@ def nome_mes(m):
     return f'{NOMES_MES[int(m[5:]) - 1]} de {m[:4]}'
 
 
+def misturar(semente, objetivas):
+    """Embaralha as alternativas de cada questão (sempre do mesmo jeito para o mesmo kit), para o gabarito não cair sempre na mesma letra."""
+    import random
+    r = random.Random(semente); saida = []
+    for q, alts, c in objetivas:
+        ordem = list(range(len(alts))); r.shuffle(ordem)
+        saida.append((q, [alts[i] for i in ordem], ordem.index(c)))
+    return saida
+
+
 def montar(mes, k, fontes):
     if 'fonte' not in k:  # kit escrito por inteiro em dados.py (fases, roteiro, perguntas etc.), sem ler o guia do jogo
-        return dict(k, mes=k.get('mes_real', mes), nome_mes=nome_mes(k.get('mes_real', mes)))
+        return dict(k, mes=k.get('mes_real', mes), nome_mes=nome_mes(k.get('mes_real', mes)), objetivas=misturar(k['slug'], k['objetivas']))
     sys.path.insert(0, str(fontes / 'kits'))
     from extrair import jogo
     j = jogo(fontes / k['fonte'])
@@ -322,7 +332,7 @@ def docx_plano(d, destino):
     for x in ['Um computador ou celular por dupla, com o jogo ' + d['titulo'] + ' (área premium ou arquivo .html baixado)'] + d['desplugado']['materiais']:
         doc.add_paragraph(x, style='List Bullet')
     doc.add_heading('Pergunta inicial', 1); doc.add_paragraph(d['pergunta'])
-    doc.add_heading('Roteiro de 2 aulas', 1); tabela(doc, [['Tempo', 'O que fazer']] + [list(x) for x in d['roteiro']])
+    doc.add_heading(f"Roteiro de {len({x.split(' · ')[0] for x, _ in d['roteiro']})} aulas", 1); tabela(doc, [['Tempo', 'O que fazer']] + [list(x) for x in d['roteiro']])
     doc.add_heading('As fases do jogo', 1)
     for i, f in enumerate(d['fases'], 1):
         doc.add_paragraph(f'Fase {i}: {f}', style='List Number')
