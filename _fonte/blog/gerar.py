@@ -286,7 +286,7 @@ def moldura(arquivo, endereco, voltar, conteudo, status, atual):
 <footer class="rodape">
     <nav class="letreiro" aria-label="Destaques">{letreiro}</nav>
     <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
-    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/apoie/">Apoie o projeto</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a> · <a href="/privacidade/">Privacidade</a></p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/ohtopico/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/apoie/">Apoie o projeto</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a> · <a href="/privacidade/">Privacidade</a></p>
 </footer>
 {contador}<script src="/blog/assets/blog.js?v={VERSAO_CSS}" defer></script>
 <script src="/assistente/assistente.js?v={VERSAO_ASSISTENTE}" defer></script>
