@@ -90,9 +90,11 @@ for (const [frase, esperado] of CASOS) {
   });
 }
 
-// O menu falado e a lista escrita da tela inicial ensinam estas frases: todas têm de funcionar
+// O menu falado e a lista escrita da tela inicial ensinam estas frases: todas têm de funcionar.
+// Exemplos de pergunta livre ("a porta está aberta?") não são comandos: o app manda para a IA da imagem.
 test("todo comando do menu é entendido", () => {
   const falhas = GRUPOS.flatMap(g => g.comandos.map(([c]) => c))
+    .filter(c => !c.trim().endsWith("?"))
     .filter(c => ["desconhecido", "sim", "nao"].includes(interpretar(c).tipo));
   assert.deepEqual(falhas, []);
 });
