@@ -13,7 +13,7 @@ Uso (na raiz do repositório; precisa do Node com Playwright, python-docx e pyth
     python3 _fonte/premium/editaveis/kit_mes.py --fontes _privado/premium --tipos CAMINHO/fontes [--meses 2026-12,2027-01]
 Amostra grátis (ficha e cartaz de um mês já liberado, para /freebies/):
     python3 _fonte/premium/editaveis/kit_mes.py --fontes _privado/premium --tipos CAMINHO/fontes --amostra 2026-11 freebies/amostra-premium
---tipos é a pasta com Lexend-400.ttf, Lexend-600.ttf e Sniglet-800.ttf.
+--tipos é a pasta com Lexend-400.ttf, Lexend-600.ttf e Fredoka-600.ttf.
 Autora: Júlia Roberta Quoos Alves.
 """
 import argparse, html, json, os, re, subprocess, sys, tempfile
@@ -70,10 +70,10 @@ CSS = '''
 @page { size: A4; margin: 14mm 15mm 20mm; }
 @font-face { font-family: 'Lexend'; font-weight: 400; src: url('file://TIPOS/Lexend-400.ttf'); }
 @font-face { font-family: 'Lexend'; font-weight: 600; src: url('file://TIPOS/Lexend-600.ttf'); }
-@font-face { font-family: 'Sniglet'; font-weight: 800; src: url('file://TIPOS/Sniglet-800.ttf'); }
+@font-face { font-family: 'Fredoka'; font-weight: 800; src: url('file://TIPOS/Fredoka-600.ttf'); }
 * { box-sizing: border-box; }
 body { font-family: 'Lexend', sans-serif; font-size: 11.5pt; line-height: 1.45; color: #111; margin: 0; }
-h1, h2, .big { font-family: 'Sniglet', 'Lexend', sans-serif; font-weight: 800; line-height: 1.1; }
+h1, h2, .big { font-family: 'Fredoka', 'Lexend', sans-serif; font-weight: 800; line-height: 1.1; }
 h1 { font-size: 26pt; margin: 6px 0 4px; } h2 { font-size: 15pt; margin: 16px 0 6px; }
 .faixa { display: flex; justify-content: space-between; border-bottom: 2px solid #111; padding-bottom: 6px; font-size: 9pt; }
 .faixa b { background: #fff36b; border: 1.5px solid #111; border-radius: 999px; padding: 1px 10px; }
@@ -83,7 +83,7 @@ h1 { font-size: 26pt; margin: 6px 0 4px; } h2 { font-size: 15pt; margin: 16px 0 
 ol.passos { counter-reset: p; list-style: none; padding: 0; }
 ol.passos li { counter-increment: p; position: relative; padding: 6px 0 6px 44px; min-height: 36px; break-inside: avoid; }
 ol.passos li::before { content: counter(p); position: absolute; left: 0; top: 4px; width: 32px; height: 32px; border: 2px solid #111; border-radius: 50%;
-  background: #79c257; font-family: 'Sniglet'; font-size: 15pt; display: flex; align-items: center; justify-content: center; }
+  background: #79c257; font-family: 'Fredoka'; font-size: 15pt; display: flex; align-items: center; justify-content: center; }
 .nome { display: grid; grid-template-columns: 3fr 1fr 1fr; gap: 12px; margin: 10px 0 4px; font-size: 10pt; }
 .nome span { border-bottom: 1.5px solid #111; padding-bottom: 14px; }
 .q { break-inside: avoid; margin-top: 12px; }
@@ -101,7 +101,7 @@ th { background: #fff36b; }
 .cartaz h1 { font-size: 44pt; margin: 10px 0 2px; }
 .cartaz .ideia { flex: 1; display: flex; gap: 14px; align-items: center; border: 2.5px solid #111; border-radius: 22px; padding: 10px 18px; margin-top: 10px; font-size: 15pt; line-height: 1.3; }
 .cartaz .ideia { background: #fff; }
-.cartaz .ideia .n { font-family: 'Sniglet'; font-size: 30pt; min-width: 64px; height: 64px; border: 2.5px solid #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.cartaz .ideia .n { font-family: 'Fredoka'; font-size: 30pt; min-width: 64px; height: 64px; border: 2.5px solid #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 '''
 
 

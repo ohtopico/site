@@ -4,7 +4,7 @@ const C = (emo, t, c, e) => ({ emo, t, c, e });
 const cartaz = (fundo, emo, titulo, sub, cor = '#1d2a1f') => `<svg viewBox="0 0 520 300" role="img" aria-label="${titulo.replace(/"/g, '')}">
   <rect x="4" y="4" width="512" height="292" rx="18" fill="${fundo}" stroke="#1d2a1f" stroke-width="4"/>
   <text x="96" y="190" text-anchor="middle" style="font-size:120px">${emo}</text>
-  ${titulo.split('|').map((l, k) => `<text x="190" y="${70 + k * 40}" style="font:800 32px Sniglet,Lexend,sans-serif;fill:${cor}">${l}</text>`).join('')}
+  ${titulo.split('|').map((l, k) => `<text x="190" y="${70 + k * 40}" style="font:800 32px Fredoka,Lexend,sans-serif;fill:${cor}">${l}</text>`).join('')}
   ${sub.split('|').map((l, k) => `<text x="190" y="${200 + k * 24}" style="font:500 17px Lexend,sans-serif;fill:${cor}">${l}</text>`).join('')}
 </svg>`;
 const svg = `<svg viewBox="0 0 620 230" role="img" aria-label="Estratégias de convencimento">

@@ -1,5 +1,5 @@
 /* Assistência por voz — mesmo sistema visual do ohtopico.com.br/material-didatico:
-   papel branco, traço preto de 1.5px, pílulas, Sniglet nos títulos e Lexend no texto, verde de destaque. */
+   papel branco, traço preto de 1.5px, pílulas, Fredoka nos títulos e Lexend no texto, verde de destaque. */
 :root {
   --paper: #ffffff;
   --paper-2: #f4f4f2;
@@ -11,7 +11,7 @@
   --accent-soft: #e3f1e8;
   --bad: #c21f3a;
   --radius: 28px;
-  --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+  --display: 'Fredoka', 'Comic Sans MS', system-ui, sans-serif;
   --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color-scheme: light;
 }

@@ -3562,7 +3562,7 @@
     g.fillStyle = '#2b6cb0'; g.fillRect(130, 100, 12, 12); g.fillRect(158, 100, 12, 12); g.fillStyle = '#e0564a'; g.fillRect(138, 122, 24, 6);
     g.fillStyle = '#888'; g.fillRect(147, 55, 6, 25); g.fillStyle = '#e0564a'; g.fillRect(142, 45, 16, 12);
     g.fillStyle = '#9fe3dc'; g.fillRect(90, 150, 20, 55); g.fillRect(190, 150, 20, 55); g.fillStyle = '#4a5560'; g.fillRect(122, 230, 20, 12); g.fillRect(158, 230, 20, 12);
-    g.fillStyle = '#ffffff'; g.font = '700 22px monospace'; g.fillText('0101', 125, 185); g.font = '700 26px Sniglet, sans-serif'; g.fillStyle = '#5b3f8f'; g.fillText('</>', 25, 50);
+    g.fillStyle = '#ffffff'; g.font = '700 22px monospace'; g.fillText('0101', 125, 185); g.font = '700 26px Fredoka, sans-serif'; g.fillStyle = '#5b3f8f'; g.fillText('</>', 25, 50);
     return (ESP.img = c);
   }
   const resolvido = () => ESP.pecas.every((p, i) => p === i);
@@ -5727,13 +5727,13 @@
     g.setTransform(1, 0, 0, 1, 0, 0); g.textAlign = 'left'; g.textBaseline = 'alphabetic';
     const x0 = 660, nome = comNome && S.turma.nome ? S.turma.nome.split(' ')[0] : '';
     g.fillStyle = 'rgba(255,255,255,.75)'; g.beginPath(); g.roundRect(x0 - 30, 60, 540, 510, 28); g.fill();
-    g.fillStyle = CARTAO.destaque; g.font = '800 54px Sniglet, Lexend, sans-serif'; g.fillText(nome ? `O mundo de ${nome}` : 'Meu mundo', x0, 140, 490);
+    g.fillStyle = CARTAO.destaque; g.font = '800 54px Fredoka, Lexend, sans-serif'; g.fillText(nome ? `O mundo de ${nome}` : 'Meu mundo', x0, 140, 490);
     g.fillStyle = CARTAO.texto; g.font = '500 30px Lexend, sans-serif';
     const figs = PESSOAS.filter(p => (S.album.tem[p.id] || 0) > 0).length;
     [[`⭐ ${S.pontos} pontos`], [`🏆 ${Object.keys(S.concluidas).length} de ${fases.length} vilas concluídas`], [`📒 ${figs} de ${PESSOAS.length} figurinhas`], [`🏅 ${Object.keys(S.medalhas).length} medalhas`], [S.pet ? `🐾 ${S.pet.nome}, meu pet` : '🏠 minha casa no Mundo']]
       .forEach(([t], i) => g.fillText(t, x0, 210 + i * 52, 490));
     g.fillStyle = CARTAO.verde; g.font = '600 26px Lexend, sans-serif'; g.fillText('Venha jogar e aprender computação:', x0, 490, 490);
-    g.fillStyle = CARTAO.destaque; g.font = '800 34px Sniglet, Lexend, sans-serif'; g.fillText('ohtopico.com.br/mundo', x0, 535, 490);
+    g.fillStyle = CARTAO.destaque; g.font = '800 34px Fredoka, Lexend, sans-serif'; g.fillText('ohtopico.com.br/mundo', x0, 535, 490);
   }
   function janelaCartao() {
     const el = $('#cartao-conteudo');

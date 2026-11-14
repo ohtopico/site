@@ -40,18 +40,18 @@ body { font-family: 'Lexend', sans-serif; color: #111; }
 .jan { position: absolute; left: 80px; top: 56px; width: 1270px; height: 660px; background: #fff; border: 3px solid #111;
   border-radius: 30px; box-shadow: 18px 18px 0 #111; overflow: hidden; display: flex; flex-direction: column; }
 .barra { height: 66px; border-bottom: 3px solid #111; background: #f4f4f2; display: flex; align-items: center; justify-content: space-between; padding: 0 30px 0 44px; flex: none; }
-.barra .nome { font-family: 'Sniglet'; font-weight: 800; font-size: 19px; letter-spacing: .08em; text-transform: uppercase; }
+.barra .nome { font-family: 'Fredoka'; font-weight: 800; font-size: 19px; letter-spacing: .08em; text-transform: uppercase; }
 .barra .bt { display: flex; gap: 12px; }
 .barra .bt span { width: 30px; height: 30px; border: 2px solid #111; border-radius: 50%; display: grid; place-items: center; font-size: 14px; line-height: 1; }
 .corpo { flex: 1; padding: 54px 104px 40px; display: flex; flex-direction: column; justify-content: center; }
 .rodape { position: absolute; left: 84px; right: 90px; bottom: 26px; display: flex; justify-content: space-between; align-items: center; }
-.rodape .aut, .rodape .pg { font-family: 'Sniglet'; font-weight: 800; font-size: 17px; letter-spacing: .1em; text-transform: uppercase; }
+.rodape .aut, .rodape .pg { font-family: 'Fredoka'; font-weight: 800; font-size: 17px; letter-spacing: .1em; text-transform: uppercase; }
 .rodape .site { border: 2px solid #111; border-radius: 99px; padding: 3px 18px; font-size: 17px; background: #fff; }
 mark { background: #fff36b; padding: 0 12px; color: inherit; }
-h1, h2 { font-family: 'Sniglet'; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin: 0; line-height: 1.12; }
+h1, h2 { font-family: 'Fredoka'; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin: 0; line-height: 1.12; }
 h1 { font-size: 84px; }
 h2 { font-size: 46px; margin-bottom: 30px; }
-.etiqueta { display: inline-flex; align-items: center; gap: 12px; border: 2.5px solid #111; border-radius: 99px; padding: 6px 20px; font-family: 'Sniglet'; font-weight: 800;
+.etiqueta { display: inline-flex; align-items: center; gap: 12px; border: 2.5px solid #111; border-radius: 99px; padding: 6px 20px; font-family: 'Fredoka'; font-weight: 800;
   font-size: 17px; letter-spacing: .1em; text-transform: uppercase; align-self: flex-start; margin-bottom: 26px; }
 .etiqueta i { font-style: normal; background: #fff36b; padding: 1px 10px; }
 .sub { font-size: 30px; color: #333; margin: 26px 0 22px; }
@@ -62,8 +62,8 @@ h2 { font-size: 46px; margin-bottom: 30px; }
 .pergunta h1 { font-size: 66px; }
 .pergunta p { font-size: 28px; color: #444; margin-top: 30px; }
 .hab { border: 2.5px solid #111; border-radius: 22px; background: #e3f4e8; padding: 20px 26px; font-size: 25px; line-height: 1.45; margin-bottom: 30px; }
-.hab b { font-family: 'Sniglet'; font-size: 24px; letter-spacing: .06em; margin-right: 12px; }
-.hab small { font-family: 'Sniglet'; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: 16px; color: #333; }
+.hab b { font-family: 'Fredoka'; font-size: 24px; letter-spacing: .06em; margin-right: 12px; }
+.hab small { font-family: 'Fredoka'; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: 16px; color: #333; }
 .hab div { margin-top: 6px; }
 .lead { font-size: 27px; font-weight: 600; margin: 0 0 14px; }
 ul.q { list-style: none; padding: 0; margin: 0; font-size: 27px; line-height: 1.5; }
@@ -73,21 +73,21 @@ ol.n { margin: 0; padding-left: 44px; font-size: 27px; line-height: 1.45; }
 ol.n li { margin: 10px 0; padding-left: 8px; }
 .cards { display: grid; gap: 26px; }
 .card { border: 2.5px solid #111; border-radius: 22px; padding: 24px 20px; text-align: center; font-size: 23px; line-height: 1.35; }
-.card .big { font-family: 'Sniglet'; font-weight: 800; font-size: 38px; margin-bottom: 8px; }
+.card .big { font-family: 'Fredoka'; font-weight: 800; font-size: 38px; margin-bottom: 8px; }
 .card .nm { font-weight: 600; font-size: 27px; margin-bottom: 6px; }
 .c0 { background: #e3f4e8; } .c1 { background: #fff36b; } .c2 { background: #fbe6ea; } .c3 { background: #fff; }
 .nota { text-align: center; font-size: 27px; color: #444; margin-top: 28px; }
 .texto p { font-size: 30px; line-height: 1.5; margin: 0 0 22px; }
 .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 .duas div { border: 2.5px solid #111; border-radius: 22px; padding: 26px 28px; font-size: 26px; line-height: 1.45; }
-.duas div strong { display: block; font-family: 'Sniglet'; font-size: 30px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+.duas div strong { display: block; font-family: 'Fredoka'; font-size: 30px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
 .duas div:first-child { background: #e3f4e8; } .duas div:last-child { background: #fbe6ea; }
 pre { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 24px; line-height: 1.45; background: #111; color: #f4f4f2; border-radius: 18px; padding: 22px 28px; margin: 0 0 20px; white-space: pre-wrap; }
-.tempo { display: inline-block; background: #111; color: #fff; border-radius: 99px; padding: 3px 18px; font-family: 'Sniglet'; font-weight: 800; font-size: 19px; letter-spacing: .08em; vertical-align: middle; margin-left: 10px; }
+.tempo { display: inline-block; background: #111; color: #fff; border-radius: 99px; padding: 3px 18px; font-family: 'Fredoka'; font-weight: 800; font-size: 19px; letter-spacing: .08em; vertical-align: middle; margin-left: 10px; }
 .levar .prox { font-size: 26px; margin-top: 26px; color: #333; }
 table { border-collapse: collapse; width: 100%; font-size: 19px; }
 td { border-bottom: 1.5px solid #ccc; padding: 8px 10px; vertical-align: top; line-height: 1.35; }
-td:first-child { font-family: 'Sniglet'; font-weight: 800; white-space: nowrap; width: 120px; }
+td:first-child { font-family: 'Fredoka'; font-weight: 800; white-space: nowrap; width: 120px; }
 td:nth-child(2) { font-weight: 600; white-space: nowrap; width: 150px; }
 .resp { border: 2px solid #111; border-radius: 14px; padding: 12px 18px; font-size: 17px; line-height: 1.4; margin-top: 16px; background: #f4f4f2; }
 .roteiro { padding-top: 34px; padding-bottom: 26px; }
@@ -134,7 +134,7 @@ function html(a) {
     <table>${rot.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${fmt(r[2])}</td></tr>`).join('')}</table>
     <div class="resp"><b>Respostas do “Confira”:</b> ${a.resp.map((r, i) => `<b>${i + 1}.</b> ${fmt(r)}`).join(' ')}</div>`, 'roteiro'));
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Lexend:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>${CSS}</style></head><body>${sl.join('\n')}</body></html>`;
 }
 

@@ -1,6 +1,6 @@
 const E = ['Agente', 'Ação', 'Modo / meio', 'Finalidade', 'Detalhamento'];
 const svg = `<svg viewBox="0 0 640 200" role="img" aria-label="Os cinco elementos da proposta de intervenção">
-  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 15px Sniglet,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 11.5px Lexend,sans-serif;fill:#3b3b3b}</style>
+  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 15px Fredoka,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 11.5px Lexend,sans-serif;fill:#3b3b3b}</style>
   <rect width="640" height="200" rx="16" fill="#fffdf6"/>
   ${[['👤', 'AGENTE', 'Quem?', 'Ministério da Educação', '#ffd9c7'], ['🛠️', 'AÇÃO', 'O quê?', 'criar campanhas', '#fff0b3'], ['🚌', 'MEIO', 'Como?', 'por meio das redes e da TV', '#d8f5dc'], ['🎯', 'FINALIDADE', 'Para quê?', 'a fim de reduzir…', '#dcecff'], ['🔎', 'DETALHE', '+ informação', 'sobre um dos elementos', '#f3e0ff']]
     .map(([e, n, p, x, c], k) => { const X = 12 + k * 126; return `<rect class="c" x="${X}" y="20" width="114" height="160" rx="14" fill="${c}"/><text x="${X + 57}" y="62" text-anchor="middle" style="font-size:30px">${e}</text>

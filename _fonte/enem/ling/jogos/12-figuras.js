@@ -3,7 +3,7 @@ const B = ['Hipérbole', 'Ironia', 'Antítese', 'Eufemismo'];
 const S = ['Aliteração', 'Assonância', 'Onomatopeia', 'Paradoxo'];
 const C = (emo, t, c, e) => ({ emo, t, c, e });
 const svg = `<svg viewBox="0 0 620 220" role="img" aria-label="Metáfora e comparação: com e sem o como">
-  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 18px Sniglet,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 13px Lexend,sans-serif;fill:#3b3b3b}</style>
+  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 18px Fredoka,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 13px Lexend,sans-serif;fill:#3b3b3b}</style>
   <rect width="620" height="220" rx="16" fill="#fffdf6"/>
   <rect class="c" x="16" y="16" width="285" height="188" rx="14" fill="#dcecff"/><text class="t" x="34" y="48">Comparação</text>
   <text x="70" y="110" style="font-size:44px">👧 = 🌹</text><text class="s" x="34" y="150">“Ela é bela COMO uma rosa.”</text><text class="s" x="34" y="176">tem o conectivo: como, feito, tal qual</text>

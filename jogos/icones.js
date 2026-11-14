@@ -10,20 +10,20 @@
       <circle cx="25" cy="27" r="1.8" fill="#111"/><circle cx="39" cy="27" r="1.8" fill="#111"/><path d="M26 36h12" ${T}/>
       <rect x="20" y="44" width="24" height="14" rx="4" fill="${A}" ${T}/><path d="M10 26v8M54 26v8" ${T}/>`,
     pacotes: `<path d="M8 22l24-10 24 10v24l-24 10-24-10z" fill="${A}" ${T}/><path d="M8 22l24 10 24-10M32 32v24" fill="none" ${T}/>
-      <path d="M20 17l24 10v8" fill="none" stroke="${R}" stroke-width="4"/><text x="17" y="46" font-family="Sniglet,sans-serif" font-weight="800" font-size="12" fill="#111">3</text>`,
+      <path d="M20 17l24 10v8" fill="none" stroke="${R}" stroke-width="4"/><text x="17" y="46" font-family="Fredoka,sans-serif" font-weight="800" font-size="12" fill="#111">3</text>`,
     rotas: `<path d="M10 52c8-2 6-14 16-16s10 8 18 4" fill="none" stroke="#111" stroke-width="2.5" stroke-dasharray="4 4"/>
       <circle cx="10" cy="52" r="5" fill="${V}" ${T}/><path d="M46 10c-7 0-11 5-11 10 0 8 11 18 11 18s11-10 11-18c0-5-4-10-11-10z" fill="${R}" ${T}/><circle cx="46" cy="20" r="4" fill="${B}" ${T}/>`,
     cifra: `<circle cx="26" cy="26" r="15" fill="${C}" ${T}/><path d="M37 37l15 15" stroke="#111" stroke-width="6" stroke-linecap="round"/>
-      <text x="16" y="31" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="${V}">A</text><text x="27" y="31" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="${R}">D</text>`,
+      <text x="16" y="31" font-family="Fredoka,sans-serif" font-weight="800" font-size="14" fill="${V}">A</text><text x="27" y="31" font-family="Fredoka,sans-serif" font-weight="800" font-size="14" fill="${R}">D</text>`,
     digitacao: `<rect x="4" y="18" width="56" height="30" rx="6" fill="${A}" ${T}/>
       <g fill="${B}" stroke="#111" stroke-width="1.8"><rect x="9" y="23" width="8" height="7" rx="1.5"/><rect x="19" y="23" width="8" height="7" rx="1.5"/><rect x="29" y="23" width="8" height="7" rx="1.5"/><rect x="39" y="23" width="8" height="7" rx="1.5"/><rect x="49" y="23" width="6" height="7" rx="1.5"/><rect x="18" y="34" width="28" height="8" rx="1.5"/></g>
       <path d="M22 12l4-6M32 12V4M42 12l-4-6" stroke="${R}" stroke-width="3" stroke-linecap="round"/><rect x="29" y="23" width="8" height="7" rx="1.5" fill="${V}" stroke="#111" stroke-width="1.8"/>`,
     numeria: `<path d="M27 40V12l5-7 5 7v28z" fill="${B}" ${T}/><path d="M18 40h28" stroke="#111" stroke-width="6" stroke-linecap="round"/><path d="M32 44v8" stroke="#a8743f" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="56" r="3.5" fill="${A}" ${T}/>
-      <path d="M44 30h16v10c0 8-5 13-8 15-3-2-8-7-8-15z" fill="${R}" ${T}/><text x="2" y="30" font-family="Sniglet,sans-serif" font-weight="800" font-size="15" fill="${V}" stroke="#111" stroke-width=".8">x²</text>`,
+      <path d="M44 30h16v10c0 8-5 13-8 15-3-2-8-7-8-15z" fill="${R}" ${T}/><text x="2" y="30" font-family="Fredoka,sans-serif" font-weight="800" font-size="15" fill="${V}" stroke="#111" stroke-width=".8">x²</text>`,
     impostor: `<circle cx="14" cy="22" r="7" fill="${V}" ${T}/><path d="M3 54c0-12 5-20 11-20s11 8 11 20z" fill="${V}" ${T}/>
       <circle cx="50" cy="22" r="7" fill="${A}" ${T}/><path d="M39 54c0-12 5-20 11-20s11 8 11 20z" fill="${A}" ${T}/>
       <circle cx="32" cy="18" r="8" fill="${R}" ${T}/><path d="M19 56c0-14 6-24 13-24s13 10 13 24z" fill="${R}" ${T}/>
-      <text x="27" y="51" font-family="Sniglet,sans-serif" font-weight="800" font-size="15" fill="${B}">?</text>`,
+      <text x="27" y="51" font-family="Fredoka,sans-serif" font-weight="800" font-size="15" fill="${B}">?</text>`,
     'partes-computador': `<rect x="12" y="6" width="40" height="28" rx="4" fill="${B}" ${T}/><rect x="16" y="10" width="32" height="20" rx="2" fill="#9fdab4" ${T}/>
       <circle cx="26" cy="19" r="2" fill="#111"/><circle cx="38" cy="19" r="2" fill="#111"/><path d="M27 24q5 4 10 0" fill="none" ${T}/>
       <rect x="6" y="42" width="34" height="14" rx="3" fill="${A}" ${T}/><path d="M11 47h4M18 47h4M25 47h4M32 47h4M14 52h18" ${T}/>
@@ -46,13 +46,13 @@
       <rect x="40" y="6" width="8" height="12" fill="#6f6a60" ${T}/><circle cx="44" cy="4" r="3" fill="${B}" ${T}/><rect x="6" y="56" width="52" height="4" rx="1" fill="#111"/>`,
     'cidade-blocos': `<path d="M32 30l20-10v22L32 52 12 42V20z" fill="${A}" ${T}/><path d="M12 20l20 10 20-10" fill="none" ${T}/><path d="M32 30v22" ${T}/>
       <path d="M12 20l20-10 20 10-20 10z" fill="${R}" ${T}/><ellipse cx="25" cy="18" rx="3.5" ry="1.8" fill="${B}" ${T}/><ellipse cx="39" cy="18" rx="3.5" ry="1.8" fill="${B}" ${T}/>
-      <circle cx="50" cy="12" r="8" fill="${V}" ${T}/><text x="46.5" y="16.5" font-family="Sniglet,sans-serif" font-weight="800" font-size="12" fill="#fff">?</text>`,
+      <circle cx="50" cy="12" r="8" fill="${V}" ${T}/><text x="46.5" y="16.5" font-family="Fredoka,sans-serif" font-weight="800" font-size="12" fill="#fff">?</text>`,
     bolha: `<circle cx="32" cy="32" r="24" fill="${C}" stroke="#111" stroke-width="2.5" stroke-dasharray="5 4"/><circle cx="26" cy="27" r="7" fill="${V}" ${T}/><circle cx="39" cy="35" r="6" fill="${A}" ${T}/><circle cx="27" cy="41" r="4" fill="${R}" ${T}/>
       <circle cx="58" cy="10" r="3" fill="${R}"/><circle cx="6" cy="56" r="3" fill="${V}"/>`,
     boato: `<path d="M14 16L32 30M32 30L50 16M32 30L20 50M32 30L46 50" ${T}/><circle cx="32" cy="30" r="8" fill="${R}" ${T}/><circle cx="14" cy="16" r="6" fill="${R}" ${T}/>
       <circle cx="50" cy="16" r="6" fill="${V}" ${T}/><path d="M47 16l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/><circle cx="20" cy="50" r="6" fill="${B}" ${T}/><circle cx="46" cy="50" r="6" fill="${B}" ${T}/>`,
     chatbot: `<path d="M8 12h36a6 6 0 0 1 6 6v14a6 6 0 0 1-6 6H24l-10 8v-8H8a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6z" fill="${A}" ${T}/>
-      <text x="9" y="30" font-family="Sniglet,sans-serif" font-weight="800" font-size="11" fill="#111">SE</text><rect x="30" y="34" width="30" height="24" rx="8" fill="${V}" ${T}/><circle cx="40" cy="45" r="3" fill="#fff"/><circle cx="50" cy="45" r="3" fill="#fff"/>`,
+      <text x="9" y="30" font-family="Fredoka,sans-serif" font-weight="800" font-size="11" fill="#111">SE</text><rect x="30" y="34" width="30" height="24" rx="8" fill="${V}" ${T}/><circle cx="40" cy="45" r="3" fill="#fff"/><circle cx="50" cy="45" r="3" fill="#fff"/>`,
     acessivel: `<rect x="4" y="8" width="56" height="44" rx="6" fill="${B}" ${T}/><path d="M4 18h56" ${T}/><circle cx="32" cy="27" r="4" fill="${V}" ${T}/>
       <path d="M20 33h24M32 33v8l-6 8M32 41l6 8" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="13" r="2" fill="${R}"/><circle cx="16" cy="13" r="2" fill="${A}"/>`,
     golpe: `<path d="M32 6l22 8v14c0 14-10 24-22 30C20 52 10 42 10 28V14z" fill="${A}" ${T}/><path d="M32 18v16" stroke="#111" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="43" r="3" fill="#111"/>`,
@@ -72,16 +72,16 @@
     mesada: `<rect x="8" y="18" width="44" height="32" rx="6" fill="${V}" ${T}/><path d="M8 26h44" ${T}/><rect x="38" y="30" width="18" height="12" rx="4" fill="${A}" ${T}/><circle cx="45" cy="36" r="2.5" fill="#111"/>
       <circle cx="20" cy="12" r="6" fill="${A}" ${T}/>`,
     poupanca: `<path d="M8 54h48M8 54V10" ${T}/><path d="M12 48c10-2 18-8 24-18s10-14 16-16" fill="none" stroke="${V}" stroke-width="4" stroke-linecap="round"/>
-      <path d="M44 12l9 1-2 9" fill="none" stroke="${V}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="24" r="7" fill="${A}" ${T}/><text x="19" y="28" font-family="Sniglet,sans-serif" font-weight="800" font-size="11" fill="#111">$</text>`,
+      <path d="M44 12l9 1-2 9" fill="none" stroke="${V}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="24" r="7" fill="${A}" ${T}/><text x="19" y="28" font-family="Fredoka,sans-serif" font-weight="800" font-size="11" fill="#111">$</text>`,
     bhaskara: `<path d="M8 32h48M32 8v48" stroke="#111" stroke-width="2" opacity=".5"/><path d="M12 10c6 30 34 30 40 0" fill="none" stroke="${R}" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="18.5" cy="32" r="3.5" fill="${A}" ${T}/><circle cx="45.5" cy="32" r="3.5" fill="${A}" ${T}/><text x="38" y="58" font-family="Sniglet,sans-serif" font-weight="800" font-size="14" fill="#111">x²</text>`,
+      <circle cx="18.5" cy="32" r="3.5" fill="${A}" ${T}/><circle cx="45.5" cy="32" r="3.5" fill="${A}" ${T}/><text x="38" y="58" font-family="Fredoka,sans-serif" font-weight="800" font-size="14" fill="#111">x²</text>`,
     'empresa-sucos': `<path d="M16 20h32l-4 36H20z" fill="${A}" ${T}/><path d="M17 30h30" ${T}/><path d="M36 20l6-14h6" fill="none" ${T}/>
       <circle cx="44" cy="20" r="8" fill="${V}" ${T}/><path d="M44 12v16M36 20h16" stroke="#111" stroke-width="1.5"/>`,
     angulos: `<path d="M8 46a24 24 0 0 1 48 0z" fill="${A}" ${T}/><path d="M32 46L50 18" stroke="${R}" stroke-width="4" stroke-linecap="round"/>
       <path d="M14 46a18 18 0 0 1 3-10M50 46a18 18 0 0 0-3-10M32 28v4" ${T}/><circle cx="32" cy="46" r="3" fill="#111"/>`,
     'valor-moeda': `<circle cx="24" cy="38" r="16" fill="${A}" ${T}/><circle cx="24" cy="38" r="11" fill="none" stroke="#111" stroke-width="1.5" stroke-dasharray="2 3"/>
-      <circle cx="44" cy="24" r="14" fill="#d9dde1" ${T}/><text x="44" y="30" text-anchor="middle" font-family="Sniglet,sans-serif" font-weight="800" font-size="17" fill="#111">?</text>
-      <text x="24" y="44" text-anchor="middle" font-family="Sniglet,sans-serif" font-weight="800" font-size="15" fill="#111">25</text>`,
+      <circle cx="44" cy="24" r="14" fill="#d9dde1" ${T}/><text x="44" y="30" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="800" font-size="17" fill="#111">?</text>
+      <text x="24" y="44" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="800" font-size="15" fill="#111">25</text>`,
     'cunhe-moeda': `<ellipse cx="30" cy="50" rx="20" ry="7" fill="${A}" ${T}/><path d="M10 50v-4c0-4 9-7 20-7s20 3 20 7v4" fill="${A}" ${T}/>
       <path d="M36 12l14 14" stroke="#8a5a2b" stroke-width="6" stroke-linecap="round"/><rect x="20" y="22" width="22" height="12" rx="3" fill="${R}" ${T} transform="rotate(-45 31 28)"/>
       <path d="M14 34l-4-4M22 32l-1-5M46 36l5-3" stroke="${V}" stroke-width="3" stroke-linecap="round"/>`,
@@ -93,8 +93,8 @@
       <path d="M40 30L52 8" stroke="#111" stroke-width="3" stroke-linecap="round"/><ellipse cx="52" cy="8" rx="3" ry="5" fill="${A}" ${T}/><circle cx="22" cy="22" r="4" fill="${V}" ${T}/><circle cx="31" cy="20" r="3" fill="${A}" ${T}/>`,
     cartao: `<rect x="6" y="14" width="52" height="36" rx="6" fill="${V}" ${T}/><path d="M6 24h52" stroke="#111" stroke-width="6"/>
       <rect x="12" y="32" width="12" height="9" rx="2" fill="${A}" ${T}/><path d="M30 42h20" ${T}/>`,
-    cambio: `<circle cx="22" cy="24" r="14" fill="${A}" ${T}/><text x="15" y="30" font-family="Sniglet,sans-serif" font-weight="800" font-size="16" fill="#111">R$</text>
-      <circle cx="42" cy="42" r="14" fill="${V}" ${T}/><text x="37" y="48" font-family="Sniglet,sans-serif" font-weight="800" font-size="17" fill="#111">$</text>
+    cambio: `<circle cx="22" cy="24" r="14" fill="${A}" ${T}/><text x="15" y="30" font-family="Fredoka,sans-serif" font-weight="800" font-size="16" fill="#111">R$</text>
+      <circle cx="42" cy="42" r="14" fill="${V}" ${T}/><text x="37" y="48" font-family="Fredoka,sans-serif" font-weight="800" font-size="17" fill="#111">$</text>
       <path d="M44 12c6 2 10 8 10 14M52 22l2 4 4-3" fill="none" ${T}/><path d="M20 54c-6-2-10-8-10-14M12 44l-2-4-4 3" fill="none" ${T}/>`,
     senha: `<path d="M20 28v-8a12 12 0 0 1 24 0v8" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/>
       <rect x="10" y="28" width="44" height="30" rx="7" fill="${A}" ${T}/><circle cx="21" cy="43" r="3.2" fill="#111"/><circle cx="32" cy="43" r="3.2" fill="#111"/><circle cx="43" cy="43" r="3.2" fill="#111"/>
@@ -119,7 +119,7 @@
       <circle cx="48" cy="48" r="5" fill="none" stroke="${V}" stroke-width="3"/><circle cx="48" cy="16" r="5" fill="none" stroke="${R}" stroke-width="3"/>`,
     boletim: `<rect x="6" y="8" width="52" height="48" rx="5" fill="${B}" ${T}/><rect x="6" y="8" width="52" height="10" rx="5" fill="${V}" ${T}/>
       <path d="M6 30h52M6 43h52M22 18v38M40 18v38" stroke="#111" stroke-width="2"/><rect x="40" y="30" width="18" height="13" fill="${A}" ${T}/>
-      <text x="9" y="16" font-family="Sniglet,sans-serif" font-weight="800" font-size="8" fill="#111">=SOMA</text>`,
+      <text x="9" y="16" font-family="Fredoka,sans-serif" font-weight="800" font-size="8" fill="#111">=SOMA</text>`,
     meteorologista: `<circle cx="22" cy="20" r="10" fill="${A}" ${T}/><path d="M22 4v4M8 20H4M11 9l-3-3M36 9l3-3" ${T}/>
       <path d="M20 40a10 10 0 0 1 4-19 13 13 0 0 1 24 4 8 8 0 0 1 2 15z" fill="${B}" ${T}/>
       <path d="M8 58l12-8 10 4 14-10 12 6" fill="none" stroke="${V}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="56" cy="50" r="3.5" fill="${R}" ${T}/>`,
@@ -131,6 +131,6 @@
   window.iconeJogo = function (id, titulo) {
     const s = window.ICONES_JOGOS[id];
     if (s) return `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">${s}</svg>`;
-    return `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="24" fill="#fff" ${T}/><text x="32" y="41" text-anchor="middle" font-family="Sniglet,sans-serif" font-weight="800" font-size="26" fill="#111">${String(titulo || '?')[0]}</text></svg>`;
+    return `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="24" fill="#fff" ${T}/><text x="32" y="41" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="800" font-size="26" fill="#111">${String(titulo || '?')[0]}</text></svg>`;
   };
 })();

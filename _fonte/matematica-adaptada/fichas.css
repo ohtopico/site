@@ -1,9 +1,9 @@
 /* Fichas de matemática adaptada: página de leitura simples + folhas A4 brancas para imprimir.
-   Títulos em Sniglet, texto em Lexend. A folha é sempre branca (economiza tinta); cor só nos detalhes. */
+   Títulos em Fredoka, texto em Lexend. A folha é sempre branca (economiza tinta); cor só nos detalhes. */
 :root {
     --ink: #111; --ink-2: #4a4a4a; --line: #d9d9d6; --paper: #fff; --paper-2: #f4f4f2;
     --accent: #16703a; --mark: #fff36b; --mark-soft: #fff9c2;
-    --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+    --display: 'Fredoka', 'Comic Sans MS', system-ui, sans-serif;
     --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 * { box-sizing: border-box; }

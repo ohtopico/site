@@ -1,5 +1,5 @@
 /* Material didático — ohtopico.com.br
-   Mesmo sistema visual do IA pra Prof: papel branco, traço preto, pílulas, Sniglet + Lexend.
+   Mesmo sistema visual do IA pra Prof: papel branco, traço preto, pílulas, Fredoka + Lexend.
    Paleta em tons de cinza e verde: verde para Computação e destaques, cinza para Matemática.
    O vermelho fica só para erro (feedback dos jogos). */
 :root {
@@ -24,7 +24,7 @@
   --warn: #3d4340;
   --warn-soft: #e4e7e5;
   --radius: 28px;
-  --display: 'Sniglet', 'Comic Sans MS', system-ui, sans-serif;
+  --display: 'Fredoka', 'Comic Sans MS', system-ui, sans-serif;
   --body: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color-scheme: light;
 }

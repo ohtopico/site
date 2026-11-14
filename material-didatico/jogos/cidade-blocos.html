@@ -581,7 +581,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
     g.fillStyle = feito ? VERDE : AMARELO; g.strokeStyle = '#111'; g.lineWidth = 2.2; g.beginPath(); g.arc(cx, cy, 14, 0, 7); g.fill(); g.stroke();
     g.fillStyle = tom(feito ? VERDE : AMARELO, .35); g.beginPath(); g.arc(cx - 4, cy - 5, 4, 0, 7); g.fill();
     if (feito) { g.strokeStyle = '#fff'; g.lineWidth = 3.5; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx - 6, cy); g.lineTo(cx - 1.5, cy + 5); g.lineTo(cx + 7, cy - 5); g.stroke(); g.lineCap = 'butt'; }
-    else { g.fillStyle = '#111'; g.font = '800 19px Sniglet, Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', cx, cy + 1); }
+    else { g.fillStyle = '#111'; g.font = '800 19px Fredoka, Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', cx, cy + 1); }
   }
   function brilhoTotem(o, t) {
     if (!aberto(o.b) || S.ok.includes(o.id)) return;
@@ -655,7 +655,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
     if (!S.falou.includes(o.id)) {
       const p = P(o.x, o.y, 3.7), bob = Math.sin(t / 250) * 2;
       g.fillStyle = '#fff'; g.strokeStyle = '#111'; g.lineWidth = 2; g.beginPath(); g.roundRect(p[0] - 9, p[1] - 22 + bob, 18, 20, 6); g.fill(); g.stroke();
-      g.fillStyle = '#111'; g.font = '800 15px Sniglet, Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('!', p[0], p[1] - 11 + bob);
+      g.fillStyle = '#111'; g.font = '800 15px Fredoka, Lexend, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('!', p[0], p[1] - 11 + bob);
     }
   }
   function carro(c) {
@@ -782,7 +782,7 @@ mdTopbar('jogos'); mdFooter(); mdJogoHead('cidade-blocos');
       } else {
         TOTENS.filter(tt => tt.b === i).forEach(tt => { c.fillStyle = S.ok.includes(tt.id) ? VERDE : '#e8a400'; c.beginPath(); c.arc((tt.x + .5) * sx, (tt.y + .5) * sy, 2.4 * k, 0, 7); c.fill(); });
       }
-      if (alvo) { c.fillStyle = ab ? '#111' : '#cfcac0'; c.font = `800 ${7 * k}px Sniglet, Lexend, sans-serif`; c.textAlign = 'left'; c.textBaseline = 'top'; c.fillText(String(i + 1), x + 5 * k, y + 4 * k); }
+      if (alvo) { c.fillStyle = ab ? '#111' : '#cfcac0'; c.font = `800 ${7 * k}px Fredoka, Lexend, sans-serif`; c.textAlign = 'left'; c.textBaseline = 'top'; c.fillText(String(i + 1), x + 5 * k, y + 4 * k); }
     });
     c.fillStyle = VERMELHO; c.strokeStyle = '#fff'; c.lineWidth = 2; c.beginPath(); c.arc(S.x * sx, S.y * sy, 4.5 * k, 0, 7); c.fill(); c.stroke();
   }

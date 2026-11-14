@@ -198,19 +198,19 @@ function modelo(o, fotos) {
     ? `<div class="shot um"><img src="${fotos[0]}" alt=""></div>`
     : `<div class="grade">${fotos.map(f => `<div class="shot"><img src="${f}" alt=""></div>`).join('')}</div>`;
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; }
   body { width: 1200px; height: 630px; background: #f4f4f2 radial-gradient(#d9d9d6 1.2px, transparent 1.2px) 0 0 / 22px 22px; font-family: Lexend, sans-serif; color: #111; position: relative; overflow: hidden; }
   .win { position: absolute; left: 50px; top: 34px; width: 1090px; height: 520px; background: #fff; border: 3px solid #111; border-radius: 26px; box-shadow: 16px 16px 0 #111; overflow: hidden; }
   .bar { height: 52px; border-bottom: 3px solid #111; display: flex; align-items: center; padding: 0 26px; background: #f4f4f2; }
-  .bar b { font-family: Sniglet; font-weight: 800; font-size: 18px; letter-spacing: .12em; text-transform: uppercase; }
+  .bar b { font-family: Fredoka; font-weight: 800; font-size: 18px; letter-spacing: .12em; text-transform: uppercase; }
   .dots { margin-left: auto; display: flex; gap: 9px; } .dots i { width: 22px; height: 22px; border: 2.5px solid #111; border-radius: 50%; }
   .body { display: flex; height: 462px; }
   .txt { flex: 0 0 580px; padding: 40px 20px 0 56px; height: 462px; overflow: hidden; }
-  .faixa { display: inline-flex; align-items: center; gap: 10px; border: 2.5px solid #111; border-radius: 99px; padding: 6px 16px; font-family: Sniglet; font-weight: 800; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; }
+  .faixa { display: inline-flex; align-items: center; gap: 10px; border: 2.5px solid #111; border-radius: 99px; padding: 6px 16px; font-family: Fredoka; font-weight: 800; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; }
   .faixa i { width: 6px; height: 18px; background: #1f8a4c; border-radius: 2px; }
-  h1 { font-family: Sniglet; font-weight: 800; font-size: 84px; line-height: .98; text-transform: uppercase; margin: 22px 0 14px; letter-spacing: .01em; }
+  h1 { font-family: Fredoka; font-weight: 800; font-size: 84px; line-height: .98; text-transform: uppercase; margin: 22px 0 14px; letter-spacing: .01em; }
   h1 span { display: inline-block; background: #fff06a; padding: 4px 12px 0; margin-left: -12px; }
   p.sub { font-size: 23px; color: #4a4a4a; line-height: 1.32; max-width: 500px; }
   .pills { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
@@ -223,7 +223,7 @@ function modelo(o, fotos) {
   .grade { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; height: 100%; }
   .grade .shot { box-shadow: 5px 5px 0 #111; }
   .rod { position: absolute; left: 54px; right: 58px; bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
-  .rod b { font-family: Sniglet; font-weight: 800; font-size: 22px; letter-spacing: .2em; text-transform: uppercase; }
+  .rod b { font-family: Fredoka; font-weight: 800; font-size: 22px; letter-spacing: .2em; text-transform: uppercase; }
   .rod span { border: 2px solid #111; border-radius: 99px; padding: 5px 18px; font-size: 19px; background: #fff; }
 </style></head><body>
 <div class="win">
@@ -245,18 +245,18 @@ function modelo(o, fotos) {
 function modeloPin(o, foto) {
   const pillCls = ['p-verde', 'p-amarelo', ''];
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; }
   body { width: 1000px; height: 1500px; background: #f4f4f2 radial-gradient(#d9d9d6 1.4px, transparent 1.4px) 0 0 / 26px 26px; font-family: Lexend, sans-serif; color: #111; position: relative; overflow: hidden; }
   .win { position: absolute; left: 44px; top: 40px; width: 900px; height: 1340px; background: #fff; border: 3px solid #111; border-radius: 30px; box-shadow: 16px 16px 0 #111; overflow: hidden; display: flex; flex-direction: column; }
   .bar { flex: 0 0 60px; border-bottom: 3px solid #111; display: flex; align-items: center; padding: 0 30px; background: #f4f4f2; }
-  .bar b { font-family: Sniglet; font-weight: 800; font-size: 20px; letter-spacing: .12em; text-transform: uppercase; }
+  .bar b { font-family: Fredoka; font-weight: 800; font-size: 20px; letter-spacing: .12em; text-transform: uppercase; }
   .dots { margin-left: auto; display: flex; gap: 10px; } .dots i { width: 24px; height: 24px; border: 2.5px solid #111; border-radius: 50%; }
   .txt { padding: 44px 56px 0; }
-  .faixa { display: inline-flex; align-items: center; gap: 10px; border: 2.5px solid #111; border-radius: 99px; padding: 7px 18px; font-family: Sniglet; font-weight: 800; font-size: 19px; letter-spacing: .1em; text-transform: uppercase; }
+  .faixa { display: inline-flex; align-items: center; gap: 10px; border: 2.5px solid #111; border-radius: 99px; padding: 7px 18px; font-family: Fredoka; font-weight: 800; font-size: 19px; letter-spacing: .1em; text-transform: uppercase; }
   .faixa i { width: 7px; height: 20px; background: #1f8a4c; border-radius: 2px; }
-  h1 { font-family: Sniglet; font-weight: 800; font-size: 104px; line-height: .98; text-transform: uppercase; margin: 26px 0 18px; letter-spacing: .01em; }
+  h1 { font-family: Fredoka; font-weight: 800; font-size: 104px; line-height: .98; text-transform: uppercase; margin: 26px 0 18px; letter-spacing: .01em; }
   h1 span { display: inline-block; background: #fff06a; padding: 4px 14px 0; margin-left: -14px; }
   p.sub { font-size: 30px; color: #4a4a4a; line-height: 1.3; }
   .pills { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
@@ -266,7 +266,7 @@ function modeloPin(o, foto) {
   .shot { height: 100%; border: 3px solid #111; border-radius: 18px; overflow: hidden; background: #fff; transform: rotate(1.2deg); box-shadow: 9px 9px 0 #111; }
   .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
   .rod { position: absolute; left: 48px; right: 52px; bottom: 34px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .rod b { font-family: Sniglet; font-weight: 800; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+  .rod b { font-family: Fredoka; font-weight: 800; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
   .rod span { border: 2px solid #111; border-radius: 99px; padding: 6px 18px; font-size: 20px; background: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style></head><body>
 <div class="win">

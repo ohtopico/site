@@ -182,12 +182,12 @@ def escrever(destino, titulo, ano, figuras, area):
     passos = ''.join(f'<li><b>{e(t)}.</b> {e(x)}</li>' for t, x in INSTRUCOES)
     pagina = f'''<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><title>Moldes táteis: {e(titulo)}</title>
-<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@800&family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Lexend:wght@400;600&display=swap" rel="stylesheet">
 <style>
 @page {{ size: A4; margin: 14mm 15mm 14mm; }}
 * {{ box-sizing: border-box; }}
 body {{ margin: 0; background: #fff; color: #000; font: 11pt/1.45 Lexend, sans-serif; }}
-h1, h2 {{ font-family: Sniglet, Lexend, sans-serif; font-weight: 800; margin: 0 0 2mm; }}
+h1, h2 {{ font-family: Fredoka, Lexend, sans-serif; font-weight: 800; margin: 0 0 2mm; }}
 h1 {{ font-size: 22pt; line-height: 1.15; }}
 h2 {{ font-size: 15pt; }}
 .capa .rot {{ font-weight: 600; margin: 0 0 1mm; }}

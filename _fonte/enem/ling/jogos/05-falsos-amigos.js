@@ -1,6 +1,6 @@
 const G = pares => ({ pares });
 const svg = `<svg viewBox="0 0 620 250" role="img" aria-label="Falsos amigos: a palavra parece, mas significa outra coisa">
-  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 22px Sniglet,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 14px Lexend,sans-serif;fill:#3b3b3b}.x{font:700 15px Lexend,sans-serif}</style>
+  <style>.c{stroke:#1d2a1f;stroke-width:2.5}.t{font:800 22px Fredoka,Lexend,sans-serif;fill:#1d2a1f}.s{font:500 14px Lexend,sans-serif;fill:#3b3b3b}.x{font:700 15px Lexend,sans-serif}</style>
   <rect x="0" y="0" width="620" height="250" rx="16" fill="#fff6dd"/>
   <rect class="c" x="20" y="20" width="270" height="96" rx="14" fill="#ffd9c7"/><text class="t" x="40" y="56">🇪🇸 “exquisito”</text><text class="s" x="40" y="84">parece “esquisito”…</text><text class="x" x="40" y="104" fill="#2d8a3b">mas é DELICIOSO 😋</text>
   <rect class="c" x="330" y="20" width="270" height="96" rx="14" fill="#c7e0ff"/><text class="t" x="350" y="56">🇪🇸 “embarazada”</text><text class="s" x="350" y="84">parece “embaraçada”…</text><text class="x" x="350" y="104" fill="#2d8a3b">mas é GRÁVIDA 🤰</text>

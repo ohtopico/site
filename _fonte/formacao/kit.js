@@ -16,7 +16,7 @@ const etapas = [
 ];
 
 const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>
-${fonte('Sniglet', 'sniglet-latin-800-normal.woff2', 800)}
+${fonte('Fredoka', 'fredoka-latin-600-normal.woff2', 600)}
 ${fonte('Lexend', 'lexend-latin-400-normal.woff2', 400)}
 ${fonte('Lexend', 'lexend-latin-600-normal.woff2', 600)}
 @page { size: A4; margin: 0; }
@@ -24,7 +24,7 @@ ${fonte('Lexend', 'lexend-latin-600-normal.woff2', 600)}
 body { margin: 0; font-family: Lexend, sans-serif; color: #1b1b1b; background: #fff; font-size: 9.6pt; line-height: 1.4; }
 .pagina { width: 210mm; height: 297mm; padding: 13mm 16mm 18mm; position: relative; page-break-after: always; overflow: hidden; }
 .pagina:last-child { page-break-after: auto; }
-h1, h2 { font-family: Sniglet, sans-serif; font-weight: 800; margin: 0; }
+h1, h2 { font-family: Fredoka, sans-serif; font-weight: 800; margin: 0; }
 h1 { font-size: 22pt; line-height: 1.1; }
 h2 { font-size: 13pt; margin: 0 0 2.5mm; padding-bottom: 1mm; border-bottom: 2px solid #f2c94c; display: inline-block; }
 .sub { font-weight: 600; color: #444; margin: 2mm 0 4mm; }
@@ -33,14 +33,14 @@ ul { margin: 0; padding-left: 5mm; } li { margin-bottom: .8mm; }
 .bloco { margin-bottom: 4.5mm; }
 .etapas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm; }
 .etapa { border: 1.4px solid #1b1b1b; border-radius: 4mm; padding: 2.5mm; font-size: 8.4pt; line-height: 1.3; }
-.etapa b { display: block; font-family: Sniglet, sans-serif; font-size: 11pt; margin-bottom: 1mm; }
+.etapa b { display: block; font-family: Fredoka, sans-serif; font-size: 11pt; margin-bottom: 1mm; }
 .etapa .n { display: inline-block; width: 6mm; height: 6mm; border-radius: 50%; background: #f2c94c; text-align: center; font-weight: 600; font-size: 9pt; line-height: 6mm; margin-bottom: 1.5mm; }
 table { width: 100%; border-collapse: collapse; font-size: 8.8pt; }
 th, td { text-align: left; vertical-align: top; padding: 1.5mm 2mm; border-bottom: 1px solid #bbb; }
 th { font-weight: 600; border-bottom: 2px solid #1b1b1b; }
 .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
 .preco { border: 2px solid #1b1b1b; border-radius: 5mm; padding: 4mm 5mm; }
-.preco .valor { font-family: Sniglet, sans-serif; font-size: 22pt; line-height: 1.1; }
+.preco .valor { font-family: Fredoka, sans-serif; font-size: 22pt; line-height: 1.1; }
 .preco .valor small { display: block; font-family: Lexend, sans-serif; font-weight: 600; font-size: 10pt; }
 .preco .faixa { display: inline-block; background: #fdf0c4; border-radius: 2mm; padding: .5mm 2mm; font-weight: 600; font-size: 9pt; margin-bottom: 2mm; }
 .rodape { position: absolute; left: 16mm; right: 16mm; bottom: 9mm; display: flex; justify-content: space-between; font-size: 8.5pt; font-weight: 600; border-top: 1px solid #1b1b1b; padding-top: 2mm; }
