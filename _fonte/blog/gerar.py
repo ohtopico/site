@@ -1044,6 +1044,105 @@ def pagina_computacao(cfg):
     return head + '\n' + moldura('guia-computacao.html', 'ohtopico.com.br/computacao-na-escola', '/', conteudo, 'Pronto', 'computacao')
 
 
+GUIA_BNCC_PDF = 'guia-professor-computacao-bncc.pdf'
+
+
+def pagina_guia_bncc(cfg):
+    site = cfg['site']
+    url = f'{site}/guia-computacao-bncc/'
+    corpo = (AQUI / 'conteudo' / 'guia-computacao-bncc.html').read_text(encoding='utf-8').strip()
+    pdf = AQUI.parents[1] / 'guia-computacao-bncc' / GUIA_BNCC_PDF
+    mb = f'{pdf.stat().st_size / 1e6:.1f}'.replace('.', ',') + ' MB' if pdf.exists() else 'PDF'
+    titulo = 'Guia do professor: Computação na BNCC'
+    descricao = ('Guia gratuito em PDF para professores: os três eixos da Computação na BNCC com exemplos de sala, a progressão '
+                 'da Educação Infantil ao Ensino Médio, planejamento, avaliação e 12 atividades com e sem tela para imprimir.')
+    imagem = f'{site}/guia-computacao-bncc/og-guia-computacao-bncc.jpg'
+    alt = ('Capa do Guia do professor: Computação na BNCC, com os eixos Pensamento computacional, Mundo digital e Cultura digital, '
+           'e o texto PDF gratuito, 41 páginas, 12 atividades com e sem tela para imprimir.')
+    ld = json_ld({
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': ['LearningResource', 'Book'],
+                '@id': url + '#guia',
+                'name': titulo,
+                'description': descricao,
+                'url': url,
+                'inLanguage': 'pt-BR',
+                'image': imagem,
+                'author': AUTORA,
+                'isAccessibleForFree': True,
+                'license': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+                'numberOfPages': 41,
+                'bookFormat': 'https://schema.org/EBook',
+                'learningResourceType': 'Guia do professor',
+                'educationalLevel': ['Educação Infantil', 'Ensino Fundamental', 'Ensino Médio'],
+                'audience': {'@type': 'EducationalAudience', 'educationalRole': 'teacher'},
+                'about': {'@type': 'Thing', 'name': 'Computação na Educação Básica (complemento da BNCC)'},
+                'encoding': {'@type': 'MediaObject', 'contentUrl': url + GUIA_BNCC_PDF, 'encodingFormat': 'application/pdf'},
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': url + '#perguntas',
+                'mainEntity': [{'@type': 'Question', 'name': q,
+                                'acceptedAnswer': {'@type': 'Answer', 'text': r}} for q, r in perguntas_frequentes(corpo)],
+            },
+            {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                    {'@type': 'ListItem', 'position': 1, 'name': 'Início', 'item': f'{site}/'},
+                    {'@type': 'ListItem', 'position': 2, 'name': 'Computação na escola', 'item': f'{site}/computacao-na-escola/'},
+                    {'@type': 'ListItem', 'position': 3, 'name': 'Guia do professor', 'item': url},
+                ],
+            },
+        ],
+    })
+    zap = ('https://wa.me/5551999222234?text=Ol%C3%A1%2C%20J%C3%BAlia.%20Vim%20pelo%20guia%20do%20professor%20de%20'
+           'Computa%C3%A7%C3%A3o%20na%20BNCC%20e%20quero%20conversar%20sobre%20forma%C3%A7%C3%A3o.')
+    baixar = (f'<a class="btn98 escuro" href="/guia-computacao-bncc/{GUIA_BNCC_PDF}" download '
+              f'data-evento="download_guia_bncc">Baixar o guia grátis (PDF, {mb})</a>')
+    conteudo = f'''<article class="texto">
+    <style>
+    .guia-topo {{ display: grid; grid-template-columns: 1.25fr 1fr; gap: 32px; align-items: center; margin-bottom: 8px; }}
+    .guia-capa {{ display: block; width: 100%; max-width: 330px; height: auto; margin: 0 auto; border: 1.5px solid var(--ink); border-radius: 10px; box-shadow: 6px 6px 0 var(--ink); background: #fff; }}
+    .guia-fatos {{ display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 18px; padding: 0; list-style: none; }}
+    .guia-fatos li {{ font-size: 14px; border: 1.5px solid var(--ink); border-radius: 99px; padding: 3px 12px; }}
+    .guia-paginas {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 18px 0 8px; }}
+    .guia-paginas figure {{ margin: 0; }}
+    .guia-paginas img {{ display: block; width: 100%; height: auto; border: 1.5px solid var(--ink); border-radius: 8px; background: #fff; }}
+    .guia-paginas figcaption {{ font-size: 14px; color: var(--ink-2); margin-top: 6px; }}
+    @media (max-width: 760px) {{ .guia-topo {{ grid-template-columns: 1fr; }} .guia-paginas {{ grid-template-columns: 1fr; }} }}
+    </style>
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/computacao-na-escola/">Computação na escola</a></li><li aria-current="page">Guia do professor</li></ol></nav>
+    <div class="guia-topo">
+      <div>
+        <p class="rotulo">Material gratuito · PDF para imprimir</p>
+        <h1>Guia do professor: <span class="marca">Computação na BNCC</span></h1>
+        <p class="linha-fina">Como transformar as habilidades de Computação da BNCC em aulas: os três eixos com exemplos de sala, a progressão de cada etapa, um roteiro para planejar, uma rubrica para avaliar e 12 atividades com e sem tela, da Educação Infantil ao Ensino Médio.</p>
+        <ul class="guia-fatos"><li>41 páginas</li><li>12 atividades com folha do estudante</li><li>Com e sem tela</li><li>Gabaritos</li><li>Sem cadastro</li></ul>
+        <p>{baixar}</p>
+      </div>
+      <img class="guia-capa" src="/guia-computacao-bncc/capa-guia-professor-computacao-bncc.webp" width="600" height="849" alt="Capa do Guia do professor: Computação na BNCC, com os três eixos, os números 3 eixos, 12 atividades e 2 versões de cada atividade, e a assinatura Júlia Roberta Quoos Alves.">
+    </div>
+    <div class="guia-paginas">
+      <figure><img src="/guia-computacao-bncc/pagina-eixo.webp" width="700" height="990" loading="lazy" alt="Página do eixo Pensamento computacional, com os quatro conceitos e exemplos por etapa."><figcaption>Um eixo por página, com exemplos de cada etapa.</figcaption></figure>
+      <figure><img src="/guia-computacao-bncc/pagina-atividade.webp" width="700" height="990" loading="lazy" alt="Orientação para o professor da atividade O caminho até a horta, com versão sem tela, versão com tela, avaliação e gabarito."><figcaption>Orientação para o professor, com e sem tela.</figcaption></figure>
+      <figure><img src="/guia-computacao-bncc/pagina-folha.webp" width="700" height="990" loading="lazy" alt="Folha do estudante da mesma atividade, com malha, setas para recortar e espaço para colar."><figcaption>Folha do estudante, pronta para imprimir.</figcaption></figure>
+    </div>
+    <div class="artigo">
+{corpo}
+    </div>
+    <section class="chamada" aria-labelledby="baixar-guia">
+        <h2 id="baixar-guia">Baixe o guia e leve para a sua escola</h2>
+        <p>O guia é gratuito e pode ser distribuído para as escolas da rede. Para ir além da primeira aula, com formação da equipe e plano para o ano inteiro, fale comigo pelo WhatsApp.</p>
+        {baixar}
+        <a class="btn98" href="{zap}" target="_blank" rel="noopener">Conversar sobre formação<span class="sr-only"> (abre em nova aba)</span></a>
+    </section>
+</article>'''
+    head = cabeca(titulo + ' (PDF grátis) | Júlia Quoos', descricao, url, imagem, alt, 'website', OG_1200 + ld)
+    return head + '\n' + moldura('guia-do-professor.pdf', 'ohtopico.com.br/guia-computacao-bncc', '/', conteudo, 'Pronto', 'computacao')
+
+
 def pagina_lei_celular(cfg):
     site = cfg['site']
     url = f'{site}/lei-do-celular-nas-escolas/'
@@ -2333,7 +2432,7 @@ def atualizar_sitemap(site_dir, cfg, publicados, mentoria_pronta, hoje, mudaram)
         ultimo = max(p['data'] for p in publicados if p['secao'] == sec)
         linhas.append(f'  <url><loc>{cfg["site"]}/blog/categoria/{slug_secao(sec)}/</loc><lastmod>{min(ultimo, hoje)}</lastmod></url>')
     linhas += [f'  <url><loc>{cfg["site"]}/blog/{p["slug"]}/</loc><lastmod>{min(p.get("atualizado", p["data"]), hoje)}</lastmod></url>' for p in publicados]
-    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'formacao-para-redes', 'apoie', 'privacidade', 'hora-do-codigo', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
+    fixas = (['mentoria'] if mentoria_pronta else []) + ['formacao-e-mentoria', 'formacao-continuada', 'formacao-tecnologias-educacionais', 'para-escolas', 'formacao-para-redes', 'apoie', 'privacidade', 'hora-do-codigo', 'mundo/professores', 'prompts-para-professores', 'computacao-na-escola', 'guia-computacao-bncc', 'lei-do-celular-nas-escolas', 'material-adaptado', 'matematica-adaptada', 'assistencia-por-voz', QUIZ_DIR, TESTE_DIR]
     for pagina in fixas:
         url = f'{cfg["site"]}/{pagina}/'
         lastmod = hoje if pagina in mudaram else (lastmod_atual(xml, url) or hoje)
@@ -2447,6 +2546,7 @@ def main():
                           ('mundo/professores', pagina_mundo_professores(cfg)),
                           ('prompts-para-professores', pagina_prompts(cfg)),
                           ('computacao-na-escola', pagina_computacao(cfg)),
+                          ('guia-computacao-bncc', pagina_guia_bncc(cfg)),
                           ('lei-do-celular-nas-escolas', pagina_lei_celular(cfg)),
                           ('matematica-adaptada', pagina_matematica_adaptada(cfg)),
                           ('assistencia-por-voz', pagina_assistencia(cfg)), (QUIZ_DIR, pagina_quiz(cfg)),
