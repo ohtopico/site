@@ -27,7 +27,7 @@
 <link rel="apple-touch-icon" href="icone-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mundo">
-<link rel="stylesheet" href="mundo.css?v=20261113b">
+<link rel="stylesheet" href="mundo.css?v=20261114prod">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"Mundo do site","url":"https://ohtopico.com.br/mundo/","inLanguage":"pt-BR","genre":"Educational","gamePlatform":"Web browser","applicationCategory":"Game","description":"Um mundo para explorar no navegador: ande pela vila, converse com os personagens, responda perguntas da BNCC, colete itens e cumpra missões abrindo os jogos, o Laboratório 3D, os simuladores e os guias do site de Júlia Roberta Quoos Alves.","image":"https://ohtopico.com.br/mundo/og-mundo.jpg","isAccessibleForFree":true,"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"}}
 </script>
@@ -66,6 +66,7 @@
   <button type="button" class="hb azul" data-abrir="biblioteca" title="Biblioteca" aria-label="Biblioteca">📖 <span class="t">Biblioteca</span></button>
   <button type="button" class="hb verde" data-abrir="busca" title="Buscar conteúdo no Mundo" aria-label="Buscar">🔎 <span class="t">Buscar</span></button>
   <button type="button" class="hb rosa" id="b-casa" title="Casa" aria-label="Casa">🏠 <span class="t">Casa</span></button>
+  <button type="button" class="hb verde" id="b-producao" data-abrir="producao" title="Produção da vila: construções que produzem sozinhas" aria-label="Produção da vila">🏭 <span class="t">Produção</span></button>
   <button type="button" class="hb amarelo" data-abrir="pet" title="Pet" aria-label="Pet">🐾 <span class="t">Pet</span></button>
   <button type="button" class="hb rosa" data-abrir="avatar" title="Avatar" aria-label="Avatar">🧑 <span class="t">Avatar</span></button>
   <button type="button" class="hb amarelo" id="b-evento" data-abrir="evento" hidden title="Evento" aria-label="Evento"><span class="ic">🎉</span> <span class="t">Evento</span></button>
@@ -302,6 +303,12 @@
     <div id="oficina-conteudo"></div>
   </div>
 </div>
+<div class="janela" id="j-producao" hidden role="dialog" aria-labelledby="j-producao-t">
+  <div class="j-caixa"><div class="j-cab"><h2 id="j-producao-t">🏭 Produção da vila</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
+    <p>Construa e melhore as construções da vila: elas produzem estrelas, madeira e pedra sozinhas, mesmo com o Mundo fechado. Cada obra pede uma pergunta do assunto da construção, e seus acertos viram ideias para a árvore de pesquisas.</p>
+    <div id="producao-c"></div>
+  </div>
+</div>
 <div class="janela" id="j-banco" hidden role="dialog" aria-labelledby="j-banco-t">
   <div class="j-caixa"><div class="j-cab"><h2 id="j-banco-t">🏦 Banco da Praça</h2><button type="button" class="d-x" data-fechar aria-label="Fechar">✕</button></div>
     <div id="banco-conteudo"></div>
@@ -403,7 +410,7 @@
 <script src="arte/arte.js?v=20261106mapas"></script>
 <script>if (window.ARTE && ARTE.liberado()) document.write('<script src="arte/vila.js?v=20261106a"><\/script>');</script>
 <script src="casas-npc.js?v=20261106a"></script>
-<script src="mundo.js?v=20261113tut"></script>
+<script src="mundo.js?v=20261114prod"></script>
 <script src="turma/api.js?v=20261106mapas"></script>
 <script src="turma/nuvem.js?v=20261106mapas"></script>
 <script src="codigo.js?v=20261106a"></script>
