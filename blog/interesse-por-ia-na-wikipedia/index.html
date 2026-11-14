@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Interesse por IA na Wikipédia: dados abertos e atividade</title>
+<meta name="description" content="O que as visitas aos verbetes de IA na Wikipédia em português mostram desde 2016 e como usar esses dados em uma aula de estatística.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/blog/interesse-por-ia-na-wikipedia/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/blog/interesse-por-ia-na-wikipedia/">
+<meta property="og:title" content="Interesse por IA na Wikipédia: dados abertos e atividade">
+<meta property="og:description" content="O que as visitas aos verbetes de IA na Wikipédia em português mostram desde 2016 e como usar esses dados em uma aula de estatística.">
+<meta property="og:image" content="https://ohtopico.com.br/blog/img/interesse-ia-wikipedia.png">
+<meta property="og:image:alt" content="Cartão O interesse por IA na Wikipédia, com três destaques: 2,9 vezes, o verbete Inteligência artificial teve 274 mil visitas em 2023, quase o triplo de 2022; 9 milhões de visitas ao verbete ChatGPT desde o lançamento, em dezembro de 2022; 2,8 vezes, Modelos de linguagem em grande escala passou de 6,3 mil visitas em 2023 para 17,5 mil em 2025. Rodapé: painel interativo, jogo e plano de aula em ohtopico.com.br/infograficos/interesse-por-ia. Wikipédia em português, só visitas de pessoas, dados abertos da Wikimedia até setembro de 2026. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:published_time" content="2026-11-14">
+<meta property="article:author" content="https://ohtopico.com.br/">
+<meta property="article:section" content="IA na prática">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://ohtopico.com.br/blog/interesse-por-ia-na-wikipedia/#post",
+      "headline": "O interesse por inteligência artificial na Wikipédia",
+      "description": "O que as visitas aos verbetes de IA na Wikipédia em português mostram desde 2016 e como usar esses dados em uma aula de estatística.",
+      "url": "https://ohtopico.com.br/blog/interesse-por-ia-na-wikipedia/",
+      "mainEntityOfPage": "https://ohtopico.com.br/blog/interesse-por-ia-na-wikipedia/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://ohtopico.com.br/blog/img/interesse-ia-wikipedia.png",
+        "width": 1080,
+        "height": 1350
+      },
+      "datePublished": "2026-11-14",
+      "dateModified": "2026-11-14",
+      "inLanguage": "pt-BR",
+      "keywords": [
+        "inteligência artificial",
+        "dados abertos",
+        "Wikipédia",
+        "letramento em IA",
+        "estatística na escola"
+      ],
+      "articleSection": "IA na prática",
+      "author": {
+        "@type": "Person",
+        "@id": "https://ohtopico.com.br/#julia",
+        "name": "Júlia Roberta Quoos Alves",
+        "alternateName": [
+          "Júlia Quoos",
+          "Júlia Roberta Quoos",
+          "Quoos"
+        ],
+        "url": "https://ohtopico.com.br/"
+      },
+      "publisher": {
+        "@id": "https://ohtopico.com.br/#julia"
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://ohtopico.com.br/blog/#blog",
+        "name": "Blog de Júlia Roberta Quoos Alves"
+      },
+      "timeRequired": "PT3M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://ohtopico.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://ohtopico.com.br/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "O interesse por inteligência artificial na Wikipédia",
+          "item": "https://ohtopico.com.br/blog/interesse-por-ia-na-wikipedia/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+if (window.self !== window.top) document.documentElement.classList.add('emoldurado');</script>
+
+
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="/blog/assets/blog.css?v=c178254ee5">
+<link rel="alternate" type="application/rss+xml" title="Blog de Júlia Roberta Quoos Alves" href="/blog/feed.xml">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body data-contador="ohtopico">
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="area">
+<div class="janela">
+    <header class="cabecalho">
+        <a class="marca-site" href="/">Júlia Quoos</a>
+        <nav class="cabecalho-links" aria-label="Principal">
+            <a href="/blog/" aria-current="page">Blog</a>
+            <a href="/material-didatico/">Material didático</a>
+            <a href="/mundo/">Mundo</a>
+            <a href="/formacao-e-mentoria/">Formação e mentoria</a>
+        </nav>
+    </header>
+    <div class="corpo">
+        <main class="pagina" id="conteudo" tabindex="-1">
+<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/blog/">Blog</a></li><li aria-current="page">IA na prática</li></ol></nav>
+    <p class="rotulo">IA na prática</p>
+    <h1>O interesse por inteligência artificial na Wikipédia</h1>
+    <p class="linha-fina">O que as visitas aos verbetes de IA na Wikipédia em português mostram desde 2016 e como usar esses dados em uma aula de estatística.</p>
+    <div class="meta">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="36" height="36">
+        <span>Por <a href="/blog/quem-e-julia-quoos/" rel="author">Júlia Roberta Quoos Alves</a></span>
+        <span><time datetime="2026-11-14">14 de novembro de 2026</time></span>
+        <span>3 min de leitura</span>
+    </div>
+    <div class="artigo">
+<p>Toda vez que alguém abre um verbete da Wikipédia, a visita é contada. A Wikimedia, fundação que mantém a enciclopédia, publica esses números todos os dias, de graça, para qualquer pessoa usar. Eles formam um retrato curioso do que as pessoas querem entender em cada momento. Reuni as visitas mensais de 18 verbetes sobre inteligência artificial e educação digital na Wikipédia em português, desde 2016, num <a href="https://juliaroberta.com/infograficos/interesse-por-ia/">painel interativo que se atualiza sozinho todo mês</a>.</p>
+
+<h2>O que os dados mostram</h2>
+<p>O lançamento do ChatGPT, em dezembro de 2022, aparece no gráfico como um degrau. O verbete <strong>Inteligência artificial</strong> teve 274 mil visitas em 2023, quase o triplo das 96 mil de 2022. O próprio verbete <strong>ChatGPT</strong> passou de 9,6 mil visitas no mês do lançamento para mais de 460 mil em junho de 2024, e já soma cerca de 9 milhões de visitas.</p>
+<p>O interesse também ficou mais técnico. O verbete <strong>Modelos de linguagem em grande escala</strong>, que explica a tecnologia por trás desses assistentes, cresce todo ano: foram 6,3 mil visitas em 2023, 17 mil em 2024 e 17,5 mil em 2025, e 2026 já passa de 14 mil até setembro. Quem chega ao ChatGPT pela curiosidade, depois vai procurar entender como ele funciona.</p>
+
+<figure class="infografico">
+<img src="/blog/img/interesse-ia-wikipedia.png" width="1080" height="1350" alt="Cartão O interesse por IA na Wikipédia, com três destaques: 2,9 vezes, o verbete Inteligência artificial teve 274 mil visitas em 2023, quase o triplo de 2022; 9 milhões de visitas ao verbete ChatGPT desde o lançamento, em dezembro de 2022; 2,8 vezes, Modelos de linguagem em grande escala passou de 6,3 mil visitas em 2023 para 17,5 mil em 2025. Rodapé: painel interativo, jogo e plano de aula em ohtopico.com.br/infograficos/interesse-por-ia. Wikipédia em português, só visitas de pessoas, dados abertos da Wikimedia até setembro de 2026. Assinatura Júlia Roberta Quoos Alves, ohtopico.com.br." loading="lazy" decoding="async">
+<figcaption>Três destaques do painel de interesse por IA. <a href="/blog/img/interesse-ia-wikipedia.png" download>Baixar imagem</a></figcaption>
+</figure>
+
+<h2>Como ler esse tipo de dado</h2>
+<p>Visitas à Wikipédia medem curiosidade, não uso. Elas sobem quando um assunto aparece no noticiário, quando começa o ano letivo e quando uma ferramenta nova é lançada. Alguns cuidados ajudam a não tirar conclusões apressadas:</p>
+<ul>
+<li><strong>Quem lê:</strong> a Wikipédia em português é lida no Brasil, em Portugal e em outros países de língua portuguesa. A maior parte das visitas vem do Brasil, mas os dados não separam por país.</li>
+<li><strong>Robôs ficam de fora:</strong> o painel usa só as visitas de pessoas. Quando a Wikimedia muda a forma de separar pessoas de acessos automáticos, alguns verbetes têm saltos de um mês para o outro que não são mudança de interesse.</li>
+<li><strong>Nomes antigos e atalhos:</strong> quando um verbete muda de nome, as visitas antigas ficam no título velho. O painel soma os dois para a série não se partir.</li>
+</ul>
+
+<h2>Para usar com a turma</h2>
+<p>Esses dados rendem uma boa aula de estatística e de qualidade da informação. No plano de aula <a href="/material-didatico/plano.html?id=p-wikipedia">A Wikipédia como base de dados</a>, a turma escolhe verbetes de um tema próprio, baixa os números, monta um gráfico de linhas na planilha e procura em duas fontes confiáveis o que explica cada pico. A atividade trabalha as habilidades EF07MA36 e EF09MA22 de Matemática e EF08CO11 e EF09CO10 de Computação.</p>
+<p>Para começar de um jeito mais leve, o jogo <a href="/material-didatico/jogos/wikipedia.html">Qual verbete tem mais visitas?</a> mostra dois verbetes e pede para escolher o mais lido no último ano. Minecraft ou Albert Einstein? Porto Alegre ou Futebol? Os números são reais, e a conversa sobre o porquê de cada resultado costuma ser a melhor parte.</p>
+
+<h2>Dados abertos como recurso de formação</h2>
+<p>Trabalhar com dados públicos é uma forma concreta de falar de inteligência artificial sem depender de nenhuma ferramenta paga: os modelos de IA aprendem com bases de texto como a Wikipédia, e entender como esses dados são coletados e contados é parte do letramento em IA. Esse tipo de atividade faz parte da <a href="/formacao-continuada/">formação continuada para professores em IA</a> que ofereço para escolas e redes de ensino.</p>
+    </div>
+    <div class="compartilhar">
+        <p>Compartilhar:</p>
+        <a class="btn98" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fohtopico.com.br%2Fblog%2Finteresse-por-ia-na-wikipedia%2F" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fohtopico.com.br%2Fblog%2Finteresse-por-ia-na-wikipedia%2F" target="_blank" rel="noopener">Facebook<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://wa.me/?text=O%20interesse%20por%20intelig%C3%AAncia%20artificial%20na%20Wikip%C3%A9dia%20https%3A%2F%2Fohtopico.com.br%2Fblog%2Finteresse-por-ia-na-wikipedia%2F" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a>
+    </div>
+    <aside class="autora" aria-labelledby="sobre-autora">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="72" height="72" loading="lazy">
+        <div>
+            <h2 id="sobre-autora">Júlia Roberta Quoos Alves</h2>
+            <p>Professora de computação no RS, mestranda em Ciência da Computação na UFSM e formadora de professores em inteligência artificial.</p>
+            <p class="links"><a href="/mentoria/">Mentoria para professores</a> <a href="/ia-pra-prof/">Guia IA pra Prof</a> <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a></p>
+        </div>
+    </aside>
+    <nav class="vizinhos" aria-label="Outros posts"><a class="ant" href="/blog/mundo-jogo-bncc-computacao/" rel="prev"><span>◄ Anterior</span>Mundo: um jogo gratuito de BNCC Computação do 6º ano ao Ensino Médio</a></nav>
+</article>
+        </main>
+        <aside class="lateral lateral-esq" aria-label="Menu do blog">
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Navegue</h2>
+                <ul class="lista-menu"><li><a href="/"><span aria-hidden="true">◄</span> Área de trabalho</a></li><li><a href="/blog/" aria-current="page"><span aria-hidden="true">⌂</span> Início do blog</a></li><li><a href="/formacao-e-mentoria/"><span aria-hidden="true">✦</span> Formação e mentoria</a></li><li><a href="/para-escolas/"><span aria-hidden="true">▣</span> Para escolas e redes</a></li><li><a href="/prompts-para-professores/"><span aria-hidden="true">❖</span> Biblioteca de prompts</a></li><li><a href="/quiz-pensamento-computacional/"><span aria-hidden="true">✱</span> Quiz de pensamento computacional</a></li><li><a href="/teste-proficiencia-informatica/"><span aria-hidden="true">▤</span> Teste de informática</a></li><li><a href="/curriculo/"><span aria-hidden="true">☺</span> Currículo</a></li></ul>
+                <button type="button" class="btn98 tema-btn" id="tema-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> Tema claro/escuro</button>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Temas</h2>
+                <ul class="lista-menu"><li><a href="/blog/categoria/sobre-mim/">Sobre mim</a></li><li><a href="/blog/categoria/ia-na-pratica/">IA na prática</a></li><li><a href="/blog/categoria/formacao-de-professores-em-ia/">Formação de professores em IA</a></li><li><a href="/blog/categoria/etica-e-lgpd/">Ética e LGPD</a></li><li><a href="/blog/categoria/computacao-e-bncc/">Computação e BNCC</a></li><li><a href="/blog/categoria/para-estudantes/">Para estudantes</a></li><li><a href="/blog/categoria/bit-a-bit/">Bit a Bit</a></li><li><a href="/blog/categoria/jogos/">Jogos</a></li><li><a href="/blog/categoria/matematica-em-sala/">Matemática em sala</a></li></ul>
+            </section>
+            <section class="caixa caixa-verde">
+                <h2 class="caixa-titulo">★ Posts recentes</h2>
+                <ul class="lista-recentes"><li><a href="/blog/interesse-por-ia-na-wikipedia/">O interesse por inteligência artificial na Wikipédia</a></li><li><a href="/blog/mundo-jogo-bncc-computacao/">Mundo: um jogo gratuito de BNCC Computação do 6º ano ao Ensino Médio</a></li><li><a href="/blog/como-ensinar-ciberseguranca-na-escola/">Como ensinar cibersegurança na escola</a></li><li><a href="/blog/ef06co02-linguagem-de-programacao-6-ano/">Algoritmos com sequência, repetição e decisão: atividade para o 6º ano (EF06CO02)</a></li><li><a href="/blog/como-montar-um-robo-do-zero/">Como montar um robô do zero</a></li></ul>
+            </section>
+        </aside>
+        <aside class="lateral lateral-dir" aria-label="Projetos e sobre a autora">
+            <nav class="caixa caixa-verde caixa-projetos" aria-label="Projetos">
+                <h2 class="caixa-titulo">★ Projetos</h2>
+                <ul class="lista-menu"><li><a href="/material-didatico/"><span aria-hidden="true">▲</span> Material didático</a></li><li><a href="/material-adaptado/"><span aria-hidden="true">◆</span> Material adaptado</a></li><li><a href="/ia-pra-prof/"><span aria-hidden="true">✎</span> Guia IA pra Prof</a></li><li><a href="/tech-pra-prof/"><span aria-hidden="true">◇</span> Guia Tech pra Prof</a></li><li><a href="/computacao-na-escola/"><span aria-hidden="true">▦</span> Computação na escola</a></li><li><a href="/lei-do-celular-nas-escolas/"><span aria-hidden="true">▮</span> Lei do celular nas escolas</a></li><li><a href="/matematica-adaptada/"><span aria-hidden="true">✚</span> Matemática adaptada</a></li><li><a href="/assistencia-por-voz/"><span aria-hidden="true">◉</span> Assistência por voz</a></li><li><a href="/mundo/professores/"><span aria-hidden="true">⬢</span> Mundo para professores</a></li></ul>
+            </nav>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Quem escreve</h2>
+                <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
+                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA. Do código ao quadro.</p>
+                <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
+            </section>
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Formação e mentoria</h2>
+                <p>Mentoria individual para professores, a partir de R$ 200 a sessão, e formação para escolas e redes.</p>
+                <a class="btn98 escuro" href="/formacao-e-mentoria/">Ver as opções</a>
+            </section>
+            <section class="caixa caixa-contador">
+                <h2 class="caixa-titulo">★ Visitas</h2>
+                <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
+                <p class="miudo">Contador do GoatCounter, sem identificar quem visita. <a href="/privacidade/">Privacidade</a></p>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Selos</h2>
+                <ul class="selos">
+                    <li class="selo selo-amarelo">feito à mão</li>
+                    <li class="selo selo-verde"><a href="/privacidade/">privacidade</a></li>
+                    <li class="selo selo-vermelho">♥ professores</li>
+                    <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</div>
+</div>
+<footer class="rodape">
+    <nav class="letreiro" aria-label="Destaques"><a href="/blog/interesse-por-ia-na-wikipedia/">✦ Post novo: O interesse por inteligência artificial na Wikipédia</a><a href="/formacao-e-mentoria/">✦ Formação e mentoria para professores, escolas e redes</a><a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a><a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a><a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a></nav>
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/topico.tech/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/apoie/">Apoie o projeto</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a> · <a href="/privacidade/">Privacidade</a></p>
+</footer>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/blog/assets/blog.js?v=c178254ee5" defer></script>
+<script src="/assistente/assistente.js?v=edf45ba561" defer></script>
+</body>
+</html>
