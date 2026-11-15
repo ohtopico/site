@@ -5,6 +5,8 @@
   const T = 'stroke="#111" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
   const V = '#2fa865', A = '#ffd23f', R = '#ef5a4c', B = '#fff', C = '#f2efe6';
   window.ICONES_JOGOS = {
+    'achados-da-convencao': `<rect x="6" y="34" width="22" height="22" rx="3" fill="${V}" ${T}/><rect x="11" y="34" width="11" height="7" fill="${B}" ${T}/><rect x="10" y="46" width="14" height="8" rx="1.5" fill="${B}" ${T}/>
+      <circle cx="38" cy="24" r="15" fill="${C}" ${T}/><circle cx="38" cy="24" r="9" fill="${A}" ${T}/><path d="M49 35l9 9" stroke="#111" stroke-width="6" stroke-linecap="round"/>`,
     robo: `<line x1="32" y1="6" x2="32" y2="14" ${T}/><circle cx="32" cy="6" r="3" fill="${R}" ${T}/>
       <rect x="14" y="14" width="36" height="28" rx="8" fill="${V}" ${T}/><circle cx="25" cy="27" r="5" fill="${B}" ${T}/><circle cx="39" cy="27" r="5" fill="${B}" ${T}/>
       <circle cx="25" cy="27" r="1.8" fill="#111"/><circle cx="39" cy="27" r="1.8" fill="#111"/><path d="M26 36h12" ${T}/>

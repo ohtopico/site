@@ -6,10 +6,10 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Achados da Convenção: jogo de objetos escondidos | Júlia Quoos</title>
+<title>Achados da Convenção: jogo de Computação | Júlia Quoos</title>
 <meta name="description" content="Jogo de achar objetos escondidos numa convenção de computação lotada: disquete, pen drive, placa de robótica, processador e mais, com curiosidades sobre cada peça.">
 <link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/achados-da-convencao.html">
-<meta property="og:title" content="Achados da Convenção: jogo de objetos escondidos | Júlia Quoos">
+<meta property="og:title" content="Achados da Convenção: jogo de Computação | Júlia Quoos">
 <meta property="og:description" content="Uma convenção de computação lotada e vários objetos perdidos no meio da multidão. Ache todos e descubra para que serve cada um.">
 <meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/achados-da-convencao.html">
 <meta property="og:type" content="website">
@@ -31,6 +31,10 @@
   .ac-topo .btn { padding: 8px 14px; min-height: 44px; font-size: 15px; }
   .ac-corpo { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 14px; align-items: start; }
   .ac-cena-box { position: relative; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: #fbf6ee; aspect-ratio: 16 / 10; }
+  .ac-esq { container-type: inline-size; min-width: 0; }
+  .ac-cena-box:has(.ac-capa:not([hidden])) { aspect-ratio: auto; min-height: 62.5cqw; }
+  .ac-cena-box:has(.ac-capa:not([hidden])) #cena { position: absolute; inset: 0; }
+  .ac-cena-box:has(.ac-capa:not([hidden])) .ac-capa { position: relative; min-height: 62.5cqw; }
   .ac-cena-box:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
   #cena { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; user-select: none; -webkit-user-select: none; }
   #cena:focus { outline: none; }
@@ -86,7 +90,9 @@
   .ac-cheia .ac-cena-box { aspect-ratio: auto; height: calc(100vh - 150px); }
   @media (max-width: 820px) {
     .ac-corpo { grid-template-columns: 1fr; }
-    .ac-lista ul { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .ac-lista ul { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 5px; }
+    .ac-item { font-size: 13px; min-height: 44px; padding: 3px 6px 3px 3px; gap: 6px; }
+    .ac-item svg { width: 32px; height: 32px; }
     .ac-lista { order: -1; }
   }
   @media print {
@@ -111,11 +117,25 @@
 
   gtag('config', 'G-Z7QDTBLC4K');
 </script>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Achados da Convenção","description":"Jogo de objetos escondidos numa convenção de computação lotada: ache o disquete, o pen drive, a placa de robótica, o processador e outros, e descubra para que serve cada um. Três níveis, dica, modo para leitor de tela e versão para imprimir e colorir.","url":"https://ohtopico.com.br/material-didatico/jogos/achados-da-convencao.html","image":"https://ohtopico.com.br/material-didatico/jogos/img/og-achados-da-convencao.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"2º ao 5º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"10–20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF02CO04","targetDescription":"Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF02CO05","targetDescription":"Reconhecer as características e usos das tecnologias computacionais no cotidiano dentro e fora da escola."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF03CO06","targetDescription":"Reconhecer que, para um computador realizar tarefas, ele se comunica com o mundo exterior com o uso de interfaces físicas (dispositivos de entrada e saída)."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF05CO05","targetDescription":"Identificar os componentes principais de um computador (dispositivos de entrada/saída, processadores e armazenamento)."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Achados da Convenção","item":"https://ohtopico.com.br/material-didatico/jogos/achados-da-convencao.html"}]}
+</script>
+<!-- dados estruturados: fim -->
 </head>
 <body>
 <header id="topbar"></header>
 <main class="wrap">
-  <div class="game-head" id="game-head"></div>
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="crumbs no-print"><a href="../jogos/">← Jogos</a></div>
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">2º ao 5º ano</span><span class="tag">⏱ 10–20 min</span></div>
+      <h1>Achados da Convenção</h1>
+      <p class="muted" style="max-width:720px">Jogo de objetos escondidos numa convenção de computação lotada: ache o disquete, o pen drive, a placa de robótica, o processador e outros, e descubra para que serve cada um. Três níveis, dica, modo para leitor de tela e versão para imprimir e colorir.</p>
+      <div class="tags"><a class="tag code co" href="../catalogo.html?hab=EF02CO04" title="EF02CO04 — Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware.">EF02CO04</a><a class="tag code co" href="../catalogo.html?hab=EF02CO05" title="EF02CO05 — Reconhecer as características e usos das tecnologias computacionais no cotidiano dentro e fora da escola.">EF02CO05</a><a class="tag code co" href="../catalogo.html?hab=EF03CO06" title="EF03CO06 — Reconhecer que, para um computador realizar tarefas, ele se comunica com o mundo exterior com o uso de interfaces físicas (dispositivos de entrada e saída).">EF03CO06</a><a class="tag code co" href="../catalogo.html?hab=EF05CO05" title="EF05CO05 — Identificar os componentes principais de um computador (dispositivos de entrada/saída, processadores e armazenamento).">EF05CO05</a></div>
+      <div class="game-acoes no-print"><button class="btn ghost" type="button" data-usar-aula="">🏫 Usar na minha aula</button></div><!-- cab: fim --></div>
   <details class="howto">
     <summary>Como jogar</summary>
     <p>O urso, a coelha e o gatinho foram à Convenção de Computação e perderam umas coisas no meio da multidão. A lista ao lado mostra o que procurar: <strong>clique ou toque no objeto</strong> quando achar.</p>
@@ -143,7 +163,7 @@
       <button class="btn ghost" type="button" id="b-nova">Nova cena</button>
     </div>
     <div class="ac-corpo">
-      <div>
+      <div class="ac-esq">
         <div class="ac-cena-box" id="cena-box">
           <svg id="cena" viewBox="0 0 1600 1000" preserveAspectRatio="none" tabindex="0" role="img" aria-label="Cena da convenção de computação, cheia de gente e de estandes. Use as setas para andar, mais e menos para aproximar e Enter para procurar no centro."></svg>
           <div class="ac-mira" aria-hidden="true"></div>
@@ -175,9 +195,47 @@
 
   <div id="impressao" aria-hidden="true"></div>
 
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Achados da Convenção</strong> é um jogo gratuito de Computação para o 2º ao 5º ano, pensado para cerca de 10–20 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Jogo de objetos escondidos numa convenção de computação lotada: ache o disquete, o pen drive, a placa de robótica, o processador e outros, e descubra para que serve cada um. Três níveis, dica, modo para leitor de tela e versão para imprimir e colorir.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../catalogo.html?hab=EF02CO04"><strong>EF02CO04</strong></a>: Diferenciar componentes físicos (hardware) e programas que fornecem as instruções (software) para o hardware.</li>
+      <li><a href="../catalogo.html?hab=EF02CO05"><strong>EF02CO05</strong></a>: Reconhecer as características e usos das tecnologias computacionais no cotidiano dentro e fora da escola.</li>
+      <li><a href="../catalogo.html?hab=EF03CO06"><strong>EF03CO06</strong></a>: Reconhecer que, para um computador realizar tarefas, ele se comunica com o mundo exterior com o uso de interfaces físicas (dispositivos de entrada e saída).</li>
+      <li><a href="../catalogo.html?hab=EF05CO05"><strong>EF05CO05</strong></a>: Identificar os componentes principais de um computador (dispositivos de entrada/saída, processadores e armazenamento).</li>
+    </ul>
+    <p></p>
+  </details>
+  <!-- professor: fim -->
   <h2 style="font-size:24px">Continue explorando</h2>
-  <div class="related" id="related"></div>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/pacotes.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Correio de Pacotes</strong>
+          <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+        </a><!-- rel: fim --></div>
 </main>
+<!-- faixa: início (gerado por _fonte/material/gerar.js) -->
+<link rel="stylesheet" href="/assets/faixa.css?v=d06f9f92">
+<aside class="faixa-jq" aria-label="Júlia Quoos: material gratuito, apoio e formação">
+<div class="faixa-jq-in">
+<p class="faixa-jq-txt"><strong>Júlia Quoos</strong> · Computação e IA na escola, do plano de aula à formação do professor. O material é gratuito e feito por uma professora; se ajudou na sua aula, dá para apoiar o projeto ou levar a formação para a escola.</p>
+<ul class="faixa-jq-links">
+<li><a href="/material-didatico/">Material gratuito</a></li>
+<li><a class="faixa-jq-apoie" href="/apoie/">Apoiar a partir de R$ 5</a></li>
+<li><a href="/formacao-e-mentoria/">Formação e mentoria</a></li>
+<li><a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" target="_blank" rel="noopener">Canal no WhatsApp</a></li>
+</ul>
+</div>
+</aside>
+<!-- faixa: fim -->
 <footer id="footer"></footer>
 
 <script>window.MD_BASE = '../';</script>
