@@ -89,6 +89,7 @@ const IMAGENS = [
      O #captura pede à página para abrir sem a tela de boas-vindas. */
   ...[
     ['fabrica-logica', 'Fábrica', 'Lógica', 'Uma fábrica de componentes com um andar por setor: algoritmos, dados, planilhas, redes e decisões', ['Computação', 'Simulação', '6º ao 9º ano']],
+    ['jogo-dos-icones', 'Jogo dos', 'Ícones', 'Você reconhece um programa só pelo ícone? Aplicativos de hoje e clássicos da internet, com uma curiosidade em cada resposta', ['Computação', 'Quiz', '5º ao 9º ano']],
     ['achados-da-convencao', 'Achados da', 'Convenção', 'Uma convenção de computação lotada e objetos perdidos na multidão: ache todos e descubra para que serve cada um', ['Computação', 'Objetos escondidos', '2º ao 5º ano']],
     ['valor-moeda', 'Adivinhe o valor', 'da moeda', 'Numismática na aula: moedas do Real, porta-moedas, cruzeiro em real e moedas de coleção', ['Matemática', 'Numismática', '6º e 7º ano']],
     ['cunhe-moeda', 'Cunhe sua', 'própria moeda', 'Metal, diâmetro, área, simetria e custo: desenhe e cunhe a moeda da turma', ['Matemática', 'Numismática', '7º e 8º ano']]

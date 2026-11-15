@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Jogo dos Ícones: jogo de Computação | Júlia Quoos</title>
+<meta name="description" content="Quiz de ícones de programas e sites: reconheça os aplicativos de hoje e os clássicos da internet, como MSN, Orkut, Winamp e ICQ, com uma curiosidade em cada resposta.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/jogo-dos-icones.html">
+<meta property="og:title" content="Jogo dos Ícones: jogo de Computação | Júlia Quoos">
+<meta property="og:description" content="Você reconhece um programa só pelo ícone? Aplicativos de hoje e clássicos da internet, com uma curiosidade em cada resposta.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/jogo-dos-icones.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/jogos/img/og-jogo-dos-icones.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jogo dos Ícones: quiz de programas e sites">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta name="twitter:image" content="https://ohtopico.com.br/material-didatico/jogos/img/og-jogo-dos-icones.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  .ji-wrap { max-width: 760px; margin: 0 auto; }
+  .ji-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .ji-config { display: grid; gap: 18px; }
+  .ji-config h3 { margin: 0 0 6px; font-size: 18px; }
+  .ji-config .chip { white-space: normal; text-align: left; max-width: 100%; }
+  .ji-capa { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 420px; margin: 0 auto 6px; }
+  .ji-capa span {
+    aspect-ratio: 1; border: 1.5px solid var(--ink); border-radius: 22%; display: grid; place-items: center;
+    font-family: var(--display); font-size: 26px; color: var(--ink); box-shadow: 3px 3px 0 var(--ink);
+  }
+  .ji-capa span:nth-child(3n+1) { background: var(--accent-soft); }
+  .ji-capa span:nth-child(3n+2) { background: var(--ok-soft); }
+  .ji-capa span:nth-child(3n) { background: var(--bad-soft); }
+  .ji-card {
+    border: 1.5px solid var(--ink); border-radius: 22px; background: var(--paper); padding: 18px;
+    box-shadow: 6px 6px 0 var(--ink); margin-bottom: 18px; text-align: center;
+  }
+  .ji-card .rot { font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+  .ji-card h3 { margin: 4px 0 12px; font-size: 22px; }
+  .ji-logo {
+    width: 180px; height: 180px; margin: 0 auto 10px; border-radius: 28px; background: #fff;
+    border: 1.5px solid var(--line); display: grid; place-items: center; overflow: hidden;
+  }
+  .ji-logo img { max-width: 136px; max-height: 136px; width: auto; height: auto; display: block; }
+  .ji-logo.pixel img { image-rendering: pixelated; width: 136px; height: auto; filter: blur(.3px); }
+  .ji-desc { font-size: 14.5px; color: var(--ink-2); max-width: 520px; margin: 0 auto; }
+  .ji-desc[hidden] { display: none; }
+  .ji-alts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .ji-alts button {
+    min-height: 52px; border: 1.5px solid var(--ink); border-radius: 16px; background: var(--paper); color: var(--ink);
+    font: inherit; font-weight: 600; font-size: 16px; padding: 8px 12px; cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
+  }
+  .ji-alts button:hover:not(:disabled) { background: var(--accent-soft); }
+  .ji-alts button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .ji-alts button:disabled { cursor: default; }
+  .ji-alts button.certa { background: var(--ok-soft); border-color: var(--ok); }
+  .ji-alts button.errada { background: var(--bad-soft); border-color: var(--bad); }
+  .ji-alts button .marca { font-weight: 700; margin-right: 4px; }
+  .ji-exp { margin-top: 14px; border-radius: 18px; padding: 14px 16px; font-size: 15px; text-align: left; }
+  .ji-exp.ok { background: var(--ok-soft); }
+  .ji-exp.bad { background: var(--bad-soft); }
+  .ji-exp p { margin: 6px 0 0; }
+  .cat { font-size: 12px; font-weight: 600; padding: 1px 9px; border-radius: 99px; background: var(--pill); color: var(--ink); white-space: nowrap; }
+  .cat.classico { background: #fff2bf; color: #4d3c00; }
+  .center { text-align: center; padding: 20px 0; }
+  .ji-res { list-style: none; padding: 0; margin: 14px auto; max-width: 560px; display: grid; gap: 6px; text-align: left; }
+  .ji-res li { display: flex; gap: 10px; align-items: center; border: 1.5px solid var(--line); border-radius: 14px; padding: 6px 10px; font-size: 14.5px; }
+  .ji-res li img { width: 34px; height: 34px; object-fit: contain; background: #fff; border-radius: 8px; flex: none; }
+  .ji-res li .ok { color: var(--ok); font-weight: 700; } .ji-res li .bad { color: var(--bad); font-weight: 700; }
+  .ji-gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .ji-gal article { border: 1.5px solid var(--ink); border-radius: 18px; padding: 12px; background: var(--paper); display: grid; gap: 6px; align-content: start; }
+  .ji-gal .topo { display: flex; gap: 10px; align-items: center; }
+  .ji-gal .topo img { width: 52px; height: 52px; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid var(--line); padding: 4px; flex: none; }
+  .ji-gal h3 { margin: 0; font-size: 16.5px; }
+  .ji-gal p { margin: 0; font-size: 14px; color: var(--ink-2); }
+  .ji-gal .fonte { font-size: 12px; color: var(--ink-3); }
+  .ji-aviso { font-size: 13px; color: var(--ink-3); margin-top: 18px; }
+  @media (max-width: 520px) {
+    .ji-alts { grid-template-columns: 1fr; }
+    .ji-logo { width: 150px; height: 150px; }
+    .ji-logo img, .ji-logo.pixel img { max-width: 112px; max-height: 112px; }
+    .ji-logo.pixel img { width: 112px; }
+    .ji-card h3 { font-size: 19px; }
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cat.classico { background: #3a3110; color: #ffe27a; } }
+  :root[data-theme="dark"] .cat.classico { background: #3a3110; color: #ffe27a; }
+  @media print { .ji-tabs, .btn-row { display: none !important; } .ji-gal article { break-inside: avoid; box-shadow: none; } }
+</style>
+<!-- dados estruturados: início (gerado por _fonte/material/gerar.js) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Jogo dos Ícones","description":"Quiz de ícones de programas e sites: reconheça os aplicativos de hoje e os clássicos da internet, como MSN, Orkut, Winamp e ICQ. Cada resposta traz o ano e uma curiosidade. Três níveis, galeria para estudar e descrição dos ícones para leitor de tela.","url":"https://ohtopico.com.br/material-didatico/jogos/jogo-dos-icones.html","image":"https://ohtopico.com.br/material-didatico/jogos/img/og-jogo-dos-icones.jpg","inLanguage":"pt-BR","learningResourceType":"Jogo educativo","educationalLevel":"5º ao 9º ano do Ensino Fundamental","about":["Computação"],"isAccessibleForFree":true,"timeRequired":"10–20 min","audience":{"@type":"EducationalAudience","educationalRole":"student"},"educationalAlignment":[{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF05CO07","targetDescription":"Reconhecer a necessidade de um sistema operacional para a execução de programas e gerenciamento do hardware."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF06CO10","targetDescription":"Analisar o consumo de tecnologia na sociedade, a produção dos recursos, a obsolescência e a sustentabilidade."},{"@type":"AlignmentObject","alignmentType":"teaches","educationalFramework":"BNCC","targetName":"EF09CO07","targetDescription":"Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais."}],"author":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"publisher":{"@type":"Person","@id":"https://ohtopico.com.br/#julia","name":"Júlia Roberta Quoos Alves","url":"https://ohtopico.com.br/"},"license":"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://ohtopico.com.br/"},{"@type":"ListItem","position":2,"name":"Material didático","item":"https://ohtopico.com.br/material-didatico/"},{"@type":"ListItem","position":3,"name":"Jogos","item":"https://ohtopico.com.br/material-didatico/jogos/"},{"@type":"ListItem","position":4,"name":"Jogo dos Ícones","item":"https://ohtopico.com.br/material-didatico/jogos/jogo-dos-icones.html"}]}
+</script>
+<!-- dados estruturados: fim -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"><!-- cab: início (gerado por _fonte/material/gerar.js) -->
+      <div class="crumbs no-print"><a href="../jogos/">← Jogos</a></div>
+      <div class="tags" style="margin-bottom:12px"><span class="tag co">Computação</span><span class="tag">5º ao 9º ano</span><span class="tag">⏱ 10–20 min</span></div>
+      <h1>Jogo dos Ícones</h1>
+      <p class="muted" style="max-width:720px">Quiz de ícones de programas e sites: reconheça os aplicativos de hoje e os clássicos da internet, como MSN, Orkut, Winamp e ICQ. Cada resposta traz o ano e uma curiosidade. Três níveis, galeria para estudar e descrição dos ícones para leitor de tela.</p>
+      <div class="tags"><a class="tag code co" href="../catalogo.html?hab=EF05CO07" title="EF05CO07 — Reconhecer a necessidade de um sistema operacional para a execução de programas e gerenciamento do hardware.">EF05CO07</a><a class="tag code co" href="../bncc/ef06co10/" title="EF06CO10 — Analisar o consumo de tecnologia na sociedade, a produção dos recursos, a obsolescência e a sustentabilidade.">EF06CO10</a><a class="tag code co" href="../bncc/ef09co07/" title="EF09CO07 — Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.">EF09CO07</a></div><p class="aprenda-links no-print">📖 Antes de começar, aprenda: <a href="../aprenda/ef06co10/">Tecnologia, consumo e meio ambiente</a> · <a href="../aprenda/ef09co07/">Impactos da tecnologia na sociedade</a></p>
+      <div class="game-acoes no-print"><button class="btn ghost" type="button" data-usar-aula="">🏫 Usar na minha aula</button></div><!-- cab: fim --></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>Aparece o ícone de um programa, aplicativo ou site e você escolhe, entre as alternativas, de onde ele é. Quando o logotipo já traz o nome escrito, a pergunta muda: você responde para que aquele programa ou site serve (ou servia). Depois de cada resposta vem uma curiosidade: o ano em que surgiu, quem criou e o que mudou.</p>
+    <p>Escolha a coleção (<strong>Programas de hoje</strong>, <strong>Clássicos da internet</strong> ou as duas misturadas) e o nível. No Fácil são três alternativas; no Médio, quatro alternativas parecidas entre si; no Difícil, o ícone aparece pixelado. A aba <strong>Galeria</strong> mostra todos os ícones com as curiosidades, para estudar antes ou projetar na aula.</p>
+    <p>Quem usa leitor de tela pode ligar a descrição do ícone: ela conta como o desenho é, sem dizer o nome.</p>
+  </details>
+
+  <div class="game-stage"><div class="ji-wrap">
+    <div class="ji-tabs" role="tablist">
+      <button class="chip" type="button" role="tab" id="tab-jogar" aria-pressed="true">Jogar</button>
+      <button class="chip" type="button" role="tab" id="tab-galeria" aria-pressed="false">Galeria</button>
+    </div>
+    <div id="stage"></div>
+    <p class="ji-aviso">Os logotipos pertencem às respectivas empresas e aparecem aqui só para identificar cada programa, numa atividade educativa. As imagens vêm do Wikimedia Commons, com a fonte e a licença de cada uma na Galeria.</p>
+  </div></div>
+
+  <!-- professor: início (gerado por _fonte/material/gerar.js) -->
+  <details class="prof">
+    <summary>Para o professor</summary>
+    <p><strong>Jogo dos Ícones</strong> é um jogo gratuito de Computação para o 5º ao 9º ano, pensado para cerca de 10–20 min de aula. Funciona no navegador do computador, do tablet ou do celular, sem cadastro e sem instalar nada. Quiz de ícones de programas e sites: reconheça os aplicativos de hoje e os clássicos da internet, como MSN, Orkut, Winamp e ICQ. Cada resposta traz o ano e uma curiosidade. Três níveis, galeria para estudar e descrição dos ícones para leitor de tela.</p>
+    <p>Habilidades da BNCC trabalhadas:</p>
+    <ul>
+      <li><a href="../catalogo.html?hab=EF05CO07"><strong>EF05CO07</strong></a>: Reconhecer a necessidade de um sistema operacional para a execução de programas e gerenciamento do hardware.</li>
+      <li><a href="../bncc/ef06co10/"><strong>EF06CO10</strong></a>: Analisar o consumo de tecnologia na sociedade, a produção dos recursos, a obsolescência e a sustentabilidade.</li>
+      <li><a href="../bncc/ef09co07/"><strong>EF09CO07</strong></a>: Avaliar aplicações e implicações políticas, socioambientais e culturais das tecnologias digitais.</li>
+    </ul>
+    <p>Para fixar, há as listas <a href="../listas/tecnologia-digital-sustentabilidade-6-ano/">Tecnologia digital e sustentabilidade (6º ano)</a>, <a href="../listas/tecnologia-digital-sociedade-9-ano/">Tecnologia digital e sociedade (9º ano)</a>, com gabarito. Os slides da aula expositiva de EF06CO10, EF09CO07 estão na página de cada habilidade.</p>
+  </details>
+  <!-- professor: fim -->
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"><!-- rel: início (gerado por _fonte/material/gerar.js) -->
+        <a class="card" href="../jogos/robo.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Robô Coletor</strong>
+          <span class="small muted">Monte a sequência de comandos, use a repetição e leve o robô até todas as estrelas com o menor programa possível.</span>
+        </a>
+        <a class="card" href="../jogos/pacotes.html">
+          <span class="small muted">🎮 Jogo</span>
+          <strong>Correio de Pacotes</strong>
+          <span class="small muted">As mensagens chegam picadas e fora de ordem. Remonte os pacotes pelo número e peça de novo os que se perderam no caminho.</span>
+        </a><!-- rel: fim --></div>
+</main>
+<!-- faixa: início (gerado por _fonte/material/gerar.js) -->
+<link rel="stylesheet" href="/assets/faixa.css?v=d06f9f92">
+<aside class="faixa-jq" aria-label="Júlia Quoos: material gratuito, apoio e formação">
+<div class="faixa-jq-in">
+<p class="faixa-jq-txt"><strong>Júlia Quoos</strong> · Computação e IA na escola, do plano de aula à formação do professor. O material é gratuito e feito por uma professora; se ajudou na sua aula, dá para apoiar o projeto ou levar a formação para a escola.</p>
+<ul class="faixa-jq-links">
+<li><a href="/material-didatico/">Material gratuito</a></li>
+<li><a class="faixa-jq-apoie" href="/apoie/">Apoiar a partir de R$ 5</a></li>
+<li><a href="/formacao-e-mentoria/">Formação e mentoria</a></li>
+<li><a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" target="_blank" rel="noopener">Canal no WhatsApp</a></li>
+</ul>
+</div>
+</aside>
+<!-- faixa: fim -->
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/listas.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('jogo-dos-icones');
+(function () {
+  const ID = 'jogo-dos-icones';
+  const IMG = 'img/icones/';
+  const CATS = { hoje: 'Programas de hoje', classico: 'Clássicos da internet' };
+  /* Grupos servem para escolher alternativas parecidas nos níveis Médio e Difícil. */
+  /* id, nome, coleção, tipo (i = só ícone, m = logotipo com o nome escrito), grupo, ano,
+     para que serve (usado nas perguntas de logotipo com nome), descrição sem o nome (leitor de tela), curiosidade */
+  const ITENS = [
+    ['chrome', 'Google Chrome', 'hoje', 'i', 'nav', 2008, 'Navegar na internet', 'Um círculo dividido em três partes, vermelha, amarela e verde, com um círculo azul no meio.', 'Lançado pelo Google em 2008, virou o navegador mais usado do mundo. O ícone lembra uma lente e usa as cores do Google.'],
+    ['firefox', 'Mozilla Firefox', 'hoje', 'i', 'nav', 2004, 'Navegar na internet', 'Uma raposa laranja e amarela enrolada em volta de um globo roxo.', 'Navegador livre lançado em 2004 pela Mozilla, que nasceu do código do antigo Netscape. Qualquer pessoa pode ver e estudar o código dele.'],
+    ['edge', 'Microsoft Edge', 'hoje', 'i', 'nav', 2015, 'Navegar na internet', 'Uma onda azul e verde que se curva como uma letra e.', 'Chegou em 2015 com o Windows 10 para substituir o Internet Explorer. Desde 2020 usa o mesmo motor de páginas do Chrome.'],
+    ['word', 'Microsoft Word', 'hoje', 'i', 'office', 1983, 'Escrever e formatar textos', 'Quadrado azul em degradê com a letra W branca num quadrado menor, à esquerda.', 'O editor de textos da Microsoft surgiu em 1983. Trabalhos escolares, currículos e ofícios costumam ser feitos nele ou em programas parecidos.'],
+    ['excel', 'Microsoft Excel', 'hoje', 'i', 'office', 1985, 'Fazer planilhas e cálculos', 'Blocos verdes em degradê com a letra X branca num quadrado menor, à esquerda.', 'A planilha da Microsoft é de 1985. Cada célula pode guardar um número ou uma fórmula, como =SOMA(A1:A10).'],
+    ['powerpoint', 'Microsoft PowerPoint', 'hoje', 'i', 'office', 1987, 'Montar apresentações de slides', 'Forma arredondada em vermelho e laranja com a letra P branca num quadrado menor, à esquerda.', 'Criado em 1987 por uma pequena empresa e comprado pela Microsoft no mesmo ano. Virou sinônimo de apresentação de slides.'],
+    ['teams', 'Microsoft Teams', 'hoje', 'i', 'office', 2017, 'Fazer reuniões e conversar em equipe', 'Duas cabeças roxas, como um grupo de pessoas, com a letra T branca num quadrado à frente.', 'Lançado em 2017, ficou muito conhecido nas aulas e reuniões a distância durante a pandemia de 2020.'],
+    ['classroom', 'Google Sala de Aula', 'hoje', 'i', 'office', 2014, 'Organizar turmas e tarefas da escola', 'Um quadro-verde com moldura amarela e três bonequinhos desenhados nele.', 'O Google Classroom é de 2014. O professor publica tarefas e materiais e a turma entrega os trabalhos pela internet.'],
+    ['acrobat', 'Adobe Acrobat Reader', 'hoje', 'i', 'office', 1993, 'Abrir e ler arquivos PDF', 'Quadrado vermelho com um traço branco que forma um triângulo curvo, como uma fita.', 'A Adobe criou o formato PDF em 1993, para um documento aparecer igual em qualquer computador. Em 2008 ele virou um padrão aberto.'],
+    ['drive', 'Google Drive', 'hoje', 'i', 'nuvem', 2012, 'Guardar arquivos na nuvem', 'Um triângulo formado por três faixas: verde, amarela e azul, com um pouco de vermelho.', 'Desde 2012 guarda arquivos na nuvem: em servidores do Google, e não só no seu computador. Dá para abrir de qualquer aparelho.'],
+    ['dropbox', 'Dropbox', 'hoje', 'i', 'nuvem', 2008, 'Guardar arquivos na nuvem', 'Uma caixa aberta azul desenhada com quatro losangos.', 'Lançado em 2008, popularizou a ideia de uma pasta que se sincroniza sozinha entre o computador, o celular e a nuvem.'],
+    ['gmail', 'Gmail', 'hoje', 'i', 'msg', 2004, 'Mandar e receber e-mails', 'Um envelope desenhado como uma letra M em azul, verde, amarelo e vermelho.', 'O e-mail do Google foi lançado em 1º de abril de 2004. Muita gente achou que era piada, porque oferecia 1 GB de espaço quando os outros davam poucos megabytes.'],
+    ['whatsapp', 'WhatsApp', 'hoje', 'i', 'msg', 2009, 'Trocar mensagens pelo celular', 'Um balão de fala branco com contorno verde e um telefone verde no meio.', 'Criado em 2009 e comprado pelo Facebook em 2014. No Brasil é um dos aplicativos mais usados para conversar, trabalhar e até vender.'],
+    ['telegram', 'Telegram', 'hoje', 'i', 'msg', 2013, 'Trocar mensagens pelo celular', 'Um círculo azul-claro com um avião de papel branco.', 'Aplicativo de mensagens criado em 2013 pelos irmãos russos Nikolai e Pavel Durov. O avião de papel lembra uma mensagem voando.'],
+    ['meet', 'Google Meet', 'hoje', 'i', 'msg', 2017, 'Fazer videochamadas', 'Uma câmera de vídeo desenhada com blocos verde, azul, vermelho e amarelo.', 'Serviço de videochamada do Google de 2017. Em 2020 ficou gratuito para todos e foi muito usado em aulas on-line.'],
+    ['youtube', 'YouTube', 'hoje', 'i', 'midia', 2005, 'Assistir e publicar vídeos', 'Um retângulo vermelho de cantos arredondados com um triângulo branco de "tocar" no meio.', 'O primeiro vídeo foi publicado em abril de 2005: 18 segundos num zoológico. O Google comprou o site em 2006.'],
+    ['spotify', 'Spotify', 'hoje', 'i', 'midia', 2008, 'Ouvir músicas e podcasts', 'Um círculo verde com três linhas pretas curvas, como ondas de som.', 'Serviço sueco de 2008 que popularizou o streaming: ouvir músicas pela internet sem baixar os arquivos. Chegou ao Brasil em 2014.'],
+    ['netflix', 'Netflix', 'hoje', 'i', 'midia', 1997, 'Assistir filmes e séries', 'Um quadrado preto com uma letra N vermelha, grossa, com sombra.', 'Começou em 1997 alugando DVDs pelo correio nos Estados Unidos. O streaming veio em 2007, e o serviço chegou ao Brasil em 2011.'],
+    ['tiktok', 'TikTok', 'hoje', 'i', 'midia', 2016, 'Ver e gravar vídeos curtos', 'Quadrado preto com uma nota musical branca em forma de letra d.', 'Criado na China em 2016 e espalhado pelo mundo a partir de 2018. O algoritmo escolhe o próximo vídeo pelo que você assistiu antes.'],
+    ['twitch', 'Twitch', 'hoje', 'i', 'midia', 2011, 'Assistir transmissões ao vivo', 'Um balão de fala roxo, quadrado, com dois traços verticais dentro, como olhos.', 'Plataforma de transmissões ao vivo de 2011, muito usada por quem joga videogame. A Amazon comprou o serviço em 2014.'],
+    ['vlc', 'VLC', 'hoje', 'i', 'midia', 2001, 'Tocar vídeos e músicas no computador', 'Um cone de trânsito laranja com listras brancas.', 'Programa livre, feito por estudantes na França, que toca quase qualquer formato. O cone veio de uma coleção de cones de trânsito do grupo.'],
+    ['instagram', 'Instagram', 'hoje', 'i', 'social', 2010, 'Postar fotos e vídeos', 'Uma câmera fotográfica desenhada em branco sobre um degradê de amarelo, rosa e roxo.', 'Lançado em 2010 só para fotos quadradas. Um dos criadores, Mike Krieger, é brasileiro. O Facebook comprou o aplicativo em 2012.'],
+    ['facebook', 'Facebook', 'hoje', 'i', 'social', 2004, 'Rede social para amigos e grupos', 'Um círculo azul com uma letra f branca.', 'Criado em 2004 por Mark Zuckerberg para estudantes da universidade de Harvard. Hoje a empresa dona dele também tem o Instagram e o WhatsApp.'],
+    ['x', 'X (antigo Twitter)', 'hoje', 'i', 'social', 2023, 'Publicar mensagens curtas', 'Uma letra X preta, formada por um traço grosso e um fino.', 'É o antigo Twitter, que trocou de nome e de logotipo em julho de 2023, depois de ser comprado por Elon Musk.'],
+    ['linkedin', 'LinkedIn', 'hoje', 'i', 'social', 2003, 'Rede social de trabalho e currículos', 'Quadrado azul com as letras i e n brancas.', 'Rede social profissional de 2003: cada perfil funciona como um currículo, e empresas divulgam vagas por lá.'],
+    ['snapchat', 'Snapchat', 'hoje', 'i', 'social', 2011, 'Mandar fotos que somem', 'Quadrado amarelo com um fantasminha branco de contorno preto.', 'Ficou famoso em 2011 com fotos que se apagam depois de vistas. Os filtros que colocam orelhas e óculos no rosto começaram lá.'],
+    ['pinterest', 'Pinterest', 'hoje', 'm', 'social', 2010, 'Juntar imagens e ideias num mural', 'A palavra escrita em letras vermelhas cursivas.', 'Site de 2010 que funciona como um mural de ideias: você "fixa" imagens de receitas, decoração e atividades em pastas.'],
+    ['maps', 'Google Maps', 'hoje', 'i', 'google', 2005, 'Ver mapas e traçar rotas', 'Um alfinete de mapa nas cores azul, verde, amarelo e vermelho.', 'Lançado em 2005. Para calcular a melhor rota, ele trata as ruas como um grafo, com distâncias e tempo de trânsito em cada trecho.'],
+    ['translate', 'Google Tradutor', 'hoje', 'i', 'google', 2006, 'Traduzir textos', 'Dois cartões sobrepostos: um azul com a letra G e um cinza com um caractere chinês.', 'Lançado em 2006, hoje traduz entre mais de cem idiomas. Usa inteligência artificial treinada com milhões de textos já traduzidos.'],
+    ['playstore', 'Google Play', 'hoje', 'i', 'google', 2012, 'Baixar aplicativos no Android', 'Um triângulo de "tocar" dividido em azul, verde, amarelo e vermelho.', 'A loja de aplicativos dos celulares Android ganhou este nome em 2012. Antes se chamava Android Market.'],
+    ['gemini', 'Gemini', 'hoje', 'i', 'ia', 2024, 'Conversar com uma inteligência artificial', 'Uma estrela de quatro pontas em degradê de azul, vermelho, amarelo e verde.', 'Assistente de inteligência artificial do Google. Em 2023 se chamava Bard e ganhou o nome Gemini em 2024.'],
+    ['chatgpt', 'ChatGPT', 'hoje', 'i', 'ia', 2022, 'Conversar com uma inteligência artificial', 'Uma flor preta formada por seis voltas entrelaçadas, como um nó.', 'Lançado pela OpenAI em novembro de 2022, chegou a 100 milhões de usuários em cerca de dois meses. É um modelo de linguagem: prevê a próxima palavra do texto.'],
+    ['windows', 'Windows', 'hoje', 'i', 'so', 1985, 'Sistema operacional de computador', 'Quatro quadrados azuis, separados por linhas brancas, como uma janela.', 'O sistema operacional da Microsoft começou em 1985. O nome quer dizer "janelas", porque cada programa abre numa janela na tela.'],
+    ['android', 'Android', 'hoje', 'i', 'so', 2008, 'Sistema operacional de celular', 'A cabeça de um robozinho verde, com duas antenas e dois olhos pretos.', 'O primeiro celular com Android saiu em 2008. É o sistema operacional mais usado em celulares no mundo, e o robô verde é o mascote.'],
+    ['apple', 'Apple', 'hoje', 'i', 'so', 1976, 'Empresa do iPhone e do Mac', 'Uma maçã preta com uma mordida do lado direito e uma folha em cima.', 'A empresa foi fundada em 1976 por Steve Jobs e Steve Wozniak numa garagem. A maçã mordida foi colorida, com listras de arco-íris, até 1998.'],
+    ['tux', 'Linux', 'hoje', 'i', 'so', 1991, 'Sistema operacional livre', 'Um pinguim preto e branco sentado, com bico e pés amarelos.', 'Linus Torvalds criou o Linux em 1991. O pinguim Tux é de 1996. O Linux roda na maioria dos servidores da internet e por baixo do Android.'],
+    ['python', 'Python', 'hoje', 'i', 'cria', 1991, 'Linguagem de programação', 'Duas cobras estilizadas, uma azul e uma amarela, encaixadas em forma de cruz.', 'Linguagem criada por Guido van Rossum em 1991. O nome vem do grupo de humor britânico Monty Python, e não da cobra.'],
+    ['photoshop', 'Adobe Photoshop', 'hoje', 'i', 'cria', 1990, 'Editar fotos e imagens', 'Quadrado azul-escuro com as letras P e s em azul-claro.', 'A primeira versão é de 1990, criada pelos irmãos Thomas e John Knoll. Editar uma foto virou "fazer um photoshop".'],
+    ['wikipedia', 'Wikipédia', 'hoje', 'i', 'cria', 2001, 'Enciclopédia escrita por voluntários', 'Um globo cinza feito de peças de quebra-cabeça com letras de vários alfabetos; faltam algumas peças no alto.', 'Enciclopédia livre de 2001. As peças que faltam no globo lembram que ela nunca fica pronta: qualquer pessoa pode escrever e corrigir.'],
+    ['steam', 'Steam', 'hoje', 'i', 'jogos', 2003, 'Comprar e jogar jogos no computador', 'Círculo azul-escuro com um desenho branco de engrenagem e pistão, como uma peça de máquina a vapor.', 'Loja de jogos para computador lançada em 2003. O nome quer dizer "vapor", por isso o desenho parece uma peça de máquina a vapor.'],
+    ['roblox', 'Roblox', 'hoje', 'm', 'jogos', 2006, 'Jogar e criar jogos on-line', 'A palavra escrita em letras pretas grossas; a letra o é um quadrado inclinado.', 'Lançado em 2006, quase todos os jogos dentro dele são feitos pelos próprios usuários, programados numa linguagem derivada da Lua, criada no Brasil.'],
+    ['duolingo', 'Duolingo', 'hoje', 'm', 'estudo', 2012, 'Aprender idiomas', 'A palavra escrita em letras verdes arredondadas.', 'Aplicativo de idiomas lançado em 2012 pelo guatemalteco Luis von Ahn, o mesmo criador do reCAPTCHA. O mascote é a coruja verde Duo.'],
+    ['kahoot', 'Kahoot!', 'hoje', 'm', 'estudo', 2013, 'Fazer quiz com a turma', 'A palavra escrita em letras roxas, com um ponto de exclamação no final.', 'Criado na Noruega em 2013. O professor projeta as perguntas e a turma responde pelo celular, entrando com um código numérico.'],
+    ['nubank', 'Nubank', 'hoje', 'm', 'compras', 2013, 'Banco digital', 'As letras n e u minúsculas, roxas, unidas num só traço.', 'Banco digital criado em São Paulo em 2013. Ficou conhecido pelo cartão roxo e por funcionar quase todo pelo aplicativo.'],
+    ['ifood', 'iFood', 'hoje', 'm', 'compras', 2011, 'Pedir comida pelo celular', 'A palavra escrita em letras vermelhas, com um sorriso embaixo.', 'Aplicativo brasileiro de entrega de comida criado em 2011. Junta restaurantes, entregadores e clientes numa só plataforma.'],
+
+    ['msn', 'MSN Messenger', 'classico', 'i', 'msg', 1999, 'Conversar por mensagem no computador', 'Dois bonequinhos lado a lado, um verde e um azul, com uma faixa laranja passando em volta.', 'Bate-papo da Microsoft lançado em 1999 e muito popular no Brasil nos anos 2000. Tinha o "chamar a atenção", que fazia a janela tremer. Foi desligado em 2013.'],
+    ['icq', 'ICQ', 'classico', 'i', 'msg', 1996, 'Conversar por mensagem no computador', 'Uma flor de pétalas verdes com uma pétala vermelha e o miolo amarelo.', 'Um dos primeiros programas de bate-papo, criado em Israel em 1996. O nome soa como "I seek you" (eu procuro você). Cada pessoa tinha um número. Foi desligado em 2024.'],
+    ['yahoo', 'Yahoo! Messenger', 'classico', 'i', 'msg', 1998, 'Conversar por mensagem no computador', 'Uma carinha redonda sorridente, branca e brilhante.', 'Bate-papo do Yahoo! de 1998, com os famosos emoticons animados. Foi desligado em 2018.'],
+    ['gtalk', 'Google Talk', 'classico', 'm', 'msg', 2005, 'Conversar por mensagem e voz', 'A palavra talk em letras coloridas, com um balão de fala no alto.', 'Bate-papo do Google de 2005, que funcionava dentro do Gmail. Foi substituído pelo Hangouts e desligado de vez em 2017.'],
+    ['skype', 'Skype', 'classico', 'i', 'msg', 2003, 'Fazer chamadas de voz e vídeo', 'Um círculo azul com uma letra S branca, como uma nuvem.', 'Desde 2003 fazia ligações de voz e vídeo pela internet, de graça entre computadores. A Microsoft comprou em 2011 e desligou em maio de 2025.'],
+    ['bbm', 'BlackBerry Messenger', 'classico', 'i', 'msg', 2005, 'Trocar mensagens entre celulares BlackBerry', 'Um balão de fala preto com pontinhos brancos que formam letras b.', 'Mensageiro de 2005 que só funcionava entre celulares BlackBerry, aqueles com teclado de botõezinhos. Cada aparelho tinha um PIN. Acabou em 2019.'],
+    ['hotmail', 'Hotmail', 'classico', 'm', 'msg', 1996, 'Mandar e receber e-mails', 'A palavra msn em laranja e, embaixo, outra palavra em letras pretas inclinadas.', 'Um dos primeiros e-mails gratuitos que funcionavam no navegador, de 1996. A Microsoft comprou em 1997, e em 2013 ele virou o Outlook.com.'],
+    ['ie', 'Internet Explorer', 'classico', 'i', 'nav', 1995, 'Navegar na internet', 'Uma letra e azul com um anel amarelado em volta, como a órbita de um planeta.', 'Navegador que vinha com o Windows desde 1995. Por volta de 2003 era usado por quase todo mundo. A Microsoft o aposentou em 2022.'],
+    ['netscape', 'Netscape Navigator', 'classico', 'i', 'nav', 1994, 'Navegar na internet', 'Um quadrado azul-esverdeado com uma letra N branca sobre o horizonte de um planeta.', 'Lançado em 1994, foi o primeiro navegador popular. Perdeu a "guerra dos navegadores" para o Internet Explorer, e o código dele deu origem ao Firefox.'],
+    ['winamp', 'Winamp', 'classico', 'i', 'midia', 1997, 'Tocar músicas MP3 no computador', 'Um raio laranja e amarelo dentro de um losango preto.', 'Tocador de músicas MP3 de 1997. Dava para trocar a "pele" (skin) do programa e deixar com a cara que você quisesse.'],
+    ['wmp', 'Windows Media Player', 'classico', 'i', 'midia', 1999, 'Tocar músicas e vídeos no computador', 'Um triângulo preto de "tocar" dentro de um anel com azul, verde, amarelo e vermelho.', 'Tocador de músicas e vídeos que acompanhou o Windows por mais de vinte anos. Muita gente usava para passar músicas de CDs para o computador.'],
+    ['napster', 'Napster', 'classico', 'i', 'midia', 1999, 'Trocar arquivos de música pela internet', 'A cara de um gatinho com fones de ouvido, em azul e branco.', 'Criado em 1999 por Shawn Fanning, de 18 anos, para trocar músicas MP3 direto entre computadores. Fechou em 2001 depois de processos por direitos autorais.'],
+    ['flash', 'Adobe Flash Player', 'classico', 'i', 'midia', 1996, 'Rodar animações e jogos nos sites', 'Quadrado vermelho-escuro com uma letra f branca curvada.', 'Por anos, quase todo joguinho e animação de site precisava do Flash. A Adobe encerrou o programa em 31 de dezembro de 2020.'],
+    ['vine', 'Vine', 'classico', 'i', 'midia', 2013, 'Publicar vídeos de 6 segundos', 'Quadrado verde com uma letra V branca desenhada como um galho.', 'Aplicativo de 2013 com vídeos de só 6 segundos, repetidos sem parar. Fechou em 2017, mas abriu caminho para os vídeos curtos de hoje.'],
+    ['orkut', 'Orkut', 'classico', 'm', 'social', 2004, 'Rede social de amigos e comunidades', 'A palavra escrita em letras rosa arredondadas.', 'Rede social do Google criada em 2004 pelo engenheiro Orkut Büyükkökten. Os brasileiros eram a maioria dos usuários, com scraps, depoimentos e comunidades. Fechou em 2014.'],
+    ['myspace', 'Myspace', 'classico', 'm', 'social', 2003, 'Rede social com perfis e músicas', 'A palavra escrita em letras pretas, sublinhada.', 'Rede social de 2003 em que cada perfil podia ser decorado e tocar uma música. Muitas bandas ficaram conhecidas por lá.'],
+    ['fotolog', 'Fotolog', 'classico', 'm', 'social', 2002, 'Publicar uma foto por dia', 'Um quadrado preto vazado seguido de uma palavra em letras pretas.', 'Site de 2002 em que cada pessoa postava uma foto por dia e recebia comentários. Fez muito sucesso no Brasil por volta de 2005.'],
+    ['googleplus', 'Google+', 'classico', 'i', 'social', 2011, 'Rede social do Google', 'Um círculo vermelho com a letra G e um sinal de mais, em branco.', 'Rede social do Google de 2011, em que os contatos eram separados em "círculos". Fechou para o público em 2019.'],
+    ['twitter', 'Twitter', 'classico', 'i', 'social', 2006, 'Publicar mensagens curtas', 'Um passarinho azul voando para a direita.', 'Rede de 2006 que começou com mensagens de no máximo 140 caracteres. O passarinho azul saiu de cena em 2023, quando o nome virou X.'],
+    ['blogger', 'Blogger', 'classico', 'i', 'cria', 1999, 'Criar um blog', 'Quadrado laranja com uma letra B branca arredondada.', 'Serviço de 1999 para criar blogs, comprado pelo Google em 2003. Muitos professores publicavam as atividades das turmas em blogs.'],
+    ['picasa', 'Picasa', 'classico', 'i', 'cria', 2002, 'Organizar e editar fotos', 'Um círculo como o diafragma de uma câmera, com pétalas coloridas.', 'Programa de 2002 para organizar as fotos do computador. O Google comprou em 2004 e encerrou em 2016.']
+  ].map(([id, nome, cat, tipo, grupo, ano, serve, desc, curio]) => ({ id, nome, cat, tipo, grupo, ano, serve, desc, curio }));
+  const POR_ID = Object.fromEntries(ITENS.map(i => [i.id, i]));
+
+  /* Fonte de cada imagem no Wikimedia Commons: arquivo original, licença, página */
+  const FONTES = {"chrome":["Google Chrome icon (February 2022).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Chrome_icon_(February_2022).svg"],"word":["Microsoft Office Word (2025–present).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Microsoft_Office_Word_(2025%E2%80%93present).svg"],"excel":["Microsoft Office Excel (2025–present).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Microsoft_Office_Excel_(2025%E2%80%93present).svg"],"whatsapp":["WhatsApp Logo green.svg","Domínio público","https://commons.wikimedia.org/wiki/File:WhatsApp_Logo_green.svg"],"youtube":["YouTube full-color icon (2017).svg","Domínio público","https://commons.wikimedia.org/wiki/File:YouTube_full-color_icon_(2017).svg"],"powerpoint":["Microsoft Office PowerPoint (2025–present).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Microsoft_Office_PowerPoint_(2025%E2%80%93present).svg"],"instagram":["Instagram logo 2016.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Instagram_logo_2016.svg"],"gmail":["Gmail icon (2020).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Gmail_icon_(2020).svg"],"facebook":["Facebook f logo (2019).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Facebook_f_logo_(2019).svg"],"tiktok":["Tiktok icon.svg","CC0","https://commons.wikimedia.org/wiki/File:Tiktok_icon.svg"],"spotify":["Spotify icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Spotify_icon.svg"],"netflix":["Netflix icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Netflix_icon.svg"],"drive":["Google Drive icon (2020).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Drive_icon_(2020).svg"],"firefox":["Firefox logo, 2019.svg","MPL 2","https://commons.wikimedia.org/wiki/File:Firefox_logo,_2019.svg"],"windows":["Windows logo - 2021.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Windows_logo_-_2021.svg"],"android":["Android Robot Head 2023.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Android_Robot_Head_2023.svg"],"edge":["Microsoft Edge logo (2019).svg","MIT","https://commons.wikimedia.org/wiki/File:Microsoft_Edge_logo_(2019).svg"],"telegram":["Telegram logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Telegram_logo.svg"],"tux":["Tux.svg","Attribution","https://commons.wikimedia.org/wiki/File:Tux.svg"],"vlc":["VLC Icon.svg","GPL","https://commons.wikimedia.org/wiki/File:VLC_Icon.svg"],"python":["Python-logo-notext.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Python-logo-notext.svg"],"linkedin":["LinkedIn icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:LinkedIn_icon.svg"],"maps":["Google Maps icon (2020).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Maps_icon_(2020).svg"],"wikipedia":["Wikipedia-logo-v2.svg","CC BY-SA 3.0","https://commons.wikimedia.org/wiki/File:Wikipedia-logo-v2.svg"],"classroom":["Google Classroom Logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Classroom_Logo.svg"],"teams":["Microsoft Office Teams (2025–present).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Microsoft_Office_Teams_(2025%E2%80%93present).svg"],"x":["X logo 2023.svg","Domínio público","https://commons.wikimedia.org/wiki/File:X_logo_2023.svg"],"chatgpt":["ChatGPT-Logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:ChatGPT-Logo.svg"],"pinterest":["Pinterest Logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Pinterest_Logo.svg"],"gemini":["Google Gemini icon 2025.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Gemini_icon_2025.svg"],"twitch":["Twitch Glitch Logo Purple.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Twitch_Glitch_Logo_Purple.svg"],"steam":["Steam icon logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Steam_icon_logo.svg"],"snapchat":["Snapchat-logo-svgrepo-com.svg","CC BY 4.0","https://commons.wikimedia.org/wiki/File:Snapchat-logo-svgrepo-com.svg"],"duolingo":["Duolingo logo (2019).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Duolingo_logo_(2019).svg"],"nubank":["Nubank logo 2021.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Nubank_logo_2021.svg"],"ifood":["IFood logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:IFood_logo.svg"],"dropbox":["Dropbox Icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Dropbox_Icon.svg"],"photoshop":["Adobe Photoshop CC icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Adobe_Photoshop_CC_icon.svg"],"meet":["Google Meet icon (2020).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Meet_icon_(2020).svg"],"playstore":["Google Play 2022 icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Play_2022_icon.svg"],"translate":["Google Translate logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Translate_logo.svg"],"acrobat":["Adobe Acrobat Reader icon (2020).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Adobe_Acrobat_Reader_icon_(2020).svg"],"kahoot":["Kahoot Logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Kahoot_Logo.svg"],"apple":["Apple logo black.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Apple_logo_black.svg"],"roblox":["Roblox Logo Black.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Roblox_Logo_Black.svg"],"msn":["MSN messenger icon.png","Domínio público","https://commons.wikimedia.org/wiki/File:MSN_messenger_icon.png"],"orkut":["Logo ORKUT.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Logo_ORKUT.svg"],"icq":["Im-icq in colours.svg","CC BY-SA 2.0","https://commons.wikimedia.org/wiki/File:Im-icq_in_colours.svg"],"winamp":["Winamp 5.9.2 icon.png","CC BY-SA 4.0","https://commons.wikimedia.org/wiki/File:Winamp_5.9.2_icon.png"],"ie":["Internet Explorer 10+11 logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Internet_Explorer_10%2B11_logo.svg"],"netscape":["Netscape icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Netscape_icon.svg"],"napster":["Napster logo.svg","GPLv3","https://commons.wikimedia.org/wiki/File:Napster_logo.svg"],"skype":["Skype logo (2019–present).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Skype_logo_(2019%E2%80%93present).svg"],"myspace":["Myspace 2010 logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Myspace_2010_logo.svg"],"flash":["Adobe Flash Player 32.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Adobe_Flash_Player_32.svg"],"googleplus":["Google Plus icon (2015-2019).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Google_Plus_icon_(2015-2019).svg"],"wmp":["Windows Media Player simplified logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Windows_Media_Player_simplified_logo.svg"],"vine":["Vine logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Vine_logo.svg"],"twitter":["Logo of Twitter.svg","Apache License 2.0","https://commons.wikimedia.org/wiki/File:Logo_of_Twitter.svg"],"picasa":["Picasa Icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Picasa_Icon.svg"],"fotolog":["Fotolog Logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Fotolog_Logo.svg"],"gtalk":["Talk (Google).svg","Domínio público","https://commons.wikimedia.org/wiki/File:Talk_(Google).svg"],"yahoo":["Im-yahoo.png","GPL","https://commons.wikimedia.org/wiki/File:Im-yahoo.png"],"bbm":["BlackBerry Messenger logo.png","Domínio público","https://commons.wikimedia.org/wiki/File:BlackBerry_Messenger_logo.png"],"hotmail":["MSN Hotmail logo.svg","Domínio público","https://commons.wikimedia.org/wiki/File:MSN_Hotmail_logo.svg"],"blogger":["Blogger icon.svg","Domínio público","https://commons.wikimedia.org/wiki/File:Blogger_icon.svg"]};
+
+  const NIVEIS = [
+    { id: 'facil', nome: 'Fácil', desc: '10 ícones, 3 alternativas', n: 10, alts: 3, parecidas: false, pixel: false },
+    { id: 'medio', nome: 'Médio', desc: '12 ícones, 4 alternativas parecidas', n: 12, alts: 4, parecidas: true, pixel: false },
+    { id: 'dificil', nome: 'Difícil', desc: '12 ícones pixelados, 4 alternativas parecidas', n: 12, alts: 4, parecidas: true, pixel: true }
+  ];
+  const stage = document.getElementById('stage');
+  const cfg = Object.assign({ nivel: 'facil', cat: 'hoje', desc: false }, mdStore.get(ID + '-cfg', {}));
+  const salvar = () => mdStore.set(ID + '-cfg', cfg);
+  let jogo = null;
+
+  const shuffle = a => { for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; } return a; };
+  const catTag = c => `<span class="cat ${c}">${CATS[c]}</span>`;
+  const LETRAS = 'ABCD';
+
+  /* ---------- som ---------- */
+  let ctxAudio = null;
+  function tom(freqs, dur) {
+    try {
+      ctxAudio = ctxAudio || new (window.AudioContext || window.webkitAudioContext)();
+      freqs.forEach((f, i) => {
+        const o = ctxAudio.createOscillator(), g = ctxAudio.createGain();
+        o.type = 'triangle'; o.frequency.value = f;
+        const t0 = ctxAudio.currentTime + i * dur;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.16, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur * 1.6);
+        o.connect(g); g.connect(ctxAudio.destination); o.start(t0); o.stop(t0 + dur * 1.8);
+      });
+    } catch (e) {}
+  }
+  const legenda = t => { if (window.MDA && MDA.legenda) MDA.legenda(t); };
+  const somAcerto = () => { tom([660, 880], 0.09); legenda('Som de acerto'); };
+  const somErro = () => { tom([260, 200], 0.09); legenda('Som de erro'); };
+  const somFim = () => { tom([523, 659, 784, 1047], 0.12); legenda('Música de fim de jogo'); };
+
+  /* ---------- perguntas ---------- */
+  function alternativas(item, nivel) {
+    const ehMarca = item.tipo === 'm';
+    // nas perguntas de logotipo com nome, as alternativas são funções; nas outras, nomes
+    const valor = i => ehMarca ? i.serve : i.nome;
+    const certo = valor(item);
+    const conflito = { x: 'twitter', twitter: 'x' };
+    let pool = ITENS.filter(i => i.id !== item.id && valor(i) !== certo && conflito[item.id] !== i.id && (!ehMarca || i.grupo !== item.grupo));
+    if (nivel.parecidas && !ehMarca) {
+      const mesmo = shuffle(pool.filter(i => i.grupo === item.grupo));
+      const resto = shuffle(pool.filter(i => i.grupo !== item.grupo && i.cat === item.cat));
+      pool = mesmo.concat(resto);
+    } else pool = shuffle(pool);
+    const escolhidas = [];
+    for (const i of pool) { const v = valor(i); if (!escolhidas.includes(v)) escolhidas.push(v); if (escolhidas.length === nivel.alts - 1) break; }
+    return shuffle([certo].concat(escolhidas));
+  }
+
+  function telaInicio() {
+    stage.innerHTML = `<div class="ji-config">
+      <div class="ji-capa" aria-hidden="true">${'ÍCONES'.split('').map(c => `<span>${c}</span>`).join('')}</div>
+      <div><h3>Coleção</h3><div class="chips" id="cats">${Object.entries(CATS).map(([k, v]) => `<button class="chip" type="button" data-c="${k}" aria-pressed="${cfg.cat === k}">${v} <span class="muted small">${ITENS.filter(i => i.cat === k).length} ícones</span></button>`).join('')}<button class="chip" type="button" data-c="" aria-pressed="${!cfg.cat}">As duas misturadas</button></div>
+      <p class="small muted" style="margin:8px 0 0">Os clássicos são programas e sites que marcaram os anos 1990 e 2000; alguns ainda existem, outros já foram desligados.</p></div>
+      <div><h3>Nível</h3><div class="chips" id="niv">${NIVEIS.map(n => `<button class="chip" type="button" data-n="${n.id}" aria-pressed="${cfg.nivel === n.id}">${n.nome} <span class="muted small">${n.desc}</span></button>`).join('')}</div></div>
+      <div><h3>Acessibilidade</h3><div class="chips"><button class="chip" type="button" id="bdesc" aria-pressed="${cfg.desc}">Mostrar a descrição de cada ícone</button></div>
+      <p class="small muted" style="margin:8px 0 0">A descrição conta como o desenho é, sem dizer o nome. O leitor de tela lê a descrição mesmo com esta opção desligada.</p></div>
+      <div class="btn-row"><button class="btn" type="button" id="go">Começar</button></div>
+    </div>`;
+    stage.querySelector('#cats').onclick = e => { const b = e.target.closest('button'); if (!b) return; cfg.cat = b.dataset.c; salvar(); telaInicio(); };
+    stage.querySelector('#niv').onclick = e => { const b = e.target.closest('button'); if (!b) return; cfg.nivel = b.dataset.n; salvar(); telaInicio(); };
+    stage.querySelector('#bdesc').onclick = () => { cfg.desc = !cfg.desc; salvar(); telaInicio(); stage.querySelector('#bdesc').focus(); };
+    stage.querySelector('#go').onclick = iniciar;
+  }
+
+  function iniciar() {
+    const nivel = NIVEIS.find(n => n.id === cfg.nivel) || NIVEIS[0];
+    const fila = shuffle(ITENS.filter(i => !cfg.cat || i.cat === cfg.cat)).slice(0, nivel.n);
+    jogo = { nivel, fila, total: fila.length, k: 0, acertos: 0, seq: 0, melhorSeq: 0, hist: [] };
+    rodada();
+  }
+
+  function rodada() {
+    const j = jogo, item = j.fila[j.k], nivel = j.nivel;
+    const alts = alternativas(item, nivel);
+    const ehMarca = item.tipo === 'm';
+    const pergunta = ehMarca ? (item.cat === 'classico' ? 'Para que servia este site ou programa?' : 'Para que serve este aplicativo ou site?') : 'De onde é este ícone?';
+    const pixel = nivel.pixel && !ehMarca;
+    stage.innerHTML = `<div class="hud"><span>Ícone <b>${j.k + 1}</b> de ${j.total}</span><span>Acertos <b>${j.acertos}</b></span>${j.seq >= 2 ? `<span>Sequência <b>${j.seq}</b></span>` : ''}</div>
+      <div class="ji-card">
+        <span class="rot">${catTag(item.cat)}</span>
+        <h3 id="perg">${pergunta}</h3>
+        <div class="ji-logo${pixel ? ' pixel' : ''}"><img id="logo" alt="${esc((ehMarca ? 'Logotipo com o nome escrito. ' : 'Ícone. ') + item.desc)}" width="128" height="128"></div>
+        <p class="ji-desc" id="desc" ${cfg.desc ? '' : 'hidden'}>${esc(item.desc)}</p>
+        <div class="ji-alts" id="alts" role="group" aria-labelledby="perg">${alts.map((a, n) => `<button type="button" data-v="${esc(a)}"><span class="marca">${LETRAS[n]})</span> ${esc(a)}</button>`).join('')}</div>
+        <div id="exp" role="status" aria-live="polite"></div>
+      </div>`;
+    const img = stage.querySelector('#logo');
+    if (pixel) {
+      // pixelado: desenha o ícone em 14 px e amplia sem suavizar
+      const fonte = new Image();
+      fonte.onload = () => {
+        const S = 14, c = document.createElement('canvas'), sc = Math.min(S / fonte.width, S / fonte.height);
+        c.width = Math.max(1, Math.round(fonte.width * sc)); c.height = Math.max(1, Math.round(fonte.height * sc));
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(fonte, 0, 0, c.width, c.height);
+        img.src = c.toDataURL('image/png');
+      };
+      fonte.src = IMG + item.id + '.webp';
+    } else img.src = IMG + item.id + '.webp';
+    stage.querySelectorAll('#alts button').forEach(b => b.onclick = () => responder(b, alts));
+  }
+
+  function responder(botao, alts) {
+    const j = jogo, item = j.fila[j.k];
+    const certo = item.tipo === 'm' ? item.serve : item.nome;
+    const ok = botao.dataset.v === certo;
+    stage.querySelectorAll('#alts button').forEach(b => {
+      b.disabled = true;
+      if (b.dataset.v === certo) b.classList.add('certa');
+      else if (b === botao) b.classList.add('errada');
+    });
+    if (ok) { j.acertos++; j.seq++; j.melhorSeq = Math.max(j.melhorSeq, j.seq); somAcerto(); } else { j.seq = 0; somErro(); }
+    j.hist.push({ item, ok });
+    // mostra o ícone nítido depois da resposta
+    const box = stage.querySelector('.ji-logo'); box.classList.remove('pixel'); stage.querySelector('#logo').src = IMG + item.id + '.webp';
+    const fim = j.k + 1 >= j.total;
+    const titulo = item.tipo === 'm' ? `${item.nome}: ${item.serve.charAt(0).toLowerCase() + item.serve.slice(1)}` : item.nome;
+    stage.querySelector('#exp').innerHTML = `<div class="ji-exp ${ok ? 'ok' : 'bad'}">
+      <strong>${ok ? 'Certo!' : 'Não foi dessa vez.'} ${item.tipo === 'm' ? 'Este é o' : 'É o ícone do'} ${esc(titulo)}.</strong>
+      <p><b>${item.ano}.</b> ${esc(item.curio)}</p>
+    </div>
+    <div class="btn-row" style="margin-top:14px;justify-content:center"><button class="btn" type="button" id="nx">${fim ? 'Ver resultado' : 'Próximo ícone'}</button></div>`;
+    const nx = stage.querySelector('#nx');
+    nx.onclick = () => { if (fim) fimDeJogo(); else { j.k++; rodada(); stage.scrollIntoView({ block: 'start', behavior: 'smooth' }); stage.querySelector('#alts button').focus({ preventScroll: true }); } };
+    nx.focus({ preventScroll: true });
+  }
+
+  function fimDeJogo() {
+    const j = jogo, pct = j.acertos / j.total * 100;
+    window.MDP && MDP.registrar(ID, pct);
+    somFim();
+    const titulo = pct >= 90 ? 'Especialista em ícones' : pct >= 60 ? 'Olho bom para logotipos' : 'Boa estreia no mundo dos ícones';
+    stage.innerHTML = `<div class="center">
+      <h2>${titulo}</h2>
+      <p style="font-size:20px" role="status"><b>${j.acertos}</b> de ${j.total} acertos</p>
+      <p>Maior sequência de acertos: <b>${j.melhorSeq}</b></p>
+      <ul class="ji-res">${j.hist.map(h => `<li><img src="${IMG + h.item.id}.webp" alt=""><span class="${h.ok ? 'ok' : 'bad'}">${h.ok ? 'Acertou' : 'Errou'}</span><span>${esc(h.item.nome)} (${h.item.ano})</span></li>`).join('')}</ul>
+      <div class="note" style="text-align:left;margin:18px auto;max-width:560px">
+        <strong>Para pensar:</strong> MSN, Orkut e ICQ já foram usados por milhões de pessoas e hoje estão desligados. O que acontece com as mensagens, as fotos e os dados quando um serviço acaba? Qual aplicativo de hoje você acha que vai virar um "clássico" daqui a vinte anos?
+      </div>
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="again">Jogar de novo</button><button class="btn ghost" type="button" id="ver">Ver a galeria</button></div></div>`;
+    document.getElementById('again').onclick = telaInicio;
+    document.getElementById('ver').onclick = () => aba('galeria');
+    stage.querySelector('h2').setAttribute('tabindex', '-1'); stage.querySelector('h2').focus();
+  }
+
+  /* ---------- Galeria ---------- */
+  let filtro = 'hoje';
+  function telaGaleria() {
+    const lista = ITENS.filter(i => !filtro || i.cat === filtro).slice().sort((a, b) => a.ano - b.ano || a.nome.localeCompare(b.nome));
+    stage.innerHTML = `<div class="chips" id="fl" style="margin-bottom:14px">${Object.entries(CATS).map(([k, v]) => `<button class="chip" type="button" data-c="${k}" aria-pressed="${filtro === k}">${v}</button>`).join('')}<button class="chip" type="button" data-c="" aria-pressed="${!filtro}">Todos</button></div>
+      <p class="small muted" style="margin:0 0 12px">${lista.length} ícones, do mais antigo ao mais novo.</p>
+      <div class="ji-gal">${lista.map(i => { const f = FONTES[i.id] || []; return `<article>
+        <div class="topo"><img src="${IMG + i.id}.webp" alt="" loading="lazy"><div><h3>${esc(i.nome)}</h3><span class="small muted">${i.ano} · ${esc(i.serve)}</span></div></div>
+        <p>${esc(i.curio)}</p>
+        <span class="fonte">Imagem: <a href="${f[2] || '#'}" target="_blank" rel="noopener">Wikimedia Commons</a> · ${esc(f[1] || '')}</span>
+      </article>`; }).join('')}</div>`;
+    stage.querySelector('#fl').onclick = e => { const b = e.target.closest('button'); if (!b) return; filtro = b.dataset.c; telaGaleria(); };
+  }
+
+  function aba(qual) {
+    document.getElementById('tab-jogar').setAttribute('aria-pressed', qual === 'jogar');
+    document.getElementById('tab-galeria').setAttribute('aria-pressed', qual === 'galeria');
+    qual === 'jogar' ? telaInicio() : telaGaleria();
+  }
+  document.getElementById('tab-jogar').onclick = () => aba('jogar');
+  document.getElementById('tab-galeria').onclick = () => aba('galeria');
+  telaInicio();
+})();
+</script>
+</body>
+</html>
