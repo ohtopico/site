@@ -1,4 +1,4 @@
-"""Gera, na página inicial (index.html), a janela Atualizações e a linha "Novo no site" do Leia-me a partir de
+"""Gera, na página inicial (index.html), a janela Atualizações a partir de
 _fonte/home/novidades.json, para a home não ficar parada enquanto o site cresce.
 
 Uso (na raiz do site):
@@ -13,10 +13,10 @@ Bloco no texto do PR (cada campo em uma linha; Texto e Curto são opcionais):
     Texto: Cada série do 1º ao 6º ano ganhou um ano letivo completo de Computação, com 32 aulas, folhas e jogos.
     Curto: Computação ano a ano (1º ao 6º)
 
-- Novidade é o título na janela; Curto é o nome na linha "Novo no site" (sem ele, vale a Novidade).
+- Novidade é o título na janela. Curto ficou sem uso desde que a linha "Novo no site" saiu do Leia-me (15/11/2026).
 - Link é relativo à raiz do site (sem a barra inicial) e precisa existir; Texto aceita HTML simples com links relativos.
   Sem Texto, a janela mostra só o título com o link.
-- A janela mostra as 10 novidades mais recentes; a linha "Novo no site", as 5 mais recentes. O resto fica no JSON.
+- A janela mostra as 10 novidades mais recentes. O resto fica no JSON.
 - Linhas dentro de blocos de código (``` ```) no texto do PR são ignoradas: é onde cabe um exemplo do bloco.
   Uma novidade com o mesmo título e link de outra que já está no JSON também é ignorada.
 - Rodar duas vezes com o mesmo JSON gera o mesmo HTML.
@@ -139,11 +139,9 @@ def escrever_index(novidades):
     janela = '\n' + ''.join(artigo(n) for n in ordem[:NA_JANELA]) + '            '
     txt = trocar_bloco(txt, 'atualizacoes', janela, lambda t, b: re.sub(
         r'(<h2 class="sr-only">Atualizações</h2>\n)[\s\S]*?(\n\s*</div>\s*</section>)', lambda m: m.group(1) + '            ' + b + m.group(2), t, count=1))
-    linha = ' · '.join(f'<a href="{html.escape(n["link"])}">{html.escape(n.get("curto") or n["titulo"])}</a>' for n in ordem[:NA_LINHA])
-    novo = f'<p class="novidades"><b>Novo no site:</b> {linha}</p>'
-    txt = trocar_bloco(txt, 'novo-no-site', novo, lambda t, b: re.sub(r'<p class="novidades">.*?</p>', lambda m: b, t, count=1))
-    if f'atualizacoes: início ({MARCA})' not in txt or f'novo-no-site: início ({MARCA})' not in txt:
-        raise SystemExit('não achei na index.html a janela Atualizações ou a linha "Novo no site"')
+    # A linha "Novo no site" saiu do Leia-me a pedido da Júlia (15/11/2026); o campo Curto fica sem uso.
+    if f'atualizacoes: início ({MARCA})' not in txt:
+        raise SystemExit('não achei na index.html a janela Atualizações')
     if txt != INDEX.read_text(encoding='utf-8'):
         INDEX.write_text(txt, encoding='utf-8')
         return True
