@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Achados da Convenção: jogo de objetos escondidos | Júlia Quoos</title>
+<meta name="description" content="Jogo de achar objetos escondidos numa convenção de computação lotada: disquete, pen drive, placa de robótica, processador e mais, com curiosidades sobre cada peça.">
+<link rel="canonical" href="https://ohtopico.com.br/material-didatico/jogos/achados-da-convencao.html">
+<meta property="og:title" content="Achados da Convenção: jogo de objetos escondidos | Júlia Quoos">
+<meta property="og:description" content="Uma convenção de computação lotada e vários objetos perdidos no meio da multidão. Ache todos e descubra para que serve cada um.">
+<meta property="og:url" content="https://ohtopico.com.br/material-didatico/jogos/achados-da-convencao.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ohtopico.com.br/material-didatico/jogos/img/og-achados-da-convencao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Achados da Convenção: jogo de objetos escondidos">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta name="twitter:image" content="https://ohtopico.com.br/material-didatico/jogos/img/og-achados-da-convencao.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="../assets/md.css">
+<style>
+  #stage { scroll-margin-top: 80px; }
+  .ac-topo { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 12px; }
+  .ac-topo .info { font-size: 15px; display: flex; gap: 6px 16px; flex-wrap: wrap; align-items: center; margin-right: auto; }
+  .ac-topo .info b { font-family: var(--display); font-size: 20px; }
+  .ac-topo .btn { padding: 8px 14px; min-height: 44px; font-size: 15px; }
+  .ac-corpo { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 14px; align-items: start; }
+  .ac-cena-box { position: relative; border: 1.5px solid var(--ink); border-radius: 18px; overflow: hidden; background: #fbf6ee; aspect-ratio: 16 / 10; }
+  .ac-cena-box:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
+  #cena { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; user-select: none; -webkit-user-select: none; }
+  #cena:focus { outline: none; }
+  .ac-zoom { position: absolute; right: 10px; bottom: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .ac-zoom button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #222; background: #fff; color: #222; font: 700 22px/1 var(--display); cursor: pointer; box-shadow: 2px 2px 0 #222; }
+  .ac-zoom button:hover { background: #f1efe9; }
+  .ac-mira { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 3px solid #222; border-radius: 50%; box-shadow: 0 0 0 3px #fff; pointer-events: none; display: none; }
+  #cena:focus-visible ~ .ac-mira { display: block; }
+  .ac-lista { border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px; }
+  .ac-lista h3 { font-size: 18px; margin: 0 0 8px; }
+  .ac-lista ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  .ac-item { display: flex; align-items: center; gap: 8px; width: 100%; border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); padding: 4px 8px 4px 4px; font: inherit; font-size: 15px; text-align: left; cursor: pointer; min-height: 48px; }
+  .ac-item:hover { border-color: var(--ink); }
+  .ac-item svg { width: 40px; height: 40px; flex: none; background: #fbf6ee; border-radius: 10px; }
+  .ac-item.achado { background: var(--ok-soft); border-color: var(--ok); }
+  .ac-item.achado .nm { text-decoration: line-through; }
+  .ac-item .ok { margin-left: auto; font-weight: 700; color: var(--ok); }
+  .ac-curio { margin-top: 12px; border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 12px 16px; display: none; }
+  .ac-curio.ver { display: block; }
+  .ac-curio h3 { font-size: 20px; margin: 0 0 4px; }
+  .ac-curio p { margin: 4px 0 0; }
+  .ac-curio .tag { margin-left: 6px; vertical-align: 2px; }
+  .ac-status { min-height: 26px; font-weight: 500; margin: 10px 0 0; }
+  .ac-capa { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(251, 246, 238, .82); padding: 12px; overflow: auto; }
+  .ac-capa[hidden] { display: none; }
+  .ac-cartao { max-width: 560px; border: 1.5px solid #222; border-radius: 24px; background: #fff; color: #222; padding: 18px 20px; box-shadow: 6px 6px 0 #222; text-align: center; }
+  .ac-cartao h2 { font-size: clamp(22px, 4vw, 30px); margin: 0 0 6px; color: #222; }
+  .ac-cartao p { margin: 6px 0; color: #333; }
+  .ac-cartao svg.herois { width: 220px; max-width: 70%; height: auto; display: block; margin: 0 auto 4px; }
+  .ac-niveis { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+  .ac-niveis button { border: 1.5px solid #222; border-radius: 16px; background: #fff; color: #222; padding: 10px 14px; font: inherit; cursor: pointer; min-width: 140px; min-height: 56px; }
+  .ac-niveis button:hover, .ac-niveis button.sel { background: #e3f1e8; }
+  .ac-niveis button strong { display: block; font-family: var(--display); font-size: 19px; }
+  .ac-niveis button span { font-size: 13px; color: #555; }
+  .ac-estrelas { font-family: var(--display); font-size: 40px; letter-spacing: 6px; color: #d9a400; margin: 4px 0; }
+  .ac-estrelas .apagada { color: #ccc; }
+  .ac-acess { margin-top: 14px; border: 1.5px solid var(--ink); border-radius: 18px; background: var(--paper); padding: 10px 16px; }
+  .ac-acess summary { cursor: pointer; font-weight: 600; }
+  .ac-setores { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 10px 0; }
+  .ac-setores button, .ac-pegar button { border: 1.5px solid var(--ink); border-radius: 14px; background: var(--paper); color: var(--ink); padding: 8px 12px; font: inherit; font-size: 15px; cursor: pointer; min-height: 48px; text-align: left; }
+  .ac-setores button:hover, .ac-pegar button:hover { background: var(--pill); }
+  .ac-pegar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .ac-descricao { margin: 8px 0 0; }
+  #impressao { display: none; }
+  .dica-anel { animation: pulsa 1s ease-in-out infinite; }
+  @keyframes pulsa { 50% { opacity: .35; } }
+  .erro-anel { animation: some .6s ease-out forwards; }
+  @keyframes some { to { opacity: 0; transform: scale(1.6); } }
+  .achou-anel { animation: aparece .35s ease-out; transform-box: fill-box; transform-origin: center; }
+  @keyframes aparece { from { transform: scale(2.2); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .dica-anel, .erro-anel, .achou-anel { animation: none; } }
+  .ac-cheia { background: var(--paper-2); padding: 12px; overflow: auto; }
+  .ac-cheia .ac-cena-box { aspect-ratio: auto; height: calc(100vh - 150px); }
+  @media (max-width: 820px) {
+    .ac-corpo { grid-template-columns: 1fr; }
+    .ac-lista ul { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .ac-lista { order: -1; }
+  }
+  @media print {
+    body * { visibility: hidden; }
+    #impressao, #impressao * { visibility: visible; }
+    #impressao { display: block !important; position: absolute; left: 0; top: 0; width: 100%; background: #fff; color: #000; }
+    #impressao h2 { font-family: var(--display); font-size: 26px; margin: 0 0 4px; }
+    #impressao p { margin: 0 0 8px; font-size: 13px; }
+    #impressao svg.cena-pb { width: 100%; height: auto; border: 1.5px solid #000; border-radius: 12px; }
+    #impressao ul { list-style: none; padding: 0; margin: 10px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 12px; }
+    #impressao li { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+    #impressao li svg { width: 34px; height: 34px; flex: none; }
+    @page { size: A4 landscape; margin: 10mm; }
+  }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body>
+<header id="topbar"></header>
+<main class="wrap">
+  <div class="game-head" id="game-head"></div>
+  <details class="howto">
+    <summary>Como jogar</summary>
+    <p>O urso, a coelha e o gatinho foram à Convenção de Computação e perderam umas coisas no meio da multidão. A lista ao lado mostra o que procurar: <strong>clique ou toque no objeto</strong> quando achar.</p>
+    <ul>
+      <li>Use os botões <strong>+</strong> e <strong>−</strong>, a rodinha do mouse ou o movimento de pinça para aproximar. Arraste a cena para andar por ela.</li>
+      <li>Não sabe como é um objeto? Toque no nome dele na lista e aparece a descrição.</li>
+      <li>A <strong>lâmpada</strong> mostra mais ou menos onde está um objeto. Achar tudo sem dica vale três estrelas.</li>
+      <li>Cada objeto achado mostra uma curiosidade: para que serve e se é de entrada, saída, armazenamento ou outra coisa.</li>
+      <li>No teclado: Tab até a cena, setas para andar, + e − para aproximar e Enter para procurar no círculo do meio. Quem usa leitor de tela pode jogar pela parte "Explorar a convenção sem ver a imagem", logo abaixo da cena.</li>
+    </ul>
+    <p><strong>Na sala de aula:</strong> o botão "Imprimir para colorir" gera a mesma cena em preto e branco, com a lista de objetos, para a turma procurar, circular e colorir no papel.</p>
+  </details>
+
+  <div class="game-stage" id="stage">
+    <div class="ac-topo">
+      <div class="info" aria-live="off">
+        <span>Achados: <b id="cont">0/0</b></span>
+        <span>Tempo: <b id="tempo">0:00</b></span>
+        <span>Dicas: <b id="ndicas">0</b></span>
+      </div>
+      <button class="btn ghost" type="button" id="b-dica">Lâmpada: dica</button>
+      <button class="btn ghost" type="button" id="b-som" aria-pressed="true">Som ligado</button>
+      <button class="btn ghost" type="button" id="b-cheia">Tela cheia</button>
+      <button class="btn ghost" type="button" id="b-imprimir">Imprimir para colorir</button>
+      <button class="btn ghost" type="button" id="b-nova">Nova cena</button>
+    </div>
+    <div class="ac-corpo">
+      <div>
+        <div class="ac-cena-box" id="cena-box">
+          <svg id="cena" viewBox="0 0 1600 1000" preserveAspectRatio="none" tabindex="0" role="img" aria-label="Cena da convenção de computação, cheia de gente e de estandes. Use as setas para andar, mais e menos para aproximar e Enter para procurar no centro."></svg>
+          <div class="ac-mira" aria-hidden="true"></div>
+          <div class="ac-zoom">
+            <button type="button" id="z-mais" aria-label="Aproximar">+</button>
+            <button type="button" id="z-menos" aria-label="Afastar">−</button>
+            <button type="button" id="z-tudo" aria-label="Ver a cena inteira" style="font-size:14px">1:1</button>
+          </div>
+          <div class="ac-capa" id="capa">
+            <div class="ac-cartao" id="cartao"></div>
+          </div>
+        </div>
+        <p class="ac-status" id="status" role="status" aria-live="polite"></p>
+        <div class="ac-curio" id="curio" aria-live="polite"></div>
+      </div>
+      <aside class="ac-lista" aria-labelledby="lista-tit">
+        <h3 id="lista-tit">Procure</h3>
+        <ul id="lista"></ul>
+      </aside>
+    </div>
+    <details class="ac-acess" id="acess">
+      <summary>Explorar a convenção sem ver a imagem</summary>
+      <p class="small">A convenção está dividida em doze partes. Escolha uma para ouvir o que tem lá. Quando um objeto da lista estiver por perto, aparece um botão para pegar.</p>
+      <div class="ac-setores" id="setores"></div>
+      <p class="ac-descricao" id="descricao" aria-live="polite"></p>
+      <div class="ac-pegar" id="pegar"></div>
+    </details>
+  </div>
+
+  <div id="impressao" aria-hidden="true"></div>
+
+  <h2 style="font-size:24px">Continue explorando</h2>
+  <div class="related" id="related"></div>
+</main>
+<footer id="footer"></footer>
+
+<script>window.MD_BASE = '../';</script>
+<script src="../assets/dados.js"></script>
+<script src="../assets/progresso.js"></script>
+<script src="../assets/comum.js"></script>
+<script>
+mdTopbar('jogos'); mdFooter(); mdJogoHead('achados-da-convencao');
+(function () {
+  'use strict';
+  const ID = 'achados-da-convencao';
+  const W = 1600, H = 1000;
+  const TINTA = '#2b2b2b';
+  const CHAVE = 'achados-convencao-v1';
+
+  /* ================= Objetos para achar =================
+     Para trocar ou incluir um objeto, edite esta lista: nome, artigo (o/a), categoria, como ele é (aparencia),
+     a curiosidade que aparece quando a criança acha e a função desenho, que desenha o objeto centrado
+     em (0, 0) num quadrado de mais ou menos 34 x 34. */
+  const OBJETOS = [
+    { id: 'disquete', nome: 'disquete', art: 'o', cat: 'Armazenamento',
+      aparencia: 'Um quadradinho azul, com uma parte de metal em cima e uma etiqueta branca embaixo.',
+      curio: 'Antes do pen drive, os arquivos iam no disquete. Ele guardava só 1,44 MB, menos do que uma foto de celular de hoje. Por isso o botão de salvar de muitos programas ainda tem a forma dele.',
+      desenho: c => `<rect x="-15" y="-15" width="30" height="30" rx="3" fill="${c('#5b8fd6')}"/>
+        <rect x="-8" y="-15" width="15" height="10" fill="${c('#d4dbe3')}"/><rect x="1" y="-13" width="3" height="6" fill="${c('#6b7480')}"/>
+        <rect x="-10" y="0" width="20" height="12" rx="2" fill="#fff"/><path d="M-6 4h12M-6 8h8" fill="none"/>` },
+    { id: 'pendrive', nome: 'pen drive', art: 'o', cat: 'Armazenamento',
+      aparencia: 'Uma pecinha comprida, colorida, com uma ponta de metal que encaixa na porta USB.',
+      curio: 'O pen drive é uma memória portátil que se liga na porta USB. Ele não tem peças que se mexem, por isso aguenta bem os trancos da mochila.',
+      desenho: c => `<g transform="rotate(-25)"><rect x="-5" y="-17" width="10" height="9" fill="${c('#d4dbe3')}"/>
+        <rect x="-3" y="-15" width="2" height="2" fill="${TINTA}"/><rect x="1" y="-15" width="2" height="2" fill="${TINTA}"/>
+        <rect x="-7" y="-9" width="14" height="25" rx="5" fill="${c('#f08a5d')}"/><circle cx="0" cy="10" r="2" fill="#fff"/></g>` },
+    { id: 'robo', nome: 'robozinho', art: 'o', cat: 'Robótica',
+      aparencia: 'Um robô pequeno e cinza, com antena, cabeça quadrada e olhos redondos.',
+      curio: 'Um robô não pensa sozinho: ele segue um programa, uma sequência de instruções que alguém escreveu. Os sensores são as entradas e os motores, as saídas.',
+      desenho: c => `<path d="M0 -13V-18" fill="none"/><circle cx="0" cy="-19" r="2.6" fill="${c('#f2c14e')}"/>
+        <rect x="-10" y="-13" width="20" height="13" rx="4" fill="${c('#b8c4cf')}"/>
+        <circle cx="-4" cy="-7" r="2.4" fill="${TINTA}"/><circle cx="4" cy="-7" r="2.4" fill="${TINTA}"/>
+        <path d="M-12 4h-3M12 4h3" fill="none"/>
+        <rect x="-8" y="0" width="16" height="12" rx="3" fill="${c('#8fb3d9')}"/><circle cx="0" cy="6" r="2" fill="${c('#e86a6a')}"/>
+        <path d="M-4 12v4M4 12v4" fill="none"/>` },
+    { id: 'placa', nome: 'placa de robótica', art: 'a', cat: 'Robótica',
+      aparencia: 'Uma placa verde e retangular, com um chip preto no meio, furinhos nos cantos e uma fileira de pinos.',
+      curio: 'É um computador bem pequeno, chamado microcontrolador. Ele lê sensores e liga motores e luzes, e é muito usado nas aulas de robótica.',
+      desenho: c => `<rect x="-17" y="-12" width="34" height="24" rx="2" fill="${c('#4caf7d')}"/>
+        <rect x="-20" y="-6" width="7" height="9" fill="${c('#d4dbe3')}"/>
+        <rect x="-4" y="-4" width="12" height="9" fill="${TINTA}"/>
+        <path d="M-8 -9h18" fill="none" stroke-dasharray="2 2"/>
+        <circle cx="13" cy="-8" r="1.8" fill="#fff"/><circle cx="13" cy="8" r="1.8" fill="#fff"/>` },
+    { id: 'chave', nome: 'chave de segurança', art: 'a', cat: 'Segurança',
+      aparencia: 'Um chaveiro amarelo com um botão redondo no meio, uma argola numa ponta e uma ponta de USB na outra.',
+      curio: 'Ela se liga ao computador para confirmar que é você mesmo entrando na conta. É a verificação em duas etapas em forma de objeto: sem a chave, quem descobrir a senha não entra.',
+      desenho: c => `<circle cx="-15" cy="0" r="5" fill="none"/>
+        <rect x="-12" y="-7" width="22" height="14" rx="6" fill="${c('#f2c14e')}"/>
+        <circle cx="-1" cy="0" r="3.6" fill="${c('#c98a1a')}"/>
+        <rect x="10" y="-4.5" width="7" height="9" fill="${c('#d4dbe3')}"/>` },
+    { id: 'mouse', nome: 'mouse', art: 'o', cat: 'Entrada',
+      aparencia: 'Um objeto oval, do tamanho da mão, com dois botões e um fio que sai da frente.',
+      curio: 'O primeiro mouse, dos anos 1960, era uma caixinha de madeira com duas rodinhas embaixo. É um dispositivo de entrada: leva os movimentos da mão para o computador.',
+      desenho: c => `<path d="M0 -12C0 -18 7 -18 9 -22" fill="none"/>
+        <ellipse cx="0" cy="2" rx="10" ry="14" fill="${c('#c9b6e4')}"/><path d="M0 -12V-2M-10 -2H10" fill="none"/>` },
+    { id: 'fone', nome: 'fone de ouvido', art: 'o', cat: 'Saída',
+      aparencia: 'Um arco com uma almofadinha redonda em cada ponta, para os dois ouvidos.',
+      curio: 'O fone é um dispositivo de saída: transforma o sinal que vem do computador em som. Usar com volume baixo protege a audição.',
+      desenho: c => `<path d="M-12 4C-12 -18 12 -18 12 4" fill="none" stroke-width="4.5"/>
+        <path d="M-12 4C-12 -18 12 -18 12 4" fill="none" stroke="${c('#e86a8a')}" stroke-width="1.6"/>
+        <rect x="-17" y="-1" width="9" height="15" rx="4" fill="${c('#e86a8a')}"/><rect x="8" y="-1" width="9" height="15" rx="4" fill="${c('#e86a8a')}"/>` },
+    { id: 'controle', nome: 'controle de videogame', art: 'o', cat: 'Entrada',
+      aparencia: 'Um controle largo, com uma cruz de um lado e botões redondos do outro.',
+      curio: 'Cada botão do controle manda um comando diferente para o jogo. É um dispositivo de entrada, como o teclado e o mouse.',
+      desenho: c => `<path d="M-12 -8H12C18 -8 20 0 20 6C20 12 15 13 12 9L9 5H-9L-12 9C-15 13 -20 12 -20 6C-20 0 -18 -8 -12 -8Z" fill="${c('#7c8fa6')}"/>
+        <path d="M-12 -3V5M-16 1H-8" fill="none" stroke-width="3"/>
+        <circle cx="10" cy="-2" r="2.3" fill="${c('#e86a6a')}"/><circle cx="14" cy="3" r="2.3" fill="${c('#f2c14e')}"/>` },
+    { id: 'processador', nome: 'processador', art: 'o', cat: 'Processamento',
+      aparencia: 'Um quadrado achatado, cinza, com perninhas de metal em volta e um quadrado dourado no meio.',
+      curio: 'O processador executa as instruções dos programas, bilhões delas por segundo. Por isso muita gente diz que ele é o cérebro do computador.',
+      desenho: c => `<path d="M-8 -16v4M-2.5 -16v4M2.5 -16v4M8 -16v4M-8 12v4M-2.5 12v4M2.5 12v4M8 12v4M-16 -8h4M-16 -2.5h4M-16 2.5h4M-16 8h4M12 -8h4M12 -2.5h4M12 2.5h4M12 8h4" fill="none"/>
+        <rect x="-12" y="-12" width="24" height="24" rx="2" fill="${c('#9aa5b1')}"/><rect x="-6" y="-6" width="12" height="12" fill="${c('#e0b84a')}"/>` },
+    { id: 'cabo', nome: 'cabo de rede', art: 'o', cat: 'Rede',
+      aparencia: 'Um fio azul todo enrolado, com uma pontinha transparente de plástico.',
+      curio: 'O cabo de rede leva os dados de um computador a outro em forma de sinais elétricos. A ponta de plástico se chama conector RJ45.',
+      desenho: c => `<path d="M0 6C0 14 -12 10 -10 2C-8 -4 -16 -6 -16 2C-16 10 -6 16 4 14" fill="none" stroke-width="5"/>
+        <path d="M0 6C0 14 -12 10 -10 2C-8 -4 -16 -6 -16 2C-16 10 -6 16 4 14" fill="none" stroke="${c('#4f8fe0')}" stroke-width="2.4"/>
+        <rect x="-5" y="-10" width="11" height="16" rx="2" fill="${c('#dff1fb')}"/><path d="M-2 -10v5M1 -10v5M4 -10v5" fill="none" stroke-width="1.4"/>` },
+    { id: 'bug', nome: 'bug', art: 'o', cat: 'Programação',
+      aparencia: 'Um besourinho vermelho de bolinhas pretas, igual a uma joaninha.',
+      curio: 'Bug é o nome que se dá a um erro no programa. Em 1947, uma equipe achou uma mariposa de verdade presa dentro de um computador e colou o inseto no caderno de registros.',
+      desenho: c => `<path d="M-12 -4l-5 -3M-13 3h-5M-11 9l-5 4M12 -4l5 -3M13 3h5M11 9l5 4" fill="none"/>
+        <circle cx="0" cy="-11" r="5.5" fill="${TINTA}"/>
+        <circle cx="0" cy="3" r="12" fill="${c('#e0524f')}"/><path d="M0 -9V15" fill="none"/>
+        <circle cx="-5" cy="0" r="2.4" fill="${TINTA}"/><circle cx="5" cy="5" r="2.4" fill="${TINTA}"/><circle cx="-4" cy="8" r="2" fill="${TINTA}"/><circle cx="5" cy="-3" r="2" fill="${TINTA}"/>` },
+    { id: 'cd', nome: 'CD', art: 'o', cat: 'Armazenamento',
+      aparencia: 'Um disco redondo e prateado, com um furo no meio e um brilho de arco-íris.',
+      curio: 'O CD guarda os dados em trilhas tão pequenas que só um raio laser consegue ler. Num CD de música cabem uns 80 minutos de som.',
+      desenho: c => `<circle r="15" fill="${c('#e6ecf3')}"/>
+        <path d="M-10 -6A11 11 0 0 1 2 -11" fill="none" stroke="${c('#f2a7c3')}" stroke-width="3"/>
+        <path d="M4 10A11 11 0 0 0 11 3" fill="none" stroke="${c('#9fd8c9')}" stroke-width="3"/>
+        <circle r="4.5" fill="#fff"/>` }
+  ];
+
+  const NIVEIS = {
+    facil:   { nome: 'Fácil',   qtd: 6,  esc: 1.45, gente: 48, desc: '6 objetos grandes' },
+    medio:   { nome: 'Médio',   qtd: 8,  esc: 1.15, gente: 66, desc: '8 objetos' },
+    dificil: { nome: 'Difícil', qtd: 12, esc: 0.92, gente: 84, desc: 'os 12 objetos, pequenos' }
+  };
+
+  /* ================= util ================= */
+  const $ = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  function rng(seed) {
+    let a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  let R = Math.random;
+  const ri = (a, b) => a + Math.floor(R() * (b - a + 1));
+  const pick = arr => arr[Math.floor(R() * arr.length)];
+  function embaralha(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }
+  const lerPref = () => { try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; } };
+  const salvarPref = p => { try { localStorage.setItem(CHAVE, JSON.stringify(p)); } catch (e) {} };
+
+  /* ================= desenho: personagens ================= */
+  const TIPOS = {
+    urso:     { cor: '#c99a6b', claro: '#ecd3b4', m: 'um urso', f: 'uma ursa' },
+    coelho:   { cor: '#f4eee8', claro: '#f6c9d4', m: 'um coelho', f: 'uma coelha' },
+    gato:     { cor: '#f2b36b', claro: '#fbe1c0', m: 'um gato', f: 'uma gata' },
+    cachorro: { cor: '#d9b48c', claro: '#f3e2cc', m: 'um cachorro', f: 'uma cachorra' },
+    panda:    { cor: '#ffffff', claro: '#ffffff', m: 'um panda', f: 'uma panda' },
+    raposa:   { cor: '#ee9a5a', claro: '#fff4e8', m: 'uma raposa', f: 'uma raposa' },
+    sapo:     { cor: '#9fd39a', claro: '#d9f0d2', m: 'um sapo', f: 'uma sapa' }
+  };
+  const ROUPAS = ['#8fb3d9', '#f2a7c3', '#f7d774', '#9fd8c9', '#c9b6e4', '#f6b48f', '#b5d98f', '#e9e4dc', '#9cc4e8', '#f4c6a5'];
+  const ACESS = ['', '', '', 'oculos', 'bone', 'laco', 'gorro'];
+  const SEGURA = ['', '', '', 'balao', 'cafe', 'placa', 'sacola', 'tablet', 'pipoca'];
+  const NOME_ACESS = { oculos: 'de óculos', bone: 'de boné', laco: 'com laço', gorro: 'de gorro' };
+  const NOME_SEG = { balao: 'com um balão', cafe: 'com um copo de café', placa: 'segurando uma plaquinha', sacola: 'com uma sacola', tablet: 'com um tablet', pipoca: 'com pipoca' };
+
+  // personagem com os pés em (0, 0), mais ou menos 120 de altura
+  function personagem(p, c, mono) {
+    const t = TIPOS[p.tipo];
+    const pele = c(t.cor), claro = c(t.claro), roupa = c(p.roupa);
+    let s = '';
+    // segurado atrás (balão fica acima)
+    if (p.segura === 'balao') s += `<path d="M24 -44C30 -70 26 -96 30 -118" fill="none" stroke-width="1.8"/><ellipse cx="31" cy="-132" rx="13" ry="16" fill="${c(p.extra)}"/><path d="M28 -116l3 -2 3 2" fill="${c(p.extra)}"/>`;
+    // pernas
+    s += `<rect x="-14" y="-20" width="11" height="20" rx="5" fill="${c('#6b7480')}"/><rect x="3" y="-20" width="11" height="20" rx="5" fill="${c('#6b7480')}"/>`;
+    // braços
+    s += `<rect x="-29" y="-58" width="13" height="30" rx="6.5" fill="${pele}" transform="rotate(14 -22 -58)"/><rect x="16" y="-58" width="13" height="30" rx="6.5" fill="${pele}" transform="rotate(-14 22 -58)"/>`;
+    // corpo (roupa)
+    s += `<path d="M-21 -16V-46C-21 -58 -12 -62 0 -62C12 -62 21 -58 21 -46V-16Z" fill="${roupa}"/>`;
+    // crachá da convenção
+    s += `<path d="M-8 -60L0 -44L8 -60" fill="none" stroke-width="1.6"/><rect x="-6" y="-45" width="12" height="15" rx="2" fill="#fff"/><rect x="-6" y="-45" width="12" height="5" rx="2" fill="${c(p.extra)}"/>`;
+    // orelhas
+    if (p.tipo === 'urso' || p.tipo === 'panda') {
+      const o = p.tipo === 'panda' ? TINTA : pele;
+      s += `<circle cx="-20" cy="-104" r="9" fill="${o}"/><circle cx="20" cy="-104" r="9" fill="${o}"/>`;
+      if (p.tipo === 'urso') s += `<circle cx="-20" cy="-104" r="4" fill="${claro}"/><circle cx="20" cy="-104" r="4" fill="${claro}"/>`;
+    } else if (p.tipo === 'coelho') {
+      s += `<ellipse cx="-10" cy="-122" rx="7" ry="20" fill="${pele}" transform="rotate(-8 -10 -122)"/><ellipse cx="10" cy="-122" rx="7" ry="20" fill="${pele}" transform="rotate(8 10 -122)"/>`;
+      if (!mono) s += `<ellipse cx="-10" cy="-121" rx="3" ry="13" fill="${claro}" stroke="none" transform="rotate(-8 -10 -122)"/><ellipse cx="10" cy="-121" rx="3" ry="13" fill="${claro}" stroke="none" transform="rotate(8 10 -122)"/>`;
+    } else if (p.tipo === 'gato' || p.tipo === 'raposa') {
+      s += `<path d="M-24 -96L-20 -118L-6 -106Z" fill="${pele}"/><path d="M24 -96L20 -118L6 -106Z" fill="${pele}"/>`;
+    } else if (p.tipo === 'cachorro') {
+      s += `<ellipse cx="-24" cy="-88" rx="8" ry="15" fill="${c('#a8805a')}" transform="rotate(18 -24 -88)"/><ellipse cx="24" cy="-88" rx="8" ry="15" fill="${c('#a8805a')}" transform="rotate(-18 24 -88)"/>`;
+    }
+    // cabeça
+    if (p.tipo === 'sapo') {
+      s += `<circle cx="-12" cy="-104" r="9" fill="${pele}"/><circle cx="12" cy="-104" r="9" fill="${pele}"/>`;
+      s += `<ellipse cx="0" cy="-86" rx="27" ry="22" fill="${pele}"/>`;
+      s += `<circle cx="-12" cy="-105" r="3.4" fill="${TINTA}" stroke="none"/><circle cx="12" cy="-105" r="3.4" fill="${TINTA}" stroke="none"/>`;
+      s += `<path d="M-9 -80Q0 -73 9 -80" fill="none"/>`;
+    } else {
+      s += `<circle cx="0" cy="-86" r="25" fill="${pele}"/>`;
+      if (p.tipo === 'raposa') s += `<ellipse cx="0" cy="-77" rx="10" ry="7" fill="${claro}"/>`;
+      if (p.tipo === 'panda') s += `<ellipse cx="-9" cy="-88" rx="6" ry="7.5" fill="${TINTA}" transform="rotate(20 -9 -88)"/><ellipse cx="9" cy="-88" rx="6" ry="7.5" fill="${TINTA}" transform="rotate(-20 9 -88)"/>`;
+      const olho = p.tipo === 'panda' ? '#fff' : TINTA;
+      s += `<circle cx="-9" cy="-88" r="3.1" fill="${olho}" stroke="none"/><circle cx="9" cy="-88" r="3.1" fill="${olho}" stroke="none"/>`;
+      if (!mono) s += `<ellipse cx="-15" cy="-79" rx="4.5" ry="2.6" fill="#f6a9b6" stroke="none" opacity=".8"/><ellipse cx="15" cy="-79" rx="4.5" ry="2.6" fill="#f6a9b6" stroke="none" opacity=".8"/>`;
+      s += `<path d="M-1.8 -82h3.6l-1.8 2z" fill="${TINTA}" stroke-width="1"/><path d="M-4.5 -78Q-2 -75.5 0 -78Q2 -75.5 4.5 -78" fill="none" stroke-width="1.6"/>`;
+      if (p.tipo === 'gato') s += `<path d="M-20 -82h-8M-20 -78l-7 2M20 -82h8M20 -78l7 2" fill="none" stroke-width="1.2"/>`;
+    }
+    // acessórios
+    if (p.acess === 'oculos') s += `<circle cx="-9" cy="-88" r="7" fill="none" stroke-width="2"/><circle cx="9" cy="-88" r="7" fill="none" stroke-width="2"/><path d="M-2 -88h4" fill="none" stroke-width="2"/>`;
+    if (p.acess === 'bone') s += `<path d="M-23 -96C-22 -116 22 -116 23 -96Z" fill="${c(p.extra)}"/><path d="M8 -98H34C34 -94 30 -93 23 -93H8Z" fill="${c(p.extra)}"/>`;
+    if (p.acess === 'laco') s += `<path d="M10 -108l10 -7v14ZM10 -108l-10 -7v14Z" fill="${c(p.extra)}"/><circle cx="10" cy="-108" r="3" fill="${c(p.extra)}"/>`;
+    if (p.acess === 'gorro') s += `<path d="M-22 -98C-20 -122 20 -122 22 -98Z" fill="${c(p.extra)}"/><circle cx="0" cy="-118" r="5" fill="#fff"/>`;
+    // segurado na frente
+    if (p.segura === 'cafe') s += `<path d="M18 -44h12l-2 14h-8Z" fill="${c('#f4ede2')}"/><rect x="17" y="-47" width="14" height="4" rx="1.5" fill="${c('#8a5a3b')}"/>`;
+    if (p.segura === 'placa') s += `<path d="M26 -40V-74" fill="none" stroke-width="2.5"/><rect x="8" y="-100" width="40" height="26" rx="5" fill="#fff"/><path d="M15 -90h26M15 -83h18" fill="none" stroke="${c(p.extra)}" stroke-width="3"/>`;
+    if (p.segura === 'sacola') s += `<path d="M20 -40C20 -50 30 -50 30 -40" fill="none" stroke-width="1.8"/><rect x="15" y="-40" width="20" height="20" rx="3" fill="${c(p.extra)}"/>`;
+    if (p.segura === 'tablet') s += `<rect x="-14" y="-50" width="28" height="20" rx="3" fill="${c('#555c66')}"/><rect x="-11" y="-47" width="22" height="14" rx="1.5" fill="${c('#bfe3f5')}"/>`;
+    if (p.segura === 'pipoca') s += `<path d="M18 -48h14l-3 18h-8Z" fill="#fff"/><path d="M21 -48v18M28 -48v18" fill="none" stroke="${c('#e86a6a')}" stroke-width="2"/><circle cx="21" cy="-50" r="3" fill="${c('#fff6cf')}"/><circle cx="26" cy="-52" r="3.4" fill="${c('#fff6cf')}"/><circle cx="31" cy="-50" r="3" fill="${c('#fff6cf')}"/>`;
+    return `<g transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) scale(${(p.s * (p.flip ? -1 : 1)).toFixed(3)} ${p.s.toFixed(3)})">${s}</g>`;
+  }
+
+  /* ================= desenho: coisas da convenção (não contam) ================= */
+  // cada coisa tem os pés em (0, 0)
+  const COISAS = {
+    notebook: c => `<path d="M-20 0H20L16 -4H-16Z" fill="${c('#9aa5b1')}"/><rect x="-15" y="-26" width="30" height="22" rx="2" fill="${c('#555c66')}"/><rect x="-12" y="-23" width="24" height="16" fill="${c('#cfeaf7')}"/>`,
+    monitor: c => `<rect x="-5" y="-10" width="10" height="10" fill="${c('#9aa5b1')}"/><rect x="-24" y="-40" width="48" height="31" rx="3" fill="${c('#555c66')}"/><rect x="-20" y="-36" width="40" height="23" fill="${c('#d7f0e3')}"/><path d="M-15 -30h18M-15 -24h26M-15 -18h12" fill="none" stroke-width="1.6"/>`,
+    caixa: c => `<rect x="-14" y="-22" width="28" height="22" rx="2" fill="${c('#e3c290')}"/><path d="M-14 -16H14M0 -22V-16" fill="none"/>`,
+    copo: c => `<path d="M-6 -16h12l-2 16h-8Z" fill="${c('#f4ede2')}"/><path d="M-2 -20q-2 -4 0 -7M3 -20q-2 -4 0 -7" fill="none" stroke-width="1.4"/>`,
+    planta: c => `<path d="M-9 -12h18l-3 12h-12Z" fill="${c('#e08b6a')}"/><ellipse cx="-6" cy="-22" rx="5" ry="10" fill="${c('#8fcf8a')}" transform="rotate(-25 -6 -22)"/><ellipse cx="6" cy="-22" rx="5" ry="10" fill="${c('#8fcf8a')}" transform="rotate(25 6 -22)"/><ellipse cx="0" cy="-26" rx="5" ry="11" fill="${c('#a6dca0')}"/>`,
+    livros: c => `<rect x="-14" y="-8" width="28" height="8" rx="1.5" fill="${c('#8fb3d9')}"/><rect x="-12" y="-15" width="24" height="7" rx="1.5" fill="${c('#f2a7c3')}"/><rect x="-13" y="-22" width="26" height="7" rx="1.5" fill="${c('#f7d774')}"/>`,
+    folhetos: c => `<rect x="-12" y="-4" width="20" height="4" fill="#fff" transform="rotate(-6)"/><rect x="-8" y="-6" width="20" height="4" fill="${c('#f7d774')}" transform="rotate(4)"/>`,
+    maca: c => `<circle cx="0" cy="-8" r="8" fill="${c('#e86a6a')}"/><path d="M0 -16q2 -4 5 -5" fill="none"/>`,
+    biscoitos: c => `<ellipse cx="0" cy="-3" rx="14" ry="4" fill="#fff"/><circle cx="-5" cy="-8" r="4.5" fill="${c('#d9a066')}"/><circle cx="4" cy="-8" r="4.5" fill="${c('#d9a066')}"/>`,
+    garrafa: c => `<rect x="-5" y="-26" width="10" height="26" rx="4" fill="${c('#bfe3f5')}"/><rect x="-3" y="-30" width="6" height="5" fill="${c('#8fb3d9')}"/>`,
+    caneca: c => `<rect x="-7" y="-14" width="14" height="14" rx="2" fill="${c('#f2a7c3')}"/><path d="M7 -11q6 0 6 4t-6 4" fill="none"/>`,
+    impressora3d: c => `<rect x="-20" y="-40" width="40" height="40" rx="3" fill="${c('#e9e4dc')}"/><rect x="-14" y="-34" width="28" height="22" fill="${c('#fbf6ee')}"/><path d="M-14 -30H14M0 -30v6" fill="none"/><path d="M-5 -12l5 -8 5 8Z" fill="${c('#f6b48f')}"/>`,
+    pufe: c => `<ellipse cx="0" cy="-12" rx="26" ry="15" fill="${c(pick(['#f2a7c3', '#9fd8c9', '#f7d774', '#c9b6e4']))}"/><path d="M-12 -22q12 6 24 0" fill="none"/>`,
+    cone: c => `<path d="M-9 0L-3 -24h6L9 0Z" fill="${c('#f6b48f')}"/><path d="M-6 -10h12" fill="none"/>`,
+    lixeira: c => `<path d="M-11 -28h22l-3 28h-16Z" fill="${c('#9fd8c9')}"/><path d="M-13 -28h26" fill="none"/><path d="M-3 -20l3 4 4 -6" fill="none" stroke-width="1.6"/>`,
+    balaoChao: c => `<path d="M0 0C-3 -14 4 -24 0 -34" fill="none" stroke-width="1.6"/><ellipse cx="0" cy="-46" rx="10" ry="13" fill="${c(pick(['#f2a7c3', '#9cc4e8', '#f7d774']))}"/>`
+  };
+  const COISAS_MESA = ['notebook', 'notebook', 'caixa', 'copo', 'planta', 'livros', 'folhetos', 'maca', 'biscoitos', 'garrafa', 'caneca'];
+  const COISAS_CHAO = ['caixa', 'pufe', 'cone', 'lixeira', 'planta', 'balaoChao', 'folhetos', 'garrafa'];
+  const NOME_COISA = { notebook: 'notebooks', monitor: 'monitores', caixa: 'caixas', copo: 'copos', planta: 'plantinhas', livros: 'livros', folhetos: 'folhetos',
+    maca: 'maçãs', biscoitos: 'biscoitos', garrafa: 'garrafas de água', caneca: 'canecas', impressora3d: 'uma impressora 3D', pufe: 'pufes', cone: 'cones', lixeira: 'lixeiras', balaoChao: 'balões' };
+
+  /* ================= cenário fixo ================= */
+  const ESTANDES = [
+    { nome: 'Robótica', cor: '#cfe3f7', placa: '#8fb3d9' },
+    { nome: 'Games', cor: '#f9d6e3', placa: '#f2a7c3' },
+    { nome: 'Redes', cor: '#d7f0e3', placa: '#9fd8c9' },
+    { nome: 'Segurança Digital', cor: '#fbefc4', placa: '#f7d774' },
+    { nome: 'Maker', cor: '#e7dcf5', placa: '#c9b6e4' }
+  ];
+  const EST_X = i => 16 + i * 316, EST_L = 300, BALCAO_Y = 300; // topo do balcão em y = 248
+  const MESAS = [
+    { x: 300, y: 600 }, { x: 800, y: 600 }, { x: 1300, y: 600 },
+    { x: 550, y: 870 }, { x: 1050, y: 870 }
+  ];
+  const MESA_L = 230, MESA_TOPO = 58; // a mesa ocupa de y-58 até y
+  const COLS = ['à esquerda', 'no centro, à esquerda', 'no centro, à direita', 'à direita'];
+  const LINHAS = ['No fundo', 'No meio', 'Na frente'];
+  const setorDe = (x, y) => ({ col: clamp(Math.floor(x / 400), 0, 3), lin: y < 330 ? 0 : y < 690 ? 1 : 2 });
+  const nomeSetor = (lin, col) => `${LINHAS[lin]}, ${COLS[col]}`;
+
+  function decoracaoEstande(i, c) {
+    const x = EST_X(i);
+    const cx = x + EST_L / 2;
+    if (i === 0) return `<g transform="translate(${cx} 196)"><rect x="-26" y="-34" width="52" height="40" rx="10" fill="${c('#b8c4cf')}"/><circle cx="-11" cy="-15" r="7" fill="#fff"/><circle cx="11" cy="-15" r="7" fill="#fff"/><circle cx="-11" cy="-15" r="3" fill="${TINTA}"/><circle cx="11" cy="-15" r="3" fill="${TINTA}"/><path d="M-8 -2h16" fill="none"/><path d="M0 -34v-10" fill="none"/><circle cx="0" cy="-47" r="4" fill="${c('#e86a6a')}"/></g>`;
+    if (i === 1) { // coração em pixels
+      const px = ['0110110', '1111111', '1111111', '0111110', '0011100', '0001000'];
+      let s = '';
+      px.forEach((l, r) => l.split('').forEach((v, k) => { if (v === '1') s += `<rect x="${cx - 42 + k * 12}" y="${150 + r * 12}" width="12" height="12" fill="${c('#e86a8a')}" stroke-width="1.4"/>`; }));
+      return s;
+    }
+    if (i === 2) {
+      const nos = [[-50, 165], [0, 150], [50, 168], [-28, 215], [30, 218]];
+      let s = '';
+      [[0, 1], [1, 2], [0, 3], [1, 3], [1, 4], [2, 4], [3, 4]].forEach(([a, b]) => { s += `<path d="M${cx + nos[a][0]} ${nos[a][1]}L${cx + nos[b][0]} ${nos[b][1]}" fill="none"/>`; });
+      nos.forEach(([dx, y]) => { s += `<circle cx="${cx + dx}" cy="${y}" r="9" fill="${c('#4f8fe0')}"/>`; });
+      return s;
+    }
+    if (i === 3) return `<g transform="translate(${cx} 200)"><path d="M-14 -20V-30C-14 -42 14 -42 14 -30V-20" fill="none" stroke-width="5"/><rect x="-22" y="-22" width="44" height="34" rx="6" fill="${c('#f2c14e')}"/><circle cx="0" cy="-8" r="5" fill="${TINTA}"/><path d="M0 -6v9" fill="none" stroke-width="3"/><path d="M42 -40C52 -36 60 -38 66 -42V-20C66 -6 56 4 54 6C52 4 42 -6 42 -20Z" fill="${c('#9fd8c9')}" transform="translate(-10 0)"/></g>`;
+    return `<g transform="translate(${cx} 192)"><circle r="26" fill="${c('#c9b6e4')}"/><circle r="10" fill="#fff"/>${[0, 45, 90, 135, 180, 225, 270, 315].map(a => `<rect x="-6" y="-36" width="12" height="12" rx="2" fill="${c('#c9b6e4')}" transform="rotate(${a})"/>`).join('')}<circle r="26" fill="none"/></g>`;
+  }
+
+  function fundo(c) {
+    let s = '';
+    // parede e chão
+    s += `<rect x="0" y="0" width="${W}" height="330" fill="${c('#f3ecf9')}" stroke="none"/>`;
+    s += `<rect x="0" y="330" width="${W}" height="${H - 330}" fill="${c('#fbf3e4')}" stroke="none"/>`;
+    let piso = '';
+    for (let x = 0; x <= W; x += 100) piso += `M${x} 330V${H}`;
+    for (let y = 380; y <= H; y += 70) piso += `M0 ${y}H${W}`;
+    s += `<path d="${piso}" fill="none" stroke="${c('#efe2c9') === '#fff' ? '#d8d8d8' : '#efe2c9'}" stroke-width="2"/>`;
+    s += `<path d="M0 330H${W}" fill="none"/>`;
+    // varal de bandeirinhas
+    const cores = ['#f2a7c3', '#9fd8c9', '#f7d774', '#8fb3d9', '#c9b6e4', '#f6b48f'];
+    let band = `<path d="M0 10Q400 46 800 18Q1200 46 1600 10" fill="none" stroke-width="2"/>`;
+    for (let i = 0; i < 32; i++) {
+      const x = 10 + i * 50, t = x / 1600;
+      const y = t < 0.5 ? 10 + 36 * 4 * t * (1 - 2 * t) * 0.5 + 8 * Math.sin(t * Math.PI * 2) : 18 + 28 * Math.sin((t - 0.5) * Math.PI * 2);
+      band += `<path d="M${x - 14} ${y.toFixed(1)}L${x + 14} ${(y + 1).toFixed(1)}L${x} ${(y + 26).toFixed(1)}Z" fill="${c(cores[i % cores.length])}" stroke-width="1.8"/>`;
+    }
+    s += band;
+    // estandes
+    ESTANDES.forEach((e, i) => {
+      const x = EST_X(i);
+      s += `<rect x="${x}" y="96" width="${EST_L}" height="210" rx="16" fill="${c(e.cor)}"/>`;
+      s += `<rect x="${x + 30}" y="70" width="${EST_L - 60}" height="40" rx="20" fill="${c(e.placa)}"/>`;
+      s += `<text x="${x + EST_L / 2}" y="98" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="${e.nome.length > 10 ? 21 : 25}" fill="${TINTA}" stroke="none">${e.nome}</text>`;
+      s += decoracaoEstande(i, c);
+    });
+    return s;
+  }
+
+  // balcão de um estande (desenhado por cima de quem atende)
+  function balcao(i, c, itens) {
+    const x = EST_X(i), e = ESTANDES[i];
+    let s = `<rect x="${x + 8}" y="248" width="${EST_L - 16}" height="16" rx="6" fill="${c('#fffaf2')}"/>`;
+    s += `<rect x="${x + 16}" y="262" width="${EST_L - 32}" height="${BALCAO_Y + 22 - 262}" rx="4" fill="${c(e.placa)}"/>`;
+    s += `<path d="M${x + 40} 278h${EST_L - 80}" fill="none" stroke="${c('#ffffff') === '#fff' && c(e.placa) === '#fff' ? TINTA : '#fff'}" stroke-width="3" stroke-dasharray="10 8"/>`;
+    s += itens;
+    return s;
+  }
+
+  function mesa(m, c, itens) {
+    const x = m.x - MESA_L / 2;
+    let s = `<rect x="${x}" y="${m.y - MESA_TOPO}" width="${MESA_L}" height="22" rx="8" fill="${c('#fffaf2')}"/>`;
+    s += `<path d="M${x + 6} ${m.y - 40}H${x + MESA_L - 6}L${x + MESA_L - 12} ${m.y}H${x + 12}Z" fill="${c(m.toalha)}"/>`;
+    s += `<path d="M${x + 30} ${m.y - 40}v40M${x + MESA_L - 30} ${m.y - 40}v40" fill="none" stroke-width="1.4" stroke-dasharray="4 5"/>`;
+    s += itens;
+    return s;
+  }
+
+  /* ================= montagem da cena ================= */
+  let estado = null;
+
+  function montar(seed, nivelId) {
+    R = rng(seed);
+    const nv = NIVEIS[nivelId];
+    const esc = nv.esc;
+    const raio = 18 * esc;
+
+    // lugares onde dá para esconder: em cima dos balcões, das mesas e no chão
+    const lugares = [];
+    ESTANDES.forEach((e, i) => {
+      for (let k = 0; k < 6; k++) lugares.push({ tipo: 'balcao', dono: i, x: EST_X(i) + 34 + k * 46 + ri(-6, 6), y: 254, prof: BALCAO_Y + 22 });
+    });
+    MESAS.forEach((m, i) => {
+      for (let k = 0; k < 5; k++) lugares.push({ tipo: 'mesa', dono: i, x: m.x - 88 + k * 44 + ri(-5, 5), y: m.y - 46, prof: m.y });
+    });
+    const longeDasMesas = (x, y, folga) => MESAS.every(m => !(Math.abs(x - m.x) < MESA_L / 2 + folga && y > m.y - MESA_TOPO - folga - 30 && y < m.y + folga));
+    for (let k = 0; k < 160 && lugares.filter(l => l.tipo === 'chao').length < 34; k++) {
+      const x = ri(60, W - 60), y = ri(380, H - 30);
+      if (!longeDasMesas(x, y, 24)) continue;
+      if (lugares.some(l => l.tipo === 'chao' && Math.hypot(l.x - x, l.y - y) < 90)) continue;
+      lugares.push({ tipo: 'chao', x, y: y - raio * 0.7, prof: y });
+    }
+
+    // escolhe objetos e lugares (no máximo metade em cima de móveis, para espalhar)
+    const objs = embaralha(OBJETOS).slice(0, nv.qtd);
+    const escolhidos = [];
+    const ordem = embaralha(lugares);
+    let emMovel = 0;
+    for (const l of ordem) {
+      if (escolhidos.length >= objs.length) break;
+      if (escolhidos.some(e => Math.hypot(e.x - l.x, e.y - l.y) < 150)) continue;
+      if (l.tipo !== 'chao' && emMovel >= Math.ceil(objs.length / 2)) continue;
+      if (l.tipo !== 'chao') emMovel++;
+      escolhidos.push(l);
+    }
+    const alvos = objs.map((o, i) => {
+      const l = escolhidos[i];
+      return { obj: o, x: l.x, y: l.y, prof: l.prof, tipo: l.tipo, dono: l.dono, rot: ri(-25, 25), achado: false };
+    });
+    alvos.forEach(a => { a.setor = setorDe(a.x, a.prof); });
+
+    // coisas que não contam, nos lugares que sobraram
+    const coisas = [];
+    lugares.forEach(l => {
+      if (escolhidos.includes(l)) return;
+      if (alvos.some(a => Math.hypot(a.x - l.x, a.y - l.y) < raio + 22)) return;
+      if (l.tipo === 'chao') { if (R() < 0.75) coisas.push({ tipo: l.tipo, dono: l.dono, x: l.x, y: l.prof, prof: l.prof, nome: pick(COISAS_CHAO) }); }
+      else if (R() < 0.8) coisas.push({ tipo: l.tipo, dono: l.dono, x: l.x, y: l.y + 12, prof: l.prof, nome: l.tipo === 'balcao' && R() < 0.4 ? (l.dono === 4 && R() < 0.5 ? 'impressora3d' : 'monitor') : pick(COISAS_MESA) });
+    });
+
+    // gente: os três da história, quem atende nos estandes e a multidão
+    const gente = [];
+    const atende = ESTANDES.map((e, i) => ({ tipo: pick(['urso', 'gato', 'cachorro', 'panda', 'raposa', 'sapo', 'coelho']), f: R() < 0.5, x: EST_X(i) + EST_L / 2 + ri(-70, 70), y: 290, s: 0.82, roupa: pick(ROUPAS), extra: pick(ROUPAS), acess: pick(ACESS), segura: '', flip: R() < 0.5, atras: true }));
+    const cobre = (p, a) => {
+      const w = 36 * p.s, h = (p.segura === 'balao' ? 150 : p.acess === 'bone' || p.tipo === 'coelho' ? 145 : 120) * p.s;
+      const r = raio + 6;
+      return a.x + r > p.x - w - (p.segura ? 18 * p.s : 0) && a.x - r < p.x + w + (p.segura ? 18 * p.s : 0) && a.y + r > p.y - h && a.y - r < p.y + 4;
+    };
+    const herois = [
+      { tipo: 'urso', f: false, acess: 'bone', segura: '', roupa: '#9fd8c9', extra: '#8fb3d9', heroi: 'o urso de boné' },
+      { tipo: 'coelho', f: true, acess: 'oculos', segura: '', roupa: '#f2a7c3', extra: '#c9b6e4', heroi: 'a coelha de óculos' },
+      { tipo: 'gato', f: false, acess: '', segura: '', roupa: '#f7d774', extra: '#f2a7c3', heroi: 'o gatinho', menor: true }
+    ];
+    const lista = herois.concat(Array.from({ length: nv.gente }, () => ({
+      tipo: pick(Object.keys(TIPOS)), f: R() < 0.5, acess: pick(ACESS), segura: pick(SEGURA), roupa: pick(ROUPAS), extra: pick(ROUPAS)
+    })));
+    lista.forEach(base => {
+      for (let tent = 0; tent < 140; tent++) {
+        const y = ri(390, H - 8), x = ri(40, W - 40);
+        const s = (0.8 + (y - 390) / (H - 390) * 0.34) * (base.menor ? 0.8 : 1);
+        const p = Object.assign({}, base, { x, y, s, flip: R() < 0.5 });
+        if (!longeDasMesas(x, y, 6)) continue;
+        if (alvos.some(a => cobre(p, a))) continue;
+        if (gente.some(g => Math.abs(g.x - x) < 34 && Math.abs(g.y - y) < 26)) continue;
+        gente.push(p);
+        break;
+      }
+    });
+    gente.forEach(g => { g.setor = setorDe(g.x, g.y); });
+    atende.forEach(g => { g.setor = setorDe(g.x, 200); });
+    MESAS.forEach(m => { m.toalha = pick(['#f9d6e3', '#cfe3f7', '#d7f0e3', '#fbefc4', '#e7dcf5']); });
+
+    return { seed, nivelId, esc, raio, alvos, coisas, gente, atende };
+  }
+
+  function desenharObjeto(o, c, esc) {
+    return `<g class="obj" stroke="${TINTA}" stroke-width="2.4">${o.desenho(c)}</g>`.replace('<g class="obj"', `<g class="obj" transform="scale(${esc})"`);
+  }
+
+  function svgCena(m, mono) {
+    const c = mono ? () => '#fff' : x => x;
+    let s = `<g stroke="${TINTA}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">`;
+    s += fundo(c);
+    const pecas = [];
+    // quem atende fica atrás do balcão; o balcão leva as coisas e os objetos de cima
+    ESTANDES.forEach((e, i) => {
+      let itens = '';
+      m.coisas.filter(k => k.tipo === 'balcao' && k.dono === i).forEach(k => { itens += `<g transform="translate(${k.x} ${k.y})">${COISAS[k.nome](c)}</g>`; });
+      m.alvos.filter(a => a.tipo === 'balcao' && a.dono === i).forEach(a => { itens += alvoSvg(a, c, m.esc); });
+      s += m.atende.filter((g, k) => k === i).map(g => personagem(g, c, mono)).join('');
+      s += balcao(i, c, itens);
+    });
+    MESAS.forEach((ms, i) => {
+      let itens = '';
+      m.coisas.filter(k => k.tipo === 'mesa' && k.dono === i).forEach(k => { itens += `<g transform="translate(${k.x} ${k.y})">${COISAS[k.nome](c)}</g>`; });
+      m.alvos.filter(a => a.tipo === 'mesa' && a.dono === i).forEach(a => { itens += alvoSvg(a, c, m.esc); });
+      pecas.push({ y: ms.y, svg: mesa(ms, c, itens) });
+    });
+    m.coisas.filter(k => k.tipo === 'chao').forEach(k => pecas.push({ y: k.y - 1, svg: `<g transform="translate(${k.x} ${k.y})">${COISAS[k.nome](c)}</g>` }));
+    m.alvos.filter(a => a.tipo === 'chao').forEach(a => pecas.push({ y: a.prof - 1, svg: alvoSvg(a, c, m.esc) }));
+    m.gente.forEach(g => pecas.push({ y: g.y, svg: personagem(g, c, mono) }));
+    pecas.sort((a, b) => a.y - b.y).forEach(p => { s += p.svg; });
+    // cartaz da convenção
+    s += `<rect x="560" y="2" width="480" height="52" rx="26" fill="#fff" stroke-width="3"/><text x="800" y="38" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="30" fill="${TINTA}" stroke="none">Convenção de Computação</text>`;
+    s += '</g>';
+    return s;
+  }
+
+  function alvoSvg(a, c, esc) {
+    return `<g transform="translate(${a.x.toFixed(1)} ${a.y.toFixed(1)}) rotate(${a.rot})" data-alvo="${a.obj.id}">${desenharObjeto(a.obj, c, esc)}</g>`;
+  }
+
+  function iconeObj(o, mono) {
+    const c = mono ? () => '#fff' : x => x;
+    return `<svg viewBox="-24 -24 48 48" aria-hidden="true"><g stroke="${TINTA}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">${o.desenho(c)}</g></svg>`;
+  }
+
+  /* ================= som ================= */
+  let somLigado = lerPref().som !== false;
+  let ctx = null;
+  function tom(freqs, dur) {
+    if (!somLigado) return;
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      freqs.forEach((f, i) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'triangle'; o.frequency.value = f;
+        const t0 = ctx.currentTime + i * dur;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.18, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur * 1.6);
+        o.connect(g); g.connect(ctx.destination); o.start(t0); o.stop(t0 + dur * 1.8);
+      });
+    } catch (e) {}
+  }
+  const legenda = t => { if (window.MDA && MDA.legenda) MDA.legenda(t); };
+  const somAcerto = () => { tom([660, 880], 0.09); legenda('Som de acerto'); };
+  const somErro = () => { tom([220], 0.06); legenda('Som curto: não tem nada aqui'); };
+  const somFim = () => { tom([523, 659, 784, 1047], 0.12); legenda('Música de vitória'); };
+  const somDica = () => { tom([988, 740], 0.08); legenda('Som de dica'); };
+
+  /* ================= tela ================= */
+  const svg = $('cena');
+  let vb = { x: 0, y: 0, w: W, h: H };
+  let inicio = 0, relogio = null, dicas = 0, fim = false;
+
+  function aplicaVB() {
+    vb.w = clamp(vb.w, W / 6, W); vb.h = vb.w * H / W;
+    vb.x = clamp(vb.x, 0, W - vb.w); vb.y = clamp(vb.y, 0, H - vb.h);
+    svg.setAttribute('viewBox', `${vb.x.toFixed(1)} ${vb.y.toFixed(1)} ${vb.w.toFixed(1)} ${vb.h.toFixed(1)}`);
+  }
+  function zoom(f, cx, cy) {
+    if (cx === undefined) { cx = vb.x + vb.w / 2; cy = vb.y + vb.h / 2; }
+    const nw = clamp(vb.w / f, W / 6, W);
+    const k = nw / vb.w;
+    vb.x = cx - (cx - vb.x) * k; vb.y = cy - (cy - vb.y) * k; vb.w = nw;
+    aplicaVB();
+  }
+  function ponto(ev) {
+    const r = svg.getBoundingClientRect();
+    return { x: vb.x + (ev.clientX - r.left) / r.width * vb.w, y: vb.y + (ev.clientY - r.top) / r.height * vb.h, escala: vb.w / r.width };
+  }
+
+  function desenhar() {
+    svg.innerHTML = svgCena(estado.m, false) + '<g id="marcas"></g>';
+    estado.m.alvos.filter(a => a.achado).forEach(marcarAchado);
+  }
+
+  function marcarAchado(a) {
+    const g = $('marcas');
+    if (!g) return;
+    const r = estado.m.raio + 10;
+    g.insertAdjacentHTML('beforeend', `<g class="achou-anel"><circle cx="${a.x}" cy="${a.y}" r="${r}" fill="none" stroke="#fff" stroke-width="9"/><circle cx="${a.x}" cy="${a.y}" r="${r}" fill="none" stroke="#157f3b" stroke-width="5"/><circle cx="${a.x + r * 0.72}" cy="${a.y - r * 0.72}" r="11" fill="#157f3b" stroke="#fff" stroke-width="2.5"/><path d="M${a.x + r * 0.72 - 5} ${a.y - r * 0.72}l3.5 4 6 -7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>`);
+  }
+
+  function desenharLista() {
+    $('lista').innerHTML = estado.m.alvos.map((a, i) =>
+      `<li><button type="button" class="ac-item${a.achado ? ' achado' : ''}" data-i="${i}" aria-label="${a.obj.nome}${a.achado ? ', já achado' : ', ainda não achado. Toque para saber como é'}">${iconeObj(a.obj)}<span class="nm">${a.obj.nome}</span>${a.achado ? '<span class="ok" aria-hidden="true">✓</span>' : ''}</button></li>`).join('');
+    const n = estado.m.alvos.filter(a => a.achado).length;
+    $('cont').textContent = `${n}/${estado.m.alvos.length}`;
+  }
+
+  const status = (t) => { $('status').textContent = t; };
+
+  function achar(a) {
+    if (a.achado || fim) return;
+    a.achado = true;
+    marcarAchado(a);
+    desenharLista();
+    somAcerto();
+    const art = a.obj.art === 'a' ? 'a' : 'o';
+    const falta = estado.m.alvos.filter(x => !x.achado).length;
+    status(`Você achou ${art} ${a.obj.nome}! ${falta ? (falta === 1 ? 'Falta 1.' : `Faltam ${falta}.`) : ''}`);
+    $('curio').className = 'ac-curio ver';
+    $('curio').innerHTML = `<h3>${art === 'a' ? 'A' : 'O'} ${a.obj.nome}<span class="tag">${a.obj.cat}</span></h3><p>${a.obj.curio}</p>`;
+    if (!falta) terminar();
+    if (setorAberto) mostrarSetor(setorAberto.lin, setorAberto.col);
+  }
+
+  function clique(p) {
+    if (fim || !estado || !$('capa').hidden) return;
+    const raioToque = Math.max(estado.m.raio * 1.3, 22 * p.escala);
+    let melhor = null, dist = Infinity;
+    estado.m.alvos.forEach(a => {
+      if (a.achado) return;
+      const d = Math.hypot(a.x - p.x, a.y - p.y);
+      if (d < raioToque && d < dist) { melhor = a; dist = d; }
+    });
+    if (melhor) { achar(melhor); return; }
+    somErro();
+    const g = $('marcas');
+    if (g) {
+      g.insertAdjacentHTML('beforeend', `<circle class="erro-anel" cx="${p.x}" cy="${p.y}" r="${14 * p.escala}" fill="none" stroke="#888" stroke-width="${3 * p.escala}" style="transform-box:fill-box;transform-origin:center"/>`);
+      const el = g.lastElementChild;
+      setTimeout(() => el && el.remove(), 650);
+    }
+  }
+
+  function dica() {
+    if (fim || !estado || !$('capa').hidden) return;
+    const falta = estado.m.alvos.filter(a => !a.achado);
+    if (!falta.length) return;
+    const a = falta[Math.floor(Math.random() * falta.length)];
+    dicas++; $('ndicas').textContent = dicas;
+    const ang = Math.random() * Math.PI * 2, d = 40 + Math.random() * 40;
+    const cx = a.x + Math.cos(ang) * d, cy = a.y + Math.sin(ang) * d, r = 140;
+    // se estiver muito perto, afasta para a dica aparecer inteira
+    if (vb.w < 520) { vb.w = 700; }
+    vb.x = cx - vb.w / 2; vb.y = cy - vb.w * H / W / 2; aplicaVB();
+    const g = $('marcas');
+    g.querySelectorAll('.dica-anel').forEach(e => e.remove());
+    g.insertAdjacentHTML('beforeend', `<circle class="dica-anel" cx="${cx}" cy="${cy}" r="${r}" fill="rgba(247,215,116,.18)" stroke="#d9a400" stroke-width="7" stroke-dasharray="18 12"/>`);
+    const el = g.lastElementChild;
+    setTimeout(() => el && el.remove(), 5000);
+    somDica();
+    const art = a.obj.art === 'a' ? 'a' : 'o';
+    status(`Dica: ${art} ${a.obj.nome} está dentro do círculo amarelo, ${nomeSetor(a.setor.lin, a.setor.col).toLowerCase()} da convenção.`);
+  }
+
+  function tempoTxt(ms) {
+    const s = Math.floor(ms / 1000);
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  }
+
+  function terminar() {
+    fim = true;
+    clearInterval(relogio);
+    const ms = Date.now() - inicio;
+    const estrelas = dicas === 0 ? 3 : dicas <= 2 ? 2 : 1;
+    const pct = Math.max(60, 100 - dicas * 10);
+    if (window.MDP) MDP.registrar(ID, pct);
+    setTimeout(() => {
+      somFim();
+      const nv = NIVEIS[estado.m.nivelId];
+      const prox = estado.m.nivelId === 'facil' ? 'medio' : estado.m.nivelId === 'medio' ? 'dificil' : null;
+      $('cartao').innerHTML = `<h2>Achou tudo!</h2>
+        <div class="ac-estrelas" aria-label="${estrelas} de 3 estrelas">${'★'.repeat(estrelas)}<span class="apagada">${'★'.repeat(3 - estrelas)}</span></div>
+        <p>Nível ${nv.nome}: ${estado.m.alvos.length} objetos em ${tempoTxt(ms)}, ${dicas === 0 ? 'sem nenhuma dica' : dicas === 1 ? 'com 1 dica' : `com ${dicas} dicas`}.</p>
+        <p class="small">Lembra para que serve cada um? Toque nos nomes da lista para ler as curiosidades de novo.</p>
+        <div class="ac-niveis">
+          <button type="button" data-dif="${estado.m.nivelId}"><strong>Jogar de novo</strong><span>outra cena, mesmo nível</span></button>
+          ${prox ? `<button type="button" data-dif="${prox}"><strong>Nível ${NIVEIS[prox].nome}</strong><span>${NIVEIS[prox].desc}</span></button>` : ''}
+          <button type="button" data-ver="1"><strong>Ver a cena</strong><span>olhar com calma</span></button>
+        </div>`;
+      $('capa').hidden = false;
+      status(`Você achou todos os objetos em ${tempoTxt(ms)}. ${estrelas} estrelas.`);
+      const b = $('cartao').querySelector('button'); if (b) b.focus();
+    }, 700);
+  }
+
+  function capaInicial() {
+    const pref = lerPref();
+    const heroisSvg = (() => {
+      const c = x => x;
+      const hs = [
+        { tipo: 'urso', acess: 'bone', segura: '', roupa: '#9fd8c9', extra: '#8fb3d9', x: 60, y: 150, s: 1 },
+        { tipo: 'coelho', acess: 'oculos', segura: '', roupa: '#f2a7c3', extra: '#c9b6e4', x: 140, y: 150, s: 1 },
+        { tipo: 'gato', acess: '', segura: '', roupa: '#f7d774', extra: '#f2a7c3', x: 215, y: 150, s: 0.8 }
+      ];
+      return `<svg class="herois" viewBox="0 0 270 160" aria-hidden="true"><g stroke="${TINTA}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">${hs.map(h => personagem(h, c, false)).join('')}</g></svg>`;
+    })();
+    $('cartao').innerHTML = `${heroisSvg}<h2>Achados da Convenção</h2>
+      <p>O urso, a coelha e o gatinho foram à Convenção de Computação e perderam umas coisas no meio da multidão. Você ajuda a achar?</p>
+      <p class="small">Escolha o nível:</p>
+      <div class="ac-niveis">${Object.entries(NIVEIS).map(([k, n]) => `<button type="button" data-dif="${k}" class="${pref.nivel === k ? 'sel' : ''}"><strong>${n.nome}</strong><span>${n.desc}</span></button>`).join('')}</div>`;
+    $('capa').hidden = false;
+  }
+
+  function comecar(nivelId, seed) {
+    seed = seed === undefined ? (Date.now() ^ Math.floor(Math.random() * 1e9)) >>> 0 : seed;
+    estado = { m: montar(seed, nivelId) };
+    salvarPref(Object.assign(lerPref(), { nivel: nivelId }));
+    dicas = 0; fim = false;
+    $('ndicas').textContent = '0';
+    vb = { x: 0, y: 0, w: W, h: H }; aplicaVB();
+    desenhar(); desenharLista();
+    $('curio').className = 'ac-curio'; $('curio').innerHTML = '';
+    $('capa').hidden = true;
+    inicio = Date.now();
+    clearInterval(relogio);
+    relogio = setInterval(() => { if (!fim) $('tempo').textContent = tempoTxt(Date.now() - inicio); }, 1000);
+    $('tempo').textContent = '0:00';
+    status(`Nível ${NIVEIS[nivelId].nome}: procure ${estado.m.alvos.length} objetos. A lista mostra quais são.`);
+    montarSetores();
+    svg.focus({ preventScroll: true });
+  }
+
+  /* ================= explorar sem ver a imagem ================= */
+  let setorAberto = null;
+  function montarSetores() {
+    setorAberto = null;
+    $('descricao').textContent = ''; $('pegar').innerHTML = '';
+    let h = '';
+    for (let lin = 0; lin < 3; lin++) for (let col = 0; col < 4; col++) h += `<button type="button" data-lin="${lin}" data-col="${col}">${nomeSetor(lin, col)}</button>`;
+    $('setores').innerHTML = h;
+  }
+  function descrevePessoa(g) {
+    if (g.heroi) return g.heroi;
+    const t = TIPOS[g.tipo];
+    let d = g.f ? t.f : t.m;
+    if (g.acess) d += ' ' + NOME_ACESS[g.acess];
+    if (g.segura) d += ' ' + NOME_SEG[g.segura];
+    return d;
+  }
+  function juntar(l) { return l.length <= 1 ? (l[0] || '') : l.slice(0, -1).join(', ') + ' e ' + l[l.length - 1]; }
+  function mostrarSetor(lin, col) {
+    setorAberto = { lin, col };
+    const m = estado.m;
+    const partes = [];
+    const nome = nomeSetor(lin, col);
+    if (lin === 0) {
+      const est = ESTANDES.map((e, i) => ({ e, i })).filter(({ i }) => setorDe(EST_X(i) + EST_L / 2, 200).col === col || setorDe(EST_X(i) + 20, 200).col === col || setorDe(EST_X(i) + EST_L - 20, 200).col === col);
+      partes.push(`ficam os estandes de ${juntar(est.map(x => x.e.nome))}`);
+      const at = m.atende.filter(g => g.setor.col === col).map(descrevePessoa);
+      if (at.length) partes.push(`atrás dos balcões estão ${juntar(at)}`);
+    }
+    const mesas = MESAS.filter(ms => { const s = setorDe(ms.x, ms.y); return s.lin === lin && s.col === col; });
+    if (mesas.length) partes.push(mesas.length === 1 ? 'tem uma mesa' : `tem ${mesas.length} mesas`);
+    const cs = [...new Set(m.coisas.filter(k => { const s = setorDe(k.x, k.prof); return s.lin === lin && s.col === col; }).map(k => NOME_COISA[k.nome]))];
+    if (cs.length) partes.push(`dá para ver ${juntar(cs.slice(0, 5))}`);
+    const gs = m.gente.filter(g => g.setor.lin === lin && g.setor.col === col);
+    if (gs.length) {
+      const her = gs.filter(g => g.heroi), out = gs.filter(g => !g.heroi);
+      const ditos = her.concat(out.slice(0, Math.max(0, 3 - her.length))).map(descrevePessoa);
+      const resto = gs.length - ditos.length;
+      partes.push(`passeiam ${juntar(ditos)}${resto > 0 ? (resto === 1 ? ' e mais uma pessoa' : ` e mais ${resto} pessoas`) : ''}`);
+    }
+    const aqui = m.alvos.filter(a => a.setor.lin === lin && a.setor.col === col && !a.achado);
+    let txt = `${nome}: ${juntar(partes) || 'só o chão da convenção'}.`;
+    if (aqui.length) txt += ` E, escondido ali, ${juntar(aqui.map(a => `${a.obj.art === 'a' ? 'uma' : 'um'} ${a.obj.nome}${a.tipo === 'chao' ? ' no chão' : a.tipo === 'mesa' ? ' em cima da mesa' : ' no balcão'}`))}!`;
+    else txt += ' Nenhum objeto da lista por aqui.';
+    $('descricao').textContent = txt;
+    $('pegar').innerHTML = aqui.map(a => `<button type="button" data-pegar="${a.obj.id}">Pegar ${a.obj.art} ${a.obj.nome}</button>`).join('');
+  }
+
+  /* ================= impressão para colorir ================= */
+  function imprimir() {
+    if (!estado) return;
+    const m = estado.m;
+    $('impressao').innerHTML = `<h2>Achados da Convenção</h2>
+      <p>Encontre e circule os objetos da lista. Depois, pinte a convenção do seu jeito. Material de Júlia Roberta Quoos Alves, ohtopico.com.br</p>
+      <svg class="cena-pb" viewBox="0 0 ${W} ${H}">${svgCena(m, true)}</svg>
+      <ul>${m.alvos.map(a => `<li>${iconeObj(a.obj, true)}<span>${a.obj.nome}</span></li>`).join('')}</ul>`;
+    setTimeout(() => window.print(), 60);
+  }
+
+  /* ================= eventos ================= */
+  const toques = new Map();
+  let arrasto = null, pinca = null;
+  svg.addEventListener('pointerdown', ev => {
+    svg.setPointerCapture(ev.pointerId);
+    toques.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+    if (toques.size === 1) arrasto = { x: ev.clientX, y: ev.clientY, vx: vb.x, vy: vb.y, moveu: false };
+    if (toques.size === 2) {
+      const [a, b] = [...toques.values()];
+      pinca = { d: Math.hypot(a.x - b.x, a.y - b.y), w: vb.w };
+      if (arrasto) arrasto.moveu = true;
+    }
+  });
+  svg.addEventListener('pointermove', ev => {
+    if (!toques.has(ev.pointerId)) return;
+    toques.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+    const r = svg.getBoundingClientRect();
+    if (toques.size === 2 && pinca) {
+      const [a, b] = [...toques.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      const meio = ponto({ clientX: (a.x + b.x) / 2, clientY: (a.y + b.y) / 2 });
+      zoom(vb.w / (pinca.w * pinca.d / d), meio.x, meio.y);
+      return;
+    }
+    if (arrasto && toques.size === 1) {
+      const dx = ev.clientX - arrasto.x, dy = ev.clientY - arrasto.y;
+      if (Math.hypot(dx, dy) > 7) arrasto.moveu = true;
+      if (arrasto.moveu) {
+        vb.x = arrasto.vx - dx / r.width * vb.w; vb.y = arrasto.vy - dy / r.height * vb.h; aplicaVB();
+      }
+    }
+  });
+  function soltar(ev) {
+    if (!toques.has(ev.pointerId)) return;
+    toques.delete(ev.pointerId);
+    if (toques.size < 2) pinca = null;
+    if (toques.size === 0) {
+      if (arrasto && !arrasto.moveu && ev.type === 'pointerup') clique(ponto(ev));
+      arrasto = null;
+    } else if (toques.size === 1) {
+      const [t] = [...toques.values()];
+      arrasto = { x: t.x, y: t.y, vx: vb.x, vy: vb.y, moveu: true };
+    }
+  }
+  svg.addEventListener('pointerup', soltar);
+  svg.addEventListener('pointercancel', soltar);
+  svg.addEventListener('wheel', ev => {
+    if (ev.deltaY > 0 && vb.w >= W) return; // já está longe: deixa a página rolar
+    ev.preventDefault();
+    const p = ponto(ev);
+    zoom(ev.deltaY < 0 ? 1.25 : 0.8, p.x, p.y);
+  }, { passive: false });
+  svg.addEventListener('keydown', ev => {
+    const passo = vb.w * 0.12;
+    const k = ev.key;
+    if (k === 'ArrowLeft') vb.x -= passo; else if (k === 'ArrowRight') vb.x += passo;
+    else if (k === 'ArrowUp') vb.y -= passo; else if (k === 'ArrowDown') vb.y += passo;
+    else if (k === '+' || k === '=') { zoom(1.3); ev.preventDefault(); return; }
+    else if (k === '-' || k === '_') { zoom(1 / 1.3); ev.preventDefault(); return; }
+    else if (k === 'Enter' || k === ' ') {
+      ev.preventDefault();
+      const r = svg.getBoundingClientRect();
+      clique({ x: vb.x + vb.w / 2, y: vb.y + vb.h / 2, escala: Math.max(vb.w / r.width, 1.2) });
+      return;
+    } else return;
+    ev.preventDefault(); aplicaVB();
+  });
+  $('z-mais').addEventListener('click', () => zoom(1.4));
+  $('z-menos').addEventListener('click', () => zoom(1 / 1.4));
+  $('z-tudo').addEventListener('click', () => { vb = { x: 0, y: 0, w: W, h: H }; aplicaVB(); });
+  $('b-dica').addEventListener('click', dica);
+  $('b-nova').addEventListener('click', () => { if (estado) comecar(estado.m.nivelId); else capaInicial(); });
+  $('b-imprimir').addEventListener('click', imprimir);
+  const atualizaSom = () => { $('b-som').textContent = somLigado ? 'Som ligado' : 'Som desligado'; $('b-som').setAttribute('aria-pressed', String(somLigado)); };
+  $('b-som').addEventListener('click', () => { somLigado = !somLigado; salvarPref(Object.assign(lerPref(), { som: somLigado })); atualizaSom(); });
+  atualizaSom();
+  $('b-cheia').addEventListener('click', () => {
+    const st = $('stage');
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    if (st.requestFullscreen) st.requestFullscreen().catch(() => {});
+  });
+  document.addEventListener('fullscreenchange', () => {
+    const cheia = document.fullscreenElement === $('stage');
+    $('stage').classList.toggle('ac-cheia', cheia);
+    $('b-cheia').textContent = cheia ? 'Sair da tela cheia' : 'Tela cheia';
+  });
+  $('cartao').addEventListener('click', ev => {
+    const b = ev.target.closest('button');
+    if (!b) return;
+    if (b.dataset.ver) { $('capa').hidden = true; svg.focus(); return; }
+    if (b.dataset.dif) comecar(b.dataset.dif);
+  });
+  $('lista').addEventListener('click', ev => {
+    const b = ev.target.closest('.ac-item');
+    if (!b || !estado) return;
+    const a = estado.m.alvos[+b.dataset.i];
+    if (a.achado) {
+      $('curio').className = 'ac-curio ver';
+      $('curio').innerHTML = `<h3>${a.obj.art === 'a' ? 'A' : 'O'} ${a.obj.nome}<span class="tag">${a.obj.cat}</span></h3><p>${a.obj.curio}</p>`;
+      status(`${a.obj.art === 'a' ? 'A' : 'O'} ${a.obj.nome} já foi achado.`);
+    } else {
+      status(`Como é ${a.obj.art} ${a.obj.nome}: ${a.obj.aparencia}`);
+    }
+  });
+  $('setores').addEventListener('click', ev => {
+    const b = ev.target.closest('button');
+    if (b && estado) mostrarSetor(+b.dataset.lin, +b.dataset.col);
+  });
+  $('pegar').addEventListener('click', ev => {
+    const b = ev.target.closest('button');
+    if (!b || !estado) return;
+    const a = estado.m.alvos.find(x => x.obj.id === b.dataset.pegar);
+    if (a) achar(a);
+  });
+
+  // a captura da imagem de compartilhar (#captura) já abre uma cena no nível médio, sem a capa
+  if (location.hash === '#captura') comecar('medio', 20261115);
+  else {
+    // mostra uma cena de fundo atrás da capa
+    estado = { m: montar(7, 'medio') }; desenhar(); desenharLista(); montarSetores();
+    capaInicial();
+  }
+})();
+</script>
+</body>
+</html>
