@@ -101,12 +101,19 @@
     display: block; text-decoration: none; background: var(--papel); border: 2px solid var(--tinta); border-radius: 18px;
     box-shadow: 5px 5px 0 var(--sombra); overflow: hidden; transition: transform .12s ease, box-shadow .12s ease;
   }
-  .cartao:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--sombra); }
-  .cartao:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--sombra); }
+  .cartao summary { cursor: pointer; display: flex; align-items: center; gap: 12px; list-style: none; padding: 14px 16px; }
+  .cartao summary::-webkit-details-marker { display: none; }
+  .cartao summary:hover { background: var(--fundo); }
+  .cartao .resumo { flex: 1; }
+  .cartao .seta { width: 12px; height: 12px; border-right: 3px solid var(--tinta); border-bottom: 3px solid var(--tinta); transform: rotate(45deg); margin: -6px 4px 0 0; transition: transform .12s ease; flex: none; }
+  .cartao[open] .seta { transform: rotate(-135deg); margin-top: 6px; }
+  .cartao[open] summary { border-bottom: 2px solid var(--tinta); }
+  .cartao .foto { display: block; }
   .cartao img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-bottom: 2px solid var(--tinta); background: var(--fundo); }
   .cartao .texto { padding: 14px 16px 16px; }
+  .cartao .ir { text-decoration: none; }
   .cartao .rotulo { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--tinta-2); }
-  .cartao h2 { font-family: var(--display); font-weight: 800; font-size: 23px; line-height: 1.15; margin: 4px 0 6px; }
+  .cartao h2 { font-family: var(--display); font-weight: 800; font-size: 21px; line-height: 1.15; margin: 4px 0 0; }
   .cartao p { margin: 0; color: var(--tinta-2); font-size: 15px; }
   .cartao .ir {
     display: inline-block; margin-top: 12px; padding: 6px 14px; border-radius: 999px; background: var(--marca);
@@ -125,7 +132,7 @@
   footer { margin-top: 28px; text-align: center; font-size: 13px; color: var(--tinta-2); }
   footer a { font-weight: 600; }
   @media (min-width: 520px) { h1 { font-size: 40px; } main { padding-top: 40px; } }
-  @media (prefers-reduced-motion: reduce) { .cartao { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .cartao, .cartao .seta { transition: none; } }
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
 <script>
@@ -152,70 +159,94 @@
 
   <ul class="cartoes">
     <li>
-      <a class="cartao destaque" href="/mundo/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">
-        <img src="/mundo/og-mundo.jpg" width="1200" height="630" alt="Vila do Mundo em visão isométrica" loading="eager">
+      <details class="cartao destaque">
+        <summary><span class="resumo"><span class="rotulo">Jogo gratuito no navegador</span><h2>Mundo</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="/mundo/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links" tabindex="-1"><img src="/mundo/og-mundo.jpg" width="1200" height="630" alt="Vila do Mundo em visão isométrica" loading="lazy"></a>
         <div class="texto">
-          <span class="rotulo">Jogo gratuito no navegador</span>
-          <h2>Mundo</h2>
           <p>Uma vila para explorar no navegador: responda perguntas da BNCC, cuide do seu pet, decore a casa e cumpra missões. Tem modo turma para o professor.</p>
-          <span class="ir">Jogar o Mundo</span>
+          <a class="ir" href="/mundo/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">Jogar o Mundo</a>
         </div>
-      </a>
+      </details>
     </li>
     <li>
-      <a class="cartao destaque" href="/material-didatico/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">
-        <img src="/material-didatico/assets/og-material-didatico.jpg" width="1200" height="675" alt="Página do material didático com jogos, planos e listas" loading="lazy">
+      <details class="cartao destaque">
+        <summary><span class="resumo"><span class="rotulo">Gratuito · BNCC Computação e Matemática</span><h2>Material didático</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="/material-didatico/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links" tabindex="-1"><img src="/material-didatico/assets/og-material-didatico.jpg" width="1200" height="675" alt="Página do material didático com jogos, planos e listas" loading="lazy"></a>
         <div class="texto">
-          <span class="rotulo">Gratuito · BNCC Computação e Matemática</span>
-          <h2>Material didático</h2>
           <p>Jogos, recursos 3D, planos de aula, fichas para imprimir e listas de exercícios, organizados por habilidade da BNCC.</p>
-          <span class="ir">Ver o material</span>
+          <a class="ir" href="/material-didatico/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">Ver o material</a>
         </div>
-      </a>
+      </details>
     </li>
     <li>
-      <a class="cartao" href="/mentoria/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">
-        <img src="/links/img/mentoria.jpg" width="1200" height="630" alt="Mentoria para professores: IA na prática" loading="lazy">
+      <details class="cartao">
+        <summary><span class="resumo"><span class="rotulo">Encontros on-line individuais</span><h2>Mentoria para professores</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="/mentoria/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links" tabindex="-1"><img src="/links/img/mentoria.jpg" width="1200" height="630" alt="Mentoria para professores: IA na prática" loading="lazy"></a>
         <div class="texto">
-          <span class="rotulo">Encontros on-line individuais</span>
-          <h2>Mentoria para professores</h2>
           <p>IA na prática para professores, coordenadores e gestores, com ética, LGPD e as tarefas reais da sua escola.</p>
-          <span class="ir">Conhecer a mentoria</span>
+          <a class="ir" href="/mentoria/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">Conhecer a mentoria</a>
         </div>
-      </a>
+      </details>
     </li>
     <li>
-      <a class="cartao" href="/formacao-tecnologias-educacionais/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">
-        <img src="/formacao-tecnologias-educacionais/og-formacao-tecnologias-educacionais.jpg" width="1200" height="630" alt="Formação em tecnologias educacionais" loading="lazy">
+      <details class="cartao">
+        <summary><span class="resumo"><span class="rotulo">Individual ou para a equipe</span><h2>Formação em tecnologias educacionais</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="/formacao-tecnologias-educacionais/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links" tabindex="-1"><img src="/formacao-tecnologias-educacionais/og-formacao-tecnologias-educacionais.jpg" width="1200" height="630" alt="Formação em tecnologias educacionais" loading="lazy"></a>
         <div class="texto">
-          <span class="rotulo">Individual ou para a equipe</span>
-          <h2>Formação em tecnologias educacionais</h2>
           <p>Treinamento prático em ferramentas digitais, IA e acessibilidade para professores e equipes de escolas e redes.</p>
-          <span class="ir">Conhecer a formação</span>
+          <a class="ir" href="/formacao-tecnologias-educacionais/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">Conhecer a formação</a>
         </div>
-      </a>
+      </details>
     </li>
     <li>
-      <a class="cartao" href="/blog/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">
-        <img src="/links/img/blog.jpg" width="1200" height="630" alt="Blog com textos para professores" loading="lazy">
+      <details class="cartao">
+        <summary><span class="resumo"><span class="rotulo">Clube de apoio mensal</span><h2>Apoie no Catarse</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="https://www.catarse.com.br/ohtopico/plans?utm_source=site&amp;utm_medium=links" rel="noopener" tabindex="-1"><img src="/links/img/catarse.jpg" width="1200" height="630" alt="Apoie no Catarse: o que você recebe ao apoiar" loading="lazy"></a>
         <div class="texto">
-          <span class="rotulo">Textos para professores</span>
-          <h2>Blog</h2>
+          <p>Planos a partir de R$ 5 por mês, com material extra para quem apoia e mantém o site gratuito.</p>
+          <a class="ir" href="https://www.catarse.com.br/ohtopico/plans?utm_source=site&amp;utm_medium=links" rel="noopener">Conhecer os planos</a>
+        </div>
+      </details>
+    </li>
+    <li>
+      <details class="cartao">
+        <summary><span class="resumo"><span class="rotulo">Ebook na Hotmart</span><h2>BNCC e Computação para Educadores</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="https://go.hotmart.com/D108499328D" rel="noopener" tabindex="-1"><img src="/links/img/ebook-bncc.jpg" width="1200" height="630" alt="Capa do ebook BNCC e Computação para Educadores" loading="lazy"></a>
+        <div class="texto">
+          <p>Guia prático com atividades com e sem tela, projetos maker e roteiro para planejar e avaliar, da Educação Infantil ao Ensino Médio.</p>
+          <a class="ir" href="https://go.hotmart.com/D108499328D" rel="noopener">Ver o ebook</a>
+        </div>
+      </details>
+    </li>
+    <li>
+      <details class="cartao">
+        <summary><span class="resumo"><span class="rotulo">Livro em PDF na Hotmart</span><h2>Tecnologia para colorir</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="https://go.hotmart.com/N108504044L" rel="noopener" tabindex="-1"><img src="/links/img/livro-colorir.jpg" width="1200" height="630" alt="Capa do livro Tecnologia para colorir" loading="lazy"></a>
+        <div class="texto">
+          <p>23 cenas de computação para colorir, do computador por dentro à inteligência artificial.</p>
+          <a class="ir" href="https://go.hotmart.com/N108504044L" rel="noopener">Ver o livro</a>
+        </div>
+      </details>
+    </li>
+    <li>
+      <details class="cartao">
+        <summary><span class="resumo"><span class="rotulo">Textos para professores</span><h2>Blog</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="/blog/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links" tabindex="-1"><img src="/links/img/blog.jpg" width="1200" height="630" alt="Blog com textos para professores" loading="lazy"></a>
+        <div class="texto">
           <p>BNCC Computação, IA na escola, prompts prontos e ideias de atividades para a sala de aula.</p>
-          <span class="ir">Ler o blog</span>
+          <a class="ir" href="/blog/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">Ler o blog</a>
         </div>
-      </a>
+      </details>
     </li>
     <li>
-      <a class="cartao" href="/curriculo/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">
-        <img src="/links/img/curriculo.jpg" width="1200" height="630" alt="Currículo de Júlia Roberta Quoos Alves" loading="lazy">
+      <details class="cartao">
+        <summary><span class="resumo"><span class="rotulo">Docência, dados e IA</span><h2>Currículo</h2></span><span class="seta" aria-hidden="true"></span></summary>
+        <a class="foto" href="/curriculo/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links" tabindex="-1"><img src="/links/img/curriculo.jpg" width="1200" height="630" alt="Currículo de Júlia Roberta Quoos Alves" loading="lazy"></a>
         <div class="texto">
-          <span class="rotulo">Docência, dados e IA</span>
-          <h2>Currículo</h2>
           <p>Formação, experiência em sala de aula, pesquisa e projetos de ciência de dados. Dá para salvar em PDF na própria página.</p>
-          <span class="ir">Ver o currículo</span>
+          <a class="ir" href="/curriculo/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=links">Ver o currículo</a>
         </div>
-      </a>
+      </details>
     </li>
   </ul>
 
