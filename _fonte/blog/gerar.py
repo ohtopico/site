@@ -627,6 +627,12 @@ PROVAS = [
      'A matéria apresenta minha análise dos dados do Censo Escolar e do IBGE de 2010 a 2022: escolas, matrículas, professores e o que melhorou no município.',
      'Matéria do jornal O Correio, de Cachoeira do Sul, 11/11/2026',
      'https://ocorreio.com.br/pesquisa-analisa-desempenho-de-novo-cabrais-nos-ultimos-anos/'),
+    ('O Mundo do site em destaque no Computacional e no Computação na Escola',
+     'A nota apresenta o Mundo como um ambiente em que os estudantes percorrem vilas, cumprem missões e exploram '
+     'programação, circuitos e pixel art, com ferramentas para o professor acompanhar a turma.',
+     'Computacional: Educação em Computação, 16/11/2026',
+     'https://www.computacional.com.br/',
+     [('Computação na Escola no Facebook', 'https://www.facebook.com/computacaoescola/posts/pfbid02RcUx9uRTgEQ8HSpRqeEi5X9aHyD6ZK7NH6d57ZtwtU2WcbNhYTC4BHJcD2uZ8xMql')]),
 ]
 
 
