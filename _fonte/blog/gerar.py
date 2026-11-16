@@ -632,7 +632,10 @@ PROVAS = [
      'programação, circuitos e pixel art, com ferramentas para o professor acompanhar a turma.',
      'Computacional: Educação em Computação, 16/11/2026',
      'https://www.computacional.com.br/',
-     [('Computação na Escola no Facebook', 'https://www.facebook.com/computacaoescola/posts/pfbid02RcUx9uRTgEQ8HSpRqeEi5X9aHyD6ZK7NH6d57ZtwtU2WcbNhYTC4BHJcD2uZ8xMql')]),
+     [('Computação na Escola no Facebook', 'https://www.facebook.com/computacaoescola/posts/pfbid02RcUx9uRTgEQ8HSpRqeEi5X9aHyD6ZK7NH6d57ZtwtU2WcbNhYTC4BHJcD2uZ8xMql')],
+     ('/img/mencao-computacional-mundo.jpg',
+      'Capa do portal Computacional em 16/11/2026, com a nota sobre o Mundo do site em Últimas Notícias',
+      1000, 314)),
 ]
 
 
