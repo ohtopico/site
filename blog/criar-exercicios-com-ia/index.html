@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Como criar exercícios com IA: passo a passo para professores</title>
+<meta name="description" content="Passo a passo para criar listas de exercícios com IA, pedir o gabarito resolvido, conferir com um checklist e adaptar para a sua turma.">
+<meta name="author" content="Júlia Roberta Quoos Alves">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ohtopico.com.br/blog/criar-exercicios-com-ia/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Júlia Quoos">
+<meta property="og:url" content="https://ohtopico.com.br/blog/criar-exercicios-com-ia/">
+<meta property="og:title" content="Como criar exercícios com IA: passo a passo para professores">
+<meta property="og:description" content="Passo a passo para criar listas de exercícios com IA, pedir o gabarito resolvido, conferir com um checklist e adaptar para a sua turma.">
+<meta property="og:image" content="https://ohtopico.com.br/blog/img/exercicios-ia.png">
+<meta property="og:image:alt" content="Cartão Antes de imprimir, confira: conteúdo no ano certo, enunciado que se entende sozinho, gabarito com contas e unidades certas, contexto que faz sentido para os alunos e dificuldade que realmente aumenta. Rodapé: revise o gabarito antes de tudo.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:published_time" content="2026-11-24">
+<meta property="article:author" content="https://ohtopico.com.br/">
+<meta property="article:section" content="IA na prática">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://ohtopico.com.br/blog/criar-exercicios-com-ia/#post",
+      "headline": "Como criar exercícios com IA sem levar erro para a sala",
+      "description": "Passo a passo para criar listas de exercícios com IA, pedir o gabarito resolvido, conferir com um checklist e adaptar para a sua turma.",
+      "url": "https://ohtopico.com.br/blog/criar-exercicios-com-ia/",
+      "mainEntityOfPage": "https://ohtopico.com.br/blog/criar-exercicios-com-ia/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://ohtopico.com.br/blog/img/exercicios-ia.png",
+        "width": 1080,
+        "height": 1350
+      },
+      "datePublished": "2026-11-24",
+      "dateModified": "2026-11-24",
+      "inLanguage": "pt-BR",
+      "keywords": [
+        "IA para professores",
+        "exercícios com IA",
+        "lista de exercícios",
+        "prompts para professores"
+      ],
+      "articleSection": "IA na prática",
+      "author": {
+        "@type": "Person",
+        "@id": "https://ohtopico.com.br/#julia",
+        "name": "Júlia Roberta Quoos Alves",
+        "alternateName": [
+          "Júlia Quoos",
+          "Júlia Roberta Quoos",
+          "Quoos"
+        ],
+        "url": "https://ohtopico.com.br/"
+      },
+      "publisher": {
+        "@id": "https://ohtopico.com.br/#julia"
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://ohtopico.com.br/blog/#blog",
+        "name": "Blog de Júlia Roberta Quoos Alves"
+      },
+      "timeRequired": "PT3M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://ohtopico.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://ohtopico.com.br/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Como criar exercícios com IA sem levar erro para a sala",
+          "item": "https://ohtopico.com.br/blog/criar-exercicios-com-ia/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>try { const t = JSON.parse(localStorage.getItem('iapraprof:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+if (window.self !== window.top) document.documentElement.classList.add('emoldurado');</script>
+
+
+<link rel="stylesheet" href="/assets/fontes/fontes.css">
+<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="/blog/assets/blog.css?v=736a2473ac">
+<link rel="alternate" type="application/rss+xml" title="Blog de Júlia Roberta Quoos Alves" href="/blog/feed.xml">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7QDTBLC4K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z7QDTBLC4K');
+</script>
+</head>
+<body data-contador="ohtopico">
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="area">
+<div class="janela">
+    <header class="cabecalho">
+        <a class="marca-site" href="/">Júlia Quoos</a>
+        <nav class="cabecalho-links" aria-label="Principal">
+            <a href="/blog/" aria-current="page">Blog</a>
+            <a href="/material-didatico/">Material didático</a>
+            <a href="/mundo/">Mundo</a>
+            <a href="/formacao-e-mentoria/">Formação e mentoria</a>
+        </nav>
+    </header>
+    <div class="corpo">
+        <main class="pagina" id="conteudo" tabindex="-1">
+<article class="texto">
+    <nav class="trilha" aria-label="Você está em"><ol><li><a href="/">Início</a></li><li><a href="/blog/">Blog</a></li><li aria-current="page">IA na prática</li></ol></nav>
+    <p class="rotulo">IA na prática</p>
+    <h1>Como criar exercícios com IA sem levar erro para a sala</h1>
+    <p class="linha-fina">Passo a passo para criar listas de exercícios com IA, pedir o gabarito resolvido, conferir com um checklist e adaptar para a sua turma.</p>
+    <div class="meta">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="36" height="36">
+        <span>Por <a href="/blog/quem-e-julia-quoos/" rel="author">Júlia Roberta Quoos Alves</a></span>
+        <span><time datetime="2026-11-24">24 de novembro de 2026</time></span>
+        <span>3 min de leitura</span>
+    </div>
+    <div class="artigo">
+<p>Criar uma lista de exercícios é uma das tarefas em que a IA mais economiza tempo do professor. Também é uma das que mais escondem erros: um gabarito com a conta errada, um enunciado ambíguo, uma questão fora do ano. Neste texto mostro o passo a passo que uso para gerar exercícios com IA e o que conferir antes de imprimir.</p>
+
+<h2>Passo 1: diga exatamente o que você quer</h2>
+<p>Quanto mais o pedido se parece com o que você explicaria a um colega, melhor o resultado. Inclua ano, conteúdo, quantidade, nível de dificuldade e formato. Um exemplo:</p>
+<pre>Atue como professor de matemática do 7º ano. Crie 8 exercícios sobre números inteiros (adição e subtração), em ordem crescente de dificuldade: 3 fáceis, 3 médios e 2 desafios com situação do cotidiano. Não use calculadora. Coloque o gabarito separado, no final, com a resolução de cada um em uma linha.</pre>
+
+<h2>Passo 2: peça o gabarito separado e resolvido</h2>
+<p>Pedir a resolução, e não só a resposta, tem duas vantagens: você confere mais rápido onde está o erro, e a IA erra menos quando precisa mostrar o caminho. Mesmo assim, <strong>resolva você mesma ao menos os desafios</strong>. É ali que os erros costumam aparecer.</p>
+
+<figure class="infografico">
+<img src="/blog/img/exercicios-ia.png" width="1080" height="1350" alt="Cartão Antes de imprimir, confira: conteúdo no ano certo, enunciado que se entende sozinho, gabarito com contas e unidades certas, contexto que faz sentido para os alunos e dificuldade que realmente aumenta. Rodapé: revise o gabarito antes de tudo." loading="lazy" decoding="async">
+<figcaption>O checklist para conferir a lista antes de imprimir. <a href="/blog/img/exercicios-ia.png" download>Baixar imagem</a></figcaption>
+</figure>
+
+<h2>Passo 3: confira com este checklist</h2>
+<ul>
+<li><strong>Conteúdo:</strong> está no ano certo? Não pede algo que a turma ainda não viu?</li>
+<li><strong>Enunciado:</strong> dá para entender sem a sua explicação? Tem só uma interpretação?</li>
+<li><strong>Gabarito:</strong> as contas estão certas? As unidades de medida estão certas?</li>
+<li><strong>Contexto:</strong> os nomes, valores e situações fazem sentido para os seus alunos?</li>
+<li><strong>Dificuldade:</strong> a progressão é real ou os “desafios” são iguais aos fáceis?</li>
+</ul>
+
+<h2>Passo 4: adapte para a sua turma</h2>
+<p>Depois de conferida, a lista ainda é genérica. Peça ajustes na mesma conversa:</p>
+<pre>Reescreva os exercícios 4 a 8 usando situações de uma cidade do interior do Rio Grande do Sul: feira, safra, futebol do bairro. Mantenha os mesmos números.</pre>
+<pre>Crie uma versão da lista com enunciados mais curtos e uma instrução por frase, para alunos com dificuldade de leitura. Mantenha o mesmo objetivo.</pre>
+
+<h2>Três erros comuns</h2>
+<ol>
+<li><strong>Pedir “exercícios sobre frações” e mais nada.</strong> Sai uma lista genérica, sem progressão, que não conversa com a sua aula.</li>
+<li><strong>Confiar no gabarito.</strong> Ele é a parte que mais precisa de revisão.</li>
+<li><strong>Usar a mesma lista para todas as turmas.</strong> Com a IA, criar uma versão adaptada leva dois minutos. Aproveite.</li>
+</ol>
+
+<h2>Para continuar</h2>
+<p>A seção de <a href="/ia-pra-prof/#/exercicios">exercícios do guia IA pra Prof</a> tem mais modelos de pedido, e a <a href="/prompts-para-professores/">biblioteca de prompts para professores</a> reúne prompts prontos por disciplina. Na <a href="/formacao-continuada/">formação continuada de professores em IA</a>, cada professor sai com a própria lista criada, conferida e adaptada para a turma dele.</p>
+<p>Na próxima semana: como usar IA para corrigir e dar devolutivas sem terceirizar a avaliação.</p>
+
+<p class="assinatura">Júlia Roberta Quoos Alves é professora de computação e formadora de professores em IA no Rio Grande do Sul.</p>
+    </div>
+    <div class="compartilhar">
+        <p>Compartilhar:</p>
+        <a class="btn98" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fcriar-exercicios-com-ia%2F" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fohtopico.com.br%2Fblog%2Fcriar-exercicios-com-ia%2F" target="_blank" rel="noopener">Facebook<span class="sr-only"> (abre em nova aba)</span></a>
+        <a class="btn98" href="https://wa.me/?text=Como%20criar%20exerc%C3%ADcios%20com%20IA%20sem%20levar%20erro%20para%20a%20sala%20https%3A%2F%2Fohtopico.com.br%2Fblog%2Fcriar-exercicios-com-ia%2F" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (abre em nova aba)</span></a>
+    </div>
+    <aside class="autora" aria-labelledby="sobre-autora">
+        <img src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="72" height="72" loading="lazy">
+        <div>
+            <h2 id="sobre-autora">Júlia Roberta Quoos Alves</h2>
+            <p>Professora de computação no RS, mestranda em Ciência da Computação na UFSM e formadora de professores em inteligência artificial.</p>
+            <p class="links"><a href="/mentoria/">Mentoria para professores</a> <a href="/ia-pra-prof/">Guia IA pra Prof</a> <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a></p>
+        </div>
+    </aside>
+    <nav class="vizinhos" aria-label="Outros posts"><a class="ant" href="/blog/ef06co05-generalizacao-6-ano/" rel="prev"><span>◄ Anterior</span>Entradas, saídas e abstração: uma aula para o 6º ano (EF06CO05)</a></nav>
+</article>
+        </main>
+        <aside class="lateral lateral-esq" aria-label="Menu do blog">
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Navegue</h2>
+                <ul class="lista-menu"><li><a href="/"><span aria-hidden="true">◄</span> Área de trabalho</a></li><li><a href="/blog/" aria-current="page"><span aria-hidden="true">⌂</span> Início do blog</a></li><li><a href="/formacao-e-mentoria/"><span aria-hidden="true">✦</span> Formação e mentoria</a></li><li><a href="/para-escolas/"><span aria-hidden="true">▣</span> Para escolas e redes</a></li><li><a href="/prompts-para-professores/"><span aria-hidden="true">❖</span> Biblioteca de prompts</a></li><li><a href="/quiz-pensamento-computacional/"><span aria-hidden="true">✱</span> Quiz de pensamento computacional</a></li><li><a href="/teste-proficiencia-informatica/"><span aria-hidden="true">▤</span> Teste de informática</a></li><li><a href="/curriculo/"><span aria-hidden="true">☺</span> Currículo</a></li></ul>
+                <button type="button" class="btn98 tema-btn" id="tema-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg> Tema claro/escuro</button>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Temas</h2>
+                <ul class="lista-menu"><li><a href="/blog/categoria/sobre-mim/">Sobre mim</a></li><li><a href="/blog/categoria/ia-na-pratica/">IA na prática</a></li><li><a href="/blog/categoria/formacao-de-professores-em-ia/">Formação de professores em IA</a></li><li><a href="/blog/categoria/etica-e-lgpd/">Ética e LGPD</a></li><li><a href="/blog/categoria/computacao-e-bncc/">Computação e BNCC</a></li><li><a href="/blog/categoria/para-estudantes/">Para estudantes</a></li><li><a href="/blog/categoria/bit-a-bit/">Bit a Bit</a></li><li><a href="/blog/categoria/jogos/">Jogos</a></li><li><a href="/blog/categoria/matematica-em-sala/">Matemática em sala</a></li></ul>
+            </section>
+            <section class="caixa caixa-verde">
+                <h2 class="caixa-titulo">★ Posts recentes</h2>
+                <ul class="lista-recentes"><li><a href="/blog/criar-exercicios-com-ia/">Como criar exercícios com IA sem levar erro para a sala</a></li><li><a href="/blog/ef06co05-generalizacao-6-ano/">Entradas, saídas e abstração: uma aula para o 6º ano (EF06CO05)</a></li><li><a href="/blog/pensamento-computacional-atividades-para-imprimir/">Pensamento computacional: atividades para imprimir do 6º ao 9º ano</a></li><li><a href="/blog/ef06co04-decomposicao-6-ano/">Decomposição no 6º ano: dividir problemas para resolver (EF06CO04)</a></li><li><a href="/blog/o-que-e-ia-generativa-para-professores/">O que é IA generativa e por que ela erra: o básico para professores</a></li></ul>
+            </section>
+        </aside>
+        <aside class="lateral lateral-dir" aria-label="Projetos e sobre a autora">
+            <nav class="caixa caixa-verde caixa-projetos" aria-label="Projetos">
+                <h2 class="caixa-titulo">★ Projetos</h2>
+                <ul class="lista-menu"><li><a href="/material-didatico/"><span aria-hidden="true">▲</span> Material didático</a></li><li><a href="/material-adaptado/"><span aria-hidden="true">◆</span> Material adaptado</a></li><li><a href="/ia-pra-prof/"><span aria-hidden="true">✎</span> Guia IA pra Prof</a></li><li><a href="/tech-pra-prof/"><span aria-hidden="true">◇</span> Guia Tech pra Prof</a></li><li><a href="/computacao-na-escola/"><span aria-hidden="true">▦</span> Computação na escola</a></li><li><a href="/lei-do-celular-nas-escolas/"><span aria-hidden="true">▮</span> Lei do celular nas escolas</a></li><li><a href="/matematica-adaptada/"><span aria-hidden="true">✚</span> Matemática adaptada</a></li><li><a href="/assistencia-por-voz/"><span aria-hidden="true">◉</span> Assistência por voz</a></li><li><a href="/mundo/professores/"><span aria-hidden="true">⬢</span> Mundo para professores</a></li></ul>
+            </nav>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Quem escreve</h2>
+                <img class="foto" src="/img/perfil.jpg" alt="Foto de Júlia Roberta Quoos Alves" width="96" height="96" loading="lazy">
+                <p><strong>Júlia Roberta Quoos Alves</strong>, professora de computação no RS e formadora de professores em IA. Do código ao quadro.</p>
+                <a class="btn98 escuro" href="/blog/quem-e-julia-quoos/">Minha história</a>
+            </section>
+            <section class="caixa caixa-amarela">
+                <h2 class="caixa-titulo">★ Formação e mentoria</h2>
+                <p>Mentoria individual para professores, a partir de R$ 200 a sessão, e formação para escolas e redes.</p>
+                <a class="btn98 escuro" href="/formacao-e-mentoria/">Ver as opções</a>
+            </section>
+            <section class="caixa caixa-contador">
+                <h2 class="caixa-titulo">★ Visitas</h2>
+                <p class="contador"><span class="sr-only">Total de visitas: </span><span data-numero>------</span></p>
+                <p class="miudo">Contador do GoatCounter, sem identificar quem visita. <a href="/privacidade/">Privacidade</a></p>
+            </section>
+            <section class="caixa">
+                <h2 class="caixa-titulo">★ Selos</h2>
+                <ul class="selos">
+                    <li class="selo selo-amarelo">feito à mão</li>
+                    <li class="selo selo-verde"><a href="/privacidade/">privacidade</a></li>
+                    <li class="selo selo-vermelho">♥ professores</li>
+                    <li class="selo"><a href="/blog/feed.xml">RSS</a></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</div>
+</div>
+<footer class="rodape">
+    <nav class="letreiro" aria-label="Destaques"><a href="/blog/criar-exercicios-com-ia/">✦ Post novo: Como criar exercícios com IA sem levar erro para a sala</a><a href="/formacao-e-mentoria/">✦ Formação e mentoria para professores, escolas e redes</a><a href="/prompts-para-professores/">✦ Biblioteca de prompts para professores</a><a href="/quiz-pensamento-computacional/">✦ Quiz de pensamento computacional para professores</a><a href="/ia-pra-prof/">✦ Guia gratuito IA pra Prof</a><a href="/tech-pra-prof/">✦ Tech pra Prof: tecnologias para professores</a></nav>
+    <p>© 2026 Júlia Roberta Quoos Alves · professora de computação no Rio Grande do Sul</p>
+    <p><a href="mailto:contato@ohtopico.com.br">contato@ohtopico.com.br</a> · <a href="https://www.linkedin.com/in/ohtopico" rel="me">LinkedIn</a> · <a href="https://www.facebook.com/profile.php?id=61596036681061" rel="me">Facebook</a> · <a href="https://www.instagram.com/ohtopico/" rel="me">Instagram</a> · <a href="https://github.com/ohtopico" rel="me">GitHub</a> · <a href="https://whatsapp.com/channel/0029VbE27754Y9ltvms5nG2g" rel="me">Canal no WhatsApp</a> · <a href="/apoie/">Apoie o projeto</a> · <a href="/blog/feed.xml">RSS</a> · <a href="/">Área de trabalho</a> · <a href="/privacidade/">Privacidade</a></p>
+</footer>
+<script data-goatcounter="https://ohtopico.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="/blog/assets/blog.js?v=736a2473ac" defer></script>
+<script src="/assistente/assistente.js?v=9578342a21" defer></script>
+</body>
+</html>
